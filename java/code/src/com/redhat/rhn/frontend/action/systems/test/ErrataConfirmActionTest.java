@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.action.systems.test;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.util.DatePicker;
+import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.errata.Errata;
@@ -27,13 +28,16 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.context.Context;
+import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.RhnPostMockStrutsTestCase;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.TimeZone;
 
 /**
@@ -46,7 +50,16 @@ public class ErrataConfirmActionTest extends RhnPostMockStrutsTestCase {
     public void setUp() throws Exception {
         super.setUp();
         setRequestPathInfo("/systems/details/ErrataConfirm");
+
+        TaskomaticApi tapi = new TaskomaticApi() {
+            @Override
+            public void scheduleMinionActionExecutions(List<Action> actions, boolean forcePackageListRefresh) {
+                // do nothing for test
+            }
+        };
+        ErrataManager.setTaskomaticApi(tapi);
     }
+
     /**
      * Tests a good/clean operation, errata are present.
      *

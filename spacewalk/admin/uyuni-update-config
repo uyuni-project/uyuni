@@ -13,8 +13,10 @@
 
 import re
 import sys
+import os
 import os.path
 import uuid
+import shutil
 import subprocess
 from spacewalk.common.rhnConfig import cfg_component
 from spacewalk.server import rhnSQL
@@ -22,8 +24,9 @@ from spacewalk.server import rhnSQL
 
 def run_uyuni_configfiles_sync():
     if not os.path.isfile("/usr/bin/uyuni-configfiles-sync"):
-        return
+        return 0
 
+    exitCode = 0
     result = subprocess.run(
         ["/usr/bin/uyuni-configfiles-sync", "sync"],
         stdout=subprocess.PIPE,
@@ -40,7 +43,8 @@ def run_uyuni_configfiles_sync():
             "Failed to synchronize files to persistent volumes. Aborting!\n"
         )
         sys.stdout.flush()
-        sys.exit(1)
+        exitCode = 1
+    return exitCode
 
 
 def move_config_to_db():
@@ -187,6 +191,28 @@ def change_billing_data_service():
         sys.stdout.write("billing-data-service sysconfig: changed LISTEN address\n")
 
 
+def init_dirs_and_perms():
+    mount_point = "/var/spacewalk"
+    with cfg_component("server") as CFG:
+        mount_point = CFG.MOUNT_POINT
+    if not mount_point:
+        sys.stdout.write("Invalid mount point. Aborting!\n")
+        sys.stdout.flush()
+        sys.exit(1)
+
+    # mount_point/systems dir with 775 wwwrun www
+    system_dir = os.path.join(mount_point, "systems")
+    if not os.path.exists(system_dir):
+        try:
+            os.makedirs(system_dir)
+        except OSError as e:
+            sys.stdout.write(f"Failed to create directory {system_dir}: {e}")
+            sys.exit(1)
+
+    shutil.chown(system_dir, "wwwrun", "www")
+    os.chmod(system_dir, int("0775", 8))
+
+
 def remove_product_name_overwrite():
     pattern = re.compile(r"^product_name\s*=.*$")
     with open("/etc/rhn/rhn.conf", "r+", encoding="utf8") as f:
@@ -198,8 +224,26 @@ def remove_product_name_overwrite():
         f.truncate()
 
 
+def change_hostname():
+    result = subprocess.run(
+        ["/usr/bin/spacewalk-hostname-rename"],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        encoding="utf-8",
+        check=False,
+    )
+
+    if result.returncode:
+        sys.stdout.write("Failed to rename the server\n")
+    if result.stdout:
+        sys.stdout.write(f"{result.stdout}\n")
+    sys.stdout.flush()
+    return result.returncode
+
+
 def main():
-    run_uyuni_configfiles_sync()
+    init_dirs_and_perms()
+    exitCode = run_uyuni_configfiles_sync()
     init_scc_login()
     import_suma_gpg_keyring()
     copy_ca()
@@ -207,6 +251,8 @@ def main():
     change_billing_data_service()
     remove_product_name_overwrite()
 
+    exitCode = max(change_hostname(), exitCode)
+    return exitCode
 
 if __name__ == "__main__":
     sys.exit(abs(main() or 0))

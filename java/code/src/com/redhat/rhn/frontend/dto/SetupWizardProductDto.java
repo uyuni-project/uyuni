@@ -104,7 +104,7 @@ public class SetupWizardProductDto implements Selectable,
          * @param stageIn the stage to compare to
          * @return whether the stages are equal
          */
-        boolean equals(SyncStage stageIn) {
+        boolean isEqualTo(SyncStage stageIn) {
             return getStage().equals(stageIn);
         }
 
@@ -168,7 +168,7 @@ public class SetupWizardProductDto implements Selectable,
          * @return true if the stage is not mirrored
          */
         public boolean isNotMirrored() {
-            return equals(SyncStage.NOT_MIRRORED);
+            return isEqualTo(SyncStage.NOT_MIRRORED);
         }
 
         /**
@@ -176,7 +176,7 @@ public class SetupWizardProductDto implements Selectable,
          * @return true if the stage is in progress
          */
         public boolean isInProgress() {
-            return equals(SyncStage.IN_PROGRESS);
+            return isEqualTo(SyncStage.IN_PROGRESS);
         }
 
         /**
@@ -184,7 +184,7 @@ public class SetupWizardProductDto implements Selectable,
          * @return true if the stage is failed
          */
         public boolean isFailed() {
-            return equals(SyncStage.FAILED);
+            return isEqualTo(SyncStage.FAILED);
         }
 
         /**
@@ -192,7 +192,7 @@ public class SetupWizardProductDto implements Selectable,
          * @return true if the stage is finished
          */
         public boolean isFinished() {
-            return equals(SyncStatus.SyncStage.FINISHED);
+            return isEqualTo(SyncStatus.SyncStage.FINISHED);
         }
     }
 
@@ -541,7 +541,7 @@ public class SetupWizardProductDto implements Selectable,
      * @see com.redhat.rhn.frontend.dto.SetupWizardProductDto.SyncStatus.SyncStage
      */
     public boolean isStatusNotMirrored() {
-        return getSyncStatus().equals(SyncStatus.SyncStage.NOT_MIRRORED);
+        return getSyncStatus().isEqualTo(SyncStatus.SyncStage.NOT_MIRRORED);
     }
 
     /**
@@ -558,7 +558,7 @@ public class SetupWizardProductDto implements Selectable,
      * @see com.redhat.rhn.frontend.dto.SetupWizardProductDto.SyncStatus.SyncStage
      */
     public boolean isStatusInProgress() {
-        return getSyncStatus().equals(SyncStatus.SyncStage.IN_PROGRESS);
+        return getSyncStatus().isEqualTo(SyncStatus.SyncStage.IN_PROGRESS);
     }
 
     /**
@@ -575,7 +575,7 @@ public class SetupWizardProductDto implements Selectable,
      * @see com.redhat.rhn.frontend.dto.SetupWizardProductDto.SyncStatus.SyncStage
      */
     public boolean isStatusFinished() {
-        return getSyncStatus().equals(SyncStatus.SyncStage.FINISHED);
+        return getSyncStatus().isEqualTo(SyncStatus.SyncStage.FINISHED);
     }
 
     /**
@@ -592,7 +592,7 @@ public class SetupWizardProductDto implements Selectable,
      * @see com.redhat.rhn.frontend.dto.SetupWizardProductDto.SyncStatus.SyncStage
      */
     public boolean isStatusFailed() {
-        return getSyncStatus().equals(SyncStatus.SyncStage.FAILED);
+        return getSyncStatus().isEqualTo(SyncStatus.SyncStage.FAILED);
     }
 
     /**

@@ -190,8 +190,23 @@ begin
   FROM rhnServer S
   WHERE
     S.id = sid
-    AND (EXISTS (SELECT 1
-                FROM rhnServerPackage SP
+  AND CASE
+    WHEN EXISTS (
+      SELECT 1
+      FROM suseMinionInfo smi
+      INNER JOIN suseServerContactMethod cm ON cm.id = S.contact_method_id
+      WHERE smi.server_id = S.id
+      AND cm.label = 'default'
+    )
+    THEN EXISTS (
+      SELECT 1
+      FROM suseMinionInfo smi
+      WHERE
+        smi.server_id = S.id
+        AND to_date('1970-01-01', 'YYYY-MM-DD') + numtodsinterval(S.last_boot, 'second') < smi.reboot_required_after AT TIME ZONE 'UTC'
+    )
+    ELSE (EXISTS (SELECT 1
+        FROM rhnServerPackage SP
                   JOIN rhnPackage P ON (P.evr_id = SP.evr_id AND P.name_id = SP.name_id)
                   JOIN rhnErrataPackage EP ON EP.package_id = P.id
                   JOIN rhnErrata E ON EP.errata_id = E.id
@@ -219,7 +234,8 @@ begin
                 AND to_date('1970-01-01', 'YYYY-MM-DD')
                        + numtodsinterval(S.last_boot, 'second') < smi.reboot_required_after at time zone 'UTC'
                )
-    );
+    )
+  END;
 
     SELECT TRUE into new_kickstarting
     FROM rhnKickstartSession KSS, rhnKickstartSessionState KSSS

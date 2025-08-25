@@ -44,7 +44,7 @@ public class ServerNetworkFactory extends HibernateFactory {
      * if there is more than one matching result
      */
     public static List<ServerNetAddress4> findServerNetAddress4(Long interfaceId) {
-        return (List<ServerNetAddress4>) HibernateFactory.getSession()
+        return HibernateFactory.getSession()
                 .getNamedQuery("ServerNetAddress4.lookup")
                 .setParameter("interface_id", interfaceId)
                 .list();
@@ -58,7 +58,7 @@ public class ServerNetworkFactory extends HibernateFactory {
      * if there is more than one matching result
      */
     public static List<ServerNetAddress6> findServerNetAddress6(Long interfaceId) {
-        return (List<ServerNetAddress6>) HibernateFactory.getSession()
+        return HibernateFactory.getSession()
                 .getNamedQuery("ServerNetAddress6.lookup_by_id")
                 .setParameter("interface_id", interfaceId)
                 .list();

@@ -424,6 +424,12 @@ INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('systems.software.refresh', 'W', NULL)
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('systems.details.support', 'R', 'Views for generating and uploading the support data')
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('systems.details.support', 'W', 'Schedule the support data action on the system')
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('systems.maintenance', 'W', NULL)
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
@@ -1222,6 +1228,12 @@ INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.contentmanagement.build_project', 'W', 'Build a Project')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.contentmanagement.generate_project_difference', 'W', 'Generate the difference for a CLM project.')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.contentmanagement.generate_environment_difference', 'W', 'Generate the difference between CLM environments.')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.contentmanagement.create_app_stream_filters', 'W', 'Create Filters for AppStream Modular Channel and attach them to CLM Project')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
@@ -1238,6 +1250,9 @@ INSERT INTO access.namespace (namespace, access_mode, description)
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.contentmanagement.detach_source', 'W', 'Detach a Source from a Project')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.contentmanagement.list_environment_difference', 'R', 'List the difference of a Project Environment compared to its original')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.contentmanagement.list_filter_criteria', 'R', 'List of available filter criteria')
@@ -2797,6 +2812,9 @@ INSERT INTO access.namespace (namespace, access_mode, description)
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.system.schedule_script_run', 'W', 'Schedule a script to run.')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.system.schedule_support_data_upload', 'W', 'Schedule fetch and upload support data from a system to SCC')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.system.schedule_sync_packages_with_system', 'W', 'Sync packages from a source system to a target.')

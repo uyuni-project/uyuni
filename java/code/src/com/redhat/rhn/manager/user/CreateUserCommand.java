@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2009--2015 Red Hat, Inc.
+ * Copyright (c) 2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -85,7 +86,7 @@ public class CreateUserCommand {
     public ValidatorError[] validate() {
         errors = new ArrayList<>(); //clear validation errors
 
-        if (passwordErrors != null && !user.getUsePamAuthentication()) {
+        if (passwordErrors != null) {
             errors.addAll(passwordErrors); //add any password validation errors
         }
         validateEmail();
@@ -305,11 +306,13 @@ public class CreateUserCommand {
     }
 
     /**
+     * Set password to the user if passed validation.
+     *
+     * PAM enabled users will skip verification of the password
      * @param passwordIn The password to set
-     * @param validate if password requirements should be validated
      */
-    public void setPassword(String passwordIn, boolean validate) {
-        if (!validate) {
+    public void setPassword(String passwordIn) {
+        if (user.getUsePamAuthentication()) {
             user.setPassword(passwordIn);
         }
         else {
@@ -320,13 +323,6 @@ public class CreateUserCommand {
                 user.setPassword(passwordIn);
             }
         }
-    }
-
-    /**
-     * @param passwordIn The password to set
-     */
-    public void setPassword(String passwordIn) {
-        setPassword(passwordIn, true);
     }
 
     /**
@@ -365,6 +361,8 @@ public class CreateUserCommand {
     }
 
     /**
+     * PAM enabled user
+     * Setting this to true will skip password policy verification
      * @param val Should this user use pam authentication?
      */
     public void setUsePamAuthentication(boolean val) {

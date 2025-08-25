@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-25 09:41+0200\n"
+"POT-Creation-Date: 2025-08-22 09:58+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -31,20 +31,20 @@ msgstr ""
 msgid "declined proxy authentication"
 msgstr ""
 
-#: ../server/apacheRequest.py:67
+#: ../server/apacheRequest.py:68
 #, python-format
 msgid "Invalid request received (%s)."
 msgstr ""
 
 #. Send the message as a fault.
-#: ../server/apacheRequest.py:126
+#: ../server/apacheRequest.py:130
 #, python-format
 msgid ""
 "IMPORTANT MESSAGE FOLLOWS:\n"
 "%s"
 msgstr ""
 
-#: ../server/apacheRequest.py:156
+#: ../server/apacheRequest.py:160
 #, python-format
 msgid ""
 "While running '%s': caught\n"
@@ -52,7 +52,7 @@ msgid ""
 msgstr ""
 
 #. pylint: disable-next=consider-using-f-string
-#: ../server/apacheRequest.py:671
+#: ../server/apacheRequest.py:675
 #, python-format
 msgid "Invalid URI %s"
 msgstr ""
@@ -108,14 +108,14 @@ msgid ""
 "               Please contact your Org administrator for more help."
 msgstr ""
 
-#: ../server/rhnChannel.py:2217
+#: ../server/rhnChannel.py:2216
 #, python-format
 msgid ""
 "Your account does not have access to any channels matching "
 "(release='%(release)s', arch='%(arch)s')%(www_activation)s"
 msgstr ""
 
-#: ../server/rhnChannel.py:2236
+#: ../server/rhnChannel.py:2235
 #, python-format
 msgid "Insufficient subscription permissions for release (%s, %s"
 msgstr ""
@@ -124,11 +124,11 @@ msgstr ""
 #.
 #. bretm 02/07/2007 -- when we have better old-client documentation, probably
 #. will be safe to get rid of all this crap
-#: ../server/rhnChannel.py:2550 ../server/rhnChannel.py:2569
+#: ../server/rhnChannel.py:2549 ../server/rhnChannel.py:2568
 msgid "System Registered but Inactive"
 msgstr ""
 
-#: ../server/rhnChannel.py:2552
+#: ../server/rhnChannel.py:2551
 #, python-format
 msgid ""
 "\n"
@@ -138,7 +138,7 @@ msgid ""
 "Please contact your organization administrator for assistance.\n"
 msgstr ""
 
-#: ../server/rhnChannel.py:2561
+#: ../server/rhnChannel.py:2560
 #, python-format
 msgid ""
 "\n"
@@ -148,7 +148,7 @@ msgid ""
 "  %(entitlement_url)s\n"
 msgstr ""
 
-#: ../server/rhnChannel.py:2571
+#: ../server/rhnChannel.py:2570
 #, python-format
 msgid ""
 "\n"

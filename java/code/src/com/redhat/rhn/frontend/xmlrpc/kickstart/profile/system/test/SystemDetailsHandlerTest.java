@@ -303,7 +303,7 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
 
         List descriptions = new ArrayList<>();
         descriptions.add(key.getDescription());
-        int result = handler.addKeys(userNotOrgOne, profile.getLabel(), descriptions);
+        handler.addKeys(userNotOrgOne, profile.getLabel(), descriptions);
 
         KickstartData data =
             KickstartFactory.lookupKickstartDataByLabelAndOrgId(profile.getLabel(),
@@ -312,7 +312,7 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
         assertEquals(1, data.getCryptoKeys().size());
 
         // Test
-        result = handler.removeKeys(userNotOrgOne, profile.getLabel(), descriptions);
+        int result = handler.removeKeys(userNotOrgOne, profile.getLabel(), descriptions);
 
         // Verify
         assertEquals(1, result);

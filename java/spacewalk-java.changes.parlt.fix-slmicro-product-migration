@@ -1,0 +1,2 @@
+- Fix product migration not showing valid clones
+  as target for SL Micro (bsc#1247269)

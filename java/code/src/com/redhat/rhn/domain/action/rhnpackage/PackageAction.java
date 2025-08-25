@@ -14,26 +14,36 @@
  */
 package com.redhat.rhn.domain.action.rhnpackage;
 
+import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFormatter;
 import com.redhat.rhn.domain.action.PackageActionFormatter;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 
 import org.apache.commons.text.StringEscapeUtils;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
  * PackageAction
  */
 public class PackageAction extends Action {
-
     private static final long serialVersionUID = -6964115307447205711L;
     private Set<PackageActionDetails> details = new HashSet<>();
+
+    protected PackageAction() {
+        //should instantiate one of the child classes
+    }
 
     /**
      * Add a PackageActionDetails to the set of details
@@ -100,6 +110,35 @@ public class PackageAction extends Action {
         }
         retval.append("</ul>");
         return retval.toString();
+    }
+
+    /**
+     * depending on the event type, we need to retrieve additional information and store that information in the result
+     *
+     * @return additionalInfo list of info items
+     */
+    protected List<Map<String, String>> createPackageActionSpecificDetails() {
+        final List<Map<String, String>> additionalInfo = new ArrayList<>();
+
+        // retrieve the list of package names associated with the action...
+        DataResult<Row> pkgs = ActionManager.getPackageList(getId(), null);
+        for (Row pkg : pkgs) {
+            String detail = (String) pkg.get("nvre");
+
+            Map<String, String> info = new HashMap<>();
+            info.put("detail", detail);
+            additionalInfo.add(info);
+        }
+
+        return additionalInfo;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getPackageParameter() {
+        return "upgrade";
     }
 
 }

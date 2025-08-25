@@ -15,6 +15,9 @@
 
 package com.redhat.rhn.frontend.servlets;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.IOException;
 
 import javax.servlet.Filter;
@@ -23,6 +26,7 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * <p>Example filter that sets the character encoding to be used in parsing the
@@ -46,6 +50,8 @@ import javax.servlet.ServletResponse;
  */
 
 public class SetCharacterEncodingFilter implements Filter {
+
+    private static final Logger LOG = LogManager.getLogger(SetCharacterEncodingFilter.class);
 
     /**
      * The default character encoding to set for requests that pass through
@@ -87,10 +93,14 @@ public class SetCharacterEncodingFilter implements Filter {
         // Conditionally select and set the character encoding to be used
         if ((request.getCharacterEncoding() == null)) {
             String encodingIn = selectEncoding(request);
-            if (encoding != null) {
+            if (encodingIn != null) {
                 request.setCharacterEncoding(encodingIn);
                 response.setContentType("text/html; charset=" + encodingIn);
                 response.setCharacterEncoding(encodingIn);
+            }
+            else {
+                HttpServletRequest httpRequest = (HttpServletRequest) request;
+                LOG.error("No character encoding defined for request: {}", httpRequest.getRequestURI());
             }
         }
 

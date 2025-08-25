@@ -16,9 +16,18 @@
 package com.redhat.rhn.taskomatic.task.gatherer;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.util.TimeUtils;
+import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.org.OrgFactory;
+import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory;
+import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.taskomatic.task.RhnJavaJob;
+import com.redhat.rhn.taskomatic.task.TaskHelper;
 
 import com.suse.manager.gatherer.GathererRunner;
 import com.suse.manager.gatherer.HostJson;
@@ -29,6 +38,8 @@ import org.quartz.JobExecutionContext;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Taskomatic job for running gatherer on all Virtual Host Managers and
@@ -58,6 +69,7 @@ public class GathererJob extends RhnJavaJob {
         if (StringUtils.isEmpty(vhmLabel)) {
             managers.addAll(VirtualHostManagerFactory.getInstance()
                     .listVirtualHostManagers());
+            gatherVmInfoFromPhysicalSystems();
         }
         else {
             managers.add(VirtualHostManagerFactory.getInstance().lookupByLabel(vhmLabel));
@@ -96,6 +108,33 @@ public class GathererJob extends RhnJavaJob {
         }
         finally {
             HibernateFactory.closeSession();
+        }
+    }
+
+    private void gatherVmInfoFromPhysicalSystems() {
+        for (Org org : OrgFactory.lookupAllOrgs()) {
+
+            Set<Long> sids = TimeUtils.logTime(log, "Find physical systems",
+                    () -> ServerFactory.listOrgSystems(org.getId()).stream()
+                            .filter(s -> !s.isInactive())
+                            .filter(s -> (s.hasEntitlement(EntitlementManager.SALT)))
+                            .filter(s -> !s.isVirtualGuest())
+                            .map(Server::getId)
+                            .collect(Collectors.toSet()));
+            if (sids.isEmpty()) {
+                continue;
+            }
+
+            Action act = ActionFactory.createAction(ActionFactory.TYPE_VIRT_PROFILE_REFRESH);
+            // set up needed fields for the action
+            act.setName(act.getActionTypeName());
+            act.setOrg(org);
+            ActionFactory.save(act);
+
+            ActionFactory.scheduleForExecution(act, sids);
+            TaskHelper.scheduleActionExecution(act);
+
+            log.info("  schedule Virt profile refresh for {} systems in org {}", sids.size(), org.getName());
         }
     }
 }

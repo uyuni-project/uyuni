@@ -176,8 +176,7 @@ public abstract class BaseSetOperateOnSelectedItemsAction extends RhnSetAction {
     }
 
     private boolean callMethod(String methodName, Object[] args) {
-        Boolean success = (Boolean) MethodUtil.callMethod(this, methodName, args);
-        return success;
+        return (Boolean) MethodUtil.callMethod(this, methodName, args);
     }
 
 

@@ -1,7 +1,7 @@
 #
 # spec file for package rhnlib
 #
-# Copyright (c) 2024 SUSE LLC
+# Copyright (c) 2025 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -40,7 +40,7 @@
 %endif
 
 Name:           rhnlib
-Version:        5.1.2
+Version:        5.2.0
 Release:        0
 Summary:        Python libraries for the Spacewalk project
 License:        GPL-2.0-only
@@ -71,8 +71,10 @@ Group:          Development/Libraries
 %if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
 BuildRequires:  python2-devel
 Requires:       python2-pyOpenSSL
+Requires:       python2-defusedxml
 %else
 BuildRequires:  python-devel
+Requires:       python-defusedxml
 %if 0%{?suse_version}
 %if 0%{?suse_version} > 1200
 Requires:       python-pyOpenSSL
@@ -92,6 +94,7 @@ BuildRequires:  rpm
 Requires(preun):python-minimal
 Requires(post): python-minimal
 Requires:       python-openssl
+Requires:       python-defusedxml
 Obsoletes:      python-rhn
 Conflicts:      python-rhn
 %endif
@@ -124,6 +127,7 @@ BuildRequires:  python-rpm-macros
 %endif
 %endif
 Requires:       python3-pyOpenSSL
+Requires:       python3-defusedxml
 
 %if "%{_vendor}" == "debbuild"
 BuildRequires:  python3-dev

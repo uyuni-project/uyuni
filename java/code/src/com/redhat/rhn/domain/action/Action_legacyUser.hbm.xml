@@ -166,7 +166,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                 </subclass>
                 <!-- ConfigAction subclass: 16, 17, 18, 22 -->
                 <subclass name="com.redhat.rhn.domain.action.config.ConfigAction"
-                        discriminator-value="16" lazy="true">
+                        discriminator-value="-16" lazy="true">
                         <set lazy="true" cascade="all" inverse="true" name="configRevisionActions" >
                                 <key column="action_id" />
                                 <one-to-many
@@ -175,10 +175,14 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                         </set>
                         <subclass
                                 name="com.redhat.rhn.domain.action.config.ConfigDeployAction"
-                                discriminator-value="17" lazy="true">
+                                discriminator-value="16" lazy="true">
                         </subclass>
                         <subclass
                                 name="com.redhat.rhn.domain.action.config.ConfigVerifyAction"
+                                discriminator-value="17" lazy="true">
+                        </subclass>
+                        <subclass
+                                name="com.redhat.rhn.domain.action.config.ConfigDiffAction"
                                 discriminator-value="18" lazy="true">
                         </subclass>
                         <!-- TODO: These last two subclasses probably don't belong here.
@@ -375,6 +379,20 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
             <one-to-one name="details" class="com.redhat.rhn.domain.action.ansible.InventoryActionDetails"
                         outer-join="false" cascade="all" property-ref="parentAction"/>
         </subclass>
+
+        <subclass name="com.redhat.rhn.domain.action.supportdata.SupportDataAction"
+                  lazy="true" discriminator-value="526" >
+            <one-to-one name="details"
+                        class="com.redhat.rhn.domain.action.supportdata.SupportDataActionDetails"
+                        outer-join="false" cascade="all" property-ref="parentAction"/>
+        </subclass>
+        
+        <!-- Refresh virtual instance information -->
+        <subclass
+                name="com.redhat.rhn.domain.action.VirtualInstanceRefreshAction"
+                discriminator-value="527" lazy="true">
+        </subclass>
+
 
     </class>
     <query name="Action.findByIdandOrgId">

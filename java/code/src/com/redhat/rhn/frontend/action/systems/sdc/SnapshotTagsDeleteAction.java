@@ -67,7 +67,7 @@ public class SnapshotTagsDeleteAction extends RhnAction {
                         ServerFactory.lookupSnapshotTagbyName(sTag.getName()));
             }
             createSuccessMessage(request, "system.history.snapshot.tagDeleteSuccess",
-                    Integer.valueOf(set.size()).toString());
+                    Integer.toString(set.size()));
             set.clear();
             RhnSetManager.store(set);
             Map<String, Object> params = makeParamMap(request);

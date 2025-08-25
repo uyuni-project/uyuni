@@ -168,7 +168,7 @@ public class MinionActionExecutor extends RhnJavaJob {
         if (cloudPaygManager.isPaygInstance()) {
             cloudPaygManager.checkRefreshCache(true);
             if (!cloudPaygManager.hasSCCCredentials()) {
-                if (ActionFactory.rejectScheduleActionIfByos(action)) {
+                if (action.rejectScheduleActionIfByos()) {
                     return;
                     }
                 }
@@ -193,7 +193,7 @@ public class MinionActionExecutor extends RhnJavaJob {
 
         return action.getServerActions()
                      .stream()
-                     .filter(serverAction -> ActionFactory.STATUS_QUEUED.equals(serverAction.getStatus()))
+                     .filter(serverAction -> serverAction.isStatusQueued())
                      .count();
     }
 }

@@ -505,10 +505,17 @@ public class DistUpgradeManager extends BaseManager {
             }
             // Init the list of required channel IDs
             // if the required channels ids is empty no valid alternative has been found
-            List<Long> requiredChannelIDs =
-                    getValidRequiredChannelIDs(user, clone, requiredChildChannels, suseBaseChannel);
-            if (!requiredChannelIDs.isEmpty()) {
-                alternatives.put(clone, requiredChannelIDs);
+            // if the target product has no required child channels add the clone as
+            // valid alternative regardless
+            if (!requiredChildChannels.isEmpty()) {
+                List<Long> requiredChannelIDs =
+                        getValidRequiredChannelIDs(user, clone, requiredChildChannels, suseBaseChannel);
+                if (!requiredChannelIDs.isEmpty()) {
+                    alternatives.put(clone, requiredChannelIDs);
+                }
+            }
+            else {
+                alternatives.put(clone, Collections.emptyList());
             }
         }
         return alternatives;
@@ -605,7 +612,7 @@ public class DistUpgradeManager extends BaseManager {
         }
         else {
             Optional<MinionServer> minion = MinionServerFactory.lookupById(server.getId());
-            if (minion.isEmpty() || !minion.get().getOsFamily().equals("Suse")) {
+            if (minion.isEmpty() || !minion.get().isOsFamilySuse()) {
                 throw new DistUpgradeException("Dist upgrade only supported for SUSE systems");
             }
         }

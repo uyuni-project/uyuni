@@ -423,7 +423,7 @@ public class RpmRepositoryWriter extends RepositoryWriter {
 
         if (ConfigDefaults.get().isMetadataSigningEnabled()) {
             String[] signCommand = new String[2];
-            signCommand[0] = "mgr-sign-metadata";
+            signCommand[0] = "/usr/bin/mgr-sign-metadata";
             signCommand[1] = prefix + "repomd.xml";
             cmdExecutor.execute(signCommand);
             createdFiles.add(new File(prefix, "repomd.xml.asc"));
@@ -612,10 +612,9 @@ public class RpmRepositoryWriter extends RepositoryWriter {
             throw new RepomdRuntimeException(e);
         }
 
-        RepomdIndexData updateinfoData = new RepomdIndexData(updateinfoFile
+        return new RepomdIndexData(updateinfoFile
                 .getCompressedChecksum(), updateinfoFile
                 .getUncompressedChecksum(), channel.getLastModified());
-        return updateinfoData;
     }
 
     /**
@@ -650,10 +649,9 @@ public class RpmRepositoryWriter extends RepositoryWriter {
             return null;
         }
 
-        RepomdIndexData productsData = new RepomdIndexData(
+        return new RepomdIndexData(
                 StringUtil.getHexString(productsFile.getMessageDigest().digest()),
                 StringUtil.getHexString(productsFile.getMessageDigest().digest()),
                 channel.getLastModified());
-        return productsData;
     }
 }

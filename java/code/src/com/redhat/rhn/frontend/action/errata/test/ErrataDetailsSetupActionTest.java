@@ -17,6 +17,8 @@ package com.redhat.rhn.frontend.action.errata.test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.errata.AdvisoryStatus;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
@@ -26,9 +28,14 @@ import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.testing.ActionHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
+import com.suse.manager.errata.advisorymap.ErrataAdvisoryMapManager;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Locale;
@@ -39,11 +46,23 @@ import java.util.Locale;
 public class ErrataDetailsSetupActionTest extends RhnBaseTestCase {
 
     @BeforeEach
+    @Override
     public void setUp() throws Exception {
         super.setUp();
 
         // Set the locale explicitly to check the dates in an known format
         Context.getCurrentContext().setLocale(Locale.US);
+
+        String testAdvisoryMapCsv =
+                """
+                # patchid, notice id, url
+                SUSE-SLE-Module-Basesystem-15-SP3-2021-3413,SUSE-RU-2021:3413-1,\
+                https://www.suse.com/support/update/announcement/2021/suse-ru-20213413-1/
+                """;
+
+        InputStream inputStream = new ByteArrayInputStream(testAdvisoryMapCsv.getBytes(StandardCharsets.UTF_8));
+        ErrataAdvisoryMapManager amm = new ErrataAdvisoryMapManager();
+        amm.readAdvisoryMapPopulateDatabase(inputStream);
     }
 
     @Test
@@ -66,6 +85,9 @@ public class ErrataDetailsSetupActionTest extends RhnBaseTestCase {
         errata.setUpdateDate(new GregorianCalendar(2021, Calendar.OCTOBER, 13).getTime());
         errata.setErrataFrom("maint-coord@suse.de");
         errata.addKeyword("test");
+        Channel ch = ChannelFactoryTest.createTestChannel(sah.getUser().getOrg());
+        ch.setUpdateTag("SLE-Module-Basesystem");
+        errata.addChannel(ch);
 
         ErrataFactory.save(errata);
 

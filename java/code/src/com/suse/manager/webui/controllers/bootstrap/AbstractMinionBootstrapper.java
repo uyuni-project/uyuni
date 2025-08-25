@@ -138,7 +138,7 @@ public abstract class AbstractMinionBootstrapper {
         }
 
         File knownHostsFile = new File(SALT_SSH_DIR_PATH + "/known_hosts");
-        String cmd = "sudo /usr/bin/ls -la " + knownHostsFile.getPath();
+        String cmd = "/usr/bin/sudo /usr/bin/ls -la " + knownHostsFile.getPath();
         Process prc = Runtime.getRuntime().exec(cmd);
 
         try {

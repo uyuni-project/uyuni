@@ -1,7 +1,7 @@
 #
 # spec file for package uyuni-java-parent
 #
-# Copyright (c) 2024 SUSE LLC
+# Copyright (c) 2025 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -16,8 +16,11 @@
 #
 
 
+# The productprettyname macros is controlled in the prjconf. If not defined, we fallback here
+%{!?productprettyname: %global productprettyname Uyuni}
+
 Name:           uyuni-java-parent
-Version:        5.1.3
+Version:        5.2.0
 Release:        0
 Summary:        Parent POM for all Uyuni Maven components
 License:        GPL-2.0-only
@@ -25,12 +28,12 @@ Group:          Development/Libraries/Java
 URL:            https://www.uyuni-project.org
 Source0:        %{name}-%{version}.tar.gz
 BuildRequires:  fdupes
-BuildRequires:  java-devel >= 11
+BuildRequires:  java-devel >= 17
 BuildRequires:  maven-local
 BuildArch:      noarch
 
 %description
-Package that contains the parent POM used by all Uyuni Maven components.
+Package that contains the parent POM used by all %{productprettyname} Maven components.
 
 %prep
 %setup -q
@@ -46,7 +49,6 @@ Package that contains the parent POM used by all Uyuni Maven components.
 %{mvn_install}
 
 %files -f .mfiles
-%defattr(-,root,root)
 %license LICENSE
 
 %changelog

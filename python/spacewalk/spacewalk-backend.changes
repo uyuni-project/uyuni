@@ -1,4 +1,18 @@
 -------------------------------------------------------------------
+Thu Jul 24 16:54:44 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.13-0
+  * Fix malformed .changes file
+
+-------------------------------------------------------------------
+Thu Jul 24 16:07:34 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.12-0
+  * Enhance permissions for reposync zypper cache
+  * CVE-2025-46809: Do not expose HTTP Proxy password
+    when breaking URL format (bsc#1245005)
+
+-------------------------------------------------------------------
 Fri Jun 27 13:02:54 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.11-0
@@ -2557,4 +2571,3 @@ Wed Sep 15 09:10:44 CEST 2010 - mantel@suse.de
 
 - Initial release of spacewalk-backend
 
--------------------------------------------------------------------

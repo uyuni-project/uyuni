@@ -61,12 +61,57 @@ public class AttestationFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testCreateAttestationConfiguration() {
+    public void testCreateAttestationConfigurationMilan() {
         ServerCoCoAttestationConfig cnf = attestationFactory.createConfigForServer(server,
                 CoCoEnvironmentType.KVM_AMD_EPYC_MILAN, true, false);
         HibernateFactory.getSession().flush();
         assertEquals(server, cnf.getServer());
         assertEquals(CoCoEnvironmentType.KVM_AMD_EPYC_MILAN, cnf.getEnvironmentType());
+        assertTrue(cnf.isEnabled(), "Config is not enabled");
+        assertFalse(cnf.isAttestOnBoot());
+    }
+
+    @Test
+    public void testCreateAttestationConfigurationGenoa() {
+        ServerCoCoAttestationConfig cnf = attestationFactory.createConfigForServer(server,
+                CoCoEnvironmentType.KVM_AMD_EPYC_GENOA, false, true);
+        HibernateFactory.getSession().flush();
+        assertEquals(server, cnf.getServer());
+        assertEquals(CoCoEnvironmentType.KVM_AMD_EPYC_GENOA, cnf.getEnvironmentType());
+        assertFalse(cnf.isEnabled(), "Config is not enabled");
+        assertTrue(cnf.isAttestOnBoot());
+    }
+
+    @Test
+    public void testCreateAttestationConfigurationBergamo() {
+        ServerCoCoAttestationConfig cnf = attestationFactory.createConfigForServer(server,
+                CoCoEnvironmentType.KVM_AMD_EPYC_BERGAMO, true, true);
+        HibernateFactory.getSession().flush();
+        assertEquals(server, cnf.getServer());
+        assertEquals(CoCoEnvironmentType.KVM_AMD_EPYC_BERGAMO, cnf.getEnvironmentType());
+        assertTrue(cnf.isEnabled(), "Config is not enabled");
+        assertTrue(cnf.isAttestOnBoot());
+    }
+
+
+    @Test
+    public void testCreateAttestationConfigurationSiena() {
+        ServerCoCoAttestationConfig cnf = attestationFactory.createConfigForServer(server,
+                CoCoEnvironmentType.KVM_AMD_EPYC_SIENA, false, false);
+        HibernateFactory.getSession().flush();
+        assertEquals(server, cnf.getServer());
+        assertEquals(CoCoEnvironmentType.KVM_AMD_EPYC_SIENA, cnf.getEnvironmentType());
+        assertFalse(cnf.isEnabled(), "Config is not enabled");
+        assertFalse(cnf.isAttestOnBoot());
+    }
+
+    @Test
+    public void testCreateAttestationConfigurationTurin() {
+        ServerCoCoAttestationConfig cnf = attestationFactory.createConfigForServer(server,
+                CoCoEnvironmentType.KVM_AMD_EPYC_TURIN, true, false);
+        HibernateFactory.getSession().flush();
+        assertEquals(server, cnf.getServer());
+        assertEquals(CoCoEnvironmentType.KVM_AMD_EPYC_TURIN, cnf.getEnvironmentType());
         assertTrue(cnf.isEnabled(), "Config is not enabled");
         assertFalse(cnf.isAttestOnBoot());
     }

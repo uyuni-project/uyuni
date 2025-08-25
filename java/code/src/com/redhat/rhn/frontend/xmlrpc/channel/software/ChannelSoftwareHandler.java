@@ -396,11 +396,8 @@ public class ChannelSoftwareHandler extends BaseHandler {
             ChannelManager.deleteChannel(loggedInUser, channelLabel);
             ChannelManager.applyChannelState(loggedInUser, minions);
         }
-        catch (InvalidChannelRoleException e) {
+        catch (InvalidChannelRoleException | PermissionException e) {
             throw new PermissionCheckFailureException(e);
-        }
-        catch (PermissionException e) {
-            throw new FaultException(1234, "permissions", e.getMessage(), new String[] {});
         }
         catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
             throw new TaskomaticApiException(e.getMessage());
@@ -1985,7 +1982,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
             ErrataCacheManager.updateCacheForChannelsAsync(set);
         }
         else {
-            throw new PermissionException(RoleFactory.SAT_ADMIN);
+            throw new PermissionCheckFailureException(RoleFactory.SAT_ADMIN);
         }
         return 1;
     }
@@ -2399,6 +2396,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
         }
 
         EditRepoCommand repoEditor = new EditRepoCommand(loggedInUser, repo.getId());
+        repoEditor.setMetadataSigned(repo.getMetadataSigned());
 
         // set new SSL Certificates for the repository
         if (!StringUtils.isEmpty(sslCaCert)) {
@@ -2769,7 +2767,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
         Role orgAdminRole = RoleFactory.lookupByLabel("org_admin");
 
         if (!loggedInUser.hasRole(orgAdminRole)) {
-            throw new PermissionException("Only Org Admins can add repo filters.");
+            throw new PermissionCheckFailureException("Only Org Admins can add repo filters.");
         }
 
         ContentSource cs = lookupContentSourceByLabel(label, loggedInUser.getOrg());
@@ -2820,7 +2818,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
         Role orgAdminRole = RoleFactory.lookupByLabel("org_admin");
 
         if (!loggedInUser.hasRole(orgAdminRole)) {
-            throw new PermissionException("Only Org Admins can remove repo filters.");
+            throw new PermissionCheckFailureException("Only Org Admins can remove repo filters.");
         }
 
         //TODO is this necessary?
@@ -2877,7 +2875,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
         Role orgAdminRole = RoleFactory.lookupByLabel("org_admin");
 
         if (!loggedInUser.hasRole(orgAdminRole)) {
-            throw new PermissionException("Only Org Admins can set repo filters.");
+            throw new PermissionCheckFailureException("Only Org Admins can set repo filters.");
         }
 
         ContentSource cs = lookupContentSourceByLabel(label, loggedInUser.getOrg());
@@ -2928,7 +2926,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
          Role orgAdminRole = RoleFactory.lookupByLabel("org_admin");
 
          if (!loggedInUser.hasRole(orgAdminRole)) {
-             throw new PermissionException("Only Org Admins can remove repo filters.");
+             throw new PermissionCheckFailureException("Only Org Admins can remove repo filters.");
          }
 
          ContentSource cs = lookupContentSourceByLabel(label, loggedInUser.getOrg());
@@ -2950,7 +2948,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
         Role orgAdminRole = RoleFactory.lookupByLabel("org_admin");
 
         if (!loggedInUser.hasRole(orgAdminRole)) {
-            throw new PermissionException("Only Org Admins can list vendor repo filters.");
+            throw new PermissionCheckFailureException("Only Org Admins can list vendor repo filters.");
         }
         log.warn("Unsupported XMLRPC call used: listVendorRepoFilters {}", label);
 
@@ -2973,7 +2971,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
         Role orgAdminRole = RoleFactory.lookupByLabel("org_admin");
 
         if (!loggedInUser.hasRole(orgAdminRole)) {
-            throw new PermissionException("Only Org Admins can add repo filters.");
+            throw new PermissionCheckFailureException("Only Org Admins can add repo filters.");
         }
         log.warn("Unsupported XMLRPC call used: addVendorRepoFilters {}", label);
 
@@ -3016,7 +3014,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
         Role orgAdminRole = RoleFactory.lookupByLabel("org_admin");
 
         if (!loggedInUser.hasRole(orgAdminRole)) {
-            throw new PermissionException("Only Org Admins can remove repo filters.");
+            throw new PermissionCheckFailureException("Only Org Admins can remove repo filters.");
         }
         log.warn("Unsupported XMLRPC call used: removeVendorRepoFilters {}", label);
 
@@ -3059,7 +3057,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
         Role orgAdminRole = RoleFactory.lookupByLabel("org_admin");
 
         if (!loggedInUser.hasRole(orgAdminRole)) {
-            throw new PermissionException("Only Org Admins can set repo filters.");
+            throw new PermissionCheckFailureException("Only Org Admins can set repo filters.");
         }
         log.warn("Unsupported XMLRPC call used: setVendorRepoFilters {}", label);
 
@@ -3107,7 +3105,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
         Role orgAdminRole = RoleFactory.lookupByLabel("org_admin");
 
         if (!loggedInUser.hasRole(orgAdminRole)) {
-            throw new PermissionException("Only Org Admins can remove repo filters.");
+            throw new PermissionCheckFailureException("Only Org Admins can remove repo filters.");
         }
         log.warn("Unsupported XMLRPC call used: clearVendorRepoFilters {}", label);
 

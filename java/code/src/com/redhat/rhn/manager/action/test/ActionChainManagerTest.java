@@ -18,6 +18,7 @@ package com.redhat.rhn.manager.action.test;
 import static java.util.Collections.singletonList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -39,6 +40,7 @@ import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.errata.cache.test.ErrataCacheManagerTest;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
@@ -46,7 +48,6 @@ import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -57,6 +58,17 @@ import java.util.Map;
  */
 public class ActionChainManagerTest extends JMockBaseTestCaseWithUser {
 
+    private static final TaskomaticApi TASKO_TEST_API = new TaskomaticApi() {
+        @Override
+        public void scheduleActionChainExecution(ActionChain actionchain) {
+            // do not call API in a test
+        }
+        @Override
+        public void scheduleActionExecution(Action action) {
+            // do not call API in a test
+        }
+    };
+
     /**
      * {@inheritDoc}
      */
@@ -65,6 +77,7 @@ public class ActionChainManagerTest extends JMockBaseTestCaseWithUser {
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
+        ActionChainManager.setTaskomaticApi(TASKO_TEST_API);
     }
 
     /**
@@ -108,7 +121,6 @@ public class ActionChainManagerTest extends JMockBaseTestCaseWithUser {
         Map<String, Object> info =
                 ErrataCacheManagerTest.createServerNeededCache(user,
                         ErrataFactory.ERRATA_TYPE_BUG);
-        List<Integer> upgradePackages = new ArrayList<>();
         Server s = (Server) info.get("server");
         Errata e = (Errata) info.get("errata");
 
@@ -140,7 +152,7 @@ public class ActionChainManagerTest extends JMockBaseTestCaseWithUser {
         PlaybookAction savedAction = (PlaybookAction) ActionFactory.lookupByUserAndId(user, action.getId());
         assertNotNull(savedAction);
         assertEquals("Execute playbook 'myplaybook.yml'", savedAction.getName());
-        assertEquals(ActionFactory.TYPE_PLAYBOOK, savedAction.getActionType());
+        assertInstanceOf(PlaybookAction.class, savedAction);
         assertEquals(earliestAction, savedAction.getEarliestAction());
 
         // Verify the details
@@ -169,7 +181,7 @@ public class ActionChainManagerTest extends JMockBaseTestCaseWithUser {
         PlaybookAction savedAction = (PlaybookAction) ActionFactory.lookupByUserAndId(user, action.getId());
         assertNotNull(savedAction);
         assertEquals("Execute playbook 'myplaybook.yml'", savedAction.getName());
-        assertEquals(ActionFactory.TYPE_PLAYBOOK, savedAction.getActionType());
+        assertInstanceOf(PlaybookAction.class, savedAction);
         assertEquals(earliestAction, savedAction.getEarliestAction());
 
         // Verify the details

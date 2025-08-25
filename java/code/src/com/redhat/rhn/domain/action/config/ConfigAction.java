@@ -17,22 +17,30 @@ package com.redhat.rhn.domain.action.config;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFormatter;
+import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.html.HtmlTag;
+
+import com.suse.salt.netapi.calls.LocalCall;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
- * ConfigAction - Class representation of the table rhnAction.
+ * ConfigAction
  */
 public class ConfigAction extends Action {
-
     private Set<ConfigRevisionAction> configRevisionActions;
+
+    protected ConfigAction() {
+        //ConfigAction should never be instantiated
+        //instead, one of ConfigDiffAction, ConfigDeployAction,ConfigVerifyAction classes should
+    }
 
     /**
      * @return Returns the configRevisionActions.
@@ -115,5 +123,15 @@ public class ConfigAction extends Action {
             return p1.compareTo(p2);
         });
         return Collections.unmodifiableList(revisionActions);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<LocalCall<?>, List<MinionSummary>> getSaltCalls(List<MinionSummary> minionSummaries) {
+        //ConfigAction should never be instantiated
+        //instead, one of ConfigDiffAction, ConfigDeployAction,ConfigVerifyAction classes should
+        throw new IllegalStateException("SHOULDN'T BE HERE: ConfigAction::getSaltCalls");
     }
 }

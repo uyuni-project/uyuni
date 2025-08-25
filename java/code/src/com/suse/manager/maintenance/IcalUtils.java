@@ -142,14 +142,12 @@ public class IcalUtils {
                 .filter(l -> !l.isEmpty())
                 .collect(toList());
 
-        Stream<Pair<Instant, Instant>> sortedLimited = periodLists.stream()
+        return periodLists.stream()
                 .map(Collection::stream)
                 .reduce(Stream.empty(), Stream::concat)
                 .sorted()
                 .limit(limit)
                 .map(p -> Pair.of(p.getStart().toInstant(), p.getRangeEnd().toInstant()));
-
-        return sortedLimited;
     }
 
     // given collection of events, filter out those with non-matching SUMMARY

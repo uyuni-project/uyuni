@@ -114,7 +114,6 @@ const FilterEdit = (props: FilterEditProps) => {
           })
           .catch((error) => {
             setErrors(error.errors);
-            showErrorToastr(error.messages, { autoHide: false });
           });
       }
     }

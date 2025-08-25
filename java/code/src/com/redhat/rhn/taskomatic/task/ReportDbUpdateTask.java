@@ -105,6 +105,8 @@ public class ReportDbUpdateTask extends RhnJavaJob {
 
             fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "System",
                 Map.of(SYSTEM_ID, 0));
+            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemHardware",
+                Map.of(SYSTEM_ID, 0));
             fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemHistory",
                 Map.of(SYSTEM_ID, 0, HISTORY_ID, 0));
             fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemAction",
@@ -150,6 +152,8 @@ public class ReportDbUpdateTask extends RhnJavaJob {
                 Map.of(PACKAGE_ID, 0));
             fillReportDbTable(rh.getSession(), CHANNEL_REPORT_QUERIES, "Repository",
                 Map.of(REPOSITORY_ID, 0));
+            fillReportDbTable(rh.getSession(), CHANNEL_REPORT_QUERIES, "CLMEnvironmentDifference",
+                    Map.of("diff_id", 0));
 
             fillReportDbTable(rh.getSession(), SCAP_REPORT_QUERIES, "XccdScan",
                 Map.of(SCAN_ID, 0));

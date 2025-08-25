@@ -110,3 +110,57 @@ These time windows for file change history are based on the [Facebook paper](htt
 #### What about Cucumber GitHub Artifacts expiring after 90 days?
 
 We are aware of this limitation and plan to implement a GitHub workflow to store Cucumber reports externally, ensuring long-term availability for training data.
+
+## 2. Cucumber Results Extraction Script
+
+[cucumber_results_extraction.py](cucumber_results_extraction.py)
+
+### Related GitHub Issues
+- https://github.com/uyuni-project/uyuni/issues/10498
+- https://github.com/uyuni-project/uyuni/issues/10508
+- https://github.com/uyuni-project/uyuni/issues/10510
+
+### How to Use the Script
+
+Run the PR data extraction script first, this script depends on its output and should not be used
+independently.
+
+```
+python cucumber_results_extraction.py
+```
+
+### Example Script Output
+
+#### CSV File
+
+![cucumber_results_csv_output](images/cucumber_results_output_1.png)
+
+#### Cucumber Statistics
+
+<img src="images/cucumber_results_output_2.png" width="400"/>
+
+### How the Script Works
+
+Extracts tests/features' results from the Cucumber JSON reports for each PR listed in the CSV file
+produced by the PR data extraction script, and outputs a new CSV file with the
+feature name, feature category, scenario counts, and pass/fail result added per feature per PR (features that were skipped are ignored and not added in the training data since they are not useful).
+
+The script also logs Cucumber statistics for verification and debugging purposes.
+
+To determine the results of the features, we need to evaluate the outcomes of the scenarios within these features, as well as the steps/hooks within these scenarios.
+
+It determines the results of the Cucumber scenarios by checking all steps and hooks (will group both under the name "entries") inside this scenario, and the scenario is marked as failed if any entry has failed, marked as skipped if any entry was skipped and none failed, otherwise marked as passed. The same approach is used to determine the results of the steps/hooks.
+
+The different part is **how it determines the result of a feature**, a feature is similarly marked as failed, if any scenario has failed. But the different part is that I **mark it as passed, if any scenario has passed and none failed**, otherwise marked as skipped (when all scenarios are skipped). 
+
+### Q&A
+
+#### Why mark a feature as passed, although it had some scenarios that were skipped?
+
+Initially, I thought I should mark a feature as passed only if all scenarios in it passed and none were skipped, but after examining some features in Uyuni's test suite I believe this is an inaccurate approach and the more accurate approach is to consider a feature as passed as long as at least one scenario passed and none failed (even if some scanrios were skipped) since in Uyuni some scenarios are always expected to be skipped due to them only running on SUSE manager or not on GH Actions, etc.
+
+A direct example of this is `srv_users.feature`, in which always two scenarios are skipped since they have the `@susemanager` tag.
+
+This can be shown in the below test statistic generated from a PR that had `srv_users` run on it as a recommended test. Here, the two scenarios were detected as skipped, but still, the feature was considered as passed.
+
+![](images/cucumber_results_srv_users.png)

@@ -1656,7 +1656,7 @@ Mon Dec 19 15:36:54 CET 2011 - mc@suse.de
 
 - new tables for storing package products (bnc#644678)
 
---------------------------------------------------------------------
+-------------------------------------------------------------------
 Thu Nov 24 12:35:34 CET 2011 - iartarisi@suse.cz
 
 - allow setting VARCHAR2 size in CHARs and BYTEs explicitly
@@ -1785,4 +1785,3 @@ Wed Sep 15 09:53:07 CEST 2010 - mantel@suse.de
 
 - Initial release of spacewalk-schema
 
--------------------------------------------------------------------

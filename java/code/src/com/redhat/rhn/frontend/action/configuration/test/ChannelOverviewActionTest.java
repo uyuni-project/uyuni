@@ -23,7 +23,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigChannelType;
-import com.redhat.rhn.domain.config.ConfigFile;
 import com.redhat.rhn.domain.config.ConfigurationFactory;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.manager.configuration.ChannelSummary;
@@ -45,7 +44,7 @@ public class ChannelOverviewActionTest extends RhnMockStrutsTestCase {
         UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
 
         ConfigChannel cc = ConfigTestUtils.createConfigChannel(user.getOrg());
-        ConfigFile cf = ConfigTestUtils.createConfigFile(cc);
+        ConfigTestUtils.createConfigFile(cc);
 
         long ccid = cc.getId();
         setRequestPathInfo("/configuration/ChannelOverview");

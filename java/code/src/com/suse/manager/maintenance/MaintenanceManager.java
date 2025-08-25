@@ -28,8 +28,6 @@ import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.util.download.DownloadException;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
-import com.redhat.rhn.domain.action.ActionStatus;
-import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
@@ -50,7 +48,6 @@ import com.suse.manager.model.maintenance.MaintenanceCalendar;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.manager.model.maintenance.MaintenanceSchedule.ScheduleType;
 import com.suse.manager.model.maintenance.ScheduleFactory;
-import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.utils.HttpHelper;
 import com.suse.utils.Opt;
 
@@ -652,15 +649,12 @@ public class MaintenanceManager {
         // we only take maintenance-mode-only actions and actions that don't have prerequisite
         // (first actions in action chains) into account
         if (action.getActionType().isMaintenancemodeOnly() && action.getPrerequisite() == null) {
-            // Special Case: we want to allow channel changing but it calls a state.apply
-            if (action.getActionType().equals(ActionFactory.TYPE_APPLY_STATES)) {
-                ApplyStatesAction applyStatesAction = (ApplyStatesAction) action;
-                if (applyStatesAction.getDetails() != null &&
-                        applyStatesAction.getDetails().getMods().equals(
-                            List.of(ApplyStatesEventMessage.CHANNELS))) {
-                    return;
-                }
+
+            // Special Cases
+            if (action.canBeScheduledAnyway()) {
+                return;
             }
+
             Set<MaintenanceSchedule> offendingSchedules = listSystemSchedulesNotMatchingDate(systemIds, scheduleDate);
             if (!offendingSchedules.isEmpty()) {
                 throw new NotInMaintenanceModeException(offendingSchedules, scheduleDate);
@@ -724,12 +718,8 @@ public class MaintenanceManager {
 
         Optional<Calendar> calendarOpt = schedule.getCalendarOpt().flatMap(c -> icalUtils.parseCalendar(c));
 
-        List<ActionStatus> pending = new LinkedList<>();
-        pending.add(ActionFactory.STATUS_PICKED_UP);
-        pending.add(ActionFactory.STATUS_QUEUED);
-
         Map<Action, List<Server>> actionsForServerToReschedule = servers.stream()
-            .flatMap(s -> ActionFactory.listServerActionsForServer(s, pending).stream())
+            .flatMap(s -> ActionFactory.listServerActionsForServer(s, ActionFactory.ALL_PENDING_STATUSES).stream())
             .filter(sa -> {
                 Action a = sa.getParentAction();
                 if (a.getPrerequisite() != null) {

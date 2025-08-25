@@ -1919,6 +1919,12 @@
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="supportdata.get" xml:space="preserve">
+        <source>Get and Upload Support data</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="reboot.reboot" xml:space="preserve">
         <source>System reboot</source>
         <context-group name="ctx">
@@ -8437,7 +8443,10 @@ Follow this url to see the full list of inactive systems:
         <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; has been updated.</source>
       </trans-unit>
       <trans-unit id="message.scheduledeleted" xml:space="preserve">
-        <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; has been deleted.</source>
+        <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; has been disabled.</source>
+      </trans-unit>
+      <trans-unit id="message.scheduleactivated" xml:space="preserve">
+        <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; activated.</source>
       </trans-unit>
       <trans-unit id="message.schedulenotactive" xml:space="preserve">
         <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; isn't active any more. It's part of the system just for information purposes and will be deleted automatically.</source>
@@ -8692,9 +8701,6 @@ Thank you for using @@PRODUCT_NAME@@.
 --the @@PRODUCT_NAME@@ Team
 </source>
       </trans-unit>
-      <trans-unit id="alphabar.label" xml:space="preserve">
-        <source>Select first character</source>
-      </trans-unit>
       <trans-unit id="lookup.customkey.title" xml:space="preserve">
         <source>We're sorry, but the custom key could not be found.</source>
       </trans-unit>
@@ -8866,6 +8872,9 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="task.status.oval-data-sync" xml:space="preserve">
         <source>Sync OVAL Data</source>
       </trans-unit>
+      <trans-unit id="task.status.errata-advisory-map-sync" xml:space="preserve">
+        <source>Update SUSE errata advisory map</source>
+      </trans-unit>
       <trans-unit id="task.status.mgr-sync-refresh" xml:space="preserve">
         <source>Refresh mgr-sync data</source>
       </trans-unit>
@@ -8910,6 +8919,9 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="bunch.jsp.description.oval-data-sync-bunch" xml:space="preserve">
         <source>Generate OVAL data required to increase the accuracy of CVE audit queries</source>
+      </trans-unit>
+      <trans-unit id="bunch.jsp.description.errata-advisory-map-sync-bunch" xml:space="preserve">
+        <source>Update SUSE errata advisory map to retrieve announcement ids and advisor URLs</source>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.mgr-sync-refresh-bunch" xml:space="preserve">
         <source>Refreshes data about channels, products and subscriptions</source>
@@ -9178,6 +9190,12 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="hub.unable_to_deregister" xml:space="preserve">
         <source>Unable to deregister: an unexpected error is occurred while contacting the remote server. Please check the server logs.</source>
       </trans-unit>
+      <trans-unit id="supportdata.uploadGeoType.eu" xml:space="preserve">
+        <source>EU</source>
+      </trans-unit>
+      <trans-unit id="supportdata.uploadGeoType.us" xml:space="preserve">
+        <source>US</source>
+      </trans-unit>
       <trans-unit id="hub.cannot_refresh_certificate" xml:space="preserve">
         <source>An error occurred while attempting to refresh the root certificate authorities. Please check the server logs.</source>
       </trans-unit>
@@ -9221,7 +9239,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>CVE Audit</source>
       </trans-unit>
       <trans-unit id="cveaudit.notfound" xml:space="preserve">
-        <source>The specified CVE number was not found in our database. You can get more information about this CVE from the links given below.</source>
+        <source>The specified CVE number was not found in our database.</source>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.ipmilan" xml:space="preserve">
         <source>IPMI</source>
@@ -9828,16 +9846,34 @@ For a detailed analysis, please refer to the log files.
         <source>None</source>
       </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_milan.description">
-        <source>KVM on AMD Epyc Processor, second generation (milan)</source>
+        <source>KVM on AMD Epyc Processor, third generation (milan)</source>
       </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_milan.label">
         <source>KVM on AMD Epyc - Milan</source>
       </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_genoa.description">
-        <source>KVM on AMD Epyc Processor, third generation (genoa)</source>
+        <source>KVM on AMD Epyc Processor, fourth generation (genoa)</source>
       </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_genoa.label">
         <source>KVM on AMD Epyc - Genoa</source>
+      </trans-unit>
+      <trans-unit id="coco.environment.kvm_amd_epyc_bergamo.description">
+        <source>KVM on AMD Epyc Processor, fourth generation (bergamo)</source>
+      </trans-unit>
+      <trans-unit id="coco.environment.kvm_amd_epyc_bergamo.label">
+        <source>KVM on AMD Epyc - Bergamo</source>
+      </trans-unit>
+      <trans-unit id="coco.environment.kvm_amd_epyc_siena.description">
+        <source>KVM on AMD Epyc Processor, fourth generation (siena)</source>
+      </trans-unit>
+      <trans-unit id="coco.environment.kvm_amd_epyc_siena.label">
+        <source>KVM on AMD Epyc - Siena</source>
+      </trans-unit>
+      <trans-unit id="coco.environment.kvm_amd_epyc_turin.description">
+        <source>KVM on AMD Epyc Processor, fifth generation (turin)</source>
+      </trans-unit>
+      <trans-unit id="coco.environment.kvm_amd_epyc_turin.label">
+        <source>KVM on AMD Epyc - Turin</source>
       </trans-unit>
       <trans-unit id="coco.resultType.none.description">
         <source>Result Type not found</source>
@@ -9871,6 +9907,18 @@ For a detailed analysis, please refer to the log files.
       </trans-unit>
       <trans-unit id="system.audit.coco.configNotUpdated">
         <source>An error occurred while updating the Confidential Computing configuration. Please check the server logs for detailed information.</source>
+      </trans-unit>
+      <trans-unit id="system.details.support.invalid_case_number">
+        <source>The case number {0} is not valid.</source>
+      </trans-unit>
+      <trans-unit id="system.details.support.invalid_region">
+        <source>The region {0] is not valid.</source>
+      </trans-unit>
+      <trans-unit id="system.details.support.unable_to_schedule">
+        <source>Unexpected error while scheduling the generation of the support data. Please check the server logs for detailed information.</source>
+      </trans-unit>
+      <trans-unit id="system.details.support.unable_to_upload">
+        <source>Unable to gather and upload the support data. Please check the server logs for detailed information.</source>
       </trans-unit>
     </body>
   </file>

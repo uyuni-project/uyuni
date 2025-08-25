@@ -1,7 +1,7 @@
 #
 # spec file for package susemanager-sync-data
 #
-# Copyright (c) 2024 SUSE LLC
+# Copyright (c) 2025 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -15,11 +15,12 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
-
+# The productprettyname macros is controlled in the prjconf. If not defined, we fallback here
+%{!?productprettyname: %global productprettyname Uyuni}
 Name:           susemanager-sync-data
-Version:        5.1.5
+Version:        5.2.0
 Release:        0
-Summary:        SUSE Manager specific scripts
+Summary:        %{productprettyname} specific scripts
 License:        GPL-2.0-only
 Group:          Productivity/Other
 URL:            https://github.com/uyuni-project/uyuni
@@ -44,7 +45,6 @@ install -m 0644 additional_repositories.json    %{buildroot}%{_datadir}/susemana
 install -m 0644 oval.config.json    %{buildroot}%{_datadir}/susemanager/oval/oval.config.json
 
 %files
-%defattr(-,root,root,-)
 %dir %{_datadir}/susemanager
 %dir %{_datadir}/susemanager/scc
 %dir %{_datadir}/susemanager/oval

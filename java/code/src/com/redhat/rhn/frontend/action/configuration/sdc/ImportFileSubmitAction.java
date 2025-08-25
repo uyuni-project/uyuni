@@ -186,7 +186,7 @@ public class ImportFileSubmitAction extends RhnSetAction {
 
         /*
          * To accomplish this task, I would like to just do the following line
-         * importSet.getElements().addAll(selectedSet.getElements());
+         * importSet.getElements().addAll(selectedSet.getElements())
          *
          * However, this does not work, because RhnSetElement contains member
          * variables for the user and set label, even though the element is

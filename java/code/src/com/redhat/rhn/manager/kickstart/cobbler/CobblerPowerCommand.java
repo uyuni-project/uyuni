@@ -53,11 +53,11 @@ public class CobblerPowerCommand extends CobblerCommand {
      */
     public enum Operation {
         /** Turn on. */
-        PowerOn,
+        POWER_ON,
         /** Turn off. */
-        PowerOff,
+        POWER_OFF,
         /** Reboot. */
-        Reboot
+        REBOOT
     }
 
     /**
@@ -112,10 +112,10 @@ public class CobblerPowerCommand extends CobblerCommand {
             boolean success = false;
             try {
                 switch (operation) {
-                case PowerOn:
+                case POWER_ON:
                     success = systemRecord.powerOn();
                     break;
-                case PowerOff:
+                case POWER_OFF:
                     success = systemRecord.powerOff();
                     break;
                 default:

@@ -15,7 +15,7 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
-## The productprettyname macros is controlled in the prjconf. If not defined, we fallback here
+# The productprettyname macros is controlled in the prjconf. If not defined, we fallback here
 %{!?productprettyname: %global productprettyname Uyuni}
 
 # Keep in sync with salt/salt.spec
@@ -39,7 +39,7 @@
 %endif
 
 Name:           susemanager-sls
-Version:        5.1.11
+Version:        5.2.0
 Release:        0
 Summary:        Static Salt state files for %{productprettyname}
 URL:            https://github.com/uyuni-project/uyuni

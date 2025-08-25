@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Thu Jul 24 18:39:52 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.17-0
+  * Fix syntax error in changelog
+
+-------------------------------------------------------------------
+Thu Jul 24 16:09:37 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.16-0
+  * CVE-2025-46811: Clean up stale sessions on websocket open
+    (bsc#1246119)
+
+-------------------------------------------------------------------
 Fri Jun 20 17:10:45 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.15-0
@@ -6096,4 +6109,3 @@ Wed Sep 15 09:29:38 CEST 2010 - mantel@suse.de
 
 - Initial release of spacewalk-java
 
--------------------------------------------------------------------

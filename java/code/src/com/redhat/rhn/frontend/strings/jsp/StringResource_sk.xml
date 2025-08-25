@@ -7793,42 +7793,42 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="systemsearch_cpu_mhz_lt_column" xml:space="preserve">
         <source>CPU Mhz</source>
-        <target/>
+        <target state="translated">CPU Mhz</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_cpu_mhz_gt_column" xml:space="preserve">
         <source>CPU Mhz</source>
-        <target/>
+        <target state="translated">CPU Mhz</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_num_of_cpus_lt_column" xml:space="preserve">
         <source>Number of CPUs</source>
-        <target/>
+        <target state="translated">Počet CPU</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_num_of_cpus_gt_column" xml:space="preserve">
         <source>Number of CPUs</source>
-        <target/>
+        <target state="translated">Počet CPU</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_ram_lt_column" xml:space="preserve">
         <source>RAM</source>
-        <target/>
+        <target state="translated">RAM</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_ram_gt_column" xml:space="preserve">
         <source>RAM</source>
-        <target/>
+        <target state="translated">RAM</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
@@ -7836,35 +7836,35 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       <!-- Monitoring General Config Page -->
       <trans-unit id="generalconfig.jsp.header1" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Configuration - Monitoring</source>
-        <target/>
+        <target state="translated">Konfigurácia @@PRODUCT_NAME@@ - Monitorovanie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="generalconfig.jsp.header2" xml:space="preserve">
         <source>General Monitoring Config</source>
-        <target/>
+        <target state="translated">Všeobecná konfigurácia monitorovania</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="generalconfig.jsp.summary" xml:space="preserve">
         <source>After updating the configuration options below, monitoring services on this @@PRODUCT_NAME@@ server and all of your Monitoring-enabled @@PRODUCT_NAME@@ Proxy servers will need to be restarted.  These actions will be scheduled automatically when you update this page.</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Po aktualizácii nižšie uvedených konfiguračných možností bude potrebné reštartovať monitorovacie služby na tomto serveri @@PRODUCT_NAME@@ a na všetkých vašich @@PRODUCT_NAME@@ Proxy s povoleným monitorovaním.  Tieto akcie sa naplánujú automaticky po tom, ako aktualizujete túto stránku.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="generalconfig.jsp.update_config" xml:space="preserve">
         <source>Update Config</source>
-        <target/>
+        <target state="translated">Aktualizovať konfiguráciu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="removeconfirm.jsp.confirmpackageremoval" xml:space="preserve">
         <source>Confirm Package Removal</source>
-        <target/>
+        <target state="translated">Potvrdenie odstránenia balíkov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/RemoveConfirm.do</context>
           <context context-type="sourcefile">https://wopr.skavenlabs/rhn/ssm/PackageRemove.do</context>
@@ -7872,21 +7872,21 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="removeconfirm.jsp.widgetsummary" xml:space="preserve">
         <source>You may schedule the package removals to take place as soon as possible, or no sooner than a specified time:</source>
-        <target/>
+        <target state="translated">Môžete si naplánovať odstránenia balíkov tak, aby sa uskutočnili čo najskôr, alebo nie skôr ako v stanovenom čase:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/RemoveConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="removeconfirm.jsp.confirm" xml:space="preserve">
         <source>Confirm</source>
-        <target/>
+        <target state="translated">Potvrdiť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/RemoveConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.addedtoactionchain" xml:space="preserve">
         <source>Action has been successfully added to the Action Chain &lt;a href="/rhn/schedule/ActionChain.do?id={0}"&gt;{1}&lt;/a&gt;.</source>
-        <target/>
+        <target state="translated">Akcia bola úspešne pridaná do Reťazca akcií &lt;a href="/rhn/schedule/ActionChain.do?id={0}"&gt;{1}&lt;/a&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
@@ -7894,7 +7894,7 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="message.packageremoval" xml:space="preserve">
         <source>{0} package removal has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">{0} odstránenie balíka bolo &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;naplánované&lt;/a&gt; pre &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
@@ -7902,7 +7902,7 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="message.packageremovals" xml:space="preserve">
         <source>{0} package removals have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">{0} odstránenia balíkov boli &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;naplánované&lt;/a&gt; pre &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
@@ -7910,7 +7910,7 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="message.packageupgrade" xml:space="preserve">
         <source>{0} package upgrade has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">{0} zvýšenie verzie balíka bolo &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;naplánované&lt;/a&gt; pre &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
@@ -7918,7 +7918,7 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="message.packageupgrades" xml:space="preserve">
         <source>{0} package upgrades have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">{0} zvýšenia verzií balíkov boli &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;naplánované&lt;/a&gt; pre &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
@@ -7926,7 +7926,7 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="message.packageinstall" xml:space="preserve">
         <source>{0} package install has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">{0} inštalácia balíka bola &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;naplánovaná&lt;/a&gt; pre &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
@@ -7934,7 +7934,7 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="message.packageinstalls" xml:space="preserve">
         <source>{0} package installs have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">{0} inštalácie balíkov boli &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;naplánované&lt;/a&gt; pre &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
@@ -7942,14 +7942,14 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="message.systeminstalls" xml:space="preserve">
         <source>Package install has been scheduled for {0} system(s).</source>
-        <target/>
+        <target state="translated">Inštalácia balíkov bola naplánovaná pre {0} systém(y).</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/packages/TargetSystemsConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.packageverify" xml:space="preserve">
         <source>{0} package verification has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">{0} overenie balíka bolo &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;naplánované&lt;/a&gt; pre &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
@@ -7957,7 +7957,7 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="message.packageverifys" xml:space="preserve">
         <source>{0} package verifications have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">{0} overenia balíkov boli &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;naplánované&lt;/a&gt; pre &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
@@ -7965,91 +7965,91 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="message.patchremoval" xml:space="preserve">
         <source>{0} patch removal has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">{0} odstránenie opravy bolo &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;naplánované&lt;/a&gt; pre &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.patchremovals" xml:space="preserve">
         <source>{0} patch removals have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">{0} odstránenia opráv boli &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;naplánované&lt;/a&gt; pre &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.patchinstall" xml:space="preserve">
         <source>{0} patch install has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">{0} inštalácia opravy bola &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;naplánovaná&lt;/a&gt; pre &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.patchinstalls" xml:space="preserve">
         <source>{0} patch installs have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">{0} inštalácie opráv boli &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;naplánované&lt;/a&gt; pre &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.xccdfeval" xml:space="preserve">
         <source>XCCDF scan has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={1}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={1}"&gt;{2}&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">Skenovanie XCCDF bolo &lt;a href="/rhn/systems/details/history/Pending.do?sid={1}"&gt;naplánované&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={1}"&gt;{2}&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/audit/ListScap.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.xccdfeval.ssm" xml:space="preserve">
         <source>XCCDF scan has been scheduled successfully.</source>
-        <target/>
+        <target state="translated">Skenovanie XCCDF bolo úspešne naplánované.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.xccdfdiff.missing" xml:space="preserve">
         <source>XCCDF scan of id={0} could not be found for user {1}.</source>
-        <target/>
+        <target state="translated">Skenovanie XCCDF id={0} nebolo možné nájsť pre používateľa {1}.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/audit/scap/Diff.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.entitlement.missing" xml:space="preserve">
         <source>One or more of the selected systems lack the {0} system type.</source>
-        <target/>
+        <target state="translated">Jeden alebo viac vybraných systémov nemá typ systému {0}.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/audit/ScheduleXccdf.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.xccdfeval.failed" xml:space="preserve">
         <source>Action was not scheduled.</source>
-        <target/>
+        <target state="translated">Akcia nebola naplánovaná.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/audit/ScheduleXccdf.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.capability.missing" xml:space="preserve">
         <source>One or more of the selected systems lack the {0} client-capability.</source>
-        <target/>
+        <target state="translated">Jeden alebo viacero vybraných systémov nemá klientsku podporu {0}.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/audit/ScheduleXccdf.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="removeconfirm.jsp.runremotecommand" xml:space="preserve">
         <source>Add Remote Command To Package Removal</source>
-        <target/>
+        <target state="translated">Pridať vzdialený príkaz na odstránenie balíka</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/RemoveConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="installconfirm.jsp.runremotecommand" xml:space="preserve">
         <source>Add Remote Command To Package Install</source>
-        <target/>
+        <target state="translated">Pridať vzdialený príkaz do inštalácie balíka</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/RemoveConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="upgradeconfirm.jsp.runremotecommand" xml:space="preserve">
         <source>Add Remote Command To Package Upgrade</source>
-        <target/>
+        <target state="translated">Pridať vzdialený príkaz na zvýšenie verzie balíka</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/RemoveConfirm.do</context>
         </context-group>
@@ -8057,201 +8057,201 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       <!-- PROBE EDIT PAGE -->
       <trans-unit id="download.jsp.header" xml:space="preserve">
         <source>Download Packages</source>
-        <target/>
+        <target state="translated">Stiahnuť balíky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/DownloadConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="download.jsp.download" xml:space="preserve">
         <source>Download Selected Packages Now!</source>
-        <target/>
+        <target state="translated">Stiahnuť vybrané balíky teraz!</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/DownloadConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="repo.jsp.channels" xml:space="preserve">
         <source>Channels</source>
-        <target/>
+        <target state="translated">Kanály</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/repos/RepoList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="download.jsp.package" xml:space="preserve">
         <source>Package</source>
-        <target/>
+        <target state="translated">Balík</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/DownloadConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="upgrade.jsp.header" xml:space="preserve">
         <source>Confirm Package Upgrade</source>
-        <target/>
+        <target state="translated">Potvrdenie zvýšenia verzie balíkov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/UpgradeConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="upgradeconfirm.jsp.widgetsummary" xml:space="preserve">
         <source>You may schedule the package upgrades to take place as soon as possible, or no sooner than a specified time:</source>
-        <target/>
+        <target state="translated">Zvýšenie verzie balíkov môžete naplánovať tak, aby sa uskutočnilo čo najskôr, alebo nie skôr ako v stanovenom čase:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/VerifyConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="schedule.jsp.at" xml:space="preserve">
         <source>Earliest:</source>
-        <target/>
+        <target state="translated">Najskôr:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/ScheduleRemoteCommand.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="schedule.jsp.maint-window" xml:space="preserve">
         <source>Maintenance window:</source>
-        <target/>
+        <target state="translated">Okno údržby:</target>
       </trans-unit>
       <trans-unit id="schedule.jsp.multiple_maintenance_schedules" xml:space="preserve">
         <source>There are multiple maintenance schedules for selected systems. Make sure that systems in the set use at most 1 maintenance schedule if you want to schedule by date or maintenance window.</source>
-        <target/>
+        <target state="translated">Pre vybrané systémy existuje viacero plánov údržby. Ak chcete plánovať podľa dátumu alebo okna údržby, uistite sa, že systémy v sade používajú najviac 1 plán údržby.</target>
       </trans-unit>
       <trans-unit id="schedule.jsp.no_maintenance_windows" xml:space="preserve">
         <source>No upcoming maintenance windows for selected systems.</source>
-        <target/>
+        <target state="translated">Žiadne nadchádzajúce okná údržby pre vybrané systémy.</target>
       </trans-unit>
       <trans-unit id="packagesindex.jsp.header" xml:space="preserve">
         <source>Packages</source>
-        <target/>
+        <target state="translated">Balíky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/Packages.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagesindex.jsp.list" xml:space="preserve">
         <source>List Installed Packages</source>
-        <target/>
+        <target state="translated">Vypísať zoznam nainštalovaných balíkov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/Packages.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagesindex.jsp.remove" xml:space="preserve">
         <source>List / Remove Installed Packages</source>
-        <target/>
+        <target state="translated">Vypísať zoznam / Odstrániť nainštalované balíky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/Packages.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagesindex.jsp.verify" xml:space="preserve">
         <source>Verify Files and Packages</source>
-        <target/>
+        <target state="translated">Overiť súbory a balíky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/Packages.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagesindex.jsp.upgrade" xml:space="preserve">
         <source>Upgrade Packages</source>
-        <target/>
+        <target state="translated">Zvýšiť verziu balíkov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/Packages.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagesindex.jsp.install" xml:space="preserve">
         <source>Install New Packages</source>
-        <target/>
+        <target state="translated">Inštalovať nové balíky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/Packages.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagesindex.jsp.profiles" xml:space="preserve">
         <source>Compare Package Profiles / Manage Package Profiles</source>
-        <target/>
+        <target state="translated">Porovnať profily balíkov / Spravovať profily balíkov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/Packages.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagesindex.jsp.update" xml:space="preserve">
         <source>Update Package List</source>
-        <target/>
+        <target state="translated">Aktualizovať zoznam balíkov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/Packages.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="message.remotecommandbefore.remove" xml:space="preserve">
         <source>The remote command action was scheduled to run &lt;strong&gt;before&lt;/strong&gt; the package remove action.</source>
-        <target/>
+        <target state="translated">Akcia vzdialeného príkazu bola naplánovaná na spustenie &lt;strong&gt;pred&lt;/strong&gt; akciou odstránenia balíka.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="installpkgs.jsp.installpackages" xml:space="preserve">
         <source>Install Selected Packages</source>
-        <target/>
+        <target state="translated">Inštalovať vybrané balíky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/InstallPackages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="installconfirm.jsp.header" xml:space="preserve">
         <source>Confirm Package Install</source>
-        <target/>
+        <target state="translated">Potvrdiť inštaláciu balíkov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/InstallPackageConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="installconfirm.jsp.widgetsummary" xml:space="preserve">
         <source>You may schedule the package installations to take place as soon as possible, or no sooner than a specified time:</source>
-        <target/>
+        <target state="translated">Inštalácie balíkov môžete naplánovať tak, aby sa uskutočnili čo najskôr alebo nie skôr ako v stanovenom čase:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/InstallConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="confirm.jsp.selection" xml:space="preserve">
         <source>Date Selection</source>
-        <target/>
+        <target state="translated">Výber dátumu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/InstallConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="confirm.jsp.than" xml:space="preserve">
         <source>Schedule action for no sooner than:</source>
-        <target/>
+        <target state="translated">Naplánovať akciu najskôr na:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/InstallConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="installconfirm.jsp.confirm" xml:space="preserve">
         <source>Confirm</source>
-        <target/>
+        <target state="translated">Potvrdiť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/InstallConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="verifypkgs.jsp.verifypackages" xml:space="preserve">
         <source>Verify Selected Packages</source>
-        <target/>
+        <target state="translated">Overiť vybrané balíky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/InstallConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="verifyconfirm.jsp.widgetsummary" xml:space="preserve">
         <source>You may schedule the package verifications to take place as soon as possible, or no sooner than a specified time:</source>
-        <target/>
+        <target state="translated">Overovania balíkov môžete naplánovať tak, aby sa uskutočnili čo najskôr, alebo nie skôr ako v stanovenom čase:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/VerifyConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="verifypkgs.jsp.verifiablepackages" xml:space="preserve">
         <source>Verifiable Packages</source>
-        <target/>
+        <target state="translated">Overiteľné balíky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/VerifyPackages.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="verifypkgs.jsp.verifypagesummary" xml:space="preserve">
         <source>The following packages are installed on this system and may be verified.</source>
-        <target/>
+        <target state="translated">V tomto systéme sú nainštalované nasledujúce balíky, ktoré možno overiť.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/VerifyPackages.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="verifyconfirm.jsp.header" xml:space="preserve">
         <source>Confirm Package Verification</source>
-        <target/>
+        <target state="translated">Potvrdiť overenie balíka</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/VerifyConfirm.do</context>
         </context-group>
@@ -8259,7 +8259,7 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       <!-- Package locking -->
       <trans-unit id="pkg.lock.header" xml:space="preserve">
         <source>Package Locking or Unlocking</source>
-        <target/>
+        <target state="translated">Uzamknutie alebo odomknutie balíkov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/LockPackages.do</context>
         </context-group>
@@ -8272,70 +8272,76 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
                 before the lock took action and the package is newer, the
                 lock will be canceled.
         </source>
-        <target/>
+        <target state="translated">
+                Balíky môžete uzamknúť, aby zostali nezmenené.
+                Avšak je dôležité mať na pamäti, že žiadosť o uzamknutie 
+                sa môže oneskoriť. Ak bol balík aktualizovaný 
+                pred vykonaním uzamknutia a balík je novší,
+                uzamknutie sa zruší.
+        </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/LockPackages.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pkg.lock.message.locksuccess" xml:space="preserve">
         <source>Packages has been requested for being locked.</source>
-        <target/>
+        <target state="translated">Balíky boli vyžiadané, aby boli uzamknuté.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/LockPackages.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pkg.lock.message.unlocksuccess" xml:space="preserve">
         <source>Packages has been requested for being unlocked.</source>
-        <target/>
+        <target state="translated">Balíky boli vyžiadané, aby boli odomknuté.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/LockPackages.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pkg.lock.message.genericerror" xml:space="preserve">
         <source>Error occurred: {0}</source>
-        <target/>
+        <target state="translated">Nastala chyba: {0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/LockPackages.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pkg.lock.menu" xml:space="preserve">
         <source>Lock / Unlock</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Zamknúť / Odomknúť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/LockPackages.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pkg.lock.requestlock" xml:space="preserve">
         <source>Lock</source>
-        <target/>
+        <target state="translated">Zamknúť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/LockPackages.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pkg.lock.requestunlock" xml:space="preserve">
         <source>Unlock</source>
-        <target/>
+        <target state="translated">Odomknúť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/LockPackages.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packages.setLocks" xml:space="preserve">
         <source>Packages Lock/Unlock</source>
-        <target/>
+        <target state="translated">Zamknúť/Odomknúť balíky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/LockPackages.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pkg.lock.locking" xml:space="preserve">
         <source>Locking...</source>
-        <target/>
+        <target state="translated">Zamykanie...</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/LockPackages.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pkg.lock.unlocking" xml:space="preserve">
         <source>Unlocking...</source>
-        <target/>
+        <target state="translated">Odomykanie...</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/LockPackages.do</context>
         </context-group>
@@ -8343,112 +8349,112 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       <!-- Package Profile strings -->
       <trans-unit id="compare.jsp.compareto" xml:space="preserve">
         <source>Compare to {0}</source>
-        <target/>
+        <target state="translated">Porovnať s {0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOTFILLEDOUT</context>
         </context-group>
       </trans-unit>
       <trans-unit id="compare.jsp.difference" xml:space="preserve">
         <source>Difference</source>
-        <target/>
+        <target state="translated">Rozdiel</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOTFILLEDOUT</context>
         </context-group>
       </trans-unit>
       <trans-unit id="compare.jsp.nodifferences" xml:space="preserve">
         <source>No differences.</source>
-        <target/>
+        <target state="translated">Žiadne rozdiely.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOTFILLEDOUT</context>
         </context-group>
       </trans-unit>
       <trans-unit id="compare.jsp.package" xml:space="preserve">
         <source>Package</source>
-        <target/>
+        <target state="translated">Balík</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOTFILLEDOUT</context>
         </context-group>
       </trans-unit>
       <trans-unit id="compare.jsp.pagesummary" xml:space="preserve">
         <source>Below is a comparison of the package profile of this system and the profile selected for comparison.</source>
-        <target/>
+        <target state="translated">Nižšie je uvedené porovnanie profilu balíka tohto systému a profilu vybraného na porovnanie.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOTFILLEDOUT</context>
         </context-group>
       </trans-unit>
       <trans-unit id="compare.jsp.profileof" xml:space="preserve">
         <source>Profile of {0}</source>
-        <target/>
+        <target state="translated">Profil {0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOTFILLEDOUT</context>
         </context-group>
       </trans-unit>
       <trans-unit id="compare.jsp.profilemadefrom" xml:space="preserve">
         <source>Profile made from {0}</source>
-        <target/>
+        <target state="translated">Profil vytvorený z {0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOTFILLEDOUT</context>
         </context-group>
       </trans-unit>
       <trans-unit id="compare.jsp.syncpackageto" xml:space="preserve">
         <source>Sync Packages To '{0}'</source>
-        <target/>
+        <target state="translated">Synchronizovať balíky s '{0}'</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOTFILLEDOUT</context>
         </context-group>
       </trans-unit>
       <trans-unit id="compare.jsp.thissystem" xml:space="preserve">
         <source>This System</source>
-        <target/>
+        <target state="translated">Tento systém</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOTFILLEDOUT</context>
         </context-group>
       </trans-unit>
       <trans-unit id="create.jsp.createprofile" xml:space="preserve">
         <source>Create Profile</source>
-        <target/>
+        <target state="translated">Vytvoriť profil</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOTFILLEDOUT</context>
         </context-group>
       </trans-unit>
       <trans-unit id="create.jsp.createstoredprofile" xml:space="preserve">
         <source>Create Stored Profile</source>
-        <target/>
+        <target state="translated">Vytvoriť uložený profil</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOTFILLEDOUT</context>
         </context-group>
       </trans-unit>
       <trans-unit id="create.jsp.pagesummary" xml:space="preserve">
         <source>This will create a stored profile, based upon the package set of this system, that you may use for profile comparisons.</source>
-        <target/>
+        <target state="translated">Takto sa vytvorí uložený profil založený na sade balíkov tohto systému, ktorý môžete použiť na porovnávania profilov.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOTFILLEDOUT</context>
         </context-group>
       </trans-unit>
       <trans-unit id="create.jsp.profiledescription" xml:space="preserve">
         <source>Profile Description</source>
-        <target/>
+        <target state="translated">Popis profilu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOTFILLEDOUT</context>
         </context-group>
       </trans-unit>
       <trans-unit id="create.jsp.profilename" xml:space="preserve">
         <source>Profile Name</source>
-        <target/>
+        <target state="translated">Názov profilu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOTFILLEDOUT</context>
         </context-group>
       </trans-unit>
       <trans-unit id="create.jsp.successmessage" xml:space="preserve">
         <source>Profile &lt;strong&gt;{0}&lt;/strong&gt; successfully created from &lt;strong&gt;{1}&lt;/strong&gt;.</source>
-        <target/>
+        <target state="translated">Profil &lt;strong&gt;{0}&lt;/strong&gt; bol úspešne vytvorený z &lt;strong&gt;{1}&lt;/strong&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOTFILLEDOUT</context>
         </context-group>
       </trans-unit>
       <trans-unit id="deleteconfirm.jsp.confirmsatadminrole" xml:space="preserve">
         <source>Confirm @@PRODUCT_NAME@@ Administrator Modification</source>
-        <target/>
+        <target state="translated">Potvrdiť zmenu administrátora @@PRODUCT_NAME@@</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/admin/multiorg/SatRoleConfirm</context>
         </context-group>
@@ -8459,49 +8465,53 @@ your own login? You will need to contact another @@PRODUCT_NAME@@ administrator 
 regain this role if you choose to remove it now.  You will no longer have access to the @@PRODUCT_NAME@@ configuration tools and
 organization management tools if you choose to remove this role from your login.
 </source>
-        <target/>
+        <target state="translated">Ste si istí, že chcete odstrániť rolu "Administrátor @@PRODUCT_NAME@@" zo svojho prihlásenia?
+Budete musieť kontaktovať iného administrátora @@PRODUCT_NAME@@, aby ste túto rolu získali späť,
+ak sa ju teraz rozhodnete odstrániť.  Ak sa rozhodnete odstrániť túto rolu zo svojho prihlásenia, nebudete
+mať viac prístup ku konfiguračným nástrojom @@PRODUCT_NAME@@ a nástrojom na správu organizácie.
+</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/admin/multiorg/SatRoleConfirm</context>
         </context-group>
       </trans-unit>
       <trans-unit id="orgs.trust.channels.plural.jsp.enabled" xml:space="preserve">
         <source>{0} trusted organizations enabled.</source>
-        <target/>
+        <target state="translated">{0} povolené dôveryhodné organizácie.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/OrgList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="orgs.trust.channels.single.jsp.enabled" xml:space="preserve">
         <source>{0} trusted organization enabled.</source>
-        <target/>
+        <target state="translated">{0} povolená dôveryhodná organizácia.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/OrgList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="orgtrustdetails.jsp.systemconsume1" xml:space="preserve">
         <source>systems in your organization consume {0} of these</source>
-        <target/>
+        <target state="translated">systémy vo vašej organizácii spotrebúvajú {0} týchto</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/multiorg/OrgTrustDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="orgtrustdetails.jsp.systemconsume2" xml:space="preserve">
         <source>systems in the {0} organization consume {1} of these</source>
-        <target/>
+        <target state="translated">systémy v {0} organizáciách spotrebúvajú {1} týchto</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/multiorg/OrgTrustDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="orgtrustdetails.jsp.header1" xml:space="preserve">
         <source>Basic Details</source>
-        <target/>
+        <target state="translated">Základné podrobnosti</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/multiorg/OrgTrustDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="orgtrustdetails.jsp.header2" xml:space="preserve">
         <source>Channel Details</source>
-        <target/>
+        <target state="translated">Podrobnosti o kanáli</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/multiorg/OrgTrustDetails</context>
         </context-group>
@@ -9798,13 +9808,6 @@ Please note that some manual configuration of these scripts may still be require
       </trans-unit>
       <trans-unit id="bootstrap.jsp.ssl-cert" xml:space="preserve">
         <source>SSL cert location</source>
-        <target/>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/config/BootstrapConfig.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="bootstrap.jsp.salt" xml:space="preserve">
-        <source>Bootstrap using Salt</source>
         <target/>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/BootstrapConfig.do</context>
@@ -21051,8 +21054,8 @@ any of these revisions.  Are you sure you want to do this?</source>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.operations.provisioning.remotecommand.form.queue.succeed" xml:space="preserve">
-        <source>Task "{0}" has been successfully added to Action Chain {1}.</source>
-        <target/>
+        <source>Task "{0}" has been successfully added to Action Chain &lt;a href="/rhn/schedule/ActionChain.do?id={1}"&gt;{2}&lt;/a&gt;.</source>
+        <target state="needs-adaptation"/>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/KickstartableSystems.do</context>
         </context-group>
@@ -27169,7 +27172,7 @@ given channel.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="schedule.delete.jsp.introparagraph" xml:space="preserve">
-        <source>Are you sure you want to delete the schedule? Associated bunch won't get scheduled any more. This can have a huge impact on @@PRODUCT_NAME@@ functionality. Proceed only if you know what you're doing.</source>
+        <source>Are you sure you want to disable the schedule? Associated bunch won't get scheduled any more. This can have a huge impact on @@PRODUCT_NAME@@ functionality. Proceed only if you know what you're doing.</source>
         <target state="needs-adaptation"/>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/DeleteSchedule.do</context>
@@ -27211,8 +27214,8 @@ given channel.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.delete.schedule" xml:space="preserve">
-        <source>delete schedule</source>
-        <target/>
+        <source>disable schedule</source>
+        <target state="needs-adaptation"/>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/ScheduleDetail.do</context>
         </context-group>
@@ -27291,8 +27294,8 @@ given channel.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="schedule.delete.jsp.deleteschedule" xml:space="preserve">
-        <source>Delete Schedule</source>
-        <target/>
+        <source>Disable Schedule</source>
+        <target state="needs-adaptation"/>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/DeleteSchedule.do</context>
         </context-group>
@@ -29574,6 +29577,35 @@ given channel.</source>
         </context-group>
         <target state="new"/>
       </trans-unit>
-    </body>
+    <trans-unit id="userdetails.jsp.adminroles" xml:space="preserve">
+        <source>Administrative Roles</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/users/UserDetails</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="bunch.jsp.description.compare-task-bunch" xml:space="preserve">
+        <source>Schedules a generic comparison task</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="schedule.edit.jsp.activateschedule" xml:space="preserve">
+        <source>Activate Schedule</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/ScheduleDetail.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="task.status.compare-task-files" xml:space="preserve">
+        <source>Compare Task</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="spmigration.jsp.dryrun.disabled.tooltip" xml:space="preserve">
+        <source>Dry run is not available for this product.</source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>

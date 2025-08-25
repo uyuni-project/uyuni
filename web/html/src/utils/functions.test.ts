@@ -38,6 +38,13 @@ describe("capitalize", () => {
     expect(Utils.capitalize("FOO")).toEqual("FOO");
     expect(Utils.capitalize("FO-O")).toEqual("FO-O");
   });
+  test("multi-linux special case", () => {
+    expect(Utils.capitalize("FOO MULTI_LINUX")).toEqual("FOO Multi-Linux");
+    expect(Utils.capitalize("foo_Multi_Linux")).toEqual("Foo Multi-Linux");
+    expect(Utils.capitalize("foo-multi-linux-bar")).toEqual("Foo Multi-Linux Bar");
+    expect(Utils.capitalize("foo-multilinux-bar")).toEqual("Foo Multi-Linux Bar");
+    expect(Utils.capitalize("foo_Multi Linux_bar")).toEqual("Foo Multi-Linux Bar");
+  });
 });
 
 describe("cancelable", () => {

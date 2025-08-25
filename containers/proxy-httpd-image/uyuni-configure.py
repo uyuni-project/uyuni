@@ -55,25 +55,6 @@ def get_ips(fqdn: str) -> Tuple[str, str]:
     return (ipv4, ipv6)
 
 
-def insert_under_line(file_path, line_to_match, line_to_insert):
-    # add 4 leading spaces and a new line in the end
-    line_to_insert = line_to_insert.rjust(len(line_to_insert) + 4) + "\n"
-
-    with open(file_path, "r", encoding="utf-8") as f:
-        contents = f.readlines()
-
-    index = -1
-    for ind, line in enumerate(contents):
-        if line_to_match in line:
-            index = ind + 1
-
-    contents.insert(index, line_to_insert)
-
-    with open(file_path, "w", encoding="utf-8") as f:
-        contents = "".join(contents)
-        f.write(contents)
-
-
 # read from files
 with open(config_path + "config.yaml", encoding="utf-8") as source:
     config = yaml.safe_load(source)
@@ -104,26 +85,30 @@ with open(config_path + "httpd.yaml", encoding="utf-8") as httpdSource:
             )
             sys.exit(1)
 
-    # store the systemid content
-    with open("/etc/sysconfig/rhn/systemid", "w", encoding="utf-8") as file:
-        file.write(httpdConfig.get("system_id"))
+    # store the systemid content, but only if it does not exist already
+    if not os.path.exists("/etc/sysconfig/rhn/systemid"):
+        with open("/etc/sysconfig/rhn/systemid", "w", encoding="utf-8") as file:
+            file.write(httpdConfig.get("system_id"))
 
-    # store SSL CA certificate
-    with open(
-        "/etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT", "w", encoding="utf-8"
-    ) as file:
-        file.write(config.get("ca_crt"))
+    # store SSL CA certificate, if it does not exist already
+    if not os.path.exists("/etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT"):
+        with open(
+            "/etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT", "w", encoding="utf-8"
+        ) as file:
+            file.write(config.get("ca_crt"))
+    # however always prepare link
     os.symlink(
         "/etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT",
         "/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT",
     )
     os.system("/usr/sbin/update-ca-certificates")
 
-    # store server certificate files
-    with open("/etc/apache2/ssl.crt/server.crt", "w", encoding="utf-8") as file:
-        file.write(httpdConfig.get("server_crt"))
-    with open("/etc/apache2/ssl.key/server.key", "w", encoding="utf-8") as file:
-        file.write(httpdConfig.get("server_key"))
+    # store server certificate files, if cert does not exist already
+    if not os.path.exists("/etc/apache2/ssl.crt/server.crt"):
+        with open("/etc/apache2/ssl.crt/server.crt", "w", encoding="utf-8") as file:
+            file.write(httpdConfig.get("server_crt"))
+        with open("/etc/apache2/ssl.key/server.key", "w", encoding="utf-8") as file:
+            file.write(httpdConfig.get("server_key"))
 
     with open("/etc/apache2/httpd.conf", "r+", encoding="utf-8") as file:
         file_content = file.read()
@@ -184,6 +169,15 @@ with open(config_path + "httpd.yaml", encoding="utf-8") as httpdSource:
         )
 
     with open(
+        "/etc/apache2/conf.d/smlm-proxy-forwards.conf", "r+", encoding="utf-8"
+    ) as smlm_conf:
+        file_content = smlm_conf.read()
+        file_content = re.sub(r"{{ SERVER }}", config["server"], file_content)
+        smlm_conf.seek(0, 0)
+        smlm_conf.write(file_content)
+        smlm_conf.truncate()
+
+    with open(
         "/etc/apache2/conf.d/susemanager-tftpsync-recv.conf", "w", encoding="utf-8"
     ) as file:
         require_ipv4 = ""
@@ -203,28 +197,6 @@ with open(config_path + "httpd.yaml", encoding="utf-8") as httpdSource:
 WSGIScriptAlias /tftpsync/add /srv/www/tftpsync/add
 WSGIScriptAlias /tftpsync/delete /srv/www/tftpsync/delete"""
         )
-
-    with open("/etc/apache2/conf.d/cobbler-proxy.conf", "w", encoding="utf-8") as file:
-        file.write(
-            f"""ProxyPass /cobbler_api https://{config['server']}/download/cobbler_api
-ProxyPassReverse /cobbler_api https://{config['server']}/download/cobbler_api
-RewriteRule ^/cblr/svc/op/ks/(.*)$ /download/$0 [R,L]
-RewriteRule ^/cblr/svc/op/autoinstall/(.*)$ /download/$0 [R,L]
-ProxyPass /cblr https://{config['server']}/cblr
-ProxyPassReverse /cblr https://{config['server']}/cblr
-ProxyPass /cobbler https://{config['server']}/cobbler
-ProxyPassReverse /cobbler https://{config['server']}/cobbler
-        """
-        )
-
-    with open(
-        "/etc/apache2/conf.d/susemanager-pub.conf", "w", encoding="utf-8"
-    ) as file:
-        file.write("WSGIScriptAlias /pub /usr/share/rhn/wsgi/xmlrpc.py")
-
-    # redirect API calls to the server
-    with open("/etc/apache2/conf.d/smlm-api.conf", "w", encoding="utf-8") as file:
-        file.write("WSGIScriptAlias /rhn/manager/api /usr/share/rhn/wsgi/xmlrpc.py")
 
     with open("/etc/apache2/vhosts.d/ssl.conf", "w", encoding="utf-8") as file:
         file.write(
@@ -256,42 +228,18 @@ ProxyPassReverse /cobbler https://{config['server']}/cobbler
 """
         )
 
-    # Adjust logs format in apache httpd:
-    # Modify the other configurations so that the var HANDLER_TYPE gets set based on a directory of a script executed
-    insert_under_line(
-        "/etc/apache2/conf.d/spacewalk-proxy-wsgi.conf",
-        "<Directory /usr/share/rhn>",
-        'SetEnv HANDLER_TYPE "proxy-broker"',
-    )
-    insert_under_line(
-        "/etc/apache2/conf.d/spacewalk-proxy.conf",
-        '<Directory "/srv/www/htdocs/pub/*">',
-        'SetEnv HANDLER_TYPE "proxy-html"',
-    )
-    insert_under_line(
-        "/etc/apache2/conf.d/spacewalk-proxy.conf",
-        '<Directory "/srv/www/htdocs/docs/*">',
-        'SetEnv HANDLER_TYPE "proxy-docs"',
-    )
-
-    # redirect /saltboot to the server
-    insert_under_line(
-        "/etc/apache2/conf.d/spacewalk-proxy-wsgi.conf",
-        "WSGIScriptAlias /tftp /usr/share/rhn/wsgi/xmlrpc.py",
-        "WSGIScriptAlias /saltboot /usr/share/rhn/wsgi/xmlrpc.py",
-    )
-
-    os.system("chown root:www /etc/rhn/rhn.conf")
-    os.system("chmod 640 /etc/rhn/rhn.conf")
 
 # Make sure permissions are set as desired
-os.system("chown -R wwwrun:www /var/spool/rhn-proxy")
-os.system("chmod -R 750 /var/spool/rhn-proxy")
+os.system("/usr/bin/chown root:www /etc/rhn/rhn.conf")
+os.system("/usr/bin/chmod 640 /etc/rhn/rhn.conf")
+
+os.system("/usr/bin/chown -R wwwrun:www /var/spool/rhn-proxy")
+os.system("/usr/bin/chmod -R 750 /var/spool/rhn-proxy")
 if not os.path.exists("/var/cache/rhn/proxy-auth"):
     os.makedirs("/var/cache/rhn/proxy-auth")
-os.system("chown -R wwwrun:root /var/cache/rhn/proxy-auth")
-os.system("chown -R wwwrun:root /srv/tftpboot")
-os.system("chmod 755 /srv/tftpboot")
+os.system("/usr/bin/chown -R wwwrun:root /var/cache/rhn/proxy-auth")
+os.system("/usr/bin/chown -R wwwrun:root /srv/tftpboot")
+os.system("/usr/bin/chmod 755 /srv/tftpboot")
 
 # Invalidate (remove) possible old proxy auth cache files, based on sha1
 # after migration to sha256 proxy auth cache files.

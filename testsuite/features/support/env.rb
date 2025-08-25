@@ -94,10 +94,17 @@ def capybara_register_driver
     # WORKAROUND failure at Scenario: Test IPMI functions: increase from 60 s to 180 s
     client = Selenium::WebDriver::Remote::Http::Default.new(open_timeout: 30, read_timeout: 240)
     chrome_options = Selenium::WebDriver::Chrome::Options.new(
-      args: %w[disable-dev-shm-usage ignore-certificate-errors window-size=2048,2048 js-flags=--max_old_space_size=2048 no-sandbox disable-notifications]
+      args: %w[
+        --disable-dev-shm-usage
+        --ignore-certificate-errors
+        --window-size=2048,2048
+        --js-flags=--max-old-space-size=2048
+        --no-sandbox
+        --disable-notifications
+      ]
     )
-    chrome_options.args << 'headless=new' unless $debug_mode
-    chrome_options.args << "remote-debugging-port=#{$chromium_dev_port}" if $chromium_dev_tools
+    chrome_options.args << '--headless=new' unless $debug_mode
+    chrome_options.args << "--remote-debugging-port=#{$chromium_dev_port}" if $chromium_dev_tools
     chrome_options.args << '--user-data-dir=/root' if $is_cloud_provider
 
     chrome_options.add_preference('prompt_for_download', false)
@@ -144,7 +151,12 @@ After do |scenario|
   log "This scenario took: #{current_epoch - @scenario_start_time} seconds"
   if scenario.failed?
     begin
-      if web_session_is_active?
+      if scenario.exception.is_a?(Selenium::WebDriver::Error::WebDriverError)
+        log "Caught web driver error: #{scenario.exception.message}"
+        Capybara.current_session.driver.quit
+        visit Capybara.app_host
+        log 'Web driver has been restarted'
+      elsif web_session_is_active?
         handle_screenshot_and_relog(scenario, current_epoch)
       else
         warn 'There is no active web session; unable to take a screenshot or relog.'

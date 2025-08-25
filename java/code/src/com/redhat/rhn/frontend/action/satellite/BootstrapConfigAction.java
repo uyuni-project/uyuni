@@ -43,7 +43,6 @@ public class BootstrapConfigAction extends BaseConfigAction {
 
     public static final String HOSTNAME = "hostname";
     public static final String SSL_CERT = "ssl-cert";
-    public static final String SALT = "salt";
 
     public static final String ENABLE_GPG = "gpg";
     public static final String HTTP_PROXY = "http-proxy";
@@ -78,7 +77,6 @@ public class BootstrapConfigAction extends BaseConfigAction {
                 getCommand(requestContext.getCurrentUser());
                 cmd.setHostname(IDN.toASCII(form.getString(HOSTNAME)));
                 cmd.setSslPath(form.getString(SSL_CERT));
-                cmd.setSaltEnabled((Boolean) form.get(SALT));
                 cmd.setEnableGpg((Boolean) form.get(ENABLE_GPG));
                 cmd.setHttpProxy(form.getString(HTTP_PROXY));
                 cmd.setHttpProxyUsername(form.getString(HTTP_PROXY_USERNAME));
@@ -99,7 +97,6 @@ public class BootstrapConfigAction extends BaseConfigAction {
             String caCertPath = CACertPathUtil.processCACertPath();
             form.set(HOSTNAME, IDN.toUnicode(ConfigDefaults.get().getHostname()));
             form.set(SSL_CERT, caCertPath);
-            form.set(SALT, Boolean.TRUE);
             form.set(ENABLE_GPG, Boolean.TRUE);
         }
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);

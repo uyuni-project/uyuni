@@ -88,12 +88,14 @@ public class AdminPaygHandlerTest extends BaseHandlerTestCase {
             fail("PermissionCheckFailureException should be thrown");
         }
         catch (PermissionCheckFailureException e) {
+            //should be here
         }
         try {
             handler.list(admin);
             fail("PermissionCheckFailureException should be thrown");
         }
         catch (PermissionCheckFailureException e) {
+            //should be here
         }
     }
 
@@ -107,12 +109,14 @@ public class AdminPaygHandlerTest extends BaseHandlerTestCase {
             fail("PermissionCheckFailureException should be thrown");
         }
         catch (PermissionCheckFailureException e) {
+            //should be here
         }
         try {
             handler.create(regular, null, null, null, null, null, null, null);
             fail("PermissionCheckFailureException should be thrown");
         }
         catch (PermissionCheckFailureException e) {
+            //should be here
         }
     }
 
@@ -126,12 +130,14 @@ public class AdminPaygHandlerTest extends BaseHandlerTestCase {
             fail("PermissionCheckFailureException should be thrown");
         }
         catch (PermissionCheckFailureException e) {
+            //should be here
         }
         try {
             handler.setDetails(regular, null, null);
             fail("PermissionCheckFailureException should be thrown");
         }
         catch (PermissionCheckFailureException e) {
+            //should be here
         }
     }
 
@@ -142,12 +148,14 @@ public class AdminPaygHandlerTest extends BaseHandlerTestCase {
             fail("PermissionCheckFailureException should be thrown");
         }
         catch (PermissionCheckFailureException e) {
+            //should be here
         }
         try {
             handler.delete(regular, null);
             fail("PermissionCheckFailureException should be thrown");
         }
         catch (PermissionCheckFailureException e) {
+            //should be here
         }
     }
 

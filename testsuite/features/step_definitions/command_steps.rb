@@ -58,7 +58,9 @@ end
 
 Then(/^it should be possible to use the HTTP proxy$/) do
   url = 'https://www.suse.com'
-  proxy = "suma2:P4$$wordWith%and&@#{$server_http_proxy}"
+  # Proxy Password: P4$$w/ord With%and&
+  # we must escape it before passing it to curl
+  proxy = "suma3:P4$$w%2Ford%20With%and&@#{$server_http_proxy}"
   get_target('server').run("curl --insecure --proxy '#{proxy}' --proxy-anyauth --location '#{url}' --output /dev/null")
 end
 
@@ -1089,7 +1091,7 @@ end
 
 When(/I generate a supportconfig for the server$/) do
   node = get_target('server')
-  node.run('mgradm support config', runs_in_container: false)
+  node.run('mgradm support config', timeout: 600, runs_in_container: false)
   node.run('mv /root/scc_*.tar.gz /root/server-supportconfig.tar.gz', runs_in_container: false)
 end
 
@@ -1422,7 +1424,7 @@ Then(/^I should be able to connect to the ReportDB on the server$/) do
   raise SystemCallError, 'Couldn\'t connect to the ReportDB on the server' unless return_code.zero?
 end
 
-Then(/^there should be a user allowed to create roles on the ReportDB $/) do
+Then(/^there should be a user allowed to create roles on the ReportDB$/) do
   users_and_permissions, return_code = get_target('server').run(reportdb_server_query('\\du'))
   raise SystemCallError, 'Couldn\'t connect to the ReportDB on the server' unless return_code.zero?
 

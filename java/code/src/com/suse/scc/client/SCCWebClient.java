@@ -22,10 +22,10 @@ import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.scc.model.SCCOrderJson;
 import com.suse.scc.model.SCCOrganizationSystemsUpdateResponse;
 import com.suse.scc.model.SCCProductJson;
-import com.suse.scc.model.SCCRegisterSystemJson;
+import com.suse.scc.model.SCCRegisterSystemItem;
 import com.suse.scc.model.SCCRepositoryJson;
 import com.suse.scc.model.SCCSubscriptionJson;
-import com.suse.scc.model.SCCUpdateSystemJson;
+import com.suse.scc.model.SCCUpdateSystemItem;
 import com.suse.scc.model.SCCVirtualizationHostJson;
 
 import com.google.gson.Gson;
@@ -122,8 +122,18 @@ public class SCCWebClient implements SCCClient {
      * @param configIn the configuration object
      */
     public SCCWebClient(SCCConfig configIn) {
+        this(configIn, new HttpClientAdapter(
+                Optional.ofNullable(configIn).map(SCCConfig::getAdditionalCerts).orElse(List.of()), false));
+    }
+
+    /**
+     * Constructor for testing purposes
+     * @param configIn the configuration object
+     * @param httpClientIn the HttpClientAdapter object
+     */
+    public SCCWebClient(SCCConfig configIn, HttpClientAdapter httpClientIn) {
         config = configIn;
-        httpClient = new HttpClientAdapter(configIn.getAdditionalCerts(), false);
+        httpClient = httpClientIn;
     }
 
     private <T> T writeCache(T value, String name) {
@@ -304,19 +314,17 @@ public class SCCWebClient implements SCCClient {
         }
     }
 
-    @Override
-    public void updateBulkLastSeen(List<SCCUpdateSystemJson> systems, String username, String password)
+    private String coreCreateUpdateSystems(String requestBody, String username, String password)
             throws SCCClientException {
 
         HttpPut request = new HttpPut(config.getUrl() + "/connect/organizations/systems");
         // Additional request headers
         addHeaders(request);
-        Map<String, List<SCCUpdateSystemJson>> payload = Map.of("systems", systems);
-        request.setEntity(new StringEntity(gson.toJson(payload), ContentType.APPLICATION_JSON));
+        request.setEntity(new StringEntity(requestBody, ContentType.APPLICATION_JSON));
 
         LOG.info("Send PUT to {}{}", config.getUrl(), "/connect/organizations/systems");
         if (LOG.isDebugEnabled()) {
-            LOG.debug(gson.toJson(payload));
+            LOG.debug("Request body: {}", requestBody);
         }
 
         try {
@@ -324,7 +332,15 @@ public class SCCWebClient implements SCCClient {
             HttpResponse response = httpClient.executeRequest(request, username, password);
 
             int responseCode = response.getStatusLine().getStatusCode();
-            if (responseCode != HttpStatus.SC_CREATED) {
+            String responseBody = EntityUtils.toString(response.getEntity());
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Response code: {}", responseCode);
+                LOG.debug("Response body: {}", responseBody);
+            }
+            if (responseCode == HttpStatus.SC_CREATED) {
+                return responseBody;
+            }
+            else {
                 // Request was not successful
                 throw new SCCClientException(responseCode, request.getURI().toString(),
                         "Got response code " + responseCode + " connecting to " + request.getURI());
@@ -344,50 +360,21 @@ public class SCCWebClient implements SCCClient {
     }
 
     @Override
+    public void updateBulkLastSeen(List<SCCUpdateSystemItem> systems, String username, String password)
+            throws SCCClientException {
+        Map<String, List<SCCUpdateSystemItem>> payload = Map.of("systems", systems);
+        String requestBody = gson.toJson(payload);
+        coreCreateUpdateSystems(requestBody, username, password);
+    }
+
+    @Override
     public SCCOrganizationSystemsUpdateResponse createUpdateSystems(
-            List<SCCRegisterSystemJson> systems, String username, String password
-    ) throws SCCClientException {
-        HttpPut request = new HttpPut(config.getUrl() + "/connect/organizations/systems");
-        // Additional request headers
-        addHeaders(request);
-        Map<String, Collection<SCCRegisterSystemJson>> payload = Map.of("systems", systems);
-        request.setEntity(new StringEntity(gson.toJson(payload), ContentType.APPLICATION_JSON));
+            List<SCCRegisterSystemItem> systems, String username, String password) throws SCCClientException {
+        Map<String, Collection<SCCRegisterSystemItem>> payload = Map.of("systems", systems);
+        String requestBody = gson.toJson(payload);
+        String responseBody = coreCreateUpdateSystems(requestBody, username, password);
 
-        LOG.info("Send PUT to {}{}", config.getUrl(), "/connect/organizations/systems");
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Request body: {}", gson.toJson(payload));
-        }
-
-        try {
-            // Connect and parse the response on success
-            HttpResponse response = httpClient.executeRequest(request, username, password);
-
-            int responseCode = response.getStatusLine().getStatusCode();
-            String responseBody = EntityUtils.toString(response.getEntity());
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Response code: {}", responseCode);
-                LOG.debug("Response body: {}", responseBody);
-            }
-            if (responseCode == HttpStatus.SC_CREATED) {
-                return gson.fromJson(responseBody, SCCOrganizationSystemsUpdateResponse.class);
-            }
-            else {
-                // Request was not successful
-                throw new SCCClientException(responseCode, request.getURI().toString(),
-                        "Got response code " + responseCode + " connecting to " + request.getURI());
-            }
-        }
-        catch (NoRouteToHostException e) {
-            String proxy = ConfigDefaults.get().getProxyHost();
-            throw new SCCClientException("No route to SCC" +
-                    (proxy != null ? " or the Proxy: " + proxy : ""));
-        }
-        catch (IOException e) {
-            throw new SCCClientException(e);
-        }
-        finally {
-            request.releaseConnection();
-        }
+        return gson.fromJson(responseBody, SCCOrganizationSystemsUpdateResponse.class);
     }
 
     @Override

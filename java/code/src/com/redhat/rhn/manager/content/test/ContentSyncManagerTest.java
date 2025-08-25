@@ -164,7 +164,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         products.add(p);
 
         // Call updateSUSEProducts()
-        ContentSyncManager csm = new ContentSyncManager();
+        ContentSyncManager csm = new SUSEProductTestUtils.TestContentSyncManager();
         csm.setSumaProductTreeJson(Optional.of(new File("/usr/share/susemanager/scc/product_tree.json")));
         csm.updateSUSEProducts(products);
 
@@ -232,7 +232,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
             SCCCachingFactory.clearSubscriptions();
             SUSEProductTestUtils.clearAllProducts();
             SUSEProductTestUtils.createVendorSUSEProducts();
-            ContentSyncManager cm = new ContentSyncManager();
+            ContentSyncManager cm = new SUSEProductTestUtils.TestContentSyncManager();
             Collection<SCCSubscriptionJson> s = cm.updateSubscriptions();
             assertNotNull(s);
             assertFalse(cm.hasToolsChannelSubscription(), "Should no find a SUSE Manager Server Subscription");
@@ -313,7 +313,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
                 .filter(c -> c.getUsername().equals("dummy"))
                 .findFirst().get();
 
-        ContentSyncManager csm = new ContentSyncManager();
+        ContentSyncManager csm = new SUSEProductTestUtils.TestContentSyncManager();
         // todo i think this doesn't mock correctly and causes timeouts
         csm.refreshRepositoriesAuthentication(repositories, new SCCContentSyncSource(credentials), null);
 
@@ -358,7 +358,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         repo2.setUrl("https://updates.suse.com/SUSE/Updates/SLE-Product-SLES/15/x86_64/update/");
         SCCCachingFactory.saveRepository(repo2);
 
-        ContentSyncManager csm = new ContentSyncManager();
+        ContentSyncManager csm = new SUSEProductTestUtils.TestContentSyncManager();
         csm.refreshRepositoriesAuthentication(repositories, new SCCContentSyncSource(credentials), null);
 
         Optional<SCCRepository> upRepoOpt = SCCCachingFactory.lookupRepositoryBySccId(2705L);
@@ -486,7 +486,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         List<SCCRepositoryJson> additionalRepos = gson.fromJson(inReaderAddRepos,
                 new TypeToken<List<SCCRepositoryJson>>() { }.getType());
 
-        ContentSyncManager csm = new ContentSyncManager();
+        ContentSyncManager csm = new SUSEProductTestUtils.TestContentSyncManager();
         csm.updateSUSEProducts(productsChanged, staticTreeChanged, additionalRepos);
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
@@ -585,7 +585,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         List<SCCRepositoryJson> additionalRepos = gson.fromJson(inReaderAddRepos,
                 new TypeToken<List<SCCRepositoryJson>>() { }.getType());
 
-        ContentSyncManager csm = new ContentSyncManager();
+        ContentSyncManager csm = new SUSEProductTestUtils.TestContentSyncManager();
         csm.updateSUSEProducts(productsChanged, staticTreeChanged, additionalRepos);
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
@@ -679,7 +679,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
 
         SCCCredentials sccCreds = CredentialsFactory.listSCCCredentials().get(0);
 
-        ContentSyncManager csm = new ContentSyncManager();
+        ContentSyncManager csm = new SUSEProductTestUtils.TestContentSyncManager();
         csm.updateSUSEProducts(productsChanged, staticTreeChanged, additionalRepos);
         csm.refreshRepositoriesAuthentication(repositoriesChanged, new SCCContentSyncSource(sccCreds), null);
         csm.linkAndRefreshContentSource(null);
@@ -737,7 +737,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
                 assertNotNull(cs);
                 assertEquals(bestAuth.getUrl(), cs.getSourceUrl());
             });
-        ContentSyncManager csm = new ContentSyncManager();
+        ContentSyncManager csm = new SUSEProductTestUtils.TestContentSyncManager();
         sles.getChannelTemplates()
         .stream()
         .filter(pr -> pr.getRepository().getSccId().equals(9999L))
@@ -965,8 +965,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         List<SCCRepositoryJson> repositoriesChanged = gson.fromJson(
                 inReaderRepos, new TypeToken<List<SCCRepositoryJson>>() { }.getType());
 
-        ContentSyncManager csm = new ContentSyncManager();
-        //csm.updateSUSEProducts(productsChanged, upgradePaths, staticTreeChanged, Collections.emptyList());
+        ContentSyncManager csm = new SUSEProductTestUtils.TestContentSyncManager();
         csm.refreshRepositoriesAuthentication(repositoriesChanged, new SCCContentSyncSource(scc2nd), null);
         csm.linkAndRefreshContentSource(null);
 
@@ -1299,7 +1298,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         products.add(p);
 
         // Call updateSUSEProducts()
-        ContentSyncManager csm = new ContentSyncManager();
+        ContentSyncManager csm = new SUSEProductTestUtils.TestContentSyncManager();
         csm.setSumaProductTreeJson(Optional.of(new File("/usr/share/susemanager/scc/product_tree.json")));
         csm.updateSUSEProducts(products);
 
@@ -1353,7 +1352,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         products.add(p);
 
         // Call updateSUSEProducts()
-        ContentSyncManager csm = new ContentSyncManager();
+        ContentSyncManager csm = new SUSEProductTestUtils.TestContentSyncManager();
         csm.setSumaProductTreeJson(Optional.of(new File("/usr/share/susemanager/scc/product_tree.json")));
         csm.updateSUSEProducts(products);
 
@@ -1373,7 +1372,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
 
-        ContentSyncManager csm = new ContentSyncManager();
+        ContentSyncManager csm = new SUSEProductTestUtils.TestContentSyncManager();
         List<ChannelTemplate> availableChannels = csm.getAvailableChannels();
 
         List<String> avChanLanbels = availableChannels
@@ -1401,7 +1400,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
 
-        ContentSyncManager csm = new ContentSyncManager();
+        ContentSyncManager csm = new SUSEProductTestUtils.TestContentSyncManager();
         List<ChannelTemplate> availableChannels = csm.getAvailableChannels();
 
         List<String> duplicates = new LinkedList<>();
@@ -1480,7 +1479,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
     public void testUpdateChannelFamiliesInsert() {
         // Get test data and insert
         List<ChannelFamilyJson> channelFamilies = getChannelFamilies();
-        ContentSyncManager csm = new ContentSyncManager();
+        ContentSyncManager csm = new SUSEProductTestUtils.TestContentSyncManager();
         csm.updateChannelFamilies(channelFamilies);
 
         // Assert that families have been inserted correctly
@@ -1520,7 +1519,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         int familynumbers = ChannelFamilyFactory.getAllChannelFamilies().size();
 
         List<ChannelFamilyJson> channelFamilies = getChannelFamilies();
-        ContentSyncManager csm = new ContentSyncManager();
+        ContentSyncManager csm = new SUSEProductTestUtils.TestContentSyncManager();
         csm.updateChannelFamilies(channelFamilies);
 
         int newFamilyNumbers = ChannelFamilyFactory.getAllChannelFamilies().size();
@@ -1622,7 +1621,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         }
 
         // Update the upgrade paths
-        ContentSyncManager csm = new ContentSyncManager();
+        ContentSyncManager csm = new SUSEProductTestUtils.TestContentSyncManager();
         csm.updateUpgradePaths(products);
 
         // Check the results
@@ -1674,7 +1673,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         products.add(product2);
 
         // Update SUSE products and upgrade paths
-        ContentSyncManager csm = new ContentSyncManager();
+        ContentSyncManager csm = new SUSEProductTestUtils.TestContentSyncManager();
         csm.setSumaProductTreeJson(Optional.of(new File("/usr/share/susemanager/scc/product_tree.json")));
         csm.updateSUSEProducts(products);
         HibernateFactory.getSession().flush();
@@ -1734,7 +1733,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         products.add(product2);
 
         // Update SUSE products and upgrade paths
-        ContentSyncManager csm = new ContentSyncManager();
+        ContentSyncManager csm = new SUSEProductTestUtils.TestContentSyncManager();
         csm.setSumaProductTreeJson(Optional.of(new File("/usr/share/susemanager/scc/product_tree.json")));
         csm.updateSUSEProducts(products);
 
@@ -1766,7 +1765,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         HibernateFactory.getSession().clear();
 
         // List channels and verify status
-        ContentSyncManager csm = new ContentSyncManager();
+        ContentSyncManager csm = new SUSEProductTestUtils.TestContentSyncManager();
         List<MgrSyncChannelDto> channels = csm.listChannels();
         boolean foundPool = false;
         boolean foundDebugPool = false;
@@ -1814,7 +1813,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
 
-        ContentSyncManager csm = new ContentSyncManager();
+        ContentSyncManager csm = new SUSEProductTestUtils.TestContentSyncManager();
         Collection<MgrSyncProductDto> products = csm.listProducts();
 
         boolean foundSLES = false;
@@ -1858,7 +1857,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
 
-        ContentSyncManager csm = new ContentSyncManager() {
+        ContentSyncManager csm = new SUSEProductTestUtils.TestContentSyncManager() {
             @Override
             protected boolean accessibleUrl(String url) {
                 return true;
@@ -1895,7 +1894,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
 
-        ContentSyncManager csm = new ContentSyncManager() {
+        ContentSyncManager csm = new SUSEProductTestUtils.TestContentSyncManager() {
             @Override
             protected boolean accessibleUrl(String url) {
                 return true;
@@ -1922,7 +1921,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testIsRefreshNeededNothingConfigured() throws Exception {
-        ContentSyncManager csm = new ContentSyncManager();
+        ContentSyncManager csm = new SUSEProductTestUtils.TestContentSyncManager();
         assertFalse(csm.isRefreshNeeded(null));
     }
 
@@ -2020,7 +2019,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
 
-        ContentSyncManager csm = new ContentSyncManager();
+        ContentSyncManager csm = new SUSEProductTestUtils.TestContentSyncManager();
 
         try {
             csm.addChannel("non-existing-channel", null);
@@ -2113,7 +2112,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
             List<ChannelFamilyJson> channelFamilies = gson.fromJson(
                     inputStreamReader3, new TypeToken<List<ChannelFamilyJson>>() { }.getType());
 
-            ContentSyncManager csm = new ContentSyncManager();
+            ContentSyncManager csm = new SUSEProductTestUtils.TestContentSyncManager();
             csm.setSumaProductTreeJson(Optional.of(treeTemp));
             csm.updateChannelFamilies(channelFamilies);
             Config.get().setString(ContentSyncManager.RESOURCE_PATH, fromdir.toString());
@@ -2207,7 +2206,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
             List<ChannelFamilyJson> channelFamilies = gson.fromJson(
                     inputStreamReader3, new TypeToken<List<ChannelFamilyJson>>() { }.getType());
 
-            ContentSyncManager csm = new ContentSyncManager();
+            ContentSyncManager csm = new SUSEProductTestUtils.TestContentSyncManager();
             csm.setSumaProductTreeJson(Optional.of(treeTemp));
             csm.updateChannelFamilies(channelFamilies);
             Config.get().setString(ContentSyncManager.RESOURCE_PATH, fromdir.toString());
@@ -2229,7 +2228,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
 
             clearSession();
 
-            csm = new ContentSyncManager();
+            csm = new SUSEProductTestUtils.TestContentSyncManager();
             csm.linkAndRefreshContentSource(null);
 
             clearSession();
@@ -2381,7 +2380,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
                 new Gson().fromJson(inputStreamReader,
                         new TypeToken<List<SCCProductJson>>() { } .getType());
 
-        ContentSyncManager csm = new ContentSyncManager();
+        ContentSyncManager csm = new SUSEProductTestUtils.TestContentSyncManager();
         csm.setSumaProductTreeJson(Optional.of(new File("/usr/share/susemanager/scc/product_tree.json")));
 
         csm.updateSUSEProducts(sccProducts);
@@ -2400,7 +2399,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         rpmrepo.setDistroTarget("sle-12-x86_64");
 
         String repourl = "http://localhost/pub/myrepo/";
-        ContentSyncManager csm = new ContentSyncManager();
+        ContentSyncManager csm = new SUSEProductTestUtils.TestContentSyncManager();
 
         assertContains(csm.buildRepoFileUrls(repourl, rpmrepo), repourl + "repodata/repomd.xml");
         assertEquals(1, csm.buildRepoFileUrls(repourl, rpmrepo).size());
@@ -2438,7 +2437,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
             expectations.never(sccClient).listRepositories();
         });
 
-        ContentSyncManager csm = new ContentSyncManager() {
+        ContentSyncManager csm = new SUSEProductTestUtils.TestContentSyncManager() {
             @Override
             protected SCCClient getSCCClient(ContentSyncSource source) throws SCCClientException {
                 return sccClient;

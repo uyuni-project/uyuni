@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 SUSE LLC
+ * Copyright (c) 2015--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.suse.manager.webui.controllers;
 
@@ -26,6 +22,7 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.security.PermissionException;
+import com.redhat.rhn.domain.action.supportdata.UploadGeoType;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -48,6 +45,7 @@ import com.suse.manager.model.attestation.CoCoEnvironmentType;
 import com.suse.manager.utils.MinionServerUtils;
 import com.suse.manager.webui.utils.ViewHelper;
 import com.suse.manager.webui.utils.gson.SimpleMinionJson;
+import com.suse.manager.webui.utils.gson.UploadRegion;
 import com.suse.utils.Json;
 
 import java.util.Arrays;
@@ -58,7 +56,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import spark.ModelAndView;
 import spark.Request;
@@ -79,6 +76,7 @@ public class MinionController {
      */
     public static void initRoutes(JadeTemplateEngine jade) {
         initSystemRoutes(jade);
+        initDetailsRoutes(jade);
         initStatesRoutes(jade);
         initSSMRoutes(jade);
         initPTFRoutes(jade);
@@ -97,6 +95,11 @@ public class MinionController {
                 jade);
         get("/manager/systems/:id",
                 MinionController::show);
+    }
+
+    private static void initDetailsRoutes(JadeTemplateEngine jade) {
+        get("/manager/systems/details/support",
+            withCsrfToken(withDocsLocale(withUserAndServer(MinionController::supportData))), jade);
     }
 
     private static void initStatesRoutes(JadeTemplateEngine jade) {
@@ -638,10 +641,58 @@ public class MinionController {
     private static void addCoCoMetadata(Map<String, Object> data) {
         // Confidential computing environment types. Using linked hash map to keep the enum order
         Map<String, String> environmentMap = new LinkedHashMap<>();
-        Stream.of(CoCoEnvironmentType.values())
+        CoCoEnvironmentType.validValues()
             .forEach(e -> environmentMap.put(e.name(), e.getDescription()));
 
         data.put("availableEnvironmentTypes", Json.GSON.toJson(environmentMap));
+    }
+
+
+    /**
+     * Handler for the page to schedule the retrieval of the support data
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the current user
+     * @param server the server
+     * @return the ModelAndView object to render the page
+     */
+    public static ModelAndView supportData(Request request, Response response, User user, Server server) {
+        Map<String, Object> data = new HashMap<>();
+
+        data.put("availableRegions", Json.GSON.toJson(getAvailableRegions()));
+        // Using json here even if support program is a string, to avoid Jade null handling
+        data.put("programName", Json.GSON.toJson(getSupportProgram(server)));
+
+        return new ModelAndView(data, "templates/minion/support-data.jade");
+    }
+
+    private static List<UploadRegion> getAvailableRegions() {
+        return Arrays.stream(UploadGeoType.values())
+            .map(UploadRegion::new)
+            .sorted(Comparator.comparing(UploadRegion::description))
+            .toList();
+    }
+
+    // Ensure this code matches the logic in the salt module supportdata.py
+    private static String getSupportProgram(Server server) {
+        if ("Suse".equals(server.getOsFamily())) {
+            if (server.isMgrServer()) {
+                return "mgradm";
+            }
+
+            if (server.isProxy()) {
+                return "mgrpxy";
+            }
+
+            return "supportconfig";
+        }
+
+        if ("RedHat".equals(server.getOsFamily()) || "Debian".equals(server.getOsFamily())) {
+            return "sosreport";
+        }
+
+        return null;
     }
 
     /**

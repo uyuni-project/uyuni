@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 SUSE LLC
+ * Copyright (c) 2024--2025 SUSE LLC
  * Copyright (c) 2009--2017 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -39,14 +39,12 @@ import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.CoCoAttestationAction;
-import com.redhat.rhn.domain.action.salt.ApplyStatesActionDetails;
-import com.redhat.rhn.domain.action.salt.ApplyStatesActionResult;
-import com.redhat.rhn.domain.action.salt.StateResult;
 import com.redhat.rhn.domain.action.script.ScriptAction;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptResult;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.action.supportdata.UploadGeoType;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -69,7 +67,6 @@ import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
-import com.redhat.rhn.domain.rhnpackage.profile.DuplicateProfileNameException;
 import com.redhat.rhn.domain.rhnpackage.profile.Profile;
 import com.redhat.rhn.domain.rhnpackage.profile.ProfileFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -116,7 +113,9 @@ import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.dto.VirtualSystemOverview;
 import com.redhat.rhn.frontend.events.SsmDeleteServersEvent;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
+import com.redhat.rhn.frontend.xmlrpc.DuplicateProfileNameException;
 import com.redhat.rhn.frontend.xmlrpc.EntityNotExistsFaultException;
+import com.redhat.rhn.frontend.xmlrpc.IOFaultException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidActionTypeException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelLabelException;
@@ -201,6 +200,7 @@ import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.xmlrpc.NoSuchHistoryEventException;
 import com.suse.manager.xmlrpc.dto.SystemEventDetailsDto;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -208,7 +208,6 @@ import org.cobbler.SystemRecord;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -216,7 +215,6 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -279,6 +277,7 @@ public class SystemHandler extends BaseHandler {
             this.cloudPaygManager = cloudPaygManagerIn;
         }
         this.attestationManager = attestationManagerIn;
+        ActionManager.setTaskomaticApi(this.taskomaticApi);
     }
 
     /**
@@ -312,7 +311,7 @@ public class SystemHandler extends BaseHandler {
 
         // if there are any existing reactivation keys, remove them before
         // creating a new one... there should only be 1; however, earlier
-        // versions of the API did not remove the existing reactivation keys;
+        // versions of the API did not remove the existing reactivation keys
         // therefore, it is possible that multiple will be returned...
         ActivationKeyFactory.removeKeysForServer(server.getId());
 
@@ -887,7 +886,7 @@ public class SystemHandler extends BaseHandler {
         ret.put("id", channel.getId());
         ret.put("name", channel.getName());
         ret.put("label", channel.getLabel());
-        ret.put("current_base", currentBase ? Integer.valueOf(1) : Integer.valueOf(0));
+        ret.put("current_base", BooleanUtils.isTrue(currentBase) ? Integer.valueOf(1) : Integer.valueOf(0));
         return ret;
     }
 
@@ -1232,7 +1231,7 @@ public class SystemHandler extends BaseHandler {
 
             //Check epoch
             String pkgEpoch = StringUtils.trim((String) pkg.get("epoch"));
-            // If epoch is null, we arrived here from the isNvreInstalled(...n,v,r) method;
+            // If epoch is null, we arrived here from the isNvreInstalled(...n,v,r) method
             // therefore, just skip the comparison
             if ((epoch != null) && !pkgEpoch.equals(StringUtils.trim(epoch))) {
                 continue;
@@ -1723,7 +1722,7 @@ public class SystemHandler extends BaseHandler {
         SsmDeleteServersEvent event =
                 new SsmDeleteServersEvent(loggedInUser, deletion,
                         SystemManager.ServerCleanupType.fromString(cleanupType).orElseThrow(() ->
-                        new IllegalArgumentException("Invalid server cleanup type value: " + cleanupType)));
+                        new InvalidParameterException("Invalid server cleanup type value: " + cleanupType)));
         MessageQueue.publish(event);
 
         // If we skipped any systems, create an error message and throw a FaultException
@@ -1804,7 +1803,7 @@ public class SystemHandler extends BaseHandler {
         systemManager.deleteServerAndCleanup(loggedInUser,
                 server.getId(),
                 SystemManager.ServerCleanupType.fromString(cleanupType).orElseThrow(() ->
-                                    new IllegalArgumentException(
+                                    new InvalidParameterException(
                                             "Invalid server cleanup type value: " + cleanupType))
         );
         return 1;
@@ -1945,7 +1944,7 @@ public class SystemHandler extends BaseHandler {
             List<Server> servers = new ArrayList<>(1);
             servers.add(server);
 
-            if (member) {
+            if (BooleanUtils.isTrue(member)) {
                 //add to server group
                 serverGroupManager.addServers(group, servers, loggedInUser);
             }
@@ -2301,11 +2300,11 @@ public class SystemHandler extends BaseHandler {
      */
     public int deleteNote(User loggedInUser, Integer sid, Integer noteId) {
         if (sid == null) {
-            throw new IllegalArgumentException("sid cannot be null");
+            throw new InvalidParameterException("sid cannot be null");
         }
 
         if (noteId == null) {
-            throw new IllegalArgumentException("nid cannot be null");
+            throw new InvalidParameterException("nid cannot be null");
         }
 
         SystemManager.deleteNote(loggedInUser, sid.longValue(), noteId.longValue());
@@ -2329,7 +2328,7 @@ public class SystemHandler extends BaseHandler {
      */
     public int deleteNotes(User loggedInUser, Integer sid) {
         if (sid == null) {
-            throw new IllegalArgumentException("sid cannot be null");
+            throw new InvalidParameterException("sid cannot be null");
         }
 
         SystemManager.deleteNotes(loggedInUser, sid.longValue());
@@ -2439,8 +2438,8 @@ public class SystemHandler extends BaseHandler {
             if (action.getFailedCount() != null) {
                 result.put("failed_count", action.getFailedCount());
             }
-            if (action.getActionType().getName() != null) {
-                result.put("action_type", action.getActionType().getName());
+            if (action.getActionTypeName() != null) {
+                result.put("action_type", action.getActionTypeName());
             }
             if (action.getSuccessfulCount() != null) {
                 result.put("successful_count", action.getSuccessfulCount());
@@ -2492,7 +2491,7 @@ public class SystemHandler extends BaseHandler {
                 result.put("result_msg", sAction.getResultMsg());
             }
 
-            final List<Map<String, String>> additionalInfo = createActionSpecificDetails(action, sAction);
+            final List<Map<String, String>> additionalInfo = action.createActionSpecificDetails(sAction);
             if (!additionalInfo.isEmpty()) {
                 result.put("additional_info", additionalInfo);
             }
@@ -2500,119 +2499,6 @@ public class SystemHandler extends BaseHandler {
             results.add(result);
         }
         return results;
-    }
-
-    private List<Map<String, String>> createActionSpecificDetails(Action action, ServerAction serverAction) {
-        // depending on the event type, we need to retrieve additional information
-        // and store that information in the result
-        final ActionType type = action.getActionType();
-        final List<Map<String, String>> additionalInfo = new ArrayList<>();
-
-        if (type.equals(ActionFactory.TYPE_PACKAGES_REMOVE) ||
-                type.equals(ActionFactory.TYPE_PACKAGES_UPDATE) ||
-                type.equals(ActionFactory.TYPE_PACKAGES_VERIFY)) {
-
-            // retrieve the list of package names associated with the action...
-            DataResult<Row> pkgs = ActionManager.getPackageList(action.getId(), null);
-            for (Row pkg : pkgs) {
-                String detail = (String) pkg.get("nvre");
-
-                Map<String, String> info = new HashMap<>();
-                info.put("detail", detail);
-                additionalInfo.add(info);
-            }
-        }
-        else if (type.equals(ActionFactory.TYPE_ERRATA)) {
-
-            // retrieve the errata that were associated with the action...
-            DataResult<Row> errata = ActionManager.getErrataList(action.getId());
-            for (Row erratum : errata) {
-                String detail = (String) erratum.get("advisory");
-                detail += " (" + erratum.get("synopsis") + ")";
-
-                Map<String, String> info = new HashMap<>();
-                info.put("detail", detail);
-                additionalInfo.add(info);
-            }
-        }
-        else if (type.equals(ActionFactory.TYPE_CONFIGFILES_UPLOAD) ||
-                type.equals(ActionFactory.TYPE_CONFIGFILES_MTIME_UPLOAD)) {
-
-            // retrieve the details associated with the action...
-            DataResult<Row> files = ActionManager.getConfigFileUploadList(action.getId());
-            for (Row file : files) {
-                Map<String, String> info = new HashMap<>();
-                info.put("detail", (String) file.get("path"));
-                String error = (String) file.get("failure_reason");
-                if (error != null) {
-                    info.put("result", error);
-                }
-                additionalInfo.add(info);
-            }
-        }
-        else if (type.equals(ActionFactory.TYPE_CONFIGFILES_DEPLOY)) {
-
-            // retrieve the details associated with the action...
-            DataResult<Row> files = ActionManager.getConfigFileDeployList(action.getId());
-            for (Row file : files) {
-                Map<String, String> info = new HashMap<>();
-                String path = (String) file.get("path");
-                path += " (rev. " + file.get("revision") + ")";
-                info.put("detail", path);
-                String error = (String) file.get("failure_reason");
-                if (error != null) {
-                    info.put("result", error);
-                }
-                additionalInfo.add(info);
-            }
-        }
-        else if (type.equals(ActionFactory.TYPE_CONFIGFILES_DIFF)) {
-
-            // retrieve the details associated with the action...
-            DataResult<Row> files = ActionManager.getConfigFileDiffList(action.getId());
-            for (Row file : files) {
-                Map<String, String> info = new HashMap<>();
-                String path = (String) file.get("path");
-                path += " (rev. " + file.get("revision") + ")";
-                info.put("detail", path);
-
-                String error = (String) file.get("failure_reason");
-                if (error != null) {
-                    info.put("result", error);
-                }
-                else {
-                    // if there wasn't an error, check to see if there was a difference
-                    // detected...
-                    String diffString = HibernateFactory.getBlobContents(
-                            file.get("diff"));
-                    if (diffString != null) {
-                        info.put("result", diffString);
-                    }
-                }
-                additionalInfo.add(info);
-            }
-        }
-        else if (type.equals(ActionFactory.TYPE_APPLY_STATES)) {
-            final ApplyStatesActionDetails detail = ActionFactory.lookupApplyStatesActionDetails(action.getId());
-            if (detail != null) {
-                final Optional<ApplyStatesActionResult> serverResult = detail.getResult(serverAction.getServerId());
-
-                final String output = serverResult.flatMap(ApplyStatesActionResult::getResult)
-                                                  .orElse(Collections.emptyList())
-                                                  .stream()
-                                                  .sorted(Comparator.comparing(StateResult::getRunNum))
-                                                  .map(StateResult::toString)
-                                                  .collect(Collectors.joining());
-
-                final String returnCode = serverResult.map(ApplyStatesActionResult::getReturnCode)
-                                                      .map(Object::toString)
-                                                      .orElse("");
-
-                additionalInfo.add(Map.of("detail", output, "result", returnCode));
-            }
-        }
-
-        return additionalInfo;
     }
 
     /**
@@ -3279,6 +3165,7 @@ public class SystemHandler extends BaseHandler {
                 sid.longValue(), ksdata.getId(), loggedInUser, new Date(),
                 ConfigDefaults.get().getCobblerHost());
 
+        KickstartScheduleCommand.setTaskomaticApi(taskomaticApi);
         cmd.setGuestName(guestName);
         cmd.setMemoryAllocation(Long.valueOf(memoryMb));
         cmd.setVirtualCpus(Long.valueOf(vcpus.toString()));
@@ -3649,7 +3536,7 @@ public class SystemHandler extends BaseHandler {
             eventDetail.setResultMsg(serverAction.getResultMsg());
             eventDetail.setResultCode(serverAction.getResultCode());
 
-            eventDetail.setAdditionalInfo(createActionSpecificDetails(action, serverAction));
+            eventDetail.setAdditionalInfo(action.createActionSpecificDetails(serverAction));
         }
 
         return eventDetail;
@@ -3752,10 +3639,8 @@ public class SystemHandler extends BaseHandler {
 
         Server server = lookupServer(loggedInUser, sid);
 
-        DataResult<ErrataOverview> dr = SystemManager.relevantErrataByType(loggedInUser,
+        return SystemManager.relevantErrataByType(loggedInUser,
                 server.getId(), advisoryType);
-
-        return dr;
     }
 
     /**
@@ -3909,7 +3794,7 @@ public class SystemHandler extends BaseHandler {
             .map(Integer::longValue)
             .collect(toList());
 
-        if (!allowModules) {
+        if (BooleanUtils.isNotTrue(allowModules)) {
             for (Long sid : serverIds) {
                 Server server = SystemManager.lookupByIdAndUser(sid, loggedInUser);
                 for (Channel channel : server.getChannels()) {
@@ -4217,7 +4102,7 @@ public class SystemHandler extends BaseHandler {
 
         List<Long> actionIds = new ArrayList<>();
 
-        if (!allowModules) {
+        if (BooleanUtils.isNotTrue(allowModules)) {
             boolean hasModules = false;
             for (Integer sid : sids) {
                 Server server = SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser);
@@ -5209,7 +5094,7 @@ public class SystemHandler extends BaseHandler {
             throw new PermissionCheckFailureException("Running remote scripts has been disabled");
         }
 
-        ScriptActionDetails scriptDetails = ActionManager.createScript(username, groupname,
+        ScriptActionDetails scriptDetails = ActionFactory.createScriptActionDetails(username, groupname,
                 timeout.longValue(), script);
         ScriptAction action = null;
 
@@ -5433,9 +5318,11 @@ public class SystemHandler extends BaseHandler {
      * @apidoc.param #param_desc("boolean", "enabled", "set the enabled state for Confidential Compute Attestation")
      * @apidoc.param #param_desc("string", "environmentType", "set the environment type of the system:")
      *   #options()
-     *     #item("NONE")
      *     #item("KVM_AMD_EPYC_MILAN")
      *     #item("KVM_AMD_EPYC_GENOA")
+     *     #item("KVM_AMD_EPYC_BERGAMO")
+     *     #item("KVM_AMD_EPYC_SIENA")
+     *     #item("KVM_AMD_EPYC_TURIN")
      *   #options_end()
      * @apidoc.param #param_desc("boolean", "attestOnBoot", "set if the attestation should be performed on system boot")
      * @apidoc.returntype #return_int_success()
@@ -5713,7 +5600,7 @@ public class SystemHandler extends BaseHandler {
         if (details.containsKey("auto_errata_update")) {
             Boolean autoUpdate = (Boolean)details.get("auto_errata_update");
 
-            if (autoUpdate) {
+            if (BooleanUtils.isTrue(autoUpdate)) {
                 server.setAutoUpdate("Y");
             }
             else {
@@ -5812,7 +5699,7 @@ public class SystemHandler extends BaseHandler {
                     server);
         }
         else {
-            if (lockStatus) {
+            if (BooleanUtils.isTrue(lockStatus)) {
                 // lock the server, if it isn't already locked.
                 if (server.getLock() == null) {
                     SystemManager.lockServer(loggedInUser, server,
@@ -5998,7 +5885,7 @@ public class SystemHandler extends BaseHandler {
      * returns uuid and other transition data for the system according to the mapping file
      * @param clientCert client certificate
      * @return map containing transition data (hostname, uuid, system_id, timestamp)
-     * @throws FileNotFoundException in case no transition data are available
+     * @throws IOFaultException in case no transition data are available
      * @throws NoSuchSystemException in case no transition data for the specific system
      * were found
      *
@@ -6006,8 +5893,7 @@ public class SystemHandler extends BaseHandler {
      * is not useful to external users of the API, the typical XMLRPC API documentation
      * is not being included.
      */
-    public Map transitionDataForSystem(String clientCert) throws FileNotFoundException,
-        NoSuchSystemException {
+    public Map transitionDataForSystem(String clientCert) throws IOFaultException, NoSuchSystemException {
         final File transitionFolder =  new File("/usr/share/rhn/transition");
         final String csvUuid = "uuid";
         final String csvSystemId = "system_id";
@@ -6021,7 +5907,7 @@ public class SystemHandler extends BaseHandler {
 
         File[] files = transitionFolder.listFiles();
         if (files == null) {
-            throw new FileNotFoundException("Transition data not available");
+            throw new IOFaultException("Transition data not available");
         }
         for (File file : files) {
             Pattern pattern = Pattern.compile("id_to_uuid-(\\d+).map");
@@ -6068,8 +5954,7 @@ public class SystemHandler extends BaseHandler {
                             map.put(csvUuid, record[uuidPos]);
                             map.put(csvSystemId, record[systemIdPos]);
                             map.put(csvStamp, fileStamp);
-                            String[] cmd = {"rpm", "--qf=%{NAME}",
-                                    "-qf", file.getAbsolutePath()};
+                            String[] cmd = {"/usr/bin/rpm", "--qf=%{NAME}", "-qf", file.getAbsolutePath()};
                             map.remove(csvHostname);
                             SystemCommandExecutor ce = new SystemCommandExecutor();
                             if (ce.execute(cmd) == 0) {
@@ -6166,7 +6051,7 @@ public class SystemHandler extends BaseHandler {
                     profileLabel, description);
             ProfileManager.copyFrom(server, profile);
         }
-        catch (DuplicateProfileNameException dbe) {
+        catch (com.redhat.rhn.domain.rhnpackage.profile.DuplicateProfileNameException dbe) {
             throw new DuplicateProfileNameException("Package Profile already exists " +
                     "with name: " + profileLabel);
         }
@@ -6891,7 +6776,7 @@ public class SystemHandler extends BaseHandler {
      * @param systemName system name
      * @param data the data about system
      * @throws SystemsExistFaultException - when system(s) matching given data exists
-     * @throws java.lang.IllegalArgumentException when the input data contains insufficient information or
+     * @throws InvalidParameterException when the input data contains insufficient information or
      * if the format of the hardware address is invalid
      * @return int - ID of the created system on success, exception thrown otherwise.
      *
@@ -7411,7 +7296,7 @@ public class SystemHandler extends BaseHandler {
             String interfaceName) {
         Server server = lookupServer(loggedInUser, sid);
 
-        if (!server.existsActiveInterfaceWithName(interfaceName)) {
+        if (BooleanUtils.isNotTrue(server.existsActiveInterfaceWithName(interfaceName))) {
             throw new NoSuchNetworkInterfaceException("No such network interface: " +
                     interfaceName);
         }
@@ -8775,11 +8660,11 @@ public class SystemHandler extends BaseHandler {
             MinionServer minion = SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser).asMinionServer()
                     .orElseThrow(() -> new UnsupportedOperationException("System not managed with Salt: " + sid));
             PackageStates vPkgState = PackageStates.byId(state)
-                    .orElseThrow(()-> new IllegalArgumentException("Invalid package state"));
+                    .orElseThrow(()-> new InvalidParameterException("Invalid package state"));
             VersionConstraints vVersionConstraint = VersionConstraints.byId(versionConstraint)
-                    .orElseThrow(() -> new IllegalArgumentException("Invalid version constraint"));
+                    .orElseThrow(() -> new InvalidParameterException("Invalid version constraint"));
             PackageName pkgName = Optional.ofNullable(PackageManager.lookupPackageName(packageName))
-                    .orElseThrow(() -> new IllegalArgumentException("No such package exists"));
+                    .orElseThrow(() -> new InvalidParameterException("No such package exists"));
 
             //update the state
            SystemManager.updatePackageState(loggedInUser, minion, pkgName, vPkgState, vVersionConstraint);
@@ -9187,6 +9072,55 @@ public class SystemHandler extends BaseHandler {
         }
         catch (LookupException ex) {
             throw new EntityNotExistsFaultException(resultId);
+        }
+    }
+
+    /**
+     * Schedule Action to get and upload support data from the defined system to SCC.
+     * @param loggedInUser the user
+     * @param sid the system ID
+     * @param caseNumber the support case number
+     * @param parameter additional parameter for the tool which collect the data
+     * @param uploadGeo The location of the upload server [EU, US]
+     * @param earliestOccurrence the date when this action should be executed
+     * @return the action
+     *
+     * @apidoc.doc Schedule an action to get and upload support data from the specified system to SCC.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "sid")
+     * @apidoc.param #param_desc("string", "caseNumber", "The SCC case number")
+     * @apidoc.param #param_desc("string", "parameter",
+     * "Additional parameter for the tool which collect the data from the system. Can be empty")
+     * @apidoc.param #param_desc("string", "uploadGeo", "The location of the upload server [EU, US]")
+     * @apidoc.param #param("$date",  "earliestOccurrence")
+     * @apidoc.returntype #param_desc("int", "id", "ID of the action scheduled, otherwise exception thrown
+     * on error")
+     */
+    public Integer scheduleSupportDataUpload(User loggedInUser, Integer sid, String caseNumber, String parameter,
+                                             String uploadGeo, Date earliestOccurrence) {
+        if (Config.get().getBoolean(ConfigDefaults.WEB_DISABLE_SUPPORTDATA_UPLOAD)) {
+            throw new UnsupportedOperationException("Disabled");
+        }
+        try {
+            SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser);
+
+            if (!caseNumber.matches("^\\d+$")) {
+                throw new InvalidParameterException("invalid case number: " + caseNumber);
+            }
+
+            Action action = ActionManager.scheduleSupportDataAction(loggedInUser, sid.longValue(),
+                    caseNumber, parameter, UploadGeoType.byLabel(StringUtils.lowerCase(uploadGeo)), earliestOccurrence);
+            taskomaticApi.scheduleActionExecution(action);
+            return action.getId().intValue();
+        }
+        catch (LookupException e) {
+            throw new NoSuchSystemException();
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException eIn) {
+            throw new TaskomaticApiException(eIn.getMessage());
+        }
+        catch (IllegalArgumentException ex) {
+            throw new InvalidParameterException("invalid upload geo type " + uploadGeo);
         }
     }
 

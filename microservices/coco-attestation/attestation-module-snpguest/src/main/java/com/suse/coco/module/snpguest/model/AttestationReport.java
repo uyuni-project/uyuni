@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 
 package com.suse.coco.module.snpguest.model;
@@ -31,6 +27,8 @@ public class AttestationReport {
     private byte[] randomNonce;
 
     private byte[] report;
+
+    private String vlekCertificate;
 
     public long getId() {
         return id;
@@ -64,15 +62,30 @@ public class AttestationReport {
         this.report = reportIn;
     }
 
+    public String getVlekCertificate() {
+        return vlekCertificate;
+    }
+
+    public void setVlekCertificate(String vlekCertificateIn) {
+        this.vlekCertificate = vlekCertificateIn;
+    }
+
+    public boolean isUsingVlekAttestation() {
+        //The Versioned Loaded Endorsement Key (VLEK) is a versioned signing key that is certified by AMD
+        //and used by the AMD CPU to sign the AMD SEV-SNP attestation reports
+
+        //if VLEK fails, we assume VCEK.
+        return (null != vlekCertificate) && (!vlekCertificate.isEmpty());
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof AttestationReport)) {
+        if (!(o instanceof AttestationReport attestationReport)) {
             return false;
         }
-        AttestationReport attestationReport = (AttestationReport) o;
         return id == attestationReport.id &&
             cpuGeneration == attestationReport.cpuGeneration &&
             Arrays.equals(randomNonce, attestationReport.randomNonce);

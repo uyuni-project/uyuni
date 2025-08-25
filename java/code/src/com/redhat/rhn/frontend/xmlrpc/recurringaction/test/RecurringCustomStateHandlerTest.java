@@ -185,7 +185,7 @@ public class RecurringCustomStateHandlerTest extends JMockBaseTestCaseWithUser {
                 "states", List.of("certs", "channels", "packages.profileupdate")
         ));
 
-        int updatedActionId = handler.update(user, Map.of(
+        handler.update(user, Map.of(
                 "id", actionId,
                 "states", List.of("packages.profileupdate", "my-channel")
         ));

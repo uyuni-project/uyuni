@@ -214,25 +214,42 @@ _pxe_image_types = [
     "",
 ]
 
-# suffixes of files we consider as image result
-_known_image_types = [
-    ".gz",
-    ".bz",
-    ".xz",
-    ".tar.xz",
-    ".install.iso",
-    ".iso",
-    ".qcow2",
-    ".ova",
-    ".vmdk",
-    ".vmx",
-    ".vhd",
-    ".vhdx",
-    ".vdi",
-    ".raw",
-    ".squashfs",
-    "",
-]
+
+def _known_image_types():
+    formats = _disk_format_types()
+    formats.extend(_compressed_format_types())
+    formats.extend(_iso_format_types())
+    formats.extend(_raw_format_types())
+    return formats
+
+
+# from https://github.com/OSInside/kiwi/blob/main/kiwi/defaults.py#L1501
+def _disk_format_types():
+    return [
+        ".gce",
+        ".qcow2",
+        ".vmdk",
+        ".ova",
+        ".vmx",
+        ".vhd",
+        ".vhdx",
+        ".vhdfixed",
+        ".vdi",
+        ".vagrant.libvirt.box",
+        ".vagrant.virtualbox.box",
+    ]
+
+
+def _compressed_format_types():
+    return [".gz", ".bz", ".xz", ".tar.xz"]
+
+
+def _iso_format_types():
+    return [".install.iso", ".iso"]
+
+
+def _raw_format_types():
+    return [".raw", ".squashfs"]
 
 
 def image_details(dest, bundle_dest=None):
@@ -266,8 +283,8 @@ def image_details(dest, bundle_dest=None):
     filename = None
     filepath = None
     compression = None
-    image_types = _known_image_types
-    if image_type == "pxe":
+    image_types = _known_image_types()
+    if image_type == "pxe" or image_type == "kis":
         image_types = _pxe_image_types
 
     for c in image_types:
@@ -512,9 +529,9 @@ def build_info(dest, build_id, bundle_dest=None):
 
     image_filepath = None
     image_filename = None
-    image_types = _known_image_types
+    image_types = _known_image_types()
 
-    if image_type == "pxe":
+    if image_type == "pxe" or image_type == "kis":
         r = inspect_boot_image(dest)
         res["boot_image"] = {
             "initrd": {

@@ -15,7 +15,7 @@
 
 package com.redhat.rhn.domain.scc;
 
-import com.redhat.rhn.manager.content.MgrSyncUtils;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -59,7 +59,7 @@ public class SCCRepositoryCloudRmtAuth extends SCCRepositoryAuth {
     public String getUrl() {
         try {
             URI url = new URI(getRepo().getUrl());
-            if (!url.getHost().endsWith(MgrSyncUtils.OFFICIAL_UPDATE_HOST_DOMAIN)) {
+            if (!url.getHost().endsWith(ConfigDefaults.get().getOfficialUpdateHostDomain())) {
                 /*
                 SCC data contain repositories which point to external server and are free to access.
                 Examples are openSUSE and nVidia repositories. These repos are not available on the RMT servers

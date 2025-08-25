@@ -132,7 +132,7 @@ public class ActionFormatter {
      */
     public String getName() {
         if (action.getName() == null) {
-            return action.getActionType().getName();
+            return action.getActionTypeName();
         }
         return action.getName();
     }
@@ -204,10 +204,7 @@ public class ActionFormatter {
             retval.append(ls.getMessage("system.event.details.completed",
                     ls.formatDate(sa.getCompletionTime())));
             retval.append("</br>");
-            if (server instanceof MinionServer &&
-                    (sa.getParentAction().getActionType().equals(ActionFactory.TYPE_ERRATA) ||
-                     sa.getParentAction().getActionType().equals(ActionFactory.TYPE_PACKAGES_UPDATE) ||
-                     sa.getParentAction().getActionType().equals(ActionFactory.TYPE_IMAGE_BUILD))) {
+            if (server instanceof MinionServer && sa.getParentAction().clientExecutionReturnsYamlFormat()) {
                 retval.append(ls.getMessage("system.event.details.returned",
                         formatResultMessage(sa.getResultMsg()), sa.getResultCode()));
             }

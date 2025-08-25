@@ -84,7 +84,7 @@ import javax.persistence.Tuple;
 public class ServerFactory extends HibernateFactory {
 
     private static final String SYSTEM_QUERIES = "System_queries";
-    private static Logger log = LogManager.getLogger(ServerFactory.class);
+    private static final Logger LOG = LogManager.getLogger(ServerFactory.class);
 
     public static final ServerFactory SINGLETON = new ServerFactory();
 
@@ -190,27 +190,27 @@ public class ServerFactory extends HibernateFactory {
      * @param name the hostname
      * @return the server, if it is found
      */
-    @SuppressWarnings("unchecked")
     public static Optional<Server> lookupProxyServer(String name) {
         boolean nameIsFullyQualified = name.contains(".");
         if (!nameIsFullyQualified) {
-            log.warn("Specified master name \"{}\" is not fully-qualified,proxy attachment might not be correct", name);
-            log.warn("Please use a FQDN in /etc/salt/minion.d/susemanager.conf");
+            LOG.warn("Specified master name \"{}\" is not fully-qualified,proxy attachment might not be correct", name);
+            LOG.warn("Please use a FQDN in /etc/salt/minion.d/susemanager.conf");
         }
 
         Optional<Server> result = findByFqdn(name);
 
-        if (result.isPresent()) {
+        if (result.isPresent() && result.get().isProxy()) {
             return result;
         }
-        result = HibernateFactory.getSession().createNativeQuery("""
-                SELECT *, 0 as clazz_
-                FROM rhnServer
-                WHERE id IN (SELECT server_id FROM rhnProxyInfo)
-                AND hostname = :hostname
-                LIMIT 1;
+        result = getSession().createQuery("""
+                SELECT s
+                FROM Server s
+                JOIN s.proxyInfo pi
+                WHERE s.hostname = :hostname
                 """, Server.class)
-                .setParameter("hostname", name, StandardBasicTypes.STRING).uniqueResultOptional();
+                .setParameter("hostname", name)
+                .setMaxResults(1)
+                .uniqueResultOptional();
 
         if (result.isPresent()) {
             return result;
@@ -218,26 +218,28 @@ public class ServerFactory extends HibernateFactory {
 
         // precise search did not work, try imprecise
         if (nameIsFullyQualified) {
-            String srippedHostname = name.split("\\.")[0];
+            String strippedHostname = name.split("\\.")[0];
 
-            return HibernateFactory.getSession().createNativeQuery("""
-                SELECT *, 0 as clazz_
-                FROM rhnServer
-                WHERE id IN (SELECT server_id FROM rhnProxyInfo)
-                AND hostname = :hostname
-                LIMIT 1;
+            return getSession().createQuery("""
+                SELECT s
+                FROM Server s
+                JOIN s.proxyInfo pi
+                WHERE s.hostname = :hostname
                 """, Server.class)
-                    .setParameter("hostname", srippedHostname, StandardBasicTypes.STRING).uniqueResultOptional();
+                    .setParameter("hostname", strippedHostname)
+                    .setMaxResults(1)
+                    .uniqueResultOptional();
         }
         else {
-            return HibernateFactory.getSession().createNativeQuery("""
-                SELECT *, 0 as clazz_
-                FROM rhnServer
-                WHERE id IN (SELECT server_id FROM rhnProxyInfo)
-                AND hostname LIKE :hostname
-                LIMIT 1;
+            return getSession().createQuery("""
+                SELECT s
+                FROM Server s
+                JOIN s.proxyInfo pi
+                WHERE s.hostname LIKE :hostname
                 """, Server.class)
-                    .setParameter("hostname", name + ".%", StandardBasicTypes.STRING).uniqueResultOptional();
+                    .setParameter("hostname", name + ".%")
+                    .setMaxResults(1)
+                    .uniqueResultOptional();
         }
     }
 
@@ -288,7 +290,7 @@ public class ServerFactory extends HibernateFactory {
      */
     @Override
     protected Logger getLogger() {
-        return log;
+        return LOG;
     }
 
     /**
@@ -440,7 +442,7 @@ public class ServerFactory extends HibernateFactory {
         WriteMode m = ModeFactory.getWriteMode(SYSTEM_QUERIES, "update_server_history_for_entitlement_event");
         m.executeUpdate(in);
 
-        log.debug("update_server_history_for_entitlement_event mode query executed.");
+        LOG.debug("update_server_history_for_entitlement_event mode query executed.");
     }
 
     /**
@@ -1349,10 +1351,7 @@ public class ServerFactory extends HibernateFactory {
      */
     public static ContactMethod findContactMethodByLabel(String label) {
         try {
-            return getSession().createNativeQuery("""
-                                      SELECT * from suseServerContactMethod
-                                      WHERE label = :label
-                                      """, ContactMethod.class)
+            return getSession().createQuery("FROM ContactMethod WHERE label = :label", ContactMethod.class)
                 .setParameter("label", label, StandardBasicTypes.STRING)
                 .getSingleResult();
         }
@@ -1365,7 +1364,7 @@ public class ServerFactory extends HibernateFactory {
      * @return a list of all systems
      */
     public static List<Server> list() {
-        return getSession().createNativeQuery("SELECT *, 0 as clazz_ FROM rhnServer s", Server.class).getResultList();
+        return getSession().createQuery("FROM Server", Server.class).getResultList();
 
     }
 
@@ -1406,7 +1405,7 @@ public class ServerFactory extends HibernateFactory {
      * @return the stream of EVRs of every installed kernel on the system
      */
     public static Stream<PackageEvr> getInstalledKernelVersions(Server server) {
-        return HibernateFactory.getSession().createQuery(
+        return getSession().createQuery(
                 "SELECT DISTINCT pkg.evr FROM InstalledPackage pkg " +
                 "WHERE pkg.name.name LIKE 'kernel-default%' " +
                 "AND pkg.server = :server", PackageEvr.class)
@@ -1554,7 +1553,7 @@ public class ServerFactory extends HibernateFactory {
         if (systemIds.isEmpty()) {
             return new HashSet<>();
         }
-        return HibernateFactory.getSession().createNativeQuery(
+        return getSession().createNativeQuery(
                 """
                         SELECT sa.* FROM rhnServerAction sa
                         JOIN rhnAction a ON sa.action_id = a.id JOIN rhnActionType at ON a.action_type = at.id

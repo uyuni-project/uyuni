@@ -65,9 +65,6 @@ jmx_exporter:
   cmd.run:
     - name: /usr/bin/rpm --query --info prometheus-jmx_exporter
 
-{% set remove_jmx_props = {'service': 'tomcat', 'file': '/etc/sysconfig/tomcat'} %}
-{% include 'srvmonitoring/removejmxprops.sls' %}
-
 jmx_exporter_tomcat_yaml_config:
   file.managed:
     - name: /etc/prometheus-jmx_exporter/tomcat/java_agent.yml
@@ -78,15 +75,23 @@ jmx_exporter_tomcat_yaml_config:
     - source:
       - salt://srvmonitoring/java_agent.yaml
 
+# Workaround for previous tomcat configuration
+remove_tomcat_previous:
+  file.rename:
+    - source: /etc/sysconfig/tomcat
+    - name: /etc/sysconfig/tomcat.bak
+    - force: True
+    - onlyif: test -f /etc/sysconfig/tomcat
+
 jmx_tomcat_config:
   file.managed:
-    - name: /usr/lib/systemd/system/tomcat.service.d/jmx.conf
+    - name: /etc/sysconfig/tomcat/systemd/jmx.conf
     - makedirs: True
     - user: root
     - group: root
     - mode: 644
     - source:
-      - salt://srvmonitoring/tomcat_jmx.conf
+      - salt://srvmonitoring/tomcat/systemd/jmx.conf
     - require:
       - cmd: jmx_exporter
   mgrcompat.module_run:
@@ -100,9 +105,6 @@ jmx_exporter_tomcat_service_cleanup:
 jmx_exporter_taskomatic_systemd_config_cleanup:
   file.absent:
     - name: /etc/prometheus-jmx_exporter/taskomatic/environment
-
-{% set remove_jmx_props = {'service': 'taskomatic', 'file': '/etc/rhn/taskomatic.conf'} %}
-{%- include 'srvmonitoring/removejmxprops.sls' %}
 
 jmx_exporter_taskomatic_yaml_config_cleanup:
   file.absent:
@@ -120,13 +122,13 @@ jmx_exporter_taskomatic_yaml_config:
 
 jmx_taskomatic_config:
   file.managed:
-    - name: /usr/lib/systemd/system/taskomatic.service.d/jmx.conf
+    - name: /etc/sysconfig/taskomatic/systemd/jmx.conf
     - makedirs: True
     - user: root
     - group: root
     - mode: 644
     - source:
-      - salt://srvmonitoring/taskomatic_jmx.conf
+      - salt://srvmonitoring/taskomatic/systemd/jmx.conf
     - require:
       - cmd: jmx_exporter
   mgrcompat.module_run:
@@ -139,8 +141,8 @@ jmx_exporter_taskomatic_service_cleanup:
 
 mgr_enable_prometheus_self_monitoring:
   cmd.run:
-    - name: grep -q '^prometheus_monitoring_enabled.*=.*' /etc/rhn/rhn.conf && sed -i 's/^prometheus_monitoring_enabled.*/prometheus_monitoring_enabled = 1/' /etc/rhn/rhn.conf || echo 'prometheus_monitoring_enabled = 1' >> /etc/rhn/rhn.conf
+    - name:  /usr/bin/grep -q '^prometheus_monitoring_enabled.*=.*' /etc/rhn/rhn.conf && /usr/bin/sed -i 's/^prometheus_monitoring_enabled.*/prometheus_monitoring_enabled = 1/' /etc/rhn/rhn.conf || /usr/bin/echo 'prometheus_monitoring_enabled = 1' >> /etc/rhn/rhn.conf
 
 mgr_is_prometheus_self_monitoring_enabled:
   cmd.run:
-    - name: grep -qF 'prometheus_monitoring_enabled = 1' /etc/rhn/rhn.conf
+    - name: /usr/bin/grep -qF 'prometheus_monitoring_enabled = 1' /etc/rhn/rhn.conf

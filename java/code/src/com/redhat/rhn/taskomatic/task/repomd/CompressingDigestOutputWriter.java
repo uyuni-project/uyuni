@@ -73,6 +73,16 @@ public class CompressingDigestOutputWriter extends OutputStream {
     }
 
     /**
+     * write stream with byte
+     * @param b byte
+     * @throws IOException ioexception
+     */
+    @Override
+    public void write(byte[] b, int off, int len) throws IOException {
+        bufferedStream.write(b, off, len);
+    }
+
+    /**
      * flush stream
      * @throws IOException ioexception
      */

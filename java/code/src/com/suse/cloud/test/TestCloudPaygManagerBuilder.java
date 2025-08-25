@@ -44,7 +44,7 @@ public class TestCloudPaygManagerBuilder {
      * and has SCC Credentials.
      */
     public TestCloudPaygManagerBuilder() {
-        withCloudProvider(CloudProvider.None)
+        withCloudProvider(CloudProvider.NONE)
             .withByosInstance()
             .withBillingDataServiceStatus("online")
             .withBillingAdapterRunning(true)
@@ -63,7 +63,7 @@ public class TestCloudPaygManagerBuilder {
         payg = true;
 
         // If it's payg don't use None as Provider
-        if (cloudProvider == CloudProvider.None) {
+        if (cloudProvider == CloudProvider.NONE) {
             cloudProvider = CloudProvider.AWS;
         }
 

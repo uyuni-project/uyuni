@@ -42,6 +42,7 @@ import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.channel.Modules;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
+import com.redhat.rhn.domain.contentmgmt.ContentEnvironmentDiff;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter.Rule;
@@ -50,6 +51,8 @@ import com.redhat.rhn.domain.contentmgmt.ContentProject;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectFilter;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectHistoryEntry;
+import com.redhat.rhn.domain.contentmgmt.DiffAction;
+import com.redhat.rhn.domain.contentmgmt.EntryType;
 import com.redhat.rhn.domain.contentmgmt.EnvironmentTarget;
 import com.redhat.rhn.domain.contentmgmt.EnvironmentTarget.Status;
 import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
@@ -997,6 +1000,209 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     /**
+     * Test environment differences of a project
+     *
+     * @throws Exception if anything goes wrong
+     */
+    @Test
+    public void testDiffProject() throws Exception {
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProjectFactory.save(cp);
+        ContentEnvironment devEnv = contentManager.createEnvironment(
+                cp.getLabel(), empty(), "dev", "dev env", "desc", false, user);
+
+        // 1. build the project with a source
+        Channel channel1 = createPopulatedChannel();
+        contentManager.attachSource("cplabel", SW_CHANNEL, channel1.getLabel(), empty(), user);
+        contentManager.buildProject("cplabel", empty(), false, user);
+
+        // 2. add new environments
+        ContentEnvironment testEnv = contentManager.createEnvironment(
+                cp.getLabel(), of("dev"), "test", "test env", "desc", false, user);
+        ContentEnvironment prodEnv = contentManager.createEnvironment(
+                cp.getLabel(), of("test"), "prod", "prod env", "desc", false, user);
+
+        // 3. promote dev to test
+        contentManager.promoteProject("cplabel", "dev", false, user);
+        assertEquals(devEnv.getVersion(), testEnv.getVersion());
+        List<EnvironmentTarget> testTgts = testEnv.getTargets();
+        testTgts.forEach(t -> assertEquals(Status.GENERATING_REPODATA, t.getStatus()));
+        assertEquals(1, testTgts.size());
+        Channel tgtChannel1 = testTgts.get(0).asSoftwareTarget().get().getChannel();
+        assertEquals("cplabel-test-" + channel1.getLabel(), tgtChannel1.getLabel());
+
+        // 4. promote test to prod
+        contentManager.promoteProject("cplabel", "test", false, user);
+        assertEquals(devEnv.getVersion(), prodEnv.getVersion());
+        List<EnvironmentTarget> prodTgts = prodEnv.getTargets();
+        prodTgts.forEach(t -> assertEquals(Status.GENERATING_REPODATA, t.getStatus()));
+        assertEquals(1, prodTgts.size());
+        tgtChannel1 = prodTgts.get(0).asSoftwareTarget().get().getChannel();
+        assertEquals("cplabel-prod-" + channel1.getLabel(), tgtChannel1.getLabel());
+
+        // Use environment diff - all envs the same - no diff expected
+        contentManager.diffProject(cp);
+        List<ContentEnvironmentDiff> diffDev = ContentManager.listEnvironmentDifference(user, "cplabel", "dev");
+        assertTrue(diffDev.isEmpty());
+        List<ContentEnvironmentDiff> diffTest = ContentManager.listEnvironmentDifference(user, "cplabel", "test");
+        assertTrue(diffTest.isEmpty());
+        List<ContentEnvironmentDiff> diffProd = ContentManager.listEnvironmentDifference(user, "cplabel", "prod");
+        assertTrue(diffProd.isEmpty());
+
+        // Remove a package from the original channel
+        Package existingPackage = channel1.getPackages().iterator().next();
+        assertTrue(channel1.getPackages().remove(existingPackage));
+
+        // Add an errata with package to the original channel
+        Errata errata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        Set<Package> errataPackages = errata.getPackages();
+        Package pack = errataPackages.iterator().next();
+        channel1.addErrata(errata);
+        channel1.getPackages().addAll(errataPackages);
+
+        // add a package to the original channel and a filter for it to the project
+        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.CONTAINS, "name", "filtered-package");
+        ContentFilter filter = contentManager.createFilter(
+                "my-filter", Rule.DENY, ContentFilter.EntityType.PACKAGE, criteria, user);
+        Package testFilteredPackage = PackageTest.createTestPackage(user.getOrg(), "filtered-package");
+        channel1.getPackages().add(testFilteredPackage);
+        ChannelFactory.save(channel1);
+        contentManager.attachFilter("cplabel", filter.getId(), user);
+
+        // Execute diff to see if all errata and packages have the expected state
+        contentManager.diffProject(cp);
+        diffDev = ContentManager.listEnvironmentDifference(user, "cplabel", "dev");
+        assertEquals(4, diffDev.size());
+        diffDev.forEach(d -> {
+            if (d.getEntryType().equals(EntryType.ERRATA)) {
+                assertEquals(DiffAction.ADD, d.getAction());
+                assertEquals(errata.getAdvisory(), d.getEntryName());
+                assertEquals(errata.getSynopsis(), d.getEntryDescription());
+                assertEquals(errata.getId(), d.getEntryId());
+            }
+            else if (d.getAction().equals(DiffAction.ADD)) {
+                assertEquals(pack.getPackageName().getName(), d.getEntryName());
+                assertEquals(pack.getNameEvra(), d.getEntryDescription());
+                assertEquals(pack.getId(), d.getEntryId());
+            }
+            else if (d.getAction().equals(DiffAction.DELETE)) {
+                assertEquals(existingPackage.getPackageName().getName(), d.getEntryName());
+                assertEquals(existingPackage.getNameEvra(), d.getEntryDescription());
+                assertEquals(existingPackage.getId(), d.getEntryId());
+            }
+            else if (d.getAction().equals(DiffAction.FILTER)) {
+                assertEquals(testFilteredPackage.getPackageName().getName(), d.getEntryName());
+                assertEquals(testFilteredPackage.getNameEvra(), d.getEntryDescription());
+                assertEquals(testFilteredPackage.getId(), d.getEntryId());
+            }
+            else {
+                fail("unexpected difference %s".formatted(d));
+            }
+        });
+
+
+        // 5. build with changes
+        contentManager.buildProject("cplabel", empty(), false, user);
+        assertEquals(Long.valueOf(2), devEnv.getVersion());
+
+        // We need to clear and reload as buildProject uses mode queries inside a doWithoutAutoFlush area
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+        cp = HibernateFactory.reload(cp);
+        devEnv = HibernateFactory.reload(devEnv);
+
+        contentManager.diffProject(cp);
+        diffDev = ContentManager.listEnvironmentDifference(user, "cplabel", "dev");
+        assertEquals(1, diffDev.size()); // The filtered package appear only and always in devEnv
+        diffTest = ContentManager.listEnvironmentDifference(user, "cplabel", "test");
+        assertEquals(3, diffTest.size());
+        diffTest.forEach(d -> {
+            if (d.getEntryType().equals(EntryType.ERRATA)) {
+                assertEquals(DiffAction.ADD, d.getAction());
+                assertEquals(errata.getAdvisory(), d.getEntryName());
+                assertEquals(errata.getSynopsis(), d.getEntryDescription());
+                assertEquals(errata.getId(), d.getEntryId());
+            }
+            else if (d.getAction().equals(DiffAction.ADD)) {
+                assertEquals(pack.getPackageName().getName(), d.getEntryName());
+                assertEquals(pack.getNameEvra(), d.getEntryDescription());
+                assertEquals(pack.getId(), d.getEntryId());
+            }
+            else if (d.getAction().equals(DiffAction.DELETE)) {
+                assertEquals(existingPackage.getPackageName().getName(), d.getEntryName());
+                assertEquals(existingPackage.getNameEvra(), d.getEntryDescription());
+                assertEquals(existingPackage.getId(), d.getEntryId());
+            }
+            else {
+                fail("unexpected difference %s".formatted(d));
+            }
+        });
+
+        // 6. promote dev to test
+        contentManager.promoteProject("cplabel", "dev", false, user);
+
+        // We need to clear and reload as promoteProject uses mode queries inside a doWithoutAutoFlush area
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+        cp = HibernateFactory.reload(cp);
+        testEnv = HibernateFactory.reload(testEnv);
+
+        assertEquals(devEnv.getVersion(), testEnv.getVersion());
+        testTgts = testEnv.getTargets();
+        testTgts.forEach(t -> assertEquals(Status.GENERATING_REPODATA, t.getStatus()));
+
+        contentManager.diffProject(cp);
+        diffDev = ContentManager.listEnvironmentDifference(user, "cplabel", "dev");
+        assertEquals(1, diffDev.size()); // The filtered package appear only and always in devEnv
+        diffTest = ContentManager.listEnvironmentDifference(user, "cplabel", "test");
+        assertTrue(diffTest.isEmpty());
+        diffProd = ContentManager.listEnvironmentDifference(user, "cplabel", "prod");
+        assertEquals(3, diffProd.size());
+        diffProd.forEach(d -> {
+            if (d.getEntryType().equals(EntryType.ERRATA)) {
+                assertEquals(DiffAction.ADD, d.getAction());
+                assertEquals(errata.getAdvisory(), d.getEntryName());
+                assertEquals(errata.getSynopsis(), d.getEntryDescription());
+                assertEquals(errata.getId(), d.getEntryId());
+            }
+            else if (d.getAction().equals(DiffAction.ADD)) {
+                assertEquals(pack.getPackageName().getName(), d.getEntryName());
+                assertEquals(pack.getNameEvra(), d.getEntryDescription());
+                assertEquals(pack.getId(), d.getEntryId());
+            }
+            else if (d.getAction().equals(DiffAction.DELETE)) {
+                assertEquals(existingPackage.getPackageName().getName(), d.getEntryName());
+                assertEquals(existingPackage.getNameEvra(), d.getEntryDescription());
+                assertEquals(existingPackage.getId(), d.getEntryId());
+            }
+            else {
+                fail("unexpected difference %s".formatted(d));
+            }
+        });
+
+        // 7. last promotion test to prod
+        contentManager.promoteProject("cplabel", "test", false, user);
+
+        // We need to clear and reload as promoteProject uses mode queries inside a doWithoutAutoFlush area
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+        prodEnv = HibernateFactory.reload(prodEnv);
+        cp = HibernateFactory.reload(cp);
+
+        assertEquals(devEnv.getVersion(), prodEnv.getVersion());
+        prodTgts = prodEnv.getTargets();
+        prodTgts.forEach(t -> assertEquals(Status.GENERATING_REPODATA, t.getStatus()));
+
+        contentManager.diffProject(cp);
+        diffDev = ContentManager.listEnvironmentDifference(user, "cplabel", "dev");
+        assertEquals(1, diffDev.size()); // The filtered package appear only and always in devEnv
+        diffTest = ContentManager.listEnvironmentDifference(user, "cplabel", "test");
+        assertTrue(diffTest.isEmpty());
+        diffProd = ContentManager.listEnvironmentDifference(user, "cplabel", "prod");
+        assertTrue(diffProd.isEmpty());
+    }
+
+    /**
      * Test promoting a project, complex happy-path scenario
      *
      * @throws Exception if anything goes wrong
@@ -1204,7 +1410,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
 
         ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(cp);
-        ContentEnvironment env = contentManager.createEnvironment(
+        contentManager.createEnvironment(
                 cp.getLabel(), empty(), "fst", "first env", "desc", false, user);
         contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
 
@@ -1585,7 +1791,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         ContentProjectFactory.save(project);
         var fstEnv = contentManager.createEnvironment(
                 project.getLabel(), empty(), "fst", "first env", "fst", false, user);
-        var sndEnv = contentManager.createEnvironment(
+        contentManager.createEnvironment(
                 project.getLabel(), of("fst"), "snd", "second env", "snd", false, user);
         var channel = createPopulatedChannel();
         contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
@@ -1617,7 +1823,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
     public void testPromotingPromotingProject() throws Exception {
         var project = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(project);
-        var fstEnv = contentManager.createEnvironment(
+        contentManager.createEnvironment(
                 project.getLabel(), empty(), "fst", "first env", "fst", false, user);
         var sndEnv = contentManager.createEnvironment(
                 project.getLabel(), of("fst"), "snd", "second env", "snd", false, user);
