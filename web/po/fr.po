@@ -14,13 +14,15 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-08-22 09:58+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2025-08-25 09:59+0000\n"
+"Last-Translator: David D <dadu042@mailo.com>\n"
+"Language-Team: French <https://l10n.opensuse.org/projects/uyuni/web/fr/>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 5.13\n"
 
 #: ../html/javascript/spacewalk-essentials.js:407
 msgid "remaining"
@@ -28,14 +30,14 @@ msgstr ""
 
 #: ../html/javascript/spacewalk-essentials.js:427
 msgid "The browser Internet Explorer is not supported. Try using Firefox, Chrome or Edge"
-msgstr ""
+msgstr "Le navigateur Internet Explorer n’est pas pris en charge. Essayez d’utiliser Firefox, Chrome ou Edge"
 
 #: ../html/src/components/CoCoScansList.tsx:75
 #: ../html/src/components/package/PackageListActionScheduler.tsx:89
 #: ../html/src/manager/minion/details/support-data.tsx:75
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:65
 msgid "The action has been <link>scheduled</link>."
-msgstr ""
+msgstr "L’action a été <link>planifiée</link>."
 
 #: ../html/src/components/CoCoScansList.tsx:90
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:77
@@ -64,7 +66,7 @@ msgstr ""
 #: ../html/src/manager/admin/hub/peripheral-details.tsx:43
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:242
 msgid "Back to list"
-msgstr ""
+msgstr "Retour à la liste"
 
 #: ../html/src/components/CoCoScansList.tsx:153
 msgid "Confidential Computing Attestations"
@@ -76,7 +78,7 @@ msgstr ""
 
 #: ../html/src/components/CoCoScansList.tsx:187
 msgid "Attestation Report details"
-msgstr ""
+msgstr "Détails du rapport d’attestation"
 
 #: ../html/src/components/FormulaForm.tsx:24
 msgid "Formula saved. Applying the highstate is not needed for this formula."
@@ -100,15 +102,15 @@ msgstr ""
 
 #: ../html/src/components/FormulaForm.tsx:275
 msgid "Collapse All Sections"
-msgstr ""
+msgstr "Réduire toutes sections"
 
 #: ../html/src/components/FormulaForm.tsx:340
 msgid "Unnamed"
-msgstr ""
+msgstr "Non nommé"
 
 #: ../html/src/components/FormulaForm.tsx:349
 msgid "Search by formula's group name"
-msgstr ""
+msgstr "Recherche par nom de groupe de la formule"
 
 #: ../html/src/components/action-schedule.tsx:50
 msgid "new action chain"
