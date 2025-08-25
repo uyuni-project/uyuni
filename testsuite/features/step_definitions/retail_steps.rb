@@ -111,13 +111,22 @@ When(/^I connect the second interface of the proxy to the private network$/) do
   node = get_target('proxy')
   _result, return_code = node.run('which nmcli')
   if return_code.zero?
-    # Network manager: we give eth1 precedence over eth0
+    # need to find out the name of the devices
+    device0 = 'eth0'
+    device1 = 'eth1'
+    _result, return_code = node.run('nmcli device show ens3')
+    if return_code.zero?
+      device0 = 'ens3'
+      device1 = 'ens4'
+    end
+
+    # Network manager: we give "device1" precedence over "device0"
     #                  otherwise the name server we get from DHCP is lost at the end of the list
     #                  (the name servers list in resolv.conf is limited to 3 entries)
     cmd = 'nmcli connection modify "Wired connection 1" ipv4.dns-priority 20 && ' \
-          'nmcli device modify eth0 ipv4.dns-priority 20 && ' \
+          "nmcli device modify #{device0} ipv4.dns-priority 20 && " \
           'nmcli connection modify "Wired connection 2" ipv4.dns-priority 10 && ' \
-          'nmcli device modify eth1 ipv4.dns-priority 10'
+          "nmcli device modify #{device1} ipv4.dns-priority 10"
   else
     # Wicked: is there a way to give eth1 precedence?
     #         we use a static setting for the name server instead
