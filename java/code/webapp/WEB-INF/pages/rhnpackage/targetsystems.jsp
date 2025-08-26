@@ -30,7 +30,8 @@
       <div class="form-horizontal">
           <div class="form-group">
               <div class="col-md-12">
-                  <button type="submit" class="btn btn-primary" name="dispatch">
+                  <button type="submit" class="btn btn-primary" name="dispatch"
+                    value='<bean:message key="targetsystems.jsp.installpackage"/>'>
                     <bean:message key="targetsystems.jsp.installpackage"/>
                   </button>
               </div>

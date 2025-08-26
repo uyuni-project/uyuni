@@ -25,7 +25,8 @@
                 name="disabledUserList"
                 exportColumns="userLogin,userLastName,userFirstName,email,roleNames,lastLoggedIn,changedByFirstName,changedByLastName,changeDate"/>
                     
-            <button type="submit" class="btn btn-default" name="dispatch">
+            <button type="submit" class="btn btn-default" name="dispatch"
+                value="<bean:message key='disabledlist.jsp.reactivate'/>">
                 <bean:message key='disabledlist.jsp.reactivate'/>
             </button>
         </div>

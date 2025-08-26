@@ -124,7 +124,8 @@
                 <jsp:param name="widget" value="date"/>
             </jsp:include>
             <div class="text-right">
-                <button type="submit" class="btn btn-default" name="dispatch" ${inactive ? 'disabled' : ''}>
+                <button type="submit" class="btn btn-default" name="dispatch" ${inactive ? 'disabled' : ''}
+                    value="<bean:message key='schedule.button'/>">
                     <rhn:icon type="repo-schedule-sync"/>
                     <bean:message key='schedule.button'/>
                 </button>

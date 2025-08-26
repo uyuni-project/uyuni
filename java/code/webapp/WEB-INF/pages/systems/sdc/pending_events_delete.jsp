@@ -25,7 +25,8 @@
   <div class="spacewalk-section-toolbar">
     <div class="action-button-wrapper">
       <rhn:hidden name="sid" value="${sid}" />
-      <button type="submit" name="dispatch" class="btn btn-danger">
+      <button type="submit" name="dispatch" class="btn btn-danger"
+        value='<bean:message key="system.event.pending.cancel"/>'>
         <bean:message key="system.event.pending.cancel"/>
       </button>
     </div>

@@ -20,7 +20,8 @@
     <rhn:csrf />
     <rhn:submitted />
     <div class="text-right">
-        <button type="submit" class="btn btn-default" name="dispatch">
+        <button type="submit" class="btn btn-default" name="dispatch"
+            value="${rhn:localize('copy2systems.jsp.doCopy')}">
             ${rhn:localize('copy2systems.jsp.doCopy')}
         </button>
     </div>

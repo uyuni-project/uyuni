@@ -53,7 +53,8 @@
 
                         <div class="text-right">
                                 <hr />
-                                <button class="btn btn-default" type="submit" name="dispatch">
+                                <button class="btn btn-default" type="submit" name="dispatch"
+                                        value="<bean:message key='ssmchildsubs.jsp.subscribe'/>">
                                        <bean:message key='ssmchildsubs.jsp.subscribe'/>
                                 </button>
                         </div>

@@ -21,7 +21,8 @@
     <rhn:submitted/>
     <div class="spacewalk-section-toolbar">
         <div class="action-button-wrapper">
-            <button class="btn btn-danger" type="submit" name="dispatch">
+            <button class="btn btn-danger" type="submit" name="dispatch"
+                value='<bean:message key="ssm.package.remove.select.confirm"/>'>
                <bean:message key="ssm.package.remove.select.confirm"/>
             </button>
         </div>

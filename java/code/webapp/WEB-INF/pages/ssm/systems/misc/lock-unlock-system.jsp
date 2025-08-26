@@ -36,10 +36,12 @@
             <rhn:submitted />
             <div class="spacewalk-section-toolbar">
                 <div class="action-button-wrapper">
-                    <button class="btn btn-default" type="submit" name="dispatch">
+                    <button class="btn btn-default" type="submit" name="dispatch"
+                        value='<bean:message key="ssm.misc.lockunlock.dispatch.lock"/>'>
                         <bean:message key="ssm.misc.lockunlock.dispatch.lock"/>
                     </button>
-                    <button class="btn btn-default" type="submit" name="dispatch">
+                    <button class="btn btn-default" type="submit" name="dispatch"
+                        value='<bean:message key="ssm.misc.lockunlock.dispatch.unlock"/>'>
                         <bean:message key="ssm.misc.lockunlock.dispatch.unlock"/>
                     </button>
                     </div>

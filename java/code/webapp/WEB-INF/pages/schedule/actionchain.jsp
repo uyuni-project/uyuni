@@ -178,7 +178,8 @@
                     <form action="/rhn/schedule/ActionChain.do?id=${param.id}" method="post">
                         <rhn:csrf/>
                         <rhn:submitted/>
-                        <button type="submit" name="dispatch" class="btn btn-danger" id="delete-action-chain">
+                        <button type="submit" name="dispatch" class="btn btn-danger" id="delete-action-chain"
+                            value='<bean:message key="actionchain.jsp.delete"/>'>
                             <bean:message key="actionchain.jsp.delete"/>
                         </button>
                     </form>

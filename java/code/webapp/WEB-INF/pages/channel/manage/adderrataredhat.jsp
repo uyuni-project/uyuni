@@ -73,7 +73,8 @@
 
                 <div class="form-group">
                     <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
-                        <button class="btn btn-default" type="submit" name="dispatch">
+                        <button class="btn btn-default" type="submit" name="dispatch"
+                            value="<bean:message key='frontend.actions.channels.manager.add.viewErrata'/>">
                             <bean:message key='frontend.actions.channels.manager.add.viewErrata'/>
                         </button>
                     </div>
@@ -83,7 +84,8 @@
 
         <div class="spacewalk-section-toolbar">
             <div class="action-button-wrapper">
-                <button class="btn btn-primary" type="submit" name="dispatch" ${empty pageList ? 'disabled' : ''}>
+                <button class="btn btn-primary" type="submit" name="dispatch" ${empty pageList ? 'disabled' : ''}
+                    value="<bean:message key='frontend.actions.channels.manager.add.submit'/>">
                     <bean:message key='frontend.actions.channels.manager.add.submit'/>
                 </button>
             </div>

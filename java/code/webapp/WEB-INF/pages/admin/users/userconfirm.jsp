@@ -31,7 +31,8 @@
           <rl:csv dataset="pageList"
             name="userConfirmList"
             exportColumns="userLogin,userLastName,userFirstName,roleNames,lastLoggedIn"/>
-            <button class="btn btn-primary" type="submit" name="dispatch">
+            <button class="btn btn-primary" type="submit" name="dispatch"
+              value="<bean:message key='userconfirm.jsp.confirm'/>">
               <bean:message key='userconfirm.jsp.confirm'/>
             </button>
         </div>

@@ -28,7 +28,8 @@
 
 <rhn:hidden name="sid" value="${param.sid}"/>
 <rhn:hidden name="ss_id" value="${param.ss_id}"/>
-<button type="submit" name="dispatch" class="btn btn-default pull-right">
+<button type="submit" name="dispatch" class="btn btn-default pull-right"
+  value='<bean:message key="system.history.snapshot.tagCreate"/>'>
   <bean:message key="system.history.snapshot.tagCreate"/>
 </button>
 </html:form>

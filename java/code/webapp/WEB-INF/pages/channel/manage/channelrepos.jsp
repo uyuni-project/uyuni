@@ -22,7 +22,8 @@
         <div class="spacewalk-section-toolbar">
             <div class="action-button-wrapper">
                 <div class="btn-group">
-                    <button class="btn btn-default" type="submit" name="dispatch">
+                    <button class="btn btn-default" type="submit" name="dispatch"
+                        value="<bean:message key='repos.jsp.update.channel'/>">
                         <bean:message key='repos.jsp.update.channel'/>
                     </button>
                     <a href="/rhn/channels/manage/repos/RepoCreate.do?cid=${cid}" class="btn btn-primary">

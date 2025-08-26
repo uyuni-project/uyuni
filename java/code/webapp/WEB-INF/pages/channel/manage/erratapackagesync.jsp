@@ -59,7 +59,8 @@
 
         <div class="text-right">
           <hr />
-                <button class="btn btn-default" type="submit" name="dispatch">
+                <button class="btn btn-default" type="submit" name="dispatch"
+                        value="<bean:message key='confirm'/>">
                         <bean:message key='confirm'/>
                 </button>
         </div>

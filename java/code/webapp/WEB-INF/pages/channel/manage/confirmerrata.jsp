@@ -21,6 +21,7 @@
     <div class="spacewalk-section-toolbar">
         <div class="action-button-wrapper">
             <button class="btn btn-primary" type="submit" name="dispatch"
+              value="<bean:message key='frontend.actions.channels.manager.add.submit'/>"
               <c:choose>
                   <c:when test="${totalSize < 1}">disabled</c:when>
               </c:choose>

@@ -21,6 +21,7 @@
         <div class="spacewalk-section-toolbar">
             <div class="action-button-wrapper">
                 <button class="btn btn-default" type="submit" name="dispatch"
+                    value='<bean:message key="channel.jsp.errata.remove"/>'
                     <c:if test="${empty pageList}">disabled="disabled"</c:if>>
                     <bean:message key="channel.jsp.errata.remove"/>
                 </button>

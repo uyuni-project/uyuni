@@ -38,7 +38,8 @@
                 <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                     <rhn:hidden name="tid" value="${param.tid}"/>
                     <rhn:csrf />
-                    <button type="submit" name="dispatch" class="btn btn-danger" align="top">
+                    <button type="submit" name="dispatch" class="btn btn-danger" align="top"
+                        value="${rhn:localize('activation-key.jsp.delete-key')}">
                         ${rhn:localize('activation-key.jsp.delete-key')}
                     </button>
                     <rhn:submitted/>

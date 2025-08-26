@@ -26,7 +26,8 @@
 
                         <div class="text-right">
                         <hr />
-                        <button class="btn btn-default" type="submit" name="dispatch">
+                        <button class="btn btn-default" type="submit" name="dispatch"
+                          value="<bean:message key='header.jsp.errata.sync'/>">
                           <bean:message key='header.jsp.errata.sync'/>
                         </button>
                         </div>
