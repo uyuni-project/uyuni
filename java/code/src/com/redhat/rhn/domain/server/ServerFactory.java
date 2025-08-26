@@ -354,13 +354,13 @@ public class ServerFactory extends HibernateFactory {
             // on query with a transient object
             return Optional.empty();
         }
-        return getSession().createNativeQuery("""
-                                      SELECT * from rhnServerPath
-                                      WHERE server_id = :server AND
-                                      proxy_server_id = :proxyserver
-                                      """, ServerPath.class)
-                .setParameter("server", server.getId(), StandardBasicTypes.LONG)
-                .setParameter("proxyserver", proxyServer.getId(), StandardBasicTypes.LONG)
+        return getSession().createQuery("""
+                FROM ServerPath sp
+                WHERE sp.id.server = :server
+                AND sp.id.proxyServer = :proxy
+                """, ServerPath.class)
+                .setParameter("server", server)
+                .setParameter("proxy", proxyServer)
                 .uniqueResultOptional();
     }
 
