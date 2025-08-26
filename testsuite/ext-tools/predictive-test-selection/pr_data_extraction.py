@@ -139,13 +139,13 @@ def get_latest_n_prs(repo, n):
         n (int): Number of PRs to retrieve.
 
     Returns:
-        list: List of PullRequest objects, ordered from newest to oldest.
+        list: List of PullRequest objects, ordered from oldest to newest.
     """
     prs = list(
         repo.get_pulls(
             state="all",
             sort="created",
-            direction="desc"
+            direction="asc"
         )[:n*PR_OVERSAMPLE_MULTIPLIER]
     )
     if len(prs) < n:
@@ -154,7 +154,7 @@ def get_latest_n_prs(repo, n):
 
 def get_prs_since_date(gh, repo, start_date):
     """
-    Get all pull requests created since the specified date, ordered from newest to oldest.
+    Get all pull requests created since the specified date, ordered from oldest to newest.
     Uses the GitHub search API for efficiency.
 
     Args:
@@ -165,8 +165,9 @@ def get_prs_since_date(gh, repo, start_date):
     Returns:
         list: List of PullRequest objects created on or after start_date.
     """
+    logger.info("Fetching all PRs created since %s, this may take a while", start_date.date())
     query = f"repo:{repo.full_name} is:pr created:>={start_date.strftime('%Y-%m-%d')}"
-    issues = gh.search_issues(query, sort="created", order="desc")
+    issues = gh.search_issues(query, sort="created", order="asc")
 
     prs = [repo.get_pull(issue.number) for issue in issues]
 
@@ -443,7 +444,7 @@ def get_files_change_history(repo, file_list, recent_days, cache=None):
             try:
                 commits = list(repo.get_commits(path=file_path, since=earliest_date))
                 logger.debug(
-                    "File %s was edited in %d commits since %d days", 
+                    "File %s was edited in %d commits since %d days",
                     file_path, len(commits), max(recent_days)
                 )
                 for commit in commits:
