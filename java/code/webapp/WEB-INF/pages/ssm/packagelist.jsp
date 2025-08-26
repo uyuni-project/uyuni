@@ -48,10 +48,8 @@
     <div class="text-right">
         <rhn:submitted/>
         <hr/>
-        <button type="submit"
-               class="btn btn-primary"
-               name="dispatch">
-               <bean:message key="installpkgs.jsp.installpackages"/>
+        <button type="submit" class="btn btn-primary" name="dispatch">
+            <bean:message key="installpkgs.jsp.installpackages"/>
         </button>
     </div>
 

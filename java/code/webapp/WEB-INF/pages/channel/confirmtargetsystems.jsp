@@ -53,7 +53,9 @@
 
                         <div class="text-right">
                                 <hr />
-                                <input class="btn btn-default" type="submit" name="dispatch"  value="<bean:message key='ssmchildsubs.jsp.subscribe'/>" </input>
+                                <button class="btn btn-default" type="submit" name="dispatch">
+                                       <bean:message key='ssmchildsubs.jsp.subscribe'/>
+                                </button>
                         </div>
 
 

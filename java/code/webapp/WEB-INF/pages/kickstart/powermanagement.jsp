@@ -31,8 +31,7 @@
                         key="kickstart.powermanagement.jsp.save_and" />
                 </label>
                 <div class="col-md-6">
-                    <button type="submit" name="dispatch" class="btn btn-default"
-                        value="<bean:message key="kickstart.powermanagement.jsp.get_status"/>">
+                    <button type="submit" name="dispatch" class="btn btn-default">
                         <i class="fa fa-th-list"></i>
                         <bean:message key="kickstart.powermanagement.jsp.get_status" />
                     </button>
@@ -43,12 +42,10 @@
             </div>
             <div class="form-group">
                 <div class="col-md-offset-3 offset-md-3 col-md-6">
-                    <button type="submit" name="dispatch" class="btn btn-default"
-                        value="<bean:message key="kickstart.powermanagement.jsp.save_only"/>">
+                    <button type="submit" name="dispatch" class="btn btn-default">
                         <bean:message key="kickstart.powermanagement.jsp.save_only" />
                     </button>
-                    <button type="submit" name="dispatch" class="btn btn-default"
-                        value="<bean:message key="kickstart.powermanagement.jsp.remove.cobblerprofile"/>">
+                    <button type="submit" name="dispatch" class="btn btn-default">
                         <bean:message key="kickstart.powermanagement.jsp.remove.cobblerprofile" />
                     </button>
                 </div>

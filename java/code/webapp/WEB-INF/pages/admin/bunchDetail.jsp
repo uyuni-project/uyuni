@@ -20,8 +20,9 @@
           <c:out value="${bunchdescription}"/>
        </div>
        <div class="text-right">
-          <input class="btn btn-default" type="submit" name="dispatch"
-            value="<bean:message key='bunch.edit.jsp.button-schedule'/>" />
+            <button class="btn btn-default" type="submit" name="dispatch">
+                <bean:message key='bunch.edit.jsp.button-schedule'/>
+            </button>
             <rhn:csrf/>
           <rhn:submitted/>
        </div>

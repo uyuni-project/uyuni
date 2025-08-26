@@ -43,7 +43,7 @@
         <div class="spacewalk-section-toolbar">
             <div class="action-button-wrapper">
                 <rhn:require acl="authorized_for(systems.software.packages, W); system_feature(ftr_package_remove)">
-                    <button type="submit" class="btn btn-danger" name ="dispatch">
+                    <button type="submit" class="btn btn-danger" name="dispatch">
                         <bean:message key="packagelist.jsp.removepackages"/>
                     </button>
                 </rhn:require>

@@ -71,7 +71,10 @@
   <rhn:hidden name="key_type" value="${param.key_type}"/>
   <div class="text-right">
     <hr />
-    <button type="submit" class="btn btn-default" name="refresh"><rhn:icon type="header-refresh" /> <bean:message key='Refresh Comparison'/></button>
+    <button type="submit" class="btn btn-default" name="refresh">
+        <rhn:icon type="header-refresh" />
+        <bean:message key='Refresh Comparison'/>
+    </button>
   </div>
 <rhn:submitted/>
 <br/>

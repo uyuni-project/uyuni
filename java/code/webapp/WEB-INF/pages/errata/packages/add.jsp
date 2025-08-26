@@ -44,8 +44,9 @@
                             </c:forEach>
                         </select>
                         <span class="input-group-btn">
-                            <input class="btn btn-default" type="submit" name="view_clicked" value="View Packages"/>
-                        </span>
+                            <button class="btn btn-default" type="submit" name="view_clicked">
+                                <bean:message key="channel.jsp.package.viewpackages"/>:
+                            </button>
                     </div>
                 </div>
             </div>
@@ -55,7 +56,7 @@
 
         <div class="spacewalk-section-toolbar">
             <div class="action-button-wrapper">
-                <button type="submit" name="dispatch" class="btn btn-default" value="<bean:message key='errata.edit.packages.add.addpackages'/>">
+                <button type="submit" name="dispatch" class="btn btn-default">
                     <bean:message key="errata.edit.packages.add.addpackages"/>
                 </button>
             </div>
