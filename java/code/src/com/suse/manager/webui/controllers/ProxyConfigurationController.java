@@ -18,7 +18,6 @@ package com.suse.manager.webui.controllers;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.badRequest;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.internalServerError;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.result;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.success;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withDocsLocale;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
@@ -43,14 +42,12 @@ import com.suse.proxy.update.ProxyConfigUpdateFacadeImpl;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import spark.ModelAndView;
 import spark.Request;
@@ -63,9 +60,6 @@ import spark.template.jade.JadeTemplateEngine;
 public class ProxyConfigurationController {
 
     private static final Logger LOG = LogManager.getLogger(ProxyConfigurationController.class);
-
-    public static final String IS_EXACT_TAG = "isExact";
-    public static final String REGISTRY_URL_TAG = "registryUrl";
 
     private final SystemManager systemManager;
     private final ProxyConfigUpdateFacade proxyConfigUpdateFacade;
@@ -119,7 +113,6 @@ public class ProxyConfigurationController {
                 jade
         );
         post("/manager/systems/details/proxy-config", withUser(this::updateProxyConfiguration));
-        post("/manager/systems/details/proxy-config/get-registry-tags", withUser(this::getRegistryTags));
     }
 
     /**
@@ -133,38 +126,6 @@ public class ProxyConfigurationController {
      */
     public ModelAndView getProxyConfiguration(Request request, Response response, User user, Server server) {
         return new ModelAndView(proxyConfigGetFacade.getFormData(user, server), "templates/minion/proxy-config.jade");
-    }
-
-    /**
-     * Check a given registry URL and return associated tags (or an error message).
-     * The request is expected to contain a registry URL and a flag indicating if the URL is exact.
-     *
-     * @param request  the request object
-     * @param response the response object
-     * @param user     the user
-     * @return the tags or an error message
-     */
-    public Object getRegistryTags(Request request, Response response, User user) {
-        try {
-            JsonObject jsonObject = new Gson().fromJson(request.body(), JsonObject.class);
-            String registryUrl = jsonObject.get(REGISTRY_URL_TAG).getAsString();
-            boolean isExact = jsonObject.has(IS_EXACT_TAG) && jsonObject.get(IS_EXACT_TAG).getAsBoolean();
-            List<String> tags = proxyConfigGetFacade.getRegistryUrlTags(registryUrl, isExact);
-
-            return success(response, ResultJson.success(tags));
-        }
-        catch (RhnRuntimeException e) {
-            LOG.error("Failed to apply proxy configuration to minion", e);
-            return success(response, ResultJson.error(e.getMessage()));
-        }
-        catch (UyuniGeneralException e) {
-            LOG.error("Failed to apply proxy configuration to minion", e);
-            return success(response, ResultJson.error(e.getErrorMessages()));
-        }
-        catch (Exception e) {
-            LOG.error("Failed to check registry URL", e);
-            return success(response, ResultJson.error(e.getMessage()));
-        }
     }
 
     /**

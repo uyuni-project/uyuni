@@ -37,6 +37,9 @@ public class ProxyConfigGetFormDataContext {
     private final Map<String, Object> proxyConfigAsMap = new HashMap<>();
     private final List<String> electableParentsFqdn = new ArrayList<>();
     private String initFailMessage;
+    private String registryUrlExample;
+    private String registryTagExample;
+    private boolean hasCertificates = false;
 
     /**
      * Constructor
@@ -77,5 +80,34 @@ public class ProxyConfigGetFormDataContext {
 
     public String getInitFailMessage() {
         return initFailMessage;
+    }
+
+    public String getRegistryUrlExample() {
+        return registryUrlExample;
+    }
+
+    public void setRegistryUrlExample(String registryUrlExampleIn) {
+        registryUrlExample = registryUrlExampleIn;
+    }
+
+    public String getRegistryTagExample() {
+        return registryTagExample;
+    }
+
+    public void setRegistryTagExample(String registryTagExampleIn) {
+        registryTagExample = registryTagExampleIn;
+    }
+
+    /**
+     * Returns true if the proxy configuration has certificates.
+     *
+     * @return true if the proxy configuration has certificates
+     */
+    public boolean hasCertificates() {
+        return hasCertificates;
+    }
+
+    public void setHasCertificates(boolean hasCertificatesIn) {
+        hasCertificates = hasCertificatesIn;
     }
 }
