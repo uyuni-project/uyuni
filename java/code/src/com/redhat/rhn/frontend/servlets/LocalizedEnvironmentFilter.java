@@ -16,7 +16,6 @@
 package com.redhat.rhn.frontend.servlets;
 
 import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.domain.session.WebSession;
 import com.redhat.rhn.domain.user.RhnTimeZone;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.context.Context;
@@ -47,9 +46,6 @@ import javax.servlet.jsp.jstl.core.Config;
 public class LocalizedEnvironmentFilter implements Filter {
 
     private static final Logger LOG = LogManager.getLogger(LocalizedEnvironmentFilter.class);
-
-
-    private static final ThreadLocal<Long> CURRENT_SESSION_ID = new ThreadLocal<>();
 
     /**
      * {@inheritDoc}
@@ -84,13 +80,6 @@ public class LocalizedEnvironmentFilter implements Filter {
         User user = requestCtx.getCurrentUser();
         setTimeZone(current, user, request);
         resolveLocale(current, user, request);
-        WebSession webSession = requestCtx.getWebSessionIfExists();
-        if (webSession != null) {
-            CURRENT_SESSION_ID.set(webSession.getId());
-        }
-        else {
-            CURRENT_SESSION_ID.remove();
-        }
     }
 
     private void setTimeZone(Context ctx, User user, HttpServletRequest request) {
@@ -147,12 +136,5 @@ public class LocalizedEnvironmentFilter implements Filter {
             ctx.setLocale(LocalizationService.DEFAULT_LOCALE);
         }
         rhnRequest.configureLocale();
-    }
-
-    /**
-     * @return the id of the currently logged in user.
-     */
-    public static Long getCurrentSessionId() {
-        return CURRENT_SESSION_ID.get();
     }
 }

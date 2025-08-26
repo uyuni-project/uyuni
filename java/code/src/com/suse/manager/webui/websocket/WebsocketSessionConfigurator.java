@@ -36,10 +36,11 @@ public class WebsocketSessionConfigurator extends ServerEndpointConfig.Configura
             HandshakeRequest request,
             HandshakeResponse response) {
         HttpSession httpSession = (HttpSession)request.getHttpSession();
-        if (null == httpSession || null == httpSession.getAttribute("webUserID")) {
-            LOG.debug("unable to set webUserID for the websession");
-            return;
+        if (httpSession.getAttribute("webUserID") != null) {
+            config.getUserProperties().put("webUserID", httpSession.getAttribute("webUserID"));
         }
-        config.getUserProperties().put("webUserID", httpSession.getAttribute("webUserID"));
+        if (httpSession.getAttribute("pxSessionID") != null) {
+            config.getUserProperties().put("pxSessionID", httpSession.getAttribute("pxSessionID"));
+        }
     }
 }
