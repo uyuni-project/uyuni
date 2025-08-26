@@ -796,7 +796,9 @@ public class ErrataHandler extends BaseHandler {
 
     /**
      * Clones a list of errata into a specified channel
-     *
+     * It only links the packages if the destination channel already contains an older version of the
+     * same package (same name and architecture). If the package is completely new to that channel,
+     * it will not be linked and the resulting behaviour will be the same as a channel.software.mergeErrata call.
      * @param loggedInUser The current user
      * @param channelLabel the channel's label that we are cloning into
      * @param advisoryNames an array of String objects containing the advisory name
@@ -804,7 +806,9 @@ public class ErrataHandler extends BaseHandler {
      * @return Returns an array of Errata objects, which get serialized into XMLRPC
      *
      * @apidoc.doc Clone a list of errata into the specified channel.
-     *
+     * It only links the packages if the destination channel already contains an older version of the
+     * same package (same name and architecture). If the package is completely new to that channel,
+     * it will not be linked and the resulting behaviour will be the same as a channel.software.mergeErrata call.
      * @apidoc.param #session_key()
      * @apidoc.param #param("string", "channelLabel")
      * @apidoc.param #array_single_desc("string", "advisoryNames", "the advisory names of the errata to clone")
@@ -927,7 +931,8 @@ public class ErrataHandler extends BaseHandler {
 
     /**
      * Clones a list of errata into a specified cloned channel
-     * according the original erratas
+     * according the original erratas.
+     * It always links the packages to the target channel by searching all related packages among all the parent clones.
      *
      * @param loggedInUser The current user
      * @param channelLabel the cloned channel's label that we are cloning into
@@ -936,7 +941,7 @@ public class ErrataHandler extends BaseHandler {
      * @return Returns an array of Errata objects, which get serialized into XMLRPC
      *
      * @apidoc.doc Clones a list of errata into a specified cloned channel according the original erratas.
-     *
+     * It always links the packages to the target channel by searching all related packages among all the parent clones.
      * @apidoc.param #session_key()
      * @apidoc.param #param("string", "channelLabel")
      * @apidoc.param #array_single_desc("string", "advisoryNames", "the advisory names of the errata to clone")
@@ -951,7 +956,8 @@ public class ErrataHandler extends BaseHandler {
 
     /**
      * Asynchronously clones a list of errata into a specified cloned channel
-     * according the original erratas
+     * according the original erratas.
+     * It always links the packages to the target channel by searching all related packages among all the parent clones.
      *
      * @param loggedInUser The current user
      * @param channelLabel the cloned channel's label that we are cloning into
@@ -960,7 +966,8 @@ public class ErrataHandler extends BaseHandler {
      * @return 1 on success, exception thrown otherwise.
      *
      * @apidoc.doc Asynchronously clones a list of errata into a specified cloned channel
-     * according the original erratas
+     * according the original erratas.
+     * It always links the packages to the target channel by searching all related packages among all the parent clones.
      *
      * @apidoc.param #session_key()
      * @apidoc.param #param("string", "channelLabel")
