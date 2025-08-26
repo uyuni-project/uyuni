@@ -584,6 +584,8 @@ public class RegisterMinionEventMessageAction implements MessageAction {
 
             mapHardwareGrains(minion, grains);
 
+            ServerFactory.save(minion);
+
             if (isSaltSSH) {
                 minion.updateServerPaths(saltSSHProxyId);
                 minion.setSSHPushPort(sshPort.orElse(SaltSSHService.SSH_PUSH_PORT));
@@ -596,7 +598,6 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 }
             }
 
-            ServerFactory.save(minion);
             giveCapabilities(minion, isSaltSSH);
 
             // Assign the Salt base entitlement by default
@@ -615,6 +616,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
 
             systemInfo.getUptimeSeconds().ifPresent(us -> SaltUtils.handleUptimeUpdate(minion, us.longValue()));
             RegistrationUtils.finishRegistration(minion, activationKey, creator, !isSaltSSH, isSaltSSH);
+            ServerFactory.save(minion);
         }
         catch (RegisterMinionException rme) {
             LOG.error("Error registering minion id: {}", minionId, rme);

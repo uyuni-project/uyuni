@@ -324,6 +324,7 @@ public class ServerFactory extends HibernateFactory {
                 return newPath;
             });
             path.setPosition(parentPath.getPosition() + 1);
+            ServerFactory.save(path);
             paths.add(path);
 
         }
@@ -336,6 +337,7 @@ public class ServerFactory extends HibernateFactory {
             return newPath;
         });
         path.setPosition(0L);
+        ServerFactory.save(path);
         paths.add(path);
         return paths;
     }
