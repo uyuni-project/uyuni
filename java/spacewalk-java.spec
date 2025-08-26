@@ -142,8 +142,8 @@ BuildRequires:  spark-core
 BuildRequires:  spark-template-jade
 BuildRequires:  statistics
 BuildRequires:  struts >= 1.2.9
-BuildRequires:  tomcat >= 7
-BuildRequires:  tomcat-lib >= 7
+BuildRequires:  tomcat10
+BuildRequires:  tomcat10-lib
 BuildRequires:  tomcat-taglibs-standard
 BuildRequires:  uyuni-base-server
 BuildRequires:  woodstox
@@ -231,7 +231,7 @@ Requires:       struts >= 1.2.9
 Requires:       sudo
 Requires:       susemanager-docs_en
 Requires:       system-lock-formula
-Requires:       tomcat-lib >= 7
+Requires:       tomcat10-lib
 Requires:       tomcat-taglibs-standard
 Requires:       woodstox
 Requires:       xalan-j2 >= 2.6.0
@@ -239,16 +239,16 @@ Requires:       xerces-j2
 Requires:       xmlsec
 Requires:       (/sbin/unix2_chkpwd or /usr/sbin/unix2_chkpwd)
 Requires:       (google-gson >= 2.2.4 with google-gson < 2.10.0)
-Requires:       mvn(org.apache.tomcat:tomcat-servlet-api) > 8
+Requires:       mvn(org.apache.tomcat:tomcat10-servlet-api)
 Requires:       mvn(org.hibernate:hibernate-c3p0)
 Requires:       mvn(org.hibernate:hibernate-core)
 Requires:       mvn(org.hibernate:hibernate-ehcache)
 Requires:       openssl
 # libtcnative-1-0 is only recommended in tomcat.
 # We want it always to prevent warnings about openssl cannot be used
-Requires:       tomcat-native
+Requires:       tomcat10-native
 Requires(pre):  salt
-Requires(pre):  tomcat >= 7
+Requires(pre):  tomcat10
 Requires(pre):  uyuni-base-server
 
 %if 0%{?rhel}
@@ -271,7 +271,7 @@ Summary:        Configuration files for Spacewalk Java
 Group:          Applications/Internet
 Requires(post): %{apache2}
 Requires(post): salt-master
-Requires(post): tomcat
+Requires(post): tomcat10
 
 %description config
 This package contains the configuration files for the %{productprettyname} Java web
@@ -292,7 +292,7 @@ Summary:        PostgreSQL database backend support files for Spacewalk Java
 # FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
 Requires:       postgresql-jdbc
-Requires:       tomcat >= 7
+Requires:       tomcat10
 Provides:       spacewalk-java-jdbc = %{version}-%{release}
 
 %description postgresql
