@@ -282,7 +282,7 @@ public class MinionServer extends Server implements SaltConfigurable {
                 // the system is connected to a proxy
                 // check if serverPath already exists
                 Optional<ServerPath> path = ServerFactory.findServerPath(this, proxy.get());
-                if (!path.isPresent() || path.get().getPosition() != 0) {
+                if (path.isEmpty() || path.get().getPosition() != 0) {
                     // proxy path does not exist -> create it
                     Set<ServerPath> proxyPaths = ServerFactory.createServerPaths(this, proxy.get(),
                                                  hostname.orElse(proxy.get().getHostname()));

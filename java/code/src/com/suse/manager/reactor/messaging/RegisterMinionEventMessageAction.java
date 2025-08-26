@@ -601,9 +601,8 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             entitlementManager.setBaseEntitlement(minion, EntitlementManager.SALT);
 
             // apply activation key properties that need to be set after saving the minion
-            if (activationKey.isPresent()) {
-                RegistrationUtils.applyActivationKeyProperties(minion, activationKey.get(), grains);
-            }
+            activationKey.ifPresent(activationKeyIn ->
+                    RegistrationUtils.applyActivationKeyProperties(minion, activationKeyIn, grains));
 
             // Saltboot treatment - prepare and apply saltboot
             if (saltbootInitrd) {
@@ -830,7 +829,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
 
                 // Remove relations to previously used activation keys
                 List<ActivationKey> keys = ActivationKeyFactory.lookupByActivatedServer(minion);
-                keys.stream().forEach(key -> {
+                keys.forEach(key -> {
                     Set<Server> activatedServers = key.getToken().getActivatedServers();
                     activatedServers.remove(minion);
                 });
