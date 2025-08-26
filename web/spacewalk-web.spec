@@ -63,6 +63,7 @@ but it does generate a number of sub-packages.
 
 %package -n spacewalk-html
 Summary:        HTML document files for Spacewalk
+# NB! This is a generated list, any changes you make here manually will be lost!
 License:        (GPL-3.0 OR MIT) AND (MPL-2.0 OR Apache-2.0) AND 0BSD AND Apache-2.0 AND BSD-2-Clause AND BSD-3-Clause AND CC-BY-4.0 AND GPL-2.0-only AND ISC AND LGPL-3.0-or-later AND MIT AND MPL-2.0 AND OFL-1.1 AND Python-2.0
 # FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
