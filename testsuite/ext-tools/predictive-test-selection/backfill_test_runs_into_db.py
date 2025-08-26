@@ -131,14 +131,30 @@ class DatabaseManager:
 
     def get_feature_id(self, session: Session, feature_name: str,
                       category_id: int, scenario_count: int) -> int:
-        """Get or create a feature and return its ID."""
-        logger.debug("Getting feature ID for: %s", feature_name)
-        stmt = select(Feature.id).where(Feature.name == feature_name)
-        feature_id = session.execute(stmt).scalar_one_or_none()
+        """Get or create a feature and return its ID, updating scenario count if needed.
 
-        if feature_id is not None:
-            logger.debug("Found existing feature ID: %d", feature_id)
-            return feature_id
+        Behavior when feature exists:
+            - If the stored scenario count differs from the provided value, update it.
+            - Otherwise, leave it unchanged and log accordingly.
+        """
+        logger.debug("Getting feature ID for: %s", feature_name)
+        stmt = select(Feature).where(Feature.name == feature_name)
+        existing_feature = session.execute(stmt).scalar_one_or_none()
+
+        if existing_feature:
+            logger.debug("Found existing feature ID: %d", existing_feature.id)
+            if existing_feature.scenario_count != scenario_count:
+                logger.info(
+                    "Updating scenario count for feature '%s' from %d to %d",
+                    feature_name, existing_feature.scenario_count, scenario_count
+                )
+                existing_feature.scenario_count = scenario_count
+            else:
+                logger.debug(
+                    "Scenario count unchanged for feature '%s': %d",
+                    feature_name, existing_feature.scenario_count
+                )
+            return existing_feature.id
 
         new_feature = Feature(
             name=feature_name,
