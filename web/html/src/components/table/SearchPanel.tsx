@@ -63,7 +63,6 @@ export function SearchPanel(props: SearchPanelProps) {
           <span>
             {t("({selectedCount} selected)", { selectedCount: props.selectedCount })}&nbsp;
             <Button className="btn-tertiary" handler={props.onClear} text={t("Clear")} />
-            &nbsp;/&nbsp;
           </span>
         )}
         {props.selectable && <Button className="btn-tertiary" handler={props.onSelectAll} text={t("Select All")} />}
