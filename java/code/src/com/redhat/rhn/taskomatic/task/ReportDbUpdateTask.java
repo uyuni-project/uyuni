@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 SUSE LLC
+ * Copyright (c) 2021--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.redhat.rhn.taskomatic.task;
 
@@ -24,8 +20,13 @@ import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.ConnectionManager;
 import com.redhat.rhn.common.hibernate.ConnectionManagerFactory;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.ReportDbHibernateFactory;
 import com.redhat.rhn.common.util.TimeUtils;
+import com.redhat.rhn.domain.notification.UserNotificationFactory;
+import com.redhat.rhn.domain.notification.types.NotificationData;
+import com.redhat.rhn.domain.notification.types.ReportDatabaseUpdateFailed;
+import com.redhat.rhn.domain.role.RoleFactory;
 
 import org.hibernate.Session;
 import org.quartz.JobExecutionContext;
@@ -33,6 +34,7 @@ import org.quartz.JobExecutionException;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 
@@ -178,12 +180,33 @@ public class ReportDbUpdateTask extends RhnJavaJob {
                 log.warn("Unable to rollback transaction", rollbackException);
             }
 
+            notifyException(ex);
+
             throw new JobExecutionException("Unable to update reporting db", ex);
         }
         finally {
             rh.closeSession();
             rh.closeSessionFactory();
         }
+    }
+
+    private static void notifyException(RuntimeException ex) {
+        // If there are pending changes on the transaction roll them back because we are failing
+        if (HibernateFactory.getSession().getTransaction().isActive()) {
+            HibernateFactory.rollbackTransaction();
+            HibernateFactory.closeSession();
+        }
+
+        // Add the notification and commit the transaction immediately to just save this change
+        NotificationData messageData = new ReportDatabaseUpdateFailed(ex);
+        UserNotificationFactory.storeNotificationMessageFor(
+            UserNotificationFactory.createNotificationMessage(messageData),
+            RoleFactory.SAT_ADMIN,
+            Optional.empty()
+        );
+
+        HibernateFactory.commitTransaction();
+        HibernateFactory.closeSession();
     }
 
     private void fillReportDbTable(Session session, String xmlName, String tableName, Map<String, Object> filterMap) {

@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -111,7 +112,7 @@ abstract class AbstractConnectionManager implements ConnectionManager {
      */
     @Override
     public ClassMetadata getMetadata(Object target) {
-        if (target == null) {
+        if (target == null || sessionFactory == null) {
             return null;
         }
 
@@ -128,7 +129,9 @@ abstract class AbstractConnectionManager implements ConnectionManager {
     @Override
     public synchronized void close() {
         try {
-            sessionFactory.close();
+            if (sessionFactory != null) {
+                sessionFactory.close();
+            }
         }
         catch (HibernateException e) {
             LOG.debug("Could not close the SessionFactory", e);

@@ -9607,6 +9607,9 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="hubregistrationchanged" xml:space="preserve">
         <source>Hub Registration Changed</source>
       </trans-unit>
+      <trans-unit id="reportdbupdatefailed" xml:space="preserve">
+          <source>Report Database Update Failed</source>
+      </trans-unit>
       <trans-unit id="notification.not_found" xml:space="preserve">
         <source>Cannot retry: a notification with id '{0}' does not exist.</source>
       </trans-unit>
@@ -9805,6 +9808,15 @@ For a detailed analysis, please refer to the log files.</source>
       </trans-unit>
       <trans-unit id="notification.hub.peripheral_deregistered.details" xml:space="preserve">
         <source>&lt;p&gt;The peripheral {0} has de-registered from this hub, and it is no longer manageable as a peripheral..&lt;/p&gt; &lt;p&gt;Any existing synchronization configuration has been removed.&lt;/p&gt;</source>
+      </trans-unit>
+      <trans-unit id="notification.reportdbupdatefailed">
+        <source>The update of the reporting database has failed and the data is out of sync.</source>
+      </trans-unit>
+      <trans-unit id="notification.reportdbupdatefailed.details.local">
+        <source>The following error was generated while trying to update the local reporting database:</source>
+      </trans-unit>
+      <trans-unit id="notification.reportdbupdatefailed.details.hub">
+        <source>The following error was generated while trying to fetch the data from the peripheral server {0}:</source>
       </trans-unit>
       <trans-unit id="task.action.rejection.reason">
         <source>This action was not executed because its earliest execution date was too old. When more than {0} hours pass between the scheduling and the picking up, the action is discarded because it is considered no longer relevant.
