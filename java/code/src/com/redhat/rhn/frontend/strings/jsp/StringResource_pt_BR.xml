@@ -253,14 +253,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Any page with required username fields</context>
         </context-group>
-        <target>{0} contém caracteres inválidos. Além dos caracteres alfanuméricos, '-', '_', '.' e '@' também são permitidos. Por favor tente novamente.</target>
+        <target state="translated">{0} contém caracteres inválidos. Além dos caracteres alfanuméricos, '-', '_', '.' e '@' também são permitidos. Tente novamente.</target>
       </trans-unit>
       <trans-unit id="errors.posix" xml:space="preserve">
         <source>{0} contains invalid characters. In addition to alphanumeric characters, '-', '_', and '.' are allowed.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page with required posix name fields</context>
         </context-group>
-        <target>{0} contém caracteres inválidos. Além dos caracteres alfanuméricos, '-', '_', '.' e '.' também são permitidos. Por favor tente novamente. </target>
+        <target state="translated">{0} contém caracteres inválidos. Além dos caracteres alfanuméricos, '-', '_', '.' e '.' também são permitidos.</target>
       </trans-unit>
       <trans-unit id="errors.config_channel_label" xml:space="preserve">
         <source>{0} contains invalid characters. In addition to alphanumeric characters, '-' and '_' are allowed.</source>
@@ -487,7 +487,7 @@
       </trans-unit>
       <trans-unit id="missing_capabilities.jsp.summary" xml:space="preserve">
         <source>The server &lt;strong&gt;&lt;a href="{0}"&gt;{1}&lt;/a&gt;&lt;/strong&gt; does not have the &lt;strong&gt;{2}&lt;/strong&gt; client capability. Please enable the capability before proceeding with the operation.</source>
-        <target>A capacidade do cliente &lt;strong&gt;&lt;a href="{0}"&gt;{1}&lt;/a&gt;&lt;/strong&gt; does not have the &lt;strong&gt;{2}&lt;/strong&gt; do servidor. Por favor ative a capacidade antes de proceder com a operação.</target>
+        <target state="translated">A capacidade do cliente &lt;strong&gt;&lt;a href="{0}"&gt;{1}&lt;/a&gt;&lt;/strong&gt; does not have the &lt;strong&gt;{2}&lt;/strong&gt; do servidor. Ative a capacidade antes de proceder com a operação.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
@@ -902,7 +902,7 @@
         <context-group name="ctx">
           <context context-type="paramnotes">You've found an error in our site. Please help us by filling out _this form_ with details of how you received this message.</context>
         </context-group>
-        <target>Você encontrou um erro em nosso site.  Por favor, entre em contato com um representante de Suporte com os detalhes de como você recebeu esta mensagem.</target>
+        <target state="translated">Você encontrou um erro em nosso site.  Entre em contato com um representante de Suporte com os detalhes de como você recebeu esta mensagem.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
@@ -1017,7 +1017,7 @@
               link may be incorrect or outdated.
           </context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation"></target>
       </trans-unit>
       <trans-unit id="404.jsp.reason3" xml:space="preserve">
         <source>If you used a bookmark, the page may have moved to a different location since the bookmark was created. Use the top navigation icon to navigate to the homepage, and if you find the document be sure to update your bookmark.</source>
@@ -1028,7 +1028,7 @@
               page may have moved
           </context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation"></target>
       </trans-unit>
       <trans-unit id="404.jsp.reason4" xml:space="preserve">
         <source>If you feel you've reached this page in error, please contact us with details of how you received this message.</source>
@@ -1063,7 +1063,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">500 error page</context>
         </context-group>
-        <target>Por favor nos ajude a corrigir esta mensagem, contactando-nos com detalhes de como você recebeu esta mensagem.</target>
+        <target state="translated">Nos ajude a corrigir esta mensagem, contactando-nos com detalhes de como você recebeu esta mensagem.</target>
       </trans-unit>
       <trans-unit id="common.jsp.noscript" xml:space="preserve">
         <source>Some features require JavaScript in order to work properly. Make sure you enable JavaScript in your browser.</source>
@@ -1307,7 +1307,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation"></target>
       </trans-unit>
       <trans-unit id="preferences.jsp.listsize" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ List Page Size</source>
@@ -1470,7 +1470,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/LocalePreferences</context>
         </context-group>
-        <target>Por favor selecione seu idioma favorito na lista abaixo contendo os idiomas atualmente suportados. O idioma selecionado será usado como padrão para a interface do @@PRODUCT_NAME@@.</target>
+        <target state="translated">Selecione seu idioma favorito na lista abaixo contendo os idiomas atualmente suportados. O idioma selecionado será usado como padrão para a interface do @@PRODUCT_NAME@@.</target>
       </trans-unit>
       <trans-unit id="preferences.jsp.startpagetitle" xml:space="preserve">
         <source>"Overview" Start Page</source>
@@ -1813,7 +1813,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/ChangeEmail</context>
         </context-group>
-        <target>Por favor preencha seu novo endereço de e-mail abaixo.</target>
+        <target state="translated">Preencha seu novo endereço de e-mail abaixo.</target>
       </trans-unit>
       <!-- channelmanagementperms.jsp -->
       <trans-unit id="channelManagementPerms.title" xml:space="preserve">
@@ -2313,7 +2313,7 @@ abaixo e &lt;b&gt;não poderá mais se autenticar&lt;/b&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DeleteUser</context>
         </context-group>
-        <target>&lt;p&gt;Isto removerá este usuário &lt;strong&gt;permanentemente&lt;/strong&gt;.&lt;/p&gt; &lt;p&gt;Todas as ações agendadas associadas a este usuário serão alteradas e desconexas do mesmo.&lt;/p&gt; &lt;p&gt;&lt;strong&gt;Por favor, clique somente uma vez no botão; o processo de remoção levará alguns instantes para concluir.&lt;/strong&gt;&lt;/p&gt;</target>
+        <target state="translated">&lt;p&gt;Isto removerá este usuário &lt;strong&gt;permanentemente&lt;/strong&gt;.&lt;/p&gt; &lt;p&gt;Todas as ações agendadas associadas a este usuário serão alteradas e desconexas do mesmo.&lt;/p&gt; &lt;p&gt;&lt;strong&gt;Clique somente uma vez no botão; o processo de remoção levará alguns instantes para concluir.&lt;/strong&gt;&lt;/p&gt;</target>
       </trans-unit>
       <!-- disableuser.jsp -->
       <trans-unit id="disableuser.jsp.disable" xml:space="preserve">
@@ -2510,7 +2510,7 @@ abaixo e &lt;b&gt;não poderá mais se autenticar&lt;/b&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="needs-adaptation">Por favor preencha suas informações no formulário abaixo. Os campos marcados com um asterisco (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) são &lt;strong&gt;obrigatórios&lt;/strong&gt;.</target>
+        <target state="translated"> Preencha suas informações no formulário abaixo. Os campos marcados com um asterisco (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) são &lt;strong&gt;obrigatórios&lt;/strong&gt;.</target>
       </trans-unit>
       <trans-unit id="your_edit_address_record.displayname" xml:space="preserve">
         <source>Record:</source>
@@ -2786,7 +2786,7 @@ abaixo e &lt;b&gt;não poderá mais se autenticar&lt;/b&gt;.</target>
           <context context-type="sourcefile">/rhn/schedule/CompletedActions</context>
           <context context-type="sourcefile">/rhn/schedule/ArchiveActions</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation"></target>
       </trans-unit>
       <!-- pendingactions.jsp -->
       <trans-unit id="pendingactions.jsp.pending_actions" xml:space="preserve">
@@ -2918,7 +2918,7 @@ abaixo e &lt;b&gt;não poderá mais se autenticar&lt;/b&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChains</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation"></target>
       </trans-unit>
       <trans-unit id="actionchains.jsp.label" xml:space="preserve">
         <source>Label</source>
@@ -2979,7 +2979,7 @@ abaixo e &lt;b&gt;não poderá mais se autenticar&lt;/b&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation"></target>
       </trans-unit>
       <trans-unit id="actionchain.jsp.action" xml:space="preserve">
         <source>Action</source>
@@ -4412,14 +4412,14 @@ abaixo e &lt;b&gt;não poderá mais se autenticar&lt;/b&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation"></target>
       </trans-unit>
       <trans-unit id="orgconfig.jsp.description.noteditable" xml:space="preserve">
         <source>Below is your organization configuration listed. See, how staging content, errata e-mail notifications and SCAP settings are configured.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation"></target>
       </trans-unit>
       <trans-unit id="org.name.jsp" xml:space="preserve">
         <source>Organization Name</source>
@@ -4927,7 +4927,7 @@ permanecer sem modificações nesta página. Caso queira modificá-los, visite
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation"></target>
       </trans-unit>
       <trans-unit id="errata.create.jsp.synopsis" xml:space="preserve">
         <source>Synopsis&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</source>
@@ -7458,7 +7458,7 @@ permanecer sem modificações nesta página. Caso queira modificá-los, visite
       <trans-unit id="system_entitlements.setToManagementEntitled.failure" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) were successfully set to &lt;strong&gt;Management&lt;/strong&gt; entitled, but you do not have  enough &lt;strong&gt;Management&lt;/strong&gt; entitlements for the remaining &lt;strong&gt;{1}&lt;/strong&gt; system(s). You may purchase additional management entitlements at &lt;a href="https://www.redhat.com/apps/commerce/rhn/"&gt;&lt;strong&gt;@@PRODUCT_NAME@@ store&lt;/strong&gt;&lt;/a&gt;. After you have additional &lt;strong&gt;Management&lt;/strong&gt; entitlements, you will be able to upgrade these systems.
     </source>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation"></target>
         <context-group name="ctx2">
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
         </context-group>
@@ -8153,7 +8153,7 @@ permanecer sem modificações nesta página. Caso queira modificá-los, visite
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/LockPackages.do</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation"></target>
       </trans-unit>
       <trans-unit id="pkg.lock.message.locksuccess" xml:space="preserve">
         <source>Packages has been requested for being locked.</source>
@@ -8178,7 +8178,7 @@ permanecer sem modificações nesta página. Caso queira modificá-los, visite
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/LockPackages.do</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation"></target>
       </trans-unit>
       <trans-unit id="pkg.lock.requestlock" xml:space="preserve">
         <source>Lock</source>
@@ -11270,7 +11270,7 @@ Você teria então que usar o $nome dentro do perfil para substituir no valor.</
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ActivationKeysEdit.do</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation"></target>
       </trans-unit>
       <trans-unit id="kickstart.activationkeys.jsp.warning" xml:space="preserve">
         <source>&lt;strong&gt;Warning:&lt;/strong&gt; Any child channel subscriptions associated with this profile will be overridden if any activation keys are selected above. If you wish to associate activation keys with this profile, please use an activation key to specify child channel subscriptions.</source>
@@ -11657,7 +11657,7 @@ For more information, see the &lt;a href={0} target="_blank" &gt;Reference Guide
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeysList.do</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation"></target>
       </trans-unit>
       <trans-unit id="keys.jsp.toolbar" xml:space="preserve">
         <source>GPG Public Keys and SSL Certificates</source>
@@ -11815,7 +11815,7 @@ For more information, see the &lt;a href={0} target="_blank" &gt;Reference Guide
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationList.do</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation"></target>
       </trans-unit>
       <trans-unit id="preservationlistdeleteconfirm.jsp.summary" xml:space="preserve">
         <source>Are you sure you want to delete the selected File List(s)?  &lt;strong&gt;WARNING: Deleting the selected File List(s) will delete all its associated files.&lt;/strong&gt;</source>
@@ -11955,7 +11955,7 @@ For more information, see the &lt;a href={0} target="_blank" &gt;Reference Guide
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationListEdit.do</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation"></target>
       </trans-unit>
       <trans-unit id="softwareedit.jsp.summary1" xml:space="preserve">
         <source>You can modify the software this kickstart profile will deploy below.</source>
@@ -12540,7 +12540,7 @@ o &lt;strong&gt;Guia de Administração de Sistemas Red Hat Enterprise Li
       </trans-unit>
       <trans-unit id="snippetcreate.jsp.kickstart_rules_1" xml:space="preserve">
         <source>&lt;p&gt;In case the kickstart scenario contains any shell script using variables like &lt;code&gt;$(example)&lt;/code&gt; its content should be escaped by using the backslash symbol:&lt;/p&gt; &lt;pre&gt;This is an \$(example) content.&lt;/pre&gt;  &lt;p&gt;If variable named &lt;em&gt;"example"&lt;/em&gt; is defined in the kickstart snippet, the templating engine will  evaluate &lt;code&gt;"$example"&lt;/code&gt; with its content. If there is no such variable, the  content  will be left unchanged. Escaping the &lt;code&gt;$&lt;/code&gt; symbol will prevent the templating engine to perform its evaluation as an internal variable.&lt;/p&gt;  &lt;p&gt;Long scripts or strings can be escaped by wrapping them with the &lt;code&gt;#raw&lt;/code&gt; and &lt;code&gt;#end raw&lt;/code&gt; directives. For example:&lt;/p&gt;</source>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation"></target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/cobbler/CobblerSnippetEdit.do</context>
           <context context-type="sourcefile">/rhn/kickstart/cobbler/CobblerSnippetCreate.do</context>
@@ -13792,7 +13792,7 @@ o &lt;strong&gt;Guia de Administração de Sistemas Red Hat Enterprise Li
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/activationkeys/childchannels/* pages</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation"></target>
       </trans-unit>
       <trans-unit id="activation-key.childchannels.jsp.blurb" xml:space="preserve">
         <source>The following child channels of &lt;strong&gt;{0}&lt;/strong&gt; can be associated with this activation key.</source>
@@ -17167,7 +17167,7 @@ Note que se um sistema específico sobrescrever um dado arquivo, ou existir em u
         <source>Current Version</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes"></context>
         </context-group>
         <target>Versão Atual</target>
       </trans-unit>
@@ -17175,7 +17175,7 @@ Note que se um sistema específico sobrescrever um dado arquivo, ou existir em u
         <source>Last Modified</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes"></context>
         </context-group>
         <target>Última Modificação</target>
       </trans-unit>
@@ -17204,7 +17204,7 @@ Note que se um sistema específico sobrescrever um dado arquivo, ou existir em u
         <source>There are no deployable systems subscribed to this channel</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes"></context>
         </context-group>
         <target>Não há nenhum sistema implementável inscrito neste canal</target>
       </trans-unit>
@@ -17212,7 +17212,7 @@ Note que se um sistema específico sobrescrever um dado arquivo, ou existir em u
         <source>Actions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes"></context>
         </context-group>
         <target>Ações</target>
       </trans-unit>
@@ -17220,7 +17220,7 @@ Note que se um sistema específico sobrescrever um dado arquivo, ou existir em u
         <source>Filename</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes"></context>
         </context-group>
         <target>Nome do Arquivo</target>
       </trans-unit>
@@ -17228,7 +17228,7 @@ Note que se um sistema específico sobrescrever um dado arquivo, ou existir em u
         <source>Deploy All Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes"></context>
         </context-group>
         <target>Implementar Todos os Arquivos</target>
       </trans-unit>
@@ -17236,7 +17236,7 @@ Note que se um sistema específico sobrescrever um dado arquivo, ou existir em u
         <source>Deploy Selected Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes"></context>
         </context-group>
         <target>Implementar Arquivos Selecionados</target>
       </trans-unit>
@@ -17244,7 +17244,7 @@ Note que se um sistema específico sobrescrever um dado arquivo, ou existir em u
         <source>Deploy Configuration Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes"></context>
         </context-group>
         <target>Implementar Arquivos de Configuração</target>
       </trans-unit>
@@ -17252,7 +17252,7 @@ Note que se um sistema específico sobrescrever um dado arquivo, ou existir em u
         <source>You may select the files you wish to deploy from the list below.  You will then be asked to select the systems to deploy them to.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes"></context>
         </context-group>
         <target state="needs-adaptation">Selecione os arquivos que você deseja implementar desta lista abaixo. Você precisará selecionar os sistemas para implementá-los nele. </target>
       </trans-unit>
@@ -17260,7 +17260,7 @@ Note que se um sistema específico sobrescrever um dado arquivo, ou existir em u
         <source>Filename</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes"></context>
         </context-group>
         <target>Nome do Arquivo</target>
       </trans-unit>
@@ -17268,7 +17268,7 @@ Note que se um sistema específico sobrescrever um dado arquivo, ou existir em u
         <source>Confirm &amp; Deploy to Selected Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes"></context>
         </context-group>
         <target>Confirmar &amp; Implementar nos Sistemas Selecionados</target>
       </trans-unit>
@@ -17276,7 +17276,7 @@ Note que se um sistema específico sobrescrever um dado arquivo, ou existir em u
         <source>Deploy Configuration Files: Select Systems for Deployment</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes"></context>
         </context-group>
         <target>Implementar Arquivos de Configuração: Selecionar Sistemas para Implementação</target>
       </trans-unit>
@@ -17284,7 +17284,7 @@ Note que se um sistema específico sobrescrever um dado arquivo, ou existir em u
         <source>Please select the systems you'd like to deploy the selected files to.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes"></context>
         </context-group>
         <target>Selecione os sistemas que você deseja implementar os arquivos selecionados.</target>
       </trans-unit>
@@ -17292,7 +17292,7 @@ Note que se um sistema específico sobrescrever um dado arquivo, ou existir em u
         <source>&lt;strong&gt;Warning:&lt;/strong&gt; Please note that if any of the files you are attempting to deploy from the {0} configuration channel are overridden or outranked by a file with the same name on a higher-ranked channel any particular system is subscribed to, then the overriding / highest-ranking version of the file will be deployed to that system, rather than the version from the {0} configuration channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes"></context>
         </context-group>
         <target>&lt;strong&gt;Aviso:&lt;/strong&gt; Observe que caso qualquer um dos arquivos, que você esteja tentando implementar a partir do canal de configuração {0}, for sobrescrito ou desclassificado por um arquivo que tenha o mesmo nome e esteja em um canal com classificação mais alta onde qualquer sistema seja inscrito, a versão sobrescrita/classificação mais alta do arquivo será implementada neste sistema, e não na versão do canal de configuração {0}.</target>
       </trans-unit>
@@ -22041,14 +22041,14 @@ a aba &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Chaves de At
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation"></target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.kernel.options.profile" xml:space="preserve">
         <source>As specified by the Profile</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation"></target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.kernel.options.custom.tip" xml:space="preserve">
         <source>If you would not like any kernel options, select '{0}' and leave the form field blank.</source>
@@ -24220,7 +24220,7 @@ O Caminho de Árvore, Kickstart RPM, Canal de Base e a Geração do Instalador d
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/ProxyClients.do</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation"></target>
       </trans-unit>
       <trans-unit id="sdc.details.proxyclients.header" xml:space="preserve">
         <source>Proxy Clients</source>
@@ -24239,14 +24239,14 @@ O Caminho de Árvore, Kickstart RPM, Canal de Base e a Geração do Instalador d
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Activation.do</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation"></target>
       </trans-unit>
       <trans-unit id="sdc.details.activation.summary" xml:space="preserve">
         <source>With a system profile specific activation key, this system can be re-registered with the same id, history, groups, and channels (unless the system's base channel changes).</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Activation.do</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation"></target>
       </trans-unit>
       <trans-unit id="sdc.details.activation.key" xml:space="preserve">
         <source>Key:</source>
@@ -24404,7 +24404,7 @@ O Caminho de Árvore, Kickstart RPM, Canal de Base e a Geração do Instalador d
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation"></target>
       </trans-unit>
       <trans-unit id="sdc.details.hardware.machine_id" xml:space="preserve">
         <source>Machine ID:</source>
@@ -25534,7 +25534,7 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/about</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation"></target>
       </trans-unit>
       <trans-unit id="help.jsp.helpdesk" xml:space="preserve">
         <source>Welcome to the Help Desk</source>
@@ -26338,7 +26338,7 @@ Serão exibidos somente pacotes de uma arquitetura compatível.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation"></target>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.summary" xml:space="preserve">
         <source>Channel Summary</source>
@@ -27514,7 +27514,7 @@ Serão exibidos somente pacotes de uma arquitetura compatível.</target>
       </trans-unit>
       <trans-unit id="channel.jsp.gpgcheck" xml:space="preserve">
         <source>Enable GPG Check </source>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation"></target>
       </trans-unit>
       <trans-unit id="channel.jsp.repolastbuild" xml:space="preserve">
         <source>Last Repo Build</source>
@@ -28106,7 +28106,7 @@ Serão exibidos somente pacotes de uma arquitetura compatível.</target>
           The reset-password link used is invalid.
           Please contact your @@PRODUCT_NAME@@ administrator for assistance.
           </source>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation"></target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ResetLink</context>
         </context-group>
@@ -28145,7 +28145,7 @@ Serão exibidos somente pacotes de uma arquitetura compatível.</target>
         <source>
           Passwords can be between {0} and {1} characters,
           and cannot contain tabs or newlines.</source>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation"></target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ResetPasswordSubmit</context>
         </context-group>
@@ -28319,7 +28319,7 @@ Serão exibidos somente pacotes de uma arquitetura compatível.</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.target.title" xml:space="preserve">
         <source>Product Migration - Target</source>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation"></target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.target.submit" xml:space="preserve">
         <source>Select Channels</source>
@@ -28329,11 +28329,11 @@ Serão exibidos somente pacotes de uma arquitetura compatível.</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.target.notSyncedChannels" xml:space="preserve">
         <source>Target not available, the following channels are not synced: </source>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation"></target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.setup.title" xml:space="preserve">
         <source>Product Migration - Channels</source>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation"></target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.setup.installed-products" xml:space="preserve">
         <source>Installed Products:</source>
@@ -28358,15 +28358,15 @@ Serão exibidos somente pacotes de uma arquitetura compatível.</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.unsupported" xml:space="preserve">
         <source>Product Migrations are supported for &lt;strong&gt;SUSE&lt;/strong&gt; systems only.</source>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation"></target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.update-zypp-plugin" xml:space="preserve">
         <source>Product Migrations are currently not supported for this system, please install the latest version of &lt;strong&gt;zypp-plugin-spacewalk&lt;/strong&gt;.</source>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation"></target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.scheduled" xml:space="preserve">
         <source>A Product Migration is already &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;scheduled&lt;/a&gt; for this system.</source>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation"></target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.up-to-date" xml:space="preserve">
         <source>There is currently no migration available for this system. Either the latest Service Pack is already installed or possible target products are not available. Please use the &lt;a href="/rhn/manager/admin/setup/products"&gt;&lt;strong&gt;Setup Wizard&lt;/strong&gt;&lt;/a&gt; to identify and add missing products.</source>
@@ -28376,19 +28376,19 @@ Serão exibidos somente pacotes de uma arquitetura compatível.</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.updatestack-update-needed" xml:space="preserve">
         <source>There are outstanding Package Management Stack updates available for this system. Please update all Software Update Stack related packages before you start a Product migration.</source>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation"></target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.update-salt-package-needed" xml:space="preserve">
         <source>The installed &lt;strong&gt;{0}&lt;/strong&gt; package version on this system is out of date. Please update the package to the latest version before you start a Product migration.</source>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation"></target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.missing-successor-extensions" xml:space="preserve">
         <source>For some of the installed extensions no successor could be found. During migration, depending on chosen target some or all of these products will be removed so proceed with caution:</source>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation"></target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.confirm.title" xml:space="preserve">
         <source>Product Migration - Confirm</source>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation"></target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.confirm.description" xml:space="preserve">
         <source>Please confirm below to schedule the migration of this system to the following products:</source>
@@ -28398,7 +28398,7 @@ Serão exibidos somente pacotes de uma arquitetura compatível.</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.confirm.note" xml:space="preserve">
         <source>In order to detect any possible problems it is recommended to always do a &lt;strong&gt;Dry Run&lt;/strong&gt; before scheduling the actual Product Migration.</source>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation"></target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.confirm.back" xml:space="preserve">
         <source>Go Back</source>
@@ -28459,7 +28459,7 @@ Serão exibidos somente pacotes de uma arquitetura compatível.</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.iss-slave" xml:space="preserve">
         <source>This server is configured as a Peripheral server in a Hub configuration. Credentials can only be managed on the Hub server.</source>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation"></target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.bt.cancel" xml:space="preserve">
         <source>Cancel</source>
@@ -28487,18 +28487,18 @@ Serão exibidos somente pacotes de uma arquitetura compatível.</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.info.p2" xml:space="preserve">
         <source>You can find them in the &lt;a href="https://scc.suse.com/organizations" target="_blank"&gt;Customer Center&lt;/a&gt;.</source>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation"></target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.error.duplicate" xml:space="preserve">
         <source>Credentials with this username already exist</source>
       </trans-unit>
       <trans-unit id="copyright.jsp.title" xml:space="preserve">
         <source>Copyright (c) 2011 - 2025 SUSE LLC.</source>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation"></target>
       </trans-unit>
       <trans-unit id="copyright.jsp.urlagreement" xml:space="preserve">
         <source>&lt;a href="/rhn/help/Eula.do"&gt;@@PRODUCT_NAME@@ License Agreement&lt;/a&gt;</source>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation"></target>
       </trans-unit>
       <trans-unit id="copyright.jsp.body.uyuni" xml:space="preserve">
         <source>
@@ -28509,7 +28509,7 @@ Serão exibidos somente pacotes de uma arquitetura compatível.</target>
     For details on @@PRODUCT_NAME@@, please visit our web-site at &lt;a href="http://www.uyuni-project.org/" target="_blank"&gt; http://www.uyuni-project.org/&lt;/a&gt;.
 &lt;/p&gt;
         </source>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation"></target>
       </trans-unit>
       <trans-unit id="activation-key.jsp.config-auto-deploy-highstate-tooltip" xml:space="preserve">
         <source>If the system is registered via Salt, the highstate will be executed on registration if this checkbox is selected.</source>
@@ -28531,7 +28531,7 @@ Serão exibidos somente pacotes de uma arquitetura compatível.</target>
       </trans-unit>
       <trans-unit id="monitoring_entitled" xml:space="preserve">
         <source>Monitor this Host</source>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation"></target>
       </trans-unit>
       <trans-unit id="Formulas" xml:space="preserve">
         <source>Formulas</source>
@@ -28545,12 +28545,12 @@ Serão exibidos somente pacotes de uma arquitetura compatível.</target>
       <trans-unit id="delete_confirm.jsp.summary.sshpush" xml:space="preserve">
         <source>For Salt minions @@PRODUCT_NAME@@ will also cleanup any specific configuration installed on the minion.
               This might take a few extra seconds.</source>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation"></target>
       </trans-unit>
       <trans-unit id="ssm.delete.systems.salt.cleanup" xml:space="preserve">
         <source>The selected profiles include Salt systems. @@PRODUCT_NAME@@ can try to remove the specific configuration from the Salt systems.
             In order for this to work the systems must be up and running and reachable. If a system is not reachable it will result in an error.</source>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation"></target>
       </trans-unit>
       <trans-unit id="ssm.delete.systems.salt.cleanup.type" xml:space="preserve">
         <source>Please chose how to handle Salt minions cleanup and delete:</source>
@@ -28588,7 +28588,7 @@ Serão exibidos somente pacotes de uma arquitetura compatível.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation"></target>
       </trans-unit>
       <trans-unit id="filedetails.jsp.note.macrosalt" xml:space="preserve">
         <source>&lt;strong&gt;Note:&lt;/strong&gt; Macro delimiters will be ignored when deploying to systems managed via Salt.</source>
@@ -28637,268 +28637,268 @@ Serão exibidos somente pacotes de uma arquitetura compatível.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="schedule.jsp.maint-window" xml:space="preserve">
         <source>Maintenance window:</source>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="schedule.jsp.multiple_maintenance_schedules" xml:space="preserve">
         <source>There are multiple maintenance schedules for selected systems. Make sure that systems in the set use at most 1 maintenance schedule if you want to schedule by date or maintenance window.</source>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="schedule.jsp.no_maintenance_windows" xml:space="preserve">
         <source>No upcoming maintenance windows for selected systems.</source>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="preferences.jsp.lang.default" xml:space="preserve">
         <source>Use configured default ({0})</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/LocalePreferences.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.schedule" xml:space="preserve">
         <source>Maintenance Schedule:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.schedule.none" xml:space="preserve">
         <source>(none)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="sdc.details.edit.schedule" xml:space="preserve">
         <source>Maintenance Schedule:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Edit.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="sdc.details.edit.schedule.none" xml:space="preserve">
         <source>None</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Edit.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="sdc.details.edit.schedule.cancelaffected" xml:space="preserve">
         <source>Cancel affected actions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Edit.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="Maintenance Windows" xml:space="preserve">
         <source>Maintenance Windows</source>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="Schedules" xml:space="preserve">
         <source>Schedules</source>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="Calendars" xml:space="preserve">
         <source>Calendars</source>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="ssm.overview.schedule.assign" xml:space="preserve">
         <source>&lt;a href="/rhn/manager/systems/ssm/maintenance"&gt;Assign&lt;/a&gt; a maintenance schedule to selected systems</source>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="ssm.misc.index.tabs.maintenanceschedule" xml:space="preserve">
         <source>Maintenance Windows</source>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="kickstart.powermanagement.system_not_found" xml:space="preserve">
         <source>System not found</source>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="preferences.jsp.title.theme" xml:space="preserve">
         <source>Style Theme</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/LocalePreferences</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="preferences.jsp.text.theme" xml:space="preserve">
         <source>Please select your preferred theme style.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/LocalePreferences</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.allow.vendor.change" xml:space="preserve">
         <source>Allow Vendor Change</source>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="preferences.jsp.docs.lang" xml:space="preserve">
         <source>Documentation Language</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/LocalePreferences</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="preferences.jsp.docs.langs" xml:space="preserve">
         <source>Please select your preferred documentation language from the list of currently supported languages below. The selected language will become the default language for the @@PRODUCT_NAME@@ documentation.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/LocalePreferences</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="channelOverview.jsp.newToolbar.stateType" xml:space="preserve">
         <source>New Config State Channel</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="channelOverview.jsp.submitCreate.state" xml:space="preserve">
         <source>Create Config State Channel</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="org-config.clm-sync-patches" xml:space="preserve">
         <source>Synchronize patches on Content Lifecycle Management build</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="details.jsp.advisorystatus" xml:space="preserve">
         <source>Status</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="details.jsp.advisorystatus.final" xml:space="preserve">
         <source>Final</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="details.jsp.advisorystatus.stable" xml:space="preserve">
         <source>Stable</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="details.jsp.advisorystatus.testing" xml:space="preserve">
         <source>Testing</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="details.jsp.advisorystatus.retracted" xml:space="preserve">
         <source>Retracted</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="errata.jsp.retracted-tooltip" xml:space="preserve">
         <source>Retracted Patch</source>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="errata.jsp.retracted-package-tooltip" xml:space="preserve">
         <source>Package belongs to a Retracted Patch</source>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.mgr-forward-registration-bunch" xml:space="preserve">
         <source>Forward registrations to SUSE Customer Center</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.minion-action-chain-cleanup-bunch" xml:space="preserve">
         <source>Cleanup outdated action chain data</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.token-cleanup-bunch" xml:space="preserve">
         <source>Cleanup outdated token data</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.target.description" xml:space="preserve">
         <source>Only shows migrations that are officially supported by SUSE in an online way. For offline migrations the autoinstallation feature in upgrade mode should be used.</source>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="ansible_control_node" xml:space="preserve">
         <source>Ansible Control Node</source>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="Product Migration" xml:space="preserve">
         <source>Product Migration</source>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="lookup.jsp.title.repo" xml:space="preserve">
         <source>We're sorry, but the repository could not be found.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="lookup.jsp.reason1.repo" xml:space="preserve">
         <source>The repository requested does not exist. This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="lookup.jsp.reason2.repo" xml:space="preserve">
         <source>You do not have permission to view this repository.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="actionchain.jsp.ansible.playbook" xml:space="preserve">
         <source>Execute Ansible playbook</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="system.audit.schedulexccdf.jsp.ovalFiles" xml:space="preserve">
         <source>Optional OVAL Files (comma separated)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Page for a new SCAP scan schedule</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="system.event.scapOvalFiles" xml:space="preserve">
         <source>&lt;strong&gt;OVAL files (comma separated): &lt;/strong&gt; </source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="task.status.channel-modular-data-cleanup" xml:space="preserve">
         <source>Modular Data Cleanup</source>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="task.status.mgr-forward-registration" xml:space="preserve">
         <source>Forward Registration</source>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="overview.jsp.transactionalupdate.reboot" xml:space="preserve">
         <source>There is a pending transaction for this system, please reboot it to activate the changes.</source>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation"></target>
       </trans-unit>
       <trans-unit id="appstream.jsp.nomodules" xml:space="preserve">
         <source>No Modules</source>
@@ -28906,99 +28906,99 @@ Serão exibidos somente pacotes de uma arquitetura compatível.</target>
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="appstream.jsp.streamname" xml:space="preserve">
         <source>Stream Names ( &lt;span class="label label-primary"&gt; Default &lt;/span&gt;, if present)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/AppStreams</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="appstream.jsp.modulename" xml:space="preserve">
         <source>Module Name</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/AppStreams</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="system.audit.xccdfdetails.jsp.ovalfiles" xml:space="preserve">
         <source>Optional OVAL Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Detailed view of SCAP XCCDF scan</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="appstream.jsp.headerappstream" xml:space="preserve">
         <source>AppStreams</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelSystems.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.create_clm_filter" xml:space="preserve">
         <source>Create live patching filters for &lt;abbr title="Content Lifecycle Management"&gt;CLM&lt;/abbr&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="channel.jsp.appstreams" xml:space="preserve">
         <source>AppStreams</source>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="ssm.overview.misc.proxy" xml:space="preserve">
         <source>Connect minions to another &lt;a href="/rhn/manager/systems/ssm/proxy"&gt;proxy server&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="ssm.misc.index.tabs.proxy" xml:space="preserve">
         <source>Proxy</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="sdc.details.connection.change" xml:space="preserve">
         <source>Change</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Connection.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="details.jsp.vendoradvisory" xml:space="preserve">
         <source>Vendor Advisory</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.update-payg-data-bunch" xml:space="preserve">
         <source>Collect authentication data from configured PAYG cloud instances</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation"></target>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.mgr-update-reporting-bunch" xml:space="preserve">
         <source>Update Reporting Database</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="task.status.mgr-update-reporting" xml:space="preserve">
         <source>Update Reporting Database</source>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.sshport" xml:space="preserve">
         <source>SSH Port:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="systemlist.jsp.ismgrserver" xml:space="preserve">
         <source>Peripheral Server</source>
@@ -29010,110 +29010,110 @@ Serão exibidos somente pacotes de uma arquitetura compatível.</target>
           <context context-type="sourcefile">/rhn/systems/Ungrouped</context>
           <context context-type="sourcefile">/rhn/systems/@@PRODUCT_NAME@@</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.mgr-update-reporting-hub-bunch" xml:space="preserve">
         <source>Update Hub Reporting Database</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="task.status.mgr-update-reporting-hub" xml:space="preserve">
         <source>Update Hub Reporting Database</source>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.to-be-removed-extensions" xml:space="preserve">
         <source>Following installed products will be removed from the system during migration:</source>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="ssm.hw.systems.confirmmessage.multiple" xml:space="preserve">
         <source>{0} hardware profiles &lt;a href="/rhn/schedule/PendingActions.do"&gt;are scheduled&lt;/a&gt; to be refreshed.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/HardwareRefresh.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="ssm.sw.systems.confirmmessage.multiple" xml:space="preserve">
         <source>{0} package profiles &lt;a href="/rhn/schedule/PendingActions.do"&gt;are scheduled&lt;/a&gt; to be refreshed.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/SoftwareRefresh.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="channel.manage.sync.scheduledisabled.jsp" xml:space="preserve">
         <source>Automatic synchronization of custom channels is enabled. This channel will be automatically synced together with vendor channels.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="exportcolumn.extraPkgCount" xml:space="preserve">
         <source>Extra Packages</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="exportcolumn.configFilesWithDifferences" xml:space="preserve">
         <source>Config Diffs</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="exportcolumn.proxy" xml:space="preserve">
         <source>Proxy</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="exportcolumn.mgrServer" xml:space="preserve">
         <source>Manager Server</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="exportcolumn.virtualHost" xml:space="preserve">
         <source>Virtual Host</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="exportcolumn.virtualGuest" xml:space="preserve">
         <source>Virtual Guest</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="exportcolumn.requiresReboot" xml:space="preserve">
         <source>Requires Reboot</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="exportcolumn.statusType" xml:space="preserve">
         <source>Status Type</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="overview.jsp.traditionalstack.deprecated" xml:space="preserve">
         <source>The traditional stack is unsupported and scheduled for removal. Consider migrating to salt minions.</source>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="ssm.misc.reboot.message.scheduled" xml:space="preserve">
         <source>Some systems already have a reboot scheduled.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="systemlist.jsp.rebootneeded" xml:space="preserve">
         <source>System requires reboot</source>
@@ -29121,197 +29121,197 @@ Serão exibidos somente pacotes de uma arquitetura compatível.</target>
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.rebootaction" xml:space="preserve">
         <source>(&lt;a href="{0}"&gt;System Reboot Action&lt;/a&gt;)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.rebootscheduled" xml:space="preserve">
         <source>System reboot scheduled</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="packagelist.jsp.packagesummary" xml:space="preserve">
         <source>Summary</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/InstallPackages</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="targetsystems.jsp.description_ptf_package" xml:space="preserve">
         <source>This package is part of a Product Temporary Fix (PTF) and cannot be installed directly. Please select the main package of the temporary fix to review the target systems.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/packages/TargetSystems.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="task.status.system-overview-update-queue" xml:space="preserve">
         <source>System Overview Update Queue</source>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="task.status.update-system-overview" xml:space="preserve">
         <source>Update System Overview</source>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.no-maintenance-window" xml:space="preserve">
         <source>Systems assigned to these schedules do not have a maintenance window at {0}</source>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="sdc.details.hardware.cpus" xml:space="preserve">
         <source>CPUs:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="sdc.details.hardware.threads" xml:space="preserve">
         <source>Threads per Core:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.system-profile-refresh-bunch" xml:space="preserve">
         <source>Schedule System Profile refresh on all managed systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="task.status.system-profile-refresh" xml:space="preserve">
         <source>System Profile Refresh</source>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="preferences.subscription-warning.name" xml:space="preserve">
         <source>Subscription Warning</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="preferences.subscription-warning.description" xml:space="preserve">
         <source> Show expired subscriptions warning.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="Recurring Actions" xml:space="preserve">
         <source>Recurring Actions</source>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.virtualization.host" xml:space="preserve">
         <source>Virtualization Host:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="grouplist.jsp.unknown" xml:space="preserve">
         <source>Security updates unknown, disabled on settings.</source>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.payg-dimension-computation-bunch" xml:space="preserve">
         <source>Collect data of managed clients for @@PRODUCT_NAME@@ PAYG</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation"></target>
       </trans-unit>
       <trans-unit id="task.status.payg-dimension-computation" xml:space="preserve">
         <source>PAYG Computation</source>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="task.status.recurring-action-executor" xml:space="preserve">
         <source>Execute Recurring Actions</source>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="PAYG Connections" xml:space="preserve">
         <source>PAYG Connections</source>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.fromDir" xml:space="preserve">
         <source>cannot verify credentials because `server.susemanager.fromdir` property is set in rhn.conf</source>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.payg" xml:space="preserve">
         <source>Pay-as-you-go:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.payg_msg" xml:space="preserve">
         <source>This is a Pay-as-you-go server</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="channel.manage.sync.nostrict.jsp" xml:space="preserve">
         <source>Retain packages in channels which have been removed from the repository</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="needs-adaptation"></target>
       </trans-unit>
       <trans-unit id="repos.jsp.button-save" xml:space="preserve">
         <source>Save</source>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="task.status.ssh-service" xml:space="preserve">
         <source>Resume Action Chains and Checkin Salt SSH Systems </source>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="peripheral_server" xml:space="preserve">
         <source>Peripheral Server</source>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="actionchain.jsp.coco.attestation" xml:space="preserve">
         <source>Confidential Computing Attestation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="ssm.overview.audit" xml:space="preserve">
         <source>Audit</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="ssm.overview.audit.coco_configure" xml:space="preserve">
         <source>&lt;a href="/rhn/manager/systems/ssm/coco/settings"&gt;Configure&lt;/a&gt; Confidential Computing for selected systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="ssm.overview.audit.coco_schedule" xml:space="preserve">
         <source>&lt;a href="/rhn/manager/systems/ssm/coco/schedule"&gt;Schedule&lt;/a&gt; a new Confidential Computing attestation for selected systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="ssm.coco.index" xml:space="preserve">
         <source>Confidential Computing</source>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="ssm.coco.tabs.configure" xml:space="preserve">
         <source>Configure</source>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="ssm.coco.tabs.schedule" xml:space="preserve">
         <source>Schedule</source>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="AppStreams" xml:space="preserve">
         <source>AppStreams</source>
@@ -29319,55 +29319,55 @@ Serão exibidos somente pacotes de uma arquitetura compatível.</target>
       </trans-unit>
       <trans-unit id="channel.manage.errata.listalreadyincludedlabel" xml:space="preserve">
         <source>List Already Included Patches:</source>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="channel.manage.errata.listalreadyincludedmsg" xml:space="preserve">
         <source>With this selected, patches that are already part of the channel are shown. This is useful when a patch is part of multiple channels, has been included from one of them, and it is necessary to associate its packages from another one.</source>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="toolbar.create.distro" xml:space="preserve">
         <source>Create Distribution</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ViewTrees.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
-    <trans-unit id="system.event.inventory" xml:space="preserve">
-          <source>Inventory:</source>
+      <trans-unit id="system.event.inventory" xml:space="preserve">
+        <source>Inventory:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
-        <target state="new"/>
-  </trans-unit>
-        <trans-unit id="ansible_managed" xml:space="preserve">
+        <target state="new"></target>
+      </trans-unit>
+      <trans-unit id="ansible_managed" xml:space="preserve">
         <source>Ansible Managed</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"></target>
+      </trans-unit>
       <trans-unit id="proxy_entitled" xml:space="preserve">
         <source>Proxy</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"></target>
+      </trans-unit>
       <trans-unit id="403.jsp.title" xml:space="preserve">
         <source>403: Access Denied</source>
         <context-group name="ctx">
           <context context-type="sourcefile">403 error page</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"></target>
+      </trans-unit>
       <trans-unit id="403.jsp.summary" xml:space="preserve">
         <source>You do not have permission to access the page: {0}.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">403 error page</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"></target>
+      </trans-unit>
       <trans-unit id="403.jsp.instruction" xml:space="preserve">
         <source>You are signed in, but your account does not have permission to access this resource. If you believe you should have access, contact your organization administrator to review your access permissions.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">403 error page</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"></target>
+      </trans-unit>
       <trans-unit id="403.jsp.actions" xml:space="preserve">
         <source>
           You can also &lt;a href="{0}"&gt;log out&lt;/a&gt; or &lt;a href="javascript:history.back()"&gt;go back&lt;/a&gt; to the previous page.
@@ -29375,37 +29375,37 @@ Serão exibidos somente pacotes de uma arquitetura compatível.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">403 error page</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"></target>
+      </trans-unit>
       <trans-unit id="userdetails.jsp.adminroles" xml:space="preserve">
         <source>Administrative Roles</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"></target>
+      </trans-unit>
       <trans-unit id="bunch.jsp.description.compare-task-bunch" xml:space="preserve">
         <source>Schedules a generic comparison task</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"></target>
+      </trans-unit>
       <trans-unit id="schedule.edit.jsp.activateschedule" xml:space="preserve">
         <source>Activate Schedule</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/ScheduleDetail.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"></target>
+      </trans-unit>
       <trans-unit id="task.status.compare-task-files" xml:space="preserve">
         <source>Compare Task</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"></target>
+      </trans-unit>
       <trans-unit id="spmigration.jsp.dryrun.disabled.tooltip" xml:space="preserve">
         <source>Dry run is not available for this product.</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="new"></target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
