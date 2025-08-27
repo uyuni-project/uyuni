@@ -43,7 +43,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -77,7 +76,7 @@ public class CVEAuditManagerOVAL {
      * @throws UnknownCVEIdentifierException if the CVE number is not known
      */
     public static List<CVEAuditServer> listSystemsByPatchStatus(User user, String cveIdentifier,
-                                                                EnumSet<PatchStatus> patchStatuses)
+                                                                Set<PatchStatus> patchStatuses)
             throws UnknownCVEIdentifierException {
         if (isCVEIdentifierUnknown(cveIdentifier)) {
             throw new UnknownCVEIdentifierException();
@@ -355,7 +354,7 @@ public class CVEAuditManagerOVAL {
      * @throws UnknownCVEIdentifierException if the CVE number is not known
      */
     public static List<CVEAuditImage> listImagesByPatchStatus(User user,
-                                                              String cveIdentifier, EnumSet<PatchStatus> patchStatuses)
+                                                              String cveIdentifier, Set<PatchStatus> patchStatuses)
             throws UnknownCVEIdentifierException {
         return CVEAuditManager.listImagesByPatchStatus(user, cveIdentifier, patchStatuses);
     }

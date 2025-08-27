@@ -672,12 +672,8 @@ public class UserHandler extends BaseHandler {
         ensureOrgAdmin(loggedInUser);
         User target = XmlRpcUserHelper.getInstance().lookupTargetUser(loggedInUser, login);
 
-        if (val.equals(1)) {
-            target.setUsePamAuthentication(true);
-        }
-        else {
-            target.setUsePamAuthentication(false);
-        }
+        boolean usePam = val.equals(1);
+        target.setUsePamAuthentication(usePam);
 
         UserManager.storeUser(target);
 

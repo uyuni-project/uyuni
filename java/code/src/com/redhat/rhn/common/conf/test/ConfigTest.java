@@ -311,7 +311,7 @@ public class ConfigTest extends RhnBaseTestCase {
         c.setBoolean("prefix.boolean_true", Boolean.FALSE.toString());
         assertFalse(c.getBoolean("prefix.boolean_true"));
         assertEquals("0", c.getString("prefix.boolean_true"));
-        c.setBoolean("prefix.boolean_true", Boolean.valueOf(oldValue).toString());
+        c.setBoolean("prefix.boolean_true", Boolean.toString(oldValue));
     }
 
     @Test

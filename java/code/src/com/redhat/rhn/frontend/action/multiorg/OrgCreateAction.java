@@ -125,13 +125,8 @@ public class OrgCreateAction extends RhnAction {
                             firstOrgMode);
 
                     //Should this user use pam authentication?
-                    if (dynaForm.get("usepam") != null &&
-                            (Boolean) dynaForm.get("usepam")) {
-                        cmd.setUsePam(true);
-                    }
-                    else {
-                        cmd.setUsePam(false);
-                    }
+                    boolean usePam = dynaForm.get("usepam") != null && (Boolean) dynaForm.get("usepam");
+                    cmd.setUsePam(usePam);
 
                     cmd.setFirstName(fname);
                     cmd.setLastName(lname);
