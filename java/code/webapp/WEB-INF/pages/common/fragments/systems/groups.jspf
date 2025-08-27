@@ -39,7 +39,7 @@
             <div class="spacewalk-section-toolbar">
                 <div class="action-button-wrapper">
                     <rhn:submitted/>
-                    <button class="btn btn-default" type="submit" name ="dispatch">
+                    <button class="btn btn-default" type="submit" name ="dispatch" value='<bean:message key="${param.action_key}"/>'>
                         <bean:message key="${param.action_key}"/>
                     </button>
                 </div>
