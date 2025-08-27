@@ -19,6 +19,8 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.domain.user.User;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Enumeration;
@@ -85,7 +87,7 @@ public class TraceBackEvent extends BaseEvent implements EventMessage {
                         out.println(HASHES);
                     }
                     else {
-                        out.println(request.getParameter(paramName));
+                        out.println(getParamDescription(request.getParameter(paramName)));
                     }
                 }
                 out.println();
@@ -123,6 +125,28 @@ public class TraceBackEvent extends BaseEvent implements EventMessage {
         }
         out.close();
         return sw.toString();
+    }
+
+    private String getParamDescription(String parameterIn) {
+        if (StringUtils.isAllEmpty(parameterIn)) {
+            return "<empty>";
+        }
+        else if (StringUtils.isNumeric(parameterIn)) {
+            return "<digits only>";
+        }
+        else if (StringUtils.isAlpha(parameterIn)) {
+            return "<alpha only>";
+        }
+        else if (StringUtils.isAlphanumeric(parameterIn)) {
+            return "<alphanumeric only>";
+        }
+        else if (StringUtils.isAllBlank(parameterIn)) {
+            return "<blank>";
+        }
+        else if (StringUtils.isAsciiPrintable(parameterIn)) {
+            return "<ascii printable>";
+        }
+        return "<characters>";
     }
 
     /**

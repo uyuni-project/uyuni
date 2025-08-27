@@ -120,6 +120,37 @@ public class TraceBackEventTest extends RhnBaseTestCase {
     }
 
     @Test
+    public void testToTextWithValues() {
+        TraceBackEvent evt = createTestEventWithValue("numbers", "184634294");
+        String eventText = evt.toText();
+        assertContains(eventText, "numbers: <digits only>");
+
+        evt = createTestEventWithValue("empty", "");
+        eventText = evt.toText();
+        assertContains(eventText, "empty: <empty>");
+
+        evt = createTestEventWithValue("blank", "  ");
+        eventText = evt.toText();
+        assertContains(eventText, "blank: <blank>");
+
+        evt = createTestEventWithValue("alpha", "aBczztTToOp");
+        eventText = evt.toText();
+        assertContains(eventText, "alpha: <alpha only>");
+
+        evt = createTestEventWithValue("alphanumeric", "218hgdsioZttdnll99");
+        eventText = evt.toText();
+        assertContains(eventText, "alphanumeric: <alphanumeric only>");
+
+        evt = createTestEventWithValue("asciiprint", "2+ 18hgdsioZttdd  hf ! ## nll99");
+        eventText = evt.toText();
+        assertContains(eventText, "asciiprint: <ascii printable>");
+
+        evt = createTestEventWithValue("chars", "2+ 1ÖäÜ üä § 8hgdsioZttdd  hf ! ## nll99");
+        eventText = evt.toText();
+        assertContains(eventText, "chars: <characters>");
+    }
+
+    @Test
     public void testTraceBackAction() {
         TraceBackEvent evt = createTestEvent();
         mailer.setExpectedSendCount(1);
