@@ -4,14 +4,13 @@ Test spacecmd.utils
 """
 from unittest.mock import MagicMock, patch, mock_open
 import pytest
-from helpers import shell, assert_expect, assert_list_args_expect, assert_args_expect, exc2str
+from helpers import assert_expect, assert_list_args_expect, assert_args_expect, exc2str
 import spacecmd.utils
-from xmlrpc import client as xmlrpclib
 import os
 import tempfile
 import shutil
 import datetime
-import pickle
+import json
 import hashlib
 import time
 
@@ -30,7 +29,7 @@ class TestSCUtilsCacheIntegration:
         """
         self.data = {"key": hashlib.sha256(str(time.time()).encode("utf-8")).hexdigest()}
         self.temp = tempfile.mkdtemp()
-        self.expiration = datetime.datetime(2019, 1, 1, 10, 30, 45)
+        self.expiration = datetime.datetime(2019, 1, 1, 10, 30, 45, 372575)
         self.cachefile = os.path.join(self.temp, "spacecmd.cache")
 
     def teardown_method(self):
@@ -51,12 +50,13 @@ class TestSCUtilsCacheIntegration:
         :return:
         """
         spacecmd.utils.save_cache(cachefile=self.cachefile, data=self.data, expire=self.expiration)
-        assert os.path.exists(self.cachefile)
-        out = pickle.load(open(self.cachefile, "rb"))
+        assert os.path.exists(f"{self.cachefile}.json")
+        with open(f"{self.cachefile}.json", "r") as f:
+            out = json.loads(f.read())
 
         assert "expire" in out
         assert "expire" not in self.data
-        assert out["expire"] == self.expiration
+        assert out["expire"] == str(self.expiration)
         assert self.data["key"] == out["key"]
 
     @patch("spacecmd.utils.open", MagicMock(side_effect=IOError("Wrong polarity on neutron flow")))
@@ -72,7 +72,7 @@ class TestSCUtilsCacheIntegration:
                                       data=self.data, expire=self.expiration)
         assert logger.error.called
         assert_args_expect(logger.error.call_args_list,
-                           [(("Couldn't write to %s", self.cachefile,), {})])
+                           [(("Couldn't write to %s", f"{self.cachefile}.json",), {})])
 
     def test_load_cache(self):
         """
@@ -82,7 +82,7 @@ class TestSCUtilsCacheIntegration:
         """
         spacecmd.utils.save_cache(cachefile=self.cachefile, data=self.data, expire=self.expiration)
 
-        assert os.path.exists(self.cachefile)
+        assert os.path.exists(f"{self.cachefile}.json")
 
         out, expiration = spacecmd.utils.load_cache(self.cachefile)
 
@@ -104,7 +104,7 @@ class TestSCUtilsCacheIntegration:
 
         assert out == {}
         assert expiration != self.expiration is not None
-        assert not os.path.exists(self.cachefile)
+        assert not os.path.exists(f"{self.cachefile}.json")
 
 
 class TestSCUtils:
