@@ -9,7 +9,6 @@ import SpaRenderer from "core/spa/spa-renderer";
 
 import { Button } from "components/buttons";
 import { showErrorToastr } from "components/toastr";
-import { disposeTooltips } from "components/tooltips";
 function isLoginPage(pathName) {
   const allLoginPossiblePaths = ["/", "/rhn/manager/login"];
   return allLoginPossiblePaths.some((loginPath) => loginPath === pathName);
@@ -72,8 +71,6 @@ window.pageRenderers.spaengine.init = function init(timeout?: number) {
     }
 
     appInstance.on("beforeNavigate", function (navigation) {
-      // Dispose tooltips
-      disposeTooltips();
       // Integration with bootstrap 3. We need to make sure all the existing modals get fully removed
       // but we have to do it after the navigation ends unless all form inputs contained in the modal will be dropped
       // before the form serialization happens and they will not submitted because they will not exist anymore

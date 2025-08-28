@@ -1,19 +1,17 @@
-import { Tooltip } from "bootstrap";
-
 let isListening = false;
 export function initializeTooltips() {
   // Initialize tooltips on existing elements
 
   const initTooltips = () => {
-    const elements = document.querySelectorAll('[data-bs-toggle="tooltip"]:not([data-tooltip-initialized])');
-
-    elements.forEach((el) => {
-      const tooltip = Tooltip.getOrCreateInstance(el, {
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+    tooltipTriggerList.forEach((el) => {
+      // @ts-ignore
+      const tooltip = new bootstrap.Tooltip(el, {
         trigger: "hover",
       });
 
-      el.setAttribute("data-tooltip-initialized", "true");
       el.addEventListener("click", () => tooltip.hide());
+      el.addEventListener("mouseleave", () => tooltip.hide());
     });
   };
 
@@ -25,15 +23,4 @@ export function initializeTooltips() {
     subtree: true,
   });
   isListening = true;
-}
-
-export function disposeTooltips() {
-  const elements = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-  elements.forEach((el) => {
-    const tooltip = Tooltip.getInstance(el);
-    if (tooltip) {
-      tooltip.dispose();
-      el.removeAttribute("data-tooltip-initialized");
-    }
-  });
 }
