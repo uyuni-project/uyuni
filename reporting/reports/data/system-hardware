@@ -23,7 +23,7 @@ columns:
   cpu_bogomips The CPU bogomips value
   cpu_cache The CPU cache size in KiB
   cpu_family The CPU family
-  cpu_MHz The CPU frequence in MHz
+  cpu_mhz The CPU frequence in MHz
   cpu_stepping The CPU stepping
   cpu_flags The CPU flags
   cpu_model The CPU model
@@ -62,7 +62,7 @@ sql:
                  , cpu_bogomips
                  , cpu_cache
                  , cpu_family
-                 , cpu_MHz
+                 , cpu_mhz
                  , cpu_stepping
                  , cpu_flags
                  , cpu_model

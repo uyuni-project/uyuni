@@ -18,9 +18,12 @@ columns:
   registered_by The user account who onboarded this system
   registration_time When this system was onboarded
   last_checkin_time When this system was visible and reachable last time
+  last_boot_time When this system was booted last time
   kernel_version The version of the kernel installed on this system
   packages_out_of_date The number of packages installed on the system that can be updated
   errata_out_of_date The number of patches that can be applied to the system
+  extra_pkg_count The number of packages installed on the system which are not available in the management server
+  status The status of the system
   software_channel THe list of software channels the system is subscribed to, separated by ;
   configuration_channel The list of configuration channels the system is subscribed to, separated by ;
   entitlements The list of entitlements of the system, separated by ;
@@ -47,9 +50,12 @@ sql:
                  , registered_by
                  , registration_time
                  , last_checkin_time
+                 , last_boot_time
                  , kernel_version
                  , packages_out_of_date
                  , errata_out_of_date
+                 , extra_pkg_count
+                 , status
                  , software_channels AS software_channel
                  , configuration_channels AS configuration_channel
                  , entitlements
