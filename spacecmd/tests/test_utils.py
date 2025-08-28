@@ -72,7 +72,7 @@ class TestSCUtilsCacheIntegration:
                                       data=self.data, expire=self.expiration)
         assert logger.error.called
         assert_args_expect(logger.error.call_args_list,
-                           [(("Couldn't write to %s.json", self.cachefile,), {})])
+                           [(("Couldn't write to %s", "{}.json".format(self.cachefile),), {})])
 
     def test_load_cache(self):
         """
