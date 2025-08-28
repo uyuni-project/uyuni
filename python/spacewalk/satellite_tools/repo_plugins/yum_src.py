@@ -1499,9 +1499,9 @@ password={passwd}
                 # pylint: disable-next=consider-using-f-string
                 ident = "{}.{}".format(pkg.name, pkg.arch)
                 # pylint: disable-next=consider-iterating-dictionary
-                if ident not in latest_pkgs.keys() or looseversion.LooseVersion(
+                if ident not in latest_pkgs.keys() or str(looseversion.LooseVersion(
                     str(pkg.evr)
-                ) > looseversion.LooseVersion(str(latest_pkgs[ident].evr)):
+                )) > str(looseversion.LooseVersion(str(latest_pkgs[ident].evr))):
                     latest_pkgs[ident] = pkg
             pkglist = list(latest_pkgs.values())
 
