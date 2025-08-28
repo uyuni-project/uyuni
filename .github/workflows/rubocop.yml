@@ -21,11 +21,10 @@ jobs:
       with:
         ruby-version: '3.3'
 
-    - name: Install Rubocop
-      run: |
-        gem install rubocop -v 1.65.1
-
-    - name: Run RuboCop
+    - name: Install and Run RuboCop
       run: |
         cd testsuite
-        rubocop features/*
+        gem install bundler
+        bundle install
+        bundle exec rubocop --version
+        bundle exec rubocop features/*
