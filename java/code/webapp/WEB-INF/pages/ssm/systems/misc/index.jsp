@@ -73,7 +73,9 @@
         <div class="text-right">
             <hr />
 
-            <input class="btn btn-default" type="submit" name="sscd_change_system_prefs" value="<bean:message key='ssm.misc.index.syspref.changepreferences'/>" />
+            <button class="btn btn-default" type="submit" name="sscd_change_system_prefs">
+                <bean:message key='ssm.misc.index.syspref.changepreferences'/>
+            </button>
         </div>
 
     </form>

@@ -42,12 +42,10 @@
             </div>
             <div class="form-group">
                 <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
-                    <button type="submit" class="btn btn-primary"
-                            name="CreateKey"
-                            value="Create Key" />
+                    <button type="submit" class="btn btn-primary" name="CreateKey">
                         <bean:message key="keycreate.jsp.submit" />
                     </button>
-                            <rhn:submitted/>
+                    <rhn:submitted/>
                 </div>
             </div>
         </form>

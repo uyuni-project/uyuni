@@ -80,8 +80,10 @@
 <!--
         <div class="text-right">
           <hr />
-                <input class="btn btn-default" type="submit" name="dispatch"
-                                value="<bean:message key='distchannelmap.jsp.update'/>" />
+          <button class="btn btn-default" type="submit" name="dispatch"
+            value="<bean:message key='distchannelmap.jsp.update'/>">
+            <bean:message key='distchannelmap.jsp.update'/>
+          </button>
         </div>
                 <rhn:submitted/>
 -->

@@ -28,8 +28,10 @@
     <rhn:hidden name="id" value="${requestScope.id}"/>
     <div class="form-group">
         <div class="col-md-offset-3 offset-md-3 col-md-6">
-            <input type="submit" class="btn btn-danger" name="dispatch"
-                   value="${rhn:localize('repos.jsp.delete.submit')}"/>
+            <button type="submit" class="btn btn-danger" name="dispatch"
+                value="${rhn:localize('repos.jsp.delete.submit')}">
+                ${rhn:localize('repos.jsp.delete.submit')}
+            </button>
         </div>
     </div>
 </form>

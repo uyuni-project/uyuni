@@ -20,8 +20,10 @@
     <rhn:csrf />
     <div class="spacewalk-section-toolbar">
         <div class="action-button-wrapper">
-            <input class="btn btn-default" type="submit"
-                name="dispatch"  value="<bean:message key='channel.jsp.errata.confirmremove'/>">
+                <button class="btn btn-default" type="submit" name="dispatch"
+                        value="<bean:message key='channel.jsp.errata.confirmremove'/>">
+                        <bean:message key='channel.jsp.errata.confirmremove'/>
+                </button>
         </div>
     </div>
     <rhn:submitted/>

@@ -24,8 +24,10 @@
         <rhn:submitted/>
         <div class="spacewalk-section-toolbar">
             <div class="action-button-wrapper">
-                <input type="submit" name="dispatch" class="btn btn-danger"
-                       value='<bean:message key="actions.jsp.deleteactions"/>'/>
+                <button type="submit" name="dispatch" class="btn btn-danger"
+                    value='<bean:message key="actions.jsp.deleteactions"/>'>
+                    <bean:message key="actions.jsp.deleteactions"/>
+                </button>
             </div>
         </div>
 

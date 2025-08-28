@@ -31,7 +31,7 @@
                     </div>
                     <div class="form-group">
                         <div class="col-sm-offset-3 offset-sm-3 col-sm-6">
-                            <button type="submit" class="btn btn-primary" value="${button_label}">
+                            <button type="submit" class="btn btn-primary">
                                 ${button_label}
                             </button>
                         </div>
