@@ -124,7 +124,7 @@ def is_interactive(options):
 
 def load_cache(cachefile):
     data = {}
-    cachefile = f"{cachefile}.json"
+    cachefile = "{}.json".format(cachefile)
     expire = datetime.now()
 
     logging.debug('Loading cache from %s', cachefile)
@@ -162,11 +162,11 @@ def save_cache(cachefile, data, expire=None):
         try:
             datetime.strptime(str(expire), _CACHE_DATE_FORMAT)
         except ValueError as e:
-            raise ValueError(f"Provided expire parameter must conform to {_CACHE_DATE_FORMAT}") from e
+            raise ValueError("Provided expire parameter must conform to {}".format(_CACHE_DATE_FORMAT)) from e
 
     if expire:
         data['expire'] = expire
-    cachefile = f"{cachefile}.json"
+    cachefile = "{}.json".format(cachefile)
 
     try:
         with open(cachefile, 'w', encoding='utf-8') as f:
