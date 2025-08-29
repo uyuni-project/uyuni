@@ -63,7 +63,7 @@ class FormulaCatalog extends React.Component<Props, State> {
               {
                 link: (str) => (
                   <a
-                    href="https://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html"
+                    href="https://docs.saltproject.io/en/latest/topics/development/conventions/formulas.html"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
