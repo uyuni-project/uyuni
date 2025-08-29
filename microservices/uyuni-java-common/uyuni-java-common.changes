@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Aug 29 10:23:58 CEST 2025 - rosuna@suse.com
+
+- version 5.1.4-0
+  * Move the missing property handling to ConfigurationSource
+  * Build with Java 17
+
+-------------------------------------------------------------------
 Wed Dec 11 16:42:10 CET 2024 - rosuna@suse.com
 
 - version 5.1.3-0
