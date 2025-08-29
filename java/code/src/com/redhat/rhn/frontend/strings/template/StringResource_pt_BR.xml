@@ -44,7 +44,7 @@ fornece acesso para gerenciar sistemas em @@PRODUCT_NAME@@.
 
    {5}
 
-Importante: Por favor, altere sua senha ao fazer o login.
+Importante: Altere sua senha ao fazer o login.
 
 Obrigado por usar @@PRODUCT_NAME@@.
 {6}</target>
@@ -91,7 +91,7 @@ fornece acesso para gerenciar sistemas em @@PRODUCT_NAME@@.
 
    {3}
 
-Importante: Por favor, altere sua senha ao fazer o login.
+Importante: Altere sua senha ao fazer o login.
 
 Obrigado por usar @@PRODUCT_NAME@@.
 {4}</target>
@@ -371,7 +371,7 @@ click the "Details" tab.
         <target state="translated">
 Modificação das Preferências de Notificação
 ---------------------------------
-Para ativar/desativar globalmente suas preferências de Alerta de Erros, por favor realize o login no @@PRODUCT_NAME@@
+Para ativar/desativar globalmente suas preferências de Alerta de Erros, realize o login no @@PRODUCT_NAME@@
 e navegue do tab "Visão Geral" / "Sua Conta" para "Preferências".
 
         URL: {0}
@@ -562,7 +562,7 @@ Thank you for using @@PRODUCT_NAME@@.
 A senha do @@PRODUCT_NAME@@ para login {1} foi redefinida em resposta a uma solicitação de redefinição
 feito em {2}
 
-Se você não iniciou esta redefinição de senha, por favor IMEDIATAMENTE contate o @@PRODUCT_NAME@@
+Se você não iniciou esta redefinição de senha, IMEDIATAMENTE contate o @@PRODUCT_NAME@@
 administrador em {2} para obter mais assistência.
 
 Obrigado por usar @@PRODUCT_NAME@@.

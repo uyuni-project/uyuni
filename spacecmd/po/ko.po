@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-22 09:58+0200\n"
+"POT-Creation-Date: 2025-08-29 09:50+0200\n"
 "PO-Revision-Date: 2025-06-17 07:59+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/spacecmd/ko/>\n"
@@ -426,6 +426,7 @@ msgid "File %s exists, confirm overwrite file? (y/n)"
 msgstr "%s 파일이 있습니다. 파일을 덮어쓰시겠습니까? (y/n)"
 
 #: ../src/spacecmd/activationkey.py:1330
+#, python-brace-format
 msgid "Failed to save exported keys to file: {}"
 msgstr "엑스포트한 키를 파일에 저장하지 못함: {}"
 
@@ -1263,6 +1264,7 @@ msgid "Exporting cc %s to %s"
 msgstr "cc %s을(를) %s(으)로 엑스포트하는 중"
 
 #: ../src/spacecmd/configchannel.py:1264
+#, python-brace-format
 msgid "File '{}' exists, confirm overwrite file? (y/n)"
 msgstr "'{}' 파일이 있습니다. 덮어쓰시겠습니까? (y/n)"
 
@@ -1583,6 +1585,7 @@ msgid "usage: custominfo_details KEY ..."
 msgstr "사용법: custominfo_details KEY ..."
 
 #: ../src/spacecmd/custominfo.py:157
+#, python-brace-format
 msgid "No keys matched argument '{}'."
 msgstr "'{}' 인수와 일치하는 키가 없습니다."
 
@@ -3386,8 +3389,8 @@ msgstr "%s에 연결하지 못함"
 msgid "API (%s) is too old (>= %s required)"
 msgstr "API(%s)가 너무 오래됨(>= %s 필수)"
 
-#: ../src/spacecmd/misc.py:345 ../src/spacecmd/utils.py:257
-#: ../src/spacecmd/utils.py:600
+#: ../src/spacecmd/misc.py:345 ../src/spacecmd/utils.py:263
+#: ../src/spacecmd/utils.py:606
 #, python-format
 msgid "Could not read %s"
 msgstr "%s을(를) 읽을 수 없음"
@@ -3651,6 +3654,7 @@ msgstr "이름이 %s인 조직을 찾지 못함"
 #: ../src/spacecmd/org.py:208 ../src/spacecmd/org.py:241
 #: ../src/spacecmd/org.py:275 ../src/spacecmd/org.py:311
 #: ../src/spacecmd/org.py:420 ../src/spacecmd/org.py:456
+#, python-brace-format
 msgid "Organisation '{}' was not found"
 msgstr "'{}' 조직을 찾지 못함"
 
@@ -3680,6 +3684,7 @@ msgid "No trust organisation found for the name %s"
 msgstr "이름이 %s인 트러스트 조직을 찾지 못함"
 
 #: ../src/spacecmd/org.py:279 ../src/spacecmd/org.py:315
+#, python-brace-format
 msgid "Organisation '{}' to trust for, was not found"
 msgstr "트러스트 대상인 '{}' 조직을 찾지 못함"
 
@@ -3713,6 +3718,7 @@ msgid "No trusted organisation found for the name %s"
 msgstr "이름이 %s인 트러스트된 조직을 찾지 못함"
 
 #: ../src/spacecmd/org.py:354
+#, python-brace-format
 msgid "Trusted organisation '{}' was not found"
 msgstr "트러스트된 조직 '{}'을(를) 찾지 못함"
 
@@ -3999,7 +4005,6 @@ msgid "proxy_container_config: create a proxy system and return its configuratio
 msgstr "proxy_container_config: 프록시 시스템을 생성하고 구성 파일을 반환합니다."
 
 #: ../src/spacecmd/proxy.py:33
-#, python-format
 msgid ""
 "usage: proxy_container_config [options] PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL ROOT_CA CRT KEY\n"
 "\n"
@@ -4046,7 +4051,6 @@ msgid "proxy_container_config_generate_cert: create a proxy system and return it
 msgstr "proxy_container_config_generate_cert: 프록시 시스템을 생성하고 구성 파일을 반환합니다."
 
 #: ../src/spacecmd/proxy.py:90
-#, python-format
 msgid ""
 "usage: proxy_container_config_generate_cert PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL\n"
 "\n"
@@ -4149,6 +4153,7 @@ msgid "Repository SSL Client Key:         %s"
 msgstr "저장소 SSL 클라이언트 키:         %s"
 
 #: ../src/spacecmd/repo.py:103
+#, python-brace-format
 msgid "No repositories found for '{}' query"
 msgstr "'{}' 쿼리에 대한 저장소를 찾지 못함"
 
@@ -4369,6 +4374,7 @@ msgid "%s  # Systems"
 msgstr "%s  # 시스템"
 
 #: ../src/spacecmd/report.py:174
+#, python-brace-format
 msgid "No errata found for '{}'"
 msgstr "'{}'에 대한 오류를 찾지 못함"
 
@@ -4793,6 +4799,7 @@ msgid "If no date is provided it will delete all archived actions"
 msgstr "날짜가 제공되지 않으면 보관된 모든 작업이 삭제됩니다."
 
 #: ../src/spacecmd/schedule.py:492
+#, python-brace-format
 msgid "Do you want to delete ({}) archived actions? [y/N]"
 msgstr "보관된 작업({})을 삭제하시겠습니까? [예/아니요]"
 
@@ -4813,6 +4820,7 @@ msgid "If no date is provided it will archive all completed actions"
 msgstr "날짜가 제공되지 않으면 완료된 모든 작업을 보관합니다."
 
 #: ../src/spacecmd/schedule.py:551
+#, python-brace-format
 msgid "Do you want to archive ({}) completed actions? [y/N]"
 msgstr "완료된 작업({})을 보관하시겠습니까? [예/아니요]"
 
@@ -6078,10 +6086,12 @@ msgstr "소프트웨어 채널의 오류 병합 "
 
 #. pylint: disable=len-as-condition
 #: ../src/spacecmd/softwarechannel.py:2578
+#, python-brace-format
 msgid "{} contains no errata which is not already present in {}"
 msgstr "{}에는 {}에 없는 오류가 포함되지 않음"
 
 #: ../src/spacecmd/softwarechannel.py:2583
+#, python-brace-format
 msgid "errata to add to channel {}: "
 msgstr "{} 채널에 추가할 오류: "
 
@@ -6095,6 +6105,7 @@ msgid " errata to  "
 msgstr " 오류 대상  "
 
 #: ../src/spacecmd/softwarechannel.py:2594
+#, python-brace-format
 msgid "Perform these changes to channel {} [y/N]:"
 msgstr "{} 채널에 이 변경 수행 [y/N]:"
 
@@ -6524,7 +6535,7 @@ msgstr "%s을(를) 예약하지 못함"
 msgid "Scheduled: %i system(s)"
 msgstr "예약됨: %i개 시스템"
 
-#: ../src/spacecmd/system.py:548 ../src/spacecmd/utils.py:253
+#: ../src/spacecmd/system.py:548 ../src/spacecmd/utils.py:259
 #, python-format
 msgid "Could not remove %s"
 msgstr "%s을(를) 제거할 수 없음"
@@ -7971,6 +7982,7 @@ msgid "Server is not supporting reactivation keys at bootstrap time"
 msgstr "부트스트랩 시점에 서버는 재활성화 키를 지원하지 않습니다."
 
 #: ../src/spacecmd/system.py:4630
+#, python-brace-format
 msgid "Bootstrapping '{}'. This may take a while."
 msgstr "'{}'을(를) 부트스트랩하는 중입니다. 잠시 시간이 걸릴 수 있습니다."
 
@@ -8205,132 +8217,128 @@ msgstr "user_setpassword: 사용자 계정 이름 접두어 필드 설정"
 msgid "usage: user_setpassword USER PASSWORD"
 msgstr "사용법: user_setpassword USER PASSWORD"
 
-#. If cache generation is interrupted (e.g by ctrl-c) you can end up
-#. with an EOFError exception due to the partial picked file
-#. So we catch this error and remove the corrupt partial file
-#. If you don't do this then spacecmd will fail with an unhandled
-#. exception until the partial file is manually removed
-#: ../src/spacecmd/utils.py:142
+#: ../src/spacecmd/utils.py:137
 #, python-format
 msgid "Loading cache file %s failed"
 msgstr "캐시 파일 %s을(를) 로드하지 못함"
 
-#: ../src/spacecmd/utils.py:143
+#: ../src/spacecmd/utils.py:138
 #, python-format
 msgid "Cache generation was probably interrupted,removing corrupt %s"
 msgstr "캐시 생성이 중단되었을 수 있습니다. %s 충돌 제거 중"
 
-#: ../src/spacecmd/utils.py:148
+#: ../src/spacecmd/utils.py:143
 #, python-format
 msgid "Couldn't load cache from %s"
 msgstr "%s에서 캐시를 로드할 수 없음"
 
-#: ../src/spacecmd/utils.py:169
+#: ../src/spacecmd/utils.py:175
 #, python-format
 msgid "Couldn't write to %s"
 msgstr "%s에 쓸 수 없음"
 
-#: ../src/spacecmd/utils.py:214
+#: ../src/spacecmd/utils.py:220
 msgid "Could not open the temporary file"
 msgstr "임시 파일을 열 수 없음"
 
-#: ../src/spacecmd/utils.py:233
+#: ../src/spacecmd/utils.py:239
 #, python-format
 msgid "Editor \"%s\" exited with code %i"
 msgstr "\"%s\" 편집기가 %i 코드로 종료됨"
 
-#: ../src/spacecmd/utils.py:235
+#: ../src/spacecmd/utils.py:241
 #, python-format
 msgid "General failure running editor: %s"
 msgstr "편집기 실행 일반 실패: %s"
 
-#: ../src/spacecmd/utils.py:238
+#: ../src/spacecmd/utils.py:244
 msgid "No editors found"
 msgstr "편집기를 찾지 못함"
 
-#: ../src/spacecmd/utils.py:376
+#: ../src/spacecmd/utils.py:382
 msgid "Invalid time provided"
 msgstr "유효하지 않은 시간 입력됨"
 
-#: ../src/spacecmd/utils.py:495
+#: ../src/spacecmd/utils.py:501
 #, python-format
 msgid "%s is an unknown errata type"
 msgstr "%s은(는) 알 수 없는 오류 유형입니다."
 
-#: ../src/spacecmd/utils.py:503
+#: ../src/spacecmd/utils.py:509
 msgid "Security Errata"
 msgstr "보안 오류"
 
-#: ../src/spacecmd/utils.py:512
+#: ../src/spacecmd/utils.py:518
 msgid "Bug Fix Errata"
 msgstr "버그 수정 오류"
 
-#: ../src/spacecmd/utils.py:521
+#: ../src/spacecmd/utils.py:527
 msgid "Enhancement Errata"
 msgstr "개선 오류"
 
-#: ../src/spacecmd/utils.py:531
+#: ../src/spacecmd/utils.py:537
 msgid "Current Selections"
 msgstr "현재 선택"
 
-#: ../src/spacecmd/utils.py:541
+#: ../src/spacecmd/utils.py:547
 msgid "Available Configuration Channels"
 msgstr "사용할 수 있는 구성 채널"
 
-#: ../src/spacecmd/utils.py:547 ../src/spacecmd/utils.py:567
+#: ../src/spacecmd/utils.py:553 ../src/spacecmd/utils.py:573
 msgid "Channel:"
 msgstr "채널:"
 
-#: ../src/spacecmd/utils.py:550 ../src/spacecmd/utils.py:570
+#: ../src/spacecmd/utils.py:556 ../src/spacecmd/utils.py:576
 msgid "Invalid channel"
 msgstr "유효하지 않은 채널"
 
-#: ../src/spacecmd/utils.py:554
+#: ../src/spacecmd/utils.py:560
 msgid "New Rank:"
 msgstr "새 순위:"
 
-#: ../src/spacecmd/utils.py:561 ../src/spacecmd/utils.py:564
+#: ../src/spacecmd/utils.py:567 ../src/spacecmd/utils.py:570
 msgid "Invalid rank"
 msgstr "유효하지 않은 순위"
 
-#: ../src/spacecmd/utils.py:575
+#: ../src/spacecmd/utils.py:581
 msgid "Clearing current selections"
 msgstr "현재 선택을 지우는 중"
 
-#: ../src/spacecmd/utils.py:756
+#: ../src/spacecmd/utils.py:762
 msgid "Could not generate json data object!"
 msgstr "json 데이터 객체를 생성할 수 없습니다!"
 
-#: ../src/spacecmd/utils.py:763
+#: ../src/spacecmd/utils.py:769
 #, python-format
 msgid "Could not open file %s for writing: %s"
 msgstr "쓰기 위해 %s 파일을 열 수 없음: %s"
 
-#: ../src/spacecmd/utils.py:774
+#: ../src/spacecmd/utils.py:780
 #, python-format
 msgid "Could not open file %s for reading: %s"
 msgstr "읽기 위해 %s 파일을 열 수 없음: %s"
 
-#: ../src/spacecmd/utils.py:776
+#: ../src/spacecmd/utils.py:782
 #, python-format
 msgid "Could not parse JSON data from %s: %s"
 msgstr "%s에서 JSON 데이터의 구문을 분석할 수 없음: %s"
 
 #. pylint: disable=broad-except
-#: ../src/spacecmd/utils.py:778
+#: ../src/spacecmd/utils.py:784
 #, python-format
 msgid "Error processing file %s: %s"
 msgstr "%s 파일 처리 중 오류: %s"
 
-#: ../src/spacecmd/utils.py:815
+#: ../src/spacecmd/utils.py:821
 msgid "Skipping usage of common strings: both strings are equal"
 msgstr "공통 문자열 사용 건너뛰기: 두 문자열이 동일함"
 
-#: ../src/spacecmd/utils.py:831
+#: ../src/spacecmd/utils.py:837
 msgid "Skipping usage of common strings: number of substrings differ"
 msgstr "공통 문자열 사용 건너뛰기: 하위 문자열의 수가 다름"
 
-#: ../src/spacecmd/utils.py:919
+#: ../src/spacecmd/utils.py:925
+#, python-brace-format
 msgid "Parameter {} not a string type, but {}."
 msgstr "{} 파라미터가 문자열 유형이 아니라 {}입니다."
 

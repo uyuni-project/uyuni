@@ -2093,11 +2093,11 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <target>Informazioni utente</target>
       </trans-unit>
       <trans-unit id="userdetails.jsp.noemailaddress" xml:space="preserve">
-        <source>No email address</source>
+        <source>Add Email Address</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
-        <target>Nessun indirizzo email</target>
+        <target state="needs-adaptation">Nessun indirizzo email</target>
       </trans-unit>
       <trans-unit id="userdetails.jsp.disable" xml:space="preserve">
         <source>Deactivate User</source>
@@ -7090,15 +7090,15 @@ amministratore dell'organizzazione all'interno della sezione "Ruoli" della tabel
         </context-group>
       </trans-unit>
       <trans-unit id="systems.groups.jsp.remove" xml:space="preserve">
-          <source>Leave Selected Groups</source>
-        <target>Abbandona i gruppi selezionati</target>
+          <source>Leave Groups</source>
+        <target state="needs-adaptation">Abbandona i gruppi selezionati</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.groups.jsp.add" xml:space="preserve">
-          <source>Join Selected Groups</source>
-        <target>Registra ai gruppi selezionati</target>
+          <source>Join Groups</source>
+        <target state="needs-adaptation">Registra ai gruppi selezionati</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
@@ -7258,8 +7258,8 @@ amministratore dell'organizzazione all'interno della sezione "Ruoli" della tabel
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroup.details.editproperties" xml:space="preserve">
-          <source>Edit These Properties</source>
-        <target>Modifica queste proprietà</target>
+          <source>Edit System Group Properties</source>
+        <target state="needs-adaptation">Modifica queste proprietà</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
@@ -8144,11 +8144,11 @@ amministratore dell'organizzazione all'interno della sezione "Ruoli" della tabel
         <target>L'azione del comando remoto è stata programmata per una sua esecuzione &lt;strong&gt;prima&lt;/strong&gt; della rimozione del pacchetto.</target>
       </trans-unit>
       <trans-unit id="installpkgs.jsp.installpackages" xml:space="preserve">
-        <source>Install Selected Packages</source>
+        <source>Install Packages</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/InstallPackages</context>
         </context-group>
-        <target>Installa i pacchetti selezionati</target>
+        <target state="needs-adaptation">Installa i pacchetti selezionati</target>
       </trans-unit>
       <trans-unit id="installconfirm.jsp.header" xml:space="preserve">
         <source>Confirm Package Install</source>
@@ -13978,8 +13978,8 @@ la &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stron
         </context-group>
       </trans-unit>
       <trans-unit id="activation-key.groups.jsp.add" xml:space="preserve">
-          <source>Join Selected Groups</source>
-        <target>Registra ai gruppi selezionati</target>
+          <source>Join Groups</source>
+        <target state="needs-adaptation">Registra ai gruppi selezionati</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/activationkeys/groups/* pages</context>
         </context-group>
@@ -14463,15 +14463,15 @@ la &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stron
         </context-group>
       </trans-unit>
       <trans-unit id="system.audit.listscap.jsp.removebut" xml:space="preserve">
-          <source>Remove Selected Scans</source>
-        <target>Rimuovi le scansioni selezionate</target>
+          <source>Remove</source>
+        <target state="needs-adaptation">Rimuovi le scansioni selezionate</target>
         <context-group name="ctx">
           <context context-type="sourcefile">View of SCAP scans for given system</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.audit.listscap.jsp.diffbut" xml:space="preserve">
-          <source>Compare Selected Scans</source>
-        <target>Confronta le scansioni selezionate</target>
+          <source>Compare</source>
+        <target state="needs-adaptation">Confronta le scansioni selezionate</target>
         <context-group name="ctx">
           <context context-type="sourcefile">View of SCAP scans for given system</context>
         </context-group>
@@ -15359,8 +15359,8 @@ la &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stron
         </context-group>
       </trans-unit>
       <trans-unit id="system.event.pending.headerPending" xml:space="preserve">
-          <source>You may cancel events for this system by selecting them and clicking the &lt;strong&gt;Cancel Selected Events&lt;/strong&gt; button.</source>
-        <target>È possibile rimuovere gli eventi per questo sistema selezionandoli e facendo clic sul pulsante &lt;strong&gt;Cancella eventi&lt;/strong&gt; nella parte bassa della pagina.</target>
+          <source>You may cancel events for this system by selecting them and clicking the &lt;strong&gt;Cancel Events&lt;/strong&gt; button.</source>
+        <target state="needs-adaptation">È possibile rimuovere gli eventi per questo sistema selezionandoli e facendo clic sul pulsante &lt;strong&gt;Cancella eventi&lt;/strong&gt; nella parte bassa della pagina.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
@@ -15380,8 +15380,8 @@ la &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stron
         </context-group>
       </trans-unit>
       <trans-unit id="system.event.pending.cancel" xml:space="preserve">
-          <source>Cancel Selected Events</source>
-        <target>Elimina eventi selezionati</target>
+          <source>Cancel Events</source>
+        <target state="needs-adaptation">Elimina eventi selezionati</target>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
@@ -16811,11 +16811,11 @@ file desiderati, copiare l'ultimissima versione all'interno di un set di overrid
         <target>Revisione {0}</target>
       </trans-unit>
       <trans-unit id="channelfiles.jsp.removeselected" xml:space="preserve">
-        <source>Remove Selected Files</source>
+        <source>Remove Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelFiles.do</context>
         </context-group>
-        <target>Rimuovi i file selezionati</target>
+        <target state="needs-adaptation">Rimuovi i file selezionati</target>
       </trans-unit>
       <trans-unit id="channelfiles.jsp.copy2systems" xml:space="preserve">
         <source>Copy to Systems</source>
@@ -17869,11 +17869,11 @@ centrally-managed configuration channel, {2}; below is a list of systems you may
         <target>scarica ultimissima revisione</target>
       </trans-unit>
       <trans-unit id="toolbar.delete.configfile" xml:space="preserve">
-        <source>Delete This File Revision</source>
+        <source>Delete</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
-        <target>cancella questa revisione del file</target>
+        <target state="needs-adaptation">cancella questa revisione del file</target>
       </trans-unit>
       <trans-unit id="toolbar.delete.org" xml:space="preserve">
         <source>Delete Organization</source>
@@ -17883,11 +17883,11 @@ centrally-managed configuration channel, {2}; below is a list of systems you may
         <target state="needs-adaptation">cancella organizzazione</target>
       </trans-unit>
       <trans-unit id="toolbar.delete.deletefile" xml:space="preserve">
-        <source>Delete This File</source>
+        <source>Delete</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
-        <target>cancella questo file</target>
+        <target state="needs-adaptation">cancella questo file</target>
       </trans-unit>
       <trans-unit id="filedetails.jsp.download" xml:space="preserve">
         <source>download file revision</source>
@@ -21421,9 +21421,9 @@ Siete sicuri di voler fare questo?</target>
       <trans-unit id="ssm.package.remove.select.summary" xml:space="preserve">
           <source>Packages listed below may be removed from one or more systems.
 
-             Select one or more and click the &lt;b&gt;Remove Selected Packages&lt;/b&gt; button to schedule package removal.
+             Select one or more and click the &lt;b&gt;Remove Packages&lt;/b&gt; button to schedule package removal.
           </source>
-        <target>I pacchetti di seguito elencati potranno essere rimossi da uno o più sistemi.
+        <target state="needs-adaptation">I pacchetti di seguito elencati potranno essere rimossi da uno o più sistemi.
 
 Selezionare uno o più pacchetti e cliccare il pulsante &lt;b&gt;Rimuovi i pacchetti selezionati&lt;/b&gt; per programmare la rimozione.</target>
         <context-group name="ctx">
@@ -21431,8 +21431,8 @@ Selezionare uno o più pacchetti e cliccare il pulsante &lt;b&gt;Rimuovi i pacch
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.package.remove.select.confirm" xml:space="preserve">
-          <source>Remove Selected Packages</source>
-        <target>Rimuovi i pacchetti selezionati</target>
+          <source>Remove Packages</source>
+        <target state="needs-adaptation">Rimuovi i pacchetti selezionati</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/PackageRemove.do</context>
         </context-group>
@@ -21498,8 +21498,8 @@ Selezionare uno o più pacchetti e cliccare il pulsante &lt;b&gt;Rimuovi i pacch
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.package.upgrade.select.confirm" xml:space="preserve">
-          <source>Upgrade Selected Packages</source>
-        <target>Aggiorna i pacchetti selezionati</target>
+          <source>Upgrade Packages</source>
+        <target state="needs-adaptation">Aggiorna i pacchetti selezionati</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/PackageUpgrade.do</context>
         </context-group>
@@ -21558,9 +21558,9 @@ Selezionare uno o più pacchetti e cliccare il pulsante &lt;b&gt;Rimuovi i pacch
       <trans-unit id="ssm.package.verify.select.summary" xml:space="preserve">
           <source>Packages listed below may be verified on one or more systems.
 
-            Select one or more and click the &lt;b&gt;Verify Selected Packages&lt;/b&gt; button to schedule package verification.
+            Select one or more and click the &lt;b&gt;Verify Packages&lt;/b&gt; button to schedule package verification.
          </source>
-        <target>I pacchetti di seguito elencati potranno essere verificati su uno o più sistemi.
+        <target state="needs-adaptation">I pacchetti di seguito elencati potranno essere verificati su uno o più sistemi.
 
 Selezionare uno o più pacchetti e cliccare il pulsante &lt;b&gt;Verifica i pacchetti selezionati&lt;/b&gt; per programmare questa operazione.</target>
         <context-group name="ctx">
@@ -21568,8 +21568,8 @@ Selezionare uno o più pacchetti e cliccare il pulsante &lt;b&gt;Verifica i pacc
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.package.verify.select.confirm" xml:space="preserve">
-          <source>Verify Selected Packages</source>
-        <target>Verifica pacchetti selezionati</target>
+          <source>Verify Packages</source>
+        <target state="needs-adaptation">Verifica pacchetti selezionati</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/PackageVerify.do</context>
         </context-group>
@@ -23669,11 +23669,11 @@ versione di Red Hat Enterprise Linux.&lt;br/&gt;&lt;br/&gt;
         <target>(&lt;a href="{0}"&gt;Blocco sistema&lt;/a&gt;)</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.subscribedchannels" xml:space="preserve">
-        <source>Subscribed Channels (&lt;a href="{0}"&gt;Alter Channel Subscriptions&lt;/a&gt;)</source>
+        <source>Subscribed Channels</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target>Canali sottoscritti (&lt;a href="{0}"&gt;Modifica Sottoscrizioni del Canale&lt;/a&gt;)</target>
+        <target state="needs-adaptation">Canali sottoscritti (&lt;a href="{0}"&gt;Modifica Sottoscrizioni del Canale&lt;/a&gt;)</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.sysevents" xml:space="preserve">
         <source>System Events</source>
@@ -23748,11 +23748,11 @@ versione di Red Hat Enterprise Linux.&lt;br/&gt;&lt;br/&gt;
         <target>(&lt;a href="{0}"&gt;Programma riavvio del sistema&lt;/a&gt;)</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.sysproperties" xml:space="preserve">
-        <source>System Properties (&lt;a href="{0}"&gt;Edit These Properties&lt;/a&gt;)</source>
+        <source>System Properties</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target>Proprietà del sistema (&lt;a href="{0}"&gt;Modifica queste proprietà&lt;/a&gt;)</target>
+        <target state="needs-adaptation">Proprietà del sistema (&lt;a href="{0}"&gt;Modifica queste proprietà&lt;/a&gt;)</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.entitlement" xml:space="preserve">
         <source>System Types:</source>
@@ -27097,11 +27097,11 @@ caratteri.</target>
         <target>Programmazione {0}</target>
       </trans-unit>
       <trans-unit id="toolbar.create.schedule" xml:space="preserve">
-        <source>create schedule</source>
+        <source>Create schedule</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/ScheduleDetail.do</context>
         </context-group>
-        <target>crea programmazione</target>
+        <target state="needs-adaptation">crea programmazione</target>
       </trans-unit>
       <trans-unit id="toolbar.delete.schedule" xml:space="preserve">
         <source>disable schedule</source>
@@ -27269,10 +27269,11 @@ caratteri.</target>
         </target>
       </trans-unit>
       <trans-unit id="toolbar.delete.software.channel" xml:space="preserve">
-        <source>Delete software channel</source>
+        <source>Delete Channel</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
+      <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="button.denyaccess.confirm" xml:space="preserve">
         <source>Deny Access and Confirm</source>
@@ -27296,10 +27297,11 @@ caratteri.</target>
         <target>Cerca</target>
       </trans-unit>
       <trans-unit id="toolbar.delete.channel" xml:space="preserve">
-        <source>Delete software channel</source>
+        <source>Delete Channel</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/errata//Add.do</context>
         </context-group>
+      <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="toolbar.misc.manage_channel" xml:space="preserve">
         <source>Manage Channel</source>
@@ -27806,16 +27808,16 @@ caratteri.</target>
         <target>Aggiungi nuovo slave</target>
       </trans-unit>
       <trans-unit id="iss.slave.remove" xml:space="preserve">
-        <source>Remove selected slaves</source>
-        <target>Rimuovi slave selezionati</target>
+        <source>Remove slaves</source>
+        <target state="needs-adaptation">Rimuovi slave selezionati</target>
       </trans-unit>
       <trans-unit id="toolbar.create.master" xml:space="preserve">
         <source>Add new master</source>
         <target>Aggiungi nuovo master</target>
       </trans-unit>
       <trans-unit id="iss.master.remove" xml:space="preserve">
-        <source>Remove selected masters</source>
-        <target>Rimuovi master selezionati</target>
+        <source>Remove masters</source>
+        <target state="needs-adaptation">Rimuovi master selezionati</target>
       </trans-unit>
       <trans-unit id="toolbar.delete.slave" xml:space="preserve">
         <source>Delete slave</source>
@@ -29460,6 +29462,20 @@ caratteri.</target>
   </trans-unit>
       <trans-unit id="spmigration.jsp.dryrun.disabled.tooltip" xml:space="preserve">
         <source>Dry run is not available for this product.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="sdc.details.overview.subscribedchannels.edit" xml:space="preserve">
+        <source>Edit Subscribed Channels</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="sdc.details.overview.sysproperties.edit" xml:space="preserve">
+        <source>Edit System Properties</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
       <target state="new"/>
   </trans-unit>
       </body>

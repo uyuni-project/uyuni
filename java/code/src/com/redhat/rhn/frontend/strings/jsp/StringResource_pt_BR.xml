@@ -253,14 +253,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Any page with required username fields</context>
         </context-group>
-        <target>{0} contém caracteres inválidos. Além dos caracteres alfanuméricos, '-', '_', '.' e '@' também são permitidos. Por favor tente novamente.</target>
+        <target state="translated">{0} contém caracteres inválidos. Além dos caracteres alfanuméricos, '-', '_', '.' e '@' também são permitidos. Tente novamente.</target>
       </trans-unit>
       <trans-unit id="errors.posix" xml:space="preserve">
         <source>{0} contains invalid characters. In addition to alphanumeric characters, '-', '_', and '.' are allowed.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page with required posix name fields</context>
         </context-group>
-        <target>{0} contém caracteres inválidos. Além dos caracteres alfanuméricos, '-', '_', '.' e '.' também são permitidos. Por favor tente novamente. </target>
+        <target state="translated">{0} contém caracteres inválidos. Além dos caracteres alfanuméricos, '-', '_', '.' e '.' também são permitidos.</target>
       </trans-unit>
       <trans-unit id="errors.config_channel_label" xml:space="preserve">
         <source>{0} contains invalid characters. In addition to alphanumeric characters, '-' and '_' are allowed.</source>
@@ -487,7 +487,7 @@
       </trans-unit>
       <trans-unit id="missing_capabilities.jsp.summary" xml:space="preserve">
         <source>The server &lt;strong&gt;&lt;a href="{0}"&gt;{1}&lt;/a&gt;&lt;/strong&gt; does not have the &lt;strong&gt;{2}&lt;/strong&gt; client capability. Please enable the capability before proceeding with the operation.</source>
-        <target>A capacidade do cliente &lt;strong&gt;&lt;a href="{0}"&gt;{1}&lt;/a&gt;&lt;/strong&gt; does not have the &lt;strong&gt;{2}&lt;/strong&gt; do servidor. Por favor ative a capacidade antes de proceder com a operação.</target>
+        <target state="translated">A capacidade do cliente &lt;strong&gt;&lt;a href="{0}"&gt;{1}&lt;/a&gt;&lt;/strong&gt; does not have the &lt;strong&gt;{2}&lt;/strong&gt; do servidor. Ative a capacidade antes de proceder com a operação.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
@@ -902,7 +902,7 @@
         <context-group name="ctx">
           <context context-type="paramnotes">You've found an error in our site. Please help us by filling out _this form_ with details of how you received this message.</context>
         </context-group>
-        <target>Você encontrou um erro em nosso site.  Por favor, entre em contato com um representante de Suporte com os detalhes de como você recebeu esta mensagem.</target>
+        <target state="translated">Você encontrou um erro em nosso site.  Entre em contato com um representante de Suporte com os detalhes de como você recebeu esta mensagem.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Permission error page</context>
         </context-group>
@@ -1063,7 +1063,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">500 error page</context>
         </context-group>
-        <target>Por favor nos ajude a corrigir esta mensagem, contactando-nos com detalhes de como você recebeu esta mensagem.</target>
+        <target state="translated">Nos ajude a corrigir esta mensagem, contactando-nos com detalhes de como você recebeu esta mensagem.</target>
       </trans-unit>
       <trans-unit id="common.jsp.noscript" xml:space="preserve">
         <source>Some features require JavaScript in order to work properly. Make sure you enable JavaScript in your browser.</source>
@@ -1470,7 +1470,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/LocalePreferences</context>
         </context-group>
-        <target>Por favor selecione seu idioma favorito na lista abaixo contendo os idiomas atualmente suportados. O idioma selecionado será usado como padrão para a interface do @@PRODUCT_NAME@@.</target>
+        <target state="translated">Selecione seu idioma favorito na lista abaixo contendo os idiomas atualmente suportados. O idioma selecionado será usado como padrão para a interface do @@PRODUCT_NAME@@.</target>
       </trans-unit>
       <trans-unit id="preferences.jsp.startpagetitle" xml:space="preserve">
         <source>"Overview" Start Page</source>
@@ -1813,7 +1813,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/ChangeEmail</context>
         </context-group>
-        <target>Por favor preencha seu novo endereço de e-mail abaixo.</target>
+        <target state="translated">Preencha seu novo endereço de e-mail abaixo.</target>
       </trans-unit>
       <!-- channelmanagementperms.jsp -->
       <trans-unit id="channelManagementPerms.title" xml:space="preserve">
@@ -2085,11 +2085,11 @@ abaixo e &lt;b&gt;não poderá mais se autenticar&lt;/b&gt;.</target>
         <target>Detalhes do Usuário</target>
       </trans-unit>
       <trans-unit id="userdetails.jsp.noemailaddress" xml:space="preserve">
-        <source>No email address</source>
+        <source>Add Email Address</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
-        <target>Nenhum endereço de e-mail</target>
+        <target state="needs-adaptation">Nenhum endereço de e-mail</target>
       </trans-unit>
       <trans-unit id="userdetails.jsp.disable" xml:space="preserve">
         <source>Deactivate User</source>
@@ -2313,7 +2313,7 @@ abaixo e &lt;b&gt;não poderá mais se autenticar&lt;/b&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DeleteUser</context>
         </context-group>
-        <target>&lt;p&gt;Isto removerá este usuário &lt;strong&gt;permanentemente&lt;/strong&gt;.&lt;/p&gt; &lt;p&gt;Todas as ações agendadas associadas a este usuário serão alteradas e desconexas do mesmo.&lt;/p&gt; &lt;p&gt;&lt;strong&gt;Por favor, clique somente uma vez no botão; o processo de remoção levará alguns instantes para concluir.&lt;/strong&gt;&lt;/p&gt;</target>
+        <target state="translated">&lt;p&gt;Isto removerá este usuário &lt;strong&gt;permanentemente&lt;/strong&gt;.&lt;/p&gt; &lt;p&gt;Todas as ações agendadas associadas a este usuário serão alteradas e desconexas do mesmo.&lt;/p&gt; &lt;p&gt;&lt;strong&gt;Clique somente uma vez no botão; o processo de remoção levará alguns instantes para concluir.&lt;/strong&gt;&lt;/p&gt;</target>
       </trans-unit>
       <!-- disableuser.jsp -->
       <trans-unit id="disableuser.jsp.disable" xml:space="preserve">
@@ -2510,7 +2510,7 @@ abaixo e &lt;b&gt;não poderá mais se autenticar&lt;/b&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="needs-adaptation">Por favor preencha suas informações no formulário abaixo. Os campos marcados com um asterisco (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) são &lt;strong&gt;obrigatórios&lt;/strong&gt;.</target>
+        <target state="translated"> Preencha suas informações no formulário abaixo. Os campos marcados com um asterisco (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) são &lt;strong&gt;obrigatórios&lt;/strong&gt;.</target>
       </trans-unit>
       <trans-unit id="your_edit_address_record.displayname" xml:space="preserve">
         <source>Record:</source>
@@ -7011,15 +7011,15 @@ permanecer sem modificações nesta página. Caso queira modificá-los, visite
         </context-group>
       </trans-unit>
       <trans-unit id="systems.groups.jsp.remove" xml:space="preserve">
-        <source>Leave Selected Groups</source>
-        <target>Sair dos Grupos Selecionados</target>
+        <source>Leave Groups</source>
+        <target state="needs-adaptation">Sair dos Grupos Selecionados</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.groups.jsp.add" xml:space="preserve">
-        <source>Join Selected Groups</source>
-        <target>Entrar nos Grupos de Sistemas</target>
+        <source>Join Groups</source>
+        <target state="needs-adaptation">Entrar nos Grupos de Sistemas</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
@@ -7176,8 +7176,8 @@ permanecer sem modificações nesta página. Caso queira modificá-los, visite
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroup.details.editproperties" xml:space="preserve">
-        <source>Edit These Properties</source>
-        <target>Editar Estas Propriedades</target>
+        <source>Edit System Group Properties</source>
+        <target state="needs-adaptation">Editar Estas Propriedades</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
@@ -8059,11 +8059,11 @@ permanecer sem modificações nesta página. Caso queira modificá-los, visite
         <target>A ação do comando remoto foi programada para rodar &lt;strong&gt;antes&lt;/strong&gt; da ação de remoção do pacote.</target>
       </trans-unit>
       <trans-unit id="installpkgs.jsp.installpackages" xml:space="preserve">
-        <source>Install Selected Packages</source>
+        <source>Install Packages</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/InstallPackages</context>
         </context-group>
-        <target>Instalar Pacotes Selecionados</target>
+        <target state="needs-adaptation">Instalar Pacotes Selecionados</target>
       </trans-unit>
       <trans-unit id="installconfirm.jsp.header" xml:space="preserve">
         <source>Confirm Package Install</source>
@@ -13907,8 +13907,8 @@ o &lt;strong&gt;Guia de Administração de Sistemas Red Hat Enterprise Li
         </context-group>
       </trans-unit>
       <trans-unit id="activation-key.groups.jsp.add" xml:space="preserve">
-        <source>Join Selected Groups</source>
-        <target>Entrar nos Grupos de Sistemas</target>
+        <source>Join Groups</source>
+        <target state="needs-adaptation">Entrar nos Grupos de Sistemas</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/activationkeys/groups/* pages</context>
         </context-group>
@@ -14394,15 +14394,15 @@ o &lt;strong&gt;Guia de Administração de Sistemas Red Hat Enterprise Li
         </context-group>
       </trans-unit>
       <trans-unit id="system.audit.listscap.jsp.removebut" xml:space="preserve">
-        <source>Remove Selected Scans</source>
-        <target>Remover Scans selecionadas</target>
+        <source>Remove</source>
+        <target state="needs-adaptation">Remover Scans selecionadas</target>
         <context-group name="ctx">
           <context context-type="sourcefile">View of SCAP scans for given system</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.audit.listscap.jsp.diffbut" xml:space="preserve">
-        <source>Compare Selected Scans</source>
-        <target>Comparar Scans selecionadas</target>
+        <source>Compare</source>
+        <target state="needs-adaptation">Comparar Scans selecionadas</target>
         <context-group name="ctx">
           <context context-type="sourcefile">View of SCAP scans for given system</context>
         </context-group>
@@ -15290,8 +15290,8 @@ o &lt;strong&gt;Guia de Administração de Sistemas Red Hat Enterprise Li
         </context-group>
       </trans-unit>
       <trans-unit id="system.event.pending.headerPending" xml:space="preserve">
-        <source>You may cancel events for this system by selecting them and clicking the &lt;strong&gt;Cancel Selected Events&lt;/strong&gt; button.</source>
-        <target>Você pode cancelar eventos para este sistema selecionando-os e pressionando o botão &lt;strong&gt;Cancelar Eventos&lt;/strong&gt; </target>
+        <source>You may cancel events for this system by selecting them and clicking the &lt;strong&gt;Cancel Events&lt;/strong&gt; button.</source>
+        <target state="needs-adaptation">Você pode cancelar eventos para este sistema selecionando-os e pressionando o botão &lt;strong&gt;Cancelar Eventos&lt;/strong&gt; </target>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
@@ -15311,8 +15311,8 @@ o &lt;strong&gt;Guia de Administração de Sistemas Red Hat Enterprise Li
         </context-group>
       </trans-unit>
       <trans-unit id="system.event.pending.cancel" xml:space="preserve">
-        <source>Cancel Selected Events</source>
-        <target>Cancelar Eventos Selecionados</target>
+        <source>Cancel Events</source>
+        <target state="needs-adaptation">Cancelar Eventos Selecionados</target>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
@@ -16739,11 +16739,11 @@ a file or files, or copy the latest version into a set of local overrides or int
         <target>Revisão {0}</target>
       </trans-unit>
       <trans-unit id="channelfiles.jsp.removeselected" xml:space="preserve">
-        <source>Remove Selected Files</source>
+        <source>Remove Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelFiles.do</context>
         </context-group>
-        <target>Remover Arquivos Selecionados</target>
+        <target state="needs-adaptation">Remover Arquivos Selecionados</target>
       </trans-unit>
       <trans-unit id="channelfiles.jsp.copy2systems" xml:space="preserve">
         <source>Copy to Systems</source>
@@ -17798,11 +17798,11 @@ de configuração centralmente gerenciado pelo arquivo, {2}; segue abaixo uma li
         <target>baixar revisão mais recente</target>
       </trans-unit>
       <trans-unit id="toolbar.delete.configfile" xml:space="preserve">
-        <source>Delete This File Revision</source>
+        <source>Delete</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
-        <target>remover esta revisão de arquivo</target>
+        <target state="needs-adaptation">remover esta revisão de arquivo</target>
       </trans-unit>
       <trans-unit id="toolbar.delete.org" xml:space="preserve">
         <source>Delete Organization</source>
@@ -17812,11 +17812,11 @@ de configuração centralmente gerenciado pelo arquivo, {2}; segue abaixo uma li
         <target state="needs-adaptation">remover organização</target>
       </trans-unit>
       <trans-unit id="toolbar.delete.deletefile" xml:space="preserve">
-        <source>Delete This File</source>
+        <source>Delete</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
-        <target>Remover este arquivo</target>
+        <target state="needs-adaptation">Remover este arquivo</target>
       </trans-unit>
       <trans-unit id="filedetails.jsp.download" xml:space="preserve">
         <source>download file revision</source>
@@ -21349,7 +21349,7 @@ para qualquer uma das revisões, assim como todo o histórico de implementação
       <trans-unit id="ssm.package.remove.select.summary" xml:space="preserve">
         <source>Packages listed below may be removed from one or more systems.
 
-             Select one or more and click the &lt;b&gt;Remove Selected Packages&lt;/b&gt; button to schedule package removal.
+             Select one or more and click the &lt;b&gt;Remove Packages&lt;/b&gt; button to schedule package removal.
           </source>
         <target state="needs-adaptation">Os pacotes listados abaixo podem ser removidos de um ou mais sistemas.
 
@@ -21360,8 +21360,8 @@ para qualquer uma das revisões, assim como todo o histórico de implementação
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.package.remove.select.confirm" xml:space="preserve">
-        <source>Remove Selected Packages</source>
-        <target>Remover Pacotes Selecionados</target>
+        <source>Remove Packages</source>
+        <target state="needs-adaptation">Remover Pacotes Selecionados</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/PackageRemove.do</context>
         </context-group>
@@ -21429,8 +21429,8 @@ para qualquer uma das revisões, assim como todo o histórico de implementação
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.package.upgrade.select.confirm" xml:space="preserve">
-        <source>Upgrade Selected Packages</source>
-        <target>Atualizar Pacotes Selecionados</target>
+        <source>Upgrade Packages</source>
+        <target state="needs-adaptation">Atualizar Pacotes Selecionados</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/PackageUpgrade.do</context>
         </context-group>
@@ -21489,7 +21489,7 @@ para qualquer uma das revisões, assim como todo o histórico de implementação
       <trans-unit id="ssm.package.verify.select.summary" xml:space="preserve">
         <source>Packages listed below may be verified on one or more systems.
 
-            Select one or more and click the &lt;b&gt;Verify Selected Packages&lt;/b&gt; button to schedule package verification.
+            Select one or more and click the &lt;b&gt;Verify Packages&lt;/b&gt; button to schedule package verification.
          </source>
         <target state="needs-adaptation">Os pacotes listados abaixo podem ser verificados em um ou mais sistemas.
 
@@ -21500,8 +21500,8 @@ para qualquer uma das revisões, assim como todo o histórico de implementação
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.package.verify.select.confirm" xml:space="preserve">
-        <source>Verify Selected Packages</source>
-        <target>Verificar Pacotes Selecionados</target>
+        <source>Verify Packages</source>
+        <target state="needs-adaptation">Verificar Pacotes Selecionados</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/PackageVerify.do</context>
         </context-group>
@@ -23602,11 +23602,11 @@ O Caminho de Árvore, Kickstart RPM, Canal de Base e a Geração do Instalador d
         <target>(&lt;a href="{0}"&gt;Bloquear sistema&lt;/a&gt;)</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.subscribedchannels" xml:space="preserve">
-        <source>Subscribed Channels (&lt;a href="{0}"&gt;Alter Channel Subscriptions&lt;/a&gt;)</source>
+        <source>Subscribed Channels</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target>Canais Registrados (&lt;a href="{0}"&gt;Alterar Subscrições de Canal&lt;/a&gt;)</target>
+        <target state="needs-adaptation">Canais Registrados (&lt;a href="{0}"&gt;Alterar Subscrições de Canal&lt;/a&gt;)</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.sysevents" xml:space="preserve">
         <source>System Events</source>
@@ -23681,11 +23681,11 @@ O Caminho de Árvore, Kickstart RPM, Canal de Base e a Geração do Instalador d
         <target>(&lt;a href="{0}"&gt;Agendar Reinicialização de Sistema&lt;/a&gt;)</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.sysproperties" xml:space="preserve">
-        <source>System Properties (&lt;a href="{0}"&gt;Edit These Properties&lt;/a&gt;)</source>
+        <source>System Properties</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target>Propriedades de Sistemas (&lt;a href="{0}"&gt;Editar Estas Propriedades&lt;/a&gt;)</target>
+        <target state="needs-adaptation">Propriedades de Sistemas (&lt;a href="{0}"&gt;Editar Estas Propriedades&lt;/a&gt;)</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.entitlement" xml:space="preserve">
         <source>System Types:</source>
@@ -27039,11 +27039,11 @@ Serão exibidos somente pacotes de uma arquitetura compatível.</target>
         <target>Agenda {0}</target>
       </trans-unit>
       <trans-unit id="toolbar.create.schedule" xml:space="preserve">
-        <source>create schedule</source>
+        <source>Create schedule</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/ScheduleDetail.do</context>
         </context-group>
-        <target>criar agenda</target>
+        <target state="needs-adaptation">criar agenda</target>
       </trans-unit>
       <trans-unit id="toolbar.delete.schedule" xml:space="preserve">
         <source>disable schedule</source>
@@ -27211,10 +27211,11 @@ Serão exibidos somente pacotes de uma arquitetura compatível.</target>
        </target>
       </trans-unit>
       <trans-unit id="toolbar.delete.software.channel" xml:space="preserve">
-        <source>Delete software channel</source>
+        <source>Delete Channel</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
+      <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="button.denyaccess.confirm" xml:space="preserve">
         <source>Deny Access and Confirm</source>
@@ -27238,10 +27239,11 @@ Serão exibidos somente pacotes de uma arquitetura compatível.</target>
         <target>Buscar</target>
       </trans-unit>
       <trans-unit id="toolbar.delete.channel" xml:space="preserve">
-        <source>Delete software channel</source>
+        <source>Delete Channel</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/errata//Add.do</context>
         </context-group>
+      <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="toolbar.misc.manage_channel" xml:space="preserve">
         <source>Manage Channel</source>
@@ -27749,16 +27751,16 @@ Serão exibidos somente pacotes de uma arquitetura compatível.</target>
         <target>Adicionar novo Slave</target>
       </trans-unit>
       <trans-unit id="iss.slave.remove" xml:space="preserve">
-        <source>Remove selected slaves</source>
-        <target>Remover slaves selecionados</target>
+        <source>Remove slaves</source>
+        <target state="needs-adaptation">Remover slaves selecionados</target>
       </trans-unit>
       <trans-unit id="toolbar.create.master" xml:space="preserve">
         <source>Add new master</source>
         <target>Adicionar novo master</target>
       </trans-unit>
       <trans-unit id="iss.master.remove" xml:space="preserve">
-        <source>Remove selected masters</source>
-        <target>Remover masters selecionados</target>
+        <source>Remove masters</source>
+        <target state="needs-adaptation">Remover masters selecionados</target>
       </trans-unit>
       <trans-unit id="toolbar.delete.slave" xml:space="preserve">
         <source>Delete slave</source>
@@ -29332,42 +29334,42 @@ Serão exibidos somente pacotes de uma arquitetura compatível.</target>
         </context-group>
         <target state="new"/>
       </trans-unit>
-    <trans-unit id="system.event.inventory" xml:space="preserve">
-          <source>Inventory:</source>
+      <trans-unit id="system.event.inventory" xml:space="preserve">
+        <source>Inventory:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="ansible_managed" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="ansible_managed" xml:space="preserve">
         <source>Ansible Managed</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="proxy_entitled" xml:space="preserve">
         <source>Proxy</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="403.jsp.title" xml:space="preserve">
         <source>403: Access Denied</source>
         <context-group name="ctx">
           <context context-type="sourcefile">403 error page</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="403.jsp.summary" xml:space="preserve">
         <source>You do not have permission to access the page: {0}.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">403 error page</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="403.jsp.instruction" xml:space="preserve">
         <source>You are signed in, but your account does not have permission to access this resource. If you believe you should have access, contact your organization administrator to review your access permissions.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">403 error page</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="403.jsp.actions" xml:space="preserve">
         <source>
           You can also &lt;a href="{0}"&gt;log out&lt;/a&gt; or &lt;a href="javascript:history.back()"&gt;go back&lt;/a&gt; to the previous page.
@@ -29375,35 +29377,49 @@ Serão exibidos somente pacotes de uma arquitetura compatível.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">403 error page</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="userdetails.jsp.adminroles" xml:space="preserve">
         <source>Administrative Roles</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="bunch.jsp.description.compare-task-bunch" xml:space="preserve">
         <source>Schedules a generic comparison task</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="schedule.edit.jsp.activateschedule" xml:space="preserve">
         <source>Activate Schedule</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/ScheduleDetail.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="task.status.compare-task-files" xml:space="preserve">
         <source>Compare Task</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="spmigration.jsp.dryrun.disabled.tooltip" xml:space="preserve">
         <source>Dry run is not available for this product.</source>
+        <target state="new"/>
+      </trans-unit>
+    <trans-unit id="sdc.details.overview.subscribedchannels.edit" xml:space="preserve">
+        <source>Edit Subscribed Channels</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="sdc.details.overview.sysproperties.edit" xml:space="preserve">
+        <source>Edit System Properties</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
       <target state="new"/>
   </trans-unit>
       </body>
