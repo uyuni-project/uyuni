@@ -245,9 +245,6 @@ artifacts:
   - artifact: simpleclient_httpserver
     package: prometheus-client-java
     repository: Uyuni_Other
-  - artifact: simpleclient_servlet
-    package: prometheus-client-java
-    repository: Uyuni_Other
   - artifact: simple-core
     # How comes that package is not noarch?
     arch: x86_64
