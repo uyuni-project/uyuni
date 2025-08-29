@@ -26,6 +26,7 @@
     <template name="ResetPassword_queries" filename="xml/ResetPassword_queries.xml" />
     <template name="Product_queries" filename="xml/Product_queries.xml" />
     <template name="oval_queries" filename="xml/oval_queries.xml"/>
+    <template name="vex_queries" filename="xml/vex_queries.xml"/>
 
     <!-- Reporting queries -->
     <template name="GeneralReport_queries" filename="xml/GeneralReport_queries.xml" />
