@@ -171,7 +171,6 @@ def create_fake_migration_path(schema_path, new_version, pr_file=None, version=N
 
 def run_command(command):
     """Run a shell command"""
-    # print(f"Run: {command}")
     try:
         subprocess.check_call(command, shell=True)
         return True
@@ -230,7 +229,7 @@ def dump_database(dump_name, excluded_tables=None):
         raise RuntimeError("Could not dump %s!" % db_name)
     cleanup_cmd = f"/usr/bin/sed -i 's/^\(\\\\u\?n\?restrict \).*$/\\1/g' {dump_name}"
     if run_command(cleanup_cmd):
-        print(f"{dump_name} cleanuped")
+        print(f"Cleaned unrestrict/restrict tokens from {dump_name} ")
     else:
         raise RuntimeError(f"Could not cleanup {dump_name}")
 
