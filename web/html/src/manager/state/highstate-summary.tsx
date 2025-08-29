@@ -120,7 +120,7 @@ function State({ minionId, state }: { minionId: number; state: StateSource }) {
   if (state.type === "STATE") {
     return (
       <>
-        <i className="spacewalk-icon-software-channels" title={state.typeName} />
+        <i className="spacewalk-icon-software-channels" data-bs-toggle="tooltip" title={state.typeName} />
         <strong>
           <a href={`/rhn/configuration/ChannelOverview.do?ccid=${state.id}`}>{state.name}</a>
         </strong>
@@ -129,7 +129,7 @@ function State({ minionId, state }: { minionId: number; state: StateSource }) {
   } else if (state.type === "CONFIG") {
     return (
       <>
-        <i className="spacewalk-icon-software-channels" title={state.typeName} />
+        <i className="spacewalk-icon-software-channels" data-bs-toggle="tooltip" title={state.typeName} />
         <strong>
           <a href={`/rhn/configuration/ChannelOverview.do?ccid=${state.id}`}>{state.name}</a>
         </strong>
@@ -138,7 +138,7 @@ function State({ minionId, state }: { minionId: number; state: StateSource }) {
   } else if (state.type === "FORMULA") {
     return (
       <>
-        <i className="spacewalk-icon-salt" title={state.typeName} />
+        <i className="spacewalk-icon-salt" data-bs-toggle="tooltip" title={state.typeName} />
         <strong>
           <a href={`/rhn/manager/systems/details/formula/${state.id}?sid=${minionId}`}>{state.name}</a>
         </strong>
@@ -147,7 +147,7 @@ function State({ minionId, state }: { minionId: number; state: StateSource }) {
   } else if (state.type === "INTERNAL") {
     return (
       <>
-        <i className="spacewalk-icon-salt" title={state.typeName} />
+        <i className="spacewalk-icon-salt" data-bs-toggle="tooltip" title={state.typeName} />
         <i>{state.name}</i>
       </>
     );

@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { SubmitButton } from "components/buttons";
+import { Button, SubmitButton } from "components/buttons";
 
 import { FocusGroup } from "./focus-group";
 
@@ -48,13 +48,13 @@ export class HeaderSearch extends React.PureComponent {
   render() {
     return (
       <FocusGroup onFocusOut={() => this.setState({ isOpen: false })}>
-        <button
-          aria-label={t("Open search")}
+        <Button
+          icon="fa-search"
+          title={t("Open search")}
+          tooltipPlacement="bottom"
           className={`is-plain header-non-link manual-toggle-box ${this.state.isOpen ? "open" : ""}`}
-          onClick={() => this.setState({ isOpen: !this.state.isOpen })}
-        >
-          <i className="fa fa-search" aria-hidden="true" />
-        </button>
+          handler={() => this.setState({ isOpen: !this.state.isOpen })}
+        />
         {this.state.isOpen ? (
           <form id="search-form" name="form1" className="box-wrapper form-inline" onSubmit={this.onSubmit}>
             <div className="form-group">

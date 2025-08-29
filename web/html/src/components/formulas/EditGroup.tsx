@@ -135,6 +135,7 @@ class EditGroup extends React.Component<EditGroupProps, EditGroupState> {
           <i
             className="fa fa-plus"
             id={this.props.id + "#add_item"}
+            data-bs-toggle="tooltip"
             title={
               this.props.element.$maxItems! <= this.props.value.length ? "Max number of items reached" : "Add Item"
             }

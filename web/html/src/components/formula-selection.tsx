@@ -185,14 +185,18 @@ class FormulaSelection extends React.Component<Props, State> {
             onClick={this.onListItemClick}
             id={formula.name}
             key={formula.name}
-            title={formula.description}
             className={this.getListStyle(formula.selected)}
           >
             <i className={this.getListIcon(formula.selected)} />
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             {capitalize(formula.name)}
             {formula.description ? (
-              <i id={"info_button_" + formula.name} className="fa fa-lg fa-info-circle pull-right" />
+              <i
+                id={"info_button_" + formula.name}
+                data-bs-toggle="tooltip"
+                title={formula.description}
+                className="fa fa-lg fa-info-circle pull-right"
+              />
             ) : null}
             {this.getDescription(formula)}
           </a>

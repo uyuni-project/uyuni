@@ -104,6 +104,7 @@
   <h3><bean:message key="systemgroup.details.properties"/>
   <rhn:require acl="authorized_for(systems.groups.details)">
     <a href="/rhn/groups/EditGroup.do?sgid=${id}"
+      data-bs-toggle="tooltip"
       title="<bean:message key='systemgroup.details.editproperties' />"
       role="button"
       class="js-spa btn btn-tertiary pull-right">
