@@ -1203,7 +1203,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu (system details)</context>
         </context-group>
-        <target state="new"></target>
+        <target state="new"/>
       </trans-unit>
       <trans-unit id="Ansible Control Node" xml:space="preserve">
         <source>Control Node</source>
@@ -1217,7 +1217,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu (system details)</context>
         </context-group>
-        <target state="new"></target>
+        <target state="new"/>
       </trans-unit>
       <trans-unit id="Inventories" xml:space="preserve">
         <source>Inventories</source>
@@ -1231,18 +1231,18 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/channel/AppStreams.do</context>
         </context-group>
-        <target state="new"></target>
+        <target state="new"/>
       </trans-unit>
       <trans-unit id="AppStreams" xml:space="preserve">
         <source>AppStreams</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/channel/downloads/Download.do</context>
         </context-group>
-        <target state="new"></target>
+        <target state="new"/>
       </trans-unit>
       <trans-unit id="nav.system.coco" xml:space="preserve">
         <source>Confidential Computing</source>
-        <target state="new"></target>
+        <target state="new"/>
       </trans-unit>
       <trans-unit id="nav.system.coco.settings" xml:space="preserve">
         <source>Settings</source>
@@ -1250,63 +1250,63 @@
       </trans-unit>
       <trans-unit id="nav.system.coco.list_attestations" xml:space="preserve">
         <source>List Attestations</source>
-        <target state="new"></target>
+        <target state="new"/>
       </trans-unit>
       <trans-unit id="Hub Configuration" xml:space="preserve">
         <source>Hub Configuration</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="new"></target>
+        <target state="new"/>
       </trans-unit>
       <trans-unit id="Hub Details" xml:space="preserve">
         <source>Hub Details</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="new"></target>
+        <target state="new"/>
       </trans-unit>
       <trans-unit id="Peripherals Configuration" xml:space="preserve">
         <source>Peripherals Configuration</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="new"></target>
+        <target state="new"/>
       </trans-unit>
       <trans-unit id="Access Tokens" xml:space="preserve">
         <source>Access Tokens</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="new"></target>
+        <target state="new"/>
       </trans-unit>
       <trans-unit id="Clients" xml:space="preserve">
         <source>Clients</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="new"></target>
+        <target state="new"/>
       </trans-unit>
       <trans-unit id="nav.sdc.config.list_channels" xml:space="preserve">
         <source>List Channels</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        <target state="new"></target>
+        <target state="new"/>
       </trans-unit>
       <trans-unit id="nav.sdc.config.rank_channels_view" xml:space="preserve">
         <source>View Rankings</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        <target state="new"></target>
+        <target state="new"/>
       </trans-unit>
       <trans-unit id="Support" xml:space="preserve">
         <source>Support</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="new"></target>
+        <target state="new"/>
       </trans-unit>
     </body>
   </file>
