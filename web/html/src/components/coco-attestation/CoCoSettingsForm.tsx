@@ -3,7 +3,6 @@ import * as React from "react";
 import { AsyncButton, Button } from "../buttons";
 import { BootstrapPanel } from "../panels/BootstrapPanel";
 import { RecurringEventPicker } from "../picker/recurring-event-picker";
-import { SectionToolbar } from "../section-toolbar/section-toolbar";
 import { Toggler } from "../toggler";
 import { Settings } from "./Utils";
 
@@ -72,25 +71,6 @@ class CoCoSettingsForm extends React.Component<Props, State> {
   render(): React.ReactNode {
     return (
       <>
-        <SectionToolbar>
-          <div className="action-button-wrapper">
-            <span className="btn-group pull-right">
-              <AsyncButton
-                id="save-btn"
-                icon="fa-floppy-o"
-                action={() => this.props.saveHandler(this.state as Settings)}
-                text={t("Save")}
-              />
-              <Button
-                id="reset-btn"
-                icon="fa-undo"
-                text={t("Reset Changes")}
-                className="btn btn-default"
-                handler={this.onResetChanges}
-              />
-            </span>
-          </div>
-        </SectionToolbar>
         <BootstrapPanel>
           <div className="form-horizontal">
             <div className="form-group">
@@ -165,6 +145,24 @@ class CoCoSettingsForm extends React.Component<Props, State> {
             />
           </BootstrapPanel>
         )}
+        <div className="row">
+          <div className="col-md-offset-3 offset-md-3 col-md-6">
+            <AsyncButton
+              id="save-btn"
+              icon="fa-floppy-o"
+              action={() => this.props.saveHandler(this.state as Settings)}
+              text={t("Save")}
+              className="btn-primary me-2"
+            />
+            <Button
+              id="reset-btn"
+              icon="fa-undo"
+              text={t("Reset Changes")}
+              className="btn-default"
+              handler={this.onResetChanges}
+            />
+          </div>
+        </div>
       </>
     );
   }

@@ -238,7 +238,7 @@ end
 
 When(/^I query latest Salt changes on "(.*?)"$/) do |host|
   node = get_target(host)
-  salt = use_salt_bundle ? 'venv-salt-minion' : 'salt'
+  salt = $use_salt_bundle ? 'venv-salt-minion' : 'salt'
   if host == 'server'
     salt = 'salt'
   end
@@ -252,12 +252,12 @@ end
 When(/^I query latest Salt changes on Debian-like system "(.*?)"$/) do |host|
   node = get_target(host)
   salt =
-    if use_salt_bundle
+    if $use_salt_bundle
       'venv-salt-minion'
     else
       'salt'
     end
-  changelog_file = use_salt_bundle ? 'changelog.gz' : 'changelog.Debian.gz'
+  changelog_file = $use_salt_bundle ? 'changelog.gz' : 'changelog.Debian.gz'
   result, _return_code = node.run("zcat /usr/share/doc/#{salt}/#{changelog_file}")
   result.split("\n")[0, 15].each do |line|
     line.force_encoding('UTF-8')
@@ -349,7 +349,7 @@ When(/^I kill running spacewalk-repo-sync for "([^"]*)"$/) do |os_product_versio
     command_output, _code = get_target('server').run('ps axo pid,cmd | grep spacewalk-repo-sync | grep -v grep', check_errors: false)
     process = command_output.split("\n")[0]
     if process.nil?
-      log "#{time_spent / 60.to_i} minutes waiting for '#{os_product_version}' remaining channels to start their repo-sync processes:\n#{channels_to_kill}" if ((time_spent += checking_rate) % 60).zero?
+      log "#{time_spent / 60} minutes waiting for '#{os_product_version}' remaining channels to start their repo-sync processes:\n#{channels_to_kill}" if ((time_spent += checking_rate) % 60).zero?
       sleep checking_rate
       next
     end
@@ -381,7 +381,7 @@ When(/^I kill running spacewalk-repo-sync for "([^"]*)" channel$/) do |channel|
     process = command_output.split("\n")[0]
     channel_synchronizing = process.split[5].strip
     if process.nil?
-      log "#{time_spent / 60.to_i} minutes waiting for '#{channel}' channel to start its repo-sync processes." if ((time_spent += checking_rate) % 60).zero?
+      log "#{time_spent / 60} minutes waiting for '#{channel}' channel to start its repo-sync processes." if ((time_spent += checking_rate) % 60).zero?
       sleep checking_rate
       next
     elsif channel_synchronizing == channel
@@ -439,7 +439,7 @@ When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
     repeat_until_timeout(timeout: timeout, message: 'Channel not fully synced') do
       break if channel_sync_completed?(channel)
 
-      log "#{time_spent / 60.to_i} minutes out of #{timeout / 60.to_i} waiting for '#{channel}' channel to be synchronized" if ((time_spent += checking_rate) % 60).zero?
+      log "#{time_spent / 60} minutes out of #{timeout / 60} waiting for '#{channel}' channel to be synchronized" if ((time_spent += checking_rate) % 60).zero?
       sleep checking_rate
     end
   rescue StandardError => e
@@ -479,7 +479,7 @@ When(/^I wait until all synchronized channels for "([^"]*)" have finished$/) do 
       end
       break if channels_to_wait.empty?
 
-      log "#{time_spent / 60.to_i} minutes out of #{timeout / 60.to_i} waiting for '#{os_product_version}' channels to be synchronized" if ((time_spent += checking_rate) % 60).zero?
+      log "#{time_spent / 60} minutes out of #{timeout / 60} waiting for '#{os_product_version}' channels to be synchronized" if ((time_spent += checking_rate) % 60).zero?
       sleep checking_rate
     end
   rescue StandardError => e
@@ -858,7 +858,7 @@ end
 # Repositories and packages management
 When(/^I migrate the non-SUMA repositories on "([^"]*)"$/) do |host|
   node = get_target(host)
-  salt_call = use_salt_bundle ? 'venv-salt-call' : 'salt-call'
+  salt_call = $use_salt_bundle ? 'venv-salt-call' : 'salt-call'
   # use sumaform states to migrate to latest SP the system repositories:
   node.run("#{salt_call} --local --file-root /root/salt/ state.apply repos")
   # disable again the non-SUMA repositories:
@@ -878,7 +878,7 @@ When(/^I (enable|disable) Debian-like "([^"]*)" repository on "([^"]*)"$/) do |a
 
   # edit ubuntu.sources with downloaded utility
   sources = '/etc/apt/sources.list.d/ubuntu.sources'
-  tmp = '/tmp//ubuntu.sources'
+  tmp = '/tmp/ubuntu.sources'
   node.run("awk -f #{dest} -v action=#{action} -v distro=$(lsb_release -sc) -v repo=#{repo} #{sources} > #{tmp} && mv #{tmp} #{sources}")
 end
 
@@ -1368,7 +1368,7 @@ end
 
 When(/^I apply "([^"]*)" local salt state on "([^"]*)"$/) do |state, host|
   node = get_target(host)
-  salt_call = use_salt_bundle ? 'venv-salt-call' : 'salt-call'
+  salt_call = $use_salt_bundle ? 'venv-salt-call' : 'salt-call'
   if host == 'server'
     salt_call = 'salt-call'
   end

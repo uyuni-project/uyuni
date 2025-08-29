@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Button } from "components/buttons";
 import { DeleteDialog } from "components/dialog/DeleteDialog";
 import { ModalButton } from "components/dialog/ModalButton";
-import { Check } from "components/input/check/Check";
+import { DEPRECATED_Check } from "components/input/check/DEPRECATED_Check";
 import { Form } from "components/input/form/Form";
 import { Column } from "components/table/Column";
 import { Table } from "components/table/Table";
@@ -101,7 +101,7 @@ const MaintenanceCalendarList = (props: CalendarListProps) => {
           <Form model={{ strategy: strategy }} onChange={setCheck}>
             <div>{t("Are you sure you want to delete the selected item?")}</div>
             <div>{t("This will unassign all schedules from this calendar.")}</div>
-            <Check name="strategy" label={<b>{t("Cancel affected actions?")}</b>} divClass="col-md-6" />
+            <DEPRECATED_Check name="strategy" label={<b>{t("Cancel affected actions?")}</b>} divClass="col-md-6" />
           </Form>
         }
         onConfirm={() => props.onDelete(addStrategy())}

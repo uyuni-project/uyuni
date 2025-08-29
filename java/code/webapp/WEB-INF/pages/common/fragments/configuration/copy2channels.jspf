@@ -12,6 +12,14 @@
 
 <rl:listset name="channelSet">
     <rhn:csrf />
+    <c:if test = "${not empty requestScope.pageList}">
+        <div class="text-right">
+            <input type="submit" class="btn btn-default"
+                name="dispatch"
+                value="${rhn:localize('copy2channels.jsp.doCopy')}"
+                />
+        </div>
+    </c:if>
         <!-- Start of Channels list -->
         <rl:list dataset="pageList"
                  name="channels"
@@ -41,15 +49,6 @@
                            attr="filesAndDirsDisplayString"
                            />
         </rl:list>
-        <c:if test = "${not empty requestScope.pageList}">
-                <hr />
-                <div class="text-right">
-                        <input type="submit" class="btn btn-default"
-                                        name="dispatch"
-                                        value="${rhn:localize('copy2channels.jsp.doCopy')}"
-                                        />
-                </div>
-        </c:if>
         <rhn:submitted/>
 </rl:listset>
 </c:when>

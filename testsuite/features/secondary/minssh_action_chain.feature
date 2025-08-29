@@ -78,7 +78,7 @@ Feature: Salt SSH action chain
     And I enter "virgo-dummy" as the filtered package name
     And I click on the filter button
     And I check "virgo-dummy" in the list
-    And I click on "Install Selected Packages"
+    And I click on "Install Packages"
     And I check radio button "schedule-by-action-chain"
     And I click on "Confirm"
     Then I should see a "Action has been successfully added to the Action Chain" text
@@ -197,7 +197,7 @@ Feature: Salt SSH action chain
   Scenario: Delete the action chain for SSH minion
     When I follow the left menu "Schedule > Action Chains"
     And I follow "minssh_action_chain_to_delete"
-    And I follow "delete action chain" in the content area
+    And I follow "Delete Action Chains" in the content area
     Then I click on "Delete"
 
   Scenario: Cleanup: roll back action chain effects on SSH minion

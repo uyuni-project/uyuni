@@ -9,6 +9,6 @@
 # IMMUTABLE ORDER
 
 - features/proxy/proxy_container.feature
-- features/proxy/proxy_container_branch_network.feature
+- features/proxy/proxy_rbs_container_branch_network.feature
 
 ## Proxy features END ###

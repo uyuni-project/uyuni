@@ -206,7 +206,7 @@ public class ToolbarTag extends TagSupport {
 
     /**
      * @param iconAltIn Sets the localization key that will resolve
-     *                  to the alt text of the icon
+     * to the alt text of the icon
      */
     public void setIconAlt(String iconAltIn) {
         this.iconAlt = iconAltIn;
@@ -239,7 +239,7 @@ public class ToolbarTag extends TagSupport {
 
     /**
      * @param imgAltIn Sets the localization key that will resolve
-     *                 to the alt text of the img
+     * to the alt text of the img
      */
     public void setImgAlt(String imgAltIn) {
         this.imgAlt = imgAltIn;
@@ -304,7 +304,7 @@ public class ToolbarTag extends TagSupport {
      * Sets the acl used to control access to the deletion action button.
      *
      * @param delacl the acl used to control access to the deletion action
-     *               button.
+     * button.
      */
     public void setDeletionAcl(String delacl) {
         deletionAcl = delacl;
@@ -395,7 +395,7 @@ public class ToolbarTag extends TagSupport {
      * Sets the acl used to control access to the creation action button.
      *
      * @param createacl the acl used to control access to the creation
-     *                  action button.
+     * action button.
      */
     public void setCreationAcl(String createacl) {
         creationAcl = createacl;
@@ -451,7 +451,7 @@ public class ToolbarTag extends TagSupport {
      * Sets the acl used to control access to the clone action button.
      *
      * @param cloneacl the acl used to control access to the clone
-     *                 action button.
+     * action button.
      */
     public void setCloneAcl(String cloneacl) {
         cloneAcl = cloneacl;
@@ -675,7 +675,7 @@ public class ToolbarTag extends TagSupport {
 
             String create = "toolbar.create." + getCreationType();
             return renderActionLink(getCreationUrl(), create, "btn btn-primary",
-                    create, "item-add", null, false);
+                                    create, "item-add", null, false);
         }
         return "";
     }
@@ -686,7 +686,7 @@ public class ToolbarTag extends TagSupport {
 
             String clone = "toolbar.clone." + getCloneType();
             return renderActionLink(getCloneUrl(), clone, "btn btn-default",
-                    clone, "item-clone", null, false);
+                                    clone, "item-clone", null, false);
         }
         return "";
     }
@@ -734,7 +734,7 @@ public class ToolbarTag extends TagSupport {
         }
 
         return renderActionLink(getMiscUrl(), getMiscText(), "btn btn-default",
-                getMiscAlt(), getMiscIcon(), getMiscImg(), isMiscSpaOff());
+                                 getMiscAlt(), getMiscIcon(), getMiscImg(), isMiscSpaOff());
     }
 
     private String renderActionLink(String url, String text, String className,

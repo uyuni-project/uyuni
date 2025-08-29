@@ -25,6 +25,11 @@
 <c:when test="${not empty requestScope.pageList}">
   <rhn:list pageList="${requestScope.pageList}"
                 noDataText="">
+    <div class="text-right">
+         <html:submit styleClass="btn btn-default" property="dispatch">
+         <bean:message key="sdc.configlist.jsp.unsubscribe"/>
+         </html:submit>
+    </div>
     <rhn:listdisplay set="${requestScope.set}"
                         filterBy="sdc.configlist.jsp.name">
           <rhn:set value="${current.id}"/>
@@ -54,12 +59,6 @@
         ${current.position}
       </rhn:column>
     </rhn:listdisplay>
-     <div class="text-right">
-         <hr />
-         <html:submit styleClass="btn btn-default" property="dispatch">
-         <bean:message key="sdc.configlist.jsp.unsubscribe"/>
-         </html:submit>
-     </div>
   </rhn:list>
 </c:when>
 <c:otherwise>

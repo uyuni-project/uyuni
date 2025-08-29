@@ -58,7 +58,7 @@ Feature: Manage users
     And option "Mr." is selected as "prefix"
     And I should see "Test" in field identified by "firstNames"
     And I should see "User" in field identified by "lastName"
-    And I should see a "galaxy-noise@localhost" link
+    And I should see a "galaxy-noise@localhost" text
     And I should see a "Administrative Roles" text
     And I should see a "Roles:" text
     And I should see a "Created:" text

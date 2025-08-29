@@ -21,7 +21,13 @@
 
     <rl:listset name="compareListSet">
         <rhn:csrf />
-
+            <div class="spacewalk-section-toolbar">
+                <div class="action-button-wrapper">
+                    <rl:csv dataset="pageList"
+                    name="pageList"
+                    exportColumns="name,arch,system.evr,other.evr,comparison"/>
+                </div>
+            </div>
             <rl:list dataset="pageList"
             width="100%"
             name="compareList"
@@ -52,10 +58,6 @@
                 <c:out value="${current.comparison}" escapeXml="true" />
             </rl:column>
         </rl:list>
-
-        <rl:csv dataset="pageList"
-                        name="pageList"
-                        exportColumns="name,arch,system.evr,other.evr,comparison"/>
 
         <c:if test="${not empty requestScope.pageList}">
             <rhn:require acl="system_feature(ftr_delta_action)"

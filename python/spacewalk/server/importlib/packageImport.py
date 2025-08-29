@@ -30,7 +30,7 @@ from .importLib import (
 )
 from .mpmSource import mpmBinaryPackage
 from uyuni.common import rhn_pkg
-from spacewalk.common.rhnConfig import CFG
+from spacewalk.common.rhnConfig import cfg_component
 from spacewalk.server import taskomatic
 from spacewalk.server.rhnServer import server_packages
 
@@ -93,12 +93,14 @@ class ChannelPackageSubscription(GenericPackageImport):
         self.backend.lookupChecksums(self.checksums)
 
         # Fix the package information up, and uniquify the packages too
+        with cfg_component("server") as CFG:
+            enable_nvrea = CFG.ENABLE_NVREA
         uniqdict = {}
         for package in self.batch:
             if package.ignored:
                 continue
             self._postprocessPackageNEVRA(package)
-            if not CFG.ENABLE_NVREA:
+            if not enable_nvrea:
                 # nvrea disabled, skip checksum
                 nevrao = (
                     package["name_id"],
@@ -551,10 +553,12 @@ class PackageImport(ChannelPackageSubscription):
             object.id = object.first_package.id
 
     def _import_signatures(self):
+        with cfg_component("server.satellite") as CFG:
+            mount_point = CFG.MOUNT_POINT
         for package in self.batch:
             # skip missing files and mpm packages
             if package["path"] and not isinstance(package, mpmBinaryPackage):
-                full_path = os.path.join(CFG.MOUNT_POINT, package["path"])
+                full_path = os.path.join(mount_point, package["path"])
                 if os.path.exists(full_path):
                     header = rhn_pkg.get_package_header(filename=full_path)
                     server_packages.processPackageKeyAssociations(

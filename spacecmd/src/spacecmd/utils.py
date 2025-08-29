@@ -33,7 +33,6 @@
 import gettext
 import logging
 import os
-import pickle
 import re
 import readline
 import shlex
@@ -64,6 +63,7 @@ from spacecmd.argumentparser import SpacecmdArgumentParser
 from spacecmd.i18n import _N
 
 __EDITORS = ['vim', 'vi', "emacs", 'nano']
+_CACHE_DATE_FORMAT = '%Y-%m-%d %H:%M:%S.%f'
 
 translation = gettext.translation('spacecmd', fallback=True)
 try:
@@ -124,21 +124,16 @@ def is_interactive(options):
 
 def load_cache(cachefile):
     data = {}
+    cachefile = f"{cachefile}.json"
     expire = datetime.now()
 
     logging.debug('Loading cache from %s', cachefile)
 
     if os.path.isfile(cachefile):
         try:
-            inputfile = open(cachefile, 'rb')
-            data = pickle.load(inputfile)
-            inputfile.close()
-        except (EOFError, pickle.UnpicklingError) as exc:
-            # If cache generation is interrupted (e.g by ctrl-c) you can end up
-            # with an EOFError exception due to the partial picked file
-            # So we catch this error and remove the corrupt partial file
-            # If you don't do this then spacecmd will fail with an unhandled
-            # exception until the partial file is manually removed
+            with open(cachefile, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+        except json.decoder.JSONDecodeError as exc:
             logging.warning(_N("Loading cache file %s failed"), cachefile)
             logging.warning(_N("Cache generation was probably interrupted," +
                                "removing corrupt %s"), cachefile)
@@ -154,17 +149,28 @@ def load_cache(cachefile):
     else:
         logging.debug('%s does not exist', cachefile)
 
+    if isinstance(expire, str):
+        expire = datetime.strptime(expire, _CACHE_DATE_FORMAT)
+
     return data, expire
 
 
 def save_cache(cachefile, data, expire=None):
     if expire:
+        if not isinstance(expire, (datetime, str)):
+            raise ValueError("expire must be datetime.datetime or str object")
+        try:
+            datetime.strptime(str(expire), _CACHE_DATE_FORMAT)
+        except ValueError as e:
+            raise ValueError(f"Provided expire parameter must conform to {_CACHE_DATE_FORMAT}") from e
+
+    if expire:
         data['expire'] = expire
+    cachefile = f"{cachefile}.json"
 
     try:
-        output = open(cachefile, 'wb')
-        pickle.dump(data, output, pickle.HIGHEST_PROTOCOL)
-        output.close()
+        with open(cachefile, 'w', encoding='utf-8') as f:
+            json.dump(data, f, default=str, indent=4)
     except IOError:
         logging.error(_N("Couldn't write to %s"), cachefile)
 

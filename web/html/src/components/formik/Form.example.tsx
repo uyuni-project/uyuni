@@ -1,10 +1,8 @@
 import { SubmitButton } from "components/buttons";
+import { Field, Form, MultiField, OnSubmit } from "components/formik";
 
 import { localizedMoment } from "utils/datetime";
 import { Utils } from "utils/functions";
-
-import { Field, MultiField } from "./field";
-import { Form, OnSubmit } from "./Form";
 
 export default () => {
   const initialValues = {

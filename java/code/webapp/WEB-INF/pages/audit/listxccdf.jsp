@@ -20,11 +20,15 @@
 <rl:listset name="groupSet">
   <rhn:csrf />
   <rhn:submitted />
+  <div class="spacewalk-section-toolbar">
+    <div class="action-button-wrapper">
+      <rl:csv name="groupSet"
+        exportColumns="id,sid,serverName,profile,completed,satisfied,dissatisfied,satisfactionUnknown"/>
+    </div>
+  </div>
   <rl:list emptykey="audit.listxccdf.jsp.noscans">
     <%@ include file="/WEB-INF/pages/common/fragments/audit/xccdf-easy-list.jspf" %>
   </rl:list>
-  <rl:csv name="groupSet"
-    exportColumns="id,sid,serverName,profile,completed,satisfied,dissatisfied,satisfactionUnknown"/>
   <rhn:tooltip key="audit.listxccdf.jsp.tooltip"/>
 </rl:listset>
 

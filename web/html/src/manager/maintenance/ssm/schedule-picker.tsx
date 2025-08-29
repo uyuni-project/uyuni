@@ -4,7 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import { AsyncButton } from "components/buttons";
 import { ModalButton } from "components/dialog/ModalButton";
 import { DEPRECATED_Select } from "components/input";
-import { Check } from "components/input/check/Check";
+import { DEPRECATED_Check } from "components/input/check/DEPRECATED_Check";
 import { Form, FormContext } from "components/input/form/Form";
 import { Utils as MessagesUtils } from "components/messages/messages";
 import { MessageType } from "components/messages/messages";
@@ -133,7 +133,7 @@ export function SchedulePicker(props: { schedules: ScheduleType[] }) {
         options={options.concat(props.schedules.map((s) => ({ value: s.id, label: s.name })))}
       />
       {context.model.scheduleId !== "0" && (
-        <Check
+        <DEPRECATED_Check
           name="cancelActions"
           label={t("Cancel affected actions")}
           divClass="col-md-6 col-md-offset-3 offset-md-3"

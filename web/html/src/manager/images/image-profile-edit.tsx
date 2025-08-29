@@ -476,8 +476,7 @@ class CreateImageProfile extends React.Component<Props, State> {
       <Button
         key="clear-btn"
         id="clear-btn"
-        className="btn-default pull-right"
-        icon="fa-eraser"
+        className="btn-default"
         text={t("Clear fields")}
         handler={this.clearFields}
       />,
@@ -487,8 +486,7 @@ class CreateImageProfile extends React.Component<Props, State> {
         <SubmitButton
           key="update-btn"
           id="update-btn"
-          className="btn-primary"
-          icon="fa-edit"
+          className="btn-primary me-4"
           text={t("Update")}
           disabled={this.state.isInvalid}
         />
@@ -498,8 +496,7 @@ class CreateImageProfile extends React.Component<Props, State> {
         <SubmitButton
           key="create-btn"
           id="create-btn"
-          className="btn-primary"
-          icon="fa-plus"
+          className="btn-primary me-4"
           text={t("Create")}
           disabled={this.state.isInvalid}
         />

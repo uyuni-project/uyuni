@@ -125,9 +125,8 @@ Feature: Update activation keys
     And I wait for child channels to appear
     And I select the parent channel for the "proxy_container" from "selectedBaseChannel"
     And I wait for child channels to appear
-    # TODO: WORKAROUND: When they are ready add them again
-    # And I include the recommended child channels
-    # And I wait until "SUSE Multi-Linux Manager Client Tools for SL Micro 6 x86_64" has been checked
+    And I include the recommended child channels
+    And I wait until "ManagerTools-SL-Micro-6.1 for x86_64" has been checked
     And I check "SUSE-Multi-Linux-Manager-Proxy-5.1 for x86_64"
     And I check "SUSE-Multi-Linux-Manager-Retail-Branch-Server-5.1 for x86_64"
     And I click on "Update Activation Key"

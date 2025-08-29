@@ -62,6 +62,15 @@
             </div>
         </div>
 
+        <div class="spacewalk-section-toolbar">
+            <div class="action-button-wrapper">
+                <rhn:submitted/>
+                <input type="submit"
+                    name="dispatch"
+                    class="btn btn-default"
+                    value='<bean:message key="cloneerrata.jsp.cloneerrata"/>'/>
+            </div>
+        </div>
         <rl:list emptykey="cloneerrata.jsp.noerrata">
 
             <rl:decorator name="PageSizeDecorator"/>
@@ -115,15 +124,6 @@
             </rl:column>
 
         </rl:list>
-
-        <div class="text-right">
-            <rhn:submitted/>
-            <input type="submit"
-                   name="dispatch"
-                   class="btn btn-default"
-                   value='<bean:message key="cloneerrata.jsp.cloneerrata"/>'/>
-        </div>
-
     </rl:listset>
 
     </body>

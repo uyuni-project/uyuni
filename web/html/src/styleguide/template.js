@@ -13,8 +13,6 @@ module.exports = {
       `/css/suse-light.css?cb=${noCache}`,
       `/fonts/font-awesome/css/font-awesome.css?cb=${noCache}`,
       `/fonts/font-spacewalk/css/spacewalk-font.css?cb=${noCache}`,
-      `/css/jquery.timepicker.css?cb=${noCache}`,
-      `/css/bootstrap-datepicker.css?cb=${noCache}`,
     ]
       .map(relativeToProxyUrl)
       .map((url) => ({
@@ -29,9 +27,6 @@ module.exports = {
       `/javascript/legacy/bootstrap-webpack.js?cb=${noCache}`,
       `/javascript/spacewalk-essentials.js?cb=${noCache}`,
       `/javascript/spacewalk-checkall.js?cb=${noCache}`,
-      `/javascript/legacy/jquery.timepicker.js?cb=${noCache}`,
-      `/javascript/bootstrap-datepicker.js?cb=${noCache}`,
-      `/javascript/momentjs/moment-with-langs.min.js?cb=${noCache}`,
     ]
       .map(relativeToProxyUrl)
       .map((url) => ({

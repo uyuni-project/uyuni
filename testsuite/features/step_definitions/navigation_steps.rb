@@ -556,6 +556,9 @@ end
 # login, logout steps
 
 Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |user, passwd|
+  # Save the user and password in global variables to be used by the API calls
+  $current_user = user
+  $current_password = passwd
   begin
     page.reset!
   rescue NoMethodError => e
@@ -567,7 +570,7 @@ Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |user, passwd
   ensure
     visit Capybara.app_host
   end
-  next if all(:xpath, "//header//span[text()='#{user}']", wait: 0).any?
+  next if all(:xpath, "//header//span[text()='#{$current_user}']", wait: 0).any?
 
   begin
     find(:xpath, '//header//i[@class=\'fa fa-sign-out\']').click
@@ -577,13 +580,11 @@ Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |user, passwd
 
   raise ScriptError, 'Login page is not correctly loaded' unless has_field?('username')
 
-  fill_in('username', with: user)
-  fill_in('password', with: passwd)
+  fill_in('username', with: $current_user)
+  fill_in('password', with: $current_password)
   click_button_and_wait('Sign In', match: :first)
 
   step 'I should be logged in'
-  $current_user = user
-  $current_password = passwd
 end
 
 Given(/^I am authorized$/) do

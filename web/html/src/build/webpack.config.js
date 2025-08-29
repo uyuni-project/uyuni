@@ -48,6 +48,7 @@ module.exports = (env, opts) => {
         from: path.resolve(__dirname, "../node_modules/jquery/dist/jquery.min.js"),
         to: path.resolve(__dirname, "../dist/javascript/legacy"),
       },
+      // TODO: This overlaps with susemanager-frontend-libs
       {
         from: path.resolve(__dirname, "../node_modules/jquery-ui/jquery-ui.js"),
         to: path.resolve(__dirname, "../dist/javascript/legacy"),
@@ -60,15 +61,6 @@ module.exports = (env, opts) => {
       {
         from: path.resolve(__dirname, "../node_modules/pwstrength-bootstrap/dist/pwstrength-bootstrap-1.0.2.js"),
         to: path.resolve(__dirname, "../dist/javascript/legacy"),
-      },
-      // TODO: Take only what we need after we've confirmed it works fine, otherwise there's a lot of fluff in this
-      {
-        from: path.resolve(__dirname, "../node_modules/timepicker/jquery.timepicker.js"),
-        to: path.resolve(__dirname, "../dist/javascript/legacy"),
-      },
-      {
-        from: path.resolve(__dirname, "../node_modules/timepicker/jquery.timepicker.css"),
-        to: path.resolve(__dirname, "../dist/css/legacy"),
       },
       // TODO: Take only what we need after we've confirmed it works fine, otherwise there's a lot of fluff in this
       {
