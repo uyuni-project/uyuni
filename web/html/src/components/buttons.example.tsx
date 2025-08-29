@@ -6,8 +6,8 @@ import { Text } from "./input/text/Text";
 import { BootstrapPanel } from "./panels/BootstrapPanel";
 export default () => {
   const listButtons = [
-    <div className="form-group btn-group">
-      <div className="col-lg-offset-3 offset-lg-3 col-lg-6" key="modal-buttons-eg1">
+    <div className="form-group btn-group" key="modal-buttons-eg1">
+      <div className="col-lg-offset-3 offset-lg-3 col-lg-6">
         <Button className="btn-primary bt-sm" text="Submit" />
         <Button className="btn-default bt-sm" text="Clear" />
       </div>
