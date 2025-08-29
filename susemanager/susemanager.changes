@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Fri Aug 29 12:31:29 CEST 2025 - rosuna@suse.com
+
+- version 5.1.12-0
+  * Add missing bootrap repository definition for OES 24.4
+    (bsc#1241013)
+  * Use absolute paths when invoking external commands
+  * Configure default official update server domain
+  * Fix syntax error in changelog
+  * Add bootstrap repo data for openSUSE Leap Micro 6.2
+
+-------------------------------------------------------------------
 Tue Jun 17 17:04:48 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.11-0
