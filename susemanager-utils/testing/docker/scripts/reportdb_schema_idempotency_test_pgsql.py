@@ -132,6 +132,7 @@ def create_fake_migration_path(schema_path, new_version, pr_file=None, version=N
     """Create a fake migration path with the next version after the last, adding
     all SQL files from a PR or since the version where all scripts started to be
     idempotent"""
+    files = []
     if pr_file:
         print("Creating migration path with the scripts from the PR")
         files = get_all_files_from_pr(pr_file, schema_path)
@@ -290,7 +291,7 @@ def diff_dumps(initial_dump, migrated_dump):
                 if line.endswith("FROM stdin;"):
                     in_table = True
             else:
-                if line == "\.":
+                if line == "\\.":
                     res += sorted(table)
                     res.append(line)
                     in_table = False
