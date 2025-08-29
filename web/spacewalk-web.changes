@@ -1,4 +1,25 @@
 -------------------------------------------------------------------
+Fri Aug 29 12:30:01 CEST 2025 - rosuna@suse.com
+
+- version 5.1.14-0
+  * Improve error message handling for duplicate filter name.
+  * Fix broken CVE links in CVE audit page.
+  * Fix tooltip text for Create button on Maintenance page.
+  * Show tick next to password when requirements
+    are met. (bsc#1230282)
+  * Update brand name in Formulas page.
+  * Ensure the UI works with an unknown VHM provider
+  * Correct the organization count in the peripheral details
+  * Use specific label for hub/peripheral FQDN
+  * Add support for product migration in SSM
+  * Add a page to generate and upload the support data for a system
+  * Adjust defaults and validations for registries in proxy
+    configuration
+  * Trigger proxy configuration validation on mount to enable
+    submit button
+  * Fix recently registered systems filter (bsc#1243183)
+
+-------------------------------------------------------------------
 Thu Jul 24 16:10:38 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.13-0
