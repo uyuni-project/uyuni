@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Fri Aug 29 12:19:05 CEST 2025 - rosuna@suse.com
+
+- version 5.1.14-0
+  * Fix parameter error when syncing product repositories in ISS v1
+    (bsc#1244724)
+  * Use absolute paths when invoking external commands
+  * Overhaul spacewalk-debug for use inside of a container
+  * Use more secure defusedxml parser (bsc#1227577)
+
+-------------------------------------------------------------------
 Thu Jul 24 16:54:44 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.13-0
