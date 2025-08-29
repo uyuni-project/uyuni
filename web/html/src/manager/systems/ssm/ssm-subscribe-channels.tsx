@@ -437,9 +437,8 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
             <div className="col-md-4 text-right">
               <strong>
                 {allowed.servers && allowed.servers.length > 0 ? (
-                  //TODO: Need to replace btn-link with btn-tertiary css class
                   <button
-                    className="btn-link"
+                    className="btn btn-tertiary"
                     data-bs-toggle="modal"
                     data-bs-target="#channelServersPopup"
                     onClick={() =>
@@ -453,9 +452,8 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
                   </button>
                 ) : null}
                 {allowed.incompatibleServers && allowed.incompatibleServers.length > 0 ? (
-                  //TODO: Need to replace btn-link with btn-tertiary css class
                   <button
-                    className="btn-link"
+                    className="btn btn-tertiary"
                     data-bs-toggle="modal"
                     data-bs-target="#channelServersPopup"
                     onClick={() =>
@@ -465,7 +463,7 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
                       )
                     }
                   >
-                    <i className="fa fa-exclamation-triangle fa-1-5x" aria-hidden="true"></i>
+                    <i className="fa fa-exclamation-triangle" aria-hidden="true"></i>
                     {allowed.incompatibleServers.length} {t("system(s) incompatible")}
                   </button>
                 ) : null}
@@ -666,9 +664,8 @@ class SummaryPage extends React.Component<SummaryPageProps, SummaryPageState> {
             <div className="col-md-4 text-right">
               <strong>
                 {allowed.servers && allowed.servers.length > 0 ? (
-                   //TODO: Need to replace btn-link with btn-tertiary css class
                   <button
-                    className="btn-link"
+                    className="btn btn-tertiary"
                     data-bs-toggle="modal"
                     data-bs-target="#channelServersPopup"
                     onClick={() => this.showServersListPopUp(newBaseName, allowed.servers)}
@@ -677,9 +674,8 @@ class SummaryPage extends React.Component<SummaryPageProps, SummaryPageState> {
                   </button>
                 ) : null}
                 {allowed.incompatibleServers && allowed.incompatibleServers.length > 0 ? (
-                  //TODO: Need to replace btn-link with btn-tertiary css class
                   <button
-                    className="btn-link"
+                    className="btn btn-tertiary"
                     data-bs-toggle="modal"
                     data-bs-target="#channelServersPopup"
                     onClick={() => this.showServersListPopUp(newBaseName, allowed.incompatibleServers)}

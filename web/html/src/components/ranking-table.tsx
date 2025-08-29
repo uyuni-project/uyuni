@@ -43,7 +43,7 @@ type RankingTableState = {
 class RankingTable extends React.Component<RankingTableProps, RankingTableState> {
   defaultEmptyMsg = t("There are no entries to show.");
   node: Element | null = null;
-  
+
   constructor(props) {
     super(props);
     this.state = {
