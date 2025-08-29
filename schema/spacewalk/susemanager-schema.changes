@@ -1,4 +1,29 @@
 -------------------------------------------------------------------
+Fri Aug 29 12:32:25 CEST 2025 - rosuna@suse.com
+
+- version 5.1.11-0
+  * Add ISSv3 SCC missing RBAC entries
+  * Add column last_seen_at to suseSCCProxy table
+  * Creation of table suseErrataAdvisoryMap and
+    added errata-advisory-map-sync taskomatic job
+    fixing bug (bsc#1243808)
+  * Add support for product migration in SSM
+  * Add RBAC definitions for support data UI
+  * Add taskomatic jobs and tables to generate and store
+    differences between CLM environments (jsc#SUMA-301)
+  * Fix syntax error in changelog
+  * Add action type to refresh virtual instance data
+  * Add new action type to get supportdata
+  * Trigger saltboot cobbler migration
+  * Fix activate and deactivate RBAC endpoint entries (bsc#1244444)
+  * Optimize CLM by improving AppStream-related queries
+    (bsc#1235847)
+  * Prioritize beacon data for regular minion reboot status
+    (bsc#1245405)
+  * Fix schema migration script for multi-org setups (bsc#1247773)
+  * Store CPU architecture specific data (jsc#SUMA-406)
+
+-------------------------------------------------------------------
 Thu Jul 03 19:11:17 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.10-0
