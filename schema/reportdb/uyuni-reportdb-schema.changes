@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Fri Aug 29 12:35:04 CEST 2025 - rosuna@suse.com
+
+- version 5.1.5-0
+  * Add table to show differences between CLM environments
+    (jsc#SUMA-301)
+  * Add last_boot_time to system table
+  * Add status and extra_pkg_count to systemoutdated table
+  * Add a System Hardware Report View
+  * Create SystemHardware table (jsc#SUMA-316)
+
+-------------------------------------------------------------------
 Fri Apr 11 17:13:47 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.4-0
