@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-22 09:58+0200\n"
+"POT-Creation-Date: 2025-08-29 09:50+0200\n"
 "PO-Revision-Date: 2025-06-16 14:59+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/spacecmd/ja/>\n"
@@ -426,6 +426,7 @@ msgid "File %s exists, confirm overwrite file? (y/n)"
 msgstr "ファイル %s は既に存在しています。上書きしてよろしいですか？ (y/n)"
 
 #: ../src/spacecmd/activationkey.py:1330
+#, python-brace-format
 msgid "Failed to save exported keys to file: {}"
 msgstr "エクスポートしたキーをファイルに書き込む処理が失敗しました: {}"
 
@@ -1265,6 +1266,7 @@ msgid "Exporting cc %s to %s"
 msgstr "cc %s を %s にエクスポートしています"
 
 #: ../src/spacecmd/configchannel.py:1264
+#, python-brace-format
 msgid "File '{}' exists, confirm overwrite file? (y/n)"
 msgstr "ファイル '{}' は既に存在しています。ファイルを上書きしますか？ (y/n)"
 
@@ -1586,6 +1588,7 @@ msgid "usage: custominfo_details KEY ..."
 msgstr "使用方法: custominfo_details 鍵 ..."
 
 #: ../src/spacecmd/custominfo.py:157
+#, python-brace-format
 msgid "No keys matched argument '{}'."
 msgstr "パラメータ '{}' に該当する鍵はありません。"
 
@@ -3386,8 +3389,8 @@ msgstr "%s への接続に失敗しました"
 msgid "API (%s) is too old (>= %s required)"
 msgstr "API (%s) が古すぎます (>= %s が必要です)"
 
-#: ../src/spacecmd/misc.py:345 ../src/spacecmd/utils.py:257
-#: ../src/spacecmd/utils.py:600
+#: ../src/spacecmd/misc.py:345 ../src/spacecmd/utils.py:263
+#: ../src/spacecmd/utils.py:606
 #, python-format
 msgid "Could not read %s"
 msgstr "%s を読み込めませんでした"
@@ -3651,6 +3654,7 @@ msgstr "%s という名前の組織は見つかりませんでした"
 #: ../src/spacecmd/org.py:208 ../src/spacecmd/org.py:241
 #: ../src/spacecmd/org.py:275 ../src/spacecmd/org.py:311
 #: ../src/spacecmd/org.py:420 ../src/spacecmd/org.py:456
+#, python-brace-format
 msgid "Organisation '{}' was not found"
 msgstr "組織 '{}' が見つかりませんでした"
 
@@ -3680,6 +3684,7 @@ msgid "No trust organisation found for the name %s"
 msgstr "名前 %s に対する信頼する組織が見つかりませんでした"
 
 #: ../src/spacecmd/org.py:279 ../src/spacecmd/org.py:315
+#, python-brace-format
 msgid "Organisation '{}' to trust for, was not found"
 msgstr "信頼先の組織 '{}' が見つかりませんでした"
 
@@ -3713,6 +3718,7 @@ msgid "No trusted organisation found for the name %s"
 msgstr "%s に対する信頼する組織が見つかりませんでした"
 
 #: ../src/spacecmd/org.py:354
+#, python-brace-format
 msgid "Trusted organisation '{}' was not found"
 msgstr "信頼する組織 '{}' が見つかりませんでした"
 
@@ -3999,7 +4005,6 @@ msgid "proxy_container_config: create a proxy system and return its configuratio
 msgstr "proxy_container_config: プロキシシステムを作成し、その設定ファイルを返します"
 
 #: ../src/spacecmd/proxy.py:33
-#, python-format
 msgid ""
 "usage: proxy_container_config [options] PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL ROOT_CA CRT KEY\n"
 "\n"
@@ -4046,7 +4051,6 @@ msgid "proxy_container_config_generate_cert: create a proxy system and return it
 msgstr "proxy_container_config_generate_cert: プロキシシステムを作成し、その設定ファイルを返します"
 
 #: ../src/spacecmd/proxy.py:90
-#, python-format
 msgid ""
 "usage: proxy_container_config_generate_cert PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL\n"
 "\n"
@@ -4149,6 +4153,7 @@ msgid "Repository SSL Client Key:         %s"
 msgstr "リポジトリーの SSL クライアント鍵:         %s"
 
 #: ../src/spacecmd/repo.py:103
+#, python-brace-format
 msgid "No repositories found for '{}' query"
 msgstr "'{}' の問い合わせに対してリポジトリーが見つかりませんでした"
 
@@ -4369,6 +4374,7 @@ msgid "%s  # Systems"
 msgstr "%s  # システム"
 
 #: ../src/spacecmd/report.py:174
+#, python-brace-format
 msgid "No errata found for '{}'"
 msgstr "'{}' に対するエラータは見つかりませんでした"
 
@@ -4793,6 +4799,7 @@ msgid "If no date is provided it will delete all archived actions"
 msgstr "日付が指定されていない場合、アーカイブ済みのすべてのアクションが削除されます"
 
 #: ../src/spacecmd/schedule.py:492
+#, python-brace-format
 msgid "Do you want to delete ({}) archived actions? [y/N]"
 msgstr "アーカイブ済みのアクション ({}) を削除しますか? [y / N]"
 
@@ -4813,6 +4820,7 @@ msgid "If no date is provided it will archive all completed actions"
 msgstr "日付が指定されていない場合は、完了したすべてのアクションがアーカイブされます"
 
 #: ../src/spacecmd/schedule.py:551
+#, python-brace-format
 msgid "Do you want to archive ({}) completed actions? [y/N]"
 msgstr "完了したアクション ({}) をアーカイブしますか? [y / N]"
 
@@ -6078,10 +6086,12 @@ msgstr "下記のソフトウェアチャンネルからのエラータを併合
 
 #. pylint: disable=len-as-condition
 #: ../src/spacecmd/softwarechannel.py:2578
+#, python-brace-format
 msgid "{} contains no errata which is not already present in {}"
 msgstr "{} には {} に含まれていないエラータがありません"
 
 #: ../src/spacecmd/softwarechannel.py:2583
+#, python-brace-format
 msgid "errata to add to channel {}: "
 msgstr "チャンネル {} に追加されるエラータ: "
 
@@ -6095,6 +6105,7 @@ msgid " errata to  "
 msgstr " 個のエラータを下記に追加:  "
 
 #: ../src/spacecmd/softwarechannel.py:2594
+#, python-brace-format
 msgid "Perform these changes to channel {} [y/N]:"
 msgstr "チャンネル {} に対する変更を適用します [y/N]:"
 
@@ -6524,7 +6535,7 @@ msgstr "%s をスケジュールする処理が失敗しました"
 msgid "Scheduled: %i system(s)"
 msgstr "スケジュール済み: %i 個のシステム"
 
-#: ../src/spacecmd/system.py:548 ../src/spacecmd/utils.py:253
+#: ../src/spacecmd/system.py:548 ../src/spacecmd/utils.py:259
 #, python-format
 msgid "Could not remove %s"
 msgstr "%s を削除できませんでした"
@@ -7971,6 +7982,7 @@ msgid "Server is not supporting reactivation keys at bootstrap time"
 msgstr "サーバは、ブートストラップ時に再アクティベーションキーをサポートしていません"
 
 #: ../src/spacecmd/system.py:4630
+#, python-brace-format
 msgid "Bootstrapping '{}'. This may take a while."
 msgstr "「{}」をブートストラップしています。 これにはしばらく時間がかかる場合があります。"
 
@@ -8205,132 +8217,128 @@ msgstr "user_setpassword: ユーザアカウントのパスワードを設定"
 msgid "usage: user_setpassword USER PASSWORD"
 msgstr "使用方法: user_setpassword ユーザ パスワード"
 
-#. If cache generation is interrupted (e.g by ctrl-c) you can end up
-#. with an EOFError exception due to the partial picked file
-#. So we catch this error and remove the corrupt partial file
-#. If you don't do this then spacecmd will fail with an unhandled
-#. exception until the partial file is manually removed
-#: ../src/spacecmd/utils.py:142
+#: ../src/spacecmd/utils.py:137
 #, python-format
 msgid "Loading cache file %s failed"
 msgstr "キャッシュファイル %s の読み込みに失敗しました"
 
-#: ../src/spacecmd/utils.py:143
+#: ../src/spacecmd/utils.py:138
 #, python-format
 msgid "Cache generation was probably interrupted,removing corrupt %s"
 msgstr "キャッシュ生成時に割り込みが発生しました。壊れている %s を削除しています"
 
-#: ../src/spacecmd/utils.py:148
+#: ../src/spacecmd/utils.py:143
 #, python-format
 msgid "Couldn't load cache from %s"
 msgstr "%s からキャッシュを読み込めませんでした"
 
-#: ../src/spacecmd/utils.py:169
+#: ../src/spacecmd/utils.py:175
 #, python-format
 msgid "Couldn't write to %s"
 msgstr "%s に書き込めませんでした"
 
-#: ../src/spacecmd/utils.py:214
+#: ../src/spacecmd/utils.py:220
 msgid "Could not open the temporary file"
 msgstr "一時ファイルを開くことができませんでした"
 
-#: ../src/spacecmd/utils.py:233
+#: ../src/spacecmd/utils.py:239
 #, python-format
 msgid "Editor \"%s\" exited with code %i"
 msgstr "エディタ \"%s\" が終了コード %i で終了しました"
 
-#: ../src/spacecmd/utils.py:235
+#: ../src/spacecmd/utils.py:241
 #, python-format
 msgid "General failure running editor: %s"
 msgstr "エディタ実行時の一般的なエラーです: %s"
 
-#: ../src/spacecmd/utils.py:238
+#: ../src/spacecmd/utils.py:244
 msgid "No editors found"
 msgstr "エディタが見つかりませんでした"
 
-#: ../src/spacecmd/utils.py:376
+#: ../src/spacecmd/utils.py:382
 msgid "Invalid time provided"
 msgstr "時刻の指定が正しくありません"
 
-#: ../src/spacecmd/utils.py:495
+#: ../src/spacecmd/utils.py:501
 #, python-format
 msgid "%s is an unknown errata type"
 msgstr "%s は不明なエラータタイプです"
 
-#: ../src/spacecmd/utils.py:503
+#: ../src/spacecmd/utils.py:509
 msgid "Security Errata"
 msgstr "セキュリティエラータ"
 
-#: ../src/spacecmd/utils.py:512
+#: ../src/spacecmd/utils.py:518
 msgid "Bug Fix Errata"
 msgstr "バグ修正エラータ"
 
-#: ../src/spacecmd/utils.py:521
+#: ../src/spacecmd/utils.py:527
 msgid "Enhancement Errata"
 msgstr "機能強化エラータ"
 
-#: ../src/spacecmd/utils.py:531
+#: ../src/spacecmd/utils.py:537
 msgid "Current Selections"
 msgstr "現在の選択"
 
-#: ../src/spacecmd/utils.py:541
+#: ../src/spacecmd/utils.py:547
 msgid "Available Configuration Channels"
 msgstr "利用可能な設定チャンネル"
 
-#: ../src/spacecmd/utils.py:547 ../src/spacecmd/utils.py:567
+#: ../src/spacecmd/utils.py:553 ../src/spacecmd/utils.py:573
 msgid "Channel:"
 msgstr "チャンネル:"
 
-#: ../src/spacecmd/utils.py:550 ../src/spacecmd/utils.py:570
+#: ../src/spacecmd/utils.py:556 ../src/spacecmd/utils.py:576
 msgid "Invalid channel"
 msgstr "チャンネルが正しくありません"
 
-#: ../src/spacecmd/utils.py:554
+#: ../src/spacecmd/utils.py:560
 msgid "New Rank:"
 msgstr "新しい順位:"
 
-#: ../src/spacecmd/utils.py:561 ../src/spacecmd/utils.py:564
+#: ../src/spacecmd/utils.py:567 ../src/spacecmd/utils.py:570
 msgid "Invalid rank"
 msgstr "順位が正しくありません"
 
-#: ../src/spacecmd/utils.py:575
+#: ../src/spacecmd/utils.py:581
 msgid "Clearing current selections"
 msgstr "現在の選択を消去しています"
 
-#: ../src/spacecmd/utils.py:756
+#: ../src/spacecmd/utils.py:762
 msgid "Could not generate json data object!"
 msgstr "JSON データオブジェクトを生成できませんでした！"
 
-#: ../src/spacecmd/utils.py:763
+#: ../src/spacecmd/utils.py:769
 #, python-format
 msgid "Could not open file %s for writing: %s"
 msgstr "ファイル %s を書き込み用に開くことができませんでした: %s"
 
-#: ../src/spacecmd/utils.py:774
+#: ../src/spacecmd/utils.py:780
 #, python-format
 msgid "Could not open file %s for reading: %s"
 msgstr "ファイル %s を読み込み用に開くことができませんでした: %s"
 
-#: ../src/spacecmd/utils.py:776
+#: ../src/spacecmd/utils.py:782
 #, python-format
 msgid "Could not parse JSON data from %s: %s"
 msgstr "JSON データを %s から処理できませんでした: %s"
 
 #. pylint: disable=broad-except
-#: ../src/spacecmd/utils.py:778
+#: ../src/spacecmd/utils.py:784
 #, python-format
 msgid "Error processing file %s: %s"
 msgstr "ファイル %s を処理する際にエラーが発生しました: %s"
 
-#: ../src/spacecmd/utils.py:815
+#: ../src/spacecmd/utils.py:821
 msgid "Skipping usage of common strings: both strings are equal"
 msgstr "共通する文字列を使用しているため読み飛ばしています: 両方の文字列が同じです"
 
-#: ../src/spacecmd/utils.py:831
+#: ../src/spacecmd/utils.py:837
 msgid "Skipping usage of common strings: number of substrings differ"
 msgstr "共通する文字列を使用しているため読み飛ばしています: 複数の箇所に違いがあります"
 
-#: ../src/spacecmd/utils.py:919
+#: ../src/spacecmd/utils.py:925
+#, python-brace-format
 msgid "Parameter {} not a string type, but {}."
 msgstr "パラメータ {} は文字列型ではなく {} です。"
 
