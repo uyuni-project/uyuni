@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Fri Aug 29 11:56:49 CEST 2025 - rosuna@suse.com
+
+- version 5.1.6-0
+  * Fix spacewalk-hostname-rename with containers (bsc#1229825)
+  * Use absolute paths when invoking external commands
+  * Fix syntax error in changelog
+  * Ensure systems directory with correct permissions
+    in /var/spacewalk
+
+-------------------------------------------------------------------
 Tue Jun 17 19:32:00 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.5-0
