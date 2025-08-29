@@ -28,7 +28,7 @@
 %endif
 
 Name:           spacewalk-config
-Version:        5.1.7
+Version:        5.1.8
 Release:        0
 Summary:        Spacewalk Configuration
 License:        GPL-2.0-only
