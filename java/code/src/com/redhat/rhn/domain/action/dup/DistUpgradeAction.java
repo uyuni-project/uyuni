@@ -236,6 +236,12 @@ public class DistUpgradeAction extends Action {
                 String message = SaltUtils.getJsonResultWithPrettyPrint(jsonResult);
                 if (liberate.isResult()) {
                     message = liberate.getChanges().getStdout();
+
+                    StateApplyResult<CmdResult> liberatedResult = distUpgradeSlsResult.getLiberatedResult();
+                    if (liberatedResult.isResult()) {
+                        message = Optional.ofNullable(message).orElse("") + "\n" +
+                                liberatedResult.getChanges().getStdout();
+                    }
                 }
                 return message;
             }
