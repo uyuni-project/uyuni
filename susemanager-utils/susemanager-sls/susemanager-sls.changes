@@ -1,4 +1,29 @@
 -------------------------------------------------------------------
+Fri Aug 29 12:33:20 CEST 2025 - rosuna@suse.com
+
+- version 5.1.13-0
+  * Add VLEK certificate creation and collection
+    in confidential computing report generation
+  * Automatically deploy IBM GPG keys to SUSE minions (bsc#1246421)
+  * Use absolute paths when invoking external commands
+  * Move jmx configuration to a persisting folder
+    (bsc#1244219)
+  * Succeed liberate product migration also when reinstall
+    packages is disabled (bsc#1248804)
+  * Install products automatically on SLE Micro 5 and SL Micro 6
+    (bsc#1243486)
+  * Add state to get virtual instance info from physical hosts
+  * Add a Salt execution module to get support data from clients
+  * Add all image types supported by kiwi (bsc#1246663)
+  * Add container based kiwi10 build system
+  * Do not use pkg search in jinja (bsc#1240882)
+  * Remove SLE11 kiwi bundle build support
+  * Install proxy related packages for RPM installation
+    (bsc#1246654)
+  * Collect CPU architecture specific data on hardware
+    profile update (jsc#SUMA-406)
+
+-------------------------------------------------------------------
 Wed Jul 30 13:37:08 CEST 2025 - michael.calmer@suse.com
 
 - version 5.1.12-0

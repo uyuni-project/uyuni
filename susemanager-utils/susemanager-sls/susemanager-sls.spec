@@ -39,7 +39,7 @@
 %endif
 
 Name:           susemanager-sls
-Version:        5.1.12
+Version:        5.1.13
 Release:        0
 Summary:        Static Salt state files for %{productprettyname}
 URL:            https://github.com/uyuni-project/uyuni
