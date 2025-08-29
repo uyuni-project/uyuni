@@ -54,20 +54,6 @@ export function AllSystems(props: Props) {
           />
         </div>
       </h1>
-      <div className="spacewalk-section-toolbar">
-        <div className="action-button-wrapper">
-          <a
-            role="button"
-            title="Download CSV"
-            href="/rhn/manager/systems/csv/all"
-            className="btn btn-default"
-            data-senna-off="true"
-          >
-            <IconTag type="item-download-csv" />
-            {t("Download CSV")}
-          </a>
-        </div>
-      </div>
       <Table
         data="/rhn/manager/api/systems/list/all"
         identifier={(item) => item.id}
@@ -79,6 +65,19 @@ export function AllSystems(props: Props) {
         defaultSearchField={props.queryColumn || "server_name"}
         initialSearch={props.query}
         emptyText={t("No Systems.")}
+        titleButtons={[
+          <a
+            role="button"
+            title="Download CSV"
+            href="/rhn/manager/systems/csv/all"
+            className="btn btn-default"
+            data-senna-off="true"
+            key="download-csv-button"
+          >
+            <IconTag type="item-download-csv" />
+            {t("Download CSV")}
+          </a>,
+        ]}
       >
         <Column
           columnKey="server_name"
