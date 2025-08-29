@@ -328,13 +328,6 @@
         </context-group>
         <target>Адрес не указан</target>
       </trans-unit>
-      <trans-unit id="Fill in this address" xml:space="preserve">
-        <source>Fill in this address</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/users/Addresses</context>
-        </context-group>
-        <target>Заполните адрес</target>
-      </trans-unit>
       <trans-unit id="Advanced Search" xml:space="preserve">
         <source>Advanced Search</source>
         <context-group name="ctx">
@@ -594,13 +587,6 @@
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
         <target>Дистрибутивы</target>
-      </trans-unit>
-      <trans-unit id="Edit this address" xml:space="preserve">
-        <source>Edit this address</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/users/Addresses</context>
-        </context-group>
-        <target>Изменить адрес</target>
       </trans-unit>
       <trans-unit id="Errata" xml:space="preserve">
         <source>Patches</source>
@@ -2447,11 +2433,11 @@ and try again.
         <target>Переименуйте или удалите конфликтующий фрагмент из {0}</target>
       </trans-unit>
       <trans-unit id="toolbar.delete.snippets" xml:space="preserve">
-        <source>delete snippet</source>
+        <source>Delete Snippet</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/cobbler/CobblerSnippetEdit</context>
         </context-group>
-        <target>удалить фрагмент</target>
+        <target state="needs-adaptation">удалить фрагмент</target>
       </trans-unit>
       <trans-unit id="kickstart.iprange.url" xml:space="preserve">
         <source>New systems can be autoinstalled based upon their ip address by appending &lt;code&gt;{0}&lt;/code&gt; to the kernel parameters for an autoinstallation.</source>
@@ -11484,6 +11470,20 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>Unable to gather and upload the support data. Please check the server logs for detailed information.</source>
       <target state="new"/>
   </trans-unit>
-    </body>
+    <trans-unit id="Add address" xml:space="preserve">
+        <source>Add address</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/users/Addresses</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="Edit" xml:space="preserve">
+        <source>Edit</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/users/Addresses</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>
