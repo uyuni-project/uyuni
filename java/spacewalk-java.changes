@@ -1,4 +1,85 @@
 -------------------------------------------------------------------
+Fri Aug 29 12:21:31 CEST 2025 - rosuna@suse.com
+
+- version 5.1.18-0
+  * CVE-2025-53883: Escape input strings in system search form
+    (bsc#1246439)
+  * Fix Maintenance Window alignment in scheduling actions page.
+    (bsc#1245553)
+  * Fix tooltip text for Create button on Maintenance page.
+    (bsc#1241044)
+  * Fix broken CVE links in CVE audit page.
+  * Show tick next to password when requirements
+    are met. (bsc#1230282)
+  * Support confidential computing VLEK attestation
+  * Implement hub registration data forwarding
+    from the peripherals towards the SCC
+  * Implement and test the update last seen mechanism
+    when a hub is acting as a SCC proxy
+  * Ensure null safety when converting from proxy paths to host
+    names (bsc#1237536)
+  * Display correct advisory link by using an errata advisory map
+    (bsc#1243808)
+  * Fix action chain scheduled within SSM creates no link
+    for the new action chain (bsc#1243825)
+  * Fix ISSv3: Inconsistent behavior of the URLs linking
+    to peripherals (bsc#1244220)
+  * Removes leftover 'Bootstrap using Salt' checkbox in
+    bootstrap script web page (bsc#1244329)
+  * Fix bug: XMLRPC API endpoint updateRepoSsl resets
+    hasSignedMetadata repository property
+  * Update the systems cache table after converting a system to
+    proxy (bsc#1239158)
+  * Fix character encoding issue on organization credentials page
+    (bsc#1246436)
+  * Use absolute paths when invoking external commands
+  * Correct the organization count in the peripheral details
+  * Add support for product migration in SSM
+  * Add a page to generate and upload the support data for a system
+  * Move jmx configuration to a persisting folder (bsc#1244219)
+  * Show Confidential Compute Attestation tab for Salt SSH
+    managed clients
+  * Make the official update server domain configurable
+  * Succeed liberate product migration also when reinstall
+    packages is disabled (bsc#1248804)
+  * Delay highstate during bootstrap to run it after the initial
+    minimal state (bsc#1240565)
+  * Add CLM environment differences to report DB (jsc#SUMA-301)
+  * Generate differences between CLM environments (jsc#SUMA-301)
+  * Adapt reportdb queries and add new data for newly added columns
+  * Populate new System Hardware report database table and
+    synchronize it to Hub (jsc#SUMA-316)
+  * Fix IllegalArgumentException for ImageInfo set build Server
+    where the Object was not a Minion Server (bsc#1241908)
+  * Fix API documentation for system config listFiles (bsc#1245027)
+  * Fix exception handling for rest like API to not strictly
+    require Fault Exceptions to return a json error object
+    (bsc#1246452)
+  * Fix inconsistency in task schedule deactivation and
+    add activation capability (bsc#1225740)
+  * Get virtual instance info from physical hosts using Salt
+    vm_info in the virt module
+  * Allow to disable supportdata upload feature
+  * Implement API to get and upload support data to SCC
+  * Update saltboot cobbler profile on image build
+  * Do not validate random password when using PAM
+    (bsc#1245398)
+  * Fix product migration not showing valid clones
+    as target for SL Micro (bsc#1247269)
+  * Fix SSM delete systems button freezing the UI (bsc#1247214)
+  * Remove the jsp table alphabet picker
+  * Rename 'Roles' to 'Administrative Roles'
+    in users UI (bsc#1243394)
+  * Adjust defaults and validations for registries in proxy
+    configuration (bsc#1246660)
+  * Drop requirement for minion to be a transactional system
+    to convert it to a proxy (bsc#1246158)
+  * Fix supported OS for proxy conversion (bsc#1246634)
+  * Optimize CLM by improving AppStream-related queries
+    (bsc#1235847)
+  * Send CPU architecture specific data to SCC (jsc#SUMA-406)
+
+-------------------------------------------------------------------
 Thu Jul 24 18:39:52 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.17-0

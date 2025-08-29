@@ -1,2 +1,0 @@
-- Get virtual instance info from physical hosts using salts
-  vm_info in the virt module

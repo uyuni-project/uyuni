@@ -60,7 +60,7 @@
 %endif
 
 Name:           spacewalk-java
-Version:        5.1.17
+Version:        5.1.18
 Release:        0
 Summary:        Java web application files for %{productprettyname}
 License:        GPL-2.0-only
