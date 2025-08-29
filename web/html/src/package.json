@@ -88,7 +88,7 @@
     "ip-regex": "^4.3.0",
     "jexl": "2.2.2",
     "jquery": "3.5.1",
-    "jquery-ui": "1.10.4",
+    "jquery-ui": "1.14.1",
     "lodash": "4.17.21",
     "mini-css-extract-plugin": "^2.6.0",
     "moment": "2.29.4",
