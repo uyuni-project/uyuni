@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-08-29 09:49+0200\n"
-"PO-Revision-Date: 2025-08-22 16:59+0000\n"
+"PO-Revision-Date: 2025-08-30 15:59+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -2228,10 +2228,8 @@ msgid "No hub is currently configured for this server. Refresh this page after c
 msgstr ""
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:89
-#, fuzzy
-#| msgid "This server is currently registered as peripheral of hub {fqdn}. "
 msgid "This server is currently registered as peripheral of hub {fqdn}. This page shows the details of the hub server."
-msgstr "Tento server je v súčasnosti registrovaný ako periféria hubu {fqdn}. "
+msgstr "Tento server je v súčasnosti registrovaný ako periféria hubu {fqdn}. Táto stránka zobrazuje podrobnosti o serveri hubu."
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:108
 msgid "Successfully scheduled a channels synchronization."
@@ -2254,10 +2252,8 @@ msgid "{fqdn} - Peripheral Details"
 msgstr "{fqdn} - Podrobnosti o periférii"
 
 #: ../html/src/manager/admin/hub/peripheral-details.tsx:51
-#, fuzzy
-#| msgid "The server {fqdn} is currently registered as peripheral of this hub. "
 msgid "The server {fqdn} is currently registered as peripheral of this hub. This page shows the details of the peripheral server."
-msgstr "Server {fqdn} je v súčasnosti registrovaný ako periféria pre hub. "
+msgstr "Server {fqdn} je v súčasnosti registrovaný ako periféria pre hub. Táto stránka zobrazuje podrobnosti o periférnom serveri."
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:26
 msgid "Peripherals Configuration"
@@ -2834,20 +2830,16 @@ msgid "Affected, patches available in channels which are not assigned"
 msgstr "Ovplyvnené, opravy dostupné v kanáloch, ktoré nie sú priradené"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:45
-#, fuzzy
-#| msgid "The client is affected by a vulnerability and we have a patch for it,"
 msgid "The client is affected by a vulnerability and we have a patch for it, but the channel(s) offering the patch are not assigned to the client."
-msgstr "Klient je ohrozený zraniteľnosťou a máme na ňu opravu,"
+msgstr "Klient je ohrozený zraniteľnosťou a máme na ňu opravu, ale kanál(y) ponúkajúce opravu nie sú priradené klientovi."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:51
 msgid "Affected, patches available in a Product Migration target"
 msgstr "Ovplyvnené, opravy dostupné v cieli migrácie produktu"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:53
-#, fuzzy
-#| msgid "The client is affected by a vulnerability and we have a patch for it,"
 msgid "The client is affected by a vulnerability and we have a patch for it, but applying the patch requires migrating the product to a newer version."
-msgstr "Klient je ohrozený zraniteľnosťou a máme na ňu opravu,"
+msgstr "Klient je ohrozený zraniteľnosťou a máme na ňu opravu, ale aplikácia opravy vyžaduje migráciu produktu na novšiu verziu."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:59
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:60
@@ -2893,10 +2885,8 @@ msgid "Affected, partial patch available in assigned channel"
 msgstr "Ovplyvnené, čiastočná oprava je k dispozícii v priradenom kanáli"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:89
-#, fuzzy
-#| msgid "The client is affected by a vulnerability and we have a patch for it,"
 msgid "The client is affected by a vulnerability and we have a patch for it, but applying the patch will only update some of the vulnerable packages."
-msgstr "Klient je ohrozený zraniteľnosťou a máme na ňu opravu,"
+msgstr "Klient je ohrozený zraniteľnosťou a máme na ňu opravu, ale aplikovanie opravy aktualizuje len niektoré zo zraniteľných balíkov."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:95
 msgid "Unknown, CVE metadata not available"
@@ -4059,20 +4049,16 @@ msgid "If you typed this address into your browser, double-check the spelling an
 msgstr "Ak ste zadali túto adresu do svojho prehliadača, znova skontrolujte pravopis a veľké písmená."
 
 #: ../html/src/manager/errors/not-found.tsx:18
-#, fuzzy
-#| msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your "
 msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your browser to try a different link, or use the top (or left) navigation bars to find the page you are looking for."
-msgstr "Ak ste nasledovali odkaz, ten môže byť nesprávny alebo zastaraný. Kliknite na tlačidlo späť vo vašom "
+msgstr "Ak ste nasledovali odkaz, ten môže byť nesprávny alebo zastaraný. Kliknite na tlačidlo späť vo vašom prehliadači a vyskúšajte iný odkaz alebo použite horný (alebo ľavý) navigačný panel, aby ste našli stránku, ktorú hľadáte."
 
 #: ../html/src/manager/errors/not-found.tsx:25
 msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was created. Use the top (or left) navigation bars to find the page you are looking for, and if you find the document be sure to update your bookmark."
 msgstr "Ak ste použili záložku, od vytvorenia záložky sa stránka mohla presunúť na iné miesto. Pomocou horných (alebo ľavých) navigačných panelov nájdite stránku, ktorú hľadáte, a ak dokument nájdete, nezabudnite aktualizovať svoju záložku."
 
 #: ../html/src/manager/errors/not-found.tsx:32
-#, fuzzy
-#| msgid "If you feel you've reached this page in error, please contact us with details of how you received "
 msgid "If you feel you've reached this page in error, please contact us with details of how you received this message."
-msgstr "Ak si myslíte, že ste sa na túto stránku dostali omylom, prosím, kontaktujte nás s podrobnosťami o tom, ako ste dostali "
+msgstr "Ak si myslíte, že ste sa na túto stránku dostali omylom, prosím, kontaktujte nás s podrobnosťami o tom, ako ste dostali túto správu."
 
 #: ../html/src/manager/groups/config-channels/group-config-channels.tsx:29
 msgid "Applying the config channels has been scheduled for each minion server in this group"
