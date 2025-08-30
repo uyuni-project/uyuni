@@ -42,7 +42,7 @@ public class ToolbarTagCreationTest extends BaseTestToolbarTag {
         // setup mock objects
         String output = "<div class=\"spacewalk-toolbar-h1\">" +
             "<div class=\"spacewalk-toolbar\"><a href=\"creation-url\" class=\"btn btn-primary\">" +
-            "<i class=\"fa fa-plus\" title=\"Create User\"></i>" +
+            "<i class=\"fa fa-plus\"></i>" +
             "Create User</a></div><h1></h1></div>";
 
         setupCreationTag("h1", "creation-url", "", "user");
@@ -65,7 +65,7 @@ public class ToolbarTagCreationTest extends BaseTestToolbarTag {
     public void testCreateAclMultipleMixinsMultipleAcls() throws Exception {
         String output = "<div class=\"spacewalk-toolbar-h1\">" +
             "<div class=\"spacewalk-toolbar\"><a href=\"creation-url\" class=\"btn btn-primary\">" +
-            "<i class=\"fa fa-plus\" title=\"Create User\">" +
+            "<i class=\"fa fa-plus\">" +
             "</i>Create User</a></div><h1></h1></div>";
 
         setupCreationTag("h1", "creation-url",
@@ -82,7 +82,7 @@ public class ToolbarTagCreationTest extends BaseTestToolbarTag {
     public void testCreateAclMultipleAclsSingleMixin() throws Exception {
         String output = "<div class=\"spacewalk-toolbar-h1\">" +
             "<div class=\"spacewalk-toolbar\"><a href=\"creation-url\" class=\"btn btn-primary\">" +
-            "<i class=\"fa fa-plus\" title=\"Create User\"></i>" +
+            "<i class=\"fa fa-plus\"></i>" +
             "Create User</a></div><h1></h1></div>";
 
         setupCreationTag("h1", "creation-url",
@@ -119,7 +119,7 @@ public class ToolbarTagCreationTest extends BaseTestToolbarTag {
         // setup mock objects
         String output = "<div class=\"spacewalk-toolbar-h1\">" +
             "<div class=\"spacewalk-toolbar\"><a href=\"creation-url\" class=\"btn btn-primary\">" +
-            "<i class=\"fa fa-plus\" title=\"Create User\"></i>" +
+            "<i class=\"fa fa-plus\"></i>" +
             "Create User</a></div><h1></h1></div>";
 
         setupCreationTag("h1", "creation-url", "true_test()", "user");

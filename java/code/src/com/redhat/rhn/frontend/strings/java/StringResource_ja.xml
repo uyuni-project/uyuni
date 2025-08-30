@@ -338,13 +338,6 @@
         </context-group>
         <target state="final">アドレスが記入されていません</target>
       </trans-unit>
-      <trans-unit approved="yes" id="Fill in this address" xml:space="preserve">
-        <source>Fill in this address</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/users/Addresses</context>
-        </context-group>
-        <target state="final">このアドレスを入力します</target>
-      </trans-unit>
       <trans-unit approved="yes" id="Advanced Search" xml:space="preserve">
         <source>Advanced Search</source>
         <context-group name="ctx">
@@ -605,13 +598,6 @@
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
         <target state="final">ディストリビューション</target>
-      </trans-unit>
-      <trans-unit approved="yes" id="Edit this address" xml:space="preserve">
-        <source>Edit this address</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/users/Addresses</context>
-        </context-group>
-        <target state="final">このアドレスを編集</target>
       </trans-unit>
       <trans-unit approved="yes" id="Errata" xml:space="preserve">
         <source>Patches</source>
@@ -2494,11 +2480,11 @@ and try again.
         <target>問題となるスニペットを {0} から削除またはその名前を変更する</target>
       </trans-unit>
       <trans-unit id="toolbar.delete.snippets" xml:space="preserve">
-        <source>delete snippet</source>
+        <source>Delete Snippet</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/cobbler/CobblerSnippetEdit</context>
         </context-group>
-        <target>スニペットの削除</target>
+        <target state="needs-adaptation">スニペットの削除</target>
       </trans-unit>
       <trans-unit id="kickstart.iprange.url" xml:space="preserve">
         <source>New systems can be autoinstalled based upon their ip address by appending &lt;code&gt;{0}&lt;/code&gt; to the kernel parameters for an autoinstallation.</source>
@@ -11919,6 +11905,20 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>Unable to gather and upload the support data. Please check the server logs for detailed information.</source>
       <target state="new"/>
   </trans-unit>
-    </body>
+    <trans-unit id="Add address" xml:space="preserve">
+        <source>Add address</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/users/Addresses</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="Edit" xml:space="preserve">
+        <source>Edit</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/users/Addresses</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>

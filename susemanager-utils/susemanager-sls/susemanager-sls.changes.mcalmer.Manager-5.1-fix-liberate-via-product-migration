@@ -1,0 +1,2 @@
+- Succeed liberate product migration also when reinstall
+  packages is disabled (bsc#1248804)

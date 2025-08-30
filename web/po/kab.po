@@ -3,17 +3,12 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#: ../html/src/components/input/range/Range.tsx:47
-#: ../html/src/components/input/range/Range.tsx:48
-#: ../html/src/components/input/range/Range.tsx:60
-#: ../html/src/components/input/range/Range.tsx:61
 #: ../html/src/core/intl/index.test.tsx:11
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:200
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-22 09:58+0200\n"
+"POT-Creation-Date: 2025-08-29 09:49+0200\n"
 "PO-Revision-Date: 2025-05-29 11:59+0000\n"
 "Last-Translator: Athmane MOKRAOUI <butterflyoffire+opensuse@protonmail.com>\n"
 "Language-Team: Kabyle <https://l10n.opensuse.org/projects/uyuni/web/kab/>\n"
@@ -32,15 +27,23 @@ msgstr ""
 msgid "The browser Internet Explorer is not supported. Try using Firefox, Chrome or Edge"
 msgstr ""
 
+#: ../html/src/components/CoCoScansList.tsx:68
+#: ../html/src/components/package/PackageListActionScheduler.tsx:82
+#: ../html/src/manager/appstreams/appstreams.tsx:61
+#: ../html/src/manager/state/highstate.tsx:64
+#: ../html/src/manager/systems/coco/ssm-schedule.tsx:57
+msgid "Action has been successfully added to the action chain <link>\"{name}\"</link>."
+msgstr ""
+
 #: ../html/src/components/CoCoScansList.tsx:75
 #: ../html/src/components/package/PackageListActionScheduler.tsx:89
 #: ../html/src/manager/minion/details/support-data.tsx:75
-#: ../html/src/manager/systems/coco/ssm-schedule.tsx:65
+#: ../html/src/manager/systems/coco/ssm-schedule.tsx:64
 msgid "The action has been <link>scheduled</link>."
 msgstr ""
 
 #: ../html/src/components/CoCoScansList.tsx:90
-#: ../html/src/manager/systems/coco/ssm-schedule.tsx:77
+#: ../html/src/manager/systems/coco/ssm-schedule.tsx:76
 msgid "Unable to schedule action. Please check the server logs for detailed information."
 msgstr ""
 
@@ -50,13 +53,13 @@ msgstr ""
 
 #: ../html/src/components/CoCoScansList.tsx:130
 #: ../html/src/manager/admin/hub/hub-details.tsx:45
-#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:41
-#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:60
+#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:42
+#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:62
 #: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:128
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:111
 #: ../html/src/manager/minion/details/support-data.tsx:142
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:232
-#: ../html/src/manager/systems/coco/ssm-schedule.tsx:94
+#: ../html/src/manager/systems/coco/ssm-schedule.tsx:98
 msgid "Schedule"
 msgstr ""
 
@@ -82,6 +85,10 @@ msgstr ""
 
 #: ../html/src/components/FormulaForm.tsx:24
 msgid "Formula saved. Applying the highstate is not needed for this formula."
+msgstr ""
+
+#: ../html/src/components/FormulaForm.tsx:137
+msgid "Multiple Group formulas detected. Only one formula for \"{name}\" can be used on each system!"
 msgstr ""
 
 #: ../html/src/components/FormulaForm.tsx:168
@@ -144,6 +151,10 @@ msgstr ""
 msgid "Attestations"
 msgstr ""
 
+#: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:41
+msgid "No attestation report available. Schedule an execution to create one."
+msgstr ""
+
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:48
 msgid "Attestation"
 msgstr ""
@@ -161,7 +172,7 @@ msgstr ""
 #: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:121
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:212
 #: ../html/src/manager/minion/packages/package-states.tsx:224
-#: ../html/src/manager/systems/all-list.tsx:73
+#: ../html/src/manager/systems/all-list.tsx:87
 #: ../html/src/manager/systems/list-filter.tsx:43
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:81
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:775
@@ -170,7 +181,7 @@ msgstr "Anagraw"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:75
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:59
-#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:107
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:87
 msgid "Environment Type"
 msgstr ""
 
@@ -188,12 +199,12 @@ msgstr ""
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:87
 #: ../html/src/manager/admin/payg-shared/info/payg-info-view.tsx:18
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:226
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:369
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:388
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:150
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:61
 #: ../html/src/manager/images/image-view-runtime.tsx:138
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:785
-#: ../html/src/manager/systems/virtual-list.tsx:82
+#: ../html/src/manager/systems/virtual-list.tsx:94
 msgid "Status"
 msgstr "Addad"
 
@@ -203,7 +214,8 @@ msgstr ""
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:110
 #: ../html/src/components/hub/TokenTable.tsx:103
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:406
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:425
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:200
 #: ../html/src/manager/images/image-profiles.tsx:190
 #: ../html/src/manager/images/image-stores.tsx:192
 #: ../html/src/manager/images/image-view.tsx:684
@@ -276,41 +288,41 @@ msgstr ""
 msgid "Process Output"
 msgstr ""
 
-#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:82
-#: ../html/src/components/formula-selection.tsx:293
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:80
+msgid "Enable attestation"
+msgstr ""
+
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:105
+msgid "Executions"
+msgstr ""
+
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:109
+msgid "Peform attestation during the boot process"
+msgstr ""
+
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:121
+msgid "Peform attestation on a schedule"
+msgstr ""
+
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:132
+msgid "Select a schedule"
+msgstr ""
+
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:154
+#: ../html/src/components/formula-selection.tsx:298
 #: ../html/src/components/hub/ModalEditButton.tsx:94
 #: ../html/src/components/large-text-attachment.tsx:195
 #: ../html/src/components/panels/CreatorPanel.tsx:125
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:119
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:196
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:197
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:17
 #: ../html/src/manager/minion/ansible/new-ansible-path.tsx:35
 #: ../html/src/manager/minion/packages/package-states.tsx:194
 msgid "Save"
 msgstr "Sekles"
 
-#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:87
+#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:160
 msgid "Reset Changes"
-msgstr ""
-
-#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:100
-msgid "Enable attestation"
-msgstr ""
-
-#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:125
-msgid "Executions"
-msgstr ""
-
-#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:129
-msgid "Peform attestation during the boot process"
-msgstr ""
-
-#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:141
-msgid "Peform attestation on a schedule"
-msgstr ""
-
-#: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:152
-msgid "Select a schedule"
 msgstr ""
 
 #: ../html/src/components/coco-attestation/Utils.tsx:49
@@ -354,9 +366,9 @@ msgstr ""
 
 #: ../html/src/components/dialog/DangerDialog.tsx:61
 #: ../html/src/components/dialog/DangerDialog.tsx:62
-#: ../html/src/components/dialog/LegacyDangerDialog.tsx:53
-#: ../html/src/components/dialog/LegacyDangerDialog.tsx:54
-#: ../html/src/components/hub/AddTokenButton.tsx:154
+#: ../html/src/components/dialog/LegacyDangerDialog.tsx:28
+#: ../html/src/components/dialog/LegacyDangerDialog.tsx:29
+#: ../html/src/components/hub/AddTokenButton.tsx:156
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:252
 #: ../html/src/components/hub/ModalEditButton.tsx:87
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:372
@@ -364,14 +376,14 @@ msgstr ""
 #: ../html/src/components/panels/CreatorPanel.tsx:114
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:56
 #: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:34
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:183
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:184
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:129
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:108
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:109
-#: ../html/src/manager/images/image-view-overview.tsx:743
-#: ../html/src/manager/images/image-view-overview.tsx:744
-#: ../html/src/manager/images/image-view-overview.tsx:816
-#: ../html/src/manager/images/image-view-overview.tsx:817
+#: ../html/src/manager/images/image-view-overview.tsx:725
+#: ../html/src/manager/images/image-view-overview.tsx:726
+#: ../html/src/manager/images/image-view-overview.tsx:802
+#: ../html/src/manager/images/image-view-overview.tsx:803
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:20
 #: ../html/src/manager/systems/delete-system.tsx:80
 #: ../html/src/manager/systems/delete-system.tsx:81
@@ -391,7 +403,8 @@ msgstr "Semmet"
 #: ../html/src/components/table/Table.tsx:139
 #: ../html/src/manager/admin/payg/payg.tsx:73
 #: ../html/src/manager/admin/payg/payg.tsx:74
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:164
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:165
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:145
 #: ../html/src/manager/content-management/project/project.tsx:109
 #: ../html/src/manager/images/image-profiles.tsx:136
 #: ../html/src/manager/images/image-profiles.tsx:210
@@ -425,11 +438,11 @@ msgstr ""
 msgid "Are you sure you want to delete project "
 msgstr ""
 
-#: ../html/src/components/formik/Form.example.tsx:35
+#: ../html/src/components/formik/Form.example.tsx:33
 msgid "Field"
 msgstr ""
 
-#: ../html/src/components/formik/Form.example.tsx:37
+#: ../html/src/components/formik/Form.example.tsx:35
 #: ../html/src/components/input/InputBase.test.tsx:43
 #: ../html/src/components/input/InputBase.test.tsx:69
 #: ../html/src/components/input/InputBase.test.tsx:97
@@ -444,11 +457,12 @@ msgstr ""
 msgid "Minimum 2 characters"
 msgstr ""
 
-#: ../html/src/components/formik/Form.example.tsx:40
+#: ../html/src/components/formik/Form.example.tsx:38
+#: ../html/src/components/input/check/form.example.tsx:19
 msgid "Checkbox"
 msgstr ""
 
-#: ../html/src/components/formik/Form.example.tsx:42
+#: ../html/src/components/formik/Form.example.tsx:40
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:205
 #: ../html/src/components/input/password/Password.example.tsx:23
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:77
@@ -462,55 +476,56 @@ msgstr ""
 msgid "Password"
 msgstr "Awal n uɛeddi"
 
-#: ../html/src/components/formik/Form.example.tsx:44
+#: ../html/src/components/formik/Form.example.tsx:42
 msgid "Datetime"
 msgstr ""
 
-#: ../html/src/components/formik/Form.example.tsx:46
+#: ../html/src/components/formik/Form.example.tsx:44
 msgid "Multiple values"
 msgstr ""
 
-#: ../html/src/components/formik/Form.example.tsx:48
+#: ../html/src/components/formik/Form.example.tsx:46
 msgid "Long text"
 msgstr ""
 
-#: ../html/src/components/formik/Form.example.tsx:50
+#: ../html/src/components/formik/Form.example.tsx:48
 msgid "Range"
 msgstr ""
 
-#: ../html/src/components/formik/Form.example.tsx:54
+#: ../html/src/components/formik/Form.example.tsx:52
 msgid "Radio"
 msgstr ""
 
-#: ../html/src/components/formik/Form.example.tsx:56
+#: ../html/src/components/formik/Form.example.tsx:54
 msgid "One"
 msgstr "Yiwen"
 
-#: ../html/src/components/formik/Form.example.tsx:57
+#: ../html/src/components/formik/Form.example.tsx:55
 msgid "Two"
 msgstr "Sin"
 
-#: ../html/src/components/formik/Form.example.tsx:58
+#: ../html/src/components/formik/Form.example.tsx:56
 msgid "Three"
 msgstr "Krad"
 
-#: ../html/src/components/formik/Form.example.tsx:65
+#: ../html/src/components/formik/Form.example.tsx:63
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:306
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:127
 msgid "Select"
 msgstr ""
 
-#: ../html/src/components/formik/Form.example.tsx:68
+#: ../html/src/components/formik/Form.example.tsx:66
 msgid "Foo"
 msgstr ""
 
-#: ../html/src/components/formik/Form.example.tsx:72
+#: ../html/src/components/formik/Form.example.tsx:70
 msgid "Bar"
 msgstr ""
 
-#: ../html/src/components/formik/Form.example.tsx:79
+#: ../html/src/components/formik/Form.example.tsx:77
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:245
-#: ../html/src/components/input/check/Check.example.tsx:22
+#: ../html/src/components/input/check/DEPRECATED_Check.example.tsx:23
+#: ../html/src/components/input/check/form.example.tsx:21
 #: ../html/src/components/input/datetime/DateTime.example.tsx:25
 #: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:66
 #: ../html/src/components/input/form-multi-input/single-field.example.tsx:55
@@ -560,7 +575,7 @@ msgstr ""
 msgid "On this page you can select Salt Formulas for this group/system, which can then be configured on group and system level. This allows you to automatically install and configure software."
 msgstr ""
 
-#: ../html/src/components/formula-selection.tsx:299
+#: ../html/src/components/formula-selection.tsx:305
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:65
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:29
 msgid "Formulas"
@@ -590,14 +605,14 @@ msgid "Toggle section visibility"
 msgstr ""
 
 #: ../html/src/components/hub/AddTokenButton.tsx:66
-#: ../html/src/components/hub/AddTokenButton.tsx:93
-#: ../html/src/components/hub/AddTokenButton.tsx:120
+#: ../html/src/components/hub/AddTokenButton.tsx:96
+#: ../html/src/components/hub/AddTokenButton.tsx:122
 msgid "Issue a new token"
 msgstr ""
 
 #: ../html/src/components/hub/AddTokenButton.tsx:77
-#: ../html/src/components/hub/AddTokenButton.tsx:101
-#: ../html/src/components/hub/AddTokenButton.tsx:120
+#: ../html/src/components/hub/AddTokenButton.tsx:105
+#: ../html/src/components/hub/AddTokenButton.tsx:122
 msgid "Store an external token"
 msgstr ""
 
@@ -609,18 +624,18 @@ msgstr ""
 msgid "Add a new access token"
 msgstr ""
 
-#: ../html/src/components/hub/AddTokenButton.tsx:128
+#: ../html/src/components/hub/AddTokenButton.tsx:130
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:70
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:229
 msgid "Server FQDN"
 msgstr ""
 
-#: ../html/src/components/hub/AddTokenButton.tsx:130
+#: ../html/src/components/hub/AddTokenButton.tsx:132
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:160
 msgid "e.g. server.domain.com"
 msgstr ""
 
-#: ../html/src/components/hub/AddTokenButton.tsx:134
+#: ../html/src/components/hub/AddTokenButton.tsx:136
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:73
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:164
 #: ../html/src/manager/proxy/container-config.tsx:206
@@ -628,39 +643,39 @@ msgstr ""
 msgid "Has to be a valid FQDN address"
 msgstr ""
 
-#: ../html/src/components/hub/AddTokenButton.tsx:139
+#: ../html/src/components/hub/AddTokenButton.tsx:141
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:184
 msgid "Token"
 msgstr ""
 
-#: ../html/src/components/hub/AddTokenButton.tsx:161
+#: ../html/src/components/hub/AddTokenButton.tsx:163
 msgid "Issue"
 msgstr ""
 
-#: ../html/src/components/hub/AddTokenButton.tsx:161
+#: ../html/src/components/hub/AddTokenButton.tsx:163
 msgid "Store"
 msgstr ""
 
-#: ../html/src/components/hub/AddTokenButton.tsx:179
+#: ../html/src/components/hub/AddTokenButton.tsx:181
 msgid "New token successfully issued"
 msgstr ""
 
-#: ../html/src/components/hub/AddTokenButton.tsx:186
+#: ../html/src/components/hub/AddTokenButton.tsx:188
 msgid "The new token was generated successfully. Make sure to copy it now as you will not be able to see this again."
 msgstr ""
 
-#: ../html/src/components/hub/AddTokenButton.tsx:200
+#: ../html/src/components/hub/AddTokenButton.tsx:202
 msgid "Copy"
 msgstr "Nɣel"
 
-#: ../html/src/components/hub/AddTokenButton.tsx:220
+#: ../html/src/components/hub/AddTokenButton.tsx:222
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:178
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:94
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:95
 msgid "Close"
 msgstr "Mdel"
 
-#: ../html/src/components/hub/AddTokenButton.tsx:252
+#: ../html/src/components/hub/AddTokenButton.tsx:254
 msgid "Access token copied to the clipboard"
 msgstr ""
 
@@ -735,7 +750,7 @@ msgstr ""
 #: ../html/src/components/hub/HierarchicalChannelsTable.tsx:210
 #: ../html/src/manager/admin/setup/products/products.tsx:587
 #: ../html/src/manager/admin/setup/products/products.tsx:968
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:159
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:166
 #: ../html/src/manager/images/image-view-packages.tsx:50
 #: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:32
 msgid "Architecture"
@@ -785,15 +800,15 @@ msgstr ""
 #: ../html/src/manager/images/image-view.tsx:820
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:29
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:31
-#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:52
+#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:54
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:103
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:121
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:233
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:235
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:111
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:113
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:178
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:179
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:186
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:187
 msgid "Back"
 msgstr "Uɣal"
 
@@ -831,8 +846,6 @@ msgstr ""
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:60
 #: ../html/src/manager/images/image-profiles.tsx:204
 #: ../html/src/manager/images/image-stores.tsx:198
-#: ../html/src/manager/images/image-view-overview.tsx:326
-#: ../html/src/manager/images/image-view-overview.tsx:351
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:36
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:39
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:78
@@ -1014,12 +1027,12 @@ msgstr ""
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:268
 #: ../html/src/manager/images/image-import.tsx:314
-#: ../html/src/manager/images/image-profile-edit.tsx:481
-#: ../html/src/manager/images/image-store-edit.tsx:202
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:515
-#: ../html/src/manager/proxy/container-config.tsx:390
+#: ../html/src/manager/images/image-profile-edit.tsx:480
+#: ../html/src/manager/images/image-store-edit.tsx:201
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:443
+#: ../html/src/manager/proxy/container-config.tsx:386
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:407
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:186
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:178
 msgid "Clear fields"
 msgstr ""
 
@@ -1160,7 +1173,7 @@ msgstr ""
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:310
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:346
 #: ../html/src/components/input/form/Form.example.tsx:23
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:389
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:408
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:171
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:100
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:138
@@ -1179,13 +1192,13 @@ msgstr "Isem"
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:38
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:38
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-form.tsx:29
-#: ../html/src/manager/images/image-build.tsx:258
-#: ../html/src/manager/images/image-profile-edit.tsx:528
+#: ../html/src/manager/images/image-build.tsx:275
+#: ../html/src/manager/images/image-profile-edit.tsx:525
 #: ../html/src/manager/images/image-profiles.tsx:177
-#: ../html/src/manager/images/image-store-edit.tsx:259
+#: ../html/src/manager/images/image-store-edit.tsx:256
 #: ../html/src/manager/images/image-stores.tsx:177
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:259
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:315
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:262
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:318
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:46
 msgid "Label"
 msgstr "Tabzimt"
@@ -1226,7 +1239,7 @@ msgstr ""
 #: ../html/src/components/states-picker.tsx:559
 #: ../html/src/manager/admin/setup/products/products.tsx:1081
 #: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:38
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:191
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:195
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:16
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1135
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:677
@@ -1272,14 +1285,14 @@ msgid "Valid"
 msgstr ""
 
 #: ../html/src/components/hub/TokenTable.tsx:76
-#: ../html/src/manager/systems/coco/ssm-schedule.tsx:115
+#: ../html/src/manager/systems/coco/ssm-schedule.tsx:108
 #: ../html/src/manager/systems/coco/ssm-settings.tsx:74
 #: ../html/src/manager/systems/list-filter.tsx:38
 msgid "Yes"
 msgstr "Ih"
 
 #: ../html/src/components/hub/TokenTable.tsx:76
-#: ../html/src/manager/systems/coco/ssm-schedule.tsx:115
+#: ../html/src/manager/systems/coco/ssm-schedule.tsx:108
 #: ../html/src/manager/systems/coco/ssm-settings.tsx:74
 #: ../html/src/manager/systems/list-filter.tsx:39
 msgid "No"
@@ -1540,11 +1553,11 @@ msgstr ""
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:214
 #: ../html/src/components/package/PackageListActionScheduler.tsx:246
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:146
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:155
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:165
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:245
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:291
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:153
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:162
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:172
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:252
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:298
 #: ../html/src/manager/images/image-view-packages.tsx:49
 #: ../html/src/manager/minion/packages/package-states.tsx:343
 msgid "Package Name"
@@ -1642,6 +1655,10 @@ msgstr ""
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:483
 msgid "Custom Quartz format:"
+msgstr ""
+
+#: ../html/src/components/picker/recurring-event-picker.tsx:493
+msgid "e.g. \"0 15 2 ? * 7\""
 msgstr ""
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:512
@@ -1770,12 +1787,12 @@ msgid "Channel Label"
 msgstr ""
 
 #: ../html/src/components/states-picker.tsx:453
-#: ../html/src/manager/admin/create-payg/create-payg.tsx:73
+#: ../html/src/manager/admin/create-payg/create-payg.tsx:48
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:81
 #: ../html/src/manager/admin/payg-shared/info/payg-info-form.tsx:23
 #: ../html/src/manager/admin/payg-shared/info/payg-info-view.tsx:14
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:370
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.tsx:76
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.tsx:81
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:110
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:45
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:42
@@ -1798,7 +1815,7 @@ msgid "This table is empty"
 msgstr ""
 
 #: ../html/src/components/states-picker.tsx:530
-#: ../html/src/components/states-picker.tsx:572
+#: ../html/src/components/states-picker.tsx:571
 msgid "System Name"
 msgstr ""
 
@@ -1822,7 +1839,7 @@ msgstr ""
 #: ../html/src/components/systems.tsx:31
 #: ../html/src/manager/systems/list-filter.tsx:8
 #: ../html/src/manager/systems/list-filter.tsx:68
-#: ../html/src/manager/systems/virtual-list.tsx:63
+#: ../html/src/manager/systems/virtual-list.tsx:75
 msgid "Virtual Host"
 msgstr ""
 
@@ -1843,7 +1860,7 @@ msgid "Peripheral Server"
 msgstr ""
 
 #: ../html/src/components/systems.tsx:102
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:187
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:194
 msgid "Security Advisory"
 msgstr ""
 
@@ -1877,7 +1894,7 @@ msgid "not equal to"
 msgstr ""
 
 #: ../html/src/components/table/NumericSearchField.tsx:62
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:132
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:139
 msgid "Matcher"
 msgstr ""
 
@@ -1891,15 +1908,15 @@ msgstr ""
 msgid "Select a filter"
 msgstr ""
 
-#: ../html/src/components/table/SearchPanel.tsx:59
+#: ../html/src/components/table/SearchPanel.tsx:60
 msgid "Items {from} - {to} of {total}"
 msgstr ""
 
-#: ../html/src/components/table/SearchPanel.tsx:64
+#: ../html/src/components/table/SearchPanel.tsx:65
 msgid "({selectedCount} selected)"
 msgstr ""
 
-#: ../html/src/components/table/SearchPanel.tsx:73
+#: ../html/src/components/table/SearchPanel.tsx:70
 msgid "Select All"
 msgstr ""
 
@@ -1974,6 +1991,14 @@ msgstr ""
 
 #: ../html/src/core/intl/index.example.tsx:7
 msgid "Please see <link>Format.JS docs</link> for the message syntax."
+msgstr ""
+
+#: ../html/src/core/intl/index.example.tsx:23
+msgid ""
+"Always use plural forms for numbers: {fooCount, plural,\n"
+"            one {only one item}\n"
+"            other {{fooCount} items}\n"
+"          }."
 msgstr ""
 
 #: ../html/src/core/intl/index.test.tsx:9
@@ -2144,41 +2169,35 @@ msgstr ""
 msgid " Tomcat and Taskomatic is needed for the configuration changes to take effect."
 msgstr ""
 
-#: ../html/src/manager/admin/create-payg/create-payg.tsx:41
+#: ../html/src/manager/admin/create-payg/create-payg.tsx:40
 msgid "Add new PAYG ssh connection data"
 msgstr ""
 
-#: ../html/src/manager/admin/create-payg/create-payg.tsx:48
-msgid "Add PAYG ssh data"
-msgstr ""
-
-#: ../html/src/manager/admin/create-payg/create-payg.tsx:49
-#: ../html/src/manager/content-management/create-project/top-panel-buttons.tsx:16
-#: ../html/src/manager/images/image-profile-edit.tsx:503
-#: ../html/src/manager/images/image-profiles.tsx:147
-#: ../html/src/manager/images/image-profiles.tsx:148
-#: ../html/src/manager/images/image-store-edit.tsx:225
-#: ../html/src/manager/images/image-stores.tsx:147
-#: ../html/src/manager/images/image-stores.tsx:148
-#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:41
-#: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:29
-#: ../html/src/manager/recurring/recurring-actions-list.tsx:104
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:207
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:172
-msgid "Create"
-msgstr "Snulfu-d"
-
-#: ../html/src/manager/admin/create-payg/create-payg.tsx:70
+#: ../html/src/manager/admin/create-payg/create-payg.tsx:46
 msgid "PAYG connection Description"
 msgstr ""
 
-#: ../html/src/manager/admin/create-payg/create-payg.tsx:77
+#: ../html/src/manager/admin/create-payg/create-payg.tsx:51
 msgid "Instance SSH connection data"
 msgstr ""
 
-#: ../html/src/manager/admin/create-payg/create-payg.tsx:82
+#: ../html/src/manager/admin/create-payg/create-payg.tsx:54
 msgid "Bastion SSH connection data"
 msgstr ""
+
+#: ../html/src/manager/admin/create-payg/create-payg.tsx:62
+msgid "Add PAYG ssh data"
+msgstr ""
+
+#: ../html/src/manager/admin/create-payg/create-payg.tsx:63
+#: ../html/src/manager/content-management/create-project/top-panel-buttons.tsx:16
+#: ../html/src/manager/images/image-profile-edit.tsx:500
+#: ../html/src/manager/images/image-store-edit.tsx:222
+#: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:29
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:210
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:172
+msgid "Create"
+msgstr "Snulfu-d"
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:36
 msgid "Sync Channels"
@@ -2201,11 +2220,11 @@ msgid "Hub Details"
 msgstr ""
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:80
-msgid "No hub is currently configured for this server. "
+msgid "No hub is currently configured for this server. Refresh this page after configuring this server as a peripheral, to see the hub details"
 msgstr ""
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:89
-msgid "This server is currently registered as peripheral of hub {fqdn}. "
+msgid "This server is currently registered as peripheral of hub {fqdn}. This page shows the details of the hub server."
 msgstr ""
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:108
@@ -2229,7 +2248,7 @@ msgid "{fqdn} - Peripheral Details"
 msgstr ""
 
 #: ../html/src/manager/admin/hub/peripheral-details.tsx:51
-msgid "The server {fqdn} is currently registered as peripheral of this hub. "
+msgid "The server {fqdn} is currently registered as peripheral of this hub. This page shows the details of the peripheral server."
 msgstr ""
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:26
@@ -2373,10 +2392,6 @@ msgstr ""
 msgid "Last Status Update"
 msgstr ""
 
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:52
-msgid "Edit "
-msgstr "Ẓreg "
-
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:71
 msgid "Editing ssh connection data.."
 msgstr ""
@@ -2467,6 +2482,10 @@ msgstr ""
 msgid "Selected channels were scheduled successfully for syncing."
 msgstr ""
 
+#: ../html/src/manager/admin/setup/products/products.tsx:259
+msgid "The following channel installations for \"{product}\" failed. Please check log files."
+msgstr ""
+
 #: ../html/src/manager/admin/setup/products/products.tsx:284
 msgid "A refresh of the product data is currently running in the background. Please try again later."
 msgstr ""
@@ -2519,18 +2538,6 @@ msgstr ""
 
 #: ../html/src/manager/admin/setup/products/products.tsx:603
 msgid "Recommended"
-msgstr ""
-
-#: ../html/src/manager/admin/setup/products/products.tsx:774
-msgid " channels sync failed"
-msgstr ""
-
-#: ../html/src/manager/admin/setup/products/products.tsx:782
-msgid " channels sync in progress"
-msgstr ""
-
-#: ../html/src/manager/admin/setup/products/products.tsx:790
-msgid " channels synced"
 msgstr ""
 
 #: ../html/src/manager/admin/setup/products/products.tsx:815
@@ -2589,19 +2596,19 @@ msgstr ""
 msgid "Optional Channels"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1101
+#: ../html/src/manager/admin/setup/products/products.tsx:1100
 msgid "not synced"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1104
+#: ../html/src/manager/admin/setup/products/products.tsx:1103
 msgid "sync in progress"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1107
+#: ../html/src/manager/admin/setup/products/products.tsx:1106
 msgid "synced"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1110
+#: ../html/src/manager/admin/setup/products/products.tsx:1109
 msgid "sync failed"
 msgstr ""
 
@@ -2720,9 +2727,9 @@ msgid " seconds"
 msgstr ""
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:196
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:363
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:382
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:280
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:140
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:143
 msgid "Filter by name"
 msgstr ""
 
@@ -2817,13 +2824,15 @@ msgid "Affected, patches available in channels which are not assigned"
 msgstr ""
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:45
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:53
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:89
-msgid "The client is affected by a vulnerability and we have a patch for it,"
+msgid "The client is affected by a vulnerability and we have a patch for it, but the channel(s) offering the patch are not assigned to the client."
 msgstr ""
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:51
 msgid "Affected, patches available in a Product Migration target"
+msgstr ""
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:53
+msgid "The client is affected by a vulnerability and we have a patch for it, but applying the patch requires migrating the product to a newer version."
 msgstr ""
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:59
@@ -2860,11 +2869,15 @@ msgid "Affected, patch is unavailable in relevant channels"
 msgstr ""
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:81
-msgid "The client is affected by a vulnerability for which a patch has been released,"
+msgid "The client is affected by a vulnerability for which a patch has been released, but the patch can't be found in the relevant channels."
 msgstr ""
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:87
 msgid "Affected, partial patch available in assigned channel"
+msgstr ""
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:89
+msgid "The client is affected by a vulnerability and we have a patch for it, but applying the patch will only update some of the vulnerable packages."
 msgstr ""
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:95
@@ -2908,51 +2921,58 @@ msgstr ""
 msgid "Audit Images"
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:340
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:343
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:9
+#: ../html/src/manager/systems/all-list.tsx:68
+#: ../html/src/manager/systems/virtual-list.tsx:56
+msgid "Download CSV"
+msgstr ""
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:359
 msgid "MITRE CVE link"
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:351
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:370
 msgid "SUSE Security CVE link"
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:417
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:485
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:436
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:504
 msgid "No action required"
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:423
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:442
 msgid "Install a new patch on this system."
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:440
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:459
 msgid "Patch available, but system needs to be migrated to a newer Product."
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:452
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:471
 msgid "Patch available, but needs to be cloned into Channel."
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:464
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:483
 msgid "Install a new partial patch on this system."
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:477
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:508
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:511
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:496
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:527
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:530
 msgid "If you see this report a bug."
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:492
-#: ../html/src/manager/images/image-view-overview.tsx:643
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:511
+#: ../html/src/manager/images/image-view-overview.tsx:641
 msgid "Rebuild"
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:500
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:519
 msgid "Patch available but needs to be cloned into Channel."
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:503
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:522
 #: ../html/src/manager/content-management/list-filters/appstreams/select-input.tsx:34
 #: ../html/src/manager/content-management/list-filters/templates/app-streams.tsx:43
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:41
@@ -2960,13 +2980,8 @@ msgstr ""
 msgid "Channel"
 msgstr ""
 
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:504
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:523
 msgid "Errata"
-msgstr ""
-
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:531
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:9
-msgid "Download CSV"
 msgstr ""
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:60
@@ -3049,19 +3064,19 @@ msgstr ""
 msgid "Please review warning and information messages below."
 msgstr ""
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:103
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:108
 msgid "Message"
 msgstr ""
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:109
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:114
 msgid "Additional information"
 msgstr ""
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:118
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:121
 msgid "No messages from the last match run."
 msgstr ""
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:123
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:126
 msgid "Messages"
 msgstr ""
 
@@ -3088,7 +3103,7 @@ msgstr ""
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:117
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:144
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:369
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.tsx:70
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.tsx:75
 msgid "Part number"
 msgstr ""
 
@@ -3098,13 +3113,13 @@ msgstr ""
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:129
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:371
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.tsx:82
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.tsx:87
 msgid "Policy"
 msgstr ""
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:135
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:374
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.tsx:103
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.tsx:108
 msgid "End date"
 msgstr ""
 
@@ -3166,53 +3181,53 @@ msgstr ""
 msgid "No subscriptions have been found to match this system, considering all products installed, either directly or in virtual guests."
 msgstr ""
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.tsx:65
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.tsx:70
 msgid "Filter by description"
 msgstr ""
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.tsx:88
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.tsx:93
 msgid "Matched/Total"
 msgstr ""
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.tsx:94
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.tsx:99
 msgid "Start date"
 msgstr ""
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.tsx:121
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.tsx:125
 msgid "No subscriptions found."
 msgstr ""
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.tsx:126
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.tsx:130
 msgid "Your subscriptions"
 msgstr ""
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:59
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:64
 msgid "Product name"
 msgstr ""
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:65
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:70
 msgid "Unmatched system count"
 msgstr ""
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:72
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:73
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:77
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:78
 msgid "Show system list"
 msgstr ""
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:92
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:95
 msgid "No unmatching products are found."
 msgstr ""
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:97
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:100
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:155
 msgid "Unmatched Products"
 msgstr ""
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:145
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:148
 msgid "System name"
 msgstr ""
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:153
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:156
 msgid "Unmatched systems"
 msgstr ""
 
@@ -3256,12 +3271,16 @@ msgstr ""
 msgid "You do not have permissions to perform this action"
 msgstr ""
 
-#: ../html/src/manager/content-management/create-project/create-project.tsx:37
+#: ../html/src/manager/content-management/create-project/create-project.tsx:36
 msgid "Create a new Content Lifecycle Project"
 msgstr ""
 
 #: ../html/src/manager/content-management/create-project/top-panel-buttons.tsx:15
 msgid "Create project"
+msgstr ""
+
+#: ../html/src/manager/content-management/list-filters/appstreams/appstreams.tsx:39
+msgid "Browse available modules"
 msgstr ""
 
 #: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:28
@@ -3299,155 +3318,155 @@ msgstr ""
 msgid "Updating the filter..."
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:87
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:88
 msgid "Check the required fields below"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:96
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:97
 msgid "Filter updated successfully"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:111
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:112
 msgid "Filter created successfully"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:122
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:123
 msgid "Filter Details"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:122
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:123
 msgid "Create a new filter"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:170
+#: ../html/src/manager/content-management/list-filters/filter-edit.tsx:171
 msgid "Filter deleted successfully"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:73
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:74
 msgid "Bear in mind that all the associated projects need to be rebuilt after a filter update"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:80
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:81
 msgid "Filter Name"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:90
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:91
 msgid "Prefix"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:93
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:94
 msgid "The prefix will be prepended to the name of every individual filter created by the template"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:104
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:108
 msgid "Use a template"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:108
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:115
 msgid "Use a manual filter"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:119
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:126
 msgid "Filter Type"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:156
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:166
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:163
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:173
 msgid "Epoch"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:157
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:167
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:164
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:174
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:105
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:50
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:80
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties.utils.ts:4
-#: ../html/src/manager/images/image-build.tsx:379
+#: ../html/src/manager/images/image-build.tsx:383
 #: ../html/src/manager/images/image-view.tsx:645
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:88
 msgid "Version"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:158
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:168
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:165
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:175
 msgid "Release"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:175
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:182
 msgid "Advisory name"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:188
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:195
 msgid "Bug Fix Advisory"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:189
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:196
 msgid "Product Enhancement Advisory"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:191
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:198
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:174
 msgid "Advisory Type"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:200
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:207
 msgid "Issued"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:210
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:217
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:70
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:135
-#: ../html/src/manager/images/image-build.tsx:411
+#: ../html/src/manager/images/image-build.tsx:415
 #: ../html/src/manager/images/image-profiles.tsx:198
-#: ../html/src/manager/images/image-view-overview.tsx:628
-#: ../html/src/manager/images/image-view-overview.tsx:727
+#: ../html/src/manager/images/image-view-overview.tsx:626
+#: ../html/src/manager/images/image-view-overview.tsx:733
 #: ../html/src/manager/images/image-view.tsx:672
 msgid "Build"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:220
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:227
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:180
 #: ../html/src/manager/images/image-view-patches.tsx:95
 msgid "Synopsis"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:232
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:239
 msgid "Reboot Required"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:233
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:240
 msgid "Package Manager Restart Required"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:236
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:243
 msgid "Advisory Keywords"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:255
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:262
 msgid "Package Provides Name"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:265
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:272
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:156
 msgid "Provides Name"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:281
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:288
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:234
 msgid "Number"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:303
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:310
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:159
 msgid "Deny"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:304
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:311
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:179
 msgid "Allow"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:306
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:313
 msgid "Rule"
 msgstr ""
 
@@ -3455,15 +3474,14 @@ msgstr ""
 msgid "Some of the selected filters are used in projects and can not be deleted."
 msgstr ""
 
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:128
+#, fuzzy
+#| msgid "Create"
+msgid "Create Filter"
+msgstr "Snulfu-d"
+
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:138
 msgid "Select unused"
-msgstr ""
-
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:145
-#: ../html/src/manager/images/image-profiles.tsx:137
-#: ../html/src/manager/images/image-stores.tsx:137
-#: ../html/src/manager/images/image-view.tsx:353
-msgid "Delete selected"
 msgstr ""
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:151
@@ -3477,6 +3495,12 @@ msgstr ""
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:176
 msgid "Projects in use"
 msgstr ""
+
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:208
+#, fuzzy
+#| msgid "Edit "
+msgid "Edit Filter"
+msgstr "Ẓreg "
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:32
 msgid "Live patching based on a specific system"
@@ -3996,7 +4020,7 @@ msgid "Sources edited successfully"
 msgstr ""
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:148
-#: ../html/src/manager/images/image-build.tsx:287
+#: ../html/src/manager/images/image-build.tsx:304
 msgid "Software Channels"
 msgstr ""
 
@@ -4009,19 +4033,19 @@ msgid "The page you requested, {currentUrl}, was not found."
 msgstr ""
 
 #: ../html/src/manager/errors/not-found.tsx:12
-msgid "If you typed this address into your browser, double-check the spelling and capitalization."
+msgid "If you typed this address into your browser, double-check the spelling and capitalization. The address you are copying may also be outdated."
 msgstr ""
 
 #: ../html/src/manager/errors/not-found.tsx:18
-msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your "
+msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your browser to try a different link, or use the top (or left) navigation bars to find the page you are looking for."
 msgstr ""
 
 #: ../html/src/manager/errors/not-found.tsx:25
-msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was "
+msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was created. Use the top (or left) navigation bars to find the page you are looking for, and if you find the document be sure to update your bookmark."
 msgstr ""
 
 #: ../html/src/manager/errors/not-found.tsx:32
-msgid "If you feel you've reached this page in error, please contact us with details of how you received "
+msgid "If you feel you've reached this page in error, please contact us with details of how you received this message."
 msgstr ""
 
 #: ../html/src/manager/groups/config-channels/group-config-channels.tsx:29
@@ -4053,7 +4077,7 @@ msgstr ""
 #: ../html/src/manager/header/search/search.tsx:14
 #: ../html/src/manager/images/image-view.tsx:668
 #: ../html/src/manager/images/image-view.tsx:792
-#: ../html/src/manager/systems/all-list.tsx:103
+#: ../html/src/manager/systems/all-list.tsx:117
 #: ../html/src/manager/systems/list-filter.tsx:47
 msgid "Packages"
 msgstr ""
@@ -4061,7 +4085,7 @@ msgstr ""
 #: ../html/src/manager/header/search/search.tsx:18
 #: ../html/src/manager/images/image-view.tsx:655
 #: ../html/src/manager/images/image-view.tsx:791
-#: ../html/src/manager/systems/all-list.tsx:90
+#: ../html/src/manager/systems/all-list.tsx:104
 #: ../html/src/manager/systems/list-filter.tsx:46
 msgid "Patches"
 msgstr ""
@@ -4103,44 +4127,48 @@ msgstr ""
 msgid "scheduled"
 msgstr ""
 
-#: ../html/src/manager/images/image-build.tsx:241
+#: ../html/src/manager/images/image-build.tsx:242
 msgid "Profile Summary"
 msgstr ""
 
-#: ../html/src/manager/images/image-build.tsx:251
+#: ../html/src/manager/images/image-build.tsx:248
+msgid "Edit Profile Summary"
+msgstr ""
+
+#: ../html/src/manager/images/image-build.tsx:268
 msgid "No profile selected"
 msgstr ""
 
-#: ../html/src/manager/images/image-build.tsx:262
-#: ../html/src/manager/images/image-profile-edit.tsx:537
+#: ../html/src/manager/images/image-build.tsx:279
+#: ../html/src/manager/images/image-profile-edit.tsx:534
 msgid "Image Type"
 msgstr ""
 
-#: ../html/src/manager/images/image-build.tsx:266
+#: ../html/src/manager/images/image-build.tsx:283
 #: ../html/src/manager/images/image-import.tsx:256
 msgid "Image Store"
 msgstr ""
 
-#: ../html/src/manager/images/image-build.tsx:270
+#: ../html/src/manager/images/image-build.tsx:287
 msgid "Path"
 msgstr ""
 
-#: ../html/src/manager/images/image-build.tsx:274
+#: ../html/src/manager/images/image-build.tsx:291
 #: ../html/src/manager/images/image-import.tsx:231
 #: ../html/src/manager/images/image-profile-edit.tsx:394
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:573
 msgid "Activation Key"
 msgstr ""
 
-#: ../html/src/manager/images/image-build.tsx:343
+#: ../html/src/manager/images/image-build.tsx:347
 msgid "Build Image"
 msgstr ""
 
-#: ../html/src/manager/images/image-build.tsx:359
+#: ../html/src/manager/images/image-build.tsx:363
 msgid "Image Profile"
 msgstr ""
 
-#: ../html/src/manager/images/image-build.tsx:389
+#: ../html/src/manager/images/image-build.tsx:393
 #: ../html/src/manager/images/image-import.tsx:291
 msgid "Build Host"
 msgstr ""
@@ -4219,22 +4247,19 @@ msgstr ""
 msgid "Create additional custom info keys"
 msgstr ""
 
-#: ../html/src/manager/images/image-profile-edit.tsx:492
-#: ../html/src/manager/images/image-store-edit.tsx:214
-#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:41
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:197
+#: ../html/src/manager/images/image-profile-edit.tsx:490
+#: ../html/src/manager/images/image-store-edit.tsx:212
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:199
 msgid "Update"
 msgstr ""
 
-#: ../html/src/manager/images/image-profile-edit.tsx:515
-msgid "Edit Image Profile: '"
-msgstr ""
-
-#: ../html/src/manager/images/image-profile-edit.tsx:515
+#: ../html/src/manager/images/image-profile-edit.tsx:512
+#: ../html/src/manager/images/image-profiles.tsx:147
+#: ../html/src/manager/images/image-profiles.tsx:148
 msgid "Create Image Profile"
 msgstr ""
 
-#: ../html/src/manager/images/image-profile-edit.tsx:531
+#: ../html/src/manager/images/image-profile-edit.tsx:528
 msgid "Label is required and must be a unique string and it cannot include any colons (:)."
 msgstr ""
 
@@ -4256,6 +4281,10 @@ msgstr ""
 
 #: ../html/src/manager/images/image-profiles.tsx:33
 msgid "Image profiles have been deleted."
+msgstr ""
+
+#: ../html/src/manager/images/image-profiles.tsx:137
+msgid "Delete Image Profile"
 msgstr ""
 
 #: ../html/src/manager/images/image-profiles.tsx:158
@@ -4291,23 +4320,19 @@ msgstr ""
 msgid "Use credentials"
 msgstr ""
 
-#: ../html/src/manager/images/image-store-edit.tsx:237
-msgid "Edit Image Store: '"
-msgstr ""
-
-#: ../html/src/manager/images/image-store-edit.tsx:237
+#: ../html/src/manager/images/image-store-edit.tsx:234
 msgid "Create Image Store"
 msgstr ""
 
-#: ../html/src/manager/images/image-store-edit.tsx:251
+#: ../html/src/manager/images/image-store-edit.tsx:248
 msgid "Store Type"
 msgstr ""
 
-#: ../html/src/manager/images/image-store-edit.tsx:262
+#: ../html/src/manager/images/image-store-edit.tsx:259
 msgid "Label is required and must be unique."
 msgstr ""
 
-#: ../html/src/manager/images/image-store-edit.tsx:268
+#: ../html/src/manager/images/image-store-edit.tsx:265
 msgid "Store URI"
 msgstr ""
 
@@ -4321,6 +4346,15 @@ msgstr ""
 
 #: ../html/src/manager/images/image-stores.tsx:28
 msgid "Image stores have been deleted."
+msgstr ""
+
+#: ../html/src/manager/images/image-stores.tsx:137
+msgid "Delete Store Profile"
+msgstr ""
+
+#: ../html/src/manager/images/image-stores.tsx:147
+#: ../html/src/manager/images/image-stores.tsx:148
+msgid "Create Store Profile"
 msgstr ""
 
 #: ../html/src/manager/images/image-stores.tsx:158
@@ -4362,8 +4396,8 @@ msgstr ""
 #: ../html/src/manager/images/image-view-overview.tsx:96
 #: ../html/src/manager/images/image-view-overview.tsx:255
 #: ../html/src/manager/images/image-view-overview.tsx:256
-#: ../html/src/manager/images/image-view-overview.tsx:515
-#: ../html/src/manager/images/image-view-overview.tsx:516
+#: ../html/src/manager/images/image-view-overview.tsx:513
+#: ../html/src/manager/images/image-view-overview.tsx:514
 #: ../html/src/manager/images/image-view-runtime.tsx:74
 #: ../html/src/manager/images/image-view-runtime.tsx:114
 #: ../html/src/manager/images/image-view.tsx:483
@@ -4383,38 +4417,18 @@ msgstr ""
 msgid "Go to event"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.tsx:52
-msgid " is queued"
-msgstr ""
-
 #: ../html/src/manager/images/image-view-overview.tsx:59
 msgid "In progress"
-msgstr ""
-
-#: ../html/src/manager/images/image-view-overview.tsx:64
-msgid " in progress"
 msgstr ""
 
 #: ../html/src/manager/images/image-view-overview.tsx:71
 msgid "Successful"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.tsx:76
-msgid " is successful"
-msgstr ""
-
-#: ../html/src/manager/images/image-view-overview.tsx:88
-msgid " has failed"
-msgstr ""
-
 #: ../html/src/manager/images/image-view-overview.tsx:107
 #: ../html/src/manager/images/image-view-overview.tsx:108
 #: ../html/src/manager/images/image-view.tsx:502
 msgid "Built externally"
-msgstr ""
-
-#: ../html/src/manager/images/image-view-overview.tsx:130
-msgid " Status"
 msgstr ""
 
 #: ../html/src/manager/images/image-view-overview.tsx:135
@@ -4456,96 +4470,101 @@ msgstr ""
 msgid "Outdated instances found"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.tsx:327
+#: ../html/src/manager/images/image-view-overview.tsx:326
 msgid "Edit profile"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.tsx:352
+#: ../html/src/manager/images/image-view-overview.tsx:350
 msgid "Edit store"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.tsx:522
-#: ../html/src/manager/images/image-view-overview.tsx:523
+#: ../html/src/manager/images/image-view-overview.tsx:465
+#: ../html/src/manager/images/image-view.tsx:751
+msgid "Instance Details for \"{name}\""
+msgstr ""
+
+#: ../html/src/manager/images/image-view-overview.tsx:520
+#: ../html/src/manager/images/image-view-overview.tsx:521
 #: ../html/src/manager/images/image-view.tsx:485
 #: ../html/src/manager/systems/list-filter.tsx:28
 msgid "Critical updates available"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.tsx:529
-#: ../html/src/manager/images/image-view-overview.tsx:530
+#: ../html/src/manager/images/image-view-overview.tsx:527
+#: ../html/src/manager/images/image-view-overview.tsx:528
 #: ../html/src/manager/images/image-view.tsx:488
 msgid "Non-critical updates available"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.tsx:536
-#: ../html/src/manager/images/image-view-overview.tsx:537
+#: ../html/src/manager/images/image-view-overview.tsx:534
+#: ../html/src/manager/images/image-view-overview.tsx:535
 #: ../html/src/manager/images/image-view.tsx:491
 msgid "Package updates available"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.tsx:543
-#: ../html/src/manager/images/image-view-overview.tsx:544
+#: ../html/src/manager/images/image-view-overview.tsx:541
+#: ../html/src/manager/images/image-view-overview.tsx:542
 #: ../html/src/manager/images/image-view.tsx:493
 msgid "Image is up to date"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.tsx:612
+#: ../html/src/manager/images/image-view-overview.tsx:610
 msgid "Image Status"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.tsx:615
+#: ../html/src/manager/images/image-view-overview.tsx:613
 msgid "Image Info"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.tsx:626
+#: ../html/src/manager/images/image-view-overview.tsx:624
 msgid "Build Status"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.tsx:634
-#: ../html/src/manager/images/image-view-overview.tsx:806
+#: ../html/src/manager/images/image-view-overview.tsx:632
+#: ../html/src/manager/images/image-view-overview.tsx:810
 msgid "Inspect"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.tsx:644
+#: ../html/src/manager/images/image-view-overview.tsx:642
 msgid "Reschedule the build"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.tsx:652
+#: ../html/src/manager/images/image-view-overview.tsx:650
 msgid "Reinspect"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.tsx:653
+#: ../html/src/manager/images/image-view-overview.tsx:651
 msgid "Reschedule the inspect"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.tsx:666
+#: ../html/src/manager/images/image-view-overview.tsx:664
 msgid "Custom Image Information"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.tsx:680
+#: ../html/src/manager/images/image-view-overview.tsx:678
 #: ../html/src/manager/images/image-view.tsx:363
 #: ../html/src/manager/images/image-view.tsx:721
 msgid "Delete Image"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.tsx:683
+#: ../html/src/manager/images/image-view-overview.tsx:681
 #: ../html/src/manager/images/image-view.tsx:724
 msgid "Are you sure you want to delete image"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.tsx:728
+#: ../html/src/manager/images/image-view-overview.tsx:734
 msgid "Schedule build"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.tsx:770
+#: ../html/src/manager/images/image-view-overview.tsx:766
 msgid "Rebuild Image"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.tsx:807
+#: ../html/src/manager/images/image-view-overview.tsx:811
 msgid "Schedule inspect"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.tsx:843
+#: ../html/src/manager/images/image-view-overview.tsx:837
 msgid "Reinspect Image"
 msgstr ""
 
@@ -4643,6 +4662,10 @@ msgstr ""
 msgid "Image build has been scheduled."
 msgstr ""
 
+#: ../html/src/manager/images/image-view.tsx:353
+msgid "Delete selected"
+msgstr ""
+
 #: ../html/src/manager/images/image-view.tsx:386
 msgid "Images"
 msgstr ""
@@ -4673,9 +4696,9 @@ msgid "(obsolete)"
 msgstr ""
 
 #: ../html/src/manager/images/image-view.tsx:652
-#: ../html/src/manager/systems/all-list.tsx:79
+#: ../html/src/manager/systems/all-list.tsx:93
 #: ../html/src/manager/systems/list-filter.tsx:45
-#: ../html/src/manager/systems/virtual-list.tsx:88
+#: ../html/src/manager/systems/virtual-list.tsx:100
 msgid "Updates"
 msgstr ""
 
@@ -4812,7 +4835,7 @@ msgid "This will remove the current schedule from all the systems assigned to it
 msgstr ""
 
 #: ../html/src/manager/maintenance/details/calendar-details.tsx:46
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:187
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:189
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:104
 msgid "Cancel affected actions?"
 msgstr ""
@@ -4893,6 +4916,10 @@ msgstr ""
 msgid "Current Schedule"
 msgstr ""
 
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:115
+msgid "Url \"{url}\" is invalid"
+msgstr ""
+
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:139
 msgid "Calendar data"
 msgstr ""
@@ -4921,14 +4948,24 @@ msgstr ""
 msgid "Refreshing the calendar will reschedule all affected actions."
 msgstr ""
 
-#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:41
-#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:60
+#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:42
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:232
+msgid "Update "
+msgstr ""
+
+#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:42
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:232
+msgid "Create "
+msgstr ""
+
+#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:42
+#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:62
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:141
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:37
 msgid "Calendar"
 msgstr ""
 
-#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:60
+#: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:62
 msgid "Maintenance"
 msgstr ""
 
@@ -4970,10 +5007,6 @@ msgstr ""
 msgid "Below is a list of Maintenance Calendars available to the current user."
 msgstr ""
 
-#: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:50
-msgid "schedule"
-msgstr ""
-
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:30
 msgid "No schedules created. Use Create to add a schedule."
 msgstr ""
@@ -4982,23 +5015,15 @@ msgstr ""
 msgid "This will remove the schedule from all the systems assigned to it."
 msgstr ""
 
-#: ../html/src/manager/maintenance/maintenance-windows.tsx:116
-msgid "successfully"
-msgstr ""
-
-#: ../html/src/manager/maintenance/maintenance-windows.tsx:141
-msgid "Error when deleting the "
-msgstr ""
-
 #: ../html/src/manager/maintenance/maintenance-windows.tsx:150
 msgid "Calendar successfully refreshed"
 msgstr ""
 
-#: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:23
+#: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:22
 msgid "Any pending maintenance-only actions for these systems will be cancelled unless they are inside the new maintenance windows."
 msgstr ""
 
-#: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:26
+#: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:25
 msgid "Are you sure you want to proceed?"
 msgstr ""
 
@@ -5134,6 +5159,10 @@ msgstr ""
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:128
 msgid "Select the current Playbook"
+msgstr ""
+
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:138
+msgid "Playbook \"{name}\""
 msgstr ""
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:147
@@ -5300,225 +5329,237 @@ msgstr ""
 msgid "Scheduling proxy configuration action..."
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:114
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:89
 #: ../html/src/manager/proxy/container-config.tsx:142
 msgid "Request interrupted or invalid response received from the server."
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:179
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:138
 msgid "Proxy Configuration"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:183
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:142
 msgid "Convert an already onboarded minion to a proxy or update the configuration of an existing proxy."
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:193
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:152
 msgid "Convert Minion to Proxy"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:198
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:156
 #: ../html/src/manager/proxy/container-config.tsx:210
 msgid "Parent FQDN"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:199
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:157
 #: ../html/src/manager/proxy/container-config.tsx:213
 msgid "The FQDN of the parent (server or proxy) to connect to."
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:201
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:159
 #: ../html/src/manager/proxy/container-config.tsx:212
 msgid "e.g., server.domain.com"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:209
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:167
 #: ../html/src/manager/proxy/container-config.tsx:221
 msgid "Proxy SSH port"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:210
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:168
 #: ../html/src/manager/proxy/container-config.tsx:222
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:499
 msgid "Port range: 1 - 65535"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:219
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:177
 #: ../html/src/manager/proxy/container-config.tsx:231
 msgid "Max Squid cache size"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:220
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:178
 msgid "The maximum value of the Squid cache in Gigabytes"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:223
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:181
 msgid "e.g., 100"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:230
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:188
 #: ../html/src/manager/proxy/container-config.tsx:242
 msgid "Proxy admin email"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:231
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:189
 #: ../html/src/manager/proxy/container-config.tsx:243
 msgid "The container-based proxy administrator email address"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:232
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:190
 #: ../html/src/manager/proxy/container-config.tsx:244
 msgid "e.g., proxy.admin@mycompany.com"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:241
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:242
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:199
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:200
 msgid "Certificates"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:250
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:208
 msgid "Keep"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:251
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:209
 msgid "Replace"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:262
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:220
 msgid "Keeping the current certificates means no changes will be made to the Root CA, Intermediate CAs, Proxy certificate, or Proxy SSL private key."
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:273
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:231
 msgid "Root CA"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:274
-#: ../html/src/manager/proxy/container-config.tsx:269
-#: ../html/src/manager/proxy/container-config.tsx:278
-#: ../html/src/manager/proxy/container-config.tsx:335
-msgid "To sign the SSL certificate in PEM format"
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:232
+msgid "Certificate authority that issued the proxy certificate (PEM format)"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:283
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:241
 #: ../html/src/manager/proxy/container-config.tsx:344
 msgid "Intermediate CAs"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:293
-#: ../html/src/manager/proxy/container-config.tsx:354
-msgid "CA file in PEM format"
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:251
+msgid "An intermediate CA certificate (PEM format)"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:305
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:263
 #: ../html/src/manager/proxy/container-config.tsx:365
 msgid "Proxy certificate"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:306
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:315
-#: ../html/src/manager/proxy/container-config.tsx:366
-#: ../html/src/manager/proxy/container-config.tsx:375
-msgid "In PEM format"
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:264
+msgid "SSL certificate issued for the proxy system (PEM format)"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:314
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:272
 #: ../html/src/manager/proxy/container-config.tsx:374
 msgid "Proxy SSL private key"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:326
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:327
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:273
+msgid "SSL private key for the proxy system (PEM format)"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:284
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:285
 msgid "Source"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:335
-msgid "Registry"
-msgstr ""
-
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:336
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:293
 msgid "RPM"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:344
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:345
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:294
+msgid "Registry"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:304
+msgid "The availability of container images depends on your environment’s connectivity. In air-gapped/restricted environments, using RPM as the source mode is recommended to ensure all required images are available locally. Selecting an incompatible source mode may result in deployment failures."
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:314
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:315
 msgid "Registry Source"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:352
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:322
 msgid "Simple"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:353
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:323
 msgid "Advanced"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:361
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:331
 msgid "Registry URL"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:362
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:389
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:413
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:437
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:461
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:485
-msgid "e.g., "
-msgstr ""
-
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:369
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:339
 msgid "Containers Tag"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:371
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:398
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:422
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:446
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:470
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:494
-msgid "e.g., latest"
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:340
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:360
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:377
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:394
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:411
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:428
+msgid "e.g. {registryTagExample}"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:388
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:351
 msgid "HTTPD URL"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:396
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:352
+msgid "e.g., {registryUrlExample}/proxy-httpd"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:359
 msgid "HTTPD Tag"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:412
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:368
 msgid "Salt Broker URL"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:420
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:369
+msgid "e.g. {registryUrlExample}/proxy-salt-broker"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:376
 msgid "Salt Broker Tag"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:436
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:385
 msgid "Squid URL"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:444
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:386
+msgid "e.g. {registryUrlExample}/proxy-squid"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:393
 msgid "Squid Tag"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:460
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:402
 msgid "SSH URL"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:468
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:403
+msgid "e.g. {registryUrlExample}/proxy-ssh"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:410
 msgid "SSH Tag"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:484
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:419
 msgid "TFTPD URL"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:492
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:420
+msgid "e.g. {registryUrlExample}/proxy-tftpd"
+msgstr ""
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:427
 msgid "TFTPD Tag"
 msgstr ""
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:510
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:438
 msgid "Apply"
 msgstr ""
 
@@ -5532,7 +5573,7 @@ msgid "Install Program Temporary Fixes (PTFs)"
 msgstr ""
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:29
-msgid "The following Program Temporary Fixes (PTFs) are available for installation on this system. "
+msgid "The following Program Temporary Fixes (PTFs) are available for installation on this system. These packages are only meant to address a specific open issue. Please follow the instructions from customer support before proceeding with the installation."
 msgstr ""
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:33
@@ -5552,7 +5593,7 @@ msgid "Remove Program Temporary Fixes (PTFs)"
 msgstr ""
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:29
-msgid "The following Program Temporary Fixes (PTFs) are currently installed on this system. "
+msgid "The following Program Temporary Fixes (PTFs) are currently installed on this system. These PTFs may be scheduled for removal by selecting them and clicking \"Remove PTF\" below. Please note that removing any non-obsolete PTF will result in the installation of the most recent versions of the packages that are part of the PTF."
 msgstr ""
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:34
@@ -5764,6 +5805,12 @@ msgstr ""
 msgid "CA certificate"
 msgstr ""
 
+#: ../html/src/manager/proxy/container-config.tsx:269
+#: ../html/src/manager/proxy/container-config.tsx:278
+#: ../html/src/manager/proxy/container-config.tsx:335
+msgid "To sign the SSL certificate in PEM format"
+msgstr ""
+
 #: ../html/src/manager/proxy/container-config.tsx:277
 msgid "CA private key"
 msgstr ""
@@ -5816,6 +5863,15 @@ msgstr ""
 
 #: ../html/src/manager/proxy/container-config.tsx:334
 msgid "The root CA"
+msgstr ""
+
+#: ../html/src/manager/proxy/container-config.tsx:354
+msgid "CA file in PEM format"
+msgstr ""
+
+#: ../html/src/manager/proxy/container-config.tsx:366
+#: ../html/src/manager/proxy/container-config.tsx:375
+msgid "In PEM format"
 msgstr ""
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:95
@@ -5924,14 +5980,6 @@ msgstr ""
 msgid "Action scheduled on selected minions"
 msgstr ""
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:232
-msgid "Update "
-msgstr ""
-
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:232
-msgid "Create "
-msgstr ""
-
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:250
 msgid "Schedule Recurring Action"
 msgstr ""
@@ -5944,6 +5992,10 @@ msgstr ""
 
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:283
 msgid "Configure states to execute"
+msgstr ""
+
+#: ../html/src/manager/recurring/recurring-actions-list.tsx:104
+msgid "Create Recurring Action"
 msgstr ""
 
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:115
@@ -6236,11 +6288,11 @@ msgstr ""
 msgid "Create Recurring"
 msgstr ""
 
-#: ../html/src/manager/storybook/storybook.tsx:48
+#: ../html/src/manager/storybook/storybook.tsx:49
 msgid "Development debugging page"
 msgstr ""
 
-#: ../html/src/manager/storybook/storybook.tsx:50
+#: ../html/src/manager/storybook/storybook.tsx:51
 msgid "This is a hidden page used by developers, if you found it by accident, good job!"
 msgstr ""
 
@@ -6254,14 +6306,6 @@ msgstr ""
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:114
 msgid "Base Channel:"
-msgstr ""
-
-#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:135
-msgid "${defaultChannelName}"
-msgstr ""
-
-#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:145
-msgid "${this.getDefaultBase().name}"
 msgstr ""
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:155
@@ -6292,28 +6336,28 @@ msgstr ""
 msgid "Add system"
 msgstr ""
 
-#: ../html/src/manager/systems/all-list.tsx:68
+#: ../html/src/manager/systems/all-list.tsx:82
 msgid "No Systems."
 msgstr ""
 
-#: ../html/src/manager/systems/all-list.tsx:117
+#: ../html/src/manager/systems/all-list.tsx:131
 #: ../html/src/manager/systems/list-filter.tsx:48
 msgid "Extra Packages"
 msgstr ""
 
-#: ../html/src/manager/systems/all-list.tsx:131
+#: ../html/src/manager/systems/all-list.tsx:145
 #: ../html/src/manager/systems/list-filter.tsx:49
 msgid "Config Diffs"
 msgstr ""
 
-#: ../html/src/manager/systems/all-list.tsx:146
+#: ../html/src/manager/systems/all-list.tsx:160
 #: ../html/src/manager/systems/list-filter.tsx:50
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:146
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:579
 msgid "Base Channel"
 msgstr ""
 
-#: ../html/src/manager/systems/all-list.tsx:157
+#: ../html/src/manager/systems/all-list.tsx:171
 #: ../html/src/manager/systems/list-filter.tsx:53
 msgid "System Type"
 msgstr ""
@@ -6417,7 +6461,7 @@ msgstr ""
 msgid "Are you sure you want to close this page while bootstrapping is in progress ?"
 msgstr ""
 
-#: ../html/src/manager/systems/coco/ssm-schedule.tsx:114
+#: ../html/src/manager/systems/coco/ssm-schedule.tsx:107
 #: ../html/src/manager/systems/coco/ssm-settings.tsx:73
 msgid "Confidential Computing Capability"
 msgstr ""
@@ -6573,7 +6617,7 @@ msgid "Groups"
 msgstr ""
 
 #: ../html/src/manager/systems/list-filter.tsx:69
-#: ../html/src/manager/systems/virtual-list.tsx:71
+#: ../html/src/manager/systems/virtual-list.tsx:83
 msgid "Virtual System"
 msgstr ""
 
@@ -6800,11 +6844,11 @@ msgstr ""
 msgid "Virtual Systems"
 msgstr ""
 
-#: ../html/src/manager/systems/virtual-list.tsx:58
+#: ../html/src/manager/systems/virtual-list.tsx:70
 msgid "No Virtual Systems."
 msgstr ""
 
-#: ../html/src/manager/systems/virtual-list.tsx:99
+#: ../html/src/manager/systems/virtual-list.tsx:111
 msgid "Base Software Channel"
 msgstr ""
 
@@ -6854,16 +6898,16 @@ msgid "Are you sure you want to delete this virtual host manager?"
 msgstr ""
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:185
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:262
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:265
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:57
 msgid "Gatherer module"
 msgstr ""
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:303
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:306
 msgid "Current Context"
 msgstr ""
 
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:317
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:320
 msgid "Kubeconfig file"
 msgstr ""
 
@@ -6925,8 +6969,4 @@ msgstr ""
 
 #: ../html/src/utils/network.ts:101
 msgid "Resource not found."
-msgstr ""
-
-#: ../html/src/utils/network.ts:105
-msgid "HTTP Error code "
 msgstr ""

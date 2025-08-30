@@ -1695,12 +1695,13 @@ public class ChannelSoftwareHandler extends BaseHandler {
 
     /**
      * Merge a channel's errata into another channel.
+     * It does not associate the packages with the channel.
      * @param loggedInUser The current user
      * @param mergeFromLabel the label of the channel to pull the errata from
      * @param mergeToLabel the label of the channel to push errata into
      * @return A list of errata that were merged.
      *
-     * @apidoc.doc Merges all errata from one channel into another
+     * @apidoc.doc Merges all errata from one channel into another. It does not associate the packages with the channel.
      * @apidoc.param #session_key()
      * @apidoc.param #param_desc("string", "mergeFromLabel", "the label of the
      * channel to pull errata from")
@@ -1729,6 +1730,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
 
     /**
      * Merge a channel's errata into another channel based upon a given start/end date.
+     * It does not associate the packages with the channel.
      * @param loggedInUser The current user
      * @param mergeFromLabel the label of the channel to pull the errata from
      * @param mergeToLabel the label of the channel to push errata into
@@ -1737,7 +1739,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @return A list of errata that were merged.
      *
      * @apidoc.doc Merges all errata from one channel into another based upon a
-     * given start/end date.
+     * given start/end date. It does not associate the packages with the channel.
      * @apidoc.param #session_key()
      * @apidoc.param #param_desc("string", "mergeFromLabel", "the label of the
      * channel to pull errata from")
@@ -1770,14 +1772,16 @@ public class ChannelSoftwareHandler extends BaseHandler {
     }
 
     /**
-     * Merge a list of errata from one channel into another channel
+     * Merge a list of errata from one channel into another channel.
+     * It does not associate the packages with the channel.
      * @param loggedInUser The current user
      * @param mergeFromLabel the label of the channel to pull the errata from
      * @param mergeToLabel the label of the channel to push errata into
      * @param errataNames the list of errata to merge
      * @return A list of errata that were merged.
      *
-     * @apidoc.doc Merges a list of errata from one channel into another
+     * @apidoc.doc Merges a list of errata from one channel into another.
+     * It does not associate the packages with the channel.
      * @apidoc.param #session_key()
      * @apidoc.param #param_desc("string", "mergeFromLabel", "the label of the
      * channel to pull errata from")

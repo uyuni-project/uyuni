@@ -2090,11 +2090,11 @@ drücken und &lt;b&gt;können sich nicht wieder einloggen&lt;/b&gt;.</target>
         <target>Benutzerdetails</target>
       </trans-unit>
       <trans-unit id="userdetails.jsp.noemailaddress" xml:space="preserve">
-        <source>No email address</source>
+        <source>Add Email Address</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
-        <target>Keine E-Mail-Adresse</target>
+        <target state="needs-adaptation">Keine E-Mail-Adresse</target>
       </trans-unit>
       <trans-unit id="userdetails.jsp.disable" xml:space="preserve">
         <source>Deactivate User</source>
@@ -7012,15 +7012,15 @@ die Organisations-Administrator Rolle im Abschnitt "Rollen" des Tab "Details" ge
         </context-group>
       </trans-unit>
       <trans-unit id="systems.groups.jsp.remove" xml:space="preserve">
-        <source>Leave Selected Groups</source>
-        <target>Ausgewählte Gruppen verlassen</target>
+        <source>Leave Groups</source>
+        <target state="needs-adaptation">Ausgewählte Gruppen verlassen</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.groups.jsp.add" xml:space="preserve">
-        <source>Join Selected Groups</source>
-        <target>Ausgewählten Gruppen beitreten</target>
+        <source>Join Groups</source>
+        <target state="needs-adaptation">Ausgewählten Gruppen beitreten</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
@@ -7177,8 +7177,8 @@ die Organisations-Administrator Rolle im Abschnitt "Rollen" des Tab "Details" ge
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroup.details.editproperties" xml:space="preserve">
-        <source>Edit These Properties</source>
-        <target>Diese Eigenschaften bearbeiten</target>
+        <source>Edit System Group Properties</source>
+        <target state="needs-adaptation">Diese Eigenschaften bearbeiten</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
@@ -8057,11 +8057,11 @@ die Organisations-Administrator Rolle im Abschnitt "Rollen" des Tab "Details" ge
         <target>Die Aktion des Remote-Befehls wurde zur Ausführung &lt;strong&gt;vor&lt;/strong&gt; der Aktion der Paketentfernung geplant.</target>
       </trans-unit>
       <trans-unit id="installpkgs.jsp.installpackages" xml:space="preserve">
-        <source>Install Selected Packages</source>
+        <source>Install Packages</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/InstallPackages</context>
         </context-group>
-        <target>Ausgewählte Pakete installieren</target>
+        <target state="needs-adaptation">Ausgewählte Pakete installieren</target>
       </trans-unit>
       <trans-unit id="installconfirm.jsp.header" xml:space="preserve">
         <source>Confirm Package Install</source>
@@ -13901,8 +13901,8 @@ Anschließend wird das nicht-chroot Post-Skript ausgeführt, und zuletzt das Pos
         </context-group>
       </trans-unit>
       <trans-unit id="activation-key.groups.jsp.add" xml:space="preserve">
-        <source>Join Selected Groups</source>
-        <target>Ausgewählten Gruppen beitreten</target>
+        <source>Join Groups</source>
+        <target state="needs-adaptation">Ausgewählten Gruppen beitreten</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/activationkeys/groups/* pages</context>
         </context-group>
@@ -14385,15 +14385,15 @@ Anschließend wird das nicht-chroot Post-Skript ausgeführt, und zuletzt das Pos
         </context-group>
       </trans-unit>
       <trans-unit id="system.audit.listscap.jsp.removebut" xml:space="preserve">
-        <source>Remove Selected Scans</source>
-        <target>Ausgewählten Scan entfernen</target>
+        <source>Remove</source>
+        <target state="needs-adaptation">Ausgewählten Scan entfernen</target>
         <context-group name="ctx">
           <context context-type="sourcefile">View of SCAP scans for given system</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.audit.listscap.jsp.diffbut" xml:space="preserve">
-        <source>Compare Selected Scans</source>
-        <target>Ausgewählte Scans vergleichen</target>
+        <source>Compare</source>
+        <target state="needs-adaptation">Ausgewählte Scans vergleichen</target>
         <context-group name="ctx">
           <context context-type="sourcefile">View of SCAP scans for given system</context>
         </context-group>
@@ -15281,8 +15281,8 @@ Anschließend wird das nicht-chroot Post-Skript ausgeführt, und zuletzt das Pos
         </context-group>
       </trans-unit>
       <trans-unit id="system.event.pending.headerPending" xml:space="preserve">
-        <source>You may cancel events for this system by selecting them and clicking the &lt;strong&gt;Cancel Selected Events&lt;/strong&gt; button.</source>
-        <target>Sie können Ereignisse für dieses System abbrechen, indem Sie diese auswählen und auf die Schaltfläche &lt;strong&gt;Ereignisse abbrechen&lt;/strong&gt; unten auf der Seite klicken.</target>
+        <source>You may cancel events for this system by selecting them and clicking the &lt;strong&gt;Cancel Events&lt;/strong&gt; button.</source>
+        <target state="needs-adaptation">Sie können Ereignisse für dieses System abbrechen, indem Sie diese auswählen und auf die Schaltfläche &lt;strong&gt;Ereignisse abbrechen&lt;/strong&gt; unten auf der Seite klicken.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
@@ -15302,8 +15302,8 @@ Anschließend wird das nicht-chroot Post-Skript ausgeführt, und zuletzt das Pos
         </context-group>
       </trans-unit>
       <trans-unit id="system.event.pending.cancel" xml:space="preserve">
-        <source>Cancel Selected Events</source>
-        <target>Gewählte Ereignisse abbrechen</target>
+        <source>Cancel Events</source>
+        <target state="needs-adaptation">Gewählte Ereignisse abbrechen</target>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
@@ -16730,11 +16730,11 @@ oder alle Dateien entfernen, oder die neueste Version in ein lokales Ersatz-Set 
         <target>Revision {0}</target>
       </trans-unit>
       <trans-unit id="channelfiles.jsp.removeselected" xml:space="preserve">
-        <source>Remove Selected Files</source>
+        <source>Remove Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelFiles.do</context>
         </context-group>
-        <target>Ausgewählte Dateien entfernen</target>
+        <target state="needs-adaptation">Ausgewählte Dateien entfernen</target>
       </trans-unit>
       <trans-unit id="channelfiles.jsp.copy2systems" xml:space="preserve">
         <source>Copy to Systems</source>
@@ -17789,11 +17789,11 @@ Konfigurations-Channel dieser Datei subskribieren, {2}; nachfolgend sehen Sie ei
         <target>Aktuellste Revision herunterladen</target>
       </trans-unit>
       <trans-unit id="toolbar.delete.configfile" xml:space="preserve">
-        <source>Delete This File Revision</source>
+        <source>Delete</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
-        <target>Diese Dateirevision löschen</target>
+        <target state="needs-adaptation">Diese Dateirevision löschen</target>
       </trans-unit>
       <trans-unit id="toolbar.delete.org" xml:space="preserve">
         <source>Delete Organization</source>
@@ -17803,11 +17803,11 @@ Konfigurations-Channel dieser Datei subskribieren, {2}; nachfolgend sehen Sie ei
         <target state="needs-adaptation">Organisation löschen</target>
       </trans-unit>
       <trans-unit id="toolbar.delete.deletefile" xml:space="preserve">
-        <source>Delete This File</source>
+        <source>Delete</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
-        <target>Diese Datei löschen</target>
+        <target state="needs-adaptation">Diese Datei löschen</target>
       </trans-unit>
       <trans-unit id="filedetails.jsp.download" xml:space="preserve">
         <source>download file revision</source>
@@ -21341,9 +21341,9 @@ dieser Revisionen.  Möchten Sie dies wirklich tun?</target>
       <trans-unit id="ssm.package.remove.select.summary" xml:space="preserve">
         <source>Packages listed below may be removed from one or more systems.
 
-             Select one or more and click the &lt;b&gt;Remove Selected Packages&lt;/b&gt; button to schedule package removal.
+             Select one or more and click the &lt;b&gt;Remove Packages&lt;/b&gt; button to schedule package removal.
           </source>
-        <target>Nachfolgend aufgelistete Pakete können von einem oder mehreren Systemen entfernt werden.
+        <target state="needs-adaptation">Nachfolgend aufgelistete Pakete können von einem oder mehreren Systemen entfernt werden.
 
              Wählen Sie eines oder mehrere und klicken die Schaltfläche &lt;b&gt;Ausgewählte Pakete entfernen&lt;/b&gt;, um die Paketentfernung einzuplanen.
           </target>
@@ -21352,8 +21352,8 @@ dieser Revisionen.  Möchten Sie dies wirklich tun?</target>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.package.remove.select.confirm" xml:space="preserve">
-        <source>Remove Selected Packages</source>
-        <target>Ausgewählte Pakete entfernen</target>
+        <source>Remove Packages</source>
+        <target state="needs-adaptation">Ausgewählte Pakete entfernen</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/PackageRemove.do</context>
         </context-group>
@@ -21421,8 +21421,8 @@ dieser Revisionen.  Möchten Sie dies wirklich tun?</target>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.package.upgrade.select.confirm" xml:space="preserve">
-        <source>Upgrade Selected Packages</source>
-        <target>Ausgewählte Pakete aktualisieren</target>
+        <source>Upgrade Packages</source>
+        <target state="needs-adaptation">Ausgewählte Pakete aktualisieren</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/PackageUpgrade.do</context>
         </context-group>
@@ -21481,9 +21481,9 @@ dieser Revisionen.  Möchten Sie dies wirklich tun?</target>
       <trans-unit id="ssm.package.verify.select.summary" xml:space="preserve">
         <source>Packages listed below may be verified on one or more systems.
 
-            Select one or more and click the &lt;b&gt;Verify Selected Packages&lt;/b&gt; button to schedule package verification.
+            Select one or more and click the &lt;b&gt;Verify Packages&lt;/b&gt; button to schedule package verification.
          </source>
-        <target>Die unten aufgeführten Pakete können auf einem oder mehreren Systemen geprüft werden.
+        <target state="needs-adaptation">Die unten aufgeführten Pakete können auf einem oder mehreren Systemen geprüft werden.
 
             Wählen Sie eines oder mehrere und klicken die Schaltfläche &lt;b&gt;Ausgewählte Pakete verifizieren&lt;/b&gt;, um die Paketprüfung einzuplanen.
          </target>
@@ -21492,8 +21492,8 @@ dieser Revisionen.  Möchten Sie dies wirklich tun?</target>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.package.verify.select.confirm" xml:space="preserve">
-        <source>Verify Selected Packages</source>
-        <target>Ausgewählte Pakete verifizieren</target>
+        <source>Verify Packages</source>
+        <target state="needs-adaptation">Ausgewählte Pakete verifizieren</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/PackageVerify.do</context>
         </context-group>
@@ -23593,11 +23593,11 @@ Tree-Pfad, Kickstart-RPM, Basis-Channel und Installer-Generation sollten immer �
         <target>(&lt;a href="{0}"&gt;System sperren&lt;/a&gt;)</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.subscribedchannels" xml:space="preserve">
-        <source>Subscribed Channels (&lt;a href="{0}"&gt;Alter Channel Subscriptions&lt;/a&gt;)</source>
+        <source>Subscribed Channels</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target>Subskribierte Channels (&lt;a href="{0}"&gt;Channel-Subskriptionen ändern&lt;/a&gt;)</target>
+        <target state="needs-adaptation">Subskribierte Channels (&lt;a href="{0}"&gt;Channel-Subskriptionen ändern&lt;/a&gt;)</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.sysevents" xml:space="preserve">
         <source>System Events</source>
@@ -23672,11 +23672,11 @@ Tree-Pfad, Kickstart-RPM, Basis-Channel und Installer-Generation sollten immer �
         <target>(&lt;a href="{0}"&gt;Systemneustart planen&lt;/a&gt;)</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.sysproperties" xml:space="preserve">
-        <source>System Properties (&lt;a href="{0}"&gt;Edit These Properties&lt;/a&gt;)</source>
+        <source>System Properties</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target>Systemeigenschaften (&lt;a href="{0}"&gt;Diese Eigenschaften bearbeiten&lt;/a&gt;)</target>
+        <target state="needs-adaptation">Systemeigenschaften (&lt;a href="{0}"&gt;Diese Eigenschaften bearbeiten&lt;/a&gt;)</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.entitlement" xml:space="preserve">
         <source>System Types:</source>
@@ -27029,11 +27029,11 @@ für einen angegebenen Channel aufgelistet wird.</target>
         <target>Plan {0}</target>
       </trans-unit>
       <trans-unit id="toolbar.create.schedule" xml:space="preserve">
-        <source>create schedule</source>
+        <source>Create schedule</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/ScheduleDetail.do</context>
         </context-group>
-        <target>Plan erstellen</target>
+        <target state="needs-adaptation">Plan erstellen</target>
       </trans-unit>
       <trans-unit id="toolbar.delete.schedule" xml:space="preserve">
         <source>disable schedule</source>
@@ -27201,10 +27201,11 @@ für einen angegebenen Channel aufgelistet wird.</target>
         </target>
       </trans-unit>
       <trans-unit id="toolbar.delete.software.channel" xml:space="preserve">
-        <source>Delete software channel</source>
+        <source>Delete Channel</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
+      <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="button.denyaccess.confirm" xml:space="preserve">
         <source>Deny Access and Confirm</source>
@@ -27228,10 +27229,11 @@ für einen angegebenen Channel aufgelistet wird.</target>
         <target>Suche</target>
       </trans-unit>
       <trans-unit id="toolbar.delete.channel" xml:space="preserve">
-        <source>Delete software channel</source>
+        <source>Delete Channel</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/errata//Add.do</context>
         </context-group>
+      <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="toolbar.misc.manage_channel" xml:space="preserve">
         <source>Manage Channel</source>
@@ -27738,16 +27740,16 @@ für einen angegebenen Channel aufgelistet wird.</target>
         <target>Neuen Slave hinzufügen</target>
       </trans-unit>
       <trans-unit id="iss.slave.remove" xml:space="preserve">
-        <source>Remove selected slaves</source>
-        <target>Ausgewählte Slaves entfernen</target>
+        <source>Remove slaves</source>
+        <target state="needs-adaptation">Ausgewählte Slaves entfernen</target>
       </trans-unit>
       <trans-unit id="toolbar.create.master" xml:space="preserve">
         <source>Add new master</source>
         <target>Neuen Master hinzufügen</target>
       </trans-unit>
       <trans-unit id="iss.master.remove" xml:space="preserve">
-        <source>Remove selected masters</source>
-        <target>Ausgewählte Master entfernen</target>
+        <source>Remove masters</source>
+        <target state="needs-adaptation">Ausgewählte Master entfernen</target>
       </trans-unit>
       <trans-unit id="toolbar.delete.slave" xml:space="preserve">
         <source>Delete slave</source>
@@ -29388,6 +29390,20 @@ für einen angegebenen Channel aufgelistet wird.</target>
   </trans-unit>
       <trans-unit id="spmigration.jsp.dryrun.disabled.tooltip" xml:space="preserve">
         <source>Dry run is not available for this product.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="sdc.details.overview.subscribedchannels.edit" xml:space="preserve">
+        <source>Edit Subscribed Channels</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="sdc.details.overview.sysproperties.edit" xml:space="preserve">
+        <source>Edit System Properties</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
       <target state="new"/>
   </trans-unit>
       </body>

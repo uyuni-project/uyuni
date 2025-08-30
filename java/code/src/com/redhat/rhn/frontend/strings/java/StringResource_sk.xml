@@ -338,13 +338,6 @@
           <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Fill in this address" xml:space="preserve">
-        <source>Fill in this address</source>
-        <target>Vyplňte túto adresu</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/users/Addresses</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="Advanced Search" xml:space="preserve">
         <source>Advanced Search</source>
         <target>Pokročilé vyhľadávanie</target>
@@ -611,13 +604,6 @@
         <target>Distribúcie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="Edit this address" xml:space="preserve">
-        <source>Edit this address</source>
-        <target>Upraviť túto adresu</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Errata" xml:space="preserve">
@@ -2504,8 +2490,8 @@ a skúste to znova.
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.delete.snippets" xml:space="preserve">
-        <source>delete snippet</source>
-        <target>vymazať úryvok</target>
+        <source>Delete Snippet</source>
+        <target state="needs-adaptation">vymazať úryvok</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/cobbler/CobblerSnippetEdit</context>
         </context-group>
@@ -9695,7 +9681,7 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       </trans-unit>
       <trans-unit id="message.scheduledeleted" xml:space="preserve">
         <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; has been disabled.</source>
-        <target state="needs-adaptation">Plán &lt;strong&gt;{0}&lt;/strong&gt; bol vymazaný.</target>
+        <target state="translated">Plán &lt;strong&gt;{0}&lt;/strong&gt; bol zakázaný.</target>
       </trans-unit>
       <trans-unit id="message.schedulenotactive" xml:space="preserve">
         <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; isn't active any more. It's part of the system just for information purposes and will be deleted automatically.</source>
@@ -11002,7 +10988,7 @@ Prípadne si budete chcieť stiahnuť &lt;strong&gt; Inkrementálne obsahové IS
       </trans-unit>
       <trans-unit id="cveaudit.notfound" xml:space="preserve">
         <source>The specified CVE number was not found in our database.</source>
-        <target state="needs-adaptation">Zadané číslo CVE sa v našej databáze nenašlo. Ďalšie informácie o tomto CVE môžete získať z odkazov uvedených nižšie.</target>
+        <target state="translated">Zadané číslo CVE sa v našej databáze nenašlo.</target>
       </trans-unit>
       <trans-unit id="bootstrap.minion.error.salt.unexpected" xml:space="preserve">
         <source>Error during applying the bootstrap state. Check the server logs.</source>
@@ -11418,7 +11404,7 @@ Ak chcete túto situáciu napraviť, pridajte prihlasovacie údaje SCC &lt;a hre
       </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_milan.description" xml:space="preserve">
         <source>KVM on AMD Epyc Processor, third generation (milan)</source>
-        <target state="needs-adaptation">KVM na procesore AMD Epyc, druhá generácia (milan)</target>
+        <target state="translated">KVM na procesore AMD Epyc, tretia generácia (milan)</target>
       </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_milan.label" xml:space="preserve">
         <source>KVM on AMD Epyc - Milan</source>
@@ -11426,7 +11412,7 @@ Ak chcete túto situáciu napraviť, pridajte prihlasovacie údaje SCC &lt;a hre
       </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_genoa.description" xml:space="preserve">
         <source>KVM on AMD Epyc Processor, fourth generation (genoa)</source>
-        <target state="needs-adaptation">KVM na procesore AMD Epyc, tretia generácia (genoa)</target>
+        <target state="translated">KVM na procesore AMD Epyc, štvrtá generácia (genoa)</target>
       </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_genoa.label" xml:space="preserve">
         <source>KVM on AMD Epyc - Genoa</source>
@@ -11857,73 +11843,87 @@ Ak chcete túto situáciu napraviť, pridajte prihlasovacie údaje SCC &lt;a hre
         <source>Error when triggering the channels sync.</source>
         <target state="translated">Chyba pri spúšťaní synchronizácie kanálov.</target>
       </trans-unit>
-    <trans-unit id="supportdata.get" xml:space="preserve">
+      <trans-unit id="supportdata.get" xml:space="preserve">
         <source>Get and Upload Support data</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Získanie a nahranie podporných dát</target>
+      </trans-unit>
       <trans-unit id="message.scheduleactivated" xml:space="preserve">
         <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; activated.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Plán &lt;strong&gt;{0}&lt;/strong&gt; bol aktivovaný.</target>
+      </trans-unit>
       <trans-unit id="task.status.errata-advisory-map-sync" xml:space="preserve">
         <source>Update SUSE errata advisory map</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Aktualizácia mapy upozornení na opravy chýb SUSE</target>
+      </trans-unit>
       <trans-unit id="bunch.jsp.description.errata-advisory-map-sync-bunch" xml:space="preserve">
         <source>Update SUSE errata advisory map to retrieve announcement ids and advisor URLs</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Aktualizácia mapy upozornení na opravy chýb SUSE pre získanie id oznámení a URL poskytovateľa</target>
+      </trans-unit>
       <trans-unit id="supportdata.uploadGeoType.eu" xml:space="preserve">
         <source>EU</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">EU</target>
+      </trans-unit>
       <trans-unit id="supportdata.uploadGeoType.us" xml:space="preserve">
         <source>US</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">US</target>
+      </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_bergamo.description" xml:space="preserve">
         <source>KVM on AMD Epyc Processor, fourth generation (bergamo)</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">KVM na procesore AMD Epyc, štvrtá generácia (bergamo)</target>
+      </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_bergamo.label" xml:space="preserve">
         <source>KVM on AMD Epyc - Bergamo</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">KVM na AMD Epyc - Bergamo</target>
+      </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_siena.description" xml:space="preserve">
         <source>KVM on AMD Epyc Processor, fourth generation (siena)</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">KVM na procesore AMD Epyc, štvrtá generácia (siena)</target>
+      </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_siena.label" xml:space="preserve">
         <source>KVM on AMD Epyc - Siena</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">KVM na AMD Epyc - Siena</target>
+      </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_turin.description" xml:space="preserve">
         <source>KVM on AMD Epyc Processor, fifth generation (turin)</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">KVM na procesore AMD Epyc, piata generácia (turin)</target>
+      </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_turin.label" xml:space="preserve">
         <source>KVM on AMD Epyc - Turin</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">KVM na AMD Epyc - Turin</target>
+      </trans-unit>
       <trans-unit id="system.details.support.invalid_case_number" xml:space="preserve">
         <source>The case number {0} is not valid.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Číslo prípadu {0} nie je platné.</target>
+      </trans-unit>
       <trans-unit id="system.details.support.invalid_region" xml:space="preserve">
         <source>The region {0] is not valid.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Región {0] nie je platný.</target>
+      </trans-unit>
       <trans-unit id="system.details.support.unable_to_schedule" xml:space="preserve">
         <source>Unexpected error while scheduling the generation of the support data. Please check the server logs for detailed information.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Pri plánovaní generovania podporných dat došlo k neočakávanej chybe. Podrobné informácie nájdete v záznamoch servera.</target>
+      </trans-unit>
       <trans-unit id="system.details.support.unable_to_upload" xml:space="preserve">
         <source>Unable to gather and upload the support data. Please check the server logs for detailed information.</source>
+        <target state="translated">Nie je možné zhromaždiť a nahrať podporné dáta. Podrobné informácie nájdete v záznamoch servera.</target>
+      </trans-unit>
+    <trans-unit id="Add address" xml:space="preserve">
+        <source>Add address</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/users/Addresses</context>
+        </context-group>
       <target state="new"/>
   </trans-unit>
-    </body>
+      <trans-unit id="Edit" xml:space="preserve">
+        <source>Edit</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/users/Addresses</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>
