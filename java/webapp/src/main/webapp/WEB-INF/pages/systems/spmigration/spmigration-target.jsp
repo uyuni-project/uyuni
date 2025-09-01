@@ -104,9 +104,7 @@
                             <ul class="form-control-static products-list">
                                 <c:set var="itemCounter" scope="page" value="0" />
                                 <c:forEach items="${targetProducts}" var="target">
-                                    <li <c:if test="${!target.isEveryChannelSynced}">
-                                                title="<bean:message key="spmigration.jsp.target.notSyncedChannels" />
-                                                    <c:out value="${target.missingChannelsMessage}" />"</c:if>>
+                                    <li>
                                         <input type="radio" name="targetProductSelected"
                                             id="target${target.serializedProductIDs}"
                                             value="${target.serializedProductIDs}"
@@ -124,7 +122,11 @@
                                             </ul>
                                         </label>
                                         <c:if test="${!target.isEveryChannelSynced}">
-                                            <rhn:icon type="header-info" />
+                                            <span data-bs-toggle="tooltip"
+                                                title="<bean:message key="spmigration.jsp.target.notSyncedChannels" />
+                                                    <c:out value="${target.missingChannelsMessage}" />">
+                                                <rhn:icon type="header-info"/>
+                                            <span>
                                         </c:if>
                                     </li>
                                     <c:set var="itemCounter" scope="page" value="${targetEnabled ? itemCounter+1 : itemCounter}"/>

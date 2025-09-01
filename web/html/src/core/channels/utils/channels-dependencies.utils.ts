@@ -12,21 +12,18 @@ function dependenciesTooltip(requiredChannels: string[], requiredByChannels: str
   }
 
   const channelLines = (channelNames: string[]) => {
-    return channelNames.reduce((channelName1, channelName2) => channelName1 + "\n" + channelName2, "");
+    return channelNames.reduce((channelName1, channelName2) => channelName1 + "<br>" + channelName2, "");
   };
 
   const requiredChannelsLines = channelLines(requiredChannels);
   const requiredByChannelsLines = channelLines(requiredByChannels);
 
-  return (
-    t("Required channels") +
-    ": \n" +
-    (requiredChannelsLines || "(" + t("none") + ")") +
-    "\n\n" +
-    t("Require this channel") +
-    ": \n" +
-    (requiredByChannelsLines || "(" + t("none") + ")")
-  );
+  return `
+    ${t("Required channels")}: <br>
+    ${requiredChannelsLines || `(${t("none")})`} <br><br>
+    ${t("Require this channel")}: <br>
+    ${requiredByChannelsLines || `(${t("none")})`}
+  `
 }
 
 // Given the map of channel dependencies on other channels (i.e. "which channels depend on a channel?")
