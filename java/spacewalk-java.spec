@@ -380,7 +380,6 @@ Requires:       spacewalk-java-config
 Requires:       spacewalk-java-jdbc
 Requires:       spacewalk-java-lib = %{version}
 Requires:       statistics
-Requires:       susemanager-frontend-libs >= 2.1.5
 Requires:       tomcat-taglibs-standard
 Requires:       xalan-j2 >= 2.6.0
 Requires:       xerces-j2
