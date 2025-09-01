@@ -42,7 +42,6 @@ import java.util.stream.Collectors;
  * OVAL data from multiple sources and make changes to it to have a more predictable format.
  */
 public class OVALCleaner {
-
     private OVALCleaner() {
     }
 
