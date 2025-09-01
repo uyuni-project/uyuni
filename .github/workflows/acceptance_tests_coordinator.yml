@@ -100,7 +100,7 @@ jobs:
     name: Insert test run into DB
     runs-on: ubuntu-latest
     needs: [recommended-tests, acceptance-tests, additional-tests]
-    if: ${{ !cancelled() }}
+    if: ${{ !cancelled() && github.repository == 'uyuni-project/uyuni' }}
     continue-on-error: true
     permissions:
       pull-requests: read
@@ -132,7 +132,11 @@ jobs:
 
       - name: Process test run data and insert it into database
         env:
-          TEST_RUNS_DATABASE_CONNECTION_STRING: ${{ secrets.TEST_RUNS_DATABASE_CONNECTION_STRING }}
+          PGUSER: ${{ secrets.PGSQL_USERNAME }}
+          PGPASSWORD: ${{ secrets.PGSQL_PASSWORD }}
+          PGSERVER: ${{ secrets.PGSQL_SERVER }}
+          PGDATABASE: ${{ secrets.PGSQL_DATABASE }}
+          TEST_RUNS_DATABASE_CONNECTION_STRING: postgresql://${PGUSER}:${PGPASSWORD}@${PGSERVER}/${PGDATABASE}
         run: |
           python .github/scripts/insert_test_run_into_db.py \
             --run-id ${{ github.run_id }} \
