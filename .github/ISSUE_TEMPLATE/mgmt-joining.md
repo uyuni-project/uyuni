@@ -74,4 +74,4 @@ General template for new joiners of the SUSE Multi-Linux team.
   - [ ] Add to [Uyuni QE developer Team](https://github.com/orgs/uyuni-project/teams/qe) on GitHub
   - [ ] Add to [QE Retrospective project](https://github.com/orgs/SUSE/projects/54) on GitHub
   - [ ] Add to [QE project board member list](https://github.com/orgs/SUSE/projects/32/views/1?pane=info) on GitHub
-  - [ ] Add to the Google [Multi Linux Manager QE Squad](https://groups.google.com/a/suse.com/g/multi-linux-manager-qe/members) group
+  - [ ] Add to the Google [Multi Linux Manager QE Squad](https://groups.google.com/a/suse.com/g/multi-linux-qe/members) group
