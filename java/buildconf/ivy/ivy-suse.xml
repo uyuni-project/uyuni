@@ -119,9 +119,6 @@
         <!-- Compilation and testing -->
         <dependency org="suse" name="velocity-engine-core" rev="2.3"/>
         <dependency org="suse" name="jetty-util" rev="9.4.58" />
-        <dependency org="suse" name="jetty-server" rev="9.4.58" />
-        <dependency org="suse" name="jetty-http" rev="9.4.58" />
-        <dependency org="suse" name="jetty-io" rev="9.4.58" />
         <dependency org="checkstyle" name="checkstyle" rev="10.12.7" transitive="false">
           <artifact name="all" type="jar" url="https://github.com/checkstyle/checkstyle/releases/download/checkstyle-10.12.7/checkstyle-10.12.7-all.jar"/>
         </dependency>
