@@ -22,13 +22,9 @@
     <rhn:csrf />
     <rhn:submitted />
 
-    <div class="spacewalk-section-toolbar">
-        <div class="action-button-wrapper">
-          <jsp:include page="/WEB-INF/pages/ssm/systems/deleteconfirmdialog.jspf">
-            <jsp:param name="saltMinionsPresent" value="${saltMinionsPresent}"/>
-          </jsp:include>
-        </div>
-    </div>
+    <jsp:include page="/WEB-INF/pages/ssm/systems/deleteconfirmdialog.jspf">
+        <jsp:param name="saltMinionsPresent" value="${saltMinionsPresent}"/>
+    </jsp:include>
 
     <%@ include file="/WEB-INF/pages/common/fragments/systems/system_listdisplay.jspf" %>
 
