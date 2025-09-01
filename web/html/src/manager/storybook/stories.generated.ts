@@ -25,7 +25,7 @@ import components_buttons_example_tsx_raw from "components/buttons.example.tsx?r
 export const components_buttons_example_tsx = {
   path: "components/buttons.example.tsx",
   title: "buttons.example.tsx",
-  groupName: "components",
+  groupName: "Button",
   component: components_buttons_example_tsx_component,
   raw: components_buttons_example_tsx_raw,
 };
