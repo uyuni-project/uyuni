@@ -1,1 +1,1 @@
-- Remove unused simpleclient_servlet
+- Remove unused simpleclient_servlet and apache-commons-el dep
