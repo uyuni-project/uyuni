@@ -76,7 +76,7 @@ artifacts:
   - artifact: commons-logging
     package: apache-commons-logging
     jar: apache-commons-logging\.jar
-    repository: Leap
+    repository: Leap_sle
   - artifact: commons-validator
     package: apache-commons-validator
     repository: Leap
