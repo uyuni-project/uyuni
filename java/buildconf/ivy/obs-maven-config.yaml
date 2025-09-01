@@ -330,12 +330,6 @@ artifacts:
     repository: Uyuni_Other
   - artifact: jetty-util
     repository: Leap_sle
-  - artifact: jetty-server
-    repository: Leap_sle
-  - artifact: jetty-http
-    repository: Leap_sle
-  - artifact: jetty-io
-    repository: Leap_sle
   - artifact: glassfish-jaxb-api
     repository: Leap
   - artifact: jaxb-runtime
