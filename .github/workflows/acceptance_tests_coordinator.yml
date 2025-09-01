@@ -134,11 +134,7 @@ jobs:
 
       - name: Process test run data and insert it into database
         env:
-          PGUSER: ${{ secrets.PGSQL_USERNAME }}
-          PGPASSWORD: ${{ secrets.PGSQL_PASSWORD }}
-          PGSERVER: ${{ secrets.PGSQL_SERVER }}
-          PGDATABASE: ${{ secrets.PGSQL_DATABASE }}
-          TEST_RUNS_DATABASE_CONNECTION_STRING: postgresql://${PGUSER}:${PGPASSWORD}@${PGSERVER}/${PGDATABASE}
+          TEST_RUNS_DATABASE_CONNECTION_STRING: postgresql://${{ secrets.PGSQL_USERNAME }}:${{ secrets.PGSQL_PASSWORD }}@${{ secrets.PGSQL_SERVER }}/${{ secrets.PGSQL_DATABASE }}
         run: |
           python .github/scripts/insert_test_run_into_db.py \
             --run-id ${{ github.run_id }} \
