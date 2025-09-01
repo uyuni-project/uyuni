@@ -8,7 +8,7 @@ It performs the following steps:
 3.  Filters downloaded Cucumber reports, keeping only secondary/recommended reports.
 4.  If secondary reports exist, it generates a run feature results JSON file.
 5.  Updates the run data JSON file with the final result (passed/failed) based on feature results.
-6.  Connects to the PostgreSQL database using a connection string from an environment variable.
+6.  Connects to the Postgres database using a connection string from an environment variable.
 7.  Inserts the test run data, including modified files and feature results, into the database.
 """
 import os
