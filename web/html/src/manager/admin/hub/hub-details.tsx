@@ -101,7 +101,7 @@ export class HubDetails extends React.Component<Props, State> {
   }
 
   private onConfirmSyncBunch(): void {
-    const resource = `/manager/api/admin/hub/sync-bunch`;
+    const resource = `/rhn/manager/api/admin/hub/sync-bunch`;
     Network.post(resource)
       .then(
         (_response) => {
