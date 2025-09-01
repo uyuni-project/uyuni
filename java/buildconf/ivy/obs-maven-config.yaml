@@ -57,9 +57,6 @@ artifacts:
   - artifact: commons-discovery
     package: jakarta-commons-discovery
     repository: Leap
-  - artifact: commons-el
-    package: apache-commons-el
-    repository: Leap
   - artifact: commons-fileupload
     package: apache-commons-fileupload
     repository: Leap
