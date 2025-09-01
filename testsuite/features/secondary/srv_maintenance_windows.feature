@@ -121,7 +121,7 @@ Feature: Maintenance windows
     And I enter "virgo-dummy" as the filtered package name
     And I click on the filter button
     And I check "virgo-dummy" in the list
-    And I click on "Install Selected Packages"
+    And I click on "Install Packages"
     And I select the next maintenance window
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled for" text
