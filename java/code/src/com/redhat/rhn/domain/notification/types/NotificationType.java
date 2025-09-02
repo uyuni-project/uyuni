@@ -35,6 +35,7 @@ public enum NotificationType implements Labeled {
     PAYG_AUTHENTICATION_UPDATE_FAILED(PaygAuthenticationUpdateFailed.class, ERROR, "paygauthenticationupdatefailed"),
     PAYG_NOT_COMPLIANT_WARNING(PaygNotCompliantWarning.class, WARNING, "paygnotcompliantwarning"),
     SCC_OPT_OUT_WARNING(SCCOptOutWarning.class, WARNING, "sccoptoutwarning"),
+    REPORT_DATABASE_UPDATED_FAILED(ReportDatabaseUpdateFailed.class, ERROR, "reportdbupdatefailed"),
     STATE_APPLY_FAILED(StateApplyFailed.class, ERROR, "stateapplyfailed"),
     SUBSCRIPTION_WARNING(SubscriptionWarning.class, WARNING, "subscriptionwarning"),
     UPDATE_AVAILABLE(UpdateAvailable.class, WARNING, "updateavailable");
