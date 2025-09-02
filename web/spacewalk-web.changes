@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Sep 02 08:32:19 CEST 2025 - rosuna@suse.com
+
+- version 5.1.15-0
+  * Fix Sync Channels button on peripheral server (bsc#1249030)
+
+-------------------------------------------------------------------
 Fri Aug 29 12:30:01 CEST 2025 - rosuna@suse.com
 
 - version 5.1.14-0
