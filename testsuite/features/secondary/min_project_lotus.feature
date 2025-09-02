@@ -95,7 +95,7 @@ Feature: Project Lotus
     And I enter "ptf-24894-3-0" as the filtered package name
     And I click on the filter button
     And I check "ptf-24894-3-0" in the list
-    And I click on "Install Selected Packages"
+    And I click on "Install Packages"
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled for" text
     And I wait until event "Package Install/Upgrade scheduled" is completed
