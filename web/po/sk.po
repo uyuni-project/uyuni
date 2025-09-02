@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-08-29 09:49+0200\n"
-"PO-Revision-Date: 2025-08-30 15:59+0000\n"
+"PO-Revision-Date: 2025-09-02 19:59+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -90,10 +90,8 @@ msgid "Formula saved. Applying the highstate is not needed for this formula."
 msgstr "Vzorec bol uložený. Pre tento vzorec nie je potrebné použiť highstate."
 
 #: ../html/src/components/FormulaForm.tsx:137
-#, fuzzy
-#| msgid "Multiple Group formulas detected. Only one formula for \"{0}\" can be used on each system!"
 msgid "Multiple Group formulas detected. Only one formula for \"{name}\" can be used on each system!"
-msgstr "Bolo zistené viacnásobné skupinové vzorce. V každom systéme je možné použiť iba jeden vzorec pre \"{0}\"!"
+msgstr "Bolo zistené viacnásobné skupinové vzorce. V každom systéme je možné použiť iba jeden vzorec pre \"{name}\"!"
 
 #: ../html/src/components/FormulaForm.tsx:168
 msgid "Please input required fields: {fields}"
@@ -4043,10 +4041,8 @@ msgid "The page you requested, {currentUrl}, was not found."
 msgstr "Požadovaná stránka {currentUrl} sa nenašla."
 
 #: ../html/src/manager/errors/not-found.tsx:12
-#, fuzzy
-#| msgid "If you typed this address into your browser, double-check the spelling and capitalization."
 msgid "If you typed this address into your browser, double-check the spelling and capitalization. The address you are copying may also be outdated."
-msgstr "Ak ste zadali túto adresu do svojho prehliadača, znova skontrolujte pravopis a veľké písmená."
+msgstr "Ak ste túto adresu zadali do prehliadača, prekontrolujte si pravopis a písanie veľkých písmen. Adresa, ktorú kopírujete, môže byť tiež neaktuálna."
 
 #: ../html/src/manager/errors/not-found.tsx:18
 msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your browser to try a different link, or use the top (or left) navigation bars to find the page you are looking for."
@@ -5186,8 +5182,6 @@ msgid "Select the current Playbook"
 msgstr "Vybrať aktuálny scenár"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:138
-#, fuzzy
-#| msgid "Playbook '{name}'"
 msgid "Playbook \"{name}\""
 msgstr "Scenár '{name}'"
 
@@ -5606,7 +5600,7 @@ msgstr "Inštalovať Program Temporary Fixes (PTFs)"
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:29
 msgid "The following Program Temporary Fixes (PTFs) are available for installation on this system. These packages are only meant to address a specific open issue. Please follow the instructions from customer support before proceeding with the installation."
-msgstr ""
+msgstr "Na inštaláciu v tomto systéme sú k dispozícii nasledujúce Program Temporary Fixes (PTFs). Tieto balíky sú určené iba na riešenie konkrétneho otvoreného problému. Pred pokračovaním v inštalácii postupujte podľa pokynov zákazníckej podpory."
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:33
 msgid "No Program Temporary Fixes (PTFs) available."
@@ -5626,7 +5620,7 @@ msgstr "Odstrániť Program Temporary Fixes (PTFs)"
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:29
 msgid "The following Program Temporary Fixes (PTFs) are currently installed on this system. These PTFs may be scheduled for removal by selecting them and clicking \"Remove PTF\" below. Please note that removing any non-obsolete PTF will result in the installation of the most recent versions of the packages that are part of the PTF."
-msgstr ""
+msgstr "V tomto systéme sú v súčasnosti nainštalované nasledujúce Program Temporary Fixes (PTFs). Tieto PTF možno naplánovať na odstránenie tak, že ich vyberiete a kliknete na \"Odstrániť PTF\" nižšie. Vezmite, prosím, na vedomie, že odstránenie akéhokoľvek nezastaraného PTF bude mať za následok inštaláciu najnovších verzií balíkov, ktoré sú súčasťou PTF."
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:34
 msgid "No Program Temporary Fixes (PTFs) installed."
