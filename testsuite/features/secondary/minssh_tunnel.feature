@@ -51,7 +51,7 @@ Feature: Register a Salt system to be managed via SSH tunnel
     And I click on the filter button
     And I wait until I see "milkyway-dummy" text
     And I check row with "milkyway-dummy" and arch of "ssh_minion"
-    And I click on "Install Selected Packages"
+    And I click on "Install Packages"
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled for" text
     Then I wait until event "Package Install/Upgrade scheduled" is completed

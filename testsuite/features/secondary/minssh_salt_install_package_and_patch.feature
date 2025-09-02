@@ -62,7 +62,7 @@ Feature: Install a package and a patch on the SUSE SSH client via Salt through t
     And I enter "andromeda" as the filtered package name
     And I click on the filter button
     And I check "andromeda-dummy-2.0-1.1" in the list
-    And I click on "Install Selected Packages"
+    And I click on "Install Packages"
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled" text
     When I wait for "andromeda-dummy-2.0-1.1" to be installed on "ssh_minion"

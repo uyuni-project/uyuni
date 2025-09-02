@@ -45,7 +45,7 @@ Feature: PXE boot a SLES 12 SP5 retail terminal
     And I enter "gcc" as the filtered package name
     And I click on the filter button
     And I check "gcc-4.8" in the list
-    And I click on "Install Selected Packages"
+    And I click on "Install Packages"
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled" text
     When I wait until event "Package Install/Upgrade scheduled" is completed

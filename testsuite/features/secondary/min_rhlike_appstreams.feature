@@ -110,7 +110,7 @@ Feature: Native AppStreams support for Red Hat-like Salt minion
     And I should not see a "scorpio-dummy-2.0" text
     And I should not see a "scorpio-dummy-1.0" text
     When I check "scorpio-dummy-2.1" in the list
-    And I click on "Install Selected Packages"
+    And I click on "Install Packages"
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled" text
     When I wait until event "Package Install/Upgrade scheduled" is completed

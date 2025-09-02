@@ -100,7 +100,7 @@ Feature: OpenSCAP audit of Salt minion
     And I follow "OpenSCAP" in the content area
     And I follow "List Scans" in the content area
     And I click on "Select All"
-    And I click on "Compare Selected Scans"
+    And I click on "Compare"
     Then I should see a "XCCDF Rule Results" text
     And I should see a "None" text
 
