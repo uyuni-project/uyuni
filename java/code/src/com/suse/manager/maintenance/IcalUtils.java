@@ -135,7 +135,7 @@ public class IcalUtils {
                 .orElse(allEvents);
 
         // we will look a year and month to the future
-        Period period = new Period(new DateTime(startDate.toEpochMilli()), Duration.ofDays(365 + 31));
+        Period period = new Period(new DateTime(startDate.toEpochMilli()), Duration.ofDays(365L + 31L));
 
         List<PeriodList> periodLists = filteredEvents.stream()
                 .map(c -> c.calculateRecurrenceSet(period))

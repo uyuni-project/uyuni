@@ -203,8 +203,8 @@ public enum SaltStateGeneratorService {
         Map<String, Object> bootImagePillarSync = new TreeMap<>();
 
         // We are interested only if bundles are present, not actual value
-        Boolean isBundle = imageInfo.getImageFiles().stream().filter(
-                f -> f.getType().equals("bundle")).findFirst().isPresent();
+        Boolean isBundle = imageInfo.getImageFiles().stream()
+                .anyMatch(f -> f.getType().equals("bundle"));
 
         bootImagePillarBase.put("arch", bootImage.getArch());
         bootImagePillarBase.put("basename", bootImage.getBasename());

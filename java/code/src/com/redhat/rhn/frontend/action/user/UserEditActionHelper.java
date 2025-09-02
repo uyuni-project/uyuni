@@ -115,13 +115,8 @@ public abstract class UserEditActionHelper extends RhnAction {
         String pamAuthService = Config.get().getString(ConfigDefaults.WEB_PAM_AUTH_SERVICE);
         if (pamAuthService != null && !pamAuthService.trim().isEmpty() &&
                 loggedInUser.hasRole(RoleFactory.ORG_ADMIN)) {
-            if (form.get("usepam") != null &&
-                    (Boolean) form.get("usepam")) {
-                targetUser.setUsePamAuthentication(true);
-            }
-            else {
-                targetUser.setUsePamAuthentication(false);
-            }
+            boolean usePam = form.get("usepam") != null && (Boolean) form.get("usepam");
+            targetUser.setUsePamAuthentication(usePam);
         }
     }
 }

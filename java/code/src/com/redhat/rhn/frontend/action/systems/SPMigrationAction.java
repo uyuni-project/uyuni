@@ -454,7 +454,7 @@ public class SPMigrationAction extends RhnAction {
         Optional<Set<String>> missingSuccessorExtensions = Optional.of(new HashSet<String>());
         DistUpgradeManager.removeIncompatibleTargets(sourceProducts,
                 targetProducts, missingSuccessorExtensions);
-        request.setAttribute(MISSING_SUCCESSOR_EXTENSIONS, missingSuccessorExtensions.orElse(new HashSet<String>()));
+        request.setAttribute(MISSING_SUCCESSOR_EXTENSIONS, missingSuccessorExtensions.orElse(new HashSet<>()));
     }
 
     /**

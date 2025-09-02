@@ -57,12 +57,8 @@ public class CreateUserAction extends RhnAction {
         command.setLastName(form.getString("lastName"));
 
         //Should this user use pam authentication?
-        if (form.get("usepam") != null && (Boolean) form.get("usepam")) {
-            command.setUsePamAuthentication(true);
-        }
-        else {
-            command.setUsePamAuthentication(false);
-        }
+        boolean usePam = form.get("usepam") != null && (Boolean) form.get("usepam");
+        command.setUsePamAuthentication(usePam);
 
         // Check passwords
         String passwd = (String)form.get(UserActionHelper.DESIRED_PASS);

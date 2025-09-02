@@ -620,7 +620,7 @@ public class MaintenanceManager {
         }
         else {
             rangeStart = rangeStart.getDayOfWeek().equals(DayOfWeek.SUNDAY) ? rangeStart.minusDays(6) :
-                    rangeStart.minusDays(rangeStart.getDayOfWeek().getValue() - 1);
+                    rangeStart.minusDays((long)rangeStart.getDayOfWeek().getValue() - 1);
         }
 
         ZonedDateTime rangeEnd = rangeStart.plusDays(42);
@@ -730,13 +730,9 @@ public class MaintenanceManager {
                     // test them, when they require maintenance mode
                     return true;
                 }
-                if (ActionFactory.lookupDependentActions(a)
-                        .anyMatch(da -> da.getActionType().isMaintenancemodeOnly())) {
-                    // check actions where a depended action in the chain requires
-                    // maintenance mode
-                    return true;
-                }
-                return false;
+                // check actions where a depended on action in the chain requires maintenance mode
+                return ActionFactory.lookupDependentActions(a)
+                        .anyMatch(da -> da.getActionType().isMaintenancemodeOnly());
             })
             .filter(Opt.fold(calendarOpt,
                     () -> (sa -> true),
