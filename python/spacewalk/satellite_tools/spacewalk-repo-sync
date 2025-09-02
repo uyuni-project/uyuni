@@ -16,6 +16,11 @@
 #
 
 import re
+import sys
+import os
+if os.path.realpath('/usr/lib/uyuni') not in sys.path:
+    sys.path.append(os.path.realpath('/usr/lib/uyuni'))
+
 try:
     #  python2
     import StringIO as StringIO
@@ -91,7 +96,7 @@ def main():
     parser.add_option('-g', '--config', action='store', dest='config',
                help='Configuration file')
     parser.add_option('-t', '--type', action='store', dest='repo_type',
-                      help='Force type of repository ("yum", "uln" and "deb" are supported)')
+                      help='Force type of repository ("yum", "uln", "deb" and "snap" are supported)')
     parser.add_option('-f', '--fail', action='store_true', dest='fail',
                       default=False,
                       help="If a package import fails, fail the entire operation")
