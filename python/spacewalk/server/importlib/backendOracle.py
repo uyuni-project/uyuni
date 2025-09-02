@@ -241,6 +241,7 @@ class OracleBackend(Backend):
                 "vendor": DBstring(64),
                 "payload_format": DBstring(32),
                 "path": DBstring(1000),
+                "remote_path": DBstring(1000),
                 "copyright": DBstring(128),
                 "is_ptf": DBbool(),
                 "is_part_of_ptf": DBbool(),
