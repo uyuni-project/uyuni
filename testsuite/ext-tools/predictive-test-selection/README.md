@@ -310,7 +310,7 @@ The current approach waits for all tests to complete and all reports to be gener
 
 #### How are test re-runs handled?
 
-When inserting into the database, if a test run already exists, the system identifies it as a re-run and only adds new test results. Existing test results are not updated to maintain historical accuracy of the initial test results.
+When inserting into the database, if a test run already exists, the system treats it as a re-run, adds new test results and updates the existing ones. This is especially useful for handling flaky tests, where re-runs help capture the accurate results. If the tests aren’t flaky, the results remain consistent across re-runs, and the mechanism still works correctly.
 
 #### How are Cucumber feature scenario counts maintained up-to-date?
 

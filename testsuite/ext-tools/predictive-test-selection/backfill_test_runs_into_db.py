@@ -216,10 +216,15 @@ class DatabaseManager:
         """Insert a feature result."""
         logger.debug("Inserting feature result: run_id=%d, feature_id=%d, passed=%s",
                     run_id, feature_id, passed)
-        result_exists = session.get(FeatureResult, {"run_id": run_id, "feature_id": feature_id})
-        if result_exists:
-            logger.debug("Feature result already exists, skipping insert")
-            return
+        result = session.get(FeatureResult, {"run_id": run_id, "feature_id": feature_id})
+        if result:
+            logger.debug("Feature result exists")
+            if result.passed != passed:
+                logger.debug("Feature passed value changed (old=%s, new=%s). Updating...",
+                            result.passed, passed)
+                result.passed = passed
+            else:
+                logger.debug("Same feature passed value. Skipping update.")
         else:
             new_result = FeatureResult(
                 run_id=run_id,
