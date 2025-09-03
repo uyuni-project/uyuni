@@ -104,4 +104,4 @@ General template for leavers of the SUSE Multi-Linux team.
   - [ ] Remove from [Uyuni QE developer Team](https://github.com/orgs/uyuni-project/teams/qe) on GitHub
   - [ ] Remove from [QE Retrospective project](https://github.com/orgs/SUSE/projects/54) on GitHub
   - [ ] Remove from [QE project board member list](https://github.com/orgs/SUSE/projects/32/views/1?pane=info) on GitHub
-  - [ ] Remove from the Google [Multi Linux Manager QE Squad](https://groups.google.com/a/suse.com/g/multi-linux-manager-qe/members) group
+  - [ ] Remove from the Google [Multi Linux Manager QE Squad](https://groups.google.com/a/suse.com/g/multi-linux-qe/members) group
