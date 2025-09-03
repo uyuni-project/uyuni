@@ -272,7 +272,7 @@ public class Router implements SparkApplication {
         StorybookController.initRoutes(jade);
 
         // ISSv3 Sync
-        initISSv3Routes();
+        initISSv3Routes(taskomaticApi);
 
         // Validate RBAC endpoints
         RbacRouteValidator.validateEndpoints();
@@ -312,15 +312,15 @@ public class Router implements SparkApplication {
         ImageBuildController.initRoutes(jade, imageBuildController);
     }
 
-    private static void initISSv3Routes() {
+    private static void initISSv3Routes(TaskomaticApi taskomaticApiIn) {
         HubManager hubManager = new HubManager();
 
         // ISS v3 Internal APIs
-        HubController hubController = new HubController(hubManager, new TaskomaticApi());
+        HubController hubController = new HubController(hubManager, taskomaticApiIn);
         hubController.initRoutes();
 
         // API for the web interface
-        HubApiController hubApiController = new HubApiController(hubManager, new IssMigratorFactory());
+        HubApiController hubApiController = new HubApiController(hubManager, new IssMigratorFactory(), taskomaticApiIn);
         hubApiController.initRoutes();
     }
 }
