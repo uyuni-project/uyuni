@@ -25,7 +25,7 @@ import components_buttons_example_tsx_raw from "components/buttons.example.tsx?r
 export const components_buttons_example_tsx = {
   path: "components/buttons.example.tsx",
   title: "buttons.example.tsx",
-  groupName: "Button",
+  groupName: "components",
   component: components_buttons_example_tsx_component,
   raw: components_buttons_example_tsx_raw,
 };
@@ -376,6 +376,18 @@ export const components_panels_TopPanel_example_tsx = {
   groupName: "panels",
   component: components_panels_TopPanel_example_tsx_component,
   raw: components_panels_TopPanel_example_tsx_raw,
+};
+
+// @ts-ignore
+import components_table_Table_example_tsx_component from "components/table/Table.example.tsx";
+import components_table_Table_example_tsx_raw from "components/table/Table.example.tsx?raw";
+
+export const components_table_Table_example_tsx = {
+  path: "components/table/Table.example.tsx",
+  title: "Table.example.tsx",
+  groupName: "table",
+  component: components_table_Table_example_tsx_component,
+  raw: components_table_Table_example_tsx_raw,
 };
 
 // @ts-ignore

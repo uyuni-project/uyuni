@@ -852,7 +852,7 @@ public class ListDisplayTag extends ListDisplayTagBase {
 
             renderPanelHeading(out);
 
-            out.print("<table class=\"table table-striped\">");
+            out.print("<table class=\"table\">");
             // we render the pagination controls as an additional head
             out.println("<thead>");
             out.println("\n<tr>");

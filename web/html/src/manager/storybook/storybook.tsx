@@ -96,7 +96,7 @@ export const Storybook = () => {
                 if (!isDeprecated(a.title) && isDeprecated(b.title)) return -1;
                 return a.title.localeCompare(b.title);
               })
-              .map((item) => {
+              .map((item, index) => {
                 const storyTitle = normalize(item.title);
                 const href = new URL(window.location.href);
                 href.searchParams.set("story", storyTitle);
@@ -115,7 +115,7 @@ export const Storybook = () => {
                         </pre>
                       ) : null}
                     </div>
-                    <hr />
+                    {group.stories && group.stories.length - 1 > index ? <hr /> : null}
                   </Fragment>
                 );
               })}

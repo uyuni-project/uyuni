@@ -19,7 +19,7 @@ export const Check = (props: CheckProps) => {
   }, [indeterminate]);
 
   return (
-    <label className={styles.check}>
+    <label className={`${styles.check} ${props.className ?? ""}`}>
       <input
         {...rest}
         className="form-check-input"
