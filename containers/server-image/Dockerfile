@@ -61,6 +61,7 @@ RUN echo "rpm.install.excludedocs = yes" >>/etc/zypp/zypp.conf && \
         virtual-host-gatherer-VMware \
         vim \
         ${USEPYTHON}-pygit2 \
+        ${USEPYTHON}-ldap \
         ipmitool \
         sssd \
         sssd-dbus \
