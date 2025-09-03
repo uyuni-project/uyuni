@@ -161,8 +161,8 @@ def save_cache(cachefile, data, expire=None):
             raise ValueError("expire must be datetime.datetime or str object")
         try:
             datetime.strptime(str(expire), _CACHE_DATE_FORMAT)
-        except ValueError as e:
-            raise ValueError("Provided expire parameter must conform to {}".format(_CACHE_DATE_FORMAT)) from e
+        except ValueError:
+            raise ValueError("Provided expire parameter must conform to {}".format(_CACHE_DATE_FORMAT))
 
     if expire:
         data['expire'] = expire
