@@ -100,7 +100,7 @@ Feature: Create activation keys
     And I enter "Proxy Key x86_64" as "description"
     And I enter "PROXY-KEY-x86_64" as "key"
     And I click on "Create Activation Key"
-    Then I should see a "Activation key Proxy Key x86_64 has been created" text
+    Then I wait until I see "Activation key Proxy Key x86_64 has been created" text
 
   Scenario: Create an activation key for the build host
     When I follow the left menu "Systems > Activation Keys"
