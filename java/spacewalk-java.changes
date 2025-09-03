@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Sep 03 16:32:06 CEST 2025 - rosuna@suse.com
+
+- version 5.1.19-0
+  * Disable CVE Audit with OVAL per default
+
+-------------------------------------------------------------------
 Fri Aug 29 12:21:31 CEST 2025 - rosuna@suse.com
 
 - version 5.1.18-0
