@@ -63,21 +63,7 @@ export default () => {
           cell={(row: ChannelWithHierarchy) => (row.channelOrg ? row.channelOrg.orgName : "SUSE")}
           width="20%"
         />
-        <viewSelected.Column
-          columnKey="view"
-          header={
-            <>
-              {/* TODO: Use the new Check here */}
-              <input
-                type="checkbox"
-                checked={viewSelected.isAllSelected}
-                onChange={() => viewSelected.toggleSelectAll()}
-              />
-              &nbsp;
-              {t("View")}
-            </>
-          }
-        />
+        <viewSelected.Column columnKey="view" header={<viewSelected.Header>{t("View")}</viewSelected.Header>} />
         <modifySelected.Column columnKey="modify" header={t("Modify")} />
       </Table>
     </>

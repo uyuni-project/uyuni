@@ -1,6 +1,9 @@
 import { useState } from "react";
 
+import { Check } from "components/input";
+
 import { Column, ColumnProps } from "./Column";
+import styles from "./useSelected.module.scss";
 
 /**
  * Create a selectable table column
@@ -108,19 +111,20 @@ export const useSelected = <T extends { children?: T[] }, I>(
   const SelectionColumn = (props: ColumnProps) => (
     <Column
       onClick={(item) => toggle(item)}
-      cell={(item) => (
-        // TODO: Use the new Checkbox component here once that PR is merged, these styles are a placeholder to show state
-        <div style={isIndeterminate(item) ? { background: "red" } : undefined}>
-          <input
-            type="checkbox"
-            checked={isSelected(item)}
-            // indeterminate={props.selected.isIndeterminate(item)}
-            readOnly
-          />
-        </div>
-      )}
+      cell={(item) => <Check indeterminate={isIndeterminate(item)} checked={isSelected(item)} />}
       {...props}
     />
+  );
+
+  const Header = (props: { children?: React.ReactNode }) => (
+    <>
+      <Check
+        checked={isAllSelected}
+        onChange={() => toggleSelectAll()}
+        className={props.children ? styles.check : undefined}
+      />
+      {props.children}
+    </>
   );
 
   // Table.tsx needs to know this is a real column for `isColumn`
@@ -129,6 +133,7 @@ export const useSelected = <T extends { children?: T[] }, I>(
   return {
     /** Render this selection as a `<Column />` */
     Column: SelectionColumn,
+    Header,
     /** Recursively select an item */
     select,
     /** Recursively unselect an item */
