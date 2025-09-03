@@ -2484,7 +2484,7 @@ lt;/divgt;
       </trans-unit>
       <trans-unit id="toolbar.delete.snippets" xml:space="preserve">
         <source>Delete Snippet</source>
-        <target state="needs-adaptation">suprimeix el fragment</target>
+        <target state="translated">Suprimeix el fragment</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/cobbler/CobblerSnippetEdit</context>
         </context-group>
@@ -9604,7 +9604,7 @@ Seguiu aquesta url per veure la llista completa de sistemes inactius:
       </trans-unit>
       <trans-unit id="message.scheduledeleted" xml:space="preserve">
         <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; has been disabled.</source>
-        <target state="needs-adaptation">S'ha suprimit la planificació lt;stronggt;{0}lt;/stronggt;.</target>
+        <target state="translated">La programació &lt;strong&gt;{0}&lt;/strong&gt; s'ha desactivat.</target>
       </trans-unit>
       <trans-unit id="message.schedulenotactive" xml:space="preserve">
         <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; isn't active any more. It's part of the system just for information purposes and will be deleted automatically.</source>
@@ -11351,22 +11351,22 @@ Per a esmenar aquesta situació, afegiu credencials SCC lt;a href""/rhn/admin/se
       <trans-unit id="riscv64-deb" xml:space="preserve">
         <source>RISCV64 Debian</source>
         <target>RISCV64 Debian</target>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="ARM64 Debian" xml:space="preserve">
         <source>ARM64 Debian</source>
         <target>ARM64 Debian</target>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="armel-deb" xml:space="preserve">
         <source>ARMEL Debian</source>
         <target>ARMEL Debian</target>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="s390x-deb" xml:space="preserve">
         <source>PPC64EL Debian</source>
         <target>PPC64EL Debian</target>
-        <target state="new"/>
+        <target state="new"></target>
       </trans-unit>
       <trans-unit id="message.savereposyncflags" xml:space="preserve">
         <source>Saved repository settings for {0}.</source>
@@ -11843,87 +11843,87 @@ Per a esmenar aquesta situació, afegiu credencials SCC lt;a href""/rhn/admin/se
         <source>Error when triggering the channels sync.</source>
         <target state="translated">Error en activar la sincronització de canals.</target>
       </trans-unit>
-    <trans-unit id="supportdata.get" xml:space="preserve">
+      <trans-unit id="supportdata.get" xml:space="preserve">
         <source>Get and Upload Support data</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"></target>
+      </trans-unit>
       <trans-unit id="message.scheduleactivated" xml:space="preserve">
         <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; activated.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"></target>
+      </trans-unit>
       <trans-unit id="task.status.errata-advisory-map-sync" xml:space="preserve">
         <source>Update SUSE errata advisory map</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"></target>
+      </trans-unit>
       <trans-unit id="bunch.jsp.description.errata-advisory-map-sync-bunch" xml:space="preserve">
         <source>Update SUSE errata advisory map to retrieve announcement ids and advisor URLs</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"></target>
+      </trans-unit>
       <trans-unit id="supportdata.uploadGeoType.eu" xml:space="preserve">
         <source>EU</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"></target>
+      </trans-unit>
       <trans-unit id="supportdata.uploadGeoType.us" xml:space="preserve">
         <source>US</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"></target>
+      </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_bergamo.description" xml:space="preserve">
         <source>KVM on AMD Epyc Processor, fourth generation (bergamo)</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"></target>
+      </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_bergamo.label" xml:space="preserve">
         <source>KVM on AMD Epyc - Bergamo</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"></target>
+      </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_siena.description" xml:space="preserve">
         <source>KVM on AMD Epyc Processor, fourth generation (siena)</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"></target>
+      </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_siena.label" xml:space="preserve">
         <source>KVM on AMD Epyc - Siena</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"></target>
+      </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_turin.description" xml:space="preserve">
         <source>KVM on AMD Epyc Processor, fifth generation (turin)</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"></target>
+      </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_turin.label" xml:space="preserve">
         <source>KVM on AMD Epyc - Turin</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"></target>
+      </trans-unit>
       <trans-unit id="system.details.support.invalid_case_number" xml:space="preserve">
         <source>The case number {0} is not valid.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"></target>
+      </trans-unit>
       <trans-unit id="system.details.support.invalid_region" xml:space="preserve">
         <source>The region {0] is not valid.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"></target>
+      </trans-unit>
       <trans-unit id="system.details.support.unable_to_schedule" xml:space="preserve">
         <source>Unexpected error while scheduling the generation of the support data. Please check the server logs for detailed information.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"></target>
+      </trans-unit>
       <trans-unit id="system.details.support.unable_to_upload" xml:space="preserve">
         <source>Unable to gather and upload the support data. Please check the server logs for detailed information.</source>
-      <target state="new"/>
-  </trans-unit>
-    <trans-unit id="Add address" xml:space="preserve">
+        <target state="new"></target>
+      </trans-unit>
+      <trans-unit id="Add address" xml:space="preserve">
         <source>Add address</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"></target>
+      </trans-unit>
       <trans-unit id="Edit" xml:space="preserve">
         <source>Edit</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="new"></target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
