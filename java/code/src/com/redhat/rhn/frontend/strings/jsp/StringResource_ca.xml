@@ -2093,7 +2093,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       </trans-unit>
       <trans-unit id="userdetails.jsp.noemailaddress" xml:space="preserve">
         <source>Add Email Address</source>
-        <target state="needs-adaptation">Cap adreça electrònica</target>
+        <target state="translated">Afegeix una adreça de correu electrònic</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
@@ -7090,14 +7090,14 @@ Secció "Roles" de la pestanya "Detalls" en els perfils dels usuaris individuals
       </trans-unit>
       <trans-unit id="systems.groups.jsp.remove" xml:space="preserve">
         <source>Leave Groups</source>
-        <target state="needs-adaptation">Deixa els grups seleccionats</target>
+        <target state="translated">Deixa els grups</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.groups.jsp.add" xml:space="preserve">
         <source>Join Groups</source>
-        <target state="needs-adaptation">Uneix-te als grups seleccionats</target>
+        <target state="translated">Uneix-te als grups</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
@@ -7258,7 +7258,7 @@ Secció "Roles" de la pestanya "Detalls" en els perfils dels usuaris individuals
       </trans-unit>
       <trans-unit id="systemgroup.details.editproperties" xml:space="preserve">
         <source>Edit System Group Properties</source>
-        <target state="needs-adaptation">Edita aquestes propietats</target>
+        <target state="translated">Edita les propietats del grup del sistema</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
@@ -8147,7 +8147,7 @@ Secció "Roles" de la pestanya "Detalls" en els perfils dels usuaris individuals
       </trans-unit>
       <trans-unit id="installpkgs.jsp.installpackages" xml:space="preserve">
         <source>Install Packages</source>
-        <target state="needs-adaptation">Instal·la els paquets seleccionats</target>
+        <target state="translated">Instal·la els paquets</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/InstallPackages</context>
         </context-group>
@@ -17350,7 +17350,7 @@ Tingueu en compte que si un sistema determinat anul·la un fitxer donat, o el t�
         <target state="translated">Versió actual</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes"></context>
         </context-group>
       </trans-unit>
       <trans-unit id="deploy.jsp.lastmodified-header" xml:space="preserve">
@@ -17358,7 +17358,7 @@ Tingueu en compte que si un sistema determinat anul·la un fitxer donat, o el t�
         <target state="translated">Última modificació</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes"></context>
         </context-group>
       </trans-unit>
       <trans-unit id="configsystemfilter.name" xml:space="preserve">
@@ -17387,7 +17387,7 @@ Tingueu en compte que si un sistema determinat anul·la un fitxer donat, o el t�
         <target state="translated">No hi ha sistemes desplegables subscrits a aquest canal</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes"></context>
         </context-group>
       </trans-unit>
       <trans-unit id="deploy.jsp.actions-header" xml:space="preserve">
@@ -17395,7 +17395,7 @@ Tingueu en compte que si un sistema determinat anul·la un fitxer donat, o el t�
         <target state="translated">Accions</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes"></context>
         </context-group>
       </trans-unit>
       <trans-unit id="deploy.jsp.filepath-header" xml:space="preserve">
@@ -17403,7 +17403,7 @@ Tingueu en compte que si un sistema determinat anul·la un fitxer donat, o el t�
         <target state="translated">Nom del fitxer</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes"></context>
         </context-group>
       </trans-unit>
       <trans-unit id="deploy.jsp.deployallbutton" xml:space="preserve">
@@ -17411,7 +17411,7 @@ Tingueu en compte que si un sistema determinat anul·la un fitxer donat, o el t�
         <target state="translated">Desplega tots els fitxers</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes"></context>
         </context-group>
       </trans-unit>
       <trans-unit id="deploy.jsp.deployselectedbutton" xml:space="preserve">
@@ -17419,7 +17419,7 @@ Tingueu en compte que si un sistema determinat anul·la un fitxer donat, o el t�
         <target state="translated">Desplega els fitxers seleccionats</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes"></context>
         </context-group>
       </trans-unit>
       <trans-unit id="deploy.jsp.h2" xml:space="preserve">
@@ -17427,14 +17427,14 @@ Tingueu en compte que si un sistema determinat anul·la un fitxer donat, o el t�
         <target state="translated">Desplegar fitxers de configuració</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes"></context>
         </context-group>
       </trans-unit>
       <trans-unit id="deploy.jsp.description" xml:space="preserve">
         <source>You may select the files you wish to deploy from the list below.  You will then be asked to select the systems to deploy them to.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes"></context>
         </context-group>
         <target state="translated">Podeu seleccionar els fitxers que voleu desplegar de la llista següent.  A continuació, se us demanarà que seleccioneu els sistemes per a desplegar-los.</target>
       </trans-unit>
@@ -17443,7 +17443,7 @@ Tingueu en compte que si un sistema determinat anul·la un fitxer donat, o el t�
         <target state="translated">Nom del fitxer</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes"></context>
         </context-group>
       </trans-unit>
       <trans-unit id="deploysystems.jsp.deployconfirmbutton" xml:space="preserve">
@@ -17451,7 +17451,7 @@ Tingueu en compte que si un sistema determinat anul·la un fitxer donat, o el t�
         <target state="translated">Confirma i desplega als sistemes seleccionats</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes"></context>
         </context-group>
       </trans-unit>
       <trans-unit id="deploysystems.jsp.h2" xml:space="preserve">
@@ -17459,7 +17459,7 @@ Tingueu en compte que si un sistema determinat anul·la un fitxer donat, o el t�
         <target state="translated">Desplegar fitxers de configuració: Seleccioneu sistemes per al desplegament</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes"></context>
         </context-group>
       </trans-unit>
       <trans-unit id="deploysystems.jsp.note" xml:space="preserve">
@@ -17467,7 +17467,7 @@ Tingueu en compte que si un sistema determinat anul·la un fitxer donat, o el t�
         <target state="translated">Seleccioneu els sistemes als quals voleu desplegar els fitxers seleccionats.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes"></context>
         </context-group>
       </trans-unit>
       <trans-unit id="deploysystems.jsp.warning" xml:space="preserve">
@@ -17475,7 +17475,7 @@ Tingueu en compte que si un sistema determinat anul·la un fitxer donat, o el t�
         <target state="translated">Lt;stronggt;Warning:lt;/stronggt; Tingueu en compte que si algun dels fitxers que esteu intentant desplegar des del canal de configuració {0} són anul·lats o superats per un fitxer amb el mateix nom en un canal de més alt rang al qual està subscrit qualsevol sistema en particular, llavors la versió de més alt rang del fitxer es desplegarà en aquest sistema, en lloc de la versió del canal de configuració {0}.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes"></context>
         </context-group>
       </trans-unit>
       <!-- deployrevision.jsp -->
@@ -29824,49 +29824,49 @@ lt;/pgt;
           També podeu &lt;a href="{0}"&gt;tancar la sessió&lt;/a&gt; o &lt;a href="javascript:history.back()"&gt;tornar&lt;/a&gt; a la pàgina anterior.
         </target>
       </trans-unit>
-    <trans-unit id="userdetails.jsp.adminroles" xml:space="preserve">
+      <trans-unit id="userdetails.jsp.adminroles" xml:space="preserve">
         <source>Administrative Roles</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"></target>
+      </trans-unit>
       <trans-unit id="bunch.jsp.description.compare-task-bunch" xml:space="preserve">
         <source>Schedules a generic comparison task</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"></target>
+      </trans-unit>
       <trans-unit id="schedule.edit.jsp.activateschedule" xml:space="preserve">
         <source>Activate Schedule</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/ScheduleDetail.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"></target>
+      </trans-unit>
       <trans-unit id="task.status.compare-task-files" xml:space="preserve">
         <source>Compare Task</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"></target>
+      </trans-unit>
       <trans-unit id="spmigration.jsp.dryrun.disabled.tooltip" xml:space="preserve">
         <source>Dry run is not available for this product.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"></target>
+      </trans-unit>
       <trans-unit id="sdc.details.overview.subscribedchannels.edit" xml:space="preserve">
         <source>Edit Subscribed Channels</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"></target>
+      </trans-unit>
       <trans-unit id="sdc.details.overview.sysproperties.edit" xml:space="preserve">
         <source>Edit System Properties</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="new"></target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
