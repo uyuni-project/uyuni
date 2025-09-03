@@ -15,6 +15,7 @@
 
 package com.redhat.rhn.taskomatic.task;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.manager.audit.CVEAuditManagerOVAL;
 
 import org.quartz.JobExecutionContext;
@@ -31,10 +32,12 @@ public class OVALDataSync extends RhnJavaJob {
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-        log.info("Syncing OVAL data");
+        if (ConfigDefaults.get().isOvalEnabledForCveAudit()) {
+            log.info("Syncing OVAL data");
 
-        CVEAuditManagerOVAL.syncOVAL();
+            CVEAuditManagerOVAL.syncOVAL();
 
-        log.info("Done syncing OVAL data");
+            log.info("Done syncing OVAL data");
+        }
     }
 }
