@@ -30,10 +30,15 @@ import javax.persistence.Transient;
  */
 @Entity
 @DiscriminatorValue("module")
-public class ModuleFilter extends ContentFilter<Module> {
+public class ModuleFilter extends ContentFilter {
 
     @Override
-    public boolean test(Module module) {
+    public boolean test(Object o) {
+        if (!(o instanceof Module)) {
+            return false;
+        }
+
+        Module module = (Module) o;
         FilterCriteria.Matcher matcher = getCriteria().getMatcher();
         String field = getCriteria().getField();
 
