@@ -189,7 +189,6 @@ export class TableDataHandler extends React.Component<Props, State> {
         promise
           .then((data) => this.updateData(data))
           .finally(() => {
-            // TODO: We should set all selection to empty here, no?
             this.setState({ loading: false });
           });
       }, pageControl);
@@ -327,7 +326,6 @@ export class TableDataHandler extends React.Component<Props, State> {
       const currIds = selectableItems.map((item) => this.props.identifier(item));
 
       const handleSelectAll = (sel) => {
-        // TODO: Also handle children, if available
         let arr = selectedItems;
         if (sel) {
           arr = arr.concat(currIds.filter((id) => !arr.includes(id)));
