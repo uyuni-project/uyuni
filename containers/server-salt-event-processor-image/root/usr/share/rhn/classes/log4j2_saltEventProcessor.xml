@@ -6,7 +6,7 @@
         </Console>
     </Appenders>
     <Loggers>
-        <Logger name="com.suse.saltevent" level="debug" additivity="false"/>
+        <Logger name="com.suse.saltevent" level="warn" additivity="false"/>
         <Logger name="com.suse.manager.reactor" level="info" additivity="false"/>
         <Root level="info">
             <AppenderRef ref="console" />
@@ -33,8 +33,6 @@
 
         <!-- this silences ehcache on Fedoras complaining about using default values -->
         <Logger name="org.hibernate.cache.ehcache.AbstractEhcacheRegionFactory" level="error" />
-
-        <Logger name="com.redhat.rhn.common.conf.Config" level="debug" />
 
     </Loggers>
 </Configuration>
