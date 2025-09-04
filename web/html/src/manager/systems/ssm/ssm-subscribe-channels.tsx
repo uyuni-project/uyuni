@@ -182,15 +182,14 @@ class BaseChannelPage extends React.Component<BaseChannelProps, BaseChannelState
             comparator={Utils.sortByText}
             header={t("Systems")}
             cell={(channel: SsmAllowedBaseChannelsJson) => (
-              // eslint-disable-next-line jsx-a11y/anchor-is-valid
-              <a
-                href="#"
+              <button
+                className="modal-link"
                 data-bs-toggle="modal"
                 data-bs-target="#channelServersPopup"
                 onClick={() => this.showServersListPopUp(channel)}
               >
                 {channel.servers.length}
-              </a>
+              </button>
             )}
           />
           <Column
@@ -438,9 +437,8 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
             <div className="col-md-4 text-right">
               <strong>
                 {allowed.servers && allowed.servers.length > 0 ? (
-                  // eslint-disable-next-line jsx-a11y/anchor-is-valid
-                  <a
-                    href="#"
+                  <button
+                    className="btn btn-tertiary"
                     data-bs-toggle="modal"
                     data-bs-target="#channelServersPopup"
                     onClick={() =>
@@ -451,12 +449,11 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
                     }
                   >
                     {allowed.servers.length} {t("system(s) to subscribe")}
-                  </a>
+                  </button>
                 ) : null}
                 {allowed.incompatibleServers && allowed.incompatibleServers.length > 0 ? (
-                  // eslint-disable-next-line jsx-a11y/anchor-is-valid
-                  <a
-                    href="#"
+                  <button
+                    className="btn btn-tertiary"
                     data-bs-toggle="modal"
                     data-bs-target="#channelServersPopup"
                     onClick={() =>
@@ -466,9 +463,9 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
                       )
                     }
                   >
-                    <i className="fa fa-exclamation-triangle fa-1-5x" aria-hidden="true"></i>
+                    <i className="fa fa-exclamation-triangle" aria-hidden="true"></i>
                     {allowed.incompatibleServers.length} {t("system(s) incompatible")}
-                  </a>
+                  </button>
                 ) : null}
               </strong>
             </div>
@@ -483,13 +480,12 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
                   </ChannelLink>{" "}
                   &nbsp;
                   {this.dependenciesTooltip(child.id) ? (
-                    // eslint-disable-next-line jsx-a11y/anchor-is-valid
-                    <a href="#">
+                    <span>
                       <i
                         className="fa fa-info-circle spacewalk-help-link"
                         title={this.dependenciesTooltip(child.id)}
                       ></i>
-                    </a>
+                    </span>
                   ) : null}
                   &nbsp;
                   {child.recommended ? (
@@ -668,27 +664,25 @@ class SummaryPage extends React.Component<SummaryPageProps, SummaryPageState> {
             <div className="col-md-4 text-right">
               <strong>
                 {allowed.servers && allowed.servers.length > 0 ? (
-                  // eslint-disable-next-line jsx-a11y/anchor-is-valid
-                  <a
-                    href="#"
+                  <button
+                    className="btn btn-tertiary"
                     data-bs-toggle="modal"
                     data-bs-target="#channelServersPopup"
                     onClick={() => this.showServersListPopUp(newBaseName, allowed.servers)}
                   >
                     {allowed.servers.length} {t("system(s) to subscribe")}
-                  </a>
+                  </button>
                 ) : null}
                 {allowed.incompatibleServers && allowed.incompatibleServers.length > 0 ? (
-                  // eslint-disable-next-line jsx-a11y/anchor-is-valid
-                  <a
-                    href="#"
+                  <button
+                    className="btn btn-tertiary"
                     data-bs-toggle="modal"
                     data-bs-target="#channelServersPopup"
                     onClick={() => this.showServersListPopUp(newBaseName, allowed.incompatibleServers)}
                   >
                     <i className="fa fa-exclamation-triangle fa-1-5x" aria-hidden="true"></i>
                     {allowed.incompatibleServers.length} {t("system(s) incompatible")}
-                  </a>
+                  </button>
                 ) : null}
               </strong>
             </div>
