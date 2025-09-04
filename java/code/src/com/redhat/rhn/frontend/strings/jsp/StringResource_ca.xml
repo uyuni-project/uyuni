@@ -14073,7 +14073,7 @@ el lt;stronggt;ENTERENTERPRISELINUXNAME Guide Guia d'administració del sistema.
       </trans-unit>
       <trans-unit id="activation-key.groups.jsp.add" xml:space="preserve">
         <source>Join Groups</source>
-        <target state="needs-adaptation">Uneix-te als grups seleccionats</target>
+        <target state="translated">Uneix-te als grups</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/activationkeys/groups/* pages</context>
         </context-group>
@@ -14558,14 +14558,14 @@ el lt;stronggt;ENTERENTERPRISELINUXNAME Guide Guia d'administració del sistema.
       </trans-unit>
       <trans-unit id="system.audit.listscap.jsp.removebut" xml:space="preserve">
         <source>Remove</source>
-        <target state="needs-adaptation">Elimina les exploracions seleccionades</target>
+        <target state="translated">Suprimeix</target>
         <context-group name="ctx">
           <context context-type="sourcefile">View of SCAP scans for given system</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.audit.listscap.jsp.diffbut" xml:space="preserve">
         <source>Compare</source>
-        <target state="needs-adaptation">Compara les exploracions seleccionades</target>
+        <target state="translated">Compara</target>
         <context-group name="ctx">
           <context context-type="sourcefile">View of SCAP scans for given system</context>
         </context-group>
@@ -15463,7 +15463,7 @@ el lt;stronggt;ENTERENTERPRISELINUXNAME Guide Guia d'administració del sistema.
       </trans-unit>
       <trans-unit id="system.event.pending.headerPending" xml:space="preserve">
         <source>You may cancel events for this system by selecting them and clicking the &lt;strong&gt;Cancel Events&lt;/strong&gt; button.</source>
-        <target state="needs-adaptation">Podeu cancel·lar esdeveniments per a aquest sistema seleccionant-los i fent clic al botó lt;stronggt;Cancel·la els esdeveniments seleccionatslt;/stronggt;.</target>
+        <target state="translated">Podeu cancel·lar esdeveniments per a aquest sistema seleccionant-los i fent clic al botó &lt;strong&gt;Cancel·la esdeveniments&lt;strong&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
@@ -15484,7 +15484,7 @@ el lt;stronggt;ENTERENTERPRISELINUXNAME Guide Guia d'administració del sistema.
       </trans-unit>
       <trans-unit id="system.event.pending.cancel" xml:space="preserve">
         <source>Cancel Events</source>
-        <target state="needs-adaptation">Cancel·la els esdeveniments seleccionats</target>
+        <target state="translated">Cancel·la esdeveniments</target>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
@@ -16922,7 +16922,7 @@ un fitxer o fitxers, o copieu l'última versió en un conjunt de sobreescripture
       </trans-unit>
       <trans-unit id="channelfiles.jsp.removeselected" xml:space="preserve">
         <source>Remove Files</source>
-        <target state="needs-adaptation">Elimina els fitxers seleccionats</target>
+        <target state="translated">Suprimeix fitxers</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelFiles.do</context>
         </context-group>
@@ -17981,7 +17981,7 @@ Canal de configuració de gestió centralitzada, {2}; a sota hi ha una llista de
       </trans-unit>
       <trans-unit id="toolbar.delete.configfile" xml:space="preserve">
         <source>Delete</source>
-        <target state="needs-adaptation">Suprimeix aquesta revisió de fitxer</target>
+        <target state="translated">Suprimeix</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
@@ -17995,7 +17995,7 @@ Canal de configuració de gestió centralitzada, {2}; a sota hi ha una llista de
       </trans-unit>
       <trans-unit id="toolbar.delete.deletefile" xml:space="preserve">
         <source>Delete</source>
-        <target state="needs-adaptation">Suprimeix aquest fitxer</target>
+        <target state="translated">Suprimeix</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
@@ -21113,7 +21113,7 @@ qualsevol d'aquestes revisions.  Estàs segur que vols fer-ho?</target>
       </trans-unit>
       <trans-unit id="ssm.operations.provisioning.remotecommand.form.queue.succeed" xml:space="preserve">
         <source>Task "{0}" has been successfully added to Action Chain &lt;a href="/rhn/schedule/ActionChain.do?id={1}"&gt;{2}&lt;/a&gt;.</source>
-        <target state="needs-adaptation">La tasca "{0}" s'ha afegit correctament a la cadena d'acció {1}.</target>
+        <target state="translated">La tasca "{0}" s'ha afegit correctament a la cadena d'accions &lt;a href="/rhn/schedule/ActionChain.do?id={1}"&gt;{2}&lt;/a&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/KickstartableSystems.do</context>
         </context-group>
@@ -21553,9 +21553,9 @@ qualsevol d'aquestes revisions.  Estàs segur que vols fer-ho?</target>
 
              Select one or more and click the &lt;b&gt;Remove Packages&lt;/b&gt; button to schedule package removal.
           </source>
-        <target state="needs-adaptation">Els paquets llistats a continuació poden ser eliminats d'un o més sistemes.
+        <target state="translated">Els paquets que s'enumeren a continuació es poden suprimir d'un o més sistemes.
 
-             Seleccioneu un o més i feu clic al botó lt;bgt;Elimina els paquets seleccionatslt;/bgt; per a planificar l'eliminació del paquet.
+Seleccioneu-ne un o més i feu clic al botó &lt;b&gt;Suprimeix paquets&lt;/b&gt; per programar l'eliminació del paquet.
           </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/PackageRemove.do</context>
@@ -21563,7 +21563,7 @@ qualsevol d'aquestes revisions.  Estàs segur que vols fer-ho?</target>
       </trans-unit>
       <trans-unit id="ssm.package.remove.select.confirm" xml:space="preserve">
         <source>Remove Packages</source>
-        <target state="needs-adaptation">Elimina els paquets seleccionats</target>
+        <target state="translated">Suprimeix paquets</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/PackageRemove.do</context>
         </context-group>
@@ -21632,7 +21632,7 @@ qualsevol d'aquestes revisions.  Estàs segur que vols fer-ho?</target>
       </trans-unit>
       <trans-unit id="ssm.package.upgrade.select.confirm" xml:space="preserve">
         <source>Upgrade Packages</source>
-        <target state="needs-adaptation">Actualitza els paquets seleccionats</target>
+        <target state="translated">Actualitza els paquets</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/PackageUpgrade.do</context>
         </context-group>
@@ -21693,9 +21693,9 @@ qualsevol d'aquestes revisions.  Estàs segur que vols fer-ho?</target>
 
             Select one or more and click the &lt;b&gt;Verify Packages&lt;/b&gt; button to schedule package verification.
          </source>
-        <target state="needs-adaptation">Els paquets llistats a continuació poden ser verificats en un o més sistemes.
+        <target state="translated">Els paquets llistats a continuació poden ser verificats en un o més sistemes.
 
-            Seleccioneu un o més i feu clic al botó lt;bgt;Verifica els paquets seleccionatslt;/bgt; per a programar la verificació del paquet.
+            Seleccioneu-ne un o més i feu clic al botó &lt;b&gt;Verifica els paquets&lt;/b&gt; per a programar la verificació del paquet.
          </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/PackageVerify.do</context>
@@ -21703,7 +21703,7 @@ qualsevol d'aquestes revisions.  Estàs segur que vols fer-ho?</target>
       </trans-unit>
       <trans-unit id="ssm.package.verify.select.confirm" xml:space="preserve">
         <source>Verify Packages</source>
-        <target state="needs-adaptation">Verifica els paquets seleccionats</target>
+        <target state="translated">Verifica els paquets</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/PackageVerify.do</context>
         </context-group>
@@ -23823,7 +23823,7 @@ lt;pgt;El camí a l'arbre ha de ser un camí de disc local al servidor .PRODUCTN
       </trans-unit>
       <trans-unit id="sdc.details.overview.subscribedchannels" xml:space="preserve">
         <source>Subscribed Channels</source>
-        <target state="needs-adaptation">Canals subscrits (lt;a href)"{0}"gt;Alter Channel Subscriptionslt;/agt;)</target>
+        <target state="translated">Canals subscrits</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
@@ -23902,7 +23902,7 @@ lt;pgt;El camí a l'arbre ha de ser un camí de disc local al servidor .PRODUCTN
       </trans-unit>
       <trans-unit id="sdc.details.overview.sysproperties" xml:space="preserve">
         <source>System Properties</source>
-        <target state="needs-adaptation">Propietats del sistema (lt;a href)"{0}"gt;Edita aquestes propietatslt;/agt;)</target>
+        <target state="translated">Propietats del sistema</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
@@ -27308,7 +27308,7 @@ canal indicat.</target>
       </trans-unit>
       <trans-unit id="schedule.delete.jsp.introparagraph" xml:space="preserve">
         <source>Are you sure you want to disable the schedule? Associated bunch won't get scheduled any more. This can have a huge impact on @@PRODUCT_NAME@@ functionality. Proceed only if you know what you're doing.</source>
-        <target state="needs-adaptation">Segur que voleu suprimir la programació? El grup associat ja no es programarà més. Això pot tenir un gran impacte en la funcionalitat de @@PRODUCT_NAME@@. Procediu només si sabeu el que feu.</target>
+        <target state="translated">Segur que voleu inhabilitar la programació? El grup associat ja no es programarà més. Això pot tenir un gran impacte en la funcionalitat de @@PRODUCT_NAME@@. Procediu només si sabeu el que feu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/DeleteSchedule.do</context>
         </context-group>
@@ -27343,14 +27343,14 @@ canal indicat.</target>
       </trans-unit>
       <trans-unit id="toolbar.create.schedule" xml:space="preserve">
         <source>Create schedule</source>
-        <target state="needs-adaptation">crea una planificació</target>
+        <target state="translated">Crea una planificació</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/ScheduleDetail.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.delete.schedule" xml:space="preserve">
         <source>disable schedule</source>
-        <target state="needs-adaptation">suprimeix la planificació</target>
+        <target state="translated">Inhabilita la planificació</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/ScheduleDetail.do</context>
         </context-group>
@@ -27430,7 +27430,7 @@ canal indicat.</target>
       </trans-unit>
       <trans-unit id="schedule.delete.jsp.deleteschedule" xml:space="preserve">
         <source>Disable Schedule</source>
-        <target state="needs-adaptation">Suprimeix la planificació</target>
+        <target state="translated">Inhabilita la planificació</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/DeleteSchedule.do</context>
         </context-group>
@@ -27516,7 +27516,7 @@ canal indicat.</target>
       </trans-unit>
       <trans-unit id="toolbar.delete.software.channel" xml:space="preserve">
         <source>Delete Channel</source>
-        <target state="needs-adaptation">Suprimeix el canal de programari</target>
+        <target state="translated">Suprimeix el canal</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
@@ -27544,7 +27544,7 @@ canal indicat.</target>
       </trans-unit>
       <trans-unit id="toolbar.delete.channel" xml:space="preserve">
         <source>Delete Channel</source>
-        <target state="needs-adaptation">Suprimeix el canal de programari</target>
+        <target state="translated">Suprimeix el canal</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/errata//Add.do</context>
         </context-group>
@@ -28083,7 +28083,7 @@ canal indicat.</target>
       </trans-unit>
       <trans-unit id="iss.slave.remove" xml:space="preserve">
         <source>Remove slaves</source>
-        <target state="needs-adaptation">Suprimeix els esclaus seleccionats</target>
+        <target state="translated">Suprimeix els esclaus</target>
       </trans-unit>
       <trans-unit id="toolbar.create.master" xml:space="preserve">
         <source>Add new master</source>
@@ -28091,7 +28091,7 @@ canal indicat.</target>
       </trans-unit>
       <trans-unit id="iss.master.remove" xml:space="preserve">
         <source>Remove masters</source>
-        <target state="needs-adaptation">Suprimeix els mestres seleccionats</target>
+        <target state="translated">Suprimeix els mestres</target>
       </trans-unit>
       <trans-unit id="toolbar.delete.slave" xml:space="preserve">
         <source>Delete slave</source>
@@ -29829,43 +29829,43 @@ lt;/pgt;
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
-        <target state="new"></target>
+        <target state="translated">Rols administratius</target>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.compare-task-bunch" xml:space="preserve">
         <source>Schedules a generic comparison task</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-        <target state="new"></target>
+        <target state="translated">Planifica una tasca de comparació genèrica</target>
       </trans-unit>
       <trans-unit id="schedule.edit.jsp.activateschedule" xml:space="preserve">
         <source>Activate Schedule</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/ScheduleDetail.do</context>
         </context-group>
-        <target state="new"></target>
+        <target state="translated">Activa la planificació</target>
       </trans-unit>
       <trans-unit id="task.status.compare-task-files" xml:space="preserve">
         <source>Compare Task</source>
-        <target state="new"></target>
+        <target state="translated">Tasca de comparació</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.dryrun.disabled.tooltip" xml:space="preserve">
         <source>Dry run is not available for this product.</source>
-        <target state="new"></target>
+        <target state="translated">L'assaig de la funció no està disponible per a aquest producte.</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.subscribedchannels.edit" xml:space="preserve">
         <source>Edit Subscribed Channels</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target state="new"></target>
+        <target state="translated">Edita els canals subscrits</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.sysproperties.edit" xml:space="preserve">
         <source>Edit System Properties</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target state="new"></target>
+        <target state="translated">Edita les propietats del sistema</target>
       </trans-unit>
     </body>
   </file>
