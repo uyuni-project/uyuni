@@ -14,19 +14,13 @@
  */
 package com.redhat.rhn.common.errors.test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.errors.PermissionExceptionHandler;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.security.PermissionException;
+import com.redhat.rhn.domain.session.WebSession;
 import com.redhat.rhn.frontend.events.TraceBackAction;
 import com.redhat.rhn.frontend.events.TraceBackEvent;
-import com.redhat.rhn.testing.MockObjectTestCase;
-import com.redhat.rhn.testing.RhnMockDynaActionForm;
-import com.redhat.rhn.testing.RhnMockHttpServletRequest;
-import com.redhat.rhn.testing.RhnMockHttpServletResponse;
-import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -34,81 +28,87 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.config.Configurator;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.DynaActionForm;
 import org.apache.struts.config.ExceptionConfig;
 import org.jmock.Expectations;
+import org.jmock.Mockery;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
+import org.jmock.junit5.JUnit5Mockery;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Vector;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-/**
- * PermissionExceptionHandlerTest
- */
-public class PermissionExceptionHandlerTest extends MockObjectTestCase {
+public class PermissionExceptionHandlerTest {
 
+    private final Mockery context = new JUnit5Mockery();
     private TraceBackAction tba;
 
     @BeforeEach
-    public void setUp() {
-        setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
+    void setUp() {
+        context.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         tba = new TraceBackAction();
         MessageQueue.registerAction(tba, TraceBackEvent.class);
         MessageQueue.startMessaging();
     }
 
-    @Test
-    public void testExecute() throws Exception {
-
-        /*
-         * Turn off logging and tracebacks Logging complains and sends warnings
-         * (expected) Tracebacks will get sent to root@localhost
-         */
-        Logger log = LogManager.getLogger(PermissionExceptionHandler.class);
-        Level orig = log.getLevel();
-        Configurator.setLevel(this.getClass().getName(), Level.OFF);
-        Config c = Config.get();
-        String mail = c.getString("web.traceback_mail", "");
+    @AfterEach
+    void tearDown() {
         try {
-            c.setString("web.traceback_mail", "jesusr@redhat.com");
-
-            PermissionException ex = new PermissionException("Simply a test");
-
-            final ActionMapping mapping = mock(ActionMapping.class, "mapping");
-            context().checking(new Expectations() { {
-                oneOf(mapping).getInputForward();
-                will(returnValue(new ActionForward()));
-            } });
-
-            RhnMockHttpServletRequest request = TestUtils
-                    .getRequestWithSessionAndUser();
-            request.setupGetHeaderNames(new Vector<String>().elements());
-            request.setupGetMethod("POST");
-            request.setupGetRequestURI("http://localhost:8080");
-            request.setupGetParameterNames(new Vector<String>().elements());
-
-            RhnMockHttpServletResponse response = new RhnMockHttpServletResponse();
-            response.setExpectedSetStatusCalls(1);
-            RhnMockDynaActionForm form = new RhnMockDynaActionForm();
-
-            PermissionExceptionHandler peh = new PermissionExceptionHandler();
-
-            peh.execute(ex, new ExceptionConfig(), mapping, form, request, response);
-            assertEquals(ex, request.getAttribute("error"));
-            response.verify();
+            MessageQueue.stopMessaging();
         }
         finally {
-            // Turn tracebacks and logging back on
-            Thread.sleep(1000); // wait for message to be sent
-            c.setString("web.traceback_mail", mail);
-            Configurator.setLevel(this.getClass().getName(), orig);
+            MessageQueue.deRegisterAction(tba, TraceBackEvent.class);
         }
     }
 
-    @AfterEach
-    public void tearDown() {
-        MessageQueue.stopMessaging();
-        MessageQueue.deRegisterAction(tba, TraceBackEvent.class);
+    @Test
+    void testExecuteSetsErrorAttributeWithoutSession() throws Exception {
+        // Turn off logging
+        Logger log = LogManager.getLogger(PermissionExceptionHandler.class);
+        Level originalLevel = log.getLevel();
+        Config config = Config.get();
+        String originalMail = config.getString("web.traceback_mail", "");
+
+        try {
+            Configurator.setLevel(getClass().getName(), Level.OFF);
+            config.setString("web.traceback_mail", "jesusr@redhat.com");
+
+            PermissionException ex = new PermissionException("Simply a test");
+
+            // Mocks
+            final ActionMapping mapping = context.mock(ActionMapping.class);
+            final HttpServletRequest request = context.mock(HttpServletRequest.class);
+            final HttpServletResponse response = context.mock(HttpServletResponse.class);
+            final DynaActionForm form = context.mock(DynaActionForm.class);
+            final WebSession webSession = context.mock(WebSession.class);
+
+            // Expectations
+            context.checking(new Expectations() {{
+                oneOf(request).getAttribute("session");
+                will(returnValue(webSession));
+                allowing(webSession).getWebUserId();
+                will(returnValue(123L));
+                oneOf(request).setAttribute("error", ex);
+                allowing(response).setStatus(with(any(Integer.class)));
+                oneOf(mapping).getInputForward();
+                will(returnValue(new ActionForward()));
+                allowing(request);
+            }});
+
+            // Execute handler
+            PermissionExceptionHandler handler = new PermissionExceptionHandler();
+            handler.execute(ex, new ExceptionConfig(), mapping, form, request, response);
+
+            // Verify
+            context.assertIsSatisfied();
+        }
+        finally {
+            Thread.sleep(1000); // wait for async message
+            config.setString("web.traceback_mail", originalMail);
+            Configurator.setLevel(getClass().getName(), originalLevel);
+        }
     }
 }
