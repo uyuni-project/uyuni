@@ -66,7 +66,7 @@ export default function HighstateSummary({ minionId }) {
 
   return (
     <>
-      <Table identifier={identifier} data={summary} initialItemsPerPage={0}>
+      <Table identifier={identifier} data={summary} hideHeaderFooter="both">
         <Column
           header={t("State Source")}
           comparator={Utils.sortByText}

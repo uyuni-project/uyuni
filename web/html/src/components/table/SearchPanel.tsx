@@ -1,6 +1,5 @@
 import * as React from "react";
 
-import { Button } from "components/buttons";
 import { cloneReactElement } from "components/utils";
 
 import styles from "./SearchPanel.module.scss";
@@ -55,18 +54,6 @@ export function SearchPanel(props: SearchPanelProps) {
           onSearchField: props.onSearchField,
         })
       )}
-      <div className={styles.pagination}>
-        <span>
-          {t("Items {from} - {to} of {total}", { from: props.fromItem, to: props.toItem, total: props.itemCount })}
-        </span>
-        {props.selectable && props.selectedCount > 0 && (
-          <span>
-            {t("({selectedCount} selected)", { selectedCount: props.selectedCount })}&nbsp;
-            <Button className="btn-tertiary" handler={props.onClear} text={t("Clear")} />
-          </span>
-        )}
-        {props.selectable && <Button className="btn-tertiary" handler={props.onSelectAll} text={t("Select All")} />}
-      </div>
     </div>
   );
 }

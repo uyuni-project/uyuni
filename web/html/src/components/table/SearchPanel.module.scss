@@ -24,19 +24,4 @@
       }
     }
   }
-
-  .pagination {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    min-height: 30px;
-
-    &:not(:first-child) {
-      margin-left: 10px;
-    }
-
-    :global(.btn-link) {
-      padding: 0;
-    }
-  }
 }

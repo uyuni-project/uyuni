@@ -45,6 +45,9 @@ type TableProps = {
   /** the initial number of how many row-per-page to show */
   initialItemsPerPage?: number;
 
+  /** Hide header and footer */
+  hideHeaderFooter?: "header" | "footer" | "both";
+
   /** enables item selection. */
   selectable?: boolean | ((row: any) => boolean);
 
