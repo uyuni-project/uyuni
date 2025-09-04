@@ -21,6 +21,7 @@ RUN echo "rpm.install.excludedocs = yes" >>/etc/zypp/zypp.conf && \
         ${PRODUCT_PATTERN_PREFIX}_server \
         ${PRODUCT_PATTERN_PREFIX}_retail \
         ${USEPYTHON}-pygit2 \
+        ${USEPYTHON}-ldap \
         billing-data-service \
         drbd-formula \
         ed \
