@@ -1,6 +1,7 @@
 # Copyright (c) 2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@transactional_server
 Feature: SELinux debugging
   In order for the server to behave correctly after a reboot
   I want to be sure that there is no wrong SELinux label
