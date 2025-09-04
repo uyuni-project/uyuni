@@ -29,8 +29,9 @@ const PasswordPolicy = (prop: PasswordPolicyProps) => {
           {/* Minimum Length */}
           <Text
             label={t("Min Password Length")}
-            required name="minLength" 
-            labelClass="col-md-4 text-left"
+            required
+            name="minLength"
+            labelClass="col-md-3"
             divClass="col-md-2"
             type="number"
           />
@@ -39,22 +40,17 @@ const PasswordPolicy = (prop: PasswordPolicyProps) => {
             label={t("Max Password Length")}
             required
             name="maxLength"
-            labelClass="col-md-4 text-left"
+            labelClass="col-md-3"
             divClass="col-md-2"
             type="number"
           />
           <div className="row">
-            <div className="col-md-4 text-right">
+            <div className="col-md-3 text-right">
               <label className="control-label">Password Complexity:</label>
             </div>
             <div className="col-md-8">
               {/* Require Digits */}
-              <DEPRECATED_Check
-                label={t("Require Digits")}
-                name="digitFlag"
-                key="digitFlag"
-                divClass="col-md-6"
-              />
+              <DEPRECATED_Check label={t("Require Digits")} name="digitFlag" key="digitFlag" divClass="col-md-6" />
               {/* Require Lowercase Characters */}
               <DEPRECATED_Check
                 label={t("Require Lowercase Characters")}
@@ -91,8 +87,8 @@ const PasswordPolicy = (prop: PasswordPolicyProps) => {
             label={t("Allowed Special Characters")}
             disabled={!policy.specialCharFlag}
             name="specialChars"
-            labelClass="col-md-4 text-left"
-            divClass="col-md-4"
+            labelClass="col-md-3 text-left"
+            divClass="col-md-3"
             defaultValue={defaults.specialChars?.toLocaleString()}
           />
           {/* Restrict Character Occurrence */}
@@ -100,27 +96,25 @@ const PasswordPolicy = (prop: PasswordPolicyProps) => {
             label={t("Restrict Characters Occurrences")}
             key="restrictedOccurrenceFlag"
             name="restrictedOccurrenceFlag"
-            divClass="col-md-6 col-md-offset-4 offset-md-4"
+            divClass="col-md-6 col-md-offset-3 offset-md-3"
           />
           {/* Maximum Character Occurrence */}
           <Text
             label={t("Max Characters Occurrences")}
             disabled={!policy.restrictedOccurrenceFlag}
             name="maxCharacterOccurrence"
-            labelClass="col-md-4 text-left"
+            labelClass="col-md-3 text-left"
             divClass="col-md-2"
             type="number"
             defaultValue={defaults.maxCharacterOccurrence.toLocaleString()}
           />
           <div className="row">
-            <div className="col-md-4 text-left col-md-offset-4 offset-md-4">
+            <div className="col-md-4 text-left col-md-offset-3 offset-md-3">
               <div className="btn-group">
                 <AsyncButton
                   id="saveButton"
                   className="btn-primary btn-large"
-                  title={t("Save Password Policy")}
                   text={t("Save")}
-                  icon="fa-save"
                   action={() => {
                     Network.post(policy_endpoint, policy)
                       .then(() => {
@@ -134,9 +128,7 @@ const PasswordPolicy = (prop: PasswordPolicyProps) => {
                 <AsyncButton
                   id="resetButton"
                   className="btn-secondary btn-large"
-                  title={t("Reset")}
                   text={t("Reset")}
-                  icon="fa-refresh"
                   action={() => {
                     const default_policy_endpoint = "/rhn/manager/api/admin/config/password-policy/default";
                     Network.get(default_policy_endpoint)
