@@ -1,0 +1,15 @@
+#!/bin/sh
+# SaltEventProcessorDaemon start script
+echo "Loading Salt Event Processor configuration..."
+. /etc/rhn/saltEventProcessor.conf
+echo "Configuration loaded successfully"
+
+EVENT_PROCESSOR_PARAMS="-Dibm.dst.compatibility=true -Dfile.encoding=UTF-8 -Xms${EVENT_PROCESSOR_INIT_MEMORY}m -Xmx${EVENT_PROCESSOR_MAX_MEMORY}m ${EVENT_PROCESSOR_CRASH_PARAMS} ${EVENT_PROCESSOR_JAVA_OPTS}"
+EVENT_PROCESSOR_CLASSPATH="${EVENT_PROCESSOR_RHN_CLASSPATH}:${EVENT_PROCESSOR_RHN_JARS}:${EVENT_PROCESSOR_JARS}"
+
+# Add logging configuration
+LOG4J_CONFIG="-Dlog4j2.configurationFile=file:///usr/share/rhn/classes/log4j2_saltEventProcessor.xml"
+
+echo "Starting Salt Event Processor..."
+# options sourced from /usr/share/rhn/config-defaults/rhn_saltEventProcessor_daemon.conf (do not touch). Add additional options to /etc/rhn/saltEventProcessor.conf
+/usr/bin/java -Djava.library.path=${EVENT_PROCESSOR_LIBRARY_PATH} -classpath ${EVENT_PROCESSOR_CLASSPATH} ${EVENT_PROCESSOR_PARAMS} ${LOG4J_CONFIG} ${JAVA_OPTS} ${JAVA_AGENT} com.suse.saltevent.SaltEventProcessor
