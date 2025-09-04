@@ -1,0 +1,2 @@
+- Add new DB function to support appstreams clone and
+  prevent timeouts in channel clone (bsc#1247990)
