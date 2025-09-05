@@ -2491,7 +2491,7 @@ a skúste to znova.
       </trans-unit>
       <trans-unit id="toolbar.delete.snippets" xml:space="preserve">
         <source>Delete Snippet</source>
-        <target state="needs-adaptation">vymazať úryvok</target>
+        <target state="translated">Vymazať úryvok</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/cobbler/CobblerSnippetEdit</context>
         </context-group>
@@ -11910,20 +11910,20 @@ Ak chcete túto situáciu napraviť, pridajte prihlasovacie údaje SCC &lt;a hre
         <source>Unable to gather and upload the support data. Please check the server logs for detailed information.</source>
         <target state="translated">Nie je možné zhromaždiť a nahrať podporné dáta. Podrobné informácie nájdete v záznamoch servera.</target>
       </trans-unit>
-    <trans-unit id="Add address" xml:space="preserve">
+      <trans-unit id="Add address" xml:space="preserve">
         <source>Add address</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Pridať adresu</target>
+      </trans-unit>
       <trans-unit id="Edit" xml:space="preserve">
         <source>Edit</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="translated">Upraviť</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
