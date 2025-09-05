@@ -23,6 +23,7 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.result;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import com.redhat.rhn.testing.MockHttpServletResponse;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 
 import com.suse.manager.webui.utils.gson.ResultJson;
@@ -50,7 +51,7 @@ public class JsonSerializationTest {
 
     @Test
     public void testOptionalEncodingFail() {
-        Response response = RequestResponseFactory.create(new RhnMockHttpServletResponse());
+        Response response = RequestResponseFactory.create(new MockHttpServletResponse());
         Optional<String> optString = Optional.of("test");
         assertThrows(InaccessibleObjectException.class, () -> {
             json(response, optString);

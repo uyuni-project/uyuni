@@ -26,10 +26,10 @@ import com.redhat.rhn.frontend.action.user.UserActionHelper;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.user.UserManager;
-import com.redhat.rhn.testing.RhnBaseTestCase;
-import com.redhat.rhn.testing.RhnMockDynaActionForm;
-import com.redhat.rhn.testing.RhnMockHttpServletRequest;
-import com.redhat.rhn.testing.TestUtils;
+import com.redhat.rhn.testing.MockDynaActionForm;
+import com.redhat.rhn.testing.MockHttpServletRequest;
+import com.redhat.rhn.testing.MockTestUtils;
+import com.redhat.rhn.testing.RhnJmockBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.mockobjects.servlet.MockHttpServletResponse;
@@ -38,10 +38,12 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.junit.jupiter.api.Test;
 
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * UserEditActionTEst
  */
-public class UserEditActionTest extends RhnBaseTestCase {
+public class UserEditActionTest extends RhnJmockBaseTestCase {
 
     /**
      * Test the SelfEditAction
@@ -53,9 +55,11 @@ public class UserEditActionTest extends RhnBaseTestCase {
         ActionMapping mapping = new ActionMapping();
         ActionForward success = new ActionForward("success", "path", false);
         ActionForward failure = new ActionForward("failure", "path", false);
-        RhnMockDynaActionForm form = new RhnMockDynaActionForm("userDetailsForm");
-        RhnMockHttpServletRequest request = TestUtils.getRequestWithSessionAndUser();
-        MockHttpServletResponse response = new MockHttpServletResponse();
+        MockDynaActionForm form = new MockDynaActionForm("userDetailsForm");
+
+        MockHttpServletRequest request = MockTestUtils.getRequestWithSessionAndUser();
+        HttpServletResponse response = mock(HttpServletResponse.class);
+
 
         RequestContext requestContext = new RequestContext(request);
 
@@ -107,8 +111,8 @@ public class UserEditActionTest extends RhnBaseTestCase {
         ActionForward success = new ActionForward("success", "path", false);
         ActionForward failure = new ActionForward("failure", "path", false);
         ActionForward noaccess = new ActionForward("noaccess", "path", true);
-        RhnMockDynaActionForm form = new RhnMockDynaActionForm("userDetailsForm");
-        RhnMockHttpServletRequest request = TestUtils.getRequestWithSessionAndUser();
+        MockDynaActionForm form = new MockDynaActionForm("userDetailsForm");
+        MockHttpServletRequest request = MockTestUtils.getRequestWithSessionAndUser();
         MockHttpServletResponse response = new MockHttpServletResponse();
 
         RequestContext requestContext = new RequestContext(request);
@@ -142,7 +146,7 @@ public class UserEditActionTest extends RhnBaseTestCase {
         runSatTests(action, user, mapping, form, request, response);
     }
 
-    private void setupRoleParameters(RhnMockHttpServletRequest request,
+    private void setupRoleParameters(MockHttpServletRequest request,
             User user) {
         request.setupAddParameter("uid", user.getId().toString());
         request.setupAddParameter("disabledRoles", "");
@@ -163,8 +167,8 @@ public class UserEditActionTest extends RhnBaseTestCase {
     private void runSatTests(AdminUserEditAction action,
                              User user,
                              ActionMapping mapping,
-                             RhnMockDynaActionForm form,
-                             RhnMockHttpServletRequest request,
+                             MockDynaActionForm form,
+                             MockHttpServletRequest request,
                              MockHttpServletResponse response) {
 
         /*

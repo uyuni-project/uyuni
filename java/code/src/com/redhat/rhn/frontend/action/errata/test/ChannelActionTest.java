@@ -31,27 +31,32 @@ import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.testing.ActionHelper;
-import com.redhat.rhn.testing.RhnBaseTestCase;
-import com.redhat.rhn.testing.RhnMockDynaActionForm;
-import com.redhat.rhn.testing.RhnMockHttpServletRequest;
-import com.redhat.rhn.testing.RhnMockHttpServletResponse;
-import com.redhat.rhn.testing.RhnMockHttpSession;
-import com.redhat.rhn.testing.TestUtils;
+import com.redhat.rhn.testing.MockDynaActionForm;
+import com.redhat.rhn.testing.MockHttpServletRequest;
+import com.redhat.rhn.testing.MockHttpSession;
+import com.redhat.rhn.testing.MockTestUtils;
+import com.redhat.rhn.testing.RhnJmockBaseTestCase;
 
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.DynaActionForm;
+import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.junit.jupiter.api.Test;
+
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * ChannelActionTest
  */
-public class ChannelActionTest extends RhnBaseTestCase {
+public class ChannelActionTest extends RhnJmockBaseTestCase {
 
     @Test
     public void testPublish() throws Exception {
         ChannelAction action = new ChannelAction();
 
         ActionMapping mapping = new ActionMapping();
+
         ActionForward def = new ActionForward(RhnHelper.DEFAULT_FORWARD, "path", true);
         ActionForward publish = new ActionForward("publish", "path", true);
         ActionForward failure = new ActionForward("failure", "path", false);
@@ -59,12 +64,12 @@ public class ChannelActionTest extends RhnBaseTestCase {
         mapping.addForwardConfig(publish);
         mapping.addForwardConfig(failure);
 
-        RhnMockHttpServletRequest request = TestUtils.getRequestWithSessionAndUser();
-        RhnMockHttpServletResponse response = new RhnMockHttpServletResponse();
-        RhnMockHttpSession session = new RhnMockHttpSession();
+        MockHttpServletRequest request = MockTestUtils.getRequestWithSessionAndUser();
+        HttpServletResponse response = mock(HttpServletResponse.class);
+        HttpSession session = mock(HttpSession.class);
         request.setSession(session);
         request.setupServerName("mymachine.rhndev.redhat.com");
-        RhnMockDynaActionForm form = new RhnMockDynaActionForm();
+        DynaActionForm form = new DynaActionForm();
 
         RequestContext requestContext = new RequestContext(request);
 
@@ -95,6 +100,8 @@ public class ChannelActionTest extends RhnBaseTestCase {
 
     @Test
     public void testUpdateChannels() throws Exception {
+        setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
+
         ChannelAction action = new ChannelAction();
 
         ActionMapping mapping = new ActionMapping();
@@ -105,12 +112,12 @@ public class ChannelActionTest extends RhnBaseTestCase {
         mapping.addForwardConfig(failure);
         mapping.addForwardConfig(push);
 
-        RhnMockHttpServletRequest request = TestUtils.getRequestWithSessionAndUser();
-        RhnMockHttpServletResponse response = new RhnMockHttpServletResponse();
-        RhnMockHttpSession session = new RhnMockHttpSession();
+        MockHttpServletRequest request = MockTestUtils.getRequestWithSessionAndUser();
+        HttpServletResponse response = mock(HttpServletResponse.class);
+        HttpSession session = new MockHttpSession();
         request.setSession(session);
         request.setupServerName("mymachine.rhndev.redhat.com");
-        RhnMockDynaActionForm form = new RhnMockDynaActionForm();
+        MockDynaActionForm form = new MockDynaActionForm();
 
         RequestContext requestContext = new RequestContext(request);
 

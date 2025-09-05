@@ -27,21 +27,22 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.errata.test.ErrataManagerTest;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.MockHttpServletRequest;
+import com.redhat.rhn.testing.MockHttpSession;
+import com.redhat.rhn.testing.MockTestUtils;
+import com.redhat.rhn.testing.RhnJmockBaseTestCase;
 import com.redhat.rhn.testing.RhnMockDynaActionForm;
-import com.redhat.rhn.testing.RhnMockHttpServletRequest;
-import com.redhat.rhn.testing.RhnMockHttpServletResponse;
-import com.redhat.rhn.testing.RhnMockHttpSession;
-import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.junit.jupiter.api.Test;
 
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * DeleteBugActionTest
  */
-public class DeleteBugActionTest extends RhnBaseTestCase {
+public class DeleteBugActionTest extends RhnJmockBaseTestCase {
 
     @Test
     public void testDeleteBug() throws Exception {
@@ -51,9 +52,9 @@ public class DeleteBugActionTest extends RhnBaseTestCase {
         ActionForward def = new ActionForward(RhnHelper.DEFAULT_FORWARD, "path", true);
         mapping.addForwardConfig(def);
 
-        RhnMockHttpServletRequest request = TestUtils.getRequestWithSessionAndUser();
-        RhnMockHttpServletResponse response = new RhnMockHttpServletResponse();
-        RhnMockHttpSession session = new RhnMockHttpSession();
+        MockHttpServletRequest request = MockTestUtils.getRequestWithSessionAndUser();
+        HttpServletResponse response = mock(HttpServletResponse.class);
+        MockHttpSession session = new MockHttpSession();
         request.setSession(session);
         request.setupServerName("mymachine.rhndev.redhat.com");
 

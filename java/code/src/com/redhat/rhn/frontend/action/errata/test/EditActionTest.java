@@ -24,25 +24,22 @@ import com.redhat.rhn.frontend.action.errata.EditAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.errata.ErrataManager;
-import com.redhat.rhn.testing.RhnBaseTestCase;
-import com.redhat.rhn.testing.RhnMockDynaActionForm;
-import com.redhat.rhn.testing.RhnMockHttpServletRequest;
-import com.redhat.rhn.testing.RhnMockHttpServletResponse;
+import com.redhat.rhn.testing.MockDynaActionForm;
+import com.redhat.rhn.testing.MockHttpServletRequest;
+import com.redhat.rhn.testing.MockTestUtils;
+import com.redhat.rhn.testing.RhnJmockBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
-
-import com.mockobjects.servlet.MockHttpServletResponse;
 
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
-import java.util.Map;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * EditActionTest
  */
-public class EditActionTest extends RhnBaseTestCase {
+public class EditActionTest extends RhnJmockBaseTestCase {
 
     @Test
     public void testUpdateErrata() throws Exception {
@@ -56,9 +53,9 @@ public class EditActionTest extends RhnBaseTestCase {
         mapping.addForwardConfig(failure);
         mapping.addForwardConfig(success);
 
-        RhnMockHttpServletRequest request = TestUtils.getRequestWithSessionAndUser();
-        RhnMockHttpServletResponse response = new RhnMockHttpServletResponse();
-        RhnMockDynaActionForm form = new RhnMockDynaActionForm("errataEditForm");
+        MockHttpServletRequest request = MockTestUtils.getRequestWithSessionAndUser();
+        HttpServletResponse response = mock(HttpServletResponse.class);
+        MockDynaActionForm form = new MockDynaActionForm("errataEditForm");
         request.setupServerName("mymachine.rhndev.redhat.com");
 
         RequestContext requestContext = new RequestContext(request);
@@ -115,12 +112,10 @@ public class EditActionTest extends RhnBaseTestCase {
         form.set("buglistUrlNew", "https://bugzilla.redhat.com/show_bug.cgi?id=123");
         //edit the keywords
         form.set("keywords", "yankee, hotel, foxtrot");
-        Map<String, Object> params = new HashMap<>();
-        params.put("eid", errata.getId().toString());
-        params.put("buglistIdNew", "123");
-        params.put("buglistSummaryNew", "test bug for a test errata");
-        params.put("buglistUrlNew", "https://bugzilla.redhat.com/show_bug.cgi?id=123");
-        request.setupGetParameterMap(params);
+        request.setupAddParameter("eid", errata.getId().toString());
+        request.setupAddParameter("buglistIdNew", "123");
+        request.setupAddParameter("buglistSummaryNew", "test bug for a test errata");
+        request.setupAddParameter("buglistUrlNew", "https://bugzilla.redhat.com/show_bug.cgi?id=123");
         request.setupAddParameter("buglistIdNew", "123");
         request.setupAddParameter("buglistSummaryNew", "test bug for a test errata");
         request.setupAddParameter("buglistUrlNew",
@@ -147,9 +142,9 @@ public class EditActionTest extends RhnBaseTestCase {
 
         ActionMapping mapping = new ActionMapping();
         ActionForward def = new ActionForward(RhnHelper.DEFAULT_FORWARD, "path", false);
-        RhnMockDynaActionForm form = new RhnMockDynaActionForm();
-        RhnMockHttpServletRequest request = TestUtils.getRequestWithSessionAndUser();
-        MockHttpServletResponse response = new MockHttpServletResponse();
+        MockDynaActionForm form = new MockDynaActionForm();
+        MockHttpServletRequest request = MockTestUtils.getRequestWithSessionAndUser();
+        HttpServletResponse response = mock(HttpServletResponse.class);
         mapping.addForwardConfig(def);
 
         RequestContext requestContext = new RequestContext(request);
@@ -170,4 +165,5 @@ public class EditActionTest extends RhnBaseTestCase {
         //check select list to make sure correct one is selected
         assertEquals(form.get("advisoryType"), errata.getAdvisoryType());
     }
+
 }

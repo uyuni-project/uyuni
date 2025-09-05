@@ -15,8 +15,6 @@
 
 package com.redhat.rhn.testing;
 
-import com.mockobjects.servlet.MockServletInputStream;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.util.Collections;

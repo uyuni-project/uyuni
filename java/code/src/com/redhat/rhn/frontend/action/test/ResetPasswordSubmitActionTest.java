@@ -23,15 +23,16 @@ import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.action.user.ResetPasswordSubmitAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
-import com.redhat.rhn.testing.RhnMockDynaActionForm;
-import com.redhat.rhn.testing.RhnMockHttpServletRequest;
-import com.redhat.rhn.testing.RhnMockHttpServletResponse;
+import com.redhat.rhn.testing.MockDynaActionForm;
+import com.redhat.rhn.testing.MockHttpServletRequest;
+import com.redhat.rhn.testing.MockHttpServletResponse;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.mockobjects.servlet.MockHttpSession;
 
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.DynaActionForm;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -42,9 +43,9 @@ public class ResetPasswordSubmitActionTest extends BaseTestCaseWithUser {
 
     private ActionForward mismatch, invalid, badpwd;
     private ActionMapping mapping;
-    private RhnMockDynaActionForm form;
-    private RhnMockHttpServletRequest request;
-    private RhnMockHttpServletResponse response;
+    private DynaActionForm form;
+    private MockHttpServletRequest request;
+    private MockHttpServletResponse response;
     private ResetPasswordSubmitAction action;
     private User adminUser;
 
@@ -117,9 +118,9 @@ public class ResetPasswordSubmitActionTest extends BaseTestCaseWithUser {
         mismatch = new ActionForward("mismatch", "path", false);
         invalid = new ActionForward("invalid", "path", false);
         badpwd = new ActionForward("badpwd", "path", false);
-        form = new RhnMockDynaActionForm("resetPasswordForm");
-        request = new RhnMockHttpServletRequest();
-        response = new RhnMockHttpServletResponse();
+        form = new MockDynaActionForm("resetPasswordForm");
+        request = new MockHttpServletRequest();
+        response = new MockHttpServletResponse();
 
         RequestContext requestContext = new RequestContext(request);
 

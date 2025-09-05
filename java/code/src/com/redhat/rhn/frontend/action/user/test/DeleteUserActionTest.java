@@ -26,23 +26,22 @@ import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.frontend.action.user.DeleteUserAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
-import com.redhat.rhn.testing.RhnBaseTestCase;
-import com.redhat.rhn.testing.RhnMockDynaActionForm;
-import com.redhat.rhn.testing.RhnMockHttpServletRequest;
-import com.redhat.rhn.testing.RhnMockHttpServletResponse;
-import com.redhat.rhn.testing.TestUtils;
+import com.redhat.rhn.testing.MockHttpServletRequest;
+import com.redhat.rhn.testing.MockTestUtils;
+import com.redhat.rhn.testing.RhnJmockBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.DynaActionForm;
 import org.junit.jupiter.api.Test;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * DeleteUserActionTest
  */
-public class DeleteUserActionTest extends RhnBaseTestCase {
-
-
+public class DeleteUserActionTest extends RhnJmockBaseTestCase {
 
     @Test
     public void testExecute() {
@@ -55,9 +54,9 @@ public class DeleteUserActionTest extends RhnBaseTestCase {
         mapping.addForwardConfig(failure);
         mapping.addForwardConfig(success);
 
-        RhnMockHttpServletRequest request = TestUtils.getRequestWithSessionAndUser();
-        RhnMockHttpServletResponse response = new RhnMockHttpServletResponse();
-        RhnMockDynaActionForm form = new RhnMockDynaActionForm();
+        MockHttpServletRequest request = MockTestUtils.getRequestWithSessionAndUser();
+        HttpServletResponse response = mock(HttpServletResponse.class);
+        DynaActionForm form = new DynaActionForm();
 
         RequestContext requestContext = new RequestContext(request);
 

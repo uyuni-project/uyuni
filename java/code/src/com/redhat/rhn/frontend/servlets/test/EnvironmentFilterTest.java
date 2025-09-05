@@ -53,7 +53,7 @@ public class EnvironmentFilterTest extends BaseFilterTst {
         String expectedRedir = "https://mymachine.rhndev.redhat.com/rhn/manager/login";
         assertEquals(expectedRedir, response.getRedirect());
 
-        request.setupGetRequestURI("/rhn/kickstart/DownloadFile");
+        request.setRequestURI("/rhn/kickstart/DownloadFile");
         response.clearRedirect();
         request.setupAddParameter("message", "some.key.to.localize");
         request.setupAddParameter("messagep1", "param value");
@@ -63,7 +63,7 @@ public class EnvironmentFilterTest extends BaseFilterTst {
         assertNull(response.getRedirect());
         assertNotEquals(expectedRedir, response.getRedirect());
 
-        request.setupGetRequestURI("/rhn/rpc/api");
+        request.setRequestURI("/rhn/rpc/api");
         response.clearRedirect();
         filter.doFilter(request, response, chain);
         assertNull(response.getRedirect());

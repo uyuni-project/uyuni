@@ -32,9 +32,9 @@ import com.redhat.rhn.domain.channel.test.ChannelFamilyFactoryTest;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.taskomatic.task.ReportDBHelper;
-import com.redhat.rhn.testing.RhnMockHttpServletResponse;
+import com.redhat.rhn.testing.MockHttpServletResponse;
+import com.redhat.rhn.testing.MockTestUtils;
 import com.redhat.rhn.testing.SparkTestUtils;
-import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.model.hub.ChannelInfoDetailsJson;
@@ -211,16 +211,16 @@ public class ControllerTestUtils {
             dummyTestRequest = SparkTestUtils.createMockRequestWithBody(apiEndpoint, httpHeaders, body);
         }
 
-        Response dummyTestResponse = RequestResponseFactory.create(new RhnMockHttpServletResponse());
+        Response dummyTestResponse = RequestResponseFactory.create(new MockHttpServletResponse());
         return routeImpl.handle(dummyTestRequest, dummyTestResponse);
     }
 
     public String createTestUserName() {
-        return "testUser" + TestUtils.randomString();
+        return "testUser" + MockTestUtils.randomString();
     }
 
     public String createTestPassword() {
-        return "testPassword" + TestUtils.randomString();
+        return "testPassword" + MockTestUtils.randomString();
     }
 
     public void createReportDbUser(String testReportDbUserName, String testReportDbPassword) {
@@ -474,7 +474,7 @@ public class ControllerTestUtils {
     public void createTestChannel(ChannelInfoDetailsJson modifyInfo, Org orgIn) throws Exception {
         ChannelFamily cfam = ChannelFamilyFactoryTest.createTestChannelFamily();
         String query = "ChannelArch.findById";
-        ChannelArch arch = (ChannelArch) TestUtils.lookupFromCacheById(500L, query);
+        ChannelArch arch = (ChannelArch) MockTestUtils.lookupFromCacheById(500L, query);
         ChannelFactoryTest.createTestChannel(modifyInfo.getName(), modifyInfo.getLabel(), orgIn, arch, cfam);
     }
 }

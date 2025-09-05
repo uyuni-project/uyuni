@@ -22,11 +22,10 @@ import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.frontend.events.TraceBackAction;
 import com.redhat.rhn.frontend.events.TraceBackEvent;
+import com.redhat.rhn.testing.MockHttpServletRequest;
+import com.redhat.rhn.testing.MockHttpServletResponse;
 import com.redhat.rhn.testing.MockObjectTestCase;
-import com.redhat.rhn.testing.RhnMockDynaActionForm;
-import com.redhat.rhn.testing.RhnMockHttpServletRequest;
-import com.redhat.rhn.testing.RhnMockHttpServletResponse;
-import com.redhat.rhn.testing.TestUtils;
+import com.redhat.rhn.testing.MockTestUtils;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -34,6 +33,7 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.config.Configurator;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.DynaActionForm;
 import org.apache.struts.config.ExceptionConfig;
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
@@ -82,15 +82,14 @@ public class LookupExceptionHandlerTest extends MockObjectTestCase {
                 will(returnValue(new ActionForward()));
             } });
 
-            RhnMockHttpServletRequest request = TestUtils
+            MockHttpServletRequest request = MockTestUtils
                     .getRequestWithSessionAndUser();
-            request.setupGetHeaderNames(new Vector<String>().elements());
-            request.setupGetMethod("POST");
-            request.setupGetRequestURI("http://localhost:8080");
-            request.setupGetParameterNames(new Vector<String>().elements());
+            request.setMethod("POST");
+            request.setRequestURI("http://localhost:8080");
+            request.setParameterNames(new Vector<String>().elements());
 
-            RhnMockHttpServletResponse response = new RhnMockHttpServletResponse();
-            RhnMockDynaActionForm form = new RhnMockDynaActionForm();
+            MockHttpServletResponse response = new MockHttpServletResponse();
+            DynaActionForm form = new DynaActionForm();
 
             LookupExceptionHandler leh = new LookupExceptionHandler();
 

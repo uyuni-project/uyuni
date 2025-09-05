@@ -27,9 +27,9 @@ import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerConfig;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
-import com.redhat.rhn.testing.RhnMockHttpServletResponse;
+import com.redhat.rhn.testing.MockHttpServletResponse;
+import com.redhat.rhn.testing.MockTestUtils;
 import com.redhat.rhn.testing.SparkTestUtils;
-import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.gatherer.GathererJsonIO;
@@ -97,7 +97,7 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
     public void setUp() throws Exception {
         super.setUp();
 
-        response = RequestResponseFactory.create(new RhnMockHttpServletResponse());
+        response = RequestResponseFactory.create(new MockHttpServletResponse());
         factory = VirtualHostManagerFactory.getInstance();
         VirtualHostManagerController.setGathererRunner(new GathererRunner() {
             @Override
@@ -136,7 +136,7 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
     @Test
     public void testGetWrongOrg() {
         Org otherOrg = UserTestUtils.createNewOrgFull("foobar org");
-        String label = "TestVHM_" + TestUtils.randomString(10);
+        String label = "TestVHM_" + MockTestUtils.randomString(10);
         createVirtualHostManagerWithLabel(label, otherOrg);
 
         Request request = getRequestWithCsrf("/manager/api/vhms");
@@ -151,7 +151,7 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testCreate() {
-        String label = "TestVHM_" + TestUtils.randomString(10);
+        String label = "TestVHM_" + MockTestUtils.randomString(10);
         Map<String, String> queryParams = new HashMap<>();
         queryParams.put("label", label);
         queryParams.put("module", "File");
@@ -185,7 +185,7 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testCreateNoCfgParam() {
-        String label = "TestVHM_" + TestUtils.randomString(10);
+        String label = "TestVHM_" + MockTestUtils.randomString(10);
         Map<String, String> queryParams = new HashMap<>();
         queryParams.put("module", "file");
         queryParams.put("label", label);
@@ -204,7 +204,7 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testDelete() throws UnsupportedEncodingException {
-        String label = "TestVHM_" + TestUtils.randomString(10);
+        String label = "TestVHM_" + MockTestUtils.randomString(10);
         VirtualHostManager vhm = createVirtualHostManagerWithLabel(label, user.getOrg());
         Request request = getDeleteRequestWithCsrfAndBody("/manager/api/vhms/delete/:id", "", vhm.getId());
         VirtualHostManagerController.delete(request, response, user);
@@ -219,7 +219,7 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
     @Test
     public void testGetDeleteWrongOrg() throws UnsupportedEncodingException {
         Org otherOrg = UserTestUtils.createNewOrgFull("foobar org");
-        String label = "TestVHM_" + TestUtils.randomString(10);
+        String label = "TestVHM_" + MockTestUtils.randomString(10);
         VirtualHostManager vhm = createVirtualHostManagerWithLabel(label, otherOrg);
         Request request = getPostRequestWithCsrfAndBody("/manager/api/vhms/delete/" + vhm.getId(), "");
         VirtualHostManagerController.delete(request, response, user);

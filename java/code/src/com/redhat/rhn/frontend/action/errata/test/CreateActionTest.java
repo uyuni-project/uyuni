@@ -26,21 +26,22 @@ import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.action.errata.CreateAction;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
-import com.redhat.rhn.testing.RhnBaseTestCase;
-import com.redhat.rhn.testing.RhnMockDynaActionForm;
-import com.redhat.rhn.testing.RhnMockHttpServletRequest;
-import com.redhat.rhn.testing.RhnMockHttpServletResponse;
-import com.redhat.rhn.testing.RhnMockHttpSession;
-import com.redhat.rhn.testing.TestUtils;
+import com.redhat.rhn.testing.MockDynaActionForm;
+import com.redhat.rhn.testing.MockHttpServletRequest;
+import com.redhat.rhn.testing.MockTestUtils;
+import com.redhat.rhn.testing.RhnJmockBaseTestCase;
 
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.junit.jupiter.api.Test;
 
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 /**
  * CreateActionTest
  */
-public class CreateActionTest extends RhnBaseTestCase {
+public class CreateActionTest extends RhnJmockBaseTestCase {
 
     @Test
     public void testCreateErrata() throws Exception {
@@ -52,13 +53,13 @@ public class CreateActionTest extends RhnBaseTestCase {
         mapping.addForwardConfig(failure);
         mapping.addForwardConfig(success);
 
-        RhnMockHttpServletRequest request = TestUtils.getRequestWithSessionAndUser();
-        RhnMockHttpServletResponse response = new RhnMockHttpServletResponse();
-        RhnMockHttpSession session = new RhnMockHttpSession();
+        MockHttpServletRequest request = MockTestUtils.getRequestWithSessionAndUser();
+        HttpServletResponse response = mock(HttpServletResponse.class);
+        HttpSession session = mock(HttpSession.class);
         request.setSession(session);
         request.setupServerName("mymachine.rhndev.redhat.com");
 
-        RhnMockDynaActionForm form = fillOutForm();
+        MockDynaActionForm form = fillOutForm();
         form.set("synopsis", ""); //required field, so we should get a validation error
 
         User user = UserFactory.lookupById(Long.parseLong(request.getParameter("uid")));
@@ -85,11 +86,11 @@ public class CreateActionTest extends RhnBaseTestCase {
         assertEquals(result.getName(), "success");
     }
 
-    public RhnMockDynaActionForm fillOutForm() {
-        RhnMockDynaActionForm form = new RhnMockDynaActionForm("errataCreateForm");
+    public MockDynaActionForm fillOutForm() {
+        MockDynaActionForm form = new MockDynaActionForm("errataCreateForm");
 
         form.set("synopsis", "synopsis");
-        form.set("advisoryName", TestUtils.randomString());
+        form.set("advisoryName", MockTestUtils.randomString());
         form.set("advisoryRelease", "2");
         form.set("advisoryType", "Security Advisory");
         form.set("product", "product");

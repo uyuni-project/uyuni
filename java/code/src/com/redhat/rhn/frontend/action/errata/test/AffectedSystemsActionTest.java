@@ -29,18 +29,19 @@ import com.redhat.rhn.frontend.action.errata.AffectedSystemsAction;
 import com.redhat.rhn.frontend.struts.RequestContext.Pagination;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.testing.ActionHelper;
+import com.redhat.rhn.testing.MockHttpServletRequest;
 import com.redhat.rhn.testing.MockObjectTestCase;
-import com.redhat.rhn.testing.RhnMockDynaActionForm;
-import com.redhat.rhn.testing.RhnMockHttpServletRequest;
-import com.redhat.rhn.testing.RhnMockHttpServletResponse;
-import com.redhat.rhn.testing.TestUtils;
+import com.redhat.rhn.testing.MockTestUtils;
 
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.DynaActionForm;
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * AffectedSystemsActionTest
@@ -56,9 +57,10 @@ public class AffectedSystemsActionTest extends MockObjectTestCase {
     public void testApply() {
         AffectedSystemsAction action = new AffectedSystemsAction();
         final ActionForward forward = new ActionForward("test", "path", true);
-        RhnMockHttpServletRequest request = TestUtils.getRequestWithSessionAndUser();
-        RhnMockHttpServletResponse response = new RhnMockHttpServletResponse();
-        RhnMockDynaActionForm form = new RhnMockDynaActionForm();
+        MockHttpServletRequest request = MockTestUtils.getRequestWithSessionAndUser();
+        HttpServletResponse response = mock(HttpServletResponse.class);
+        DynaActionForm form = new DynaActionForm();
+
 
         // No systems selected
         final ActionMapping mapping = mock(ActionMapping.class, "mapping");
@@ -92,7 +94,7 @@ public class AffectedSystemsActionTest extends MockObjectTestCase {
         assertEquals("path?eid=54321", sameForward.getPath());
     }
 
-    private void addPagination(RhnMockHttpServletRequest r) {
+    private void addPagination(MockHttpServletRequest r) {
         r.setupAddParameter(Pagination.FIRST.getElementName(), "someValue");
         r.setupAddParameter(Pagination.FIRST.getLowerAttributeName(), "10");
         r.setupAddParameter(Pagination.PREV.getElementName(), "0");
