@@ -1,0 +1,2 @@
+- Fix schema migration when removing the dropped
+  virtualization action types (bsc#1249178)
