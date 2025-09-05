@@ -42,6 +42,21 @@ ch.setFormatter(formatter)
 # add ch to logger
 logger.addHandler(ch)
 
+def get_safe_path(base_dir, user_directory, user_filename):
+    """
+    Return an absolute path under base_dir built from user_directory
+    and user_filename. All parameters must not be None.
+    """
+
+    abs_base_dir = os.path.abspath(base_dir)
+    combined_path = os.path.join(abs_base_dir, user_directory, user_filename)
+
+    abs_final_path = os.path.abspath(combined_path)
+    if not abs_final_path.startswith(os.path.join(abs_base_dir, '')):
+        return None
+
+    return abs_final_path
+
 def application(environ, start_response):
     status = '500 Server Error'
     content = ''
@@ -56,24 +71,18 @@ def application(environ, start_response):
         elif key == "directory":
             directory = value
 
-    if not (CFG.TFTPBOOT and re.match('^/[\w]+.*$', CFG.TFTPBOOT) and
-              os.path.exists(CFG.TFTPBOOT)):
+    if not (CFG.TFTPBOOT and os.path.exists(CFG.TFTPBOOT)):
         logger.error("Invalid tftp directory configuration")
         content = 'Invalid tftp directory configuration'
     elif not (file_name and file_type and directory):
         logger.error("'file_name', 'directory' or 'file_type' not specified")
         content = "please provide the parameters 'file_name', 'directory' and 'file_type'"
-    elif ".." in directory or not re.match('^[/\:a-zA-Z0-9._-]+$', directory):
-        # don't print the parameter because of security concerns
-        logger.error("Insecure directory parameter given")
-        content = 'Insecure directory'
-    elif ".." in file_name or not re.match('^[\:a-zA-Z0-9._-]+$', file_name):
-        # don't print the parameter because of security concerns
-        logger.error("Insecure file_name parameter given")
-        content = 'Insecure file_name'
     elif not (CFG.SERVER_IP and CFG.PROXY_IP and CFG.SERVER_FQDN and CFG.PROXY_FQDN):
         logger.error("Incomplete configuration")
         content = 'Incomplete configuration'
+    elif get_safe_path(CFG.TFTPBOOT, directory, file_name) is None:
+        logger.error("Insecure path specified")
+        content = 'Insecure directory'
     else:
         path = os.path.join(CFG.TFTPBOOT, directory, file_name)
 
