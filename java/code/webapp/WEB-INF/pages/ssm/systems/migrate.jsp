@@ -40,8 +40,9 @@
       </html:select>
     </div>
     <div class="form-group">
-      <button class="btn btn-default" type="submit" name="dispatch" value="${rhn:localize('ssm.migrate.systems.confirmbutton')}">
-          ${rhn:localize('ssm.migrate.systems.confirmbutton')}
+      <button class="btn btn-default" type="submit" name="dispatch"
+        value="${rhn:localize('ssm.migrate.systems.confirmbutton')}">
+        ${rhn:localize('ssm.migrate.systems.confirmbutton')}
       </button>
     </div>
   </html:form>

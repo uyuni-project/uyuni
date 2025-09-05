@@ -68,8 +68,10 @@
                 <div class="text-right">
                     <rhn:submitted/>
                     <hr />
-                    <input class="btn btn-default" type="submit" name="dispatch" class="btn btn-primary"
-                        value="<bean:message key="compare.jsp.syncpackageto" arg0="${fn:escapeXml(requestScope.profilename)}"/>" />
+                    <button class="btn btn-default" type="submit" name="dispatch" class="btn btn-primary"
+                        value='<bean:message key="compare.jsp.syncpackageto" arg0="${fn:escapeXml(requestScope.profilename)}"/>'>
+                        <bean:message key="compare.jsp.syncpackageto" arg0="${fn:escapeXml(requestScope.profilename)}"/>
+                    </button>
                 </div>
             </rhn:require>
         </c:if>

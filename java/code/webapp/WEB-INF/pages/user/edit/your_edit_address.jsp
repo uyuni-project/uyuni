@@ -26,9 +26,7 @@
                     <%@ include file="/WEB-INF/pages/common/fragments/user/edit_address_form.jspf" %>
                     <div class="form-group">
                         <div class="col-sm-offset-3 offset-sm-3 col-sm-6">
-                            <button type="submit"
-                                    class="btn btn-primary"
-                                    value="<bean:message key='button.update'/>">
+                            <button type="submit" class="btn btn-primary">
                                 <bean:message key="button.update"/>
                             </button>
                         </div>

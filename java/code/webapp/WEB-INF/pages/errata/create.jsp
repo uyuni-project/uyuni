@@ -190,7 +190,8 @@
             </div>
             <div class="form-group">
                 <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
-                    <button class="btn btn-primary" type="submit" name="dispatch" value='<bean:message key="errata.create.jsp.createerrata"/>'>
+                    <button class="btn btn-primary" type="submit" name="dispatch"
+                        value='<bean:message key="errata.create.jsp.createerrata"/>'>
                         <bean:message key="errata.create.jsp.createerrata"/>
                     </button>
                 </div>

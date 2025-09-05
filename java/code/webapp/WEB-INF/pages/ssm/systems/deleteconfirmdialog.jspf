@@ -24,8 +24,10 @@
                     </p>
                 </div>
                 <div class="modal-footer">
-                    <input id="btn-dispatch-dialog" class="btn btn-danger" type="submit" name="dispatch"
-                        value="${rhn:localize('ssm.delete.systems.confirmbutton')}"/>
+                    <button id="btn-dispatch-dialog" class="btn btn-danger" type="submit" name="dispatch"
+                        value="${rhn:localize('ssm.delete.systems.confirmbutton')}">
+                        ${rhn:localize('ssm.delete.systems.confirmbutton')}
+                    </button>
                     <button id="btn-cancel-dialog" class="btn btn-default" type="button" onclick="jQuery('#confirmDeleteDialog').modal('hide')">
                         <bean:message key="ssm.delete.systems.cancel"/>
                     </button>

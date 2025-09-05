@@ -37,7 +37,10 @@
 
         <div class="text-right">
                 <hr />
-                <input class="btn btn-default" type="submit" name="dispatch"  value="<bean:message key='confirm.jsp.confirm'/>">
+                <button class="btn btn-default" type="submit" name="dispatch"
+                        value="<bean:message key='confirm.jsp.confirm'/>">
+                        <bean:message key='confirm.jsp.confirm'/>
+                </button>
         </div>
 </rl:listset>
 

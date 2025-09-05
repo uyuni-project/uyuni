@@ -52,11 +52,13 @@
    </rl:list>
    <hr/>
    <div>
-     <rhn:submitted/>
-     <input type="button"
-                value="${rhn:localize('org.trust.cancel')}"
-                onClick="location.href='${parentUrl}'" class="btn btn-primary" />
-     <input type="submit" name ="dispatch" value="${rhn:localize('confirm')}" class="btn btn-default" />
+      <rhn:submitted/>
+      <button type="button" onClick="location.href='${parentUrl}'" class="btn btn-default">
+         ${rhn:localize('org.trust.cancel')}
+      </button>
+      <button type="submit" name ="dispatch" class="btn btn-default">
+         ${rhn:localize('confirm')}
+      </button>
    </div>
 </rl:listset>
 </body>

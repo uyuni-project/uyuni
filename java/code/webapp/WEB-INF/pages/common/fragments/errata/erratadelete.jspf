@@ -1,7 +1,9 @@
 <div class="spacewalk-section-toolbar">
     <div class="action-button-wrapper">
-        <input class="btn btn-danger" type="submit" name="dispatch"
-               value='<bean:message key="deleteconfirm.jsp.confirm"/>'/>
+        <button class="btn btn-danger" type="submit" name="dispatch"
+            value='<bean:message key="deleteconfirm.jsp.confirm"/>'>
+            <bean:message key="deleteconfirm.jsp.confirm"/>
+        </button>
     </div>
 </div>
 <rhn:list pageList="${requestScope.pageList}" noDataText="erratalist.jsp.noerrata">
