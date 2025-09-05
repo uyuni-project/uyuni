@@ -1,0 +1,15 @@
+include /templates/common.jade
+
+script(type='text/javascript').
+    window.csrfToken = "#{csrf_token}";
+
+#show-access-group.h-100
+
+script(type='text/javascript').
+    spaImportReactPage('admin/show-access-group')
+        .then(function(module) {
+            module.renderer(
+                'show-access-group',
+                !{accessGroup}
+            );
+        });

@@ -40,6 +40,7 @@ import org.hibernate.query.Query;
 import org.hibernate.type.StandardBasicTypes;
 
 import java.sql.Types;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -194,6 +195,9 @@ public  class UserFactory extends HibernateFactory {
      * @return the list of com.redhat.rhn.domain.User objects found
      */
     public static List<User> lookupByIds(Collection<Long> ids) {
+        if (ids.isEmpty()) {
+            return new ArrayList<>();
+        }
         if (ids.size() < 1000) {
             return realLookupByIds(ids);
         }
