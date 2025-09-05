@@ -214,7 +214,7 @@
 }
 
 .panel-heading,
-.panel-heading a:not(.btn-tertiary),
+.panel-heading a:not(.btn):not(.btn-tertiary),
 th > a,
 th .orderBy {
   border: none;

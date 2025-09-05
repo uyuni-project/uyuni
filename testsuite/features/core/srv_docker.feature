@@ -35,4 +35,4 @@ Feature: Prepare server for using Docker
     And I enter the URI of the registry as "uri"
     And I click on "create-btn"
     Then I wait until table row contains a "galaxy-registry" text
-    And I should see a "1 - 1 of 1 item" text
+    And I should see a "Items 1 - 1 of 1" text
