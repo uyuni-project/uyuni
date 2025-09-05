@@ -23,16 +23,19 @@ import com.redhat.rhn.domain.common.ResetPassword;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.frontend.action.user.ResetLinkAction;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
-import com.redhat.rhn.testing.RhnMockDynaActionForm;
-import com.redhat.rhn.testing.RhnMockHttpServletRequest;
-import com.redhat.rhn.testing.RhnMockHttpServletResponse;
-
-import com.mockobjects.servlet.MockHttpSession;
 
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.DynaActionForm;
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * ResetLinkActionTest
@@ -41,14 +44,20 @@ public class ResetLinkActionTest extends BaseTestCaseWithUser {
 
     private ActionForward valid, invalid;
     private ActionMapping mapping;
-    private RhnMockDynaActionForm form;
-    private RhnMockHttpServletRequest request;
-    private RhnMockHttpServletResponse response;
+    private Mockery context;
+    private DynaActionForm form;
+    private HttpServletRequest request;
+    private HttpServletResponse response;
+    private HttpSession session;
     private ResetLinkAction action;
 
     @Test
     public void testPerformNoToken() {
         try {
+            // simulate missing "token" parameter
+            context.checking(new Expectations() {{
+                allowing(request).getParameter("token"); will(returnValue(null));
+            }});
             action.execute(mapping, form, request, response);
         }
         catch (BadParameterException bpe) {
@@ -62,44 +71,57 @@ public class ResetLinkActionTest extends BaseTestCaseWithUser {
     public void testPerformInvalidToken() {
         ResetPassword rp = ResetPasswordFactory.createNewEntryFor(user);
         ResetPasswordFactory.invalidateToken(rp.getToken());
-        request.setupAddParameter("token", rp.getToken());
+
+        context.checking(new Expectations() {{
+            allowing(request).getParameter("token"); will(returnValue(rp.getToken()));
+            allowing(request).getAttribute(org.apache.struts.Globals.ERROR_KEY);
+            will(returnValue(null));
+            allowing(request).setAttribute(with(any(String.class)), with(any(Object.class)));
+        }});
         ActionForward rc = action.execute(mapping, form, request, response);
         assertEquals(invalid, rc);
-    }
-
-    public void xxxtestPerformExpiredToken() {
-        // 'expired' drives off of 'created', which is in the hands of the DB
-        // so, no test here
     }
 
     @Test
     public void testPerformValidToken() {
         ResetPassword rp = ResetPasswordFactory.createNewEntryFor(user);
-        request.setupAddParameter("token", rp.getToken());
-        ActionForward rc = action.execute(mapping, form, request, response);
+
+        context.checking(new Expectations() {{
+            allowing(request).getParameter("token"); will(returnValue(rp.getToken()));
+        }});
+
+        ActionForward rc = action.execute(mapping, null, request, response);
         assertEquals(valid, rc);
     }
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
-        action = new ResetLinkAction();
 
+        // Initialize jMock context with ByteBuddy for concrete classes if needed
+        context = new Mockery();
+        context.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
+
+        form = context.mock(DynaActionForm.class);
+
+        request = context.mock(HttpServletRequest.class);
+        response = context.mock(HttpServletResponse.class);
+        session = context.mock(HttpSession.class);
+
+        // Setup the ResetLinkAction and mapping
+        action = new ResetLinkAction();
         mapping = new ActionMapping();
+
         valid = new ActionForward("valid", "path", false);
         invalid = new ActionForward("invalid", "path", false);
-        form = new RhnMockDynaActionForm("resetPasswordForm");
-        request = new RhnMockHttpServletRequest();
-        response = new RhnMockHttpServletResponse();
-
-        MockHttpSession mockSession = new MockHttpSession();
-        mockSession.setupGetAttribute("token", null);
-        mockSession.setupGetAttribute("request_method", "GET");
-        request.setSession(mockSession);
-        request.setupServerName("mymachine.rhndev.redhat.com");
-
         mapping.addForwardConfig(valid);
         mapping.addForwardConfig(invalid);
+
+        // Default expectations for request/session
+        context.checking(new Expectations() {{
+            allowing(request).getSession(); will(returnValue(session));
+            allowing(request).getMethod(); will(returnValue("GET"));
+            allowing(request).getServerName(); will(returnValue("mymachine.rhndev.redhat.com"));
+        }});
     }
 }

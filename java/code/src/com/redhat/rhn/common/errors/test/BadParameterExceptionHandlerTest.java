@@ -14,17 +14,15 @@
  */
 package com.redhat.rhn.common.errors.test;
 
+import static org.junit.Assert.assertNotNull;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.errors.BadParameterExceptionHandler;
 import com.redhat.rhn.common.messaging.MessageQueue;
+import com.redhat.rhn.domain.session.WebSession;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.frontend.events.TraceBackAction;
 import com.redhat.rhn.frontend.events.TraceBackEvent;
-import com.redhat.rhn.testing.MockObjectTestCase;
-import com.redhat.rhn.testing.RhnMockDynaActionForm;
-import com.redhat.rhn.testing.RhnMockHttpServletRequest;
-import com.redhat.rhn.testing.RhnMockHttpServletResponse;
-import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -34,80 +32,76 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.config.ExceptionConfig;
 import org.jmock.Expectations;
+import org.jmock.Mockery;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Vector;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * BadParameterExceptionHandlerTest
  */
-public class BadParameterExceptionHandlerTest extends MockObjectTestCase {
+public class BadParameterExceptionHandlerTest {
 
     private TraceBackAction tba;
+    private Mockery context;
 
     @BeforeEach
     public void setUp() {
-        setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
+        context = new Mockery() {{
+            setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
+        }};
         tba = new TraceBackAction();
         MessageQueue.registerAction(tba, TraceBackEvent.class);
         MessageQueue.startMessaging();
     }
 
-
     @Test
-    public void testExecute() throws Exception {
-
-        /*
-         * Turn off logging and tracebacks
-         * Logging complains and sends warnings (expected)
-         * Tracebacks will get sent to root@localhost
-         */
+    public void testExecuteHandlesBadParameterException() throws Exception {
         Logger log = LogManager.getLogger(BadParameterExceptionHandler.class);
         Level origLevel = log.getLevel();
         Configurator.setLevel(this.getClass().getName(), Level.OFF);
+
         Config c = Config.get();
         String mail = c.getString("web.traceback_mail");
+
         try {
             c.setString("web.traceback_mail", "jesusr@redhat.com");
 
-            BadParameterException ex =
-                new BadParameterException("Invalid test parameter");
+            BadParameterException ex = new BadParameterException("Invalid test parameter");
 
-            final ActionMapping mapping = mock(ActionMapping.class, "mapping");
-            context().checking(new Expectations() { {
+            final ActionMapping mapping = context.mock(ActionMapping.class);
+            final HttpServletRequest request = context.mock(HttpServletRequest.class);
+            final HttpServletResponse response = context.mock(HttpServletResponse.class);
+            final WebSession webSession = context.mock(WebSession.class);
+
+            context.checking(new Expectations() {{
                 oneOf(mapping).getInputForward();
                 will(returnValue(new ActionForward()));
-            } });
 
-            // mockup a dumb ass Enumeration class for the Mock request
-            // jmock RULES!
-            RhnMockHttpServletRequest request = TestUtils
-                    .getRequestWithSessionAndUser();
-            request.setupGetHeaderNames(new Vector<String>().elements());
-            request.setupGetMethod("POST");
-            request.setupGetRequestURI("http://localhost:8080");
-            request.setupGetParameterNames(new Vector<String>().elements());
-            RhnMockHttpServletResponse response = new RhnMockHttpServletResponse();
-            RhnMockDynaActionForm form = new RhnMockDynaActionForm();
+                oneOf(request).getAttribute("session");
+                will(returnValue(webSession));
 
-            BadParameterExceptionHandler bpeh = new BadParameterExceptionHandler();
+                allowing(webSession).getWebUserId();
+                will(returnValue(123L));
 
-            bpeh.execute(ex, new ExceptionConfig(), mapping, form, request, response);
+                oneOf(request).setAttribute("error", ex);
+                allowing(response).setStatus(with(any(Integer.class)));
+
+                allowing(request); // allow other harmless calls
+            }});
+
+            BadParameterExceptionHandler handler = new BadParameterExceptionHandler();
+            handler.execute(ex, new ExceptionConfig(), mapping, null, request, response);
+
+            assertNotNull(request.getAttribute("error"));
         }
         finally {
-            // Turn tracebacks and logging back on
-            // wait for message to be sent
-            int tries = 0;
+            // Restore config and logging
             Thread.sleep(1000);
-            while (MessageQueue.getMessageCount() != 0 && tries  < 10) {
-                Thread.sleep(100);
-                tries++;
-            }
-            // don't bother resetting it if it were already missing.
-            // Blame mmccune for change getString to return freakin null.
             if (mail != null) {
                 c.setString("web.traceback_mail", mail);
             }
@@ -120,5 +114,4 @@ public class BadParameterExceptionHandlerTest extends MockObjectTestCase {
         MessageQueue.stopMessaging();
         MessageQueue.deRegisterAction(tba, TraceBackEvent.class);
     }
-
 }
