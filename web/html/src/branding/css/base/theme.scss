@@ -1295,12 +1295,6 @@ tr.changed > td {
   background: $badge-bg;
 }
 
-// We can reenable these after the theme migration is complete
-#scroll-top,
-#legend-box-wrapper {
-  display: none !important;
-}
-
 .proxy-brand {
   font-size: 1.6em;
   color: $eos-bc-gray-900;
