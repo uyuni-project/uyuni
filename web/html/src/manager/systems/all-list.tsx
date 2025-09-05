@@ -153,6 +153,12 @@ export function AllSystems(props: Props) {
           }}
         />
         <Column
+          columnKey="last_checkin"
+          comparator={Utils.sortByText}
+          header={t("Last Checked In")}
+          cell={(item) => item.lastCheckin}
+        />
+        <Column
           columnKey="channel_labels"
           comparator={Utils.sortByText}
           header={t("Base Channel")}
