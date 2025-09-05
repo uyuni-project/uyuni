@@ -3,7 +3,8 @@
 :global(.old-theme),
 :global(.new-theme) {
   .check {
-    display: flex;
+    display: inline-flex;
+    vertical-align: -2px;
     gap: 6px;
     white-space: nowrap;
     align-items: center;

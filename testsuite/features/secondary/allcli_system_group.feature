@@ -108,7 +108,7 @@ Feature: Manage a group of systems and the Systems Set Manager
     And I enter "virgo-dummy" as the filtered package name
     And I click on the filter button
     And I check "virgo-dummy-2.0-1.1" in the list
-    And I click on "Remove Selected Packages"
+    And I click on "Remove Packages"
     And I click on "Confirm"
     Then I should see a "Package removals are being scheduled, it may take several minutes for this to complete." text
 
@@ -123,7 +123,7 @@ Feature: Manage a group of systems and the Systems Set Manager
     And I enter "virgo-dummy" as the filtered package name
     And I click on the filter button
     When I check "virgo-dummy-2.0-1.1" in the list
-    And I click on "Install Selected Packages"
+    And I click on "Install Packages"
     And I click on "Confirm"
     Then I should see a "Package installations are being scheduled, it may take several minutes for this to complete." text
 

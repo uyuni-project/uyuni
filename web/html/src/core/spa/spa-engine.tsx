@@ -9,7 +9,6 @@ import SpaRenderer from "core/spa/spa-renderer";
 
 import { Button } from "components/buttons";
 import { showErrorToastr } from "components/toastr";
-
 function isLoginPage(pathName) {
   const allLoginPossiblePaths = ["/", "/rhn/manager/login"];
   return allLoginPossiblePaths.some((loginPath) => loginPath === pathName);
@@ -112,7 +111,6 @@ window.pageRenderers.spaengine.init = function init(timeout?: number) {
           showErrorToastr(message, { autoHide: false, containerId: "global" });
         }
       }
-
       Loggerhead.info("Loading `" + window.location + "`");
       SpaRenderer.onSpaEndNavigation();
       onDocumentReadyInitOldJS();

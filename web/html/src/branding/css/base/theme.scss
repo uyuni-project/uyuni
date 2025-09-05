@@ -546,15 +546,6 @@ nav.navbar-pf {
   margin-left: 8px !important;
 }
 
-.spacewalk-list {
-  .spacewalk-list-head-addons {
-    .spacewalk-list-head-addons-extra {
-      float: right;
-      width: auto;
-    }
-  }
-}
-
 //Table's filters
 .filter-input {
   padding: 0.7em;
@@ -758,6 +749,11 @@ i[class~="fa-right"] {
       // TODO: Check
       @extend .pull-left;
       @extend .text-left;
+    }
+
+    .spacewalk-list-reflinks {
+      display: flex;
+      justify-content: space-between
     }
   }
 }

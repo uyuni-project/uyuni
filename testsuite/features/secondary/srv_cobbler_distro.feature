@@ -149,7 +149,7 @@ Feature: Cobbler and distribution autoinstallation
   Scenario: Delete a snippet
     When I follow the left menu "Systems > Autoinstallation > Autoinstallation Snippets"
     And I follow "created_test_snippet"
-    And I follow "delete snippet"
+    And I follow "Delete Snippet"
     And I click on "Delete Snippet"
     Then I should see a "created_test_snippet deleted successfully." text
 

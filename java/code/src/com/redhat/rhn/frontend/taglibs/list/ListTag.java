@@ -978,11 +978,11 @@ public class ListTag extends BodyTagSupport {
 
     private void startTable() throws JspException {
         if (hasExpansionDecorator()) {
-            ListTagUtil.write(pageContext, "<table class=\"table table-striped\"" +
+            ListTagUtil.write(pageContext, "<table class=\"table\"" +
                 " id=\"" + this.getStyleId() + "_exp\"");
         }
         else {
-            ListTagUtil.write(pageContext, "<table class=\"table table-striped\"");
+            ListTagUtil.write(pageContext, "<table class=\"table\"");
         }
 
         if (width != null) {

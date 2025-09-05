@@ -253,6 +253,7 @@ public class IconTag extends TagSupport {
         StringBuilder result = new StringBuilder();
         result.append("<i class=\"" + icons.get(type) + "\"");
         if (title != null) {
+            result.append(" data-bs-toggle=\"tooltip\"");
             result.append(" title=\"" +
                 StringEscapeUtils.escapeHtml4(this.getTitle()) + "\"");
         }

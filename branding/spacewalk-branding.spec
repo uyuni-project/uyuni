@@ -38,7 +38,6 @@ Requires:       httpd
 Requires:       susemanager-advanced-topics_en-pdf
 Requires:       susemanager-best-practices_en-pdf
 Requires:       susemanager-docs_en
-Requires:       susemanager-frontend-libs
 Requires:       susemanager-getting-started_en-pdf
 Requires:       susemanager-reference_en-pdf
 Requires(pre):  tomcat

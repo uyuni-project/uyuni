@@ -42,7 +42,7 @@ function channelIcon(channel) {
     iconTitle = t("Normal Configuration Channel");
   }
 
-  return <i className={iconClass} title={iconTitle} style={iconStyle} />;
+  return <i data-bs-toggle="tooltip" className={iconClass} title={iconTitle} style={iconStyle} />;
 }
 
 type StatesPickerProps = {
@@ -281,7 +281,11 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
           </td>
           <td>{currentChannel.label}</td>
           <td>
-            <i className="fa fa-info-circle fa-1-5x text-primary" title={currentChannel.description} />
+            <i
+              data-bs-toggle="tooltip"
+              className="fa fa-info-circle fa-1-5x text-primary"
+              title={currentChannel.description}
+            />
           </td>
           <td>
             <div className="form-group">
@@ -445,7 +449,7 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
               </div>
             ) : (
               <span>
-                <table className="table table-striped">
+                <table className="table">
                   <thead>
                     <tr>
                       <th>{this.props.type === "state" ? t("State Name") : t("Channel Name")}</th>

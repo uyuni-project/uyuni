@@ -16,6 +16,7 @@ Feature: Maintenance windows
 
   Scenario: Create a single calendar
     When I follow the left menu "Schedule > Maintenance Windows > Calendars"
+    And I wait for "1" second
     Then I should see a "No calendars created" text
     When I click on "Create" in element "maintenance-windows"
     Then I should see a "Calendar Name" text
@@ -26,7 +27,7 @@ Feature: Maintenance windows
 
   Scenario: Create a multi calendar
     When I follow the left menu "Schedule > Maintenance Windows > Calendars"
-    Then I should see a "Items 1 - 1 of 1" text
+    Then I should see a "1 - 1 of 1 item" text
     When I click on "Create" in element "maintenance-windows"
     Then I should see a "Calendar Name" text
     When I enter "multicalendar" as "name"
@@ -36,6 +37,7 @@ Feature: Maintenance windows
 
   Scenario: Create a single schedule
     When I follow the left menu "Schedule > Maintenance Windows > Schedules"
+    And I wait for "1" second
     Then I should see a "No schedules created" text
     When I click on "Create" in element "maintenance-windows"
     Then I should see a "Schedule Name" text
@@ -48,7 +50,7 @@ Feature: Maintenance windows
 
   Scenario: Create a multi schedule
     When I follow the left menu "Schedule > Maintenance Windows > Schedules"
-    Then I should see a "Items 1 - 1 of 1" text
+    Then I should see a "1 - 1 of 1 item" text
     When I click on "Create" in element "maintenance-windows"
     Then I should see a "Schedule Name" text
     When I enter "SAP Maintenance Window" as "name"
@@ -60,6 +62,7 @@ Feature: Maintenance windows
 
   Scenario: Create another multi schedule
     When I follow the left menu "Schedule > Maintenance Windows > Schedules"
+    And I wait for "1" second
     Then I should see a "Items 1 - 2 of 2" text
     When I click on "Create"
     And I enter "Core Server Window" as "name"
@@ -116,7 +119,7 @@ Feature: Maintenance windows
     And I enter "virgo-dummy" as the filtered package name
     And I click on the filter button
     And I check "virgo-dummy" in the list
-    And I click on "Install Selected Packages"
+    And I click on "Install Packages"
     And I select the next maintenance window
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled for" text

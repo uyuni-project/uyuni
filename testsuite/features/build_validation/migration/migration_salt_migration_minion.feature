@@ -95,7 +95,7 @@ Feature: Migrate Salt to bundled Salt on a SLES 15 SP5 minion
     And I click on the filter button
     And I wait until I see "adobe-sourcecodepro-fonts" text
     And I check "adobe-sourcecodepro-fonts" in the list
-    And I click on "Install Selected Packages"
+    And I click on "Install Packages"
     And I click on "Confirm"
     When I wait until event "Package Install/Upgrade scheduled by admin" is completed
     Then "adobe-sourcecodepro-fonts" should be installed on "salt_migration_minion"

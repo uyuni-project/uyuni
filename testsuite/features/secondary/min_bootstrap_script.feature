@@ -84,7 +84,7 @@ Feature: Register a Salt minion with a bootstrap script
    And I enter "orion-dummy" as the filtered package name
    And I click on the filter button
    And I check row with "orion-dummy" and arch of "sle_minion"
-   And I click on "Install Selected Packages"
+   And I click on "Install Packages"
    And I click on "Confirm"
    Then I should see a "1 package install has been scheduled for" text
    When I wait until event "Package Install/Upgrade scheduled" is completed
