@@ -1,0 +1,4 @@
+- Bump apache-commons-logging version
+- Remove unused simpleclient_servlet dependency
+- Remove unused apache-commons-el dependency
+- Remove unused jetty dependencies
