@@ -100,14 +100,16 @@ export class NotificationList extends React.Component<Props, State> {
               }
               additionalFilters={this.renderFilters()}
               titleButtons={[
-                <div className="btn-group">
+                <div className="btn-group" key="notification-msg-btn">
                   <AsyncButton
+                    key="refresh"
                     id="reload"
                     icon="fa-refresh"
                     text={t("Refresh")}
                     action={() => this.refreshServerData()}
                   />
                   <AsyncButton
+                    key="delete-messages"
                     id="delete-selected-messages"
                     icon="fa-trash"
                     text={t("Delete")}
@@ -115,6 +117,7 @@ export class NotificationList extends React.Component<Props, State> {
                     disabled={this.state.selectedItems.length === 0}
                   />
                   <AsyncButton
+                    key="mark-as-read"
                     id="mark-as-read"
                     icon="fa-check-circle"
                     text={t("Mark as Read")}

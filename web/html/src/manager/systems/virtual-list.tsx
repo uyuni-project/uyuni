@@ -57,6 +57,7 @@ export function VirtualSystems(props: Props) {
         emptyText={t("No Virtual Systems.")}
         titleButtons={[
           <a
+            key="download-csv"
             href="/rhn/manager/systems/csv/virtualSystems"
             title="Download CSV"
             className="btn btn-default"
