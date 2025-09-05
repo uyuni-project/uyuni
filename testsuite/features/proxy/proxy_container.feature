@@ -59,6 +59,12 @@ Feature: Setup containerized proxy
     And I wait until port "443" is listening on "proxy" container
     And I visit "Proxy" endpoint of this "proxy"
 
+  # WORKAROUND: Bug 1248848 - netavark 1.15 fails to remove existing nftables rules
+  Scenario: Replace the uyuni-proxy-pod service to flush the firewall
+    When I replace the line that contains "ExecStart=" for this line "ExecStart=/bin/sh -c '/usr/bin/podman pod start --pod-id-file %t/uyuni-proxy-pod.pod-id && /sbin/nft flush table inet netavark && /usr/bin/podman network reload -a'" in file "/etc/systemd/system/uyuni-proxy-pod.service" on "proxy"
+    And I run "systemctl daemon-reload" on "proxy"
+    And I run "systemctl restart uyuni-proxy-pod" on "proxy"
+
   Scenario: The containerized proxy should be registered automatically
     When I follow the left menu "Systems"
     And I wait until I see the name of "proxy", refreshing the page

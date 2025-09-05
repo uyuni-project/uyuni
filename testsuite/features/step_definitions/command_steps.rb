@@ -794,6 +794,11 @@ When(/^I run "([^"]*)" on "([^"]*)"$/) do |cmd, host|
   node.run(cmd)
 end
 
+When(/^I replace the line that contains "([^"]*)" for this line "([^"]*)" in file "([^"]*)" on "([^"]*)"$/) do |cmd_original, cmd_replaced, file, host|
+  node = get_target(host)
+  node.run("sed -i \"/#{cmd_original}/c\\#{cmd_replaced}\" #{file}")
+end
+
 When(/^I run "([^"]*)" on "([^"]*)" with logging$/) do |cmd, host|
   node = get_target(host)
   output, _code = node.run(cmd)
