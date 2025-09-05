@@ -5,7 +5,6 @@ import { Dialog } from "components/dialog/Dialog";
 import { DEPRECATED_Select, Form } from "components/input";
 import { Messages as MessageContainer, MessageType, Utils as MessagesUtils } from "components/messages/messages";
 import { TopPanel } from "components/panels/TopPanel";
-import { SectionToolbar } from "components/section-toolbar/section-toolbar";
 import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
 import { Table } from "components/table/Table";
@@ -83,7 +82,6 @@ export class NotificationList extends React.Component<Props, State> {
             <p>{t("The server has collected the following notification messages.")}</p>
 
             {this.renderTabs()}
-            {this.renderToolbar()}
 
             <Table
               data={this.filterDataByType(this.state.serverData)}
@@ -101,6 +99,30 @@ export class NotificationList extends React.Component<Props, State> {
                 />
               }
               additionalFilters={this.renderFilters()}
+              titleButtons={[
+                <div className="btn-group">
+                  <AsyncButton
+                    id="reload"
+                    icon="fa-refresh"
+                    text={t("Refresh")}
+                    action={() => this.refreshServerData()}
+                  />
+                  <AsyncButton
+                    id="delete-selected-messages"
+                    icon="fa-trash"
+                    text={t("Delete")}
+                    action={() => this.deleteNotifications(this.state.selectedItems)}
+                    disabled={this.state.selectedItems.length === 0}
+                  />
+                  <AsyncButton
+                    id="mark-as-read"
+                    icon="fa-check-circle"
+                    text={t("Mark as Read")}
+                    action={() => this.updateReadStatus(this.state.selectedItems, true)}
+                    disabled={this.state.selectedItems.length === 0}
+                  />
+                </div>,
+              ]}
             >
               <Column
                 columnKey="severity"
@@ -184,34 +206,6 @@ export class NotificationList extends React.Component<Props, State> {
           </li>
         </ul>
       </div>
-    );
-  }
-
-  private renderToolbar(): React.ReactNode {
-    return (
-      <SectionToolbar>
-        <div className="action-button-wrapper">
-          <div className="btn-group">
-            <AsyncButton id="reload" icon="fa-refresh" text={t("Refresh")} action={() => this.refreshServerData()} />
-            <AsyncButton
-              id="delete-selected-messages"
-              icon="fa-trash"
-              title={t("Delete selected messages")}
-              text={t("Delete selected messages")}
-              action={() => this.deleteNotifications(this.state.selectedItems)}
-              disabled={this.state.selectedItems.length === 0}
-            />
-            <AsyncButton
-              id="mark-as-read"
-              icon="fa-check-circle"
-              title={t("Mark selected as read")}
-              text={t("Mark selected as read")}
-              action={() => this.updateReadStatus(this.state.selectedItems, true)}
-              disabled={this.state.selectedItems.length === 0}
-            />
-          </div>
-        </div>
-      </SectionToolbar>
     );
   }
 
