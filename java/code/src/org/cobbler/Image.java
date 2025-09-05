@@ -85,7 +85,7 @@ public class Image extends CobblerObject {
      * @return the image
      */
     public static Image lookupByName(CobblerConnection client, String name) {
-        return handleLookup(client, lookupDataMapByName(client, name, "get_image"));
+        return handleLookup(client, lookupDataMapByName(client, name, "get_image", false, false));
     }
 
     /**

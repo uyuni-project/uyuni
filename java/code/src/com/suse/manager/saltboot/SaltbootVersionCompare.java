@@ -28,7 +28,14 @@ import java.util.regex.Pattern;
  *  <p><i>Sorts for newest version</i></p>
  */
 public class SaltbootVersionCompare implements Comparator<String> {
+    private final Pattern prepare;
 
+    /**
+     * @param prepareIn pattern to preprocess the version string
+     */
+    public SaltbootVersionCompare(Pattern prepareIn) {
+        prepare = prepareIn;
+    }
     /**
      * SaltbootVersion comparator
      * <p>Saltboot version is in format ImageName-ImageVersion
@@ -46,13 +53,23 @@ public class SaltbootVersionCompare implements Comparator<String> {
         if (image1 == null || image2 == null) {
             throw new IllegalArgumentException("Versions can not be null");
         }
+        if (prepare != null) {
+            Matcher prepmatch1 = prepare.matcher(image1);
+            Matcher prepmatch2 = prepare.matcher(image2);
+            if (!prepmatch1.find() || !prepmatch2.find()) {
+               throw new IllegalArgumentException("Prep regexp does not match");
+            }
+            image1 = prepmatch1.group(1);
+            image2 = prepmatch2.group(1);
+        }
+
         Pattern regex = Pattern.compile("-(\\d+\\.\\d+\\.\\d+)-(\\d+)$");
 
         // Saltboot (Kiwi + revision) version is x.x.x-x where x is uint
         Matcher match1 = regex.matcher(image1);
         Matcher match2 = regex.matcher(image2);
         if (!match1.find() || !match2.find()) {
-            throw new IllegalArgumentException("Invalid version format");
+            throw new IllegalArgumentException("Invalid version format " + image1 + " " + image2);
         }
 
         String version1 = match1.group(1);

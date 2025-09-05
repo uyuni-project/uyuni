@@ -177,7 +177,7 @@ public class SystemRecord extends CobblerObject {
      * @return the system that maps to the name or null
      */
     public static SystemRecord lookupByName(CobblerConnection client, String name) {
-        return handleLookup(client, lookupDataMapByName(client, name, "get_system"));
+        return handleLookup(client, lookupDataMapByName(client, name, "get_system", false, false));
     }
 
     /**
