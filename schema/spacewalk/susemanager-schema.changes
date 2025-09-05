@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Sep 05 12:01:04 CEST 2025 - rosuna@suse.com
+
+- version 5.1.12-0
+  * Fix schema migration when removing the dropped
+    virtualization action types (bsc#1249178)
+
+-------------------------------------------------------------------
 Fri Aug 29 12:32:25 CEST 2025 - rosuna@suse.com
 
 - version 5.1.11-0
