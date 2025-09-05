@@ -12,9 +12,11 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.suse.manager.webui.controllers.test; import com.redhat.rhn.domain.role.RoleFactory;
+package com.suse.manager.webui.controllers.test;
+
+import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
-import com.redhat.rhn.testing.RhnMockHttpServletResponse;
+import com.redhat.rhn.testing.MockHttpServletResponse;
 import com.redhat.rhn.testing.SparkTestUtils;
 
 import org.jmock.imposters.ByteBuddyClassImposteriser;
@@ -47,7 +49,7 @@ public class BaseControllerTestCase extends JMockBaseTestCaseWithUser {
 
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
-        response = RequestResponseFactory.create(new RhnMockHttpServletResponse());
+        response = RequestResponseFactory.create(new MockHttpServletResponse());
     }
 
 

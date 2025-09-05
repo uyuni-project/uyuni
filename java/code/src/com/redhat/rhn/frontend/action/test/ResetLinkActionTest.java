@@ -23,11 +23,10 @@ import com.redhat.rhn.domain.common.ResetPassword;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.frontend.action.user.ResetLinkAction;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
-import com.redhat.rhn.testing.RhnMockDynaActionForm;
-import com.redhat.rhn.testing.RhnMockHttpServletRequest;
-import com.redhat.rhn.testing.RhnMockHttpServletResponse;
-
-import com.mockobjects.servlet.MockHttpSession;
+import com.redhat.rhn.testing.MockDynaActionForm;
+import com.redhat.rhn.testing.MockHttpServletRequest;
+import com.redhat.rhn.testing.MockHttpServletResponse;
+import com.redhat.rhn.testing.MockHttpSession;
 
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -41,9 +40,9 @@ public class ResetLinkActionTest extends BaseTestCaseWithUser {
 
     private ActionForward valid, invalid;
     private ActionMapping mapping;
-    private RhnMockDynaActionForm form;
-    private RhnMockHttpServletRequest request;
-    private RhnMockHttpServletResponse response;
+    private MockDynaActionForm form;
+    private MockHttpServletRequest request;
+    private MockHttpServletResponse response;
     private ResetLinkAction action;
 
     @Test
@@ -67,11 +66,6 @@ public class ResetLinkActionTest extends BaseTestCaseWithUser {
         assertEquals(invalid, rc);
     }
 
-    public void xxxtestPerformExpiredToken() {
-        // 'expired' drives off of 'created', which is in the hands of the DB
-        // so, no test here
-    }
-
     @Test
     public void testPerformValidToken() {
         ResetPassword rp = ResetPasswordFactory.createNewEntryFor(user);
@@ -89,13 +83,13 @@ public class ResetLinkActionTest extends BaseTestCaseWithUser {
         mapping = new ActionMapping();
         valid = new ActionForward("valid", "path", false);
         invalid = new ActionForward("invalid", "path", false);
-        form = new RhnMockDynaActionForm("resetPasswordForm");
-        request = new RhnMockHttpServletRequest();
-        response = new RhnMockHttpServletResponse();
+        form = new MockDynaActionForm("resetPasswordForm");
+        request = new MockHttpServletRequest();
+        response = new MockHttpServletResponse();
 
         MockHttpSession mockSession = new MockHttpSession();
-        mockSession.setupGetAttribute("token", null);
-        mockSession.setupGetAttribute("request_method", "GET");
+        mockSession.setAttribute("token", null);
+        mockSession.setAttribute("request_method", "GET");
         request.setSession(mockSession);
         request.setupServerName("mymachine.rhndev.redhat.com");
 

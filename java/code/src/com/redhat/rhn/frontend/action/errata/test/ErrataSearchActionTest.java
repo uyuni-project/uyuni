@@ -20,8 +20,8 @@ import com.redhat.rhn.frontend.action.BaseSearchAction;
 import com.redhat.rhn.frontend.action.errata.ErrataSearchAction;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
-import com.redhat.rhn.testing.ActionHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.RimeActionHelper;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.apache.commons.collections.IteratorUtils;
@@ -39,7 +39,7 @@ public class ErrataSearchActionTest extends RhnBaseTestCase {
     public void testExecute() throws Exception {
 
         ErrataSearchAction action = new ErrataSearchAction();
-        ActionHelper ah = new ActionHelper();
+        RimeActionHelper ah = new RimeActionHelper();
         Errata e = ErrataFactoryTest.createTestErrata(UserTestUtils.createOrg("testOrg" +
                     this.getClass().getSimpleName()));
         String name = e.getAdvisory();
@@ -49,12 +49,8 @@ public class ErrataSearchActionTest extends RhnBaseTestCase {
         ah.getForm().set(RhnAction.SUBMITTED, Boolean.TRUE);
         // these are duplicated on PURPOSE! Because mockobjects SUCK ASS!
         ah.getRequest().setupAddParameter(BaseSearchAction.SEARCH_STR, name);
-        ah.getRequest().setupAddParameter(BaseSearchAction.SEARCH_STR, name);
         ah.getRequest().setupAddParameter(BaseSearchAction.VIEW_MODE,
                         BaseSearchAction.OPT_ADVISORY);
-        ah.getRequest().setupAddParameter(BaseSearchAction.VIEW_MODE,
-                        BaseSearchAction.OPT_ADVISORY);
-        ah.getRequest().setupAddParameter(BaseSearchAction.FINE_GRAINED, "on");
         ah.getRequest().setupAddParameter(BaseSearchAction.FINE_GRAINED, "on");
 
         Map<String, String> paramnames = new HashMap<>();
@@ -62,7 +58,7 @@ public class ErrataSearchActionTest extends RhnBaseTestCase {
         paramnames.put(BaseSearchAction.VIEW_MODE, BaseSearchAction.OPT_ADVISORY);
         paramnames.put(BaseSearchAction.FINE_GRAINED, "on");
         paramnames.put(RhnAction.SUBMITTED, "true");
-        ah.getRequest().setupGetParameterNames(
+        ah.getRequest().setParameterNames(
                 IteratorUtils.asEnumeration(paramnames.keySet().iterator()));
 
         ah.setupClampListBounds();

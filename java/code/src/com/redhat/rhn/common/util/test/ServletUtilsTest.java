@@ -20,8 +20,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.util.ServletUtils;
+import com.redhat.rhn.testing.MockHttpServletRequest;
 import com.redhat.rhn.testing.MockObjectTestCase;
-import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.ServletTestUtils;
 
 import org.jmock.Expectations;
@@ -83,7 +83,7 @@ public class ServletUtilsTest extends MockObjectTestCase {
 
     @Test
     public void testRequestPath() {
-        RhnMockHttpServletRequest request = new RhnMockHttpServletRequest();
+        MockHttpServletRequest request = new MockHttpServletRequest();
         request.setRequestURL("http://localhost:8080/rhnjava/index.jsp");
 
         assertEquals("/rhnjava/index.jsp", ServletUtils.getRequestPath(request));

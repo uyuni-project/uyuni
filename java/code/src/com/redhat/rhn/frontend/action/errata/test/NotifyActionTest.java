@@ -25,31 +25,31 @@ import com.redhat.rhn.frontend.action.errata.NotifyAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.errata.ErrataManager;
-import com.redhat.rhn.testing.RhnBaseTestCase;
-import com.redhat.rhn.testing.RhnMockDynaActionForm;
-import com.redhat.rhn.testing.RhnMockHttpServletRequest;
-import com.redhat.rhn.testing.TestUtils;
-
-import com.mockobjects.servlet.MockHttpServletResponse;
+import com.redhat.rhn.testing.MockHttpServletRequest;
+import com.redhat.rhn.testing.MockTestUtils;
+import com.redhat.rhn.testing.RhnJmockBaseTestCase;
 
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.DynaActionForm;
 import org.junit.jupiter.api.Test;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * NotifyActionTest
  */
-public class NotifyActionTest extends RhnBaseTestCase {
+public class NotifyActionTest extends RhnJmockBaseTestCase {
 
     @Test
     public void testNotifyAction() throws Exception {
         NotifyAction action = new NotifyAction();
 
-        RhnMockHttpServletRequest request = TestUtils.getRequestWithSessionAndUser();
+        MockHttpServletRequest request = MockTestUtils.getRequestWithSessionAndUser();
         ActionMapping mapping = new ActionMapping();
         ActionForward def = new ActionForward(RhnHelper.DEFAULT_FORWARD, "path", false);
-        RhnMockDynaActionForm form = new RhnMockDynaActionForm();
-        MockHttpServletResponse response = new MockHttpServletResponse();
+        DynaActionForm form = new DynaActionForm();
+        HttpServletResponse response = mock(HttpServletResponse.class);
         mapping.addForwardConfig(def);
 
         RequestContext requestContext = new RequestContext(request);

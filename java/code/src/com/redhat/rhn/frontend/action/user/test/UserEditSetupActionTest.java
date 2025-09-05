@@ -28,10 +28,10 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.frontend.action.user.UserEditSetupAction;
 import com.redhat.rhn.frontend.action.user.UserRoleStatusBean;
-import com.redhat.rhn.testing.ActionHelper;
+import com.redhat.rhn.testing.MockDynaActionForm;
 import com.redhat.rhn.testing.RhnBaseTestCase;
-import com.redhat.rhn.testing.RhnMockDynaActionForm;
-import com.redhat.rhn.testing.TestUtils;
+import com.redhat.rhn.testing.RimeActionHelper;
+import com.redhat.rhn.testing.MockTestUtils;
 
 import org.junit.jupiter.api.Test;
 
@@ -45,7 +45,7 @@ public class UserEditSetupActionTest extends RhnBaseTestCase {
     @Test
     public void testPerformExecute() throws Exception {
         UserEditSetupAction action = new UserEditSetupAction();
-        ActionHelper sah = new ActionHelper();
+        RimeActionHelper sah = new RimeActionHelper();
         sah.setUpAction(action);
         sah.getRequest().setRequestURL("foo");
 
@@ -59,7 +59,7 @@ public class UserEditSetupActionTest extends RhnBaseTestCase {
 
         // Below we test to make sure that some of
         // the strings in the form are localized
-        TestUtils.enableLocalizationDebugMode();
+        MockTestUtils.enableLocalizationDebugMode();
         try {
             sah.executeAction();
 
@@ -75,7 +75,7 @@ public class UserEditSetupActionTest extends RhnBaseTestCase {
                 sah.getRequest().getAttribute("rbacRoles");
             assertEquals(6, rbacRoles.size());
             UserRoleStatusBean lv = rbacRoles.get(0);
-            assertTrue(TestUtils.isLocalized(lv.getName()));
+            assertTrue(MockTestUtils.isLocalized(lv.getName()));
             assertNotNull(sah.getRequest().getAttribute("disabledRoles"));
             assertInstanceOf(User.class, sah.getRequest().getAttribute("user"));
 
@@ -87,14 +87,14 @@ public class UserEditSetupActionTest extends RhnBaseTestCase {
             }
         }
         finally {
-            TestUtils.disableLocalizationDebugMode();
+            MockTestUtils.disableLocalizationDebugMode();
         }
     }
 
     @Test
     public void testNoParamExecute() throws Exception {
         UserEditSetupAction action = new UserEditSetupAction();
-        ActionHelper sah = new ActionHelper();
+        RimeActionHelper sah = new RimeActionHelper();
         sah.setUpAction(action);
         sah.getRequest().setRequestURL("rdu.redhat.com/rhn/users/UserDetails.do");
         setupExpectations(sah.getForm(), sah.getUser());
@@ -111,7 +111,7 @@ public class UserEditSetupActionTest extends RhnBaseTestCase {
         }
     }
 
-    private void setupExpectations(RhnMockDynaActionForm form, User user) {
+    private void setupExpectations(MockDynaActionForm form, User user) {
 
         form.addExpectedProperty("uid", user.getId());
         form.addExpectedProperty("firstNames", user.getFirstNames());

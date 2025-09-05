@@ -19,9 +19,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import com.redhat.rhn.frontend.struts.RhnHelper;
+import com.redhat.rhn.testing.MockDynaActionForm;
+import com.redhat.rhn.testing.MockHttpServletRequest;
 import com.redhat.rhn.testing.RhnBaseTestCase;
-import com.redhat.rhn.testing.RhnMockDynaActionForm;
-import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 
 import org.apache.struts.Globals;
 import org.apache.struts.action.ActionMessage;
@@ -36,7 +36,7 @@ public class RhnHelperTest extends RhnBaseTestCase {
 
     @Test
     public void testEmptySelectionError() {
-        RhnMockHttpServletRequest request = new RhnMockHttpServletRequest();
+        MockHttpServletRequest request = new MockHttpServletRequest();
         RhnHelper.handleEmptySelection(request);
         assertNotNull(request.getAttribute(Globals.MESSAGE_KEY));
         assertNotNull(request.getSession().getAttribute(Globals.MESSAGE_KEY));
@@ -51,7 +51,7 @@ public class RhnHelperTest extends RhnBaseTestCase {
     @Test
     public void testGetTextAreaValue() {
         String value = "asdf\r\nasdfwerwer\rasdf\n\radsfhjhhasdf";
-        DynaActionForm form = new RhnMockDynaActionForm();
+        DynaActionForm form = new MockDynaActionForm();
         form.set("somevalue", value);
         String stripped = RhnHelper.getTextAreaValue(form, "somevalue");
         assertNotNull(stripped);
@@ -60,28 +60,28 @@ public class RhnHelperTest extends RhnBaseTestCase {
 
     @Test
     public void testGetParameterWithSpecialCharacters() {
-        RhnMockHttpServletRequest request = new RhnMockHttpServletRequest();
-        request.setupQueryString("   ");
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        request.setQueryString("   ");
         assertNull(RhnHelper.getParameterWithSpecialCharacters(request, "zzzz"));
 
-        request.setupQueryString(null);
+        request.setQueryString(null);
         assertNull(RhnHelper.getParameterWithSpecialCharacters(request, "zzzz"));
 
-        request.setupQueryString("asdf12354");
+        request.setQueryString("asdf12354");
         assertNull(RhnHelper.getParameterWithSpecialCharacters(request, "zzzz"));
 
-        request.setupQueryString("foo=bar");
+        request.setQueryString("foo=bar");
         assertNull(RhnHelper.getParameterWithSpecialCharacters(request, "zzzz"));
 
-        request.setupQueryString("foo=bar");
+        request.setQueryString("foo=bar");
         assertEquals("bar", RhnHelper.
                 getParameterWithSpecialCharacters(request, "foo"));
 
-        request.setupQueryString("foo=bar&baz=bloop&blippy=blorg");
+        request.setQueryString("foo=bar&baz=bloop&blippy=blorg");
         assertEquals("bar", RhnHelper.
                 getParameterWithSpecialCharacters(request, "foo"));
 
-        request.setupQueryString("foo=bar+++&baz=bloop&blippy=blorg");
+        request.setQueryString("foo=bar+++&baz=bloop&blippy=blorg");
         assertEquals("bar+++", RhnHelper.
                     getParameterWithSpecialCharacters(request, "foo"));
 
