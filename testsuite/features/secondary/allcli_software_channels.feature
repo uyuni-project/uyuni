@@ -149,7 +149,7 @@ Feature: Channel subscription via SSM
     And I should see a "1 system(s) incompatible" text
     When I click on "Confirm"
     Then I should see a "Channel Changes Actions" text
-    And I should see a "1 - 1 of 1 item" text
+    And I should see a "Items 1 - 1 of 1" text
     And a table line should contain system "rhlike_minion", "Could not determine system default channel"
     And I click on the clear SSM button
 
@@ -179,7 +179,7 @@ Feature: Channel subscription via SSM
     And I should see a "1 system(s) incompatible" text
     When I click on "Confirm"
     Then I should see a "Channel Changes Actions" text
-    And I should see a "1 - 1 of 1 item" text
+    And I should see a "Items 1 - 1 of 1" text
     And a table line should contain system "deblike_minion", "Could not determine system default channel"
     And I click on the clear SSM button
 
