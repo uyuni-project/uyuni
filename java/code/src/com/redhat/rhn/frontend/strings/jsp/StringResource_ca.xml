@@ -17350,7 +17350,7 @@ Tingueu en compte que si un sistema determinat anul·la un fitxer donat, o el t�
         <target state="translated">Versió actual</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"></context>
+          <context context-type="paramnotes"/>
         </context-group>
       </trans-unit>
       <trans-unit id="deploy.jsp.lastmodified-header" xml:space="preserve">
@@ -17358,7 +17358,7 @@ Tingueu en compte que si un sistema determinat anul·la un fitxer donat, o el t�
         <target state="translated">Última modificació</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"></context>
+          <context context-type="paramnotes"/>
         </context-group>
       </trans-unit>
       <trans-unit id="configsystemfilter.name" xml:space="preserve">
@@ -17387,7 +17387,7 @@ Tingueu en compte que si un sistema determinat anul·la un fitxer donat, o el t�
         <target state="translated">No hi ha sistemes desplegables subscrits a aquest canal</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"></context>
+          <context context-type="paramnotes"/>
         </context-group>
       </trans-unit>
       <trans-unit id="deploy.jsp.actions-header" xml:space="preserve">
@@ -17395,7 +17395,7 @@ Tingueu en compte que si un sistema determinat anul·la un fitxer donat, o el t�
         <target state="translated">Accions</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"></context>
+          <context context-type="paramnotes"/>
         </context-group>
       </trans-unit>
       <trans-unit id="deploy.jsp.filepath-header" xml:space="preserve">
@@ -17403,7 +17403,7 @@ Tingueu en compte que si un sistema determinat anul·la un fitxer donat, o el t�
         <target state="translated">Nom del fitxer</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"></context>
+          <context context-type="paramnotes"/>
         </context-group>
       </trans-unit>
       <trans-unit id="deploy.jsp.deployallbutton" xml:space="preserve">
@@ -17411,7 +17411,7 @@ Tingueu en compte que si un sistema determinat anul·la un fitxer donat, o el t�
         <target state="translated">Desplega tots els fitxers</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"></context>
+          <context context-type="paramnotes"/>
         </context-group>
       </trans-unit>
       <trans-unit id="deploy.jsp.deployselectedbutton" xml:space="preserve">
@@ -17419,7 +17419,7 @@ Tingueu en compte que si un sistema determinat anul·la un fitxer donat, o el t�
         <target state="translated">Desplega els fitxers seleccionats</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"></context>
+          <context context-type="paramnotes"/>
         </context-group>
       </trans-unit>
       <trans-unit id="deploy.jsp.h2" xml:space="preserve">
@@ -17427,14 +17427,14 @@ Tingueu en compte que si un sistema determinat anul·la un fitxer donat, o el t�
         <target state="translated">Desplegar fitxers de configuració</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"></context>
+          <context context-type="paramnotes"/>
         </context-group>
       </trans-unit>
       <trans-unit id="deploy.jsp.description" xml:space="preserve">
         <source>You may select the files you wish to deploy from the list below.  You will then be asked to select the systems to deploy them to.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"></context>
+          <context context-type="paramnotes"/>
         </context-group>
         <target state="translated">Podeu seleccionar els fitxers que voleu desplegar de la llista següent.  A continuació, se us demanarà que seleccioneu els sistemes per a desplegar-los.</target>
       </trans-unit>
@@ -17443,7 +17443,7 @@ Tingueu en compte que si un sistema determinat anul·la un fitxer donat, o el t�
         <target state="translated">Nom del fitxer</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"></context>
+          <context context-type="paramnotes"/>
         </context-group>
       </trans-unit>
       <trans-unit id="deploysystems.jsp.deployconfirmbutton" xml:space="preserve">
@@ -17451,7 +17451,7 @@ Tingueu en compte que si un sistema determinat anul·la un fitxer donat, o el t�
         <target state="translated">Confirma i desplega als sistemes seleccionats</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"></context>
+          <context context-type="paramnotes"/>
         </context-group>
       </trans-unit>
       <trans-unit id="deploysystems.jsp.h2" xml:space="preserve">
@@ -17459,7 +17459,7 @@ Tingueu en compte que si un sistema determinat anul·la un fitxer donat, o el t�
         <target state="translated">Desplegar fitxers de configuració: Seleccioneu sistemes per al desplegament</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"></context>
+          <context context-type="paramnotes"/>
         </context-group>
       </trans-unit>
       <trans-unit id="deploysystems.jsp.note" xml:space="preserve">
@@ -17467,7 +17467,7 @@ Tingueu en compte que si un sistema determinat anul·la un fitxer donat, o el t�
         <target state="translated">Seleccioneu els sistemes als quals voleu desplegar els fitxers seleccionats.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"></context>
+          <context context-type="paramnotes"/>
         </context-group>
       </trans-unit>
       <trans-unit id="deploysystems.jsp.warning" xml:space="preserve">
@@ -17475,7 +17475,7 @@ Tingueu en compte que si un sistema determinat anul·la un fitxer donat, o el t�
         <target state="translated">Lt;stronggt;Warning:lt;/stronggt; Tingueu en compte que si algun dels fitxers que esteu intentant desplegar des del canal de configuració {0} són anul·lats o superats per un fitxer amb el mateix nom en un canal de més alt rang al qual està subscrit qualsevol sistema en particular, llavors la versió de més alt rang del fitxer es desplegarà en aquest sistema, en lloc de la versió del canal de configuració {0}.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"></context>
+          <context context-type="paramnotes"/>
         </context-group>
       </trans-unit>
       <!-- deployrevision.jsp -->
