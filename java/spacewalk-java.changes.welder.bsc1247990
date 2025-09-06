@@ -1,0 +1,2 @@
+- Optimize appstream cloning to prevent timeout during
+  channel clone (bsc#1247990)
