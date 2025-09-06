@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-09-05 08:31+0200\n"
-"PO-Revision-Date: 2025-09-05 16:59+0000\n"
+"PO-Revision-Date: 2025-09-06 16:59+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -1872,8 +1872,6 @@ msgid "All"
 msgstr "Všetky"
 
 #: ../html/src/components/table/Table.example.tsx:40
-#, fuzzy
-#| msgid "Channel Name"
 msgid "Channel name"
 msgstr "Názov kanála"
 
@@ -1883,11 +1881,11 @@ msgstr "Hub Org"
 
 #: ../html/src/components/table/Table.example.tsx:66
 msgid "View"
-msgstr ""
+msgstr "Zobraziť"
 
 #: ../html/src/components/table/Table.example.tsx:67
 msgid "Modify"
-msgstr ""
+msgstr "Zmeniť"
 
 #: ../html/src/components/target-systems.tsx:22
 msgid "Target Systems"
@@ -3235,10 +3233,8 @@ msgid "Create project"
 msgstr "Vytvoriť projekt"
 
 #: ../html/src/manager/content-management/list-filters/appstreams/appstreams.tsx:39
-#, fuzzy
-#| msgid "disable all modules"
 msgid "Browse available modules"
-msgstr "zakázať všetky moduly"
+msgstr "Prehliadať dostupné moduly"
 
 #: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:28
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:34
@@ -3432,10 +3428,8 @@ msgid "Some of the selected filters are used in projects and can not be deleted.
 msgstr "Niektoré z vybraných filtrov sa používajú v projektoch a nemožno ich vymazať."
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:128
-#, fuzzy
-#| msgid "Create New Filter"
 msgid "Create Filter"
-msgstr "Vytvoriť nový filter"
+msgstr "Vytvoriť filter"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:140
 msgid "Select unused"
@@ -3454,10 +3448,8 @@ msgid "Projects in use"
 msgstr "Používané projekty"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:209
-#, fuzzy
-#| msgid "Edit Filter {name}"
 msgid "Edit Filter"
-msgstr "Upraviť filter {name}"
+msgstr "Upraviť filter"
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:32
 msgid "Live patching based on a specific system"
@@ -4088,10 +4080,8 @@ msgid "Profile Summary"
 msgstr "Súhrn profilu"
 
 #: ../html/src/manager/images/image-build.tsx:248
-#, fuzzy
-#| msgid "Profile Summary"
 msgid "Edit Profile Summary"
-msgstr "Súhrn profilu"
+msgstr "Upraviť súhrn profilu"
 
 #: ../html/src/manager/images/image-build.tsx:268
 msgid "No profile selected"
@@ -4246,10 +4236,8 @@ msgid "Image profiles have been deleted."
 msgstr "Profily obrazov boli vymazané."
 
 #: ../html/src/manager/images/image-profiles.tsx:137
-#, fuzzy
-#| msgid "Create Image Profile"
 msgid "Delete Image Profile"
-msgstr "Vytvoriť profil obrazu"
+msgstr "Vymazať profil obrazu"
 
 #: ../html/src/manager/images/image-profiles.tsx:158
 msgid "Image Profiles"
@@ -4317,17 +4305,13 @@ msgid "Image stores have been deleted."
 msgstr "Úložiská obrazov boli vymazané."
 
 #: ../html/src/manager/images/image-stores.tsx:137
-#, fuzzy
-#| msgid "Delete Profile"
 msgid "Delete Store Profile"
-msgstr "Vymazať profil"
+msgstr "Vymazať profil úložiska"
 
 #: ../html/src/manager/images/image-stores.tsx:147
 #: ../html/src/manager/images/image-stores.tsx:148
-#, fuzzy
-#| msgid "Create Image Profile"
 msgid "Create Store Profile"
-msgstr "Vytvoriť profil obrazu"
+msgstr "Vytvoriť profil úložiska"
 
 #: ../html/src/manager/images/image-stores.tsx:158
 msgid "Image Stores"
@@ -5413,10 +5397,8 @@ msgid "Root CA"
 msgstr "Koreňová CA"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:232
-#, fuzzy
-#| msgid "CA certificate to use to sign the SSL certificate in PEM format"
 msgid "Certificate authority that issued the proxy certificate (PEM format)"
-msgstr "Certifikát CA, ktorý sa má použiť na podpísanie certifikátu SSL vo formáte PEM"
+msgstr "Certifikačná autorita, ktorá vydala proxy certifikát (formát PEM)"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:241
 #: ../html/src/manager/proxy/container-config.tsx:344
@@ -5424,10 +5406,8 @@ msgid "Intermediate CAs"
 msgstr "Sprostredkujúce CA"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:251
-#, fuzzy
-#| msgid "To sign the SSL certificate in PEM format"
 msgid "An intermediate CA certificate (PEM format)"
-msgstr "Podpísanie certifikátu SSL vo formáte PEM"
+msgstr "Certifikát sprostredkujúcej CA (formát PEM)"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:263
 #: ../html/src/manager/proxy/container-config.tsx:365
@@ -5435,10 +5415,8 @@ msgid "Proxy certificate"
 msgstr "Proxy certifikát"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:264
-#, fuzzy
-#| msgid "CA certificate to use to sign the SSL certificate in PEM format"
 msgid "SSL certificate issued for the proxy system (PEM format)"
-msgstr "Certifikát CA, ktorý sa má použiť na podpísanie certifikátu SSL vo formáte PEM"
+msgstr "SSL certifikát vydaný pre proxy systém (formát PEM)"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:272
 #: ../html/src/manager/proxy/container-config.tsx:374
@@ -5447,7 +5425,7 @@ msgstr "Súkromný kľúč proxy SSL"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:273
 msgid "SSL private key for the proxy system (PEM format)"
-msgstr ""
+msgstr "Súkromný kľúč SSL pre proxy systém (formát PEM)"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:284
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:285
@@ -5464,7 +5442,7 @@ msgstr "Register"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:304
 msgid "The availability of container images depends on your environment’s connectivity. In air-gapped/restricted environments, using RPM as the source mode is recommended to ensure all required images are available locally. Selecting an incompatible source mode may result in deployment failures."
-msgstr ""
+msgstr "Dostupnosť obrazov kontajnerov závisí od pripojenia vášho prostredia. V prostrediach air-gapped/s obmedzeným prístupom sa odporúča používať RPM ako zdrojový režim, aby boli všetky potrebné obrazy dostupné lokálne. Výber nekompatibilného režimu zdroja môže spôsobiť chyby nasadenia."
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:314
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:315
@@ -5498,7 +5476,7 @@ msgstr "Značka kontajnerov"
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:411
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:428
 msgid "e.g. {registryTagExample}"
-msgstr ""
+msgstr "napr. {registryTagExample}"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:351
 msgid "HTTPD URL"
@@ -5506,7 +5484,7 @@ msgstr "HTTPD URL"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:352
 msgid "e.g., {registryUrlExample}/proxy-httpd"
-msgstr ""
+msgstr "napr., {registryUrlExample}/proxy-httpd"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:359
 msgid "HTTPD Tag"
@@ -5518,7 +5496,7 @@ msgstr "Salt Broker URL"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:369
 msgid "e.g. {registryUrlExample}/proxy-salt-broker"
-msgstr ""
+msgstr "napr. {registryUrlExample}/proxy-salt-broker"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:376
 msgid "Salt Broker Tag"
@@ -5530,7 +5508,7 @@ msgstr "Squid URL"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:386
 msgid "e.g. {registryUrlExample}/proxy-squid"
-msgstr ""
+msgstr "napr. {registryUrlExample}/proxy-squid"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:393
 msgid "Squid Tag"
@@ -5542,7 +5520,7 @@ msgstr "SSH URL"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:403
 msgid "e.g. {registryUrlExample}/proxy-ssh"
-msgstr ""
+msgstr "napr. {registryUrlExample}/proxy-ssh"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:410
 msgid "SSH Tag"
@@ -5554,7 +5532,7 @@ msgstr "TFTPD URL"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:420
 msgid "e.g. {registryUrlExample}/proxy-tftpd"
-msgstr ""
+msgstr "napr. {registryUrlExample}/proxy-tftpd"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:427
 msgid "TFTPD Tag"
@@ -5996,10 +5974,8 @@ msgid "Configure states to execute"
 msgstr "Konfigurovať stavy na vykonanie"
 
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:105
-#, fuzzy
-#| msgid "Create Recurring"
 msgid "Create Recurring Action"
-msgstr "Vytvoriť opakovanie sa"
+msgstr "Vytvoriť opakujúcu sa akciu"
 
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:116
 msgid " Recurring Actions "
