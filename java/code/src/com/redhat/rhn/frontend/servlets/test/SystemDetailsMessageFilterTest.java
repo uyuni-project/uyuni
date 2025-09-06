@@ -24,8 +24,8 @@ import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.servlets.SystemDetailsMessageFilter;
+import com.redhat.rhn.testing.MockHttpServletRequest;
 import com.redhat.rhn.testing.MockObjectTestCase;
-import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.apache.struts.action.ActionMessage;
@@ -52,7 +52,7 @@ public class SystemDetailsMessageFilterTest extends MockObjectTestCase {
         // The server is created as a traditional system (enterprise entitled)
         Server server = ServerFactoryTest.createTestServer(user, false,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
-        HttpServletRequest request = new RhnMockHttpServletRequest();
+        HttpServletRequest request = new MockHttpServletRequest();
         SystemDetailsMessageFilter filter = new SystemDetailsMessageFilter();
         filter.processSystemMessages(request, server);
 
@@ -70,7 +70,7 @@ public class SystemDetailsMessageFilterTest extends MockObjectTestCase {
     public void shouldNotAddTraditionalStackDeprecationMessage() {
         // The server is created as a salt system (salt entitled)
         MinionServer minionServer = MinionServerFactoryTest.createTestMinionServer(user);
-        HttpServletRequest request = new RhnMockHttpServletRequest();
+        HttpServletRequest request = new MockHttpServletRequest();
         SystemDetailsMessageFilter filter = new SystemDetailsMessageFilter();
         filter.processSystemMessages(request, minionServer);
         ActionMessages messages =

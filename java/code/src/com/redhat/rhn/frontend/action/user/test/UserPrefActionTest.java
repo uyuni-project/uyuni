@@ -22,21 +22,21 @@ import com.redhat.rhn.frontend.action.user.UserPrefAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.user.UserManager;
-import com.redhat.rhn.testing.RhnBaseTestCase;
-import com.redhat.rhn.testing.RhnMockDynaActionForm;
-import com.redhat.rhn.testing.RhnMockHttpServletRequest;
-import com.redhat.rhn.testing.TestUtils;
-
-import com.mockobjects.servlet.MockHttpServletResponse;
+import com.redhat.rhn.testing.MockDynaActionForm;
+import com.redhat.rhn.testing.MockHttpServletRequest;
+import com.redhat.rhn.testing.MockObjectTestCase;
+import com.redhat.rhn.testing.MockTestUtils;
 
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.junit.jupiter.api.Test;
 
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * UserPrefActionTest
  */
-public class UserPrefActionTest extends RhnBaseTestCase {
+public class UserPrefActionTest extends MockObjectTestCase {
 
     private static final Integer PAGE_SIZE = 50;
     private static final Integer PREF_LOC = 7018;
@@ -50,9 +50,9 @@ public class UserPrefActionTest extends RhnBaseTestCase {
 
         ActionMapping mapping = new ActionMapping();
         ActionForward success = new ActionForward("success", "path", false);
-        RhnMockDynaActionForm form = new RhnMockDynaActionForm();
-        RhnMockHttpServletRequest request = TestUtils.getRequestWithSessionAndUser();
-        MockHttpServletResponse response = new MockHttpServletResponse();
+        MockDynaActionForm form = new MockDynaActionForm();
+        MockHttpServletRequest request = MockTestUtils.getRequestWithSessionAndUser();
+        HttpServletResponse response = mock(HttpServletResponse.class);
 
         mapping.addForwardConfig(success);
 

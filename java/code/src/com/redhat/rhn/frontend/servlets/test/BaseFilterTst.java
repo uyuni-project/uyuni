@@ -17,41 +17,38 @@ package com.redhat.rhn.frontend.servlets.test;
 import com.redhat.rhn.domain.session.WebSession;
 import com.redhat.rhn.frontend.servlets.PxtCookieManager;
 import com.redhat.rhn.frontend.struts.RequestContext;
-import com.redhat.rhn.testing.RhnBaseTestCase;
-import com.redhat.rhn.testing.RhnMockHttpServletRequest;
-import com.redhat.rhn.testing.RhnMockHttpServletResponse;
-import com.redhat.rhn.testing.RhnMockHttpSession;
-
-import com.mockobjects.servlet.MockFilterChain;
-import com.mockobjects.servlet.MockHttpSession;
+import com.redhat.rhn.testing.MockFilterChain;
+import com.redhat.rhn.testing.MockHttpServletRequest;
+import com.redhat.rhn.testing.MockHttpServletResponse;
+import com.redhat.rhn.testing.MockHttpSession;
+import com.redhat.rhn.testing.RhnJmockBaseTestCase;
 
 import org.junit.jupiter.api.BeforeEach;
 
 /**
  * AuthFilterTest
  */
-public abstract class BaseFilterTst extends RhnBaseTestCase {
+public abstract class BaseFilterTst extends RhnJmockBaseTestCase {
 
-    protected RhnMockHttpServletRequest request;
+    protected MockHttpServletRequest request;
     protected MockHttpSession session;
-    protected RhnMockHttpServletResponse response;
+    protected MockHttpServletResponse response;
     protected MockFilterChain chain;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        request = new RhnMockHttpServletRequest();
-        session = new RhnMockHttpSession();
+        request = new MockHttpServletRequest();
+        session = new MockHttpSession();
 
         PxtCookieManager pcm = new PxtCookieManager();
         RequestContext requestContext = new RequestContext(request);
 
         request.setupServerName("mymachine.rhndev.redhat.com");
         request.setSession(session);
-        request.setupGetRequestURI("http://localhost:8080");
+        request.setRequestURI("http://localhost:8080");
         WebSession s = requestContext.getWebSession();
         request.addCookie(pcm.createPxtCookie(s.getId(), request, 10));
-        response = new RhnMockHttpServletResponse();
+        response = new MockHttpServletResponse();
         chain = new MockFilterChain();
     }
 

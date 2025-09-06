@@ -24,8 +24,8 @@ import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.struts.BaseSetListAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
-import com.redhat.rhn.testing.ActionHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.RimeActionHelper;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,7 +40,7 @@ import java.util.Map;
 public class BaseSetListActionTest extends RhnBaseTestCase {
 
     private TestSetupListAction tla;
-    private ActionHelper sah;
+    private RimeActionHelper sah;
 
     /**
      * {@inheritDoc}
@@ -49,7 +49,7 @@ public class BaseSetListActionTest extends RhnBaseTestCase {
     @BeforeEach
     public void setUp() throws Exception {
         tla = new TestSetupListAction();
-        sah = new ActionHelper();
+        sah = new RimeActionHelper();
         sah.setUpAction(tla);
         sah.setupClampListBounds();
         sah.getRequest().setupAddParameter("submitted", "false");

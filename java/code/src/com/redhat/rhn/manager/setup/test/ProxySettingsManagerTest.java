@@ -28,11 +28,15 @@ import com.redhat.rhn.manager.satellite.ConfigureSatelliteCommand;
 import com.redhat.rhn.manager.satellite.ProxySettingsConfigureSatelliteCommand;
 import com.redhat.rhn.manager.setup.ProxySettingsDto;
 import com.redhat.rhn.manager.setup.ProxySettingsManager;
+
+import com.redhat.rhn.testing.MockHttpServletRequest;
+import com.redhat.rhn.testing.MockTestUtils;
 import com.redhat.rhn.testing.RhnBaseTestCase;
-import com.redhat.rhn.testing.RhnMockHttpServletRequest;
-import com.redhat.rhn.testing.TestUtils;
+import com.redhat.rhn.testing.RhnJmockBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import org.jmock.Mockery;
+import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -127,11 +131,11 @@ public class ProxySettingsManagerTest extends RhnBaseTestCase {
 
     @Test
     public void testProxySettingsManagerStoreProxySettings() {
-        HttpServletRequest request = new RhnMockHttpServletRequest();
+        HttpServletRequest request = new MockHttpServletRequest();
         ProxySettingsDto proxySettingsDtoToStore = new ProxySettingsDto();
-        proxySettingsDtoToStore.setHostname(TEST_HOSTNAME + TestUtils.randomString());
-        proxySettingsDtoToStore.setUsername(TEST_USERNAME + TestUtils.randomString());
-        proxySettingsDtoToStore.setPassword(TEST_PASSWD + TestUtils.randomString());
+        proxySettingsDtoToStore.setHostname(TEST_HOSTNAME + MockTestUtils.randomString());
+        proxySettingsDtoToStore.setUsername(TEST_USERNAME + MockTestUtils.randomString());
+        proxySettingsDtoToStore.setPassword(TEST_PASSWD + MockTestUtils.randomString());
 
         ValidatorError[] errors = ProxySettingsManager.storeProxySettings(proxySettingsDtoToStore, satAdmin, request);
         assertEquals(1, errors.length);

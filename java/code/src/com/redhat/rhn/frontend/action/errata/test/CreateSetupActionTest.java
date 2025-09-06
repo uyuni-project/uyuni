@@ -17,8 +17,8 @@ package com.redhat.rhn.frontend.action.errata.test;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.redhat.rhn.frontend.action.errata.CreateSetupAction;
-import com.redhat.rhn.testing.ActionHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.RimeActionHelper;
 
 import org.junit.jupiter.api.Test;
 
@@ -31,7 +31,7 @@ public class CreateSetupActionTest extends RhnBaseTestCase {
     public void testExecute() throws Exception {
 
         CreateSetupAction action = new CreateSetupAction();
-        ActionHelper sah = new ActionHelper();
+        RimeActionHelper sah = new RimeActionHelper();
 
         sah.setUpAction(action);
         sah.executeAction();

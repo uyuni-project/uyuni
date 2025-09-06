@@ -24,11 +24,11 @@ import com.redhat.rhn.common.messaging.Mail;
 import com.redhat.rhn.common.messaging.test.MockMail;
 import com.redhat.rhn.frontend.events.TraceBackAction;
 import com.redhat.rhn.frontend.events.TraceBackEvent;
+import com.redhat.rhn.testing.MockHttpServletRequest;
+import com.redhat.rhn.testing.MockHttpSession;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
-import com.mockobjects.servlet.MockHttpServletRequest;
-import com.mockobjects.servlet.MockHttpSession;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -149,12 +149,12 @@ public class TraceBackEventTest extends RhnBaseTestCase {
             }
         };
         request.setSession(new MockHttpSession());
-        request.setupGetRequestURI("http://localhost:8080");
-        request.setupGetMethod("POST");
+        request.setRequestURI("http://localhost:8080");
+        request.setMethod("POST");
         Vector<String> v = new Vector<>();
         v.add("someparam");
         request.setupAddParameter("someparam", "somevalue");
-        request.setupGetParameterNames(v.elements());
+        request.setParameterNames(v.elements());
         evt.setUser(UserTestUtils.findNewUser("testUser",
                     "testOrg" + this.getClass().getSimpleName()));
         evt.setRequest(request);
@@ -175,12 +175,12 @@ public class TraceBackEventTest extends RhnBaseTestCase {
             }
         };
         request.setSession(new MockHttpSession());
-        request.setupGetRequestURI("http://localhost:8080");
-        request.setupGetMethod("POST");
+        request.setRequestURI("http://localhost:8080");
+        request.setMethod("POST");
         Vector<String> v = new Vector<>();
         v.add(paramIn);
         request.setupAddParameter(paramIn, valueIn);
-        request.setupGetParameterNames(v.elements());
+        request.setParameterNames(v.elements());
         evt.setUser(UserTestUtils.findNewUser("testUser",
                     "testOrg" + this.getClass().getSimpleName()));
         evt.setRequest(request);

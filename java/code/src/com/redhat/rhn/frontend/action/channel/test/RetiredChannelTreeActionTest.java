@@ -25,8 +25,8 @@ import com.redhat.rhn.frontend.listview.ListControl;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.channel.ChannelManager;
-import com.redhat.rhn.testing.ActionHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.RimeActionHelper;
 
 import org.junit.jupiter.api.Test;
 
@@ -44,7 +44,7 @@ public class RetiredChannelTreeActionTest extends RhnBaseTestCase {
                 return ChannelManager.retiredChannelTree(user, lc);
             }
         };
-        ActionHelper sah = new ActionHelper();
+        RimeActionHelper sah = new RimeActionHelper();
         sah.setUpAction(action, RhnHelper.DEFAULT_FORWARD);
         sah.getRequest().setupAddParameter(RequestContext.FILTER_STRING, (String) null);
 

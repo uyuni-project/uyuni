@@ -20,8 +20,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.frontend.struts.RequestContext;
+import com.redhat.rhn.testing.MockHttpServletRequest;
 import com.redhat.rhn.testing.MockObjectTestCase;
-import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 import com.redhat.rhn.testing.RhnMockHttpSession;
 import com.redhat.rhn.testing.UserTestUtils;
@@ -52,14 +52,14 @@ public class RequestContextTest extends MockObjectTestCase {
 
         final String requestUrl = "http://localhost:8080/rhn/manager/login";
         final RouteMatch match = new RouteMatch(new Object(), requestUrl, requestUrl, "");
-        final RhnMockHttpServletRequest mockRequest = new RhnMockHttpServletRequest();
+        final MockHttpServletRequest mockRequest = new MockHttpServletRequest();
         RhnMockHttpSession session = new RhnMockHttpSession();
         mockRequest.setSession(session);
 
         mockRequest.setRequestURL(requestUrl);
-        mockRequest.setupGetMethod("POST");
         mockRequest.setMethod("POST");
-        mockRequest.setupPathInfo(URI.create(requestUrl).getPath());
+        mockRequest.setMethod("POST");
+        mockRequest.setPathInfo(URI.create(requestUrl).getPath());
         mockRequest.setupAddParameter("url_bounce", "/rhn/users/UserDetails.do?uid=1");
 
         Response response = RequestResponseFactory.create(new RhnMockHttpServletResponse());
@@ -136,9 +136,9 @@ public class RequestContextTest extends MockObjectTestCase {
      */
     @Test
     public void testbuildPageLink() {
-        RhnMockHttpServletRequest request = new RhnMockHttpServletRequest();
+        MockHttpServletRequest request = new MockHttpServletRequest();
         request.setupAddParameter("someparam", "value");
-        request.setupQueryString("otherparam=foo&barparam=beer");
+        request.setQueryString("otherparam=foo&barparam=beer");
         request.addAttribute("requestedUri", "http://localhost/rhn/somePage.do");
 
         RequestContext requestContext = new RequestContext(request);
@@ -146,7 +146,7 @@ public class RequestContextTest extends MockObjectTestCase {
         String url = requestContext.buildPageLink("someparam", "value");
         assertEquals("http://localhost/rhn/somePage.do?" +
                 "someparam=value&otherparam=foo&barparam=beer", url);
-        request.setupQueryString("otherparam=foo&barparam=beer&someparam=value");
+        request.setQueryString("otherparam=foo&barparam=beer&someparam=value");
         url = requestContext.buildPageLink("someparam", "zzzzz");
 
         assertEquals("http://localhost/rhn/somePage.do?" +

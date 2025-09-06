@@ -31,9 +31,9 @@ import com.redhat.rhn.frontend.action.systems.SPMigrationAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.testing.ChannelTestUtils;
-import com.redhat.rhn.testing.RhnMockDynaActionForm;
-import com.redhat.rhn.testing.RhnMockHttpServletRequest;
-import com.redhat.rhn.testing.TestUtils;
+import com.redhat.rhn.testing.MockDynaActionForm;
+import com.redhat.rhn.testing.MockHttpServletRequest;
+import com.redhat.rhn.testing.MockTestUtils;
 
 import com.mockobjects.servlet.MockHttpServletResponse;
 
@@ -52,16 +52,16 @@ import java.util.Set;
 public class SPMigrationActionTest {
 
     private Server server;
-    private RhnMockHttpServletRequest request;
+    private MockHttpServletRequest request;
     private RequestContext requestContext;
     private SUSEProduct baseProduct;
     private SUSEProduct addonProduct;
-    private RhnMockDynaActionForm form;
+    private MockDynaActionForm form;
     private Channel baseChannel;
 
     @BeforeEach
     public void setUp() throws Exception {
-        request = TestUtils.getRequestWithSessionAndUser();
+        request = MockTestUtils.getRequestWithSessionAndUser();
         requestContext = new RequestContext(request);
         User user = requestContext.getCurrentUser();
         server = ServerFactoryTest.createTestServer(user, true,
@@ -69,7 +69,7 @@ public class SPMigrationActionTest {
         UserManager.storeUser(user);
         baseProduct = SUSEProductTestUtils.createTestSUSEProduct(ChannelFamilyFactoryTest.createTestChannelFamily());
         addonProduct = SUSEProductTestUtils.createTestSUSEProduct(ChannelFamilyFactoryTest.createTestChannelFamily());
-        form = new RhnMockDynaActionForm();
+        form = new MockDynaActionForm();
         baseChannel = ChannelTestUtils.createBaseChannel(user);
 
         form.set("step", "confirm");
