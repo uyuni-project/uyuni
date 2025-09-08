@@ -56,9 +56,9 @@
 <c:if test="${not empty requestScope.dataset}">
 <div class="text-right">
    <rhn:submitted/>
-    <input type="submit" class="btn btn-primary"
-                name ="dispatch"
-        value="${rhn:localize('orgchannel.jsp.submit')}"/>
+    <button type="submit" class="btn btn-primary" name ="dispatch">
+        ${rhn:localize('orgchannel.jsp.submit')}
+    </button>
 </div>
 </c:if>
 </rl:listset>

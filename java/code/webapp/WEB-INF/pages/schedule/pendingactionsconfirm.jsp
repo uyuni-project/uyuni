@@ -22,10 +22,10 @@
     <rhn:csrf />
     <div class="spacewalk-section-toolbar">
         <div class="action-button-wrapper">
-             <input type="submit"
-               name="dispatch"
-               class="btn btn-primary"
-               value='<bean:message key="actions.jsp.confirmcancelactions"/>'/>
+                <button type="submit" name="dispatch" class="btn btn-primary"
+                        value='<bean:message key="actions.jsp.confirmcancelactions"/>'>
+                        <bean:message key="actions.jsp.confirmcancelactions"/>
+                </button>
          </div>
      </div>
                 <rl:list emptykey="pendingactions.jsp.nogroups" styleclass="list">

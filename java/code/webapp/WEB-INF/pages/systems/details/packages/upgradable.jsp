@@ -28,8 +28,10 @@
     <c:if test="${not empty requestScope.all}">
         <div class="spacewalk-section-toolbar">
             <div class="action-button-wrapper">
-                <input type="submit" class="btn btn-default" name="dispatch"
-                        value='<bean:message key="upgradable.jsp.upgrade"/>'/>
+                <button type="submit" class="btn btn-default" name="dispatch"
+                  value='<bean:message key="upgradable.jsp.upgrade"/>'>
+                  <bean:message key="upgradable.jsp.upgrade"/>
+                </button>
             </div>
         </div>
     </c:if>

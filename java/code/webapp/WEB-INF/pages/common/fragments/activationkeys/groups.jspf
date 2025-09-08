@@ -30,8 +30,10 @@
         <div class="spacewalk-section-toolbar">
             <div class="action-button-wrapper">
                 <rhn:submitted/>
-                <input type="submit" name="dispatch" class="btn btn-default"
-                        value='<bean:message key="${param.action_key}"/>'/>
+                <button type="submit" name="dispatch" class="btn btn-default"
+                        value='<bean:message key="${param.action_key}"/>'>
+                        <bean:message key="${param.action_key}"/>
+                </button>
             </div>
         </div>
         <rl:list dataset="pageList"

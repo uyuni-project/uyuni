@@ -30,7 +30,9 @@
    <div class="spacewalk-section-toolbar">
       <div class="action-button-wrapper">
       <rhn:submitted/>
-      <input class="btn btn-default" type="submit" name ="confirm" value="${rhn:localize('org.trust.modify')}" />
+         <button class="btn btn-default" type="submit" name="confirm">
+            ${rhn:localize('org.trust.modify')}
+         </button>
       </div>
    </div>
    <rhn:csrf />

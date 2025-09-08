@@ -62,7 +62,9 @@
   <rhn:hidden name="update" value="${update}" />
 
   <div class="text-right">
-    <input class="btn btn-default" type="submit" name="confirm" value="<bean:message key='ssm.misc.index.syspref.changepreferences'/>" />
+    <button class="btn btn-default" type="submit" name="confirm">
+      <bean:message key='ssm.misc.index.syspref.changepreferences'/>
+    </button>
   </div>
 
 </form>
