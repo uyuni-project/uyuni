@@ -5374,8 +5374,8 @@
         ],
         "repositories" : [
             {
-                "id" : -217,
-                "url" : "http://deb.debian.org/debian/dists/buster/main/binary-amd64/",
+                "id" : -657,
+                "url" : "http://archive.debian.org/debian/dists/buster/main/binary-amd64/",
                 "name" : "debian-10-pool",
                 "distro_target" : "amd64",
                 "description" : "Debian 10 (buster) pool for amd64",
@@ -5387,8 +5387,8 @@
                 ]
             },
             {
-                "id" : -218,
-                "url" : "http://deb.debian.org/debian/dists/buster-updates/main/binary-amd64/",
+                "id" : -658,
+                "url" : "http://archive.debian.org/debian/dists/buster-updates/main/binary-amd64/",
                 "name" : "debian-10-main-updates",
                 "distro_target" : "amd64",
                 "description" : "Debian 10 (buster) AMD64 Main Updates",
@@ -5400,8 +5400,8 @@
                 ]
             },
             {
-                "id" : -219,
-                "url" : "http://security-cdn.debian.org/debian-security/dists/buster/updates/main/binary-amd64/",
+                "id" : -659,
+                "url" : "http://archive.debian.org/debian-security/dists/buster/updates/main/binary-amd64/",
                 "name" : "debian-10-main-security",
                 "distro_target" : "amd64",
                 "description" : "Debian 10 (buster) AMD64 Main Security",
