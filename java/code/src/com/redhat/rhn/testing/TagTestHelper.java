@@ -15,19 +15,24 @@
 
 package com.redhat.rhn.testing;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import javax.servlet.ServletContext;
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.BodyTag;
 import javax.servlet.jsp.tagext.IterationTag;
 import javax.servlet.jsp.tagext.Tag;
 
-import junit.framework.Assert;
-
 /**
  * Sets up mock tag objects in a common configuration.
  * MockHttpServletRequest, MockServletContext and MockHttpSession are attached to MockPageContext
- * @see MockPageContext#setRequest();
- * @see MockPageContext#setServletContext();
- * @see MockPageContext#setSession();
+ *
+ * @see MockPageContext#setRequest(ServletRequest) ();
+ * @see MockPageContext#setServletContext(ServletContext) ();
+ * @see MockPageContext#setSession(HttpSession) ();
  */
 public class TagTestHelper extends AbstractServletTestHelper {
     private final MockPageContext pageContext = new MockPageContext();
@@ -36,7 +41,20 @@ public class TagTestHelper extends AbstractServletTestHelper {
     private final MockJspWriter enclosingWriter = new MockJspWriter();
     private final Tag testSubject;
 
-    private final String getReturnValueName(int returnValue) {
+    /**
+     * @param testSubjectIn The Tag to be tested
+     */
+    public TagTestHelper(Tag testSubjectIn) {
+        this.testSubject = testSubjectIn;
+
+        pageContext.setRequest(getRequest());
+        pageContext.setServletContext(getServletContext());
+        pageContext.setSession(getHttpSession());
+        pageContext.setJspWriter(outWriter);
+        bodyContent.setupGetEnclosingWriter(enclosingWriter);
+    }
+
+    private String getReturnValueName(int returnValue) {
         switch (returnValue) {
             case BodyTag.EVAL_BODY_INCLUDE:
                 return "EVAL_BODY_INCLUDE";
@@ -53,20 +71,6 @@ public class TagTestHelper extends AbstractServletTestHelper {
         }
     }
 
-
-    /**
-     * @param testSubject The Tag to be tested
-     */
-    public TagTestHelper(Tag testSubject) {
-        this.testSubject = testSubject;
-
-        pageContext.setRequest(getRequest());
-        pageContext.setServletContext(getServletContext());
-        pageContext.setSession(getHttpSession());
-        pageContext.setJspWriter(outWriter);
-        bodyContent.setupGetEnclosingWriter(enclosingWriter);
-    }
-
     /**
      * @return The writer use when making calls to PageContext.getOut
      */
@@ -80,6 +84,7 @@ public class TagTestHelper extends AbstractServletTestHelper {
 
     /**
      * Assert that the return value of doStartTag is equal to an expectedValue
+     *
      * @param expectedValue value to check against doStartTag
      */
     public void assertDoStartTag(final int expectedValue) throws JspException {
@@ -88,18 +93,17 @@ public class TagTestHelper extends AbstractServletTestHelper {
         checkReturnValue("doStartTag", expectedValue, testSubject.doStartTag());
     }
 
-    private final void checkReturnValue(final String methodName, final int expectedValue, final int returnValue) {
-        Assert.assertEquals(methodName + " expected value " + getReturnValueName(expectedValue) +
-            " but was " + getReturnValueName(returnValue),
-            expectedValue, returnValue);
+    private void checkReturnValue(final String methodName, final int expectedValue, final int returnValue) {
+        assertEquals(expectedValue, returnValue, methodName + " expected value " +
+                getReturnValueName(expectedValue) + " but was " + getReturnValueName(returnValue));
     }
 
     /**
      * Invoke doInitBody on the test subject
      */
     public void testDoInitBody() throws JspException {
-        Assert.assertTrue("doInitBody should not be called as test subject not an instance of BodyTag",
-            testSubject instanceof BodyTag);
+        assertTrue(testSubject instanceof BodyTag,
+                "doInitBody should not be called as test subject not an instance of BodyTag");
 
         ((BodyTag) testSubject).setBodyContent(bodyContent);
         ((BodyTag) testSubject).doInitBody();
@@ -107,21 +111,23 @@ public class TagTestHelper extends AbstractServletTestHelper {
 
     /**
      * Assert that the return value of doAfterBody is equal to an expectedValue
+     *
      * @param expectedValue value to check against doAfterBody
      */
     public void assertDoAfterBody(int expectedValue) throws JspException {
-        Assert.assertTrue("doAfterTag should not be called as test subject not an instance of IterationTag",
-            testSubject instanceof IterationTag);
+        assertTrue(testSubject instanceof IterationTag,
+                "doAfterTag should not be called as test subject not an instance of IterationTag");
 
         checkReturnValue("doAfterTag", expectedValue, ((IterationTag) testSubject).doAfterBody());
     }
 
     /**
      * Assert that the return value of doEndTag is equal to an expectedValue
+     *
      * @param expectedValue value to check against doEndTag
      */
     public void assertDoEndTag(int expectedValue) throws JspException {
-        Assert.assertEquals("doEndTag returned unexpected value" + getReturnValueName(expectedValue),
-            expectedValue, testSubject.doEndTag());
+        assertEquals(expectedValue, testSubject.doEndTag(),
+                "doEndTag returned unexpected value" + getReturnValueName(expectedValue));
     }
 }

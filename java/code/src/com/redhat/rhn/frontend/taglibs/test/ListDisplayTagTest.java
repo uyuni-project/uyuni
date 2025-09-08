@@ -23,7 +23,7 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.taglibs.ListDisplayTag;
 import com.redhat.rhn.frontend.taglibs.ListTag;
 import com.redhat.rhn.testing.MockObjectTestCase;
-import com.redhat.rhn.testing.RhnMockJspWriter;
+import com.redhat.rhn.testing.MockJspWriter;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.jmock.Expectations;
@@ -48,7 +48,7 @@ public class ListDisplayTagTest extends MockObjectTestCase {
 
     private HttpServletRequest request;
     private PageContext pageContext;
-    private RhnMockJspWriter writer;
+    private MockJspWriter writer;
 
     @BeforeEach
     public void setUp() {
@@ -56,7 +56,7 @@ public class ListDisplayTagTest extends MockObjectTestCase {
         TestUtils.disableLocalizationLogging();
         request = mock(HttpServletRequest.class);
         pageContext = mock(PageContext.class);
-        writer = new RhnMockJspWriter();
+        writer = new MockJspWriter();
 
         ldt = new ListDisplayTag();
         ListTag lt = new ListTag();
@@ -93,7 +93,6 @@ public class ListDisplayTagTest extends MockObjectTestCase {
         tagval = ldt.doEndTag();
         ldt.release();
         assertEquals(Tag.EVAL_PAGE, tagval);
-        writer.verify();
         String htmlOut = writer.toString();
         assertPaginationControls(htmlOut);
     }
@@ -136,7 +135,6 @@ public class ListDisplayTagTest extends MockObjectTestCase {
         tagval = ldt.doEndTag();
         ldt.release();
         assertEquals(tagval, Tag.EVAL_PAGE);
-        writer.verify();
         String htmlOut = writer.toString();
         assertPaginationControls(htmlOut);
     }

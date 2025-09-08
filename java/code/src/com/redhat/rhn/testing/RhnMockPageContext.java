@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.testing;
 
-import com.mockobjects.servlet.MockPageContext;
-
 import javax.servlet.ServletResponse;
 
 /**

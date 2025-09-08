@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.testing;
 
-import com.mockobjects.servlet.MockHttpSession;
-
 import org.apache.commons.collections.iterators.IteratorEnumeration;
 
 import java.util.Enumeration;

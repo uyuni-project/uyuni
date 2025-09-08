@@ -39,7 +39,6 @@ import javax.servlet.descriptor.JspConfigDescriptor;
 
 public class MockServletContext implements ServletContext {
 
-    // Simple data structures to replace mockobjects functionality
     private Map<String, Object> attributes = new HashMap<>();
     private Set<String> resourcePaths;
     private List<String> realPaths = new ArrayList<>();

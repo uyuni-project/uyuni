@@ -144,7 +144,7 @@ public class MockJspWriter extends JspWriter {
     }
 
     @Override
-    public void println(String sIn) throws IOException {
+    public void println(String sIn) {
         if (sIn != null) {
             stringWriter.write(sIn);
         }
@@ -152,7 +152,7 @@ public class MockJspWriter extends JspWriter {
     }
 
     @Override
-    public void println(Object oIn) throws IOException {
+    public void println(Object oIn) {
         printWriter.print(oIn);
     }
 

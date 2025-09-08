@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.testing;
 
-import com.mockobjects.servlet.MockJspWriter;
-
 import java.io.IOException;
 
 /**

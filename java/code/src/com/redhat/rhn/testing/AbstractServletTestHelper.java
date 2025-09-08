@@ -23,9 +23,6 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
-/**
- * $Revision: 1.1 $
- */
 public abstract class AbstractServletTestHelper {
     protected final MockHttpServletRequest request = new MockHttpServletRequest();
     protected final MockHttpServletResponse response = new MockHttpServletResponse();

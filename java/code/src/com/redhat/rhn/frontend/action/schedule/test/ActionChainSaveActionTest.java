@@ -26,7 +26,8 @@ import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.frontend.action.schedule.ActionChainSaveAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
-import com.redhat.rhn.testing.RhnMockHttpServletRequest;
+import com.redhat.rhn.testing.MockHttpServletRequest;
+import com.redhat.rhn.testing.MockTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.utils.Json;
@@ -52,7 +53,7 @@ public class ActionChainSaveActionTest extends BaseTestCaseWithUser {
     @SuppressWarnings("unchecked")
     @Test
     public void testSave() throws Exception {
-        RhnMockHttpServletRequest request = TestUtils.getRequestWithSessionAndUser();
+        MockHttpServletRequest request = MockTestUtils.getRequestWithSessionAndUser();
         user = new RequestContext(request).getCurrentUser();
 
         ActionChainSaveAction saveAction = new ActionChainSaveAction();

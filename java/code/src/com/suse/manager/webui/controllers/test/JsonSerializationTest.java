@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.redhat.rhn.testing.MockHttpServletResponse;
-import com.redhat.rhn.testing.RhnMockHttpServletResponse;
+import com.redhat.rhn.testing.MockHttpServletResponse;
 
 import com.suse.manager.webui.utils.gson.ResultJson;
 
@@ -60,7 +60,7 @@ public class JsonSerializationTest {
 
     @Test
     public void testOptionalEncodingSuccess() {
-        Response response = RequestResponseFactory.create(new RhnMockHttpServletResponse());
+        Response response = RequestResponseFactory.create(new MockHttpServletResponse());
         Optional<String> optString = Optional.of("test");
         json(response, optString, new TypeToken<>() { });
     }

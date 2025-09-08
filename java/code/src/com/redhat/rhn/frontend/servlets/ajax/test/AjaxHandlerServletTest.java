@@ -26,10 +26,8 @@ import com.redhat.rhn.domain.session.WebSessionFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.servlets.ajax.AjaxHandlerServlet;
 import com.redhat.rhn.testing.MockHttpServletRequest;
-import com.redhat.rhn.testing.RhnMockHttpServletResponse;
+import com.redhat.rhn.testing.MockHttpServletResponse;
 import com.redhat.rhn.testing.UserTestUtils;
-
-import com.mockobjects.servlet.MockRequestDispatcher;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,6 +38,10 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.util.Set;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
 
 public class AjaxHandlerServletTest extends AjaxHandlerServlet {
@@ -59,7 +61,7 @@ public class AjaxHandlerServletTest extends AjaxHandlerServlet {
 
         request.addAttribute("session", session);
         request.setRequestDispatcher(new MockRequestDispatcher());
-        response = new RhnMockHttpServletResponse();
+        response = new MockHttpServletResponse();
         servlet = new AjaxHandlerServlet();
     }
 
@@ -158,5 +160,22 @@ public class AjaxHandlerServletTest extends AjaxHandlerServlet {
 
         // sortOrder is set according to request body
         assertEquals(sortOrder, request.getAttribute("sortOrder"));
+    }
+
+    public class MockRequestDispatcher implements RequestDispatcher {
+        private ServletRequest request;
+        private ServletResponse response;
+
+        public void forward(ServletRequest aRequest, ServletResponse aResponse)
+                throws ServletException, IOException {
+            request = aRequest;
+            response = aResponse;
+        }
+
+        public void include(ServletRequest aRequest, ServletResponse aResponse)
+                throws ServletException, IOException {
+            request = aRequest;
+            response = aResponse;
+        }
     }
 }

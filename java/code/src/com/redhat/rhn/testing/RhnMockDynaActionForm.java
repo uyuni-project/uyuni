@@ -16,8 +16,6 @@ package com.redhat.rhn.testing;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
-import com.mockobjects.Expectation;
-
 import org.apache.struts.action.DynaActionForm;
 import org.apache.struts.action.DynaActionFormClass;
 import org.apache.struts.config.FormBeanConfig;
@@ -32,8 +30,7 @@ import java.util.Set;
  * a Struts DynaActionForm which allows the user to
  * set expected values during testing.
  */
-public class RhnMockDynaActionForm extends DynaActionForm
-                                   implements Expectation {
+public class RhnMockDynaActionForm extends DynaActionForm {
 
     /** Name of FormBean */
     private String formName;
@@ -157,60 +154,6 @@ public class RhnMockDynaActionForm extends DynaActionForm
     @Override
     public Object get(String name) {
         return actual.get(name);
-    }
-
-    /**
-     * Verifies the object received the expected values.
-     */
-    @Override
-    public void verify() {
-        // need to compare the values in the expected list with
-        // those of the actual list.
-
-        Set<String> keys = expected.keySet();
-        for (String key : keys) {
-            Object expValue = expected.get(key);
-            Object actValue = actual.get(key);
-
-            if (expValue == null) {
-                throw new NullPointerException("Expected value of [" + key + "] is null.");
-            }
-
-            if (!expValue.equals(actValue)) {
-                String msg = "Did not receive expected values.\n" + "key [" +
-                        key +
-                        "] expected value [" +
-                        expValue +
-                        "] actual value [" +
-                        actValue +
-                        "]";
-                fail(msg);
-            }
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean hasExpectations() {
-        return !expected.isEmpty();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setExpectNothing() {
-        expectNothing = true;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setFailOnVerify() {
-        // do nothing
     }
 
     /**

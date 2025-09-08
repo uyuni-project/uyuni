@@ -73,13 +73,13 @@ public class SparkTestUtils {
         final String requestUrl = substituteVariables(matchUrl, vals);
         final RouteMatch match = new RouteMatch(new Object(), matchUrl, requestUrl, "");
 
-        final RhnMockHttpServletRequest mockRequest = new RhnMockHttpServletRequest();
-        mockRequest.setSession(new RhnMockHttpSession());
+        final MockHttpServletRequest mockRequest = new MockHttpServletRequest();
+        mockRequest.setSession(new MockHttpSession());
         mockRequest.setRequestURL(requestUrl);
-        mockRequest.setupGetMethod("GET");
-        mockRequest.setupGetInputStream(new MockServletInputStream());
+        mockRequest.setMethod("GET");
+        mockRequest.setInputStream(new MockServletInputStream());
         setQueryParams(mockRequest, queryParams);
-        mockRequest.setupPathInfo(URI.create(requestUrl).getPath());
+        mockRequest.setPathInfo(URI.create(requestUrl).getPath());
         httpHeaders.forEach(mockRequest::setupGetHeader);
 
         return RequestResponseFactory.create(match, mockRequest);
@@ -121,13 +121,13 @@ public class SparkTestUtils {
         final String requestUrl = substituteVariables(matchUrl, vals);
         final RouteMatch match = new RouteMatch(new Object(), matchUrl, requestUrl, "");
 
-        final RhnMockHttpServletRequest mockRequest = new RhnMockHttpServletRequest();
-        mockRequest.setSession(new RhnMockHttpSession());
+        final MockHttpServletRequest mockRequest = new MockHttpServletRequest();
+        mockRequest.setSession(new MockHttpSession());
         mockRequest.setRequestURL(requestUrl);
-        mockRequest.setupGetMethod("GET");
-        mockRequest.setupGetInputStream(new MockServletInputStream());
+        mockRequest.setMethod("GET");
+        mockRequest.setInputStream(new MockServletInputStream());
         setMultiValueQueryParams(mockRequest, queryParams);
-        mockRequest.setupPathInfo(URI.create(requestUrl).getPath());
+        mockRequest.setPathInfo(URI.create(requestUrl).getPath());
         httpHeaders.forEach(mockRequest::setupGetHeader);
 
         return RequestResponseFactory.create(match, mockRequest);
@@ -206,20 +206,17 @@ public class SparkTestUtils {
         final String requestUrl = substituteVariables(matchUrl, vals);
         final RouteMatch match = new RouteMatch(new Object(), matchUrl, requestUrl, "");
 
-        final RhnMockHttpServletRequest mockRequest = new RhnMockHttpServletRequest();
-        mockRequest.setSession(new RhnMockHttpSession());
+        final MockHttpServletRequest mockRequest = new MockHttpServletRequest();
+        mockRequest.setSession(new MockHttpSession());
         mockRequest.setRequestURL(requestUrl);
-        mockRequest.setupGetMethod(method);
         mockRequest.setMethod(method);
-        // we need to set the query params twice as mockobjects request uses two separate
-        // backing objects
         MockServletInputStream in = new MockServletInputStream();
         in.setupRead(body.getBytes(
                 mockRequest.getCharacterEncoding() != null ?
                         mockRequest.getCharacterEncoding() : "UTF-8"));
-        mockRequest.setupGetInputStream(in);
+        mockRequest.setInputStream(in);
         setQueryParams(mockRequest, queryParams);
-        mockRequest.setupPathInfo(URI.create(requestUrl).getPath());
+        mockRequest.setPathInfo(URI.create(requestUrl).getPath());
 
         httpHeaders.forEach(
                 (name, val) -> mockRequest.setupGetHeader(name, val));
@@ -254,19 +251,16 @@ public class SparkTestUtils {
         final String requestUrl = substituteVariables(matchUrl, vals);
         final RouteMatch match = new RouteMatch(new Object(), matchUrl, requestUrl, "");
 
-        final RhnMockHttpServletRequest mockRequest = new RhnMockHttpServletRequest();
-        mockRequest.setSession(new RhnMockHttpSession());
+        final MockHttpServletRequest mockRequest = new MockHttpServletRequest();
+        mockRequest.setSession(new MockHttpSession());
         mockRequest.setRequestURL(requestUrl);
-        mockRequest.setupGetMethod(method);
         mockRequest.setMethod(method);
-        // we need to set the query params twice as mockobjects request uses two separate
-        // backing objects
         MockServletInputStream in = new MockServletInputStream();
         in.setupRead(body.getBytes(
                 mockRequest.getCharacterEncoding() != null ?
                         mockRequest.getCharacterEncoding() : "UTF-8"));
-        mockRequest.setupGetInputStream(in);
-        mockRequest.setupPathInfo(URI.create(requestUrl).getPath());
+        mockRequest.setInputStream(in);
+        mockRequest.setPathInfo(URI.create(requestUrl).getPath());
 
         httpHeaders.forEach(
                 mockRequest::setupGetHeader);
@@ -274,21 +268,17 @@ public class SparkTestUtils {
         return RequestResponseFactory.create(match, mockRequest);
     }
 
-    private static void setQueryParams(RhnMockHttpServletRequest request, Map<String, String> queryParams) {
-        // we need to set the query params twice as mockobjects request uses two separate
-        // backing objects
+    private static void setQueryParams(MockHttpServletRequest request, Map<String, String> queryParams) {
         queryParams.forEach((name, val) -> request.setupAddParameter(name, new String[]{val}));
         // we must convert to a "multi-value map"
-        request.setupGetParameterMap(queryParams.entrySet().stream().collect(
+        request.setParameters(queryParams.entrySet().stream().collect(
                 Collectors.toMap(v -> v.getKey(), v -> new String[]{v.getValue()})));
     }
 
-    private static void setMultiValueQueryParams(RhnMockHttpServletRequest request,
+    private static void setMultiValueQueryParams(MockHttpServletRequest request,
                                                  Map<String, List<String>> queryParams) {
-        // we need to set the query params twice as mockobjects request uses two separate
-        // backing objects
         queryParams.forEach((name, val) -> request.setupAddParameter(name, val.toArray(new String[0])));
-        request.setupGetParameterMap(queryParams.entrySet().stream().collect(
+        request.setParameters(queryParams.entrySet().stream().collect(
                 Collectors.toMap(v -> v.getKey(), v -> v.getValue().toArray(new String[0]))));
     }
 }

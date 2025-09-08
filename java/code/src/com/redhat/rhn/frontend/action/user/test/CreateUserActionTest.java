@@ -22,7 +22,7 @@ import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.common.RhnConfiguration;
 import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.frontend.action.user.UserActionHelper;
-import com.redhat.rhn.testing.RhnMockDynaActionForm;
+import com.redhat.rhn.testing.MockDynaActionForm;
 import com.redhat.rhn.testing.RhnPostMockStrutsTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.webapp.RhnServletListener;
@@ -57,7 +57,7 @@ public class CreateUserActionTest extends RhnPostMockStrutsTestCase {
     @Test
     public void testNewUserIntoOrgSatellite() {
         setRequestPathInfo("/newlogin/CreateUserSubmit");
-        RhnMockDynaActionForm form = fillOutForm("userCreateForm", false);
+        MockDynaActionForm form = fillOutForm("userCreateForm", false);
         setActionForm(form);
         actionPerform();
         String forwardPath = getActualForward();
@@ -72,7 +72,7 @@ public class CreateUserActionTest extends RhnPostMockStrutsTestCase {
         factory.updateConfigurationValue(RhnConfiguration.KEYS.PSW_CHECK_SPECIAL_CHAR_FLAG, true);
 
         setRequestPathInfo("/newlogin/CreateUserSubmit");
-        RhnMockDynaActionForm form = fillOutForm("userCreateForm", true);
+        MockDynaActionForm form = fillOutForm("userCreateForm", true);
         setActionForm(form);
         actionPerform();
         String forwardPath = getActualForward();
@@ -83,8 +83,8 @@ public class CreateUserActionTest extends RhnPostMockStrutsTestCase {
     /**
      * @return Properly filled out user creation form.
      */
-    private RhnMockDynaActionForm fillOutForm(String formName, boolean usePAM) {
-        RhnMockDynaActionForm f = new RhnMockDynaActionForm(formName);
+    private MockDynaActionForm fillOutForm(String formName, boolean usePAM) {
+        MockDynaActionForm f = new MockDynaActionForm(formName);
         f.set("login", "testUser" + TestUtils.randomString());
         f.set("address1", "123 somewhere ln");
         f.set("address2", "");

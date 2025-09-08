@@ -14,9 +14,6 @@
  */
 package com.redhat.rhn.testing;
 
-import com.mockobjects.ExpectationValue;
-import com.mockobjects.servlet.MockHttpServletResponse;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,7 +29,6 @@ public class RhnMockHttpServletResponse extends MockHttpServletResponse {
     private final Map<String, String> header = new HashMap<>();
     private String redirect;
     private String encoding;
-    private final ExpectationValue myStatus = new ExpectationValue("RhnMockHttpServletResponse.setStatus");
 
     /** {@inheritDoc} */
     @Override
@@ -126,16 +122,10 @@ public class RhnMockHttpServletResponse extends MockHttpServletResponse {
     }
 
     /**
-     * Set the expected response status
-     * @param status the response status
+     * {@inheritDoc}
      */
-    public void setExpectedStatus(int status) {
-        myStatus.setExpected(status);
-    }
-
     @Override
     public void setStatus(int status) {
         super.setStatus(status);
-        myStatus.setActual(status);
     }
 }

@@ -23,11 +23,10 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.taglibs.SystemTimeMessageTag;
+import com.redhat.rhn.testing.MockJspWriter;
+import com.redhat.rhn.testing.MockPageContext;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
-
-import com.mockobjects.servlet.MockJspWriter;
-import com.mockobjects.servlet.MockPageContext;
 
 import org.junit.jupiter.api.Test;
 

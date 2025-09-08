@@ -26,12 +26,11 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.testing.MockDynaActionForm;
 import com.redhat.rhn.testing.MockHttpServletRequest;
+import com.redhat.rhn.testing.MockHttpServletResponse;
 import com.redhat.rhn.testing.MockTestUtils;
 import com.redhat.rhn.testing.RhnJmockBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
-
-import com.mockobjects.servlet.MockHttpServletResponse;
 
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;

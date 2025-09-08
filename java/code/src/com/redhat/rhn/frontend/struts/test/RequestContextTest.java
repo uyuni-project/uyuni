@@ -21,9 +21,9 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.testing.MockHttpServletRequest;
+import com.redhat.rhn.testing.MockHttpServletResponse;
+import com.redhat.rhn.testing.MockHttpSession;
 import com.redhat.rhn.testing.MockObjectTestCase;
-import com.redhat.rhn.testing.RhnMockHttpServletResponse;
-import com.redhat.rhn.testing.RhnMockHttpSession;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.webui.controllers.login.LoginController;
@@ -53,7 +53,7 @@ public class RequestContextTest extends MockObjectTestCase {
         final String requestUrl = "http://localhost:8080/rhn/manager/login";
         final RouteMatch match = new RouteMatch(new Object(), requestUrl, requestUrl, "");
         final MockHttpServletRequest mockRequest = new MockHttpServletRequest();
-        RhnMockHttpSession session = new RhnMockHttpSession();
+        MockHttpSession session = new MockHttpSession();
         mockRequest.setSession(session);
 
         mockRequest.setRequestURL(requestUrl);
@@ -62,7 +62,7 @@ public class RequestContextTest extends MockObjectTestCase {
         mockRequest.setPathInfo(URI.create(requestUrl).getPath());
         mockRequest.setupAddParameter("url_bounce", "/rhn/users/UserDetails.do?uid=1");
 
-        Response response = RequestResponseFactory.create(new RhnMockHttpServletResponse());
+        Response response = RequestResponseFactory.create(new MockHttpServletResponse());
         // logging in
         LoginHelper.successfulLogin(mockRequest, response.raw(), UserTestUtils.findNewUser("testUser", "testOrg" +
                 this.getClass().getSimpleName()));

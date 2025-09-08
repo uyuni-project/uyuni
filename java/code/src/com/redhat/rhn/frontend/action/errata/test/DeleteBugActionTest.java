@@ -31,10 +31,10 @@ import com.redhat.rhn.testing.MockHttpServletRequest;
 import com.redhat.rhn.testing.MockHttpSession;
 import com.redhat.rhn.testing.MockTestUtils;
 import com.redhat.rhn.testing.RhnJmockBaseTestCase;
-import com.redhat.rhn.testing.RhnMockDynaActionForm;
 
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.DynaActionForm;
 import org.junit.jupiter.api.Test;
 
 import javax.servlet.http.HttpServletResponse;
@@ -58,7 +58,7 @@ public class DeleteBugActionTest extends RhnJmockBaseTestCase {
         request.setSession(session);
         request.setupServerName("mymachine.rhndev.redhat.com");
 
-        RhnMockDynaActionForm form = new RhnMockDynaActionForm();
+        DynaActionForm form = new DynaActionForm();
 
         RequestContext requestContext = new RequestContext(request);
 

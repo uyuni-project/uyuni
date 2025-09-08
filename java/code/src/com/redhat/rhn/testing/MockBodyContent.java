@@ -15,8 +15,6 @@
 
 package com.redhat.rhn.testing;
 
-import com.mockobjects.util.AssertMo;
-
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
@@ -87,7 +85,7 @@ public class MockBodyContent extends BodyContent {
     }
 
     private void notImplemented() {
-        AssertMo.notImplemented(MockBodyContent.class.getName());
+        throw new UnsupportedOperationException();
     }
 
     public Reader getReader() {

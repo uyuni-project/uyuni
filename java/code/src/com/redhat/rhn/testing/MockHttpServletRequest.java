@@ -52,9 +52,6 @@ public class MockHttpServletRequest implements HttpServletRequest {
 
     private static final String LOCALHOST = "localhost";
 
-    /**
-     * Request URL
-     */
     private String requestURL;
     /**
      * Request URI
@@ -176,6 +173,10 @@ public class MockHttpServletRequest implements HttpServletRequest {
      * Reader
      */
     private BufferedReader reader;
+    /**
+     * Input stream
+     */
+    private ServletInputStream inputStream;
 
 
     /**
@@ -195,7 +196,7 @@ public class MockHttpServletRequest implements HttpServletRequest {
         this.pathInfo = null;
         this.queryString = null;
         this.locales.add(Locale.getDefault());
-        this.session = new RhnMockHttpSession();
+        this.session = new MockHttpSession();
         this.method = "POST";
         this.port = 80;
         this.remoteAddr = "127.0.0.1";
@@ -556,7 +557,11 @@ public class MockHttpServletRequest implements HttpServletRequest {
 
     @Override
     public ServletInputStream getInputStream() throws IOException {
-        return null;
+        return inputStream;
+    }
+
+    public void setInputStream(ServletInputStream inputStreamIn) {
+        this.inputStream = inputStreamIn;
     }
 
     @Override
@@ -600,6 +605,10 @@ public class MockHttpServletRequest implements HttpServletRequest {
         String[] reduced = Arrays.copyOfRange(existing, 1, existing.length);
         parameters.put(name, reduced);
         return existing;
+    }
+
+    public void setParameters(Map<String, String[]> map) {
+        parameters = map;
     }
 
     @Override

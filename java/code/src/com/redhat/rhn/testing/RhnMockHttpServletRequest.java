@@ -15,8 +15,6 @@
  */
 package com.redhat.rhn.testing;
 
-import com.mockobjects.servlet.MockHttpServletRequest;
-
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -57,7 +55,7 @@ public class RhnMockHttpServletRequest extends MockHttpServletRequest {
         parameterMap = new HashMap<>();
         cookies = new ArrayList<>();
         setupServerName("somehost.rhn.redhat.com");
-        setupGetRequestURI("/rhn/network/somepage.do");
+        setRequestURI("/rhn/network/somepage.do");
         setLocale(Locale.getDefault());
         setSession(new RhnMockHttpSession());
         setMethod("POST");
@@ -164,13 +162,6 @@ public class RhnMockHttpServletRequest extends MockHttpServletRequest {
         return parameterMap;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setupGetParameterMap(Map map) {
-        parameterMap = map;
-    }
 
     /** {@inheritDoc} */
     @Override

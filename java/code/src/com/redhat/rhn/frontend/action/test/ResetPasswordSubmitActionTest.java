@@ -26,9 +26,8 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.MockDynaActionForm;
 import com.redhat.rhn.testing.MockHttpServletRequest;
 import com.redhat.rhn.testing.MockHttpServletResponse;
+import com.redhat.rhn.testing.MockHttpSession;
 import com.redhat.rhn.testing.UserTestUtils;
-
-import com.mockobjects.servlet.MockHttpSession;
 
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -125,8 +124,8 @@ public class ResetPasswordSubmitActionTest extends BaseTestCaseWithUser {
         RequestContext requestContext = new RequestContext(request);
 
         MockHttpSession mockSession = new MockHttpSession();
-        mockSession.setupGetAttribute("token", null);
-        mockSession.setupGetAttribute("request_method", "GET");
+        mockSession.setAttribute("token", null);
+        mockSession.setAttribute("request_method", "GET");
         request.setSession(mockSession);
         request.setupServerName("mymachine.rhndev.redhat.com");
         requestContext.getWebSession();

@@ -47,14 +47,8 @@ public class ErrataSearchActionTest extends RhnBaseTestCase {
         ah.setUpAction(action, RhnHelper.DEFAULT_FORWARD);
         ah.getForm().set(BaseSearchAction.VIEW_MODE, BaseSearchAction.OPT_ADVISORY);
         ah.getForm().set(RhnAction.SUBMITTED, Boolean.TRUE);
-        // these are duplicated on PURPOSE! Because mockobjects SUCK ASS!
         ah.getRequest().setupAddParameter(BaseSearchAction.SEARCH_STR, name);
-        ah.getRequest().setupAddParameter(BaseSearchAction.SEARCH_STR, name);
-        ah.getRequest().setupAddParameter(BaseSearchAction.VIEW_MODE,
-                        BaseSearchAction.OPT_ADVISORY);
-        ah.getRequest().setupAddParameter(BaseSearchAction.VIEW_MODE,
-                        BaseSearchAction.OPT_ADVISORY);
-        ah.getRequest().setupAddParameter(BaseSearchAction.FINE_GRAINED, "on");
+        ah.getRequest().setupAddParameter(BaseSearchAction.VIEW_MODE, BaseSearchAction.OPT_ADVISORY);
         ah.getRequest().setupAddParameter(BaseSearchAction.FINE_GRAINED, "on");
 
         Map<String, String> paramnames = new HashMap<>();
