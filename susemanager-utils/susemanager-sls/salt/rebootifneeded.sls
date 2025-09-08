@@ -9,6 +9,9 @@ mgr_reboot_if_needed:
 {%- elif grains['os_family'] == 'Debian' %}
     - onlyif:
       - /usr/bin/test -e /var/run/reboot-required
+{%- elif grains.get('transactional', False) and grains['os_family'] == 'Suse' %}
+    - onlyif:
+      - /usr/bin/snapper list --columns number 2>/dev/null | /usr/bin/grep '+'
 {%- elif grains['os_family'] == 'Suse' and grains['osmajorrelease'] <= 12 %}
     - onlyif:
       - /usr/bin/test -e /boot/do_purge_kernels
