@@ -39,6 +39,16 @@
         </div>
       </div>
     </li>
+    <li class="list-group-item">
+      <div class="row">
+        <div class="col-sm-2">
+          <strong><bean:message key="system.event.actionId"/>:</strong> 
+        </div>
+        <div class="col-sm-10">
+          ${requestScope.aid}
+        </div>
+      </div>
+    </li>
     <c:if test="${requestScope.typePlaybook && not empty requestScope.inventory}">
       <li class="list-group-item">
         <div class="row">
