@@ -1656,6 +1656,9 @@ class RepoSync(object):
         for index, what in enumerate(to_process):
             # pylint: disable-next=unused-variable
             pack, to_download, to_link = what
+            log(0, f"pack: {pack}")
+            log(0, f"to_download: {to_download}")
+            # log(0, f"pack.a_pkg.header: {pack.a_pkg.header}")
             if not to_download:
                 continue
             import_count += 1
@@ -1668,79 +1671,166 @@ class RepoSync(object):
                     # pylint: disable-next=broad-exception-raised
                     raise Exception
 
-                pack.load_checksum_from_header()
+                if _is_snap_pack(pack):
+                    # ---- SNAP PATH (no a_pkg/header available) ----
+                    log(0, "snap: skipping load_checksum_from_header and a_pkg usage")
 
-                if not self.metadata_only:
-                    rel_package_path = rhnPackageUpload.relative_path_from_header(
-                        pack.a_pkg.header,
-                        self.org_id,
-                        pack.a_pkg.checksum_type,
-                        pack.a_pkg.checksum,
-                    )
-                else:
-                    rel_package_path = None
+                    # Ensure the minimal fields we need exist (fall back conservatively)
+                    name = getattr(pack, "name", None) or "unknown"
+                    epoch = getattr(pack, "epoch", None) or "0"
+                    version = getattr(pack, "version", None) or "0"
+                    release = getattr(pack, "release", None) or "0"
+                    arch = getattr(pack, "arch", None) or "noarch"
 
-                if rel_package_path:
-                    # Save uploaded package to cache with repository checksum type
-
-                    # First write the package to the filesystem to final location
-                    # pylint: disable=W0703
+                    payload_size = 0
                     try:
-                        importLib.move_package(
-                            pack.a_pkg.payload_stream.name,
-                            basedir=mount_point,
-                            relpath=rel_package_path,
-                            checksum_type=pack.a_pkg.checksum_type,
-                            checksum=pack.a_pkg.checksum,
-                            force=1,
-                        )
-                    except OSError:
-                        e = sys.exc_info()[1]
-                        raise_with_tb(
-                            # pylint: disable-next=consider-using-f-string
-                            rhnFault(50, "Package upload failed: %s" % e),
-                            sys.exc_info()[2],
-                        )
-                    except importLib.FileConflictError:
-                        raise_with_tb(
-                            rhnFault(50, "File already exists"), sys.exc_info()[2]
-                        )
+                        payload_size = os.path.getsize(stage_path)
                     except Exception:
-                        raise_with_tb(rhnFault(50, "File error"), sys.exc_info()[2])
+                        pass
 
-                    # Remove any pending scheduled file deletion for this package
-                    h_delete_package_queue.execute(path=rel_package_path)
+                    checksum_type = getattr(pack, "checksum_type", None)
+                    checksum = getattr(pack, "checksum", None)
 
-                pkg = mpmSource.create_package(
-                    pack.a_pkg.header,
-                    size=pack.a_pkg.payload_size,
-                    checksum_type=pack.a_pkg.checksum_type,
-                    checksum=pack.a_pkg.checksum,
-                    relpath=rel_package_path,
-                    org_id=self.org_id,
-                    header_start=pack.a_pkg.header_start,
-                    header_end=pack.a_pkg.header_end,
-                    channels=[],
-                )
+                    rel_package_path = None  # metadata-only
 
-                if pack.a_pkg.header.is_source:
-                    mpm_src_batch.append(pkg)
-                else:
+                    minimal_header = _MinimalHeader(name, epoch, version, release, arch, packaging=None)
+
+                    pkg = mpmSource.create_package(
+                        minimal_header,
+                        size=payload_size,
+                        checksum_type=checksum_type,
+                        checksum=checksum,
+                        relpath=rel_package_path,
+                        org_id=self.org_id,
+                        header_start=0,
+                        header_end=0,
+                        channels=[],
+                    )
+                    print('successful create_package for snap')
+                    log(0, f"pkg: {pkg}")
+
+                    pkg.name = str(name or getattr(pack, "name", "") or "unknown")
+                    pkg.epoch = str(epoch if epoch not in (None, "") else "0")
+                    pkg.version = str(version or "0")
+                    pkg.release = str(release or "0")
+                    pkg.arch = str(arch or "noarch")
+                    pkg.org_id = getattr(self, "org_id", None) or 1  # 以实际 org 为准
+
+                    try:
+                        pkg.package_size = os.path.getsize(stage_path) or 0
+                    except Exception:
+                        pkg.package_size = 0
+
+                    if getattr(pkg, "checksum_list", None) is None and checksum_type and checksum:
+                        pkg.checksum_list = [(checksum_type, checksum)]
+
+                    if getattr(pkg, "md5sum", None) is None and checksum_type == "md5":
+                        pkg.md5sum = checksum
+
+                    log(0, f"DEBUG SNAP PKG: name={pkg.name}, evr={pkg.epoch}:{pkg.version}-{pkg.release}, "
+                        f"arch={pkg.arch}, size={pkg.package_size}, checksum_list={pkg.checksum_list}")
+
+                    # Ensure importer-friendly fields are not None
+                    if getattr(pkg, "package_size", None) in (None, 0):
+                        pkg.package_size = payload_size or 0
+                    if getattr(pkg, "checksum_list", None) is None and checksum_type and checksum:
+                        # most code expects an iterable of (type, value) pairs
+                        pkg.checksum_list = [(checksum_type, checksum)]
+
+                    log(0, f"pkg2: {pkg}")
                     mpm_bin_batch.append(pkg)
-                # we do not want to keep a whole 'a_pkg' object for every package in memory,
-                # because we need only checksum. see BZ 1397417
-                pack.checksum = pack.a_pkg.checksum
-                pack.checksum_type = pack.a_pkg.checksum_type
-                pack.epoch = pack.a_pkg.header["epoch"]
-                pack.a_pkg = None
 
-                all_packages.add((pack.checksum_type, pack.checksum))
+                    # keep pack lightweight like rpm/deb path
+                    pack.checksum = checksum
+                    pack.checksum_type = checksum_type
+                    pack.epoch = epoch
+                    pack.a_pkg = None
 
-                # Downloaded pkg checksum matches with pkg already in channel, no need to disassociate from channel
-                if (pack.checksum_type, pack.checksum) in to_disassociate:
-                    to_disassociate[(pack.checksum_type, pack.checksum)] = False
-                    # Set to_link to False, no need to link again
-                    to_process[index] = (pack, True, False)
+                    all_packages.add((pack.checksum_type, pack.checksum))
+                    if (pack.checksum_type, pack.checksum) in to_disassociate:
+                        to_disassociate[(pack.checksum_type, pack.checksum)] = False
+                        to_process[index] = (pack, True, False)
+
+
+                else:
+                    log(0, " load_checksum")
+                    pack.load_checksum_from_header()
+                    log(0,"successful load_checksum")
+                    log(0, f"pack: {pack}")
+                    log(0, f"to_download: {to_download}")
+
+                    if not self.metadata_only:
+                        rel_package_path = rhnPackageUpload.relative_path_from_header(
+                            pack.a_pkg.header,
+                            self.org_id,
+                            pack.a_pkg.checksum_type,
+                            pack.a_pkg.checksum,
+                        )
+                    else:
+                        rel_package_path = None
+
+                    if rel_package_path:
+                        # Save uploaded package to cache with repository checksum type
+
+                        # First write the package to the filesystem to final location
+                        # pylint: disable=W0703
+                        try:
+                            importLib.move_package(
+                                pack.a_pkg.payload_stream.name,
+                                basedir=mount_point,
+                                relpath=rel_package_path,
+                                checksum_type=pack.a_pkg.checksum_type,
+                                checksum=pack.a_pkg.checksum,
+                                force=1,
+                            )
+                        except OSError:
+                            e = sys.exc_info()[1]
+                            raise_with_tb(
+                                # pylint: disable-next=consider-using-f-string
+                                rhnFault(50, "Package upload failed: %s" % e),
+                                sys.exc_info()[2],
+                            )
+                        except importLib.FileConflictError:
+                            raise_with_tb(
+                                rhnFault(50, "File already exists"), sys.exc_info()[2]
+                            )
+                        except Exception:
+                            raise_with_tb(rhnFault(50, "File error"), sys.exc_info()[2])
+
+                        # Remove any pending scheduled file deletion for this package
+                        h_delete_package_queue.execute(path=rel_package_path)
+
+                    print(f"header: {pack.a_pkg.header}")
+                    pkg = mpmSource.create_package(
+                        pack.a_pkg.header,
+                        size=pack.a_pkg.payload_size,
+                        checksum_type=pack.a_pkg.checksum_type,
+                        checksum=pack.a_pkg.checksum,
+                        relpath=rel_package_path,
+                        org_id=self.org_id,
+                        header_start=pack.a_pkg.header_start,
+                        header_end=pack.a_pkg.header_end,
+                        channels=[],
+                    )
+
+                    if pack.a_pkg.header.is_source:
+                        mpm_src_batch.append(pkg)
+                    else:
+                        mpm_bin_batch.append(pkg)
+                    # we do not want to keep a whole 'a_pkg' object for every package in memory,
+                    # because we need only checksum. see BZ 1397417
+                    pack.checksum = pack.a_pkg.checksum
+                    pack.checksum_type = pack.a_pkg.checksum_type
+                    pack.epoch = pack.a_pkg.header["epoch"]
+                    pack.a_pkg = None
+
+                    all_packages.add((pack.checksum_type, pack.checksum))
+
+                    # Downloaded pkg checksum matches with pkg already in channel, no need to disassociate from channel
+                    if (pack.checksum_type, pack.checksum) in to_disassociate:
+                        to_disassociate[(pack.checksum_type, pack.checksum)] = False
+                        # Set to_link to False, no need to link again
+                        to_process[index] = (pack, True, False)
 
             except (KeyboardInterrupt, rhnSQL.SQLError):
                 raise
@@ -1767,7 +1857,7 @@ class RepoSync(object):
                         importer.run()
                         rhnSQL.commit()
                         del importer.batch
-                        affected_channels.extend(importer.affected_channels)
+                        affected_channels.extend(importer.affected_channels or [])
                         del mpm_bin_batch
                         mpm_bin_batch = importLib.Collection()
 
@@ -3349,3 +3439,44 @@ class RepoSync(object):
     @staticmethod
     def chunks(seq, n):
         return (seq[i : i + n] for i in range(0, len(seq), n))
+
+class _MinimalHeader(dict):
+    def __init__(self, name, epoch, version, release, arch, packaging=None):
+        super().__init__()
+        self["name"] = name
+        self["epoch"] = epoch if epoch not in (None, "") else "0"
+        self["version"] = version
+        self["release"] = release
+        self["arch"] = arch
+        # IMPORTANT: force fallback path (NOT "rpm"/"deb"/"snap")
+        self.packaging = packaging  # None or "generic"
+        self._is_source = False
+
+    @property
+    def is_source(self):
+        return self._is_source
+
+    def __getattr__(self, item):
+        try:
+            return self[item]
+        except KeyError:
+            raise AttributeError(item)
+
+
+def _is_snap_pack(pack):
+    # Conservative: most snaps end with ".snap"; unique_id examples also hint at snaps
+    try:
+        if pack.path and pack.path.endswith(".snap"):
+            return True
+    except Exception:
+        pass
+    try:
+        uid = getattr(pack, "unique_id", None)
+        # Your example shows something like "<I1zaMBxZ..._amd64>" or a bare token with "_amd64"
+        # Keep this loose so it doesn't break other types.
+        if uid and "amd64" in str(uid) and ".snap" in str(pack.path or ""):
+            return True
+    except Exception:
+        pass
+    return False
+

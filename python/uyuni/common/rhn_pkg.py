@@ -55,6 +55,11 @@ def package_from_stream(stream, packaging):
         from uyuni.common import rhn_rpm
 
         a_pkg = rhn_rpm.RPM_Package(stream)
+    elif packaging == "snap":
+        # pylint: disable-next=import-outside-toplevel
+        from uyuni.common import rhn_snap
+
+        a_pkg = rhn_snap.SNAP_Package(stream)
     elif packaging == "mpm":
         # pylint: disable-next=import-outside-toplevel
         from uyuni.common import rhn_mpm
@@ -70,6 +75,8 @@ def package_from_filename(filename):
         packaging = "deb"
     elif filename.endswith(".rpm") or filename.endswith(".hdr"):
         packaging = "rpm"
+    elif filename.endswith(".snap"):
+        packaging = "snap"
     else:
         packaging = "mpm"
     stream = open(filename, mode="rb")
