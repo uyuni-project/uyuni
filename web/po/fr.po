@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-09-05 08:31+0200\n"
-"PO-Revision-Date: 2025-08-28 07:59+0000\n"
+"PO-Revision-Date: 2025-09-08 08:59+0000\n"
 "Last-Translator: David D <dadu042@mailo.com>\n"
 "Language-Team: French <https://l10n.opensuse.org/projects/uyuni/web/fr/>\n"
 "Language: fr\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.13\n"
+"X-Generator: Weblate 5.13.1\n"
 
 #: ../html/javascript/spacewalk-essentials.js:407
 msgid "remaining"
@@ -1872,8 +1872,6 @@ msgid "All"
 msgstr ""
 
 #: ../html/src/components/table/Table.example.tsx:40
-#, fuzzy
-#| msgid "Channel Name"
 msgid "Channel name"
 msgstr "Nom canal"
 
@@ -2342,10 +2340,8 @@ msgid "Last Status Update"
 msgstr ""
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:52
-#, fuzzy
-#| msgid "Edit"
 msgid "Edit "
-msgstr "Éditer"
+msgstr "Éditer "
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:71
 msgid "Editing ssh connection data.."
@@ -3432,10 +3428,8 @@ msgid "Some of the selected filters are used in projects and can not be deleted.
 msgstr ""
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:128
-#, fuzzy
-#| msgid "Create {label}"
 msgid "Create Filter"
-msgstr "Créer {label}"
+msgstr "Créer filtre"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:140
 msgid "Select unused"
@@ -3475,7 +3469,7 @@ msgstr ""
 
 #: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:107
 msgid "Product"
-msgstr ""
+msgstr "Produit"
 
 #: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:132
 msgid "Kernel"
@@ -3491,7 +3485,7 @@ msgstr ""
 
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:77
 msgid "Create Project"
-msgstr ""
+msgstr "Créer projet"
 
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:86
 msgid "Content Lifecycle Projects"
@@ -3516,11 +3510,11 @@ msgstr ""
 
 #: ../html/src/manager/content-management/project/project.tsx:116
 msgid "Delete Project"
-msgstr ""
+msgstr "Supprimer projet"
 
 #: ../html/src/manager/content-management/project/project.tsx:119
 msgid "Are you sure you want to delete project"
-msgstr ""
+msgstr "Êtes-vous sûr de vouloir supprimer le projet"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:26
 #: ../html/src/manager/packages/list.tsx:152
@@ -4410,10 +4404,8 @@ msgid "Built externally"
 msgstr ""
 
 #: ../html/src/manager/images/image-view-overview.tsx:130
-#, fuzzy
-#| msgid "Status"
 msgid " Status"
-msgstr "Statut"
+msgstr " Statut"
 
 #: ../html/src/manager/images/image-view-overview.tsx:135
 msgid "Picked Up"
@@ -6296,10 +6288,8 @@ msgid "Base Channel:"
 msgstr ""
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:135
-#, fuzzy
-#| msgid "Channel Name"
 msgid "${defaultChannelName}"
-msgstr "Nom canal"
+msgstr "${defaultChannelName}"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:145
 msgid "${this.getDefaultBase().name}"
@@ -6966,16 +6956,16 @@ msgstr ""
 
 #: ../html/src/utils/network.ts:97
 msgid "Session expired, please reload the page."
-msgstr ""
+msgstr "Session expirée, veuillez recharger la page."
 
 #: ../html/src/utils/network.ts:99
 msgid "Authorization error, please reload the page or try to logout/login again."
-msgstr ""
+msgstr "Erreur d’autorisation, veuillez recharger la page ou essayer de vous déconnecter/reconnecter à nouveau."
 
 #: ../html/src/utils/network.ts:101
 msgid "Resource not found."
-msgstr ""
+msgstr "Ressource non trouvée."
 
 #: ../html/src/utils/network.ts:105
 msgid "HTTP Error code "
-msgstr ""
+msgstr "Code d'erreur HTTP "
