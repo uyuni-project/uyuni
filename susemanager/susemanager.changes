@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Sep 08 11:24:52 CEST 2025 - rosuna@suse.com
+
+- version 5.1.13-0
+  * Fix wrong header in old changelog entry
+
+-------------------------------------------------------------------
 Fri Aug 29 12:31:29 CEST 2025 - rosuna@suse.com
 
 - version 5.1.12-0
