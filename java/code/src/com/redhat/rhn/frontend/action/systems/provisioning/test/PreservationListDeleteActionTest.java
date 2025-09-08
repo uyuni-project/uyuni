@@ -22,8 +22,8 @@ import com.redhat.rhn.domain.common.CommonFactory;
 import com.redhat.rhn.domain.common.FileList;
 import com.redhat.rhn.domain.common.test.FileListTest;
 import com.redhat.rhn.frontend.action.systems.provisioning.PreservationListDeleteAction;
-import com.redhat.rhn.testing.ActionHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.ActionHelper;
 
 import org.apache.struts.Globals;
 import org.apache.struts.action.Action;

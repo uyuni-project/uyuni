@@ -19,12 +19,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.taglibs.NoScriptTag;
 import com.redhat.rhn.frontend.taglibs.SubmittedTag;
+import com.redhat.rhn.testing.MockHttpServletRequest;
+import com.redhat.rhn.testing.MockJspWriter;
 import com.redhat.rhn.testing.RhnBaseTestCase;
-import com.redhat.rhn.testing.RhnMockHttpServletRequest;
-import com.redhat.rhn.testing.RhnMockJspWriter;
+import com.redhat.rhn.testing.TagTestHelper;
 import com.redhat.rhn.testing.TagTestUtils;
-
-import com.mockobjects.helpers.TagTestHelper;
 
 import org.junit.jupiter.api.Test;
 
@@ -41,7 +40,7 @@ public class NoScriptTagTest  extends RhnBaseTestCase {
     @Test
     public void testRender() throws Exception {
         NoScriptTag tag = new NoScriptTag();
-        RhnMockHttpServletRequest request = new RhnMockHttpServletRequest();
+        MockHttpServletRequest request = new MockHttpServletRequest();
         TagTestHelper tth = TagTestUtils.setupTagTest(tag,
                                         new URL("http://localhost"),
                                         request);
@@ -51,7 +50,7 @@ public class NoScriptTagTest  extends RhnBaseTestCase {
         tth.assertDoStartTag(Tag.SKIP_BODY);
         tth.assertDoEndTag(Tag.SKIP_BODY);
 
-        RhnMockJspWriter rout = (RhnMockJspWriter) tth.getPageContext().getOut();
+        MockJspWriter rout = (MockJspWriter) tth.getPageContext().getOut();
         assertTrue(rout.toString().contains("<noscript>"));
         assertTrue(rout.toString().contains("</noscript>"));
         assertTrue(rout.toString().contains("\"" + RequestContext.NO_SCRIPT + "\""));

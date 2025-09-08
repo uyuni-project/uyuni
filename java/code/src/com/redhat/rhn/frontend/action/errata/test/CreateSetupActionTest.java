@@ -17,8 +17,8 @@ package com.redhat.rhn.frontend.action.errata.test;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.redhat.rhn.frontend.action.errata.CreateSetupAction;
-import com.redhat.rhn.testing.ActionHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.ActionHelper;
 
 import org.junit.jupiter.api.Test;
 

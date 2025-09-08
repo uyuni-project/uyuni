@@ -14,15 +14,18 @@
  */
 package com.redhat.rhn.frontend.taglibs.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.frontend.taglibs.HighlightTag;
+import com.redhat.rhn.testing.MockBodyContent;
+import com.redhat.rhn.testing.MockJspWriter;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.TagTestHelper;
 import com.redhat.rhn.testing.TagTestUtils;
 
-import com.mockobjects.helpers.TagTestHelper;
-import com.mockobjects.servlet.MockJspWriter;
-
+import org.apache.commons.lang3.StringUtils;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import javax.servlet.jsp.JspException;
@@ -33,104 +36,131 @@ import javax.servlet.jsp.tagext.Tag;
  */
 public class HighlightTagTest extends RhnBaseTestCase {
 
+    private HighlightTag highlightTag;
+    private TagTestHelper tagTestHelper;
+    private MockJspWriter out;
+
+
+    @Override
+    @BeforeEach
+    public void setUp() throws Exception {
+        super.setUp();
+
+        highlightTag = new HighlightTag();
+        tagTestHelper = TagTestUtils.setupTagTest(highlightTag, null);
+        highlightTag.setPageContext(tagTestHelper.getPageContext());
+
+        MockBodyContent bc = new MockBodyContent("some test text");
+        highlightTag.setBodyContent(bc);
+
+        out = (MockJspWriter) tagTestHelper.getPageContext().getOut();
+    }
+
     @Test
-    public void testDoEndTag() {
-
-        HighlightTag ht = new HighlightTag();
-        TagTestHelper tth = TagTestUtils.setupTagTest(ht, null);
-        ht.setPageContext(tth.getPageContext());
-
-        RhnMockBodyContent bc = new RhnMockBodyContent("some test text");
-        ht.setBodyContent(bc);
-
-        MockJspWriter out = (MockJspWriter) tth.getPageContext().getOut();
-
+    public void testDoEndWithRegularTag() {
         /*
          * <rhn:highlight tag="foo" text="test">
          *     some test text
          * </rhn:highlight>
          */
-        ht.setTag("foo");
-        ht.setText("test");
-        out.setExpectedData("some <foo>test</foo> text");
+        highlightTag.setTag("foo");
+        highlightTag.setText("test");
 
         try {
-            tth.assertDoEndTag(Tag.EVAL_PAGE);
+            tagTestHelper.assertDoEndTag(Tag.EVAL_PAGE);
         }
         catch (JspException e) {
             fail(e.toString());
         }
 
+        assertEquals("some <foo>test</foo> text\n", out.toString());
+    }
+
+    @Test
+    public void testDoEndWithCustomTags() {
         /*
          * <rhn:highlight tag="foo" startTag="<foo bar=1>" text="test">
          *     some test text
          * </rhn:highlight>
          */
-        ht.setTag("foo");
-        ht.setStartTag("<foo bar=1>");
-        out.setExpectedData("some <foo bar=1>test</foo> text");
+        highlightTag.setTag("foo");
+        highlightTag.setText("test");
+        highlightTag.setStartTag("<foo bar=1>");
         try {
-            tth.assertDoEndTag(Tag.EVAL_PAGE);
+            tagTestHelper.assertDoEndTag(Tag.EVAL_PAGE);
         }
         catch (JspException e) {
             fail(e.toString());
         }
+        assertEquals("some <foo bar=1>test</foo> text\n", out.toString());
+    }
 
+    @Test
+    public void testDoEndWithOnlyCustomTags() {
         /*
          * <rhn:highlight startTag="<foo>" endTag="</foo>" text="test">
          *     some test text
          * </rhn:highlight>
          */
-        ht.setTag(null);
-        ht.setStartTag("<foo>");
-        ht.setEndTag("</foo>");
-        out.setExpectedData("some <foo>test</foo> text");
+        highlightTag.setTag(null);
+        highlightTag.setStartTag("<foo>");
+        highlightTag.setEndTag("</foo>");
+//        out.setExpectedData("some <foo>test</foo> text");
         try {
-            tth.assertDoEndTag(Tag.EVAL_PAGE);
+            tagTestHelper.assertDoEndTag(Tag.EVAL_PAGE);
         }
         catch (JspException e) {
             fail(e.toString());
         }
 
-        // Make sure it fails correctly
+        assertEquals("some test text\n", out.toString());
+    }
+
+    @Test
+    public void testDoEndFailures() {
         /*
          * <rhn:highlight endTag="</foo>" text="test">
          * -- missing startTag or tag
          */
-        ht.setTag(null);
-        ht.setStartTag(null);
+        highlightTag.setTag(null);
+        highlightTag.setStartTag(null);
         try {
-            tth.assertDoEndTag(Tag.EVAL_PAGE);
+            tagTestHelper.assertDoEndTag(Tag.EVAL_PAGE);
             fail(); //Shouldn't get here
         }
         catch (JspException e) {
             //Success
         }
+    }
 
+    @Test
+    public void testDoEndWithNoBodyContent() {
         /*
          * <rhn:highlight tag="foo" text="test"></rhn:highlight>
          */
-        ht.setBodyContent(null);
-        ht.setTag("foo");
+        highlightTag.setBodyContent(null);
+        highlightTag.setTag("foo");
         try {
-            tth.assertDoEndTag(Tag.SKIP_BODY);
+            tagTestHelper.assertDoEndTag(Tag.SKIP_BODY);
         }
         catch (JspException e) {
             fail(e.toString());
         }
 
-        RhnMockBodyContent bc2 = new RhnMockBodyContent("some test text " +
-                                                        "to Test in a TEST");
-        ht.setBodyContent(bc2);
-        ht.setTag("foo");
-        ht.setText("test");
-        out.setExpectedData("some <foo>test</foo> text to <foo>Test</foo> " +
-                            "in a <foo>TEST</foo>");
+        assertEquals(StringUtils.EMPTY, out.toString());
+    }
+
+    @Test
+    public void testDoEndWithMultipleOccurrences() {
+        highlightTag.setBodyContent(new MockBodyContent("some test text to Test in a TEST"));
+        highlightTag.setTag("foo");
+        highlightTag.setText("test");
         try {
-            tth.assertDoEndTag(Tag.EVAL_PAGE);
+            tagTestHelper.assertDoEndTag(Tag.EVAL_PAGE);
         }
         catch (JspException e) {
             fail(e.toString());
         }
+        assertEquals("some <foo>test</foo> text to <foo>Test</foo> in a <foo>TEST</foo>\n", out.toString());
     }
 }

@@ -22,14 +22,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.redhat.rhn.frontend.taglibs.ColumnTag;
 import com.redhat.rhn.frontend.taglibs.ListDisplayTag;
 import com.redhat.rhn.frontend.taglibs.NavDialogMenuTag;
+import com.redhat.rhn.testing.MockHttpServletRequest;
+import com.redhat.rhn.testing.MockJspWriter;
+import com.redhat.rhn.testing.MockPageContext;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.TagTestHelper;
 import com.redhat.rhn.testing.TagTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
-import com.mockobjects.helpers.TagTestHelper;
-import com.mockobjects.servlet.MockHttpServletRequest;
-import com.mockobjects.servlet.MockJspWriter;
-import com.mockobjects.servlet.MockPageContext;
 
 import org.junit.jupiter.api.Test;
 
@@ -158,21 +158,20 @@ public class ColumnTagTest extends RhnBaseTestCase {
         mockRequest.setupAddParameter("order", "asc");
         // And we STILL have to set the query string
         // otherwise MockObjects complains bitterly....
-        mockRequest.setupQueryString("this=stupid&library=needs_this");
+        mockRequest.setQueryString("this=stupid&library=needs_this");
         // setup mock objects
         MockJspWriter out = (MockJspWriter)tth.getPageContext().getOut();
 
-        out.setExpectedData("<th>" +
-                "<a title=\"Sort By This Column\" " +
-                "href=\"http://localhost:8080/rhnjava/index.jsp?order=desc" +
-                "&sort=sortProp\">**headervalue**</a></th>");
         MockPageContext mpc = tth.getPageContext();
         mpc.setAttribute("current", new Object());
         ct.setPageContext(mpc);
         tth.assertDoStartTag(Tag.SKIP_BODY);
         tth.assertDoEndTag(Tag.EVAL_BODY_INCLUDE);
         //TODO: verify if this test is needed, followup with bug 458688
-        //out.verify();
+        // assertEquals("<th>" +
+        //        "<a title=\"Sort By This Column\" " +
+        //        "href=\"http://localhost:8080/rhnjava/index.jsp?order=desc" +
+        //        "&sort=sortProp\">**headervalue**</a></th>", out);
         TestUtils.enableLocalizationLogging();
     }
 

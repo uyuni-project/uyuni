@@ -21,14 +21,14 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.frontend.taglibs.ListTag;
+import com.redhat.rhn.testing.MockHttpServletRequest;
+import com.redhat.rhn.testing.MockJspWriter;
+import com.redhat.rhn.testing.MockPageContext;
 import com.redhat.rhn.testing.RhnBaseTestCase;
-import com.redhat.rhn.testing.RhnMockHttpServletRequest;
+import com.redhat.rhn.testing.TagTestHelper;
 import com.redhat.rhn.testing.TagTestUtils;
 
-import com.mockobjects.helpers.TagTestHelper;
-import com.mockobjects.servlet.MockJspWriter;
-import com.mockobjects.servlet.MockPageContext;
-
+import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
 
 import java.net.URL;
@@ -56,7 +56,7 @@ public class ListTagTest extends RhnBaseTestCase {
 
         TagTestHelper tth = TagTestUtils.setupTagTest(lt, new URL("http://localhost/"));
         MockPageContext pc = tth.getPageContext();
-        RhnMockHttpServletRequest request = new RhnMockHttpServletRequest();
+        MockHttpServletRequest request = new MockHttpServletRequest();
 
         pc.setRequest(request);
         lt.setPageContext(pc);
@@ -95,11 +95,10 @@ public class ListTagTest extends RhnBaseTestCase {
         try {
             // setup mock objects
             MockJspWriter out = (MockJspWriter) tth.getPageContext().getOut();
-            out.setExpectedData("<div class=\"list-empty-message\">do spaces work?</div>");
 
             // ok let's test the tag
             tth.assertDoStartTag(Tag.SKIP_BODY);
-            out.verify();
+            assertEquals("<div class=\"list-empty-message\">do spaces work?</div>\n", out.toString());
         }
         catch (JspException e) {
             fail(e.toString());
@@ -126,11 +125,10 @@ public class ListTagTest extends RhnBaseTestCase {
         try {
             // setup mock objects
             MockJspWriter out = (MockJspWriter) tth.getPageContext().getOut();
-            out.setExpectedData("");
 
             // ok let's test the tag
             tth.assertDoStartTag(Tag.EVAL_BODY_INCLUDE);
-            out.verify();
+            assertEquals(StringUtils.EMPTY, out.toString());
         }
         catch (JspException e) {
             fail(e.toString());
@@ -148,11 +146,10 @@ public class ListTagTest extends RhnBaseTestCase {
         try {
             // setup mock objects
             MockJspWriter out = (MockJspWriter) tth.getPageContext().getOut();
-            out.setExpectedData("<div class=\"list-empty-message\">**No Data.**</div>");
 
             // ok let's test the tag
             tth.assertDoStartTag(Tag.SKIP_BODY);
-            out.verify();
+            assertEquals("<div class=\"list-empty-message\">**No Data.**</div>\n", out.toString());
         }
         catch (JspException e) {
             fail(e.toString());

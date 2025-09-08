@@ -29,8 +29,8 @@ import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.frontend.action.schedule.ActionSystemsSetupAction;
 import com.redhat.rhn.frontend.action.schedule.InProgressSystemsSetupAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
-import com.redhat.rhn.testing.ActionHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.ActionHelper;
 
 import org.junit.jupiter.api.Test;
 

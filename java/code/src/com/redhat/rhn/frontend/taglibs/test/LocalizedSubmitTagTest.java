@@ -14,14 +14,15 @@
  */
 package com.redhat.rhn.frontend.taglibs.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.frontend.taglibs.LocalizedSubmitTag;
+import com.redhat.rhn.testing.MockJspWriter;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.TagTestHelper;
 import com.redhat.rhn.testing.TagTestUtils;
 
-import com.mockobjects.helpers.TagTestHelper;
-import com.mockobjects.servlet.MockJspWriter;
 
 import org.junit.jupiter.api.Test;
 
@@ -43,12 +44,11 @@ public class LocalizedSubmitTagTest extends RhnBaseTestCase {
             tth.getPageContext().getRequest();
             // setup mock objects
             MockJspWriter out = (MockJspWriter)tth.getPageContext().getOut();
-            out.setExpectedData("<input type=\"submit\"" +
-                " tabindex=\"3\" value=\"(none)\" class=\"btn btn-primary\">");
             // ok let's test the tag
             tth.assertDoStartTag(Tag.SKIP_BODY);
             tth.assertDoEndTag(Tag.EVAL_PAGE);
-            out.verify();
+            assertEquals("<input type=\"submit\"" +
+                    " tabindex=\"3\" value=\"(none)\" class=\"btn btn-primary\">", out.toString());
         }
         catch (JspException e) {
             fail(e.toString());
@@ -70,12 +70,11 @@ public class LocalizedSubmitTagTest extends RhnBaseTestCase {
             tth.getPageContext().getRequest();
             // setup mock objects
             MockJspWriter out = (MockJspWriter)tth.getPageContext().getOut();
-            out.setExpectedData("<input type=\"submit\"" +
-                    " tabindex=\"3\" value=\"(none)\" class=\"foo btn btn-danger\">");
             // ok let's test the tag
             tth.assertDoStartTag(Tag.SKIP_BODY);
             tth.assertDoEndTag(Tag.EVAL_PAGE);
-            out.verify();
+            assertEquals("<input type=\"submit\"" +
+                    " tabindex=\"3\" value=\"(none)\" class=\"foo btn btn-danger\">", out.toString());
         }
         catch (JspException e) {
             fail(e.toString());

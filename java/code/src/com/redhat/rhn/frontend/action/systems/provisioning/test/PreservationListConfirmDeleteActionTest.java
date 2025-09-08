@@ -29,9 +29,9 @@ import com.redhat.rhn.frontend.action.systems.provisioning.PreservationListConfi
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
-import com.redhat.rhn.testing.ActionHelper;
+import com.redhat.rhn.testing.MockHttpServletRequest;
 import com.redhat.rhn.testing.RhnBaseTestCase;
-import com.redhat.rhn.testing.RhnMockHttpServletRequest;
+import com.redhat.rhn.testing.ActionHelper;
 
 import org.apache.struts.action.Action;
 import org.junit.jupiter.api.BeforeEach;
@@ -76,7 +76,7 @@ public class PreservationListConfirmDeleteActionTest extends RhnBaseTestCase {
         ah.getRequest().setupAddParameter("submitted", "false");
         ah.executeAction();
 
-        RhnMockHttpServletRequest request = ah.getRequest();
+        MockHttpServletRequest request = ah.getRequest();
 
         RequestContext requestContext = new RequestContext(request);
 

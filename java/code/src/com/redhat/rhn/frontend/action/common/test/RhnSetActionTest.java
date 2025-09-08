@@ -26,8 +26,8 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.RhnSetAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
-import com.redhat.rhn.testing.ActionHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.ActionHelper;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;

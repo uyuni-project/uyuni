@@ -36,6 +36,7 @@ public class MockHttpSession implements HttpSession {
     private int maxInactiveInterval = 1800; // 30 minutes default
     private boolean invalidated = false;
     private boolean isNew = true;
+    private MockServletContext servletContext;
 
     /**
      * Gets the attribute value associated with the specified name
@@ -111,7 +112,11 @@ public class MockHttpSession implements HttpSession {
      * @return null (not implemented in this mock)
      */
     public ServletContext getServletContext() {
-        return null;
+        return servletContext;
+    }
+
+    public void setServletContext(MockServletContext servletContextIn) {
+        servletContext = servletContextIn;
     }
 
     /**

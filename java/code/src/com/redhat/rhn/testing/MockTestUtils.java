@@ -24,6 +24,7 @@ import com.redhat.rhn.frontend.servlets.PxtSessionDelegateFactory;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.config.Configurator;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.type.StandardBasicTypes;
 import org.jmock.Expectations;
@@ -184,7 +185,6 @@ public class MockTestUtils {
                 .setCacheable(true)
                 .uniqueResult();
     }
-
 
     /**
      * Enable the *** ERROR: Message with id: [asciiString] not found.***

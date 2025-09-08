@@ -19,9 +19,9 @@ import static org.junit.jupiter.api.Assertions.fail;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.frontend.action.user.UserPrefSetupAction;
-import com.redhat.rhn.testing.ActionHelper;
+import com.redhat.rhn.testing.MockDynaActionForm;
 import com.redhat.rhn.testing.RhnBaseTestCase;
-import com.redhat.rhn.testing.RhnMockDynaActionForm;
+import com.redhat.rhn.testing.ActionHelper;
 
 import org.junit.jupiter.api.Test;
 
@@ -70,7 +70,7 @@ public class UserPrefSetupActionTest extends RhnBaseTestCase {
         }
     }
 
-    private void setupExpectations(RhnMockDynaActionForm form, User user) {
+    private void setupExpectations(MockDynaActionForm form, User user) {
         form.addExpectedProperty("uid", user.getId());
         form.addExpectedProperty("pagesize", user.getPageSize());
     }

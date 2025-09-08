@@ -30,12 +30,12 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
-import com.redhat.rhn.testing.ActionHelper;
 import com.redhat.rhn.testing.MockDynaActionForm;
 import com.redhat.rhn.testing.MockHttpServletRequest;
 import com.redhat.rhn.testing.MockHttpSession;
 import com.redhat.rhn.testing.MockTestUtils;
 import com.redhat.rhn.testing.RhnJmockBaseTestCase;
+import com.redhat.rhn.testing.ActionHelper;
 
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;

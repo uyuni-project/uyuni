@@ -19,9 +19,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import com.redhat.rhn.domain.user.Address;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.user.EditAddressSetupAction;
-import com.redhat.rhn.testing.ActionHelper;
+import com.redhat.rhn.testing.MockDynaActionForm;
 import com.redhat.rhn.testing.RhnBaseTestCase;
-import com.redhat.rhn.testing.RhnMockDynaActionForm;
+import com.redhat.rhn.testing.ActionHelper;
 
 import org.junit.jupiter.api.Test;
 
@@ -48,7 +48,7 @@ public class EditAddressSetupActionTest extends RhnBaseTestCase {
         sah.getForm().verify();
     }
 
-    private void setupExpectations(RhnMockDynaActionForm form, User user) {
+    private void setupExpectations(MockDynaActionForm form, User user) {
         form.addExpectedProperty("address1", user.getAddress1());
         form.addExpectedProperty("address2", user.getAddress2());
         form.addExpectedProperty("phone", user.getPhone());

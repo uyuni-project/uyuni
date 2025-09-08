@@ -22,8 +22,8 @@ import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.RhnSetAction;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
-import com.redhat.rhn.testing.ActionHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.ActionHelper;
 
 import org.apache.struts.action.ActionForward;
 import org.junit.jupiter.api.Test;

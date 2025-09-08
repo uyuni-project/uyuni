@@ -33,94 +33,94 @@ public class MockJspWriter extends JspWriter {
     }
 
     @Override
-    public void write(char[] cbuf, int off, int len) throws IOException {
-        stringWriter.write(cbuf, off, len);
+    public void write(char[] buf, int off, int len) throws IOException {
+        printWriter.write(buf, off, len);
     }
 
 
     @Override
     public void newLine() throws IOException {
-        stringWriter.write(System.lineSeparator());
+        printWriter.write(System.lineSeparator());
     }
 
     @Override
     public void print(boolean bIn) throws IOException {
-        stringWriter.write(String.valueOf(bIn));
+        printWriter.write(String.valueOf(bIn));
     }
 
     @Override
     public void print(char cIn) throws IOException {
-        stringWriter.write(cIn);
+        printWriter.write(cIn);
     }
 
     @Override
     public void print(int iIn) throws IOException {
-        stringWriter.write(String.valueOf(iIn));
+        printWriter.write(String.valueOf(iIn));
     }
 
     @Override
     public void print(long lIn) throws IOException {
-        stringWriter.write(String.valueOf(lIn));
+        printWriter.write(String.valueOf(lIn));
     }
 
     @Override
     public void print(float vIn) throws IOException {
-        stringWriter.write(String.valueOf(vIn));
+        printWriter.write(String.valueOf(vIn));
     }
 
     @Override
     public void print(double vIn) throws IOException {
-        stringWriter.write(String.valueOf(vIn));
+        printWriter.print(String.valueOf(vIn));
     }
 
     @Override
     public void print(char[] charsIn) throws IOException {
         if (charsIn != null) {
-            stringWriter.write(charsIn);
+            printWriter.write(charsIn);
         }
     }
 
     @Override
     public void print(String sIn) throws IOException {
         if (sIn != null) {
-            stringWriter.write(sIn);
+            printWriter.write(sIn);
         }
     }
 
     @Override
     public void print(Object oIn) throws IOException {
         if (oIn != null) {
-            stringWriter.write(oIn.toString());
+            printWriter.write(oIn.toString());
         }
     }
 
     @Override
     public void println() throws IOException {
-        stringWriter.write(System.lineSeparator());
+        printWriter.write(System.lineSeparator());
     }
 
     @Override
     public void println(boolean bIn) throws IOException {
-        stringWriter.write(String.valueOf(bIn));
-        stringWriter.write(System.lineSeparator());
+        printWriter.write(String.valueOf(bIn));
+        printWriter.write(System.lineSeparator());
     }
 
     @Override
     public void println(char cIn) throws IOException {
-        stringWriter.write(cIn);
-        stringWriter.write(System.lineSeparator());
+        printWriter.write(cIn);
+        printWriter.write(System.lineSeparator());
     }
 
     @Override
     public void println(int iIn) throws IOException {
-        stringWriter.write(String.valueOf(iIn));
-        stringWriter.write(System.lineSeparator());
+        printWriter.write(String.valueOf(iIn));
+        printWriter.write(System.lineSeparator());
     }
 
     @Override
     public void println(long lIn) throws IOException {
-        stringWriter.write(String.valueOf(lIn));
-        stringWriter.write(System.lineSeparator());
+        printWriter.write(String.valueOf(lIn));
+        printWriter.write(System.lineSeparator());
     }
 
     @Override
@@ -153,10 +153,7 @@ public class MockJspWriter extends JspWriter {
 
     @Override
     public void println(Object oIn) throws IOException {
-        if (oIn != null) {
-            stringWriter.write(oIn.toString());
-        }
-        stringWriter.write(System.lineSeparator());
+        printWriter.print(oIn);
     }
 
     @Override
@@ -168,22 +165,18 @@ public class MockJspWriter extends JspWriter {
 
     @Override
     public void clearBuffer() throws IOException {
-        // Clear just the buffer contents - in JSP context this typically means clear without throwing exception
+        // Clear the internal string writer
         StringBuffer buffer = stringWriter.getBuffer();
-        if (!buffer.isEmpty()) {
-            buffer.setLength(0);
-        }
+        buffer.setLength(0);
     }
 
     @Override
     public void flush() throws IOException {
-        // For a mock implementation, flushing is a no-op as we're writing to memory
-        printWriter.flush();
+        notImplemented();
     }
 
     @Override
     public void close() throws IOException {
-        // Close the underlying writers
         printWriter.close();
         stringWriter.close();
     }
@@ -193,24 +186,24 @@ public class MockJspWriter extends JspWriter {
         return 0;
     }
 
-    /**
-     * Get the content written to this writer as a string.
-     * This is useful for testing JSP output.
-     * @return the content written so far
-     */
-    public String getContent() {
-        printWriter.flush();
+    @Override
+    public String toString() {
         return stringWriter.toString();
     }
 
-    /**
-     * Reset the writer, clearing all content.
-     * This is a convenience method for testing.
-     */
+    public String getBuffer() {
+        return stringWriter.toString();
+    }
+
     public void reset() {
         printWriter.flush();
-        StringBuffer buffer = stringWriter.getBuffer();
-        buffer.setLength(0);
+        stringWriter = new StringWriter();
+        printWriter = new PrintWriter(stringWriter);
     }
+
+    private void notImplemented() {
+        throw new UnsupportedOperationException();
+    }
+
 }
 

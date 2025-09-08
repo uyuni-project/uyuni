@@ -26,8 +26,8 @@ import com.redhat.rhn.frontend.taglibs.list.ListTagUtil;
 import com.redhat.rhn.frontend.taglibs.list.TagHelper;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
-import com.redhat.rhn.testing.ActionHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.ActionHelper;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.apache.struts.action.ActionForward;

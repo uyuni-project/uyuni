@@ -20,8 +20,8 @@ import com.redhat.rhn.frontend.action.BaseSearchAction;
 import com.redhat.rhn.frontend.action.errata.ErrataSearchAction;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
-import com.redhat.rhn.testing.ActionHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.ActionHelper;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.apache.commons.collections.IteratorUtils;
@@ -62,7 +62,7 @@ public class ErrataSearchActionTest extends RhnBaseTestCase {
         paramnames.put(BaseSearchAction.VIEW_MODE, BaseSearchAction.OPT_ADVISORY);
         paramnames.put(BaseSearchAction.FINE_GRAINED, "on");
         paramnames.put(RhnAction.SUBMITTED, "true");
-        ah.getRequest().setupGetParameterNames(
+        ah.getRequest().setParameterNames(
                 IteratorUtils.asEnumeration(paramnames.keySet().iterator()));
 
         ah.setupClampListBounds();

@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -51,67 +52,129 @@ public class MockHttpServletRequest implements HttpServletRequest {
 
     private static final String LOCALHOST = "localhost";
 
-    /** Request URL */
+    /**
+     * Request URL
+     */
     private String requestURL;
-    /** Request URI */
+    /**
+     * Request URI
+     */
     private String requestURI;
-    /** Server name */
+    /**
+     * Server name
+     */
     private String serverName;
-    /** Context path */
+    /**
+     * Context path
+     */
     private String contextPath;
-    /** Servlet path */
+    /**
+     * Servlet path
+     */
     private String servletPath;
-    /** Path info */
+    /**
+     * Path info
+     */
     private String pathInfo;
-    /** Query string */
+    /**
+     * Query string
+     */
     private String queryString;
-    /** HTTP method */
+    /**
+     * HTTP method
+     */
     private String method;
-    /** Character encoding */
+    /**
+     * Character encoding
+     */
     private String encoding;
-    /** Content type */
+    /**
+     * Content type
+     */
     private String contentType;
-    /** Content length */
+    /**
+     * Content length
+     */
     private int contentLength = -1;
-    /** Attributes */
+    /**
+     * Attributes
+     */
     private Map<String, Object> attributes;
-    /** Headers */
+    /**
+     * Headers
+     */
     private Map<String, String> headers;
-    /** Parameters */
-    private Map<String, String[]> parameterMap;
-    /** Locales */
+    /**
+     * Parameters
+     */
+    private Map<String, String[]> parameters;
+    /**
+     * Locales
+     */
     private List<Locale> locales;
-    /** Server port */
+    /**
+     * Server port
+     */
     private int port;
-    /** Secure flag */
+    /**
+     * Secure flag
+     */
     private boolean secure;
-    /** Cookies */
+    /**
+     * Cookies
+     */
     private List<Cookie> cookies;
-    /** HTTP session */
+    /**
+     * HTTP session
+     */
     private HttpSession session;
-    /** Remote address */
+    /**
+     * Remote address
+     */
     private String remoteAddr;
-    /** Remote host */
+    /**
+     * Remote host
+     */
     private String remoteHost;
-    /** Remote port */
+    /**
+     * Remote port
+     */
     private int remotePort;
-    /** Local address */
+    /**
+     * Local address
+     */
     private String localAddr;
-    /** Local name */
+    /**
+     * Local name
+     */
     private String localName;
-    /** Local port */
+    /**
+     * Local port
+     */
     private int localPort;
-    /** Protocol */
+    /**
+     * Protocol
+     */
     private String protocol = "HTTP/1.1";
-    /** Scheme */
+    /**
+     * Scheme
+     */
     private String scheme = "http";
-    /** Remote user */
+    /**
+     * Remote user
+     */
     private String remoteUser;
-    /** Request dispatcher URI */
+    /**
+     * Request dispatcher URI
+     */
     private String requestDispatcherURI;
-    /** Request dispatcher */
+    /**
+     * Request dispatcher
+     */
     private RequestDispatcher requestDispatcher;
-    /** Reader */
+    /**
+     * Reader
+     */
     private BufferedReader reader;
 
 
@@ -122,7 +185,7 @@ public class MockHttpServletRequest implements HttpServletRequest {
         this.attributes = new HashMap<>();
         this.headers = new HashMap<>();
         this.locales = new ArrayList<>();
-        this.parameterMap = new HashMap<>();
+        this.parameters = new HashMap<>();
         this.cookies = new ArrayList<>();
         this.serverName = "host.mlm.suse.com";
         this.requestURI = "/mlm/network/somepage.do";
@@ -145,6 +208,7 @@ public class MockHttpServletRequest implements HttpServletRequest {
 
     /**
      * Get the request URL
+     *
      * @return StringBuffer request URL
      */
     public StringBuffer getRequestURL() {
@@ -153,6 +217,7 @@ public class MockHttpServletRequest implements HttpServletRequest {
 
     /**
      * Set the request URL for testing
+     *
      * @param pathIn Request url path.
      */
     public void setRequestURL(String pathIn) {
@@ -161,6 +226,7 @@ public class MockHttpServletRequest implements HttpServletRequest {
 
     /**
      * Set the server name for this request.
+     *
      * @param serverNameIn server name
      */
     public void setupServerName(String serverNameIn) {
@@ -168,63 +234,38 @@ public class MockHttpServletRequest implements HttpServletRequest {
     }
 
     /**
-     * Set the request URI for this request.
-     * @param requestURIIn request URI
-     */
-    public void setRequestURI(String requestURIIn) {
-        this.requestURI = requestURIIn;
-    }
-
-    /**
-     * Set the session for this request.
-     * @param sessionIn HTTP session
-     */
-    public void setSession(HttpSession sessionIn) {
-        this.session = sessionIn;
-    }
-
-    /**
      * Add a parameter to the request
-     * @param name parameter name
+     *
+     * @param name  parameter name
      * @param value parameter value
      */
     public void setupAddParameter(String name, String value) {
-        parameterMap.put(name, new String[]{value});
+        setupAddParameter(name, new String[]{value});
     }
 
     /**
      * Add a parameter array to the request
-     * @param name parameter name
+     *
+     * @param name   parameter name
      * @param values parameter values
      */
     public void setupAddParameter(String name, String[] values) {
-        parameterMap.put(name, values);
-    }
-
-    /**
-     * Set the primary locale of this Request.
-     * @param lcl The primary Local of this Request.
-     */
-    public void setLocale(Locale lcl) {
-        if (this.locales.isEmpty()) {
-            this.locales.add(lcl);
+        String[] existing = parameters.get(name);
+        if (existing == null || existing.length == 0 || (existing.length == 1 && existing[0] == null)) {
+            parameters.put(name, values);
         }
         else {
-            this.locales.set(0, lcl);
+            String[] merged = Arrays.copyOf(existing, existing.length + values.length);
+            System.arraycopy(values, 0, merged, existing.length, values.length);
+            parameters.put(name, merged);
         }
-    }
-
-    /**
-     * @param methodIn The method to set.
-     */
-    public void setMethod(String methodIn) {
-        this.method = methodIn;
     }
 
     /**
      * Add a GET header to the request.
+     *
      * @param headerName name of header to be added
-     * @param value value of header to be added.
+     * @param value      value of header to be added.
      */
     public void setupGetHeader(String headerName, String value) {
         headers.put(headerName, value);
@@ -232,6 +273,7 @@ public class MockHttpServletRequest implements HttpServletRequest {
 
     /**
      * Sets the server port for this request.
+     *
      * @param p Port
      */
     public void setupGetServerPort(int p) {
@@ -240,6 +282,7 @@ public class MockHttpServletRequest implements HttpServletRequest {
 
     /**
      * Configures whether this request is secure.
+     *
      * @param s Flag indicating whether request is secure.
      */
     public void setupIsSecure(boolean s) {
@@ -249,6 +292,7 @@ public class MockHttpServletRequest implements HttpServletRequest {
     /**
      * Allows you to add a Cookie to the request to simulate receiving
      * a cookie from the browser.
+     *
      * @param cookie Cookie to added.
      */
     public void addCookie(Cookie cookie) {
@@ -257,7 +301,8 @@ public class MockHttpServletRequest implements HttpServletRequest {
 
     /**
      * Add custom header and value
-     * @param name header
+     *
+     * @param name  header
      * @param value header value
      */
     public void setHeader(String name, String value) {
@@ -266,14 +311,13 @@ public class MockHttpServletRequest implements HttpServletRequest {
 
     /**
      * Adds a new attribute the Request.
-     * @param name attribute name
+     *
+     * @param name  attribute name
      * @param value attribute value
      */
     public void addAttribute(String name, Object value) {
         attributes.put(name, value);
     }
-
-    // HttpServletRequest interface methods implementation
 
     @Override
     public String getAuthType() {
@@ -285,22 +329,20 @@ public class MockHttpServletRequest implements HttpServletRequest {
         return contextPath != null ? contextPath : "";
     }
 
-    public void setPathInfo(String pathInfoIn) {
-        this.pathInfo = pathInfoIn;
-    }
-
     @Override
     public String getPathInfo() {
         return pathInfo;
     }
 
+    public void setPathInfo(String pathInfoIn) {
+        this.pathInfo = pathInfoIn;
+    }
+
+    // HttpServletRequest interface methods implementation
+
     @Override
     public String getPathTranslated() {
         return null;
-    }
-
-    public void setQueryString(String queryStringIn) {
-        this.queryString = queryStringIn;
     }
 
     @Override
@@ -308,9 +350,22 @@ public class MockHttpServletRequest implements HttpServletRequest {
         return queryString;
     }
 
+    public void setQueryString(String queryStringIn) {
+        this.queryString = queryStringIn;
+    }
+
     @Override
     public String getRequestURI() {
         return requestURI;
+    }
+
+    /**
+     * Set the request URI for this request.
+     *
+     * @param requestURIIn request URI
+     */
+    public void setRequestURI(String requestURIIn) {
+        this.requestURI = requestURIIn;
     }
 
     @Override
@@ -326,6 +381,15 @@ public class MockHttpServletRequest implements HttpServletRequest {
     @Override
     public HttpSession getSession() {
         return session;
+    }
+
+    /**
+     * Set the session for this request.
+     *
+     * @param sessionIn HTTP session
+     */
+    public void setSession(HttpSession sessionIn) {
+        this.session = sessionIn;
     }
 
     @Override
@@ -436,6 +500,13 @@ public class MockHttpServletRequest implements HttpServletRequest {
         return method;
     }
 
+    /**
+     * @param methodIn The method to set.
+     */
+    public void setMethod(String methodIn) {
+        this.method = methodIn;
+    }
+
     @Override
     public String getRemoteUser() {
         return remoteUser;
@@ -446,12 +517,12 @@ public class MockHttpServletRequest implements HttpServletRequest {
         return cookies.toArray(new Cookie[0]);
     }
 
-    // ServletRequest interface methods implementation
-
     @Override
     public Object getAttribute(String name) {
         return attributes.get(name);
     }
+
+    // ServletRequest interface methods implementation
 
     @Override
     public Enumeration<String> getAttributeNames() {
@@ -490,33 +561,50 @@ public class MockHttpServletRequest implements HttpServletRequest {
 
     @Override
     public String getParameter(String name) {
-        String[] values = parameterMap.get(name);
-        return (values != null && values.length > 0) ? values[0] : null;
+        String[] values = getParameterValues(name);
+        if (values == null) {
+            return null;
+        }
+
+        return values[0];
     }
 
     @Override
     public Enumeration<String> getParameterNames() {
-        return Collections.enumeration(parameterMap.keySet());
+        return Collections.enumeration(parameters.keySet());
     }
 
     /**
      * Set parameter names with empty values
+     *
      * @param names parameter names
      */
     public void setParameterNames(Enumeration<String> names) {
         while (names.hasMoreElements()) {
-            parameterMap.put(names.nextElement(), new String[]{""});
+            parameters.put(names.nextElement(), new String[]{""});
         }
     }
 
+    /**
+     * Main method to get (includes consuming) the first array element
+     * @param name parameter name
+     * @return parameter values
+     */
     @Override
     public String[] getParameterValues(String name) {
-        return parameterMap.get(name);
+        String[] existing = parameters.get(name);
+        if (existing == null || existing.length == 0) {
+            return null;
+        }
+
+        String[] reduced = Arrays.copyOfRange(existing, 1, existing.length);
+        parameters.put(name, reduced);
+        return existing;
     }
 
     @Override
     public Map<String, String[]> getParameterMap() {
-        return parameterMap;
+        return parameters;
     }
 
     @Override
@@ -539,30 +627,34 @@ public class MockHttpServletRequest implements HttpServletRequest {
         return port;
     }
 
-    public void setReader(BufferedReader readerIn) {
-        this.reader = readerIn;
-    }
-
     @Override
     public BufferedReader getReader() throws IOException {
         return reader;
+    }
+
+    public void setReader(BufferedReader readerIn) {
+        this.reader = readerIn;
     }
 
     public String getRemoteAddr() {
         return remoteAddr;
     }
 
-    public String getRemoteHost() {
-        return remoteHost;
-    }
-
     public void setRemoteAddr(String remoteAddrIn) {
         remoteAddr = remoteAddrIn;
+    }
+
+    public String getRemoteHost() {
+        return remoteHost;
     }
 
     @Override
     public void setAttribute(String name, Object value) {
         attributes.put(name, value);
+    }
+
+    public void setAttributes(Map<String, Object> map){
+        this.attributes = map;
     }
 
     @Override
@@ -575,6 +667,20 @@ public class MockHttpServletRequest implements HttpServletRequest {
         return this.locales.isEmpty() ? Locale.getDefault() : this.locales.get(0);
     }
 
+    /**
+     * Set the primary locale of this Request.
+     *
+     * @param lcl The primary Local of this Request.
+     */
+    public void setLocale(Locale lcl) {
+        if (this.locales.isEmpty()) {
+            this.locales.add(lcl);
+        }
+        else {
+            this.locales.set(0, lcl);
+        }
+    }
+
     @Override
     public Enumeration<Locale> getLocales() {
         return Collections.enumeration(this.locales);
@@ -584,8 +690,10 @@ public class MockHttpServletRequest implements HttpServletRequest {
     public boolean isSecure() {
         return secure;
     }
+
     /**
      * Setup a RequestDispatcher to be returned when getRequestDispatcher is called.
+     *
      * @param requestDispatcherIn the RequestDispatcher to return
      */
     public void setRequestDispatcher(RequestDispatcher requestDispatcherIn) {

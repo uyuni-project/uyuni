@@ -23,8 +23,8 @@ import com.redhat.rhn.frontend.action.common.test.RhnSetActionTest;
 import com.redhat.rhn.frontend.action.systems.BaseSystemListAction;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.user.UserManager;
-import com.redhat.rhn.testing.ActionHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.ActionHelper;
 
 import org.junit.jupiter.api.Test;
 

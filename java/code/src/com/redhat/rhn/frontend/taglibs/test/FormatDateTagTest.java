@@ -14,14 +14,15 @@
  */
 package com.redhat.rhn.frontend.taglibs.test;
 
+import static org.apache.commons.lang3.StringUtils.EMPTY;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.frontend.taglibs.FormatDateTag;
+import com.redhat.rhn.testing.MockJspWriter;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.TagTestHelper;
 import com.redhat.rhn.testing.TagTestUtils;
-
-import com.mockobjects.helpers.TagTestHelper;
-import com.mockobjects.servlet.MockJspWriter;
 
 import org.junit.jupiter.api.Test;
 
@@ -68,12 +69,11 @@ public class FormatDateTagTest extends RhnBaseTestCase {
         ht.setHumanStyle("from");
 
         MockJspWriter out = (MockJspWriter) tth.getPageContext().getOut();
-        // no data for a null value
-        out.setExpectedData("");
         try {
             ht.doStartTag();
             ht.doEndTag();
-            out.verify();
+            // no data for a null value
+            assertEquals(EMPTY, out.toString());
             ht.release();
         }
         catch (JspException e) {

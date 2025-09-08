@@ -28,10 +28,10 @@ import com.redhat.rhn.frontend.action.common.test.RhnSetActionTest;
 import com.redhat.rhn.frontend.action.errata.AffectedSystemsAction;
 import com.redhat.rhn.frontend.struts.RequestContext.Pagination;
 import com.redhat.rhn.frontend.struts.RhnHelper;
-import com.redhat.rhn.testing.ActionHelper;
 import com.redhat.rhn.testing.MockHttpServletRequest;
 import com.redhat.rhn.testing.MockObjectTestCase;
 import com.redhat.rhn.testing.MockTestUtils;
+import com.redhat.rhn.testing.ActionHelper;
 
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;

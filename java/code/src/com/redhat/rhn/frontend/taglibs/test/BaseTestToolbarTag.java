@@ -14,14 +14,16 @@
  */
 package com.redhat.rhn.frontend.taglibs.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.redhat.rhn.common.security.acl.AclHandler;
 import com.redhat.rhn.frontend.taglibs.ToolbarTag;
+import com.redhat.rhn.testing.MockHttpServletRequest;
+import com.redhat.rhn.testing.MockJspWriter;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.TagTestHelper;
 import com.redhat.rhn.testing.TagTestUtils;
 
-import com.mockobjects.helpers.TagTestHelper;
-import com.mockobjects.servlet.MockHttpServletRequest;
-import com.mockobjects.servlet.MockJspWriter;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,7 +51,7 @@ public abstract class BaseTestToolbarTag extends RhnBaseTestCase {
         tth = TagTestUtils.setupTagTest(tt, null);
         out = (MockJspWriter) tth.getPageContext().getOut();
         MockHttpServletRequest req = tth.getRequest();
-        req.setupGetAttribute(new HashMap<>());
+        req.setAttributes(new HashMap<>());
     }
 
     @Override
@@ -62,10 +64,9 @@ public abstract class BaseTestToolbarTag extends RhnBaseTestCase {
     }
 
     public void verifyTag(String output) throws JspException {
-        out.setExpectedData(output);
         tth.assertDoStartTag(Tag.EVAL_BODY_INCLUDE);
         tth.assertDoEndTag(Tag.EVAL_PAGE);
-        out.verify();
+        assertEquals(output, out.toString());
     }
 
     public static class MockTwoAclHandler implements AclHandler {

@@ -21,8 +21,8 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.user.ChangeEmailSetupAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.user.UserManager;
-import com.redhat.rhn.testing.ActionHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.ActionHelper;
 
 import org.apache.struts.action.ActionForward;
 import org.junit.jupiter.api.Test;

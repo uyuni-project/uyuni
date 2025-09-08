@@ -19,9 +19,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.user.CreateUserSetupAction;
-import com.redhat.rhn.testing.ActionHelper;
+import com.redhat.rhn.testing.MockDynaActionForm;
 import com.redhat.rhn.testing.RhnBaseTestCase;
-import com.redhat.rhn.testing.RhnMockDynaActionForm;
+import com.redhat.rhn.testing.ActionHelper;
 
 import org.junit.jupiter.api.Test;
 
@@ -46,7 +46,7 @@ public class CreateUserSetupActionTest extends RhnBaseTestCase {
         assertEquals("true", sah.getRequest().getAttribute("displaypam"));
     }
 
-    private void setupExpectations(RhnMockDynaActionForm form, User user) {
+    private void setupExpectations(MockDynaActionForm form, User user) {
         form.addExpectedProperty("country", "US");
         form.addExpectedProperty("contact_email", Boolean.TRUE);
         form.addExpectedProperty("contact_partner", Boolean.TRUE);
