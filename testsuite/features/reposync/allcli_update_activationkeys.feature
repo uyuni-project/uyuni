@@ -257,6 +257,8 @@ Feature: Update activation keys
     And I wait for child channels to appear
     And I check "Fake-RPM-Terminal-Channel"
     And I wait until "Fake-RPM-Terminal-Channel" has been checked
+    And I check "Uyuni Client Tools for SLES15 SP4 x86_64 (Development)"
+    And I wait until "Uyuni Client Tools for SLES15 SP4 x86_64 (Development)" has been checked
     And I click on "Update Activation Key"
     Then I should see a "Activation key Terminal Key x86_64 has been modified" text
 
