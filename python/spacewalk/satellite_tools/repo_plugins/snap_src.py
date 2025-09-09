@@ -189,7 +189,7 @@ class SnapRepo:
             "Accept": "application/json",
         }
 
-        for ch in range(ord("z"), ord("z") + 1):
+        for ch in range(ord("a"), ord("z") + 1):
             keyword = chr(ch)
             page = 1
             same_count = 0
@@ -268,7 +268,7 @@ class SnapRepo:
                     )
                     break
 
-        return to_return[208:210]
+        return to_return
 
 
 # pylint: disable-next=missing-class-docstring
