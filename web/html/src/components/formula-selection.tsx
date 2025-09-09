@@ -138,7 +138,7 @@ class FormulaSelection extends React.Component<Props, State> {
       );
       groups.groupless.forEach(function (this: FormulaSelection, formula) {
         list.push(
-          <button
+          <div
             onClick={this.onListItemClick}
             id={formula.name}
             key={formula.name}
@@ -152,7 +152,7 @@ class FormulaSelection extends React.Component<Props, State> {
               <i id={"info_button_" + formula.name} className="fa fa-lg fa-info-circle pull-right" />
             ) : null}
             {this.getDescription(formula)}
-          </button>
+          </div>
         );
       }, this);
     }
@@ -161,7 +161,7 @@ class FormulaSelection extends React.Component<Props, State> {
       const group = groups[group_name];
       const group_state = this.getGroupItemState(group);
       list.push(
-        <button
+        <div
           onClick={this.onGroupItemClick}
           id={"group_" + group_name}
           key={"group_" + group_name}
@@ -171,11 +171,11 @@ class FormulaSelection extends React.Component<Props, State> {
             <i className={this.getListIcon(group_state)} />
             {" " + capitalize(group_name)}
           </strong>
-        </button>
+        </div>
       );
       group.forEach(function (this: FormulaSelection, formula) {
         list.push(
-          <button
+          <div
             onClick={this.onListItemClick}
             id={formula.name}
             key={formula.name}
@@ -193,7 +193,7 @@ class FormulaSelection extends React.Component<Props, State> {
               />
             ) : null}
             {this.getDescription(formula)}
-          </button>
+          </div>
         );
       }, this);
     }
