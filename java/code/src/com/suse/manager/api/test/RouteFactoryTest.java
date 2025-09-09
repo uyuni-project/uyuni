@@ -23,7 +23,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.servlets.PxtSessionDelegate;
 import com.redhat.rhn.frontend.servlets.PxtSessionDelegateFactory;
 import com.redhat.rhn.frontend.xmlrpc.serializer.SerializerFactory;
-import com.redhat.rhn.testing.MockHttpServletResponse;
+import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 import com.redhat.rhn.testing.SparkTestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -808,6 +808,6 @@ public class RouteFactoryTest extends BaseControllerTestCase {
     }
 
     private Response createResponse() {
-        return RequestResponseFactory.create(new MockHttpServletResponse());
+        return RequestResponseFactory.create(new RhnMockHttpServletResponse());
     }
 }

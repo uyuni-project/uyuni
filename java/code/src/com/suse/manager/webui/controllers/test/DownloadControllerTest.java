@@ -46,7 +46,7 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ErrataTestUtils;
-import com.redhat.rhn.testing.MockHttpServletResponse;
+import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 import com.redhat.rhn.testing.SparkTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
@@ -57,7 +57,6 @@ import com.suse.manager.webui.utils.token.DownloadTokenBuilder;
 import com.suse.manager.webui.utils.token.Token;
 import com.suse.manager.webui.utils.token.TokenBuildingException;
 import com.suse.manager.webui.utils.token.TokenParsingException;
-
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
@@ -102,7 +101,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
     private File packageFile2;
     private File debPackageFile;
     private File debPackageFile2;
-    private MockHttpServletResponse mockResponse;
+    private RhnMockHttpServletResponse mockResponse;
     private Response response;
     private Package pkg;
     private Package pkg2;
@@ -125,7 +124,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         super.setUp();
 
         this.channel = ErrataTestUtils.createTestChannel(user);
-        this.mockResponse = new MockHttpServletResponse();
+        this.mockResponse = new RhnMockHttpServletResponse();
         this.response = RequestResponseFactory.create(mockResponse);
 
         this.pkg = ErrataTestUtils.createTestPackage(user, channel, "noarch");

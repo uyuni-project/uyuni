@@ -38,7 +38,7 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.rhnpackage.test.PackageManagerTest;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
-import com.redhat.rhn.testing.MockHttpServletRequest;
+import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -50,7 +50,7 @@ public class KickstartHelperTest extends BaseTestCaseWithUser {
     private KickstartHelper helper;
     private KickstartData ksdata;
     private RhnHttpServletRequest request;
-    private MockHttpServletRequest mockRequest;
+    private RhnMockHttpServletRequest mockRequest;
 
     /**
      * {@inheritDoc}
@@ -62,7 +62,7 @@ public class KickstartHelperTest extends BaseTestCaseWithUser {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         UserFactory.save(user);
         ksdata = KickstartDataTest.createKickstartWithOptions(user.getOrg());
-        mockRequest = new MockHttpServletRequest();
+        mockRequest = new RhnMockHttpServletRequest();
         mockRequest.setRemoteAddr("127.0.0.1");
         request = new RhnHttpServletRequest(mockRequest);
         helper = new KickstartHelper(request);
@@ -177,7 +177,7 @@ public class KickstartHelperTest extends BaseTestCaseWithUser {
                 ",1006678487::1152567362.02:21600.0:t15lgsaTRKpX6AxkUFQ11A==:f" +
                 "js-0-12.rhndev.redhat.com";
 
-        mockRequest.setupGetHeader(KickstartHelper.XRHNPROXYAUTH, proxyheader);
+        mockRequest.setHeader(KickstartHelper.XRHNPROXYAUTH, proxyheader);
         helper = new KickstartHelper(request);
         assertEquals("fjs-0-08.rhndev.redhat.com", helper.getKickstartHost());
 

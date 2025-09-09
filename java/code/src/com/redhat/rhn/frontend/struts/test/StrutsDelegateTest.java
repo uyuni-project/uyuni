@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.StrutsDelegate;
-import com.redhat.rhn.testing.MockDynaActionForm;
+import com.redhat.rhn.testing.RhnMockDynaActionForm;
 
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.DynaActionForm;
@@ -53,7 +53,7 @@ public class StrutsDelegateTest  {
     @Test
     public void testGetTextAreaValue() {
         String value = "asdf\r\nasdfwerwer\rasdf\n\radsfhjhhasdf";
-        DynaActionForm form = new MockDynaActionForm();
+        DynaActionForm form = new RhnMockDynaActionForm();
         form.set("somevalue", value);
 
         StrutsDelegate strutsDelegate = new StrutsDelegateStub();

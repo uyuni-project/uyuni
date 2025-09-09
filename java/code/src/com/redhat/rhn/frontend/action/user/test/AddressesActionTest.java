@@ -21,8 +21,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.frontend.action.user.AddressesAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
-import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.ActionHelper;
+import com.redhat.rhn.testing.RhnBaseTestCase;
 
 import org.junit.jupiter.api.Test;
 
@@ -54,7 +54,7 @@ public class AddressesActionTest extends RhnBaseTestCase {
         sah.setUpAction(action);
         sah.getRequest().setRequestURL("rdu.redhat.com/rhn/users/Adresses.do");
 
-        sah.getRequest().setupAddParameter("uid", (String)null);
+        sah.getRequest().addParameter("uid", (String)null);
         sah.getRequest().getParameterValues("uid"); //now uid = null
 
         try {
@@ -74,7 +74,7 @@ public class AddressesActionTest extends RhnBaseTestCase {
         sah.setUpAction(action);
         sah.getRequest().setRequestURL("foo");
         sah.getRequest().getParameter("uid");
-        sah.getRequest().setupAddParameter("uid", (String) null);
+        sah.getRequest().addParameter("uid", (String) null);
 
         sah.executeAction();
 

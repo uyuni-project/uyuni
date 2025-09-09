@@ -23,10 +23,10 @@ import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.action.user.ResetPasswordSubmitAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
-import com.redhat.rhn.testing.MockDynaActionForm;
-import com.redhat.rhn.testing.MockHttpServletRequest;
-import com.redhat.rhn.testing.MockHttpServletResponse;
-import com.redhat.rhn.testing.MockHttpSession;
+import com.redhat.rhn.testing.RhnMockDynaActionForm;
+import com.redhat.rhn.testing.RhnMockHttpServletRequest;
+import com.redhat.rhn.testing.RhnMockHttpServletResponse;
+import com.redhat.rhn.testing.RhnMockHttpSession;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.apache.struts.action.ActionForward;
@@ -43,8 +43,8 @@ public class ResetPasswordSubmitActionTest extends BaseTestCaseWithUser {
     private ActionForward mismatch, invalid, badpwd;
     private ActionMapping mapping;
     private DynaActionForm form;
-    private MockHttpServletRequest request;
-    private MockHttpServletResponse response;
+    private RhnMockHttpServletRequest request;
+    private RhnMockHttpServletResponse response;
     private ResetPasswordSubmitAction action;
     private User adminUser;
 
@@ -117,17 +117,17 @@ public class ResetPasswordSubmitActionTest extends BaseTestCaseWithUser {
         mismatch = new ActionForward("mismatch", "path", false);
         invalid = new ActionForward("invalid", "path", false);
         badpwd = new ActionForward("badpwd", "path", false);
-        form = new MockDynaActionForm("resetPasswordForm");
-        request = new MockHttpServletRequest();
-        response = new MockHttpServletResponse();
+        form = new RhnMockDynaActionForm("resetPasswordForm");
+        request = new RhnMockHttpServletRequest();
+        response = new RhnMockHttpServletResponse();
 
         RequestContext requestContext = new RequestContext(request);
 
-        MockHttpSession mockSession = new MockHttpSession();
+        RhnMockHttpSession mockSession = new RhnMockHttpSession();
         mockSession.setAttribute("token", null);
         mockSession.setAttribute("request_method", "GET");
         request.setSession(mockSession);
-        request.setupServerName("mymachine.rhndev.redhat.com");
+        request.setServerName("mymachine.rhndev.redhat.com");
         requestContext.getWebSession();
 
         mapping.addForwardConfig(mismatch);

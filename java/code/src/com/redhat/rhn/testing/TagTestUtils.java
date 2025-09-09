@@ -27,7 +27,6 @@ public class TagTestUtils {
     // static class
     private TagTestUtils() { }
 
-
     /**
      * Setup the TagTestHelper class with the
      * appropriate infrastructure.
@@ -38,22 +37,23 @@ public class TagTestUtils {
      * @return TagTestHelper
      * @see TagTestHelper
      */
-    public static TagTestHelper setupTagTest(Tag tag, URL url, MockHttpServletRequest request) {
+    public static TagTestHelper setupTagTest(Tag tag, URL url,
+                                             RhnMockHttpServletRequest request) {
 
         TagTestHelper tth = new TagTestHelper(tag);
-        MockPageContext mpc = tth.getPageContext();
+        RhnMockPageContext mpc = tth.getPageContext();
         MockServletContext ctx = (MockServletContext) mpc.getServletContext();
         if (request == null) {
-            request = MockTestUtils.getRequestWithSessionAndUser();
+            request = TestUtils.getRequestWithSessionAndUser();
         }
         request.setRequestURL("http://localhost:8080/rhnjava/index.jsp");
         request.addAttribute("requestedUri", "http://localhost:8080/rhnjava/index.jsp");
-        request.setSession(new MockHttpSession());
+        request.setSession(new RhnMockHttpSession());
         mpc.setRequest(request);
-        mpc.setJspWriter(new MockJspWriter());
+        mpc.setJspWriter(new RhnMockJspWriter());
 
         if (url != null) {
-            ctx.setupGetResource(url);
+            ctx.setResource(url);
         }
         return tth;
     }

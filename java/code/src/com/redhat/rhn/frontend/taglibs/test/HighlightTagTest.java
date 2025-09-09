@@ -19,8 +19,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.frontend.taglibs.HighlightTag;
 import com.redhat.rhn.testing.MockBodyContent;
-import com.redhat.rhn.testing.MockJspWriter;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.RhnMockJspWriter;
 import com.redhat.rhn.testing.TagTestHelper;
 import com.redhat.rhn.testing.TagTestUtils;
 
@@ -36,9 +36,9 @@ import javax.servlet.jsp.tagext.Tag;
  */
 public class HighlightTagTest extends RhnBaseTestCase {
 
-    private HighlightTag highlightTag;
-    private TagTestHelper tagTestHelper;
-    private MockJspWriter out;
+    private HighlightTag ht;
+    private TagTestHelper tth;
+    private RhnMockJspWriter out;
 
 
     @Override
@@ -46,14 +46,14 @@ public class HighlightTagTest extends RhnBaseTestCase {
     public void setUp() throws Exception {
         super.setUp();
 
-        highlightTag = new HighlightTag();
-        tagTestHelper = TagTestUtils.setupTagTest(highlightTag, null);
-        highlightTag.setPageContext(tagTestHelper.getPageContext());
+        ht = new HighlightTag();
+        tth = TagTestUtils.setupTagTest(ht, null);
+        ht.setPageContext(tth.getPageContext());
 
         MockBodyContent bc = new MockBodyContent("some test text");
-        highlightTag.setBodyContent(bc);
+        ht.setBodyContent(bc);
 
-        out = (MockJspWriter) tagTestHelper.getPageContext().getOut();
+        out = (RhnMockJspWriter) tth.getPageContext().getOut();
     }
 
     @Test
@@ -63,11 +63,11 @@ public class HighlightTagTest extends RhnBaseTestCase {
          *     some test text
          * </rhn:highlight>
          */
-        highlightTag.setTag("foo");
-        highlightTag.setText("test");
+        ht.setTag("foo");
+        ht.setText("test");
 
         try {
-            tagTestHelper.assertDoEndTag(Tag.EVAL_PAGE);
+            tth.assertDoEndTag(Tag.EVAL_PAGE);
         }
         catch (JspException e) {
             fail(e.toString());
@@ -83,11 +83,11 @@ public class HighlightTagTest extends RhnBaseTestCase {
          *     some test text
          * </rhn:highlight>
          */
-        highlightTag.setTag("foo");
-        highlightTag.setText("test");
-        highlightTag.setStartTag("<foo bar=1>");
+        ht.setTag("foo");
+        ht.setText("test");
+        ht.setStartTag("<foo bar=1>");
         try {
-            tagTestHelper.assertDoEndTag(Tag.EVAL_PAGE);
+            tth.assertDoEndTag(Tag.EVAL_PAGE);
         }
         catch (JspException e) {
             fail(e.toString());
@@ -102,12 +102,12 @@ public class HighlightTagTest extends RhnBaseTestCase {
          *     some test text
          * </rhn:highlight>
          */
-        highlightTag.setTag(null);
-        highlightTag.setStartTag("<foo>");
-        highlightTag.setEndTag("</foo>");
+        ht.setTag(null);
+        ht.setStartTag("<foo>");
+        ht.setEndTag("</foo>");
 //        out.setExpectedData("some <foo>test</foo> text");
         try {
-            tagTestHelper.assertDoEndTag(Tag.EVAL_PAGE);
+            tth.assertDoEndTag(Tag.EVAL_PAGE);
         }
         catch (JspException e) {
             fail(e.toString());
@@ -122,10 +122,10 @@ public class HighlightTagTest extends RhnBaseTestCase {
          * <rhn:highlight endTag="</foo>" text="test">
          * -- missing startTag or tag
          */
-        highlightTag.setTag(null);
-        highlightTag.setStartTag(null);
+        ht.setTag(null);
+        ht.setStartTag(null);
         try {
-            tagTestHelper.assertDoEndTag(Tag.EVAL_PAGE);
+            tth.assertDoEndTag(Tag.EVAL_PAGE);
             fail(); //Shouldn't get here
         }
         catch (JspException e) {
@@ -138,10 +138,10 @@ public class HighlightTagTest extends RhnBaseTestCase {
         /*
          * <rhn:highlight tag="foo" text="test"></rhn:highlight>
          */
-        highlightTag.setBodyContent(null);
-        highlightTag.setTag("foo");
+        ht.setBodyContent(null);
+        ht.setTag("foo");
         try {
-            tagTestHelper.assertDoEndTag(Tag.SKIP_BODY);
+            tth.assertDoEndTag(Tag.SKIP_BODY);
         }
         catch (JspException e) {
             fail(e.toString());
@@ -152,11 +152,11 @@ public class HighlightTagTest extends RhnBaseTestCase {
 
     @Test
     public void testDoEndWithMultipleOccurrences() {
-        highlightTag.setBodyContent(new MockBodyContent("some test text to Test in a TEST"));
-        highlightTag.setTag("foo");
-        highlightTag.setText("test");
+        ht.setBodyContent(new MockBodyContent("some test text to Test in a TEST"));
+        ht.setTag("foo");
+        ht.setText("test");
         try {
-            tagTestHelper.assertDoEndTag(Tag.EVAL_PAGE);
+            tth.assertDoEndTag(Tag.EVAL_PAGE);
         }
         catch (JspException e) {
             fail(e.toString());

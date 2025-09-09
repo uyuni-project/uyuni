@@ -23,7 +23,7 @@ import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.kickstart.KickstartOptionsCommand;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
-import com.redhat.rhn.testing.MockHttpServletRequest;
+import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.junit.jupiter.api.Test;
@@ -33,7 +33,7 @@ import org.junit.jupiter.api.Test;
  */
 public class KickstartOptionsCommandTest extends BaseTestCaseWithUser {
 
-    private MockHttpServletRequest mockRequest;
+    private RhnMockHttpServletRequest mockRequest;
 
     @Test
     public void testKickstartOptionsCommand() throws Exception {
@@ -41,7 +41,7 @@ public class KickstartOptionsCommandTest extends BaseTestCaseWithUser {
 
         User ksUser = UserTestUtils.createUser("testuser", k.getOrg().getId());
 
-        mockRequest = new MockHttpServletRequest();
+        mockRequest = new RhnMockHttpServletRequest();
         mockRequest.setRemoteAddr("127.0.0.1");
 
         KickstartOptionsCommand command = new KickstartOptionsCommand(k.getId(), ksUser);

@@ -16,34 +16,30 @@
 package com.redhat.rhn.testing;
 
 
-import java.io.IOException;
-
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-
 public abstract class AbstractServletTestHelper {
-    protected final MockHttpServletRequest request = new MockHttpServletRequest();
-    protected final MockHttpServletResponse response = new MockHttpServletResponse();
-    protected final MockHttpSession httpSession = new MockHttpSession();
+    protected final RhnMockHttpServletRequest request = new RhnMockHttpServletRequest();
+    protected final RhnMockHttpServletResponse response = new RhnMockHttpServletResponse();
+    protected final RhnMockHttpSession httpSession = new RhnMockHttpSession();
     protected final MockRequestDispatcher requestDispatcher = new MockRequestDispatcher();
     protected final MockServletContext servletContext = new MockServletContext();
-//    protected final MockServletConfig servletConfig = new MockServletConfig();
 
+    /**
+     * Constructor that initializes the mock servlet components and sets up their relationships.
+     * Configures the request with a session, servlet context with request dispatcher,
+     * and establishes proper cross-references between the mock objects.
+     */
     public AbstractServletTestHelper() {
         request.setSession(httpSession);
-        servletContext.setupGetRequestDispatcher(requestDispatcher);
+        servletContext.setRequestDispatcher(requestDispatcher);
         request.setRequestDispatcher(requestDispatcher);
         httpSession.setServletContext(servletContext);
-//        servletConfig.setServletContext(servletContext);
     }
 
-    public MockHttpServletRequest getRequest() {
+    public RhnMockHttpServletRequest getRequest() {
         return request;
     }
 
-    public MockHttpSession getHttpSession() {
+    public RhnMockHttpSession getHttpSession() {
         return httpSession;
     }
 
@@ -51,7 +47,7 @@ public abstract class AbstractServletTestHelper {
         return requestDispatcher;
     }
 
-    public MockHttpServletResponse getResponse() {
+    public RhnMockHttpServletResponse getResponse() {
         return response;
     }
 
@@ -59,24 +55,4 @@ public abstract class AbstractServletTestHelper {
         return servletContext;
     }
 
-//    public MockServletConfig getServletConfig() {
-//        return servletConfig;
-//    }
-
-    public class MockRequestDispatcher implements RequestDispatcher {
-        private ServletRequest myRequest;
-        private ServletResponse myResponse;
-
-        public void forward(ServletRequest aRequest, ServletResponse aResponse)
-                throws ServletException, IOException {
-            myRequest = aRequest;
-            myResponse = aResponse;
-        }
-
-        public void include(ServletRequest aRequest, ServletResponse aResponse)
-                throws ServletException, IOException {
-            myRequest = aRequest;
-            myResponse = aResponse;
-        }
-    }
 }

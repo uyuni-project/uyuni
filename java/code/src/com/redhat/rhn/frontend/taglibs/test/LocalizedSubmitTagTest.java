@@ -18,11 +18,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.frontend.taglibs.LocalizedSubmitTag;
-import com.redhat.rhn.testing.MockJspWriter;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.RhnMockJspWriter;
 import com.redhat.rhn.testing.TagTestHelper;
 import com.redhat.rhn.testing.TagTestUtils;
-
 
 import org.junit.jupiter.api.Test;
 
@@ -43,7 +42,7 @@ public class LocalizedSubmitTagTest extends RhnBaseTestCase {
             TagTestHelper tth = TagTestUtils.setupTagTest(ltag, null);
             tth.getPageContext().getRequest();
             // setup mock objects
-            MockJspWriter out = (MockJspWriter)tth.getPageContext().getOut();
+            RhnMockJspWriter out = (RhnMockJspWriter)tth.getPageContext().getOut();
             // ok let's test the tag
             tth.assertDoStartTag(Tag.SKIP_BODY);
             tth.assertDoEndTag(Tag.EVAL_PAGE);
@@ -69,7 +68,7 @@ public class LocalizedSubmitTagTest extends RhnBaseTestCase {
             TagTestHelper tth = TagTestUtils.setupTagTest(ltag, null);
             tth.getPageContext().getRequest();
             // setup mock objects
-            MockJspWriter out = (MockJspWriter)tth.getPageContext().getOut();
+            RhnMockJspWriter out = (RhnMockJspWriter)tth.getPageContext().getOut();
             // ok let's test the tag
             tth.assertDoStartTag(Tag.SKIP_BODY);
             tth.assertDoEndTag(Tag.EVAL_PAGE);

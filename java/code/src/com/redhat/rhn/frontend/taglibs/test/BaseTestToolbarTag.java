@@ -18,12 +18,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.redhat.rhn.common.security.acl.AclHandler;
 import com.redhat.rhn.frontend.taglibs.ToolbarTag;
-import com.redhat.rhn.testing.MockHttpServletRequest;
-import com.redhat.rhn.testing.MockJspWriter;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.RhnMockHttpServletRequest;
+import com.redhat.rhn.testing.RhnMockJspWriter;
 import com.redhat.rhn.testing.TagTestHelper;
 import com.redhat.rhn.testing.TagTestUtils;
-
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -42,15 +41,15 @@ public abstract class BaseTestToolbarTag extends RhnBaseTestCase {
     protected URL url = null;
     protected TagTestHelper tth;
     protected ToolbarTag tt;
-    protected MockJspWriter out;
+    protected RhnMockJspWriter out;
 
     @Override
     @BeforeEach
     public void setUp() {
         tt = new ToolbarTag();
         tth = TagTestUtils.setupTagTest(tt, null);
-        out = (MockJspWriter) tth.getPageContext().getOut();
-        MockHttpServletRequest req = tth.getRequest();
+        out = (RhnMockJspWriter) tth.getPageContext().getOut();
+        RhnMockHttpServletRequest req = tth.getRequest();
         req.setAttributes(new HashMap<>());
     }
 

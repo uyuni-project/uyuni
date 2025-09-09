@@ -23,21 +23,20 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.errata.NotifySetupAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
-import com.redhat.rhn.testing.MockHttpServletRequest;
-import com.redhat.rhn.testing.MockTestUtils;
-import com.redhat.rhn.testing.RhnJmockBaseTestCase;
+import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.RhnMockDynaActionForm;
+import com.redhat.rhn.testing.RhnMockHttpServletRequest;
+import com.redhat.rhn.testing.RhnMockHttpServletResponse;
+import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.DynaActionForm;
 import org.junit.jupiter.api.Test;
-
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * NotifySetupActionTest
  */
-public class NotifySetupActionTest extends RhnJmockBaseTestCase {
+public class NotifySetupActionTest extends RhnBaseTestCase {
 
     @Test
     public void testExecute() throws Exception {
@@ -45,9 +44,9 @@ public class NotifySetupActionTest extends RhnJmockBaseTestCase {
 
         ActionMapping mapping = new ActionMapping();
         ActionForward def = new ActionForward(RhnHelper.DEFAULT_FORWARD, "path", false);
-        DynaActionForm form = new DynaActionForm();
-        MockHttpServletRequest request = MockTestUtils.getRequestWithSessionAndUser();
-        HttpServletResponse response = mock(HttpServletResponse.class);
+        RhnMockDynaActionForm form = new RhnMockDynaActionForm();
+        RhnMockHttpServletRequest request = TestUtils.getRequestWithSessionAndUser();
+        RhnMockHttpServletResponse response = new RhnMockHttpServletResponse();
         mapping.addForwardConfig(def);
 
         RequestContext requestContext = new RequestContext(request);
@@ -56,8 +55,8 @@ public class NotifySetupActionTest extends RhnJmockBaseTestCase {
         Errata published = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
 
         //test default case
-        request.setupAddParameter("eid", published.getId().toString());
-        request.setupAddParameter("eid", published.getId().toString());
+        request.addParameter("eid", published.getId().toString());
+        request.addParameter("eid", published.getId().toString());
         ActionForward result = action.execute(mapping, form, request, response);
         assertEquals(RhnHelper.DEFAULT_FORWARD, result.getName());
         assertNotNull(request.getAttribute("advisory"));

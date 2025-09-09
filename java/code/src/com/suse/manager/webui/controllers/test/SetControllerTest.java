@@ -26,7 +26,7 @@ import com.redhat.rhn.frontend.action.SetLabels;
 import com.redhat.rhn.frontend.struts.SessionSetHelper;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
-import com.redhat.rhn.testing.MockHttpServletResponse;
+import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 import com.redhat.rhn.testing.SparkTestUtils;
 
 import com.suse.manager.webui.controllers.SetController;
@@ -77,7 +77,7 @@ public class SetControllerTest extends BaseControllerTestCase {
             "system_list"
         );
 
-        MockHttpServletResponse mockResponse = (MockHttpServletResponse) response.raw();
+        RhnMockHttpServletResponse mockResponse = (RhnMockHttpServletResponse) response.raw();
 
         mockResponse.setContentType("application/json");
 
@@ -103,7 +103,7 @@ public class SetControllerTest extends BaseControllerTestCase {
             "system_list"
         );
 
-        MockHttpServletResponse mockResponse = (MockHttpServletResponse) response.raw();
+        RhnMockHttpServletResponse mockResponse = (RhnMockHttpServletResponse) response.raw();
 
         mockResponse.setContentType("application/json");
 
@@ -122,7 +122,7 @@ public class SetControllerTest extends BaseControllerTestCase {
             "list-selection"
         );
 
-        MockHttpServletResponse mockResponse = (MockHttpServletResponse) response.raw();
+        RhnMockHttpServletResponse mockResponse = (RhnMockHttpServletResponse) response.raw();
 
         mockResponse.setContentType("application/json");
 
@@ -144,7 +144,7 @@ public class SetControllerTest extends BaseControllerTestCase {
             "list-selection"
         );
 
-        MockHttpServletResponse mockResponse = (MockHttpServletResponse) response.raw();
+        RhnMockHttpServletResponse mockResponse = (RhnMockHttpServletResponse) response.raw();
 
         mockResponse.setContentType("application/json");
 
@@ -166,7 +166,7 @@ public class SetControllerTest extends BaseControllerTestCase {
             "nonExisting"
         );
 
-        MockHttpServletResponse mockResponse = (MockHttpServletResponse) response.raw();
+        RhnMockHttpServletResponse mockResponse = (RhnMockHttpServletResponse) response.raw();
 
         mockResponse.setStatus(HttpStatus.SC_INTERNAL_SERVER_ERROR);
         mockResponse.setContentType("application/json");
@@ -184,7 +184,7 @@ public class SetControllerTest extends BaseControllerTestCase {
             "nonExisting"
         );
 
-        MockHttpServletResponse mockResponse = (MockHttpServletResponse) response.raw();
+        RhnMockHttpServletResponse mockResponse = (RhnMockHttpServletResponse) response.raw();
 
         mockResponse.setStatus(HttpStatus.SC_NOT_FOUND);
         mockResponse.setContentType("application/json");

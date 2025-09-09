@@ -23,8 +23,8 @@ import com.redhat.rhn.frontend.action.common.test.RhnSetActionTest;
 import com.redhat.rhn.frontend.action.systems.BaseSystemListAction;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.user.UserManager;
-import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.ActionHelper;
+import com.redhat.rhn.testing.RhnBaseTestCase;
 
 import org.junit.jupiter.api.Test;
 
@@ -51,8 +51,8 @@ public abstract class BaseSystemListActionTestCase extends RhnBaseTestCase {
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
         UserManager.storeUser(user);
         String sid = server.getId().toString();
-        ah.getRequest().setupAddParameter("items_on_page", (String[])null);
-        ah.getRequest().setupAddParameter("items_selected", new String[] { sid });
+        ah.getRequest().addParameter("items_on_page", (String[])null);
+        ah.getRequest().addParameter("items_selected", new String[] { sid });
         ah.executeAction("updatelist");
 
         RhnSetActionTest.verifyRhnSetData(ah.getUser(), RhnSetDecl.SYSTEMS, 1);
@@ -68,8 +68,8 @@ public abstract class BaseSystemListActionTestCase extends RhnBaseTestCase {
         User user = ah.getUser();
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         UserManager.storeUser(user);
-        ah.getRequest().setupAddParameter("items_on_page", (String[])null);
-        ah.getRequest().setupAddParameter("items_selected", (String[]) null);
+        ah.getRequest().addParameter("items_on_page", (String[])null);
+        ah.getRequest().addParameter("items_selected", (String[]) null);
         ah.executeAction("selectall");
         // This test only ensures that 'Select All' doesn't blow up.
         // To really test that something got selected, we would have to create an

@@ -18,9 +18,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.frontend.taglibs.RequiredFieldTag;
-import com.redhat.rhn.testing.MockHttpServletRequest;
-import com.redhat.rhn.testing.MockJspWriter;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.RhnMockHttpServletRequest;
+import com.redhat.rhn.testing.RhnMockJspWriter;
 import com.redhat.rhn.testing.TagTestHelper;
 import com.redhat.rhn.testing.TagTestUtils;
 
@@ -38,7 +38,7 @@ public class RequiredFieldTagTest extends RhnBaseTestCase {
     @Test
     public void testRender() throws Exception {
         RequiredFieldTag tag = new RequiredFieldTag();
-        MockHttpServletRequest request = new MockHttpServletRequest();
+        RhnMockHttpServletRequest request = new RhnMockHttpServletRequest();
         TagTestHelper tth = TagTestUtils.setupTagTest(tag,
                                         new URL("http://localhost"),
                                         request);
@@ -49,7 +49,7 @@ public class RequiredFieldTagTest extends RhnBaseTestCase {
         tth.assertDoStartTag(Tag.EVAL_BODY_INCLUDE);
         tth.assertDoEndTag(Tag.SKIP_BODY);
 
-        MockJspWriter rout = (MockJspWriter) tth.getPageContext().getOut();
+        RhnMockJspWriter rout = (RhnMockJspWriter) tth.getPageContext().getOut();
         assertTrue(rout.toString().contains("<span class"));
         assertTrue(rout.toString().contains("</span>"));
         assertTrue(rout.toString().contains("*"));

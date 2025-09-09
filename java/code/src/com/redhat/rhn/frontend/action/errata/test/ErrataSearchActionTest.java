@@ -20,8 +20,8 @@ import com.redhat.rhn.frontend.action.BaseSearchAction;
 import com.redhat.rhn.frontend.action.errata.ErrataSearchAction;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
-import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.ActionHelper;
+import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.apache.commons.collections.IteratorUtils;
@@ -47,9 +47,9 @@ public class ErrataSearchActionTest extends RhnBaseTestCase {
         ah.setUpAction(action, RhnHelper.DEFAULT_FORWARD);
         ah.getForm().set(BaseSearchAction.VIEW_MODE, BaseSearchAction.OPT_ADVISORY);
         ah.getForm().set(RhnAction.SUBMITTED, Boolean.TRUE);
-        ah.getRequest().setupAddParameter(BaseSearchAction.SEARCH_STR, name);
-        ah.getRequest().setupAddParameter(BaseSearchAction.VIEW_MODE, BaseSearchAction.OPT_ADVISORY);
-        ah.getRequest().setupAddParameter(BaseSearchAction.FINE_GRAINED, "on");
+        ah.getRequest().addParameter(BaseSearchAction.SEARCH_STR, name);
+        ah.getRequest().addParameter(BaseSearchAction.VIEW_MODE, BaseSearchAction.OPT_ADVISORY);
+        ah.getRequest().addParameter(BaseSearchAction.FINE_GRAINED, "on");
 
         Map<String, String> paramnames = new HashMap<>();
         paramnames.put(BaseSearchAction.SEARCH_STR, name);

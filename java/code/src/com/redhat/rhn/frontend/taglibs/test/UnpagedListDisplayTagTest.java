@@ -22,7 +22,7 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.taglibs.ListTag;
 import com.redhat.rhn.frontend.taglibs.UnpagedListDisplayTag;
 import com.redhat.rhn.testing.MockObjectTestCase;
-import com.redhat.rhn.testing.MockJspWriter;
+import com.redhat.rhn.testing.RhnMockJspWriter;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.jmock.Expectations;
@@ -43,7 +43,7 @@ public class UnpagedListDisplayTagTest extends MockObjectTestCase {
     private UnpagedListDisplayTag ldt;
     private HttpServletRequest request;
     private PageContext pageContext;
-    private MockJspWriter writer;
+    private RhnMockJspWriter writer;
 
     @BeforeEach
     public void setUp() {
@@ -52,7 +52,7 @@ public class UnpagedListDisplayTagTest extends MockObjectTestCase {
 
         request = mock(HttpServletRequest.class);
         pageContext = mock(PageContext.class);
-        writer = new MockJspWriter();
+        writer = new RhnMockJspWriter();
 
         ldt = new UnpagedListDisplayTag();
         ListTag lt = new ListTag();

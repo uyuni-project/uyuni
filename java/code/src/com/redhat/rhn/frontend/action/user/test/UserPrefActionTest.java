@@ -22,10 +22,11 @@ import com.redhat.rhn.frontend.action.user.UserPrefAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.user.UserManager;
-import com.redhat.rhn.testing.MockDynaActionForm;
-import com.redhat.rhn.testing.MockHttpServletRequest;
 import com.redhat.rhn.testing.MockObjectTestCase;
-import com.redhat.rhn.testing.MockTestUtils;
+import com.redhat.rhn.testing.RhnMockDynaActionForm;
+import com.redhat.rhn.testing.RhnMockHttpServletRequest;
+import com.redhat.rhn.testing.RhnMockHttpServletResponse;
+import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -50,9 +51,9 @@ public class UserPrefActionTest extends MockObjectTestCase {
 
         ActionMapping mapping = new ActionMapping();
         ActionForward success = new ActionForward("success", "path", false);
-        MockDynaActionForm form = new MockDynaActionForm();
-        MockHttpServletRequest request = MockTestUtils.getRequestWithSessionAndUser();
-        HttpServletResponse response = mock(HttpServletResponse.class);
+        RhnMockDynaActionForm form = new RhnMockDynaActionForm();
+        RhnMockHttpServletRequest request = TestUtils.getRequestWithSessionAndUser();
+        HttpServletResponse response = new RhnMockHttpServletResponse();
 
         mapping.addForwardConfig(success);
 
@@ -65,7 +66,7 @@ public class UserPrefActionTest extends MockObjectTestCase {
         // a second time.  The MockRequest counts the number of times getParamter
         // is called.
 
-        request.setupAddParameter("uid", user.getId().toString());
+        request.addParameter("uid", user.getId().toString());
         // populate with any set of information
         // then get the verify the user was changed correctly.
         form.set("emailNotif", Boolean.FALSE);

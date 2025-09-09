@@ -21,8 +21,8 @@ import com.redhat.rhn.common.util.test.CSVWriterTest;
 import com.redhat.rhn.frontend.action.CSVDownloadAction;
 import com.redhat.rhn.frontend.taglibs.list.CSVTag;
 import com.redhat.rhn.frontend.taglibs.list.ListSetTag;
-import com.redhat.rhn.testing.MockJspWriter;
 import com.redhat.rhn.testing.MockObjectTestCase;
+import com.redhat.rhn.testing.RhnMockJspWriter;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.jmock.Expectations;
@@ -46,7 +46,7 @@ public class CSVTagTest extends MockObjectTestCase {
     private HttpServletRequest req;
     private HttpSession session;
     private PageContext context;
-    private MockJspWriter writer;
+    private RhnMockJspWriter writer;
 
     private String listName = "testDataListName";
 
@@ -59,7 +59,7 @@ public class CSVTagTest extends MockObjectTestCase {
         session = mock(HttpSession.class);
         context = mock(PageContext.class);
 
-        writer = new MockJspWriter();
+        writer = new RhnMockJspWriter();
 
         csv = new CSVTag();
         csv.setName("testIsMyName");

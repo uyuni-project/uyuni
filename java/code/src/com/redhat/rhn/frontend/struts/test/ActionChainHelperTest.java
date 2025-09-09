@@ -27,8 +27,8 @@ import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
-import com.redhat.rhn.testing.MockHttpServletRequest;
-import com.redhat.rhn.testing.MockTestUtils;
+import com.redhat.rhn.testing.RhnMockHttpServletRequest;
+import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.utils.Json;
 
@@ -50,7 +50,7 @@ public class ActionChainHelperTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testReadActionChain() {
-        ActionChain chain = ActionChainFactory.createActionChain(MockTestUtils.randomString(),
+        ActionChain chain = ActionChainFactory.createActionChain(TestUtils.randomString(),
             user);
 
         // poor-man's DynaActionForm mocking
@@ -71,7 +71,7 @@ public class ActionChainHelperTest extends BaseTestCaseWithUser {
         assertNotNull(retrievedChain);
         assertEquals(chain.getId(), retrievedChain.getId());
 
-        formMap.put(ActionChainHelper.LABEL_PROPERTY_NAME, MockTestUtils.randomString());
+        formMap.put(ActionChainHelper.LABEL_PROPERTY_NAME, TestUtils.randomString());
         ActionChain newChain = ActionChainHelper.readActionChain(form, user);
         assertNotNull(newChain);
         assertFalse(chain.getId().equals(newChain.getId()));
@@ -84,7 +84,7 @@ public class ActionChainHelperTest extends BaseTestCaseWithUser {
     public void testPrepopulateActionChains() {
         List<ActionChain> actionChains = new LinkedList<>();
         for (int i = 0; i < 10; i++) {
-            actionChains.add(ActionChainFactory.createActionChain(MockTestUtils.randomString(),
+            actionChains.add(ActionChainFactory.createActionChain(TestUtils.randomString(),
                 user));
         }
 
@@ -97,7 +97,7 @@ public class ActionChainHelperTest extends BaseTestCaseWithUser {
             result.add(map);
         }
 
-        MockHttpServletRequest request = MockTestUtils.getRequestWithSessionAndUser();
+        RhnMockHttpServletRequest request = TestUtils.getRequestWithSessionAndUser();
         request.addAttribute(
             ActionChainHelper.EXISTING_ACTION_CHAINS_PROPERTY_NAME, Json.GSON.toJson(result));
 

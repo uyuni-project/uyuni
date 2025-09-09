@@ -18,9 +18,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.taglibs.SubmittedTag;
-import com.redhat.rhn.testing.MockHttpServletRequest;
-import com.redhat.rhn.testing.MockJspWriter;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.RhnMockHttpServletRequest;
+import com.redhat.rhn.testing.RhnMockJspWriter;
 import com.redhat.rhn.testing.TagTestHelper;
 import com.redhat.rhn.testing.TagTestUtils;
 
@@ -39,7 +39,7 @@ public class SubmittedTagTest extends RhnBaseTestCase {
     @Test
     public void testRender() throws Exception {
         SubmittedTag tag = new SubmittedTag();
-        MockHttpServletRequest request = new MockHttpServletRequest();
+        RhnMockHttpServletRequest request = new RhnMockHttpServletRequest();
         TagTestHelper tth = TagTestUtils.setupTagTest(tag,
                                         new URL("http://localhost"),
                                         request);
@@ -49,7 +49,7 @@ public class SubmittedTagTest extends RhnBaseTestCase {
         tth.assertDoStartTag(Tag.SKIP_BODY);
         tth.assertDoEndTag(Tag.SKIP_BODY);
 
-        MockJspWriter rout = (MockJspWriter) tth.getPageContext().getOut();
+        RhnMockJspWriter rout = (RhnMockJspWriter) tth.getPageContext().getOut();
 
         assertTrue(rout.toString().contains(RhnAction.SUBMITTED));
         assertTrue(rout.toString().contains(SubmittedTag.HIDDEN));

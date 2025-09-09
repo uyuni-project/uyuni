@@ -31,10 +31,10 @@ import com.redhat.rhn.frontend.action.systems.SPMigrationAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.testing.ChannelTestUtils;
-import com.redhat.rhn.testing.MockDynaActionForm;
-import com.redhat.rhn.testing.MockHttpServletRequest;
-import com.redhat.rhn.testing.MockHttpServletResponse;
-import com.redhat.rhn.testing.MockTestUtils;
+import com.redhat.rhn.testing.RhnMockDynaActionForm;
+import com.redhat.rhn.testing.RhnMockHttpServletRequest;
+import com.redhat.rhn.testing.RhnMockHttpServletResponse;
+import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -51,16 +51,16 @@ import java.util.Set;
 public class SPMigrationActionTest {
 
     private Server server;
-    private MockHttpServletRequest request;
+    private RhnMockHttpServletRequest request;
     private RequestContext requestContext;
     private SUSEProduct baseProduct;
     private SUSEProduct addonProduct;
-    private MockDynaActionForm form;
+    private RhnMockDynaActionForm form;
     private Channel baseChannel;
 
     @BeforeEach
     public void setUp() throws Exception {
-        request = MockTestUtils.getRequestWithSessionAndUser();
+        request = TestUtils.getRequestWithSessionAndUser();
         requestContext = new RequestContext(request);
         User user = requestContext.getCurrentUser();
         server = ServerFactoryTest.createTestServer(user, true,
@@ -68,7 +68,7 @@ public class SPMigrationActionTest {
         UserManager.storeUser(user);
         baseProduct = SUSEProductTestUtils.createTestSUSEProduct(ChannelFamilyFactoryTest.createTestChannelFamily());
         addonProduct = SUSEProductTestUtils.createTestSUSEProduct(ChannelFamilyFactoryTest.createTestChannelFamily());
-        form = new MockDynaActionForm();
+        form = new RhnMockDynaActionForm();
         baseChannel = ChannelTestUtils.createBaseChannel(user);
 
         form.set("step", "confirm");
@@ -86,9 +86,9 @@ public class SPMigrationActionTest {
         ActionForward target = new ActionForward("schedule", "path", false);
 
         String sid = server.getId().toString();
-        request.setupAddParameter("sid", sid);
-        request.setupAddParameter(RequestContext.DISPATCH, "schedule");
-        MockHttpServletResponse response = new MockHttpServletResponse();
+        request.addParameter("sid", sid);
+        request.addParameter(RequestContext.DISPATCH, "schedule");
+        RhnMockHttpServletResponse response = new RhnMockHttpServletResponse();
         mapping.addForwardConfig(target);
         SPMigrationAction action = new SPMigrationAction();
         ActionForward result = action.execute(mapping, form, request, response);

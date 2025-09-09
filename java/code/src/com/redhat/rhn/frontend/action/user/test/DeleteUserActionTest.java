@@ -26,22 +26,21 @@ import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.frontend.action.user.DeleteUserAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
-import com.redhat.rhn.testing.MockHttpServletRequest;
-import com.redhat.rhn.testing.MockTestUtils;
-import com.redhat.rhn.testing.RhnJmockBaseTestCase;
+import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.RhnMockDynaActionForm;
+import com.redhat.rhn.testing.RhnMockHttpServletRequest;
+import com.redhat.rhn.testing.RhnMockHttpServletResponse;
+import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.DynaActionForm;
 import org.junit.jupiter.api.Test;
-
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * DeleteUserActionTest
  */
-public class DeleteUserActionTest extends RhnJmockBaseTestCase {
+public class DeleteUserActionTest extends RhnBaseTestCase {
 
     @Test
     public void testExecute() {
@@ -54,14 +53,14 @@ public class DeleteUserActionTest extends RhnJmockBaseTestCase {
         mapping.addForwardConfig(failure);
         mapping.addForwardConfig(success);
 
-        MockHttpServletRequest request = MockTestUtils.getRequestWithSessionAndUser();
-        HttpServletResponse response = mock(HttpServletResponse.class);
-        DynaActionForm form = new DynaActionForm();
+        RhnMockHttpServletRequest request = TestUtils.getRequestWithSessionAndUser();
+        RhnMockHttpServletResponse response = new RhnMockHttpServletResponse();
+        RhnMockDynaActionForm form = new RhnMockDynaActionForm();
 
         RequestContext requestContext = new RequestContext(request);
 
         Long uid = Long.parseLong(request.getParameter("uid"));
-        request.setupAddParameter("uid", uid.toString()); //put it back
+        request.addParameter("uid", uid.toString()); //put it back
         assertNotNull(UserFactory.lookupById(uid));
 
 
@@ -76,7 +75,7 @@ public class DeleteUserActionTest extends RhnJmockBaseTestCase {
 
         //Null parameter
         request.getParameter("uid");
-        request.setupAddParameter("uid", (String)null);
+        request.addParameter("uid", (String)null);
         requestContext.getCurrentUser().addPermanentRole(
                 RoleFactory.lookupByLabel("org_admin"));
         try {
@@ -88,14 +87,14 @@ public class DeleteUserActionTest extends RhnJmockBaseTestCase {
         }
 
         //try to delete self
-        request.setupAddParameter("uid", uid.toString());
+        request.addParameter("uid", uid.toString());
         forward = action.execute(mapping, form, request, response);
         failure.setPath("path?uid=" + uid);
         assertEquals(failure.getName(), forward.getName());
         assertEquals(failure.getPath(), forward.getPath());
 
         //try to delete non-existing user
-        request.setupAddParameter("uid", "-9999");
+        request.addParameter("uid", "-9999");
         try {
             action.execute(mapping, form, request, response);
             fail();
@@ -109,7 +108,7 @@ public class DeleteUserActionTest extends RhnJmockBaseTestCase {
         User usr = UserTestUtils.createUser("testUser",
                 requestContext.getCurrentUser().getOrg().getId());
         usr.addPermanentRole(RoleFactory.lookupByLabel("org_admin"));
-        request.setupAddParameter("uid", usr.getId().toString());
+        request.addParameter("uid", usr.getId().toString());
         forward = action.execute(mapping, form, request, response);
         failure.setPath("path?uid=" + usr.getId());
         assertEquals(failure.getName(), forward.getName());
@@ -118,7 +117,7 @@ public class DeleteUserActionTest extends RhnJmockBaseTestCase {
         //successful delete
         User usr2 = UserTestUtils.createUser("testUser",
                 requestContext.getCurrentUser().getOrg().getId());
-        request.setupAddParameter("uid", usr2.getId().toString());
+        request.addParameter("uid", usr2.getId().toString());
         forward = action.execute(mapping, form, request, response);
         assertEquals(success, forward);
     }

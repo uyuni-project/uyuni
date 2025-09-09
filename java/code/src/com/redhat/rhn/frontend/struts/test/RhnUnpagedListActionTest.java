@@ -25,8 +25,8 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.RhnUnpagedListAction;
 import com.redhat.rhn.frontend.struts.StrutsDelegate;
-import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.ActionHelper;
+import com.redhat.rhn.testing.RhnBaseTestCase;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;

@@ -14,14 +14,15 @@
  */
 package com.redhat.rhn.frontend.action.user.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.redhat.rhn.domain.user.Address;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.user.EditAddressSetupAction;
-import com.redhat.rhn.testing.MockDynaActionForm;
-import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.ActionHelper;
+import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.RhnMockDynaActionForm;
 
 import org.junit.jupiter.api.Test;
 
@@ -35,29 +36,24 @@ public class EditAddressSetupActionTest extends RhnBaseTestCase {
         EditAddressSetupAction action = new EditAddressSetupAction();
         ActionHelper sah = new ActionHelper();
         sah.setUpAction(action);
-        sah.getRequest().setupAddParameter("type", Address.TYPE_MARKETING);
+        sah.getRequest().addParameter("type", Address.TYPE_MARKETING);
 
         User user = sah.getUser();
         user.setPhone("555-1212");
         user.setFax("555-1212");
 
-        setupExpectations(sah.getForm(), user);
         sah.executeAction();
 
         assertNotNull(sah.getForm().get("uid"));
-        sah.getForm().verify();
-    }
-
-    private void setupExpectations(MockDynaActionForm form, User user) {
-        form.addExpectedProperty("address1", user.getAddress1());
-        form.addExpectedProperty("address2", user.getAddress2());
-        form.addExpectedProperty("phone", user.getPhone());
-        form.addExpectedProperty("fax", user.getFax());
-        form.addExpectedProperty("city", user.getCity());
-        form.addExpectedProperty("state", user.getState());
-        form.addExpectedProperty("country", user.getCountry());
-        form.addExpectedProperty("zip", user.getZip());
-
+        RhnMockDynaActionForm form = sah.getForm();
+        assertEquals(user.getAddress1(), form.get("address1"));
+        assertEquals(user.getAddress2(), form.get("address2"));
+        assertEquals(user.getPhone(), form.get("phone"));
+        assertEquals(user.getFax(), form.get("fax"));
+        assertEquals(user.getCity(), form.get("city"));
+        assertEquals(user.getState(), form.get("state"));
+        assertEquals(user.getCountry(), form.get("country"));
+        assertEquals(user.getZip(), form.get("zip"));
     }
 
 

@@ -30,21 +30,18 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
-import com.redhat.rhn.testing.MockDynaActionForm;
-import com.redhat.rhn.testing.MockHttpServletRequest;
-import com.redhat.rhn.testing.MockHttpSession;
-import com.redhat.rhn.testing.MockTestUtils;
-import com.redhat.rhn.testing.RhnJmockBaseTestCase;
 import com.redhat.rhn.testing.ActionHelper;
+import com.redhat.rhn.testing.RhnJmockBaseTestCase;
+import com.redhat.rhn.testing.RhnMockDynaActionForm;
+import com.redhat.rhn.testing.RhnMockHttpServletRequest;
+import com.redhat.rhn.testing.RhnMockHttpServletResponse;
+import com.redhat.rhn.testing.RhnMockHttpSession;
+import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.DynaActionForm;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.junit.jupiter.api.Test;
-
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  * ChannelActionTest
@@ -56,7 +53,6 @@ public class ChannelActionTest extends RhnJmockBaseTestCase {
         ChannelAction action = new ChannelAction();
 
         ActionMapping mapping = new ActionMapping();
-
         ActionForward def = new ActionForward(RhnHelper.DEFAULT_FORWARD, "path", true);
         ActionForward publish = new ActionForward("publish", "path", true);
         ActionForward failure = new ActionForward("failure", "path", false);
@@ -64,12 +60,12 @@ public class ChannelActionTest extends RhnJmockBaseTestCase {
         mapping.addForwardConfig(publish);
         mapping.addForwardConfig(failure);
 
-        MockHttpServletRequest request = MockTestUtils.getRequestWithSessionAndUser();
-        HttpServletResponse response = mock(HttpServletResponse.class);
-        HttpSession session = mock(HttpSession.class);
+        RhnMockHttpServletRequest request = TestUtils.getRequestWithSessionAndUser();
+        RhnMockHttpServletResponse response = new RhnMockHttpServletResponse();
+        RhnMockHttpSession session = new RhnMockHttpSession();
         request.setSession(session);
-        request.setupServerName("mymachine.rhndev.redhat.com");
-        DynaActionForm form = new DynaActionForm();
+        request.setServerName("mymachine.rhndev.redhat.com");
+        RhnMockDynaActionForm form = new RhnMockDynaActionForm();
 
         RequestContext requestContext = new RequestContext(request);
 
@@ -79,9 +75,9 @@ public class ChannelActionTest extends RhnJmockBaseTestCase {
         Errata errata = ErrataFactoryTest.createTestErrata(usr.getOrg().getId());
 
         //We can't publish without selecting channels. Make sure we get an error.
-        request.setupAddParameter("eid", errata.getId().toString());
-        request.setupAddParameter("items_on_page", "");
-        request.setupAddParameter("items_selected", new String[0]);
+        request.addParameter("eid", errata.getId().toString());
+        request.addParameter("items_on_page", "");
+        request.addParameter("items_selected", new String[0]);
 
         ActionForward result = action.publish(mapping, form, request, response);
         assertEquals("failure", result.getName());
@@ -90,9 +86,9 @@ public class ChannelActionTest extends RhnJmockBaseTestCase {
         Channel c1 = ChannelFactoryTest.createTestChannel(usr);
 
         //setup the request
-        request.setupAddParameter("eid", errata.getId().toString());
-        request.setupAddParameter("items_on_page", "");
-        request.setupAddParameter("items_selected", c1.getId().toString());
+        request.addParameter("eid", errata.getId().toString());
+        request.addParameter("items_on_page", "");
+        request.addParameter("items_selected", c1.getId().toString());
 
         result = action.publish(mapping, form, request, response);
         assertEquals(result.getName(), "publish");
@@ -112,12 +108,12 @@ public class ChannelActionTest extends RhnJmockBaseTestCase {
         mapping.addForwardConfig(failure);
         mapping.addForwardConfig(push);
 
-        MockHttpServletRequest request = MockTestUtils.getRequestWithSessionAndUser();
-        HttpServletResponse response = mock(HttpServletResponse.class);
-        HttpSession session = new MockHttpSession();
+        RhnMockHttpServletRequest request = TestUtils.getRequestWithSessionAndUser();
+        RhnMockHttpServletResponse response = new RhnMockHttpServletResponse();
+        RhnMockHttpSession session = new RhnMockHttpSession();
         request.setSession(session);
-        request.setupServerName("mymachine.rhndev.redhat.com");
-        MockDynaActionForm form = new MockDynaActionForm();
+        request.setServerName("mymachine.rhndev.redhat.com");
+        RhnMockDynaActionForm form = new RhnMockDynaActionForm();
 
         RequestContext requestContext = new RequestContext(request);
 
@@ -131,9 +127,9 @@ public class ChannelActionTest extends RhnJmockBaseTestCase {
         flushAndEvict(errata);
 
         //We can't take away all channels. make sure we get an error
-        request.setupAddParameter("eid", id.toString());
-        request.setupAddParameter("items_on_page", "");
-        request.setupAddParameter("items_selected", new String[0]);
+        request.addParameter("eid", id.toString());
+        request.addParameter("items_on_page", "");
+        request.addParameter("items_selected", new String[0]);
 
         ActionForward result = action.publish(mapping, form, request, response);
         assertEquals("failure", result.getName());
@@ -146,9 +142,9 @@ public class ChannelActionTest extends RhnJmockBaseTestCase {
 
         //setup the request
         String[] selected = {c1.getId().toString(), c2.getId().toString()};
-        request.setupAddParameter("eid", id.toString());
-        request.setupAddParameter("items_on_page", "");
-        request.setupAddParameter("items_selected", selected);
+        request.addParameter("eid", id.toString());
+        request.addParameter("items_on_page", "");
+        request.addParameter("items_selected", selected);
 
         result = action.updateChannels(mapping, form, request, response);
         assertEquals("push", result.getName());
@@ -166,9 +162,9 @@ public class ChannelActionTest extends RhnJmockBaseTestCase {
         //make sure we can take away channels
         //setup the request
         String[] selected2 = {c2.getId().toString()};
-        request.setupAddParameter("eid", id.toString());
-        request.setupAddParameter("items_on_page", "");
-        request.setupAddParameter("items_selected", selected2);
+        request.addParameter("eid", id.toString());
+        request.addParameter("items_on_page", "");
+        request.addParameter("items_selected", selected2);
         result = action.updateChannels(mapping, form, request, response);
 
         assertEquals("push", result.getName());
@@ -192,10 +188,10 @@ public class ChannelActionTest extends RhnJmockBaseTestCase {
             ChannelFactoryTest.createTestChannel(user);
         }
 
-        ah.getRequest().setupAddParameter("eid", errata.getId().toString());
-        ah.getRequest().setupAddParameter("items_on_page", (String[])null);
-        ah.getRequest().setupAddParameter("items_selected", (String[])null);
-        ah.getRequest().setupAddParameter("returnvisit", "false");
+        ah.getRequest().addParameter("eid", errata.getId().toString());
+        ah.getRequest().addParameter("items_on_page", (String[])null);
+        ah.getRequest().addParameter("items_selected", (String[])null);
+        ah.getRequest().addParameter("returnvisit", "false");
         ah.executeAction("selectall");
 
         //satellite could already have some channels

@@ -24,10 +24,10 @@ import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.frontend.action.systems.audit.ScapSetupAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
-import com.redhat.rhn.testing.MockHttpServletRequest;
-import com.redhat.rhn.testing.MockTestUtils;
 import com.redhat.rhn.testing.PackageTestUtils;
+import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
+import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -49,7 +49,7 @@ public class ScapSetupActionTest extends RhnMockStrutsTestCase {
 
         server = MinionServerFactoryTest.createTestMinionServer(user);
 
-        MockHttpServletRequest request = MockTestUtils.getRequestWithSessionAndUser();
+        RhnMockHttpServletRequest request = TestUtils.getRequestWithSessionAndUser();
         request.setAttribute(RequestContext.SYSTEM, server);
 
         mockContext = new RequestContext(request);

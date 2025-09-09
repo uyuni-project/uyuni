@@ -28,8 +28,8 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.errata.ChannelSetupAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
-import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.ActionHelper;
+import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.junit.jupiter.api.Test;
@@ -72,10 +72,10 @@ public class ChannelSetupActionTest extends RhnBaseTestCase {
         e.addChannel(c1);
         ErrataFactory.save(e);
         //setup the request object
-        sah.getRequest().setupAddParameter("eid", e.getId().toString());
-        sah.getRequest().setupAddParameter("newset", (String) null);
-        sah.getRequest().setupAddParameter("returnvisit", (String) null);
-        sah.getRequest().setupAddParameter("returnvisit", (String) null);
+        sah.getRequest().addParameter("eid", e.getId().toString());
+        sah.getRequest().addParameter("newset", (String) null);
+        sah.getRequest().addParameter("returnvisit", (String) null);
+        sah.getRequest().addParameter("returnvisit", (String) null);
         sah.executeAction();
 
         RequestContext requestContext = new RequestContext(sah.getRequest());

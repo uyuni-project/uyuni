@@ -24,8 +24,8 @@ import com.redhat.rhn.domain.session.WebSession;
 import com.redhat.rhn.frontend.taglibs.list.ListCommand;
 import com.redhat.rhn.frontend.taglibs.list.ListSetTag;
 import com.redhat.rhn.frontend.taglibs.list.ListTag;
-import com.redhat.rhn.testing.MockJspWriter;
 import com.redhat.rhn.testing.MockObjectTestCase;
+import com.redhat.rhn.testing.RhnMockJspWriter;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.jmock.Expectations;
@@ -49,7 +49,7 @@ public class ListTagTest extends MockObjectTestCase {
     private HttpServletRequest req;
     private WebSession webSess;
     private PageContext pageContext;
-    private MockJspWriter writer;
+    private RhnMockJspWriter writer;
 
     private String listName = "testDataListName";
 
@@ -63,7 +63,7 @@ public class ListTagTest extends MockObjectTestCase {
         pageContext = mock(PageContext.class);
         webSess = mock(WebSession.class);
 
-        writer = new MockJspWriter();
+        writer = new RhnMockJspWriter();
 
         context().checking(new Expectations() { {
             atLeast(1).of(pageContext).getAttribute(listName);

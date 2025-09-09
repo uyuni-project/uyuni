@@ -18,8 +18,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.frontend.taglibs.RhnHiddenTag;
-import com.redhat.rhn.testing.MockJspWriter;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.RhnMockJspWriter;
 import com.redhat.rhn.testing.TagTestHelper;
 
 import org.junit.jupiter.api.AfterEach;
@@ -37,15 +37,15 @@ public class RhnHiddenTagTest extends RhnBaseTestCase {
 
     private TagTestHelper tth;
     private RhnHiddenTag ht;
-    private MockJspWriter out;
+    private RhnMockJspWriter out;
 
     @Override
     @BeforeEach
     public void setUp() {
         ht = new RhnHiddenTag();
         tth = new TagTestHelper(ht);
-        tth.getPageContext().setJspWriter(new MockJspWriter());
-        out = (MockJspWriter) tth.getPageContext().getOut();
+        tth.getPageContext().setJspWriter(new RhnMockJspWriter());
+        out = (RhnMockJspWriter) tth.getPageContext().getOut();
     }
 
     @Override

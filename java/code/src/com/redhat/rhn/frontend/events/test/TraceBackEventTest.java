@@ -24,11 +24,10 @@ import com.redhat.rhn.common.messaging.Mail;
 import com.redhat.rhn.common.messaging.test.MockMail;
 import com.redhat.rhn.frontend.events.TraceBackAction;
 import com.redhat.rhn.frontend.events.TraceBackEvent;
-import com.redhat.rhn.testing.MockHttpServletRequest;
-import com.redhat.rhn.testing.MockHttpSession;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.RhnMockHttpServletRequest;
+import com.redhat.rhn.testing.RhnMockHttpSession;
 import com.redhat.rhn.testing.UserTestUtils;
-
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -142,18 +141,18 @@ public class TraceBackEventTest extends RhnBaseTestCase {
         TraceBackEvent evt = new TraceBackEvent();
         // In the implementation we use getHeaderNames so we override it with
         // one that returns an empty implementation.
-        MockHttpServletRequest request = new MockHttpServletRequest() {
+        RhnMockHttpServletRequest request = new RhnMockHttpServletRequest() {
             @Override
             public Enumeration<String> getHeaderNames() {
                 return new Vector<String>().elements();
             }
         };
-        request.setSession(new MockHttpSession());
+        request.setSession(new RhnMockHttpSession());
         request.setRequestURI("http://localhost:8080");
         request.setMethod("POST");
         Vector<String> v = new Vector<>();
         v.add("someparam");
-        request.setupAddParameter("someparam", "somevalue");
+        request.addParameter("someparam", "somevalue");
         request.setParameterNames(v.elements());
         evt.setUser(UserTestUtils.findNewUser("testUser",
                     "testOrg" + this.getClass().getSimpleName()));
@@ -168,18 +167,18 @@ public class TraceBackEventTest extends RhnBaseTestCase {
         TraceBackEvent evt = new TraceBackEvent();
         // In the implementation we use getHeaderNames so we override it with
         // one that returns an empty implementation.
-        MockHttpServletRequest request = new MockHttpServletRequest() {
+        RhnMockHttpServletRequest request = new RhnMockHttpServletRequest() {
             @Override
             public Enumeration<String> getHeaderNames() {
                 return new Vector<String>().elements();
             }
         };
-        request.setSession(new MockHttpSession());
+        request.setSession(new RhnMockHttpSession());
         request.setRequestURI("http://localhost:8080");
         request.setMethod("POST");
         Vector<String> v = new Vector<>();
         v.add(paramIn);
-        request.setupAddParameter(paramIn, valueIn);
+        request.addParameter(paramIn, valueIn);
         request.setParameterNames(v.elements());
         evt.setUser(UserTestUtils.findNewUser("testUser",
                     "testOrg" + this.getClass().getSimpleName()));

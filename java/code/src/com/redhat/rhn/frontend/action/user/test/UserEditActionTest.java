@@ -26,11 +26,11 @@ import com.redhat.rhn.frontend.action.user.UserActionHelper;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.user.UserManager;
-import com.redhat.rhn.testing.MockDynaActionForm;
-import com.redhat.rhn.testing.MockHttpServletRequest;
-import com.redhat.rhn.testing.MockHttpServletResponse;
-import com.redhat.rhn.testing.MockTestUtils;
-import com.redhat.rhn.testing.RhnJmockBaseTestCase;
+import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.RhnMockDynaActionForm;
+import com.redhat.rhn.testing.RhnMockHttpServletRequest;
+import com.redhat.rhn.testing.RhnMockHttpServletResponse;
+import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.apache.struts.action.ActionForward;
@@ -42,7 +42,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * UserEditActionTEst
  */
-public class UserEditActionTest extends RhnJmockBaseTestCase {
+public class UserEditActionTest extends RhnBaseTestCase {
 
     /**
      * Test the SelfEditAction
@@ -54,11 +54,10 @@ public class UserEditActionTest extends RhnJmockBaseTestCase {
         ActionMapping mapping = new ActionMapping();
         ActionForward success = new ActionForward("success", "path", false);
         ActionForward failure = new ActionForward("failure", "path", false);
-        MockDynaActionForm form = new MockDynaActionForm("userDetailsForm");
+        RhnMockDynaActionForm form = new RhnMockDynaActionForm("userDetailsForm");
 
-        MockHttpServletRequest request = MockTestUtils.getRequestWithSessionAndUser();
-        HttpServletResponse response = mock(HttpServletResponse.class);
-
+        RhnMockHttpServletRequest request = TestUtils.getRequestWithSessionAndUser();
+        HttpServletResponse response = new RhnMockHttpServletResponse();
 
         RequestContext requestContext = new RequestContext(request);
 
@@ -69,7 +68,7 @@ public class UserEditActionTest extends RhnJmockBaseTestCase {
         request.setAttribute(RhnHelper.TARGET_USER, user);
 
         //Try password mismatch
-        request.setupAddParameter("uid", user.getId().toString());
+        request.addParameter("uid", user.getId().toString());
         form.set("prefix", user.getPrefix());
         form.set("firstNames", user.getFirstNames());
         form.set("lastName", user.getLastName());
@@ -81,7 +80,7 @@ public class UserEditActionTest extends RhnJmockBaseTestCase {
         assertEquals("failure", result.getName());
 
         //Try validation errors
-        request.setupAddParameter("uid", user.getId().toString());
+        request.addParameter("uid", user.getId().toString());
         form.set(UserActionHelper.DESIRED_PASS_CONFIRM, "foobar");
         form.set("firstNames", "");
 
@@ -89,7 +88,7 @@ public class UserEditActionTest extends RhnJmockBaseTestCase {
         assertEquals("failure", result.getName());
 
         //Try Valid edit
-        request.setupAddParameter("uid", user.getId().toString());
+        request.addParameter("uid", user.getId().toString());
         form.set("firstNames", "Larry");
 
         result = action.execute(mapping, form, request, response);
@@ -110,9 +109,9 @@ public class UserEditActionTest extends RhnJmockBaseTestCase {
         ActionForward success = new ActionForward("success", "path", false);
         ActionForward failure = new ActionForward("failure", "path", false);
         ActionForward noaccess = new ActionForward("noaccess", "path", true);
-        MockDynaActionForm form = new MockDynaActionForm("userDetailsForm");
-        MockHttpServletRequest request = MockTestUtils.getRequestWithSessionAndUser();
-        MockHttpServletResponse response = new MockHttpServletResponse();
+        RhnMockDynaActionForm form = new RhnMockDynaActionForm("userDetailsForm");
+        RhnMockHttpServletRequest request = TestUtils.getRequestWithSessionAndUser();
+        RhnMockHttpServletResponse response = new RhnMockHttpServletResponse();
 
         RequestContext requestContext = new RequestContext(request);
 
@@ -145,30 +144,30 @@ public class UserEditActionTest extends RhnJmockBaseTestCase {
         runSatTests(action, user, mapping, form, request, response);
     }
 
-    private void setupRoleParameters(MockHttpServletRequest request,
-            User user) {
-        request.setupAddParameter("uid", user.getId().toString());
-        request.setupAddParameter("disabledRoles", "");
-        request.setupAddParameter("role_" + RoleFactory.ORG_ADMIN.getLabel(),
+    private void setupRoleParameters(RhnMockHttpServletRequest request,
+                                     User user) {
+        request.addParameter("uid", user.getId().toString());
+        request.addParameter("disabledRoles", "");
+        request.addParameter("role_" + RoleFactory.ORG_ADMIN.getLabel(),
                 (String)null);
-        request.setupAddParameter("role_" + RoleFactory.CHANNEL_ADMIN.getLabel(),
+        request.addParameter("role_" + RoleFactory.CHANNEL_ADMIN.getLabel(),
                 (String)null);
-        request.setupAddParameter("role_" + RoleFactory.SAT_ADMIN.getLabel(),
+        request.addParameter("role_" + RoleFactory.SAT_ADMIN.getLabel(),
                 (String)null);
-        request.setupAddParameter("role_" + RoleFactory.ACTIVATION_KEY_ADMIN.getLabel(),
+        request.addParameter("role_" + RoleFactory.ACTIVATION_KEY_ADMIN.getLabel(),
                 (String)null);
-        request.setupAddParameter("role_" + RoleFactory.SYSTEM_GROUP_ADMIN.getLabel(),
+        request.addParameter("role_" + RoleFactory.SYSTEM_GROUP_ADMIN.getLabel(),
                 (String)null);
-        request.setupAddParameter("role_" + RoleFactory.CONFIG_ADMIN.getLabel(),
+        request.addParameter("role_" + RoleFactory.CONFIG_ADMIN.getLabel(),
                 (String)null);
     }
 
     private void runSatTests(AdminUserEditAction action,
                              User user,
                              ActionMapping mapping,
-                             MockDynaActionForm form,
-                             MockHttpServletRequest request,
-                             MockHttpServletResponse response) {
+                             RhnMockDynaActionForm form,
+                             RhnMockHttpServletRequest request,
+                             RhnMockHttpServletResponse response) {
 
         /*
          * This should never happen, but just in case...

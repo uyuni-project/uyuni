@@ -17,7 +17,7 @@ package com.redhat.rhn.frontend.action.multiorg.test;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.role.RoleFactory;
-import com.redhat.rhn.testing.MockDynaActionForm;
+import com.redhat.rhn.testing.RhnMockDynaActionForm;
 import com.redhat.rhn.testing.RhnPostMockStrutsTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
@@ -83,7 +83,7 @@ public class OrgCreateActionTest extends RhnPostMockStrutsTestCase {
     @Test
     public void testCreateFirstSatUser() {
         setRequestPathInfo("/newlogin/CreateFirstUser");
-        MockDynaActionForm f = new MockDynaActionForm("orgCreateForm");
+        RhnMockDynaActionForm f = new RhnMockDynaActionForm("orgCreateForm");
         f.set("orgName", "testOrg" + TestUtils.randomString());
         f.set("login", "testUser" + TestUtils.randomString());
         f.set("email", "foobar@redhat.com");

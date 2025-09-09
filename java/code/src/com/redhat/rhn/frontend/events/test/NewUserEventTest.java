@@ -23,11 +23,10 @@ import com.redhat.rhn.common.messaging.test.MockMail;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.events.NewUserAction;
 import com.redhat.rhn.frontend.events.NewUserEvent;
-import com.redhat.rhn.testing.MockHttpServletRequest;
-import com.redhat.rhn.testing.MockHttpSession;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.RhnMockHttpServletRequest;
+import com.redhat.rhn.testing.RhnMockHttpSession;
 import com.redhat.rhn.testing.UserTestUtils;
-
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -95,13 +94,13 @@ public class NewUserEventTest extends RhnBaseTestCase {
         NewUserEvent evt = new NewUserEvent();
         // In the implementation we use getHeaderNames so we override it with
         // one that returns an empty implementation.
-        MockHttpServletRequest request = new MockHttpServletRequest() {
+        RhnMockHttpServletRequest request = new RhnMockHttpServletRequest() {
             @Override
             public Enumeration<String> getHeaderNames() {
                 return new Vector<String>().elements();
             }
         };
-        request.setSession(new MockHttpSession());
+        request.setSession(new RhnMockHttpSession());
         request.setRequestURI("http://localhost:8080");
         request.setMethod("POST");
         User usr = UserTestUtils.findNewUser("testUser",

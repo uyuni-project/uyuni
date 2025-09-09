@@ -22,7 +22,7 @@ import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.server.Pillar;
 import com.redhat.rhn.testing.ImageTestUtils;
-import com.redhat.rhn.testing.MockHttpServletResponse;
+import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 import com.redhat.rhn.testing.SparkTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
@@ -71,7 +71,7 @@ public class SaltbootControllerTest extends BaseControllerTestCase {
         Map<String, String> queryParams = new HashMap<>();
         queryParams.put("orgid", user.getOrg().getId().toString());
 
-        ((MockHttpServletResponse)response.raw()).setStatus(301);
+        ((RhnMockHttpServletResponse)response.raw()).setStatus(301);
 
         Request request = SparkTestUtils.createMockRequestWithParams(
             "http://localhost:8080/saltboot/boot/POS_Image_JeOS7.x86_64-7.1.0-1/POS_Image_JeOS7.x86_64-7.1.0.initrd",

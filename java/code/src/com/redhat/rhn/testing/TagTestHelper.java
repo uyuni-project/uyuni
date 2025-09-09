@@ -28,17 +28,17 @@ import javax.servlet.jsp.tagext.Tag;
 
 /**
  * Sets up mock tag objects in a common configuration.
- * MockHttpServletRequest, MockServletContext and MockHttpSession are attached to MockPageContext
+ * RhnMockHttpServletRequest, MockServletContext and MockHttpSession are attached to MockPageContext
  *
- * @see MockPageContext#setRequest(ServletRequest) ();
- * @see MockPageContext#setServletContext(ServletContext) ();
- * @see MockPageContext#setSession(HttpSession) ();
+ * @see RhnMockPageContext#setRequest(ServletRequest) ();
+ * @see RhnMockPageContext#setServletContext(ServletContext) ();
+ * @see RhnMockPageContext#setSession(HttpSession) ();
  */
 public class TagTestHelper extends AbstractServletTestHelper {
-    private final MockPageContext pageContext = new MockPageContext();
+    private final RhnMockPageContext pageContext = new RhnMockPageContext();
     private final MockBodyContent bodyContent = new MockBodyContent();
-    private final MockJspWriter outWriter = new MockJspWriter();
-    private final MockJspWriter enclosingWriter = new MockJspWriter();
+    private final RhnMockJspWriter outWriter = new RhnMockJspWriter();
+    private final RhnMockJspWriter enclosingWriter = new RhnMockJspWriter();
     private final Tag testSubject;
 
     /**
@@ -74,11 +74,11 @@ public class TagTestHelper extends AbstractServletTestHelper {
     /**
      * @return The writer use when making calls to PageContext.getOut
      */
-    public MockJspWriter getOutWriter() {
+    public RhnMockJspWriter getOutWriter() {
         return outWriter;
     }
 
-    public MockPageContext getPageContext() {
+    public RhnMockPageContext getPageContext() {
         return pageContext;
     }
 

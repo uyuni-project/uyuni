@@ -22,9 +22,9 @@ import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.frontend.events.TraceBackAction;
 import com.redhat.rhn.frontend.events.TraceBackEvent;
-import com.redhat.rhn.testing.MockHttpServletRequest;
 import com.redhat.rhn.testing.MockObjectTestCase;
-import com.redhat.rhn.testing.MockTestUtils;
+import com.redhat.rhn.testing.RhnMockHttpServletRequest;
+import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -82,7 +82,7 @@ public class PermissionExceptionHandlerTest extends MockObjectTestCase {
                 will(returnValue(new ActionForward()));
             } });
 
-            MockHttpServletRequest request = MockTestUtils
+            RhnMockHttpServletRequest request = TestUtils
                     .getRequestWithSessionAndUser();
             request.setMethod("POST");
             request.setRequestURI("http://localhost:8080");

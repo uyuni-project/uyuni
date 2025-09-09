@@ -22,9 +22,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.frontend.action.configuration.channel.ChannelOverviewAction;
 import com.redhat.rhn.frontend.struts.RhnValidationHelper;
-import com.redhat.rhn.testing.MockDynaActionForm;
-import com.redhat.rhn.testing.MockHttpServletRequest;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.RhnMockDynaActionForm;
+import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 
 import org.apache.struts.action.ActionErrors;
 import org.junit.jupiter.api.Test;
@@ -51,7 +51,7 @@ public class RhnValidationHelperTest extends RhnBaseTestCase {
     @Test
      public void testValidateDynaActionFormPathed() {
          ChannelOverviewAction coa = new ChannelOverviewAction();
-         MockDynaActionForm form = new MockDynaActionForm();
+         RhnMockDynaActionForm form = new RhnMockDynaActionForm();
          form.setFormName("channelOverviewForm");
          form.set("cofName"        , "testName");
          form.set("cofLabel"       , "testLabel");
@@ -68,10 +68,10 @@ public class RhnValidationHelperTest extends RhnBaseTestCase {
 
     @Test
      public void testFailedValidation() {
-        MockHttpServletRequest request = new MockHttpServletRequest();
+        RhnMockHttpServletRequest request = new RhnMockHttpServletRequest();
         RhnValidationHelper.setFailedValidation(request);
         assertTrue(RhnValidationHelper.getFailedValidation(request));
-        request = new MockHttpServletRequest();
+        request = new RhnMockHttpServletRequest();
         assertFalse(RhnValidationHelper.getFailedValidation(request));
 
      }

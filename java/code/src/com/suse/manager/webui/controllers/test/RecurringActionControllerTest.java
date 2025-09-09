@@ -32,7 +32,7 @@ import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.recurringactions.RecurringActionManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
-import com.redhat.rhn.testing.MockHttpServletResponse;
+import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 import com.redhat.rhn.testing.ServerGroupTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
@@ -81,7 +81,7 @@ public class RecurringActionControllerTest extends BaseControllerTestCase {
 
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
 
-        response = RequestResponseFactory.create(new MockHttpServletResponse());
+        response = RequestResponseFactory.create(new RhnMockHttpServletResponse());
 
         minionServer = MinionServerFactoryTest.createTestMinionServer(user);
 

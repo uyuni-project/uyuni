@@ -21,8 +21,8 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.user.ChangeEmailSetupAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.user.UserManager;
-import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.ActionHelper;
+import com.redhat.rhn.testing.RhnBaseTestCase;
 
 import org.apache.struts.action.ActionForward;
 import org.junit.jupiter.api.Test;
@@ -41,7 +41,7 @@ public class ChangeEmailSetupActionTest extends RhnBaseTestCase {
         LocalizationService ls = LocalizationService.getInstance();
         User user = sah.getUser();
         //Test verified
-        sah.getRequest().setupAddParameter("uid", "");
+        sah.getRequest().addParameter("uid", "");
 
         user.setEmail("myemail@somewhere.com");
         UserManager.storeUser(user);

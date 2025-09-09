@@ -19,8 +19,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.frontend.taglibs.FormatDateTag;
-import com.redhat.rhn.testing.MockJspWriter;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.RhnMockJspWriter;
 import com.redhat.rhn.testing.TagTestHelper;
 import com.redhat.rhn.testing.TagTestUtils;
 
@@ -46,7 +46,7 @@ public class FormatDateTagTest extends RhnBaseTestCase {
         ht.setValue(now);
         ht.setHumanStyle("from");
 
-        MockJspWriter out = (MockJspWriter) tth.getPageContext().getOut();
+        RhnMockJspWriter out = (RhnMockJspWriter) tth.getPageContext().getOut();
         try {
             ht.doStartTag();
             ht.doEndTag();
@@ -68,7 +68,7 @@ public class FormatDateTagTest extends RhnBaseTestCase {
         ht.setValue(null);
         ht.setHumanStyle("from");
 
-        MockJspWriter out = (MockJspWriter) tth.getPageContext().getOut();
+        RhnMockJspWriter out = (RhnMockJspWriter) tth.getPageContext().getOut();
         try {
             ht.doStartTag();
             ht.doEndTag();

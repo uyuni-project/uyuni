@@ -22,8 +22,8 @@ import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.RhnSetAction;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
-import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.ActionHelper;
+import com.redhat.rhn.testing.RhnBaseTestCase;
 
 import org.apache.struts.action.ActionForward;
 import org.junit.jupiter.api.Test;
@@ -43,9 +43,9 @@ public abstract class BaseErrataActionTestCase extends RhnBaseTestCase {
         ActionHelper sah = new ActionHelper();
         sah.setUpAction(getAction(), "delete");
         sah.getRequest().setRequestURL("foo");
-        sah.getRequest().setupAddParameter("items_selected",
+        sah.getRequest().addParameter("items_selected",
             new String[] {"10", "20", "30"});
-        sah.getRequest().setupAddParameter("items_on_page", (String)null);
+        sah.getRequest().addParameter("items_on_page", (String)null);
         sah.setupClampListBounds();
         ActionForward testforward = sah.executeAction("deleteErrata");
 
@@ -63,8 +63,8 @@ public abstract class BaseErrataActionTestCase extends RhnBaseTestCase {
             createErrata(user);
         }
 
-        ah.getRequest().setupAddParameter("items_on_page", (String[])null);
-        ah.getRequest().setupAddParameter("items_selected", (String[])null);
+        ah.getRequest().addParameter("items_on_page", (String[])null);
+        ah.getRequest().addParameter("items_selected", (String[])null);
         ah.executeAction("selectall");
 
         RhnSet set = RhnSetDecl.ERRATA_TO_DELETE.get(user);

@@ -45,7 +45,7 @@ import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
-import com.redhat.rhn.testing.MockHttpServletRequest;
+import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
@@ -135,7 +135,7 @@ public class SystemHandlerProvisioningTest extends BaseHandlerTestCase {
                 Map<String, String> advancedOptions = Map.of(
                         "kernel_options", "console=tty0", "post_kernel_options", "console=tty1"
                 );
-                MockHttpServletRequest request = new MockHttpServletRequest();
+                RhnMockHttpServletRequest request = new RhnMockHttpServletRequest();
 
                 int result = 0;
                 result = handler.provisionSystem(admin, request, server.getId().intValue(), null, profileName,
@@ -191,7 +191,7 @@ public class SystemHandlerProvisioningTest extends BaseHandlerTestCase {
                         "custom", "echo test-command 2");
                 k.getKickstartDefaults().getKstree().setChannel(server.getBaseChannel());
                 String profileName = k.getLabel();
-                MockHttpServletRequest request = new MockHttpServletRequest();
+                RhnMockHttpServletRequest request = new RhnMockHttpServletRequest();
 
                 int result = 0;
                 result = handler.provisionSystem(admin, request, server.getId().intValue(),
@@ -240,7 +240,7 @@ public class SystemHandlerProvisioningTest extends BaseHandlerTestCase {
                         "custom", "echo test-command 3");
                 k.getKickstartDefaults().getKstree().setChannel(server.getBaseChannel());
                 String profileName = k.getLabel();
-                MockHttpServletRequest request = new MockHttpServletRequest();
+                RhnMockHttpServletRequest request = new RhnMockHttpServletRequest();
 
                 String headerValue = "1006681409::1151513167.96:21600.0:VV/xF" +
                 "NEmCYOuHxEBAs7BEw==:myproxy,1006681408" +

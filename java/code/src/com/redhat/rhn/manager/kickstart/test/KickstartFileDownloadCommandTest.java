@@ -21,7 +21,7 @@ import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartInstallType;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
 import com.redhat.rhn.domain.role.RoleFactory;
-import com.redhat.rhn.testing.MockHttpServletRequest;
+import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 
 import org.junit.jupiter.api.Test;
 
@@ -44,7 +44,7 @@ public class KickstartFileDownloadCommandTest extends
         KickstartCommand keyCommand =
             KickstartFactory.createKickstartCommand(ksdata, "key");
         keyCommand.setArguments(fakeKey);
-        MockHttpServletRequest req = new MockHttpServletRequest();
+        RhnMockHttpServletRequest req = new RhnMockHttpServletRequest();
         req.setRequestURL("http://localhost.redhat.com/");
     }
 }

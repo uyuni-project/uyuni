@@ -20,10 +20,10 @@ import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.frontend.events.TraceBackAction;
 import com.redhat.rhn.frontend.events.TraceBackEvent;
-import com.redhat.rhn.testing.MockHttpServletRequest;
-import com.redhat.rhn.testing.MockHttpServletResponse;
 import com.redhat.rhn.testing.MockObjectTestCase;
-import com.redhat.rhn.testing.MockTestUtils;
+import com.redhat.rhn.testing.RhnMockHttpServletRequest;
+import com.redhat.rhn.testing.RhnMockHttpServletResponse;
+import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -84,11 +84,11 @@ public class BadParameterExceptionHandlerTest extends MockObjectTestCase {
 
             // mockup a dumb ass Enumeration class for the Mock request
             // jmock RULES!
-            MockHttpServletRequest request = MockTestUtils.getRequestWithSessionAndUser();
+            RhnMockHttpServletRequest request = TestUtils.getRequestWithSessionAndUser();
             request.setMethod("POST");
             request.setRequestURI("http://localhost:8080");
             request.setParameterNames(new Vector<String>().elements());
-            MockHttpServletResponse response = new MockHttpServletResponse();
+            RhnMockHttpServletResponse response = new RhnMockHttpServletResponse();
             DynaActionForm form = new DynaActionForm();
 
             BadParameterExceptionHandler bpeh = new BadParameterExceptionHandler();

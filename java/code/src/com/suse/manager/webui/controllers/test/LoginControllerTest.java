@@ -25,9 +25,9 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.user.UserManager;
-import com.redhat.rhn.testing.MockHttpServletRequest;
-import com.redhat.rhn.testing.MockHttpServletResponse;
-import com.redhat.rhn.testing.MockHttpSession;
+import com.redhat.rhn.testing.RhnMockHttpServletRequest;
+import com.redhat.rhn.testing.RhnMockHttpServletResponse;
+import com.redhat.rhn.testing.RhnMockHttpSession;
 import com.redhat.rhn.testing.SparkTestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -63,16 +63,16 @@ public class LoginControllerTest extends BaseControllerTestCase {
 
         final String requestUrl = "http://localhost:8080/rhn/manager/login";
         final RouteMatch match = new RouteMatch(new Object(), requestUrl, requestUrl, "");
-        final MockHttpServletRequest mockRequest = new MockHttpServletRequest();
-        MockHttpSession session = new MockHttpSession();
+        final RhnMockHttpServletRequest mockRequest = new RhnMockHttpServletRequest();
+        RhnMockHttpSession session = new RhnMockHttpSession();
         mockRequest.setSession(session);
 
         mockRequest.setRequestURL(requestUrl);
         mockRequest.setMethod("POST");
         mockRequest.setPathInfo(URI.create(requestUrl).getPath());
-        mockRequest.setupAddParameter("url_bounce", "/rhn/users/UserDetails.do?uid=1");
+        mockRequest.addParameter("url_bounce", "/rhn/users/UserDetails.do?uid=1");
 
-        response = RequestResponseFactory.create(new MockHttpServletResponse());
+        response = RequestResponseFactory.create(new RhnMockHttpServletResponse());
         // logging in
         LoginHelper.successfulLogin(mockRequest, response.raw(), user);
         ModelAndView result = LoginController.loginView(RequestResponseFactory.create(match, mockRequest), response);
@@ -86,15 +86,15 @@ public class LoginControllerTest extends BaseControllerTestCase {
         Config.get().setBoolean(ConfigDefaults.SINGLE_SIGN_ON_ENABLED, "true");
         final String requestUrl = "http://localhost:8080/rhn/manager/login";
         final RouteMatch match = new RouteMatch(new Object(), requestUrl, requestUrl, "");
-        final MockHttpServletRequest mockRequest = new MockHttpServletRequest();
-        MockHttpSession session = new MockHttpSession();
+        final RhnMockHttpServletRequest mockRequest = new RhnMockHttpServletRequest();
+        RhnMockHttpSession session = new RhnMockHttpSession();
         mockRequest.setSession(session);
         mockRequest.setRequestURL(requestUrl);
         mockRequest.setMethod("POST");
         mockRequest.setPathInfo(URI.create(requestUrl).getPath());
-        mockRequest.setupAddParameter("url_bounce", "/rhn/users/UserDetails.do?uid=1");
+        mockRequest.addParameter("url_bounce", "/rhn/users/UserDetails.do?uid=1");
 
-        response = RequestResponseFactory.create(new MockHttpServletResponse());
+        response = RequestResponseFactory.create(new RhnMockHttpServletResponse());
         ModelAndView result = LoginController.loginView(RequestResponseFactory.create(match, mockRequest), response);
         assertNotNull(result); // redirect to the SSO login page
         // we still need to check that the model has been correctly populated
@@ -107,16 +107,16 @@ public class LoginControllerTest extends BaseControllerTestCase {
 
         final String requestUrl = "http://localhost:8080/rhn/manager/login";
         final RouteMatch match = new RouteMatch(new Object(), requestUrl, requestUrl, "");
-        final MockHttpServletRequest mockRequest = new MockHttpServletRequest();
-        MockHttpSession session = new MockHttpSession();
+        final RhnMockHttpServletRequest mockRequest = new RhnMockHttpServletRequest();
+        RhnMockHttpSession session = new RhnMockHttpSession();
         mockRequest.setSession(session);
 
         mockRequest.setRequestURL(requestUrl);
         mockRequest.setMethod("POST");
         mockRequest.setPathInfo(URI.create(requestUrl).getPath());
-        mockRequest.setupAddParameter("url_bounce", "/rhn/users/UserDetails.do?uid=1");
+        mockRequest.addParameter("url_bounce", "/rhn/users/UserDetails.do?uid=1");
 
-        response = RequestResponseFactory.create(new MockHttpServletResponse());
+        response = RequestResponseFactory.create(new RhnMockHttpServletResponse());
         ModelAndView result = LoginController.loginView(RequestResponseFactory.create(match, mockRequest), response);
         HashMap<String, String> model = (HashMap<String, String>) result.getModel();
         assertNull(session.getAttribute("webUserID"));
@@ -132,7 +132,7 @@ public class LoginControllerTest extends BaseControllerTestCase {
                 new HashMap<>(),
                 Json.GSON.toJson(new LoginController.LoginCredentials(user.getLogin(), "password")),
                 params);
-        Response response = RequestResponseFactory.create(new MockHttpServletResponse());
+        Response response = RequestResponseFactory.create(new RhnMockHttpServletResponse());
 
         String modelView = LoginController.login(request, response);
         LoginController.LoginResult result = Json.GSON.fromJson(modelView, LoginController.LoginResult.class);
@@ -148,7 +148,7 @@ public class LoginControllerTest extends BaseControllerTestCase {
                 new HashMap<>(),
                 Json.GSON.toJson(new LoginController.LoginCredentials("admin", "wrong")),
                 params);
-        Response response = RequestResponseFactory.create(new MockHttpServletResponse());
+        Response response = RequestResponseFactory.create(new RhnMockHttpServletResponse());
 
         String modelView = LoginController.login(request, response);
         LoginController.LoginResult result = Json.GSON.fromJson(modelView, LoginController.LoginResult.class);
@@ -168,7 +168,7 @@ public class LoginControllerTest extends BaseControllerTestCase {
                 new HashMap<>(),
                 Json.GSON.toJson(new LoginController.LoginCredentials("admin", "")),
                 params);
-        Response response = RequestResponseFactory.create(new MockHttpServletResponse());
+        Response response = RequestResponseFactory.create(new RhnMockHttpServletResponse());
 
         String modelView = LoginController.login(request, response);
         LoginController.LoginResult result = Json.GSON.fromJson(modelView, LoginController.LoginResult.class);
@@ -188,7 +188,7 @@ public class LoginControllerTest extends BaseControllerTestCase {
                 new HashMap<>(),
                 Json.GSON.toJson(new LoginController.LoginCredentials("admin", "")),
                 params);
-        Response response = RequestResponseFactory.create(new MockHttpServletResponse());
+        Response response = RequestResponseFactory.create(new RhnMockHttpServletResponse());
 
         String modelView = LoginController.login(request, response);
         LoginController.LoginResult result = Json.GSON.fromJson(modelView, LoginController.LoginResult.class);
@@ -208,7 +208,7 @@ public class LoginControllerTest extends BaseControllerTestCase {
                 new HashMap<>(),
                 Json.GSON.toJson(new LoginController.LoginCredentials("017324193274913741974",
                         "017324193274913741974")), params);
-        Response response = RequestResponseFactory.create(new MockHttpServletResponse());
+        Response response = RequestResponseFactory.create(new RhnMockHttpServletResponse());
 
         String modelView = LoginController.login(request, response);
         LoginController.LoginResult result = Json.GSON.fromJson(modelView, LoginController.LoginResult.class);
@@ -230,7 +230,7 @@ public class LoginControllerTest extends BaseControllerTestCase {
                 new HashMap<>(),
                 Json.GSON.toJson(new LoginController.LoginCredentials(u.getLogin(),
                         "password")), params);
-        Response response = RequestResponseFactory.create(new MockHttpServletResponse());
+        Response response = RequestResponseFactory.create(new RhnMockHttpServletResponse());
 
         String modelView = LoginController.login(request, response);
         LoginController.LoginResult result = Json.GSON.fromJson(modelView, LoginController.LoginResult.class);

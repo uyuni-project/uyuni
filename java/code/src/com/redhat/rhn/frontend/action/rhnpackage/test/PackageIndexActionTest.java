@@ -23,8 +23,8 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.frontend.action.rhnpackage.PackageIndexAction;
-import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.ActionHelper;
+import com.redhat.rhn.testing.RhnBaseTestCase;
 
 import org.junit.jupiter.api.Test;
 
@@ -44,7 +44,7 @@ public class PackageIndexActionTest extends RhnBaseTestCase {
         ah.getUser().addPermanentRole(RoleFactory.ORG_ADMIN);
 
         Server svr = ServerFactoryTest.createTestServer(ah.getUser(), true);
-        ah.getRequest().setupAddParameter("sid", svr.getId().toString());
+        ah.getRequest().addParameter("sid", svr.getId().toString());
         ah.executeAction("update");
 
         SelectMode m = ModeFactory.getMode("test_queries", "scheduled_actions");

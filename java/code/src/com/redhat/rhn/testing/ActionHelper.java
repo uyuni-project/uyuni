@@ -34,14 +34,14 @@ import java.util.Locale;
  * ActionHelper - abstract base class that can be used to setup
  * tests to verify our struts Actions.
  */
-public class ActionHelper {
+public class ActionHelper  {
 
     private ActionMapping mapping;
     private ActionForward success;
     private Action action;
-    private MockDynaActionForm form;
-    private MockHttpServletRequest request;
-    private MockHttpServletResponse response;
+    private RhnMockDynaActionForm form;
+    private RhnMockHttpServletRequest request;
+    private RhnMockHttpServletResponse response;
     private User user;
 
     /**
@@ -50,27 +50,27 @@ public class ActionHelper {
      * @param actionIn The Action we want to setup to test.
      * @throws Exception if error occurs setting up the Action.
      */
-    public void setUpAction(Action actionIn) throws Exception {
-        setUpAction(actionIn, RhnHelper.DEFAULT_FORWARD);
-    }
+     public void setUpAction(Action actionIn) throws Exception {
+         setUpAction(actionIn, RhnHelper.DEFAULT_FORWARD);
+     }
 
     /**
-     * Setup the Action with the proper Request, Form, Response.  With this version
-     * of the method we allow the caller to specify the expected name of the Forward
-     * the Action should generate.
-     *
-     * @param actionIn The Action we want to setup to test.
-     * @param expectedForwardName expected name of the forward you want the Action
-     *        to generate.
+    * Setup the Action with the proper Request, Form, Response.  With this version
+    * of the method we allow the caller to specify the expected name of the Forward
+    * the Action should generate.
+    *
+    * @param actionIn The Action we want to setup to test.
+    * @param expectedForwardName expected name of the forward you want the Action
+    *        to generate.
      */
     public void setUpAction(Action actionIn, String expectedForwardName) {
         action = actionIn;
         mapping = new ActionMapping();
         setExpectedForward(expectedForwardName);
-        form = new MockDynaActionForm();
-        request = MockTestUtils.getRequestWithSessionAndUser();
+        form = new RhnMockDynaActionForm();
+        request = TestUtils.getRequestWithSessionAndUser();
         request.setLocale(Locale.getDefault());
-        response = new MockHttpServletResponse();
+        response = new RhnMockHttpServletResponse();
 
         RequestContext requestContext = new RequestContext(request);
 
@@ -80,7 +80,7 @@ public class ActionHelper {
         // we have to get the actual user here so we can call setupAddParamter
         // a second time.  The MockRequest counts the number of times getParamter
         // is called.
-        request.setupAddParameter("uid", user.getId().toString());
+        request.addParameter("uid", user.getId().toString());
 
     }
 
@@ -106,7 +106,7 @@ public class ActionHelper {
      * examined to assert its state and make sure things were returned properly
      */
     public ForwardWrapper executeAction(String methodName, boolean successCheck)
-            throws Exception {
+                         throws Exception {
 
         ActionForward rc = null;
         // Here we dynamically call the dispatch method
@@ -142,34 +142,34 @@ public class ActionHelper {
         return executeAction(null);
     }
 
-//    /**
-//     * Get the response used by the helper.
-//     * @return response used
-//     */
-//    public MockHttpServletResponse getResponse() {
-//        return response;
-//    }
-//
     /**
-     * Get the Request associated with this test
-     * @return RhnMockHttpServletRequest used.
+     * Get the response used by the helper.
+     * @return response used
      */
-    public MockHttpServletRequest getRequest() {
+    public RhnMockHttpServletResponse getResponse() {
+        return response;
+    }
+
+    /**
+    * Get the Request associated with this test
+    * @return RhnMockHttpServletRequest used.
+    */
+    public RhnMockHttpServletRequest getRequest() {
         return request;
     }
 
     /**
-     * Get the Form associated with this test
-     * @return RhnMockDynaActionForm used.
-     */
-    public MockDynaActionForm getForm() {
+    * Get the Form associated with this test
+    * @return RhnMockDynaActionForm used.
+    */
+    public RhnMockDynaActionForm getForm() {
         return form;
     }
 
     /**
-     * Get the User associated with this test
-     * @return User used.
-     */
+    * Get the User associated with this test
+    * @return User used.
+    */
     public User getUser() {
         return user;
     }
@@ -201,10 +201,10 @@ public class ActionHelper {
      * @param filterString the filter string we want to test out.
      */
     public void setupClampListBounds(String filterString) {
-        getRequest().setupAddParameter(RequestContext.FILTER_STRING, filterString);
-        getRequest().setupAddParameter(RequestContext.PREVIOUS_FILTER_STRING, filterString);
-        getRequest().setupAddParameter("newset", (String)null);
-        getRequest().setupAddParameter("returnvisit", (String) null);
+        getRequest().addParameter(RequestContext.FILTER_STRING, filterString);
+        getRequest().addParameter(RequestContext.PREVIOUS_FILTER_STRING, filterString);
+        getRequest().addParameter("newset", (String)null);
+        getRequest().addParameter("returnvisit", (String) null);
         setupProcessPagination();
     }
 
@@ -213,32 +213,16 @@ public class ActionHelper {
      * listview Actions.
      */
     public void setupProcessPagination() {
-        getRequest().setupAddParameter(Pagination.FIRST.getElementName(), "someValue");
-        getRequest().setupAddParameter(Pagination.FIRST.getLowerAttributeName(), "10");
-        getRequest().setupAddParameter(Pagination.PREV.getElementName(), "0");
-        getRequest().setupAddParameter(Pagination.PREV.getLowerAttributeName(), "");
-        getRequest().setupAddParameter(Pagination.NEXT.getElementName(), "20");
-        getRequest().setupAddParameter(Pagination.NEXT.getLowerAttributeName(), "");
-        getRequest().setupAddParameter(Pagination.LAST.getElementName(), "");
-        getRequest().setupAddParameter(Pagination.LAST.getLowerAttributeName(), "20");
-        getRequest().setupAddParameter("lower", "10");
+        getRequest().addParameter(Pagination.FIRST.getElementName(), "someValue");
+        getRequest().addParameter(Pagination.FIRST.getLowerAttributeName(), "10");
+        getRequest().addParameter(Pagination.PREV.getElementName(), "0");
+        getRequest().addParameter(Pagination.PREV.getLowerAttributeName(), "");
+        getRequest().addParameter(Pagination.NEXT.getElementName(), "20");
+        getRequest().addParameter(Pagination.NEXT.getLowerAttributeName(), "");
+        getRequest().addParameter(Pagination.LAST.getElementName(), "");
+        getRequest().addParameter(Pagination.LAST.getLowerAttributeName(), "20");
+        getRequest().addParameter("lower", "10");
     }
-
-//    /**
-//     * Setup the request parameters for ListSelection
-//     * @param listName The name of the list, from
-//     *  com.redhat.rhn.frontend.taglibs.list.ListTag
-//     */
-//    public void setupListSelection(String listName) {
-//        String uniqueName = TagHelper.generateUniqueName(listName);
-//        String selectAction = ListTagUtil.makeSelectActionName(uniqueName);
-//        String sel = ListTagUtil.makeSelectedItemsName(uniqueName);
-//        String items = ListTagUtil.makePageItemsName(uniqueName);
-//        getRequest().setupAddParameter(selectAction, (String)null);
-//        getRequest().setupAddParameter(sel, (String)null);
-//        getRequest().setupAddParameter(items, (String)null);
-//
-//    }
 
     /**
      * Sets the expected forward to an ActionForward with the

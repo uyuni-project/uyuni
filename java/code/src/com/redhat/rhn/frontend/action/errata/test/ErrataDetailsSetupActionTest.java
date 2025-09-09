@@ -25,8 +25,8 @@ import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.frontend.action.errata.ErrataDetailsSetupAction;
 import com.redhat.rhn.frontend.context.Context;
-import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.ActionHelper;
+import com.redhat.rhn.testing.RhnBaseTestCase;
 
 import com.suse.manager.errata.advisorymap.ErrataAdvisoryMapManager;
 
@@ -91,7 +91,7 @@ public class ErrataDetailsSetupActionTest extends RhnBaseTestCase {
 
         ErrataFactory.save(errata);
 
-        sah.getRequest().setupAddParameter("eid", errata.getId().toString());
+        sah.getRequest().addParameter("eid", errata.getId().toString());
 
         sah.executeAction();
 

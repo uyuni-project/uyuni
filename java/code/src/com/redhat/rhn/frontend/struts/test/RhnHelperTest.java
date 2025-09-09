@@ -19,9 +19,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import com.redhat.rhn.frontend.struts.RhnHelper;
-import com.redhat.rhn.testing.MockDynaActionForm;
-import com.redhat.rhn.testing.MockHttpServletRequest;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.RhnMockDynaActionForm;
+import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 
 import org.apache.struts.Globals;
 import org.apache.struts.action.ActionMessage;
@@ -36,7 +36,7 @@ public class RhnHelperTest extends RhnBaseTestCase {
 
     @Test
     public void testEmptySelectionError() {
-        MockHttpServletRequest request = new MockHttpServletRequest();
+        RhnMockHttpServletRequest request = new RhnMockHttpServletRequest();
         RhnHelper.handleEmptySelection(request);
         assertNotNull(request.getAttribute(Globals.MESSAGE_KEY));
         assertNotNull(request.getSession().getAttribute(Globals.MESSAGE_KEY));
@@ -51,7 +51,7 @@ public class RhnHelperTest extends RhnBaseTestCase {
     @Test
     public void testGetTextAreaValue() {
         String value = "asdf\r\nasdfwerwer\rasdf\n\radsfhjhhasdf";
-        DynaActionForm form = new MockDynaActionForm();
+        DynaActionForm form = new RhnMockDynaActionForm();
         form.set("somevalue", value);
         String stripped = RhnHelper.getTextAreaValue(form, "somevalue");
         assertNotNull(stripped);
@@ -60,7 +60,7 @@ public class RhnHelperTest extends RhnBaseTestCase {
 
     @Test
     public void testGetParameterWithSpecialCharacters() {
-        MockHttpServletRequest request = new MockHttpServletRequest();
+        RhnMockHttpServletRequest request = new RhnMockHttpServletRequest();
         request.setQueryString("   ");
         assertNull(RhnHelper.getParameterWithSpecialCharacters(request, "zzzz"));
 

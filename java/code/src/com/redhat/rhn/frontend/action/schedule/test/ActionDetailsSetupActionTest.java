@@ -21,8 +21,8 @@ import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.test.ActionFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.schedule.ActionDetailsSetupAction;
-import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.ActionHelper;
+import com.redhat.rhn.testing.RhnBaseTestCase;
 
 import org.junit.jupiter.api.Test;
 
@@ -39,7 +39,7 @@ public class ActionDetailsSetupActionTest extends RhnBaseTestCase {
         User user = sah.getUser();
         Action a1 = ActionFactoryTest.createAction(user, ActionFactory.TYPE_REBOOT);
         a1.setSchedulerUser(user);
-        sah.getRequest().setupAddParameter("aid", a1.getId().toString());
+        sah.getRequest().addParameter("aid", a1.getId().toString());
 
 
         sah.executeAction();

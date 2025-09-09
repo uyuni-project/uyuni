@@ -21,7 +21,6 @@ import com.redhat.rhn.frontend.servlets.ResourceReloadServlet;
 import com.redhat.rhn.testing.MockObjectTestCase;
 import com.redhat.rhn.testing.MockServletOutputStream;
 
-
 import org.jmock.Expectations;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

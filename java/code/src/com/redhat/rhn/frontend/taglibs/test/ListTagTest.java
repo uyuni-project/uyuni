@@ -21,10 +21,10 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.frontend.taglibs.ListTag;
-import com.redhat.rhn.testing.MockHttpServletRequest;
-import com.redhat.rhn.testing.MockJspWriter;
-import com.redhat.rhn.testing.MockPageContext;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.RhnMockHttpServletRequest;
+import com.redhat.rhn.testing.RhnMockJspWriter;
+import com.redhat.rhn.testing.RhnMockPageContext;
 import com.redhat.rhn.testing.TagTestHelper;
 import com.redhat.rhn.testing.TagTestUtils;
 
@@ -55,8 +55,8 @@ public class ListTagTest extends RhnBaseTestCase {
         ListTag lt = new ListTag();
 
         TagTestHelper tth = TagTestUtils.setupTagTest(lt, new URL("http://localhost/"));
-        MockPageContext pc = tth.getPageContext();
-        MockHttpServletRequest request = new MockHttpServletRequest();
+        RhnMockPageContext pc = tth.getPageContext();
+        RhnMockHttpServletRequest request = new RhnMockHttpServletRequest();
 
         pc.setRequest(request);
         lt.setPageContext(pc);
@@ -94,7 +94,7 @@ public class ListTagTest extends RhnBaseTestCase {
 
         try {
             // setup mock objects
-            MockJspWriter out = (MockJspWriter) tth.getPageContext().getOut();
+            RhnMockJspWriter out = (RhnMockJspWriter) tth.getPageContext().getOut();
 
             // ok let's test the tag
             tth.assertDoStartTag(Tag.SKIP_BODY);
@@ -124,7 +124,7 @@ public class ListTagTest extends RhnBaseTestCase {
 
         try {
             // setup mock objects
-            MockJspWriter out = (MockJspWriter) tth.getPageContext().getOut();
+            RhnMockJspWriter out = (RhnMockJspWriter) tth.getPageContext().getOut();
 
             // ok let's test the tag
             tth.assertDoStartTag(Tag.EVAL_BODY_INCLUDE);
@@ -145,7 +145,7 @@ public class ListTagTest extends RhnBaseTestCase {
 
         try {
             // setup mock objects
-            MockJspWriter out = (MockJspWriter) tth.getPageContext().getOut();
+            RhnMockJspWriter out = (RhnMockJspWriter) tth.getPageContext().getOut();
 
             // ok let's test the tag
             tth.assertDoStartTag(Tag.SKIP_BODY);

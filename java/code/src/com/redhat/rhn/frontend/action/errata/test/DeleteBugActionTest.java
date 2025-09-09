@@ -27,22 +27,21 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.errata.test.ErrataManagerTest;
-import com.redhat.rhn.testing.MockHttpServletRequest;
-import com.redhat.rhn.testing.MockHttpSession;
-import com.redhat.rhn.testing.MockTestUtils;
-import com.redhat.rhn.testing.RhnJmockBaseTestCase;
+import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.RhnMockDynaActionForm;
+import com.redhat.rhn.testing.RhnMockHttpServletRequest;
+import com.redhat.rhn.testing.RhnMockHttpServletResponse;
+import com.redhat.rhn.testing.RhnMockHttpSession;
+import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.DynaActionForm;
 import org.junit.jupiter.api.Test;
-
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * DeleteBugActionTest
  */
-public class DeleteBugActionTest extends RhnJmockBaseTestCase {
+public class DeleteBugActionTest extends RhnBaseTestCase {
 
     @Test
     public void testDeleteBug() throws Exception {
@@ -52,13 +51,13 @@ public class DeleteBugActionTest extends RhnJmockBaseTestCase {
         ActionForward def = new ActionForward(RhnHelper.DEFAULT_FORWARD, "path", true);
         mapping.addForwardConfig(def);
 
-        MockHttpServletRequest request = MockTestUtils.getRequestWithSessionAndUser();
-        HttpServletResponse response = mock(HttpServletResponse.class);
-        MockHttpSession session = new MockHttpSession();
+        RhnMockHttpServletRequest request = TestUtils.getRequestWithSessionAndUser();
+        RhnMockHttpServletResponse response = new RhnMockHttpServletResponse();
+        RhnMockHttpSession session = new RhnMockHttpSession();
         request.setSession(session);
-        request.setupServerName("mymachine.rhndev.redhat.com");
+        request.setServerName("mymachine.rhndev.redhat.com");
 
-        DynaActionForm form = new DynaActionForm();
+        RhnMockDynaActionForm form = new RhnMockDynaActionForm();
 
         RequestContext requestContext = new RequestContext(request);
 
@@ -74,8 +73,8 @@ public class DeleteBugActionTest extends RhnJmockBaseTestCase {
 
         assertEquals(1, e.getBugs().size());
         //setup the request
-        request.setupAddParameter("eid", eid.toString());
-        request.setupAddParameter("bid", bugId.toString());
+        request.addParameter("eid", eid.toString());
+        request.addParameter("bid", bugId.toString());
 
         ActionForward result = action.execute(mapping, form, request, response);
         assertEquals(result.getName(), RhnHelper.DEFAULT_FORWARD);

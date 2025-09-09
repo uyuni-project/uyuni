@@ -20,10 +20,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.frontend.struts.RequestContext;
-import com.redhat.rhn.testing.MockHttpServletRequest;
-import com.redhat.rhn.testing.MockHttpServletResponse;
-import com.redhat.rhn.testing.MockHttpSession;
 import com.redhat.rhn.testing.MockObjectTestCase;
+import com.redhat.rhn.testing.RhnMockHttpServletRequest;
+import com.redhat.rhn.testing.RhnMockHttpServletResponse;
+import com.redhat.rhn.testing.RhnMockHttpSession;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.webui.controllers.login.LoginController;
@@ -52,17 +52,17 @@ public class RequestContextTest extends MockObjectTestCase {
 
         final String requestUrl = "http://localhost:8080/rhn/manager/login";
         final RouteMatch match = new RouteMatch(new Object(), requestUrl, requestUrl, "");
-        final MockHttpServletRequest mockRequest = new MockHttpServletRequest();
-        MockHttpSession session = new MockHttpSession();
+        final RhnMockHttpServletRequest mockRequest = new RhnMockHttpServletRequest();
+        RhnMockHttpSession session = new RhnMockHttpSession();
         mockRequest.setSession(session);
 
         mockRequest.setRequestURL(requestUrl);
         mockRequest.setMethod("POST");
         mockRequest.setMethod("POST");
         mockRequest.setPathInfo(URI.create(requestUrl).getPath());
-        mockRequest.setupAddParameter("url_bounce", "/rhn/users/UserDetails.do?uid=1");
+        mockRequest.addParameter("url_bounce", "/rhn/users/UserDetails.do?uid=1");
 
-        Response response = RequestResponseFactory.create(new MockHttpServletResponse());
+        Response response = RequestResponseFactory.create(new RhnMockHttpServletResponse());
         // logging in
         LoginHelper.successfulLogin(mockRequest, response.raw(), UserTestUtils.findNewUser("testUser", "testOrg" +
                 this.getClass().getSimpleName()));
@@ -136,8 +136,8 @@ public class RequestContextTest extends MockObjectTestCase {
      */
     @Test
     public void testbuildPageLink() {
-        MockHttpServletRequest request = new MockHttpServletRequest();
-        request.setupAddParameter("someparam", "value");
+        RhnMockHttpServletRequest request = new RhnMockHttpServletRequest();
+        request.addParameter("someparam", "value");
         request.setQueryString("otherparam=foo&barparam=beer");
         request.addAttribute("requestedUri", "http://localhost/rhn/somePage.do");
 

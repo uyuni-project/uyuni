@@ -18,37 +18,38 @@ import com.redhat.rhn.domain.session.WebSession;
 import com.redhat.rhn.frontend.servlets.PxtCookieManager;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.testing.MockFilterChain;
-import com.redhat.rhn.testing.MockHttpServletRequest;
-import com.redhat.rhn.testing.MockHttpServletResponse;
-import com.redhat.rhn.testing.MockHttpSession;
-import com.redhat.rhn.testing.RhnJmockBaseTestCase;
+import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.RhnMockHttpServletRequest;
+import com.redhat.rhn.testing.RhnMockHttpServletResponse;
+import com.redhat.rhn.testing.RhnMockHttpSession;
 
 import org.junit.jupiter.api.BeforeEach;
 
 /**
  * AuthFilterTest
  */
-public abstract class BaseFilterTst extends RhnJmockBaseTestCase {
+public abstract class BaseFilterTst extends RhnBaseTestCase {
 
-    protected MockHttpServletRequest request;
-    protected MockHttpSession session;
-    protected MockHttpServletResponse response;
+    protected RhnMockHttpServletRequest request;
+    protected RhnMockHttpSession session;
+    protected RhnMockHttpServletResponse response;
     protected MockFilterChain chain;
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        request = new MockHttpServletRequest();
-        session = new MockHttpSession();
+        request = new RhnMockHttpServletRequest();
+        session = new RhnMockHttpSession();
 
         PxtCookieManager pcm = new PxtCookieManager();
         RequestContext requestContext = new RequestContext(request);
 
-        request.setupServerName("mymachine.rhndev.redhat.com");
+        request.setServerName("mymachine.rhndev.redhat.com");
         request.setSession(session);
         request.setRequestURI("http://localhost:8080");
         WebSession s = requestContext.getWebSession();
         request.addCookie(pcm.createPxtCookie(s.getId(), request, 10));
-        response = new MockHttpServletResponse();
+        response = new RhnMockHttpServletResponse();
         chain = new MockFilterChain();
     }
 

@@ -20,9 +20,9 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.security.acl.AclHandler;
 import com.redhat.rhn.manager.acl.AclManager;
-import com.redhat.rhn.testing.MockHttpServletRequest;
-import com.redhat.rhn.testing.MockTestUtils;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.RhnMockHttpServletRequest;
+import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.Test;
 
@@ -36,7 +36,7 @@ public class AclManagerTest extends RhnBaseTestCase {
     @Test
     public void testHasAcl() {
 
-        MockHttpServletRequest request = MockTestUtils.getRequestWithSessionAndUser();
+        RhnMockHttpServletRequest request = TestUtils.getRequestWithSessionAndUser();
         String singleTrue = "true_test()";
         String multipleTrue = "first_true_acl(); second_true_acl()";
         String singleFalse = "false_test()";

@@ -22,14 +22,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.redhat.rhn.frontend.taglibs.ColumnTag;
 import com.redhat.rhn.frontend.taglibs.ListDisplayTag;
 import com.redhat.rhn.frontend.taglibs.NavDialogMenuTag;
-import com.redhat.rhn.testing.MockHttpServletRequest;
-import com.redhat.rhn.testing.MockJspWriter;
-import com.redhat.rhn.testing.MockPageContext;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.RhnMockHttpServletRequest;
+import com.redhat.rhn.testing.RhnMockJspWriter;
+import com.redhat.rhn.testing.RhnMockPageContext;
 import com.redhat.rhn.testing.TagTestHelper;
 import com.redhat.rhn.testing.TagTestUtils;
 import com.redhat.rhn.testing.TestUtils;
-
 
 import org.junit.jupiter.api.Test;
 
@@ -150,19 +149,19 @@ public class ColumnTagTest extends RhnBaseTestCase {
         assertEquals(ldt, ct.getParent());
 
         TagTestHelper tth = TagTestUtils.setupTagTest(ct, null);
-        MockHttpServletRequest mockRequest = (MockHttpServletRequest)
+        RhnMockHttpServletRequest mockRequest = (RhnMockHttpServletRequest)
                 tth.getPageContext().getRequest();
         // Dumb, dumb, dumb
         // Mock request doesn't parse the query string!
         // I've had salads with more intelligence
-        mockRequest.setupAddParameter("order", "asc");
+        mockRequest.addParameter("order", "asc");
         // And we STILL have to set the query string
         // otherwise MockObjects complains bitterly....
         mockRequest.setQueryString("this=stupid&library=needs_this");
         // setup mock objects
-        MockJspWriter out = (MockJspWriter)tth.getPageContext().getOut();
+        RhnMockJspWriter out = (RhnMockJspWriter)tth.getPageContext().getOut();
 
-        MockPageContext mpc = tth.getPageContext();
+        RhnMockPageContext mpc = tth.getPageContext();
         mpc.setAttribute("current", new Object());
         ct.setPageContext(mpc);
         tth.assertDoStartTag(Tag.SKIP_BODY);
