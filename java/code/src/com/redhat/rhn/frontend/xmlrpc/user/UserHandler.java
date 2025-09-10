@@ -567,7 +567,7 @@ public class UserHandler extends BaseHandler {
                     errorString.append(" :: ");
                 }
             }
-            //Throw a InvalidParameterException with our message string
+
             throw new InvalidParameterException(errorString.toString());
         }
 

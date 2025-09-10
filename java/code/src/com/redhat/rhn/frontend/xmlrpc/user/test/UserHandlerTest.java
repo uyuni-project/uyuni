@@ -27,7 +27,6 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
-import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidServerGroupException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchRoleException;
@@ -255,7 +254,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
                     "And Ted", "iron.maiden@rufus.com");
             assertEquals(1, rc);
         }
-        catch (BadParameterException e) {
+        catch (InvalidParameterException e) {
             fail(login + " cause an error");
         }
     }
