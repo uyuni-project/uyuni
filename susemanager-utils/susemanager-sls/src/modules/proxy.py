@@ -137,8 +137,14 @@ def _extract_pxe_entries(files, outfile):
         res = _parse_single_pxe(f)
         entries.append(res)
 
+    data = {
+        "branch_id": __salt__["grains.get"]("pxe:branch_id"),
+        "pxe_entries": entries,
+    }
+
     with open(outfile, "x") as fd:
-        yaml.safe_dump(entries, fd, width=float("inf"))
+
+        yaml.safe_dump(data, fd, width=float("inf"))
 
 
 def _parse_single_pxe(filename):
