@@ -127,8 +127,6 @@ public class ResetPasswordSubmitActionTest extends BaseTestCaseWithUser {
         mockSession.setAttribute("token", null);
         mockSession.setAttribute("request_method", "GET");
         request.setSession(mockSession);
-        request.setServerName("mymachine.rhndev.redhat.com");
-        requestContext.getWebSession();
 
         mapping.addForwardConfig(mismatch);
         mapping.addForwardConfig(invalid);

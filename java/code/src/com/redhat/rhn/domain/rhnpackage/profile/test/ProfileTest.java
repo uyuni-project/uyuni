@@ -54,8 +54,7 @@ public class ProfileTest extends RhnBaseTestCase {
      */
     @Test
     public void testProfileEquals() throws Exception {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User user = UserTestUtils.findNewUser(this);
         Channel channel = ChannelFactoryTest.createTestChannel(user);
         Profile p1 = createTestProfile(user, channel);
         Profile p2 = new Profile();

@@ -77,8 +77,7 @@ public class ConfigUploadMtimeActionTest extends RhnBaseTestCase {
 
     @Test
     public void testCreate() throws Exception {
-        User usr = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User usr = UserTestUtils.findNewUser(this);
 
         ConfigUploadMtimeAction testAction = (ConfigUploadMtimeAction)ActionFactoryTest
                 .createAction(usr, ActionFactory.TYPE_CONFIGFILES_MTIME_UPLOAD);

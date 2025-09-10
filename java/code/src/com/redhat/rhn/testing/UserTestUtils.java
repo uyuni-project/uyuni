@@ -283,6 +283,16 @@ public class UserTestUtils  {
     }
 
     /**
+     * Create a new user 'testUser' and a custom org name based on
+     * the class name of the passed in object.
+     * @param object whose class name will be appended to org name
+     * @return User created
+     */
+    public static User findNewUser(Object object) {
+        return findNewUser("testUser", "testOrg" + object.getClass().getSimpleName());
+    }
+
+    /**
      * Find an Org_ADMIN for the Org passed in.  Create Org_ADMIN if not.
      * @param orgIn to find/create
      * @return User who is Org_ADMIN

@@ -43,7 +43,6 @@ import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
 import com.redhat.rhn.taskomatic.domain.TaskoTemplate;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
-import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.model.products.Channel;
 import com.suse.manager.model.products.MandatoryChannels;
@@ -249,7 +248,6 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
     public void testCanVerifyVendorChannelConflictsWithCustomChannel() {
         ProductSyncManager manager = new ProductSyncManager();
 
-        UserTestUtils.findNewUser("testUser", "testOrg");
         ChannelFamily family = getOrCreateChannelFamily();
         String uniquePrefix = RandomStringUtils.randomAlphanumeric(6);
 

@@ -76,8 +76,7 @@ public class ChannelFamilyFactoryTest extends RhnBaseTestCase {
 
     @Test
     public void testVerifyOrgFamily() {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User user = UserTestUtils.findNewUser(this);
         Org org = user.getOrg();
         ChannelFamily orgfam = ChannelFamilyFactory.lookupByOrg(org);
 

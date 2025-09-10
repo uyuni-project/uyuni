@@ -40,7 +40,7 @@ public class TraceBackEventTest extends RhnBaseTestCase {
 
     private static final String MSG_OUTER_EXC = "outer-exception";
     private static final String MSG_INNER_EXC = "inner-exception";
-    private final User user = UserTestUtils.findNewUser("testUser", "testOrg" + this.getClass().getSimpleName());
+    private final User user = UserTestUtils.findNewUser(this);
 
     private MockMail mailer;
 

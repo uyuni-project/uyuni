@@ -26,7 +26,7 @@ import com.redhat.rhn.testing.RhnMockHttpSession;
 import org.junit.jupiter.api.BeforeEach;
 
 /**
- * AuthFilterTest
+ * BaseFilterTst
  */
 public abstract class BaseFilterTst extends RhnBaseTestCase {
 

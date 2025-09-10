@@ -188,8 +188,6 @@ public class MockBodyContent extends BodyContent {
         notImplemented();
     }
 
-
-
     /**
      * Writes the content to the specified writer.
      * @param writerIn the writer to write to

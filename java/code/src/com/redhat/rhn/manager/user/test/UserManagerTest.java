@@ -277,7 +277,7 @@ public class UserManagerTest extends RhnBaseTestCase {
 
     @Test
     public void testVerifyPackageAccess() {
-        User user = UserTestUtils.findNewUser("testuser", "testorg");
+        User user = UserTestUtils.findNewUser();
         Package pkg = PackageTest.createTestPackage(user.getOrg());
         assertTrue(UserManager.verifyPackageAccess(user.getOrg(), pkg.getId()));
 
@@ -287,8 +287,7 @@ public class UserManagerTest extends RhnBaseTestCase {
 
     @Test
     public void testLookup() {
-        User admin = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User admin = UserTestUtils.findNewUser(this);
         admin.addPermanentRole(RoleFactory.ORG_ADMIN);
 
         User regular = UserTestUtils.createUser("testUser2", admin.getOrg().getId());
@@ -435,8 +434,7 @@ public class UserManagerTest extends RhnBaseTestCase {
         int numTotal = 1;
         int numDisabled = 0;
         int numActive = 1;
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User user = UserTestUtils.findNewUser(this);
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         PageControl pc = new PageControl();
         pc.setStart(1);
@@ -509,8 +507,7 @@ public class UserManagerTest extends RhnBaseTestCase {
     }
     @Test
     public void testStoreUser() {
-        User usr = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User usr = UserTestUtils.findNewUser(this);
         Long id = usr.getId();
         usr.setEmail("something@changed.redhat.com");
         UserManager.storeUser(usr);
@@ -520,8 +517,7 @@ public class UserManagerTest extends RhnBaseTestCase {
 
     @Test
     public void testGetSystemGroups() {
-        User usr = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User usr = UserTestUtils.findNewUser(this);
         PageControl pc = new PageControl();
         pc.setIndexData(false);
         pc.setFilterColumn("name");

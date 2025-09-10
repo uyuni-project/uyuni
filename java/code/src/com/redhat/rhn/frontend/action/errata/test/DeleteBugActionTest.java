@@ -31,7 +31,6 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.RhnMockDynaActionForm;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
-import com.redhat.rhn.testing.RhnMockHttpSession;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.struts.action.ActionForward;
@@ -53,9 +52,6 @@ public class DeleteBugActionTest extends RhnBaseTestCase {
 
         RhnMockHttpServletRequest request = TestUtils.getRequestWithSessionAndUser();
         RhnMockHttpServletResponse response = new RhnMockHttpServletResponse();
-        RhnMockHttpSession session = new RhnMockHttpSession();
-        request.setSession(session);
-        request.setServerName("mymachine.rhndev.redhat.com");
 
         RhnMockDynaActionForm form = new RhnMockDynaActionForm();
 

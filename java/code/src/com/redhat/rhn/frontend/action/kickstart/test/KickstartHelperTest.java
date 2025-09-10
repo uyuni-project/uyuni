@@ -63,7 +63,6 @@ public class KickstartHelperTest extends BaseTestCaseWithUser {
         UserFactory.save(user);
         ksdata = KickstartDataTest.createKickstartWithOptions(user.getOrg());
         mockRequest = new RhnMockHttpServletRequest();
-        mockRequest.setRemoteAddr("127.0.0.1");
         request = new RhnHttpServletRequest(mockRequest);
         helper = new KickstartHelper(request);
     }
