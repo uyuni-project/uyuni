@@ -16,6 +16,7 @@ package com.redhat.rhn.domain.action;
 
 import static com.suse.proxy.ProxyConfigUtils.USE_CERTS_MODE_REPLACE;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionSummary;
@@ -29,6 +30,7 @@ import com.suse.manager.reactor.hardware.CpuArchUtil;
 import com.suse.manager.reactor.hardware.HardwareMapper;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.utils.ValueMap;
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.utils.gson.ProxyConfigUpdateJson;
 import com.suse.manager.webui.utils.salt.custom.HwProfileUpdateSlsResult;
 import com.suse.proxy.ProxyConfigUtils;
@@ -60,6 +62,7 @@ import java.util.stream.Stream;
  */
 public class HardwareRefreshAction extends Action {
     private static final Logger LOG = LogManager.getLogger(HardwareRefreshAction.class);
+    private static final SaltApi SALT_API = GlobalInstanceHolder.SALT_API;
 
     /**
      * {@inheritDoc}
@@ -185,7 +188,8 @@ public class HardwareRefreshAction extends Action {
     private void handleMissingProxyConfig(Pillar pillar, MinionServer proxy) {
         ProxyConfig config = ProxyConfigUtils.proxyConfigFromPillar(pillar);
         ProxyConfigUpdateFacade updater = new ProxyConfigUpdateFacadeImpl();
-        SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltApi);
+        SystemManager systemManager = new SystemManager(
+                ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, SALT_API);
 
         String httpdURL = null, httpdTag = null;
         if (config.getHttpdImage() != null) {

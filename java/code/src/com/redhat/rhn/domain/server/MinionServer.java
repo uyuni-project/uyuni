@@ -46,7 +46,7 @@ public class MinionServer extends Server implements SaltConfigurable {
     private String kernelLiveVersion;
     private Integer sshPushPort;
     private Set<AccessToken> accessTokens = new HashSet<>();
-    private final Set<Pillar> pillars = new HashSet<>();
+    private Set<Pillar> pillars = new HashSet<>();
     private Date rebootRequiredAfter;
     private String containerRuntime;
     private String uname;
