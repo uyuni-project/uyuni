@@ -19,10 +19,8 @@ package com.redhat.rhn.manager.system;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.emptyMap;
 import static java.util.Collections.emptySet;
-import static java.util.Optional.empty;
 import static java.util.Optional.ofNullable;
 
-import com.redhat.rhn.common.RhnRuntimeException;
 import com.redhat.rhn.common.client.ClientCertificate;
 import com.redhat.rhn.common.client.InvalidCertificateException;
 import com.redhat.rhn.common.conf.Config;
@@ -138,11 +136,7 @@ import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.StateRevisionService;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.xmlrpc.dto.SystemEventDetailsDto;
-import com.suse.salt.netapi.calls.LocalCall;
-import com.suse.salt.netapi.utils.Xor;
 import com.suse.utils.Opt;
-
-import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -3931,28 +3925,5 @@ public class SystemManager extends BaseManager {
     public static boolean serverHasProxyEntitlement(Long sid) {
         Server s = ServerFactory.lookupById(sid);
         return s.hasEntitlement(EntitlementManager.PROXY);
-    }
-
-    /**
-     * Run the proxy.backup state synchronously and copy the files as minion pillar for later use.
-     *
-     * @param proxy the proxy minion to back up
-     */
-    public void backupProxyConfig(MinionServer proxy) throws InvalidProxyVersionException, RhnRuntimeException {
-        // Ensure server is 4.3 proxy server
-        if (!(proxy.isProxy() && proxy.getRelease().equals("15.4"))) {
-            throw new InvalidProxyVersionException("Proxy backup supports only non-containerized 4.3 proxies");
-        }
-
-        // TODO: call this async
-        // Call proxy.backup salt module
-        LocalCall<Xor<String, List<String>>> call = new LocalCall<>("proxy.backup", empty(), empty(),
-                new TypeToken<>() {  });
-        Optional<List<String>> files = saltApi.callSync(call, proxy.getMinionId()).map(res -> res.fold(
-                error -> {
-                    throw new RhnRuntimeException(error);
-                },
-                success -> success
-        ));
     }
 }

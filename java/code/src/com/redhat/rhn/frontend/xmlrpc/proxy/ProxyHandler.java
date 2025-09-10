@@ -40,7 +40,6 @@ import com.redhat.rhn.frontend.xmlrpc.ProxyMissingEntitlementException;
 import com.redhat.rhn.frontend.xmlrpc.ProxyNotActivatedException;
 import com.redhat.rhn.frontend.xmlrpc.ProxySystemIsSatelliteException;
 import com.redhat.rhn.frontend.xmlrpc.SSLCertFaultException;
-import com.redhat.rhn.frontend.xmlrpc.SaltFaultException;
 import com.redhat.rhn.frontend.xmlrpc.ValidationException;
 import com.redhat.rhn.frontend.xmlrpc.system.XmlRpcSystemHelper;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
@@ -52,6 +51,7 @@ import com.suse.manager.ssl.SSLCertGenerationException;
 import com.suse.manager.ssl.SSLCertManager;
 import com.suse.manager.ssl.SSLCertPair;
 import com.suse.manager.webui.utils.gson.ProxyConfigUpdateJson;
+import com.suse.proxy.migrate.ProxyBackupApplyState;
 import com.suse.proxy.update.ProxyConfigUpdateFacade;
 
 
@@ -616,11 +616,12 @@ public class ProxyHandler extends BaseHandler {
     public int backupConfiguration(User loggedInUser, Integer serverId) {
         try {
             Server server = xmlRpcSystemHelper.lookupServer(loggedInUser, serverId);
-            server.asMinionServer().ifPresent(systemManager::backupProxyConfig);
+            server.asMinionServer().ifPresent(
+                    minion -> ProxyBackupApplyState.backupProxyConfig(loggedInUser, minion));
         }
-        catch (RhnRuntimeException | InvalidProxyVersionException e) {
+        catch (InvalidProxyVersionException | RhnRuntimeException e) {
             LOG.error("Failed to backup a proxy configuration", e);
-            throw new SaltFaultException(e.getMessage());
+            throw new RhnRuntimeException(e.getMessage());
         }
         return 1;
     }
