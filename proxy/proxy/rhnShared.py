@@ -417,7 +417,7 @@ class SharedHandler:
                 # mod_wsgi modifies incoming headers so we have to transform them back
                 k = k.replace("_", "-")
             if not (
-                k.lower()[:2] == "x-"
+                k.lower().startswith("x-")
                 or k.lower()
                 in [  # all but 'host', and 'via'
                     "accept",

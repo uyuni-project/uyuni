@@ -706,10 +706,10 @@ def do_softwarechannel_listerrata(self, args):
     # iterate over args and alter a copy of it (channels)
     channels = args[:]
     for arg in args:
-        if arg[:5] == "from=":
+        if arg.startswith("from="):
             begin_date = arg[5:]
             channels.remove(arg)
-        elif arg[:3] == "to=":
+        elif arg.startswith("to="):
             end_date = arg[3:]
             channels.remove(arg)
 

@@ -158,7 +158,7 @@ class Repository(rhnRepository.Repository):
         """
 
         log_debug(3, pkgFilename)
-        if pkgFilename[-8:] != ".src.rpm" and pkgFilename[-10:] != ".nosrc.rpm":
+        if not (pkgFilename.endswith(".src.rpm") or pkgFilename.endswith(".nosrc.rpm")):
             raise rhnFault(17, _("Invalid SRPM package requested: %s") % pkgFilename)
 
         # Connect to the server to get an authorization for downloading this
@@ -185,7 +185,7 @@ class Repository(rhnRepository.Repository):
         if not retval:
             raise rhnFault(17, _("Invalid SRPM package requested: %s") % pkgFilename)
 
-        if pkgFilename[-8:] != ".src.rpm":
+        if not pkgFilename.endswith(".src.rpm"):
             # We already know the filename ends in .src.rpm
             nvrea = list(parseRPMName(pkgFilename[:-8]))
             nvrea.append("src")
