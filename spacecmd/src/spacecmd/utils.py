@@ -390,7 +390,7 @@ def parse_time_input(userinput=""):
 
     # handle time differences (e.g., +1m, +2h)
     if not timestamp:
-        match = re.search(r"^(\+|-)?(\d+)(s|m|h|d)$", userinput, re.I)
+        match = re.search(r"^([+-])?(\d+)([smhd])$", userinput, re.I)
 
         if match and len(match.groups()) >= 2:
             sign = match.group(1)
@@ -400,14 +400,16 @@ def parse_time_input(userinput=""):
             if sign == "-":
                 number = -number
 
-            if re.match("s", unit, re.I):
+            if unit.lower() == "s":
                 delta = timedelta(seconds=number)
-            elif re.match("m", unit, re.I):
+            elif unit.lower() == "m":
                 delta = timedelta(minutes=number)
-            elif re.match("h", unit, re.I):
+            elif unit.lower() == "h":
                 delta = timedelta(hours=number)
-            elif re.match("d", unit, re.I):
+            elif unit.lower() == "d":
                 delta = timedelta(days=number)
+            else:
+                delta = timedelta()
 
             # pylint: disable-next=possibly-used-before-assignment
             timestamp = datetime.now() + delta
