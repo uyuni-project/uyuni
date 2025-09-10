@@ -23,9 +23,7 @@ import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.frontend.events.TraceBackAction;
 import com.redhat.rhn.frontend.events.TraceBackEvent;
 import com.redhat.rhn.testing.MockObjectTestCase;
-import com.redhat.rhn.testing.RhnMockDynaActionForm;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
-import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.logging.log4j.Level;
@@ -34,6 +32,7 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.config.Configurator;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.DynaActionForm;
 import org.apache.struts.config.ExceptionConfig;
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
@@ -42,6 +41,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Vector;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * PermissionExceptionHandlerTest
@@ -83,20 +84,21 @@ public class PermissionExceptionHandlerTest extends MockObjectTestCase {
 
             RhnMockHttpServletRequest request = TestUtils
                     .getRequestWithSessionAndUser();
-            request.setupGetHeaderNames(new Vector<String>().elements());
-            request.setupGetMethod("POST");
-            request.setupGetRequestURI("http://localhost:8080");
-            request.setupGetParameterNames(new Vector<String>().elements());
+            request.setMethod("POST");
+            request.setRequestURI("http://localhost:8080");
+            request.setParameterNames(new Vector<String>().elements());
 
-            RhnMockHttpServletResponse response = new RhnMockHttpServletResponse();
-            response.setExpectedSetStatusCalls(1);
-            RhnMockDynaActionForm form = new RhnMockDynaActionForm();
+            HttpServletResponse response = mock(HttpServletResponse.class);
+            context.checking(new Expectations() {{
+                oneOf(response).setStatus(with(any(Integer.class)));
+            }});
+
+            DynaActionForm form = new DynaActionForm();
 
             PermissionExceptionHandler peh = new PermissionExceptionHandler();
 
             peh.execute(ex, new ExceptionConfig(), mapping, form, request, response);
             assertEquals(ex, request.getAttribute("error"));
-            response.verify();
         }
         finally {
             // Turn tracebacks and logging back on

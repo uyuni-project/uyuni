@@ -21,12 +21,11 @@ import static org.junit.jupiter.api.Assertions.fail;
 import com.redhat.rhn.frontend.taglibs.NavDialogMenuTag;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.RhnMockExceptionJspWriter;
+import com.redhat.rhn.testing.RhnMockHttpServletRequest;
+import com.redhat.rhn.testing.RhnMockJspWriter;
+import com.redhat.rhn.testing.TagTestHelper;
 import com.redhat.rhn.testing.TagTestUtils;
 import com.redhat.rhn.testing.TestUtils;
-
-import com.mockobjects.helpers.TagTestHelper;
-import com.mockobjects.servlet.MockHttpServletRequest;
-import com.mockobjects.servlet.MockJspWriter;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -106,15 +105,14 @@ public class NavDialogMenuTagTest extends RhnBaseTestCase {
 
         try {
             // setup mock objects
-            MockJspWriter out = (MockJspWriter) tth.getPageContext().getOut();
-            out.setExpectedData(getReturnValue());
+            RhnMockJspWriter out = (RhnMockJspWriter) tth.getPageContext().getOut();
 
             // ok let's test the tag
             setupTag(nmt, 0, 4, NAV_XML, DIALOG_NAV);
-            MockHttpServletRequest req = tth.getRequest();
-            req.addExpectedSetAttribute("innernavtitle", " - Sign In");
+            RhnMockHttpServletRequest req = tth.getRequest();
+            req.addAttribute("innernavtitle", " - Sign In");
             tth.assertDoStartTag(Tag.SKIP_BODY);
-            out.verify();
+            assertEquals(getReturnValue(), out.toString());
         }
         catch (JspException e) {
             fail(e.toString());

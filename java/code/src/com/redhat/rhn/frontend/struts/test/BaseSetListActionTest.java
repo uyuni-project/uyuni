@@ -52,7 +52,7 @@ public class BaseSetListActionTest extends RhnBaseTestCase {
         sah = new ActionHelper();
         sah.setUpAction(tla);
         sah.setupClampListBounds();
-        sah.getRequest().setupAddParameter("submitted", "false");
+        sah.getRequest().addParameter("submitted", "false");
     }
 
     /**

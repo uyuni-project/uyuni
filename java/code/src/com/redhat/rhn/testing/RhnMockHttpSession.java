@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2011--2025 SUSE LLC
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,68 +15,227 @@
  */
 package com.redhat.rhn.testing;
 
-import com.mockobjects.servlet.MockHttpSession;
-
-import org.apache.commons.collections.iterators.IteratorEnumeration;
-
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpSessionContext;
 
 /**
- * Override MockHttpSession's implementation of get/setAttribute so we
- * don't have to define ahead of time all the attributes that will be set
- * on the session.
+ * RhnMockHttpSession is a mock implementation of the HttpSession interface
  */
-public class RhnMockHttpSession extends MockHttpSession {
+public class RhnMockHttpSession implements HttpSession {
 
-    private Map<String, Object> attributes;
+    private final Map<String, Object> attributes = new HashMap<>();
+    private final String id = UUID.randomUUID().toString();
+    private final long creationTime = System.currentTimeMillis();
+    private long lastAccessedTime = creationTime;
+    private int maxInactiveInterval = 1800; // 30 minutes default
+    private boolean invalidated = false;
+    private boolean isNew = true;
+    private MockServletContext servletContext;
 
     /**
-     * default constructor
+     * Gets the attribute value associated with the specified name
+     *
+     * @param name the name of the attribute
+     * @return the attribute value, or null if not found
      */
-    public RhnMockHttpSession() {
-        super();
-        attributes = new HashMap<>();
-    }
-
-    /**
-     * Returns the attribute bound to the given name.
-     * @param name Name of attribute whose value is sought.
-     * @return Object value of attribute with given name.
-     */
-    @Override
     public Object getAttribute(String name) {
+        checkValid();
         return attributes.get(name);
     }
 
     /**
-     * Adds a new attribute the Session.
-     * @param name attribute name
-     * @param value attribute value
+     * Gets an enumeration of all attribute names in this session
+     *
+     * @return an enumeration of attribute names
      */
-    @Override
-    public void setAttribute(String name, Object value) {
-        attributes.put(name, value);
-    }
-
-    @Override
-    public Enumeration getAttributeNames() {
-        return new IteratorEnumeration(attributes.keySet().iterator());
+    public Enumeration<String> getAttributeNames() {
+        checkValid();
+        return Collections.enumeration(attributes.keySet());
     }
 
     /**
-     * Removes an attribute from the session
-     * @param name attribute name
+     * Gets the time when this session was created
+     *
+     * @return the creation time in milliseconds since epoch
      */
-    @Override
+    public long getCreationTime() {
+        checkValid();
+        return creationTime;
+    }
+
+    /**
+     * Gets the unique identifier for this session
+     *
+     * @return the session ID
+     */
+    public String getId() {
+        return id;
+    }
+
+    /**
+     * Gets the time when this session was last accessed
+     *
+     * @return the last accessed time in milliseconds since epoch
+     */
+    public long getLastAccessedTime() {
+        checkValid();
+        return lastAccessedTime;
+    }
+
+    /**
+     * Gets the maximum time interval (in seconds) that this session can remain inactive
+     *
+     * @return the maximum inactive interval in seconds
+     */
+    public int getMaxInactiveInterval() {
+        return maxInactiveInterval;
+    }
+
+    /**
+     * Sets the maximum time interval (in seconds) that this session can remain inactive
+     *
+     * @param interval the maximum inactive interval in seconds
+     */
+    public void setMaxInactiveInterval(int interval) {
+        this.maxInactiveInterval = interval;
+    }
+
+    /**
+     * Gets the servlet context associated with this session
+     *
+     * @return null (not implemented in this mock)
+     */
+    public ServletContext getServletContext() {
+        return servletContext;
+    }
+
+    public void setServletContext(MockServletContext servletContextIn) {
+        servletContext = servletContextIn;
+    }
+
+    /**
+     * Gets the session context (deprecated method)
+     *
+     * @return null (not implemented in this mock)
+     *
+     */
+    public HttpSessionContext getSessionContext() {
+        return null;
+    }
+
+    /**
+     * Get attribute value
+     *
+     * @param name attribute name
+     * @return attribute value
+     */
+    public Object getValue(String name) {
+        return getAttribute(name);
+    }
+
+    /**
+     * Get attribute names
+     *
+     * @return attribute names
+     */
+    public String[] getValueNames() {
+        checkValid();
+        return attributes.keySet().toArray(new String[0]);
+    }
+
+    /**
+     * Invalidate this session
+     */
+    public void invalidate() {
+        checkValid();
+        invalidated = true;
+        attributes.clear();
+    }
+
+    /**
+     * Check if this session is new
+     *
+     * @return true if this session is new
+     */
+    public boolean isNew() {
+        checkValid();
+        return isNew;
+    }
+
+    /**
+     * Stores an attribute value (deprecated method)
+     *
+     * @param name  the attribute name
+     * @param value the attribute value
+     */
+    public void putValue(String name, Object value) {
+        setAttribute(name, value);
+    }
+
+    /**
+     * Removes the attribute with the specified name from this session
+     *
+     * @param name the name of the attribute to remove
+     */
     public void removeAttribute(String name) {
+        checkValid();
         attributes.remove(name);
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public String toString() {
-        return this.getClass().getName() + " attributes: " + attributes;
+    /**
+     * Removes an attribute value (deprecated method)
+     *
+     * @param name the attribute name to remove
+     */
+    public void removeValue(String name) {
+        removeAttribute(name);
+    }
+
+    /**
+     * Sets an attribute in this session
+     *
+     * @param name  the name of the attribute
+     * @param value the value of the attribute (null removes the attribute)
+     */
+    public void setAttribute(String name, Object value) {
+        checkValid();
+        if (value == null) {
+            removeAttribute(name);
+        }
+        else {
+            attributes.put(name, value);
+        }
+    }
+
+    /**
+     * Mark this session as not new (used internally)
+     */
+    public void markNotNew() {
+        this.isNew = false;
+    }
+
+    /**
+     * Update the last accessed time (used internally)
+     */
+    public void updateLastAccessedTime() {
+        this.lastAccessedTime = System.currentTimeMillis();
+    }
+
+    /**
+     * Checks if this session is still valid and throws an exception if invalidated
+     *
+     * @throws IllegalStateException if the session has been invalidated
+     */
+    private void checkValid() {
+        if (invalidated) {
+            throw new IllegalStateException("Session has been invalidated");
+        }
     }
 }

@@ -15,18 +15,19 @@
 
 package com.redhat.rhn.common.security.acl.test;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import com.redhat.rhn.common.security.acl.Acl;
 import com.redhat.rhn.common.security.acl.AclHandler;
-import com.redhat.rhn.testing.RhnBaseTestCase;
 
-import com.mockobjects.ExpectationValue;
-import com.mockobjects.Verifiable;
-
-import org.junit.jupiter.api.AfterEach;
+import org.hamcrest.Description;
+import org.hamcrest.TypeSafeDiagnosingMatcher;
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -35,84 +36,120 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+
 /*
  * Test for {@link Acl}
  *
  */
-public class AclTest extends RhnBaseTestCase {
+public class AclTest {
 
-    private Acl acl = null;
-    private Map<String, Object> context = null;
-    private MockAclHandler handler = null;
+    private Mockery jmock;
+    private Acl acl;
+    private Map<String, Object> context;
 
-    /** Sets up the acl, handler, and context objects. */
-    @Override
     @BeforeEach
-    public void setUp() {
+    void setUp() {
+        jmock = new Mockery() {{
+            setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
+        }};
         acl = new Acl();
         context = new HashMap<>();
-        handler = new MockAclHandler();
-
-        acl.registerHandler(handler);
     }
 
-    /** Tears down the acl, handler, and context objects. */
-    @Override
-    @AfterEach
-    public void tearDown() throws Exception {
-        super.tearDown();
-        acl = null;
-        context = null;
-        handler = null;
+    /* -------------------------
+       Test helpers / matchers
+       ------------------------- */
+
+    /** Hamcrest matcher that asserts String[] equality by value (Arrays.equals). */
+    private static org.hamcrest.Matcher<String[]> params(String... expected) {
+        return new TypeSafeDiagnosingMatcher<String[]>() {
+            @Override
+            protected boolean matchesSafely(String[] actual, Description mismatchDescription) {
+                if (!Arrays.equals(actual, expected)) {
+                    mismatchDescription.appendText("was ").appendValue(Arrays.toString(actual));
+                    return false;
+                }
+                return true;
+            }
+
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("params ").appendValue(Arrays.toString(expected));
+            }
+        };
     }
 
-    /* Test single-statement acls.
-     * Tests the following, to make sure parser is behaving:
-     * <ul>
-     *   <li>"handler_zero()"
-     *   <li>"handler_zero(true)"
-     *   <li>"handler_zero(true,false)"
-     *   <li>"handler_zero(true ,false)"
-     *   <li>"handler_zero(true , false)"
-     *   <li>"handler_zero(true, false)"
-     *   <li>"not handler_zero(true)"
-     * </ul>
+    /* -------------------------
+       A testable handler to mock
+       ------------------------- */
+
+    /**
+     * Concrete class with the reflective methods Acl will invoke.
+     * We mock THIS class (not the AclHandler interface) so we can set expectations
+     * on aclHandlerZero/One/Two. We also provide a no-op reset().
      */
+    public static class TestableHandler implements AclHandler {
+        public void reset() { /* no-op for tests */ }
+
+        public boolean aclHandlerZero(Map<String, Object> context, String[] params) {
+            return false;
+        }
+        public boolean aclHandlerOne(Map<String, Object> context, String[] params) {
+            return false;
+        }
+        public boolean aclHandlerTwo(Map<String, Object> context, String[] params) {
+            return false;
+        }
+    }
+
+    /* -------------------------
+       Core parsing & logic tests
+       ------------------------- */
+
     @Test
-    public void testSimpleAcl() {
+    void testSimpleAcl() {
+        TestableHandler h = jmock.mock(TestableHandler.class);
+        acl.registerHandler(h);
 
-        // test parsing with no params. should be false
-        handler.setExpected("handler_zero", new String[0]);
+        // handler_zero() -> false
+        jmock.checking(new Expectations() {{
+            oneOf(h).aclHandlerZero(with(context), with(params()));
+            will(returnValue(false));
+        }});
         assertFalse(acl.evalAcl(context, "handler_zero()"));
-        handler.verify();
+        jmock.assertIsSatisfied();
 
-        // test parsing with no 1 param. should be true
-        handler.setExpected("handler_zero", new String[]{"true"});
+        // handler_zero(true) -> true
+        jmock.checking(new Expectations() {{
+            oneOf(h).aclHandlerZero(with(context), with(params("true")));
+            will(returnValue(true));
+        }});
         assertTrue(acl.evalAcl(context, "handler_zero(true)"));
-        handler.verify();
+        jmock.assertIsSatisfied();
 
-        // test 2 params with diff spacings
-        handler.setExpected("handler_zero",
-                new String[]{"true", "false"});
-        assertTrue(acl.evalAcl(context, "handler_zero(true,false)"));
-        handler.verify();
+        // handler_zero(true,false) variants -> true
+        String[] expressions = {
+                "handler_zero(true,false)",
+                "handler_zero(true ,false)",
+                "handler_zero(true , false)",
+                "handler_zero(true, false)"
+        };
+        for (String expr : expressions) {
+            jmock.checking(new Expectations() {{
+                oneOf(h).aclHandlerZero(with(context), with(params("true", "false")));
+                will(returnValue(true));
+            }});
+            assertTrue(acl.evalAcl(context, expr));
+            jmock.assertIsSatisfied();
+        }
 
-        handler.setExpected("handler_zero", new String[]{"true", "false"});
-        assertTrue(acl.evalAcl(context, "handler_zero(true ,false)"));
-        handler.verify();
-
-        handler.setExpected("handler_zero", new String[]{"true", "false"});
-        assertTrue(acl.evalAcl(context, "handler_zero(true , false)"));
-        handler.verify();
-
-        handler.setExpected("handler_zero", new String[]{"true", "false"});
-        assertTrue(acl.evalAcl(context, "handler_zero(true, false)"));
-        handler.verify();
-
-        // test negation
-        handler.setExpected("handler_zero", new String[]{"true"});
+        // not handler_zero(true) -> false (zero(true) returns true, then negated)
+        jmock.checking(new Expectations() {{
+            oneOf(h).aclHandlerZero(with(context), with(params("true")));
+            will(returnValue(true));
+        }});
         assertFalse(acl.evalAcl(context, "not handler_zero(true)"));
-        handler.verify();
+        jmock.assertIsSatisfied();
     }
 
     /* Test expressions connected with Or.
@@ -123,21 +160,27 @@ public class AclTest extends RhnBaseTestCase {
      * </ul>
      */
     @Test
-    public void testMultipleOrStatementsAcl() {
-        handler.setExpected("handler_zero", new String[]{"false"});
-        handler.setExpected("handler_one", new String[]{"true"});
-        assertTrue(acl.evalAcl(context,
-                    "handler_zero(false) or handler_one(true)"));
-        handler.verify();
+    void testMultipleOrStatementsAcl() {
+        TestableHandler h = jmock.mock(TestableHandler.class);
+        acl.registerHandler(h);
 
-        handler.setExpected("handler_zero", new String[]{"true"});
-        // handler_one, even though we give it false in evalAcl, is not expected
-        // to have an expectation value. handler_one won't get called
-        // because handler_zero will return true
-        handler.setExpected("handler_one", null);
-        assertTrue(acl.evalAcl(context,
-                    "handler_zero(true) or handler_one(false)"));
-        handler.verify();
+        // handler_zero(false) or handler_one(true) -> true
+        jmock.checking(new Expectations() {{
+            oneOf(h).aclHandlerZero(with(context), with(params("false")));
+            will(returnValue(false));
+            oneOf(h).aclHandlerOne(with(context), with(params("true")));
+            will(returnValue(true));
+        }});
+        assertTrue(acl.evalAcl(context, "handler_zero(false) or handler_one(true)"));
+        jmock.assertIsSatisfied();
+
+        // handler_zero(true) or handler_one(false) -> short-circuit true, handler_one not called
+        jmock.checking(new Expectations() {{
+            oneOf(h).aclHandlerZero(with(context), with(params("true"))); will(returnValue(true));
+            never(h).aclHandlerOne(with(any(Map.class)), with(any(String[].class)));
+        }});
+        assertTrue(acl.evalAcl(context, "handler_zero(true) or handler_one(false)"));
+        jmock.assertIsSatisfied();
     }
 
     /* Test statements connected with And.
@@ -148,22 +191,28 @@ public class AclTest extends RhnBaseTestCase {
      * </ul>
      */
     @Test
-    public void testMultipleAndStatementsAcl() {
-        handler.setExpected("handler_zero", new String[]{"false"});
-        // handler_one, even though we give it false in evalAcl, is not expected
-        // to have an expectation value. handler_one won't get called
-        // because handler_zero will return true
-        handler.setExpected("handler_one", null);
-        assertFalse(acl.evalAcl(context,
-                    "handler_zero(false) ; handler_one(true)"));
-        handler.verify();
+    void testMultipleAndStatementsAcl() {
+        TestableHandler h = jmock.mock(TestableHandler.class);
+        acl.registerHandler(h);
 
+        // handler_zero(false) ; handler_one(true) -> short-circuit false, handler_one not called
+        jmock.checking(new Expectations() {{
+            oneOf(h).aclHandlerZero(with(context), with(params("false")));
+            will(returnValue(false));
+            never(h).aclHandlerOne(with(any(Map.class)), with(any(String[].class)));
+        }});
+        assertFalse(acl.evalAcl(context, "handler_zero(false) ; handler_one(true)"));
+        jmock.assertIsSatisfied();
 
-        handler.setExpected("handler_zero", new String[]{"true", "false"});
-        handler.setExpected("handler_one", new String[]{"true"});
-        assertTrue(acl.evalAcl(context,
-                    "handler_zero(true,false) ; handler_one(true)"));
-        handler.verify();
+        // handler_zero(true,false) ; handler_one(true) -> true && true => true
+        jmock.checking(new Expectations() {{
+            oneOf(h).aclHandlerZero(with(context), with(params("true", "false")));
+            will(returnValue(true));
+            oneOf(h).aclHandlerOne(with(context), with(params("true")));
+            will(returnValue(true));
+        }});
+        assertTrue(acl.evalAcl(context, "handler_zero(true,false) ; handler_one(true)"));
+        jmock.assertIsSatisfied();
     }
 
     /* Test statements connected with And and Or.
@@ -173,59 +222,46 @@ public class AclTest extends RhnBaseTestCase {
      * </ul>
      */
     @Test
-    public void testCompoundAcl() {
+    void testCompoundAcl() {
+        TestableHandler h = jmock.mock(TestableHandler.class);
+        acl.registerHandler(h);
 
-        handler.setExpected("handler_zero", new String[]{"true"});
-        // handler_one, even though we give it false in evalAcl, is not expected
-        // to have an expectation value. handler_one won't get called
-        // because handler_zero will return true
-        handler.setExpected("handler_one", null);
-        handler.setExpected("handler_two", new String[]{"true"});
-
-        assertTrue(acl.evalAcl(context,
-            "handler_zero(true) or handler_one(false) ; handler_two(true)"));
-
-        handler.verify();
+        // handler_zero(true) or handler_one(false) ; handler_two(true)
+        // Expect: handler_zero(true) -> true (OR short-circuits, so handler_one not called)
+        // Then AND handler_two(true) must still be evaluated (depending on your Acl precedence).
+        jmock.checking(new Expectations() {{
+            oneOf(h).aclHandlerZero(with(context), with(params("true"))); will(returnValue(true));
+            never(h).aclHandlerOne(with(any(Map.class)), with(any(String[].class)));
+            oneOf(h).aclHandlerTwo(with(context), with(params("true")));  will(returnValue(true));
+        }});
+        assertTrue(acl.evalAcl(context, "handler_zero(true) or handler_one(false) ; handler_two(true)"));
+        jmock.assertIsSatisfied();
     }
 
 
     /* Test bad handler.
      */
     @Test
-    public void testBadHandler() {
-        try {
-            acl.evalAcl(null, "handler_does_not_exist(true)");
-            fail("expected to fail");
-        }
-        catch (IllegalArgumentException e) {
-            // good
-        }
+    void testBadHandler() {
+        assertThrows(IllegalArgumentException.class,
+                () -> acl.evalAcl(null, "handler_does_not_exist(true)"));
     }
 
     /* Test bad syntax.
      */
     @Test
-    public void testBadSyntax() {
-        try {
-            acl.evalAcl(null, "handler_zero(true) and handler_zero(true)");
-            fail("expected to fail");
-        }
-        catch (IllegalArgumentException e) {
-            // good
-        }
+    void testBadSyntax() {
+        // Assuming "and" is invalid per original test
+        assertThrows(IllegalArgumentException.class,
+                () -> acl.evalAcl(null, "handler_zero(true) and handler_zero(true)"));
     }
 
     /* Test bad syntax.
      */
     @Test
-    public void test() {
-        try {
-            acl.evalAcl(null, null);
-            fail("expected to fail");
-        }
-        catch (IllegalArgumentException e) {
-            // good
-        }
+    void testNullExpression() {
+        assertThrows(IllegalArgumentException.class,
+                () -> acl.evalAcl(null, null));
     }
 
     /** Makes sure that method names are properly converted to acl handler
@@ -289,11 +325,12 @@ public class AclTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testStringArrayConstructor() {
-        Acl localAcl = new Acl(new String[]{MockAclHandler.class.getName(),
-            MockAclHandlerWithFunkyNames.class.getName()});
-
-        // make sure we can call an acl handler from each class
+    void testStringArrayConstructor() {
+        // For constructor-based registration, we must use real classes with default ctors.
+        Acl localAcl = new Acl(new String[]{
+                MockAclHandler.class.getName(),
+                MockAclHandlerWithFunkyNames.class.getName()
+        });
         assertTrue(localAcl.evalAcl(context, "handler_zero(true)"));
         assertTrue(localAcl.evalAcl(context, "xml_test()"));
     }
@@ -309,108 +346,40 @@ public class AclTest extends RhnBaseTestCase {
     }
 
 
-    // HELPER CLASSES
+    /** Real class used by the string-array constructor test. */
+    public static class MockAclHandler implements AclHandler {
+        public void reset() { /* no-op */ }
+        public boolean aclHandlerZero(Map<String, Object> c, String[] p) {
+            return p.length > 0 && "true".equals(p[0]);
+        }
+        public boolean aclHandlerOne(Map<String, Object> c, String[] p) {
+            return p.length > 0 && "true".equals(p[0]);
+        }
+        public boolean aclHandlerTwo(Map<String, Object> c, String[] p) {
+            return p.length > 0 && "true".equals(p[0]);
+        }
+    }
 
-    /* Mock AclHandler that can be used to check that the Acl class
-     * is parsing parameters correctly.
-     * If no parameters are given to this AclHandler, its
-     * {@link #handleAcl} method returns false. If the
-     * first parameter equals "true", then handleAcl() returns true.
-     */
-   public static class MockAclHandler implements AclHandler, Verifiable {
-       private Map<String, Object> expected = null;
-
-       public MockAclHandler() {
-           reset();
-       }
-       private void reset() {
-           expected = new HashMap<>();
-           expected.put("handler_zero",
-                   new ExpectationValue("handler_zero params"));
-           expected.put("handler_one",
-                   new ExpectationValue("handler_one params"));
-           expected.put("handler_two",
-                   new ExpectationValue("handler_two params"));
-
-           // defer verifying until verify() is called
-           // otherwise, calling setActual() might throw an Exception,
-           // which we don't want because then we won't get our
-           // assert exceptions
-           for (Object expectedValueIn : expected.values()) {
-               ExpectationValue exp = (ExpectationValue) expectedValueIn;
-               exp.setFailOnVerify();
-           }
-       }
-       /**
-        * Set the parameters expected to be given a handler upon
-        * a call to evalAcl. These get reset with {@link #verify}
-        * is called.
-        * @param handlerName the handler name
-        * @param params the params
-        */
-       public void setExpected(String handlerName, String[] params) {
-           if (params != null) {
-               ExpectationValue exp =
-                   (ExpectationValue)expected.get(handlerName);
-               exp.setExpected(Arrays.asList(params));
-           }
-       }
-       public boolean aclHandlerZero(Map<String, Object> ctx, String[] params) {
-           return handlerDelegate("handler_zero", ctx, params);
-       }
-       public boolean aclHandlerOne(Map<String, Object> ctx, String[] params) {
-           return handlerDelegate("handler_one", ctx, params);
-       }
-       public boolean aclHandlerTwo(Map<String, Object> ctx, String[] params) {
-           return handlerDelegate("handler_two", ctx, params);
-       }
-
-       private boolean handlerDelegate(
-               String name, Map<String, Object> ctx, String[] params) {
-           ExpectationValue exp = (ExpectationValue)expected.get(name);
-           exp.setActual(Arrays.asList(params));
-
-           if (params.length == 0) {
-               return false;
-           }
-
-           return params[0].equals("true");
-
-       }
-
-       /** Call to verify that the expected parameters match
-        * the parameters given to the handler when Acl calls handleAcl.
-        * The expectation values get reset when this is called.
-        */
-       @Override
-       public void verify() {
-           for (Object expectedValueIn : expected.values()) {
-               ExpectationValue exp = (ExpectationValue) expectedValueIn;
-               exp.verify();
-           }
-           reset();
-       }
-   }
-
-   /** A handler class with a variety of names to test that method names
-    *  get converted to acl names correctly.
-    */
-   public static class MockAclHandlerWithFunkyNames implements AclHandler {
-       public boolean aclTheQuickBrownFoxJumpedOverTheLazyDog(
-               Map<String, Object> ctx, String[] params) {
-           return true;
-       }
-       public boolean aclTestXMLFile(Map<String, Object> ctx, String[] params) {
-           return true;
-       }
-       public boolean aclTestX(Map<String, Object> ctx, String[] params) {
-           return true;
-       }
-       public boolean aclTestXML(Map<String, Object> ctx, String[] params) {
-           return true;
-       }
-       public boolean aclXMLTest(Map<String, Object> ctx, String[] params) {
-           return true;
-       }
-   }
+    /** Real class to verify method-name → ACL-name conversion. */
+    public static class MockAclHandlerWithFunkyNames implements AclHandler {
+        public void reset() {
+            /* no-op */
+        }
+        public boolean aclTheQuickBrownFoxJumpedOverTheLazyDog(Map<String, Object> context, String[] params) {
+            return true;
+        }
+        public boolean aclTestXMLFile(Map<String, Object> context, String[] params) {
+            return true;
+        }
+        public boolean aclTestX(Map<String, Object> context, String[] params) {
+            return true;
+        }
+        public boolean aclTestXML(Map<String, Object> context, String[] params) {
+            return true;
+        }
+        // Depending on your Acl's camelCase rules, this may need to be aclXmlTest instead.
+        public boolean aclXMLTest(Map<String, Object> context, String[] params) {
+            return true;
+        }
+    }
 }

@@ -17,7 +17,6 @@ package com.redhat.rhn.frontend.action.user.test;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
@@ -25,7 +24,6 @@ import com.redhat.rhn.frontend.action.user.VisibleSystemsListAction;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.testing.ActionHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
-import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.struts.action.Action;
 import org.junit.jupiter.api.Test;
@@ -44,15 +42,13 @@ public class VisibleSystemsListActionTest extends RhnBaseTestCase {
 
 
         User user = ah.getUser();
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        TestUtils.saveAndFlush(user);
         ServerFactoryTest.createTestServer(user, true,
                         ServerConstants.getServerGroupTypeEnterpriseEntitled());
 
-        ah.getRequest().setupAddParameter("newset", (String[]) null);
-        ah.getRequest().setupAddParameter("items_on_page", (String[]) null);
-        ah.getRequest().setupAddParameter("items_selected", (String[]) null);
-        ah.getRequest().setupAddParameter("uid", user.getId().toString());
+        ah.getRequest().addParameter("newset", (String[]) null);
+        ah.getRequest().addParameter("items_on_page", (String[]) null);
+        ah.getRequest().addParameter("items_selected", (String[]) null);
+        ah.getRequest().addParameter("uid", user.getId().toString());
 
         RhnSetDecl.SYSTEMS.clear(user);
         assertTrue(RhnSetDecl.SYSTEMS.get(user).isEmpty());

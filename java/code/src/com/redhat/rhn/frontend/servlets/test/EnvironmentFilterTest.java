@@ -41,10 +41,10 @@ public class EnvironmentFilterTest extends BaseFilterTst {
     public void testNonSSLUrls() throws Exception {
 
         EnvironmentFilter filter = new EnvironmentFilter();
-        request.setupAddParameter("message", "some.key.to.localize");
-        request.setupAddParameter("messagep1", "param value");
-        request.setupAddParameter("messagep2", "param value");
-        request.setupAddParameter("messagep3", "param value");
+        request.addParameter("message", "some.key.to.localize");
+        request.addParameter("messagep1", "param value");
+        request.addParameter("messagep2", "param value");
+        request.addParameter("messagep3", "param value");
         filter.init(null);
 
         filter.doFilter(request, response, chain);
@@ -53,17 +53,17 @@ public class EnvironmentFilterTest extends BaseFilterTst {
         String expectedRedir = "https://mymachine.rhndev.redhat.com/rhn/manager/login";
         assertEquals(expectedRedir, response.getRedirect());
 
-        request.setupGetRequestURI("/rhn/kickstart/DownloadFile");
+        request.setRequestURI("/rhn/kickstart/DownloadFile");
         response.clearRedirect();
-        request.setupAddParameter("message", "some.key.to.localize");
-        request.setupAddParameter("messagep1", "param value");
-        request.setupAddParameter("messagep2", "param value");
-        request.setupAddParameter("messagep3", "param value");
+        request.addParameter("message", "some.key.to.localize");
+        request.addParameter("messagep1", "param value");
+        request.addParameter("messagep2", "param value");
+        request.addParameter("messagep3", "param value");
         filter.doFilter(request, response, chain);
         assertNull(response.getRedirect());
         assertNotEquals(expectedRedir, response.getRedirect());
 
-        request.setupGetRequestURI("/rhn/rpc/api");
+        request.setRequestURI("/rhn/rpc/api");
         response.clearRedirect();
         filter.doFilter(request, response, chain);
         assertNull(response.getRedirect());
@@ -73,11 +73,11 @@ public class EnvironmentFilterTest extends BaseFilterTst {
     public void testAddAMessage() throws Exception {
         EnvironmentFilter filter = new EnvironmentFilter();
         filter.init(null);
-        this.request.setupIsSecure(true);
-        request.setupAddParameter("message", "some.key.to.localize");
-        request.setupAddParameter("messagep1", "param value");
-        request.setupAddParameter("messagep2", "param value");
-        request.setupAddParameter("messagep3", "param value");
+        this.request.setIsSecure(true);
+        request.addParameter("message", "some.key.to.localize");
+        request.addParameter("messagep1", "param value");
+        request.addParameter("messagep2", "param value");
+        request.addParameter("messagep3", "param value");
 
         filter.doFilter(request, response, chain);
 

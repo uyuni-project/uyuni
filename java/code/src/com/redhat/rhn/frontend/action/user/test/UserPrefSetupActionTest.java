@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.user.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.domain.user.User;
@@ -21,8 +22,8 @@ import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.frontend.action.user.UserPrefSetupAction;
 import com.redhat.rhn.testing.ActionHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
-import com.redhat.rhn.testing.RhnMockDynaActionForm;
 
+import org.apache.struts.action.DynaActionForm;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -40,11 +41,13 @@ public class UserPrefSetupActionTest extends RhnBaseTestCase {
         ActionHelper sah = new ActionHelper();
         sah.setUpAction(action);
         sah.getRequest().setRequestURL("foo");
-        setupExpectations(sah.getForm(), sah.getUser());
         sah.executeAction();
 
         // verify the dyna form got the right values we expected.
-        sah.getForm().verify();
+        User user = sah.getUser();
+        DynaActionForm form = sah.getForm();
+        assertEquals(user.getId(), form.get("uid"));
+        assertEquals(user.getPageSize(), form.get("pagesize"));
     }
 
     /**
@@ -57,8 +60,7 @@ public class UserPrefSetupActionTest extends RhnBaseTestCase {
         ActionHelper sah = new ActionHelper();
         sah.setUpAction(action);
         sah.getRequest().setRequestURL("rdu.redhat.com/rhn/users/UserPreferences.do");
-        setupExpectations(sah.getForm(), sah.getUser());
-        sah.getRequest().setupAddParameter("uid", (String)null);
+        sah.getRequest().addParameter("uid", (String)null);
         sah.getRequest().getParameterValues("uid"); //now uid = null
 
         try {
@@ -68,10 +70,5 @@ public class UserPrefSetupActionTest extends RhnBaseTestCase {
         catch (BadParameterException e) {
             //no op
         }
-    }
-
-    private void setupExpectations(RhnMockDynaActionForm form, User user) {
-        form.addExpectedProperty("uid", user.getId());
-        form.addExpectedProperty("pagesize", user.getPageSize());
     }
 }

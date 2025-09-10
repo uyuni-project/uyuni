@@ -56,8 +56,8 @@ public class PreservationListDeleteActionTest extends RhnBaseTestCase {
         ah.setUpAction(action);
         ah.setupClampListBounds();
         ah.getRequest().setRequestURL("");
-        ah.getRequest().setupAddParameter("newset", (String)null);
-        ah.getRequest().setupAddParameter("items_on_page", (String)null);
+        ah.getRequest().addParameter("newset", (String)null);
+        ah.getRequest().addParameter("items_on_page", (String)null);
         List ids = new LinkedList<>();
 
         // give list some FileLists
@@ -68,7 +68,7 @@ public class PreservationListDeleteActionTest extends RhnBaseTestCase {
             ids.add(fl.getId().toString());
         }
 
-        ah.getRequest().setupAddParameter("items_selected",
+        ah.getRequest().addParameter("items_selected",
                                          (String[]) ids.toArray(new String[0]));
 
         ActionForward testforward = ah.executeAction("operateOnSelectedSet");

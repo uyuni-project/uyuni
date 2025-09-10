@@ -48,7 +48,7 @@ public class ChangeEmailActionTest extends RhnBaseTestCase {
 
         TestUtils.disableLocalizationDebugMode();
 
-        sah.getRequest().setupAddParameter("uid", sah.getUser().getId().toString());
+        sah.getRequest().addParameter("uid", sah.getUser().getId().toString());
         sah.getForm().set("email", "differentEmailTest@redhat.com");
         sah.executeAction();
 

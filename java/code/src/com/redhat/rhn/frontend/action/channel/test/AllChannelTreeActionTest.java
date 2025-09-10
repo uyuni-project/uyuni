@@ -45,7 +45,7 @@ public class AllChannelTreeActionTest extends RhnBaseTestCase {
         };
         ActionHelper sah = new ActionHelper();
         sah.setUpAction(action, RhnHelper.DEFAULT_FORWARD);
-        sah.getRequest().setupAddParameter(RequestContext.FILTER_STRING, (String) null);
+        sah.getRequest().addParameter(RequestContext.FILTER_STRING, (String) null);
 
         User user = sah.getUser();
         Channel channel = ChannelFactoryTest.createTestChannel(user);

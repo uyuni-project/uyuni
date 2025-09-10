@@ -27,11 +27,10 @@ import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.utils.Json;
-
-import com.mockobjects.servlet.MockHttpServletRequest;
 
 import org.apache.struts.action.DynaActionForm;
 import org.junit.jupiter.api.Test;
@@ -98,8 +97,8 @@ public class ActionChainHelperTest extends BaseTestCaseWithUser {
             result.add(map);
         }
 
-        MockHttpServletRequest request = TestUtils.getRequestWithSessionAndUser();
-        request.addExpectedSetAttribute(
+        RhnMockHttpServletRequest request = TestUtils.getRequestWithSessionAndUser();
+        request.addAttribute(
             ActionChainHelper.EXISTING_ACTION_CHAINS_PROPERTY_NAME, Json.GSON.toJson(result));
 
         ActionChainHelper.prepopulateActionChains(request);

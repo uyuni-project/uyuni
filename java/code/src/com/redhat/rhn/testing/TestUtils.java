@@ -23,12 +23,9 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.HibernateRuntimeException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.MethodUtil;
-import com.redhat.rhn.domain.session.WebSession;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.servlets.PxtCookieManager;
 import com.redhat.rhn.frontend.servlets.PxtSessionDelegate;
 import com.redhat.rhn.frontend.servlets.PxtSessionDelegateFactory;
-import com.redhat.rhn.frontend.struts.RequestContext;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -204,33 +201,32 @@ public class TestUtils {
      * @return a request with a Session and a User.
      */
     public static RhnMockHttpServletRequest getRequestWithSessionAndUser() {
-        RhnMockHttpServletRequest req = new RhnMockHttpServletRequest();
-        RhnMockHttpServletResponse resp = new RhnMockHttpServletResponse();
+        RhnMockHttpServletRequest request = new RhnMockHttpServletRequest();
+        RhnMockHttpServletResponse response = new RhnMockHttpServletResponse();
         RhnMockHttpSession session = new RhnMockHttpSession();
-        req.setupServerName("mymachine.rhndev.redhat.com");
-        req.setSession(session);
+        request.setServerName("mlm.dev.suse.com");
+        request.setSession(session);
 
-        User u = UserTestUtils.findNewUser("testUser",
-            "testOrg_getRequestWithSessionAndUser" + RandomStringUtils.randomAlphanumeric(5));
-        Long userid = u.getId();
+        // Create a test user
+        User user = UserTestUtils.findNewUser(
+                "testUser",
+                "testOrg_getRequestWithSessionAndUser" + RandomStringUtils.randomAlphanumeric(5)
+        );
+        Long userid = user.getId();
 
-        RequestContext requestContext = new RequestContext(req);
-        PxtSessionDelegateFactory pxtDelegateFactory =
-            PxtSessionDelegateFactory.getInstance();
-
+        // Set up the user context using PxtSessionDelegate
+        PxtSessionDelegateFactory pxtDelegateFactory = PxtSessionDelegateFactory.getInstance();
         PxtSessionDelegate pxtDelegate = pxtDelegateFactory.newPxtSessionDelegate();
 
-        WebSession s = requestContext.getWebSession();
+        // Update the web user id in the request context
+        // required for getCurrentUser() to work
+        pxtDelegate.updateWebUserId(request, response, userid);
 
-        PxtCookieManager pxtCookieManager = new PxtCookieManager();
-        req.addCookie(pxtCookieManager.createPxtCookie(s.getId(), req, 10));
+        // Set the uid parameter
+        request.addCookie(response.getCookie("pxt-session-cookie"));
+        request.addParameter("uid", userid.toString());
 
-        pxtDelegate.updateWebUserId(req, resp, userid);
-
-        req.addCookie(resp.getCookie("pxt-session-cookie"));
-        req.setupAddParameter("uid", userid.toString());
-
-        return req;
+        return request;
     }
 
     /**

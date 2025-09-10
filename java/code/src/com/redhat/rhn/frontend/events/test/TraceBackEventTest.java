@@ -22,19 +22,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.messaging.Mail;
 import com.redhat.rhn.common.messaging.test.MockMail;
+import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.events.TraceBackAction;
 import com.redhat.rhn.frontend.events.TraceBackEvent;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.UserTestUtils;
-
-import com.mockobjects.servlet.MockHttpServletRequest;
-import com.mockobjects.servlet.MockHttpSession;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.Enumeration;
-import java.util.Vector;
 
 /**
  * Test for {@link TraceBackEvent}.
@@ -44,6 +40,7 @@ public class TraceBackEventTest extends RhnBaseTestCase {
 
     private static final String MSG_OUTER_EXC = "outer-exception";
     private static final String MSG_INNER_EXC = "inner-exception";
+    private final User user = UserTestUtils.findNewUser("testUser", "testOrg" + this.getClass().getSimpleName());
 
     private MockMail mailer;
 
@@ -170,50 +167,15 @@ public class TraceBackEventTest extends RhnBaseTestCase {
     }
 
     private TraceBackEvent createTestEvent() {
-        TraceBackEvent evt = new TraceBackEvent();
-        // In the implementation we use getHeaderNames so we override it with
-        // one that returns an empty implementation.
-        MockHttpServletRequest request = new MockHttpServletRequest() {
-            @Override
-            public Enumeration<String> getHeaderNames() {
-                return new Vector<String>().elements();
-            }
-        };
-        request.setSession(new MockHttpSession());
-        request.setupGetRequestURI("http://localhost:8080");
-        request.setupGetMethod("POST");
-        Vector<String> v = new Vector<>();
-        v.add("someparam");
-        request.setupAddParameter("someparam", "somevalue");
-        request.setupGetParameterNames(v.elements());
-        evt.setUser(UserTestUtils.findNewUser("testUser",
-                    "testOrg" + this.getClass().getSimpleName()));
-        evt.setRequest(request);
-        Throwable e = new RuntimeException(MSG_OUTER_EXC);
-        e.initCause(new RuntimeException(MSG_INNER_EXC));
-        evt.setException(e);
-        return evt;
+        return this.createTestEventWithValue("someparam", "somevalue");
     }
 
     private TraceBackEvent createTestEventWithValue(String paramIn, String valueIn) {
         TraceBackEvent evt = new TraceBackEvent();
-        // In the implementation we use getHeaderNames so we override it with
-        // one that returns an empty implementation.
-        MockHttpServletRequest request = new MockHttpServletRequest() {
-            @Override
-            public Enumeration<String> getHeaderNames() {
-                return new Vector<String>().elements();
-            }
-        };
-        request.setSession(new MockHttpSession());
-        request.setupGetRequestURI("http://localhost:8080");
-        request.setupGetMethod("POST");
-        Vector<String> v = new Vector<>();
-        v.add(paramIn);
-        request.setupAddParameter(paramIn, valueIn);
-        request.setupGetParameterNames(v.elements());
-        evt.setUser(UserTestUtils.findNewUser("testUser",
-                    "testOrg" + this.getClass().getSimpleName()));
+        RhnMockHttpServletRequest request = new RhnMockHttpServletRequest();
+        request.setRequestURI("http://localhost:8080");
+        request.addParameter(paramIn, valueIn);
+        evt.setUser(user);
         evt.setRequest(request);
         Throwable e = new RuntimeException(MSG_OUTER_EXC);
         e.initCause(new RuntimeException(MSG_INNER_EXC));

@@ -93,7 +93,6 @@ public class ListDisplayTagTest extends MockObjectTestCase {
         tagval = ldt.doEndTag();
         ldt.release();
         assertEquals(Tag.EVAL_PAGE, tagval);
-        writer.verify();
         String htmlOut = writer.toString();
         assertPaginationControls(htmlOut);
     }
@@ -136,7 +135,6 @@ public class ListDisplayTagTest extends MockObjectTestCase {
         tagval = ldt.doEndTag();
         ldt.release();
         assertEquals(tagval, Tag.EVAL_PAGE);
-        writer.verify();
         String htmlOut = writer.toString();
         assertPaginationControls(htmlOut);
     }
