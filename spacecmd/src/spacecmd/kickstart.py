@@ -2972,7 +2972,7 @@ def do_kickstart_getupdatetype(self, args):
         return 1
 
     for label in labels:
-        if not label in all_labels:
+        if label not in all_labels:
             logging.error(_N("kickstart label %s doesn't exist!") % label)
             continue
 
@@ -3034,7 +3034,7 @@ def do_kickstart_setupdatetype(self, args):
         return 1
 
     for label in labels:
-        if not label in all_labels:
+        if label not in all_labels:
             logging.error(_N("kickstart label %s doesn't exist!") % label)
             continue
 
@@ -3083,7 +3083,7 @@ def do_kickstart_getsoftwaredetails(self, args):
         return 1
 
     for label in labels:
-        if not label in all_labels:
+        if label not in all_labels:
             logging.error(_N("kickstart label %s doesn't exist!") % label)
             continue
 

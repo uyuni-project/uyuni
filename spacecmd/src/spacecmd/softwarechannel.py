@@ -955,7 +955,7 @@ def do_softwarechannel_update(self, args):
         details["gpg_key_fp"] = options.gpg_fingerprint
 
     if options.disable_gpg_check:
-        details["gpg_check"] = str(not options.disable_gpg_check.lower() == "yes")
+        details["gpg_check"] = str(options.disable_gpg_check.lower() != "yes")
 
     details["vendor_channel"] = str(vendor_channel)
 
@@ -1339,7 +1339,7 @@ def do_softwarechannel_clonetree(
         return 1
 
     channels = [options.source_channel]
-    if not options.source_channel in self.list_base_channels():
+    if options.source_channel not in self.list_base_channels():
         logging.error(_N("Channel does not exist or is not a base channel!"))
         self.help_softwarechannel_clonetree()
         return 1
@@ -1413,7 +1413,7 @@ def clone_channel(self, channel, options, details):
         details["gpg_fingerprint"] = options.gpg_fingerprint
 
     if options.disable_gpg_check:
-        details["gpg_check"] = str(not options.disable_gpg_check.lower() == "yes")
+        details["gpg_check"] = str(options.disable_gpg_check.lower() != "yes")
 
     apiversion = self.client.api.getVersion()
     if apiversion and int(apiversion) <= 19:
@@ -1516,7 +1516,7 @@ def do_softwarechannel_addpackages(self, args):
 
     # Take the first argument as the channel and validate it
     channel = args.pop(0)
-    if not channel in self.do_softwarechannel_list("", True):
+    if channel not in self.do_softwarechannel_list("", True):
         logging.error(_N("%s is not a valid channel") % channel)
         self.help_softwarechannel_addpackages()
         return 1
@@ -1947,12 +1947,12 @@ def do_softwarechannel_adderrata(self, args):
 
     allchannels = self.do_softwarechannel_list("", True)
     source_channel = args[0]
-    if not source_channel in allchannels:
+    if source_channel not in allchannels:
         logging.error(_N("source channel %s does not exist!") % source_channel)
         self.help_softwarechannel_adderrata()
         return 1
     dest_channel = args[1]
-    if not dest_channel in allchannels:
+    if dest_channel not in allchannels:
         logging.error(_N("dest channel %s does not exist!") % dest_channel)
         self.help_softwarechannel_adderrata()
         return 1
@@ -3062,7 +3062,7 @@ def do_softwarechannel_setsyncschedule(self, args):
         for i in ["no_errata", "fail", "sync_kickstart", "latest"]
     )
 
-    if not len(args) in [1, 7]:
+    if len(args) not in [1, 7]:
         self.help_softwarechannel_setsyncschedule()
         return 1
 

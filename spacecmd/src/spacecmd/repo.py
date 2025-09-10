@@ -182,7 +182,7 @@ def do_repo_addfilters(self, args):
         flag = arg[0]
         repofilter = arg[1:]
 
-        if not flag in ("+", "-"):
+        if flag not in ("+", "-"):
             logging.error(_N("Each filter must start with + or -"))
             return 1
 
@@ -219,7 +219,7 @@ def do_repo_removefilters(self, args):
         flag = arg[0]
         repofilter = arg[1:]
 
-        if not flag in ("+", "-"):
+        if flag not in ("+", "-"):
             logging.error(_N("Each filter must start with + or -"))
             return 1
 
@@ -258,7 +258,7 @@ def do_repo_setfilters(self, args):
         flag = arg[0]
         repofilter = arg[1:]
 
-        if not flag in ("+", "-"):
+        if flag not in ("+", "-"):
             logging.error(_N("Each filter must start with + or -"))
             return 1
 
