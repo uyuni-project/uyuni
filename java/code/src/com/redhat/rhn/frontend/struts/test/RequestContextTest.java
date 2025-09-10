@@ -57,10 +57,10 @@ public class RequestContextTest extends MockObjectTestCase {
         mockRequest.setSession(session);
 
         mockRequest.setRequestURL(requestUrl);
-        mockRequest.setupGetMethod("POST");
         mockRequest.setMethod("POST");
-        mockRequest.setupPathInfo(URI.create(requestUrl).getPath());
-        mockRequest.setupAddParameter("url_bounce", "/rhn/users/UserDetails.do?uid=1");
+        mockRequest.setMethod("POST");
+        mockRequest.setPathInfo(URI.create(requestUrl).getPath());
+        mockRequest.addParameter("url_bounce", "/rhn/users/UserDetails.do?uid=1");
 
         Response response = RequestResponseFactory.create(new RhnMockHttpServletResponse());
         // logging in
@@ -137,8 +137,8 @@ public class RequestContextTest extends MockObjectTestCase {
     @Test
     public void testbuildPageLink() {
         RhnMockHttpServletRequest request = new RhnMockHttpServletRequest();
-        request.setupAddParameter("someparam", "value");
-        request.setupQueryString("otherparam=foo&barparam=beer");
+        request.addParameter("someparam", "value");
+        request.setQueryString("otherparam=foo&barparam=beer");
         request.addAttribute("requestedUri", "http://localhost/rhn/somePage.do");
 
         RequestContext requestContext = new RequestContext(request);
@@ -146,7 +146,7 @@ public class RequestContextTest extends MockObjectTestCase {
         String url = requestContext.buildPageLink("someparam", "value");
         assertEquals("http://localhost/rhn/somePage.do?" +
                 "someparam=value&otherparam=foo&barparam=beer", url);
-        request.setupQueryString("otherparam=foo&barparam=beer&someparam=value");
+        request.setQueryString("otherparam=foo&barparam=beer&someparam=value");
         url = requestContext.buildPageLink("someparam", "zzzzz");
 
         assertEquals("http://localhost/rhn/somePage.do?" +

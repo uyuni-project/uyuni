@@ -26,12 +26,12 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.RhnMockDynaActionForm;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
+import com.redhat.rhn.testing.RhnMockHttpSession;
 import com.redhat.rhn.testing.UserTestUtils;
-
-import com.mockobjects.servlet.MockHttpSession;
 
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.DynaActionForm;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -42,7 +42,7 @@ public class ResetPasswordSubmitActionTest extends BaseTestCaseWithUser {
 
     private ActionForward mismatch, invalid, badpwd;
     private ActionMapping mapping;
-    private RhnMockDynaActionForm form;
+    private DynaActionForm form;
     private RhnMockHttpServletRequest request;
     private RhnMockHttpServletResponse response;
     private ResetPasswordSubmitAction action;
@@ -123,11 +123,11 @@ public class ResetPasswordSubmitActionTest extends BaseTestCaseWithUser {
 
         RequestContext requestContext = new RequestContext(request);
 
-        MockHttpSession mockSession = new MockHttpSession();
-        mockSession.setupGetAttribute("token", null);
-        mockSession.setupGetAttribute("request_method", "GET");
+        RhnMockHttpSession mockSession = new RhnMockHttpSession();
+        mockSession.setAttribute("token", null);
+        mockSession.setAttribute("request_method", "GET");
         request.setSession(mockSession);
-        request.setupServerName("mymachine.rhndev.redhat.com");
+        request.setServerName("mymachine.rhndev.redhat.com");
         requestContext.getWebSession();
 
         mapping.addForwardConfig(mismatch);

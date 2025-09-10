@@ -56,7 +56,7 @@ public class CreateActionTest extends RhnBaseTestCase {
         RhnMockHttpServletResponse response = new RhnMockHttpServletResponse();
         RhnMockHttpSession session = new RhnMockHttpSession();
         request.setSession(session);
-        request.setupServerName("mymachine.rhndev.redhat.com");
+        request.setServerName("mymachine.rhndev.redhat.com");
 
         RhnMockDynaActionForm form = fillOutForm();
         form.set("synopsis", ""); //required field, so we should get a validation error
@@ -70,10 +70,10 @@ public class CreateActionTest extends RhnBaseTestCase {
         RhnSetManager.store(destinationChannels);
         String destinationId = destination.getId().toString();
         // both read twice
-        request.setupAddParameter("items_on_page", new String[]{destinationId});
-        request.setupAddParameter("items_on_page", new String[]{destinationId});
-        request.setupAddParameter("items_selected", new String[]{destinationId});
-        request.setupAddParameter("items_selected", new String[]{destinationId});
+        request.addParameter("items_on_page", new String[]{destinationId});
+        request.addParameter("items_on_page", new String[]{destinationId});
+        request.addParameter("items_selected", new String[]{destinationId});
+        request.addParameter("items_selected", new String[]{destinationId});
 
         ActionForward result = action.create(mapping, form, request, response);
         assertEquals(result.getName(), "failure");

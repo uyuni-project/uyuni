@@ -33,9 +33,8 @@ import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.RhnMockDynaActionForm;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
+import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 import com.redhat.rhn.testing.TestUtils;
-
-import com.mockobjects.servlet.MockHttpServletResponse;
 
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -87,9 +86,9 @@ public class SPMigrationActionTest {
         ActionForward target = new ActionForward("schedule", "path", false);
 
         String sid = server.getId().toString();
-        request.setupAddParameter("sid", sid);
-        request.setupAddParameter(RequestContext.DISPATCH, "schedule");
-        MockHttpServletResponse response = new MockHttpServletResponse();
+        request.addParameter("sid", sid);
+        request.addParameter(RequestContext.DISPATCH, "schedule");
+        RhnMockHttpServletResponse response = new RhnMockHttpServletResponse();
         mapping.addForwardConfig(target);
         SPMigrationAction action = new SPMigrationAction();
         ActionForward result = action.execute(mapping, form, request, response);

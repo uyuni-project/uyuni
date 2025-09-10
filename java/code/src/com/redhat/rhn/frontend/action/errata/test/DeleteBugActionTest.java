@@ -55,7 +55,7 @@ public class DeleteBugActionTest extends RhnBaseTestCase {
         RhnMockHttpServletResponse response = new RhnMockHttpServletResponse();
         RhnMockHttpSession session = new RhnMockHttpSession();
         request.setSession(session);
-        request.setupServerName("mymachine.rhndev.redhat.com");
+        request.setServerName("mymachine.rhndev.redhat.com");
 
         RhnMockDynaActionForm form = new RhnMockDynaActionForm();
 
@@ -73,8 +73,8 @@ public class DeleteBugActionTest extends RhnBaseTestCase {
 
         assertEquals(1, e.getBugs().size());
         //setup the request
-        request.setupAddParameter("eid", eid.toString());
-        request.setupAddParameter("bid", bugId.toString());
+        request.addParameter("eid", eid.toString());
+        request.addParameter("bid", bugId.toString());
 
         ActionForward result = action.execute(mapping, form, request, response);
         assertEquals(result.getName(), RhnHelper.DEFAULT_FORWARD);

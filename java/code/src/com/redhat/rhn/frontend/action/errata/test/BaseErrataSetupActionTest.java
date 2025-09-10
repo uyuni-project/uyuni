@@ -28,9 +28,8 @@ import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.RhnMockDynaActionForm;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
+import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 import com.redhat.rhn.testing.TestUtils;
-
-import com.mockobjects.servlet.MockHttpServletResponse;
 
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -49,7 +48,7 @@ public class BaseErrataSetupActionTest extends RhnBaseTestCase {
         ActionForward def = new ActionForward(RhnHelper.DEFAULT_FORWARD, "path", false);
         RhnMockDynaActionForm form = new RhnMockDynaActionForm();
         RhnMockHttpServletRequest request = TestUtils.getRequestWithSessionAndUser();
-        MockHttpServletResponse response = new MockHttpServletResponse();
+        RhnMockHttpServletResponse response = new RhnMockHttpServletResponse();
         mapping.addForwardConfig(def);
 
         RequestContext requestContext = new RequestContext(request);
@@ -58,7 +57,7 @@ public class BaseErrataSetupActionTest extends RhnBaseTestCase {
         Errata published = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
 
         //test lookup exception
-        request.setupAddParameter("eid", Long.valueOf(-92861).toString());
+        request.addParameter("eid", Long.valueOf(-92861).toString());
         try {
             action.execute(mapping, form, request, response);
             fail();
@@ -68,7 +67,7 @@ public class BaseErrataSetupActionTest extends RhnBaseTestCase {
         }
 
         //test default case
-        request.setupAddParameter("eid", published.getId().toString());
+        request.addParameter("eid", published.getId().toString());
         ActionForward result = action.execute(mapping, form, request, response);
         assertEquals(RhnHelper.DEFAULT_FORWARD, result.getName());
         assertNotNull(request.getAttribute("advisory"));

@@ -27,7 +27,7 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 import org.junit.jupiter.api.Test;
 
 /**
- * LoginActionTest
+ * AddressesActionTest
  */
 public class AddressesActionTest extends RhnBaseTestCase {
 
@@ -54,7 +54,7 @@ public class AddressesActionTest extends RhnBaseTestCase {
         sah.setUpAction(action);
         sah.getRequest().setRequestURL("rdu.redhat.com/rhn/users/Adresses.do");
 
-        sah.getRequest().setupAddParameter("uid", (String)null);
+        sah.getRequest().addParameter("uid", (String)null);
         sah.getRequest().getParameterValues("uid"); //now uid = null
 
         try {
@@ -74,7 +74,7 @@ public class AddressesActionTest extends RhnBaseTestCase {
         sah.setUpAction(action);
         sah.getRequest().setRequestURL("foo");
         sah.getRequest().getParameter("uid");
-        sah.getRequest().setupAddParameter("uid", (String) null);
+        sah.getRequest().addParameter("uid", (String) null);
 
         sah.executeAction();
 

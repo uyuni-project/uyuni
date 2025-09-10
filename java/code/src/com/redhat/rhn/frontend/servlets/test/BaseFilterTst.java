@@ -17,13 +17,11 @@ package com.redhat.rhn.frontend.servlets.test;
 import com.redhat.rhn.domain.session.WebSession;
 import com.redhat.rhn.frontend.servlets.PxtCookieManager;
 import com.redhat.rhn.frontend.struts.RequestContext;
+import com.redhat.rhn.testing.MockFilterChain;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 import com.redhat.rhn.testing.RhnMockHttpSession;
-
-import com.mockobjects.servlet.MockFilterChain;
-import com.mockobjects.servlet.MockHttpSession;
 
 import org.junit.jupiter.api.BeforeEach;
 
@@ -33,7 +31,7 @@ import org.junit.jupiter.api.BeforeEach;
 public abstract class BaseFilterTst extends RhnBaseTestCase {
 
     protected RhnMockHttpServletRequest request;
-    protected MockHttpSession session;
+    protected RhnMockHttpSession session;
     protected RhnMockHttpServletResponse response;
     protected MockFilterChain chain;
 
@@ -46,9 +44,9 @@ public abstract class BaseFilterTst extends RhnBaseTestCase {
         PxtCookieManager pcm = new PxtCookieManager();
         RequestContext requestContext = new RequestContext(request);
 
-        request.setupServerName("mymachine.rhndev.redhat.com");
+        request.setServerName("mymachine.rhndev.redhat.com");
         request.setSession(session);
-        request.setupGetRequestURI("http://localhost:8080");
+        request.setRequestURI("http://localhost:8080");
         WebSession s = requestContext.getWebSession();
         request.addCookie(pcm.createPxtCookie(s.getId(), request, 10));
         response = new RhnMockHttpServletResponse();

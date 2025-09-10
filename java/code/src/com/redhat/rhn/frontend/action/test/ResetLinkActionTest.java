@@ -26,8 +26,7 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.RhnMockDynaActionForm;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
-
-import com.mockobjects.servlet.MockHttpSession;
+import com.redhat.rhn.testing.RhnMockHttpSession;
 
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -62,20 +61,15 @@ public class ResetLinkActionTest extends BaseTestCaseWithUser {
     public void testPerformInvalidToken() {
         ResetPassword rp = ResetPasswordFactory.createNewEntryFor(user);
         ResetPasswordFactory.invalidateToken(rp.getToken());
-        request.setupAddParameter("token", rp.getToken());
+        request.addParameter("token", rp.getToken());
         ActionForward rc = action.execute(mapping, form, request, response);
         assertEquals(invalid, rc);
-    }
-
-    public void xxxtestPerformExpiredToken() {
-        // 'expired' drives off of 'created', which is in the hands of the DB
-        // so, no test here
     }
 
     @Test
     public void testPerformValidToken() {
         ResetPassword rp = ResetPasswordFactory.createNewEntryFor(user);
-        request.setupAddParameter("token", rp.getToken());
+        request.addParameter("token", rp.getToken());
         ActionForward rc = action.execute(mapping, form, request, response);
         assertEquals(valid, rc);
     }
@@ -93,11 +87,11 @@ public class ResetLinkActionTest extends BaseTestCaseWithUser {
         request = new RhnMockHttpServletRequest();
         response = new RhnMockHttpServletResponse();
 
-        MockHttpSession mockSession = new MockHttpSession();
-        mockSession.setupGetAttribute("token", null);
-        mockSession.setupGetAttribute("request_method", "GET");
+        RhnMockHttpSession mockSession = new RhnMockHttpSession();
+        mockSession.setAttribute("token", null);
+        mockSession.setAttribute("request_method", "GET");
         request.setSession(mockSession);
-        request.setupServerName("mymachine.rhndev.redhat.com");
+        request.setServerName("mymachine.rhndev.redhat.com");
 
         mapping.addForwardConfig(valid);
         mapping.addForwardConfig(invalid);

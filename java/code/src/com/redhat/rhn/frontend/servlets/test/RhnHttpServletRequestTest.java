@@ -20,8 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import com.redhat.rhn.frontend.servlets.RhnHttpServletRequest;
 import com.redhat.rhn.testing.MockObjectTestCase;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
-
-import com.mockobjects.servlet.MockHttpSession;
+import com.redhat.rhn.testing.RhnMockHttpSession;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,7 +35,7 @@ public class RhnHttpServletRequestTest extends MockObjectTestCase {
     @BeforeEach
     public void setUp() {
         mockRequest = new RhnMockHttpServletRequest();
-        mockRequest.setSession(new MockHttpSession());
+        mockRequest.setSession(new RhnMockHttpSession());
         request = new RhnHttpServletRequest(mockRequest);
     }
 
@@ -45,8 +44,8 @@ public class RhnHttpServletRequestTest extends MockObjectTestCase {
      */
     @Test
     public void testNoHeaders() {
-        mockRequest.setupServerName("localhost");
-        mockRequest.setupGetServerPort(8080);
+        mockRequest.setServerName("localhost");
+        mockRequest.setServerPort(8080);
         assertEquals("localhost", request.getServerName());
         assertEquals(8080, request.getServerPort());
     }
@@ -56,9 +55,9 @@ public class RhnHttpServletRequestTest extends MockObjectTestCase {
      */
     @Test
     public void testOverrideServerName() {
-        mockRequest.setupServerName("localhost");
-        mockRequest.setupGetServerPort(8080);
-        mockRequest.setupGetHeader("X-Server-Hostname", "testServer.redhat.com");
+        mockRequest.setServerName("localhost");
+        mockRequest.setServerPort(8080);
+        mockRequest.setHeader("X-Server-Hostname", "testServer.redhat.com");
         assertEquals("testServer.redhat.com", request.getServerName());
         assertEquals(8080, request.getServerPort());
     }
@@ -68,7 +67,7 @@ public class RhnHttpServletRequestTest extends MockObjectTestCase {
      */
     @Test
     public void testNoOverrideSecure() {
-        mockRequest.setupIsSecure(false);
+        mockRequest.setIsSecure(false);
         assertFalse(request.isSecure());
     }
 
@@ -78,8 +77,8 @@ public class RhnHttpServletRequestTest extends MockObjectTestCase {
     @Test
     public void testOverrideSecureHosted() {
 
-        mockRequest.setupIsSecure(false);
-        mockRequest.setupGetHeader("X-ENV-HTTPS", "on");
+        mockRequest.setIsSecure(false);
+        mockRequest.setHeader("X-ENV-HTTPS", "on");
 
         // We expect this to be false, because this isn't a satellite.
         assertFalse(request.isSecure());
