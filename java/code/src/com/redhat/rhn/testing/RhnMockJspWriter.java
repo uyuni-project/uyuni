@@ -163,7 +163,8 @@ public class RhnMockJspWriter extends JspWriter {
     @Override
     public void clear() throws IOException {
         // Clear both the buffer and the internal string writer
-        this.clearBuffer();
+        StringBuffer buffer = stringWriter.getBuffer();
+        buffer.setLength(0);
     }
 
     @Override

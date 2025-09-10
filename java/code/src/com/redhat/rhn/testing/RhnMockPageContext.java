@@ -46,7 +46,6 @@ public class RhnMockPageContext extends PageContext {
      * This is a mock implementation that does nothing.
      */
     public void release() {
-        // mock implementation - no resources to release
     }
 
     /**

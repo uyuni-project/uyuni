@@ -40,7 +40,6 @@ public class MockServletOutputStream extends ServletOutputStream {
 
     @Override
     public void setWriteListener(WriteListener writeListenerIn) {
-        // mock implementation
     }
 
     /**

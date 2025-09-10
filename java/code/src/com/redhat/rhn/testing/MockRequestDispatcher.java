@@ -55,36 +55,4 @@ public class MockRequestDispatcher implements RequestDispatcher  {
         request = requestIn;
         response = responseIn;
     }
-
-    /**
-     * Get the stored request object.
-     * @return the stored request object
-     */
-    public ServletRequest getRequest() {
-        return request;
-    }
-
-    /**
-     * Set the stored request object.
-     * @param requestIn
-     */
-    public void setRequest(ServletRequest requestIn) {
-        request = requestIn;
-    }
-
-    /**
-     * Get the stored response object.
-     * @return the stored response object
-     */
-    public ServletResponse getResponse() {
-        return response;
-    }
-
-    /**
-     * Set the stored response object.
-     * @param responseIn the response to set
-     */
-    public void setResponse(ServletResponse responseIn) {
-        response = responseIn;
-    }
 }

@@ -642,10 +642,6 @@ public class RhnMockHttpServletRequest implements HttpServletRequest {
         return requestDispatcher;
     }
 
-    public String getRequestDispatcherURI() {
-        return requestDispatcherURI;
-    }
-
     @Override
     public String getRealPath(String path) {
         return null;
