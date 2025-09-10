@@ -1,0 +1,1 @@
+- Ignore http proxy for localhost in healthcheck (bsc#1249155)
