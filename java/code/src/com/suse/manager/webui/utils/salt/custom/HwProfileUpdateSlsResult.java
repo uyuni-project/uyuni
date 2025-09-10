@@ -282,7 +282,7 @@ public class HwProfileUpdateSlsResult {
      * Evaluate existence of proxy config
      * @return true if proxy config is present
      */
-    public boolean hasProxyConfig() {
+    public boolean missesProxyConfig() {
         return proxyInfo.map(res -> {
             SumaUtil.ProxyInfo info = res.getChanges().getRet();
             return !info.hasConfigFiles() && !info.getVersion().isEmpty();
