@@ -1275,7 +1275,7 @@ def export_configchannel_getdetails(self, channel):
             # If we're using a recent API version files exported with no contents
             # i.e binary or non-xml encodable ascii files can be exported as
             # base64 encoded
-            if not "contents" in f:
+            if "contents" not in f:
                 if f["type"] != "directory":
                     if not self.check_api_version("11.1"):
                         logging.warning(
@@ -1470,7 +1470,7 @@ def import_configchannel_fromdetails(self, ccdetails):
                     # with no "contents" key (
                     # I guess the best thing to do here flag an error and
                     # import everything else
-                    if not "contents" in filedetails:
+                    if "contents" not in filedetails:
                         logging.error(
                             _("Failed trying to import file %s (empty content)") % path
                         )

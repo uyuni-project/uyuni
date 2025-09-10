@@ -1083,7 +1083,7 @@ def do_system_upgradepackage(self, args):
         return 1
 
     # install and upgrade for individual packages are the same
-    if not ".*" in args[1:]:
+    if ".*" not in args[1:]:
         return self.do_system_installpackage(orig_args)
 
     # get the start time option
@@ -4120,7 +4120,7 @@ def filter_latest_packages(
                 + _N("found with no arch or arch_label")
             )
             return None
-        if not tuplekey in latest:
+        if tuplekey not in latest:
             latest[tuplekey] = p
         else:
             # Already have this package, is p newer?
@@ -4306,7 +4306,7 @@ def do_system_comparewithchannel(self, args):
             # User specified a specific channel, check it exists
             allch = self.client.channel.listSoftwareChannels(self.session)
             allch_labels = [c["label"] for c in allch]
-            if not options.channel in allch_labels:
+            if options.channel not in allch_labels:
                 logging.error(_N("Specified channel does not exist"))
                 self.help_system_comparewithchannel()
                 return None
@@ -4342,7 +4342,7 @@ def do_system_comparewithchannel(self, args):
         # Get the latest packages in each channel
         latestpkgs = {}
         for c in channels:
-            if not c in channel_latest:
+            if c not in channel_latest:
                 # pylint: disable-next=consider-using-f-string
                 logging.debug("Getting packages for channel %s" % c)
                 pkgs = self.client.channel.software.listAllPackages(self.session, c)
@@ -4356,7 +4356,7 @@ def do_system_comparewithchannel(self, args):
             # We do this for every channel of every system, since the mix of
             # subscribed channels may be different
             for key in channel_latest[c].keys():
-                if not key in latestpkgs:
+                if key not in latestpkgs:
                     latestpkgs[key] = channel_latest[c][key]
                 else:
                     p_newest = latest_pkg(channel_latest[c][key], latestpkgs[key])

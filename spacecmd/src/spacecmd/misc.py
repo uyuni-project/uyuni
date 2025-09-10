@@ -650,7 +650,7 @@ def generate_package_cache(self, force=False):
             continue
 
         for p in packages:
-            if not p.get("name") in self.all_packages_short:
+            if p.get("name") not in self.all_packages_short:
                 self.all_packages_short[p.get("name")] = ""
 
             longname = build_package_names(p)
