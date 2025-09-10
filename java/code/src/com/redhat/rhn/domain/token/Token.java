@@ -143,6 +143,9 @@ public class Token implements Identifiable {
     )
     @OrderColumn(name = "position") // Handles list indexing.
     @ListIndexBase(1)
+    @org.hibernate.annotations.CollectionType(
+            type = "com.redhat.rhn.common.hibernate.ForceRecreationListType"
+    )
     private List<ConfigChannel> configChannels  = new ArrayList<>();
     /**
      * @return Returns the entitlements.
