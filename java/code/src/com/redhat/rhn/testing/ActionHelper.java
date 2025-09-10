@@ -22,8 +22,6 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RequestContext.Pagination;
 import com.redhat.rhn.frontend.struts.RhnHelper;
-import com.redhat.rhn.frontend.taglibs.list.ListTagUtil;
-import com.redhat.rhn.frontend.taglibs.list.TagHelper;
 import com.redhat.rhn.manager.user.UserManager;
 
 import org.apache.struts.action.Action;
@@ -151,6 +149,7 @@ public class ActionHelper  {
     public RhnMockHttpServletResponse getResponse() {
         return response;
     }
+
     /**
     * Get the Request associated with this test
     * @return RhnMockHttpServletRequest used.
@@ -223,23 +222,6 @@ public class ActionHelper  {
         getRequest().setupAddParameter(Pagination.LAST.getElementName(), "");
         getRequest().setupAddParameter(Pagination.LAST.getLowerAttributeName(), "20");
         getRequest().setupAddParameter("lower", "10");
-    }
-
-
-    /**
-     * Setup the request parameters for ListSelection
-     * @param listName The name of the list, from
-     *  com.redhat.rhn.frontend.taglibs.list.ListTag
-     */
-    public void setupListSelection(String listName) {
-        String uniqueName = TagHelper.generateUniqueName(listName);
-        String selectAction = ListTagUtil.makeSelectActionName(uniqueName);
-        String sel = ListTagUtil.makeSelectedItemsName(uniqueName);
-        String items = ListTagUtil.makePageItemsName(uniqueName);
-        getRequest().setupAddParameter(selectAction, (String)null);
-        getRequest().setupAddParameter(sel, (String)null);
-        getRequest().setupAddParameter(items, (String)null);
-
     }
 
     /**

@@ -24,10 +24,9 @@ import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.taglibs.SystemTimeMessageTag;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.RhnMockJspWriter;
+import com.redhat.rhn.testing.RhnMockPageContext;
 import com.redhat.rhn.testing.UserTestUtils;
-
-import com.mockobjects.servlet.MockJspWriter;
-import com.mockobjects.servlet.MockPageContext;
 
 import org.junit.jupiter.api.Test;
 
@@ -68,7 +67,7 @@ public class SystemTimeMessageTagTest extends RhnBaseTestCase {
         assertFalse(result.contains(ls.getMessage("timetag.awol")));
     }
 
-    private class CustomWriter extends MockJspWriter {
+    private class CustomWriter extends RhnMockJspWriter {
         private StringBuffer printed = new StringBuffer();
 
         CustomWriter() {
@@ -85,7 +84,7 @@ public class SystemTimeMessageTagTest extends RhnBaseTestCase {
         }
     }
 
-    private class CustomPageContext extends MockPageContext {
+    private class CustomPageContext extends RhnMockPageContext {
 
         private CustomWriter writer;
 

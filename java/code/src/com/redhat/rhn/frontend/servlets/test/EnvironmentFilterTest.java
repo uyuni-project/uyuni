@@ -20,10 +20,17 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import com.redhat.rhn.frontend.servlets.EnvironmentFilter;
+import com.redhat.rhn.frontend.servlets.RhnHttpServletRequest;
+import com.redhat.rhn.frontend.servlets.RhnHttpServletResponse;
 
 import org.apache.struts.Globals;
+import org.jmock.Expectations;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
+
+import javax.servlet.ServletException;
 
 /**
  * EnvironmentFilterTest
@@ -32,9 +39,16 @@ public class EnvironmentFilterTest extends BaseFilterTst {
 
     @Override
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() throws ServletException, IOException {
         super.setUp();
         this.request.setRequestURL("https://rhn.webdev.redhat.com/rhn/manager/login");
+
+        context.checking(new Expectations() {{
+            allowing(chain).doFilter(
+                    with(any(RhnHttpServletRequest.class)),
+                    with(any(RhnHttpServletResponse.class))
+            );
+        }});
     }
 
     @Test

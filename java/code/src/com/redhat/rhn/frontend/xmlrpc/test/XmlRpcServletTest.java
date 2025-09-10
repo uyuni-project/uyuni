@@ -23,9 +23,8 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.XmlRpcServlet;
 import com.redhat.rhn.frontend.xmlrpc.serializer.SerializerFactory;
 import com.redhat.rhn.testing.MockObjectTestCase;
+import com.redhat.rhn.testing.MockServletInputStream;
 import com.redhat.rhn.testing.UserTestUtils;
-
-import com.mockobjects.servlet.MockServletInputStream;
 
 import org.jmock.Expectations;
 import org.junit.jupiter.api.AfterEach;

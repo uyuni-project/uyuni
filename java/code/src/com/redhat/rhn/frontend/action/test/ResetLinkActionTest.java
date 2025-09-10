@@ -26,8 +26,7 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.RhnMockDynaActionForm;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
-
-import com.mockobjects.servlet.MockHttpSession;
+import com.redhat.rhn.testing.RhnMockHttpSession;
 
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -67,11 +66,6 @@ public class ResetLinkActionTest extends BaseTestCaseWithUser {
         assertEquals(invalid, rc);
     }
 
-    public void xxxtestPerformExpiredToken() {
-        // 'expired' drives off of 'created', which is in the hands of the DB
-        // so, no test here
-    }
-
     @Test
     public void testPerformValidToken() {
         ResetPassword rp = ResetPasswordFactory.createNewEntryFor(user);
@@ -93,7 +87,7 @@ public class ResetLinkActionTest extends BaseTestCaseWithUser {
         request = new RhnMockHttpServletRequest();
         response = new RhnMockHttpServletResponse();
 
-        MockHttpSession mockSession = new MockHttpSession();
+        RhnMockHttpSession mockSession = new RhnMockHttpSession();
         mockSession.setupGetAttribute("token", null);
         mockSession.setupGetAttribute("request_method", "GET");
         request.setSession(mockSession);

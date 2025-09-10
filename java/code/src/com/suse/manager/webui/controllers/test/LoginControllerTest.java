@@ -69,7 +69,6 @@ public class LoginControllerTest extends BaseControllerTestCase {
 
         mockRequest.setRequestURL(requestUrl);
         mockRequest.setupGetMethod("POST");
-        mockRequest.setMethod("POST");
         mockRequest.setupPathInfo(URI.create(requestUrl).getPath());
         mockRequest.setupAddParameter("url_bounce", "/rhn/users/UserDetails.do?uid=1");
 
@@ -92,7 +91,6 @@ public class LoginControllerTest extends BaseControllerTestCase {
         mockRequest.setSession(session);
         mockRequest.setRequestURL(requestUrl);
         mockRequest.setupGetMethod("POST");
-        mockRequest.setMethod("POST");
         mockRequest.setupPathInfo(URI.create(requestUrl).getPath());
         mockRequest.setupAddParameter("url_bounce", "/rhn/users/UserDetails.do?uid=1");
 
@@ -115,7 +113,6 @@ public class LoginControllerTest extends BaseControllerTestCase {
 
         mockRequest.setRequestURL(requestUrl);
         mockRequest.setupGetMethod("POST");
-        mockRequest.setMethod("POST");
         mockRequest.setupPathInfo(URI.create(requestUrl).getPath());
         mockRequest.setupAddParameter("url_bounce", "/rhn/users/UserDetails.do?uid=1");
 
