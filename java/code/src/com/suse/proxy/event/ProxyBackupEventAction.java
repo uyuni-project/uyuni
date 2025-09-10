@@ -21,9 +21,11 @@ import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Pillar;
 
 import com.suse.manager.saltboot.SaltbootException;
+import com.suse.manager.saltboot.SaltbootUtils;
 import com.suse.manager.webui.services.SaltConstants;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.utils.YamlHelper;
@@ -37,6 +39,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class ProxyBackupEventAction implements MessageAction {
     private static final Logger LOG = LogManager.getLogger(ProxyBackupEventAction.class);
@@ -93,31 +96,62 @@ public class ProxyBackupEventAction implements MessageAction {
         });
 
         // Create cobbler records based on PXE entries
-        convertPxeEntriesToCobbler(pxeEntries);
+        try {
+            convertPxeEntriesToCobbler(pxeEntries, proxy);
+        }
+        catch (SaltbootException e) {
+            LOG.error("Failed to convert PXE entries for minion {}", proxy.getMinionId());
+            // TODO: mark backup action as failed
+        }
+
         // TODO create config channel for custom config files if needed
         // TODO Remove the files in the temporary folder
     }
 
-    private void convertPxeEntriesToCobbler(Path pxeEntries) throws SaltbootException {
+    private void convertPxeEntriesToCobbler(Path pxeEntries, MinionServer proxy) throws SaltbootException {
         if (pxeEntries == null) {
-            LOG.info("No PXE entries found in backup configuration");
+            LOG.info("No branch server and PXE entries found in backup configuration");
             return;
         }
-        List<Map<String, String>> pexies = YamlHelper.loadAs(
-        FileUtils.readStringFromFile(pxeEntries.toString()), List.class);
 
-        if (pexies == null) {
-            LOG.error("Failed to parse PXE backup");
-            // TODO: add what to do now. Report a bug probably
-            return;
+        Map<String, Object> retailData = YamlHelper.loadAs(
+                FileUtils.readStringFromFile(pxeEntries.toString()), Map.class);
+
+        if (!retailData.containsKey("branch_id")) {
+            throw new SaltbootException("branch_id is missing in the proxy data");
         }
-        pexies.forEach(this::convertSinglePxeEntry);
+        final String branchId = retailData.get("branch_id").toString();
+        LOG.debug("Found branch id {} in the yaml data", branchId);
+        // This creates new, or updates existing profile to use the newest image. Maybe not what we want wrt. update
+        SaltbootUtils.createSaltbootProfile(branchId, "", proxy.getOrg(), null, null);
+
+        if (retailData.containsKey("pxe_entries")) {
+            LOG.debug("Found pxe entries");
+            List<Map<String, String>> pixies = (List<Map<String, String>>) retailData.get("pxe_entries");
+            try {
+                pixies.forEach(pxe -> this.convertSinglePxeEntry(branchId, pxe));
+            }
+            catch (SaltbootException e) {
+                LOG.warn("Ignoring", e);
+            }
+        }
+        else {
+            LOG.info("Proxy backup parsing did not find any pxe entries");
+        }
     }
 
-    private void convertSinglePxeEntry(Map<String, String> entry) throws SaltbootException {
+    private void convertSinglePxeEntry(String branchid, Map<String, String> entry) throws SaltbootException {
         // Lookup MinionEntry based on MAC address
         LOG.debug("processing entry for MAC {}", entry.get("mac"));
-        //SaltbootUtils.createSaltbootSystem(entry.get());
+        List<MinionServer> minions = MinionServerFactory.findMinionsByHwAddrs(Set.of(entry.get("mac")));
+        if (minions == null || minions.isEmpty()) {
+            throw new SaltbootException("Unable to find minion by its MAC address {}");
+        }
+        else if (minions.size() > 1) {
+            throw new SaltbootException("Multiple minions found by one MAC address. Cannot choose one");
+        }
+        SaltbootUtils.createSaltbootSystem(minions.get(0).getMinionId(),
+                entry.get("probable_boot_image"), branchid, List.of(entry.get("mac")), entry.get("args"));
     }
 
     @Override
