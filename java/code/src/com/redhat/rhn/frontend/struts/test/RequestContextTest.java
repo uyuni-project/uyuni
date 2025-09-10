@@ -23,7 +23,6 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.testing.MockObjectTestCase;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
-import com.redhat.rhn.testing.RhnMockHttpSession;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.webui.controllers.login.LoginController;
@@ -53,12 +52,8 @@ public class RequestContextTest extends MockObjectTestCase {
         final String requestUrl = "http://localhost:8080/rhn/manager/login";
         final RouteMatch match = new RouteMatch(new Object(), requestUrl, requestUrl, "");
         final RhnMockHttpServletRequest mockRequest = new RhnMockHttpServletRequest();
-        RhnMockHttpSession session = new RhnMockHttpSession();
-        mockRequest.setSession(session);
 
         mockRequest.setRequestURL(requestUrl);
-        mockRequest.setMethod("POST");
-        mockRequest.setMethod("POST");
         mockRequest.setPathInfo(URI.create(requestUrl).getPath());
         mockRequest.addParameter("url_bounce", "/rhn/users/UserDetails.do?uid=1");
 
@@ -68,69 +63,11 @@ public class RequestContextTest extends MockObjectTestCase {
                 this.getClass().getSimpleName()));
         ModelAndView result = LoginController.loginView(RequestResponseFactory.create(match, mockRequest), response);
         HashMap<String, String> model = (HashMap<String, String>) result.getModel();
-        assertNotNull(session.getAttribute("webUserID"));
+        assertNotNull(mockRequest.getSession().getAttribute("webUserID"));
         assertEquals(model.get("url_bounce"), "/rhn/users/UserDetails.do?uid=1");
         RequestContext requestContext = new RequestContext(RequestResponseFactory.create(match, mockRequest).raw());
         assertNotNull(requestContext.getCurrentUser());
     }
-
-    /**
-     * Tests the pagination: First.
-    */
-    /*public void testProcessPaginationFirst() {
-        MockHttpServletRequest request =
-            new MockHttpServletRequest();
-        request.setupAddParameter("First", "1");
-        request.setupAddParameter("first_lower", "1");
-        RequestContext requestContext = new RequestContext(request);
-        String rc = requestContext.processPagination();
-        assertEquals("1", rc);
-    }*/
-
-    /**
-     * Tests the pagination: Prev.
-     */
-    /*public void testProcessPaginationPrev() {
-        MockHttpServletRequest request =
-            new MockHttpServletRequest();
-        request.setupAddParameter("First", (String) null);
-        request.setupAddParameter("Prev", "1");
-        request.setupAddParameter("prev_lower", "10");
-        RequestContext requestContext = new RequestContext(request);
-        String rc = requestContext.processPagination();
-        assertEquals("10", rc);
-    }*/
-
-    /**
-     * Tests the pagination: Last.
-     */
-    /*public void testProcessPaginationLast() {
-        MockHttpServletRequest request =
-            new MockHttpServletRequest();
-        request.setupAddParameter("First", (String)null);
-        request.setupAddParameter("Prev", (String)null);
-        request.setupAddParameter("Next", (String)null);
-        request.setupAddParameter("Last", "1");
-        request.setupAddParameter("last_lower", "30");
-        RequestContext requestContext = new RequestContext(request);
-        String rc = requestContext.processPagination();
-        assertEquals("30", rc);
-    }*/
-
-    /**
-     * Tests the pagination: Next.
-     */
-    /*public void testProcessPaginationNext() {
-        MockHttpServletRequest request =
-            new MockHttpServletRequest();
-        request.setupAddParameter("First", (String)null);
-        request.setupAddParameter("Prev", (String)null);
-        request.setupAddParameter("Next", "1");
-        request.setupAddParameter("next_lower", "20");
-        RequestContext requestContext = new RequestContext(request);
-        String rc = requestContext.processPagination();
-        assertEquals("20", rc);
-    }*/
 
     /**
      */

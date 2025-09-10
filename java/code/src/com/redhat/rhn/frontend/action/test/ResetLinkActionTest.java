@@ -91,7 +91,6 @@ public class ResetLinkActionTest extends BaseTestCaseWithUser {
         mockSession.setAttribute("token", null);
         mockSession.setAttribute("request_method", "GET");
         request.setSession(mockSession);
-        request.setServerName("mymachine.rhndev.redhat.com");
 
         mapping.addForwardConfig(valid);
         mapping.addForwardConfig(invalid);

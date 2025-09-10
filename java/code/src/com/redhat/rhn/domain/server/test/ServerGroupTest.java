@@ -51,7 +51,7 @@ public class ServerGroupTest extends RhnBaseTestCase {
 
     @Test
     public void testEquals() {
-        User user = UserTestUtils.findNewUser("testUser", "testorg");
+        User user = UserTestUtils.findNewUser();
         ServerGroup sg1 = ServerGroupTestUtils.createManaged(user);
         ServerGroup sg2 = new ServerGroup();
 

@@ -24,7 +24,6 @@ import javax.servlet.jsp.tagext.BodyContent;
 
 public class MockBodyContent extends BodyContent {
     private JspWriter jspWriter;
-    private Writer writer;
     private String text;
 
     /**
@@ -47,6 +46,7 @@ public class MockBodyContent extends BodyContent {
      * Gets the buffer size.
      * @return the buffer size
      */
+    @Override
     public int getBufferSize() {
         notImplemented();
         return super.getBufferSize();
@@ -57,6 +57,7 @@ public class MockBodyContent extends BodyContent {
      * @param c the character to write
      * @throws IOException if an I/O error occurs
      */
+    @Override
     public void write(int c) throws IOException {
         notImplemented();
         super.write(c);
@@ -66,6 +67,7 @@ public class MockBodyContent extends BodyContent {
      * Flushes the stream.
      * @throws IOException if an I/O error occurs
      */
+    @Override
     public void flush() throws IOException {
         notImplemented();
         super.flush();
@@ -75,6 +77,7 @@ public class MockBodyContent extends BodyContent {
      * Checks if auto flush is enabled.
      * @return true if auto flush is enabled
      */
+    @Override
     public boolean isAutoFlush() {
         notImplemented();
         return super.isAutoFlush();
@@ -85,6 +88,7 @@ public class MockBodyContent extends BodyContent {
      * @param cbuf the character array to write
      * @throws IOException if an I/O error occurs
      */
+    @Override
     public void write(char []cbuf) throws IOException {
         notImplemented();
         super.write(cbuf);
@@ -109,6 +113,7 @@ public class MockBodyContent extends BodyContent {
     /**
      * Clears the body content.
      */
+    @Override
     public void clearBody() {
         notImplemented();
         super.clearBody();
@@ -119,6 +124,7 @@ public class MockBodyContent extends BodyContent {
      * @param str the string to write
      * @throws IOException if an I/O error occurs
      */
+    @Override
     public void write(String str) throws IOException {
         notImplemented();
         super.write(str);
@@ -136,6 +142,7 @@ public class MockBodyContent extends BodyContent {
      * Gets the enclosing writer.
      * @return the enclosing JSP writer
      */
+    @Override
     public JspWriter getEnclosingWriter() {
         return jspWriter;
     }
@@ -181,14 +188,12 @@ public class MockBodyContent extends BodyContent {
         notImplemented();
     }
 
-
     /**
      * Writes the content to the specified writer.
      * @param writerIn the writer to write to
-     * @throws IOException if an I/O error occurs
      */
-    public void writeOut(Writer writerIn) throws IOException {
-        writer = writerIn;
+    public void writeOut(Writer writerIn) {
+        notImplemented();
     }
 
     /**
@@ -392,6 +397,7 @@ public class MockBodyContent extends BodyContent {
      * @param len the number of characters to write
      * @throws IOException if an I/O error occurs
      */
+    @Override
     public void write(String str, int off, int len) throws IOException {
         notImplemented();
         super.write(str, off, len);
@@ -402,7 +408,7 @@ public class MockBodyContent extends BodyContent {
      * @return the string content
      */
     public String getString() {
-        return text;
+        return getText();
     }
 
     /**

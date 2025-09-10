@@ -37,7 +37,7 @@ public class RhnMockHttpServletResponse implements HttpServletResponse {
     private final Map<String, Cookie> cookies = new HashMap<>();
     private final Map<String, String> headers = new HashMap<>();
     private String redirect;
-    private String encoding = StandardCharsets.UTF_8.name();;
+    private String encoding = StandardCharsets.UTF_8.name();
     private String contentType;
     private Locale locale = Locale.getDefault();
     private int bufferSize = 8192;

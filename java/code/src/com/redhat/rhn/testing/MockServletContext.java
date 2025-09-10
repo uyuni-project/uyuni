@@ -215,6 +215,14 @@ public class MockServletContext implements ServletContext {
     }
 
     /**
+     * Gets the request dispatcher to be returned by named dispatcher requests.
+     * @return the request dispatcher for mock implementation
+     */
+    public RequestDispatcher getRequestDispatcher() {
+        return requestDispatcher;
+    }
+
+    /**
      * Gets the major version of the Servlet API that this servlet container supports.
      * @return -1 for mock implementation
      */

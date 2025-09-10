@@ -92,7 +92,7 @@ public class NetworkInterfaceTest extends RhnBaseTestCase {
      * @throws Exception something bad happened
      */
     public static NetworkInterface createTestNetworkInterface() {
-        User user = UserTestUtils.findNewUser("testuser", "testorg");
+        User user = UserTestUtils.findNewUser();
         Server s = ServerFactoryTest.createTestServer(user);
         return createTestNetworkInterface(s);
     }

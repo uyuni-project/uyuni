@@ -837,8 +837,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     public void testListAdministrators() {
 
         //The org admin user
-        User admin = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User admin = UserTestUtils.findNewUser(this);
         admin.addPermanentRole(RoleFactory.ORG_ADMIN);
 
         //the non-orgadmin user who is a member of the group

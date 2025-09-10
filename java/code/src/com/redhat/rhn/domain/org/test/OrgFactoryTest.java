@@ -80,7 +80,7 @@ public class OrgFactoryTest extends RhnBaseTestCase {
      */
     @Test
     public void testAddRole() {
-        User user = UserTestUtils.findNewUser("testuser", "testorg");
+        User user = UserTestUtils.findNewUser();
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         assertTrue(user.hasRole(RoleFactory.CHANNEL_ADMIN));
     }
@@ -213,7 +213,7 @@ public class OrgFactoryTest extends RhnBaseTestCase {
 
     @Test
     public void testCustomDataKeys() {
-        User user = UserTestUtils.findNewUser("testuser", "testorg");
+        User user = UserTestUtils.findNewUser();
         Org org = user.getOrg();
 
         Set keys = org.getCustomDataKeys();
