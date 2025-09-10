@@ -20,8 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import com.redhat.rhn.frontend.servlets.RhnHttpServletRequest;
 import com.redhat.rhn.testing.MockObjectTestCase;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
-
-import com.mockobjects.servlet.MockHttpSession;
+import com.redhat.rhn.testing.RhnMockHttpSession;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,7 +35,7 @@ public class RhnHttpServletRequestTest extends MockObjectTestCase {
     @BeforeEach
     public void setUp() {
         mockRequest = new RhnMockHttpServletRequest();
-        mockRequest.setSession(new MockHttpSession());
+        mockRequest.setSession(new RhnMockHttpSession());
         request = new RhnHttpServletRequest(mockRequest);
     }
 

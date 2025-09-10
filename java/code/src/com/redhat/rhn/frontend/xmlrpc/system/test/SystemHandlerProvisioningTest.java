@@ -248,7 +248,7 @@ public class SystemHandlerProvisioningTest extends BaseHandlerTestCase {
                 "uyunidev.suse.com,1006678487::1152567362.02:21600.0:t15l" +
                 "gsaTRKpX6AxkUFQ11A==:fjs-0-12.rhndev.redhat.com";
                 headerValue = headerValue.replaceFirst("myproxy", proxy.getHostname());
-                request.setHeader("X-RHN-Proxy-Auth", headerValue);
+                request.setupGetHeader("X-RHN-Proxy-Auth", headerValue);
 
                 int result = 0;
                 result = handler.provisionSystem(admin, request, server.getId().intValue(),

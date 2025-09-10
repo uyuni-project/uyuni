@@ -30,14 +30,9 @@ import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 import com.redhat.rhn.testing.TestUtils;
 
-import com.mockobjects.servlet.MockHttpServletResponse;
-
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.junit.jupiter.api.Test;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * EditActionTest
@@ -115,12 +110,10 @@ public class EditActionTest extends RhnBaseTestCase {
         form.set("buglistUrlNew", "https://bugzilla.redhat.com/show_bug.cgi?id=123");
         //edit the keywords
         form.set("keywords", "yankee, hotel, foxtrot");
-        Map<String, Object> params = new HashMap<>();
-        params.put("eid", errata.getId().toString());
-        params.put("buglistIdNew", "123");
-        params.put("buglistSummaryNew", "test bug for a test errata");
-        params.put("buglistUrlNew", "https://bugzilla.redhat.com/show_bug.cgi?id=123");
-        request.setupGetParameterMap(params);
+        request.setupAddParameter("eid", errata.getId().toString());
+        request.setupAddParameter("buglistIdNew", "123");
+        request.setupAddParameter("buglistSummaryNew", "test bug for a test errata");
+        request.setupAddParameter("buglistUrlNew", "https://bugzilla.redhat.com/show_bug.cgi?id=123");
         request.setupAddParameter("buglistIdNew", "123");
         request.setupAddParameter("buglistSummaryNew", "test bug for a test errata");
         request.setupAddParameter("buglistUrlNew",
@@ -149,7 +142,7 @@ public class EditActionTest extends RhnBaseTestCase {
         ActionForward def = new ActionForward(RhnHelper.DEFAULT_FORWARD, "path", false);
         RhnMockDynaActionForm form = new RhnMockDynaActionForm();
         RhnMockHttpServletRequest request = TestUtils.getRequestWithSessionAndUser();
-        MockHttpServletResponse response = new MockHttpServletResponse();
+        RhnMockHttpServletResponse response = new RhnMockHttpServletResponse();
         mapping.addForwardConfig(def);
 
         RequestContext requestContext = new RequestContext(request);

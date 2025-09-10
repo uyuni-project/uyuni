@@ -19,6 +19,7 @@ package com.redhat.rhn.frontend.struts.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -26,20 +27,26 @@ import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
+import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.utils.Json;
 
-import com.mockobjects.servlet.MockHttpServletRequest;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 
 import org.apache.struts.action.DynaActionForm;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Silvio Moioli {@literal <smoioli@suse.de>}
@@ -83,6 +90,9 @@ public class ActionChainHelperTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testPrepopulateActionChains() {
+        RhnMockHttpServletRequest request = TestUtils.getRequestWithSessionAndUser();
+        user = new RequestContext(request).getCurrentUser();
+
         List<ActionChain> actionChains = new LinkedList<>();
         for (int i = 0; i < 10; i++) {
             actionChains.add(ActionChainFactory.createActionChain(TestUtils.randomString(),
@@ -98,10 +108,21 @@ public class ActionChainHelperTest extends BaseTestCaseWithUser {
             result.add(map);
         }
 
-        MockHttpServletRequest request = TestUtils.getRequestWithSessionAndUser();
-        request.addExpectedSetAttribute(
-            ActionChainHelper.EXISTING_ACTION_CHAINS_PROPERTY_NAME, Json.GSON.toJson(result));
-
         ActionChainHelper.prepopulateActionChains(request);
+
+        Object attribute = request.getAttribute(ActionChainHelper.EXISTING_ACTION_CHAINS_PROPERTY_NAME);
+        assertNotNull(attribute);
+        assertInstanceOf(String.class, attribute);
+
+        // assert jsons are equivalent
+        JsonArray arr1 = JsonParser.parseString(Json.GSON.toJson(result)).getAsJsonArray();
+        JsonArray arr2 = JsonParser.parseString((String)attribute).getAsJsonArray();
+
+        Set<JsonElement> set1 = new HashSet<>();
+        arr1.forEach(set1::add);
+        Set<JsonElement> set2 = new HashSet<>();
+        arr2.forEach(set2::add);
+        assertEquals(set1, set2);
     }
+
 }

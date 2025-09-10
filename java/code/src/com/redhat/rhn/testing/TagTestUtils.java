@@ -15,10 +15,6 @@
 
 package com.redhat.rhn.testing;
 
-import com.mockobjects.helpers.TagTestHelper;
-import com.mockobjects.servlet.MockPageContext;
-import com.mockobjects.servlet.MockServletContext;
-
 import java.net.URL;
 
 import javax.servlet.jsp.tagext.Tag;
@@ -39,13 +35,13 @@ public class TagTestUtils {
      * @param request The request that was created by the test to be used
      *        by this helper
      * @return TagTestHelper
-     * @see com.mockobjects.helpers.TagTestHelper
+     * @see TagTestHelper
      */
     public static TagTestHelper setupTagTest(Tag tag, URL url,
                                              RhnMockHttpServletRequest request) {
 
         TagTestHelper tth = new TagTestHelper(tag);
-        MockPageContext mpc = tth.getPageContext();
+        RhnMockPageContext mpc = tth.getPageContext();
         MockServletContext ctx = (MockServletContext) mpc.getServletContext();
         if (request == null) {
             request = TestUtils.getRequestWithSessionAndUser();
@@ -57,7 +53,7 @@ public class TagTestUtils {
         mpc.setJspWriter(new RhnMockJspWriter());
 
         if (url != null) {
-            ctx.setupGetResource(url);
+            ctx.setResource(url);
         }
         return tth;
     }
@@ -68,7 +64,7 @@ public class TagTestUtils {
      * @param tag The Tag lib to test.
      * @param url URL to be passed into the Mock Servlet Context.
      * @return TagTestHelper
-     * @see com.mockobjects.helpers.TagTestHelper
+     * @see TagTestHelper
      */
     public static TagTestHelper setupTagTest(Tag tag, URL url) {
         return setupTagTest(tag, url, null);

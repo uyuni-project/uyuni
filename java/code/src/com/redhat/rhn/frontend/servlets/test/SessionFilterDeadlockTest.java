@@ -20,16 +20,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.frontend.servlets.SessionFilter;
 
-import com.mockobjects.servlet.MockFilterChain;
-
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.config.Configurator;
+import org.jmock.Expectations;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
+import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
@@ -39,15 +39,12 @@ import javax.servlet.ServletResponse;
 public class SessionFilterDeadlockTest extends BaseFilterTst {
 
     @Test
-    public void testDeadlockFilter() throws Exception {
+    public void testDeadlockFilter() throws ServletException, IOException {
         // Make sure the chain blows up.
-        chain = new MockFilterChain() {
-            @Override
-            public void doFilter(ServletRequest req, ServletResponse resp)
-            throws IOException {
-                throw new IOException("Test IOException");
-            }
-        };
+        context().checking(new Expectations() {{
+            allowing(chain).doFilter(with(any(ServletRequest.class)), with(any(ServletResponse.class)));
+            will(throwException(new IOException("Test IOException")));
+        }});
         SessionFilter filter = new SessionFilter();
         HibernateFactory.getSession();
         int caughtCount = 0;

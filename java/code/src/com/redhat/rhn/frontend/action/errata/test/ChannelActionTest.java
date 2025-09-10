@@ -31,7 +31,7 @@ import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.testing.ActionHelper;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.RhnJmockBaseTestCase;
 import com.redhat.rhn.testing.RhnMockDynaActionForm;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
@@ -40,12 +40,13 @@ import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.junit.jupiter.api.Test;
 
 /**
  * ChannelActionTest
  */
-public class ChannelActionTest extends RhnBaseTestCase {
+public class ChannelActionTest extends RhnJmockBaseTestCase {
 
     @Test
     public void testPublish() throws Exception {
@@ -95,6 +96,8 @@ public class ChannelActionTest extends RhnBaseTestCase {
 
     @Test
     public void testUpdateChannels() throws Exception {
+        setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
+
         ChannelAction action = new ChannelAction();
 
         ActionMapping mapping = new ActionMapping();
