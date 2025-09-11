@@ -18,9 +18,8 @@ import org.apache.logging.log4j.Logger;
 
 /**
  * "Driver" for a work queue of worker threads
- * @param <T> type of the queue driver candidates
  */
-public interface QueueDriver<T> {
+public interface QueueDriver {
 
     /**
      * Set the logger to use for all logging operations

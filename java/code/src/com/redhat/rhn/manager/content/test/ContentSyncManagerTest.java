@@ -2103,12 +2103,12 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         new File(fromdir + "/SUSE/Products/SLE-WE/12/x86_64/product/repodata/repomd.xml").createNewFile();
         new File(fromdir + "/SUSE/Updates/SLE-WE/12/x86_64/update/repodata/repomd.xml").createNewFile();
         new File(fromdir + "/repo/RPMMD/SLE-12-GA-Desktop-NVIDIA-Driver/repodata/repomd.xml").createNewFile();
-        try {
+        try (InputStreamReader inputStreamReader3 = new InputStreamReader(ContentSyncManager.class
+                .getResourceAsStream(JARPATH + "smallBase/channel_families.json"))) {
             Gson gson = new GsonBuilder()
                     .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
                     .create();
-            InputStreamReader inputStreamReader3 = new InputStreamReader(ContentSyncManager.class
-                    .getResourceAsStream(JARPATH + "smallBase/channel_families.json"));
+
             List<ChannelFamilyJson> channelFamilies = gson.fromJson(
                     inputStreamReader3, new TypeToken<List<ChannelFamilyJson>>() { }.getType());
 
@@ -2197,12 +2197,12 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         new File(fromdir + "/SUSE/Products/SLE-WE/12/x86_64/product/repodata/repomd.xml").createNewFile();
         new File(fromdir + "/SUSE/Updates/SLE-WE/12/x86_64/update/repodata/repomd.xml").createNewFile();
         new File(fromdir + "/repo/RPMMD/SLE-12-GA-Desktop-NVIDIA-Driver/repodata/repomd.xml").createNewFile();
-        try {
+        try (InputStreamReader inputStreamReader3 = new InputStreamReader(ContentSyncManager.class
+                .getResourceAsStream(JARPATH + "smallBase/channel_families.json"))) {
             Gson gson = new GsonBuilder()
                     .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
                     .create();
-            InputStreamReader inputStreamReader3 = new InputStreamReader(ContentSyncManager.class
-                    .getResourceAsStream(JARPATH + "smallBase/channel_families.json"));
+
             List<ChannelFamilyJson> channelFamilies = gson.fromJson(
                     inputStreamReader3, new TypeToken<List<ChannelFamilyJson>>() { }.getType());
 

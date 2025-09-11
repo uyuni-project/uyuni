@@ -62,14 +62,14 @@ public class TaskQueueFactory {
      * @return queue instance
      * @throws Exception error occurred during queue creation
      */
-    public TaskQueue createQueue(String name, Class<? extends QueueDriver<?>> driverClass, Logger loggerIn)
+    public TaskQueue createQueue(String name, Class<? extends QueueDriver> driverClass, Logger loggerIn)
         throws Exception {
         TaskQueue retval;
         synchronized (queues) {
             retval = queues.get(name);
             if (retval == null) {
                 retval = new TaskQueue(name);
-                QueueDriver<?> driver = driverClass.getDeclaredConstructor().newInstance();
+                QueueDriver driver = driverClass.getDeclaredConstructor().newInstance();
                 driver.setLogger(loggerIn);
                 driver.initialize();
                 retval.setQueueDriver(driver);

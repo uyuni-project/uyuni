@@ -3564,9 +3564,7 @@ public class SystemHandler extends BaseHandler {
     public List<ErrataOverview> getRelevantErrata(User loggedInUser, Integer sid) {
 
         Server server = lookupServer(loggedInUser, sid);
-        DataResult<ErrataOverview> dr = SystemManager.relevantErrata(
-                loggedInUser, server.getId());
-        return dr;
+        return SystemManager.relevantErrata(loggedInUser, server.getId());
     }
 
     /**

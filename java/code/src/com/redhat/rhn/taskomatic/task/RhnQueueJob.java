@@ -35,7 +35,7 @@ import org.quartz.JobExecutionException;
  * @param <T> The {@link QueueDriver} class
  *
  */
-public abstract class RhnQueueJob<T extends QueueDriver<?>> implements RhnJob {
+public abstract class RhnQueueJob<T extends QueueDriver> implements RhnJob {
 
     private TaskoRun jobRun = null;
     protected Logger log = LogManager.getLogger(getClass().getName());
