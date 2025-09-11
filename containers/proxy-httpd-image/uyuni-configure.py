@@ -187,10 +187,10 @@ with open(config_path + "httpd.yaml", encoding="utf-8") as httpdSource:
     ) as file:
         require_ipv4 = ""
         require_ipv6 = ""
-        if len(proxy_ipv4) > 0:
-            require_ipv4 = f"Require ip {proxy_ipv4}"
-        if len(proxy_ipv6) > 0:
-            require_ipv6 = f"Require ip {proxy_ipv6}"
+        if len(server_ipv4) > 0:
+            require_ipv4 = f"Require ip {server_ipv4}"
+        if len(server_ipv6) > 0:
+            require_ipv6 = f"Require ip {server_ipv6}"
         file.write(
             f"""<Directory "/srv/www/tftpsync">
     <RequireAny>

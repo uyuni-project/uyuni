@@ -11,9 +11,10 @@ import ListPayg from "./list-payg";
 type RendererProps = {
   payg_instances?: string;
   flashMessage?: ServerMessageType;
+  isIssPeripheral?: boolean;
 };
 
-export const renderer = (id: string, { payg_instances, flashMessage }: RendererProps = {}) => {
+export const renderer = (id: string, { payg_instances, flashMessage, isIssPeripheral }: RendererProps = {}) => {
   let projectsJson: any[] = [];
   try {
     projectsJson = JSON.parse(payg_instances || "");
@@ -24,7 +25,7 @@ export const renderer = (id: string, { payg_instances, flashMessage }: RendererP
   SpaRenderer.renderNavigationReact(
     <RolesProvider>
       <MessagesContainer />
-      <ListPayg payg_instances={projectsJson} flashMessage={flashMessage} />
+      <ListPayg payg_instances={projectsJson} flashMessage={flashMessage} isIssPeripheral={isIssPeripheral} />
     </RolesProvider>,
     document.getElementById(id)
   );

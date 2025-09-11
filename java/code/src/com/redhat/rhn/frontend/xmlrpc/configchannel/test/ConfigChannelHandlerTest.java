@@ -66,6 +66,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * ConfigChannelHandlerTest
@@ -282,7 +283,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
      */
     private int removeAllGlobals() {
         var channels = handler.listGlobals(admin);
-        var labels = channels.stream().map(ConfigChannelDto::getLabel).toList();
+        var labels = channels.stream().map(ConfigChannelDto::getLabel).collect(Collectors.toList());
         return handler.deleteChannels(admin, labels);
     }
 

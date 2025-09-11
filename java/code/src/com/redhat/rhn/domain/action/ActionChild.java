@@ -14,16 +14,31 @@
  */
 package com.redhat.rhn.domain.action;
 
-import com.redhat.rhn.domain.BaseDomainHelper;
+import java.io.Serializable;
+import java.util.Date;
+
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 
 /**
  * ActionChild - Class that can be used for records that require an Action as their
  * parent.  IOTW: Tables that have a foreign key action_id.
  *
  */
-public abstract class ActionChild extends BaseDomainHelper {
+@MappedSuperclass
+public abstract class ActionChild implements Serializable {
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "action_id", nullable = false)
     private Action parentAction;
+
+    @Transient
+    private Date created = new Date();
+    @Transient
+    private Date modified = new Date();
 
     /**
      * Gets the parent Action associated with this ServerAction record
@@ -39,6 +54,38 @@ public abstract class ActionChild extends BaseDomainHelper {
      */
     public void setParentAction(Action parentActionIn) {
         this.parentAction = parentActionIn;
+    }
+
+    /**
+     * Gets the current value of created
+     * @return Date the current value
+     */
+    public Date getCreated() {
+        return this.created;
+    }
+
+    /**
+     * Sets the value of created to new value
+     * @param createdIn New value for created
+     */
+    public void setCreated(Date createdIn) {
+        this.created = createdIn;
+    }
+
+    /**
+     * Gets the current value of modified
+     * @return Date the current value
+     */
+    public Date getModified() {
+        return this.modified;
+    }
+
+    /**
+     * Sets the value of modified to new value
+     * @param modifiedIn New value for modified
+     */
+    public void setModified(Date modifiedIn) {
+        this.modified = modifiedIn;
     }
 
 }

@@ -1,4 +1,5 @@
 #
+# Copyright (c) 2024 SUSE LLC
 # Copyright (c) 2008--2018 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -240,6 +241,10 @@ suseImageInfoChannel               :: suseImageInfo rhnChannel
 suseImageInfoInstalledProduct      :: suseInstalledProduct suseImageInfo
 suseImageProfile                   :: rhnRegTokenChannels web_customer suseImageStore
 suseImageStore                     :: suseCredentials web_customer suseImageStoreType
+suseISSHub                         :: suseCredentials
+suseISSPeripheral                  :: suseCredentials
+suseISSPeripheralChannels          :: suseISSPeripheral rhnChannel
+suseISSAccessToken                 :: iss_access_token_type_t
 suseMaintenanceCalendar            :: web_customer
 suseMaintenanceSchedule            :: web_customer suseMaintenanceCalendar
 suseMgrServerInfo                  :: rhnServer rhnPackageEVR suseCredentials
@@ -299,3 +304,10 @@ suseAppstreamPackage               :: suseAppstream rhnPackage
 suseAppstreamApi                   :: suseAppstream
 rhnChannelNewestPackage            :: suseAppstream rhnChannel rhnPackageName rhnPackageEVR \
                                       rhnPackageArch
+endpoint                           :: schemas/access
+namespace                          :: schemas/access
+endpointNamespace                  :: schemas/access endpoint namespace
+userNamespace                      :: schemas/access web_contact namespace
+accessGroup                        :: schemas/access web_customer
+accessGroupNamespace               :: schemas/access accessGroup namespace
+userAccessGroup                    :: schemas/access web_contact accessGroup

@@ -1,7 +1,7 @@
 # Copyright (c) 2016-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-@buildhost
+@build_host
 Feature: Bootstrap a build host via the GUI
 
   Scenario: Log in as admin user
@@ -28,4 +28,3 @@ Feature: Bootstrap a build host via the GUI
     Given I am on the Systems overview page of this "build_host"
     Then I should see a "[Container Build Host]" text
     Then I should see a "[OS Image Build Host]" text
-

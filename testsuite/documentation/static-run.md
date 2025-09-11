@@ -31,7 +31,7 @@ export MINION="${PREFIX}min-sles15.tf.local"
 export BUILD_HOST="${PREFIX}min-build.tf.local"
 export SSH_MINION="${PREFIX}minssh-sles15.tf.local"
 export RHLIKE_MINION="${PREFIX}min-rocky8.tf.local"
-export DEBLIKE_MINION="${PREFIX}min-ubuntu2204.tf.local"
+export DEBLIKE_MINION="${PREFIX}min-ubuntu2404.tf.local"
 run-testsuite
 ```
 

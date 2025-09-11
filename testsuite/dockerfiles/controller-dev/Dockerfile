@@ -1,10 +1,10 @@
-FROM opensuse/leap:15.5
+FROM opensuse/leap:15.6
 # Ruby 3 devel repos
-RUN zypper -n ar -f --no-gpgcheck http://download.opensuse.org/repositories/devel:/languages:/ruby/15.5/ ruby_devel
-RUN zypper -n ar -f --no-gpgcheck http://download.opensuse.org/repositories/devel:/languages:/ruby:/extensions/15.5/ rubey_devel_extensions
+RUN zypper -n ar -f --no-gpgcheck http://download.opensuse.org/repositories/devel:/languages:/ruby/15.6/ ruby_devel
+RUN zypper -n ar -f --no-gpgcheck http://download.opensuse.org/repositories/devel:/languages:/ruby:/extensions/15.6/ rubey_devel_extensions
 
 RUN zypper ref -f && \
-    zypper -n ar --no-gpgcheck http://download.opensuse.org/repositories/systemsmanagement:/sumaform:/tools/openSUSE_Leap_15.5/ tools && \
+    zypper -n ar --no-gpgcheck http://download.opensuse.org/repositories/systemsmanagement:/sumaform:/tools/openSUSE_Leap_15.6/ tools && \
     zypper -n install nmap tar gzip iputils \
       gcc \
       make \
@@ -32,8 +32,8 @@ RUN zypper ref -f && \
       hostname \
       iproute2 \
       && \
-      zypper -n install --oldpackage libssh4=0.9.6 && \
-      zypper -n install --oldpackage libssh-devel=0.9.6 && \
+    zypper -n install libssh4 && \
+    zypper -n install libssh-devel && \
     zypper -n clean -a
 COPY etc_pam.d_sshd /etc/pam.d/sshd
 CMD ssh-keygen -A && /usr/sbin/sshd -De

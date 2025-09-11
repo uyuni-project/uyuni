@@ -3,7 +3,7 @@
 .btn-primary,
 .btn-danger {
   color: inherit;
-  font-weight: bold;
+  font-weight: 600;
   padding: 8px 16px;
   position: relative;
   border-style: solid;
@@ -181,7 +181,7 @@ th {
   a {
     border: none;
     padding: 0;
-    font-weight: bold !important;
+    font-weight: 600 !important;
     color: $eos-bc-gray-1000 !important;
   }
 }

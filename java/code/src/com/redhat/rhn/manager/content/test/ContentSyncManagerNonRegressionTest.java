@@ -91,7 +91,7 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
                     baseProducts.stream(),
                     baseProducts.stream()
                         .flatMap(p -> p.getExtensions().stream())
-            ).toList();
+            ).collect(Collectors.toList());
 
             Set<MgrSyncProductDto> checkedProducts = new LinkedHashSet<>();
 

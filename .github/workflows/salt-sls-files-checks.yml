@@ -10,9 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 #v4.2.2
 
-    - uses: mattsb42/not-grep@master
+    - uses: mattsb42/not-grep@6830ab112798c6561640e1a3372e65f0bcb9435a #master
       with:
         config-file: ./.github/config/file-content-checks.toml
         # If you don't set debug, passing checks will be hidden.

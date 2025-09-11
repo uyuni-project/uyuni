@@ -1,47 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="com.redhat.rhn.domain.state.StateRevision" table="suseStateRevision">
-        <id name="id" type="long" column="id">
-            <generator class="org.hibernate.id.enhanced.SequenceStyleGenerator">
-                <param name="sequence_name">suse_state_revision_id_seq</param>
-                <param name="increment_size">1</param>
-            </generator>
-        </id>
-        <set name="packageStates" lazy="true" inverse="true" cascade="all">
-            <key column="state_revision_id"/>
-            <one-to-many class="com.redhat.rhn.domain.state.PackageState"/>
-        </set>
-
-        <list name="configChannels" lazy="true" table="suseStateRevisionConfigChannel"
-              cascade="save-update" where="(position > 0)"
-              collection-type="com.redhat.rhn.common.hibernate.ForceRecreationListType">
-            <key column="state_revision_id"/>
-            <list-index column="position" base="1"/>
-            <many-to-many
-                    class="com.redhat.rhn.domain.config.ConfigChannel"
-                    column="config_channel_id"/>
-        </list>
-
-        <property name="created" column="created" type="timestamp" insert="false" update="false"/>
-        <many-to-one name="creator" column="creator_id" class="com.redhat.rhn.domain.user.legacy.UserImpl" lazy="proxy"/>
-
-        <joined-subclass name="com.redhat.rhn.domain.state.ServerStateRevision" table="suseServerStateRevision">
-            <key column="state_revision_id"/>
-            <many-to-one name="server" column="server_id" class="com.redhat.rhn.domain.server.Server"/>
-        </joined-subclass>
-
-        <joined-subclass name="com.redhat.rhn.domain.state.ServerGroupStateRevision" table="suseServerGroupStateRevision">
-            <key column="state_revision_id"/>
-            <many-to-one name="group" column="group_id" class="com.redhat.rhn.domain.server.ServerGroup"/>
-        </joined-subclass>
-
-        <joined-subclass name="com.redhat.rhn.domain.state.OrgStateRevision" table="suseOrgStateRevision">
-            <key column="state_revision_id"/>
-            <many-to-one name="org" column="org_id" class="com.redhat.rhn.domain.org.Org"/>
-        </joined-subclass>
-
-    </class>
     <query name="StateRevision.deleteAll">
         <![CDATA[delete from com.redhat.rhn.domain.state.StateRevision]]>
     </query>

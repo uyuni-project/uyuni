@@ -54,7 +54,7 @@ public class MgrSyncUtils {
     private static final String OFFICIAL_NOVELL_UPDATE_HOST = "nu.novell.com";
     public static final String OFFICIAL_UPDATE_HOST_DOMAIN = ".suse.com";
     private static final List<String> PRODUCT_ARCHS = Arrays.asList("i386", "i486", "i586", "i686", "ia64", "ppc64le",
-            "ppc64", "ppc", "s390x", "s390", "x86_64", "aarch64", "amd64");
+            "ppc64", "ppc", "s390x", "s390", "x86_64", "aarch64", "amd64", "arm64");
 
     // No instances should be created
     private MgrSyncUtils() {
@@ -137,6 +137,9 @@ public class MgrSyncUtils {
             case "amd64":
                 arch = "amd64-deb";
                 break;
+            case "arm64":
+                arch = "arm64-deb";
+                break;
             default:
                 // keep arch unchanged
                 break;
@@ -166,16 +169,28 @@ public class MgrSyncUtils {
 
     /**
      * Find a {@link ChannelProduct} or create it if necessary and return it.
+     *
      * @param product product to find or create
      * @return channel product
      */
     public static ChannelProduct findOrCreateChannelProduct(SUSEProduct product) {
+        return findOrCreateChannelProduct(product.getName(), product.getVersion());
+    }
+
+    /**
+     * Find a {@link ChannelProduct} or create it if necessary and return it.
+     *
+     * @param productName    name of the product to find or create
+     * @param productVersion version of the product to find or create
+     * @return channel product
+     */
+    public static ChannelProduct findOrCreateChannelProduct(String productName, String productVersion) {
         ChannelProduct p = ChannelFactory.findChannelProduct(
-                product.getName(), product.getVersion());
+                productName, productVersion);
         if (p == null) {
             p = new ChannelProduct();
-            p.setProduct(product.getName());
-            p.setVersion(product.getVersion());
+            p.setProduct(productName);
+            p.setVersion(productVersion);
             p.setBeta(false);
             ChannelFactory.save(p);
         }

@@ -1,6 +1,7 @@
 #  pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2017 Red Hat, Inc.
+# Copyright (c) 2025 SUSE LLC
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -29,12 +30,12 @@ from spacewalk.common.rhnConfig import CFG
 from spacewalk.common.rhnException import rhnFault, rhnException
 from spacewalk.common.rhnTranslate import _
 
-from . import rhnSQL
-from . import rhnSession
+from spacewalk.server import db_config
+from spacewalk.server import rhnSQL
+from spacewalk.server import rhnSession
 
 
 class User:
-
     """Main User class"""
 
     def __init__(self, username, password):
@@ -696,16 +697,18 @@ def validate_new_password(password):
     # regular expression
     if not password:
         raise rhnFault(12)
-    if len(password) < CFG.MIN_PASSWD_LEN:
+    MIN_PASSWD_LEN = db_config.value("PSW_CHECK_LENGTH_MIN")
+    MAX_PASSWD_LEN = db_config.value("PSW_CHECK_LENGTH_MAX")
+    if len(password) < MIN_PASSWD_LEN:
         raise rhnFault(
-            14, _("password must be at least %d characters") % CFG.MIN_PASSWD_LEN
+            14, _("password must be at least %d characters") % MIN_PASSWD_LEN
         )
-    if len(password) > CFG.MAX_PASSWD_LEN:
+    if len(password) > MAX_PASSWD_LEN:
         raise rhnFault(
-            701, _("Password must be shorter than %d characters") % CFG.MAX_PASSWD_LEN
+            701, _("Password must be shorter than %d characters") % MAX_PASSWD_LEN
         )
 
-    password = password[: CFG.MAX_PASSWD_LEN]
+    password = password[:MAX_PASSWD_LEN]
     invalid_re = re.compile(r"[^ A-Za-z0-9`!@#$%^&*()-_=+[{\]}\\|;:'\",<.>/?~]")
     asterisks_re = re.compile(r"^\**$")
 

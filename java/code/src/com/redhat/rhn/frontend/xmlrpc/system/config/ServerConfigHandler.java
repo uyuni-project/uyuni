@@ -57,6 +57,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -517,7 +518,7 @@ public class ServerConfigHandler extends BaseHandler {
                 // and their ranks will be overridden
                 channelsToAdd = Stream
                         .concat(channels.stream(), server.getConfigChannelStream().filter(c -> !channels.contains(c)))
-                        .toList();
+                        .collect(Collectors.toList());
             }
             else {
                 // Channels are added to the end by default

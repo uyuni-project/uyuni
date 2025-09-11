@@ -2,6 +2,7 @@ default: -f pretty -r features --publish-quiet
 action_chains: --tags @scope_action_chains
 ansible: --tags @scope_ansible
 api: --tags @scope_api
+ssm: --tags @scope_ssm
 building_container_images: --tags @scope_building_container_images
 changing_software_channels: --tags @scope_changing_software_channels
 cobbler: --tags @scope_cobbler

@@ -206,7 +206,7 @@ public class ChannelArch extends BaseDomainHelper {
                 substrings[1].equals("iSeries") || substrings[1].equals("pSeries")) {
             return "ppc64";
         }
-        if (substrings[1].equals("aarch64")) {
+        if (substrings[1].equals("aarch64") || substrings[1].equals("arm64")) {
             return "aarch64";
         }
         if (substrings[1].equals("ppc64le")) {

@@ -309,7 +309,7 @@ class CreateImageProfile extends React.Component<Props, State> {
                 <br />
                 See also the{" "}
                 <a href="https://github.com/SUSE/manager-build-profiles/tree/master/Containers">
-                  SUSE Manager templates repository
+                  SUSE Multi-Linux Manager templates repository
                 </a>{" "}
                 for some out-of-the-box working examples.
               </span>
@@ -335,7 +335,7 @@ class CreateImageProfile extends React.Component<Props, State> {
                 <br />
                 See also the{" "}
                 <a href="https://github.com/SUSE/manager-build-profiles/tree/master/OSImage">
-                  SUSE Manager templates repository
+                  SUSE Multi-Linux Manager templates repository
                 </a>{" "}
                 for some out-of-the-box working examples.
               </span>

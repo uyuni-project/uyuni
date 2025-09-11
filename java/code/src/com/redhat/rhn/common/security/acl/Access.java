@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2015 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -15,11 +16,13 @@
 package com.redhat.rhn.common.security.acl;
 
 import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.LookupException;
+import com.redhat.rhn.domain.access.Namespace;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ClonedChannel;
@@ -43,6 +46,7 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.user.UserManager;
 
+import com.suse.manager.model.hub.HubFactory;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.utils.ViewHelper;
 
@@ -96,6 +100,41 @@ public class Access extends BaseHandler {
             LOG.debug("{} aclUserRole | B returning false ..", params[0]);
         }
         return false;
+    }
+
+    /**
+     * Returns {@code true} if the current user is permitted access to a namespace<strong>or any of its
+     * parents</strong>.
+     * <p>
+     * This method is not suitable for access filtering and should be preferred only for conditional rendering
+     * as it returns also {@code true} if the user has access to any parent of the specified namespace.
+     * @param ctx the context map
+     * @param params the namespace and the access mode ('R' for read-only, 'W' for write)
+     *               as respective elements of an array
+     * @return {@code true} if user is permitted access to the specified namespace or any of its parents
+     */
+    public boolean aclAuthorizedFor(Map<String, Object> ctx, String[] params) {
+        User user = (User) ctx.get("user");
+        if (user == null) {
+            return false;
+        }
+
+        if (user.hasRole(RoleFactory.SAT_ADMIN)) {
+            return true;
+        }
+
+        boolean authorized = UserManager.getPermittedNamespaces(user)
+                .filter(ns -> params[0].equals(ns.getNamespace()) ||
+                        ns.getNamespace().startsWith(params[0] + '.')
+                ).anyMatch(ns -> params.length < 2 ||
+                        ns.getAccessMode().equals(Namespace.AccessMode.valueOf(params[1])));
+
+        if (!authorized) {
+            LOG.debug("Access restricted for user '{}' to namespace '{}' [{}]",
+                    user.getId(), params[0], params.length > 1 ? params[1] : "any");
+        }
+
+        return !ConfigDefaults.get().isRbacEnabled() || authorized;
     }
 
     /**
@@ -675,5 +714,27 @@ public class Access extends BaseHandler {
         }
 
         return server.getChannels().stream().anyMatch(Channel::isModular);
+    }
+
+    /**
+     * Checks if this server is a hub
+     * @param ctx the acl context
+     * @param params the parameters for the acl
+     * @return true if this server has peripheral registered
+     */
+    public boolean aclIsHub(Map<String, Object> ctx, String[] params) {
+        HubFactory factory = new HubFactory();
+        return factory.isISSHub();
+    }
+
+    /**
+     * Checks if this server is a peripheral
+     * @param ctx the acl context
+     * @param params the parameters for the acl
+     * @return true if this server is registered as a peripheral on a hub
+     */
+    public boolean aclIsPeripheral(Map<String, Object> ctx, String[] params) {
+        HubFactory factory = new HubFactory();
+        return factory.isISSPeripheral();
     }
 }

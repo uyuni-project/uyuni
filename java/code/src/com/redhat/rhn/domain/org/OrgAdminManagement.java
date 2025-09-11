@@ -17,13 +17,51 @@ package com.redhat.rhn.domain.org;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 
+import org.hibernate.annotations.Type;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
 /**
  * OrgAdminManagement
  */
+@Entity
+@Table(name = "rhnOrgAdminManagement")
 public class OrgAdminManagement extends BaseDomainHelper {
 
+    @Id
+    @Column(name = "org_id", nullable = false)
     private Long orgId;
+
+    @OneToOne
+    @MapsId // Maps the primary key of OrgAdminManagement to the primary key of Org
+    @JoinColumn(name = "org_id") // The foreign key column
+    private Org org;
+
+    @Column(name = "enabled", nullable = false)
+    @Type(type = "yes_no")
     private boolean enabled;
+
+    /**
+     * Gets the current value of org
+     * @return Returns the value of org
+     */
+    public Org getOrg() {
+        return org;
+    }
+
+    /**
+     * Sets the value of org to new value
+     * @param orgIn New value for org
+     */
+    public void setOrg(Org orgIn) {
+        org = orgIn;
+    }
 
     /**
      * @return Returns the orgId.

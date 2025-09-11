@@ -7,7 +7,7 @@
 @skip_if_github_validation
 @containerized_server
 @proxy
-@buildhost
+@build_host
 @private_net
 @pxeboot_minion
 @scope_cobbler

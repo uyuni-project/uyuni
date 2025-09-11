@@ -1,0 +1,12 @@
+include /templates/common.jade
+
+#register-peripheral
+
+script(type='text/javascript').
+    window.csrfToken = "#{csrf_token}";
+
+script(type='text/javascript').
+    spaImportReactPage('admin/hub/register-peripheral')
+        .then(function(module) {
+            module.renderer("register-peripheral");
+        });

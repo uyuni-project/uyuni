@@ -742,6 +742,10 @@ class OracleBackend(Backend):
         )
         sth.execute()
 
+    def setSessionTimeZoneToUTC(self):
+        sth = self.dbmodule.prepare("alter session set time_zone = 'UTC'")
+        sth.execute()
+
     def init(self):
         """
         Override parent to do explicit setting of the date format. (Oracle
@@ -766,6 +770,10 @@ class PostgresqlBackend(OracleBackend):
             "set session time zone '%s'"
             % timezone_utils.get_utc_offset()
         )
+        sth.execute()
+
+    def setSessionTimeZoneToUTC(self):
+        sth = self.dbmodule.prepare("set session time zone 'UTC'")
         sth.execute()
 
     def init(self):

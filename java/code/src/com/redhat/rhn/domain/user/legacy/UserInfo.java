@@ -18,13 +18,14 @@ package com.redhat.rhn.domain.user.legacy;
 import com.redhat.rhn.domain.user.RhnTimeZone;
 import com.redhat.rhn.domain.user.User;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * UserInfo represents the bean version of the DB table
  * RHNUSERINFO
  */
-public class UserInfo extends AbstractUserChild {
+public class UserInfo extends AbstractUserChild implements Serializable {
     private int pageSize;
     private int emailNotify;
     private boolean taskoNotify;

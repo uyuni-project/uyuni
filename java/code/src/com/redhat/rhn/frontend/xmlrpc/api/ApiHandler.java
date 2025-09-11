@@ -17,7 +17,6 @@ package com.redhat.rhn.frontend.xmlrpc.api;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.util.StringUtil;
-import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.HandlerFactory;
 
@@ -92,11 +91,9 @@ public class ApiHandler extends BaseHandler {
     }
 
     /** Lists available API namespaces
-     * @param loggedInUser The current user
      * @return map of API namespaces
      *
      * @apidoc.doc Lists available API namespaces
-     * @apidoc.param #session_key()
      * @apidoc.returntype
      *   #struct_begin("namespace")
      *        #prop_desc("string", "namespace", "API namespace")
@@ -104,7 +101,7 @@ public class ApiHandler extends BaseHandler {
      *   #struct_end()
      */
     @ReadOnly
-    public Map<String, String> getApiNamespaces(User loggedInUser) {
+    public Map<String, String> getApiNamespaces() {
         return handlers.getKeys().stream().collect(Collectors.toMap(
            namespace -> namespace,
            namespace -> StringUtil.getClassNameNoPackage(
@@ -114,11 +111,9 @@ public class ApiHandler extends BaseHandler {
 
     /**
      * Lists all available api calls grouped by namespace
-     * @param loggedInUser The current user
      * @return a map containing list of api calls for every namespace
      *
      * @apidoc.doc Lists all available api calls grouped by namespace
-     * @apidoc.param #session_key()
      * @apidoc.returntype
      *   #struct_begin("method_info")
      *       #prop_desc("string", "name", "method name")
@@ -128,21 +123,19 @@ public class ApiHandler extends BaseHandler {
      *   #struct_end()
      */
     @ReadOnly
-    public Map<String, Object> getApiCallList(User loggedInUser) {
+    public Map<String, Object> getApiCallList() {
         return handlers.getKeys().stream().collect(Collectors.toMap(
             namespace -> namespace,
-            namespace -> getApiNamespaceCallList(loggedInUser, namespace)
+                this::getApiNamespaceCallList
         ));
     }
 
     /**
      * Lists all available api calls for the specified namespace
-     * @param loggedInUser The current user
      * @param namespace namespace of interest
      * @return a map containing list of api calls for every namespace
      *
      * @apidoc.doc Lists all available api calls for the specified namespace
-     * @apidoc.param #session_key()
      * @apidoc.param #param("string", "namespace")
      * @apidoc.returntype
      *   #struct_begin("method_info")
@@ -153,7 +146,7 @@ public class ApiHandler extends BaseHandler {
      *   #struct_end()
      */
     @ReadOnly
-    public Map getApiNamespaceCallList(User loggedInUser, String namespace) {
+    public Map getApiNamespaceCallList(String namespace) {
         Class<? extends BaseHandler> handlerClass =
                 handlers.getHandler(namespace)
                         .orElseThrow(() -> new RuntimeException("Handler " + namespace + " not found."))

@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.server.Server;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * SCCVirtualizationHostJson
@@ -62,7 +63,7 @@ public class SCCVirtualizationHostJson {
         systems = s.getGuests().stream()
                 .filter(guest -> guest.isRegisteredGuest())
                 .map(guest -> new SCCVirtualizationHostSystemsJson(guest))
-                .toList();
+                .collect(Collectors.toList());
     }
 
     /**

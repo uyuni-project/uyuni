@@ -30,8 +30,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import javax.persistence.NoResultException;
-
 /**
  * Factory class for working with states.
  */
@@ -102,12 +100,7 @@ public class StateFactory extends HibernateFactory {
                 """;
         Query<OrgStateRevision> query = getSession().createNativeQuery(sql, OrgStateRevision.class);
         query.setParameter("org", org.getId(), StandardBasicTypes.LONG);
-        try {
-            return Optional.ofNullable(query.getSingleResult());
-        }
-        catch (NoResultException e) {
-            return Optional.empty();
-        }
+        return query.uniqueResultOptional();
     }
 
     /**
@@ -125,12 +118,7 @@ public class StateFactory extends HibernateFactory {
                 """;
         Query<ServerGroupStateRevision> query = getSession().createNativeQuery(sql, ServerGroupStateRevision.class);
         query.setParameter("group", group.getId(), StandardBasicTypes.LONG);
-        try {
-            return Optional.ofNullable(query.getSingleResult());
-        }
-        catch (NoResultException e) {
-            return Optional.empty();
-        }
+        return query.uniqueResultOptional();
     }
 
     /**
@@ -147,12 +135,7 @@ public class StateFactory extends HibernateFactory {
                 """;
         Query<ServerStateRevision> query = getSession().createNativeQuery(sql, ServerStateRevision.class);
         query.setParameter("server", server.getId(), StandardBasicTypes.LONG);
-        try {
-            return Optional.ofNullable(query.getSingleResult());
-        }
-        catch (NoResultException e) {
-            return Optional.empty();
-        }
+        return query.uniqueResultOptional();
     }
 
     /**

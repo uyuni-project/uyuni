@@ -1,4 +1,4 @@
-# Copyright (c) 2022 SUSE LLC
+# Copyright (c) 2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 # This is a known bug: https://bugzilla.suse.com/show_bug.cgi?id=1209231
@@ -83,7 +83,7 @@ Feature: Correct timezone display
 
   Scenario: Cleanup: Log in as admin user again and remove scheduled actions
     Given I am authorized for the "Admin" section
-    And I cancel all scheduled actions
+    And I cancel all scheduled actions via API
 
   Scenario: Cleanup: Remove role
     When I follow the left menu "Users > User List > Active"

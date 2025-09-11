@@ -37,6 +37,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Used to schedule actions from Recurring action schedules
@@ -89,7 +90,7 @@ public class RecurringActionJob extends RhnJavaJob {
                 List<String> mods = configs.stream()
                         .sorted(Comparator.comparingLong(RecurringStateConfig::getPosition))
                         .map(RecurringStateConfig::getStateName)
-                        .toList();
+                        .collect(Collectors.toList());
                 Action a = ActionManager.scheduleApplyStates(action.getCreator(),
                         minionIds, mods,
                         Optional.of(Map.of("rec_id", action.getId().toString())),

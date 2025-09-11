@@ -20,17 +20,37 @@ import com.redhat.rhn.domain.action.ActionChild;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 /**
  * ScriptAction
  */
+@Entity
+@Table(name = "rhnActionScript")
 public class ScriptActionDetails extends ActionChild {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "script_action_seq")
+    @SequenceGenerator(name = "script_action_seq", sequenceName = "RHN_ACTSCRIPT_ID_SEQ", allocationSize = 1)
     private Long id;
-    private String username;
-    private String groupname;
-    private byte[] script;
+
+    @Column(nullable = false)
+    private String username = "";
+    @Column(nullable = false)
+    private String groupname = "";
+    @Column(name = "script", columnDefinition = "bytea")
+    private byte[] script = {};
     private Long timeout;
-    private Set<ScriptResult> results;
+    @OneToMany(mappedBy = "parentScriptActionDetails", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<ScriptResult> results = new HashSet<>();
 
     /**
      * @return Returns the groupname.

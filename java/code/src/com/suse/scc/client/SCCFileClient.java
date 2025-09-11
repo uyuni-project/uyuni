@@ -30,11 +30,11 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
+import java.nio.file.Path;
 import java.util.List;
 
 /**
@@ -42,15 +42,14 @@ import java.util.List;
  */
 public class SCCFileClient implements SCCClient {
 
-    /** The config object. */
-    private final SCCConfig config;
+    private final Path localResourcePath;
 
     /**
      * Constructor for connecting to scc.suse.com.
-     * @param configIn the configuration object
+     * @param localResourcePathIn the local path from where to read scc data.
      */
-    public SCCFileClient(SCCConfig configIn) {
-        config = configIn;
+    public SCCFileClient(Path localResourcePathIn) {
+        this.localResourcePath = localResourcePathIn;
     }
 
     /**
@@ -160,7 +159,7 @@ public class SCCFileClient implements SCCClient {
                 .create();
         return (T) gson.fromJson(
                 new BufferedReader(new InputStreamReader(new FileInputStream(
-                        new File(config.getLocalResourcePath(), filename)))),
+                        localResourcePath.resolve(filename).toFile()))),
                 resultType);
     }
 }

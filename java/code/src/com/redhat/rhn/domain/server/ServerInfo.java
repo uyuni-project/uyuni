@@ -14,12 +14,13 @@
  */
 package com.redhat.rhn.domain.server;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * ServerInfo - Class representation of the table rhnServerInfo
  */
-public class ServerInfo {
+public class ServerInfo implements Serializable {
 
     private Long id;
     private Server server;

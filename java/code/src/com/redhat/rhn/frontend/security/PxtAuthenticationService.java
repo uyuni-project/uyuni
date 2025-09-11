@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2024 SUSE LLC
  * Copyright (c) 2009--2015 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -21,13 +22,12 @@ import com.redhat.rhn.frontend.servlets.PxtSessionDelegate;
 import com.suse.manager.api.HttpApiRegistry;
 import com.suse.manager.webui.utils.LoginHelper;
 
-import org.apache.commons.collections.set.UnmodifiableSet;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.client.utils.URIBuilder;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.Set;
-import java.util.TreeSet;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -40,50 +40,45 @@ public class PxtAuthenticationService extends BaseAuthenticationService {
 
     public static final long MAX_URL_LENGTH = 2048;
 
-    private static final Set UNPROTECTED_URIS;
-    private static final Set POST_UNPROTECTED_URIS;
-    private static final Set LOGIN_URIS;
+    private static final Set<String> UNPROTECTED_URIS;
+    private static final Set<String> POST_UNPROTECTED_URIS;
+    private static final Set<String> LOGIN_URIS;
 
     static {
         // Login routes
-        TreeSet set = new TreeSet<>();
-        set.add("/rhn/newlogin/");
-        set.add("/rhn/manager/login");
-
-        LOGIN_URIS = UnmodifiableSet.decorate(set);
+        Set<String> routes = new HashSet<>();
+        routes.add("/rhn/newlogin/");
+        routes.add("/rhn/manager/login");
+        LOGIN_URIS = Set.copyOf(routes);
 
         // Unauthenticated routes
-        set = new TreeSet<>(set);
-        set.add("/rhn/rpc/api");
-        set.add("/rhn/help/");
-        set.add("/rhn/apidoc");
-        set.add("/rhn/errors");
-        set.add("/rhn/kickstart/DownloadFile");
-        set.add("/rhn/ty/TinyUrl");
-        set.add("/css");
-        set.add("/img");
-        set.add("/img/favicon.ico");
-        set.add("/rhn/common/DownloadFile");
-        set.add("/rhn/manager/sso");
+        routes.add("/rhn/rpc/api");
+        routes.add("/rhn/help/");
+        routes.add("/rhn/apidoc");
+        routes.add("/rhn/errors");
+        routes.add("/rhn/kickstart/DownloadFile");
+        routes.add("/rhn/ty/TinyUrl");
+        routes.add("/css");
+        routes.add("/img");
+        routes.add("/img/favicon.ico");
+        routes.add("/rhn/common/DownloadFile");
+        routes.add("/rhn/manager/sso");
         // password-reset-link destination
-        set.add("/rhn/ResetLink");
-        set.add("/rhn/ResetPasswordSubmit");
-        set.add("/rhn/saltboot");
-
+        routes.add("/rhn/ResetLink");
+        routes.add("/rhn/ResetPasswordSubmit");
+        routes.add("/rhn/saltboot");
+        routes.add("/rhn/hub");
         // HTTP API public endpoints
-        set.addAll(HttpApiRegistry.getUnautenticatedRoutes());
-
-        UNPROTECTED_URIS = UnmodifiableSet.decorate(set);
+        routes.addAll(HttpApiRegistry.getUnautenticatedRoutes());
+        UNPROTECTED_URIS = Set.copyOf(routes);
 
         // CSRF whitelist
-        set = new TreeSet<>(set);
-        set.add("/rhn/common/DownloadFile");
-        // search (safe to be unprotected, since it has no modifying side-effects)
-        set.add("/rhn/Search.do");
-        set.add("/rhn/manager/api/");
-        set.add("/rhn/manager/upload/image");
-
-        POST_UNPROTECTED_URIS = UnmodifiableSet.decorate(set);
+        routes.add("/rhn/common/DownloadFile");
+        // Search (safe to be unprotected, since it has no modifying side-effects)
+        routes.add("/rhn/Search.do");
+        routes.add("/rhn/manager/api/");
+        routes.add("/rhn/manager/upload/image");
+        POST_UNPROTECTED_URIS = Set.copyOf(routes);
     }
 
     private PxtSessionDelegate pxtDelegate;
@@ -92,17 +87,17 @@ public class PxtAuthenticationService extends BaseAuthenticationService {
     }
 
     @Override
-    protected Set getLoginURIs() {
+    protected Set<String> getLoginURIs() {
         return LOGIN_URIS;
     }
 
     @Override
-    protected Set getUnprotectedURIs() {
+    protected Set<String> getUnprotectedURIs() {
         return UNPROTECTED_URIS;
     }
 
     @Override
-    protected Set getPostUnprotectedURIs() {
+    protected Set<String> getPostUnprotectedURIs() {
         return POST_UNPROTECTED_URIS;
     }
 
@@ -125,9 +120,6 @@ public class PxtAuthenticationService extends BaseAuthenticationService {
         return requestURIdoesLogin(request) || requestPostCsfrWhitelist(request);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean validate(HttpServletRequest request, HttpServletResponse response) {
         if (requestURIRequiresAuthentication(request)) {
@@ -140,9 +132,6 @@ public class PxtAuthenticationService extends BaseAuthenticationService {
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void refresh(HttpServletRequest request, HttpServletResponse response) {
         // If URL requires auth and we are authenticated refresh the session.
@@ -159,9 +148,6 @@ public class PxtAuthenticationService extends BaseAuthenticationService {
                pxtDelegate.getWebUserId(request) == null);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void redirectToLogin(HttpServletRequest request, HttpServletResponse response)
         throws ServletException {
@@ -198,19 +184,12 @@ public class PxtAuthenticationService extends BaseAuthenticationService {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void redirectTo(HttpServletRequest request, HttpServletResponse response,
-                           String path) {
+    public void redirectTo(HttpServletRequest request, HttpServletResponse response, String path) {
             response.setHeader("Location", path);
-            response.setStatus(response.SC_SEE_OTHER);
+            response.setStatus(HttpServletResponse.SC_SEE_OTHER);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void invalidate(HttpServletRequest request, HttpServletResponse response) {
         pxtDelegate.invalidatePxtSession(request, response);

@@ -111,7 +111,7 @@ public class AutoErrataTask extends RhnJavaJob {
         SelectMode select = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_AUTO_ERRATA_SYSTEMS);
         List<Map<String, Long>> results = select.execute();
-        return results.stream().map(system -> system.get("id")).toList();
+        return results.stream().map(system -> system.get("id")).collect(Collectors.toList());
     }
 
     /**
@@ -125,7 +125,7 @@ public class AutoErrataTask extends RhnJavaJob {
         return ServerFactory.lookupByIds(systems).stream()
                 .filter(mm::isSystemInMaintenanceMode)
                 .map(Server::getId)
-                .toList();
+                .collect(Collectors.toList());
     }
 
     /**

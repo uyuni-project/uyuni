@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 SUSE LLC
+ * Copyright (c) 2016--2024 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.redhat.rhn.domain.channel;
 
@@ -20,7 +16,9 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
 
-import com.suse.manager.webui.utils.DownloadTokenBuilder;
+import com.suse.manager.webui.utils.token.DownloadTokenBuilder;
+import com.suse.manager.webui.utils.token.Token;
+import com.suse.manager.webui.utils.token.TokenException;
 import com.suse.utils.Opt;
 
 import org.apache.logging.log4j.LogManager;
@@ -29,7 +27,6 @@ import org.jose4j.lang.JoseException;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -127,7 +124,7 @@ public class AccessTokenFactory extends HibernateFactory {
                     tokensToActivate.stream()
                             .anyMatch(newToken ->
                                     newToken.getChannels().containsAll(token.getChannels()));
-        }).toList();
+        }).collect(Collectors.toList());
     }
 
     /**
@@ -201,7 +198,7 @@ public class AccessTokenFactory extends HibernateFactory {
             try {
                 return regenerate(token);
             }
-            catch (JoseException e) {
+            catch (TokenException e) {
                 LOG.error("Could not regenerate token with id: {}", token.getId(), e);
                 return token;
             }
@@ -265,25 +262,21 @@ public class AccessTokenFactory extends HibernateFactory {
     public static Optional<AccessToken> generate(MinionServer minion,
             Set<Channel> channels) {
         try {
-            DownloadTokenBuilder tokenBuilder = new DownloadTokenBuilder(minion.getOrg().getId());
-            tokenBuilder.useServerSecret();
-            tokenBuilder.onlyChannels(channels.stream().map(Channel::getLabel)
-                    .collect(Collectors.toSet()));
-            String tokenString = tokenBuilder.getToken();
+            Token token = new DownloadTokenBuilder(minion.getOrg().getId())
+                .usingServerSecret()
+                .allowingOnlyChannels(channels.stream().map(Channel::getLabel).collect(Collectors.toSet()))
+                .build();
 
             AccessToken newToken = new AccessToken();
-            newToken.setStart(Date.from(tokenBuilder.getIssuedAt()));
-            newToken.setToken(tokenString);
+            newToken.setStart(Date.from(token.getIssuingTime()));
+            newToken.setToken(token.getSerializedForm());
             newToken.setMinion(minion);
-            Instant expiration = tokenBuilder.getIssuedAt()
-                    .plus(tokenBuilder.getExpirationTimeMinutesInTheFuture(),
-                            ChronoUnit.MINUTES);
-            newToken.setExpiration(Date.from(expiration));
+            newToken.setExpiration(Date.from(token.getExpirationTime()));
             newToken.setChannels(channels);
             save(newToken);
             return Optional.of(newToken);
         }
-        catch (JoseException e) {
+        catch (TokenException e) {
             LOG.error("Could not generate token for minion: {}", minion.getId(), e);
             return Optional.empty();
         }
@@ -293,36 +286,32 @@ public class AccessTokenFactory extends HibernateFactory {
      * Regenerated an access token by creating a new one with the same information.
      * If the token is linked to a minion it will be unlinked and linked to the new token.
      *
-     * @param token access token to regenerate
+     * @param accessToken access token to regenerate
      * @return the new access token
      * @throws JoseException if token generation fails in this case
      * the old token will not be unlinked.
      */
-    public static AccessToken regenerate(AccessToken token) throws JoseException {
-        DownloadTokenBuilder tokenBuilder = new DownloadTokenBuilder(token.getMinion().getOrg().getId());
-        tokenBuilder.useServerSecret();
-        tokenBuilder.onlyChannels(token.getChannels().stream().map(Channel::getLabel)
-                .collect(Collectors.toSet()));
-        String tokenString = tokenBuilder.getToken();
+    public static AccessToken regenerate(AccessToken accessToken) throws TokenException {
+        Token token = new DownloadTokenBuilder(accessToken.getMinion().getOrg().getId())
+            .usingServerSecret()
+            .allowingOnlyChannels(accessToken.getChannels().stream().map(Channel::getLabel).collect(Collectors.toSet()))
+            .build();
 
-        //Link new token
+        // Link new token
         AccessToken newToken = new AccessToken();
-        newToken.setStart(Date.from(tokenBuilder.getIssuedAt()));
-        newToken.setToken(tokenString);
-        newToken.setMinion(token.getMinion());
-        Instant expiration = tokenBuilder.getIssuedAt()
-                .plus(tokenBuilder.getExpirationTimeMinutesInTheFuture(),
-                        ChronoUnit.MINUTES);
-        newToken.setExpiration(Date.from(expiration));
+        newToken.setStart(Date.from(token.getIssuingTime()));
+        newToken.setToken(token.getSerializedForm());
+        newToken.setMinion(accessToken.getMinion());
+        newToken.setExpiration(Date.from(token.getExpirationTime()));
         // We need to copy the collection here because hibernate does not like to share.
-        newToken.setChannels(new HashSet<>(token.getChannels()));
+        newToken.setChannels(new HashSet<>(accessToken.getChannels()));
 
         AccessTokenFactory.save(newToken);
 
         // Unlink the old token
-        token.setMinion(null);
-        token.setValid(false);
-        AccessTokenFactory.save(token);
+        accessToken.setMinion(null);
+        accessToken.setValid(false);
+        AccessTokenFactory.save(accessToken);
 
         return newToken;
     }

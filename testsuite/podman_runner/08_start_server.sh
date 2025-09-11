@@ -66,7 +66,11 @@ sudo -i podman run --cap-add AUDIT_CONTROL --rm \
     ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-server-all-in-one-dev:$UYUNI_VERSION
 sudo -i podman exec -d server prometheus
 
+echo "Setting SCC mirror to /mirror"
+sudo -i podman exec server bash -c "echo \"server.susemanager.fromdir = /mirror\" >> /etc/rhn/rhn.conf"
+sudo -i podman exec server bash -c "rctomcat restart"
+echo "Syncing with latest changes"
+sudo -i podman exec server bash -c "rsync -av /testsuite/dockerfiles/server-all-in-one-dev/mirror/ /mirror/"
+
 # mgrctl should not be installed in this container
 sudo -i podman exec server bash -c "rm -f /usr/bin/mgrctl"
-
-

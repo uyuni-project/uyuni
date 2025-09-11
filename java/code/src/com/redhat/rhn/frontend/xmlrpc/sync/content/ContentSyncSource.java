@@ -51,12 +51,12 @@ public interface ContentSyncSource {
     /**
      * Gets the instance of {@link SCCWebClient} that allows to access this content source.
      * @param uuid the unique identifier for this client for debugging purpose
-     * @param loggingDir the optional logging directory
+     * @param loggingDir the logging directory
      * @return the client that can be used to connect this content source.
      * @throws ContentSyncSourceException when it's not possible to build a client
      * @throws SCCClientException when an client error happens during the initialization
      */
-    SCCClient getClient(String uuid, Optional<Path> loggingDir) throws ContentSyncSourceException, SCCClientException;
+    SCCClient getClient(String uuid, Path loggingDir) throws ContentSyncSourceException, SCCClientException;
 
 
     /**

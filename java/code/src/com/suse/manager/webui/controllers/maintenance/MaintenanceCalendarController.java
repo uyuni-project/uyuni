@@ -141,10 +141,10 @@ public class MaintenanceCalendarController {
                             .map(tuple -> Map.of(
                                     "id", tuple.getScheduleId().toString(),
                                     "name", tuple.getScheduleName()))
-                            .toList();
+                            .collect(Collectors.toList());
                     return new MaintenanceCalendarJson(calId, calName, schedules);
                 })
-                .toList();
+                .collect(Collectors.toList());
 
         return json(response, calendarsWithSchedules, new TypeToken<>() { });
     }
@@ -175,7 +175,7 @@ public class MaintenanceCalendarController {
                         "id", schedule.getId().toString(),
                         "name", schedule.getName()
                 )
-        ).toList());
+        ).collect(Collectors.toList()));
         json.setEventNames(new IcalUtils().getEventNames(calendar));
 
         return json(response, json, new TypeToken<>() { });

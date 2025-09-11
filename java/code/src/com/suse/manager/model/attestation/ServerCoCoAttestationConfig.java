@@ -19,6 +19,8 @@ import com.redhat.rhn.domain.server.Server;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
@@ -32,7 +34,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "suseServerCoCoAttestationConfig")
-public class ServerCoCoAttestationConfig {
+public class ServerCoCoAttestationConfig implements Serializable  {
     private Long id;
     private Server server;
     private boolean enabled;

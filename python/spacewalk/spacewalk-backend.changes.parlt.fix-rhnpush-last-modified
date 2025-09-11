@@ -1,2 +1,0 @@
-- Fix wrong timestamp when importing packages
-  with rhnpush (bsc#1235970)

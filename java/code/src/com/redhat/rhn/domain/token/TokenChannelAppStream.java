@@ -16,6 +16,8 @@ package com.redhat.rhn.domain.token;
 
 import com.redhat.rhn.domain.channel.Channel;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -28,7 +30,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "suseRegTokenChannelAppStream")
-public class TokenChannelAppStream {
+public class TokenChannelAppStream implements Serializable {
 
     /**
      * Constructs a TokenChannelAppStream instance.

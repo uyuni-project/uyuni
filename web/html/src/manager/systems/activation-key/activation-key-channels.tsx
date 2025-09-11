@@ -1,6 +1,7 @@
 import * as React from "react";
 
 import MandatoryChannelsApi from "core/channels/api/mandatory-channels-api";
+import { productName } from "core/user-preferences";
 
 import { Messages } from "components/messages/messages";
 import { Utils as MessagesUtils } from "components/messages/messages";
@@ -29,7 +30,13 @@ class ActivationKeyChannels extends React.Component<ActivationKeyChannelsProps, 
   }
 
   getDefaultBase(): Channel {
-    return { id: -1, name: t("SUSE Manager Default"), custom: false, subscribable: true, recommended: false };
+    return {
+      id: -1,
+      name: t("{productName} Default", { productName }),
+      custom: false,
+      subscribable: true,
+      recommended: false,
+    };
   }
 
   handleBaseChange = (event: React.ChangeEvent<HTMLSelectElement>): Promise<number> => {

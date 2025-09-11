@@ -206,7 +206,7 @@ Thank you for using @@PRODUCT_NAME@@.
 {2}</target>
       </trans-unit>
       <trans-unit approved="yes" id="email.errata.notification.body.summary" xml:space="preserve">
-          <source>
+        <source>
 @@PRODUCT_NAME@@ has determined that the following advisory is applicable to
 one or more of the systems you have registered:
 
@@ -223,7 +223,7 @@ Summary:
 ------------------------------------------------------------------------------
     </source>
         <context-group name="ctx">
-            <context context-type="paramnotes">
+          <context context-type="paramnotes">
         {0} - Errata Details URL
         {1} - errata advisory type
         {2} - errata advisory
@@ -233,7 +233,7 @@ Summary:
         {6} - errata notes
         {7} - errata refs
       </context>
-          </context-group>
+        </context-group>
         <target state="final">
 @@PRODUCT_NAME@@ 确定以下建议适用于
 您注册的一个或多个系统：
@@ -255,7 +255,7 @@ Summary:
         </context-group>
       </trans-unit>
       <trans-unit approved="yes" id="email.errata.notification.body.affectedheader" xml:space="preserve">
-          <source>
+        <source>
 ---------------------
 Affected Systems List
 ---------------------
@@ -276,7 +276,7 @@ package profile for that server is out of date.
         </context-group>
       </trans-unit>
       <trans-unit id="email.errata.notification.body.onesystem" xml:space="preserve">
-          <source>
+        <source>
 There is 1 affected system registered in 'Overview' (only systems for
 which you have explicitly enabled Patch Alerts are shown).
     </source>
@@ -289,15 +289,15 @@ which you have explicitly enabled Patch Alerts are shown).
         </context-group>
       </trans-unit>
       <trans-unit id="email.errata.notification.body.numsystems" xml:space="preserve">
-          <source>
+        <source>
 There are {0} affected systems registered in 'Overview' (only systems for
 which you have explicitly enabled Patch Alerts are shown).
     </source>
         <context-group name="ctx">
-            <context context-type="paramnotes">
+          <context context-type="paramnotes">
         {0} - system count
       </context>
-          </context-group>
+        </context-group>
         <target state="translated">
 "概览" 中有 {0} 个受影响的已注册系统（只显示
 已为其显式启用了补丁警报的系统）。
@@ -307,7 +307,7 @@ which you have explicitly enabled Patch Alerts are shown).
         </context-group>
       </trans-unit>
       <trans-unit id="email.errata.notification.body.affected" xml:space="preserve">
-          <source>
+        <source>
 Release    Arch       Profile Name
 ---------- ---------- ---------------------------------------------
 {0}
@@ -322,11 +322,11 @@ You may address the issues outlined in this advisory in two ways:
      - run the Update Agent on each affected server.
     </source>
         <context-group name="ctx">
-            <context context-type="paramnotes">
+          <context context-type="paramnotes">
         {0} - systems affected list
         {1} - system list URL
       </context>
-          </context-group>
+        </context-group>
         <target state="translated">
 发行版    体系结构       配置文件名称
 ---------- ---------- ---------------------------------------------
@@ -346,7 +346,7 @@ You may address the issues outlined in this advisory in two ways:
         </context-group>
       </trans-unit>
       <trans-unit approved="yes" id="email.errata.notification.body.preferences" xml:space="preserve">
-          <source>
+        <source>
 Changing Notification Preferences
 ---------------------------------
 To enable/disable your Patch Alert preferences globally please log in to @@PRODUCT_NAME@@
@@ -362,12 +362,12 @@ click the "Details" tab.
 {2}
     </source>
         <context-group name="ctx">
-            <context context-type="paramnotes">
+          <context context-type="paramnotes">
         {0} - account preferences URL
         {1} - email footer
         {2} - account info
       </context>
-          </context-group>
+        </context-group>
         <target state="final">
 更改通知首选项
 ---------------------------------
@@ -472,18 +472,18 @@ please contact your @@PRODUCT_NAME@@ administrator for further assistance.
 
 Thank you for using @@PRODUCT_NAME@@.
         </source>
-        <target>
+        <target state="translated">
 [ 这是按您的请求自动发送到 {0} 的一封电子邮件。]
 
-重设置登录名 {2} 的 @@PRODUCT_NAME@@ 口令的请求已发出。
+重置登录名 {2} 的 @@PRODUCT_NAME@@ 口令的请求已发出。
 
-要继续完成重设置过程，请转到：
+要继续完成重置过程，请转到：
 
 {1}
 
-如果您不想要重设置口令，可忽略本电子邮件。
+如果您不想要重置口令，可忽略本电子邮件。
 
-如果您在重设置过程中遇到任何其他问题，
+如果您在重置过程中遇到任何其他问题，
 请联系您的 @@PRODUCT_NAME@@ 管理员取得更多帮助。
 
 感谢您使用 @@PRODUCT_NAME@@。
@@ -533,7 +533,7 @@ Thank you for using @@PRODUCT_NAME@@.
 现有登录名：
 
 {1}
-您可以在下面的网址中重设置所有上述 @@PRODUCT_NAME@@ 登录名的口令：
+您可以在下面的网址中重置所有上述 @@PRODUCT_NAME@@ 登录名的口令：
 
   https://{2}/rhn/help/ForgotCredentials.do
 
@@ -556,13 +556,13 @@ administrator at {2} for further assistance.
 
 Thank you for using @@PRODUCT_NAME@@.
         </source>
-        <target>
+        <target state="translated">
 [ 这是自动发送到 {0} 的一封电子邮件。]
 
-为了响应 {2} 发出的重设置请求，现已重设置登录名 {1} 的
+为了响应 {2} 发出的重置请求，现已重置登录名 {1} 的
 @@PRODUCT_NAME@@ 口令
 
-如果您并未发出此项口令重设置请求，请立即联系 @@PRODUCT_NAME@@
+如果您并未发出此项口令重置请求，请立即联系 @@PRODUCT_NAME@@
 管理员 ({2}) 以取得更多帮助。
 
 感谢您使用 @@PRODUCT_NAME@@。
@@ -577,7 +577,7 @@ Thank you for using @@PRODUCT_NAME@@.
         </context-group>
       </trans-unit>
       <trans-unit approved="yes" id="dailysummary.email.notpaygcompliant" xml:space="preserve">
-          <source>Warning: This @@PRODUCT_NAME@@ PAYG instance is not compliant and some of its functions are disabled.
+        <source>Warning: This @@PRODUCT_NAME@@ PAYG instance is not compliant and some of its functions are disabled.
 Please contact your administrator to amend the situation before continuing using the product.
           </source>
         <target state="final">警告：此 @@PRODUCT_NAME@@ PAYG 实例不合规，部分功能将会停用。

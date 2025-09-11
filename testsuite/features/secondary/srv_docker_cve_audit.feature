@@ -4,6 +4,7 @@
 # This feature depends on:
 # - features/secondary/buildhost_docker_build_image.feature : Due to the images listed in the CVE Audit images
 
+@skip_if_github_validation
 @scope_cve_audit
 @no_auth_registry
 Feature: CVE audit for content management

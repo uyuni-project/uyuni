@@ -29,6 +29,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -340,7 +341,7 @@ public class SetupWizardProductDto implements Selectable,
                 getOptionalChannels().stream()
                 )
                 .filter(Channel::isInstallerUpdates)
-                .toList();
+                .collect(Collectors.toList());
     }
 
     /**

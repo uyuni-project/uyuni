@@ -101,6 +101,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.NoResultException;
 
@@ -3169,8 +3170,8 @@ public class ChannelSoftwareHandler extends BaseHandler {
 
     public long applyChannelState(User user, List<Integer> sids) {
         try {
-            List<Long> serverIds = sids.stream().map(Integer::longValue).toList();
-            List<MinionServer> minionServers = MinionServerFactory.lookupByIds(serverIds).toList();
+            List<Long> serverIds = sids.stream().map(Integer::longValue).collect(Collectors.toList());
+            List<MinionServer> minionServers = MinionServerFactory.lookupByIds(serverIds).collect(Collectors.toList());
             return ChannelManager.applyChannelState(user, minionServers).orElse(0L);
         }
         catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {

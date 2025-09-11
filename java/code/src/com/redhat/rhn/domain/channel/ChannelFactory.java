@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2009--2017 Red Hat, Inc.
- * Copyright (c) 2011--2021 SUSE LLC
+ * Copyright (c) 2011--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -15,6 +15,7 @@
  */
 package com.redhat.rhn.domain.channel;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
@@ -24,13 +25,26 @@ import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.common.ChecksumType;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.org.OrgFactory;
+import com.redhat.rhn.domain.product.ChannelTemplate;
+import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.scc.SCCRepository;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.xmlrpc.InvalidChannelLabelException;
 import com.redhat.rhn.manager.appstreams.AppStreamsManager;
+import com.redhat.rhn.manager.content.ContentSyncManager;
+import com.redhat.rhn.manager.content.MgrSyncUtils;
 import com.redhat.rhn.manager.ssm.SsmChannelDto;
 
+import com.suse.manager.model.hub.CustomChannelInfoJson;
+import com.suse.manager.model.hub.HubFactory;
+import com.suse.manager.model.hub.ModifyCustomChannelInfoJson;
+import com.suse.scc.SCCEndpoints;
+import com.suse.scc.model.SCCRepositoryJson;
+
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
@@ -43,10 +57,14 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
@@ -66,6 +84,7 @@ public class ChannelFactory extends HibernateFactory {
 
     private static ChannelFactory singleton = new ChannelFactory();
     private static Logger log = LogManager.getLogger(ChannelFactory.class);
+
     private ChannelFactory() {
         super();
     }
@@ -81,6 +100,7 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * Lookup a Channel by its id
+     *
      * @param id the id to search for
      * @return the Channel found
      */
@@ -91,7 +111,8 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * Lookup a Channel by id and User
-     * @param id the id to search for
+     *
+     * @param id     the id to search for
      * @param userIn User who is doing the looking
      * @return the Server found (null if not or not member if userIn)
      */
@@ -105,7 +126,8 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * Lookup a Channel by label and User
-     * @param label the label to search for
+     *
+     * @param label  the label to search for
      * @param userIn User who is doing the looking
      * @return the Server found (null if not or not member if userIn)
      */
@@ -119,6 +141,7 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * Lookup a content source type by label
+     *
      * @param label the label to lookup
      * @return the ContentSourceType
      */
@@ -128,6 +151,7 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * List all available content source types
+     *
      * @return list of ContentSourceType
      */
     public static List<ContentSourceType> listContentSourceTypes() {
@@ -136,6 +160,7 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * Lookup a content source by org
+     *
      * @param org the org to lookup
      * @return the ContentSource(s)
      */
@@ -145,6 +170,7 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * Lookup orphan vendor content source
+     *
      * @return the ContentSource(s)
      */
     public static List<ContentSource> lookupOrphanVendorContentSources() {
@@ -153,6 +179,7 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * Lookup orphan vendor channels
+     *
      * @return the Channels(s)
      */
     public static List<Channel> lookupOrphanVendorChannels() {
@@ -170,6 +197,7 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * Lookup repository for given channel
+     *
      * @param c the channel
      * @return repository
      */
@@ -179,9 +207,31 @@ public class ChannelFactory extends HibernateFactory {
     }
 
     /**
+     * List all available Vendor Channels created from a given SCC repository ID
+     *
+     * @param sccId the SCC Repository ID
+     * @return return a list of available {@link Channel}s for this SCC repository ID
+     */
+    public static List<Channel> findVendorChannelBySccId(Long sccId) {
+        return getSession().createNativeQuery("""
+                        SELECT c.*, cl.original_id,
+                        CASE WHEN cl.original_id IS NULL THEN 0 ELSE 1 END AS clazz_
+                        FROM suseSCCRepository r
+                        JOIN suseChannelTemplate ct ON r.id = ct.repo_id
+                        JOIN rhnChannel c on c.label = ct.channel_label
+                        LEFT JOIN rhnChannelCloned cl ON c.id = cl.id
+                        WHERE r.scc_id = :sccId
+                        ORDER BY c.label
+                        """, Channel.class)
+                .setParameter("sccId", sccId)
+                .list();
+    }
+
+    /**
      * Lookup a content source by org/channel
+     *
      * @param org the org to lookup
-     * @param c the channel
+     * @param c   the channel
      * @return the ContentSource(s)
      */
     public static List<ContentSource> lookupContentSources(Org org, Channel c) {
@@ -198,7 +248,8 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * Lookup a content source by org and label
-     * @param org the org to lookup
+     *
+     * @param org   the org to lookup
      * @param label repo label
      * @return the ContentSource(s)
      */
@@ -209,6 +260,7 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * Lookup a Vendor content source (org is NULL) by label
+     *
      * @param label repo label
      * @return the ContentSource(s)
      */
@@ -219,9 +271,10 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * Lookup a content source by org and repo
-     * @param org the org to lookup
+     *
+     * @param org      the org to lookup
      * @param repoType repo type
-     * @param repoUrl repo url
+     * @param repoUrl  repo url
      * @return the ContentSource(s)
      */
     public static List<ContentSource> lookupContentSourceByOrgAndRepo(Org org,
@@ -232,7 +285,8 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * lookup content source by id and org
-     * @param id id of content source
+     *
+     * @param id    id of content source
      * @param orgIn org to check
      * @return content source
      */
@@ -242,6 +296,7 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * Lookup a content source's filters by id
+     *
      * @param id source id
      * @return the ContentSourceFilters
      */
@@ -251,6 +306,7 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * Retrieve a list of channel ids associated with the labels provided
+     *
      * @param labelsIn the labels to search for
      * @return list of channel ids
      */
@@ -265,6 +321,7 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * Insert or Update a Channel.
+     *
      * @param c Channel to be stored in database.
      */
     public static void save(Channel c) {
@@ -274,6 +331,7 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * Insert or Update a content source.
+     *
      * @param c content source to be stored in database.
      */
     public static void save(ContentSource c) {
@@ -282,6 +340,7 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * Insert or Update a DistChannelMap.
+     *
      * @param dcm DistChannelMap to be stored in database.
      */
     public static void save(DistChannelMap dcm) {
@@ -290,6 +349,7 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * Insert or Update a content source filter.
+     *
      * @param f content source filter to be stored in database.
      */
     public static void save(ContentSourceFilter f) {
@@ -298,6 +358,7 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * Remove a Channel from the DB
+     *
      * @param c Action to be removed from database.
      */
     public static void remove(Channel c) {
@@ -317,6 +378,7 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * Remove a DistChannelMap from the DB
+     *
      * @param dcm Action to be removed from database.
      */
     public static void remove(DistChannelMap dcm) {
@@ -325,6 +387,7 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * Remove a Content Source from the DB
+     *
      * @param src to be removed from database
      */
     public static void remove(ContentSource src) {
@@ -333,6 +396,7 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * Remove a ContentSourceFilter from the DB
+     *
      * @param filter to be removed from database
      */
     public static void remove(ContentSourceFilter filter) {
@@ -341,6 +405,7 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * Returns the base channel for the given server id.
+     *
      * @param sid Server id whose base channel we want.
      * @return Base Channel for the given server id.
      */
@@ -350,6 +415,7 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * Returns a list of Channels which have clonable errata.
+     *
      * @param org Org.
      * @return List of com.redhat.rhn.domain.Channel objects which have
      * clonable errata.
@@ -360,8 +426,9 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * Returns the list of Channel ids which the given orgid has access to.
+     *
      * @param orgid Org id
-     * @param cid Base Channel id.
+     * @param cid   Base Channel id.
      * @return the list of Channel ids which the given orgid has access to.
      */
     public static List<Channel> getUserAcessibleChannels(Long orgid, Long cid) {
@@ -371,8 +438,9 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * Returns the accessible child channels associated to a base channel.
+     *
      * @param baseChannel the base channel who's child channels are needed
-     * @param user the user requesting the info.. (has to be globally subscribed etc.)
+     * @param user        the user requesting the info.. (has to be globally subscribed etc.)
      * @return the accessible child channels..
      */
     public static List<Channel> getAccessibleChildChannels(Channel baseChannel, User user) {
@@ -383,6 +451,7 @@ public class ChannelFactory extends HibernateFactory {
     /**
      * Returns the list of Channels accessible by an org
      * Channels are accessible if they are owned by an org or public.
+     *
      * @param orgid The id for the org
      * @return A list of Channel Objects.
      */
@@ -392,6 +461,7 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * Returns list of channel architectures
+     *
      * @return list of channel architectures
      */
     public static List<ChannelArch> getChannelArchitectures() {
@@ -400,12 +470,13 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * Checks if a channel is accessible by an Org.
+     *
      * @param channelLabel the channel label
-     * @param orgId the Org ID
+     * @param orgId        the Org ID
      * @return true if it is accessible
      */
     public static boolean isAccessibleBy(String channelLabel, Long orgId) {
-        return (int)singleton.lookupObjectByNamedQuery("Channel.isAccessibleBy",
+        return (int) singleton.lookupObjectByNamedQuery("Channel.isAccessibleBy",
                 Map.of("channel_label", channelLabel, ORG_ID, orgId)) > 0;
     }
 
@@ -413,7 +484,7 @@ public class ChannelFactory extends HibernateFactory {
      * Checks if a channel is accessible by a User.
      *
      * @param channelLabel the channel label
-     * @param userId user id
+     * @param userId       user id
      * @return true if it is accessible
      */
     public static boolean isAccessibleByUser(String channelLabel, Long userId) {
@@ -423,6 +494,7 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * returns a ChannelArch by label
+     *
      * @param label ChannelArch label
      * @return a ChannelArch by label
      */
@@ -436,7 +508,8 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * Returns the Channel whose label matches the given label.
-     * @param org The org of the user looking up the channel
+     *
+     * @param org   The org of the user looking up the channel
      * @param label Channel label sought.
      * @return the Channel whose label matches the given label.
      */
@@ -449,6 +522,7 @@ public class ChannelFactory extends HibernateFactory {
      * Returns the Channel whose label matches the given label.
      * This was added to allow taskomatic to lookup channels by label,
      * and should NOT be used from the webui.
+     *
      * @param label Channel label sought.
      * @return the Channel whose label matches the given label.
      */
@@ -472,8 +546,9 @@ public class ChannelFactory extends HibernateFactory {
     /**
      * Returns true if the given channel is globally subscribable for the
      * given org.
+     *
      * @param org Org
-     * @param c Channel to validate.
+     * @param c   Channel to validate.
      * @return true if the given channel is globally subscribable for the
      */
     public static boolean isGloballySubscribable(Org org, Channel c) {
@@ -494,10 +569,11 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * Set the globally subscribable attribute for a given channel
-     * @param org The org containing the channel
+     *
+     * @param org     The org containing the channel
      * @param channel The channel in question
-     * @param value True to make the channel globally subscribable, false to make it not
-     * globally subscribable.
+     * @param value   True to make the channel globally subscribable, false to make it not
+     *                globally subscribable.
      */
     public static void setGloballySubscribable(Org org, Channel channel, boolean value) {
         //we need to check here, otherwise if we try to remove and it's already removed
@@ -521,13 +597,14 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * Remove an org-channel setting
-     * @param org The org in question
+     *
+     * @param org     The org in question
      * @param channel The channel in question
-     * @param label the label of the setting to remove
+     * @param label   the label of the setting to remove
      */
     private static void removeOrgChannelSetting(Org org, Channel channel, String label) {
         WriteMode m = ModeFactory.getWriteMode(CHANNEL_QUERIES,
-                                      "remove_org_channel_setting");
+                "remove_org_channel_setting");
         Map<String, Object> params = new HashMap<>();
         params.put(ORG_ID, org.getId());
         params.put("cid", channel.getId());
@@ -537,13 +614,14 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * Adds an org-channel setting
-     * @param org The org in question
+     *
+     * @param org     The org in question
      * @param channel The channel in question
-     * @param label the label of the setting to add
+     * @param label   the label of the setting to add
      */
     private static void addOrgChannelSetting(Org org, Channel channel, String label) {
         WriteMode m = ModeFactory.getWriteMode(CHANNEL_QUERIES,
-                                      "add_org_channel_setting");
+                "add_org_channel_setting");
         Map<String, Object> params = new HashMap<>();
         params.put(ORG_ID, org.getId());
         params.put("cid", channel.getId());
@@ -552,13 +630,12 @@ public class ChannelFactory extends HibernateFactory {
     }
 
     /**
-     *
      * @param cid Channel package is being added to
      * @param pid Package id from rhnPackage
      */
     public static void addChannelPackage(Long cid, Long pid) {
         WriteMode m = ModeFactory.getWriteMode(CHANNEL_QUERIES,
-        "add_channel_package");
+                "add_channel_package");
         Map<String, Object> params = new HashMap<>();
         params.put("cid", cid);
         params.put("pid", pid);
@@ -567,6 +644,7 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * Creates empty SSL set for repository
+     *
      * @return empty SSL set
      */
     public static SslContentSource createRepoSslSet() {
@@ -593,7 +671,7 @@ public class ChannelFactory extends HibernateFactory {
      */
     public static void refreshNewestPackageCache(Long channelId, String label) {
         CallableMode m = ModeFactory.getCallableMode(CHANNEL_QUERIES,
-            "refresh_newest_package");
+                "refresh_newest_package");
         Map<String, Object> inParams = new HashMap<>();
         inParams.put("cid", channelId);
         inParams.put(LABEL, label);
@@ -605,11 +683,11 @@ public class ChannelFactory extends HibernateFactory {
      * Clones the "newest" channel packages according to clone.
      *
      * @param fromChannelId original channel id
-     * @param toChannelId cloned channle id
+     * @param toChannelId   cloned channle id
      */
     public static void cloneNewestPackageCache(Long fromChannelId, Long toChannelId) {
         WriteMode m = ModeFactory.getWriteMode(CHANNEL_QUERIES,
-            "clone_newest_package");
+                "clone_newest_package");
         Map<String, Object> params = new HashMap<>();
         params.put("from_cid", fromChannelId);
         params.put("to_cid", toChannelId);
@@ -618,6 +696,7 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * Returns true if the given label is in use.
+     *
      * @param label Label
      * @return true if the given label is in use.
      */
@@ -631,6 +710,7 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * Returns true if the given name is in use.
+     *
      * @param name name
      * @return true if the given name is in use.
      */
@@ -645,6 +725,7 @@ public class ChannelFactory extends HibernateFactory {
     /**
      * Return a list of kickstartable tree channels, i.e. channels that can
      * be used for creating kickstartable trees (distributions).
+     *
      * @param org org
      * @return list of channels
      */
@@ -656,6 +737,7 @@ public class ChannelFactory extends HibernateFactory {
     /**
      * Return a list of channels that are kickstartable to the Org passed in,
      * i.e. channels that can be used for creating kickstart profiles.
+     *
      * @param org org
      * @return list of channels
      */
@@ -666,6 +748,7 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * Get a list of base channels that have an org associated
+     *
      * @param user the logged in user
      * @return List of Channels
      */
@@ -675,6 +758,7 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * Find yum supported checksum types
+     *
      * @return List of ChecksumTypes instances
      */
     public static List<ChecksumType> listYumSupportedChecksums() {
@@ -683,17 +767,18 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * Get a list of modular channels in users org
+     *
      * @param user the logged in user
      * @return List of modular channels
      */
     public static List<Channel> listModularChannels(User user) {
-        List<Channel> channels = singleton.listObjectsByNamedQuery("Channel.findModularChannels",
-                Map.of("org_id", user.getOrg().getId()));
-        return channels;
+        return singleton.listObjectsByNamedQuery("Channel.findModularChannels",
+                Map.of(ORG_ID, user.getOrg().getId()));
     }
 
     /**
      * Find checksumtype by label
+     *
      * @param checksum checksum label
      * @return ChecksumType instance for given label
      */
@@ -707,6 +792,7 @@ public class ChannelFactory extends HibernateFactory {
     /**
      * Get a list of packages ids that are in a channel and in a list of errata.
      * (The errata do not necessarily have to be associate with the channel)
+     *
      * @param chan the channel
      * @param eids the errata ids
      * @return list of package ids
@@ -719,6 +805,7 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * Lookup a ChannelArch based on its name
+     *
      * @param name arch name
      * @return ChannelArch if found, otherwise null
      */
@@ -731,6 +818,7 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * Lookup a ChannelArch based on its label
+     *
      * @param label arch label
      * @return ChannelArch if found, otherwise null
      */
@@ -743,6 +831,7 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * Get package ids for a channel
+     *
      * @param cid the channel id
      * @return List of package ids
      */
@@ -755,6 +844,7 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * Get cloned errata ids for a channel
+     *
      * @param cid the channel id
      * @return List of errata ids
      */
@@ -767,6 +857,7 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * Looksup the number of Packages in a channel
+     *
      * @param channel the Channel who's package count you are interested in.
      * @return number of packages in this channel.
      */
@@ -776,6 +867,7 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * Get the errata count for a channel
+     *
      * @param channel the channel
      * @return the errata count as an int
      */
@@ -805,6 +897,7 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * Lookup ChannelSyncFlag object for a specfic channel
+     *
      * @param channel The channel object on which the lookup should be performed
      * @return ChannelSyncFlag object containing all flag settings for a specfic channel
      */
@@ -818,6 +911,7 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * Save a ChannelSyncFlag object for a specfic channel
+     *
      * @param flags The ChannelSyncFlag object which should be added to channel
      */
     public static void save(ChannelSyncFlag flags) {
@@ -826,7 +920,7 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * List all defined dist channel maps
-     *
+     * <p>
      * Returns empty array if none is found.
      *
      * @return DistChannelMap[], empty if none is found
@@ -837,6 +931,7 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * Lists all dist channel maps for an user organization
+     *
      * @param org organization
      * @return list of dist channel maps
      */
@@ -857,9 +952,10 @@ public class ChannelFactory extends HibernateFactory {
     /**
      * Lookup the dist channel map for the given product name, release, and channel arch.
      * Returns null if none is found.
-     * @param org organization
+     *
+     * @param org         organization
      * @param productName Product name.
-     * @param release Version.
+     * @param release     Version.
      * @param channelArch Channel arch.
      * @return DistChannelMap, null if none is found
      */
@@ -874,8 +970,8 @@ public class ChannelFactory extends HibernateFactory {
      * Lookup the dist channel map for the given organization according to release and channel arch.
      * Returns null if none is found.
      *
-     * @param org organization
-     * @param release release
+     * @param org         organization
+     * @param release     release
      * @param channelArch Channel arch.
      * @return DistChannelMap, null if none is found
      */
@@ -888,6 +984,7 @@ public class ChannelFactory extends HibernateFactory {
     /**
      * Lists compatible dist channel mappings for a server available within an organization
      * Returns empty list if none is found.
+     *
      * @param server server
      * @return list of dist channel mappings, empty list if none is found
      */
@@ -899,7 +996,8 @@ public class ChannelFactory extends HibernateFactory {
     /**
      * Lists *common* compatible channels for all SSM systems subscribed to a common base
      * Returns empty list if none is found.
-     * @param user user
+     *
+     * @param user    user
      * @param channel channel
      * @return list of compatible channels, empty list if none is found
      */
@@ -911,6 +1009,7 @@ public class ChannelFactory extends HibernateFactory {
     /**
      * Lists *common* compatible channels for all SSM systems subscribed to a common base
      * Returns empty list if none is found.
+     *
      * @param user user
      * @return list of compatible channels, empty list if none is found
      */
@@ -922,7 +1021,8 @@ public class ChannelFactory extends HibernateFactory {
     /**
      * Lists *common* custom compatible channels
      * for all SSM systems subscribed to a common base
-     * @param user user
+     *
+     * @param user    user
      * @param channel channel
      * @return List of channels.
      */
@@ -934,6 +1034,7 @@ public class ChannelFactory extends HibernateFactory {
     /**
      * Lists *common* custom compatible channels
      * for all SSM systems without base channel
+     *
      * @param user user
      * @return List of channels.
      */
@@ -946,7 +1047,7 @@ public class ChannelFactory extends HibernateFactory {
      * Find child channels that can be subscribed by the user and have the arch compatible
      * with the servers in the SSM.
      *
-     * @param user user
+     * @param user            user
      * @param parentChannelId id of the parent channel
      * @return List of child channel ids.
      */
@@ -956,8 +1057,8 @@ public class ChannelFactory extends HibernateFactory {
         return res
                 .stream()
                 .map(Arrays::asList)
-                .map(r -> new SsmChannelDto((long)r.get(0), (String)r.get(1), r.get(2) != null))
-                .toList();
+                .map(r -> new SsmChannelDto((long) r.get(0), (String) r.get(1), r.get(2) != null))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -976,7 +1077,7 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * All channels (including children) based on the following rules
-     *
+     * <p>
      * 1) Base channels are listed first
      * 2) Parent channels are ordered by label
      * 3) Child channels are listed right after the corresponding parent, and ordered by label
@@ -992,6 +1093,7 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * Get a list of channels with no org that are not a child
+     *
      * @return List of Channels
      */
     public static List<Channel> listRedHatBaseChannels() {
@@ -1001,6 +1103,7 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * List all accessible Red Hat base channels for a given user
+     *
      * @param user logged in user
      * @return list of Red Hat base channels
      */
@@ -1011,6 +1114,7 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * Lookup the original channel of a cloned channel
+     *
      * @param chan the channel to find the original of
      * @return The channel that was cloned, null if none
      */
@@ -1034,6 +1138,7 @@ public class ChannelFactory extends HibernateFactory {
     /**
      * Returns a distinct list of ChannelArch labels for all synch'd and custom
      * channels in the satellite.
+     *
      * @return a distinct list of ChannelArch labels for all synch'd and custom
      * channels in the satellite.
      */
@@ -1043,6 +1148,7 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * List all accessible base channels for an org
+     *
      * @param user logged in user.
      * @return list of custom channels
      */
@@ -1053,6 +1159,7 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * List all accessible base channels for an org
+     *
      * @param user logged in user.
      * @return list of custom channels
      */
@@ -1063,6 +1170,7 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * List all accessible base channels for the entire satellite
+     *
      * @return list of base channels
      */
     public static List<Channel> listAllBaseChannels() {
@@ -1072,6 +1180,7 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * List all child channels of the given parent regardless of the user
+     *
      * @param parent the parent channel
      * @return list of children of the parent
      */
@@ -1081,18 +1190,19 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * Lookup a Package based on the channel and package file name
-     * @param channel to look in
+     *
+     * @param channel  to look in
      * @param fileName to look up
      * @return Package if found
      */
     public static Package lookupPackageByFilename(Channel channel,
-            String fileName) {
+                                                  String fileName) {
 
         List<Package> pkgs = HibernateFactory.getSession()
-          .getNamedQuery("Channel.packageByFileName")
-          .setParameter("pathlike", "%/" + fileName, StandardBasicTypes.STRING)
-          .setParameter("channel_id", channel.getId(), StandardBasicTypes.LONG)
-          .list();
+                .getNamedQuery("Channel.packageByFileName")
+                .setParameter("pathlike", "%/" + fileName, StandardBasicTypes.STRING)
+                .setParameter("channel_id", channel.getId(), StandardBasicTypes.LONG)
+                .list();
         if (pkgs.isEmpty()) {
             return null;
         }
@@ -1101,14 +1211,15 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * Lookup a Package based on the channel, package file name and range
-     * @param channel to look in
-     * @param fileName to look up
+     *
+     * @param channel     to look in
+     * @param fileName    to look up
      * @param headerStart start of header
-     * @param headerEnd end of header
+     * @param headerEnd   end of header
      * @return Package if found
      */
     public static Package lookupPackageByFilenameAndRange(Channel channel,
-            String fileName, int headerStart, int headerEnd) {
+                                                          String fileName, int headerStart, int headerEnd) {
 
         List<Package> pkgs = HibernateFactory.getSession()
                 .getNamedQuery("Channel.packageByFileNameAndRange")
@@ -1127,6 +1238,7 @@ public class ChannelFactory extends HibernateFactory {
     /**
      * Method to check if the channel contains any kickstart distributions
      * associated to it.
+     *
      * @param ch the channel to check distros on
      * @return true of the channels contains any distros
      */
@@ -1141,6 +1253,7 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * Clear a content source's filters
+     *
      * @param id source id
      */
     public static void clearContentSourceFilters(Long id) {
@@ -1157,7 +1270,8 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * returns channel manager id for given channel
-     * @param org given organization
+     *
+     * @param org       given organization
      * @param channelId channel id
      * @return list of channel managers
      */
@@ -1177,7 +1291,8 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * returns channel subscriber id for given channel
-     * @param org given organization
+     *
+     * @param org       given organization
      * @param channelId channel id
      * @return list of channel subscribers
      */
@@ -1197,6 +1312,7 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * Locks the given Channel for update on a database level
+     *
      * @param c Channel to lock
      */
     public static void lock(Channel c) {
@@ -1205,8 +1321,9 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * Adds errata to channel mapping. Does nothing else
+     *
      * @param eids List of eids to add mappings for
-     * @param cid channel id we're cloning into
+     * @param cid  channel id we're cloning into
      */
     public static void addErrataToChannel(Set<Long> eids, Long cid) {
         WriteMode m = ModeFactory.getWriteMode(CHANNEL_QUERIES,
@@ -1220,7 +1337,17 @@ public class ChannelFactory extends HibernateFactory {
     }
 
     /**
+     * List all channels
+     *
+     * @return list of all channels
+     */
+    public static List<Channel> listAllChannels() {
+        return getSession().createQuery("FROM Channel c", Channel.class).getResultList();
+    }
+
+    /**
      * List all vendor channels (org is null)
+     *
      * @return list of vendor channels
      */
     public static List<Channel> listVendorChannels() {
@@ -1233,18 +1360,21 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * List all custom channels (org is not null) with at least one repository
+     *
      * @return list of vendor channels
      */
     public static List<Channel> listCustomChannelsWithRepositories() {
         List<Channel> result =
-            singleton.listObjectsByNamedQuery("Channel.findCustomChannelsWithRepositories", Map.of());
+                singleton.listObjectsByNamedQuery("Channel.findCustomChannelsWithRepositories", Map.of());
         if (result != null) {
             return result;
         }
         return new ArrayList<>();
     }
+
     /**
      * List all vendor content sources (org is null)
+     *
      * @return list of vendor content sources
      */
     @SuppressWarnings("unchecked")
@@ -1255,6 +1385,7 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * Find a vendor content source (org is null) for a given repo URL.
+     *
      * @param repoUrl url to match against
      * @return vendor content source if it exists
      */
@@ -1298,24 +1429,8 @@ public class ChannelFactory extends HibernateFactory {
     }
 
     /**
-     * Find {@link ContentSource} with source url containing urlPart.
-     * Uses SQL wildcard paramter '%'. When urlPart does contain a wildcard parameter, it is passed directly to
-     * the query. If not, a wildcard is added and the begining and the end.
-     * @param urlPart part of the url
-     * @return list of found {@link ContentSource}
-     */
-    public static List<ContentSource> findContentSourceLikeUrl(String urlPart) {
-        String urllike = urlPart;
-        if (!urlPart.contains("%")) {
-            urllike = String.format("%%%s%%", urlPart);
-        }
-        return getSession().createNamedQuery("ContentSource.findLikeUrl", ContentSource.class)
-                .setParameter("urllike", urllike)
-                .list();
-    }
-
-    /**
      * Find a {@link ChannelProduct} for given name and version.
+     *
      * @param product the product
      * @param version the version
      * @return channel product
@@ -1337,6 +1452,7 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * Insert or update a {@link ChannelProduct}.
+     *
      * @param channelProduct ChannelProduct to be stored in database.
      */
     public static void save(ChannelProduct channelProduct) {
@@ -1345,6 +1461,7 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * Insert or update a {@link ProductName}.
+     *
      * @param productName ProductName to be stored in database.
      */
     public static void save(ProductName productName) {
@@ -1403,7 +1520,7 @@ public class ChannelFactory extends HibernateFactory {
      * Sets channel modules data from given channel.
      *
      * @param from the source Channel
-     * @param to  the target Channel
+     * @param to   the target Channel
      */
     public static void cloneModulesMetadata(Channel from, Channel to) {
         if (!from.isModular()) {
@@ -1424,5 +1541,362 @@ public class ChannelFactory extends HibernateFactory {
             }
             to.getModules().setRelativeFilename(from.getModules().getRelativeFilename());
         }
+    }
+
+    /**
+     * Converts a custom channel to a custom channel info structure
+     *
+     * @param customChannel              the custom channel to be converted
+     * @param peripheralOrgId            the peripheral org id this channel will be assigned to in the peripheral
+     * @param forcedOriginalChannelLabel an optional string setting the original of a cloned channel,
+     *                                   instead of the pristine one
+     * @return CustomChannelInfoJson the converted info of the custom channel
+     */
+    public static CustomChannelInfoJson toCustomChannelInfo(Channel customChannel, long peripheralOrgId,
+                                                            Optional<String> forcedOriginalChannelLabel) {
+
+        if (!customChannel.isCustom()) {
+            throw new IllegalArgumentException("Channel [" + customChannel.getLabel() + "] is not custom");
+        }
+
+        CustomChannelInfoJson customChannelInfo = new CustomChannelInfoJson(customChannel.getLabel());
+
+        customChannelInfo.setPeripheralOrgId(peripheralOrgId);
+
+        String parentChannelLabel = (null == customChannel.getParentChannel()) ? null :
+                customChannel.getParentChannel().getLabel();
+        customChannelInfo.setParentChannelLabel(parentChannelLabel);
+
+        String channelArchLabel = (null == customChannel.getChannelArch()) ? null :
+                customChannel.getChannelArch().getLabel();
+        customChannelInfo.setChannelArchLabel(channelArchLabel);
+
+        customChannelInfo.setBaseDir(customChannel.getBaseDir());
+        customChannelInfo.setName(customChannel.getName());
+        customChannelInfo.setSummary(customChannel.getSummary());
+        customChannelInfo.setDescription(customChannel.getDescription());
+
+        String productNameLabel = (null == customChannel.getProductName()) ? null :
+                customChannel.getProductName().getLabel();
+        customChannelInfo.setProductNameLabel(productNameLabel);
+
+        customChannelInfo.setGpgCheck(customChannel.isGPGCheck());
+        customChannelInfo.setGpgKeyUrl(customChannel.getGPGKeyUrl());
+        customChannelInfo.setGpgKeyId(customChannel.getGPGKeyId());
+        customChannelInfo.setGpgKeyFp(customChannel.getGPGKeyFp());
+
+        customChannelInfo.setEndOfLifeDate(customChannel.getEndOfLife());
+        customChannelInfo.setChecksumTypeLabel(customChannel.getChecksumTypeLabel());
+
+        String channelProductProduct = (null == customChannel.getProduct()) ? null :
+                customChannel.getProduct().getProduct();
+        customChannelInfo.setChannelProductProduct(channelProductProduct);
+        String channelProductVersion = (null == customChannel.getProduct()) ? null :
+                customChannel.getProduct().getVersion();
+        customChannelInfo.setChannelProductVersion(channelProductVersion);
+
+        customChannelInfo.setChannelAccess(customChannel.getAccess());
+        customChannelInfo.setMaintainerName(customChannel.getMaintainerName());
+        customChannelInfo.setMaintainerEmail(customChannel.getMaintainerEmail());
+        customChannelInfo.setMaintainerPhone(customChannel.getMaintainerPhone());
+        customChannelInfo.setSupportPolicy(customChannel.getSupportPolicy());
+        customChannelInfo.setUpdateTag(customChannel.getUpdateTag());
+        customChannelInfo.setInstallerUpdates(customChannel.isInstallerUpdates());
+
+        String originalChannelLabel = customChannel.asCloned()
+                .map(clonedChannel ->
+                        forcedOriginalChannelLabel.orElseGet(() -> clonedChannel.getOriginal().getLabel()))
+                .orElse(null);
+        customChannelInfo.setOriginalChannelLabel(originalChannelLabel);
+
+        // obtain repository info
+        String hostname = ConfigDefaults.get().getJavaHostname();
+        String customChannelLabel = customChannel.getLabel();
+
+        Optional<String> tokenString = SCCEndpoints.buildHubRepositoryToken(customChannelLabel);
+        if (tokenString.isPresent()) {
+            SCCRepositoryJson repositoryInfo = SCCEndpoints.buildCustomRepoJson(customChannelLabel, hostname,
+                    tokenString.get());
+            customChannelInfo.setRepositoryInfo(repositoryInfo);
+        }
+
+        return customChannelInfo;
+    }
+
+    /**
+     * Converts a custom channel info structure to a custom channel
+     *
+     * @param customChannelInfo the custom channel info to be converted
+     * @return customChannel the converted custom channel
+     */
+    public static Channel toCustomChannel(CustomChannelInfoJson customChannelInfo) {
+        Org org = OrgFactory.lookupById(customChannelInfo.getPeripheralOrgId());
+        Channel parentChannel = ChannelFactory.lookupByLabel(customChannelInfo.getParentChannelLabel());
+        ChannelArch channelArch = ChannelFactory.findArchByLabel(customChannelInfo.getChannelArchLabel());
+        ChecksumType checksumType = ChannelFactory.findChecksumTypeByLabel(customChannelInfo.getChecksumTypeLabel());
+
+        Channel customChannel = new Channel();
+        if (StringUtils.isNotEmpty(customChannelInfo.getOriginalChannelLabel())) {
+            Channel originalChannel = ChannelFactory.lookupByLabel(customChannelInfo.getOriginalChannelLabel());
+
+            ClonedChannel temp = new ClonedChannel();
+            temp.setOriginal(originalChannel);
+            customChannel = temp;
+        }
+
+        customChannel.setOrg(org);
+        customChannel.setParentChannel(parentChannel);
+        customChannel.setChannelArch(channelArch);
+
+        customChannel.setLabel(customChannelInfo.getLabel());
+        customChannel.setBaseDir(customChannelInfo.getBaseDir());
+        customChannel.setName(customChannelInfo.getName());
+        customChannel.setSummary(customChannelInfo.getSummary());
+        customChannel.setDescription(customChannelInfo.getDescription());
+
+        customChannel.setProductName(MgrSyncUtils.findOrCreateProductName(customChannelInfo.getProductNameLabel()));
+
+        customChannel.setGPGCheck(customChannelInfo.isGpgCheck());
+        customChannel.setGPGKeyUrl(customChannelInfo.getGpgKeyUrl());
+        customChannel.setGPGKeyId(customChannelInfo.getGpgKeyId());
+        customChannel.setGPGKeyFp(customChannelInfo.getGpgKeyFp());
+
+        customChannel.setEndOfLife(customChannelInfo.getEndOfLifeDate());
+        customChannel.setChecksumType(checksumType);
+
+        customChannel.setProduct(MgrSyncUtils.findOrCreateChannelProduct(
+                customChannelInfo.getChannelProductProduct(), customChannelInfo.getChannelProductVersion()));
+
+        customChannel.setAccess(customChannelInfo.getChannelAccess());
+        customChannel.setMaintainerName(customChannelInfo.getMaintainerName());
+        customChannel.setMaintainerEmail(customChannelInfo.getMaintainerEmail());
+        customChannel.setMaintainerPhone(customChannelInfo.getMaintainerPhone());
+        customChannel.setSupportPolicy(customChannelInfo.getSupportPolicy());
+        customChannel.setUpdateTag(customChannelInfo.getUpdateTag());
+        customChannel.setInstallerUpdates(customChannelInfo.isInstallerUpdates());
+
+        // rebuild repository
+        ContentSyncManager csm = new ContentSyncManager();
+        HubFactory hubFactory = new HubFactory();
+        csm.refreshCustomRepo(List.of(customChannelInfo.getRepositoryInfo()), hubFactory.lookupIssHub().orElse(null));
+
+        return customChannel;
+    }
+
+    /**
+     * Ensures that the vendor channels json info structure is valid, as well as all consequent data
+     *
+     * @param vendorChannelLabelList list of vendor channel labels to be checked
+     * @throws IllegalArgumentException if something is wrong
+     */
+    public static void ensureValidVendorChannels(List<String> vendorChannelLabelList) {
+        for (String vendorChannelLabel : vendorChannelLabelList) {
+            Optional<ChannelTemplate> vendorChannelTemplate = SUSEProductFactory
+                    .lookupByChannelLabelFirst(vendorChannelLabel);
+
+            if (vendorChannelTemplate.isEmpty()) {
+                throw new InvalidChannelLabelException(vendorChannelLabel,
+                        InvalidChannelLabelException.Reason.IS_MISSING,
+                        "Invalid data: vendor channel label not found", vendorChannelLabel);
+            }
+        }
+    }
+
+    /**
+     * Ensures that the custom channels json info structure is valid, as well as all consequent data
+     *
+     * @param customChannelInfoJsonList list of custom channel info structures to be checked
+     * @throws IllegalArgumentException if something is wrong
+     */
+    public static void ensureValidCustomChannels(List<CustomChannelInfoJson> customChannelInfoJsonList) {
+        for (CustomChannelInfoJson customChannelInfo : customChannelInfoJsonList) {
+
+            if (ChannelFactory.doesChannelLabelExist(customChannelInfo.getLabel())) {
+                throw new IllegalArgumentException("Channel already found with the same label " +
+                        "for custom channel [" + customChannelInfo.getLabel() + "]");
+            }
+
+            ensureValidOrgIds(customChannelInfoJsonList);
+
+            ensureExistingOrAboutToCreate(customChannelInfoJsonList, false, "channel arch",
+                    CustomChannelInfoJson::getChannelArchLabel, ChannelFactory::findArchByLabel, null);
+
+            ensureExistingOrAboutToCreate(customChannelInfoJsonList, false, "checksum type",
+                    CustomChannelInfoJson::getChecksumTypeLabel, ChannelFactory::findChecksumTypeByLabel, null);
+
+            ensureExistingOrAboutToCreate(customChannelInfoJsonList, true, "parent channel",
+                    CustomChannelInfoJson::getParentChannelLabel, ChannelFactory::lookupByLabel,
+                    CustomChannelInfoJson::getLabel);
+
+            ensureExistingOrAboutToCreate(customChannelInfoJsonList, true, "original channel",
+                    CustomChannelInfoJson::getOriginalChannelLabel, ChannelFactory::lookupByLabel,
+                    CustomChannelInfoJson::getLabel);
+        }
+    }
+
+    private static <T extends ModifyCustomChannelInfoJson>
+    void ensureExistingOrAboutToCreate(List<T> customChannelInfoJsonList,
+                                       boolean emptyIsAllowed, String informationTypeString,
+                                       Function<T, String> searchLabelMethod,
+                                       Function<String, Object> lookupLabelMethod,
+                                       Function<T, String> accumulateFollowingMethod) {
+        Set<String> accumulationSet = new HashSet<>();
+
+        for (T customChannelInfo : customChannelInfoJsonList) {
+            String searchLabel = searchLabelMethod.apply(customChannelInfo);
+            boolean isEmptySearchLabel = StringUtils.isEmpty(searchLabel);
+
+            if (isEmptySearchLabel && (!emptyIsAllowed)) {
+                throw new IllegalArgumentException(String.format("Custom channel searchLabel [%s] must have valid %s",
+                        customChannelInfo.getLabel(), informationTypeString));
+            }
+
+            if ((!isEmptySearchLabel) && (!accumulationSet.contains(searchLabel))) {
+                if (null == lookupLabelMethod.apply(searchLabel)) {
+                    throw new IllegalArgumentException(String.format("No %s named [%s] for custom channel [%s]",
+                            informationTypeString, searchLabel, customChannelInfo.getLabel()));
+                }
+                accumulationSet.add(searchLabel);
+            }
+
+            //when looking to a parent or original channel, this channel can be a parent/original of the following ones
+            if (null != accumulateFollowingMethod) {
+                accumulationSet.add(accumulateFollowingMethod.apply(customChannelInfo));
+            }
+        }
+    }
+
+    private static <T extends ModifyCustomChannelInfoJson> void ensureValidOrgIds(List<T> customChannelInfoJsonList) {
+        Set<Long> orgSet = new HashSet<>();
+
+        for (T customChannelInfo : customChannelInfoJsonList) {
+            Long orgId = customChannelInfo.getPeripheralOrgId();
+
+            if (null == orgId) {
+                throw new IllegalArgumentException("Custom channel info [" +
+                        customChannelInfo.getLabel() + "] must have a defined OrgId");
+            }
+
+            if (!orgSet.contains(orgId)) {
+                Org org = OrgFactory.lookupById(orgId);
+                if (null == org) {
+                    throw new IllegalArgumentException("No org id found [" + orgId +
+                            "] for custom channel [" + customChannelInfo.getLabel() + "]");
+                }
+                orgSet.add(orgId);
+            }
+        }
+    }
+
+    /**
+     * Ensures that the custom channels json modify info structure is valid, as well as all consequent data
+     *
+     * @param modifyCustomChannelList list of custom channel info structures to be checked
+     * @throws IllegalArgumentException if something is wrong
+     */
+    public static void ensureValidModifyCustomChannels(List<ModifyCustomChannelInfoJson> modifyCustomChannelList) {
+        for (ModifyCustomChannelInfoJson modifyCustomChannelInfo : modifyCustomChannelList) {
+
+            if (!ChannelFactory.doesChannelLabelExist(modifyCustomChannelInfo.getLabel())) {
+                throw new IllegalArgumentException("Channel to modify not found for custom channel [" +
+                        modifyCustomChannelInfo.getLabel() + "]");
+            }
+
+            ensureValidOrgIds(modifyCustomChannelList);
+
+            ensureExistingOrAboutToCreate(modifyCustomChannelList, true, "original channel",
+                    ModifyCustomChannelInfoJson::getOriginalChannelLabel, ChannelFactory::lookupByLabel,
+                    ModifyCustomChannelInfoJson::getLabel);
+        }
+    }
+
+    private static <T> void setValueIfNotNull(Channel channelIn, T valueIn,
+                                              BiConsumer<Channel, T> channelSetValueMethod) {
+        if (null != valueIn) {
+            channelSetValueMethod.accept(channelIn, valueIn);
+        }
+    }
+
+    /**
+     * Modifies a custom channel according to the info structure
+     *
+     * @param modifyCustomChannelInfo the custom channel info with the info on how to modify the custom channel
+     * @return customChannel the modified custom channel
+     */
+    public static Channel modifyCustomChannel(ModifyCustomChannelInfoJson modifyCustomChannelInfo) {
+
+        Channel customChannel = ChannelFactory.lookupByLabel(modifyCustomChannelInfo.getLabel());
+        if (null == customChannel) {
+            throw new IllegalArgumentException("No existing custom channel to modify with label [" +
+                    modifyCustomChannelInfo.getLabel() + "]");
+        }
+
+        Org org = null;
+        if (null != modifyCustomChannelInfo.getPeripheralOrgId()) {
+            org = OrgFactory.lookupById(modifyCustomChannelInfo.getPeripheralOrgId());
+            if ((null != modifyCustomChannelInfo.getPeripheralOrgId()) && (null == org)) {
+                throw new IllegalArgumentException("No org id to modify [" +
+                        modifyCustomChannelInfo.getPeripheralOrgId() +
+                        "] for custom channel [" + modifyCustomChannelInfo.getLabel() + "]");
+            }
+        }
+
+        if ((null != modifyCustomChannelInfo.getOriginalChannelLabel()) &&
+                (StringUtils.isNotEmpty(modifyCustomChannelInfo.getOriginalChannelLabel()))) {
+
+            Channel originalChannel =
+                    ChannelFactory.lookupByLabel(modifyCustomChannelInfo.getOriginalChannelLabel());
+
+            if (null == originalChannel) {
+                throw new IllegalArgumentException("No original channel to modify as original [" +
+                        modifyCustomChannelInfo.getOriginalChannelLabel() +
+                        "] for custom channel [" + modifyCustomChannelInfo.getLabel() + "]");
+            }
+
+            if (customChannel.asCloned().isEmpty()) {
+                throw new IllegalArgumentException("Cannot set original channel " +
+                        "for not cloned custom channel [" + modifyCustomChannelInfo.getLabel() + "]");
+            }
+
+            customChannel.asCloned().get().setOriginal(originalChannel);
+        }
+
+        //null field = do not modify
+        if (null != modifyCustomChannelInfo.getPeripheralOrgId()) {
+            customChannel.setOrg(org);
+        }
+
+        setValueIfNotNull(customChannel, modifyCustomChannelInfo.getBaseDir(), Channel::setBaseDir);
+        setValueIfNotNull(customChannel, modifyCustomChannelInfo.getName(), Channel::setName);
+        setValueIfNotNull(customChannel, modifyCustomChannelInfo.getSummary(), Channel::setSummary);
+        setValueIfNotNull(customChannel, modifyCustomChannelInfo.getDescription(), Channel::setDescription);
+
+        if (null != modifyCustomChannelInfo.getProductNameLabel()) {
+            customChannel.setProductName(
+                    MgrSyncUtils.findOrCreateProductName(modifyCustomChannelInfo.getProductNameLabel()));
+        }
+
+        setValueIfNotNull(customChannel, modifyCustomChannelInfo.isGpgCheck(), Channel::setGPGCheck);
+        setValueIfNotNull(customChannel, modifyCustomChannelInfo.getGpgKeyUrl(), Channel::setGPGKeyUrl);
+        setValueIfNotNull(customChannel, modifyCustomChannelInfo.getGpgKeyId(), Channel::setGPGKeyId);
+        setValueIfNotNull(customChannel, modifyCustomChannelInfo.getGpgKeyFp(), Channel::setGPGKeyFp);
+        setValueIfNotNull(customChannel, modifyCustomChannelInfo.getEndOfLifeDate(), Channel::setEndOfLife);
+
+        if ((null != modifyCustomChannelInfo.getChannelProductProduct()) &&
+                (null != modifyCustomChannelInfo.getChannelProductVersion())) {
+            customChannel.setProduct(MgrSyncUtils.findOrCreateChannelProduct(
+                    modifyCustomChannelInfo.getChannelProductProduct(),
+                    modifyCustomChannelInfo.getChannelProductVersion()));
+        }
+
+        setValueIfNotNull(customChannel, modifyCustomChannelInfo.getChannelAccess(), Channel::setAccess);
+        setValueIfNotNull(customChannel, modifyCustomChannelInfo.getMaintainerName(), Channel::setMaintainerName);
+        setValueIfNotNull(customChannel, modifyCustomChannelInfo.getMaintainerEmail(), Channel::setMaintainerEmail);
+        setValueIfNotNull(customChannel, modifyCustomChannelInfo.getMaintainerPhone(), Channel::setMaintainerPhone);
+        setValueIfNotNull(customChannel, modifyCustomChannelInfo.getSupportPolicy(), Channel::setSupportPolicy);
+        setValueIfNotNull(customChannel, modifyCustomChannelInfo.getUpdateTag(), Channel::setUpdateTag);
+        setValueIfNotNull(customChannel, modifyCustomChannelInfo.isInstallerUpdates(), Channel::setInstallerUpdates);
+
+        return customChannel;
     }
 }

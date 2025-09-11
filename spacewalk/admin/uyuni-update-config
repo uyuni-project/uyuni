@@ -99,7 +99,7 @@ def move_configuration(key, value, oldkey=None):
 
 def init_scc_login():
     # pylint: disable-next=invalid-name
-    with cfg_component("server") as CFG:
+    with cfg_component("server.susemanager") as CFG:
         try:
             if CFG.scc_backup_srv_usr:
                 # nothing to do

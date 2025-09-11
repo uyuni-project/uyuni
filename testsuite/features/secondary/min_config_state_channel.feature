@@ -5,7 +5,6 @@
 # - features/secondary/min_config_state_channel_subscriptions.feature
 # If the state channel fails to be deleted.
 
-@skip_if_github_validation
 @sle_minion
 @scope_configuration_channels
 Feature: Configuration state channels

@@ -319,6 +319,7 @@ class Runner:
             except RhnSyncException:
                 rhnSQL.rollback()
                 raise
+            # pylint: disable-next=possibly-used-before-assignment
             except exception:
                 e = sys.exc_info()[1]
                 msg = _(
@@ -531,7 +532,6 @@ def sendMail(forceEmail=0):
 
 
 class Syncer:
-
     """high-level sychronization/import class
     NOTE: there should *ONLY* be one instance of this.
     """
@@ -1122,7 +1122,6 @@ class Syncer:
             if package_ids:
                 lm = self._channel_collection.get_channel_timestamp(channel_label)
                 channel_last_modified = int(rhnLib.timestamp(lm))
-
                 stream_loader.set_args(channel_label, channel_last_modified)
                 stream_loader.process(package_ids)
 
@@ -1132,7 +1131,7 @@ class Syncer:
 
     _query_compare_packages = """
         select p.id, c.checksum_type, c.checksum, p.path, p.package_size,
-               TO_CHAR(p.last_modified, 'YYYYMMDDHH24MISS') last_modified
+               TO_CHAR(p.last_modified at time zone 'UTC', 'YYYYMMDDHH24MISS') last_modified
           from rhnPackage p, rhnChecksumView c
          where p.name_id = lookup_package_name(:name)
            and p.evr_id = lookup_evr(:epoch, :version, :release, :package_type)
@@ -1307,6 +1306,13 @@ class Syncer:
                 db_checksum = row["checksum"]
                 db_package_size = row["package_size"]
                 db_path = row["path"]
+                log(
+                    3,
+                    # pylint: disable-next=consider-using-f-string
+                    "PKG Metadata values: {}, {}, {}, {}".format(
+                        checksum_type, checksum, package_size, l_timestamp
+                    ),
+                )
 
                 if not (
                     l_timestamp <= db_timestamp
@@ -1315,6 +1321,19 @@ class Syncer:
                 ):
                     # package doesn't match
                     channel_package = package_id
+                    log(
+                        3,
+                        # pylint: disable-next=consider-using-f-string
+                        "Package id {} has different checksum {} vs. {}, package size {} vs. {} or timestamp {} > {}".format(
+                            channel_package,
+                            checksum,
+                            db_checksum,
+                            package_size,
+                            db_package_size,
+                            l_timestamp,
+                            db_timestamp,
+                        ),
+                    )
 
                 if check_rpms:
                     if db_path:
@@ -1326,15 +1345,34 @@ class Syncer:
                             # file doesn't match
                             fs_package = package_id
                             channel_package = package_id
+                            log(
+                                3,
+                                # pylint: disable-next=consider-using-f-string
+                                "Package id {} - {} verify failed: {}".format(
+                                    package_id, db_path, errcode
+                                ),
+                            )
                         path = db_path
                     else:
                         # upload package and reimport metadata
                         channel_package = package_id
                         fs_package = package_id
+                        # pylint: disable-next=consider-using-f-string
+                        log(3, "Package id {} path not found in db".format(package_id))
+            else:
+                log(
+                    3,
+                    # pylint: disable-next=consider-using-f-string
+                    "Package id {} found in DB, but missing checksum_type {}".format(
+                        package_id, checksum_type
+                    ),
+                )
         else:
             # package is missing from the DB
             channel_package = package_id
             fs_package = package_id
+            # pylint: disable-next=consider-using-f-string
+            log(3, "Package id {} not found in db".format(package_id))
 
         if channel_package:
             m_channel_packages.append(channel_package)
@@ -1500,7 +1538,7 @@ class Syncer:
 
     _query_compare_source_packages = """
         select ps.id, c.checksum_type, c.checksum, ps.path, ps.package_size,
-               TO_CHAR(ps.last_modified, 'YYYYMMDDHH24MISS') last_modified
+               TO_CHAR(ps.last_modified at time zone 'UTC', 'YYYYMMDDHH24MISS') last_modified
           from rhnPackageSource ps, rhnChecksumView c
          where ps.source_rpm_id = lookup_source_name(:package_id)
            and (ps.org_id = :org_id or
@@ -1790,7 +1828,7 @@ class Syncer:
     _query_get_db_errata = rhnSQL.Statement(
         """
         select e.id, e.advisory_name,
-               TO_CHAR(e.last_modified, 'YYYYMMDDHH24MISS') last_modified
+               TO_CHAR(e.last_modified at time zone 'UTC', 'YYYYMMDDHH24MISS') last_modified
           from rhnChannelErrata ce, rhnErrata e, rhnChannel c
          where c.label = :channel
            and ce.channel_id = c.id

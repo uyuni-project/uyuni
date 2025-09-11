@@ -2,35 +2,36 @@ import { hot } from "react-hot-loader/root";
 
 import * as React from "react";
 
+import { isUyuni } from "core/user-preferences";
+
 import withPageWrapper from "components/general/with-page-wrapper";
 
 import SusemanagerThemeLogin from "./susemanager/login";
 import UyuniThemeLogin from "./uyuni/login";
 
-type Theme = "uyuni" | "susemanager-light" | "susemanager-dark";
+type Theme = "uyuni" | "suse-light" | "suse-dark";
 
 const products = {
   suma: {
-    key: "SUSE Manager",
+    productName: "SUSE Multi-Linux Manager",
     headerTitle: (
       <React.Fragment>
         <span>SUSE</span>
-        <i className="fa fa-registered" />
-        <span>Manager</span>
+        <i className="fa fa-registered" /> <span>Multi-Linux Manager</span>
       </React.Fragment>
     ),
     bodyTitle: (
       <span>
         SUSE
         <br />
-        {" Manager"}
+        {" Multi-Linux Manager"}
       </span>
     ),
-    url: "http://www.suse.com/products/suse-manager/",
-    title: "SUSE Manager login page",
+    url: "https://www.suse.com/products/multi-linux-manager/",
+    title: "SUSE Multi-Linux Manager login page",
   },
   uyuni: {
-    key: "Uyuni",
+    productName: "Uyuni",
     headerTitle: "Uyuni",
     bodyTitle: "Uyuni",
     url: "http://www.uyuni-project.org/",
@@ -39,13 +40,11 @@ const products = {
 };
 
 type Props = {
-  isUyuni: boolean;
   theme: Theme;
   bounce: string;
   validationErrors: Array<string>;
   schemaUpgradeRequired: boolean;
   webVersion: string;
-  productName: string;
   customHeader: string;
   customFooter: string;
   legalNote: string;
@@ -60,7 +59,7 @@ export type ThemeProps = Props & {
 };
 
 const Login = (props: Props) => {
-  const product = props.isUyuni ? products.uyuni : products.suma;
+  const product = isUyuni ? products.uyuni : products.suma;
   if (props.theme === "uyuni") {
     return <UyuniThemeLogin {...props} product={product} />;
   }

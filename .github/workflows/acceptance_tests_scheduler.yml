@@ -1,0 +1,26 @@
+name: Scheduled Acceptance Tests
+
+on:
+  schedule:
+    - cron: '0 */12 * * *'  # Every 12 hours
+  workflow_dispatch: # Allow manual triggering
+
+jobs:
+  scheduled_run:
+    name: Run Acceptance and Additional Tests
+    if: github.repository == 'uyuni-project/uyuni' && github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Acceptance Tests
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          event-type: run-acceptance-tests
+          repository: ${{ github.repository }}
+
+      - name: Trigger Additional Tests
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          event-type: run-additional-tests
+          repository: ${{ github.repository }}

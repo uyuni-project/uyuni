@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.contentmgmt.modulemd.ModulemdApi;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Validates a content project instance using a specified list of validators
@@ -60,6 +61,6 @@ public class ContentProjectValidator {
     public List<ContentValidationMessage> validate() {
         return validators.stream()
                 .flatMap(v -> v.validate(project).stream())
-                .toList();
+                .collect(Collectors.toList());
     }
 }

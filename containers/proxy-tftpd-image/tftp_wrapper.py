@@ -7,6 +7,7 @@
 import argparse
 import logging
 import os
+import re
 import requests
 import yaml
 
@@ -132,8 +133,10 @@ class HttpResponseDataFilteredPXE(HttpResponseDataFiltered):
                         entry += f"ONTIMEOUT {entry_name}\n"
                         saltboot_content += entry
                     else:
-                        cobbler_content += entry.replace(
-                            self._server_fqdn, self._proxy_fqdn
+                        cobbler_content += re.sub(
+                            r"\b" + re.escape(self._server_fqdn) + r"\b",
+                            self._proxy_fqdn,
+                            entry,
                         )
                     entry = ""
             if not in_entry:
@@ -179,8 +182,10 @@ class HttpResponseDataFilteredGrub(HttpResponseDataFiltered):
                         saltboot_content += entry
                         saltboot_content += f"set default={entry_name}\n"
                     else:
-                        cobbler_content += entry.replace(
-                            self._server_fqdn, self._proxy_fqdn
+                        cobbler_content += re.sub(
+                            r"\b" + re.escape(self._server_fqdn) + r"\b",
+                            self._proxy_fqdn,
+                            entry,
                         )
                     entry = ""
             else:

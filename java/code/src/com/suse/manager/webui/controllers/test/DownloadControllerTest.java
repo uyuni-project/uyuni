@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 SUSE LLC
+ * Copyright (c) 2015--2024 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 
 package com.suse.manager.webui.controllers.test;
@@ -57,8 +53,10 @@ import com.redhat.rhn.testing.TestUtils;
 import com.suse.cloud.CloudPaygManager;
 import com.suse.cloud.test.TestCloudPaygManagerBuilder;
 import com.suse.manager.webui.controllers.DownloadController;
-import com.suse.manager.webui.utils.DownloadTokenBuilder;
-import com.suse.manager.webui.utils.TokenBuilder;
+import com.suse.manager.webui.utils.token.DownloadTokenBuilder;
+import com.suse.manager.webui.utils.token.Token;
+import com.suse.manager.webui.utils.token.TokenBuildingException;
+import com.suse.manager.webui.utils.token.TokenParsingException;
 
 import com.mockobjects.servlet.MockHttpServletResponse;
 
@@ -66,7 +64,6 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.http.HttpStatus;
-import org.jose4j.lang.JoseException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -76,15 +73,11 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -197,18 +190,14 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
 
     /**
      * helper method to save a token to the database
-     * @param tokenBuilder
+     * @param token the token
      * @return the access token database object
-     * @throws JoseException if an error happens during token build
      */
-    private AccessToken saveTokenToDataBase(TokenBuilder tokenBuilder) throws JoseException {
+    private AccessToken saveTokenToDataBase(Token token) throws TokenParsingException {
         AccessToken newToken = new AccessToken();
-        newToken.setStart(Date.from(tokenBuilder.getIssuedAt()));
-        newToken.setToken(tokenBuilder.getToken());
-        Instant expiration = tokenBuilder.getIssuedAt()
-                .plus(tokenBuilder.getExpirationTimeMinutesInTheFuture(),
-                        ChronoUnit.MINUTES);
-        newToken.setExpiration(Date.from(expiration));
+        newToken.setStart(Date.from(token.getIssuingTime()));
+        newToken.setToken(token.getSerializedForm());
+        newToken.setExpiration(Date.from(token.getExpirationTime()));
         TestUtils.saveAndFlush(newToken);
         return newToken;
     }
@@ -391,12 +380,12 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testTwoTokens() throws Exception {
-        DownloadTokenBuilder tokenBuilder = new DownloadTokenBuilder(user.getOrg().getId());
-        tokenBuilder.useServerSecret();
-        String token = tokenBuilder.getToken();
+        Token token = new DownloadTokenBuilder(user.getOrg().getId())
+            .usingServerSecret()
+            .build();
 
         Map<String, String> params = new HashMap<>();
-        params.put(token, "");
+        params.put(token.getSerializedForm(), "");
         params.put("2ndtoken", "");
         Request request = getMockRequestWithParams(params);
 
@@ -419,16 +408,14 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
     @Test
     public void testTokenDifferentChannel() throws Exception {
         // The added token is for a different channel
-        DownloadTokenBuilder tokenBuilder = new DownloadTokenBuilder(user.getOrg().getId());
-        tokenBuilder.useServerSecret();
-        tokenBuilder.onlyChannels(
-                new HashSet<>(
-                        Arrays.asList(channel.getLabel() + "WRONG")));
-        String tokenOtherChannel = tokenBuilder.getToken();
+        Token tokenOtherChannel = new DownloadTokenBuilder(user.getOrg().getId())
+            .usingServerSecret()
+            .allowingOnlyChannels(Set.of(channel.getLabel() + "WRONG"))
+            .build();
 
 
         Map<String, String> params = new HashMap<>();
-        params.put(tokenOtherChannel, "");
+        params.put(tokenOtherChannel.getSerializedForm(), "");
         Request request = getMockRequestWithParams(params);
 
         try {
@@ -449,15 +436,13 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testTokenWrongOrg() throws Exception {
-        DownloadTokenBuilder tokenBuilder = new DownloadTokenBuilder(user.getOrg().getId() + 1);
-        tokenBuilder.useServerSecret();
-        tokenBuilder.onlyChannels(
-                new HashSet<>(
-                        Arrays.asList(channel.getLabel())));
-        String tokenOtherOrg = tokenBuilder.getToken();
+        Token tokenOtherOrg = new DownloadTokenBuilder(user.getOrg().getId() + 1)
+            .usingServerSecret()
+            .allowingOnlyChannels(Set.of(channel.getLabel()))
+            .build();
 
         Map<String, String> params = new HashMap<>();
-        params.put(tokenOtherOrg, "");
+        params.put(tokenOtherOrg.getSerializedForm(), "");
         Request request = getMockRequestWithParams(params);
 
         try {
@@ -559,12 +544,12 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
      * @throws Exception if anything goes wrong
      */
     private void testCorrectChannel(Supplier<File> pkgFile, Function<String, Request> requestFactory) throws Exception {
-        DownloadTokenBuilder tokenBuilder = new DownloadTokenBuilder(user.getOrg().getId());
-        tokenBuilder.useServerSecret();
-        tokenBuilder.onlyChannels(
-                new HashSet<>(
-                        Arrays.asList(channel.getLabel())));
-        AccessToken accessToken = saveTokenToDataBase(tokenBuilder);
+        Token token = new DownloadTokenBuilder(user.getOrg().getId())
+            .usingServerSecret()
+            .allowingOnlyChannels(Set.of(channel.getLabel()))
+            .build();
+
+        AccessToken accessToken = saveTokenToDataBase(token);
         String tokenChannel = accessToken.getToken();
 
         Request request = requestFactory.apply(tokenChannel);
@@ -583,10 +568,11 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testDownloadPackageWithSpecialCharacters() throws Exception {
-        DownloadTokenBuilder tokenBuilder = new DownloadTokenBuilder(user.getOrg().getId());
-        tokenBuilder.useServerSecret();
-        tokenBuilder.onlyChannels(new HashSet<>(Arrays.asList(channel.getLabel())));
-        AccessToken accessToken = saveTokenToDataBase(tokenBuilder);
+        Token token = new DownloadTokenBuilder(user.getOrg().getId())
+            .usingServerSecret().allowingOnlyChannels(Set.of(channel.getLabel()))
+            .build();
+
+        AccessToken accessToken = saveTokenToDataBase(token);
         String tokenChannel = accessToken.getToken();
 
         Map<String, String> params = new HashMap<>();
@@ -612,9 +598,11 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testCorrectOrg() throws Exception {
-        DownloadTokenBuilder tokenBuilder = new DownloadTokenBuilder(user.getOrg().getId());
-        tokenBuilder.useServerSecret();
-        AccessToken accessToken = saveTokenToDataBase(tokenBuilder);
+        Token token = new DownloadTokenBuilder(user.getOrg().getId())
+            .usingServerSecret()
+            .build();
+
+        AccessToken accessToken = saveTokenToDataBase(token);
         String tokenOrg = accessToken.getToken();
 
         Map<String, String> params = new HashMap<>();
@@ -641,11 +629,12 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testExpiredToken() throws Exception {
-        DownloadTokenBuilder tokenBuilder = new DownloadTokenBuilder(user.getOrg().getId());
-        tokenBuilder.useServerSecret();
-        // already expired
-        tokenBuilder.setExpirationTimeMinutesInTheFuture(-1);
-        AccessToken accessToken = saveTokenToDataBase(tokenBuilder);
+        Token token = new DownloadTokenBuilder(user.getOrg().getId())
+            .usingServerSecret()
+            .expiringAfterMinutes(-1) // already expired
+            .build();
+
+        AccessToken accessToken = saveTokenToDataBase(token);
         String expiredToken = accessToken.getToken();
 
         Map<String, String> params = new HashMap<>();
@@ -696,9 +685,11 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testDownloadComps() throws Exception {
-        DownloadTokenBuilder tokenBuilder = new DownloadTokenBuilder(user.getOrg().getId());
-        tokenBuilder.useServerSecret();
-        AccessToken accessToken = saveTokenToDataBase(tokenBuilder);
+        Token token = new DownloadTokenBuilder(user.getOrg().getId())
+            .usingServerSecret()
+            .build();
+
+        AccessToken accessToken = saveTokenToDataBase(token);
         String tokenOrg = accessToken.getToken();
 
         Map<String, String> params = new HashMap<>();
@@ -750,9 +741,10 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testDownloadModules() throws Exception {
-        DownloadTokenBuilder tokenBuilder = new DownloadTokenBuilder(user.getOrg().getId());
-        tokenBuilder.useServerSecret();
-        AccessToken accessToken = saveTokenToDataBase(tokenBuilder);
+        Token token = new DownloadTokenBuilder(user.getOrg().getId())
+            .usingServerSecret()
+            .build();
+        AccessToken accessToken = saveTokenToDataBase(token);
         String tokenOrg = accessToken.getToken();
 
         Map<String, String> params = new HashMap<>();
@@ -803,9 +795,11 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testDownloadMediaProducts() throws Exception {
-        DownloadTokenBuilder tokenBuilder = new DownloadTokenBuilder(user.getOrg().getId());
-        tokenBuilder.useServerSecret();
-        AccessToken accessToken = saveTokenToDataBase(tokenBuilder);
+        Token token = new DownloadTokenBuilder(user.getOrg().getId())
+            .usingServerSecret()
+            .build();
+
+        AccessToken accessToken = saveTokenToDataBase(token);
         String tokenOrg = accessToken.getToken();
 
         Map<String, String> params = new HashMap<>();
@@ -857,9 +851,11 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testDownloadMissingFile() throws Exception {
-        DownloadTokenBuilder tokenBuilder = new DownloadTokenBuilder(user.getOrg().getId());
-        tokenBuilder.useServerSecret();
-        AccessToken accessToken = saveTokenToDataBase(tokenBuilder);
+        Token token = new DownloadTokenBuilder(user.getOrg().getId())
+            .usingServerSecret()
+            .build();
+
+        AccessToken accessToken = saveTokenToDataBase(token);
         String tokenOrg = accessToken.getToken();
 
         Map<String, String> params = new HashMap<>();
@@ -931,11 +927,12 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         HibernateFactory.getSession().flush();
 
         // Test case - Token passed minion has no products
-        DownloadTokenBuilder tokenBuilderPass = new DownloadTokenBuilder(user.getOrg().getId());
-        tokenBuilderPass.useServerSecret();
-        tokenBuilderPass.setExpirationTimeMinutesInTheFuture(30);
+        Token token = new DownloadTokenBuilder(user.getOrg().getId())
+            .usingServerSecret()
+            .expiringAfterMinutes(30)
+            .build();
 
-        AccessToken accessToken = saveTokenToDataBase(tokenBuilderPass);
+        AccessToken accessToken = saveTokenToDataBase(token);
         accessToken.setMinion(minion);
         TestUtils.saveAndFlush(accessToken);
         try {
@@ -981,48 +978,54 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         downloadController = new DownloadController(cpg);
 
         // Test case - Token passed is not a short-token (must fail)
-        DownloadTokenBuilder tokenBuilderFail = new DownloadTokenBuilder(user.getOrg().getId());
-        tokenBuilderFail.useServerSecret();
-        tokenBuilderFail.setExpirationTimeMinutesInTheFuture(360);
         try {
-            downloadController.validateMinionInPayg(tokenBuilderFail.getToken());
+            Token tokenFail = new DownloadTokenBuilder(user.getOrg().getId())
+                .usingServerSecret()
+                .expiringAfterMinutes(360)
+                .build();
+
+            downloadController.validateMinionInPayg(tokenFail.getSerializedForm());
             fail("Long lived token shouldn't have been accepted");
         }
         catch (spark.HaltException e) {
             assertEquals(HttpStatus.SC_FORBIDDEN, e.getStatusCode());
             assertTrue(e.getBody().contains("Forbidden: Token is expired or is not a short-token"));
         }
-        catch (JoseException e) {
+        catch (TokenBuildingException e) {
             fail("There was an issue when building the test token");
         }
 
         // Test case - Token passed is short-lived (must pass)
-        DownloadTokenBuilder tokenBuilderPass = new DownloadTokenBuilder(user.getOrg().getId());
-        tokenBuilderPass.useServerSecret();
-        tokenBuilderPass.setExpirationTimeMinutesInTheFuture(30);
         try {
-            downloadController.validateMinionInPayg(tokenBuilderPass.getToken());
+            Token tokenPass = new DownloadTokenBuilder(user.getOrg().getId())
+                .usingServerSecret()
+                .expiringAfterMinutes(30)
+                .build();
+
+            downloadController.validateMinionInPayg(tokenPass.getSerializedForm());
         }
         catch (spark.HaltException e) {
             fail("Short-lived token must've been accepted");
         }
-        catch (JoseException e) {
+        catch (TokenBuildingException e) {
             fail("There was an issue when building the test token");
         }
 
         // Test case - Token passed is expired
-        DownloadTokenBuilder tokenBuilderExpired = new DownloadTokenBuilder(user.getOrg().getId());
-        tokenBuilderExpired.useServerSecret();
-        tokenBuilderExpired.setExpirationTimeMinutesInTheFuture(-15);
         try {
-            downloadController.validateMinionInPayg(tokenBuilderExpired.getToken());
+            Token tokenExpired = new DownloadTokenBuilder(user.getOrg().getId())
+                .usingServerSecret()
+                .expiringAfterMinutes(-15)
+                .build();
+
+            downloadController.validateMinionInPayg(tokenExpired.getSerializedForm());
             fail("A token in the past must no be accepted");
         }
         catch (spark.HaltException e) {
             assertEquals(HttpStatus.SC_FORBIDDEN, e.getStatusCode());
             assertTrue(e.getBody().contains("Forbidden: Short-token is not valid or is expired"));
         }
-        catch (JoseException e) {
+        catch (TokenBuildingException e) {
             fail("There was an issue when building the test token");
         }
     }

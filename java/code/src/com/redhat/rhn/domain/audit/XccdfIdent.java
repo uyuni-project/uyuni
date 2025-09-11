@@ -14,10 +14,12 @@
  */
 package com.redhat.rhn.domain.audit;
 
+import java.io.Serializable;
+
 /**
  * XccdfIdent - Class representation of the table rhnXccdfIdent.
  */
-public class XccdfIdent {
+public class XccdfIdent implements Serializable {
 
     private Long id;
 

@@ -391,6 +391,11 @@ public class ConfigDefaults {
      */
     public static final String RHUI_DEFAULT_ORG_ID = "java.rhui_default_org_id";
 
+    /**
+     * Role-Based Access Control (enable for testing)
+     */
+    public static final String RBAC_EXPERIMENTAL = "server.susemanager.rbac";
+
     private ConfigDefaults() {
     }
 
@@ -1145,7 +1150,7 @@ public class ConfigDefaults {
      * @return the name of the theme for the webUI
      */
     public String getDefaultWebTheme() {
-        return Config.get().getString(WEB_THEME, "susemanager-light");
+        return Config.get().getString(WEB_THEME, "suse-light");
     }
 
     /**
@@ -1205,5 +1210,13 @@ public class ConfigDefaults {
      * */
     public boolean isOvalEnabledForCveAudit() {
         return Config.get().getBoolean(CVE_AUDIT_ENABLE_OVAL_METADATA, false);
+    }
+
+    /**
+     * Check if Role-Based Access Control (RBAC) is enabled (experimental).
+     * @return {@code true} if RBAC is enabled
+     */
+    public boolean isRbacEnabled() {
+        return Config.get().getBoolean(RBAC_EXPERIMENTAL, false);
     }
 }

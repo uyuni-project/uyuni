@@ -22,6 +22,7 @@ import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.manager.user.UserManager;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * ChannelPackagesBaseAction
@@ -33,7 +34,7 @@ public class ChannelPackagesBaseAction extends RhnAction {
     protected List<SelectableChannel> findChannels(User user, Long selectedChan) {
         return ChannelFactory.findAllByUserOrderByChild(user).stream()
                 .map(c -> setSelected(c, selectedChan))
-                .toList();
+                .collect(Collectors.toList());
     }
 
     protected boolean canAccessChannel(User user, Channel channel) {

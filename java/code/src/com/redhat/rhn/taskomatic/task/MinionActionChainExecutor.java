@@ -125,7 +125,7 @@ public class MinionActionChainExecutor extends RhnJavaJob {
                                               .stream()
                                               .map(ActionChainEntry::getActionId)
                                               .filter(Objects::nonNull)
-                                              .toList();
+                                              .collect(Collectors.toList());
 
             ActionFactory.rejectScheduledActions(actionsId,
                 LOCALIZATION.getMessage("task.action.rejection.reason", MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS));
@@ -139,7 +139,7 @@ public class MinionActionChainExecutor extends RhnJavaJob {
                     .stream()
                     .map(ActionChainEntry::getActionId)
                     .filter(Objects::nonNull)
-                    .toList();
+                    .collect(Collectors.toList());
             ActionFactory.rejectScheduledActions(actionsId,
                     LOCALIZATION.getMessage("task.action.rejection.notcompliant"));
             return;
@@ -159,7 +159,7 @@ public class MinionActionChainExecutor extends RhnJavaJob {
                             .stream()
                             .map(ActionChainEntry::getActionId)
                             .filter(Objects::nonNull)
-                            .toList();
+                            .collect(Collectors.toList());
 
                     Set<Server> nonCompliantByosMinions = actionChain.getEntries()
                             .stream()

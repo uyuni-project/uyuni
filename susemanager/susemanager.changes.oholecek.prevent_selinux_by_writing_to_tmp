@@ -1,2 +1,0 @@
-- Write new pg_hba conf to correct directory to prevent
-  SELinux context category problem

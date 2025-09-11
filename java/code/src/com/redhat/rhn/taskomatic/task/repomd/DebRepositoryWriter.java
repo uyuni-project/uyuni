@@ -33,6 +33,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.zip.GZIPOutputStream;
 
 /**
@@ -169,7 +170,7 @@ public class DebRepositoryWriter extends RepositoryWriter {
     private void loadExtraTags(DataResult<PackageDto> packageBatch) {
         List<Long> pkgIds = packageBatch.stream()
                 .map(PackageDto::getId)
-                .toList();
+                .collect(Collectors.toList());
         Map<Long, Map<String, String>> extraTags = TaskManager.getChannelPackageExtraTags(pkgIds);
         packageBatch.stream().forEach(pkgDto ->
                 pkgDto.setExtraTags(extraTags.get(pkgDto.getId())));

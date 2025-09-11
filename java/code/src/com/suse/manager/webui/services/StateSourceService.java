@@ -78,7 +78,7 @@ public class StateSourceService {
         // Internal states
         stateOrigins = Stream.concat(stateOrigins, Stream.of(StateSourceDto.internalState()));
 
-        return stateOrigins.toList();
+        return stateOrigins.collect(Collectors.toList());
     }
 
     private static Stream<StateSourceDto> getStateSources(List<ConfigChannel> channels, SaltConfigurable source,

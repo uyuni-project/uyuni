@@ -27,6 +27,7 @@ import com.redhat.rhn.domain.matcher.MatcherRunDataFactory;
 import com.redhat.rhn.domain.server.PinnedSubscriptionFactory;
 
 import com.suse.cloud.CloudPaygManager;
+import com.suse.manager.model.hub.HubFactory;
 import com.suse.manager.webui.services.impl.MonitoringService;
 
 import org.apache.logging.log4j.LogManager;
@@ -100,12 +101,14 @@ public class MatcherRunner {
         Runtime r = Runtime.getRuntime();
         ExecutorService errorReaderService = null;
         ExecutorService inputReaderService = null;
+        HubFactory hubFactory = new HubFactory();
         try {
             boolean isSUMaPayg = cloudManager.isPaygInstance();
             boolean isUyuni = ConfigDefaults.get().isUyuni();
 
             boolean needsEntitlements = !isUyuni && !isSUMaPayg;
-            boolean includeSelf = !isSUMaPayg && !isUyuni && IssFactory.getCurrentMaster() == null;
+            boolean includeSelf = !isSUMaPayg && !isUyuni && IssFactory.getCurrentMaster() == null &&
+                    !hubFactory.isISSPeripheral();
             boolean isSelfMonitoringEnabled = !isSUMaPayg && !isUyuni && MonitoringService.isMonitoringEnabled();
 
             PinnedSubscriptionFactory.getInstance().cleanStalePins();

@@ -996,7 +996,7 @@ public class UserHandler extends BaseHandler {
         User targetUser = XmlRpcUserHelper.getInstance().lookupTargetUser(
                 loggedInUser, login);
 
-        if (sgNames == null || sgNames.size() < 1) {
+        if (sgNames == null || sgNames.isEmpty()) {
             throw new IllegalArgumentException("no servergroup names supplied");
         }
 
@@ -1019,7 +1019,7 @@ public class UserHandler extends BaseHandler {
             groups.add(group);
         }
 
-        List<Long> groupIds = groups.stream().map(ManagedServerGroup::getId).toList();
+        List<Long> groupIds = groups.stream().map(ManagedServerGroup::getId).collect(Collectors.toList());
         UserManager.grantServerGroupPermission(targetUser.getId(), groupIds);
 
         // Follow up with a call to addDefaultSystemGroups if setDefault is true:

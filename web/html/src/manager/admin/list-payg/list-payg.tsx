@@ -33,6 +33,7 @@ type PaygOverviewType = {
 type Props = {
   payg_instances: Array<PaygOverviewType>;
   flashMessage?: ServerMessageType;
+  isIssPeripheral?: boolean;
 };
 const ListPayg = (props: Props) => {
   useEffect(() => {
@@ -50,7 +51,13 @@ const ListPayg = (props: Props) => {
     return true;
   };
 
-  let pageContent = (
+  let pageContent = props.isIssPeripheral ? (
+    <div className="alert alert-warning" role="alert">
+      {t(
+        "This server is configured as a Peripheral server in a Hub configuration. Managing PAYG Connections is disabled."
+      )}
+    </div>
+  ) : (
     <Table
       data={props.payg_instances}
       identifier={(row) => row.host}
@@ -100,13 +107,15 @@ const ListPayg = (props: Props) => {
       <SectionToolbar>
         <div className="action-button-wrapper">
           <div className="btn-group">
-            <Button
-              id="addPAYG"
-              icon="fa-plus"
-              className={"btn-primary"}
-              text={t("Add PAYG Connection")}
-              handler={addPayg}
-            />
+            {props.isIssPeripheral ? null : (
+              <Button
+                id="addPAYG"
+                icon="fa-plus"
+                className={"btn-primary"}
+                text={t("Add PAYG Connection")}
+                handler={addPayg}
+              />
+            )}
           </div>
         </div>
       </SectionToolbar>

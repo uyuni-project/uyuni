@@ -20,13 +20,16 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.credentials.RemoteCredentials;
 import com.redhat.rhn.domain.credentials.SCCCredentials;
 
+import com.suse.manager.model.hub.IssHub;
 import com.suse.scc.client.SCCClient;
-import com.suse.scc.client.SCCConfig;
+import com.suse.scc.client.SCCConfigBuilder;
 import com.suse.scc.client.SCCWebClient;
+import com.suse.utils.CertificateUtils;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
+import java.security.cert.CertificateException;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -54,21 +57,41 @@ public class SCCContentSyncSource implements ContentSyncSource {
     }
 
     @Override
-    public SCCClient getClient(String uuid, Optional<Path> loggingDir) throws ContentSyncSourceException {
+    public SCCClient getClient(String uuid, Path loggingDir) throws ContentSyncSourceException {
         try {
             URI url = new URI(Config.get().getString(ConfigDefaults.SCC_URL));
 
             String username = credentials.getUsername();
             String password = credentials.getPassword();
 
-            SCCConfig config = loggingDir
-                .map(path -> path.toAbsolutePath().toString())
-                .map(path -> new SCCConfig(url, username, password, uuid, null, path, false))
-                .orElseGet(() -> new SCCConfig(url, username, password, uuid));
+            IssHub issHub = credentials.getIssHub();
+            if (issHub != null) {
+                String rootCa = issHub.getRootCa();
+                URI uri = new URI("https://%1$s/rhn/hub/scc/".formatted(issHub.getFqdn()));
+                var cfg = new SCCConfigBuilder()
+                        .setUrl(uri)
+                        .setCertificates(CertificateUtils.parse(rootCa).stream().toList())
+                        .setUsername(username)
+                        .setPassword(password)
+                        .setUuid(uuid)
+                        .setLoggingDir(loggingDir.toAbsolutePath().toString())
+                        .setSkipOwner(false)
+                        .createSCCConfig();
+                return new SCCWebClient(cfg);
+            }
+
+            var config = new SCCConfigBuilder()
+                    .setUrl(url)
+                    .setUsername(username)
+                    .setPassword(password)
+                    .setUuid(uuid)
+                    .setLoggingDir(loggingDir.toAbsolutePath().toString())
+                    .setSkipOwner(false)
+                    .createSCCConfig();
 
             return new SCCWebClient(config);
         }
-        catch (URISyntaxException e) {
+        catch (URISyntaxException | CertificateException e) {
             throw new ContentSyncSourceException(e);
         }
     }

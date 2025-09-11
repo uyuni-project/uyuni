@@ -329,4 +329,18 @@ INSERT INTO rhnTaskoTemplate (id, bunch_id, task_id, ordering, start_if)
                     0,
                     null);
 
+INSERT INTO rhnTaskoTemplate (id, bunch_id, task_id, ordering, start_if)
+             VALUES (sequence_nextval('rhn_tasko_template_id_seq'),
+                    (SELECT id FROM rhnTaskoBunch WHERE name='root-ca-cert-update-bunch'),
+                    (SELECT id FROM rhnTaskoTask WHERE name='root-ca-cert-update'),
+                    0,
+                    null);
+
+INSERT INTO rhnTaskoTemplate (id, bunch_id, task_id, ordering, start_if)
+             VALUES (sequence_nextval('rhn_tasko_template_id_seq'),
+                    (SELECT id FROM rhnTaskoBunch WHERE name='custom-gpg-key-import-bunch'),
+                    (SELECT id FROM rhnTaskoTask WHERE name='custom-gpg-key-import'),
+                    0,
+                    null);
+
 commit;

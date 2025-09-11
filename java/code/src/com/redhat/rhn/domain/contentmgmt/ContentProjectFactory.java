@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -248,7 +249,7 @@ public class ContentProjectFactory extends HibernateFactory {
         channels.stream().filter(Channel::isBaseChannel).findAny().ifPresent(bc -> {
             List<String> rogueChannels = ChannelFactory.listAllChildrenForChannel(bc).stream()
                     .filter(b -> !childChannels.contains(b))
-                    .map(Channel::getName).toList();
+                    .map(Channel::getName).collect(Collectors.toList());
             if (!rogueChannels.isEmpty()) {
                 throw  new ContentManagementException(LocalizationService.getInstance().getMessage(
                         "contentmanagement.non_environment_channels_found", rogueChannels));
@@ -499,7 +500,7 @@ public class ContentProjectFactory extends HibernateFactory {
                 .setParameter("project", project)
                 .setParameter("channel", channel)
                 .stream();
-        return clones.flatMap(c -> c.asCloned().stream()).toList();
+        return clones.flatMap(c -> c.asCloned().stream()).collect(Collectors.toList());
     }
 
     /**

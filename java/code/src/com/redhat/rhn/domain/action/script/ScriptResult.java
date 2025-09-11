@@ -22,47 +22,162 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
 /**
  * ScriptResult
  */
+@Entity
+@Table(name = "rhnServerActionScriptResult")
 public class ScriptResult implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    private Long serverId;
-    private Long actionScriptId;
+    @Embeddable
+    public static class ScriptResultId implements Serializable {
+        @Column(name = "server_id")
+        private Long serverId;
+
+        @Column(name = "action_script_id")
+        private Long actionScriptId;
+
+        /**
+         * Default Constructor.
+         */
+        public ScriptResultId() {
+        }
+
+        /**
+         * Constructor with argument.
+         * @param serverIdIn The serverId to set.
+         * @param actionScriptIdIn The actionScriptId to set.
+         */
+        public ScriptResultId(Long serverIdIn, Long actionScriptIdIn) {
+            this.serverId = serverIdIn;
+            this.actionScriptId = actionScriptIdIn;
+        }
+
+        /**
+         * @return Returns the serverId.
+         */
+        public Long getServerId() {
+            return serverId;
+        }
+
+        /**
+         * @param serverIdIn The serverId to set.
+         */
+        public void setServerId(Long serverIdIn) {
+            this.serverId = serverIdIn;
+        }
+
+        /**
+         * @return Returns the actionScriptId.
+         */
+        public Long getActionScriptId() {
+            return actionScriptId;
+        }
+
+        /**
+         * @param actionScriptIdIn The actionScriptId to set.
+         */
+        public void setActionScriptId(Long actionScriptIdIn) {
+            this.actionScriptId = actionScriptIdIn;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+            ScriptResultId that = (ScriptResultId) o;
+            return serverId.equals(that.serverId) && actionScriptId.equals(that.actionScriptId);
+        }
+
+        @Override
+        public int hashCode() {
+            return serverId.hashCode() + actionScriptId.hashCode();
+        }
+    }
+
+    @EmbeddedId
+    private ScriptResultId id;
+
+    @Column(name = "start_date")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date startDate;
+
+    @Column(name = "stop_date")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date stopDate;
+
+    @Column(name = "return_code")
     private Long returnCode;
+
+    @Column(name = "output", columnDefinition = "bytea")
     private byte[] output;
 
+    @ManyToOne
+    @JoinColumn(name = "action_script_id", insertable = false, updatable = false, nullable = false)
     private ScriptActionDetails parentScriptActionDetails;
+
+    /**
+     * Default Constructor.
+     */
+    public ScriptResult() {
+        this.id = new ScriptResultId();
+    }
+
+    /**
+     * @return Returns the id.
+     */
+    public ScriptResultId getId() {
+        return id;
+    }
+
+    /**
+     * @param idIn The id to set.
+     */
+    public void setId(ScriptResultId idIn) {
+        this.id = idIn;
+    }
+
 
     /**
      * @return Returns the serverId.
      */
     public Long getServerId() {
-        return serverId;
+        return this.getId().getServerId();
     }
 
     /**
      * @param s The serverId to set.
      */
     public void setServerId(Long s) {
-        this.serverId = s;
+        this.getId().setServerId(s);
     }
 
     /**
      * @return Returns the actionScriptId.
      */
     public Long getActionScriptId() {
-        return actionScriptId;
+        return this.getId().getActionScriptId();
     }
 
     /**
      * @param a The actionScriptId to set.
      */
     public void setActionScriptId(Long a) {
-        this.actionScriptId = a;
+        this.getId().setActionScriptId(a);
     }
 
     /**

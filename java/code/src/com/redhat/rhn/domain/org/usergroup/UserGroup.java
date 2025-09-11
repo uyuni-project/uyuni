@@ -15,6 +15,7 @@
 
 package com.redhat.rhn.domain.org.usergroup;
 
+import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.role.Role;
 
 import java.io.Serializable;
@@ -90,16 +91,16 @@ public interface UserGroup extends Serializable {
     void setRole(Role roleIn);
 
     /**
-     * Getter for orgId
-     * @return orgId
+     * Getter for org
+     * @return org
      */
-    Long getOrgId();
+    Org getOrg();
 
     /**
-     * Setter for orgId
-     * @param orgIdIn New value for orgId
+     * Setter for org
+     * @param orgIn New value for org
      */
-    void setOrgId(Long orgIdIn);
+    void setOrg(Org orgIn);
 
     /**
      * Getter for created

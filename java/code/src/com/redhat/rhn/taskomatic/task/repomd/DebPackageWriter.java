@@ -35,6 +35,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Collection;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -127,7 +128,7 @@ public class DebPackageWriter implements Closeable {
         buf.write(pkgDto.getArchLabel().replace("-deb", ""));
         buf.newLine();
 
-        String vendor = StringUtils.defaultString(pkgDto.getVendor(), "Debian");
+        String vendor = Objects.toString(pkgDto.getVendor(), "Debian");
         buf.write("Maintainer: ");
         buf.write(vendor);
         buf.newLine();

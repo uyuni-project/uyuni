@@ -5,8 +5,7 @@
 }
 
 label {
-  // TODO: Make this `inherit` after the Bootstrap upgrade is complete?
-  font-weight: 700;
+  font-weight: inherit;
   margin-bottom: 0;
   max-width: 100%;
 }

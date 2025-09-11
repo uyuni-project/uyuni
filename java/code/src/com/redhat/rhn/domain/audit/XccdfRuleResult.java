@@ -14,13 +14,14 @@
  */
 package com.redhat.rhn.domain.audit;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
 /**
  * XccdfRuleResult - Class representation of the table rhnXccdfRuleresult.
  */
-public class XccdfRuleResult {
+public class XccdfRuleResult implements Serializable {
 
     private Long id;
 

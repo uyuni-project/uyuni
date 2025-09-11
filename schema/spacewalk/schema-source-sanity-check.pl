@@ -74,8 +74,8 @@ sub check_file_content {
                 }
                 if (not $content =~ /^(--.*\n
                                         |\s*\n
-                                        |(create|alter|comment\s+on)\s+table\s+$name\b(?:[^;]|';')+;
-                                        |create\s+(unique\s+)?index\s+\w+\s+on\s+$name[^;]+;
+                                        |(create|alter|comment\s+on)\s+table\s+(?:\w+\.)?$name\b(?:[^;]|';')+;
+                                        |create\s+(unique\s+)?index\s+\w+\s+on\s+(?:\w+\.)?$name[^;]+;
                                         |create\s+sequence[^;]+;
                                         |comment\s+on\s+column\s+$name\.[^;]+;
                                         )+$/ix) {
@@ -85,7 +85,7 @@ sub check_file_content {
         } elsif ($type eq 'views') {
                 if (not $content =~ /^(--.*\n
                                         |\s*\n
-                                        |create(\s+or\s+replace)?\s+view\s+$name\b[^;]+;
+                                        |create(\s+or\s+replace)?\s+view\s+(?:\w+\.)?$name\b[^;]+;
                                         )+$/ix) {
                         print "Bad $type content [$filename]\n";
                         $error = 1;
@@ -130,6 +130,15 @@ sub check_file_content {
                                         |create(\s+or\s+replace)?\s+trigger[^;]+\s+on\s+$name\b[^;]+execute\s+procedure\s+no_operation_trig_fun\(\);
                                         |create(\s+or\s+replace)?\s+trigger[^;]+\s+on\s+$name\b(?s:.+?);\n/\n
                                         |show\s+errors;?\n
+                                        )+$!ix) {
+                        print "Bad $type content [$filename]\n";
+                        $error = 1;
+                }
+        } elsif ($type eq 'schemas') {
+                if (not $content =~ m!^(--.*\n
+                                        |\s*\n
+                                        |create\s+schema\s+$name\b\s*;
+                                        |comment\s+on\s+schema\s+$name\b\s+is\s+[^;]+;
                                         )+$!ix) {
                         print "Bad $type content [$filename]\n";
                         $error = 1;

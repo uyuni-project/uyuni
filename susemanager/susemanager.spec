@@ -1,7 +1,7 @@
 #
 # spec file for package susemanager
 #
-# Copyright (c) 2024 SUSE LLC
+# Copyright (c) 2025 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -15,12 +15,23 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
+## The productprettyname macros is controlled in the prjconf. If not defined, we fallback here
+%{!?productprettyname: %global productprettyname Uyuni}
 
 %if 0%{?suse_version} > 1320 || 0%{?rhel} >= 8
 # SLE15 and RHEL8 build on Python 3
 %global build_py3   1
 %endif
 %define pythonX %{?build_py3:python3}%{!?build_py3:python2}
+
+# Keep in sync with salt/salt.spec, used to set correct shebang in mgr-salt-ssh
+%if 0%{?suse_version} == 1500 && 0%{?sle_version} >= 150700
+%global use_python python311
+%global use_python_shebang python3.11
+%else
+%global use_python python3
+%global use_python_shebang python3
+%endif
 
 %if 0%{?rhel}
 %global apache_user root
@@ -48,9 +59,9 @@
 %global debug_package %{nil}
 
 Name:           susemanager
-Version:        5.1.3
+Version:        5.1.7
 Release:        0
-Summary:        SUSE Manager specific scripts
+Summary:        %{productprettyname} specific scripts
 License:        GPL-2.0-only
 # FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/System
@@ -127,17 +138,17 @@ Requires:       bind-utils
 %global pythonsmroot %{python_sitelib}/spacewalk
 
 %description
-A collection of scripts for managing SUSE Manager's initial
+A collection of scripts for managing %{productprettyname}'s initial
 setup tasks, re-installation, upgrades and managing.
 
 %package tools
-Summary:        SUSE Manager Tools
+Summary:        %{productprettyname} Tools
 Group:          Productivity/Other
 
 %if 0%{?build_py3}
 BuildRequires:  python3-configobj
 Requires:       createrepo_c
-Requires:       python3
+Requires:       %{use_python}
 Requires:       python3-configobj
 Requires:       python3-uyuni-common-libs
 %else
@@ -158,17 +169,17 @@ Requires:       susemanager-sync-data
 BuildRequires:  docbook-utils
 
 %description tools
-This package contains SUSE Manager tools
+This package contains %{productprettyname} tools
 
 %package bash-completion
-Summary:        Bash completion for SUSE Manager CLI tools
+Summary:        Bash completion for %{productprettyname} CLI tools
 Group:          Productivity/Other
 Supplements:    spacewalk-backend
 Supplements:    spacewalk-utils
 Supplements:    susemanager
 
 %description bash-completion
-Bash completion for SUSE Manager CLI tools
+Bash completion for %{productprettyname} CLI tools
 
 %prep
 %setup -q
@@ -177,10 +188,11 @@ Bash completion for SUSE Manager CLI tools
 
 # Fixing shebang for Python 3
 %if 0%{?build_py3}
-for i in `find . -type f`;
+for i in `find . -type f -not -name 'mgr-salt-ssh'`;
 do
     sed -i '1s=^#!/usr/bin/\(python\|env python\)[0-9.]*=#!/usr/bin/python3=' $i;
 done
+sed -i '1s=^#!/usr/bin/python3=#!/usr/bin/%{use_python_shebang}=' src/mgr-salt-ssh
 %endif
 
 # Bash completion
@@ -220,7 +232,7 @@ install -m 0644 etc/firewalld/services/suse-manager-server.xml %{buildroot}/%{_s
 %endif
 
 %if 0%{?sle_version} && !0%{?is_opensuse}
-# this script migrate the server to Uyuni. It should not be available on SUSE Manager
+# this script migrate the server to Uyuni. It should not be available on SUSE Multi-Linux Manager
 rm -f %{buildroot}/%{_prefix}/lib/susemanager/bin/server-migrator.sh
 %endif
 

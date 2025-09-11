@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 SUSE LLC
+ * Copyright (c) 2015--2024 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.suse.manager.webui.controllers;
 
@@ -37,26 +33,22 @@ import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 
 import com.suse.cloud.CloudPaygManager;
-import com.suse.manager.webui.utils.TokenBuilder;
-import com.suse.utils.Opt;
+import com.suse.manager.webui.utils.token.Token;
+import com.suse.manager.webui.utils.token.TokenParser;
+import com.suse.manager.webui.utils.token.TokenParsingException;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jose4j.jwt.JwtClaims;
-import org.jose4j.jwt.MalformedClaimException;
 import org.jose4j.jwt.NumericDate;
-import org.jose4j.jwt.consumer.InvalidJwtException;
-import org.jose4j.jwt.consumer.JwtConsumer;
-import org.jose4j.jwt.consumer.JwtConsumerBuilder;
 
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
-import java.security.Key;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
@@ -76,13 +68,6 @@ public class DownloadController {
 
     private static final Logger LOG = LogManager.getLogger(DownloadController.class);
 
-    private static final Key KEY = TokenBuilder.getKeyForSecret(
-            TokenBuilder.getServerSecret().orElseThrow(
-                        () -> new IllegalArgumentException("Server has no key configured")));
-    private static final JwtConsumer JWT_CONSUMER = new JwtConsumerBuilder()
-            .setVerificationKey(KEY)
-            .build();
-
     // cached value to avoid multiple calls
     private final String mountPointPath;
 
@@ -93,7 +78,7 @@ public class DownloadController {
     );
 
     /**
-     * If true, check via JWT tokens that files requested by a minion are actually accessible by that minon. Turning
+     * If true, check via JWT tokens that files requested by a minion are actually accessible by that minion. Turning
      * this flag to false disables the checks.
      */
     private boolean checkTokens;
@@ -102,6 +87,10 @@ public class DownloadController {
      * Invoked from Router. Initialize routes for Systems Views.
      */
     public void initRoutes() {
+        get("/manager/download/hubsync/:sccrepoid/getPackage/:file", this::downloadPackageHub);
+        get("/manager/download/hubsync/:sccrepoid/getPackage/:org/:checksum/:file", this::downloadPackageHub);
+        get("/manager/download/hubsync/:sccrepoid/repodata/:file", this::downloadMetadataHub);
+        get("/manager/download/hubsync/:sccrepoid/media.1/:file", this::downloadMediaFilesHub);
         get("/manager/download/:channel/getPackage/:file", this::downloadPackage);
         get("/manager/download/:channel/getPackage/:org/:checksum/:file", this::downloadPackage);
         get("/manager/download/:channel/repodata/:file", this::downloadMetadata);
@@ -110,6 +99,10 @@ public class DownloadController {
         head("/manager/download/:channel/getPackage/:org/:checksum/:file", this::downloadPackage);
         head("/manager/download/:channel/repodata/:file", this::downloadMetadata);
         head("/manager/download/:channel/media.1/:file", this::downloadMediaFiles);
+        head("/manager/download/hubsync/:sccrepoid/getPackage/:file", this::downloadPackageHub);
+        head("/manager/download/hubsync/:sccrepoid/getPackage/:org/:checksum/:file", this::downloadPackageHub);
+        head("/manager/download/hubsync/:sccrepoid/repodata/:file", this::downloadMetadataHub);
+        head("/manager/download/hubsync/:sccrepoid/media.1/:file", this::downloadMediaFilesHub);
     }
 
     /**
@@ -279,6 +272,25 @@ public class DownloadController {
     }
 
     /**
+     * Download metadata taking the scc repo id and filename from the request path.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @return an object to make spark happy
+     */
+    public Object downloadMetadataHub(Request request, Response response) {
+        Long sccid = Long.parseLong(request.params(":sccrepoid"));
+        String filename = request.params(":file");
+
+        List<Channel> vendorChannelBySccId = ChannelFactory.findVendorChannelBySccId(sccid);
+        String channelLabel = vendorChannelBySccId.stream().map(Channel::getLabel).findFirst().orElseThrow(() -> {
+            LOG.error("Repository for SCC ID {} not found", sccid);
+            return halt(HttpStatus.SC_NOT_FOUND, "Repository not found");
+        });
+        return downloadMetadata(request, response, channelLabel, filename);
+    }
+
+    /**
      * Download metadata taking the channel and filename from the request path.
      *
      * @param request the request object
@@ -288,6 +300,10 @@ public class DownloadController {
     public Object downloadMetadata(Request request, Response response) {
         String channelLabel = request.params(":channel");
         String filename = request.params(":file");
+        return downloadMetadata(request, response, channelLabel, filename);
+    }
+
+    private Object downloadMetadata(Request request, Response response, String channelLabel, String filename) {
         String mountPoint = Config.get().getString(ConfigDefaults.REPOMD_CACHE_MOUNT_POINT, "/var/cache");
         String prefix = Config.get().getString(ConfigDefaults.REPOMD_PATH_PREFIX, "rhn/repodata");
 
@@ -319,6 +335,24 @@ public class DownloadController {
         return downloadFile(request, response, file);
     }
 
+    /**
+     * Download media metadata taking the scc repo id and filename from the request path.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @return an object to make spark happy
+     */
+    public Object downloadMediaFilesHub(Request request, Response response) {
+        Long sccid = Long.parseLong(request.params(":sccrepoid"));
+        String filename = request.params(":file");
+
+        List<Channel> vendorChannelBySccId = ChannelFactory.findVendorChannelBySccId(sccid);
+        String channelLabel = vendorChannelBySccId.stream().map(Channel::getLabel).findFirst().orElseThrow(() -> {
+            LOG.error("Repository for SCC ID {} not found", sccid);
+            return halt(HttpStatus.SC_NOT_FOUND, "Repository not found");
+        });
+        return downloadMediaFiles(request, response, channelLabel, filename);
+    }
 
     /**
      * Download media metadata taking the channel and filename from the request path.
@@ -330,6 +364,10 @@ public class DownloadController {
     public Object downloadMediaFiles(Request request, Response response) {
         String channelLabel = request.params(":channel");
         String filename = request.params(":file");
+        return downloadMediaFiles(request, response, channelLabel, filename);
+    }
+
+    private Object downloadMediaFiles(Request request, Response response, String channelLabel, String filename) {
         validatePaygCompliant();
 
         processToken(request, channelLabel, filename);
@@ -410,6 +448,28 @@ public class DownloadController {
     }
 
     /**
+     * Download a package taking the scc repo id and RPM filename from the request path.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @return an object to make spark happy
+     */
+    public Object downloadPackageHub(Request request, Response response) {
+
+        // we can't use request.params(:file)
+        // See https://bugzilla.suse.com/show_bug.cgi?id=972158
+        // https://github.com/perwendel/spark/issues/490
+        Long sccid = Long.parseLong(request.params(":sccrepoid"));
+
+        List<Channel> vendorChannelBySccId = ChannelFactory.findVendorChannelBySccId(sccid);
+        String channel = vendorChannelBySccId.stream().map(Channel::getLabel).findFirst().orElseThrow(() -> {
+            LOG.error("Repository for SCC ID {} not found", sccid);
+            return halt(HttpStatus.SC_NOT_FOUND, "Repository not found");
+        });
+        return downloadPackage(request, response, channel);
+    }
+
+    /**
      * Download a package taking the channel and RPM filename from the request path.
      *
      * @param request the request object
@@ -422,6 +482,10 @@ public class DownloadController {
         // See https://bugzilla.suse.com/show_bug.cgi?id=972158
         // https://github.com/perwendel/spark/issues/490
         String channel = request.params(":channel");
+        return downloadPackage(request, response, channel);
+    }
+
+    private Object downloadPackage(Request request, Response response, String channel) {
         String path = "";
         try {
             URI uri = new URI(request.url());
@@ -581,47 +645,43 @@ public class DownloadController {
                 sanitizeToken(token), filename)
         );
         try {
-            JwtClaims claims = JWT_CONSUMER.processToClaims(token);
-            if (Optional.ofNullable(claims.getExpirationTime())
-                .map(exp -> exp.isBefore(NumericDate.now()))
+            Token parsedToken = new TokenParser().usingServerSecret().parse(token);
+            if (Optional.ofNullable(parsedToken.getExpirationTime())
+                .map(exp -> exp.isBefore(Instant.now()))
                 .orElse(false)) {
                 LOG.info("Forbidden: Token expired");
                 halt(HttpStatus.SC_FORBIDDEN, "Token expired");
             }
 
             // enforce channel claim
-            Optional<List<String>> channelClaim = Optional.ofNullable(claims.getStringListClaimValue("onlyChannels"))
-                    // new versions of getStringListClaimValue() return an empty list instead of null
-                    .filter(l -> !l.isEmpty());
-            Opt.consume(channelClaim,
-                    () -> LOG.info("Token ...{} does provide access to any channel",
-                            sanitizeToken(token)),
-                    channels -> {
-                if (!channels.contains(channel)) {
-                    LOG.info("Forbidden: Token ...{} does not provide access to channel {}",
-                            sanitizeToken(token), channel);
-                    LOG.info("Token allow access only to the following channels: {}", String.join(",", channels));
-                    halt(HttpStatus.SC_FORBIDDEN, "Token does not provide access to channel " + channel);
-                }
-            });
+            List<String> onlyChannels = parsedToken.getListClaim("onlyChannels", String.class);
+            if (CollectionUtils.isEmpty(onlyChannels)) {
+                LOG.info("Token ...{} does not provide access to any channel", () -> sanitizeToken(token));
+            }
+            else if (!onlyChannels.contains(channel)) {
+                LOG.info("Forbidden: Token ...{} does not provide access to channel {}",
+                    () -> sanitizeToken(token), () -> channel);
+                LOG.info("Token allow access only to the following channels: {}", () -> String.join(",", onlyChannels));
+                halt(HttpStatus.SC_FORBIDDEN, "Token does not provide access to channel %s".formatted(channel));
+            }
 
             // enforce org claim
-            Optional<Long> orgClaim = Optional.ofNullable(claims.getClaimValue("org", Long.class));
-            Opt.consume(orgClaim, () -> {
+            Long orgId = parsedToken.getClaim("org", Long.class);
+            if (orgId == null) {
                 LOG.info("Forbidden: Token does not specify the organization");
                 halt(HttpStatus.SC_BAD_REQUEST, "Token does not specify the organization");
-            }, orgId -> {
-                if (!ChannelFactory.isAccessibleBy(channel, orgId)) {
-                    LOG.info("Forbidden: Token does not provide access to channel {}", channel);
-                    halt(HttpStatus.SC_FORBIDDEN, "Token does not provide access to channel " + channel);
-                }
-            });
+            }
+            else if (!ChannelFactory.isAccessibleBy(channel, orgId)) {
+                String sanitChannel = StringUtil.sanitizeLogInput(channel);
+                LOG.info("Forbidden: Token does not provide access to channel {}", sanitChannel);
+                halt(HttpStatus.SC_FORBIDDEN, "Token does not provide access to channel %s".formatted(sanitChannel));
+            }
         }
-        catch (InvalidJwtException | MalformedClaimException e) {
+        catch (TokenParsingException e) {
             LOG.info("Forbidden: Token ...{} is not valid to access {} in {}: {}",
-                    sanitizeToken(token), filename, channel, e.getMessage());
+                () -> sanitizeToken(token), () -> filename, () -> channel, () -> e.getMessage());
             halt(HttpStatus.SC_FORBIDDEN,
-                 String.format("Token is not valid to access %s in %s: %s", filename, channel, e.getMessage()));
+                "Token is not valid to access %s in %s: %s".formatted(filename, channel, e.getMessage()));
         }
     }
 
@@ -676,12 +736,12 @@ public class DownloadController {
         }
         else {
             try {
-                JwtClaims claims = JWT_CONSUMER.processToClaims(token);
-                boolean isValid = Optional.ofNullable(claims.getExpirationTime())
+                Token parsedToken = new TokenParser().usingServerSecret().parse(token);
+                boolean isValid = Optional.ofNullable(parsedToken.getExpirationTime())
                         .map(exp -> {
                             long timeDeltaSeconds = Duration.ofMinutes(EXPIRATION_TIME_MINUTES_IN_THE_FUTURE_TEMP_TOKEN)
                                     .toSeconds();
-                            long expireDeltaSeconds = exp.getValue() - NumericDate.now().getValue();
+                            long expireDeltaSeconds = exp.getEpochSecond() - NumericDate.now().getValue();
                             return expireDeltaSeconds > 0 && expireDeltaSeconds < timeDeltaSeconds;
                         })
                         .orElse(false);
@@ -691,7 +751,7 @@ public class DownloadController {
                     halt(HttpStatus.SC_FORBIDDEN, "Forbidden: Token is expired or is not a short-token");
                 }
             }
-            catch (InvalidJwtException | MalformedClaimException e) {
+            catch (TokenParsingException e) {
                 LOG.info("Forbidden: Short-token ...{} is not valid or is expired: {}",
                         sanitizeToken(token), e.getMessage());
                 halt(HttpStatus.SC_FORBIDDEN,

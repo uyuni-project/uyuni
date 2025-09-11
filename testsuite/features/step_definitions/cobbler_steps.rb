@@ -258,32 +258,34 @@ Then(/^the local logs for Cobbler should not contain errors$/) do
 
   # normal log file
   cobbler_log_file = '/var/log/cobbler/cobbler.log'
+  remote_file = '/tmp/cobbler.copy'
   local_file = '/tmp/cobbler.log'
   # to avoid a race condition with "tar" as called by "mgrctl cp", we need to work on a copy:
-  node.run("cp #{cobbler_log_file} #{local_file}")
-  success = file_extract(node, local_file, local_file)
+  node.run("cp #{cobbler_log_file} #{remote_file}")
+  success = file_extract(node, remote_file, local_file)
   raise ScriptError, 'File extraction failed' unless success
 
   output = File.read(local_file).each_line.select { |line| line.include? 'ERROR' }
   unless output.empty?
-    node.run("cp #{local_file} #{cobbler_log_file}-$(date +\"%Y_%m_%d_%I_%M_%p\")")
+    node.run("cp #{remote_file} #{cobbler_log_file}-$(date +\"%Y_%m_%d_%I_%M_%p\")")
     log "Error in Cobbler log:\n#{output}"
     log ''
   end
 
   # debug log file
   cobbler_log_file = '/var/log/cobbler/cobbler_debug.log'
+  remote_file = '/tmp/cobbler_debug.copy'
   local_file = '/tmp/cobbler_debug.log'
   # to avoid a race condition with "tar" as called by "mgrctl cp", we need to work on a copy:
-  node.run("cp #{cobbler_log_file} #{local_file}")
-  success = file_extract(node, local_file, local_file)
+  node.run("cp #{cobbler_log_file} #{remote_file}")
+  success = file_extract(node, remote_file, local_file)
   raise ScriptError, 'File extraction failed' unless success
 
   file_data = File.read(local_file).gsub("\n", ',').chop.gsub('"', ' \' ').gsub('\\\'\'', '"')
   data_hash = JSON.parse("[#{file_data}]")
   output_debug = data_hash.select { |key, _hash| key['levelname'] == 'ERROR' }
   unless output_debug.empty?
-    node.run("cp #{local_file} #{cobbler_log_file}-$(date +\"%Y_%m_%d_%I_%M_%p\")")
+    node.run("cp #{remote_file} #{cobbler_log_file}-$(date +\"%Y_%m_%d_%I_%M_%p\")")
     log "Error in Cobbler debug log:\n#{output_debug}"
     log ''
   end

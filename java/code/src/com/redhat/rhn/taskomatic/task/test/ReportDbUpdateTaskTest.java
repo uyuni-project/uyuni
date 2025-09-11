@@ -47,6 +47,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import javax.persistence.Tuple;
@@ -101,7 +102,7 @@ public class ReportDbUpdateTaskTest extends JMockBaseTestCaseWithUser {
             // Create some packages and add them to the channel
             List<Package> packages = IntStream.range(1, 10)
                 .mapToObj(index -> PackageTest.createTestPackage(user.getOrg()))
-                .toList();
+                .collect(Collectors.toList());
             channel.getPackages().addAll(packages);
 
 
@@ -109,7 +110,7 @@ public class ReportDbUpdateTaskTest extends JMockBaseTestCaseWithUser {
             List<Package> updatedPackages = packages.stream()
                 .map(originalPackage -> PackageTestUtils.newVersionOfPackage(originalPackage, null, "2.0.0", null,
                     user.getOrg()))
-                .toList();
+                .collect(Collectors.toList());
             channel.getPackages().addAll(updatedPackages);
             updatablePackagesMap.put(server.getId(), updatedPackages);
 
@@ -140,7 +141,7 @@ public class ReportDbUpdateTaskTest extends JMockBaseTestCaseWithUser {
 
             List<Package> updatablePackagesForServer = updatablePackagesMap.get(testServer.getId()).stream()
                 .sorted(Comparator.comparing(pck -> pck.getId()))
-                .toList();
+                .collect(Collectors.toList());
 
             assertFalse(CollectionUtils.isEmpty(updatablePackagesForServer),
                 "The updatable packages reference list should not be empty");

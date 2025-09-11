@@ -60,7 +60,7 @@ public abstract class RecurringAction extends BaseDomainHelper {
     private String name;
     private String cronExpr;
     private boolean active;
-    private User creator;
+    private UserImpl creator;
     private RecurringActionType recurringActionType;
     private RecurringActionType.ActionType actionType;
 
@@ -89,7 +89,9 @@ public abstract class RecurringAction extends BaseDomainHelper {
      */
     protected RecurringAction(RecurringActionType recurringActionTypeIn, boolean isActive, User creatorIn) {
         this.active = isActive;
-        this.creator = creatorIn;
+        if (creatorIn instanceof UserImpl userImpl)  {
+            this.creator = userImpl;
+        }
 
         this.recurringActionType = recurringActionTypeIn;
         this.recurringActionType.setRecurringAction(this);
@@ -224,9 +226,9 @@ public abstract class RecurringAction extends BaseDomainHelper {
      *
      * @return creator
      */
-    @ManyToOne(targetEntity = UserImpl.class)
+    @ManyToOne
     @JoinColumn(name = "creator_id")
-    public User getCreator() {
+    public UserImpl getCreator() {
         return creator;
     }
 
@@ -235,7 +237,7 @@ public abstract class RecurringAction extends BaseDomainHelper {
      *
      * @param creatorIn the creator
      */
-    public void setCreator(User creatorIn) {
+    public void setCreator(UserImpl creatorIn) {
         creator = creatorIn;
     }
 

@@ -37,6 +37,7 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -185,7 +186,7 @@ public class CSVDownloadAction extends DownloadAction {
         // Read the CSV separator from user preferences
         User user = new RequestContext(request).getCurrentUser();
         CSVWriter csvWriter = new CSVWriter(new StringWriter(), user.getCsvSeparator());
-        csvWriter.setColumns(Arrays.stream(exportColumns.split(",")).map(String::trim).toList());
+        csvWriter.setColumns(Arrays.stream(exportColumns.split(",")).map(String::trim).collect(Collectors.toList()));
 
         String header = getHeaderText(request, session);
         if (header != null) {

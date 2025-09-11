@@ -85,9 +85,6 @@ public class ScapManagerTest extends JMockBaseTestCaseWithUser {
                 .openStream();
         XccdfTestResult result = ScapManager.xccdfEval(minion, action, 2, "", resultsIn, resumeXsl);
 
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
-
         result = HibernateFactory.getSession().get(XccdfTestResult.class, result.getId());
         assertNotNull(result);
 
@@ -117,9 +114,6 @@ public class ScapManagerTest extends JMockBaseTestCaseWithUser {
                 "/com/redhat/rhn/manager/audit/test/openscap/suma-ref42-min-sles15/results.xml")
                 .openStream();
         XccdfTestResult result = ScapManager.xccdfEval(minion, action, 2, "", resultsIn, resumeXsl);
-
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
 
         result = HibernateFactory.getSession().get(XccdfTestResult.class, result.getId());
         assertNotNull(result);
@@ -217,9 +211,6 @@ public class ScapManagerTest extends JMockBaseTestCaseWithUser {
 
         XccdfTestResult result = ScapManager.xccdfEvalResume(minion, action, 2, "",
                 new ByteArrayInputStream(resume.getBytes(StandardCharsets.UTF_8)));
-
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
 
         result = HibernateFactory.getSession().get(XccdfTestResult.class, result.getId());
         assertNotNull(result);
@@ -325,9 +316,6 @@ public class ScapManagerTest extends JMockBaseTestCaseWithUser {
                 "/com/redhat/rhn/manager/audit/test/openscap/rhccp/results.xml")
                 .openStream();
         XccdfTestResult result = ScapManager.xccdfEval(minion, action, 2, "", resultsIn, resumeXsl);
-
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
 
         result = HibernateFactory.getSession().get(XccdfTestResult.class, result.getId());
         assertNotNull(result);

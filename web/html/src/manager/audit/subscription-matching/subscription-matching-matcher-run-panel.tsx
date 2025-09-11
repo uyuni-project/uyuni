@@ -85,7 +85,7 @@ const MatcherRunDescription = (props: MatcherRunDescriptionProps) => {
     return (
       <div className="text-danger">
         {t(
-          "Could not start a matching run. Please contact your SUSE Manager administrator to make sure the task scheduler is running."
+          "Could not start a matching run. Please contact your administrator to make sure the task scheduler is running."
         )}
       </div>
     );

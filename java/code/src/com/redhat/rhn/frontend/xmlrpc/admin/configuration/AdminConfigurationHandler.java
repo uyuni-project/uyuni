@@ -49,6 +49,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.security.auth.login.LoginException;
 
@@ -231,7 +232,7 @@ public class AdminConfigurationHandler extends BaseHandler {
         User target = XmlRpcUserHelper.getInstance().lookupTargetUser(loggedInUser, name);
         List<String> existingGroups = ServerGroupFactory.listAdministeredServerGroups(target).stream()
                  .map(group -> group.getName())
-                 .toList();
+                 .collect(Collectors.toList());
         LOG.debug("existing groups: {}", existingGroups);
         LOG.debug("requested groups: {}", systemGroups);
         List<String> toAdd = new ArrayList<>();
@@ -258,7 +259,7 @@ public class AdminConfigurationHandler extends BaseHandler {
 
         List<String> existingManageableChannels = Arrays.stream(channelHandler.listManageableChannels(target))
                  .map(c -> ((ChannelTreeNode)c).getChannelLabel())
-                 .toList();
+                 .collect(Collectors.toList());
 
         LOG.debug("existing manageable channels: {}", existingManageableChannels);
         LOG.debug("requested manageable channels: {}", manageableChannels);
@@ -278,7 +279,7 @@ public class AdminConfigurationHandler extends BaseHandler {
 
         List<String> existingSubscribableChannels = Arrays.stream(channelHandler.listMyChannels(target))
                  .map(c -> ((ChannelTreeNode)c).getChannelLabel())
-                 .toList();
+                 .collect(Collectors.toList());
 
         LOG.debug("existing subscribable channels: {}", existingSubscribableChannels);
         LOG.debug("requested subscribable channels: {}", subscribableChannels);
@@ -391,7 +392,7 @@ public class AdminConfigurationHandler extends BaseHandler {
         activationKeyHandler.addServerGroups(loggedInUser, key,
                  serverGroupsToAdd.stream()
                  .map(groupName -> serverGroupHandler.getDetails(loggedInUser, groupName).getId().intValue())
-                 .toList());
+                 .collect(Collectors.toList()));
         LOG.debug("Configuration channels: {}", configurationChannels);
         activationKeyHandler.setConfigChannels(loggedInUser, Arrays.asList(key), configurationChannels);
     }
@@ -499,7 +500,7 @@ public class AdminConfigurationHandler extends BaseHandler {
                         activationKeyData.getOrDefault("system_types", Collections.emptyList());
                 List<String> systemTypesList = systemTypes.stream()
                         .map(entry -> entry.get("type"))
-                        .toList();
+                        .collect(Collectors.toList());
                 String contactMethod = (String) activationKeyData.get("contact_method");
                 Boolean configureAfterRegistration = (Boolean) activationKeyData.get("configure_after_registration");
                 List<String> configurationChannels = (List<String>)

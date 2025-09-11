@@ -18,13 +18,15 @@ import com.redhat.rhn.manager.acl.AclManager;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import java.io.Serializable;
+
 /**
  * Pane. This is the domain object that contains the
  * data represented by a Pane observed by a user.
  * Note this class directly maps to RHNINFOPANE
  * thorough hibernate
  */
-public class Pane {
+public class Pane implements Serializable {
 
     public static final String TASKS = "tasks";
     public static final String CRITICAL_SYSTEMS = "critical-systems";

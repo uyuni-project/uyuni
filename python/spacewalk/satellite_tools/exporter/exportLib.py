@@ -554,7 +554,7 @@ class _ChannelDumper(BaseRowDumper):
     _query_get_source_package_ids = rhnSQL.Statement(
         """
         select distinct ps.id, sr.name source_rpm,
-               TO_CHAR(ps.last_modified, 'YYYYMMDDHH24MISS') last_modified
+               TO_CHAR(ps.last_modified at time zone 'UTC', 'YYYYMMDDHH24MISS') last_modified
           from rhnChannelPackage cp, rhnPackage p, rhnPackageSource ps,
                rhnSourceRPM sr
          where cp.channel_id = :channel_id
@@ -576,7 +576,7 @@ class _ChannelDumper(BaseRowDumper):
     _query__get_errata_ids = rhnSQL.Statement(
         """
         select ce.errata_id as id, e.advisory_name,
-              TO_CHAR(e.last_modified, 'YYYYMMDDHH24MISS') last_modified
+              TO_CHAR(e.last_modified at time zone 'UTC', 'YYYYMMDDHH24MISS') last_modified
           from rhnChannelErrata ce, rhnErrata e
          where ce.channel_id = :channel_id
            and ce.errata_id = e.id
@@ -680,7 +680,7 @@ class _ChannelDumper(BaseRowDumper):
 
     _query_channel_comps_last_modified = rhnSQL.Statement(
         """
-        select to_char(last_modified, 'YYYYMMDDHH24MISS') as comps_last_modified
+        select TO_CHAR(last_modified at time zone 'UTC', 'YYYYMMDDHH24MISS') as comps_last_modified
         from rhnChannelComps
         where channel_id = :channel_id
         and comps_type_id = 1
@@ -696,7 +696,7 @@ class _ChannelDumper(BaseRowDumper):
 
     _query_channel_modules_last_modified = rhnSQL.Statement(
         """
-        select to_char(last_modified, 'YYYYMMDDHH24MISS') as modules_last_modified
+        select TO_CHAR(last_modified at time zone 'UTC', 'YYYYMMDDHH24MISS') as modules_last_modified
         from rhnChannelComps
         where channel_id = :channel_id
         and comps_type_id = 2
@@ -1300,7 +1300,7 @@ class _PackageDumper(BaseRowDumper):
             """
             select
                 name, text,
-                TO_CHAR(time, 'YYYYMMDDHH24MISS') as time
+                TO_CHAR(time at time zone 'UTC', 'YYYYMMDDHH24MISS') as time
             from rhnPackageChangeLog
             where package_id = :package_id
         """
@@ -1384,7 +1384,7 @@ class _PackageDumper(BaseRowDumper):
             select
                 pc.name, pf.device, pf.inode, pf.file_mode, pf.username,
                 pf.groupname, pf.rdev, pf.file_size,
-                TO_CHAR(mtime, 'YYYYMMDDHH24MISS') mtime,
+                TO_CHAR(mtime at time zone 'UTC', 'YYYYMMDDHH24MISS') mtime,
                 c.checksum_type as "checksum-type",
                 c.checksum, pf.linkto, pf.flags, pf.verifyflags, pf.lang
             from rhnPackageFile pf
@@ -2200,7 +2200,7 @@ class _KickstartableTreeDumper(BaseRowDumper):
                    c.checksum_type,
                    c.checksum,
                    file_size,
-                    TO_CHAR(last_modified, 'YYYYMMDDHH24MISS') "last-modified"
+                    TO_CHAR(last_modified at time zone 'UTC', 'YYYYMMDDHH24MISS') "last-modified"
               from rhnKSTreeFile, rhnChecksumView c
              where kstree_id = :kstree_id
                and checksum_id = c.id
@@ -2224,7 +2224,7 @@ class KickstartableTreesDumper(BaseSubelementDumper, BaseQueryDumper):
                    ktt.label "kstree-type-label",
                    kit.name "install-type-name",
                    kit.label "install-type-label",
-                   TO_CHAR(kt.last_modified, 'YYYYMMDDHH24MISS') "last-modified"
+                   TO_CHAR(kt.last_modified at time zone 'UTC', 'YYYYMMDDHH24MISS') "last-modified"
               from rhnKickstartableTree kt,
                    rhnKSTreeType ktt,
                    rhnKSInstallType kit,

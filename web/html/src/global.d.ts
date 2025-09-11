@@ -4,7 +4,6 @@ declare global {
   interface Window {
     // See java/code/webapp/WEB-INF/includes/leftnav.jsp
     JSONMenu: any[];
-    _IS_UYUNI: boolean;
 
     // CSRF loopback
     csrfToken?: string;
@@ -34,6 +33,7 @@ declare global {
     spaImportReactPage: (pageName: string) => Promise<unknown>;
 
     userPrefPageSize?: number;
+    isUyuni?: boolean;
   }
 
   // Test env setup, see ./utils/test-utils/setup/index.ts

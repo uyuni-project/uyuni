@@ -182,6 +182,9 @@ type LinkProps = BaseProps & {
   /** target of the link */
   target?: string;
 
+  /** to treat the link URL as a download  */
+  download?: string;
+
   /** Callback function to execute on button click. */
   handler?: (...args: any[]) => any;
 };
@@ -208,6 +211,7 @@ export class LinkButton extends _ButtonBase<LinkProps> {
         className={"btn " + this.props.className}
         href={this.props.href}
         onClick={this.props.handler}
+        download={this.props.download}
         {...targetProps}
       >
         {this.renderIcon()}
