@@ -1,5 +1,4 @@
--- oracle equivalent source sha1 31306ef50aaa30b52c7dd02adcb94ab66de8fb25
---
+-- Copyright (c) 2025 SUSE LLC
 -- Copyright (c) 2008--2018 Red Hat, Inc.
 --
 -- This software is licensed to you under the GNU General Public License,
@@ -299,11 +298,6 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
         channel_family_id_val   NUMERIC;
         server_org_id_val       NUMERIC;
         server_already_in_chan  BOOLEAN;
-        channel_family_is_satellite cursor(channel_family_id_in numeric) for
-                select  1
-                from    rhnChannelFamily
-                where   id = channel_family_id_in
-                    and label IN ('SMS', 'SMS-X86', 'SMS-Z', 'SMS-PPC');
         child record;
     BEGIN
         -- In PostgreSQL recursion with opened cursors is not allowed so we use
@@ -359,10 +353,6 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
         THEN
             perform rhn_exception.raise_exception('channel_unsubscribe_no_family');
         END IF;
-
-        for ignore in channel_family_is_satellite(channel_family_id_val) loop
-                delete from suseMgrServerInfo where server_id = server_id_in;
-        end loop;
 
         SELECT org_id INTO server_org_id_val
           FROM rhnServer
