@@ -14,101 +14,101 @@
  */
 package com.redhat.rhn.common.errors.test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.errors.LookupExceptionHandler;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.frontend.events.TraceBackAction;
 import com.redhat.rhn.frontend.events.TraceBackEvent;
-import com.redhat.rhn.testing.MockObjectTestCase;
-import com.redhat.rhn.testing.RhnMockDynaActionForm;
-import com.redhat.rhn.testing.RhnMockHttpServletRequest;
-import com.redhat.rhn.testing.RhnMockHttpServletResponse;
-import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.config.Configurator;
+import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.config.ExceptionConfig;
 import org.jmock.Expectations;
+import org.jmock.Mockery;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Vector;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-/**
- * LookupExceptionHandlerTest
- */
-public class LookupExceptionHandlerTest extends MockObjectTestCase {
+public class LookupExceptionHandlerTest {
 
+    private final Mockery context = new Mockery();
     private TraceBackAction tba;
+    private ActionMapping mapping;
+    private HttpServletRequest request;
+    private HttpServletResponse response;
+    private ActionForm form;
 
     @BeforeEach
-    public void setUp() {
-        setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
+    void setUp() {
+        // Allow mocking concrete classes
+        context.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
+
+        // JMock mocks
+        mapping = context.mock(ActionMapping.class);
+        request = context.mock(HttpServletRequest.class);
+        response = context.mock(HttpServletResponse.class);
+        form = context.mock(ActionForm.class);
+
+        // Messaging setup
         tba = new TraceBackAction();
         MessageQueue.registerAction(tba, TraceBackEvent.class);
         MessageQueue.startMessaging();
     }
 
-    @Test
-    public void testExecute() throws Exception {
-
-        /*
-         * Turn off logging and tracebacks
-         * Logging complains and sends warnings (expected)
-         * Tracebacks will get sent to root@localhost
-         */
-        Logger log = LogManager.getLogger(LookupExceptionHandler.class);
-        Level orig = log.getLevel();
-        Config c = Config.get();
-        String mail = c.getString("web.traceback_mail", "");
+    @AfterEach
+    void tearDown() {
         try {
-            Configurator.setLevel(this.getClass().getName(), Level.OFF);
-            c.setString("web.traceback_mail", "jesusr@redhat.com");
-
-            LookupException ex = new LookupException("Simply a test");
-
-            final ActionMapping mapping = mock(ActionMapping.class, "mapping");
-            context().checking(new Expectations() { {
-                oneOf(mapping).getInputForward();
-                will(returnValue(new ActionForward()));
-            } });
-
-            RhnMockHttpServletRequest request = TestUtils
-                    .getRequestWithSessionAndUser();
-            request.setupGetHeaderNames(new Vector<String>().elements());
-            request.setupGetMethod("POST");
-            request.setupGetRequestURI("http://localhost:8080");
-            request.setupGetParameterNames(new Vector<String>().elements());
-
-            RhnMockHttpServletResponse response = new RhnMockHttpServletResponse();
-            RhnMockDynaActionForm form = new RhnMockDynaActionForm();
-
-            LookupExceptionHandler leh = new LookupExceptionHandler();
-
-            leh.execute(ex, new ExceptionConfig(), mapping, form, request, response);
-            assertEquals(ex, request.getAttribute("error"));
+            MessageQueue.stopMessaging();
         }
         finally {
-            //Turn tracebacks and logging back on
-            Thread.sleep(1000); //wait for message to be sent
-            c.setString("web.traceback_mail", mail);
-            Configurator.setLevel(this.getClass().getName(), orig);
+            MessageQueue.deRegisterAction(tba, TraceBackEvent.class);
         }
     }
 
-    @AfterEach
-    public void tearDown() {
-        MessageQueue.stopMessaging();
-        MessageQueue.deRegisterAction(tba, TraceBackEvent.class);
-    }
+    @Test
+    void testExecuteSetsErrorAttribute() throws Exception {
+        Logger log = LogManager.getLogger(LookupExceptionHandler.class);
+        Level originalLevel = log.getLevel();
+        Config config = Config.get();
+        String originalMail = config.getString("web.traceback_mail", "");
 
+        try {
+            // Disable logging and set fake mail
+            Configurator.setLevel(getClass().getName(), Level.OFF);
+            config.setString("web.traceback_mail", "test@example.com");
+
+            LookupException ex = new LookupException("Simply a test");
+            LookupExceptionHandler handler = new LookupExceptionHandler();
+
+            // JMock expectations
+            context.checking(new Expectations() {{
+                oneOf(mapping).getInputForward();
+                will(returnValue(new ActionForward()));
+                oneOf(request).setAttribute("error", ex);
+                allowing(response).setStatus(with(any(Integer.class)));
+                allowing(request);
+            }});
+
+            // Execute handler
+            handler.execute(ex, new ExceptionConfig(), mapping, form, request, response);
+
+            // Verify all expectations
+            context.assertIsSatisfied();
+        }
+        finally {
+            // Restore config
+            config.setString("web.traceback_mail", originalMail);
+            Configurator.setLevel(getClass().getName(), originalLevel);
+        }
+    }
 }
