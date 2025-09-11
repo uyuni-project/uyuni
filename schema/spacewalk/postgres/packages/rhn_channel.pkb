@@ -339,26 +339,25 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
             RETURN;
         END IF;
 
-   if deleting_server = 0 then
-      insert into rhnServerHistory (id,server_id,summary,details) (
-          select  nextval('rhn_event_id_seq'),
-                server_id_in,
-             'unsubscribed from channel ' || SUBSTR(c.label, 0, 106),
-             c.label
-          from    rhnChannel c
-          where   c.id = channel_id_in
-      );
-   end if;
+        IF deleting_server = 0 then
+            insert into rhnServerHistory (id,server_id,summary,details) (
+                select  nextval('rhn_event_id_seq'), server_id_in,
+                        'unsubscribed from channel ' || SUBSTR(c.label, 0, 106),
+                        c.label
+                from    rhnChannel c
+                where   c.id = channel_id_in
+            );
+        END IF;
 
-   DELETE FROM rhnServerChannel WHERE server_id = server_id_in AND channel_id = channel_id_in;
+        DELETE FROM rhnServerChannel WHERE server_id = server_id_in AND channel_id = channel_id_in;
 
-   if deleting_server = 0 then
-        perform queue_server(server_id_in, immediate_in);
+        if deleting_server = 0 then
+            perform queue_server(server_id_in, immediate_in);
 
-        update rhnServer
-           set channels_changed = current_timestamp
-         where id = server_id_in;
-   end if;
+            update rhnServer
+            set    channels_changed = current_timestamp
+            where  id = server_id_in;
+        end if;
 
         channel_family_id_val := rhn_channel.family_for_channel(channel_id_in);
         IF channel_family_id_val IS NULL
