@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.Identifiable;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFamily;
+import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.common.ProvisionState;
 import com.redhat.rhn.domain.common.RhnConfiguration;
 import com.redhat.rhn.domain.common.RhnConfigurationFactory;
@@ -2279,7 +2280,11 @@ public class Server extends BaseDomainHelper implements Identifiable {
                     }
                     ChannelFamily cf = p.getChannelFamily();
                     if (cf != null) {
-                        return cf.getLabel().startsWith("SMP") || cf.getLabel().equals("SLE-M-T");
+                        return List.of(
+                                ChannelFamilyFactory.PROXY_CHANNEL_FAMILY_LABEL,
+                                ChannelFamilyFactory.PROXY_ARM_CHANNEL_FAMILY_LABEL,
+                                ChannelFamilyFactory.TOOLS_CHANNEL_FAMILY_LABEL
+                        ).contains(cf.getLabel());
                     }
                     return false;
                 });
