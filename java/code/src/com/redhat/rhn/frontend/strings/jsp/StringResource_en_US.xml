@@ -14437,7 +14437,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         </context-group>
       </trans-unit>
       <trans-unit id="channelOverview.jsp.tasks.deploy" xml:space="preserve">
-        <source>Deploy Files</source>
+        <source>Deploy Files:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
@@ -14467,7 +14467,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         </context-group>
       </trans-unit>
       <trans-unit id="channelOverview.jsp.tasks.compare" xml:space="preserve">
-        <source>Compare Files</source>
+        <source>Compare Files:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
@@ -14479,7 +14479,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         </context-group>
       </trans-unit>
       <trans-unit id="channelOverview.jsp.tasks.modify" xml:space="preserve">
-        <source>Add/Create Files</source>
+        <source>Add/Create Files:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
@@ -24747,7 +24747,7 @@ given channel.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="channelOverview.jsp.tasks.initsls" xml:space="preserve">
-        <source>State File</source>
+        <source>State File:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>

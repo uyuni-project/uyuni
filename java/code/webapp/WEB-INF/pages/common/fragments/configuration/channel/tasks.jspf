@@ -13,7 +13,6 @@
             <c:set var="tableshown" scope="request" value="true" />
             <li class="list-group-item">
                 <strong>
-                    <rhn:icon type="nav-bullet"/>
                     <bean:message key="channelOverview.jsp.tasks.initsls" />
                 </strong>
             </li>
@@ -31,7 +30,6 @@
 
             <li class="list-group-item">
                 <strong>
-                    <rhn:icon type="nav-bullet"/>
                     <bean:message key="channelOverview.jsp.tasks.deploy" />
                 </strong>
             </li>
@@ -64,7 +62,6 @@
             <!-- Compare Files table -->
             <div class="list-group-item">
                 <strong>
-                    <rhn:icon type="nav-bullet"/>
                     <bean:message key="channelOverview.jsp.tasks.compare" />
                 </strong>
             </div>
@@ -80,7 +77,6 @@
             <!-- Add/Create Files table -->
             <div class="list-group-item">
                 <strong>
-                    <rhn:icon type="nav-bullet"/>
                     <bean:message key="channelOverview.jsp.tasks.modify" />
                 </strong>
             </div>
