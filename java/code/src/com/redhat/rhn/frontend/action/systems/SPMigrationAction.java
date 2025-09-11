@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012--2020 SUSE LLC
+ * Copyright (c) 2012--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.action.systems;
 
@@ -355,15 +351,16 @@ public class SPMigrationAction extends RhnAction {
             Date earliest = getStrutsDelegate().readScheduleDate(form, "date",
                     DatePicker.YEAR_RANGE_POSITIVE);
             try {
-                Long actionID = DistUpgradeManager.scheduleDistUpgrade(ctx.getCurrentUser(),
-                        server, targetProductSet, channelIDs, dryRun, allowVendorChange, earliest,
-                        GlobalInstanceHolder.PAYG_MANAGER.isPaygInstance());
+                List<DistUpgradeAction> actions = DistUpgradeManager.scheduleDistUpgrade(ctx.getCurrentUser(),
+                    List.of(server), targetProductSet, channelIDs, dryRun, allowVendorChange,
+                    GlobalInstanceHolder.PAYG_MANAGER.isPaygInstance(), earliest, null);
 
                 // Display a message to the user
                 String product = targetProductSet.getBaseProduct().getFriendlyName();
                 String msgKey = dryRun ? MSG_SCHEDULED_DRYRUN : MSG_SCHEDULED_MIGRATION;
-                String[] msgParams = new String[]{server.getId().toString(), actionID.toString(), product};
-                getStrutsDelegate().saveMessage(msgKey, msgParams, request);
+                List<String> msgParams = List.of(server.getId().toString(), actions.get(0).getId().toString(), product);
+
+                getStrutsDelegate().saveMessage(msgKey, msgParams.toArray(String[]::new), request);
                 Map<String, Long> params = new HashMap<>();
                 params.put("sid", server.getId());
                 return getStrutsDelegate().forwardParams(forward, params);
@@ -451,10 +448,12 @@ public class SPMigrationAction extends RhnAction {
      */
     private void setMissingSuccessorsInfo(HttpServletRequest request, Optional<SUSEProductSet> sourceProducts,
                                           List<SUSEProductSet> targetProducts) {
-        Optional<Set<String>> missingSuccessorExtensions = Optional.of(new HashSet<String>());
-        DistUpgradeManager.removeIncompatibleTargets(sourceProducts,
-                targetProducts, missingSuccessorExtensions);
-        request.setAttribute(MISSING_SUCCESSOR_EXTENSIONS, missingSuccessorExtensions.orElse(new HashSet<>()));
+        Set<SUSEProduct> missingSuccessors = new HashSet<>();
+
+        DistUpgradeManager.removeIncompatibleTargets(sourceProducts, targetProducts, missingSuccessors);
+        request.setAttribute(MISSING_SUCCESSOR_EXTENSIONS, missingSuccessors.stream()
+            .map(SUSEProduct::getFriendlyName)
+            .toList());
     }
 
     /**
@@ -604,7 +603,11 @@ public class SPMigrationAction extends RhnAction {
         Long aid = ctx.getParamAsLong("aid");
 
         DistUpgradeAction action = (DistUpgradeAction) ActionFactory.lookupById(aid);
-        DistUpgradeActionDetails details = action.getDetails();
+        Map<Long, DistUpgradeActionDetails> detailsMap = action.getDetailsMap();
+        if (detailsMap.size() != 1) {
+            throw new IllegalStateException("Invalid number of DistUpgradeActionDetails linked to the action");
+        }
+        DistUpgradeActionDetails details = detailsMap.values().iterator().next();
         List<Channel> channels = details.getChannelTasks().stream()
                 .filter(channel -> channel.getTask() == DistUpgradeChannelTask.SUBSCRIBE)
                 .map(DistUpgradeChannelTask::getChannel)

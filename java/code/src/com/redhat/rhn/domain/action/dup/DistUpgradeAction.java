@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 SUSE LLC
+ * Copyright (c) 2012--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 
 package com.redhat.rhn.domain.action.dup;
@@ -23,7 +19,9 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductUpgrade;
 import com.redhat.rhn.domain.server.MinionSummary;
+import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.frontend.struts.RequestContext;
 
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
@@ -42,7 +40,6 @@ import com.suse.salt.netapi.results.CmdResult;
 import com.suse.salt.netapi.results.ModuleRun;
 import com.suse.salt.netapi.results.StateApplyResult;
 import com.suse.utils.Json;
-import com.suse.utils.Opt;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonSyntaxException;
@@ -69,24 +66,43 @@ import javax.servlet.http.HttpServletRequest;
 public class DistUpgradeAction extends Action {
     private static final Logger LOG = LogManager.getLogger(DistUpgradeAction.class);
 
-    private static final long serialVersionUID = 1585401756449185047L;
-    private DistUpgradeActionDetails details;
+    private static final long serialVersionUID = -702781375842108784L;
+
+    private Map<Long, DistUpgradeActionDetails> detailsMap;
 
     /**
-     * Return the details.
+     * Return the details for the specified server.
+     * @param serverId the server id
      * @return details
      */
-    public DistUpgradeActionDetails getDetails() {
-        return details;
+    public DistUpgradeActionDetails getDetails(Long serverId) {
+        return detailsMap.get(serverId);
     }
 
     /**
-     * Set the details.
+     * Set the details of a specific server.
      * @param detailsIn details
      */
     public void setDetails(DistUpgradeActionDetails detailsIn) {
         detailsIn.setParentAction(this);
-        this.details = detailsIn;
+        detailsMap.put(detailsIn.getServer().getId(), detailsIn);
+    }
+
+    /**
+     * Gets the migration details associated to this action, mapped for each server
+     * @return a map where the key is the server id and the value is a {@link  DistUpgradeActionDetails}
+     */
+    public Map<Long, DistUpgradeActionDetails> getDetailsMap() {
+        return detailsMap;
+    }
+
+    /**
+     * Sets the migration details for each server and associates them with this action
+     * @param detailsMapIn a map where the key is the server id and the value is a {@link  DistUpgradeActionDetails}
+     */
+    public void setDetailsMap(Map<Long, DistUpgradeActionDetails> detailsMapIn) {
+        detailsMapIn.values().forEach(details -> details.setParentAction(this));
+        this.detailsMap = detailsMapIn;
     }
 
     /**
@@ -94,42 +110,51 @@ public class DistUpgradeAction extends Action {
      */
     @Override
     public Map<LocalCall<?>, List<MinionSummary>> getSaltCalls(List<MinionSummary> minionSummaries) {
-        Map<Boolean, List<Channel>> collect = getDetails().getChannelTasks()
-                .stream().collect(Collectors.partitioningBy(
-                        ct -> ct.getTask() == DistUpgradeChannelTask.SUBSCRIBE,
-                        Collectors.mapping(DistUpgradeChannelTask::getChannel,
-                                Collectors.toList())
+        Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
+
+        minionSummaries.forEach((minionSummary -> {
+            DistUpgradeActionDetails actionDetails = getDetails(minionSummary.getServerId());
+
+            Map<Boolean, List<Channel>> channelTaskMap = actionDetails
+                .getChannelTasks()
+                .stream()
+                .collect(Collectors.partitioningBy(
+                    ct -> ct.getTask() == DistUpgradeChannelTask.SUBSCRIBE,
+                    Collectors.mapping(DistUpgradeChannelTask::getChannel, Collectors.toList())
                 ));
 
-        List<Channel> subbed = collect.get(true);
-        List<Channel> unsubbed = collect.get(false);
+            List<Channel> subscribedChannels = channelTaskMap.get(true);
+            List<Channel> unsubscribedChannels = channelTaskMap.get(false);
 
-        getServerActions()
+            getServerActions()
                 .stream()
-                .flatMap(s -> Opt.stream(s.getServer().asMinionServer()))
+                .filter(s -> Objects.equals(s.getServerId(), minionSummary.getServerId()))
+                .flatMap(s -> s.getServer().asMinionServer().stream())
                 .forEach(minion -> {
                     Set<Channel> currentChannels = minion.getChannels();
-                    unsubbed.forEach(currentChannels::remove);
-                    currentChannels.addAll(subbed);
+                    unsubscribedChannels.forEach(currentChannels::remove);
+                    currentChannels.addAll(subscribedChannels);
                     MinionPillarManager.INSTANCE.generatePillar(minion);
                     ServerFactory.save(minion);
                 });
 
-        Map<String, Object> pillar = new HashMap<>();
-        Map<String, Object> susemanager = new HashMap<>();
-        pillar.put("susemanager", susemanager);
-        Map<String, Object> distupgrade = new HashMap<>();
-        susemanager.put("distupgrade", distupgrade);
-        distupgrade.put("dryrun", getDetails().isDryRun());
-        distupgrade.put(SaltParameters.ALLOW_VENDOR_CHANGE, getDetails().isAllowVendorChange());
-        distupgrade.put("channels", subbed.stream()
+            Map<String, Object> pillar = new HashMap<>();
+            Map<String, Object> susemanager = new HashMap<>();
+            pillar.put("susemanager", susemanager);
+            Map<String, Object> distupgrade = new HashMap<>();
+            susemanager.put("distupgrade", distupgrade);
+            distupgrade.put("dryrun", actionDetails.isDryRun());
+            distupgrade.put(SaltParameters.ALLOW_VENDOR_CHANGE, actionDetails.isAllowVendorChange());
+            distupgrade.put("channels", subscribedChannels.stream()
                 .sorted()
                 .map(c -> "susemanager:" + c.getLabel())
                 .collect(Collectors.toList()));
-        if (Objects.nonNull(getDetails().getMissingSuccessors())) {
-            pillar.put("missing_successors", Arrays.asList(getDetails().getMissingSuccessors().split(",")));
-        }
-        getDetails().getProductUpgrades().stream()
+
+            if (Objects.nonNull(actionDetails.getMissingSuccessors())) {
+                pillar.put("missing_successors", Arrays.asList(actionDetails.getMissingSuccessors().split(",")));
+            }
+
+            actionDetails.getProductUpgrades().stream()
                 .map(SUSEProductUpgrade::getToProduct)
                 .filter(SUSEProduct::isBase)
                 .forEach(tgt -> {
@@ -140,14 +165,15 @@ public class DistUpgradeAction extends Action {
                     distupgrade.put("targetbaseproduct", baseproduct);
                 });
 
-        HibernateFactory.commitTransaction();
+            HibernateFactory.commitTransaction();
 
-        LocalCall<Map<String, State.ApplyResult>> distUpgrade = State.apply(
+            var distUpgrade = State.apply(
                 Collections.singletonList(ApplyStatesEventMessage.DISTUPGRADE),
                 Optional.of(pillar)
-        );
-        Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
-        ret.put(distUpgrade, minionSummaries);
+            );
+
+            ret.put(distUpgrade, List.of(minionSummary));
+        }));
 
         return ret;
     }
@@ -157,30 +183,41 @@ public class DistUpgradeAction extends Action {
      */
     @Override
     public void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult, UpdateAuxArgs auxArgs) {
+        Long serverId = serverAction.getServerId();
+        DistUpgradeActionDetails details = getDetails(serverId);
+
+        if (details == null) {
+            return;
+        }
+
         if (details.isDryRun()) {
-            Map<Boolean, List<Channel>> collect = details.getChannelTasks()
-                    .stream().collect(Collectors.partitioningBy(
-                            ct -> ct.getTask() == DistUpgradeChannelTask.SUBSCRIBE,
-                            Collectors.mapping(DistUpgradeChannelTask::getChannel,
-                                    Collectors.toList())
-                    ));
-            List<Channel> subbed = collect.get(true);
-            List<Channel> unsubbed = collect.get(false);
+            Map<Boolean, List<Channel>> channelTaskMap = details.getChannelTasks()
+                .stream()
+                .collect(Collectors.partitioningBy(
+                    ct -> ct.getTask() == DistUpgradeChannelTask.SUBSCRIBE,
+                    Collectors.mapping(DistUpgradeChannelTask::getChannel, Collectors.toList())
+                ));
+
+            List<Channel> subscribedChannels = channelTaskMap.get(true);
+            List<Channel> unsubscribedChannels = channelTaskMap.get(false);
+
             Set<Channel> currentChannels = serverAction.getServer().getChannels();
-            currentChannels.removeAll(subbed);
-            currentChannels.addAll(unsubbed);
+            subscribedChannels.forEach(currentChannels::remove);
+            currentChannels.addAll(unsubscribedChannels);
             ServerFactory.save(serverAction.getServer());
-            MessageQueue.publish(
-                    new ChannelsChangedEventMessage(serverAction.getServerId()));
-            MessageQueue.publish(
-                    new ApplyStatesEventMessage(serverAction.getServerId(), false,
-                            ApplyStatesEventMessage.CHANNELS));
-            String message = parseDryRunMessage(jsonResult);
-            serverAction.setResultMsg(message);
+
+            var channelsChangedEvent = new ChannelsChangedEventMessage(serverId);
+            var applyStatesEvent = new ApplyStatesEventMessage(serverId, false, ApplyStatesEventMessage.CHANNELS);
+
+            MessageQueue.publish(channelsChangedEvent);
+            MessageQueue.publish(applyStatesEvent);
+
+            String result = parseDryRunMessage(jsonResult);
+            serverAction.setResultMsg(result);
         }
         else {
-            String message = parseMigrationMessage(jsonResult);
-            serverAction.setResultMsg(message);
+            String result = parseMigrationMessage(jsonResult);
+            serverAction.setResultMsg(result);
 
             // Make sure grains are updated after dist upgrade
             serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
@@ -192,22 +229,21 @@ public class DistUpgradeAction extends Action {
 
     private String parseDryRunMessage(JsonElement jsonResult) {
         try {
-            DistUpgradeDryRunSlsResult distUpgradeSlsResult = Json.GSON.fromJson(
-                    jsonResult, DistUpgradeDryRunSlsResult.class);
-            if (distUpgradeSlsResult.getSpmigration() != null) {
+            var distUpgradeResult = Json.GSON.fromJson(jsonResult, DistUpgradeDryRunSlsResult.class);
+            if (distUpgradeResult.getSpmigration() != null) {
                 return String.join(" ",
-                        distUpgradeSlsResult.getSpmigration().getChanges().getRetOpt().orElse(""),
-                        distUpgradeSlsResult.getSpmigration().getComment());
+                    distUpgradeResult.getSpmigration().getChanges().getRetOpt().orElse(""),
+                    distUpgradeResult.getSpmigration().getComment()
+                );
             }
         }
         catch (JsonSyntaxException e) {
             try {
-                DistUpgradeOldSlsResult distUpgradeSlsResult = Json.GSON.fromJson(
-                        jsonResult, DistUpgradeOldSlsResult.class);
+                var oldFormatResult = Json.GSON.fromJson(jsonResult, DistUpgradeOldSlsResult.class);
                 return String.join(" ",
-                        distUpgradeSlsResult.getSpmigration().getChanges().getRetOpt()
-                                .map(ModuleRun::getComment).orElse(""),
-                        distUpgradeSlsResult.getSpmigration().getComment());
+                    oldFormatResult.getSpmigration().getChanges().getRetOpt().map(ModuleRun::getComment).orElse(""),
+                    oldFormatResult.getSpmigration().getComment()
+                );
             }
             catch (JsonSyntaxException ex) {
                 LOG.error("Unable to parse dry run result", ex);
@@ -218,56 +254,54 @@ public class DistUpgradeAction extends Action {
 
     private String parseMigrationMessage(JsonElement jsonResult) {
         try {
-            DistUpgradeSlsResult distUpgradeSlsResult = Json.GSON.fromJson(jsonResult, DistUpgradeSlsResult.class);
-            if (distUpgradeSlsResult.getSpmigration() != null) {
-                StateApplyResult<RetOpt<Map<String, Change<String>>>> spmig =
-                        distUpgradeSlsResult.getSpmigration();
+            var distUpgradeResult = Json.GSON.fromJson(jsonResult, DistUpgradeSlsResult.class);
+            if (distUpgradeResult.getSpmigration() != null) {
+                StateApplyResult<RetOpt<Map<String, Change<String>>>> spmig = distUpgradeResult.getSpmigration();
                 String message = spmig.getComment();
+
                 if (spmig.isResult()) {
-                    message = spmig.getChanges().getRetOpt().map(ret -> ret.entrySet().stream().map(entry ->
-                            entry.getKey() + ":" + entry.getValue().getOldValue() +
-                                    "->" + entry.getValue().getNewValue()
-                    ).collect(Collectors.joining(","))).orElse(spmig.getComment());
+                    message = spmig.getChanges().getRetOpt()
+                        .map(ret -> getChangesString(ret))
+                        .orElse(spmig.getComment());
                 }
+
                 return message;
             }
-            else if (distUpgradeSlsResult.getLiberate() != null) {
-                StateApplyResult<CmdResult> liberate = distUpgradeSlsResult.getLiberate();
+            else if (distUpgradeResult.getLiberate() != null) {
+                StateApplyResult<CmdResult> liberate = distUpgradeResult.getLiberate();
                 String message = SaltUtils.getJsonResultWithPrettyPrint(jsonResult);
                 if (liberate.isResult()) {
                     message = liberate.getChanges().getStdout();
 
-                    StateApplyResult<CmdResult> liberatedResult = distUpgradeSlsResult.getLiberatedResult();
+                    StateApplyResult<CmdResult> liberatedResult = distUpgradeResult.getLiberatedResult();
                     if (liberatedResult.isResult()) {
                         message = Optional.ofNullable(message).orElse("") + "\n" +
                                 liberatedResult.getChanges().getStdout();
                     }
                 }
+
                 return message;
             }
+
             return SaltUtils.getJsonResultWithPrettyPrint(jsonResult);
         }
         catch (JsonSyntaxException e) {
             try {
-                DistUpgradeOldSlsResult distUpgradeSlsResult = Json.GSON.fromJson(
-                        jsonResult, DistUpgradeOldSlsResult.class);
-                return distUpgradeSlsResult.getSpmigration().getChanges()
-                        .getRetOpt().map(ret -> {
-                            if (ret.isResult()) {
-                                return ret.getChanges().entrySet().stream()
-                                        .map(entry -> entry.getKey() + ":" + entry.getValue().getOldValue() + "->" +
-                                                entry.getValue().getNewValue()).collect(Collectors.joining(","));
-                            }
-                            else {
-                                return ret.getComment();
-                            }
-                        }).orElse("");
+                var oldFormatResult = Json.GSON.fromJson(jsonResult, DistUpgradeOldSlsResult.class);
+
+                return oldFormatResult.getSpmigration().getChanges().getRetOpt()
+                    .map(ret -> {
+                        if (ret.isResult()) {
+                            return getChangesString(ret.getChanges());
+                        }
+
+                        return ret.getComment();
+                    })
+                    .orElse("");
             }
             catch (JsonSyntaxException ex) {
                 try {
-                    TypeToken<List<String>> typeToken = new TypeToken<>() {
-                    };
-                    List<String> saltError = Json.GSON.fromJson(jsonResult, typeToken.getType());
+                    List<String> saltError = Json.GSON.fromJson(jsonResult, new TypeToken<>() { }.getType());
                     return String.join("\n", saltError);
                 }
                 catch (JsonSyntaxException exc) {
@@ -278,13 +312,30 @@ public class DistUpgradeAction extends Action {
         return "Unable to parse migration result";
     }
 
+    private static String getChangesString(Map<String, Change<String>> ret) {
+        return ret.entrySet().stream()
+            .map(entry -> {
+                String key = entry.getKey();
+
+                String oldValue = entry.getValue().getOldValue();
+                String newValue = entry.getValue().getNewValue();
+
+                return "%s: %s->%s".formatted(key, oldValue, newValue);
+            })
+            .collect(Collectors.joining(","));
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
     public boolean setRequestAttributeDryRun(HttpServletRequest request) {
-        boolean typeDistUpgradeDryRun = getDetails().isDryRun();
+        RequestContext requestContext = new RequestContext(request);
+        Server server = requestContext.lookupAndBindServer();
+
+        boolean typeDistUpgradeDryRun = getDetails(server.getId()).isDryRun();
         request.setAttribute("typeDistUpgradeDryRun", typeDistUpgradeDryRun);
+
         return typeDistUpgradeDryRun;
     }
 }

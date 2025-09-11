@@ -86,4 +86,52 @@ public class ListsTest  {
         result = Lists.union(List.of(1, 2, 3), null);
         assertEquals(List.of(1, 2, 3), result);
     }
+
+    @Test
+    public void testMerge() {
+        List<Integer> result = Lists.merge(List.of(1, 2, 3), List.of(2, 3, 3, 5));
+        assertEquals(List.of(1, 2, 3, 5), result);
+    }
+
+    @Test
+    public void testNullSafetyMerge() {
+        List<Integer> result = Lists.merge(null, List.of(2, 3, 3, 5));
+        assertEquals(List.of(2, 3, 5), result);
+
+        result = Lists.merge(List.of(1, 2, 3), null);
+        assertEquals(List.of(1, 2, 3), result);
+    }
+
+    @Test
+    public void testEmptyMerge() {
+        List<Integer> result = Lists.merge(List.of(), List.of(2, 3, 3, 5));
+        assertEquals(List.of(2, 3, 5), result);
+
+        result = Lists.merge(List.of(1, 2, 3), List.of());
+        assertEquals(List.of(1, 2, 3), result);
+    }
+
+    @Test
+    public void testSubtract() {
+        List<Integer> result = Lists.subtract(List.of(1, 2, 3), List.of(2, 3, 5));
+        assertEquals(List.of(1), result);
+    }
+
+    @Test
+    public void testNullSafetySubtract() {
+        List<Integer> result = Lists.subtract(null, List.of(2, 3, 3, 5));
+        assertEquals(List.of(), result);
+
+        result = Lists.merge(List.of(1, 2, 3), null);
+        assertEquals(List.of(1, 2, 3), result);
+    }
+
+    @Test
+    public void testEmptySubtract() {
+        List<Integer> result = Lists.subtract(List.of(), List.of(2, 3, 3, 5));
+        assertEquals(List.of(), result);
+
+        result = Lists.merge(List.of(1, 2, 3), List.of());
+        assertEquals(List.of(1, 2, 3), result);
+    }
 }
