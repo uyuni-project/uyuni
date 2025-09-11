@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.domain.server;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.AccessToken;
 import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.channel.Channel;
@@ -256,6 +257,10 @@ public class MinionServer extends Server implements SaltConfigurable {
      */
     public boolean updateServerPaths(String hostname) {
         Optional<Server> proxy = ServerFactory.lookupProxyServer(hostname);
+        if (hostname.equals(ConfigDefaults.get().getJavaHostname())) {
+            // we are not a proxy!
+            proxy = Optional.empty();
+        }
 
         return updateServerPaths(proxy, Optional.of(hostname));
     }
