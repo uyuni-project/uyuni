@@ -299,8 +299,9 @@ BASE_CHANNEL_BY_CLIENT = {
     'salt_migration_minion' => 'SLE-Product-SLES15-SP5-Pool for x86_64'
   },
   'Uyuni' => {
-    'proxy' => 'openSUSE Leap Micro 5.5 (x86_64)',
-    'proxy_container' => 'openSUSE Leap Micro 5.5 (x86_64)',
+    'proxy' => 'openSUSE Tumbleweed (x86_64)',
+    'proxy_container' => 'openSUSE Tumbleweed (x86_64)',
+    'proxy_nontransactional' => 'openSUSE Tumbleweed (x86_64)',
     'sle_minion' => 'openSUSE Leap 15.6 (x86_64)',
     'ssh_minion' => 'openSUSE Leap 15.6 (x86_64)',
     'rhlike_minion' => 'RHEL8-Pool for x86_64',
@@ -490,6 +491,7 @@ CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
   'Uyuni' => {
     'openSUSE Leap 15.6 (x86_64)' => 'openSUSE-Leap-15.6-x86_64-uyuni',
     'openSUSE Leap Micro 5.5 (x86_64)' => 'openSUSE-Leap-Micro-5.5-x86_64-uyuni',
+    'openSUSE Tumbleweed (x86_64)' => 'openSUSE-Tumbleweed-x86_64-uyuni',
     'SLES12-SP5-Pool for x86_64' => 'SLE-12-SP5-x86_64',
     'SLE-Product-SLES15-SP3-Pool for x86_64' => 'SLE-15-SP3-x86_64',
     'SLE-Product-SLES15-SP4-Pool for x86_64' => 'SLE-15-SP4-x86_64',
@@ -562,6 +564,7 @@ PARENT_CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
   'Uyuni' => {
     'openSUSE Leap 15.6 (x86_64)' => nil,
     'openSUSE Leap Micro 5.5 (x86_64)' => 'opensuse_micro5_5-x86_64',
+    'openSUSE Tumbleweed (x86_64)' => nil,
     'SLES12-SP5-Pool for x86_64' => nil,
     'SLE-Product-SLES15-SP3-Pool for x86_64' => 'sle-product-sles15-sp3-pool-x86_64',
     'SLE-Product-SLES15-SP4-Pool for x86_64' => 'sle-product-sles15-sp4-pool-x86_64',
@@ -1333,6 +1336,11 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sl-micro-6.1-pool-x86_64
         sl-micro-6.1-devel-uyuni-client-x86_64
       ],
+    'tumbleweed-client-tools-x86_64' => # CHECKED
+      %w[
+        opensuse_tumbleweed-uyuni-client-x86_64
+        opensuse_tumbleweed-uyuni-client-devel-x86_64
+      ],
     'ubuntu-2004' => # CHECKED
       %w[
         ubuntu-2004-pool-amd64-uyuni
@@ -1371,10 +1379,9 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
       ],
     'uyuni-proxy' => # CHECKED
       %w[
-        opensuse_micro5_5-x86_64
-        opensuse_micro5_5-x86_64-sle-updates
-        opensuse_micro5_5-uyuni-client-x86_64
-        opensuse_micro5_5-uyuni-client-devel-x86_64
+        opensuse_tumbleweed-x86_64
+        opensuse_tumbleweed-uyuni-client-devel-x86_64
+        uyuni-proxy-devel-tumbleweed-x86_64
       ]
     # There are no channels for Retail under Uyuni
   }
@@ -1491,6 +1498,9 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'opensuse_micro5_5-x86_64-sle-updates' => 5400,
   'opensuse-sle-15.6-updates-aarch64' => 5040,
   'oraclelinux9-appstream-x86_64' => 5880,
+  'opensuse_tumbleweed-x86_64' => 12_600,
+  'opensuse_tumbleweed-uyuni-client-x86_64' => 60,
+  'opensuse_tumbleweed-uyuni-client-devel-x86_64' => 60,
   'oraclelinux9-uyuni-client-devel-x86_64' => 120,
   'oraclelinux9-x86_64' => 2400,
   'res-7-ltss-updates-x86_64' => 1380,
@@ -1694,7 +1704,8 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'ubuntu-2404-amd64-universe-uyuni' => 24_000,
   'ubuntu-2404-amd64-uyuni-client-devel' => 120,
   'ubuntu-2404-pool-amd64-uyuni' => 60,
-  'uyuni-proxy-devel-leap-x86_64' => 60
+  'uyuni-proxy-devel-tumbleweed-x86_64' => 60,
+  'uyuni-proxy-stable-tumbleweed-x86_64' => 60
 }.freeze
 
 EMPTY_CHANNELS = %w[
