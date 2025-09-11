@@ -1,0 +1,2 @@
+- Decouple Server and Proxy identification from its
+  software channels (bsc#1248113)

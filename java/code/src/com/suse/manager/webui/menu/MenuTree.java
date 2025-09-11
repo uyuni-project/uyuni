@@ -181,7 +181,8 @@ public class MenuTree {
                                 .withPrimaryUrl("/rhn/manager/systems/list/all?qc=created_days&q=>6"))
                         .addChild(new MenuItem("Proxy")
                                 .withPrimaryUrl("/rhn/manager/systems/list/all?qc=system_kind&q=proxy")
-                                .withVisibility(checkAcl(user, "org_channel_family(SMP) or not is_suma()") &&
+                                .withVisibility(checkAcl(user, "org_channel_family(SMP) or " +
+                                        "org_channel_family(SMP-ARM64) or not is_suma()") &&
                                         adminRoles.get("org")))
                         .addChild(new MenuItem("Duplicate Systems")
                                 .withPrimaryUrl("/rhn/systems/DuplicateIPList.do")
