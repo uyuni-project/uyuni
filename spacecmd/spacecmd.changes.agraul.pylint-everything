@@ -1,0 +1,3 @@
+- Use "x not in y" instead of "not x in y"
+- Replace regex functions with more efficient string functions
+- Allow existing pylint failures

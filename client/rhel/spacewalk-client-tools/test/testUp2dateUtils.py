@@ -1,5 +1,7 @@
 #!/usr/bin/python
+# pylint: disable=missing-module-docstring,invalid-name
 
+# pylint: disable-next=unused-import
 import settestpath
 
 from up2date_client import up2dateUtils
@@ -9,34 +11,43 @@ import unittest
 TestCase = unittest.TestCase
 test_up2date = "../etc-conf/up2date.config"
 
+
 class ReturnsString(TestCase):
     def testReturnsString(self):
         "Verify that function returns string"
+        # pylint: disable-next=unidiomatic-typecheck
         assert type(self.function()) == type("")
 
     def testNonZoreLength(self):
         "Verify that function returns a non zero length string"
         assert len(self.function()) > 0
 
+
+# pylint: disable-next=missing-class-docstring
 class TestGetVersion(ReturnsString):
     def setUp(self):
+        # pylint: disable-next=import-outside-toplevel
         from up2date_client import config
+
         self.cfg = config.initUp2dateConfig(test_up2date)
         self.function = up2dateUtils.getVersion
 
     def testVersionOverride(self):
         "Verify that specify a version overide works"
-        self.cfg['versionOverride'] = "100"
+        self.cfg["versionOverride"] = "100"
         res = up2dateUtils.getVersion()
         assert res == "100"
+
 
 class TestGetOSRelease(ReturnsString):
     def setUp(self):
         self.function = up2dateUtils.getOSRelease
 
+
 class TestGetRelease(ReturnsString):
     def setUp(self):
         self.function = up2dateUtils.getRelease
+
 
 class TestGetArch(ReturnsString):
     def setUp(self):
@@ -45,13 +56,16 @@ class TestGetArch(ReturnsString):
     def testIa32eOverride(self):
         "Verify that function does not return ia32e #216225"
         arch = self.function()
-        assert arch.find('ia32e') == -1
+        assert arch.find("ia32e") == -1
+
 
 class TestVersion(ReturnsString):
     def setUp(self):
         self.function = up2dateUtils.version
 
+
 def suite():
+    # pylint: disable-next=redefined-outer-name
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TestGetVersion))
     suite.addTest(unittest.makeSuite(TestGetOSRelease))
@@ -59,6 +73,7 @@ def suite():
     suite.addTest(unittest.makeSuite(TestGetArch))
     suite.addTest(unittest.makeSuite(TestVersion))
     return suite
+
 
 if __name__ == "__main__":
     unittest.main(defaultTest="suite")

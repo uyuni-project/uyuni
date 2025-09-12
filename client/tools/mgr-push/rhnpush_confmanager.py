@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -19,17 +20,19 @@ from rhnpush import rhnpush_config
 from rhnpush import utils
 
 
+# pylint: disable-next=missing-class-docstring
 class ConfManager:
 
     def __init__(self, optionparser, store_true_list):
-        sysdir = '/etc/sysconfig/rhn'
+        sysdir = "/etc/sysconfig/rhn"
         homedir = utils.get_home_dir()
-        default = 'rhnpushrc'
-        regular = '.rhnpushrc'
+        default = "rhnpushrc"
+        regular = ".rhnpushrc"
         deffile = os.path.join(sysdir, default)
         regfile = os.path.join(homedir, regular)
         cwdfile = os.path.join(os.getcwd(), regular)
 
+        # pylint: disable-next=invalid-name
         self.cfgFileList = [deffile, regfile, cwdfile]
         self.defaultconfig = rhnpush_config.rhnpushConfigParser(ensure_consistency=True)
 
@@ -41,25 +44,32 @@ class ConfManager:
     # Change the exclude options of the self.userconfig
     def _files_to_list(self):
         # Change the files options to lists.
-        if ('files' in self.defaultconfig.__dict__ and
-                not isinstance(self.defaultconfig.files, type([]))):
-            self.defaultconfig.files = [x.strip() for x in
-                                        self.defaultconfig.files.split(',')]
+        if "files" in self.defaultconfig.__dict__ and not isinstance(
+            self.defaultconfig.files, type([])
+        ):
+            self.defaultconfig.files = [
+                x.strip() for x in self.defaultconfig.files.split(",")
+            ]
 
         # Change the exclude options to list.
-        if ('exclude' in self.defaultconfig.__dict__ and
-                not isinstance(self.defaultconfig.__dict__['exclude'], type([]))):
-            self.defaultconfig.exclude = [x.strip() for x in
-                                          self.defaultconfig.exclude.split(',')]
+        if "exclude" in self.defaultconfig.__dict__ and not isinstance(
+            self.defaultconfig.__dict__["exclude"], type([])
+        ):
+            self.defaultconfig.exclude = [
+                x.strip() for x in self.defaultconfig.exclude.split(",")
+            ]
 
     def get_config(self):
         for f in self.cfgFileList:
             if os.access(f, os.F_OK):
                 if not os.access(f, os.R_OK):
+                    # pylint: disable-next=consider-using-f-string
                     print(("rhnpush does not have read permission on %s" % f))
                     sys.exit(1)
                 config2 = rhnpush_config.rhnpushConfigParser(f)
-                self.defaultconfig, config2 = utils.make_common_attr_equal(self.defaultconfig, config2)
+                self.defaultconfig, config2 = utils.make_common_attr_equal(
+                    self.defaultconfig, config2
+                )
 
         self._files_to_list()
 
@@ -70,8 +80,9 @@ class ConfManager:
             # an empty string array from of size 1 [''] .
             self.defaultconfig.channel = []
         else:
-            self.defaultconfig.channel = [x.strip() for x in
-                                          self.defaultconfig.channel.split(',')]
+            self.defaultconfig.channel = [
+                x.strip() for x in self.defaultconfig.channel.split(",")
+            ]
 
         # Get the command line arguments. These take precedence over the other settings
         argoptions, files = self.cmdconfig.parse_args()
@@ -101,7 +112,9 @@ class ConfManager:
             self.defaultconfig.timeout = int(self.defaultconfig.timeout)
 
         # Copy the settings in argoptions into self.defaultconfig.
-        self.defaultconfig, argoptions = utils.make_common_attr_equal(self.defaultconfig, argoptions)
+        self.defaultconfig, argoptions = utils.make_common_attr_equal(
+            self.defaultconfig, argoptions
+        )
 
         # Make sure files is in the correct format.
         if self.defaultconfig.files != files:
@@ -114,5 +127,5 @@ class ConfManager:
 def _zero_to_none(config, store_true_list):
     for opt in config.keys():
         for cmd in store_true_list:
-            if str(opt) == cmd and config.__dict__[opt] == '0':
+            if str(opt) == cmd and config.__dict__[opt] == "0":
                 config.__dict__[opt] = None

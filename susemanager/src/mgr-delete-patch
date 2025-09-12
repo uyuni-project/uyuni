@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# pylint: disable=missing-module-docstring,invalid-name
 # -*- coding: utf-8 -*-
 #
 # Copyright (C) 2014 Novell, Inc.
@@ -22,6 +23,7 @@ from optparse import OptionParser
 from spacewalk.common.rhnConfig import CFG, initCFG
 from spacewalk.susemanager import mgr_delete_patch
 
+
 def main():
     initCFG("server.susemanager")
 
@@ -33,12 +35,20 @@ patch the tool will propose the removal of the original patch and all its
 clones.
 """
 
-    parser = OptionParser(version="%prog 0.1",
-                          description=textwrap.dedent(description),
-                          usage="%prog [options] PATCH"
-                          )
-    parser.add_option('-d', '--debug', action="store", type="int", dest='debug',
-                      default=CFG.DEBUG, help="enable debugging")
+    parser = OptionParser(
+        version="%prog 0.1",
+        description=textwrap.dedent(description),
+        usage="%prog [options] PATCH",
+    )
+    parser.add_option(
+        "-d",
+        "--debug",
+        action="store",
+        type="int",
+        dest="debug",
+        default=CFG.DEBUG,
+        help="enable debugging",
+    )
 
     (options, args) = parser.parse_args()
 
@@ -51,8 +61,10 @@ clones.
     for patch in args:
         cleaner.remove(patch)
 
+
 if __name__ == "__main__":
     try:
         main()
     except IOError as e:
+        # pylint: disable-next=consider-using-f-string
         print("ERROR: %s" % e)

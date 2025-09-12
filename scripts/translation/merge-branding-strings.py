@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# pylint: disable=missing-module-docstring,invalid-name
 
 import sys
 import os
@@ -10,22 +11,26 @@ skip = ["emptyspace.jsp"]
 idpattern = re.compile('id="([^"]+)"')
 sourcepattern = re.compile(r"<source>.*</source>", re.S)
 
+
 def getid(line):
     try:
         return idpattern.search(line).group(1)
     except AttributeError as e:
+        # pylint: disable-next=consider-using-f-string
         print("Error in line '{0}': {1}".format(line, e))
         sys.exit(1)
 
 
 def align(orig, translation):
-    #import pdb; pdb.set_trace()
+    # import pdb; pdb.set_trace()
     newfile = []
     node = ""
     source = ""
     insource = False
     currentid = None
+    # pylint: disable-next=unspecified-encoding
     with open(orig) as o:
+        # pylint: disable-next=consider-using-f-string
         print("Orig: {0}".format(orig))
         for oline in o:
             if not currentid and "trans-unit" in oline:
@@ -40,7 +45,9 @@ def align(orig, translation):
                 node += oline
             else:
                 newfile.append(oline)
+    # pylint: disable-next=unspecified-encoding
     with open(translation) as t:
+        # pylint: disable-next=consider-using-f-string
         print("translation: {0}".format(translation))
         for tline in t:
             if not currentid and "trans-unit" in tline:
@@ -54,14 +61,16 @@ def align(orig, translation):
                 source += tline
                 insource = False
             elif currentid and "trans-unit" in tline:
+                # pylint: disable-next=unused-variable
                 found = False
                 for n, item in enumerate(newfile):
                     if isinstance(item, tuple) and item[0] == currentid:
                         nd = sourcepattern.sub(source, item[1])
                         newfile[n] = (item[0], nd)
                         found = True
+                        # pylint: disable-next=consider-using-f-string
                         print("Node found: {0}".format(currentid))
-                        break;
+                        break
                 source = ""
                 currentid = None
             elif currentid:
@@ -76,6 +85,7 @@ def align(orig, translation):
     newname = orig
     if SAVE:
         newname += ".new"
+    # pylint: disable-next=unspecified-encoding
     with open(newname, "w") as new:
         for line in newfile:
             if isinstance(line, tuple):
@@ -86,18 +96,17 @@ def align(orig, translation):
 
 usage = sys.argv[0] + " <branding file> <merge to file>"
 try:
-  branding = sys.argv[1]
-  mergeto = sys.argv[2]
+    branding = sys.argv[1]
+    mergeto = sys.argv[2]
 
-  if not os.path.exists(branding):
-      print(usage)
-      sys.exit(1)
-  if not os.path.exists(mergeto):
-      print(usage)
-      sys.exit(1)
+    if not os.path.exists(branding):
+        print(usage)
+        sys.exit(1)
+    if not os.path.exists(mergeto):
+        print(usage)
+        sys.exit(1)
 
-  align(mergeto, branding)
+    align(mergeto, branding)
 except:
     print(usage)
     raise
-
