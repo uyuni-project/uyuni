@@ -3,16 +3,12 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#: ../html/src/components/input/range/Range.tsx:47
-#: ../html/src/components/input/range/Range.tsx:48
-#: ../html/src/components/input/range/Range.tsx:60
-#: ../html/src/components/input/range/Range.tsx:61
 #: ../html/src/core/intl/index.test.tsx:11
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-05 08:31+0200\n"
+"POT-Creation-Date: 2025-09-12 10:46+0200\n"
 "PO-Revision-Date: 2025-09-06 10:59+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/web/ca/>\n"
@@ -31,15 +27,25 @@ msgstr "restant"
 msgid "The browser Internet Explorer is not supported. Try using Firefox, Chrome or Edge"
 msgstr "El navegador Internet Explorer no està suportat. Proveu d'utilitzar el Firefox, Chrome o Edge"
 
+#: ../html/src/components/CoCoScansList.tsx:68
+#: ../html/src/components/package/PackageListActionScheduler.tsx:82
+#: ../html/src/components/product-migration/utils.tsx:113
+#: ../html/src/manager/appstreams/appstreams.tsx:61
+#: ../html/src/manager/state/highstate.tsx:64
+#: ../html/src/manager/systems/coco/ssm-schedule.tsx:67
+msgid "Action has been successfully added to the action chain <link>\"{name}\"</link>."
+msgstr "L'acció s'ha afegit correctament a la cadena d'accions <link>\"{name}\"</link>."
+
 #: ../html/src/components/CoCoScansList.tsx:75
 #: ../html/src/components/package/PackageListActionScheduler.tsx:89
+#: ../html/src/components/product-migration/utils.tsx:120
 #: ../html/src/manager/minion/details/support-data.tsx:75
-#: ../html/src/manager/systems/coco/ssm-schedule.tsx:64
+#: ../html/src/manager/systems/coco/ssm-schedule.tsx:74
 msgid "The action has been <link>scheduled</link>."
 msgstr "L'acció ha estat <link>programada</link>."
 
 #: ../html/src/components/CoCoScansList.tsx:90
-#: ../html/src/manager/systems/coco/ssm-schedule.tsx:76
+#: ../html/src/manager/systems/coco/ssm-schedule.tsx:86
 msgid "Unable to schedule action. Please check the server logs for detailed information."
 msgstr "No s'ha pogut programar l'acció. Si us plau, comproveu els registres del servidor per obtenir informació detallada."
 
@@ -55,7 +61,7 @@ msgstr "Confirma l'execució de la prova"
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:111
 #: ../html/src/manager/minion/details/support-data.tsx:142
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:232
-#: ../html/src/manager/systems/coco/ssm-schedule.tsx:98
+#: ../html/src/manager/systems/coco/ssm-schedule.tsx:108
 msgid "Schedule"
 msgstr "Programa"
 
@@ -82,6 +88,10 @@ msgstr "Detalls de l'informe d'autenticació"
 #: ../html/src/components/FormulaForm.tsx:24
 msgid "Formula saved. Applying the highstate is not needed for this formula."
 msgstr "Fórmula desada. No es necessita aplicar l'estat alt per a aquesta fórmula."
+
+#: ../html/src/components/FormulaForm.tsx:137
+msgid "Multiple Group formulas detected. Only one formula for \"{name}\" can be used on each system!"
+msgstr "S'han detectat diverses fórmules de grup. Només es pot usar una fórmula per a {name} a cada sistema!"
 
 #: ../html/src/components/FormulaForm.tsx:168
 msgid "Please input required fields: {fields}"
@@ -173,6 +183,10 @@ msgstr "Nom"
 msgid "Attestations"
 msgstr "Acreditacions"
 
+#: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:41
+msgid "No attestation report available. Schedule an execution to create one."
+msgstr "No hi ha cap informe d'atestat disponible. Programeu una execució per crear-ne un."
+
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:48
 msgid "Attestation"
 msgstr "Acreditació"
@@ -205,7 +219,7 @@ msgstr "Tipus d'entorn"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:83
 #: ../html/src/components/hub/TokenTable.tsx:89
-#: ../html/src/manager/notifications/notifications-list.tsx:126
+#: ../html/src/manager/notifications/notifications-list.tsx:151
 msgid "Created"
 msgstr "Creat"
 
@@ -221,8 +235,9 @@ msgstr "Darrera modificació"
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:150
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:61
 #: ../html/src/manager/images/image-view-runtime.tsx:138
+#: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:162
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:785
-#: ../html/src/manager/systems/virtual-list.tsx:94
+#: ../html/src/manager/systems/virtual-list.tsx:93
 msgid "Status"
 msgstr "Estat"
 
@@ -254,6 +269,7 @@ msgstr "Accions"
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:55
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:205
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:376
+#: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:160
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:77
 msgid "Details"
 msgstr "Detalls"
@@ -272,7 +288,7 @@ msgid "Last modified on"
 msgstr "Darrera modificació el"
 
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:84
-#: ../html/src/manager/notifications/notifications-list.tsx:129
+#: ../html/src/manager/notifications/notifications-list.tsx:154
 msgid "Action"
 msgstr "Acció"
 
@@ -435,6 +451,7 @@ msgstr "Cancel·la"
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:88
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:73
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:24
+#: ../html/src/manager/notifications/notifications-list.tsx:115
 #: ../html/src/manager/packages/list.tsx:72
 #: ../html/src/manager/packages/list.tsx:125
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:248
@@ -910,20 +927,20 @@ msgid "Are you sure you want to remove the current Root Certificate Authority fo
 msgstr "Segur que voleu eliminar l'autoritat de certificació d'arrel actual per a {fqdn}?"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:364
-#: ../html/src/manager/notifications/notifications-list.tsx:339
-#: ../html/src/manager/notifications/notifications-list.tsx:340
+#: ../html/src/manager/notifications/notifications-list.tsx:336
+#: ../html/src/manager/notifications/notifications-list.tsx:337
 msgid "Info"
 msgstr "Informació"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:369
-#: ../html/src/manager/notifications/notifications-list.tsx:346
-#: ../html/src/manager/notifications/notifications-list.tsx:347
+#: ../html/src/manager/notifications/notifications-list.tsx:343
+#: ../html/src/manager/notifications/notifications-list.tsx:344
 msgid "Warning"
 msgstr "Avís"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:374
-#: ../html/src/manager/notifications/notifications-list.tsx:353
-#: ../html/src/manager/notifications/notifications-list.tsx:354
+#: ../html/src/manager/notifications/notifications-list.tsx:350
+#: ../html/src/manager/notifications/notifications-list.tsx:351
 msgid "Error"
 msgstr "Error"
 
@@ -1284,16 +1301,20 @@ msgid "Valid"
 msgstr "Vàlid"
 
 #: ../html/src/components/hub/TokenTable.tsx:76
-#: ../html/src/manager/systems/coco/ssm-schedule.tsx:108
+#: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:87
+#: ../html/src/manager/systems/coco/ssm-schedule.tsx:116
 #: ../html/src/manager/systems/coco/ssm-settings.tsx:74
 #: ../html/src/manager/systems/list-filter.tsx:38
+#: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:123
 msgid "Yes"
 msgstr "Sí"
 
 #: ../html/src/components/hub/TokenTable.tsx:76
-#: ../html/src/manager/systems/coco/ssm-schedule.tsx:108
+#: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:87
+#: ../html/src/manager/systems/coco/ssm-schedule.tsx:116
 #: ../html/src/manager/systems/coco/ssm-settings.tsx:74
 #: ../html/src/manager/systems/list-filter.tsx:39
+#: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:123
 msgid "No"
 msgstr "No"
 
@@ -1554,6 +1575,18 @@ msgstr "Filtra pel nom del paquet"
 msgid "Package Name"
 msgstr "Nom del paquet"
 
+#: ../html/src/components/pagination.tsx:110
+msgid "Items {from} - {to} of {total}"
+msgstr "Elements {from} - {to} de {total}"
+
+#: ../html/src/components/pagination.tsx:140
+msgid ""
+"{total, plural,\n"
+"            one {<dropdown></dropdown> of # page}\n"
+"            other {<dropdown></dropdown> of # pages}\n"
+"        }"
+msgstr ""
+
 #: ../html/src/components/picker/recurring-event-picker.tsx:58
 msgid "Sunday"
 msgstr "diumenge"
@@ -1618,9 +1651,127 @@ msgstr "Els dies estan limitats a 28 per tenir disponible una programació recur
 msgid "Custom Quartz format:"
 msgstr "Format de quars personalitzat:"
 
+#: ../html/src/components/picker/recurring-event-picker.tsx:493
+msgid "e.g. \"0 15 2 ? * 7\""
+msgstr "p. ex. \"0 15 2 ? * 7\""
+
 #: ../html/src/components/picker/recurring-event-picker.tsx:512
 msgid "Select a Schedule"
 msgstr "Seleccioneu una planificació"
+
+#: ../html/src/components/product-migration/MigrationChannelsSelectorForm.tsx:159
+#: ../html/src/components/product-migration/MigrationTargetSelectorForm.tsx:56
+#, fuzzy
+#| msgid "Product"
+msgid "Source Product"
+msgstr "Producte"
+
+#: ../html/src/components/product-migration/MigrationChannelsSelectorForm.tsx:166
+#, fuzzy
+#| msgid "Product"
+msgid "Target Product"
+msgstr "Producte"
+
+#: ../html/src/components/product-migration/MigrationChannelsSelectorForm.tsx:173
+#, fuzzy
+#| msgid "New base channel"
+msgid "Target base channel"
+msgstr "Nou canal base"
+
+#: ../html/src/components/product-migration/MigrationChannelsSelectorForm.tsx:187
+#, fuzzy
+#| msgid "no child channels"
+msgid "Target child channels"
+msgstr "no hi ha canals fills"
+
+#: ../html/src/components/product-migration/MigrationChannelsSelectorForm.tsx:194
+#: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:85
+msgid "Allow vendor change"
+msgstr ""
+
+#: ../html/src/components/product-migration/MigrationChannelsSelectorForm.tsx:207
+#, fuzzy
+#| msgid "Back to sytem selection"
+msgid "Back to target selection"
+msgstr "Torna a la selecció del sistema"
+
+#: ../html/src/components/product-migration/MigrationChannelsSelectorForm.tsx:210
+#, fuzzy
+#| msgid "Schedule Attestation"
+msgid "Schedule Migration"
+msgstr "Prova de la planificació"
+
+#: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:41
+msgid "Please review your selection and confirm below to schedule the migration."
+msgstr ""
+
+#: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:45
+#: ../html/src/manager/header/search/search.tsx:10
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:183
+msgid "Systems"
+msgstr "Tipus de sistema"
+
+#: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:60
+#, fuzzy
+#| msgid "Product Description"
+msgid "Product after migration"
+msgstr "Descripció del producte"
+
+#: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:66
+#, fuzzy
+#| msgid "No subscriptions found."
+msgid "Channel subscriptions after migration"
+msgstr "No s'ha trobat cap subscripció."
+
+#: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:91
+msgid "Schedule action for no sooner than"
+msgstr ""
+
+#: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:104
+msgid "In order to detect any possible problems it is recommended to always do a Dry Run before scheduling the actual Product Migration."
+msgstr ""
+
+#: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:114
+#, fuzzy
+#| msgid "Back to sytem selection"
+msgid "Back to channel selection"
+msgstr "Torna a la selecció del sistema"
+
+#: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:121
+#, fuzzy
+#| msgid " ready to run"
+msgid "Dry run"
+msgstr " llest per a executar"
+
+#: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:127
+#: ../html/src/manager/admin/hub/peripherals.tsx:39
+msgid "Migrate"
+msgstr "Migra"
+
+#: ../html/src/components/product-migration/MigrationTargetSelectorForm.tsx:44
+msgid ""
+"Target not available, the following channels are not synced:\n"
+"\n"
+"{missingChannels}"
+msgstr ""
+
+#: ../html/src/components/product-migration/MigrationTargetSelectorForm.tsx:63
+#, fuzzy
+#| msgid "Product"
+msgid "Product id"
+msgstr "Producte"
+
+#: ../html/src/components/product-migration/MigrationTargetSelectorForm.tsx:64
+#, fuzzy
+#| msgid "Products"
+msgid "Target Products"
+msgstr "Productes"
+
+#: ../html/src/components/product-migration/MigrationTargetSelectorForm.tsx:84
+#, fuzzy
+#| msgid "Sync Channels"
+msgid "Select Channels"
+msgstr "Sincronitza els canals"
 
 #: ../html/src/components/ranking-table.tsx:20
 #: ../html/src/components/salt-state-popup.tsx:11
@@ -1797,7 +1948,7 @@ msgstr "Convidat virtual"
 #: ../html/src/components/systems.tsx:31
 #: ../html/src/manager/systems/list-filter.tsx:8
 #: ../html/src/manager/systems/list-filter.tsx:68
-#: ../html/src/manager/systems/virtual-list.tsx:75
+#: ../html/src/manager/systems/virtual-list.tsx:74
 msgid "Virtual Host"
 msgstr "Amfitrió virtual"
 
@@ -1887,11 +2038,11 @@ msgstr "Mostra"
 msgid "Modify"
 msgstr "Modifica"
 
-#: ../html/src/components/target-systems.tsx:22
+#: ../html/src/components/target-systems.tsx:26
 msgid "Target Systems"
 msgstr "Sistemes de destinació"
 
-#: ../html/src/components/target-systems.tsx:28
+#: ../html/src/components/target-systems.tsx:32
 msgid "No systems specified."
 msgstr "No s'ha especificat cap sistema."
 
@@ -1950,6 +2101,18 @@ msgstr "Requereix aquest canal"
 #: ../html/src/core/intl/index.example.tsx:7
 msgid "Please see <link>Format.JS docs</link> for the message syntax."
 msgstr "Si voleu saber la sintaxi del missatge, consulteu la <link>documentació de Format.JS</link>."
+
+#: ../html/src/core/intl/index.example.tsx:23
+msgid ""
+"Always use plural forms for numbers: {fooCount, plural,\n"
+"            one {only one item}\n"
+"            other {{fooCount} items}\n"
+"          }."
+msgstr ""
+"Feu servir sempre formes plurals per als nombres: {fooCount, plural,\n"
+"un {només un element}\n"
+"altres {{fooCount} elements}\n"
+"}."
 
 #: ../html/src/core/intl/index.test.tsx:9
 msgid "foo"
@@ -2170,11 +2333,13 @@ msgid "Hub Details"
 msgstr "Detalls del Hub"
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:80
-msgid "No hub is currently configured for this server. "
-msgstr "Actualment no hi ha cap hub configurat per a aquest servidor. "
+msgid "No hub is currently configured for this server. Refresh this page after configuring this server as a peripheral, to see the hub details"
+msgstr "Actualment no hi ha cap concentrador configurat per a aquest servidor. Actualitzeu aquesta pàgina després de configurar aquest servidor com a perifèric per veure els detalls del concentrador."
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:89
-msgid "This server is currently registered as peripheral of hub {fqdn}. "
+#, fuzzy
+#| msgid "This server is currently registered as peripheral of hub {fqdn}. "
+msgid "This server is currently registered as peripheral of hub {fqdn}. This page shows the details of the hub server."
 msgstr "Aquest servidor està actualment registrat com a perifèric del concentrador {fqdn}. "
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:108
@@ -2198,7 +2363,9 @@ msgid "{fqdn} - Peripheral Details"
 msgstr "{fqdn} - Detalls del perifèric"
 
 #: ../html/src/manager/admin/hub/peripheral-details.tsx:51
-msgid "The server {fqdn} is currently registered as peripheral of this hub. "
+#, fuzzy
+#| msgid "The server {fqdn} is currently registered as peripheral of this hub. "
+msgid "The server {fqdn} is currently registered as peripheral of this hub. This page shows the details of the peripheral server."
 msgstr "El servidor {fqdn} està actualment registrat com a perifèric d'aquest concentrador. "
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:26
@@ -2208,10 +2375,6 @@ msgstr "Configuració dels perifèrics"
 #: ../html/src/manager/admin/hub/peripherals.tsx:35
 msgid "Add Peripheral"
 msgstr "Afegeix perifèric"
-
-#: ../html/src/manager/admin/hub/peripherals.tsx:39
-msgid "Migrate"
-msgstr "Migra"
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:41
 msgid "Migrate an existing configuration of a previous version of ISS"
@@ -2339,10 +2502,6 @@ msgstr "S'estan editant les propietats."
 msgid "Last Status Update"
 msgstr "Última actualització d'estat"
 
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:52
-msgid "Edit "
-msgstr "Edita "
-
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:71
 msgid "Editing ssh connection data.."
 msgstr "S'estan editant les dades de connexió ssh."
@@ -2400,7 +2559,7 @@ msgstr "Refresca el catàleg de productes de SUSE Customer Center"
 #: ../html/src/manager/images/image-profiles.tsx:141
 #: ../html/src/manager/images/image-stores.tsx:141
 #: ../html/src/manager/images/image-view.tsx:376
-#: ../html/src/manager/notifications/notifications-list.tsx:195
+#: ../html/src/manager/notifications/notifications-list.tsx:108
 msgid "Refresh"
 msgstr "Refresca"
 
@@ -2432,6 +2591,10 @@ msgstr "Han fallat les següents instal·lacions de productes. Si us plau, compr
 #: ../html/src/manager/admin/setup/products/products.tsx:250
 msgid "Selected channels were scheduled successfully for syncing."
 msgstr "Els canals seleccionats s'han programat correctament per sincronitzar."
+
+#: ../html/src/manager/admin/setup/products/products.tsx:259
+msgid "The following channel installations for \"{product}\" failed. Please check log files."
+msgstr "Les instal·lacions de canals següents per a \"{product}\" han fallat. Si us plau, reviseu els fitxers de registre."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:284
 msgid "A refresh of the product data is currently running in the background. Please try again later."
@@ -2487,18 +2650,6 @@ msgstr "Canals"
 msgid "Recommended"
 msgstr "Recomanat"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:774
-msgid " channels sync failed"
-msgstr " ha fallat la sincronització dels canals"
-
-#: ../html/src/manager/admin/setup/products/products.tsx:782
-msgid " channels sync in progress"
-msgstr " sincronització de canals en curs"
-
-#: ../html/src/manager/admin/setup/products/products.tsx:790
-msgid " channels synced"
-msgstr " canals sincronitzats"
-
 #: ../html/src/manager/admin/setup/products/products.tsx:815
 msgid "To enable this product, the parent product should be selected first"
 msgstr "Per a habilitar aquest producte, primer s'ha de seleccionar el producte pare"
@@ -2512,7 +2663,7 @@ msgid "This product is mirrored."
 msgstr "Aquest producte està reflectit."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:857
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:71
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:81
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:144
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:497
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:547
@@ -2783,14 +2934,16 @@ msgid "Affected, patches available in channels which are not assigned"
 msgstr "Afectats, hi ha pedaços disponibles en canals que no estan assignats"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:45
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:53
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:89
-msgid "The client is affected by a vulnerability and we have a patch for it,"
-msgstr "El client està afectat per una vulnerabilitat i tenim un pedaç per a això,"
+msgid "The client is affected by a vulnerability and we have a patch for it, but the channel(s) offering the patch are not assigned to the client."
+msgstr "El client està afectat per una vulnerabilitat i tenim un pedaç per a això, però el(s) canal(s) que ofereixen el pedaç no estan assignats al client."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:51
 msgid "Affected, patches available in a Product Migration target"
 msgstr "Afectats, hi ha pedaços disponibles en un objectiu de migració de productes"
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:53
+msgid "The client is affected by a vulnerability and we have a patch for it, but applying the patch requires migrating the product to a newer version."
+msgstr "El client està afectat per una vulnerabilitat i tenim un pedaç per a això, però aplicar-lo requereix migrar el producte a una versió més recent."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:59
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:60
@@ -2826,12 +2979,16 @@ msgid "Affected, patch is unavailable in relevant channels"
 msgstr "Afectat, el pedaç no està disponible als canals pertinents"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:81
-msgid "The client is affected by a vulnerability for which a patch has been released,"
-msgstr "El client es veu afectat per una vulnerabilitat per la qual s'ha alliberat un pegat,"
+msgid "The client is affected by a vulnerability for which a patch has been released, but the patch can't be found in the relevant channels."
+msgstr "El client està afectat per una vulnerabilitat per a la qual s'ha publicat un pedaç, però no es pot trobar als canals pertinents."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:87
 msgid "Affected, partial patch available in assigned channel"
 msgstr "Afectat, hi ha un pedaç parcial disponible al canal assignat"
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:89
+msgid "The client is affected by a vulnerability and we have a patch for it, but applying the patch will only update some of the vulnerable packages."
+msgstr "El client està afectat per una vulnerabilitat i tenim un pedaç per a això, però aplicar-lo només actualitzarà alguns dels paquets vulnerables."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:95
 msgid "Unknown, CVE metadata not available"
@@ -2877,7 +3034,7 @@ msgstr "Auditoria d'imatges"
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:343
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:9
 #: ../html/src/manager/systems/all-list.tsx:78
-#: ../html/src/manager/systems/virtual-list.tsx:56
+#: ../html/src/manager/systems/virtual-list.tsx:67
 msgid "Download CSV"
 msgstr "Baixa el CSV"
 
@@ -3889,45 +4046,45 @@ msgstr "mostra'n més"
 msgid "Versions history"
 msgstr "Historial de versions"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/base-channel.tsx:42
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/base-channel.tsx:51
 msgid "New base channel"
 msgstr "Nou canal base"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:177
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:179
 msgid "New Base Channel"
 msgstr "Canal base nou"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:180
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:182
 msgid "Choose the channel to be elected as the new base channel"
 msgstr "Trieu el canal que s'ha d'escollir com a nou canal base"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:196
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:198
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:546
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:605
 msgid "Child Channels"
 msgstr "Canals fills"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:219
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:221
 msgid "Clear Search"
 msgstr "Neteja la cerca"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:22
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:28
 msgid "This channel requires:"
 msgstr "Aquest canal requereix:"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:28
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:35
 msgid "This channel is required by:"
 msgstr "Aquest canal és requerit per:"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:70
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:80
 msgid "This channel is recommended"
 msgstr "Es recomana aquest canal"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:75
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:85
 msgid "This channel is mandatory"
 msgstr "Aquest canal és obligatori"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:76
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:86
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:149
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:552
 msgid "mandatory"
@@ -3950,7 +4107,7 @@ msgstr "inclou les recomanades"
 #: ../html/src/manager/images/image-view-patches.tsx:79
 #: ../html/src/manager/images/image-view.tsx:643
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:105
-#: ../html/src/manager/notifications/notifications-list.tsx:114
+#: ../html/src/manager/notifications/notifications-list.tsx:139
 #: ../html/src/manager/state/highstate-summary.tsx:77
 msgid "Type"
 msgstr "Tipus"
@@ -3981,19 +4138,25 @@ msgid "The page you requested, {currentUrl}, was not found."
 msgstr "No s'ha trobat la pàgina que heu sol·licitat, {currentUrl}."
 
 #: ../html/src/manager/errors/not-found.tsx:12
-msgid "If you typed this address into your browser, double-check the spelling and capitalization."
+#, fuzzy
+#| msgid "If you typed this address into your browser, double-check the spelling and capitalization."
+msgid "If you typed this address into your browser, double-check the spelling and capitalization. The address you are copying may also be outdated."
 msgstr "Si heu escrit aquesta adreça al navegador, reviseu-ne l'ortografia i les majúscules."
 
 #: ../html/src/manager/errors/not-found.tsx:18
-msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your "
+#, fuzzy
+#| msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your "
+msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your browser to try a different link, or use the top (or left) navigation bars to find the page you are looking for."
 msgstr "Si heu seguit un enllaç, és possible que sigui incorrecte o que estigui desactualitzat. Feu clic al botó Enrere del "
 
 #: ../html/src/manager/errors/not-found.tsx:25
-msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was "
-msgstr "Si heu utilitzat un punt, la pàgina pot haver-se mogut a una ubicació diferent des que el punt de llibre era "
+msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was created. Use the top (or left) navigation bars to find the page you are looking for, and if you find the document be sure to update your bookmark."
+msgstr "Si heu fet servir un marcador, és possible que la pàgina s'hagi mogut a una ubicació diferent des que es va crear. Feu servir les barres de navegació superiors (o esquerra) per trobar la pàgina que busqueu i, si trobeu el document, assegureu-vos d'actualitzar el marcador."
 
 #: ../html/src/manager/errors/not-found.tsx:32
-msgid "If you feel you've reached this page in error, please contact us with details of how you received "
+#, fuzzy
+#| msgid "If you feel you've reached this page in error, please contact us with details of how you received "
+msgid "If you feel you've reached this page in error, please contact us with details of how you received this message."
 msgstr "Si creieu que heu arribat a aquesta pàgina per error, poseu-vos en contacte amb nosaltres i expliqueu-nos com heu rebut "
 
 #: ../html/src/manager/groups/config-channels/group-config-channels.tsx:29
@@ -4016,11 +4179,6 @@ msgstr "Tipus de destinació no vàlid."
 #: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:14
 msgid "Formula saved. Apply the <link>Highstate</link> for the changes to take effect."
 msgstr "Fórmula desada. Aplica el <link>Highstate</link> perquè els canvis tinguin efecte."
-
-#: ../html/src/manager/header/search/search.tsx:10
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:183
-msgid "Systems"
-msgstr "Tipus de sistema"
 
 #: ../html/src/manager/header/search/search.tsx:14
 #: ../html/src/manager/images/image-view.tsx:668
@@ -4202,10 +4360,6 @@ msgid "Update"
 msgstr "Actualitza"
 
 #: ../html/src/manager/images/image-profile-edit.tsx:512
-msgid "Edit Image Profile: '"
-msgstr "Edita el perfil de la imatge: '"
-
-#: ../html/src/manager/images/image-profile-edit.tsx:512
 #: ../html/src/manager/images/image-profiles.tsx:147
 #: ../html/src/manager/images/image-profiles.tsx:148
 msgid "Create Image Profile"
@@ -4271,10 +4425,6 @@ msgstr "Esteu segur que voleu suprimir els perfils seleccionats? ({count} perfil
 #: ../html/src/manager/images/image-store-edit.tsx:165
 msgid "Use credentials"
 msgstr "Utilitza credencials"
-
-#: ../html/src/manager/images/image-store-edit.tsx:234
-msgid "Edit Image Store: '"
-msgstr "Edita la botiga d'imatges: '"
 
 #: ../html/src/manager/images/image-store-edit.tsx:234
 msgid "Create Image Store"
@@ -4373,39 +4523,19 @@ msgstr "En cua"
 msgid "Go to event"
 msgstr "Ves a l'esdeveniment"
 
-#: ../html/src/manager/images/image-view-overview.tsx:52
-msgid " is queued"
-msgstr " està en cua"
-
 #: ../html/src/manager/images/image-view-overview.tsx:59
 msgid "In progress"
 msgstr "En curs"
 
-#: ../html/src/manager/images/image-view-overview.tsx:64
-msgid " in progress"
-msgstr " en curs"
-
 #: ../html/src/manager/images/image-view-overview.tsx:71
 msgid "Successful"
 msgstr "Èxit"
-
-#: ../html/src/manager/images/image-view-overview.tsx:76
-msgid " is successful"
-msgstr " és exitós"
-
-#: ../html/src/manager/images/image-view-overview.tsx:88
-msgid " has failed"
-msgstr " ha fallat"
 
 #: ../html/src/manager/images/image-view-overview.tsx:107
 #: ../html/src/manager/images/image-view-overview.tsx:108
 #: ../html/src/manager/images/image-view.tsx:502
 msgid "Built externally"
 msgstr "Construït externament"
-
-#: ../html/src/manager/images/image-view-overview.tsx:130
-msgid " Status"
-msgstr " Estat"
 
 #: ../html/src/manager/images/image-view-overview.tsx:135
 msgid "Picked Up"
@@ -4453,6 +4583,11 @@ msgstr "Edita el perfil"
 #: ../html/src/manager/images/image-view-overview.tsx:350
 msgid "Edit store"
 msgstr "Edita la botiga"
+
+#: ../html/src/manager/images/image-view-overview.tsx:465
+#: ../html/src/manager/images/image-view.tsx:752
+msgid "Instance Details for \"{name}\""
+msgstr "Detalls de la instància per a {name}"
 
 #: ../html/src/manager/images/image-view-overview.tsx:520
 #: ../html/src/manager/images/image-view-overview.tsx:521
@@ -4669,7 +4804,7 @@ msgstr "(obsolet)"
 #: ../html/src/manager/images/image-view.tsx:652
 #: ../html/src/manager/systems/all-list.tsx:91
 #: ../html/src/manager/systems/list-filter.tsx:45
-#: ../html/src/manager/systems/virtual-list.tsx:100
+#: ../html/src/manager/systems/virtual-list.tsx:99
 msgid "Updates"
 msgstr "Actualitzacions"
 
@@ -4887,6 +5022,10 @@ msgstr "Sistemes de cerca"
 msgid "Current Schedule"
 msgstr "Planificació actual"
 
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:115
+msgid "Url \"{url}\" is invalid"
+msgstr "L'URL {url} no és vàlid"
+
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:139
 msgid "Calendar data"
 msgstr "Dades del calendari"
@@ -4974,10 +5113,6 @@ msgstr "A continuació es mostra una llista de Planes de manteniment disponibles
 msgid "Below is a list of Maintenance Calendars available to the current user."
 msgstr "A continuació es mostra una llista de calendaris de manteniment disponibles per a l'usuari actual."
 
-#: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:50
-msgid "schedule"
-msgstr "planificació"
-
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:30
 msgid "No schedules created. Use Create to add a schedule."
 msgstr "No s'ha creat cap planificació. Utilitzeu Crea per a afegir una planificació."
@@ -4985,14 +5120,6 @@ msgstr "No s'ha creat cap planificació. Utilitzeu Crea per a afegir una planifi
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:89
 msgid "This will remove the schedule from all the systems assigned to it."
 msgstr "Això eliminarà la planificació de tots els sistemes assignats a ella."
-
-#: ../html/src/manager/maintenance/maintenance-windows.tsx:116
-msgid "successfully"
-msgstr "amb èxit"
-
-#: ../html/src/manager/maintenance/maintenance-windows.tsx:141
-msgid "Error when deleting the "
-msgstr "S'ha produït un error en suprimir el "
 
 #: ../html/src/manager/maintenance/maintenance-windows.tsx:150
 msgid "Calendar successfully refreshed"
@@ -5139,6 +5266,10 @@ msgstr "Planificació de l'execució de la llibreta"
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:128
 msgid "Select the current Playbook"
 msgstr "Selecciona el llibre de reproducció actual"
+
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:138
+msgid "Playbook \"{name}\""
+msgstr "Llibret {name}"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:147
 msgid "Schedule Playbook Execution"
@@ -5461,10 +5592,6 @@ msgstr "Avançat"
 msgid "Registry URL"
 msgstr "URL de registre"
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:332
-msgid "e.g., "
-msgstr "p. ex., "
-
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:339
 msgid "Containers Tag"
 msgstr "Etiqueta de contenidors"
@@ -5543,7 +5670,7 @@ msgid "Apply"
 msgstr "Aplica"
 
 #: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:18
-#: ../html/src/manager/notifications/notifications-list.tsx:120
+#: ../html/src/manager/notifications/notifications-list.tsx:145
 msgid "Summary"
 msgstr "Resum"
 
@@ -5552,8 +5679,8 @@ msgid "Install Program Temporary Fixes (PTFs)"
 msgstr "Instal·la les correccions temporals del programa (PTFs)"
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:29
-msgid "The following Program Temporary Fixes (PTFs) are available for installation on this system. "
-msgstr "Les següents Correccions Temporals del Programa (PTFs) estan disponibles per a la instal·lació en aquest sistema. "
+msgid "The following Program Temporary Fixes (PTFs) are available for installation on this system. These packages are only meant to address a specific open issue. Please follow the instructions from customer support before proceeding with the installation."
+msgstr "Les següents correccions temporals de programa (PTF) estan disponibles per a la instal·lació en aquest sistema. Aquests paquets només estan pensats per solucionar un problema obert específic. Seguiu les instruccions del servei d'atenció al client abans de continuar la instal·lació."
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:33
 msgid "No Program Temporary Fixes (PTFs) available."
@@ -5572,8 +5699,8 @@ msgid "Remove Program Temporary Fixes (PTFs)"
 msgstr "Elimina les correccions temporals del programa (PTF)"
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:29
-msgid "The following Program Temporary Fixes (PTFs) are currently installed on this system. "
-msgstr "Les següents Correccions Temporals del Programa (PTFs) estan instal·lades actualment en aquest sistema. "
+msgid "The following Program Temporary Fixes (PTFs) are currently installed on this system. These PTFs may be scheduled for removal by selecting them and clicking \"Remove PTF\" below. Please note that removing any non-obsolete PTF will result in the installation of the most recent versions of the packages that are part of the PTF."
+msgstr "Les següents correccions temporals de programa (PTF) estan actualment instal·lades en aquest sistema. Es pot programar l'eliminació d'aquests PTF seleccionant-los i fent clic a Elimina PTF a continuació. Tingueu en compte que l'eliminació de qualsevol PTF no obsolet comportarà la instal·lació de les versions més recents dels paquets que formen part del PTF."
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:34
 msgid "No Program Temporary Fixes (PTFs) installed."
@@ -5603,81 +5730,78 @@ msgstr "Llista / Elimina els PTF instal·lats"
 msgid "Install PTF"
 msgstr "Instal·la PTF"
 
-#: ../html/src/manager/notifications/notifications-list.tsx:78
+#: ../html/src/manager/notifications/notifications-list.tsx:77
 msgid "Notification Messages"
 msgstr "Missatges de notificació"
 
-#: ../html/src/manager/notifications/notifications-list.tsx:83
+#: ../html/src/manager/notifications/notifications-list.tsx:82
 msgid "The server has collected the following notification messages."
 msgstr "El servidor ha recollit els següents missatges de notificació."
 
-#: ../html/src/manager/notifications/notifications-list.tsx:100
+#: ../html/src/manager/notifications/notifications-list.tsx:98
 msgid "Filter by summary"
 msgstr "Filtra per resum"
 
-#: ../html/src/manager/notifications/notifications-list.tsx:108
+#: ../html/src/manager/notifications/notifications-list.tsx:123
+#, fuzzy
+#| msgid "Flag as Read"
+msgid "Mark as Read"
+msgstr "Bandera com a llegida"
+
+#: ../html/src/manager/notifications/notifications-list.tsx:133
 msgid "Severity"
 msgstr "Severitat"
 
-#: ../html/src/manager/notifications/notifications-list.tsx:133
+#: ../html/src/manager/notifications/notifications-list.tsx:158
 msgid "Read|Delete"
 msgstr "Llegeix|Suprimeix"
 
-#: ../html/src/manager/notifications/notifications-list.tsx:159
+#: ../html/src/manager/notifications/notifications-list.tsx:184
 msgid "Filter by type"
 msgstr "Filtra per tipus"
 
-#: ../html/src/manager/notifications/notifications-list.tsx:177
+#: ../html/src/manager/notifications/notifications-list.tsx:202
 msgid "Unread Messages"
 msgstr "Missatges sense llegir"
 
-#: ../html/src/manager/notifications/notifications-list.tsx:182
+#: ../html/src/manager/notifications/notifications-list.tsx:207
 msgid "All Messages"
 msgstr "Tots els missatges"
 
-#: ../html/src/manager/notifications/notifications-list.tsx:199
-#: ../html/src/manager/notifications/notifications-list.tsx:200
-msgid "Delete selected messages"
-msgstr "Suprimeix els missatges seleccionats"
-
-#: ../html/src/manager/notifications/notifications-list.tsx:207
-#: ../html/src/manager/notifications/notifications-list.tsx:208
-msgid "Mark selected as read"
-msgstr "Marca els seleccionats com a llegits"
-
-#: ../html/src/manager/notifications/notifications-list.tsx:226
+#: ../html/src/manager/notifications/notifications-list.tsx:223
+#: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:145
 msgid "show details"
 msgstr "mostra els detalls"
 
-#: ../html/src/manager/notifications/notifications-list.tsx:242
+#: ../html/src/manager/notifications/notifications-list.tsx:239
 msgid "Retry"
 msgstr "Torna-ho a provar"
 
-#: ../html/src/manager/notifications/notifications-list.tsx:254
+#: ../html/src/manager/notifications/notifications-list.tsx:251
 msgid "Flag as Unread"
 msgstr "Bandera com a no llegida"
 
-#: ../html/src/manager/notifications/notifications-list.tsx:254
+#: ../html/src/manager/notifications/notifications-list.tsx:251
 msgid "Flag as Read"
 msgstr "Bandera com a llegida"
 
-#: ../html/src/manager/notifications/notifications-list.tsx:260
+#: ../html/src/manager/notifications/notifications-list.tsx:257
 msgid "Delete Notification"
 msgstr "Suprimeix la notificació"
 
-#: ../html/src/manager/notifications/notifications-list.tsx:307
+#: ../html/src/manager/notifications/notifications-list.tsx:304
 msgid "{number} messages status updated successfully"
 msgstr "L'estat de {number} missatges s'ha actualitzat correctament"
 
-#: ../html/src/manager/notifications/notifications-list.tsx:308
+#: ../html/src/manager/notifications/notifications-list.tsx:305
 msgid "Message read status updated successfully"
 msgstr "L'estat de lectura del missatge s'ha actualitzat correctament"
 
-#: ../html/src/manager/notifications/notifications-list.tsx:325
+#: ../html/src/manager/notifications/notifications-list.tsx:322
 msgid "{number} messages deleted successfully"
 msgstr "{number} missatges s'han suprimit correctament"
 
-#: ../html/src/manager/notifications/notifications-list.tsx:326
+#: ../html/src/manager/notifications/notifications-list.tsx:323
 msgid "Message deleted successfully"
 msgstr "El missatge s'ha suprimit correctament"
 
@@ -6287,14 +6411,6 @@ msgstr "S'estan carregant els canals fills.."
 msgid "Base Channel:"
 msgstr "Canal base:"
 
-#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:135
-msgid "${defaultChannelName}"
-msgstr "${defaultChannelName}"
-
-#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:145
-msgid "${this.getDefaultBase().name}"
-msgstr "${this.getDefaultBase().name}"
-
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:155
 msgid "Child Channels:"
 msgstr "Canals fills:"
@@ -6444,7 +6560,7 @@ msgstr "Gestiona completament el sistema via SSH (no instal·larà un agent)"
 msgid "Are you sure you want to close this page while bootstrapping is in progress ?"
 msgstr "Esteu segur que voleu tancar aquesta pàgina mentre l'arrencada està en curs?"
 
-#: ../html/src/manager/systems/coco/ssm-schedule.tsx:107
+#: ../html/src/manager/systems/coco/ssm-schedule.tsx:115
 #: ../html/src/manager/systems/coco/ssm-settings.tsx:73
 msgid "Confidential Computing Capability"
 msgstr "Capacitat de computació confidencial"
@@ -6600,9 +6716,74 @@ msgid "Groups"
 msgstr "Grups"
 
 #: ../html/src/manager/systems/list-filter.tsx:69
-#: ../html/src/manager/systems/virtual-list.tsx:83
+#: ../html/src/manager/systems/virtual-list.tsx:82
 msgid "Virtual System"
 msgstr "Sistema virtual"
+
+#: ../html/src/manager/systems/product-migration/migration-from-dry-run.tsx:59
+#: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:97
+msgid "Product Migration - Schedule outcome"
+msgstr ""
+
+#: ../html/src/manager/systems/product-migration/migration-from-dry-run.tsx:62
+#, fuzzy
+#| msgid "{productName} Configuration - Monitoring"
+msgid "Product Migration - Confirm from dry run"
+msgstr "Configuració per a {productName} - Supervisió"
+
+#: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:88
+msgid "Product Migration - Choose target product"
+msgstr ""
+
+#: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:91
+msgid "Product Migration - Select channels"
+msgstr ""
+
+#: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:94
+msgid "Product Migration - Schedule"
+msgstr ""
+
+#: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:116
+#, fuzzy
+#| msgid "Show product's channels"
+msgid "Show product details"
+msgstr "Mostra els canals del producte"
+
+#: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:131
+msgid "The products installed on this system can be migrated"
+msgstr ""
+
+#: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:134
+msgid "The products installed on this system cannot be migrated"
+msgstr ""
+
+#: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:140
+msgid "The products installed on this system can be migrated."
+msgstr ""
+
+#: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:159
+#, fuzzy
+#| msgid "Product"
+msgid "Base Product"
+msgstr "Producte"
+
+#: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:161
+msgid "Can be migrated?"
+msgstr ""
+
+#: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:217
+msgid "Product details for {system}"
+msgstr ""
+
+#: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:221
+msgid "These are the products currently installed on {system}:"
+msgstr ""
+
+#: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:232
+#, fuzzy
+#| msgid "This slave is currently disabled and cannot be selected for migration"
+msgid "The systems currently selected cannot be migrated in batch."
+msgstr "Aquest esclau està actualment desactivat i no es pot seleccionar per a la migració"
 
 #: ../html/src/manager/systems/proxy.tsx:44
 msgid "Please select a list of minions (not proxies or traditional clients)."
@@ -6839,11 +7020,11 @@ msgstr "Confirmeu el canvi del canal de programari"
 msgid "Virtual Systems"
 msgstr "Sistemes virtuals"
 
-#: ../html/src/manager/systems/virtual-list.tsx:70
+#: ../html/src/manager/systems/virtual-list.tsx:57
 msgid "No Virtual Systems."
 msgstr "Sense sistemes virtuals."
 
-#: ../html/src/manager/systems/virtual-list.tsx:111
+#: ../html/src/manager/systems/virtual-list.tsx:110
 msgid "Base Software Channel"
 msgstr "Canal de programari base"
 
@@ -6966,18 +7147,83 @@ msgstr "Error d'autorització. Torneu a carregar la pàgina o torneu a intentar 
 msgid "Resource not found."
 msgstr "No s'ha trobat el recurs."
 
-#: ../html/src/utils/network.ts:105
-msgid "HTTP Error code "
-msgstr "Codi d'error HTTP "
+#~ msgid "No hub is currently configured for this server. "
+#~ msgstr "Actualment no hi ha cap hub configurat per a aquest servidor. "
 
-#~ msgid "Action has been successfully added to the action chain <link>\"{name}\"</link>."
-#~ msgstr "L'acció s'ha afegit correctament a la cadena d'accions <link>\"{name}\"</link>."
+#~ msgid "Edit "
+#~ msgstr "Edita "
 
-#~ msgid "Multiple Group formulas detected. Only one formula for \"{name}\" can be used on each system!"
-#~ msgstr "S'han detectat diverses fórmules de grup. Només es pot usar una fórmula per a {name} a cada sistema!"
+#~ msgid " channels sync failed"
+#~ msgstr " ha fallat la sincronització dels canals"
 
-#~ msgid "No attestation report available. Schedule an execution to create one."
-#~ msgstr "No hi ha cap informe d'atestat disponible. Programeu una execució per crear-ne un."
+#~ msgid " channels sync in progress"
+#~ msgstr " sincronització de canals en curs"
+
+#~ msgid " channels synced"
+#~ msgstr " canals sincronitzats"
+
+#~ msgid "The client is affected by a vulnerability and we have a patch for it,"
+#~ msgstr "El client està afectat per una vulnerabilitat i tenim un pedaç per a això,"
+
+#~ msgid "The client is affected by a vulnerability for which a patch has been released,"
+#~ msgstr "El client es veu afectat per una vulnerabilitat per la qual s'ha alliberat un pegat,"
+
+#~ msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was "
+#~ msgstr "Si heu utilitzat un punt, la pàgina pot haver-se mogut a una ubicació diferent des que el punt de llibre era "
+
+#~ msgid "Edit Image Profile: '"
+#~ msgstr "Edita el perfil de la imatge: '"
+
+#~ msgid "Edit Image Store: '"
+#~ msgstr "Edita la botiga d'imatges: '"
+
+#~ msgid " is queued"
+#~ msgstr " està en cua"
+
+#~ msgid " in progress"
+#~ msgstr " en curs"
+
+#~ msgid " is successful"
+#~ msgstr " és exitós"
+
+#~ msgid " has failed"
+#~ msgstr " ha fallat"
+
+#~ msgid " Status"
+#~ msgstr " Estat"
+
+#~ msgid "schedule"
+#~ msgstr "planificació"
+
+#~ msgid "successfully"
+#~ msgstr "amb èxit"
+
+#~ msgid "Error when deleting the "
+#~ msgstr "S'ha produït un error en suprimir el "
+
+#~ msgid "e.g., "
+#~ msgstr "p. ex., "
+
+#~ msgid "The following Program Temporary Fixes (PTFs) are available for installation on this system. "
+#~ msgstr "Les següents Correccions Temporals del Programa (PTFs) estan disponibles per a la instal·lació en aquest sistema. "
+
+#~ msgid "The following Program Temporary Fixes (PTFs) are currently installed on this system. "
+#~ msgstr "Les següents Correccions Temporals del Programa (PTFs) estan instal·lades actualment en aquest sistema. "
+
+#~ msgid "Delete selected messages"
+#~ msgstr "Suprimeix els missatges seleccionats"
+
+#~ msgid "Mark selected as read"
+#~ msgstr "Marca els seleccionats com a llegits"
+
+#~ msgid "${defaultChannelName}"
+#~ msgstr "${defaultChannelName}"
+
+#~ msgid "${this.getDefaultBase().name}"
+#~ msgstr "${this.getDefaultBase().name}"
+
+#~ msgid "HTTP Error code "
+#~ msgstr "Codi d'error HTTP "
 
 #~ msgid "First"
 #~ msgstr "Primer"
@@ -6991,12 +7237,6 @@ msgstr "Codi d'error HTTP "
 #~ msgid "Page {current} of {total}"
 #~ msgstr "Pàgina {current} de {total}"
 
-#~ msgid "e.g. \"0 15 2 ? * 7\""
-#~ msgstr "p. ex. \"0 15 2 ? * 7\""
-
-#~ msgid "Items {from} - {to} of {total}"
-#~ msgstr "Elements {from} - {to} de {total}"
-
 #~ msgid "({selectedCount} selected)"
 #~ msgstr "({selectedCount} seleccionat)"
 
@@ -7006,55 +7246,8 @@ msgstr "Codi d'error HTTP "
 #~ msgid "items per page"
 #~ msgstr "elements per pàgina"
 
-#~ msgid ""
-#~ "Always use plural forms for numbers: {fooCount, plural,\n"
-#~ "            one {only one item}\n"
-#~ "            other {{fooCount} items}\n"
-#~ "          }."
-#~ msgstr ""
-#~ "Feu servir sempre formes plurals per als nombres: {fooCount, plural,\n"
-#~ "un {només un element}\n"
-#~ "altres {{fooCount} elements}\n"
-#~ "}."
-
-#~ msgid "No hub is currently configured for this server. Refresh this page after configuring this server as a peripheral, to see the hub details"
-#~ msgstr "Actualment no hi ha cap concentrador configurat per a aquest servidor. Actualitzeu aquesta pàgina després de configurar aquest servidor com a perifèric per veure els detalls del concentrador."
-
 #~ msgid "Save Password Policy"
 #~ msgstr "Desa la política de les contrasenyes"
-
-#~ msgid "The following channel installations for \"{product}\" failed. Please check log files."
-#~ msgstr "Les instal·lacions de canals següents per a \"{product}\" han fallat. Si us plau, reviseu els fitxers de registre."
-
-#~ msgid "The client is affected by a vulnerability and we have a patch for it, but the channel(s) offering the patch are not assigned to the client."
-#~ msgstr "El client està afectat per una vulnerabilitat i tenim un pedaç per a això, però el(s) canal(s) que ofereixen el pedaç no estan assignats al client."
-
-#~ msgid "The client is affected by a vulnerability and we have a patch for it, but applying the patch requires migrating the product to a newer version."
-#~ msgstr "El client està afectat per una vulnerabilitat i tenim un pedaç per a això, però aplicar-lo requereix migrar el producte a una versió més recent."
-
-#~ msgid "The client is affected by a vulnerability for which a patch has been released, but the patch can't be found in the relevant channels."
-#~ msgstr "El client està afectat per una vulnerabilitat per a la qual s'ha publicat un pedaç, però no es pot trobar als canals pertinents."
-
-#~ msgid "The client is affected by a vulnerability and we have a patch for it, but applying the patch will only update some of the vulnerable packages."
-#~ msgstr "El client està afectat per una vulnerabilitat i tenim un pedaç per a això, però aplicar-lo només actualitzarà alguns dels paquets vulnerables."
-
-#~ msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was created. Use the top (or left) navigation bars to find the page you are looking for, and if you find the document be sure to update your bookmark."
-#~ msgstr "Si heu fet servir un marcador, és possible que la pàgina s'hagi mogut a una ubicació diferent des que es va crear. Feu servir les barres de navegació superiors (o esquerra) per trobar la pàgina que busqueu i, si trobeu el document, assegureu-vos d'actualitzar el marcador."
-
-#~ msgid "Instance Details for \"{name}\""
-#~ msgstr "Detalls de la instància per a {name}"
-
-#~ msgid "Url \"{url}\" is invalid"
-#~ msgstr "L'URL {url} no és vàlid"
-
-#~ msgid "Playbook \"{name}\""
-#~ msgstr "Llibret {name}"
-
-#~ msgid "The following Program Temporary Fixes (PTFs) are available for installation on this system. These packages are only meant to address a specific open issue. Please follow the instructions from customer support before proceeding with the installation."
-#~ msgstr "Les següents correccions temporals de programa (PTF) estan disponibles per a la instal·lació en aquest sistema. Aquests paquets només estan pensats per solucionar un problema obert específic. Seguiu les instruccions del servei d'atenció al client abans de continuar la instal·lació."
-
-#~ msgid "The following Program Temporary Fixes (PTFs) are currently installed on this system. These PTFs may be scheduled for removal by selecting them and clicking \"Remove PTF\" below. Please note that removing any non-obsolete PTF will result in the installation of the most recent versions of the packages that are part of the PTF."
-#~ msgstr "Les següents correccions temporals de programa (PTF) estan actualment instal·lades en aquest sistema. Es pot programar l'eliminació d'aquests PTF seleccionant-los i fent clic a Elimina PTF a continuació. Tingueu en compte que l'eliminació de qualsevol PTF no obsolet comportarà la instal·lació de les versions més recents dels paquets que formen part del PTF."
 
 #~ msgid "Add a system"
 #~ msgstr "Afegeix un sistema"
