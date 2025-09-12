@@ -1268,6 +1268,18 @@ INSERT INTO access.accessGroupNamespace
     )
     ON CONFLICT DO NOTHING;
 
+-- Namespace: api.channel.software
+-- Permit to channel_admin
+INSERT INTO access.accessGroupNamespace
+    SELECT ag.id, ns.id
+    FROM access.accessGroup ag, access.namespace ns
+    WHERE ag.label = 'channel_admin'
+    AND ns.namespace IN (
+        'api.channel.software.setAutoSync',
+        'api.channel.software.isAutoSync',
+        'api.channel.listSoftwareChannelsByAutoSync'
+    )
+    ON CONFLICT DO NOTHING;
 -- Namespace: audit.scap.management and audit.scap.execution
 -- Permit to all
 INSERT INTO access.accessGroupNamespace (group_id, namespace_id)
