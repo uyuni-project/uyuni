@@ -84,35 +84,35 @@
         </rl:list>
 
         <div class="checkbox">
-            <label>
+            <label title="<bean:message key="channel.manage.sync.nostrict-tt.jsp"/>">
                 <input type="checkbox" name="noStrict" id="noStrict"  <c:if test='${noStrict}'> checked</c:if> />
                 <bean:message key="channel.manage.sync.nostrict.jsp"/>
             </label>
         </div>
         
         <div class="checkbox">
-            <label>
+            <label title="<bean:message key="channel.manage.sync.noerrata-tt.jsp"/>">
                 <input type="checkbox" name="noErrata" id="noErrata" <c:if test='${noErrata}'> checked</c:if>/>
                 <bean:message key="channel.manage.sync.noerrata.jsp"/>
             </label>
         </div>
         
         <div class="checkbox">
-            <label>
+            <label title="<bean:message key="channel.manage.sync.latestonly-tt.jsp"/>">
                 <input type="checkbox" name="latest" id="latest" <c:if test='${latest}'> checked</c:if>/>
                 <bean:message key="channel.manage.sync.latestonly.jsp"/>
             </label>
         </div>
         
         <div class="checkbox">
-            <label>
+            <label title="<bean:message key="channel.manage.sync.synckickstart-tt.jsp"/>">
                 <input type="checkbox" name="syncKickstart" id="syncKickstart" <c:if test='${syncKickstart}'> checked</c:if>/>
                 <bean:message key="channel.manage.sync.synckickstart.jsp"/>
             </label>
         </div>
         
         <div class="checkbox">
-            <label>
+            <label title="<bean:message key="channel.manage.sync.fail-tt.jsp"/>">
                 <input type="checkbox" name="fail" id="fail" <c:if test='${fail}'> checked</c:if>/>
                 <bean:message key="channel.manage.sync.fail.jsp"/>
             </label>
