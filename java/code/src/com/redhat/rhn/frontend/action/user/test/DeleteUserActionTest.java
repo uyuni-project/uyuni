@@ -42,8 +42,6 @@ import org.junit.jupiter.api.Test;
  */
 public class DeleteUserActionTest extends RhnBaseTestCase {
 
-
-
     @Test
     public void testExecute() {
         DeleteUserAction action = new DeleteUserAction();

@@ -38,7 +38,7 @@ artifacts:
   - artifact: javax.mail
     jar: javax.mail.jar
     package: javamail
-    repository: Leap
+    repository: Leap_sle
   - artifact: commons-beanutils
     package: apache-commons-beanutils
     repository: Leap

@@ -86,7 +86,6 @@ public class BadParameterExceptionHandlerTest extends MockObjectTestCase {
             // jmock RULES!
             RhnMockHttpServletRequest request = TestUtils
                     .getRequestWithSessionAndUser();
-            request.setupGetHeaderNames(new Vector<String>().elements());
             request.setupGetMethod("POST");
             request.setupGetRequestURI("http://localhost:8080");
             request.setupGetParameterNames(new Vector<String>().elements());

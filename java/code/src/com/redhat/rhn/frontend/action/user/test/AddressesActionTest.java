@@ -27,7 +27,7 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 import org.junit.jupiter.api.Test;
 
 /**
- * LoginActionTest
+ * AddressesActionTest
  */
 public class AddressesActionTest extends RhnBaseTestCase {
 

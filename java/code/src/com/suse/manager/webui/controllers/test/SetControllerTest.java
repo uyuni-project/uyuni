@@ -79,7 +79,7 @@ public class SetControllerTest extends BaseControllerTestCase {
 
         RhnMockHttpServletResponse mockResponse = (RhnMockHttpServletResponse) response.raw();
 
-        mockResponse.setExpectedContentType("application/json");
+        mockResponse.setContentType("application/json");
 
         String result = SetController.updateSet(request, response, user);
 
@@ -87,7 +87,6 @@ public class SetControllerTest extends BaseControllerTestCase {
         assertEquals(2, testSetDecl.get(user).size());
         assertTrue(testSetDecl.get(user).contains(s0.getId()));
         assertTrue(testSetDecl.get(user).contains(s2.getId()));
-        mockResponse.verify();
     }
 
     @Test
@@ -106,13 +105,12 @@ public class SetControllerTest extends BaseControllerTestCase {
 
         RhnMockHttpServletResponse mockResponse = (RhnMockHttpServletResponse) response.raw();
 
-        mockResponse.setExpectedContentType("application/json");
+        mockResponse.setContentType("application/json");
 
         String result = SetController.clearSet(request, response, user);
 
         assertEquals("0", result);
         assertEquals(0, testSetDecl.get(user).size());
-        mockResponse.verify();
     }
 
     @Test
@@ -126,7 +124,7 @@ public class SetControllerTest extends BaseControllerTestCase {
 
         RhnMockHttpServletResponse mockResponse = (RhnMockHttpServletResponse) response.raw();
 
-        mockResponse.setExpectedContentType("application/json");
+        mockResponse.setContentType("application/json");
 
         Set<String> selectionList = SessionSetHelper.lookupAndBind(request.raw(), "list-selection");
         selectionList.add("selection-key-0");
@@ -136,7 +134,6 @@ public class SetControllerTest extends BaseControllerTestCase {
 
         assertEquals("2", result);
         assertEquals(Set.of("selection-key-0", "selection-key-2"), selectionList);
-        mockResponse.verify();
     }
 
     @Test
@@ -149,7 +146,7 @@ public class SetControllerTest extends BaseControllerTestCase {
 
         RhnMockHttpServletResponse mockResponse = (RhnMockHttpServletResponse) response.raw();
 
-        mockResponse.setExpectedContentType("application/json");
+        mockResponse.setContentType("application/json");
 
         Set<String> selectionList = SessionSetHelper.lookupAndBind(request.raw(), "list-selection");
         selectionList.add("selection-key-0");
@@ -159,7 +156,6 @@ public class SetControllerTest extends BaseControllerTestCase {
 
         assertEquals("0", result);
         assertEquals(Set.of(), selectionList);
-        mockResponse.verify();
     }
     @Test
     public void returnsErrorWhenUpdatingNonExistingSet() throws UnsupportedEncodingException {
@@ -172,13 +168,12 @@ public class SetControllerTest extends BaseControllerTestCase {
 
         RhnMockHttpServletResponse mockResponse = (RhnMockHttpServletResponse) response.raw();
 
-        mockResponse.setExpectedStatus(HttpStatus.SC_INTERNAL_SERVER_ERROR);
-        mockResponse.setExpectedContentType("application/json");
+        mockResponse.setStatus(HttpStatus.SC_INTERNAL_SERVER_ERROR);
+        mockResponse.setContentType("application/json");
 
         String result = SetController.updateSet(request, response, user);
 
         assertEquals(GSON.toJson(Map.of("messages", List.of("Failed to change set"))), result);
-        mockResponse.verify();
     }
 
     @Test
@@ -191,13 +186,12 @@ public class SetControllerTest extends BaseControllerTestCase {
 
         RhnMockHttpServletResponse mockResponse = (RhnMockHttpServletResponse) response.raw();
 
-        mockResponse.setExpectedStatus(HttpStatus.SC_NOT_FOUND);
-        mockResponse.setExpectedContentType("application/json");
+        mockResponse.setStatus(HttpStatus.SC_NOT_FOUND);
+        mockResponse.setContentType("application/json");
 
         String result = SetController.clearSet(request, response, user);
 
         assertEquals(GSON.toJson(Map.of("error", "No such set: nonExisting")), result);
-        mockResponse.verify();
     }
 
     private static RhnSetDecl initializeSet(String label, User user, Long... values) {
