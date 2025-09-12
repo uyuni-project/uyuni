@@ -33,12 +33,7 @@ public class LoggingInvocationProcessor {
 
     private static final Logger LOGGER = LogManager.getLogger(LoggingInvocationProcessor.class);
 
-    private static ThreadLocal timer = new ThreadLocal() {
-        @Override
-        protected synchronized Object initialValue() {
-            return new StopWatch();
-        }
-    };
+    private static final ThreadLocal<StopWatch> TIMER = ThreadLocal.withInitial(StopWatch::new);
 
     public static final Set<String> DEFAULT_SENSITIVE_KEYWORDS =
             Set.of("pass", "key", "certificate", "token", "secret");
@@ -220,7 +215,7 @@ public class LoggingInvocationProcessor {
     }
 
     protected static StopWatch getStopWatch() {
-        return (StopWatch) timer.get();
+        return TIMER.get();
     }
 
 }

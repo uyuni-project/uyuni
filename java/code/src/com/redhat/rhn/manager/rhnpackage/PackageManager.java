@@ -28,7 +28,6 @@ import com.redhat.rhn.common.util.CompressionUtil;
 import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
-import com.redhat.rhn.domain.channel.DistChannelMap;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
@@ -1756,8 +1755,8 @@ public class PackageManager extends BaseManager {
 
     private static String getAssociatedRelease(Package pack) {
         for (Channel chan : pack.getChannels()) {
-            for (DistChannelMap map : chan.getDistChannelMaps()) {
-                return map.getRelease();
+            if (chan.getDistChannelMaps().iterator().hasNext()) {
+                return chan.getDistChannelMaps().iterator().next().getRelease();
             }
         }
         return null;

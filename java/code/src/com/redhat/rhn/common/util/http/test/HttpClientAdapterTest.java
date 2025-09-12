@@ -261,7 +261,6 @@ public class HttpClientAdapterTest  {
      */
     private boolean callUseProxyFor(URI uri) throws Exception {
         Method method = HttpClientAdapter.class.getDeclaredMethod("useProxyFor", URI.class);
-        method.setAccessible(true);
         return (Boolean) method.invoke(new HttpClientAdapter(), uri);
     }
 }
