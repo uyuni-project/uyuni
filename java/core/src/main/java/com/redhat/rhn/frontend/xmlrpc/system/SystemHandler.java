@@ -3367,10 +3367,8 @@ public class SystemHandler extends BaseHandler {
      * @return an array of Integers containing the system Ids
      *
      * @apidoc.doc Returns a list of system IDs whose name matches
-     *  the supplied regular expression(defined by
-     *  <a href="http://docs.oracle.com/javase/1.5.0/docs/api/java/util/regex/Pattern.html"
-     *  target="_blank">
-     * Java representation of regular expressions</a>)
+     *  the supplied regular expression defined by Java representation of regular expressions
+     *  (http://docs.oracle.com/javase/1.5.0/docs/api/java/util/regex/Pattern.html)
      *
      * @apidoc.param #session_key()
      * @apidoc.param #param_desc("string", "regexp",  "A regular expression")
