@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Sep 12 10:29:08 CEST 2025 - rosuna@suse.com
+
+- version 4.3.34-0
+  * Use more secure defusedxml parser (bsc#1227577)
+
+-------------------------------------------------------------------
 Thu Jul 10 17:16:41 CEST 2025 - marina.latini@suse.com
 
 - version 4.3.33-0
