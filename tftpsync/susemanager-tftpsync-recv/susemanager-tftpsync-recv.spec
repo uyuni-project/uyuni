@@ -17,7 +17,7 @@
 
 
 Name:           susemanager-tftpsync-recv
-Version:        5.0.2
+Version:        5.0.3
 Release:        0
 Summary:        Reciever for SUSE Manager tftp sync
 License:        GPL-2.0-only
