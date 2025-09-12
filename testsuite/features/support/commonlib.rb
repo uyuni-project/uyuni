@@ -322,6 +322,16 @@ def deb_host?(name)
   %w[debian ubuntu].include? os_family
 end
 
+# Determines if the given command contains a pipe.
+#
+# @param cmd [String] The string to check.
+# @return [Boolean] Returns true if the command contains a pipe in it, false otherwise.
+def command_contains_a_pipe?(cmd)
+  command_splitted = cmd.split('|')
+  command_without_spaces = command_splitted.map(&:strip)
+  command_splitted.length > 1 && command_without_spaces.all? { |command| !command.empty? }
+end
+
 # Checks if a repository exists.
 #
 # @param repo [String] The name of the repository to check.
