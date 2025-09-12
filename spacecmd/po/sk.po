@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-05 08:31+0200\n"
+"POT-Creation-Date: 2025-09-12 10:46+0200\n"
 "PO-Revision-Date: 2025-09-05 16:59+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>\n"
@@ -426,6 +426,7 @@ msgid "File %s exists, confirm overwrite file? (y/n)"
 msgstr "Súbor %s existuje, potvrďte prepísanie súboru? (a/n)"
 
 #: ../src/spacecmd/activationkey.py:1330
+#, python-brace-format
 msgid "Failed to save exported keys to file: {}"
 msgstr "Zlyhalo uloženie exportovaných kľúčov do súboru: {}"
 
@@ -1266,6 +1267,7 @@ msgid "Exporting cc %s to %s"
 msgstr "Exportovanie cc %s do %s"
 
 #: ../src/spacecmd/configchannel.py:1264
+#, python-brace-format
 msgid "File '{}' exists, confirm overwrite file? (y/n)"
 msgstr "Súbor '{}' existuje, potvrďte prepísanie súboru? (a/n)"
 
@@ -1587,6 +1589,7 @@ msgid "usage: custominfo_details KEY ..."
 msgstr "použitie: custominfo_details KĽÚČ ..."
 
 #: ../src/spacecmd/custominfo.py:157
+#, python-brace-format
 msgid "No keys matched argument '{}'."
 msgstr "Žiadne kľúče sa nezhodujú s argumentom '{}'."
 
@@ -3656,6 +3659,7 @@ msgstr "Pre názov %s nebola nájdená žiadna organizácia"
 #: ../src/spacecmd/org.py:208 ../src/spacecmd/org.py:241
 #: ../src/spacecmd/org.py:275 ../src/spacecmd/org.py:311
 #: ../src/spacecmd/org.py:420 ../src/spacecmd/org.py:456
+#, python-brace-format
 msgid "Organisation '{}' was not found"
 msgstr "Organizácia '{}' nebola nájdená"
 
@@ -3685,6 +3689,7 @@ msgid "No trust organisation found for the name %s"
 msgstr "Pre názov %s nebola nájdená žiadna dôveryhodná organizácia"
 
 #: ../src/spacecmd/org.py:279 ../src/spacecmd/org.py:315
+#, python-brace-format
 msgid "Organisation '{}' to trust for, was not found"
 msgstr "Organizácia '{}', ktorej možno dôverovať, nebola nájdená"
 
@@ -3718,6 +3723,7 @@ msgid "No trusted organisation found for the name %s"
 msgstr "Pre názov %s nebola nájdená žiadna dôveryhodná organizácia"
 
 #: ../src/spacecmd/org.py:354
+#, python-brace-format
 msgid "Trusted organisation '{}' was not found"
 msgstr "Dôveryhodná organizácia '{}' nebola nájdená"
 
@@ -4004,7 +4010,6 @@ msgid "proxy_container_config: create a proxy system and return its configuratio
 msgstr "proxy_container_config: vytvoriť systém proxy a vrátiť jeho konfiguračný súbor"
 
 #: ../src/spacecmd/proxy.py:33
-#, python-format
 msgid ""
 "usage: proxy_container_config [options] PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL ROOT_CA CRT KEY\n"
 "\n"
@@ -4051,7 +4056,6 @@ msgid "proxy_container_config_generate_cert: create a proxy system and return it
 msgstr "proxy_container_config_generate_cert: vytvoriť systém proxy a vrátiť jeho konfiguračný súbor"
 
 #: ../src/spacecmd/proxy.py:90
-#, python-format
 msgid ""
 "usage: proxy_container_config_generate_cert PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL\n"
 "\n"
@@ -4154,6 +4158,7 @@ msgid "Repository SSL Client Key:         %s"
 msgstr "Kľúč klienta SSL repozitára:         %s"
 
 #: ../src/spacecmd/repo.py:103
+#, python-brace-format
 msgid "No repositories found for '{}' query"
 msgstr "Pre dopyt '{}' neboli nájdené žiadne repozitáre"
 
@@ -4374,6 +4379,7 @@ msgid "%s  # Systems"
 msgstr "%s  # Systémy"
 
 #: ../src/spacecmd/report.py:174
+#, python-brace-format
 msgid "No errata found for '{}'"
 msgstr "Nenašli sa žiadne opravy chýb pre '{}'"
 
@@ -4798,6 +4804,7 @@ msgid "If no date is provided it will delete all archived actions"
 msgstr "Ak nie je zadaný žiadny dátum, vymažú sa všetky archivované akcie"
 
 #: ../src/spacecmd/schedule.py:492
+#, python-brace-format
 msgid "Do you want to delete ({}) archived actions? [y/N]"
 msgstr "Chcete vymazať všetky ({}) archivované akcie? [a/N]"
 
@@ -4818,6 +4825,7 @@ msgid "If no date is provided it will archive all completed actions"
 msgstr "Ak nie je zadaný žiadny dátum, archivujú sa všetky dokončené akcie"
 
 #: ../src/spacecmd/schedule.py:551
+#, python-brace-format
 msgid "Do you want to archive ({}) completed actions? [y/N]"
 msgstr "Chcete archivovať všetky ({}) dokončené akcie? [a/N]"
 
@@ -6083,10 +6091,12 @@ msgstr "zlúčenie opráv chýb zo softvérového kanála "
 
 #. pylint: disable=len-as-condition
 #: ../src/spacecmd/softwarechannel.py:2578
+#, python-brace-format
 msgid "{} contains no errata which is not already present in {}"
 msgstr "{} neobsahuje žiadne opravy chýb, ktoré nie sú už prítomné v {}"
 
 #: ../src/spacecmd/softwarechannel.py:2583
+#, python-brace-format
 msgid "errata to add to channel {}: "
 msgstr "opravy chýb na pridanie do kanála {}: "
 
@@ -6100,6 +6110,7 @@ msgid " errata to  "
 msgstr " opravy chýb do  "
 
 #: ../src/spacecmd/softwarechannel.py:2594
+#, python-brace-format
 msgid "Perform these changes to channel {} [y/N]:"
 msgstr "Vykonať tieto zmeny v kanáli {} [a/N]:"
 
@@ -7976,6 +7987,7 @@ msgid "Server is not supporting reactivation keys at bootstrap time"
 msgstr "Server nepodporuje reaktivačné kľúče v čase zavádzania"
 
 #: ../src/spacecmd/system.py:4630
+#, python-brace-format
 msgid "Bootstrapping '{}'. This may take a while."
 msgstr "Zavádzanie '{}'. To môže chvíľu trvať."
 
@@ -8331,6 +8343,7 @@ msgid "Skipping usage of common strings: number of substrings differ"
 msgstr "Preskočenie použitia spoločných reťazcov: počet podreťazcov sa líši"
 
 #: ../src/spacecmd/utils.py:925
+#, python-brace-format
 msgid "Parameter {} not a string type, but {}."
 msgstr "Parameter {} nie je typ reťazca, ale {}."
 
