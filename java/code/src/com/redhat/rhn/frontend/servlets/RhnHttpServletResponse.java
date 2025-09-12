@@ -100,14 +100,6 @@ public class RhnHttpServletResponse extends HttpServletResponseWrapper {
      * {@inheritDoc}
      */
     @Override
-    public String encodeRedirectURL(String arg0) {
-        return super.encodeRedirectURL(arg0);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void setCharacterEncoding(String charsetIn) {
         charset = charsetIn;
     }
