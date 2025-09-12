@@ -36,6 +36,7 @@ import com.suse.manager.hub.HubController;
 import com.suse.manager.hub.HubManager;
 import com.suse.manager.hub.migration.IssMigratorFactory;
 import com.suse.manager.kubernetes.KubernetesManager;
+import com.suse.manager.model.products.migration.MigrationDataFactory;
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.webui.controllers.AnsibleController;
 import com.suse.manager.webui.controllers.CSVDownloadController;
@@ -129,6 +130,7 @@ public class Router implements SparkApplication {
         SystemManager systemManager = GlobalInstanceHolder.SYSTEM_MANAGER;
         CloudPaygManager paygManager = GlobalInstanceHolder.PAYG_MANAGER;
         AttestationManager attestationManager = GlobalInstanceHolder.ATTESTATION_MANAGER;
+        MigrationDataFactory migrationDataFactory = new MigrationDataFactory();
 
         SystemsController systemsController = new SystemsController(saltApi);
         ProxyController proxyController = new ProxyController(systemManager);
@@ -136,7 +138,7 @@ public class Router implements SparkApplication {
         NotificationMessageController notificationMessageController =
                 new NotificationMessageController(systemQuery, saltApi, paygManager, attestationManager);
         MinionsAPI minionsAPI = new MinionsAPI(saltApi, sshMinionBootstrapper, regularMinionBootstrapper,
-                saltKeyUtils, attestationManager, taskomaticApi);
+                saltKeyUtils, attestationManager, taskomaticApi, paygManager, migrationDataFactory);
         StatesAPI statesAPI = new StatesAPI(saltApi, taskomaticApi, serverGroupManager);
         FormulaController formulaController = new FormulaController(saltApi);
         HttpApiRegistry httpApiRegistry = new HttpApiRegistry();
@@ -272,7 +274,7 @@ public class Router implements SparkApplication {
         StorybookController.initRoutes(jade);
 
         // ISSv3 Sync
-        initISSv3Routes();
+        initISSv3Routes(taskomaticApi);
 
         // Validate RBAC endpoints
         RbacRouteValidator.validateEndpoints();
@@ -312,15 +314,15 @@ public class Router implements SparkApplication {
         ImageBuildController.initRoutes(jade, imageBuildController);
     }
 
-    private static void initISSv3Routes() {
+    private static void initISSv3Routes(TaskomaticApi taskomaticApiIn) {
         HubManager hubManager = new HubManager();
 
         // ISS v3 Internal APIs
-        HubController hubController = new HubController(hubManager, new TaskomaticApi());
+        HubController hubController = new HubController(hubManager, taskomaticApiIn);
         hubController.initRoutes();
 
         // API for the web interface
-        HubApiController hubApiController = new HubApiController(hubManager, new IssMigratorFactory());
+        HubApiController hubApiController = new HubApiController(hubManager, new IssMigratorFactory(), taskomaticApiIn);
         hubApiController.initRoutes();
     }
 }

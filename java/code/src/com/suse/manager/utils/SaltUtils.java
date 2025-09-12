@@ -533,8 +533,8 @@ public class SaltUtils {
             return Opt.fold(
                 SaltUtils.jsonEventToStateApplyResults(rawResult),
                 () -> true,
-                results -> results.values().stream().filter(
-                    result -> !result.isResult()).findAny().isPresent());
+                results -> results.values().stream()
+                        .anyMatch(result -> !result.isResult()));
         }
         return !(success && retcode == 0);
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 SUSE LLC
+ * Copyright (c) 2012--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.redhat.rhn.domain.product;
 
@@ -18,6 +14,8 @@ import static com.suse.utils.Predicates.isAbsent;
 
 import com.redhat.rhn.common.util.RpmVersionComparator;
 import com.redhat.rhn.domain.server.InstalledProduct;
+
+import com.suse.utils.Lists;
 
 import com.google.gson.Gson;
 
@@ -27,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -251,5 +250,27 @@ public class SUSEProductSet {
      */
     public static String serializeProductIDs(List<Long> ids) {
         return new Gson().toJson(ids);
+    }
+
+    /**
+     * Merges two target product sets into a single one, if they have the same base.
+     * @param firstSet the first product set
+     * @param secondSet the second product set
+     * @return a combine product set, having the same base and merged addons and missing channels.
+     */
+    public static SUSEProductSet merge(SUSEProductSet firstSet, SUSEProductSet secondSet) {
+        if (!Objects.equals(firstSet.getBaseProduct(), secondSet.getBaseProduct())) {
+            throw new IllegalArgumentException(
+                "The base products do not match between the given product sets: %s, %s".formatted(firstSet, secondSet)
+            );
+        }
+
+        SUSEProduct baseProduct = firstSet.getBaseProduct();
+        List<SUSEProduct> allAddons = Lists.merge(firstSet.getAddonProducts(), secondSet.getAddonProducts());
+        List<String> allMissingChannels = Lists.merge(firstSet.getMissingChannels(), secondSet.getMissingChannels());
+
+        SUSEProductSet finalProductSet = new SUSEProductSet(baseProduct, allAddons);
+        finalProductSet.addMissingChannels(allMissingChannels);
+        return finalProductSet;
     }
 }

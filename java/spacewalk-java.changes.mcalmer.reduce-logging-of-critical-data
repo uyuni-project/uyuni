@@ -1,0 +1,2 @@
+- Prevent printing user input in traceback logs and mails
+  (bsc#1239636)

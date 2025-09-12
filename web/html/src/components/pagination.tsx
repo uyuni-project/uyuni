@@ -107,13 +107,7 @@ const ItemsPerPageSelector = (props: ItemsPerPageSelectorProps) => {
   return (
     <div>
       <DropdownButton
-        text={t(
-          `{total, plural,
-              one {{from} - {to} of {total} item}
-              other {{from} - {to} of {total} items}
-          }` as string,
-          { from: props.fromItem, to: props.toItem, total: props.itemCount }
-        )}
+        text={t("Items {from} - {to} of {total}", { from: props.fromItem, to: props.toItem, total: props.itemCount })}
         className={`page-selector ${testIdPrefix}__control`}
         items={[5, 10, 15, 25, 50, 100, 250, 500].map((o) => (
           <Button

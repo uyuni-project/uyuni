@@ -25,8 +25,7 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.credentials.HubSCCCredentials;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.listview.PageControl;
-import com.redhat.rhn.taskomatic.NoSuchBunchTaskException;
-import com.redhat.rhn.taskomatic.TaskoFactory;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.hub.HubManager;
@@ -69,7 +68,6 @@ import com.google.gson.reflect.TypeToken;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.quartz.SchedulerException;
 
 import java.io.IOException;
 import java.security.cert.CertificateException;
@@ -94,6 +92,8 @@ public class HubApiController {
 
     private final IssMigratorFactory migratorFactory;
 
+    private final TaskomaticApi taskomaticApi;
+
     private static final Gson GSON = new GsonBuilder()
         .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
         .serializeNulls()
@@ -103,17 +103,20 @@ public class HubApiController {
      * Default constructor
      */
     public HubApiController() {
-        this(new HubManager(), new IssMigratorFactory());
+        this(new HubManager(), new IssMigratorFactory(), new TaskomaticApi());
     }
 
     /**
      * Creates an instance with the given dependencies
      * @param hubManagerIn the hub manager
      * @param migratorFactoryIn the migrator factory
+     * @param taskomaticApiIn the taskomatic API
      */
-    public HubApiController(HubManager hubManagerIn, IssMigratorFactory migratorFactoryIn) {
+    public HubApiController(HubManager hubManagerIn, IssMigratorFactory migratorFactoryIn,
+                            TaskomaticApi taskomaticApiIn) {
         this.hubManager = hubManagerIn;
         this.migratorFactory = migratorFactoryIn;
+        this.taskomaticApi = taskomaticApiIn;
     }
 
     /**
@@ -514,11 +517,11 @@ public class HubApiController {
 
     private String scheduleUpdateTask(Request request, Response response, User user) {
         try {
-            Map<String, Object> params = Map.of("noRepoSync", false);
-            TaskoFactory.addSingleBunchRun(null, "mgr-sync-refresh-bunch", params, new Date());
+            Map<String, String> params = Map.of("noRepoSync", "false");
+            taskomaticApi.scheduleSingleSatBunch(user, "mgr-sync-refresh-bunch", params);
             return success(response);
         }
-        catch (NoSuchBunchTaskException | SchedulerException ex) {
+        catch (TaskomaticApiException ex) {
             LOGGER.error("Failed to schedule mgr-sync-refresh job: {}", ex.getMessage());
             return internalServerError(response, LOC.getMessage("hub.unexpected_error_migrating", ex.getMessage()));
         }

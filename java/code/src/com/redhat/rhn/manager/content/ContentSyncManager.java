@@ -787,7 +787,7 @@ public class ContentSyncManager {
         Optional<Date> lastRefreshDate = ManagerInfoFactory.getLastMgrSyncRefresh();
         if (Config.get().getString(ContentSyncManager.RESOURCE_PATH, null) != null) {
             LOG.debug("Syncing from dir");
-            long hours24 = 24 * 60 * 60 * 1000;
+            long hours24 = 24L * 60L * 60L * 1000L;
             Timestamp t = new Timestamp(System.currentTimeMillis() - hours24);
 
             return Opt.fold(

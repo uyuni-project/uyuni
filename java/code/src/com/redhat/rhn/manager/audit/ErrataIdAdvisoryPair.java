@@ -101,9 +101,6 @@ public class ErrataIdAdvisoryPair {
             return false;
         }
         ErrataIdAdvisoryPair other = (ErrataIdAdvisoryPair) obj;
-        if (id != other.id) {
-            return false;
-        }
-        return true;
+        return id == other.id;
     }
 }

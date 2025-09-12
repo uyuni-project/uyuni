@@ -122,9 +122,6 @@ public class ServerChannelIdPair {
         if (cid != other.cid) {
             return false;
         }
-        if (sid != other.sid) {
-            return false;
-        }
-        return true;
+        return sid == other.sid;
     }
 }

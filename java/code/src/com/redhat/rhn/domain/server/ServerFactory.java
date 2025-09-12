@@ -56,12 +56,9 @@ import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.Session;
-import org.hibernate.query.Query;
 import org.hibernate.type.StandardBasicTypes;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -105,7 +102,7 @@ public class ServerFactory extends HibernateFactory {
             return null;
         }
 
-        return (CustomDataValue) HibernateFactory.getSession().getNamedQuery("CustomDataValue.findByServerAndKey")
+        return getSession().createNamedQuery("CustomDataValue.findByServerAndKey", CustomDataValue.class)
                 .setParameter("server", server)
                 .setParameter("key", key)
                 .setCacheable(true)
@@ -166,8 +163,7 @@ public class ServerFactory extends HibernateFactory {
      * @return List of systems
      */
     public static List<Row> lookupServersWithCustomKey(Long userId, Long cikid) {
-        SelectMode m = ModeFactory.getMode(SYSTEM_QUERIES,
-                "users_systems_with_value_for_key");
+        SelectMode m = ModeFactory.getMode(SYSTEM_QUERIES, "users_systems_with_value_for_key");
         Map<String, Object> inParams = new HashMap<>();
 
         inParams.put("user_id", userId);
@@ -368,16 +364,19 @@ public class ServerFactory extends HibernateFactory {
      * @param serverGroup The group to add the servers to
      */
     public static void addServersToGroup(Collection<Server> servers, ServerGroup serverGroup) {
-        List<Long> serverIdsToAdd = servers.stream().filter(s -> s.getOrgId().equals(serverGroup.getOrgId()))
+        List<Long> serverIdsToAdd = servers.stream()
+                .filter(s -> s.getOrgId().equals(serverGroup.getOrgId()))
                 .map(Server::getId).collect(Collectors.toList());
 
         boolean serversUpdated = insertServersToGroup(serverIdsToAdd, serverGroup.getId());
 
         if (serversUpdated) {
-            servers.stream().forEach(s -> {
-                s.addGroup(serverGroup);
-                SystemManager.updateSystemOverview(s);
-            });
+            servers.stream()
+                    .filter(s -> s.getOrgId().equals(serverGroup.getOrgId()))
+                    .forEach(s -> {
+                        s.addGroup(serverGroup);
+                        SystemManager.updateSystemOverview(s);
+                    });
             if (serverGroup.isManaged()) {
                 updatePermissionsForServerGroup(serverGroup.getId());
             }
@@ -424,7 +423,7 @@ public class ServerFactory extends HibernateFactory {
      * @param serverGroupIn The group to add the server to
      */
     public static void addServerToGroup(Server serverIn, ServerGroup serverGroupIn) {
-        addServersToGroup(Arrays.asList(serverIn), serverGroupIn);
+        addServersToGroup(Collections.singletonList(serverIn), serverGroupIn);
     }
 
     /**
@@ -451,16 +450,19 @@ public class ServerFactory extends HibernateFactory {
      * @param serverGroup The group to remove the servers from
      */
     public static void removeServersFromGroup(Collection<Server> servers, ServerGroup serverGroup) {
-        List<Long> serverIdsToAdd = servers.stream().filter(s -> s.getOrgId().equals(serverGroup.getOrgId()))
+        List<Long> serverIdsToAdd = servers.stream()
+                .filter(s -> s.getOrgId().equals(serverGroup.getOrgId()))
                 .map(Server::getId).collect(Collectors.toList());
 
         boolean serversUpdated = removeServersFromGroup(serverIdsToAdd, serverGroup.getId());
 
         if (serversUpdated) {
-            servers.stream().forEach(s -> {
-                s.removeGroup(serverGroup);
-                SystemManager.updateSystemOverview(s);
-            });
+            servers.stream()
+                    .filter(s -> s.getOrgId().equals(serverGroup.getOrgId()))
+                    .forEach(s -> {
+                        s.removeGroup(serverGroup);
+                        SystemManager.updateSystemOverview(s);
+                    });
             if (serverGroup.isManaged()) {
                 updatePermissionsForServerGroup(serverGroup.getId());
             }
@@ -491,7 +493,7 @@ public class ServerFactory extends HibernateFactory {
      * @param serverGroupIn The group to remove the server from
      */
     public static void removeServerFromGroup(Server serverIn, ServerGroup serverGroupIn) {
-        removeServersFromGroup(Arrays.asList(serverIn), serverGroupIn);
+        removeServersFromGroup(Collections.singletonList(serverIn), serverGroupIn);
     }
 
     /**
@@ -540,13 +542,11 @@ public class ServerFactory extends HibernateFactory {
      * @param systems the systems to check
      * @return list of servers pending reoot action
      */
-    @SuppressWarnings("unchecked")
     public static List<Long> findSystemsPendingRebootActions(List<SystemOverview> systems) {
         List<Long> sids = systems.stream().map(SystemOverview::getId).collect(Collectors.toList());
-        Session session = HibernateFactory.getSession();
-        Query<Long> query = session.getNamedQuery("Server.findServersPendingRebootAction");
-        query.setParameter("systemIds", sids);
-        return query.list();
+        return getSession().createNamedQuery("Server.findServersPendingRebootAction", Long.class)
+                .setParameter("systemIds", sids)
+                .list();
     }
 
     /**
@@ -640,20 +640,20 @@ public class ServerFactory extends HibernateFactory {
      * @return the servers with only limited number of loaded fields
      */
     public static List<Server> getSsmSystemsForSubscribe(User user) {
-        List<Tuple> res = getSession().createNativeQuery(
-                "SELECT S.id, S.machine_id, SMI.minion_id, {CC.*} " +
-                    "FROM rhnServer S " +
-                    "   LEFT OUTER JOIN suseMinionInfo SMI ON S.id = SMI.server_id " +
-                    "   INNER JOIN rhnSet ST ON S.id = ST.element " +
-                    "   LEFT OUTER JOIN rhnServerConfigChannel SCC ON S.id = SCC.server_id " +
-                    "   LEFT OUTER JOIN rhnConfigChannel CC on CC.id = SCC.config_channel_id " +
-                    "WHERE " +
-                    "   S.id = ST.element " +
-                    "   AND ST.user_id = :user_id " +
-                    "   AND ST.label = :system_set_label " +
-                    "   AND EXISTS(SELECT 1 FROM rhnServerFeaturesView SFV WHERE SFV.server_id = ST.element " +
-                    "   AND SFV.label = 'ftr_config') " +
-                    "ORDER BY S.name, SCC.position", Tuple.class)
+        List<Tuple> res = getSession().createNativeQuery("""
+                SELECT S.id, S.machine_id, SMI.minion_id, {CC.*}
+                    FROM rhnServer S
+                       LEFT OUTER JOIN suseMinionInfo SMI ON S.id = SMI.server_id
+                       INNER JOIN rhnSet ST ON S.id = ST.element
+                       LEFT OUTER JOIN rhnServerConfigChannel SCC ON S.id = SCC.server_id
+                       LEFT OUTER JOIN rhnConfigChannel CC on CC.id = SCC.config_channel_id
+                    WHERE
+                       S.id = ST.element
+                       AND ST.user_id = :user_id
+                       AND ST.label = :system_set_label
+                       AND EXISTS(SELECT 1 FROM rhnServerFeaturesView SFV WHERE SFV.server_id = ST.element
+                       AND SFV.label = 'ftr_config')
+                    ORDER BY S.name, SCC.position""", Tuple.class)
                 .addScalar("id", StandardBasicTypes.BIG_INTEGER)
                 .addScalar("machine_id", StandardBasicTypes.STRING)
                 .addScalar("minion_id", StandardBasicTypes.STRING)
@@ -707,19 +707,19 @@ public class ServerFactory extends HibernateFactory {
      * @return the servers with only limited number of loaded fields
      */
     public static List<Server> getSystemsForSubscribe(List<Long> sids, User user) {
-        List<Tuple> res = getSession().createNativeQuery(
-                        "SELECT S.id, S.machine_id, SMI.minion_id, {CC.*} " +
-                                "FROM rhnServer S " +
-                                "   LEFT OUTER JOIN suseMinionInfo SMI ON S.id = SMI.server_id " +
-                                "   LEFT OUTER JOIN rhnServerConfigChannel SCC ON S.id = SCC.server_id " +
-                                "   LEFT OUTER JOIN rhnConfigChannel CC on CC.id = SCC.config_channel_id " +
-                                "   JOIN rhnUserServerPerms USP ON (S.id = USP.server_id) " +
-                                "WHERE " +
-                                "   S.id IN (:sids) " +
-                                "   AND USP.user_id = :user_id " +
-                                "   AND EXISTS(SELECT 1 FROM rhnServerFeaturesView SFV WHERE SFV.server_id = S.id " +
-                                "   AND SFV.label = 'ftr_config') " +
-                                "ORDER BY S.name, SCC.position", Tuple.class)
+        List<Tuple> res = getSession().createNativeQuery("""
+                        SELECT S.id, S.machine_id, SMI.minion_id, {CC.*}
+                                FROM rhnServer S
+                                   LEFT OUTER JOIN suseMinionInfo SMI ON S.id = SMI.server_id
+                                   LEFT OUTER JOIN rhnServerConfigChannel SCC ON S.id = SCC.server_id
+                                   LEFT OUTER JOIN rhnConfigChannel CC on CC.id = SCC.config_channel_id
+                                   JOIN rhnUserServerPerms USP ON (S.id = USP.server_id)
+                                WHERE
+                                   S.id IN (:sids)
+                                   AND USP.user_id = :user_id
+                                   AND EXISTS(SELECT 1 FROM rhnServerFeaturesView SFV WHERE SFV.server_id = S.id
+                                   AND SFV.label = 'ftr_config')
+                                ORDER BY S.name, SCC.position""", Tuple.class)
                 .addScalar("id", StandardBasicTypes.BIG_INTEGER)
                 .addScalar("machine_id", StandardBasicTypes.STRING)
                 .addScalar("minion_id", StandardBasicTypes.STRING)
@@ -746,12 +746,8 @@ public class ServerFactory extends HibernateFactory {
      * @param id the digital server id
      * @return server corresponding to the given id
      */
-    @SuppressWarnings("unchecked")
     public static Server lookupForeignSystemByDigitalServerId(String id) {
-        List<Server> servers = getSession().createNativeQuery("""
-                                      SELECT *, 0 as clazz_  from rhnServer
-                                      WHERE digital_server_id = :id
-                                      """, Server.class)
+        List<Server> servers = getSession().createQuery("FROM Server WHERE digitalServerId = :id", Server.class)
                 .setParameter("id", id, StandardBasicTypes.STRING)
                 .getResultList();
         for (Server server : servers) {
@@ -788,11 +784,10 @@ public class ServerFactory extends HibernateFactory {
      * @return The ServerGroupType
      */
     public static ServerGroupType lookupServerGroupTypeByLabel(String label) {
-        return (ServerGroupType) HibernateFactory.getSession().getNamedQuery("ServerGroupType.findByLabel")
+        return getSession().createNamedQuery("ServerGroupType.findByLabel", ServerGroupType.class)
                 .setParameter("label", label, StandardBasicTypes.STRING)
                 .setCacheable(true)
                 .uniqueResult();
-
     }
 
     /**
@@ -891,8 +886,7 @@ public class ServerFactory extends HibernateFactory {
      * @return The ServerArch
      */
     public static ServerArch lookupServerArchByLabel(String label) {
-        Session session = HibernateFactory.getSession();
-        return (ServerArch) session.getNamedQuery("ServerArch.findByLabel")
+        return getSession().createNamedQuery("ServerArch.findByLabel", ServerArch.class)
                 .setParameter("label", label, StandardBasicTypes.STRING)
                 .setCacheable(true)
                 .uniqueResult();
@@ -917,8 +911,7 @@ public class ServerFactory extends HibernateFactory {
      * @return The CPUArch
      */
     public static CPUArch lookupCPUArchByName(String name) {
-        Session session = HibernateFactory.getSession();
-        return (CPUArch) session.getNamedQuery("CPUArch.findByName")
+        return getSession().createNamedQuery("CPUArch.findByName", CPUArch.class)
                 .setParameter("name", name, StandardBasicTypes.STRING)
                 .setCacheable(true).uniqueResult();
     }
@@ -930,8 +923,7 @@ public class ServerFactory extends HibernateFactory {
      * @return a list of Servers which are compatible with the given server.
      */
     public static List<Row> compatibleWithServer(User user, Server server) {
-        SelectMode m = ModeFactory.getMode(SYSTEM_QUERIES,
-                "compatible_with_server");
+        SelectMode m = ModeFactory.getMode(SYSTEM_QUERIES, "compatible_with_server");
 
         Map<String, Object> params = new HashMap<>();
         params.put("sid", server.getId());
@@ -967,8 +959,7 @@ public class ServerFactory extends HibernateFactory {
      */
     public static List<HistoryEvent> getServerHistory(Server server) {
 
-        SelectMode m = ModeFactory.getMode("Action_queries",
-                "system_events_history");
+        SelectMode m = ModeFactory.getMode("Action_queries", "system_events_history");
         Map<String, Long> params = new HashMap<>();
         params.put("sid", server.getId());
 
@@ -1084,7 +1075,6 @@ public class ServerFactory extends HibernateFactory {
 
     /**
      * List snapshots associated with a server.
-     *
      * A user may optionally provide a start and end date to narrow the snapshots that
      * will be listed.  For example,
      * - If user provides startDate only, all snapshots created either on or after the
@@ -1147,12 +1137,11 @@ public class ServerFactory extends HibernateFactory {
      * @param snap the snapshot to delete
      */
     public static void deleteSnapshot(ServerSnapshot snap) {
-        HibernateFactory.getSession().delete(snap);
+        getSession().delete(snap);
     }
 
     /**
      * Delete snapshots across servers in the org.
-     *
      * A user may optionally provide a start and end date to narrow the snapshots that
      * will be removed.  For example,
      * - If user provides startDate only, all snapshots created either on or after the
@@ -1169,23 +1158,20 @@ public class ServerFactory extends HibernateFactory {
     public static void deleteSnapshots(Org org, Date startDate, Date endDate) {
 
         if ((startDate != null) && (endDate != null)) {
-            HibernateFactory.getSession()
-            .getNamedQuery("ServerSnapshot.deleteBetweenDates")
+            getSession().createNamedQuery("ServerSnapshot.deleteBetweenDates")
             .setParameter("org", org)
             .setParameter("start_date", startDate)
             .setParameter("end_date", endDate)
             .executeUpdate();
         }
         else if (startDate != null) {
-            HibernateFactory.getSession()
-            .getNamedQuery("ServerSnapshot.deleteAfterDate")
+            getSession().createNamedQuery("ServerSnapshot.deleteAfterDate")
             .setParameter("org", org)
             .setParameter("start_date", startDate)
             .executeUpdate();
         }
         else {
-            HibernateFactory.getSession()
-            .getNamedQuery("ServerSnapshot.delete")
+            getSession().createNamedQuery("ServerSnapshot.delete")
             .setParameter("org", org)
             .executeUpdate();
         }
@@ -1193,7 +1179,6 @@ public class ServerFactory extends HibernateFactory {
 
     /**
      * Delete snapshots associated with a server.
-     *
      * A user may optionally provide a start and end date to narrow the snapshots that
      * will be removed.  For example,
      * - If user provides startDate only, all snapshots created either on or after the
@@ -1212,8 +1197,7 @@ public class ServerFactory extends HibernateFactory {
             Date startDate, Date endDate) {
 
         if ((startDate != null) && (endDate != null)) {
-            HibernateFactory.getSession()
-            .getNamedQuery("ServerSnapshot.deleteForServerBetweenDates")
+            getSession().createNamedQuery("ServerSnapshot.deleteForServerBetweenDates")
             .setParameter("org", org)
             .setParameter("server", server)
             .setParameter("start_date", startDate)
@@ -1221,16 +1205,14 @@ public class ServerFactory extends HibernateFactory {
             .executeUpdate();
         }
         else if (startDate != null) {
-            HibernateFactory.getSession()
-            .getNamedQuery("ServerSnapshot.deleteForServerAfterDate")
+            getSession().createNamedQuery("ServerSnapshot.deleteForServerAfterDate")
             .setParameter("org", org)
             .setParameter("server", server)
             .setParameter("start_date", startDate)
             .executeUpdate();
         }
         else {
-            HibernateFactory.getSession()
-            .getNamedQuery("ServerSnapshot.deleteForServer")
+            getSession().createNamedQuery("ServerSnapshot.deleteForServer")
             .setParameter("org", org)
             .setParameter("server", server)
             .executeUpdate();
@@ -1263,8 +1245,7 @@ public class ServerFactory extends HibernateFactory {
      * @param tagName name of the tag
      */
     public static void addTagToSnapshot(Long snpId, Long orgId, String tagName) {
-        CallableMode m = ModeFactory.getCallableMode(SYSTEM_QUERIES,
-                "add_tag_to_snapshot");
+        CallableMode m = ModeFactory.getCallableMode(SYSTEM_QUERIES, "add_tag_to_snapshot");
         Map<String, Object> inParams = new HashMap<>();
         inParams.put("snapshot_id", snpId);
         inParams.put("org_id", orgId);
@@ -1279,8 +1260,7 @@ public class ServerFactory extends HibernateFactory {
      * @param user User making the request
      */
     public static void bulkAddTagToSnapshot(String tagName, String setLabel, User user) {
-        CallableMode m = ModeFactory.getCallableMode(SYSTEM_QUERIES,
-                "bulk_add_tag_to_snapshot");
+        CallableMode m = ModeFactory.getCallableMode(SYSTEM_QUERIES, "bulk_add_tag_to_snapshot");
         Map<String, Object> params = new HashMap<>();
         params.put("set_label", setLabel);
         params.put("org_id", user.getOrg().getId());
@@ -1308,7 +1288,7 @@ public class ServerFactory extends HibernateFactory {
      * @return snapshot tag
      */
     public static SnapshotTag lookupSnapshotTagbyName(String tagName) {
-        return (SnapshotTag) HibernateFactory.getSession().getNamedQuery("SnapshotTag.lookupByTagName")
+        return getSession().createNamedQuery("SnapshotTag.lookupByTagName", SnapshotTag.class)
                 .setParameter("tag_name", tagName, StandardBasicTypes.STRING)
                 // Do not use setCacheable(true), as tag deletion will
                 // usually end up making this query's output out of date
@@ -1320,7 +1300,7 @@ public class ServerFactory extends HibernateFactory {
      * @return snapshot Tag
      */
     public static SnapshotTag lookupSnapshotTagbyId(Long tagId) {
-        return (SnapshotTag) HibernateFactory.getSession().getNamedQuery("SnapshotTag.lookupById")
+        return getSession().createNamedQuery("SnapshotTag.lookupById", SnapshotTag.class)
                 .setParameter("id", tagId, StandardBasicTypes.LONG)
                 // Do not use setCacheable(true), as tag deletion will
                 // usually end up making this query's output out of date
@@ -1386,12 +1366,12 @@ public class ServerFactory extends HibernateFactory {
      * @return a stream of SLES systems
      */
     public static Stream<Server> querySlesSystems(String nameQuery, int limit, User user) {
-        return HibernateFactory.getSession().createQuery(
-                "SELECT s FROM UserImpl user " +
-                "JOIN user.servers s " +
-                "WHERE user = :user " +
-                "AND s.os = 'SLES' " +
-                "AND s.name LIKE :nameQuery ", Server.class)
+        return getSession().createQuery("""
+                SELECT s FROM UserImpl user
+                JOIN user.servers s
+                WHERE user = :user
+                AND s.os = 'SLES'
+                AND s.name LIKE :nameQuery""", Server.class)
                 .setParameter("user", user)
                 .setParameter("nameQuery", '%' + StringUtils.defaultString(nameQuery) + '%')
                 .setMaxResults(limit)
@@ -1405,10 +1385,10 @@ public class ServerFactory extends HibernateFactory {
      * @return the stream of EVRs of every installed kernel on the system
      */
     public static Stream<PackageEvr> getInstalledKernelVersions(Server server) {
-        return getSession().createQuery(
-                "SELECT DISTINCT pkg.evr FROM InstalledPackage pkg " +
-                "WHERE pkg.name.name LIKE 'kernel-default%' " +
-                "AND pkg.server = :server", PackageEvr.class)
+        return getSession().createQuery("""
+                SELECT DISTINCT pkg.evr FROM InstalledPackage pkg
+                WHERE pkg.name.name LIKE 'kernel-default%'
+                AND pkg.server = :server""", PackageEvr.class)
                 .setParameter("server", server)
                 .getResultStream();
     }
@@ -1492,7 +1472,7 @@ public class ServerFactory extends HibernateFactory {
      * @param device the device to delete
      */
     public static void delete(Device device) {
-        HibernateFactory.getSession().delete(device);
+        getSession().delete(device);
     }
 
     /**
@@ -1576,8 +1556,7 @@ public class ServerFactory extends HibernateFactory {
         if (systemIds.isEmpty()) {
             return 0;
         }
-        return HibernateFactory.getSession()
-                .getNamedQuery("Server.setMaintenanceScheduleToSystems")
+        return getSession().createNamedQuery("Server.setMaintenanceScheduleToSystems")
                 .setParameter("schedule", schedule)
                 .setParameter("systemIds", systemIds)
                 .executeUpdate();

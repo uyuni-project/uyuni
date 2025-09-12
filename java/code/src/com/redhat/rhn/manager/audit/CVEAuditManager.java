@@ -45,7 +45,6 @@ import org.apache.logging.log4j.Logger;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -862,7 +861,7 @@ public class CVEAuditManager {
      * @throws UnknownCVEIdentifierException if the CVE number is not known
      */
     public static List<CVEAuditServer> listSystemsByPatchStatus(User user,
-        String cveIdentifier, EnumSet<PatchStatus> patchStatuses)
+        String cveIdentifier, Set<PatchStatus> patchStatuses)
             throws UnknownCVEIdentifierException {
         if (isCVEIdentifierUnknown(cveIdentifier)) {
             throw new UnknownCVEIdentifierException();
@@ -892,7 +891,7 @@ public class CVEAuditManager {
      * @throws UnknownCVEIdentifierException if the CVE number is not known
      */
     public static List<CVEAuditImage> listImagesByPatchStatus(User user,
-            String cveIdentifier, EnumSet<PatchStatus> patchStatuses)
+            String cveIdentifier, Set<PatchStatus> patchStatuses)
             throws UnknownCVEIdentifierException {
         if (isCVEIdentifierUnknown(cveIdentifier)) {
             throw new UnknownCVEIdentifierException();
@@ -933,7 +932,7 @@ public class CVEAuditManager {
      * @return list of system records with patch status
      */
     private static List<CVEAuditSystemBuilder> listSystemsByPatchStatus(Stream<CVEPatchStatus> results,
-            EnumSet<PatchStatus> patchStatuses) {
+            Set<PatchStatus> patchStatuses) {
 
         List<CVEAuditSystemBuilder> ret = new LinkedList<>();
 

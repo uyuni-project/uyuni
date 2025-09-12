@@ -56,8 +56,14 @@
 <h2><rhn:icon type="header-kickstart" /><bean:message key="kickstart.schedule.heading4.jsp" /></h2>
     <div class="spacewalk-section-toolbar">
         <div class="action-button-wrapper">
-            <input class="btn btn-default" type="submit" name="dispatch" value="${rhn:localize('ssm.kickstart.schedule.create.records.button.jsp')}" />
-            <input class="btn btn-default" type="submit" name="dispatch" value="${rhn:localize('kickstart.schedule.button2.jsp')}"/>
+            <button class="btn btn-default" type="submit" name="dispatch"
+                value="${rhn:localize('ssm.kickstart.schedule.create.records.button.jsp')}">
+                ${rhn:localize('ssm.kickstart.schedule.create.records.button.jsp')}
+            </button>
+            <button class="btn btn-default" type="submit" name="dispatch"
+                value="${rhn:localize('kickstart.schedule.button2.jsp')}">
+                ${rhn:localize('kickstart.schedule.button2.jsp')}
+            </button>
         </div>
     </div>
 

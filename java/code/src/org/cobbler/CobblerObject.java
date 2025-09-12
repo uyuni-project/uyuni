@@ -190,8 +190,8 @@ public abstract class CobblerObject {
      */
     @SuppressWarnings("unchecked")
     protected static Map<String, Object> lookupDataMapByName(CobblerConnection client,
-                                                             String name, String lookupMethod) {
-        Object obj = client.invokeMethod(lookupMethod, name);
+                                                             String name, String lookupMethod, Object... args) {
+        Object obj = client.invokeTokenMethod(lookupMethod, name, args[0], args[1]);
         if ("~".equals(obj)) {
             return null;
         }
@@ -319,7 +319,7 @@ public abstract class CobblerObject {
      * @param value The new value for the property. This must be a "raw" object value and not a resolved one.
      */
     protected void modify(String key, Object value) {
-        modify(key, value, true);
+        modify(key, value, !client.isInTransaction());
     }
 
     /**
@@ -328,7 +328,7 @@ public abstract class CobblerObject {
      * @param key   The property name. Normally this is one of the constants defined above.
      * @param value The new value for the property. This must be a "raw" object value and not a resolved one.
      * @param updateResolved Whether to update the resolved value in our internal Map. This should only be set to
-     *                       false if you create a new object.
+     *                       false if you create a new object or in a transaction.
      */
     protected void modify(String key, Object value, boolean updateResolved) {
         if (key == null || key.isBlank()) {
@@ -583,7 +583,7 @@ public abstract class CobblerObject {
      */
     public void setCreated(Date createdIn) {
         // cobbler deals with seconds since epoch, Date returns milliseconds. Convert.
-        modify(CTIME, (double) (createdIn.getTime() / 1000));
+        modify(CTIME, (double) (createdIn.getTime() / 1000F));
     }
 
     /**
@@ -604,7 +604,7 @@ public abstract class CobblerObject {
      */
     public void setModified(Date modifiedIn) {
         // cobbler deals with seconds since epoch, Date returns milliseconds. Convert.
-        modify(MTIME, (double) (modifiedIn.getTime() / 1000));
+        modify(MTIME, (double) (modifiedIn.getTime() / 1000F));
     }
 
     /**

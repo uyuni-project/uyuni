@@ -39,8 +39,9 @@
             <div class="spacewalk-section-toolbar">
                 <div class="action-button-wrapper">
                     <rhn:submitted/>
-                    <input class="btn btn-default" type="submit" name ="dispatch"
-                        value='<bean:message key="${param.action_key}"/>'/>
+                    <button class="btn btn-default" type="submit" name ="dispatch" value='<bean:message key="${param.action_key}"/>'>
+                        <bean:message key="${param.action_key}"/>
+                    </button>
                 </div>
             </div>
         </c:if>

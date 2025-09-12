@@ -6,9 +6,20 @@ import { FormContext } from "../form/Form";
 import { InputBase, InputBaseProps } from "../InputBase";
 import styles from "./Radio.module.scss";
 
+interface RadioOption {
+  /** The label of this option */
+  label: React.ReactNode;
+  /** The value to set when this option is selected */
+  value: string;
+  /** Specific title of this option */
+  title?: string;
+  /** true if this option is currently not selectable */
+  disabled?: boolean;
+}
+
 type Props = InputBaseProps & {
   /** Items to display in an array of objects with label and value properties. */
-  items: Array<{ label: React.ReactNode; value: string }>;
+  items: Array<RadioOption>;
 
   /** Show the choices in a line or not */
   inline?: boolean;
@@ -43,8 +54,8 @@ export function Radio(props: Props) {
         const radioClass = props.inline ? "radio-inline" : "radio";
         return (
           <span className={styles.radio}>
-            {props.items.map(({ label, value }) => (
-              <label className={radioClass} key={`${props.name}_${value}`}>
+            {props.items.map(({ label, value, title, disabled }) => (
+              <label className={radioClass} key={`${props.name}_${value}`} title={title}>
                 <ControlledInput
                   type="radio"
                   name={props.name}
@@ -54,6 +65,7 @@ export function Radio(props: Props) {
                   className={inputClass}
                   onBlur={onBlur}
                   onChange={(event) => onChange(event.target.name, event.target.value)}
+                  disabled={disabled ?? false}
                 />
                 {label}
               </label>
@@ -91,6 +103,7 @@ export function Radio(props: Props) {
 Radio.defaultProps = {
   inline: false,
   openOption: false,
+  customRadioClass: undefined,
   inputClass: undefined,
   defaultValue: undefined,
   label: undefined,

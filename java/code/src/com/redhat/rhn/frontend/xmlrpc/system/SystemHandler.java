@@ -165,6 +165,7 @@ import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.distupgrade.DistUpgradeException;
 import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
 import com.redhat.rhn.manager.distupgrade.DistUpgradePaygException;
+import com.redhat.rhn.manager.distupgrade.NoInstalledProductException;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.kickstart.KickstartFormatter;
@@ -7501,7 +7502,7 @@ public class SystemHandler extends BaseHandler {
     @ReadOnly
     public List<Map<String, Object>> listMigrationTargets(User loggedInUser,
             Integer sid, boolean excludeTargetWhereMissingSuccessors) {
-        List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
+        List<Map<String, Object>> returnList = new ArrayList<>();
         Server server = lookupServer(loggedInUser, sid);
         Optional<SUSEProductSet> installedProducts = server.getInstalledProductSet();
         if (!installedProducts.isPresent()) {
@@ -7512,8 +7513,7 @@ public class SystemHandler extends BaseHandler {
         List<SUSEProductSet> migrationTargets = DistUpgradeManager.
                 getTargetProductSets(installedProducts, arch, loggedInUser);
         if (excludeTargetWhereMissingSuccessors) {
-            migrationTargets = DistUpgradeManager.removeIncompatibleTargets(
-                    installedProducts, migrationTargets,  Optional.empty());
+            migrationTargets = DistUpgradeManager.removeIncompatibleTargets(installedProducts, migrationTargets);
         }
         for (SUSEProductSet ps : migrationTargets) {
             if (!ps.getIsEveryChannelSynced()) {
@@ -7939,7 +7939,7 @@ public class SystemHandler extends BaseHandler {
         // Consider the targets where some extensions have missing successors but only if user explicitly mention
         // targetIdent && set the flag removeProductsWithNoSuccessorAfterMigration as true
         if (!removeProductsWithNoSuccessorAfterMigration || StringUtils.isBlank(targetIdent)) {
-            targets = DistUpgradeManager.removeIncompatibleTargets(installedProducts, targets, Optional.empty());
+            targets = DistUpgradeManager.removeIncompatibleTargets(installedProducts, targets);
         }
         if (!targets.isEmpty()) {
             SUSEProductSet targetProducts = null;
@@ -7999,9 +7999,19 @@ public class SystemHandler extends BaseHandler {
                     for (EssentialChannelDto channel : channels) {
                         channelIDs.add(channel.getId());
                     }
-                    return DistUpgradeManager.scheduleDistUpgrade(loggedInUser, server,
-                            targetProducts, channelIDs, dryRun, allowVendorChange,
-                            earliestOccurrence, cloudPaygManager.isPaygInstance());
+
+                    var scheduledAction = DistUpgradeManager.scheduleDistUpgrade(
+                        loggedInUser,
+                        List.of(server),
+                        targetProducts,
+                        channelIDs,
+                        dryRun,
+                        allowVendorChange,
+                        cloudPaygManager.isPaygInstance(), earliestOccurrence,
+                        null
+                    );
+
+                    return scheduledAction.get(0).getId();
                 }
 
                 // Consider alternatives (cloned channel trees)
@@ -8010,9 +8020,19 @@ public class SystemHandler extends BaseHandler {
                 for (ClonedChannel clonedBaseChannel : alternatives.keySet()) {
                     if (clonedBaseChannel.getLabel().equals(baseChannelLabel)) {
                         channelIDs.addAll(alternatives.get(clonedBaseChannel));
-                        return DistUpgradeManager.scheduleDistUpgrade(loggedInUser, server,
-                                targetProducts, channelIDs, dryRun, allowVendorChange,
-                                earliestOccurrence, cloudPaygManager.isPaygInstance());
+
+                        var scheduledAction = DistUpgradeManager.scheduleDistUpgrade(
+                            loggedInUser,
+                            List.of(server),
+                            targetProducts,
+                            channelIDs,
+                            dryRun,
+                            allowVendorChange,
+                            cloudPaygManager.isPaygInstance(), earliestOccurrence,
+                            null
+                        );
+
+                        return scheduledAction.get(0).getId();
                     }
                 }
             }
@@ -8022,6 +8042,9 @@ public class SystemHandler extends BaseHandler {
             catch (DistUpgradePaygException e) {
                 // We forbid product migration in SUMA PAYG instance in certain situations
                 throw new FaultException(-1, "productMigrationNotAllowedPayg", e.getMessage());
+            }
+            catch (NoInstalledProductException e) {
+                throw new FaultException(-1, "listMigrationTargetError", e.getMessage());
             }
         }
 
@@ -8107,13 +8130,23 @@ public class SystemHandler extends BaseHandler {
         Set<Long> channelIDs = null;
         try {
             channelIDs = DistUpgradeManager.performChannelChecks(channels, loggedInUser);
-            return DistUpgradeManager.scheduleDistUpgrade(loggedInUser, server, null,
-                    channelIDs, dryRun, allowVendorChange,
-                    earliestOccurrence, cloudPaygManager.isPaygInstance());
+
+            var scheduledAction = DistUpgradeManager.scheduleDistUpgrade(
+                loggedInUser, List.of(server),
+                null,
+                channelIDs, dryRun, allowVendorChange,
+                cloudPaygManager.isPaygInstance(), earliestOccurrence,
+                null
+            );
+
+            return scheduledAction.get(0).getId();
         }
         catch (DistUpgradePaygException e) {
             // We forbid product migration in SUMA PAYG instance in certain situations
             throw new FaultException(-1, "productMigrationNotAllowedPayg", e.getMessage());
+        }
+        catch (NoInstalledProductException e) {
+            throw new FaultException(-1, "listMigrationTargetError", e.getMessage());
         }
         catch (DistUpgradeException e) {
             throw new FaultException(-1, "distUpgradeChannelError", e.getMessage());

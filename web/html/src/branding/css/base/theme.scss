@@ -1185,7 +1185,8 @@ i.fa.pointer {
   display: inline-block;
 }
 
-input:disabled + label {
+input:disabled+label,
+label:has(input:disabled) {
   cursor: not-allowed;
   color: $gray;
 }
@@ -1293,12 +1294,6 @@ tr.changed > td {
   font-size: 12px;
   border-radius: 10px;
   background: $badge-bg;
-}
-
-// We can reenable these after the theme migration is complete
-#scroll-top,
-#legend-box-wrapper {
-  display: none !important;
 }
 
 .proxy-brand {

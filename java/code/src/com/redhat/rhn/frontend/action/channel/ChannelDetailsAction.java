@@ -114,13 +114,9 @@ public class ChannelDetailsAction extends RhnAction {
 
         request.setAttribute("gpg_check", chan.isGPGCheck());
 
-        if ((chan.getOrg() == null && user.isMemberOf(AccessGroupFactory.CHANNEL_ADMIN)) ||
-                UserManager.verifyChannelAdmin(user, chan)) {
-            request.setAttribute("has_access", true);
-        }
-        else {
-            request.setAttribute("has_access", false);
-        }
+        boolean hasAccess = (chan.getOrg() == null && user.isMemberOf(AccessGroupFactory.CHANNEL_ADMIN)) ||
+                UserManager.verifyChannelAdmin(user, chan);
+        request.setAttribute("has_access", hasAccess);
 
         return getStrutsDelegate().forwardParams(
                 mapping.findForward(fwd), params);

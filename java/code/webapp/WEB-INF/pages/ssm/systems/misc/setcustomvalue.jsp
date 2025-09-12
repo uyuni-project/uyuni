@@ -38,9 +38,12 @@
 
     <div class="text-right">
 
-      <input class="btn btn-default" type="submit" name="set" value="<bean:message key='ssm.misc.setcustom.setvalues'/>" />
-      <input class="btn btn-default" type="submit" name="remove" value="<bean:message key='ssm.misc.setcustom.removevalues'/>" />
-
+      <button class="btn btn-default" type="submit" name="set">
+        <bean:message key='ssm.misc.setcustom.setvalues'/>
+      </button>
+      <button class="btn btn-default" type="submit" name="remove">
+        <bean:message key='ssm.misc.setcustom.removevalues'/>
+      </button>
       <rhn:submitted/>
     </div>
   </form>
