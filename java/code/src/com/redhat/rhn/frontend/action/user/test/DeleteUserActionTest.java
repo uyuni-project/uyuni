@@ -42,8 +42,6 @@ import org.junit.jupiter.api.Test;
  */
 public class DeleteUserActionTest extends RhnBaseTestCase {
 
-
-
     @Test
     public void testExecute() {
         DeleteUserAction action = new DeleteUserAction();
@@ -62,7 +60,7 @@ public class DeleteUserActionTest extends RhnBaseTestCase {
         RequestContext requestContext = new RequestContext(request);
 
         Long uid = Long.parseLong(request.getParameter("uid"));
-        request.setupAddParameter("uid", uid.toString()); //put it back
+        request.addParameter("uid", uid.toString()); //put it back
         assertNotNull(UserFactory.lookupById(uid));
 
 
@@ -77,7 +75,7 @@ public class DeleteUserActionTest extends RhnBaseTestCase {
 
         //Null parameter
         request.getParameter("uid");
-        request.setupAddParameter("uid", (String)null);
+        request.addParameter("uid", (String)null);
         requestContext.getCurrentUser().addPermanentRole(
                 RoleFactory.lookupByLabel("org_admin"));
         try {
@@ -89,14 +87,14 @@ public class DeleteUserActionTest extends RhnBaseTestCase {
         }
 
         //try to delete self
-        request.setupAddParameter("uid", uid.toString());
+        request.addParameter("uid", uid.toString());
         forward = action.execute(mapping, form, request, response);
         failure.setPath("path?uid=" + uid);
         assertEquals(failure.getName(), forward.getName());
         assertEquals(failure.getPath(), forward.getPath());
 
         //try to delete non-existing user
-        request.setupAddParameter("uid", "-9999");
+        request.addParameter("uid", "-9999");
         try {
             action.execute(mapping, form, request, response);
             fail();
@@ -110,7 +108,7 @@ public class DeleteUserActionTest extends RhnBaseTestCase {
         User usr = UserTestUtils.createUser("testUser",
                 requestContext.getCurrentUser().getOrg().getId());
         usr.addPermanentRole(RoleFactory.lookupByLabel("org_admin"));
-        request.setupAddParameter("uid", usr.getId().toString());
+        request.addParameter("uid", usr.getId().toString());
         forward = action.execute(mapping, form, request, response);
         failure.setPath("path?uid=" + usr.getId());
         assertEquals(failure.getName(), forward.getName());
@@ -119,7 +117,7 @@ public class DeleteUserActionTest extends RhnBaseTestCase {
         //successful delete
         User usr2 = UserTestUtils.createUser("testUser",
                 requestContext.getCurrentUser().getOrg().getId());
-        request.setupAddParameter("uid", usr2.getId().toString());
+        request.addParameter("uid", usr2.getId().toString());
         forward = action.execute(mapping, form, request, response);
         assertEquals(success, forward);
     }

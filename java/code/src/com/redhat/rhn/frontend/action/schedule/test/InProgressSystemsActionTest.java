@@ -52,10 +52,10 @@ public class InProgressSystemsActionTest extends RhnBaseTestCase {
             ServerActionTest.createServerAction(server, a);
         }
 
-        ah.getRequest().setupAddParameter("aid", a.getId().toString());
-        ah.getRequest().setupAddParameter("aid", a.getId().toString()); //stupid mock
-        ah.getRequest().setupAddParameter("items_on_page", (String[])null);
-        ah.getRequest().setupAddParameter("items_selected", (String[])null);
+        ah.getRequest().addParameter("aid", a.getId().toString());
+        ah.getRequest().addParameter("aid", a.getId().toString()); //stupid mock
+        ah.getRequest().addParameter("items_on_page", (String[])null);
+        ah.getRequest().addParameter("items_selected", (String[])null);
         ah.executeAction("selectall");
 
         RhnSetActionTest.verifyRhnSetData(user.getId(), "unscheduleaction", 4);

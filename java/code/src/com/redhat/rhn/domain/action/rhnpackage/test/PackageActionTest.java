@@ -99,8 +99,7 @@ public class PackageActionTest extends RhnBaseTestCase {
 
     @Test
     public void testCreatePackageUpdateAction() throws Exception {
-        User usr = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User usr = UserTestUtils.findNewUser(this);
 
         PackageAction testAction = (PackageAction)ActionFactoryTest.createAction(usr,
                 ActionFactory.TYPE_PACKAGES_UPDATE);
@@ -125,8 +124,7 @@ public class PackageActionTest extends RhnBaseTestCase {
 
     @Test
     public void testCreatePackageUpdateActionWithName() throws Exception {
-        User usr = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User usr = UserTestUtils.findNewUser(this);
 
         PackageAction testAction = (PackageAction)ActionFactoryTest.createAction(usr,
                 ActionFactory.TYPE_PACKAGES_UPDATE);
@@ -150,8 +148,7 @@ public class PackageActionTest extends RhnBaseTestCase {
 
     @Test
     public void testCreatePackageRemoveAction() throws Exception {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User user = UserTestUtils.findNewUser(this);
         Server srvr = ServerFactoryTest.createTestServer(user);
 
         ServerAction sa = new ServerAction();

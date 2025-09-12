@@ -55,8 +55,6 @@ public class UserEditSetupActionTest extends RhnBaseTestCase {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         user.getAccessGroups().addAll(AccessGroupFactory.DEFAULT_GROUPS);
 
-        setupExpectations(sah.getForm(), sah.getUser());
-
         // Below we test to make sure that some of
         // the strings in the form are localized
         TestUtils.enableLocalizationDebugMode();
@@ -64,7 +62,12 @@ public class UserEditSetupActionTest extends RhnBaseTestCase {
             sah.executeAction();
 
             // verify the dyna form got the right values we expected.
-            sah.getForm().verify();
+            RhnMockDynaActionForm form = sah.getForm();
+            assertEquals(user.getId(), form.get("uid"));
+            assertEquals(user.getFirstNames(), form.get("firstNames"));
+            assertEquals(user.getLastName(), form.get("lastName"));
+            assertEquals(user.getTitle(), form.get("title"));
+            assertEquals(user.getPrefix(), form.get("prefix"));
 
             assertEquals(sah.getUser().getLastLoggedIn(),
                     sah.getRequest().getAttribute("lastLoggedIn"));
@@ -97,9 +100,8 @@ public class UserEditSetupActionTest extends RhnBaseTestCase {
         ActionHelper sah = new ActionHelper();
         sah.setUpAction(action);
         sah.getRequest().setRequestURL("rdu.redhat.com/rhn/users/UserDetails.do");
-        setupExpectations(sah.getForm(), sah.getUser());
 
-        sah.getRequest().setupAddParameter("uid", (String)null);
+        sah.getRequest().addParameter("uid", (String)null);
         sah.getRequest().getParameterValues("uid"); //now uid = null
 
         try {
@@ -111,12 +113,4 @@ public class UserEditSetupActionTest extends RhnBaseTestCase {
         }
     }
 
-    private void setupExpectations(RhnMockDynaActionForm form, User user) {
-
-        form.addExpectedProperty("uid", user.getId());
-        form.addExpectedProperty("firstNames", user.getFirstNames());
-        form.addExpectedProperty("lastName", user.getLastName());
-        form.addExpectedProperty("title", user.getTitle());
-        form.addExpectedProperty("prefix", user.getPrefix());
-    }
 }

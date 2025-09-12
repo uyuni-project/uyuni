@@ -38,8 +38,7 @@ public class ConfigActionTest extends RhnBaseTestCase {
 
     @Test
     public void testCreate() throws Exception {
-        User usr = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User usr = UserTestUtils.findNewUser(this);
 
         ConfigAction testAction = (ConfigAction)ActionFactoryTest.createAction(usr,
                 ActionFactory.TYPE_CONFIGFILES_DEPLOY);

@@ -27,14 +27,15 @@ import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.RhnMockDynaActionForm;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
+import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
-
-import com.mockobjects.servlet.MockHttpServletResponse;
 
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.junit.jupiter.api.Test;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * EditAddressSubmitActionSubmitTest
@@ -46,7 +47,7 @@ public class EditAddressActionTest extends RhnBaseTestCase {
     private ActionForward success;
     private RhnMockDynaActionForm form;
     private RhnMockHttpServletRequest request;
-    private MockHttpServletResponse response;
+    private HttpServletResponse response;
     private User usr;
 
     private void setUpFailure() {
@@ -55,7 +56,7 @@ public class EditAddressActionTest extends RhnBaseTestCase {
         success = new ActionForward("success", "path", false);
         form = new RhnMockDynaActionForm("editAddressForm");
         request = TestUtils.getRequestWithSessionAndUser();
-        response = new MockHttpServletResponse();
+        response = new RhnMockHttpServletResponse();
         // Make sure we aren't operating on the logged in user
         // we want to edit the address associated with the UID field
         // in the Request.
@@ -64,7 +65,7 @@ public class EditAddressActionTest extends RhnBaseTestCase {
         String userIdRaw = request.getParameter("uid");
         userIdRaw = usr.getId().toString();
         // Put it back into the Request
-        request.setupAddParameter("uid", userIdRaw);
+        request.addParameter("uid", userIdRaw);
     }
 
     private void setUpSuccess() {
@@ -73,7 +74,7 @@ public class EditAddressActionTest extends RhnBaseTestCase {
         success = new ActionForward("success", "path", false);
         form = new RhnMockDynaActionForm("editAddressForm");
         request = TestUtils.getRequestWithSessionAndUser();
-        response = new MockHttpServletResponse();
+        response = new RhnMockHttpServletResponse();
 
         RequestContext requestContext = new RequestContext(request);
 
@@ -88,7 +89,7 @@ public class EditAddressActionTest extends RhnBaseTestCase {
         String userIdRaw = request.getParameter("uid");
         userIdRaw = usr.getId().toString();
         // Put it back into the Request
-        request.setupAddParameter("uid", userIdRaw);
+        request.addParameter("uid", userIdRaw);
     }
 
     private void executeAction(String addressType) {

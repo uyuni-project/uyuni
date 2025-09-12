@@ -120,8 +120,7 @@ public class MigrationManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testMigrateSystemNotSatAdmin() {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User user = UserTestUtils.findNewUser(this);
         try {
             migrationManager.removeOrgRelationships(user, server);
             fail();

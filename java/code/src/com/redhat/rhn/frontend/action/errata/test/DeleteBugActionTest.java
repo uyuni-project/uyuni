@@ -31,7 +31,6 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.RhnMockDynaActionForm;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
-import com.redhat.rhn.testing.RhnMockHttpSession;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.struts.action.ActionForward;
@@ -53,9 +52,6 @@ public class DeleteBugActionTest extends RhnBaseTestCase {
 
         RhnMockHttpServletRequest request = TestUtils.getRequestWithSessionAndUser();
         RhnMockHttpServletResponse response = new RhnMockHttpServletResponse();
-        RhnMockHttpSession session = new RhnMockHttpSession();
-        request.setSession(session);
-        request.setupServerName("mymachine.rhndev.redhat.com");
 
         RhnMockDynaActionForm form = new RhnMockDynaActionForm();
 
@@ -73,8 +69,8 @@ public class DeleteBugActionTest extends RhnBaseTestCase {
 
         assertEquals(1, e.getBugs().size());
         //setup the request
-        request.setupAddParameter("eid", eid.toString());
-        request.setupAddParameter("bid", bugId.toString());
+        request.addParameter("eid", eid.toString());
+        request.addParameter("bid", bugId.toString());
 
         ActionForward result = action.execute(mapping, form, request, response);
         assertEquals(result.getName(), RhnHelper.DEFAULT_FORWARD);

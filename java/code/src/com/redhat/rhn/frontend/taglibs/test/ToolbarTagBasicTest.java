@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.taglibs.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -39,7 +40,6 @@ public class ToolbarTagBasicTest extends BaseTestToolbarTag {
                "<a href=\"/help/provisioning/" +
                "s1-sm-your-rhn.html#S2-SM-YOUR-RHN-PREFS\" target=\"_blank\">" +
                "<i class=\"fa fa-question-circle spacewalk-help-link\"></i></a></h1></div>";
-            out.setExpectedData(output);
 
             tt.setBase("h1");
             tt.setImg("/img/rhn-icon-preferences.gif");
@@ -49,7 +49,7 @@ public class ToolbarTagBasicTest extends BaseTestToolbarTag {
             // ok let's test the tag
             tth.assertDoStartTag(Tag.EVAL_BODY_INCLUDE);
             tth.assertDoEndTag(Tag.EVAL_PAGE);
-            out.verify();
+            assertEquals(output, out.toString());
         }
         catch (JspException e) {
             fail(e.toString());
@@ -61,7 +61,6 @@ public class ToolbarTagBasicTest extends BaseTestToolbarTag {
         try {
             String output = "<div class=\"spacewalk-toolbar-h1\"><div class=\"" +
                             "spacewalk-toolbar\"></div><h1></h1></div>";
-            out.setExpectedData(output);
 
             tt.setBase("h1");
             tt.setImg("");
@@ -69,7 +68,7 @@ public class ToolbarTagBasicTest extends BaseTestToolbarTag {
             // ok let's test the tag
             tth.assertDoStartTag(Tag.EVAL_BODY_INCLUDE);
             tth.assertDoEndTag(Tag.EVAL_PAGE);
-            out.verify();
+            assertEquals(output, out.toString());
         }
         catch (JspException e) {
             fail(e.toString());
@@ -82,7 +81,6 @@ public class ToolbarTagBasicTest extends BaseTestToolbarTag {
             String output = "<div class=\"spacewalk-toolbar-h1\"><div class=\"" +
                             "spacewalk-toolbar\"></div><h1><img src=\"" +
                             "/img/rhn-icon-preferences.gif\" /></h1></div>";
-            out.setExpectedData(output);
 
             tt.setBase("h1");
             tt.setImg("/img/rhn-icon-preferences.gif");
@@ -90,7 +88,7 @@ public class ToolbarTagBasicTest extends BaseTestToolbarTag {
             // ok let's test the tag
             tth.assertDoStartTag(Tag.EVAL_BODY_INCLUDE);
             tth.assertDoEndTag(Tag.EVAL_PAGE);
-            out.verify();
+            assertEquals(output, out.toString());
         }
         catch (JspException e) {
             fail(e.toString());
@@ -121,15 +119,13 @@ public class ToolbarTagBasicTest extends BaseTestToolbarTag {
                             "spacewalk-toolbar\"></div><h1><img src=\"" +
                             "/img/rhn-icon-preferences.gif\" /></h1></div>";
 
-            out.setExpectedData(output);
-
             tt.setBase("h1");
             tt.setImg("/img/rhn-icon-preferences.gif");
 
             // ok let's test the tag
             tth.assertDoStartTag(Tag.EVAL_BODY_INCLUDE);
             tth.assertDoEndTag(Tag.EVAL_PAGE);
-            out.verify();
+            assertEquals(output, out.toString());
         }
         catch (JspException e) {
             fail(e.toString());

@@ -71,7 +71,7 @@ public class SaltbootControllerTest extends BaseControllerTestCase {
         Map<String, String> queryParams = new HashMap<>();
         queryParams.put("orgid", user.getOrg().getId().toString());
 
-        ((RhnMockHttpServletResponse)response.raw()).setExpectedStatus(301);
+        ((RhnMockHttpServletResponse)response.raw()).setStatus(301);
 
         Request request = SparkTestUtils.createMockRequestWithParams(
             "http://localhost:8080/saltboot/boot/POS_Image_JeOS7.x86_64-7.1.0-1/POS_Image_JeOS7.x86_64-7.1.0.initrd",
