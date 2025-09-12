@@ -588,7 +588,7 @@ public class ErrataHandler extends BaseHandler {
      * @throws FaultException A FaultException is thrown if the errata corresponding to the
      * given advisoryName cannot be found
      *
-     * @apidoc.doc Returns a list of <a href="http://cve.mitre.org/" target="_blank">CVE</a>s applicable to the errata
+     * @apidoc.doc Returns a list of CVEs (http://cve.mitre.org/) applicable to the errata
      * with the given advisory name. For those errata that are present in both vendor and user organizations under the
      * same advisory name, this method retrieves the list of CVEs of both of them.
      * @apidoc.param #session_key()
