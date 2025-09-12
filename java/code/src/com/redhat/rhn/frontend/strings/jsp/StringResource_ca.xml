@@ -1656,13 +1656,6 @@
         </context-group>
       </trans-unit>
       <!-- legends -->
-      <trans-unit id="errata-legend.jsp.title" xml:space="preserve">
-        <source>Patches Legend</source>
-        <target state="translated">Llegenda dels pedaços</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/errata-legend.jsp</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="errata-legend.jsp.security" xml:space="preserve">
         <source>Security</source>
         <target state="translated">Seguretat</target>
@@ -1686,125 +1679,6 @@
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/errata-legend.jsp</context>
           <context context-type="sourcefile">/rhn/errata/details/Details.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system-legend.jsp.title" xml:space="preserve">
-        <source>System Legend</source>
-        <target state="translated">Llegenda del sistema</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/system-legend.jsp</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system-legend.jsp.fully" xml:space="preserve">
-        <source>OK</source>
-        <target state="translated">D'ACORD</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/system-legend.jsp</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system-legend.jsp.critical" xml:space="preserve">
-        <source>Critical</source>
-        <target state="translated">Crítica</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/system-legend.jsp</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system-legend.jsp.updates" xml:space="preserve">
-        <source>Warning</source>
-        <target state="translated">Avís</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/system-legend.jsp</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system-legend.jsp.locked" xml:space="preserve">
-        <source>Locked</source>
-        <target state="translated">Bloquejat</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/system-legend.jsp</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system-legend.jsp.kickstarting" xml:space="preserve">
-        <source>Autoinstalling</source>
-        <target state="translated">Autoinstal·lació</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/system-legend.jsp</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system-legend.jsp.pending" xml:space="preserve">
-        <source>Pending Actions</source>
-        <target state="translated">Accions pendents</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/system-legend.jsp</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system-legend.jsp.notcheckingin" xml:space="preserve">
-        <source>Unknown</source>
-        <target state="translated">Desconegut</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/system-legend.jsp</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system-legend.jsp.unentitled" xml:space="preserve">
-        <source>No System Types</source>
-        <target state="translated">Sense tipus de sistema</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/system-legend.jsp</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system-legend.jsp.monitoring" xml:space="preserve">
-        <source>Monitoring Status</source>
-        <target state="translated">Estat del monitoratge</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/system-legend.jsp</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system-group-legend.jsp.title" xml:space="preserve">
-        <source>System Group Legend</source>
-        <target state="translated">Llegenda del grup del sistema</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/system-group-legend.jsp</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system-group-legend.jsp.fully" xml:space="preserve">
-        <source>OK</source>
-        <target state="translated">D'ACORD</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/system-group-legend.jsp</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system-group-legend.jsp.critical" xml:space="preserve">
-        <source>Critical</source>
-        <target state="translated">Crítica</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/system-group-legend.jsp</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system-group-legend.jsp.updates" xml:space="preserve">
-        <source>Warning</source>
-        <target state="translated">Avís</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/system-group-legend.jsp</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="yourrhn-legend.jsp.title" xml:space="preserve">
-        <source>Overview Legend</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/system-group-legend.jsp</context>
-        </context-group>
-        <target>Llegenda de la visió de conjunt</target>
-      </trans-unit>
-      <trans-unit id="yourrhn-legend.jsp.failedactions" xml:space="preserve">
-        <source>Failed Actions</source>
-        <target state="translated">Accions fallides</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/system-group-legend.jsp</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="yourrhn-legend.jsp.completedactions" xml:space="preserve">
-        <source>Completed Actions</source>
-        <target state="translated">Accions completades</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/system-group-legend.jsp</context>
         </context-group>
       </trans-unit>
       <!-- email_sent.jsp -->
@@ -14402,13 +14276,6 @@ el lt;stronggt;ENTERENTERPRISELINUXNAME Guide Guia d'administració del sistema.
           <context context-type="sourcefile">View of SCAP scans for given system</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="system.audit.listscap.jsp.legend" xml:space="preserve">
-        <source>Xccdf Legend</source>
-        <target state="translated">Llegenda Xccdf</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">View of SCAP scans for given system</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="system.audit.listscap.jsp.noscans" xml:space="preserve">
         <source>This system has not yet reported any SCAP results.</source>
         <target state="translated">Aquest sistema encara no ha informat de cap resultat SCAP.</target>
@@ -14430,23 +14297,9 @@ el lt;stronggt;ENTERENTERPRISELINUXNAME Guide Guia d'administració del sistema.
           <context context-type="sourcefile">View of SCAP scans for given system</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="system.audit.listscap.jsp.pass" xml:space="preserve">
-        <source>Pass</source>
-        <target state="translated">Passar</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">View of SCAP scans for given system</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="system.audit.listscap.jsp.fail.abb" xml:space="preserve">
         <source>F</source>
         <target state="translated">F</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">View of SCAP scans for given system</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system.audit.listscap.jsp.fail" xml:space="preserve">
-        <source>Fail</source>
-        <target state="translated">Falla</target>
         <context-group name="ctx">
           <context context-type="sourcefile">View of SCAP scans for given system</context>
         </context-group>
@@ -14458,23 +14311,9 @@ el lt;stronggt;ENTERENTERPRISELINUXNAME Guide Guia d'administració del sistema.
           <context context-type="sourcefile">View of SCAP scans for given system</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="system.audit.listscap.jsp.error" xml:space="preserve">
-        <source>Error</source>
-        <target state="translated">Error</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">View of SCAP scans for given system</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="system.audit.listscap.jsp.unknown.abb" xml:space="preserve">
         <source>U</source>
         <target state="translated">U</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">View of SCAP scans for given system</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system.audit.listscap.jsp.unknown" xml:space="preserve">
-        <source>Unknown</source>
-        <target state="translated">Desconegut</target>
         <context-group name="ctx">
           <context context-type="sourcefile">View of SCAP scans for given system</context>
         </context-group>
@@ -14486,23 +14325,9 @@ el lt;stronggt;ENTERENTERPRISELINUXNAME Guide Guia d'administració del sistema.
           <context context-type="sourcefile">View of SCAP scans for given system</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="system.audit.listscap.jsp.notapplicable" xml:space="preserve">
-        <source>Not applicable</source>
-        <target state="translated">No aplicable</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">View of SCAP scans for given system</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="system.audit.listscap.jsp.notchecked.abb" xml:space="preserve">
         <source>K</source>
         <target state="translated">K</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">View of SCAP scans for given system</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system.audit.listscap.jsp.notchecked" xml:space="preserve">
-        <source>Not checked</source>
-        <target state="translated">No s'ha comprovat</target>
         <context-group name="ctx">
           <context context-type="sourcefile">View of SCAP scans for given system</context>
         </context-group>
@@ -14514,13 +14339,6 @@ el lt;stronggt;ENTERENTERPRISELINUXNAME Guide Guia d'administració del sistema.
           <context context-type="sourcefile">View of SCAP scans for given system</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="system.audit.listscap.jsp.notselected" xml:space="preserve">
-        <source>Not selected</source>
-        <target state="translated">No seleccionat</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">View of SCAP scans for given system</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="system.audit.listscap.jsp.informational.abb" xml:space="preserve">
         <source>I</source>
         <target state="translated">I</target>
@@ -14528,23 +14346,9 @@ el lt;stronggt;ENTERENTERPRISELINUXNAME Guide Guia d'administració del sistema.
           <context context-type="sourcefile">View of SCAP scans for given system</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="system.audit.listscap.jsp.informational" xml:space="preserve">
-        <source>Informational</source>
-        <target state="translated">Informació</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">View of SCAP scans for given system</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="system.audit.listscap.jsp.fixed.abb" xml:space="preserve">
         <source>X</source>
         <target state="translated">X</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">View of SCAP scans for given system</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system.audit.listscap.jsp.fixed" xml:space="preserve">
-        <source>Fixed</source>
-        <target state="translated">Fixa</target>
         <context-group name="ctx">
           <context context-type="sourcefile">View of SCAP scans for given system</context>
         </context-group>
@@ -15525,69 +15329,6 @@ el lt;stronggt;ENTERENTERPRISELINUXNAME Guide Guia d'administració del sistema.
         </context-group>
       </trans-unit>
       <!-- System events legend -->
-      <trans-unit id="system-history-legend.jsp.type.title" xml:space="preserve">
-        <source>Event Type Legend</source>
-        <target state="translated">Llegenda del tipus d'esdeveniment</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">System Eevents Pages Legend</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system-history-legend.jsp.type.package" xml:space="preserve">
-        <source>Package Event</source>
-        <target state="translated">Esdeveniment del paquet</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">System Eevents Pages Legend</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system-history-legend.jsp.type.errata" xml:space="preserve">
-        <source>Errata Event</source>
-        <target state="translated">Esdeveniment Errata</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">System Eevents Pages Legend</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system-history-legend.jsp.type.preferences" xml:space="preserve">
-        <source>Preferences Event</source>
-        <target state="translated">Esdeveniment de preferències</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">System Eevents Pages Legend</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system-history-legend.jsp.type.system" xml:space="preserve">
-        <source>System Event</source>
-        <target state="translated">Esdeveniment del sistema</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">System Eevents Pages Legend</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system-history-legend.jsp.status.title" xml:space="preserve">
-        <source>Event Status Legend</source>
-        <target state="translated">Llegenda de l'estat de l'esdeveniment</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">System Eevents Pages Legend</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system-history-legend.status.jsp.ok" xml:space="preserve">
-        <source>Complete</source>
-        <target state="translated">Completat</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">System Eevents Pages Legend</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system-history-legend.jsp.status.failed" xml:space="preserve">
-        <source>Failure</source>
-        <target state="translated">Ha fallat</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">System Eevents Pages Legend</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system-history-legend.jsp.status.running" xml:space="preserve">
-        <source>Activity Occuring</source>
-        <target state="translated">Ocupació de l'activitat</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">System Eevents Pages Legend</context>
-        </context-group>
-      </trans-unit>
       <!-- System snapshots -->
       <trans-unit id="system.history.snapshot.header" xml:space="preserve">
         <source>System Snapshots</source>
@@ -28623,10 +28364,6 @@ canal indicat.</target>
         <source>Reboot Required</source>
         <target state="translated">Cal reiniciar</target>
       </trans-unit>
-      <trans-unit id="errata-legend.jsp.restart" xml:space="preserve">
-        <source>Affects Package Management</source>
-        <target state="translated">Afecta la gestió de paquets</target>
-      </trans-unit>
       <trans-unit id="systemgroup.details.states" xml:space="preserve">
         <source>States:</source>
         <target state="translated">Estats:</target>
@@ -29867,6 +29604,28 @@ lt;/pgt;
         </context-group>
         <target state="translated">Edita les propietats del sistema</target>
       </trans-unit>
-    </body>
+    <trans-unit id="actionchain.jsp.distupgrade.upgrade" xml:space="preserve">
+        <source>Migrate the installed product on</source>
+            <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="auditview.mark.reviewed" xml:space="preserve">
+        <source>Mark reviewed</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/audit/Search.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="ssm.overview.product_migration" xml:space="preserve">
+            <source>Product Migration</source>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="ssm.overview.product_migration.migrate" xml:space="preserve">
+            <source>&lt;a href="/rhn/manager/systems/ssm/product-migration"&gt;Migrate the products&lt;/a&gt; installed on the selected systems</source>
+        <target state="new"/>
+  </trans-unit>
+        </body>
   </file>
 </xliff>

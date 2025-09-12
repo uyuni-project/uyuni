@@ -174,7 +174,7 @@ Nous vous remercions d'utiliser @@PRODUCT_NAME@@.
 {2}</target>
       </trans-unit>
       <trans-unit id="email.errata.notification.body.summary" xml:space="preserve">
-          <source>
+        <source>
 @@PRODUCT_NAME@@ has determined that the following advisory is applicable to
 one or more of the systems you have registered:
 
@@ -190,8 +190,8 @@ Summary:
 {7}
 ------------------------------------------------------------------------------
     </source>
-          <context-group name="ctx">
-            <context context-type="paramnotes">
+        <context-group name="ctx">
+          <context context-type="paramnotes">
         {0} - Errata Details URL
         {1} - errata advisory type
         {2} - errata advisory
@@ -201,8 +201,8 @@ Summary:
         {6} - errata notes
         {7} - errata refs
       </context>
-          </context-group>
-          <target>
+        </context-group>
+        <target>
 @@PRODUCT_NAME@@ a déterminé que le conseil suivant est applicable à
 un ou plusieurs des systèmes que vous avez enregistrés :
 
@@ -221,9 +221,9 @@ Summary:
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="email.errata.notification.body.affectedheader" xml:space="preserve">
-          <source>
+      </trans-unit>
+      <trans-unit id="email.errata.notification.body.affectedheader" xml:space="preserve">
+        <source>
 ---------------------
 Affected Systems List
 ---------------------
@@ -231,52 +231,51 @@ This Patch Advisory may apply to the systems listed below. If you know that
 this patch does not apply to a system listed, it might be possible that the
 package profile for that server is out of date.
     </source>
-          <target state="needs-adaptation">
+        <target state="translated">
 ---------------------
-Affected Systems List
+Liste des systèmes affectés
 ---------------------
-Cet avis d'errata peuvent s'appliquer aux systèmes répertoriés ci-dessous. Si vous pensez que
- cette errata ne s'applique pas à un système répertorié, il est possible que
- le profil de paquetage de ce serveur soit obsolète. Dans ce cas, vous devrez exécuter
- ' up2date -p ' (RHEL 4 et versions inférieures) ou 'rhn-profil-sync' (RHEL 5 et versions supérieures) en tant que racine sur le système en question pour actualiser votre profil de logiciel.
-</target>
+Cet avis de mise à jour peut s’appliquer aux systèmes énumérés ci-dessous. Si vous savez que
+ce patch ne s’applique pas à un système répertorié, il est possible que le
+profil de package pour ce serveur soit obsolète.
+    </target>
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="email.errata.notification.body.onesystem" xml:space="preserve">
-          <source>
+      </trans-unit>
+      <trans-unit id="email.errata.notification.body.onesystem" xml:space="preserve">
+        <source>
 There is 1 affected system registered in 'Overview' (only systems for
 which you have explicitly enabled Patch Alerts are shown).
     </source>
-          <target>
+        <target>
 Il y a 1 système affecté enregistré dans 'Présentation' (seuls les systèmes
  pour lesquels vous avez activé explicitement les alertes errata sont affichés).
 </target>
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="email.errata.notification.body.numsystems" xml:space="preserve">
-          <source>
+      </trans-unit>
+      <trans-unit id="email.errata.notification.body.numsystems" xml:space="preserve">
+        <source>
 There are {0} affected systems registered in 'Overview' (only systems for
 which you have explicitly enabled Patch Alerts are shown).
     </source>
-          <context-group name="ctx">
-            <context context-type="paramnotes">
+        <context-group name="ctx">
+          <context context-type="paramnotes">
         {0} - system count
       </context>
-          </context-group>
-          <target>
+        </context-group>
+        <target>
 Il y a {0} système affecté enregistré dans 'Présentation' (seuls les systèmes
  pour lesquels vous avez activé explicitement les alertes errata sont affichés).
 </target>
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="email.errata.notification.body.affected" xml:space="preserve">
-          <source>
+      </trans-unit>
+      <trans-unit id="email.errata.notification.body.affected" xml:space="preserve">
+        <source>
 Release    Arch       Profile Name
 ---------- ---------- ---------------------------------------------
 {0}
@@ -290,13 +289,13 @@ You may address the issues outlined in this advisory in two ways:
 
      - run the Update Agent on each affected server.
     </source>
-          <context-group name="ctx">
-            <context context-type="paramnotes">
+        <context-group name="ctx">
+          <context context-type="paramnotes">
         {0} - systems affected list
         {1} - system list URL
       </context>
-          </context-group>
-          <target>
+        </context-group>
+        <target>
 Version    Arch       Nom Profil
 ---------- ---------- ---------------------------------------------
 {0}
@@ -313,9 +312,9 @@ Vous pouvez régler les problèmes décrits dans cet avis de deux façons :
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="email.errata.notification.body.preferences" xml:space="preserve">
-          <source>
+      </trans-unit>
+      <trans-unit id="email.errata.notification.body.preferences" xml:space="preserve">
+        <source>
 Changing Notification Preferences
 ---------------------------------
 To enable/disable your Patch Alert preferences globally please log in to @@PRODUCT_NAME@@
@@ -330,14 +329,14 @@ click the "Details" tab.
 {1}
 {2}
     </source>
-          <context-group name="ctx">
-            <context context-type="paramnotes">
+        <context-group name="ctx">
+          <context context-type="paramnotes">
         {0} - account preferences URL
         {1} - email footer
         {2} - account info
       </context>
-          </context-group>
-          <target>
+        </context-group>
+        <target>
  Changer vos préférences de notification
 ---------------------------------
  Pour activer/désactiver vos préférences d' Errata Alert globalement, veuillez vous connecter à @@PRODUCT_NAME@@
@@ -357,7 +356,7 @@ Vous pouvez également activer/désactiver la notification sur une base par syst
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
-        </trans-unit>
+      </trans-unit>
       <trans-unit id="dailysummary.email.subject" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Daily Status Report for {0}</source>
         <context-group name="ctx">
@@ -443,6 +442,22 @@ please contact your @@PRODUCT_NAME@@ administrator for further assistance.
 
 Thank you for using @@PRODUCT_NAME@@.
         </source>
+        <target state="translated">
+[ Ceci est un e-mail automatisé envoyé à {0} à votre demande. ]
+
+Une demande de réinitialisation du mot de passe de @@PRODUCT_NAME@@ pour la connexion {2} a été faite.
+
+Pour continuer le processus de réinitialisation, veuillez procéder à :
+
+{1}
+
+Si vous ne voulez pas que votre mot de passe soit réinitialisé, vous pouvez ignorer cet email.
+
+Si vous rencontrez d’autres difficultés avec le processus de réinitialisation,
+veuillez contacter votre administrateur de @@PRODUCT_NAME@@ pour une assistance supplémentaire.
+
+Merci d’utiliser @@PRODUCT_NAME@@.
+        </target>
         <context-group name="ctx">
           <context context-type="sourcefile">ForgotCredentials</context>
           <context context-type="paramnotes">
@@ -510,6 +525,17 @@ administrator at {2} for further assistance.
 
 Thank you for using @@PRODUCT_NAME@@.
         </source>
+        <target state="translated">
+[ Ceci est un email automatisé envoyé à {0}. ]
+
+Le mot de passe de @@PRODUCT_NAME@@ pour la connexion {1} a été réinitialisé en réponse à une demande de réinitialisation
+faite à {2}
+
+Si vous n’avez pas initié cette réinitialisation de mot de passe, veuillez contacter IMMÉDIATEMENT l'administrateur de @@PRODUCT_NAME@@
+à {2} pour une assistance supplémentaire.
+
+Merci d’utiliser @@PRODUCT_NAME@@.
+        </target>
         <context-group name="ctx">
           <context context-type="sourcefile">ResetPasswordSubmit</context>
           <context context-type="paramnotes">
@@ -519,12 +545,14 @@ Thank you for using @@PRODUCT_NAME@@.
           </context>
         </context-group>
       </trans-unit>
-    <trans-unit id="dailysummary.email.notpaygcompliant" xml:space="preserve">
-          <source>Warning: This @@PRODUCT_NAME@@ PAYG instance is not compliant and some of its functions are disabled.
+      <trans-unit id="dailysummary.email.notpaygcompliant" xml:space="preserve">
+        <source>Warning: This @@PRODUCT_NAME@@ PAYG instance is not compliant and some of its functions are disabled.
 Please contact your administrator to amend the situation before continuing using the product.
           </source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="translated">Avertissement : cette instance de @@PRODUCT_NAME@@ PAYG n’est pas conforme et certaines de ses fonctions sont désactivées.
+Veuillez contacter votre administrateur pour modifier la situation avant de continuer à utiliser le produit.
+          </target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

@@ -3,16 +3,12 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#: ../html/src/components/input/range/Range.tsx:47
-#: ../html/src/components/input/range/Range.tsx:48
-#: ../html/src/components/input/range/Range.tsx:60
-#: ../html/src/components/input/range/Range.tsx:61
 #: ../html/src/core/intl/index.test.tsx:11
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-05 08:31+0200\n"
+"POT-Creation-Date: 2025-09-12 10:46+0200\n"
 "PO-Revision-Date: 2024-08-22 17:47+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web/cs/>\n"
@@ -31,15 +27,26 @@ msgstr "zbývající"
 msgid "The browser Internet Explorer is not supported. Try using Firefox, Chrome or Edge"
 msgstr "Prohlížeč Internet Explorer není podporován. Zkuste použít Firefox, Chrome nebo Edge"
 
+#: ../html/src/components/CoCoScansList.tsx:68
+#: ../html/src/components/package/PackageListActionScheduler.tsx:82
+#: ../html/src/components/product-migration/utils.tsx:113
+#: ../html/src/manager/appstreams/appstreams.tsx:61
+#: ../html/src/manager/state/highstate.tsx:64
+#: ../html/src/manager/systems/coco/ssm-schedule.tsx:67
+#, fuzzy
+msgid "Action has been successfully added to the action chain <link>\"{name}\"</link>."
+msgstr "Akce byla úspěšně přidána do Řetězce akcí "
+
 #: ../html/src/components/CoCoScansList.tsx:75
 #: ../html/src/components/package/PackageListActionScheduler.tsx:89
+#: ../html/src/components/product-migration/utils.tsx:120
 #: ../html/src/manager/minion/details/support-data.tsx:75
-#: ../html/src/manager/systems/coco/ssm-schedule.tsx:64
+#: ../html/src/manager/systems/coco/ssm-schedule.tsx:74
 msgid "The action has been <link>scheduled</link>."
 msgstr "Akce byla <link>naplánována</link>."
 
 #: ../html/src/components/CoCoScansList.tsx:90
-#: ../html/src/manager/systems/coco/ssm-schedule.tsx:76
+#: ../html/src/manager/systems/coco/ssm-schedule.tsx:86
 msgid "Unable to schedule action. Please check the server logs for detailed information."
 msgstr ""
 
@@ -56,7 +63,7 @@ msgstr "Potvrdit odstranění"
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:111
 #: ../html/src/manager/minion/details/support-data.tsx:142
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:232
-#: ../html/src/manager/systems/coco/ssm-schedule.tsx:98
+#: ../html/src/manager/systems/coco/ssm-schedule.tsx:108
 msgid "Schedule"
 msgstr "Plán"
 
@@ -84,6 +91,12 @@ msgstr ""
 #: ../html/src/components/FormulaForm.tsx:24
 msgid "Formula saved. Applying the highstate is not needed for this formula."
 msgstr "Vzorec uložen. U tohoto vzorce není potřeba použít highstate."
+
+#: ../html/src/components/FormulaForm.tsx:137
+#, fuzzy
+#| msgid "Multiple Group formulas detected. Only one formula for \"{0}\" can be used on each system!"
+msgid "Multiple Group formulas detected. Only one formula for \"{name}\" can be used on each system!"
+msgstr "Bylo zjištěno několik skupinových vzorců. V každém systému lze pro „{0}“ použít pouze jeden vzorec!"
 
 #: ../html/src/components/FormulaForm.tsx:168
 msgid "Please input required fields: {fields}"
@@ -177,6 +190,10 @@ msgstr "Název"
 msgid "Attestations"
 msgstr "Restart"
 
+#: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:41
+msgid "No attestation report available. Schedule an execution to create one."
+msgstr ""
+
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:48
 #, fuzzy
 msgid "Attestation"
@@ -211,7 +228,7 @@ msgstr "Životní cyklus životního prostředí"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:83
 #: ../html/src/components/hub/TokenTable.tsx:89
-#: ../html/src/manager/notifications/notifications-list.tsx:126
+#: ../html/src/manager/notifications/notifications-list.tsx:151
 msgid "Created"
 msgstr "Vytvořeno"
 
@@ -228,8 +245,9 @@ msgstr "Naposledy upraveno"
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:150
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:61
 #: ../html/src/manager/images/image-view-runtime.tsx:138
+#: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:162
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:785
-#: ../html/src/manager/systems/virtual-list.tsx:94
+#: ../html/src/manager/systems/virtual-list.tsx:93
 msgid "Status"
 msgstr "Stav"
 
@@ -262,6 +280,7 @@ msgstr "Akce"
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:55
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:205
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:376
+#: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:160
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:77
 msgid "Details"
 msgstr "Podrobnosti"
@@ -283,7 +302,7 @@ msgid "Last modified on"
 msgstr "Naposledy upraveno"
 
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:84
-#: ../html/src/manager/notifications/notifications-list.tsx:129
+#: ../html/src/manager/notifications/notifications-list.tsx:154
 msgid "Action"
 msgstr "Akce"
 
@@ -452,6 +471,7 @@ msgstr "Zrušit"
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:88
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:73
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:24
+#: ../html/src/manager/notifications/notifications-list.tsx:115
 #: ../html/src/manager/packages/list.tsx:72
 #: ../html/src/manager/packages/list.tsx:125
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:248
@@ -991,20 +1011,20 @@ msgid "Are you sure you want to remove the current Root Certificate Authority fo
 msgstr "Opravdu chcete smazat vybrané úložiště?"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:364
-#: ../html/src/manager/notifications/notifications-list.tsx:339
-#: ../html/src/manager/notifications/notifications-list.tsx:340
+#: ../html/src/manager/notifications/notifications-list.tsx:336
+#: ../html/src/manager/notifications/notifications-list.tsx:337
 msgid "Info"
 msgstr "Informace"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:369
-#: ../html/src/manager/notifications/notifications-list.tsx:346
-#: ../html/src/manager/notifications/notifications-list.tsx:347
+#: ../html/src/manager/notifications/notifications-list.tsx:343
+#: ../html/src/manager/notifications/notifications-list.tsx:344
 msgid "Warning"
 msgstr "Výstraha"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:374
-#: ../html/src/manager/notifications/notifications-list.tsx:353
-#: ../html/src/manager/notifications/notifications-list.tsx:354
+#: ../html/src/manager/notifications/notifications-list.tsx:350
+#: ../html/src/manager/notifications/notifications-list.tsx:351
 msgid "Error"
 msgstr "Chyba"
 
@@ -1444,16 +1464,20 @@ msgid "Valid"
 msgstr ""
 
 #: ../html/src/components/hub/TokenTable.tsx:76
-#: ../html/src/manager/systems/coco/ssm-schedule.tsx:108
+#: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:87
+#: ../html/src/manager/systems/coco/ssm-schedule.tsx:116
 #: ../html/src/manager/systems/coco/ssm-settings.tsx:74
 #: ../html/src/manager/systems/list-filter.tsx:38
+#: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:123
 msgid "Yes"
 msgstr "Ano"
 
 #: ../html/src/components/hub/TokenTable.tsx:76
-#: ../html/src/manager/systems/coco/ssm-schedule.tsx:108
+#: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:87
+#: ../html/src/manager/systems/coco/ssm-schedule.tsx:116
 #: ../html/src/manager/systems/coco/ssm-settings.tsx:74
 #: ../html/src/manager/systems/list-filter.tsx:39
+#: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:123
 msgid "No"
 msgstr "Ne"
 
@@ -1732,6 +1756,18 @@ msgstr "Filtrovat dle názvu balíčku"
 msgid "Package Name"
 msgstr "Název balíčku"
 
+#: ../html/src/components/pagination.tsx:110
+msgid "Items {from} - {to} of {total}"
+msgstr "Položky {from} - {to} z {total}"
+
+#: ../html/src/components/pagination.tsx:140
+msgid ""
+"{total, plural,\n"
+"            one {<dropdown></dropdown> of # page}\n"
+"            other {<dropdown></dropdown> of # pages}\n"
+"        }"
+msgstr ""
+
 #: ../html/src/components/picker/recurring-event-picker.tsx:58
 msgid "Sunday"
 msgstr "Neděle"
@@ -1796,9 +1832,126 @@ msgstr "Dny jsou omezeny na 28, aby byl k dispozici opakovatelný plán pro vše
 msgid "Custom Quartz format:"
 msgstr "Vlastní Quartz formát:"
 
+#: ../html/src/components/picker/recurring-event-picker.tsx:493
+msgid "e.g. \"0 15 2 ? * 7\""
+msgstr "např. \"0 15 2 ? * 7\""
+
 #: ../html/src/components/picker/recurring-event-picker.tsx:512
 msgid "Select a Schedule"
 msgstr "Vybrat plán"
+
+#: ../html/src/components/product-migration/MigrationChannelsSelectorForm.tsx:159
+#: ../html/src/components/product-migration/MigrationTargetSelectorForm.tsx:56
+#, fuzzy
+#| msgid "Product"
+msgid "Source Product"
+msgstr "Produkt"
+
+#: ../html/src/components/product-migration/MigrationChannelsSelectorForm.tsx:166
+#, fuzzy
+#| msgid "Target Host"
+msgid "Target Product"
+msgstr "Cílový hostitel"
+
+#: ../html/src/components/product-migration/MigrationChannelsSelectorForm.tsx:173
+#, fuzzy
+#| msgid "New base channel"
+msgid "Target base channel"
+msgstr "Nový základní kanál"
+
+#: ../html/src/components/product-migration/MigrationChannelsSelectorForm.tsx:187
+#, fuzzy
+#| msgid "no child channels"
+msgid "Target child channels"
+msgstr "žádné podřízené kanály"
+
+#: ../html/src/components/product-migration/MigrationChannelsSelectorForm.tsx:194
+#: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:85
+msgid "Allow vendor change"
+msgstr ""
+
+#: ../html/src/components/product-migration/MigrationChannelsSelectorForm.tsx:207
+#, fuzzy
+#| msgid "Back to sytem selection"
+msgid "Back to target selection"
+msgstr "Zpět k výběru systému"
+
+#: ../html/src/components/product-migration/MigrationChannelsSelectorForm.tsx:210
+#, fuzzy
+msgid "Schedule Migration"
+msgstr "Podrobnosti plánu"
+
+#: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:41
+msgid "Please review your selection and confirm below to schedule the migration."
+msgstr ""
+
+#: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:45
+#: ../html/src/manager/header/search/search.tsx:10
+#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:183
+msgid "Systems"
+msgstr "Systémy"
+
+#: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:60
+#, fuzzy
+#| msgid "Product Description"
+msgid "Product after migration"
+msgstr "Popis výrobku"
+
+#: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:66
+#, fuzzy
+#| msgid "No subscriptions found."
+msgid "Channel subscriptions after migration"
+msgstr "Nenašlo se žádné předplatné."
+
+#: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:91
+msgid "Schedule action for no sooner than"
+msgstr ""
+
+#: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:104
+msgid "In order to detect any possible problems it is recommended to always do a Dry Run before scheduling the actual Product Migration."
+msgstr ""
+
+#: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:114
+#, fuzzy
+#| msgid "Back to sytem selection"
+msgid "Back to channel selection"
+msgstr "Zpět k výběru systému"
+
+#: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:121
+#, fuzzy
+#| msgid " ready to run"
+msgid "Dry run"
+msgstr " připraven ke spuštění"
+
+#: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:127
+#: ../html/src/manager/admin/hub/peripherals.tsx:39
+msgid "Migrate"
+msgstr "Migrovat"
+
+#: ../html/src/components/product-migration/MigrationTargetSelectorForm.tsx:44
+msgid ""
+"Target not available, the following channels are not synced:\n"
+"\n"
+"{missingChannels}"
+msgstr ""
+
+#: ../html/src/components/product-migration/MigrationTargetSelectorForm.tsx:63
+#, fuzzy
+#| msgid "Product"
+msgid "Product id"
+msgstr "Produkt"
+
+#: ../html/src/components/product-migration/MigrationTargetSelectorForm.tsx:64
+#, fuzzy
+#| msgid "Products"
+msgid "Target Products"
+msgstr "Produkty"
+
+#: ../html/src/components/product-migration/MigrationTargetSelectorForm.tsx:84
+#, fuzzy
+#| msgid "Base Channel"
+msgid "Select Channels"
+msgstr "Základní kanál"
 
 #: ../html/src/components/ranking-table.tsx:20
 #: ../html/src/components/salt-state-popup.tsx:11
@@ -1977,7 +2130,7 @@ msgstr "Virtuální hostitel"
 #: ../html/src/components/systems.tsx:31
 #: ../html/src/manager/systems/list-filter.tsx:8
 #: ../html/src/manager/systems/list-filter.tsx:68
-#: ../html/src/manager/systems/virtual-list.tsx:75
+#: ../html/src/manager/systems/virtual-list.tsx:74
 msgid "Virtual Host"
 msgstr "Virtuální hostitel"
 
@@ -2075,12 +2228,12 @@ msgstr ""
 msgid "Modify"
 msgstr ""
 
-#: ../html/src/components/target-systems.tsx:22
+#: ../html/src/components/target-systems.tsx:26
 #, fuzzy
 msgid "Target Systems"
 msgstr "Cílové systémy"
 
-#: ../html/src/components/target-systems.tsx:28
+#: ../html/src/components/target-systems.tsx:32
 #, fuzzy
 msgid "No systems specified."
 msgstr "vybrané systémy"
@@ -2140,6 +2293,14 @@ msgstr "Vyžadovat tento kanál"
 
 #: ../html/src/core/intl/index.example.tsx:7
 msgid "Please see <link>Format.JS docs</link> for the message syntax."
+msgstr ""
+
+#: ../html/src/core/intl/index.example.tsx:23
+msgid ""
+"Always use plural forms for numbers: {fooCount, plural,\n"
+"            one {only one item}\n"
+"            other {{fooCount} items}\n"
+"          }."
 msgstr ""
 
 #: ../html/src/core/intl/index.test.tsx:9
@@ -2385,11 +2546,11 @@ msgid "Hub Details"
 msgstr "Podrobnosti"
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:80
-msgid "No hub is currently configured for this server. "
+msgid "No hub is currently configured for this server. Refresh this page after configuring this server as a peripheral, to see the hub details"
 msgstr ""
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:89
-msgid "This server is currently registered as peripheral of hub {fqdn}. "
+msgid "This server is currently registered as peripheral of hub {fqdn}. This page shows the details of the hub server."
 msgstr ""
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:108
@@ -2413,7 +2574,7 @@ msgid "{fqdn} - Peripheral Details"
 msgstr ""
 
 #: ../html/src/manager/admin/hub/peripheral-details.tsx:51
-msgid "The server {fqdn} is currently registered as peripheral of this hub. "
+msgid "The server {fqdn} is currently registered as peripheral of this hub. This page shows the details of the peripheral server."
 msgstr ""
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:26
@@ -2427,10 +2588,6 @@ msgstr "Konfigurace"
 #| msgid "Peripheral Server"
 msgid "Add Peripheral"
 msgstr "Periferní server"
-
-#: ../html/src/manager/admin/hub/peripherals.tsx:39
-msgid "Migrate"
-msgstr "Migrovat"
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:41
 msgid "Migrate an existing configuration of a previous version of ISS"
@@ -2565,10 +2722,6 @@ msgstr "Úprava vlastností.."
 msgid "Last Status Update"
 msgstr "Poslední aktualizace stavu"
 
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:52
-msgid "Edit "
-msgstr "Upravit "
-
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:71
 msgid "Editing ssh connection data.."
 msgstr "Úprava údajů o připojení ssh.."
@@ -2629,7 +2782,7 @@ msgstr "Aktualizujte katalog produktů ze zákaznického centra SUSE"
 #: ../html/src/manager/images/image-profiles.tsx:141
 #: ../html/src/manager/images/image-stores.tsx:141
 #: ../html/src/manager/images/image-view.tsx:376
-#: ../html/src/manager/notifications/notifications-list.tsx:195
+#: ../html/src/manager/notifications/notifications-list.tsx:108
 msgid "Refresh"
 msgstr "Aktualizovat"
 
@@ -2664,6 +2817,11 @@ msgstr "Následující instalace produktů selhaly. Zkontrolujte žurnálové so
 #, fuzzy
 msgid "Selected channels were scheduled successfully for syncing."
 msgstr "Některé změny byly úspěšně naplánovány."
+
+#: ../html/src/manager/admin/setup/products/products.tsx:259
+#, fuzzy
+msgid "The following channel installations for \"{product}\" failed. Please check log files."
+msgstr "Následující instalace produktů selhaly. Zkontrolujte žurnálové soubory."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:284
 msgid "A refresh of the product data is currently running in the background. Please try again later."
@@ -2722,18 +2880,6 @@ msgstr "Kanály"
 msgid "Recommended"
 msgstr "doporučeno"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:774
-msgid " channels sync failed"
-msgstr " synchronizace kanálů selhala"
-
-#: ../html/src/manager/admin/setup/products/products.tsx:782
-msgid " channels sync in progress"
-msgstr " probíhá synchronizace kanálů"
-
-#: ../html/src/manager/admin/setup/products/products.tsx:790
-msgid " channels synced"
-msgstr " kanály synchronizovány"
-
 #: ../html/src/manager/admin/setup/products/products.tsx:815
 msgid "To enable this product, the parent product should be selected first"
 msgstr "Chcete-li povolit tento produkt, je třeba nejprve vybrat nadřazený produkt"
@@ -2747,7 +2893,7 @@ msgid "This product is mirrored."
 msgstr "Tento produkt je zrcadlen."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:857
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:71
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:81
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:144
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:497
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:547
@@ -3032,14 +3178,16 @@ msgid "Affected, patches available in channels which are not assigned"
 msgstr "Ovlivněno: v kanálech, které nejsou přiřazeny, jsou dostupné záplaty"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:45
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:53
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:89
-msgid "The client is affected by a vulnerability and we have a patch for it,"
+msgid "The client is affected by a vulnerability and we have a patch for it, but the channel(s) offering the patch are not assigned to the client."
 msgstr ""
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:51
 msgid "Affected, patches available in a Product Migration target"
 msgstr "Ovlivněno, záplaty dostupné v cíli Migrace produktu"
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:53
+msgid "The client is affected by a vulnerability and we have a patch for it, but applying the patch requires migrating the product to a newer version."
+msgstr ""
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:59
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:60
@@ -3078,13 +3226,17 @@ msgid "Affected, patch is unavailable in relevant channels"
 msgstr "Ovlivněno: v přiřazeném kanálu je dostupná aspoň 1 záplata"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:81
-msgid "The client is affected by a vulnerability for which a patch has been released,"
+msgid "The client is affected by a vulnerability for which a patch has been released, but the patch can't be found in the relevant channels."
 msgstr ""
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:87
 #, fuzzy
 msgid "Affected, partial patch available in assigned channel"
 msgstr "Ovlivněno: v přiřazeném kanálu je dostupná aspoň 1 záplata"
+
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:89
+msgid "The client is affected by a vulnerability and we have a patch for it, but applying the patch will only update some of the vulnerable packages."
+msgstr ""
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:95
 msgid "Unknown, CVE metadata not available"
@@ -3131,7 +3283,7 @@ msgstr "Auditovat obrazy"
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:343
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:9
 #: ../html/src/manager/systems/all-list.tsx:78
-#: ../html/src/manager/systems/virtual-list.tsx:56
+#: ../html/src/manager/systems/virtual-list.tsx:67
 msgid "Download CSV"
 msgstr "Stáhnout CSV"
 
@@ -4166,45 +4318,45 @@ msgstr "zobrazit více"
 msgid "Versions history"
 msgstr "Historie verzí"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/base-channel.tsx:42
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/base-channel.tsx:51
 msgid "New base channel"
 msgstr "Nový základní kanál"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:177
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:179
 msgid "New Base Channel"
 msgstr "Nový základní kanál"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:180
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:182
 msgid "Choose the channel to be elected as the new base channel"
 msgstr "Vyberte kanál, který má být zvolen jako nový základní kanál"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:196
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:198
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:546
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:605
 msgid "Child Channels"
 msgstr "Podřízené kanály"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:219
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:221
 msgid "Clear Search"
 msgstr "Výmaz hledání"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:22
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:28
 msgid "This channel requires:"
 msgstr "Tento kanál vyžaduje:"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:28
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:35
 msgid "This channel is required by:"
 msgstr "Tento kanál je vyžádán:"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:70
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:80
 msgid "This channel is recommended"
 msgstr "Tento kanál je doporučen"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:75
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:85
 msgid "This channel is mandatory"
 msgstr "Tento kanál je povinný"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:76
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:86
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:149
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:552
 msgid "mandatory"
@@ -4227,7 +4379,7 @@ msgstr "zahrnout, co je doporučeno"
 #: ../html/src/manager/images/image-view-patches.tsx:79
 #: ../html/src/manager/images/image-view.tsx:643
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:105
-#: ../html/src/manager/notifications/notifications-list.tsx:114
+#: ../html/src/manager/notifications/notifications-list.tsx:139
 #: ../html/src/manager/state/highstate-summary.tsx:77
 msgid "Type"
 msgstr "Typ"
@@ -4261,23 +4413,23 @@ msgstr "Požadovaná stránka {0} se nenašla."
 #: ../html/src/manager/errors/not-found.tsx:12
 #, fuzzy
 #| msgid "If you typed this address into your browser, double-check the spelling and capitalization."
-msgid "If you typed this address into your browser, double-check the spelling and capitalization."
+msgid "If you typed this address into your browser, double-check the spelling and capitalization. The address you are copying may also be outdated."
 msgstr "Pokud jste tuto adresu zadali do svého prohlížeče, důkladně zkontrolujte zápis a velká písmena."
 
 #: ../html/src/manager/errors/not-found.tsx:18
 #, fuzzy
 #| msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your "
-msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your "
+msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your browser to try a different link, or use the top (or left) navigation bars to find the page you are looking for."
 msgstr "Pokud jste následovali odkaz, mohl být nesprávný nebo zastaralý. Stiskněte tlačítko ZPĚT ve Vašem "
 
 #: ../html/src/manager/errors/not-found.tsx:25
-msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was "
-msgstr "Pokud jste použili záložku, stránka se mohla mezitím přesunout jinam z "
+msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was created. Use the top (or left) navigation bars to find the page you are looking for, and if you find the document be sure to update your bookmark."
+msgstr "Jestliže jste použili záložku, mohla se stránka od vytvoření záložky přesunout na jiné místo. Pomocí horních (nebo levých) navigačních panelů najděte hledanou stránku, a najdete-li dokument, nezapomeňte záložku aktualizovat."
 
 #: ../html/src/manager/errors/not-found.tsx:32
 #, fuzzy
 #| msgid "If you feel you've reached this page in error, please contact us with details of how you received "
-msgid "If you feel you've reached this page in error, please contact us with details of how you received "
+msgid "If you feel you've reached this page in error, please contact us with details of how you received this message."
 msgstr "Myslíte-li si, že jste na této stránce omylem, kontaktujte nás laskavě s podrobnostmi, jak jste se sem dostali "
 
 #: ../html/src/manager/groups/config-channels/group-config-channels.tsx:29
@@ -4302,11 +4454,6 @@ msgstr "Neplatný typ cíle."
 #, fuzzy
 msgid "Formula saved. Apply the <link>Highstate</link> for the changes to take effect."
 msgstr "Vzorec uložen. U tohoto vzorce není potřeba použít highstate."
-
-#: ../html/src/manager/header/search/search.tsx:10
-#: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:183
-msgid "Systems"
-msgstr "Systémy"
 
 #: ../html/src/manager/header/search/search.tsx:14
 #: ../html/src/manager/images/image-view.tsx:668
@@ -4490,10 +4637,6 @@ msgid "Update"
 msgstr "Aktualizace"
 
 #: ../html/src/manager/images/image-profile-edit.tsx:512
-msgid "Edit Image Profile: '"
-msgstr "Upravit profil obrazu: '"
-
-#: ../html/src/manager/images/image-profile-edit.tsx:512
 #: ../html/src/manager/images/image-profiles.tsx:147
 #: ../html/src/manager/images/image-profiles.tsx:148
 msgid "Create Image Profile"
@@ -4562,10 +4705,6 @@ msgstr "Opravdu chcete odstranit vybrané profily? (Vybráno {0} profilů)"
 #: ../html/src/manager/images/image-store-edit.tsx:165
 msgid "Use credentials"
 msgstr "Použít pověření"
-
-#: ../html/src/manager/images/image-store-edit.tsx:234
-msgid "Edit Image Store: '"
-msgstr "Upravit úložiště obrazů: '"
 
 #: ../html/src/manager/images/image-store-edit.tsx:234
 msgid "Create Image Store"
@@ -4669,39 +4808,19 @@ msgstr "Ve frontě"
 msgid "Go to event"
 msgstr "Jdi k události"
 
-#: ../html/src/manager/images/image-view-overview.tsx:52
-msgid " is queued"
-msgstr " je ve frontě"
-
 #: ../html/src/manager/images/image-view-overview.tsx:59
 msgid "In progress"
 msgstr "Probíhá"
 
-#: ../html/src/manager/images/image-view-overview.tsx:64
-msgid " in progress"
-msgstr " probíhá"
-
 #: ../html/src/manager/images/image-view-overview.tsx:71
 msgid "Successful"
 msgstr "Úspěšné"
-
-#: ../html/src/manager/images/image-view-overview.tsx:76
-msgid " is successful"
-msgstr " je úspěšné"
-
-#: ../html/src/manager/images/image-view-overview.tsx:88
-msgid " has failed"
-msgstr " selhalo"
 
 #: ../html/src/manager/images/image-view-overview.tsx:107
 #: ../html/src/manager/images/image-view-overview.tsx:108
 #: ../html/src/manager/images/image-view.tsx:502
 msgid "Built externally"
 msgstr "Sestaveno externě"
-
-#: ../html/src/manager/images/image-view-overview.tsx:130
-msgid " Status"
-msgstr " Stav"
 
 #: ../html/src/manager/images/image-view-overview.tsx:135
 msgid "Picked Up"
@@ -4751,6 +4870,12 @@ msgstr "Upravit profil"
 #: ../html/src/manager/images/image-view-overview.tsx:350
 msgid "Edit store"
 msgstr "Upravit úložiště"
+
+#: ../html/src/manager/images/image-view-overview.tsx:465
+#: ../html/src/manager/images/image-view.tsx:752
+#, fuzzy
+msgid "Instance Details for \"{name}\""
+msgstr "Podrobnosti instance pro '{0}'"
 
 #: ../html/src/manager/images/image-view-overview.tsx:520
 #: ../html/src/manager/images/image-view-overview.tsx:521
@@ -4971,7 +5096,7 @@ msgstr "(zastaralé)"
 #: ../html/src/manager/images/image-view.tsx:652
 #: ../html/src/manager/systems/all-list.tsx:91
 #: ../html/src/manager/systems/list-filter.tsx:45
-#: ../html/src/manager/systems/virtual-list.tsx:100
+#: ../html/src/manager/systems/virtual-list.tsx:99
 msgid "Updates"
 msgstr "Aktualizace"
 
@@ -5193,6 +5318,11 @@ msgstr "Vyhledávat systémy"
 msgid "Current Schedule"
 msgstr "Aktuální plán"
 
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:115
+#, fuzzy
+msgid "Url \"{url}\" is invalid"
+msgstr "URL '{0}' je neplatné"
+
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:139
 msgid "Calendar data"
 msgstr "Data kalendáře"
@@ -5285,10 +5415,6 @@ msgstr "Níže je uveden seznam plánů údržby, které má aktuální uživate
 msgid "Below is a list of Maintenance Calendars available to the current user."
 msgstr "Níže je uveden seznam plánů údržby, které má aktuální uživatel k dispozici."
 
-#: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:50
-msgid "schedule"
-msgstr "plán"
-
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:30
 msgid "No schedules created. Use Create to add a schedule."
 msgstr "Nebyly vytvořeny žádné plány. Pomocí Vytvořit přidejte plán."
@@ -5296,14 +5422,6 @@ msgstr "Nebyly vytvořeny žádné plány. Pomocí Vytvořit přidejte plán."
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:89
 msgid "This will remove the schedule from all the systems assigned to it."
 msgstr "Tím odstraníte plán ze všech systémů, které jsou mu přiřazeny."
-
-#: ../html/src/manager/maintenance/maintenance-windows.tsx:116
-msgid "successfully"
-msgstr "úspěšně"
-
-#: ../html/src/manager/maintenance/maintenance-windows.tsx:141
-msgid "Error when deleting the "
-msgstr "Chyba při odstraňování "
 
 #: ../html/src/manager/maintenance/maintenance-windows.tsx:150
 msgid "Calendar successfully refreshed"
@@ -5451,6 +5569,11 @@ msgstr "Naplánovat provedení scénáře"
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:128
 msgid "Select the current Playbook"
 msgstr ""
+
+#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:138
+#, fuzzy
+msgid "Playbook \"{name}\""
+msgstr "Scénář '{0}'"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:147
 msgid "Schedule Playbook Execution"
@@ -5804,12 +5927,6 @@ msgstr ""
 msgid "Registry URL"
 msgstr "Registrované systémy"
 
-#: ../html/src/manager/minion/proxy/proxy-config.tsx:332
-#, fuzzy
-#| msgid "e.g., 2048"
-msgid "e.g., "
-msgstr "např. 2048"
-
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:339
 #, fuzzy
 #| msgid "Contains Package"
@@ -5890,7 +6007,7 @@ msgid "Apply"
 msgstr "Použít"
 
 #: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:18
-#: ../html/src/manager/notifications/notifications-list.tsx:120
+#: ../html/src/manager/notifications/notifications-list.tsx:145
 msgid "Summary"
 msgstr "Souhrn"
 
@@ -5899,7 +6016,7 @@ msgid "Install Program Temporary Fixes (PTFs)"
 msgstr ""
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:29
-msgid "The following Program Temporary Fixes (PTFs) are available for installation on this system. "
+msgid "The following Program Temporary Fixes (PTFs) are available for installation on this system. These packages are only meant to address a specific open issue. Please follow the instructions from customer support before proceeding with the installation."
 msgstr ""
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:33
@@ -5920,7 +6037,7 @@ msgid "Remove Program Temporary Fixes (PTFs)"
 msgstr ""
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:29
-msgid "The following Program Temporary Fixes (PTFs) are currently installed on this system. "
+msgid "The following Program Temporary Fixes (PTFs) are currently installed on this system. These PTFs may be scheduled for removal by selecting them and clicking \"Remove PTF\" below. Please note that removing any non-obsolete PTF will result in the installation of the most recent versions of the packages that are part of the PTF."
 msgstr ""
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:34
@@ -5953,87 +6070,84 @@ msgstr ""
 msgid "Install PTF"
 msgstr "Instalováno"
 
-#: ../html/src/manager/notifications/notifications-list.tsx:78
+#: ../html/src/manager/notifications/notifications-list.tsx:77
 msgid "Notification Messages"
 msgstr "Oznámení"
 
-#: ../html/src/manager/notifications/notifications-list.tsx:83
+#: ../html/src/manager/notifications/notifications-list.tsx:82
 msgid "The server has collected the following notification messages."
 msgstr "Server shromáždil následující upozornění."
 
-#: ../html/src/manager/notifications/notifications-list.tsx:100
+#: ../html/src/manager/notifications/notifications-list.tsx:98
 msgid "Filter by summary"
 msgstr "Filtrovat podle souhrnu"
 
-#: ../html/src/manager/notifications/notifications-list.tsx:108
+#: ../html/src/manager/notifications/notifications-list.tsx:123
+#, fuzzy
+#| msgid "Flag as Read"
+msgid "Mark as Read"
+msgstr "Označit jako přečtené"
+
+#: ../html/src/manager/notifications/notifications-list.tsx:133
 msgid "Severity"
 msgstr "Závažnost"
 
-#: ../html/src/manager/notifications/notifications-list.tsx:133
+#: ../html/src/manager/notifications/notifications-list.tsx:158
 msgid "Read|Delete"
 msgstr "Číst|Odstranit"
 
-#: ../html/src/manager/notifications/notifications-list.tsx:159
+#: ../html/src/manager/notifications/notifications-list.tsx:184
 msgid "Filter by type"
 msgstr "Filtrovat podle typu"
 
-#: ../html/src/manager/notifications/notifications-list.tsx:177
+#: ../html/src/manager/notifications/notifications-list.tsx:202
 msgid "Unread Messages"
 msgstr "Nepřečtené zprávy"
 
-#: ../html/src/manager/notifications/notifications-list.tsx:182
+#: ../html/src/manager/notifications/notifications-list.tsx:207
 msgid "All Messages"
 msgstr "Všechny zprávy"
 
-#: ../html/src/manager/notifications/notifications-list.tsx:199
-#: ../html/src/manager/notifications/notifications-list.tsx:200
-msgid "Delete selected messages"
-msgstr "Odstranit vybrané zprávy"
-
-#: ../html/src/manager/notifications/notifications-list.tsx:207
-#: ../html/src/manager/notifications/notifications-list.tsx:208
-msgid "Mark selected as read"
-msgstr "Označit vybrané zprávy jako přečtené"
-
-#: ../html/src/manager/notifications/notifications-list.tsx:226
+#: ../html/src/manager/notifications/notifications-list.tsx:223
+#: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:145
 msgid "show details"
 msgstr "ukázat podrobnosti"
 
-#: ../html/src/manager/notifications/notifications-list.tsx:242
+#: ../html/src/manager/notifications/notifications-list.tsx:239
 msgid "Retry"
 msgstr "Další pokus"
 
-#: ../html/src/manager/notifications/notifications-list.tsx:254
+#: ../html/src/manager/notifications/notifications-list.tsx:251
 msgid "Flag as Unread"
 msgstr "Označit jako nepřečtené"
 
-#: ../html/src/manager/notifications/notifications-list.tsx:254
+#: ../html/src/manager/notifications/notifications-list.tsx:251
 msgid "Flag as Read"
 msgstr "Označit jako přečtené"
 
-#: ../html/src/manager/notifications/notifications-list.tsx:260
+#: ../html/src/manager/notifications/notifications-list.tsx:257
 msgid "Delete Notification"
 msgstr "Smazat oznámení"
 
-#: ../html/src/manager/notifications/notifications-list.tsx:307
+#: ../html/src/manager/notifications/notifications-list.tsx:304
 #, fuzzy
 #| msgid "Environment updated successfully"
 msgid "{number} messages status updated successfully"
 msgstr "Prostředí aktualizováno úspěšně"
 
-#: ../html/src/manager/notifications/notifications-list.tsx:308
+#: ../html/src/manager/notifications/notifications-list.tsx:305
 #, fuzzy
 #| msgid "Cluster properties updated successfully"
 msgid "Message read status updated successfully"
 msgstr "Vlastnosti klastru aktualizovány úspěšně"
 
-#: ../html/src/manager/notifications/notifications-list.tsx:325
+#: ../html/src/manager/notifications/notifications-list.tsx:322
 #, fuzzy
 #| msgid "Filter deleted successfully"
 msgid "{number} messages deleted successfully"
 msgstr "Filtr odebrán úspěšně"
 
-#: ../html/src/manager/notifications/notifications-list.tsx:326
+#: ../html/src/manager/notifications/notifications-list.tsx:323
 #, fuzzy
 #| msgid "Filter deleted successfully"
 msgid "Message deleted successfully"
@@ -6690,14 +6804,6 @@ msgstr "Zavádím podřízené kanály.."
 msgid "Base Channel:"
 msgstr "Základní kanál:"
 
-#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:135
-msgid "${defaultChannelName}"
-msgstr "${defaultChannelName}"
-
-#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:145
-msgid "${this.getDefaultBase().name}"
-msgstr "${this.getDefaultBase().name}"
-
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:155
 msgid "Child Channels:"
 msgstr "Podřízené kanály:"
@@ -6856,7 +6962,7 @@ msgstr "Správa systému kompletně přes SSH (neinstaluje agenta)"
 msgid "Are you sure you want to close this page while bootstrapping is in progress ?"
 msgstr "Skutečně chcete tuto stránku zavřít během zavádění systému?"
 
-#: ../html/src/manager/systems/coco/ssm-schedule.tsx:107
+#: ../html/src/manager/systems/coco/ssm-schedule.tsx:115
 #: ../html/src/manager/systems/coco/ssm-settings.tsx:73
 msgid "Confidential Computing Capability"
 msgstr ""
@@ -7030,9 +7136,73 @@ msgid "Groups"
 msgstr "Skupina"
 
 #: ../html/src/manager/systems/list-filter.tsx:69
-#: ../html/src/manager/systems/virtual-list.tsx:83
+#: ../html/src/manager/systems/virtual-list.tsx:82
 msgid "Virtual System"
 msgstr "Virtuální systém"
+
+#: ../html/src/manager/systems/product-migration/migration-from-dry-run.tsx:59
+#: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:97
+msgid "Product Migration - Schedule outcome"
+msgstr ""
+
+#: ../html/src/manager/systems/product-migration/migration-from-dry-run.tsx:62
+#, fuzzy
+#| msgid "SUSE Manager Configuration - Monitoring"
+msgid "Product Migration - Confirm from dry run"
+msgstr "Konfigurace SUSE Manageru - monitorování"
+
+#: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:88
+msgid "Product Migration - Choose target product"
+msgstr ""
+
+#: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:91
+#, fuzzy
+msgid "Product Migration - Select channels"
+msgstr "Konfigurační kanály"
+
+#: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:94
+msgid "Product Migration - Schedule"
+msgstr ""
+
+#: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:116
+#, fuzzy
+#| msgid "Show product's channels"
+msgid "Show product details"
+msgstr "Zobrazit kanály produktu"
+
+#: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:131
+msgid "The products installed on this system can be migrated"
+msgstr ""
+
+#: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:134
+msgid "The products installed on this system cannot be migrated"
+msgstr ""
+
+#: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:140
+msgid "The products installed on this system can be migrated."
+msgstr ""
+
+#: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:159
+#, fuzzy
+#| msgid "Product"
+msgid "Base Product"
+msgstr "Produkt"
+
+#: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:161
+msgid "Can be migrated?"
+msgstr ""
+
+#: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:217
+msgid "Product details for {system}"
+msgstr ""
+
+#: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:221
+msgid "These are the products currently installed on {system}:"
+msgstr ""
+
+#: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:232
+msgid "The systems currently selected cannot be migrated in batch."
+msgstr ""
 
 #: ../html/src/manager/systems/proxy.tsx:44
 msgid "Please select a list of minions (not proxies or traditional clients)."
@@ -7271,11 +7441,11 @@ msgstr "Potvrďte změnu softwarového kanálu"
 msgid "Virtual Systems"
 msgstr "Virtuální systémy"
 
-#: ../html/src/manager/systems/virtual-list.tsx:70
+#: ../html/src/manager/systems/virtual-list.tsx:57
 msgid "No Virtual Systems."
 msgstr "Žádné virtuální systémy."
 
-#: ../html/src/manager/systems/virtual-list.tsx:111
+#: ../html/src/manager/systems/virtual-list.tsx:110
 msgid "Base Software Channel"
 msgstr "Základní softwarový kanál"
 
@@ -7399,18 +7569,70 @@ msgstr "Chyba autorizace, znovu načtěte stránku nebo se pokuste znovu odhlás
 msgid "Resource not found."
 msgstr "Zdroj nebyl nalezen."
 
-#: ../html/src/utils/network.ts:105
-msgid "HTTP Error code "
-msgstr "Kód chyby HTTP "
+#~ msgid "Edit "
+#~ msgstr "Upravit "
+
+#~ msgid " channels sync failed"
+#~ msgstr " synchronizace kanálů selhala"
+
+#~ msgid " channels sync in progress"
+#~ msgstr " probíhá synchronizace kanálů"
+
+#~ msgid " channels synced"
+#~ msgstr " kanály synchronizovány"
+
+#~ msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was "
+#~ msgstr "Pokud jste použili záložku, stránka se mohla mezitím přesunout jinam z "
+
+#~ msgid "Edit Image Profile: '"
+#~ msgstr "Upravit profil obrazu: '"
+
+#~ msgid "Edit Image Store: '"
+#~ msgstr "Upravit úložiště obrazů: '"
+
+#~ msgid " is queued"
+#~ msgstr " je ve frontě"
+
+#~ msgid " in progress"
+#~ msgstr " probíhá"
+
+#~ msgid " is successful"
+#~ msgstr " je úspěšné"
+
+#~ msgid " has failed"
+#~ msgstr " selhalo"
+
+#~ msgid " Status"
+#~ msgstr " Stav"
+
+#~ msgid "schedule"
+#~ msgstr "plán"
+
+#~ msgid "successfully"
+#~ msgstr "úspěšně"
+
+#~ msgid "Error when deleting the "
+#~ msgstr "Chyba při odstraňování "
 
 #, fuzzy
-#~ msgid "Action has been successfully added to the action chain <link>\"{name}\"</link>."
-#~ msgstr "Akce byla úspěšně přidána do Řetězce akcí "
+#~| msgid "e.g., 2048"
+#~ msgid "e.g., "
+#~ msgstr "např. 2048"
 
-#, fuzzy
-#~| msgid "Multiple Group formulas detected. Only one formula for \"{0}\" can be used on each system!"
-#~ msgid "Multiple Group formulas detected. Only one formula for \"{name}\" can be used on each system!"
-#~ msgstr "Bylo zjištěno několik skupinových vzorců. V každém systému lze pro „{0}“ použít pouze jeden vzorec!"
+#~ msgid "Delete selected messages"
+#~ msgstr "Odstranit vybrané zprávy"
+
+#~ msgid "Mark selected as read"
+#~ msgstr "Označit vybrané zprávy jako přečtené"
+
+#~ msgid "${defaultChannelName}"
+#~ msgstr "${defaultChannelName}"
+
+#~ msgid "${this.getDefaultBase().name}"
+#~ msgstr "${this.getDefaultBase().name}"
+
+#~ msgid "HTTP Error code "
+#~ msgstr "Kód chyby HTTP "
 
 #~ msgid "First"
 #~ msgstr "První"
@@ -7424,12 +7646,6 @@ msgstr "Kód chyby HTTP "
 #~ msgid "Page {current} of {total}"
 #~ msgstr "Strana {current} z {total}"
 
-#~ msgid "e.g. \"0 15 2 ? * 7\""
-#~ msgstr "např. \"0 15 2 ? * 7\""
-
-#~ msgid "Items {from} - {to} of {total}"
-#~ msgstr "Položky {from} - {to} z {total}"
-
 #~ msgid "({selectedCount} selected)"
 #~ msgstr "({selectedCount} vybraných)"
 
@@ -7438,25 +7654,6 @@ msgstr "Kód chyby HTTP "
 
 #~ msgid "items per page"
 #~ msgstr "položek na stránku"
-
-#, fuzzy
-#~ msgid "The following channel installations for \"{product}\" failed. Please check log files."
-#~ msgstr "Následující instalace produktů selhaly. Zkontrolujte žurnálové soubory."
-
-#~ msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was created. Use the top (or left) navigation bars to find the page you are looking for, and if you find the document be sure to update your bookmark."
-#~ msgstr "Jestliže jste použili záložku, mohla se stránka od vytvoření záložky přesunout na jiné místo. Pomocí horních (nebo levých) navigačních panelů najděte hledanou stránku, a najdete-li dokument, nezapomeňte záložku aktualizovat."
-
-#, fuzzy
-#~ msgid "Instance Details for \"{name}\""
-#~ msgstr "Podrobnosti instance pro '{0}'"
-
-#, fuzzy
-#~ msgid "Url \"{url}\" is invalid"
-#~ msgstr "URL '{0}' je neplatné"
-
-#, fuzzy
-#~ msgid "Playbook \"{name}\""
-#~ msgstr "Scénář '{0}'"
 
 #, fuzzy
 #~ msgid "Add a system"
@@ -7636,9 +7833,6 @@ msgstr "Kód chyby HTTP "
 
 #~ msgid "Select where to migrate the virtual guest to."
 #~ msgstr "Zvolte, kam migrovat virtuální host."
-
-#~ msgid "Target Host"
-#~ msgstr "Cílový hostitel"
 
 #~ msgid "Start / Resume"
 #~ msgstr "Spustit / Pokračovat"
@@ -8223,10 +8417,6 @@ msgstr "Kód chyby HTTP "
 #, fuzzy
 #~ msgid "states"
 #~ msgstr "Stát"
-
-#, fuzzy
-#~ msgid "configuration channels"
-#~ msgstr "Konfigurační kanály"
 
 #, fuzzy
 #~ msgid "Search in {0}"
