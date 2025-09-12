@@ -1656,13 +1656,6 @@
         <target>@@PRODUCT_NAME@@ 릴리즈 &lt;a href="{0}" target="_blank"&gt;{1}&lt;/a&gt;</target>
       </trans-unit>
       <!-- legends -->
-      <trans-unit id="errata-legend.jsp.title" xml:space="preserve">
-        <source>Patches Legend</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/errata-legend.jsp</context>
-        </context-group>
-        <target>패치 범례</target>
-      </trans-unit>
       <trans-unit id="errata-legend.jsp.security" xml:space="preserve">
         <source>Security</source>
         <context-group name="ctx">
@@ -1687,125 +1680,6 @@
           <context context-type="sourcefile">/rhn/errata/details/Details.do</context>
         </context-group>
         <target>기능 개선</target>
-      </trans-unit>
-      <trans-unit id="system-legend.jsp.title" xml:space="preserve">
-        <source>System Legend</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/system-legend.jsp</context>
-        </context-group>
-        <target>시스템 유형</target>
-      </trans-unit>
-      <trans-unit id="system-legend.jsp.fully" xml:space="preserve">
-        <source>OK</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/system-legend.jsp</context>
-        </context-group>
-        <target>확인</target>
-      </trans-unit>
-      <trans-unit id="system-legend.jsp.critical" xml:space="preserve">
-        <source>Critical</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/system-legend.jsp</context>
-        </context-group>
-        <target>위험</target>
-      </trans-unit>
-      <trans-unit id="system-legend.jsp.updates" xml:space="preserve">
-        <source>Warning</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/system-legend.jsp</context>
-        </context-group>
-        <target>경고</target>
-      </trans-unit>
-      <trans-unit id="system-legend.jsp.locked" xml:space="preserve">
-        <source>Locked</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/system-legend.jsp</context>
-        </context-group>
-        <target>잠김</target>
-      </trans-unit>
-      <trans-unit id="system-legend.jsp.kickstarting" xml:space="preserve">
-        <source>Autoinstalling</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/system-legend.jsp</context>
-        </context-group>
-        <target>자동 설치 중</target>
-      </trans-unit>
-      <trans-unit id="system-legend.jsp.pending" xml:space="preserve">
-        <source>Pending Actions</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/system-legend.jsp</context>
-        </context-group>
-        <target>보류 중인 작업</target>
-      </trans-unit>
-      <trans-unit id="system-legend.jsp.notcheckingin" xml:space="preserve">
-        <source>Unknown</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/system-legend.jsp</context>
-        </context-group>
-        <target>알 수 없음</target>
-      </trans-unit>
-      <trans-unit id="system-legend.jsp.unentitled" xml:space="preserve">
-        <source>No System Types</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/system-legend.jsp</context>
-        </context-group>
-        <target>시스템 유형 없음</target>
-      </trans-unit>
-      <trans-unit id="system-legend.jsp.monitoring" xml:space="preserve">
-        <source>Monitoring Status</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/system-legend.jsp</context>
-        </context-group>
-        <target>모니터링 상태</target>
-      </trans-unit>
-      <trans-unit id="system-group-legend.jsp.title" xml:space="preserve">
-        <source>System Group Legend</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/system-group-legend.jsp</context>
-        </context-group>
-        <target>시스템 그룹 유형</target>
-      </trans-unit>
-      <trans-unit id="system-group-legend.jsp.fully" xml:space="preserve">
-        <source>OK</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/system-group-legend.jsp</context>
-        </context-group>
-        <target>확인</target>
-      </trans-unit>
-      <trans-unit id="system-group-legend.jsp.critical" xml:space="preserve">
-        <source>Critical</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/system-group-legend.jsp</context>
-        </context-group>
-        <target>위험</target>
-      </trans-unit>
-      <trans-unit id="system-group-legend.jsp.updates" xml:space="preserve">
-        <source>Warning</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/system-group-legend.jsp</context>
-        </context-group>
-        <target>경고</target>
-      </trans-unit>
-      <trans-unit id="yourrhn-legend.jsp.title" xml:space="preserve">
-        <source>Overview Legend</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/system-group-legend.jsp</context>
-        </context-group>
-        <target>개요 유형</target>
-      </trans-unit>
-      <trans-unit id="yourrhn-legend.jsp.failedactions" xml:space="preserve">
-        <source>Failed Actions</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/system-group-legend.jsp</context>
-        </context-group>
-        <target>실패한 작업</target>
-      </trans-unit>
-      <trans-unit id="yourrhn-legend.jsp.completedactions" xml:space="preserve">
-        <source>Completed Actions</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/legends/system-group-legend.jsp</context>
-        </context-group>
-        <target>완료된 작업</target>
       </trans-unit>
       <!-- email_sent.jsp -->
       <!-- yourchangeemail.jsp -->
@@ -14399,13 +14273,6 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <context context-type="sourcefile">View of SCAP scans for given system</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="system.audit.listscap.jsp.legend" xml:space="preserve">
-        <source>Xccdf Legend</source>
-        <target>Xccdf 유형</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">View of SCAP scans for given system</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="system.audit.listscap.jsp.noscans" xml:space="preserve">
         <source>This system has not yet reported any SCAP results.</source>
         <target>이 시스템은 아직 SCAP 결과를 보고하지 않습니다.</target>
@@ -14427,23 +14294,9 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <context context-type="sourcefile">View of SCAP scans for given system</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="system.audit.listscap.jsp.pass" xml:space="preserve">
-        <source>Pass</source>
-        <target>합격</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">View of SCAP scans for given system</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="system.audit.listscap.jsp.fail.abb" xml:space="preserve">
         <source>F</source>
         <target>F</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">View of SCAP scans for given system</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system.audit.listscap.jsp.fail" xml:space="preserve">
-        <source>Fail</source>
-        <target>불합격</target>
         <context-group name="ctx">
           <context context-type="sourcefile">View of SCAP scans for given system</context>
         </context-group>
@@ -14455,23 +14308,9 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <context context-type="sourcefile">View of SCAP scans for given system</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="system.audit.listscap.jsp.error" xml:space="preserve">
-        <source>Error</source>
-        <target>오류</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">View of SCAP scans for given system</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="system.audit.listscap.jsp.unknown.abb" xml:space="preserve">
         <source>U</source>
         <target>U</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">View of SCAP scans for given system</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system.audit.listscap.jsp.unknown" xml:space="preserve">
-        <source>Unknown</source>
-        <target>알 수 없음</target>
         <context-group name="ctx">
           <context context-type="sourcefile">View of SCAP scans for given system</context>
         </context-group>
@@ -14483,23 +14322,9 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <context context-type="sourcefile">View of SCAP scans for given system</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="system.audit.listscap.jsp.notapplicable" xml:space="preserve">
-        <source>Not applicable</source>
-        <target>해당 없음</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">View of SCAP scans for given system</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="system.audit.listscap.jsp.notchecked.abb" xml:space="preserve">
         <source>K</source>
         <target>K</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">View of SCAP scans for given system</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system.audit.listscap.jsp.notchecked" xml:space="preserve">
-        <source>Not checked</source>
-        <target>확인되지 않음</target>
         <context-group name="ctx">
           <context context-type="sourcefile">View of SCAP scans for given system</context>
         </context-group>
@@ -14511,13 +14336,6 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <context context-type="sourcefile">View of SCAP scans for given system</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="system.audit.listscap.jsp.notselected" xml:space="preserve">
-        <source>Not selected</source>
-        <target>선택되지 않음</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">View of SCAP scans for given system</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="system.audit.listscap.jsp.informational.abb" xml:space="preserve">
         <source>I</source>
         <target>I</target>
@@ -14525,23 +14343,9 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <context context-type="sourcefile">View of SCAP scans for given system</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="system.audit.listscap.jsp.informational" xml:space="preserve">
-        <source>Informational</source>
-        <target>정보</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">View of SCAP scans for given system</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="system.audit.listscap.jsp.fixed.abb" xml:space="preserve">
         <source>X</source>
         <target>X</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">View of SCAP scans for given system</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system.audit.listscap.jsp.fixed" xml:space="preserve">
-        <source>Fixed</source>
-        <target>수정됨</target>
         <context-group name="ctx">
           <context context-type="sourcefile">View of SCAP scans for given system</context>
         </context-group>
@@ -15522,69 +15326,6 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         </context-group>
       </trans-unit>
       <!-- System events legend -->
-      <trans-unit id="system-history-legend.jsp.type.title" xml:space="preserve">
-        <source>Event Type Legend</source>
-        <target>이벤트 유형 범례</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">System Eevents Pages Legend</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system-history-legend.jsp.type.package" xml:space="preserve">
-        <source>Package Event</source>
-        <target>패키지 이벤트</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">System Eevents Pages Legend</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system-history-legend.jsp.type.errata" xml:space="preserve">
-        <source>Errata Event</source>
-        <target>오류 이벤트</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">System Eevents Pages Legend</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system-history-legend.jsp.type.preferences" xml:space="preserve">
-        <source>Preferences Event</source>
-        <target>기본 설정 이벤트</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">System Eevents Pages Legend</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system-history-legend.jsp.type.system" xml:space="preserve">
-        <source>System Event</source>
-        <target>시스템 이벤트</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">System Eevents Pages Legend</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system-history-legend.jsp.status.title" xml:space="preserve">
-        <source>Event Status Legend</source>
-        <target>이벤트 상태 범례</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">System Eevents Pages Legend</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system-history-legend.status.jsp.ok" xml:space="preserve">
-        <source>Complete</source>
-        <target>완료</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">System Eevents Pages Legend</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system-history-legend.jsp.status.failed" xml:space="preserve">
-        <source>Failure</source>
-        <target>실패</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">System Eevents Pages Legend</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system-history-legend.jsp.status.running" xml:space="preserve">
-        <source>Activity Occuring</source>
-        <target>발생 중 활동</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">System Eevents Pages Legend</context>
-        </context-group>
-      </trans-unit>
       <!-- System snapshots -->
       <trans-unit id="system.history.snapshot.header" xml:space="preserve">
         <source>System Snapshots</source>
@@ -28609,10 +28350,6 @@ given channel.</source>
         <source>Reboot Required</source>
         <target>재부팅 필요</target>
       </trans-unit>
-      <trans-unit id="errata-legend.jsp.restart" xml:space="preserve">
-        <source>Affects Package Management</source>
-        <target>패키지 관리에 영향을 줌</target>
-      </trans-unit>
       <trans-unit id="systemgroup.details.states" xml:space="preserve">
         <source>States:</source>
         <target>상태:</target>
@@ -29852,6 +29589,28 @@ given channel.</source>
         </context-group>
       <target state="new"/>
   </trans-unit>
-      </body>
+      <trans-unit id="actionchain.jsp.distupgrade.upgrade" xml:space="preserve">
+        <source>Migrate the installed product on</source>
+            <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="auditview.mark.reviewed" xml:space="preserve">
+        <source>Mark reviewed</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/audit/Search.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="ssm.overview.product_migration" xml:space="preserve">
+            <source>Product Migration</source>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="ssm.overview.product_migration.migrate" xml:space="preserve">
+            <source>&lt;a href="/rhn/manager/systems/ssm/product-migration"&gt;Migrate the products&lt;/a&gt; installed on the selected systems</source>
+        <target state="new"/>
+  </trans-unit>
+        </body>
   </file>
 </xliff>
