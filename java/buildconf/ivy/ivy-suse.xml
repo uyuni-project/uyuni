@@ -10,7 +10,7 @@
         <dependency org="suse" name="c3p0" rev="0.9.5.5" />
         <dependency org="suse" name="cglib" rev="3.3.0" />
         <dependency org="suse" name="classmate" rev="1.5.1" />
-        <dependency org="suse" name="javax.mail" rev="1.5.2" />
+        <dependency org="suse" name="javax.mail" rev="1.6.2" />
         <dependency org="suse" name="client" rev="2.1" />
         <dependency org="suse" name="common" rev="2.1" />
         <dependency org="suse" name="stringprep" rev="1.1" />
