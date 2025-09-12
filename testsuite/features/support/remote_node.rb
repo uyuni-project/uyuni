@@ -56,7 +56,7 @@ class RemoteNode
       @private_ip = net_prefix + PRIVATE_ADDRESSES[host]
       @private_interface = nil
       %w[eth1 ens4].each do |dev|
-        _output, code = run_local("ip address show dev #{dev}")
+        _output, code = run_local("ip address show dev #{dev}", check_errors: false)
 
         if code.zero?
           @private_interface = dev
