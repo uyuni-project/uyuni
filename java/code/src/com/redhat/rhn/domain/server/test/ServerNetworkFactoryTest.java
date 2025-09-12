@@ -28,7 +28,6 @@ import com.redhat.rhn.testing.TestUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ServerNetworkFactoryTest extends BaseTestCaseWithUser {
@@ -53,7 +52,7 @@ public class ServerNetworkFactoryTest extends BaseTestCaseWithUser {
         ServerNetworkFactory.saveServerNetAddress6(a6);
         a6 = TestUtils.saveAndReload(a6);
 
-        ArrayList<ServerNetAddress6> iPv6Addresses = netint.getIPv6Addresses();
+        List<ServerNetAddress6> iPv6Addresses = netint.getIPv6Addresses();
         assertNotEmpty(iPv6Addresses);
         assertEquals("2a00:de40:b208:1:5054:ff:fe9e:36e7", iPv6Addresses.get(0).getAddress());
 
@@ -83,7 +82,7 @@ public class ServerNetworkFactoryTest extends BaseTestCaseWithUser {
         ServerNetworkFactory.saveServerNetAddress4(a4);
         a4 = TestUtils.saveAndReload(a4);
 
-        ArrayList<ServerNetAddress4> iPv4Addresses = netint.getIPv4Addresses();
+        List<ServerNetAddress4> iPv4Addresses = netint.getIPv4Addresses();
         assertNotEmpty(iPv4Addresses);
         assertEquals("1.2.3.4", iPv4Addresses.get(0).getAddress());
 

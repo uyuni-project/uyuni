@@ -25,6 +25,7 @@ import org.hibernate.Session;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -195,7 +196,7 @@ Serializable {
     /**
      * @return If available, returns list of global IPv6 addresses for a given interface.
      */
-    public ArrayList<String> getGlobalIpv6Addresses() {
+    public List<String> getGlobalIpv6Addresses() {
         ArrayList<String> addresses = findServerNetAddress6ByScope("universe");
         // RHEL-5 registration may return "global" rather than "universe"
         // for global addresses (a libnl thing).
@@ -338,7 +339,7 @@ Serializable {
      * Retrieve list of IPv4 addresses
      * @return List of ServerNetAddress4 objects
      */
-    public ArrayList<ServerNetAddress4> getIPv4Addresses() {
+    public List<ServerNetAddress4> getIPv4Addresses() {
         if (sa4 == null) {
             Session session = HibernateFactory.getSession();
             sa4 = (ArrayList<ServerNetAddress4>)
@@ -361,7 +362,7 @@ Serializable {
      * Retrieve list of IPv6 addresses
      * @return List of ServerNetAddress6 objects
      */
-    public ArrayList<ServerNetAddress6> getIPv6Addresses() {
+    public List<ServerNetAddress6> getIPv6Addresses() {
         if (sa6 == null) {
             Session session = HibernateFactory.getSession();
             sa6 = (ArrayList<ServerNetAddress6>)
@@ -406,7 +407,7 @@ Serializable {
      * @return Returns first most global ipv6 address
      */
     public String getGlobalIpv6Addr() {
-        ArrayList<String> addrs = getGlobalIpv6Addresses();
+        List<String> addrs = getGlobalIpv6Addresses();
         if (addrs == null) {
             addrs = findServerNetAddress6ByScope("site");
         }
