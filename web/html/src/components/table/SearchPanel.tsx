@@ -18,14 +18,17 @@ type SearchPanelProps = {
   field?: string;
 
   /** Search field components */
-  children?: ReactNode;
+  children?: React.ReactNode;
+
+  /** Align search fields inline */
+  searchPanelInline?: boolean
 };
 
 /** Panel containing the search fields for a table */
 export function SearchPanel(props: SearchPanelProps) {
   return (
-    <div className={`spacewalk-list-filter ${styles.searchPanel}`}>
-      {Children.toArray(props.children).map((child) =>
+    <div className={`spacewalk-list-filter ${props.searchPanelInline ? styles.inlineSearchPanel : styles.searchPanel}`}>
+      {React.Children.toArray(props.children).map((child) =>
         cloneReactElement(child, {
           criteria: props.criteria,
           field: props.field,

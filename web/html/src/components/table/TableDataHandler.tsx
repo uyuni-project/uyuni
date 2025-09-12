@@ -110,6 +110,12 @@ type Props = {
 
   /** Title buttons to add next to the items per page selection */
   titleButtons?: ReactNode[];
+
+  /** Sticky table header */
+  stickyHeader?: boolean;
+
+  /** Align search fields inline */
+  searchPanelInline?: boolean
 };
 
 type State = {
@@ -134,6 +140,7 @@ export class TableDataHandler extends Component<Props, State> {
 
   constructor(props: Props) {
     super(props);
+    this.panelHeaderRef = React.createRef();
     this.state = {
       data: [],
       provider: this.getProvider(),
@@ -145,6 +152,7 @@ export class TableDataHandler extends Component<Props, State> {
       sortColumnKey: this.props.initialSortColumnKey || null,
       sortDirection: this.props.initialSortDirection || 1,
       loading: false,
+      headerHeight: null,
     };
   }
 
@@ -214,6 +222,10 @@ export class TableDataHandler extends Component<Props, State> {
 
   componentDidMount() {
     this.getData();
+
+    if (this.panelHeaderRef.current) {
+      this.setState({ headerHeight: this.panelHeaderRef.current.clientHeight });
+    }
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -336,6 +348,7 @@ export class TableDataHandler extends Component<Props, State> {
       searchField = <SearchField />;
     }
     const isTableHeaderEmpty = !this.props.titleButtons && !searchField && !this.props.additionalFilters;
+    const stickyHeader = this.props.stickyHeader;
 
     if (this.props.selectable) {
       const isSelectable =
@@ -414,17 +427,22 @@ export class TableDataHandler extends Component<Props, State> {
     const hideHeader = this.props.hideHeaderFooter === "header" || this.props.hideHeaderFooter === "both";
     const hideFooter = this.props.hideHeaderFooter === "footer" || this.props.hideHeaderFooter === "both";
     return (
-      <div className="spacewalk-list">
+      <div className={`spacewalk-list ${this.props.stickyHeader ? "overflow-visible" : ""}`}>
         <div className="panel panel-default">
           {!hideHeader && !isTableHeaderEmpty ? (
             <>
-              <div className=" panel-heading">
+              <div ref={this.panelHeaderRef} className={` panel-heading ${this.props.stickyHeader ? "sticky-panel-heading" : ""}`}>
                 <div className="spacewalk-list-head-addons align-items-center">
                   <SearchPanel
                     criteria={this.state.criteria}
                     field={this.state.field}
                     onSearch={this.onSearch}
                     onSearchField={this.onSearchField}
+                    onClear={handleSearchPanelClear}
+                    onSelectAll={handleSearchPanelSelectAll}
+                    selectedCount={selectedItems.length}
+                    selectable={isSelectable}
+                    searchPanelInline={this.props.searchPanelInline}
                   >
                     {searchField}
                     {this.props.additionalFilters}
@@ -451,7 +469,7 @@ export class TableDataHandler extends Component<Props, State> {
             </div>
           ) : (
             <div>
-              <div className="table-responsive">
+              <div className={`table-responsive ${this.props.stickyHeader ? "overflow-visible" : ""}`}>
                 {this.props.children({
                   currItems,
                   headers,
@@ -459,6 +477,7 @@ export class TableDataHandler extends Component<Props, State> {
                   selectedItems: selectedItems,
                   criteria: this.state.criteria,
                   field: this.state.field,
+                  headerHeight: this.state.headerHeight,
                 })}
               </div>
             </div>

@@ -99,7 +99,6 @@ const AccessGroupList = (props) => {
         <div className="pull-right btn-group">
           <LinkButton
             className="btn-primary"
-            title={t("Create Access Group")}
             text={t("Create Access Group")}
             href="/rhn/manager/admin/access-control/create-access-group"
           />

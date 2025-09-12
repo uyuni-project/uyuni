@@ -5,10 +5,12 @@ import { AccessGroupState } from "manager/admin/access-control/access-group";
 
 import { Column } from "components/table/Column";
 import { Table } from "components/table/Table";
+import { SearchField } from "components/table/SearchField";
 import { MessagesContainer, showErrorToastr } from "components/toastr";
-
+import { getValue } from "utils/data";
 import Network from "utils/network";
-
+import { DEPRECATED_Check, Form, } from "components/input";
+import { Toggler } from "components/toggler";
 type Props = {
   state: AccessGroupState;
   onChange: Function;
@@ -18,6 +20,9 @@ type Props = {
 const AccessGroupPermissions = (props: Props) => {
   const [namespaces, setNamespaces] = useState([]);
   const checkboxRefs = useRef({});
+  const [apiNamespace, setApiNamespace] = useState(false);
+  const [webNamespace, setWebNamespace] = useState(false);
+  const [showOnlySelected, setShowOnlySelected] = useState(false);
 
   const isItemDisabled = useCallback((item, type) => {
     const requiredAccessMode = type === "view" ? "R" : "W";
@@ -136,6 +141,100 @@ const AccessGroupPermissions = (props: Props) => {
       updateRefsRecursively(item);
     });
   }, [namespaces, props.state.permissions, getCheckState]);
+  
+  const setNamespacesCheck = (model) => {
+    setApiNamespace(!!model.apiNamespace);
+    setWebNamespace(!!model.webNamespace);
+  };
+
+  const filteredNamespaces = namespaces.filter((item) => {
+    if (apiNamespace && webNamespace) {
+      return true;
+    }
+    if (apiNamespace) {
+      return item.isAPI;
+    }
+    if (webNamespace) {
+      return !item.isAPI;
+    }
+    return true;
+  });
+
+  const searchData = (row: NamespaceNode, criteria?: string): boolean => {
+    if (!criteria) return true;
+
+    const keysToSearch = ["name", "description"];
+
+    const currentMatch = keysToSearch
+      .map((key) => getValue(row, key))
+      .filter(Boolean)
+      .join()
+      .toLowerCase()
+      .includes(criteria.toLowerCase());
+
+    if (currentMatch) return true;
+
+    if (row.children && row.children.length > 0) {
+      return row.children.some((child) => searchData(child, criteria));
+    }
+
+    return false;
+  };
+
+  const namespacesFilter = (
+    <div className="d-flex">
+      <div className="ms-4">
+        <Form model={{ apiNamespace, webNamespace  }} onChange={setNamespacesCheck}>
+          <div className="d-flex">
+            <span className="control-label me-3">Filter by:</span>
+            <span className="me-4">
+              <DEPRECATED_Check
+                label={t("API")}
+                name="apiNamespace"
+                key="apiNamespace"
+              />
+            </span>
+            <span>
+              <DEPRECATED_Check
+                label={t("Web")}
+                name="webNamespace"
+                key="webNamespace"
+              />
+            </span>
+          </div>
+        </Form>
+      </div>
+    </div>
+  );
+
+ const getSelectedNamespace = (item, selectedModes = ["view", "modify"]) => {
+  return item
+    .map((item) => {
+      const children = item.children ? getSelectedNamespace(item.children, selectedModes) : [];
+      
+      const itemPermissions = props.state.permissions[item.namespace];
+      const isSelected = selectedModes.some((mode) => itemPermissions?.[mode]);
+      const hasSelectedChildren = children.length > 0;
+
+      if (isSelected || hasSelectedChildren) {
+        return { ...item, children };
+      }
+      return null;
+    })
+    .filter(Boolean);
+  };
+
+  const selectedToggle = (
+    <Toggler
+      value={showOnlySelected}
+      handler={() => setShowOnlySelected(!showOnlySelected)}
+      text={t("Show only selected")}
+    />
+  );
+
+  const finalData = showOnlySelected
+    ? getSelectedNamespace(filteredNamespaces)
+    : filteredNamespaces;
 
   return (
     <div>
@@ -160,7 +259,17 @@ const AccessGroupPermissions = (props: Props) => {
         </>
       ) : null}
       <p>{t("Review and modify the permissions for this custom group as needed.")}</p>
-      <Table data={namespaces} identifier={(item) => `${item.namespace}-${item.isAPI ? "api" : "ui"}`} expandable>
+      <Table
+        data={finalData}
+        identifier={(item) => `${item.namespace}-${item.isAPI ? "api" : "ui"}`}
+        expandable
+        stickyHeader
+        searchPanelInline
+        searchField={<SearchField filter={searchData} placeholder={t("Filter by name")} />}
+        additionalFilters={[namespacesFilter]}
+        titleButtons={[selectedToggle]}
+        tableClass="table-hover"
+      >
         <Column
           columnKey="name"
           header={t("Name")}
