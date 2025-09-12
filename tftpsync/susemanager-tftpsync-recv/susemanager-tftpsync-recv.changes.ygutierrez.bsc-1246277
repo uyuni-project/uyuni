@@ -1,0 +1,1 @@
+- CVE-2025-53880 Sanitize path in sync-proxy script (bsc#1246277)
