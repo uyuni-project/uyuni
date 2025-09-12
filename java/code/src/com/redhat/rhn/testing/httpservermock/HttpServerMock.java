@@ -116,11 +116,9 @@ public class HttpServerMock {
         EngineMock engine = new EngineMock(service);
 
         Connection connection = null;
-        ServerSocket socket = null;
         ExchangeDetails<T> exchangeDetails = new ExchangeDetails<>();
-        try {
+        try (ServerSocket socket = new ServerSocket(port)) {
             connection = ConnectionFactory.getConnection(engine);
-            socket = new ServerSocket(port);
             connection.connect(socket);
 
             try {
@@ -128,11 +126,6 @@ public class HttpServerMock {
             }
             catch (Exception e) {
                 throw e;
-            }
-        }
-        finally {
-            if (socket != null) {
-                socket.close();
             }
         }
 
