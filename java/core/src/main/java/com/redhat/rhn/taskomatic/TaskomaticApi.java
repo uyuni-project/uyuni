@@ -175,6 +175,9 @@ public class TaskomaticApi {
      */
     public void scheduleSingleRepoSync(List<Channel> channels)
             throws TaskomaticApiException {
+        if (channels.isEmpty()) {
+            return;
+        }
         List<String> channelIds = new ArrayList<>(channels.size());
         for (Channel channel : channels) {
             channelIds.add(channel.getId().toString());

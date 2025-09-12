@@ -121,6 +121,24 @@
                 </div>
                 <div class="form-group">
                     <label class="col-lg-3 control-label">
+                        <bean:message key="channel.jsp.repoautosync"/>
+                    </label>
+                    <div class="col-lg-6">
+                        <c:choose>
+                            <c:when test="${channel.autoSync == true}">
+                                <bean:message key="channel.jsp.repoautosync.true"/>
+                            </c:when>
+                            <c:when test="${channel.autoSync == false}">
+                                <bean:message key="channel.jsp.repoautosync.false"/>
+                            </c:when>
+                            <c:otherwise>
+                                (none)
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-3 control-label">
                         <bean:message key="channel.jsp.repodata"/>
                     </label>
                     <div class="col-lg-6">

@@ -225,6 +225,9 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
     @PrimaryKeyJoinColumn(name = "channel_id")
     private ChannelSyncFlag channelSyncFlag;
 
+    @Column(name = "auto_sync")
+    private boolean autoSync;
+
     /**
      * Channel Object Constructor
      */
@@ -242,6 +245,7 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
         GPGCheck = true;
         channelSyncFlag = new ChannelSyncFlag();
         channelSyncFlag.setChannel(this);
+        autoSync = true;
     }
 
     /**
@@ -1177,6 +1181,22 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
      */
     public boolean isTypeDeb() {
         return PackageFactory.ARCH_TYPE_DEB.equalsIgnoreCase(getArchTypeLabel());
+    }
+
+    /**
+     * is auto repos sync activated
+     * @return boolean saying if is repo auto sync is enable
+     */
+    public boolean isAutoSync() {
+        return autoSync;
+    }
+
+    /**
+     * Enable or disable channel auto sync that runs on taskomatic
+     * @param autoSyncIn boolean to set the repo auto sync
+     */
+    public void setAutoSync(boolean autoSyncIn) {
+        autoSync = autoSyncIn;
     }
 
     /**
