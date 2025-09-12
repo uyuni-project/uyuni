@@ -33,6 +33,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <property name="lastSynced" type="timestamp" column="last_synced"/>
         <property name="updateTag" type="string" column="update_tag"/>
         <property name="installerUpdates" type="yes_no" column="installer_updates"/>
+        <property name="autoSync" column="auto_sync" type="boolean"/>
         <property name="created" column="created" type="timestamp"
             insert="false" update="false"/>
         <property name="modified" column="modified" type="timestamp"
@@ -685,12 +686,16 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 
     <query name="Channel.findCustomChannelsWithRepositories">
         <![CDATA[from com.redhat.rhn.domain.channel.Channel as c
-                where c.org is not null and c.sources is not empty]]>
+                where c.org is not null and c.sources is not empty and c.autoSync is true]]>
     </query>
 
     <query name="Channel.findVendorChannels">
         <![CDATA[from com.redhat.rhn.domain.channel.Channel as c
                  where c.org is null]]>
+    </query>
+    <query name="Channel.findVendorChannelsForAutoSync">
+        <![CDATA[from com.redhat.rhn.domain.channel.Channel as c
+                 where c.org is null and c.autoSync is true]]>
     </query>
     <sql-query name="Channel.findVendorRepositoryByChannelId">
         <![CDATA[

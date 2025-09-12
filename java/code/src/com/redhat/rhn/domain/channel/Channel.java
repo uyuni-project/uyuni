@@ -98,6 +98,7 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
     private Set<ClonedChannel> clonedChannels;
     private Set<SUSEProductChannel> suseProductChannels;
     private ChannelSyncFlag channelSyncFlag;
+    private Boolean autoSync;
 
     /**
      * Channel Object Constructor
@@ -1040,6 +1041,22 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
      */
     public boolean isTypeDeb() {
         return PackageFactory.ARCH_TYPE_DEB.equalsIgnoreCase(getArchTypeLabel());
+    }
+
+    /**
+     * is auto repos sync activated
+     * @return boolean saying if is repo auto sync is enable
+     */
+    public Boolean getAutoSync() {
+        return autoSync;
+    }
+
+    /**
+     * Enable or disable channel auto sync that runs on taskomatic
+     * @param autoSyncIn boolean to set the repo auto sync
+     */
+    public void setAutoSync(Boolean autoSyncIn) {
+        autoSync = autoSyncIn;
     }
 
     /**
