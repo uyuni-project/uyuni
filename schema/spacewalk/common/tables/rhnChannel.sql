@@ -59,6 +59,7 @@ CREATE TABLE rhnChannel
     maint_phone         VARCHAR(128),
     support_policy      VARCHAR(256),
     update_tag          VARCHAR(128),
+    auto_sync           BOOLEAN default true NOT NULL,
     installer_updates   CHAR(1)
                             DEFAULT ('N') NOT NULL
                             CONSTRAINT rhn_channel_instup_ck
