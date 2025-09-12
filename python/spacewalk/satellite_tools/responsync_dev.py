@@ -1372,10 +1372,10 @@ class RepoSync(object):
         with cfg_component("server.susemanager") as CFG:
             mount_point = CFG.MOUNT_POINT
         for pack in packages:
-            if pack.arch not in self.arches:
+            #if pack.arch not in self.arches:
                 # skip packages with incompatible architecture
-                skipped += 1
-                continue
+                #skipped += 1
+                #continue
             epoch = ""
             if pack.epoch and pack.epoch != "0":
                 # pylint: disable-next=consider-using-f-string
@@ -1668,7 +1668,17 @@ class RepoSync(object):
                     # pylint: disable-next=broad-exception-raised
                     raise Exception
 
+                log(0, " load_checksum")
                 pack.load_checksum_from_header()
+                log(0,"successful load_checksum")
+                log(0, f"a_pkg: {pack.a_pkg})")
+
+                if pack.a_pkg and pack.a_pkg.header:
+                    log(0, "a_pkg.header contents:")
+                    for key, value in pack.a_pkg.header.items():
+                        log(0, f"  {key}: {value}")
+                else:
+                    log(0, "a_pkg.header is empty or None")
 
                 if not self.metadata_only:
                     rel_package_path = rhnPackageUpload.relative_path_from_header(
@@ -1686,6 +1696,7 @@ class RepoSync(object):
                     # First write the package to the filesystem to final location
                     # pylint: disable=W0703
                     try:
+
                         importLib.move_package(
                             pack.a_pkg.payload_stream.name,
                             basedir=mount_point,
@@ -1711,6 +1722,7 @@ class RepoSync(object):
                     # Remove any pending scheduled file deletion for this package
                     h_delete_package_queue.execute(path=rel_package_path)
 
+
                 pkg = mpmSource.create_package(
                     pack.a_pkg.header,
                     size=pack.a_pkg.payload_size,
@@ -1722,26 +1734,40 @@ class RepoSync(object):
                     header_end=pack.a_pkg.header_end,
                     channels=[],
                 )
-
+                log(0, f"mpmSource.create_package succeeded: {type(pkg)}")
                 if pack.a_pkg.header.is_source:
                     mpm_src_batch.append(pkg)
                 else:
                     mpm_bin_batch.append(pkg)
+                log(0, f"DEBUG: pkg object created, type: {type(pkg)}")
+                log(0, f"DEBUG: pkg.get('name'): {pkg.get('name', 'NOT_SET')}")
+                log(0, f"DEBUG: pkg.get('version'): {pkg.get('version', 'NOT_SET')}")
+                log(0, f"DEBUG: pkg.get('release'): {pkg.get('release', 'NOT_SET')}")
+                log(0, f"DEBUG: pkg.get('epoch'): {pkg.get('epoch', 'NOT_SET')}")
+                log(0, f"DEBUG: pkg.get('arch'): {pkg.get('arch', 'NOT_SET')}")
+                log(0, f"DEBUG: pkg.get('checksum_type'): {pkg.get('checksum_type', 'NOT_SET')}")
+                log(0, f"DEBUG: pkg.get('checksum'): {pkg.get('checksum', 'NOT_SET')}")
+                log(0, f"DEBUG: pkg.get('org_id'): {pkg.get('org_id', 'NOT_SET')}")
+                log(0, f"DEBUG: pkg.get('path'): {pkg.get('path', 'NOT_SET')}")
+                log(0, f"DEBUG: pkg.get('summary'): {pkg.get('summary', 'NOT_SET')}")
+                log(0, f"DEBUG: pkg.get('description'): {pkg.get('description', 'NOT_SET')}")
+                log(0, f"DEBUG: pkg.get('provides'): {pkg.get('provides', 'NOT_SET')}")
+                log(0, f"DEBUG: pkg.get('requires'): {pkg.get('requires', 'NOT_SET')}")
+                log(0, f"DEBUG: pkg.get('files'): {pkg.get('files', 'NOT_SET')}")
+                log(0, f"DEBUG: pkg.get('changelog'): {pkg.get('changelog', 'NOT_SET')}")
                 # we do not want to keep a whole 'a_pkg' object for every package in memory,
                 # because we need only checksum. see BZ 1397417
                 pack.checksum = pack.a_pkg.checksum
                 pack.checksum_type = pack.a_pkg.checksum_type
                 pack.epoch = pack.a_pkg.header["epoch"]
                 pack.a_pkg = None
-
                 all_packages.add((pack.checksum_type, pack.checksum))
-
                 # Downloaded pkg checksum matches with pkg already in channel, no need to disassociate from channel
                 if (pack.checksum_type, pack.checksum) in to_disassociate:
                     to_disassociate[(pack.checksum_type, pack.checksum)] = False
                     # Set to_link to False, no need to link again
                     to_process[index] = (pack, True, False)
-
+                log(0, "after to_disassociate")
             except (KeyboardInterrupt, rhnSQL.SQLError):
                 raise
             except Exception:
@@ -1760,12 +1786,15 @@ class RepoSync(object):
                         import_count == to_download_count
                         or len(mpm_bin_batch) % self.import_batch_size == 0
                     ):
+                        log(0,"packageImport.PackageImport")
                         importer = packageImport.PackageImport(
                             mpm_bin_batch, backend, caller=upload_caller
                         )
                         importer.setUploadForce(1)
                         importer.run()
+                        log(0,"importer.run successful")
                         rhnSQL.commit()
+                        log(0,"rhnSQL.COMMIT SUCCESSFUL")
                         del importer.batch
                         affected_channels.extend(importer.affected_channels)
                         del mpm_bin_batch
@@ -1779,10 +1808,12 @@ class RepoSync(object):
                             mpm_src_batch, backend, caller=upload_caller
                         )
                         src_importer.setUploadForce(1)
+                        log(0,"src_importer.run()")
                         src_importer.run()
                         rhnSQL.commit()
                         del mpm_src_batch
                         mpm_src_batch = importLib.Collection()
+                    log(0, "after importing packages by batch or if the current packages is the last")
 
                 except (KeyboardInterrupt, rhnSQL.SQLError):
                     raise
