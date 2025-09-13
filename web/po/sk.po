@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-09-12 10:46+0200\n"
-"PO-Revision-Date: 2025-09-06 16:59+0000\n"
+"PO-Revision-Date: 2025-09-13 17:59+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 5.13.1\n"
+"X-Generator: Weblate 5.13.3\n"
 
 #: ../html/javascript/spacewalk-essentials.js:407
 msgid "remaining"
@@ -33,10 +33,8 @@ msgstr "Prehliadač Internet Explorer nie je podporovaný. Skúste použiť Fire
 #: ../html/src/manager/appstreams/appstreams.tsx:61
 #: ../html/src/manager/state/highstate.tsx:64
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:67
-#, fuzzy
-#| msgid "Action has been successfully added to the action chain <link>'{name}'</link>."
 msgid "Action has been successfully added to the action chain <link>\"{name}\"</link>."
-msgstr "Akcia bola úspešne pridaná do reťazca akcií <link>'{name}'</link>."
+msgstr "Akcia bola úspešne pridaná do reťazca akcií <link>\"{name}\"</link>."
 
 #: ../html/src/components/CoCoScansList.tsx:75
 #: ../html/src/components/package/PackageListActionScheduler.tsx:89
@@ -1720,10 +1718,8 @@ msgid "Product after migration"
 msgstr "Popis produktu"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:66
-#, fuzzy
-#| msgid "No subscriptions found."
 msgid "Channel subscriptions after migration"
-msgstr "Nenašli sa žiadne predplatné."
+msgstr "Predplatné kanálov po migrácii"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:91
 msgid "Schedule action for no sooner than"
@@ -1740,10 +1736,8 @@ msgid "Back to channel selection"
 msgstr "Späť na výber systému"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:121
-#, fuzzy
-#| msgid " ready to run"
 msgid "Dry run"
-msgstr " pripravené na spustenie"
+msgstr "Skúšobné spustenie"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:127
 #: ../html/src/manager/admin/hub/peripherals.tsx:39
@@ -2335,10 +2329,8 @@ msgid "No hub is currently configured for this server. Refresh this page after c
 msgstr ""
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:89
-#, fuzzy
-#| msgid "This server is currently registered as peripheral of hub {fqdn}. "
 msgid "This server is currently registered as peripheral of hub {fqdn}. This page shows the details of the hub server."
-msgstr "Tento server je v súčasnosti registrovaný ako periféria hubu {fqdn}. "
+msgstr "Tento server je v súčasnosti registrovaný ako periféria hubu {fqdn}. Táto stránka zobrazuje podrobnosti o hub serveri."
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:108
 msgid "Successfully scheduled a channels synchronization."
@@ -2361,10 +2353,8 @@ msgid "{fqdn} - Peripheral Details"
 msgstr "{fqdn} - Podrobnosti o periférii"
 
 #: ../html/src/manager/admin/hub/peripheral-details.tsx:51
-#, fuzzy
-#| msgid "The server {fqdn} is currently registered as peripheral of this hub. "
 msgid "The server {fqdn} is currently registered as peripheral of this hub. This page shows the details of the peripheral server."
-msgstr "Server {fqdn} je v súčasnosti registrovaný ako periféria pre hub. "
+msgstr "Server {fqdn} je v súčasnosti registrovaný ako periféria pre hub. Táto stránka zobrazuje podrobnosti o periférnom serveri."
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:26
 msgid "Peripherals Configuration"
@@ -2591,10 +2581,8 @@ msgid "Selected channels were scheduled successfully for syncing."
 msgstr "Synchronizácia vybraných kanálov bola úspešne naplánovaná."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:259
-#, fuzzy
-#| msgid "The following channel installations for '{product}' failed. Please check log files."
 msgid "The following channel installations for \"{product}\" failed. Please check log files."
-msgstr "Nasledujúce inštalácie kanálov pre '{product}' zlyhali. Skontrolujte, prosím, súbory záznamov."
+msgstr "Nasledujúce inštalácie kanálov pre \"{product}\" zlyhali. Skontrolujte, prosím, súbory záznamov."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:284
 msgid "A refresh of the product data is currently running in the background. Please try again later."
@@ -4140,26 +4128,20 @@ msgid "The page you requested, {currentUrl}, was not found."
 msgstr "Požadovaná stránka {currentUrl} sa nenašla."
 
 #: ../html/src/manager/errors/not-found.tsx:12
-#, fuzzy
-#| msgid "If you typed this address into your browser, double-check the spelling and capitalization."
 msgid "If you typed this address into your browser, double-check the spelling and capitalization. The address you are copying may also be outdated."
-msgstr "Ak ste zadali túto adresu do svojho prehliadača, znova skontrolujte pravopis a veľké písmená."
+msgstr "Ak ste zadali túto adresu do svojho prehliadača, znova skontrolujte pravopis a veľké písmená. Adresa, ktorú kopírujete, môže byť tiež zastaraná."
 
 #: ../html/src/manager/errors/not-found.tsx:18
-#, fuzzy
-#| msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your "
 msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your browser to try a different link, or use the top (or left) navigation bars to find the page you are looking for."
-msgstr "Ak ste nasledovali odkaz, ten môže byť nesprávny alebo zastaraný. Kliknite na tlačidlo späť vo vašom "
+msgstr "Ak ste nasledovali odkaz, ten môže byť nesprávny alebo zastaraný. Kliknite na tlačidlo späť vo vašom prehliadači a vyskúšajte iný odkaz alebo použite horný (alebo ľavý) navigačný panel, aby ste našli stránku, ktorú hľadáte."
 
 #: ../html/src/manager/errors/not-found.tsx:25
 msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was created. Use the top (or left) navigation bars to find the page you are looking for, and if you find the document be sure to update your bookmark."
 msgstr "Ak ste použili záložku, od vytvorenia záložky sa stránka mohla presunúť na iné miesto. Pomocou horných (alebo ľavých) navigačných panelov nájdite stránku, ktorú hľadáte, a ak dokument nájdete, nezabudnite aktualizovať svoju záložku."
 
 #: ../html/src/manager/errors/not-found.tsx:32
-#, fuzzy
-#| msgid "If you feel you've reached this page in error, please contact us with details of how you received "
 msgid "If you feel you've reached this page in error, please contact us with details of how you received this message."
-msgstr "Ak si myslíte, že ste sa na túto stránku dostali omylom, prosím, kontaktujte nás s podrobnosťami o tom, ako ste dostali "
+msgstr "Ak si myslíte, že ste sa na túto stránku dostali omylom, prosím, kontaktujte nás s podrobnosťami o tom, ako ste dostali túto správu."
 
 #: ../html/src/manager/groups/config-channels/group-config-channels.tsx:29
 msgid "Applying the config channels has been scheduled for each minion server in this group"
@@ -4588,10 +4570,8 @@ msgstr "Upraviť úložisko"
 
 #: ../html/src/manager/images/image-view-overview.tsx:465
 #: ../html/src/manager/images/image-view.tsx:752
-#, fuzzy
-#| msgid "Instance Details for '{name}'"
 msgid "Instance Details for \"{name}\""
-msgstr "Podrobnosti inštancie pre '{name}'"
+msgstr "Podrobnosti inštancie pre \"{name}\""
 
 #: ../html/src/manager/images/image-view-overview.tsx:520
 #: ../html/src/manager/images/image-view-overview.tsx:521
@@ -5027,10 +5007,8 @@ msgid "Current Schedule"
 msgstr "Aktuálny plán"
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:115
-#, fuzzy
-#| msgid "Url '{url}' is invalid"
 msgid "Url \"{url}\" is invalid"
-msgstr "Url '{url}' je neplatné"
+msgstr "Url \"{url}\" je neplatné"
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:139
 msgid "Calendar data"
@@ -6788,10 +6766,8 @@ msgid "These are the products currently installed on {system}:"
 msgstr ""
 
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:232
-#, fuzzy
-#| msgid "This slave is currently disabled and cannot be selected for migration"
 msgid "The systems currently selected cannot be migrated in batch."
-msgstr "Tento podriadený je v súčasnosti zakázaný a nie je možné ho vybrať na migráciu"
+msgstr "Aktuálne vybrané systémy nie je možné migrovať v dávke."
 
 #: ../html/src/manager/systems/proxy.tsx:44
 msgid "Please select a list of minions (not proxies or traditional clients)."
