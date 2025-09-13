@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-09-12 10:46+0200\n"
-"PO-Revision-Date: 2025-09-06 10:59+0000\n"
+"PO-Revision-Date: 2025-09-13 09:59+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/web/ca/>\n"
 "Language: ca\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.13.1\n"
+"X-Generator: Weblate 5.13.3\n"
 
 #: ../html/javascript/spacewalk-essentials.js:407
 msgid "remaining"
@@ -1586,6 +1586,10 @@ msgid ""
 "            other {<dropdown></dropdown> of # pages}\n"
 "        }"
 msgstr ""
+"{total, plural,\n"
+"            one {<dropdown></dropdown> d'# pàgina}\n"
+"            other {<dropdown></dropdown> de # pàgines}\n"
+"        }"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:58
 msgid "Sunday"
@@ -1661,49 +1665,37 @@ msgstr "Seleccioneu una planificació"
 
 #: ../html/src/components/product-migration/MigrationChannelsSelectorForm.tsx:159
 #: ../html/src/components/product-migration/MigrationTargetSelectorForm.tsx:56
-#, fuzzy
-#| msgid "Product"
 msgid "Source Product"
-msgstr "Producte"
+msgstr "Producte d'origen"
 
 #: ../html/src/components/product-migration/MigrationChannelsSelectorForm.tsx:166
-#, fuzzy
-#| msgid "Product"
 msgid "Target Product"
-msgstr "Producte"
+msgstr "Producte de destinació"
 
 #: ../html/src/components/product-migration/MigrationChannelsSelectorForm.tsx:173
-#, fuzzy
-#| msgid "New base channel"
 msgid "Target base channel"
-msgstr "Nou canal base"
+msgstr "Canal base de destinació"
 
 #: ../html/src/components/product-migration/MigrationChannelsSelectorForm.tsx:187
-#, fuzzy
-#| msgid "no child channels"
 msgid "Target child channels"
-msgstr "no hi ha canals fills"
+msgstr "Canal fill de destinació"
 
 #: ../html/src/components/product-migration/MigrationChannelsSelectorForm.tsx:194
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:85
 msgid "Allow vendor change"
-msgstr ""
+msgstr "Permet el canvi de proveïdor"
 
 #: ../html/src/components/product-migration/MigrationChannelsSelectorForm.tsx:207
-#, fuzzy
-#| msgid "Back to sytem selection"
 msgid "Back to target selection"
-msgstr "Torna a la selecció del sistema"
+msgstr "Torna a la selecció de destinacions"
 
 #: ../html/src/components/product-migration/MigrationChannelsSelectorForm.tsx:210
-#, fuzzy
-#| msgid "Schedule Attestation"
 msgid "Schedule Migration"
-msgstr "Prova de la planificació"
+msgstr "Programa la migració"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:41
 msgid "Please review your selection and confirm below to schedule the migration."
-msgstr ""
+msgstr "Reviseu la selecció i confirmeu-la a continuació per programar la migració."
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:45
 #: ../html/src/manager/header/search/search.tsx:10
@@ -1712,36 +1704,28 @@ msgid "Systems"
 msgstr "Tipus de sistema"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:60
-#, fuzzy
-#| msgid "Product Description"
 msgid "Product after migration"
-msgstr "Descripció del producte"
+msgstr "Producte després de la migració"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:66
-#, fuzzy
-#| msgid "No subscriptions found."
 msgid "Channel subscriptions after migration"
-msgstr "No s'ha trobat cap subscripció."
+msgstr "Subscripcions a canals després de la migració"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:91
 msgid "Schedule action for no sooner than"
-msgstr ""
+msgstr "Programa una acció per a no abans de"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:104
 msgid "In order to detect any possible problems it is recommended to always do a Dry Run before scheduling the actual Product Migration."
-msgstr ""
+msgstr "Per tal de detectar possibles problemes, es recomana fer sempre un simulacre abans de programar la migració del producte."
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:114
-#, fuzzy
-#| msgid "Back to sytem selection"
 msgid "Back to channel selection"
-msgstr "Torna a la selecció del sistema"
+msgstr "Torna a la selecció de canals"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:121
-#, fuzzy
-#| msgid " ready to run"
 msgid "Dry run"
-msgstr " llest per a executar"
+msgstr "Execució de prova"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:127
 #: ../html/src/manager/admin/hub/peripherals.tsx:39
@@ -1754,24 +1738,21 @@ msgid ""
 "\n"
 "{missingChannels}"
 msgstr ""
+"Objectiu no disponible, els canals següents no estan sincronitzats:\n"
+"\n"
+"{missingChannels}"
 
 #: ../html/src/components/product-migration/MigrationTargetSelectorForm.tsx:63
-#, fuzzy
-#| msgid "Product"
 msgid "Product id"
-msgstr "Producte"
+msgstr "ID del producte"
 
 #: ../html/src/components/product-migration/MigrationTargetSelectorForm.tsx:64
-#, fuzzy
-#| msgid "Products"
 msgid "Target Products"
-msgstr "Productes"
+msgstr "Productes de destinació"
 
 #: ../html/src/components/product-migration/MigrationTargetSelectorForm.tsx:84
-#, fuzzy
-#| msgid "Sync Channels"
 msgid "Select Channels"
-msgstr "Sincronitza els canals"
+msgstr "Seleccioneu els canals"
 
 #: ../html/src/components/ranking-table.tsx:20
 #: ../html/src/components/salt-state-popup.tsx:11
@@ -2337,10 +2318,8 @@ msgid "No hub is currently configured for this server. Refresh this page after c
 msgstr "Actualment no hi ha cap concentrador configurat per a aquest servidor. Actualitzeu aquesta pàgina després de configurar aquest servidor com a perifèric per veure els detalls del concentrador."
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:89
-#, fuzzy
-#| msgid "This server is currently registered as peripheral of hub {fqdn}. "
 msgid "This server is currently registered as peripheral of hub {fqdn}. This page shows the details of the hub server."
-msgstr "Aquest servidor està actualment registrat com a perifèric del concentrador {fqdn}. "
+msgstr "Aquest servidor està actualment registrat com a perifèric del concentrador {fqdn}. Aquesta pàgina mostra els detalls del servidor central."
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:108
 msgid "Successfully scheduled a channels synchronization."
@@ -2363,10 +2342,8 @@ msgid "{fqdn} - Peripheral Details"
 msgstr "{fqdn} - Detalls del perifèric"
 
 #: ../html/src/manager/admin/hub/peripheral-details.tsx:51
-#, fuzzy
-#| msgid "The server {fqdn} is currently registered as peripheral of this hub. "
 msgid "The server {fqdn} is currently registered as peripheral of this hub. This page shows the details of the peripheral server."
-msgstr "El servidor {fqdn} està actualment registrat com a perifèric d'aquest concentrador. "
+msgstr "El servidor {fqdn} està actualment registrat com a perifèric d'aquest concentrador. Aquesta pàgina mostra els detalls del servidor perifèric."
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:26
 msgid "Peripherals Configuration"
@@ -4138,26 +4115,20 @@ msgid "The page you requested, {currentUrl}, was not found."
 msgstr "No s'ha trobat la pàgina que heu sol·licitat, {currentUrl}."
 
 #: ../html/src/manager/errors/not-found.tsx:12
-#, fuzzy
-#| msgid "If you typed this address into your browser, double-check the spelling and capitalization."
 msgid "If you typed this address into your browser, double-check the spelling and capitalization. The address you are copying may also be outdated."
-msgstr "Si heu escrit aquesta adreça al navegador, reviseu-ne l'ortografia i les majúscules."
+msgstr "Si heu escrit aquesta adreça al navegador, reviseu-ne l'ortografia i les majúscules. L'adreça que copieu també pot no estar actualitzada."
 
 #: ../html/src/manager/errors/not-found.tsx:18
-#, fuzzy
-#| msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your "
 msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your browser to try a different link, or use the top (or left) navigation bars to find the page you are looking for."
-msgstr "Si heu seguit un enllaç, és possible que sigui incorrecte o que estigui desactualitzat. Feu clic al botó Enrere del "
+msgstr "Si heu seguit un enllaç, és possible que sigui incorrecte o que no estigui actualitzat. Feu clic al botó Enrere del navegador per provar un enllaç diferent o useu les barres de navegació superiors (o de l'esquerra) per trobar la pàgina que cerqueu."
 
 #: ../html/src/manager/errors/not-found.tsx:25
 msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was created. Use the top (or left) navigation bars to find the page you are looking for, and if you find the document be sure to update your bookmark."
 msgstr "Si heu fet servir un marcador, és possible que la pàgina s'hagi mogut a una ubicació diferent des que es va crear. Feu servir les barres de navegació superiors (o esquerra) per trobar la pàgina que busqueu i, si trobeu el document, assegureu-vos d'actualitzar el marcador."
 
 #: ../html/src/manager/errors/not-found.tsx:32
-#, fuzzy
-#| msgid "If you feel you've reached this page in error, please contact us with details of how you received "
 msgid "If you feel you've reached this page in error, please contact us with details of how you received this message."
-msgstr "Si creieu que heu arribat a aquesta pàgina per error, poseu-vos en contacte amb nosaltres i expliqueu-nos com heu rebut "
+msgstr "Si creieu que heu arribat a aquesta pàgina per error, poseu-vos en contacte amb nosaltres i expliqueu-nos com heu rebut aquest missatge."
 
 #: ../html/src/manager/groups/config-channels/group-config-channels.tsx:29
 msgid "Applying the config channels has been scheduled for each minion server in this group"
@@ -5090,11 +5061,11 @@ msgstr "Això desassignarà totes les planificacions d'aquest calendari."
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:30
 msgid "Create a new Maintenance Schedule"
-msgstr "Crea una nova planificació de manteniment"
+msgstr "Crea una planificació de manteniment nova"
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:30
 msgid "Create a new Maintenance Calendar"
-msgstr "Crea un nou calendari de manteniment"
+msgstr "Crea un calendari de manteniment nou"
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:41
 #: ../html/src/manager/maintenance/ssm/system-assignment.tsx:17
@@ -5743,10 +5714,8 @@ msgid "Filter by summary"
 msgstr "Filtra per resum"
 
 #: ../html/src/manager/notifications/notifications-list.tsx:123
-#, fuzzy
-#| msgid "Flag as Read"
 msgid "Mark as Read"
-msgstr "Bandera com a llegida"
+msgstr "Marca com a llegit"
 
 #: ../html/src/manager/notifications/notifications-list.tsx:133
 msgid "Severity"
@@ -6723,67 +6692,59 @@ msgstr "Sistema virtual"
 #: ../html/src/manager/systems/product-migration/migration-from-dry-run.tsx:59
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:97
 msgid "Product Migration - Schedule outcome"
-msgstr ""
+msgstr "Migració de productes - Programació del resultat"
 
 #: ../html/src/manager/systems/product-migration/migration-from-dry-run.tsx:62
-#, fuzzy
-#| msgid "{productName} Configuration - Monitoring"
 msgid "Product Migration - Confirm from dry run"
-msgstr "Configuració per a {productName} - Supervisió"
+msgstr "Migració de productes - Confirmació a partir de l'execució de prova"
 
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:88
 msgid "Product Migration - Choose target product"
-msgstr ""
+msgstr "Migració de productes - Trieu el producte de destinació"
 
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:91
 msgid "Product Migration - Select channels"
-msgstr ""
+msgstr "Migració de productes - Seleccioneu els canals"
 
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:94
 msgid "Product Migration - Schedule"
-msgstr ""
+msgstr "Migració de productes - Planificació"
 
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:116
-#, fuzzy
-#| msgid "Show product's channels"
 msgid "Show product details"
-msgstr "Mostra els canals del producte"
+msgstr "Mostra els detalls del producte"
 
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:131
 msgid "The products installed on this system can be migrated"
-msgstr ""
+msgstr "Els productes instal·lats en aquest sistema es poden migrar"
 
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:134
 msgid "The products installed on this system cannot be migrated"
-msgstr ""
+msgstr "Els productes instal·lats en aquest sistema no es poden migrar"
 
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:140
 msgid "The products installed on this system can be migrated."
-msgstr ""
+msgstr "Els productes instal·lats en aquest sistema es poden migrar."
 
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:159
-#, fuzzy
-#| msgid "Product"
 msgid "Base Product"
-msgstr "Producte"
+msgstr "Producte de base"
 
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:161
 msgid "Can be migrated?"
-msgstr ""
+msgstr "Es pot migrar?"
 
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:217
 msgid "Product details for {system}"
-msgstr ""
+msgstr "Detalls del producte per a {system}"
 
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:221
 msgid "These are the products currently installed on {system}:"
-msgstr ""
+msgstr "Aquests són els productes instal·lats actualment a {system}:"
 
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:232
-#, fuzzy
-#| msgid "This slave is currently disabled and cannot be selected for migration"
 msgid "The systems currently selected cannot be migrated in batch."
-msgstr "Aquest esclau està actualment desactivat i no es pot seleccionar per a la migració"
+msgstr "Els sistemes seleccionats actualment no es poden migrar per lots."
 
 #: ../html/src/manager/systems/proxy.tsx:44
 msgid "Please select a list of minions (not proxies or traditional clients)."
