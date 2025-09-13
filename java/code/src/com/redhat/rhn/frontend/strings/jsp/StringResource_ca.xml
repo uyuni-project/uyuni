@@ -29604,28 +29604,28 @@ lt;/pgt;
         </context-group>
         <target state="translated">Edita les propietats del sistema</target>
       </trans-unit>
-    <trans-unit id="actionchain.jsp.distupgrade.upgrade" xml:space="preserve">
+      <trans-unit id="actionchain.jsp.distupgrade.upgrade" xml:space="preserve">
         <source>Migrate the installed product on</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Migra el producte instal·lat a</target>
+      </trans-unit>
       <trans-unit id="auditview.mark.reviewed" xml:space="preserve">
         <source>Mark reviewed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/audit/Search.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Marca com a revisat</target>
+      </trans-unit>
       <trans-unit id="ssm.overview.product_migration" xml:space="preserve">
-            <source>Product Migration</source>
-        <target state="new"/>
-  </trans-unit>
-        <trans-unit id="ssm.overview.product_migration.migrate" xml:space="preserve">
-            <source>&lt;a href="/rhn/manager/systems/ssm/product-migration"&gt;Migrate the products&lt;/a&gt; installed on the selected systems</source>
-        <target state="new"/>
-  </trans-unit>
-        </body>
+        <source>Product Migration</source>
+        <target state="translated">Migració de productes</target>
+      </trans-unit>
+      <trans-unit id="ssm.overview.product_migration.migrate" xml:space="preserve">
+        <source>&lt;a href="/rhn/manager/systems/ssm/product-migration"&gt;Migrate the products&lt;/a&gt; installed on the selected systems</source>
+        <target state="translated">&lt;a href="/rhn/manager/systems/ssm/product-migration"&gt;Migra els productes&lt;/a&gt; instal·lats als sistemes seleccionats</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
