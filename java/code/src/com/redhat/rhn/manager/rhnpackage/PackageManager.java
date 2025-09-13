@@ -81,6 +81,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * PackageManager
@@ -1436,6 +1437,13 @@ public class PackageManager extends BaseManager {
 
         if (!user.isMemberOf(AccessGroupFactory.CHANNEL_ADMIN)) {
             throw new PermissionException(AccessGroupFactory.CHANNEL_ADMIN);
+        }
+        if (LOG.isInfoEnabled()) {
+            // Important for Auditing
+            String pkgList = PackageManager.lookupByIdAndUser(ids.stream().toList(), user).stream()
+                    .map(p -> "%s (%d)".formatted(p.getNameEvra(), p.getId()))
+                    .collect(Collectors.joining(", "));
+            LOG.info("Deleting {} packages: {}", ids.size(), pkgList);
         }
 
         long start = System.currentTimeMillis();
