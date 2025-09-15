@@ -19,6 +19,30 @@ type Props = {
   query?: string;
 };
 
+const DownloadCSVButton = ({ search }) => {
+  let url = "/rhn/manager/systems/csv/all";
+  if (search?.field && search?.criteria) {
+    const searchParams = new URLSearchParams({
+      qc: search.field,
+      q: search.criteria,
+    });
+    url += `?${searchParams.toString()}`;
+  }
+  return (
+    <a
+      role="button"
+      title="Download CSV"
+      href={url}
+      className="btn btn-default"
+      data-senna-off="true"
+      key="download-csv-button"
+    >
+      <IconTag type="item-download-csv" />
+      {t("Download CSV")}
+    </a>
+  );
+};
+
 export function AllSystems(props: Props) {
   const [selectedSystems, setSelectedSystems] = React.useState<string[]>([]);
 
@@ -65,19 +89,7 @@ export function AllSystems(props: Props) {
         defaultSearchField={props.queryColumn || "server_name"}
         initialSearch={props.query}
         emptyText={t("No Systems.")}
-        titleButtons={[
-          <a
-            role="button"
-            title="Download CSV"
-            href="/rhn/manager/systems/csv/all"
-            className="btn btn-default"
-            data-senna-off="true"
-            key="download-csv-button"
-          >
-            <IconTag type="item-download-csv" />
-            {t("Download CSV")}
-          </a>,
-        ]}
+        titleButtons={[<DownloadCSVButton search={{}} />]}
       >
         <Column
           columnKey="server_name"
