@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-09-12 10:46+0200\n"
-"PO-Revision-Date: 2025-09-13 17:59+0000\n"
+"PO-Revision-Date: 2025-09-15 15:59+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -185,7 +185,7 @@ msgstr "Atestácie"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:41
 msgid "No attestation report available. Schedule an execution to create one."
-msgstr ""
+msgstr "K dispozícii nie je žiadna atestačná správa. Naplánujte vykonanie, aby ste ho vytvorili."
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:48
 msgid "Attestation"
@@ -2967,10 +2967,8 @@ msgid "Affected, patch is unavailable in relevant channels"
 msgstr "Ovplyvnené, oprava nie je k dispozícii v príslušných kanáloch"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:81
-#, fuzzy
-#| msgid "The client is affected by a vulnerability for which a patch has not yet been released."
 msgid "The client is affected by a vulnerability for which a patch has been released, but the patch can't be found in the relevant channels."
-msgstr "Klient je ovplyvnený zraniteľnosťou, pre ktorú ešte nebola vydaná oprava."
+msgstr "Klient je ovplyvnený zraniteľnosťou, pre ktorú bola vydaná oprava, ale oprava sa nedá nájsť v príslušných kanáloch."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:87
 msgid "Affected, partial patch available in assigned channel"
