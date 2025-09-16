@@ -14,14 +14,13 @@
  */
 package com.redhat.rhn.testing;
 
-import com.redhat.rhn.frontend.servlets.LegacyServletOutputStream;
-
 import java.io.IOException;
+import javax.servlet.ServletOutputStream;
 
 /**
  * RhnMockServletOutputStream - simple mock of an output stream
  */
-public class RhnMockServletOutputStream extends LegacyServletOutputStream {
+public class RhnMockServletOutputStream extends ServletOutputStream {
     private StringBuffer contents;
 
     /**

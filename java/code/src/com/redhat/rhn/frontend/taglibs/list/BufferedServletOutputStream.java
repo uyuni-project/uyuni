@@ -15,17 +15,16 @@
 
 package com.redhat.rhn.frontend.taglibs.list;
 
-import com.redhat.rhn.frontend.servlets.LegacyServletOutputStream;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import javax.servlet.ServletOutputStream;
 
 /**
  * Buffers servlet output rather than streaming it to the client
  *
  */
-class BufferedServletOutputStream extends LegacyServletOutputStream {
+class BufferedServletOutputStream extends ServletOutputStream {
 
     private ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 

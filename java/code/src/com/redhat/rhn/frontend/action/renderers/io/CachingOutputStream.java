@@ -15,16 +15,15 @@
 
 package com.redhat.rhn.frontend.action.renderers.io;
 
-import com.redhat.rhn.frontend.servlets.LegacyServletOutputStream;
-
 import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
+import javax.servlet.ServletOutputStream;
 
 /**
  * Caches all content written to it to be retrieved
  * later
  */
-public class CachingOutputStream extends LegacyServletOutputStream {
+public class CachingOutputStream extends ServletOutputStream {
 
     private ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 
