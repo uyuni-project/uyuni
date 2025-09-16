@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-09-12 10:46+0200\n"
-"PO-Revision-Date: 2025-09-15 15:59+0000\n"
+"PO-Revision-Date: 2025-09-16 13:59+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -1586,6 +1586,10 @@ msgid ""
 "            other {<dropdown></dropdown> of # pages}\n"
 "        }"
 msgstr ""
+"{total, plural,\n"
+"            one {<dropdown></dropdown> z # strany}\n"
+"            other {<dropdown></dropdown> z # strán}\n"
+"        }"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:58
 msgid "Sunday"
@@ -1661,49 +1665,37 @@ msgstr "Vybrať plán"
 
 #: ../html/src/components/product-migration/MigrationChannelsSelectorForm.tsx:159
 #: ../html/src/components/product-migration/MigrationTargetSelectorForm.tsx:56
-#, fuzzy
-#| msgid "Product"
 msgid "Source Product"
-msgstr "Produkt"
+msgstr "Zdrojový produkt"
 
 #: ../html/src/components/product-migration/MigrationChannelsSelectorForm.tsx:166
-#, fuzzy
-#| msgid "Target Host"
 msgid "Target Product"
-msgstr "Cieľový hostiteľ"
+msgstr "Cieľový produkt"
 
 #: ../html/src/components/product-migration/MigrationChannelsSelectorForm.tsx:173
-#, fuzzy
-#| msgid "New base channel"
 msgid "Target base channel"
-msgstr "Nový základný kanál"
+msgstr "Cieľový základný kanál"
 
 #: ../html/src/components/product-migration/MigrationChannelsSelectorForm.tsx:187
-#, fuzzy
-#| msgid "no child channels"
 msgid "Target child channels"
-msgstr "žiadne kanály potomkov"
+msgstr "Cieľové kanály potomkov"
 
 #: ../html/src/components/product-migration/MigrationChannelsSelectorForm.tsx:194
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:85
 msgid "Allow vendor change"
-msgstr ""
+msgstr "Povoliť zmenu dodávateľa"
 
 #: ../html/src/components/product-migration/MigrationChannelsSelectorForm.tsx:207
-#, fuzzy
-#| msgid "Back to sytem selection"
 msgid "Back to target selection"
-msgstr "Späť na výber systému"
+msgstr "Späť na výber cieľa"
 
 #: ../html/src/components/product-migration/MigrationChannelsSelectorForm.tsx:210
-#, fuzzy
-#| msgid "Schedule Attestation"
 msgid "Schedule Migration"
-msgstr "Naplánovať atestáciu"
+msgstr "Naplánovať migráciu"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:41
 msgid "Please review your selection and confirm below to schedule the migration."
-msgstr ""
+msgstr "Prosím, skontrolujte svoj výber a potvrďte nižšie, aby ste naplánovali migráciu."
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:45
 #: ../html/src/manager/header/search/search.tsx:10
@@ -1712,10 +1704,8 @@ msgid "Systems"
 msgstr "Systémy"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:60
-#, fuzzy
-#| msgid "Product Description"
 msgid "Product after migration"
-msgstr "Popis produktu"
+msgstr "Produkt po migrácii"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:66
 msgid "Channel subscriptions after migration"
@@ -1723,17 +1713,15 @@ msgstr "Predplatné kanálov po migrácii"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:91
 msgid "Schedule action for no sooner than"
-msgstr ""
+msgstr "Akciu naplánujte nie skôr ako na"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:104
 msgid "In order to detect any possible problems it is recommended to always do a Dry Run before scheduling the actual Product Migration."
-msgstr ""
+msgstr "Aby sa zistili prípadné problémy, odporúča sa vždy pred naplánovaním skutočnej migrácie produktu vykonať skúšobnú migráciu."
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:114
-#, fuzzy
-#| msgid "Back to sytem selection"
 msgid "Back to channel selection"
-msgstr "Späť na výber systému"
+msgstr "Späť na výber kanálov"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:121
 msgid "Dry run"
@@ -1750,24 +1738,21 @@ msgid ""
 "\n"
 "{missingChannels}"
 msgstr ""
+"Cieľ nie je dostupný, nasledujúce kanály nie sú synchronizované:\n"
+"\n"
+"{missingChannels}"
 
 #: ../html/src/components/product-migration/MigrationTargetSelectorForm.tsx:63
-#, fuzzy
-#| msgid "Product"
 msgid "Product id"
-msgstr "Produkt"
+msgstr "Produkt id"
 
 #: ../html/src/components/product-migration/MigrationTargetSelectorForm.tsx:64
-#, fuzzy
-#| msgid "Products"
 msgid "Target Products"
-msgstr "Produkty"
+msgstr "Cieľové produkty"
 
 #: ../html/src/components/product-migration/MigrationTargetSelectorForm.tsx:84
-#, fuzzy
-#| msgid "Sync Channels"
 msgid "Select Channels"
-msgstr "Synchronizácia kanálov"
+msgstr "Vybrať kanály"
 
 #: ../html/src/components/ranking-table.tsx:20
 #: ../html/src/components/salt-state-popup.tsx:11
@@ -2105,6 +2090,10 @@ msgid ""
 "            other {{fooCount} items}\n"
 "          }."
 msgstr ""
+"Vždy používajte množné číslo pre čísla: {fooCount, plural,\n"
+"            one {len jedna položka}\n"
+"            other {{fooCount} položky}\n"
+"          }."
 
 #: ../html/src/core/intl/index.test.tsx:9
 msgid "foo"
@@ -2326,7 +2315,7 @@ msgstr "Podrobnosti pre hub"
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:80
 msgid "No hub is currently configured for this server. Refresh this page after configuring this server as a peripheral, to see the hub details"
-msgstr ""
+msgstr "Pre tento server nie je v súčasnosti nakonfigurovaný žiadny hub. Obnovte túto stránku po nakonfigurovaní tohto servera ako periférie, aby ste videli podrobnosti hubu"
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:89
 msgid "This server is currently registered as peripheral of hub {fqdn}. This page shows the details of the hub server."
@@ -5725,8 +5714,6 @@ msgid "Filter by summary"
 msgstr "Filtrovať podľa súhrnu"
 
 #: ../html/src/manager/notifications/notifications-list.tsx:123
-#, fuzzy
-#| msgid "Flag as Read"
 msgid "Mark as Read"
 msgstr "Označiť ako prečítané"
 
