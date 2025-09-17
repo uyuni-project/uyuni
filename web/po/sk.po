@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-09-12 10:46+0200\n"
-"PO-Revision-Date: 2025-09-16 13:59+0000\n"
+"PO-Revision-Date: 2025-09-17 17:59+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -6692,63 +6692,55 @@ msgstr "Virtuálny systém"
 #: ../html/src/manager/systems/product-migration/migration-from-dry-run.tsx:59
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:97
 msgid "Product Migration - Schedule outcome"
-msgstr ""
+msgstr "Migrácia produktu – Plánovaný výsledok"
 
 #: ../html/src/manager/systems/product-migration/migration-from-dry-run.tsx:62
-#, fuzzy
-#| msgid "{productName} Configuration - Monitoring"
 msgid "Product Migration - Confirm from dry run"
-msgstr "Konfigurácia {productName} - Monitorovanie"
+msgstr "Migrácia produktu – Potvrdenie zo skúšobného spustenia"
 
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:88
 msgid "Product Migration - Choose target product"
-msgstr ""
+msgstr "Migrácia produktu – Výber cieľového produktu"
 
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:91
-#, fuzzy
-#| msgid "configuration channels"
 msgid "Product Migration - Select channels"
-msgstr "konfiguračné kanály"
+msgstr "Migrácia produktov – Výber kanálov"
 
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:94
 msgid "Product Migration - Schedule"
-msgstr ""
+msgstr "Migrácia produktov – Plán"
 
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:116
-#, fuzzy
-#| msgid "Show product's channels"
 msgid "Show product details"
-msgstr "Zobraziť kanály produktu"
+msgstr "Zobraziť podrobnosti o produkte"
 
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:131
 msgid "The products installed on this system can be migrated"
-msgstr ""
+msgstr "Produkty nainštalované v tomto systéme je možné migrovať"
 
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:134
 msgid "The products installed on this system cannot be migrated"
-msgstr ""
+msgstr "Produkty nainštalované v tomto systéme nie je možné migrovať"
 
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:140
 msgid "The products installed on this system can be migrated."
-msgstr ""
+msgstr "Produkty nainštalované v tomto systéme je možné migrovať."
 
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:159
-#, fuzzy
-#| msgid "Product"
 msgid "Base Product"
-msgstr "Produkt"
+msgstr "Základný produkt"
 
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:161
 msgid "Can be migrated?"
-msgstr ""
+msgstr "Je možné migrovať?"
 
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:217
 msgid "Product details for {system}"
-msgstr ""
+msgstr "Podrobnosti produktu pre {system}"
 
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:221
 msgid "These are the products currently installed on {system}:"
-msgstr ""
+msgstr "Toto sú produkty, ktoré sú v súčasnosti nainštalované na {system}:"
 
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:232
 msgid "The systems currently selected cannot be migrated in batch."
