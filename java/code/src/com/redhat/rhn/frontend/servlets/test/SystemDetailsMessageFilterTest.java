@@ -31,7 +31,6 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -64,7 +63,7 @@ public class SystemDetailsMessageFilterTest extends MockObjectTestCase {
         ActionMessage message = globalMessagesIterator.next();
         assertEquals(SystemDetailsMessageFilter.TRADITIONAL_STACK_MESSAGE_KEY, message.getKey());
         // Ensure only one message is present
-        Assertions.assertFalse(globalMessagesIterator.hasNext());
+        assertFalse(globalMessagesIterator.hasNext());
     }
 
     @Test
