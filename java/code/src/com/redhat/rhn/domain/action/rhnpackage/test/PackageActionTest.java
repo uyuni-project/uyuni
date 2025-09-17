@@ -52,8 +52,8 @@ public class PackageActionTest extends RhnBaseTestCase {
     @Test
     public void testLookupPackageAction() throws Exception {
 
-        Action newA = ActionFactoryTest.createAction(UserTestUtils.createUser("testUser",
-                UserTestUtils.createOrg("testOrg" + this.getClass().getSimpleName())),
+        Action newA = ActionFactoryTest.createAction(
+                UserTestUtils.createUser(this),
                 ActionFactory.TYPE_PACKAGES_VERIFY);
         assertNotNull(newA.getId());
         assertInstanceOf(PackageAction.class, newA);
@@ -72,7 +72,7 @@ public class PackageActionTest extends RhnBaseTestCase {
             assertNotNull(detail.getEvr().getId());
         }
 
-        User user = UserTestUtils.findNewUser("TEST USER", "TEST ORG");
+        User user = UserTestUtils.createUser("TEST USER", "TEST ORG");
         Server testserver = ServerFactoryTest.createTestServer(user);
 
         PackageActionResult result = new PackageActionResult();
@@ -99,8 +99,7 @@ public class PackageActionTest extends RhnBaseTestCase {
 
     @Test
     public void testCreatePackageUpdateAction() throws Exception {
-        User usr = UserTestUtils.findNewUser(this);
-
+        User usr = UserTestUtils.createUser(this);
         PackageAction testAction = (PackageAction)ActionFactoryTest.createAction(usr,
                 ActionFactory.TYPE_PACKAGES_UPDATE);
         PackageActionDetailsTest.createTestDetailsWithNvre(usr, testAction);
@@ -124,8 +123,7 @@ public class PackageActionTest extends RhnBaseTestCase {
 
     @Test
     public void testCreatePackageUpdateActionWithName() throws Exception {
-        User usr = UserTestUtils.findNewUser(this);
-
+        User usr = UserTestUtils.createUser(this);
         PackageAction testAction = (PackageAction)ActionFactoryTest.createAction(usr,
                 ActionFactory.TYPE_PACKAGES_UPDATE);
         PackageActionDetailsTest.createTestDetailsWithName(usr, testAction);
@@ -148,7 +146,7 @@ public class PackageActionTest extends RhnBaseTestCase {
 
     @Test
     public void testCreatePackageRemoveAction() throws Exception {
-        User user = UserTestUtils.findNewUser(this);
+        User user = UserTestUtils.createUser(this);
         Server srvr = ServerFactoryTest.createTestServer(user);
 
         ServerAction sa = new ServerAction();

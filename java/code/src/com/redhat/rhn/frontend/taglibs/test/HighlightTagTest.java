@@ -105,7 +105,6 @@ public class HighlightTagTest extends RhnBaseTestCase {
         ht.setTag(null);
         ht.setStartTag("<foo>");
         ht.setEndTag("</foo>");
-//        out.setExpectedData("some <foo>test</foo> text");
         try {
             tth.assertDoEndTag(Tag.EVAL_PAGE);
         }

@@ -32,7 +32,7 @@ public class ProxyServerTest extends RhnBaseTestCase {
 
     @Test
     public void testProxyServer() {
-        User user = UserTestUtils.findNewUser();
+        User user = UserTestUtils.createUser();
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server server = ServerFactoryTest.createTestServer(user, true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled(),

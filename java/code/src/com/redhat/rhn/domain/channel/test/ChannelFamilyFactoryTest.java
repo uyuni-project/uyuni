@@ -76,7 +76,7 @@ public class ChannelFamilyFactoryTest extends RhnBaseTestCase {
 
     @Test
     public void testVerifyOrgFamily() {
-        User user = UserTestUtils.findNewUser(this);
+        User user = UserTestUtils.createUser(this);
         Org org = user.getOrg();
         ChannelFamily orgfam = ChannelFamilyFactory.lookupByOrg(org);
 
@@ -99,12 +99,12 @@ public class ChannelFamilyFactoryTest extends RhnBaseTestCase {
     }
 
     public static ChannelFamily createNullOrgTestChannelFamily() {
-        User user = UserTestUtils.findNewUser("testUser", "testOrgCreateTestChannelFamily");
+        User user = UserTestUtils.createUser();
         return createTestChannelFamily(user, true);
     }
 
     public static ChannelFamily createTestChannelFamily() {
-        User user = UserTestUtils.findNewUser("testUser", "testOrgCreateTestChannelFamily");
+        User user = UserTestUtils.createUser();
         return createTestChannelFamily(user);
     }
 

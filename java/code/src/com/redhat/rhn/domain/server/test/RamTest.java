@@ -34,7 +34,7 @@ public class RamTest extends RhnBaseTestCase {
     @Test
     public void testRam() throws Exception {
 
-        User u = UserTestUtils.findNewUser(this);
+        User u = UserTestUtils.createUser(this);
         Server server = ServerFactoryTest.createTestServer(u);
         assertNotNull(server);
         assertNotNull(server.getId());

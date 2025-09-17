@@ -60,7 +60,7 @@ public class EditAddressActionTest extends RhnBaseTestCase {
         // Make sure we aren't operating on the logged in user
         // we want to edit the address associated with the UID field
         // in the Request.
-        usr = UserTestUtils.findNewUser("differentUser", "differentOrg");
+        usr = UserTestUtils.createUser("differentUser", "differentOrg");
         // Have to grab the UID out of the request so we can reset it
         String userIdRaw = request.getParameter("uid");
         userIdRaw = usr.getId().toString();

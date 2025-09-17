@@ -102,7 +102,7 @@ public class ServerActionTest extends RhnBaseTestCase {
 
     @Test
     public void testCreate() throws Exception {
-        User user = UserTestUtils.findNewUser(this);
+        User user = UserTestUtils.createUser(this);
         ErrataAction parent = (ErrataAction) ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
         new ActionPackageDetails();
         ServerAction child = createServerAction(ServerFactoryTest
@@ -124,8 +124,8 @@ public class ServerActionTest extends RhnBaseTestCase {
      */
     @Test
     public void testLookupServerAction() throws Exception {
-        Action newA = ActionFactoryTest.createAction(UserTestUtils.createUser("testUser",
-                UserTestUtils.createOrg("testOrg" + this.getClass().getSimpleName())),
+        Action newA = ActionFactoryTest.createAction(
+                UserTestUtils.createUser(this),
                 ActionFactory.TYPE_REBOOT);
         Long id = newA.getId();
         Action a = ActionFactory.lookupById(id);

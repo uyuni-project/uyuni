@@ -73,7 +73,7 @@ public class SystemEntitlementManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testEntitleServer() throws Exception {
-        User user = UserTestUtils.findNewUser(this);
+        User user = UserTestUtils.createUser(this);
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server server = ServerTestUtils.createTestSystem(user, ServerConstants.getServerGroupTypeEnterpriseEntitled());
         ChannelTestUtils.setupBaseChannelForVirtualization(user,
@@ -146,7 +146,7 @@ public class SystemEntitlementManagerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testVirtualEntitleServer() throws Exception {
         // User and server
-        User user = UserTestUtils.findNewUser(this);
+        User user = UserTestUtils.createUser(this);
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server server = ServerTestUtils.createTestSystem(user, ServerConstants.getServerGroupTypeEnterpriseEntitled());
         ChannelTestUtils.setupBaseChannelForVirtualization(user, server.getBaseChannel());
@@ -190,7 +190,7 @@ public class SystemEntitlementManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testEntitleAnsibleControlNodeToTradClient() throws Exception {
-        User user = UserTestUtils.findNewUser(this);
+        User user = UserTestUtils.createUser(this);
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server server = ServerTestUtils.createTestSystem(user, ServerConstants.getServerGroupTypeEnterpriseEntitled());
         server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
@@ -208,7 +208,7 @@ public class SystemEntitlementManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testEntitleAnsibleControlNodeToSaltClient() throws Exception {
-        User user = UserTestUtils.findNewUser(this);
+        User user = UserTestUtils.createUser(this);
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server server = MinionServerFactoryTest.createTestMinionServer(user);
         server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));

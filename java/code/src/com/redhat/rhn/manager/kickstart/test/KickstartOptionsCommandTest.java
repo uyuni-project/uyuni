@@ -36,7 +36,7 @@ public class KickstartOptionsCommandTest extends BaseTestCaseWithUser {
     public void testKickstartOptionsCommand() throws Exception {
         KickstartData k = KickstartDataTest.createKickstartWithOptions(user.getOrg());
 
-        User ksUser = UserTestUtils.createUser("testuser", k.getOrg().getId());
+        User ksUser = new UserTestUtils.UserBuilder().orgId(k.getOrg().getId()).build();
 
         KickstartOptionsCommand command = new KickstartOptionsCommand(k.getId(), ksUser);
 

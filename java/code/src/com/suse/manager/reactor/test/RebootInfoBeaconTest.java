@@ -58,8 +58,7 @@ public class RebootInfoBeaconTest extends RhnJmockBaseTestCase {
 
     @BeforeEach
     public void setUp() {
-        user = UserTestUtils.findNewUser("testUser", "testOrg" +
-                this.getClass().getSimpleName());
+        user = UserTestUtils.createUser(this);
         this.eventParser = new JsonParser<>(new TypeToken<>() {
         });
         SaltService saltService = createSaltService();

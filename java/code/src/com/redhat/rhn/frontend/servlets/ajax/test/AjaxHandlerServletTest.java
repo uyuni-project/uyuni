@@ -50,8 +50,7 @@ public class AjaxHandlerServletTest extends AjaxHandlerServlet {
 
     @BeforeEach
     public void setUp() {
-        user = UserTestUtils.findNewUser("testUser", "testOrg" +
-                this.getClass().getSimpleName());
+        user = UserTestUtils.createUser(this);
         WebSession session = WebSessionFactory.createSession();
         session.setWebUserId(user.getId());
         request = new RhnMockHttpServletRequest();

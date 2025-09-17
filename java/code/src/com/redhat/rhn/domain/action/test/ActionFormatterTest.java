@@ -41,7 +41,7 @@ public class ActionFormatterTest extends RhnBaseTestCase {
     @Override
     @BeforeEach
     public void setUp() {
-        user = UserTestUtils.findNewUser(this);
+        user = UserTestUtils.createUser(this);
     }
     /**
      * Test formatting an Action

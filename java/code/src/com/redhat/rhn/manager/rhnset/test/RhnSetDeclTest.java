@@ -47,7 +47,7 @@ public class RhnSetDeclTest extends RhnBaseTestCase {
     @Override
     @BeforeEach
     public void setUp() {
-        user = UserTestUtils.findNewUser(this);
+        user = UserTestUtils.createUser(this);
     }
 
     @Override

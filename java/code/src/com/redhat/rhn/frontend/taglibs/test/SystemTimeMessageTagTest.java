@@ -54,7 +54,7 @@ public class SystemTimeMessageTagTest extends RhnBaseTestCase {
             //should go here
         }
 
-        User user = UserTestUtils.findNewUser(this);
+        User user = UserTestUtils.createUser(this);
         Server server = ServerFactoryTest.createTestServer(user);
         tag.setServer(server);
         tag.doEndTag();

@@ -76,7 +76,7 @@ public class RhnMockStrutsTestCase extends MockStrutsTestCase implements Hiberna
 
         request.setServerName("localhost");
         request.setMethod(HttpServletRequestSimulator.GET);
-        user = UserTestUtils.findNewUser(TestStatics.TESTUSER, TestStatics.TESTORG);
+        user = UserTestUtils.createUser(TestStatics.TEST_USER, TestStatics.TEST_ORG);
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         addRequestParameter(RequestContext.USER_ID, user.getId().toString());
         WebSession s = requestContext.getWebSession();

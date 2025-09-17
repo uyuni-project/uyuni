@@ -83,7 +83,7 @@ public class UserTest extends RhnBaseTestCase {
      */
     @Test
     public void testAuthenticateTrue() {
-        User usr = UserTestUtils.findNewUser(this);
+        User usr = UserTestUtils.createUser(this);
         // relies on UserTestUtils.createUser setting password to "password"
         assertTrue(usr.authenticate("password"));
     }
@@ -94,7 +94,7 @@ public class UserTest extends RhnBaseTestCase {
      */
     @Test
     public void testAuthenticateFail() {
-        User usr = UserTestUtils.findNewUser(this);
+        User usr = UserTestUtils.createUser(this);
         assertFalse(usr.authenticate("this should fail"));
     }
 
@@ -105,7 +105,7 @@ public class UserTest extends RhnBaseTestCase {
      */
     @Test
     public void testLookupSameUserTwice() {
-        User usr = UserTestUtils.findNewUser(this);
+        User usr = UserTestUtils.createUser(this);
         Long userId = usr.getId();
         usr.getOrg();
         usr = null;
@@ -117,7 +117,7 @@ public class UserTest extends RhnBaseTestCase {
      */
     @Test
     public void testAddAddress() {
-        User usr = UserTestUtils.findNewUser(this);
+        User usr = UserTestUtils.createUser(this);
         Address addr = UserTestUtils.createTestAddress(usr);
         UserFactory.save(usr);
         assertTrue(addr.getId() != 0);
@@ -126,7 +126,7 @@ public class UserTest extends RhnBaseTestCase {
 
     @Test
     public void testBeanMethods() {
-        User usr = UserTestUtils.findNewUser(this);
+        User usr = UserTestUtils.createUser(this);
         String foo = "foo";
         Date now = new Date();
 
@@ -200,7 +200,7 @@ public class UserTest extends RhnBaseTestCase {
 
     @Test
     public void testSystemGroupMethods() {
-        User usr = UserTestUtils.findNewUser(this);
+        User usr = UserTestUtils.createUser(this);
         assertEquals(0, usr.getDefaultSystemGroupIds().size());
         // We currently don't have a way in the Java code to
         // add SystemGroups, we can only update pre-existing ones
@@ -213,7 +213,7 @@ public class UserTest extends RhnBaseTestCase {
 
     @Test
     public void testGetRoles() {
-        User usr = UserTestUtils.findNewUser(this);
+        User usr = UserTestUtils.createUser(this);
         Set<Role> roles = usr.getRoles();
         assertEquals(5, roles.size());
     }
@@ -230,7 +230,7 @@ public class UserTest extends RhnBaseTestCase {
     public void testPamAuthenticationFails() {
         String oldValue = Config.get().setString("web.pam_auth_service", "login");
         try {
-            User usr = UserTestUtils.findNewUser(this);
+            User usr = UserTestUtils.createUser(this);
             usr.setUsePamAuthentication(true);
             // This fails, though it succeeds in testAUthenticateTrue, giving
             // us some confidence that a different auth mechanism was indeed
@@ -244,7 +244,7 @@ public class UserTest extends RhnBaseTestCase {
 
     @Test
     public void testServerPerms() throws Exception {
-        User user = UserTestUtils.findNewUser(this);
+        User user = UserTestUtils.createUser(this);
         Server server = ServerTestUtils.createTestSystem(user);
 
         assertEquals(1, user.getServers().size());

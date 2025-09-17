@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.taglibs.list.decorators.PageSizeDecorator;
 import com.redhat.rhn.manager.user.CreateUserCommand;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.TestStatics;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -60,8 +61,8 @@ public class CreateUserCommandTest extends RhnBaseTestCase {
         command.setEmail(invalidEmail);
         command.setPassword(invalidPassword);
         command.setPrefix(validPrefix);
-        command.setFirstNames("testuser");
-        command.setLastName("testuser");
+        command.setFirstNames(TestStatics.TEST_USER);
+        command.setLastName(TestStatics.TEST_USER);
         //We should get 4 errors (login, email, password, prefix)
         Object[] errors = command.validate();
         Config.get().setString(UserDefaults.MAX_USER_LENGTH,
@@ -92,8 +93,8 @@ public class CreateUserCommandTest extends RhnBaseTestCase {
         command.setEmail(invalidEmail);
         command.setPassword(invalidPassword);
         command.setPrefix(invalidPrefix);
-        command.setFirstNames("testuser");
-        command.setLastName("testuser");
+        command.setFirstNames(TestStatics.TEST_USER);
+        command.setLastName(TestStatics.TEST_USER);
 
         //We should get 4 errors (login, email, password, prefix)
         Object[] errors = command.validate();
@@ -111,7 +112,7 @@ public class CreateUserCommandTest extends RhnBaseTestCase {
 
     @Test
     public void testStore() {
-        Org org = UserTestUtils.findNewOrg("testorg");
+        Org org = UserTestUtils.createOrg(TestStatics.TEST_ORG);
 
         String login = TestUtils.randomString();
         command.setLogin(login);
@@ -140,8 +141,8 @@ public class CreateUserCommandTest extends RhnBaseTestCase {
     public void testUsernameValidation() {
         // setup stuff required for command
         command.setEmail("validemail@mycompany.com");
-        command.setFirstNames("testuser");
-        command.setLastName("testuser");
+        command.setFirstNames(TestStatics.TEST_USER);
+        command.setLastName(TestStatics.TEST_USER);
         command.setPassword("validPassword");
         command.setPrefix("Ms.");
 

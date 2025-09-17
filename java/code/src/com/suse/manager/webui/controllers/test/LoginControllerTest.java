@@ -212,7 +212,7 @@ public class LoginControllerTest extends BaseControllerTestCase {
     @Test
     public void testLoginWithDisabledUsername() throws UnsupportedEncodingException {
         Config.get().setBoolean(ConfigDefaults.SINGLE_SIGN_ON_ENABLED, "false");
-        User u = UserTestUtils.findNewUser(this);
+        User u = UserTestUtils.createUser(this);
         UserManager.disableUser(u, u);
         Map<String, String> params = new HashMap<>();
         Request request = SparkTestUtils.createMockRequestWithBody(

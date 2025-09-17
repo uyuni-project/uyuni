@@ -66,8 +66,7 @@ public class NoteTest extends RhnBaseTestCase {
     public static Note createTestNote() throws Exception {
         Note note = new Note();
 
-        User user = UserTestUtils.createUser("testuser",
-                                    UserTestUtils.createOrg("testorg"));
+        User user = UserTestUtils.createUser();
         note.setCreator(user);
         note.setServer(ServerFactoryTest.createTestServer(user));
         note.setSubject("RHN-JAVA Unit tests are good");

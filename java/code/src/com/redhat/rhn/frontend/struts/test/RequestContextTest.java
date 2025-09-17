@@ -59,8 +59,7 @@ public class RequestContextTest extends MockObjectTestCase {
 
         Response response = RequestResponseFactory.create(new RhnMockHttpServletResponse());
         // logging in
-        LoginHelper.successfulLogin(mockRequest, response.raw(), UserTestUtils.findNewUser("testUser", "testOrg" +
-                this.getClass().getSimpleName()));
+        LoginHelper.successfulLogin(mockRequest, response.raw(), UserTestUtils.createUser(this));
         ModelAndView result = LoginController.loginView(RequestResponseFactory.create(match, mockRequest), response);
         HashMap<String, String> model = (HashMap<String, String>) result.getModel();
         assertNotNull(mockRequest.getSession().getAttribute("webUserID"));

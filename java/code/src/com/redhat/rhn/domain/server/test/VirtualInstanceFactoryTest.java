@@ -62,7 +62,7 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
     @BeforeEach
     public void setUp() {
         virtualInstanceDAO = new VirtualInstanceFactory();
-        user = UserTestUtils.findNewUser(this);
+        user = UserTestUtils.createUser(this);
         builder = new GuestBuilder(user);
         SaltApi saltApi = new TestSaltApi();
         systemEntitlementManager = new SystemEntitlementManager(

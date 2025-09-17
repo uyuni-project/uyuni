@@ -21,7 +21,6 @@ import com.redhat.rhn.domain.common.ResetPassword;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.action.user.ResetPasswordSubmitAction;
-import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.RhnMockDynaActionForm;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
@@ -109,8 +108,10 @@ public class ResetPasswordSubmitActionTest extends BaseTestCaseWithUser {
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
-        adminUser = UserTestUtils.findNewUser("testAdminUser", "testOrg" +
-                        this.getClass().getSimpleName(), true);
+        adminUser = new UserTestUtils.UserBuilder()
+                .userName("testAdminUser")
+                .orgAdmin(true)
+                .build();
         action = new ResetPasswordSubmitAction();
 
         mapping = new ActionMapping();
@@ -120,8 +121,6 @@ public class ResetPasswordSubmitActionTest extends BaseTestCaseWithUser {
         form = new RhnMockDynaActionForm("resetPasswordForm");
         request = new RhnMockHttpServletRequest();
         response = new RhnMockHttpServletResponse();
-
-        RequestContext requestContext = new RequestContext(request);
 
         RhnMockHttpSession mockSession = new RhnMockHttpSession();
         mockSession.setAttribute("token", null);

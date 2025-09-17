@@ -33,7 +33,7 @@ public class CustomDataKeyTest extends RhnBaseTestCase {
 
     @Test
     public void testCustomDataKey() {
-        User user = UserTestUtils.findNewUser();
+        User user = UserTestUtils.createUser();
         CustomDataKey key = createTestCustomDataKey(user);
 
         Long id = key.getId();

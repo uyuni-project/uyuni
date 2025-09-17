@@ -47,7 +47,6 @@ import org.junit.jupiter.api.Test;
 import java.util.Collections;
 import java.util.Optional;
 
-
 /**
  * SystemManagerMockTest
  */
@@ -69,8 +68,7 @@ public class SystemManagerMockTest extends JMockBaseTestCaseWithUser {
             "server.secret_key",
             DigestUtils.sha256Hex(TestUtils.randomString()));
 
-        User user = UserTestUtils.findNewUser(
-            "testUser", "testOrg" + this.getClass().getSimpleName());
+        User user = UserTestUtils.createUser(this);
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
 
         MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(user);

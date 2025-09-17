@@ -174,7 +174,7 @@ public class XmlRpcServletTest extends MockObjectTestCase {
 
     @Test
     public void testTranslation() throws Exception {
-        User user = UserTestUtils.findNewUser();
+        User user = UserTestUtils.createUser();
         doTest("<?xml version=\"1.0\"?> <methodCall> " +
                "<methodName>unittest.getUserLogin</methodName> <params> " +
                "<param><value><i4>" + user.getId() + "</i4></value></param>" +

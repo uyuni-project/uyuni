@@ -42,7 +42,10 @@ public class CryptoKeysHandlerTest extends BaseHandlerTestCase {
     @Test
     public void testListAllKeys() {
         // Setup
-        User otherOrg = UserTestUtils.findNewUser("testUser", "cryptoOrg", true);
+        User otherOrg = new UserTestUtils.UserBuilder()
+                .orgName("cryptoOrg")
+                .orgAdmin(true)
+                .build();
         CryptoKey key = CryptoTest.createTestKey(otherOrg.getOrg());
         KickstartFactory.saveCryptoKey(key);
         flushAndEvict(key);

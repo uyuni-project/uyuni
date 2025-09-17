@@ -208,8 +208,8 @@ public class TestUtils {
         request.setSession(session);
 
         // Create a test user
-        User user = UserTestUtils.findNewUser(
-                "testUser",
+        User user = UserTestUtils.createUser(
+                TestStatics.TEST_USER,
                 "testOrg_getRequestWithSessionAndUser" + RandomStringUtils.randomAlphanumeric(5)
         );
         Long userid = user.getId();

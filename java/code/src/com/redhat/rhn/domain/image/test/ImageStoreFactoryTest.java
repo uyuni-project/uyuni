@@ -51,7 +51,7 @@ public class ImageStoreFactoryTest extends BaseTestCaseWithUser {
         assertEquals(ImageStoreFactory.TYPE_OS_IMAGE, osImgStore.getStoreType());
         assertEquals(user.getOrg().getId() + "/", osImgStore.getUri());
 
-        Org newOrg = UserTestUtils.createNewOrgFull("My New Org");
+        Org newOrg = UserTestUtils.createOrg("My New Org");
 
         osImgStoreOpt = ImageStoreFactory.lookupBylabelAndOrg("SUSE Manager OS Image Store", newOrg);
 
@@ -124,7 +124,7 @@ public class ImageStoreFactoryTest extends BaseTestCaseWithUser {
         assertEquals(0, iList.size());
 
 
-        Org org = UserTestUtils.createNewOrgFull("foreign org");
+        Org org = UserTestUtils.createOrg("foreign org");
 
         iList = ImageStoreFactory.listByTypeLabelAndOrg(ImageStoreFactory.TYPE_REGISTRY.getLabel(), org);
         assertEquals(0, iList.size());
