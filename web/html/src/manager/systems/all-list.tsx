@@ -29,14 +29,7 @@ const DownloadCSVButton = ({ search }) => {
     url += `?${searchParams.toString()}`;
   }
   return (
-    <a
-      role="button"
-      title="Download CSV"
-      href={url}
-      className="btn btn-default"
-      data-senna-off="true"
-      key="download-csv-button"
-    >
+    <a role="button" title="Download CSV" href={url} className="btn btn-default" data-senna-off="true">
       <IconTag type="item-download-csv" />
       {t("Download CSV")}
     </a>
@@ -89,7 +82,7 @@ export function AllSystems(props: Props) {
         defaultSearchField={props.queryColumn || "server_name"}
         initialSearch={props.query}
         emptyText={t("No Systems.")}
-        titleButtons={[<DownloadCSVButton search={{}} />]}
+        titleButtons={[<DownloadCSVButton key="download-csv-button" search={{}} />]}
       >
         <Column
           columnKey="server_name"

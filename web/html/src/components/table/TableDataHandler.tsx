@@ -4,8 +4,7 @@ import _isEqual from "lodash/isEqual";
 
 import { pageSize } from "core/user-preferences";
 
-import { Loading } from "components/utils";
-import { cloneReactElement } from "components/utils";
+import { cloneReactElement, Loading } from "components/utils";
 
 import { AsyncDataProvider, PageControl, SimpleDataProvider } from "utils/data-providers";
 import { Comparator, PagedData } from "utils/data-providers";
