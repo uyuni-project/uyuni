@@ -105,7 +105,7 @@ public class UpdateChildChannelsCommand extends BaseUpdateChannelCommand {
 
         //Subscribe to new channels
         log.debug("subscribing to new channels");
-        boolean failedChannels = subscribeToNewChannels(user, cids, server);
+        subscribeToNewChannels(user, cids, server);
 
         //Unsubscribe from any channels in remove
         log.debug("unsubscribing from other channels");
@@ -118,17 +118,12 @@ public class UpdateChildChannelsCommand extends BaseUpdateChannelCommand {
         }
         super.store();
 
-        if (failedChannels) {
-            return new ValidatorError("sdc.channels.edit.failed_channels");
-        }
         return null;
     }
 
-    private static boolean subscribeToNewChannels(User loggedInUser,
+    private static void subscribeToNewChannels(User loggedInUser,
             List<Long> channelIds, Server serverIn)
         throws FaultException {
-
-        boolean failedChannels = false;
 
         /*
          * Loop through the list of new channel ids for the server. Make sure each one is
@@ -171,8 +166,6 @@ public class UpdateChildChannelsCommand extends BaseUpdateChannelCommand {
                 throw new PermissionCheckFailureException();
             }
         }
-
-        return failedChannels;
     }
 
     private static void unsubscribeFromOldChannels(User loggedInUser,
