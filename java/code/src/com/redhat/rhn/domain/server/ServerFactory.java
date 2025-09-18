@@ -320,6 +320,7 @@ public class ServerFactory extends HibernateFactory {
                 return newPath;
             });
             path.setPosition(parentPath.getPosition() + 1);
+            ServerFactory.save(path);
             paths.add(path);
 
         }
@@ -332,6 +333,7 @@ public class ServerFactory extends HibernateFactory {
             return newPath;
         });
         path.setPosition(0L);
+        ServerFactory.save(path);
         paths.add(path);
         return paths;
     }
@@ -348,13 +350,13 @@ public class ServerFactory extends HibernateFactory {
             // on query with a transient object
             return Optional.empty();
         }
-        return getSession().createNativeQuery("""
-                                      SELECT * from rhnServerPath
-                                      WHERE server_id = :server AND
-                                      proxy_server_id = :proxyserver
-                                      """, ServerPath.class)
-                .setParameter("server", server.getId(), StandardBasicTypes.LONG)
-                .setParameter("proxyserver", proxyServer.getId(), StandardBasicTypes.LONG)
+        return getSession().createQuery("""
+                FROM ServerPath sp
+                WHERE sp.id.server = :server
+                AND sp.id.proxyServer = :proxy
+                """, ServerPath.class)
+                .setParameter("server", server)
+                .setParameter("proxy", proxyServer)
                 .uniqueResultOptional();
     }
 
