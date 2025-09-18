@@ -1,9 +1,6 @@
 # Copyright (c) 2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-# workaround for bsc#1240645
-@bug_reported
-@skip
 @skip_if_github_validation
 @sle_minion
 @scope_salt
