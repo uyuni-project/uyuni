@@ -4,7 +4,7 @@ import _isEqual from "lodash/isEqual";
 
 import { pageSize } from "core/user-preferences";
 
-import { Loading } from "components/utils";
+import { cloneReactElement, Loading } from "components/utils";
 
 import { AsyncDataProvider, PageControl, SimpleDataProvider } from "utils/data-providers";
 import { Comparator, PagedData } from "utils/data-providers";
@@ -280,6 +280,14 @@ export class TableDataHandler extends React.Component<Props, State> {
     }
   };
 
+  renderTitleButtons = () => {
+    return React.Children.map(this.props.titleButtons, (item: React.ReactNode) =>
+      cloneReactElement(item, {
+        search: { field: this.state.field, criteria: this.state.criteria },
+      })
+    );
+  };
+
   render() {
     // Skip rendering the headers if no header was provided
     const headers =
@@ -417,7 +425,7 @@ export class TableDataHandler extends React.Component<Props, State> {
                     {this.props.additionalFilters}
                   </SearchPanel>
                   <div className="spacewalk-list-head-addons-extra table-items-per-page-wrapper">
-                    {this.props.titleButtons}
+                    {this.renderTitleButtons()}
                   </div>
                 </div>
               </div>

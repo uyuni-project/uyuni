@@ -1,0 +1,2 @@
+- Fix systems list CSV download to include only
+  filtered data (bsc#1248409)
