@@ -58,8 +58,7 @@ public class ServerUuidTest extends RhnBaseTestCase {
         ServerUuid su = new ServerUuid();
         su.setUuid(UUID);
 
-        User user = UserTestUtils.createUser("testuser",
-                UserTestUtils.createOrg("testorg"));
+        User user = UserTestUtils.createUser();
 
         Server s = ServerFactoryTest.createTestServer(user);
         su.setServer(s);

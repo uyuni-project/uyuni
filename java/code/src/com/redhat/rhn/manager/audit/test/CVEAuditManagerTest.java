@@ -139,17 +139,17 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
     @Test
     public void testListAllServers() throws Exception {
         Set<SystemOverview> expected = new HashSet<>();
-        User user1 = UserTestUtils.findNewUser("testuser1", "testorg1");
+        User user1 = UserTestUtils.createUser("testuser1", "testorg1");
         Server server1 = createTestServer(user1);
         SystemOverview sysOverview1 = new SystemOverview();
         sysOverview1.setId(server1.getId());
         expected.add(sysOverview1);
-        User user2 = UserTestUtils.findNewUser("testuser2", "testorg2");
+        User user2 = UserTestUtils.createUser("testuser2", "testorg2");
         Server server2 = createTestServer(user2);
         SystemOverview sysOverview2 = new SystemOverview();
         sysOverview2.setId(server2.getId());
         expected.add(sysOverview2);
-        User user3 = UserTestUtils.findNewUser("testuser3", "testorg3");
+        User user3 = UserTestUtils.createUser("testuser3", "testorg3");
         Server server3 = createTestServer(user3);
         SystemOverview sysOverview3 = new SystemOverview();
         sysOverview3.setId(server3.getId());

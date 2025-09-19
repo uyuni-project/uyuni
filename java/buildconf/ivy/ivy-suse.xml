@@ -137,8 +137,6 @@
         <dependency org="org.jmock" name="jmock" rev="2.12.0" transitive="false"/>
         <dependency org="org.jmock" name="jmock-junit5" rev="2.12.0" transitive="false"/>
         <dependency org="org.jmock" name="jmock-imposters" rev="2.12.0" transitive="false"/>
-        <dependency org="mockobjects" name="mockobjects-core" rev="0.09" transitive="false"/>
-        <dependency org="mockobjects" name="mockobjects-jdk1.4-j2ee1.3" rev="0.09" transitive="false"/>
         <dependency org="org.objenesis" name="objenesis" rev="1.0" transitive="false"/>
         <dependency org="javax.websocket" name="javax.websocket-api" rev="1.1" transitive="false"/>
         <dependency org="org.jacoco" name="org.jacoco.ant" rev="0.8.7" transitive="false">

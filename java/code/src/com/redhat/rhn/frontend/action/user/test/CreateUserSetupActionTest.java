@@ -17,7 +17,6 @@ package com.redhat.rhn.frontend.action.user.test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.user.CreateUserSetupAction;
 import com.redhat.rhn.testing.ActionHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
@@ -36,21 +35,17 @@ public class CreateUserSetupActionTest extends RhnBaseTestCase {
         ActionHelper sah = new ActionHelper();
         sah.setUpAction(action);
 
-        setupExpectations(sah.getForm(), sah.getUser());
         sah.executeAction();
 
         // verify the dyna form got the right values we expected.
-        sah.getForm().verify();
+        RhnMockDynaActionForm form = sah.getForm();
+        assertEquals("US", form.get("country"));
+        assertEquals(Boolean.TRUE, form.get("contact_email"));
+        assertEquals(Boolean.TRUE, form.get("contact_partner"));
+        assertEquals(LocalizationService.getInstance().getMessage("user prefix Mr."),
+            form.get("prefix"));
 
         //If we're a sat, make sure displaypam was set
         assertEquals("true", sah.getRequest().getAttribute("displaypam"));
-    }
-
-    private void setupExpectations(RhnMockDynaActionForm form, User user) {
-        form.addExpectedProperty("country", "US");
-        form.addExpectedProperty("contact_email", Boolean.TRUE);
-        form.addExpectedProperty("contact_partner", Boolean.TRUE);
-        form.addExpectedProperty("prefix",
-            LocalizationService.getInstance().getMessage("user prefix Mr."));
     }
 }

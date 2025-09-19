@@ -44,8 +44,7 @@ public class UpdateUserCommandTest extends RhnBaseTestCase {
     @Override
     @BeforeEach
     public void setUp() {
-        Long oid = UserTestUtils.createOrg("testOrg" + this.getClass().getSimpleName());
-        User user = UserTestUtils.createUser("testUser", oid);
+        User user = UserTestUtils.createUser();
         command = new UpdateUserCommand(user);
     }
 

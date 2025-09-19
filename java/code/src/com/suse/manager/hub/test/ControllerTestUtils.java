@@ -34,6 +34,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.taskomatic.task.ReportDBHelper;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 import com.redhat.rhn.testing.SparkTestUtils;
+import com.redhat.rhn.testing.TestStatics;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -216,7 +217,7 @@ public class ControllerTestUtils {
     }
 
     public String createTestUserName() {
-        return "testUser" + TestUtils.randomString();
+        return TestStatics.TEST_USER + TestUtils.randomString();
     }
 
     public String createTestPassword() {
@@ -367,7 +368,11 @@ public class ControllerTestUtils {
     }
 
     public ChannelInfoDetailsJson createValidCustomChInfo(String channelLabel) {
-        User testPeripheralUser = UserTestUtils.findNewUser("peripheral_user_", "peripheral_org_", true);
+        User testPeripheralUser = new UserTestUtils.UserBuilder()
+                        .userName("peripheral_user_")
+                        .orgName("peripheral_org_")
+                        .orgAdmin(true)
+                        .build();
         return createChannelInfoDetailsJson(testPeripheralUser.getOrg().getId(),
                 channelLabel, "", "",
                 true, true, "channel-s390", "sha256",

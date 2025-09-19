@@ -21,17 +21,16 @@ import com.redhat.rhn.domain.common.ResetPassword;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.action.user.ResetPasswordSubmitAction;
-import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.RhnMockDynaActionForm;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
+import com.redhat.rhn.testing.RhnMockHttpSession;
 import com.redhat.rhn.testing.UserTestUtils;
-
-import com.mockobjects.servlet.MockHttpSession;
 
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.DynaActionForm;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -42,7 +41,7 @@ public class ResetPasswordSubmitActionTest extends BaseTestCaseWithUser {
 
     private ActionForward mismatch, invalid, badpwd;
     private ActionMapping mapping;
-    private RhnMockDynaActionForm form;
+    private DynaActionForm form;
     private RhnMockHttpServletRequest request;
     private RhnMockHttpServletResponse response;
     private ResetPasswordSubmitAction action;
@@ -109,8 +108,10 @@ public class ResetPasswordSubmitActionTest extends BaseTestCaseWithUser {
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
-        adminUser = UserTestUtils.findNewUser("testAdminUser", "testOrg" +
-                        this.getClass().getSimpleName(), true);
+        adminUser = new UserTestUtils.UserBuilder()
+                .userName("testAdminUser")
+                .orgAdmin(true)
+                .build();
         action = new ResetPasswordSubmitAction();
 
         mapping = new ActionMapping();
@@ -121,14 +122,10 @@ public class ResetPasswordSubmitActionTest extends BaseTestCaseWithUser {
         request = new RhnMockHttpServletRequest();
         response = new RhnMockHttpServletResponse();
 
-        RequestContext requestContext = new RequestContext(request);
-
-        MockHttpSession mockSession = new MockHttpSession();
-        mockSession.setupGetAttribute("token", null);
-        mockSession.setupGetAttribute("request_method", "GET");
+        RhnMockHttpSession mockSession = new RhnMockHttpSession();
+        mockSession.setAttribute("token", null);
+        mockSession.setAttribute("request_method", "GET");
         request.setSession(mockSession);
-        request.setupServerName("mymachine.rhndev.redhat.com");
-        requestContext.getWebSession();
 
         mapping.addForwardConfig(mismatch);
         mapping.addForwardConfig(invalid);

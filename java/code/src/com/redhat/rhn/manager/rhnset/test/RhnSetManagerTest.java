@@ -44,7 +44,7 @@ public class RhnSetManagerTest extends RhnBaseTestCase {
     @Override
     @BeforeEach
     public void setUp() {
-        userId = UserTestUtils.createUser(TEST_USER_NAME, TEST_ORG_NAME);
+        userId = UserTestUtils.createUser(TEST_USER_NAME, TEST_ORG_NAME).getId();
         cleanup = new TestSetCleanup();
     }
 

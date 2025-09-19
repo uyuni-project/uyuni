@@ -401,9 +401,9 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
     public void checkApiListAllPeripheralOrgs() throws Exception {
         String apiUnderTest = "/hub/listAllPeripheralOrgs";
 
-        Org org1 = UserTestUtils.findNewOrg("org1");
-        Org org2 = UserTestUtils.findNewOrg("org2");
-        Org org3 = UserTestUtils.findNewOrg("org3");
+        Org org1 = UserTestUtils.createOrg("org1");
+        Org org2 = UserTestUtils.createOrg("org2");
+        Org org3 = UserTestUtils.createOrg("org3");
 
         String answer = (String) testUtils.withServerFqdn(DUMMY_SERVER_FQDN)
                 .withApiEndpoint(apiUnderTest)
@@ -575,7 +575,11 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
 
         Date endOfLifeDate = testUtils.createDateUtil(2096, 10, 22);
 
-        User testPeripheralUser = UserTestUtils.findNewUser("peripheral_user_", "peripheral_org_", true);
+        User testPeripheralUser = new UserTestUtils.UserBuilder()
+                .userName("peripheral_user_")
+                .orgName("peripheral_org_")
+                .orgAdmin(true)
+                .build();
         Org testPeripheralOrg = testPeripheralUser.getOrg();
         Long testPeripheralOrgId = testPeripheralOrg.getId();
 
@@ -805,8 +809,16 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void checkConversion() throws Exception {
-        User localUser = UserTestUtils.findNewUser("local_user_", "local_org_", true);
-        User peripheralUser = UserTestUtils.findNewUser("peripheral_user_", "peripheral_org_", true);
+        User localUser = new UserTestUtils.UserBuilder()
+                .userName("local_user_")
+                .orgName("local_org_")
+                .orgAdmin(true)
+                .build();
+        User peripheralUser = new UserTestUtils.UserBuilder()
+                .userName("peripheral_user_")
+                .orgName("peripheral_org_")
+                .orgAdmin(true)
+                .build();
         ChannelSoftwareHandler channelSoftwareHandler = new ChannelSoftwareHandler(null, null);
         ProductName pn = ChannelFactoryTest.lookupOrCreateProductName(ChannelManager.RHEL_PRODUCT_NAME);
         ChannelProduct cp = ErrataTestUtils.createTestChannelProduct();

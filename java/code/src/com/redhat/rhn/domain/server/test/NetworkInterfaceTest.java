@@ -89,10 +89,9 @@ public class NetworkInterfaceTest extends RhnBaseTestCase {
     /**
      * Creates a test NetworkInterface object
      * @return Returns a new NetworkInterface object all filled out for testing purposes.
-     * @throws Exception something bad happened
      */
     public static NetworkInterface createTestNetworkInterface() {
-        User user = UserTestUtils.findNewUser("testuser", "testorg");
+        User user = UserTestUtils.createUser();
         Server s = ServerFactoryTest.createTestServer(user);
         return createTestNetworkInterface(s);
     }

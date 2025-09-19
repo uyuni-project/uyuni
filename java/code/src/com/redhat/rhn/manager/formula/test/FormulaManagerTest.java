@@ -43,7 +43,6 @@ import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerGroupTestUtils;
-import com.redhat.rhn.testing.TestStatics;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -274,7 +273,7 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testGetCombinedFormulaDataForSystems() throws Exception {
         // minion with only group formulas
-        User user = UserTestUtils.findNewUser(TestStatics.TESTUSER, TestStatics.TESTORG);
+        User user = UserTestUtils.createUser();
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         minion.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
         assertFalse(SystemManager.hasEntitlement(minion.getId(), EntitlementManager.MONITORING));

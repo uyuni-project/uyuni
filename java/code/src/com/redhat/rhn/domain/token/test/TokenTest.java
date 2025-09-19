@@ -144,8 +144,8 @@ public class TokenTest extends RhnBaseTestCase {
         token.setDeployConfigs(true);
         token.setNote("RHN-JAVA test note");
         token.setUsageLimit(42L);
-        User user = UserTestUtils.createUser("testuser",
-                                             UserTestUtils.createOrg("testorg"));
+        User user = UserTestUtils.createUser();
+
         token.setCreator(user);
         token.setOrg(user.getOrg());
         token.setServer(ServerFactoryTest.createTestServer(user));

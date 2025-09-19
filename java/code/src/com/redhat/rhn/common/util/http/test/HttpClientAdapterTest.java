@@ -118,7 +118,7 @@ public class HttpClientAdapterTest  {
 
         /**
          * This constructor takes a map of headers and expected values to verify.
-         * @param headers the map of headers and expected values
+         * @param headersIn the map of headers and expected values
          */
         TestResponder(Map<String, String> headersIn) {
             headers = headersIn;

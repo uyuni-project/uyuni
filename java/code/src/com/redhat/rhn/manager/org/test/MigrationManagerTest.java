@@ -89,7 +89,13 @@ public class MigrationManagerTest extends BaseTestCaseWithUser {
         super.setUp();
 
         // Create 2 orgs, each with multiple org admins
-        origOrgAdmins.add(UserTestUtils.findNewUser("origAdmin", "origOrg", true));
+        origOrgAdmins.add(
+                new UserTestUtils.UserBuilder()
+                        .userName("origAdmin")
+                        .orgName("origOrg")
+                        .orgAdmin(true)
+                        .build()
+        );
         origOrg = origOrgAdmins.iterator().next().getOrg();
         for (Integer i = 0; i < 2; i++) {
             User user = UserTestUtils.createUser("origAdmin", origOrg.getId());
@@ -98,7 +104,13 @@ public class MigrationManagerTest extends BaseTestCaseWithUser {
             origOrgAdmins.add(user);
         }
 
-        destOrgAdmins.add(UserTestUtils.findNewUser("destAdmin", "destOrg", true));
+        destOrgAdmins.add(
+                new UserTestUtils.UserBuilder()
+                        .userName("destAdmin")
+                        .orgName("destOrg")
+                        .orgAdmin(true)
+                        .build()
+        );
         destOrg = destOrgAdmins.iterator().next().getOrg();
         for (Integer i = 0; i < 2; i++) {
             User user = UserTestUtils.createUser("destAdmin", destOrg.getId());
@@ -120,8 +132,7 @@ public class MigrationManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testMigrateSystemNotSatAdmin() {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User user = UserTestUtils.createUser(this);
         try {
             migrationManager.removeOrgRelationships(user, server);
             fail();

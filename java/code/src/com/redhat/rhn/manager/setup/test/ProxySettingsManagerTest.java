@@ -30,6 +30,7 @@ import com.redhat.rhn.manager.setup.ProxySettingsDto;
 import com.redhat.rhn.manager.setup.ProxySettingsManager;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
+import com.redhat.rhn.testing.TestStatics;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -52,8 +53,7 @@ public class ProxySettingsManagerTest extends RhnBaseTestCase {
 
     @BeforeEach
     public void setupTest() {
-        Long satOrg = UserTestUtils.createOrg("satOrg");
-        satAdmin = UserTestUtils.createUser("satUser", satOrg);
+        satAdmin = UserTestUtils.createUser(TestStatics.TEST_SAT_USER, "satOrg");
         satAdmin.addPermanentRole(RoleFactory.SAT_ADMIN);
         UserFactory.save(satAdmin);
 

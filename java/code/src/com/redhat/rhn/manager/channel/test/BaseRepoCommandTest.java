@@ -16,7 +16,6 @@ package com.redhat.rhn.manager.channel.test;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
-import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.channel.repo.InvalidRepoLabelException;
 import com.redhat.rhn.frontend.xmlrpc.channel.repo.InvalidRepoTypeException;
@@ -37,15 +36,12 @@ public class BaseRepoCommandTest extends RhnBaseTestCase {
 
     private BaseRepoCommand ccc = null;
     private int label_count = 0;
-    private User user = null;
 
     @Override
     @BeforeEach
     public void setUp() {
-        Long oid = UserTestUtils.createOrg("testOrg" + this.getClass().getSimpleName());
-        user = UserTestUtils.createUser("testUser", oid);
-        Org org = user.getOrg();
-        ccc = new CreateRepoCommand(org);
+        User user = UserTestUtils.createUser();
+        ccc = new CreateRepoCommand(user.getOrg());
     }
 
     @Test

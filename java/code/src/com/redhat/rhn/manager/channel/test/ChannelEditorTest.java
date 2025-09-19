@@ -43,7 +43,7 @@ public class ChannelEditorTest extends RhnBaseTestCase {
 
     @Test
     public void testAddRemovePackages() throws Exception {
-        User user = UserTestUtils.findNewUser("testuser", "testorg");
+        User user = UserTestUtils.createUser();
         Package pkg = PackageTest.createTestPackage(user.getOrg());
         assertTrue(UserManager.verifyPackageAccess(user.getOrg(), pkg.getId()));
         Channel channel = ChannelFactoryTest.createTestChannel(user);

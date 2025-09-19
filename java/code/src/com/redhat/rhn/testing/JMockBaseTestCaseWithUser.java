@@ -45,13 +45,11 @@ public abstract class JMockBaseTestCaseWithUser extends RhnJmockBaseTestCase {
      */
     @BeforeEach
     public void setUp() throws Exception {
-        user = UserTestUtils.findNewUser("testUser", "testOrg" +
-                this.getClass().getSimpleName());
+        user = UserTestUtils.createUser();
         KickstartDataTest.setupTestConfiguration(user);
         tmpSaltRoot = Files.createTempDirectory("salt");
         SaltStateGeneratorService.INSTANCE.setSkipSetOwner(true);
-        SaltStateGeneratorService.INSTANCE.setSuseManagerStatesFilesRoot(tmpSaltRoot
-                .toAbsolutePath());
+        SaltStateGeneratorService.INSTANCE.setSuseManagerStatesFilesRoot(tmpSaltRoot.toAbsolutePath());
         Files.createDirectory(tmpSaltRoot.resolve(SALT_CONFIG_STATES_DIR));
     }
 

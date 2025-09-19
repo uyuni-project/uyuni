@@ -31,6 +31,7 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
+import com.redhat.rhn.testing.TestStatics;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.admin.PaygAdminManager;
@@ -67,7 +68,7 @@ public class PaygApiControllerTest extends BaseControllerTestCase {
         super.setUp();
         clearDb();
 
-        satAdmin = UserTestUtils.createUser("satUser", user.getOrg().getId());
+        satAdmin = UserTestUtils.createUser(TestStatics.TEST_SAT_USER, user.getOrg().getId());
         satAdmin.addPermanentRole(RoleFactory.SAT_ADMIN);
 
         context.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);

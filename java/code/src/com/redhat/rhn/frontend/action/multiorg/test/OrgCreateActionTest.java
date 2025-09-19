@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.testing.RhnMockDynaActionForm;
 import com.redhat.rhn.testing.RhnPostMockStrutsTestCase;
+import com.redhat.rhn.testing.TestStatics;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.Test;
@@ -84,8 +85,8 @@ public class OrgCreateActionTest extends RhnPostMockStrutsTestCase {
     public void testCreateFirstSatUser() {
         setRequestPathInfo("/newlogin/CreateFirstUser");
         RhnMockDynaActionForm f = new RhnMockDynaActionForm("orgCreateForm");
-        f.set("orgName", "testOrg" + TestUtils.randomString());
-        f.set("login", "testUser" + TestUtils.randomString());
+        f.set("orgName", TestStatics.TEST_ORG + TestUtils.randomString());
+        f.set("login", TestStatics.TEST_USER + TestUtils.randomString());
         f.set("email", "foobar@redhat.com");
         f.set("firstNames", "Test fname");
         f.set("lastName", "Test lname");

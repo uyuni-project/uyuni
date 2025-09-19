@@ -19,8 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.frontend.servlets.SessionFilter;
-
-import com.mockobjects.servlet.MockFilterChain;
+import com.redhat.rhn.testing.MockFilterChain;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;

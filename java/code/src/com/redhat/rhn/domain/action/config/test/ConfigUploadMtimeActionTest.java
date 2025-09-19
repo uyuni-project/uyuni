@@ -45,9 +45,8 @@ public class ConfigUploadMtimeActionTest extends RhnBaseTestCase {
      */
     @Test
     public void testLookupConfigUploadAction() throws Exception {
-        Action newA = ActionFactoryTest.createAction(UserTestUtils.createUser("testUser",
-                UserTestUtils.createOrg("testOrg" + this.getClass().getSimpleName())),
-                ActionFactory.TYPE_CONFIGFILES_MTIME_UPLOAD);
+        User user = UserTestUtils.createUser(this);
+        Action newA = ActionFactoryTest.createAction(user, ActionFactory.TYPE_CONFIGFILES_MTIME_UPLOAD);
         Long id = newA.getId();
         Action a = ActionFactory.lookupById(id);
 
@@ -77,8 +76,7 @@ public class ConfigUploadMtimeActionTest extends RhnBaseTestCase {
 
     @Test
     public void testCreate() throws Exception {
-        User usr = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User usr = UserTestUtils.createUser(this);
 
         ConfigUploadMtimeAction testAction = (ConfigUploadMtimeAction)ActionFactoryTest
                 .createAction(usr, ActionFactory.TYPE_CONFIGFILES_MTIME_UPLOAD);

@@ -37,6 +37,7 @@ import com.redhat.rhn.manager.token.ActivationKeyManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.ConfigTestUtils;
+import com.redhat.rhn.testing.TestStatics;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -124,8 +125,8 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
         // unfortunately satellite is NOT multiorg aware...
         //So we can't check on the org clause
         //so...
-        User newUser = UserTestUtils.findNewUser("testUser2",
-                "testOrg" + this.getClass().getSimpleName());
+        User newUser = UserTestUtils.createUser("testUser2",
+                TestStatics.TEST_ORG + this.getClass().getSimpleName());
         try {
             manager.lookupByKey(key.getKey(), newUser);
             String msg = "Permission check failed :(.." +

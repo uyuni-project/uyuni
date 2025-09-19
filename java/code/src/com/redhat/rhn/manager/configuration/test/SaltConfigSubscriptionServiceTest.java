@@ -75,7 +75,7 @@ public class SaltConfigSubscriptionServiceTest extends BaseTestCaseWithUser {
         assertTrue(revision1.getConfigChannels().stream().anyMatch(channel1::equals));
 
         // Test for orgs
-        Org org = UserTestUtils.createNewOrgFull("Test Org");
+        Org org = UserTestUtils.createOrg("Test Org");
         SaltConfigSubscriptionService.subscribeChannels(org, Collections.singletonList(channel1), user);
         revision1 = StateFactory.latestStateRevision(org).get();
 
@@ -126,7 +126,7 @@ public class SaltConfigSubscriptionServiceTest extends BaseTestCaseWithUser {
     public void testUnsubscribeChannels() throws Exception {
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
         ServerGroup serverGroup = ServerGroupTestUtils.createManaged(user);
-        Org org = UserTestUtils.createNewOrgFull("Test Org");
+        Org org = UserTestUtils.createOrg("Test Org");
 
         ConfigChannel channel1 = ConfigTestUtils.createConfigChannel(user.getOrg(),
                 "Channel 1", "cfg-channel-1");
@@ -200,7 +200,7 @@ public class SaltConfigSubscriptionServiceTest extends BaseTestCaseWithUser {
     public void testSetConfigChannels() throws Exception {
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
         ServerGroup serverGroup = ServerGroupTestUtils.createManaged(user);
-        Org org = UserTestUtils.createNewOrgFull("Test Org");
+        Org org = UserTestUtils.createOrg("Test Org");
 
         ConfigChannel channel1 = ConfigTestUtils.createConfigChannel(user.getOrg(),
                 "Channel 1", "cfg-channel-1");

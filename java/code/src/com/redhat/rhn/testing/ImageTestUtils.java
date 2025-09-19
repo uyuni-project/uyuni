@@ -302,7 +302,8 @@ public class ImageTestUtils {
      * @return the credentials
      */
     public static RegistryCredentials createCredentials() {
-        RegistryCredentials registryCredentials = CredentialsFactory.createRegistryCredentials("testuser", "testpass");
+        RegistryCredentials registryCredentials =
+                CredentialsFactory.createRegistryCredentials(TestStatics.TEST_USER, "testpass");
         CredentialsFactory.storeCredentials(registryCredentials);
         return registryCredentials;
     }

@@ -507,7 +507,7 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public final void testSetCustomDataValues() throws Exception {
+    public final void testSetCustomDataValues() {
         createImageStore("myregistry", admin);
         int result = handler.create(admin, "myprofile", ImageProfile.TYPE_DOCKERFILE,
                 "myregistry", "/path/to/dockerfile", "");

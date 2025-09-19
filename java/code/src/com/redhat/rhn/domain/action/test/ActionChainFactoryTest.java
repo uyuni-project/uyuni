@@ -581,7 +581,7 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testPermissions() throws Exception {
-        Org otherOrg = UserTestUtils.createNewOrgFull("OtherOrg");
+        Org otherOrg = UserTestUtils.createOrg("OtherOrg");
         User other = UserTestUtils.createUser("otherAdmin", otherOrg.getId());
 
         // Create the thing

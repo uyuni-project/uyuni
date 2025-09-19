@@ -39,7 +39,7 @@ public class ErrataPackagesSetupActionTest extends RhnBaseTestCase {
         Errata e = ErrataFactoryTest.createTestErrata(
                 sah.getUser().getOrg().getId());
 
-        sah.getRequest().setupAddParameter("eid", e.getId().toString());
+        sah.getRequest().addParameter("eid", e.getId().toString());
 
         sah.executeAction();
 

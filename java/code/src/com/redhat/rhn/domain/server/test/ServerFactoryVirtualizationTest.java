@@ -40,8 +40,7 @@ public class ServerFactoryVirtualizationTest extends RhnBaseTestCase {
     @Override
     @BeforeEach
     public void setUp() {
-        user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        user = UserTestUtils.createUser(this);
         virtualInstanceFactory = new VirtualInstanceManufacturer(user);
     }
 

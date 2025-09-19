@@ -108,7 +108,7 @@ public class ActivationKeyTest extends BaseTestCaseWithUser {
          // great!.. Exception for passing in invalid keys always welcome
         }
 
-        User user1 = UserTestUtils.findNewUser("testuser", "testorg");
+        User user1 = UserTestUtils.createUser();
         Server server2 = ServerFactoryTest.createTestServer(user1);
         try {
             ActivationKeyManager.getInstance().

@@ -51,7 +51,7 @@ public class ServerGroupTest extends RhnBaseTestCase {
 
     @Test
     public void testEquals() {
-        User user = UserTestUtils.findNewUser("testUser", "testorg");
+        User user = UserTestUtils.createUser();
         ServerGroup sg1 = ServerGroupTestUtils.createManaged(user);
         ServerGroup sg2 = new ServerGroup();
 
@@ -100,7 +100,7 @@ public class ServerGroupTest extends RhnBaseTestCase {
 
     @Test
     public void testGetServerGroupTypeFeatures() {
-        Org org1 = UserTestUtils.findNewOrg("testOrg" + this.getClass().getSimpleName());
+        Org org1 = UserTestUtils.createOrg(this);
         assertFalse(org1.getEntitledServerGroups().isEmpty());
 
         // we assume existence of salt entitlement
@@ -114,7 +114,7 @@ public class ServerGroupTest extends RhnBaseTestCase {
 
     @Test
     public void testServerGroupPillar() {
-        Org org1 = UserTestUtils.findNewOrg("testOrg" + this.getClass().getSimpleName());
+        Org org1 = UserTestUtils.createOrg(this);
         ServerGroup group = createTestServerGroup(org1, ServerConstants.getServerGroupTypeSaltEntitled());
         Set<Pillar> pillars = new HashSet<>();
         Map<String, Object> pillar1 = new HashMap<>();

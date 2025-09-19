@@ -180,8 +180,7 @@ public class AccessTest extends BaseTestCaseWithUser {
     @Test
     public void testUserCanManageChannelAcl() {
         Map<String, Object> context = new HashMap<>();
-        User user =  UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User user =  UserTestUtils.createUser(this);
         user.addToGroup(AccessGroupFactory.CHANNEL_ADMIN);
         context.put("user", user);
         boolean rc = acl.evalAcl(context, "user_can_manage_channels()");
@@ -207,8 +206,7 @@ public class AccessTest extends BaseTestCaseWithUser {
     @Test
     public void testSystemFeature() {
         Map<String, Object> context = new HashMap<>();
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User user = UserTestUtils.createUser(this);
         context.put("user", user);
         Server s = ServerFactoryTest.createTestServer(user, false);
         context.put("sid", new String[] {s.getId().toString()});
@@ -222,8 +220,7 @@ public class AccessTest extends BaseTestCaseWithUser {
     public void testAclSystemHasManagementEntitlement() {
         Map<String, Object> context = new HashMap<>();
 
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User user = UserTestUtils.createUser(this);
 
         Server s = ServerFactoryTest.createTestServer(user, true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
@@ -248,8 +245,7 @@ public class AccessTest extends BaseTestCaseWithUser {
     @Test
     public void testAclSystemHasSaltEntitlement() {
         Map<String, Object> context = new HashMap<>();
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User user = UserTestUtils.createUser(this);
 
         // Check with a salt entitled system
         Server s = ServerFactoryTest.createTestServer(user, true,
@@ -282,8 +278,7 @@ public class AccessTest extends BaseTestCaseWithUser {
     @Test
     public void testAclSystemIsBootstrapMinionServer() throws Exception {
         Map<String, Object> context = new HashMap<>();
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User user = UserTestUtils.createUser(this);
 
         // Check with a minion system w/o bootstrap entitlement
         Server s = ServerTestUtils.createTestSystem(user, ServerConstants.getServerGroupTypeBootstrapEntitled());
@@ -332,8 +327,7 @@ public class AccessTest extends BaseTestCaseWithUser {
     public void testCanAccessChannel() {
         try {
             Map<String, Object> context = new HashMap<>();
-            User user =  UserTestUtils.findNewUser("testUser",
-                    "testOrg" + this.getClass().getSimpleName());
+            User user =  UserTestUtils.createUser(this);
             context.put("user", user);
             user.addToGroup(AccessGroupFactory.CHANNEL_ADMIN);
 
@@ -348,7 +342,7 @@ public class AccessTest extends BaseTestCaseWithUser {
     @Test
     public void testIsModularChannel() {
         Map<String, Object> context = new HashMap<>();
-        User user = UserTestUtils.findNewUser("testUser", "testOrg" + this.getClass().getSimpleName());
+        User user = UserTestUtils.createUser(this);
         context.put("user", user);
 
         user.addToGroup(AccessGroupFactory.CHANNEL_ADMIN);

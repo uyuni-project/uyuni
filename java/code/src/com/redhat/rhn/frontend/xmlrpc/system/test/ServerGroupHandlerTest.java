@@ -175,7 +175,11 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
 
         // verify that neither an org or sat admin may have their
         // group access changed
-        User orgAdmin = UserTestUtils.findNewUser("orgAdmin", "newOrg", true);
+        User orgAdmin = new UserTestUtils.UserBuilder()
+                .userName("orgAdmin")
+                .orgName("newOrg")
+                .orgAdmin(true)
+                .build();
         assertTrue(orgAdmin.hasRole(RoleFactory.ORG_ADMIN));
         assertFalse(orgAdmin.hasRole(RoleFactory.SAT_ADMIN));
         UserFactory.save(orgAdmin);
@@ -183,7 +187,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         addOrRemoveAnAdmin(group, orgAdmin, true);
         addOrRemoveAnAdmin(group, orgAdmin, false);
 
-        User satAdmin = UserTestUtils.findNewUser("satAdmin", "newOrg", false);
+        User satAdmin = UserTestUtils.createUser("satAdmin", "newOrg");
         satAdmin.addPermanentRole(RoleFactory.SAT_ADMIN);
         assertTrue(satAdmin.hasRole(RoleFactory.SAT_ADMIN));
         assertFalse(satAdmin.hasRole(RoleFactory.ORG_ADMIN));

@@ -42,7 +42,10 @@ public class SystemMigrationFactoryTest extends RhnBaseTestCase {
 
         // Setup
         // Create org1 with 3 servers
-        User orgAdmin1 = UserTestUtils.findNewUser("testUser", "org1", true);
+        User orgAdmin1 = new UserTestUtils.UserBuilder()
+                .orgName("org1")
+                .orgAdmin(true)
+                .build();
         List<Server> servers = new LinkedList<>();
         for (int i = 0; i < 3; i++) {
             Server server = ServerFactoryTest.createTestServer(orgAdmin1);
@@ -51,8 +54,16 @@ public class SystemMigrationFactoryTest extends RhnBaseTestCase {
         }
 
         // Create org2 & 3 w/0 servers
-        User orgAdmin2 = UserTestUtils.findNewUser("orgAdmin2", "org2", true);
-        User orgAdmin3 = UserTestUtils.findNewUser("orgAdmin3", "org3", true);
+        User orgAdmin2 = new UserTestUtils.UserBuilder()
+                .userName("orgAdmin2")
+                .orgName("org2")
+                .orgAdmin(true)
+                .build();
+        User orgAdmin3 = new UserTestUtils.UserBuilder()
+                .userName("orgAdmin3")
+                .orgName("org3")
+                .orgAdmin(true)
+                .build();
 
         assertEquals(3, SystemManager.systemList(orgAdmin1, null).size());
         assertEquals(0, SystemManager.systemList(orgAdmin2, null).size());

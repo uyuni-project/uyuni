@@ -254,7 +254,11 @@ public class OrgHandlerTest extends BaseHandlerTestCase {
 
     @Test
     public void testMigrateSystem() throws Exception {
-        User newOrgAdmin = UserTestUtils.findNewUser("newAdmin", "newOrg", true);
+        User newOrgAdmin = new UserTestUtils.UserBuilder()
+                .userName("newAdmin")
+                .orgName("newOrg")
+                .orgAdmin(true)
+                .build();
         newOrgAdmin.getOrg().getTrustedOrgs().add(admin.getOrg());
         OrgFactory.save(newOrgAdmin.getOrg());
 
@@ -270,10 +274,18 @@ public class OrgHandlerTest extends BaseHandlerTestCase {
     @Test
     public void testMigrateInvalid() throws Exception {
 
-        User orgAdmin1 = UserTestUtils.findNewUser("orgAdmin1", "org1", true);
+        User orgAdmin1 = new UserTestUtils.UserBuilder()
+                .userName("orgAdmin1")
+                .orgName("org1")
+                .orgAdmin(true)
+                .build();
         orgAdmin1.getOrg().getTrustedOrgs().add(admin.getOrg());
 
-        User orgAdmin2 = UserTestUtils.findNewUser("orgAdmin2", "org2", true);
+        User orgAdmin2 = new UserTestUtils.UserBuilder()
+                .userName("orgAdmin2")
+                .orgName("org2")
+                .orgAdmin(true)
+                .build();
 
         Server server = ServerTestUtils.createTestSystem(admin);
         List<Integer> servers = new LinkedList<>();

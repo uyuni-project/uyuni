@@ -640,7 +640,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         ServerFactory.findByMachineId(MACHINE_ID).ifPresent(ServerFactory::delete);
 
         // create machine in different organization
-        Org otherOrg = UserTestUtils.createNewOrgFull("otherOrg");
+        Org otherOrg = UserTestUtils.createOrg("otherOrg");
         User otherUser = UserTestUtils.createUser("otheruser", otherOrg.getId());
         Server server = ServerTestUtils.createTestSystem(otherUser,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
@@ -1117,7 +1117,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testRegisterSystemFromDifferentOrg() throws Exception {
-        User creator = UserFactory.lookupById(UserTestUtils.createUser("chuck", "rangers"));
+        User creator = UserTestUtils.createUser("chuck", "rangers");
         MinionPendingRegistrationService.addMinion(creator, MINION_ID, ContactMethodUtil.DEFAULT);
         try {
             executeTest(
@@ -1141,7 +1141,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testRegisterSystemWithAKAndCreator() throws Exception {
-        User creator = UserFactory.lookupById(UserTestUtils.createUser("chuck", "rangers"));
+        User creator = UserTestUtils.createUser("chuck", "rangers");
         MinionPendingRegistrationService.addMinion(creator, MINION_ID, ContactMethodUtil.DEFAULT);
         try {
             executeTest(

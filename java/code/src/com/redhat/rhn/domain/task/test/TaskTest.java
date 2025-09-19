@@ -41,7 +41,7 @@ public class TaskTest extends RhnBaseTestCase {
     @Test
     public void testTask() {
 
-        Org org = UserTestUtils.findNewOrg("testOrg" + this.getClass().getSimpleName());
+        Org org = UserTestUtils.createOrg(this);
         String testname = "task_object_unit_test_" + TestUtils.randomString();
         Long testdata = 42L;
         Task t = TaskFactory.createTask(org, testname, testdata);
@@ -73,7 +73,7 @@ public class TaskTest extends RhnBaseTestCase {
 
     @Test
     public void testLookupNameLike() {
-        Org org = UserTestUtils.findNewOrg("testOrg" + this.getClass().getSimpleName());
+        Org org = UserTestUtils.createOrg(this);
         String testname = "task_object_unit_test_" + TestUtils.randomString();
         Long testdata = 42L;
         TaskFactory.createTask(org, testname, testdata);

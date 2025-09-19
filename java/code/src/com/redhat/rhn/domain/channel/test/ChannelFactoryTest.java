@@ -61,8 +61,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
 
     @Test
     public void testChannelFactory() throws Exception {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testChannelFactory" + this.getClass().getSimpleName());
+        User user = UserTestUtils.createUser(this);
         Channel c = ChannelFactoryTest.createTestChannel(user);
 
         assertNotNull(c.getChannelFamily());
@@ -243,8 +242,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
      */
     @Test
     public void testChannelsWithClonableErrata() throws Exception {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User user = UserTestUtils.createUser(this);
         ChannelManager.
                 getChannelsWithClonableErrata(user.getOrg());
 
@@ -262,7 +260,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
 
     @Test
     public void testLookupByLabel() throws Exception {
-        User user = UserTestUtils.findNewUser("testuser", "testorg");
+        User user = UserTestUtils.createUser();
         Channel rh = createTestChannel(user);
         String label = rh.getLabel();
         rh.setOrg(null);
@@ -287,8 +285,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
 
     @Test
     public void testIsGloballySubscribable() throws Exception {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User user = UserTestUtils.createUser(this);
         Channel c = createTestChannel(user);
         assertTrue(ChannelFactory.isGloballySubscribable(user.getOrg(), c));
     }
@@ -306,8 +303,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
 
     @Test
     public void testVerifyLabel() throws Exception {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User user = UserTestUtils.createUser(this);
         Channel c = createTestChannel(user);
         assertFalse(ChannelFactory.doesChannelLabelExist("foo"));
         assertTrue(ChannelFactory.doesChannelLabelExist(c.getLabel()));
@@ -315,8 +311,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
 
     @Test
     public void testVerifyName() throws Exception {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User user = UserTestUtils.createUser(this);
         Channel c = createTestChannel(user);
         assertFalse(ChannelFactory.doesChannelNameExist("power house foo channel"));
         assertTrue(ChannelFactory.doesChannelNameExist(c.getName()));
@@ -324,8 +319,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
 
     @Test
     public void testKickstartableTreeChannels() throws Exception {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User user = UserTestUtils.createUser(this);
 
         List<Channel> channels = ChannelFactory.getKickstartableTreeChannels(user.getOrg());
         assertNotNull(channels);
@@ -339,8 +333,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
 
     @Test
     public void testKickstartableChannels() throws Exception {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User user = UserTestUtils.createUser(this);
         // Setup test config since kickstartable trees are required
         KickstartDataTest.setupTestConfiguration(user);
 
@@ -373,8 +366,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
 
     @Test
     public void testPackageCount() throws Exception {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User user = UserTestUtils.createUser(this);
         Channel original = ChannelFactoryTest.createTestChannel(user);
         assertEquals(0, ChannelFactory.getPackageCount(original));
         original.addPackage(PackageTest.createTestPackage(user.getOrg()));
@@ -437,8 +429,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
 
     @Test
     public void testAccessibleChildChannels() throws Exception {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User user = UserTestUtils.createUser(this);
         Channel parent = ChannelFactoryTest.createBaseChannel(user);
         Channel child = ChannelFactoryTest.createTestChannel(user);
         child.setParentChannel(parent);
@@ -462,7 +453,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
     @Test
     public void testFindChannelArchesSyncdChannels() throws Exception {
         // ensure at least one channel is present
-        User user = UserTestUtils.findNewUser("testuser", "testorg");
+        User user = UserTestUtils.createUser();
         ChannelFactoryTest.createTestChannel(user);
 
         List<String> labels = ChannelFactory.findChannelArchLabelsSyncdChannels();
@@ -472,8 +463,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
 
     @Test
     public void testListAllBaseChannels() throws Exception {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User user = UserTestUtils.createUser(this);
         // do NOT use createBaseChannel here because that will create a Red Hat
         // base channel NOT a user owned base channel.
         createTestChannel(user);
@@ -488,8 +478,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
 
     @Test
     public void testLookupPackageByFileName() throws Exception {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User user = UserTestUtils.createUser(this);
         Channel channel = ChannelTestUtils.createTestChannel(user);
         TestUtils.saveAndFlush(channel);
         Package p = PackageManagerTest.addPackageToChannel("some-package", channel);
@@ -540,9 +529,9 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
      */
     @Test
     public void testAccessibility() throws Exception {
-        User user1 = UserTestUtils.findNewUser("testuser1", "testorg1");
+        User user1 = UserTestUtils.createUser("testuser1", "testorg1");
         User user2 = UserTestUtils.createUser("testuser2", user1.getOrg().getId());
-        User user3 = UserTestUtils.findNewUser("testuser3", "testorg3");
+        User user3 = UserTestUtils.createUser("testuser3", "testorg3");
         Channel c = ChannelFactoryTest.createTestChannel(user1);
 
         assertTrue(ChannelFactory.isAccessibleByUser(c.getLabel(), user1.getId()));
@@ -557,10 +546,10 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
      */
     @Test
     public void testOrgAccessibility() throws Exception {
-        User user1 = UserTestUtils.findNewUser("testuser1", "testorg1");
-        User user2 = UserTestUtils.findNewUser("testuser2", "testorg2");
-        User user3 = UserTestUtils.findNewUser("testuser3", "testorg3");
-        User user4 = UserTestUtils.findNewUser("testuser4", "testorg4");
+        User user1 = UserTestUtils.createUser("testuser1", "testorg1");
+        User user2 = UserTestUtils.createUser("testuser2", "testorg2");
+        User user3 = UserTestUtils.createUser("testuser3", "testorg3");
+        User user4 = UserTestUtils.createUser("testuser4", "testorg4");
         Org org1 = user1.getOrg();
         Org org2 = user2.getOrg();
         Org org3 = user3.getOrg();
@@ -609,10 +598,10 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
      */
     @Test
     public void testTrustedOrgAccessibility() throws Exception {
-        User user1 = UserTestUtils.findNewUser("testuser1", "testorg1");
-        User user2 = UserTestUtils.findNewUser("testuser2", "testorg2");
-        User user3 = UserTestUtils.findNewUser("testuser3", "testorg3");
-        User user4 = UserTestUtils.findNewUser("testuser4", "testorg4");
+        User user1 = UserTestUtils.createUser("testuser1", "testorg1");
+        User user2 = UserTestUtils.createUser("testuser2", "testorg2");
+        User user3 = UserTestUtils.createUser("testuser3", "testorg3");
+        User user4 = UserTestUtils.createUser("testuser4", "testorg4");
         Org org1 = user1.getOrg();
         Org org2 = user2.getOrg();
         Org org3 = user3.getOrg();
@@ -670,8 +659,8 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
      */
     @Test
     public void testFindAllByUserOrderByChild() throws Exception {
-        User user1 = UserTestUtils.findNewUser("testuser1", "testorg1");
-        User user2 = UserTestUtils.findNewUser("testuser2", "testorg2");
+        User user1 = UserTestUtils.createUser("testuser1", "testorg1");
+        User user2 = UserTestUtils.createUser("testuser2", "testorg2");
 
         Channel parent3 = ChannelFactoryTest.createTestChannel(user1);
         parent3.setLabel("b_parent3");
@@ -711,7 +700,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
     @Test
     public void testChannelSyncFlag() throws Exception {
 
-        User user = UserTestUtils.findNewUser("testuser", "testorg");
+        User user = UserTestUtils.createUser();
         Channel channel = ChannelFactoryTest.createTestChannel(user);
         ChannelFactory.save(channel);
         long channelId = channel.getId();
