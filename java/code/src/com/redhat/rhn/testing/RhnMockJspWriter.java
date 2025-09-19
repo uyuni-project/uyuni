@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2011--2025 SUSE LLC
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -12,88 +13,193 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
+
 package com.redhat.rhn.testing;
 
-import com.mockobjects.servlet.MockJspWriter;
-
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
+import javax.servlet.jsp.JspWriter;
 
 /**
- * JMockJspWriter - Simple abstract class that defines a default no arg constructor so
- * JMock will be happy.
+ * RhnMockJspWriter
  */
-public class RhnMockJspWriter extends MockJspWriter {
+public class RhnMockJspWriter extends JspWriter {
+    private StringWriter stringWriter = new StringWriter();
+    private PrintWriter printWriter = new PrintWriter(stringWriter);
 
     /**
-     * A stringbuffer to to capture what's being printed.
-     * The StringWriter in MockJspWriter is freakin private
-     * and there's no getters to access it.
+     * Default constructor
      */
-    private StringBuffer buf = new StringBuffer();
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void clear() {
-        // Do nothing
+    public RhnMockJspWriter() {
+        super(0, true);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void clearBuffer() {
-        // Do nothing
+    public void write(char[] buf, int off, int len) throws IOException {
+        printWriter.write(buf, off, len);
     }
 
-    /**
-     *
-     * {@inheritDoc}
-     */
+
     @Override
-    public void print(String stringIn) {
-        buf.append(stringIn);
-        super.println(stringIn);
+    public void newLine() throws IOException {
+        printWriter.write(System.lineSeparator());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void println(String stringIn) {
-        buf.append(stringIn);
-        buf.append("\n");
-        super.println(stringIn);
+    public void print(boolean bIn) throws IOException {
+        printWriter.write(String.valueOf(bIn));
     }
 
-    /**
-     *
-     * {@inheritDoc}
-     */
+    @Override
+    public void print(char cIn) throws IOException {
+        printWriter.write(cIn);
+    }
+
+    @Override
+    public void print(int iIn) throws IOException {
+        printWriter.write(String.valueOf(iIn));
+    }
+
+    @Override
+    public void print(long lIn) throws IOException {
+        printWriter.write(String.valueOf(lIn));
+    }
+
+    @Override
+    public void print(float vIn) throws IOException {
+        printWriter.write(String.valueOf(vIn));
+    }
+
+    @Override
+    public void print(double vIn) throws IOException {
+        printWriter.print(String.valueOf(vIn));
+    }
+
+    @Override
+    public void print(char[] charsIn) throws IOException {
+        if (charsIn != null) {
+            printWriter.write(charsIn);
+        }
+    }
+
+    @Override
+    public void print(String sIn) throws IOException {
+        if (sIn != null) {
+            printWriter.write(sIn);
+        }
+    }
+
+    @Override
+    public void print(Object oIn) throws IOException {
+        if (oIn != null) {
+            printWriter.write(oIn.toString());
+        }
+    }
+
+    @Override
+    public void println() throws IOException {
+        printWriter.write(System.lineSeparator());
+    }
+
+    @Override
+    public void println(boolean bIn) throws IOException {
+        printWriter.write(String.valueOf(bIn));
+        printWriter.write(System.lineSeparator());
+    }
+
+    @Override
+    public void println(char cIn) throws IOException {
+        printWriter.write(cIn);
+        printWriter.write(System.lineSeparator());
+    }
+
+    @Override
+    public void println(int iIn) throws IOException {
+        printWriter.write(String.valueOf(iIn));
+        printWriter.write(System.lineSeparator());
+    }
+
+    @Override
+    public void println(long lIn) throws IOException {
+        printWriter.write(String.valueOf(lIn));
+        printWriter.write(System.lineSeparator());
+    }
+
+    @Override
+    public void println(float vIn) throws IOException {
+        printWriter.write(String.valueOf(vIn));
+        printWriter.write(System.lineSeparator());
+    }
+
+    @Override
+    public void println(double vIn) throws IOException {
+        printWriter.write(String.valueOf(vIn));
+        printWriter.write(System.lineSeparator());
+    }
+
+    @Override
+    public void println(char[] charsIn) throws IOException {
+        if (charsIn != null) {
+            printWriter.write(charsIn);
+        }
+        printWriter.write(System.lineSeparator());
+    }
+
+    @Override
+    public void println(String sIn) {
+        if (sIn != null) {
+            printWriter.write(sIn);
+        }
+        printWriter.write(System.lineSeparator());
+    }
+
+    @Override
+    public void println(Object oIn) {
+        printWriter.print(oIn);
+    }
+
+    @Override
+    public void clear() throws IOException {
+        // Clear both the buffer and the internal string writer
+        this.clearBuffer();
+    }
+
+    @Override
+    public void clearBuffer() throws IOException {
+        // Clear the internal string writer
+        StringBuffer buffer = stringWriter.getBuffer();
+        buffer.setLength(0);
+    }
+
+    @Override
+    public void flush() throws IOException {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void close() throws IOException {
+        printWriter.close();
+        stringWriter.close();
+    }
+
+    @Override
+    public int getRemaining() {
+        return 0;
+    }
+
     @Override
     public String toString() {
-        return buf.toString();
+        return stringWriter.toString();
     }
-
     /**
-     *
-     * {@inheritDoc}
+     * Resets the writer to its initial state.
      */
-    @Override
-    public void println(Object anObject) {
-        buf.append(anObject);
-        buf.append("\n");
-        super.println(anObject);
-    }
-
-    /**
-     *
-     * {@inheritDoc}
-     */
-    @Override
-    public void write(String str) throws IOException {
-        buf.append(str);
-        super.write(str);
+    public void reset() {
+        printWriter.flush();
+        stringWriter = new StringWriter();
+        printWriter = new PrintWriter(stringWriter);
     }
 }
+

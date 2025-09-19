@@ -15,12 +15,16 @@
 package com.redhat.rhn.frontend.servlets.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.frontend.servlets.SetCharacterEncodingFilter;
 
+import org.jmock.Expectations;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+
+import javax.servlet.ServletException;
 
 /**
  * AuthFilterTest
@@ -30,10 +34,14 @@ public class I18NFilterTest extends BaseFilterTst {
     private static final String UTF8 = "UTF-8";
 
     /** Test the CheckCharSet functionality
-     * @throws Exception if something fails
+     * @throws ServletException if something fails
+     * @throws IOException if something fails
      */
     @Test
-    public void testCheckCharset() throws Exception {
+    public void testCheckCharset() throws ServletException, IOException {
+        context.checking(new Expectations() {{
+            oneOf(chain).doFilter(request, response);
+        }});
 
         SetCharacterEncodingFilter filter = new SetCharacterEncodingFilter();
 
@@ -42,7 +50,7 @@ public class I18NFilterTest extends BaseFilterTst {
         }
         catch (IOException ioe) {
             // This should never happen ..
-            throw new Exception("doFilter() failed ..");
+            fail("doFilter() failed ..");
         }
 
         assertEquals(request.getCharacterEncoding(), UTF8);

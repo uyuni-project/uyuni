@@ -15,8 +15,6 @@
 
 package com.redhat.rhn.testing;
 
-import com.mockobjects.servlet.MockServletInputStream;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.util.Collections;
@@ -212,9 +210,6 @@ public class SparkTestUtils {
         mockRequest.setSession(new RhnMockHttpSession());
         mockRequest.setRequestURL(requestUrl);
         mockRequest.setupGetMethod(method);
-        mockRequest.setMethod(method);
-        // we need to set the query params twice as mockobjects request uses two separate
-        // backing objects
         MockServletInputStream in = new MockServletInputStream();
         in.setupRead(body.getBytes(
                 mockRequest.getCharacterEncoding() != null ?
@@ -260,9 +255,6 @@ public class SparkTestUtils {
         mockRequest.setSession(new RhnMockHttpSession());
         mockRequest.setRequestURL(requestUrl);
         mockRequest.setupGetMethod(method);
-        mockRequest.setMethod(method);
-        // we need to set the query params twice as mockobjects request uses two separate
-        // backing objects
         MockServletInputStream in = new MockServletInputStream();
         in.setupRead(body.getBytes(
                 mockRequest.getCharacterEncoding() != null ?
@@ -277,8 +269,6 @@ public class SparkTestUtils {
     }
 
     private static void setQueryParams(RhnMockHttpServletRequest request, Map<String, String> queryParams) {
-        // we need to set the query params twice as mockobjects request uses two separate
-        // backing objects
         queryParams.forEach((name, val) -> request.setupAddParameter(name, new String[]{val}));
         // we must convert to a "multi-value map"
         request.setupGetParameterMap(queryParams.entrySet().stream().collect(
@@ -287,8 +277,6 @@ public class SparkTestUtils {
 
     private static void setMultiValueQueryParams(RhnMockHttpServletRequest request,
                                                  Map<String, List<String>> queryParams) {
-        // we need to set the query params twice as mockobjects request uses two separate
-        // backing objects
         queryParams.forEach((name, val) -> request.setupAddParameter(name, val.toArray(new String[0])));
         request.setupGetParameterMap(queryParams.entrySet().stream().collect(
                 Collectors.toMap(v -> v.getKey(), v -> v.getValue().toArray(new String[0]))));

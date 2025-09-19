@@ -29,14 +29,15 @@ import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.RhnMockDynaActionForm;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
+import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
-
-import com.mockobjects.servlet.MockHttpServletResponse;
 
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.junit.jupiter.api.Test;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * UserEditActionTEst
@@ -55,7 +56,7 @@ public class UserEditActionTest extends RhnBaseTestCase {
         ActionForward failure = new ActionForward("failure", "path", false);
         RhnMockDynaActionForm form = new RhnMockDynaActionForm("userDetailsForm");
         RhnMockHttpServletRequest request = TestUtils.getRequestWithSessionAndUser();
-        MockHttpServletResponse response = new MockHttpServletResponse();
+        HttpServletResponse response = new RhnMockHttpServletResponse();
 
         RequestContext requestContext = new RequestContext(request);
 
@@ -109,7 +110,7 @@ public class UserEditActionTest extends RhnBaseTestCase {
         ActionForward noaccess = new ActionForward("noaccess", "path", true);
         RhnMockDynaActionForm form = new RhnMockDynaActionForm("userDetailsForm");
         RhnMockHttpServletRequest request = TestUtils.getRequestWithSessionAndUser();
-        MockHttpServletResponse response = new MockHttpServletResponse();
+        RhnMockHttpServletResponse response = new RhnMockHttpServletResponse();
 
         RequestContext requestContext = new RequestContext(request);
 
@@ -165,7 +166,7 @@ public class UserEditActionTest extends RhnBaseTestCase {
                              ActionMapping mapping,
                              RhnMockDynaActionForm form,
                              RhnMockHttpServletRequest request,
-                             MockHttpServletResponse response) {
+                             RhnMockHttpServletResponse response) {
 
         /*
          * This should never happen, but just in case...
