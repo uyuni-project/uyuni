@@ -19,7 +19,7 @@
 
 from . import headerSource
 from . import debPackage
-
+from . import snapPackage
 
 # pylint: disable-next=missing-class-docstring
 class mpmBinaryPackage(headerSource.rpmBinaryPackage):
@@ -134,6 +134,16 @@ def create_package(
         )
     if header.packaging == "deb":
         return debPackage.debBinaryPackage(
+            header,
+            size=size,
+            checksum_type=checksum_type,
+            checksum=checksum,
+            path=relpath,
+            org_id=org_id,
+            channels=channels,
+        )
+    if header.packaging == "snap":
+        return snapPackage.snapBinaryPackage(
             header,
             size=size,
             checksum_type=checksum_type,
