@@ -366,8 +366,17 @@ public class ServerFactory extends HibernateFactory {
     public static void addServersToGroup(Collection<Server> servers, ServerGroup serverGroup) {
         List<Long> serverIdsToAdd = servers.stream()
                 .filter(s -> s.getOrgId().equals(serverGroup.getOrgId()))
-                .map(Server::getId).collect(Collectors.toList());
+                .map(Server::getId).toList();
 
+        if (serverIdsToAdd.size() != servers.size()) {
+            String incompatible = servers.stream()
+                    .filter(s -> !s.getOrgId().equals(serverGroup.getOrgId()))
+                    .map(Server::getName)
+                    .collect(Collectors.joining(", "));
+
+            LOG.error("Unable to set group '{}' for systems in different organization: {}",
+                    serverGroup.getName(), incompatible);
+        }
         boolean serversUpdated = insertServersToGroup(serverIdsToAdd, serverGroup.getId());
 
         if (serversUpdated) {
@@ -452,7 +461,7 @@ public class ServerFactory extends HibernateFactory {
     public static void removeServersFromGroup(Collection<Server> servers, ServerGroup serverGroup) {
         List<Long> serverIdsToAdd = servers.stream()
                 .filter(s -> s.getOrgId().equals(serverGroup.getOrgId()))
-                .map(Server::getId).collect(Collectors.toList());
+                .map(Server::getId).toList();
 
         boolean serversUpdated = removeServersFromGroup(serverIdsToAdd, serverGroup.getId());
 
