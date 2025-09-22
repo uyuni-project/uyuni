@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Sep 22 16:52:18 CEST 2025 - rosuna@suse.com
+
+- version 5.0.7-0
+  * CVE-2025-53192: Do not use apache-commons-ognl but its successor
+    ognl (bsc#1248252)
+
+-------------------------------------------------------------------
 Mon Jan 13 14:57:58 CET 2025 - rosuna@suse.com
 
 - version 5.0.6-0
