@@ -122,7 +122,7 @@ export const MigrationChannelsSelectorForm: React.FC<Props> = ({
 
     const newBase = baseChannels.find((base) => base.id.toString() === value);
     if (newBase !== undefined) {
-      channelProcessor.setSelectedBaseChannelId(newBase.id).then((_channelTree) => {
+      channelProcessor.setSelectedBaseChannelId(newBase.id).then(() => {
         setSelectedBaseChannel(newBase);
         setSelectedChildChannels(getRequiredChannelsForBase(newBase));
       });

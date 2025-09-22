@@ -116,7 +116,7 @@ const ExportersList = (props: { exporters: Record<string, boolean>; messages: Re
   );
 };
 
-const ListPlaceholderItem = (props) => {
+const ListPlaceholderItem = () => {
   return (
     <li className={styles.placeholder_item}>
       <Icon type="item-disabled" className="fa-1-5x" />
@@ -125,10 +125,10 @@ const ListPlaceholderItem = (props) => {
   );
 };
 
-const ListPlaceholder = (props) => {
+const ListPlaceholder = () => {
   return (
     <ul className={styles.placeholder}>
-      {Object.keys(exporterMap).map((e) => (
+      {Object.keys(exporterMap).map(() => (
         <ListPlaceholderItem />
       ))}
     </ul>

@@ -69,7 +69,7 @@ class EditGroup extends React.Component<EditGroupProps, EditGroupState> {
     );
   };
 
-  handleAddItem = (event) => {
+  handleAddItem = () => {
     if (this.props.element.$maxItems! <= this.props.value.length || this.isDisabled()) return;
 
     this.props.setSectionsExpanded(SectionState.Mixed);
@@ -94,7 +94,7 @@ class EditGroup extends React.Component<EditGroupProps, EditGroupState> {
     });
   };
 
-  isVisible = (index?: number) => {
+  isVisible = () => {
     return this.state.visible;
   };
 
@@ -181,6 +181,7 @@ type EditPrimitiveGroupProps = {
  * to be rendered as a list of simple form elements in the UI.
  */
 class EditPrimitiveGroup extends React.Component<EditPrimitiveGroupProps> {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   simpleWrapper = (name, required, element, help = null) => {
     return (
       <React.Fragment>

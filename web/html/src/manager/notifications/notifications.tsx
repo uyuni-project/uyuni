@@ -22,7 +22,7 @@ class Notifications extends React.Component<Props, State> {
     classStyle: "",
   };
 
-  onBeforeUnload = (e) => {
+  onBeforeUnload = () => {
     if (!DEPRECATED_unsafeEquals(this.state.websocket, null)) {
       this.state.websocket.close();
     }
@@ -38,7 +38,7 @@ class Notifications extends React.Component<Props, State> {
     ws.onopen = () => {
       ws.send('["user-notifications"]');
     };
-    ws.onclose = (e) => {
+    ws.onclose = () => {
       const errs = this.state.errors ? this.state.errors : [];
       if (!this.state.pageUnloading && !this.state.websocketErr) {
         errs.push(t("Websocket connection closed. Refresh the page to try again."));

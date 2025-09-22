@@ -82,7 +82,7 @@ class RecurringActionsDetails extends React.Component<RecurringActionsDetailsPro
 
   deleteSchedule = (item) => {
     return Network.del("/rhn/manager/api/recurringactions/" + item.recurringActionId + "/delete")
-      .then((_) => {
+      .then(() => {
         this.props.onSetMessages(MessagesUtils.info("Schedule '" + item.scheduleName + "' has been deleted."));
         this.props.onCancel("back");
       })

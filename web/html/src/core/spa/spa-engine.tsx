@@ -39,6 +39,7 @@ window.pageRenderers.spaengine.init = function init(timeout?: number) {
     appInstance.addRoutes([
       {
         path: /.*/,
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         handler: function (route, a, b) {
           const screen = new HtmlScreen();
 

@@ -59,7 +59,7 @@ class RecurringActionsEdit extends React.Component<Props, State> {
     }
   }
 
-  componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
+  componentDidUpdate(prevProps: Readonly<Props>): void {
     if (!_isEqual(prevProps.schedule, this.props.schedule)) {
       this.getDetailsData();
     }
@@ -75,7 +75,7 @@ class RecurringActionsEdit extends React.Component<Props, State> {
 
   updateSchedule = (schedule) => {
     return Network.post("/rhn/manager/api/recurringactions/save", schedule)
-      .then((_) => {
+      .then(() => {
         const successMsg = (
           <span>{this.isEdit() ? t("Schedule successfully updated.") : t("Schedule successfully created.")}</span>
         );
@@ -87,7 +87,7 @@ class RecurringActionsEdit extends React.Component<Props, State> {
 
   executeCustom = (schedule) => {
     return Network.post("/rhn/manager/api/recurringactions/custom/execute", schedule)
-      .then((_) => {
+      .then(() => {
         const successMsg = <span>{t("Action scheduled on selected minions")}</span>;
         this.props.onSetMessages(MessagesUtils.info(successMsg));
       })

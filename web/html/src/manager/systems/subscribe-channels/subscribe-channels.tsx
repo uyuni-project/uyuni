@@ -188,7 +188,7 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
   };
 
   fetchMandatoryChannelsByChannelIds(channelIds: number[]) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       const mandatoryChannelsNotCached = channelIds.filter((channelId) => !this.state.mandatoryChannelsRaw[channelId]);
       if (mandatoryChannelsNotCached.length > 0) {
         Network.post("/rhn/manager/api/admin/mandatoryChannels", mandatoryChannelsNotCached)

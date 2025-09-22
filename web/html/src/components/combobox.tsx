@@ -53,6 +53,7 @@ export class Combobox extends React.Component<ComboboxProps, ComboboxState> {
 
   render() {
     const colourStyles = {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       option: (styles, { data, isDisabled, isFocused, isSelected }) => {
         if (isFocused) {
           return Object.assign(styles, { backgroundColor: "#052940", color: "#ffffff" });

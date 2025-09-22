@@ -5,10 +5,9 @@ import styles from "./build-version.module.scss";
 type Props = {
   id: string;
   text: string;
-  collapsed?: boolean;
 };
 
-const BuildVersion = ({ id, text, collapsed }: Props) => {
+const BuildVersion = ({ id, text }: Props) => {
   return (
     <div>
       <dd className="collapsible-content">
@@ -32,7 +31,6 @@ const BuildVersion = ({ id, text, collapsed }: Props) => {
 BuildVersion.defaultProps = {
   id: undefined,
   text: undefined,
-  collapsed: true,
 };
 
 export default BuildVersion;

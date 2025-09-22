@@ -292,7 +292,7 @@ export class NotificationList extends React.Component<Props, State> {
     try {
       await Network.post("/rhn/manager/notification-messages/update-messages-status", { messageIds, flagAsRead });
 
-      this.setState((prevState, _props) => ({
+      this.setState((prevState) => ({
         // serverData = prev serverData without those are changed + those changed with the changes
         serverData: prevState.serverData
           ?.filter((m) => !messageIds.includes(m.id))
@@ -314,7 +314,7 @@ export class NotificationList extends React.Component<Props, State> {
     try {
       await Network.post("/rhn/manager/notification-messages/delete", messageIds);
 
-      this.setState((prevState, _props) => ({
+      this.setState((prevState) => ({
         serverData: prevState.serverData?.filter((m) => !messageIds.includes(m.id)),
         selectedItems: prevState.selectedItems.filter((m) => !messageIds.includes(m)),
         messages: MessagesUtils.success(

@@ -21,11 +21,7 @@ const PropertiesHistoryEntries = (props) => (
       const versionMessage = getVersionMessage(history);
       return (
         <li key={`historyentries_${props.id}_${index}`}>
-          {index === 0 ? (
-            versionMessage
-          ) : (
-            <BuildVersion id={`${history.version}_historyentry`} text={versionMessage} collapsed={true} />
-          )}
+          {index === 0 ? versionMessage : <BuildVersion id={`${history.version}_historyentry`} text={versionMessage} />}
         </li>
       );
     })}

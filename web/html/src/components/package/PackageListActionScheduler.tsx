@@ -95,7 +95,7 @@ export class PackageListActionScheduler extends React.Component<Props, State> {
         );
 
         // Clear the current selection
-        Network.post(`/rhn/manager/api/sets/${this.props.selectionSet}/clear`).catch((err) => {
+        Network.post(`/rhn/manager/api/sets/${this.props.selectionSet}/clear`).catch(() => {
           this.setState({ messages: MessagesUtils.warning(t("Unable to clear selection")) });
         });
 
@@ -104,7 +104,7 @@ export class PackageListActionScheduler extends React.Component<Props, State> {
           messages: msg,
         });
       })
-      .catch((err) => {
+      .catch(() => {
         this.setState({ messages: MessagesUtils.error(t("Unable to perform action.")) });
       });
   };

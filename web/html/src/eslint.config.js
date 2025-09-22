@@ -19,13 +19,12 @@ const productionRules = {
 };
 
 module.exports = defineConfig([
+  globalIgnores(["dist/**/*", "vendors/**/*", "build/yarn/**/*"]),
   eslint.configs.recommended,
   // In the future, it would be nice to use `tseslint.configs.recommended` here, but legacy code is too far from that for now
   tseslint.configs.stylistic,
   {
     languageOptions: {
-      // parser: tsParser,
-
       globals: {
         ...globals.browser,
         ...globals.node,
@@ -45,9 +44,17 @@ module.exports = defineConfig([
     },
 
     rules: {
-      // Too much legacy code holds empty references and such, we can't enable these rules yet, but aim for it in the future
-      // TODO: Turn back off
+      // We use `@typescript-eslint/no-unused-vars` instead
       "no-unused-vars": "off",
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          caughtErrors: "none",
+          ignoreRestSiblings: true,
+          destructuredArrayIgnorePattern: "^_",
+        },
+      ],
+      // Too much legacy code holds empty references and such, we can't enable these rules yet, but aim for it in the future
       "@typescript-eslint/no-empty-function": "off",
       "no-async-promise-executor": "off",
       "no-prototype-builtins": "off",
@@ -144,12 +151,18 @@ module.exports = defineConfig([
       },
     },
   },
-  globalIgnores(["dist/**/*", "vendors/**/*", "build/yarn/**/*"]),
   {
     // Build scripts and tests are allowed to use the console
-    files: ["build.js", "build/**", "utils/test-utils/**", "**/*.test.ts"],
+    files: ["build.js", "build/**", "utils/test-utils/**", "**/*.test.{ts,tsx}"],
     rules: {
       "no-console": "off",
+    },
+  },
+  {
+    // Examples and tests can have lingering vars to exemplify
+    files: ["**/*.example.{ts,tsx}", "**/*.test.{ts,tsx}"],
+    rules: {
+      "@typescript-eslint/no-unused-vars": "off",
     },
   },
 ]);

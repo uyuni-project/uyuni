@@ -84,7 +84,7 @@ class CoCoScansList extends React.Component<Props, State> {
           messages: msg,
         });
       })
-      .catch((err) => {
+      .catch(() => {
         this.setState({
           messages: MessagesUtils.error(
             t("Unable to schedule action. Please check the server logs for detailed information.")

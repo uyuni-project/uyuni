@@ -67,7 +67,7 @@ class RecurringActionsList extends React.Component<Props, State> {
 
   deleteSchedule = (item, tableRef) => {
     return Network.del("/rhn/manager/api/recurringactions/" + item.recurringActionId + "/delete")
-      .then((_) => {
+      .then(() => {
         this.props.onSetMessages(MessagesUtils.info("Schedule '" + item.scheduleName + "' has been deleted."));
         this.getRecurringScheduleList();
         if (tableRef) {
@@ -80,7 +80,7 @@ class RecurringActionsList extends React.Component<Props, State> {
   toggleActive = (schedule) => {
     Object.assign(schedule, { active: !schedule.active });
     return Network.post("/rhn/manager/api/recurringactions/save", schedule)
-      .then((_) => {
+      .then(() => {
         this.props.onSetMessages(MessagesUtils.info(t("Schedule successfully updated.")));
       })
       .catch(this.props.onError);

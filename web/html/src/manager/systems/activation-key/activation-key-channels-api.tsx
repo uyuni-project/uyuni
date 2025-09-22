@@ -95,7 +95,7 @@ class ActivationKeyChannelsApi extends React.Component<ActivationKeyChannelsProp
         })
         .catch(this.handleResponseError);
     } else {
-      future = new Promise(function (resolve, reject) {
+      future = new Promise(function (resolve) {
         resolve();
       });
     }
@@ -107,7 +107,7 @@ class ActivationKeyChannelsApi extends React.Component<ActivationKeyChannelsProp
 
     const currentObject: any = this;
     if (currentObject.state.fetchedData && currentObject.state.fetchedData.has(baseId)) {
-      future = new Promise((resolve, reject) => {
+      future = new Promise((resolve) => {
         resolve(
           currentObject.setState({
             availableChannels: currentObject.state.fetchedData.get(baseId),

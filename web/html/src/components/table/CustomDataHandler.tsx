@@ -50,12 +50,13 @@ export function CustomDataHandler(props: Props) {
   const { selectable, ...allProps } = props;
   return (
     <TableDataHandler {...allProps} selectable={() => selectable}>
-      {({ currItems, headers, handleSelect, selectedItems, criteria }) =>
+      {({ currItems, criteria }) =>
         React.Children.toArray(props.children).map((child) => cloneReactElement(child, { data: currItems, criteria }))
       }
     </TableDataHandler>
   );
 }
+
 CustomDataHandler.defaultProps = {
   selectable: false,
 };

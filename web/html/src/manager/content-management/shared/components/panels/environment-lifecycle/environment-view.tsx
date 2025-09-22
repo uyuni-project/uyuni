@@ -43,17 +43,12 @@ const EnvironmentView = React.memo((props: Props) => {
         <dt className="col-3 col-xs-3">{t("Description")}:</dt>
         <dd className="col-9 col-xs-9">{props.environment.description}</dd>
       </dl>
-      {/*<dl className="row">*/}
-      {/*<dt className="col-3 col-xs-3">Registered Systems:</dt>*/}
-      {/*<dd className="col-9 col-xs-9">{0}</dd>*/}
-      {/*</dl>*/}
       <dl className="row">
         <dt className="col-3 col-xs-3">{t("Version")}:</dt>
         <dd className="col-9 col-xs-9">
           <BuildVersion
             id={`${props.environment.version}_${props.environment.id}`}
             text={getVersionMessageByNumber(props.environment.version, props.historyEntries) || t("not built")}
-            collapsed={true}
           />
         </dd>
       </dl>

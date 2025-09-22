@@ -85,7 +85,6 @@ const Promote = (props: Props) => {
                       getVersionMessageByNumber(props.environmentPromote.version, props.historyEntries) ||
                       t("not built")
                     }
-                    collapsed={true}
                   />
                 </dd>
               </dl>

@@ -80,7 +80,7 @@ const PropertiesEdit = (props: Props) => {
           <PropertiesView properties={propertiesToShow} />
         </React.Fragment>
       )}
-      renderCreationContent={({ open, item, setItem, errors }) => {
+      renderCreationContent={({ item, setItem, errors }) => {
         if (isLoading) {
           return <Loading text={t("Editing properties..")} />;
         }

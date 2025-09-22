@@ -123,7 +123,7 @@ export const SupportData: React.FC<Props> = ({ serverId, availableRegions, suppo
             name="parameters"
             label={t("Command-line Arguments")}
             hint={t("Optional command line arguments for the execution of <programName></programName>.", {
-              programName: (_str: string) => getFormattedProgramName(supportProgramName),
+              programName: () => getFormattedProgramName(supportProgramName),
             })}
             labelClass="col-md-3"
             divClass="col-md-6"

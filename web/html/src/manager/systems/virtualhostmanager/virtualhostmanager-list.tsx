@@ -44,7 +44,7 @@ class VirtualHostManagerList extends React.Component<Props, State> {
             columnKey="label"
             comparator={Utils.sortByText}
             header={t("Label")}
-            cell={(row, criteria) => (
+            cell={(row) => (
               <a data-senna-off href={"#/details/" + row.id}>
                 <i className="fa spacewalk-icon-virtual-host-manager" />
                 {row.label}
@@ -55,13 +55,13 @@ class VirtualHostManagerList extends React.Component<Props, State> {
             columnKey="gathererModule"
             comparator={Utils.sortByText}
             header={t("Gatherer module")}
-            cell={(row, criteria) => row.gathererModule}
+            cell={(row) => row.gathererModule}
           />
           <Column
             columnKey="org"
             comparator={Utils.sortByText}
             header={t("Organization")}
-            cell={(row, criteria) => row.orgName}
+            cell={(row) => row.orgName}
           />
           <Column
             columnKey="actions"
@@ -69,7 +69,7 @@ class VirtualHostManagerList extends React.Component<Props, State> {
             columnClass="text-right"
             headerClass="text-right"
             header={t("Actions")}
-            cell={(row, criteria) => {
+            cell={(row) => {
               return (
                 <div className="btn-group">
                   <Button

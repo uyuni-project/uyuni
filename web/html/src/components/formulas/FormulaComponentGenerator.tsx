@@ -785,7 +785,7 @@ export class FormulaFormContextProvider extends React.Component<
       this.state.formulaValues,
       this,
       this.state.formulaValues,
-      (parentVal, key, meta, formulaForm, formulaValues) => {
+      (parentVal, key, meta, formulaForm) => {
         const val = parentVal[key];
         if (meta["visibleIf"]) {
           const visibleIf = checkVisibilityCondition(meta["id"], meta["visibleIf"], formulaForm);
@@ -816,34 +816,29 @@ export class FormulaFormContextProvider extends React.Component<
 
   checkFieldsFormat = () => {
     const errors: any[] = [];
-    this.walkValueTree(
-      this.state.formulaValues,
-      this,
-      this.state.formulaValues,
-      (parentVal, key, meta, formulaForm, formulaValues) => {
-        const value = parentVal[key];
-        if (meta["match"]) {
-          try {
-            let regex = meta["match"].startsWith("^") ? meta["match"] : "^" + meta["match"];
-            regex = regex.endsWith("$") ? regex : regex + "$";
-            const re = new RegExp(regex, "u");
-            if (Array.isArray(value)) {
-              // match each value
-              if (!value.every((v) => re.test(v))) {
-                errors.push(meta["name"]);
-              }
-            } else {
-              if (!re.test(value)) {
-                errors.push(meta["name"]);
-              }
+    this.walkValueTree(this.state.formulaValues, this, this.state.formulaValues, (parentVal, key, meta) => {
+      const value = parentVal[key];
+      if (meta["match"]) {
+        try {
+          let regex = meta["match"].startsWith("^") ? meta["match"] : "^" + meta["match"];
+          regex = regex.endsWith("$") ? regex : regex + "$";
+          const re = new RegExp(regex, "u");
+          if (Array.isArray(value)) {
+            // match each value
+            if (!value.every((v) => re.test(v))) {
+              errors.push(meta["name"]);
             }
-          } catch (err) {
-            Loggerhead.error("Error matching regex: '" + meta["match"] + "':" + err);
+          } else {
+            if (!re.test(value)) {
+              errors.push(meta["name"]);
+            }
           }
+        } catch (err) {
+          Loggerhead.error("Error matching regex: '" + meta["match"] + "':" + err);
         }
-        return true;
       }
-    );
+      return true;
+    });
     return errors;
   };
 
@@ -878,7 +873,7 @@ export class FormulaFormContextProvider extends React.Component<
    */
   preprocessLayout = (layout: ElementDefinition, scope = "system") => {
     Object.entries(layout)
-      .filter(([name, element]) => !name.startsWith("$") || name === "$key")
+      .filter(([name]) => !name.startsWith("$") || name === "$key")
       .forEach(([name, element]) => {
         this.adjustElementBasicAttrs([name, element], scope);
 
@@ -901,7 +896,7 @@ export class FormulaFormContextProvider extends React.Component<
    */
   preprocessData = (layout: ElementDefinition, data: any) => {
     Object.entries(layout)
-      .filter(([name, element]) => !(data[name] === undefined || (name.startsWith("$") && name !== "$key")))
+      .filter(([name]) => !(data[name] === undefined || (name.startsWith("$") && name !== "$key")))
       .forEach(([name, element]) => {
         const editGroupSubType = getEditGroupSubtype(element);
         // other edit-group as-a-dictionary needs to be converted to an array
@@ -916,7 +911,7 @@ export class FormulaFormContextProvider extends React.Component<
           data[name] = Object.entries(data[name] || {});
         } // the last form of a recursive edit-group needs to be processed recursively
         else if (editGroupSubType === EditGroupSubtype.LIST_OF_DICTIONARIES) {
-          Object.entries(data[name] || {}).forEach(([name, value]) => this.preprocessData(element.$prototype, value));
+          Object.entries(data[name] || {}).forEach(([_, value]) => this.preprocessData(element.$prototype, value));
         } // group elements also must be processed as they can contain edit-groups
         else if (!isPrimitiveElement(element)) {
           this.preprocessData(element, data[name]);
@@ -948,7 +943,7 @@ export class FormulaFormContextProvider extends React.Component<
       editGroupSubType === EditGroupSubtype.DICTIONARY_OF_DICTIONARIES ||
       editGroupSubType === EditGroupSubtype.LIST_OF_DICTIONARIES
     ) {
-      element.$newItemValue = this.generateValues(element.$prototype, {}, {}, element);
+      element.$newItemValue = this.generateValues(element.$prototype, {}, {});
     } else if (editGroupSubType === EditGroupSubtype.PRIMITIVE_DICTIONARY) {
       element.$newItemValue = [
         this.defaultValue(element.$prototype.$key.$type, element.$prototype.$key.$default),
@@ -1062,7 +1057,7 @@ export class FormulaFormContextProvider extends React.Component<
    * object that follows the structure of the layout and has values populated
    * based on the system data, group data and layout default.
    */
-  generateValues = (layout, group_data, system_data, UNUSED_ARG?: any) => {
+  generateValues = (layout, group_data, system_data) => {
     const generateValuesInternal = (layout, group_data, system_data, prototypeParentId?: any, elementIndex?: any) => {
       const result: any = {};
       for (const key in layout) {

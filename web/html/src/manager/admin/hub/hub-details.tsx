@@ -104,7 +104,7 @@ export class HubDetails extends React.Component<Props, State> {
     const resource = `/rhn/manager/api/admin/hub/sync-bunch`;
     Network.post(resource)
       .then(
-        (_response) => {
+        () => {
           showInfoToastr(t("Successfully scheduled a channels synchronization."));
         },
         (xhr) => Network.showResponseErrorToastr(xhr)

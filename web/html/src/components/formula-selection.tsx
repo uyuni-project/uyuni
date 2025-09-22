@@ -75,7 +75,7 @@ class FormulaSelection extends React.Component<Props, State> {
      * Do not assign to state fields directly, use `setState()` instead
      */
     (this.state as any).activeFormulas = selectedFormulas;
-    return this.props.saveRequest(this, selectedFormulas).then((data) => {
+    return this.props.saveRequest(this, selectedFormulas).then(() => {
       this.init();
       window.scrollTo(0, 0);
     });

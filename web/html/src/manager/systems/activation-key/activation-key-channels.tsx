@@ -97,7 +97,7 @@ class ActivationKeyChannels extends React.Component<ActivationKeyChannelsProps, 
         activationKeyId={this.props.activationKeyId}
         currentSelectedBaseId={this.state.currentSelectedBaseId}
       >
-        {({ messages, loading, loadingChildren, availableBaseChannels, availableChannels, fetchChildChannels }) => {
+        {({ loading, loadingChildren, availableBaseChannels, availableChannels, fetchChildChannels }) => {
           if (loading) {
             return (
               <div className="form-group">

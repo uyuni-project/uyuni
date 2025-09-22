@@ -152,6 +152,7 @@ class TimePicker extends React.PureComponent<TimePickerProps> {
 
   componentDidMount() {
     this._input?.timepicker({
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       roundingFunction: (seconds, options) => seconds,
     });
     this._input?.on("timeFormatError", () => {

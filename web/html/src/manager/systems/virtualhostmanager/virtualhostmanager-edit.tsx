@@ -90,7 +90,7 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
     return this.props.item ? true : false;
   }
 
-  onUpdate = (model) => {
+  onUpdate = () => {
     if (!this.isEdit()) {
       return false;
     }
@@ -111,13 +111,13 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
     }
 
     return request
-      .then((data) => {
+      .then(() => {
         Utils.urlBounce("/rhn/manager/vhms");
       })
       .catch(this.handleResponseError);
   };
 
-  onCreate = (model) => {
+  onCreate = () => {
     if (this.isEdit()) {
       return false;
     }
@@ -138,7 +138,7 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
     }
 
     return request
-      .then((data) => {
+      .then(() => {
         Utils.urlBounce("/rhn/manager/vhms");
       })
       .catch(this.handleResponseError);
@@ -216,7 +216,7 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
     return buttons;
   }
 
-  paramField(name, defaultValue) {
+  paramField(name) {
     const required = this.isEdit() ? name !== "password" && name !== "username" : true;
     if (name.toLowerCase() === "password") {
       return (
@@ -257,9 +257,7 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
     if (!this.state.vhmParams) {
       return null;
     }
-    const fields = Object.keys(this.state.vhmParams).map((param) =>
-      this.paramField(param, this.state.vhmParams[param])
-    );
+    const fields = Object.keys(this.state.vhmParams).map((param) => this.paramField(param));
 
     fields.unshift(<Text name="label" label={t("Label")} required labelClass="col-md-3" divClass="col-md-6" />);
 
@@ -347,7 +345,7 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
         model={this.state.model}
         className="virtualhostmanager-form"
         onChange={this.onFormChange}
-        onSubmit={(e) => (this.isEdit() ? this.onUpdate(e) : this.onCreate(e))}
+        onSubmit={() => (this.isEdit() ? this.onUpdate() : this.onCreate())}
         onValidate={this.onValidate}
         formRef={this.bindForm}
       >

@@ -20,7 +20,7 @@ const useMonitoringApi = () => {
   const [restartNeeded, setRestartNeeded] = useState<boolean>(false);
   const [messages, setMessages] = useState<MessageType[]>([]);
 
-  const handleResponseError = (jqXHR: JQueryXHR, arg = ""): any => {
+  const handleResponseError = (jqXHR: JQueryXHR): any => {
     const msg = Network.responseErrorMessage(jqXHR);
     setMessages(msg);
   };

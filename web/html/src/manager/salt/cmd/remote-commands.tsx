@@ -316,7 +316,7 @@ class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandSta
     );
   };
 
-  onBeforeUnload = (event) => {
+  onBeforeUnload = () => {
     this.setState({
       pageUnloading: true,
     });
@@ -334,7 +334,7 @@ class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandSta
         executing: jQuery.Deferred().resolve(),
       });
     };
-    ws.onclose = (e) => {
+    ws.onclose = () => {
       const errs = this.state.errors ? this.state.errors : [];
       if (!this.state.pageUnloading && !this.state.websocketErr) {
         errs.push(t("Websocket connection closed. Refresh the page to try again."));
