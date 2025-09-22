@@ -14,6 +14,6 @@
              commons-logging ${log4j-jars} objectweb-asm/asm oro
              quartz redstone-xmlrpc redstone-xmlrpc-client simple-core
              slf4j/api slf4j/simple junit picocontainer
-             lucene lucene-analyzers lucene-misc mybatis javassist apache-commons-ognl" />
+             lucene lucene-analyzers lucene-misc mybatis javassist ognl/ognl" />
 
 </project>

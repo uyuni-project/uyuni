@@ -13,7 +13,7 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
     uyuni-coco-attestation-core \
     uyuni-coco-attestation-module-secureboot \
     ${ARCH_SPECIFIC_MODULES} \
-    javassist apache-commons-ognl procps
+    javassist ognl procps
 
 ARG PRODUCT=Uyuni
 ARG VENDOR="Uyuni project"
