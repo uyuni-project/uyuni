@@ -13,7 +13,7 @@ The project is composed of several interconnected parts. This README explains ea
   - [2. Pull Request Data Extraction Script](#2-pull-request-data-extraction-script)
   - [3. Cucumber Results Extraction Script](#3-cucumber-results-extraction-script)
   - [4. Runs Feature Result Extraction Script](#4-runs-feature-result-extraction-script)
-  - [5. Insert Test Runs Into Database Script](#5-insert-test-runs-into-database-script)
+  - [5. Backfill Test Runs Into Database Script](#5-backfill-test-runs-into-database-script)
   - [6. Generate Training Data Script](#6-generate-training-data-script)
 
 High-level diagram of this phase
@@ -243,9 +243,9 @@ A JSON file like the following will be generated inside each test run’s folder
 ]
 ```
 
-## 5. Insert Test Runs Into Database Script
+## 5. Backfill Test Runs Into Database Script
 
-[insert_test_runs_into_db.py](insert_test_runs_into_db.py)
+[backfill_test_runs_into_db.py](backfill_test_runs_into_db.py)
 
 ### Functionality
 

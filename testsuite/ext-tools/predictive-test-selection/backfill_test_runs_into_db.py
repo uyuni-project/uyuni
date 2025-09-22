@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-Uses extracted test run data and feature results to insert test runs into a relational database.
+Uses extracted test run data and feature results to backfill test runs into a relational database.
 
 This script reads the CSV file produced by the PR data extraction script and for each PR,
-uses run data and feature results from all run folders and inserts them into the database.
+uses run data and feature results from all run folders and backfills them into the database.
 
 Prerequisites:
     - Run runs_feature_result_extraction.py
@@ -13,7 +13,7 @@ The script works with any PostgreSQL database, and probably any relational datab
 but is tested with Neon Postgres.
 
 Usage:
-    python insert_test_runs_into_db.py
+    python backfill_test_runs_into_db.py
 """
 import os
 import re
@@ -36,7 +36,7 @@ from config import (
 )
 from utilities import setup_logging
 
-logger = setup_logging(logging.INFO, "logs/insert_test_runs_into_db.log")
+logger = setup_logging(logging.INFO, "logs/backfill_test_runs_into_db.log")
 
 # SQLAlchemy setup
 Base = declarative_base()
