@@ -1,6 +1,8 @@
 import _isNil from "lodash/isNil";
 import validator from "validator";
 
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
+
 type SingleOrArray<T> = T | T[] | undefined;
 interface TreeLikeModel<T = any> {
   [key: string]: SingleOrArray<T | TreeLikeModel<T>>;
@@ -83,7 +85,7 @@ export function unflattenModel<T>(flatModel: Record<string, T>): TreeLikeModel<T
     if (pos >= 0) {
       const segment = name.substring(0, pos);
       const tail = name.substring(pos + 1);
-      if (obj[segment] == null) {
+      if (DEPRECATED_unsafeEquals(obj[segment], null)) {
         obj[segment] = {};
       }
       aggregate(obj[segment], tail, value);

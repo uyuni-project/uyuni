@@ -4,8 +4,7 @@ import _isEqual from "lodash/isEqual";
 
 import { RecurringPlaybookPicker } from "manager/recurring/recurring-playbook-picker";
 
-import { Button } from "components/buttons";
-import { AsyncButton } from "components/buttons";
+import { AsyncButton, Button } from "components/buttons";
 import { DEPRECATED_Select, Form } from "components/input";
 import { Utils as MessagesUtils } from "components/messages/messages";
 import { InnerPanel } from "components/panels/InnerPanel";

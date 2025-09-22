@@ -187,7 +187,7 @@ class CVEAudit extends React.Component<Props, State> {
   onCVEChange = (e) => {
     const value = e.target.value;
     const parts = CVE_REGEX.exec(value);
-    if (parts != null && DEPRECATED_unsafeEquals(parts.length, 3)) {
+    if (!DEPRECATED_unsafeEquals(parts, null) && DEPRECATED_unsafeEquals(parts.length, 3)) {
       const year = Number.parseInt(parts[1], 10);
       if (YEARS.includes(year)) {
         const number = parts[2];

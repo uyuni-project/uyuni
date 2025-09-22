@@ -3,8 +3,7 @@ import { useEffect, useState } from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 
-import { Messages } from "components/messages/messages";
-import { Utils as MessagesUtils } from "components/messages/messages";
+import { Messages, Utils as MessagesUtils } from "components/messages/messages";
 
 import Network from "utils/network";
 

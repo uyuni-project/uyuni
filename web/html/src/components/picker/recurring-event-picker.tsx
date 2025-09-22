@@ -1,13 +1,12 @@
 import * as React from "react";
 
+import { Combobox, ComboboxItem } from "components/combobox";
 import { DateTimePicker } from "components/datetime";
 import { Form } from "components/input/form/Form";
 import { Text } from "components/input/text/Text";
 
 import { localizedMoment } from "utils";
 
-import { Combobox } from "../combobox";
-import { ComboboxItem } from "../combobox";
 import styles from "./recurring-event-picker.module.scss";
 
 export type RecurringType = "hourly" | "daily" | "weekly" | "monthly" | "cron";
@@ -160,9 +159,7 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
   };
 
   onMinutesChanged = (selectedItem: ComboboxItem) => {
-    let newMinutes: ComboboxItem;
-
-    newMinutes = {
+    const newMinutes: ComboboxItem = {
       id: selectedItem.id,
       text: selectedItem.text,
     };
@@ -221,9 +218,7 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
   };
 
   onWeekDayChanged = (selectedItem: ComboboxItem) => {
-    let newWeekDay: ComboboxItem;
-
-    newWeekDay = {
+    const newWeekDay: ComboboxItem = {
       id: selectedItem.id,
       text: selectedItem.text,
     };
@@ -272,9 +267,7 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
   };
 
   onMonthDayChanged = (selectedItem: ComboboxItem) => {
-    let newMonthDay: ComboboxItem;
-
-    newMonthDay = {
+    const newMonthDay: ComboboxItem = {
       id: selectedItem.id,
       text: selectedItem.text,
     };

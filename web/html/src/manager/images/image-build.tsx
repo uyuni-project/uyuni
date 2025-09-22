@@ -9,8 +9,7 @@ import { Form } from "components/input/form/Form";
 import { FormGroup } from "components/input/FormGroup";
 import { Text } from "components/input/text/Text";
 import { ActionChainLink, ActionLink } from "components/links";
-import { Messages } from "components/messages/messages";
-import { Utils as MessagesUtils } from "components/messages/messages";
+import { Messages, Utils as MessagesUtils } from "components/messages/messages";
 import { TopPanel } from "components/panels/TopPanel";
 
 import { localizedMoment } from "utils";

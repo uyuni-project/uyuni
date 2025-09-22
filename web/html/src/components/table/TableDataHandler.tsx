@@ -6,9 +6,9 @@ import { pageSize } from "core/user-preferences";
 
 import { cloneReactElement, Loading } from "components/utils";
 
-import { AsyncDataProvider, PageControl, SimpleDataProvider } from "utils/data-providers";
-import { Comparator, PagedData } from "utils/data-providers";
+import { AsyncDataProvider, Comparator, PageControl, PagedData, SimpleDataProvider } from "utils/data-providers";
 import { Utils } from "utils/functions";
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
 import { ItemsPerPageSelector, PaginationBlock } from "../pagination";
 import { Header } from "./Header";
@@ -199,7 +199,7 @@ export class TableDataHandler extends React.Component<Props, State> {
 
   updateData({ items, total, selectedIds }: PagedData) {
     this.setState({ data: items, totalItems: total }, () => {
-      if (selectedIds != null) {
+      if (!DEPRECATED_unsafeEquals(selectedIds, null)) {
         this.props.onSelect?.(selectedIds);
       }
       const lastPage = this.getLastPage();
@@ -248,7 +248,7 @@ export class TableDataHandler extends React.Component<Props, State> {
 
   onSearchField = (field?: string): void => {
     this.setState({ currentPage: 1, field: field }, () => {
-      if (this.state.criteria != null && this.state.criteria !== "") {
+      if (!DEPRECATED_unsafeEquals(this.state.criteria, null) && this.state.criteria !== "") {
         this.getData();
       }
     });

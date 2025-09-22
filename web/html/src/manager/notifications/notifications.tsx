@@ -2,6 +2,8 @@ import * as React from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
+
 interface Props {}
 
 interface State {
@@ -21,7 +23,7 @@ class Notifications extends React.Component<Props, State> {
   };
 
   onBeforeUnload = (e) => {
-    if (this.state.websocket != null) {
+    if (!DEPRECATED_unsafeEquals(this.state.websocket, null)) {
       this.state.websocket.close();
     }
     this.setState({
@@ -48,7 +50,7 @@ class Notifications extends React.Component<Props, State> {
     };
     ws.onerror = (e) => {
       Loggerhead.error("Websocket error: " + JSON.stringify(e));
-      if (this.state.websocket != null) {
+      if (!DEPRECATED_unsafeEquals(this.state.websocket, null)) {
         this.state.websocket.close();
       }
       this.setState({
@@ -84,8 +86,8 @@ class Notifications extends React.Component<Props, State> {
   render() {
     return (
       <a className="js-spa" href="/rhn/manager/notification-messages">
-        <i className={this.state.websocket == null ? "fa fa-bell-slash" : "fa fa-bell"}></i>
-        {this.state.websocket != null && this.state.unreadMessagesLength > 0 ? (
+        <i className={DEPRECATED_unsafeEquals(this.state.websocket, null) ? "fa fa-bell-slash" : "fa fa-bell"}></i>
+        {!DEPRECATED_unsafeEquals(this.state.websocket, null) && this.state.unreadMessagesLength > 0 ? (
           <div id="notification-counter" className={this.state.classStyle}>
             {this.state.unreadMessagesLength}
           </div>

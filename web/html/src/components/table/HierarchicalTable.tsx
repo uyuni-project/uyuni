@@ -1,6 +1,8 @@
 import * as React from "react";
 import { useState } from "react";
 
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
+
 import { SearchField } from "./SearchField";
 import { Table, TableRef } from "./Table";
 
@@ -94,7 +96,7 @@ export const HierarchicalTable = React.forwardRef<TableRef, HierarchicalTablePro
     // Second pass: identify parent-child relationships and mark non-leaves
     items.forEach((item) => {
       const parentId = item.parentId;
-      if (parentId != null && itemMap[parentId]) {
+      if (!DEPRECATED_unsafeEquals(parentId, null) && itemMap[parentId]) {
         itemMap[parentId].isLeaf = false;
       }
     });

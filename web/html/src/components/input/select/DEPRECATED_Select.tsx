@@ -5,6 +5,8 @@ import ReactSelect from "react-select";
 import AsyncSelect from "react-select/async";
 import { AsyncPaginate as AsyncPaginateSelect } from "react-select-async-paginate";
 
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
+
 import { FormContext } from "../form/Form";
 import { InputBase, InputBaseProps } from "../InputBase";
 import withCustomComponents from "./withCustomComponents";
@@ -187,8 +189,8 @@ export function DEPRECATED_Select(props: Props) {
             isDisabled: props.disabled,
             onBlur: onBlur,
             onChange: onChange,
-            getOptionLabel: (option) => (option != null ? getOptionLabel(option) : ""),
-            getOptionValue: (option) => (option != null ? getOptionValue(option) : ""),
+            getOptionLabel: (option) => (!DEPRECATED_unsafeEquals(option, null) ? getOptionLabel(option) : ""),
+            getOptionValue: (option) => (!DEPRECATED_unsafeEquals(option, null) ? getOptionValue(option) : ""),
             formatOptionLabel: formatOptionLabel,
             placeholder: placeholder,
             isLoading: isLoading,

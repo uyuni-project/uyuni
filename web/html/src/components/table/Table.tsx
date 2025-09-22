@@ -3,6 +3,8 @@ import { forwardRef, useImperativeHandle } from "react";
 
 import { Button } from "components/buttons";
 
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
+
 import { Column } from "./Column";
 import { SearchField } from "./SearchField";
 import { TableDataHandler } from "./TableDataHandler";
@@ -117,7 +119,7 @@ export const Table = forwardRef<TableRef, TableProps>((props, ref) => {
   return (
     <TableDataHandler ref={dataHandlerRef} columns={columns} {...allProps}>
       {({ currItems, headers, handleSelect, selectedItems, criteria }) => {
-        const selectableValue = props.selectable == null ? false : props.selectable;
+        const selectableValue = DEPRECATED_unsafeEquals(props.selectable, null) ? false : props.selectable;
 
         const renderRow = (item: ArrayElement<typeof currItems>, index: number, nestingLevel: number) => {
           const cells: React.ReactNode[] = React.Children.toArray(props.children)

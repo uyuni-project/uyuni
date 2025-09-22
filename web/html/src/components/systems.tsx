@@ -46,7 +46,7 @@ export function iconAndName(system: SystemOverview) {
 
   const content = [systemIcon, proxyIcon, mgrServerIcon, system.serverName];
 
-  if (system.id != null) {
+  if (!DEPRECATED_unsafeEquals(system.id, null)) {
     return (
       <a href={`/rhn/systems/details/Overview.do?sid=${system.id}`} className="js-spa">
         {content}

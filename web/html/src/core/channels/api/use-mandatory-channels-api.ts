@@ -3,16 +3,16 @@ import { useState } from "react";
 import { Channel } from "manager/systems/activation-key/activation-key-channels-api";
 
 import { MandatoryChannel } from "core/channels/type/channels.type";
-import { ChannelsDependencies } from "core/channels/utils/channels-dependencies.utils";
 import {
+  ChannelsDependencies,
   dependenciesTooltip as dependenciesTooltipInternal,
   processChannelDependencies,
 } from "core/channels/utils/channels-dependencies.utils";
 
 import { MessageType } from "components/messages/messages";
 
-import { JsonResult } from "utils/network";
-import Network from "utils/network";
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
+import Network, { JsonResult } from "utils/network";
 
 const messageMap = {
   base_not_found_or_not_authorized: t("Base channel not found or not authorized."),
@@ -78,7 +78,7 @@ const useMandatoryChannelsApi = (): UseMandatoryChannelsApiReturnType => {
     const resolveChannelNames: Function = (channelIds: number[]): (string | null | undefined)[] => {
       return Array.from(channelIds || new Set())
         .map((channelId: number) => channels.find((c) => c.id === channelId))
-        .filter((channel): boolean => channel != null)
+        .filter((channel): boolean => !DEPRECATED_unsafeEquals(channel, null))
         .map((channel): string | null | undefined => channel && channel.name);
     };
     return dependenciesTooltipInternal(

@@ -8,8 +8,7 @@ import { localizedMoment } from "utils";
 import { Utils } from "utils/functions";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
-import { CsvLink, humanReadablePolicy, ToolTip } from "./subscription-matching-util";
-import { WarningIcon } from "./subscription-matching-util";
+import { CsvLink, humanReadablePolicy, ToolTip, WarningIcon } from "./subscription-matching-util";
 
 interface SubscriptionsProps {
   subscriptions: any[];

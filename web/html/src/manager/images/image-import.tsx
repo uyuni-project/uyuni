@@ -6,8 +6,7 @@ import { Button, SubmitButton } from "components/buttons";
 import { DEPRECATED_Select } from "components/input";
 import { Form } from "components/input/form/Form";
 import { Text } from "components/input/text/Text";
-import { Messages } from "components/messages/messages";
-import { Utils as MessagesUtils } from "components/messages/messages";
+import { Messages, Utils as MessagesUtils } from "components/messages/messages";
 import { TopPanel } from "components/panels/TopPanel";
 
 import { Utils } from "utils/functions";

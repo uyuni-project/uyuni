@@ -3,6 +3,7 @@ import * as React from "react";
 import { Button } from "components/buttons";
 import { Messages, MessageType } from "components/messages/messages";
 
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network from "utils/network";
 
 import styles from "./products-scc-dialog.module.scss";
@@ -80,7 +81,7 @@ class SCCDialog extends React.Component<Props> {
   // there is at least one step with a valid 'success' flag value
   // or the sync is running
   hasRun = () => {
-    return this.state.steps.some((s) => s.success != null) || this.isSyncRunning();
+    return this.state.steps.some((s) => !DEPRECATED_unsafeEquals(s.success, null)) || this.isSyncRunning();
   };
 
   startSync = () => {
@@ -157,7 +158,7 @@ class SCCDialog extends React.Component<Props> {
                 <li key={s.id}>
                   <i
                     className={
-                      s.success != null
+                      !DEPRECATED_unsafeEquals(s.success, null)
                         ? s.success
                           ? "fa fa-check text-success"
                           : "fa fa-exclamation-triangle text-warning"

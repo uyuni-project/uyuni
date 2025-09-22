@@ -54,7 +54,7 @@ class TaskoTop extends React.Component<Props> {
   };
 
   sortByEndTime = (aRaw, bRaw, columnKey, sortDirection) => {
-    if (aRaw[columnKey] == null || bRaw[columnKey] == null) {
+    if (DEPRECATED_unsafeEquals(aRaw[columnKey], null) || DEPRECATED_unsafeEquals(bRaw[columnKey], null)) {
       // reset the sortDirection because if 'endTime' is null it means that its status
       // it's 'running' so we want to keep it at the top of any other rows
       sortDirection = 1;
@@ -174,7 +174,7 @@ class TaskoTop extends React.Component<Props> {
       </div>
     );
 
-    if (data != null) {
+    if (!DEPRECATED_unsafeEquals(data, null)) {
       if (Object.keys(data).length > 0) {
         return (
           <div key="taskotop-content">
@@ -212,13 +212,19 @@ class TaskoTop extends React.Component<Props> {
                 columnKey="endTime"
                 comparator={this.sortByEndTime}
                 header={t("End Time")}
-                cell={(row) => (row["endTime"] == null ? "" : localizedMoment(row["endTime"]).toUserTimeString())}
+                cell={(row) =>
+                  DEPRECATED_unsafeEquals(row["endTime"], null)
+                    ? ""
+                    : localizedMoment(row["endTime"]).toUserTimeString()
+                }
               />
               <Column
                 columnKey="elapsedTime"
                 comparator={this.sortByNumber}
                 header={t("Elapsed Time")}
-                cell={(row) => (row["elapsedTime"] == null ? "" : row["elapsedTime"] + " seconds")}
+                cell={(row) =>
+                  DEPRECATED_unsafeEquals(row["elapsedTime"], null) ? "" : row["elapsedTime"] + " seconds"
+                }
               />
               <Column
                 columnKey="status"

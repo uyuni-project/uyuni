@@ -2,6 +2,8 @@ import * as React from "react";
 
 import _isNil from "lodash/isNil";
 
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
+
 import { FormContext } from "./form/Form";
 import { FormGroup } from "./FormGroup";
 import { Label } from "./Label";
@@ -109,7 +111,7 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
 
   componentDidMount() {
     if (this.props?.name) {
-      if (this.context.registerInput != null) {
+      if (!DEPRECATED_unsafeEquals(this.context.registerInput, null)) {
         this.context.registerInput(this);
       }
 
@@ -233,7 +235,7 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
           showErrors: state.showErrors || (Array.isArray(errors) && errors.length > 0),
         }),
         () => {
-          if (this.context.validateForm != null) {
+          if (!DEPRECATED_unsafeEquals(this.context.validateForm, null)) {
             this.context.validateForm();
           }
         }
@@ -242,7 +244,7 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
   }
 
   setValue = (name: string | undefined = undefined, value: ValueType) => {
-    if (name && this.context.setModelValue != null) {
+    if (name && !DEPRECATED_unsafeEquals(this.context.setModelValue, null)) {
       this.context.setModelValue(name, value);
     }
     const propsName = this.props.name;

@@ -8,6 +8,7 @@ import { SectionState } from "components/FormulaForm";
 import HelpIcon from "components/utils/HelpIcon";
 
 import { Formulas, Utils } from "utils/functions";
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
 import EditGroup from "./EditGroup";
 import Group from "./Group";
@@ -393,7 +394,7 @@ function isVisibleByCriteria(element: any, criteria: string) {
 
   // return conditions result whether the element can be hided or not
   return (
-    criteria == null ||
+    DEPRECATED_unsafeEquals(criteria, null) ||
     criteria === "" ||
     element.$name.toLowerCase().includes(criteria.toLowerCase()) ||
     visibilityForcedByChildren
@@ -606,7 +607,11 @@ function cleanMeta(value) {
 }
 
 function checkIfEmptyValueAttrExists(value, element, formulaValues) {
-  if ((value == null || value.length === 0) && !element.$optional && (element.$ifEmpty || element.$ifEmpty === null)) {
+  if (
+    (DEPRECATED_unsafeEquals(value, null) || value.length === 0) &&
+    !element.$optional &&
+    (element.$ifEmpty || element.$ifEmpty === null)
+  ) {
     value = element.$ifEmpty;
     formulaValues[element.$id] = value;
   }

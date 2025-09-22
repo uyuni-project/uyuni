@@ -10,8 +10,7 @@ import { DangerDialog } from "components/dialog/DangerDialog";
 import { Dialog } from "components/dialog/Dialog";
 import { DEPRECATED_Select, Form } from "components/input";
 import { ChannelLink } from "components/links";
-import { Messages, MessageType } from "components/messages/messages";
-import { Utils as MessagesUtils } from "components/messages/messages";
+import { Messages, MessageType, Utils as MessagesUtils } from "components/messages/messages";
 import { SectionToolbar } from "components/section-toolbar/section-toolbar";
 import { CustomDataHandler } from "components/table/CustomDataHandler";
 import { SearchField } from "components/table/SearchField";
@@ -190,7 +189,9 @@ class ProductsPageWrapper extends React.Component {
     )
       .then((data) => {
         // returned data format is { productId : "error" }. If the value is null or missing the operation succeeded
-        const failedProducts = currentObject.state.selectedItems.filter((i) => data[i.identifier] != null);
+        const failedProducts = currentObject.state.selectedItems.filter(
+          (i) => !DEPRECATED_unsafeEquals(data[i.identifier], null)
+        );
         let resultMessages: MessageType[] | null = null;
         if (failedProducts.length === 0) {
           resultMessages = MessagesUtils.success("Selected channels/products were scheduled successfully for syncing.");
@@ -223,7 +224,7 @@ class ProductsPageWrapper extends React.Component {
     Network.post("/rhn/manager/admin/setup/products", [id])
       .then((data) => {
         // if the id is not present in the response or it is null, the operation went fine.
-        if (data[id] == null) {
+        if (DEPRECATED_unsafeEquals(data[id], null)) {
           currentObject.setState({
             errors: MessagesUtils.success("The product '" + name + "' sync has been scheduled successfully"),
             scheduleResyncItems: scheduleResyncItemsNew.filter((i) => !DEPRECATED_unsafeEquals(i, id)),
@@ -244,7 +245,7 @@ class ProductsPageWrapper extends React.Component {
     Network.post("/rhn/manager/admin/setup/channels/optional", channels)
       .then((data) => {
         // returned data format is { channel : "error" }. If the value is null or missing the operation succeeded
-        const failedChannels = channels.filter((c) => data[c] != null);
+        const failedChannels = channels.filter((c) => !DEPRECATED_unsafeEquals(data[c], null));
         let resultMessages: MessageType[] | null = null;
         if (failedChannels.length === 0) {
           resultMessages = MessagesUtils.success(t("Selected channels were scheduled successfully for syncing."));
@@ -758,7 +759,11 @@ class CheckListItem extends React.Component<CheckListItemProps> {
   };
 
   getNestedData = (item) => {
-    if (item && this.props.bypassProps.nestedKey && item[this.props.bypassProps.nestedKey] != null) {
+    if (
+      item &&
+      this.props.bypassProps.nestedKey &&
+      !DEPRECATED_unsafeEquals(item[this.props.bypassProps.nestedKey], null)
+    ) {
       return item[this.props.bypassProps.nestedKey];
     }
     return [];
