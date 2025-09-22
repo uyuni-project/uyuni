@@ -410,52 +410,48 @@ def get_modified_files(repo, pr, test_run):
     comparison = repo.compare(base_commit_sha, test_run_commit_sha)
     return [f.filename for f in comparison.files if ".changes" not in f.filename]
 
-def get_files_change_history(repo, file_list, recent_days, cache=None):
+def get_files_change_history(repo, file_list, recent_days, run_execution_date=None):
     """
     For each N in recent_days, return the total number of times the files in file_list
-    were modified in the last N days.
+    were modified in the last N days before the execution date of the test run, this ensures
+    no future data leakage occurs and the training data correctly mirrors the production data.
 
     Args:
         repo (github.Repository.Repository): Repository object.
         file_list (list): List of modified file paths.
         recent_days (list): List of integers representing "last N days".
-        cache (dict, optional): A cache to store and retrieve file change history.
+        run_execution_date (datetime): The execution data of the test run.
 
     Returns:
         dict: Mapping each number of days to total number of changes across all files.
     """
-    if cache is None:
-        cache = {}
+    if run_execution_date:
+        now = run_execution_date
+    else:
+        now = datetime.datetime.now(datetime.timezone.utc)
 
-    now = datetime.datetime.now(datetime.timezone.utc)
     day_thresholds = {days: now - datetime.timedelta(days=days) for days in recent_days}
 
     total_change_history = {days: 0 for days in recent_days}
 
     for file_path in file_list:
-        if file_path in cache:
-            file_change_history = cache[file_path]
-            logger.debug("Found history for %s in cache.", file_path)
-        else:
-            logger.debug("Obtaining change history of file %s", file_path)
-            file_change_history = {days: 0 for days in recent_days}
-            earliest_date = now - datetime.timedelta(days=max(recent_days))
-            try:
-                commits = list(repo.get_commits(path=file_path, since=earliest_date))
-                logger.debug(
-                    "File %s was edited in %d commits since %d days", 
-                    file_path, len(commits), max(recent_days)
-                )
-                for commit in commits:
-                    logger.debug("File edited in commit %s", commit.sha)
-                    commit_date = commit.commit.committer.date
-                    for days, threshold_date in day_thresholds.items():
-                        if commit_date >= threshold_date:
-                            file_change_history[days] += 1
-                cache[file_path] = file_change_history
-            except Exception as e:
-                logger.error("Could not retrieve commits for file %s: %s", file_path, e)
-                cache[file_path] = file_change_history
+        logger.debug("Obtaining change history of file %s", file_path)
+        file_change_history = {days: 0 for days in recent_days}
+        earliest_date = now - datetime.timedelta(days=max(recent_days))
+        try:
+            commits = list(repo.get_commits(path=file_path, since=earliest_date, until=now))
+            logger.debug(
+                "File %s was edited in %d commits since %d days", 
+                file_path, len(commits), max(recent_days)
+            )
+            for commit in commits:
+                commit_date = commit.commit.committer.date
+                logger.debug("File edited in commit %s with date %s", commit.sha, commit_date)
+                for days, threshold_date in day_thresholds.items():
+                    if commit_date >= threshold_date:
+                        file_change_history[days] += 1
+        except Exception as e:
+            logger.error("Could not retrieve commits for file %s: %s", file_path, e)
 
         for days in recent_days:
             total_change_history[days] += file_change_history[days]
