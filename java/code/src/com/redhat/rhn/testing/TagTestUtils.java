@@ -53,7 +53,7 @@ public class TagTestUtils {
         mpc.setJspWriter(new RhnMockJspWriter());
 
         if (url != null) {
-            ctx.setupGetResource(url);
+            ctx.setResource(url);
         }
         return tth;
     }

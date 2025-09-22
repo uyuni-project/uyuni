@@ -59,7 +59,6 @@ public class MockServletContext implements ServletContext {
         return Collections.emptyEnumeration();
     }
 
-
     /**
      * Sets the resource to be returned by getResource().
      * @param resourceIn the URL resource to set
@@ -67,18 +66,6 @@ public class MockServletContext implements ServletContext {
     public void setResource(URL resourceIn) {
         this.resource = resourceIn;
     }
-
-    /**
-     * Sets the resource to be returned by getResource().
-     * @param resourceIn the URL resource to set
-     * @deprecated replaced by {@link #setResource(URL)}
-     */
-    @Deprecated
-    public void setupGetResource(URL resourceIn) {
-        this.resource = resourceIn;
-    }
-
-
 
     /**
      * Gets a URL to the resource mapped to the specified path.
@@ -106,11 +93,11 @@ public class MockServletContext implements ServletContext {
         return resourcePaths;
     }
 
-    @Override
     /**
      * Gets the context path of the web application.
      * @return empty string for mock implementation
      */
+    @Override
     public String getContextPath() {
         return "";
     }
@@ -322,51 +309,50 @@ public class MockServletContext implements ServletContext {
         return null;
     }
 
-    @Override
     /**
      * Adds a servlet with the given name and class name to this servlet context.
      * @param sIn the servlet name
      * @param sIn1 the servlet class name
      * @return null for mock implementation
      */
+    @Override
     public ServletRegistration.Dynamic addServlet(String sIn, String sIn1) {
         return null;
     }
 
-    @Override
     /**
      * Adds a servlet with the given name and servlet instance to this servlet context.
      * @param sIn the servlet name
      * @param servletIn the servlet instance
      * @return null for mock implementation
      */
+    @Override
     public ServletRegistration.Dynamic addServlet(String sIn, Servlet servletIn) {
         return null;
     }
 
-    @Override
     /**
      * Adds a servlet with the given name and servlet class to this servlet context.
      * @param sIn the servlet name
      * @param classIn the servlet class
      * @return null for mock implementation
      */
+    @Override
     public ServletRegistration.Dynamic addServlet(String sIn, Class<? extends Servlet> classIn) {
         return null;
     }
 
-    @Override
     /**
      * Adds a JSP file with the given name and file path to this servlet context.
      * @param sIn the servlet name
      * @param sIn1 the JSP file path
      * @return null for mock implementation
      */
+    @Override
     public ServletRegistration.Dynamic addJspFile(String sIn, String sIn1) {
         return null;
     }
 
-    @Override
     /**
      * Creates a servlet of the given class.
      * @param classIn the servlet class
@@ -374,63 +360,64 @@ public class MockServletContext implements ServletContext {
      * @return null for mock implementation
      * @throws ServletException if servlet creation fails
      */
+    @Override
     public <T extends Servlet> T createServlet(Class<T> classIn) throws ServletException {
         return null;
     }
 
-    @Override
     /**
      * Gets the servlet registration for the servlet with the given servlet name.
      * @param sIn the servlet name
      * @return null for mock implementation
      */
+    @Override
     public ServletRegistration getServletRegistration(String sIn) {
         return null;
     }
 
-    @Override
     /**
      * Gets a map containing the servlet registrations for all servlets.
      * @return empty map for mock implementation
      */
+    @Override
     public Map<String, ? extends ServletRegistration> getServletRegistrations() {
         return Map.of();
     }
 
-    @Override
     /**
      * Adds a filter with the given name and class name to this servlet context.
-     * @param sIn the filter name
+     *
+     * @param sIn  the filter name
      * @param sIn1 the filter class name
      * @return null for mock implementation
      */
+    @Override
     public FilterRegistration.Dynamic addFilter(String sIn, String sIn1) {
         return null;
     }
 
-    @Override
     /**
      * Adds a filter with the given name and filter instance to this servlet context.
      * @param sIn the filter name
      * @param filterIn the filter instance
      * @return null for mock implementation
      */
+    @Override
     public FilterRegistration.Dynamic addFilter(String sIn, Filter filterIn) {
         return null;
     }
 
-    @Override
     /**
      * Adds a filter with the given name and filter class to this servlet context.
      * @param sIn the filter name
      * @param classIn the filter class
      * @return null for mock implementation
      */
+    @Override
     public FilterRegistration.Dynamic addFilter(String sIn, Class<? extends Filter> classIn) {
         return null;
     }
 
-    @Override
     /**
      * Creates a filter of the given class.
      * @param classIn the filter class
@@ -438,95 +425,95 @@ public class MockServletContext implements ServletContext {
      * @return null for mock implementation
      * @throws ServletException if filter creation fails
      */
+    @Override
     public <T extends Filter> T createFilter(Class<T> classIn) throws ServletException {
         return null;
     }
 
-    @Override
     /**
      * Gets the filter registration for the filter with the given filter name.
      * @param sIn the filter name
      * @return null for mock implementation
      */
+    @Override
     public FilterRegistration getFilterRegistration(String sIn) {
         return null;
     }
 
-    @Override
     /**
      * Gets a map containing the filter registrations for all filters.
      * @return empty map for mock implementation
      */
+    @Override
     public Map<String, ? extends FilterRegistration> getFilterRegistrations() {
         return Map.of();
     }
 
-    @Override
     /**
      * Gets the session cookie configuration for this servlet context.
      * @return null for mock implementation
      */
+    @Override
     public SessionCookieConfig getSessionCookieConfig() {
         return null;
     }
 
-    @Override
     /**
      * Sets the session tracking modes for this servlet context.
      * @param setIn the set of session tracking modes
      */
+    @Override
     public void setSessionTrackingModes(Set<SessionTrackingMode> setIn) {
         // Mock implementation does nothing
     }
 
-    @Override
     /**
      * Gets the default session tracking modes for this servlet context.
      * @return empty set for mock implementation
      */
+    @Override
     public Set<SessionTrackingMode> getDefaultSessionTrackingModes() {
         return Set.of();
     }
 
-    @Override
     /**
      * Gets the effective session tracking modes for this servlet context.
      * @return empty set for mock implementation
      */
+    @Override
     public Set<SessionTrackingMode> getEffectiveSessionTrackingModes() {
         return Set.of();
     }
 
-    @Override
     /**
      * Adds a listener with the given class name to this servlet context.
      * @param sIn the listener class name
      */
+    @Override
     public void addListener(String sIn) {
         // Mock implementation does nothing
     }
 
-    @Override
     /**
      * Adds a listener instance to this servlet context.
      * @param tIn the listener instance
      * @param <T> the listener type
      */
+    @Override
     public <T extends EventListener> void addListener(T tIn) {
         // Mock implementation does nothing
     }
 
-    @Override
     /**
      * Adds a listener with the given listener class to this servlet context.
      * @param classIn the listener class
      */
+    @Override
     public void addListener(Class<? extends EventListener> classIn) {
         // Mock implementation does nothing
         // Mock implementation does nothing
     }
 
-    @Override
     /**
      * Creates a listener of the given class.
      * @param classIn the listener class
@@ -534,15 +521,16 @@ public class MockServletContext implements ServletContext {
      * @return null for mock implementation
      * @throws ServletException if listener creation fails
      */
+    @Override
     public <T extends EventListener> T createListener(Class<T> classIn) throws ServletException {
         return null;
     }
 
-    @Override
     /**
      * Gets the JSP configuration descriptor for this servlet context.
      * @return null for mock implementation
      */
+    @Override
     public JspConfigDescriptor getJspConfigDescriptor() {
         return null;
     }

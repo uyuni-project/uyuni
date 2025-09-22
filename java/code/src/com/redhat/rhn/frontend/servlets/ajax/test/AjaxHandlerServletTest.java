@@ -57,7 +57,7 @@ public class AjaxHandlerServletTest extends AjaxHandlerServlet {
         request = new RhnMockHttpServletRequest();
 
         request.addAttribute("session", session);
-        request.setupGetRequestDispatcher(new MockRequestDispatcher());
+        request.setRequestDispatcher(new MockRequestDispatcher());
         response = new RhnMockHttpServletResponse();
         servlet = new AjaxHandlerServlet();
     }
@@ -74,7 +74,7 @@ public class AjaxHandlerServletTest extends AjaxHandlerServlet {
         );
         for (String uri : uris) {
             // setup request URI
-            request.setupGetRequestURI(uri);
+            request.setRequestURI(uri);
 
             // parentURL is not set before handling the request
             assertNotEquals(uri, request.getAttribute("parentUrl"));
@@ -90,7 +90,7 @@ public class AjaxHandlerServletTest extends AjaxHandlerServlet {
     public void testInactiveSystems() {
         // setup request URI
         String uri = "/rhn/ajax/inactive-systems";
-        request.setupGetRequestURI(uri);
+        request.setRequestURI(uri);
 
         // inactiveSystemsClass is not set before handling the request
         assertNull(request.getAttribute("inactiveSystemsClass"));
@@ -108,7 +108,7 @@ public class AjaxHandlerServletTest extends AjaxHandlerServlet {
     public void testPendingActions() {
         // setup request URI
         String uri = "/rhn/ajax/pending-actions";
-        request.setupGetRequestURI(uri);
+        request.setRequestURI(uri);
 
         // showPendingActions is not set before handling the request
         assertNull(request.getAttribute("showPendingActions"));
@@ -123,7 +123,7 @@ public class AjaxHandlerServletTest extends AjaxHandlerServlet {
     public void testLatestErrata() {
         // setup request URI
         String uri = "/rhn/ajax/latest-errata";
-        request.setupGetRequestURI(uri);
+        request.setRequestURI(uri);
 
         // showErrata is not set before handling the request
         assertNull(request.getAttribute("showErrata"));
@@ -141,7 +141,7 @@ public class AjaxHandlerServletTest extends AjaxHandlerServlet {
     public void testHandlerWithRequestBody() throws IOException {
         // setup request URI
         String uri = "/rhn/ajax/action-chain-entries";
-        request.setupGetRequestURI(uri);
+        request.setRequestURI(uri);
 
         // setup data
         Integer sortOrder = 13;
@@ -149,7 +149,7 @@ public class AjaxHandlerServletTest extends AjaxHandlerServlet {
 
         // setup request body
         Reader input = new StringReader("{ \"actionChainId\":" + a.getId() + ", \"sortOrder\": 13 }");
-        request.setupGetReader(new BufferedReader(input));
+        request.setReader(new BufferedReader(input));
 
         // sortOrder is not set before handling the request
         assertNull(request.getAttribute("sortOrder"));

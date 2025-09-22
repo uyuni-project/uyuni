@@ -31,7 +31,7 @@ public abstract class AbstractServletTestHelper {
     public AbstractServletTestHelper() {
         request.setSession(httpSession);
         servletContext.setRequestDispatcher(requestDispatcher);
-        request.setupGetRequestDispatcher(requestDispatcher);
+        request.setRequestDispatcher(requestDispatcher);
         httpSession.setServletContext(servletContext);
     }
 

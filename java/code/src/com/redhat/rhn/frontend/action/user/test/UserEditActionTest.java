@@ -67,7 +67,7 @@ public class UserEditActionTest extends RhnBaseTestCase {
         request.setAttribute(RhnHelper.TARGET_USER, user);
 
         //Try password mismatch
-        request.setupAddParameter("uid", user.getId().toString());
+        request.addParameter("uid", user.getId().toString());
         form.set("prefix", user.getPrefix());
         form.set("firstNames", user.getFirstNames());
         form.set("lastName", user.getLastName());
@@ -79,7 +79,7 @@ public class UserEditActionTest extends RhnBaseTestCase {
         assertEquals("failure", result.getName());
 
         //Try validation errors
-        request.setupAddParameter("uid", user.getId().toString());
+        request.addParameter("uid", user.getId().toString());
         form.set(UserActionHelper.DESIRED_PASS_CONFIRM, "foobar");
         form.set("firstNames", "");
 
@@ -87,7 +87,7 @@ public class UserEditActionTest extends RhnBaseTestCase {
         assertEquals("failure", result.getName());
 
         //Try Valid edit
-        request.setupAddParameter("uid", user.getId().toString());
+        request.addParameter("uid", user.getId().toString());
         form.set("firstNames", "Larry");
 
         result = action.execute(mapping, form, request, response);
@@ -145,19 +145,19 @@ public class UserEditActionTest extends RhnBaseTestCase {
 
     private void setupRoleParameters(RhnMockHttpServletRequest request,
             User user) {
-        request.setupAddParameter("uid", user.getId().toString());
-        request.setupAddParameter("disabledRoles", "");
-        request.setupAddParameter("role_" + RoleFactory.ORG_ADMIN.getLabel(),
+        request.addParameter("uid", user.getId().toString());
+        request.addParameter("disabledRoles", "");
+        request.addParameter("role_" + RoleFactory.ORG_ADMIN.getLabel(),
                 (String)null);
-        request.setupAddParameter("role_" + RoleFactory.CHANNEL_ADMIN.getLabel(),
+        request.addParameter("role_" + RoleFactory.CHANNEL_ADMIN.getLabel(),
                 (String)null);
-        request.setupAddParameter("role_" + RoleFactory.SAT_ADMIN.getLabel(),
+        request.addParameter("role_" + RoleFactory.SAT_ADMIN.getLabel(),
                 (String)null);
-        request.setupAddParameter("role_" + RoleFactory.ACTIVATION_KEY_ADMIN.getLabel(),
+        request.addParameter("role_" + RoleFactory.ACTIVATION_KEY_ADMIN.getLabel(),
                 (String)null);
-        request.setupAddParameter("role_" + RoleFactory.SYSTEM_GROUP_ADMIN.getLabel(),
+        request.addParameter("role_" + RoleFactory.SYSTEM_GROUP_ADMIN.getLabel(),
                 (String)null);
-        request.setupAddParameter("role_" + RoleFactory.CONFIG_ADMIN.getLabel(),
+        request.addParameter("role_" + RoleFactory.CONFIG_ADMIN.getLabel(),
                 (String)null);
     }
 

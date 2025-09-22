@@ -47,9 +47,9 @@ public abstract class BaseFilterTst extends RhnJmockBaseTestCase {
         PxtCookieManager pcm = new PxtCookieManager();
         RequestContext requestContext = new RequestContext(request);
 
-        request.setupServerName("mymachine.rhndev.redhat.com");
+        request.setServerName("mymachine.rhndev.redhat.com");
         request.setSession(session);
-        request.setupGetRequestURI("http://localhost:8080");
+        request.setRequestURI("http://localhost:8080");
         WebSession s = requestContext.getWebSession();
         request.addCookie(pcm.createPxtCookie(s.getId(), request, 10));
         response = new RhnMockHttpServletResponse();

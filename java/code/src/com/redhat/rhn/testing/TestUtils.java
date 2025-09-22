@@ -204,7 +204,7 @@ public class TestUtils {
         RhnMockHttpServletRequest req = new RhnMockHttpServletRequest();
         RhnMockHttpServletResponse resp = new RhnMockHttpServletResponse();
         RhnMockHttpSession session = new RhnMockHttpSession();
-        req.setupServerName("mlm.dev.suse.com");
+        req.setServerName("mlm.dev.suse.com");
         req.setSession(session);
 
         // Create a test user
@@ -224,7 +224,7 @@ public class TestUtils {
 
         // Set the uid parameter
         req.addCookie(resp.getCookie("pxt-session-cookie"));
-        req.setupAddParameter("uid", userid.toString());
+        req.addParameter("uid", userid.toString());
 
         return req;
     }

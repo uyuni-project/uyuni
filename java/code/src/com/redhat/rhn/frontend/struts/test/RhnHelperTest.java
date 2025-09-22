@@ -61,27 +61,27 @@ public class RhnHelperTest extends RhnBaseTestCase {
     @Test
     public void testGetParameterWithSpecialCharacters() {
         RhnMockHttpServletRequest request = new RhnMockHttpServletRequest();
-        request.setupQueryString("   ");
+        request.setQueryString("   ");
         assertNull(RhnHelper.getParameterWithSpecialCharacters(request, "zzzz"));
 
-        request.setupQueryString(null);
+        request.setQueryString(null);
         assertNull(RhnHelper.getParameterWithSpecialCharacters(request, "zzzz"));
 
-        request.setupQueryString("asdf12354");
+        request.setQueryString("asdf12354");
         assertNull(RhnHelper.getParameterWithSpecialCharacters(request, "zzzz"));
 
-        request.setupQueryString("foo=bar");
+        request.setQueryString("foo=bar");
         assertNull(RhnHelper.getParameterWithSpecialCharacters(request, "zzzz"));
 
-        request.setupQueryString("foo=bar");
+        request.setQueryString("foo=bar");
         assertEquals("bar", RhnHelper.
                 getParameterWithSpecialCharacters(request, "foo"));
 
-        request.setupQueryString("foo=bar&baz=bloop&blippy=blorg");
+        request.setQueryString("foo=bar&baz=bloop&blippy=blorg");
         assertEquals("bar", RhnHelper.
                 getParameterWithSpecialCharacters(request, "foo"));
 
-        request.setupQueryString("foo=bar+++&baz=bloop&blippy=blorg");
+        request.setQueryString("foo=bar+++&baz=bloop&blippy=blorg");
         assertEquals("bar+++", RhnHelper.
                     getParameterWithSpecialCharacters(request, "foo"));
 

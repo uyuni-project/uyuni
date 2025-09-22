@@ -176,7 +176,7 @@ public class RhnMockHttpSession implements HttpSession {
      * @param value the attribute value
      */
     public void putValue(String name, Object value) {
-        setupGetAttribute(name, value);
+        this.setAttribute(name, value);
     }
 
     /**
@@ -212,17 +212,6 @@ public class RhnMockHttpSession implements HttpSession {
         else {
             attributes.put(name, value);
         }
-    }
-
-    /**
-     * @deprecated replaced by {@link #setAttribute(String, Object)}
-     *
-     * @param key  parameter name
-     * @param value parameter value
-     */
-    @Deprecated
-    public void setupGetAttribute(String key, Object value) {
-        this.setAttribute(key, value);
     }
 
     /**

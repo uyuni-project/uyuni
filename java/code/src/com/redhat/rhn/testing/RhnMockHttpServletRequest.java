@@ -179,25 +179,12 @@ public class RhnMockHttpServletRequest implements HttpServletRequest {
     }
 
     /**
-     * @param headerName name of header to be added
-     * @param value      value of header to be added.
-     * @deprecated replaced by {@link #setHeader(String, String)}
-     * <p>
-     * Add a GET header to the request.
-     */
-    @Deprecated
-    public void setupGetHeader(String headerName, String value) {
-        headers.put(headerName, value);
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
     public Enumeration<String> getHeaderNames() {
         return Collections.enumeration(headers.keySet());
     }
-
 
     /**
      * {@inheritDoc}
@@ -247,34 +234,12 @@ public class RhnMockHttpServletRequest implements HttpServletRequest {
     }
 
     /**
-     * Set the parameter map for this request
-     * @param map map of parameters
-     * @deprecated replaced by {@link #setParameters(Map)}
-     */
-    @Deprecated
-    public void setupGetParameterMap(Map<String, String[]> map) {
-        parameters = map;
-    }
-
-
-
-    /**
      * Add a parameter to the request
      *
      * @param name  parameter name
      * @param value parameter value
      */
     public void addParameter(String name, String value) {
-        addParameter(name, new String[]{value});
-    }
-
-    /**
-     * @param name  parameter name
-     * @param value parameter value
-     * @deprecated replaced by {@link #addParameter(String, String)}
-     */
-    @Deprecated
-    public void setupAddParameter(String name, String value) {
         addParameter(name, new String[]{value});
     }
 
@@ -296,16 +261,6 @@ public class RhnMockHttpServletRequest implements HttpServletRequest {
         }
     }
 
-    /**
-     * @param name   parameter name
-     * @param values parameter values
-     * @deprecated replaced by {@link #addParameter(String, String[])}
-     */
-    @Deprecated
-    public void setupAddParameter(String name, String[] values) {
-        this.addParameter(name, values);
-    }
-
 
     @Override
     public Enumeration<String> getParameterNames() {
@@ -321,15 +276,6 @@ public class RhnMockHttpServletRequest implements HttpServletRequest {
         while (names.hasMoreElements()) {
             parameters.put(names.nextElement(), new String[]{""});
         }
-    }
-
-    /**
-     * @param names parameter names
-     * @deprecated replaced by {@link #setParameterNames(Enumeration)}
-     */
-    @Deprecated
-    public void setupGetParameterNames(Enumeration<String> names) {
-        this.setParameterNames(names);
     }
 
     /**
@@ -407,33 +353,11 @@ public class RhnMockHttpServletRequest implements HttpServletRequest {
     }
 
     /**
-     * @param p Port
-     * @deprecated replaced by {@link #setServerPort(int)}
-     * <p>
-     * Sets the server port for this request.
-     */
-    @Deprecated
-    public void setupGetServerPort(int p) {
-        port = p;
-    }
-
-    /**
      * Configures whether this request is secure.
      *
      * @param s Flag indicating whether request is secure.
      */
-    public void setIsSecure(boolean s) {
-        secure = s;
-    }
-
-    /**
-     * @param s Flag indicating whether request is secure.
-     * @deprecated replaced by {@link #setIsSecure(boolean)}
-     * <p>
-     * Configures whether this request is secure.
-     */
-    @Deprecated
-    public void setupIsSecure(boolean s) {
+    public void setSecure(boolean s) {
         secure = s;
     }
 
@@ -479,15 +403,6 @@ public class RhnMockHttpServletRequest implements HttpServletRequest {
     }
 
     /**
-     * @param methodIn The method to set.
-     * @deprecated replaced by {@link #setMethod(String)}
-     */
-    @Deprecated
-    public void setupGetMethod(String methodIn) {
-        this.method = methodIn;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -520,15 +435,6 @@ public class RhnMockHttpServletRequest implements HttpServletRequest {
         this.pathInfo = pathInfoIn;
     }
 
-    /**
-     * @param pathInfoIn The request URI to set.
-     * @deprecated replaced by {@link #setPathInfo(String)}
-     */
-    @Deprecated
-    public void setupPathInfo(String pathInfoIn) {
-        this.pathInfo = pathInfoIn;
-    }
-
     @Override
     public String getPathTranslated() {
         throw new UnsupportedOperationException();
@@ -548,15 +454,6 @@ public class RhnMockHttpServletRequest implements HttpServletRequest {
         this.queryString = queryStringIn;
     }
 
-    /**
-     * @param queryStringIn query string to set.
-     * @deprecated replaced by {@link #setQueryString(String)}
-     */
-    @Deprecated
-    public void setupQueryString(String queryStringIn) {
-        this.queryString = queryStringIn;
-    }
-
     @Override
     public String getRequestURI() {
         return requestURI;
@@ -568,15 +465,6 @@ public class RhnMockHttpServletRequest implements HttpServletRequest {
      * @param requestURIIn request URI to set.
      */
     public void setRequestURI(String requestURIIn) {
-        this.requestURI = requestURIIn;
-    }
-
-    /**
-     * @param requestURIIn The request URI to set.
-     * @deprecated replaced by {@link #setRequestURI(String)}
-     */
-    @Deprecated
-    public void setupGetRequestURI(String requestURIIn) {
         this.requestURI = requestURIIn;
     }
 
@@ -735,18 +623,6 @@ public class RhnMockHttpServletRequest implements HttpServletRequest {
         this.inputStream = inputStreamIn;
     }
 
-    /**
-     * Set the input stream for this request.
-     * @param inputStreamIn input stream
-     * @deprecated replaced by {@link #setInputStream(ServletInputStream)}
-     */
-    @Deprecated
-    public void setupGetInputStream(ServletInputStream inputStreamIn) {
-        this.inputStream = inputStreamIn;
-    }
-
-
-
     @Override
     public String getProtocol() {
         return protocol;
@@ -771,31 +647,12 @@ public class RhnMockHttpServletRequest implements HttpServletRequest {
         this.serverName = serverNameIn;
     }
 
-    /**
-     * Set the server name for this request.
-     * @param serverNameIn The method to set.
-     * @deprecated replaced by {@link #setServerName(String)}
-     */
-    @Deprecated
-    public void setupServerName(String serverNameIn) {
-        this.serverName = serverNameIn;
-    }
-
     @Override
     public BufferedReader getReader() throws IOException {
         return reader;
     }
 
     public void setReader(BufferedReader readerIn) {
-        this.reader = readerIn;
-    }
-
-    /**
-     * @param readerIn reader to set
-     * @deprecated replaced by {@link #setReader(BufferedReader)}
-     */
-    @Deprecated
-    public void setupGetReader(BufferedReader readerIn) {
         this.reader = readerIn;
     }
 
@@ -812,15 +669,6 @@ public class RhnMockHttpServletRequest implements HttpServletRequest {
         remoteAddr = remoteAddrIn;
     }
 
-    /**
-     * @param remoteAddrIn remote address
-     * @deprecated replaced by {@link #setRemoteAddr(String)}
-     */
-    @Deprecated
-    public void setupGetRemoteAddr(String remoteAddrIn) {
-        remoteAddr = remoteAddrIn;
-    }
-
     public String getRemoteHost() {
         return remoteHost;
     }
@@ -831,15 +679,6 @@ public class RhnMockHttpServletRequest implements HttpServletRequest {
      * @param map map of attributes to set
      */
     public void setAttributes(Map<String, Object> map) {
-        this.attributes = map;
-    }
-
-    /**
-     * @param map map of attributes to set
-     * @deprecated replaced by {@link #setAttributes(Map)}
-     */
-    @Deprecated
-    public void setupGetAttribute(Map<String, Object> map) {
         this.attributes = map;
     }
 
@@ -854,16 +693,6 @@ public class RhnMockHttpServletRequest implements HttpServletRequest {
      * @param requestDispatcherIn the RequestDispatcher to return
      */
     public void setRequestDispatcher(RequestDispatcher requestDispatcherIn) {
-        this.requestDispatcher = requestDispatcherIn;
-    }
-
-
-    /**
-     * @param requestDispatcherIn the RequestDispatcher to set
-     * @deprecated replaced by {@link #setRequestDispatcher(RequestDispatcher)}
-     */
-    @Deprecated
-    public void setupGetRequestDispatcher(RequestDispatcher requestDispatcherIn) {
         this.requestDispatcher = requestDispatcherIn;
     }
 

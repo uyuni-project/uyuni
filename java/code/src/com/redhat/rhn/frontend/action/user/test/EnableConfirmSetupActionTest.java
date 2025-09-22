@@ -79,11 +79,11 @@ public class EnableConfirmSetupActionTest extends RhnBaseTestCase {
         //Add parameter for list.
         String listName = TagHelper.generateUniqueName(EnableConfirmSetupAction.LIST_NAME);
 
-        ah.getRequest().setupAddParameter(ListTagUtil.
+        ah.getRequest().addParameter(ListTagUtil.
                                     makeSelectedItemsName(listName), "0");
-        ah.getRequest().setupAddParameter(ListTagUtil.
+        ah.getRequest().addParameter(ListTagUtil.
                                         makePageItemsName(listName), "0");
-        ah.getRequest().setupAddParameter("dispatch", "dummyValue");
+        ah.getRequest().addParameter("dispatch", "dummyValue");
         ActionForward af = ah.executeAction("execute", false);
         assertEquals("enabled", af.getName());
     }

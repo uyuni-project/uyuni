@@ -54,8 +54,8 @@ public class PreservationListDeleteSubmitActionTest extends RhnBaseTestCase {
         ActionHelper ah = new ActionHelper();
         ah.setUpAction(action, "delete");
         ah.getRequest().setRequestURL("");
-        ah.getRequest().setupAddParameter("newset", (String)null);
-        ah.getRequest().setupAddParameter("items_on_page", (String)null);
+        ah.getRequest().addParameter("newset", (String)null);
+        ah.getRequest().addParameter("items_on_page", (String)null);
         List ids = new LinkedList<>();
 
         // give list some FileLists
@@ -69,7 +69,7 @@ public class PreservationListDeleteSubmitActionTest extends RhnBaseTestCase {
             CommonFactory.removeFileList(fl);
         }
 
-        ah.getRequest().setupAddParameter("items_selected",
+        ah.getRequest().addParameter("items_selected",
                 (String[]) ids.toArray(new String[0]));
         ah.setupClampListBounds();
         ActionForward testforward = ah.executeAction("forwardToConfirm");
@@ -86,9 +86,9 @@ public class PreservationListDeleteSubmitActionTest extends RhnBaseTestCase {
         ActionHelper ah = new ActionHelper();
         ah.setUpAction(action, RhnHelper.DEFAULT_FORWARD);
         ah.getRequest().setRequestURL("");
-        ah.getRequest().setupAddParameter("newset", (String)null);
-        ah.getRequest().setupAddParameter("items_on_page", (String)null);
-        ah.getRequest().setupAddParameter("items_selected", (String[]) null);
+        ah.getRequest().addParameter("newset", (String)null);
+        ah.getRequest().addParameter("items_on_page", (String)null);
+        ah.getRequest().addParameter("items_selected", (String[]) null);
         ah.setupClampListBounds();
         ActionForward testforward = ah.executeAction("forwardToConfirm");
         assertEquals("path?lower=10", testforward.getPath());

@@ -65,7 +65,7 @@ public class EditAddressActionTest extends RhnBaseTestCase {
         String userIdRaw = request.getParameter("uid");
         userIdRaw = usr.getId().toString();
         // Put it back into the Request
-        request.setupAddParameter("uid", userIdRaw);
+        request.addParameter("uid", userIdRaw);
     }
 
     private void setUpSuccess() {
@@ -89,7 +89,7 @@ public class EditAddressActionTest extends RhnBaseTestCase {
         String userIdRaw = request.getParameter("uid");
         userIdRaw = usr.getId().toString();
         // Put it back into the Request
-        request.setupAddParameter("uid", userIdRaw);
+        request.addParameter("uid", userIdRaw);
     }
 
     private void executeAction(String addressType) {

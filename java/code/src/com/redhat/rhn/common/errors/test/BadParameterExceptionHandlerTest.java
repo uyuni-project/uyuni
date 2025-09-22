@@ -86,9 +86,9 @@ public class BadParameterExceptionHandlerTest extends MockObjectTestCase {
             // jmock RULES!
             RhnMockHttpServletRequest request = TestUtils
                     .getRequestWithSessionAndUser();
-            request.setupGetMethod("POST");
-            request.setupGetRequestURI("http://localhost:8080");
-            request.setupGetParameterNames(new Vector<String>().elements());
+            request.setMethod("POST");
+            request.setRequestURI("http://localhost:8080");
+            request.setParameterNames(new Vector<String>().elements());
             RhnMockHttpServletResponse response = new RhnMockHttpServletResponse();
             RhnMockDynaActionForm form = new RhnMockDynaActionForm();
 

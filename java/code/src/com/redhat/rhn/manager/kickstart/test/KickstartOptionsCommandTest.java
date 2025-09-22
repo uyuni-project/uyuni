@@ -42,7 +42,7 @@ public class KickstartOptionsCommandTest extends BaseTestCaseWithUser {
         User ksUser = UserTestUtils.createUser("testuser", k.getOrg().getId());
 
         mockRequest = new RhnMockHttpServletRequest();
-        mockRequest.setupGetRemoteAddr("127.0.0.1");
+        mockRequest.setRemoteAddr("127.0.0.1");
 
         KickstartOptionsCommand command = new KickstartOptionsCommand(k.getId(), ksUser);
 

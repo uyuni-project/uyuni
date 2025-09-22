@@ -66,7 +66,7 @@ public class UserPrefActionTest extends RhnBaseTestCase {
         // a second time.  The MockRequest counts the number of times getParamter
         // is called.
 
-        request.setupAddParameter("uid", user.getId().toString());
+        request.addParameter("uid", user.getId().toString());
         // populate with any set of information
         // then get the verify the user was changed correctly.
         form.set("emailNotif", Boolean.FALSE);

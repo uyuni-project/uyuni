@@ -151,7 +151,7 @@ public class ColumnTagTest extends RhnBaseTestCase {
         TagTestHelper tth = TagTestUtils.setupTagTest(ct, null);
         RhnMockHttpServletRequest mockRequest = (RhnMockHttpServletRequest)
                 tth.getPageContext().getRequest();
-        mockRequest.setupAddParameter("order", "asc");
+        mockRequest.addParameter("order", "asc");
 
         RhnMockPageContext mpc = tth.getPageContext();
         mpc.setAttribute("current", new Object());

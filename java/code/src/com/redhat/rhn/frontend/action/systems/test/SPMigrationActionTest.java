@@ -85,8 +85,8 @@ public class SPMigrationActionTest {
         ActionForward target = new ActionForward("schedule", "path", false);
 
         String sid = server.getId().toString();
-        request.setupAddParameter("sid", sid);
-        request.setupAddParameter(RequestContext.DISPATCH, "schedule");
+        request.addParameter("sid", sid);
+        request.addParameter(RequestContext.DISPATCH, "schedule");
         RhnMockHttpServletResponse response = new RhnMockHttpServletResponse();
         mapping.addForwardConfig(target);
         SPMigrationAction action = new SPMigrationAction();
