@@ -91,6 +91,13 @@ type TableProps = {
 
   /** Title buttons to add next to the items per page selection */
   titleButtons?: Array<React.ReactNode>;
+
+  /** Make header sticky */
+  stickyHeader?: boolean;
+
+  /** Add class to table */
+  tableClass?: string
+  
 };
 
 function isColumn(input: any): input is React.ReactElement<React.ComponentProps<typeof Column>> {
@@ -116,7 +123,7 @@ export const Table = forwardRef<TableRef, TableProps>((props, ref) => {
 
   return (
     <TableDataHandler ref={dataHandlerRef} columns={columns} {...allProps}>
-      {({ currItems, headers, handleSelect, selectedItems, criteria }) => {
+      {({ currItems, headers, handleSelect, selectedItems, criteria, headerHeight }) => {
         const selectableValue = props.selectable == null ? false : props.selectable;
 
         const renderRow = (item: ArrayElement<typeof currItems>, index: number, nestingLevel: number) => {
@@ -223,8 +230,9 @@ export const Table = forwardRef<TableRef, TableProps>((props, ref) => {
         const rows = currItems.map((item, index) => renderRow(item, index, 0));
 
         return (
-          <table className="table vertical-middle">
-            <thead>
+          <table className={`table vertical-middle ${props.tableClass || ""}`}>
+            <thead className={props.stickyHeader ? "position-sticky" : "" }
+              style={props.stickyHeader ? { top: headerHeight } : null}>
               <tr>{headers}</tr>
             </thead>
             <tbody>{rows}</tbody>
