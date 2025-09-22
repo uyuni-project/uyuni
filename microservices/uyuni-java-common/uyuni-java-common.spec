@@ -17,7 +17,7 @@
 
 
 Name:           uyuni-java-common
-Version:        5.1.4
+Version:        5.1.5
 Release:        0
 Summary:        Common Java library for Uyuni Java components
 License:        GPL-2.0-only
