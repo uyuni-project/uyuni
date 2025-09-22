@@ -9,41 +9,41 @@ const messageMap = {
   invalid_channel_id: t("Invalid channel id"),
 };
 
-export interface Channel {
+export type Channel = {
   id: number;
   name: string;
   custom: boolean;
   subscribable: boolean;
   recommended: boolean;
-}
+};
 
 export type availableChannelsType = { base: Channel | null | undefined; children: Channel[] }[];
 
-interface ChildrenArgsProps {
+type ChildrenArgsProps = {
   messages: any[];
   loading: boolean;
   loadingChildren: boolean;
   availableBaseChannels: Channel[];
   availableChannels: availableChannelsType;
   fetchChildChannels: (baseId: number) => Promise<any>;
-}
+};
 
-interface ActivationKeyChannelsProps {
+type ActivationKeyChannelsProps = {
   defaultBaseId: number;
   activationKeyId: number;
   currentSelectedBaseId: number;
   onNewBaseChannel: Function;
   children: (arg0: ChildrenArgsProps) => JSX.Element;
-}
+};
 
-interface ActivationKeyChannelsState {
+type ActivationKeyChannelsState = {
   messages: any[];
   loading: boolean;
   loadingChildren: boolean;
   availableBaseChannels: Channel[]; //[base1, base2],
   availableChannels: availableChannelsType; //[{base : null, children: []}]
   fetchedData: Map<number, number[]>;
-}
+};
 
 class ActivationKeyChannelsApi extends React.Component<ActivationKeyChannelsProps, ActivationKeyChannelsState> {
   constructor(props: ActivationKeyChannelsProps) {

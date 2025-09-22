@@ -4,10 +4,10 @@ import { MessageType } from "components/messages/messages";
 
 import Network, { JsonResult } from "utils/network";
 
-interface ExportersResultType {
+type ExportersResultType = {
   exporters: Record<string, boolean>;
   messages: Record<string, string>;
-}
+};
 
 function isRestartNeeded(data: ExportersResultType) {
   return Object.keys(data.exporters).some((key) => data.messages[key] === "restart");

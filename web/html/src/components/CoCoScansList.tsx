@@ -14,15 +14,15 @@ import { AttestationReport } from "./coco-attestation/Utils";
 import { ActionChainLink, ActionLink } from "./links";
 import { SectionToolbar } from "./section-toolbar/section-toolbar";
 
-interface Props {
+type Props = {
   /** The id of the system to be shown */
   serverId?: number;
 
   /** The action chains */
   actionChains?: ActionChain[];
-}
+};
 
-interface State {
+type State = {
   messages: MessageType[];
   confirmSchedule: boolean;
   showReportDetails: boolean;
@@ -30,7 +30,7 @@ interface State {
   actionChain?: ActionChain;
   reportSelected?: AttestationReport;
   activeTab?: string;
-}
+};
 
 class CoCoScansList extends React.Component<Props, State> {
   constructor(props: Props) {

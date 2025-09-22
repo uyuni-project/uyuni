@@ -7,7 +7,7 @@ import { showInfoToastr } from "components/toastr";
 
 import Network from "utils/network";
 
-interface Props {
+type Props = {
   /** Specify if the deregistration is for a hub or a peripheral */
   role: IssRole;
   /** The unique identifier of the server */
@@ -16,12 +16,12 @@ interface Props {
   fqdn: string;
   /** Callback invoked after the deregistration as been performed */
   onDeregistered?: () => void;
-}
+};
 
-interface State {
+type State = {
   confirmDeregistration: boolean;
   showDeleteErrorModal: boolean;
-}
+};
 
 export class DeregisterServer extends React.Component<Props, State> {
   public constructor(props: Props) {

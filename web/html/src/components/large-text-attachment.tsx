@@ -17,13 +17,13 @@ enum EditMethod {
   Paste = "paste",
 }
 
-interface EditFormModel {
+type EditFormModel = {
   method: EditMethod;
   uploadedValue?: string;
   pastedValue?: string;
-}
+};
 
-interface Props {
+type Props = {
   /** The text data, can be null */
   value: string | null;
   /** The filename to be suggested to the user for the download */
@@ -52,14 +52,14 @@ interface Props {
   onEdit: (value: string) => Promise<any>;
   /** Callback to invoked when the user confirms on the delete dialog */
   onDelete: () => Promise<any>;
-}
+};
 
-interface State {
+type State = {
   showDeleteDialog: boolean;
   showEditDialog: boolean;
   editFormModel: EditFormModel;
   editFormValidated: boolean;
-}
+};
 
 /**
  * Component to handle large text data. It allows the user to download, edit and delete the text data.

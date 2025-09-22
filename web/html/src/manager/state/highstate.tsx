@@ -28,14 +28,14 @@ declare global {
 
 const messagesCounterLimit = 3;
 
-interface HighstateProps {}
+type HighstateProps = {};
 
-interface HighstateState {
+type HighstateState = {
   messages: any[];
   earliest: moment.Moment;
   test: boolean;
   actionChain?: any;
-}
+};
 
 class Highstate extends React.Component<HighstateProps, HighstateState> {
   constructor(props) {

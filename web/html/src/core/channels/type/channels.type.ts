@@ -1,4 +1,4 @@
-export interface ChannelTypePartial {
+export type ChannelTypePartial = {
   id: number;
   archLabel: string;
   custom: boolean;
@@ -7,7 +7,7 @@ export interface ChannelTypePartial {
   name: string;
   recommended: boolean;
   subscribable: boolean;
-}
+};
 
 export type MandatoryChannel = ChannelTypePartial & {
   compatibleChannelPreviousSelection?: number;
@@ -25,10 +25,10 @@ export type ChildChannelType = ChannelTypePartial & {
   parent: BaseChannelType;
 };
 
-export interface ChannelTreeType {
+export type ChannelTreeType = {
   base: BaseChannelType;
   children: ChildChannelType[];
-}
+};
 
 export type ChannelType = BaseChannelType | ChildChannelType;
 

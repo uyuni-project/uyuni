@@ -21,19 +21,19 @@ import {
   MigrationVersion,
 } from "./types";
 
-interface Props {
+type Props = {
   title: string;
   migrationEntries: MigrationEntry[];
   migrateFrom: MigrationVersion;
-}
+};
 
-interface State {
+type State = {
   tableModel: MigrationEntry[];
   tableModelValid: boolean;
   loading: boolean;
   submitted: boolean;
   migrationResult: MigrationResult | undefined;
-}
+};
 
 export class MigrateSlavesForm extends React.Component<Props, State> {
   static defaultProps: Partial<Props> = {

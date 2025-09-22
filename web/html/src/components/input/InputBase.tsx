@@ -10,7 +10,7 @@ import { Label } from "./Label";
 
 export type Validator = (...args: any[]) => boolean | Promise<boolean>;
 
-export interface InputBaseProps<ValueType = string> {
+export type InputBaseProps<ValueType = string> = {
   /** name of the field to map in the form model.
    * The value can be an array of names if multiple inputs are contained in this field.
    */
@@ -74,9 +74,9 @@ export interface InputBaseProps<ValueType = string> {
   onChange?: (name: string | undefined, value: ValueType) => void;
 
   autoComplete?: string;
-}
+};
 
-interface State {
+type State = {
   isValid: boolean;
   showErrors: boolean;
 
@@ -84,7 +84,7 @@ interface State {
    *  (typically errors messages received from server response)
    */
   errors?: string[] | object;
-}
+};
 
 export class InputBase<ValueType = string> extends React.Component<InputBaseProps<ValueType>, State> {
   static defaultProps = {

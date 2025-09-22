@@ -23,12 +23,12 @@ const useChannelsApi = () => {
 };
 
 type MandatoryChannelsResponse = Record<number, number[] | undefined>;
-interface ChannelsWithMandatory {
+type ChannelsWithMandatory = {
   channels: ChannelTreeType[];
   channelsMap: Map<number, BaseChannelType | ChildChannelType>;
   requiresMap: Map<number, Set<BaseChannelType | ChildChannelType> | undefined>;
   requiredByMap: Map<number, Set<BaseChannelType | ChildChannelType> | undefined>;
-}
+};
 
 export const useChannelsWithMandatoryApi = () => {
   const [responsePromise, setResponsePromise] = useState<Promise<ChannelsWithMandatory> | undefined>(undefined);

@@ -16,9 +16,9 @@ import { ChangesMapObject, OptionalValue, Package, PackagesObject } from "./pack
 import * as packageHelpers from "./package-utils";
 import usePackageStatesApi from "./use-package-states.api";
 
-interface PropsType {
+type PropsType = {
   serverId: string;
-}
+};
 type ViewType = "search" | "system" | "changes";
 
 const PackageStates = ({ serverId }: PropsType) => {

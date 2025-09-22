@@ -5,11 +5,11 @@ import { Panel } from "components/panels/Panel";
 import { ProjectPropertiesType } from "../../../type/project.type";
 import PropertiesForm from "./properties-form";
 
-interface Props {
+type Props = {
   properties: ProjectPropertiesType;
   errors: any;
   onChange: Function;
-}
+};
 
 const Properties = (props: Props) => {
   return (

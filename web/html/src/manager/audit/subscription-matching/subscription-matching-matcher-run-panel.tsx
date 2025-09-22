@@ -6,18 +6,18 @@ import { localizedMoment } from "utils";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network from "utils/network";
 
-interface MatcherRunPanelProps {
+type MatcherRunPanelProps = {
   initialLatestStart?: moment.Moment | null;
   initialLatestEnd?: moment.Moment | null;
   dataAvailable?: boolean;
   onMatcherRunSchedule: (...args: any[]) => any;
-}
+};
 
-interface MatcherRunPanelState {
+type MatcherRunPanelState = {
   latestStart?: moment.Moment | null;
   latestEnd?: moment.Moment | null;
   error: boolean;
-}
+};
 
 class MatcherRunPanel extends React.Component<MatcherRunPanelProps, MatcherRunPanelState> {
   state = {
@@ -82,11 +82,11 @@ class MatcherRunPanel extends React.Component<MatcherRunPanelProps, MatcherRunPa
   }
 }
 
-interface MatcherRunDescriptionProps {
+type MatcherRunDescriptionProps = {
   error?: any;
   latestStart?: moment.Moment | null;
   latestEnd?: moment.Moment | null;
-}
+};
 
 const MatcherRunDescription = (props: MatcherRunDescriptionProps) => {
   if (props.error) {
@@ -139,11 +139,11 @@ const MatcherTaskDescription = () => (
   </div>
 );
 
-interface MatcherScheduleButtonProps {
+type MatcherScheduleButtonProps = {
   onError: (...args: any[]) => any;
   onScheduled: (...args: any[]) => any;
   matcherRunning?: boolean;
-}
+};
 
 class MatcherScheduleButton extends React.Component<MatcherScheduleButtonProps> {
   onClick = () => {

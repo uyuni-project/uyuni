@@ -12,11 +12,11 @@ import { AnsiblePath, createNewAnsiblePath } from "./ansible-path-type";
 import EditAnsiblePath from "./edit-ansible-path";
 import NewAnsiblePath from "./new-ansible-path";
 
-interface PropsType {
+type PropsType = {
   minionServerId: number;
-}
+};
 
-interface StateType {
+type StateType = {
   minionServerId: number;
   playbooksPaths: AnsiblePath[];
   inventoriesPaths: AnsiblePath[];
@@ -26,7 +26,7 @@ interface StateType {
   editInventoryPath: Partial<AnsiblePath>;
   errors: string[];
   loading: boolean;
-}
+};
 
 export class AnsibleControlNode extends React.Component<PropsType, StateType> {
   constructor(props) {

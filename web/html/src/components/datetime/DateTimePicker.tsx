@@ -9,9 +9,9 @@ import { localizedMoment, parseTimeString } from "utils";
 // Turn this on to view internal state under the picker in the UI
 const SHOW_DEBUG_VALUES = false;
 
-interface InputPassthroughProps {
+type InputPassthroughProps = {
   "data-id": string | undefined;
-}
+};
 
 const InputPassthrough = forwardRef<HTMLInputElement, React.HTMLProps<HTMLInputElement> & InputPassthroughProps>(
   (props, ref) => {
@@ -21,7 +21,7 @@ const InputPassthrough = forwardRef<HTMLInputElement, React.HTMLProps<HTMLInputE
   }
 );
 
-interface Props {
+type Props = {
   id?: string;
   legacyId?: string;
   value: moment.Moment;
@@ -31,7 +31,7 @@ interface Props {
   hideTimePicker?: boolean;
   /** By default date times are shown in the user's configured time zone. Setting this property will default to the server time zone instead. */
   serverTimeZone?: boolean;
-}
+};
 
 export const DateTimePicker = (props: Props) => {
   // See https://github.com/date-fns/date-fns/blob/main/docs/unicodeTokens.md

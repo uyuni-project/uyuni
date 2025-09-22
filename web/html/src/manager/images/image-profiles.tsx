@@ -33,14 +33,14 @@ const messageMap = {
   delete_success_p: t("Image profiles have been deleted."),
 };
 
-interface Props {}
+type Props = {};
 
-interface State {
+type State = {
   messages: any;
   imageprofiles: any;
   selectedItems: any;
   selected?: any;
-}
+};
 
 class ImageProfiles extends React.Component<Props, State> {
   constructor(props) {

@@ -4,9 +4,9 @@ import validator from "validator";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
 type SingleOrArray<T> = T | T[] | undefined;
-interface TreeLikeModel<T = any> {
+type TreeLikeModel<T = any> = {
   [key: string]: SingleOrArray<T | TreeLikeModel<T>>;
-}
+};
 
 /**
  * Convert a tree-like model into a flat model for use with the Form and Input components.

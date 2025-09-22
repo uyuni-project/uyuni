@@ -15,14 +15,14 @@ declare global {
   }
 }
 
-interface Props {
+type Props = {
   serverId: number;
-}
+};
 
-interface State {
+type State = {
   loading: boolean;
   allowedActions: string[];
-}
+};
 
 class PtfOverview extends React.Component<Props, State> {
   constructor(props) {

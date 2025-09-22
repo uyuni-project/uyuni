@@ -1,6 +1,6 @@
 import * as React from "react";
 
-interface HighlightProps {
+type HighlightProps = {
   /** text to display */
   text: string;
 
@@ -12,7 +12,7 @@ interface HighlightProps {
 
   /** CSS class to add to wrapping element */
   className?: string;
-}
+};
 
 /** Search and highlight part of a text */
 export function Highlight(props: HighlightProps) {

@@ -9,17 +9,17 @@ import Network from "utils/network";
 
 import { AnsiblePath } from "./ansible-path-type";
 
-interface PropsType {
+type PropsType = {
   path: AnsiblePath;
   onSelectPlaybook: (playbook: PlaybookDetails | null) => void;
-}
+};
 
-interface StateType {
+type StateType = {
   isOpen: boolean;
   content: PlaybookDetails[] | InventoryDetails | null;
   errors: string[];
   loading: boolean;
-}
+};
 
 function getURL(path: AnsiblePath) {
   let baseUrl: string;
@@ -35,23 +35,23 @@ function isPlaybook(path: AnsiblePath) {
   return path.type === "playbook";
 }
 
-export interface PlaybookDetails {
+export type PlaybookDetails = {
   path: AnsiblePath;
   fullPath: string;
   customInventory?: string;
   name: string;
-}
+};
 
-interface Server {
+type Server = {
   id: number;
   name: string;
-}
+};
 
-interface InventoryDetails {
+type InventoryDetails = {
   dump: string;
   knownSystems: Server[];
   unknownSystems: string[];
-}
+};
 
 class AccordionPathContent extends React.Component<PropsType, StateType> {
   constructor(props) {

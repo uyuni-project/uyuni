@@ -4,9 +4,9 @@ type WithRenderer<RendererProps> = Omit<RendererProps, keyof FieldInputProps<any
   as: (props: RendererProps) => JSX.Element;
 };
 
-interface WithoutRenderer {
+type WithoutRenderer = {
   as?: string | never;
-}
+};
 
 type MaybeRenderer<RendererProps> = WithRenderer<RendererProps> | WithoutRenderer;
 

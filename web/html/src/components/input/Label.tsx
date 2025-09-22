@@ -1,11 +1,11 @@
 import * as React from "react";
 
-interface Props {
+type Props = {
   name?: string;
   htmlFor?: string;
   className?: string;
   required?: boolean;
-}
+};
 
 export function Label(props: Props) {
   return (

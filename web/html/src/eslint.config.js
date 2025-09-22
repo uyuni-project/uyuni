@@ -62,6 +62,7 @@ module.exports = defineConfig([
       "no-redeclare": "off",
       "@typescript-eslint/no-redeclare": "error",
       "@typescript-eslint/prefer-for-of": "off",
+      "@typescript-eslint/consistent-type-definitions": "off",
       // TODO: Eventually this should be "error"
       "local-rules/no-raw-date": "warn",
       "local-rules/intl-apostrophe-curly": "error",

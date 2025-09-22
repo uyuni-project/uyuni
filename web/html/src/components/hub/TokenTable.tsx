@@ -14,16 +14,16 @@ import Network from "utils/network";
 
 import { AccessToken, TokenType, ValidityRequest } from "./types";
 
-interface Props {
+type Props = {
   allowToggleValidity: boolean;
   allowDeletion: boolean;
-}
+};
 
-interface State {
+type State = {
   selectedRow: AccessToken | undefined;
   confirmValidityDialog: boolean;
   confirmDeleteDialog: boolean;
-}
+};
 
 export class TokenTable extends React.Component<Props, State> {
   private tableRef: React.RefObject<TableRef>;

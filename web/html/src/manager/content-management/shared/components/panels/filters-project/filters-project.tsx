@@ -15,12 +15,12 @@ import getRenderedMessages from "../../messages/messages";
 import styles from "./filters-project.module.scss";
 import FiltersProjectSelection from "./filters-project-selection";
 
-interface FiltersProps {
+type FiltersProps = {
   projectId: string;
   selectedFilters: ProjectFilterServerType[];
   onChange: Function;
   messages?: ProjectMessageType[];
-}
+};
 
 const renderFilterEntry = (filter, projectId, symbol, last) => {
   const descr = getClmFilterDescription(filter);

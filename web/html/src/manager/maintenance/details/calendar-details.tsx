@@ -11,7 +11,7 @@ import { BootstrapPanel } from "components/panels/BootstrapPanel";
 import { Column } from "components/table/Column";
 import { Table } from "components/table/Table";
 
-interface CalendarDetailsProps {
+type CalendarDetailsProps = {
   id: number;
   name: string;
   eventNames: string[];
@@ -21,7 +21,7 @@ interface CalendarDetailsProps {
   onMessage: (messages: MessageType[]) => void;
   clearMessages: (messages: void) => void;
   responseError: (messages: MessageType[]) => void;
-}
+};
 
 const MaintenanceCalendarDetails = (props: CalendarDetailsProps) => {
   const [strategy, setStrategy] = useState(false);
@@ -67,7 +67,7 @@ const MaintenanceCalendarDetails = (props: CalendarDetailsProps) => {
   );
 };
 
-interface OverviewProps {
+type OverviewProps = {
   id: number;
   name: string;
   eventNames: string[];
@@ -76,7 +76,7 @@ interface OverviewProps {
   onMessage: (messages: MessageType[]) => void;
   clearMessages: (messages: void) => void;
   responseError: (messages: MessageType[]) => void;
-}
+};
 
 const MaintenanceCalendarOverview = (props: OverviewProps) => {
   const tableData = [

@@ -4,16 +4,16 @@ import SpaRenderer from "core/spa/spa-renderer";
 
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
-interface Props {}
+type Props = {};
 
-interface State {
+type State = {
   unreadMessagesLength: any;
   websocket: any;
   classStyle: string;
   errors?: any;
   websocketErr?: any;
   pageUnloading?: boolean;
-}
+};
 
 class Notifications extends React.Component<Props, State> {
   state: State = {

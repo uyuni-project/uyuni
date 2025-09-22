@@ -118,9 +118,9 @@ function cveAudit(cveId, target, statuses) {
   });
 }
 
-interface Props {}
+type Props = {};
 
-interface State {
+type State = {
   cveNumber: string;
   cveYear: number;
   statuses: string[];
@@ -130,7 +130,7 @@ interface State {
   selectedItems: any[];
   target?: any;
   auditExecuted?: boolean;
-}
+};
 
 class CVEAudit extends React.Component<Props, State> {
   constructor(props) {

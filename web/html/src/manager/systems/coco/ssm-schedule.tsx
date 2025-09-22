@@ -13,16 +13,16 @@ import Network from "utils/network";
 
 import { CoCoSystemData } from "./types";
 
-interface Props {
+type Props = {
   systemSupport: CoCoSystemData[];
   actionChains: ActionChain[];
-}
+};
 
-interface State {
+type State = {
   messages: MessageType[];
   earliest: LocalizedMoment;
   actionChain?: ActionChain;
-}
+};
 
 class CoCoSSMSchedule extends React.Component<Props, State> {
   public constructor(props) {

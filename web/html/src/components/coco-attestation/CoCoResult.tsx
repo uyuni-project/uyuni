@@ -2,10 +2,10 @@ import * as React from "react";
 
 import { AttestationResult, renderTime } from "./Utils";
 
-interface Props {
+type Props = {
   /** The id of the system to be shown */
   result: AttestationResult;
-}
+};
 
 class CoCoResult extends React.Component<Props> {
   render = () => {

@@ -8,11 +8,11 @@ import { MessagesContainer } from "components/toastr";
 
 import { VirtualSystems } from "./virtual-list";
 
-interface RendererProps {
+type RendererProps = {
   isAdmin: boolean;
   queryColumn?: string;
   query?: string;
-}
+};
 
 export const renderer = (id: string, docsLocale: string, { isAdmin, queryColumn, query }: RendererProps) =>
   SpaRenderer.renderNavigationReact(

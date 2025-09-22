@@ -1,12 +1,12 @@
 import * as React from "react";
 
-interface LoadingProps {
+type LoadingProps = {
   /** Text to be displayed with the loading spinner */
   text?: string;
 
   /** whether to show borders around the component */
   withBorders?: boolean;
-}
+};
 
 export function Spinner() {
   return <i className="fa fa-spinner fa-spin fa-1-5x" />;

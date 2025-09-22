@@ -9,9 +9,9 @@ import { ProjectPropertiesType } from "../../../type/project.type";
 import BuildVersion from "../build/build-version";
 import { getVersionMessage } from "./properties.utils";
 
-interface Props {
+type Props = {
   properties: ProjectPropertiesType;
-}
+};
 
 const NUMBER_HISTORY_ENTRIES = 5;
 

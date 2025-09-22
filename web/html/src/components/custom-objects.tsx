@@ -1,6 +1,6 @@
 import * as React from "react";
 
-interface Props {
+type Props = {
   width: string;
 
   /** Width unit */
@@ -11,7 +11,7 @@ interface Props {
   title?: string;
 
   children?: React.ReactNode;
-}
+};
 
 export const CustomDiv = (props: Props) => {
   const width = props.width + props.um;

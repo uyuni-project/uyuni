@@ -13,9 +13,9 @@ import { Utils } from "utils/functions";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network from "utils/network";
 
-interface Props {
+type Props = {
   refreshInterval: number;
-}
+};
 
 class TaskoTop extends React.Component<Props> {
   timerId?: number;

@@ -15,13 +15,13 @@ type ChannelWithHierarchy = FlatChannel &
     isPendingRemoval?: boolean;
   };
 
-interface ChannelTableProps {
+type ChannelTableProps = {
   channels: FlatChannel[];
   onChannelSelect: (channelId: number, checked: boolean) => void;
   onOrgSelect?: (channelId: number, org?: Org) => void;
   loading?: boolean;
   availableOrgs: Org[];
-}
+};
 
 const HierarchicalChannelsTable: React.FC<ChannelTableProps> = ({
   channels,

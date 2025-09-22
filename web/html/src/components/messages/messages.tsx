@@ -2,21 +2,21 @@ import * as React from "react";
 
 export type Severity = "info" | "success" | "warning" | "error";
 
-export interface ServerMessageType {
+export type ServerMessageType = {
   severity: Severity;
   text: string;
   args: string[];
-}
+};
 
-export interface MessageType {
+export type MessageType = {
   severity: Severity;
   text: React.ReactNode;
-}
+};
 
-interface Props {
+type Props = {
   /** Message objects to display */
   items: MessageType[] | MessageType;
-}
+};
 
 /**
  * Component to render multiple alert messages.

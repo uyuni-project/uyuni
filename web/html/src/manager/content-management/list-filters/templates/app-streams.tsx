@@ -9,11 +9,11 @@ import Network, { JsonResult } from "utils/network";
 import { Props as FilterFormProps } from "../filter-form";
 import { Template } from "./index";
 
-interface Channel {
+type Channel = {
   id: number;
   label: string;
   name: string;
-}
+};
 
 function getChannels() {
   return Network.get<JsonResult<Channel[]>>("/rhn/manager/api/channels/modular").then(Network.unwrap);

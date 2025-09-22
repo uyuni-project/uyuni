@@ -1,11 +1,11 @@
-interface Project {
+type Project = {
   /** Project label */
   left: string;
   /** Project name */
   right: string;
-}
+};
 
-export interface FilterServerType {
+export type FilterServerType = {
   entityType: string;
   matcher: string;
   id: number;
@@ -14,9 +14,9 @@ export interface FilterServerType {
   criteriaValue: string;
   rule: string;
   projects?: Project[];
-}
+};
 
-export interface FilterFormType {
+export type FilterFormType = {
   type: string;
   matcher?: string;
   rule: string;
@@ -42,4 +42,4 @@ export interface FilterFormType {
   kernelId?: number;
   kernelName?: string;
   channelId?: number;
-}
+};

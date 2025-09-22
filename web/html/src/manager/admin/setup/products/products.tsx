@@ -403,7 +403,7 @@ class ProductsPageWrapper extends React.Component {
   }
 }
 
-interface ProductsProps {
+type ProductsProps = {
   data: any[];
   loading?: boolean;
   readOnlyMode?: boolean;
@@ -414,7 +414,7 @@ interface ProductsProps {
   selectedItems: any[];
   handleSelectedItems: (...args: any[]) => any;
   handleUnselectedItems: (...args: any[]) => any;
-}
+};
 
 /**
  * Show the products data
@@ -542,14 +542,14 @@ class Products extends React.Component<ProductsProps> {
   }
 }
 
-interface CheckListProps {
+type CheckListProps = {
   data: any;
   bypassProps: any;
   treeLevel: any;
   childrenDisabled?: boolean;
   handleSelectedItems: (...args: any[]) => any;
   handleUnselectedItems: (...args: any[]) => any;
-}
+};
 
 /**
  * Generate a custom list of elements for the products data
@@ -629,7 +629,7 @@ class CheckList extends React.Component<CheckListProps> {
   }
 }
 
-interface CheckListItemProps {
+type CheckListItemProps = {
   item: any;
   bypassProps: any;
   treeLevel: any;
@@ -637,7 +637,7 @@ interface CheckListItemProps {
   index: number;
   handleSelectedItems: (...args: any[]) => any;
   handleUnselectedItems: (...args: any[]) => any;
-}
+};
 
 /**
  * A component to generate a list item which contains

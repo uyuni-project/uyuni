@@ -3,7 +3,7 @@ export enum TokenType {
   CONSUMED = "CONSUMED",
 }
 
-export interface AccessToken {
+export type AccessToken = {
   id: number;
   serverFqdn: string;
   type: TokenType;
@@ -14,40 +14,40 @@ export interface AccessToken {
   modificationDate: Date;
   hubId: number | null;
   peripheralId: number | null;
-}
+};
 
 export enum IssRole {
   Hub = "HUB",
   Peripheral = "PERIPHERAL",
 }
 
-export interface HubRegisterRequest {
+export type HubRegisterRequest = {
   fqdn: string;
   token?: string;
   username?: string;
   password?: string;
   rootCA?: string;
-}
+};
 
-export interface ValidityRequest {
+export type ValidityRequest = {
   valid: boolean;
-}
+};
 
-export interface CreateTokenRequest {
+export type CreateTokenRequest = {
   type: TokenType;
   fqdn?: string;
   token?: string;
-}
+};
 
-export interface PeripheralListData {
+export type PeripheralListData = {
   id: number;
   fqdn: string;
   rootCA: string | null;
   nSyncedChannels: number;
   nSyncedOrgs: number;
-}
+};
 
-export interface IssServerDetailData {
+export type IssServerDetailData = {
   id: number;
   role: IssRole;
   fqdn: string;
@@ -55,30 +55,30 @@ export interface IssServerDetailData {
   sccUsername: string;
   created: Date;
   modified: Date;
-}
+};
 
-export interface HubDetailData extends IssServerDetailData {
+export type HubDetailData = {
   gpgKey: string | null;
-}
+} & IssServerDetailData;
 
-export interface PeripheralDetailData extends IssServerDetailData {
+export type PeripheralDetailData = {
   nSyncedChannels: number;
   nSyncedOrgs: number;
-}
+} & IssServerDetailData;
 
 export enum MigrationVersion {
   v1 = "v1",
   v2 = "v2",
 }
 
-export interface MigrationEntry {
+export type MigrationEntry = {
   id: number;
   selected: boolean;
   disabled: boolean;
   fqdn: string;
   accessToken: string | null;
   rootCA: string | null;
-}
+};
 
 export enum MigrationResultCode {
   SUCCESS = "SUCCESS",
@@ -92,22 +92,22 @@ export enum MigrationMessageLevel {
   ERROR = "ERROR",
 }
 
-export interface MigrationMessage {
+export type MigrationMessage = {
   severity: MigrationMessageLevel;
   message: string;
-}
+};
 
-export interface MigrationResult {
+export type MigrationResult = {
   resultCode: MigrationResultCode;
   messageSet: MigrationMessage[];
-}
+};
 
-export interface Org {
+export type Org = {
   orgId: number;
   orgName: string;
-}
+};
 
-export interface Channel {
+export type Channel = {
   channelId: number;
   channelName: string;
   channelLabel: string;
@@ -118,9 +118,9 @@ export interface Channel {
   children: Channel[]; // for easy hierarchical references
   strictOrg: boolean;
   synced: boolean;
-}
+};
 
-export interface FlatChannel {
+export type FlatChannel = {
   channelId: number;
   channelName: string;
   channelLabel: string;
@@ -131,9 +131,9 @@ export interface FlatChannel {
   childrenLabels: string[]; // for easy lookup if needed
   strictOrg: boolean;
   synced: boolean; // no need for another class that tells us if the channel is synced or not
-}
+};
 
-export interface ChannelSyncProps {
+export type ChannelSyncProps = {
   peripheralOrgs: Org[];
   channels: Channel[];
-}
+};

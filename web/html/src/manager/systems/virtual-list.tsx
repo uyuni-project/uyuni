@@ -12,13 +12,13 @@ import Network from "utils/network";
 import { VirtualSystemsListFilter } from "./list-filter";
 
 // See java/code/src/com/suse/manager/webui/templates/systems/virtual-list.jade
-interface Props {
+type Props = {
   /** Locale of the help links */
   docsLocale: string;
   isAdmin: boolean;
   queryColumn?: string;
   query?: string;
-}
+};
 
 export function VirtualSystems(props: Props) {
   const [selectedSystems, setSelectedSystems] = React.useState<string[]>([]);

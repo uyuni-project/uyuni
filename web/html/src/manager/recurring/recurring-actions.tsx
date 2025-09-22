@@ -46,14 +46,14 @@ function getHashAction() {
   return match ? match[1] : undefined;
 }
 
-interface Props {}
+type Props = {};
 
-interface State {
+type State = {
   messages: any[];
   minionIds?: any[];
   action?: any;
   selected?: any;
-}
+};
 
 class RecurringActions extends React.Component<Props, State> {
   constructor(props) {

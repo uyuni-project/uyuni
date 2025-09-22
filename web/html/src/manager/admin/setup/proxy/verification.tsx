@@ -13,9 +13,9 @@ enum Verification {
   Invalid,
 }
 
-interface Props {
+type Props = {
   savedSettings?: ProxySettings;
-}
+};
 
 export const ProxyVerification = (props: Props) => {
   const [verification, setVerification] = useState(Verification.Unknown);

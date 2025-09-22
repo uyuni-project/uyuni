@@ -1,6 +1,6 @@
 export type OptionalValue = number | undefined;
 
-export interface Package {
+export type Package = {
   arch: string;
   name: string;
   packageStateId: OptionalValue;
@@ -8,11 +8,11 @@ export interface Package {
   epoch?: string;
   release?: string;
   version?: string;
-}
+};
 
-export interface PackagesObject {
+export type PackagesObject = {
   original: Package;
   value?: Package;
-}
+};
 
 export type ChangesMapObject = Record<string, PackagesObject>;

@@ -89,13 +89,13 @@ function labelFor(state) {
   return <span className={"label label-" + mapping.label}>{mapping.uiName}</span>;
 }
 
-interface Props {}
+type Props = {};
 
-interface State {
+type State = {
   keys: any[];
   isOrgAdmin: boolean;
   loading: boolean;
-}
+};
 
 class KeyManagement extends React.Component<Props, State> {
   constructor(props) {

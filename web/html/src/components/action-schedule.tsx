@@ -9,29 +9,29 @@ import Network from "utils/network";
 
 import { Combobox, ComboboxItem } from "./combobox";
 
-export interface MaintenanceWindow {
+export type MaintenanceWindow = {
   id: number;
   from: string;
   to: string;
   fromMilliseconds: number;
   toMilliseconds: number;
-}
+};
 
-export interface ActionChain {
+export type ActionChain = {
   id: number;
   text: string;
-}
+};
 
-interface ActionScheduleProps {
+type ActionScheduleProps = {
   earliest: moment.Moment;
   actionChains?: ActionChain[];
   onDateTimeChanged: (value: moment.Moment) => void;
   onActionChainChanged?: (actionChain: ActionChain | null) => void;
   systemIds?: (string | number)[];
   actionType?: string;
-}
+};
 
-interface ActionScheduleState {
+type ActionScheduleState = {
   loading: boolean;
   type: "earliest" | "actionChain";
   earliest: moment.Moment;
@@ -43,7 +43,7 @@ interface ActionScheduleState {
   maintenanceWindows: MaintenanceWindow[];
   systemIds: (string | number)[];
   actionType: string;
-}
+};
 
 class ActionSchedule extends React.Component<ActionScheduleProps, ActionScheduleState> {
   newActionChainOpt = { id: Number(0), text: t("new action chain") };

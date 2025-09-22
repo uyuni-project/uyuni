@@ -30,15 +30,15 @@ const messageMap = {
   // Nothing for now
 };
 
-interface Props {}
+type Props = {};
 
-interface State {
+type State = {
   storeTypes: string[];
   model: any;
   messages: any;
   initLabel?: any;
   isInvalid?: boolean;
-}
+};
 
 class CreateImageStore extends React.Component<Props, State> {
   defaultModel: any;

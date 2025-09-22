@@ -23,7 +23,7 @@ enum CertificateMode {
   Paste = "paste",
 }
 
-interface FormModel {
+type FormModel = {
   serverFqdn: string;
   registrationMode: RegistrationMode;
   token?: string;
@@ -32,16 +32,16 @@ interface FormModel {
   certificateMode: CertificateMode;
   uploadedRootCA?: string;
   pastedRootCA?: string;
-}
+};
 
-interface Props {}
+type Props = {};
 
-interface State {
+type State = {
   model: FormModel;
   messages: MessageType[];
   loading: boolean;
   validated: boolean;
-}
+};
 
 export class RegisterPeripheralForm extends React.Component<Props, State> {
   // Initial form model

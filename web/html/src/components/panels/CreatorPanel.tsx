@@ -7,7 +7,7 @@ import { ModalLink } from "components/dialog/ModalLink";
 
 import { Panel } from "./Panel";
 
-interface Props {
+type Props = {
   id: string;
   title: string;
   creatingText: string;
@@ -25,7 +25,7 @@ interface Props {
   collapsible?: boolean;
   icon?: string;
   customIconClass?: string;
-}
+};
 
 const panelLevels = {
   "1": "h1",

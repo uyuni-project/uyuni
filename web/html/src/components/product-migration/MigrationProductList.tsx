@@ -3,11 +3,11 @@ import { useCallback } from "react";
 
 import { MigrationProduct } from "./types";
 
-interface Props {
+type Props = {
   className?: string;
   product: MigrationProduct;
   customAddonRenderer?: (id: number, name: string) => JSX.Element;
-}
+};
 
 export const MigrationProductList: React.FC<Props> = ({ className, product, customAddonRenderer }): JSX.Element => {
   const renderProduct = useCallback(

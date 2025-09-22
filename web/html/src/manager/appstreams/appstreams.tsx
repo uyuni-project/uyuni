@@ -8,9 +8,9 @@ import { AppStreamsChangesConfirm } from "./changes-confirm-appstreams";
 import { AppStreamsList } from "./list-appstreams";
 import { getStreamName, handleModuleEnableDisable } from "./utils";
 
-interface Props {
+type Props = {
   channelsAppStreams: ChannelAppStream[];
-}
+};
 
 const AppStreams = ({ channelsAppStreams }: Props) => {
   const [appStreams, setAppStreams] = useState<ChannelAppStream[]>(channelsAppStreams);

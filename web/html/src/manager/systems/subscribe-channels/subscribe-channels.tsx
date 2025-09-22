@@ -24,20 +24,20 @@ const messageMap = {
   invalid_channel_id: t("Invalid channel id"),
 };
 
-interface ChannelDto {
+type ChannelDto = {
   id: number;
   name: string;
   custom: boolean;
   subscribable: boolean;
   recommended: boolean;
   compatibleChannelPreviousSelection?: number;
-}
+};
 
-interface SystemChannelsProps {
+type SystemChannelsProps = {
   serverId: number;
-}
+};
 
-interface SystemChannelsState {
+type SystemChannelsState = {
   messages: any[];
   earliest: moment.Moment;
   originalBase: ChannelDto | null | undefined;
@@ -56,7 +56,7 @@ interface SystemChannelsState {
   scheduled: boolean;
   actionChain: ActionChain | null | undefined;
   dependencyDataAvailable: boolean;
-}
+};
 
 class SystemChannels extends React.Component<SystemChannelsProps, SystemChannelsState> {
   constructor(props: SystemChannelsProps) {

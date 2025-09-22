@@ -17,16 +17,16 @@ export enum AddTokenMethod {
   IssueAndStore,
 }
 
-interface Props {
+type Props = {
   method: AddTokenMethod;
   onCreated?: () => void;
-}
+};
 
-interface State {
+type State = {
   createRequest: CreateTokenRequest | undefined;
   createRequestValid: boolean;
   generatedToken: string | undefined;
-}
+};
 
 export class AddTokenButton extends React.Component<Props, State> {
   static defaultProps: Partial<Props> = {

@@ -12,7 +12,7 @@ import { useExpanded } from "./useExpanded";
 
 type ArrayElement<A> = A extends readonly (infer T)[] ? T : never;
 
-interface TableProps {
+type TableProps = {
   /**
    * Either an array of data items of any type where each element is a row data,
    * or a URI string to a resource endpoint that returns a paged list of data items.
@@ -93,15 +93,15 @@ interface TableProps {
 
   /** Title buttons to add next to the items per page selection */
   titleButtons?: React.ReactNode[];
-}
+};
 
 function isColumn(input: any): input is React.ReactElement<React.ComponentProps<typeof Column>> {
   return input?.type === Column || input?.type?.displayName === "Column";
 }
 
-export interface TableRef {
+export type TableRef = {
   refresh: (...args: any[]) => any;
-}
+};
 
 export const Table = forwardRef<TableRef, TableProps>((props, ref) => {
   const { ...allProps } = props;

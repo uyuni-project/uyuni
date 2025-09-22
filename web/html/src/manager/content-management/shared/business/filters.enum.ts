@@ -1,24 +1,24 @@
 import _find from "lodash/find";
 
-interface FilterEntityType {
+type FilterEntityType = {
   key: string;
   text: string;
-}
+};
 type FilterEntityEnumType = Record<string, FilterEntityType>;
 
-export interface FilterMatcherType {
+export type FilterMatcherType = {
   key: string;
   text: string;
   longDescription: string;
-}
+};
 type FilterMatcherEnumType = Record<string, FilterMatcherType>;
 
-export interface ClmFilterOptionType {
+export type ClmFilterOptionType = {
   key: string;
   entityType: FilterEntityType;
   matchers: FilterMatcherType[];
   text: string;
-}
+};
 type ClmFilterOptionsEnumType = Record<string, ClmFilterOptionType>;
 
 export const filterEntity: FilterEntityEnumType = {

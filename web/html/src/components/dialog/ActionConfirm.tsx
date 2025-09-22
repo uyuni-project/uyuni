@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { DangerDialog } from "./DangerDialog";
 
-interface Props {
+type Props = {
   id: string;
   type: string;
   name: string;
@@ -16,11 +16,11 @@ interface Props {
   children?: React.ReactNode;
   /** whether the dialog should be shown or hidden */
   isOpen: boolean;
-}
+};
 
-interface State {
+type State = {
   force: boolean;
-}
+};
 
 /**
  * A pop-up dialog to confirm an action on a selection of items.

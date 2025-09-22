@@ -7,12 +7,12 @@ import { BootstrapPanel } from "components/panels/BootstrapPanel";
 
 import Network from "utils/network";
 
-interface ProxyType {
+type ProxyType = {
   hostname: string;
   id: number;
   name: string;
   path: string[];
-}
+};
 
 // See java/code/src/com/suse/manager/webui/templates/minion/proxy.jade
 declare global {
@@ -23,15 +23,15 @@ declare global {
   }
 }
 
-interface Props {
+type Props = {
   proxies: ProxyType[];
   currentProxy?: number;
-}
+};
 
-interface State {
+type State = {
   messages: MessageType[];
   proxy: number;
-}
+};
 
 class Proxy extends React.Component<Props, State> {
   constructor(props: Props) {

@@ -11,14 +11,14 @@ import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
 import styles from "./menu.module.scss";
 
-interface LinkProps {
+type LinkProps = {
   url: string;
   className?: string;
   target?: string;
   title?: string;
   responsiveLabel?: React.ReactNode;
   label?: React.ReactNode;
-}
+};
 
 const Link = (props: LinkProps) => (
   <a href={props.url} className={flatten([props.className, "js-spa"])} target={props.target} title={props.title}>
@@ -27,7 +27,7 @@ const Link = (props: LinkProps) => (
   </a>
 );
 
-interface NodeProps {
+type NodeProps = {
   handleClick: ((event?: React.MouseEvent) => any) | null;
   isLeaf?: boolean;
   icon?: string;
@@ -36,7 +36,7 @@ interface NodeProps {
   label: string;
   isSearchActive?: boolean;
   isOpen?: boolean;
-}
+};
 
 class Node extends React.Component<NodeProps> {
   handleClick = (event) => {
@@ -59,13 +59,13 @@ class Node extends React.Component<NodeProps> {
   }
 }
 
-interface ElementProps {
+type ElementProps = {
   element?: any;
   searchString?: any;
   level: any;
   visiblityForcedByParent: any;
   forceCollapse?: any;
-}
+};
 
 class Element extends React.Component<ElementProps> {
   state = {
@@ -147,13 +147,13 @@ class Element extends React.Component<ElementProps> {
   }
 }
 
-interface MenuLevelProps {
+type MenuLevelProps = {
   elements: any[];
   level: any;
   searchString: any;
   visiblityForcedByParent?: any;
   forceCollapse?: any;
-}
+};
 
 class MenuLevel extends React.Component<MenuLevelProps> {
   render() {

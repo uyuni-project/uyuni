@@ -4,11 +4,11 @@ import { useEffect, useRef } from "react";
 import { Button, DropdownButton } from "components/buttons";
 
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
-interface PaginationBlockProps {
+type PaginationBlockProps = {
   currentPage: number;
   lastPage: number;
   onPageChange: (page: number) => any;
-}
+};
 
 const PaginationBlock = (props: PaginationBlockProps) => {
   const currentPage = props.currentPage;
@@ -58,14 +58,14 @@ const PaginationBlock = (props: PaginationBlockProps) => {
   );
 };
 
-interface PaginationButtonProps {
+type PaginationButtonProps = {
   disabled?: boolean;
   onClick: (...args: any[]) => any;
   text?: React.ReactNode;
   icon?: React.ReactNode;
   title?: string;
   ariaLabel: string;
-}
+};
 const PaginationButton = (props: PaginationButtonProps) => {
   const btnRef = useRef<HTMLButtonElement>(null);
 
@@ -93,13 +93,13 @@ const PaginationButton = (props: PaginationButtonProps) => {
   );
 };
 
-interface ItemsPerPageSelectorProps {
+type ItemsPerPageSelectorProps = {
   currentValue: number;
   onChange: (value: number) => any;
   itemCount: number;
   fromItem: number;
   toItem: number;
-}
+};
 
 const ItemsPerPageSelector = (props: ItemsPerPageSelectorProps) => {
   const testIdPrefix = `data-testid-pageSize-child`;
@@ -127,11 +127,11 @@ const ItemsPerPageSelector = (props: ItemsPerPageSelectorProps) => {
   );
 };
 
-interface PageSelectorProps {
+type PageSelectorProps = {
   lastPage: number;
   currentValue: number;
   onChange: (value: number) => any;
-}
+};
 
 const PageSelector = (props: PageSelectorProps) => {
   return props.lastPage > 1 ? (

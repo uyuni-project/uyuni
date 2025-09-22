@@ -5,15 +5,15 @@ import SpaRenderer from "core/spa/spa-renderer";
 import { Button } from "components/buttons";
 import { TopPanel } from "components/panels/TopPanel";
 
-interface MinionResultViewProps {
+type MinionResultViewProps = {
   id?: any;
   result?: any;
   label?: React.ReactNode;
-}
+};
 
-interface MinionResultViewState {
+type MinionResultViewState = {
   open: boolean;
-}
+};
 
 class MinionResultView extends React.Component<MinionResultViewProps, MinionResultViewState> {
   constructor(props) {
@@ -114,9 +114,9 @@ function isTimedOutDone(minionsMap: Map<any, any>, waitForSSH, timedOutSSH) {
   return noMinionsPending && anyTimedOutMinion;
 }
 
-interface RemoteCommandProps {}
+type RemoteCommandProps = {};
 
-interface RemoteCommandState {
+type RemoteCommandState = {
   command: string;
   target: string;
   result: {
@@ -132,7 +132,7 @@ interface RemoteCommandState {
   websocket?: any;
   websocketErr?: any;
   pageUnloading?: boolean;
-}
+};
 
 class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandState> {
   constructor(props) {

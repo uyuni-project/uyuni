@@ -12,11 +12,11 @@ import { Column } from "../table/Column";
 import { Table } from "../table/Table";
 import { AttestationReport, renderStatus, renderTime } from "./Utils";
 
-interface Props {
+type Props = {
   dataUrl: string;
   showSystem?: boolean;
   onReportDetails: (report: AttestationReport) => void;
-}
+};
 
 class CoCoAttestationTable extends React.Component<Props> {
   public static readonly defaultProps: Partial<Props> = {

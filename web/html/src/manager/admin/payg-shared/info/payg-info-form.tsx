@@ -4,12 +4,12 @@ import { paygProperties } from "manager/admin/payg/payg";
 
 import { Form, Text } from "components/input";
 
-interface Props {
+type Props = {
   payg: paygProperties;
   errors: any;
   onChange: Function;
   editing?: boolean;
-}
+};
 const PaygInfoForm = (props: Props) => {
   return (
     <Form

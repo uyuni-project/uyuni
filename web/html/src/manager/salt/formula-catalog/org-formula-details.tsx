@@ -13,11 +13,11 @@ declare global {
   }
 }
 
-interface Props {}
+type Props = {};
 
-interface State {
+type State = {
   metadata: any;
-}
+};
 
 class FormulaDetail extends React.Component<Props, State> {
   constructor(props, context) {

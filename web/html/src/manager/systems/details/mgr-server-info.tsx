@@ -7,7 +7,7 @@ import { TopPanel } from "components/panels/TopPanel";
 import Network from "utils/network";
 
 // See java/code/src/com/suse/manager/webui/templates/systems/mgr-server.jade
-interface Props {
+type Props = {
   serverId: string;
   name: string;
   version: string;
@@ -19,11 +19,11 @@ interface Props {
   isAdmin: boolean;
   /** Locale of the help links */
   docsLocale: string;
-}
+};
 
-interface State {
+type State = {
   messages: MessageType[];
-}
+};
 
 const messageMap = {
   invalid_systemid: t("Not a system id"),

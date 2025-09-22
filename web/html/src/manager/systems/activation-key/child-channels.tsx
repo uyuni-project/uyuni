@@ -8,7 +8,7 @@ import { Loading } from "components/utils/loading/Loading";
 
 import { Channel } from "./activation-key-channels-api";
 
-interface ChildChannelsProps {
+type ChildChannelsProps = {
   channels: Channel[];
   base: any;
   showBase: boolean;
@@ -18,11 +18,11 @@ interface ChildChannelsProps {
   requiredChannelsResult: RequiredChannelsResultType;
   fetchMandatoryChannelsByChannelIds: Function;
   collapsed: boolean;
-}
+};
 
-interface ChildChannelsState {
+type ChildChannelsState = {
   collapsed: boolean;
-}
+};
 
 class ChildChannels extends React.Component<ChildChannelsProps, ChildChannelsState> {
   constructor(props: ChildChannelsProps) {

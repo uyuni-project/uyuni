@@ -6,10 +6,10 @@ import { Messages } from "components/messages/messages";
 
 import { ProjectMessageType } from "../../type";
 
-interface ValidationMessagesType {
+type ValidationMessagesType = {
   panelClass: string;
   messages: React.ReactNode | null | undefined;
-}
+};
 
 const msgClassMap = {
   warning: {

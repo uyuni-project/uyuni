@@ -16,16 +16,16 @@ import { SearchField } from "./SearchField";
 import { SearchPanel } from "./SearchPanel";
 import { SelectedRowDetails } from "./SelectedRowDetails";
 
-interface ChildrenArgsProps {
+type ChildrenArgsProps = {
   currItems: any[];
   headers: React.ReactNode;
   handleSelect: Function;
   selectedItems: any[];
   criteria?: string;
   field?: string;
-}
+};
 
-interface Props {
+type Props = {
   columns: React.ReactElement<any>[];
 
   /**
@@ -107,9 +107,9 @@ interface Props {
 
   /** Title buttons to add next to the items per page selection */
   titleButtons?: React.ReactNode[];
-}
+};
 
-interface State {
+type State = {
   data: any[];
   provider: SimpleDataProvider | AsyncDataProvider;
   currentPage: number;
@@ -120,7 +120,7 @@ interface State {
   sortColumnKey: string | null;
   sortDirection: number;
   loading: boolean;
-}
+};
 
 export class TableDataHandler extends React.Component<Props, State> {
   static defaultProps = {

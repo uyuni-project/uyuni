@@ -2,13 +2,13 @@ import * as React from "react";
 
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
-interface Props {
+type Props = {
   isError?: boolean;
   children: React.ReactNode;
 
   /** CSS class name to apply to the component */
   className?: string;
-}
+};
 
 export function FormGroup(props: Props) {
   const className = !DEPRECATED_unsafeEquals(props.className, null) ? props.className : "";

@@ -16,12 +16,12 @@ import getRenderedMessages from "../../messages/messages";
 import ChannelsSelection from "./channels/channels-selection";
 import styles from "./sources.module.scss";
 
-interface SourcesProps {
+type SourcesProps = {
   projectId: string;
   softwareSources: ProjectSoftwareSourceType[];
   onChange: Function;
   messages?: ProjectMessageType[];
-}
+};
 
 const ModalSourceCreationContent = ({ isLoading, softwareSources, onChange }) => {
   const initialSelectedSources = useMemo(

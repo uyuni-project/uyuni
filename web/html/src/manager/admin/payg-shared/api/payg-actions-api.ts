@@ -3,11 +3,11 @@ import { useState } from "react";
 import { Cancelable } from "utils/functions";
 import Network from "utils/network";
 
-interface returnUsePaygActionsApi {
+type returnUsePaygActionsApi = {
   onAction: (actionBodyRequest: any, action: NetworkActionKey, id?: string | null) => Promise<any>;
   cancelAction: () => void;
   isLoading: boolean;
-}
+};
 
 const networkAction = {
   get: Network.get,

@@ -1,11 +1,11 @@
 import { BaseChannelType } from "core/channels/type/channels.type";
 
-export interface FilterType {
+export type FilterType = {
   id: string;
   text: string;
   isVisible: (arg0: BaseChannelType) => boolean;
   selectedByDefault: boolean;
-}
+};
 export type FiltersType = Record<string, FilterType>;
 
 export const channelsFiltersAvailable: FiltersType = {

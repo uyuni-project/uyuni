@@ -7,7 +7,7 @@ import { ModalButton } from "components/dialog/ModalButton";
 import { Column } from "components/table/Column";
 import { Table } from "components/table/Table";
 
-interface ScheduleListProps {
+type ScheduleListProps = {
   data: {
     id: number;
     name: string;
@@ -17,7 +17,7 @@ interface ScheduleListProps {
   onSelect: (...args: any[]) => any;
   onEdit: (...args: any[]) => any;
   onDelete: (...args: any[]) => any;
-}
+};
 
 const MaintenanceScheduleList = (props: ScheduleListProps) => {
   const [scheduleToDelete, setScheduleToDelete] = useState({});

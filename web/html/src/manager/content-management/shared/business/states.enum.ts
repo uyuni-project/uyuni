@@ -1,12 +1,12 @@
 import _find from "lodash/find";
 
-interface stateType {
+type stateType = {
   key: string;
   description: string;
   deletion: boolean;
   edited: boolean;
   sign: string;
-}
+};
 
 type statesEnumType = Record<string, stateType>;
 

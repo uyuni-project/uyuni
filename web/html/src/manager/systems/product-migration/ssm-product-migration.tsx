@@ -33,13 +33,13 @@ enum MigrationStep {
   Scheduled,
 }
 
-export interface Props {
+export type Props = {
   commonBaseProduct: boolean;
   migrationSource: MigrationProduct | null;
   migrationTargets: MigrationTarget[];
   systemsData: MigrationSystemData[];
   actionChains?: ActionChain[];
-}
+};
 
 export const SSMProductMigration: React.FC<Props> = ({
   commonBaseProduct,

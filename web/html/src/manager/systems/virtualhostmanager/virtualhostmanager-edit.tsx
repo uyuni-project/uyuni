@@ -12,19 +12,19 @@ import { Messages } from "components/messages/messages";
 import { Utils } from "utils/functions";
 import Network from "utils/network";
 
-interface Props {
+type Props = {
   item?: any;
   type: string;
   onCancel?: (...args: any[]) => any;
-}
+};
 
-interface State {
+type State = {
   model: any;
   messages: any[] | null;
   vhmParams?: any;
   validKubeconfig?: any;
   isInvalid?: boolean;
-}
+};
 
 class VirtualHostManagerEdit extends React.Component<Props, State> {
   form?: HTMLFormElement;

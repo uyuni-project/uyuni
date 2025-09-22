@@ -44,13 +44,13 @@ function channelIcon(channel) {
   return <i data-bs-toggle="tooltip" className={iconClass} title={iconTitle} style={iconStyle} />;
 }
 
-interface StatesPickerProps {
+type StatesPickerProps = {
   type?: string;
   matchUrl: (filter?: string) => any;
   applyRequest?: (systems: any[]) => any;
   saveRequest: (channels: any[]) => any;
   messages?: (messages: MessageType[] | any) => any;
-}
+};
 
 class StatesPickerState {
   filter = "";
@@ -469,11 +469,11 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
   }
 }
 
-interface ExecuteStatesProps {
+type ExecuteStatesProps = {
   assigned: boolean;
   type: any;
   applySaltState: (memberIds: any[]) => any;
-}
+};
 
 class ExecuteStatesButton extends React.Component<ExecuteStatesProps> {
   state = {

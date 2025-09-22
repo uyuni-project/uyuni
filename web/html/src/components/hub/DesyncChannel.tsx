@@ -6,7 +6,7 @@ import { showInfoToastr } from "components/toastr";
 
 import Network from "utils/network";
 
-interface Props {
+type Props = {
   /** Name of the channel */
   name: string;
   /** Label of the channel */
@@ -15,11 +15,11 @@ interface Props {
   peripheralId: number;
   /** Callback invoked after the desync as been performed */
   onDesync?: () => void;
-}
+};
 
-interface State {
+type State = {
   confirmDesync: boolean;
-}
+};
 
 export class DesyncChannel extends React.Component<Props, State> {
   public constructor(props: Props) {

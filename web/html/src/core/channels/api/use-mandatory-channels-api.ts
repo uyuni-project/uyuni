@@ -20,22 +20,22 @@ const messageMap = {
   invalid_channel_id: t("Invalid channel id"),
 };
 
-interface FetchMandatoryChannelsProps {
+type FetchMandatoryChannelsProps = {
   base?: { id: number };
   channels: MandatoryChannel[];
-}
+};
 
-export interface RequiredChannelsResultType {
+export type RequiredChannelsResultType = {
   requiredChannels: Map<number, Set<number>>;
   requiredByChannels: Map<number, Set<number>>;
   dependenciesTooltip: (channelId: number, channels: (MandatoryChannel | Channel)[]) => string | undefined;
-}
+};
 
-export interface UseMandatoryChannelsApiReturnType {
+export type UseMandatoryChannelsApiReturnType = {
   requiredChannelsResult: RequiredChannelsResultType;
   isDependencyDataLoaded: boolean;
   fetchMandatoryChannelsByChannelIds: (props: FetchMandatoryChannelsProps) => void;
-}
+};
 
 const useMandatoryChannelsApi = (): UseMandatoryChannelsApiReturnType => {
   const [messages, setMessages] = useState<MessageType[]>([]);

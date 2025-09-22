@@ -7,11 +7,11 @@ import { Utils } from "utils/functions";
 
 import { CsvLink } from "./subscription-matching-util";
 
-interface Props {
+type Props = {
   messages: any[];
   systems: any;
   subscriptions: any;
-}
+};
 
 const systemName = (systems, messageData) => {
   if (!systems[messageData["id"]]) {

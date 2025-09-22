@@ -4,18 +4,18 @@ import Creatable from "react-select/creatable";
 
 import withCustomComponents from "./input/select/withCustomComponents";
 
-interface ReactSelectItem {
+type ReactSelectItem = {
   value: string | null | undefined;
   id: any | null | undefined;
   label: string;
-}
+};
 
-export interface ComboboxItem {
+export type ComboboxItem = {
   id: any;
   text: string;
-}
+};
 
-interface ComboboxProps {
+type ComboboxProps = {
   id?: string;
   name?: string;
   options?: ComboboxItem[];
@@ -27,11 +27,11 @@ interface ComboboxProps {
 
   /** Id for testing purposes */
   "data-testid"?: string;
-}
+};
 
-interface ComboboxState {
+type ComboboxState = {
   focused: boolean;
-}
+};
 
 export class Combobox extends React.Component<ComboboxProps, ComboboxState> {
   onChange = (selectedOption: ReactSelectItem) => {

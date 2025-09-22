@@ -6,11 +6,11 @@ import { Toggler } from "components/toggler";
 
 import styles from "./channels-selection.module.scss";
 
-interface Props {
+type Props = {
   base: BaseChannelType;
   selectedRows: Set<number>;
   onToggleChannelSelect: (channel: BaseChannelType | ChildChannelType, toState?: boolean) => void;
-}
+};
 
 const RecommendedToggle = (props: Props) => {
   const { base, selectedRows } = props;

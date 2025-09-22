@@ -19,17 +19,17 @@ declare global {
   }
 }
 
-interface ErrorDetails {
+type ErrorDetails = {
   message: string;
   standardOutput?: string;
   standardError?: string;
   result?: string;
-}
+};
 
-interface ErrorDetailsDialogProps {
+type ErrorDetailsDialogProps = {
   error: ErrorDetails | null;
   onDialogClose: () => void;
-}
+};
 
 class ErrorDetailsDialog extends React.Component<ErrorDetailsDialogProps> {
   render() {
@@ -116,12 +116,12 @@ class ErrorDetailsDialog extends React.Component<ErrorDetailsDialogProps> {
   }
 }
 
-interface Props {
+type Props = {
   proxies: any[];
   availableActivationKeys: any[];
   ansibleInventoryId: number | null;
   targetHost: string | null;
-}
+};
 
 enum AuthMethod {
   Password = "password",
@@ -129,7 +129,7 @@ enum AuthMethod {
   AnsiblePreauth = "ansible-preauth",
 }
 
-interface State {
+type State = {
   host: string;
   port: string;
   user: string;
@@ -148,7 +148,7 @@ interface State {
   privKeyLoading?: boolean;
   success?: any;
   errorDetails: ErrorDetails | null;
-}
+};
 
 class BootstrapMinions extends React.Component<Props, State> {
   initState: State;

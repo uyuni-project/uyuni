@@ -1,7 +1,7 @@
-export interface NotificationType {
+export type NotificationType = {
   label: string;
   description: string;
-}
+};
 
 export enum Severity {
   Info = "info",
@@ -9,7 +9,7 @@ export enum Severity {
   Error = "error",
 }
 
-export interface Notification {
+export type Notification = {
   id: number;
   severity: Severity;
   type: string;
@@ -18,4 +18,4 @@ export interface Notification {
   read: boolean;
   actionable: boolean;
   create: Date;
-}
+};

@@ -6,7 +6,7 @@ import { InputBase } from "../InputBase";
 
 type InputBaseRef = React.ElementRef<typeof InputBase>;
 
-interface Props {
+type Props = {
   /** Object storing the data of the form.
    *  Each field name in the form needs to map to a property of this
    *  object. The value is the one displayed in the form */
@@ -47,16 +47,16 @@ interface Props {
   title?: string;
 
   autoComplete?: string;
-}
+};
 
-interface FormContextType {
+type FormContextType = {
   model: any;
   errors: any;
   setModelValue: (name: string, value: any) => any;
   registerInput: Function;
   unregisterInput: Function;
   validateForm: () => void;
-}
+};
 
 export const FormContext = React.createContext<Partial<FormContextType>>({});
 

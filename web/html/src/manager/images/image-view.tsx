@@ -61,11 +61,11 @@ function getHashTab() {
   return match ? match[1] : undefined;
 }
 
-interface ImageViewProps {
+type ImageViewProps = {
   runtimeInfoEnabled: any;
-}
+};
 
-interface ImageViewState {
+type ImageViewState = {
   messages: any;
   images: any;
   imagesRuntime: any;
@@ -74,7 +74,7 @@ interface ImageViewState {
   selectedRuntime?: any;
   gotRuntimeInfo?: any;
   selectedCount?: any;
-}
+};
 
 class ImageView extends React.Component<ImageViewProps, ImageViewState> {
   constructor(props) {
@@ -415,21 +415,21 @@ class ImageView extends React.Component<ImageViewProps, ImageViewState> {
   }
 }
 
-interface ImageViewListProps {
+type ImageViewListProps = {
   data: any;
   runtimeInfoEnabled: any;
   gotRuntimeInfo: any;
   onSelectCount: (...args: any[]) => any;
   onSelect: (...args: any[]) => any;
   onDelete: (...args: any[]) => any;
-}
+};
 
-interface ImageViewListState {
+type ImageViewListState = {
   selectedItems: any;
   instancePopupContent: any;
   selected?: any;
   showObsolete: boolean;
-}
+};
 
 class ImageViewList extends React.Component<ImageViewListProps, ImageViewListState> {
   constructor(props) {
@@ -756,7 +756,7 @@ class ImageViewList extends React.Component<ImageViewListProps, ImageViewListSta
   }
 }
 
-interface ImageViewDetailsProps {
+type ImageViewDetailsProps = {
   data: any;
   runtimeInfoEnabled: any;
   gotRuntimeInfo: any;
@@ -765,7 +765,7 @@ interface ImageViewDetailsProps {
   onTabChange?: (...args: any[]) => any;
   onDelete: (...args: any[]) => any;
   onCancel: (...args: any[]) => any;
-}
+};
 
 class ImageViewDetails extends React.Component<ImageViewDetailsProps> {
   getHashUrls(tabs) {

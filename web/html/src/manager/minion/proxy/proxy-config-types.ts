@@ -13,7 +13,7 @@ export enum RegistryMode {
   Advanced = "advanced",
 }
 
-export interface ProxyConfigModel {
+export type ProxyConfigModel = {
   rootCA: string;
   proxyCertificate: string;
   proxyKey: string;
@@ -37,16 +37,16 @@ export interface ProxyConfigModel {
   registrySshTag: string;
   registryTftpdURL: string;
   registryTftpdTag: string;
-}
+};
 
-export interface Parent {
+export type Parent = {
   id: number;
   name: string;
   selected: boolean;
   disabled: boolean;
-}
+};
 
-export interface ProxyConfigProps {
+export type ProxyConfigProps = {
   serverId: string;
   parents: Parent[];
   currentConfig: ProxyConfigModel;
@@ -54,6 +54,6 @@ export interface ProxyConfigProps {
   registryUrlExample?: string;
   registryTagExample?: string;
   hasCertificates?: boolean;
-}
+};
 
 export const RegistryBaseURL = "registryBaseURL";

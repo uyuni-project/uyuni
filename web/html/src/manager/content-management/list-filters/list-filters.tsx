@@ -23,10 +23,10 @@ import { FilterFormType, FilterServerType } from "../shared/type/filter.type";
 import { mapFilterFormToRequest, mapResponseToFilterForm } from "./filter.utils";
 import FilterEdit from "./filter-edit";
 
-interface Props {
+type Props = {
   filters: FilterServerType[];
   flashMessage: string;
-}
+};
 
 const ListFilters = (props: Props) => {
   const { onAction } = useLifecycleActionsApi({ resource: "filters" });

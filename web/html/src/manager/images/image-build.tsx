@@ -41,9 +41,9 @@ const messageMap = {
   ),
 };
 
-interface Props {}
+type Props = {};
 
-interface State {
+type State = {
   model: {
     version: string;
     earliest: moment.Moment;
@@ -57,7 +57,7 @@ interface State {
   messages?: any;
   actionChain?: any;
   isInvalid?: boolean;
-}
+};
 
 class BuildImage extends React.Component<Props, State> {
   constructor(props: Props) {

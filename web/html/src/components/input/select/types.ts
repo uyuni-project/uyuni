@@ -1,7 +1,7 @@
 /** Usually options have the shape `{ value: string; label: string }`, but the consumer can define any shape */
 export type OptionType = { value: string; label: string } | Record<string, unknown>;
 
-interface SingleValue<V> {
+type SingleValue<V> = {
   value?: V;
   onChange?: (newValue: V | undefined) => void;
   /** Allow selecting multiple values */
@@ -9,9 +9,9 @@ interface SingleValue<V> {
 
   /** Allow removing the selected value, for single value this results in `undefined`, for multiple values this results in `[]` */
   isClearable: true;
-}
+};
 
-interface ClearableSingleValue<V> {
+type ClearableSingleValue<V> = {
   value?: V;
   onChange?: (newValue: V) => void;
   /** Allow selecting multiple values */
@@ -19,9 +19,9 @@ interface ClearableSingleValue<V> {
 
   /** Allow removing the selected value, for single value this results in `undefined`, for multiple values this results in `[]` */
   isClearable?: false;
-}
+};
 
-interface MultipleValue<V> {
+type MultipleValue<V> = {
   value?: V;
   onChange?: (newValue: V) => void;
   /** Allow selecting multiple values */
@@ -29,7 +29,7 @@ interface MultipleValue<V> {
 
   /** Allow removing the selected value, for single value this results in `undefined`, for multiple values this results in `[]` */
   isClearable?: boolean;
-}
+};
 
 type Value<V> = SingleValue<V> | ClearableSingleValue<V> | MultipleValue<V>;
 

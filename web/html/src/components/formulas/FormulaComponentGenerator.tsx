@@ -18,7 +18,7 @@ const { getEditGroupSubtype, EditGroupSubtype } = Formulas;
 
 const BASIC_INPUT_TYPES = ["text", "email", "url", "date", "time"];
 
-export interface ElementDefinition {
+export type ElementDefinition = {
   $id?: string;
   $type: string;
   $name: string;
@@ -41,9 +41,9 @@ export interface ElementDefinition {
   $rows?: number;
   /** DEPRECATED, use `$visible` instead */
   $visibleIf?: () => boolean;
-}
+};
 
-interface Context {
+type Context = {
   scope: any | null;
   layout: any;
   values: any;
@@ -54,7 +54,7 @@ interface Context {
   sectionsExpanded: SectionState | null | undefined;
   setSectionsExpanded: ((SectionState) => void) | null | undefined;
   searchCriteria: string | null | undefined;
-}
+};
 
 export const FormulaFormContext = React.createContext<Context>({
   scope: null,
@@ -309,10 +309,10 @@ function buildValuePath<ValueType>(id: string, formValues) {
   const tokens = id.split("#");
   let value = formValues;
 
-  interface ValuePath<T = unknown> {
+  type ValuePath<T = unknown> = {
     parent: ValuePath<T> | null;
     value: T;
-  }
+  };
 
   let prevPath: ValuePath<ValueType> | null = null;
   let path: ValuePath<ValueType> | null = null;
@@ -486,7 +486,7 @@ export const FormulaFormRenderer = () => (
   </FormulaFormContext.Consumer>
 );
 
-interface UnwrappedFormulaFormRendererProps {
+type UnwrappedFormulaFormRendererProps = {
   scope: string | null;
   values: any;
   sectionsExpanded: SectionState | null | undefined;
@@ -495,7 +495,7 @@ interface UnwrappedFormulaFormRendererProps {
   onChange?: (id: string, value: string) => any;
   registerValidationTrigger?: (...args: any[]) => any;
   searchCriteria: string | null | undefined;
-}
+};
 
 // layout
 // values
@@ -666,7 +666,7 @@ function preprocessCleanValues(values, layout) {
   return result;
 }
 
-interface FormulaFormContextProviderProps {
+type FormulaFormContextProviderProps = {
   layout?: any;
   systemData?: any;
   groupData?: any;
@@ -674,14 +674,14 @@ interface FormulaFormContextProviderProps {
   sectionsExpanded?: SectionState;
   setSectionsExpanded?: (status: SectionState) => void;
   searchCriteria?: string;
-}
+};
 
-interface FormulaFormContextProviderState {
+type FormulaFormContextProviderState = {
   formulaLayout?: any;
   formulaValues?: any;
   formulaChanged: boolean;
   validationTrigger?: any;
-}
+};
 
 // layout
 // systemData

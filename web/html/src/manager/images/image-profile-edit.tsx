@@ -38,9 +38,9 @@ const messageMap = {
   "": "There was an error.",
 };
 
-interface Props {}
+type Props = {};
 
-interface State {
+type State = {
   imageTypes: any;
   model: any;
   imageStores: any;
@@ -50,7 +50,7 @@ interface State {
   channels?: any;
   storeUri?: any;
   isInvalid?: boolean;
-}
+};
 
 class CreateImageProfile extends React.Component<Props, State> {
   defaultModel: any;

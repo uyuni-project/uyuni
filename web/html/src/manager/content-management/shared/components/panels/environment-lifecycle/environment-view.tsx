@@ -6,10 +6,10 @@ import { ProjectEnvironmentType, ProjectHistoryEntry } from "../../../type";
 import BuildVersion from "../build/build-version";
 import { getVersionMessageByNumber } from "../properties/properties.utils";
 
-interface Props {
+type Props = {
   environment: ProjectEnvironmentType;
   historyEntries: ProjectHistoryEntry[];
-}
+};
 
 type EnvironmentStatusEnumType = Record<
   string,

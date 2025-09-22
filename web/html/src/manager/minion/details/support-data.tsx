@@ -11,10 +11,10 @@ import Validation from "components/validation";
 import { localizedMoment } from "utils";
 import Network from "utils/network";
 
-export interface UploadRegion {
+export type UploadRegion = {
   label: string;
   description: string;
-}
+};
 
 export type UploadRegionArray = [UploadRegion, ...UploadRegion[]];
 
@@ -32,11 +32,11 @@ class SupportDataRequest {
   }
 }
 
-interface Props {
+type Props = {
   serverId: number;
   availableRegions: UploadRegionArray;
   supportProgramName: string | null;
-}
+};
 
 export const SupportData: React.FC<Props> = ({ serverId, availableRegions, supportProgramName }): JSX.Element => {
   const [formModel, setFormModel] = useState(

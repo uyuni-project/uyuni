@@ -2,7 +2,7 @@ import * as React from "react";
 
 import ReactModal from "react-modal";
 
-export interface DialogProps {
+export type DialogProps = {
   /** whether the dialog should be shown or hidden */
   isOpen: boolean;
   /** Function to call to close the modal. This typically changes the value of isOpen */
@@ -21,7 +21,7 @@ export interface DialogProps {
   hideHeader?: boolean;
   /** Can the modal be closed using the cross button, ESC or by clicking on the overlay? */
   closableModal?: boolean;
-}
+};
 
 ReactModal.setAppElement(document.body);
 

@@ -6,17 +6,17 @@ import { Button } from "components/buttons";
 import { BootstrapPanel } from "components/panels";
 import { SectionToolbar } from "components/section-toolbar/section-toolbar";
 
-interface PropsType {
+type PropsType = {
   minionServerId: number;
   playbookPath: string;
   inventoryPath: string;
   flushCache: boolean;
   onSelectPlaybook: (playbook: any) => void;
-}
+};
 
-interface StateType {
+type StateType = {
   editPlaybook: boolean;
-}
+};
 
 class RecurringPlaybookPicker extends React.Component<PropsType, StateType> {
   constructor(props) {

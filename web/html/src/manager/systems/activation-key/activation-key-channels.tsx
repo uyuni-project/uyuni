@@ -9,14 +9,14 @@ import { Loading } from "components/utils/loading/Loading";
 import ActivationKeyChannelsApi, { availableChannelsType, Channel } from "./activation-key-channels-api";
 import ChildChannels from "./child-channels";
 
-interface ActivationKeyChannelsProps {
+type ActivationKeyChannelsProps = {
   activationKeyId: number;
-}
+};
 
-interface ActivationKeyChannelsState {
+type ActivationKeyChannelsState = {
   currentSelectedBaseId: number;
   currentChildSelectedIds: number[];
-}
+};
 
 class ActivationKeyChannels extends React.Component<ActivationKeyChannelsProps, ActivationKeyChannelsState> {
   constructor(props: ActivationKeyChannelsProps) {

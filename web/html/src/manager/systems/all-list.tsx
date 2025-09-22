@@ -11,13 +11,13 @@ import Network from "utils/network";
 
 import { SystemsListFilter } from "./list-filter";
 
-interface Props {
+type Props = {
   /** Locale of the help links */
   docsLocale: string;
   isAdmin: boolean;
   queryColumn?: string;
   query?: string;
-}
+};
 
 const DownloadCSVButton = ({ search }) => {
   let url = "/rhn/manager/systems/csv/all";

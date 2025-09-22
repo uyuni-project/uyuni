@@ -16,7 +16,7 @@ import Network from "utils/network";
 
 const SELECTION_KEY_SEPARATOR = "~*~";
 
-interface Props {
+type Props = {
   serverId: number;
   selectionSet: string;
   actionChains: ActionChain[];
@@ -30,15 +30,15 @@ interface Props {
   listActionLabel: string;
   listColumns: React.ReactNode[];
   confirmTitle: string;
-}
+};
 
-interface State {
+type State = {
   messages: MessageType[];
   selectedPackages: string[];
   confirmAction: boolean;
   earliest: moment.Moment;
   actionChain?: ActionChain;
-}
+};
 
 export class PackageListActionScheduler extends React.Component<Props, State> {
   constructor(props) {

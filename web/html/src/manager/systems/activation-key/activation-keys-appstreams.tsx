@@ -16,9 +16,9 @@ declare global {
   }
 }
 
-interface Props {
+type Props = {
   channelsAppStreams: ChannelAppStream[];
-}
+};
 
 const AppStreams = (props: Props) => {
   const [channelsAppStreams, setChannelAppStreams] = useState(props.channelsAppStreams);

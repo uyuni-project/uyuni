@@ -16,13 +16,13 @@ import { mapAddEnvironmentRequest, mapUpdateEnvironmentRequest } from "./environ
 import EnvironmentForm from "./environment-form";
 import EnvironmentView from "./environment-view";
 
-interface Props {
+type Props = {
   projectId: string;
   environments: ProjectEnvironmentType[];
   historyEntries: ProjectHistoryEntry[];
   onChange: Function;
   messages?: ProjectMessageType[];
-}
+};
 
 const EnvironmentLifecycle = (props: Props) => {
   const { onAction, cancelAction, isLoading } = useLifecycleActionsApi({

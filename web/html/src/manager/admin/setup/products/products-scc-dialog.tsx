@@ -12,13 +12,13 @@ const messageMap = {
   // Nothing for now
 };
 
-interface SCCRefreshStep {
+type SCCRefreshStep = {
   id: string;
   label: string;
   url: string;
   inProgress: boolean;
   success: boolean | null;
-}
+};
 
 const _SCC_REFRESH_STEPS: SCCRefreshStep[] = [
   {
@@ -51,10 +51,10 @@ const _SCC_REFRESH_STEPS: SCCRefreshStep[] = [
   },
 ];
 
-interface Props {
+type Props = {
   forceStart?: boolean;
   updateSccSyncRunning: (isRunning: boolean) => void;
-}
+};
 
 class SCCDialog extends React.Component<Props> {
   state = {

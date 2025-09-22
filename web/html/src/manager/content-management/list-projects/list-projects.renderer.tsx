@@ -8,10 +8,10 @@ import { MessagesContainer } from "components/toastr/toastr";
 
 import ListProjects from "./list-projects";
 
-interface RendererProps {
+type RendererProps = {
   projects?: string;
   flashMessage?: ServerMessageType;
-}
+};
 
 export const renderer = (id: string, { projects, flashMessage }: RendererProps = {}) => {
   let projectsJson: any[] = [];

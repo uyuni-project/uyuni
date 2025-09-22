@@ -46,7 +46,7 @@ const FilterEditModalContent = ({
   );
 };
 
-interface FilterEditProps {
+type FilterEditProps = {
   id: string;
   initialFilterForm: Partial<FilterFormType>;
   icon?: string;
@@ -57,7 +57,7 @@ interface FilterEditProps {
   openFilterId?: number;
   projectLabel?: string;
   editing?: boolean;
-}
+};
 
 const redirectToProject = (projectLabel: string) => {
   window.pageRenderers?.spaengine?.navigate?.(`/rhn/manager/contentmanagement/project/${projectLabel || ""}`);

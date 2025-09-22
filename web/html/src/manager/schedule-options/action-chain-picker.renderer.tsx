@@ -2,9 +2,9 @@ import SpaRenderer from "core/spa/spa-renderer";
 
 import { ActionChainPicker } from "./action-chain-picker";
 
-interface Props {
+type Props = {
   actionChains: string;
-}
+};
 
 export const renderer = (id: string, props: Props) => {
   let actionChains = [] as any[];

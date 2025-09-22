@@ -30,7 +30,7 @@ export enum SectionState {
   Collapsed,
 }
 
-interface Props {
+type Props = {
   /** URL to get the server data */
   dataUrl: string;
 
@@ -56,9 +56,9 @@ interface Props {
   scope: "system" | "group";
 
   messageTexts: Record<string, any>;
-}
+};
 
-interface State {
+type State = {
   formulaName: string;
   formulaList: any[];
   formulaRawLayout: any;
@@ -73,7 +73,7 @@ interface State {
   sectionsExpanded: SectionState;
   searchCriteria: string;
   loading: boolean;
-}
+};
 
 class FormulaForm extends React.Component<Props, State> {
   constructor(props: Props) {

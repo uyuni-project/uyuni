@@ -3,7 +3,7 @@ import { useContext } from "react";
 
 import { DEPRECATED_Select, FormContext } from "components/input";
 
-interface ModuleSelectorProps {
+type ModuleSelectorProps = {
   modules: Record<
     string,
     {
@@ -12,7 +12,7 @@ interface ModuleSelectorProps {
     }
   >;
   isLoading: boolean;
-}
+};
 
 export default function ModuleSelector(props: ModuleSelectorProps) {
   const formContext = useContext(FormContext);

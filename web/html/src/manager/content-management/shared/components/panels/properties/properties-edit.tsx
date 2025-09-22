@@ -15,14 +15,14 @@ import getRenderedMessages from "../../messages/messages";
 import PropertiesForm from "./properties-form";
 import PropertiesView from "./properties-view";
 
-interface Props {
+type Props = {
   projectId: string;
   properties: ProjectPropertiesType;
   showDraftVersion: boolean;
   onChange: Function;
   currentHistoryEntry?: ProjectHistoryEntry;
   messages?: ProjectMessageType[];
-}
+};
 
 const PropertiesEdit = (props: Props) => {
   const { onAction, cancelAction, isLoading } = useLifecycleActionsApi({

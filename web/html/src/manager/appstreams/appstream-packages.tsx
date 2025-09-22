@@ -4,10 +4,10 @@ import { PackageLink } from "components/links";
 
 import Network from "../../utils/network";
 
-interface Package {
+type Package = {
   id: number;
   nevra: string;
-}
+};
 
 export const AppStreamPackages = ({ stream, channelId }) => {
   const [packages, setPackages] = useState<Package[]>([]);

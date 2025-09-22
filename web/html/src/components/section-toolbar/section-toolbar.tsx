@@ -1,9 +1,9 @@
 import * as React from "react";
 import { useEffect } from "react";
 
-interface Props {
+type Props = {
   children: React.ReactNode;
-}
+};
 
 export const SectionToolbar = ({ children }: Props) => {
   useEffect(() => {

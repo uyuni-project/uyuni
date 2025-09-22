@@ -23,7 +23,7 @@ const getEditGroupSubtype = Formulas.getEditGroupSubtype;
 const deepCopy = Utils.deepCopy;
 // circular dependencies are bad
 
-interface EditGroupProps {
+type EditGroupProps = {
   id: string;
   key: any;
   disabled?: boolean;
@@ -34,11 +34,11 @@ interface EditGroupProps {
   setSectionsExpanded: (SectionState) => void;
   isVisibleByCriteria?: () => boolean;
   criteria: string;
-}
+};
 
-interface EditGroupState {
+type EditGroupState = {
   visible: boolean;
-}
+};
 
 /*
  * Base class for edit-group.
@@ -167,14 +167,14 @@ class EditGroup extends React.Component<EditGroupProps, EditGroupState> {
   }
 }
 
-interface EditPrimitiveGroupProps {
+type EditPrimitiveGroupProps = {
   id: string;
   value: any;
   element: ElementDefinition;
   formulaForm: any;
   isDisabled?: boolean;
   handleRemoveItem: (...args: any[]) => any;
-}
+};
 
 /*
  * Used for rendering edit-groups in the form of "list of primitive types",
@@ -224,14 +224,14 @@ class EditPrimitiveGroup extends React.Component<EditPrimitiveGroupProps> {
   }
 }
 
-interface EditPrimitiveDictionaryGroupProps {
+type EditPrimitiveDictionaryGroupProps = {
   id: string;
   value: any;
   element: ElementDefinition;
   formulaForm: any;
   isDisabled?: boolean;
   handleRemoveItem: (...args: any[]) => any;
-}
+};
 
 /*
  * Used for rendering edit-groups in the form of "dictionary of primitive types",
@@ -288,11 +288,11 @@ class EditPrimitiveDictionaryGroup extends React.Component<EditPrimitiveDictiona
   }
 }
 
-interface RemoveButtonProps {
+type RemoveButtonProps = {
   minItems: number;
   currentLength: number;
   handleRemoveItem: (...args: any[]) => any;
-}
+};
 
 class RemoveButton extends React.Component<RemoveButtonProps> {
   render() {
@@ -310,7 +310,7 @@ class RemoveButton extends React.Component<RemoveButtonProps> {
   }
 }
 
-interface EditDictionaryGroupProps {
+type EditDictionaryGroupProps = {
   id: string;
   element: ElementDefinition;
   value: any;
@@ -319,11 +319,11 @@ interface EditDictionaryGroupProps {
   sectionsExpanded: SectionState;
   setSectionsExpanded: (SectionState) => void;
   handleRemoveItem: (...args: any[]) => any;
-}
+};
 
-interface EditDictionaryGroupState {
+type EditDictionaryGroupState = {
   visibility: Map<string, boolean>;
-}
+};
 
 /*
  * Used for rendering edit-groups that are backed up list of dictionaries

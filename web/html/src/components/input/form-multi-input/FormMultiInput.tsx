@@ -8,7 +8,7 @@ import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
 import { FormContext } from "../form/Form";
 
-interface Props {
+type Props = {
   /** Id of the component */
   id: string;
 
@@ -60,7 +60,7 @@ interface Props {
 
   /** CSS class for the wrapping Panel */
   panelClassName?: string;
-}
+};
 
 /**
  * Compute the list of item keys in the model based of fields named like `${prefix}${idx}_${name}`

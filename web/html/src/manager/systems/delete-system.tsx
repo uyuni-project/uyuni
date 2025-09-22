@@ -12,17 +12,17 @@ const messageMap = {
   apply_result_missing: t("No result found in state apply response."),
 };
 
-interface Props {
+type Props = {
   serverId: string;
   buttonClass?: string;
   buttonText?: React.ReactNode;
   onDeleteSuccess?: (...args: any[]) => any;
-}
+};
 
-interface State {
+type State = {
   messages: any[];
   cleanupErr: boolean;
-}
+};
 
 class DeleteSystem extends React.Component<Props, State> {
   constructor(props: Props) {

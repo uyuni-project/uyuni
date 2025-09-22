@@ -20,23 +20,23 @@ const messageMap = {
   ),
 };
 
-interface ImportDto {
+type ImportDto = {
   buildHostId: number;
   name: string;
   version: string;
   activationKey: string;
   storeId: number;
-}
+};
 
-interface Model {
+type Model = {
   name?: string | null;
   version?: string | null;
   storeId?: string | null;
   buildHostId?: string | null;
   activationKey: string;
-}
+};
 
-interface Channels {
+type Channels = {
   base: {
     name: string;
   };
@@ -44,7 +44,7 @@ interface Channels {
     id: string;
     name: string;
   }[];
-}
+};
 
 function emptyModel(): Model {
   return {

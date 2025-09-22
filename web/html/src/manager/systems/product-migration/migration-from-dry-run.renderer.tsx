@@ -5,10 +5,10 @@ import { MigrationDryRunConfirmation } from "components/product-migration";
 
 import { SSMProductMigrationFromDryRun } from "./migration-from-dry-run";
 
-interface RendererProps {
+type RendererProps = {
   actionChains: ActionChain[];
   dryRunData: MigrationDryRunConfirmation;
-}
+};
 
 export const renderer = (id: string, { actionChains, dryRunData }: RendererProps) =>
   SpaRenderer.renderNavigationReact(

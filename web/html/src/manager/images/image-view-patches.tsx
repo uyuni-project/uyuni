@@ -34,9 +34,9 @@ const typeTitles = {
   restart_suggested: t("Affects package management stack"),
 };
 
-interface ImageViewPatchesProps {
+type ImageViewPatchesProps = {
   data: any;
-}
+};
 
 class ImageViewPatches extends React.Component<ImageViewPatchesProps> {
   searchData(row, criteria) {

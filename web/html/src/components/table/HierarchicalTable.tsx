@@ -6,16 +6,16 @@ import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import { SearchField } from "./SearchField";
 import { Table, TableRef } from "./Table";
 
-export interface HierarchicalRow {
+export type HierarchicalRow = {
   id: string | number;
   parentId?: string | number | null;
   level?: number;
   expanded?: boolean;
   isLeaf?: boolean;
   [key: string]: any;
-}
+};
 
-interface HierarchicalTableProps {
+type HierarchicalTableProps = {
   /** Optional class to add to the table container */
   className?: string;
 
@@ -62,7 +62,7 @@ interface HierarchicalTableProps {
 
   /** Children node in the table (Column components) */
   children: React.ReactNode;
-}
+};
 
 export const HierarchicalTable = React.forwardRef<TableRef, HierarchicalTableProps>((props, ref) => {
   const {

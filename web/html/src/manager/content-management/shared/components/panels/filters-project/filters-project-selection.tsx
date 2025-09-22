@@ -10,12 +10,12 @@ import useLifecycleActionsApi from "../../../api/use-lifecycle-actions-api";
 import { getClmFilterDescription } from "../../../business/filters.enum";
 import { ProjectFilterServerType } from "../../../type";
 
-interface FiltersProps {
+type FiltersProps = {
   projectId: string;
   initialSelectedFiltersIds: number[];
   onChange: Function;
   isUpdatingFilter: boolean;
-}
+};
 
 const FiltersProjectSelection = (props: FiltersProps) => {
   const { onAction: onActionAllFilters, isLoading: isLoadingAllFilters } = useLifecycleActionsApi({

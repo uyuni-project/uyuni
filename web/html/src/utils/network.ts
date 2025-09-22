@@ -7,11 +7,11 @@ import { replacer } from "./json";
 
 declare let csrfToken: string;
 
-export interface JsonResult<T> {
+export type JsonResult<T> = {
   success: boolean;
   messages: string[];
   data: T;
-}
+};
 
 /**
  * There are some cases where network requests with empty data are accidentally made as follows:

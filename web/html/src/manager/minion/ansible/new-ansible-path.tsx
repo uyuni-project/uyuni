@@ -3,14 +3,14 @@ import * as React from "react";
 import { AsyncButton } from "components/buttons";
 import { TextField } from "components/fields";
 
-interface Props {
+type Props = {
   title: string;
   pathType: string;
   newPathValue: string;
   newPath: (value: string) => any;
   placeholder?: string;
   savePath: (...args: any) => any;
-}
+};
 
 const NewAnsiblePath = (props: Props) => {
   return (

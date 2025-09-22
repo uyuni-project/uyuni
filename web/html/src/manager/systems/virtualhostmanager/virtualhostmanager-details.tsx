@@ -11,17 +11,17 @@ import { Table } from "components/table/Table";
 import { Utils } from "utils/functions";
 import Network from "utils/network";
 
-interface Props {
+type Props = {
   data: any;
   onEdit: (...args: any[]) => any;
   onCancel: (...args: any[]) => any;
   onDelete: (...args: any[]) => any;
-}
+};
 
-interface State {
+type State = {
   messages: any[];
   nodes?: any;
-}
+};
 
 class VirtualHostManagerDetails extends React.Component<Props, State> {
   constructor(props: Props) {

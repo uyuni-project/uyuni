@@ -5,7 +5,7 @@ import { cloneReactElement } from "components/utils";
 import { SearchField } from "./SearchField";
 import { TableDataHandler } from "./TableDataHandler";
 
-interface Props {
+type Props = {
   /** any type of data in an array, where each element is a row data */
   data: any[];
 
@@ -44,7 +44,7 @@ interface Props {
 
   /** Other filter fields */
   additionalFilters?: React.ReactNode[];
-}
+};
 
 export function CustomDataHandler(props: Props) {
   const { selectable, ...allProps } = props;

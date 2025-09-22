@@ -16,7 +16,7 @@ import DownArrow from "../../down-arrow/down-arrow";
 import BuildVersion from "../build/build-version";
 import { getVersionMessageByNumber } from "../properties/properties.utils";
 
-interface Props {
+type Props = {
   projectId: string;
   environmentPromote: ProjectEnvironmentType;
   environmentTarget: ProjectEnvironmentType;
@@ -24,7 +24,7 @@ interface Props {
   versionToPromote: number;
   historyEntries: ProjectHistoryEntry[];
   onChange: Function;
-}
+};
 
 const Promote = (props: Props) => {
   const [open, setOpen] = useState(false);

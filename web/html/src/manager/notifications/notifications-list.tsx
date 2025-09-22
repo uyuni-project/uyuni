@@ -25,11 +25,11 @@ enum DataType {
   All = "data-all",
 }
 
-interface Props {
+type Props = {
   notificationTypes: NotificationType[];
-}
+};
 
-interface State {
+type State = {
   serverData: Notification[] | undefined;
   dataType: DataType;
   loading: boolean;
@@ -37,7 +37,7 @@ interface State {
   selectedItems: number[];
   popupItem: Notification | undefined;
   typeCriteria: string[];
-}
+};
 
 export class NotificationList extends React.Component<Props, State> {
   private readonly typeMap: Map<string, string>;

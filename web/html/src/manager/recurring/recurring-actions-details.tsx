@@ -41,7 +41,7 @@ export enum RecurringActionType {
   PLAYBOOK = "PLAYBOOK",
 }
 
-interface RecurringActionsDetailsProps {
+type RecurringActionsDetailsProps = {
   data?: any;
   minions?: any;
   onCancel: (arg0: string) => any;
@@ -49,13 +49,13 @@ interface RecurringActionsDetailsProps {
   onError: (arg0: any) => any;
   onDeleteError: (arg0: any) => any;
   onSetMessages: (arg0: any) => any;
-}
+};
 
-interface RecurringActionsDetailsState {
+type RecurringActionsDetailsState = {
   messages: any[];
   minions: any;
   details: any;
-}
+};
 
 class RecurringActionsDetails extends React.Component<RecurringActionsDetailsProps, RecurringActionsDetailsState> {
   weekDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];

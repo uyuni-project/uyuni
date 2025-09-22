@@ -5,18 +5,18 @@ import { ElementDefinition } from "./FormulaComponentGenerator";
 
 const generatePassword = Utils.generatePassword;
 
-interface Props {
+type Props = {
   id: string;
   value: string;
   onChange: (...args: any[]) => any;
   disabled: boolean;
   element: ElementDefinition;
   required?: boolean;
-}
+};
 
-interface State {
+type State = {
   showPassword: boolean;
-}
+};
 
 class PasswordInput extends React.Component<Props, State> {
   constructor(props: Props) {

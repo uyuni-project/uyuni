@@ -15,10 +15,10 @@ declare global {
   }
 }
 
-interface ImageViewRuntimeProps {
+type ImageViewRuntimeProps = {
   data: any;
   gotRuntimeInfo: any;
-}
+};
 
 class ImageViewRuntime extends React.Component<ImageViewRuntimeProps> {
   render() {
@@ -55,9 +55,9 @@ class ImageViewRuntime extends React.Component<ImageViewRuntimeProps> {
   }
 }
 
-interface PodInfoProps {
+type PodInfoProps = {
   data: any;
-}
+};
 
 class PodInfo extends React.Component<PodInfoProps> {
   renderStatusIcon(statusId) {
@@ -93,9 +93,9 @@ class PodInfo extends React.Component<PodInfoProps> {
   }
 }
 
-interface ClusterInfoProps {
+type ClusterInfoProps = {
   data: any;
-}
+};
 
 class ClusterInfo extends React.Component<ClusterInfoProps> {
   renderTitle(data) {

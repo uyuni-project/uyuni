@@ -11,15 +11,15 @@ import { Table } from "components/table/Table";
 
 import Network from "utils/network";
 
-interface Props {
+type Props = {
   flashMessage?: ServerMessageType;
   warningMessage?: ServerMessageType;
-}
+};
 
-interface State {
+type State = {
   serverData: any[];
   messages: any[];
-}
+};
 
 class FormulaCatalog extends React.Component<Props, State> {
   constructor(props) {

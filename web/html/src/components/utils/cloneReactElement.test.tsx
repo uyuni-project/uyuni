@@ -40,10 +40,10 @@ describe("cloneReactElement", () => {
   });
 
   test("passes custom props through to React components", () => {
-    interface ChildProps {
+    type ChildProps = {
       foo?: string;
       bar?: number;
-    }
+    };
     const Child = (props: ChildProps) => (
       <>
         foo value: {props.foo}, bar value: {props.bar}

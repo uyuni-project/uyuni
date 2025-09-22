@@ -9,7 +9,7 @@ import { TopPanel } from "components/panels/TopPanel";
 import MaintenanceCalendarDetails from "./calendar-details";
 import MaintenanceScheduleDetails from "./schedule-details";
 
-interface MaintenanceDetailsProps {
+type MaintenanceDetailsProps = {
   type: "schedule" | "calendar";
   data: any;
   onMessage: (messages: MessageType[]) => void;
@@ -18,7 +18,7 @@ interface MaintenanceDetailsProps {
   onDelete: (...args: any[]) => any;
   clearMessages: (messages: void) => void;
   responseError: (messages: MessageType[]) => void;
-}
+};
 
 const MaintenanceWindowsDetails = (props: MaintenanceDetailsProps) => {
   const [type] = useState(props.type);

@@ -99,7 +99,7 @@ if (window.serverTime) {
 }
 
 declare module "moment" {
-  export interface Moment {
+  export type Moment = {
     /**
      * Unless you specifically need the server time, please use the `toUser...` equivalent.
      * Get a localized date-time-zone string in the server's time zone, e.g. `"2020-01-31 13:00 Asia/Tokyo"`
@@ -129,7 +129,7 @@ declare module "moment" {
     toUserDateString(): string;
     /** Get a localized time string in the user's time zone, e.g. `"13:00"` */
     toUserTimeString(): string;
-  }
+  };
 
   /** Full server time zone string, e.g. `"Asia/Tokyo"` */
   const serverTimeZone: string;

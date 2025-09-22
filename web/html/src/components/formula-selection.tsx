@@ -11,14 +11,14 @@ import { Messages, MessageType } from "./messages/messages";
 
 const capitalize = Utils.capitalize;
 
-interface Props {
+type Props = {
   dataUrl: string;
   saveRequest: (...args: any[]) => any;
   warningMessage?: string;
   addFormulaNavBar: (...args: any[]) => any;
-}
+};
 
-interface State {
+type State = {
   formulas: Record<string, any>;
   activeSelectedFormulas?: any;
   groups: { groupless: any[] };
@@ -27,7 +27,7 @@ interface State {
   showDescription: boolean;
   messages: MessageType[];
   errors?: MessageType[];
-}
+};
 
 class FormulaSelection extends React.Component<Props, State> {
   constructor(props: Props) {

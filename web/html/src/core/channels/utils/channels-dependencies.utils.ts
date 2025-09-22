@@ -1,7 +1,7 @@
-export interface ChannelsDependencies {
+export type ChannelsDependencies = {
   requiredChannels: Map<number, Set<number>>;
   requiredByChannels: Map<number, Set<number>>;
-}
+};
 
 // Converts array of channel names into a human-readable tooltip
 // containing information about channel dependencies

@@ -7,15 +7,15 @@ import { TopPanel } from "./panels/TopPanel";
 import { Column } from "./table/Column";
 import { Table } from "./table/Table";
 
-export interface SystemData {
+export type SystemData = {
   id: number;
   name: string;
-}
+};
 
-interface Props {
+type Props = {
   systemsData: SystemData[];
   children?: React.ReactNode;
-}
+};
 
 export const TargetSystems: React.FC<Props> = ({ systemsData, children }: Props): JSX.Element => {
   function renderSystemLink(system: SystemData) {

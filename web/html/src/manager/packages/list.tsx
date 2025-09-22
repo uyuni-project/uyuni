@@ -14,14 +14,14 @@ import { Utils } from "utils/functions";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network from "utils/network";
 
-interface Props {
+type Props = {
   /** Locale of the help links */
   docsLocale: string;
   /** List of selected package ids */
   selected: string[];
   /** The entry to select in the channel field */
   selectedChannel: string | null;
-}
+};
 
 export function PackageList(props: Props) {
   const [open, setOpen] = React.useState(false);

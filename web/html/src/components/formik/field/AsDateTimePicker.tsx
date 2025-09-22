@@ -4,10 +4,10 @@ import { DateTimePicker } from "components/datetime";
 
 import { LocalizedMoment } from "utils/datetime";
 
-interface BaseProps<ValueType> {
+type BaseProps<ValueType> = {
   name: string;
   value: ValueType;
-}
+};
 
 type Props = BaseProps<LocalizedMoment> & React.ComponentProps<typeof DateTimePicker>;
 

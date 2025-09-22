@@ -12,19 +12,19 @@ import Network from "utils/network";
 
 import CancelActionsDialog from "../shared/cancel-actions-dialog";
 
-interface ScheduleType {
+type ScheduleType = {
   id: number;
   name: string;
-}
+};
 
-interface WithMaintenanceSchedulesProps {
+type WithMaintenanceSchedulesProps = {
   systems: string[];
   onMessage: (messages: MessageType[]) => void;
   children: (
     schedules: ScheduleType[],
     onAssign: (scheduleId: number, cancelActions: boolean) => Promise<any>
   ) => JSX.Element;
-}
+};
 
 export function WithMaintenanceSchedules(props: WithMaintenanceSchedulesProps) {
   const [schedules, setSchedules] = useState([]);
@@ -58,10 +58,10 @@ export function WithMaintenanceSchedules(props: WithMaintenanceSchedulesProps) {
   return props.children(schedules, onAssign);
 }
 
-interface SchedulePickerFormProps {
+type SchedulePickerFormProps = {
   schedules: ScheduleType[];
   onAssign: (scheduleId: number, cancelActions: boolean) => Promise<any>;
-}
+};
 
 export function SchedulePickerForm(props: SchedulePickerFormProps) {
   const [model, setModel] = useState<any>({});
@@ -114,11 +114,11 @@ export function SchedulePickerForm(props: SchedulePickerFormProps) {
 
 export function SchedulePicker(props: { schedules: ScheduleType[] }) {
   const context = useContext(FormContext);
-  interface SchedulesType {
+  type SchedulesType = {
     // TODO: Historically numbers and strings are mixed here, if you work with this, please clean this up
     value: number | string;
     label: string;
-  }
+  };
   const options: SchedulesType[] = [{ value: "0", label: t("None - clear schedule") }];
   return (
     <>

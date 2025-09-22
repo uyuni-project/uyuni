@@ -8,9 +8,9 @@ import { MessagesContainer } from "components/toastr";
 import Proxy from "./proxy";
 import { ProxySettings } from "./proxy-settings";
 
-interface Props {
+type Props = {
   proxySettings: ProxySettings;
-}
+};
 
 export const renderer = (id: string, props: Props) => {
   SpaRenderer.renderNavigationReact(

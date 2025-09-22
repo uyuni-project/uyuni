@@ -31,10 +31,10 @@ import PropertiesEdit from "../shared/components/panels/properties/properties-ed
 import Sources from "../shared/components/panels/sources/sources";
 import { ProjectType } from "../shared/type/project.type";
 
-interface Props {
+type Props = {
   project: ProjectType;
   wasFreshlyCreatedMessage?: string;
-}
+};
 
 const Project = (props: Props) => {
   const [project, setProject] = useState(props.project);

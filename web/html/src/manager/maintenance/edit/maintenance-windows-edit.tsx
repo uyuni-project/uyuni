@@ -7,7 +7,7 @@ import { InnerPanel } from "components/panels/InnerPanel";
 import MaintenanceCalendarEdit from "./calendar-edit";
 import MaintenanceScheduleEdit from "./schedule-edit";
 
-interface MaintenanceEditProps {
+type MaintenanceEditProps = {
   type: "schedule" | "calendar";
   calendarNames?: any[];
   selected: any;
@@ -15,7 +15,7 @@ interface MaintenanceEditProps {
   onEdit: (...args: any[]) => any;
   onActionChanged: (...args: any[]) => any;
   onRefresh: (...args: any[]) => any;
-}
+};
 
 const MaintenanceWindowsEdit = (props: MaintenanceEditProps) => {
   /**

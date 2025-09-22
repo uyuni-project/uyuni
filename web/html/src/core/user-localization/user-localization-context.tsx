@@ -2,10 +2,10 @@
 // the jade mixin userLocalization
 import * as React from "react";
 
-export interface userLocalizationType {
+export type userLocalizationType = {
   timezone: string;
   localTime: string;
-}
+};
 declare let global_user_localization: userLocalizationType | undefined;
 
 const UserLocalizationContext = React.createContext<Partial<userLocalizationType>>({});

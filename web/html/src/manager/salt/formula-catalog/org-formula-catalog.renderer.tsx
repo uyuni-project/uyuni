@@ -6,10 +6,10 @@ import { ServerMessageType } from "components/messages/messages";
 
 import FormulaCatalog from "./org-formula-catalog";
 
-interface RendererProps {
+type RendererProps = {
   flashMessage?: ServerMessageType;
   warningMessage?: ServerMessageType;
-}
+};
 
 export const renderer = (id: string, { flashMessage, warningMessage }: RendererProps = {}) => {
   SpaRenderer.renderNavigationReact(

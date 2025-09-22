@@ -10,11 +10,11 @@ import { Utils } from "utils/functions";
 
 import { CsvLink, SystemLabel } from "./subscription-matching-util";
 
-interface UnmatchedProductsProps {
+type UnmatchedProductsProps = {
   unmatchedProductIds: any[];
   systems: any[];
   products: any[];
-}
+};
 
 class UnmatchedProducts extends React.Component<UnmatchedProductsProps> {
   state = {
@@ -104,12 +104,12 @@ class UnmatchedProducts extends React.Component<UnmatchedProductsProps> {
   }
 }
 
-interface UnmatchedSystemPopUpProps {
+type UnmatchedSystemPopUpProps = {
   systems: any[];
   products: any[];
   selectedProductId: any;
   onClosePopUp?: (...args: any[]) => any;
-}
+};
 
 class UnmatchedSystemPopUp extends React.Component<UnmatchedSystemPopUpProps> {
   buildTableData = (props) => {

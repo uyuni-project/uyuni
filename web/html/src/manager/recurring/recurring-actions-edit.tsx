@@ -16,14 +16,14 @@ import Network from "utils/network";
 
 import { DisplayHighstate } from "../state/display-highstate";
 
-interface Props {
+type Props = {
   schedule?: any;
   onActionChanged: (arg0: any) => any;
   onSetMessages: (arg0: any) => any;
   onError: (arg0: any) => any;
-}
+};
 
-interface State {
+type State = {
   minions?: any[];
   active: boolean;
   targetId?: any;
@@ -34,7 +34,7 @@ interface State {
   actionTypeDescription?: any;
   cron?: any;
   details?: any;
-}
+};
 
 class RecurringActionsEdit extends React.Component<Props, State> {
   constructor(props) {

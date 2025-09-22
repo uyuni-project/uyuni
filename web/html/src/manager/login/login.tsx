@@ -39,7 +39,7 @@ const products = {
   },
 };
 
-interface Props {
+type Props = {
   theme: Theme;
   bounce: string;
   validationErrors: string[];
@@ -52,7 +52,7 @@ interface Props {
   passwordLength: string;
   diskspaceSeverity: string;
   sccForwardWarning: boolean;
-}
+};
 
 export type ThemeProps = Props & {
   product: typeof products[keyof typeof products];

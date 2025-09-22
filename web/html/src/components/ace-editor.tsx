@@ -1,7 +1,7 @@
 import * as React from "react";
 import ReactDOM from "react-dom";
 
-interface Props {
+type Props = {
   mode: string;
   minLines: number;
   maxLines: number;
@@ -10,7 +10,7 @@ interface Props {
   className: string;
   id: string;
   content: React.ReactNode;
-}
+};
 
 class AceEditor extends React.Component<Props> {
   componentDidMount() {

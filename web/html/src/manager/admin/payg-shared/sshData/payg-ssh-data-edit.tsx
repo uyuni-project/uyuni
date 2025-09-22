@@ -9,14 +9,14 @@ import CreatorPanel from "components/panels/CreatorPanel";
 import { showErrorToastr, showSuccessToastr } from "components/toastr";
 import { Loading } from "components/utils";
 
-interface Props {
+type Props = {
   paygSshData: paygProperties;
   paygId: string;
   isInstance: boolean;
   labelPrefix: string;
   onChange: Function;
   readOnly?: boolean;
-}
+};
 
 const PaygSshDataEdit = (props: Props) => {
   const { onAction, cancelAction, isLoading } = useLifecyclePaygActionsApi();

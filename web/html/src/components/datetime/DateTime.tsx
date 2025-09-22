@@ -2,10 +2,10 @@ import { localizedMoment } from "utils";
 
 import { getTimeProps } from "./timeProps";
 
-interface Props {
+type Props = {
   value?: string | moment.Moment;
   children?: string;
-}
+};
 
 export const DateTime = (props: Props) => {
   const input = props.value ?? props.children;

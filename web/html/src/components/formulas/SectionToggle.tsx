@@ -1,11 +1,11 @@
 import * as React from "react";
 
-interface Props {
+type Props = {
   index?: any;
   isVisible: (index: any) => boolean;
   setVisible: (index: any, isVisible: boolean) => any;
   children?: React.ReactNode;
-}
+};
 
 const SectionToggle = (props: Props) => {
   const toggleSection = () => {

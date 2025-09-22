@@ -8,11 +8,11 @@ import { MessagesContainer } from "components/toastr/toastr";
 
 import ListPayg from "./list-payg";
 
-interface RendererProps {
+type RendererProps = {
   payg_instances?: string;
   flashMessage?: ServerMessageType;
   isIssPeripheral?: boolean;
-}
+};
 
 export const renderer = (id: string, { payg_instances, flashMessage, isIssPeripheral }: RendererProps = {}) => {
   let projectsJson: any[] = [];

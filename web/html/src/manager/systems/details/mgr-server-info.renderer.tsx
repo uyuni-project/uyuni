@@ -4,7 +4,7 @@ import SpaRenderer from "core/spa/spa-renderer";
 
 import { MgrServer } from "./mgr-server-info";
 
-interface RendererProps {
+type RendererProps = {
   serverId: string;
   name: string;
   version: string;
@@ -14,7 +14,7 @@ interface RendererProps {
   reportDbUser: string;
   reportDbLastSynced?: string;
   isAdmin: boolean;
-}
+};
 
 export const renderer = (
   id: string,

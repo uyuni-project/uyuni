@@ -2,7 +2,7 @@ import * as React from "react";
 
 /** @module toggler */
 
-interface Props {
+type Props = {
   /** Callback function to execute on toggle switch. */
   handler: (value: boolean) => void;
 
@@ -17,7 +17,7 @@ interface Props {
 
   /** className of the component. */
   className?: string;
-}
+};
 
 /**
  * A customized toggle switch element to represent boolean values.

@@ -21,20 +21,20 @@ import { Utils } from "utils/functions";
 
 import { SetupHeader } from "../setup/setup-header";
 
-interface PaygOverviewType {
+type PaygOverviewType = {
   id: string;
   host: string;
   description: string;
   status: string;
   statusMessage: string;
   lastChange: moment.Moment;
-}
+};
 
-interface Props {
+type Props = {
   payg_instances: PaygOverviewType[];
   flashMessage?: ServerMessageType;
   isIssPeripheral?: boolean;
-}
+};
 const ListPayg = (props: Props) => {
   useEffect(() => {
     if (props.flashMessage) {

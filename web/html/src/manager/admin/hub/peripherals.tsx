@@ -8,9 +8,9 @@ import { PeripheralsList } from "components/hub";
 import { TopPanel } from "components/panels";
 import { MessagesContainer, showSuccessToastr } from "components/toastr";
 
-interface Props {
+type Props = {
   flashMessage?: string;
-}
+};
 
 const IssPeripheral = (props: Props) => {
   React.useEffect(() => {

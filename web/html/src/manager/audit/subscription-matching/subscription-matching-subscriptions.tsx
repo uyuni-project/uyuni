@@ -10,9 +10,9 @@ import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
 import { CsvLink, humanReadablePolicy, ToolTip, WarningIcon } from "./subscription-matching-util";
 
-interface SubscriptionsProps {
+type SubscriptionsProps = {
   subscriptions: any[];
-}
+};
 
 class Subscriptions extends React.Component<SubscriptionsProps> {
   sortByPolicy = (aRaw, bRaw, columnKey, sortDirection) => {

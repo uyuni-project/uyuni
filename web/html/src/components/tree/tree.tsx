@@ -5,25 +5,25 @@ import { CustomDiv } from "components/custom-objects";
 
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
-export interface TreeItem {
+export type TreeItem = {
   id: string;
   data?: any;
   children?: string[];
-}
+};
 
-export interface TreeData {
+export type TreeData = {
   rootId: string;
   items: TreeItem[];
-}
+};
 
-export interface Props {
+export type Props = {
   data?: TreeData;
   renderItem: (item: TreeItem, renderNameColumn: Function) => React.ReactNode;
   header?: React.ReactNode;
   initiallyExpanded?: string[];
   onItemSelectionChanged?: (item: TreeItem, checked: boolean) => void;
   initiallySelected?: string[];
-}
+};
 
 export const Tree = (props: Props) => {
   const [visibleSublists, setVisibleSublist] = useState(props.initiallyExpanded || []);

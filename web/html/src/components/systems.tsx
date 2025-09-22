@@ -4,7 +4,7 @@ import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
 import { IconTag } from "./icontag";
 
-export interface SystemOverview {
+export type SystemOverview = {
   id: number;
   serverName: string;
   isVirtualGuest: boolean;
@@ -12,7 +12,7 @@ export interface SystemOverview {
   entitlement: string[];
   proxy: boolean;
   mgrServer: boolean;
-}
+};
 
 export function iconAndName(system: SystemOverview) {
   const iconMapping = [

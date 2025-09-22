@@ -20,7 +20,7 @@ import Network from "utils/network";
 
 import CancelActionsDialog from "../shared/cancel-actions-dialog";
 
-interface MaintenanceScheduleDetailsProps {
+type MaintenanceScheduleDetailsProps = {
   id: number;
   name: string; // Name of the maintenance schedule
   eventNames: string[];
@@ -30,7 +30,7 @@ interface MaintenanceScheduleDetailsProps {
   onMessage: (messages: MessageType[]) => void;
   clearMessages: (messages: void) => void;
   responseError: (messages: MessageType[]) => void;
-}
+};
 
 const MaintenanceScheduleDetails = (props: MaintenanceScheduleDetailsProps) => {
   const [activeTab, setActiveTab] = useState("overview");
@@ -78,7 +78,7 @@ const MaintenanceScheduleDetails = (props: MaintenanceScheduleDetailsProps) => {
   );
 };
 
-interface OverviewProps {
+type OverviewProps = {
   id: number;
   name: string; // Name of the maintenance schedule
   eventNames: string[];
@@ -87,7 +87,7 @@ interface OverviewProps {
   onMessage: (messages: MessageType[]) => void;
   clearMessages: (messages: void) => void;
   responseError: (messages: MessageType[]) => void;
-}
+};
 
 const MaintenanceScheduleOverview = (props: OverviewProps) => {
   const tableData = [
@@ -125,11 +125,11 @@ const MaintenanceScheduleOverview = (props: OverviewProps) => {
   );
 };
 
-interface SystemPickerProps {
+type SystemPickerProps = {
   scheduleId: number;
   onBack: () => void;
   onMessage: (messages: MessageType[]) => void;
-}
+};
 
 const SystemPicker = (props: SystemPickerProps) => {
   const [hasChanges, setHasChanges] = useState(false);
