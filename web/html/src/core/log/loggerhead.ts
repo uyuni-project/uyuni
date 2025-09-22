@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 // This file is allowed to use console, everyone else is not
 
 type Headers = Record<string, string>;

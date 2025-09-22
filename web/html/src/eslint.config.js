@@ -12,11 +12,7 @@ const react = require("eslint-plugin-react");
 
 const globals = require("globals");
 
-const productionRules = {
-  "prettier/prettier": "error",
-  "@typescript-eslint/no-unused-vars": "error",
-  "no-console": "error",
-};
+const isProduction = process.env.NODE_ENV === "production";
 
 module.exports = defineConfig([
   globalIgnores(["dist/**/*", "vendors/**/*", "build/yarn/**/*"]),
@@ -47,20 +43,21 @@ module.exports = defineConfig([
       // We use `@typescript-eslint/no-unused-vars` instead
       "no-unused-vars": "off",
       "@typescript-eslint/no-unused-vars": [
-        "error",
+        isProduction ? "error" : "warn",
         {
           caughtErrors: "none",
           ignoreRestSiblings: true,
           destructuredArrayIgnorePattern: "^_",
         },
       ],
+      "prettier/prettier": isProduction ? "error" : "warn",
+      "no-console": isProduction ? "error" : "warn",
       // Too much legacy code holds empty references and such, we can't enable these rules yet, but aim for it in the future
       "@typescript-eslint/no-empty-function": "off",
       "no-async-promise-executor": "off",
       "no-prototype-builtins": "off",
       "no-case-declarations": "off",
 
-      "prettier/prettier": "warn",
       "jsx-a11y/anchor-is-valid": "error",
       "react/jsx-no-target-blank": "error",
       "react-hooks/rules-of-hooks": "error",
@@ -135,7 +132,6 @@ module.exports = defineConfig([
           ],
         },
       ],
-      ...(process.env.NODE_ENV === "production" ? productionRules : {}),
     },
 
     settings: {
