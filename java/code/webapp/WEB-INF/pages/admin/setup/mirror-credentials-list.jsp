@@ -8,7 +8,7 @@
 <c:forEach items="${credentials}" var="current">
     <div class="panel panel-default">
         <div class="panel-body">
-            <h3>${current.user}</h3>
+            <h3><c:out value="${current.user}" /></h3>
         </div>
         <div class="panel-footer">
             <div class="row">
@@ -27,13 +27,23 @@
                     <a href="javascript:void(0);" onCLick="initSubscriptions('${current.id}')" data-bs-toggle="modal" data-bs-target="#modal-list-subscriptions">
                         <rhn:icon type="setup-wizard-creds-subscriptions" title="mirror-credentials.jsp.subscriptions" />
                     </a>
-                    <a href="javascript:void(0);" onCLick="initEdit('${current.id}', '${current.user}');" data-bs-toggle="modal" data-bs-target="#modal-edit-credentials">
+                    <a href="javascript:void(0);"
+                        data-id="<c:out value='${current.id}' />"
+                        data-user="<c:out value='${current.user}' />"
+                        onClick="initEdit(this);"
+                        data-bs-toggle="modal"
+                        data-bs-target="#modal-edit-credentials">
                         <rhn:icon type="setup-wizard-creds-edit" title="mirror-credentials.jsp.edit" />
                     </a>
                 </div>
                 <div class="text-right col-2 col-xs-2">
                     <span id="delete-${current.id}">
-                        <a href="javascript:void(0);" onClick="initDelete('${current.id}', '${current.user}');" data-bs-toggle="modal" data-bs-target="#modal-delete-credentials">
+                        <a href="javascript:void(0);"
+                            data-id="<c:out value='${current.id}' />"
+                            data-user="<c:out value='${current.user}' />"
+                            onClick="initDelete(this);"
+                            data-bs-toggle="modal"
+                            data-bs-target="#modal-delete-credentials">
                             <rhn:icon type="item-del" title="mirror-credentials.jsp.delete" />
                         </a>
                     </span>
