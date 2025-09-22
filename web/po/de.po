@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-09-12 10:46+0200\n"
-"PO-Revision-Date: 2025-08-30 11:59+0000\n"
+"PO-Revision-Date: 2025-09-22 23:59+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/web/de/>\n"
 "Language: de\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.13\n"
+"X-Generator: Weblate 5.13.3\n"
 
 #: ../html/javascript/spacewalk-essentials.js:407
 msgid "remaining"
@@ -1803,10 +1803,8 @@ msgid "Target Products"
 msgstr "Zielsysteme"
 
 #: ../html/src/components/product-migration/MigrationTargetSelectorForm.tsx:84
-#, fuzzy
-#| msgid "Required channels"
 msgid "Select Channels"
-msgstr "Erforderliche Kanäle"
+msgstr "Kanäle auswählen"
 
 #: ../html/src/components/ranking-table.tsx:20
 #: ../html/src/components/salt-state-popup.tsx:11
