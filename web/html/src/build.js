@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 const shell = require("shelljs");
 const path = require("path");
 const v8 = require("v8");

@@ -3,7 +3,6 @@
  * This avoids issues with mismatched packages when building patches or working in OBS/IBS.
  */
 
-/* eslint-disable no-console */
 const fs = require("fs");
 const path = require("path");
 const semver = require("semver");
