@@ -136,7 +136,7 @@ public class ServerTestUtils {
      * @throws Exception if error
      */
     public static Server createTestSystem() throws Exception {
-        return createTestSystem(UserTestUtils.findNewUser());
+        return createTestSystem(UserTestUtils.createUser());
     }
 
     /**
@@ -225,7 +225,7 @@ public class ServerTestUtils {
      * @throws Exception if error
      */
     public static Server createVirtHostWithGuest(SystemEntitlementManager systemEntitlementManager) throws Exception {
-        return createVirtHostWithGuests(UserTestUtils.findNewUser(), 1, systemEntitlementManager);
+        return createVirtHostWithGuests(UserTestUtils.createUser(), 1, systemEntitlementManager);
     }
 
     /**
@@ -237,7 +237,7 @@ public class ServerTestUtils {
      */
     public static Server createVirtHostWithGuests(int numberOfGuests, SystemEntitlementManager systemEntitlementManager)
             throws Exception {
-        return createVirtHostWithGuests(UserTestUtils.findNewUser(), numberOfGuests, systemEntitlementManager);
+        return createVirtHostWithGuests(UserTestUtils.createUser(), numberOfGuests, systemEntitlementManager);
     }
 
     /**

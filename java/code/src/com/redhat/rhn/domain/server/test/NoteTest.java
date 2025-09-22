@@ -61,13 +61,11 @@ public class NoteTest extends RhnBaseTestCase {
     /**
      * Helper method to create a test Note
      * @return A new Note.
-     * @throws Exception something bad happened
      */
-    public static Note createTestNote() throws Exception {
+    public static Note createTestNote() {
         Note note = new Note();
 
-        User user = UserTestUtils.createUser("testuser",
-                                    UserTestUtils.createOrg("testorg"));
+        User user = UserTestUtils.createUser();
         note.setCreator(user);
         note.setServer(ServerFactoryTest.createTestServer(user));
         note.setSubject("RHN-JAVA Unit tests are good");

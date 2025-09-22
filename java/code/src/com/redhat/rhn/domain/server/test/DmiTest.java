@@ -99,7 +99,7 @@ public class DmiTest extends RhnBaseTestCase {
      * @throws Exception something bad happened
      */
     public static Dmi createTestDmi() throws Exception {
-        User u = UserTestUtils.findNewUser("testUser", "testOrgCreateTestDmi");
+        User u = UserTestUtils.createUser();
         Server server = ServerFactoryTest.createTestServer(u);
         assertNotNull(server);
         assertNotNull(server.getId());

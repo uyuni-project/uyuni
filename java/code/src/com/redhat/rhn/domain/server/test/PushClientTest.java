@@ -63,8 +63,7 @@ public class PushClientTest extends RhnBaseTestCase {
         pc.setLastMessageTime(new Date());
         pc.setLastPingTime(new Date());
 
-        User user = UserTestUtils.createUser("testuser",
-                UserTestUtils.createOrg("testorg"));
+        User user = UserTestUtils.createUser();
         Server s = ServerFactoryTest.createTestServer(user,
                                                     true,
                                                     ServerConstants.

@@ -39,7 +39,7 @@ public class PackageHelperTest extends RhnBaseTestCase {
 
     @Test
     public void testPackageToMap() {
-        User user = UserTestUtils.findNewUser("testuser", "testorg");
+        User user = UserTestUtils.createUser();
         Package pkg = PackageTest.createTestPackage(user.getOrg());
 
         Map<String, Object> map = PackageHelper.packageToMap(pkg, user);
@@ -69,7 +69,7 @@ public class PackageHelperTest extends RhnBaseTestCase {
 
     @Test
     public void testPackage2MapWithNulls() {
-        User user = UserTestUtils.findNewUser("testuser", "testorg");
+        User user = UserTestUtils.createUser();
         Package pkg = PackageTest.createTestPackage(user.getOrg());
 
         // DO NOT delete this, otherwise Hibernate tries to freakin

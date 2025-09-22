@@ -130,8 +130,7 @@ public class XmlRpcLoggingInvocationProcessorTest extends RhnBaseTestCase {
 
     @Test
     public void testPostProcessValidSession() throws NoSuchMethodException {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User user = UserTestUtils.createUser(this);
         // create a web session indicating a logged in user.
         WebSession s = WebSessionFactory.createSession();
         s.setWebUserId(user.getId());

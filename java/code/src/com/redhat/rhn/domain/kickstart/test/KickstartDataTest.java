@@ -66,7 +66,6 @@ import com.redhat.rhn.manager.profile.test.ProfileManagerTest;
 import com.redhat.rhn.manager.rhnpackage.test.PackageManagerTest;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
-import com.redhat.rhn.testing.TestStatics;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -360,7 +359,7 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
         FileList f = new FileList();
 
         f.setLabel("Test FileList" + TestUtils.randomString());
-        f.setOrg(UserTestUtils.findNewOrg(TestStatics.TESTORG));
+        f.setOrg(UserTestUtils.createOrg());
         f.setCreated(new Date());
         f.setModified(new Date());
         assertNull(f.getId());
@@ -583,7 +582,7 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
 
     @Test
     public void testPreserveFileLists() throws Exception {
-        Org org = UserTestUtils.findNewOrg(TestStatics.TESTORG);
+        Org org = UserTestUtils.createOrg();
 
         FileList list1 = createFileList1(org);
         FileList list2 = createFileList2(org);

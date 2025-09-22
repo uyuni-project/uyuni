@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.frontend.action.user.UserActionHelper;
 import com.redhat.rhn.testing.RhnMockDynaActionForm;
 import com.redhat.rhn.testing.RhnPostMockStrutsTestCase;
+import com.redhat.rhn.testing.TestStatics;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.webapp.RhnServletListener;
 
@@ -85,7 +86,7 @@ public class CreateUserActionTest extends RhnPostMockStrutsTestCase {
      */
     private RhnMockDynaActionForm fillOutForm(String formName, boolean usePAM) {
         RhnMockDynaActionForm f = new RhnMockDynaActionForm(formName);
-        f.set("login", "testUser" + TestUtils.randomString());
+        f.set("login", TestStatics.TEST_USER + TestUtils.randomString());
         f.set("address1", "123 somewhere ln");
         f.set("address2", "");
         f.set("city", "Cincinnati");

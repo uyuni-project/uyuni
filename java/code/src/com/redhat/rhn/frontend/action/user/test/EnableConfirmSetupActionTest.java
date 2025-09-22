@@ -54,8 +54,9 @@ public class EnableConfirmSetupActionTest extends RhnBaseTestCase {
         ah.getMapping().addForwardConfig(new ActionForward("enabled", "path", true));
         ah.getUser().addPermanentRole(RoleFactory.ORG_ADMIN);
         RhnSet set = RhnSetDecl.USERS.get(ah.getUser());
-        User one = UserTestUtils.createUser("testUser", ah.getUser().getOrg().getId());
-        User two = UserTestUtils.createUser("testUser", ah.getUser().getOrg().getId());
+        Long orgId = ah.getUser().getOrg().getId();
+        User one = new UserTestUtils.UserBuilder().orgId(orgId).build();
+        User two = new UserTestUtils.UserBuilder().orgId(orgId).build();
         set.addElement(one.getId());
         set.addElement(two.getId());
         RhnSetManager.store(set);

@@ -259,8 +259,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testSnapshotServer() {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User user = UserTestUtils.createUser(this);
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server server = ServerFactoryTest.createTestServer(user, true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
@@ -287,8 +286,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testDeleteServer() {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User user = UserTestUtils.createUser(this);
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server s = ServerFactoryTest.createTestServer(user, true);
         Long id = s.getId();
@@ -363,8 +361,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testDeleteVirtualServer() throws Exception {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User user = UserTestUtils.createUser(this);
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server host = ServerTestUtils.createVirtHostWithGuests(user, 1, systemEntitlementManager);
         Server guest = (host.getGuests().iterator().next()).
@@ -390,8 +387,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testDeleteVirtualServerHostDeleted() throws Exception {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User user = UserTestUtils.createUser(this);
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server host = ServerTestUtils.createVirtHostWithGuests(user, 1, systemEntitlementManager);
         Server guest = (host.getGuests().iterator().next()).
@@ -420,8 +416,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testSystemsNotInSg() {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User user = UserTestUtils.createUser(this);
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
 
         // Create a test server so we have one in the list.
@@ -451,8 +446,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testSystemList() {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User user = UserTestUtils.createUser(this);
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
 
         // Create a test server so we have one in the list.
@@ -466,8 +460,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testSystemWithFeature() {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User user = UserTestUtils.createUser(this);
         PageControl pc = new PageControl();
         pc.setStart(1);
         pc.setPageSize(20);
@@ -494,8 +487,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testSystemsInGroup() {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User user = UserTestUtils.createUser(this);
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
 
         Server server = ServerFactoryTest.createTestServer(user, true,
@@ -525,8 +517,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testCountActions() throws Exception {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User user = UserTestUtils.createUser(this);
         Server server = ServerFactoryTest.createTestServer(user);
 
         assertEquals(0, SystemManager.countActions(server.getId()));
@@ -548,8 +539,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testCountPackageActions() throws Exception {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User user = UserTestUtils.createUser(this);
         Server server = ServerFactoryTest.createTestServer(user);
 
         assertEquals(0, SystemManager.countActions(server.getId()));
@@ -572,8 +562,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testUnscheduledErrata() throws Exception {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User user = UserTestUtils.createUser(this);
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server server = ServerFactoryTest.createTestServer(user, true);
         PageControl pc = new PageControl();
@@ -604,8 +593,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testGetServerEntitlement() throws Exception {
         // create a new server
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User user = UserTestUtils.createUser(this);
         Server server = ServerFactoryTest.createTestServer(user);
         List<Entitlement> entitlements =
                 SystemManager.getServerEntitlements(server.getId());
@@ -615,8 +603,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testClientCapability() throws Exception {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User user = UserTestUtils.createUser(this);
         Server server = ServerFactoryTest.createTestServer(user);
         Long ver = 1L;
         giveCapability(server.getId(), SystemManager.CAP_PACKAGES_VERIFY, ver);
@@ -654,8 +641,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
          * We add the test channel to each of the servers.  This allows
          * us to test the compatibleWithServer method.
          */
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User user = UserTestUtils.createUser(this);
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server srvr = ServerFactoryTest.createTestServer(user, true,
                 ServerFactory.lookupServerGroupTypeByLabel("enterprise_entitled"));
@@ -686,8 +672,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testGetSsmSystemsSubscribedToChannel() throws Exception {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User user = UserTestUtils.createUser(this);
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         UserFactory.save(user);
 
@@ -709,8 +694,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testNoBaseChannelInSet() throws Exception {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User user = UserTestUtils.createUser(this);
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         UserFactory.save(user);
 
@@ -752,7 +736,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testRegisteredList() {
-        User user = UserTestUtils.findNewUser(TestStatics.TESTUSER, TestStatics.TESTORG);
+        User user = UserTestUtils.createUser();
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server server = ServerFactoryTest.createTestServer(user, true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
@@ -768,7 +752,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testDeactivateProxy() throws Exception {
-        User user = UserTestUtils.findNewUser(TestStatics.TESTUSER, TestStatics.TESTORG);
+        User user = UserTestUtils.createUser();
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server server = ServerFactoryTest.createTestProxyServer(user, true);
         assertTrue(server.isProxy());
@@ -868,8 +852,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testListCustomKeys() {
-        User admin = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User admin = UserTestUtils.createUser(this);
         admin.addPermanentRole(RoleFactory.ORG_ADMIN);
 
 
@@ -897,7 +880,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     public void testErrataCountsForSystem() throws Exception {
 
         // Setup
-        User admin = UserTestUtils.findNewUser("errataUser1", "errataOrg1");
+        User admin = UserTestUtils.createUser("errataUser1", "errataOrg1");
         Org org = admin.getOrg();
 
         Server server = ServerTestUtils.createTestSystem(admin);
@@ -931,7 +914,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     public void testSsmSystemPackagesToRemove() throws Exception {
 
         // Setup
-        User admin = UserTestUtils.findNewUser("ssmUser1", "ssmOrg1");
+        User admin = UserTestUtils.createUser("ssmUser1", "ssmOrg1");
         Org org = admin.getOrg();
 
         //    Create Test Servers
@@ -1029,8 +1012,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testDeleteNote() throws Exception {
         // Setup
-        User admin = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User admin = UserTestUtils.createUser(this);
         Server server = ServerTestUtils.createTestSystem(admin);
         int sizeBefore = server.getNotes().size();
         server.addNote(admin, "Test Subject", "Test Body");
@@ -1055,8 +1037,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testDeleteNotes() throws Exception {
         // Setup
-        User admin = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User admin = UserTestUtils.createUser(this);
         Server server = ServerTestUtils.createTestSystem(admin);
         int sizeBefore = server.getNotes().size();
         server.addNote(admin, "Test Subject 1", "Test Body");
@@ -1083,8 +1064,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testHasPackageAvailable() throws Exception {
-        User admin = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User admin = UserTestUtils.createUser(this);
         Server server = ServerTestUtils.createTestSystem(admin);
 
         Package pack = PackageTest.createTestPackage(admin.getOrg());
@@ -1108,8 +1088,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     }
     @Test
     public void testListSystemsWithNeededPackage() throws Exception {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User user = UserTestUtils.createUser(this);
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server server = ServerFactoryTest.createTestServer(user, true);
         PageControl pc = new PageControl();
@@ -1143,8 +1122,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testListInstalledPackage() throws Exception {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User user = UserTestUtils.createUser(this);
         Server s = ServerFactoryTest.createTestServer(user);
 
         List<Map<String, Long>> list = SystemManager.listInstalledPackage("kernel", s);
@@ -1169,8 +1147,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testInSet() {
-        User usr = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User usr = UserTestUtils.createUser(this);
         RhnSet newrs = RhnSetManager.createSet(usr.getId(), "test_systems_list",
                 SetCleanup.NOOP);
 
@@ -1191,8 +1168,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testFindByName() {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User user = UserTestUtils.createUser(this);
         Server s = ServerFactoryTest.createTestServer(user, true);
         List<SystemOverview> list = SystemManager.listSystemsByName(user, s.getName());
         assertEquals(1, list.size());
@@ -1202,8 +1178,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testListDuplicatesByHostname() {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User user = UserTestUtils.createUser(this);
 
         String[] hostnames = {"DUPHOST", "notADup", "duphost"};
         for (String name : hostnames) {
@@ -1249,10 +1224,8 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     @Test
-    public void testGetActivationKeys() throws Exception {
-        User user = UserTestUtils.findNewUser("testUser", "testOrg" +
-            this.getClass().getSimpleName());
-
+    public void testGetActivationKeys() {
+        User user = UserTestUtils.createUser(this);
         ActivationKey activationKey = ActivationKeyTest.createTestActivationKey(user);
         Server server = activationKey.getServer();
         activationKey.getToken().getActivatedServers().add(server);
@@ -1262,9 +1235,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testCountSystemsInSetWithoutEntitlement() {
-        User user = UserTestUtils.findNewUser("testUser", "testOrg" +
-            this.getClass().getSimpleName());
-
+        User user = UserTestUtils.createUser(this);
         String setLabel = TestUtils.randomString();
         List<String> entitlements = new ArrayList<>();
         entitlements.add(EntitlementManager.ENTERPRISE_ENTITLED);
@@ -1299,9 +1270,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testCountSystemsInSetWithoutFeature() {
-        User user = UserTestUtils.findNewUser("testUser", "testOrg" +
-            this.getClass().getSimpleName());
-
+        User user = UserTestUtils.createUser(this);
         String setLabel = TestUtils.randomString();
         List<String> entitlements = new ArrayList<>();
         entitlements.add(EntitlementManager.ENTERPRISE_ENTITLED);
@@ -1336,8 +1305,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testUpdateServerChannels() throws Exception {
-        User user = UserTestUtils.findNewUser("testUser", "testOrg" +
-                this.getClass().getSimpleName());
+        User user = UserTestUtils.createUser(this);
         Server server = ServerFactoryTest.createTestServer(user, true);
 
         Channel base1 = ChannelFactoryTest.createBaseChannel(user);
@@ -1366,8 +1334,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testUpdateServerChannelsNoChildren() throws Exception {
-        User user = UserTestUtils.findNewUser("testUser", "testOrg" +
-                this.getClass().getSimpleName());
+        User user = UserTestUtils.createUser(this);
         Server server = ServerFactoryTest.createTestServer(user, true);
 
         ProductName pnbase = MgrSyncUtils.findOrCreateProductName("Product Name Base");
@@ -1404,8 +1371,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testUpdateServerChannelsNoBase() throws Exception {
-        User user = UserTestUtils.findNewUser("testUser", "testOrg" +
-                this.getClass().getSimpleName());
+        User user = UserTestUtils.createUser(this);
         Server server = ServerFactoryTest.createTestServer(user, true);
 
         Channel base1 = ChannelFactoryTest.createBaseChannel(user);
@@ -1519,7 +1485,10 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testListSystemProfileCrossOrg() {
-        User foreignUser = UserTestUtils.findNewUser("testUser", "anotherTestOrg" + this.getClass().getSimpleName());
+        User foreignUser = UserTestUtils.createUser(
+                TestStatics.TEST_USER,
+                "anotherTestOrg" + this.getClass().getSimpleName()
+        );
         UserTestUtils.addUserRole(foreignUser, RoleFactory.ORG_ADMIN);
         UserTestUtils.addUserRole(user, RoleFactory.ORG_ADMIN);
         String hwAddr = "be:b0:bc:a3:a7:ad";
@@ -1685,7 +1654,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testAddServerToServerGroupWithMonitoring() throws Exception {
         // A new test server, no monitoring entitlement
-        User user = UserTestUtils.findNewUser(TestStatics.TESTUSER, TestStatics.TESTORG);
+        User user = UserTestUtils.createUser();
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
         server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
         assertFalse(SystemManager.hasEntitlement(server.getId(), EntitlementManager.MONITORING));
@@ -1712,7 +1681,10 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testRetrieveSystemGroupsForSystemsWithEntitlementAndUser() throws Exception {
-        User user = UserTestUtils.findNewUser("testUser", "testOrg" + this.getClass().getSimpleName());
+        User user = UserTestUtils.createUser(
+                TestStatics.TEST_USER,
+                TestStatics.TEST_ORG + this.getClass().getSimpleName()
+        );
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
 
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
@@ -2171,13 +2143,14 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
                 .collect(Collectors.toSet());
     }
 
-    public void testCountOutdatedSystems() throws Exception {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+    @Test
+    public void testCountOutdatedSystems() {
+        User user = UserTestUtils.createUser(this);
         Server server = ServerFactoryTest.createTestServer(user);
         Long sid = server.getId();
         Package pack = PackageTest.createTestPackage(user.getOrg());
         ErrataCacheManager.insertNeededErrataCache(sid, null, pack.getId());
+        SystemsOverviewUpdateWorker.doUpdate(sid);
 
         assertEquals(1, SystemsCollector.getNumberOfOutdatedSystems());
     }

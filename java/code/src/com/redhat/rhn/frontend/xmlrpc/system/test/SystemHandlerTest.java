@@ -1599,9 +1599,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         admins.add(regular);
         serverGroupManager.associateAdmins(group, admins, admin);
 
-
-        User nonGroupAdminUser = UserTestUtils.createUser(
-                "testUser3", admin.getOrg().getId());
+        User nonGroupAdminUser = UserTestUtils.createUser("testUser3", admin.getOrg().getId());
         nonGroupAdminUser.removePermanentRole(RoleFactory.ORG_ADMIN);
 
         List<User> users = ServerFactory.listAdministrators(server);

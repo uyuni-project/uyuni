@@ -302,7 +302,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testAddOrRemoveServersToOrFromGroup() throws Exception {
-        User user1 = UserTestUtils.findNewUser("userForAddingServers1", "orgForAddingServers1" +
+        User user1 = UserTestUtils.createUser("userForAddingServers1", "orgForAddingServers1" +
                 this.getClass().getSimpleName());
 
         Server testServer1 = createTestServer(user1);
@@ -344,7 +344,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         TestUtils.flushAndEvict(serverGroup);
         serverGroup = ServerGroupFactory.lookupByIdAndOrg(serverGroup.getId(), user1.getOrg());
 
-        User user2 = UserTestUtils.findNewUser("userForAddingServers2", "orgForAddingServers2" +
+        User user2 = UserTestUtils.createUser("userForAddingServers2", "orgForAddingServers2" +
                 this.getClass().getSimpleName());
 
         Server testServerDifferentOrg = createTestServer(user2);
@@ -837,8 +837,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     public void testListAdministrators() {
 
         //The org admin user
-        User admin = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User admin = UserTestUtils.createUser(this);
         admin.addPermanentRole(RoleFactory.ORG_ADMIN);
 
         //the non-orgadmin user who is a member of the group
@@ -846,8 +845,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         regular.removePermanentRole(RoleFactory.ORG_ADMIN);
 
         //a user who shouldn't be able to admin the system
-        User nonGroupAdminUser = UserTestUtils.createUser(
-                 "testUser3", admin.getOrg().getId());
+        User nonGroupAdminUser = UserTestUtils.createUser("testUser3", admin.getOrg().getId());
         nonGroupAdminUser.removePermanentRole(RoleFactory.ORG_ADMIN);
 
         ManagedServerGroup group = ServerGroupTestUtils.createManaged(admin);

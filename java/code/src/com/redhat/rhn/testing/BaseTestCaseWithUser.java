@@ -43,8 +43,7 @@ public abstract class BaseTestCaseWithUser extends RhnBaseTestCase {
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
-        user = UserTestUtils.findNewUser("testUser", "testOrg" +
-                this.getClass().getSimpleName());
+        user = UserTestUtils.createUser(this);
         KickstartDataTest.setupTestConfiguration(user);
         tmpSaltRoot = Files.createTempDirectory("salt");
         SaltStateGeneratorService.INSTANCE.setSuseManagerStatesFilesRoot(tmpSaltRoot

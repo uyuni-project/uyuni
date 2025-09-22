@@ -108,8 +108,10 @@ public class ResetPasswordSubmitActionTest extends BaseTestCaseWithUser {
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
-        adminUser = UserTestUtils.findNewUser("testAdminUser", "testOrg" +
-                        this.getClass().getSimpleName(), true);
+        adminUser = new UserTestUtils.UserBuilder()
+                .userName("testAdminUser")
+                .orgAdmin(true)
+                .build();
         action = new ResetPasswordSubmitAction();
 
         mapping = new ActionMapping();

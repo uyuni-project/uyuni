@@ -40,7 +40,11 @@ public class OrgManagerTest extends RhnBaseTestCase {
     @Test
     public void testOrgsInSat() throws Exception {
 
-        User user = UserTestUtils.findNewUser("test-morg", "testorg-foo", true);
+        User user = new UserTestUtils.UserBuilder()
+                .userName("test-morg")
+                .orgName("testorg-foo")
+                .orgAdmin(true)
+                .build();
         Org o = user.getOrg();
         // add satellite_admin since its not one of the implied roles
         o.addRole(RoleFactory.SAT_ADMIN);

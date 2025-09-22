@@ -29,8 +29,12 @@ import org.junit.jupiter.api.Test;
 public class MultiOrgTest extends RhnBaseTestCase {
 
     @Test
-    public void testAddMultiOrg() throws Exception {
-        User user = UserTestUtils.findNewUser("test-morg", "testorg-morg", true);
+    public void testAddMultiOrg() {
+        User user = new UserTestUtils.UserBuilder()
+                .userName("test-morg")
+                .orgName("testorg-morg")
+                .orgAdmin(true)
+                .build();
 
         Org o = user.getOrg();
         UserTestUtils.addManagement(o);

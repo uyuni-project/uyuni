@@ -71,7 +71,7 @@ public class ErrataTestUtils {
      * @return the newly created user
      */
     public static User createTestUser() {
-        User user = UserTestUtils.findNewUser("testuser", "testorg");
+        User user = UserTestUtils.createUser();
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         return user;
     }

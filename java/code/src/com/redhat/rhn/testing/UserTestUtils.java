@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2015--2025 SUSE LLC
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -15,11 +16,12 @@
 
 package com.redhat.rhn.testing;
 
+import static com.redhat.rhn.common.ExceptionMessage.NOT_INSTANTIABLE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
-import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.access.AccessGroup;
 import com.redhat.rhn.domain.access.AccessGroupFactory;
@@ -35,152 +37,107 @@ import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.user.UserManager;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * A class that allows us to easily create test users.
  */
-public class UserTestUtils  {
-    // static class
-    private UserTestUtils() { }
+public class UserTestUtils {
 
     public static final String TEST_PASSWORD = "password";
 
     /**
-     * Creates a new Org with the given orgName.
-     * The current time is appended to the given orgName.
-     * @param orgName Name of org.
-     * @return long The Org id.
+     * Creates a new User and an Org with default names.
+     * The user will be added to the org.
+     *
+     * @return User created
      */
-    public static Long createOrg(String orgName) {
-        return createNewOrgFull(orgName).getId();
+    public static User createUser() {
+        return new UserBuilder().build();
     }
 
     /**
-     * Creates a new Org with the given orgName.
-     * The current time is appended to the given orgName.
-     * @param orgName Name of org.
-     * @return long The Org
+     * Creates a new User and an Org with the given userName and orgName.
+     * The user will be added to the org.
+     *
+     * @param userName the userName for the User
+     * @param orgName  the orgName for the User
+     * @return User created
      */
-    public static Org createNewOrgFull(String orgName) {
-        Org org1 = OrgFactory.createOrg();
-        org1.setName(orgName + TestUtils.randomString());
-        org1 = OrgFactory.save(org1);
-        assertTrue(org1.getId() > 0);
-        return org1;
-    }
-
-
-    /**
-     * Creates a new User and Org with the given userName and orgName.
-     * The current time is appended to the given username and orgName.
-     * @param userName Name of user.
-     * @param orgName Name of org.
-     * @return long the user id.
-     */
-    public static Long createUser(String userName, String orgName) {
-        User usr = createUserInternal(userName);
-        Long orgId = createOrg(orgName);
-        Address addr1 = createTestAddress(usr);
-        usr = UserFactory.saveNewUser(usr, addr1, orgId);
-        UserFactory.IMPLIEDROLES.forEach(usr::addPermanentRole);
-
-        assertTrue(usr.getId() > 0);
-        return usr.getId();
+    public static User createUser(String userName, String orgName) {
+        return new UserBuilder().userName(userName).orgName(orgName).build();
     }
 
     /**
-     * Creates a new User in the specified org
-     * @param userName Name of user.
-     * @param orgId the org in which to create the user
-     * @return long the user id.
+     * Creates a new User and an Org with the given userName, orgName and
+     * an object whose class name will be appended to the org name.
+     * The user will be added to the org.
+     *
+     * @param userName the userName for the User
+     * @param orgName  the orgName for the User
+     * @param object   an object whose class name will be appended to the org name
+     * @return User created
+     */
+    public static User createUser(String userName, String orgName, Object object) {
+        return new UserBuilder().userName(userName).orgName(orgName).orgObjectSuffix(object).build();
+    }
+
+    /**
+     * Creates a new User with the given userName and adds it to the orgId.
+     *
+     * @param userName the userName for the User
+     * @param orgId    the orgId for the User
+     * @return User created
      */
     public static User createUser(String userName, Long orgId) {
-        return createUserInOrg(userName, orgId, true);
-    }
-
-    private static User createUserInOrg(String userName, Long orgId, boolean randomLogin) {
-        User usr = createUserInternal(userName, randomLogin);
-        Address addr1 = createTestAddress(usr);
-
-        usr = UserFactory.saveNewUser(usr, addr1, orgId);
-        UserFactory.IMPLIEDROLES.forEach(usr::addPermanentRole);
-
-        assertTrue(usr.getId() > 0);
-        return usr;
-    }
-
-
-    private static User createUserInternal(String userName, boolean randomLogin) {
-        UserFactory.getSession();
-        User usr = UserFactory.createUser();
-        if (randomLogin) {
-            usr.setLogin(userName + TestUtils.randomString());
-        }
-        else {
-            usr.setLogin(userName);
-        }
-        usr.setPassword(TEST_PASSWORD);
-        usr.setFirstNames("userName" + TestUtils.randomString());
-        usr.setLastName("userName" + TestUtils.randomString());
-        String prefix = (String) LocalizationService.getInstance().
-        availablePrefixes().toArray()[0];
-        usr.setPrefix(prefix);
-        usr.setEmail("javaTest@example.com");
-
-        return usr;
-    }
-
-    private static User createUserInternal(String userName) {
-        return createUserInternal(userName, true);
+        return new UserBuilder().userName(userName).orgId(orgId).build();
     }
 
     /**
-     * Creates a new User and Org with the given userName and orgName.
-     * The current time is appended to the given username and orgName.
-     * @param userName Name of user.
-     * @param orgName Name of org.
-     * @return User the newly created User.
+     * Creates a new User with default name.
+     * Creates a new Org with an object whose class name will be the org name.
+     * The user will be added to the org.
+     *
+     * @param object   an object whose class name will be the org name
+     * @return User created
      */
-    public static User findNewUser(String userName, String orgName) {
-        return findNewUser(userName, orgName, false);
+    public static User createUser(Object object) {
+        return new UserBuilder().orgObjectSuffix(object).build();
     }
 
     /**
-     * Creates a new User and Org with the given userName and orgName.
-     * The current time is appended to the given username and orgName.
-     * @param userName Name of user.
-     * @param orgName Name of org.
-     * @param orgAdmin if you want the user to have the ORG_ADMIN role
-     * @return User the newly created User.
+     * Create a new Org with default name.
+     *
+     * @return Org created
      */
-    public static User findNewUser(String userName, String orgName, boolean orgAdmin) {
-        Long id = createUser(userName, orgName);
-        User usr = UserFactory.lookupById(id);
-        if (orgAdmin) {
-            usr.getAccessGroups().addAll(List.of(AccessGroupFactory.CHANNEL_ADMIN,
-                    AccessGroupFactory.SYSTEM_GROUP_ADMIN, AccessGroupFactory.IMAGE_ADMIN,
-                    AccessGroupFactory.ACTIVATION_KEY_ADMIN, AccessGroupFactory.CONFIG_ADMIN));
-            usr.addPermanentRole(RoleFactory.ORG_ADMIN);
-            UserFactory.save(usr);
-        }
-        return usr;
+    public static Org createOrg() {
+        return new OrgBuilder().build();
     }
 
     /**
-     * Creates a new Org with the given name, then returns the newly
-     * created Org.
-     * @param orgName Org name
-     * @return Org
+     * Create a new Org with an object whose class name will be the org name.
+     *
+     * @param object   an object whose class name will be the org name
+     * @return Org created
      */
-    public static Org findNewOrg(String orgName) {
-        Long id = createOrg(orgName);
-        return OrgFactory.lookupById(id);
+    public static Org createOrg(Object object) {
+        return new OrgBuilder().orgObjectSuffix(object).build();
+    }
+
+    /**
+     * Create a new Org with the given name.
+     *
+     * @param orgName  the orgName for the Org
+     * @return Org created
+     */
+    public static Org createOrg(String orgName) {
+        return new OrgBuilder().orgName(orgName).build();
     }
 
     /**
      * Create a dummy address to test against
-     * @param user the User we want to be the parent of this
-     *        Address.
+     *
+     * @param user the User we want to be the parent of this Address.
      * @return A dummy address to test against.
      */
     public static Address createTestAddress(User user) {
@@ -196,21 +153,10 @@ public class UserTestUtils  {
     }
 
     /**
-     * Create a dummy Address and returns its id.
-     * @param user the User we want to be the parent of this
-     *        Address.
-     * @return the id of the dummy address.
-     */
-    public static Long createAddress(User user) {
-        Address addr = createTestAddress(user);
-        assertTrue(addr.getId() > 0);
-        return addr.getId();
-    }
-
-    /**
      * Check that <code>user</code> is an org_admin, and that
      * there is at least one server visible to her. The second check
      * is necessary because of bz156752
+     *
      * @param user the user for which to check
      */
     public static void assertOrgAdmin(User user) {
@@ -224,6 +170,7 @@ public class UserTestUtils  {
      * Check that <code>user</code> is <em>not</em> an org_admin, and that
      * she can see no servers. The second check
      * is necessary because of bz156752
+     *
      * @param user the user for which to check
      */
     public static void assertNotOrgAdmin(User user) {
@@ -236,8 +183,9 @@ public class UserTestUtils  {
     /**
      * Simple method to add a Role to a User.  Will
      * make sure the User's org has the role too
+     *
      * @param user to add Role to
-     * @param r Role to add.
+     * @param r    Role to add.
      */
     public static void addUserRole(User user, Role r) {
         Org o = user.getOrg();
@@ -247,7 +195,8 @@ public class UserTestUtils  {
 
     /**
      * Simple method to add an access group to a User.
-     * @param user to add group to
+     *
+     * @param user    to add group to
      * @param groupIn the group to add.
      */
     public static void addAccessGroup(User user, AccessGroup groupIn) {
@@ -256,69 +205,210 @@ public class UserTestUtils  {
 
     /**
      * Add provisioning to an org
+     *
      * @param orgIn to add to
      */
     public static void addManagement(Org orgIn) {
-            ServerGroupTestUtils.createEntitled(orgIn,
-                    ServerConstants.getServerGroupTypeEnterpriseEntitled());
+        ServerGroupTestUtils.createEntitled(orgIn,
+                ServerConstants.getServerGroupTypeEnterpriseEntitled());
     }
 
     /**
      * Add virtualization to an org
+     *
      * @param orgIn to add to
      */
     public static void addVirtualization(Org orgIn) {
         EntitlementServerGroup sg =
-            ServerGroupTestUtils.createEntitled(orgIn,
-                    ServerConstants.getServerGroupTypeVirtualizationEntitled());
+                ServerGroupTestUtils.createEntitled(orgIn,
+                        ServerConstants.getServerGroupTypeVirtualizationEntitled());
         TestUtils.saveAndFlush(sg);
     }
 
     /**
-     * Create a new user 'testUser' and 'testOrg'
-     * @return User created
-     */
-    public static User findNewUser() {
-        return findNewUser("testUser", "testOrg");
-    }
-
-    /**
      * Find an Org_ADMIN for the Org passed in.  Create Org_ADMIN if not.
+     *
      * @param orgIn to find/create
      * @return User who is Org_ADMIN
      */
     public static User ensureOrgAdminExists(Org orgIn) {
         User retval = UserFactory.findRandomOrgAdmin(orgIn);
         if (retval == null) {
-            retval = UserTestUtils.createUser("TestUser", orgIn.getId());
+            retval = new UserTestUtils.UserBuilder().orgId(orgIn.getId()).build();
             UserTestUtils.addUserRole(retval, RoleFactory.ORG_ADMIN);
             TestUtils.saveAndFlush(orgIn);
         }
         return retval;
     }
+
     /**
-     * Make sure a user with the passed in *exact* login exists within the org
-     * @param login to ensure exists
-     * @return User new if not already there
+     * Private constructor to prevent instantiation
      */
-    public static User ensureUserExists(String login) {
-        User retval = null;
-        try {
-            retval = UserFactory.lookupByLogin(login);
-        }
-        catch (LookupException le) {
-            retval = createUserInOrg(login, createOrg("testOrg"), false);
-        }
-        return retval;
+    private UserTestUtils() {
+        throw new UnsupportedOperationException(NOT_INSTANTIABLE);
     }
 
     /**
-     * Ensures that an admin user for the Satellite org exists, creating it if
-     * necessary.
+     * Builder for creating a test User
      */
-    public static void ensureSatelliteOrgAdminExists() {
-        Org satelliteOrg = OrgFactory.getSatelliteOrg();
-        UserTestUtils.ensureOrgAdminExists(satelliteOrg);
+    public static class UserBuilder {
+
+        private String userName = TestStatics.TEST_USER;
+        private String orgName = TestStatics.TEST_ORG;
+        private Long orgId = null;
+        private Object orgObjectSuffix = null;
+        private boolean orgAdmin = false;
+
+        /**
+         * Set the userName for the User
+         * @param userNameIn the userName
+         * @return this builder
+         */
+        public UserBuilder userName(String userNameIn) {
+            this.userName = userNameIn;
+            return this;
+        }
+
+        /**
+         * Set the orgId for the User. If set, orgName will be ignored.
+         * @param orgIdIn the org id
+         * @return this builder
+         */
+        public UserBuilder orgId(Long orgIdIn) {
+            this.orgId = orgIdIn;
+            return this;
+        }
+
+        /**
+         * Set the orgName for the User
+         * @param orgNameIn the org name
+         * @return this builder
+         */
+        public UserBuilder orgName(String orgNameIn) {
+            this.orgName = orgNameIn;
+            return this;
+        }
+
+        /**
+         * Set the orgAdmin flag for the User
+         * @param orgAdminIn whether the user should be an org admin
+         * @return this builder
+         */
+        public UserBuilder orgAdmin(boolean orgAdminIn) {
+            this.orgAdmin = orgAdminIn;
+            return this;
+        }
+
+        /**
+         * Set an object whose class name will be appended to the org name
+         * @param obj the object to use
+         * @return this builder
+         */
+        public UserBuilder orgObjectSuffix(Object obj) {
+            this.orgObjectSuffix = obj;
+            return this;
+        }
+
+        /**
+         * Builds and persists the User
+         *
+         * @return the created User
+         */
+        public User build() {
+            if (orgId != null && orgObjectSuffix != null) {
+                fail("orgId and orgObjectSuffix cannot be both be provided");
+            }
+
+            Long resolvedOrgId = Optional.ofNullable(orgId)
+                    .orElse(new OrgBuilder().orgName(orgName).orgObjectSuffix(orgObjectSuffix).build().getId());
+
+            User user = createUserInternal(userName);
+            Address address = createTestAddress(user);
+
+            user = UserFactory.saveNewUser(user, address, resolvedOrgId);
+            UserFactory.IMPLIEDROLES.forEach(user::addPermanentRole);
+            assertTrue(user.getId() > 0);
+
+            if (orgAdmin) {
+                user.getAccessGroups().addAll(List.of(
+                        AccessGroupFactory.CHANNEL_ADMIN,
+                        AccessGroupFactory.SYSTEM_GROUP_ADMIN,
+                        AccessGroupFactory.IMAGE_ADMIN,
+                        AccessGroupFactory.ACTIVATION_KEY_ADMIN,
+                        AccessGroupFactory.CONFIG_ADMIN)
+                );
+                user.addPermanentRole(RoleFactory.ORG_ADMIN);
+                UserFactory.save(user);
+            }
+            return user;
+        }
+
+        /**
+         * Internal method to create a user object with random values.
+         *
+         * @param userName base name of user
+         * @return User the newly created User.
+         */
+        private static User createUserInternal(String userName) {
+            UserFactory.getSession();
+            User user = UserFactory.createUser();
+            user.setLogin(userName + TestUtils.randomString());
+            user.setPassword(TEST_PASSWORD);
+            user.setFirstNames("userName" + TestUtils.randomString());
+            user.setLastName("userName" + TestUtils.randomString());
+            String prefix = (String) LocalizationService.getInstance().availablePrefixes().toArray()[0];
+            user.setPrefix(prefix);
+            user.setEmail("javaTest@example.com");
+
+            return user;
+        }
+    }
+
+    /**
+     * Builder for creating a test User
+     */
+    public static class OrgBuilder {
+
+        private String orgName = TestStatics.TEST_ORG;
+        private Object orgObjectSuffix = null;
+
+        /**
+         * Set the orgName for the Org
+         * @param orgNameIn the org name
+         * @return this builder
+         */
+        public OrgBuilder orgName(String orgNameIn) {
+            this.orgName = orgNameIn;
+            return this;
+        }
+
+        /**
+         * Set an object whose class name will be appended to the org name
+         * @param obj the object to use
+         * @return this builder
+         */
+        public OrgBuilder orgObjectSuffix(Object obj) {
+            this.orgObjectSuffix = obj;
+            return this;
+        }
+
+        /**
+         * Builds and persists the Org
+         *
+         * @return the created Org
+         */
+        public Org build() {
+            StringBuilder fullOrgNameSB = new StringBuilder(orgName);
+            if (orgObjectSuffix != null) {
+                fullOrgNameSB.append(orgObjectSuffix.getClass().getSimpleName());
+            }
+            fullOrgNameSB.append(TestUtils.randomString());
+
+            Org org = OrgFactory.createOrg();
+            org.setName(fullOrgNameSB.toString());
+            org = OrgFactory.save(org);
+            assertTrue(org.getId() > 0);
+            return org;
+        }
     }
 }
-
