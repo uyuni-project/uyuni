@@ -1,0 +1,2 @@
+- CVE-2025-53192: Do not use apache-commons-ognl but its successor
+  ognl (bsc#1248252)
