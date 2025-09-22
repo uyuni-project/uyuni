@@ -1,14 +1,13 @@
 import * as React from "react";
 
 import { AsyncButton } from "components/buttons";
-import { Messages } from "components/messages/messages";
-import { MessageType, Utils as MessagesUtils } from "components/messages/messages";
+import { Messages, MessageType, Utils as MessagesUtils } from "components/messages/messages";
 import { TopPanel } from "components/panels/TopPanel";
 
 import Network from "utils/network";
 
 // See java/code/src/com/suse/manager/webui/templates/systems/mgr-server.jade
-type Props = {
+interface Props {
   serverId: string;
   name: string;
   version: string;
@@ -20,11 +19,11 @@ type Props = {
   isAdmin: boolean;
   /** Locale of the help links */
   docsLocale: string;
-};
+}
 
-type State = {
+interface State {
   messages: MessageType[];
-};
+}
 
 const messageMap = {
   invalid_systemid: t("Not a system id"),

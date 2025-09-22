@@ -3,16 +3,16 @@ import { useState } from "react";
 import { Cancelable } from "utils/functions";
 import Network from "utils/network";
 
-type Props = {
+interface Props {
   resource: string;
   nestedResource?: string;
-};
+}
 
-type returnUseProjectActionsApi = {
+interface returnUseProjectActionsApi {
   onAction: (actionBodyRequest: any, action: NetworkActionKey, id?: string | null) => Promise<any>;
   cancelAction: () => void;
   isLoading: boolean;
-};
+}
 
 const networkAction = {
   get: Network.get,

@@ -12,21 +12,21 @@ export enum FilterOptionType {
   NUMERIC,
 }
 
-type FilterOption = {
+interface FilterOption {
   label: string;
   value: string;
   type?: FilterOptionType;
-  filterOptions?: Array<any>;
-};
+  filterOptions?: any[];
+}
 
-type SearchFieldProps = {
-  filterOptions: Array<FilterOption>;
+interface SearchFieldProps {
+  filterOptions: FilterOption[];
   field: any;
   criteria: any;
   onSearch: any;
   placeholder: any;
   name: any;
-};
+}
 
 const renderSearchField = (props: SearchFieldProps) => {
   const { filterOptions, field, criteria, onSearch, placeholder, name } = props;

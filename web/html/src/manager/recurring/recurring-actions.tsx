@@ -47,14 +47,14 @@ function getHashAction() {
   return match ? match[1] : undefined;
 }
 
-type Props = {};
+interface Props {}
 
-type State = {
+interface State {
   messages: any[];
   minionIds?: any[];
   action?: any;
   selected?: any;
-};
+}
 
 class RecurringActions extends React.Component<Props, State> {
   constructor(props) {
@@ -132,7 +132,7 @@ class RecurringActions extends React.Component<Props, State> {
 
   handleDeleteError = (jqXHR) => {
     const taskoErrorMsg = MessagesUtils.error(t("Error when deleting the action. Check if Taskomatic is running"));
-    let messages = jqXHR && jqXHR.status === 503 ? taskoErrorMsg : Network.responseErrorMessage(jqXHR);
+    const messages = jqXHR && jqXHR.status === 503 ? taskoErrorMsg : Network.responseErrorMessage(jqXHR);
     this.setMessages(messages);
   };
 

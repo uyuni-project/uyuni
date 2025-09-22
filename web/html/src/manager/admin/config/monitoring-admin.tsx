@@ -104,14 +104,7 @@ const ExporterItem = (props: { name: string; status: boolean; message: string | 
   );
 };
 
-const ExportersList = (props: {
-  exporters: {
-    [key: string]: boolean;
-  };
-  messages: {
-    [key: string]: string;
-  };
-}) => {
+const ExportersList = (props: { exporters: Record<string, boolean>; messages: Record<string, string> }) => {
   const keys = Object.keys(props.exporters).sort();
 
   return (
@@ -173,11 +166,7 @@ const HelpPanel = () => {
   );
 };
 
-const ExportersMessages = (props: {
-  messages: {
-    [key: string]: string;
-  };
-}) => {
+const ExportersMessages = (props: { messages: Record<string, string> }) => {
   if (props.messages) {
     const keys = Object.keys(props.messages).sort();
 

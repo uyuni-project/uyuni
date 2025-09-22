@@ -2,10 +2,10 @@ import * as React from "react";
 
 import { DangerDialog } from "components/dialog/LegacyDangerDialog";
 
-type Props = {
+interface Props {
   id: string;
   onConfirmAsync: () => Promise<any>;
-};
+}
 
 export default function CancelActionsDialog(props: Props) {
   return (

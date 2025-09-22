@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { Comparator } from "utils/data-providers";
 
-export type ColumnProps = {
+export interface ColumnProps {
   /** key differenciating a column from its sibblings */
   columnKey: string;
 
@@ -45,7 +45,7 @@ export type ColumnProps = {
   disabled?: boolean;
 
   nestingLevel?: number;
-};
+}
 
 /**
  * Represents a column in the table.

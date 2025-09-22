@@ -9,14 +9,14 @@ import CreatorPanel from "components/panels/CreatorPanel";
 import { showErrorToastr, showSuccessToastr } from "components/toastr";
 import { Loading } from "components/utils";
 
-type Props = {
+interface Props {
   paygSshData: paygProperties;
   paygId: string;
   isInstance: boolean;
   labelPrefix: string;
   onChange: Function;
   readOnly?: boolean;
-};
+}
 
 const PaygSshDataEdit = (props: Props) => {
   const { onAction, cancelAction, isLoading } = useLifecyclePaygActionsApi();
@@ -43,7 +43,7 @@ const PaygSshDataEdit = (props: Props) => {
       });
   };
 
-  let title = props.labelPrefix + " SSH connection";
+  const title = props.labelPrefix + " SSH connection";
 
   return (
     <div id={props.labelPrefix + "-panel-wrapper"}>

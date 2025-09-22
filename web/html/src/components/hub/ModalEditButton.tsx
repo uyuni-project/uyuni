@@ -5,7 +5,7 @@ import { Dialog } from "components/dialog/Dialog";
 import { Form, Text } from "components/input";
 import { Validator } from "components/input/InputBase";
 
-type Props = {
+interface Props {
   /** The label of the button that opens the modal */
   buttonLabel: string;
   /** The optioanl icon of the button that opens the modal */
@@ -26,12 +26,12 @@ type Props = {
   value: string;
   /** calback to notify the modified value, after the user presses Save */
   onSave?: (value: string) => void | Promise<void>;
-};
+}
 
-type State = {
+interface State {
   valid: boolean;
   model?: { value: string };
-};
+}
 
 /** A component that allows to edit a single value with a modal dialog triggered by a button */
 export class ModalEditButton extends React.Component<Props, State> {

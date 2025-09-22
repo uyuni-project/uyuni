@@ -1,6 +1,6 @@
 import * as React from "react";
 
-type Props = {
+interface Props {
   headingLevel?: keyof JSX.IntrinsicElements;
   collapseId?: string | null | undefined;
   customIconClass?: string | null | undefined;
@@ -11,7 +11,7 @@ type Props = {
   footer?: React.ReactNode;
   children: React.ReactNode;
   buttons?: React.ReactNode;
-};
+}
 
 const Panel = (props: Props) => {
   const { headingLevel: HeadingLevel = "h1" } = props;

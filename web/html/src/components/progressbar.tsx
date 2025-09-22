@@ -1,10 +1,10 @@
 import * as React from "react";
 
-type Props = {
+interface Props {
   width?: string;
   progress: number;
   title?: string;
-};
+}
 
 const ProgressBar = (props: Props) => {
   const wrapperWidth = props.width ? { width: props.width } : { width: "100%" };

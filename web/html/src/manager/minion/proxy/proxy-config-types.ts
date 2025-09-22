@@ -13,7 +13,7 @@ export enum RegistryMode {
   Advanced = "advanced",
 }
 
-export type ProxyConfigModel = {
+export interface ProxyConfigModel {
   rootCA: string;
   proxyCertificate: string;
   proxyKey: string;
@@ -37,7 +37,7 @@ export type ProxyConfigModel = {
   registrySshTag: string;
   registryTftpdURL: string;
   registryTftpdTag: string;
-};
+}
 
 export interface Parent {
   id: number;

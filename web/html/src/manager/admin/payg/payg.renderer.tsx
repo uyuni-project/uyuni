@@ -7,11 +7,11 @@ import { MessagesContainer } from "components/toastr";
 
 import Pyag from "./payg";
 
-type RendererProps = {
+interface RendererProps {
   payg?: string;
   wasFreshlyCreatedMessage?: string;
   readOnly?: boolean;
-};
+}
 
 export const renderer = (id: string, { payg, wasFreshlyCreatedMessage, readOnly }: RendererProps = {}) => {
   let paygJson: any = {};

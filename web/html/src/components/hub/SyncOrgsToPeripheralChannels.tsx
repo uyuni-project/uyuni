@@ -14,14 +14,14 @@ import Network from "utils/network";
 import ChannelHierarchicalTable from "./HierarchicalChannelsTable";
 import { Channel, ChannelSyncProps, FlatChannel, Org } from "./types";
 
-type SyncPeripheralsProps = {
+interface SyncPeripheralsProps {
   peripheralId: number;
   peripheralFqdn: string;
   availableOrgs: Org[];
   channels: Channel[];
-};
+}
 
-type State = {
+interface State {
   peripheralId: number;
   peripheralFqdn: string;
   channels: FlatChannel[];
@@ -30,7 +30,7 @@ type State = {
   channelsToAdd: number[];
   channelsToRemove: number[];
   loading: boolean;
-};
+}
 
 /**
  * Converts a hierarchical array of Channel objects to a flat array of FlatChannel objects.

@@ -6,9 +6,9 @@ import { MessagesContainer } from "components/toastr/toastr";
 
 import PackageStates from "./package-states";
 
-type RendererProps = {
+interface RendererProps {
   serverId?: any;
-};
+}
 
 export const renderer = (id: string, { serverId }: RendererProps = {}) => {
   SpaRenderer.renderNavigationReact(

@@ -190,7 +190,7 @@ class ProductsPageWrapper extends React.Component {
     )
       .then((data) => {
         // returned data format is { productId : "error" }. If the value is null or missing the operation succeeded
-        let failedProducts = currentObject.state.selectedItems.filter((i) => data[i.identifier] != null);
+        const failedProducts = currentObject.state.selectedItems.filter((i) => data[i.identifier] != null);
         let resultMessages: MessageType[] | null = null;
         if (failedProducts.length === 0) {
           resultMessages = MessagesUtils.success("Selected channels/products were scheduled successfully for syncing.");
@@ -218,7 +218,7 @@ class ProductsPageWrapper extends React.Component {
   resyncProduct = (id, name) => {
     const currentObject = this;
     currentObject.state.scheduledItems.concat([id]);
-    let scheduleResyncItemsNew = currentObject.state.scheduleResyncItems.concat([id]);
+    const scheduleResyncItemsNew = currentObject.state.scheduleResyncItems.concat([id]);
     currentObject.setState({ scheduleResyncItems: scheduleResyncItemsNew });
     Network.post("/rhn/manager/admin/setup/products", [id])
       .then((data) => {
@@ -244,7 +244,7 @@ class ProductsPageWrapper extends React.Component {
     Network.post("/rhn/manager/admin/setup/channels/optional", channels)
       .then((data) => {
         // returned data format is { channel : "error" }. If the value is null or missing the operation succeeded
-        let failedChannels = channels.filter((c) => data[c] != null);
+        const failedChannels = channels.filter((c) => data[c] != null);
         let resultMessages: MessageType[] | null = null;
         if (failedChannels.length === 0) {
           resultMessages = MessagesUtils.success(t("Selected channels were scheduled successfully for syncing."));
@@ -402,7 +402,7 @@ class ProductsPageWrapper extends React.Component {
   }
 }
 
-type ProductsProps = {
+interface ProductsProps {
   data: any[];
   loading?: boolean;
   readOnlyMode?: boolean;
@@ -413,7 +413,7 @@ type ProductsProps = {
   selectedItems: any[];
   handleSelectedItems: (...args: any[]) => any;
   handleUnselectedItems: (...args: any[]) => any;
-};
+}
 
 /**
  * Show the products data
@@ -541,14 +541,14 @@ class Products extends React.Component<ProductsProps> {
   }
 }
 
-type CheckListProps = {
+interface CheckListProps {
   data: any;
   bypassProps: any;
   treeLevel: any;
   childrenDisabled?: boolean;
   handleSelectedItems: (...args: any[]) => any;
   handleUnselectedItems: (...args: any[]) => any;
-};
+}
 
 /**
  * Generate a custom list of elements for the products data
@@ -628,7 +628,7 @@ class CheckList extends React.Component<CheckListProps> {
   }
 }
 
-type CheckListItemProps = {
+interface CheckListItemProps {
   item: any;
   bypassProps: any;
   treeLevel: any;
@@ -636,7 +636,7 @@ type CheckListItemProps = {
   index: number;
   handleSelectedItems: (...args: any[]) => any;
   handleUnselectedItems: (...args: any[]) => any;
-};
+}
 
 /**
  * A component to generate a list item which contains
@@ -698,7 +698,7 @@ class CheckListItem extends React.Component<CheckListItemProps> {
   };
 
   getChildrenTree = (item) => {
-    let arr = this.getNestedData(item);
+    const arr = this.getNestedData(item);
     let nestedArr = [];
     arr.forEach((child) => {
       nestedArr = nestedArr.concat(this.getChildrenTree(child));
@@ -849,7 +849,7 @@ class CheckListItem extends React.Component<CheckListItemProps> {
       handleDescriptionClick = () => this.props.bypassProps.handleVisibleSublist(currentItem.identifier);
       hoverableDescriptionClass = "product-hover pointer";
     }
-    let productDescriptionContent = (
+    const productDescriptionContent = (
       <span className={"product-description " + hoverableDescriptionClass} onClick={handleDescriptionClick}>
         {currentItem.label}&nbsp;
         {currentItem.recommended ? (
@@ -876,13 +876,13 @@ class CheckListItem extends React.Component<CheckListItemProps> {
     /** generate channel sync status **/
     let channelSyncContent;
     if (this.isInstalled()) {
-      let currentProductChannels = currentItem.channels.filter((c) => c.status !== _CHANNEL_STATUS.notSynced);
+      const currentProductChannels = currentItem.channels.filter((c) => c.status !== _CHANNEL_STATUS.notSynced);
       channelSyncContent = this.channelsStatusSync(currentProductChannels, true);
     }
 
     let childProductChannelSyncContent;
     if (this.isInstalled()) {
-      let childProductChannels: any[] = [];
+      const childProductChannels: any[] = [];
 
       // add all channels of the subtree
       this.getChildrenTree(currentItem)

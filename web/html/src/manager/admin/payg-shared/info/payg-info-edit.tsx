@@ -9,11 +9,11 @@ import CreatorPanel from "components/panels/CreatorPanel";
 import { showErrorToastr, showSuccessToastr } from "components/toastr";
 import { Loading } from "components/utils";
 
-type Props = {
+interface Props {
   payg: PaygFullType;
   onChange: Function;
   readOnly?: boolean;
-};
+}
 
 const PaygInfoEdit = (props: Props) => {
   const { onAction, cancelAction, isLoading } = useLifecyclePaygActionsApi();

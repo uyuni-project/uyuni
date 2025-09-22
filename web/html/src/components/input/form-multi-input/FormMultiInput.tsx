@@ -6,7 +6,7 @@ import { PanelRow } from "components/panels/PanelRow";
 
 import { FormContext } from "../form/Form";
 
-type Props = {
+interface Props {
   /** Id of the component */
   id: string;
 
@@ -58,12 +58,12 @@ type Props = {
 
   /** CSS class for the wrapping Panel */
   panelClassName?: string;
-};
+}
 
 /**
  * Compute the list of item keys in the model based of fields named like `${prefix}${idx}_${name}`
  */
-export function getOrderedItemsFromModel(model: any, prefix: string): Array<number> {
+export function getOrderedItemsFromModel(model: any, prefix: string): number[] {
   if (typeof model === "undefined" || model === null) {
     return [];
   }

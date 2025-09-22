@@ -2,9 +2,9 @@ import SpaRenderer from "core/spa/spa-renderer";
 
 import Appstreams from "./appstreams";
 
-type RendererProps = {
+interface RendererProps {
   channelsAppStreams?: string;
-};
+}
 
 export const renderer = (id: string, { channelsAppStreams }: RendererProps) => {
   let channelsAppStreamsJson: any[] = [];

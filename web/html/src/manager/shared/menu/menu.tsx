@@ -11,14 +11,14 @@ import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
 import styles from "./menu.module.scss";
 
-type LinkProps = {
+interface LinkProps {
   url: string;
   className?: string;
   target?: string;
   title?: string;
   responsiveLabel?: React.ReactNode;
   label?: React.ReactNode;
-};
+}
 
 const Link = (props: LinkProps) => (
   <a href={props.url} className={flatten([props.className, "js-spa"])} target={props.target} title={props.title}>
@@ -27,7 +27,7 @@ const Link = (props: LinkProps) => (
   </a>
 );
 
-type NodeProps = {
+interface NodeProps {
   handleClick: ((event?: React.MouseEvent) => any) | null;
   isLeaf?: boolean;
   icon?: string;
@@ -36,7 +36,7 @@ type NodeProps = {
   label: string;
   isSearchActive?: boolean;
   isOpen?: boolean;
-};
+}
 
 class Node extends React.Component<NodeProps> {
   handleClick = (event) => {
@@ -59,13 +59,13 @@ class Node extends React.Component<NodeProps> {
   }
 }
 
-type ElementProps = {
+interface ElementProps {
   element?: any;
   searchString?: any;
   level: any;
   visiblityForcedByParent: any;
   forceCollapse?: any;
-};
+}
 
 class Element extends React.Component<ElementProps> {
   state = {
@@ -81,7 +81,7 @@ class Element extends React.Component<ElementProps> {
   }
 
   isCurrentVisible = (element, search) => {
-    if (search == null || DEPRECATED_unsafeEquals(search.length, 0)) {
+    if (DEPRECATED_unsafeEquals(search, null) || DEPRECATED_unsafeEquals(search.length, 0)) {
       return true;
     }
 
@@ -89,7 +89,7 @@ class Element extends React.Component<ElementProps> {
   };
 
   isVisible = (element, search) => {
-    if (search == null || DEPRECATED_unsafeEquals(search.length, 0)) {
+    if (DEPRECATED_unsafeEquals(search, null) || DEPRECATED_unsafeEquals(search.length, 0)) {
       return true;
     }
 
@@ -101,7 +101,7 @@ class Element extends React.Component<ElementProps> {
   };
 
   isLeaf = (element) => {
-    return element.submenu == null;
+    return DEPRECATED_unsafeEquals(element.submenu, null);
   };
 
   toggleView = () => {
@@ -147,17 +147,17 @@ class Element extends React.Component<ElementProps> {
   }
 }
 
-type MenuLevelProps = {
+interface MenuLevelProps {
   elements: any[];
   level: any;
   searchString: any;
   visiblityForcedByParent?: any;
   forceCollapse?: any;
-};
+}
 
 class MenuLevel extends React.Component<MenuLevelProps> {
   render() {
-    let contentMenu = this.props.elements.map((el, i) => (
+    const contentMenu = this.props.elements.map((el, i) => (
       <Element
         element={el}
         key={this.props.level + "_" + el.label + "_" + i}
@@ -187,7 +187,7 @@ class Nav extends React.Component {
   };
 
   render() {
-    const isSearchActive = this.state.search != null && this.state.search.length > 0;
+    const isSearchActive = !DEPRECATED_unsafeEquals(this.state.search, null) && this.state.search.length > 0;
     return (
       <nav className={isSearchActive ? "" : "collapsed"}>
         <div className="nav-tool-box">
@@ -229,9 +229,9 @@ class Breadcrumb extends React.Component {
   }
 
   render() {
-    let breadcrumbArray: any[] = [];
+    const breadcrumbArray: any[] = [];
     let level = window.JSONMenu.find((l) => l.active);
-    while (level != null) {
+    while (!DEPRECATED_unsafeEquals(level, null)) {
       breadcrumbArray.push(level);
       level = level.submenu ? level.submenu.find((l) => l.active) : null;
     }

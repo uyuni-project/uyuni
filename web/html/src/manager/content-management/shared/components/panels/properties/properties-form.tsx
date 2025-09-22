@@ -4,12 +4,12 @@ import { Form, Text } from "components/input";
 
 import { ProjectPropertiesType } from "../../../type";
 
-type Props = {
+interface Props {
   properties: ProjectPropertiesType;
   errors: any;
   onChange: Function;
   editing?: boolean;
-};
+}
 
 const PropertiesForm = (props: Props) => (
   <Form

@@ -5,9 +5,9 @@ import { DeregisterServer, IssRole, PeripheralDetailData, ServerDetailsForm } fr
 import { TopPanel } from "components/panels";
 import { SectionToolbar } from "components/section-toolbar/section-toolbar";
 
-export type Props = {
+export interface Props {
   peripheral: PeripheralDetailData;
-};
+}
 
 export class PeripheralDetails extends React.Component<Props> {
   public constructor(props: Props) {

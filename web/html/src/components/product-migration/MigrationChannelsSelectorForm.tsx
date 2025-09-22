@@ -62,7 +62,7 @@ export const MigrationChannelsSelectorForm: React.FC<Props> = ({
     base: BaseChannelType,
     additionalChildren?: ChildChannelType[]
   ): Set<ChildChannelType> {
-    const selectionSet: Set<ChildChannelType> = new Set();
+    const selectionSet = new Set<ChildChannelType>();
 
     channelProcessor.getRequires(base.id)?.forEach((item) => {
       if (isChildChannel(item)) {

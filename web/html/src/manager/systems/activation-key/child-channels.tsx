@@ -8,21 +8,21 @@ import { Loading } from "components/utils/loading/Loading";
 
 import { Channel } from "./activation-key-channels-api";
 
-type ChildChannelsProps = {
-  channels: Array<Channel>;
+interface ChildChannelsProps {
+  channels: Channel[];
   base: any;
   showBase: boolean;
-  selectedChannelsIds: Array<number>;
+  selectedChannelsIds: number[];
   selectChannels: Function;
   isDependencyDataLoaded: boolean;
   requiredChannelsResult: RequiredChannelsResultType;
   fetchMandatoryChannelsByChannelIds: Function;
   collapsed: boolean;
-};
+}
 
-type ChildChannelsState = {
+interface ChildChannelsState {
   collapsed: boolean;
-};
+}
 
 class ChildChannels extends React.Component<ChildChannelsProps, ChildChannelsState> {
   constructor(props: ChildChannelsProps) {
@@ -40,7 +40,7 @@ class ChildChannels extends React.Component<ChildChannelsProps, ChildChannelsSta
   handleChannelChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const channelId = parseInt(event.target.value, 10);
     const selectedFlag = event.target.checked;
-    const channelIds: Array<number> = this.selectChannelWithDependencies(channelId, selectedFlag);
+    const channelIds: number[] = this.selectChannelWithDependencies(channelId, selectedFlag);
 
     this.props.selectChannels(channelIds, selectedFlag);
   };

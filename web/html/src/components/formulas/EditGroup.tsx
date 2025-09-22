@@ -23,7 +23,7 @@ const getEditGroupSubtype = Formulas.getEditGroupSubtype;
 const deepCopy = Utils.deepCopy;
 // circular dependencies are bad
 
-type EditGroupProps = {
+interface EditGroupProps {
   id: string;
   key: any;
   disabled?: boolean;
@@ -34,11 +34,11 @@ type EditGroupProps = {
   setSectionsExpanded: (SectionState) => void;
   isVisibleByCriteria?: () => boolean;
   criteria: string;
-};
+}
 
-type EditGroupState = {
+interface EditGroupState {
   visible: boolean;
-};
+}
 
 /*
  * Base class for edit-group.
@@ -73,8 +73,8 @@ class EditGroup extends React.Component<EditGroupProps, EditGroupState> {
     if (this.props.element.$maxItems! <= this.props.value.length || this.isDisabled()) return;
 
     this.props.setSectionsExpanded(SectionState.Mixed);
-    let newValueProps = this.props.value;
-    let newValue = deepCopy(this.props.element.$newItemValue);
+    const newValueProps = this.props.value;
+    const newValue = deepCopy(this.props.element.$newItemValue);
 
     newValueProps.push(newValue);
 
@@ -167,14 +167,14 @@ class EditGroup extends React.Component<EditGroupProps, EditGroupState> {
   }
 }
 
-type EditPrimitiveGroupProps = {
+interface EditPrimitiveGroupProps {
   id: string;
   value: any;
   element: ElementDefinition;
   formulaForm: any;
   isDisabled?: boolean;
   handleRemoveItem: (...args: any[]) => any;
-};
+}
 
 /*
  * Used for rendering edit-groups in the form of "list of primitive types",
@@ -196,12 +196,12 @@ class EditPrimitiveGroup extends React.Component<EditPrimitiveGroupProps> {
   };
 
   render() {
-    let elements: React.ReactNode[] = [];
-    for (let i in this.props.value) {
+    const elements: React.ReactNode[] = [];
+    for (const i in this.props.value) {
       if (i === "$meta") {
         continue;
       }
-      let id = this.props.id + "#" + i;
+      const id = this.props.id + "#" + i;
       elements.push(
         <div className="form-group" id={id} key={id}>
           {generateFormulaComponentForId(
@@ -224,14 +224,14 @@ class EditPrimitiveGroup extends React.Component<EditPrimitiveGroupProps> {
   }
 }
 
-type EditPrimitiveDictionaryGroupProps = {
+interface EditPrimitiveDictionaryGroupProps {
   id: string;
   value: any;
   element: ElementDefinition;
   formulaForm: any;
   isDisabled?: boolean;
   handleRemoveItem: (...args: any[]) => any;
-};
+}
 
 /*
  * Used for rendering edit-groups in the form of "dictionary of primitive types",
@@ -251,13 +251,13 @@ class EditPrimitiveDictionaryGroup extends React.Component<EditPrimitiveDictiona
   }
 
   render() {
-    let elements: React.ReactNode[] = [];
+    const elements: React.ReactNode[] = [];
 
-    for (let i in this.props.value) {
+    for (const i in this.props.value) {
       if (i === "$meta") {
         continue;
       }
-      let id = this.props.id + "#" + i;
+      const id = this.props.id + "#" + i;
       elements.push(
         <div className="form-group" id={id} key={id}>
           {generateFormulaComponentForId(
@@ -288,11 +288,11 @@ class EditPrimitiveDictionaryGroup extends React.Component<EditPrimitiveDictiona
   }
 }
 
-type RemoveButtonProps = {
+interface RemoveButtonProps {
   minItems: number;
   currentLength: number;
   handleRemoveItem: (...args: any[]) => any;
-};
+}
 
 class RemoveButton extends React.Component<RemoveButtonProps> {
   render() {
@@ -310,7 +310,7 @@ class RemoveButton extends React.Component<RemoveButtonProps> {
   }
 }
 
-type EditDictionaryGroupProps = {
+interface EditDictionaryGroupProps {
   id: string;
   element: ElementDefinition;
   value: any;
@@ -319,11 +319,11 @@ type EditDictionaryGroupProps = {
   sectionsExpanded: SectionState;
   setSectionsExpanded: (SectionState) => void;
   handleRemoveItem: (...args: any[]) => any;
-};
+}
 
-type EditDictionaryGroupState = {
+interface EditDictionaryGroupState {
   visibility: Map<string, boolean>;
-};
+}
 
 /*
  * Used for rendering edit-groups that are backed up list of dictionaries
@@ -383,22 +383,22 @@ class EditDictionaryGroup extends React.Component<EditDictionaryGroupProps, Edit
 
   setAllVisible(visible) {
     const { visibility } = this.state;
-    for (let i in this.props.value) {
+    for (const i in this.props.value) {
       visibility.set(i, visible);
       this.setState({ visibility });
     }
   }
 
   render() {
-    let elements: React.ReactNode[] = [];
-    for (let i in this.props.value) {
+    const elements: React.ReactNode[] = [];
+    for (const i in this.props.value) {
       if (i === "$meta") {
         continue;
       }
-      let id = this.props.id + "#" + i;
+      const id = this.props.id + "#" + i;
 
-      let item_elements: React.ReactNode[] = [];
-      for (let element_name in this.props.element.$prototype) {
+      const item_elements: React.ReactNode[] = [];
+      for (const element_name in this.props.element.$prototype) {
         if (element_name.startsWith("$") && element_name !== "$key") continue;
         item_elements.push(
           generateFormulaComponent(

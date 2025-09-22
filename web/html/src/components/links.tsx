@@ -1,12 +1,12 @@
 import * as React from "react";
 
-type LinkProps = {
+interface LinkProps {
   id: string | number;
   newWindow?: boolean;
   children?: React.ReactNode;
   className?: string;
   title?: string;
-};
+}
 
 const targetProps = (props: LinkProps): Partial<React.HTMLProps<HTMLAnchorElement>> => {
   const target = props.newWindow ? "_blank" : "_self";

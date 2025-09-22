@@ -20,21 +20,21 @@ import { showSuccessToastr } from "components/toastr/toastr";
 
 import { Utils } from "utils/functions";
 
-type ContentProjectOverviewType = {
+interface ContentProjectOverviewType {
   properties: {
-    label: String;
-    name: String;
-    description: String;
+    label: string;
+    name: string;
+    description: string;
     lastBuildDate: moment.Moment;
   };
-  environments: Array<String>;
-  needRebuild: Boolean;
-};
+  environments: string[];
+  needRebuild: boolean;
+}
 
-type Props = {
-  projects: Array<ContentProjectOverviewType>;
+interface Props {
+  projects: ContentProjectOverviewType[];
   flashMessage?: ServerMessageType;
-};
+}
 
 const ListProjects = (props: Props) => {
   const roles = useRoles();

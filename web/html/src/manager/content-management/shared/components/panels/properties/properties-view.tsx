@@ -9,9 +9,9 @@ import { ProjectPropertiesType } from "../../../type/project.type";
 import BuildVersion from "../build/build-version";
 import { getVersionMessage } from "./properties.utils";
 
-type Props = {
+interface Props {
   properties: ProjectPropertiesType;
-};
+}
 
 const NUMBER_HISTORY_ENTRIES = 5;
 
@@ -33,7 +33,7 @@ const PropertiesHistoryEntries = (props) => (
 );
 
 const PropertiesView = (props: Props) => {
-  let propertiesToShow = produce(props.properties, (draftProperties) => {
+  const propertiesToShow = produce(props.properties, (draftProperties) => {
     draftProperties.historyEntries.sort((a, b) => b.version - a.version);
   });
 

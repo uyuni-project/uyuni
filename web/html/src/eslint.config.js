@@ -1,8 +1,9 @@
 const { defineConfig, globalIgnores } = require("eslint/config");
 
-const tsParser = require("@typescript-eslint/parser");
+const eslint = require("@eslint/js");
+const tseslint = require("typescript-eslint");
+
 const reactHooks = require("eslint-plugin-react-hooks");
-const typescriptEslint = require("@typescript-eslint/eslint-plugin");
 const localRules = require("eslint-plugin-local-rules");
 const simpleImportSort = require("eslint-plugin-simple-import-sort");
 const prettier = require("eslint-plugin-prettier");
@@ -18,12 +19,16 @@ const productionRules = {
 };
 
 module.exports = defineConfig([
+  eslint.configs.recommended,
+  // In the future, it would be nice to use `tseslint.configs.recommended` here, but legacy code is too far from that for now
+  tseslint.configs.stylistic,
   {
     languageOptions: {
-      parser: tsParser,
+      // parser: tsParser,
 
       globals: {
         ...globals.browser,
+        ...globals.node,
         t: true,
         module: true,
         jQuery: true,
@@ -33,7 +38,6 @@ module.exports = defineConfig([
     plugins: {
       react,
       "react-hooks": reactHooks,
-      "@typescript-eslint": typescriptEslint,
       "local-rules": localRules,
       "simple-import-sort": simpleImportSort,
       "jsx-a11y": jsxA11y,
@@ -41,6 +45,13 @@ module.exports = defineConfig([
     },
 
     rules: {
+      // Too much legacy code holds empty references and such, we can't enable these rules yet, but aim for it in the future
+      "no-unused-vars": "off",
+      "@typescript-eslint/no-empty-function": "off",
+      "no-async-promise-executor": "off",
+      "no-prototype-builtins": "off",
+      "no-case-declarations": "off",
+
       "prettier/prettier": "warn",
       "jsx-a11y/anchor-is-valid": "error",
       "react/jsx-no-target-blank": "error",
@@ -88,6 +99,7 @@ module.exports = defineConfig([
         },
       ],
       "sort-imports": "off",
+      "no-duplicate-imports": "error",
       // "no-duplicate-imports": "error",
       // We use a `DEPRECATED_` prefix for old components that doesn't conform with this rule
       "react/jsx-pascal-case": "off",

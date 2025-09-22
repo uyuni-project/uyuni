@@ -3,22 +3,20 @@ import * as React from "react";
 import MandatoryChannelsApi from "core/channels/api/mandatory-channels-api";
 import { productName } from "core/user-preferences";
 
-import { Messages } from "components/messages/messages";
-import { Utils as MessagesUtils } from "components/messages/messages";
+import { Messages, Utils as MessagesUtils } from "components/messages/messages";
 import { Loading } from "components/utils/loading/Loading";
 
-import ActivationKeyChannelsApi from "./activation-key-channels-api";
-import { availableChannelsType, Channel } from "./activation-key-channels-api";
+import ActivationKeyChannelsApi, { availableChannelsType, Channel } from "./activation-key-channels-api";
 import ChildChannels from "./child-channels";
 
-type ActivationKeyChannelsProps = {
+interface ActivationKeyChannelsProps {
   activationKeyId: number;
-};
+}
 
-type ActivationKeyChannelsState = {
+interface ActivationKeyChannelsState {
   currentSelectedBaseId: number;
-  currentChildSelectedIds: Array<number>;
-};
+  currentChildSelectedIds: number[];
+}
 
 class ActivationKeyChannels extends React.Component<ActivationKeyChannelsProps, ActivationKeyChannelsState> {
   constructor(props: ActivationKeyChannelsProps) {
@@ -46,7 +44,7 @@ class ActivationKeyChannels extends React.Component<ActivationKeyChannelsProps, 
     );
   };
 
-  selectChildChannels = (channelIds: Array<number>, selectedFlag: boolean) => {
+  selectChildChannels = (channelIds: number[], selectedFlag: boolean) => {
     let selectedIds = [...this.state.currentChildSelectedIds];
     if (selectedFlag) {
       selectedIds = [...channelIds.filter((c) => !selectedIds.includes(c)), ...selectedIds];

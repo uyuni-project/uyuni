@@ -3,12 +3,12 @@ import * as React from "react";
 import { DEPRECATED_Select } from "components/input";
 import { Form } from "components/input/form/Form";
 
-type SearchFieldOption = {
+interface SearchFieldOption {
   label: string;
   value: string;
-};
+}
 
-type SearchFieldProps = {
+interface SearchFieldProps {
   /** The value that the user will enter to perform the filter on the criteriaField */
   criteria?: string;
 
@@ -37,12 +37,12 @@ type SearchFieldProps = {
 
   /** input field name */
   name?: string;
-};
+}
 
 /** Text input search field */
 export function SearchField(props: SearchFieldProps) {
   // Dummy model and onChange to reuse the Select component as it requires a Form
-  let model = {};
+  const model = {};
   const onChange = () => {};
 
   return (

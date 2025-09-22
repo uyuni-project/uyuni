@@ -19,12 +19,12 @@ import ChannelsFilters from "./channels-filters";
 import { getInitialFiltersState } from "./channels-filters-state";
 import styles from "./channels-selection.module.scss";
 
-type PropsType = {
+interface PropsType {
   isSourcesApiLoading: boolean;
   initialSelectedSources: ProjectSoftwareSourceType[];
   // For some reason, the wrapper expects labels, not channels or ids, but that's fine by us
   onChange: (channelLabels: string[]) => void;
-};
+}
 
 const ChannelsSelection = (props: PropsType) => {
   const [isLoading, setIsLoading] = useState(true);

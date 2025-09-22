@@ -5,18 +5,18 @@ import { fromNow } from "components/datetime/FromNow";
 import { localizedMoment } from "utils";
 import Network from "utils/network";
 
-type MatcherRunPanelProps = {
+interface MatcherRunPanelProps {
   initialLatestStart?: moment.Moment | null;
   initialLatestEnd?: moment.Moment | null;
   dataAvailable?: boolean;
   onMatcherRunSchedule: (...args: any[]) => any;
-};
+}
 
-type MatcherRunPanelState = {
+interface MatcherRunPanelState {
   latestStart?: moment.Moment | null;
   latestEnd?: moment.Moment | null;
   error: boolean;
-};
+}
 
 class MatcherRunPanel extends React.Component<MatcherRunPanelProps, MatcherRunPanelState> {
   state = {
@@ -74,11 +74,11 @@ class MatcherRunPanel extends React.Component<MatcherRunPanelProps, MatcherRunPa
   }
 }
 
-type MatcherRunDescriptionProps = {
+interface MatcherRunDescriptionProps {
   error?: any;
   latestStart?: moment.Moment | null;
   latestEnd?: moment.Moment | null;
-};
+}
 
 const MatcherRunDescription = (props: MatcherRunDescriptionProps) => {
   if (props.error) {
@@ -131,11 +131,11 @@ const MatcherTaskDescription = () => (
   </div>
 );
 
-type MatcherScheduleButtonProps = {
+interface MatcherScheduleButtonProps {
   onError: (...args: any[]) => any;
   onScheduled: (...args: any[]) => any;
   matcherRunning?: boolean;
-};
+}
 
 class MatcherScheduleButton extends React.Component<MatcherScheduleButtonProps> {
   onClick = () => {

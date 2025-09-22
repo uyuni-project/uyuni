@@ -10,7 +10,7 @@ import { useExpanded } from "./useExpanded";
 
 type ArrayElement<A> = A extends readonly (infer T)[] ? T : never;
 
-type TableProps = {
+interface TableProps {
   /**
    * Either an array of data items of any type where each element is a row data,
    * or a URI string to a resource endpoint that returns a paged list of data items.
@@ -25,7 +25,7 @@ type TableProps = {
    *
    * See: utils/data-providers/paged-data-endpoint.js for async usage
    */
-  data: Array<any> | string;
+  data: any[] | string;
 
   /** Function extracting the unique key of the row from the data object */
   identifier: (row: any) => any;
@@ -52,10 +52,10 @@ type TableProps = {
   selectable?: boolean | ((row: any) => boolean);
 
   /** the handler to call when the table selection is updated. If not provided, the select boxes won't be rendered */
-  onSelect?: (items: Array<any>) => void;
+  onSelect?: (items: any[]) => void;
 
   /** the identifiers for selected items */
-  selectedItems?: Array<any>;
+  selectedItems?: any[];
 
   /** Allow items to be deleted or allow rows to be deleted on a case-by-case basis */
   deletable?: boolean | ((row: any) => boolean);
@@ -81,7 +81,7 @@ type TableProps = {
   children: React.ReactNode;
 
   /** Other filter fields */
-  additionalFilters?: Array<React.ReactNode>;
+  additionalFilters?: React.ReactNode[];
 
   /** Default search field */
   defaultSearchField?: string;
@@ -90,16 +90,16 @@ type TableProps = {
   initialSearch?: string;
 
   /** Title buttons to add next to the items per page selection */
-  titleButtons?: Array<React.ReactNode>;
-};
+  titleButtons?: React.ReactNode[];
+}
 
 function isColumn(input: any): input is React.ReactElement<React.ComponentProps<typeof Column>> {
   return input?.type === Column || input?.type?.displayName === "Column";
 }
 
-export type TableRef = {
+export interface TableRef {
   refresh: (...args: any[]) => any;
-};
+}
 
 export const Table = forwardRef<TableRef, TableProps>((props, ref) => {
   const { ...allProps } = props;

@@ -2,18 +2,17 @@ import * as React from "react";
 
 import { AsyncButton } from "components/buttons";
 import { ActionLink } from "components/links";
-import { Messages, MessageType } from "components/messages/messages";
-import { Utils as MessagesUtils } from "components/messages/messages";
+import { Messages, MessageType, Utils as MessagesUtils } from "components/messages/messages";
 import { BootstrapPanel } from "components/panels/BootstrapPanel";
 
 import Network from "utils/network";
 
-type ProxyType = {
+interface ProxyType {
   hostname: string;
   id: number;
   name: string;
   path: string[];
-};
+}
 
 // See java/code/src/com/suse/manager/webui/templates/minion/proxy.jade
 declare global {
@@ -24,15 +23,15 @@ declare global {
   }
 }
 
-type Props = {
+interface Props {
   proxies: ProxyType[];
   currentProxy?: number;
-};
+}
 
-type State = {
+interface State {
   messages: MessageType[];
   proxy: number;
-};
+}
 
 class Proxy extends React.Component<Props, State> {
   constructor(props: Props) {

@@ -7,44 +7,43 @@ import { localizedMoment } from "utils";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network from "utils/network";
 
-import { Combobox } from "./combobox";
-import { ComboboxItem } from "./combobox";
+import { Combobox, ComboboxItem } from "./combobox";
 
-export type MaintenanceWindow = {
+export interface MaintenanceWindow {
   id: number;
   from: string;
   to: string;
   fromMilliseconds: number;
   toMilliseconds: number;
-};
+}
 
-export type ActionChain = {
+export interface ActionChain {
   id: number;
   text: string;
-};
+}
 
-type ActionScheduleProps = {
+interface ActionScheduleProps {
   earliest: moment.Moment;
-  actionChains?: Array<ActionChain>;
+  actionChains?: ActionChain[];
   onDateTimeChanged: (value: moment.Moment) => void;
   onActionChainChanged?: (actionChain: ActionChain | null) => void;
-  systemIds?: Array<string | number>;
+  systemIds?: (string | number)[];
   actionType?: string;
-};
+}
 
-type ActionScheduleState = {
+interface ActionScheduleState {
   loading: boolean;
   type: "earliest" | "actionChain";
   earliest: moment.Moment;
   actionChain?: ActionChain;
-  actionChains?: Array<ActionChain>;
+  actionChains?: ActionChain[];
   isMaintenanceModeEnabled: boolean;
   multiMaintenanceWindows: boolean;
   maintenanceWindow: MaintenanceWindow;
-  maintenanceWindows: Array<MaintenanceWindow>;
-  systemIds: Array<string | number>;
+  maintenanceWindows: MaintenanceWindow[];
+  systemIds: (string | number)[];
   actionType: string;
-};
+}
 
 class ActionSchedule extends React.Component<ActionScheduleProps, ActionScheduleState> {
   newActionChainOpt = { id: Number(0), text: t("new action chain") };

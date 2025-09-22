@@ -10,9 +10,9 @@ import img from "./http-proxy.png";
 import { ProxySettings } from "./proxy-settings";
 import { ProxyVerification } from "./verification";
 
-type Props = {
+interface Props {
   proxySettings: Readonly<ProxySettings>;
-};
+}
 
 export default (props: Props) => {
   const propsHasValues = Boolean(

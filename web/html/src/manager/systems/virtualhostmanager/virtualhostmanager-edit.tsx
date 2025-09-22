@@ -12,19 +12,19 @@ import { Messages } from "components/messages/messages";
 import { Utils } from "utils/functions";
 import Network from "utils/network";
 
-type Props = {
+interface Props {
   item?: any;
   type: string;
   onCancel?: (...args: any[]) => any;
-};
+}
 
-type State = {
+interface State {
   model: any;
   messages: any[] | null;
   vhmParams?: any;
   validKubeconfig?: any;
   isInvalid?: boolean;
-};
+}
 
 class VirtualHostManagerEdit extends React.Component<Props, State> {
   form?: HTMLFormElement;
@@ -59,7 +59,7 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
   };
 
   setValues(item) {
-    let m: any = {};
+    const m: any = {};
     m["id"] = item.id;
     m["label"] = item.label;
     m["gathererModule"] = item.gathererModule;
@@ -217,7 +217,7 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
   }
 
   paramField(name, defaultValue) {
-    let required = this.isEdit() ? name !== "password" && name !== "username" : true;
+    const required = this.isEdit() ? name !== "password" && name !== "username" : true;
     if (name.toLowerCase() === "password") {
       return (
         <Password
@@ -257,7 +257,9 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
     if (!this.state.vhmParams) {
       return null;
     }
-    let fields = Object.keys(this.state.vhmParams).map((param) => this.paramField(param, this.state.vhmParams[param]));
+    const fields = Object.keys(this.state.vhmParams).map((param) =>
+      this.paramField(param, this.state.vhmParams[param])
+    );
 
     fields.unshift(<Text name="label" label={t("Label")} required labelClass="col-md-3" divClass="col-md-6" />);
 
@@ -268,8 +270,8 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
   };
 
   handleKubeconfigUpload = (event) => {
-    let kubeconfig = event.target.files[0];
-    let formData = new FormData();
+    const kubeconfig = event.target.files[0];
+    const formData = new FormData();
     formData.append("kubeconfig", kubeconfig);
     Network.post("/rhn/manager/api/vhms/kubeconfig/validate", formData, "multipart/form-data", false)
       .then((res) => {

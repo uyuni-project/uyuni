@@ -64,7 +64,7 @@ export const renderer = (renderId, { serverId, warningMessage }) => {
       "'><i class='fa fa-pencil-square-o'></i>" +
       t("Configuration") +
       "</a></li>\n";
-    for (let i in formulaList)
+    for (const i in formulaList)
       navBar +=
         "<li><a href='/rhn/manager/systems/details/formula/" +
         i +

@@ -30,15 +30,15 @@ function channelIcon(channel) {
   return <i data-bs-toggle="tooltip" className={iconClass} title={iconTitle} style={iconStyle} />;
 }
 
-type RankingTableProps = {
+interface RankingTableProps {
   items: any[];
   onUpdate?: (newItems: any[]) => any;
   emptyMsg: string;
-};
+}
 
-type RankingTableState = {
+interface RankingTableState {
   items: any[];
-};
+}
 
 class RankingTable extends React.Component<RankingTableProps, RankingTableState> {
   defaultEmptyMsg = t("There are no entries to show.");

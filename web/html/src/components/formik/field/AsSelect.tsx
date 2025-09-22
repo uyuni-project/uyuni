@@ -5,7 +5,6 @@ import { Select } from "components/input";
 import styles from "./AsSelect.module.scss";
 
 export const AsSelect = (props: React.ComponentProps<typeof Select> & { name: string }) => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [field, meta, helper] = useField(props.name);
 
   return (

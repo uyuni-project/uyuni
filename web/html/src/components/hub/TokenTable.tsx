@@ -14,16 +14,16 @@ import Network from "utils/network";
 
 import { AccessToken, TokenType, ValidityRequest } from "./types";
 
-type Props = {
+interface Props {
   allowToggleValidity: boolean;
   allowDeletion: boolean;
-};
+}
 
-type State = {
+interface State {
   selectedRow: AccessToken | undefined;
   confirmValidityDialog: boolean;
   confirmDeleteDialog: boolean;
-};
+}
 
 export class TokenTable extends React.Component<Props, State> {
   private tableRef: React.RefObject<TableRef>;
@@ -230,7 +230,7 @@ export class TokenTable extends React.Component<Props, State> {
   }
 
   private getValidityConfirmationMessage(row: AccessToken): string {
-    const messageGeneratorMap: { [key: string]: (params: object) => string } = {
+    const messageGeneratorMap: Record<string, (params: object) => string> = {
       "issued-valid-hub": (params) =>
         // token issued for another server currently valid and linked to a hub
         t("Invalidating this access token will prevent the hub {fqdn} from accesssing.", params),

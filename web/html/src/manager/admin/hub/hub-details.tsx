@@ -8,14 +8,14 @@ import { showInfoToastr } from "components/toastr";
 
 import Network from "utils/network";
 
-export type Props = {
+export interface Props {
   hub: HubDetailData | null;
-};
+}
 
-type State = {
+interface State {
   hub: HubDetailData | null;
   confirmSyncBunch: boolean;
-};
+}
 
 export class HubDetails extends React.Component<Props, State> {
   public constructor(props: Props) {

@@ -30,15 +30,15 @@ const messageMap = {
   // Nothing for now
 };
 
-type Props = {};
+interface Props {}
 
-type State = {
+interface State {
   storeTypes: string[];
   model: any;
   messages: any;
   initLabel?: any;
   isInvalid?: boolean;
-};
+}
 
 class CreateImageStore extends React.Component<Props, State> {
   defaultModel: any;
@@ -68,7 +68,7 @@ class CreateImageStore extends React.Component<Props, State> {
   setValues = (id) => {
     Network.get("/rhn/manager/api/cm/imagestores/" + id).then((res) => {
       if (res.success) {
-        let data = res.data;
+        const data = res.data;
         this.setState({
           model: data,
           initLabel: data.label,
@@ -193,7 +193,7 @@ class CreateImageStore extends React.Component<Props, State> {
   }
 
   renderButtons() {
-    let buttons = [
+    const buttons = [
       <Button
         key="clear-btn"
         id="clear-btn"

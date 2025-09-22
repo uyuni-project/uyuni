@@ -13,9 +13,9 @@ import { Utils } from "utils/functions";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network from "utils/network";
 
-type Props = {
+interface Props {
   refreshInterval: number;
-};
+}
 
 class TaskoTop extends React.Component<Props> {
   timerId?: number;
@@ -34,7 +34,7 @@ class TaskoTop extends React.Component<Props> {
   }
 
   refreshServerData = () => {
-    let currentObject = this;
+    const currentObject = this;
     Network.get("/rhn/manager/api/admin/runtime-status/data")
       .then((data) => {
         currentObject.setState({
@@ -59,24 +59,24 @@ class TaskoTop extends React.Component<Props> {
       // it's 'running' so we want to keep it at the top of any other rows
       sortDirection = 1;
     }
-    let a = aRaw[columnKey] || "0000-01-01T00:00:00.000Z";
-    let b = bRaw[columnKey] || "0000-01-01T00:00:00.000Z";
-    let result = a.toLowerCase().localeCompare(b.toLowerCase());
+    const a = aRaw[columnKey] || "0000-01-01T00:00:00.000Z";
+    const b = bRaw[columnKey] || "0000-01-01T00:00:00.000Z";
+    const result = a.toLowerCase().localeCompare(b.toLowerCase());
     return (result || Utils.sortById(aRaw, bRaw)) * sortDirection;
   };
 
   sortByStatus = (aRaw, bRaw, columnKey, sortDirection) => {
-    let statusValues = { running: 0, ready_to_run: 1, failed: 2, interrupted: 3, skipped: 4, finished: 5 };
-    let a = statusValues[aRaw[columnKey]];
-    let b = statusValues[bRaw[columnKey]];
-    let result = (a > b ? 1 : a < b ? -1 : 0) || this.sortByEndTime(aRaw, bRaw, "endTime", sortDirection);
+    const statusValues = { running: 0, ready_to_run: 1, failed: 2, interrupted: 3, skipped: 4, finished: 5 };
+    const a = statusValues[aRaw[columnKey]];
+    const b = statusValues[bRaw[columnKey]];
+    const result = (a > b ? 1 : a < b ? -1 : 0) || this.sortByEndTime(aRaw, bRaw, "endTime", sortDirection);
     return (result || Utils.sortById(aRaw, bRaw)) * sortDirection;
   };
 
   sortByNumber = (aRaw, bRaw, columnKey, sortDirection) => {
-    let a = aRaw[columnKey];
-    let b = bRaw[columnKey];
-    let result = a > b ? 1 : a < b ? -1 : 0;
+    const a = aRaw[columnKey];
+    const b = bRaw[columnKey];
+    const result = a > b ? 1 : a < b ? -1 : 0;
     return (result || Utils.sortById(aRaw, bRaw)) * sortDirection;
   };
 

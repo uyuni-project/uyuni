@@ -11,14 +11,14 @@ import Network from "utils/network";
 
 import { CoCoSystemData } from "./types";
 
-type Props = {
+interface Props {
   systemSupport: CoCoSystemData[];
   availableEnvironmentTypes: object;
-};
+}
 
-type State = {
+interface State {
   messages: MessageType[];
-};
+}
 
 class CoCoSSMSettings extends React.Component<Props, State> {
   private readonly emptySettings: Settings;

@@ -3,8 +3,7 @@ import * as React from "react";
 import { Button } from "components/buttons";
 import { DeleteDialog } from "components/dialog/DeleteDialog";
 import { ModalButton } from "components/dialog/ModalButton";
-import { Messages } from "components/messages/messages";
-import { Utils as MessagesUtils } from "components/messages/messages";
+import { Messages, Utils as MessagesUtils } from "components/messages/messages";
 import { BootstrapPanel } from "components/panels/BootstrapPanel";
 import { Column } from "components/table/Column";
 import { Table } from "components/table/Table";
@@ -12,17 +11,17 @@ import { Table } from "components/table/Table";
 import { Utils } from "utils/functions";
 import Network from "utils/network";
 
-type Props = {
+interface Props {
   data: any;
   onEdit: (...args: any[]) => any;
   onCancel: (...args: any[]) => any;
   onDelete: (...args: any[]) => any;
-};
+}
 
-type State = {
+interface State {
   messages: any[];
   nodes?: any;
-};
+}
 
 class VirtualHostManagerDetails extends React.Component<Props, State> {
   constructor(props: Props) {

@@ -8,7 +8,7 @@ import { Form } from "components/input/form/Form";
 import { Radio } from "components/input/radio/Radio";
 import { Text } from "components/input/text/Text";
 
-type ScheduleEditProps = {
+interface ScheduleEditProps {
   isEdit: boolean;
   schedule?: {
     id: number;
@@ -16,16 +16,16 @@ type ScheduleEditProps = {
     type: "SINGLE" | "MULTI";
     calendarName: string;
   };
-  calendarNames?: Array<Record<string, any>>;
+  calendarNames?: Record<string, any>[];
   onEdit: (...args: any[]) => any;
-};
+}
 
-type Model = {
+interface Model {
   name?: string;
   type?: string;
   calendarName?: string;
   strategy: boolean;
-};
+}
 
 const MaintenanceScheduleEdit = forwardRef((props: ScheduleEditProps, ref) => {
   const [model, setModel] = useState<Model>({

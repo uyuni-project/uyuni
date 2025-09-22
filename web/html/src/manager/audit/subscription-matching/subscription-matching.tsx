@@ -18,9 +18,9 @@ import { Subscriptions } from "./subscription-matching-subscriptions";
 import { UnmatchedProducts } from "./subscription-matching-unmatched-products";
 import { WarningIcon } from "./subscription-matching-util";
 
-type SubscriptionMatchingProps = {
+interface SubscriptionMatchingProps {
   refreshInterval: number;
-};
+}
 
 class SubscriptionMatching extends React.Component<SubscriptionMatchingProps> {
   timerId?: number;
@@ -115,10 +115,10 @@ const ErrorMessage = (props) => (
   />
 );
 
-type SubscriptionMatchingTabContainerProps = {
+interface SubscriptionMatchingTabContainerProps {
   data: any;
   onPinChanged: (...args: any[]) => any;
-};
+}
 
 class SubscriptionMatchingTabContainer extends React.Component<SubscriptionMatchingTabContainerProps> {
   state = { activeTabHash: document.location.hash };

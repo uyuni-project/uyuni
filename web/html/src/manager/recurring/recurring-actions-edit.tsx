@@ -17,14 +17,14 @@ import Network from "utils/network";
 
 import { DisplayHighstate } from "../state/display-highstate";
 
-type Props = {
+interface Props {
   schedule?: any;
   onActionChanged: (arg0: any) => any;
   onSetMessages: (arg0: any) => any;
   onError: (arg0: any) => any;
-};
+}
 
-type State = {
+interface State {
   minions?: any[];
   active: boolean;
   targetId?: any;
@@ -35,7 +35,7 @@ type State = {
   actionTypeDescription?: any;
   cron?: any;
   details?: any;
-};
+}
 
 class RecurringActionsEdit extends React.Component<Props, State> {
   constructor(props) {
@@ -175,13 +175,13 @@ class RecurringActionsEdit extends React.Component<Props, State> {
   };
 
   onTypeChanged = (type) => {
-    let { details } = this.state;
+    const { details } = this.state;
     details.type = type;
     this.setState({ details });
   };
 
   onCronTimesChanged = (cronTimes) => {
-    let { details } = this.state;
+    const { details } = this.state;
     details.cronTimes = cronTimes;
     this.setState({ details });
   };
@@ -191,7 +191,7 @@ class RecurringActionsEdit extends React.Component<Props, State> {
   };
 
   onSaveStates = (states) => {
-    let { details } = this.state;
+    const { details } = this.state;
     details.states = states;
     this.setState({ details });
     return Promise.resolve(states);
@@ -209,7 +209,7 @@ class RecurringActionsEdit extends React.Component<Props, State> {
   };
 
   toggleTestState = () => {
-    let { details } = this.state;
+    const { details } = this.state;
     details.test = !this.state.details.test;
     this.setState({ details });
   };

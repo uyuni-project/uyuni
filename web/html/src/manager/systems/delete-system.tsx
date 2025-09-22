@@ -3,8 +3,7 @@ import * as React from "react";
 import { AsyncButton, Button } from "components/buttons";
 import { Dialog } from "components/dialog/LegacyDialog";
 import { showDialog } from "components/dialog/util";
-import { Messages } from "components/messages/messages";
-import { Utils as MessagesUtils } from "components/messages/messages";
+import { Messages, Utils as MessagesUtils } from "components/messages/messages";
 
 import Network from "utils/network";
 
@@ -13,17 +12,17 @@ const messageMap = {
   apply_result_missing: t("No result found in state apply response."),
 };
 
-type Props = {
+interface Props {
   serverId: string;
   buttonClass?: string;
   buttonText?: React.ReactNode;
   onDeleteSuccess?: (...args: any[]) => any;
-};
+}
 
-type State = {
+interface State {
   messages: any[];
   cleanupErr: boolean;
-};
+}
 
 class DeleteSystem extends React.Component<Props, State> {
   constructor(props: Props) {
@@ -34,7 +33,7 @@ class DeleteSystem extends React.Component<Props, State> {
     };
   }
 
-  handleDelete = (cleanupErr: Boolean) => {
+  handleDelete = (cleanupErr: boolean) => {
     return Network.post(`/rhn/manager/api/systems/${this.props.serverId}/delete`, { nocleanup: cleanupErr })
       .then((data) => {
         if (data.success && this.props.onDeleteSuccess) {

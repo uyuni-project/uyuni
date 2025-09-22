@@ -3,10 +3,10 @@
  */
 import produce from "./produce";
 
-type Input = {
+interface Input {
   foo?: number;
   bar: { value: number }[];
-};
+}
 
 describe("immer produce", () => {
   let input: Input;

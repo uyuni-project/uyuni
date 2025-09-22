@@ -6,7 +6,7 @@ import SpaRenderer from "core/spa/spa-renderer";
 import { MigrateSlavesForm, MigrationEntry, MigrationVersion } from "components/hub";
 import { MessagesContainer } from "components/toastr";
 
-export const renderer = (id: string, migrationEntries: Array<MigrationEntry>) => {
+export const renderer = (id: string, migrationEntries: MigrationEntry[]) => {
   SpaRenderer.renderNavigationReact(
     <RolesProvider>
       <MessagesContainer />

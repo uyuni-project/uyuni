@@ -4,21 +4,21 @@ import Creatable from "react-select/creatable";
 
 import withCustomComponents from "./input/select/withCustomComponents";
 
-type ReactSelectItem = {
+interface ReactSelectItem {
   value: string | null | undefined;
   id: any | null | undefined;
   label: string;
-};
+}
 
-export type ComboboxItem = {
+export interface ComboboxItem {
   id: any;
   text: string;
-};
+}
 
-type ComboboxProps = {
+interface ComboboxProps {
   id?: string;
   name?: string;
-  options?: Array<ComboboxItem>;
+  options?: ComboboxItem[];
   selectedId?: (number | null | undefined) | (string | null | undefined);
   onFocus?: () => void;
   onSelect: (value: ComboboxItem) => void;
@@ -27,11 +27,11 @@ type ComboboxProps = {
 
   /** Id for testing purposes */
   "data-testid"?: string;
-};
+}
 
-type ComboboxState = {
+interface ComboboxState {
   focused: boolean;
-};
+}
 
 export class Combobox extends React.Component<ComboboxProps, ComboboxState> {
   onChange = (selectedOption: ReactSelectItem) => {
@@ -76,7 +76,7 @@ export class Combobox extends React.Component<ComboboxProps, ComboboxState> {
 
     // The react-select is expecting the value to be a string, but let's keep the original id here so we can propagate
     // correctly the selected option up.
-    const options: Array<ReactSelectItem> = (this.props.options || []).map((item) => ({
+    const options: ReactSelectItem[] = (this.props.options || []).map((item) => ({
       value: item.id.toString(),
       id: item.id,
       label: item.text,

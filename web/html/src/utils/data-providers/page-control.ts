@@ -1,7 +1,7 @@
-type SortType = {
+interface SortType {
   direction: number;
   column: string;
-};
+}
 
 export default class PageControl {
   page: number;
@@ -16,7 +16,7 @@ export default class PageControl {
     query?: string | null,
     queryField?: string | null,
     sortColumn?: string | null,
-    sortDirection: number = 1
+    sortDirection = 1
   ) {
     this.page = page;
     this.pageSize = pageSize;

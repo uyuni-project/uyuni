@@ -1,16 +1,16 @@
-export type ProjectHistoryEntry = {
+export interface ProjectHistoryEntry {
   version: number;
   message: string;
-};
+}
 
-export type ProjectPropertiesType = {
+export interface ProjectPropertiesType {
   label: string;
   name: string;
   description?: string;
-  historyEntries: Array<ProjectHistoryEntry>;
-};
+  historyEntries: ProjectHistoryEntry[];
+}
 
-export type ProjectSoftwareSourceType = {
+export interface ProjectSoftwareSourceType {
   channelId: number;
   name: string;
   label: string;
@@ -18,9 +18,9 @@ export type ProjectSoftwareSourceType = {
   type: string;
   hasUnsyncedPatches: boolean;
   targetChannelId: number | null | undefined;
-};
+}
 
-export type ProjectEnvironmentType = {
+export interface ProjectEnvironmentType {
   id: number;
   projectLabel: string;
   label: string;
@@ -30,9 +30,9 @@ export type ProjectEnvironmentType = {
   version: number;
   hasProfiles: boolean;
   builtTime: string | null | undefined;
-};
+}
 
-export type ProjectFilterServerType = {
+export interface ProjectFilterServerType {
   id: number;
   name: string;
   criteriaKey: string;
@@ -40,18 +40,18 @@ export type ProjectFilterServerType = {
   entityType: string;
   rule: "deny" | "allow";
   state: string;
-};
+}
 
-export type ProjectMessageType = {
+export interface ProjectMessageType {
   text: string;
   type: "info" | "warning" | "error";
   entity: "properties" | "softwareSources" | "filters" | "environments";
-};
+}
 
-export type ProjectType = {
+export interface ProjectType {
   properties: ProjectPropertiesType;
-  softwareSources: Array<ProjectSoftwareSourceType>;
-  filters: Array<any>;
-  environments: Array<ProjectEnvironmentType>;
-  messages: Array<ProjectMessageType>;
-};
+  softwareSources: ProjectSoftwareSourceType[];
+  filters: any[];
+  environments: ProjectEnvironmentType[];
+  messages: ProjectMessageType[];
+}

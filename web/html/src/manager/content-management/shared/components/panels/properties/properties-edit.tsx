@@ -15,14 +15,14 @@ import getRenderedMessages from "../../messages/messages";
 import PropertiesForm from "./properties-form";
 import PropertiesView from "./properties-view";
 
-type Props = {
+interface Props {
   projectId: string;
   properties: ProjectPropertiesType;
   showDraftVersion: boolean;
   onChange: Function;
   currentHistoryEntry?: ProjectHistoryEntry;
-  messages?: Array<ProjectMessageType>;
-};
+  messages?: ProjectMessageType[];
+}
 
 const PropertiesEdit = (props: Props) => {
   const { onAction, cancelAction, isLoading } = useLifecycleActionsApi({
@@ -39,7 +39,7 @@ const PropertiesEdit = (props: Props) => {
 
   const messages = getRenderedMessages(props.messages || []);
 
-  let propertiesToShow = produce(props.properties, (draftProperties) => {
+  const propertiesToShow = produce(props.properties, (draftProperties) => {
     if (props.showDraftVersion) {
       draftProperties.historyEntries.unshift(defaultDraftHistory);
     }

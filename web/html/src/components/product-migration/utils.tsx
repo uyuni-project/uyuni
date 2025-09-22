@@ -26,7 +26,7 @@ import { MigrationScheduleRequest } from "./types";
  *  - requiredByMap a mapping detailing for each channel id, which other channels requires it
  */
 function processChannelData(baseChannelTrees: ChannelTreeType[], mandatoryMap: Record<string, number[]>) {
-  const channelsMap: Map<number, ChannelType> = new Map();
+  const channelsMap = new Map<number, ChannelType>();
   const baseChannels: BaseChannelType[] = [];
 
   // Process the base channel trees
@@ -65,7 +65,7 @@ function processChannelData(baseChannelTrees: ChannelTreeType[], mandatoryMap: R
 
 // Buildst the requiresMap and the requiredByMap
 function processMandatoryMap(mandatoryData: Record<string, number[]>, channelsMap: Map<number, ChannelType>) {
-  const requiresMap: Map<number, Set<number>> = new Map();
+  const requiresMap = new Map<number, Set<number>>();
 
   Object.entries(mandatoryData).forEach(([id, mandatoryIds]) => {
     requiresMap.set(parseInt(id, 10), new Set(mandatoryIds));

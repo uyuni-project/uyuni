@@ -46,7 +46,7 @@ describe("stringToReact", () => {
   test("bracketed email matcher doesn't break default sanitizer behavior (bsc#1211469)", () => {
     expectRenderToEqual(
       stringToReact("<img src=x onerror=alert(1)//>"),
-      // eslint-disable-next-line jsx-a11y/alt-text
+
       <img src="x" />
     );
 

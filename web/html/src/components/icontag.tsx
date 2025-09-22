@@ -1,11 +1,11 @@
 import * as React from "react";
 
-type Props = {
+interface Props {
   type: string;
   className?: string;
   title?: string;
   tooltipPlacement?: "top" | "right" | "bottom" | "left";
-};
+}
 
 // See https://fontawesome.com/v4/icons/
 function IconTag(props: Props) {

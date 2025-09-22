@@ -10,11 +10,11 @@ import { Utils } from "utils/functions";
 
 import { CsvLink, SystemLabel } from "./subscription-matching-util";
 
-type UnmatchedProductsProps = {
+interface UnmatchedProductsProps {
   unmatchedProductIds: any[];
   systems: any[];
   products: any[];
-};
+}
 
 class UnmatchedProducts extends React.Component<UnmatchedProductsProps> {
   state = {
@@ -35,7 +35,7 @@ class UnmatchedProducts extends React.Component<UnmatchedProductsProps> {
   };
 
   sortBySystemCount = (a, b, columnKey, sortDirection) => {
-    let result = a[columnKey] - b[columnKey];
+    const result = a[columnKey] - b[columnKey];
     return (result || Utils.sortById(a, b)) * sortDirection;
   };
 
@@ -104,12 +104,12 @@ class UnmatchedProducts extends React.Component<UnmatchedProductsProps> {
   }
 }
 
-type UnmatchedSystemPopUpProps = {
+interface UnmatchedSystemPopUpProps {
   systems: any[];
   products: any[];
   selectedProductId: any;
   onClosePopUp?: (...args: any[]) => any;
-};
+}
 
 class UnmatchedSystemPopUp extends React.Component<UnmatchedSystemPopUpProps> {
   buildTableData = (props) => {

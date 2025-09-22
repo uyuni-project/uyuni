@@ -8,16 +8,16 @@ import { Table } from "components/table/Table";
 
 import { Utils } from "utils/functions";
 
-type Props = {
+interface Props {
   data?: any;
   onSelect: (row: any) => any;
   onEdit: (row: any) => any;
   onDelete: (item: any) => any;
-};
+}
 
-type State = {
+interface State {
   itemToDelete?: any;
-};
+}
 
 class VirtualHostManagerList extends React.Component<Props, State> {
   constructor(props: Props) {

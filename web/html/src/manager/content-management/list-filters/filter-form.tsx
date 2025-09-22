@@ -17,13 +17,13 @@ enum FilterBy {
   Template = "Template",
 }
 
-export type Props = {
+export interface Props {
   filter: Partial<FilterFormType>;
   errors: any;
   onChange: (...args: any[]) => any;
   onClientValidate: (...args: any[]) => any;
   editing?: boolean;
-};
+}
 
 const FilterForm = (props: Props) => {
   const initialFilterBy = props.filter.template ? FilterBy.Template : FilterBy.Type;

@@ -4,7 +4,7 @@ import { InputBase } from "../InputBase";
 
 type InputBaseRef = React.ElementRef<typeof InputBase>;
 
-type Props = {
+interface Props {
   /** Object storing the data of the form.
    *  Each field name in the form needs to map to a property of this
    *  object. The value is the one displayed in the form */
@@ -45,16 +45,16 @@ type Props = {
   title?: string;
 
   autoComplete?: string;
-};
+}
 
-type FormContextType = {
+interface FormContextType {
   model: any;
   errors: any;
   setModelValue: (name: string, value: any) => any;
   registerInput: Function;
   unregisterInput: Function;
   validateForm: () => void;
-};
+}
 
 export const FormContext = React.createContext<Partial<FormContextType>>({});
 
@@ -68,7 +68,7 @@ export class Form extends React.Component<Props> {
     formDirection: "form-horizontal",
   };
 
-  inputs: { [key: string]: InputBaseRef | undefined } = {};
+  inputs: Record<string, InputBaseRef | undefined> = {};
 
   setModelValue = (name: string, value: any) => {
     const { model, errors } = this.props;

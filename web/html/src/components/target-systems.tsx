@@ -12,10 +12,10 @@ export interface SystemData {
   name: string;
 }
 
-type Props = {
+interface Props {
   systemsData: SystemData[];
   children?: React.ReactNode;
-};
+}
 
 export const TargetSystems: React.FC<Props> = ({ systemsData, children }: Props): JSX.Element => {
   function renderSystemLink(system: SystemData) {

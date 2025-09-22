@@ -64,7 +64,7 @@ export const renderer = (renderId, { groupId, warningMessage }) => {
       "'>" +
       t("Formulas") +
       "</a></li>\n";
-    for (let i in formulaList)
+    for (const i in formulaList)
       navBar +=
         "<li><a href='/rhn/manager/groups/details/formula/" +
         i +

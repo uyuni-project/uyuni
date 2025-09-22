@@ -6,9 +6,9 @@ import Network from "utils/network";
 
 import { useWebSocket } from "../../shared/websocket/useWebSocket";
 
-type Props = {
+interface Props {
   count?: number;
-};
+}
 
 export function SsmCounter(props: Props) {
   const [count, setCount] = React.useState(props.count);

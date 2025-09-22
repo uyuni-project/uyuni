@@ -3,9 +3,9 @@ import * as React from "react";
 import { PaygFullType } from "manager/admin/payg/payg";
 import PaygStatus from "manager/admin/payg-shared/common/payg-status";
 
-type Props = {
+interface Props {
   payg: PaygFullType;
-};
+}
 
 const PaygInfoView = (props: Props) => {
   return (

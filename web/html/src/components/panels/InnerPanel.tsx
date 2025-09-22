@@ -3,7 +3,7 @@ import * as React from "react";
 import { SectionToolbar } from "components/section-toolbar/section-toolbar";
 import { cloneReactElement, HelpLink } from "components/utils";
 
-type Props = {
+interface Props {
   title: string;
   icon: string;
   buttons?: React.ReactNode[];
@@ -11,7 +11,7 @@ type Props = {
   children: React.ReactNode;
   summary?: React.ReactNode;
   helpUrl?: string;
-};
+}
 
 function InnerPanel(props: Props) {
   const help = props.helpUrl ? <HelpLink url={props.helpUrl} /> : null;

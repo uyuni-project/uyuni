@@ -4,13 +4,13 @@ import { docsLocale } from "core/user-preferences";
 
 import HelpIcon from "./HelpIcon";
 
-type Props = {
+interface Props {
   /** URL of the link */
   url: string;
 
   /** Title of the icon */
   text: string;
-};
+}
 
 export function HelpLink(props: Props) {
   return (

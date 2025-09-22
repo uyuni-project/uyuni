@@ -11,17 +11,17 @@ import { ComboboxItem } from "../combobox";
 import styles from "./recurring-event-picker.module.scss";
 
 export type RecurringType = "hourly" | "daily" | "weekly" | "monthly" | "cron";
-export type CronTimes = {
+export interface CronTimes {
   // TODO: These should be `string` or `number`, but currently they're used mixed up
   minute: number | string;
   hour: number | string;
   dayOfMonth: string;
   dayOfWeek: string;
-};
+}
 
 type PickerMode = "Panel" | "Inline";
 
-type RecurringEventPickerProps = {
+interface RecurringEventPickerProps {
   timezone: string;
   mode?: PickerMode;
   hideScheduleName?: boolean;
@@ -33,9 +33,9 @@ type RecurringEventPickerProps = {
   onTypeChanged: (type: string) => void;
   onCronTimesChanged: (cronTimes: CronTimes) => void;
   onCronChanged: (cron: string) => void;
-};
+}
 
-type RecurringEventPickerState = {
+interface RecurringEventPickerState {
   scheduleName: string;
   type: RecurringType;
   time: moment.Moment;
@@ -44,7 +44,7 @@ type RecurringEventPickerState = {
   monthDay: ComboboxItem;
   cron: string;
   cronTimes: CronTimes;
-};
+}
 
 class RecurringEventPicker extends React.Component<RecurringEventPickerProps, RecurringEventPickerState> {
   public static readonly defaultProps: Partial<RecurringEventPickerProps> = {

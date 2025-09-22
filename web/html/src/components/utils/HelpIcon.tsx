@@ -1,9 +1,9 @@
 import * as React from "react";
 
-type Props = {
+interface Props {
   /** Title of the icon */
   text?: string | null;
-};
+}
 
 /** Display help icon with a title */
 const HelpIcon = ({ text }: Props) => {

@@ -19,7 +19,7 @@ interface RadioOption {
 
 type Props = InputBaseProps & {
   /** Items to display in an array of objects with label and value properties. */
-  items: Array<RadioOption>;
+  items: RadioOption[];
 
   /** Show the choices in a line or not */
   inline?: boolean;

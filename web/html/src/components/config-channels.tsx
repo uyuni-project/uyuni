@@ -4,11 +4,11 @@ import { StatesPicker } from "components/states-picker";
 
 import { Messages, MessageType } from "./messages/messages";
 
-type ConfigChannelsProps = {
+interface ConfigChannelsProps {
   matchUrl: (filter?: string) => any;
   applyRequest: (component: ConfigChannels) => any;
   saveRequest: (channels: any[]) => any;
-};
+}
 
 class ConfigChannelsState {
   messages: MessageType[] | null = null;

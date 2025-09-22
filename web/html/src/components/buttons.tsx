@@ -5,7 +5,7 @@ import * as React from "react";
  * @module buttons
  */
 
-type BaseProps = {
+interface BaseProps {
   /** Text to display on the button. */
   text?: React.ReactNode;
   /** Text to display on the button. */
@@ -31,9 +31,9 @@ type BaseProps = {
   className?: string;
   /** Tooltip placement */
   tooltipPlacement?: "top" | "right" | "bottom" | "left";
-};
+}
 
-type BaseState = {};
+interface BaseState {}
 
 /**
  * Base class for button components.
@@ -75,9 +75,9 @@ type AsyncProps = BaseProps & {
   type?: "button" | "submit" | "reset";
 };
 
-type AsyncState = {
+interface AsyncState {
   value: string;
-};
+}
 
 /**
  * A button which performs an asynchronous action and displays an animation while waiting for the result.

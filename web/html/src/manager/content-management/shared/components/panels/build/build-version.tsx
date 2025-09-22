@@ -2,11 +2,11 @@ import * as React from "react";
 
 import styles from "./build-version.module.scss";
 
-type Props = {
+interface Props {
   id: string;
   text: string;
   collapsed?: boolean;
-};
+}
 
 const BuildVersion = ({ id, text, collapsed }: Props) => {
   return (

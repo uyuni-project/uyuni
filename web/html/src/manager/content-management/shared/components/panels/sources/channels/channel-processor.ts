@@ -5,7 +5,7 @@ import produce from "utils/produce";
 
 import { channelsFiltersAvailable } from "./channels-filters-state";
 
-type InternalProcessorState = {
+interface InternalProcessorState {
   /** An array of all base channels after they've passed initial processing */
   channels: ChannelTreeType[] | undefined;
   /** A map from a channel id to any known channel */
@@ -20,7 +20,7 @@ type InternalProcessorState = {
   search: string;
   /** User-selected filters such as vendors, custom, clones */
   activeFilters: string[];
-};
+}
 
 type WorkerPayload = Partial<InternalProcessorState>;
 

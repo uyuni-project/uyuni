@@ -30,7 +30,7 @@ export enum SectionState {
   Collapsed,
 }
 
-type Props = {
+interface Props {
   /** URL to get the server data */
   dataUrl: string;
 
@@ -56,9 +56,9 @@ type Props = {
   scope: "system" | "group";
 
   messageTexts: Record<string, any>;
-};
+}
 
-type State = {
+interface State {
   formulaName: string;
   formulaList: any[];
   formulaRawLayout: any;
@@ -73,7 +73,7 @@ type State = {
   sectionsExpanded: SectionState;
   searchCriteria: string;
   loading: boolean;
-};
+}
 
 class FormulaForm extends React.Component<Props, State> {
   constructor(props: Props) {
@@ -153,7 +153,7 @@ class FormulaForm extends React.Component<Props, State> {
 
   saveFormula = (data) => {
     this.setState({ formulaChanged: false });
-    let scope = this.props.scope;
+    const scope = this.props.scope;
     let formType = scope.toUpperCase();
     if (formType === "SYSTEM") {
       formType = "SERVER";
@@ -172,7 +172,7 @@ class FormulaForm extends React.Component<Props, State> {
         errors: messages,
       });
     } else {
-      let formData = {
+      const formData = {
         type: formType,
         id: this.props.systemId,
         formula_name: this.state.formulaName,

@@ -7,10 +7,10 @@ import { MessagesContainer } from "components/toastr";
 
 import Project from "./project";
 
-type RendererProps = {
+interface RendererProps {
   project?: string;
   wasFreshlyCreatedMessage?: string;
-};
+}
 
 export const renderer = (id: string, { project, wasFreshlyCreatedMessage }: RendererProps = {}) => {
   let projectJson: any = {};

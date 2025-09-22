@@ -43,14 +43,14 @@ const roleBasedMessages = {
   },
 };
 
-type Props = {
+interface Props {
   model: IssServerDetailData;
   editable: boolean;
-};
+}
 
-type State = {
+interface State {
   model: IssServerDetailData;
-};
+}
 
 export class ServerDetailsForm extends React.Component<Props, State> {
   public constructor(props: Props) {

@@ -11,13 +11,13 @@ import Network from "utils/network";
 
 import { SystemsListFilter } from "./list-filter";
 
-type Props = {
+interface Props {
   /** Locale of the help links */
   docsLocale: string;
   isAdmin: boolean;
   queryColumn?: string;
   query?: string;
-};
+}
 
 const DownloadCSVButton = ({ search }) => {
   let url = "/rhn/manager/systems/csv/all";
@@ -95,6 +95,8 @@ export function AllSystems(props: Props) {
           comparator={Utils.sortByText}
           header={t("Updates")}
           cell={(item) => {
+            // TODO: If you touch this file, please resolve this linter error
+            // eslint-disable-next-line eqeqeq
             if (item.statusType == null) {
               return "";
             }
@@ -106,7 +108,7 @@ export function AllSystems(props: Props) {
           comparator={Utils.sortByText}
           header={t("Patches")}
           cell={(item) => {
-            let totalErrataCount = item.securityErrata + item.bugErrata + item.enhancementErrata;
+            const totalErrataCount = item.securityErrata + item.bugErrata + item.enhancementErrata;
             if (totalErrataCount !== 0) {
               return <a href={`/rhn/systems/details/ErrataList.do?sid=${item.id}`}>{totalErrataCount}</a>;
             }
@@ -162,6 +164,8 @@ export function AllSystems(props: Props) {
           comparator={Utils.sortByText}
           header={t("Base Channel")}
           cell={(item) => {
+            // TODO: If you touch this file, please resolve this linter error
+            // eslint-disable-next-line eqeqeq
             if (item.channelId != null) {
               return <a href={`/rhn/channels/ChannelDetail.do?cid=${item.channelId}`}>{item.channelLabels}</a>;
             }

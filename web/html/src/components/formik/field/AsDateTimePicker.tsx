@@ -4,15 +4,14 @@ import { DateTimePicker } from "components/datetime";
 
 import { LocalizedMoment } from "utils/datetime";
 
-type BaseProps<ValueType> = {
+interface BaseProps<ValueType> {
   name: string;
   value: ValueType;
-};
+}
 
 type Props = BaseProps<LocalizedMoment> & React.ComponentProps<typeof DateTimePicker>;
 
 export const AsDateTimePicker = (props: Props) => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [field, meta, helper] = useField(props.name);
   return (
     <DateTimePicker

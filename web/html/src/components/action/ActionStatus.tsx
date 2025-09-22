@@ -1,6 +1,6 @@
 import * as React from "react";
 
-type Props = {
+interface Props {
   /** ID of the server the action is running on */
   serverId: string;
 
@@ -9,7 +9,7 @@ type Props = {
 
   /** Status name of the action. One of 'Queued', 'Failed', 'Completed' or 'Picked Up' */
   status: string;
-};
+}
 
 /**
  * Render a clickable icon depending on the action status name.

@@ -40,13 +40,13 @@ function MinionHighstate({ minion }: { minion: { id: number; name: string } }) {
   );
 }
 
-type DisplayHighstateProps = {
+interface DisplayHighstateProps {
   minions?: any;
-};
+}
 
-type DisplayHighstateState = {
+interface DisplayHighstateState {
   minions?: any;
-};
+}
 
 class DisplayHighstate extends React.Component<DisplayHighstateProps, DisplayHighstateState> {
   constructor(props: DisplayHighstateProps) {

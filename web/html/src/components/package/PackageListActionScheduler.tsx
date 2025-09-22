@@ -15,10 +15,10 @@ import Network from "utils/network";
 
 const SELECTION_KEY_SEPARATOR = "~*~";
 
-type Props = {
+interface Props {
   serverId: number;
   selectionSet: string;
-  actionChains: Array<ActionChain>;
+  actionChains: ActionChain[];
   icon: string;
   listDataAPI: string;
   scheduleActionAPI: string;
@@ -29,15 +29,15 @@ type Props = {
   listActionLabel: string;
   listColumns: React.ReactNode[];
   confirmTitle: string;
-};
+}
 
-type State = {
-  messages: Array<MessageType>;
+interface State {
+  messages: MessageType[];
   selectedPackages: string[];
   confirmAction: boolean;
   earliest: moment.Moment;
   actionChain?: ActionChain;
-};
+}
 
 export class PackageListActionScheduler extends React.Component<Props, State> {
   constructor(props) {

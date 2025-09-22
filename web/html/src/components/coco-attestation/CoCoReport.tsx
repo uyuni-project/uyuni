@@ -5,14 +5,14 @@ import { TabContainer } from "../tab-container";
 import CoCoResult from "./CoCoResult";
 import { AttestationReport, renderStatus, renderTime } from "./Utils";
 
-type Props = {
+interface Props {
   report: AttestationReport;
   activeTab?: string;
-};
+}
 
-type State = {
+interface State {
   activeTabHash: string;
-};
+}
 
 class CoCoReport extends React.Component<Props, State> {
   constructor(props: Props) {

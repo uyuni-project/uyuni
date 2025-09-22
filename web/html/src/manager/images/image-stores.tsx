@@ -33,14 +33,14 @@ const typeMap = {
   os_image: "OS Image",
 };
 
-type Props = {};
+interface Props {}
 
-type State = {
+interface State {
   messages: any;
   imagestores: any;
   selectedItems: any;
   selected?: any;
-};
+}
 
 class ImageStores extends React.Component<Props, State> {
   constructor(props) {

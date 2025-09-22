@@ -22,7 +22,7 @@ export function closeDialog(modalId: string) {
   return closeModalPromise;
 }
 
-export type DialogProps = {
+export interface DialogProps {
   id: string;
   className?: string;
   title?: React.ReactNode;
@@ -32,7 +32,7 @@ export type DialogProps = {
   /** Whether to automatically focus the first input in the opened modal, true by default */
   autoFocus?: boolean;
   onClosePopUp?: (...args: any[]) => any;
-};
+}
 
 export function Dialog(props: DialogProps) {
   const { onClosePopUp, buttons, ...OtherProps } = props;

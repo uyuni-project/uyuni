@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 
 import { Combobox } from "components/combobox";
 
-type ActionChain = {
+interface ActionChain {
   id: string;
   text: string;
-};
+}
 
-type Props = {
+interface Props {
   actionChains: ActionChain[];
-};
+}
 
 export const ActionChainPicker = (props: Props) => {
   const [selectedId, setSelectedId] = useState(props.actionChains[0]?.id || "");

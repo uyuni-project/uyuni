@@ -26,7 +26,7 @@ interface SchedulePlaybookProps {
 }
 
 interface PlaybookArgs {
-  flushCache: Boolean;
+  flushCache: boolean;
 }
 
 export default function SchedulePlaybook({ playbook, onBack, onSelectPlaybook, isRecurring }: SchedulePlaybookProps) {

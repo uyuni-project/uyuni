@@ -1,6 +1,6 @@
 import * as React from "react";
 
-type HighlightProps = {
+interface HighlightProps {
   /** text to display */
   text: string;
 
@@ -12,12 +12,12 @@ type HighlightProps = {
 
   /** CSS class to add to wrapping element */
   className?: string;
-};
+}
 
 /** Search and highlight part of a text */
 export function Highlight(props: HighlightProps) {
-  let text = props.text;
-  let high = props.highlight;
+  const text = props.text;
+  const high = props.highlight;
 
   if (!props.enabled || !high) {
     return (
@@ -27,7 +27,7 @@ export function Highlight(props: HighlightProps) {
     );
   }
 
-  let pos = text.toLocaleLowerCase().indexOf(high.toLocaleLowerCase());
+  const pos = text.toLocaleLowerCase().indexOf(high.toLocaleLowerCase());
   if (pos < 0) {
     return (
       <span key="hl" className={props.className}>

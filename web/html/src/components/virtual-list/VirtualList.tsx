@@ -4,12 +4,12 @@ import { Virtuoso } from "react-virtuoso";
 
 import styles from "./VirtualList.module.scss";
 
-type ListProps<T> = {
+interface ListProps<T> {
   renderItem: (item: T) => JSX.Element;
   items: T[];
   itemKey: (item: T) => string | number;
   defaultItemHeight?: number;
-};
+}
 
 const VirtualList = <T,>(props: ListProps<T>) => {
   const itemContent = (index: number, item: T) => {

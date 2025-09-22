@@ -66,7 +66,7 @@ export const SupportData: React.FC<Props> = ({ serverId, availableRegions, suppo
     Network.post(`/rhn/manager/api/systems/${serverId}/details/uploadSupportData`, formModel)
       .then(
         (response) => {
-          let messages: Array<MessageType>;
+          let messages: MessageType[];
           if (!response.success) {
             messages = MessagesUtils.error(response.messages);
           } else {

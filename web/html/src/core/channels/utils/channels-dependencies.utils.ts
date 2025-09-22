@@ -1,12 +1,12 @@
-export type ChannelsDependencies = {
+export interface ChannelsDependencies {
   requiredChannels: Map<number, Set<number>>;
   requiredByChannels: Map<number, Set<number>>;
-};
+}
 
 // Converts array of channel names into a human-readable tooltip
 // containing information about channel dependencies
 // return null if the channel is not involved in any dependencies
-function dependenciesTooltip(requiredChannels: Array<string>, requiredByChannels: Array<string>): string | undefined {
+function dependenciesTooltip(requiredChannels: string[], requiredByChannels: string[]): string | undefined {
   if (requiredChannels.length === 0 && requiredByChannels.length === 0) {
     return undefined;
   }
@@ -48,7 +48,7 @@ function computeReverseDependencies(dependencyMap: Map<number, Set<number>>): Ma
 }
 
 function processChannelDependencies(requiredChannelsRaw): ChannelsDependencies {
-  const requiredChannels: Map<number, Set<number>> = new Map(
+  const requiredChannels = new Map<number, Set<number>>(
     Object.entries(requiredChannelsRaw).map((entry) => {
       const channelId = parseInt(entry[0], 10);
       // TODO: Specify types

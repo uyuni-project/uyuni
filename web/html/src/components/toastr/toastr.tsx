@@ -2,14 +2,14 @@ import * as React from "react";
 
 import { cssTransition, toast, ToastContainer } from "react-toastify";
 
-type OptionalParams = {
+interface OptionalParams {
   autoHide: boolean;
   containerId?: string;
-};
+}
 
-type MessagesContainerProps = {
+interface MessagesContainerProps {
   containerId?: string;
-};
+}
 
 const FadeTransition = cssTransition({
   enter: "toast-enter",

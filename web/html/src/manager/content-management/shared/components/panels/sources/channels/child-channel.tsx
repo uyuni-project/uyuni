@@ -8,7 +8,7 @@ import { Highlight } from "components/table/Highlight";
 import { ChannelDependencyData, ChannelProcessor } from "./channel-processor";
 import styles from "./channels-selection.module.scss";
 
-type Props = {
+interface Props {
   /** The child channel */
   channel: ChildChannelType;
   /** The text currently used to filter the list of channels */
@@ -19,7 +19,7 @@ type Props = {
   channelProcessor: Readonly<ChannelProcessor>;
   /** Callback to invoke when a channel is selected/deselected */
   onToggleChannelSelect: (channel: BaseChannelType | ChildChannelType, toState?: boolean) => void;
-};
+}
 
 function getTooltip(channelDependencies: ChannelDependencyData): string {
   let tooltip = "";

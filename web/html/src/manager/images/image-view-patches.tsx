@@ -34,9 +34,9 @@ const typeTitles = {
   restart_suggested: t("Affects package management stack"),
 };
 
-type ImageViewPatchesProps = {
+interface ImageViewPatchesProps {
   data: any;
-};
+}
 
 class ImageViewPatches extends React.Component<ImageViewPatchesProps> {
   searchData(row, criteria) {
@@ -54,9 +54,9 @@ class ImageViewPatches extends React.Component<ImageViewPatchesProps> {
   }
 
   renderType = (row) => {
-    let icon = [<i key={row.type} className={typeIcons[row.type]} title={typeTitles[row.type]} />];
+    const icon = [<i key={row.type} className={typeIcons[row.type]} title={typeTitles[row.type]} />];
 
-    for (let k of row.keywords) {
+    for (const k of row.keywords) {
       icon.push(<i key={k} className={typeIcons[k]} title={typeTitles[k]} />);
     }
 

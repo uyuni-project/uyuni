@@ -3,25 +3,25 @@ import { useState } from "react";
 
 import { CustomDiv } from "components/custom-objects";
 
-export type TreeItem = {
+export interface TreeItem {
   id: string;
   data?: any;
-  children?: Array<string>;
-};
+  children?: string[];
+}
 
-export type TreeData = {
+export interface TreeData {
   rootId: string;
-  items: Array<TreeItem>;
-};
+  items: TreeItem[];
+}
 
-export type Props = {
+export interface Props {
   data?: TreeData;
   renderItem: (item: TreeItem, renderNameColumn: Function) => React.ReactNode;
   header?: React.ReactNode;
-  initiallyExpanded?: Array<string>;
+  initiallyExpanded?: string[];
   onItemSelectionChanged?: (item: TreeItem, checked: boolean) => void;
-  initiallySelected?: Array<string>;
-};
+  initiallySelected?: string[];
+}
 
 export const Tree = (props: Props) => {
   const [visibleSublists, setVisibleSublist] = useState(props.initiallyExpanded || []);

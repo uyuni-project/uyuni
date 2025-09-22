@@ -4,7 +4,7 @@ import { cloneReactElement } from "components/utils";
 
 import styles from "./SearchPanel.module.scss";
 
-type SearchPanelProps = {
+interface SearchPanelProps {
   /** number representing the number of the first displayed item */
   fromItem: number;
 
@@ -40,7 +40,7 @@ type SearchPanelProps = {
 
   /** Search field components */
   children?: React.ReactNode;
-};
+}
 
 /** Panel containing the search fields for a table */
 export function SearchPanel(props: SearchPanelProps) {

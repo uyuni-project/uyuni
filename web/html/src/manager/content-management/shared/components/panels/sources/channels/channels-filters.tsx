@@ -3,10 +3,10 @@ import { memo } from "react";
 
 import { channelsFiltersAvailableValues, FilterType } from "./channels-filters-state";
 
-type Props = {
+interface Props {
   activeFilters: string[];
   onChange: (value: string) => void;
-};
+}
 
 const ChannelsFilters = (props: Props) => {
   return (

@@ -2,10 +2,10 @@ import * as React from "react";
 
 import { IconTag } from "components/icontag";
 
-type Props = {
+interface Props {
   status: string;
   statusMessage: string;
-};
+}
 
 const PaygStatus = (props: Props) => {
   let icon = "system-unknown";

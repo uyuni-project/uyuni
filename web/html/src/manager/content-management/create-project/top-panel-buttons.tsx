@@ -2,9 +2,9 @@ import * as React from "react";
 
 import { AsyncButton } from "components/buttons";
 
-type TopPanelButtonsProps = {
+interface TopPanelButtonsProps {
   onCreate: (...args: any[]) => any;
-};
+}
 
 const TopPanelButtons = (props: TopPanelButtonsProps) => {
   return (

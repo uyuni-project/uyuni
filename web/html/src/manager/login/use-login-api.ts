@@ -4,11 +4,11 @@ import { useImmer } from "use-immer";
 
 import Network from "utils/network";
 
-type LoginApiStateType = {
-  messages: Array<string>;
+interface LoginApiStateType {
+  messages: string[];
   success: boolean;
   loading: boolean;
-};
+}
 
 const errorsMessage = {
   "error.invalid_login": t("Either the password or username is incorrect."),

@@ -8,14 +8,14 @@ import { HelpLink } from "components/utils";
 import MaintenanceCalendarList from "./calendar-list";
 import MaintenanceScheduleList from "./schedule-list";
 
-type MaintenanceListProps = {
+interface MaintenanceListProps {
   type: "schedule" | "calendar";
   data: any[];
   onActionChanged: (...args: any[]) => any;
   onSelect: (...args: any[]) => any;
   onEdit: (...args: any[]) => any;
   onDelete: (...args: any[]) => any;
-};
+}
 
 const MaintenanceWindowsList = (props: MaintenanceListProps) => {
   const [type] = useState(props.type);

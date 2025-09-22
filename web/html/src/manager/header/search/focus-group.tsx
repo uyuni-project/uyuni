@@ -1,10 +1,10 @@
 import * as React from "react";
 import { useEffect, useRef } from "react";
 
-type Props = {
+interface Props {
   onFocusOut: () => void;
   children?: React.ReactNode;
-};
+}
 
 export const FocusGroup = (props: Props) => {
   const containerRef = useRef<HTMLDivElement>(null);

@@ -11,15 +11,15 @@ import { Table } from "components/table/Table";
 
 import Network from "utils/network";
 
-type Props = {
+interface Props {
   flashMessage?: ServerMessageType;
   warningMessage?: ServerMessageType;
-};
+}
 
-type State = {
+interface State {
   serverData: any[];
   messages: any[];
-};
+}
 
 class FormulaCatalog extends React.Component<Props, State> {
   constructor(props) {
@@ -48,7 +48,7 @@ class FormulaCatalog extends React.Component<Props, State> {
     return rowData;
   };
 
-  searchData = (row: string = "", criteria?: string) => {
+  searchData = (row = "", criteria?: string) => {
     return !criteria || row.toLowerCase().includes(criteria.toLowerCase());
   };
 

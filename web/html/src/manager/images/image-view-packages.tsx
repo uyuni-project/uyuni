@@ -18,9 +18,9 @@ declare global {
   }
 }
 
-type Props = {
+interface Props {
   data: any;
-};
+}
 
 class ImageViewPackages extends React.Component<Props> {
   searchData(row, criteria) {

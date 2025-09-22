@@ -7,7 +7,7 @@ import { Highlight } from "components/table/Highlight";
 import { isFiltered } from "./FormulaComponentGenerator";
 import SectionToggle from "./SectionToggle";
 
-type Props = {
+interface Props {
   id: string;
   sectionsExpanded: SectionState;
   setSectionsExpanded: (SectionState) => void;
@@ -16,7 +16,7 @@ type Props = {
   children?: React.ReactNode;
   isVisibleByCriteria?: () => boolean;
   criteria: string;
-};
+}
 
 const Group = (props: Props) => {
   const [visible, setVisible] = useState(props.sectionsExpanded !== SectionState.Collapsed);

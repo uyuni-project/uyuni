@@ -31,7 +31,7 @@ export const renderer = (renderId, { serverId, formulaId }) => {
       "'><i class='fa fa-pencil-square-o'></i>" +
       t("Configuration") +
       "</a></li>\n";
-    for (let i in formulaList)
+    for (const i in formulaList)
       navBar +=
         "<li" +
         (DEPRECATED_unsafeEquals(i, activeId) ? " class='active'>" : ">") +

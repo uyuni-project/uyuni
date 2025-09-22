@@ -35,16 +35,16 @@ function getHashAction() {
   return match ? match[1] : undefined;
 }
 
-type Props = {};
+interface Props {}
 
-type State = {
+interface State {
   vhms: any[];
   messages?: any[];
   availableModules: any[];
   selected?: any;
   action?: any;
   id?: any;
-};
+}
 
 class VirtualHostManager extends React.Component<Props, State> {
   constructor(props: Props) {

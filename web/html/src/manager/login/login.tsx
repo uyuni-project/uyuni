@@ -39,10 +39,10 @@ const products = {
   },
 };
 
-type Props = {
+interface Props {
   theme: Theme;
   bounce: string;
-  validationErrors: Array<string>;
+  validationErrors: string[];
   schemaUpgradeRequired: boolean;
   webVersion: string;
   customHeader: string;
@@ -52,7 +52,7 @@ type Props = {
   passwordLength: string;
   diskspaceSeverity: string;
   sccForwardWarning: boolean;
-};
+}
 
 export type ThemeProps = Props & {
   product: typeof products[keyof typeof products];

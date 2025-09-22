@@ -13,7 +13,7 @@ import withPageWrapper from "components/general/with-page-wrapper";
 import { TopPanel } from "components/panels/TopPanel";
 import { showErrorToastr, showSuccessToastr } from "components/toastr/toastr";
 
-export type paygProperties = {
+export interface paygProperties {
   description: string;
   host: string;
   port: string;
@@ -29,21 +29,21 @@ export type paygProperties = {
   bastion_key_password: string;
   instance_edit: boolean;
   bastion_edit: boolean;
-};
+}
 
-export type PaygFullType = {
+export interface PaygFullType {
   id: string;
   status: string;
   statusMessage: string;
   lastChange: moment.Moment;
   properties: paygProperties;
-};
+}
 
-type Props = {
+interface Props {
   payg: PaygFullType;
   wasFreshlyCreatedMessage?: string;
   readOnly?: boolean;
-};
+}
 
 const Payg = (props: Props) => {
   const [payg, setPayg] = useState(props.payg);

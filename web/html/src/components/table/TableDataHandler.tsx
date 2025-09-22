@@ -16,17 +16,17 @@ import { SearchField } from "./SearchField";
 import { SearchPanel } from "./SearchPanel";
 import { SelectedRowDetails } from "./SelectedRowDetails";
 
-type ChildrenArgsProps = {
-  currItems: Array<any>;
+interface ChildrenArgsProps {
+  currItems: any[];
   headers: React.ReactNode;
   handleSelect: Function;
-  selectedItems: Array<any>;
+  selectedItems: any[];
   criteria?: string;
   field?: string;
-};
+}
 
-type Props = {
-  columns: Array<React.ReactElement<any>>;
+interface Props {
+  columns: React.ReactElement<any>[];
 
   /**
    * Either an array of data items of any type where each element is a row data,
@@ -42,7 +42,7 @@ type Props = {
    *
    * See: utils/data-providers/paged-data-endpoint.js for async usage
    */
-  data: Array<any> | string;
+  data: any[] | string;
 
   /** Function extracting the unique key of the row from the data object */
   identifier: (row: any) => any;
@@ -75,10 +75,10 @@ type Props = {
   selectable: boolean | ((row: unknown) => boolean);
 
   /** the handler to call when the table selection is updated. If not provided, the select boxes won't be rendered */
-  onSelect?: (items: Array<any>) => void;
+  onSelect?: (items: any[]) => void;
 
   /** the identifiers for selected items */
-  selectedItems?: Array<any>;
+  selectedItems?: any[];
 
   /** Allow items to be deleted */
   deletable?: boolean | ((row: any) => boolean);
@@ -103,14 +103,14 @@ type Props = {
   children: (args: ChildrenArgsProps) => React.ReactNode;
 
   /** Other filter fields */
-  additionalFilters?: Array<React.ReactNode>;
+  additionalFilters?: React.ReactNode[];
 
   /** Title buttons to add next to the items per page selection */
-  titleButtons?: Array<React.ReactNode>;
-};
+  titleButtons?: React.ReactNode[];
+}
 
-type State = {
-  data: Array<any>;
+interface State {
+  data: any[];
   provider: SimpleDataProvider | AsyncDataProvider;
   currentPage: number;
   itemsPerPage: number;
@@ -120,7 +120,7 @@ type State = {
   sortColumnKey: string | null;
   sortDirection: number;
   loading: boolean;
-};
+}
 
 export class TableDataHandler extends React.Component<Props, State> {
   static defaultProps = {
@@ -149,9 +149,7 @@ export class TableDataHandler extends React.Component<Props, State> {
     const data = this.props.data;
     if (Array.isArray(data)) {
       // Gather comparators from columns
-      const comparators: {
-        [key: string]: Comparator;
-      } = this.props.columns.reduce((comparators, col) => {
+      const comparators: Record<string, Comparator> = this.props.columns.reduce((comparators, col) => {
         if (col.props.columnKey) {
           comparators[col.props.columnKey] = col.props.comparator;
         }

@@ -3,15 +3,16 @@ import { useContext } from "react";
 
 import { DEPRECATED_Select, FormContext } from "components/input";
 
-type ModuleSelectorProps = {
-  modules: {
-    [name: string]: {
+interface ModuleSelectorProps {
+  modules: Record<
+    string,
+    {
       default: string;
-      streams: Array<string>;
-    };
-  };
+      streams: string[];
+    }
+  >;
   isLoading: boolean;
-};
+}
 
 export default function ModuleSelector(props: ModuleSelectorProps) {
   const formContext = useContext(FormContext);

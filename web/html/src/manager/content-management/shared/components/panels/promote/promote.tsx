@@ -16,15 +16,15 @@ import DownArrow from "../../down-arrow/down-arrow";
 import BuildVersion from "../build/build-version";
 import { getVersionMessageByNumber } from "../properties/properties.utils";
 
-type Props = {
+interface Props {
   projectId: string;
   environmentPromote: ProjectEnvironmentType;
   environmentTarget: ProjectEnvironmentType;
   environmentNextTarget: ProjectEnvironmentType;
   versionToPromote: number;
-  historyEntries: Array<ProjectHistoryEntry>;
+  historyEntries: ProjectHistoryEntry[];
   onChange: Function;
-};
+}
 
 const Promote = (props: Props) => {
   const [open, setOpen] = useState(false);

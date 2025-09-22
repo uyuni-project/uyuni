@@ -17,14 +17,14 @@ import useLifecycleActionsApi from "../../../api/use-lifecycle-actions-api";
 import { ProjectHistoryEntry } from "../../../type/project.type";
 import DownArrow from "../../down-arrow/down-arrow";
 
-type Props = {
+interface Props {
   projectId: string;
   onBuild: Function;
   currentHistoryEntry?: Partial<ProjectHistoryEntry>;
-  changesToBuild: Array<string>;
+  changesToBuild: string[];
   disabled?: boolean;
   hasChannelsWithUnsyncedPatches: boolean;
-};
+}
 
 const Build = ({
   projectId,

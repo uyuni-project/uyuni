@@ -9,16 +9,16 @@ import { Form } from "components/input/form/Form";
 import { Column } from "components/table/Column";
 import { Table } from "components/table/Table";
 
-type CalendarListProps = {
+interface CalendarListProps {
   data: {
     id: number;
     name: string;
-    scheduleNames: Array<Map<string, string>>;
+    scheduleNames: Map<string, string>[];
   }[];
   onSelect: (...args: any[]) => any;
   onEdit: (...args: any[]) => any;
   onDelete: (...args: any[]) => any;
-};
+}
 
 const MaintenanceCalendarList = (props: CalendarListProps) => {
   const [calendarToDelete, setCalendarToDelete] = useState<any>({});

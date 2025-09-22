@@ -11,21 +11,21 @@ import AccordionPathContent, { PlaybookDetails } from "./accordion-path-content"
 import { AnsiblePath } from "./ansible-path-type";
 import SchedulePlaybook from "./schedule-playbook";
 
-type PropsType = {
+interface PropsType {
   minionServerId: number;
   pathContentType: string;
   isRecurring?: boolean;
   onSelectPlaybook?: (playbook: any) => void;
-};
+}
 
-type StateType = {
+interface StateType {
   minionServerId: number;
   pathContentType: string;
   pathList: AnsiblePath[];
   selectedPlaybook: PlaybookDetails | null;
   errors: string[];
   loading: boolean;
-};
+}
 
 class AnsiblePathContent extends React.Component<PropsType, StateType> {
   constructor(props) {

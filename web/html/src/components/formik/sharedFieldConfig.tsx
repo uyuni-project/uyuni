@@ -1,13 +1,13 @@
 import React, { createContext, useContext } from "react";
 
-export type SharedFieldConfigType = {
+export interface SharedFieldConfigType {
   /** CSS class to use for the label */
   labelClass?: string;
 
   // TODO: Rename to fieldClass once everything is done
   /** CSS class to use for the <div> element wrapping the field input part */
   divClass?: string;
-};
+}
 
 const initialValue = {};
 

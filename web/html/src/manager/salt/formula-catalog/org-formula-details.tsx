@@ -13,11 +13,11 @@ declare global {
   }
 }
 
-type Props = {};
+interface Props {}
 
-type State = {
+interface State {
   metadata: any;
-};
+}
 
 class FormulaDetail extends React.Component<Props, State> {
   constructor(props, context) {
@@ -36,8 +36,8 @@ class FormulaDetail extends React.Component<Props, State> {
   };
 
   generateMetadata = () => {
-    let metadata: React.ReactNode[] = [];
-    for (let item in this.state.metadata) {
+    const metadata: React.ReactNode[] = [];
+    for (const item in this.state.metadata) {
       metadata.push(
         <div className="form-group" key={item}>
           <label className="col-md-3 control-label">{item}:</label>
@@ -49,12 +49,12 @@ class FormulaDetail extends React.Component<Props, State> {
   };
 
   generateMetadataItem = (name, item) => {
-    if (typeof item == "string")
+    if (typeof item === "string")
       return <textarea className="form-control" name={name} value={item} readOnly disabled />;
-    else if (typeof item == "object") {
+    else if (typeof item === "object") {
       let text = "";
       let rows = 1;
-      for (let key in item) {
+      for (const key in item) {
         text += key + ": " + item[key] + "\n";
         rows++;
       }

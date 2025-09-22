@@ -18,7 +18,7 @@ import Network from "utils/network";
 import { inferEntityParams, isReadOnly, targetNameLink, targetTypeToString } from "./recurring-actions-utils";
 import { RecurringActionsSearch } from "./search/recurring-actions-search";
 
-type Props = {
+interface Props {
   onSetMessages: (arg0: any) => any;
   isFilteredList?: boolean;
   onActionChanged: (arg0: any) => any;
@@ -26,13 +26,13 @@ type Props = {
   onEdit: (arg0: any) => any;
   onError: (arg0: any) => any;
   onDeleteError: (arg0: any) => any;
-};
+}
 
-type State = {
+interface State {
   itemsToDelete: any[];
   itemToDelete?: any;
   schedules: any[];
-};
+}
 
 class RecurringActionsList extends React.Component<Props, State> {
   tableRef: React.RefObject<any>;

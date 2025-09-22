@@ -3,7 +3,7 @@ import * as React from "react";
 import { Button } from "components/buttons";
 
 import { showDialog } from "./util";
-type Props = {
+interface Props {
   target: string;
   id?: string;
   className?: string;
@@ -13,7 +13,7 @@ type Props = {
   disabled?: boolean;
   item?: any;
   onClick?: (...args: any[]) => any;
-};
+}
 
 /**
  * DEPRECATED: Do **NOT** use this component for new code, prefer `ModalButton` instead

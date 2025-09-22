@@ -17,14 +17,14 @@ function channelIcon(channel) {
   return <i className={iconClass} title={iconTitle} />;
 }
 
-type SaltStatePopupProps = {
+interface SaltStatePopupProps {
   saltState?: {
     id: string;
     name: string;
     content: React.ReactNode;
   };
   onClosePopUp: () => any;
-};
+}
 
 class SaltStatePopup extends React.Component<SaltStatePopupProps> {
   render() {

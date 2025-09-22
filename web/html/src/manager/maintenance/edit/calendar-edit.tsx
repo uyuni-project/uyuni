@@ -11,7 +11,7 @@ import { Form } from "components/input/form/Form";
 import { Text } from "components/input/text/Text";
 import { MessageType, Utils as MessagesUtils } from "components/messages/messages";
 
-type CalendarEditProps = {
+interface CalendarEditProps {
   messages: (messages: MessageType[]) => any;
   isEdit: boolean;
   calendar?: {
@@ -23,7 +23,7 @@ type CalendarEditProps = {
   onRefresh: (...args: any[]) => any;
   onEdit: (...args: any[]) => any;
   isLoading: (...args: any[]) => any;
-};
+}
 
 const MaintenanceCalendarEdit = forwardRef((props: CalendarEditProps, ref) => {
   const [model, setModel] = useState<{ name?: string; strategy: boolean }>({ name: "", strategy: false });

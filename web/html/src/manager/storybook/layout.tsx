@@ -2,9 +2,9 @@ import React from "react";
 
 import styles from "./layout.module.scss";
 
-type Props = {
+interface Props {
   children?: React.ReactNode;
-};
+}
 
 export const StorySection = (props: Props) => {
   return (
@@ -22,9 +22,9 @@ export const StripedStorySection = (props: Props) => {
   );
 };
 
-type RowProps = {
+interface RowProps {
   children?: React.ReactNode;
-};
+}
 
 export const StoryRow = (props: RowProps) => {
   return <div className={styles.row}>{props.children}</div>;

@@ -4,13 +4,13 @@ import { DEPRECATED_Select, Form, Text } from "components/input";
 
 import { ProjectEnvironmentType } from "../../../type";
 
-type Props = {
+interface Props {
   environment: ProjectEnvironmentType;
   errors: any;
-  environments: Array<ProjectEnvironmentType>;
+  environments: ProjectEnvironmentType[];
   onChange: Function;
   editing?: boolean;
-};
+}
 
 const EnvironmentForm = (props: Props) => (
   <Form

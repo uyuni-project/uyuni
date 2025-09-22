@@ -9,41 +9,41 @@ const messageMap = {
   invalid_channel_id: t("Invalid channel id"),
 };
 
-export type Channel = {
+export interface Channel {
   id: number;
   name: string;
   custom: boolean;
   subscribable: boolean;
   recommended: boolean;
-};
+}
 
-export type availableChannelsType = Array<{ base: Channel | null | undefined; children: Array<Channel> }>;
+export type availableChannelsType = { base: Channel | null | undefined; children: Channel[] }[];
 
-type ChildrenArgsProps = {
+interface ChildrenArgsProps {
   messages: any[];
   loading: boolean;
   loadingChildren: boolean;
   availableBaseChannels: Channel[];
   availableChannels: availableChannelsType;
   fetchChildChannels: (baseId: number) => Promise<any>;
-};
+}
 
-type ActivationKeyChannelsProps = {
+interface ActivationKeyChannelsProps {
   defaultBaseId: number;
   activationKeyId: number;
   currentSelectedBaseId: number;
   onNewBaseChannel: Function;
   children: (arg0: ChildrenArgsProps) => JSX.Element;
-};
+}
 
-type ActivationKeyChannelsState = {
-  messages: Array<any>;
+interface ActivationKeyChannelsState {
+  messages: any[];
   loading: boolean;
   loadingChildren: boolean;
-  availableBaseChannels: Array<Channel>; //[base1, base2],
+  availableBaseChannels: Channel[]; //[base1, base2],
   availableChannels: availableChannelsType; //[{base : null, children: []}]
-  fetchedData: Map<number, Array<number>>;
-};
+  fetchedData: Map<number, number[]>;
+}
 
 class ActivationKeyChannelsApi extends React.Component<ActivationKeyChannelsProps, ActivationKeyChannelsState> {
   constructor(props: ActivationKeyChannelsProps) {
@@ -66,10 +66,9 @@ class ActivationKeyChannelsApi extends React.Component<ActivationKeyChannelsProp
   }
 
   fetchBaseChannels = () => {
-    let future;
     this.setState({ loading: true });
 
-    future = Network.get(`/rhn/manager/api/activation-keys/base-channels`)
+    const future = Network.get(`/rhn/manager/api/activation-keys/base-channels`)
       .then((data) => {
         this.setState({
           availableBaseChannels: Array.from(data.data).map((channel: any) => channel.base),

@@ -152,15 +152,15 @@ function ActionStatus(props) {
   );
 }
 
-type ImageInfoProps = {
+interface ImageInfoProps {
   gotRuntimeInfo?: any;
   data: any;
   runtimeInfoEnabled?: any;
-};
+}
 
-type ImageInfoState = {
+interface ImageInfoState {
   instancePopupContent: any;
-};
+}
 
 class ImageInfo extends React.Component<ImageInfoProps, ImageInfoState> {
   constructor(props) {
@@ -470,9 +470,9 @@ class ImageInfo extends React.Component<ImageInfoProps, ImageInfoState> {
   }
 }
 
-type ImageCustomInfoProps = {
+interface ImageCustomInfoProps {
   data: any;
-};
+}
 
 class ImageCustomInfo extends React.Component<ImageCustomInfoProps> {
   render() {
@@ -494,14 +494,14 @@ class ImageCustomInfo extends React.Component<ImageCustomInfoProps> {
   }
 }
 
-type ImageViewOverviewProps = {
+interface ImageViewOverviewProps {
   data: any;
   runtimeInfoEnabled: any;
   gotRuntimeInfo: any;
   onBuild?: (...args: any[]) => any;
   onInspect?: (id: string, earliest: moment.Moment) => void;
   onDelete?: (...args: any[]) => any;
-};
+}
 
 class ImageViewOverview extends React.Component<ImageViewOverviewProps> {
   renderStatus(row) {
@@ -690,16 +690,16 @@ class ImageViewOverview extends React.Component<ImageViewOverviewProps> {
   }
 }
 
-type BuildDialogProps = {
+interface BuildDialogProps {
   data: any;
   onBuild?: (...args: any[]) => any;
-};
+}
 
-type BuildDialogState = {
+interface BuildDialogState {
   model: {
     earliest: moment.Moment;
   };
-};
+}
 
 class BuildDialog extends React.Component<BuildDialogProps, BuildDialogState> {
   constructor(props) {
@@ -767,16 +767,16 @@ class BuildDialog extends React.Component<BuildDialogProps, BuildDialogState> {
   }
 }
 
-type InspectDialogProps = {
+interface InspectDialogProps {
   data: any;
   onInspect?: (id: string, earliest: moment.Moment) => void;
-};
+}
 
-type InspectDialogState = {
+interface InspectDialogState {
   model: {
     earliest: moment.Moment;
   };
-};
+}
 
 class InspectDialog extends React.Component<InspectDialogProps, InspectDialogState> {
   constructor(props) {

@@ -11,9 +11,9 @@ import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import { CsvLink, humanReadablePolicy, ToolTip } from "./subscription-matching-util";
 import { WarningIcon } from "./subscription-matching-util";
 
-type SubscriptionsProps = {
+interface SubscriptionsProps {
   subscriptions: any[];
-};
+}
 
 class Subscriptions extends React.Component<SubscriptionsProps> {
   sortByPolicy = (aRaw, bRaw, columnKey, sortDirection) => {

@@ -4,7 +4,9 @@ import { localizedMoment } from "utils";
 
 // These aren't the actual proper types, just what I've inferred from code usage below
 type Instance = JQuery & Date;
-type StaticProperties = { dates: any };
+interface StaticProperties {
+  dates: any;
+}
 type PickerType = ((config: object) => Instance) & ((method: "show" | "hide") => Instance) & StaticProperties;
 
 type DatePickerType = PickerType & ((method: "setDate", value: Date) => void) & ((method: "getDate") => Date);
@@ -42,7 +44,7 @@ if (jQuery.fn.datepicker) {
 }
 
 // TODO: Almost all of these props are unused
-type DatePickerProps = {
+interface DatePickerProps {
   id?: string;
   open?: boolean;
   onToggle: (state: boolean) => void;
@@ -50,7 +52,7 @@ type DatePickerProps = {
   month: number;
   date: number;
   onDateChanged: (year: number, month: number, date: number) => void;
-};
+}
 
 class DatePicker extends React.PureComponent<DatePickerProps> {
   _input: JQuery | null = null;
@@ -135,7 +137,7 @@ class DatePicker extends React.PureComponent<DatePickerProps> {
   }
 }
 
-type TimePickerProps = {
+interface TimePickerProps {
   id?: string;
   open?: boolean;
   onToggle: (state: boolean) => void;
@@ -143,7 +145,7 @@ type TimePickerProps = {
   minutes: number;
   seconds: number;
   onTimeChanged: (hours: number, minutes: number, seconds: number) => void;
-};
+}
 
 class TimePicker extends React.PureComponent<TimePickerProps> {
   _input: JQuery | null = null;
@@ -230,7 +232,7 @@ class TimePicker extends React.PureComponent<TimePickerProps> {
   }
 }
 
-type DateTimePickerProps = {
+interface DateTimePickerProps {
   id?: string;
   legacyId?: string;
   value: moment.Moment;
@@ -239,15 +241,15 @@ type DateTimePickerProps = {
   hideTimePicker?: boolean;
   // By default date times are shown in the user's configured time zone. Setting this property will default to the server time zone instead.
   serverTimeZone?: boolean;
-};
+}
 
-type DateTimePickerState = {
+interface DateTimePickerState {
   dateOpen: boolean;
   timeOpen: boolean;
   hideDate: boolean;
   hideTime: boolean;
   timeZone: typeof localizedMoment.userTimeZone | typeof localizedMoment.serverTimeZone;
-};
+}
 
 export class DEPRECATED_DateTimePicker extends React.Component<DateTimePickerProps, DateTimePickerState> {
   constructor(props: DateTimePickerProps) {

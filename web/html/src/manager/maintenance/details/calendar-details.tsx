@@ -11,17 +11,17 @@ import { BootstrapPanel } from "components/panels/BootstrapPanel";
 import { Column } from "components/table/Column";
 import { Table } from "components/table/Table";
 
-type CalendarDetailsProps = {
+interface CalendarDetailsProps {
   id: number;
   name: string;
-  eventNames: Array<string>;
-  scheduleNames: Array<Record<string, string>>;
+  eventNames: string[];
+  scheduleNames: Record<string, string>[];
   url: string;
   onDelete: (...args: any[]) => any;
   onMessage: (messages: MessageType[]) => void;
   clearMessages: (messages: void) => void;
   responseError: (messages: MessageType[]) => void;
-};
+}
 
 const MaintenanceCalendarDetails = (props: CalendarDetailsProps) => {
   const [strategy, setStrategy] = useState(false);
@@ -67,16 +67,16 @@ const MaintenanceCalendarDetails = (props: CalendarDetailsProps) => {
   );
 };
 
-type OverviewProps = {
+interface OverviewProps {
   id: number;
   name: string;
-  eventNames: Array<string>;
-  scheduleNames: Array<Record<string, string>>;
+  eventNames: string[];
+  scheduleNames: Record<string, string>[];
   url: string;
   onMessage: (messages: MessageType[]) => void;
   clearMessages: (messages: void) => void;
   responseError: (messages: MessageType[]) => void;
-};
+}
 
 const MaintenanceCalendarOverview = (props: OverviewProps) => {
   const tableData = [

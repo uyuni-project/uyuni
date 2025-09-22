@@ -1,6 +1,6 @@
 import * as React from "react";
 
-type HeaderProps = {
+interface HeaderProps {
   /** key differenciating a header from its siblings */
   key?: string | number;
 
@@ -24,7 +24,7 @@ type HeaderProps = {
 
   /** identifier for the column */
   columnKey?: string;
-};
+}
 
 /** Represents a header cell in the table.
  *  This component should only be used internally by Table.

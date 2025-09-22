@@ -18,21 +18,21 @@ import { MessageType, Utils as MessagesUtils } from "components/messages/message
 
 import Network from "utils/network";
 
-type WebCalendarProps = {
+interface WebCalendarProps {
   id: number;
   type: string;
-  eventNames: Array<string>;
+  eventNames: string[];
   messages: (messages: MessageType[]) => void;
   clearMessages: (messages: void) => void;
   responseError: (messages: MessageType[]) => void;
   date?: moment.Moment | undefined;
-};
+}
 
-type Event = {
+interface Event {
   start: string;
   end: string;
   title: string;
-};
+}
 
 // To create new colors visit https://css.land/lch/ choose a color and adjust the hue in steps
 // to get different color variants. Make sure the are distinguishable from existing colors

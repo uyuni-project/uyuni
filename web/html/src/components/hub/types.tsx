@@ -3,7 +3,7 @@ export enum TokenType {
   CONSUMED = "CONSUMED",
 }
 
-export type AccessToken = {
+export interface AccessToken {
   id: number;
   serverFqdn: string;
   type: TokenType;
@@ -14,38 +14,38 @@ export type AccessToken = {
   modificationDate: Date;
   hubId: number | null;
   peripheralId: number | null;
-};
+}
 
 export enum IssRole {
   Hub = "HUB",
   Peripheral = "PERIPHERAL",
 }
 
-export type HubRegisterRequest = {
+export interface HubRegisterRequest {
   fqdn: string;
   token?: string;
   username?: string;
   password?: string;
   rootCA?: string;
-};
+}
 
-export type ValidityRequest = {
+export interface ValidityRequest {
   valid: boolean;
-};
+}
 
-export type CreateTokenRequest = {
+export interface CreateTokenRequest {
   type: TokenType;
   fqdn?: string;
   token?: string;
-};
+}
 
-export type PeripheralListData = {
+export interface PeripheralListData {
   id: number;
   fqdn: string;
   rootCA: string | null;
   nSyncedChannels: number;
   nSyncedOrgs: number;
-};
+}
 
 export interface IssServerDetailData {
   id: number;
@@ -71,14 +71,14 @@ export enum MigrationVersion {
   v2 = "v2",
 }
 
-export type MigrationEntry = {
+export interface MigrationEntry {
   id: number;
   selected: boolean;
   disabled: boolean;
   fqdn: string;
   accessToken: string | null;
   rootCA: string | null;
-};
+}
 
 export enum MigrationResultCode {
   SUCCESS = "SUCCESS",
@@ -92,22 +92,22 @@ export enum MigrationMessageLevel {
   ERROR = "ERROR",
 }
 
-export type MigrationMessage = {
+export interface MigrationMessage {
   severity: MigrationMessageLevel;
   message: string;
-};
+}
 
-export type MigrationResult = {
+export interface MigrationResult {
   resultCode: MigrationResultCode;
-  messageSet: Array<MigrationMessage>;
-};
+  messageSet: MigrationMessage[];
+}
 
-export type Org = {
+export interface Org {
   orgId: number;
   orgName: string;
-};
+}
 
-export type Channel = {
+export interface Channel {
   channelId: number;
   channelName: string;
   channelLabel: string;
@@ -118,9 +118,9 @@ export type Channel = {
   children: Channel[]; // for easy hierarchical references
   strictOrg: boolean;
   synced: boolean;
-};
+}
 
-export type FlatChannel = {
+export interface FlatChannel {
   channelId: number;
   channelName: string;
   channelLabel: string;
@@ -131,9 +131,9 @@ export type FlatChannel = {
   childrenLabels: string[]; // for easy lookup if needed
   strictOrg: boolean;
   synced: boolean; // no need for another class that tells us if the channel is synced or not
-};
+}
 
-export type ChannelSyncProps = {
+export interface ChannelSyncProps {
   peripheralOrgs: Org[];
   channels: Channel[];
-};
+}

@@ -10,7 +10,7 @@ import ChildChannel from "./child-channel";
 import EmptyChild from "./empty-child";
 import RecommendedToggle from "./recommended-toggle";
 
-type Props = {
+interface Props {
   /** The base channel with all its children */
   channelTree: ChannelTreeType;
   /** The text currently used to filter the list of channels */
@@ -29,7 +29,7 @@ type Props = {
   onToggleChannelSelect: (channel: BaseChannelType | ChildChannelType, toState?: boolean) => void;
   /** callback to invoke when a channel is opened/collapsed */
   onToggleChannelOpen?: (channel: BaseChannelType) => void;
-};
+}
 
 const BaseChannel: React.FC<Props> = (props: Props): React.ReactElement => {
   const { base, children } = props.channelTree;

@@ -6,10 +6,10 @@ import { Messages } from "components/messages/messages";
 
 import { ProjectMessageType } from "../../type";
 
-type ValidationMessagesType = {
+interface ValidationMessagesType {
   panelClass: string;
   messages: React.ReactNode | null | undefined;
-};
+}
 
 const msgClassMap = {
   warning: {
@@ -26,12 +26,12 @@ const msgClassMap = {
   },
 };
 
-const sortMessages = (messages: Array<ProjectMessageType>) => {
+const sortMessages = (messages: ProjectMessageType[]) => {
   const msgPriorities = { error: 0, warning: 1, info: 2 };
   return messages.slice().sort((a, b) => msgPriorities[a.type] - msgPriorities[b.type]);
 };
 
-const getRenderedMessages = (messages: Array<ProjectMessageType>): ValidationMessagesType => {
+const getRenderedMessages = (messages: ProjectMessageType[]): ValidationMessagesType => {
   if (_isEmpty(messages)) {
     return {
       panelClass: "panel-default",

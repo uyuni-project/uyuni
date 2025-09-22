@@ -2,10 +2,10 @@ import { useState } from "react";
 
 import { DEPRECATED_Select } from "components/input";
 
-type Matcher = {
+interface Matcher {
   label: string;
   value: string;
-};
+}
 
 const matchers: Matcher[] = [
   { label: t("less than"), value: "<" },

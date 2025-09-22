@@ -3,7 +3,7 @@ import React from "react";
 import { FromNow } from "components/datetime";
 import { CronTimes, RecurringType } from "components/picker/recurring-event-picker";
 
-export type Settings = {
+export interface Settings {
   enabled: boolean;
   environmentType: string;
   attestOnBoot: boolean;
@@ -12,9 +12,9 @@ export type Settings = {
   scheduleType?: RecurringType;
   scheduleCron?: string;
   scheduleCronTimes?: CronTimes;
-};
+}
 
-export type AttestationResult = {
+export interface AttestationResult {
   id: number;
   resultType: string;
   resultTypeLabel: string;
@@ -24,9 +24,9 @@ export type AttestationResult = {
   details: string;
   processOutput: string;
   attestationTime: Date;
-};
+}
 
-export type AttestationReport = {
+export interface AttestationReport {
   id: number;
   systemId: number;
   systemName: string;
@@ -41,8 +41,8 @@ export type AttestationReport = {
   actionId: number | null;
   actionName: string | null;
   actionScheduledBy: string | null;
-  results: Array<AttestationResult>;
-};
+  results: AttestationResult[];
+}
 
 export function renderTime(time: Date): React.ReactNode {
   if (time === null) {

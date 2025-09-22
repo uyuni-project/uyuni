@@ -22,15 +22,13 @@ const useChannelsApi = () => {
   return [promise];
 };
 
-type MandatoryChannelsResponse = {
-  [key: number]: number[] | undefined;
-};
-type ChannelsWithMandatory = {
+type MandatoryChannelsResponse = Record<number, number[] | undefined>;
+interface ChannelsWithMandatory {
   channels: ChannelTreeType[];
   channelsMap: Map<number, BaseChannelType | ChildChannelType>;
   requiresMap: Map<number, Set<BaseChannelType | ChildChannelType> | undefined>;
   requiredByMap: Map<number, Set<BaseChannelType | ChildChannelType> | undefined>;
-};
+}
 
 export const useChannelsWithMandatoryApi = () => {
   const [responsePromise, setResponsePromise] = useState<Promise<ChannelsWithMandatory> | undefined>(undefined);
@@ -44,7 +42,7 @@ export const useChannelsWithMandatoryApi = () => {
     // Gather all channel ids for which we need requirement data
     const channelIds: number[] = [];
     // Keep track of all channels as we go
-    const channelsMap: Map<number, BaseChannelType | ChildChannelType> = new Map();
+    const channelsMap = new Map<number, BaseChannelType | ChildChannelType>();
 
     await asyncIdleCallback(() => {
       // These are regular for-loops since we might be hauling through large volumes of data

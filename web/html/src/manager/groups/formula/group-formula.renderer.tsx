@@ -27,7 +27,7 @@ export const renderer = (renderId, { groupId, formulaId }) => {
     let navBar = "<ul class='nav nav-tabs nav-tabs-pf' id='formula-nav-bar'>\n";
     navBar +=
       "<li><a href='/rhn/manager/groups/details/formulas?sgid=" + groupId + "'>" + t("Formulas") + "</a></li>\n";
-    for (let i in formulaList)
+    for (const i in formulaList)
       navBar +=
         "<li" +
         (DEPRECATED_unsafeEquals(i, activeId) ? " class='active'>" : ">") +

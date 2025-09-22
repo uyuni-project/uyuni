@@ -9,22 +9,22 @@ import Network, { JsonResult } from "utils/network";
 import { Props as FilterFormProps } from "../filter-form";
 import { Template } from "./index";
 
-type Product = {
+interface Product {
   id: number;
   label: string;
-};
+}
 
-type System = {
+interface System {
   id: number;
   name: string;
   kernel: string;
-};
+}
 
-type Kernel = {
+interface Kernel {
   id: number;
   version: string;
   latest?: boolean;
-};
+}
 
 function getProducts(): Promise<Product[]> {
   return Network.get<JsonResult<Product[]>>("/rhn/manager/api/contentmanagement/livepatching/products").then(

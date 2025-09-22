@@ -5,13 +5,13 @@ import { paygProperties } from "manager/admin/payg/payg";
 import { Form, Password, Text } from "components/input";
 import { InputBase } from "components/input/InputBase";
 
-type PropsForm = {
+interface PropsForm {
   paygSshData: paygProperties;
   errors: any;
   onChange: Function;
   isInstance: boolean;
   editing?: boolean;
-};
+}
 
 const PaygSshDataForm = (props: PropsForm) => {
   return (
@@ -29,14 +29,14 @@ const PaygSshDataForm = (props: PropsForm) => {
 
 export default PaygSshDataForm;
 
-type PropsFields = {
+interface PropsFields {
   paygSshData: paygProperties;
   isInstance: boolean;
   editing?: boolean;
-};
+}
 
 export const PaygSshDataFormFields = (props: PropsFields) => {
-  let prefix = props.isInstance ? "" : "bastion_";
+  const prefix = props.isInstance ? "" : "bastion_";
   return (
     <React.Fragment>
       {props.editing && (

@@ -8,18 +8,18 @@ import { Loading } from "components/utils";
 
 import Network from "utils/network";
 
-type Props = {
+interface Props {
   serverId: number;
   availableEnvironmentTypes: object;
   showOnScheduleOption?: boolean;
-};
+}
 
-type State = {
+interface State {
   messages: MessageType[];
   supported: boolean;
   settings: Settings;
   loading: boolean;
-};
+}
 
 class CoCoSettings extends React.Component<Props, State> {
   public static readonly defaultProps: Partial<Props> = {

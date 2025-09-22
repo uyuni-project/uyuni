@@ -3,10 +3,10 @@ import * as React from "react";
 import { paygProperties } from "manager/admin/payg/payg";
 
 const passHidden = "*****";
-type Props = {
+interface Props {
   payg: paygProperties;
   isInstance: boolean;
-};
+}
 
 const PaygShhDataView = (props: Props) => {
   return (

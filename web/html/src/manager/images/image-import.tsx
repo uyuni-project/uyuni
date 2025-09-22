@@ -21,23 +21,23 @@ const messageMap = {
   ),
 };
 
-type ImportDto = {
+interface ImportDto {
   buildHostId: number;
   name: string;
   version: string;
   activationKey: string;
   storeId: number;
-};
+}
 
-type Model = {
+interface Model {
   name?: string | null;
   version?: string | null;
   storeId?: string | null;
   buildHostId?: string | null;
   activationKey: string;
-};
+}
 
-type Channels = {
+interface Channels {
   base: {
     name: string;
   };
@@ -45,7 +45,7 @@ type Channels = {
     id: string;
     name: string;
   }[];
-};
+}
 
 function emptyModel(): Model {
   return {
@@ -60,11 +60,11 @@ function emptyModel(): Model {
 class ImageImport extends React.Component {
   state: {
     imageStores?: any | null;
-    messages: Array<any>;
+    messages: any[];
     model: Model;
     isInvalid: boolean;
-    hosts: Array<any>;
-    activationkeys: Array<string>;
+    hosts: any[];
+    activationkeys: string[];
     channels?: Channels;
   };
 

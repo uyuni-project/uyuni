@@ -15,13 +15,13 @@ import Network from "utils/network";
 import { humanReadablePolicy, SystemLabel, ToolTip } from "./subscription-matching-util";
 import { WarningIcon } from "./subscription-matching-util";
 
-type PinsProps = {
+interface PinsProps {
   pinnedMatches: any[];
   onPinChanged: (...args: any[]) => any;
   products: any[];
   systems: any[];
   subscriptions: any[];
-};
+}
 
 class Pins extends React.Component<PinsProps> {
   state = {
@@ -220,12 +220,12 @@ const PinButton = (props) => (
   </button>
 );
 
-type AddPinPopUpProps = {
+interface AddPinPopUpProps {
   onSavePin: (...args: any[]) => any;
   systems: any[];
   products: any[];
   subscriptions: any[];
-};
+}
 
 class AddPinPopUp extends React.Component<AddPinPopUpProps> {
   state = {
@@ -233,7 +233,7 @@ class AddPinPopUp extends React.Component<AddPinPopUpProps> {
   };
 
   sortByCpuCount = (a, b, columnKey, sortDirection) => {
-    let result = a[columnKey] - b[columnKey];
+    const result = a[columnKey] - b[columnKey];
     return (result || Utils.sortById(a, b)) * sortDirection;
   };
 
@@ -356,10 +356,10 @@ const ProductTableCell = (props) => {
   return <ToolTip content={firstProductName + ", ..."} title={productNames} />;
 };
 
-type PinSubscriptionSelectorProps = {
+interface PinSubscriptionSelectorProps {
   subscriptions: any[];
   onSubscriptionSelected: (...args: any[]) => any;
-};
+}
 
 class PinSubscriptionSelector extends React.Component<PinSubscriptionSelectorProps> {
   render() {

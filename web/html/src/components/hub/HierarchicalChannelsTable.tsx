@@ -15,13 +15,13 @@ type ChannelWithHierarchy = FlatChannel &
     isPendingRemoval?: boolean;
   };
 
-type ChannelTableProps = {
+interface ChannelTableProps {
   channels: FlatChannel[];
   onChannelSelect: (channelId: number, checked: boolean) => void;
   onOrgSelect?: (channelId: number, org?: Org) => void;
   loading?: boolean;
   availableOrgs: Org[];
-};
+}
 
 const HierarchicalChannelsTable: React.FC<ChannelTableProps> = ({
   channels,
@@ -79,7 +79,7 @@ const HierarchicalChannelsTable: React.FC<ChannelTableProps> = ({
 
   const rowClass = useCallback((row: ChannelWithHierarchy) => {
     const isCurrentlySynced = row.synced;
-    let className = isCurrentlySynced ? "synced-channel" : "";
+    const className = isCurrentlySynced ? "synced-channel" : "";
     return className;
   }, []);
 

@@ -38,9 +38,9 @@ const messageMap = {
   "": "There was an error.",
 };
 
-type Props = {};
+interface Props {}
 
-type State = {
+interface State {
   imageTypes: any;
   model: any;
   imageStores: any;
@@ -50,7 +50,7 @@ type State = {
   channels?: any;
   storeUri?: any;
   isInvalid?: boolean;
-};
+}
 
 class CreateImageProfile extends React.Component<Props, State> {
   defaultModel: any;
@@ -83,7 +83,7 @@ class CreateImageProfile extends React.Component<Props, State> {
   setValues(id) {
     Network.get("/rhn/manager/api/cm/imageprofiles/" + id).then((res) => {
       if (res.success) {
-        let data = res.data;
+        const data = res.data;
         this.setState({
           model: {
             label: data.label,
@@ -422,7 +422,7 @@ class CreateImageProfile extends React.Component<Props, State> {
                   onChange={(event) => {
                     const target = event.target;
 
-                    let data = this.state.customData;
+                    const data = this.state.customData;
                     data[target.name] = target.value;
 
                     this.setState({
@@ -472,7 +472,7 @@ class CreateImageProfile extends React.Component<Props, State> {
   }
 
   renderButtons() {
-    let buttons = [
+    const buttons = [
       <Button
         key="clear-btn"
         id="clear-btn"

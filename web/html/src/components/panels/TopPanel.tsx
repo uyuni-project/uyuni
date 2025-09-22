@@ -2,13 +2,13 @@ import * as React from "react";
 
 import { HelpLink } from "components/utils/HelpLink";
 
-type Props = {
+interface Props {
   helpUrl?: string;
   button?: React.ReactNode;
   title: string;
   icon?: string;
   children?: React.ReactNode;
-};
+}
 
 export function TopPanel(props: Props) {
   const help = props.helpUrl ? <HelpLink url={props.helpUrl} /> : null;

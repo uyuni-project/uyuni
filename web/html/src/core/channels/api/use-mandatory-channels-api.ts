@@ -20,22 +20,22 @@ const messageMap = {
   invalid_channel_id: t("Invalid channel id"),
 };
 
-type FetchMandatoryChannelsProps = {
+interface FetchMandatoryChannelsProps {
   base?: { id: number };
-  channels: Array<MandatoryChannel>;
-};
+  channels: MandatoryChannel[];
+}
 
-export type RequiredChannelsResultType = {
+export interface RequiredChannelsResultType {
   requiredChannels: Map<number, Set<number>>;
   requiredByChannels: Map<number, Set<number>>;
   dependenciesTooltip: (channelId: number, channels: (MandatoryChannel | Channel)[]) => string | undefined;
-};
+}
 
-export type UseMandatoryChannelsApiReturnType = {
+export interface UseMandatoryChannelsApiReturnType {
   requiredChannelsResult: RequiredChannelsResultType;
   isDependencyDataLoaded: boolean;
   fetchMandatoryChannelsByChannelIds: (props: FetchMandatoryChannelsProps) => void;
-};
+}
 
 const useMandatoryChannelsApi = (): UseMandatoryChannelsApiReturnType => {
   const [messages, setMessages] = useState<MessageType[]>([]);
@@ -54,9 +54,9 @@ const useMandatoryChannelsApi = (): UseMandatoryChannelsApiReturnType => {
     const mandatoryChannelsNotCached = needDepsInfoChannels.filter((channelId) => !mandatoryChannelsRaw[channelId]);
     if (mandatoryChannelsNotCached.length > 0) {
       Network.post("/rhn/manager/api/admin/mandatoryChannels", mandatoryChannelsNotCached)
-        .then((data: JsonResult<Map<number, Array<number>>>) => {
+        .then((data: JsonResult<Map<number, number[]>>) => {
           const allTheNewMandatoryChannelsData = Object.assign({}, mandatoryChannelsRaw, data.data);
-          let dependencies: ChannelsDependencies = processChannelDependencies(allTheNewMandatoryChannelsData);
+          const dependencies: ChannelsDependencies = processChannelDependencies(allTheNewMandatoryChannelsData);
 
           setMandatoryChannelsRaw(allTheNewMandatoryChannelsData);
           setRequiredChannels(dependencies.requiredChannels);
@@ -75,7 +75,7 @@ const useMandatoryChannelsApi = (): UseMandatoryChannelsApiReturnType => {
   };
 
   const dependenciesTooltip = (channelId: number, channels: (MandatoryChannel | Channel)[]) => {
-    const resolveChannelNames: Function = (channelIds: Array<number>): Array<string | null | undefined> => {
+    const resolveChannelNames: Function = (channelIds: number[]): (string | null | undefined)[] => {
       return Array.from(channelIds || new Set())
         .map((channelId: number) => channels.find((c) => c.id === channelId))
         .filter((channel): boolean => channel != null)

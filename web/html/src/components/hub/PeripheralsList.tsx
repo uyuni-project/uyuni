@@ -9,7 +9,7 @@ import { Table, TableRef } from "components/table/Table";
 
 import { Utils } from "utils/functions";
 
-type Props = {};
+interface Props {}
 
 export class PeripheralsList extends React.Component<Props> {
   private tableRef: React.RefObject<TableRef>;
@@ -21,7 +21,7 @@ export class PeripheralsList extends React.Component<Props> {
   }
 
   public render(): React.ReactNode {
-    let componentContent = (
+    const componentContent = (
       <Table
         ref={this.tableRef}
         data="/rhn/manager/api/admin/hub/peripherals"

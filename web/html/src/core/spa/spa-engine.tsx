@@ -78,7 +78,7 @@ window.pageRenderers.spaengine.init = function init(timeout?: number) {
       jQuery(".modal-backdrop").addClass("removeWhenNavigationEnds");
       jQuery("body").removeClass("modal-open");
 
-      let urlParser = document.createElement("a");
+      const urlParser = document.createElement("a");
       urlParser.href = navigation.path;
       if (isLoginPage(urlParser.pathname)) {
         window.location = navigation.path;

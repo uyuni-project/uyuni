@@ -6,12 +6,12 @@ import { RecurringEventPicker } from "../picker/recurring-event-picker";
 import { Toggler } from "../toggler";
 import { Settings } from "./Utils";
 
-type Props = {
+interface Props {
   initialData: Settings;
   availableEnvironmentTypes: object;
   showOnScheduleOption?: boolean;
   saveHandler: (data: Settings) => void;
-};
+}
 
 type State = Settings;
 

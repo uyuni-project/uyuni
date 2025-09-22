@@ -42,9 +42,9 @@ const messageMap = {
   ),
 };
 
-type Props = {};
+interface Props {}
 
-type State = {
+interface State {
   model: {
     version: string;
     earliest: moment.Moment;
@@ -58,7 +58,7 @@ type State = {
   messages?: any;
   actionChain?: any;
   isInvalid?: boolean;
-};
+}
 
 class BuildImage extends React.Component<Props, State> {
   constructor(props: Props) {
@@ -94,7 +94,7 @@ class BuildImage extends React.Component<Props, State> {
 
     Network.get("/rhn/manager/api/cm/imageprofiles/" + profileId).then((res) => {
       if (res.success) {
-        let data = res.data;
+        const data = res.data;
 
         // Prevent out-of-order async results
         if (!DEPRECATED_unsafeEquals(data.profileId, this.state.model.profileId)) return false;
@@ -232,8 +232,8 @@ class BuildImage extends React.Component<Props, State> {
   };
 
   renderProfileSummary() {
-    let p = this.state.profile;
-    let pselected = p.label ? true : false;
+    const p = this.state.profile;
+    const pselected = p.label ? true : false;
     return (
       <div className="col-md-5">
         <div className="panel panel-default">

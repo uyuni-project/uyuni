@@ -1,23 +1,21 @@
-export type Channel = {
+export interface Channel {
   id: number;
   label: string;
   name: string;
-};
+}
 
-export type AppStreams = {
-  [key: string]: Array<AppStreamModule>;
-};
+export type AppStreams = Record<string, AppStreamModule[]>;
 
-export type ChannelAppStream = {
+export interface ChannelAppStream {
   channel: Channel;
   appStreams: AppStreams;
-};
+}
 
-export type AppStreamModule = {
+export interface AppStreamModule {
   name: string;
   stream: string;
   version: string;
   context: string;
   arch: string;
   enabled: boolean;
-};
+}

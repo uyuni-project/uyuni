@@ -1,6 +1,6 @@
 import * as React from "react";
 
-type Props = {
+interface Props {
   labels: React.ReactNode[];
   /** Must start with # */
   hashes: string[];
@@ -8,7 +8,7 @@ type Props = {
   initialActiveTabHash: string;
   /** Takes a hash parameter */
   onTabHashChange: (hash: string) => any;
-};
+}
 
 class TabContainer extends React.Component<Props> {
   UNSAFE_componentWillReceiveProps(nextProps: Props) {
@@ -62,12 +62,12 @@ class TabContainer extends React.Component<Props> {
   }
 }
 
-type TabLabelProps = {
+interface TabLabelProps {
   active?: boolean;
   hash?: string;
   onClick?: (...args: any[]) => any;
   text: React.ReactNode;
-};
+}
 
 const TabLabel = (props: TabLabelProps) => (
   <li className={props.active ? "active" : ""}>

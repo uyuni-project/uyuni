@@ -3,7 +3,7 @@ import * as React from "react";
 import { AddTokenButton, TokenTable } from "components/hub";
 import { TopPanel } from "components/panels";
 
-type Props = {};
+interface Props {}
 
 export class TokenList extends React.Component<Props> {
   private tokenTable: React.RefObject<TokenTable>;

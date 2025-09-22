@@ -1,6 +1,6 @@
 import * as React from "react";
 
-type Props = {
+interface Props {
   /** The id of the html div tag */
   id: string;
   /** The css className for the 'modal-dialog' div */
@@ -13,7 +13,7 @@ type Props = {
   closableModal?: boolean;
   /** A callback function with no parameters */
   onClosePopUp?: () => any;
-};
+}
 
 export class PopUp extends React.Component<Props> {
   componentDidMount() {

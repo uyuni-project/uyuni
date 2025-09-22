@@ -1,16 +1,14 @@
 import _find from "lodash/find";
 
-type stateType = {
+interface stateType {
   key: string;
   description: string;
   deletion: boolean;
   edited: boolean;
   sign: string;
-};
+}
 
-type statesEnumType = {
-  [key: string]: stateType;
-};
+type statesEnumType = Record<string, stateType>;
 
 const statesEnum: statesEnumType = {
   ATTACHED: { key: "ATTACHED", description: "added", deletion: false, edited: true, sign: "+" },

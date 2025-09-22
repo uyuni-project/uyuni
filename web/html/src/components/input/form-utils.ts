@@ -76,7 +76,7 @@ export function convertNumbers<T>(flatModel: Record<string, T>): Record<string, 
  * Reverse of flattenModel.
  */
 export function unflattenModel<T>(flatModel: Record<string, T>): TreeLikeModel<T> {
-  let treeModel: any = {};
+  const treeModel: any = {};
 
   const aggregate = (obj: Record<string, any>, name: string, value: any) => {
     const pos = name.indexOf("_");

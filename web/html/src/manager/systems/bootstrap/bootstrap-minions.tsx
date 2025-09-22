@@ -19,17 +19,17 @@ declare global {
   }
 }
 
-type ErrorDetails = {
+interface ErrorDetails {
   message: string;
   standardOutput?: string;
   standardError?: string;
   result?: string;
-};
+}
 
-type ErrorDetailsDialogProps = {
+interface ErrorDetailsDialogProps {
   error: ErrorDetails | null;
   onDialogClose: () => void;
-};
+}
 
 class ErrorDetailsDialog extends React.Component<ErrorDetailsDialogProps> {
   render() {
@@ -103,6 +103,8 @@ class ErrorDetailsDialog extends React.Component<ErrorDetailsDialogProps> {
     return (
       <Dialog
         id="show-error-details"
+        // TODO: If you touch this file, please resolve this linter error
+        // eslint-disable-next-line eqeqeq
         isOpen={this.props.error != null}
         title={title}
         className="modal-xs"
@@ -114,12 +116,12 @@ class ErrorDetailsDialog extends React.Component<ErrorDetailsDialogProps> {
   }
 }
 
-type Props = {
+interface Props {
   proxies: any[];
   availableActivationKeys: any[];
   ansibleInventoryId: number | null;
   targetHost: string | null;
-};
+}
 
 enum AuthMethod {
   Password = "password",
@@ -127,7 +129,7 @@ enum AuthMethod {
   AnsiblePreauth = "ansible-preauth",
 }
 
-type State = {
+interface State {
   host: string;
   port: string;
   user: string;
@@ -146,7 +148,7 @@ type State = {
   privKeyLoading?: boolean;
   success?: any;
   errorDetails: ErrorDetails | null;
-};
+}
 
 class BootstrapMinions extends React.Component<Props, State> {
   initState: State;
@@ -254,9 +256,9 @@ class BootstrapMinions extends React.Component<Props, State> {
   };
 
   proxyChanged = (event) => {
-    let proxyId = parseInt(event.target.value, 10);
-    let proxy = this.props.proxies.find((p) => p.id === proxyId);
-    let showWarn = proxy && proxy.hostname.indexOf(".") < 0;
+    const proxyId = parseInt(event.target.value, 10);
+    const proxy = this.props.proxies.find((p) => p.id === proxyId);
+    const showWarn = proxy && proxy.hostname.indexOf(".") < 0;
     this.setState({
       proxy: event.target.value,
       showProxyHostnameWarn: showWarn,
@@ -277,7 +279,7 @@ class BootstrapMinions extends React.Component<Props, State> {
 
   onBootstrap = () => {
     this.setState({ errors: [], loading: true });
-    let formData: any = {};
+    const formData: any = {};
     formData["host"] = this.state.host.trim();
     formData["port"] = this.state.port.trim() === "" ? undefined : this.state.port.trim();
     formData["user"] = this.state.user.trim() === "" ? undefined : this.state.user.trim();
@@ -323,7 +325,7 @@ class BootstrapMinions extends React.Component<Props, State> {
             loading: false,
           });
         } catch (err) {
-          let errMessage =
+          const errMessage =
             xhr.status === 0
               ? t(
                   "Request interrupted or invalid response received from the server. Please check if your minion was bootstrapped correctly."
@@ -391,7 +393,7 @@ class BootstrapMinions extends React.Component<Props, State> {
       alertMessages = MessagesUtils.info(t("Loading SSH Private Key.."));
     }
 
-    let buttons = [
+    const buttons = [
       <AsyncButton
         id="bootstrap-btn"
         key="bootstrap-btn"
@@ -676,7 +678,7 @@ class BootstrapMinions extends React.Component<Props, State> {
   componentDidMount() {
     window.addEventListener("beforeunload", (e) => {
       if (this.state.loading) {
-        let confirmationMessage = t("Are you sure you want to close this page while bootstrapping is in progress ?");
+        const confirmationMessage = t("Are you sure you want to close this page while bootstrapping is in progress ?");
         (e || window.event).returnValue = confirmationMessage;
         return confirmationMessage;
       }

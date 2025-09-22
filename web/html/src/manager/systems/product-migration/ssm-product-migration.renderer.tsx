@@ -5,10 +5,10 @@ import { MigrationTargetSelection } from "components/product-migration";
 
 import { SSMProductMigration } from "./ssm-product-migration";
 
-type RendererProps = {
+interface RendererProps {
   actionChains: ActionChain[];
   migrationData: MigrationTargetSelection;
-};
+}
 
 export const renderer = (id: string, { actionChains, migrationData }: RendererProps) =>
   SpaRenderer.renderNavigationReact(

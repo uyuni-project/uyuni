@@ -7,9 +7,9 @@ import { showErrorToastr } from "components/toastr";
 import useLifecycleActionsApi from "../../shared/api/use-lifecycle-actions-api";
 import ModuleSelector from "./module-selector";
 
-type SelectInputProps = {
+interface SelectInputProps {
   channels: { id: string; name: string }[];
-};
+}
 
 export default function SelectInput(props: SelectInputProps) {
   const [modules, setModules] = useState({});

@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { Button } from "components/buttons";
 
-type SearchPanelPropss = {
+interface SearchPanelPropss {
   /** number representing the number of the first displayed item */
   fromItem: number;
 
@@ -23,7 +23,7 @@ type SearchPanelPropss = {
 
   /** function called when the Select All button is clicked. Should set the selection */
   onSelectAll: () => void;
-};
+}
 
 /** Panel containing the search fields for a table */
 export function SelectedRowDetails(props: SearchPanelPropss) {

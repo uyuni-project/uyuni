@@ -1,4 +1,4 @@
-export type PasswordPolicyData = {
+export interface PasswordPolicyData {
   minLength: bigint;
   maxLength: bigint;
   digitFlag: boolean;
@@ -9,9 +9,9 @@ export type PasswordPolicyData = {
   specialChars: string | null;
   restrictedOccurrenceFlag: boolean;
   maxCharacterOccurrence: bigint;
-};
+}
 
-export type PasswordPolicyProps = {
+export interface PasswordPolicyProps {
   policy: PasswordPolicyData;
   defaults: PasswordPolicyData;
-};
+}
