@@ -60,9 +60,13 @@ module.exports = defineConfig([
       radix: ["error", "always"],
       // ESLint doesn't recongize overloads by default
       "no-redeclare": "off",
+      // Align with existing code style
       "@typescript-eslint/no-redeclare": "error",
       "@typescript-eslint/prefer-for-of": "off",
       "@typescript-eslint/consistent-type-definitions": "off",
+      "@typescript-eslint/no-redundant-type-constituents": "off",
+      "@typescript-eslint/no-inferrable-types": "off",
+      "@typescript-eslint/consistent-generic-constructors": "off",
       // TODO: Eventually this should be "error"
       "local-rules/no-raw-date": "warn",
       "local-rules/intl-apostrophe-curly": "error",

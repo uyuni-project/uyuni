@@ -165,16 +165,16 @@ function msg(severityIn: Severity, textIn: React.ReactNode, listMultiple: boolea
  * entries will generate multiple separated messages.
  */
 export const Utils = {
-  info: function (text: React.ReactNode, listMultiple = false, header?: string): MessageType[] {
+  info: function (text: React.ReactNode, listMultiple: boolean = false, header?: string): MessageType[] {
     return msg("info", text, listMultiple, header);
   },
-  success: function (text: React.ReactNode, listMultiple = false, header?: string): MessageType[] {
+  success: function (text: React.ReactNode, listMultiple: boolean = false, header?: string): MessageType[] {
     return msg("success", text, listMultiple, header);
   },
-  warning: function (text: React.ReactNode, listMultiple = false, header?: string): MessageType[] {
+  warning: function (text: React.ReactNode, listMultiple: boolean = false, header?: string): MessageType[] {
     return msg("warning", text, listMultiple, header);
   },
-  error: function (text: React.ReactNode, listMultiple = false, header?: string): MessageType[] {
+  error: function (text: React.ReactNode, listMultiple: boolean = false, header?: string): MessageType[] {
     return msg("error", text, listMultiple, header);
   },
 };
