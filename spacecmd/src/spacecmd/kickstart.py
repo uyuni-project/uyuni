@@ -35,12 +35,6 @@ import gettext
 import os
 from getpass import getpass
 from operator import itemgetter
-
-try:
-    from urllib2 import urlopen, HTTPError
-except ImportError:
-    from urllib.request import urlopen
-    from urllib.error import HTTPError
 import re
 
 try:
@@ -581,27 +575,9 @@ def do_kickstart_details(self, args):
 
 
 def kickstart_getcontents(self, profile):
-
-    kickstart = None
-    if self.check_api_version("10.11"):
-        kickstart = self.client.kickstart.profile.downloadRenderedKickstart(
-            self.session, profile
-        )
-    else:
-        # old versions of th API don't return a rendered Kickstart,
-        # so grab it in a hacky way
-        # pylint: disable-next=consider-using-f-string
-        url = "http://%s/ks/cfg/label/%s" % (self.server, profile)
-
-        try:
-            # pylint: disable-next=consider-using-f-string
-            logging.debug("Retrieving %s" % url)
-            response = urlopen(url)
-            kickstart = response.read()
-        except HTTPError:
-            logging.error(_N("Could not retrieve the Kickstart file"))
-
-    return kickstart
+    return self.client.kickstart.profile.downloadRenderedKickstart(
+        self.session, profile
+    )
 
 
 def help_kickstart_getcontents(self):
