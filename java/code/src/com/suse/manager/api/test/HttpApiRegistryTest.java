@@ -44,7 +44,7 @@ public class HttpApiRegistryTest extends RhnJmockBaseTestCase {
             // Intentionally empty: test endpoint stub; route registration is validated by expectations.
         }
         public void mySecondEndpoint() {
-            // Intentionally empty: second test endpoint stub; behavior is validated elsewhere.
+            // Intentionally empty: Second test endpoint stub; behavior is validated elsewhere.
         }
         @ReadOnly @ApiIgnore public void ignored() {
             // Intentionally empty: ignored endpoint used to verify ApiIgnore handling.
