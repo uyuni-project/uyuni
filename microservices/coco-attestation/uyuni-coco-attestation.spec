@@ -1,7 +1,7 @@
 #
 # spec file for package uyuni-coco-attestation
 #
-# Copyright (c) 2024 SUSE LLC
+# Copyright (c) 2025 SUSE LLC and contributors
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -28,7 +28,7 @@ BuildRequires:  java-devel >= 11
 BuildRequires:  maven-local
 BuildRequires:  mvn(org.uyuni-project:uyuni-java-parent:pom:)
 BuildRequires:  mvn(org.uyuni-project:uyuni-java-common)
-BuildRequires:  mvn(org.apache.commons:commons-ognl)
+BuildRequires:  mvn(ognl:ognl)
 BuildRequires:  mvn(org.apache.logging.log4j:log4j-api)
 BuildRequires:  mvn(org.apache.logging.log4j:log4j-core)
 BuildRequires:  mvn(org.postgresql:postgresql)
@@ -107,7 +107,7 @@ install -p -m 644 attestation-core/src/package/daemon.conf $RPM_BUILD_ROOT%{_pre
 install -p -m 644 attestation-core/src/package/log4j2.xml $RPM_BUILD_ROOT%{_prefix}/share/coco-attestation/classes
 
 # Create links for the jars
-build-jar-repository -s -p $RPM_BUILD_ROOT%{_prefix}/share/coco-attestation/lib uyuni-java-common/uyuni-common log4j/log4j-api log4j/log4j-core ongres-scram ongres-stringprep postgresql-jdbc apache-commons-ognl javassist mybatis mchange-commons c3p0
+build-jar-repository -s -p $RPM_BUILD_ROOT%{_prefix}/share/coco-attestation/lib uyuni-java-common/uyuni-common log4j/log4j-api log4j/log4j-core ongres-scram ongres-stringprep postgresql-jdbc ognl/ognl javassist mybatis mchange-commons c3p0
 
 # Link all the attestation jars built and installed by maven
 ln -s -f -r $RPM_BUILD_ROOT%{_javadir}/uyuni-coco-attestation/*.jar $RPM_BUILD_ROOT%{_prefix}/share/coco-attestation/lib
