@@ -218,7 +218,7 @@ class ProductsPageWrapper extends React.Component {
   resyncProduct = (id, name) => {
     const currentObject = this;
     currentObject.state.scheduledItems.concat([id]);
-    var scheduleResyncItemsNew = currentObject.state.scheduleResyncItems.concat([id]);
+    let scheduleResyncItemsNew = currentObject.state.scheduleResyncItems.concat([id]);
     currentObject.setState({ scheduleResyncItems: scheduleResyncItemsNew });
     Network.post("/rhn/manager/admin/setup/products", [id])
       .then((data) => {
@@ -673,7 +673,7 @@ class CheckListItem extends React.Component<CheckListItemProps> {
     const currentItem = this.props.item;
 
     // add base product first (the server fails if it tries to add extentions first)
-    var arr = [this.props.item];
+    let arr = [this.props.item];
 
     // this item was selected but it is going to be removed from the selected set,
     // so all children are going to be removed as well
@@ -698,7 +698,7 @@ class CheckListItem extends React.Component<CheckListItemProps> {
   };
 
   getChildrenTree = (item) => {
-    var arr = this.getNestedData(item);
+    let arr = this.getNestedData(item);
     let nestedArr = [];
     arr.forEach((child) => {
       nestedArr = nestedArr.concat(this.getChildrenTree(child));

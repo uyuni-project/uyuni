@@ -94,7 +94,7 @@ class BuildImage extends React.Component<Props, State> {
 
     Network.get("/rhn/manager/api/cm/imageprofiles/" + profileId).then((res) => {
       if (res.success) {
-        var data = res.data;
+        let data = res.data;
 
         // Prevent out-of-order async results
         if (!DEPRECATED_unsafeEquals(data.profileId, this.state.model.profileId)) return false;
@@ -232,8 +232,8 @@ class BuildImage extends React.Component<Props, State> {
   };
 
   renderProfileSummary() {
-    var p = this.state.profile;
-    var pselected = p.label ? true : false;
+    let p = this.state.profile;
+    let pselected = p.label ? true : false;
     return (
       <div className="col-md-5">
         <div className="panel panel-default">

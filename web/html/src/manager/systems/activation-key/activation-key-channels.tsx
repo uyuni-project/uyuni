@@ -47,7 +47,7 @@ class ActivationKeyChannels extends React.Component<ActivationKeyChannelsProps, 
   };
 
   selectChildChannels = (channelIds: Array<number>, selectedFlag: boolean) => {
-    var selectedIds = [...this.state.currentChildSelectedIds];
+    let selectedIds = [...this.state.currentChildSelectedIds];
     if (selectedFlag) {
       selectedIds = [...channelIds.filter((c) => !selectedIds.includes(c)), ...selectedIds];
     } else {

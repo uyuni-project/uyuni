@@ -83,7 +83,7 @@ class CreateImageProfile extends React.Component<Props, State> {
   setValues(id) {
     Network.get("/rhn/manager/api/cm/imageprofiles/" + id).then((res) => {
       if (res.success) {
-        var data = res.data;
+        let data = res.data;
         this.setState({
           model: {
             label: data.label,
@@ -472,7 +472,7 @@ class CreateImageProfile extends React.Component<Props, State> {
   }
 
   renderButtons() {
-    var buttons = [
+    let buttons = [
       <Button
         key="clear-btn"
         id="clear-btn"

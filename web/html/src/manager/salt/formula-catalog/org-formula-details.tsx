@@ -36,8 +36,8 @@ class FormulaDetail extends React.Component<Props, State> {
   };
 
   generateMetadata = () => {
-    var metadata: React.ReactNode[] = [];
-    for (var item in this.state.metadata) {
+    let metadata: React.ReactNode[] = [];
+    for (let item in this.state.metadata) {
       metadata.push(
         <div className="form-group" key={item}>
           <label className="col-md-3 control-label">{item}:</label>
@@ -52,9 +52,9 @@ class FormulaDetail extends React.Component<Props, State> {
     if (typeof item == "string")
       return <textarea className="form-control" name={name} value={item} readOnly disabled />;
     else if (typeof item == "object") {
-      var text = "";
-      var rows = 1;
-      for (var key in item) {
+      let text = "";
+      let rows = 1;
+      for (let key in item) {
         text += key + ": " + item[key] + "\n";
         rows++;
       }

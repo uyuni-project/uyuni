@@ -59,7 +59,7 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
   };
 
   setValues(item) {
-    var m: any = {};
+    let m: any = {};
     m["id"] = item.id;
     m["label"] = item.label;
     m["gathererModule"] = item.gathererModule;
@@ -257,7 +257,7 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
     if (!this.state.vhmParams) {
       return null;
     }
-    var fields = Object.keys(this.state.vhmParams).map((param) => this.paramField(param, this.state.vhmParams[param]));
+    let fields = Object.keys(this.state.vhmParams).map((param) => this.paramField(param, this.state.vhmParams[param]));
 
     fields.unshift(<Text name="label" label={t("Label")} required labelClass="col-md-3" divClass="col-md-6" />);
 
@@ -298,7 +298,7 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
   };
 
   renderKubernetesForm = () => {
-    var contextSelect;
+    let contextSelect;
     if (this.state.model.contexts) {
       contextSelect = (
         <DEPRECATED_Select

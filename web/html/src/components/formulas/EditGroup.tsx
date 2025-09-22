@@ -398,7 +398,7 @@ class EditDictionaryGroup extends React.Component<EditDictionaryGroupProps, Edit
       let id = this.props.id + "#" + i;
 
       let item_elements: React.ReactNode[] = [];
-      for (var element_name in this.props.element.$prototype) {
+      for (let element_name in this.props.element.$prototype) {
         if (element_name.startsWith("$") && element_name !== "$key") continue;
         item_elements.push(
           generateFormulaComponent(

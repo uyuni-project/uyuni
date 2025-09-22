@@ -110,7 +110,7 @@ function statusDisplay(system: any, isAdmin: boolean) {
 
   const { iconType, iconTitle, url } = systems[type];
 
-  var locked: React.ReactNode = "";
+  let locked: React.ReactNode = "";
   if (DEPRECATED_unsafeEquals(system["locked"], 1)) {
     locked = <IconTag type="system-locked" title={t("System Locked")} />;
   }

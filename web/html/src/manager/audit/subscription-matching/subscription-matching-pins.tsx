@@ -233,7 +233,7 @@ class AddPinPopUp extends React.Component<AddPinPopUpProps> {
   };
 
   sortByCpuCount = (a, b, columnKey, sortDirection) => {
-    var result = a[columnKey] - b[columnKey];
+    let result = a[columnKey] - b[columnKey];
     return (result || Utils.sortById(a, b)) * sortDirection;
   };
 
@@ -263,7 +263,7 @@ class AddPinPopUp extends React.Component<AddPinPopUpProps> {
   };
 
   render() {
-    var popUpContent;
+    let popUpContent;
     const systemId = this.state.systemId;
 
     if (isNil(systemId)) {

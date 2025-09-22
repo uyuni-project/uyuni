@@ -42,7 +42,7 @@ type HighstateState = {
 class Highstate extends React.Component<HighstateProps, HighstateState> {
   constructor(props) {
     super(props);
-    var state = {
+    let state = {
       messages: [],
       earliest: localizedMoment(),
       test: false,

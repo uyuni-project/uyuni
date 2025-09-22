@@ -34,7 +34,7 @@ class TaskoTop extends React.Component<Props> {
   }
 
   refreshServerData = () => {
-    var currentObject = this;
+    let currentObject = this;
     Network.get("/rhn/manager/api/admin/runtime-status/data")
       .then((data) => {
         currentObject.setState({
@@ -59,24 +59,24 @@ class TaskoTop extends React.Component<Props> {
       // it's 'running' so we want to keep it at the top of any other rows
       sortDirection = 1;
     }
-    var a = aRaw[columnKey] || "0000-01-01T00:00:00.000Z";
-    var b = bRaw[columnKey] || "0000-01-01T00:00:00.000Z";
-    var result = a.toLowerCase().localeCompare(b.toLowerCase());
+    let a = aRaw[columnKey] || "0000-01-01T00:00:00.000Z";
+    let b = bRaw[columnKey] || "0000-01-01T00:00:00.000Z";
+    let result = a.toLowerCase().localeCompare(b.toLowerCase());
     return (result || Utils.sortById(aRaw, bRaw)) * sortDirection;
   };
 
   sortByStatus = (aRaw, bRaw, columnKey, sortDirection) => {
-    var statusValues = { running: 0, ready_to_run: 1, failed: 2, interrupted: 3, skipped: 4, finished: 5 };
-    var a = statusValues[aRaw[columnKey]];
-    var b = statusValues[bRaw[columnKey]];
-    var result = (a > b ? 1 : a < b ? -1 : 0) || this.sortByEndTime(aRaw, bRaw, "endTime", sortDirection);
+    let statusValues = { running: 0, ready_to_run: 1, failed: 2, interrupted: 3, skipped: 4, finished: 5 };
+    let a = statusValues[aRaw[columnKey]];
+    let b = statusValues[bRaw[columnKey]];
+    let result = (a > b ? 1 : a < b ? -1 : 0) || this.sortByEndTime(aRaw, bRaw, "endTime", sortDirection);
     return (result || Utils.sortById(aRaw, bRaw)) * sortDirection;
   };
 
   sortByNumber = (aRaw, bRaw, columnKey, sortDirection) => {
-    var a = aRaw[columnKey];
-    var b = bRaw[columnKey];
-    var result = a > b ? 1 : a < b ? -1 : 0;
+    let a = aRaw[columnKey];
+    let b = bRaw[columnKey];
+    let result = a > b ? 1 : a < b ? -1 : 0;
     return (result || Utils.sortById(aRaw, bRaw)) * sortDirection;
   };
 
@@ -88,7 +88,7 @@ class TaskoTop extends React.Component<Props> {
   };
 
   decodeStatus = (status) => {
-    var cell;
+    let cell;
     switch (status) {
       case "running":
         cell = (

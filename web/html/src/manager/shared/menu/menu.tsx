@@ -157,7 +157,7 @@ type MenuLevelProps = {
 
 class MenuLevel extends React.Component<MenuLevelProps> {
   render() {
-    var contentMenu = this.props.elements.map((el, i) => (
+    let contentMenu = this.props.elements.map((el, i) => (
       <Element
         element={el}
         key={this.props.level + "_" + el.label + "_" + i}
@@ -229,8 +229,8 @@ class Breadcrumb extends React.Component {
   }
 
   render() {
-    var breadcrumbArray: any[] = [];
-    var level = window.JSONMenu.find((l) => l.active);
+    let breadcrumbArray: any[] = [];
+    let level = window.JSONMenu.find((l) => l.active);
     while (level != null) {
       breadcrumbArray.push(level);
       level = level.submenu ? level.submenu.find((l) => l.active) : null;

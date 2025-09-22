@@ -110,7 +110,7 @@ class FormulaForm extends React.Component<Props, State> {
   }
 
   init = () => {
-    var dataPromise;
+    let dataPromise;
     if (this.props.getDataPromise) {
       dataPromise = this.props.getDataPromise();
     } else {

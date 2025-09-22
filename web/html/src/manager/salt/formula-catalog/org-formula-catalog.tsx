@@ -53,7 +53,7 @@ class FormulaCatalog extends React.Component<Props, State> {
   };
 
   render() {
-    var items: MessageType[] = [
+    let items: MessageType[] = [
       {
         severity: "info",
         text: (

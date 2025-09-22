@@ -17,7 +17,7 @@ type SubscriptionsProps = {
 
 class Subscriptions extends React.Component<SubscriptionsProps> {
   sortByPolicy = (aRaw, bRaw, columnKey, sortDirection) => {
-    var result = 0;
+    let result = 0;
     const aValue = humanReadablePolicy(aRaw[columnKey]);
     const bValue = humanReadablePolicy(bRaw[columnKey]);
     result = aValue.toLowerCase().localeCompare(bValue.toLowerCase());
@@ -25,7 +25,7 @@ class Subscriptions extends React.Component<SubscriptionsProps> {
   };
 
   sortByQuantity = (aRaw, bRaw, columnKey, sortDirection) => {
-    var result = 0;
+    let result = 0;
     const aMatched = aRaw["matchedQuantity"];
     const aTotal = aRaw["totalQuantity"];
     const bMatched = bRaw["matchedQuantity"];

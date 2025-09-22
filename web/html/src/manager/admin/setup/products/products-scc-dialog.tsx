@@ -101,12 +101,12 @@ class SCCDialog extends React.Component<Props> {
   };
 
   runSccRefreshStep = (stepList, i) => {
-    var currentObject = this;
+    let currentObject = this;
 
     // if i-step exists
     if (stepList.length >= i + 1) {
       // run the i-step
-      var currentStep = stepList[i];
+      let currentStep = stepList[i];
       currentStep.inProgress = true;
       currentObject.setState({
         steps: stepList,

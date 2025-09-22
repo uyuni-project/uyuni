@@ -90,7 +90,7 @@ export function generateFormulaComponentForId(
 ) {
   wrapper = get(wrapper, defaultWrapper);
 
-  var isDisabled =
+  let isDisabled =
     (formulaForm.props.scope !== element.$scope && element.$scope !== "system") ||
     ("$disabled" in element && evalExpression(id, element.$disabled, formulaForm)) ||
     (!("$disabled" in element) && disabled);
@@ -383,7 +383,7 @@ export function isFiltered(criteria) {
 function isVisibleByCriteria(element: any, criteria: string) {
   let visibilityForcedByChildren = false;
   // check if all children are not visible by criteria so we can hide the parent (this element) as well
-  for (var child_name in element) {
+  for (let child_name in element) {
     // We want to apply the search and filter only on top of nested components the child elements that start
     // with '$' are normal labels or other values so we skip them.
     if (child_name.startsWith("$")) continue;
@@ -401,8 +401,8 @@ function isVisibleByCriteria(element: any, criteria: string) {
 }
 
 function generateChildrenFormItems(element, value, formulaForm, id, disabled = false) {
-  var child_items: React.ReactNode[] = [];
-  for (var child_name in element) {
+  let child_items: React.ReactNode[] = [];
+  for (let child_name in element) {
     if (child_name.startsWith("$")) continue;
     child_items.push(
       generateFormulaComponent(element[child_name], value[child_name], formulaForm, id, undefined, disabled)
@@ -412,8 +412,8 @@ function generateChildrenFormItems(element, value, formulaForm, id, disabled = f
 }
 
 function generateSelectList(data) {
-  var options: React.ReactNode[] = [];
-  for (var key in data)
+  let options: React.ReactNode[] = [];
+  for (let key in data)
     options.push(
       <option key={key} value={data[key]}>
         {data[key]}
@@ -727,7 +727,7 @@ export class FormulaFormContextProvider extends React.Component<
   onFormulaChange = (id, value) => {
     let values = this.state.formulaValues;
     let parents = id.split("#");
-    for (var i in parents.slice(0, -1)) {
+    for (let i in parents.slice(0, -1)) {
       if (values[parents[i]] === undefined) values[parents[i]] = {};
       values = values[parents[i]];
     }

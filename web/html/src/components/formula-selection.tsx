@@ -124,7 +124,7 @@ class FormulaSelection extends React.Component<Props, State> {
   }
 
   generateList = () => {
-    var list: React.ReactNode[] = [];
+    let list: React.ReactNode[] = [];
     const groups = this.state.groups;
 
     if (groups.groupless.length > 0) {
@@ -158,7 +158,7 @@ class FormulaSelection extends React.Component<Props, State> {
         );
       }, this);
     }
-    for (var group_name in groups) {
+    for (let group_name in groups) {
       if (group_name === "groupless") continue;
       const group = groups[group_name];
       const group_state = this.getGroupItemState(group);
@@ -226,7 +226,7 @@ class FormulaSelection extends React.Component<Props, State> {
   onGroupItemClick = (e) => {
     e.preventDefault();
 
-    var group = e.target;
+    let group = e.target;
     while (!group.id.startsWith("group_")) group = group.parentElement;
     group = this.state.groups[group.id.slice(6)];
     const state = this.getGroupItemState(group);
@@ -247,7 +247,7 @@ class FormulaSelection extends React.Component<Props, State> {
   };
 
   render() {
-    var items: MessageType[] = [];
+    let items: MessageType[] = [];
     if (this.props.warningMessage) {
       items.push({ severity: "warning", text: this.props.warningMessage });
     }
