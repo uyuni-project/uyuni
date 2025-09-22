@@ -46,6 +46,7 @@ module.exports = defineConfig([
 
     rules: {
       // Too much legacy code holds empty references and such, we can't enable these rules yet, but aim for it in the future
+      // TODO: Turn back off
       "no-unused-vars": "off",
       "@typescript-eslint/no-empty-function": "off",
       "no-async-promise-executor": "off",
@@ -145,8 +146,8 @@ module.exports = defineConfig([
   },
   globalIgnores(["dist/**/*", "vendors/**/*", "build/yarn/**/*"]),
   {
-    // Build scripts are allowed to use the console
-    files: ["build/**"],
+    // Build scripts and tests are allowed to use the console
+    files: ["build.js", "build/**", "utils/test-utils/**", "**/*.test.ts"],
     rules: {
       "no-console": "off",
     },
