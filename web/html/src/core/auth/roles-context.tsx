@@ -3,7 +3,9 @@
 import * as React from "react";
 
 export type rolesType = string[];
-declare let global_userRoles: rolesType | undefined;
+declare global {
+  var global_userRoles: rolesType | undefined;
+}
 
 const RolesContext = React.createContext<rolesType>([]);
 

@@ -5,7 +5,9 @@ import { Cancelable, Utils } from "utils/functions";
 
 import { replacer } from "./json";
 
-declare let csrfToken: string;
+declare global {
+  var csrfToken: string;
+}
 
 export type JsonResult<T> = {
   success: boolean;

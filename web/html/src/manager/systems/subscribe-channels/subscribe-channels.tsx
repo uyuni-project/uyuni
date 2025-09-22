@@ -15,7 +15,9 @@ import { localizedMoment } from "utils";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network, { JsonResult } from "utils/network";
 
-declare let actionChains: ActionChain[];
+declare global {
+  var actionChains: ActionChain[];
+}
 
 const messageMap = {
   taskomatic_error: t("Error scheduling job in Taskomatic. Please check the logs."),
