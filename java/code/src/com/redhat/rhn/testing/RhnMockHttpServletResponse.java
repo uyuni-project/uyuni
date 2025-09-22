@@ -146,15 +146,6 @@ public class RhnMockHttpServletResponse implements HttpServletResponse {
         this.status = statusIn;
     }
 
-    /**
-     * @param statusIn the status to set
-     * @deprecated replaced by {@link #setStatus(int)}
-     */
-    @Deprecated
-    public void setExpectedStatus(int statusIn) {
-        this.status = statusIn;
-    }
-
     @Override
     public int getStatus() {
         return status;
@@ -247,15 +238,6 @@ public class RhnMockHttpServletResponse implements HttpServletResponse {
      */
     @Override
     public void setContentType(String type) {
-        this.contentType = type;
-    }
-
-    /**
-     * @param type the content type to set
-     * @deprecated replaced by {@link #setContentType(String)}
-     */
-    @Deprecated
-    public void setExpectedContentType(String type) {
         this.contentType = type;
     }
 

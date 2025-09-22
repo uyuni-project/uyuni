@@ -76,11 +76,11 @@ public class SparkTestUtils {
         final RhnMockHttpServletRequest mockRequest = new RhnMockHttpServletRequest();
         mockRequest.setSession(new RhnMockHttpSession());
         mockRequest.setRequestURL(requestUrl);
-        mockRequest.setupGetMethod("GET");
-        mockRequest.setupGetInputStream(new MockServletInputStream());
+        mockRequest.setMethod("GET");
+        mockRequest.setInputStream(new MockServletInputStream());
         setQueryParams(mockRequest, queryParams);
-        mockRequest.setupPathInfo(URI.create(requestUrl).getPath());
-        httpHeaders.forEach(mockRequest::setupGetHeader);
+        mockRequest.setPathInfo(URI.create(requestUrl).getPath());
+        httpHeaders.forEach(mockRequest::setHeader);
 
         return RequestResponseFactory.create(match, mockRequest);
     }
@@ -124,11 +124,11 @@ public class SparkTestUtils {
         final RhnMockHttpServletRequest mockRequest = new RhnMockHttpServletRequest();
         mockRequest.setSession(new RhnMockHttpSession());
         mockRequest.setRequestURL(requestUrl);
-        mockRequest.setupGetMethod("GET");
-        mockRequest.setupGetInputStream(new MockServletInputStream());
+        mockRequest.setMethod("GET");
+        mockRequest.setInputStream(new MockServletInputStream());
         setMultiValueQueryParams(mockRequest, queryParams);
-        mockRequest.setupPathInfo(URI.create(requestUrl).getPath());
-        httpHeaders.forEach(mockRequest::setupGetHeader);
+        mockRequest.setPathInfo(URI.create(requestUrl).getPath());
+        httpHeaders.forEach(mockRequest::setHeader);
 
         return RequestResponseFactory.create(match, mockRequest);
     }
@@ -209,17 +209,17 @@ public class SparkTestUtils {
         final RhnMockHttpServletRequest mockRequest = new RhnMockHttpServletRequest();
         mockRequest.setSession(new RhnMockHttpSession());
         mockRequest.setRequestURL(requestUrl);
-        mockRequest.setupGetMethod(method);
+        mockRequest.setMethod(method);
         MockServletInputStream in = new MockServletInputStream();
         in.setupRead(body.getBytes(
                 mockRequest.getCharacterEncoding() != null ?
                         mockRequest.getCharacterEncoding() : "UTF-8"));
-        mockRequest.setupGetInputStream(in);
+        mockRequest.setInputStream(in);
         setQueryParams(mockRequest, queryParams);
-        mockRequest.setupPathInfo(URI.create(requestUrl).getPath());
+        mockRequest.setPathInfo(URI.create(requestUrl).getPath());
 
         httpHeaders.forEach(
-                (name, val) -> mockRequest.setupGetHeader(name, val));
+                (name, val) -> mockRequest.setHeader(name, val));
 
         return RequestResponseFactory.create(match, mockRequest);
     }
@@ -254,31 +254,31 @@ public class SparkTestUtils {
         final RhnMockHttpServletRequest mockRequest = new RhnMockHttpServletRequest();
         mockRequest.setSession(new RhnMockHttpSession());
         mockRequest.setRequestURL(requestUrl);
-        mockRequest.setupGetMethod(method);
+        mockRequest.setMethod(method);
         MockServletInputStream in = new MockServletInputStream();
         in.setupRead(body.getBytes(
                 mockRequest.getCharacterEncoding() != null ?
                         mockRequest.getCharacterEncoding() : "UTF-8"));
-        mockRequest.setupGetInputStream(in);
-        mockRequest.setupPathInfo(URI.create(requestUrl).getPath());
+        mockRequest.setInputStream(in);
+        mockRequest.setPathInfo(URI.create(requestUrl).getPath());
 
         httpHeaders.forEach(
-                mockRequest::setupGetHeader);
+                mockRequest::setHeader);
 
         return RequestResponseFactory.create(match, mockRequest);
     }
 
     private static void setQueryParams(RhnMockHttpServletRequest request, Map<String, String> queryParams) {
-        queryParams.forEach((name, val) -> request.setupAddParameter(name, new String[]{val}));
+        queryParams.forEach((name, val) -> request.addParameter(name, new String[]{val}));
         // we must convert to a "multi-value map"
-        request.setupGetParameterMap(queryParams.entrySet().stream().collect(
+        request.setParameters(queryParams.entrySet().stream().collect(
                 Collectors.toMap(v -> v.getKey(), v -> new String[]{v.getValue()})));
     }
 
     private static void setMultiValueQueryParams(RhnMockHttpServletRequest request,
                                                  Map<String, List<String>> queryParams) {
-        queryParams.forEach((name, val) -> request.setupAddParameter(name, val.toArray(new String[0])));
-        request.setupGetParameterMap(queryParams.entrySet().stream().collect(
+        queryParams.forEach((name, val) -> request.addParameter(name, val.toArray(new String[0])));
+        request.setParameters(queryParams.entrySet().stream().collect(
                 Collectors.toMap(v -> v.getKey(), v -> v.getValue().toArray(new String[0]))));
     }
 }

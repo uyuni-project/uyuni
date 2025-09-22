@@ -80,7 +80,7 @@ public class ActionHelper  {
         // we have to get the actual user here so we can call setupAddParamter
         // a second time.  The MockRequest counts the number of times getParamter
         // is called.
-        request.setupAddParameter("uid", user.getId().toString());
+        request.addParameter("uid", user.getId().toString());
 
     }
 
@@ -201,10 +201,10 @@ public class ActionHelper  {
      * @param filterString the filter string we want to test out.
      */
     public void setupClampListBounds(String filterString) {
-        getRequest().setupAddParameter(RequestContext.FILTER_STRING, filterString);
-        getRequest().setupAddParameter(RequestContext.PREVIOUS_FILTER_STRING, filterString);
-        getRequest().setupAddParameter("newset", (String)null);
-        getRequest().setupAddParameter("returnvisit", (String) null);
+        getRequest().addParameter(RequestContext.FILTER_STRING, filterString);
+        getRequest().addParameter(RequestContext.PREVIOUS_FILTER_STRING, filterString);
+        getRequest().addParameter("newset", (String)null);
+        getRequest().addParameter("returnvisit", (String) null);
         setupProcessPagination();
     }
 
@@ -213,15 +213,15 @@ public class ActionHelper  {
      * listview Actions.
      */
     public void setupProcessPagination() {
-        getRequest().setupAddParameter(Pagination.FIRST.getElementName(), "someValue");
-        getRequest().setupAddParameter(Pagination.FIRST.getLowerAttributeName(), "10");
-        getRequest().setupAddParameter(Pagination.PREV.getElementName(), "0");
-        getRequest().setupAddParameter(Pagination.PREV.getLowerAttributeName(), "");
-        getRequest().setupAddParameter(Pagination.NEXT.getElementName(), "20");
-        getRequest().setupAddParameter(Pagination.NEXT.getLowerAttributeName(), "");
-        getRequest().setupAddParameter(Pagination.LAST.getElementName(), "");
-        getRequest().setupAddParameter(Pagination.LAST.getLowerAttributeName(), "20");
-        getRequest().setupAddParameter("lower", "10");
+        getRequest().addParameter(Pagination.FIRST.getElementName(), "someValue");
+        getRequest().addParameter(Pagination.FIRST.getLowerAttributeName(), "10");
+        getRequest().addParameter(Pagination.PREV.getElementName(), "0");
+        getRequest().addParameter(Pagination.PREV.getLowerAttributeName(), "");
+        getRequest().addParameter(Pagination.NEXT.getElementName(), "20");
+        getRequest().addParameter(Pagination.NEXT.getLowerAttributeName(), "");
+        getRequest().addParameter(Pagination.LAST.getElementName(), "");
+        getRequest().addParameter(Pagination.LAST.getLowerAttributeName(), "20");
+        getRequest().addParameter("lower", "10");
     }
 
     /**

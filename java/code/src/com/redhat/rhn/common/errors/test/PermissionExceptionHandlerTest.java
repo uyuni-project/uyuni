@@ -84,9 +84,9 @@ public class PermissionExceptionHandlerTest extends MockObjectTestCase {
 
             RhnMockHttpServletRequest request = TestUtils
                     .getRequestWithSessionAndUser();
-            request.setupGetMethod("POST");
-            request.setupGetRequestURI("http://localhost:8080");
-            request.setupGetParameterNames(new Vector<String>().elements());
+            request.setMethod("POST");
+            request.setRequestURI("http://localhost:8080");
+            request.setParameterNames(new Vector<String>().elements());
 
             HttpServletResponse response = mock(HttpServletResponse.class);
             context.checking(new Expectations() {{

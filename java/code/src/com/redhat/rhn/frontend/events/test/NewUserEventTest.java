@@ -101,8 +101,8 @@ public class NewUserEventTest extends RhnBaseTestCase {
             }
         };
         request.setSession(new RhnMockHttpSession());
-        request.setupGetRequestURI("http://localhost:8080");
-        request.setupGetMethod("POST");
+        request.setRequestURI("http://localhost:8080");
+        request.setMethod("POST");
         User usr = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
 

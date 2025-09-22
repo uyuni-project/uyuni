@@ -68,9 +68,9 @@ public class LoginControllerTest extends BaseControllerTestCase {
         mockRequest.setSession(session);
 
         mockRequest.setRequestURL(requestUrl);
-        mockRequest.setupGetMethod("POST");
-        mockRequest.setupPathInfo(URI.create(requestUrl).getPath());
-        mockRequest.setupAddParameter("url_bounce", "/rhn/users/UserDetails.do?uid=1");
+        mockRequest.setMethod("POST");
+        mockRequest.setPathInfo(URI.create(requestUrl).getPath());
+        mockRequest.addParameter("url_bounce", "/rhn/users/UserDetails.do?uid=1");
 
         response = RequestResponseFactory.create(new RhnMockHttpServletResponse());
         // logging in
@@ -90,9 +90,9 @@ public class LoginControllerTest extends BaseControllerTestCase {
         RhnMockHttpSession session = new RhnMockHttpSession();
         mockRequest.setSession(session);
         mockRequest.setRequestURL(requestUrl);
-        mockRequest.setupGetMethod("POST");
-        mockRequest.setupPathInfo(URI.create(requestUrl).getPath());
-        mockRequest.setupAddParameter("url_bounce", "/rhn/users/UserDetails.do?uid=1");
+        mockRequest.setMethod("POST");
+        mockRequest.setPathInfo(URI.create(requestUrl).getPath());
+        mockRequest.addParameter("url_bounce", "/rhn/users/UserDetails.do?uid=1");
 
         response = RequestResponseFactory.create(new RhnMockHttpServletResponse());
         ModelAndView result = LoginController.loginView(RequestResponseFactory.create(match, mockRequest), response);
@@ -112,9 +112,9 @@ public class LoginControllerTest extends BaseControllerTestCase {
         mockRequest.setSession(session);
 
         mockRequest.setRequestURL(requestUrl);
-        mockRequest.setupGetMethod("POST");
-        mockRequest.setupPathInfo(URI.create(requestUrl).getPath());
-        mockRequest.setupAddParameter("url_bounce", "/rhn/users/UserDetails.do?uid=1");
+        mockRequest.setMethod("POST");
+        mockRequest.setPathInfo(URI.create(requestUrl).getPath());
+        mockRequest.addParameter("url_bounce", "/rhn/users/UserDetails.do?uid=1");
 
         response = RequestResponseFactory.create(new RhnMockHttpServletResponse());
         ModelAndView result = LoginController.loginView(RequestResponseFactory.create(match, mockRequest), response);

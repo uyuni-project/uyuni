@@ -36,7 +36,7 @@ public class EditAddressSetupActionTest extends RhnBaseTestCase {
         EditAddressSetupAction action = new EditAddressSetupAction();
         ActionHelper sah = new ActionHelper();
         sah.setUpAction(action);
-        sah.getRequest().setupAddParameter("type", Address.TYPE_MARKETING);
+        sah.getRequest().addParameter("type", Address.TYPE_MARKETING);
 
         User user = sah.getUser();
         user.setPhone("555-1212");

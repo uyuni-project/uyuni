@@ -55,8 +55,8 @@ public class NotifySetupActionTest extends RhnBaseTestCase {
         Errata published = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
 
         //test default case
-        request.setupAddParameter("eid", published.getId().toString());
-        request.setupAddParameter("eid", published.getId().toString());
+        request.addParameter("eid", published.getId().toString());
+        request.addParameter("eid", published.getId().toString());
         ActionForward result = action.execute(mapping, form, request, response);
         assertEquals(RhnHelper.DEFAULT_FORWARD, result.getName());
         assertNotNull(request.getAttribute("advisory"));

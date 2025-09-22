@@ -54,7 +54,7 @@ public class EditActionTest extends RhnBaseTestCase {
         RhnMockHttpServletRequest request = TestUtils.getRequestWithSessionAndUser();
         RhnMockHttpServletResponse response = new RhnMockHttpServletResponse();
         RhnMockDynaActionForm form = new RhnMockDynaActionForm("errataEditForm");
-        request.setupServerName("mymachine.rhndev.redhat.com");
+        request.setServerName("mymachine.rhndev.redhat.com");
 
         RequestContext requestContext = new RequestContext(request);
 
@@ -64,8 +64,8 @@ public class EditActionTest extends RhnBaseTestCase {
         //Create another for checking adv name uniqueness constraint
         Errata errata2 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
 
-        request.setupAddParameter("eid", errata.getId().toString());
-        request.setupAddParameter("eid", errata.getId().toString());
+        request.addParameter("eid", errata.getId().toString());
+        request.addParameter("eid", errata.getId().toString());
 
         //Execute setupAction to fillout form
         ActionForward result = action.unspecified(mapping, form, request, response);
@@ -78,20 +78,20 @@ public class EditActionTest extends RhnBaseTestCase {
         form.set("buglistUrlNew", "");
 
         //make sure we still get validation errors
-        request.setupAddParameter("eid", errata.getId().toString());
+        request.addParameter("eid", errata.getId().toString());
         form.set("synopsis", ""); //required field, so we should get a validation error
         result = action.update(mapping, form, request, response);
         assertEquals(RhnHelper.DEFAULT_FORWARD, result.getName());
 
         //make sure adv name has to be unique
-        request.setupAddParameter("eid", errata.getId().toString());
+        request.addParameter("eid", errata.getId().toString());
         form.set("synopsis", "this errata has been edited");
         form.set("advisoryName", errata2.getAdvisoryName());
         result = action.update(mapping, form, request, response);
         assertEquals(RhnHelper.DEFAULT_FORWARD, result.getName());
 
         //make sure adv name cannot start with rh
-        request.setupAddParameter("eid", errata.getId().toString());
+        request.addParameter("eid", errata.getId().toString());
         form.set("advisoryName", "rh" + TestUtils.randomString());
         result = action.update(mapping, form, request, response);
         assertEquals(RhnHelper.DEFAULT_FORWARD, result.getName());
@@ -101,8 +101,8 @@ public class EditActionTest extends RhnBaseTestCase {
         /*
          * I hate it when Mock Objects don't act like the objects they mock
          */
-        request.setupAddParameter("eid", errata.getId().toString());
-        request.setupAddParameter("eid", errata.getId().toString());
+        request.addParameter("eid", errata.getId().toString());
+        request.addParameter("eid", errata.getId().toString());
         form.set("advisoryName", newAdvisoryName);
         //add a bug
         form.set("buglistIdNew", "123");
@@ -110,13 +110,13 @@ public class EditActionTest extends RhnBaseTestCase {
         form.set("buglistUrlNew", "https://bugzilla.redhat.com/show_bug.cgi?id=123");
         //edit the keywords
         form.set("keywords", "yankee, hotel, foxtrot");
-        request.setupAddParameter("eid", errata.getId().toString());
-        request.setupAddParameter("buglistIdNew", "123");
-        request.setupAddParameter("buglistSummaryNew", "test bug for a test errata");
-        request.setupAddParameter("buglistUrlNew", "https://bugzilla.redhat.com/show_bug.cgi?id=123");
-        request.setupAddParameter("buglistIdNew", "123");
-        request.setupAddParameter("buglistSummaryNew", "test bug for a test errata");
-        request.setupAddParameter("buglistUrlNew",
+        request.addParameter("eid", errata.getId().toString());
+        request.addParameter("buglistIdNew", "123");
+        request.addParameter("buglistSummaryNew", "test bug for a test errata");
+        request.addParameter("buglistUrlNew", "https://bugzilla.redhat.com/show_bug.cgi?id=123");
+        request.addParameter("buglistIdNew", "123");
+        request.addParameter("buglistSummaryNew", "test bug for a test errata");
+        request.addParameter("buglistUrlNew",
                 "https://bugzilla.redhat.com/show_bug.cgi?id=123");
         result = action.update(mapping, form, request, response);
         assertEquals(RhnHelper.DEFAULT_FORWARD, result.getName());
@@ -150,7 +150,7 @@ public class EditActionTest extends RhnBaseTestCase {
         User user = requestContext.getCurrentUser();
         Errata errata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
 
-        request.setupAddParameter("eid", errata.getId().toString());
+        request.addParameter("eid", errata.getId().toString());
 
         //make sure our form vars are null
         assertNull(form.get("synopsis"));

@@ -61,7 +61,7 @@ public class ResetLinkActionTest extends BaseTestCaseWithUser {
     public void testPerformInvalidToken() {
         ResetPassword rp = ResetPasswordFactory.createNewEntryFor(user);
         ResetPasswordFactory.invalidateToken(rp.getToken());
-        request.setupAddParameter("token", rp.getToken());
+        request.addParameter("token", rp.getToken());
         ActionForward rc = action.execute(mapping, form, request, response);
         assertEquals(invalid, rc);
     }
@@ -69,7 +69,7 @@ public class ResetLinkActionTest extends BaseTestCaseWithUser {
     @Test
     public void testPerformValidToken() {
         ResetPassword rp = ResetPasswordFactory.createNewEntryFor(user);
-        request.setupAddParameter("token", rp.getToken());
+        request.addParameter("token", rp.getToken());
         ActionForward rc = action.execute(mapping, form, request, response);
         assertEquals(valid, rc);
     }
@@ -88,10 +88,10 @@ public class ResetLinkActionTest extends BaseTestCaseWithUser {
         response = new RhnMockHttpServletResponse();
 
         RhnMockHttpSession mockSession = new RhnMockHttpSession();
-        mockSession.setupGetAttribute("token", null);
-        mockSession.setupGetAttribute("request_method", "GET");
+        mockSession.setAttribute("token", null);
+        mockSession.setAttribute("request_method", "GET");
         request.setSession(mockSession);
-        request.setupServerName("mymachine.rhndev.redhat.com");
+        request.setServerName("mymachine.rhndev.redhat.com");
 
         mapping.addForwardConfig(valid);
         mapping.addForwardConfig(invalid);

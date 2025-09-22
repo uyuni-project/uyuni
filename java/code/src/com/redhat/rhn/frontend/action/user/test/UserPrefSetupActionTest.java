@@ -60,7 +60,7 @@ public class UserPrefSetupActionTest extends RhnBaseTestCase {
         ActionHelper sah = new ActionHelper();
         sah.setUpAction(action);
         sah.getRequest().setRequestURL("rdu.redhat.com/rhn/users/UserPreferences.do");
-        sah.getRequest().setupAddParameter("uid", (String)null);
+        sah.getRequest().addParameter("uid", (String)null);
         sah.getRequest().getParameterValues("uid"); //now uid = null
 
         try {

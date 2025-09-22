@@ -45,10 +45,10 @@ public class VisibleSystemsListActionTest extends RhnBaseTestCase {
         ServerFactoryTest.createTestServer(user, true,
                         ServerConstants.getServerGroupTypeEnterpriseEntitled());
 
-        ah.getRequest().setupAddParameter("newset", (String[]) null);
-        ah.getRequest().setupAddParameter("items_on_page", (String[]) null);
-        ah.getRequest().setupAddParameter("items_selected", (String[]) null);
-        ah.getRequest().setupAddParameter("uid", user.getId().toString());
+        ah.getRequest().addParameter("newset", (String[]) null);
+        ah.getRequest().addParameter("items_on_page", (String[]) null);
+        ah.getRequest().addParameter("items_selected", (String[]) null);
+        ah.getRequest().addParameter("uid", user.getId().toString());
 
         RhnSetDecl.SYSTEMS.clear(user);
         assertTrue(RhnSetDecl.SYSTEMS.get(user).isEmpty());
