@@ -195,26 +195,3 @@ class Shelf:
     def __str__(self):
         # pylint: disable-next=consider-using-f-string
         return "<Remote-Shelf instance at %s>" % id(self)
-
-
-# -------------------------------------------------------------------------------
-# test code
-# pylint: disable=E0012, C0411, C0413, E1136, C0412
-# pylint: disable=bad-option-value,unsupported-assignment-operation
-if __name__ == "__main__":
-    from spacewalk.common.rhnConfig import initCFG
-
-    initCFG("proxy.broker")
-    s = Shelf(("localhost", 9999))
-    s["1234"] = [1, 2, 3, 4, None, None]
-    s["blah"] = "testing 1 2 3"
-    # pylint: disable-next=consider-using-f-string
-    print('Cached object s["1234"] = {}'.format(s["1234"]))
-    # pylint: disable-next=consider-using-f-string
-    print('Cached object s["blah"] = {}'.format(s["blah"]))
-    print("asdfrasdf" in s)
-
-#    print
-#    print 'And this will bomb (attempt to get non-existant data:'
-#    s["DOESN'T EXIST!!!"]
-# -------------------------------------------------------------------------------
