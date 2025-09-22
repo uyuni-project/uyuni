@@ -94,17 +94,14 @@ class FormulaForm extends React.Component<Props, State> {
       loading: true,
     };
 
-    window.addEventListener(
-      "beforeunload",
-      function (this: FormulaForm, e) {
-        if (!this.state.formulaChanged) return null;
+    window.addEventListener("beforeunload", (e) => {
+      if (!this.state.formulaChanged) return;
 
-        let confirmationMessage = "You have unsaved changes. If you leave before saving, your changes will be lost.";
-
-        get(e, window.event).returnValue = confirmationMessage; //Gecko + IE
-        return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
-      }.bind(this)
-    );
+      const confirmationMessage = "You have unsaved changes. If you leave before saving, your changes will be lost.";
+      e.preventDefault();
+      e.returnValue = confirmationMessage;
+      return confirmationMessage;
+    });
 
     this.init();
   }
