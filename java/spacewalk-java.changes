@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Sep 23 11:24:32 CEST 2025 - rosuna@suse.com
+
+- version 5.1.20-0
+  * Fixes bug: Changing configuration channel ranking in
+    activation key results in internal server error (bsc#1249059)
+
+-------------------------------------------------------------------
 Wed Sep 03 16:32:06 CEST 2025 - rosuna@suse.com
 
 - version 5.1.19-0
