@@ -169,6 +169,7 @@ public class MessageQueueTest extends RhnBaseTestCase {
     public void testDeRegisterMultiple() {
         logger.debug("testDeRegisterMultiple - start");
         TestAction.deRegisterAction();
+        TestAction.deRegisterAction();
         logger.debug("testDeRegisterMultiple - end");
     }
 

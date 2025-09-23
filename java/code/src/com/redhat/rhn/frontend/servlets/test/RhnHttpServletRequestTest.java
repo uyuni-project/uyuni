@@ -23,6 +23,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.redhat.rhn.frontend.servlets.RhnHttpServletRequest;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
@@ -54,31 +55,40 @@ public class RhnHttpServletRequestTest {
 
     @Test
     public void testDefaultConstructor() {
-        assertEquals(Collections.singletonList(ACTIVE_LANG_ATTR), Collections.list(request.getAttributeNames()));
-        assertFalse(request.getHeaderNames().hasMoreElements());
-        assertFalse(request.getLocales().hasMoreElements());
-        assertTrue(request.getParameterMap().isEmpty());
-        assertEquals(0, request.getCookies().length);
-        assertEquals(DEFAULT_SERVER_NAME, request.getServerName());
-        assertEquals("/mlm/network/somepage.do", request.getRequestURI());
-        assertEquals("http://host.mlm.suse.com/mlm/network/somepage.do", request.getRequestURL().toString());
-        assertEquals(StringUtils.EMPTY, request.getContextPath());
-        assertEquals(StringUtils.EMPTY, request.getServletPath());
-        assertNull(request.getPathInfo());
-        assertNull(request.getQueryString());
-        assertNotNull(request.getSession());
-        assertEquals("POST", request.getMethod());
-        assertEquals(80, request.getServerPort());
-        assertEquals("127.0.0.1", request.getRemoteAddr());
-        assertEquals(LOCALHOST, request.getRemoteHost());
-        assertEquals(12345, request.getRemotePort());
-        assertEquals("127.0.0.1", request.getLocalAddr());
-        assertEquals(LOCALHOST, request.getLocalName());
-        assertEquals(8080, request.getLocalPort());
-        assertEquals("http", request.getProtocol());
-        assertEquals("http", request.getScheme());
-        assertEquals(-1, request.getContentLength());
-        assertFalse(request.isSecure());
+        assertAll(
+                "Default constructor values",
+                () -> assertEquals(
+                        Collections.singletonList(ACTIVE_LANG_ATTR),
+                        Collections.list(request.getAttributeNames())
+                ),
+                () -> assertFalse(request.getHeaderNames().hasMoreElements()),
+                () -> assertFalse(request.getLocales().hasMoreElements()),
+                () -> assertTrue(request.getParameterMap().isEmpty()),
+                () -> assertEquals(0, request.getCookies().length),
+                () -> assertEquals(DEFAULT_SERVER_NAME, request.getServerName()),
+                () -> assertEquals("/mlm/network/somepage.do", request.getRequestURI()),
+                () -> assertEquals(
+                        "http://host.mlm.suse.com/mlm/network/somepage.do",
+                        request.getRequestURL().toString()
+                ),
+                () -> assertEquals(StringUtils.EMPTY, request.getContextPath()),
+                () -> assertEquals(StringUtils.EMPTY, request.getServletPath()),
+                () -> assertNull(request.getPathInfo()),
+                () -> assertNull(request.getQueryString()),
+                () -> assertNotNull(request.getSession()),
+                () -> assertEquals("POST", request.getMethod()),
+                () -> assertEquals(80, request.getServerPort()),
+                () -> assertEquals("127.0.0.1", request.getRemoteAddr()),
+                () -> assertEquals(LOCALHOST, request.getRemoteHost()),
+                () -> assertEquals(12345, request.getRemotePort()),
+                () -> assertEquals("127.0.0.1", request.getLocalAddr()),
+                () -> assertEquals(LOCALHOST, request.getLocalName()),
+                () -> assertEquals(8080, request.getLocalPort()),
+                () -> assertEquals("http", request.getProtocol()),
+                () -> assertEquals("http", request.getScheme()),
+                () -> assertEquals(-1, request.getContentLength()),
+                () -> assertFalse(request.isSecure())
+        );
     }
 
     @Test
@@ -92,7 +102,9 @@ public class RhnHttpServletRequestTest {
     public void testSetAndGetProtocol() {
         assertFalse(baseRequest.isSecure());
         assertEquals("http", request.getProtocol());
+
         baseRequest.setSecure(true);
+        assertTrue(baseRequest.isSecure());
         assertEquals("https", request.getProtocol());
     }
 

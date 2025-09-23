@@ -22,13 +22,10 @@ import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.testing.ActionHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.UserTestUtils;
 
-import org.apache.commons.collections.IteratorUtils;
 import org.junit.jupiter.api.Test;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * ErrataSearchActionTest
@@ -46,17 +43,11 @@ public class ErrataSearchActionTest extends RhnBaseTestCase {
         ah.setUpAction(action, RhnHelper.DEFAULT_FORWARD);
         ah.getForm().set(BaseSearchAction.VIEW_MODE, BaseSearchAction.OPT_ADVISORY);
         ah.getForm().set(RhnAction.SUBMITTED, Boolean.TRUE);
-        ah.getRequest().addParameter(BaseSearchAction.SEARCH_STR, name);
-        ah.getRequest().addParameter(BaseSearchAction.VIEW_MODE, BaseSearchAction.OPT_ADVISORY);
-        ah.getRequest().addParameter(BaseSearchAction.FINE_GRAINED, "on");
-
-        Map<String, String> paramnames = new HashMap<>();
-        paramnames.put(BaseSearchAction.SEARCH_STR, name);
-        paramnames.put(BaseSearchAction.VIEW_MODE, BaseSearchAction.OPT_ADVISORY);
-        paramnames.put(BaseSearchAction.FINE_GRAINED, "on");
-        paramnames.put(RhnAction.SUBMITTED, "true");
-        ah.getRequest().setParameterNames(
-                IteratorUtils.asEnumeration(paramnames.keySet().iterator()));
+        RhnMockHttpServletRequest request = ah.getRequest();
+        request.addParameter(BaseSearchAction.SEARCH_STR, name);
+        request.addParameter(BaseSearchAction.VIEW_MODE, BaseSearchAction.OPT_ADVISORY);
+        request.addParameter(BaseSearchAction.FINE_GRAINED, "on");
+        request.addParameter(BaseSearchAction.SUBMITTED, "true");
 
         ah.setupClampListBounds();
 

@@ -14,6 +14,7 @@
  */
 package com.suse.scc.test;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -65,40 +66,46 @@ public class SCCClientTest  {
         // Assertions
         assertEquals(2, products.size());
         SCCProductJson p = products.get(0);
-        assertEquals(42, p.getId());
-        assertEquals("SUSE Linux Enterprise Server", p.getName());
-        assertEquals("SUSE_SLES", p.getIdentifier());
-        assertEquals("11", p.getVersion());
-        assertEquals("GA", p.getReleaseType());
-        assertEquals("x86_64", p.getArch());
-        assertEquals("SUSE Linux Enterprise Server 11 x86_64", p.getFriendlyName());
-        assertEquals("7261", p.getProductClass());
-        assertEquals("cpe:/o:suse:sled-addon:12.0", p.getCpe());
-        assertFalse(p.isFree());
-        assertNull(p.getDescription());
-        assertEquals("https://nu.novell.com/SUSE:/Products:/SLE-12/images/repo/" +
-                "SLE-12-Server-POOL-x86_64-Media.license/", p.getEulaUrl());
+        assertAll(
+                "Check first product data",
+                () -> assertEquals(42, p.getId()),
+                () -> assertEquals("SUSE Linux Enterprise Server", p.getName()),
+                () -> assertEquals("SUSE_SLES", p.getIdentifier()),
+                () -> assertEquals("11", p.getVersion()),
+                () -> assertEquals("GA", p.getReleaseType()),
+                () -> assertEquals("x86_64", p.getArch()),
+                () -> assertEquals("SUSE Linux Enterprise Server 11 x86_64", p.getFriendlyName()),
+                () -> assertEquals("7261", p.getProductClass()),
+                () -> assertEquals("cpe:/o:suse:sled-addon:12.0", p.getCpe()),
+                () -> assertFalse(p.isFree()),
+                () -> assertNull(p.getDescription()),
+                () -> assertEquals("https://nu.novell.com/SUSE:/Products:/SLE-12/images/repo/" +
+                        "SLE-12-Server-POOL-x86_64-Media.license/", p.getEulaUrl())
+        );
 
         // Extensions
         List<SCCProductJson> extensions = p.getExtensions();
         assertEquals(1, extensions.size());
         SCCProductJson e = extensions.get(0);
-        assertEquals(1145, e.getId());
-        assertEquals("SUSE Linux Enterprise Server", e.getName());
-        assertEquals("sle-sdk", e.getIdentifier());
-        assertEquals("12", e.getVersion());
-        assertNull(e.getReleaseType());
-        assertEquals("ppc64le", e.getArch());
-        assertEquals("SUSE Linux Enterprise Software Development Kit 12 ppc64le",
-                e.getFriendlyName());
-        assertNull(e.getProductClass());
-        assertEquals("cpe:/o:suse:sle-sdk:12.0", e.getCpe());
-        assertTrue(e.isFree());
-        assertNull(e.getDescription());
-        assertEquals("https://nu.novell.com/repo/$RCE/SLE10-SDK-SP4-Online/" +
-                "sles-10-x86_64.license/", e.getEulaUrl());
-        assertEquals(0, e.getExtensions().size());
-        assertEquals(1, e.getRepositories().size());
+        assertAll(
+                "Check first extension data",
+                () -> assertEquals(1145, e.getId()),
+                () -> assertEquals("SUSE Linux Enterprise Server", e.getName()),
+                () -> assertEquals("sle-sdk", e.getIdentifier()),
+                () -> assertEquals("12", e.getVersion()),
+                () -> assertNull(e.getReleaseType()),
+                () -> assertEquals("ppc64le", e.getArch()),
+                () -> assertEquals("SUSE Linux Enterprise Software Development Kit 12 ppc64le",
+                        e.getFriendlyName()),
+                () -> assertNull(e.getProductClass()),
+                () -> assertEquals("cpe:/o:suse:sle-sdk:12.0", e.getCpe()),
+                () -> assertTrue(e.isFree()),
+                () -> assertNull(e.getDescription()),
+                () -> assertEquals("https://nu.novell.com/repo/$RCE/SLE10-SDK-SP4-Online/" +
+                        "sles-10-x86_64.license/", e.getEulaUrl()),
+                () -> assertEquals(0, e.getExtensions().size()),
+                () -> assertEquals(1, e.getRepositories().size())
+        );
 
         // Repositories
         List<SCCRepositoryJson> repos = p.getRepositories();
@@ -131,11 +138,16 @@ public class SCCClientTest  {
         // Assertions
         assertEquals(2, repos.size());
         SCCRepositoryJson r = repos.get(0);
-        assertEquals(Long.valueOf(1358), r.getSCCId());
-        assertEquals("SLE10-SDK-SP4-Online", r.getName());
-        assertEquals("sles-10-i586", r.getDistroTarget());
-        assertEquals("SLE10-SDK-SP4-Online for sles-10-i586", r.getDescription());
-        assertEquals("https://nu.novell.com/repo/$RCE/SLE10-SDK-SP4-Online/sles-10-i586", r.getUrl());
+        assertAll(
+                "Check first repository data",
+                () -> assertEquals(Long.valueOf(1358), r.getSCCId()),
+                () -> assertEquals("SLE10-SDK-SP4-Online", r.getName()),
+                () -> assertEquals("sles-10-i586", r.getDistroTarget()),
+                () -> assertEquals("SLE10-SDK-SP4-Online for sles-10-i586", r.getDescription()),
+                () -> assertEquals("https://nu.novell.com/repo/$RCE/SLE10-SDK-SP4-Online/sles-10-i586",
+                        r.getUrl()),
+                () -> assertTrue(r.isAutorefresh())
+        );
         assertTrue(r.isAutorefresh());
     }
 
@@ -161,22 +173,25 @@ public class SCCClientTest  {
         // Assertions
         assertEquals(2, subs.size());
         SCCSubscriptionJson s = subs.get(0);
-        assertEquals(1L, s.getId().longValue());
-        assertEquals("631dc51f", s.getRegcode());
-        assertEquals("Subscription 1", s.getName());
-        assertEquals("FULL", s.getType());
-        assertEquals("EXPIRED", s.getStatus());
-        assertNull(s.getStartsAt());
-        assertEquals(Date.from(Instant.parse("2014-03-14T13:10:21.164Z")), s.getExpiresAt());
-        assertEquals(Integer.valueOf(6), s.getSystemLimit());
-        assertEquals(Integer.valueOf(1), s.getSystemsCount());
-        assertNull(s.getVirtualCount());
-        assertFalse(s.getProductIds().contains(11L));
-        assertTrue(s.getProductIds().contains(12L));
-        assertTrue(s.getProductIds().contains(13L));
-        assertTrue(s.getProductIds().contains(14L));
-        assertTrue(s.getSkus().contains("SKU1"));
-        assertTrue(s.getSkus().contains("SKU2"));
+        assertAll(
+                "Check first subscription data",
+                () -> assertEquals(1L, s.getId().longValue()),
+                () -> assertEquals("631dc51f", s.getRegcode()),
+                () -> assertEquals("Subscription 1", s.getName()),
+                () -> assertEquals("FULL", s.getType()),
+                () -> assertEquals("EXPIRED", s.getStatus()),
+                () -> assertNull(s.getStartsAt()),
+                () -> assertEquals(Date.from(Instant.parse("2014-03-14T13:10:21.164Z")), s.getExpiresAt()),
+                () -> assertEquals(Integer.valueOf(6), s.getSystemLimit()),
+                () -> assertEquals(Integer.valueOf(1), s.getSystemsCount()),
+                () -> assertNull(s.getVirtualCount()),
+                () -> assertFalse(s.getProductIds().contains(11L)),
+                () -> assertTrue(s.getProductIds().contains(12L)),
+                () -> assertTrue(s.getProductIds().contains(13L)),
+                () -> assertTrue(s.getProductIds().contains(14L)),
+                () -> assertTrue(s.getSkus().contains("SKU1")),
+                () -> assertTrue(s.getSkus().contains("SKU2"))
+        );
 
         // Product classes
         List<String> productClasses = s.getProductClasses();
@@ -223,12 +238,16 @@ public class SCCClientTest  {
             // Assertions
             assertEquals(1, repos.size());
             SCCRepositoryJson r = repos.get(0);
-            assertEquals(Long.valueOf(1358), r.getSCCId());
-            assertEquals("SLE10-SDK-SP4-Online", r.getName());
-            assertEquals("sles-10-i586", r.getDistroTarget());
-            assertEquals("SLE10-SDK-SP4-Online for sles-10-i586", r.getDescription());
-            assertEquals("https://nu.novell.com/repo/$RCE/SLE10-SDK-SP4-Online/sles-10-i586", r.getUrl());
-            assertTrue(r.isAutorefresh());
+            assertAll(
+                    "Check first repository data",
+                    () -> assertEquals(Long.valueOf(1358), r.getSCCId()),
+                    () -> assertEquals("SLE10-SDK-SP4-Online", r.getName()),
+                    () -> assertEquals("sles-10-i586", r.getDistroTarget()),
+                    () -> assertEquals("SLE10-SDK-SP4-Online for sles-10-i586", r.getDescription()),
+                    () -> assertEquals("https://nu.novell.com/repo/$RCE/SLE10-SDK-SP4-Online/sles-10-i586",
+                            r.getUrl()),
+                    () -> assertTrue(r.isAutorefresh())
+            );
         }
         finally {
             this.removeTempDir(tmpDir);

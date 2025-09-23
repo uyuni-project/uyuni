@@ -28,8 +28,8 @@ public class TagTestUtils {
     private TagTestUtils() { }
 
     /**
-     * Setup the TagTestHelper class with the
-     * appropriate infrastructure.
+     * Set up the TagTestHelper class with the appropriate infrastructure.
+     *
      * @param tag The Tag lib to test.
      * @param url URL to be passed into the Mock Servlet Context.
      * @param request The request that was created by the test to be used
@@ -37,9 +37,7 @@ public class TagTestUtils {
      * @return TagTestHelper
      * @see TagTestHelper
      */
-    public static TagTestHelper setupTagTest(Tag tag, URL url,
-                                             RhnMockHttpServletRequest request) {
-
+    public static TagTestHelper setupTagTest(Tag tag, URL url, RhnMockHttpServletRequest request) {
         TagTestHelper tth = new TagTestHelper(tag);
         RhnMockPageContext mpc = tth.getPageContext();
         MockServletContext ctx = (MockServletContext) mpc.getServletContext();
@@ -58,8 +56,8 @@ public class TagTestUtils {
     }
 
     /**
-     * Setup the TagTestHelper class with the
-     * appropriate infrastructure.
+     * Set up the TagTestHelper class with the appropriate infrastructure.
+     *
      * @param tag The Tag lib to test.
      * @param url URL to be passed into the Mock Servlet Context.
      * @return TagTestHelper
