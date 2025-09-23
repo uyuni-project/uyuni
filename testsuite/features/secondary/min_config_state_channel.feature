@@ -126,8 +126,8 @@ Feature: Configuration state channels
     And I check "statechannel2-cbox"
     And I click on "Save Changes"
     And I wait until I see "Edit Channel Ranks" text
-    Then I should see a "My State Channel (statechannel)" link
-    And I should see a "My State Channel (statechannel2)" link
+    Then I should see a "My State Channel (statechannel)" text
+    And I should see a "My State Channel (statechannel2)" text
     When I click on "Confirm"
     Then I should see a "State assignments have been saved." text
 
@@ -150,9 +150,9 @@ Feature: Configuration state channels
     When I check "statechannel3-cbox"
     And I click on "Save Changes"
     And I wait until I see "Edit Channel Ranks" text
-    And I should see a "My State Channel (statechannel)" link
-    And I should see a "My State Channel (statechannel2)" link
-    And I should see a "statechannel3 (statechannel3)" link
+    And I should see a "My State Channel (statechannel)" text
+    And I should see a "My State Channel (statechannel2)" text
+    And I should see a "statechannel3 (statechannel3)" text
     When I click on "Confirm"
     Then I should see a "State assignments have been saved." text
 
