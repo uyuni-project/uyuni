@@ -5,6 +5,7 @@ import { jsFormatPreferredLocale } from "core/user-preferences";
 import type { Values } from "./inferValues";
 
 const poData = getPoAsJson(window.preferredLocale);
+console.log(poData);
 
 /**
  * Get the translation data. If the file is not found e.g. because the language is not (yet) supported
@@ -29,6 +30,7 @@ const intl = createIntl(
     onError: (error) => {
       if (error.code === "MISSING_TRANSLATION") {
         // Do nothing, translations are handled separately out of sync with development
+        console.error(error);
       } else {
         console.error(error);
       }
