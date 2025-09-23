@@ -1,14 +1,10 @@
 import { createIntl, createIntlCache } from "@formatjs/intl";
 
-import Gettext from "core/intl/node-gettext";
 import { jsFormatPreferredLocale } from "core/user-preferences";
 
 import type { Values } from "./inferValues";
 
-const gt = new Gettext();
-const domain = "messages";
 const poData = getPoAsJson(window.preferredLocale);
-gt.addTranslations("", domain, poData);
 
 /**
  * Get the translation data. If the file is not found e.g. because the language is not (yet) supported
@@ -25,25 +21,18 @@ function getPoAsJson(locale?: string) {
   }
 }
 
-// We proxy every translation request directly to gettext so we can use the po files as-is without any transformations
-const alwaysExists = { configurable: true, enumerable: true };
-const messages = new Proxy(
-  {},
-  {
-    get(_, key: string) {
-      return gt.gettext(key);
-    },
-    getOwnPropertyDescriptor() {
-      return alwaysExists;
-    },
-  }
-);
-
 const cache = createIntlCache();
 const intl = createIntl(
   {
     locale: jsFormatPreferredLocale,
-    messages,
+    messages: poData,
+    onError: (error) => {
+      if (error.code === "MISSING_TRANSLATION") {
+        // Do nothing, translations are handled separately out of sync with development
+      } else {
+        console.error(error);
+      }
+    },
   },
   cache
 );

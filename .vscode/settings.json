@@ -10,7 +10,6 @@
   },
   "typescript.preferences.autoImportFileExcludePatterns": [
     "formik",
-    "node-gettext"
   ],
   "css.lint.emptyRules": "ignore",
   "less.lint.emptyRules": "ignore",

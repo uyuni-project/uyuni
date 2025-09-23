@@ -76,10 +76,6 @@ module.exports = {
       "error",
       {
         paths: [
-          {
-            name: "node-gettext",
-            message: "Please import from `core/intl/node-gettext` instead.",
-          },
           // TODO: List everything we want to limit once the implementation is done
           // {
           //   name: "formik",
