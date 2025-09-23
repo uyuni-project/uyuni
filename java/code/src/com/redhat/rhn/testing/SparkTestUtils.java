@@ -17,6 +17,7 @@ package com.redhat.rhn.testing;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -210,7 +211,7 @@ public class SparkTestUtils {
         MockServletInputStream in = new MockServletInputStream();
         in.setupRead(body.getBytes(
                 mockRequest.getCharacterEncoding() != null ?
-                        mockRequest.getCharacterEncoding() : "UTF-8"));
+                        mockRequest.getCharacterEncoding() : StandardCharsets.UTF_8.name()));
         mockRequest.setInputStream(in);
         setQueryParams(mockRequest, queryParams);
         mockRequest.setPathInfo(URI.create(requestUrl).getPath());
@@ -254,7 +255,7 @@ public class SparkTestUtils {
         MockServletInputStream in = new MockServletInputStream();
         in.setupRead(body.getBytes(
                 mockRequest.getCharacterEncoding() != null ?
-                        mockRequest.getCharacterEncoding() : "UTF-8"));
+                        mockRequest.getCharacterEncoding() : StandardCharsets.UTF_8.name()));
         mockRequest.setInputStream(in);
         mockRequest.setPathInfo(URI.create(requestUrl).getPath());
 

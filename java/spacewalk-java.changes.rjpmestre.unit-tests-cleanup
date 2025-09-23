@@ -5,3 +5,4 @@
 - Remove duplicated test assertions and parameter settings
 - Reenable commented/unmarked tests
 - Remove ErrataCacheTaskTest (contained no tests)
+- Fix some magic strings already defined as constants

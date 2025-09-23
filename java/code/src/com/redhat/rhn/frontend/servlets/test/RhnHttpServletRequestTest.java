@@ -16,6 +16,8 @@
 package com.redhat.rhn.frontend.servlets.test;
 
 import static com.redhat.rhn.frontend.servlets.RhnHttpServletRequest.ACTIVE_LANG_ATTR;
+import static com.redhat.rhn.testing.RhnMockHttpServletRequest.DEFAULT_SERVER_NAME;
+import static com.redhat.rhn.testing.RhnMockHttpServletRequest.LOCALHOST;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -57,7 +59,7 @@ public class RhnHttpServletRequestTest {
         assertFalse(request.getLocales().hasMoreElements());
         assertTrue(request.getParameterMap().isEmpty());
         assertEquals(0, request.getCookies().length);
-        assertEquals("host.mlm.suse.com", request.getServerName());
+        assertEquals(DEFAULT_SERVER_NAME, request.getServerName());
         assertEquals("/mlm/network/somepage.do", request.getRequestURI());
         assertEquals("http://host.mlm.suse.com/mlm/network/somepage.do", request.getRequestURL().toString());
         assertEquals(StringUtils.EMPTY, request.getContextPath());
@@ -68,10 +70,10 @@ public class RhnHttpServletRequestTest {
         assertEquals("POST", request.getMethod());
         assertEquals(80, request.getServerPort());
         assertEquals("127.0.0.1", request.getRemoteAddr());
-        assertEquals("localhost", request.getRemoteHost());
+        assertEquals(LOCALHOST, request.getRemoteHost());
         assertEquals(12345, request.getRemotePort());
         assertEquals("127.0.0.1", request.getLocalAddr());
-        assertEquals("localhost", request.getLocalName());
+        assertEquals(LOCALHOST, request.getLocalName());
         assertEquals(8080, request.getLocalPort());
         assertEquals("http", request.getProtocol());
         assertEquals("http", request.getScheme());
@@ -81,7 +83,7 @@ public class RhnHttpServletRequestTest {
 
     @Test
     public void testOverrideServerName() {
-        assertEquals("host.mlm.suse.com", request.getServerName());
+        assertEquals(DEFAULT_SERVER_NAME, request.getServerName());
         baseRequest.setHeader("X-Server-Hostname", "otherhost.mlm.suse.com");
         assertEquals("otherhost.mlm.suse.com", request.getServerName());
     }

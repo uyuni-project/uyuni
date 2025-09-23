@@ -15,7 +15,6 @@
 package com.redhat.rhn.frontend.servlets.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.frontend.servlets.SetCharacterEncodingFilter;
 
@@ -23,6 +22,7 @@ import org.jmock.Expectations;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 import javax.servlet.ServletException;
 
@@ -31,9 +31,9 @@ import javax.servlet.ServletException;
  */
 public class I18NFilterTest extends BaseFilterTst {
 
-    private static final String UTF8 = "UTF-8";
-
-    /** Test the CheckCharSet functionality
+    /**
+     * Test the CheckCharSet functionality
+     *
      * @throws ServletException if something fails
      * @throws IOException if something fails
      */
@@ -43,18 +43,10 @@ public class I18NFilterTest extends BaseFilterTst {
             oneOf(chain).doFilter(request, response);
         }});
 
-        SetCharacterEncodingFilter filter = new SetCharacterEncodingFilter();
+        new SetCharacterEncodingFilter().doFilter(request, response, chain);
 
-        try {
-            filter.doFilter(request, response, chain);
-        }
-        catch (IOException ioe) {
-            // This should never happen ..
-            fail("doFilter() failed ..");
-        }
-
-        assertEquals(request.getCharacterEncoding(), UTF8);
-        assertEquals(response.getCharacterEncoding(), UTF8);
+        assertEquals(request.getCharacterEncoding(), StandardCharsets.UTF_8.name());
+        assertEquals(response.getCharacterEncoding(), StandardCharsets.UTF_8.name());
     }
 
 }
