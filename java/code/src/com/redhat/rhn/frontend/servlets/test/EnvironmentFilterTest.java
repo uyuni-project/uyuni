@@ -96,6 +96,6 @@ public class EnvironmentFilterTest extends BaseFilterTst {
         filter.doFilter(request, response, chain);
 
         assertNotNull(request.getAttribute(Globals.MESSAGE_KEY));
-        assertNotNull(session.getAttribute(Globals.MESSAGE_KEY));
+        assertNotNull(request.getSession().getAttribute(Globals.MESSAGE_KEY));
     }
 }

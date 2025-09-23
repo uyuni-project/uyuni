@@ -25,16 +25,13 @@ import com.redhat.rhn.frontend.events.NewUserAction;
 import com.redhat.rhn.frontend.events.NewUserEvent;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
-import com.redhat.rhn.testing.RhnMockHttpSession;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
-import java.util.Vector;
 
 /**
  * Test for NewUserEvent
@@ -92,17 +89,7 @@ public class NewUserEventTest extends RhnBaseTestCase {
 
     private NewUserEvent createTestEvent() {
         NewUserEvent evt = new NewUserEvent();
-        // In the implementation we use getHeaderNames so we override it with
-        // one that returns an empty implementation.
-        RhnMockHttpServletRequest request = new RhnMockHttpServletRequest() {
-            @Override
-            public Enumeration<String> getHeaderNames() {
-                return new Vector<String>().elements();
-            }
-        };
-        request.setSession(new RhnMockHttpSession());
-        request.setRequestURI("http://localhost:8080");
-        request.setMethod("POST");
+        RhnMockHttpServletRequest request = new RhnMockHttpServletRequest();
         User usr = UserTestUtils.createUser(this);
 
         evt.setUser(usr);

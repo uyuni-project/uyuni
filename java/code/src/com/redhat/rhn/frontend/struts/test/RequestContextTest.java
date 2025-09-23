@@ -23,7 +23,6 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.testing.MockObjectTestCase;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
-import com.redhat.rhn.testing.RhnMockHttpSession;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.webui.controllers.login.LoginController;
@@ -53,12 +52,8 @@ public class RequestContextTest extends MockObjectTestCase {
         final String requestUrl = "http://localhost:8080/rhn/manager/login";
         final RouteMatch match = new RouteMatch(new Object(), requestUrl, requestUrl, "");
         final RhnMockHttpServletRequest mockRequest = new RhnMockHttpServletRequest();
-        RhnMockHttpSession session = new RhnMockHttpSession();
-        mockRequest.setSession(session);
 
         mockRequest.setRequestURL(requestUrl);
-        mockRequest.setMethod("POST");
-        mockRequest.setMethod("POST");
         mockRequest.setPathInfo(URI.create(requestUrl).getPath());
         mockRequest.addParameter("url_bounce", "/rhn/users/UserDetails.do?uid=1");
 
@@ -67,7 +62,7 @@ public class RequestContextTest extends MockObjectTestCase {
         LoginHelper.successfulLogin(mockRequest, response.raw(), UserTestUtils.createUser(this));
         ModelAndView result = LoginController.loginView(RequestResponseFactory.create(match, mockRequest), response);
         HashMap<String, String> model = (HashMap<String, String>) result.getModel();
-        assertNotNull(session.getAttribute("webUserID"));
+        assertNotNull(mockRequest.getSession().getAttribute("webUserID"));
         assertEquals(model.get("url_bounce"), "/rhn/users/UserDetails.do?uid=1");
         RequestContext requestContext = new RequestContext(RequestResponseFactory.create(match, mockRequest).raw());
         assertNotNull(requestContext.getCurrentUser());

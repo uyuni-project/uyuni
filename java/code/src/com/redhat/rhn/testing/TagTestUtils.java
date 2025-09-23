@@ -48,7 +48,6 @@ public class TagTestUtils {
         }
         request.setRequestURL("http://localhost:8080/rhnjava/index.jsp");
         request.addAttribute("requestedUri", "http://localhost:8080/rhnjava/index.jsp");
-        request.setSession(new RhnMockHttpSession());
         mpc.setRequest(request);
         mpc.setJspWriter(new RhnMockJspWriter());
 

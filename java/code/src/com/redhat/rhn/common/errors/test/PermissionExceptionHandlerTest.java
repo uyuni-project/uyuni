@@ -40,8 +40,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Vector;
-
 import javax.servlet.http.HttpServletResponse;
 
 /**
@@ -82,11 +80,7 @@ public class PermissionExceptionHandlerTest extends MockObjectTestCase {
                 will(returnValue(new ActionForward()));
             } });
 
-            RhnMockHttpServletRequest request = TestUtils
-                    .getRequestWithSessionAndUser();
-            request.setMethod("POST");
-            request.setRequestURI("http://localhost:8080");
-            request.setParameterNames(new Vector<String>().elements());
+            RhnMockHttpServletRequest request = TestUtils.getRequestWithSessionAndUser();
 
             HttpServletResponse response = mock(HttpServletResponse.class);
             context.checking(new Expectations() {{

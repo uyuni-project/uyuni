@@ -1,0 +1,2 @@
+- Remove redundant initializations while setting up RhnMockHttpServletRequest
+  in unit tests

@@ -27,7 +27,6 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
-import com.redhat.rhn.testing.RhnMockHttpSession;
 import com.redhat.rhn.testing.SparkTestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -64,11 +63,8 @@ public class LoginControllerTest extends BaseControllerTestCase {
         final String requestUrl = "http://localhost:8080/rhn/manager/login";
         final RouteMatch match = new RouteMatch(new Object(), requestUrl, requestUrl, "");
         final RhnMockHttpServletRequest mockRequest = new RhnMockHttpServletRequest();
-        RhnMockHttpSession session = new RhnMockHttpSession();
-        mockRequest.setSession(session);
 
         mockRequest.setRequestURL(requestUrl);
-        mockRequest.setMethod("POST");
         mockRequest.setPathInfo(URI.create(requestUrl).getPath());
         mockRequest.addParameter("url_bounce", "/rhn/users/UserDetails.do?uid=1");
 
@@ -77,7 +73,7 @@ public class LoginControllerTest extends BaseControllerTestCase {
         LoginHelper.successfulLogin(mockRequest, response.raw(), user);
         ModelAndView result = LoginController.loginView(RequestResponseFactory.create(match, mockRequest), response);
         HashMap<String, String> model = (HashMap<String, String>) result.getModel();
-        assertNotNull(session.getAttribute("webUserID"));
+        assertNotNull(mockRequest.getSession().getAttribute("webUserID"));
         assertEquals(model.get("url_bounce"), "/rhn/users/UserDetails.do?uid=1");
     }
 
@@ -87,10 +83,7 @@ public class LoginControllerTest extends BaseControllerTestCase {
         final String requestUrl = "http://localhost:8080/rhn/manager/login";
         final RouteMatch match = new RouteMatch(new Object(), requestUrl, requestUrl, "");
         final RhnMockHttpServletRequest mockRequest = new RhnMockHttpServletRequest();
-        RhnMockHttpSession session = new RhnMockHttpSession();
-        mockRequest.setSession(session);
         mockRequest.setRequestURL(requestUrl);
-        mockRequest.setMethod("POST");
         mockRequest.setPathInfo(URI.create(requestUrl).getPath());
         mockRequest.addParameter("url_bounce", "/rhn/users/UserDetails.do?uid=1");
 
@@ -108,18 +101,15 @@ public class LoginControllerTest extends BaseControllerTestCase {
         final String requestUrl = "http://localhost:8080/rhn/manager/login";
         final RouteMatch match = new RouteMatch(new Object(), requestUrl, requestUrl, "");
         final RhnMockHttpServletRequest mockRequest = new RhnMockHttpServletRequest();
-        RhnMockHttpSession session = new RhnMockHttpSession();
-        mockRequest.setSession(session);
 
         mockRequest.setRequestURL(requestUrl);
-        mockRequest.setMethod("POST");
         mockRequest.setPathInfo(URI.create(requestUrl).getPath());
         mockRequest.addParameter("url_bounce", "/rhn/users/UserDetails.do?uid=1");
 
         response = RequestResponseFactory.create(new RhnMockHttpServletResponse());
         ModelAndView result = LoginController.loginView(RequestResponseFactory.create(match, mockRequest), response);
         HashMap<String, String> model = (HashMap<String, String>) result.getModel();
-        assertNull(session.getAttribute("webUserID"));
+        assertNull(mockRequest.getSession().getAttribute("webUserID"));
         assertEquals(model.get("url_bounce"), "/rhn/users/UserDetails.do?uid=1");
     }
 

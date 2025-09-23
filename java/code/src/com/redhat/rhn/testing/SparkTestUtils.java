@@ -74,7 +74,6 @@ public class SparkTestUtils {
         final RouteMatch match = new RouteMatch(new Object(), matchUrl, requestUrl, "");
 
         final RhnMockHttpServletRequest mockRequest = new RhnMockHttpServletRequest();
-        mockRequest.setSession(new RhnMockHttpSession());
         mockRequest.setRequestURL(requestUrl);
         mockRequest.setMethod("GET");
         mockRequest.setInputStream(new MockServletInputStream());
@@ -122,7 +121,6 @@ public class SparkTestUtils {
         final RouteMatch match = new RouteMatch(new Object(), matchUrl, requestUrl, "");
 
         final RhnMockHttpServletRequest mockRequest = new RhnMockHttpServletRequest();
-        mockRequest.setSession(new RhnMockHttpSession());
         mockRequest.setRequestURL(requestUrl);
         mockRequest.setMethod("GET");
         mockRequest.setInputStream(new MockServletInputStream());
@@ -207,7 +205,6 @@ public class SparkTestUtils {
         final RouteMatch match = new RouteMatch(new Object(), matchUrl, requestUrl, "");
 
         final RhnMockHttpServletRequest mockRequest = new RhnMockHttpServletRequest();
-        mockRequest.setSession(new RhnMockHttpSession());
         mockRequest.setRequestURL(requestUrl);
         mockRequest.setMethod(method);
         MockServletInputStream in = new MockServletInputStream();
@@ -252,7 +249,6 @@ public class SparkTestUtils {
         final RouteMatch match = new RouteMatch(new Object(), matchUrl, requestUrl, "");
 
         final RhnMockHttpServletRequest mockRequest = new RhnMockHttpServletRequest();
-        mockRequest.setSession(new RhnMockHttpSession());
         mockRequest.setRequestURL(requestUrl);
         mockRequest.setMethod(method);
         MockServletInputStream in = new MockServletInputStream();

@@ -39,8 +39,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Vector;
-
 /**
  * BadParameterExceptionHandlerTest
  */
@@ -82,13 +80,7 @@ public class BadParameterExceptionHandlerTest extends MockObjectTestCase {
                 will(returnValue(new ActionForward()));
             } });
 
-            // mockup a dumb ass Enumeration class for the Mock request
-            // jmock RULES!
-            RhnMockHttpServletRequest request = TestUtils
-                    .getRequestWithSessionAndUser();
-            request.setMethod("POST");
-            request.setRequestURI("http://localhost:8080");
-            request.setParameterNames(new Vector<String>().elements());
+            RhnMockHttpServletRequest request = TestUtils.getRequestWithSessionAndUser();
             RhnMockHttpServletResponse response = new RhnMockHttpServletResponse();
             RhnMockDynaActionForm form = new RhnMockDynaActionForm();
 

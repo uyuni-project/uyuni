@@ -173,7 +173,6 @@ public class TraceBackEventTest extends RhnBaseTestCase {
     private TraceBackEvent createTestEventWithValue(String paramIn, String valueIn) {
         TraceBackEvent evt = new TraceBackEvent();
         RhnMockHttpServletRequest request = new RhnMockHttpServletRequest();
-        request.setRequestURI("http://localhost:8080");
         request.addParameter(paramIn, valueIn);
         evt.setUser(user);
         evt.setRequest(request);

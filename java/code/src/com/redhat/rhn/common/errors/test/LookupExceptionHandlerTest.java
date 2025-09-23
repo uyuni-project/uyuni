@@ -41,8 +41,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Vector;
-
 /**
  * LookupExceptionHandlerTest
  */
@@ -82,11 +80,7 @@ public class LookupExceptionHandlerTest extends MockObjectTestCase {
                 will(returnValue(new ActionForward()));
             } });
 
-            RhnMockHttpServletRequest request = TestUtils
-                    .getRequestWithSessionAndUser();
-            request.setMethod("POST");
-            request.setRequestURI("http://localhost:8080");
-            request.setParameterNames(new Vector<String>().elements());
+            RhnMockHttpServletRequest request = TestUtils.getRequestWithSessionAndUser();
 
             RhnMockHttpServletResponse response = new RhnMockHttpServletResponse();
             RhnMockDynaActionForm form = new RhnMockDynaActionForm();
