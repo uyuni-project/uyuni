@@ -375,23 +375,39 @@ public class SaltbootUtils {
     }
 
     /**
-     * Create saltboot profile
+     * Create a Saltboot cobbler profile
      * Saltboot profile is tied with particular saltboot group and contains default boot instructions for new terminals
-     * @param saltbootGroup The group
-     * @throws SaltbootException
+     * @param saltbootGroup The group for the branch.
+     * @throws SaltbootException Throws SaltbootException describing the failure.
      */
     public static void createSaltbootProfile(ServerGroup saltbootGroup) throws SaltbootException {
         Optional<String> groupImageNameOpt = getGroupImageName(saltbootGroup);
         if (groupImageNameOpt.isEmpty()) {
-            LOG.warn("Can't get image for saltboot group {}-{}",
+            LOG.warn("Cannot get image for saltboot group {}-{}",
                      saltbootGroup.getOrg().getId(), saltbootGroup.getName());
             throw new SaltbootException("Missing saltboot group pillar");
         }
         String groupImageName = groupImageNameOpt.get();
-        try {
+        createSaltbootProfile(saltbootGroup, groupImageName, false);
+    }
 
+    /**
+     * Create a Saltboot cobbler profile
+     * Saltboot profile is tied with particular saltboot group and contains default boot instructions for new terminals
+     * @param branchGroup The group for the branch.
+     * @param image The image name, possibly including version.
+     * @param onlyWhenMissing If true, existing groups will be skipped.
+     * @throws SaltbootException Throws SaltbootException describing the failure.
+     */
+    public static void createSaltbootProfile(ServerGroup branchGroup, String image, Boolean onlyWhenMissing)
+            throws SaltbootException {
+        if (image == null || image.isEmpty()) {
+            LOG.debug("Using default image for saltboot profile {}", branchGroup.getName());
+            image = DEFAULT_IMAGE;
+        }
+        try {
             CobblerConnection con = CobblerXMLRPCHelper.getAutomatedConnection();
-            updateGroupProfile(con, saltbootGroup, groupImageName, false);
+            updateGroupProfile(con, branchGroup, image, onlyWhenMissing);
         }
         catch (XmlRpcException e) {
             throw new SaltbootException(e);
