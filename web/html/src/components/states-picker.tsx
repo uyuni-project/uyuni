@@ -264,9 +264,8 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
           <td>
             {channelIcon(currentChannel)}
             {currentChannel.type !== "internal_state" ? (
-              /* eslint-disable-next-line jsx-a11y/anchor-is-valid */
-              <a
-                href="#"
+              <button
+                className="modal-link"
                 data-bs-toggle="modal"
                 data-bs-target="#saltStatePopUp"
                 onClick={() => {
@@ -274,7 +273,7 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
                 }}
               >
                 {currentChannel.name}
-              </a>
+              </button>
             ) : (
               currentChannel.name
             )}

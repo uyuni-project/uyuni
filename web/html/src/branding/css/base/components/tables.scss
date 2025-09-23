@@ -51,6 +51,13 @@ tbody tr td,
   background: transparent !important;
 }
 
+tbody tr td .modal-link {
+  border: 0;
+  color: $eos-bc-blue-500;
+  font-weight: 600;
+  background: transparent;
+}
+
 .display-number {
   height: 30px;
   padding: 5px 10px;
