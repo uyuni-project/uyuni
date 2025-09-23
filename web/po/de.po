@@ -3692,7 +3692,7 @@ msgstr ""
 
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:86
 msgid "Content Lifecycle Projects"
-msgstr ""
+msgstr "TEST TEST TEST"
 
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:116
 msgid "Last Build"
@@ -3709,7 +3709,7 @@ msgstr ""
 
 #: ../html/src/manager/content-management/project/project.tsx:104
 msgid "Content Lifecycle Project - {name}"
-msgstr ""
+msgstr "TEST TEST TEST"
 
 #: ../html/src/manager/content-management/project/project.tsx:116
 msgid "Delete Project"
