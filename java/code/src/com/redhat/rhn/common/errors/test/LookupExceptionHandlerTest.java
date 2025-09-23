@@ -23,7 +23,6 @@ import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.frontend.events.TraceBackAction;
 import com.redhat.rhn.frontend.events.TraceBackEvent;
 import com.redhat.rhn.testing.MockObjectTestCase;
-import com.redhat.rhn.testing.RhnMockDynaActionForm;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 import com.redhat.rhn.testing.TestUtils;
@@ -34,6 +33,7 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.config.Configurator;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.DynaActionForm;
 import org.apache.struts.config.ExceptionConfig;
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
@@ -80,10 +80,11 @@ public class LookupExceptionHandlerTest extends MockObjectTestCase {
                 will(returnValue(new ActionForward()));
             } });
 
-            RhnMockHttpServletRequest request = TestUtils.getRequestWithSessionAndUser();
+            RhnMockHttpServletRequest request = TestUtils
+                    .getRequestWithSessionAndUser();
 
             RhnMockHttpServletResponse response = new RhnMockHttpServletResponse();
-            RhnMockDynaActionForm form = new RhnMockDynaActionForm();
+            DynaActionForm form = new DynaActionForm();
 
             LookupExceptionHandler leh = new LookupExceptionHandler();
 

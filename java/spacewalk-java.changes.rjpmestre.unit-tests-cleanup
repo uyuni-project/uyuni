@@ -1,2 +1,4 @@
-- Remove redundant initializations while setting up RhnMockHttpServletRequest
-  in unit tests
+- Remove redundant initializations while setting up
+  RhnMockHttpServletRequest in unit tests
+- Replace unnecessary RhnMockDynaActionForm with base
+  DynaActionForm
