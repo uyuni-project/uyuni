@@ -21,7 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -40,8 +39,6 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
-import org.hibernate.Session;
-import org.hibernate.type.StandardBasicTypes;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -63,13 +60,10 @@ public class TokenTest extends RhnBaseTestCase {
 
         assertNotEquals(token1, token2);
 
-        Session session = HibernateFactory.getSession();
-        token2 = (Token) session.getNamedQuery("Token.findById")
-                                   .setParameter("id", token1.getId(), StandardBasicTypes.LONG)
-                                   .uniqueResult();
-
+        token2 = TokenFactory.lookupById(token1.getId());
         assertEquals(token1, token2);
         assertFalse(token1.isTokenDisabled());
+
         token1.disable();
         assertTrue(token1.isTokenDisabled());
         assertEquals(1, token1.getEntitlements().size());
