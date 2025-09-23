@@ -677,7 +677,6 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         assertEquals(1, comparator.compare("5.4.1", "5.3.0.10"));
         assertEquals(-1, comparator.compare("5.0.0.0", "5.3.0.3"));
         assertEquals(-1, comparator.compare("5.0.9.0", "5.0.10.0"));
-        assertEquals(-1, comparator.compare("5.0.9.0", "5.0.10.0"));
     }
 
     @Test

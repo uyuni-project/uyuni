@@ -312,7 +312,6 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         DataResult systems = ErrataManager.systemsAffected(user, a.getId(), pc);
         assertNotNull(systems);
         assertTrue(systems.isEmpty());
-        assertTrue(systems.isEmpty());
 
         DataResult systems2 = ErrataManager.systemsAffected(user, (long) -2, pc);
         assertTrue(systems2.isEmpty());

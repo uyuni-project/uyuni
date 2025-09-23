@@ -455,7 +455,6 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         DataResult<SystemOverview> systems = SystemManager.systemList(user, null);
         assertNotNull(systems);
         assertFalse(systems.isEmpty());
-        assertFalse(systems.isEmpty());
     }
 
     @Test
@@ -478,7 +477,6 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         int newCount = systems.size();
         assertNotNull(systems);
 
-        assertFalse(systems.isEmpty());
         assertFalse(systems.isEmpty());
         assertTrue(newCount > origCount);
         assertTrue(systems.size() <= 20);
@@ -572,7 +570,6 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         DataResult<Errata> errata =
                 SystemManager.unscheduledErrata(user, server.getId(), pc);
         assertNotNull(errata);
-        assertTrue(errata.isEmpty());
         assertTrue(errata.isEmpty());
         assertFalse(SystemManager.hasUnscheduledErrata(user, server.getId()));
 
@@ -1098,7 +1095,6 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         DataResult<Errata> errata =
                 SystemManager.unscheduledErrata(user, server.getId(), pc);
         assertNotNull(errata);
-        assertTrue(errata.isEmpty());
         assertTrue(errata.isEmpty());
         assertFalse(SystemManager.hasUnscheduledErrata(user, server.getId()));
 

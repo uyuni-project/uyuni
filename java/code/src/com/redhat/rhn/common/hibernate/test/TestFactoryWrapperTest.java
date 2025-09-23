@@ -113,7 +113,6 @@ public class TestFactoryWrapperTest extends RhnBaseTestCase {
         TestInterface obj = TestFactory.createTest();
         obj.setFoobar("update_test");
         TestFactory.save(obj);
-        TestFactory.save(obj);
         // Make sure we make it here without exception
         assertTrue(true);
     }

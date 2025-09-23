@@ -136,7 +136,6 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
                 handler.cloneAsOriginal(admin, clonedChannelForEmptyErrata.getLabel(),
                         Arrays.asList(emptyErrata.getAdvisoryName()));
         assertNotNull(clonedForEmptyErrata);
-        assertNotNull(clonedForEmptyErrata);
         assertEquals(1, clonedForEmptyErrata.length);
 
         ClonedErrata clonedEmptyErrata = (ClonedErrata) clonedForEmptyErrata[0];

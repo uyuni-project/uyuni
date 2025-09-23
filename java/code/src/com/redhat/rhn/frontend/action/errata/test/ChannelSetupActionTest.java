@@ -75,7 +75,6 @@ public class ChannelSetupActionTest extends RhnBaseTestCase {
         sah.getRequest().addParameter("eid", e.getId().toString());
         sah.getRequest().addParameter("newset", (String) null);
         sah.getRequest().addParameter("returnvisit", (String) null);
-        sah.getRequest().addParameter("returnvisit", (String) null);
         sah.executeAction();
 
         RequestContext requestContext = new RequestContext(sah.getRequest());

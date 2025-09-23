@@ -56,7 +56,6 @@ public class NotifySetupActionTest extends RhnBaseTestCase {
 
         //test default case
         request.addParameter("eid", published.getId().toString());
-        request.addParameter("eid", published.getId().toString());
         ActionForward result = action.execute(mapping, form, request, response);
         assertEquals(RhnHelper.DEFAULT_FORWARD, result.getName());
         assertNotNull(request.getAttribute("advisory"));

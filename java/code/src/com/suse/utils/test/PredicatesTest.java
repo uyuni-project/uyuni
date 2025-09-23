@@ -36,7 +36,6 @@ public class PredicatesTest {
     private static Stream<Arguments> expressionPredicates() {
         return Stream.of(
                 Arguments.of(null, true, false, true, false, true, false),
-                Arguments.of(null, true, false, true, false, true, false),
                 Arguments.of(new Object(), false, true, false, true, true, false),
                 Arguments.of(new String(), true, false, true, false, true, false),
                 Arguments.of("", true, false, true, false, true, false),

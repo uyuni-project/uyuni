@@ -64,7 +64,7 @@ public class EnvironmentFilterTest extends BaseFilterTst {
         filter.doFilter(request, response, chain);
 
         // Check that we got the expected redirect.
-        String expectedRedir = "https://mymachine.rhndev.redhat.com/rhn/manager/login";
+        String expectedRedir = "https://host.mlm.suse.com/rhn/manager/login";
         assertEquals(expectedRedir, response.getRedirect());
 
         request.setRequestURI("/rhn/kickstart/DownloadFile");

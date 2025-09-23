@@ -448,7 +448,6 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
         virtGuests.add(31L);
         virtGuests.add(32L);
         virtGuests.add(33L);
-        virtGuests.add(33L);
         systems.add(new SystemJson(30L, "virtual host 30", 1, true, true, virtGuests,
                 new HashSet<>()));
         systems.add(new SystemJson(31L, "virtual guest 31", 1, false, false,

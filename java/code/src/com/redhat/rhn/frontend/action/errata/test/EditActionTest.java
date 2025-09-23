@@ -64,7 +64,6 @@ public class EditActionTest extends RhnBaseTestCase {
         Errata errata2 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
 
         request.addParameter("eid", errata.getId().toString());
-        request.addParameter("eid", errata.getId().toString());
 
         //Execute setupAction to fillout form
         ActionForward result = action.unspecified(mapping, form, request, response);
@@ -97,11 +96,6 @@ public class EditActionTest extends RhnBaseTestCase {
 
         //make sure we can edit an errata
         String newAdvisoryName = errata.getAdvisoryName() + "edited";
-        /*
-         * I hate it when Mock Objects don't act like the objects they mock
-         */
-        request.addParameter("eid", errata.getId().toString());
-        request.addParameter("eid", errata.getId().toString());
         form.set("advisoryName", newAdvisoryName);
         //add a bug
         form.set("buglistIdNew", "123");
@@ -113,10 +107,6 @@ public class EditActionTest extends RhnBaseTestCase {
         request.addParameter("buglistIdNew", "123");
         request.addParameter("buglistSummaryNew", "test bug for a test errata");
         request.addParameter("buglistUrlNew", "https://bugzilla.redhat.com/show_bug.cgi?id=123");
-        request.addParameter("buglistIdNew", "123");
-        request.addParameter("buglistSummaryNew", "test bug for a test errata");
-        request.addParameter("buglistUrlNew",
-                "https://bugzilla.redhat.com/show_bug.cgi?id=123");
         result = action.update(mapping, form, request, response);
         assertEquals(RhnHelper.DEFAULT_FORWARD, result.getName());
 

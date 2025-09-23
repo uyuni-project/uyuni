@@ -67,8 +67,6 @@ public class CreateActionTest extends RhnBaseTestCase {
         String destinationId = destination.getId().toString();
         // both read twice
         request.addParameter("items_on_page", new String[]{destinationId});
-        request.addParameter("items_on_page", new String[]{destinationId});
-        request.addParameter("items_selected", new String[]{destinationId});
         request.addParameter("items_selected", new String[]{destinationId});
 
         ActionForward result = action.create(mapping, form, request, response);

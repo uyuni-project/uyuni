@@ -32,12 +32,10 @@ public class RhnServletListenerTest  {
         rl.contextInitialized(null);
         assertTrue(rl.hibernateStarted());
         assertTrue(rl.loggingStarted());
-        assertTrue(rl.loggingStarted());
 
         // Test teardown
         rl.contextDestroyed(null);
         assertFalse(rl.hibernateStarted());
-        assertFalse(rl.loggingStarted());
         assertFalse(rl.loggingStarted());
 
     }
