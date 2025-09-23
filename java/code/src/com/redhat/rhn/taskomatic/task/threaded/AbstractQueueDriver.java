@@ -19,7 +19,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-public abstract class AbstractQueueDriver<T> implements QueueDriver<T> {
+public abstract class AbstractQueueDriver<T> implements QueueDriver {
 
     private final Queue<T> workItemsQueue = new LinkedList<>();
 

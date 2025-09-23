@@ -37,7 +37,6 @@ public class RhnHiddenTag extends TagSupport {
 
     private static final long serialVersionUID = -8385317358288103720L;
 
-    private String id;
     private String name;
     private String value;
 

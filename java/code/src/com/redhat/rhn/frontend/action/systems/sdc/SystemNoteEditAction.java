@@ -58,7 +58,7 @@ public class SystemNoteEditAction extends RhnAction {
         Map<String, Object> params = new HashMap<>();
 
         Long nid = null;
-        if (!(request.getParameter("nid") == null)) {
+        if (request.getParameter("nid") != null) {
             nid = Long.parseLong(request.getParameter("nid"));
         }
 

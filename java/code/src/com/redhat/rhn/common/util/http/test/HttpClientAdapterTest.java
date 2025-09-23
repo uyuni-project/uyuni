@@ -31,7 +31,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
@@ -257,11 +256,15 @@ public class HttpClientAdapterTest  {
      *
      * @param uri the URI to call useProxyFor() with
      * @return the result of useProxyFor()
-     * @throws Exception in case of an Exception is thrown in here
      */
-    private boolean callUseProxyFor(URI uri) throws Exception {
-        Method method = HttpClientAdapter.class.getDeclaredMethod("useProxyFor", URI.class);
-        method.setAccessible(true);
-        return (Boolean) method.invoke(new HttpClientAdapter(), uri);
+    private boolean callUseProxyFor(URI uri) {
+        var httpClientAdapter = new HttpClientAdapter() {
+            @Override
+            public boolean useProxyFor(URI uri) {
+                return super.useProxyFor(uri);
+            }
+        };
+
+        return httpClientAdapter.useProxyFor(uri);
     }
 }

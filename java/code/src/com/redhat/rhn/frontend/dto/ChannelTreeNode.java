@@ -250,7 +250,7 @@ public class ChannelTreeNode extends BaseDto implements BaseListDto,
      */
     @Override
     public boolean changeRowColor() {
-       return !(this.getDepth() > 1);
+       return (this.getDepth() <= 1);
     }
 
     /**

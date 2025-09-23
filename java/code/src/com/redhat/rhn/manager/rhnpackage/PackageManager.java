@@ -28,7 +28,6 @@ import com.redhat.rhn.common.util.CompressionUtil;
 import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
-import com.redhat.rhn.domain.channel.DistChannelMap;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
@@ -64,6 +63,7 @@ import com.redhat.rhn.manager.system.IncompatibleArchException;
 import com.suse.manager.utils.PagedSqlQueryBuilder;
 import com.suse.oval.ShallowSystemPackage;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -1764,8 +1764,8 @@ public class PackageManager extends BaseManager {
 
     private static String getAssociatedRelease(Package pack) {
         for (Channel chan : pack.getChannels()) {
-            for (DistChannelMap map : chan.getDistChannelMaps()) {
-                return map.getRelease();
+            if (CollectionUtils.isNotEmpty(chan.getDistChannelMaps())) {
+                return chan.getDistChannelMaps().iterator().next().getRelease();
             }
         }
         return null;

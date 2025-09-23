@@ -394,7 +394,7 @@ public class HttpClientAdapter {
      * @param uri the URI to check
      * @return true if proxy should be used, else false
      */
-    private boolean useProxyFor(URI uri) {
+    protected boolean useProxyFor(URI uri) {
         if (uri.getScheme().equals("file")) {
             return false;
         }
