@@ -107,8 +107,8 @@ public class DeleteUserActionTest extends RhnBaseTestCase {
 
         //try to delete org admin
         failure.setPath("path");
-        User usr = UserTestUtils.createUser("testUser",
-                requestContext.getCurrentUser().getOrg().getId());
+        Long orgId = requestContext.getCurrentUser().getOrg().getId();
+        User usr = new UserTestUtils.UserBuilder().orgId(orgId).build();
         usr.addPermanentRole(RoleFactory.lookupByLabel("org_admin"));
         request.addParameter("uid", usr.getId().toString());
         forward = action.execute(mapping, form, request, response);
@@ -117,8 +117,7 @@ public class DeleteUserActionTest extends RhnBaseTestCase {
         assertEquals(failure.getPath(), forward.getPath());
 
         //successful delete
-        User usr2 = UserTestUtils.createUser("testUser",
-                requestContext.getCurrentUser().getOrg().getId());
+        User usr2 = new UserTestUtils.UserBuilder().orgId(orgId).build();
         request.addParameter("uid", usr2.getId().toString());
         forward = action.execute(mapping, form, request, response);
         assertEquals(success, forward);

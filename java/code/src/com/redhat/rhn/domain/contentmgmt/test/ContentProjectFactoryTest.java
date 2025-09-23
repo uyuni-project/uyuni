@@ -281,7 +281,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         Org org1 = user.getOrg();
         ContentProject cp1 = new ContentProject("cplabel", "cpname", "cpdesc", org1);
         ContentProjectFactory.save(cp1);
-        Org org2 = UserTestUtils.createNewOrgFull("testOrg2");
+        Org org2 = UserTestUtils.createOrg("testOrg2");
         UserTestUtils.createUser("testUserIn2ndOrg", org2.getId());
         ContentProject cp2 = new ContentProject("cplabel2", "cpname2", "cpdesc2", org2);
         ContentProjectFactory.save(cp2);

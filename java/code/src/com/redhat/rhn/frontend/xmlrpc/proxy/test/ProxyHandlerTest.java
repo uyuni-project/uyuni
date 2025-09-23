@@ -72,9 +72,6 @@ import java.util.Set;
 
 public class ProxyHandlerTest extends RhnJmockBaseTestCase {
 
-    private static final String TEST_USER = "testuser";
-    private static final String TEST_ORG = "testorg";
-
     private final SaltApi saltApi = new TestSaltApi();
     private final SystemQuery systemQuery = new TestSystemQuery();
     private final CloudPaygManager paygManager = new TestCloudPaygManagerBuilder().build();
@@ -99,7 +96,7 @@ public class ProxyHandlerTest extends RhnJmockBaseTestCase {
 
     @Test
     public void testDeactivateProxyWithReload() throws Exception {
-        User user = UserTestUtils.findNewUser(TEST_USER, TEST_ORG);
+        User user = UserTestUtils.createUser();
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server server = ServerFactoryTest.createTestProxyServer(user, true);
         assertTrue(server.isProxy());
@@ -109,7 +106,7 @@ public class ProxyHandlerTest extends RhnJmockBaseTestCase {
 
     @Test
     public void testActivateProxy() throws Exception {
-        User user = UserTestUtils.findNewUser(TEST_USER, TEST_ORG);
+        User user = UserTestUtils.createUser();
         ProxyHandler ph = new ProxyHandler(xmlRpcSystemHelper, systemManager, proxyConfigUpdateFacade);
 
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
@@ -126,7 +123,7 @@ public class ProxyHandlerTest extends RhnJmockBaseTestCase {
 
     @Test
     public void testActivateSaltProxy() throws Exception {
-        User user = UserTestUtils.findNewUser(TEST_USER, TEST_ORG);
+        User user = UserTestUtils.createUser();
         ProxyHandler ph = new ProxyHandler(xmlRpcSystemHelper, systemManager, proxyConfigUpdateFacade);
 
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
@@ -143,7 +140,7 @@ public class ProxyHandlerTest extends RhnJmockBaseTestCase {
 
     @Test
     public void testDeactivateProxy() throws Exception {
-        User user = UserTestUtils.findNewUser(TEST_USER, TEST_ORG);
+        User user = UserTestUtils.createUser();
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server server = ServerFactoryTest.createTestServer(user, true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled(),
@@ -163,7 +160,7 @@ public class ProxyHandlerTest extends RhnJmockBaseTestCase {
     @Test
     public void testListProxyClients() throws Exception {
         // create user
-        User user = UserTestUtils.findNewUser(TEST_USER, TEST_ORG);
+        User user = UserTestUtils.createUser();
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
 
         // create proxy
@@ -187,7 +184,7 @@ public class ProxyHandlerTest extends RhnJmockBaseTestCase {
 
     @Test
     public void testContainerConfig() throws Exception {
-        User user = UserTestUtils.findNewUser(TEST_USER, TEST_ORG);
+        User user = UserTestUtils.createUser();
         byte[] dummyConfig = "Dummy config".getBytes();
         String server = "srv.acme.lab";
         String proxy = "proxy.acme.lab";
@@ -212,7 +209,7 @@ public class ProxyHandlerTest extends RhnJmockBaseTestCase {
 
     @Test
     public void testContainerConfigGenerateCert() throws Exception {
-        User user = UserTestUtils.findNewUser(TEST_USER, TEST_ORG);
+        User user = UserTestUtils.createUser();
         byte[] dummyConfig = "Dummy config".getBytes();
         String server = "srv.acme.lab";
         String proxy = "proxy.acme.lab";
@@ -240,7 +237,7 @@ public class ProxyHandlerTest extends RhnJmockBaseTestCase {
 
     @Test
     public void testBootstrapProxyRpm() {
-        User user = UserTestUtils.findNewUser(TEST_USER, TEST_ORG);
+        User user = UserTestUtils.createUser();
 
         SystemManager mockSystemManager = mock(SystemManager.class);
         ProxyConfigUpdateFacade mockProxyConfigUpdateFacade = mock(ProxyConfigUpdateFacadeImpl.class);
@@ -273,7 +270,7 @@ public class ProxyHandlerTest extends RhnJmockBaseTestCase {
 
     @Test
     public void testBootstrapProxyRegistrySimple() {
-        User user = UserTestUtils.findNewUser(TEST_USER, TEST_ORG);
+        User user = UserTestUtils.createUser();
 
         SystemManager mockSystemManager = mock(SystemManager.class);
         ProxyConfigUpdateFacade mockProxyConfigUpdateFacade = mock(ProxyConfigUpdateFacadeImpl.class);
@@ -310,7 +307,7 @@ public class ProxyHandlerTest extends RhnJmockBaseTestCase {
 
     @Test
     public void testBootstrapProxyRegistryAdvanced() {
-        User user = UserTestUtils.findNewUser(TEST_USER, TEST_ORG);
+        User user = UserTestUtils.createUser();
 
         SystemManager mockSystemManager = mock(SystemManager.class);
         ProxyConfigUpdateFacade mockProxyConfigUpdateFacade = mock(ProxyConfigUpdateFacadeImpl.class);

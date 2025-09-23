@@ -103,8 +103,7 @@ public class NewUserEventTest extends RhnBaseTestCase {
         request.setSession(new RhnMockHttpSession());
         request.setRequestURI("http://localhost:8080");
         request.setMethod("POST");
-        User usr = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User usr = UserTestUtils.createUser(this);
 
         evt.setUser(usr);
         evt.setDomain("someserver.rhndev.redhat.com");
@@ -114,8 +113,16 @@ public class NewUserEventTest extends RhnBaseTestCase {
     }
 
     private List<User> createAdmins() {
-        User adminOne = UserTestUtils.findNewUser("testUserOne", "testOrgOne", true);
-        User adminTwo = UserTestUtils.findNewUser("testUserTwo", "testOrgTwo", true);
+        User adminOne = new UserTestUtils.UserBuilder()
+                .userName("testUserOne")
+                .orgName("testOrgOne")
+                .orgAdmin(true)
+                .build();
+        User adminTwo = new UserTestUtils.UserBuilder()
+                .userName("testUserTwo")
+                .orgName("testOrgTwo")
+                .orgAdmin(true)
+                .build();
         List<User> admins = new ArrayList<>();
         admins.add(adminOne);
         admins.add(adminTwo);

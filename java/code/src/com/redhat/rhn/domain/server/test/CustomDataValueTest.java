@@ -36,7 +36,7 @@ public class CustomDataValueTest extends RhnBaseTestCase {
 
     @Test
     public void testCustomDataValue() throws Exception {
-        User user = UserTestUtils.findNewUser("testuser", "testorg");
+        User user = UserTestUtils.createUser();
         Server server = ServerFactoryTest.createTestServer(user);
 
         CustomDataKey key = CustomDataKeyTest.createTestCustomDataKey(user);

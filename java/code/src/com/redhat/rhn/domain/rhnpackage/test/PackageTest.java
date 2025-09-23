@@ -88,8 +88,7 @@ public class PackageTest extends BaseTestCaseWithUser {
 
     @Test
     public void testFile() {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User user = UserTestUtils.createUser(this);
         Package pkg = createTestPackage(user.getOrg());
         assertNotNull(pkg);
 

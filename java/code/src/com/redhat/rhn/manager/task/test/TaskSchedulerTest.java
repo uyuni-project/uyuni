@@ -47,7 +47,7 @@ public class TaskSchedulerTest extends RhnBaseTestCase {
     }
 
     public void aTestUpdateByChannel() throws Exception {
-        Org org = UserTestUtils.findNewOrg("testorg");
+        Org org = UserTestUtils.createOrg();
         Errata e = ErrataFactoryTest.createTestErrata(org.getId());
 
         //add some channels

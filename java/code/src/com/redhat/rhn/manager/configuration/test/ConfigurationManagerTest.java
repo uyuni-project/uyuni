@@ -113,7 +113,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
     public void setUp() throws Exception {
         super.setUp();
         //Create a user and an org
-        user = UserTestUtils.findNewUser("testyman", "orgman");
+        user = UserTestUtils.createUser("testyman", "orgman");
         pc = new PageControl();
         pc.setStart(1);
         pc.setPageSize(20);

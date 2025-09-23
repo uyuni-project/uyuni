@@ -26,7 +26,6 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.domain.org.Org;
-import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
@@ -59,7 +58,7 @@ public class ErrataCacheManagerTest extends RhnBaseTestCase {
     @Test
     public void testCount() {
         // setup the test
-        Org org = UserTestUtils.findNewOrg("testOrg" + this.getClass().getSimpleName());
+        Org org = UserTestUtils.createOrg(this);
         insertRowIntoErrataCacheQueue(org);
 
         // let's see if we find the right data.
@@ -71,7 +70,7 @@ public class ErrataCacheManagerTest extends RhnBaseTestCase {
     @Test
     public void testDeleteErrataCacheQueue() {
         // setup the test
-        Org org = UserTestUtils.findNewOrg("testOrg" + this.getClass().getSimpleName());
+        Org org = UserTestUtils.createOrg(this);
         insertRowIntoErrataCacheQueue(org);
 
         // let's see if we find the right data.
@@ -98,9 +97,9 @@ public class ErrataCacheManagerTest extends RhnBaseTestCase {
     public void testInsertNeededCache() throws Exception {
 
         // create a lot of stuff to test this simple insert.
-        Long oid = UserTestUtils.createOrg("testOrg" + this.getClass().getSimpleName());
-        Org org = OrgFactory.lookupById(oid);
-        User user = UserTestUtils.createUser("testUser", oid);
+        Org org = UserTestUtils.createOrg(this);
+        Long oid = org.getId();
+        User user = new UserTestUtils.UserBuilder().orgId(oid).build();
         Server server = ServerFactoryTest.createTestServer(user);
         Package pkg = PackageTest.createTestPackage(org);
         Errata e = ErrataFactoryTest.createTestErrata(oid);
@@ -171,9 +170,9 @@ public class ErrataCacheManagerTest extends RhnBaseTestCase {
     @Test
     public void testDeleteNeededCache() throws Exception {
         // create a lot of stuff to test this simple insert.
-        Long oid = UserTestUtils.createOrg("testOrg" + this.getClass().getSimpleName());
-        Org org = OrgFactory.lookupById(oid);
-        User user = UserTestUtils.createUser("testUser", oid);
+        Org org = UserTestUtils.createOrg(this);
+        Long oid = org.getId();
+        User user = new UserTestUtils.UserBuilder().orgId(oid).build();
         Server server = ServerFactoryTest.createTestServer(user);
         Package pkg = PackageTest.createTestPackage(org);
         Errata e = ErrataFactoryTest.createTestErrata(oid);
@@ -230,8 +229,8 @@ public class ErrataCacheManagerTest extends RhnBaseTestCase {
     @Test
     public void testInsertNeededErrataCache() throws Exception {
         // create a lot of stuff to test this simple insert.
-        Long oid = UserTestUtils.createOrg("testOrg" + this.getClass().getSimpleName());
-        User user = UserTestUtils.createUser("testUser", oid);
+        User user = UserTestUtils.createUser();
+        Long oid = user.getOrg().getId();
         Server server = ServerFactoryTest.createTestServer(user);
         Errata e = ErrataFactoryTest.createTestErrata(oid);
         Long sid = server.getId();
@@ -264,8 +263,8 @@ public class ErrataCacheManagerTest extends RhnBaseTestCase {
     @Test
     public void testDeleteNeededErrataCache() throws Exception {
         // create a lot of stuff to test this simple insert.
-        Long oid = UserTestUtils.createOrg("testOrg" + this.getClass().getSimpleName());
-        User user = UserTestUtils.createUser("testUser", oid);
+        Long oid = UserTestUtils.createOrg(this).getId();
+        User user = new UserTestUtils.UserBuilder().orgId(oid).build();
         Server server = ServerFactoryTest.createTestServer(user);
         Errata e = ErrataFactoryTest.createTestErrata(oid);
         Long sid = server.getId();
@@ -306,9 +305,9 @@ public class ErrataCacheManagerTest extends RhnBaseTestCase {
     @Test
     public void testPackagesNeedingUpdates() throws Exception {
         // create a lot of stuff to test this simple insert.
-        Long oid = UserTestUtils.createOrg("testOrg" + this.getClass().getSimpleName());
-        Org org = OrgFactory.lookupById(oid);
-        User user = UserTestUtils.createUser("testUser", oid);
+        Org org = UserTestUtils.createOrg(this);
+        Long oid = org.getId();
+        User user = new UserTestUtils.UserBuilder().orgId(oid).build();
         Server server = ServerFactoryTest.createTestServer(user);
         Package pkg = PackageTest.createTestPackage(org);
         Errata e = ErrataFactoryTest.createTestErrata(oid);
@@ -339,9 +338,8 @@ public class ErrataCacheManagerTest extends RhnBaseTestCase {
     @Test
     public void testAllServerIdsForOrg() throws Exception {
         // create a lot of stuff to test this simple insert.
-        Long oid = UserTestUtils.createOrg("testOrg" + this.getClass().getSimpleName());
-        Org org = OrgFactory.lookupById(oid);
-        User user = UserTestUtils.createUser("testUser", oid);
+        Org org = UserTestUtils.createOrg(this);
+        User user = new UserTestUtils.UserBuilder().orgId(org.getId()).build();
         ServerFactoryTest.createTestServer(user);
 
         DataResult dr = ErrataCacheManager.allServerIdsForOrg(org);

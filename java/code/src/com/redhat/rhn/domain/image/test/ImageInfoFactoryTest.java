@@ -203,8 +203,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public final void testListImageInfos() {
-        User foreignUser = UserTestUtils.createUser("foreign-user",
-                UserTestUtils.createOrg("foreign-org"));
+        User foreignUser = UserTestUtils.createUser("foreign-user", "foreign-org");
 
         ImageInfo img1 = createImageInfo("myimage1", "1.0.0", user);
         ImageInfo img2 = createImageInfo("myimage2", "1.0.0", user);
@@ -222,8 +221,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public final void testListImageOverviews() {
-        User foreignUser = UserTestUtils.createUser("foreign-user",
-                UserTestUtils.createOrg("foreign-org"));
+        User foreignUser = UserTestUtils.createUser("foreign-user", "foreign-org");
 
         ImageInfo img1 = createImageInfo("myimage1", "1.0.0", user);
         ImageInfo img2 = createImageInfo("myimage2", "1.0.0", user);
@@ -255,8 +253,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public final void testLookupByIdAndOrg() {
-        User foreignUser = UserTestUtils.createUser("foreign-user",
-                UserTestUtils.createOrg("foreign-org"));
+        User foreignUser = UserTestUtils.createUser("foreign-user", "foreign-org");
 
         ImageInfo image = createImageInfo("myimage", "1.0.0", user);
 
@@ -270,9 +267,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public final void testLookupOverviewByIdAndOrg() {
-        User foreignUser = UserTestUtils.createUser("foreign-user",
-                UserTestUtils.createOrg("foreign-org"));
-
+        User foreignUser = UserTestUtils.createUser("foreign-user", "foreign-org");
         ImageInfo image = createImageInfo("myimage", "1.0.0", user);
 
         ImageOverview result = ImageInfoFactory

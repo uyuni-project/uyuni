@@ -31,8 +31,8 @@ import org.junit.jupiter.api.Test;
 public class ProxyServerTest extends RhnBaseTestCase {
 
     @Test
-    public void testProxyServer() throws Exception {
-        User user = UserTestUtils.findNewUser("testuser", "testorg");
+    public void testProxyServer() {
+        User user = UserTestUtils.createUser();
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server server = ServerFactoryTest.createTestServer(user, true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled(),
