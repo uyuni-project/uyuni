@@ -17,12 +17,17 @@ package com.suse.proxy.event;
 
 import static com.suse.manager.webui.services.SaltConstants.SALT_FILE_GENERATION_TEMP_PATH;
 
+import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.common.util.FileUtils;
+import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Pillar;
+import com.redhat.rhn.domain.server.ServerGroup;
+import com.redhat.rhn.domain.server.ServerGroupFactory;
+import com.redhat.rhn.manager.system.SystemManager;
 
 import com.suse.manager.saltboot.SaltbootException;
 import com.suse.manager.saltboot.SaltbootUtils;
@@ -30,6 +35,7 @@ import com.suse.manager.webui.services.SaltConstants;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.utils.YamlHelper;
 import com.suse.proxy.ProxyConfigUtils;
+import com.suse.proxy.ProxyException;
 import com.suse.proxy.model.ProxyConfig;
 
 import org.apache.logging.log4j.LogManager;
@@ -43,6 +49,9 @@ import java.util.Set;
 
 public class ProxyBackupEventAction implements MessageAction {
     private static final Logger LOG = LogManager.getLogger(ProxyBackupEventAction.class);
+    private static final String BRANCH_FORMULA = "formula-branch-network";
+    private static final String IMAGE_SYNC_FORMULA = "formula-image-synchronize";
+    private static final String SALTBOOT_GROUP_FORMULA = "saltboot-group";
 
     private final SaltApi saltApi;
     /**
@@ -95,20 +104,94 @@ public class ProxyBackupEventAction implements MessageAction {
                 proxy.addPillar(configPillar);
         });
 
+        SystemManager.addHistoryEvent(proxy, "Proxy configuration created",
+                "Proxy configuration migrated. Reinstallation of the proxy will autoconfigure it.");
+
         // Create cobbler records based on PXE entries
         try {
-            convertPxeEntriesToCobbler(pxeEntries, proxy);
+            String branchid = convertRBSToContainerized(proxy, config.getProxyFqdn());
+            convertPxeEntriesToCobbler(pxeEntries, proxy, branchid);
         }
         catch (SaltbootException e) {
             LOG.error("Failed to convert PXE entries for minion {}", proxy.getMinionId());
             // TODO: mark backup action as failed
+        }
+        catch (ProxyException e) {
+            LOG.info(e);
         }
 
         // TODO create config channel for custom config files if needed
         // TODO Remove the files in the temporary folder
     }
 
-    private void convertPxeEntriesToCobbler(Path pxeEntries, MinionServer proxy) throws SaltbootException {
+    private String convertRBSToContainerized(MinionServer proxy, String fqdn) throws ProxyException, SaltbootException {
+        /* TODO: migrate proxy formulas:
+        1) get proxy formulas and a) check branch network formula for branch id verification
+        1) b) check image-sync formula for default image
+        2) check if saltboot group formula exists on the branch group
+        2) a) if yes, do nothing else
+        2) b) if no, assign saltboot group formula on the group and create saltboot profile
+
+        - note this has a prerequisite migration of the image files, if there are any bundled images left
+        */
+        Pillar branch = proxy.getPillarByCategory(BRANCH_FORMULA).
+                orElseThrow(() -> new ProxyException("Not a branch server"));
+        String branchId = (String)branch.getPillarValue("pxe:branch_id");
+        if (branchId == null || branchId.isEmpty()) {
+            throw new SaltbootException("Not a valid branch server configuration");
+        }
+        // Get default image from the image sync formula
+        String defaultImage = proxy.getPillarByCategory(IMAGE_SYNC_FORMULA).map(
+                pillar -> {
+                    try {
+                        return (String)pillar.getPillarValue("image-synchronize:default_boot_image");
+                    }
+                    catch (LookupException e) {
+                        return "";
+                    }
+                }
+        ).orElse("");
+
+        LOG.info("Migrating branch id {} with branch server {}. Default image: '{}'",
+                branchId, proxy.getMinionId(), defaultImage);
+
+        ServerGroup branchGroup = ServerGroupFactory.lookupByNameAndOrg(branchId, proxy.getOrg());
+        if (branchGroup == null) {
+            throw new SaltbootException("Unable to find branch group with id " + branchId);
+        }
+
+        // Check branch is part of the group
+        if (!branchGroup.getServers().contains(proxy)) {
+            proxy.addGroup(branchGroup);
+        }
+
+        // Assign saltboot-group formula
+        List<String> formulas = FormulaFactory.getFormulasByGroup(branchGroup);
+        if (!formulas.contains(SALTBOOT_GROUP_FORMULA)) {
+            formulas.add(SALTBOOT_GROUP_FORMULA);
+            FormulaFactory.saveGroupFormulas(branchGroup, formulas);
+        }
+
+        Map<String, Object> data = Map.of(
+        "saltboot", Map.ofEntries(
+                Map.entry("containerized_proxy", true),
+                Map.entry("default_boot_image", defaultImage),
+                Map.entry("default_boot_image_version", ""),
+                Map.entry("download_server", fqdn),
+                Map.entry("minion_id_naming", "Hostname")
+        ));
+        FormulaFactory.saveGroupFormulaData(data, branchGroup, SALTBOOT_GROUP_FORMULA);
+
+        // Disable tftp and pxe formulas
+        List<String> branchFormulas = FormulaFactory.getFormulasByMinion(proxy);
+        branchFormulas.remove("pxe");
+        branchFormulas.remove("tftp");
+        FormulaFactory.saveServerFormulas(proxy, branchFormulas);
+        return branchId;
+    }
+
+    private void convertPxeEntriesToCobbler(Path pxeEntries, MinionServer proxy, String branchId)
+            throws SaltbootException {
         if (pxeEntries == null) {
             LOG.info("No branch server and PXE entries found in backup configuration");
             return;
@@ -117,13 +200,8 @@ public class ProxyBackupEventAction implements MessageAction {
         Map<String, Object> retailData = YamlHelper.loadAs(
                 FileUtils.readStringFromFile(pxeEntries.toString()), Map.class);
 
-        if (!retailData.containsKey("branch_id")) {
-            throw new SaltbootException("branch_id is missing in the proxy data");
-        }
-        final String branchId = retailData.get("branch_id").toString();
-        LOG.debug("Found branch id {} in the yaml data", branchId);
-        // This creates new, or updates existing profile to use the newest image. Maybe not what we want wrt. update
-        SaltbootUtils.createSaltbootProfile(branchId, "", proxy.getOrg(), null, null);
+        String assumedBranchId = (String)retailData.get("branch_id");
+
 
         if (retailData.containsKey("pxe_entries")) {
             LOG.debug("Found pxe entries");
