@@ -93,7 +93,7 @@ public class TokenTest extends RhnBaseTestCase {
         Channel c = ChannelFactoryTest.createTestChannel(t.getCreator());
         t.addChannel(c);
         TokenFactory.save(t);
-        t = (Token) reload(t);
+        t = reload(t);
         assertNotNull(t.getChannels());
         assertEquals(1, t.getChannels().size());
 
@@ -117,11 +117,11 @@ public class TokenTest extends RhnBaseTestCase {
         proc.add(t.getConfigChannelsFor(user), global2);
 
         TokenFactory.save(t);
-        List ls = new ArrayList<>();
+        List<ConfigChannel> ls = new ArrayList<>();
         ls.add(global1);
         ls.add(global2);
 
-        t = (Token) reload(t);
+        t = reload(t);
         assertNotNull(t.getConfigChannelsFor(user));
         assertEquals(2, t.getConfigChannelsFor(user).size());
         assertEquals(ls, t.getConfigChannelsFor(user));
