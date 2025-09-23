@@ -71,60 +71,60 @@ public class RequestContextTest extends MockObjectTestCase {
     /**
      * Tests the pagination: First.
     */
-    /*public void testProcessPaginationFirst() {
-        MockHttpServletRequest request =
-            new MockHttpServletRequest();
-        request.addParameter("First", "1");
+    @Test
+    public void testProcessPaginationFirst() {
+        RhnMockHttpServletRequest request = new RhnMockHttpServletRequest();
+        request.addParameter("First Page", "not null");
         request.addParameter("first_lower", "1");
         RequestContext requestContext = new RequestContext(request);
         String rc = requestContext.processPagination();
         assertEquals("1", rc);
-    }*/
+    }
 
     /**
      * Tests the pagination: Prev.
      */
-    /*public void testProcessPaginationPrev() {
-        MockHttpServletRequest request =
-            new MockHttpServletRequest();
-        request.addParameter("First", (String) null);
-        request.addParameter("Prev", "1");
+    @Test
+    public void testProcessPaginationPrev() {
+        RhnMockHttpServletRequest request = new RhnMockHttpServletRequest();
+        request.addParameter("First Page", (String) null);
+        request.addParameter("Previous Page", "1");
         request.addParameter("prev_lower", "10");
         RequestContext requestContext = new RequestContext(request);
         String rc = requestContext.processPagination();
         assertEquals("10", rc);
-    }*/
+    }
 
     /**
      * Tests the pagination: Last.
      */
-    /*public void testProcessPaginationLast() {
-        MockHttpServletRequest request =
-            new MockHttpServletRequest();
-        request.addParameter("First", (String)null);
-        request.addParameter("Prev", (String)null);
-        request.addParameter("Next", (String)null);
-        request.addParameter("Last", "1");
+    @Test
+    public void testProcessPaginationLast() {
+        RhnMockHttpServletRequest request = new RhnMockHttpServletRequest();
+        request.addParameter("First Page", (String)null);
+        request.addParameter("Previous Page", (String)null);
+        request.addParameter("Next Page", (String)null);
+        request.addParameter("Last Page", "1");
         request.addParameter("last_lower", "30");
         RequestContext requestContext = new RequestContext(request);
         String rc = requestContext.processPagination();
         assertEquals("30", rc);
-    }*/
+    }
 
     /**
      * Tests the pagination: Next.
      */
-    /*public void testProcessPaginationNext() {
-        MockHttpServletRequest request =
-            new MockHttpServletRequest();
-        request.addParameter("First", (String)null);
-        request.addParameter("Prev", (String)null);
-        request.addParameter("Next", "1");
+    @Test
+    public void testProcessPaginationNext() {
+        RhnMockHttpServletRequest request = new RhnMockHttpServletRequest();
+        request.addParameter("First Page", (String)null);
+        request.addParameter("Prev Page", (String)null);
+        request.addParameter("Next Page", "1");
         request.addParameter("next_lower", "20");
         RequestContext requestContext = new RequestContext(request);
         String rc = requestContext.processPagination();
         assertEquals("20", rc);
-    }*/
+    }
 
     /**
      */

@@ -33,7 +33,7 @@ import javax.servlet.http.HttpServletRequestWrapper;
  */
 public class RhnHttpServletRequest extends HttpServletRequestWrapper {
 
-    private static final String ACTIVE_LANG_ATTR = "rhnActiveLang";
+    public static final String ACTIVE_LANG_ATTR = "rhnActiveLang";
 
     private ArrayList<Locale> locales = new ArrayList<>();
 

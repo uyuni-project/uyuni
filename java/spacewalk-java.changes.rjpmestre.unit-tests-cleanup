@@ -3,3 +3,4 @@
 - Replace unnecessary RhnMockDynaActionForm with base
   DynaActionForm
 - Remove duplicated test assertions and parameter settings
+- Reenable commented/unmarked tests

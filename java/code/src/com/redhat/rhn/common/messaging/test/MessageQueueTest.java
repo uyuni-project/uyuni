@@ -155,6 +155,7 @@ public class MessageQueueTest extends RhnBaseTestCase {
      *  for now
      * @throws Exception something bad happened
      */
+    @Test
     public void skipTestDeRegister() throws Exception {
         logger.debug("testDeRegister - start");
         TestAction.deRegisterAction();
