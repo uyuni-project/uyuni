@@ -4,3 +4,4 @@
   DynaActionForm
 - Remove duplicated test assertions and parameter settings
 - Reenable commented/unmarked tests
+- Remove ErrataCacheTaskTest (contained no tests)
