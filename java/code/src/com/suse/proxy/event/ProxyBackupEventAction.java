@@ -85,6 +85,11 @@ public class ProxyBackupEventAction implements MessageAction {
             return newPath;
         }).toList();
 
+        if (!validMigrationFiles(copiedFiles)) {
+            SystemManager.addHistoryEvent(proxy, "Proxy migration: failed",
+                "Received incomplete backup data. Try retrying the migration.");
+        }
+
         // Copy the backup common files as pillar in the database
         Path configPath = copiedFiles.stream().filter(file -> file.endsWith("config.yaml"))
             .findFirst().map(tmpPath::resolve).orElse(null);
@@ -95,8 +100,18 @@ public class ProxyBackupEventAction implements MessageAction {
         Path pxeEntries = copiedFiles.stream().filter(file -> file.endsWith("pxe_entries.yaml"))
             .findFirst().map(tmpPath::resolve).orElse(null);
 
-        ProxyConfig config = ProxyConfigUtils.loadFilesToProxyConfig(configPath, httpdPath, sshPath);
-        Pillar configPillar = ProxyConfigUtils.proxyConfigToPillar(config).setMinion(proxy);
+        ProxyConfig config;
+        Pillar configPillar;
+        try {
+            config = ProxyConfigUtils.loadFilesToProxyConfig(configPath, httpdPath, sshPath);
+            configPillar = ProxyConfigUtils.proxyConfigToPillar(config).setMinion(proxy);
+        }
+        catch (Exception e) {
+            LOG.error("Failed to parse migration files for minion {}", proxy.getMinionId(), e);
+            SystemManager.addHistoryEvent(proxy, "Proxy migration: failed",
+                    "Unable to parse uploaded data. See log file for details");
+            return;
+        }
 
         proxy.getPillarByCategory(ProxyConfigUtils.PROXY_PILLAR_CATEGORY).ifPresentOrElse(
             pillar -> {
@@ -109,25 +124,32 @@ public class ProxyBackupEventAction implements MessageAction {
         SystemManager.addHistoryEvent(proxy, "Proxy migration: new configuration created",
                 "Reinstallation of the proxy will now autoconfigure it on the first boot");
 
-        // Create cobbler records based on PXE entries
-        try {
-            String branchid = convertRBSToContainerized(proxy, config.getProxyFqdn());
-            convertPxeEntriesToCobbler(pxeEntries, proxy, branchid);
-            SystemManager.addHistoryEvent(proxy, "Proxy migration: finished",
-                    "Proxy was detected to be a Retail Branch Server, branch migration was performed");
+        if (proxy.getPillarByCategory(BRANCH_FORMULA).isPresent()) {
+            SystemManager.addHistoryEvent(proxy, "Retail Branch Server migration: started",
+                    "Proxy detected as a Retail Branch Server, migration started");
+            // Create cobbler records based on PXE entries
+            try {
+                String branchid = convertRBSToContainerized(proxy, config.getProxyFqdn());
+                convertPxeEntriesToCobbler(pxeEntries, proxy, branchid);
+                SystemManager.addHistoryEvent(proxy, "Proxy migration: finished",
+                        "Proxy was detected to be a Retail Branch Server, branch migration was performed");
+            }
+            catch (SaltbootException | ProxyException e) {
+                LOG.error("Failed to convert PXE entries for minion {}", proxy.getMinionId(), e);
+                SystemManager.addHistoryEvent(proxy, "Retail Branch Server migration: failed",
+                        "Failed to migrate the branch server. See log files for details.");
+            }
         }
-        catch (SaltbootException e) {
-            LOG.error("Failed to convert PXE entries for minion {}", proxy.getMinionId());
-            // TODO: mark backup action as failed
-        }
-        catch (ProxyException e) {
-            LOG.info(e);
-            SystemManager.addHistoryEvent(proxy, "Proxy migration: finished",
-                    "Proxy was not detected to be a Retail Branch Server, migration is finished");
-        }
+        SystemManager.addHistoryEvent(proxy, "Proxy migration: finished",
+                "All data were migrated. Proceed with reinstallation of the proxy host.");
 
         // TODO create config channel for custom config files if needed
         // TODO Remove the files in the temporary folder
+    }
+
+    private boolean validMigrationFiles(List<String> copiedFiles) {
+        Long numFiles = copiedFiles.stream().filter(file -> file.endsWith(".yaml")).count();
+        return numFiles == 3 || numFiles == 4;
     }
 
     private String convertRBSToContainerized(MinionServer proxy, String fqdn) throws ProxyException, SaltbootException {
@@ -221,7 +243,8 @@ public class ProxyBackupEventAction implements MessageAction {
         }
     }
 
-    private void convertSinglePxeEntry(MinionServer proxy, String branchid, Map<String, String> entry) throws SaltbootException {
+    private void convertSinglePxeEntry(MinionServer proxy, String branchid, Map<String, String> entry)
+            throws SaltbootException {
         // Lookup MinionEntry based on MAC address
         String mac = entry.get("mac");
         LOG.debug("processing entry for MAC {}", mac);
