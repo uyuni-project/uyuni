@@ -21,6 +21,7 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.entitlement.OSImageBuildHostEntitlement;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
@@ -77,11 +78,13 @@ public class OSImageBuildHostEntitlementTest extends BaseEntitlementTestCase {
         assertTrue(ent.isAllowedOnServer(minion));
         assertFalse(ent.isAllowedOnServer(traditional));
 
-        minion.setOs("SLES");
+        minion.setOsFamily(ServerConstants.OS_FAMILY_SUSE);
+        minion.setOs(ServerConstants.SLES);
         minion.setRelease("15.1");
         assertTrue(ent.isAllowedOnServer(minion));
 
-        minion.setOs("RedHat Linux");
+        minion.setOsFamily(ServerConstants.OS_FAMILY_REDHAT);
+        minion.setOs(ServerConstants.REDHAT);
         minion.setRelease("6Server");
         assertFalse(ent.isAllowedOnServer(minion));
     }

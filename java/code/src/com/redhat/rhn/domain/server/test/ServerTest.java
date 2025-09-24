@@ -200,6 +200,7 @@ public class ServerTest extends BaseTestCaseWithUser {
         Server s = ServerFactoryTest.createTestServer(user, true,
                 ServerConstants.getServerGroupTypeSaltEntitled(),
                 ServerFactoryTest.TYPE_SERVER_MINION);
+        s.setOsFamily(ServerConstants.OS_FAMILY_SUSE);
         s.setOs("SLES");
         s.setRelease("12.1");
         assertTrue(s.doesOsSupportsOSImageBuilding());
@@ -304,8 +305,9 @@ public class ServerTest extends BaseTestCaseWithUser {
         Server s = ServerFactoryTest.createTestServer(user, true,
                 ServerConstants.getServerGroupTypeSaltEntitled(),
                 ServerFactoryTest.TYPE_SERVER_MINION);
-        s.setOs("SLES");
-        s.setRelease("10.4");
+        s.setOsFamily(ServerConstants.OS_FAMILY_DEBIAN);
+        s.setOs(ServerConstants.UBUNTU);
+        s.setRelease("18.04");
         assertFalse(s.doesOsSupportsOSImageBuilding());
     }
 
