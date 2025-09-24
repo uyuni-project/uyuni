@@ -17,6 +17,7 @@ package com.suse.proxy.event;
 
 import static com.suse.manager.webui.services.SaltConstants.SALT_FILE_GENERATION_TEMP_PATH;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageAction;
@@ -68,7 +69,8 @@ public class ProxyBackupEventAction implements MessageAction {
         ProxyBackupEvent proxyEvent = ((ProxyBackupEventMessage) msg).getProxyBackupEvent();
         MinionServer proxy = proxyEvent.getMinion();
 
-        LOG.debug("Processing ProxyBackupEvent for minion {}", proxy.getMinionId());
+        SystemManager.addHistoryEvent(proxy, "Proxy migration: started",
+                "Received event with client side data, starting data migration");
 
         Path base = Paths.get(SaltConstants.SALT_CP_PUSH_ROOT_PATH, proxy.getMinionId(), "files");
         Path tmpPath = Path.of(SALT_FILE_GENERATION_TEMP_PATH);
@@ -104,13 +106,15 @@ public class ProxyBackupEventAction implements MessageAction {
                 proxy.addPillar(configPillar);
         });
 
-        SystemManager.addHistoryEvent(proxy, "Proxy configuration created",
-                "Proxy configuration migrated. Reinstallation of the proxy will autoconfigure it.");
+        SystemManager.addHistoryEvent(proxy, "Proxy migration: new configuration created",
+                "Reinstallation of the proxy will now autoconfigure it on the first boot");
 
         // Create cobbler records based on PXE entries
         try {
             String branchid = convertRBSToContainerized(proxy, config.getProxyFqdn());
             convertPxeEntriesToCobbler(pxeEntries, proxy, branchid);
+            SystemManager.addHistoryEvent(proxy, "Proxy migration: finished",
+                    "Proxy was detected to be a Retail Branch Server, branch migration was performed");
         }
         catch (SaltbootException e) {
             LOG.error("Failed to convert PXE entries for minion {}", proxy.getMinionId());
@@ -118,6 +122,8 @@ public class ProxyBackupEventAction implements MessageAction {
         }
         catch (ProxyException e) {
             LOG.info(e);
+            SystemManager.addHistoryEvent(proxy, "Proxy migration: finished",
+                    "Proxy was not detected to be a Retail Branch Server, migration is finished");
         }
 
         // TODO create config channel for custom config files if needed
@@ -200,14 +206,11 @@ public class ProxyBackupEventAction implements MessageAction {
         Map<String, Object> retailData = YamlHelper.loadAs(
                 FileUtils.readStringFromFile(pxeEntries.toString()), Map.class);
 
-        String assumedBranchId = (String)retailData.get("branch_id");
-
-
         if (retailData.containsKey("pxe_entries")) {
             LOG.debug("Found pxe entries");
             List<Map<String, String>> pixies = (List<Map<String, String>>) retailData.get("pxe_entries");
             try {
-                pixies.forEach(pxe -> this.convertSinglePxeEntry(branchId, pxe));
+                pixies.forEach(pxe -> this.convertSinglePxeEntry(proxy, branchId, pxe));
             }
             catch (SaltbootException e) {
                 LOG.warn("Ignoring", e);
@@ -218,18 +221,21 @@ public class ProxyBackupEventAction implements MessageAction {
         }
     }
 
-    private void convertSinglePxeEntry(String branchid, Map<String, String> entry) throws SaltbootException {
+    private void convertSinglePxeEntry(MinionServer proxy, String branchid, Map<String, String> entry) throws SaltbootException {
         // Lookup MinionEntry based on MAC address
-        LOG.debug("processing entry for MAC {}", entry.get("mac"));
-        List<MinionServer> minions = MinionServerFactory.findMinionsByHwAddrs(Set.of(entry.get("mac")));
+        String mac = entry.get("mac");
+        LOG.debug("processing entry for MAC {}", mac);
+        List<MinionServer> minions = MinionServerFactory.findMinionsByHwAddrs(Set.of(mac));
         if (minions == null || minions.isEmpty()) {
+            // Create empty profile for minions that do not exist
+            GlobalInstanceHolder.SYSTEM_MANAGER.createSystemProfile(proxy.getCreator(), mac, Map.of("hwAddress", mac));
             throw new SaltbootException("Unable to find minion by its MAC address {}");
         }
         else if (minions.size() > 1) {
             throw new SaltbootException("Multiple minions found by one MAC address. Cannot choose one");
         }
         SaltbootUtils.createSaltbootSystem(minions.get(0).getMinionId(),
-                entry.get("probable_boot_image"), branchid, List.of(entry.get("mac")), entry.get("args"));
+                entry.get("probable_boot_image"), branchid, List.of(mac), entry.get("args"));
     }
 
     @Override
