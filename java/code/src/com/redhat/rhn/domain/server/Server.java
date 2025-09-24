@@ -2378,11 +2378,12 @@ public class Server extends BaseDomainHelper implements Identifiable {
     /**
      * Return <code>true</code> if OS on this system supports OS Image building,
      * <code>false</code> otherwise.
+     * Allows everything from SUSE, Leap and LeapMicro
      *
      * @return <code>true</code> if OS supports OS Image building
      */
     public boolean doesOsSupportsOSImageBuilding() {
-        return isSLES11() || isSLES12() || isSLES15() || isLeap15();
+        return isOsFamilySuse() || isLeap() || isLeapMicro();
     }
 
     /**
