@@ -37,12 +37,24 @@ public class HttpApiRegistryTest extends RhnJmockBaseTestCase {
      * Stub API handler for testing
      */
     public static class RegistryTestHandler extends BaseHandler {
-        private void notExposed() { }
-        @ReadOnly public void myFirstEndpoint() { }
-        public void mySecondEndpoint() { }
-        @ReadOnly @ApiIgnore public void ignored() { }
-        @ApiIgnore(ApiType.HTTP) public void alsoIgnored() { }
-        @ApiIgnore(ApiType.XMLRPC) public void notIgnored() { }
+        private void notExposed() {
+            // Intentionally empty: Test helper method; presence is required for registry discovery tests.
+        }
+        @ReadOnly public void myFirstEndpoint() {
+            // Intentionally empty: Test endpoint stub; route registration is validated by expectations.
+        }
+        public void mySecondEndpoint() {
+            // Intentionally empty: Second test endpoint stub; behavior is validated elsewhere.
+        }
+        @ReadOnly @ApiIgnore public void ignored() {
+            // Intentionally empty: Ignored endpoint used to verify ApiIgnore handling.
+        }
+        @ApiIgnore(ApiType.HTTP) public void alsoIgnored() {
+            // Intentionally empty: Ignored for HTTP; ensures only expected routes are registered.
+        }
+        @ApiIgnore(ApiType.XMLRPC) public void notIgnored() {
+            // Intentionally empty: Not ignored for HTTP; included to assert correct registration.
+        }
     }
 
     @BeforeEach
