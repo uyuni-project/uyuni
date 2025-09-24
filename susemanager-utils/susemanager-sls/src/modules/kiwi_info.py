@@ -14,7 +14,8 @@ log = logging.getLogger(__name__)
 
 # Kiwi version is always in format "MAJOR.MINOR.RELEASE" with numeric values
 # Source https://osinside.github.io/kiwi/image_description/elements.html#preferences-version
-KIWI_VERSION_REGEX = r"\d+\.\d+\.\d+"
+# Enhanced by allowing also MAJOR.MINOR version, particularly for SL-Micro images
+KIWI_VERSION_REGEX = r"\d+\.\d+(\.\d+)?"
 # Taken from Kiwi sources https://github.com/OSInside/kiwi/blob/eb2b1a84bf7/kiwi/schema/kiwi.rng#L81
 KIWI_ARCH_REGEX = r"(x86_64|i586|i686|ix86|aarch64|arm64|armv5el|armv5tel|armv6hl|armv6l|armv7hl|armv7l|ppc|ppc64|ppc64le|s390|s390x|riscv64)"
 # Taken from Kiwi sources https://github.com/OSInside/kiwi/blob/eb2b1a84bf7/kiwi/schema/kiwi.rng#L26
