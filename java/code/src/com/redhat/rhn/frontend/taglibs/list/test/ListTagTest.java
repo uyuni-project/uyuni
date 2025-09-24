@@ -35,6 +35,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 
@@ -88,7 +89,7 @@ public class ListTagTest extends MockObjectTestCase {
     public void testRegularRun() throws Exception {
         context().checking(new Expectations() { {
             atLeast(1).of(req).getRequestURI();
-            will(returnValue("UTF-8"));
+            will(returnValue(StandardCharsets.UTF_8.name()));
 
             atLeast(1).of(req).getAttribute("session");
             will(returnValue(webSess));

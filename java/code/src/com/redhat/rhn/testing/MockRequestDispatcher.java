@@ -66,7 +66,7 @@ public class MockRequestDispatcher implements RequestDispatcher  {
 
     /**
      * Set the stored request object.
-     * @param requestIn
+     * @param requestIn the request to set
      */
     public void setRequest(ServletRequest requestIn) {
         request = requestIn;

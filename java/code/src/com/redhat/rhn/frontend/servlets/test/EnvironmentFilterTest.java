@@ -64,7 +64,7 @@ public class EnvironmentFilterTest extends BaseFilterTst {
         filter.doFilter(request, response, chain);
 
         // Check that we got the expected redirect.
-        String expectedRedir = "https://mymachine.rhndev.redhat.com/rhn/manager/login";
+        String expectedRedir = "https://host.mlm.suse.com/rhn/manager/login";
         assertEquals(expectedRedir, response.getRedirect());
 
         request.setRequestURI("/rhn/kickstart/DownloadFile");
@@ -96,6 +96,6 @@ public class EnvironmentFilterTest extends BaseFilterTst {
         filter.doFilter(request, response, chain);
 
         assertNotNull(request.getAttribute(Globals.MESSAGE_KEY));
-        assertNotNull(session.getAttribute(Globals.MESSAGE_KEY));
+        assertNotNull(request.getSession().getAttribute(Globals.MESSAGE_KEY));
     }
 }

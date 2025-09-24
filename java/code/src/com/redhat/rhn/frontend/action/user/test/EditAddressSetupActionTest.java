@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.user.test;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -46,14 +47,17 @@ public class EditAddressSetupActionTest extends RhnBaseTestCase {
 
         assertNotNull(sah.getForm().get("uid"));
         RhnMockDynaActionForm form = sah.getForm();
-        assertEquals(user.getAddress1(), form.get("address1"));
-        assertEquals(user.getAddress2(), form.get("address2"));
-        assertEquals(user.getPhone(), form.get("phone"));
-        assertEquals(user.getFax(), form.get("fax"));
-        assertEquals(user.getCity(), form.get("city"));
-        assertEquals(user.getState(), form.get("state"));
-        assertEquals(user.getCountry(), form.get("country"));
-        assertEquals(user.getZip(), form.get("zip"));
+        assertAll(
+                "Check if the user information is correct",
+                () -> assertEquals(user.getAddress1(), form.get("address1")),
+                () -> assertEquals(user.getAddress2(), form.get("address2")),
+                () -> assertEquals(user.getPhone(), form.get("phone")),
+                () -> assertEquals(user.getFax(), form.get("fax")),
+                () -> assertEquals(user.getCity(), form.get("city")),
+                () -> assertEquals(user.getState(), form.get("state")),
+                () -> assertEquals(user.getCountry(), form.get("country")),
+                () -> assertEquals(user.getZip(), form.get("zip"))
+        );
     }
 
 

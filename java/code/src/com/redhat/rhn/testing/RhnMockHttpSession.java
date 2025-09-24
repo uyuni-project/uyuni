@@ -176,7 +176,7 @@ public class RhnMockHttpSession implements HttpSession {
      * @param value the attribute value
      */
     public void putValue(String name, Object value) {
-        this.setAttribute(name, value);
+        setAttribute(name, value);
     }
 
     /**

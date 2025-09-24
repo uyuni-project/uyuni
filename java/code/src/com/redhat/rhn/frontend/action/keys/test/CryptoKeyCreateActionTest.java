@@ -53,8 +53,7 @@ public class CryptoKeyCreateActionTest extends RhnPostMockStrutsTestCase {
         setRequestPathInfo("/keys/CryptoKeyCreate");
         addRequestParameter(CryptoKeyCreateAction.SUBMITTED, Boolean.TRUE.toString());
         addRequestParameter(CryptoKeyCreateAction.DESCRIPTION, "somedesc");
-        addRequestParameter(CryptoKeyCreateAction.TYPE,
-                KickstartFactory.KEY_TYPE_GPG.getLabel());
+        addRequestParameter(CryptoKeyCreateAction.TYPE, KickstartFactory.KEY_TYPE_GPG.getLabel());
         addUploadedFile(CryptoKeyCreateAction.CONTENTS, "somekey", "");
         actionPerform();
         assertNotNull(request.getAttribute(CryptoKeyCreateAction.KEY));
@@ -66,15 +65,12 @@ public class CryptoKeyCreateActionTest extends RhnPostMockStrutsTestCase {
     public void testEdit() {
         setRequestPathInfo("/keys/CryptoKeyEdit");
         addRequestParameter(CryptoKeyCreateAction.SUBMITTED, Boolean.TRUE.toString());
-        addRequestParameter(CryptoKeyCreateAction.SUBMITTED, Boolean.TRUE.toString());
         addRequestParameter(CryptoKeyCreateAction.DESCRIPTION, "somedesc");
-        addRequestParameter(CryptoKeyCreateAction.TYPE,
-                KickstartFactory.KEY_TYPE_GPG.getLabel());
+        addRequestParameter(CryptoKeyCreateAction.TYPE, KickstartFactory.KEY_TYPE_GPG.getLabel());
         CryptoKey key = CryptoTest.createTestKey(user.getOrg());
         KickstartFactory.saveCryptoKey(key);
         TestUtils.flushAndEvict(key);
-        addRequestParameter(RequestContext.KEY_ID,
-                key.getId().toString());
+        addRequestParameter(RequestContext.KEY_ID, key.getId().toString());
         addUploadedFile(CryptoKeyCreateAction.CONTENTS, "somekey", "test key content");
         actionPerform();
         verifyNoActionErrors();

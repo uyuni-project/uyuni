@@ -49,6 +49,7 @@ import java.util.Set;
 public class ServerGroupManagerTest extends BaseTestCaseWithUser {
     private static final String NAME = "Foo1";
     private static final String DESCRIPTION = "Test Foo1";
+    public static final String TEST_DIFF_USER = "testDiffUser";
 
     private ServerGroupManager manager;
 
@@ -85,7 +86,7 @@ public class ServerGroupManagerTest extends BaseTestCaseWithUser {
         ManagedServerGroup sg = manager.create(user, NAME, DESCRIPTION);
         assertTrue(manager.canAccess(user, sg));
 
-        User newUser = UserTestUtils.createUser("testDiffUser", user.getOrg().getId());
+        User newUser = UserTestUtils.createUser(TEST_DIFF_USER, user.getOrg().getId());
         assertFalse(manager.canAccess(newUser, sg));
         List admins = new ArrayList<>();
         admins.add(newUser);
@@ -95,7 +96,7 @@ public class ServerGroupManagerTest extends BaseTestCaseWithUser {
         manager.dissociateAdmins(sg, admins, user);
         assertFalse(manager.canAccess(newUser, sg));
 
-        User orgAdmin = UserTestUtils.createUser("testDiffUser", user.getOrg().getId());
+        User orgAdmin = UserTestUtils.createUser(TEST_DIFF_USER, user.getOrg().getId());
         orgAdmin.addPermanentRole(RoleFactory.ORG_ADMIN);
         assertTrue(manager.canAccess(orgAdmin, sg));
     }
@@ -105,8 +106,7 @@ public class ServerGroupManagerTest extends BaseTestCaseWithUser {
         user.addToGroup(AccessGroupFactory.SYSTEM_GROUP_ADMIN);
         ManagedServerGroup sg = manager.create(user, NAME, DESCRIPTION);
         sg = (ManagedServerGroup) reload(sg);
-        User newUser = UserTestUtils.createUser("testDiffUser",
-                user.getOrg().getId());
+        User newUser = UserTestUtils.createUser(TEST_DIFF_USER, user.getOrg().getId());
         try {
             manager.remove(newUser, sg);
             fail("Permission error. Can't remove if you don't have access");
@@ -178,8 +178,7 @@ public class ServerGroupManagerTest extends BaseTestCaseWithUser {
     public void testAddRemoveAdmins() {
         user.addToGroup(AccessGroupFactory.SYSTEM_GROUP_ADMIN);
         ManagedServerGroup sg = manager.create(user, NAME, DESCRIPTION);
-        User newUser = UserTestUtils.
-            createUser("testDiffUser", user.getOrg().getId());
+        User newUser = UserTestUtils.createUser(TEST_DIFF_USER, user.getOrg().getId());
         List admins = new ArrayList<>();
         admins.add(newUser);
         manager.associateAdmins(sg, admins, user);
@@ -188,8 +187,7 @@ public class ServerGroupManagerTest extends BaseTestCaseWithUser {
         expected.add(user);
         assertEquals(expected, sg.getAssociatedAdminsFor(user));
 
-        User orgAdmin = UserTestUtils.createUser("testDiffUser",
-                user.getOrg().getId());
+        User orgAdmin = UserTestUtils.createUser(TEST_DIFF_USER, user.getOrg().getId());
         orgAdmin.addPermanentRole(RoleFactory.ORG_ADMIN);
         List admins1 = new ArrayList<>();
         admins1.add(orgAdmin);

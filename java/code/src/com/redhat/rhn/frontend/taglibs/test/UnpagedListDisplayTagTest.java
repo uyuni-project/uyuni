@@ -113,18 +113,40 @@ public class UnpagedListDisplayTagTest extends MockObjectTestCase {
         assertEquals(EXPECTED_HTML_OUT, writer.toString());
     }
 
-    private static final String EXPECTED_HTML_OUT =
-        "<div class=\"spacewalk-list\"><div class=\"panel panel-default\">" +
-        "<table class=\"table\">\n<thead>\n<tr>\n\n</tbody>\n</table>\n\n" +
-        "</div>\n\n" +
-        "</div>\n\n";
+    private static final String EXPECTED_HTML_OUT = """
+        <div class="spacewalk-list"><div class="panel panel-default"><table class="table">
+        <thead>
+        <tr>
 
-    private static final String EXPECTED_HTML_OUT_WITH_TITLE =
-        "<div class=\"spacewalk-list\"><div class=\"panel panel-default\">" +
-        "<div class=\"panel-heading\">\n<h4 class=\"panel-title\">**Inactive Systems**</h4>\n" +
-        "<div class=\"spacewalk-list-head-addons\">\n\n" +
-        "<div class=\"spacewalk-list-head-addons-extra\">\n\n</div>\n" +
-        "</div>\n</div>\n<table class=\"table\">\n<thead>\n<tr>\n\n</tbody>\n</table>\n\n" +
-        "</div>\n\n" +
-        "</div>\n\n";
+        </tbody>
+        </table>
+
+        </div>
+
+        </div>
+
+        """;
+
+    private static final String EXPECTED_HTML_OUT_WITH_TITLE = """
+        <div class="spacewalk-list"><div class="panel panel-default"><div class="panel-heading">
+        <h4 class="panel-title">**Inactive Systems**</h4>
+        <div class="spacewalk-list-head-addons">
+
+        <div class="spacewalk-list-head-addons-extra">
+
+        </div>
+        </div>
+        </div>
+        <table class="table">
+        <thead>
+        <tr>
+
+        </tbody>
+        </table>
+
+        </div>
+
+        </div>
+
+        """;
 }

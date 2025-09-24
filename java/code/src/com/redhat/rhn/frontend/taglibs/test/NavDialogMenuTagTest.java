@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import com.redhat.rhn.frontend.taglibs.NavDialogMenuTag;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.RhnMockExceptionJspWriter;
+import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.RhnMockJspWriter;
 import com.redhat.rhn.testing.TagTestHelper;
 import com.redhat.rhn.testing.TagTestUtils;
@@ -108,6 +109,8 @@ public class NavDialogMenuTagTest extends RhnBaseTestCase {
 
             // ok let's test the tag
             setupTag(nmt, 0, 4, NAV_XML, DIALOG_NAV);
+            RhnMockHttpServletRequest req = tth.getRequest();
+            req.addAttribute("innernavtitle", " - Sign In");
             tth.assertDoStartTag(Tag.SKIP_BODY);
             assertEquals(getReturnValue(), out.toString());
         }

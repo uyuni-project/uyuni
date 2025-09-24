@@ -49,7 +49,8 @@ import javax.servlet.http.Part;
  */
 public class RhnMockHttpServletRequest implements HttpServletRequest {
 
-    private static final String LOCALHOST = "localhost";
+    public static final String LOCALHOST = "localhost";
+    public static final String DEFAULT_SERVER_NAME = "host.mlm.suse.com";
 
     private String requestURL;
     private String requestURI;
@@ -92,7 +93,7 @@ public class RhnMockHttpServletRequest implements HttpServletRequest {
         this.locales = new ArrayList<>();
         this.parameters = new HashMap<>();
         this.cookies = new ArrayList<>();
-        this.serverName = "host.mlm.suse.com";
+        this.serverName = DEFAULT_SERVER_NAME;
         this.requestURI = "/mlm/network/somepage.do";
         this.requestURL = "http://host.mlm.suse.com/mlm/network/somepage.do";
         this.contextPath = "";

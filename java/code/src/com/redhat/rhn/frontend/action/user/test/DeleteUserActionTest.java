@@ -27,7 +27,6 @@ import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.frontend.action.user.DeleteUserAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.testing.RhnBaseTestCase;
-import com.redhat.rhn.testing.RhnMockDynaActionForm;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 import com.redhat.rhn.testing.TestUtils;
@@ -35,14 +34,13 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.DynaActionForm;
 import org.junit.jupiter.api.Test;
 
 /**
  * DeleteUserActionTest
  */
 public class DeleteUserActionTest extends RhnBaseTestCase {
-
-
 
     @Test
     public void testExecute() {
@@ -57,7 +55,7 @@ public class DeleteUserActionTest extends RhnBaseTestCase {
 
         RhnMockHttpServletRequest request = TestUtils.getRequestWithSessionAndUser();
         RhnMockHttpServletResponse response = new RhnMockHttpServletResponse();
-        RhnMockDynaActionForm form = new RhnMockDynaActionForm();
+        DynaActionForm form = new DynaActionForm();
 
         RequestContext requestContext = new RequestContext(request);
 

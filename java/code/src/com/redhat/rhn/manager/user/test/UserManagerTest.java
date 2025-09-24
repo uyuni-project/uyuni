@@ -373,8 +373,6 @@ public class UserManagerTest extends RhnBaseTestCase {
         //admin -> self
         UserManager.disableUser(org1admin, org1admin);
 
-
-        //Normal users can only disable themselves
         //Normal users can only disable themselves
         assertTrue(org1admin.isDisabled());
         //normal user -> self

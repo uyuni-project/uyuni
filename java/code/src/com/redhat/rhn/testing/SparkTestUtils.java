@@ -17,6 +17,7 @@ package com.redhat.rhn.testing;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -74,7 +75,6 @@ public class SparkTestUtils {
         final RouteMatch match = new RouteMatch(new Object(), matchUrl, requestUrl, "");
 
         final RhnMockHttpServletRequest mockRequest = new RhnMockHttpServletRequest();
-        mockRequest.setSession(new RhnMockHttpSession());
         mockRequest.setRequestURL(requestUrl);
         mockRequest.setMethod("GET");
         mockRequest.setInputStream(new MockServletInputStream());
@@ -122,7 +122,6 @@ public class SparkTestUtils {
         final RouteMatch match = new RouteMatch(new Object(), matchUrl, requestUrl, "");
 
         final RhnMockHttpServletRequest mockRequest = new RhnMockHttpServletRequest();
-        mockRequest.setSession(new RhnMockHttpSession());
         mockRequest.setRequestURL(requestUrl);
         mockRequest.setMethod("GET");
         mockRequest.setInputStream(new MockServletInputStream());
@@ -207,13 +206,12 @@ public class SparkTestUtils {
         final RouteMatch match = new RouteMatch(new Object(), matchUrl, requestUrl, "");
 
         final RhnMockHttpServletRequest mockRequest = new RhnMockHttpServletRequest();
-        mockRequest.setSession(new RhnMockHttpSession());
         mockRequest.setRequestURL(requestUrl);
         mockRequest.setMethod(method);
         MockServletInputStream in = new MockServletInputStream();
         in.setupRead(body.getBytes(
                 mockRequest.getCharacterEncoding() != null ?
-                        mockRequest.getCharacterEncoding() : "UTF-8"));
+                        mockRequest.getCharacterEncoding() : StandardCharsets.UTF_8.name()));
         mockRequest.setInputStream(in);
         setQueryParams(mockRequest, queryParams);
         mockRequest.setPathInfo(URI.create(requestUrl).getPath());
@@ -252,13 +250,12 @@ public class SparkTestUtils {
         final RouteMatch match = new RouteMatch(new Object(), matchUrl, requestUrl, "");
 
         final RhnMockHttpServletRequest mockRequest = new RhnMockHttpServletRequest();
-        mockRequest.setSession(new RhnMockHttpSession());
         mockRequest.setRequestURL(requestUrl);
         mockRequest.setMethod(method);
         MockServletInputStream in = new MockServletInputStream();
         in.setupRead(body.getBytes(
                 mockRequest.getCharacterEncoding() != null ?
-                        mockRequest.getCharacterEncoding() : "UTF-8"));
+                        mockRequest.getCharacterEncoding() : StandardCharsets.UTF_8.name()));
         mockRequest.setInputStream(in);
         mockRequest.setPathInfo(URI.create(requestUrl).getPath());
 

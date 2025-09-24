@@ -20,7 +20,6 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.testing.RhnJmockBaseTestCase;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
-import com.redhat.rhn.testing.RhnMockHttpSession;
 
 import org.junit.jupiter.api.BeforeEach;
 
@@ -35,21 +34,16 @@ import javax.servlet.ServletException;
 public abstract class BaseFilterTst extends RhnJmockBaseTestCase {
 
     protected RhnMockHttpServletRequest request;
-    protected RhnMockHttpSession session;
     protected RhnMockHttpServletResponse response;
     protected FilterChain chain;
 
     @BeforeEach
     public void setUp() throws ServletException, IOException {
         request = new RhnMockHttpServletRequest();
-        session = new RhnMockHttpSession();
 
         PxtCookieManager pcm = new PxtCookieManager();
         RequestContext requestContext = new RequestContext(request);
 
-        request.setServerName("mymachine.rhndev.redhat.com");
-        request.setSession(session);
-        request.setRequestURI("http://localhost:8080");
         WebSession s = requestContext.getWebSession();
         request.addCookie(pcm.createPxtCookie(s.getId(), request, 10));
         response = new RhnMockHttpServletResponse();

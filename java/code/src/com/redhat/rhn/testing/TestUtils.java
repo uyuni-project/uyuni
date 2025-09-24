@@ -203,9 +203,6 @@ public class TestUtils {
     public static RhnMockHttpServletRequest getRequestWithSessionAndUser() {
         RhnMockHttpServletRequest req = new RhnMockHttpServletRequest();
         RhnMockHttpServletResponse resp = new RhnMockHttpServletResponse();
-        RhnMockHttpSession session = new RhnMockHttpSession();
-        req.setServerName("mlm.dev.suse.com");
-        req.setSession(session);
 
         // Create a test user
         User user = UserTestUtils.createUser(

@@ -26,13 +26,13 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.testing.RhnBaseTestCase;
-import com.redhat.rhn.testing.RhnMockDynaActionForm;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.DynaActionForm;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -47,7 +47,7 @@ public class NotifyActionTest extends RhnBaseTestCase {
         RhnMockHttpServletRequest request = TestUtils.getRequestWithSessionAndUser();
         ActionMapping mapping = new ActionMapping();
         ActionForward def = new ActionForward(RhnHelper.DEFAULT_FORWARD, "path", false);
-        RhnMockDynaActionForm form = new RhnMockDynaActionForm();
+        DynaActionForm form = new DynaActionForm();
         RhnMockHttpServletResponse response = new RhnMockHttpServletResponse();
         mapping.addForwardConfig(def);
 

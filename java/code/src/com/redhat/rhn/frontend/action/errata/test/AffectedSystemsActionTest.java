@@ -30,13 +30,13 @@ import com.redhat.rhn.frontend.struts.RequestContext.Pagination;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.testing.ActionHelper;
 import com.redhat.rhn.testing.MockObjectTestCase;
-import com.redhat.rhn.testing.RhnMockDynaActionForm;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.DynaActionForm;
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.junit.jupiter.api.BeforeEach;
@@ -58,7 +58,7 @@ public class AffectedSystemsActionTest extends MockObjectTestCase {
         final ActionForward forward = new ActionForward("test", "path", true);
         RhnMockHttpServletRequest request = TestUtils.getRequestWithSessionAndUser();
         RhnMockHttpServletResponse response = new RhnMockHttpServletResponse();
-        RhnMockDynaActionForm form = new RhnMockDynaActionForm();
+        DynaActionForm form = new DynaActionForm();
 
         // No systems selected
         final ActionMapping mapping = mock(ActionMapping.class, "mapping");

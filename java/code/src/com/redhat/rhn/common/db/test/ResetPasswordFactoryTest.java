@@ -83,7 +83,6 @@ public class ResetPasswordFactoryTest extends BaseTestCaseWithUser {
     public void testFactoryCreate() {
         ResetPassword rp = ResetPasswordFactory.createNewEntryFor(user);
         assertNotNull(rp);
-        assertNotNull(rp);
         assertEquals(rp.getUserId(), user.getId());
         assertNotNull(rp.getToken());
         assertTrue(rp.isValid());
