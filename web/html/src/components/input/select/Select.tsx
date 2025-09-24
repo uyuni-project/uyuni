@@ -6,6 +6,8 @@ import ReactSelect from "react-select";
 import AsyncSelect from "react-select/async";
 import { AsyncPaginate as AsyncPaginateSelect } from "react-select-async-paginate";
 
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
+
 import { OptionType, SelectProps } from "./types";
 import withCustomComponents from "./withCustomComponents";
 
@@ -15,7 +17,7 @@ const noOptionsMessage = () => t("No options");
 export function Select<O extends OptionType, V>(props: SelectProps<O, V>) {
   const getOptionValue = (option) => {
     // Filter out null values so consumers don't have to worry about this edge case
-    if (option == null) {
+    if (DEPRECATED_unsafeEquals(option, null)) {
       // This cast is safe because it can only ever happen when `isClearable` is true and `undefined` is an expected value
       return undefined as V;
     }
@@ -26,7 +28,7 @@ export function Select<O extends OptionType, V>(props: SelectProps<O, V>) {
   };
 
   const getOptionLabel = (option: O) => {
-    if (option == null) {
+    if (DEPRECATED_unsafeEquals(option, null)) {
       return undefined;
     }
     if (props.getOptionLabel) {
@@ -107,10 +109,10 @@ export function Select<O extends OptionType, V>(props: SelectProps<O, V>) {
       onBlur: props.onBlur,
       onChange: (newValue) => {
         if (props.isMulti) {
-          setValue(newValue != null ? newValue : []);
+          setValue(!DEPRECATED_unsafeEquals(newValue, null) ? newValue : []);
           props.onChange?.(newValue?.map((item) => getOptionValue(item)));
         } else {
-          setValue(newValue != null ? newValue : undefined);
+          setValue(!DEPRECATED_unsafeEquals(newValue, null) ? newValue : undefined);
           props.onChange?.(getOptionValue(newValue));
         }
       },

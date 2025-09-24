@@ -24,7 +24,7 @@ import { mapFilterFormToRequest, mapResponseToFilterForm } from "./filter.utils"
 import FilterEdit from "./filter-edit";
 
 type Props = {
-  filters: Array<FilterServerType>;
+  filters: FilterServerType[];
   flashMessage: string;
 };
 

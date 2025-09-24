@@ -6,6 +6,7 @@ import { Column } from "components/table/Column";
 import { Table } from "components/table/Table";
 
 import { Utils } from "utils/functions";
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network from "utils/network";
 
 import { VirtualSystemsListFilter } from "./list-filter";
@@ -20,9 +21,9 @@ type Props = {
 };
 
 export function VirtualSystems(props: Props) {
-  const [selectedSystems, setSelectedSystems] = React.useState<String[]>([]);
+  const [selectedSystems, setSelectedSystems] = React.useState<string[]>([]);
 
-  const handleSelectedSystems = (items: String[]) => {
+  const handleSelectedSystems = (items: string[]) => {
     const removed = selectedSystems.filter((item) => !items.includes(item)).map((item) => [item, false]);
     const added = items.filter((item) => !selectedSystems.includes(item)).map((item) => [item, true]);
     const data = Object.assign({}, Object.fromEntries(added), Object.fromEntries(removed));
@@ -81,7 +82,7 @@ export function VirtualSystems(props: Props) {
           comparator={Utils.sortByText}
           header={t("Virtual System")}
           cell={(item) => {
-            if (item.systemId != null) {
+            if (!DEPRECATED_unsafeEquals(item.systemId, null)) {
               return <a href={`/rhn/systems/details/Overview.do?sid=${item.systemId}`}>{item.name}</a>;
             }
             return item.name;
@@ -98,7 +99,7 @@ export function VirtualSystems(props: Props) {
           comparator={Utils.sortByText}
           header={t("Updates")}
           cell={(item) => {
-            if (item.statusType == null) {
+            if (DEPRECATED_unsafeEquals(item.statusType, null)) {
               return "";
             }
             return Systems.statusDisplay(item, props.isAdmin);
@@ -109,7 +110,7 @@ export function VirtualSystems(props: Props) {
           comparator={Utils.sortByText}
           header={t("Base Software Channel")}
           cell={(item) => {
-            if (item.channelId != null) {
+            if (!DEPRECATED_unsafeEquals(item.channelId, null)) {
               return <a href={`/rhn/channels/ChannelDetail.do?cid=${item.channelId}`}>{item.channelLabels}</a>;
             }
             return item.channelLabels;

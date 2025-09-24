@@ -16,7 +16,7 @@ type ScheduleEditProps = {
     type: "SINGLE" | "MULTI";
     calendarName: string;
   };
-  calendarNames?: Array<Record<string, any>>;
+  calendarNames?: Record<string, any>[];
   onEdit: (...args: any[]) => any;
 };
 

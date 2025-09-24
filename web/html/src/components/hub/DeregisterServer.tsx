@@ -100,7 +100,7 @@ export class DeregisterServer extends React.Component<Props, State> {
     }
     Network.del(resource)
       .then(
-        (_response) => {
+        () => {
           this.onSuccessfullDeregister();
         },
         (xhr) => {

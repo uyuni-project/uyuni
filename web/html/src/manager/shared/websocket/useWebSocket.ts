@@ -1,11 +1,6 @@
 import * as React from "react";
 
-export function useWebSocket(
-  errors: Array<string>,
-  setErrors: Function,
-  property: string,
-  callback: (value: any) => void
-) {
+export function useWebSocket(errors: string[], setErrors: Function, property: string, callback: (value: any) => void) {
   const [webSocketErr, setWebSocketErr] = React.useState(false);
   const [pageUnloading, setPageUnloading] = React.useState(false);
 

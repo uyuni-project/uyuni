@@ -8,9 +8,7 @@ type stateType = {
   sign: string;
 };
 
-type statesEnumType = {
-  [key: string]: stateType;
-};
+type statesEnumType = Record<string, stateType>;
 
 const statesEnum: statesEnumType = {
   ATTACHED: { key: "ATTACHED", description: "added", deletion: false, edited: true, sign: "+" },

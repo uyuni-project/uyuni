@@ -2,6 +2,8 @@ import * as React from "react";
 
 import _isNil from "lodash/isNil";
 
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
+
 import { FormContext } from "./form/Form";
 import { FormGroup } from "./FormGroup";
 import { Label } from "./Label";
@@ -12,7 +14,7 @@ export type InputBaseProps<ValueType = string> = {
   /** name of the field to map in the form model.
    * The value can be an array of names if multiple inputs are contained in this field.
    */
-  name?: string | Array<string>;
+  name?: string | string[];
 
   /** Default value if none is set.
    * In the case of multiple properties managed by this input, an object with the properties
@@ -81,7 +83,7 @@ type State = {
   /** Error messages received from FormContext
    *  (typically errors messages received from server response)
    */
-  errors?: Array<string> | Object;
+  errors?: string[] | object;
 };
 
 export class InputBase<ValueType = string> extends React.Component<InputBaseProps<ValueType>, State> {
@@ -109,7 +111,7 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
 
   componentDidMount() {
     if (this.props?.name) {
-      if (this.context.registerInput != null) {
+      if (!DEPRECATED_unsafeEquals(this.context.registerInput, null)) {
         this.context.registerInput(this);
       }
 
@@ -199,7 +201,7 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
    * `this.props.name` is an array. This makes inferring validation types tricky, so we accept whatever inputs make sense
    * for a given branch.
    */
-  validate<InferredValueType = ValueType>(value: InferredValueType, errors?: Array<string> | Object): void {
+  validate<InferredValueType = ValueType>(value: InferredValueType, errors?: string[] | object): void {
     const results: ReturnType<Validator>[] = [];
     let isValid = true;
 
@@ -233,7 +235,7 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
           showErrors: state.showErrors || (Array.isArray(errors) && errors.length > 0),
         }),
         () => {
-          if (this.context.validateForm != null) {
+          if (!DEPRECATED_unsafeEquals(this.context.validateForm, null)) {
             this.context.validateForm();
           }
         }
@@ -242,7 +244,7 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
   }
 
   setValue = (name: string | undefined = undefined, value: ValueType) => {
-    if (name && this.context.setModelValue != null) {
+    if (name && !DEPRECATED_unsafeEquals(this.context.setModelValue, null)) {
       this.context.setModelValue(name, value);
     }
     const propsName = this.props.name;

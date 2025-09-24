@@ -120,7 +120,7 @@ BaseChannel.defaultProps = {
   showBase: true,
   isOpen: true,
   recommendedToggle: true,
-  onToggleChannelOpen: (_channel) => {},
+  onToggleChannelOpen: () => {},
 };
 
 export default BaseChannel;

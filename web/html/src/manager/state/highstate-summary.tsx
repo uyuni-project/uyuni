@@ -10,7 +10,7 @@ import { Table } from "components/table/Table";
 import { Utils } from "utils/functions";
 import Network from "utils/network";
 
-interface StateSource {
+type StateSource = {
   id?: number;
   name: string;
   type: "STATE" | "CONFIG" | "FORMULA" | "INTERNAL";
@@ -18,7 +18,7 @@ interface StateSource {
   sourceId: number;
   sourceName: string;
   sourceType: "SYSTEM" | "GROUP" | "ORG";
-}
+};
 
 const typeMap = {
   STATE: t("State channel"),

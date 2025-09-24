@@ -22,7 +22,7 @@ type Props = {
   environmentTarget: ProjectEnvironmentType;
   environmentNextTarget: ProjectEnvironmentType;
   versionToPromote: number;
-  historyEntries: Array<ProjectHistoryEntry>;
+  historyEntries: ProjectHistoryEntry[];
   onChange: Function;
 };
 
@@ -85,7 +85,6 @@ const Promote = (props: Props) => {
                       getVersionMessageByNumber(props.environmentPromote.version, props.historyEntries) ||
                       t("not built")
                     }
-                    collapsed={true}
                   />
                 </dd>
               </dl>

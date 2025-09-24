@@ -79,7 +79,7 @@ const HierarchicalChannelsTable: React.FC<ChannelTableProps> = ({
 
   const rowClass = useCallback((row: ChannelWithHierarchy) => {
     const isCurrentlySynced = row.synced;
-    let className = isCurrentlySynced ? "synced-channel" : "";
+    const className = isCurrentlySynced ? "synced-channel" : "";
     return className;
   }, []);
 

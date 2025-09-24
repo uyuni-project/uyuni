@@ -6,9 +6,7 @@ export type FilterType = {
   isVisible: (arg0: BaseChannelType) => boolean;
   selectedByDefault: boolean;
 };
-export type FiltersType = {
-  [key: string]: FilterType;
-};
+export type FiltersType = Record<string, FilterType>;
 
 export const channelsFiltersAvailable: FiltersType = {
   vendors: {

@@ -3,8 +3,7 @@ import * as React from "react";
 import { Button } from "components/buttons";
 import { DeleteDialog } from "components/dialog/DeleteDialog";
 import { ModalButton } from "components/dialog/ModalButton";
-import { Messages } from "components/messages/messages";
-import { Utils as MessagesUtils } from "components/messages/messages";
+import { Messages, Utils as MessagesUtils } from "components/messages/messages";
 import { BootstrapPanel } from "components/panels/BootstrapPanel";
 import { Column } from "components/table/Column";
 import { Table } from "components/table/Table";
@@ -76,7 +75,7 @@ class VirtualHostManagerDetails extends React.Component<Props, State> {
                 columnKey="name"
                 comparator={Utils.sortByText}
                 header={t("Name")}
-                cell={(row, criteria) =>
+                cell={(row) =>
                   row.type === "server" ? (
                     <a href={"/rhn/systems/details/Overview.do?sid=" + row.id}>{row.name}</a>
                   ) : (
@@ -84,24 +83,19 @@ class VirtualHostManagerDetails extends React.Component<Props, State> {
                   )
                 }
               />
-              <Column columnKey="os" comparator={Utils.sortByText} header={t("OS")} cell={(row, criteria) => row.os} />
-              <Column
-                columnKey="arch"
-                comparator={Utils.sortByText}
-                header={t("CPU Arch")}
-                cell={(row, criteria) => row.arch}
-              />
+              <Column columnKey="os" comparator={Utils.sortByText} header={t("OS")} cell={(row) => row.os} />
+              <Column columnKey="arch" comparator={Utils.sortByText} header={t("CPU Arch")} cell={(row) => row.arch} />
               <Column
                 columnKey="cpuSockets"
                 comparator={Utils.sortByText}
                 header={t("CPU Sockets")}
-                cell={(row, criteria) => (row.cpuSockets !== 0 ? row.cpuSockets : t("N/A"))}
+                cell={(row) => (row.cpuSockets !== 0 ? row.cpuSockets : t("N/A"))}
               />
               <Column
                 columnKey="memory"
                 comparator={Utils.sortByText}
                 header={t("RAM (Mb)")}
-                cell={(row, criteria) => (row.memory !== 0 ? row.memory : t("N/A"))}
+                cell={(row) => (row.memory !== 0 ? row.memory : t("N/A"))}
               />
             </Table>
           </BootstrapPanel>

@@ -18,16 +18,16 @@ import Network, { JsonResult } from "utils/network";
 import { PlaybookDetails } from "./accordion-path-content";
 import { AnsiblePath } from "./ansible-path-type";
 
-interface SchedulePlaybookProps {
+type SchedulePlaybookProps = {
   playbook: PlaybookDetails;
   isRecurring?: boolean;
   onBack: () => void;
   onSelectPlaybook?: (playbook: any) => void;
-}
+};
 
-interface PlaybookArgs {
-  flushCache: Boolean;
-}
+type PlaybookArgs = {
+  flushCache: boolean;
+};
 
 export default function SchedulePlaybook({ playbook, onBack, onSelectPlaybook, isRecurring }: SchedulePlaybookProps) {
   const [loading, setLoading] = useState(true);

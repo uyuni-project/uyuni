@@ -39,14 +39,14 @@ export type ProxyConfigModel = {
   registryTftpdTag: string;
 };
 
-export interface Parent {
+export type Parent = {
   id: number;
   name: string;
   selected: boolean;
   disabled: boolean;
-}
+};
 
-export interface ProxyConfigProps {
+export type ProxyConfigProps = {
   serverId: string;
   parents: Parent[];
   currentConfig: ProxyConfigModel;
@@ -54,6 +54,6 @@ export interface ProxyConfigProps {
   registryUrlExample?: string;
   registryTagExample?: string;
   hasCertificates?: boolean;
-}
+};
 
 export const RegistryBaseURL = "registryBaseURL";

@@ -1,5 +1,5 @@
-// This file is allowed to use console, everyone else is not
 /* eslint-disable no-console */
+// This file is allowed to use console, everyone else is not
 
 type Headers = Record<string, string>;
 type Level = "info" | "debug" | "trace" | "warning" | "error";
@@ -96,7 +96,7 @@ export default class Loggerhead {
       "Content-Type": "application/json; charset=utf-8",
     };
 
-    var xhr = new XMLHttpRequest();
+    const xhr = new XMLHttpRequest();
     xhr.open("POST", this.url);
 
     Object.keys(this.setHeaders(headers)).forEach((key) => {

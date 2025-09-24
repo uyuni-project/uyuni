@@ -4,8 +4,7 @@ import _isEqual from "lodash/isEqual";
 
 import { RecurringPlaybookPicker } from "manager/recurring/recurring-playbook-picker";
 
-import { Button } from "components/buttons";
-import { AsyncButton } from "components/buttons";
+import { AsyncButton, Button } from "components/buttons";
 import { DEPRECATED_Select, Form } from "components/input";
 import { Utils as MessagesUtils } from "components/messages/messages";
 import { InnerPanel } from "components/panels/InnerPanel";
@@ -60,7 +59,7 @@ class RecurringActionsEdit extends React.Component<Props, State> {
     }
   }
 
-  componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
+  componentDidUpdate(prevProps: Readonly<Props>): void {
     if (!_isEqual(prevProps.schedule, this.props.schedule)) {
       this.getDetailsData();
     }
@@ -76,7 +75,7 @@ class RecurringActionsEdit extends React.Component<Props, State> {
 
   updateSchedule = (schedule) => {
     return Network.post("/rhn/manager/api/recurringactions/save", schedule)
-      .then((_) => {
+      .then(() => {
         const successMsg = (
           <span>{this.isEdit() ? t("Schedule successfully updated.") : t("Schedule successfully created.")}</span>
         );
@@ -88,7 +87,7 @@ class RecurringActionsEdit extends React.Component<Props, State> {
 
   executeCustom = (schedule) => {
     return Network.post("/rhn/manager/api/recurringactions/custom/execute", schedule)
-      .then((_) => {
+      .then(() => {
         const successMsg = <span>{t("Action scheduled on selected minions")}</span>;
         this.props.onSetMessages(MessagesUtils.info(successMsg));
       })
@@ -175,13 +174,13 @@ class RecurringActionsEdit extends React.Component<Props, State> {
   };
 
   onTypeChanged = (type) => {
-    let { details } = this.state;
+    const { details } = this.state;
     details.type = type;
     this.setState({ details });
   };
 
   onCronTimesChanged = (cronTimes) => {
-    let { details } = this.state;
+    const { details } = this.state;
     details.cronTimes = cronTimes;
     this.setState({ details });
   };
@@ -191,7 +190,7 @@ class RecurringActionsEdit extends React.Component<Props, State> {
   };
 
   onSaveStates = (states) => {
-    let { details } = this.state;
+    const { details } = this.state;
     details.states = states;
     this.setState({ details });
     return Promise.resolve(states);
@@ -209,7 +208,7 @@ class RecurringActionsEdit extends React.Component<Props, State> {
   };
 
   toggleTestState = () => {
-    let { details } = this.state;
+    const { details } = this.state;
     details.test = !this.state.details.test;
     this.setState({ details });
   };

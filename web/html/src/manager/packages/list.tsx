@@ -11,13 +11,14 @@ import { Table, TableRef } from "components/table/Table";
 import { MessagesContainer, showSuccessToastr } from "components/toastr/toastr";
 
 import { Utils } from "utils/functions";
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network from "utils/network";
 
 type Props = {
   /** Locale of the help links */
   docsLocale: string;
   /** List of selected package ids */
-  selected: Array<string>;
+  selected: string[];
   /** The entry to select in the channel field */
   selectedChannel: string | null;
 };
@@ -39,7 +40,7 @@ export function PackageList(props: Props) {
               return {
                 value: `channel/${c["id"]}`,
                 label: c["name"],
-                hasParent: c["parentId"] != null,
+                hasParent: !DEPRECATED_unsafeEquals(c["parentId"], null),
               };
             })
           );
@@ -132,7 +133,7 @@ export function PackageList(props: Props) {
         onClose={() => setOpen(false)}
       />
 
-      {formModel["channel"] != null && formModel["channel"] !== "" && (
+      {!DEPRECATED_unsafeEquals(formModel["channel"], null) && formModel["channel"] !== "" && (
         <Table
           ref={tableRef}
           data={`/rhn/manager/api/packages/list/${formModel["binary"]}/${formModel["channel"]}`}

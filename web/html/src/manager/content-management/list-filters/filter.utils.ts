@@ -65,9 +65,9 @@ export function mapFilterFormToRequest(filterForm: Partial<FilterFormType>, proj
   return requestForm;
 }
 
-export function mapResponseToFilterForm(filtersResponse: Array<FilterServerType> = []): Array<FilterFormType> {
+export function mapResponseToFilterForm(filtersResponse: FilterServerType[] = []): FilterFormType[] {
   return filtersResponse.map((filterResponse) => {
-    let filterForm: any = {};
+    const filterForm: any = {};
     filterForm.id = filterResponse.id;
     filterForm.filter_name = filterResponse.name;
     filterForm.rule = filterResponse.rule;

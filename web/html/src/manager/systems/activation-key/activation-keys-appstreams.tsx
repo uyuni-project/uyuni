@@ -17,13 +17,13 @@ declare global {
 }
 
 type Props = {
-  channelsAppStreams: Array<ChannelAppStream>;
+  channelsAppStreams: ChannelAppStream[];
 };
 
 const AppStreams = (props: Props) => {
   const [channelsAppStreams, setChannelAppStreams] = useState(props.channelsAppStreams);
-  const [toEnable, setToEnable] = useState<Map<number, Array<string>>>(new Map());
-  const [toDisable, setToDisable] = useState<Map<number, Array<string>>>(new Map());
+  const [toEnable, setToEnable] = useState<Map<number, string[]>>(new Map());
+  const [toDisable, setToDisable] = useState<Map<number, string[]>>(new Map());
   const [statusMessage, setStatusMessage] = useState<MessageType[]>([]);
   const handleEnableDisable = (channel, appStream) =>
     handleModuleEnableDisable(channel, appStream, channelsAppStreams, toEnable, toDisable, setToEnable, setToDisable);

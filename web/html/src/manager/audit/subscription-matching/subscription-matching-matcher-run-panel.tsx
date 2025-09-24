@@ -3,6 +3,7 @@ import * as React from "react";
 import { fromNow } from "components/datetime/FromNow";
 
 import { localizedMoment } from "utils";
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network from "utils/network";
 
 type MatcherRunPanelProps = {
@@ -26,7 +27,10 @@ class MatcherRunPanel extends React.Component<MatcherRunPanelProps, MatcherRunPa
   };
 
   UNSAFE_componentWillReceiveProps(nextProps) {
-    if (this.state.latestStart == null || nextProps.initialLatestStart >= this.state.latestStart) {
+    if (
+      DEPRECATED_unsafeEquals(this.state.latestStart, null) ||
+      nextProps.initialLatestStart >= this.state.latestStart
+    ) {
       this.setState({
         latestStart: nextProps.initialLatestStart,
         latestEnd: nextProps.initialLatestEnd,
@@ -65,7 +69,11 @@ class MatcherRunPanel extends React.Component<MatcherRunPanelProps, MatcherRunPa
           error={this.state.error}
         />
         <MatcherScheduleButton
-          matcherRunning={!this.state.error && this.state.latestStart != null && this.state.latestEnd == null}
+          matcherRunning={
+            !this.state.error &&
+            !DEPRECATED_unsafeEquals(this.state.latestStart, null) &&
+            DEPRECATED_unsafeEquals(this.state.latestEnd, null)
+          }
           onScheduled={this.onScheduled}
           onError={this.onError}
         />
@@ -91,7 +99,7 @@ const MatcherRunDescription = (props: MatcherRunDescriptionProps) => {
     );
   }
 
-  if (props.latestStart == null) {
+  if (DEPRECATED_unsafeEquals(props.latestStart, null)) {
     return (
       <div>
         {t("No match data is currently available.")}
@@ -101,7 +109,7 @@ const MatcherRunDescription = (props: MatcherRunDescriptionProps) => {
     );
   }
 
-  if (props.latestEnd == null) {
+  if (DEPRECATED_unsafeEquals(props.latestEnd, null)) {
     return (
       <div>
         {t("Matching data is currently being recomputed, it was started {timeFromNow}.", {

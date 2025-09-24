@@ -1,8 +1,7 @@
 import * as React from "react";
 import { useState } from "react";
 
-import { AsyncButton } from "components/buttons";
-import { SubmitButton } from "components/buttons";
+import { AsyncButton, SubmitButton } from "components/buttons";
 import { Form } from "components/input/form/Form";
 import { FormMultiInput } from "components/input/form-multi-input/FormMultiInput";
 import { unflattenModel } from "components/input/form-utils";
@@ -12,6 +11,7 @@ import { Panel } from "components/panels/Panel";
 import { TopPanel } from "components/panels/TopPanel";
 import Validation from "components/validation";
 
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network from "utils/network";
 
 import { ContainerConfigMessages } from "./container-config-messages";
@@ -70,7 +70,7 @@ export function ProxyConfig() {
       })
       .map((fieldName) => {
         const field = document.getElementById(fieldName);
-        if (field !== null && field instanceof HTMLInputElement && field.files != null) {
+        if (field !== null && field instanceof HTMLInputElement && !DEPRECATED_unsafeEquals(field.files, null)) {
           const file = field.files[0];
           return new Promise((resolve) => {
             const reader = new FileReader();

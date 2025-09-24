@@ -6,8 +6,7 @@ import { ModalButton } from "components/dialog/ModalButton";
 import { DEPRECATED_Select } from "components/input";
 import { DEPRECATED_Check } from "components/input/check/DEPRECATED_Check";
 import { Form, FormContext } from "components/input/form/Form";
-import { Utils as MessagesUtils } from "components/messages/messages";
-import { MessageType } from "components/messages/messages";
+import { MessageType, Utils as MessagesUtils } from "components/messages/messages";
 
 import Network from "utils/network";
 

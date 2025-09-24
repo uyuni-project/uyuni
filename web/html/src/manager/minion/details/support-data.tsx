@@ -11,10 +11,10 @@ import Validation from "components/validation";
 import { localizedMoment } from "utils";
 import Network from "utils/network";
 
-export interface UploadRegion {
+export type UploadRegion = {
   label: string;
   description: string;
-}
+};
 
 export type UploadRegionArray = [UploadRegion, ...UploadRegion[]];
 
@@ -32,11 +32,11 @@ class SupportDataRequest {
   }
 }
 
-interface Props {
+type Props = {
   serverId: number;
   availableRegions: UploadRegionArray;
   supportProgramName: string | null;
-}
+};
 
 export const SupportData: React.FC<Props> = ({ serverId, availableRegions, supportProgramName }): JSX.Element => {
   const [formModel, setFormModel] = useState(
@@ -66,7 +66,7 @@ export const SupportData: React.FC<Props> = ({ serverId, availableRegions, suppo
     Network.post(`/rhn/manager/api/systems/${serverId}/details/uploadSupportData`, formModel)
       .then(
         (response) => {
-          let messages: Array<MessageType>;
+          let messages: MessageType[];
           if (!response.success) {
             messages = MessagesUtils.error(response.messages);
           } else {
@@ -123,7 +123,7 @@ export const SupportData: React.FC<Props> = ({ serverId, availableRegions, suppo
             name="parameters"
             label={t("Command-line Arguments")}
             hint={t("Optional command line arguments for the execution of <programName></programName>.", {
-              programName: (_str: string) => getFormattedProgramName(supportProgramName),
+              programName: () => getFormattedProgramName(supportProgramName),
             })}
             labelClass="col-md-3"
             divClass="col-md-6"

@@ -1,5 +1,5 @@
 export function mapAddEnvironmentRequest(environment, environments, projectId) {
-  let environmentRequest = {
+  const environmentRequest = {
     ...environment,
     projectLabel: projectId,
     label: environment.label,
@@ -26,7 +26,7 @@ export function mapAddEnvironmentRequest(environment, environments, projectId) {
 }
 
 export function mapUpdateEnvironmentRequest(environment, projectId) {
-  let environmentRequest = {
+  const environmentRequest = {
     ...environment,
     projectLabel: projectId,
   };

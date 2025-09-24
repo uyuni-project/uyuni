@@ -52,7 +52,7 @@ const PaygInfoEdit = (props: Props) => {
             <PaygInfoView payg={props.payg} />
           </React.Fragment>
         )}
-        renderCreationContent={({ open, item, setItem, errors }) => {
+        renderCreationContent={({ item, setItem, errors }) => {
           if (isLoading) {
             return <Loading text={t("Editing properties..")} />;
           }

@@ -18,7 +18,7 @@ export type ComboboxItem = {
 type ComboboxProps = {
   id?: string;
   name?: string;
-  options?: Array<ComboboxItem>;
+  options?: ComboboxItem[];
   selectedId?: (number | null | undefined) | (string | null | undefined);
   onFocus?: () => void;
   onSelect: (value: ComboboxItem) => void;
@@ -53,6 +53,7 @@ export class Combobox extends React.Component<ComboboxProps, ComboboxState> {
 
   render() {
     const colourStyles = {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       option: (styles, { data, isDisabled, isFocused, isSelected }) => {
         if (isFocused) {
           return Object.assign(styles, { backgroundColor: "#052940", color: "#ffffff" });
@@ -76,7 +77,7 @@ export class Combobox extends React.Component<ComboboxProps, ComboboxState> {
 
     // The react-select is expecting the value to be a string, but let's keep the original id here so we can propagate
     // correctly the selected option up.
-    const options: Array<ReactSelectItem> = (this.props.options || []).map((item) => ({
+    const options: ReactSelectItem[] = (this.props.options || []).map((item) => ({
       value: item.id.toString(),
       id: item.id,
       label: item.text,

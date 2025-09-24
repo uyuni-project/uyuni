@@ -42,7 +42,7 @@ const products = {
 type Props = {
   theme: Theme;
   bounce: string;
-  validationErrors: Array<string>;
+  validationErrors: string[];
   schemaUpgradeRequired: boolean;
   webVersion: string;
   customHeader: string;

@@ -69,12 +69,12 @@ class EditGroup extends React.Component<EditGroupProps, EditGroupState> {
     );
   };
 
-  handleAddItem = (event) => {
+  handleAddItem = () => {
     if (this.props.element.$maxItems! <= this.props.value.length || this.isDisabled()) return;
 
     this.props.setSectionsExpanded(SectionState.Mixed);
-    let newValueProps = this.props.value;
-    let newValue = deepCopy(this.props.element.$newItemValue);
+    const newValueProps = this.props.value;
+    const newValue = deepCopy(this.props.element.$newItemValue);
 
     newValueProps.push(newValue);
 
@@ -94,7 +94,7 @@ class EditGroup extends React.Component<EditGroupProps, EditGroupState> {
     });
   };
 
-  isVisible = (index?: number) => {
+  isVisible = () => {
     return this.state.visible;
   };
 
@@ -181,6 +181,7 @@ type EditPrimitiveGroupProps = {
  * to be rendered as a list of simple form elements in the UI.
  */
 class EditPrimitiveGroup extends React.Component<EditPrimitiveGroupProps> {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   simpleWrapper = (name, required, element, help = null) => {
     return (
       <React.Fragment>
@@ -196,12 +197,12 @@ class EditPrimitiveGroup extends React.Component<EditPrimitiveGroupProps> {
   };
 
   render() {
-    let elements: React.ReactNode[] = [];
-    for (let i in this.props.value) {
+    const elements: React.ReactNode[] = [];
+    for (const i in this.props.value) {
       if (i === "$meta") {
         continue;
       }
-      let id = this.props.id + "#" + i;
+      const id = this.props.id + "#" + i;
       elements.push(
         <div className="form-group" id={id} key={id}>
           {generateFormulaComponentForId(
@@ -251,13 +252,13 @@ class EditPrimitiveDictionaryGroup extends React.Component<EditPrimitiveDictiona
   }
 
   render() {
-    let elements: React.ReactNode[] = [];
+    const elements: React.ReactNode[] = [];
 
-    for (let i in this.props.value) {
+    for (const i in this.props.value) {
       if (i === "$meta") {
         continue;
       }
-      let id = this.props.id + "#" + i;
+      const id = this.props.id + "#" + i;
       elements.push(
         <div className="form-group" id={id} key={id}>
           {generateFormulaComponentForId(
@@ -383,22 +384,22 @@ class EditDictionaryGroup extends React.Component<EditDictionaryGroupProps, Edit
 
   setAllVisible(visible) {
     const { visibility } = this.state;
-    for (let i in this.props.value) {
+    for (const i in this.props.value) {
       visibility.set(i, visible);
       this.setState({ visibility });
     }
   }
 
   render() {
-    let elements: React.ReactNode[] = [];
-    for (let i in this.props.value) {
+    const elements: React.ReactNode[] = [];
+    for (const i in this.props.value) {
       if (i === "$meta") {
         continue;
       }
-      let id = this.props.id + "#" + i;
+      const id = this.props.id + "#" + i;
 
-      let item_elements: React.ReactNode[] = [];
-      for (var element_name in this.props.element.$prototype) {
+      const item_elements: React.ReactNode[] = [];
+      for (const element_name in this.props.element.$prototype) {
         if (element_name.startsWith("$") && element_name !== "$key") continue;
         item_elements.push(
           generateFormulaComponent(

@@ -8,8 +8,7 @@ import { localizedMoment } from "utils";
 import { Utils } from "utils/functions";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
-import { CsvLink, humanReadablePolicy, ToolTip } from "./subscription-matching-util";
-import { WarningIcon } from "./subscription-matching-util";
+import { CsvLink, humanReadablePolicy, ToolTip, WarningIcon } from "./subscription-matching-util";
 
 type SubscriptionsProps = {
   subscriptions: any[];
@@ -17,7 +16,7 @@ type SubscriptionsProps = {
 
 class Subscriptions extends React.Component<SubscriptionsProps> {
   sortByPolicy = (aRaw, bRaw, columnKey, sortDirection) => {
-    var result = 0;
+    let result = 0;
     const aValue = humanReadablePolicy(aRaw[columnKey]);
     const bValue = humanReadablePolicy(bRaw[columnKey]);
     result = aValue.toLowerCase().localeCompare(bValue.toLowerCase());
@@ -25,7 +24,7 @@ class Subscriptions extends React.Component<SubscriptionsProps> {
   };
 
   sortByQuantity = (aRaw, bRaw, columnKey, sortDirection) => {
-    var result = 0;
+    let result = 0;
     const aMatched = aRaw["matchedQuantity"];
     const aTotal = aRaw["totalQuantity"];
     const bMatched = bRaw["matchedQuantity"];

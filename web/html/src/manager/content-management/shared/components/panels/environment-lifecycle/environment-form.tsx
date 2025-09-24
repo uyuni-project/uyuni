@@ -7,7 +7,7 @@ import { ProjectEnvironmentType } from "../../../type";
 type Props = {
   environment: ProjectEnvironmentType;
   errors: any;
-  environments: Array<ProjectEnvironmentType>;
+  environments: ProjectEnvironmentType[];
   onChange: Function;
   editing?: boolean;
 };

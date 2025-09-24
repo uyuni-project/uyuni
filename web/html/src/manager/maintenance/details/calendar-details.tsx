@@ -14,8 +14,8 @@ import { Table } from "components/table/Table";
 type CalendarDetailsProps = {
   id: number;
   name: string;
-  eventNames: Array<string>;
-  scheduleNames: Array<Record<string, string>>;
+  eventNames: string[];
+  scheduleNames: Record<string, string>[];
   url: string;
   onDelete: (...args: any[]) => any;
   onMessage: (messages: MessageType[]) => void;
@@ -70,8 +70,8 @@ const MaintenanceCalendarDetails = (props: CalendarDetailsProps) => {
 type OverviewProps = {
   id: number;
   name: string;
-  eventNames: Array<string>;
-  scheduleNames: Array<Record<string, string>>;
+  eventNames: string[];
+  scheduleNames: Record<string, string>[];
   url: string;
   onMessage: (messages: MessageType[]) => void;
   clearMessages: (messages: void) => void;

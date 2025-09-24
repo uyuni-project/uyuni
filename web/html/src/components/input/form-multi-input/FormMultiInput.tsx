@@ -4,6 +4,8 @@ import { Button } from "components/buttons";
 import { Panel } from "components/panels/Panel";
 import { PanelRow } from "components/panels/PanelRow";
 
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
+
 import { FormContext } from "../form/Form";
 
 type Props = {
@@ -63,14 +65,14 @@ type Props = {
 /**
  * Compute the list of item keys in the model based of fields named like `${prefix}${idx}_${name}`
  */
-export function getOrderedItemsFromModel(model: any, prefix: string): Array<number> {
+export function getOrderedItemsFromModel(model: any, prefix: string): number[] {
   if (typeof model === "undefined" || model === null) {
     return [];
   }
   return Object.keys(model)
     .map((property) => {
       const result = property.match(new RegExp(`^${prefix}([0-9]+)`));
-      if (result != null) {
+      if (!DEPRECATED_unsafeEquals(result, null)) {
         return Number.parseInt(result[1], 10);
       }
       return -1;
@@ -163,9 +165,9 @@ export function FormMultiInput(props: Props) {
           />
         );
         const children = props.children(index);
-        if (props.panelTitle != null || props.panelIcon != null) {
-          const icon = props.panelIcon != null ? props.panelIcon(index) : null;
-          const title = props.panelTitle != null ? props.panelTitle(index) : null;
+        if (!DEPRECATED_unsafeEquals(props.panelTitle, null) || !DEPRECATED_unsafeEquals(props.panelIcon, null)) {
+          const icon = !DEPRECATED_unsafeEquals(props.panelIcon, null) ? props.panelIcon(index) : null;
+          const title = !DEPRECATED_unsafeEquals(props.panelTitle, null) ? props.panelTitle(index) : null;
           return (
             <Panel key={`${props.prefix}${index}`} icon={icon} title={title} headingLevel="h3" buttons={removeButton}>
               {children}

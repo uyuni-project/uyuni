@@ -4,6 +4,8 @@ import "core/intl";
 import * as React from "react";
 import ReactDOM from "react-dom";
 
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
+
 window.pageRenderers = window.pageRenderers || {};
 window.pageRenderers.spa = window.pageRenderers.spa || {};
 
@@ -25,7 +27,7 @@ function hasReactApp() {
 }
 
 function renderGlobalReact(element: JSX.Element, container: Element | null | undefined) {
-  if (container == null) {
+  if (DEPRECATED_unsafeEquals(container, null)) {
     throw new Error("The DOM element is not present.");
   }
 
@@ -37,7 +39,7 @@ function renderGlobalReact(element: JSX.Element, container: Element | null | und
 }
 
 function renderNavigationReact(element: JSX.Element, container: Element | null | undefined) {
-  if (container == null) {
+  if (DEPRECATED_unsafeEquals(container, null)) {
     throw new Error("The DOM element is not present.");
   }
 

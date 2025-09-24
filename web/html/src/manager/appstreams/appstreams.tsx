@@ -9,13 +9,13 @@ import { AppStreamsList } from "./list-appstreams";
 import { getStreamName, handleModuleEnableDisable } from "./utils";
 
 type Props = {
-  channelsAppStreams: Array<ChannelAppStream>;
+  channelsAppStreams: ChannelAppStream[];
 };
 
 const AppStreams = ({ channelsAppStreams }: Props) => {
   const [appStreams, setAppStreams] = useState<ChannelAppStream[]>(channelsAppStreams);
-  const [toEnable, setToEnable] = useState<Map<number, Array<string>>>(new Map());
-  const [toDisable, setToDisable] = useState<Map<number, Array<string>>>(new Map());
+  const [toEnable, setToEnable] = useState<Map<number, string[]>>(new Map());
+  const [toDisable, setToDisable] = useState<Map<number, string[]>>(new Map());
   const [showConfirm, setShowConfirm] = useState<boolean>(false);
   const [scheduledMsg, setScheduledMsg] = useState<MessageType[]>([]);
 

@@ -12,7 +12,7 @@ import { ProjectFilterServerType } from "../../../type";
 
 type FiltersProps = {
   projectId: string;
-  initialSelectedFiltersIds: Array<number>;
+  initialSelectedFiltersIds: number[];
   onChange: Function;
   isUpdatingFilter: boolean;
 };
@@ -21,7 +21,7 @@ const FiltersProjectSelection = (props: FiltersProps) => {
   const { onAction: onActionAllFilters, isLoading: isLoadingAllFilters } = useLifecycleActionsApi({
     resource: "filters",
   });
-  const [allFilters, setAllFilters]: [Array<ProjectFilterServerType>, Function] = useState([]);
+  const [allFilters, setAllFilters]: [ProjectFilterServerType[], Function] = useState([]);
   const [onGoingSelectedFilters, setOnGoingSelectedFilters] = useState(props.initialSelectedFiltersIds);
 
   useEffect(() => {

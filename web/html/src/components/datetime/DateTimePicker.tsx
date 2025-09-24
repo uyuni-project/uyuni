@@ -114,7 +114,7 @@ export const DateTimePicker = (props: Props) => {
     {
       name: "arrow",
       options: {
-        padding: ({ popper, reference, placement }) => ({
+        padding: ({ popper, reference }) => ({
           right: Math.min(popper.width, reference.width) - 24,
         }),
       },

@@ -2,8 +2,7 @@ import * as React from "react";
 
 import { AsyncButton } from "components/buttons";
 import { ActionLink } from "components/links";
-import { Messages, MessageType } from "components/messages/messages";
-import { Utils as MessagesUtils } from "components/messages/messages";
+import { Messages, MessageType, Utils as MessagesUtils } from "components/messages/messages";
 import { BootstrapPanel } from "components/panels/BootstrapPanel";
 
 import Network from "utils/network";

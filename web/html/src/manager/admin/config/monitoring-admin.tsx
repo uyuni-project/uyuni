@@ -104,14 +104,7 @@ const ExporterItem = (props: { name: string; status: boolean; message: string | 
   );
 };
 
-const ExportersList = (props: {
-  exporters: {
-    [key: string]: boolean;
-  };
-  messages: {
-    [key: string]: string;
-  };
-}) => {
+const ExportersList = (props: { exporters: Record<string, boolean>; messages: Record<string, string> }) => {
   const keys = Object.keys(props.exporters).sort();
 
   return (
@@ -123,7 +116,7 @@ const ExportersList = (props: {
   );
 };
 
-const ListPlaceholderItem = (props) => {
+const ListPlaceholderItem = () => {
   return (
     <li className={styles.placeholder_item}>
       <Icon type="item-disabled" className="fa-1-5x" />
@@ -132,10 +125,10 @@ const ListPlaceholderItem = (props) => {
   );
 };
 
-const ListPlaceholder = (props) => {
+const ListPlaceholder = () => {
   return (
     <ul className={styles.placeholder}>
-      {Object.keys(exporterMap).map((e) => (
+      {Object.keys(exporterMap).map(() => (
         <ListPlaceholderItem />
       ))}
     </ul>
@@ -173,11 +166,7 @@ const HelpPanel = () => {
   );
 };
 
-const ExportersMessages = (props: {
-  messages: {
-    [key: string]: string;
-  };
-}) => {
+const ExportersMessages = (props: { messages: Record<string, string> }) => {
   if (props.messages) {
     const keys = Object.keys(props.messages).sort();
 

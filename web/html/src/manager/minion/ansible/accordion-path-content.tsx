@@ -35,23 +35,23 @@ function isPlaybook(path: AnsiblePath) {
   return path.type === "playbook";
 }
 
-export interface PlaybookDetails {
+export type PlaybookDetails = {
   path: AnsiblePath;
   fullPath: string;
   customInventory?: string;
   name: string;
-}
+};
 
-interface Server {
+type Server = {
   id: number;
   name: string;
-}
+};
 
-interface InventoryDetails {
-  dump: String;
+type InventoryDetails = {
+  dump: string;
   knownSystems: Server[];
-  unknownSystems: String[];
-}
+  unknownSystems: string[];
+};
 
 class AccordionPathContent extends React.Component<PropsType, StateType> {
   constructor(props) {

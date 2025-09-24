@@ -1,5 +1,7 @@
 import * as React from "react";
 
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
+
 import { InputBase } from "../InputBase";
 
 type InputBaseRef = React.ElementRef<typeof InputBase>;
@@ -68,14 +70,14 @@ export class Form extends React.Component<Props> {
     formDirection: "form-horizontal",
   };
 
-  inputs: { [key: string]: InputBaseRef | undefined } = {};
+  inputs: Record<string, InputBaseRef | undefined> = {};
 
   setModelValue = (name: string, value: any) => {
     const { model, errors } = this.props;
-    if (value == null && model[name] != null) {
+    if (DEPRECATED_unsafeEquals(value, null) && !DEPRECATED_unsafeEquals(model[name], null)) {
       delete model[name];
       this.props.onChange?.(model);
-    } else if (value != null) {
+    } else if (!DEPRECATED_unsafeEquals(value, null)) {
       model[name] = value;
       this.props.onChange?.(model);
     }

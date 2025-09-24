@@ -4,7 +4,9 @@ import { localizedMoment } from "utils";
 
 // These aren't the actual proper types, just what I've inferred from code usage below
 type Instance = JQuery & Date;
-type StaticProperties = { dates: any };
+type StaticProperties = {
+  dates: any;
+};
 type PickerType = ((config: object) => Instance) & ((method: "show" | "hide") => Instance) & StaticProperties;
 
 type DatePickerType = PickerType & ((method: "setDate", value: Date) => void) & ((method: "getDate") => Date);
@@ -150,6 +152,7 @@ class TimePicker extends React.PureComponent<TimePickerProps> {
 
   componentDidMount() {
     this._input?.timepicker({
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       roundingFunction: (seconds, options) => seconds,
     });
     this._input?.on("timeFormatError", () => {

@@ -115,7 +115,7 @@ export class TokenTable extends React.Component<Props, State> {
     }
 
     const isExpired = localizedMoment(expirationTime).isBefore(localizedMoment());
-    const param = { expiration: (_str) => this.renderDate(expirationTime) };
+    const param = { expiration: () => this.renderDate(expirationTime) };
 
     return (
       <span className={isExpired ? "text-danger" : ""}>
@@ -196,7 +196,7 @@ export class TokenTable extends React.Component<Props, State> {
   private onDelete(row: AccessToken): void {
     Network.del(`/rhn/manager/api/admin/hub/access-tokens/${row.id}`)
       .catch((xhr) => Network.showResponseErrorToastr(xhr))
-      .then((response) => {
+      .then(() => {
         this.refresh();
         showInfoToastr("Access token successfully deleted");
       });
@@ -230,7 +230,7 @@ export class TokenTable extends React.Component<Props, State> {
   }
 
   private getValidityConfirmationMessage(row: AccessToken): string {
-    const messageGeneratorMap: { [key: string]: (params: object) => string } = {
+    const messageGeneratorMap: Record<string, (params: object) => string> = {
       "issued-valid-hub": (params) =>
         // token issued for another server currently valid and linked to a hub
         t("Invalidating this access token will prevent the hub {fqdn} from accesssing.", params),

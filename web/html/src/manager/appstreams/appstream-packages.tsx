@@ -4,10 +4,10 @@ import { PackageLink } from "components/links";
 
 import Network from "../../utils/network";
 
-interface Package {
+type Package = {
   id: number;
   nevra: string;
-}
+};
 
 export const AppStreamPackages = ({ stream, channelId }) => {
   const [packages, setPackages] = useState<Package[]>([]);
@@ -38,7 +38,7 @@ export const AppStreamPackages = ({ stream, channelId }) => {
     <>
       <h6>{t("AppStream {stream} has {count} packages:", { stream: stream, count: packages.length })}</h6>
       <div style={{ maxHeight: "calc(100vh - 200px)" }}>
-        {packages.map((pkg, index) => (
+        {packages.map((pkg) => (
           <li key={`pkg-${pkg.id}`}>
             <PackageLink id={pkg.id} newWindow={true}>
               {pkg.nevra}

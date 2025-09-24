@@ -23,12 +23,12 @@ import {
 
 type Props = {
   title: string;
-  migrationEntries: Array<MigrationEntry>;
+  migrationEntries: MigrationEntry[];
   migrateFrom: MigrationVersion;
 };
 
 type State = {
-  tableModel: Array<MigrationEntry>;
+  tableModel: MigrationEntry[];
   tableModelValid: boolean;
   loading: boolean;
   submitted: boolean;
@@ -385,7 +385,7 @@ export class MigrateSlavesForm extends React.Component<Props, State> {
     );
   }
 
-  private isTableModeValid(entries: Array<MigrationEntry>): boolean {
+  private isTableModeValid(entries: MigrationEntry[]): boolean {
     // Filter only the entries that can be migrated and are selected
     const migratable = entries.filter((entry) => !entry.disabled && entry.selected);
 
@@ -413,7 +413,7 @@ export class MigrateSlavesForm extends React.Component<Props, State> {
     field: K,
     id: number,
     value: MigrationEntry[K]
-  ): Array<MigrationEntry> {
+  ): MigrationEntry[] {
     return this.state.tableModel.map((entry) => (entry.id === id ? { ...entry, [field]: value } : entry));
   }
 }

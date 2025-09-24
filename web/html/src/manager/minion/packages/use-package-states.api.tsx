@@ -16,8 +16,8 @@ type ActionType =
 
 const usePackageStatesApi = () => {
   const [messages, setMessages] = useState<MessageType[]>([]);
-  const [packageStates, setPackageStates] = useState<Array<Package>>([]);
-  const [searchResults, setSearchResults] = useState<Array<Package>>([]);
+  const [packageStates, setPackageStates] = useState<Package[]>([]);
+  const [searchResults, setSearchResults] = useState<Package[]>([]);
 
   function onActionPackageStatesApi(action: ActionType): Promise<any> {
     switch (action.type) {
@@ -32,7 +32,7 @@ const usePackageStatesApi = () => {
         return Network.post("/rhn/manager/api/states/packages/save", {
           sid: action.serverId,
           packageStates: toSave,
-        }).then((data: Array<Package>) => {
+        }).then((data: Package[]) => {
           updateAfterSave(data, changed);
           setMessages(MessagesUtils.info(t("Package states have been saved.")));
         });
@@ -56,14 +56,14 @@ const usePackageStatesApi = () => {
         });
       }
       case "GetServerPackages": {
-        return Network.get("/rhn/manager/api/states/packages?sid=" + action.serverId).then((data: Array<Package>) => {
+        return Network.get("/rhn/manager/api/states/packages?sid=" + action.serverId).then((data: Package[]) => {
           updateAfterServerGetPackages(data);
         });
       }
       case "Search": {
         return Network.get(
           "/rhn/manager/api/states/packages/match?sid=" + action.serverId + "&target=" + action.filter
-        ).then((data: Array<Package>) => {
+        ).then((data: Package[]) => {
           updateAfterSearch(data);
           return null;
         });
@@ -73,7 +73,7 @@ const usePackageStatesApi = () => {
     }
   }
 
-  function updateAfterSearch(serverSearchResults: Array<Package>): void {
+  function updateAfterSearch(serverSearchResults: Package[]): void {
     const newSearchResults = serverSearchResults.map((state) => {
       state.packageStateId = packageHelpers.normalizePackageState(state.packageStateId);
       state.versionConstraintId = packageHelpers.normalizePackageVersionConstraint(state.versionConstraintId);
@@ -82,7 +82,7 @@ const usePackageStatesApi = () => {
     setSearchResults(newSearchResults);
   }
 
-  function updateAfterServerGetPackages(serverPackages: Array<Package>): void {
+  function updateAfterServerGetPackages(serverPackages: Package[]): void {
     const newPackageStates = serverPackages.map((state) => {
       state.packageStateId = packageHelpers.normalizePackageState(state.packageStateId);
       state.versionConstraintId = packageHelpers.normalizePackageVersionConstraint(state.versionConstraintId);
@@ -91,7 +91,7 @@ const usePackageStatesApi = () => {
     setPackageStates(newPackageStates);
   }
 
-  function updateAfterSave(newServerPackages: Array<Package>, changed: ChangesMapObject): void {
+  function updateAfterSave(newServerPackages: Package[], changed: ChangesMapObject): void {
     const newPackageStates: any = newServerPackages.map((state: Package) => {
       state.packageStateId = packageHelpers.normalizePackageState(state.packageStateId);
       return state;

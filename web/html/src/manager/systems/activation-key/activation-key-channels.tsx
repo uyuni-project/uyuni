@@ -3,12 +3,10 @@ import * as React from "react";
 import MandatoryChannelsApi from "core/channels/api/mandatory-channels-api";
 import { productName } from "core/user-preferences";
 
-import { Messages } from "components/messages/messages";
-import { Utils as MessagesUtils } from "components/messages/messages";
+import { Messages, Utils as MessagesUtils } from "components/messages/messages";
 import { Loading } from "components/utils/loading/Loading";
 
-import ActivationKeyChannelsApi from "./activation-key-channels-api";
-import { availableChannelsType, Channel } from "./activation-key-channels-api";
+import ActivationKeyChannelsApi, { availableChannelsType, Channel } from "./activation-key-channels-api";
 import ChildChannels from "./child-channels";
 
 type ActivationKeyChannelsProps = {
@@ -17,7 +15,7 @@ type ActivationKeyChannelsProps = {
 
 type ActivationKeyChannelsState = {
   currentSelectedBaseId: number;
-  currentChildSelectedIds: Array<number>;
+  currentChildSelectedIds: number[];
 };
 
 class ActivationKeyChannels extends React.Component<ActivationKeyChannelsProps, ActivationKeyChannelsState> {
@@ -46,8 +44,8 @@ class ActivationKeyChannels extends React.Component<ActivationKeyChannelsProps, 
     );
   };
 
-  selectChildChannels = (channelIds: Array<number>, selectedFlag: boolean) => {
-    var selectedIds = [...this.state.currentChildSelectedIds];
+  selectChildChannels = (channelIds: number[], selectedFlag: boolean) => {
+    let selectedIds = [...this.state.currentChildSelectedIds];
     if (selectedFlag) {
       selectedIds = [...channelIds.filter((c) => !selectedIds.includes(c)), ...selectedIds];
     } else {
@@ -99,7 +97,7 @@ class ActivationKeyChannels extends React.Component<ActivationKeyChannelsProps, 
         activationKeyId={this.props.activationKeyId}
         currentSelectedBaseId={this.state.currentSelectedBaseId}
       >
-        {({ messages, loading, loadingChildren, availableBaseChannels, availableChannels, fetchChildChannels }) => {
+        {({ loading, loadingChildren, availableBaseChannels, availableChannels, fetchChildChannels }) => {
           if (loading) {
             return (
               <div className="form-group">

@@ -21,7 +21,7 @@ export class PeripheralsList extends React.Component<Props> {
   }
 
   public render(): React.ReactNode {
-    let componentContent = (
+    const componentContent = (
       <Table
         ref={this.tableRef}
         data="/rhn/manager/api/admin/hub/peripherals"

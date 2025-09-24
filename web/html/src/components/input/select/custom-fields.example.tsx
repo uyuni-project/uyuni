@@ -36,12 +36,7 @@ export default () => {
         onChange={(newValue) => setValue(newValue)}
         options={options}
         getOptionLabel={(item) => item.fooLabelValue}
-        getOptionValue={(item) => {
-          if (!item) {
-            debugger;
-          }
-          return item.nested.value;
-        }}
+        getOptionValue={(item) => item.nested.value}
         isClearable
       />
     </>

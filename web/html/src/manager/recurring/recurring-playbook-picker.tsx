@@ -47,7 +47,7 @@ class RecurringPlaybookPicker extends React.Component<PropsType, StateType> {
   };
 
   render() {
-    let button = (
+    const button = (
       <Button
         id="change-btn"
         className="btn-default"

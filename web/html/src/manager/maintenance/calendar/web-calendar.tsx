@@ -21,7 +21,7 @@ import Network from "utils/network";
 type WebCalendarProps = {
   id: number;
   type: string;
-  eventNames: Array<string>;
+  eventNames: string[];
   messages: (messages: MessageType[]) => void;
   clearMessages: (messages: void) => void;
   responseError: (messages: MessageType[]) => void;

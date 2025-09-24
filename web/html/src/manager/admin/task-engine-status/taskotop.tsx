@@ -34,7 +34,7 @@ class TaskoTop extends React.Component<Props> {
   }
 
   refreshServerData = () => {
-    var currentObject = this;
+    const currentObject = this;
     Network.get("/rhn/manager/api/admin/runtime-status/data")
       .then((data) => {
         currentObject.setState({
@@ -54,29 +54,29 @@ class TaskoTop extends React.Component<Props> {
   };
 
   sortByEndTime = (aRaw, bRaw, columnKey, sortDirection) => {
-    if (aRaw[columnKey] == null || bRaw[columnKey] == null) {
+    if (DEPRECATED_unsafeEquals(aRaw[columnKey], null) || DEPRECATED_unsafeEquals(bRaw[columnKey], null)) {
       // reset the sortDirection because if 'endTime' is null it means that its status
       // it's 'running' so we want to keep it at the top of any other rows
       sortDirection = 1;
     }
-    var a = aRaw[columnKey] || "0000-01-01T00:00:00.000Z";
-    var b = bRaw[columnKey] || "0000-01-01T00:00:00.000Z";
-    var result = a.toLowerCase().localeCompare(b.toLowerCase());
+    const a = aRaw[columnKey] || "0000-01-01T00:00:00.000Z";
+    const b = bRaw[columnKey] || "0000-01-01T00:00:00.000Z";
+    const result = a.toLowerCase().localeCompare(b.toLowerCase());
     return (result || Utils.sortById(aRaw, bRaw)) * sortDirection;
   };
 
   sortByStatus = (aRaw, bRaw, columnKey, sortDirection) => {
-    var statusValues = { running: 0, ready_to_run: 1, failed: 2, interrupted: 3, skipped: 4, finished: 5 };
-    var a = statusValues[aRaw[columnKey]];
-    var b = statusValues[bRaw[columnKey]];
-    var result = (a > b ? 1 : a < b ? -1 : 0) || this.sortByEndTime(aRaw, bRaw, "endTime", sortDirection);
+    const statusValues = { running: 0, ready_to_run: 1, failed: 2, interrupted: 3, skipped: 4, finished: 5 };
+    const a = statusValues[aRaw[columnKey]];
+    const b = statusValues[bRaw[columnKey]];
+    const result = (a > b ? 1 : a < b ? -1 : 0) || this.sortByEndTime(aRaw, bRaw, "endTime", sortDirection);
     return (result || Utils.sortById(aRaw, bRaw)) * sortDirection;
   };
 
   sortByNumber = (aRaw, bRaw, columnKey, sortDirection) => {
-    var a = aRaw[columnKey];
-    var b = bRaw[columnKey];
-    var result = a > b ? 1 : a < b ? -1 : 0;
+    const a = aRaw[columnKey];
+    const b = bRaw[columnKey];
+    const result = a > b ? 1 : a < b ? -1 : 0;
     return (result || Utils.sortById(aRaw, bRaw)) * sortDirection;
   };
 
@@ -88,7 +88,7 @@ class TaskoTop extends React.Component<Props> {
   };
 
   decodeStatus = (status) => {
-    var cell;
+    let cell;
     switch (status) {
       case "running":
         cell = (
@@ -174,7 +174,7 @@ class TaskoTop extends React.Component<Props> {
       </div>
     );
 
-    if (data != null) {
+    if (!DEPRECATED_unsafeEquals(data, null)) {
       if (Object.keys(data).length > 0) {
         return (
           <div key="taskotop-content">
@@ -212,13 +212,19 @@ class TaskoTop extends React.Component<Props> {
                 columnKey="endTime"
                 comparator={this.sortByEndTime}
                 header={t("End Time")}
-                cell={(row) => (row["endTime"] == null ? "" : localizedMoment(row["endTime"]).toUserTimeString())}
+                cell={(row) =>
+                  DEPRECATED_unsafeEquals(row["endTime"], null)
+                    ? ""
+                    : localizedMoment(row["endTime"]).toUserTimeString()
+                }
               />
               <Column
                 columnKey="elapsedTime"
                 comparator={this.sortByNumber}
                 header={t("Elapsed Time")}
-                cell={(row) => (row["elapsedTime"] == null ? "" : row["elapsedTime"] + " seconds")}
+                cell={(row) =>
+                  DEPRECATED_unsafeEquals(row["elapsedTime"], null) ? "" : row["elapsedTime"] + " seconds"
+                }
               />
               <Column
                 columnKey="status"

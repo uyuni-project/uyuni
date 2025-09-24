@@ -1,10 +1,12 @@
 import _isNil from "lodash/isNil";
 import validator from "validator";
 
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
+
 type SingleOrArray<T> = T | T[] | undefined;
-interface TreeLikeModel<T = any> {
+type TreeLikeModel<T = any> = {
   [key: string]: SingleOrArray<T | TreeLikeModel<T>>;
-}
+};
 
 /**
  * Convert a tree-like model into a flat model for use with the Form and Input components.
@@ -76,14 +78,14 @@ export function convertNumbers<T>(flatModel: Record<string, T>): Record<string, 
  * Reverse of flattenModel.
  */
 export function unflattenModel<T>(flatModel: Record<string, T>): TreeLikeModel<T> {
-  let treeModel: any = {};
+  const treeModel: any = {};
 
   const aggregate = (obj: Record<string, any>, name: string, value: any) => {
     const pos = name.indexOf("_");
     if (pos >= 0) {
       const segment = name.substring(0, pos);
       const tail = name.substring(pos + 1);
-      if (obj[segment] == null) {
+      if (DEPRECATED_unsafeEquals(obj[segment], null)) {
         obj[segment] = {};
       }
       aggregate(obj[segment], tail, value);

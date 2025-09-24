@@ -41,7 +41,7 @@ export type AttestationReport = {
   actionId: number | null;
   actionName: string | null;
   actionScheduledBy: string | null;
-  results: Array<AttestationResult>;
+  results: AttestationResult[];
 };
 
 export function renderTime(time: Date): React.ReactNode {

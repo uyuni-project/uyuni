@@ -3,6 +3,8 @@ import * as React from "react";
 import { DEPRECATED_Select } from "components/input";
 import { Form } from "components/input/form/Form";
 
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
+
 type SearchFieldOption = {
   label: string;
   value: string;
@@ -42,12 +44,12 @@ type SearchFieldProps = {
 /** Text input search field */
 export function SearchField(props: SearchFieldProps) {
   // Dummy model and onChange to reuse the Select component as it requires a Form
-  let model = {};
+  const model = {};
   const onChange = () => {};
 
   return (
     <Form model={model} onChange={onChange} title={t("Filter")}>
-      {props.options != null && (
+      {!DEPRECATED_unsafeEquals(props.options, null) && (
         <DEPRECATED_Select
           name="filter"
           placeholder={t("Select a filter")}

@@ -36,7 +36,7 @@ type PropsFields = {
 };
 
 export const PaygSshDataFormFields = (props: PropsFields) => {
-  let prefix = props.isInstance ? "" : "bastion_";
+  const prefix = props.isInstance ? "" : "bastion_";
   return (
     <React.Fragment>
       {props.editing && (

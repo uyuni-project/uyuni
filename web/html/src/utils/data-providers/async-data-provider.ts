@@ -13,7 +13,7 @@ export default class AsyncDataProvider {
     this.endpoint.get(callback, pageControl);
   }
 
-  getIds(callback: (promise: Promise<Array<any>>) => any, criteria?: string) {
+  getIds(callback: (promise: Promise<any[]>) => any, criteria?: string) {
     this.endpoint.selectAll(callback, criteria);
   }
 }

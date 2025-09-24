@@ -94,23 +94,20 @@ class FormulaForm extends React.Component<Props, State> {
       loading: true,
     };
 
-    window.addEventListener(
-      "beforeunload",
-      function (this: FormulaForm, e) {
-        if (!this.state.formulaChanged) return null;
+    window.addEventListener("beforeunload", (e) => {
+      if (!this.state.formulaChanged) return;
 
-        let confirmationMessage = "You have unsaved changes. If you leave before saving, your changes will be lost.";
-
-        get(e, window.event).returnValue = confirmationMessage; //Gecko + IE
-        return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
-      }.bind(this)
-    );
+      const confirmationMessage = "You have unsaved changes. If you leave before saving, your changes will be lost.";
+      e.preventDefault();
+      e.returnValue = confirmationMessage;
+      return confirmationMessage;
+    });
 
     this.init();
   }
 
   init = () => {
-    var dataPromise;
+    let dataPromise;
     if (this.props.getDataPromise) {
       dataPromise = this.props.getDataPromise();
     } else {
@@ -156,7 +153,7 @@ class FormulaForm extends React.Component<Props, State> {
 
   saveFormula = (data) => {
     this.setState({ formulaChanged: false });
-    let scope = this.props.scope;
+    const scope = this.props.scope;
     let formType = scope.toUpperCase();
     if (formType === "SYSTEM") {
       formType = "SERVER";
@@ -175,7 +172,7 @@ class FormulaForm extends React.Component<Props, State> {
         errors: messages,
       });
     } else {
-      let formData = {
+      const formData = {
         type: formType,
         id: this.props.systemId,
         formula_name: this.state.formulaName,

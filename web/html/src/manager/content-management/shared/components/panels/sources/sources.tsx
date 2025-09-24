@@ -18,9 +18,9 @@ import styles from "./sources.module.scss";
 
 type SourcesProps = {
   projectId: string;
-  softwareSources: Array<ProjectSoftwareSourceType>;
+  softwareSources: ProjectSoftwareSourceType[];
   onChange: Function;
-  messages?: Array<ProjectMessageType>;
+  messages?: ProjectMessageType[];
 };
 
 const ModalSourceCreationContent = ({ isLoading, softwareSources, onChange }) => {

@@ -7,7 +7,7 @@ import { TableDataHandler } from "./TableDataHandler";
 
 type Props = {
   /** any type of data in an array, where each element is a row data */
-  data: Array<any>;
+  data: any[];
 
   /** Function extracting the unique key of the row from the data object */
   identifier: (row: any) => any;
@@ -25,10 +25,10 @@ type Props = {
   selectable: boolean;
 
   /** the handler to call when the table selection is updated. If not provided, the select boxes won't be rendered */
-  onSelect?: (items: Array<any>) => void;
+  onSelect?: (items: any[]) => void;
 
   /** the identifiers for selected items */
-  selectedItems?: Array<any>;
+  selectedItems?: any[];
 
   /** The message which is shown when there are no rows to display */
   emptyText?: string;
@@ -43,19 +43,20 @@ type Props = {
   children: React.ReactNode;
 
   /** Other filter fields */
-  additionalFilters?: Array<React.ReactNode>;
+  additionalFilters?: React.ReactNode[];
 };
 
 export function CustomDataHandler(props: Props) {
   const { selectable, ...allProps } = props;
   return (
     <TableDataHandler {...allProps} selectable={() => selectable}>
-      {({ currItems, headers, handleSelect, selectedItems, criteria }) =>
+      {({ currItems, criteria }) =>
         React.Children.toArray(props.children).map((child) => cloneReactElement(child, { data: currItems, criteria }))
       }
     </TableDataHandler>
   );
 }
+
 CustomDataHandler.defaultProps = {
   selectable: false,
 };

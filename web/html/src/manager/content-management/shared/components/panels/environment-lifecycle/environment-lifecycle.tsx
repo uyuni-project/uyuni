@@ -18,10 +18,10 @@ import EnvironmentView from "./environment-view";
 
 type Props = {
   projectId: string;
-  environments: Array<ProjectEnvironmentType>;
-  historyEntries: Array<ProjectHistoryEntry>;
+  environments: ProjectEnvironmentType[];
+  historyEntries: ProjectHistoryEntry[];
   onChange: Function;
-  messages?: Array<ProjectMessageType>;
+  messages?: ProjectMessageType[];
 };
 
 const EnvironmentLifecycle = (props: Props) => {

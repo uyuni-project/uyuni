@@ -25,7 +25,7 @@ export function useIntervalEffect(
     }
 
     if (interval !== null) {
-      let id = setInterval(tick, interval);
+      const id = setInterval(tick, interval);
       return () => {
         clearInterval(id);
         if (typeof cleanup === "function") {
