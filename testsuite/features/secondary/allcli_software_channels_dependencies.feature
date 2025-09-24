@@ -42,10 +42,10 @@ Feature: Channel subscription with recommended or required dependencies
     And I wait for child channels to appear
     And I check radio button "(none, disable service)"
     And I wait for child channels to appear
-    And I check radio button "openSUSE Leap 15.6 (x86_64)"
-    Then I should see the child channel "Uyuni Client Tools for openSUSE Leap 15.6 (x86_64)" "unselected" and "disabled"
-    When I select the child channel "Uyuni Client Tools for openSUSE Leap 15.6 (x86_64)"
-    Then I should see the child channel "Uyuni Client Tools for openSUSE Leap 15.6 (x86_64)" "selected"
+    And I check radio button "openSUSE Tumbleweed (x86_64)"
+    Then I should see the child channel "Uyuni Client Tools for openSUSE Tumbleweed (x86_64)" "unselected" and "disabled"
+    When I select the child channel "Uyuni Client Tools for openSUSE Tumbleweed (x86_64)"
+    Then I should see the child channel "Uyuni Client Tools for openSUSE Tumbleweed (x86_64)" "selected"
 
 @susemanager
   Scenario: Play with recommended and required child channels selection in SSM
@@ -77,8 +77,8 @@ Feature: Channel subscription with recommended or required dependencies
     And I follow "channel memberships" in the content area
     Then I should see a "Base Channel" text
     And I should see a "Next" text
-    And I should see a table line with "openSUSE Leap 15.6 (x86_64)", "1"
-    When I select "No Change" from drop-down in table line with "openSUSE Leap 15.6 (x86_64)"
+    And I should see a table line with "openSUSE Tumbleweed (x86_64)", "1"
+    When I select "No Change" from drop-down in table line with "openSUSE Tumbleweed (x86_64)"
     And I click on "Next"
     Then I should see the toggler "disabled"
 
