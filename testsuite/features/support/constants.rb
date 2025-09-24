@@ -418,6 +418,7 @@ LABEL_BY_BASE_CHANNEL = {
     'openSUSE-Leap-15.6-Pool for aarch64' => 'opensuse-leap-15.6-pool-aarch64'
   },
   'Uyuni' => {
+    'openSUSE Tumbleweed (x86_64)' => 'opensuse_tumbleweed-x86_64',
     'openSUSE Leap 15.6 (x86_64)' => 'opensuse_leap15_6-x86_64',
     'openSUSE Leap Micro 5.5 (x86_64)' => 'opensuse_micro5_5-x86_64',
     'SLES12-SP5-Pool for x86_64' => 'sles12-sp5-pool-x86_64',
@@ -927,6 +928,10 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         managertools-sle15-pool-aarch64-opensuse-15.6
         managertools-sle15-updates-aarch64-opensuse-15.6
       ],
+    'tumbleweed-x86_64' =>
+      %w[
+        opensuse_tumbleweed-x86_64
+      ],
     'suse-microos-5.1' => # CHECKED
       %w[
         suse-microos-5.1-pool-x86_64
@@ -1338,8 +1343,8 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
       ],
     'tumbleweed-client-tools-x86_64' => # CHECKED
       %w[
-        opensuse_tumbleweed-uyuni-client-x86_64
-        opensuse_tumbleweed-uyuni-client-devel-x86_64
+        opensuse_tumbleweed-uyuni-client
+        opensuse_tumbleweed-uyuni-client-devel
       ],
     'ubuntu-2004' => # CHECKED
       %w[
@@ -1499,8 +1504,8 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'opensuse-sle-15.6-updates-aarch64' => 5040,
   'oraclelinux9-appstream-x86_64' => 5880,
   'opensuse_tumbleweed-x86_64' => 12_600,
-  'opensuse_tumbleweed-uyuni-client-x86_64' => 60,
-  'opensuse_tumbleweed-uyuni-client-devel-x86_64' => 60,
+  'opensuse_tumbleweed-uyuni-client-x86_64' => 12_600,
+  'opensuse_tumbleweed-uyuni-client-devel-x86_64' => 12_600,
   'oraclelinux9-uyuni-client-devel-x86_64' => 120,
   'oraclelinux9-x86_64' => 2400,
   'res-7-ltss-updates-x86_64' => 1380,
@@ -1628,7 +1633,7 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sles12-sp5-updates-x86_64' => 3720,
   'sles12-sp5-uyuni-client-devel-x86_64' => 120,
   'sles15-sp3-devel-uyuni-client-x86_64' => 120,
-  'sles15-sp4-devel-uyuni-client-x86_64' => 120,
+  'sles15-sp4-devel-uyuni-client-x86_64' => 2460,
   'sles15-sp5-devel-uyuni-client-x86_64' => 120,
   'sles15-sp6-devel-uyuni-client-x86_64' => 120,
   'sles15-sp7-devel-uyuni-client-x86_64' => 60,
@@ -1704,8 +1709,8 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'ubuntu-2404-amd64-universe-uyuni' => 24_000,
   'ubuntu-2404-amd64-uyuni-client-devel' => 120,
   'ubuntu-2404-pool-amd64-uyuni' => 60,
-  'uyuni-proxy-devel-tumbleweed-x86_64' => 60,
-  'uyuni-proxy-stable-tumbleweed-x86_64' => 60
+  'uyuni-proxy-devel-tumbleweed-x86_64' => 24_000,
+  'uyuni-proxy-stable-tumbleweed-x86_64' => 24_000
 }.freeze
 
 EMPTY_CHANNELS = %w[
