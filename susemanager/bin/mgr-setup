@@ -9,7 +9,7 @@ EXIT_ERROR=2
 EXIT_ALREADY_CONFIGURED=3
 
 
-# get product name, default: SUSE Manager
+# get product name, default: SUSE Multi-Linux Manager
 IFS=" = "
 DEFAULT_RHN_CONF="/usr/share/rhn/config-defaults/rhn.conf"
 
@@ -22,7 +22,7 @@ if [ -f "$DEFAULT_RHN_CONF" ]; then
     done < $DEFAULT_RHN_CONF
 fi
 if [ ! -n "$PRODUCT_NAME" ]; then
-    PRODUCT_NAME="SUSE Manager"
+    PRODUCT_NAME="SUSE Multi-Linux Manager"
 fi
 
 if [ ! $UID -eq 0 ]; then
