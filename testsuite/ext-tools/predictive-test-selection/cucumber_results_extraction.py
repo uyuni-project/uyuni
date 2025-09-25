@@ -31,7 +31,7 @@ from config import (
 )
 from utilities import setup_logging
 
-logger = setup_logging(logging.DEBUG, log_file="logs/cucumber_results_extraction.log")
+logger = logging.getLogger(__name__)
 
 def get_feature_name_from_uri(uri: str) -> str:
     """
@@ -281,4 +281,5 @@ def main() -> None:
         logger.critical("Fatal error: %s", e)
 
 if __name__ == "__main__":
+    logger = setup_logging(logging.DEBUG, log_file="logs/cucumber_results_extraction.log")
     main()

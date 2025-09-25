@@ -1,19 +1,19 @@
 #!/usr/bin/env python3
 """
-Uses extracted test run data and feature results to insert test runs into a relational database.
+Uses extracted test run data and feature results to backfill test runs into a relational database.
 
 This script reads the CSV file produced by the PR data extraction script and for each PR,
 uses run data and feature results from all run folders and inserts them into the database.
 
 Prerequisites:
     - Run runs_feature_result_extraction.py
-    - Environment variable DATABASE_CONNECTION_STRING must be set.
+    - Environment variable TEST_RUNS_DATABASE_CONNECTION_STRING must be set.
 
 The script works with any PostgreSQL database, and probably any relational database,
 but is tested with Neon Postgres.
 
 Usage:
-    python insert_test_runs_into_db.py
+    python backfill_test_runs_into_db.py
 """
 import os
 import re
@@ -36,7 +36,7 @@ from config import (
 )
 from utilities import setup_logging
 
-logger = setup_logging(logging.INFO, "logs/insert_test_runs_into_db.log")
+logger = logging.getLogger(__name__)
 
 # SQLAlchemy setup
 Base = declarative_base()
@@ -131,14 +131,30 @@ class DatabaseManager:
 
     def get_feature_id(self, session: Session, feature_name: str,
                       category_id: int, scenario_count: int) -> int:
-        """Get or create a feature and return its ID."""
-        logger.debug("Getting feature ID for: %s", feature_name)
-        stmt = select(Feature.id).where(Feature.name == feature_name)
-        feature_id = session.execute(stmt).scalar_one_or_none()
+        """Get or create a feature and return its ID, updating scenario count if needed.
 
-        if feature_id is not None:
-            logger.debug("Found existing feature ID: %d", feature_id)
-            return feature_id
+        Behavior when feature exists:
+            - If the stored scenario count differs from the provided value, update it.
+            - Otherwise, leave it unchanged and log accordingly.
+        """
+        logger.debug("Getting feature ID for: %s", feature_name)
+        stmt = select(Feature).where(Feature.name == feature_name)
+        existing_feature = session.execute(stmt).scalar_one_or_none()
+
+        if existing_feature:
+            logger.debug("Found existing feature ID: %d", existing_feature.id)
+            if existing_feature.scenario_count != scenario_count:
+                logger.info(
+                    "Updating scenario count for feature '%s' from %d to %d",
+                    feature_name, existing_feature.scenario_count, scenario_count
+                )
+                existing_feature.scenario_count = scenario_count
+            else:
+                logger.debug(
+                    "Scenario count unchanged for feature '%s': %d",
+                    feature_name, existing_feature.scenario_count
+                )
+            return existing_feature.id
 
         new_feature = Feature(
             name=feature_name,
@@ -166,14 +182,16 @@ class DatabaseManager:
         logger.debug("Created file with ID: %d", new_file.id)
         return new_file.id
 
-    def test_run_exists(self, session: Session, github_id: int) -> bool:
-        """Check if a test run already exists by GitHub ID."""
-        logger.debug("Checking if test run exists with github_id: %d", github_id)
+    def get_test_run_id(self, session: Session, github_id: int) -> Optional[int]:
+        """Get test run database ID by GitHub ID.
+        
+        Returns the run's database ID if it exists, otherwise None.
+        """
+        logger.debug("Getting database ID of test run with github_id: %d", github_id)
         stmt = select(TestRun.id).where(TestRun.github_id == github_id)
         test_run_id = session.execute(stmt).scalar_one_or_none()
-        exists = test_run_id is not None
-        logger.debug("Test run exists: %s", exists)
-        return exists
+        logger.debug("Test run database ID (or None if not found): %s", test_run_id)
+        return test_run_id
 
     def insert_test_run(self, session: Session, pr_number: int, run_number: int,
                        github_id: int, commit_sha: str, passed: bool,
@@ -198,13 +216,23 @@ class DatabaseManager:
         """Insert a feature result."""
         logger.debug("Inserting feature result: run_id=%d, feature_id=%d, passed=%s",
                     run_id, feature_id, passed)
-        new_result = FeatureResult(
-            run_id=run_id,
-            feature_id=feature_id,
-            passed=passed
-        )
-        session.add(new_result)
-        logger.debug("Added feature result to session")
+        result = session.get(FeatureResult, {"run_id": run_id, "feature_id": feature_id})
+        if result:
+            logger.debug("Feature result exists")
+            if result.passed != passed:
+                logger.debug("Feature passed value changed (old=%s, new=%s). Updating...",
+                            result.passed, passed)
+                result.passed = passed
+            else:
+                logger.debug("Same feature passed value. Skipping update.")
+        else:
+            new_result = FeatureResult(
+                run_id=run_id,
+                feature_id=feature_id,
+                passed=passed
+            )
+            session.add(new_result)
+            logger.debug("Added feature result to session")
 
     def insert_run_modified_files(self, session: Session, run_id: int, file_ids: Set[int]) -> None:
         """Insert run modified files relationships."""
@@ -303,9 +331,15 @@ class TestRunInserter:
     def insert_run(self, session: Session, pr_number: int, run_number: int,
                   run_folder_path: str) -> bool:
         """Insert a single test run and its associated data into the database.
-            
+
+        Behavior:
+            - If the run does not exist, inserts the run metadata, modified files,
+            and feature results.
+            - If the run already exists (most likely this is a rerun), skips inserting
+            the run metadata and modified files, and only inserts the new feature results.
+
         Returns:
-            True if run was successfully inserted, False otherwise
+            True if insertion was successful, False otherwise
         """
         logger.info(
             "Inserting run: run_number=%d, path=%s", run_number, run_folder_path
@@ -313,53 +347,57 @@ class TestRunInserter:
 
         # Load run data
         run_data = self.load_run_data(run_folder_path)
-        if run_data is None:
+        if not run_data:
             return False
 
-        # Check if run already exists
-        github_id = run_data.get('github_id')
-        if self.db_manager.test_run_exists(session, github_id):
-            logger.info("Test run with github_id %d already exists, skipping", github_id)
-            return True
-
-        # Parse run data
-        commit_sha = run_data.get('commit_sha', '')
-        result = run_data.get('result', '')
-        execution_timestamp = run_data.get('execution_timestamp', '')
-        modified_files = run_data.get('modified_files', [])
-
-        # Convert result to boolean
-        passed = result == CUCUMBER_PASSED
-
-        # Parse execution timestamp
-        try:
-            executed_at = datetime.fromisoformat(execution_timestamp)
-        except (ValueError, AttributeError):
-            logger.warning("Invalid execution_timestamp in %s: %s", run_folder_path,
-                          execution_timestamp)
-            return False
-
-        # Obtain modified files, initialize file_ids as a set to avoid duplicates
-        file_ids = set()
-        for file_path in modified_files:
-            file_id = self.db_manager.get_file_id(session, file_path)
-            file_ids.add(file_id)
-        if not file_ids:
-            return False
-
+        # Load run feature results
         feature_results = self.load_feature_results(run_folder_path)
         if not feature_results:
             return False
 
-        run_id = self.db_manager.insert_test_run(
-            session, pr_number, run_number, github_id, commit_sha, passed, executed_at
-        )
+        # Check if run already exists
+        github_id = run_data.get('github_id')
+        test_run_id = self.db_manager.get_test_run_id(session, github_id)
+        if test_run_id is None:
+            # Parse run data
+            commit_sha = run_data.get('commit_sha', '')
+            result = run_data.get('result', '')
+            execution_timestamp = run_data.get('execution_timestamp', '')
+            modified_files = run_data.get('modified_files', [])
 
-        self.db_manager.insert_run_modified_files(session, run_id, file_ids)
+            # Convert result to boolean
+            passed = result == CUCUMBER_PASSED
 
-        self.insert_run_feature_results(session, run_id, feature_results)
+            # Parse execution timestamp
+            try:
+                executed_at = datetime.fromisoformat(execution_timestamp)
+            except (ValueError, AttributeError):
+                logger.warning("Invalid execution_timestamp in %s: %s", run_folder_path,
+                            execution_timestamp)
+                return False
 
-        logger.info("Successfully inserted run: %s", run_folder_path)
+            # Obtain modified files, initialize file_ids as a set to avoid duplicates
+            file_ids = set()
+            for file_path in modified_files:
+                file_id = self.db_manager.get_file_id(session, file_path)
+                file_ids.add(file_id)
+            if not file_ids:
+                return False
+
+            run_id = self.db_manager.insert_test_run(
+                session, pr_number, run_number, github_id, commit_sha, passed, executed_at
+            )
+
+            self.db_manager.insert_run_modified_files(session, run_id, file_ids)
+
+            self.insert_run_feature_results(session, run_id, feature_results)
+
+            logger.info("Successfully inserted run")
+        else:
+            logger.info("Run with github_id %d exists, only inserting feature results", github_id)
+            self.insert_run_feature_results(session, test_run_id, feature_results)
+            logger.info("Successfully inserted feature results")
+
         return True
 
     def insert_runs_in_pr(self, session: Session, pr_number: str) -> None:
@@ -415,11 +453,11 @@ class TestRunInserter:
 
 def get_database_connection_string() -> str:
     """Get database connection string from environment variable"""
-    database_connection_string = os.getenv('DATABASE_CONNECTION_STRING')
+    database_connection_string = os.getenv('TEST_RUNS_DATABASE_CONNECTION_STRING')
     if not database_connection_string:
         logger.critical(
-            "DATABASE_CONNECTION_STRING not set in environment.\n"
-            "export DATABASE_CONNECTION_STRING='database_connection_string' and rerun the script"
+            "TEST_RUNS_DATABASE_CONNECTION_STRING not set in environment.\n"
+            "export TEST_RUNS_DATABASE_CONNECTION_STRING='connection_string' and rerun the script"
         )
         sys.exit(1)
     return database_connection_string
@@ -441,4 +479,5 @@ def main() -> None:
 
 
 if __name__ == "__main__":
+    logger = setup_logging(logging.INFO, "logs/backfill_test_runs_into_db.log")
     main()
