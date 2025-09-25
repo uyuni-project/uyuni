@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-09-12 10:46+0200\n"
-"PO-Revision-Date: 2025-09-08 08:59+0000\n"
+"PO-Revision-Date: 2025-09-25 10:59+0000\n"
 "Last-Translator: Antonio Gemelli <antonio.gemelli@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/spacecmd/it/>\n"
 "Language: it\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.13.1\n"
+"X-Generator: Weblate 5.13.3\n"
 
 #: ../src/spacecmd/activationkey.py:50
 msgid "activationkey_addpackages: Add packages to an activation key"
@@ -29,7 +29,7 @@ msgstr "usage: activationkey_addpackages CHIAVE <PACCHETTO ...>"
 
 #: ../src/spacecmd/activationkey.py:86
 msgid "activationkey_removepackages: Remove packages from an activation key"
-msgstr ""
+msgstr "activationkey_removepackages: Rimuovi pacchetti da una chiave di attivazione"
 
 #: ../src/spacecmd/activationkey.py:88
 msgid "usage: activationkey_removepackages KEY <PACKAGE ...>"
