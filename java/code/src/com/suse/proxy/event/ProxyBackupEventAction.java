@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Pillar;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.manager.system.SystemManager;
@@ -71,6 +72,7 @@ public class ProxyBackupEventAction implements MessageAction {
 
         SystemManager.addHistoryEvent(proxy, "Proxy migration: started",
                 "Received event with client side data, starting data migration");
+        ServerFactory.save(proxy);
 
         Path base = Paths.get(SaltConstants.SALT_CP_PUSH_ROOT_PATH, proxy.getMinionId(), "files");
         Path tmpPath = Path.of(SALT_FILE_GENERATION_TEMP_PATH);
@@ -88,6 +90,7 @@ public class ProxyBackupEventAction implements MessageAction {
         if (!validMigrationFiles(copiedFiles)) {
             SystemManager.addHistoryEvent(proxy, "Proxy migration: failed",
                 "Received incomplete backup data. Try retrying the migration.");
+            ServerFactory.save(proxy);
         }
 
         // Copy the backup common files as pillar in the database
@@ -123,21 +126,31 @@ public class ProxyBackupEventAction implements MessageAction {
 
         SystemManager.addHistoryEvent(proxy, "Proxy migration: new configuration created",
                 "Reinstallation of the proxy will now autoconfigure it on the first boot");
+        ServerFactory.save(proxy);
 
         if (proxy.getPillarByCategory(BRANCH_FORMULA).isPresent()) {
             SystemManager.addHistoryEvent(proxy, "Retail Branch Server migration: started",
                     "Proxy detected as a Retail Branch Server, migration started");
+            ServerFactory.save(proxy);
             // Create cobbler records based on PXE entries
             try {
                 String branchid = convertRBSToContainerized(proxy, config.getProxyFqdn());
                 convertPxeEntriesToCobbler(pxeEntries, proxy, branchid);
-                SystemManager.addHistoryEvent(proxy, "Proxy migration: finished",
+                SystemManager.addHistoryEvent(proxy, "Retail Branch Server migration: finished",
                         "Proxy was detected to be a Retail Branch Server, branch migration was performed");
+                ServerFactory.save(proxy);
             }
             catch (SaltbootException | ProxyException e) {
                 LOG.error("Failed to convert PXE entries for minion {}", proxy.getMinionId(), e);
                 SystemManager.addHistoryEvent(proxy, "Retail Branch Server migration: failed",
                         "Failed to migrate the branch server. See log files for details.");
+                return;
+            }
+            catch (Exception e) {
+                LOG.error("Unexpected exception for minion {}", proxy.getMinionId(), e);
+                SystemManager.addHistoryEvent(proxy, "Retail Branch Server migration: failed",
+                        "Failed to migrate the branch server. See log files for details.");
+                return;
             }
         }
         SystemManager.addHistoryEvent(proxy, "Proxy migration: finished",
@@ -183,7 +196,7 @@ public class ProxyBackupEventAction implements MessageAction {
         LOG.info("Migrating branch id {} with branch server {}. Default image: '{}'",
                 branchId, proxy.getMinionId(), defaultImage);
 
-        ServerGroup branchGroup = ServerGroupFactory.lookupByNameAndOrg(branchId, proxy.getOrg());
+        ServerGroup branchGroup = ServerGroupFactory.lookupByNameAndOrg(branchId.trim(), proxy.getOrg());
         if (branchGroup == null) {
             throw new SaltbootException("Unable to find branch group with id " + branchId);
         }
@@ -213,7 +226,7 @@ public class ProxyBackupEventAction implements MessageAction {
         // Disable tftp and pxe formulas
         List<String> branchFormulas = FormulaFactory.getFormulasByMinion(proxy);
         branchFormulas.remove("pxe");
-        branchFormulas.remove("tftp");
+        branchFormulas.remove("tftpd");
         FormulaFactory.saveServerFormulas(proxy, branchFormulas);
         return branchId;
     }
