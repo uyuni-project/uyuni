@@ -182,7 +182,6 @@ BuildRequires:  systemd-rpm-macros
 Requires:       python3-spacewalk-client-tools
 Requires:       python3-solv
 Requires:       python3-urlgrabber >= 4
-Requires:       python3-looseversion
 Requires:       spacewalk-admin >= 0.1.1-0
 Requires:       spacewalk-certs-tools
 Requires:       susemanager-tools
