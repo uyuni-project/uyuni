@@ -25,10 +25,14 @@ from salt.exceptions import CommandExecutionError
 
 log = logging.getLogger(__name__)
 
+# Taken from Kiwi sources https://github.com/OSInside/kiwi/blob/eb2b1a84bf7/kiwi/schema/kiwi.rng#L81
+KIWI_ARCH_REGEX = r"(x86_64|i586|i686|ix86|aarch64|arm64|armv5el|armv5tel|armv6hl|armv6l|armv7hl|armv7l|ppc|ppc64|ppc64le|s390|s390x|riscv64)"
+
 # PXE entries matchers. We keep grub and pxelinux entries identical.
 # Parse pxelinux.cfg entries as they are easier
 kernel_line_match = re.compile(r" *kernel (([^/]+).+)$")
 initrd_line_match = re.compile(r" *append initrd=([^ ]+)(.*)$")
+image_name_match = re.compile(r"([^.]+)."+KIWI_ARCH_REGEX+"(.+)$")
 
 # Just for lint and static analysis, will be replaced by salt's loader
 __grains__ = {}
@@ -175,7 +179,12 @@ def _parse_single_pxe(filename):
             kernel_match = kernel_line_match.match(line)
             if kernel_match:
                 result["kernel"] = kernel_match.group(1)
-                result["probable_boot_image"] = kernel_match.group(2)
+                image_match = image_name_match.match(kernel_match.group(2))
+                if image_match:
+                    # This skips the arch part which is part of the filename, but not the image
+                    result["probable_boot_image"] = image_match.group(1) + image_match.group(3)
+                else:
+                    raise ValueError("Not a valid boot image name format")
             else:
                 raise ValueError("Not a valid kernel definition")
 
