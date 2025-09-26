@@ -1,0 +1,2 @@
+- Use startswith() or endswith() in Python code
+- Allow existing pylint failures

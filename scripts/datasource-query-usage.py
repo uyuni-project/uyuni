@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# pylint: disable=invalid-name
 #
 # Copyright (c) 2008 Red Hat, Inc.
 #
@@ -30,22 +31,32 @@ import sys
 import xml.parsers.expat
 import commands
 
+
+# pylint: disable-next=redefined-outer-name
 def start_element(name, attrs, filename):
     if name == "mode":
-        query_name = attrs['name']
+        query_name = attrs["name"]
         grep_for_hits(filename, query_name)
 
+
+# pylint: disable-next=unused-argument
 def dummy_element(name):
     pass
 
+
+# pylint: disable-next=redefined-outer-name
 def grep_for_hits(filename, query_name):
-    cmd = "grep -r %s * | grep -v '.xml' | wc -l" \
-            % query_name
+    # pylint: disable-next=consider-using-f-string
+    cmd = "grep -r %s * | grep -v '.xml' | wc -l" % query_name
+    # pylint: disable-next=unused-variable
     (status, output) = commands.getstatusoutput(cmd)
     hits = int(output)
+    # pylint: disable-next=unspecified-encoding
     used = open("used_queries", "a")
+    # pylint: disable-next=unspecified-encoding
     unused = open("unused_queries", "a")
     if hits == 0:
+        # pylint: disable-next=consider-using-f-string
         print("  Unused query: %s" % query_name)
         unused.write(filename + "." + query_name + "\n")
     else:
@@ -53,15 +64,24 @@ def grep_for_hits(filename, query_name):
     used.close()
     unused.close()
 
+
 if __name__ == "__main__":
     cwd = os.getcwd()
     files = sys.argv[1:]
     for filename in files:
+        # pylint: disable-next=consider-using-f-string
         print("Scanning %s" % filename)
-        f = open(filename, 'r')
+        # pylint: disable-next=unspecified-encoding
+        f = open(filename, "r")
         p = xml.parsers.expat.ParserCreate()
 
-        p.StartElementHandler = lambda x, y: start_element(x, y, os.path.basename(filename))
+        p.StartElementHandler = lambda x, y: start_element(
+            # pylint: disable-next=cell-var-from-loop
+            x,
+            y,
+            # pylint: disable-next=cell-var-from-loop
+            os.path.basename(filename),
+        )
         p.EndElementHandler = dummy_element
         p.CharacterDataHandler = dummy_element
 

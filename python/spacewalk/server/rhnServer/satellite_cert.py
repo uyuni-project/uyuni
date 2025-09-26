@@ -122,7 +122,6 @@ class MonitoringSlots(Slots):
 
 
 class SatelliteCert:
-
     """Satellite certificate class
     Usage:
     c = SatelliteCert()

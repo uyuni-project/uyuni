@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+# pylint: disable=missing-module-docstring,invalid-name
 # -*- coding: utf-8 -*-
 
 import sys
@@ -14,6 +15,7 @@ try:
     from spacewalk.common.rhnConfig import CFG, initCFG
     from spacewalk.server import rhnSQL
     from spacewalk.server.rhnPackage import unlink_package_file
+# pylint: disable-next=bare-except
 except:
     _LIBPATH = "/usr/share/rhn"
     # add to the path if need be
@@ -23,38 +25,43 @@ except:
     from server import rhnSQL
     from server.rhnPackage import unlink_package_file
 
-LOG_FILE = '/var/log/rhn/spacewalk-data-fsck.log'
+LOG_FILE = "/var/log/rhn/spacewalk-data-fsck.log"
 
 report_msg = {
-    'file': "%5d files scanned",
-    'exists': "ERROR: %5d files missing on disk",
-    'dbexists': "ERROR: %5d files missing in database",
-    'srpmexists': "ERROR: %5d SRPMs without matching RPM in db",
-    'restore': "ERROR: %5d file paths could not be restored",
-    'size': "ERROR: %5d file size mismatch(es)",
-    'checksum': "ERROR: %5d file checksum mismatch(es)",
-    'nevrao': "ERROR: %5d file NEVRAO mismatch(es)",
+    "file": "%5d files scanned",
+    "exists": "ERROR: %5d files missing on disk",
+    "dbexists": "ERROR: %5d files missing in database",
+    "srpmexists": "ERROR: %5d SRPMs without matching RPM in db",
+    "restore": "ERROR: %5d file paths could not be restored",
+    "size": "ERROR: %5d file size mismatch(es)",
+    "checksum": "ERROR: %5d file checksum mismatch(es)",
+    "nevrao": "ERROR: %5d file NEVRAO mismatch(es)",
 }
 report = {}
 
 
 def is_sha256_capable():
+    # pylint: disable-next=import-outside-toplevel
     import rpm
+    # pylint: disable-next=import-outside-toplevel
     from rhn.stringutils import sstr
+
     ts = rpm.TransactionSet()
-    mi = ts.dbMatch('Providename', 'spacewalk-schema')
+    mi = ts.dbMatch("Providename", "spacewalk-schema")
     cmp = -1
     try:
         h = next(mi)
-        cmp = rpm.labelCompare([sstr(h['name']), sstr(h['version']), sstr(h['release'])],
-                               [sstr(h['name']), '0.8.1', '1'])
+        cmp = rpm.labelCompare(
+            [sstr(h["name"]), sstr(h["version"]), sstr(h["release"])],
+            [sstr(h["name"]), "0.8.1", "1"],
+        )
     except StopIteration:
         pass
-    return (cmp > 0)
+    return cmp > 0
 
 
 def db_init():
-    initCFG('server')
+    initCFG("server")
     rhnSQL.initDB()
 
 
@@ -72,6 +79,7 @@ def package_find_by_src_id():
     return query
 
 
+# pylint: disable-next=redefined-outer-name
 def package_query(options, bind_path=False):
     query = """select %s
                  from %s
@@ -94,6 +102,7 @@ def package_query(options, bind_path=False):
     return query % (columns, tables)
 
 
+# pylint: disable-next=redefined-outer-name
 def check_db_vs_disk(options):
     for k in list(report_msg.keys()):
         report[k] = 0
@@ -109,34 +118,35 @@ def check_db_vs_disk(options):
         if not row:
             break
 
-        if row['path']:
-            abs_path = os.path.join(path_prefix, row['path'])
+        if row["path"]:
+            abs_path = os.path.join(path_prefix, row["path"])
             log(3, abs_path)
-            report['file'] += 1
+            report["file"] += 1
 
             if check_disk_exists(abs_path) == 1:
-                report['exists'] += 1
+                report["exists"] += 1
                 not_on_disk(row, abs_path, options)
             elif options.restore:
-                report['restore'] += check_disk_nevrao(abs_path, row.copy(), True)
+                report["restore"] += check_disk_nevrao(abs_path, row.copy(), True)
             else:
                 if options.size:
-                    report['size'] += check_disk_size(abs_path, row['package_size'])
+                    report["size"] += check_disk_size(abs_path, row["package_size"])
                 if options.nevrao:
-                    report['nevrao'] += check_disk_nevrao(abs_path, row.copy())
+                    report["nevrao"] += check_disk_nevrao(abs_path, row.copy())
                 if options.checksum:
-                    report['checksum'] += check_disk_checksum(abs_path,
-                                                              row['checksum_type'], row['checksum'])
+                    report["checksum"] += check_disk_checksum(
+                        abs_path, row["checksum_type"], row["checksum"]
+                    )
         elif options.restore:
             abs_path = "unknown"
-            report['restore'] += check_disk_nevrao(abs_path, row.copy(), True)
+            report["restore"] += check_disk_nevrao(abs_path, row.copy(), True)
 
     h.close()
     error_found = 0
-    for i in ['file', 'exists', 'restore', 'size', 'nevrao', 'checksum']:
+    for i in ["file", "exists", "restore", "size", "nevrao", "checksum"]:
         if report[i] > 0:
             log(1, report_msg[i] % report[i])
-            if i != 'file':
+            if i != "file":
                 error_found = 1
     return error_found
 
@@ -145,12 +155,15 @@ def check_disk_exists(abs_path):
     return not os.path.isfile(abs_path)
 
 
+# pylint: disable-next=redefined-outer-name
 def not_on_disk(row, abs_path, options):
     if options.remove:
-        log(0, "Removed package path from db: %s" % row['path'])
-        rhnSQL.execute('update rhnPackage set path = NULL where id = :id', id=row['id'])
+        # pylint: disable-next=consider-using-f-string
+        log(0, "Removed package path from db: %s" % row["path"])
+        rhnSQL.execute("update rhnPackage set path = NULL where id = :id", id=row["id"])
         rhnSQL.commit()
     else:
+        # pylint: disable-next=consider-using-f-string
         log(0, "File missing: %s" % abs_path)
 
 
@@ -158,6 +171,7 @@ def check_disk_size(abs_path, size):
     file_size = os.stat(abs_path)[stat.ST_SIZE]
     ret = 0
     if file_size != size:
+        # pylint: disable-next=consider-using-f-string
         log(0, "File size mismatch: %s (%s vs. %s)" % (abs_path, size, file_size))
         ret = 1
     return ret
@@ -166,82 +180,122 @@ def check_disk_size(abs_path, size):
 def check_disk_nevrao(abs_path, row, restore=None):
     file = {}
     try:
-        (_redhat_,
-        file['org_id'],
-        file['checksum_prefix'],
-        file['name'],
-        file['evr'],
-        file['arch'],
-        file['checksum'],
-        file['basename']) = row['path'].split('/')
+        (
+            # pylint: disable-next=invalid-name,unused-variable
+            _redhat_,
+            file["org_id"],
+            file["checksum_prefix"],
+            file["name"],
+            file["evr"],
+            file["arch"],
+            file["checksum"],
+            file["basename"],
+        ) = row["path"].split("/")
     except ValueError:
-        log(0, "File path %s mismatch structure" % row['path'])
+        # pylint: disable-next=consider-using-f-string
+        log(0, "File path %s mismatch structure" % row["path"])
         return 1
     except AttributeError:
         if not restore:
             log(0, "File path missing in DB")
             return 1
-        file['org_id'] = ""
-        file['checksum_prefix'] = ""
-        file['name'] = ""
-        file['evr'] = ""
-        file['arch'] = ""
-        file['checksum'] = ""
-        file['basename'] = ""
+        file["org_id"] = ""
+        file["checksum_prefix"] = ""
+        file["name"] = ""
+        file["evr"] = ""
+        file["arch"] = ""
+        file["checksum"] = ""
+        file["basename"] = ""
 
-    if not row['org_id']:
-        row['org_id'] = 'NULL'
+    if not row["org_id"]:
+        row["org_id"] = "NULL"
     else:
-        row['org_id'] = str(row['org_id'])
-    row['checksum_prefix'] = row['checksum'][:3]
-    if row['epoch']:
-        row['evr'] = row['epoch'] + ':'
+        row["org_id"] = str(row["org_id"])
+    row["checksum_prefix"] = row["checksum"][:3]
+    if row["epoch"]:
+        row["evr"] = row["epoch"] + ":"
     else:
-        row['evr'] = ''
-    row['evr'] += row['version'] + '-' + row['release']
-    row['basename'] = "%s-%s-%s.%s.%s" % (
-        row['name'], row['version'], row['release'],
-        row['arch'], (row.get('path') or "rpm")[-3:])
+        row["evr"] = ""
+    row["evr"] += row["version"] + "-" + row["release"]
+    # pylint: disable-next=consider-using-f-string
+    row["basename"] = "%s-%s-%s.%s.%s" % (
+        row["name"],
+        row["version"],
+        row["release"],
+        row["arch"],
+        (row.get("path") or "rpm")[-3:],
+    )
     ret = 0
-    for key in ('org_id', 'checksum_prefix', 'name', 'evr', 'arch', 'checksum',
-                'basename'):
+    for key in (
+        "org_id",
+        "checksum_prefix",
+        "name",
+        "evr",
+        "arch",
+        "checksum",
+        "basename",
+    ):
         if file[key] != row[key]:
             if is_orphaned_rpm(row["id"]):
+                # pylint: disable-next=inconsistent-quotes
                 log(0, f"{row['basename']} is orphaned, consider removing it")
             else:
-                log(0, f"File path mismatch: {abs_path} ({key}: {row[key]} vs. {file[key]})")
+                log(
+                    0,
+                    f"File path mismatch: {abs_path} ({key}: {row[key]} vs. {file[key]})",
+                )
             if restore:
+                # pylint: disable-next=consider-using-f-string
                 log(2, "Beginning file path restoration: %s" % abs_path)
                 return restore_file_path(file, row)
             ret = 1
     return ret
 
 
+# pylint: disable-next=unused-argument
 def restore_file_path(file, row):
-    prefix = CFG.MOUNT_POINT + '/'
-    new_path = 'packages/' + row['org_id'] + '/' + row['checksum_prefix'] + '/' + row['name'] + \
-        '/' + row['evr'] + '/' + row['arch'] + '/' + row['checksum'] + '/' + row['basename']
-    query = "update rhnPackage set path=\'" + new_path + "\' where id=" + str(row['id'])
+    prefix = CFG.MOUNT_POINT + "/"
+    new_path = (
+        "packages/"
+        + row["org_id"]
+        + "/"
+        + row["checksum_prefix"]
+        + "/"
+        + row["name"]
+        + "/"
+        + row["evr"]
+        + "/"
+        + row["arch"]
+        + "/"
+        + row["checksum"]
+        + "/"
+        + row["basename"]
+    )
+    query = "update rhnPackage set path='" + new_path + "' where id=" + str(row["id"])
     new_path = prefix + new_path
 
-    if row['path']:
-        backup_path = prefix + row['path']
-    if (os.path.isfile(new_path) and
-       check_disk_checksum(new_path, row['checksum_type'], row['checksum']) == 0):
-            backup_path = tempfile.mkdtemp() + new_path
-            os.makedirs(backup_path.rsplit('/', 1)[0])
-            log(0, "Target file path exists, moving to: %s" % backup_path)
-            shutil.move(new_path, backup_path)
-    elif not row['path']:
+    if row["path"]:
+        backup_path = prefix + row["path"]
+    if (
+        os.path.isfile(new_path)
+        and check_disk_checksum(new_path, row["checksum_type"], row["checksum"]) == 0
+    ):
+        backup_path = tempfile.mkdtemp() + new_path
+        os.makedirs(backup_path.rsplit("/", 1)[0])
+        # pylint: disable-next=consider-using-f-string
+        log(0, "Target file path exists, moving to: %s" % backup_path)
+        shutil.move(new_path, backup_path)
+    elif not row["path"]:
         # path is empty - unable to restore
         return delete_package_entry(row)
 
     cleanup = True
     try:  # 1st, make dirs needed
-        os.makedirs(new_path.rsplit('/', 1)[0])
+        os.makedirs(new_path.rsplit("/", 1)[0])
     except OSError as e:
         if e.errno != 17:  # something broke up
-            log(0, "File path restoration failed: %s" % row['path'])
+            # pylint: disable-next=consider-using-f-string
+            log(0, "File path restoration failed: %s" % row["path"])
             return 1
         else:
             cleanup = False  # dir already exists, do not cleanup
@@ -249,13 +303,20 @@ def restore_file_path(file, row):
         if not os.path.isfile(new_path):
             shutil.move(backup_path, new_path)
     except OSError:
-        log(0, "File path restoration failed, rolling back: %s" % row['path'])
+        # pylint: disable-next=consider-using-f-string
+        log(0, "File path restoration failed, rolling back: %s" % row["path"])
+        # pylint: disable-next=singleton-comparison
         if cleanup == True:
             try:
-                os.removedirs(new_path.rsplit('/', 1)[0])
+                os.removedirs(new_path.rsplit("/", 1)[0])
             except OSError as e:
                 if e.errno != 39:
-                    log(0, "Could not rollback file path restoration: %s" % row['path'] or '')
+                    log(
+                        0,
+                        # pylint: disable-next=consider-using-f-string
+                        "Could not rollback file path restoration: %s" % row["path"]
+                        or "",
+                    )
                     return 1
         return
     h = rhnSQL.prepare(query)
@@ -265,19 +326,25 @@ def restore_file_path(file, row):
         if backup_path:
             if os.path.isfile(backup_path):
                 os.remove(backup_path)
-            os.removedirs(backup_path.rsplit('/', 1)[0])
+            os.removedirs(backup_path.rsplit("/", 1)[0])
     except OSError as e:
         if e.errno == 2:
-            log(2, "File %s%s was removed by someone else but transaction has been successfully completed" %
-                (prefix, row['path']))
+            log(
+                2,
+                # pylint: disable-next=consider-using-f-string
+                "File %s%s was removed by someone else but transaction has been successfully completed"
+                % (prefix, row["path"]),
+            )
         elif e.errno != 39:
             log(4, "Unexpected error, computer is going to self destruct")
+    # pylint: disable-next=consider-using-f-string
     log(0, "File successfully restored, new file path: %s" % new_path)
     return 0
 
+
 def delete_package_entry(row):
-    query1 = "delete from rhnChannelPackage where package_id=" + str(row['id'])
-    query2 = "delete from rhnPackage where id=" + str(row['id'])
+    query1 = "delete from rhnChannelPackage where package_id=" + str(row["id"])
+    query2 = "delete from rhnPackage where id=" + str(row["id"])
     try:
         h = rhnSQL.prepare(query1)
         h.execute()
@@ -285,26 +352,36 @@ def delete_package_entry(row):
         h.execute()
         rhnSQL.commit()
         log(0, "Successfully removed DB package entry without path")
+    # pylint: disable-next=broad-exception-caught
     except Exception as e:
         log(0, "Failed to remove DB package entry: ", e)
         return 1
     return 0
 
+
 def check_disk_checksum(abs_path, checksum_type, db_checksum):
     file_checksum = None
     ret = 0
     try:
-        fp = open(abs_path, 'rb')
+        fp = open(abs_path, "rb")
         h = checksum.getHashlibInstance(checksum_type, False)
         h.update(fp.read())
         file_checksum = h.hexdigest()
         fp.close()
+    # pylint: disable-next=broad-exception-caught
     except Exception as exc:
+        # pylint: disable-next=consider-using-f-string
         log(0, "Unable to calculate checksum: {}".format(str(exc)))
         ret = 1
 
     if file_checksum is not None and file_checksum != db_checksum:
-        log(0, "File checksum mismatch: %s (%s: %s vs. %s)" % (abs_path, checksum_type, db_checksum, file_checksum))
+        log(
+            0,
+            # pylint: disable-next=consider-using-f-string
+            "File checksum mismatch: %s (%s: %s vs. %s)"
+            % (abs_path, checksum_type, db_checksum, file_checksum),
+        )
+        # pylint: disable-next=possibly-used-before-assignment
         if options.remove_mismatch:
             remove_mismatch(abs_path, options)
         ret = 1
@@ -312,18 +389,20 @@ def check_disk_checksum(abs_path, checksum_type, db_checksum):
     return ret
 
 
+# pylint: disable-next=unused-argument,unused-argument
 def check_disk_vs_db(disk_content=None, db_content=None):
     for k in list(report_msg.keys()):
         report[k] = 0
     query = package_query(options, bind_path=True)
     h = rhnSQL.prepare(query)
-    for root, dirs, files in os.walk(os.path.join(CFG.MOUNT_POINT, 'packages')):
-        rel_root = root[len(CFG.MOUNT_POINT) + 1:]
+    # pylint: disable-next=unused-variable
+    for root, dirs, files in os.walk(os.path.join(CFG.MOUNT_POINT, "packages")):
+        rel_root = root[len(CFG.MOUNT_POINT) + 1 :]
         for f in files:
             abs_path = os.path.join(root, f)
             rel_path = os.path.join(rel_root, f)
             log(3, abs_path)
-            report['file'] += 1
+            report["file"] += 1
 
             h.execute(path=rel_path)
             row = h.fetchone_dict()
@@ -331,33 +410,36 @@ def check_disk_vs_db(disk_content=None, db_content=None):
             if not row:
                 if (not is_srpm(f)) or is_orphaned_srpm(abs_path, f):
                     if is_srpm(f):
-                        report['srpmexists'] += 1
+                        report["srpmexists"] += 1
                     else:
-                        report['dbexists'] += 1
+                        report["dbexists"] += 1
                     not_in_db(abs_path, options)
                 continue
 
             if options.size and options.fs_only:
-                report['size'] += check_disk_size(abs_path, row['package_size'])
+                report["size"] += check_disk_size(abs_path, row["package_size"])
             if options.nevrao and options.fs_only:
-                report['nevrao'] += check_disk_nevrao(abs_path, row.copy())
+                report["nevrao"] += check_disk_nevrao(abs_path, row.copy())
             if options.checksum and options.fs_only:
-                report['checksum'] += check_disk_checksum(abs_path,
-                                                          row['checksum_type'], row['checksum'])
+                report["checksum"] += check_disk_checksum(
+                    abs_path, row["checksum_type"], row["checksum"]
+                )
     h.close()
     error_found = 0
-    for i in ['file', 'dbexists', 'srpmexists', 'size', 'nevrao', 'checksum']:
+    for i in ["file", "dbexists", "srpmexists", "size", "nevrao", "checksum"]:
         if report[i] > 0:
             log(1, report_msg[i] % report[i])
-            if i != 'file':
+            if i != "file":
                 error_found = 1
     return error_found
+
 
 def is_srpm(file):
     if file.find("src.rpm") != -1:
         return True
     else:
         return False
+
 
 def is_orphaned_rpm(package_id: int) -> bool:
     if not isinstance(package_id, int):
@@ -377,6 +459,7 @@ def is_orphaned_rpm(package_id: int) -> bool:
     # Package is an orphan when not associated with any channel
     return not row.get("exists", True)
 
+
 def is_orphaned_srpm(path, file):
     if is_srpm(file):
         query = src_package_query()
@@ -389,58 +472,111 @@ def is_orphaned_srpm(path, file):
             return True
         query = package_find_by_src_id()
         h = rhnSQL.prepare(query)
-        h.execute(id=row['source_rpm_id'])
+        h.execute(id=row["source_rpm_id"])
         row = h.fetchone_dict()
         if not row:
+            # pylint: disable-next=consider-using-f-string
             log(0, "SRPM without matching RPM in db: %s" % (path))
             return True
 
     return False
 
+
+# pylint: disable-next=redefined-outer-name
 def not_in_db(path, options):
     if options.remove:
         if is_srpm(path):
+            # pylint: disable-next=consider-using-f-string
             log(0, "Removed SRPM without matching RPM in db: %s" % (path))
         else:
+            # pylint: disable-next=consider-using-f-string
             log(0, "Removed file missing in db: %s" % (path))
         unlink_package_file(path)
     else:
         if not is_srpm(path):
+            # pylint: disable-next=consider-using-f-string
             log(0, "File missing in db: %s" % (path))
 
+
+# pylint: disable-next=redefined-outer-name,unused-argument
 def remove_mismatch(path, options):
+    # pylint: disable-next=consider-using-f-string
     log(0, "Removed file because checksum does not match: %s" % (path))
     unlink_package_file(path)
 
+
+# pylint: disable-next=redefined-outer-name
 def log(level, *args):
     log_debug(level, *args)
     verbose = options.verbose
     if not verbose:
         verbose = 0
     if verbose >= level:
-        print((', '.join([str(i) for i in args])))
+        print((", ".join([str(i) for i in args])))
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
 
     options_table = [
-        Option("-v", "--verbose",       action="count",
-               help="Increase verbosity"),
-        Option("-S", "--no-size",       action="store_false", dest="size", default=True,
-               help="Don't check package size"),
-        Option("-C", "--no-checksum",   action="store_false", dest="checksum", default=True,
-               help="Don't check package checksum"),
-        Option("-O", "--no-nevrao",     action="store_false", dest="nevrao", default=True,
-               help="Don't check package name, epoch, version, release, arch, org"),
-        Option("-d", "--db-only",       action="store_true",
-               help="Check only if packages from database are present on filesystem"),
-        Option("-f", "--fs-only",       action="store_true",
-               help="Check only if packages from filesystem are in the database"),
-        Option("-r", "--remove",        action="store_true",
-               help="Automatically remove packages from filesystem not present in database"),
-        Option("-R", "--remove-mismatch", action="store_true", dest="remove_mismatch", default=False,
-               help="Automatically remove packages from filesystem that does not match the checksum stored in database. (not valid with --db-only)"),
-        Option("-F", "--fix-file-path", action="store_true", dest="restore", default=False,
-               help="Restores file paths, try this when you have NEVRAO mismatches. Do not run this command with another commands"),
+        Option("-v", "--verbose", action="count", help="Increase verbosity"),
+        Option(
+            "-S",
+            "--no-size",
+            action="store_false",
+            dest="size",
+            default=True,
+            help="Don't check package size",
+        ),
+        Option(
+            "-C",
+            "--no-checksum",
+            action="store_false",
+            dest="checksum",
+            default=True,
+            help="Don't check package checksum",
+        ),
+        Option(
+            "-O",
+            "--no-nevrao",
+            action="store_false",
+            dest="nevrao",
+            default=True,
+            help="Don't check package name, epoch, version, release, arch, org",
+        ),
+        Option(
+            "-d",
+            "--db-only",
+            action="store_true",
+            help="Check only if packages from database are present on filesystem",
+        ),
+        Option(
+            "-f",
+            "--fs-only",
+            action="store_true",
+            help="Check only if packages from filesystem are in the database",
+        ),
+        Option(
+            "-r",
+            "--remove",
+            action="store_true",
+            help="Automatically remove packages from filesystem not present in database",
+        ),
+        Option(
+            "-R",
+            "--remove-mismatch",
+            action="store_true",
+            dest="remove_mismatch",
+            default=False,
+            help="Automatically remove packages from filesystem that does not match the checksum stored in database. (not valid with --db-only)",
+        ),
+        Option(
+            "-F",
+            "--fix-file-path",
+            action="store_true",
+            dest="restore",
+            default=False,
+            help="Restores file paths, try this when you have NEVRAO mismatches. Do not run this command with another commands",
+        ),
     ]
     parser = OptionParser(option_list=options_table)
     (options, args) = parser.parse_args()
@@ -452,7 +588,10 @@ if __name__ == '__main__':
     exit_value = 0
     if options.remove_mismatch:
         if options.db_only or not options.checksum:
-            log(0, "Syntax error: The option --remove-mismatch cannot be used with --db-only or --no-checksum")
+            log(
+                0,
+                "Syntax error: The option --remove-mismatch cannot be used with --db-only or --no-checksum",
+            )
             sys.exit(1)
     if not options.fs_only:
         log(1, "Checking if packages from database are present on filesystem")

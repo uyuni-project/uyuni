@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+# pylint: disable=missing-module-docstring
 #
 # Displays a summary of Taskomatic activities in progress
 #
@@ -27,45 +28,87 @@ from spacewalk.server import rhnSQL
 from io import BytesIO
 
 
-DEFAULT_LOGFILE = './taskotop.log'
+DEFAULT_LOGFILE = "./taskotop.log"
 
-parser = argparse.ArgumentParser(description="Taskotop is a tool to monitor what taskomatic " +
-                                 "is currently doing.")
+parser = argparse.ArgumentParser(
+    description="Taskotop is a tool to monitor what taskomatic " + "is currently doing."
+)
 mode_group = parser.add_mutually_exclusive_group()
-mode_group.add_argument("-e", "--each-task", action="store_true",
-                    dest="eachTask",
-                    help="Display most recent run for each task instead of recent task run history.")
-mode_group.add_argument("-r", "--recent-history", action="store_true",
-                    dest="recentHistory",
-                    help="Display recent history of task runs.  This is the default display mode.")
-parser.add_argument("-H", "--human-readable", action="store_true",
-                    dest="humanReadable",
-                    help="Use human readable time output.  Time will be displayed " +
-                    "in the format [[days:]hours:]min:sec instead of total seconds.")
-parser.add_argument("-m", "--max-age", type=int,
-                    dest="maxAge", default=60,
-                    help="Retrieve past events up to this old (in seconds, default 60). " +
-                    "This has no effect if -e/--each-task is specified.")
-parser.add_argument("-n", type=int,
-                    dest="numIterations", default=0,
-                    help="taskotop will iterate the specified number of times and then exit. " +
-                    "If not specified or 0 (the default), taskotop will run until the user exits taskotop.")
-parser.add_argument("-t", "--taskomatic", action="store_true",
-                    dest="displayTaskomatic",
-                    help="Include taskomaticd process information in the output.")
-parser.add_argument("-v", "--verbose", action="count",
-                    dest="verbose", default=0,
-                    help="Increase log output verbosity.  Specify multiple times, up to 4 " +
-                    "to increase verbosity.")
-parser.add_argument("--hide-elapsed", action="store_true",
-                    dest="hideElapsed",
-                    help="Hide the ELAPSED column in the display.")
-parser.add_argument("--show-start", action="store_true",
-                    dest="showStart",
-                    help="Include the START column in the display.")
-parser.add_argument("--logfile", dest="logfile", default=DEFAULT_LOGFILE,
-                    help="Specify logfile to use if at least one verbose arg specified.  " +
-                    "Default is %s" % DEFAULT_LOGFILE)
+mode_group.add_argument(
+    "-e",
+    "--each-task",
+    action="store_true",
+    dest="eachTask",
+    help="Display most recent run for each task instead of recent task run history.",
+)
+mode_group.add_argument(
+    "-r",
+    "--recent-history",
+    action="store_true",
+    dest="recentHistory",
+    help="Display recent history of task runs.  This is the default display mode.",
+)
+parser.add_argument(
+    "-H",
+    "--human-readable",
+    action="store_true",
+    dest="humanReadable",
+    help="Use human readable time output.  Time will be displayed "
+    + "in the format [[days:]hours:]min:sec instead of total seconds.",
+)
+parser.add_argument(
+    "-m",
+    "--max-age",
+    type=int,
+    dest="maxAge",
+    default=60,
+    help="Retrieve past events up to this old (in seconds, default 60). "
+    + "This has no effect if -e/--each-task is specified.",
+)
+parser.add_argument(
+    "-n",
+    type=int,
+    dest="numIterations",
+    default=0,
+    help="taskotop will iterate the specified number of times and then exit. "
+    + "If not specified or 0 (the default), taskotop will run until the user exits taskotop.",
+)
+parser.add_argument(
+    "-t",
+    "--taskomatic",
+    action="store_true",
+    dest="displayTaskomatic",
+    help="Include taskomaticd process information in the output.",
+)
+parser.add_argument(
+    "-v",
+    "--verbose",
+    action="count",
+    dest="verbose",
+    default=0,
+    help="Increase log output verbosity.  Specify multiple times, up to 4 "
+    + "to increase verbosity.",
+)
+parser.add_argument(
+    "--hide-elapsed",
+    action="store_true",
+    dest="hideElapsed",
+    help="Hide the ELAPSED column in the display.",
+)
+parser.add_argument(
+    "--show-start",
+    action="store_true",
+    dest="showStart",
+    help="Include the START column in the display.",
+)
+parser.add_argument(
+    "--logfile",
+    dest="logfile",
+    default=DEFAULT_LOGFILE,
+    help="Specify logfile to use if at least one verbose arg specified.  "
+    # pylint: disable-next=consider-using-f-string
+    + "Default is %s" % DEFAULT_LOGFILE,
+)
 args = parser.parse_args()
 
 DISPLAY_TASKOMATIC = args.displayTaskomatic
@@ -79,57 +122,81 @@ MAXIMUM_AGE = args.maxAge
 LOGGING_ENABLED = False
 
 INTERACTIVE_HELP = [
-"Help for taskotop interactive commands",
-"",
-"  e    Change display mode to show each task's latest run.",
-"  h    Display this help page.",
-"  H    Toggle human readable format.  This toggles the time display between",
-"       [[days:]hours:]min:sec format and total seconds.",
-"  q    Quit taskotop.",
-"  r    Change display mode to show recent history of task runs.",
-"  t    Toggle taskomatic process information display.",
-""
+    "Help for taskotop interactive commands",
+    "",
+    "  e    Change display mode to show each task's latest run.",
+    "  h    Display this help page.",
+    "  H    Toggle human readable format.  This toggles the time display between",
+    "       [[days:]hours:]min:sec format and total seconds.",
+    "  q    Quit taskotop.",
+    "  r    Change display mode to show recent history of task runs.",
+    "  t    Toggle taskomatic process information display.",
+    "",
 ]
 
 
+# pylint: disable-next=redefined-outer-name
 def log_debug(msg, *args, **kwargs):
     if LOGGING_ENABLED:
         logging.debug(msg, *args, **kwargs)
 
+
+# pylint: disable-next=redefined-outer-name
 def log_info(msg, *args, **kwargs):
     if LOGGING_ENABLED:
         logging.info(msg, *args, **kwargs)
 
+
+# pylint: disable-next=redefined-outer-name
 def log_warning(msg, *args, **kwargs):
     if LOGGING_ENABLED:
         logging.warning(msg, *args, **kwargs)
 
+
+# pylint: disable-next=redefined-outer-name
 def log_error(msg, *args, **kwargs):
     if LOGGING_ENABLED:
         logging.error(msg, *args, **kwargs)
 
+
 class CursesDisplayBuilder:
     """Builder class to make laying out a curses display in a table format easier"""
+
     JUSTIFY_LEFT = 0
     JUSTIFY_CENTER = 1
     JUSTIFY_RIGHT = 2
     row = []
 
-    def add_column(self, width, heading, heading_justify, data_justify, format_data_callable, data_key = ""):
-        self.row.append(CursesDisplayColumn(width,
-                                       heading,
-                                       heading_justify,
-                                       data_justify,
-                                       format_data_callable,
-                                       data_key))
+    def add_column(
+        self,
+        width,
+        heading,
+        heading_justify,
+        data_justify,
+        format_data_callable,
+        data_key="",
+    ):
+        self.row.append(
+            CursesDisplayColumn(
+                width,
+                heading,
+                heading_justify,
+                data_justify,
+                format_data_callable,
+                data_key,
+            )
+        )
 
     def string_of_length(self, length, char="*"):
         retval = ""
+        # pylint: disable-next=unused-variable
         for i in range(0, length):
             retval += char
         return retval
 
-    def add_column_value_to_screen(self, screen, value, ypos, xpos, column_width, justify, maxy, maxx):
+    def add_column_value_to_screen(
+        self, screen, value, ypos, xpos, column_width, justify, maxy, maxx
+    ):
         if len(value) > column_width:
             value = self.string_of_length(column_width)
         addxpos = int(xpos + justify * (column_width - len(value)) / 2)
@@ -138,14 +205,18 @@ class CursesDisplayBuilder:
         # visible
         if ypos == maxy - 1 and addxpos + len(value) == maxx:
             value = value[0:-1]
-        log_debug('y=%d x=%d value \'%s\'  value length %d' % (ypos, addxpos, value, len(value)))
+        log_debug(
+            # pylint: disable-next=consider-using-f-string
+            "y=%d x=%d value '%s'  value length %d" % (ypos, addxpos, value, len(value))
+        )
         if len(value) > 0:
             screen.addstr(ypos, addxpos, value)
         return column_width
 
-    def output_to_screen(self, screen, data, starty = 0):
+    def output_to_screen(self, screen, data, starty=0):
         maxy, maxx = screen.getmaxyx()
-        log_debug('maxy, maxx is %d %d' % (maxy, maxx))
+        # pylint: disable-next=consider-using-f-string
+        log_debug("maxy, maxx is %d %d" % (maxy, maxx))
         last_column_to_display = 0
         current_width = 0
         for column in self.row:
@@ -154,38 +225,76 @@ class CursesDisplayBuilder:
                 current_width += column.width + 1
             else:
                 break
-            log_debug('column \'%s\': width %d, next column starts at %d' % (column.heading, column.width, current_width))
+            log_debug(
+                # pylint: disable-next=consider-using-f-string
+                "column '%s': width %d, next column starts at %d"
+                % (column.heading, column.width, current_width)
+            )
 
         current_row = 0
         if current_row + starty < maxy:
             current_x = 0
-            for colindex in range (0, last_column_to_display):
+            for colindex in range(0, last_column_to_display):
                 column = self.row[colindex]
                 width = column.width
                 if width == -1:
                     width = maxx - current_x
                 value = column.heading
-                current_x += self.add_column_value_to_screen(screen, value, current_row + starty, current_x, width, column.heading_justify, maxy, maxx) + 1
+                current_x += (
+                    self.add_column_value_to_screen(
+                        screen,
+                        value,
+                        current_row + starty,
+                        current_x,
+                        width,
+                        column.heading_justify,
+                        maxy,
+                        maxx,
+                    )
+                    + 1
+                )
             current_row += 1
 
         for rowdata in data:
             if current_row + starty >= maxy:
                 break
             current_x = 0
-            for colindex in range (0, last_column_to_display):
+            for colindex in range(0, last_column_to_display):
                 column = self.row[colindex]
                 width = column.width
                 if width == -1:
                     width = maxx - current_x
                 value = column.format_data_callable(rowdata, column.data_key, width)
-                current_x += self.add_column_value_to_screen(screen, value, current_row + starty, current_x, width, column.data_justify, maxy, maxx) + 1
+                current_x += (
+                    self.add_column_value_to_screen(
+                        screen,
+                        value,
+                        current_row + starty,
+                        current_x,
+                        width,
+                        column.data_justify,
+                        maxy,
+                        maxx,
+                    )
+                    + 1
+                )
             current_row += 1
 
         return current_row - 1
 
+
 class CursesDisplayColumn:
     """Data structure for representing a column within CursesDisplayBuilder"""
-    def __init__(self, width, heading, heading_justify, data_justify, format_data_callable, data_key = ""):
+
+    def __init__(
+        self,
+        width,
+        heading,
+        heading_justify,
+        data_justify,
+        format_data_callable,
+        data_key="",
+    ):
         self.width = width
         self.heading = heading
         self.heading_justify = heading_justify
@@ -196,7 +305,8 @@ class CursesDisplayColumn:
 
 def get_tasko_runs_newer_than_age(maximum_age):
     """Returns data about recent Taskomatic task runs from the database."""
-    task_query = rhnSQL.prepare("""
+    task_query = rhnSQL.prepare(
+        """
         SELECT
             task.name AS name,
             run.id AS id,
@@ -214,16 +324,19 @@ def get_tasko_runs_newer_than_age(maximum_age):
                     AND (run.end_time IS NULL OR run.end_time > :timelimit)
 
             ORDER BY end_time DESC NULLS FIRST, start_time ASC
-    """);
+    """
+    )
     # trim those older than maximum_age
-    task_query.execute(timelimit = datetime.datetime.now() - datetime.timedelta(seconds=maximum_age))
+    task_query.execute(
+        timelimit=datetime.datetime.now() - datetime.timedelta(seconds=maximum_age)
+    )
 
     # HACK: simulate fetchall_dict() in such a way BLOBs are only read once
     # (otherwise we get exceptions)
     result = []
     row = task_query.fetchone_dict()
     while row is not None:
-        row["data"] =  rhnSQL.read_lob(row["data"])
+        row["data"] = rhnSQL.read_lob(row["data"])
         result.append(row)
         row = task_query.fetchone_dict()
     return result
@@ -231,7 +344,8 @@ def get_tasko_runs_newer_than_age(maximum_age):
 
 def get_tasko_runs_latest_each_task():
     """Returns data about latest of each Taskomatic task runs from the database."""
-    task_query = rhnSQL.prepare("""
+    task_query = rhnSQL.prepare(
+        """
         SELECT
             task.name AS name,
             run.id AS id,
@@ -251,7 +365,8 @@ def get_tasko_runs_latest_each_task():
                 JOIN rhnTaskoTask task ON task.id = template.task_id
 
             ORDER BY end_time DESC NULLS FIRST, start_time ASC
-    """);
+    """
+    )
 
     task_query.execute()
 
@@ -260,7 +375,7 @@ def get_tasko_runs_latest_each_task():
     result = []
     row = task_query.fetchone_dict()
     while row is not None:
-        row["data"] =  rhnSQL.read_lob(row["data"])
+        row["data"] = rhnSQL.read_lob(row["data"])
         result.append(row)
         row = task_query.fetchone_dict()
     return result
@@ -271,28 +386,38 @@ def get_channel_names(ids):
     if len(ids) == 0:
         return []
 
-    query = rhnSQL.prepare("""
+    query = rhnSQL.prepare(
+        # pylint: disable-next=consider-using-f-string
+        """
         SELECT DISTINCT label
             FROM rhnChannel
             WHERE id IN ({0})
             ORDER BY label
-    """.format(",".join(ids)));
+    """.format(
+            ",".join(ids)
+        )
+    )
     query.execute()
 
     return [tuple[0] for tuple in query.fetchall()]
 
+
 def get_current_repodata_channel_names():
     """Gets the channel names of currenlty running repodata tasks from the database."""
-    query = rhnSQL.prepare("""
+    query = rhnSQL.prepare(
+        """
         SELECT DISTINCT channel_label
             FROM rhnRepoRegenQueue
             WHERE next_action IS NULL
             ORDER BY channel_label
-    """);
+    """
+    )
     query.execute()
 
     return [row[0] for row in query.fetchall()]
 
+
+# pylint: disable-next=redefined-builtin
 def extract_channel_ids(bytes):
     """Extracts channel ids from a Java Map in serialized form."""
     # HACK: this heuristicallty looks for strings, which are marked with 't',
@@ -310,20 +435,24 @@ def extract_channel_ids(bytes):
             oldpos = io.tell()
             try:
                 length = struct.unpack(">H", io.read(2))[0]
+                # pylint: disable-next=consider-using-f-string
                 java_string = struct.unpack(">{0}s".format(length), io.read(length))
                 java_strings += java_string
             except struct.error:
-                pass # not a real string, ignore
+                pass  # not a real string, ignore
             io.seek(oldpos)
     # of those found, filter the ones looking like a number
-    return [java_string.decode() for java_string in java_strings if java_string.isdigit()]
+    return [
+        java_string.decode() for java_string in java_strings if java_string.isdigit()
+    ]
+
 
 # column indexes for ps output
-IX_PID  = 0
+IX_PID = 0
 IX_PPID = 1
 IX_PCPU = 2
 IX_PMEM = 3
-IX_RSS  = 4
+IX_RSS = 4
 IX_TIME = 5
 # comm can have whitespace, but taskomaticd does not and
 # is the only process for which we parse start time.  As
@@ -337,43 +466,62 @@ IX_START_DAY = 9
 IX_START_TIME = 10
 IX_START_YEAR = 11
 
+
 def taskomaticd_ps():
     """use ps command to retrieve pids[], cputimeseconds, cpupercent, memsize, mempercent, upsince"""
+    # pylint: disable-next=import-outside-toplevel
     import subprocess
+
     pids = []
     upsince = ""
     cputimeseconds = 0
     cpupercent = 0.0
     mempercent = 0.0
     memsize = 0
-    out = subprocess.Popen(['ps', '--no-headers', '-eHo', 'pid,ppid,pcpu,pmem,rss,time,comm,lstart'],
-    stdout=subprocess.PIPE).communicate()[0].splitlines()
+    out = (
+        subprocess.Popen(
+            ["ps", "--no-headers", "-eHo", "pid,ppid,pcpu,pmem,rss,time,comm,lstart"],
+            stdout=subprocess.PIPE,
+        )
+        .communicate()[0]
+        .splitlines()
+    )
     for line in out:
         values = line.split()
-        if (values[IX_COMM] == "taskomaticd" or values[IX_PPID] in pids):
+        if values[IX_COMM] == "taskomaticd" or values[IX_PPID] in pids:
             pids.append(values[IX_PID])
             if not upsince:
-                upsince = '%s %s %s %s' % (values[IX_START_DAY], values[IX_START_MON], values[IX_START_YEAR], values[IX_START_TIME])
+                # pylint: disable-next=consider-using-f-string
+                upsince = "%s %s %s %s" % (
+                    values[IX_START_DAY],
+                    values[IX_START_MON],
+                    values[IX_START_YEAR],
+                    values[IX_START_TIME],
+                )
             cputimeseconds += seconds_from_time(values[IX_TIME])
             cpupercent += float(values[IX_PCPU])
             mempercent += float(values[IX_PMEM])
             memsize += int(values[IX_RSS])
     return pids, cputimeseconds, cpupercent, memsize, mempercent, upsince
 
+
+# pylint: disable-next=redefined-outer-name
 def seconds_from_time(time):
     """convert time in [DD-]hh:mm:ss format to total seconds"""
-    parts = time.split(':')
+    parts = time.split(":")
     days = 0
     hours = 0
+    # pylint: disable-next=redefined-builtin
     min = int(parts[1])
     sec = int(parts[2])
-    if '-' in parts[0]:
-        dh = parts[0].split('-')
+    if "-" in parts[0]:
+        dh = parts[0].split("-")
         days = int(dh[0])
         hours = int(dh[1])
     else:
         hours = int(parts[0])
     return (((((days * 24) + hours) * 60) + min) * 60) + sec
+
 
 def add_line(screen, line, ypos):
     """Truncate the given line and add it to the screen at the specified position"""
@@ -388,40 +536,57 @@ def add_line(screen, line, ypos):
     if ypos == maxy - 1:
         last_line = 1
     if len(line) > maxx - last_line:
-        line = line[0:maxx - last_line]
+        line = line[0 : maxx - last_line]
     screen.addstr(ypos, 0, line)
     return 1
+
 
 def show_taskomatic_header(screen):
     """Get taskomatic telemetry and display up to maxy, maxx"""
     ypos = 0
     try:
-        pids, cputimeseconds, cpupercent, memsize, mempercent, upsince = taskomaticd_ps()
-        line = 'taskomaticd is not running'
+        pids, cputimeseconds, cpupercent, memsize, mempercent, upsince = (
+            taskomaticd_ps()
+        )
+        line = "taskomaticd is not running"
 
-        if (len(pids) > 0):
-            line = 'taskomaticd pid: %s  up since: %s  child processes: %d' % (pids[0], upsince, len(pids) - 1)
+        if len(pids) > 0:
+            # pylint: disable-next=consider-using-f-string
+            line = "taskomaticd pid: %s  up since: %s  child processes: %d" % (
+                pids[0],
+                upsince,
+                len(pids) - 1,
+            )
         ypos += add_line(screen, line, ypos)
 
         if HUMAN_READABLE:
-            line = 'cpu %%: %2.1f  cpu total time: %s' % (cpupercent, seconds_to_hms_string(cputimeseconds))
+            # pylint: disable-next=consider-using-f-string
+            line = "cpu %%: %2.1f  cpu total time: %s" % (
+                cpupercent,
+                seconds_to_hms_string(cputimeseconds),
+            )
         else:
-            line = 'cpu %%: %2.1f  cpu total seconds: %d' % (cpupercent, cputimeseconds)
+            # pylint: disable-next=consider-using-f-string
+            line = "cpu %%: %2.1f  cpu total seconds: %d" % (cpupercent, cputimeseconds)
         ypos += add_line(screen, line, ypos)
 
-        line = 'mem %%: %2.1f  mem total (kB): %d' % (mempercent, memsize)
+        # pylint: disable-next=consider-using-f-string
+        line = "mem %%: %2.1f  mem total (kB): %d" % (mempercent, memsize)
         ypos += add_line(screen, line, ypos)
+    # pylint: disable-next=broad-exception-caught
     except Exception:
-        log_error('failed to issue ps command to retrieve taskomaticd information')
-        line = 'failed to issue ps command to retrieve taskomaticd information'
+        log_error("failed to issue ps command to retrieve taskomaticd information")
+        line = "failed to issue ps command to retrieve taskomaticd information"
         ypos += add_line(screen, line, ypos)
     return ypos
+
 
 def display_interactive_help(screen):
     """Display the interactive help on the screen"""
     log_debug("Displaying interactive help")
     while True:
         screen.erase()
+        # pylint: disable-next=unused-variable
         maxy, maxx = screen.getmaxyx()
         ypos = 0
         for line in INTERACTIVE_HELP:
@@ -435,29 +600,33 @@ def display_interactive_help(screen):
             c = screen.getch()
             if c > -1 and c < 256:
                 break
+        # pylint: disable-next=broad-exception-caught
         except Exception:
             pass
+
 
 def process_interactive_input(c, screen):
     """Process the interactive input from the user"""
     global DISPLAY_MODE
     global HUMAN_READABLE
     global DISPLAY_TASKOMATIC
-    if c == ord('q'):
+    if c == ord("q"):
         system_exit(0)
-    elif c == ord('e'):
+    elif c == ord("e"):
         DISPLAY_MODE = DISPLAY_MODE_EACH_TASK
-        log_debug('Display Mode is now Each Task')
-    elif c == ord('r'):
+        log_debug("Display Mode is now Each Task")
+    elif c == ord("r"):
         DISPLAY_MODE = DISPLAY_MODE_RECENT_HISTORY
-        log_debug('Display Mode is now Recent History')
-    elif c == ord('H'):
+        log_debug("Display Mode is now Recent History")
+    elif c == ord("H"):
         HUMAN_READABLE = not HUMAN_READABLE
-        log_debug('HUMAN_READABLE is now %s' % HUMAN_READABLE)
-    elif c == ord('t'):
+        # pylint: disable-next=consider-using-f-string
+        log_debug("HUMAN_READABLE is now %s" % HUMAN_READABLE)
+    elif c == ord("t"):
         DISPLAY_TASKOMATIC = not DISPLAY_TASKOMATIC
-        log_debug('DISPLAY_TASKOMATIC is now %s' % DISPLAY_TASKOMATIC)
-    elif c == ord('h'):
+        # pylint: disable-next=consider-using-f-string
+        log_debug("DISPLAY_TASKOMATIC is now %s" % DISPLAY_TASKOMATIC)
+    elif c == ord("h"):
         # turn off half delay with nocbreak(), then
         # turn cbreak back on so no need to hit 'enter'
         curses.nocbreak()
@@ -467,6 +636,7 @@ def process_interactive_input(c, screen):
         curses.curs_set(0)
         curses.halfdelay(10)
 
+
 def seconds_to_hms_string(seconds):
     result, s = divmod(seconds, 60)
     result, m = divmod(result, 60)
@@ -474,13 +644,19 @@ def seconds_to_hms_string(seconds):
 
     retval = ""
     if result > 0:
-        retval += '%d:' % result
+        # pylint: disable-next=consider-using-f-string
+        retval += "%d:" % result
     if h > 0:
-        retval += '%02d:' % h
-    retval += '%02d:' % m
-    retval += '%02d' % s
+        # pylint: disable-next=consider-using-f-string
+        retval += "%02d:" % h
+    # pylint: disable-next=consider-using-f-string
+    retval += "%02d:" % m
+    # pylint: disable-next=consider-using-f-string
+    retval += "%02d" % s
     return retval
 
+
+# pylint: disable-next=unused-argument,unused-argument
 def format_elapsed_time(rowdata, data_key, width):
     """Formats the elapsed time for display."""
     end = datetime.datetime.now()
@@ -488,30 +664,42 @@ def format_elapsed_time(rowdata, data_key, width):
         end = rowdata["end_time"]
 
     td = end.replace(tzinfo=None) - rowdata["start_time"].replace(tzinfo=None)
-    seconds = int((td.microseconds + (td.seconds + td.days * 24 * 3600) * 10**6) / 10**6)
+    seconds = int(
+        (td.microseconds + (td.seconds + td.days * 24 * 3600) * 10**6) / 10**6
+    )
     if HUMAN_READABLE:
         return seconds_to_hms_string(seconds)
+    # pylint: disable-next=consider-using-f-string
     return "{0}s".format(seconds)
 
+
+# pylint: disable-next=unused-argument
 def format_datetime(rowdata, data_key, width):
     if rowdata[data_key]:
-        return rowdata[data_key].strftime('%Y-%m-%d %H:%M:%S')
+        return rowdata[data_key].strftime("%Y-%m-%d %H:%M:%S")
     return ""
 
+
+# pylint: disable-next=unused-argument
 def format_start_time(rowdata, data_key, width):
     if rowdata["start_time"]:
         return format_datetime(rowdata, "start_time", width)
     return ""
 
+
+# pylint: disable-next=unused-argument
 def format_end_time(rowdata, data_key, width):
     if rowdata["end_time"]:
         return format_datetime(rowdata, "end_time", width)
     if rowdata["start_time"]:
         if SHOW_ELAPSED_TIME:
-            return"(running)"
+            return "(running)"
+        # pylint: disable-next=consider-using-f-string
         return "(running {0})".format(format_elapsed_time(rowdata, "", width))
     return ""
 
+
+# pylint: disable-next=unused-argument
 def format_channel_names(rowdata, data_key, width):
     """format channel names for display"""
     channel_names = []
@@ -524,10 +712,15 @@ def format_channel_names(rowdata, data_key, width):
         retval = retval[0:width]
     return retval
 
+
+# pylint: disable-next=unused-argument,unused-argument
 def format_int(rowdata, data_key, width):
     """format an int for display"""
+    # pylint: disable-next=consider-using-f-string
     return "{id:d}".format(**rowdata)
 
+
+# pylint: disable-next=unused-argument
 def format_string(rowdata, data_key, width):
     """format a string for display"""
     return rowdata[data_key]
@@ -547,40 +740,57 @@ def main(screen):
 
     # set up curses display builder
     display_builder = CursesDisplayBuilder()
-    display_builder.add_column(11,
-                            "RUN ID",
-                            display_builder.JUSTIFY_RIGHT,
-                            display_builder.JUSTIFY_LEFT,
-                            format_int,
-                            "id"),
-    display_builder.add_column(30,
-                            "TASK NAME",
-                            display_builder.JUSTIFY_RIGHT,
-                            display_builder.JUSTIFY_RIGHT,
-                            format_string,
-                            "name"),
+    # pylint: disable-next=expression-not-assigned
+    display_builder.add_column(
+        11,
+        "RUN ID",
+        display_builder.JUSTIFY_RIGHT,
+        display_builder.JUSTIFY_LEFT,
+        format_int,
+        "id",
+    ),
+    # pylint: disable-next=expression-not-assigned
+    display_builder.add_column(
+        30,
+        "TASK NAME",
+        display_builder.JUSTIFY_RIGHT,
+        display_builder.JUSTIFY_RIGHT,
+        format_string,
+        "name",
+    ),
     if SHOW_START_TIME:
-        display_builder.add_column(19,
-                            "START",
-                            display_builder.JUSTIFY_CENTER,
-                            display_builder.JUSTIFY_RIGHT,
-                            format_start_time),
+        # pylint: disable-next=expression-not-assigned
+        display_builder.add_column(
+            19,
+            "START",
+            display_builder.JUSTIFY_CENTER,
+            display_builder.JUSTIFY_RIGHT,
+            format_start_time,
+        ),
     if SHOW_ELAPSED_TIME:
-        display_builder.add_column(9,
-                            "ELAPSED",
-                            display_builder.JUSTIFY_RIGHT,
-                            display_builder.JUSTIFY_RIGHT,
-                            format_elapsed_time),
-    display_builder.add_column(19,
-                            "END",
-                            display_builder.JUSTIFY_CENTER,
-                            display_builder.JUSTIFY_RIGHT,
-                            format_end_time),
-    display_builder.add_column(-1,
-                            "CHANNEL",
-                            display_builder.JUSTIFY_CENTER,
-                            display_builder.JUSTIFY_RIGHT,
-                            format_channel_names)
+        # pylint: disable-next=expression-not-assigned
+        display_builder.add_column(
+            9,
+            "ELAPSED",
+            display_builder.JUSTIFY_RIGHT,
+            display_builder.JUSTIFY_RIGHT,
+            format_elapsed_time,
+        ),
+    # pylint: disable-next=expression-not-assigned
+    display_builder.add_column(
+        19,
+        "END",
+        display_builder.JUSTIFY_CENTER,
+        display_builder.JUSTIFY_RIGHT,
+        format_end_time,
+    ),
+    display_builder.add_column(
+        -1,
+        "CHANNEL",
+        display_builder.JUSTIFY_CENTER,
+        display_builder.JUSTIFY_RIGHT,
+        format_channel_names,
+    )
 
     num_iterations = args.numIterations
     if args.numIterations == 0:
@@ -588,7 +798,8 @@ def main(screen):
     while num_iterations != 0:
         if num_iterations > 0:
             num_iterations -= 1
-            log_debug('updating screen (%d remaining)' % num_iterations)
+            # pylint: disable-next=consider-using-f-string
+            log_debug("updating screen (%d remaining)" % num_iterations)
         else:
             log_debug("updating screen")
         screen.erase()
@@ -597,9 +808,9 @@ def main(screen):
             current_y += show_taskomatic_header(screen) + 1
         result = []
         if DISPLAY_MODE == DISPLAY_MODE_EACH_TASK:
-             result = get_tasko_runs_latest_each_task()
+            result = get_tasko_runs_latest_each_task()
         else:
-             result = get_tasko_runs_newer_than_age(MAXIMUM_AGE)
+            result = get_tasko_runs_newer_than_age(MAXIMUM_AGE)
         display_builder.output_to_screen(screen, result, current_y)
 
         screen.refresh()
@@ -609,9 +820,12 @@ def main(screen):
             c = screen.getch()
             if c != curses.ERR:
                 process_interactive_input(c, screen)
+        # pylint: disable-next=broad-exception-caught
         except Exception:
+            # pylint: disable-next=redefined-outer-name
             e = sys.exc_info()[1]
-            log_warning('getch() exception %s' % e)
+            # pylint: disable-next=consider-using-f-string
+            log_warning("getch() exception %s" % e)
             pass
 
 
@@ -621,8 +835,9 @@ def system_exit(code, msgs=None):
         if type(msgs) not in [type([]), type(())]:
             msgs = (msgs,)
         for msg in msgs:
-            sys.stderr.write(str(msg) + '\n')
+            sys.stderr.write(str(msg) + "\n")
     sys.exit(code)
+
 
 if args.numIterations < 0:
     system_exit(2, "ERROR: NUMITERATIONS must not be a negative value")
@@ -631,7 +846,9 @@ if args.maxAge < 0:
     system_exit(2, "ERROR: MAXAGE must not be a negative value")
 
 if args.logfile != DEFAULT_LOGFILE and args.verbose == 0:
-    system_exit(2, "ERROR: --logfile command line option requires use of -v or --verbose option")
+    system_exit(
+        2, "ERROR: --logfile command line option requires use of -v or --verbose option"
+    )
 
 if args.verbose > 0:
     LOGGING_ENABLED = True
@@ -645,40 +862,68 @@ if args.verbose > 0:
     else:
         loglevel = logging.DEBUG
     dirname = os.path.dirname(args.logfile)
-    if dirname != '' and not os.path.isdir(os.path.dirname(args.logfile)):
-        system_exit(1, "ERROR: Directory %s in specified logfile doesn't exist" % dirname)
+    if dirname != "" and not os.path.isdir(os.path.dirname(args.logfile)):
+        system_exit(
+            # pylint: disable-next=consider-using-f-string
+            1, "ERROR: Directory %s in specified logfile doesn't exist" % dirname
+        )
     try:
-        lfile = open(args.logfile, 'a')
-        lfile.write("Logging started with verbosity %d on %s\n" % (args.verbose,  time.strftime("%c")))
-        lfile.write("taskotop command args: %s\n" % ' '.join(sys.argv[1:]))
+        # pylint: disable-next=unspecified-encoding
+        lfile = open(args.logfile, "a")
+        lfile.write(
+            # pylint: disable-next=consider-using-f-string
+            "Logging started with verbosity %d on %s\n"
+            % (args.verbose, time.strftime("%c"))
+        )
+        # pylint: disable-next=consider-using-f-string
+        lfile.write("taskotop command args: %s\n" % " ".join(sys.argv[1:]))
         lfile.close()
+    # pylint: disable-next=broad-exception-caught
     except Exception:
+        # pylint: disable-next=consider-using-f-string
         system_exit(1, "ERROR: Failed to open and write to logfile %s" % args.logfile)
 
-    logging.basicConfig(filename=args.logfile, level=loglevel, format='%(asctime)s %(levelname)s:%(message)s')
-    log_debug('HUMAN_READABLE is %s' % HUMAN_READABLE)
-    log_debug('MAXIMUM_AGE is %d' % MAXIMUM_AGE)
+    logging.basicConfig(
+        filename=args.logfile,
+        level=loglevel,
+        format="%(asctime)s %(levelname)s:%(message)s",
+    )
+    # pylint: disable-next=consider-using-f-string
+    log_debug("HUMAN_READABLE is %s" % HUMAN_READABLE)
+    # pylint: disable-next=consider-using-f-string
+    log_debug("MAXIMUM_AGE is %d" % MAXIMUM_AGE)
 
 if args.eachTask:
     DISPLAY_MODE = DISPLAY_MODE_EACH_TASK
-    log_debug('Display Mode is Each Task')
+    log_debug("Display Mode is Each Task")
 if args.recentHistory:
     DISPLAY_MODE = DISPLAY_MODE_RECENT_HISTORY
-    log_debug('Display Mode is Recent History')
+    log_debug("Display Mode is Recent History")
 if args.showStart:
     SHOW_START_TIME = True
-    log_debug('START column will be displayed')
+    log_debug("START column will be displayed")
 if args.hideElapsed:
     SHOW_ELAPSED_TIME = False
-    log_debug('ELAPSED column will be hidden')
+    log_debug("ELAPSED column will be hidden")
 
 try:
     curses.wrapper(main)
 except rhnSQL.SQLConnectError:
     e = sys.exc_info()[1]
-    system_exit(20, ["ERROR: Can't connect to the database: %s" % str(e), "Check if your database is running."])
+    system_exit(
+        20,
+        [
+            # pylint: disable-next=consider-using-f-string
+            "ERROR: Can't connect to the database: %s" % str(e),
+            "Check if your database is running.",
+        ],
+    )
+# pylint: disable-next=broad-exception-caught
 except Exception:
     e = sys.exc_info()[1]
-    system_exit(1, "ERROR: Some problems occurred during getting information about tasks: %s" % str(e))
-
-
+    system_exit(
+        1,
+        # pylint: disable-next=consider-using-f-string
+        "ERROR: Some problems occurred during getting information about tasks: %s"
+        % str(e),
+    )

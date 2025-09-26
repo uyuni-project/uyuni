@@ -39,6 +39,7 @@ def get_package_header(filename=None, file_obj=None, fd=None):
 
     a_pkg = package_from_stream(stream, packaging)
     a_pkg.read_header()
+    # pylint: disable-next=possibly-used-before-assignment
     if need_close:
         stream.close()
     return a_pkg.header
@@ -82,7 +83,6 @@ DEFAULT_CHECKSUM_TYPE = "md5"
 
 # pylint: disable-next=invalid-name
 class A_Package:
-
     """virtual class that implements shared methods for RPM/MPM/DEB package object"""
 
     # pylint: disable=R0902

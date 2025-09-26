@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring,invalid-name
 # Spacewalk Proxy Server SSL Redirect handler code.
 #
 # Copyright (c) 2008--2017 Red Hat, Inc.
@@ -17,6 +18,7 @@
 # language imports
 import socket
 import re
+
 try:
     # python 3
     from urllib.parse import urlparse, urlunparse
@@ -41,72 +43,82 @@ from proxy import rhnConstants
 
 
 class RedirectHandler(SharedHandler):
+    """Spacewalk Proxy SSL Redirect specific handler code called by rhnApache.
 
-    """ Spacewalk Proxy SSL Redirect specific handler code called by rhnApache.
+    Workflow is:
+    Client -> Apache:Broker -> Squid -> Apache:Redirect -> Satellite
 
-        Workflow is:
-        Client -> Apache:Broker -> Squid -> Apache:Redirect -> Satellite
-
-        Redirect handler get all request for localhost:80 and they come
-        from Broker handler through Squid, which hadle caching.
-        Redirect module transform destination url to parent or http proxy.
-        Depend on what we have in CFG.
+    Redirect handler get all request for localhost:80 and they come
+    from Broker handler through Squid, which hadle caching.
+    Redirect module transform destination url to parent or http proxy.
+    Depend on what we have in CFG.
     """
 
     def __init__(self, req):
         SharedHandler.__init__(self, req)
-        self.componentType = 'proxy.redirect'
+        # pylint: disable-next=invalid-name
+        self.componentType = "proxy.redirect"
         self._initConnectionVariables(req)
+        # pylint: disable-next=invalid-name
         self.rhnParentXMLRPC = None
 
+    # pylint: disable-next=invalid-name,invalid-name
     def _initConnectionVariables(self, _req):
-        """ set connection variables
-            NOTE: self.{caChain,rhnParent,httpProxy*} are initialized
-                  in SharedHandler
+        """set connection variables
+        NOTE: self.{caChain,rhnParent,httpProxy*} are initialized
+              in SharedHandler
         """
 
+        # pylint: disable-next=invalid-name
         effectiveURI = self._getEffectiveURI()
+        # pylint: disable-next=invalid-name
         effectiveURI_parts = urlparse(effectiveURI)
-        self.rhnParentXMLRPC = urlunparse(('https', self.rhnParent, '/XMLRPC', '', '', ''))
-        self.rhnParent = urlunparse(('https', self.rhnParent) + effectiveURI_parts[2:])
+        self.rhnParentXMLRPC = urlunparse(
+            ("https", self.rhnParent, "/XMLRPC", "", "", "")
+        )
+        self.rhnParent = urlunparse(("https", self.rhnParent) + effectiveURI_parts[2:])
 
-        log_debug(3, 'remapped self.rhnParent:       %s' % self.rhnParent)
-        log_debug(3, 'remapped self.rhnParentXMLRPC: %s' % self.rhnParentXMLRPC)
+        # pylint: disable-next=consider-using-f-string
+        log_debug(3, "remapped self.rhnParent:       %s" % self.rhnParent)
+        # pylint: disable-next=consider-using-f-string
+        log_debug(3, "remapped self.rhnParentXMLRPC: %s" % self.rhnParentXMLRPC)
 
     def handler(self):
-        """ Main handler for all requests pumped through this server. """
+        """Main handler for all requests pumped through this server."""
 
-        log_debug(4, 'In redirect handler')
+        log_debug(4, "In redirect handler")
         self._prepHandler()
 
         # Rebuild the X-Forwarded-For header so that it reflects the actual
         # path of the request.  We must do this because squid is unable to
         # determine the "real" client, and will make each entry in the chain
         # 127.0.0.1.
-        _oto = rhnFlags.get('outputTransportOptions')
-        _oto['X-Forwarded-For'] = _oto['X-RHN-IP-Path']
+        # pylint: disable-next=invalid-name
+        _oto = rhnFlags.get("outputTransportOptions")
+        _oto["X-Forwarded-For"] = _oto["X-RHN-IP-Path"]
 
-        self.rhnParent = self.rhnParent or ''  # paranoid
+        self.rhnParent = self.rhnParent or ""  # paranoid
 
-        log_debug(4, 'Connecting to parent...')
+        log_debug(4, "Connecting to parent...")
         self._connectToParent()  # part 1
 
-        log_debug(4, 'Initiating communication with server...')
-        status = self._serverCommo()       # part 2
+        log_debug(4, "Initiating communication with server...")
+        status = self._serverCommo()  # part 2
         if status not in (apache.OK, apache.HTTP_PARTIAL_CONTENT):
+            # pylint: disable-next=consider-using-f-string
             log_debug(3, "Leaving handler with status code %s" % status)
             return status
 
-        log_debug(4, 'Initiating communication with client...')
+        log_debug(4, "Initiating communication with client...")
         # If we got this far, it has to be a good response
         return self._clientCommo(status)
 
     def _handleServerResponse(self, status):
-        """ Here, we'll override the default behavior for handling server responses
-            so that we can adequately handle 302's.
+        """Here, we'll override the default behavior for handling server responses
+        so that we can adequately handle 302's.
 
-            We will follow redirects unless it is redirect to (re)login page. In which
-            case we change protocol to https and return redirect to user.
+        We will follow redirects unless it is redirect to (re)login page. In which
+        case we change protocol to https and return redirect to user.
         """
 
         # In case of a 302, redirect the original request to the location
@@ -119,21 +131,27 @@ class RedirectHandler(SharedHandler):
             # if we redirected to ssl version of login page, send redirect directly to user
             headers = self.responseContext.getHeaders()
             if headers is not None:
+                # pylint: disable-next=invalid-name
                 for headerKey in list(headers.keys()):
-                    if headerKey == 'location':
+                    if headerKey == "location":
                         location = self._get_header(headerKey)
-                        login = re.compile(r'https?://.*(/rhn/manager/login\?.*)')
+                        login = re.compile(r"https?://.*(/rhn/manager/login\?.*)")
                         m = login.match(location[0])
                         if m:
                             # pull server name out of "t:o:k:e:n:hostname1,t:o:k:e:n:hostname2,..."
-                            proxy_auth = self.req.headers_in['X-RHN-Proxy-Auth']
-                            last_auth = proxy_auth.split(',')[-1]
-                            server_name = last_auth.split(':')[-1]
+                            proxy_auth = self.req.headers_in["X-RHN-Proxy-Auth"]
+                            last_auth = proxy_auth.split(",")[-1]
+                            server_name = last_auth.split(":")[-1]
                             log_debug(1, "Redirecting to SSL version of login page")
-                            rhnLib.setHeaderValue(self.req.headers_out, 'Location',
-                                                  "https://%s%s" % (server_name, m.group(1)))
+                            rhnLib.setHeaderValue(
+                                self.req.headers_out,
+                                "Location",
+                                # pylint: disable-next=consider-using-f-string
+                                "https://%s%s" % (server_name, m.group(1)),
+                            )
                             return apache.HTTP_MOVED_PERMANENTLY
 
+            # pylint: disable-next=invalid-name
             redirectStatus = self.__redirectToNextLocation()
 
             # At this point, we've either:
@@ -144,13 +162,17 @@ class RedirectHandler(SharedHandler):
             #
             # We'll keep redirecting until we've received HTTP_OK or an error.
 
-            while redirectStatus in (apache.HTTP_MOVED_PERMANENTLY, apache.HTTP_MOVED_TEMPORARILY):
+            while redirectStatus in (
+                apache.HTTP_MOVED_PERMANENTLY,
+                apache.HTTP_MOVED_TEMPORARILY,
+            ):
 
                 # We've been told to redirect again.  We'll pass a special
                 # argument to ensure that if we end up back at the server, we
                 # won't be redirected again.
 
                 log_debug(1, "Redirected again!  Code=", redirectStatus)
+                # pylint: disable-next=invalid-name
                 redirectStatus = self.__redirectToNextLocation(True)
 
             if redirectStatus not in (apache.HTTP_OK, apache.HTTP_PARTIAL_CONTENT):
@@ -158,9 +180,12 @@ class RedirectHandler(SharedHandler):
                 # We must have run out of retry attempts.  Fail over to Hosted
                 # to perform the request.
 
-                log_debug(1, "Redirection failed; retries exhausted.  "
-                          "Failing over.  Code=",
-                          redirectStatus)
+                log_debug(
+                    1,
+                    "Redirection failed; retries exhausted.  " "Failing over.  Code=",
+                    redirectStatus,
+                )
+                # pylint: disable-next=invalid-name
                 redirectStatus = self.__redirectFailover()
 
             return SharedHandler._handleServerResponse(self, redirectStatus)
@@ -169,34 +194,36 @@ class RedirectHandler(SharedHandler):
             # Otherwise, revert to default behavior.
             return SharedHandler._handleServerResponse(self, status)
 
+    # pylint: disable-next=invalid-name,invalid-name
     def __redirectToNextLocation(self, loopProtection=False):
-        """ This function will perform a redirection to the next location, as
-            specified in the last response's "Location" header. This function will
-            return an actual HTTP response status code.  If successful, it will
-            return apache.HTTP_OK, not apache.OK.  If unsuccessful, this function
-            will retry a configurable number of times, as defined in
-            CFG.NETWORK_RETRIES.  The following codes define "success".
+        """This function will perform a redirection to the next location, as
+        specified in the last response's "Location" header. This function will
+        return an actual HTTP response status code.  If successful, it will
+        return apache.HTTP_OK, not apache.OK.  If unsuccessful, this function
+        will retry a configurable number of times, as defined in
+        CFG.NETWORK_RETRIES.  The following codes define "success".
 
-              HTTP_OK
-              HTTP_PARTIAL_CONTENT
-              HTTP_MOVED_TEMPORARILY
-              HTTP_MOVED_PERMANENTLY
+          HTTP_OK
+          HTTP_PARTIAL_CONTENT
+          HTTP_MOVED_TEMPORARILY
+          HTTP_MOVED_PERMANENTLY
 
-            Upon successful completion of this function, the responseContext
-            should be populated with the response.
+        Upon successful completion of this function, the responseContext
+        should be populated with the response.
 
-            Arguments:
+        Arguments:
 
-            loopProtection - If True, this function will insert a special
-                           header into the new request that tells the RHN
-                           server not to issue another redirect to us, in case
-                           that's where we end up being redirected.
+        loopProtection - If True, this function will insert a special
+                       header into the new request that tells the RHN
+                       server not to issue another redirect to us, in case
+                       that's where we end up being redirected.
 
-            Return:
+        Return:
 
-            This function may return any valid HTTP_* response code.  See
-            __redirectToNextLocationNoRetry for more info.
+        This function may return any valid HTTP_* response code.  See
+        __redirectToNextLocationNoRetry for more info.
         """
+        # pylint: disable-next=invalid-name
         retriesLeft = CFG.NETWORK_RETRIES
 
         # We'll now try to redirect to the 3rd party.  We will keep
@@ -207,17 +234,25 @@ class RedirectHandler(SharedHandler):
         #     HTTP_MOVED_PERMANENTLY
         #     HTTP_MOVED_TEMPORARILY
 
+        # pylint: disable-next=invalid-name
         redirectStatus = self.__redirectToNextLocationNoRetry(loopProtection)
-        while redirectStatus != apache.HTTP_OK and redirectStatus != apache.HTTP_PARTIAL_CONTENT and \
-                        redirectStatus != apache.HTTP_MOVED_PERMANENTLY and \
-                        redirectStatus != apache.HTTP_MOVED_TEMPORARILY and retriesLeft > 0:
+        while (
+            redirectStatus != apache.HTTP_OK
+            and redirectStatus != apache.HTTP_PARTIAL_CONTENT
+            and redirectStatus != apache.HTTP_MOVED_PERMANENTLY
+            and redirectStatus != apache.HTTP_MOVED_TEMPORARILY
+            and retriesLeft > 0
+        ):
 
+            # pylint: disable-next=invalid-name
             retriesLeft = retriesLeft - 1
-            log_debug(1, "Redirection failed; trying again.  "
-                      "Retries left=",
-                      retriesLeft,
-                      "Code=",
-                      redirectStatus)
+            log_debug(
+                1,
+                "Redirection failed; trying again.  " "Retries left=",
+                retriesLeft,
+                "Code=",
+                redirectStatus,
+            )
 
             # Pop the current response context and restore the state to
             # the last successful response.  The acts of remove the current
@@ -225,37 +260,39 @@ class RedirectHandler(SharedHandler):
             self.responseContext.remove()
 
             # XXX: Possibly sleep here for a second?
-            redirectStatus = \
-                self.__redirectToNextLocationNoRetry(loopProtection)
+            # pylint: disable-next=invalid-name
+            redirectStatus = self.__redirectToNextLocationNoRetry(loopProtection)
 
         return redirectStatus
 
+    # pylint: disable-next=invalid-name,invalid-name
     def __redirectToNextLocationNoRetry(self, loopProtection=False):
-        """ This function will perform a redirection to the next location, as
-            specified in the last response's "Location" header. This function will
-            return an actual HTTP response status code.  If successful, it will
-            return apache.HTTP_OK, not apache.OK.  If unsuccessful, this function
-            will simply return; no retries will be performed.  The following error
-            codes can be returned:
+        """This function will perform a redirection to the next location, as
+        specified in the last response's "Location" header. This function will
+        return an actual HTTP response status code.  If successful, it will
+        return apache.HTTP_OK, not apache.OK.  If unsuccessful, this function
+        will simply return; no retries will be performed.  The following error
+        codes can be returned:
 
-            HTTP_OK,HTTP_PARTIAL_CONTENT - Redirect successful.
-            HTTP_MOVED_TEMPORARILY     - Redirect was redirected again by 3rd party.
-            HTTP_MOVED_PERMANENTLY     - Redirect was redirected again by 3rd party.
-            HTTP_INTERNAL_SERVER_ERROR - Error extracting redirect information
-            HTTP_SERVICE_UNAVAILABLE   - Could not connect to 3rd party server,
-                                         connection was reset, or a read error
-                                         occurred during communication.
-            HTTP_*                     - Any other HTTP status code may also be
-                                         returned.
+        HTTP_OK,HTTP_PARTIAL_CONTENT - Redirect successful.
+        HTTP_MOVED_TEMPORARILY     - Redirect was redirected again by 3rd party.
+        HTTP_MOVED_PERMANENTLY     - Redirect was redirected again by 3rd party.
+        HTTP_INTERNAL_SERVER_ERROR - Error extracting redirect information
+        HTTP_SERVICE_UNAVAILABLE   - Could not connect to 3rd party server,
+                                     connection was reset, or a read error
+                                     occurred during communication.
+        HTTP_*                     - Any other HTTP status code may also be
+                                     returned.
 
-            Upon successful completion of this function, a new responseContext
-            will be created and pushed onto the stack.
+        Upon successful completion of this function, a new responseContext
+        will be created and pushed onto the stack.
         """
 
         # Obtain the redirect location first before we replace the current
         # response context.  It's contained in the Location header of the
         # previous response.
 
+        # pylint: disable-next=invalid-name
         redirectLocation = self._get_header(rhnConstants.HEADER_LOCATION)
 
         # We are about to redirect to a new location so now we'll push a new
@@ -273,29 +310,31 @@ class RedirectHandler(SharedHandler):
         # The _get_header function returns the value as a list.  There should
         # always be exactly one location specified.
 
+        # pylint: disable-next=invalid-name
         redirectLocation = redirectLocation[0]
         log_debug(1, "  Redirecting to: ", redirectLocation)
 
         # Tear apart the redirect URL.  We need the scheme, the host, the
         # port (if not the default), and the URI.
 
+        # pylint: disable-next=invalid-name,unused-variable
         _scheme, host, port, uri, query = self._parse_url(redirectLocation)
 
         # Add back the query string
         if query:
-            uri += '?' + query
+            uri += "?" + query
 
         # Now create a new connection.  We'll use SSL if configured to do
         # so.
 
         params = {
-            'host':   host,
-            'port':   port,
+            "host": host,
+            "port": port,
         }
-        if CFG.has_key('timeout'):
-            params['timeout'] = CFG.TIMEOUT
+        if CFG.has_key("timeout"):
+            params["timeout"] = CFG.TIMEOUT
         log_debug(1, "  Redirecting with SSL.  Cert= ", self.caChain)
-        params['trusted_certs'] = [self.caChain]
+        params["trusted_certs"] = [self.caChain]
         connection = connections.HTTPSConnection(**params)
 
         # Put the connection into the current response context.
@@ -310,8 +349,7 @@ class RedirectHandler(SharedHandler):
             log_error("Error opening redirect connection", redirectLocation, e)
             Traceback(mail=0)
             return apache.HTTP_SERVICE_UNAVAILABLE
-        log_debug(4, "Connected to 3rd party server:",
-                  connection.sock.getpeername())
+        log_debug(4, "Connected to 3rd party server:", connection.sock.getpeername())
 
         # Put the request out on the wire.
 
@@ -326,11 +364,10 @@ class RedirectHandler(SharedHandler):
             # Add some custom headers.
 
             if loopProtection:
-                connection.putheader(rhnConstants.HEADER_RHN_REDIRECT, '0')
+                connection.putheader(rhnConstants.HEADER_RHN_REDIRECT, "0")
 
             log_debug(4, "  Adding original URL header: ", self.rhnParent)
-            connection.putheader(rhnConstants.HEADER_RHN_ORIG_LOC,
-                                 self.rhnParent)
+            connection.putheader(rhnConstants.HEADER_RHN_ORIG_LOC, self.rhnParent)
 
             # Add all the other headers in the original request in case we
             # need to re-authenticate with Hosted.
@@ -338,25 +375,23 @@ class RedirectHandler(SharedHandler):
             for hdr in list(self.req.headers_in.keys()):
                 if hdr.lower().startswith("x-rhn"):
                     connection.putheader(hdr, self.req.headers_in[hdr])
-                    log_debug(4, "Passing request header: ",
-                              hdr,
-                              self.req.headers_in[hdr])
+                    log_debug(
+                        4, "Passing request header: ", hdr, self.req.headers_in[hdr]
+                    )
 
             connection.endheaders()
 
             response = connection.getresponse()
         except IOError as ioe:
             # Raised by getresponse() if server closes connection on us.
-            log_error("Redirect connection reset by peer.",
-                      redirectLocation,
-                      ioe)
+            log_error("Redirect connection reset by peer.", redirectLocation, ioe)
             Traceback(mail=0)
 
             # The connection is saved in the current response context, and
             # will be closed when the caller pops the context.
             return apache.HTTP_SERVICE_UNAVAILABLE
 
-        except socket.error as se: # pylint: disable=duplicate-except
+        except socket.error as se:  # pylint: disable=duplicate-except
             # Some socket error occurred.  Possibly a read error.
             log_error("Redirect request failed.", redirectLocation, se)
             Traceback(mail=0)
@@ -371,30 +406,31 @@ class RedirectHandler(SharedHandler):
         self.responseContext.setBodyFd(response)
         self.responseContext.setHeaders(response.msg)
 
-        log_debug(4, "Response headers: ",
-                  list(self.responseContext.getHeaders().items()))
+        log_debug(
+            4, "Response headers: ", list(self.responseContext.getHeaders().items())
+        )
         log_debug(4, "Got redirect response.  Status=", response.status)
 
         # Return the HTTP status to the caller.
 
         return response.status
 
+    # pylint: disable-next=invalid-name
     def __redirectFailover(self):
-        """ This routine resends the original request back to the satellite/hosted
-            system if a redirect to a 3rd party failed.  To prevent redirection loops
-            from occurring, an "X-RHN-Redirect: 0" header is passed along with the
-            request.  This function will return apache.HTTP_OK if everything
-            succeeded, otherwise it will return an appropriate HTTP error code.
+        """This routine resends the original request back to the satellite/hosted
+        system if a redirect to a 3rd party failed.  To prevent redirection loops
+        from occurring, an "X-RHN-Redirect: 0" header is passed along with the
+        request.  This function will return apache.HTTP_OK if everything
+        succeeded, otherwise it will return an appropriate HTTP error code.
         """
 
         # Add a special header which will tell the server not to send us any
         # more redirects.
 
-        headers = rhnFlags.get('outputTransportOptions')
-        headers[rhnConstants.HEADER_RHN_REDIRECT] = '0'
+        headers = rhnFlags.get("outputTransportOptions")
+        headers[rhnConstants.HEADER_RHN_REDIRECT] = "0"
 
-        log_debug(4, "Added X-RHN-Redirect header to outputTransportOptions:",
-                  headers)
+        log_debug(4, "Added X-RHN-Redirect header to outputTransportOptions:", headers)
 
         # Reset the existing connection and reconnect to the RHN parent server.
 

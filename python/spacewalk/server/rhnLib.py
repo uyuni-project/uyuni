@@ -113,14 +113,12 @@ def normalize_server_arch(arch):
 
 
 class InvalidAction(Exception):
-
     """An error class to signal when we can not handle an action"""
 
     pass
 
 
 class EmptyAction(Exception):
-
     """An error class that signals that we encountered an internal error
     trying to handle an action through no fault of the client
     """
@@ -129,7 +127,6 @@ class EmptyAction(Exception):
 
 
 class ShadowAction(Exception):
-
     """An error class for actions that should not get to the client"""
 
     pass
@@ -235,7 +232,6 @@ def get_package_path_without_package_name(
 
 
 class CallableObj:
-
     """Generic callable object"""
 
     def __init__(self, name, func):
@@ -252,7 +248,9 @@ def make_evr(nvre, source=False):
     """
     if ":" in nvre:
         nvr, epoch = nvre.rsplit(":", 1)
+    # pylint: disable-next=used-before-assignment
     if "-" in epoch:
+        # pylint: disable-next=used-before-assignment
         nvr, epoch = epoch, nvr
     else:
         nvr, epoch = nvre, ""
