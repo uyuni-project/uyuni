@@ -1,6 +1,8 @@
 # Copyright 2021-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+require 'net/http'
+
 ### This file contains the definitions for all steps concerning the different
 ### kinds of minions as well as PXE boot and Retail.
 
@@ -527,14 +529,40 @@ When(/^I wait until the image inspection for "([^"]*)" is completed$/) do |host|
   step %(I wait at most 300 seconds until event "Image Inspect 1//#{name}:#{version}" is completed)
 end
 
-When(/^I am on the image store of the Kiwi image for organization "([^"]*)"$/) do |org|
-  # There is no navigation step to access this URL, so we must use a visit call (https://github.com/SUSE/spacewalk/issues/15256)
-  visit("https://#{get_target('server').full_hostname}/os-images/#{org}/")
+Then(/^I should see the image for "([^"]*)" is built$/) do |host|
+  name = compute_kiwi_profile_name(host)
+
+  begin
+    tr = find('tr', text: name)
+    tr.find('i[title="Built"]')
+  rescue Capybara::ElementNotFound
+    raise ScriptError, "Image #{name} is not present or not marked as built"
+  end
 end
 
-Then(/^I should see the name of the image for "([^"]*)"$/) do |host|
+Then(/^I open the details page of the image for "([^"]*)"$/) do |host|
   name = compute_kiwi_profile_name(host)
-  step %(I should see a "#{name}" text)
+
+  begin
+    tr = find('tr', text: name)
+    tr.find('button[aria-label="Details"]').click
+  rescue Capybara::ElementNotFound
+    raise ScriptError, "Can not open details page for image #{name}"
+  end
+end
+
+Then(/^I should see a link to download the image for "([^"]*)"$/) do |host|
+  name = compute_kiwi_profile_name(host)
+  # Find the <a> whose href contains the image name and ends with .xz
+  link = find("a[href*='#{name}'][href$='.xz']")
+  img_url = link[:href]
+  uri = URI.parse(img_url)
+  # We use the HEAD method to verify the image is available, as it can be quite big for a GET
+  Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http|
+    response = http.head(uri.request_uri)
+
+    raise ScriptError, "Failed HEAD request for image #{name}" unless response.is_a?(Net::HTTPSuccess)
+  end
 end
 
 Then(/^the image for "([^"]*)" should exist on the branch server$/) do |host|
