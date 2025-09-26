@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 SUSE LLC
+ * Copyright (c) 2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -52,7 +52,7 @@ import java.util.stream.Collectors;
 
 public class SaltbootUtils {
     private static final Logger LOG = LogManager.getLogger(SaltbootUtils.class);
-    private static final String DEFAULT_IMAGE = "DEFAULT_IMAGE";
+    public static final String DEFAULT_BOOT_IMAGE = "DEFAULT_IMAGE";
     private SaltbootUtils() { }
 
 
@@ -108,7 +108,7 @@ public class SaltbootUtils {
 
     private static String makeCobblerName(Org org, String name, String version, String release) {
         if (name == null || name.isEmpty()) {
-            return makeCobblerName(org, DEFAULT_IMAGE);
+            return makeCobblerName(org, DEFAULT_BOOT_IMAGE);
         }
         else if (version == null || version.isEmpty()) {
             return makeCobblerName(org, name);
@@ -139,7 +139,7 @@ public class SaltbootUtils {
     }
 
     private static String makeCobblerNameDefault(Org org) {
-        return makeCobblerName(org, DEFAULT_IMAGE);
+        return makeCobblerName(org, DEFAULT_BOOT_IMAGE);
     }
 
 
@@ -191,11 +191,9 @@ public class SaltbootUtils {
 
         String defaultImage = makeCobblerNameDefault(imageInfo.getOrg());
 
-        selectDistro(distros, makeCobblerFilterDefault(imageInfo.getOrg())).ifPresent(n -> {
-            if (nameVR.equals(n)) {
-                updateDistroProfile(con, defaultImage, cd, "Default image");
-            }
-        });
+        // As generic default boot image use the latest built image, which is this one
+        // Reason is that we want latest patches to be generally available
+        updateDistroProfile(con, defaultImage, cd, "Default image");
 
         selectDistro(distros, makeCobblerFilterName(imageInfo)).ifPresent(n -> {
             if (nameVR.equals(n)) {
@@ -259,7 +257,7 @@ public class SaltbootUtils {
                  .map(n -> Distro.lookupByName(con, n))
                  .ifPresentOrElse(
                      d -> updateDistroProfile(con, makeCobblerNameDefault(info.getOrg()), d, "Default image"),
-                     () -> LOG.error("Can't update the profile for {}", orgId + "-" + DEFAULT_IMAGE));
+                     () -> LOG.error("Can't update the profile for {}", orgId + "-" + DEFAULT_BOOT_IMAGE));
 
             selectDistro(remainingDistros, makeCobblerFilterName(info))
                  .map(n -> Distro.lookupByName(con, n))
@@ -403,7 +401,7 @@ public class SaltbootUtils {
             throws SaltbootException {
         if (image == null || image.isEmpty()) {
             LOG.debug("Using default image for saltboot profile {}", branchGroup.getName());
-            image = DEFAULT_IMAGE;
+            image = DEFAULT_BOOT_IMAGE;
         }
         try {
             CobblerConnection con = CobblerXMLRPCHelper.getAutomatedConnection();
@@ -700,5 +698,30 @@ public class SaltbootUtils {
         CobblerConnection con = CobblerXMLRPCHelper.getUncachedAutomatedConnection();
         migrateSaltbootDistros(con);
         migrateSaltbootProfiles(con);
+    }
+
+    /**
+     * Returns true if profile exists or else false. Profile name is in the old format
+     *
+     * @param profileName Name of the distro
+     * @param org Owning organization to check
+     * @return True if distro exists
+     */
+    public static Boolean profileExists(String profileName, Org org) {
+        CobblerConnection con = CobblerXMLRPCHelper.getAutomatedConnection();
+        Profile profile = Profile.lookupByName(con, makeCobblerName(org, profileName));
+        return profile != null;
+    }
+
+    /**
+     * Returns true if profile exists or else false. Profile name is in the new format
+     *
+     * @param profileName Name of the distro
+     * @return True if distro exists
+     */
+    public static Boolean profileExists(String profileName) {
+        CobblerConnection con = CobblerXMLRPCHelper.getAutomatedConnection();
+        Profile profile = Profile.lookupByName(con, profileName);
+        return profile != null;
     }
 }
