@@ -1,4 +1,4 @@
-# Copyright 2015-2024 SUSE LLC
+# Copyright 2015-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 ### This file contains all step definitions concerning Salt and bootstrapping
@@ -439,13 +439,13 @@ end
 # Perform actions
 When(/^I reject "([^"]*)" from the Pending section$/) do |host|
   system_name = get_system_name(host)
-  xpath_query = "//tr[td[contains(.,'#{system_name}')]]//button[@title = 'Reject']"
+  xpath_query = "//tr[td[contains(.,'#{system_name}')]]//button[@aria-label = 'Reject']"
   raise ScriptError, "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query).click
 end
 
 When(/^I delete "([^"]*)" from the Rejected section$/) do |host|
   system_name = get_system_name(host)
-  xpath_query = "//tr[td[contains(.,'#{system_name}')]]//button[@title = 'Delete']"
+  xpath_query = "//tr[td[contains(.,'#{system_name}')]]//button[@aria-label = 'Delete']"
   raise ScriptError, "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query).click
 end
 
@@ -459,7 +459,7 @@ end
 
 When(/^I accept "([^"]*)" key$/) do |host|
   system_name = get_system_name(host)
-  xpath_query = "//tr[td[contains(.,'#{system_name}')]]//button[@title = 'Accept']"
+  xpath_query = "//tr[td[contains(.,'#{system_name}')]]//button[@aria-label = 'Accept']"
   raise ScriptError, "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query).click
 end
 
