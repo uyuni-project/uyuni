@@ -60,6 +60,7 @@ CREATE TABLE rhnServer
                             CONSTRAINT rhn_server_mtsched_id_fk
                                 REFERENCES suseMaintenanceSchedule (id)
                                 ON DELETE SET NULL,
+    auto_sync           BOOLEAN NOT NULL default true;
     created             TIMESTAMPTZ
                             DEFAULT (current_timestamp) NOT NULL,
     modified            TIMESTAMPTZ
