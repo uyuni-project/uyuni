@@ -118,6 +118,12 @@ if (opts.verbose) {
             console.error(`
                     It seems changes to license and/or spec files haven't been committed.
                     Please run "yarn build" again and commit the following files: ${uncommittedFiles.join(", ")}`);
+
+            const { stdout: diffOut } = shell.exec(`git diff -- ${editedLicenseFilesByBuild.join(" ")}`, {
+              cwd: rootDir,
+            });
+            console.log(diffOut);
+
             if (opts.force) {
               console.error(`WARN: Ignoring uncommitted spec changes because build was called with --force`);
             } else {
