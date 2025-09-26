@@ -16,6 +16,7 @@ import com.redhat.rhn.domain.access.WebEndpoint;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainEntry;
 import com.redhat.rhn.domain.action.ActionChild;
+import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionDetails;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionResult;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionDetails;
@@ -35,6 +36,7 @@ import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.cloudpayg.CloudRmtHost;
 import com.redhat.rhn.domain.cloudpayg.PaygCredentialsProduct;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
+import com.redhat.rhn.domain.common.ArchType;
 import com.redhat.rhn.domain.common.ProvisionState;
 import com.redhat.rhn.domain.common.RhnConfiguration;
 import com.redhat.rhn.domain.config.ConfigChannel;
@@ -200,11 +202,13 @@ public class AnnotationRegistry {
             ActionChain.class,
             ActionChainEntry.class,
             ActionChild.class,
+            ActionType.class,
             AddressImpl.class,
             AnsiblePath.class,
             AppStreamApi.class,
             AppStreamApiKey.class,
             AppStream.class,
+            ArchType.class,
             BaseCredentials.class,
             Capability.class,
             ChannelArch.class,
