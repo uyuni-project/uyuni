@@ -57,7 +57,6 @@ RUN echo "rpm.install.excludedocs = yes" >>/etc/zypp/zypp.conf && \
         sssd-krb5 \
         sssd-ldap \
         sssd-tools \
-        susemanager-tftpsync \
         uyuni-config-formula \
         vim \
         virtual-host-gatherer-Libvirt \
