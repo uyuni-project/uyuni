@@ -6,7 +6,9 @@ var deleteId;
 var subscriptionsId;
 
 // Init modal to edit credentials
-function initEdit(id, user) {
+function initEdit(element) {
+  var id = jQuery(element).data('id');
+  var user = jQuery(element).data('user');
   console.log("initEdit(): " + id);
   editId = id;
   jQuery('#edit-user').val(user);
@@ -16,7 +18,9 @@ function initEdit(id, user) {
 }
 
 // Init modal to delete credentials
-function initDelete(id, user) {
+function initDelete(element) {
+  var id = jQuery(element).data('id');
+  var user = jQuery(element).data('user');
   console.log("initDelete(): " + id);
   deleteId = id;
   jQuery('#delete-user').text(user);

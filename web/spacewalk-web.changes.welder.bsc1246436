@@ -1,0 +1,1 @@
+- Fix parsing errors in organization credentials list (bsc#1246436)
