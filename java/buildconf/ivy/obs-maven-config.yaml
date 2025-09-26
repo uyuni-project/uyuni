@@ -57,9 +57,6 @@ artifacts:
   - artifact: commons-discovery
     package: jakarta-commons-discovery
     repository: Leap
-  - artifact: commons-el
-    package: apache-commons-el
-    repository: Leap
   - artifact: commons-fileupload
     package: apache-commons-fileupload
     repository: Leap
@@ -79,7 +76,7 @@ artifacts:
   - artifact: commons-logging
     package: apache-commons-logging
     jar: apache-commons-logging\.jar
-    repository: Leap
+    repository: Leap_sle
   - artifact: commons-validator
     package: apache-commons-validator
     repository: Leap
@@ -332,12 +329,6 @@ artifacts:
   - artifact: ical4j
     repository: Uyuni_Other
   - artifact: jetty-util
-    repository: Leap_sle
-  - artifact: jetty-server
-    repository: Leap_sle
-  - artifact: jetty-http
-    repository: Leap_sle
-  - artifact: jetty-io
     repository: Leap_sle
   - artifact: glassfish-jaxb-api
     repository: Leap
