@@ -66,8 +66,11 @@ class rpmPackage(IncompletePackage):
             if not field:  # unsupported
                 continue
 
-            value = header[field]
-            if key == "build_time" and isinstance(value, int):
+            #value = header[field]
+            value = []
+            if value == []:
+                value = None
+            elif key == "build_time" and isinstance(value, int):
                 value = gmtime(value)  # unix timestamp
             elif key == "payload_size":
                 if value is None:
@@ -78,8 +81,6 @@ class rpmPackage(IncompletePackage):
                     # workaround for older rpms where signed
                     # attributes go negative for size > 2G
                     value = int(value) + 2**32
-            elif value == []:
-                value = None
             elif value:
                 value = str(value)
 
@@ -108,7 +109,7 @@ class rpmPackage(IncompletePackage):
         if self["payload_size"] is None:
             self["payload_size"] = 0
         # Extra tags
-        self._populateExtraTags(header)
+        #self._populateExtraTags(header)
 
         return self
 
