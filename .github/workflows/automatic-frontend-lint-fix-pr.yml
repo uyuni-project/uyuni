@@ -64,6 +64,6 @@ jobs:
           The applied changes are only stylistic and do not need a changelog.
 
           - [x] No changelog needed
-        commit-message: Bot: Fix frontend lint issues
+        commit-message: "Bot: Fix frontend lint issues"
         # Ask for a review from the user who triggered the run, in this case the person who pushed to master
         reviewers: ${{ github.actor }}
