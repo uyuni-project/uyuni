@@ -9,7 +9,7 @@ export type SystemOverview = {
   serverName: string;
   isVirtualGuest: boolean;
   isVirtualHost: boolean;
-  entitlement: string[];
+  entitlement?: string[];
   proxy: boolean;
   mgrServer: boolean;
 };
@@ -19,7 +19,7 @@ export function iconAndName(system: SystemOverview) {
     {
       iconType: "system-bare-metal",
       iconTitle: t("Unprovisioned System"),
-      condition: (sys: SystemOverview) => sys.entitlement.includes("bootstrap_entitled"),
+      condition: (sys: SystemOverview) => sys.entitlement?.includes("bootstrap_entitled"),
     },
     {
       iconType: "system-virt-guest",
