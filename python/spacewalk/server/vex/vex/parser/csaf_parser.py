@@ -1,7 +1,5 @@
 """
 This module extends vex_parser class to parse VEX files in CSAF format.
-
-Credits to [@anthonyharrison](https://github.com/anthonyharrison/csaf/blob/main/csaf/parser.py#L154)
 """
 
 import json
