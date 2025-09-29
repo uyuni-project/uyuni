@@ -749,10 +749,9 @@ class YumSrcTest(unittest.TestCase):
             ),
         ]
 
-        os.path.isfile = Mock(return_value=True)
-
-        cs.solv_pool = solv.Pool()
-        cs.solv_repo = cs.solv_pool.add_repo("libsolv")
+        with patch("os.path.isfile", MagicMock(return_value=True)):
+            cs.solv_pool = solv.Pool()
+            cs.solv_repo = cs.solv_pool.add_repo("libsolv")
 
         for pack in mocked_packs:
             new_solvable = cs.solv_repo.add_solvable()
