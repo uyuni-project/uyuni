@@ -26,7 +26,7 @@ Feature: Monitor SUMA environment with Prometheus on a SLE Salt minion
 
   Scenario: Configure Prometheus formula
     When I follow "Formulas" in the content area
-    And I click on "Prometheus" in the content area
+    And I follow "Prometheus" in the content area
     And I click on "Expand All Sections"
     And I enter "admin" as "Username"
     And I enter "admin" as "Password"
@@ -35,7 +35,7 @@ Feature: Monitor SUMA environment with Prometheus on a SLE Salt minion
 
   Scenario: Configure Prometheus exporter formula
     When I follow "Formulas" in the content area
-    And I click on "Prometheus Exporters" in the content area
+    And I follow "Prometheus Exporters" in the content area
     And I click on "Expand All Sections"
     And I should see a "Enable and configure Prometheus exporters for managed systems." text
     And I check "node" exporter
