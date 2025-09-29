@@ -3,8 +3,9 @@ from psycopg2 import sql
 import logging
 
 class VEXDatabaseManager:
+    # Default creds, update to your own
     def __init__(self, dbname="susemanager", user="spacewalk", 
-                 password="OaPqj3cJ7E6fNjIK0iK6WHg/+akS6TCmTRaqfml/", 
+                 password="password", 
                  host="localhost"):
         
         """Initialize the database connection parameters"""
