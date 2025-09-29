@@ -51,7 +51,7 @@ jobs:
         branch: "automatic-frontend-lint-fix"
         sign-commits: true
         author: "github-actions <github-actions[bot]@users.noreply.github.com>"
-        title: Bot: Fix frontend lint issues
+        title: "Bot: Fix frontend lint issues"
         body: |
           ## What does this PR change?
 
