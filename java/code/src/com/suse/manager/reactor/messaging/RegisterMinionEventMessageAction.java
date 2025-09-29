@@ -579,10 +579,9 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 RegistrationUtils.subscribeMinionToChannels(systemQuery, minion, grains, activationKey,
                     activationKeyLabel);
             }
-
             minion.updateServerInfo();
-
             mapHardwareGrains(minion, grains);
+            ServerFactory.save(minion);
 
             if (isSaltSSH) {
                 minion.updateServerPaths(saltSSHProxyId);
@@ -596,16 +595,14 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 }
             }
 
-            ServerFactory.save(minion);
             giveCapabilities(minion, isSaltSSH);
 
             // Assign the Salt base entitlement by default
             entitlementManager.setBaseEntitlement(minion, EntitlementManager.SALT);
 
             // apply activation key properties that need to be set after saving the minion
-            if (activationKey.isPresent()) {
-                RegistrationUtils.applyActivationKeyProperties(minion, activationKey.get(), grains);
-            }
+            activationKey.ifPresent(activationKeyIn ->
+                    RegistrationUtils.applyActivationKeyProperties(minion, activationKeyIn, grains));
 
             // Saltboot treatment - prepare and apply saltboot
             if (saltbootInitrd) {
@@ -615,6 +612,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
 
             systemInfo.getUptimeSeconds().ifPresent(us -> SaltUtils.handleUptimeUpdate(minion, us.longValue()));
             RegistrationUtils.finishRegistration(minion, activationKey, creator, !isSaltSSH, isSaltSSH);
+            ServerFactory.save(minion);
         }
         catch (RegisterMinionException rme) {
             LOG.error("Error registering minion id: {}", minionId, rme);
@@ -831,7 +829,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
 
                 // Remove relations to previously used activation keys
                 List<ActivationKey> keys = ActivationKeyFactory.lookupByActivatedServer(minion);
-                keys.stream().forEach(key -> {
+                keys.forEach(key -> {
                     Set<Server> activatedServers = key.getToken().getActivatedServers();
                     activatedServers.remove(minion);
                 });

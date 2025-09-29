@@ -5,8 +5,8 @@
 select * from (
   SELECT  DISTINCT S.id,
                    S.name,
-                   SI.server_id AS MGR_SERVER,
-                   PI.server_id AS PROXY,
+                   SI.server_id IS NOT NULL AS MGR_SERVER,
+                   PI.server_id IS NOT NULL AS PROXY,
                    TO_CHAR(Sinfo.checkin, 'YYYY-MM-DD HH24:MI:SS') AS LAST_CHECKIN
     FROM rhnServerInfo SInfo, rhnUserServerPerms USP, rhnServer S
     LEFT OUTER JOIN suseMgrServerInfo SI ON S.id = SI.server_id
@@ -1015,8 +1015,8 @@ SELECT  DISTINCT ST.element AS ID
 <query name="available_to_user_with_errata" params="user_id">
   SELECT  DISTINCT S.id,
                    S.name,
-                   SI.server_id AS MGR_SERVER,
-                   PI.server_id is not null AS PROXY,
+                   SI.server_id IS NOT NULL AS MGR_SERVER,
+                   PI.server_id IS NOT NULL AS PROXY,
                    TO_CHAR(Sinfo.checkin, 'YYYY-MM-DD HH24:MI:SS') AS LAST_CHECKIN,
                    SO.SECURITY_ERRATA, SO.BUG_ERRATA, SO.ENHANCEMENT_ERRATA, SO.LOCKED,
                    SO.OUTDATED_PACKAGES, SO.SERVER_NAME, SO.SERVER_ADMINS, SO.GROUP_COUNT,
