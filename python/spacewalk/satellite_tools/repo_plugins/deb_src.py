@@ -75,6 +75,15 @@ class DebPackage:
             if key in ("epoch", "version", "release"):
                 self.solvable.evr = self.evr()
 
+    def __getstate__(self):
+        state = self.__dict__.copy()
+        del state["solvable"]
+        return state
+
+    def __setstate__(self, state):
+        self.__dict__.update(state)
+        self.solvable = None
+
     def evr(self):
         # The format is: [epoch:]upstream_version[-debian_revision].
         # https://www.debian.org/doc/debian-policy/ch-controlfields.html#version
