@@ -9,7 +9,6 @@
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
 
-
 CREATE TABLE suseVEXAnnotations
 (
     cve_id               NUMERIC NOT NULL
