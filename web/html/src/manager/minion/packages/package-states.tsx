@@ -1,5 +1,3 @@
-import { hot } from "react-hot-loader/root";
-
 import * as React from "react";
 import { useEffect, useRef, useState } from "react";
 
@@ -354,4 +352,4 @@ const PackageStates = ({ serverId }: PropsType) => {
   );
 };
 
-export default hot(withPageWrapper<PropsType>(PackageStates));
+export default withPageWrapper<PropsType>(PackageStates);

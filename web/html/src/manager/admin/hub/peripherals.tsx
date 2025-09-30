@@ -1,5 +1,3 @@
-import { hot } from "react-hot-loader/root";
-
 import * as React from "react";
 
 import { Button, DropdownButton, LinkButton } from "components/buttons";
@@ -70,4 +68,4 @@ const IssPeripheral = (props: Props) => {
   );
 };
 
-export default hot(withPageWrapper(IssPeripheral));
+export default withPageWrapper(IssPeripheral);

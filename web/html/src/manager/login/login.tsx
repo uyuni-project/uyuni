@@ -1,5 +1,3 @@
-import { hot } from "react-hot-loader/root";
-
 import * as React from "react";
 
 import { isUyuni } from "core/user-preferences";
@@ -66,4 +64,4 @@ const Login = (props: Props) => {
   return <SusemanagerThemeLogin {...props} product={product} />;
 };
 
-export default hot(withPageWrapper<Props>(Login));
+export default withPageWrapper<Props>(Login);

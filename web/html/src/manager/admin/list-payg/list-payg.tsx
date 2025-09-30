@@ -1,5 +1,3 @@
-import { hot } from "react-hot-loader/root";
-
 import * as React from "react";
 import { useEffect } from "react";
 
@@ -124,4 +122,4 @@ const ListPayg = (props: Props) => {
   );
 };
 
-export default hot(withPageWrapper(ListPayg));
+export default withPageWrapper(ListPayg);
