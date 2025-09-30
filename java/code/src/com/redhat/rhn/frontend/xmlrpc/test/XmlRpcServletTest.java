@@ -74,7 +74,7 @@ public class XmlRpcServletTest extends MockObjectTestCase {
             will(returnValue("http"));
             atLeast(1).of(mockresp).getWriter();
             will(returnValue(pw));
-            atLeast(1).of(mockresp).setContentType("text/xml");
+            atLeast(1).of(mockresp).setContentType("text/xml; charset=utf-8");
         } });
 
         // ok run servlet

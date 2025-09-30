@@ -139,7 +139,7 @@ public class XmlRpcServlet extends HttpServlet {
             return;
         }
 
-        response.setContentType("text/xml");
+        response.setContentType("text/xml; charset=utf-8");
         try {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Passing control to XmlRpcServer.execute");
