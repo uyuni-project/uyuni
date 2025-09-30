@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Debug utility: packages log files, and relevant debug information
 #                needed for full diagnosis of Spacewalk Server issues.
@@ -29,10 +29,10 @@ IS_SUSE=0
 NO_REPORTS=0
 NO_COMPRESSION=0
 MAX_LOG_AGE=10
-if `grep -iq '^ID_LIKE=.*suse' /etc/os-release`; then
+if grep -iq '^ID_LIKE=.*suse' /etc/os-release; then
     IS_SUSE=1
 fi
-if [ "$SPACEWALK_DEBUG_NO_REPORTS" == 1 ]; then
+if [ "$SPACEWALK_DEBUG_NO_REPORTS" = 1 ]; then
     NO_REPORTS=1
 fi
 
@@ -47,7 +47,7 @@ usage() {
     echo "    --log-age             Set the maximum age (in days) for extracted logs ($MAX_LOG_AGE)"
     echo "    --no-reports          Do not run spacewalk-report. Useful if spacewalk-debug takes too long"
     echo "    --no-compression      Do not compress spacewalk-debug destination folder"
-    exit $1
+    exit 1
 }
 
 while [ ${#} -ne 0 ]; do
@@ -83,27 +83,21 @@ while [ ${#} -ne 0 ]; do
 done
 
 if [ ! -d "$BASE_DIR" ]; then
-    mkdir -p "$BASE_DIR"
-    [ $? != 0 ] && echo "Unable to create directory $BASE_DIR" && exit 1
+    mkdir -p "$BASE_DIR" || (echo "Unable to create directory $BASE_DIR"; exit 1)
 fi
 
 # clean any previous run
-rm -rf $BASE_DIR/spacewalk-debug/*
+rm -rf "$BASE_DIR/spacewalk-debug"/*
 
 # Make sure BASE_DIR is not relative
-BASE_DIR=$(cd $BASE_DIR && pwd)
+BASE_DIR=$(cd "$BASE_DIR" && pwd)
 
-DIR=$BASE_DIR/spacewalk-debug
-TARBALL=$BASE_DIR/spacewalk-debug.tar.bz2
+DIR="$BASE_DIR/spacewalk-debug"
+TARBALL="$BASE_DIR/spacewalk-debug.tar.bz2"
 
-/bin/mkdir -p $DIR
-if [ $? != 0 ] ; then
-  echo "Unable to create directory $DIR"
-  exit
-fi
-
-chmod 700 $DIR
-cd $DIR
+mkdir -p "$DIR" || (echo "Unable to create directory $DIR"; exit 1)
+chmod 700 "$DIR"
+cd "$DIR" || (echo "Unable to change to the output directory"; exit 1)
 
 echo "Collecting and packaging relevant diagnostic information."
 if [ $NO_REPORTS -eq 1 ] ; then
@@ -111,133 +105,137 @@ if [ $NO_REPORTS -eq 1 ] ; then
 fi
 echo "Warning: this may take some time..."
 
-mkdir -p $DIR/conf/httpd
-mkdir -p $DIR/conf/tomcat
-mkdir -p $DIR/conf/cobbler
-mkdir -p $DIR/conf/rhn/sysconfig
-mkdir -p $DIR/httpd-logs
-mkdir -p $DIR/tomcat-logs
-mkdir -p $DIR/cobbler-logs
-mkdir -p $DIR/rhn-logs/rhn
-mkdir -p $DIR/config-defaults
-mkdir -p $DIR/kickstarts
-mkdir -p $DIR/cobbler-lib
-mkdir -p $DIR/tasko
-mkdir -p $DIR/salt-states
+mkdir -p "$DIR/conf/httpd"
+mkdir -p "$DIR/conf/tomcat"
+mkdir -p "$DIR/conf/cobbler"
+mkdir -p "$DIR/conf/rhn/sysconfig"
+mkdir -p "$DIR/database"
+mkdir -p "$DIR/httpd-logs"
+mkdir -p "$DIR/tomcat-logs"
+mkdir -p "$DIR/cobbler-logs"
+mkdir -p "$DIR/rhn-logs/rhn"
+mkdir -p "$DIR/config-defaults"
+mkdir -p "$DIR/kickstarts"
+mkdir -p "$DIR/cobbler-lib"
+mkdir -p "$DIR/tasko"
+mkdir -p "$DIR/salt-states"
 if [ -f /usr/bin/journalctl ]; then
-  mkdir -p $DIR/systemd
+  mkdir -p "$DIR/systemd"
 fi
 
 echo "    * copying configuration information"
 if [ -d /etc/httpd ]; then
-    cp -fapRd /etc/httpd/conf* $DIR/conf/httpd
+    cp -fapRd /etc/httpd/conf* "$DIR/conf/httpd"
 elif [ -d /etc/apache2 ]; then
-    cp -fapRd /etc/apache2/conf* $DIR/conf/httpd
-    cp -fapRd /etc/apache2/vhosts* $DIR/conf/httpd
+    cp -fapRd /etc/apache2/conf* "$DIR/conf/httpd"
+    cp -fapRd /etc/apache2/vhosts* "$DIR/conf/httpd"
 fi
-cp -fapRd /etc/rhn $DIR/conf/rhn
-cp -fapRd /etc/sysconfig/rhn $DIR/conf/rhn/sysconfig
+cp -fapRd /etc/rhn "$DIR/conf/rhn"
+cp -fapRd /etc/sysconfig/rhn "$DIR/conf/rhn/sysconfig"
 
 # there might be backups of rhn.conf so clean them up as well (bsc#1146419)
-find $DIR/conf/rhn -name 'rhn.conf*' -exec sed -i 's/^server.susemanager.mirrcred_pass.*/server.susemanager.mirrcred_pass = <replaced_by_debug_tool>/' {} \;
-find $DIR/conf/rhn -name 'rhn.conf*' -exec sed -i 's/^server.secret_key.*/server.secret_key = <replaced_by_debug_tool>/' {} \;
-find $DIR/conf/rhn -name 'rhn.conf*' -exec sed -i 's/^session_secret_.*/session_secret_N = <replaced_by_debug_tool>/' {} \;
-find $DIR/conf/rhn -name 'rhn.conf*' -exec sed -i 's/^web.session_swap_secret_.*/web.session_swap_secret_N = <replaced_by_debug_tool>/' {} \;
-find $DIR/conf/rhn -name 'rhn.conf*' -exec sed -i 's/^db_password.*/db_password = <replaced_by_debug_tool>/' {} \;
-find $DIR/conf/rhn -name 'rhn.conf*' -exec sed -i 's/^report_db_password.*/report_db_password = <replaced_by_debug_tool>/' {} \;
-find $DIR/conf/rhn -name 'rhn.conf*' -exec sed -i 's/^server.satellite.http_proxy_password.*/server.satellite.http_proxy_password = <replaced_by_debug_tool>/' {} \;
+find "$DIR/conf/rhn" -name 'rhn.conf*' -exec sed -i 's/^server.susemanager.mirrcred_pass.*/server.susemanager.mirrcred_pass = <replaced_by_debug_tool>/' {} \;
+find "$DIR/conf/rhn" -name 'rhn.conf*' -exec sed -i 's/^server.secret_key.*/server.secret_key = <replaced_by_debug_tool>/' {} \;
+find "$DIR/conf/rhn" -name 'rhn.conf*' -exec sed -i 's/^session_secret_.*/session_secret_N = <replaced_by_debug_tool>/' {} \;
+find "$DIR/conf/rhn" -name 'rhn.conf*' -exec sed -i 's/^web.session_swap_secret_.*/web.session_swap_secret_N = <replaced_by_debug_tool>/' {} \;
+find "$DIR/conf/rhn" -name 'rhn.conf*' -exec sed -i 's/^db_password.*/db_password = <replaced_by_debug_tool>/' {} \;
+find "$DIR/conf/rhn" -name 'rhn.conf*' -exec sed -i 's/^report_db_password.*/report_db_password = <replaced_by_debug_tool>/' {} \;
+find "$DIR/conf/rhn" -name 'rhn.conf*' -exec sed -i 's/^server.satellite.http_proxy_password.*/server.satellite.http_proxy_password = <replaced_by_debug_tool>/' {} \;
 
 # cleanup also some other files
-find $DIR/conf/rhn -name 'uln.conf*' -exec sed -i 's/^password.*/password = <replaced_by_debug_tool>/' {} \;
-find $DIR/conf/rhn -name 'signing.conf*' -exec sed -i 's/^GPGPASS=.*/GPGPASS=<replaced_by_debug_tool>/' {} \;
+find "$DIR/conf/rhn" -name 'uln.conf*' -exec sed -i 's/^password.*/password = <replaced_by_debug_tool>/' {} \;
+find "$DIR/conf/rhn" -name 'signing.conf*' -exec sed -i 's/^GPGPASS=.*/GPGPASS=<replaced_by_debug_tool>/' {} \;
 
 if [ -f /etc/tnsnames.ora ] ; then
-    cp -fad /etc/tnsnames.ora $DIR/conf
+    cp -fad /etc/tnsnames.ora "$DIR/conf"
 fi
 
 # Copy generated and existing SLS files
 echo "    * copying Salt state files"
 D_IFS=$IFS
 IFS=","
+# shellcheck disable=SC2140
 for sls_dir in "/usr/share/susemanager/salt/","static-sls","static SLS" \
                "/srv/susemanager/salt/","generated-sls","generated SLS"; do
+    # shellcheck disable=SC2086
     set $sls_dir
-    if [ -d $1 ] && [ "$(ls -A $1)" ]; then
+    if [ -d "$1" ] && [ "$(ls -A "$1")" ]; then
 	    echo -e "    \t- copying $3"
-	    cp -fa $1 $DIR/salt-states/$2
+	    cp -fa "$1" "$DIR/salt-states/$2"
     fi
 done
 IFS=$D_IFS
-mkdir -p $DIR/salt-states/custom-sls/
-for i in $(find /srv/salt/ -type f); do
+
+mkdir -p "$DIR/salt-states/custom-sls/"
+while read -r sls; do
     echo -e "    \t- copying custom SLS"
-    if [[ $(file $i) = *"text"* ]];  then
-	    cp --parents -fa $i $DIR/salt-states/custom-sls/
+    if [[ $(file "$sls") = *"text"* ]];  then
+	    cp --parents -fa "$sls" "$DIR/salt-states/custom-sls/"
     else
-      echo "$i" >> $DIR/salt-states/custom-sls/other_files
+      echo "$sls" >> "$DIR/salt-states/custom-sls/other_files"
     fi
-done
+done < <(find /srv/salt/ -type f)
 
 MATCHER_DATA_DIR=/var/lib/spacewalk/subscription-matcher
 if [ -d $MATCHER_DATA_DIR ]; then
   echo "    * copying Subscription Matcher files"
-  cp -fa $MATCHER_DATA_DIR $DIR/
+  cp -fa $MATCHER_DATA_DIR "$DIR/"
 fi
 
 echo "    * copying logs"
 if [ -f /usr/bin/journalctl ]; then
-  /usr/bin/journalctl -m > $DIR/systemd/journalctl.log
+  /usr/bin/journalctl -m > "$DIR/systemd/journalctl.log"
 fi
 
 if [ -d /var/log/httpd ]; then
-    cp -fapRd /var/log/httpd $DIR/httpd-logs
+    cp -fapRd /var/log/httpd "$DIR/httpd-logs"
 elif [ -d /var/log/apache2 ]; then
-    cp -fapRd /var/log/apache2 $DIR/httpd-logs
+    cp -fapRd /var/log/apache2 "$DIR/httpd-logs"
 fi
 
 # copy rhn logs
 if [ -d /var/log/rhn ]; then
-    cp -fapd  /var/log/rhn/*.log* $DIR/rhn-logs/rhn
+    cp -fapd  /var/log/rhn/*.log* "$DIR/rhn-logs/rhn"
 
     # check for reposync dir
     if [ -d /var/log/rhn/reposync ]; then
-        cp -fapRd /var/log/rhn/reposync $DIR/rhn-logs/rhn
+        cp -fapRd /var/log/rhn/reposync "$DIR/rhn-logs/rhn"
     fi
 
     # check for search dir
     if [ -d /var/log/rhn/search ]; then
-        cp -fapRd /var/log/rhn/search $DIR/rhn-logs/rhn
+        cp -fapRd /var/log/rhn/search "$DIR/rhn-logs/rhn"
     fi
 
     # check mgr-create-bootstrap-repo dir
     if [ -d /var/log/rhn/mgr-create-bootstrap-repo ]; then
-        cp -fapRd /var/log/rhn/mgr-create-bootstrap-repo $DIR/rhn-logs/rhn
+        cp -fapRd /var/log/rhn/mgr-create-bootstrap-repo "$DIR/rhn-logs/rhn"
     fi
 fi
 
-if [ $IS_SUSE -eq 1 ]; then
-    cp -fa /var/log/susemanager* $DIR/rhn-logs
+if [ -e /var/log/susemanager ]; then
+    cp -fa /var/log/susemanager* "$DIR/rhn-logs"
 fi
 
 if [ -d /var/log/salt ]; then
-    mkdir -p $DIR/salt-logs
-    cp -fa /var/log/salt $DIR/salt-logs
+    mkdir -p "$DIR/salt-logs"
+    cp -fa /var/log/salt "$DIR/salt-logs"
 fi
 
 # tomcat for spacewalk 400+
 for tomcat in tomcat tomcat5 tomcat6 ; do
   if [ -d /etc/$tomcat ]; then
-    cp -fa /etc/$tomcat $DIR/conf/tomcat
+    cp -fa /etc/$tomcat "$DIR/conf/tomcat"
   fi
   if [ -d /var/log/$tomcat ]; then
-    cp -fa /var/log/$tomcat $DIR/tomcat-logs
+    cp -fa /var/log/$tomcat "$DIR/tomcat-logs"
   fi
 done
 
 # copying the /usr/share/rhn/config-defaults
 echo "    * copying config-defaults files"
 if [ -d /usr/share/rhn/config-defaults ]; then
-    cp -fa /usr/share/rhn/config-defaults/* $DIR/config-defaults
+    cp -fa /usr/share/rhn/config-defaults/* "$DIR/config-defaults"
 fi
 
 # CLM - Save Current Environment Version Details
@@ -254,6 +252,7 @@ while read -r project; do
   while [ -n "$curr_env" ]; do
     env_label=$(echo "SELECT label FROM susecontentenvironment WHERE id=$curr_env;" | /usr/bin/spacewalk-sql --select-mode - | tail -n +3 | head -n -2 | tr -d '[:space:]')
     env_version=$(echo "SELECT version FROM susecontentenvironment WHERE id=$curr_env;" | /usr/bin/spacewalk-sql --select-mode - | tail -n +3 | head -n -2 | tr -d '[:space:]')
+    # shellcheck disable=SC2129
     echo "## Environment: $env_label" >> "$DIR/clm/projects/$project_label.txt"
     echo "SELECT message, version, created FROM susecontentprojecthistoryentry WHERE project_id=$project_id AND version=$env_version ;" | /usr/bin/spacewalk-sql --select-mode - | head -n -2 >> "$DIR/clm/projects/$project_label.txt"
     echo -e "\n\n" >> "$DIR/clm/projects/$project_label.txt"
@@ -271,58 +270,58 @@ for i in $(echo "\\dt;" | /usr/bin/spacewalk-sql --select-mode - |grep suseconte
 #cobbler stuff
 echo "    * copying cobbler files"
 if [ -d /etc/cobbler ]; then
-    cp -fa /etc/cobbler/* $DIR/conf/cobbler
+    cp -fa /etc/cobbler/* "$DIR/conf/cobbler"
 fi
 if [ -d /var/log/cobbler ]; then
-   cp -fa /var/log/cobbler/* $DIR/cobbler-logs
+   cp -fa /var/log/cobbler/* "$DIR/cobbler-logs"
 fi
 if [ -d /var/lib/cobbler ]; then
-   cp -fa /var/lib/cobbler/snippets $DIR/cobbler-lib/
-   cp -fa /var/lib/cobbler/config $DIR/cobbler-lib/
-   cp -fa /var/lib/cobbler/kickstarts $DIR/cobbler-lib/
-   cp -fa /var/lib/cobbler/triggers $DIR/cobbler-lib/
-   cp -fa /var/lib/cobbler/collections $DIR/cobbler-lib/
+   cp -fa /var/lib/cobbler/snippets "$DIR/cobbler-lib/"
+   cp -fa /var/lib/cobbler/config "$DIR/cobbler-lib/" 2>/dev/null
+   cp -fa /var/lib/cobbler/kickstarts "$DIR/cobbler-lib/"
+   cp -fa /var/lib/cobbler/triggers "$DIR/cobbler-lib/"
+   cp -fa /var/lib/cobbler/collections "$DIR/cobbler-lib/"
 fi
 if [ -d /var/lib/rhn/kickstarts ]; then
-   cp -fa /var/lib/rhn/kickstarts/* $DIR/kickstarts/
+   cp -fa /var/lib/rhn/kickstarts/* "$DIR/kickstarts/"
 fi
 
 # Remove passwords from cobbler settings
-find $DIR/conf/cobbler -type f -name 'settings*' -exec sed -i 's/^default_password_crypted.*/default_password_crypted <replaced_by_debug_tool>/' {} \;
+find "$DIR/conf/cobbler" -type f -name 'settings*' -exec sed -i 's/^default_password_crypted.*/default_password_crypted <replaced_by_debug_tool>/' {} \;
 
 # ssl-build
 if [ -d /root/ssl-build ] ; then
     echo "    * copying ssl-build"
-    mkdir -p $DIR/ssl-build
+    mkdir -p "$DIR/ssl-build"
     # NOTE: cp -a == cp -pRd
-    ls -lR /root/ssl-build/ > $DIR/ssl-build/ls-lR.txt 2> /dev/null
+    ls -lR /root/ssl-build/ > "$DIR/ssl-build/ls-lR.txt" 2> /dev/null
 fi
 
 # /etc/sudoers
-if [ -f /etc/sudoers -o -d /etc/sudoers.d ] ; then
+if [ -f /etc/sudoers ] || [ -d /etc/sudoers.d ] ; then
 	echo "    * copying /etc/sudoers*"
-	cp -fa /etc/sudoers* $DIR/conf
+	cp -fa /etc/sudoers* "$DIR/conf"
 fi
 
 # /etc/passwd
 if [ -f /etc/passwd ] ; then
 	echo "    * copying apache, postgres, tomcat entries from /etc/passwd"
-	getent passwd apache wwwrun tomcat postgres > $DIR/conf/passwd
+	getent passwd apache wwwrun tomcat postgres > "$DIR/conf/passwd"
 fi
 
 # /etc/group
 if [ -f /etc/group ] ; then
 	echo "    * copying apache, postgres, tomcat entries from /etc/group"
-	getent group apache www tomcat postgres > $DIR/conf/group
+	getent group apache www tomcat postgres > "$DIR/conf/group"
 fi
 
-echo "    * querying RPM database (versioning of Spacewalk, etc.)"
-rpm -qa --last > $DIR/rpm-manifest
-rpm -qa | sort > $DIR/rpm-manifest-clean
+echo "    * querying RPM database"
+rpm -qa --last > "$DIR/rpm-manifest"
+rpm -qa | sort > "$DIR/rpm-manifest-clean"
 
 echo "    * querying schema version, database charactersets and database"
-/usr/bin/rhn-schema-version > $DIR/database-schema-version
-/usr/bin/rhn-charsets > $DIR/database-character-sets
+/usr/bin/rhn-schema-version > "$DIR/database-schema-version"
+/usr/bin/rhn-charsets > "$DIR/database-character-sets"
 
 if [ -f /usr/bin/spacewalk-sql ] ; then
     USERS_TZ_LC_SQL="""
@@ -335,17 +334,18 @@ if [ -f /usr/bin/spacewalk-sql ] ; then
         ORDER BY login;
     """
     echo "    * querying users timezone and localization preferences"
-    echo $USERS_TZ_LC_SQL | /usr/bin/spacewalk-sql --select-mode - > $DIR/users-preferences
+    echo "$USERS_TZ_LC_SQL" | /usr/bin/spacewalk-sql --select-mode - > "$DIR/users-preferences"
 fi
 
 echo "    * get diskspace available"
-df -h > $DIR/diskinfo
+df -h > "$DIR/diskinfo"
 
 echo "    * get database settings"
-/usr/bin/rhn-db-stats $DIR/database/db-settings.log
+QUERY="SHOW ALL;"
+echo "$QUERY" | /usr/bin/spacewalk-sql --select-mode - > "$DIR/database/db-settings.log"
 
 echo "    * get schema statistics"
-/usr/bin/rhn-schema-stats $DIR/database/schema-stats.log
+/usr/bin/rhn-schema-stats "$DIR/database/schema-stats.log"
 
 echo "    * get tables statistics"
 QUERY="SELECT * FROM pg_stat_user_tables;"
@@ -355,75 +355,60 @@ echo "    * get per table configuration options"
 QUERY="SELECT relname, reloptions FROM pg_class JOIN pg_namespace ON  pg_namespace.oid = pg_class.relnamespace WHERE pg_namespace.nspname = 'public' AND pg_class.relkind = 'r';"
 echo "$QUERY" | /usr/bin/spacewalk-sql --select-mode - > "${DIR}/database/table_options.log"
 
-PGSQL_ROOT=""
-MAX_PGSQL_LOGS_SIZE="6291456" #6 GB
-rpm -q postgresql92-postgresql > /dev/null
-if [ $? == 0 ]; then
-	PGSQL_ROOT="/opt/rh/postgresql92/root"
-fi
-
 if [ -d /var/log/spacewalk/schema-upgrade ] ; then
 	echo "    * copying schema upgrade logs"
-	mkdir -p $DIR/schema-upgrade-logs
-	cp -pr /var/log/spacewalk/schema-upgrade/* $DIR/schema-upgrade-logs
+	mkdir -p "$DIR/schema-upgrade-logs"
+	cp -pr /var/log/spacewalk/schema-upgrade/* "$DIR/schema-upgrade-logs"
 fi
 
-if [ "$(spacewalk-cfg-get db_backend)" = "postgresql" ] ; then
-    echo "    * copying Postgresql procedures information"
-    echo "select proname, prosrc from pg_catalog.pg_proc;" | /usr/bin/spacewalk-sql --select-mode - &> $DIR/database/pg_catalog.pg_proc.log
-fi
+echo "    * copying Postgresql procedures information"
+QUERY="SELECT proname, prosrc FROM pg_catalog.pg_proc;"
+echo "$QUERY"  | /usr/bin/spacewalk-sql --select-mode - > "$DIR/database/pg_catalog.pg_proc.log"
 
 if [ -f /var/log/audit/audit.log ] ; then
 	echo "    * copying audit.log"
-	mkdir -p $DIR/audit-log
-	cp -fa /var/log/audit/audit.log $DIR/audit-log
+	mkdir -p "$DIR/audit-log"
+	cp -fa /var/log/audit/audit.log "$DIR/audit-log"
 fi
 
 if [ -d /var/log/rhn/tasko/sat ] ; then
 	echo "    * copying tasko/sat"
-	cp -fa /var/log/rhn/tasko/sat $DIR/tasko
+	cp -fa /var/log/rhn/tasko/sat "$DIR/tasko"
 fi
 
 if [ $IS_SUSE -eq 1 ]; then
     if [ -d "/var/lib/spacewalk/scc/scc-data" ]; then
         echo  "    * copying SCC data"
-        mkdir -p $DIR/sccdata
-        IFS=$(echo -en "\n\b")
-        for i in $(ls -A /var/lib/spacewalk/scc/scc-data); do
-            cp -fa /var/lib/spacewalk/scc/scc-data/$i $DIR/sccdata/
+        mkdir -p "$DIR/sccdata"
+        for i in /var/lib/spacewalk/scc/scc-data/*; do
+            cp -fa "$i" "$DIR/sccdata/"
         done
     fi
 
     if [ -x /usr/bin/spacewalk-report ] && [ $NO_REPORTS -eq 0 ]; then
         # get some inventory info
         echo "    * running spacewalk-report to create reports."
-        /usr/bin/spacewalk-report --legacy-report inventory > $DIR/inventory-report.csv
-        /usr/bin/spacewalk-report --legacy-report channels > $DIR/channels-report.csv
+        /usr/bin/spacewalk-report --legacy-report inventory > "$DIR/inventory-report.csv"
+        /usr/bin/spacewalk-report --legacy-report channels > "$DIR/channels-report.csv"
     fi
 
-    ls -laR $(spacewalk-cfg-get documentroot)/pub > $DIR/ls-laR-htdocs
+    ls -laR "$(spacewalk-cfg-get documentroot)/pub" > "$DIR/ls-laR-htdocs"
 fi
 
 echo "    * timestamping"
-echo "Spacewalk debug created on $(date)" > $DIR/timestamp
+echo "Spacewalk debug created on $(date)" > "$DIR/timestamp"
 
 # Skip if MAX_LOG_AGE is not a number
-if [ "$MAX_LOG_AGE" -eq "$MAX_LOG_AGE" 2>/dev/null ]; then
+if [ "$MAX_LOG_AGE" -eq "$MAX_LOG_AGE" ]; then
     # Remove all logs older than MAX_LOG_AGE to reduce the size of the tarball
-    find $DIR/* -regextype sed \( -iregex ".*log\.[0-9]\{1,\}.*" -or -iregex ".*[0-9]\{8\}.*" \
+    find "$DIR"/* -regextype sed \( -iregex ".*log\.[0-9]\{1,\}.*" -or -iregex ".*[0-9]\{8\}.*" \
         -or -iregex ".*[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}\(\.\|_[0-9]\{6\}\(_sync\)\?\.\).*" \) \
         -daystart -mtime +"$MAX_LOG_AGE" -not -ipath "*schema*" -delete
 
         # tasko files need to be parsed separately to find old ones
         for dir in rhn-logs/rhn/tasko tasko/sat; do
-            if [ -d $dir ]; then
-                for file in $(find $DIR/$dir); do
-                    if [ -f "$file" ]; then
-                        if [ -n "$(find $file -daystart -mtime +$MAX_LOG_AGE)" ]; then
-                            rm $file
-                        fi
-                    fi
-                done
+            if [ -d "$dir" ]; then
+                find "$DIR/$dir" -type f -daystart -mtime +"$MAX_LOG_AGE" -delete
             fi
         done
 fi
@@ -438,7 +423,7 @@ if [ -f /usr/bin/spacewalk-sql ] ; then
         FROM rhntaskoschedule
         WHERE cron_expr is not null or job_label like '%default';
     """
-    echo $TASK_SCHEDULE_DEFAULT_SQL | /usr/bin/spacewalk-sql --select-mode - > $DIR/tasko/task_schedule_default
+    echo "$TASK_SCHEDULE_DEFAULT_SQL" | /usr/bin/spacewalk-sql --select-mode - > "$DIR/tasko/task_schedule_default"
 
     # Extract task schedules from the database - only the modified ones
     TASK_SCHEDULE_MODIFIED_SQL="""
@@ -448,35 +433,37 @@ if [ -f /usr/bin/spacewalk-sql ] ; then
         FROM rhntaskoschedule
         WHERE created <> modified;
     """
-    echo $TASK_SCHEDULE_MODIFIED_SQL | /usr/bin/spacewalk-sql --select-mode - > $DIR/tasko/task_schedule_modified
+    echo "$TASK_SCHEDULE_MODIFIED_SQL" | /usr/bin/spacewalk-sql --select-mode - > "$DIR/tasko/task_schedule_modified"
 fi
 
 # exclude private keys
-find $DIR -name "*PRIVATE*" -delete
-find $DIR -name "server.key*" -delete
-find $DIR -name "server.pem*" -delete
-find $DIR -name "rhn-org-httpd-ssl*" -delete
+find "$DIR" -name "*PRIVATE*" -delete
+find "$DIR" -name "server.key*" -delete
+find "$DIR" -name "server.pem*" -delete
+find "$DIR" -name "rhn-org-httpd-ssl*" -delete
 
 # Remove bootloader linux+initrd files
-find $DIR/salt-states/generated-sls/bootloader/ -type f -exec truncate -s 0 {} \;
-touch $DIR/salt-states/generated-sls/bootloader/DATA_GOT_TRUNCATED_VIA_SUPPORTCONFIG
+if [ -d "$DIR/salt-states/generated-sls/bootloader/" ]; then
+    find "$DIR/salt-states/generated-sls/bootloader/" -type f -exec truncate -s 0 {} \;
+    touch "$DIR/salt-states/generated-sls/bootloader/DATA_GOT_TRUNCATED_VIA_SUPPORTCONFIG"
+fi
 
 # fix permissions
-chmod -R 700 $DIR
+chmod -R 700 "$DIR"
 
 if [ $NO_COMPRESSION -eq 1 ] ; then
   echo
   echo "Debug dump created, stored in $DIR"
 else
   echo "    * creating tarball (may take some time): $TARBALL"
-  # set tarball premissions *before* writing data
-  install -m 600 /dev/null $TARBALL
-  tar -cjf $TARBALL \
-      -C $(dirname $DIR) \
-      $(basename $DIR)
+  # set tarball permissions *before* writing data
+  install -m 600 /dev/null "$TARBALL"
+  tar -cjf "$TARBALL" \
+      -C "$(dirname "$DIR")" \
+      "$(basename "$DIR")"
 
   echo "    * removing temporary debug tree"
-  rm -Rf echo $DIR
+  rm -Rf "$DIR"
   echo "Debug dump created, stored in $TARBALL"
 fi
 
