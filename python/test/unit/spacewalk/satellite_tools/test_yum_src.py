@@ -715,3 +715,63 @@ class YumSrcTest(unittest.TestCase):
             un = UpdateNotice(un_elem)
             for un_key in expected.keys():
                 self.assertEqual(un[un_key], expected[un_key])
+
+    def test_list_packages_with_latest(self):
+
+        cs = self._make_dummy_cs()
+
+        package_attrs = [
+            "name",
+            "arch",
+            "evr",
+        ]
+        Package = namedtuple("Package", package_attrs)
+        mocked_packs = [
+            Package(
+                "n1",
+                "x86_64",
+                "1.1-1.1",
+            ),
+            Package(
+                "n2",
+                "x86_64",
+                "2.1-3.4",
+            ),
+            Package(
+                "n1",
+                "x86_64",
+                "1.1.1-1.2.1",
+            ),
+            Package(
+                "n1",
+                "x86_64",
+                "1.3.1-1.4.1",
+            ),
+        ]
+
+        with patch("os.path.isfile", MagicMock(return_value=True)):
+            cs.solv_pool = solv.Pool()
+            cs.solv_repo = cs.solv_pool.add_repo("libsolv")
+
+        for pack in mocked_packs:
+            new_solvable = cs.solv_repo.add_solvable()
+            new_solvable.name = pack.name
+            new_solvable.arch = pack.arch
+            new_solvable.evr = pack.evr
+
+        with patch.object(
+            cs,
+            "_get_solvable_packages",
+            MagicMock(return_value=list(cs.solv_repo.solvables)),
+        ), patch("solv.XSolvable.lookup_checksum", MagicMock()), patch(
+            "solv.XSolvable.lookup_location", MagicMock()
+        ):
+            listed_packages = cs.list_packages(filters=None, latest=True)
+
+        self.assertEqual(len(listed_packages), 2)
+        self.assertEqual(listed_packages[0].name, "n1")
+        self.assertEqual(listed_packages[0].version, "1.3.1")
+        self.assertEqual(listed_packages[0].release, "1.4.1")
+        self.assertEqual(listed_packages[1].name, "n2")
+        self.assertEqual(listed_packages[1].version, "2.1")
+        self.assertEqual(listed_packages[1].release, "3.4")

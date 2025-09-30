@@ -50,7 +50,6 @@ import traceback
 # pylint: disable-next=unused-import
 import types
 import urlgrabber
-import looseversion
 import json
 
 try:
@@ -1493,15 +1492,9 @@ password={passwd}
 
         if latest:
             latest_pkgs = {}
-            # pylint: disable-next=unused-variable
-            new_pkgs = []
             for pkg in pkglist:
-                # pylint: disable-next=consider-using-f-string
-                ident = "{}.{}".format(pkg.name, pkg.arch)
-                # pylint: disable-next=consider-iterating-dictionary
-                if ident not in latest_pkgs.keys() or looseversion.LooseVersion(
-                    str(pkg.evr)
-                ) > looseversion.LooseVersion(str(latest_pkgs[ident].evr)):
+                ident = f"{pkg.name}.{pkg.arch}"
+                if ident not in latest_pkgs or pkg.evrcmp(latest_pkgs[ident]) > 0:
                     latest_pkgs[ident] = pkg
             pkglist = list(latest_pkgs.values())
 
