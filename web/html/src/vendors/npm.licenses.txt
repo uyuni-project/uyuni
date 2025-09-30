@@ -10243,7 +10243,7 @@ THE SOFTWARE.
 
 --------------------------------------------------------------------------------
 
-Package: brace-expansion@1.1.11
+Package: brace-expansion@1.1.12
 License text:
 
 MIT License
@@ -18784,7 +18784,7 @@ SOFTWARE.
 
 --------------------------------------------------------------------------------
 
-Package: nanoid@3.3.7
+Package: nanoid@3.3.8
 License text:
 
 The MIT License (MIT)
@@ -19639,7 +19639,7 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 --------------------------------------------------------------------------------
 
-Package: postcss-modules-extract-imports@3.0.0
+Package: postcss-modules-extract-imports@3.1.0
 License text:
 
 Copyright 2015 Glen Maddern
@@ -19650,7 +19650,7 @@ THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH RE
 
 --------------------------------------------------------------------------------
 
-Package: postcss-modules-local-by-default@4.0.4
+Package: postcss-modules-local-by-default@4.2.0
 License text:
 
 The MIT License (MIT)
@@ -19676,7 +19676,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 --------------------------------------------------------------------------------
 
-Package: postcss-modules-scope@3.1.1
+Package: postcss-modules-scope@3.2.1
 License text:
 
 ISC License (ISC)
@@ -19701,7 +19701,7 @@ Permission to use, copy, modify, and/or distribute this software for any purpose
 THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --------------------------------------------------------------------------------
 
-Package: postcss-selector-parser@6.0.15
+Package: postcss-selector-parser@7.1.0
 License text:
 
 Copyright (c) Ben Briggs <beneb.info@gmail.com> (http://beneb.info)
