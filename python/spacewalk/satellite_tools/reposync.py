@@ -1223,9 +1223,6 @@ class RepoSync(object):
         ):
             return None
 
-        # pylint: disable-next=consider-using-f-string
-        log(0, "Add Patch %s" % patch_name)
-
         e["errata_from"] = notice["from"]
         e["advisory"] = e["advisory_name"] = patch_name
         e["advisory_rel"] = notice["version"]
@@ -1272,6 +1269,9 @@ class RepoSync(object):
                 % e["advisory_name"],
             )
             return None
+
+        # pylint: disable-next=consider-using-f-string
+        log(0, "Add Patch %s" % patch_name)
 
         e["keywords"] = self._update_keywords(notice)
         e["bugs"] = self._update_bugs(notice)
