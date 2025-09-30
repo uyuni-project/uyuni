@@ -14,7 +14,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-"""
+r"""
 Blend is a tool used to sort and combine .sql files as defined by the arguments
 and the contents of the .deps files.  Files with an extension of (.sql|.pkb|.pks)
 are dependancy sorted as defined by the (optional) .deps files contained within each
@@ -38,10 +38,8 @@ Terms:
 
 Format:
 
-  # pylint: disable-next=anomalous-backslash-in-string
   path = {namespace}([\s,]+{namespace})*
 
-  # pylint: disable-next=anomalous-backslash-in-string
   {qname} :: {qname}([\s,]+{qname})*
 
 Examples:
@@ -69,7 +67,6 @@ Examples:
 
   The star notation prepends its list to all following entries in the file.
 
-# pylint: disable-next=anomalous-backslash-in-string
 Lines may be joined by (\).
 
 MAIN.SQL
