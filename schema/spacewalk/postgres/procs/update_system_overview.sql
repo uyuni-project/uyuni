@@ -1,5 +1,5 @@
 --
--- Copyright (c) 2022 SUSE, LLC
+-- Copyright (c) 2022-2025 SUSE, LLC
 --
 -- This software is licensed to you under the GNU General Public License,
 -- version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -78,20 +78,16 @@ begin
 	     rhnServerChannel SC
     WHERE SC.server_id = sid AND SC.channel_id = C.id AND C.parent_channel IS NULL;
 
-    SELECT count(*)
-    INTO new_security_errata
+    SELECT
+      count(CASE WHEN setv.errata_type = 'Security Advisory' THEN 1 END),
+      count(CASE WHEN setv.errata_type = 'Bug Fix Advisory' THEN 1 END),
+      count(CASE WHEN setv.errata_type = 'Product Enhancement Advisory'  THEN 1 END)
+    INTO
+      new_security_errata,
+      new_bug_errata,
+      new_enhancement_errata
     FROM rhnServerErrataTypeView setv
-    WHERE setv.server_id = sid AND setv.errata_type = 'Security Advisory';
-
-    SELECT count(*)
-    INTO new_bug_errata
-    FROM rhnServerErrataTypeView setv
-    WHERE setv.server_id = sid AND setv.errata_type = 'Bug Fix Advisory';
-
-    SELECT count(*)
-    INTO new_enhancement_errata
-    FROM rhnServerErrataTypeView setv
-    WHERE setv.server_id = sid AND setv.errata_type = 'Product Enhancement Advisory';
+    WHERE setv.server_id = sid;
 
     SELECT count(DISTINCT p.name_id)
     INTO new_outdated_packages
@@ -158,33 +154,20 @@ begin
         ORDER BY CASE SEV.is_base WHEN 'Y' THEN 1 WHEN 'N' THEN 2 END, SEV.label
     ) AS ordered;
 
-    SELECT count(sp.name_id) AS extra_pkg_count
-    INTO new_extra_pkg_count
-    FROM rhnServerPackage sp
-    LEFT OUTER JOIN (SELECT sc.server_id,
-                            cp.package_id,
-                            p.name_id,
-                            p.evr_id,
-                            p.package_arch_id
-                     FROM rhnPackage p,
-                          rhnServerChannel sc,
-                          rhnServerPackage sp2,
-                          rhnChannelPackage cp,
-                          rhnUserServerPerms usp2
-                     WHERE cp.package_id = p.id
-                       AND cp.channel_id = sc.channel_id
-                       AND sc.server_id = usp2.server_id
-                       AND sc.server_id = sp2.server_id
-                       AND sp2.server_id = sid
-                       AND sp2.name_id = p.name_id
-                       AND sp2.evr_id = p.evr_id
-                       AND sp2.package_arch_id = p.package_arch_id
-                     ) scp ON (scp.server_id = sp.server_id AND
-                               sp.name_id = scp.name_id AND
-                               sp.evr_id = scp.evr_id AND
-                               sp.package_arch_id = scp.package_arch_id)
-  WHERE scp.package_id IS NULL AND sp.server_id = sid
-  GROUP BY sp.server_id;
+  SELECT count(sp.name_id)
+  INTO new_extra_pkg_count
+  FROM rhnServerPackage sp
+  WHERE sp.server_id = sid
+  AND NOT EXISTS (
+    SELECT 1
+    FROM rhnPackage p
+    JOIN rhnChannelPackage cp ON cp.package_id = p.id
+    JOIN rhnServerChannel sc ON cp.channel_id = sc.channel_id
+    WHERE sc.server_id = sp.server_id
+    AND p.name_id = sp.name_id
+    AND p.evr_id = sp.evr_id
+    AND p.package_arch_id = sp.package_arch_id
+);
 
   SELECT TRUE into new_requires_reboot
   FROM rhnServer S

@@ -1,5 +1,6 @@
 --
 -- Copyright (c) 2008--2012 Red Hat, Inc.
+-- Copyright (c) 2025 SUSE LLC
 --
 -- This software is licensed to you under the GNU General Public License,
 -- version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -71,19 +72,16 @@ CREATE TABLE rhnPackage
                          DEFAULT (-1) NOT NULL,
     header_end       NUMERIC
                          DEFAULT (-1) NOT NULL
-)
-
-;
+);
 
 CREATE INDEX rhn_package_oid_id_idx
-    ON rhnPackage (org_id, id)
-    
-    ;
+    ON rhnPackage (org_id, id);
 
 CREATE INDEX rhn_package_nid_id_idx
-    ON rhnPackage (name_id, id)
-    
-    ;
+    ON rhnPackage (name_id, id);
+
+CREATE INDEX rhn_package_nid_evr_arch_idx
+    ON rhnPackage (name_id, evr_id, package_arch_id);
 
 CREATE SEQUENCE rhn_package_id_seq;
 
