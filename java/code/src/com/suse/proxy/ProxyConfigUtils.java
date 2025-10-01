@@ -81,9 +81,9 @@ public class ProxyConfigUtils {
     public static final String REGISTRY_MODE_ADVANCED = "advanced";
     public static final String REGISTRY_BASE_URL = "registryBaseURL";
     public static final String REGISTRY_BASE_TAG = "registryBaseTag";
-    public static final String PROXY_SSH_PUB = "sshPub";
-    public static final String PROXY_SSH_PRIV = "sshPriv";
-    public static final String PROXY_SSH_PARENT_PUB = "sshParentPub";
+    public static final String PROXY_SSH_PUB = "proxySshPub";
+    public static final String PROXY_SSH_PRIV = "proxySshPriv";
+    public static final String PROXY_SSH_PARENT_PUB = "parentSshPub";
 
     // Registry entries
     public static final String PILLAR_REGISTRY_ENTRY = "registries";
@@ -329,38 +329,6 @@ public class ProxyConfigUtils {
             data.put(PROXY_TFTPD.getTagField(), tftpdImage.getTag());
         }
 
-        return data;
-    }
-
-    /**
-     * Load collected files to the pillar
-     *
-     * @param configPath path to the general configuration file
-     * @param httpdPath path to the httpd configuration file
-     * @param sshPath path to the ssh configuration file
-     * @return map object with parsed data
-     */
-    public static Map<String, Object> loadFilesForPillar(Path configPath, Path httpdPath, Path sshPath) {
-        Map<String, Object> data = new HashMap<>();
-
-        Map<String, Object> httpd = YamlHelper.loadAs(
-                FileUtils.readStringFromFile(httpdPath.toString()), Map.class);
-        data.put(PROXY_KEY_FIELD, httpd.get("server_key"));
-        data.put(PROXY_CERT_FIELD, httpd.get("server_crt"));
-
-        Map<String, Object> ssh = YamlHelper.loadAs(
-                FileUtils.readStringFromFile(sshPath.toString()), Map.class);
-        data.put(PROXY_SSH_PRIV, ssh.get("server_ssh_push"));
-        data.put(PROXY_SSH_PUB, ssh.get("server_ssh_push_pub"));
-        data.put(PROXY_SSH_PARENT_PUB, ssh.get("server_ssh_key_pub"));
-
-        Map<String, Object> config = YamlHelper.loadAs(
-                FileUtils.readStringFromFile(configPath.toString()), Map.class);
-        data.put(ROOT_CA_FIELD, config.get("ca_crt"));
-        data.put(EMAIL_FIELD, config.get("email"));
-        data.put(MAX_CACHE_FIELD, config.get("max_cache_size_mb"));
-        data.put(PARENT_FQDN_FIELD, config.get("server"));
-        data.put(PROXY_FQDN_FIELD, config.get("proxy_fqdn"));
         return data;
     }
 

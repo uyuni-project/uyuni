@@ -118,12 +118,9 @@ public class ProxyBackupEventAction implements MessageAction {
         }
 
         proxy.getPillarByCategory(ProxyConfigUtils.PROXY_PILLAR_CATEGORY).ifPresentOrElse(
-            pillar -> {
-                pillar.setPillar(configPillar.getPillar());
-            },
-            () -> {
-                proxy.addPillar(configPillar);
-        });
+            pillar -> pillar.setPillar(configPillar.getPillar()),
+            () -> proxy.addPillar(configPillar)
+        );
 
         SystemManager.addHistoryEvent(proxy, "Proxy migration: new configuration created",
                 "Reinstallation of the proxy will now autoconfigure it on the first boot");
@@ -168,7 +165,7 @@ public class ProxyBackupEventAction implements MessageAction {
     }
 
     private String convertRBSToContainerized(MinionServer proxy, String fqdn) throws ProxyException, SaltbootException {
-        /* TODO: migrate proxy formulas:
+        /*
         1) get proxy formulas and a) check branch network formula for branch id verification
         1) b) check image-sync formula for default image
         2) check if saltboot group formula exists on the branch group
