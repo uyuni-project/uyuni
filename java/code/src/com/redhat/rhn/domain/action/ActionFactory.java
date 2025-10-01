@@ -728,8 +728,17 @@ public class ActionFactory extends HibernateFactory {
      * @return Returns the ActionStatus corresponding to name
      */
     private static ActionStatus lookupActionStatusByName(String name) {
-        return singleton.lookupObjectByNamedQuery("ActionStatus.findByName", Map.of("name", name), true);
-
+        try {
+            Session session = HibernateFactory.getSession();
+            return session.createQuery("FROM ActionStatus WHERE name = :name", ActionStatus.class)
+                    .setParameter("name", name)
+                    //Retrieve from cache if there
+                    .setCacheable(true)
+                    .uniqueResult();
+        }
+        catch (HibernateException he) {
+            throw new HibernateRuntimeException("lookupActionStatusByName failed with name: " + name, he);
+        }
     }
 
     /**
