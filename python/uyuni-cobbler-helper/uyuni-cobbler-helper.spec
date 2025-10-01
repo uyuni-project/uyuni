@@ -18,6 +18,7 @@
 ## The productprettyname macros is controlled in the prjconf. If not defined, we fallback here
 %{!?productprettyname: %global productprettyname Uyuni}
 
+%{?!python_module:%define python_module() python-%{**} python3-%{**}}
 Name:           uyuni-cobbler-helper
 Version:        5.1.0
 Release:        0
