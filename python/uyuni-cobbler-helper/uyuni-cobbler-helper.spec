@@ -1,7 +1,7 @@
 #
 # spec file for package uyuni-cobbler-helper
 #
-# Copyright (c) 2025 SUSE LLC
+# Copyright (c) 2025 SUSE LLC and contributors
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -19,7 +19,7 @@
 %{!?productprettyname: %global productprettyname Uyuni}
 
 Name:           uyuni-cobbler-helper
-Version:        5.1.0
+Version:        5.2.0
 Release:        0
 Summary:        Python helper functions for %{productprettyname} Cobbler snippets
 License:        Apache-2.0
