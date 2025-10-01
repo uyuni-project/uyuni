@@ -100,7 +100,13 @@ def do_api(self, args):
         return
 
     try:
-        if api_name in ["api.getVersion", "api.systemVersion"]:
+        if api_name in [
+            "api.getVersion",
+            "api.systemVersion",
+            "api.getApiNamespaces",
+            "api.getApiCallList",
+            "api.getApiNamespaceCallList",
+        ]:
             res = api(*api_args)
         else:
             res = api(self.session, *api_args)
