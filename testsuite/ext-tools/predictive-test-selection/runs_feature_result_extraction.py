@@ -7,7 +7,7 @@ This script processes the CSV file produced by the PR data extraction script and
 for each PR, processes all run folders to extract feature-level test results.
 
 Usage:
-    python run_feature_results_extraction.py
+    python runs_feature_result_extraction.py
 
 - Run the PR data extraction script first, this script depends on its output.
 - Uses functions from cucumber_results_extraction.py for feature result extraction.

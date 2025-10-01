@@ -91,8 +91,9 @@ venv/
 .venv/
 
 # Predictive Test Selection Outputs
-**/predictive-test-selection/**/*.log
-**/predictive-test-selection/**/*.csv
+**/predictive-test-selection/CSVs
+**/predictive-test-selection/logs
+**/predictive-test-selection/artifacts
 **/predictive-test-selection/PR*
 
 # Schema

@@ -49,3 +49,14 @@ CUCUMBER_RESULTS_COLUMNS = ["feature", "feature_category", "scenario_count", "re
 TRAINING_CSV_FILENAME = "CSVs/training_data.csv"
 # Time windows (in days) to track recent Cucumber feature failure rates
 FEATURE_FAILURE_RECENT_DAYS = [7, 14, 28, 56]
+
+# ------------------------------
+# Data Preprocessing Pipeline
+# ------------------------------
+PREPROCESSED_TRAINING_CSV_FILENAME = "CSVs/preprocessed_training_data.csv"
+PREPROCESSED_TESTING_CSV_FILENAME = "CSVs/preprocessed_testing_data.csv"
+PREPROCESSING_PIPELINE_FILENAME = "artifacts/preprocessing_pipeline.joblib"
+# File extensions frequency threshold to keep (top extensions covering X% frequency)
+EXTENSION_COVERAGE_THRESHOLD = 0.95
+# Test set size as fraction of total data (0.2 = 20% for testing, 80% for training)
+TEST_SET_SIZE = 0.2
