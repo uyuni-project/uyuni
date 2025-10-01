@@ -1,31 +1,32 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-'''
-    saltbroker: A ZeroMQ Proxy (broker) for Salt Minions
+# pylint: disable=invalid-name
+"""
+saltbroker: A ZeroMQ Proxy (broker) for Salt Minions
 
-    The main process spawns a process for each channel of Salt ZMQ transport:
+The main process spawns a process for each channel of Salt ZMQ transport:
 
-    - PubChannelProxy process provides the PUB channel for the minions
-    - RetChannelProxy process provides the RET channel for the minions
+- PubChannelProxy process provides the PUB channel for the minions
+- RetChannelProxy process provides the RET channel for the minions
 
-    Also acts like a supervisor for the child process, respawning them if they die.
+Also acts like a supervisor for the child process, respawning them if they die.
 
-    :depends:   python-PyYAML
-    :depends:   python-pyzmq
+:depends:   python-PyYAML
+:depends:   python-pyzmq
 
-    Copyright (c) 2016--2025 SUSE LLC
+Copyright (c) 2016--2025 SUSE LLC
 
-    All modifications and additions to the file contributed by third parties
-    remain the property of their copyright owners, unless otherwise agreed
-    upon. The license for this file, and modifications and additions to the
-    file, is the same license as for the pristine package itself (unless the
-    license for the pristine package is not an Open Source License, in which
-    case the license is the MIT License). An "Open Source License" is a
-    license that conforms to the Open Source Definition (Version 1.9)
-    published by the Open Source Initiative.
+All modifications and additions to the file contributed by third parties
+remain the property of their copyright owners, unless otherwise agreed
+upon. The license for this file, and modifications and additions to the
+file, is the same license as for the pristine package itself (unless the
+license for the pristine package is not an Open Source License, in which
+case the license is the MIT License). An "Open Source License" is a
+license that conforms to the Open Source Definition (Version 1.9)
+published by the Open Source Initiative.
 
-    Please submit bugfixes or comments via http://bugs.opensuse.org/
-'''
+Please submit bugfixes or comments via http://bugs.opensuse.org/
+"""
 
 # Import python libs
 import ipaddress
@@ -102,14 +103,14 @@ class AbstractChannelProxy(multiprocessing.Process):
         self.backend_connected = False
         if "master" not in self.opts:
             raise self.ChannelException(
-                '[{}] No "master" opts is provided'.format(
-                    self.__class__.__name__
-                )
+                # pylint: disable-next=consider-using-f-string
+                '[{}] No "master" opts is provided'.format(self.__class__.__name__)
             )
         try:
             self.opts["master_ip"] = socket.gethostbyname(self.opts["master"])
         except socket.gaierror as exc:
             raise self.ChannelException(
+                # pylint: disable-next=consider-using-f-string
                 "[{}] Error trying to resolve '{}': {}".format(
                     self.__class__.__name__, self.opts["master"], exc
                 )
@@ -121,6 +122,7 @@ class AbstractChannelProxy(multiprocessing.Process):
             context = zmq.Context()
 
             log.debug(
+                # pylint: disable-next=logging-format-interpolation,consider-using-f-string
                 "Setting up a {} sock on {}".format(
                     self.backend_type, self._backend_uri
                 )
@@ -154,6 +156,7 @@ class AbstractChannelProxy(multiprocessing.Process):
                     time.sleep(0.5)
 
             log.debug(
+                # pylint: disable-next=logging-format-interpolation,consider-using-f-string
                 "Setting up a {} sock on {}".format(
                     self.frontend_type, self._frontend_uri
                 )
@@ -170,14 +173,19 @@ class AbstractChannelProxy(multiprocessing.Process):
             self.frontend.bind(self._frontend_uri)
 
             # Forward all messages
-            log.info("Staring ZMQ proxy on %s and %s sockets", self.frontend_type, self.backend_type)
+            log.info(
+                "Staring ZMQ proxy on %s and %s sockets",
+                self.frontend_type,
+                self.backend_type,
+            )
             try:
                 zmq.proxy(self.frontend, self.backend)
+            # pylint: disable-next=broad-exception-caught,unused-variable
             except Exception as e:
                 log.error(
                     "Error while processing proxy with %s and %s sockets. Terminating...",
                     self.frontend_type,
-                    self.backend_type
+                    self.backend_type,
                 )
                 return
 
@@ -185,20 +193,22 @@ class AbstractChannelProxy(multiprocessing.Process):
             if self.reconnect_retries == 0:
                 # Do not raise error if drop_after_retries was used
                 return
+            # pylint: disable-next=consider-using-f-string
             msg = "ZMQ Error: {}".format(zmq_error)
             log.error(msg)
             raise self.ChannelException(msg)
 
+        # pylint: disable-next=broad-exception-caught
         except Exception as exc:
             log.error("Exception: %s", exc)
             log.debug("Traceback: %s", traceback.format_exc())
 
+    # pylint: disable-next=redefined-outer-name
     def set_sockopts(self, socket, sockopts, sock_type, addr=None):
 
+        # pylint: disable-next=invalid-name
         def __set_sock_opt(opt, val, opt_name, sock_type):
-            log.debug(
-                "Setting socket opt %s to %s on %s", opt_name, val, sock_type
-            )
+            log.debug("Setting socket opt %s to %s on %s", opt_name, val, sock_type)
             socket.setsockopt(opt, val)
 
         for opt_name, opt_src in sockopts:
@@ -215,14 +225,11 @@ class AbstractChannelProxy(multiprocessing.Process):
                 continue
             __set_sock_opt(opt, opt_val, opt_name, sock_type)
         if (
-            self.opts["ipv6"] is True
-            or (addr is not None and ":" in addr)
+            self.opts["ipv6"] is True or (addr is not None and ":" in addr)
         ) and hasattr(zmq, "IPV4ONLY"):
             # IPv6 sockets work for both IPv6 and IPv4 addresses
             __set_sock_opt(zmq.IPV4ONLY, 0, "IPV4ONLY", sock_type)
-        if (
-            addr is not None and ":" in addr
-        ) and hasattr(zmq, "IPV6"):
+        if (addr is not None and ":" in addr) and hasattr(zmq, "IPV6"):
             __set_sock_opt(zmq.IPV6, 1, "IPV6", sock_type)
 
     def backend_socket_monitor(self, monitor_socket):
@@ -230,15 +237,18 @@ class AbstractChannelProxy(multiprocessing.Process):
             mon_evt = recv_monitor_message(monitor_socket)
             if self.reconnect_retries != -1:
                 if mon_evt["event"] == zmq.EVENT_DISCONNECTED:
+                    # pylint: disable-next=logging-format-interpolation,consider-using-f-string
                     log.warning("{} socket disconnected".format(self.backend_type))
                     self.backend_connected = False
                 elif mon_evt["event"] == zmq.EVENT_CONNECTED:
+                    # pylint: disable-next=logging-format-interpolation,consider-using-f-string
                     log.info("{} socket connected".format(self.backend_type))
                     self.backend_connected = True
                     self.reconnect_retries = self.opts["drop_after_retries"]
                 elif mon_evt["event"] == zmq.EVENT_CONNECT_RETRIED:
                     if self.reconnect_retries == 0:
                         log.warning(
+                            # pylint: disable-next=logging-format-interpolation,consider-using-f-string
                             "Closing {} socket due to retry attempts reached!".format(
                                 self.backend_type
                             )
@@ -284,10 +294,12 @@ class PubChannelProxy(AbstractChannelProxy):
         self.backend_type = "XSUB"
         self.frontend_type = "XPUB"
 
+        # pylint: disable-next=consider-using-f-string
         self._backend_uri = "tcp://{}:{}".format(
             ip_bracket(self.opts["master_ip"]),
             self.opts["publish_port"],
         )
+        # pylint: disable-next=consider-using-f-string
         self._frontend_uri = "tcp://{}:{}".format(
             ip_bracket(self.opts["interface"]),
             self.opts["publish_port"],
@@ -302,6 +314,7 @@ class RetChannelProxy(AbstractChannelProxy):
     socket to receive messages from minions which are then forwarded to
     the Salt master.
     """
+
     def __init__(self, opts):
         super().__init__(opts)
         self.name = "RetChannelProxy"
@@ -312,10 +325,12 @@ class RetChannelProxy(AbstractChannelProxy):
         self.backend_type = "DEALER"
         self.frontend_type = "ROUTER"
 
+        # pylint: disable-next=consider-using-f-string
         self._backend_uri = "tcp://{}:{}".format(
             ip_bracket(self.opts["master_ip"]),
             self.opts["ret_port"],
         )
+        # pylint: disable-next=consider-using-f-string
         self._frontend_uri = "tcp://{}:{}".format(
             ip_bracket(self.opts["interface"]),
             self.opts["ret_port"],
@@ -323,11 +338,12 @@ class RetChannelProxy(AbstractChannelProxy):
 
 
 class SaltBroker(object):
-    '''
+    """
     Creates a SaltBroker that forward messages and responses from
     minions to Salt Master by creating a ZeroMQ proxy that manage
     the PUB/RET channels of the Salt ZMQ transport.
-    '''
+    """
+
     def __init__(self, opts):
         log.debug("Readed config: %s", opts)
         self.opts = opts
@@ -373,10 +389,11 @@ class SaltBroker(object):
 
         return ret_proxy
 
+    # pylint: disable-next=unused-argument
     def sigterm_clean(self, signum, frame):
-        '''
+        """
         Custom SIGTERM handler
-        '''
+        """
         log.info("Caught signal %s, stopping all channels", signum)
 
         if self.pub_proxy_proc:
@@ -388,11 +405,11 @@ class SaltBroker(object):
         log.info("Terminating main process")
 
     def start(self):
-        '''
+        """
         Starts a SaltBroker. It spawns the PubChannelProxy and
         RetChannelProxy processes and also acts like a supervisor
         of these child process respawning them if they died.
-        '''
+        """
         log.info("Starting Salt ZeroMQ Proxy [PID: %s]", os.getpid())
 
         # Attach a handler for SIGTERM signal
@@ -416,6 +433,7 @@ class SaltBroker(object):
                 self.ret_proxy_proc = self._start_ret_proxy()
             time.sleep(SUPERVISOR_TIMEOUT)
 
+
 if __name__ == "__main__":
     # Try to get config from /etc/rhn/rhn.conf
     rhn_parent = None
@@ -428,6 +446,7 @@ if __name__ == "__main__":
 
     # Check for the config file
     if not os.path.isfile(SALT_BROKER_CONF_FILE):
+        # pylint: disable-next=consider-using-f-string
         sys.exit("Config file not found: {0}".format(SALT_BROKER_CONF_FILE))
 
     # default config
@@ -450,10 +469,12 @@ if __name__ == "__main__":
     }
 
     try:
+        # pylint: disable-next=unspecified-encoding
         config = yaml.load(open(SALT_BROKER_CONF_FILE), Loader=yaml.SafeLoader)
         if not config:
             config = {}
         if not isinstance(config, dict):
+            # pylint: disable-next=consider-using-f-string
             sys.exit("Bad format in config file: {0}".format(SALT_BROKER_CONF_FILE))
 
         saltbroker_opts = _DEFAULT_OPTS.copy()
@@ -467,9 +488,10 @@ if __name__ == "__main__":
             "%(asctime)s [%(levelname)-8s][%(processName)-16s][%(process)s] %(message)s",
         )
         # log to file or to standard output and error depending on the configuration
-        if saltbroker_opts.get('log_to_file'):
+        if saltbroker_opts.get("log_to_file"):
             fileloghandler = logging.handlers.RotatingFileHandler(
-                SALT_BROKER_LOGFILE, maxBytes=200000, backupCount=5)
+                SALT_BROKER_LOGFILE, maxBytes=200000, backupCount=5
+            )
             fileloghandler.setFormatter(formatter)
             log.addHandler(fileloghandler)
         else:
@@ -491,4 +513,5 @@ if __name__ == "__main__":
         proxy.start()
 
     except yaml.scanner.ScannerError as exc:
+        # pylint: disable-next=consider-using-f-string
         sys.exit("Error reading YAML config file: {0}".format(exc))

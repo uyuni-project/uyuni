@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -18,11 +19,14 @@ import unittest
 
 
 # pylint: disable=W0212,E1101,R0904
+# pylint: disable-next=missing-class-docstring
 class RhnConfigTestCase(unittest.TestCase):
 
     def setUp(self):
-        self.userconfig = rhnpush_config.rhnpushConfigParser('.rhnpushrc')
-        self.defaultconfig = rhnpush_config.rhnpushConfigParser('/etc/sysconfig/rhn/rhnpushrc')
+        self.userconfig = rhnpush_config.rhnpushConfigParser(".rhnpushrc")
+        self.defaultconfig = rhnpush_config.rhnpushConfigParser(
+            "/etc/sysconfig/rhn/rhnpushrc"
+        )
 
     def tearDown(self):
         self.userconfig = None
@@ -31,21 +35,25 @@ class RhnConfigTestCase(unittest.TestCase):
     def testReadConfigFiles(self):
         self.userconfig._read_config_files()
         self.defaultconfig._read_config_files()
+        # pylint: disable-next=singleton-comparison,singleton-comparison
         assert self.userconfig.settings != None and self.defaultconfig.settings != None
 
     def testGetOption(self):
-        a = self.userconfig.get_option('usage')
-        b = self.defaultconfig.get_option('usage')
-        assert a != None and b != None and a == '0' and b == '0'
+        a = self.userconfig.get_option("usage")
+        b = self.defaultconfig.get_option("usage")
+        # pylint: disable-next=singleton-comparison,singleton-comparison
+        assert a != None and b != None and a == "0" and b == "0"
 
     def testKeys(self):
         a = list(self.userconfig.keys())
         b = list(self.defaultconfig.keys())
+        # pylint: disable-next=singleton-comparison,singleton-comparison
         assert a != None and b != None
 
     def test_keys(self):
         a = self.userconfig._keys()
         b = self.defaultconfig._keys()
+        # pylint: disable-next=singleton-comparison,singleton-comparison
         assert a != None and b != None
 
     def testGetItem(self):
@@ -54,7 +62,9 @@ class RhnConfigTestCase(unittest.TestCase):
     def testAddConfigAsAttr(self):
         self.userconfig._add_config_as_attr()
         self.userconfig._add_config_as_attr()
+        # pylint: disable-next=singleton-comparison,singleton-comparison
         assert self.userconfig.usage != None and self.defaultconfig.usage != None
+
 
 if __name__ == "__main__":
     unittest.main()

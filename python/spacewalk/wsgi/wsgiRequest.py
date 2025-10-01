@@ -133,7 +133,6 @@ class WsgiConnection:
 
 
 class WsgiMPtable:
-
     """This class emulates mod_python's mp_table. See
     http://www.modpython.org/live/current/doc-html/pyapi-mptable.html
 

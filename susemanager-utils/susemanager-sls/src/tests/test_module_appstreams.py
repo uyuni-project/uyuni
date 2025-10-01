@@ -1,29 +1,55 @@
+# pylint: disable=missing-module-docstring
 import pytest
 from unittest.mock import patch
-from ..modules.appstreams import _parse_nsvca, _get_module_info, _get_enabled_module_names
+from ..modules.appstreams import (
+    _parse_nsvca,
+    _get_module_info,
+    _get_enabled_module_names,
+)
 from collections import namedtuple
 
 MockDNFCommandResult = namedtuple("MockObject", ["returncode", "stdout"])
 
-@pytest.mark.parametrize("module_info_output, expected_result", [
-    (["Name             : maven",
-      "Stream           : 3.8 [e] [a]",
-      "Version          : 9020020230511160017",
-      "Context          : 4b0b4b45",
-      "Architecture     : x86_64"], 
-     {"name": "maven", "stream": "3.8", "version": "9020020230511160017", "context": "4b0b4b45", "architecture": "x86_64"}),
-    
-    (["Name             : ruby",
-      "Stream           : 3.1 [e] [a]",
-      "Version          : 9010020221119221509",
-      "Context          : 8d1baf64",
-      "Architecture     : x86_64"], 
-     {"name": "ruby", "stream": "3.1", "version": "9010020221119221509", "context": "8d1baf64", "architecture": "x86_64"}),
-    (["Context          : 8d1baf64",
-      "Architecture     : x86_64"], 
-     None),
-    ([], None)
-])
+
+@pytest.mark.parametrize(
+    "module_info_output, expected_result",
+    [
+        (
+            [
+                "Name             : maven",
+                "Stream           : 3.8 [e] [a]",
+                "Version          : 9020020230511160017",
+                "Context          : 4b0b4b45",
+                "Architecture     : x86_64",
+            ],
+            {
+                "name": "maven",
+                "stream": "3.8",
+                "version": "9020020230511160017",
+                "context": "4b0b4b45",
+                "architecture": "x86_64",
+            },
+        ),
+        (
+            [
+                "Name             : ruby",
+                "Stream           : 3.1 [e] [a]",
+                "Version          : 9010020221119221509",
+                "Context          : 8d1baf64",
+                "Architecture     : x86_64",
+            ],
+            {
+                "name": "ruby",
+                "stream": "3.1",
+                "version": "9010020221119221509",
+                "context": "8d1baf64",
+                "architecture": "x86_64",
+            },
+        ),
+        (["Context          : 8d1baf64", "Architecture     : x86_64"], None),
+        ([], None),
+    ],
+)
 def test_parse_nsvca(module_info_output, expected_result):
     assert _parse_nsvca(module_info_output) == expected_result
 
@@ -57,15 +83,27 @@ Artifacts        : ruby-0:3.1.2-141.module+el9.1.0+13172+8d1baf64.i686
                  : ruby-0:3.1.2-141.module+el9.1.0+13172+8d1baf64.src
 """
 
+
 def test_get_module_info():
     module_names = ["maven", "ruby"]
     mocked_command_result = MockDNFCommandResult(
-        returncode=0,
-        stdout=sample_maven_ruby_module_info_result
+        returncode=0, stdout=sample_maven_ruby_module_info_result
     )
     expected_result = [
-        {"name": "maven", "stream": "3.8", "version": "9020020230511160017", "context": "4b0b4b45", "architecture": "x86_64"},
-        {"name": "ruby", "stream": "3.1", "version": "9010020221119221509", "context": "8d1baf64", "architecture": "x86_64"}
+        {
+            "name": "maven",
+            "stream": "3.8",
+            "version": "9020020230511160017",
+            "context": "4b0b4b45",
+            "architecture": "x86_64",
+        },
+        {
+            "name": "ruby",
+            "stream": "3.1",
+            "version": "9010020221119221509",
+            "context": "8d1baf64",
+            "architecture": "x86_64",
+        },
     ]
     with patch("subprocess.run", return_value=mocked_command_result):
         assert _get_module_info(module_names) == expected_result
@@ -84,10 +122,10 @@ swig             4.1 [e]            common [d], complete                        
 
 """
 
+
 def test_get_enabled_module_names():
     mocked_command_result = MockDNFCommandResult(
-        returncode=0,
-        stdout=sample_dnf_enabled_modules_result
+        returncode=0, stdout=sample_dnf_enabled_modules_result
     )
     expected_result = ["maven:3.8", "nginx:1.22", "nodejs:18", "ruby:3.1", "swig:4.1"]
     with patch("subprocess.run", return_value=mocked_command_result):

@@ -152,10 +152,11 @@ def test_cpusockets_cpu_data(arch):
 
 
 def test_arch_specs_unknown():
-    with patch('src.grains.cpuinfo._get_architecture', return_value="unknown"), \
-         patch('src.grains.cpuinfo._add_ppc64_extras') as mock_ppc64, \
-         patch('src.grains.cpuinfo._add_arm64_extras') as mock_arm64, \
-         patch('src.grains.cpuinfo._add_z_systems_extras') as mock_z:
+    with patch("src.grains.cpuinfo._get_architecture", return_value="unknown"), patch(
+        "src.grains.cpuinfo._add_ppc64_extras"
+    ) as mock_ppc64, patch("src.grains.cpuinfo._add_arm64_extras") as mock_arm64, patch(
+        "src.grains.cpuinfo._add_z_systems_extras"
+    ) as mock_z:
 
         specs = cpuinfo.arch_specs()
 
@@ -164,22 +165,33 @@ def test_arch_specs_unknown():
         assert mock_z.call_count == 0
         assert specs == {"cpu_arch_specs": {}}
 
+
 def test_arch_specs_ppc64():
+    # pylint: disable-next=protected-access
     cpuinfo._get_architecture = MagicMock(return_value="ppc64")
+    # pylint: disable-next=protected-access
     cpuinfo._read_file = MagicMock(
-        side_effect=lambda path: "shared_processor_mode = 1"
-        if path == "/proc/ppc64/lparcfg"
-        else "device tree content"
+        side_effect=lambda path: (
+            "shared_processor_mode = 1"
+            if path == "/proc/ppc64/lparcfg"
+            else "device tree content"
+        )
     )
     specs = cpuinfo.arch_specs()
-    assert specs == { "cpu_arch_specs": {"lpar_mode": "shared", "device_tree": "device tree content"} }
+    assert specs == {
+        "cpu_arch_specs": {"lpar_mode": "shared", "device_tree": "device tree content"}
+    }
 
 
 def test_arch_specs_arm64():
+    # pylint: disable-next=protected-access
     cpuinfo._get_architecture = MagicMock(return_value="arm64")
+    # pylint: disable-next=protected-access
     cpuinfo._read_file = MagicMock(return_value="")
 
-    with patch.dict(cpuinfo.__salt__, {"cmd.run_all": MagicMock()}), patch.object(cpuinfo, "_which_bin") as mock_which_bin:
+    with patch.dict(cpuinfo.__salt__, {"cmd.run_all": MagicMock()}), patch.object(
+        cpuinfo, "_which_bin"
+    ) as mock_which_bin:
         mock_which_bin.return_value = "/usr/bin/dmidecode"
         dmi_output = "Family: test_family\nManufacturer: test_manufacturer\nSignature: test_signature"
         cpuinfo.__salt__["cmd.run_all"].return_value = {
@@ -203,31 +215,47 @@ def test_arch_specs_arm64():
     [
         (
             "VM00 Type: test_type\nType Name: test_model\nVM00 Name: test_layer\nSockets: test_sockets",
-            {"type": "test_type", "type_name": "test_model", "layer_type": "test_layer"}
+            {
+                "type": "test_type",
+                "type_name": "test_model",
+                "layer_type": "test_layer",
+            },
         ),
         (
             "LPAR Type: lpar_type\nType Name: lpar_model\nLPAR Name: lpar_layer\nSockets: lpar_sockets",
-            {"type": "lpar_type", "type_name": "lpar_model", "layer_type": "lpar_layer"}
+            {
+                "type": "lpar_type",
+                "type_name": "lpar_model",
+                "layer_type": "lpar_layer",
+            },
         ),
-    ]
+    ],
 )
 def test_add_z_systems_extras(output, expected_specs):
     specs = {}
-    with patch.dict(cpuinfo.__salt__, {"cmd.run_all": MagicMock()}), patch.object(cpuinfo, "_which_bin") as mock_which_bin:
+    with patch.dict(cpuinfo.__salt__, {"cmd.run_all": MagicMock()}), patch.object(
+        cpuinfo, "_which_bin"
+    ) as mock_which_bin:
         mock_which_bin.return_value = "/usr/bin/read_values"
         cpuinfo.__salt__["cmd.run_all"].return_value = {
             "retcode": 0,
             "stdout": output,
         }
+        # pylint: disable-next=protected-access
         cpuinfo._add_z_systems_extras(specs)
     assert specs == expected_specs
 
+
 def test_exact_string_match():
     text = "Family: test_family\nManufacturer: test_manufacturer\nSignature: test_signature"
+    # pylint: disable-next=protected-access
     result = cpuinfo._exact_string_match("Family", text)
     assert result == "test_family"
 
+
 def test_read_file_failure():
+    # pylint: disable-next=protected-access
     cpuinfo._read_file = MagicMock(return_value="")
+    # pylint: disable-next=protected-access
     result = cpuinfo._read_file("/path/to/nonexistent/file")
     assert result == ""

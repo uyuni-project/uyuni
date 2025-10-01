@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -28,52 +29,56 @@ def main():
 
     for pkgfile in packages:
         # Try to open the package as a patch first
+        # pylint: disable-next=unspecified-encoding
         with open(pkgfile) as f:
             header = rhn_rpm.get_package_header(file_obj=f)
             p = rpm_to_mpm(header, f)
             dest_filename = _compute_filename(p.header)
+            # pylint: disable-next=consider-using-f-string
             print("Writing out the package to %s" % dest_filename)
+            # pylint: disable-next=unspecified-encoding
             with open(dest_filename, "w+") as dest_file:
                 p.write(dest_file)
 
 
 def _compute_filename(hdr):
-    return '%s-%s.%s.mpm' % (hdr['name'], hdr['version'], hdr['arch'])
+    # pylint: disable-next=consider-using-f-string
+    return "%s-%s.%s.mpm" % (hdr["name"], hdr["version"], hdr["arch"])
 
 
 def rpm_to_mpm(header, file_stream):
     tag_map = {
-        'package_group': 'group',
-        'rpm_version': 'rpmversion',
-        'payload_size': 'archivesize',
-        'payload_format': 'payloadformat',
-        'build_host': 'buildhost',
-        'build_time': 'buildtime',
-        'source_rpm': 'sourcerpm',
+        "package_group": "group",
+        "rpm_version": "rpmversion",
+        "payload_size": "archivesize",
+        "payload_format": "payloadformat",
+        "build_host": "buildhost",
+        "build_time": "buildtime",
+        "source_rpm": "sourcerpm",
     }
 
     tags = [
-        'name',
-        'epoch',
-        'version',
-        'release',
-        'arch',
-        'description',
-        'summary',
-        'license',
-        'package_group',
-        'rpm_version',
-        'payload_size',
-        'payload_format',
-        'build_host',
-        'build_time',
-        'cookie',
-        'vendor',
-        'source_rpm',
-        'sigmd5',
-        'sigpgp',
-        'siggpg',
-        'sigsize',
+        "name",
+        "epoch",
+        "version",
+        "release",
+        "arch",
+        "description",
+        "summary",
+        "license",
+        "package_group",
+        "rpm_version",
+        "payload_size",
+        "payload_format",
+        "build_host",
+        "build_time",
+        "cookie",
+        "vendor",
+        "source_rpm",
+        "sigmd5",
+        "sigpgp",
+        "siggpg",
+        "sigsize",
     ]
 
     result = {}
@@ -82,27 +87,27 @@ def rpm_to_mpm(header, file_stream):
         result[t] = header[tt]
 
     # Add files
-    result['files'] = _extract_files(header)
+    result["files"] = _extract_files(header)
 
     # Dependency
-    result['provides'] = _extract_rpm_requires(header)
-    result['requires'] = _extract_rpm_provides(header)
-    result['conflicts'] = _extract_rpm_conflicts(header)
-    result['obsoletes'] = _extract_rpm_obsoletes(header)
+    result["provides"] = _extract_rpm_requires(header)
+    result["requires"] = _extract_rpm_provides(header)
+    result["conflicts"] = _extract_rpm_conflicts(header)
+    result["obsoletes"] = _extract_rpm_obsoletes(header)
 
-    result['changelog'] = _extract_rpm_changelog(header)
+    result["changelog"] = _extract_rpm_changelog(header)
 
     # md5sum, package_size
     file_stream.seek(0, 2)
     file_size = file_stream.tell()
-    result['package_size'] = file_size
+    result["package_size"] = file_size
 
     is_source = 0
     if header.is_source:
         is_source = 1
-    result['is_source'] = is_source
+    result["is_source"] = is_source
 
-    result['package_type'] = 'rpm'
+    result["package_type"] = "rpm"
 
     h = rhn_mpm.MPM_Header(result)
     p = rhn_mpm.MPM_Package()
@@ -114,74 +119,74 @@ def rpm_to_mpm(header, file_stream):
 
 def _extract_files(header):
     tag_maps = {
-        'name': 'filenames',
-        'device': 'filedevices',
-        'inode': 'fileinodes',
-        'file_mode': 'filemodes',
-        'username': 'fileusername',
-        'groupname': 'filegroupname',
-        'rdev': 'filerdevs',
-        'file_size': 'filesizes',
-        'mtime': 'filemtimes',
-        'md5': 'filemd5s',
-        'linkto': 'filelinktos',
-        'flags': 'fileflags',
-        'verifyflags': 'fileverifyflags',
-        'lang': 'filelangs',
+        "name": "filenames",
+        "device": "filedevices",
+        "inode": "fileinodes",
+        "file_mode": "filemodes",
+        "username": "fileusername",
+        "groupname": "filegroupname",
+        "rdev": "filerdevs",
+        "file_size": "filesizes",
+        "mtime": "filemtimes",
+        "md5": "filemd5s",
+        "linkto": "filelinktos",
+        "flags": "fileflags",
+        "verifyflags": "fileverifyflags",
+        "lang": "filelangs",
     }
     files = _extract_array_fields(header, tag_maps)
     # Munge the mtime
     for f in files:
-        f['mtime'] = gmtime(f['mtime'])
+        f["mtime"] = gmtime(f["mtime"])
     return files
 
 
 def _extract_rpm_provides(header):
     tag_maps = {
-        'name': 'provides',
-        'version': 'provideversion',
-        'flags': 'provideflags',
+        "name": "provides",
+        "version": "provideversion",
+        "flags": "provideflags",
     }
     return _extract_array_fields(header, tag_maps)
 
 
 def _extract_rpm_requires(header):
     tag_maps = {
-        'name': 'requirename',
-        'version': 'requireversion',
-        'flags': 'requireflags',
+        "name": "requirename",
+        "version": "requireversion",
+        "flags": "requireflags",
     }
     return _extract_array_fields(header, tag_maps)
 
 
 def _extract_rpm_conflicts(header):
     tag_maps = {
-        'name': 'conflictname',
-        'version': 'conflictversion',
-        'flags': 'conflictflags',
+        "name": "conflictname",
+        "version": "conflictversion",
+        "flags": "conflictflags",
     }
     return _extract_array_fields(header, tag_maps)
 
 
 def _extract_rpm_obsoletes(header):
     tag_maps = {
-        'name': 'obsoletename',
-        'version': 'obsoleteversion',
-        'flags': 'obsoleteflags',
+        "name": "obsoletename",
+        "version": "obsoleteversion",
+        "flags": "obsoleteflags",
     }
     return _extract_array_fields(header, tag_maps)
 
 
 def _extract_rpm_changelog(header):
     tag_maps = {
-        'name': 'changelogname',
-        'text': 'changelogtext',
-        'time': 'changelogtime',
+        "name": "changelogname",
+        "text": "changelogtext",
+        "time": "changelogtime",
     }
     cl = _extract_array_fields(header, tag_maps)
     # Munge the changelog time
     for c in cl:
-        c['time'] = gmtime(c['time'])
+        c["time"] = gmtime(c["time"])
     return cl
 
 
@@ -209,7 +214,9 @@ def _extract_array_fields(header, tag_maps):
 
 def gmtime(timestamp):
     ttuple = time.gmtime(timestamp)
+    # pylint: disable-next=consider-using-f-string
     return "%d-%02d-%02d %02d:%02d:%02d" % ttuple[:6]
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     sys.exit(main() or 0)

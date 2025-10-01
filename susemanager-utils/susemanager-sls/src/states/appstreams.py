@@ -1,8 +1,7 @@
 # SPDX-FileCopyrightText: 2024-2025 SUSE LLC
 #
 # SPDX-License-Identifier: Apache-2.0
-
-'''
+"""
 Salt Custom State for managing AppStreams configuration
 
 This custom state provides functionality for managing AppStreams modules,
@@ -10,10 +9,11 @@ enabling or disabling them as needed.
 
 The 'enabled' and 'disabled' states ensure that specified AppStreams modules
 are respectively enabled or disabled.
-'''
+"""
+
 
 def enabled(name, appstreams):
-    '''
+    """
     Ensure that the appstreams are enabled.
 
     :param str name
@@ -22,7 +22,8 @@ def enabled(name, appstreams):
     :param list appstreams:
         A list of appstreams to enable in the format module_name:stream
 
-    '''
+    """
+    # pylint: disable-next=undefined-variable
     if __opts__["test"]:
         return _test_mode(name, appstreams, "enable")
 
@@ -34,16 +35,13 @@ def enabled(name, appstreams):
             "comment": "No AppStreams to enable provided",
         }
 
-    result, comment, changes = __salt__['appstreams.enable'](appstreams)
-    return {
-        "name": name,
-        "changes": changes,
-        "result": result,
-        "comment": comment
-    }
+    # pylint: disable-next=undefined-variable
+    result, comment, changes = __salt__["appstreams.enable"](appstreams)
+    return {"name": name, "changes": changes, "result": result, "comment": comment}
+
 
 def disabled(name, appstreams):
-    '''
+    """
     Ensure that the appstreams are disabled.
 
     :param str name
@@ -52,7 +50,8 @@ def disabled(name, appstreams):
     :param list appstreams:
         A list of appstreams to disable
 
-    '''
+    """
+    # pylint: disable-next=undefined-variable
     if __opts__["test"]:
         return _test_mode(name, appstreams, "disable")
 
@@ -64,20 +63,17 @@ def disabled(name, appstreams):
             "comment": "No AppStreams to disable provided",
         }
 
-    result, comment, changes = __salt__['appstreams.disable'](appstreams)
-    return {
-        "name": name,
-        "changes": changes,
-        "result": result,
-        "comment": comment
-    }
+    # pylint: disable-next=undefined-variable
+    result, comment, changes = __salt__["appstreams.disable"](appstreams)
+    return {"name": name, "changes": changes, "result": result, "comment": comment}
+
 
 def _test_mode(name, appstreams, action):
     action_name = f"{action}d"
     comment = f"The following appstreams would be {action_name}: {appstreams}"
     changes = {}
     if appstreams:
-        changes = { "ret": {} }
+        changes = {"ret": {}}
         changes["ret"][action_name] = appstreams
     else:
         comment = f"No AppStreams to {action} provided"

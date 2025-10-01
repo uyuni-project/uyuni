@@ -1,8 +1,10 @@
 #!/usr/bin/python
+# pylint: disable=missing-module-docstring
 
 import unittest
 import random
 
+# pylint: disable-next=wildcard-import
 from config import *
 
 KICKSTART_FILE = """
@@ -177,51 +179,64 @@ else
 fi
 """
 
-CHANNEL_LABEL = 'rhel-i386-server-5'
+CHANNEL_LABEL = "rhel-i386-server-5"
 
+
+# pylint: disable-next=missing-class-docstring,undefined-variable
 class KickstartTests(RhnTestCase):
 
     def test_list_kickstartable_channels(self):
+        # pylint: disable-next=undefined-variable
         chans = client.kickstart.listKickstartableChannels(self.session_key)
         # should be true on any satellite we're testing against
         self.assertTrue(len(chans) > 0)
         for c in chans:
-            self.assertTrue(c.has_key('channel_description'))
-            self.assertTrue(c.has_key('channel_label'))
-            self.assertTrue(c.has_key('channel_name'))
-            self.assertTrue(c.has_key('parent_channel_label'))
-            self.assertTrue(c.has_key('channel_summary'))
+            self.assertTrue(c.has_key("channel_description"))
+            self.assertTrue(c.has_key("channel_label"))
+            self.assertTrue(c.has_key("channel_name"))
+            self.assertTrue(c.has_key("parent_channel_label"))
+            self.assertTrue(c.has_key("channel_summary"))
 
     def test_list_kickstartable_trees(self):
-        trees = client.kickstart.tree.list(self.session_key,
-            CHANNEL_LABEL)
+        # pylint: disable-next=undefined-variable
+        trees = client.kickstart.tree.list(self.session_key, CHANNEL_LABEL)
         # should be true on any satellite we're testing against
         self.assertTrue(len(trees) > 0)
         for t in trees:
-            self.assertTrue(t.has_key('channel_id'))
-            self.assertTrue(t.has_key('boot_image'))
-            self.assertTrue(t.has_key('base_path'))
-            self.assertTrue(t.has_key('label'))
+            self.assertTrue(t.has_key("channel_id"))
+            self.assertTrue(t.has_key("boot_image"))
+            self.assertTrue(t.has_key("base_path"))
+            self.assertTrue(t.has_key("label"))
 
     def test_import(self):
-        trees = client.kickstart.tree.list(self.session_key,
-            CHANNEL_LABEL)
+        # pylint: disable-next=undefined-variable
+        trees = client.kickstart.tree.list(self.session_key, CHANNEL_LABEL)
 
         # could fail if you ran it enough
+        # pylint: disable-next=consider-using-f-string
         ks_label = "test-profile-%s" % random.randint(100, 999)
 
-        client.kickstart.importFile(self.session_key, ks_label, 'none',
-            trees[0]['label'], False, KICKSTART_FILE)
+        # pylint: disable-next=undefined-variable
+        client.kickstart.importFile(
+            self.session_key, ks_label, "none", trees[0]["label"], False, KICKSTART_FILE
+        )
 
     def test_create(self):
-        trees = client.kickstart.tree.list(self.session_key,
-            CHANNEL_LABEL)
+        # pylint: disable-next=undefined-variable
+        trees = client.kickstart.tree.list(self.session_key, CHANNEL_LABEL)
+        # pylint: disable-next=consider-using-f-string
         ks_label = "api-created-%s" % random.randint(100, 999)
-        client.kickstart.createProfile(self.session_key, ks_label,
-            'none', trees[0]['label'], SATELLITE_HOST, 'rootpw')
-
+        # pylint: disable-next=undefined-variable
+        client.kickstart.createProfile(
+            self.session_key,
+            ks_label,
+            "none",
+            trees[0]["label"],
+            # pylint: disable-next=undefined-variable
+            SATELLITE_HOST,
+            "rootpw",
+        )
 
 
 if __name__ == "__main__":
     unittest.main()
-

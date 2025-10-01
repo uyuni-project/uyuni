@@ -11,6 +11,7 @@ class TestSCArgumentParser:
     """
     Test argument parser subclass.
     """
+
     def test_argparse_raise_exception(self):
         """
         Test argparse raise exception.

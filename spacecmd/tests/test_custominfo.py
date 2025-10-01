@@ -2,8 +2,11 @@
 """
 Test suite for custominfo source
 """
+# pylint: disable-next=unused-import
 from mock import MagicMock, patch, mock_open
 from spacecmd import custominfo
+
+# pylint: disable-next=unused-import
 from helpers import shell, exc2str
 import pytest
 
@@ -12,6 +15,8 @@ class TestSCCusomInfo:
     """
     Test for custominfo API.
     """
+
+    # pylint: disable-next=redefined-outer-name
     def test_do_custominfo_createkey_no_keyname(self, shell):
         """
         Test do_custominfo_createkey do not break on no key name provided, falling back to interactive mode.
@@ -25,7 +30,7 @@ class TestSCCusomInfo:
 
         assert "Empty key" in exc2str(exc)
 
-
+    # pylint: disable-next=redefined-outer-name
     def test_do_custominfo_createkey_no_descr(self, shell):
         """
         Test do_custominfo_createkey description gets the name of the key, if not provided.
@@ -37,10 +42,13 @@ class TestSCCusomInfo:
             custominfo.do_custominfo_createkey(shell, "")
 
         assert shell.client.system.custominfo.createKey.called
-        session, keyname, descr = shell.client.system.custominfo.createKey.call_args_list[0][0]
+        session, keyname, descr = (
+            shell.client.system.custominfo.createKey.call_args_list[0][0]
+        )
         assert shell.session == session
         assert keyname == descr
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_custominfo_createkey_descr_interactive(self, shell):
         """
         Test do_custominfo_createkey description gets the name of the key from interactive prompt.
@@ -52,28 +60,35 @@ class TestSCCusomInfo:
             custominfo.do_custominfo_createkey(shell, "")
 
         assert shell.client.system.custominfo.createKey.called
-        session, keyname, descr = shell.client.system.custominfo.createKey.call_args_list[0][0]
+        session, keyname, descr = (
+            shell.client.system.custominfo.createKey.call_args_list[0][0]
+        )
         assert shell.session == session
         assert keyname != descr
         assert keyname == "keyname"
         assert descr == "keydescr"
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_custominfo_createkey_descr_args(self, shell):
         """
         Test do_custominfo_createkey description gets the name of the key from the args.
         """
         shell.client.system.custominfo.createKey = MagicMock()
+        # pylint: disable-next=unused-variable
         prompter = MagicMock(side_effect=Exception("Kaboom"))
 
         custominfo.do_custominfo_createkey(shell, "keyname keydescr")
 
         assert shell.client.system.custominfo.createKey.called
-        session, keyname, descr = shell.client.system.custominfo.createKey.call_args_list[0][0]
+        session, keyname, descr = (
+            shell.client.system.custominfo.createKey.call_args_list[0][0]
+        )
         assert shell.session == session
         assert keyname != descr
         assert keyname == "keyname"
         assert descr == "keydescr"
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_custominfo_deletekey_noargs(self, shell):
         """
         Test do_custominfo_deletekey shows help on no args.
@@ -92,6 +107,7 @@ class TestSCCusomInfo:
         assert errmsg in exc2str(exc)
 
     @patch("spacecmd.custominfo.print", MagicMock())
+    # pylint: disable-next=redefined-outer-name
     def test_do_custominfo_deletekey_args(self, shell):
         """
         Test do_custominfo_deletekey calls deleteKey API function.
@@ -115,11 +131,12 @@ class TestSCCusomInfo:
         assert len(keylist) == 1
         assert "this_key_stays" in keylist
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_custominfo_listkeys_stdout(self, shell):
         """
         Test do_custominfo_listkeys calls lists all keys calling listAllKeys API function to STDOUT.
         """
-        keylist=[
+        keylist = [
             {"label": "some_key"},
             {"label": "some_other_key"},
             {"label": "this_key_stays"},
@@ -132,11 +149,12 @@ class TestSCCusomInfo:
         assert ret is None
         assert mprint.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_custominfo_listkeys_as_data(self, shell):
         """
         Test do_custominfo_listkeys calls lists all keys calling listAllKeys API function as data.
         """
-        keylist=[
+        keylist = [
             {"label": "some_key"},
             {"label": "some_other_key"},
             {"label": "this_key_stays"},
@@ -151,11 +169,12 @@ class TestSCCusomInfo:
         for key in keylist:
             assert key["label"] in ret
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_custominfo_details_noarg(self, shell):
         """
         Test do_custominfo_details shows help when no arguments has been passed.
         """
-        keylist=["some_key", "some_other_key", "this_key_stays"]
+        keylist = ["some_key", "some_other_key", "this_key_stays"]
         shell.help_custominfo_details = MagicMock(side_effect=Exception("Help info"))
         shell.client.system.custominfo.listAllKeys = MagicMock()
         shell.do_custominfo_listkeys = MagicMock(return_value=keylist)
@@ -170,6 +189,7 @@ class TestSCCusomInfo:
         assert not logger.error.called
         assert not shell.client.system.custominfo.listAllKeys.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_custominfo_details_no_key(self, shell):
         """
         Test do_custominfo_details shows error to the log if key name doesn't match.
@@ -184,9 +204,16 @@ class TestSCCusomInfo:
                 custominfo.do_custominfo_details(shell, "keyname")
 
         assert not shell.client.system.custominfo.listAllKeys.called
-        assert logger.debug.call_args_list[0][0][0] == "customkey_details called with args: 'keyname', keys: ''."
-        assert logger.error.call_args_list[0][0][0] == "No keys matched argument 'keyname'."
+        assert (
+            logger.debug.call_args_list[0][0][0]
+            == "customkey_details called with args: 'keyname', keys: ''."
+        )
+        assert (
+            logger.error.call_args_list[0][0][0]
+            == "No keys matched argument 'keyname'."
+        )
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_custominfo_details_keydetails_notfound(self, shell):
         """
         Test do_custominfo_details nothing happens if keydetails missing.
@@ -203,6 +230,7 @@ class TestSCCusomInfo:
         assert shell.client.system.custominfo.listAllKeys.called
         assert not mprint.called
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_custominfo_details_keydetails_na(self, shell):
         """
         Test do_custominfo_details prints key details not available in format.
@@ -223,15 +251,15 @@ class TestSCCusomInfo:
                 custominfo.do_custominfo_details(shell, "key*")
 
         expectations = [
-            'Label:        key_one',
-            'Description:  N/A',
-            'Modified:     N/A',
-            'System Count: 0',
-            '***',
-            'Label:        key_two',
-            'Description:  N/A',
-            'Modified:     N/A',
-            'System Count: 0'
+            "Label:        key_one",
+            "Description:  N/A",
+            "Modified:     N/A",
+            "System Count: 0",
+            "***",
+            "Label:        key_two",
+            "Description:  N/A",
+            "Modified:     N/A",
+            "System Count: 0",
         ]
 
         assert shell.client.system.custominfo.listAllKeys.called
@@ -239,6 +267,7 @@ class TestSCCusomInfo:
         for idx, call in enumerate(mprint.call_args_list):
             assert call[0][0] == expectations[idx]
 
+    # pylint: disable-next=redefined-outer-name
     def test_do_custominfo_details_keydetails(self, shell):
         """
         Test do_custominfo_details prints key details not available in format.
@@ -246,8 +275,18 @@ class TestSCCusomInfo:
         shell.SEPARATOR = "***"
         shell.client.system.custominfo.listAllKeys = MagicMock(
             return_value=[
-                {"label": "key_one", "description": "descr one", "last_modified": "123", "system_count": 1},
-                {"label": "key_two", "description": "descr two", "last_modified": "234", "system_count": 2},
+                {
+                    "label": "key_one",
+                    "description": "descr one",
+                    "last_modified": "123",
+                    "system_count": 1,
+                },
+                {
+                    "label": "key_two",
+                    "description": "descr two",
+                    "last_modified": "234",
+                    "system_count": 2,
+                },
             ]
         )
         shell.do_custominfo_listkeys = MagicMock(return_value=["key_one", "key_two"])
@@ -259,15 +298,15 @@ class TestSCCusomInfo:
                 custominfo.do_custominfo_details(shell, "key*")
 
         expectations = [
-            'Label:        key_one',
-            'Description:  descr one',
-            'Modified:     123',
-            'System Count: 1',
-            '***',
-            'Label:        key_two',
-            'Description:  descr two',
-            'Modified:     234',
-            'System Count: 2'
+            "Label:        key_one",
+            "Description:  descr one",
+            "Modified:     123",
+            "System Count: 1",
+            "***",
+            "Label:        key_two",
+            "Description:  descr two",
+            "Modified:     234",
+            "System Count: 2",
         ]
 
         assert shell.client.system.custominfo.listAllKeys.called
@@ -275,6 +314,7 @@ class TestSCCusomInfo:
         for idx, call in enumerate(mprint.call_args_list):
             assert call[0][0] == expectations[idx]
 
+    # pylint: disable-next=redefined-outer-name
     def test_custominfo_updatekey_noarg_name(self, shell):
         """
         Test do_custominfo_updatekey with no arguments falls to the interactive prompt.
@@ -287,18 +327,22 @@ class TestSCCusomInfo:
 
         assert "interactive mode" in exc2str(exc)
 
+    # pylint: disable-next=redefined-outer-name
     def test_custominfo_updatekey_noarg_descr(self, shell):
         """
         Test do_custominfo_updatekey with no arguments falls to the interactive prompt.
         """
         shell.client.system.custominfo.updateKey = MagicMock()
-        prompt = MagicMock(side_effect=["keyname", Exception("interactive mode for descr")])
+        prompt = MagicMock(
+            side_effect=["keyname", Exception("interactive mode for descr")]
+        )
         with patch("spacecmd.custominfo.prompt_user", prompt):
             with pytest.raises(Exception) as exc:
                 custominfo.do_custominfo_updatekey(shell, "")
 
         assert "interactive mode for descr" in exc2str(exc)
 
+    # pylint: disable-next=redefined-outer-name
     def test_custominfo_updatekey_keyonly_arg(self, shell):
         """
         Test do_custominfo_updatekey description is taken interactively.
@@ -311,6 +355,7 @@ class TestSCCusomInfo:
 
         assert "interactive mode for descr" in exc2str(exc)
 
+    # pylint: disable-next=redefined-outer-name
     def test_custominfo_updatekey_all_args(self, shell):
         """
         Test do_custominfo_updatekey description is taken by arguments, interactive mode is not initiated.
@@ -318,10 +363,14 @@ class TestSCCusomInfo:
         shell.client.system.custominfo.updateKey = MagicMock()
         prompt = MagicMock(side_effect=[Exception("interactive mode for descr")])
         with patch("spacecmd.custominfo.prompt_user", prompt):
-            custominfo.do_custominfo_updatekey(shell, "keyname 'some key description here'")
+            custominfo.do_custominfo_updatekey(
+                shell, "keyname 'some key description here'"
+            )
 
         assert shell.client.system.custominfo.updateKey.called
-        session, keyname, description = shell.client.system.custominfo.updateKey.call_args_list[0][0]
+        session, keyname, description = (
+            shell.client.system.custominfo.updateKey.call_args_list[0][0]
+        )
         assert shell.session == session
         assert keyname == "keyname"
         assert description == "some key description here"

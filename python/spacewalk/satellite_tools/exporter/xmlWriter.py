@@ -22,7 +22,6 @@ import sys
 
 
 class XMLWriter:
-
     """
     XML writer, UTF-8 aware
     """
@@ -30,8 +29,7 @@ class XMLWriter:
     # We escape &<>'" and chars UTF-8 does not properly escape (everything
     # other than tab (\x09), newline and carriage return (\x0a and \x0d),
     # stuff above ASCII 32 and UTF-8 alphanumeric chars in any language)
-    # pylint: disable-next=anomalous-backslash-in-string
-    _re = re.compile("(&|<|>|'|\"|[^\x09\x0a\x0d\x20-\xFF\w])")
+    _re = re.compile(r"([&<>'\"]|[^\x09\x0a\x0d\x20-\xff\w])")
     _escaped_chars = {
         "&": "&amp;",
         "<": "&lt;",
@@ -140,7 +138,7 @@ if __name__ == "__main__":
         # pylint: disable-next=invalid-character-esc
         "String with \"quotes\", 'apostroph', Trond Eivind Glomsrød\n  and Bernhard Rosenkr)Bänzer"
     )
-    r = re.compile("(&|<|>|'|\"|[^\x09\x0a\x0d\x20-\xFF])")
+    r = re.compile(r"([&<>'\"]|[^\x09\x0a\x0d\x20-\xff])")
     writer.close_tag("text")
     writer.close_tag("message")
     writer.empty_tag("yahoo", attributes={"abc": 1})

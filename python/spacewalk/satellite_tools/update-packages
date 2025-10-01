@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# pylint: disable=missing-module-docstring,invalid-name
 #
 # wrapper for Script to update pacakge paths and gpg key ids.
 #
@@ -19,28 +20,31 @@
 #
 
 
-if __name__ != '__main__':
+if __name__ != "__main__":
     raise ImportError("module cannot be imported")
 
+# pylint: disable-next=wrong-import-position
 import sys
 
 
+# pylint: disable-next=invalid-name
 def systemExit(code, msgs=None):
     "Exit with a code and optional message(s). Saved a few lines of code."
 
     if msgs:
         if type(msgs) not in [type([]), type(())]:
-            msgs = (msgs, )
+            msgs = (msgs,)
         for msg in msgs:
-            sys.stderr.write(str(msg) + '\n')
+            sys.stderr.write(str(msg) + "\n")
     sys.exit(code)
 
 
+# pylint: disable-next=wrong-import-position
 import os
 
 # quick check to see if you are a super-user.
 if os.getuid() != 0:
-    sys.stderr.write('ERROR: must be root to execute\n')
+    sys.stderr.write("ERROR: must be root to execute\n")
     sys.exit(8)
 
 
@@ -49,8 +53,10 @@ try:
 except KeyboardInterrupt:
     systemExit(0, "\nUser interrupted process.")
 except ImportError:
-    sys.stderr.write("Unable to find RHN code tree.\n"
-                     "Path not correct? '%s'\n" % _LIBPATH)
+    sys.stderr.write(
+        # pylint: disable-next=consider-using-f-string,undefined-variable
+        "Unable to find RHN code tree.\n" "Path not correct? '%s'\n" % _LIBPATH
+    )
     raise
 
 
@@ -58,9 +64,12 @@ except ImportError:
 #   i.e., lock against multiple instances of updatePackages
 LOCK = None
 try:
-    LOCK = rhnLockfile.Lockfile('/run/update-packages.pid')
+    LOCK = rhnLockfile.Lockfile("/run/update-packages.pid")
 except rhnLockfile.LockfileLockedException:
-    systemExit(1, "ERROR: attempting to run more than one instance of update-packages. Exiting.")
+    systemExit(
+        1,
+        "ERROR: attempting to run more than one instance of update-packages. Exiting.",
+    )
 
 try:
     # NOTE: importing
@@ -68,11 +77,13 @@ try:
 except KeyboardInterrupt:
     systemExit(0, "\nUser interrupted process.")
 except ImportError as e:
-    systemExit(2, "Unable to find update package tool.\n"
-                  "Error: %s" % e)
+    # pylint: disable-next=consider-using-f-string
+    systemExit(2, "Unable to find update package tool.\n" "Error: %s" % e)
 
 
+# pylint: disable-next=invalid-name
 def releaseLOCK():
+    # pylint: disable-next=global-variable-not-assigned
     global LOCK
     if LOCK:
         LOCK.release()
@@ -89,7 +100,7 @@ def main():
     return 0
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     try:
         sys.exit(abs(main() or 0))
     except KeyboardInterrupt:

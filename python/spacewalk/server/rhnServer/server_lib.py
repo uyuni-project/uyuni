@@ -67,6 +67,7 @@ def getServerID(server, fields=[]):
     """
 
     def check_chars(s):
+        # pylint: disable-next=possibly-used-before-assignment
         return reduce(lambda a, b: a and b in "0123456789", s, 1)
 
     log_debug(4, server, fields)

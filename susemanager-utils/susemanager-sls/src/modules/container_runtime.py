@@ -25,23 +25,24 @@ References:
 
 import os
 import re
+
 try:
     from salt.utils import fopen
 except ImportError:
     from salt.utils.files import fopen
 
-RUNTIME_DOCKER = 'docker'
-RUNTIME_RKT = 'rkt'
-RUNTIME_NSPAWN = 'systemd-nspawn'
-RUNTIME_LXC = 'lxc'
-RUNTIME_LXC_LIBVIRT = 'lxc-libvirt'
-RUNTIME_OPENVZ = 'openvz'
-RUNTIME_KUBERNETES = 'kube'
-RUNTIME_GARDEN = 'garden'
-RUNTIME_PODMAN = 'podman'
-RUNTIME_GVISOR = 'gvisor'
-RUNTIME_FIREJAIL = 'firejail'
-RUNTIME_NOT_FOUND = 'not-found'
+RUNTIME_DOCKER = "docker"
+RUNTIME_RKT = "rkt"
+RUNTIME_NSPAWN = "systemd-nspawn"
+RUNTIME_LXC = "lxc"
+RUNTIME_LXC_LIBVIRT = "lxc-libvirt"
+RUNTIME_OPENVZ = "openvz"
+RUNTIME_KUBERNETES = "kube"
+RUNTIME_GARDEN = "garden"
+RUNTIME_PODMAN = "podman"
+RUNTIME_GVISOR = "gvisor"
+RUNTIME_FIREJAIL = "firejail"
+RUNTIME_NOT_FOUND = "not-found"
 
 CONTAINER_RUNTIMES = [
     RUNTIME_DOCKER,
@@ -56,6 +57,7 @@ CONTAINER_RUNTIMES = [
     RUNTIME_GVISOR,
     RUNTIME_FIREJAIL,
 ]
+
 
 def _detect_container_files():
     """
@@ -73,6 +75,7 @@ def _detect_container_files():
 
     return RUNTIME_NOT_FOUND
 
+
 def _get_container_runtime(input_string):
     """
     Determines the container runtime from the input string.
@@ -86,15 +89,18 @@ def _get_container_runtime(input_string):
 
     return RUNTIME_NOT_FOUND
 
+
 def _read_file(file_path):
     """
     Reads the contents of a file safely.
     """
     try:
-        with fopen(file_path, 'r') as f:
+        with fopen(file_path, "r") as f:
             return f.read().strip()
+    # pylint: disable-next=broad-exception-caught
     except Exception:
         return ""
+
 
 def get_container_runtime():
     """
@@ -131,7 +137,7 @@ def get_container_runtime():
         return runtime
 
     # Docker was not detected at this point.
-	# An overlay mount on "/" may indicate we're under containerd or other runtime.
+    # An overlay mount on "/" may indicate we're under containerd or other runtime.
     mounts = _read_file("/proc/mounts")
     if re.match("^[^ ]+ / overlay", mounts):
         return RUNTIME_KUBERNETES

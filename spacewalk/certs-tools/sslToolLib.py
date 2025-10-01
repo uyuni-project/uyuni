@@ -136,7 +136,6 @@ def chdir(newdir):
 
 
 class TempDir:
-
     """temp directory class with a cleanup destructor and method"""
 
     _shutil = shutil  # trying to hang onto shutil during garbage collection

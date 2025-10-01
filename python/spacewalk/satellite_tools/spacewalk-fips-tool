@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2014--2016 Red Hat, Inc.
 #
@@ -20,46 +21,79 @@ from optparse import OptionParser
 from uyuni.common import rhn_rpm
 import sys
 import time
+
 try:
     #  python2
     import xmlrpclib
 except ImportError:
     #  python3
-    import xmlrpc.client as xmlrpclib # pylint: disable=F0401
+    import xmlrpc.client as xmlrpclib  # pylint: disable=F0401
 from socket import gethostname
 
 
 def parse_args():
     parser = OptionParser()
     parser.set_usage("spacewalk-fips-tool -i|-c [options] systemid01 [systemid02 ...]")
-    parser.add_option("-i", action="store_true", dest="install_packages", default=False,
-                      help="schedule installation of packages required for certificate update")
-    parser.add_option("-c", action="store_true", dest="update_certificates", default=False,
-                      help="schedule update of client certificates for specified systems")
-    parser.add_option("-u", action="store", type="string", dest="username",
-                      help="username (organizational administrator)")
-    parser.add_option("-p", action="store", type="string", dest="password",
-                      help="password")
-    parser.add_option("-s", action="store", type="string", dest="hostname",
-                      help="server hostname to use, defaults to local hostname",
-                      default=gethostname())
-    parser.add_option("-d", action="store", type="string", dest="date",
-                      help="date to schedule the conversion for, defaults to now, " +
-                           "format: %Y-%m-%d %H:%M:%S (e.g. 2014-10-30 19:30:00)")
-    parser.add_option("-o", action="store", type="string", dest="output",
-                      help="output file in csv format to store the details about all " +
-                           "scheduled actions, use '-' for stdout")
+    parser.add_option(
+        "-i",
+        action="store_true",
+        dest="install_packages",
+        default=False,
+        help="schedule installation of packages required for certificate update",
+    )
+    parser.add_option(
+        "-c",
+        action="store_true",
+        dest="update_certificates",
+        default=False,
+        help="schedule update of client certificates for specified systems",
+    )
+    parser.add_option(
+        "-u",
+        action="store",
+        type="string",
+        dest="username",
+        help="username (organizational administrator)",
+    )
+    parser.add_option(
+        "-p", action="store", type="string", dest="password", help="password"
+    )
+    parser.add_option(
+        "-s",
+        action="store",
+        type="string",
+        dest="hostname",
+        help="server hostname to use, defaults to local hostname",
+        default=gethostname(),
+    )
+    parser.add_option(
+        "-d",
+        action="store",
+        type="string",
+        dest="date",
+        help="date to schedule the conversion for, defaults to now, "
+        + "format: %Y-%m-%d %H:%M:%S (e.g. 2014-10-30 19:30:00)",
+    )
+    parser.add_option(
+        "-o",
+        action="store",
+        type="string",
+        dest="output",
+        help="output file in csv format to store the details about all "
+        + "scheduled actions, use '-' for stdout",
+    )
 
     return parser.parse_args()
 
 
 def read_username():
+    # pylint: disable-next=unspecified-encoding
     tty = open("/dev/tty", "r+")
-    tty.write('Username: ')
+    tty.write("Username: ")
     tty.close()
 
     try:
-        username = sys.stdin.readline().rstrip('\n')
+        username = sys.stdin.readline().rstrip("\n")
     except KeyboardInterrupt:
         print()
         sys.exit(0)
@@ -121,7 +155,7 @@ The certificate conversion process cannot continue. Please re-run this tool
 with -i (package installation) option.
 """
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     (options, args) = parse_args()
 
     if len(args) == 0:
@@ -151,8 +185,11 @@ if __name__ == '__main__':
 
     scheduled_date = None
     try:
-        scheduled_date = xmlrpclib.DateTime(time.strptime(options.date, strftime_format))
+        scheduled_date = xmlrpclib.DateTime(
+            time.strptime(options.date, strftime_format)
+        )
     except ValueError as e:
+        # pylint: disable-next=consider-using-f-string
         sys.stderr.write("Error processing the specified date: %s\n" % e)
         sys.exit(1)
 
@@ -161,6 +198,7 @@ if __name__ == '__main__':
         sys.exit(1)
 
     (client, key) = (None, None)
+    # pylint: disable-next=consider-using-f-string
     client = xmlrpclib.Server("https://%s/rpc/api" % options.hostname, verbose=0)
 
     try:
@@ -175,36 +213,38 @@ if __name__ == '__main__':
     systems = [int(i) for i in args]
     systems.sort()
 
-    scc_pkg = 'spacewalk-client-cert'
+    scc_pkg = "spacewalk-client-cert"
     broken_systems = systems[:]
 
     installed_packages = {}
     try:
         for system_id in systems:
             for package in client.system.list_packages(key, system_id):
-                if package['name'] == scc_pkg:
+                if package["name"] == scc_pkg:
                     installed_packages[system_id] = package
                     # Systems which already have spacewalk-client-cert installed are not broken
                     broken_systems.remove(system_id)
                     break
     except xmlrpclib.Fault as e:
-        sys.stderr.write(e.faultString + '\n')
+        sys.stderr.write(e.faultString + "\n")
         sys.exit(1)
 
-    latest_available_packages = client.system.list_latest_available_package(key, systems, scc_pkg)
+    latest_available_packages = client.system.list_latest_available_package(
+        key, systems, scc_pkg
+    )
 
     for i in latest_available_packages:
         # Systems which can install / update spacewalk-client-cert are not broken
-        if i['id'] in broken_systems:
-            broken_systems.remove(i['id'])
+        if i["id"] in broken_systems:
+            broken_systems.remove(i["id"])
 
-        if i['id'] in installed_packages:
+        if i["id"] in installed_packages:
 
-            if installed_packages[i['id']]['epoch'] == ' ':
-                installed_packages[i['id']]['epoch'] = ''
+            if installed_packages[i["id"]]["epoch"] == " ":
+                installed_packages[i["id"]]["epoch"] = ""
 
             # What's installed matches or is more recent than what's available
-            if rhn_rpm.hdrLabelCompare(i['package'], installed_packages[i['id']]) <= 0:
+            if rhn_rpm.hdrLabelCompare(i["package"], installed_packages[i["id"]]) <= 0:
                 latest_available_packages.remove(i)
 
     if len(broken_systems) > 0:
@@ -214,6 +254,7 @@ if __name__ == '__main__':
             sys.stderr.write(broken_systems_msg02)
 
         for system_id in broken_systems:
+            # pylint: disable-next=consider-using-f-string
             sys.stderr.write("\t%s\n" % system_id)
 
         if options.install_packages:
@@ -225,50 +266,78 @@ if __name__ == '__main__':
 
     (csv_writer, csv_file) = (None, None)
 
-    if options.output == '-':
+    if options.output == "-":
         csv_file = sys.stdout
     else:
+        # pylint: disable-next=unspecified-encoding
         csv_file = open(options.output, "w+")
 
     csv_writer = csv.writer(csv_file, lineterminator="\n")
-    csv_writer.writerow(['action_id', 'system_id', 'action_description', 'scheduled_date'])
+    csv_writer.writerow(
+        ["action_id", "system_id", "action_description", "scheduled_date"]
+    )
 
     # Install / update spacewalk-client-cert on the selected systems
     if options.install_packages:
         for i in latest_available_packages:
-            pkg = i['package']
-            action_id = client.system.schedule_package_install(key,
-                                                               i['id'],            # system id
-                                                               pkg['id'],          # package id
-                                                               scheduled_date)     # earliest date
+            pkg = i["package"]
+            action_id = client.system.schedule_package_install(
+                key, i["id"], pkg["id"], scheduled_date  # system id  # package id
+            )  # earliest date
 
             pkg_string = None
-            if pkg['epoch']:
-                pkg_string = "%s-%s:%s-%s.%s" % (pkg['name'], pkg['epoch'], pkg['version'],
-                                                 pkg['release'], pkg['arch'])
+            if pkg["epoch"]:
+                # pylint: disable-next=consider-using-f-string
+                pkg_string = "%s-%s:%s-%s.%s" % (
+                    pkg["name"],
+                    pkg["epoch"],
+                    pkg["version"],
+                    pkg["release"],
+                    pkg["arch"],
+                )
             else:
-                pkg_string = "%s-%s-%s.%s" % (pkg['name'], pkg['version'],
-                                              pkg['release'], pkg['arch'])
+                # pylint: disable-next=consider-using-f-string
+                pkg_string = "%s-%s-%s.%s" % (
+                    pkg["name"],
+                    pkg["version"],
+                    pkg["release"],
+                    pkg["arch"],
+                )
 
-            csv_writer.writerow([action_id,
-                                 i['id'],
-                                 "Installation of %s package on system %s" % (pkg_string, i['id']),
-                                 options.date])
+            csv_writer.writerow(
+                [
+                    action_id,
+                    i["id"],
+                    # pylint: disable-next=consider-using-f-string
+                    "Installation of %s package on system %s" % (pkg_string, i["id"]),
+                    options.date,
+                ]
+            )
 
     # Schedule the certificate update
     if options.update_certificates:
         for system_id in systems:
             try:
-                action_id = client.system.schedule_certificate_update(key, system_id, scheduled_date)
+                action_id = client.system.schedule_certificate_update(
+                    key, system_id, scheduled_date
+                )
             except xmlrpclib.Fault as e:
-                sys.stderr.write("Error scheduling certificate update on %s: %s\n" %
-                                 (system_id, e.faultString))
+                sys.stderr.write(
+                    # pylint: disable-next=consider-using-f-string
+                    "Error scheduling certificate update on %s: %s\n"
+                    % (system_id, e.faultString)
+                )
                 sys.exit(1)
             # write the actions to csv
-            csv_writer.writerow([action_id,
-                                 system_id,
-                                 "Certificate update on %s" % system_id,
-                                 options.date])
+            csv_writer.writerow(
+                [
+                    action_id,
+                    system_id,
+                    # pylint: disable-next=consider-using-f-string
+                    "Certificate update on %s" % system_id,
+                    options.date,
+                ]
+            )
 
     if options.output != "-":
         csv_file.close()

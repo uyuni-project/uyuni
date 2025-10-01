@@ -31,7 +31,6 @@ class LockfileLockedException(Exception):
 
 
 class Lockfile:
-
     """class that provides simple access to a PID-style lockfile.
 
     methods: __init__(lockfile), acquire(), and release()
