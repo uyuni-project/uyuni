@@ -14,22 +14,38 @@
  */
 package com.redhat.rhn.domain.common;
 
+import static org.hibernate.annotations.CacheConcurrencyStrategy.READ_ONLY;
+
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageType;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.Immutable;
 
 import java.util.Objects;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * ArchType
  */
+@Entity
+@Table(name = "rhnArchType")
+@Immutable
+@Cache(usage = READ_ONLY)
 public class ArchType extends BaseDomainHelper {
 
+    @Id
     private Long id;
+    @Column
     private String label;
+    @Column
     private String name;
 
     /**
@@ -42,7 +58,7 @@ public class ArchType extends BaseDomainHelper {
     /**
      * @param i The id to set.
      */
-    public void setId(Long i) {
+    protected void setId(Long i) {
         this.id = i;
     }
 
