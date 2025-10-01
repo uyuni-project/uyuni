@@ -1,5 +1,6 @@
 --
 -- Copyright (c) 2008--2013 Red Hat, Inc.
+-- Copyright (c) 2025 SUSE LLC
 --
 -- This software is licensed to you under the GNU General Public License,
 -- version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -32,32 +33,22 @@ CREATE TABLE rhnServerNeededCache
                     CONSTRAINT rhn_sncp_cid_fk
                         REFERENCES rhnChannel (id)
                         ON DELETE CASCADE
-)
+);
 
-
-;
+CREATE INDEX rhn_snc_server_idx
+    ON rhnServerNeededCache (server_id) ;
 
 CREATE INDEX rhn_snc_pid_idx
-    ON rhnServerNeededCache (package_id)
-    
-    
-    ;
+    ON rhnServerNeededCache (package_id) ;
 
 CREATE INDEX rhn_snc_eid_idx
-    ON rhnServerNeededCache (errata_id)
-    
-    ;
+    ON rhnServerNeededCache (errata_id) ;
 
 CREATE INDEX rhn_snc_cid_idx
-    ON rhnServerNeededCache (channel_id)
-    
-    ;
+    ON rhnServerNeededCache (channel_id);
 
 CREATE INDEX rhn_snc_seid_idx
     ON rhnServerNeededCache (server_id, errata_id);
 
 CREATE INDEX rhn_snc_speid_idx
-    ON rhnServerNeededCache (server_id, package_id, errata_id)
-    
-    
-    ;
+    ON rhnServerNeededCache (server_id, package_id, errata_id);

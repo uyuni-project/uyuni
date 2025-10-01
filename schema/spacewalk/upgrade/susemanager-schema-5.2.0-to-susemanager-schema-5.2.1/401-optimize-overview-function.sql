@@ -1,5 +1,5 @@
 --
--- Copyright (c) 2022-2025 SUSE, LLC
+-- Copyright (c) 2025 SUSE LLC
 --
 -- This software is licensed to you under the GNU General Public License,
 -- version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -13,10 +13,10 @@
 -- in this software or its documentation.
 --
 
-create or replace
+CREATE OR REPLACE
 function update_system_overview (
     sid in numeric
-) returns void as
+) RETURNS void as
 $$
 declare
     new_id                              numeric;
