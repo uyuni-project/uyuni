@@ -8,12 +8,14 @@ import RawGettext from "node-gettext";
 
 export default class Gettext extends RawGettext {
   addTranslations(locale: string, domain: string, translations: Record<string | symbol, unknown>) {
-    if (String(locale) === "__proto__") {
+    const localeString = String(locale);
+    if (localeString === "__proto__") {
       throw new RangeError("Invalid locale");
     }
-    if (String(domain) === "__proto__") {
+    const domainString = String(domain);
+    if (domainString === "__proto__") {
       throw new RangeError("Invalid domain");
     }
-    return super.addTranslations.call(this, locale, domain, translations);
+    return super.addTranslations.call(this, localeString, domainString, translations);
   }
 }
