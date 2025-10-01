@@ -138,8 +138,8 @@ public class ProxyBackupEventAction implements MessageAction {
                 String branchid = convertRBSToContainerized(proxy, config.getProxyFqdn());
                 String messages = convertPxeEntriesToCobbler(pxeEntries, proxy, branchid);
                 SystemManager.addHistoryEvent(proxy, "Retail Branch Server migration: finished",
-                        "Proxy was detected to be a Retail Branch Server, branch migration was performed.<ul>" +
-                                messages + "</ul>");
+                        "Proxy was detected to be a Retail Branch Server, branch migration was performed" +
+                        "\n" + messages);
                 ServerFactory.save(proxy);
             }
             catch (SaltbootException | ProxyException e) {
@@ -236,7 +236,7 @@ public class ProxyBackupEventAction implements MessageAction {
         }
 
         if (pxeEntries == null) {
-            return "<li>No PXE entries found in a backup configuration for branch " + branchId + "</li>";
+            return "- No PXE entries found in a backup configuration for branch " + branchId;
         }
 
         Map<String, Object> retailData = YamlHelper.loadAs(
@@ -248,9 +248,9 @@ public class ProxyBackupEventAction implements MessageAction {
 
             return pixies.stream().map(
                     pxe -> this.convertSinglePxeEntry(proxy, branchGroup, pxe)
-            ).collect(Collectors.joining());
+            ).collect(Collectors.joining("\n"));
         }
-        return "<li>No PXE entries found in a backup configuration for branch " + branchId + "</li>";
+        return "- No PXE entries found in a backup configuration for branch " + branchId;
     }
 
     private String convertSinglePxeEntry(MinionServer proxy, ServerGroup branchGroup, Map<String, String> entry) {
@@ -281,25 +281,17 @@ public class ProxyBackupEventAction implements MessageAction {
                             proxy.getOrg()
                     );
                 }
-                ServerFactory.addServerToGroup(minion, branchLostAndFoundGroup);
-                ServerFactory.addServerToGroup(minion, branchGroup);
+                minion.addGroup(branchLostAndFoundGroup);
 
-                logMessages = "<li>Lost and found: system with HW address " +
-                        mac + " in branch " + branchid + " not found as registered.</li>";
+                logMessages = "- Lost and found: system with HW address " +
+                        mac + " in branch " + branchid + " not found as registered.";
                 minions = List.of(minion);
             }
         }
         if (minions.size() > 1) {
-            return "<li>Multiple minions found by one MAC address " + mac + ". Cannot choose one, ignoring</li>";
+            return "- Multiple minions found by one MAC address " + mac + ". Cannot choose one, ignoring";
         }
-
-        MinionServer minion = minions.get(0);
-        String minionId = minion.getMinionId();
-
-        // Check if minion is part of the branch group. If not, then ignore as this might have been moved minion.
-        if (!minion.getGroups().contains(branchGroup)) {
-            return "<li>Not processing minion " + minionId + " not part of a branch group.</li>";
-        }
+        String minionId = minions.get(0).getMinionId();
 
         // Lookup distro to check if exists
         String image;
@@ -308,8 +300,9 @@ public class ProxyBackupEventAction implements MessageAction {
         }
         else {
             image = SaltbootUtils.DEFAULT_BOOT_IMAGE;
-            logMessages = logMessages + "<li>Image not found: system " + minionId + " is using unknown image " +
-                    entry.get("probable_boot_image") + ". Using default boot image.</li>";
+            logMessages = logMessages + "\n" +
+                    "- Image not found: system " + minionId + " is using unknown image " +
+                    entry.get("probable_boot_image") + ". Using default boot image";
         }
         SaltbootUtils.createSaltbootSystem(minions.get(0).getMinionId(), image, branchid,
                 List.of(mac), entry.get("args"));
