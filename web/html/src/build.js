@@ -8,7 +8,7 @@ const yargs = require("yargs/yargs");
 const { hideBin } = require("yargs/helpers");
 
 const { fillSpecFile } = require("./build/fill-spec-file");
-const config = require("./build/webpack.config");
+const config = require("./build/webpack/config");
 const checkPackage = require("./build/check-package");
 const { aggregateLicenses } = require("./build/licenses");
 
