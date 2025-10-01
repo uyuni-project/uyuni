@@ -16,6 +16,7 @@ import com.redhat.rhn.domain.access.WebEndpoint;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainEntry;
 import com.redhat.rhn.domain.action.ActionChild;
+import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionDetails;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionResult;
@@ -202,6 +203,7 @@ public class AnnotationRegistry {
             ActionChain.class,
             ActionChainEntry.class,
             ActionChild.class,
+            ActionStatus.class,
             ActionType.class,
             AddressImpl.class,
             AnsiblePath.class,
