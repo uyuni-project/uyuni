@@ -397,6 +397,16 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         });
     }
 
+    private void setMinionName(String minionId, MinionServer minion, Optional<ValueMap> grains) {
+        grains.ifPresentOrElse(
+                grain -> minion.setName(
+                        grain.getMap("susemanager")
+                                .flatMap(s -> s.getOptionalAsString("profile_name"))
+                                .orElse(minionId)),
+                () -> minion.setName(minionId)
+        );
+    }
+
     /**
      * Update information of already registered minion, in case minion_id is different
      * or machine-id is different.
@@ -410,7 +420,10 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         if (!minionId.equals(oldMinionId)) {
             LOG.warn("Minion '{}' already registered, updating profile to '{}' [{}]", oldMinionId, minionId,
                     registeredMinion.getMachineId());
-            registeredMinion.setName(minionId);
+
+            Optional<ValueMap> grainsOptional = saltApi.getSystemInfoFull(minionId).map(SystemInfo::getGrains);
+            setMinionName(minionId, registeredMinion, grainsOptional);
+
             registeredMinion.setMinionId(minionId);
             ServerFactory.save(registeredMinion);
 
@@ -508,7 +521,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
 
             minion.setMachineId(machineId);
             minion.setMinionId(minionId);
-            minion.setName(minionId);
+            setMinionName(minionId, minion, Optional.of(grains));
             minion.setDigitalServerId(machineId);
 
             Optional<String> activationKeyLabel = getActivationKeyLabelFromGrains(grains, activationKeyOverride);

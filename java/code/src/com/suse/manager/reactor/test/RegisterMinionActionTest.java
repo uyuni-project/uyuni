@@ -577,6 +577,11 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         server.setMachineId(MACHINE_ID);
         executeTest((key) -> new Expectations() {{
             allowing(saltServiceMock).updateSystemInfo(with(any(MinionList.class)));
+            allowing(saltServiceMock).getSystemInfoFull(MINION_ID);
+            will(returnValue(getSystemInfo(MINION_ID, null, key)));
+            allowing(saltServiceMock)
+                    .getGrains(with(any(String.class)), with(any(TypeToken.class)), with(any(String[].class)));
+            will(returnValue(Optional.of(DEFAULT_MINION_START_UP_GRAINS)));
             exactly(1).of(saltServiceMock).deleteKey(server.getMinionId());
         }}, null, (minion, machineId, key) -> assertTrue(MinionServerFactory.findByMinionId(MINION_ID).isPresent()),
                 null, DEFAULT_CONTACT_METHOD);
