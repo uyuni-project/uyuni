@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.frontend.action;
 
+import static com.redhat.rhn.manager.user.UserManager.ensureRoleBasedAccess;
+
+import com.redhat.rhn.domain.access.Namespace;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -58,12 +61,15 @@ public class SearchAction extends RhnAction {
                 return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
             }
             else if (searchType.equals("systems")) {
+                ensureRoleBasedAccess(user, "systems.search", Namespace.AccessMode.R);
                 return doSystemSearch(mapping, request, searchString);
             }
             else if (searchType.equals("errata")) {
+                ensureRoleBasedAccess(user, "patches.search", Namespace.AccessMode.R);
                 return doErrataSearch(mapping, request, searchString);
             }
             else if (searchType.equals("packages")) {
+                ensureRoleBasedAccess(user, "software.search", Namespace.AccessMode.R);
                 return doPackageSearch(mapping, request, searchString);
             }
             else if (searchType.equals("docs")) {
