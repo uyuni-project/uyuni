@@ -17,10 +17,6 @@ exec(`yarn audit --json --groups "dependencies"`, (_, stdout) => {
     }
 
     const advisories = results.filter((item) => item.type === "auditAdvisory");
-    if (!advisories.length) {
-      process.exitCode = 0;
-      return;
-    }
 
     const validAdvisories = advisories.filter((item) => {
       const { module_name: moduleName, id, overview, recommendation } = item.data.advisory;
@@ -30,10 +26,19 @@ exec(`yarn audit --json --groups "dependencies"`, (_, stdout) => {
             overview
           )}\n\tRecommendation: ${inline(recommendation)}\n\tReason for ignoring: ${ignore[moduleName]}\n`
         );
+        delete ignore[moduleName];
         return false;
       }
       return true;
     });
+
+    const unusedIgnores = Object.keys(ignore);
+    if (unusedIgnores.length) {
+      process.exitCode = 1;
+      unusedIgnores.forEach((item) => {
+        console.error(`Error: Unused ignore for module "${item}", please check .auditignore.js`);
+      });
+    }
 
     if (validAdvisories.length) {
       process.exitCode = 1;
@@ -45,14 +50,9 @@ exec(`yarn audit --json --groups "dependencies"`, (_, stdout) => {
           )}\n\tRecommendation: ${inline(recommendation)}\n`
         );
       });
-      return;
     }
-
-    process.exitCode = 0;
-    return;
   } catch (error) {
     process.exitCode = error.code || 1;
     console.error(error);
-    return;
   }
 });
