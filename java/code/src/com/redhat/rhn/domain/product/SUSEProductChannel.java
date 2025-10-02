@@ -19,23 +19,46 @@ import com.redhat.rhn.domain.channel.Channel;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.annotations.Type;
 
 import java.io.Serializable;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 /**
  * POJO for a suseProductChannel row.
  */
+@Entity
+@Table(name = "suseProductChannel")
 public class SUSEProductChannel extends BaseDomainHelper implements Serializable {
 
     /** The id. */
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "suse_product_channel_seq")
+    @SequenceGenerator(name = "suse_product_channel_seq", sequenceName = "suse_product_channel_id_seq",
+            allocationSize = 1)
     private Long id;
 
     /** The product. */
+    @ManyToOne
+    @JoinColumn(name = "product_id")
     private SUSEProduct product;
 
     /** The channel. */
+    @ManyToOne
+    @JoinColumn(name = "channel_id")
     private Channel channel;
 
+    @Column
+    @Type(type = "yes_no")
     private boolean mandatory;
 
     /**
