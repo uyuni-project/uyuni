@@ -94,6 +94,8 @@ import com.redhat.rhn.domain.org.usergroup.UserGroupMembersId;
 import com.redhat.rhn.domain.product.ChannelTemplate;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductChannel;
+import com.redhat.rhn.domain.product.SUSEProductExtension;
+import com.redhat.rhn.domain.product.SUSEProductUpgrade;
 import com.redhat.rhn.domain.recurringactions.GroupRecurringAction;
 import com.redhat.rhn.domain.recurringactions.MinionRecurringAction;
 import com.redhat.rhn.domain.recurringactions.OrgRecurringAction;
@@ -355,6 +357,8 @@ public class AnnotationRegistry {
             StateRevision.class,
             SupportDataActionDetails.class,
             SUSEProduct.class,
+            SUSEProductExtension.class,
+            SUSEProductUpgrade.class,
             Task.class,
             TaskoBunch.class,
             TaskoTask.class,
