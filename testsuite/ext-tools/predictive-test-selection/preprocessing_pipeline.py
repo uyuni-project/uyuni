@@ -284,7 +284,7 @@ def perform_train_test_split(df, logger, test_size=TEST_SET_SIZE):
     logger.info("Train set size: %d samples", len(df_train))
     logger.info("Test set size: %d samples", len(df_test))
     logger.info(
-        "Split ratio: %.3f / %.3f", 
+        "Split ratio: %.3f / %.3f",
         len(df_train)/(len(df_train)+len(df_test)), len(df_test)/(len(df_train)+len(df_test))
     )
 
@@ -376,9 +376,11 @@ def main():
         # Create output DataFrames
         preprocessed_train_df = pd.DataFrame(X_train, columns=feature_names[:X_train.shape[1]])
         preprocessed_train_df['failed'] = y_train.values
+        preprocessed_train_df['pr_number'] = df_train['pr_number_numeric'].values
 
         preprocessed_test_df = pd.DataFrame(X_test, columns=feature_names[:X_test.shape[1]])
         preprocessed_test_df['failed'] = y_test.values
+        preprocessed_test_df['pr_number'] = df_test['pr_number_numeric'].values
 
         logger.info("Exporting training data to %s", PREPROCESSED_TRAINING_CSV_FILENAME)
         preprocessed_train_df.to_csv(PREPROCESSED_TRAINING_CSV_FILENAME, index=False)

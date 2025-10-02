@@ -60,3 +60,14 @@ PREPROCESSING_PIPELINE_FILENAME = "artifacts/preprocessing_pipeline.joblib"
 EXTENSION_COVERAGE_THRESHOLD = 0.95
 # Test set size as fraction of total data (0.2 = 20% for testing, 80% for training)
 TEST_SET_SIZE = 0.2
+
+# ------------------------------
+# XGBoost Classifier Training
+# ------------------------------
+XGBOOST_MODEL_FILENAME = "artifacts/xgboost_classifier.joblib"
+# Random seed for reproducibility
+RANDOM_SEED = 42
+# Cross-validation configuration
+CV_FOLDS = 5
+# Number of iterations for RandomizedSearchCV
+N_ITER_SEARCH = 50
