@@ -29,11 +29,13 @@
           spaImportReactPage('notifications/notifications');
         </script>
       </li>
-      <li class="search" id="header-search">
-        <script>
-          spaImportReactPage('header/search');
-        </script>
-      </li>
+      <rhn:require acl="authorized_for(systems.search) or authorized_for(software.search) or authorized_for(patches.search)">
+        <li class="search" id="header-search">
+          <script>
+            spaImportReactPage('header/search');
+          </script>
+        </li>
+      </rhn:require>
       <li id="ssm-box" class="ssm-box hide-overflow">
         <div id="ssm-counter"></div>
         <script type="text/javascript">
