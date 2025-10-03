@@ -140,6 +140,7 @@ class ActivationKeyChannels extends React.Component<ActivationKeyChannelsProps, 
                   </span>
                   {this.state.currentSelectedBaseId === -1 && (
                     <Messages
+                      autoScroll={false}
                       items={MessagesUtils.warning(
                         t(
                           `When "${this.getDefaultBase().name}" is selected and the installed ` +
