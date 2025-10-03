@@ -115,7 +115,7 @@ class ActionSchedule extends React.Component<ActionScheduleProps, ActionSchedule
   };
 
   handleResponseError = (jqXHR) => {
-    Loggerhead.error(Network.responseErrorMessage(jqXHR).toString());
+    Loggerhead.error(Network.responseErrorMessage(jqXHR));
     this.setState({ loading: false });
   };
 
