@@ -13,12 +13,15 @@ The project is composed of several interconnected parts. This README explains ea
   - [2. Pull Request Data Extraction Script](#2-pull-request-data-extraction-script)
   - [3. Cucumber Results Extraction Script](#3-cucumber-results-extraction-script)
   - [4. Runs Feature Result Extraction Script](#4-runs-feature-result-extraction-script)
-  - [5. Insert Test Runs Into Database Script](#5-insert-test-runs-into-database-script)
+  - [5. Backfill Test Runs Into Database Script](#5-backfill-test-runs-into-database-script)
   - [6. Generate Training Data Script](#6-generate-training-data-script)
 
 High-level diagram of this phase
 
 ![](images/gather_training_data_diagram.png)
+
+- [Phase 2 - Training \& Testing](#phase-2---training--testing)
+  - [1. Preprocessing Data](#1-preprocessing-data)
 
 # Phase 1 - Gathering Training Data
 
@@ -243,9 +246,9 @@ A JSON file like the following will be generated inside each test run’s folder
 ]
 ```
 
-## 5. Insert Test Runs Into Database Script
+## 5. Backfill Test Runs Into Database Script
 
-[insert_test_runs_into_db.py](insert_test_runs_into_db.py)
+[backfill_test_runs_into_db.py](backfill_test_runs_into_db.py)
 
 ### Functionality
 
@@ -311,3 +314,50 @@ My intuition is that we should focus on the first test run because it best refle
 Additionally, failed features/tests are underrepresented in our data. To try to improve this imbalance, we prefer the first failed run if it exists, even if it's not the first run, as this increases the number of samples where failures occur. An alternative approach could be to represent PRs only by their first failed run (and ignore PRs without test failures), though this would reduce the overall dataset size.
 
 </details>
+
+<br>
+
+# Phase 2 - Training & Testing
+
+## 1. Preprocessing Data
+
+[preprocessing_pipeline.py](preprocessing_pipeline.py)
+
+### Functionality
+
+- Data quality checks and cleaning
+- Time-ordered train/test split by PR number based on `TEST_SET_SIZE` in [config.py](config.py).
+- Consistent preprocessing using sklearn Pipeline
+- Saving pipeline for production use
+
+### Preprocessing
+
+#### Extensions (Multi-hot Encoding)
+
+- Keeps top extensions covering X% frequency, e.g., 95% of the extensions that appear, this value can be tweaked in [config.py](config.py) by tweaking `EXTENSION_COVERAGE_THRESHOLD`.
+- Groups remaining as `ext_other`.
+- Creates binary features: `ext_java`, `ext_ts`, etc.
+- This captures most of the information without exploding dimensionality, and allows handling future unseen extensions.
+
+#### Modifications (Log1p Transform)
+
+- Applied log transformation to reduce the impact of extreme outliers. This ensures that pull requests with an unusually high number of modifications are brought closer in scale to the rest, which I read helps improve model training performance.
+
+#### Run Number (Keep As-Is)
+- Added binary `is_first_run` (1 if run_number == 1)
+
+#### Categorical (One-hot Encoding)
+- One-hot encoded `feature` and `feature_category`.
+
+#### Scenario Count (Log1p Transform)
+
+#### Failures (Keep As-Is)
+
+#### Target Variable
+- `result` → `failed` (binary: 1 if failed, 0 if passed)
+
+### Outputs
+
+1. Preprocessed training data CSV
+2. Preprocessed testing data CSV
+3. Preprocessing pipeline to be used in production
