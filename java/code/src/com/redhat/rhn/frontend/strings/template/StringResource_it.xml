@@ -79,6 +79,20 @@ Important: Please change your password upon logging in.
 
 Thank you for using @@PRODUCT_NAME@@.
 {4}</source>
+        <target state="translated">Ciao,
+
+È stato creato per te un accesso a @@PRODUCT_NAME@@. Il tuo login @@PRODUCT_NAME@@, insieme a un abbonamento attivo @@VENDOR_NAME@@, ti permette di gestire i sistemi su @@PRODUCT_NAME@@.
+
+Login @@PRODUCT_NAME@@: {0}
+Password: {1}
+E-mail: {2}
+
+{3}
+
+Importante: ti invitiamo a cambiare la password al primo accesso.
+
+Grazie per utilizzare @@PRODUCT_NAME@@.
+{4}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
           <context context-type="paramnotes">

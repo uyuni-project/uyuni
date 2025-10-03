@@ -16321,11 +16321,11 @@ Le script post non-chroot sera ensuite exécuté et le script post sera enfin ex
         <target>Actions de configuration</target>
       </trans-unit>
       <trans-unit id="channelOverview.jsp.tasks.deploy" xml:space="preserve">
-        <source>Deploy Files</source>
+        <source>Deploy Files:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
-        <target>Déployer les fichiers</target>
+        <target state="needs-adaptation">Déployer les fichiers</target>
       </trans-unit>
       <trans-unit id="channelOverview.jsp.tasks.deployAll2All" xml:space="preserve">
         <source>Deploy all configuration files to all subscribed systems</source>
@@ -16356,11 +16356,11 @@ Le script post non-chroot sera ensuite exécuté et le script post sera enfin ex
         <target>Déployer les fichiers de configuration sélectionnés sur les systèmes abonnés sélectionnés</target>
       </trans-unit>
       <trans-unit id="channelOverview.jsp.tasks.compare" xml:space="preserve">
-        <source>Compare Files</source>
+        <source>Compare Files:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
-        <target>Comparer les fichiers</target>
+        <target state="needs-adaptation">Comparer les fichiers</target>
       </trans-unit>
       <trans-unit id="channelOverview.jsp.tasks.compareAll" xml:space="preserve">
         <source>Compare all files in channel to files on all subscribed systems</source>
@@ -16370,11 +16370,11 @@ Le script post non-chroot sera ensuite exécuté et le script post sera enfin ex
         <target>Comparer tous les fichiers dans le canal aux fichiers de tous les systèmes abonnés</target>
       </trans-unit>
       <trans-unit id="channelOverview.jsp.tasks.modify" xml:space="preserve">
-        <source>Add/Create Files</source>
+        <source>Add/Create Files:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
-        <target>Ajouter/Créer des fichiers</target>
+        <target state="needs-adaptation">Ajouter/Créer des fichiers</target>
       </trans-unit>
       <trans-unit id="channelOverview.jsp.tasks.modifyCreate" xml:space="preserve">
         <source>Create Configuration File or Directory</source>
@@ -28037,10 +28037,11 @@ canal  {0}. Les systèmes abonnés vont perdre leur accès aux paquetages spéci
         </context-group>
       </trans-unit>
       <trans-unit id="channelOverview.jsp.tasks.initsls" xml:space="preserve">
-        <source>State File</source>
+        <source>State File:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
+      <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="channelOverview.jsp.tasks.viewinitsls" xml:space="preserve">
         <source>View/Edit 'init.sls' File</source>
@@ -29176,6 +29177,41 @@ canal  {0}. Les systèmes abonnés vont perdre leur accès aux paquetages spéci
             <source>&lt;a href="/rhn/manager/systems/ssm/product-migration"&gt;Migrate the products&lt;/a&gt; installed on the selected systems</source>
         <target state="new"/>
   </trans-unit>
-        </body>
+        <trans-unit id="channel.manage.sync.noerrata-tt.jsp" xml:space="preserve">
+        <source>Do not synchronize patches.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="channel.manage.sync.nostrict-tt.jsp" xml:space="preserve">
+        <source>Allows a channel to deviate from the repository, keeping packages that have been removed from the remote repository.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="channel.manage.sync.latestonly-tt.jsp" xml:space="preserve">
+        <source>Synchronize the latest package version only.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="channel.manage.sync.synckickstart-tt.jsp" xml:space="preserve">
+        <source>This option prepares a directory tree ready for Kickstart auto installation.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="channel.manage.sync.fail-tt.jsp" xml:space="preserve">
+        <source>Stop synchronizing if an error occurs.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>

@@ -12,11 +12,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-11 13:25+0200\n"
+"POT-Creation-Date: 2025-10-03 11:04+0200\n"
 "PO-Revision-Date: 2018-03-16 11:02+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
-"Language-Team: Malay (http://www.transifex.com/projects/p/spacewalk/language/"
-"ms/)\n"
+"Language-Team: Malay (http://www.transifex.com/projects/p/spacewalk/language/ms/)\n"
 "Language: ms\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,101 +23,92 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Zanata 4.6.2\n"
 
-#: ../src/up2date_client/config.py:162
+#. pylint: disable-next=consider-using-f-string
+#: ../src/up2date_client/config.py:166
 #, python-format
 msgid "%s was not found"
 msgstr "%s tidak dijumpai"
 
-#: ../src/up2date_client/rpcServer.py:55
+#: ../src/up2date_client/rpcServer.py:70
 msgid "Error: Server Unavailable. Please try later."
 msgstr ""
 
-#: ../src/up2date_client/rpcServer.py:181
+#. pylint: disable-next=consider-using-f-string
+#: ../src/up2date_client/rpcServer.py:221
 msgid "ERROR: can not find server CA file"
 msgstr ""
 
-#: ../src/up2date_client/up2dateErrors.py:47
-#: ../src/up2date_client/up2dateErrors.py:80
+#: ../src/up2date_client/up2dateErrors.py:62
+#: ../src/up2date_client/up2dateErrors.py:101
 #, python-format
 msgid "class %s has no attribute '%s'"
 msgstr ""
 
-#: ../src/up2date_client/up2dateErrors.py:107
+#: ../src/up2date_client/up2dateErrors.py:135
 msgid "RPM error.  The message was:\n"
 msgstr "Terdapat ralat RPM.  Mesejnya ialah:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:114
+#: ../src/up2date_client/up2dateErrors.py:145
 msgid "Password error. The message was:\n"
 msgstr "Terdapat ralat RPM.  Mesejnya ialah:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:118
+#: ../src/up2date_client/up2dateErrors.py:151
 msgid "RPM dependency error. The message was:\n"
 msgstr "Terdapat ralat RPM.  Mesejnya ialah:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:128
+#: ../src/up2date_client/up2dateErrors.py:163
 msgid "Error communicating with server. The message was:\n"
-msgstr ""
-"Terdapat ralat maut ketika berkomunikasi dengan pelayan.  Mesejnya ialah:\n"
+msgstr "Terdapat ralat maut ketika berkomunikasi dengan pelayan.  Mesejnya ialah:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:135
+#: ../src/up2date_client/up2dateErrors.py:172
 msgid "File Not Found: \n"
 msgstr "Fail tidak dijumpai\n"
 
-#: ../src/up2date_client/up2dateErrors.py:142
+#: ../src/up2date_client/up2dateErrors.py:180
 msgid "Delay error from server.  The message was:\n"
-msgstr ""
-"Terdapat ralat maut ketika berkomunikasi dengan pelayan.  Mesejnya ialah:\n"
+msgstr "Terdapat ralat maut ketika berkomunikasi dengan pelayan.  Mesejnya ialah:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:178
+#: ../src/up2date_client/up2dateErrors.py:229
 msgid "Error validating data at server:\n"
 msgstr "Data rosak/tidak lengkap atau ralat pelayan (%1).\n"
 
-#: ../src/up2date_client/up2dateErrors.py:191
+#: ../src/up2date_client/up2dateErrors.py:246
 msgid ""
 "\n"
 "Red Hat Network Classic is not supported.\n"
 "    "
 msgstr ""
 
-#: ../src/up2date_client/up2dateErrors.py:197
+#: ../src/up2date_client/up2dateErrors.py:255
 msgid "The installation number is invalid"
 msgstr "Fail laluan statik %s tidak sah"
 
-#: ../src/up2date_client/up2dateErrors.py:200
+#: ../src/up2date_client/up2dateErrors.py:259
 msgid "Error parsing the oemInfo file at field:\n"
 msgstr "Ralat fail\n"
 
-#: ../src/up2date_client/up2dateErrors.py:227
+#: ../src/up2date_client/up2dateErrors.py:294
 msgid "Network error: "
 msgstr ""
 
-#: ../src/up2date_client/up2dateErrors.py:295
+#: ../src/up2date_client/up2dateErrors.py:385
 msgid ""
 "\n"
-"    Your organization does not have enough Management entitlements to "
-"register this\n"
+"    Your organization does not have enough Management entitlements to register this\n"
 "    system. Please notify your organization administrator of this error.\n"
-"    You should be able to register this system after your organization frees "
-"existing\n"
-"    or purchases additional entitlements. Additional entitlements may be "
-"purchased by your\n"
+"    You should be able to register this system after your organization frees existing\n"
+"    or purchases additional entitlements. Additional entitlements may be purchased by your\n"
 "    organization administrator in the SUSE Customer Center.\n"
 "\n"
 "    A common cause of this error code is due to having mistakenly setup an\n"
-"    Activation Key which is set as the universal default.  If an activation "
-"key is set\n"
-"    on the account as a universal default, you can disable this key and "
-"retry to avoid\n"
+"    Activation Key which is set as the universal default.  If an activation key is set\n"
+"    on the account as a universal default, you can disable this key and retry to avoid\n"
 "    requiring a Management entitlement."
 msgstr ""
 
 #, python-format
-#~ msgid ""
-#~ "This client requires the server to support %s, which the current server "
-#~ "does not support"
-#~ msgstr ""
-#~ "Klien ini memerlukan pelayan untuk menyokong %s, dimana pelayan semasa "
-#~ "tidak menyokongnya"
+#~ msgid "This client requires the server to support %s, which the current server does not support"
+#~ msgstr "Klien ini memerlukan pelayan untuk menyokong %s, dimana pelayan semasa tidak menyokongnya"
 
 #~ msgid "Getting list of packages installed on the system"
 #~ msgstr "on"
@@ -150,11 +140,8 @@ msgstr ""
 #~ msgid "Error reading machine info:"
 #~ msgstr "Ralat membaca maklumat cpu:"
 
-#~ msgid ""
-#~ "This system may not be updated until it is associated with a channel."
-#~ msgstr ""
-#~ "Sistem ini mungkin tidak dikemaskinikan sehingga ia dipadankan dengan "
-#~ "saluran."
+#~ msgid "This system may not be updated until it is associated with a channel."
+#~ msgstr "Sistem ini mungkin tidak dikemaskinikan sehingga ia dipadankan dengan saluran."
 
 #, fuzzy
 #~ msgid "Show additional output. Repeat for more detail."
@@ -179,9 +166,7 @@ msgstr ""
 #~ msgid "There was some sort of I/O error: %s\n"
 #~ msgstr "Terdapat seperti ralat I/O: %s\n"
 
-#~ msgid ""
-#~ "A common cause of this error is the system time being incorrect. Verify "
-#~ "that the time on this system is correct.\n"
+#~ msgid "A common cause of this error is the system time being incorrect. Verify that the time on this system is correct.\n"
 #~ msgstr "A ralat Tentusah on\n"
 
 #~ msgid "An error has occurred:"
@@ -233,9 +218,7 @@ msgstr ""
 #~ msgid "Create Profile - Hardware"
 #~ msgstr "Mempartisyen Sistem Anda"
 
-#~ msgid ""
-#~ "Additional hardware information including PCI devices, disk sizes and "
-#~ "mount points will be included in the profile."
+#~ msgid "Additional hardware information including PCI devices, disk sizes and mount points will be included in the profile."
 #~ msgstr "Tambahan PCI dan point dalam."
 
 #~ msgid "Include the following information about hardware and network:"
@@ -244,9 +227,7 @@ msgstr ""
 #~ msgid "Create Profile - Packages"
 #~ msgstr "Mempartisyen Sistem Anda"
 
-#~ msgid ""
-#~ "RPM information is important to determine what updated software packages "
-#~ "are relevant to this system."
+#~ msgid "RPM information is important to determine what updated software packages are relevant to this system."
 #~ msgstr "kepada kepada."
 
 #~ msgid "Include RPM packages installed on this system in my System Profile"
@@ -259,9 +240,7 @@ msgstr ""
 #~ msgstr "Alamat E-Mel"
 
 #~ msgid "System Already Registered"
-#~ msgstr ""
-#~ "    --force                    - daftar sistem walaupun ia telahpun "
-#~ "didaftarkan"
+#~ msgstr "    --force                    - daftar sistem walaupun ia telahpun didaftarkan"
 
 #~ msgid "It appears this system has already been set up for software updates:"
 #~ msgstr "_Laksana up2date..."
@@ -270,8 +249,7 @@ msgstr ""
 #~ msgstr "Huraian"
 
 #, fuzzy
-#~ msgid ""
-#~ "Subscriptions have been activated for the following products/services:"
+#~ msgid "Subscriptions have been activated for the following products/services:"
 #~ msgstr "Fail laluan statik %s tidak sah"
 
 #~ msgid "Software Channel Subscriptions:"
@@ -314,9 +292,7 @@ msgstr ""
 #~ msgstr "Pelayan menandakan ralat:\n"
 
 #~ msgid "There was an error communicating with the registration server:\n"
-#~ msgstr ""
-#~ "Terdapat ralat maut ketika berkomunikasi dengan pelayan.  Mesejnya "
-#~ "ialah:\n"
+#~ msgstr "Terdapat ralat maut ketika berkomunikasi dengan pelayan.  Mesejnya ialah:\n"
 
 #~ msgid "Profile name:"
 #~ msgstr "Nama profil telah wujud!"
@@ -371,12 +347,8 @@ msgstr ""
 #~ msgid "Finish"
 #~ msgstr "Tamat"
 
-#~ msgid ""
-#~ "  <Tab>/<Alt-Tab> between elements  |  <Space> selects  |  <F12> next "
-#~ "screen"
-#~ msgstr ""
-#~ "  <Tab>/<Alt-Tab> Antara unsur   |  <Space> pilih   |  <F12> Skrin "
-#~ "seterusnya "
+#~ msgid "  <Tab>/<Alt-Tab> between elements  |  <Space> selects  |  <F12> next screen"
+#~ msgstr "  <Tab>/<Alt-Tab> Antara unsur   |  <Space> pilih   |  <F12> Skrin seterusnya "
 
 #, fuzzy, python-brace-format
 #~ msgid "You must run the {PRODUCT_NAME} registration program as root."
@@ -401,9 +373,7 @@ msgstr ""
 #~ msgstr "atau "
 
 #~ msgid "Register the system even if it is already registered"
-#~ msgstr ""
-#~ "    --force                    - daftar sistem walaupun ia telahpun "
-#~ "didaftarkan"
+#~ msgstr "    --force                    - daftar sistem walaupun ia telahpun didaftarkan"
 
 #~ msgid "A username and password are required to register a system."
 #~ msgstr "A dan kepada."
@@ -411,9 +381,7 @@ msgstr ""
 #~ msgid "This system is already registered. Use --force to override"
 #~ msgstr "Guna kepada"
 
-#~ msgid ""
-#~ "A profilename was not specified, and hostname and IP address could not be "
-#~ "determined to use as a profilename, please specify one."
+#~ msgid "A profilename was not specified, and hostname and IP address could not be determined to use as a profilename, please specify one."
 #~ msgstr "A dan dan IP kepada."
 
 #, fuzzy
@@ -457,12 +425,8 @@ msgstr ""
 #~ msgid "There was an error while logging in."
 #~ msgstr "Terdapat ralat mendaftarkan sistem ini."
 
-#~ msgid ""
-#~ "There was an error communicating with the registration server.  The "
-#~ "message was:\n"
-#~ msgstr ""
-#~ "Terdapat ralat maut ketika berkomunikasi dengan pelayan.  Mesejnya "
-#~ "ialah:\n"
+#~ msgid "There was an error communicating with the registration server.  The message was:\n"
+#~ msgstr "Terdapat ralat maut ketika berkomunikasi dengan pelayan.  Mesejnya ialah:\n"
 
 #~ msgid "There was an error while assembling information for the profile."
 #~ msgstr ""
@@ -533,8 +497,7 @@ msgstr ""
 #~ msgid "Arch"
 #~ msgstr "Arch"
 
-#~ msgid ""
-#~ "Building a list of RPM packages installed on your system.  Please wait."
+#~ msgid "Building a list of RPM packages installed on your system.  Please wait."
 #~ msgstr "on."
 
 #~ msgid ""
@@ -552,9 +515,7 @@ msgstr ""
 #~ "Terdapat ralat ketika meyimpan tetapan anda. Pastikan yang\n"
 #~ "%s adalah kepunyaan anda."
 
-#~ msgid ""
-#~ "You need to register this system by running `rhn_register` before using "
-#~ "this option"
+#~ msgid "You need to register this system by running `rhn_register` before using this option"
 #~ msgstr "kepada oleh"
 
 #~ msgid "Updating package profile..."

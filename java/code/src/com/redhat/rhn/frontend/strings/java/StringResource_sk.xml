@@ -10390,8 +10390,8 @@ Prípadne si budete chcieť stiahnuť &lt;strong&gt; Inkrementálne obsahové IS
         </context-group>
       </trans-unit>
       <trans-unit id="system.entitle.added.monitoring_entitled" xml:space="preserve">
-        <source>&lt;strong&gt;Monitor this Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Since you added the Monitoring system type we automatically assigned the Prometheus Exporters formula to the system. Please apply the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; in order to install and enable the Prometheus metrics exporters.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Please make sure to open the &lt;a href="/docs/{1}/installation-and-upgrade/ports.html#_external_client_ports" target="_blank"&gt;required network ports&lt;/a&gt; for all installed exporters.</source>
-        <target state="translated">Bol použitý typ &lt;strong&gt;Monitorovania tohto hostiteľa&lt;/strong&gt;.&lt;br/&gt;&lt;strong&gt;Poznámka:&lt;/strong&gt; Keďže ste pridali typ systému monitorovania, automaticky sme systému priradili vzorec exportérov Prometheus. Prosím, použite &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt;, aby ste mohli nainštalovať a povoliť exportéry metrík Prometheus. &lt;br/&gt;&lt;strong&gt;Poznámka:&lt;/strong&gt; Prosím, uistite sa, že ste otvorili &lt;a href="/docs/{1}/installation-and-upgrade/ports.html#_external_client_ports" target="_blank"&gt;požadované sieťové porty&lt;/a&gt; pre všetky nainštalované exportéry.</target>
+        <source>&lt;strong&gt;Monitor this Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Since you added the Monitoring system type we automatically assigned the Prometheus Exporters formula to the system. Please apply the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; in order to install and enable the Prometheus metrics exporters.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Please make sure to open the &lt;a href="/docs/{1}/installation-and-upgrade/network-requirements.html#_external_client_ports" target="_blank"&gt;required network ports&lt;/a&gt; for all installed exporters.</source>
+        <target state="needs-adaptation">Bol použitý typ &lt;strong&gt;Monitorovania tohto hostiteľa&lt;/strong&gt;.&lt;br/&gt;&lt;strong&gt;Poznámka:&lt;/strong&gt; Keďže ste pridali typ systému monitorovania, automaticky sme systému priradili vzorec exportérov Prometheus. Prosím, použite &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt;, aby ste mohli nainštalovať a povoliť exportéry metrík Prometheus. &lt;br/&gt;&lt;strong&gt;Poznámka:&lt;/strong&gt; Prosím, uistite sa, že ste otvorili &lt;a href="/docs/{1}/installation-and-upgrade/ports.html#_external_client_ports" target="_blank"&gt;požadované sieťové porty&lt;/a&gt; pre všetky nainštalované exportéry.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
@@ -11924,82 +11924,82 @@ Ak chcete túto situáciu napraviť, pridajte prihlasovacie údaje SCC &lt;a hre
         </context-group>
         <target state="translated">Upraviť</target>
       </trans-unit>
-    <trans-unit id="reportdbupdatefailed" xml:space="preserve">
-          <source>Report Database Update Failed</source>
-      <target state="new"/>
-  </trans-unit>
+      <trans-unit id="reportdbupdatefailed" xml:space="preserve">
+        <source>Report Database Update Failed</source>
+        <target state="translated">Aktualizácia databázy správ zlyhala</target>
+      </trans-unit>
       <trans-unit id="notification.reportdbupdatefailed" xml:space="preserve">
         <source>The update of the reporting database has failed and the data is out of sync.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Aktualizácia databázy správ zlyhala a dáta nie sú synchronizované.</target>
+      </trans-unit>
       <trans-unit id="notification.reportdbupdatefailed.details.local" xml:space="preserve">
         <source>The following error was generated while trying to update the local reporting database:</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Pri pokuse o aktualizáciu lokálnej databázy správ sa vygenerovala nasledujúca chyba:</target>
+      </trans-unit>
       <trans-unit id="notification.reportdbupdatefailed.details.hub" xml:space="preserve">
         <source>The following error was generated while trying to fetch the data from the peripheral server {0}:</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Pri pokuse o získanie údajov z periférneho servera {0} bola vygenerovaná nasledujúca chyba:</target>
+      </trans-unit>
       <trans-unit id="system.migration.noServersSelected" xml:space="preserve">
-          <source>Unable to identify the selected systems for the migration.</source>
-      <target state="new"/>
-  </trans-unit>
+        <source>Unable to identify the selected systems for the migration.</source>
+        <target state="translated">Nie je možné identifikovať vybrané systémy pre migráciu.</target>
+      </trans-unit>
       <trans-unit id="system.migration.noCommonProduct" xml:space="preserve">
-          <source>The selected systems do not have a common base product.</source>
-      <target state="new"/>
-  </trans-unit>
+        <source>The selected systems do not have a common base product.</source>
+        <target state="translated">Vybrané systémy nemajú spoločný základný produkt.</target>
+      </trans-unit>
       <trans-unit id="system.migration.noServersSelected" xml:space="preserve">
-          <source>Unable to identify a valid migration target for the selected systems.</source>
-      <target state="new"/>
-  </trans-unit>
+        <source>Unable to identify a valid migration target for the selected systems.</source>
+        <target state="translated">Nie je možné identifikovať platný cieľ migrácie pre vybrané systémy.</target>
+      </trans-unit>
       <trans-unit id="product_migration.os_not_supported" xml:space="preserve">
         <source>Product Migrations are not supported for the OS of this system.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Migrácie produktov nie sú podporované pre OS tohto systému.</target>
+      </trans-unit>
       <trans-unit id="product_migration.source_unknown" xml:space="preserve">
         <source>The base product of this system is unknown.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Základný produkt tohto systému nie je známy.</target>
+      </trans-unit>
       <trans-unit id="product_migration.source_mismatch" xml:space="preserve">
         <source>The base product of this system does not match.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Základný produkt tohto systému sa nezhoduje.</target>
+      </trans-unit>
       <trans-unit id="product_migration.salt_needs_update" xml:space="preserve">
         <source>Salt installed on this system is out of date.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Salt inštalované na tomto systéme je neaktuálne.</target>
+      </trans-unit>
       <trans-unit id="product_migration.salt_needs_update.details" xml:space="preserve">
         <source>The installed &lt;pre&gt;{0}&lt;/pre&gt; package version on this system is out of date. Please update the package to the latest version before you start a Product migration.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Nainštalovaná &lt;pre&gt;{0}&lt;/pre&gt; verzia balíka na tomto systéme je neaktuálna. Pred začatím migrácie produktu, prosím, aktualizujte balík na najnovšiu verziu.</target>
+      </trans-unit>
       <trans-unit id="product_migration.addons_affected" xml:space="preserve">
         <source>Some installed addons are going to be affect, depending on chosen target.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Niektoré nainštalované doplnky budú ovplyvnené v závislosti od zvoleného cieľa.</target>
+      </trans-unit>
       <trans-unit id="product_migration.single.addons_affected" xml:space="preserve">
         <source>Some installed addons are going to be affect.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Niektoré nainštalované doplnky budú ovplyvnené.</target>
+      </trans-unit>
       <trans-unit id="product_migration.addons_affected.missing_successors" xml:space="preserve">
         <source>&lt;p&gt;Depending on chosen target, some or all of these products will be removed because no successor could be found, so proceed with caution:&lt;/p&gt;{0}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">&lt;p&gt;V závislosti od zvoleného cieľa budú niektoré alebo všetky tieto produkty odstránené, pretože sa nepodarilo nájsť žiadneho nástupcu, preto postupujte opatrne:&lt;/p&gt;{0}</target>
+      </trans-unit>
       <trans-unit id="product_migration.single.addons_affected.missing_successors" xml:space="preserve">
         <source>&lt;p&gt;These products will be removed because no successor could be found, so proceed with caution:&lt;/p&gt;{0}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">&lt;p&gt;Tieto produkty budú odstránené, pretože sa nepodarilo nájsť žiadneho nástupcu, preto postupujte opatrne:&lt;/p&gt;{0}</target>
+      </trans-unit>
       <trans-unit id="product_migration.addons_affected.installed_addons" xml:space="preserve">
         <source>&lt;p&gt;Depending on chosen target, some or all of these products will be installed:&lt;/p&gt;{0}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">&lt;p&gt;V závislosti od zvoleného cieľa budú nainštalované niektoré alebo všetky z týchto produktov:&lt;/p&gt;{0}</target>
+      </trans-unit>
       <trans-unit id="product_migration.single.addons_affected.installed_addons" xml:space="preserve">
         <source>&lt;p&gt;These products will be installed:&lt;/p&gt;{0}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">&lt;p&gt;Budú nainštalované tieto produkty:&lt;/p&gt;{0}</target>
+      </trans-unit>
       <trans-unit id="product_migration.addon_or_higher" xml:space="preserve">
         <source>{0} or higher</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">{0} alebo vyššie</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

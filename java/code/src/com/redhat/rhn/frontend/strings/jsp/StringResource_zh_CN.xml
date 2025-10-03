@@ -16503,11 +16503,11 @@ kickstart 前脚本的更多细节，请参见《&lt;strong&gt;@@ENTERPRISE_LINU
         <target state="translated">配置操作</target>
       </trans-unit>
       <trans-unit id="channelOverview.jsp.tasks.deploy" xml:space="preserve">
-        <source>Deploy Files</source>
+        <source>Deploy Files:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
-        <target state="translated">部署文件</target>
+        <target state="needs-adaptation">部署文件</target>
       </trans-unit>
       <trans-unit id="channelOverview.jsp.tasks.deployAll2All" xml:space="preserve">
         <source>Deploy all configuration files to all subscribed systems</source>
@@ -16538,11 +16538,11 @@ kickstart 前脚本的更多细节，请参见《&lt;strong&gt;@@ENTERPRISE_LINU
         <target state="translated">将所选配置文件部署到所选订阅的系统中</target>
       </trans-unit>
       <trans-unit id="channelOverview.jsp.tasks.compare" xml:space="preserve">
-        <source>Compare Files</source>
+        <source>Compare Files:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
-        <target state="translated">比较文件</target>
+        <target state="needs-adaptation">比较文件</target>
       </trans-unit>
       <trans-unit id="channelOverview.jsp.tasks.compareAll" xml:space="preserve">
         <source>Compare all files in channel to files on all subscribed systems</source>
@@ -16552,11 +16552,11 @@ kickstart 前脚本的更多细节，请参见《&lt;strong&gt;@@ENTERPRISE_LINU
         <target state="translated">将通道中的所有文件与所有订阅系统中的文件进行比较</target>
       </trans-unit>
       <trans-unit id="channelOverview.jsp.tasks.modify" xml:space="preserve">
-        <source>Add/Create Files</source>
+        <source>Add/Create Files:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
-        <target state="translated">添加/创建文件</target>
+        <target state="needs-adaptation">添加/创建文件</target>
       </trans-unit>
       <trans-unit id="channelOverview.jsp.tasks.modifyCreate" xml:space="preserve">
         <source>Create Configuration File or Directory</source>
@@ -28395,8 +28395,8 @@ given channel.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="channelOverview.jsp.tasks.initsls" xml:space="preserve">
-        <source>State File</source>
-        <target>状态文件</target>
+        <source>State File:</source>
+        <target state="needs-adaptation">状态文件</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
@@ -29625,6 +29625,41 @@ given channel.</source>
             <source>&lt;a href="/rhn/manager/systems/ssm/product-migration"&gt;Migrate the products&lt;/a&gt; installed on the selected systems</source>
         <target state="new"/>
   </trans-unit>
-        </body>
+        <trans-unit id="channel.manage.sync.noerrata-tt.jsp" xml:space="preserve">
+        <source>Do not synchronize patches.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="channel.manage.sync.nostrict-tt.jsp" xml:space="preserve">
+        <source>Allows a channel to deviate from the repository, keeping packages that have been removed from the remote repository.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="channel.manage.sync.latestonly-tt.jsp" xml:space="preserve">
+        <source>Synchronize the latest package version only.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="channel.manage.sync.synckickstart-tt.jsp" xml:space="preserve">
+        <source>This option prepares a directory tree ready for Kickstart auto installation.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="channel.manage.sync.fail-tt.jsp" xml:space="preserve">
+        <source>Stop synchronizing if an error occurs.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>

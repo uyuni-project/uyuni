@@ -16503,8 +16503,8 @@ el lt;stronggt;ENTERENTERPRISELINUXNAME Guide Guia d'administració del sistema.
         </context-group>
       </trans-unit>
       <trans-unit id="channelOverview.jsp.tasks.deploy" xml:space="preserve">
-        <source>Deploy Files</source>
-        <target state="translated">Desplega fitxers</target>
+        <source>Deploy Files:</source>
+        <target state="needs-adaptation">Desplega fitxers</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
@@ -16538,8 +16538,8 @@ el lt;stronggt;ENTERENTERPRISELINUXNAME Guide Guia d'administració del sistema.
         </context-group>
       </trans-unit>
       <trans-unit id="channelOverview.jsp.tasks.compare" xml:space="preserve">
-        <source>Compare Files</source>
-        <target state="translated">Compara fitxers</target>
+        <source>Compare Files:</source>
+        <target state="needs-adaptation">Compara fitxers</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
@@ -16552,8 +16552,8 @@ el lt;stronggt;ENTERENTERPRISELINUXNAME Guide Guia d'administració del sistema.
         </context-group>
       </trans-unit>
       <trans-unit id="channelOverview.jsp.tasks.modify" xml:space="preserve">
-        <source>Add/Create Files</source>
-        <target state="translated">Afegeix/Crea fitxers</target>
+        <source>Add/Create Files:</source>
+        <target state="needs-adaptation">Afegeix/Crea fitxers</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
@@ -28396,8 +28396,8 @@ canal indicat.</target>
         </context-group>
       </trans-unit>
       <trans-unit id="channelOverview.jsp.tasks.initsls" xml:space="preserve">
-        <source>State File</source>
-        <target state="translated">Fitxer d'estat</target>
+        <source>State File:</source>
+        <target state="needs-adaptation">Fitxer d'estat</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
@@ -29604,28 +29604,63 @@ lt;/pgt;
         </context-group>
         <target state="translated">Edita les propietats del sistema</target>
       </trans-unit>
-    <trans-unit id="actionchain.jsp.distupgrade.upgrade" xml:space="preserve">
+      <trans-unit id="actionchain.jsp.distupgrade.upgrade" xml:space="preserve">
         <source>Migrate the installed product on</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Migra el producte instal·lat a</target>
+      </trans-unit>
       <trans-unit id="auditview.mark.reviewed" xml:space="preserve">
         <source>Mark reviewed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/audit/Search.do</context>
         </context-group>
+        <target state="translated">Marca com a revisat</target>
+      </trans-unit>
+      <trans-unit id="ssm.overview.product_migration" xml:space="preserve">
+        <source>Product Migration</source>
+        <target state="translated">Migració de productes</target>
+      </trans-unit>
+      <trans-unit id="ssm.overview.product_migration.migrate" xml:space="preserve">
+        <source>&lt;a href="/rhn/manager/systems/ssm/product-migration"&gt;Migrate the products&lt;/a&gt; installed on the selected systems</source>
+        <target state="translated">&lt;a href="/rhn/manager/systems/ssm/product-migration"&gt;Migra els productes&lt;/a&gt; instal·lats als sistemes seleccionats</target>
+      </trans-unit>
+    <trans-unit id="channel.manage.sync.noerrata-tt.jsp" xml:space="preserve">
+        <source>Do not synchronize patches.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
+        </context-group>
       <target state="new"/>
   </trans-unit>
-      <trans-unit id="ssm.overview.product_migration" xml:space="preserve">
-            <source>Product Migration</source>
-        <target state="new"/>
+      <trans-unit id="channel.manage.sync.nostrict-tt.jsp" xml:space="preserve">
+        <source>Allows a channel to deviate from the repository, keeping packages that have been removed from the remote repository.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
+        </context-group>
+      <target state="new"/>
   </trans-unit>
-        <trans-unit id="ssm.overview.product_migration.migrate" xml:space="preserve">
-            <source>&lt;a href="/rhn/manager/systems/ssm/product-migration"&gt;Migrate the products&lt;/a&gt; installed on the selected systems</source>
-        <target state="new"/>
+      <trans-unit id="channel.manage.sync.latestonly-tt.jsp" xml:space="preserve">
+        <source>Synchronize the latest package version only.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
+        </context-group>
+      <target state="new"/>
   </trans-unit>
-        </body>
+      <trans-unit id="channel.manage.sync.synckickstart-tt.jsp" xml:space="preserve">
+        <source>This option prepares a directory tree ready for Kickstart auto installation.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="channel.manage.sync.fail-tt.jsp" xml:space="preserve">
+        <source>Stop synchronizing if an error occurs.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>
