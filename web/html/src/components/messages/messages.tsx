@@ -16,6 +16,7 @@ export type MessageType = {
 type Props = {
   /** Message objects to display */
   items: MessageType[] | MessageType;
+  autoScroll?: boolean;
 };
 
 /**
@@ -63,7 +64,7 @@ export class Messages extends React.Component<Props> {
     const changed =
       prevItems.length !== curItems.length ||
       prevItems.some((p, i) => p.text !== curItems[i]?.text || p.severity !== curItems[i]?.severity);
-     
+
     if (changed && curItems.length > 0) {
       const el = document.querySelector(".alert-container");
       if (el) {
@@ -102,7 +103,11 @@ export class Messages extends React.Component<Props> {
       </div>
     ));
 
-    return <div className="alert-container" key={"messages-pop-up"}>{msgs}</div>;
+    return (
+      <div className="alert-container" key={"messages-pop-up"}>
+        {msgs}
+      </div>
+    );
   }
 }
 

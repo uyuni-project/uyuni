@@ -4,7 +4,12 @@ import { Messages, MessageType } from "components/messages/messages";
 
 type SuccessType = boolean | undefined;
 
-export const ContainerConfigMessages = (success: SuccessType, messagesIn: React.ReactNode[], loading: boolean, autoScroll: boolean) => {
+export const ContainerConfigMessages = (
+  success: SuccessType,
+  messagesIn: React.ReactNode[],
+  loading: boolean,
+  autoScroll: boolean
+) => {
   let items: MessageType[] = [];
   if (success) {
     items = [
