@@ -19,11 +19,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-11 13:25+0200\n"
+"POT-Creation-Date: 2025-10-03 11:04+0200\n"
 "PO-Revision-Date: 2018-03-16 10:59+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
-"Language-Team: Bulgarian (http://www.transifex.com/projects/p/spacewalk/"
-"language/bg/)\n"
+"Language-Team: Bulgarian (http://www.transifex.com/projects/p/spacewalk/language/bg/)\n"
 "Language: bg\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -31,119 +30,106 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Zanata 4.6.2\n"
 
-#: ../src/up2date_client/config.py:162
+#. pylint: disable-next=consider-using-f-string
+#: ../src/up2date_client/config.py:166
 #, python-format
 msgid "%s was not found"
 msgstr "%s не бе намерен"
 
-#: ../src/up2date_client/rpcServer.py:55
+#: ../src/up2date_client/rpcServer.py:70
 msgid "Error: Server Unavailable. Please try later."
 msgstr "Грешка: Сървърът е недостъпен. Моля, опитайте по-късно."
 
-#: ../src/up2date_client/rpcServer.py:181
+#. pylint: disable-next=consider-using-f-string
+#: ../src/up2date_client/rpcServer.py:221
 #, fuzzy
 msgid "ERROR: can not find server CA file"
 msgstr "ГРЕШКА: не мога да намеря RHNS CA файл"
 
-#: ../src/up2date_client/up2dateErrors.py:47
-#: ../src/up2date_client/up2dateErrors.py:80
+#: ../src/up2date_client/up2dateErrors.py:62
+#: ../src/up2date_client/up2dateErrors.py:101
 #, python-format
 msgid "class %s has no attribute '%s'"
 msgstr ""
 
-#: ../src/up2date_client/up2dateErrors.py:107
+#: ../src/up2date_client/up2dateErrors.py:135
 msgid "RPM error.  The message was:\n"
 msgstr "RPM грешка.  Съобщението е:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:114
+#: ../src/up2date_client/up2dateErrors.py:145
 msgid "Password error. The message was:\n"
 msgstr "Грешка с парола. Съобщението е:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:118
+#: ../src/up2date_client/up2dateErrors.py:151
 msgid "RPM dependency error. The message was:\n"
 msgstr "RPM грешка на зависимостите. Съобщението е:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:128
+#: ../src/up2date_client/up2dateErrors.py:163
 msgid "Error communicating with server. The message was:\n"
 msgstr "Грешка при комуникация със сървъра. Съобщението е:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:135
+#: ../src/up2date_client/up2dateErrors.py:172
 msgid "File Not Found: \n"
 msgstr "Файлът не е намерен:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:142
+#: ../src/up2date_client/up2dateErrors.py:180
 msgid "Delay error from server.  The message was:\n"
 msgstr "Грешка от забавяне от сървъра.  Съобщението е:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:178
+#: ../src/up2date_client/up2dateErrors.py:229
 msgid "Error validating data at server:\n"
 msgstr "Грешка при валидиране на данни на сървъра:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:191
+#: ../src/up2date_client/up2dateErrors.py:246
 msgid ""
 "\n"
 "Red Hat Network Classic is not supported.\n"
 "    "
 msgstr ""
 
-#: ../src/up2date_client/up2dateErrors.py:197
+#: ../src/up2date_client/up2dateErrors.py:255
 msgid "The installation number is invalid"
 msgstr "Инсталационният номер не е валиден"
 
-#: ../src/up2date_client/up2dateErrors.py:200
+#: ../src/up2date_client/up2dateErrors.py:259
 msgid "Error parsing the oemInfo file at field:\n"
 msgstr "Грешка при разбор на oemInfo файл при поле:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:227
+#: ../src/up2date_client/up2dateErrors.py:294
 msgid "Network error: "
 msgstr ""
 
-#: ../src/up2date_client/up2dateErrors.py:295
+#: ../src/up2date_client/up2dateErrors.py:385
 #, fuzzy
 msgid ""
 "\n"
-"    Your organization does not have enough Management entitlements to "
-"register this\n"
+"    Your organization does not have enough Management entitlements to register this\n"
 "    system. Please notify your organization administrator of this error.\n"
-"    You should be able to register this system after your organization frees "
-"existing\n"
-"    or purchases additional entitlements. Additional entitlements may be "
-"purchased by your\n"
+"    You should be able to register this system after your organization frees existing\n"
+"    or purchases additional entitlements. Additional entitlements may be purchased by your\n"
 "    organization administrator in the SUSE Customer Center.\n"
 "\n"
 "    A common cause of this error code is due to having mistakenly setup an\n"
-"    Activation Key which is set as the universal default.  If an activation "
-"key is set\n"
-"    on the account as a universal default, you can disable this key and "
-"retry to avoid\n"
+"    Activation Key which is set as the universal default.  If an activation key is set\n"
+"    on the account as a universal default, you can disable this key and retry to avoid\n"
 "    requiring a Management entitlement."
 msgstr ""
 "\n"
-"    Вашата организация няма достатъчно Management права за регистрирането на "
-"тази\n"
-"    система в Red Hat Network. Моля, съобщете на Вашия организационен "
-"администратор за тази грешка. \n"
-"    Вие ще можете да регистрирате тази система, след като организацията Ви "
-"освободи съществуващи \n"
-"    или закупи допълнителни права. Допълнителни права могат да бъдат "
-"закупени от Вашия\n"
-"    организационен администратор чрез влизане в Red Hat Network и посещаване "
-"на\n"
+"    Вашата организация няма достатъчно Management права за регистрирането на тази\n"
+"    система в Red Hat Network. Моля, съобщете на Вашия организационен администратор за тази грешка. \n"
+"    Вие ще можете да регистрирате тази система, след като организацията Ви освободи съществуващи \n"
+"    или закупи допълнителни права. Допълнителни права могат да бъдат закупени от Вашия\n"
+"    организационен администратор чрез влизане в Red Hat Network и посещаване на\n"
 "    страницата 'Subscription Management' във 'Your RHN' секцията на RHN.\n"
 "    \n"
 "    Често причина за тази грешка е съществуването на грешна настройка на\n"
-"    Activation Key, който е зададен като universal default.  Ако Activation "
-"key е зададен\n"
-"    в акаунта като universal default, можете да забраните този ключ и да "
-"опитате отново,\n"
+"    Activation Key, който е зададен като universal default.  Ако Activation key е зададен\n"
+"    в акаунта като universal default, можете да забраните този ключ и да опитате отново,\n"
 "    за да избегнете изискването на Management права."
 
 #, python-format
-#~ msgid ""
-#~ "This client requires the server to support %s, which the current server "
-#~ "does not support"
-#~ msgstr ""
-#~ "Клиентът изисква сървъра да поддържа %s, което текущият сървър не прави"
+#~ msgid "This client requires the server to support %s, which the current server does not support"
+#~ msgstr "Клиентът изисква сървъра да поддържа %s, което текущият сървър не прави"
 
 #~ msgid "Getting list of packages installed on the system"
 #~ msgstr "Получаване на списък на пакетите, инсталирани на системата"
@@ -178,8 +164,7 @@ msgstr ""
 #~ msgid "Unable to Locate SystemId"
 #~ msgstr "Не мога да локализирам SystemId"
 
-#~ msgid ""
-#~ "This system may not be updated until it is associated with a channel."
+#~ msgid "This system may not be updated until it is associated with a channel."
 #~ msgstr "Системата може да не бъде обновена докато е асоциирана с канал."
 
 #, fuzzy
@@ -190,8 +175,7 @@ msgstr ""
 #~ msgstr "Задаване на HTTP прокси за ползване"
 
 #~ msgid "Specify a username to use with an authenticated http proxy"
-#~ msgstr ""
-#~ "Задаване потребителско име за ползване при свързването с http прокси"
+#~ msgstr "Задаване потребителско име за ползване при свързването с http прокси"
 
 #~ msgid "Specify a password to use with an authenticated http proxy"
 #~ msgstr "Задаване парола за ползване при свързването с http прокси"
@@ -222,12 +206,8 @@ msgstr ""
 #~ msgid "There was an SSL error: %s\n"
 #~ msgstr "Получена е SSL грешка:%s\n"
 
-#~ msgid ""
-#~ "A common cause of this error is the system time being incorrect. Verify "
-#~ "that the time on this system is correct.\n"
-#~ msgstr ""
-#~ "Обикновено причината за тази грешка е, че системното време не е точно. "
-#~ "Уверете се, че часовника на системата е точен.\n"
+#~ msgid "A common cause of this error is the system time being incorrect. Verify that the time on this system is correct.\n"
+#~ msgstr "Обикновено причината за тази грешка е, че системното време не е точно. Уверете се, че часовника на системата е точен.\n"
 
 #, python-format
 #~ msgid "There was a SSL crypto error: %s\n"
@@ -271,20 +251,14 @@ msgstr ""
 
 #, fuzzy, python-brace-format
 #~ msgid ""
-#~ "This assistant will guide you through connecting your system to "
-#~ "{PRODUCT_NAME} to receive software updates, including security updates, "
-#~ "to keep your system supported and compliant.  You will need the following "
-#~ "at this time:\n"
+#~ "This assistant will guide you through connecting your system to {PRODUCT_NAME} to receive software updates, including security updates, to keep your system supported and compliant.  You will need the following at this time:\n"
 #~ "\n"
 #~ " * A network connection\n"
 #~ " * Your {PRODUCT_NAME} Login & password\n"
 #~ " * The location of a {PRODUCT_NAME} Server or Proxy\n"
 #~ "\n"
 #~ msgstr ""
-#~ "Този асистент ще Ви води през процедурата за свързване на Вашата система "
-#~ "към Red Hat Network (RHN) за получаване на обновления на софтуера, "
-#~ "включително такива, свързани със сигурността, за да бъде системата Ви "
-#~ "поддържана и съвместима.  Към момента ще имате нужда от:\n"
+#~ "Този асистент ще Ви води през процедурата за свързване на Вашата система към Red Hat Network (RHN) за получаване на обновления на софтуера, включително такива, свързани със сигурността, за да бъде системата Ви поддържана и съвместима.  Към момента ще имате нужда от:\n"
 #~ "\n"
 #~ " * Мрежова връзка\n"
 #~ " * Вашите Red Hat Login & парола\n"
@@ -299,12 +273,8 @@ msgstr ""
 #~ msgstr "Защо да се регистрирам"
 
 #, fuzzy, python-brace-format
-#~ msgid ""
-#~ "Connecting your system to {PRODUCT_NAME} allows you to take full "
-#~ "advantage of the benefits of a paid subscription, including:"
-#~ msgstr ""
-#~ "Свързването на системата Ви с Red Hat Network Ви дава възможност да се "
-#~ "възползвате напълно от предимствата на платения абонамент, включително:"
+#~ msgid "Connecting your system to {PRODUCT_NAME} allows you to take full advantage of the benefits of a paid subscription, including:"
+#~ msgstr "Свързването на системата Ви с Red Hat Network Ви дава възможност да се възползвате напълно от предимствата на платения абонамент, включително:"
 
 #~ msgid "Security & Updates:"
 #~ msgstr "Сигурност & Обновления:"
@@ -319,35 +289,20 @@ msgstr ""
 #~ msgstr "Съвместимост:"
 
 #, fuzzy
-#~ msgid ""
-#~ "Receive the latest software updates, including security updates, keeping "
-#~ "this system updated and secure."
-#~ msgstr ""
-#~ "Получавате последните софтуерни обновления, включително свързаните със "
-#~ "сигурността, поддържайки тази Red Hat Enterprise Linux система актуална и "
-#~ "сигурна."
+#~ msgid "Receive the latest software updates, including security updates, keeping this system updated and secure."
+#~ msgstr "Получавате последните софтуерни обновления, включително свързаните със сигурността, поддържайки тази Red Hat Enterprise Linux система актуална и сигурна."
 
 #, fuzzy
-#~ msgid ""
-#~ "Download installation images for system releases, including new releases."
-#~ msgstr ""
-#~ "Сваляте инсталационни образи за издания на Red Hat Enterprise Linux, "
-#~ "включително нови версии."
+#~ msgid "Download installation images for system releases, including new releases."
+#~ msgstr "Сваляте инсталационни образи за издания на Red Hat Enterprise Linux, включително нови версии."
 
 #, fuzzy
-#~ msgid ""
-#~ "Access to the technical support experts for help with any issues you "
-#~ "might encounter with this system."
-#~ msgstr ""
-#~ "Достъп до експертите по техническа поддръжка на Red Hat или партньори на "
-#~ "Red Hat, за помощ при всякакъв проблем, който може да забележите с тази "
-#~ "система."
+#~ msgid "Access to the technical support experts for help with any issues you might encounter with this system."
+#~ msgstr "Достъп до експертите по техническа поддръжка на Red Hat или партньори на Red Hat, за помощ при всякакъв проблем, който може да забележите с тази система."
 
 #, fuzzy
 #~ msgid "Tip: SUSE values your privacy: https://www.suse.com/company/legal/"
-#~ msgstr ""
-#~ "Забележка: Red Hat пази неприкосновеността на личните Ви данни: http://"
-#~ "www.redhat.com/legal/privacy_statement.html"
+#~ msgstr "Забележка: Red Hat пази неприкосновеността на личните Ви данни: http://www.redhat.com/legal/privacy_statement.html"
 
 #~ msgid "Take me back to the registration"
 #~ msgstr "Върни ме обратно в регистрацията"
@@ -356,20 +311,12 @@ msgstr ""
 #~ msgstr "Рестартиране на агента за обновление"
 
 #, fuzzy, python-brace-format
-#~ msgid ""
-#~ "Are you sure you don't want to connect your system to {PRODUCT_NAME}? "
-#~ "You'll miss out on the benefits of a SLES/RHEL subscription:\n"
-#~ msgstr ""
-#~ "Сигурни ли сте, че не искате да свържете Вашата система към Red Hat "
-#~ "Network? Ще изгубите ползите от Red Hat Enterprise Linux абонамента:\n"
+#~ msgid "Are you sure you don't want to connect your system to {PRODUCT_NAME}? You'll miss out on the benefits of a SLES/RHEL subscription:\n"
+#~ msgstr "Сигурни ли сте, че не искате да свържете Вашата система към Red Hat Network? Ще изгубите ползите от Red Hat Enterprise Linux абонамента:\n"
 
 #, fuzzy, python-brace-format
-#~ msgid ""
-#~ "You will not be able to take advantage of these subscription privileges "
-#~ "without connecting your system to {PRODUCT_NAME}.\n"
-#~ msgstr ""
-#~ "Вие няма да можете да се възползвате от привилегиите на абонамента без "
-#~ "свързване на системата Ви към Red Hat Network.\n"
+#~ msgid "You will not be able to take advantage of these subscription privileges without connecting your system to {PRODUCT_NAME}.\n"
+#~ msgstr "Вие няма да можете да се възползвате от привилегиите на абонамента без свързване на системата Ви към Red Hat Network.\n"
 
 #~ msgid "Take me back to the setup process."
 #~ msgstr "Върни ме обратно в процеса за настройка."
@@ -382,8 +329,7 @@ msgstr ""
 #~ "Please enter your login information for the %s {PRODUCT_NAME}:\n"
 #~ "\n"
 #~ msgstr ""
-#~ "Моля, въведете Вашата информация за влизане за %s Red Hat Network "
-#~ "Satellite:\n"
+#~ "Моля, въведете Вашата информация за влизане за %s Red Hat Network Satellite:\n"
 #~ "\n"
 
 #~ msgid "Login:"
@@ -393,12 +339,8 @@ msgstr ""
 #~ msgstr "Парола:"
 
 #, fuzzy, python-brace-format
-#~ msgid ""
-#~ "Tip: Forgot your login or password?  Contact your {PRODUCT_NAME} "
-#~ "Organization Administrator."
-#~ msgstr ""
-#~ "Съвет: Забравено име или парола?  Свържете се с Администратора на Вашата "
-#~ "Satellite Organization."
+#~ msgid "Tip: Forgot your login or password?  Contact your {PRODUCT_NAME} Organization Administrator."
+#~ msgstr "Съвет: Забравено име или парола?  Свържете се с Администратора на Вашата Satellite Organization."
 
 #~ msgid "Please enter a desired login."
 #~ msgstr "Моля, въведете желано име."
@@ -421,32 +363,18 @@ msgstr ""
 #~ msgid "Confirm operating system release selection"
 #~ msgstr "Потвърдете секцията за изданието на ОС"
 
-#~ msgid ""
-#~ "Your system will be subscribed to the base software channel to receive "
-#~ "all available updates."
-#~ msgstr ""
-#~ "Системата Ви ще бъде абонирана към основния софтуерен канал за получаване "
-#~ "на всички налични обновления."
+#~ msgid "Your system will be subscribed to the base software channel to receive all available updates."
+#~ msgstr "Системата Ви ще бъде абонирана към основния софтуерен канал за получаване на всички налични обновления."
 
 #~ msgid "Create Profile - Hardware"
 #~ msgstr "Свързване на системата"
 
 #, fuzzy, python-brace-format
-#~ msgid ""
-#~ "A Profile Name is a descriptive name that you choose to identify this "
-#~ "System Profile on the {PRODUCT_NAME} web pages. Optionally, include a "
-#~ "computer serial or identification number."
-#~ msgstr ""
-#~ "Име на профила е името, което избирате да идентифицира този системен "
-#~ "профил на сайта на Red Hat Network. Допълнително, може да включите "
-#~ "серийния или идентификационния номер на компютъра."
+#~ msgid "A Profile Name is a descriptive name that you choose to identify this System Profile on the {PRODUCT_NAME} web pages. Optionally, include a computer serial or identification number."
+#~ msgstr "Име на профила е името, което избирате да идентифицира този системен профил на сайта на Red Hat Network. Допълнително, може да включите серийния или идентификационния номер на компютъра."
 
-#~ msgid ""
-#~ "Additional hardware information including PCI devices, disk sizes and "
-#~ "mount points will be included in the profile."
-#~ msgstr ""
-#~ "Допълнителна информация за хардуера, включително PCI устройства, размер "
-#~ "на дискове и точки на монтиране ще бъде включена в профила."
+#~ msgid "Additional hardware information including PCI devices, disk sizes and mount points will be included in the profile."
+#~ msgstr "Допълнителна информация за хардуера, включително PCI устройства, размер на дискове и точки на монтиране ще бъде включена в профила."
 
 #~ msgid "Include the following information about hardware and network:"
 #~ msgstr "Включва следната информация за мрежата и хардуера:"
@@ -454,16 +382,11 @@ msgstr ""
 #~ msgid "Create Profile - Packages"
 #~ msgstr "Свързване на системата"
 
-#~ msgid ""
-#~ "RPM information is important to determine what updated software packages "
-#~ "are relevant to this system."
-#~ msgstr ""
-#~ "RPM информацията е важна за определяне какви обновления на софтуерни "
-#~ "пакети се отнасят за тази система."
+#~ msgid "RPM information is important to determine what updated software packages are relevant to this system."
+#~ msgstr "RPM информацията е важна за определяне какви обновления на софтуерни пакети се отнасят за тази система."
 
 #~ msgid "Include RPM packages installed on this system in my System Profile"
-#~ msgstr ""
-#~ "Включи инсталираните на тази система RPM пакети в моя системен профил"
+#~ msgstr "Включи инсталираните на тази система RPM пакети в моя системен профил"
 
 #~ msgid "You may deselect individual packages by unchecking them below."
 #~ msgstr "Може да откажете отделни пакети, като ги размаркирате по-долу."
@@ -475,13 +398,10 @@ msgstr ""
 #~ msgstr "*Email Адрес:"
 
 #~ msgid "System Already Registered"
-#~ msgstr ""
-#~ "    --force                    - регистриране на системата дори и да е "
-#~ "регистрирана"
+#~ msgstr "    --force                    - регистриране на системата дори и да е регистрирана"
 
 #~ msgid "It appears this system has already been set up for software updates:"
-#~ msgstr ""
-#~ "Оказа се, че тази система вече е била настроена за софтуерни обновления:"
+#~ msgstr "Оказа се, че тази система вече е била настроена за софтуерни обновления:"
 
 #~ msgid "Are you sure you would like to continue?"
 #~ msgstr "Сигурни ли сте, че искате да продължите?"
@@ -494,16 +414,11 @@ msgstr ""
 #~ msgid ""
 #~ "We are finished collecting information for the System Profile.\n"
 #~ "\n"
-#~ "Press \"Next\" to send this System Profile to {PRODUCT_NAME}.  Click "
-#~ "\"Cancel\" and no information will be sent.  You can run the registration "
-#~ "program later by typing `rhn_register` at the command line."
+#~ "Press \"Next\" to send this System Profile to {PRODUCT_NAME}.  Click \"Cancel\" and no information will be sent.  You can run the registration program later by typing `rhn_register` at the command line."
 #~ msgstr ""
 #~ "Завършихме събирането на информация за Системния Профил.\n"
 #~ "\n"
-#~ "Цъкнете \"Напред\" за да изпратите този профил на Red Hat Network.  Ако "
-#~ "цъкнете \"Отказ\", информация няма да бъде изпращана.  Може да стартирате "
-#~ "регистриращата програма по-късно като напишете в командния ред "
-#~ "`rhn_register`."
+#~ "Цъкнете \"Напред\" за да изпратите този профил на Red Hat Network.  Ако цъкнете \"Отказ\", информация няма да бъде изпращана.  Може да стартирате регистриращата програма по-късно като напишете в командния ред `rhn_register`."
 
 #~ msgid "Review Subscription"
 #~ msgstr "Преглед на регистрацията"
@@ -512,16 +427,11 @@ msgstr ""
 #~ msgstr "Моля, прегледайте детайлите за абонамента на системата по-долу:"
 
 #, fuzzy, python-format, python-brace-format
-#~ msgid ""
-#~ "The installation number %s was activated during this system's initial "
-#~ "connection to {PRODUCT_NAME}."
-#~ msgstr ""
-#~ "Инсталационният номер %s беше активиран по време на тази инициализираща "
-#~ "връзка на системата към Red Hat Network."
+#~ msgid "The installation number %s was activated during this system's initial connection to {PRODUCT_NAME}."
+#~ msgstr "Инсталационният номер %s беше активиран по време на тази инициализираща връзка на системата към Red Hat Network."
 
 #, fuzzy
-#~ msgid ""
-#~ "Subscriptions have been activated for the following products/services:"
+#~ msgid "Subscriptions have been activated for the following products/services:"
 #~ msgstr "Бяха активирани абонаменти за следните Red Hat продукти/услуги:"
 
 #~ msgid "Software Channel Subscriptions:"
@@ -549,46 +459,20 @@ msgstr ""
 #~ "yum-rhn-plugin не е разрешен.\n"
 #~ "Автоматичното обновление няма да работи."
 
-#~ msgid ""
-#~ "You were unable to be subscribed to the following software channels "
-#~ "because there were insufficient subscriptions available in your account:"
-#~ msgstr ""
-#~ "Не може да се абонирате за следните софтуерни канали поради недостатъчно "
-#~ "достъпни абонаменти във Вашия акаунт:"
+#~ msgid "You were unable to be subscribed to the following software channels because there were insufficient subscriptions available in your account:"
+#~ msgstr "Не може да се абонирате за следните софтуерни канали поради недостатъчно достъпни абонаменти във Вашия акаунт:"
 
 #, fuzzy, python-brace-format
-#~ msgid ""
-#~ "This system was unable to be associated with the following {PRODUCT_NAME} "
-#~ "system type(s) because there were insufficient subscriptions available in "
-#~ "your account:"
-#~ msgstr ""
-#~ "Тази система не може да се асоциира със следните RHN модули, поради "
-#~ "недостатъчно достъпни абонаменти в акаунта Ви:"
+#~ msgid "This system was unable to be associated with the following {PRODUCT_NAME} system type(s) because there were insufficient subscriptions available in your account:"
+#~ msgstr "Тази система не може да се асоциира със следните RHN модули, поради недостатъчно достъпни абонаменти в акаунта Ви:"
 
 #, fuzzy
-#~ msgid ""
-#~ "Virtualization type: software updates for a limited number of virtual "
-#~ "guests on this system."
-#~ msgstr ""
-#~ "Virtualization module: софтуерни обновления за ограничен брой виртуални "
-#~ "гости на тази система."
+#~ msgid "Virtualization type: software updates for a limited number of virtual guests on this system."
+#~ msgstr "Virtualization module: софтуерни обновления за ограничен брой виртуални гости на тази система."
 
 #, fuzzy, python-brace-format
-#~ msgid ""
-#~ "<b>Warning:</b> Any guest systems you create on this system and register "
-#~ "to {PRODUCT_NAME} will consume system subscriptions beyond this host "
-#~ "system's subscription. You will need to: (1) make a virtualization system "
-#~ "entitlement available and (2) apply that system entitlement to this "
-#~ "system in {PRODUCT_NAME} web interface if you do not want virtual guests "
-#~ "of this system to consume additional subscriptions."
-#~ msgstr ""
-#~ "<b>Внимание:</b> Гост системите, създадени от Вас на тази система и "
-#~ "регистрирани в RHN ще консумират Red Hat Enterprise Linux абонаменти, "
-#~ "извън тези на системата домакин. Вие ще трябва да: (1) make a "
-#~ "virtualization or virtualization platform system entitlement available "
-#~ "and (2) apply that system entitlement to this system in RHN's web "
-#~ "interface ако не искате виртуалните гости на тази система да консумират "
-#~ "допълнителни абонаменти."
+#~ msgid "<b>Warning:</b> Any guest systems you create on this system and register to {PRODUCT_NAME} will consume system subscriptions beyond this host system's subscription. You will need to: (1) make a virtualization system entitlement available and (2) apply that system entitlement to this system in {PRODUCT_NAME} web interface if you do not want virtual guests of this system to consume additional subscriptions."
+#~ msgstr "<b>Внимание:</b> Гост системите, създадени от Вас на тази система и регистрирани в RHN ще консумират Red Hat Enterprise Linux абонаменти, извън тези на системата домакин. Вие ще трябва да: (1) make a virtualization or virtualization platform system entitlement available and (2) apply that system entitlement to this system in RHN's web interface ако не искате виртуалните гости на тази система да консумират допълнителни абонаменти."
 
 #~ msgid "Fatal Error"
 #~ msgstr "Фатална грешка"
@@ -605,8 +489,7 @@ msgstr ""
 #~ "\n"
 #~ "Make sure that the network connection on this system is operational.\n"
 #~ "\n"
-#~ "This system will not be able to successfully receive software updates "
-#~ "without connecting to an {PRODUCT_NAME} server/proxy"
+#~ "This system will not be able to successfully receive software updates without connecting to an {PRODUCT_NAME} server/proxy"
 #~ msgstr ""
 #~ "Не можем да се свържем с Red Hat Network Server.\n"
 #~ "\n"
@@ -615,53 +498,37 @@ msgstr ""
 #~ "\n"
 #~ "Убедете се, че мрежовата връзка на тази система работи.\n"
 #~ "\n"
-#~ "Тази система няма да може успешно да получава софтуерни обновления от Red "
-#~ "Hat без връзка с Red Hat Network сървър"
+#~ "Тази система няма да може успешно да получава софтуерни обновления от Red Hat без връзка с Red Hat Network сървър"
 
 #, python-format
 #~ msgid "Architecture: %s, OS Release: %s, OS Version: %s"
 #~ msgstr "Архитектура: %s, OS Издание: %s, OS Версия: %s"
 
-#~ msgid ""
-#~ "This server doesn't support functionality needed by this version of the "
-#~ "software update setup client. Please try again with a newer server."
-#~ msgstr ""
-#~ "Този сървър не поддържа функционалност, нужна за тази версия на клиента "
-#~ "за установяване на софтуерните обновявания. Моля, опитайте отново с по-"
-#~ "нова версия сървър."
+#~ msgid "This server doesn't support functionality needed by this version of the software update setup client. Please try again with a newer server."
+#~ msgstr "Този сървър не поддържа функционалност, нужна за тази версия на клиента за установяване на софтуерните обновявания. Моля, опитайте отново с по-нова версия сървър."
 
 #, fuzzy, python-format, python-brace-format
 #~ msgid ""
 #~ "<b><span size=\"16000\">Incompatible Certificate File</span></b>\n"
 #~ "\n"
-#~ "The certificate you provided, <b>%s</b>, is not compatible with  the "
-#~ "{PRODUCT_NAME} server at <b>%s</b>. You may want to double-check that you "
-#~ "have provided a valid certificate file. Are you sure you have provided "
-#~ "the correct certificate, and that the certificate file has not been "
-#~ "corrupted?\n"
+#~ "The certificate you provided, <b>%s</b>, is not compatible with  the {PRODUCT_NAME} server at <b>%s</b>. You may want to double-check that you have provided a valid certificate file. Are you sure you have provided the correct certificate, and that the certificate file has not been corrupted?\n"
 #~ "\n"
 #~ "Please try again with a different certificate file."
 #~ msgstr ""
 #~ "<b><span size=\"16000\">Несъвместим сертификатен файл</span></b>\n"
 #~ "\n"
-#~ "Предоставеният от Вас сертификат, <b>%s</b>, не е съвместим с Red Hat "
-#~ "Network сървъра на <b>%s</b>. Може би е добре да проверите отново, дали "
-#~ "сте предоставили файл с валиден сертификат. Сигурни ли сте, че сте "
-#~ "предоставили коректния сертификат и че файлът със сертификата не е бил "
-#~ "повреден?\n"
+#~ "Предоставеният от Вас сертификат, <b>%s</b>, не е съвместим с Red Hat Network сървъра на <b>%s</b>. Може би е добре да проверите отново, дали сте предоставили файл с валиден сертификат. Сигурни ли сте, че сте предоставили коректния сертификат и че файлът със сертификата не е бил повреден?\n"
 #~ "\n"
 #~ "Моля, опитайте отново с друг файл със сертификат."
 
 #~ msgid ""
 #~ "<b><span size=\"12000\">Incompatible Certificate File</span></b>\n"
 #~ "\n"
-#~ " The certificate is expired. Please ensure you have the correct  "
-#~ "certificate and your system time is correct."
+#~ " The certificate is expired. Please ensure you have the correct  certificate and your system time is correct."
 #~ msgstr ""
 #~ "<b><span size=\"12000\">Несъвместим сертификатен файл</span></b>\n"
 #~ "\n"
-#~ " Сертификатът е изтекъл. Моля, убедете се, че имате коректния  сертификат "
-#~ "и че часовникът на системата е верен."
+#~ " Сертификатът е изтекъл. Моля, убедете се, че имате коректния  сертификат и че часовникът на системата е верен."
 
 #~ msgid ""
 #~ "\n"
@@ -772,12 +639,8 @@ msgstr ""
 #~ msgid "You specified an invalid protocol.Only https and http are allowed."
 #~ msgstr "Задали сте невалиден протокол. Позволени са само https и http."
 
-#~ msgid ""
-#~ "  <Tab>/<Alt-Tab> between elements  |  <Space> selects  |  <F12> next "
-#~ "screen"
-#~ msgstr ""
-#~ "  <Таб>/<Алт-Таб> между елементите  |  <Интервал> избери  |  <F12> "
-#~ "следващ екран"
+#~ msgid "  <Tab>/<Alt-Tab> between elements  |  <Space> selects  |  <F12> next screen"
+#~ msgstr "  <Таб>/<Алт-Таб> между елементите  |  <Интервал> избери  |  <F12> следващ екран"
 
 #, fuzzy, python-brace-format
 #~ msgid "You must run the {PRODUCT_NAME} registration program as root."
@@ -796,36 +659,25 @@ msgstr ""
 #~ msgstr "Задайте URL на сървъра, който да се използва"
 
 #~ msgid "Specify a file to use as the ssl CA cert"
-#~ msgstr ""
-#~ "    --sslCACert=<път>         - задаване на файл за използване като ssl "
-#~ "CA cert"
+#~ msgstr "    --sslCACert=<път>         - задаване на файл за използване като ssl CA cert"
 
 #~ msgid "Specify an activation key"
 #~ msgstr "Задаване на HTTP прокси, което да се използва"
 
 #~ msgid "[Deprecated] Read contact info from stdin"
-#~ msgstr ""
-#~ "    --contactinfo               - прочитане на контактната информация от "
-#~ "конзолата "
+#~ msgstr "    --contactinfo               - прочитане на контактната информация от конзолата "
 
 #~ msgid "Do not probe or upload any hardware info"
-#~ msgstr ""
-#~ "    --nohardware               - не търси и не зареждай информация за "
-#~ "хардуера"
+#~ msgstr "    --nohardware               - не търси и не зареждай информация за хардуера"
 
 #~ msgid "Do not profile or upload any package info"
-#~ msgstr ""
-#~ "    --nopackages               - не преглеждай и зареждай никаква пакетна "
-#~ "информация "
+#~ msgstr "    --nopackages               - не преглеждай и зареждай никаква пакетна информация "
 
 #~ msgid "Register the system even if it is already registered"
-#~ msgstr ""
-#~ "    --force                    - регистриране на системата дори и да е "
-#~ "регистрирана"
+#~ msgstr "    --force                    - регистриране на системата дори и да е регистрирана"
 
 #~ msgid "A username and password are required to register a system."
-#~ msgstr ""
-#~ "Име, парола и емайл адрес са задължителни при регистрация на система."
+#~ msgstr "Име, парола и емайл адрес са задължителни при регистрация на система."
 
 #~ msgid "This system is already registered. Use --force to override"
 #~ msgstr "Системата е вече регистрирана. Използвайте --force за презапис"
@@ -836,12 +688,8 @@ msgstr ""
 #~ "Внимание: yum-rhn-plugin липсва и не може да бъде разрешен.\n"
 #~ "Автоматичното обновление няма да работи."
 
-#~ msgid ""
-#~ "A profilename was not specified, and hostname and IP address could not be "
-#~ "determined to use as a profilename, please specify one."
-#~ msgstr ""
-#~ "Не е зададено име на профил, а хост и IP адрес не могат да бъдат "
-#~ "определени за да се ползват като име на профил, моля задайте име."
+#~ msgid "A profilename was not specified, and hostname and IP address could not be determined to use as a profilename, please specify one."
+#~ msgstr "Не е зададено име на профил, а хост и IP адрес не могат да бъдат определени за да се ползват като име на профил, моля задайте име."
 
 #, fuzzy
 #~ msgid "Software updates setup unsuccessful"
@@ -894,11 +742,9 @@ msgstr ""
 #~ msgstr "Може би работите с клиент, който не е съвместим със сървъра."
 
 #, fuzzy, python-format
-#~ msgid ""
-#~ "Please enter your account information for the <b>%s</b> Spacewalk server:"
+#~ msgid "Please enter your account information for the <b>%s</b> Spacewalk server:"
 #~ msgstr ""
-#~ "Моля, въведете Вашата информация за влизане за %s Red Hat Network "
-#~ "Satellite:\n"
+#~ "Моля, въведете Вашата информация за влизане за %s Red Hat Network Satellite:\n"
 #~ "\n"
 
 #~ msgid "You must enter a login."
@@ -910,12 +756,8 @@ msgstr ""
 #~ msgid "There was an error while logging in."
 #~ msgstr "Има проблем при регистрирането на системата."
 
-#~ msgid ""
-#~ "There was an error communicating with the registration server.  The "
-#~ "message was:\n"
-#~ msgstr ""
-#~ "Получена е грешка при комуникирането с регистрационния сървър. "
-#~ "Съобщението е:\n"
+#~ msgid "There was an error communicating with the registration server.  The message was:\n"
+#~ msgstr "Получена е грешка при комуникирането с регистрационния сървър. Съобщението е:\n"
 
 #~ msgid "There was an error while assembling information for the profile."
 #~ msgstr "Получена е фатална грешка при инсталацията на пакета:"
@@ -936,12 +778,8 @@ msgstr ""
 #~ msgstr "Регистриране на системата"
 
 #, python-format
-#~ msgid ""
-#~ "The installation number [ %s ] provided is not a valid installation "
-#~ "number. Please go back to the previous screen and fix it."
-#~ msgstr ""
-#~ "Абонаментния номер [ %s ] зададен от Вас не е валиден регистстрационен "
-#~ "номер"
+#~ msgid "The installation number [ %s ] provided is not a valid installation number. Please go back to the previous screen and fix it."
+#~ msgstr "Абонаментния номер [ %s ] зададен от Вас не е валиден регистстрационен номер"
 
 #~ msgid "There was a problem registering this system."
 #~ msgstr "Имаше проблем при регистрирането на тази система."
@@ -964,12 +802,8 @@ msgstr ""
 #~ msgid "You must select a certificate."
 #~ msgstr "Трябва да изберете сертификат."
 
-#~ msgid ""
-#~ "There was an SSL error. This could be because the file you picked was not "
-#~ "a certificate file."
-#~ msgstr ""
-#~ "Имаше SSL грешка. Това може да е, понеже избраният от Вас файл, не е файл "
-#~ "сертификат."
+#~ msgid "There was an SSL error. This could be because the file you picked was not a certificate file."
+#~ msgstr "Имаше SSL грешка. Това може да е, понеже избраният от Вас файл, не е файл сертификат."
 
 #~ msgid "Something went wrong while installing the new certificate:\n"
 #~ msgstr "Нещо се обърка при инсталирането на новия сертификат:\n"
@@ -993,11 +827,8 @@ msgstr ""
 #~ msgid "Arch"
 #~ msgstr "Арх"
 
-#~ msgid ""
-#~ "Building a list of RPM packages installed on your system.  Please wait."
-#~ msgstr ""
-#~ "Създаване на списък на инсталираните на тази система RPM пакети.  Моля "
-#~ "изчакайте."
+#~ msgid "Building a list of RPM packages installed on your system.  Please wait."
+#~ msgstr "Създаване на списък на инсталираните на тази система RPM пакети.  Моля изчакайте."
 
 #~ msgid ""
 #~ "There was an error loading your configuration.  Make sure that\n"
@@ -1015,22 +846,11 @@ msgstr ""
 #~ "че сте собственик %s."
 
 #, fuzzy, python-format
-#~ msgid ""
-#~ "This error shouldn't have happened. If you'd like to help us improve this "
-#~ "program, please file a bug at bugzilla.suse.com. Including the relevant "
-#~ "parts of '%s' would be very helpful. Thanks!"
-#~ msgstr ""
-#~ "Тази грешка не би трябвало да се случва. Ако искате да ни помогнете да "
-#~ "подобрим тази програма, моля, съобщете за бъг на bugzilla.redhat.com. "
-#~ "Включването на подходящи части от '%s' би било много полезно. Благодарим "
-#~ "Ви!"
+#~ msgid "This error shouldn't have happened. If you'd like to help us improve this program, please file a bug at bugzilla.suse.com. Including the relevant parts of '%s' would be very helpful. Thanks!"
+#~ msgstr "Тази грешка не би трябвало да се случва. Ако искате да ни помогнете да подобрим тази програма, моля, съобщете за бъг на bugzilla.redhat.com. Включването на подходящи части от '%s' би било много полезно. Благодарим Ви!"
 
-#~ msgid ""
-#~ "You need to register this system by running `rhn_register` before using "
-#~ "this option"
-#~ msgstr ""
-#~ "Трябва да регистрирате тази система като стартирате `rhn_register` преди "
-#~ "да ползвате тази опция"
+#~ msgid "You need to register this system by running `rhn_register` before using this option"
+#~ msgstr "Трябва да регистрирате тази система като стартирате `rhn_register` преди да ползвате тази опция"
 
 #~ msgid "Updating package profile..."
 #~ msgstr "Обновяване на пакетния профил..."
@@ -1126,12 +946,8 @@ msgstr ""
 #~ msgid "Link To Subscription"
 #~ msgstr "Описание"
 
-#~ msgid ""
-#~ "Log in to http://rhn.redhat.com/ and unentitle an inactive system at Your "
-#~ "RHN > Subscription Management > System Entitlements."
-#~ msgstr ""
-#~ "Влезте на http://rhn.redhat.com/ and unentitle an inactive system at Your "
-#~ "RHN > Subscription Management > System Entitlements."
+#~ msgid "Log in to http://rhn.redhat.com/ and unentitle an inactive system at Your RHN > Subscription Management > System Entitlements."
+#~ msgstr "Влезте на http://rhn.redhat.com/ and unentitle an inactive system at Your RHN > Subscription Management > System Entitlements."
 
 #~ msgid "installation number field"
 #~ msgstr "Невалиден абонаментен номер"
@@ -1175,20 +991,11 @@ msgstr ""
 #~ msgid "Send package profile checkbox"
 #~ msgstr "Изпращане _списъка с пакети."
 
-#~ msgid ""
-#~ "Download installation images for Red Hat Enterprise Linux releases, "
-#~ "including new releases."
-#~ msgstr ""
-#~ "Сваляте инсталационни образи за издания на Red Hat Enterprise Linux, "
-#~ "включително нови версии."
+#~ msgid "Download installation images for Red Hat Enterprise Linux releases, including new releases."
+#~ msgstr "Сваляте инсталационни образи за издания на Red Hat Enterprise Linux, включително нови версии."
 
-#~ msgid ""
-#~ "Access to the technical support experts at Red Hat or Red Hat's partners "
-#~ "for help with any issues you might encounter with this system."
-#~ msgstr ""
-#~ "Достъп до експертите по техническа поддръжка на Red Hat или партньори на "
-#~ "Red Hat, за помощ при всякакъв проблем, който може да забележите с тази "
-#~ "система."
+#~ msgid "Access to the technical support experts at Red Hat or Red Hat's partners for help with any issues you might encounter with this system."
+#~ msgstr "Достъп до експертите по техническа поддръжка на Red Hat или партньори на Red Hat, за помощ при всякакъв проблем, който може да забележите с тази система."
 
 #~ msgid "Proxy Configuration"
 #~ msgstr "Мрежова настройка"
@@ -1238,8 +1045,7 @@ msgstr ""
 #, fuzzy
 #~ msgid "Enter your Red Hat Satellite URL."
 #~ msgstr ""
-#~ "Моля, въведете Вашата информация за влизане за %s Red Hat Network "
-#~ "Satellite:\n"
+#~ "Моля, въведете Вашата информация за влизане за %s Red Hat Network Satellite:\n"
 #~ "\n"
 
 #~ msgid "Red Hat Login:"
