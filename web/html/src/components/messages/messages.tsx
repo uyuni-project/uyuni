@@ -15,6 +15,7 @@ export type MessageType = {
 type Props = {
   /** Message objects to display */
   items: MessageType[] | MessageType;
+  autoScroll?: boolean;
 };
 
 /**
@@ -85,7 +86,11 @@ export class Messages extends Component<Props> {
       </div>
     ));
 
-    return <div className="alert-container" key={"messages-pop-up"}>{msgs}</div>;
+    return (
+      <div className="alert-container" key={"messages-pop-up"}>
+        {msgs}
+      </div>
+    );
   }
 }
 
