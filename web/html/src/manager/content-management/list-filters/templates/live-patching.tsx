@@ -101,31 +101,27 @@ export default (props: FilterFormProps & { template: Template }) => {
   return (
     <>
       {template === Template.LivePatchingProduct && (
-        <>
-          <DEPRECATED_Select
-            name="productId"
-            label={t("Product")}
-            labelClass="col-md-3"
-            divClass="col-md-8"
-            options={products}
-            getOptionValue={(product) => product.id}
-            getOptionLabel={(product) => product.label}
-          />
-        </>
+        <DEPRECATED_Select
+          name="productId"
+          label={t("Product")}
+          labelClass="col-md-3"
+          divClass="col-md-8"
+          options={products}
+          getOptionValue={(product) => product.id}
+          getOptionLabel={(product) => product.label}
+        />
       )}
       {template === Template.LivePatchingSystem && (
-        <>
-          <DEPRECATED_Select
-            loadOptions={getSystems}
-            name="systemId"
-            label={t("System")}
-            labelClass="col-md-3"
-            divClass="col-md-8"
-            getOptionValue={(system) => system.id}
-            getOptionLabel={(system) => `${system.name} (${system.kernel})`}
-            defaultValueOption={defaultValueOption}
-          />
-        </>
+        <DEPRECATED_Select
+          loadOptions={getSystems}
+          name="systemId"
+          label={t("System")}
+          labelClass="col-md-3"
+          divClass="col-md-8"
+          getOptionValue={(system) => system.id}
+          getOptionLabel={(system) => `${system.name} (${system.kernel})`}
+          defaultValueOption={defaultValueOption}
+        />
       )}
       <DEPRECATED_Select
         name="kernelId"

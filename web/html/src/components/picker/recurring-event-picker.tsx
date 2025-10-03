@@ -21,7 +21,6 @@ export type CronTimes = {
 type PickerMode = "Panel" | "Inline";
 
 type RecurringEventPickerProps = {
-  timezone: string;
   mode?: PickerMode;
   hideScheduleName?: boolean;
   scheduleName: string;
@@ -51,7 +50,7 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
     hideScheduleName: false,
   };
 
-  minutes = Array.from(Array(60).keys()).map((id) => ({ id: Number(id), text: id.toString() }));
+  minutes = Array.from(new Array(60).keys()).map((id) => ({ id: Number(id), text: id.toString() }));
 
   weekDays = [
     { id: Number(1), text: t("Sunday") },
@@ -63,7 +62,7 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
     { id: Number(7), text: t("Saturday") },
   ];
 
-  monthDays = Array.from(Array(31).keys()).map((id) => ({ id: Number(id + 1), text: (id + 1).toString() }));
+  monthDays = Array.from(new Array(31).keys()).map((id) => ({ id: Number(id + 1), text: (id + 1).toString() }));
 
   constructor(props: RecurringEventPickerProps) {
     super(props);

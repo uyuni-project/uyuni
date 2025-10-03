@@ -801,9 +801,7 @@ export class FormulaFormContextProvider extends React.Component<
         if (meta["required"]) {
           const required = evalExpression(meta["id"], meta["required"] + "", formulaForm);
           if (required) {
-            if (Array.isArray(val) && val.some((v) => !v)) {
-              requiredErrors.push(meta["name"]);
-            } else if (!val) {
+            if ((Array.isArray(val) && val.some((v) => !v)) || !val) {
               requiredErrors.push(meta["name"]);
             }
           }
@@ -828,10 +826,8 @@ export class FormulaFormContextProvider extends React.Component<
             if (!value.every((v) => re.test(v))) {
               errors.push(meta["name"]);
             }
-          } else {
-            if (!re.test(value)) {
-              errors.push(meta["name"]);
-            }
+          } else if (!re.test(value)) {
+            errors.push(meta["name"]);
           }
         } catch (err) {
           Loggerhead.error("Error matching regex: '" + meta["match"] + "':" + err);

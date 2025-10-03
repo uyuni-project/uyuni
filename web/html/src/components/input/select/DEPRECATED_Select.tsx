@@ -153,7 +153,7 @@ export function DEPRECATED_Select(props: Props) {
     if (!props.name) {
       return;
     }
-    const value = (formContext.model || {})[props.name || ""];
+    const value = formContext.model?.[props.name || ""];
     if (
       props.name &&
       isAsync(props) &&
@@ -178,7 +178,7 @@ export function DEPRECATED_Select(props: Props) {
             : getOptionValue(newValue);
           setValue(props.name, value);
         };
-        const value = (formContext.model || {})[props.name || ""];
+        const value = formContext.model?.[props.name || ""];
 
         // Common props to pass to both 'react-select' and 'react-select/async'
         const commonProps = Object.assign(

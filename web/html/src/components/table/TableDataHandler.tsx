@@ -350,7 +350,7 @@ export class TableDataHandler extends React.Component<Props, State> {
           <input type="checkbox" checked={allSelected} onChange={(e) => handleSelectAll(e.target.checked)} />
         </Header>
       );
-      headers && headers.unshift(checkbox);
+      headers && headers?.unshift(checkbox);
     }
 
     if (this.props.expandable) {

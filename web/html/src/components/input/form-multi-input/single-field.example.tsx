@@ -39,17 +39,15 @@ export default () => {
           disabled={false}
         >
           {(index) => (
-            <>
-              <Text
-                name={`user${index}_login`}
-                label={t("Login")}
-                required
-                invalidHint={t("Minimum 2 characters")}
-                labelClass="col-md-3"
-                divClass="col-md-6"
-                validators={[(value) => value.length > 2]}
-              />
-            </>
+            <Text
+              name={`user${index}_login`}
+              label={t("Login")}
+              required
+              invalidHint={t("Minimum 2 characters")}
+              labelClass="col-md-3"
+              divClass="col-md-6"
+              validators={[(value) => value.length > 2]}
+            />
           )}
         </FormMultiInput>
         <SubmitButton className="btn-primary" text={t("Submit")} />

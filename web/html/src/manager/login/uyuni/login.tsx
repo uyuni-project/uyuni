@@ -99,11 +99,7 @@ const UyuniThemeLogin = (props: ThemeProps) => {
                   disabled={isLoading}
                 />
               </form>
-              {props.legalNote ? (
-                <>
-                  <p className="gray-text small-text">{props.legalNote}</p>
-                </>
-              ) : null}
+              {props.legalNote ? <p className="gray-text small-text">{props.legalNote}</p> : null}
             </div>
           </div>
         </section>

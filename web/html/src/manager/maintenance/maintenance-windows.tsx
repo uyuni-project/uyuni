@@ -78,7 +78,7 @@ const MaintenanceWindows = () => {
       .then((newCalendarNames) => {
         /* Convert list of calendar names into ComboboxItem
       Add "<None>" as first element to allow unassigning of calendars */
-        const names = Array.from(Array(newCalendarNames.length + 1).keys()).map((id) =>
+        const names = Array.from(new Array(newCalendarNames.length + 1).keys()).map((id) =>
           id === 0 ? { id: 0, text: "<None>" } : { id: Number(id), text: newCalendarNames[id - 1] }
         );
         setCalendarNames(names);

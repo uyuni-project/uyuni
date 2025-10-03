@@ -26,7 +26,7 @@ export type Props = {
 };
 
 export const Tree = (props: Props) => {
-  const [visibleSublists, setVisibleSublist] = useState(props.initiallyExpanded || []);
+  const [visibleSublists, setVisibleSublists] = useState(props.initiallyExpanded || []);
   const [selected, setSelected] = useState(props.initiallySelected || []);
 
   function isSublistVisible(id: string): boolean {
@@ -34,7 +34,7 @@ export const Tree = (props: Props) => {
   }
 
   function handleVisibleSublist(id: string): void {
-    setVisibleSublist((oldVisibleSublist) =>
+    setVisibleSublists((oldVisibleSublist) =>
       oldVisibleSublist.indexOf(id) !== -1
         ? oldVisibleSublist.filter((item) => item !== id)
         : oldVisibleSublist.concat([id])

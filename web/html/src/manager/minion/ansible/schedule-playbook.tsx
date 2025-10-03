@@ -32,7 +32,7 @@ type PlaybookArgs = {
 export default function SchedulePlaybook({ playbook, onBack, onSelectPlaybook, isRecurring }: SchedulePlaybookProps) {
   const [loading, setLoading] = useState(true);
   const [playbookContent, setPlaybookContent] = useState("");
-  const [isTestMode, setTestMode] = useState(false);
+  const [isTestMode, setIsTestMode] = useState(false);
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [inventoryPath, setInventoryPath] = useState<ComboboxItem | null>(null);
   const [inventories, setInventories] = useState<string[]>([]);
@@ -96,7 +96,7 @@ export default function SchedulePlaybook({ playbook, onBack, onSelectPlaybook, i
 
   const buttons = [
     <div className="btn-group pull-right">
-      <Toggler text={t("Test mode")} value={isTestMode} className="btn" handler={() => setTestMode(!isTestMode)} />
+      <Toggler text={t("Test mode")} value={isTestMode} className="btn" handler={() => setIsTestMode(!isTestMode)} />
       <Button
         icon="fa-angle-left"
         className="btn-default"

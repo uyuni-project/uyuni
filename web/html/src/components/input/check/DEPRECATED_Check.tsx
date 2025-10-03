@@ -28,7 +28,7 @@ export function DEPRECATED_Check(props: Props) {
         const setChecked = (event: any) => {
           setValue(event.target.name, event.target.checked);
         };
-        const fieldValue = (formContext.model || {})[props.name] || props.defaultValue || "";
+        const fieldValue = formContext.model?.[props.name] || props.defaultValue || "";
         return (
           <div className="checkbox">
             <label htmlFor={props.name}>
