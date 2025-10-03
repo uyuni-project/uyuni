@@ -2,9 +2,6 @@
 
 /* Define colors, fonts and other style attributes here to override the defaults */
 
-/* Page background color */
-/* body { background-color: #FFFFFF } */
-
 /* Headings */
 h1 { font-size: 145% }
 
@@ -89,7 +86,6 @@ code {
 
 table {
     padding: 0;
-    /* margin: 0; */
 }
 
 PRE {
@@ -97,7 +93,6 @@ PRE {
     padding: 5px;
     border-style: solid;
     border-width: 1px;
-    /* border-color: #CCCCCC; */
     border-color: #999;
     background-color: #F1EBDC
 }
@@ -111,12 +106,3 @@ hr {
 th font {
     font-size: 12pt;
 }
-/*
-td font {
-    font-size: 12pt;
-}
-
-font b {
-    font-size: 12pt;
-}
-*/
