@@ -296,6 +296,7 @@ export function ProxyConfig({
           />
           <div className="offset-md-3 col-md-6">
             <Messages
+              autoScroll={false}
               items={[
                 {
                   severity: "warning",

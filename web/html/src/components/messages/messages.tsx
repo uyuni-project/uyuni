@@ -85,7 +85,7 @@ export class Messages extends Component<Props> {
       </div>
     ));
 
-    return <div key={"messages-pop-up"}>{msgs}</div>;
+    return <div className="alert-container" key={"messages-pop-up"}>{msgs}</div>;
   }
 }
 

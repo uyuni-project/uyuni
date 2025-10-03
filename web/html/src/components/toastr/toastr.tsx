@@ -39,7 +39,9 @@ export function showSuccessToastr(message: ReactNode, optionalParams: OptionalPa
     toast.success(msg, {
       autoClose: parseAutoHide(optionalParams.autoHide),
       containerId: optionalParams.containerId,
+      onOpen: onScroll,
     });
+
   show(message, notify);
 }
 
@@ -48,6 +50,7 @@ export function showWarningToastr(message: ReactNode, optionalParams: OptionalPa
     toast.warning(msg, {
       autoClose: parseAutoHide(optionalParams.autoHide),
       containerId: optionalParams.containerId,
+      onOpen: onScroll,
     });
   show(message, notify);
 }
@@ -57,6 +60,7 @@ export function showErrorToastr(message: ReactNode | Error, optionalParams: Opti
     toast.error(msg, {
       autoClose: parseAutoHide(optionalParams.autoHide),
       containerId: optionalParams.containerId,
+      onOpen: onScroll,
     });
   };
 
@@ -73,6 +77,7 @@ export function showInfoToastr(message: ReactNode, optionalParams: OptionalParam
     toast.info(msg, {
       autoClose: parseAutoHide(optionalParams.autoHide),
       containerId: optionalParams.containerId,
+      onOpen: onScroll,
     });
   show(message, notify);
 }
