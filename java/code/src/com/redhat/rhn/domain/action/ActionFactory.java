@@ -709,7 +709,17 @@ public class ActionFactory extends HibernateFactory {
         if (label == null) {
             return null;
         }
-        return singleton.lookupObjectByNamedQuery("ActionType.findByLabel", Map.of("label", label), true);
+        try {
+            Session session = HibernateFactory.getSession();
+            return session.createQuery("FROM ActionType WHERE label = :label", ActionType.class)
+                    .setParameter("label", label)
+                    //Retrieve from cache if there
+                    .setCacheable(true)
+                    .uniqueResult();
+        }
+        catch (HibernateException he) {
+            throw new HibernateRuntimeException("lookupActionTypeByLabel failed with label: " + label, he);
+        }
     }
 
     /**
