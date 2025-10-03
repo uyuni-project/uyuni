@@ -743,13 +743,13 @@ end
 # have more infos about the errors
 def print_server_logs
   $stdout.puts '=> /var/log/rhn/rhn_web_ui.log'
-  out, _code = get_target('server').run('tail -n20 /var/log/rhn/rhn_web_ui.log | awk -v limit="$(date --date="5 minutes ago" "+%Y-%m-%d %H:%M:%S")" " $0 > limit"')
+  out, _code = get_target('server').run('tail -n20 /var/log/rhn/rhn_web_ui.log | awk -v limit="$(date --date="5 minutes ago" "+%Y-%m-%d %H:%M:%S")" \'substr($0, 1, 19) > limit\'')
   out.each_line do |line|
     $stdout.puts line.to_s
   end
   $stdout.puts
   $stdout.puts '=> /var/log/rhn/rhn_web_api.log'
-  out, _code = get_target('server').run('tail -n20 /var/log/rhn/rhn_web_api.log | awk -v limit="$(date --date="5 minutes ago" "+%Y-%m-%d %H:%M:%S")" " $0 > limit"')
+  out, _code = get_target('server').run('tail -n20 /var/log/rhn/rhn_web_api.log | awk -v limit="$(date --date="5 minutes ago" "+%Y-%m-%d %H:%M:%S")" \'substr($0, 2, 19) > limit\'')
   out.each_line do |line|
     $stdout.puts line.to_s
   end
