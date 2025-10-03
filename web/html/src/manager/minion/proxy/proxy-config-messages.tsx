@@ -26,5 +26,5 @@ export const ContainerConfigMessages = (success: SuccessType, messagesIn: ReactN
       },
     ];
   }
-  return <Messages items={items} />;
+  return <Messages items={items} autoScroll={autoScroll} />;
 };
