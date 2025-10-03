@@ -6,7 +6,7 @@ This script connects to the database, preprocesses feature data, and loops over 
 test runs to create a training CSV file.
 
 Prerequisites:
-    - Environment variable DATABASE_CONNECTION_STRING must be set.
+    - Environment variable TEST_RUNS_DATABASE_CONNECTION_STRING must be set.
     - Environment variable GITHUB_TOKEN must be set with a GitHub Access Token.
 
 Usage:
@@ -28,7 +28,7 @@ from config import (
     FEATURE_FAILURE_RECENT_DAYS,
     REPO_FULL_NAME
 )
-from insert_test_runs_into_db import (
+from backfill_test_runs_into_db import (
     Feature, FeatureCategory, FeatureResult, TestRun, RunModifiedFile, File,
     get_database_connection_string
 )
@@ -37,7 +37,7 @@ from pr_data_extraction import (
 )
 from utilities import setup_logging
 
-logger = setup_logging(logging.INFO, "logs/generate_training_data.log")
+logger = logging.getLogger(__name__)
 
 
 class DatabaseManager:
@@ -230,4 +230,5 @@ def main():
 
 
 if __name__ == "__main__":
+    logger = setup_logging(logging.INFO, "logs/generate_training_data.log")
     main()
