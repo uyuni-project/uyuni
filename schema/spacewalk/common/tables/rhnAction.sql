@@ -51,19 +51,16 @@ CREATE TABLE rhnAction
 ;
 
 CREATE INDEX rhn_action_oid_idx
-    ON rhnAction (org_id)
-    
-    ;
+    ON rhnAction(org_id);
 
 CREATE INDEX rhn_action_scheduler_idx
-    ON rhnAction (scheduler)
-    
-    ;
+    ON rhnAction(scheduler);
 
 CREATE INDEX rhn_action_prereq_id_idx
-    ON rhnAction (prerequisite, id)
-    
-    ;
+    ON rhnAction(prerequisite, id);
+
+CREATE INDEX rhn_action_created_idx
+    ON rhnAction(created);
 
 CREATE SEQUENCE rhn_event_id_seq;
 
