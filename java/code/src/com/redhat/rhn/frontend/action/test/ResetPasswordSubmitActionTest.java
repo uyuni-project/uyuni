@@ -26,9 +26,8 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.RhnMockDynaActionForm;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
+import com.redhat.rhn.testing.RhnMockHttpSession;
 import com.redhat.rhn.testing.UserTestUtils;
-
-import com.mockobjects.servlet.MockHttpSession;
 
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -109,8 +108,10 @@ public class ResetPasswordSubmitActionTest extends BaseTestCaseWithUser {
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
-        adminUser = UserTestUtils.findNewUser("testAdminUser", "testOrg" +
-                        this.getClass().getSimpleName(), true);
+        adminUser = new UserTestUtils.UserBuilder()
+                .userName("testAdminUser")
+                .orgAdmin(true)
+                .build();
         action = new ResetPasswordSubmitAction();
 
         mapping = new ActionMapping();
@@ -123,11 +124,10 @@ public class ResetPasswordSubmitActionTest extends BaseTestCaseWithUser {
 
         RequestContext requestContext = new RequestContext(request);
 
-        MockHttpSession mockSession = new MockHttpSession();
-        mockSession.setupGetAttribute("token", null);
-        mockSession.setupGetAttribute("request_method", "GET");
+        RhnMockHttpSession mockSession = new RhnMockHttpSession();
+        mockSession.setAttribute("token", null);
+        mockSession.setAttribute("request_method", "GET");
         request.setSession(mockSession);
-        request.setupServerName("mymachine.rhndev.redhat.com");
         requestContext.getWebSession();
 
         mapping.addForwardConfig(mismatch);

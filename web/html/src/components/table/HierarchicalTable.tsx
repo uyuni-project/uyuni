@@ -1,6 +1,8 @@
 import * as React from "react";
 import { useState } from "react";
 
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
+
 import { SearchField } from "./SearchField";
 import { Table, TableRef } from "./Table";
 
@@ -20,7 +22,7 @@ type HierarchicalTableProps = {
   /**
    * Array of data items where each element has a unique id and optional parentId
    */
-  data: Array<HierarchicalRow>;
+  data: HierarchicalRow[];
 
   /** Function extracting the unique key of the row from the data object */
   identifier: (row: HierarchicalRow) => string | number;
@@ -29,7 +31,7 @@ type HierarchicalTableProps = {
   searchField?: React.ReactComponentElement<typeof SearchField>;
 
   /** Other filter fields */
-  additionalFilters?: Array<React.ReactNode>;
+  additionalFilters?: React.ReactNode[];
 
   /** Function to determine which column has expand/collapse controls */
   expandColumnKey?: string;
@@ -50,10 +52,10 @@ type HierarchicalTableProps = {
   selectable?: boolean | ((row: any) => boolean);
 
   /** the handler to call when the table selection is updated */
-  onSelect?: (items: Array<any>) => void;
+  onSelect?: (items: any[]) => void;
 
   /** the identifiers for selected items */
-  selectedItems?: Array<any>;
+  selectedItems?: any[];
 
   /** Indent size in pixels per level */
   indentSize?: number;
@@ -82,7 +84,7 @@ export const HierarchicalTable = React.forwardRef<TableRef, HierarchicalTablePro
     return initialState;
   });
 
-  const buildTreeStructure = (items: Array<HierarchicalRow>) => {
+  const buildTreeStructure = (items: HierarchicalRow[]) => {
     // Create a map of all items by ID
     const itemMap: Record<string | number, HierarchicalRow> = {};
 
@@ -94,7 +96,7 @@ export const HierarchicalTable = React.forwardRef<TableRef, HierarchicalTablePro
     // Second pass: identify parent-child relationships and mark non-leaves
     items.forEach((item) => {
       const parentId = item.parentId;
-      if (parentId != null && itemMap[parentId]) {
+      if (!DEPRECATED_unsafeEquals(parentId, null) && itemMap[parentId]) {
         itemMap[parentId].isLeaf = false;
       }
     });
@@ -120,13 +122,13 @@ export const HierarchicalTable = React.forwardRef<TableRef, HierarchicalTablePro
     return Object.values(itemMap);
   };
 
-  const getVisibleRows = (treeData: Array<HierarchicalRow>) => {
+  const getVisibleRows = (treeData: HierarchicalRow[]) => {
     // Find root nodes (nodes without parents or with parents that don't exist in our data)
     const rootNodes = treeData.filter((row) => {
       return !row.parentId || !treeData.some((parent) => identifier(parent) === row.parentId);
     });
 
-    const visibleRows: Array<HierarchicalRow> = [];
+    const visibleRows: HierarchicalRow[] = [];
 
     const addVisibleDescendants = (node: HierarchicalRow) => {
       visibleRows.push(node);

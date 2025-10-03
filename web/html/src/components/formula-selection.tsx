@@ -75,7 +75,7 @@ class FormulaSelection extends React.Component<Props, State> {
      * Do not assign to state fields directly, use `setState()` instead
      */
     (this.state as any).activeFormulas = selectedFormulas;
-    return this.props.saveRequest(this, selectedFormulas).then((data) => {
+    return this.props.saveRequest(this, selectedFormulas).then(() => {
       this.init();
       window.scrollTo(0, 0);
     });
@@ -124,7 +124,7 @@ class FormulaSelection extends React.Component<Props, State> {
   }
 
   generateList = () => {
-    var list: React.ReactNode[] = [];
+    const list: React.ReactNode[] = [];
     const groups = this.state.groups;
 
     if (groups.groupless.length > 0) {
@@ -138,9 +138,7 @@ class FormulaSelection extends React.Component<Props, State> {
       );
       groups.groupless.forEach(function (this: FormulaSelection, formula) {
         list.push(
-          // eslint-disable-next-line jsx-a11y/anchor-is-valid
-          <a
-            href="#"
+          <button
             onClick={this.onListItemClick}
             id={formula.name}
             key={formula.name}
@@ -154,18 +152,16 @@ class FormulaSelection extends React.Component<Props, State> {
               <i id={"info_button_" + formula.name} className="fa fa-lg fa-info-circle pull-right" />
             ) : null}
             {this.getDescription(formula)}
-          </a>
+          </button>
         );
       }, this);
     }
-    for (var group_name in groups) {
+    for (const group_name in groups) {
       if (group_name === "groupless") continue;
       const group = groups[group_name];
       const group_state = this.getGroupItemState(group);
       list.push(
-        // eslint-disable-next-line jsx-a11y/anchor-is-valid
-        <a
-          href="#"
+        <button
           onClick={this.onGroupItemClick}
           id={"group_" + group_name}
           key={"group_" + group_name}
@@ -175,13 +171,11 @@ class FormulaSelection extends React.Component<Props, State> {
             <i className={this.getListIcon(group_state)} />
             {" " + capitalize(group_name)}
           </strong>
-        </a>
+        </button>
       );
       group.forEach(function (this: FormulaSelection, formula) {
         list.push(
-          // eslint-disable-next-line jsx-a11y/anchor-is-valid
-          <a
-            href="#"
+          <button
             onClick={this.onListItemClick}
             id={formula.name}
             key={formula.name}
@@ -199,7 +193,7 @@ class FormulaSelection extends React.Component<Props, State> {
               />
             ) : null}
             {this.getDescription(formula)}
-          </a>
+          </button>
         );
       }, this);
     }
@@ -226,7 +220,7 @@ class FormulaSelection extends React.Component<Props, State> {
   onGroupItemClick = (e) => {
     e.preventDefault();
 
-    var group = e.target;
+    let group = e.target;
     while (!group.id.startsWith("group_")) group = group.parentElement;
     group = this.state.groups[group.id.slice(6)];
     const state = this.getGroupItemState(group);
@@ -247,7 +241,7 @@ class FormulaSelection extends React.Component<Props, State> {
   };
 
   render() {
-    var items: MessageType[] = [];
+    let items: MessageType[] = [];
     if (this.props.warningMessage) {
       items.push({ severity: "warning", text: this.props.warningMessage });
     }

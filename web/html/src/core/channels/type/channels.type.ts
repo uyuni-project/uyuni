@@ -11,7 +11,7 @@ export type ChannelTypePartial = {
 
 export type MandatoryChannel = ChannelTypePartial & {
   compatibleChannelPreviousSelection?: number;
-  children: Array<number>;
+  children: number[];
 };
 
 export type BaseChannelType = ChannelTypePartial & {

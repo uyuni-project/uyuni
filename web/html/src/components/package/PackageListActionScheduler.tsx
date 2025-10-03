@@ -11,6 +11,7 @@ import { Table } from "components/table/Table";
 
 import { localizedMoment } from "utils";
 import { Utils } from "utils/functions";
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network from "utils/network";
 
 const SELECTION_KEY_SEPARATOR = "~*~";
@@ -18,7 +19,7 @@ const SELECTION_KEY_SEPARATOR = "~*~";
 type Props = {
   serverId: number;
   selectionSet: string;
-  actionChains: Array<ActionChain>;
+  actionChains: ActionChain[];
   icon: string;
   listDataAPI: string;
   scheduleActionAPI: string;
@@ -32,7 +33,7 @@ type Props = {
 };
 
 type State = {
-  messages: Array<MessageType>;
+  messages: MessageType[];
   selectedPackages: string[];
   confirmAction: boolean;
   earliest: moment.Moment;
@@ -94,7 +95,7 @@ export class PackageListActionScheduler extends React.Component<Props, State> {
         );
 
         // Clear the current selection
-        Network.post(`/rhn/manager/api/sets/${this.props.selectionSet}/clear`).catch((err) => {
+        Network.post(`/rhn/manager/api/sets/${this.props.selectionSet}/clear`).catch(() => {
           this.setState({ messages: MessagesUtils.warning(t("Unable to clear selection")) });
         });
 
@@ -103,7 +104,7 @@ export class PackageListActionScheduler extends React.Component<Props, State> {
           messages: msg,
         });
       })
-      .catch((err) => {
+      .catch(() => {
         this.setState({ messages: MessagesUtils.error(t("Unable to perform action.")) });
       });
   };
@@ -126,7 +127,7 @@ export class PackageListActionScheduler extends React.Component<Props, State> {
   };
 
   packageNameLink = (item) => {
-    if (item.packageId == null) {
+    if (DEPRECATED_unsafeEquals(item.packageId, null)) {
       return item.nvre;
     }
 
@@ -134,7 +135,7 @@ export class PackageListActionScheduler extends React.Component<Props, State> {
   };
 
   buildSelectionKey = (item) => {
-    if (item.nvrea != null) {
+    if (!DEPRECATED_unsafeEquals(item.nvrea, null)) {
       return item.idCombo + SELECTION_KEY_SEPARATOR + item.nvrea;
     }
 

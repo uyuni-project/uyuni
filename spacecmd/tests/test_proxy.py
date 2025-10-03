@@ -5,6 +5,8 @@ Test suite for "proxy"
 from spacecmd import proxy
 
 from unittest.mock import mock_open, patch
+
+# pylint: disable-next=unused-import
 from helpers import shell  # used by pytest
 import pytest
 
@@ -19,6 +21,7 @@ import pytest
         ("proxy.lab server.lab 1024 proxy@acme.org", True),
     ],
 )
+# pylint: disable-next=redefined-outer-name
 def test_proxy_container_config_invokes_help_when_needed(shell, args, calls_help):
 
     m_open = mock_open()
@@ -43,7 +46,10 @@ def test_proxy_container_config_invokes_help_when_needed(shell, args, calls_help
     ],
 )
 def test_proxy_container_config_generate_cert_invokes_help_when_needed(
-    shell, args, calls_help
+    # pylint: disable-next=redefined-outer-name
+    shell,
+    args,
+    calls_help,
 ):
 
     m_open = mock_open()

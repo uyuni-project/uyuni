@@ -782,6 +782,32 @@ public class SparkApplicationHelper {
      * @param messages messages
      * @return a JSON string
      */
+    public static String serviceUnavailable(Response response, String... messages) {
+        response.type(APPLICATION_JSON);
+        response.status(HttpStatus.SC_SERVICE_UNAVAILABLE);
+        return GSON.toJson(ResultJson.error(messages));
+    }
+
+    /**
+     * Serialize the result and set the response content type to JSON
+     * and the http status code to bad request.
+     * @param response the http response
+     * @param messages messages
+     * @return a JSON string
+     */
+    public static String badGateway(Response response, String... messages) {
+        response.type(APPLICATION_JSON);
+        response.status(HttpStatus.SC_BAD_GATEWAY);
+        return GSON.toJson(ResultJson.error(messages));
+    }
+
+    /**
+     * Serialize the result and set the response content type to JSON
+     * and the http status code to bad request.
+     * @param response the http response
+     * @param messages messages
+     * @return a JSON string
+     */
     public static String badRequest(Response response, String... messages) {
         response.type(APPLICATION_JSON);
         response.status(HttpStatus.SC_BAD_REQUEST);

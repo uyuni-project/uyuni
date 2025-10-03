@@ -128,8 +128,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
     public void testListContentProjects() {
         ContentProject cp1 = contentManager.createProject("cplabel1", "cpname1", "description1", user);
         ContentProject cp2 = contentManager.createProject("cplabel2", "cpname2", "description2", user);
-        Org rangersOrg = UserTestUtils.createNewOrgFull("rangers");
-        User anotherAdmin = UserTestUtils.createUser("Chuck", rangersOrg.getId());
+        User anotherAdmin = UserTestUtils.createUser("Chuck", "rangers");
         anotherAdmin.addPermanentRole(ORG_ADMIN);
         ContentProject cp3 = contentManager.createProject("cplabel3", "cpname3", "description3", anotherAdmin);
 
@@ -185,8 +184,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
     public void testContentProjectCrossOrg() {
         ContentProject cp = contentManager.createProject("cplabel", "cpname", "description", user);
 
-        Org rangersOrg = UserTestUtils.createNewOrgFull("rangers");
-        User anotherUser = UserTestUtils.createUser("Chuck", rangersOrg.getId());
+        User anotherUser = UserTestUtils.createUser("Chuck", "rangers");
         anotherUser.addPermanentRole(ORG_ADMIN);
 
         assertFalse(ContentManager.lookupProject(cp.getLabel(), anotherUser).isPresent());
@@ -660,8 +658,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         FilterCriteria criteria = new FilterCriteria(Matcher.CONTAINS, "name", "aaa");
         ContentFilter filter = contentManager.createFilter("my-filter", Rule.DENY, EntityType.PACKAGE, criteria, user);
 
-        Org rangersOrg = UserTestUtils.createNewOrgFull("rangers");
-        User anotherAdmin = UserTestUtils.createUser("Chuck", rangersOrg.getId());
+        User anotherAdmin = UserTestUtils.createUser("Regular user", "rangers");
         anotherAdmin.addPermanentRole(ORG_ADMIN);
         assertFalse(ContentManager.lookupFilterById(filter.getId(), anotherAdmin).isPresent());
         assertTrue(ContentManager.listFilters(anotherAdmin).isEmpty());
@@ -892,7 +889,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         Channel channel = createPopulatedChannel();
         contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
 
-        Org otherOrg = UserTestUtils.createNewOrgFull("testOrg2");
+        Org otherOrg = UserTestUtils.createOrg("testOrg2");
         Channel alreadyExistingTgt = createChannelInEnvironment(env, of(channel.getLabel()));
         alreadyExistingTgt.setOrg(otherOrg);
 
@@ -913,11 +910,12 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testBuildProjectTwoUsers() throws Exception {
+        String userInSameOrg = "userInSameOrg";
         User adminSameOrg = UserTestUtils.createUser("adminInSameOrg", user.getOrg().getId());
         adminSameOrg.addPermanentRole(ORG_ADMIN);
-        User userSameOrg = UserTestUtils.createUser("userInSameOrg", user.getOrg().getId());
-        Org otherOrg = UserTestUtils.createNewOrgFull("testOrg2");
-        User userOtherOrg = UserTestUtils.createUser("userInOtherOrg", otherOrg.getId());
+        User userSameOrg = UserTestUtils.createUser(userInSameOrg, user.getOrg().getId());
+        Org otherOrg = UserTestUtils.createOrg("testOrg2");
+        User userOtherOrg = UserTestUtils.createUser(userInSameOrg, otherOrg.getId());
 
         // project is created by one user
         ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());

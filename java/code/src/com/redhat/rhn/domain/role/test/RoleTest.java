@@ -48,8 +48,7 @@ public class RoleTest extends RhnBaseTestCase {
      */
     @Test
     public void testAttemptChangeUserRoles() {
-        User usr = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User usr = UserTestUtils.createUser(this);
         boolean failed = false;
         Set roles = usr.getRoles();
         try {
@@ -67,8 +66,7 @@ public class RoleTest extends RhnBaseTestCase {
     */
     @Test
     public void testUserAddRole() {
-        User usr = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User usr = UserTestUtils.createUser(this);
         assertFalse(usr.hasRole(ORG_ADMIN));
         usr.addPermanentRole(ORG_ADMIN);
         assertTrue(usr.hasRole(ORG_ADMIN));
@@ -84,8 +82,7 @@ public class RoleTest extends RhnBaseTestCase {
     @Test
     public void testUserRemoveRole() {
         // Create a new user, add ORG_ADMIN to their roles
-        User usr = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User usr = UserTestUtils.createUser(this);
         usr.addPermanentRole(ORG_ADMIN);
         UserFactory.save(usr);
         usr.removePermanentRole(ORG_ADMIN);
@@ -101,8 +98,7 @@ public class RoleTest extends RhnBaseTestCase {
      */
     @Test
     public void testOrgAdminRole() {
-        User usr = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User usr = UserTestUtils.createUser(this);
         Org o1 = usr.getOrg();
         // Add the CHANNEL_ADMIN role to the Org
         o1.addRole(RoleFactory.CHANNEL_ADMIN);
@@ -119,8 +115,7 @@ public class RoleTest extends RhnBaseTestCase {
      */
     @Test
     public void testOrgAddRole() {
-        User usr = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User usr = UserTestUtils.createUser(this);
         Org o1 = usr.getOrg();
         // Add the CHANNEL_ADMIN role to the Org
         o1.addRole(RoleFactory.CHANNEL_ADMIN);
@@ -137,8 +132,7 @@ public class RoleTest extends RhnBaseTestCase {
      */
     @Test
     public void testUserWithNoRoles() {
-        User usr = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User usr = UserTestUtils.createUser(this);
         assertFalse(usr.hasRole(SAT_ADMIN));
         assertFalse(usr.hasRole(ORG_ADMIN));
     }

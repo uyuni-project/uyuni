@@ -8,16 +8,16 @@ import { Form, FormGroup, Label, Radio } from "components/input";
 import { MigrationProductList } from "./MigrationProductList";
 import { MigrationProduct, MigrationTarget } from "./types";
 
-interface Props {
+type Props = {
   migrationSource: MigrationProduct;
   migrationTargets: MigrationTarget[];
   targetId: string | undefined;
   onTargetChange: (targetId: string) => Promise<void>;
-}
+};
 
-interface FormModel {
+type FormModel = {
   selectedTarget?: string;
-}
+};
 
 export const MigrationTargetSelectorForm: React.FC<Props> = ({
   migrationSource,

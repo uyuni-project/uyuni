@@ -7,8 +7,7 @@ import { localizedMoment } from "utils";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network from "utils/network";
 
-import { Combobox } from "./combobox";
-import { ComboboxItem } from "./combobox";
+import { Combobox, ComboboxItem } from "./combobox";
 
 export type MaintenanceWindow = {
   id: number;
@@ -25,10 +24,10 @@ export type ActionChain = {
 
 type ActionScheduleProps = {
   earliest: moment.Moment;
-  actionChains?: Array<ActionChain>;
+  actionChains?: ActionChain[];
   onDateTimeChanged: (value: moment.Moment) => void;
   onActionChainChanged?: (actionChain: ActionChain | null) => void;
-  systemIds?: Array<string | number>;
+  systemIds?: (string | number)[];
   actionType?: string;
 };
 
@@ -37,12 +36,12 @@ type ActionScheduleState = {
   type: "earliest" | "actionChain";
   earliest: moment.Moment;
   actionChain?: ActionChain;
-  actionChains?: Array<ActionChain>;
+  actionChains?: ActionChain[];
   isMaintenanceModeEnabled: boolean;
   multiMaintenanceWindows: boolean;
   maintenanceWindow: MaintenanceWindow;
-  maintenanceWindows: Array<MaintenanceWindow>;
-  systemIds: Array<string | number>;
+  maintenanceWindows: MaintenanceWindow[];
+  systemIds: (string | number)[];
   actionType: string;
 };
 

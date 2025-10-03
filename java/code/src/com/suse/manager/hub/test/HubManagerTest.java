@@ -45,6 +45,7 @@ import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
+import com.redhat.rhn.testing.TestStatics;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.hub.HubClientFactory;
@@ -207,7 +208,7 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
     public void setUp() throws Exception {
         super.setUp();
 
-        satAdmin = UserTestUtils.createUser("satUser", user.getOrg().getId());
+        satAdmin = UserTestUtils.createUser(TestStatics.TEST_SAT_USER, user.getOrg().getId());
         satAdmin.addPermanentRole(RoleFactory.SAT_ADMIN);
         UserFactory.save(satAdmin);
 

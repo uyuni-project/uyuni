@@ -19,6 +19,23 @@ type Props = {
   query?: string;
 };
 
+const DownloadCSVButton = ({ search }) => {
+  let url = "/rhn/manager/systems/csv/all";
+  if (search?.field && search?.criteria) {
+    const searchParams = new URLSearchParams({
+      qc: search.field,
+      q: search.criteria,
+    });
+    url += `?${searchParams.toString()}`;
+  }
+  return (
+    <a role="button" title="Download CSV" href={url} className="btn btn-default" data-senna-off="true">
+      <IconTag type="item-download-csv" />
+      {t("Download CSV")}
+    </a>
+  );
+};
+
 export function AllSystems(props: Props) {
   const [selectedSystems, setSelectedSystems] = React.useState<string[]>([]);
 
@@ -65,19 +82,7 @@ export function AllSystems(props: Props) {
         defaultSearchField={props.queryColumn || "server_name"}
         initialSearch={props.query}
         emptyText={t("No Systems.")}
-        titleButtons={[
-          <a
-            role="button"
-            title="Download CSV"
-            href="/rhn/manager/systems/csv/all"
-            className="btn btn-default"
-            data-senna-off="true"
-            key="download-csv-button"
-          >
-            <IconTag type="item-download-csv" />
-            {t("Download CSV")}
-          </a>,
-        ]}
+        titleButtons={[<DownloadCSVButton key="download-csv-button" search={{}} />]}
       >
         <Column
           columnKey="server_name"
@@ -90,6 +95,8 @@ export function AllSystems(props: Props) {
           comparator={Utils.sortByText}
           header={t("Updates")}
           cell={(item) => {
+            // TODO: If you touch this file, please resolve this linter error
+            // eslint-disable-next-line eqeqeq
             if (item.statusType == null) {
               return "";
             }
@@ -101,7 +108,7 @@ export function AllSystems(props: Props) {
           comparator={Utils.sortByText}
           header={t("Patches")}
           cell={(item) => {
-            let totalErrataCount = item.securityErrata + item.bugErrata + item.enhancementErrata;
+            const totalErrataCount = item.securityErrata + item.bugErrata + item.enhancementErrata;
             if (totalErrataCount !== 0) {
               return <a href={`/rhn/systems/details/ErrataList.do?sid=${item.id}`}>{totalErrataCount}</a>;
             }
@@ -153,10 +160,18 @@ export function AllSystems(props: Props) {
           }}
         />
         <Column
+          columnKey="last_checkin"
+          comparator={Utils.sortByText}
+          header={t("Last Checked In")}
+          cell={(item) => item.lastCheckin}
+        />
+        <Column
           columnKey="channel_labels"
           comparator={Utils.sortByText}
           header={t("Base Channel")}
           cell={(item) => {
+            // TODO: If you touch this file, please resolve this linter error
+            // eslint-disable-next-line eqeqeq
             if (item.channelId != null) {
               return <a href={`/rhn/channels/ChannelDetail.do?cid=${item.channelId}`}>{item.channelLabels}</a>;
             }

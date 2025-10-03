@@ -53,8 +53,7 @@ public class SessionManagerTest extends RhnBaseTestCase {
     @Test
     public void testMakeSession() {
         long expTime = SessionManager.lifetimeValue();
-        User u = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User u = UserTestUtils.createUser(this);
         WebSession s = SessionManager.makeSession(u.getId(), expTime);
 
         assertNotNull(s);
@@ -220,8 +219,7 @@ public class SessionManagerTest extends RhnBaseTestCase {
     @Test
     public void testPurgeSession() {
         long duration = 3600L;
-        User u = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User u = UserTestUtils.createUser(this);
         WebSession s = SessionManager.makeSession(u.getId(), duration);
         assertNotNull(s);
         long actualDuration = s.getExpires() - TimeUtils.currentTimeSeconds();

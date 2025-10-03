@@ -14,7 +14,7 @@ import { localizedMoment } from "utils/datetime";
 import { MigrationProductList } from "./MigrationProductList";
 import { MigrationProduct } from "./types";
 
-interface Props {
+type Props = {
   systemsData: SystemData[];
   actionChains: ActionChain[];
   migrationTarget: MigrationProduct;
@@ -22,7 +22,7 @@ interface Props {
   allowVendorChange: boolean;
   onBack?: () => void;
   onConfirm: (dryRun: boolean, earliest: moment.Moment, actionChain?: ActionChain) => Promise<void>;
-}
+};
 
 export const MigrationConfirmScheduleForm: React.FC<Props> = ({
   systemsData,

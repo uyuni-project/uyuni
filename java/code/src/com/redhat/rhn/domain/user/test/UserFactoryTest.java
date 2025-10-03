@@ -38,7 +38,6 @@ import com.redhat.rhn.domain.user.UserServerPreferenceId;
 import com.redhat.rhn.domain.user.legacy.UserImpl;
 import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.testing.RhnBaseTestCase;
-import com.redhat.rhn.testing.TestStatics;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -67,10 +66,8 @@ public class UserFactoryTest extends RhnBaseTestCase {
     @Test
     public void testStateChanges() throws InterruptedException {
 
-        User orgAdmin = UserTestUtils.createUser("UFTOrgAdmin",
-                                            UserTestUtils.createOrg("UFTTestOrg"));
-        User normalUser = UserTestUtils.createUser("UFTNormalUser",
-                                            orgAdmin.getOrg().getId());
+        User orgAdmin = UserTestUtils.createUser("UFTOrgAdmin", "UFTTestOrg");
+        User normalUser = UserTestUtils.createUser("UFTNormalUser", orgAdmin.getOrg().getId());
 
         //disable the normal user
         factory.disable(normalUser, orgAdmin);
@@ -126,8 +123,7 @@ public class UserFactoryTest extends RhnBaseTestCase {
 
     @Test
     public void testLookupById() {
-        Long id = UserTestUtils.createUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        Long id = UserTestUtils.createUser().getId();
         User usr = UserFactory.lookupById(id);
         assertNotNull(usr);
         assertNotNull(usr.getFirstNames());
@@ -136,8 +132,8 @@ public class UserFactoryTest extends RhnBaseTestCase {
     @Test
     public void testLookupByIds() {
         List<Long> idList = new ArrayList<>();
-        Long firstId = UserTestUtils.createUser("testUserOne", "testOrgOne");
-        Long secondId = UserTestUtils.createUser("testUserSecond", "testOrgSecond");
+        Long firstId = UserTestUtils.createUser("testUserOne", "testOrgOne").getId();
+        Long secondId = UserTestUtils.createUser("testUserSecond", "testOrgSecond").getId();
         idList.add(firstId);
         idList.add(secondId);
         List<User> userList = UserFactory.lookupByIds(idList);
@@ -148,8 +144,7 @@ public class UserFactoryTest extends RhnBaseTestCase {
 
     @Test
     public void testLookupByLogin() {
-        Long id = UserTestUtils.createUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        Long id = UserTestUtils.createUser().getId();
         User usr = UserFactory.lookupById(id);
         String createdLogin = usr.getLogin();
         assertNotNull(usr);
@@ -168,8 +163,7 @@ public class UserFactoryTest extends RhnBaseTestCase {
 
     @Test
     public void testEmailA() {
-        Long id = UserTestUtils.createUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        Long id = UserTestUtils.createUser().getId();
         User usr = UserFactory.lookupById(id);
         UserFactory.save(usr);
     }
@@ -221,8 +215,7 @@ public class UserFactoryTest extends RhnBaseTestCase {
     @Test
     public void testCommitUser() {
 
-        Long id = UserTestUtils.createUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        Long id = UserTestUtils.createUser().getId();
         User usr = UserFactory.lookupById(id);
         usr.setFirstNames("UserFactoryTest.testCommitUser.change " +
                     TestUtils.randomString());
@@ -262,8 +255,7 @@ public class UserFactoryTest extends RhnBaseTestCase {
         int len = 3;
         String[] logins = new String[len];
         for (int i = 0; i < len; i++) {
-            Long id = UserTestUtils.createUser("testUser",
-                    "testOrg" + this.getClass().getSimpleName());
+            Long id = UserTestUtils.createUser().getId();
             User usr = UserFactory.lookupById(id);
             logins[i] = usr.getLogin();
         }
@@ -283,7 +275,7 @@ public class UserFactoryTest extends RhnBaseTestCase {
         String orgName = "userFactoryTestOrg ";
         String userName = "userFactoryTestUser " + TestUtils.randomString();
 
-        Long orgId = UserTestUtils.createOrg(orgName);
+        Org org = UserTestUtils.createOrg(orgName);
 
         User usr = UserFactory.createUser();
         usr.setLogin(userName);
@@ -305,7 +297,7 @@ public class UserFactoryTest extends RhnBaseTestCase {
         addr1.setPhone("650-555-1212");
         addr1.setFax("650-555-1212");
 
-        usr = UserFactory.saveNewUser(usr, addr1, orgId);
+        usr = UserFactory.saveNewUser(usr, addr1, org.getId());
 
         assertTrue(usr.getId() > 0);
 
@@ -319,8 +311,7 @@ public class UserFactoryTest extends RhnBaseTestCase {
 
     @Test
     public void testUserServerPreferenceLookup() {
-        User user = UserTestUtils.findNewUser(TestStatics.TESTUSER,
-                                              TestStatics.TESTORG + "UserFactoryTest");
+        User user = UserTestUtils.createUser();
 
         Server s = ServerFactoryTest.createTestServer(user, true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
@@ -345,8 +336,7 @@ public class UserFactoryTest extends RhnBaseTestCase {
 
     @Test
     public void testSetUserServerPreferenceTrue() {
-        User user = UserTestUtils.findNewUser(TestStatics.TESTUSER,
-                                              TestStatics.TESTORG + "UserFactoryTest");
+        User user = UserTestUtils.createUser();
 
         Server s = ServerFactoryTest.createTestServer(user, true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
@@ -377,13 +367,13 @@ public class UserFactoryTest extends RhnBaseTestCase {
 
     @Test
     public void testSatelliteHasUsers() {
-        UserTestUtils.findNewUser("testUser", "testUserOrg", true);
+        new UserTestUtils.UserBuilder().orgName("testUserOrg").orgAdmin(true).build();
         assertTrue(UserFactory.satelliteHasUsers());
     }
 
     @Test
     public void testFindAllOrgAdmins() {
-        User user = UserTestUtils.findNewUser("testUser", "findAdminsOrg", true);
+        User user = new UserTestUtils.UserBuilder().orgName("findAdminsOrg").orgAdmin(true).build();
 
         Org o = user.getOrg();
 

@@ -45,8 +45,8 @@ public class KickstartActionTest extends RhnBaseTestCase {
      */
     @Test
     public void testLookupKickstartAction() throws Exception {
-        Action newA = ActionFactoryTest.createAction(UserTestUtils.createUser("testUser",
-            UserTestUtils.createOrg("testOrg" + this.getClass().getSimpleName())),
+        Action newA = ActionFactoryTest.createAction(
+                UserTestUtils.createUser(this),
             ActionFactory.TYPE_KICKSTART_INITIATE);
         Long id = newA.getId();
         Action a = ActionFactory.lookupById(id);
@@ -61,9 +61,8 @@ public class KickstartActionTest extends RhnBaseTestCase {
     @Test
     public void testKickstartInitiateAction() throws Exception {
 
-        Action newA = ActionFactoryTest
-            .createAction(UserTestUtils.createUser("testUser",
-                UserTestUtils.createOrg("testOrg" + this.getClass().getSimpleName())),
+        Action newA = ActionFactoryTest.createAction(
+                UserTestUtils.createUser(this),
                 ActionFactory.TYPE_KICKSTART_INITIATE);
         Long id = newA.getId();
         String appendTestString = "Append Test String";
@@ -97,9 +96,8 @@ public class KickstartActionTest extends RhnBaseTestCase {
     @Test
     public void testKickstartScheduleSyncAction() throws Exception {
 
-        Action newA = ActionFactoryTest
-            .createAction(UserTestUtils.createUser("testUser",
-                UserTestUtils.createOrg("testOrg" + this.getClass().getSimpleName())),
+        Action newA = ActionFactoryTest.createAction(
+                UserTestUtils.createUser(this),
                 ActionFactory.TYPE_KICKSTART_SCHEDULE_SYNC);
         Long id = newA.getId();
         String appendTestString = "Append Test String";

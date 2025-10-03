@@ -204,6 +204,39 @@ public class SystemsController {
         PageControlHelper pageHelper = new PageControlHelper(request, "server_name");
         PageControl pc = pageHelper.getPageControl();
 
+        var parser = getFilterParser(pc);
+
+        // When getting ids for the select all we just get all systems ID matching the filter, no paging
+        if ("id".equals(pageHelper.getFunction())) {
+            pc.setStart(1);
+            pc.setPageSize(0); // Setting to zero means getting them all
+
+            List<SystemOverview> systems = new PagedSqlQueryBuilder()
+                    .select("O.id, O.selectable")
+                    .from("suseSystemOverview O, rhnUserServerPerms USP")
+                    .where("O.id = USP.server_id AND USP.user_id = :user_id")
+                    .run(Map.of("user_id", user.getId()), pc, parser, SystemOverview.class);
+
+            return json(response, systems.stream()
+                    .filter(SystemOverview::isSelectable)
+                    .map(SystemOverview::getId)
+                    .collect(Collectors.toList()), new TypeToken<>() { });
+        }
+
+        DataResult<SystemOverview> systems = SystemManager.systemListNew(user, parser, pc);
+        RhnSet ssmSet = RhnSetDecl.SYSTEMS.get(user);
+
+        return json(response, new PagedDataResultJson<>(systems, systems.getTotalSize(), ssmSet.getElementValues()),
+                new TypeToken<>() { });
+    }
+
+    /**
+     * Helper function to create the filter parser
+     * @param pc - the page control object
+     * @return - the filter parser
+     */
+    public static Function<Optional<PageControl>, PagedSqlQueryBuilder.FilterWithValue>
+        getFilterParser(PageControl pc) {
         Map<String, Function<Optional<PageControl>, PagedSqlQueryBuilder.FilterWithValue>> mapping = Map.of(
                 "outdated_packages", PagedSqlQueryBuilder::parseFilterAsNumber,
                 "extra_pkg_count", PagedSqlQueryBuilder::parseFilterAsNumber,
@@ -263,29 +296,7 @@ public class SystemsController {
         if (pc.getFilterColumn() != null && mapping.containsKey(pc.getFilterColumn())) {
             parser = mapping.get(pc.getFilterColumn());
         }
-
-        // When getting ids for the select all we just get all systems ID matching the filter, no paging
-        if ("id".equals(pageHelper.getFunction())) {
-            pc.setStart(1);
-            pc.setPageSize(0); // Setting to zero means getting them all
-
-            List<SystemOverview> systems = new PagedSqlQueryBuilder()
-                    .select("O.id, O.selectable")
-                    .from("suseSystemOverview O, rhnUserServerPerms USP")
-                    .where("O.id = USP.server_id AND USP.user_id = :user_id")
-                    .run(Map.of("user_id", user.getId()), pc, parser, SystemOverview.class);
-
-            return json(response, systems.stream()
-                    .filter(SystemOverview::isSelectable)
-                    .map(SystemOverview::getId)
-                    .collect(Collectors.toList()), new TypeToken<>() { });
-        }
-
-        DataResult<SystemOverview> systems = SystemManager.systemListNew(user, parser, pc);
-        RhnSet ssmSet = RhnSetDecl.SYSTEMS.get(user);
-
-        return json(response, new PagedDataResultJson<>(systems, systems.getTotalSize(), ssmSet.getElementValues()),
-                new TypeToken<>() { });
+        return parser;
     }
 
     /**

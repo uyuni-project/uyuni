@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2013--2025 SUSE LLC
  * Copyright (c) 2009--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,10 +15,6 @@
  */
 package com.redhat.rhn.testing;
 
-import static org.junit.jupiter.api.Assertions.fail;
-
-import com.mockobjects.Expectation;
-
 import org.apache.struts.action.DynaActionForm;
 import org.apache.struts.action.DynaActionFormClass;
 import org.apache.struts.config.FormBeanConfig;
@@ -25,29 +22,18 @@ import org.apache.struts.config.FormPropertyConfig;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 /**
- * RhnMockDynaActionForm is a mock implementation of
- * a Struts DynaActionForm which allows the user to
- * set expected values during testing.
+ * MockDynaActionForm is a simple mock implementation of a Struts DynaActionForm.
+ * This is a basic implementation suitable for testing.
  */
-public class RhnMockDynaActionForm extends DynaActionForm
-                                   implements Expectation {
+public class RhnMockDynaActionForm extends DynaActionForm {
 
     /** Name of FormBean */
     private String formName;
 
     /** Map of actual properties which have been set */
-    private Map<String, Object> actual;
-    /** Map of expected properties to be set */
-    private Map<String, Object> expected;
-
-    /**
-     * True if we are not to expect anything but simply be a Form;
-     * defaults to false
-     */
-    private boolean expectNothing;
+    private Map<String, Object> properties;
 
     private Map<String, FormPropertyConfig> formPropertyConfigs;
 
@@ -65,7 +51,7 @@ public class RhnMockDynaActionForm extends DynaActionForm
      */
     @Override
     public Map<String, Object> getMap() {
-        return actual;
+        return properties;
     }
 
     /**
@@ -73,9 +59,7 @@ public class RhnMockDynaActionForm extends DynaActionForm
      */
     public RhnMockDynaActionForm() {
         super();
-        actual = new HashMap<>();
-        expected = new HashMap<>();
-        expectNothing = false;
+        properties = new HashMap<>();
         formPropertyConfigs = new HashMap<>();
 
         // Setup the empty config.
@@ -135,18 +119,7 @@ public class RhnMockDynaActionForm extends DynaActionForm
             setDynamicActionFormClass(theDynaClass);
         }
         // Add the actual value
-        actual.put(name, value);
-    }
-
-    /**
-     * Adds a property that is expected to be set via the set method.
-     * @param name Property name
-     * @param value Property value
-     */
-    public void addExpectedProperty(String name, Object value) {
-        if (!expectNothing) {
-            expected.put(name, value);
-        }
+        properties.put(name, value);
     }
 
     /**
@@ -156,61 +129,7 @@ public class RhnMockDynaActionForm extends DynaActionForm
      */
     @Override
     public Object get(String name) {
-        return actual.get(name);
-    }
-
-    /**
-     * Verifies the object received the expected values.
-     */
-    @Override
-    public void verify() {
-        // need to compare the values in the expected list with
-        // those of the actual list.
-
-        Set<String> keys = expected.keySet();
-        for (String key : keys) {
-            Object expValue = expected.get(key);
-            Object actValue = actual.get(key);
-
-            if (expValue == null) {
-                throw new NullPointerException("Expected value of [" + key + "] is null.");
-            }
-
-            if (!expValue.equals(actValue)) {
-                String msg = "Did not receive expected values.\n" + "key [" +
-                        key +
-                        "] expected value [" +
-                        expValue +
-                        "] actual value [" +
-                        actValue +
-                        "]";
-                fail(msg);
-            }
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean hasExpectations() {
-        return !expected.isEmpty();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setExpectNothing() {
-        expectNothing = true;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setFailOnVerify() {
-        // do nothing
+        return properties.get(name);
     }
 
     /**

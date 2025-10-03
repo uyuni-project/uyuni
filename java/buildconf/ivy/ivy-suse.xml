@@ -10,7 +10,7 @@
         <dependency org="suse" name="c3p0" rev="0.9.5.5" />
         <dependency org="suse" name="cglib" rev="3.3.0" />
         <dependency org="suse" name="classmate" rev="1.5.1" />
-        <dependency org="suse" name="javax.mail" rev="1.5.2" />
+        <dependency org="suse" name="javax.mail" rev="1.6.2" />
         <dependency org="suse" name="client" rev="2.1" />
         <dependency org="suse" name="common" rev="2.1" />
         <dependency org="suse" name="stringprep" rev="1.1" />
@@ -62,13 +62,13 @@
         <dependency org="suse" name="jsch" rev="0.2.22" />
         <dependency org="suse" name="jctools-core" rev="4.0.5" />
         <dependency org="suse" name="mchange-commons-java" rev="0.2.20" />
-        <dependency org="suse" name="netty-buffer" rev="4.1.118" />
-        <dependency org="suse" name="netty-codec" rev="4.1.118" />
-        <dependency org="suse" name="netty-common" rev="4.1.118" />
-        <dependency org="suse" name="netty-handler" rev="4.1.118" />
-        <dependency org="suse" name="netty-resolver" rev="4.1.118" />
-        <dependency org="suse" name="netty-transport" rev="4.1.118" />
-        <dependency org="suse" name="netty-transport-native-unix-common" rev="4.1.118" />
+        <dependency org="suse" name="netty-buffer" rev="4.1.126" />
+        <dependency org="suse" name="netty-codec" rev="4.1.126" />
+        <dependency org="suse" name="netty-common" rev="4.1.126" />
+        <dependency org="suse" name="netty-handler" rev="4.1.126" />
+        <dependency org="suse" name="netty-resolver" rev="4.1.126" />
+        <dependency org="suse" name="netty-transport" rev="4.1.126" />
+        <dependency org="suse" name="netty-transport-native-unix-common" rev="4.1.126" />
         <dependency org="suse" name="oro" rev="2.0.8" />
         <dependency org="suse" name="pgjdbc-ng" rev="0.8.7" />
         <dependency org="suse" name="postgresql-jdbc" rev="42.2.25" />
@@ -137,8 +137,6 @@
         <dependency org="org.jmock" name="jmock" rev="2.12.0" transitive="false"/>
         <dependency org="org.jmock" name="jmock-junit5" rev="2.12.0" transitive="false"/>
         <dependency org="org.jmock" name="jmock-imposters" rev="2.12.0" transitive="false"/>
-        <dependency org="mockobjects" name="mockobjects-core" rev="0.09" transitive="false"/>
-        <dependency org="mockobjects" name="mockobjects-jdk1.4-j2ee1.3" rev="0.09" transitive="false"/>
         <dependency org="org.objenesis" name="objenesis" rev="1.0" transitive="false"/>
         <dependency org="javax.websocket" name="javax.websocket-api" rev="1.1" transitive="false"/>
         <dependency org="org.jacoco" name="org.jacoco.ant" rev="0.8.7" transitive="false">

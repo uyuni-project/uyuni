@@ -1,4 +1,5 @@
 #!/usr/bin/python -u
+# pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
@@ -19,15 +20,16 @@ import sys
 from os.path import exists, join
 
 
+# pylint: disable-next=invalid-name
 def errAndExit(errno, msg):
-    sys.stderr.write(msg+'\n')
+    sys.stderr.write(msg + "\n")
     sys.exit(errno)
 
 
 # figure out import path
 _LIBPATH = ""
 for p in ["/var/www/rhns", "/usr/share/rhn"]:
-    if exists(p) and exists(join(p, 'server')) and exists(join(p, 'common')):
+    if exists(p) and exists(join(p, "server")) and exists(join(p, "common")):
         _LIBPATH = p
 if _LIBPATH not in sys.path:
     sys.path.append(_LIBPATH)
@@ -40,21 +42,23 @@ except KeyboardInterrupt:
     sys.exit(0)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     rhnSQL.initDB()
 
     try:
-        h = rhnSQL.prepare("""
+        h = rhnSQL.prepare(
+            """
                 SELECT evr_t_as_vre_simple(PE.evr) as evrsimple
                   FROM rhnPackageEVR PE, rhnVersionInfo RVI, rhnPackageName PN
                  WHERE RVI.label = 'schema'
                    AND RVI.name_id = PN.id
                    AND RVI.evr_id = PE.id
-                """)
+                """
+        )
         h.execute()
         row = h.fetchone_dict()
         if row:
-            print(row['evrsimple'])
+            print(row["evrsimple"])
     except KeyboardInterrupt:
         sys.stderr.write("\nUser interrupted process.\n")
         sys.exit(0)
@@ -62,5 +66,3 @@ if __name__ == '__main__':
         # really a stub for better exception handling in the future.
         sys.stderr.write("SQL error occurred, traceback follows...\n")
         raise
-
-

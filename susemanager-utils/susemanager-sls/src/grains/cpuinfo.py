@@ -192,15 +192,18 @@ def cpu_data():
             # pylint: disable-next=logging-format-interpolation,consider-using-f-string
             log.warning("lscpu: {0}".format(str(error)))
 
+
 # -----------------------------------------------------------------------------
 # Grain for Architecture-Specific CPU Data
 # -----------------------------------------------------------------------------
+
 
 def _read_file(path):
     """
     Helper to read a file and return its content. Returns empty string if not found.
     """
     try:
+        # pylint: disable-next=unspecified-encoding
         with open(path, "r", errors="replace") as f:
             return f.read()
     except FileNotFoundError:
@@ -211,6 +214,7 @@ def _exact_string_match(key, text):
     """
     Extract a value based on a key in the text using regex.
     """
+    # pylint: disable-next=consider-using-f-string
     match = re.search(r"{}\s*:\s*(.*)".format(re.escape(key)), text)
     return match.group(1).strip() if match else ""
 
@@ -261,8 +265,9 @@ def _add_arm64_extras(specs):
 
     try:
         ret = __salt__["cmd.run_all"](
+            # pylint: disable-next=consider-using-f-string
             "{0} -t processor".format(dmidecode),
-            output_loglevel="quiet"
+            output_loglevel="quiet",
         )
 
         if ret["retcode"] == 0:
@@ -292,7 +297,11 @@ def _add_z_systems_extras(specs):
         return
 
     try:
-        ret = __salt__["cmd.run_all"]("{0} -s".format(read_values), output_loglevel="quiet")
+        ret = __salt__["cmd.run_all"](
+            # pylint: disable-next=consider-using-f-string
+            "{0} -s".format(read_values),
+            output_loglevel="quiet",
+        )
         if ret["retcode"] == 0:
             output = ret["stdout"]
 
@@ -320,6 +329,7 @@ def _add_z_systems_extras(specs):
     except (CommandExecutionError, OSError):
         log.warning("Failed to retrieve z System CPU details.", exc_info=True)
 
+
 def _get_architecture():
     """
     Returns the system architecture.
@@ -330,6 +340,7 @@ def _get_architecture():
     except (CommandExecutionError, OSError):
         log.warning("Failed to determine system architecture.", exc_info=True)
         return "unknown"
+
 
 def arch_specs():
     """

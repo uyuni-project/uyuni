@@ -760,8 +760,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
     @Test
     public void testRemoveAssociatedSystemGroups() {
 
-        User testUser = UserTestUtils.createUser("ksdjkfjasdkfjasdfjoiwenv",
-                admin.getOrg().getId());
+        User testUser = UserTestUtils.createUser("ksdjkfjasdkfjasdfjoiwenv", admin.getOrg().getId());
 
         Object[] assocGrps = handler.listAssignedSystemGroups(
                 admin, testUser.getLogin());
@@ -809,8 +808,7 @@ public class UserHandlerTest extends BaseHandlerTestCase {
     @Test
     public void testRemoveAssignedSystemGroupsInvalidGroup() {
 
-        User testUser = UserTestUtils.createUser("ksdjkfjasdkfjasdfjoiwenv",
-                admin.getOrg().getId());
+        User testUser = UserTestUtils.createUser("ksdjkfjasdkfjasdfjoiwenv", admin.getOrg().getId());
 
          try {
              handler.removeAssignedSystemGroup(admin,

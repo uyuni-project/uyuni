@@ -9,7 +9,7 @@ export type SystemOverview = {
   serverName: string;
   isVirtualGuest: boolean;
   isVirtualHost: boolean;
-  entitlement: string[];
+  entitlement?: string[];
   proxy: boolean;
   mgrServer: boolean;
 };
@@ -19,7 +19,7 @@ export function iconAndName(system: SystemOverview) {
     {
       iconType: "system-bare-metal",
       iconTitle: t("Unprovisioned System"),
-      condition: (sys: SystemOverview) => sys.entitlement.includes("bootstrap_entitled"),
+      condition: (sys: SystemOverview) => sys.entitlement?.includes("bootstrap_entitled"),
     },
     {
       iconType: "system-virt-guest",
@@ -46,7 +46,7 @@ export function iconAndName(system: SystemOverview) {
 
   const content = [systemIcon, proxyIcon, mgrServerIcon, system.serverName];
 
-  if (system.id != null) {
+  if (!DEPRECATED_unsafeEquals(system.id, null)) {
     return (
       <a href={`/rhn/systems/details/Overview.do?sid=${system.id}`} className="js-spa">
         {content}
@@ -110,7 +110,7 @@ function statusDisplay(system: any, isAdmin: boolean) {
 
   const { iconType, iconTitle, url } = systems[type];
 
-  var locked: React.ReactNode = "";
+  let locked: React.ReactNode = "";
   if (DEPRECATED_unsafeEquals(system["locked"], 1)) {
     locked = <IconTag type="system-locked" title={t("System Locked")} />;
   }

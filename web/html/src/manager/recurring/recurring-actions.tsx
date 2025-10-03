@@ -2,8 +2,7 @@ import * as React from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 
-import { Messages } from "components/messages/messages";
-import { Utils as MessagesUtils } from "components/messages/messages";
+import { Messages, Utils as MessagesUtils } from "components/messages/messages";
 
 import { localizedMoment } from "utils";
 import Network from "utils/network";
@@ -132,7 +131,7 @@ class RecurringActions extends React.Component<Props, State> {
 
   handleDeleteError = (jqXHR) => {
     const taskoErrorMsg = MessagesUtils.error(t("Error when deleting the action. Check if Taskomatic is running"));
-    let messages = jqXHR && jqXHR.status === 503 ? taskoErrorMsg : Network.responseErrorMessage(jqXHR);
+    const messages = jqXHR && jqXHR.status === 503 ? taskoErrorMsg : Network.responseErrorMessage(jqXHR);
     this.setMessages(messages);
   };
 

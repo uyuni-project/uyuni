@@ -8,8 +8,7 @@ import { DeleteDialog } from "components/dialog/DeleteDialog";
 import { ModalButton } from "components/dialog/ModalButton";
 import { IconTag } from "components/icontag";
 import { SystemLink } from "components/links";
-import { Utils as MessagesUtils } from "components/messages/messages";
-import { MessageType } from "components/messages/messages";
+import { MessageType, Utils as MessagesUtils } from "components/messages/messages";
 import { BootstrapPanel } from "components/panels/BootstrapPanel";
 import { TabLabel } from "components/tab-container";
 import { Column } from "components/table/Column";
@@ -24,7 +23,7 @@ import CancelActionsDialog from "../shared/cancel-actions-dialog";
 type MaintenanceScheduleDetailsProps = {
   id: number;
   name: string; // Name of the maintenance schedule
-  eventNames: Array<string>;
+  eventNames: string[];
   type: "SINGLE" | "MULTI";
   calendarName: string | undefined;
   onDelete: (item: { name: string }) => Promise<any>;
@@ -82,7 +81,7 @@ const MaintenanceScheduleDetails = (props: MaintenanceScheduleDetailsProps) => {
 type OverviewProps = {
   id: number;
   name: string; // Name of the maintenance schedule
-  eventNames: Array<string>;
+  eventNames: string[];
   calendarName: string | undefined;
   type: "SINGLE" | "MULTI";
   onMessage: (messages: MessageType[]) => void;

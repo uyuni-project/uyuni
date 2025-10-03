@@ -25,13 +25,14 @@ import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.RhnMockDynaActionForm;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
+import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 import com.redhat.rhn.testing.TestUtils;
-
-import com.mockobjects.servlet.MockHttpServletResponse;
 
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.junit.jupiter.api.Test;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * UserPrefActionTest
@@ -52,7 +53,7 @@ public class UserPrefActionTest extends RhnBaseTestCase {
         ActionForward success = new ActionForward("success", "path", false);
         RhnMockDynaActionForm form = new RhnMockDynaActionForm();
         RhnMockHttpServletRequest request = TestUtils.getRequestWithSessionAndUser();
-        MockHttpServletResponse response = new MockHttpServletResponse();
+        HttpServletResponse response = new RhnMockHttpServletResponse();
 
         mapping.addForwardConfig(success);
 
@@ -65,7 +66,7 @@ public class UserPrefActionTest extends RhnBaseTestCase {
         // a second time.  The MockRequest counts the number of times getParamter
         // is called.
 
-        request.setupAddParameter("uid", user.getId().toString());
+        request.addParameter("uid", user.getId().toString());
         // populate with any set of information
         // then get the verify the user was changed correctly.
         form.set("emailNotif", Boolean.FALSE);

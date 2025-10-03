@@ -1,5 +1,5 @@
 import { SystemData } from "components/target-systems";
 
-export interface CoCoSystemData extends SystemData {
+export type CoCoSystemData = {
   cocoSupport: boolean;
-}
+} & SystemData;

@@ -68,10 +68,10 @@ public class RhnSetActionTest extends RhnBaseTestCase {
         sah.setUpAction(action);
         sah.setupClampListBounds();
         sah.getRequest().setRequestURL("foo");
-        sah.getRequest().setupAddParameter("items_selected",
+        sah.getRequest().addParameter("items_selected",
             new String[] {"10", "20", "30"});
-        sah.getRequest().setupAddParameter("newset", (String)null);
-        sah.getRequest().setupAddParameter("items_on_page", (String)null);
+        sah.getRequest().addParameter("newset", (String)null);
+        sah.getRequest().addParameter("items_on_page", (String)null);
         ActionForward forward = sah.executeAction("updatelist");
 
         // let's go find the data
@@ -85,10 +85,10 @@ public class RhnSetActionTest extends RhnBaseTestCase {
         sah.setUpAction(action);
         sah.setupClampListBounds();
         sah.getRequest().setRequestURL("foo");
-        sah.getRequest().setupAddParameter("items_selected",
+        sah.getRequest().addParameter("items_selected",
             new String[] {"777|999", "99|555", "666|77656"});
-        sah.getRequest().setupAddParameter("newset", (String)null);
-        sah.getRequest().setupAddParameter("items_on_page", (String)null);
+        sah.getRequest().addParameter("newset", (String)null);
+        sah.getRequest().addParameter("items_on_page", (String)null);
         sah.executeAction("updatelist");
 
         // let's go find the data
@@ -151,7 +151,7 @@ public class RhnSetActionTest extends RhnBaseTestCase {
     public void testFilter() throws Exception {
         ActionHelper sah = new ActionHelper();
         sah.setUpAction(action);
-        sah.getRequest().setupAddParameter(RequestContext.FILTER_STRING, "zzzz");
+        sah.getRequest().addParameter(RequestContext.FILTER_STRING, "zzzz");
         sah.setupClampListBounds();
 
         ActionForward forward = sah.executeAction("filter");
@@ -164,10 +164,10 @@ public class RhnSetActionTest extends RhnBaseTestCase {
         ActionHelper sah = new ActionHelper();
         sah.setUpAction(action);
         sah.setupClampListBounds();
-        sah.getRequest().setupAddParameter("items_selected",
+        sah.getRequest().addParameter("items_selected",
             new String[] {"10", "20", "30"});
-        sah.getRequest().setupAddParameter("newset", (String)null);
-        sah.getRequest().setupAddParameter("items_on_page", (String)null);
+        sah.getRequest().addParameter("newset", (String)null);
+        sah.getRequest().addParameter("items_on_page", (String)null);
         ActionForward forward  = sah.executeAction("unspecified");
 
         verifyParam(forward.getPath(), "newset", "[10, 20, 30]");

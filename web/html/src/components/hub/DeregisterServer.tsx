@@ -20,13 +20,14 @@ type Props = {
 
 type State = {
   confirmDeregistration: boolean;
+  showDeleteErrorModal: boolean;
 };
 
 export class DeregisterServer extends React.Component<Props, State> {
   public constructor(props: Props) {
     super(props);
 
-    this.state = { confirmDeregistration: false };
+    this.state = { confirmDeregistration: false, showDeleteErrorModal: false };
   }
 
   public render(): React.ReactNode {
@@ -46,11 +47,25 @@ export class DeregisterServer extends React.Component<Props, State> {
           isOpen={this.state.confirmDeregistration}
           submitText={t("Deregister")}
           submitIcon="fa-trash"
-          onConfirm={() => this.onConfirmDeregistration()}
+          onConfirm={() => this.onConfirmDeregistration(false)}
           onClose={() => this.setState({ confirmDeregistration: false })}
+        />
+        <DangerDialog
+          id="deregister-error-modal"
+          title={t("Error deregistering server")}
+          content={this.renderDeregisterErrorModal()}
+          isOpen={this.state.showDeleteErrorModal}
+          onConfirm={() => this.onConfirmDeregistration(true)}
+          onClose={() => this.setState({ showDeleteErrorModal: false })}
+          submitText={t("Deregister without cleanup")}
+          submitIcon={"fa-trash"}
         />
       </>
     );
+  }
+
+  private renderDeregisterErrorModal() {
+    return <span>{t("Cleanup timed out. Please check if the machine is reachable.")}</span>;
   }
 
   private getConfirmationMessage(): string {
@@ -75,21 +90,32 @@ export class DeregisterServer extends React.Component<Props, State> {
     }
   }
 
-  private onConfirmDeregistration(): void {
-    const resource =
+  private onConfirmDeregistration(only_local: boolean): void {
+    let resource =
       this.props.role === IssRole.Hub
         ? `/rhn/manager/api/admin/hub/${this.props.id}`
         : `/rhn/manager/api/admin/hub/peripherals/${this.props.id}`;
+    if (only_local) {
+      resource += `?only_local=true`;
+    }
     Network.del(resource)
       .then(
-        (_response) => {
-          showInfoToastr(t("The server {fqdn} has been successfully deregistered.", { fqdn: this.props.fqdn }));
-
-          // Invoke the callback if present
-          this.props.onDeregistered?.();
+        () => {
+          this.onSuccessfullDeregister();
         },
-        (xhr) => Network.showResponseErrorToastr(xhr)
+        (xhr) => {
+          if (xhr && xhr.status === 503) {
+            this.setState({ confirmDeregistration: false, showDeleteErrorModal: true });
+          } else {
+            Network.showResponseErrorToastr(xhr);
+          }
+        }
       )
       .finally(() => this.setState({ confirmDeregistration: false }));
+  }
+
+  private onSuccessfullDeregister() {
+    showInfoToastr(t("The server {fqdn} has been successfully deregistered.", { fqdn: this.props.fqdn }));
+    this.props.onDeregistered?.();
   }
 }

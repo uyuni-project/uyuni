@@ -35,7 +35,6 @@ import com.redhat.rhn.domain.action.errata.ErrataAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.server.test.ServerActionTest;
 import com.redhat.rhn.domain.action.test.ActionFactoryTest;
-import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
@@ -323,8 +322,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
     public void testAssignScheduleCrossOrg() throws Exception {
         MaintenanceManager mm = new MaintenanceManager();
         user.addPermanentRole(ORG_ADMIN);
-        Org acmeOrg = UserTestUtils.createNewOrgFull("acme-123");
-        User user2 = UserTestUtils.createUser("user-321", acmeOrg.getId());
+        User user2 = UserTestUtils.createUser("user-321", "acme-123");
         user2.addPermanentRole(ORG_ADMIN);
 
         MaintenanceSchedule schedule1 = mm.createSchedule(

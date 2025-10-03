@@ -36,7 +36,7 @@ public class ConfigUploadActionTest extends RhnBaseTestCase {
     @Test
     public void testLookup() throws Exception {
         //create the action
-        User user = UserTestUtils.findNewUser("bob", "ibm");
+        User user = UserTestUtils.createUser("bob", "ibm");
         Action a =
             ActionFactoryTest.createAction(user, ActionFactory.TYPE_CONFIGFILES_UPLOAD);
 

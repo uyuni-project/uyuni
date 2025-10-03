@@ -1,0 +1,2 @@
+- Adds provisionSystem API call without a proxy and with
+  kernel_options (bsc#1245528)

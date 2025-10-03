@@ -16,9 +16,9 @@ declare global {
     // SPA engine and renderer
     pageRenderers?: {
       spa?: {
-        globalRenderersToUpdate?: Array<{
+        globalRenderersToUpdate?: {
           onSPAEndNavigation?: Function;
-        }>;
+        }[];
         reactAppsName?: string[];
         reactRenderers?: unknown[];
         previousReactRenderers?: unknown[];

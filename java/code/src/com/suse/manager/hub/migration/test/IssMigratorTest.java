@@ -42,6 +42,7 @@ import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
+import com.redhat.rhn.testing.TestStatics;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -114,7 +115,7 @@ public class IssMigratorTest extends JMockBaseTestCaseWithUser {
 
         Config.get().setString(ConfigDefaults.SERVER_HOSTNAME, LOCAL_SERVER_FQDN);
 
-        User satAdmin = UserTestUtils.createUser("satUser", user.getOrg().getId());
+        User satAdmin = UserTestUtils.createUser(TestStatics.TEST_SAT_USER, user.getOrg().getId());
         satAdmin.addPermanentRole(RoleFactory.SAT_ADMIN);
         UserFactory.save(satAdmin);
 

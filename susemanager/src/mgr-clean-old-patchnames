@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# pylint: disable=missing-module-docstring,invalid-name
 # -*- coding: utf-8 -*-
 #
 # Copyright (C) 2011 Novell, Inc.
@@ -16,31 +17,39 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 from __future__ import print_function
 
+# pylint: disable-next=unused-import
 import sys
 from optparse import OptionParser
 from spacewalk.susemanager import mgr_clean_old_patchnames
 
+
 def main():
-    parser = OptionParser(version="%prog 0.1",
-                          description="Remove patches with old patchnames from the given channels")
+    parser = OptionParser(
+        version="%prog 0.1",
+        description="Remove patches with old patchnames from the given channels",
+    )
 
-    parser.add_option("-a", "--all", action="store_true", dest="all",
-                      help="iterate over all channels")
-    parser.add_option("-c", "--channel", action="store", dest="channel",
-                      help="channel name")
-    parser.add_option('-d', '--debug', dest='debug', default=0,
-                      help="debugging")
+    parser.add_option(
+        "-a", "--all", action="store_true", dest="all", help="iterate over all channels"
+    )
+    parser.add_option(
+        "-c", "--channel", action="store", dest="channel", help="channel name"
+    )
+    parser.add_option("-d", "--debug", dest="debug", default=0, help="debugging")
 
+    # pylint: disable-next=unused-variable
     (options, args) = parser.parse_args()
 
-    cleaner = mgr_clean_old_patchnames.Cleaner(all=options.all,
-                                      channel=options.channel,
-                                      debug=options.debug)
+    cleaner = mgr_clean_old_patchnames.Cleaner(
+        all=options.all, channel=options.channel, debug=options.debug
+    )
 
     cleaner.run()
+
 
 if __name__ == "__main__":
     try:
         main()
     except IOError as e:
+        # pylint: disable-next=consider-using-f-string
         print("ERROR: %s" % e)

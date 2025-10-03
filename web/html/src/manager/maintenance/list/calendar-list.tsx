@@ -13,7 +13,7 @@ type CalendarListProps = {
   data: {
     id: number;
     name: string;
-    scheduleNames: Array<Map<string, string>>;
+    scheduleNames: Map<string, string>[];
   }[];
   onSelect: (...args: any[]) => any;
   onEdit: (...args: any[]) => any;

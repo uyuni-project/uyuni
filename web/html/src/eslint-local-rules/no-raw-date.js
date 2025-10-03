@@ -9,6 +9,7 @@ module.exports = {
     },
     fixable: false,
     schema: [],
+    hasSuggestions: true,
   },
   create: function (context) {
     return {

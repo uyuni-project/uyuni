@@ -100,7 +100,7 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testSaveAndLookupAnsiblePathNoPerms() throws Exception {
-        User chuck = UserTestUtils.findNewUser("testUser", "testOrg" + this.getClass().getSimpleName());
+        User chuck = UserTestUtils.createUser(this);
 
         MinionServer minion = createAnsibleControlNode(user);
         AnsiblePath path = new InventoryPath(minion);

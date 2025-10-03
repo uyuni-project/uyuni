@@ -21,9 +21,8 @@ import com.redhat.rhn.frontend.taglibs.SubmittedTag;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.RhnMockJspWriter;
+import com.redhat.rhn.testing.TagTestHelper;
 import com.redhat.rhn.testing.TagTestUtils;
-
-import com.mockobjects.helpers.TagTestHelper;
 
 import org.junit.jupiter.api.Test;
 

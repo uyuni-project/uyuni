@@ -282,8 +282,8 @@ public class DownloadFile extends DownloadAction {
 
         if (map.containsKey(CHILD) && !Config.get().getBoolean("ks_restrict_child_channels")) {
             Channel child = ChannelFactory.lookupByLabel(map.get(CHILD));
-            if (child == null || tree == null || child.getParentChannel() == null ||
-                    !child.getParentChannel().equals(tree.getChannel())) {
+            if (child == null || tree == null || (child.getParentChannel() != null &&
+                    !child.getParentChannel().equals(tree.getChannel()))) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return mapping.findForward("error");
             }

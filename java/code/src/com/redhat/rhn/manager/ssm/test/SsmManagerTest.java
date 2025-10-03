@@ -1013,7 +1013,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testScheduleChannelChangesWithIncompatibleBase() throws Exception {
-        Org org2 = UserTestUtils.createNewOrgFull("anotherOrg");
+        Org org2 = UserTestUtils.createOrg("anotherOrg");
 
         Channel parent1 = ChannelFactoryTest.createTestChannel(user);
         parent1.setParentChannel(null);
@@ -1065,7 +1065,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testScheduleChannelChangesWithIncompatibleBaseOnNoBaseServer() throws Exception {
-        Org org2 = UserTestUtils.createNewOrgFull("anotherOrg");
+        Org org2 = UserTestUtils.createOrg("anotherOrg");
 
         Server server1 = ServerFactoryTest.createTestServer(user, true);
 

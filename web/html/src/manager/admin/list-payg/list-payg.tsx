@@ -22,16 +22,16 @@ import { Utils } from "utils/functions";
 import { SetupHeader } from "../setup/setup-header";
 
 type PaygOverviewType = {
-  id: String;
-  host: String;
-  description: String;
-  status: String;
-  statusMessage: String;
+  id: string;
+  host: string;
+  description: string;
+  status: string;
+  statusMessage: string;
   lastChange: moment.Moment;
 };
 
 type Props = {
-  payg_instances: Array<PaygOverviewType>;
+  payg_instances: PaygOverviewType[];
   flashMessage?: ServerMessageType;
   isIssPeripheral?: boolean;
 };
@@ -51,7 +51,7 @@ const ListPayg = (props: Props) => {
     return true;
   };
 
-  let pageContent = props.isIssPeripheral ? (
+  const pageContent = props.isIssPeripheral ? (
     <div className="alert alert-warning" role="alert">
       {t(
         "This server is configured as a Peripheral server in a Hub configuration. Managing PAYG Connections is disabled."

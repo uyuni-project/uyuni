@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerSystemCreateCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.TestStatics;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.cobbler.CobblerConnection;
@@ -69,7 +70,10 @@ public class CobblerSystemCreateCommandTest extends BaseTestCaseWithUser {
     @Test
     public void testConstructorReactivation() {
         // Arrange
-        User admin = UserTestUtils.findNewUser("adminUser", "testOrg" + this.getClass().getSimpleName(), true);
+        User admin = new UserTestUtils.UserBuilder()
+                .userName(TestStatics.TEST_ADMIN_USER)
+                .orgAdmin(true)
+                .build();
         KickstartData k = KickstartDataTest.createTestKickstartData(admin.getOrg());
         k.setCobblerId("test-id");
         Server s = ServerFactoryTest.createTestServer(admin, false);

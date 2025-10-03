@@ -75,8 +75,7 @@ public class LocationTest extends RhnBaseTestCase {
         loc.setCity(STATE);
         loc.setCity(COUNTRY);
 
-        User user = UserTestUtils.createUser("testuser",
-                UserTestUtils.createOrg("testorg"));
+        User user = UserTestUtils.createUser();
         Server s = ServerFactoryTest.createTestServer(user);
         loc.setServer(s);
 

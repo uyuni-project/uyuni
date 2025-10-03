@@ -79,7 +79,7 @@ public class DeviceTest extends RhnBaseTestCase {
 
     public static Device createTestDevice() throws Exception {
         Device hd = new Device();
-        User u = UserTestUtils.findNewUser("testUser", "testOrgCreateTestDevice");
+        User u = UserTestUtils.createUser();
         Server server = ServerFactoryTest.createTestServer(u);
 
         hd.setServer(server);

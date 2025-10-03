@@ -37,7 +37,7 @@ public class OrgSerializerTest extends MockObjectTestCase {
     public void testSerialize() throws XmlRpcException {
         OrgSerializer os = new OrgSerializer();
 
-        Org org = UserTestUtils.findNewOrg("foo");
+        Org org = UserTestUtils.createOrg("foo");
 
         Writer output = new StringWriter();
         os.serialize(org, output, new XmlRpcSerializer());

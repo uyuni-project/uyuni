@@ -2,6 +2,8 @@ import * as React from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
+
 type Props = {};
 
 type State = {
@@ -20,8 +22,8 @@ class Notifications extends React.Component<Props, State> {
     classStyle: "",
   };
 
-  onBeforeUnload = (e) => {
-    if (this.state.websocket != null) {
+  onBeforeUnload = () => {
+    if (!DEPRECATED_unsafeEquals(this.state.websocket, null)) {
       this.state.websocket.close();
     }
     this.setState({
@@ -30,14 +32,14 @@ class Notifications extends React.Component<Props, State> {
   };
 
   componentDidMount() {
-    var port = window.location.port;
-    var url = "wss://" + window.location.hostname + (port ? ":" + port : "") + "/rhn/websocket/notifications";
-    var ws = new WebSocket(url);
+    const port = window.location.port;
+    const url = "wss://" + window.location.hostname + (port ? ":" + port : "") + "/rhn/websocket/notifications";
+    const ws = new WebSocket(url);
     ws.onopen = () => {
       ws.send('["user-notifications"]');
     };
-    ws.onclose = (e) => {
-      var errs = this.state.errors ? this.state.errors : [];
+    ws.onclose = () => {
+      const errs = this.state.errors ? this.state.errors : [];
       if (!this.state.pageUnloading && !this.state.websocketErr) {
         errs.push(t("Websocket connection closed. Refresh the page to try again."));
       }
@@ -48,7 +50,7 @@ class Notifications extends React.Component<Props, State> {
     };
     ws.onerror = (e) => {
       Loggerhead.error("Websocket error: " + JSON.stringify(e));
-      if (this.state.websocket != null) {
+      if (!DEPRECATED_unsafeEquals(this.state.websocket, null)) {
         this.state.websocket.close();
       }
       this.setState({
@@ -84,8 +86,8 @@ class Notifications extends React.Component<Props, State> {
   render() {
     return (
       <a className="js-spa" href="/rhn/manager/notification-messages">
-        <i className={this.state.websocket == null ? "fa fa-bell-slash" : "fa fa-bell"}></i>
-        {this.state.websocket != null && this.state.unreadMessagesLength > 0 ? (
+        <i className={DEPRECATED_unsafeEquals(this.state.websocket, null) ? "fa fa-bell-slash" : "fa fa-bell"}></i>
+        {!DEPRECATED_unsafeEquals(this.state.websocket, null) && this.state.unreadMessagesLength > 0 ? (
           <div id="notification-counter" className={this.state.classStyle}>
             {this.state.unreadMessagesLength}
           </div>

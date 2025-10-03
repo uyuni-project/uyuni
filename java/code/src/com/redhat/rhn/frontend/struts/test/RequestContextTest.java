@@ -23,7 +23,6 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.testing.MockObjectTestCase;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
-import com.redhat.rhn.testing.RhnMockHttpSession;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.webui.controllers.login.LoginController;
@@ -53,22 +52,17 @@ public class RequestContextTest extends MockObjectTestCase {
         final String requestUrl = "http://localhost:8080/rhn/manager/login";
         final RouteMatch match = new RouteMatch(new Object(), requestUrl, requestUrl, "");
         final RhnMockHttpServletRequest mockRequest = new RhnMockHttpServletRequest();
-        RhnMockHttpSession session = new RhnMockHttpSession();
-        mockRequest.setSession(session);
 
         mockRequest.setRequestURL(requestUrl);
-        mockRequest.setupGetMethod("POST");
-        mockRequest.setMethod("POST");
-        mockRequest.setupPathInfo(URI.create(requestUrl).getPath());
-        mockRequest.setupAddParameter("url_bounce", "/rhn/users/UserDetails.do?uid=1");
+        mockRequest.setPathInfo(URI.create(requestUrl).getPath());
+        mockRequest.addParameter("url_bounce", "/rhn/users/UserDetails.do?uid=1");
 
         Response response = RequestResponseFactory.create(new RhnMockHttpServletResponse());
         // logging in
-        LoginHelper.successfulLogin(mockRequest, response.raw(), UserTestUtils.findNewUser("testUser", "testOrg" +
-                this.getClass().getSimpleName()));
+        LoginHelper.successfulLogin(mockRequest, response.raw(), UserTestUtils.createUser(this));
         ModelAndView result = LoginController.loginView(RequestResponseFactory.create(match, mockRequest), response);
         HashMap<String, String> model = (HashMap<String, String>) result.getModel();
-        assertNotNull(session.getAttribute("webUserID"));
+        assertNotNull(mockRequest.getSession().getAttribute("webUserID"));
         assertEquals(model.get("url_bounce"), "/rhn/users/UserDetails.do?uid=1");
         RequestContext requestContext = new RequestContext(RequestResponseFactory.create(match, mockRequest).raw());
         assertNotNull(requestContext.getCurrentUser());
@@ -77,68 +71,68 @@ public class RequestContextTest extends MockObjectTestCase {
     /**
      * Tests the pagination: First.
     */
-    /*public void testProcessPaginationFirst() {
-        MockHttpServletRequest request =
-            new MockHttpServletRequest();
-        request.setupAddParameter("First", "1");
-        request.setupAddParameter("first_lower", "1");
+    @Test
+    public void testProcessPaginationFirst() {
+        RhnMockHttpServletRequest request = new RhnMockHttpServletRequest();
+        request.addParameter("First Page", "not null");
+        request.addParameter("first_lower", "1");
         RequestContext requestContext = new RequestContext(request);
         String rc = requestContext.processPagination();
         assertEquals("1", rc);
-    }*/
+    }
 
     /**
      * Tests the pagination: Prev.
      */
-    /*public void testProcessPaginationPrev() {
-        MockHttpServletRequest request =
-            new MockHttpServletRequest();
-        request.setupAddParameter("First", (String) null);
-        request.setupAddParameter("Prev", "1");
-        request.setupAddParameter("prev_lower", "10");
+    @Test
+    public void testProcessPaginationPrev() {
+        RhnMockHttpServletRequest request = new RhnMockHttpServletRequest();
+        request.addParameter("First Page", (String) null);
+        request.addParameter("Previous Page", "1");
+        request.addParameter("prev_lower", "10");
         RequestContext requestContext = new RequestContext(request);
         String rc = requestContext.processPagination();
         assertEquals("10", rc);
-    }*/
+    }
 
     /**
      * Tests the pagination: Last.
      */
-    /*public void testProcessPaginationLast() {
-        MockHttpServletRequest request =
-            new MockHttpServletRequest();
-        request.setupAddParameter("First", (String)null);
-        request.setupAddParameter("Prev", (String)null);
-        request.setupAddParameter("Next", (String)null);
-        request.setupAddParameter("Last", "1");
-        request.setupAddParameter("last_lower", "30");
+    @Test
+    public void testProcessPaginationLast() {
+        RhnMockHttpServletRequest request = new RhnMockHttpServletRequest();
+        request.addParameter("First Page", (String)null);
+        request.addParameter("Previous Page", (String)null);
+        request.addParameter("Next Page", (String)null);
+        request.addParameter("Last Page", "1");
+        request.addParameter("last_lower", "30");
         RequestContext requestContext = new RequestContext(request);
         String rc = requestContext.processPagination();
         assertEquals("30", rc);
-    }*/
+    }
 
     /**
      * Tests the pagination: Next.
      */
-    /*public void testProcessPaginationNext() {
-        MockHttpServletRequest request =
-            new MockHttpServletRequest();
-        request.setupAddParameter("First", (String)null);
-        request.setupAddParameter("Prev", (String)null);
-        request.setupAddParameter("Next", "1");
-        request.setupAddParameter("next_lower", "20");
+    @Test
+    public void testProcessPaginationNext() {
+        RhnMockHttpServletRequest request = new RhnMockHttpServletRequest();
+        request.addParameter("First Page", (String)null);
+        request.addParameter("Prev Page", (String)null);
+        request.addParameter("Next Page", "1");
+        request.addParameter("next_lower", "20");
         RequestContext requestContext = new RequestContext(request);
         String rc = requestContext.processPagination();
         assertEquals("20", rc);
-    }*/
+    }
 
     /**
      */
     @Test
     public void testbuildPageLink() {
         RhnMockHttpServletRequest request = new RhnMockHttpServletRequest();
-        request.setupAddParameter("someparam", "value");
-        request.setupQueryString("otherparam=foo&barparam=beer");
+        request.addParameter("someparam", "value");
+        request.setQueryString("otherparam=foo&barparam=beer");
         request.addAttribute("requestedUri", "http://localhost/rhn/somePage.do");
 
         RequestContext requestContext = new RequestContext(request);
@@ -146,7 +140,7 @@ public class RequestContextTest extends MockObjectTestCase {
         String url = requestContext.buildPageLink("someparam", "value");
         assertEquals("http://localhost/rhn/somePage.do?" +
                 "someparam=value&otherparam=foo&barparam=beer", url);
-        request.setupQueryString("otherparam=foo&barparam=beer&someparam=value");
+        request.setQueryString("otherparam=foo&barparam=beer&someparam=value");
         url = requestContext.buildPageLink("someparam", "zzzzz");
 
         assertEquals("http://localhost/rhn/somePage.do?" +

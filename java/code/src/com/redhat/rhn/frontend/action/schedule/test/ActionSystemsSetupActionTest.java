@@ -45,7 +45,7 @@ public class ActionSystemsSetupActionTest extends RhnBaseTestCase {
         ActionHelper sah = new ActionHelper();
         sah.setUpAction(action);
 
-        sah.getRequest().setupAddParameter("aid", (String)null);
+        sah.getRequest().addParameter("aid", (String)null);
         try {
             sah.executeAction();
             fail();
@@ -54,7 +54,7 @@ public class ActionSystemsSetupActionTest extends RhnBaseTestCase {
             //no op
         }
 
-        sah.getRequest().setupAddParameter("aid", "-99999");
+        sah.getRequest().addParameter("aid", "-99999");
         try {
             sah.executeAction();
             fail();
@@ -71,10 +71,10 @@ public class ActionSystemsSetupActionTest extends RhnBaseTestCase {
         ActionFactory.save(a);
 
         sah.setupClampListBounds();
-        sah.getRequest().setupAddParameter("aid", a.getId().toString());
-        sah.getRequest().setupAddParameter("filter_string", "");
-        sah.getRequest().setupAddParameter("newset", (String)null);
-        sah.getRequest().setupAddParameter("returnvisit", (String) null);
+        sah.getRequest().addParameter("aid", a.getId().toString());
+        sah.getRequest().addParameter("filter_string", "");
+        sah.getRequest().addParameter("newset", (String)null);
+        sah.getRequest().addParameter("returnvisit", (String) null);
 
         sah.executeAction();
         assertNotNull(sah.getRequest().getAttribute(RequestContext.PAGE_LIST));

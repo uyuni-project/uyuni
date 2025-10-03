@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 SUSE LLC
+ * Copyright (c) 2015--2025 SUSE LLC
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -15,66 +15,114 @@
  */
 package com.redhat.rhn.testing;
 
-import com.mockobjects.servlet.MockHttpServletRequest;
-
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.servlet.AsyncContext;
+import javax.servlet.DispatcherType;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.ServletInputStream;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpUpgradeHandler;
+import javax.servlet.http.Part;
 
 /**
  * RhnMockHttpServletRequest is a mock implementation of the
- * HttpServletRequest which fixes deficiencies in the MockObjects'
- * implementation of MockHttpServletRequest.
+ * HttpServletRequest which provides a simple mock for testing purposes.
  */
-public class RhnMockHttpServletRequest extends MockHttpServletRequest {
+public class RhnMockHttpServletRequest implements HttpServletRequest {
 
-    /** Context Path */
+    public static final String LOCALHOST = "localhost";
+    public static final String DEFAULT_SERVER_NAME = "host.mlm.suse.com";
+
     private String requestURL;
+    private String requestURI;
+    private String serverName;
+    private String contextPath;
+    private String servletPath;
+    private String pathInfo;
+    private String queryString;
+    private String method;
+    private String encoding;
+    private String contentType;
+    private int contentLength = -1;
     private Map<String, Object> attributes;
     private Map<String, String> headers;
-    private Map parameterMap;
+    private Map<String, String[]> parameters;
     private List<Locale> locales;
     private int port;
     private boolean secure;
     private List<Cookie> cookies;
-    private String encoding;
-    private String method;
-    private Enumeration<String> headerNames;
+    private HttpSession session;
+    private String remoteAddr;
+    private String remoteHost;
+    private int remotePort;
+    private String localAddr;
+    private String localName;
+    private int localPort;
+    private String protocol = "HTTP/1.1";
+    private String scheme = "http";
+    private String requestDispatcherURI;
+    private RequestDispatcher requestDispatcher;
+    private BufferedReader reader;
+    private ServletInputStream inputStream;
 
     /**
-     * default constructor
+     * Default constructor
      */
     public RhnMockHttpServletRequest() {
-        super();
-        attributes = new HashMap<>();
-        headers = new HashMap<>();
-        locales = new ArrayList<>();
-        parameterMap = new HashMap<>();
-        cookies = new ArrayList<>();
-        setupServerName("somehost.rhn.redhat.com");
-        setupGetRequestURI("/rhn/network/somepage.do");
-        setLocale(Locale.getDefault());
-        setSession(new RhnMockHttpSession());
-        setMethod("POST");
+        this.attributes = new HashMap<>();
+        this.headers = new HashMap<>();
+        this.locales = new ArrayList<>();
+        this.parameters = new HashMap<>();
+        this.cookies = new ArrayList<>();
+        this.serverName = DEFAULT_SERVER_NAME;
+        this.requestURI = "/mlm/network/somepage.do";
+        this.requestURL = "http://host.mlm.suse.com/mlm/network/somepage.do";
+        this.contextPath = "";
+        this.servletPath = "";
+        this.pathInfo = null;
+        this.queryString = null;
+        this.session = new RhnMockHttpSession();
+        this.method = "POST";
+        this.port = 80;
+        this.remoteAddr = "127.0.0.1";
+        this.remoteHost = LOCALHOST;
+        this.remotePort = 12345;
+        this.localAddr = "127.0.0.1";
+        this.localName = LOCALHOST;
+        this.localPort = 8080;
     }
 
     /**
-     * Overrides the MockHttpServletRequest to actually return a value.
-     * The Mock version returns null
-     * @return StringBuffer Context Path
+     * Get the request URL
+     *
+     * @return StringBuffer request URL
      */
-    @Override
-    public java.lang.StringBuffer getRequestURL() {
+    public StringBuffer getRequestURL() {
         return new StringBuffer(requestURL);
     }
 
     /**
      * Added the ability to specify a context path for testing.
+     *
      * @param pathIn Request url path.
      */
     public void setRequestURL(String pathIn) {
@@ -83,6 +131,7 @@ public class RhnMockHttpServletRequest extends MockHttpServletRequest {
 
     /**
      * Returns the attribute bound to the given name.
+     *
      * @param name Name of attribute whose value is sought.
      * @return Object value of attribute with given name.
      */
@@ -92,8 +141,9 @@ public class RhnMockHttpServletRequest extends MockHttpServletRequest {
     }
 
     /**
-     * Adds a new attribute the Request.
-     * @param name attribute name
+     * Adds a new attribute to the Request.
+     *
+     * @param name  attribute name
      * @param value attribute value
      */
     public void addAttribute(String name, Object value) {
@@ -101,8 +151,9 @@ public class RhnMockHttpServletRequest extends MockHttpServletRequest {
     }
 
     /**
-     * Sets an attribute the Request.
-     * @param name attribute name
+     * Sets an attribute to the Request.
+     *
+     * @param name  attribute name
      * @param value attribute value
      */
     @Override
@@ -110,8 +161,9 @@ public class RhnMockHttpServletRequest extends MockHttpServletRequest {
         attributes.put(name, value);
     }
 
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getHeader(String name) {
         return headers.get(name);
@@ -119,103 +171,174 @@ public class RhnMockHttpServletRequest extends MockHttpServletRequest {
 
     /**
      * Add custom header and value
-     * @param name header
+     *
+     * @param name  header
      * @param value header value
      */
     public void setHeader(String name, String value) {
         headers.put(name, value);
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public Enumeration getHeaderNames() {
-        return this.headerNames;
-    }
-
     /**
-     * Header Names
-     * @param headerNamesIn attribute headerNames
-     */
-    public void setupGetHeaderNames(Enumeration<String> headerNamesIn) {
-        this.headerNames = headerNamesIn;
-    }
-
-    /**
-     * Override to return 'null' if the requested param doesn't exist
-     * (Mock throws an AssertionError in this case :(
-     * This requires old junit4 as this class is not defined anymore in junit5
-     * @param paramName name of param to look up
-     * @return value of paramName, or 'null' if paramName isn't in the request
+     * {@inheritDoc}
      */
     @Override
-    public String getParameter(String paramName) {
-        try {
-            return super.getParameter(paramName);
-        }
-        catch (junit.framework.AssertionFailedError afe) {
-            // todo verify if that works uff this is such a PITA with legacy libs!
-            return null;
-        }
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public Map getParameterMap() {
-        return parameterMap;
+    public Enumeration<String> getHeaderNames() {
+        return Collections.enumeration(headers.keySet());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setupGetParameterMap(Map map) {
-        parameterMap = map;
+    public String getParameter(String paramName) {
+        String[] values = getParameterValues(paramName);
+        if (values == null) {
+            return null;
+        }
+
+        return values[0];
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Returns the current values of a request parameter while consuming the first entry
+     *
+     * @param name parameter name
+     * @return the array of values associated with the parameter
+     */
+    @Override
+    public String[] getParameterValues(String name) {
+        String[] existing = parameters.get(name);
+        if (existing == null || existing.length == 0) {
+            return null;
+        }
+
+        String[] reduced = Arrays.copyOfRange(existing, 1, existing.length);
+        parameters.put(name, reduced);
+        return existing;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<String, String[]> getParameterMap() {
+        return parameters;
+    }
+
+    /**
+     * Set the parameter map for this request
+     * @param map map of parameters
+     */
+    public void setParameters(Map<String, String[]> map) {
+        parameters = map;
+    }
+
+    /**
+     * Add a parameter to the request
+     *
+     * @param name  parameter name
+     * @param value parameter value
+     */
+    public void addParameter(String name, String value) {
+        addParameter(name, new String[]{value});
+    }
+
+    /**
+     * Add a parameter array to the request
+     *
+     * @param name   parameter name
+     * @param values parameter values
+     */
+    public void addParameter(String name, String[] values) {
+        String[] existing = parameters.get(name);
+        if (existing == null || existing.length == 0 || (existing.length == 1 && existing[0] == null)) {
+            parameters.put(name, values);
+        }
+        else {
+            String[] merged = Arrays.copyOf(existing, existing.length + values.length);
+            System.arraycopy(values, 0, merged, existing.length, values.length);
+            parameters.put(name, merged);
+        }
+    }
+
+
+    @Override
+    public Enumeration<String> getParameterNames() {
+        return Collections.enumeration(parameters.keySet());
+    }
+
+    /**
+     * Set parameter names with empty values
+     *
+     * @param names parameter names
+     */
+    public void setParameterNames(Enumeration<String> names) {
+        while (names.hasMoreElements()) {
+            parameters.put(names.nextElement(), new String[]{""});
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Locale getLocale() {
-        return this.locales.get(0);
+        return this.locales.isEmpty() ? Locale.getDefault() : this.locales.get(0);
     }
 
     /**
      * Set the primary locale of this Request.
+     *
      * @param lcl The primary Local of this Request.
      */
     public void setLocale(Locale lcl) {
-        this.locales.add(0, lcl);
+        if (this.locales.isEmpty()) {
+            this.locales.add(lcl);
+        }
+        else {
+            this.locales.set(0, lcl);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Enumeration<Locale> getLocales() {
+        return Collections.enumeration(this.locales);
     }
 
     /**
      * Set the list of Locales.
+     *
      * @param lcls List of Locales.
      */
-    public void setLocales(List lcls) {
+    public void setLocales(List<Locale> lcls) {
         this.locales = lcls;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public Enumeration getLocales() {
-        return java.util.Collections.enumeration(this.locales);
     }
 
     /**
      * Allows you to add a Cookie to the request to simulate receiving
      * a cookie from the browser.
+     *
      * @param cookie Cookie to added.
      */
     public void addCookie(Cookie cookie) {
         cookies.add(cookie);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Cookie[] getCookies() {
-        return (Cookie[]) cookies.toArray(new Cookie[0]);
+        return cookies.toArray(new Cookie[0]);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getServerPort() {
         return port;
@@ -223,47 +346,45 @@ public class RhnMockHttpServletRequest extends MockHttpServletRequest {
 
     /**
      * Sets the server port for this request.
+     *
      * @param p Port
      */
-    public void setupGetServerPort(int p) {
+    public void setServerPort(int p) {
         port = p;
     }
 
     /**
-     * Add a GET header to the request.
-     * @param headerName name of header to be added
-     * @param value value of header to be added.
-     */
-    public void setupGetHeader(String headerName, String value) {
-        headers.put(headerName, value);
-    }
-
-    /**
      * Configures whether this request is secure.
+     *
      * @param s Flag indicating whether request is secure.
      */
-    public void setupIsSecure(boolean s) {
+    public void setSecure(boolean s) {
         secure = s;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isSecure() {
         return secure;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getCharacterEncoding() {
         return encoding;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setCharacterEncoding(String encodingIn) {
         this.encoding = encodingIn;
     }
-
 
     /**
      * @return Returns the method.
@@ -273,8 +394,9 @@ public class RhnMockHttpServletRequest extends MockHttpServletRequest {
         return method;
     }
 
-
     /**
+     * Sets the method for this request.
+     *
      * @param methodIn The method to set.
      */
     public void setMethod(String methodIn) {
@@ -287,5 +409,362 @@ public class RhnMockHttpServletRequest extends MockHttpServletRequest {
     @Override
     public String getRemoteUser() {
         return null;
+    }
+
+
+    @Override
+    public String getAuthType() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public String getContextPath() {
+        return contextPath != null ? contextPath : "";
+    }
+
+    @Override
+    public String getPathInfo() {
+        return pathInfo;
+    }
+
+    /**
+     * Set the path info for this request.
+     *
+     * @param pathInfoIn
+     */
+    public void setPathInfo(String pathInfoIn) {
+        this.pathInfo = pathInfoIn;
+    }
+
+    @Override
+    public String getPathTranslated() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public String getQueryString() {
+        return queryString;
+    }
+
+    /**
+     * Set the query string for this request.
+     *
+     * @param queryStringIn query string to set.
+     */
+    public void setQueryString(String queryStringIn) {
+        this.queryString = queryStringIn;
+    }
+
+    @Override
+    public String getRequestURI() {
+        return requestURI;
+    }
+
+    /**
+     * Set the request URI for this request.
+     *
+     * @param requestURIIn request URI to set.
+     */
+    public void setRequestURI(String requestURIIn) {
+        this.requestURI = requestURIIn;
+    }
+
+    @Override
+    public String getRequestedSessionId() {
+        return session != null ? session.getId() : null;
+    }
+
+    @Override
+    public String getServletPath() {
+        return servletPath != null ? servletPath : "";
+    }
+
+    @Override
+    public HttpSession getSession() {
+        return session;
+    }
+
+    /**
+     * Set the session for this request.
+     *
+     * @param sessionIn HTTP session
+     */
+    public void setSession(HttpSession sessionIn) {
+        this.session = sessionIn;
+    }
+
+    @Override
+    public HttpSession getSession(boolean create) {
+        if (session == null && create) {
+            session = new RhnMockHttpSession();
+        }
+        return session;
+    }
+
+    @Override
+    public Principal getUserPrincipal() {
+        return null;
+    }
+
+    @Override
+    public boolean isRequestedSessionIdFromCookie() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean isRequestedSessionIdFromURL() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean isRequestedSessionIdFromUrl() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean isRequestedSessionIdValid() {
+        return session != null;
+    }
+
+    @Override
+    public boolean isUserInRole(String role) {
+        return false;
+    }
+
+    @Override
+    public String changeSessionId() {
+        return session != null ? session.getId() : null;
+    }
+
+    @Override
+    public boolean authenticate(HttpServletResponse response) throws IOException, ServletException {
+        return false;
+    }
+
+    @Override
+    public void login(String username, String password) throws ServletException {
+        // Mock implementation - do nothing
+    }
+
+    @Override
+    public void logout() throws ServletException {
+        // Mock implementation - do nothing
+    }
+
+    @Override
+    public Collection<Part> getParts() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    public Part getPart(String name) {
+        return null;
+    }
+
+    @Override
+    public <T extends HttpUpgradeHandler> T upgrade(Class<T> httpUpgradeHandlerClass)
+            throws IOException, ServletException {
+        return null;
+    }
+
+    @Override
+    public boolean isTrailerFieldsReady() {
+        return HttpServletRequest.super.isTrailerFieldsReady();
+    }
+
+    @Override
+    public Enumeration<String> getHeaders(String name) {
+        String value = headers.get(name);
+        return value != null ?
+                Collections.enumeration(Collections.singletonList(value)) :
+                Collections.emptyEnumeration();
+    }
+
+    @Override
+    public int getIntHeader(String name) {
+        String value = headers.get(name);
+        return value != null ? Integer.parseInt(value) : -1;
+    }
+
+    @Override
+    public long getDateHeader(String name) {
+        return -1;
+    }
+
+    @Override
+    public Enumeration<String> getAttributeNames() {
+        return Collections.enumeration(attributes.keySet());
+    }
+
+    @Override
+    public int getContentLength() {
+        return contentLength;
+    }
+
+    @Override
+    public long getContentLengthLong() {
+        return contentLength >= 0 ? contentLength : -1L;
+    }
+
+    @Override
+    public String getContentType() {
+        return contentType;
+    }
+
+    @Override
+    public ServletInputStream getInputStream() throws IOException {
+        return inputStream;
+    }
+
+    /**
+     * Set the input stream for this request.
+     * @param inputStreamIn input stream
+     */
+    public void setInputStream(ServletInputStream inputStreamIn) {
+        this.inputStream = inputStreamIn;
+    }
+
+    @Override
+    public String getProtocol() {
+        return protocol;
+    }
+
+    @Override
+    public String getScheme() {
+        return scheme;
+    }
+
+    @Override
+    public String getServerName() {
+        return serverName != null ? serverName : LOCALHOST;
+    }
+
+    /**
+     * Set the server name for this request.
+     *
+     * @param serverNameIn server name
+     */
+    public void setServerName(String serverNameIn) {
+        this.serverName = serverNameIn;
+    }
+
+    @Override
+    public BufferedReader getReader() throws IOException {
+        return reader;
+    }
+
+    public void setReader(BufferedReader readerIn) {
+        this.reader = readerIn;
+    }
+
+    public String getRemoteAddr() {
+        return remoteAddr;
+    }
+
+    /**
+     * Set the remote address for this request.
+     *
+     * @param remoteAddrIn remote address
+     */
+    public void setRemoteAddr(String remoteAddrIn) {
+        remoteAddr = remoteAddrIn;
+    }
+
+    public String getRemoteHost() {
+        return remoteHost;
+    }
+
+    /**
+     * Set the remote host for this request.
+     *
+     * @param map map of attributes to set
+     */
+    public void setAttributes(Map<String, Object> map) {
+        this.attributes = map;
+    }
+
+    @Override
+    public void removeAttribute(String name) {
+        attributes.remove(name);
+    }
+
+    /**
+     * Set a RequestDispatcher to be returned when getRequestDispatcher is called.
+     *
+     * @param requestDispatcherIn the RequestDispatcher to return
+     */
+    public void setRequestDispatcher(RequestDispatcher requestDispatcherIn) {
+        this.requestDispatcher = requestDispatcherIn;
+    }
+
+    @Override
+    public RequestDispatcher getRequestDispatcher(String uri) {
+        this.requestDispatcherURI = uri;
+        return requestDispatcher;
+    }
+
+    public String getRequestDispatcherURI() {
+        return requestDispatcherURI;
+    }
+
+    @Override
+    public String getRealPath(String path) {
+        return null;
+    }
+
+    @Override
+    public int getRemotePort() {
+        return remotePort;
+    }
+
+    @Override
+    public String getLocalName() {
+        return localName;
+    }
+
+    @Override
+    public String getLocalAddr() {
+        return localAddr;
+    }
+
+    @Override
+    public int getLocalPort() {
+        return localPort;
+    }
+
+    @Override
+    public ServletContext getServletContext() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public AsyncContext startAsync() throws IllegalStateException {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public AsyncContext startAsync(ServletRequest servletRequest, ServletResponse servletResponse)
+            throws IllegalStateException {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean isAsyncStarted() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean isAsyncSupported() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public AsyncContext getAsyncContext() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public DispatcherType getDispatcherType() {
+        return DispatcherType.REQUEST;
     }
 }

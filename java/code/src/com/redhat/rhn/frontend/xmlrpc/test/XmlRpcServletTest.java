@@ -23,9 +23,8 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.XmlRpcServlet;
 import com.redhat.rhn.frontend.xmlrpc.serializer.SerializerFactory;
 import com.redhat.rhn.testing.MockObjectTestCase;
+import com.redhat.rhn.testing.MockServletInputStream;
 import com.redhat.rhn.testing.UserTestUtils;
-
-import com.mockobjects.servlet.MockServletInputStream;
 
 import org.jmock.Expectations;
 import org.junit.jupiter.api.AfterEach;
@@ -175,7 +174,7 @@ public class XmlRpcServletTest extends MockObjectTestCase {
 
     @Test
     public void testTranslation() throws Exception {
-        User user = UserTestUtils.findNewUser("testuser", "testorg");
+        User user = UserTestUtils.createUser();
         doTest("<?xml version=\"1.0\"?> <methodCall> " +
                "<methodName>unittest.getUserLogin</methodName> <params> " +
                "<param><value><i4>" + user.getId() + "</i4></value></param>" +

@@ -22,6 +22,7 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.util.http.HttpClientAdapter;
 import com.redhat.rhn.manager.setup.ProxySettingsDto;
 import com.redhat.rhn.manager.setup.test.ProxySettingsManagerTest;
+import com.redhat.rhn.testing.TestStatics;
 import com.redhat.rhn.testing.httpservermock.HttpServerMock;
 import com.redhat.rhn.testing.httpservermock.Responder;
 
@@ -31,8 +32,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.net.URI;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -49,15 +50,10 @@ public class HttpClientAdapterTest  {
     private static final HttpServerMock SERVER_MOCK = new HttpServerMock();
 
     // String values
-    private static final String TEST_USER = "testuser";
     private static final String TEST_PASSWORD = "testpassword";
     private static final String TEST_AUTHORITY = "foobar.com:1234";
     private static final String PROXY_TEST_USER = "proxyuser";
     private static final String PROXY_TEST_PASSWORD = "proxypassword";
-    private static final String EXPECTED_AUTHORIZATION =
-            "Basic dGVzdHVzZXI6dGVzdHBhc3N3b3Jk";
-    private static final String EXPECTED_PROXY_AUTHORIZATION =
-            "Basic cHJveHl1c2VyOnByb3h5cGFzc3dvcmQ=";
 
     /**
      * Test for executeRequest(): an authenticated GET request.
@@ -68,15 +64,14 @@ public class HttpClientAdapterTest  {
         Callable<Integer> requester = () -> {
             HttpGet request = new HttpGet(SERVER_MOCK.getURI().toString());
             HttpClientAdapter client = new HttpClientAdapter();
-            return client.executeRequest(request, TEST_USER, TEST_PASSWORD)
+            return client.executeRequest(request, TestStatics.TEST_USER, TEST_PASSWORD)
                     .getStatusLine().getStatusCode();
         };
 
         Map<String, String> headers = new HashMap<>();
         headers.put("Host", SERVER_MOCK.getURI().getAuthority());
-        headers.put("Authorization", EXPECTED_AUTHORIZATION);
-        assertEquals((Integer) HttpStatus.SC_OK,
-                SERVER_MOCK.getResult(requester, new TestResponder(headers)));
+        headers.put("Authorization", basicAuthHeader(TestStatics.TEST_USER, TEST_PASSWORD));
+        assertEquals((Integer) HttpStatus.SC_OK, SERVER_MOCK.getResult(requester, new TestResponder(headers)));
     }
 
     /**
@@ -95,17 +90,16 @@ public class HttpClientAdapterTest  {
         Callable<Integer> requester = () -> {
             HttpGet request = new HttpGet("http://" + TEST_AUTHORITY);
             HttpClientAdapter client = new HttpClientAdapter();
-            return client.executeRequest(request, TEST_USER, TEST_PASSWORD)
+            return client.executeRequest(request, TestStatics.TEST_USER, TEST_PASSWORD)
                     .getStatusLine().getStatusCode();
         };
 
         Map<String, String> headers = new HashMap<>();
         headers.put("Host", TEST_AUTHORITY);
-        headers.put("Authorization", EXPECTED_AUTHORIZATION);
-        headers.put("Proxy-Authorization", EXPECTED_PROXY_AUTHORIZATION);
+        headers.put("Authorization", basicAuthHeader(TestStatics.TEST_USER, TEST_PASSWORD));
+        headers.put("Proxy-Authorization", basicAuthHeader(PROXY_TEST_USER, PROXY_TEST_PASSWORD));
         headers.put("Proxy-Connection", "Keep-Alive");
-        assertEquals((Integer) HttpStatus.SC_OK,
-                SERVER_MOCK.getResult(requester, new TestResponder(headers)));
+        assertEquals((Integer) HttpStatus.SC_OK, SERVER_MOCK.getResult(requester, new TestResponder(headers)));
     }
 
     /**
@@ -118,7 +112,7 @@ public class HttpClientAdapterTest  {
 
         /**
          * This constructor takes a map of headers and expected values to verify.
-         * @param headers the map of headers and expected values
+         * @param headersIn the map of headers and expected values
          */
         TestResponder(Map<String, String> headersIn) {
             headers = headersIn;
@@ -257,11 +251,22 @@ public class HttpClientAdapterTest  {
      *
      * @param uri the URI to call useProxyFor() with
      * @return the result of useProxyFor()
-     * @throws Exception in case of an Exception is thrown in here
      */
-    private boolean callUseProxyFor(URI uri) throws Exception {
-        Method method = HttpClientAdapter.class.getDeclaredMethod("useProxyFor", URI.class);
-        method.setAccessible(true);
-        return (Boolean) method.invoke(new HttpClientAdapter(), uri);
+    private boolean callUseProxyFor(URI uri) {
+        var httpClientAdapter = new HttpClientAdapter() {
+            @Override
+            public boolean useProxyFor(URI uri) {
+                return super.useProxyFor(uri);
+            }
+        };
+
+        return httpClientAdapter.useProxyFor(uri);
     }
+
+    private static String basicAuthHeader(String username, String password) {
+        String credentials = username + ":" + password;
+        String encoded = Base64.getEncoder().encodeToString(credentials.getBytes());
+        return "Basic " + encoded;
+    }
+
 }

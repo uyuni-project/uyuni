@@ -49,8 +49,7 @@ public class AuthHandlerTest extends RhnBaseTestCase {
     @Test
     public void testLoginLogout() throws Exception {
         AuthHandler handler = new AuthHandler();
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User user = UserTestUtils.createUser(this);
         long dbLifetime = Long.parseLong(Config.get().getString("session_database_lifetime"));
         long currentTime = System.currentTimeMillis() / 1000;
 
@@ -118,8 +117,7 @@ public class AuthHandlerTest extends RhnBaseTestCase {
     @Test
     public void testSessionKeyValidity() throws Exception {
         AuthHandler handler = new AuthHandler();
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User user = UserTestUtils.createUser(this);
 
         String key = handler.login(user.getLogin(), "password");
 

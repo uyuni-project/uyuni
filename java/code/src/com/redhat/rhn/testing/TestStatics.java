@@ -14,15 +14,19 @@
  */
 package com.redhat.rhn.testing;
 
+import static com.redhat.rhn.common.ExceptionMessage.NOT_INSTANTIABLE;
+
 /**
- * TestStatics.
+ * TestStatics holds global static vars used during testing
  */
 public class TestStatics {
-    /*
-     * global static vars used during testing
-     */
-    public static final String TESTORG = "testOrg";
-    public static final String TESTUSER = "testUser";
 
-    private TestStatics() { }
+    public static final String TEST_ORG = "testOrg";
+    public static final String TEST_USER = "testUser";
+    public static final String TEST_SAT_USER = "satUser";
+    public static final String TEST_ADMIN_USER = "adminUser";
+
+    private TestStatics() {
+        throw new UnsupportedOperationException(NOT_INSTANTIABLE);
+    }
 }

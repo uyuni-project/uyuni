@@ -12,6 +12,7 @@ import { Column } from "components/table/Column";
 import { Table } from "components/table/Table";
 
 import { localizedMoment } from "utils";
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network from "utils/network";
 
 import { DisplayHighstate } from "../state/display-highstate";
@@ -81,7 +82,7 @@ class RecurringActionsDetails extends React.Component<RecurringActionsDetailsPro
 
   deleteSchedule = (item) => {
     return Network.del("/rhn/manager/api/recurringactions/" + item.recurringActionId + "/delete")
-      .then((_) => {
+      .then(() => {
         this.props.onSetMessages(MessagesUtils.info("Schedule '" + item.scheduleName + "' has been deleted."));
         this.props.onCancel("back");
       })
@@ -146,7 +147,7 @@ class RecurringActionsDetails extends React.Component<RecurringActionsDetailsPro
 
   showScheduleDetails(data) {
     const { details } = this.state;
-    if (details == null) {
+    if (DEPRECATED_unsafeEquals(details, null)) {
       return false;
     }
     details.cronTimes.hour = details.cronTimes.hour.padStart(2, "0");

@@ -86,7 +86,7 @@ class RankingTable extends React.Component<RankingTableProps, RankingTableState>
 
     jQuery(this.node).sortable({
       update: this.handleUpdate.bind(this),
-      items: "a",
+      items: ".list-group-item",
     });
 
     this.handleUpdate();
@@ -105,12 +105,11 @@ class RankingTable extends React.Component<RankingTableProps, RankingTableState>
       // TODO: Provide a callback as prop for optional mapping and generify this default implementation
       const icon = channelIcon(i);
       return (
-        // eslint-disable-next-line jsx-a11y/anchor-is-valid
-        <a href="#" className="list-group-item" key={i.label} data-id={i.label}>
+        <div className="list-group-item" key={i.label} data-id={i.label}>
           <i className="fa fa-sort" />
           {icon}
           {i.name} ({i.label})
-        </a>
+        </div>
       );
     });
   }

@@ -14,21 +14,21 @@
  */
 package com.redhat.rhn.frontend.taglibs.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.redhat.rhn.domain.user.Address;
 import com.redhat.rhn.frontend.action.user.AddressesAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.taglibs.AddressTag;
 import com.redhat.rhn.testing.ActionHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.RhnMockJspWriter;
+import com.redhat.rhn.testing.TagTestHelper;
 import com.redhat.rhn.testing.TagTestUtils;
-
-import com.mockobjects.helpers.TagTestHelper;
-import com.mockobjects.servlet.MockJspWriter;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.tagext.Tag;
 
 /**
@@ -62,18 +62,16 @@ public class AddressTagTest extends RhnBaseTestCase {
         TagTestHelper tth = TagTestUtils.setupTagTest(addtg, null, sah.getRequest());
 
         // setup mock objects
-        MockJspWriter out = (MockJspWriter)tth.getPageContext().getOut();
-        String data = getPopulatedReturnValue(sah.getRequest(), sah.getUser().getId());
-        out.setExpectedData(
-            getPopulatedReturnValue(sah.getRequest(), sah.getUser().getId()));
+        RhnMockJspWriter out = (RhnMockJspWriter)tth.getPageContext().getOut();
+        String expectedData = getPopulatedReturnValue(sah.getUser().getId());
         addtg.setType(Address.TYPE_MARKETING);
         addtg.setUser(sah.getUser());
         addtg.setAddress(
-            (Address) sah.getRequest().getAttribute(RhnHelper.TARGET_ADDRESS_MARKETING));
+                (Address) sah.getRequest().getAttribute(RhnHelper.TARGET_ADDRESS_MARKETING));
 
         // ok let's test the tag
         tth.assertDoStartTag(Tag.SKIP_BODY);
-        out.verify();
+        assertEquals(expectedData, out.toString());
     }
 
     /* Test rendering an empty Address
@@ -83,19 +81,19 @@ public class AddressTagTest extends RhnBaseTestCase {
         AddressTag addtg = new AddressTag();
         TagTestHelper tth = TagTestUtils.setupTagTest(addtg, null, sah.getRequest());
         // setup mock objects
-        MockJspWriter out = (MockJspWriter)tth.getPageContext().getOut();
+        RhnMockJspWriter out = (RhnMockJspWriter)tth.getPageContext().getOut();
+        String expectedData = getEmptyReturnValue(sah.getUser().getId());
 
-        out.setExpectedData(getEmptyReturnValue(sah.getRequest(), sah.getUser().getId()));
         // The test User in the super class shouldn't have
         // a SHIPPING address
         addtg.setType(Address.TYPE_MARKETING);
         addtg.setUser(sah.getUser());
         // ok let's test the tag
         tth.assertDoStartTag(Tag.SKIP_BODY);
-        out.verify();
+        assertEquals(expectedData, out.toString());
     }
 
-    private String getPopulatedReturnValue(HttpServletRequest req, Long uid) {
+    private String getPopulatedReturnValue(Long uid) {
         return "<strong>Mailing Address</strong>" +
                 "<address>444 Castro<br />" +
                 "#1<br />" +
@@ -107,7 +105,7 @@ public class AddressTagTest extends RhnBaseTestCase {
                 uid + "\">" + "Edit</a>";
     }
 
-    private String getEmptyReturnValue(HttpServletRequest req, Long uid) {
+    private String getEmptyReturnValue(Long uid) {
         return "<strong>Mailing Address</strong>" +
                 "<div class=\"alert alert-info\">Address not filled in</div>" +
                 "<a class=\"btn btn-default\" href=\"/EditAddress.do?type=M&amp;uid=" +

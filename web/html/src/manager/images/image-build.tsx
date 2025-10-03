@@ -9,8 +9,7 @@ import { Form } from "components/input/form/Form";
 import { FormGroup } from "components/input/FormGroup";
 import { Text } from "components/input/text/Text";
 import { ActionChainLink, ActionLink } from "components/links";
-import { Messages } from "components/messages/messages";
-import { Utils as MessagesUtils } from "components/messages/messages";
+import { Messages, Utils as MessagesUtils } from "components/messages/messages";
 import { TopPanel } from "components/panels/TopPanel";
 
 import { localizedMoment } from "utils";
@@ -94,7 +93,7 @@ class BuildImage extends React.Component<Props, State> {
 
     Network.get("/rhn/manager/api/cm/imageprofiles/" + profileId).then((res) => {
       if (res.success) {
-        var data = res.data;
+        const data = res.data;
 
         // Prevent out-of-order async results
         if (!DEPRECATED_unsafeEquals(data.profileId, this.state.model.profileId)) return false;
@@ -232,8 +231,8 @@ class BuildImage extends React.Component<Props, State> {
   };
 
   renderProfileSummary() {
-    var p = this.state.profile;
-    var pselected = p.label ? true : false;
+    const p = this.state.profile;
+    const pselected = p.label ? true : false;
     return (
       <div className="col-md-5">
         <div className="panel panel-default">

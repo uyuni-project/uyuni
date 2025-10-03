@@ -4,12 +4,13 @@ import { useContext } from "react";
 import { DEPRECATED_Select, FormContext } from "components/input";
 
 type ModuleSelectorProps = {
-  modules: {
-    [name: string]: {
+  modules: Record<
+    string,
+    {
       default: string;
-      streams: Array<string>;
-    };
-  };
+      streams: string[];
+    }
+  >;
   isLoading: boolean;
 };
 

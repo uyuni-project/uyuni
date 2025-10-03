@@ -30,7 +30,6 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.RhnMockDynaActionForm;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
-import com.redhat.rhn.testing.RhnMockHttpSession;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.struts.action.ActionForward;
@@ -54,9 +53,6 @@ public class CreateActionTest extends RhnBaseTestCase {
 
         RhnMockHttpServletRequest request = TestUtils.getRequestWithSessionAndUser();
         RhnMockHttpServletResponse response = new RhnMockHttpServletResponse();
-        RhnMockHttpSession session = new RhnMockHttpSession();
-        request.setSession(session);
-        request.setupServerName("mymachine.rhndev.redhat.com");
 
         RhnMockDynaActionForm form = fillOutForm();
         form.set("synopsis", ""); //required field, so we should get a validation error
@@ -70,10 +66,8 @@ public class CreateActionTest extends RhnBaseTestCase {
         RhnSetManager.store(destinationChannels);
         String destinationId = destination.getId().toString();
         // both read twice
-        request.setupAddParameter("items_on_page", new String[]{destinationId});
-        request.setupAddParameter("items_on_page", new String[]{destinationId});
-        request.setupAddParameter("items_selected", new String[]{destinationId});
-        request.setupAddParameter("items_selected", new String[]{destinationId});
+        request.addParameter("items_on_page", new String[]{destinationId});
+        request.addParameter("items_selected", new String[]{destinationId});
 
         ActionForward result = action.create(mapping, form, request, response);
         assertEquals(result.getName(), "failure");

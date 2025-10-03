@@ -21,7 +21,6 @@ import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.frontend.events.TraceBackAction;
 import com.redhat.rhn.frontend.events.TraceBackEvent;
 import com.redhat.rhn.testing.MockObjectTestCase;
-import com.redhat.rhn.testing.RhnMockDynaActionForm;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 import com.redhat.rhn.testing.TestUtils;
@@ -32,14 +31,13 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.config.Configurator;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.DynaActionForm;
 import org.apache.struts.config.ExceptionConfig;
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.Vector;
 
 /**
  * BadParameterExceptionHandlerTest
@@ -73,8 +71,7 @@ public class BadParameterExceptionHandlerTest extends MockObjectTestCase {
         try {
             c.setString("web.traceback_mail", "jesusr@redhat.com");
 
-            BadParameterException ex =
-                new BadParameterException("Invalid test parameter");
+            BadParameterException ex = new BadParameterException("Invalid test parameter");
 
             final ActionMapping mapping = mock(ActionMapping.class, "mapping");
             context().checking(new Expectations() { {
@@ -82,16 +79,9 @@ public class BadParameterExceptionHandlerTest extends MockObjectTestCase {
                 will(returnValue(new ActionForward()));
             } });
 
-            // mockup a dumb ass Enumeration class for the Mock request
-            // jmock RULES!
-            RhnMockHttpServletRequest request = TestUtils
-                    .getRequestWithSessionAndUser();
-            request.setupGetHeaderNames(new Vector<String>().elements());
-            request.setupGetMethod("POST");
-            request.setupGetRequestURI("http://localhost:8080");
-            request.setupGetParameterNames(new Vector<String>().elements());
+            RhnMockHttpServletRequest request = TestUtils.getRequestWithSessionAndUser();
             RhnMockHttpServletResponse response = new RhnMockHttpServletResponse();
-            RhnMockDynaActionForm form = new RhnMockDynaActionForm();
+            DynaActionForm form = new DynaActionForm();
 
             BadParameterExceptionHandler bpeh = new BadParameterExceptionHandler();
 

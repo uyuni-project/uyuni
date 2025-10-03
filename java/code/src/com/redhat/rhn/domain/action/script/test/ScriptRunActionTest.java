@@ -45,8 +45,7 @@ public class ScriptRunActionTest extends RhnBaseTestCase {
 
     @Test
     public void testScriptAction() throws Exception {
-        User usr = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User usr = UserTestUtils.createUser(this);
         Action newA = ActionFactoryTest.createAction(usr, ActionFactory.TYPE_SCRIPT_RUN);
         Long id = newA.getId();
         assertInstanceOf(ScriptRunAction.class, newA);
@@ -106,8 +105,7 @@ public class ScriptRunActionTest extends RhnBaseTestCase {
 
     @Test
     public void testScriptActionDetails() throws Exception {
-        User usr = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User usr = UserTestUtils.createUser(this);
         Action newA = ActionFactoryTest.createAction(usr, ActionFactory.TYPE_SCRIPT_RUN);
         Long id = newA.getId();
         assertInstanceOf(ScriptRunAction.class, newA);

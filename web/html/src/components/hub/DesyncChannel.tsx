@@ -60,7 +60,7 @@ export class DesyncChannel extends React.Component<Props, State> {
 
     Network.del(resource, [this.props.label])
       .then(
-        (_response) => {
+        () => {
           showInfoToastr(t("The channels have been successfully desynced."));
           this.props.onDesync?.();
         },

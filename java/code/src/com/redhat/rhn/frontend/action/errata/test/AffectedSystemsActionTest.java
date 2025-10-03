@@ -30,13 +30,13 @@ import com.redhat.rhn.frontend.struts.RequestContext.Pagination;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.testing.ActionHelper;
 import com.redhat.rhn.testing.MockObjectTestCase;
-import com.redhat.rhn.testing.RhnMockDynaActionForm;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.DynaActionForm;
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.junit.jupiter.api.BeforeEach;
@@ -58,7 +58,7 @@ public class AffectedSystemsActionTest extends MockObjectTestCase {
         final ActionForward forward = new ActionForward("test", "path", true);
         RhnMockHttpServletRequest request = TestUtils.getRequestWithSessionAndUser();
         RhnMockHttpServletResponse response = new RhnMockHttpServletResponse();
-        RhnMockDynaActionForm form = new RhnMockDynaActionForm();
+        DynaActionForm form = new DynaActionForm();
 
         // No systems selected
         final ActionMapping mapping = mock(ActionMapping.class, "mapping");
@@ -67,11 +67,11 @@ public class AffectedSystemsActionTest extends MockObjectTestCase {
             will(returnValue(forward));
         } });
 
-        request.setupAddParameter("items_selected", (String[]) null);
-        request.setupAddParameter("items_on_page", (String[]) null);
+        request.addParameter("items_selected", (String[]) null);
+        request.addParameter("items_on_page", (String[]) null);
         addPagination(request);
-        request.setupAddParameter("filter_string", "");
-        request.setupAddParameter("eid", "12345");
+        request.addParameter("filter_string", "");
+        request.addParameter("eid", "12345");
 
         ActionForward sameForward = action.applyErrata(mapping, form, request, response);
         assertTrue(sameForward.getPath().startsWith("path?"));
@@ -84,24 +84,24 @@ public class AffectedSystemsActionTest extends MockObjectTestCase {
             will(returnValue(forward));
         } });
 
-        request.setupAddParameter("items_selected", "123456");
-        request.setupAddParameter("items_on_page", (String[]) null);
-        request.setupAddParameter("eid", "54321");
+        request.addParameter("items_selected", "123456");
+        request.addParameter("items_on_page", (String[]) null);
+        request.addParameter("eid", "54321");
 
         sameForward = action.applyErrata(mapping, form, request, response);
         assertEquals("path?eid=54321", sameForward.getPath());
     }
 
     private void addPagination(RhnMockHttpServletRequest r) {
-        r.setupAddParameter(Pagination.FIRST.getElementName(), "someValue");
-        r.setupAddParameter(Pagination.FIRST.getLowerAttributeName(), "10");
-        r.setupAddParameter(Pagination.PREV.getElementName(), "0");
-        r.setupAddParameter(Pagination.PREV.getLowerAttributeName(), "");
-        r.setupAddParameter(Pagination.NEXT.getElementName(), "20");
-        r.setupAddParameter(Pagination.NEXT.getLowerAttributeName(), "");
-        r.setupAddParameter(Pagination.LAST.getElementName(), "");
-        r.setupAddParameter(Pagination.LAST.getLowerAttributeName(), "20");
-        r.setupAddParameter("lower", "10");
+        r.addParameter(Pagination.FIRST.getElementName(), "someValue");
+        r.addParameter(Pagination.FIRST.getLowerAttributeName(), "10");
+        r.addParameter(Pagination.PREV.getElementName(), "0");
+        r.addParameter(Pagination.PREV.getLowerAttributeName(), "");
+        r.addParameter(Pagination.NEXT.getElementName(), "20");
+        r.addParameter(Pagination.NEXT.getLowerAttributeName(), "");
+        r.addParameter(Pagination.LAST.getElementName(), "");
+        r.addParameter(Pagination.LAST.getLowerAttributeName(), "20");
+        r.addParameter("lower", "10");
     }
 
     @Test
@@ -123,10 +123,10 @@ public class AffectedSystemsActionTest extends MockObjectTestCase {
                     server.getId(), errata.getId());
         }
 
-        ah.getRequest().setupAddParameter("eid", errata.getId().toString());
-        ah.getRequest().setupAddParameter("eid", errata.getId().toString()); // stupid mock
-        ah.getRequest().setupAddParameter("items_on_page", (String[]) null);
-        ah.getRequest().setupAddParameter("items_selected", (String[]) null);
+        ah.getRequest().addParameter("eid", errata.getId().toString());
+        ah.getRequest().addParameter("eid", errata.getId().toString()); // stupid mock
+        ah.getRequest().addParameter("items_on_page", (String[]) null);
+        ah.getRequest().addParameter("items_selected", (String[]) null);
         ah.executeAction("selectall");
 
         RhnSetActionTest.verifyRhnSetData(ah.getUser().getId(),

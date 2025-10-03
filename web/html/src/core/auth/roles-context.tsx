@@ -2,8 +2,10 @@
 // and jade mixin userRoles
 import * as React from "react";
 
-export type rolesType = Array<string>;
-declare var global_userRoles: rolesType | undefined;
+export type rolesType = string[];
+declare global {
+  var global_userRoles: rolesType | undefined;
+}
 
 const RolesContext = React.createContext<rolesType>([]);
 

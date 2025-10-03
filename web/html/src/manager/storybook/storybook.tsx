@@ -16,8 +16,8 @@ const STORAGE_KEY = "storybook-show-code";
 export const Storybook = () => {
   const { tab, story } = useQueryParams();
 
-  const normalize = (input: string = "") => input.replaceAll(" ", "-").toLowerCase();
-  const isDeprecated = (input: string = "") => input.startsWith("DEPRECATED_");
+  const normalize = (input = "") => input.replaceAll(" ", "-").toLowerCase();
+  const isDeprecated = (input = "") => input.startsWith("DEPRECATED_");
 
   const activeTab = normalize(tab) || normalize(stories[0]?.title);
 

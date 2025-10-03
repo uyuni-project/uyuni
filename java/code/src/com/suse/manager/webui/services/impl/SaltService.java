@@ -693,9 +693,11 @@ public class SaltService implements SystemQuery, SaltApi {
      * {@inheritDoc}
      */
     @Override
-    public Map<String, Result<List<SaltUtil.RunningInfo>>> running(MinionList target) {
+    public Map<String, CompletionStage<Result<List<SaltUtil.RunningInfo>>>> running(MinionList target,
+            CompletableFuture<GenericError> cancel) {
         try {
-            return callSync(SaltUtil.running(), target);
+            return completableAsyncCall(SaltUtil.running(), target, getEventStream(), cancel)
+                    .orElseGet(Collections::emptyMap);
         }
         catch (SaltException e) {
             throw new RhnRuntimeException(e);

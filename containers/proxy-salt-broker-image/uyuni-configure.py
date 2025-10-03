@@ -10,6 +10,7 @@ with open("/etc/uyuni/config.yaml", encoding="utf-8") as source:
 
     # write to file
     with open("/etc/rhn/rhn.conf", "w", encoding="utf-8") as dest:
+        # pylint: disable-next=inconsistent-quotes
         dest.write(f"rhn_parent={config['server']}")
 
     # read to existing config file

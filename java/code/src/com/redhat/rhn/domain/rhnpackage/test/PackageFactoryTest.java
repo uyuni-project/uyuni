@@ -70,7 +70,7 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
         Package pkg = PackageTest.createTestPackage(user.getOrg());
         assertNotNull(pkg.getOrg().getId());
 
-        User usr = UserTestUtils.createUser("testUser", pkg.getOrg().getId());
+        User usr = new UserTestUtils.UserBuilder().orgId(pkg.getOrg().getId()).build();
         Package pkg2 = PackageFactory.lookupByIdAndUser(pkg.getId(), usr);
         assertNotNull(pkg2);
         // Check to make sure it returns NULL

@@ -43,7 +43,7 @@ const PaygSshDataEdit = (props: Props) => {
       });
   };
 
-  let title = props.labelPrefix + " SSH connection";
+  const title = props.labelPrefix + " SSH connection";
 
   return (
     <div id={props.labelPrefix + "-panel-wrapper"}>
@@ -66,7 +66,7 @@ const PaygSshDataEdit = (props: Props) => {
             <PaygSshDataView payg={props.paygSshData} isInstance={props.isInstance} />
           </React.Fragment>
         )}
-        renderCreationContent={({ open, item, setItem, errors }) => {
+        renderCreationContent={({ item, setItem, errors }) => {
           if (isLoading) {
             return <Loading text={t("Editing ssh connection data..")} />;
           }

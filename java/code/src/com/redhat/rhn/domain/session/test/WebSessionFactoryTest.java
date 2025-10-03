@@ -30,7 +30,6 @@ import com.redhat.rhn.domain.session.WebSessionFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.session.SessionManager;
 import com.redhat.rhn.testing.RhnBaseTestCase;
-import com.redhat.rhn.testing.TestCaseHelper;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.apache.commons.lang3.StringUtils;
@@ -47,6 +46,8 @@ public class WebSessionFactoryTest extends RhnBaseTestCase {
     // (MTV -> RDU) they can fail and this time value
     // can be tweaked accordingly.
     private static final int EXP_TIME = 5000;
+    public static final String SESSION_TEST = "sessionTest";
+    public static final String SESSION_TEST_ORG = "SessionTestOrg";
 
 
     private void verifySession(WebSession s) {
@@ -101,12 +102,12 @@ public class WebSessionFactoryTest extends RhnBaseTestCase {
         verifySession(s);
         assertNotNull(s);
 
-        Long userId = UserTestUtils.createUser("sessionTest1", "SessionTestOrg");
+        Long userId = UserTestUtils.createUser("sessionTest1", SESSION_TEST_ORG).getId();
         s.setWebUserId(userId);
         User u = s.getUser();
         assertNotNull(u);
         assertEquals(userId, u.getId());
-        Long userId2 = UserTestUtils.createUser("sessionTest2", "SessionTestOrg");
+        Long userId2 = UserTestUtils.createUser("sessionTest2", SESSION_TEST_ORG).getId();
         assertNotEquals(userId, userId2);
         try {
             s.setWebUserId(userId2);
@@ -118,34 +119,9 @@ public class WebSessionFactoryTest extends RhnBaseTestCase {
         assertNull(s.getUser());
     }
 
-
-    /**
-     * Not ready for use yet.
-     */
-    public void xxxxUserOnSession() {
-        WebSession s = WebSessionFactory.createSession();
-        WebSessionFactory.save(s);
-        s = (WebSession) reload(s);
-
-        Long lastId = null;
-        for (int i = 0; i < 50; i++) {
-            Long userId = UserTestUtils.createUser("st" +
-                    Math.random() + System.currentTimeMillis(), "SessionTestOrg");
-            assertNotEquals(userId, lastId);
-            s.setWebUserId(userId);
-            User u = s.getUser();
-            assertNotNull(u);
-            assertEquals(userId, u.getId());
-            lastId = userId;
-            WebSessionFactory.save(s);
-            s = (WebSession) reload(s);
-            TestCaseHelper.tearDownHelper();
-        }
-    }
-
     @Test
     public void testUnifiedCreate() {
-        User u = UserTestUtils.findNewUser("sessionTest", "SessionTestOrg");
+        User u = UserTestUtils.createUser(SESSION_TEST, SESSION_TEST_ORG);
         WebSession s = SessionManager.makeSession(u.getId(), (long) EXP_TIME);
 
         WebSession s2 = WebSessionFactory.lookupById(s.getId());
@@ -159,7 +135,7 @@ public class WebSessionFactoryTest extends RhnBaseTestCase {
         WebSession s = WebSessionFactory.createSession();
         verifySession(s);
         assertNotNull(s);
-        Long userId = UserTestUtils.createUser("sessionTest", "SessionTestOrg");
+        Long userId = UserTestUtils.createUser(SESSION_TEST, SESSION_TEST_ORG).getId();
 
         long expTime = TimeUtils.currentTimeSeconds() + EXP_TIME;
         s.setExpires(expTime);
@@ -220,7 +196,7 @@ public class WebSessionFactoryTest extends RhnBaseTestCase {
         verifySession(s);
         assertNotNull(s);
 
-        Long userId = UserTestUtils.createUser("sessionTest", "SessionTestOrg");
+        Long userId = UserTestUtils.createUser(SESSION_TEST, SESSION_TEST_ORG).getId();
         long expTime = TimeUtils.currentTimeSeconds() - EXP_TIME;
         s.setExpires(expTime);
         s.setWebUserId(userId);

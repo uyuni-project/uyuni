@@ -39,6 +39,7 @@ window.pageRenderers.spaengine.init = function init(timeout?: number) {
     appInstance.addRoutes([
       {
         path: /.*/,
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         handler: function (route, a, b) {
           const screen = new HtmlScreen();
 
@@ -78,7 +79,7 @@ window.pageRenderers.spaengine.init = function init(timeout?: number) {
       jQuery(".modal-backdrop").addClass("removeWhenNavigationEnds");
       jQuery("body").removeClass("modal-open");
 
-      let urlParser = document.createElement("a");
+      const urlParser = document.createElement("a");
       urlParser.href = navigation.path;
       if (isLoginPage(urlParser.pathname)) {
         window.location = navigation.path;

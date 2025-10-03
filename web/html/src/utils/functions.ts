@@ -1,3 +1,4 @@
+import { DEPRECATED_unsafeEquals } from "./legacy";
 import { getUrlParam, urlBounce } from "./url";
 
 // This as opposed to a regular type definition lets Typescript know we're dealing with a real promise-like in async contexts
@@ -40,9 +41,11 @@ function sortById(aRaw: any, bRaw: any): number {
 }
 
 function sortByText(aRaw: any, bRaw: any, columnKey: string, sortDirection: number): number {
-  var a = aRaw[columnKey];
-  var b = bRaw[columnKey];
-  var result = (a == null ? "" : a).toLowerCase().localeCompare((b == null ? "" : b).toLowerCase());
+  const a = aRaw[columnKey];
+  const b = bRaw[columnKey];
+  const result = (DEPRECATED_unsafeEquals(a, null) ? "" : a)
+    .toLowerCase()
+    .localeCompare((DEPRECATED_unsafeEquals(b, null) ? "" : b).toLowerCase());
   return (result || sortById(aRaw, bRaw)) * sortDirection;
 }
 

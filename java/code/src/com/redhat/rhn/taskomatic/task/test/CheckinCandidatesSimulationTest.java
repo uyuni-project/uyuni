@@ -44,7 +44,7 @@ public class CheckinCandidatesSimulationTest  {
 
     // Calculations are done in seconds
     private int thresholdMax = thresholdDays * 86400;
-    private int thresholdMin = Math.round(thresholdMax / 2);
+    private int thresholdMin = thresholdMax / 2;
     private double thresholdMean = thresholdMax;
     private double thresholdStddev = thresholdMax / 6;
 

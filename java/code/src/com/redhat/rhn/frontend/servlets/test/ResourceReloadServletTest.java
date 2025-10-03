@@ -19,8 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.frontend.servlets.ResourceReloadServlet;
 import com.redhat.rhn.testing.MockObjectTestCase;
-
-import com.mockobjects.servlet.MockServletOutputStream;
+import com.redhat.rhn.testing.MockServletOutputStream;
 
 import org.jmock.Expectations;
 import org.junit.jupiter.api.AfterEach;

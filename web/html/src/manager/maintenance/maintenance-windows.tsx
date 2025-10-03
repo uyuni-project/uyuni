@@ -3,8 +3,7 @@ import { useEffect, useState } from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 
-import { Messages } from "components/messages/messages";
-import { Utils as MessagesUtils } from "components/messages/messages";
+import { Messages, Utils as MessagesUtils } from "components/messages/messages";
 
 import Network from "utils/network";
 
@@ -108,7 +107,7 @@ const MaintenanceWindows = () => {
 
   const update = (itemIn) => {
     return Network.post("/rhn/manager/api/maintenance/" + window.type + "/save", itemIn)
-      .then((_) => {
+      .then(() => {
         const successMsg = (
           <span>
             {t(
@@ -129,7 +128,7 @@ const MaintenanceWindows = () => {
 
   const deleteItem = (itemIn) => {
     return Network.del("/rhn/manager/api/maintenance/" + window.type + "/delete", itemIn)
-      .then((_) => {
+      .then(() => {
         setMessages(
           MessagesUtils.info(
             (window.type === "schedule" ? "Schedule " : "Calendar ") + "'" + itemIn.name + "' has been deleted."
@@ -146,7 +145,7 @@ const MaintenanceWindows = () => {
 
   const refreshCalendar = (itemIn) => {
     return Network.post("/rhn/manager/api/maintenance/calendar/refresh", itemIn)
-      .then((_) => {
+      .then(() => {
         const msgs = messages.concat(MessagesUtils.info(t("Calendar successfully refreshed")));
         setAction(undefined);
         setMessages(msgs.slice(-messagesCounterLimit));
@@ -159,7 +158,7 @@ const MaintenanceWindows = () => {
   const handleForwardAction = (newAction?: string) => {
     const loc = window.location;
     if (newAction === undefined || newAction === "back") {
-      listMaintenanceWindowItems().then((data) => {
+      listMaintenanceWindowItems().then(() => {
         window.history.pushState(null, "", loc.pathname + loc.search);
       });
     } else {

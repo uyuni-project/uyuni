@@ -1,8 +1,7 @@
 import * as React from "react";
 import { useRef, useState } from "react";
 
-import { AsyncButton } from "components/buttons";
-import { Button } from "components/buttons";
+import { AsyncButton, Button } from "components/buttons";
 import { InnerPanel } from "components/panels/InnerPanel";
 
 import MaintenanceCalendarEdit from "./calendar-edit";

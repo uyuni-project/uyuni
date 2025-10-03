@@ -330,10 +330,8 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testLookupByOriginal() throws Exception {
-
-        Long orgId = UserTestUtils.createOrg("testOrgLookupByOriginal");
-        Org org = OrgFactory.lookupById(orgId);
-        Errata testErrata = createTestErrata(orgId);
+        Org org = UserTestUtils.createOrg("testOrgLookupByOriginal");
+        Errata testErrata = createTestErrata(org.getId());
 
         ErrataHelper.cloneErrataFaster(testErrata.getId(), org);
 

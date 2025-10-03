@@ -7,7 +7,7 @@ import { MessagesContainer } from "components/toastr";
 import { PackageList } from "./list";
 
 type RendererProps = {
-  selected: Array<string>;
+  selected: string[];
   selectedChannel: string | null;
 };
 

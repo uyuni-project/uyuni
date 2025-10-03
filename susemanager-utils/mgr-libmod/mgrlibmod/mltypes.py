@@ -1,6 +1,7 @@
 """
 Input types for the mgr-libmod
 """
+
 # pylint: disable-next=unused-import
 from typing import List, Tuple, Any, AnyStr, Union, Optional, Dict, Set, cast
 

@@ -135,7 +135,7 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
     @SuppressWarnings("unchecked")
     @Test
     public void testGetWrongOrg() {
-        Org otherOrg = UserTestUtils.createNewOrgFull("foobar org");
+        Org otherOrg = UserTestUtils.createOrg("foobar org");
         String label = "TestVHM_" + TestUtils.randomString(10);
         createVirtualHostManagerWithLabel(label, otherOrg);
 
@@ -218,7 +218,7 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testGetDeleteWrongOrg() throws UnsupportedEncodingException {
-        Org otherOrg = UserTestUtils.createNewOrgFull("foobar org");
+        Org otherOrg = UserTestUtils.createOrg("foobar org");
         String label = "TestVHM_" + TestUtils.randomString(10);
         VirtualHostManager vhm = createVirtualHostManagerWithLabel(label, otherOrg);
         Request request = getPostRequestWithCsrfAndBody("/manager/api/vhms/delete/" + vhm.getId(), "");

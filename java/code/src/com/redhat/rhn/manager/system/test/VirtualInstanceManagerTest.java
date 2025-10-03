@@ -67,8 +67,7 @@ public class VirtualInstanceManagerTest extends RhnBaseTestCase {
     @Override
     @BeforeEach
     public void setUp() {
-        user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        user = UserTestUtils.createUser(this);
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         server = ServerFactoryTest.createTestServer(user, true);
     }

@@ -34,7 +34,7 @@ public class MgrServerTest extends RhnBaseTestCase {
 
     @Test
     public void testSatServer() throws Exception {
-        User user = UserTestUtils.findNewUser("testuser", "testorg");
+        User user = UserTestUtils.createUser();
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server server = ServerFactoryTest.createTestServer(user, true,
                 ServerConstants.getServerGroupTypeSaltEntitled(),

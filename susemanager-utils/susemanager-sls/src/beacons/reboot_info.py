@@ -57,6 +57,7 @@ def beacon(config):
 
     # pylint: disable-next=undefined-variable
     try:
+        # pylint: disable-next=undefined-variable
         result = __salt__["reboot_info.reboot_required"]()
     except KeyError:
         # reboot_info salt module could be not yet in synchronized

@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring
 #
 # Licensed under the GNU General Public License Version 3
 #
@@ -27,6 +28,7 @@
 import logging
 import sys
 import gettext
+
 try:
     from xmlrpc import client as xmlrpclib
 except ImportError:
@@ -34,15 +36,18 @@ except ImportError:
 from spacecmd.i18n import _N
 from spacecmd.utils import *
 
-translation = gettext.translation('spacecmd', fallback=True)
+translation = gettext.translation("spacecmd", fallback=True)
 try:
     _ = translation.ugettext
 except AttributeError:
     _ = translation.gettext
 
+
 def help_api(self):
-    print(_('api: call server API with arguments directly'))
-    print(_('''usage: api [options] API_STRING)
+    print(_("api: call server API with arguments directly"))
+    print(
+        _(
+            """usage: api [options] API_STRING)
 
 options:
   -A, --args  Arguments for the API other than session id in comma separated
@@ -55,14 +60,16 @@ examples:
   api --args "sysgroup_A" systemgroup.listSystems
   api -A "rhel-i386-server-5,2011-04-01,2011-05-01" -F "%(name)s" \\
       channel.software.listAllPackages
-'''))
+"""
+        )
+    )
 
 
 def do_api(self, args):
     arg_parser = get_argument_parser()
-    arg_parser.add_argument('-A', '--args', default='')
-    arg_parser.add_argument('-F', '--format', default='')
-    arg_parser.add_argument('-o', '--output', default='')
+    arg_parser.add_argument("-A", "--args", default="")
+    arg_parser.add_argument("-F", "--format", default="")
+    arg_parser.add_argument("-o", "--output", default="")
 
     # set glob = False otherwise repo filters cannot set wildcard characters
     args, options = parse_command_arguments(args, arg_parser, glob=False)
@@ -76,6 +83,7 @@ def do_api(self, args):
 
     if options.output:
         try:
+            # pylint: disable-next=unspecified-encoding
             output = open(options.output, "w")
         except IOError:
             logging.warning(_N("Could not open to write: %s"), options.output)
@@ -92,7 +100,13 @@ def do_api(self, args):
         return
 
     try:
-        if api_name in ['api.getVersion', 'api.systemVersion']:
+        if api_name in [
+            "api.getVersion",
+            "api.systemVersion",
+            "api.getApiNamespaces",
+            "api.getApiCallList",
+            "api.getApiNamespaceCallList",
+        ]:
             res = api(*api_args)
         else:
             res = api(self.session, *api_args)
@@ -106,10 +120,10 @@ def do_api(self, args):
         else:
             json_dump(res, output, indent=2, cls=CustomJsonEncoder)
 
-        if (output != sys.stdout):
+        if output != sys.stdout:
             output.close()
 
     except xmlrpclib.Fault as e:
         logging.error(e)
-        if (output != sys.stdout):
+        if output != sys.stdout:
             output.close()

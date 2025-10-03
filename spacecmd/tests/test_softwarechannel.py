@@ -5,11 +5,14 @@ Test software channel module.
 
 from mock import Mock, MagicMock, patch, call
 import spacecmd.softwarechannel
+
+# pylint: disable-next=unused-import
 from helpers import shell, assert_expect, assert_list_args_expect
 import pytest
 import rpm
 
 
+# pylint: disable-next=redefined-outer-name
 def test_softwarechannel_list_doreturn_nolabels(shell):
     """
     Test do_softwarechannel_list no labels, return data.
@@ -28,6 +31,8 @@ def test_softwarechannel_list_doreturn_nolabels(shell):
     assert not shell.list_child_channels.called
     assert not shell.list_base_channels.called
 
+
+# pylint: disable-next=redefined-outer-name
 def test_softwarechannel_list_noreturn_nolabels(shell):
     """
     Test do_softwarechannel_list no labels, no return data.
@@ -38,13 +43,17 @@ def test_softwarechannel_list_noreturn_nolabels(shell):
     shell.client.channel.listAllChannels = MagicMock(return_value=[])
     mprint = MagicMock()
     with patch("spacecmd.softwarechannel.print", mprint):
-        out = spacecmd.softwarechannel.do_softwarechannel_list(shell, "", doreturn=False)
+        out = spacecmd.softwarechannel.do_softwarechannel_list(
+            shell, "", doreturn=False
+        )
     assert out is None
     assert not shell.help_softwarechannel_list.called
     assert not shell.client.channel.software.getDetails.called
     assert not shell.list_child_channels.called
     assert not shell.list_base_channels.called
 
+
+# pylint: disable-next=redefined-outer-name
 def test_softwarechannel_list_noreturn_labels_std(shell):
     """
     Test do_softwarechannel_list with label, no return data, standard output.
@@ -52,15 +61,20 @@ def test_softwarechannel_list_noreturn_labels_std(shell):
     :param shell:
     :return:
     """
-    shell.client.channel.listAllChannels = MagicMock(return_value=[
-        {"label": "label-one"}, {"label": "label-last"},
-        {"label": "label-two"}, {"label": "label-three"},
-    ])
+    shell.client.channel.listAllChannels = MagicMock(
+        return_value=[
+            {"label": "label-one"},
+            {"label": "label-last"},
+            {"label": "label-two"},
+            {"label": "label-three"},
+        ]
+    )
 
     mprint = MagicMock()
     with patch("spacecmd.softwarechannel.print", mprint):
         out = spacecmd.softwarechannel.do_softwarechannel_list(
-            shell, "", doreturn=False)
+            shell, "", doreturn=False
+        )
 
     assert out is None
     assert not shell.help_softwarechannel_list.called
@@ -68,9 +82,12 @@ def test_softwarechannel_list_noreturn_labels_std(shell):
     assert not shell.list_child_channels.called
     assert shell.client.channel.listAllChannels.called
 
-    assert_list_args_expect(mprint.call_args_list,
-                            ["label-last", "label-one", "label-three", "label-two"])
+    assert_list_args_expect(
+        mprint.call_args_list, ["label-last", "label-one", "label-three", "label-two"]
+    )
 
+
+# pylint: disable-next=redefined-outer-name
 def test_softwarechannel_list_noreturn_labels_verbose(shell):
     """
     Test do_softwarechannel_list with label, no return data, verbose output.
@@ -78,21 +95,24 @@ def test_softwarechannel_list_noreturn_labels_verbose(shell):
     :param shell:
     :return:
     """
-    shell.client.channel.listAllChannels = MagicMock(return_value=[
-        {"label": "test_channel"},
-    ])
-    shell.client.channel.software.getDetails = MagicMock(side_effect=[
-        {"summary": "Summary of test_channel"},
-        {"summary": "Summary of child_channel"},
-    ])
-    shell.list_child_channels = MagicMock(return_value=[
-        "child_channel"
-    ])
+    shell.client.channel.listAllChannels = MagicMock(
+        return_value=[
+            {"label": "test_channel"},
+        ]
+    )
+    shell.client.channel.software.getDetails = MagicMock(
+        side_effect=[
+            {"summary": "Summary of test_channel"},
+            {"summary": "Summary of child_channel"},
+        ]
+    )
+    shell.list_child_channels = MagicMock(return_value=["child_channel"])
 
     mprint = MagicMock()
     with patch("spacecmd.softwarechannel.print", mprint):
         out = spacecmd.softwarechannel.do_softwarechannel_list(
-            shell, "-v", doreturn=False)
+            shell, "-v", doreturn=False
+        )
 
     assert out is None
     assert not shell.help_softwarechannel_list.called
@@ -100,9 +120,10 @@ def test_softwarechannel_list_noreturn_labels_verbose(shell):
     assert shell.client.channel.software.getDetails.called
     assert shell.client.channel.listAllChannels.called
 
-    assert_expect(mprint.call_args_list,
-                    'test_channel : Summary of test_channel')
+    assert_expect(mprint.call_args_list, "test_channel : Summary of test_channel")
 
+
+# pylint: disable-next=redefined-outer-name
 def test_softwarechannel_list_noreturn_labels_verbose_tree(shell):
     """
     Test do_softwarechannel_list with label, no return data, verbose output with tree.
@@ -110,25 +131,26 @@ def test_softwarechannel_list_noreturn_labels_verbose_tree(shell):
     :param shell:
     :return:
     """
-    shell.client.channel.listAllChannels = MagicMock(return_value=[
-        {"any_channel": "any_channel"},
-    ])
-    shell.client.channel.software.getDetails = MagicMock(side_effect=[
-        {"summary": "Summary of test_channel"},
-        {"summary": "Summary of child_channel"},
-    ])
-    shell.list_child_channels = MagicMock(return_value=[
-        "child_channel"
-    ])
+    shell.client.channel.listAllChannels = MagicMock(
+        return_value=[
+            {"any_channel": "any_channel"},
+        ]
+    )
+    shell.client.channel.software.getDetails = MagicMock(
+        side_effect=[
+            {"summary": "Summary of test_channel"},
+            {"summary": "Summary of child_channel"},
+        ]
+    )
+    shell.list_child_channels = MagicMock(return_value=["child_channel"])
 
-    shell.list_base_channels = MagicMock(return_value=[
-        "base_channel"
-    ])
+    shell.list_base_channels = MagicMock(return_value=["base_channel"])
 
     mprint = MagicMock()
     with patch("spacecmd.softwarechannel.print", mprint):
         out = spacecmd.softwarechannel.do_softwarechannel_list(
-            shell, "-v -t", doreturn=False)
+            shell, "-v -t", doreturn=False
+        )
 
     assert out is None
     assert not shell.client.channel.listAllChannels.called
@@ -136,10 +158,16 @@ def test_softwarechannel_list_noreturn_labels_verbose_tree(shell):
     assert shell.list_child_channels.called
     assert shell.client.channel.software.getDetails.called
 
-    assert_list_args_expect(mprint.call_args_list,
-                            ['base_channel : Summary of test_channel',
-                                ' |-child_channel : Summary of child_channel'])
+    assert_list_args_expect(
+        mprint.call_args_list,
+        [
+            "base_channel : Summary of test_channel",
+            " |-child_channel : Summary of child_channel",
+        ],
+    )
 
+
+# pylint: disable-next=redefined-outer-name
 def test_softwarechannel_listmanageablechannels_noarg(shell):
     """
     Test do_softwarechannel_listmanageablechannels without arguments.
@@ -147,22 +175,29 @@ def test_softwarechannel_listmanageablechannels_noarg(shell):
     :param shell:
     :return:
     """
-    shell.client.channel.listManageableChannels = MagicMock(return_value=[
-        {"label": "x_channel"},
-        {"label": "z_channel"},
-        {"label": "a_channel"},
-    ])
+    shell.client.channel.listManageableChannels = MagicMock(
+        return_value=[
+            {"label": "x_channel"},
+            {"label": "z_channel"},
+            {"label": "a_channel"},
+        ]
+    )
 
     mprint = MagicMock()
     with patch("spacecmd.softwarechannel.print", mprint):
-        out = spacecmd.softwarechannel.do_softwarechannel_listmanageablechannels(shell, "")
+        out = spacecmd.softwarechannel.do_softwarechannel_listmanageablechannels(
+            shell, ""
+        )
 
     assert out is None
     assert not shell.client.channel.software.getDetails.called
     assert shell.client.channel.listManageableChannels.called
-    assert_list_args_expect(mprint.call_args_list,
-                            ["a_channel", "x_channel", "z_channel"])
+    assert_list_args_expect(
+        mprint.call_args_list, ["a_channel", "x_channel", "z_channel"]
+    )
 
+
+# pylint: disable-next=redefined-outer-name
 def test_softwarechannel_listmanageablechannels_default_verbose(shell):
     """
     Test do_softwarechannel_listmanageablechannels with verbose arg (all).
@@ -170,33 +205,44 @@ def test_softwarechannel_listmanageablechannels_default_verbose(shell):
     :param shell:
     :return:
     """
-    shell.client.channel.listManageableChannels = MagicMock(return_value=[
-        {"label": "x_channel"},
-        {"label": "z_channel"},
-        {"label": "b_channel"},
-        {"label": "a_channel"},
-    ])
-    shell.client.channel.software.getDetails = MagicMock(side_effect=[
-        {"summary": "A summary"},
-        {"summary": "B summary"},
-        {"summary": "X summary"},
-        {"summary": "Z summary"},
-    ])
+    shell.client.channel.listManageableChannels = MagicMock(
+        return_value=[
+            {"label": "x_channel"},
+            {"label": "z_channel"},
+            {"label": "b_channel"},
+            {"label": "a_channel"},
+        ]
+    )
+    shell.client.channel.software.getDetails = MagicMock(
+        side_effect=[
+            {"summary": "A summary"},
+            {"summary": "B summary"},
+            {"summary": "X summary"},
+            {"summary": "Z summary"},
+        ]
+    )
 
     mprint = MagicMock()
     with patch("spacecmd.softwarechannel.print", mprint):
         out = spacecmd.softwarechannel.do_softwarechannel_listmanageablechannels(
-            shell, "--verbose")
+            shell, "--verbose"
+        )
 
     assert out is None
     assert shell.client.channel.software.getDetails.called
     assert shell.client.channel.listManageableChannels.called
-    assert_list_args_expect(mprint.call_args_list,
-                            ["a_channel : A summary",
-                                "b_channel : B summary",
-                                "x_channel : X summary",
-                                "z_channel : Z summary"])
+    assert_list_args_expect(
+        mprint.call_args_list,
+        [
+            "a_channel : A summary",
+            "b_channel : B summary",
+            "x_channel : X summary",
+            "z_channel : Z summary",
+        ],
+    )
 
+
+# pylint: disable-next=redefined-outer-name
 def test_softwarechannel_listmanageablechannels_data_sparse(shell):
     """
     Test do_softwarechannel_listmanageablechannels data out, short.
@@ -204,21 +250,27 @@ def test_softwarechannel_listmanageablechannels_data_sparse(shell):
     :param shell:
     :return:
     """
-    shell.client.channel.listManageableChannels = MagicMock(return_value=[
-        {"label": "x_channel"},
-        {"label": "z_channel"},
-        {"label": "a_channel"},
-    ])
+    shell.client.channel.listManageableChannels = MagicMock(
+        return_value=[
+            {"label": "x_channel"},
+            {"label": "z_channel"},
+            {"label": "a_channel"},
+        ]
+    )
 
     mprint = MagicMock()
     with patch("spacecmd.softwarechannel.print", mprint):
-        out = spacecmd.softwarechannel.do_softwarechannel_listmanageablechannels(shell, "", doreturn=True)
+        out = spacecmd.softwarechannel.do_softwarechannel_listmanageablechannels(
+            shell, "", doreturn=True
+        )
 
     assert out is not None
     assert not shell.client.channel.software.getDetails.called
     assert shell.client.channel.listManageableChannels.called
     assert out == ["a_channel", "x_channel", "z_channel"]
 
+
+# pylint: disable-next=redefined-outer-name
 def test_softwarechannel_listmanageablechannels_data_verbose(shell):
     """
     Test do_softwarechannel_listmanageablechannels with verbose arg (all).
@@ -226,29 +278,36 @@ def test_softwarechannel_listmanageablechannels_data_verbose(shell):
     :param shell:
     :return:
     """
-    shell.client.channel.listManageableChannels = MagicMock(return_value=[
-        {"label": "x_channel"},
-        {"label": "z_channel"},
-        {"label": "b_channel"},
-        {"label": "a_channel"},
-    ])
-    shell.client.channel.software.getDetails = MagicMock(side_effect=[
-        {"summary": "A summary"},
-        {"summary": "B summary"},
-        {"summary": "X summary"},
-        {"summary": "Z summary"},
-    ])
+    shell.client.channel.listManageableChannels = MagicMock(
+        return_value=[
+            {"label": "x_channel"},
+            {"label": "z_channel"},
+            {"label": "b_channel"},
+            {"label": "a_channel"},
+        ]
+    )
+    shell.client.channel.software.getDetails = MagicMock(
+        side_effect=[
+            {"summary": "A summary"},
+            {"summary": "B summary"},
+            {"summary": "X summary"},
+            {"summary": "Z summary"},
+        ]
+    )
 
     mprint = MagicMock()
     with patch("spacecmd.softwarechannel.print", mprint):
         out = spacecmd.softwarechannel.do_softwarechannel_listmanageablechannels(
-            shell, "--verbose", doreturn=True)
+            shell, "--verbose", doreturn=True
+        )
 
     assert out is not None
     assert not shell.client.channel.software.getDetails.called
     assert shell.client.channel.listManageableChannels.called
     assert out == ["a_channel", "b_channel", "x_channel", "z_channel"]
 
+
+# pylint: disable-next=redefined-outer-name
 def test_listchildchannels(shell):
     """
     Test do_softwarechannel_listchildchannels noargs.
@@ -256,16 +315,26 @@ def test_listchildchannels(shell):
     :param shell:
     :return:
     """
-    shell.list_child_channels = MagicMock(return_value=["x_child_channel", "z_child_channel",
-                                                        "b_child_channel", "a_child_channel",])
+    shell.list_child_channels = MagicMock(
+        return_value=[
+            "x_child_channel",
+            "z_child_channel",
+            "b_child_channel",
+            "a_child_channel",
+        ]
+    )
     mprint = MagicMock()
     with patch("spacecmd.softwarechannel.print", mprint):
         spacecmd.softwarechannel.do_softwarechannel_listchildchannels(shell, "")
 
     assert not shell.client.channel.software.getDetails.called
-    assert_list_args_expect(mprint.call_args_list,
-                            ['a_child_channel\nb_child_channel\nx_child_channel\nz_child_channel'])
+    assert_list_args_expect(
+        mprint.call_args_list,
+        ["a_child_channel\nb_child_channel\nx_child_channel\nz_child_channel"],
+    )
 
+
+# pylint: disable-next=redefined-outer-name
 def test_listchildchannels_verbose(shell):
     """
     Test do_softwarechannel_listchildchannels verbose.
@@ -273,25 +342,41 @@ def test_listchildchannels_verbose(shell):
     :param shell:
     :return:
     """
-    shell.list_child_channels = MagicMock(return_value=["x_child_channel", "z_child_channel",
-                                                        "b_child_channel", "a_child_channel",])
-    shell.client.channel.software.getDetails = MagicMock(side_effect=[
-        {"summary": "A summary"},
-        {"summary": "B summary"},
-        {"summary": "X summary"},
-        {"summary": "Z summary"},
-    ])
+    shell.list_child_channels = MagicMock(
+        return_value=[
+            "x_child_channel",
+            "z_child_channel",
+            "b_child_channel",
+            "a_child_channel",
+        ]
+    )
+    shell.client.channel.software.getDetails = MagicMock(
+        side_effect=[
+            {"summary": "A summary"},
+            {"summary": "B summary"},
+            {"summary": "X summary"},
+            {"summary": "Z summary"},
+        ]
+    )
     mprint = MagicMock()
     with patch("spacecmd.softwarechannel.print", mprint):
-        spacecmd.softwarechannel.do_softwarechannel_listchildchannels(shell, "--verbose")
+        spacecmd.softwarechannel.do_softwarechannel_listchildchannels(
+            shell, "--verbose"
+        )
 
     assert shell.client.channel.software.getDetails.called
-    assert_list_args_expect(mprint.call_args_list,
-                            ['a_child_channel : A summary',
-                                'b_child_channel : B summary',
-                                'x_child_channel : X summary',
-                                'z_child_channel : Z summary'])
+    assert_list_args_expect(
+        mprint.call_args_list,
+        [
+            "a_child_channel : A summary",
+            "b_child_channel : B summary",
+            "x_child_channel : X summary",
+            "z_child_channel : Z summary",
+        ],
+    )
 
+
+# pylint: disable-next=redefined-outer-name
 def test_listsystems_noargs(shell):
     """
     Test do_softwarechannel_listsystems no args.
@@ -308,6 +393,8 @@ def test_listsystems_noargs(shell):
     assert not shell.client.channel.software.listSubscribedSystems.called
     assert shell.help_softwarechannel_listsystems.called
 
+
+# pylint: disable-next=redefined-outer-name
 def test_listsystems_noargs_channel_no_data(shell):
     """
     Test do_softwarechannel_listsystems one channel, no data.
@@ -315,23 +402,31 @@ def test_listsystems_noargs_channel_no_data(shell):
     :param shell:
     :return:
     """
-    shell.client.channel.software.listSubscribedSystems = MagicMock(return_value=[
-        {"name": "one.acme.lan"},
-        {"name": "two.acme.lan"},
-        {"name": "zetta.acme.lan"},
-        {"name": "third.zoo.lan"},
-    ])
+    shell.client.channel.software.listSubscribedSystems = MagicMock(
+        return_value=[
+            {"name": "one.acme.lan"},
+            {"name": "two.acme.lan"},
+            {"name": "zetta.acme.lan"},
+            {"name": "third.zoo.lan"},
+        ]
+    )
     mprint = MagicMock()
     with patch("spacecmd.softwarechannel.print", mprint):
-        out = spacecmd.softwarechannel.do_softwarechannel_listsystems(shell, "my_channel")
+        out = spacecmd.softwarechannel.do_softwarechannel_listsystems(
+            shell, "my_channel"
+        )
 
     assert not shell.help_softwarechannel_listsystems.called
     assert out is None
     assert mprint.called
     assert shell.client.channel.software.listSubscribedSystems.called
-    assert_list_args_expect(mprint.call_args_list,
-                            ['one.acme.lan\nthird.zoo.lan\ntwo.acme.lan\nzetta.acme.lan'])
+    assert_list_args_expect(
+        mprint.call_args_list,
+        ["one.acme.lan\nthird.zoo.lan\ntwo.acme.lan\nzetta.acme.lan"],
+    )
 
+
+# pylint: disable-next=redefined-outer-name
 def test_listsystems_noargs_channel_data_return(shell):
     """
     Test do_softwarechannel_listsystems one channel, data return.
@@ -339,21 +434,27 @@ def test_listsystems_noargs_channel_data_return(shell):
     :param shell:
     :return:
     """
-    shell.client.channel.software.listSubscribedSystems = MagicMock(return_value=[
-        {"name": "one.acme.lan"},
-        {"name": "two.acme.lan"},
-        {"name": "zetta.acme.lan"},
-        {"name": "third.zoo.lan"},
-    ])
+    shell.client.channel.software.listSubscribedSystems = MagicMock(
+        return_value=[
+            {"name": "one.acme.lan"},
+            {"name": "two.acme.lan"},
+            {"name": "zetta.acme.lan"},
+            {"name": "third.zoo.lan"},
+        ]
+    )
     mprint = MagicMock()
     with patch("spacecmd.softwarechannel.print", mprint):
-        out = spacecmd.softwarechannel.do_softwarechannel_listsystems(shell, "my_channel", doreturn=True)
+        out = spacecmd.softwarechannel.do_softwarechannel_listsystems(
+            shell, "my_channel", doreturn=True
+        )
 
     assert not shell.help_softwarechannel_listsystems.called
     assert not mprint.called
     assert out is not None
-    assert out == ['one.acme.lan', 'third.zoo.lan', 'two.acme.lan', 'zetta.acme.lan']
+    assert out == ["one.acme.lan", "third.zoo.lan", "two.acme.lan", "zetta.acme.lan"]
 
+
+# pylint: disable-next=redefined-outer-name
 def test_listpackages_noargs_nodata(shell):
     """
     Test do_softwarechannel_listpackages no args. No data return.
@@ -369,6 +470,8 @@ def test_listpackages_noargs_nodata(shell):
     assert not shell.client.channel.software.listLatestPackages.called
     assert shell.help_softwarechannel_listpackages.called
 
+
+# pylint: disable-next=redefined-outer-name
 def test_listpackages_too_much_args_nodata(shell):
     """
     Test do_softwarechannel_listpackages with too much much arguments.
@@ -379,12 +482,15 @@ def test_listpackages_too_much_args_nodata(shell):
     mprint = MagicMock()
     with patch("spacecmd.softwarechannel.print", mprint):
         out = spacecmd.softwarechannel.do_softwarechannel_listpackages(
-            shell, "one_channel other_channel somemore_channels")
+            shell, "one_channel other_channel somemore_channels"
+        )
 
     assert out is None
     assert not shell.client.channel.software.listLatestPackages.called
     assert shell.help_softwarechannel_listpackages.called
 
+
+# pylint: disable-next=redefined-outer-name
 def test_listpackages_one_channel_no_data(shell):
     """
     Test do_softwarechannel_listpackages with one channel. No data return.
@@ -394,24 +500,45 @@ def test_listpackages_one_channel_no_data(shell):
     """
     shell.client.channel.software.listLatestPackages = MagicMock(
         return_value=[
-            {"name": "emacs", "version": "42.0",
-                "release": "9", "epoch": "", "arch": "x86_64"},
-            {"name": "emacs-nox", "version": "42.0",
-                "release": "10", "epoch": "", "arch_label": "x86_64"},
-            {"name": "tiff", "version": "1.0",
-                "release": "11", "epoch": "3", "arch": "amd64"},
+            {
+                "name": "emacs",
+                "version": "42.0",
+                "release": "9",
+                "epoch": "",
+                "arch": "x86_64",
+            },
+            {
+                "name": "emacs-nox",
+                "version": "42.0",
+                "release": "10",
+                "epoch": "",
+                "arch_label": "x86_64",
+            },
+            {
+                "name": "tiff",
+                "version": "1.0",
+                "release": "11",
+                "epoch": "3",
+                "arch": "amd64",
+            },
         ]
     )
     mprint = MagicMock()
     with patch("spacecmd.softwarechannel.print", mprint):
-        out = spacecmd.softwarechannel.do_softwarechannel_listpackages(shell, "one_channel")
+        out = spacecmd.softwarechannel.do_softwarechannel_listpackages(
+            shell, "one_channel"
+        )
 
     assert out is None
     assert not shell.help_softwarechannel_listpackages.called
     assert shell.client.channel.software.listLatestPackages.called
-    assert_list_args_expect(mprint.call_args_list,
-                            ['emacs-42.0-9.x86_64\nemacs-nox-42.0-10.x86_64\ntiff-1.0-11:3.x86_64'])
+    assert_list_args_expect(
+        mprint.call_args_list,
+        ["emacs-42.0-9.x86_64\nemacs-nox-42.0-10.x86_64\ntiff-1.0-11:3.x86_64"],
+    )
 
+
+# pylint: disable-next=redefined-outer-name
 def test_listpackages_one_channel_with_data(shell):
     """
     Test do_softwarechannel_listpackages with one channel. With data return.
@@ -421,25 +548,46 @@ def test_listpackages_one_channel_with_data(shell):
     """
     shell.client.channel.software.listLatestPackages = MagicMock(
         return_value=[
-            {"name": "emacs", "version": "42.0",
-                "release": "9", "epoch": "", "arch": "x86_64"},
-            {"name": "emacs-nox", "version": "42.0",
-                "release": "10", "epoch": "", "arch_label": "x86_64"},
-            {"name": "tiff", "version": "1.0",
-                "release": "11", "epoch": "3", "arch": "amd64"},
+            {
+                "name": "emacs",
+                "version": "42.0",
+                "release": "9",
+                "epoch": "",
+                "arch": "x86_64",
+            },
+            {
+                "name": "emacs-nox",
+                "version": "42.0",
+                "release": "10",
+                "epoch": "",
+                "arch_label": "x86_64",
+            },
+            {
+                "name": "tiff",
+                "version": "1.0",
+                "release": "11",
+                "epoch": "3",
+                "arch": "amd64",
+            },
         ]
     )
     mprint = MagicMock()
     with patch("spacecmd.softwarechannel.print", mprint):
         out = spacecmd.softwarechannel.do_softwarechannel_listpackages(
-            shell, "one_channel", doreturn=True)
+            shell, "one_channel", doreturn=True
+        )
 
     assert out is not None
     assert not shell.help_softwarechannel_listpackages.called
     assert shell.client.channel.software.listLatestPackages.called
-    assert out == ['emacs-42.0-9.x86_64', 'emacs-nox-42.0-10.x86_64',
-                    'tiff-1.0-11:3.x86_64']
+    assert out == [
+        "emacs-42.0-9.x86_64",
+        "emacs-nox-42.0-10.x86_64",
+        "tiff-1.0-11:3.x86_64",
+    ]
 
+
+# pylint: disable-next=redefined-outer-name
 def test_listallpackages_noargs_nodata(shell):
     """
     Test do_softwarechannel_listallpackages no args. No data return.
@@ -455,6 +603,8 @@ def test_listallpackages_noargs_nodata(shell):
     assert not shell.client.channel.software.listAllPackages.called
     assert shell.help_softwarechannel_listallpackages.called
 
+
+# pylint: disable-next=redefined-outer-name
 def test_listallpackages_too_much_args_nodata(shell):
     """
     Test do_softwarechannel_listallpackages with too much much arguments.
@@ -465,12 +615,15 @@ def test_listallpackages_too_much_args_nodata(shell):
     mprint = MagicMock()
     with patch("spacecmd.softwarechannel.print", mprint):
         out = spacecmd.softwarechannel.do_softwarechannel_listallpackages(
-            shell, "one_channel other_channel somemore_channels")
+            shell, "one_channel other_channel somemore_channels"
+        )
 
     assert out is None
     assert not shell.client.channel.software.listAllPackages.called
     assert shell.help_softwarechannel_listallpackages.called
 
+
+# pylint: disable-next=redefined-outer-name
 def test_listallpackages_one_channel_no_data(shell):
     """
     Test do_softwarechannel_listallpackages with one channel. No data return.
@@ -480,24 +633,45 @@ def test_listallpackages_one_channel_no_data(shell):
     """
     shell.client.channel.software.listAllPackages = MagicMock(
         return_value=[
-            {"name": "emacs", "version": "42.0",
-                "release": "9", "epoch": "", "arch": "x86_64"},
-            {"name": "emacs-nox", "version": "42.0",
-                "release": "10", "epoch": "", "arch_label": "x86_64"},
-            {"name": "tiff", "version": "1.0",
-                "release": "11", "epoch": "3", "arch": "amd64"},
+            {
+                "name": "emacs",
+                "version": "42.0",
+                "release": "9",
+                "epoch": "",
+                "arch": "x86_64",
+            },
+            {
+                "name": "emacs-nox",
+                "version": "42.0",
+                "release": "10",
+                "epoch": "",
+                "arch_label": "x86_64",
+            },
+            {
+                "name": "tiff",
+                "version": "1.0",
+                "release": "11",
+                "epoch": "3",
+                "arch": "amd64",
+            },
         ]
     )
     mprint = MagicMock()
     with patch("spacecmd.softwarechannel.print", mprint):
-        out = spacecmd.softwarechannel.do_softwarechannel_listallpackages(shell, "one_channel")
+        out = spacecmd.softwarechannel.do_softwarechannel_listallpackages(
+            shell, "one_channel"
+        )
 
     assert out is None
     assert not shell.help_softwarechannel_listallpackages.called
     assert shell.client.channel.software.listAllPackages.called
-    assert_list_args_expect(mprint.call_args_list,
-                            ['emacs-42.0-9.x86_64\nemacs-nox-42.0-10.x86_64\ntiff-1.0-11:3.x86_64'])
+    assert_list_args_expect(
+        mprint.call_args_list,
+        ["emacs-42.0-9.x86_64\nemacs-nox-42.0-10.x86_64\ntiff-1.0-11:3.x86_64"],
+    )
 
+
+# pylint: disable-next=redefined-outer-name
 def test_listallpackages_one_channel_with_data(shell):
     """
     Test do_softwarechannel_listallpackages with one channel. With data return.
@@ -507,26 +681,48 @@ def test_listallpackages_one_channel_with_data(shell):
     """
     shell.client.channel.software.listAllPackages = MagicMock(
         return_value=[
-            {"name": "emacs", "version": "42.0",
-                "release": "9", "epoch": "", "arch": "x86_64"},
-            {"name": "emacs-nox", "version": "42.0",
-                "release": "10", "epoch": "", "arch_label": "x86_64"},
-            {"name": "tiff", "version": "1.0",
-                "release": "11", "epoch": "3", "arch": "amd64"},
+            {
+                "name": "emacs",
+                "version": "42.0",
+                "release": "9",
+                "epoch": "",
+                "arch": "x86_64",
+            },
+            {
+                "name": "emacs-nox",
+                "version": "42.0",
+                "release": "10",
+                "epoch": "",
+                "arch_label": "x86_64",
+            },
+            {
+                "name": "tiff",
+                "version": "1.0",
+                "release": "11",
+                "epoch": "3",
+                "arch": "amd64",
+            },
         ]
     )
     mprint = MagicMock()
     with patch("spacecmd.softwarechannel.print", mprint):
         out = spacecmd.softwarechannel.do_softwarechannel_listallpackages(
-            shell, "one_channel", doreturn=True)
+            shell, "one_channel", doreturn=True
+        )
 
     assert out is not None
     assert not shell.help_softwarechannel_listallpackages.called
     assert shell.client.channel.software.listAllPackages.called
-    assert out == ['emacs-42.0-9.x86_64', 'emacs-nox-42.0-10.x86_64',
-                    'tiff-1.0-11:3.x86_64']
+    assert out == [
+        "emacs-42.0-9.x86_64",
+        "emacs-nox-42.0-10.x86_64",
+        "tiff-1.0-11:3.x86_64",
+    ]
 
-@pytest.mark.skipif(not hasattr(rpm, "labelCompare"), reason="Full RPM bindings required")
+
+@pytest.mark.skipif(
+    not hasattr(rpm, "labelCompare"), reason="Full RPM bindings required"
+)
 def test_filter_latest_packages():
     """
     Test filter_latest_packages function.
@@ -534,16 +730,41 @@ def test_filter_latest_packages():
     :return:
     """
     data = [
-        {"name": "emacs", "version": "42.0",
-            "release": "9", "epoch": "", "arch": "x86_64"},
-        {"name": "emacs", "version": "42.0",
-            "release": "10", "epoch": "", "arch_label": "x86_64"},
-        {"name": "emacs", "version": "42.0",
-            "release": "8", "epoch": "", "arch": "x86_64"},
-        {"name": "emacs", "version": "42.1",
-            "release": "7", "epoch": "", "arch": "x86_64"},
-        {"name": "emacs", "version": "41.9",
-            "release": "11", "epoch": "", "arch_label": "x86_64"},
+        {
+            "name": "emacs",
+            "version": "42.0",
+            "release": "9",
+            "epoch": "",
+            "arch": "x86_64",
+        },
+        {
+            "name": "emacs",
+            "version": "42.0",
+            "release": "10",
+            "epoch": "",
+            "arch_label": "x86_64",
+        },
+        {
+            "name": "emacs",
+            "version": "42.0",
+            "release": "8",
+            "epoch": "",
+            "arch": "x86_64",
+        },
+        {
+            "name": "emacs",
+            "version": "42.1",
+            "release": "7",
+            "epoch": "",
+            "arch": "x86_64",
+        },
+        {
+            "name": "emacs",
+            "version": "41.9",
+            "release": "11",
+            "epoch": "",
+            "arch_label": "x86_64",
+        },
     ]
     out = list(spacecmd.softwarechannel.filter_latest_packages(data))
     assert len(out) == 1
@@ -555,6 +776,8 @@ def test_filter_latest_packages():
     assert res["arch"] == "x86_64"
     assert res["epoch"] == ""
 
+
+# pylint: disable-next=redefined-outer-name
 def test_listlatestpackages_noargs_nodata(shell):
     """
     Test do_softwarechannel_listlatestpackages without args. No data return.
@@ -569,6 +792,8 @@ def test_listlatestpackages_noargs_nodata(shell):
     assert not shell.client.channel.software.listAllPackages.called
     assert shell.help_softwarechannel_listlatestpackages.called
 
+
+# pylint: disable-next=redefined-outer-name
 def test_listlatestpackages_wrongargs_nodata(shell):
     """
     Test do_softwarechannel_listlatestpackages with wrong amount of args. No data return.
@@ -578,12 +803,15 @@ def test_listlatestpackages_wrongargs_nodata(shell):
     mprint = MagicMock()
     with patch("spacecmd.softwarechannel.print", mprint):
         out = spacecmd.softwarechannel.do_softwarechannel_listlatestpackages(
-            shell, "one two three")
+            shell, "one two three"
+        )
 
     assert out is None
     assert not shell.client.channel.software.listAllPackages.called
     assert shell.help_softwarechannel_listlatestpackages.called
 
+
+# pylint: disable-next=redefined-outer-name
 def test_listlatestpackages_channel_packages(shell):
     """
     Test do_softwarechannel_listlatestpackages with channel supplied.
@@ -592,26 +820,46 @@ def test_listlatestpackages_channel_packages(shell):
     """
     shell.client.channel.software.listAllPackages = MagicMock(
         return_value=[
-            {"name": "emacs", "version": "42.0",
-                "release": "9", "epoch": "", "arch": "x86_64"},
-            {"name": "emacs-nox", "version": "42.0",
-                "release": "10", "epoch": "", "arch_label": "x86_64"},
-            {"name": "tiff", "version": "1.0",
-                "release": "11", "epoch": "3", "arch": "amd64"},
+            {
+                "name": "emacs",
+                "version": "42.0",
+                "release": "9",
+                "epoch": "",
+                "arch": "x86_64",
+            },
+            {
+                "name": "emacs-nox",
+                "version": "42.0",
+                "release": "10",
+                "epoch": "",
+                "arch_label": "x86_64",
+            },
+            {
+                "name": "tiff",
+                "version": "1.0",
+                "release": "11",
+                "epoch": "3",
+                "arch": "amd64",
+            },
         ]
     )
     mprint = MagicMock()
     with patch("spacecmd.softwarechannel.print", mprint):
         out = spacecmd.softwarechannel.do_softwarechannel_listlatestpackages(
-            shell, "some_channel")
+            shell, "some_channel"
+        )
 
     assert out is None
     assert not shell.help_softwarechannel_listlatestpackages.called
     assert shell.client.channel.software.listAllPackages.called
 
-    assert_list_args_expect(mprint.call_args_list,
-                            ['emacs-42.0-9.x86_64\nemacs-nox-42.0-10.x86_64\ntiff-1.0-11:3.x86_64'])
+    assert_list_args_expect(
+        mprint.call_args_list,
+        ["emacs-42.0-9.x86_64\nemacs-nox-42.0-10.x86_64\ntiff-1.0-11:3.x86_64"],
+    )
 
+
+# pylint: disable-next=redefined-outer-name
 def test_listlatestpackages_channel_packages_as_data(shell):
     """
     Test do_softwarechannel_listlatestpackages with channel supplied. Return as data.
@@ -620,25 +868,47 @@ def test_listlatestpackages_channel_packages_as_data(shell):
     """
     shell.client.channel.software.listAllPackages = MagicMock(
         return_value=[
-            {"name": "emacs", "version": "42.0",
-                "release": "9", "epoch": "", "arch": "x86_64"},
-            {"name": "emacs-nox", "version": "42.0",
-                "release": "10", "epoch": "", "arch_label": "x86_64"},
-            {"name": "tiff", "version": "1.0",
-                "release": "11", "epoch": "3", "arch": "amd64"},
+            {
+                "name": "emacs",
+                "version": "42.0",
+                "release": "9",
+                "epoch": "",
+                "arch": "x86_64",
+            },
+            {
+                "name": "emacs-nox",
+                "version": "42.0",
+                "release": "10",
+                "epoch": "",
+                "arch_label": "x86_64",
+            },
+            {
+                "name": "tiff",
+                "version": "1.0",
+                "release": "11",
+                "epoch": "3",
+                "arch": "amd64",
+            },
         ]
     )
     mprint = MagicMock()
     with patch("spacecmd.softwarechannel.print", mprint):
         out = spacecmd.softwarechannel.do_softwarechannel_listlatestpackages(
-            shell, "some_channel", doreturn=True)
+            shell, "some_channel", doreturn=True
+        )
 
     assert out is not None
     assert not shell.help_softwarechannel_listlatestpackages.called
     assert shell.client.channel.software.listAllPackages.called
 
-    assert out == ['emacs-42.0-9.x86_64', 'emacs-nox-42.0-10.x86_64', 'tiff-1.0-11:3.x86_64']
+    assert out == [
+        "emacs-42.0-9.x86_64",
+        "emacs-nox-42.0-10.x86_64",
+        "tiff-1.0-11:3.x86_64",
+    ]
 
+
+# pylint: disable-next=redefined-outer-name
 def test_softwarechannel_diff(shell):
     """
     Test that do_softwarechannel_diff function prints correct output
@@ -652,6 +922,7 @@ def test_softwarechannel_diff(shell):
 
     mprint = MagicMock()
     with patch("spacecmd.softwarechannel.print", mprint):
+        # pylint: disable-next=assignment-from-none
         out = spacecmd.softwarechannel.do_softwarechannel_diff(
             shell, "source_channel target_channel"
         )
@@ -668,6 +939,8 @@ def test_softwarechannel_diff(shell):
         ],
     )
 
+
+# pylint: disable-next=redefined-outer-name
 def test_softwarechannel_errata_diff(shell):
     """
     Test that do_softwarechannel_errata_diff function prints correct output
@@ -684,6 +957,7 @@ def test_softwarechannel_errata_diff(shell):
 
     mprint = MagicMock()
     with patch("spacecmd.softwarechannel.print", mprint):
+        # pylint: disable-next=assignment-from-none
         out = spacecmd.softwarechannel.do_softwarechannel_errata_diff(
             shell, "source_channel target_channel"
         )
@@ -701,6 +975,7 @@ def test_softwarechannel_errata_diff(shell):
     )
 
 
+# pylint: disable-next=redefined-outer-name
 def test_softwarechannel_removepackages(shell):
     packages_list = [
         {

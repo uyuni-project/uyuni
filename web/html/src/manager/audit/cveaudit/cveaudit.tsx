@@ -187,7 +187,7 @@ class CVEAudit extends React.Component<Props, State> {
   onCVEChange = (e) => {
     const value = e.target.value;
     const parts = CVE_REGEX.exec(value);
-    if (parts != null && DEPRECATED_unsafeEquals(parts.length, 3)) {
+    if (!DEPRECATED_unsafeEquals(parts, null) && DEPRECATED_unsafeEquals(parts.length, 3)) {
       const year = Number.parseInt(parts[1], 10);
       if (YEARS.includes(year)) {
         const number = parts[2];
@@ -285,7 +285,7 @@ class CVEAudit extends React.Component<Props, State> {
                     <input
                       type="checkbox"
                       checked={this.state.statuses.includes(status)}
-                      onChange={(e) => {
+                      onChange={() => {
                         if (this.state.statuses.includes(status)) {
                           this.setState({
                             statuses: this.state.statuses.filter((x) => x !== status),
@@ -386,7 +386,7 @@ class CVEAudit extends React.Component<Props, State> {
               width="10%"
               comparator={Utils.sortByText}
               header={t("Status")}
-              cell={(row, criteria) => (
+              cell={(row) => (
                 <div>
                   <i
                     className={"fa fa-big " + PATCH_STATUS_LABEL[row.patchStatus].className}
@@ -423,7 +423,7 @@ class CVEAudit extends React.Component<Props, State> {
               width="45%"
               comparator={Utils.sortByText}
               header={t("Actions")}
-              cell={(row, criteria) => {
+              cell={(row) => {
                 if (this.state.resultType === TARGET_SERVER) {
                   if (
                     row.patchStatus === NOT_AFFECTED ||

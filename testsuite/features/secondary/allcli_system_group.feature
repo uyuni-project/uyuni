@@ -84,6 +84,8 @@ Feature: Manage a group of systems and the Systems Set Manager
     And I click on "Apply Patches"
     And I click on "Confirm"
     Then I should see a "Patch virgo-dummy-3456 has been scheduled for 1 system" text
+    And I am on the Systems overview page of this "sle_minion"
+    And I wait until event "Patch Update: virgo-dummy-3456 - Test update for virgo-dummy scheduled by admin" is completed
 
   Scenario: Apply a patch to systems in the SSM
     When I follow the left menu "Systems > System Set Manager > Overview"
@@ -98,6 +100,8 @@ Feature: Manage a group of systems and the Systems Set Manager
     And I click on "Apply Patches"
     And I click on "Confirm"
     Then I should see a "Patch andromeda-dummy-6789 has been scheduled for 1 system" text
+    And I am on the Systems overview page of this "sle_minion"
+    And I wait until event "Patch Update: andromeda-dummy-6789 - Test update for andromeda-dummy scheduled by admin" is completed
 
 @skip_if_github_validation
   Scenario: Delete a package from systems in the SSM

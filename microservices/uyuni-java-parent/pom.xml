@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright (c) 2024 SUSE LLC
+  ~ Copyright (c) 2025 SUSE LLC and contributors
   ~
   ~ This software is licensed to you under the GNU General Public License,
   ~ version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -40,7 +40,7 @@
             <dependency>
                 <groupId>org.mybatis</groupId>
                 <artifactId>mybatis</artifactId>
-                <version>3.5.6</version>
+                <version>3.5.19</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.logging.log4j</groupId>

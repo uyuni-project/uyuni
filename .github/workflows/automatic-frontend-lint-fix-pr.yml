@@ -20,7 +20,7 @@ jobs:
     - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 #v4.2.2
 
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@cdca7365b2dadb8aad0a33bc7601856ffabcc48e #v4.3.0
+      uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 #v5.0.0
       with:
         node-version: ${{ matrix.node-version }}
 
@@ -36,25 +36,26 @@ jobs:
         key: ${{ runner.os }}-yarn-${{ matrix.node-version }}-${{ hashFiles('**/yarn.lock') }}
 
     - name: Install dependencies
-      run: yarn --cwd web/html/src install --frozen-lockfile --prefer-offline
+      run: yarn install --frozen-lockfile --prefer-offline --ignore-scripts
 
     # Run lint with fixes
     - name: Run lint
-      run: yarn --cwd web/html/src lint
+      run: yarn lint --fix
 
     # If there's any changes, create a PR, see https://github.com/marketplace/actions/create-pull-request
     - name: Create PR
       uses: peter-evans/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e #v7.0.8
       with:
-        # Delete the branch after merger
+        # Delete the branch after merge
         delete-branch: true
-        branch: automatic-frontend-lint-fix
+        branch: "automatic-frontend-lint-fix"
+        sign-commits: true
         author: "github-actions <github-actions[bot]@users.noreply.github.com>"
-        title: Automatic frontend lint fixes
+        title: "Bot: Fix frontend lint issues"
         body: |
           ## What does this PR change?
 
-          Applies automatic frontend lint fixes.  
+          This is a bot generated pull request. It appears fixable lint issues were found in master, you were tagged for a review as you were the last one to merge.  
 
           If this PR was made in error, please reach out to [@uyuni-project/frontend](https://github.com/orgs/uyuni-project/teams/frontend).  
 
@@ -63,6 +64,6 @@ jobs:
           The applied changes are only stylistic and do not need a changelog.
 
           - [x] No changelog needed
-        commit-message: Automatic frontend lint fixes
+        commit-message: "Bot: Fix frontend lint issues"
         # Ask for a review from the user who triggered the run, in this case the person who pushed to master
         reviewers: ${{ github.actor }}

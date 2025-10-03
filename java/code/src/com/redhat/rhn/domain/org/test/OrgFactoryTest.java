@@ -80,21 +80,21 @@ public class OrgFactoryTest extends RhnBaseTestCase {
      */
     @Test
     public void testAddRole() {
-        User user = UserTestUtils.findNewUser("testuser", "testorg");
+        User user = UserTestUtils.createUser();
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         assertTrue(user.hasRole(RoleFactory.CHANNEL_ADMIN));
     }
 
     @Test
     public void testLookupById() {
-        Org org1 = UserTestUtils.findNewOrg("testOrg" + this.getClass().getSimpleName());
+        Org org1 = UserTestUtils.createOrg(this);
         assertNotNull(org1);
         assertTrue(org1.getId() > 0);
     }
 
     @Test
     public void testCommitOrg() {
-        Org org1 = UserTestUtils.findNewOrg("testOrg" + this.getClass().getSimpleName());
+        Org org1 = UserTestUtils.createOrg(this);
         String changedName = "OrgFactoryTest testCommitOrg " + TestUtils.randomString();
         org1.setName(changedName);
         org1 = OrgFactory.save(org1);
@@ -169,7 +169,7 @@ public class OrgFactoryTest extends RhnBaseTestCase {
 
     @Test
     public void testOrgDefautRegistrationToken() throws Exception {
-        User user = UserTestUtils.findNewUser("testUser", "testOrg", true);
+        User user = new UserTestUtils.UserBuilder().orgAdmin(true).build();
         Org orig = user.getOrg();
         orig.setName("org created by OrgFactory test: " + TestUtils.randomString());
         // build the channels set
@@ -201,7 +201,7 @@ public class OrgFactoryTest extends RhnBaseTestCase {
      */
     @Test
     public void testGetRoles() {
-        Org org1 = UserTestUtils.findNewOrg("testOrg" + this.getClass().getSimpleName());
+        Org org1 = UserTestUtils.createOrg(this);
         assertNotNull(org1.getRoles());
         assertTrue(org1.hasRole(RoleFactory.ORG_ADMIN));
     }
@@ -213,7 +213,7 @@ public class OrgFactoryTest extends RhnBaseTestCase {
 
     @Test
     public void testCustomDataKeys() {
-        User user = UserTestUtils.findNewUser("testuser", "testorg");
+        User user = UserTestUtils.createUser();
         Org org = user.getOrg();
 
         Set keys = org.getCustomDataKeys();

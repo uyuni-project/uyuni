@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring
 #
 # Licensed under the GNU General Public License Version 3
 #
@@ -62,25 +63,30 @@ import rpm
 from spacecmd.argumentparser import SpacecmdArgumentParser
 from spacecmd.i18n import _N
 
-__EDITORS = ['vim', 'vi', "emacs", 'nano']
-_CACHE_DATE_FORMAT = '%Y-%m-%d %H:%M:%S.%f'
+__EDITORS = ["vim", "vi", "emacs", "nano"]
+_CACHE_DATE_FORMAT = "%Y-%m-%d %H:%M:%S.%f"
 
-translation = gettext.translation('spacecmd', fallback=True)
+translation = gettext.translation("spacecmd", fallback=True)
 try:
     _ = translation.ugettext
 except AttributeError:
     _ = translation.gettext
 
+
 class CustomJsonEncoder(json.JSONEncoder):
 
-    def default(self, obj): # pylint: disable=arguments-differ,method-hidden
-        if isinstance(obj,xmlrpclib.DateTime):
-            return datetime.fromtimestamp(time.mktime(obj.timetuple())).strftime("%F %T")
+    # pylint: disable-next=arguments-renamed
+    def default(self, obj):  # pylint: disable=arguments-differ,method-hidden
+        if isinstance(obj, xmlrpclib.DateTime):
+            return datetime.fromtimestamp(time.mktime(obj.timetuple())).strftime(
+                "%F %T"
+            )
         return json.JSONEncoder.default(self, obj)
 
 
 def get_argument_parser():
     return SpacecmdArgumentParser()
+
 
 def parse_command_arguments(command_args, argument_parser, glob=True):
     try:
@@ -88,10 +94,9 @@ def parse_command_arguments(command_args, argument_parser, glob=True):
 
         # allow simple globbing
         if glob:
-            parts = [re.sub(r'\*', '.*', a) for a in parts]
+            parts = [part.replace("*", ".*") for part in parts]
 
-        argument_parser.add_argument('leftovers', nargs='*',
-                                     help=argparse.SUPPRESS)
+        argument_parser.add_argument("leftovers", nargs="*", help=argparse.SUPPRESS)
         opts = argument_parser.parse_args(args=parts)
         if opts.leftovers:
             leftovers = opts.leftovers
@@ -100,7 +105,8 @@ def parse_command_arguments(command_args, argument_parser, glob=True):
         return leftovers, opts
     except IndexError:
         return None, None
- 
+
+
 def is_interactive(options):
     """
     check if any named options were passed to the function, and if so,
@@ -124,30 +130,35 @@ def is_interactive(options):
 
 def load_cache(cachefile):
     data = {}
+    # pylint: disable-next=consider-using-f-string
     cachefile = "{}.json".format(cachefile)
     expire = datetime.now()
 
-    logging.debug('Loading cache from %s', cachefile)
+    logging.debug("Loading cache from %s", cachefile)
 
     if os.path.isfile(cachefile):
         try:
-            with open(cachefile, 'r', encoding='utf-8') as f:
+            with open(cachefile, "r", encoding="utf-8") as f:
                 data = json.load(f)
         except json.decoder.JSONDecodeError as exc:
             logging.warning(_N("Loading cache file %s failed"), cachefile)
-            logging.warning(_N("Cache generation was probably interrupted," +
-                               "removing corrupt %s"), cachefile)
+            logging.warning(
+                _N(
+                    "Cache generation was probably interrupted," + "removing corrupt %s"
+                ),
+                cachefile,
+            )
             logging.debug(str(exc))
             os.remove(cachefile)
         except IOError:
             logging.error(_N("Couldn't load cache from %s"), cachefile)
 
         if isinstance(data, (list, dict)):
-            if 'expire' in data:
-                expire = data['expire']
-                del data['expire']
+            if "expire" in data:
+                expire = data["expire"]
+                del data["expire"]
     else:
-        logging.debug('%s does not exist', cachefile)
+        logging.debug("%s does not exist", cachefile)
 
     if isinstance(expire, str):
         expire = datetime.strptime(expire, _CACHE_DATE_FORMAT)
@@ -162,20 +173,27 @@ def save_cache(cachefile, data, expire=None):
         try:
             datetime.strptime(str(expire), _CACHE_DATE_FORMAT)
         except ValueError:
-            raise ValueError("Provided expire parameter must conform to {}".format(_CACHE_DATE_FORMAT))
+            # pylint: disable-next=raise-missing-from
+            raise ValueError(
+                # pylint: disable-next=consider-using-f-string
+                "Provided expire parameter must conform to {}".format(
+                    _CACHE_DATE_FORMAT
+                )
+            )
 
     if expire:
-        data['expire'] = expire
+        data["expire"] = expire
+    # pylint: disable-next=consider-using-f-string
     cachefile = "{}.json".format(cachefile)
 
     try:
-        with open(cachefile, 'w', encoding='utf-8') as f:
+        with open(cachefile, "w", encoding="utf-8") as f:
             json.dump(data, f, default=str, indent=4)
     except IOError:
         logging.error(_N("Couldn't write to %s"), cachefile)
 
-    if 'expire' in data:
-        del data['expire']
+    if "expire" in data:
+        del data["expire"]
 
 
 def tab_completer(options, text):
@@ -207,31 +225,30 @@ def filter_results(items, patterns, search=False):
     return matches
 
 
-def editor(template='', delete=False):
+def editor(template="", delete=False):
     # create a temporary file
-    (descriptor, file_name) = mkstemp(prefix='spacecmd.')
+    (descriptor, file_name) = mkstemp(prefix="spacecmd.")
 
     if template and descriptor:
         try:
-            handle = os.fdopen(descriptor, 'w')
+            handle = os.fdopen(descriptor, "w")
             handle.write(template)
             handle.close()
         except IOError as exc:
-            logging.warning(_N('Could not open the temporary file'))
+            logging.warning(_N("Could not open the temporary file"))
             logging.error(str(exc))
             return None
 
     # use the user's specified editor
-    if 'EDITOR' in os.environ:
-        if __EDITORS[0] != os.environ['EDITOR']:
-            __EDITORS.insert(0, os.environ['EDITOR'])
+    if "EDITOR" in os.environ:
+        if __EDITORS[0] != os.environ["EDITOR"]:
+            __EDITORS.insert(0, os.environ["EDITOR"])
 
     success = False
     exit_code = -1
     for editor_cmd in __EDITORS:
         try:
-            exit_code = os.spawnlp(os.P_WAIT, editor_cmd,
-                                   editor_cmd, file_name)
+            exit_code = os.spawnlp(os.P_WAIT, editor_cmd, editor_cmd, file_name)
 
             if exit_code == 0:
                 success = True
@@ -241,27 +258,28 @@ def editor(template='', delete=False):
             logging.error(_N("General failure running editor: %s"), str(exc))
 
     if not success:
-        logging.error(_N('No editors found'))
-        return ''
+        logging.error(_N("No editors found"))
+        return ""
 
     if os.path.isfile(file_name) and exit_code == 0:
         try:
             # read the session (format = username:session)
-            handle = open(file_name, 'r')
+            # pylint: disable-next=unspecified-encoding
+            handle = open(file_name, "r")
             contents = handle.read()
             handle.close()
 
             if delete:
                 try:
                     os.remove(file_name)
-                    file_name = ''
+                    file_name = ""
                 except OSError:
-                    logging.error(_N('Could not remove %s'), file_name)
+                    logging.error(_N("Could not remove %s"), file_name)
 
             return contents, file_name
         except IOError:
-            logging.error(_N('Could not read %s'), file_name)
-            return [], ''
+            logging.error(_N("Could not read %s"), file_name)
+            return [], ""
 
     return None
 
@@ -277,21 +295,23 @@ def prompt_user(prompt, noblank=False, multiline=False):
                     # python 2 must call raw_input() because input()
                     # also evaluates the user input and that causes
                     # problems.
-                    userinput = raw_input('%s ' % prompt)
+                    # pylint: disable-next=consider-using-f-string
+                    userinput = raw_input("%s " % prompt)
                 except NameError:
                     # python 3 replaced raw_input() with input()...
                     # it no longer evaulates the user input.
-                    userinput = input('%s ' % prompt)
+                    # pylint: disable-next=consider-using-f-string
+                    userinput = input("%s " % prompt)
             if noblank:
-                if userinput != '':
+                if userinput != "":
                     break
             else:
                 break
     except EOFError:
-        print('')
-        return ''
+        print("")
+        return ""
 
-    if userinput != '':
+    if userinput != "":
         last = readline.get_current_history_length() - 1
 
         if last >= 0:
@@ -299,91 +319,111 @@ def prompt_user(prompt, noblank=False, multiline=False):
 
     return userinput
 
-def parse_time_input(userinput=''):
+
+def parse_time_input(userinput=""):
     """Parse time input from the user and return xmlrpclib.DateTime"""
     timestamp = None
 
-    if userinput == '' or re.match('now', userinput, re.I):
+    if userinput == "" or re.match("now", userinput, re.I):
         timestamp = datetime.now()
 
     # handle YYYYMMDDHHMM times
     if not timestamp:
-        match = re.match(r'^(\d{4})(\d{2})(\d{2})(\d{2})?(\d{2})?(\d{2})?$', userinput)
+        match = re.match(r"^(\d{4})(\d{2})(\d{2})(\d{2})?(\d{2})?(\d{2})?$", userinput)
 
         if match:
-            date_format = '%Y%m%d'
+            date_format = "%Y%m%d"
 
             # YYYYMMDD
             if not match.group(4) and not match.group(5):
-                timestamp = time.strptime('%s%s%s' % (match.group(1),
-                                                      match.group(2),
-                                                      match.group(3)),
-                                          date_format)
+                timestamp = time.strptime(
+                    # pylint: disable-next=consider-using-f-string
+                    "%s%s%s" % (match.group(1), match.group(2), match.group(3)),
+                    date_format,
+                )
             # YYYYMMDDHH
             elif not match.group(5):
-                date_format += '%H'
+                date_format += "%H"
 
-                timestamp = time.strptime('%s%s%s%s' % (match.group(1),
-                                                        match.group(2),
-                                                        match.group(3),
-                                                        match.group(4)),
-                                          date_format)
+                timestamp = time.strptime(
+                    # pylint: disable-next=consider-using-f-string
+                    "%s%s%s%s"
+                    % (match.group(1), match.group(2), match.group(3), match.group(4)),
+                    date_format,
+                )
             # YYYYMMDDHHMM
             elif not match.group(6):
-                date_format += '%H%M'
+                date_format += "%H%M"
 
-                timestamp = time.strptime('%s%s%s%s%s' % (match.group(1),
-                                                          match.group(2),
-                                                          match.group(3),
-                                                          match.group(4),
-                                                          match.group(5)),
-                                          date_format)
+                timestamp = time.strptime(
+                    # pylint: disable-next=consider-using-f-string
+                    "%s%s%s%s%s"
+                    % (
+                        match.group(1),
+                        match.group(2),
+                        match.group(3),
+                        match.group(4),
+                        match.group(5),
+                    ),
+                    date_format,
+                )
             # YYYYMMDDHHMMSS
             else:
-                date_format += '%H%M%S'
+                date_format += "%H%M%S"
 
-                timestamp = time.strptime('%s%s%s%s%s%s' % (match.group(1),
-                                                            match.group(2),
-                                                            match.group(3),
-                                                            match.group(4),
-                                                            match.group(5),
-                                                            match.group(6)),
-                                          date_format)
+                timestamp = time.strptime(
+                    # pylint: disable-next=consider-using-f-string
+                    "%s%s%s%s%s%s"
+                    % (
+                        match.group(1),
+                        match.group(2),
+                        match.group(3),
+                        match.group(4),
+                        match.group(5),
+                        match.group(6),
+                    ),
+                    date_format,
+                )
             if timestamp:
                 # 2.5 has a nice little datetime.strptime() function...
                 timestamp = datetime(*(timestamp)[0:7])
 
     # handle time differences (e.g., +1m, +2h)
     if not timestamp:
-        match = re.search(r'^(\+|-)?(\d+)(s|m|h|d)$', userinput, re.I)
+        match = re.search(r"^([+-])?(\d+)([smhd])$", userinput, re.I)
 
         if match and len(match.groups()) >= 2:
             sign = match.group(1)
             number = int(match.group(2))
             unit = match.group(3)
 
-            if sign == '-':
+            if sign == "-":
                 number = -number
 
-            if re.match('s', unit, re.I):
+            if unit.lower() == "s":
                 delta = timedelta(seconds=number)
-            elif re.match('m', unit, re.I):
+            elif unit.lower() == "m":
                 delta = timedelta(minutes=number)
-            elif re.match('h', unit, re.I):
+            elif unit.lower() == "h":
                 delta = timedelta(hours=number)
-            elif re.match('d', unit, re.I):
+            elif unit.lower() == "d":
                 delta = timedelta(days=number)
+            else:
+                delta = timedelta()
 
+            # pylint: disable-next=possibly-used-before-assignment
             timestamp = datetime.now() + delta
 
     if timestamp:
         return xmlrpclib.DateTime(timestamp.timetuple())
 
-    logging.error(_N('Invalid time provided'))
+    logging.error(_N("Invalid time provided"))
     return None
 
-def latest_pkg(pkg1, pkg2, version_key='version',
-               release_key='release', epoch_key='epoch'):
+
+def latest_pkg(
+    pkg1, pkg2, version_key="version", release_key="release", epoch_key="epoch"
+):
     """
     Compares 2 package objects (dicts) and returns the newest one.
 
@@ -397,13 +437,13 @@ def latest_pkg(pkg1, pkg2, version_key='version',
         Returns:
             pkg (dict): Returns pkg1 if the package passed as first parameter is newer than the package passed as second parameter.
             Returns pkg2 in case it's the opposite. Finally, returns None if the two packages are the same version
-    """           
+    """
     # Sometimes empty epoch is a space, sometimes its an empty string, which
     # breaks the comparison, strip it here to fix
     t1 = (pkg1[epoch_key].strip(), pkg1[version_key], pkg1[release_key])
     t2 = (pkg2[epoch_key].strip(), pkg2[version_key], pkg2[release_key])
 
-    result = rpm.labelCompare(t1, t2) # pylint: disable=no-member
+    result = rpm.labelCompare(t1, t2)  # pylint: disable=no-member
     if result == 1:
         return pkg1
     if result == -1:
@@ -411,22 +451,25 @@ def latest_pkg(pkg1, pkg2, version_key='version',
 
     return None
 
+
 def build_package_name(package):
     """Returns name-version-release:epoch.arch string for a single package.
 
     Args:
       packages: A single package object.
     """
+    # pylint: disable-next=consider-using-f-string
     name = "{name}-{version}-{release}".format(
         name=package.get("name"),
         version=package.get("version"),
-        release=package.get("release")
+        release=package.get("release"),
     )
     epoch = package.get("epoch", "").strip()
     # NOTE: normally it's "name-epoch:version-release.arch", but in spacecmd
     # "name-version-release:epoch.arch" is used. Such strings can be supplied
     # by users, therefore we need to stick to it.
     if epoch:
+        # pylint: disable-next=consider-using-f-string
         name += ":{epoch}".format(epoch=epoch)
 
     arch = package.get("arch", "").strip()
@@ -434,8 +477,10 @@ def build_package_name(package):
     if arch:
         # system.listPackages uses AMD64 instead of x86_64
         arch = re.sub("amd64", "x86_64", arch.lower())
+        # pylint: disable-next=consider-using-f-string
         name += ".{arch}".format(arch=arch)
     elif arch_label:
+        # pylint: disable-next=consider-using-f-string
         name += ".{arch}".format(arch=arch_label)
 
     return name
@@ -469,20 +514,25 @@ def build_package_names(packages):
 def print_errata_summary(erratum):
     # Workaround - recent spacewalk lacks the "date" key
     # on some listErrata calls
-    if erratum.get('date') is None:
-        erratum['date'] = erratum.get('issue_date')
-    if erratum['date'] is None:
-        erratum['date'] = "N/A"
-    date_parts = erratum['date'].split()
+    if erratum.get("date") is None:
+        erratum["date"] = erratum.get("issue_date")
+    if erratum["date"] is None:
+        erratum["date"] = "N/A"
+    date_parts = erratum["date"].split()
 
     if len(date_parts) > 1:
-        erratum['date'] = date_parts[0]
+        erratum["date"] = date_parts[0]
 
-    print('%s  %s  %s  %s' % (
-        erratum.get('advisory_name').ljust(14),
-        wrap(erratum.get('advisory_synopsis'), 49)[0].ljust(49),
-        (erratum.get('advisory_status') or '').ljust(9),
-        erratum.get('date').rjust(8)))
+    print(
+        # pylint: disable-next=consider-using-f-string
+        "%s  %s  %s  %s"
+        % (
+            erratum.get("advisory_name").ljust(14),
+            wrap(erratum.get("advisory_synopsis"), 49)[0].ljust(49),
+            (erratum.get("advisory_status") or "").ljust(9),
+            erratum.get("date").rjust(8),
+        )
+    )
 
 
 def print_errata_list(errata):
@@ -491,41 +541,42 @@ def print_errata_list(errata):
     rhba = []
 
     for erratum in errata:
-        if re.match('security', erratum.get('advisory_type'), re.I):
+        if re.match("security", erratum.get("advisory_type"), re.I):
             rhsa.append(erratum)
-        elif re.match('bug fix', erratum.get('advisory_type'), re.I):
+        elif re.match("bug fix", erratum.get("advisory_type"), re.I):
             rhba.append(erratum)
-        elif re.match('product enhancement', erratum.get('advisory_type'), re.I):
+        elif re.match("product enhancement", erratum.get("advisory_type"), re.I):
             rhea.append(erratum)
         else:
-            logging.warning(_N('%s is an unknown errata type'),
-                            erratum.get('advisory_name'))
+            logging.warning(
+                _N("%s is an unknown errata type"), erratum.get("advisory_name")
+            )
             continue
 
     if not errata:
         return
 
     if rhsa:
-        print(_('Security Errata'))
-        print('---------------')
+        print(_("Security Errata"))
+        print("---------------")
         for erratum in rhsa:
             print_errata_summary(erratum)
 
     if rhba:
         if rhsa:
-            print('')
+            print("")
 
-        print(_('Bug Fix Errata'))
-        print('--------------')
+        print(_("Bug Fix Errata"))
+        print("--------------")
         for erratum in rhba:
             print_errata_summary(erratum)
 
     if rhea:
         if rhsa or rhba:
-            print('')
+            print("")
 
-        print(_('Enhancement Errata'))
-        print('------------------')
+        print(_("Enhancement Errata"))
+        print("------------------")
         for erratum in rhea:
             print_errata_summary(erratum)
 
@@ -534,76 +585,77 @@ def config_channel_order(all_channels=None, new_channels=None):
     all_channels = all_channels or []
     new_channels = new_channels or []
     while True:
-        print(_('Current Selections'))
-        print('------------------')
+        print(_("Current Selections"))
+        print("------------------")
         for i, new_channel in enumerate(new_channels, 1):
-            print('%i. %s' % (i, new_channel))
+            # pylint: disable-next=consider-using-f-string
+            print("%i. %s" % (i, new_channel))
 
-        print('')
-        action = prompt_user('a[dd], r[emove], c[lear], d[one]:')
+        print("")
+        action = prompt_user("a[dd], r[emove], c[lear], d[one]:")
 
-        if re.match('a', action, re.I):
-            print('')
-            print(_('Available Configuration Channels'))
-            print('--------------------------------')
+        if re.match("a", action, re.I):
+            print("")
+            print(_("Available Configuration Channels"))
+            print("--------------------------------")
             for c in sorted(all_channels):
                 print(c)
 
-            print('')
-            channel = prompt_user(_('Channel:'))
+            print("")
+            channel = prompt_user(_("Channel:"))
 
             if channel not in all_channels:
-                logging.warning(_N('Invalid channel'))
+                logging.warning(_N("Invalid channel"))
                 continue
 
             try:
-                rank = int(prompt_user(_('New Rank:')))
+                rank = int(prompt_user(_("New Rank:")))
 
                 if channel in new_channels:
                     new_channels.remove(channel)
 
                 new_channels.insert(rank - 1, channel)
             except IndexError:
-                logging.warning(_N('Invalid rank'))
+                logging.warning(_N("Invalid rank"))
                 continue
             except ValueError:
-                logging.warning(_N('Invalid rank'))
+                logging.warning(_N("Invalid rank"))
                 continue
-        elif re.match('r', action, re.I):
-            channel = prompt_user(_('Channel:'))
+        elif re.match("r", action, re.I):
+            channel = prompt_user(_("Channel:"))
 
             if channel not in all_channels:
-                logging.warning(_N('Invalid channel'))
+                logging.warning(_N("Invalid channel"))
                 continue
 
             new_channels.remove(channel)
-        elif re.match('c', action, re.I):
-            print(_('Clearing current selections'))
+        elif re.match("c", action, re.I):
+            print(_("Clearing current selections"))
             new_channels = []
             continue
-        elif re.match('d', action, re.I):
+        elif re.match("d", action, re.I):
             break
 
-        print('')
+        print("")
 
     return new_channels
 
 
 def list_locales():
-    if not os.path.isdir('/usr/share/zoneinfo'):
+    if not os.path.isdir("/usr/share/zoneinfo"):
         return []
 
     zones = []
 
-    for item in os.listdir('/usr/share/zoneinfo'):
-        path = os.path.join('/usr/share/zoneinfo', item)
+    for item in os.listdir("/usr/share/zoneinfo"):
+        path = os.path.join("/usr/share/zoneinfo", item)
 
         if os.path.isdir(path):
             try:
                 for subitem in os.listdir(path):
                     zones.append(os.path.join(item, subitem))
             except IOError:
-                logging.error(_N('Could not read %s'), path)
+                logging.error(_N("Could not read %s"), path)
         else:
             zones.append(item)
 
@@ -622,6 +674,7 @@ def max_length(items, minimum=0):
 
     return max_size
 
+
 def read_file(filename):
     """
     Read file.
@@ -631,6 +684,7 @@ def read_file(filename):
 
         Returns:
     """
+    # pylint: disable-next=unspecified-encoding
     with open(filename, "r") as fhd:
         return fhd.read()
 
@@ -660,13 +714,14 @@ def parse_str(s, type_to=None):
         if type_to is not None and isinstance(type_to, type):
             return type_to(s)
 
-        if re.match(r'[1-9]\d*', s):
+        if re.match(r"[1-9]\d*", s):
             return int(s)
 
         if s in ("False", "True"):
+            # pylint: disable-next=eval-used
             return eval(s)
 
-        if re.match(r'{.*}', s):
+        if re.match(r"{.*}", s):
             return json.loads(s)  # retry with json module
 
         return str(s)
@@ -696,7 +751,7 @@ def parse_list_str(list_s, sep=","):
     return list_s.split(sep)
 
 
-def parse_api_args(args, sep=','):
+def parse_api_args(args, sep=","):
     """
     Simple JSON-like expression parser.
 
@@ -762,11 +817,14 @@ def json_dump_to_file(obj, filename):
         logging.error(_N("Could not generate json data object!"))
     else:
         try:
-            with open(filename, 'w') as fdh:
+            # pylint: disable-next=unspecified-encoding
+            with open(filename, "w") as fdh:
                 fdh.write(json_data)
             out = True
         except IOError as exc:
-            logging.error(_N("Could not open file %s for writing: %s"), filename, str(exc))
+            logging.error(
+                _N("Could not open file %s for writing: %s"), filename, str(exc)
+            )
 
     return out
 
@@ -774,13 +832,14 @@ def json_dump_to_file(obj, filename):
 def json_read_from_file(filename):
     data = None
     try:
+        # pylint: disable-next=unspecified-encoding
         with open(filename) as fhd:
             data = json.loads(fhd.read())
     except IOError as exc:
         logging.error(_N("Could not open file %s for reading: %s"), filename, str(exc))
     except ValueError as exc:
         logging.error(_N("Could not parse JSON data from %s: %s"), filename, str(exc))
-    except Exception as exc: # pylint: disable=broad-except
+    except Exception as exc:  # pylint: disable=broad-except
         logging.error(_N("Error processing file %s: %s"), filename, str(exc))
 
     return data
@@ -812,7 +871,7 @@ def get_string_diff_dicts(string1, string2, sep="-"):
 
         Returns:
             A list of two dictonaries of regular expressions. The first dictionary can be used to transform
-            string1 into string2. The second dictionary can also be used  to transform string2 to string1. 
+            string1 into string2. The second dictionary can also be used  to transform string2 to string1.
     """
     replace1 = {}
     replace2 = {}
@@ -831,10 +890,16 @@ def get_string_diff_dicts(string1, string2, sep="-"):
             pass
         else:
             # TODO: replace only if len(sub1) == len(sub2) ?
-            replace1['(^|-)' + sub1 + '(-|$)'] = r'\1' + "DIFF(" + sub1 + "|" + sub2 + ")" + r'\2'
-            replace2['(^|-)' + sub2 + '(-|$)'] = r'\1' + "DIFF(" + sub1 + "|" + sub2 + ")" + r'\2'
+            replace1["(^|-)" + sub1 + "(-|$)"] = (
+                r"\1" + "DIFF(" + sub1 + "|" + sub2 + ")" + r"\2"
+            )
+            replace2["(^|-)" + sub2 + "(-|$)"] = (
+                r"\1" + "DIFF(" + sub1 + "|" + sub2 + ")" + r"\2"
+            )
     if substrings1 or substrings2:
-        logging.info(_N("Skipping usage of common strings: number of substrings differ"))
+        logging.info(
+            _N("Skipping usage of common strings: number of substrings differ")
+        )
         return [None, None]
     return [replace1, replace2]
 
@@ -894,7 +959,7 @@ def diff(source_data, target_data, source_channel, target_channel):
 
 def file_is_binary(self, path):
     """Tries to determine whether the file is a binary.
-       Assumes binary if it can't categorize the file as plaintext"""
+    Assumes binary if it can't categorize the file as plaintext"""
     try:
         process = Popen(["file", "-b", "--mime-type", path], stdout=PIPE)
         output = process.communicate()[0]
@@ -911,22 +976,26 @@ def file_is_binary(self, path):
         pass
     return True
 
+
 def string_to_bool(input_string):
     """
     Convert string of "true" or "false", "yes" or "no" to boolean.
 
         Parameters:
             input_string (str): The string to be converted to boolean
-        
+
         Returns:
             A boolean value converted from the input_string parameter
     """
     if not isinstance(input_string, str):
-        raise IOError(_("Parameter {} not a string type, but {}.").format(
-            repr(input_string), type(input_string)
-        ))
+        raise IOError(
+            _("Parameter {} not a string type, but {}.").format(
+                repr(input_string), type(input_string)
+            )
+        )
 
-    return input_string.lower().strip() in ['true', 'yes']
+    return input_string.lower().strip() in ["true", "yes"]
+
 
 def is_vendor_channel(self, label):
     """Return true if channel is vendor channel false otherwise"""
@@ -945,6 +1014,7 @@ class DictToDefault:
             get(value, default=None):
                 Returns a value from the target dict
     """
+
     def __init__(self, target, default=None):
         self.__target = target
         self.__default = default

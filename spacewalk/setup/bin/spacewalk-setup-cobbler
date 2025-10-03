@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+# pylint: disable=missing-module-docstring,invalid-name
 
 # Copyright (c) 2021 SUSE LLC
 #
@@ -19,12 +20,22 @@ import argparse
 from configparser import ConfigParser
 from shutil import copyfile
 
-parser = argparse.ArgumentParser(description='Setup Cobbler for Uyuni.')
-parser.add_argument('--cobbler-config-directory', '-c', dest='cobbler_config_directory', default="/etc/cobbler/",
-                    help='The directory where "settings" and "modules.conf" are in.')
-parser.add_argument('--apache2-config-directory', '-a', dest='httpd_config_directory', default="/etc/apache2/conf.d",
-                    help='The directory where the Apache config file "cobbler.conf" is in.')
-parser.add_argument('--fqdn', '-f', dest='fqdn', default=None)
+parser = argparse.ArgumentParser(description="Setup Cobbler for Uyuni.")
+parser.add_argument(
+    "--cobbler-config-directory",
+    "-c",
+    dest="cobbler_config_directory",
+    default="/etc/cobbler/",
+    help='The directory where "settings" and "modules.conf" are in.',
+)
+parser.add_argument(
+    "--apache2-config-directory",
+    "-a",
+    dest="httpd_config_directory",
+    default="/etc/apache2/conf.d",
+    help='The directory where the Apache config file "cobbler.conf" is in.',
+)
+parser.add_argument("--fqdn", "-f", dest="fqdn", default=None)
 
 COBBLER_CONFIG_DIRECTORY = "/etc/cobbler/"
 COBBLER_CONFIG_FILES = [
@@ -39,10 +50,11 @@ COBBLER_HTTP_CONFIG = "cobbler.conf"
 def backup_file(file_path: str):
     """
     Copies the file and adds a suffix ".backup" to it.
-    
+
     :param file_path: The full path to the file which should be backed up.
     :raises FileNotFoundError: In case the path specified was not existing.
     """
+    # pylint: disable-next=consider-using-f-string
     copyfile(file_path, "%s.backup" % file_path)
 
 
@@ -50,7 +62,7 @@ def manipulate_cobbler_settings(config_dir: str, settings_yaml: str, fqdn: str):
     """
     Manipulate the main Cobbler configuration file which is in YAML format. This function backs the original
     configuration up and writes a new one with the required changes to the disk.
-    
+
     :param config_dir: The directory of Cobbler where the config files are.
     :param settings_yaml: The name of the main YAML file of Cobbler.
     :param fqdn: The FQDN of the server. If None (default), the FQDN is resolved from the system
@@ -61,24 +73,35 @@ def manipulate_cobbler_settings(config_dir: str, settings_yaml: str, fqdn: str):
 
     # In case of failing DNS resolution, we get a OSError (socket.gaierror)
     try:
-        filecontent["next_server_v4"] = socket.getaddrinfo(filecontent["server"], None, socket.AF_INET)[1][4][0]
+        filecontent["next_server_v4"] = socket.getaddrinfo(
+            filecontent["server"], None, socket.AF_INET
+        )[1][4][0]
     except OSError:
         filecontent["next_server_v4"] = ""
 
     try:
-        filecontent["next_server_v6"] = socket.getaddrinfo(filecontent["server"], None, socket.AF_INET6)[1][4][0]
+        filecontent["next_server_v6"] = socket.getaddrinfo(
+            filecontent["server"], None, socket.AF_INET6
+        )[1][4][0]
     except OSError:
         filecontent["next_server_v6"] = ""
 
     if not filecontent["next_server_v4"] and not filecontent["next_server_v6"]:
-        print("ERROR: Neither IPv4 nor IPv6 addresses can be resolved for configured FQDN: {}. Please check your DNS and hostname configuration.".format(filecontent["server"]))
+        print(
+            # pylint: disable-next=consider-using-f-string
+            "ERROR: Neither IPv4 nor IPv6 addresses can be resolved for configured FQDN: {}. Please check your DNS and hostname configuration.".format(
+                filecontent["server"]
+            )
+        )
         exit(1)
 
     filecontent["pxe_just_once"] = True
     filecontent["redhat_management_server"] = fqdn or socket.getfqdn()
     filecontent["client_use_localhost"] = True
     filecontent["uyuni_authentication_endpoint"] = "http://localhost"
+    filecontent["cheetah_import_whitelist"] = ["random", "re", "time", "netaddr", "uyuni_cobbler_helper"]
     yaml_dump = yaml.safe_dump(filecontent)
+    # pylint: disable-next=unspecified-encoding
     with open(full_path, "w") as settings_file:
         settings_file.write(yaml_dump)
 
@@ -86,7 +109,7 @@ def manipulate_cobbler_settings(config_dir: str, settings_yaml: str, fqdn: str):
 def manipulate_cobbler_modules(config_dir: str, modules_ini: str):
     """
     Manipulates the authentication of Cobbler to use the SUMA/Uyuni Server directly.
-    
+
     :param config_dir: The directory of Cobbler where the config files are.
     :param modules_ini: The name of the configuration in INI style for the modules Cobbler uses at runtime.
     """
@@ -98,6 +121,7 @@ def manipulate_cobbler_modules(config_dir: str, modules_ini: str):
     # Modify Authentication to Spacewalk module
     cp["authentication"]["module"] = "authentication.spacewalk"
     # Write Ini File
+    # pylint: disable-next=unspecified-encoding
     with open(full_path, "w") as modules_conf:
         cp.write(modules_conf)
 
@@ -105,26 +129,28 @@ def manipulate_cobbler_modules(config_dir: str, modules_ini: str):
 def remove_virtual_host(conf_directory: str, conf_file: str):
     """
     Replaces all occurrences of lines with "VirtualHost" with an empty one.
-    
+
     :param conf_directory: The directory where the Apache2 configuration files are.
     :param conf_file: The file to edit.
     """
     full_path = os.path.join(conf_directory, conf_file)
     backup_file(full_path)
+    # pylint: disable-next=unspecified-encoding
     with open(full_path, "r") as http_config:
         http_lines = http_config.readlines()
         for i in range(0, len(http_lines)):
             if "VirtualHost" in http_lines[i]:
                 http_lines[i] = ""
-    with open (full_path, 'w') as http_config_update:
+    # pylint: disable-next=unspecified-encoding
+    with open(full_path, "w") as http_config_update:
         http_config_update.writelines(http_lines)
 
 
 def sanitize_args(args):
     global COBBLER_CONFIG_DIRECTORY
-    COBBLER_CONFIG_DIRECTORY = os.path.join(args.cobbler_config_directory, '')
+    COBBLER_CONFIG_DIRECTORY = os.path.join(args.cobbler_config_directory, "")
     global HTTPD_CONFIG_DIRECTORY
-    HTTPD_CONFIG_DIRECTORY = os.path.join(args.httpd_config_directory, '')
+    HTTPD_CONFIG_DIRECTORY = os.path.join(args.httpd_config_directory, "")
 
 
 def main():
@@ -133,7 +159,9 @@ def main():
     """
     args = parser.parse_args()
     sanitize_args(args)
-    manipulate_cobbler_settings(COBBLER_CONFIG_DIRECTORY, COBBLER_CONFIG_FILES[1], args.fqdn)
+    manipulate_cobbler_settings(
+        COBBLER_CONFIG_DIRECTORY, COBBLER_CONFIG_FILES[1], args.fqdn
+    )
     manipulate_cobbler_modules(COBBLER_CONFIG_DIRECTORY, COBBLER_CONFIG_FILES[0])
     remove_virtual_host(HTTPD_CONFIG_DIRECTORY, COBBLER_HTTP_CONFIG)
 

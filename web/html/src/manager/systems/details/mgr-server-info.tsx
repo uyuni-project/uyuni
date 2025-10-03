@@ -1,8 +1,7 @@
 import * as React from "react";
 
 import { AsyncButton } from "components/buttons";
-import { Messages } from "components/messages/messages";
-import { MessageType, Utils as MessagesUtils } from "components/messages/messages";
+import { Messages, MessageType, Utils as MessagesUtils } from "components/messages/messages";
 import { TopPanel } from "components/panels/TopPanel";
 
 import Network from "utils/network";

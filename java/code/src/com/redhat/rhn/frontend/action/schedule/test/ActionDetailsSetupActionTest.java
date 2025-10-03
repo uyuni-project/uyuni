@@ -39,7 +39,7 @@ public class ActionDetailsSetupActionTest extends RhnBaseTestCase {
         User user = sah.getUser();
         Action a1 = ActionFactoryTest.createAction(user, ActionFactory.TYPE_REBOOT);
         a1.setSchedulerUser(user);
-        sah.getRequest().setupAddParameter("aid", a1.getId().toString());
+        sah.getRequest().addParameter("aid", a1.getId().toString());
 
 
         sah.executeAction();

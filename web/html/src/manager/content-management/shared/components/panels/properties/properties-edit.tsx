@@ -21,7 +21,7 @@ type Props = {
   showDraftVersion: boolean;
   onChange: Function;
   currentHistoryEntry?: ProjectHistoryEntry;
-  messages?: Array<ProjectMessageType>;
+  messages?: ProjectMessageType[];
 };
 
 const PropertiesEdit = (props: Props) => {
@@ -39,7 +39,7 @@ const PropertiesEdit = (props: Props) => {
 
   const messages = getRenderedMessages(props.messages || []);
 
-  let propertiesToShow = produce(props.properties, (draftProperties) => {
+  const propertiesToShow = produce(props.properties, (draftProperties) => {
     if (props.showDraftVersion) {
       draftProperties.historyEntries.unshift(defaultDraftHistory);
     }
@@ -80,7 +80,7 @@ const PropertiesEdit = (props: Props) => {
           <PropertiesView properties={propertiesToShow} />
         </React.Fragment>
       )}
-      renderCreationContent={({ open, item, setItem, errors }) => {
+      renderCreationContent={({ item, setItem, errors }) => {
         if (isLoading) {
           return <Loading text={t("Editing properties..")} />;
         }

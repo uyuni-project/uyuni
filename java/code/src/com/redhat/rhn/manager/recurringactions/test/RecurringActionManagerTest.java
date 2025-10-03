@@ -26,7 +26,6 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.access.AccessGroupFactory;
-import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.recurringactions.GroupRecurringAction;
 import com.redhat.rhn.domain.recurringactions.MinionRecurringAction;
 import com.redhat.rhn.domain.recurringactions.OrgRecurringAction;
@@ -69,7 +68,7 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
         setThreadingPolicy(new Synchroniser());
     }};
 
-    private Org anotherOrg;
+
     private User anotherUser;
     private static TaskomaticApi taskomaticMock;
     private static final String CRON_EXPR = "0 * * * * ?";
@@ -84,8 +83,7 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
     public void setUp() throws Exception {
         super.setUp();
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        anotherOrg = UserTestUtils.createNewOrgFull("anotherOrg");
-        anotherUser = UserTestUtils.createUser("anotherUser", anotherOrg.getId());
+        anotherUser = UserTestUtils.createUser("anotherUser", "anotherOrg");
 
         RecurringActionManager.setTaskomaticApi(taskomaticMock);
     }

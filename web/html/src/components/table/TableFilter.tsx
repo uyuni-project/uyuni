@@ -16,11 +16,11 @@ type FilterOption = {
   label: string;
   value: string;
   type?: FilterOptionType;
-  filterOptions?: Array<any>;
+  filterOptions?: any[];
 };
 
 type SearchFieldProps = {
-  filterOptions: Array<FilterOption>;
+  filterOptions: FilterOption[];
   field: any;
   criteria: any;
   onSearch: any;

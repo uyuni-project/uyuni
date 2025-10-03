@@ -58,8 +58,6 @@ import com.suse.manager.webui.utils.token.Token;
 import com.suse.manager.webui.utils.token.TokenBuildingException;
 import com.suse.manager.webui.utils.token.TokenParsingException;
 
-import com.mockobjects.servlet.MockHttpServletResponse;
-
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -103,7 +101,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
     private File packageFile2;
     private File debPackageFile;
     private File debPackageFile2;
-    private MockHttpServletResponse mockResponse;
+    private RhnMockHttpServletResponse mockResponse;
     private Response response;
     private Package pkg;
     private Package pkg2;

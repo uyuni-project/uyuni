@@ -12,6 +12,9 @@
  * equalities handling differently in strict equality. Please be sure to always
  * test your changes.
  */
+export function DEPRECATED_unsafeEquals(a: any, b: null): a is null | undefined;
+export function DEPRECATED_unsafeEquals(a: any, b: undefined): a is null | undefined;
+export function DEPRECATED_unsafeEquals(a: any, b: any): boolean;
 export function DEPRECATED_unsafeEquals(a: any, b: any) {
   // eslint-disable-next-line eqeqeq
   return a == b;

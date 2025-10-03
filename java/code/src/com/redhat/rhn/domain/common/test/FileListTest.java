@@ -23,7 +23,6 @@ import com.redhat.rhn.domain.common.FileList;
 import com.redhat.rhn.domain.config.ConfigFileName;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.testing.RhnBaseTestCase;
-import com.redhat.rhn.testing.TestStatics;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -38,7 +37,7 @@ public class FileListTest extends RhnBaseTestCase {
 
     @Test
     public void testDeleteFileList() {
-        Org o = UserTestUtils.findNewOrg(TestStatics.TESTORG);
+        Org o = UserTestUtils.createOrg();
         FileList f = createTestFileList(o);
 
         CommonFactory.saveFileList(f);
@@ -55,7 +54,7 @@ public class FileListTest extends RhnBaseTestCase {
 
     @Test
     public void testFileList() {
-        Org o = UserTestUtils.findNewOrg(TestStatics.TESTORG);
+        Org o = UserTestUtils.createOrg();
         FileList f = createTestFileList(o);
 
         CommonFactory.saveFileList(f);

@@ -3,24 +3,26 @@ import { useState } from "react";
 
 import { CustomDiv } from "components/custom-objects";
 
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
+
 export type TreeItem = {
   id: string;
   data?: any;
-  children?: Array<string>;
+  children?: string[];
 };
 
 export type TreeData = {
   rootId: string;
-  items: Array<TreeItem>;
+  items: TreeItem[];
 };
 
 export type Props = {
   data?: TreeData;
   renderItem: (item: TreeItem, renderNameColumn: Function) => React.ReactNode;
   header?: React.ReactNode;
-  initiallyExpanded?: Array<string>;
+  initiallyExpanded?: string[];
   onItemSelectionChanged?: (item: TreeItem, checked: boolean) => void;
-  initiallySelected?: Array<string>;
+  initiallySelected?: string[];
 };
 
 export const Tree = (props: Props) => {
@@ -53,7 +55,7 @@ export const Tree = (props: Props) => {
 
       if (props.data) {
         const item = props.data.items.find((item) => item.id === id);
-        if (props.onItemSelectionChanged != null && item != null) {
+        if (!DEPRECATED_unsafeEquals(props.onItemSelectionChanged, null) && !DEPRECATED_unsafeEquals(item, null)) {
           props.onItemSelectionChanged(item, checked);
         }
       }
@@ -61,7 +63,7 @@ export const Tree = (props: Props) => {
   }
 
   function renderItem(item: TreeItem, idx: number) {
-    const children = (props.data != null ? props.data.items : [])
+    const children = (!DEPRECATED_unsafeEquals(props.data, null) ? props.data.items : [])
       .filter((row) => (item.children || []).includes(row.id))
       .map((child, childIdx) => renderItem(child, childIdx));
     const sublistVisible = isSublistVisible(item.id);
@@ -79,7 +81,7 @@ export const Tree = (props: Props) => {
     return (
       <li key={item.id} className={idx % 2 === 1 ? "list-row-odd" : "list-row-even"}>
         <div className="product-details-wrapper" style={{ padding: ".7em" }}>
-          {props.onItemSelectionChanged != null && (
+          {!DEPRECATED_unsafeEquals(props.onItemSelectionChanged, null) && (
             <CustomDiv className="col" width="2" um="em">
               <input
                 type="checkbox"
@@ -108,7 +110,7 @@ export const Tree = (props: Props) => {
   const data = props.data || { items: [{ id: "0" }], rootId: "0" };
   const rootNode = data.items.find((item) => item.id === data.rootId);
 
-  if (rootNode == null) {
+  if (DEPRECATED_unsafeEquals(rootNode, null)) {
     return <div>{t("Invalid data")}</div>;
   }
 
@@ -116,16 +118,18 @@ export const Tree = (props: Props) => {
     .filter((item) => (rootNode.children || []).includes(item.id))
     .map((item, idx) => renderItem(item, idx));
 
-  if (nodes == null || nodes.length === 0) {
+  if (DEPRECATED_unsafeEquals(nodes, null) || nodes.length === 0) {
     return <div>{t("No data")}</div>;
   }
 
   return (
     <ul className="product-list">
-      {props.header != null && (
+      {!DEPRECATED_unsafeEquals(props.header, null) && (
         <li className="list-header">
           <div style={{ padding: ".7em" }}>
-            {props.onItemSelectionChanged != null && <CustomDiv key="header1" className="col" width="2" um="em" />}
+            {!DEPRECATED_unsafeEquals(props.onItemSelectionChanged, null) && (
+              <CustomDiv key="header1" className="col" width="2" um="em" />
+            )}
             <CustomDiv key="header2" className="col" width="2" um="em" />
             {props.header}
           </div>

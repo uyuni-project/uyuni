@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2015--2025 SUSE LLC
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,25 +15,37 @@
  */
 package com.redhat.rhn.testing;
 
-import com.mockobjects.ExpectationValue;
-import com.mockobjects.servlet.MockHttpServletResponse;
-
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * RhnMockHttpServletResponse is a mock implementation of the
- * HttpServletResponse which fixes deficiencies in the MockObjects'
- * implementation of MockHttpServletResponse.
+ * HttpServletResponse which provides a simple mock for testing purposes.
  */
-public class RhnMockHttpServletResponse extends MockHttpServletResponse {
+public class RhnMockHttpServletResponse implements HttpServletResponse {
     private final Map<String, Cookie> cookies = new HashMap<>();
-    private final Map<String, String> header = new HashMap<>();
+    private final Map<String, String> headers = new HashMap<>();
     private String redirect;
-    private String encoding;
-    private final ExpectationValue myStatus = new ExpectationValue("RhnMockHttpServletResponse.setStatus");
+    private String encoding = StandardCharsets.UTF_8.name();
+    private String contentType;
+    private Locale locale = Locale.getDefault();
+    private int bufferSize = 8192;
+    private boolean committed = false;
+    private int status = SC_OK;
+    private StringWriter stringWriter = new StringWriter();
+    private PrintWriter writer = new PrintWriter(stringWriter);
+    private MockServletOutputStream outputStream = new MockServletOutputStream();
 
     /** {@inheritDoc} */
     @Override
@@ -41,21 +54,19 @@ public class RhnMockHttpServletResponse extends MockHttpServletResponse {
     }
 
     /**
-     *
      * {@inheritDoc}
      */
     @Override
     public void addHeader(String key, String value) {
-        header.put(key, value);
+        headers.put(key, value);
     }
 
     /**
-     *
      * {@inheritDoc}
      */
     @Override
     public void setHeader(String key, String value) {
-        header.put(key, value);
+        headers.put(key, value);
     }
 
     /**
@@ -65,7 +76,7 @@ public class RhnMockHttpServletResponse extends MockHttpServletResponse {
      */
     @Override
     public String getHeader(String key) {
-        return header.get(key);
+        return headers.get(key);
     }
 
     /**
@@ -84,6 +95,7 @@ public class RhnMockHttpServletResponse extends MockHttpServletResponse {
     @Override
     public void sendRedirect(String aURL) {
         redirect = aURL;
+        committed = true;
     }
 
     /**
@@ -122,20 +134,178 @@ public class RhnMockHttpServletResponse extends MockHttpServletResponse {
      */
     @Override
     public boolean isCommitted() {
-        return false;
+        return committed;
     }
 
     /**
-     * Set the expected response status
-     * @param status the response status
+     * Sets the status code.
+     * @param statusIn the status to set
      */
-    public void setExpectedStatus(int status) {
-        myStatus.setExpected(status);
+    @Override
+    public void setStatus(int statusIn) {
+        this.status = statusIn;
     }
 
     @Override
-    public void setStatus(int status) {
-        super.setStatus(status);
-        myStatus.setActual(status);
+    public int getStatus() {
+        return status;
     }
+
+    @Override
+    public boolean containsHeader(String name) {
+        return headers.containsKey(name);
+    }
+
+    @Override
+    public String encodeURL(String url) {
+        return url;
+    }
+
+    @Override
+    public String encodeRedirectURL(String url) {
+        return url;
+    }
+
+    @Override
+    public String encodeUrl(String url) {
+        return url;
+    }
+
+    @Override
+    public String encodeRedirectUrl(String url) {
+        return url;
+    }
+
+    @Override
+    public void sendError(int sc, String msg) throws IOException {
+        this.status = sc;
+        committed = true;
+    }
+
+    @Override
+    public void sendError(int sc) throws IOException {
+        this.status = sc;
+        committed = true;
+    }
+
+    @Override
+    public void setDateHeader(String name, long date) {
+        headers.put(name, String.valueOf(date));
+    }
+
+    @Override
+    public void addDateHeader(String name, long date) {
+        headers.put(name, String.valueOf(date));
+    }
+
+    @Override
+    public void setIntHeader(String name, int value) {
+        headers.put(name, String.valueOf(value));
+    }
+
+    @Override
+    public void addIntHeader(String name, int value) {
+        headers.put(name, String.valueOf(value));
+    }
+
+    @Override
+    public void setStatus(int sc, String sm) {
+        this.status = sc;
+    }
+
+    @Override
+    public Collection<String> getHeaders(String name) {
+        return headers.containsKey(name) ?
+            Collections.singletonList(headers.get(name)) :
+            Collections.emptyList();
+    }
+
+    @Override
+    public Collection<String> getHeaderNames() {
+        return headers.keySet();
+    }
+
+    // ServletResponse implementation
+
+    @Override
+    public String getContentType() {
+        return contentType;
+    }
+
+    /**
+     * Sets the content type.
+     * @param type the content type to set
+     */
+    @Override
+    public void setContentType(String type) {
+        this.contentType = type;
+    }
+
+    @Override
+    public ServletOutputStream getOutputStream() throws IOException {
+        return outputStream;
+    }
+
+    @Override
+    public PrintWriter getWriter() throws IOException {
+        return writer;
+    }
+
+    @Override
+    public void setContentLength(int len) {
+        headers.put("Content-Length", String.valueOf(len));
+    }
+
+    @Override
+    public void setContentLengthLong(long len) {
+        headers.put("Content-Length", String.valueOf(len));
+    }
+
+    @Override
+    public int getBufferSize() {
+        return bufferSize;
+    }
+
+    @Override
+    public void setBufferSize(int size) {
+        this.bufferSize = size;
+    }
+
+    @Override
+    public Locale getLocale() {
+        return locale;
+    }
+
+    @Override
+    public void setLocale(Locale loc) {
+        this.locale = loc;
+    }
+
+    @Override
+    public void flushBuffer() throws IOException {
+        committed = true;
+        writer.flush();
+        outputStream.flush();
+    }
+
+    @Override
+    public void resetBuffer() {
+        if (!committed) {
+            stringWriter = new StringWriter();
+            writer = new PrintWriter(stringWriter);
+            outputStream = new MockServletOutputStream();
+        }
+    }
+
+    @Override
+    public void reset() {
+        if (!committed) {
+            headers.clear();
+            resetBuffer();
+            status = SC_OK;
+            contentType = null;
+            encoding = "UTF-8";
+        }
+    }
+
 }

@@ -20,7 +20,7 @@ import { MigrationProductList } from "./MigrationProductList";
 import { MigrationProduct, MigrationTarget } from "./types";
 import { MigrationUtils } from "./utils";
 
-interface Props {
+type Props = {
   migrationSource: MigrationProduct;
   migrationTarget: MigrationTarget;
   baseChannelTrees: ChannelTreeType[];
@@ -30,7 +30,7 @@ interface Props {
   allowVendorChange?: boolean;
   onChannelSelection: (channelTree: ChannelTreeType, allowVendorChange: boolean) => void;
   onBack: () => void;
-}
+};
 
 export const MigrationChannelsSelectorForm: React.FC<Props> = ({
   migrationSource,
@@ -122,7 +122,7 @@ export const MigrationChannelsSelectorForm: React.FC<Props> = ({
 
     const newBase = baseChannels.find((base) => base.id.toString() === value);
     if (newBase !== undefined) {
-      channelProcessor.setSelectedBaseChannelId(newBase.id).then((_channelTree) => {
+      channelProcessor.setSelectedBaseChannelId(newBase.id).then(() => {
         setSelectedBaseChannel(newBase);
         setSelectedChildChannels(getRequiredChannelsForBase(newBase));
       });

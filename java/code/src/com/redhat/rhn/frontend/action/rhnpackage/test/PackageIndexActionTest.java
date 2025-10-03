@@ -44,7 +44,7 @@ public class PackageIndexActionTest extends RhnBaseTestCase {
         ah.getUser().addPermanentRole(RoleFactory.ORG_ADMIN);
 
         Server svr = ServerFactoryTest.createTestServer(ah.getUser(), true);
-        ah.getRequest().setupAddParameter("sid", svr.getId().toString());
+        ah.getRequest().addParameter("sid", svr.getId().toString());
         ah.executeAction("update");
 
         SelectMode m = ModeFactory.getMode("test_queries", "scheduled_actions");

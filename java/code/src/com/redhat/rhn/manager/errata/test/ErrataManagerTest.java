@@ -47,7 +47,6 @@ import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.errata.Keyword;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.domain.org.Org;
-import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
@@ -115,8 +114,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testStore() throws Exception {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User user = UserTestUtils.createUser(this);
         Errata e = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
 
         e.setAdvisoryName(TestUtils.randomString());
@@ -203,8 +201,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         // errata search is done by the search-server. The search
         // in ErrataManager is to load ErrataOverview objects from
         // the results of the search-server searches.
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User user = UserTestUtils.createUser(this);
         Package p = PackageTest.createTestPackage(user.getOrg());
         Errata e = new Errata();
         e.setAdvisory("ZEUS-2007");
@@ -237,8 +234,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testRelevantErrataList() throws Exception {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User user = UserTestUtils.createUser(this);
         ErrataCacheManagerTest.createServerNeededCache(user, ErrataFactory.ERRATA_TYPE_BUG);
         DataResult<ErrataOverview> errata = ErrataManager.relevantErrata(user);
         assertNotNull(errata);
@@ -247,8 +243,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testRelevantErrataByTypeList() throws Exception {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User user = UserTestUtils.createUser(this);
         ErrataCacheManagerTest.createServerNeededCache(user, ErrataFactory.ERRATA_TYPE_BUG);
         PageControl pc = new PageControl();
         pc.setStart(1);
@@ -261,8 +256,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testLookupErrata() throws Exception {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User user = UserTestUtils.createUser(this);
         Errata errata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
 
         // Check for the case where the errata belongs to the users org
@@ -285,7 +279,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         catch (LookupException e) {
             //This means we hit the returnedErrata.getOrg == null path successfully
         }
-        Org org2 = OrgFactory.lookupById(UserTestUtils.createOrg("testOrg2"));
+        Org org2 = UserTestUtils.createOrg("testOrg2");
         errata.setOrg(org2);
         ErrataFactory.save(errata);
 
@@ -308,18 +302,15 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testSystemsAffected() throws Exception {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User user = UserTestUtils.createUser(this);
         PageControl pc = new PageControl();
         pc.setStart(1);
         pc.setPageSize(5);
 
-        Errata a = ErrataFactoryTest.createTestErrata(UserTestUtils.createOrg("testOrg" +
-                    this.getClass().getSimpleName()));
+        Errata a = ErrataFactoryTest.createTestErrata(UserTestUtils.createOrg(this).getId());
 
         DataResult systems = ErrataManager.systemsAffected(user, a.getId(), pc);
         assertNotNull(systems);
-        assertTrue(systems.isEmpty());
         assertTrue(systems.isEmpty());
 
         DataResult systems2 = ErrataManager.systemsAffected(user, (long) -2, pc);
@@ -328,11 +319,9 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testAdvisoryNameUnique() throws Exception {
-        Errata e1 = ErrataFactoryTest.createTestErrata(UserTestUtils.createOrg("testOrg" +
-                    this.getClass().getSimpleName()));
+        Errata e1 = ErrataFactoryTest.createTestErrata(UserTestUtils.createOrg(this).getId());
         Thread.sleep(100); //sleep for a bit to make sure we get unique advisoryNames
-        Errata e2 = ErrataFactoryTest.createTestErrata(UserTestUtils.createOrg("testOrg" +
-                    this.getClass().getSimpleName()));
+        Errata e2 = ErrataFactoryTest.createTestErrata(UserTestUtils.createOrg(this).getId());
 
         assertNotEquals(e1.getId(), e2.getId()); //make sure adv names are different
     }
@@ -375,7 +364,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testErrataInSet() throws Exception {
-        User user = UserTestUtils.findNewUser();
+        User user = UserTestUtils.createUser();
 
         Errata e = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         e = TestUtils.saveAndReload(e);

@@ -27,12 +27,12 @@ type WorkerPayload = Partial<InternalProcessorState>;
 /**
  * The dependency data of a channel
  */
-export interface ChannelDependencyData {
+export type ChannelDependencyData = {
   /** The names of the channels that the channel requires */
   requiresNames: string[];
   /** The names of the channels that require this channel */
   requiredByNames: string[];
-}
+};
 
 export class ChannelProcessor {
   private state: InternalProcessorState;

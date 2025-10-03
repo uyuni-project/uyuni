@@ -3,7 +3,7 @@ const { exec } = require("child_process");
 const ignore = require("../.auditignore.js");
 
 const inline = (message) => {
-  return (message || "").replace(/\r?\n/g, " ");
+  return (message || "").replaceAll(/\r?\n/g, " ");
 };
 
 // Yarn 1.x doesn't currently support muting known issues, see https://github.com/yarnpkg/yarn/issues/6669

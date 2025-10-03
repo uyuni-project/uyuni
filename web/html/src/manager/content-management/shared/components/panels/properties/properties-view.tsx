@@ -21,11 +21,7 @@ const PropertiesHistoryEntries = (props) => (
       const versionMessage = getVersionMessage(history);
       return (
         <li key={`historyentries_${props.id}_${index}`}>
-          {index === 0 ? (
-            versionMessage
-          ) : (
-            <BuildVersion id={`${history.version}_historyentry`} text={versionMessage} collapsed={true} />
-          )}
+          {index === 0 ? versionMessage : <BuildVersion id={`${history.version}_historyentry`} text={versionMessage} />}
         </li>
       );
     })}
@@ -33,7 +29,7 @@ const PropertiesHistoryEntries = (props) => (
 );
 
 const PropertiesView = (props: Props) => {
-  let propertiesToShow = produce(props.properties, (draftProperties) => {
+  const propertiesToShow = produce(props.properties, (draftProperties) => {
     draftProperties.historyEntries.sort((a, b) => b.version - a.version);
   });
 

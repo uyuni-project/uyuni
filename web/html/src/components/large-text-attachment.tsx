@@ -79,7 +79,7 @@ export class LargeTextAttachment extends React.Component<Props, State> {
     confirmDeleteMessage: "Are you sure?",
     buttonMode: ButtonMode.TextAndIcon,
     disabled: false,
-    onEdit: async (_value: string) => undefined,
+    onEdit: async () => undefined,
     onDelete: async () => undefined,
   };
 

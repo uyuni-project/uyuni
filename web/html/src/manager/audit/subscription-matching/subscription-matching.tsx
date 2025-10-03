@@ -2,8 +2,7 @@ import * as React from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 
-import { Messages as MessageContainer } from "components/messages/messages";
-import { Utils as MessagesUtils } from "components/messages/messages";
+import { Messages as MessageContainer, Utils as MessagesUtils } from "components/messages/messages";
 import { TopPanel } from "components/panels/TopPanel";
 import { TabContainer } from "components/tab-container";
 
@@ -93,9 +92,9 @@ class SubscriptionMatching extends React.Component<SubscriptionMatchingProps> {
         <ErrorMessage error={this.state.error} />
         <SubscriptionMatchingTabContainer data={data} onPinChanged={this.onPinChanged} />
         <MatcherRunPanel
-          dataAvailable={data != null}
-          initialLatestStart={data == null ? null : data.latestStart}
-          initialLatestEnd={data == null ? null : data.latestEnd}
+          dataAvailable={!DEPRECATED_unsafeEquals(data, null)}
+          initialLatestStart={DEPRECATED_unsafeEquals(data, null) ? null : data.latestStart}
+          initialLatestEnd={DEPRECATED_unsafeEquals(data, null) ? null : data.latestEnd}
           onMatcherRunSchedule={this.onMatcherRunSchedule}
         />
       </div>
@@ -137,7 +136,7 @@ class SubscriptionMatchingTabContainer extends React.Component<SubscriptionMatch
   render() {
     const data = this.props.data;
 
-    if (data == null || !data.matcherDataAvailable) {
+    if (DEPRECATED_unsafeEquals(data, null) || !data.matcherDataAvailable) {
       return null;
     }
 

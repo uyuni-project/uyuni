@@ -67,7 +67,7 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
-        userNotOrgOne = UserTestUtils.findNewUser();
+        userNotOrgOne = UserTestUtils.createUser();
         userKey = XmlRpcTestUtils.getSessionKey(userNotOrgOne);
         userNotOrgOne.addPermanentRole(RoleFactory.ORG_ADMIN);
     }

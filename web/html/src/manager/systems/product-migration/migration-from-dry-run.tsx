@@ -18,13 +18,13 @@ import { MessagesContainer } from "components/toastr";
 
 import Network from "utils/network";
 
-export interface Props {
+export type Props = {
   targetProduct: MigrationProduct;
   selectedChannels: ChannelTreeType;
   systemsData: MigrationSystemData[];
   allowVendorChange: boolean;
   actionChains?: ActionChain[];
-}
+};
 
 export const SSMProductMigrationFromDryRun: React.FC<Props> = ({
   targetProduct,

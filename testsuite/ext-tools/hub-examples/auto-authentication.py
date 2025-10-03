@@ -14,9 +14,9 @@ import argparse
 
 # Parsing arguments
 parser = argparse.ArgumentParser()
-parser.add_argument('hub_fqdn', type=str, help='The Hub FQDN')
-parser.add_argument('user', type=str, help='The username for the Hub')
-parser.add_argument('password', type=str, help='The password for the Hub')
+parser.add_argument("hub_fqdn", type=str, help="The Hub FQDN")
+parser.add_argument("user", type=str, help="The username for the Hub")
+parser.add_argument("password", type=str, help="The password for the Hub")
 args = parser.parse_args()
 
 api = f"http://{args.hub_fqdn}:2830/hub/rpc/api"
@@ -37,10 +37,14 @@ successfulResponses = systemsPerServer["Successful"]
 failedResponses = systemsPerServer["Failed"]
 
 if successfulResponses["Responses"]:
-  print(f"Systems responding successfully through a multicast api call:\n{successfulResponses}\n")
+    print(
+        f"Systems responding successfully through a multicast api call:\n{successfulResponses}\n"
+    )
 
 if failedResponses["Responses"]:
-  print(f"Systems failing to reply through a multicast api call:\n{failedResponses}\n")
+    print(
+        f"Systems failing to reply through a multicast api call:\n{failedResponses}\n"
+    )
 
 # Log out
 client.hub.logout(hubSessionKey)

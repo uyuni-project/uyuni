@@ -6,7 +6,7 @@ import { FormContext } from "../form/Form";
 import { InputBase, InputBaseProps } from "../InputBase";
 import styles from "./Radio.module.scss";
 
-interface RadioOption {
+type RadioOption = {
   /** The label of this option */
   label: React.ReactNode;
   /** The value to set when this option is selected */
@@ -15,11 +15,11 @@ interface RadioOption {
   title?: string;
   /** true if this option is currently not selectable */
   disabled?: boolean;
-}
+};
 
 type Props = InputBaseProps & {
   /** Items to display in an array of objects with label and value properties. */
-  items: Array<RadioOption>;
+  items: RadioOption[];
 
   /** Show the choices in a line or not */
   inline?: boolean;

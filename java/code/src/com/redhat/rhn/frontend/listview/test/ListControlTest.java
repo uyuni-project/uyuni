@@ -61,14 +61,15 @@ public class ListControlTest extends RhnBaseTestCase {
         pc.setIndexData(true);
         pc.setFilterColumn("login");
 
-        User user = UserTestUtils.findNewUser("zbeeblebrox", "H2G2");
-        UserTestUtils.createUser("adent", user.getOrg().getId());
-        UserTestUtils.createUser("fprefect", user.getOrg().getId());
-        UserTestUtils.createUser("ffffffff", user.getOrg().getId());
+        User user = UserTestUtils.createUser("zbeeblebrox", "H2G2");
+        Long orgId = user.getOrg().getId();
+        UserTestUtils.createUser("adent", orgId);
+        UserTestUtils.createUser("fprefect", orgId);
+        UserTestUtils.createUser("ffffffff", orgId);
 
         SelectMode m = ModeFactory.getMode("User_queries", "users_in_org");
         Map<String, Object> params = new HashMap<>();
-        params.put("org_id", user.getOrg().getId());
+        params.put("org_id", orgId);
         DataResult dr = m.execute(params);
         dr.setIndex(pc.createIndex(dr));
 

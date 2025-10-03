@@ -20,10 +20,17 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import com.redhat.rhn.frontend.servlets.EnvironmentFilter;
+import com.redhat.rhn.frontend.servlets.RhnHttpServletRequest;
+import com.redhat.rhn.frontend.servlets.RhnHttpServletResponse;
 
 import org.apache.struts.Globals;
+import org.jmock.Expectations;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
+
+import javax.servlet.ServletException;
 
 /**
  * EnvironmentFilterTest
@@ -32,38 +39,45 @@ public class EnvironmentFilterTest extends BaseFilterTst {
 
     @Override
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() throws ServletException, IOException {
         super.setUp();
         this.request.setRequestURL("https://rhn.webdev.redhat.com/rhn/manager/login");
+
+        context.checking(new Expectations() {{
+            allowing(chain).doFilter(
+                    with(any(RhnHttpServletRequest.class)),
+                    with(any(RhnHttpServletResponse.class))
+            );
+        }});
     }
 
     @Test
     public void testNonSSLUrls() throws Exception {
 
         EnvironmentFilter filter = new EnvironmentFilter();
-        request.setupAddParameter("message", "some.key.to.localize");
-        request.setupAddParameter("messagep1", "param value");
-        request.setupAddParameter("messagep2", "param value");
-        request.setupAddParameter("messagep3", "param value");
+        request.addParameter("message", "some.key.to.localize");
+        request.addParameter("messagep1", "param value");
+        request.addParameter("messagep2", "param value");
+        request.addParameter("messagep3", "param value");
         filter.init(null);
 
         filter.doFilter(request, response, chain);
 
         // Check that we got the expected redirect.
-        String expectedRedir = "https://mymachine.rhndev.redhat.com/rhn/manager/login";
+        String expectedRedir = "https://host.mlm.suse.com/rhn/manager/login";
         assertEquals(expectedRedir, response.getRedirect());
 
-        request.setupGetRequestURI("/rhn/kickstart/DownloadFile");
+        request.setRequestURI("/rhn/kickstart/DownloadFile");
         response.clearRedirect();
-        request.setupAddParameter("message", "some.key.to.localize");
-        request.setupAddParameter("messagep1", "param value");
-        request.setupAddParameter("messagep2", "param value");
-        request.setupAddParameter("messagep3", "param value");
+        request.addParameter("message", "some.key.to.localize");
+        request.addParameter("messagep1", "param value");
+        request.addParameter("messagep2", "param value");
+        request.addParameter("messagep3", "param value");
         filter.doFilter(request, response, chain);
         assertNull(response.getRedirect());
         assertNotEquals(expectedRedir, response.getRedirect());
 
-        request.setupGetRequestURI("/rhn/rpc/api");
+        request.setRequestURI("/rhn/rpc/api");
         response.clearRedirect();
         filter.doFilter(request, response, chain);
         assertNull(response.getRedirect());
@@ -73,15 +87,15 @@ public class EnvironmentFilterTest extends BaseFilterTst {
     public void testAddAMessage() throws Exception {
         EnvironmentFilter filter = new EnvironmentFilter();
         filter.init(null);
-        this.request.setupIsSecure(true);
-        request.setupAddParameter("message", "some.key.to.localize");
-        request.setupAddParameter("messagep1", "param value");
-        request.setupAddParameter("messagep2", "param value");
-        request.setupAddParameter("messagep3", "param value");
+        this.request.setSecure(true);
+        request.addParameter("message", "some.key.to.localize");
+        request.addParameter("messagep1", "param value");
+        request.addParameter("messagep2", "param value");
+        request.addParameter("messagep3", "param value");
 
         filter.doFilter(request, response, chain);
 
         assertNotNull(request.getAttribute(Globals.MESSAGE_KEY));
-        assertNotNull(session.getAttribute(Globals.MESSAGE_KEY));
+        assertNotNull(request.getSession().getAttribute(Globals.MESSAGE_KEY));
     }
 }

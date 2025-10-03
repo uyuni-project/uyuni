@@ -65,17 +65,16 @@ public class ChannelSetupActionTest extends RhnBaseTestCase {
         sah.setupClampListBounds();
 
         //Create a new errata
-        Org org = UserTestUtils.createNewOrgFull("channelSetupActionTestbrokenTestExec");
+        Org org = UserTestUtils.createOrg("channelSetupActionTestbrokenTestExec");
         Errata e = ErrataFactoryTest.createTestErrata(org.getId());
         //make sure we have a channel for the errata
         Channel c1 = ChannelFactoryTest.createTestChannel(org);
         e.addChannel(c1);
         ErrataFactory.save(e);
         //setup the request object
-        sah.getRequest().setupAddParameter("eid", e.getId().toString());
-        sah.getRequest().setupAddParameter("newset", (String) null);
-        sah.getRequest().setupAddParameter("returnvisit", (String) null);
-        sah.getRequest().setupAddParameter("returnvisit", (String) null);
+        sah.getRequest().addParameter("eid", e.getId().toString());
+        sah.getRequest().addParameter("newset", (String) null);
+        sah.getRequest().addParameter("returnvisit", (String) null);
         sah.executeAction();
 
         RequestContext requestContext = new RequestContext(sah.getRequest());

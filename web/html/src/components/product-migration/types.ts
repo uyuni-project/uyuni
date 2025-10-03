@@ -2,46 +2,46 @@ import { ChannelTreeType } from "core/channels/type/channels.type";
 
 import { SystemData } from "components/target-systems";
 
-export interface MigrationProduct {
+export type MigrationProduct = {
   id: number;
   name: string;
   addons: MigrationProduct[];
-}
+};
 
-export interface MigrationTarget {
+export type MigrationTarget = {
   id: string;
   targetProduct: MigrationProduct;
   missingChannels: string[];
-}
+};
 
-export interface MigrationSystemData extends SystemData {
+export type MigrationSystemData = {
   installedProduct: MigrationProduct;
   eligible: boolean;
   reason: string | null;
   details: string | null;
-}
+} & SystemData;
 
-export interface MigrationChannelsSelection {
+export type MigrationChannelsSelection = {
   baseChannelTrees: ChannelTreeType[];
   mandatoryMap: Record<string, number[]>;
   systemsData: MigrationSystemData[];
-}
+};
 
-export interface MigrationTargetSelection {
+export type MigrationTargetSelection = {
   commonBaseProduct: boolean;
   migrationSource: MigrationProduct;
   migrationTargets: MigrationTarget[];
   systemsData: MigrationSystemData[];
-}
+};
 
-export interface MigrationDryRunConfirmation {
+export type MigrationDryRunConfirmation = {
   targetProduct: MigrationProduct;
   selectedChannels: ChannelTreeType;
   systemsData: MigrationSystemData[];
   allowVendorChange: boolean;
-}
+};
 
-export interface MigrationScheduleRequest {
+export type MigrationScheduleRequest = {
   serverIds: number[];
   targetProduct: MigrationProduct;
   targetChannelTree: ChannelTreeType;
@@ -49,4 +49,4 @@ export interface MigrationScheduleRequest {
   allowVendorChange: boolean;
   earliest: moment.Moment | null;
   actionChain: string | null;
-}
+};

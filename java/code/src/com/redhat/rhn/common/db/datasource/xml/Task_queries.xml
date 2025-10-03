@@ -346,6 +346,20 @@ SELECT id, channel_label, client, reason, force, bypass_filters, next_action
    </query>
 </write-mode>
 
+<mode name="pkgcleanup_find_orphan_vendor_packages">
+  <query params="">
+    SELECT    p.id,
+              pn.name || '-' || evr_t_as_vre_simple(pe.evr) || '.' || pa.label AS nevra
+    FROM      rhnPackage p
+    JOIN      rhnPackageName pn ON p.name_id = pn.id
+    JOIN      rhnPackageEVR pe ON p.evr_id = pe.id
+    JOIN      rhnPackageArch pa ON p.package_arch_id = pa.id
+    LEFT JOIN rhnChannelPackage cp ON p.id = cp.package_id
+    WHERE     p.org_id IS NULL
+    AND       cp.channel_id IS NULL
+  </query>
+</mode>
+
 <mode name="summarypop_awol_server_in_orgs2"
       class="com.redhat.rhn.frontend.dto.OrgIdWrapper">
    <query>

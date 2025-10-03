@@ -21,8 +21,7 @@ import com.redhat.rhn.domain.rhnset.RhnSetImpl;
 import com.redhat.rhn.frontend.taglibs.ListDisplayTag;
 import com.redhat.rhn.frontend.taglibs.SetTag;
 import com.redhat.rhn.testing.RhnBaseTestCase;
-
-import com.mockobjects.helpers.TagTestHelper;
+import com.redhat.rhn.testing.TagTestHelper;
 
 import org.junit.jupiter.api.Test;
 

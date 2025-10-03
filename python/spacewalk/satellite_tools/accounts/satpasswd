@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2014--2015 Red Hat, Inc.
 # Copyright (c) 2025 SUSE LLC
@@ -28,11 +29,15 @@ def print_help():
     print("\t-s, --stdin\tRead the password from standard input.")
 
 
+# pylint: disable-next=redefined-outer-name
 def read_passwd(stdin, msg):
+    # pylint: disable-next=redefined-outer-name,invalid-name
     passwordIn = None
     if stdin:
+        # pylint: disable-next=invalid-name
         passwordIn = sys.stdin.readline().rstrip("\n")
     else:
+        # pylint: disable-next=invalid-name
         passwordIn = getpass.getpass(msg)
     return passwordIn
 
@@ -58,6 +63,7 @@ if __name__ == "__main__":
 
     user = rhnUser.search(userIn)
     if not user:
+        # pylint: disable-next=consider-using-f-string
         print("User %s is not a valid Satellite user." % userIn)
         sys.exit(1)
 
@@ -74,6 +80,7 @@ if __name__ == "__main__":
 
     MIN_PASSWD_LEN = db_config.value("PSW_CHECK_LENGTH_MIN")
     if len(passwordIn) < MIN_PASSWD_LEN:
+        # pylint: disable-next=consider-using-f-string
         print(("User password should be at least %d characters long.") % MIN_PASSWD_LEN)
         sys.exit(1)
 

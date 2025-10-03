@@ -71,9 +71,9 @@ public class PreservationListConfirmDeleteActionTest extends RhnBaseTestCase {
 
         RhnSetManager.store(set);
         ah.setupClampListBounds();
-        ah.getRequest().setupAddParameter("newset", (String)null);
-        ah.getRequest().setupAddParameter("returnvisit", (String) null);
-        ah.getRequest().setupAddParameter("submitted", "false");
+        ah.getRequest().addParameter("newset", (String)null);
+        ah.getRequest().addParameter("returnvisit", (String) null);
+        ah.getRequest().addParameter("submitted", "false");
         ah.executeAction();
 
         RhnMockHttpServletRequest request = ah.getRequest();

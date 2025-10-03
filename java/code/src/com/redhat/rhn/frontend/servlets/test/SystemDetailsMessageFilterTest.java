@@ -43,8 +43,7 @@ public class SystemDetailsMessageFilterTest extends MockObjectTestCase {
 
     @BeforeEach
     public void setUp() {
-        user = UserTestUtils.findNewUser("testUser", "testOrg" +
-                this.getClass().getSimpleName());
+        user = UserTestUtils.createUser(this);
     }
 
     @Test

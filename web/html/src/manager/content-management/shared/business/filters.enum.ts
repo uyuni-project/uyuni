@@ -1,24 +1,25 @@
 import _find from "lodash/find";
 
-type FilterEntityType = { key: string; text: string };
-type FilterEntityEnumType = {
-  [key: string]: FilterEntityType;
+type FilterEntityType = {
+  key: string;
+  text: string;
 };
+type FilterEntityEnumType = Record<string, FilterEntityType>;
 
-export type FilterMatcherType = { key: string; text: string; longDescription: string };
-type FilterMatcherEnumType = {
-  [key: string]: FilterMatcherType;
+export type FilterMatcherType = {
+  key: string;
+  text: string;
+  longDescription: string;
 };
+type FilterMatcherEnumType = Record<string, FilterMatcherType>;
 
 export type ClmFilterOptionType = {
   key: string;
   entityType: FilterEntityType;
-  matchers: Array<FilterMatcherType>;
+  matchers: FilterMatcherType[];
   text: string;
 };
-type ClmFilterOptionsEnumType = {
-  [key: string]: ClmFilterOptionType;
-};
+type ClmFilterOptionsEnumType = Record<string, ClmFilterOptionType>;
 
 export const filterEntity: FilterEntityEnumType = {
   PACKAGE: {
@@ -253,7 +254,7 @@ export function findClmFilterByKey(key: string | undefined): ClmFilterOptionType
   return _find(clmFilterOptions, (entry) => entry.key === key);
 }
 
-export function getClmFiltersOptions(): Array<ClmFilterOptionType> {
+export function getClmFiltersOptions(): ClmFilterOptionType[] {
   return Object.values(clmFilterOptions) as any;
 }
 

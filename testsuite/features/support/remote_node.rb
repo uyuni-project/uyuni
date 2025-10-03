@@ -54,9 +54,16 @@ class RemoteNode
 
     if (PRIVATE_ADDRESSES.key? host) && !$private_net.nil?
       @private_ip = net_prefix + PRIVATE_ADDRESSES[host]
-      @private_interface = 'eth1'
-      _out, _err, code = ssh('ip address show ens4')
-      @private_interface = 'ens4' if code.zero?
+      @private_interface = nil
+      %w[eth1 ens4].each do |dev|
+        _output, code = run_local("ip address show dev #{dev}", check_errors: false)
+
+        if code.zero?
+          @private_interface = dev
+          break
+        end
+      end
+      raise StandardError, "No private interface for '#{@hostname}'." if @private_interface.nil?
     end
 
     ip = client_public_ip

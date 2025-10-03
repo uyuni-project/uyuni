@@ -11,10 +11,12 @@
 
 package com.suse.manager.webui.controllers.admin.handlers;
 
+import static com.suse.manager.webui.utils.SparkApplicationHelper.badGateway;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.badRequest;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.internalServerError;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.notFound;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.serviceUnavailable;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.success;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withProductAdmin;
 import static spark.Spark.delete;
@@ -411,19 +413,23 @@ public class HubApiController {
 
     private String deleteServer(Request request, Response response, User user, IssRole issRole) {
         long serverId = Long.parseLong(request.params("id"));
+        boolean onlyLocal = Boolean.parseBoolean(request.queryParams("only_local"));
         IssServer server = hubManager.findServer(user, serverId, issRole);
         if (server == null) {
             return notFound(response, LOC.getMessage("hub.cannot_find_server"));
         }
-
         try {
-            hubManager.deregister(user, server.getFqdn(), issRole, false);
+            hubManager.deregister(user, server.getFqdn(), issRole, onlyLocal);
         }
-        catch (IOException | CertificateException ex) {
-            LOGGER.error("Unable to register: error to connect with the remote server {}", server.getFqdn(), ex);
-            return internalServerError(response, LOC.getMessage("hub.unable_to_deregister"));
+        catch (IOException ex) {
+            LOGGER.error("Unable to deregister: error to connect with the remote server {}", server.getFqdn(), ex);
+            return serviceUnavailable(response, LOC.getMessage("hub.unable_to_deregister"));
         }
-
+        catch (CertificateException ex) {
+            LOGGER.error("Unable to deregister: error with Certificate when connecting to the remote server {}",
+                    server.getFqdn(), ex);
+            return badGateway(response, LOC.getMessage("hub.unable_to_deregister"));
+        }
         return success(response);
     }
 

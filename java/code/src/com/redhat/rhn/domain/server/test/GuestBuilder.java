@@ -230,9 +230,10 @@ public class GuestBuilder {
     }
 
     private void withHostInAnotherOrg(ServerGroupType groupType) {
-        Long orgId = UserTestUtils.createOrg("another-org-" + TestUtils.randomString());
-        User otherUser = UserTestUtils.createUser("another-user" + TestUtils.randomString(),
-                orgId);
+        User otherUser = UserTestUtils.createUser(
+                "another-user" + TestUtils.randomString(),
+                "another-org-" + TestUtils.randomString()
+        );
         Server host = ServerFactoryTest.createTestServer(otherUser, true, groupType);
 
         guest.setHostSystem(host);

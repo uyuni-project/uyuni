@@ -80,6 +80,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.ServerTestUtils;
+import com.redhat.rhn.testing.TestStatics;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -133,7 +134,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testAddRemoveSubscribeRole() throws Exception {
-        User admin = UserTestUtils.createUser("adminUser", user.getOrg().getId());
+        User admin = UserTestUtils.createUser(TestStatics.TEST_ADMIN_USER, user.getOrg().getId());
         Channel channel = ChannelFactoryTest.createTestChannel(admin);
         channel.setGloballySubscribable(false, admin.getOrg());
         assertFalse(channel.isGloballySubscribable(admin.getOrg()));
@@ -150,7 +151,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
     @Test
     public void testChannelsInOrg() throws Exception {
         // get an org
-        Org org = OrgFactory.lookupById(UserTestUtils.createOrg("channelTestOrg"));
+        Org org = UserTestUtils.createOrg("channelTestOrg");
         //put a channel in the org
         Channel channel = ChannelFactoryTest.createTestChannel(org);
         org.addOwnedChannel(channel);
@@ -252,7 +253,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testOwnedChannelsTree() {
-        assertTrue(ChannelManager.ownedChannelsTree(UserTestUtils.findNewUser()).isEmpty());
+        assertTrue(ChannelManager.ownedChannelsTree(UserTestUtils.createUser()).isEmpty());
         assertNotEmpty(ChannelManager.ownedChannelsTree(user));
     }
 
@@ -675,7 +676,6 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         assertEquals(1, comparator.compare("5.3.1.1", "5.3.0.10"));
         assertEquals(1, comparator.compare("5.4.1", "5.3.0.10"));
         assertEquals(-1, comparator.compare("5.0.0.0", "5.3.0.3"));
-        assertEquals(-1, comparator.compare("5.0.9.0", "5.0.10.0"));
         assertEquals(-1, comparator.compare("5.0.9.0", "5.0.10.0"));
     }
 

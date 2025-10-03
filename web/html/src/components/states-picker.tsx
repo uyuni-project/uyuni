@@ -18,8 +18,7 @@ import { Utils } from "utils/functions";
 import Network from "../utils/network";
 import { AsyncButton } from "./buttons";
 import { TextField } from "./fields";
-import { Messages, MessageType } from "./messages/messages";
-import { Utils as MessagesUtils } from "./messages/messages";
+import { Messages, MessageType, Utils as MessagesUtils } from "./messages/messages";
 import { RankingTable } from "./ranking-table";
 import { SaltStatePopup } from "./salt-state-popup";
 import { Table } from "./table/Table";
@@ -137,7 +136,7 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
       }
     }
     const request = this.props.saveRequest(channels).then(
-      (data, textStatus, jqXHR) => {
+      (data) => {
         const newSearchResults = this.state.search.results.map((channel) => {
           const changed = this.state.changed.get(channelKey(channel));
           // We want to make sure the search results are updated with the changes. If there was a change
@@ -169,7 +168,7 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
         this.setMessages(messages);
         this.hideRanking();
       },
-      (jqXHR, textStatus, errorThrown) => {
+      () => {
         this.setMessages(MessagesUtils.error(t("An error occurred on save.")));
       }
     );
@@ -251,7 +250,7 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
       }
     });
 
-    for (var row of rows) {
+    for (const row of rows) {
       const changed = row.value;
       const currentChannel = changed === undefined ? row.original : changed;
 
@@ -264,9 +263,8 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
           <td>
             {channelIcon(currentChannel)}
             {currentChannel.type !== "internal_state" ? (
-              /* eslint-disable-next-line jsx-a11y/anchor-is-valid */
-              <a
-                href="#"
+              <button
+                className="modal-link"
                 data-bs-toggle="modal"
                 data-bs-target="#saltStatePopUp"
                 onClick={() => {
@@ -274,7 +272,7 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
                 }}
               >
                 {currentChannel.name}
-              </a>
+              </button>
             ) : (
               currentChannel.name
             )}

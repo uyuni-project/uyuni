@@ -33,13 +33,13 @@ enum MigrationStep {
   Scheduled,
 }
 
-export interface Props {
+export type Props = {
   commonBaseProduct: boolean;
   migrationSource: MigrationProduct | null;
   migrationTargets: MigrationTarget[];
   systemsData: MigrationSystemData[];
   actionChains?: ActionChain[];
-}
+};
 
 export const SSMProductMigration: React.FC<Props> = ({
   commonBaseProduct,
@@ -55,7 +55,7 @@ export const SSMProductMigration: React.FC<Props> = ({
   const [channelSelectionData, setChannelSelectionData] = useState<MigrationChannelsSelection | undefined>(undefined);
   const [selectedChannelTree, setSelectedChannelTree] = useState<ChannelTreeType | undefined>(undefined);
   const [allowVendorChange, setAllowVendorChange] = useState(false);
-  const [migrationOutcomeMessage, setMigrationOutcomeMessage] = useState<Array<MessageType>>([]);
+  const [migrationOutcomeMessage, setMigrationOutcomeMessage] = useState<MessageType[]>([]);
 
   async function performMigration(dryRun: boolean, earliest: moment.Moment, actionChain?: ActionChain): Promise<void> {
     if (selectedTarget === undefined || selectedChannelTree === undefined) {

@@ -63,7 +63,7 @@ public class PxtAuthenticationServiceTest extends AuthenticationServiceAbstractT
         } });
     }
 
-    private void setupGetRequestURI(final String requestUri) {
+    private void setRequestURI(final String requestUri) {
         context().checking(new Expectations() { {
             allowing(mockRequest).getRequestURI();
             will(returnValue(requestUri));
@@ -93,42 +93,42 @@ public class PxtAuthenticationServiceTest extends AuthenticationServiceAbstractT
     @Test
     public final void testValidateFailsWhenPxtSessionKeyIsInvalid() {
         setupPxtDelegate(false, false, 1234L);
-        setupGetRequestURI("/rhn/YourRhn.do");
+        setRequestURI("/rhn/YourRhn.do");
         runValidateFailsTest();
     }
 
     @Test
     public final void testValidateFailsWhenPxtSessionExpired() {
         setupPxtDelegate(true, true, 1234L);
-        setupGetRequestURI("/rhn/YourRhn.do");
+        setRequestURI("/rhn/YourRhn.do");
         runValidateFailsTest();
     }
 
     @Test
     public final void testValidateFailsWhenWebUserIdIsNull() {
         setupPxtDelegate(true, false, null);
-        setupGetRequestURI("/rhn/YourRhn.do");
+        setRequestURI("/rhn/YourRhn.do");
         runValidateFailsTest();
     }
 
     @Test
     public final void testValidateSucceedsWhenRequestURIUnprotected() {
         setupPxtDelegate(false, false, 1234L);
-        setupGetRequestURI("/rhn/manager/login");
+        setRequestURI("/rhn/manager/login");
         assertTrue(service.validate(getRequest(), getResponse()));
     }
 
     @Test
     public final void testValidateSucceeds() {
         setupPxtDelegate(true, false, 1234L);
-        setupGetRequestURI("/rhn/YourRhn.do");
+        setRequestURI("/rhn/YourRhn.do");
         runValidateSucceedsTest();
     }
 
     @Test
     public final void testInvalidate() {
         setupPxtDelegate(true, false, 1234L);
-        setupGetRequestURI("/rhn/YourRhn.do");
+        setRequestURI("/rhn/YourRhn.do");
 
         context().checking(new Expectations() { {
             atLeast(1).of(mockPxtDelegate).invalidatePxtSession(
@@ -167,7 +167,7 @@ public class PxtAuthenticationServiceTest extends AuthenticationServiceAbstractT
     @Test
     public final void testRedirectoToLoginForwardsRequest() throws Exception {
         setupPxtDelegate(true, false, 1234L);
-        setupGetRequestURI("/rhn/YourRhn.do");
+        setRequestURI("/rhn/YourRhn.do");
 
         URIBuilder uriBuilder = new URIBuilder("/rhn/manager/login");
         uriBuilder.addParameter("url_bounce", "/rhn/YourRhn.do");
@@ -204,7 +204,7 @@ public class PxtAuthenticationServiceTest extends AuthenticationServiceAbstractT
     @Test
     public final void testRedirectToLoginSetsURLBounceRequestAttribute() throws Exception {
         setupPxtDelegate(true, false, 1234L);
-        setupGetRequestURI("/rhn/YourRhn.do");
+        setRequestURI("/rhn/YourRhn.do");
         setUpRedirectToLogin();
 
         URIBuilder uriBounceBuilder = new URIBuilder();

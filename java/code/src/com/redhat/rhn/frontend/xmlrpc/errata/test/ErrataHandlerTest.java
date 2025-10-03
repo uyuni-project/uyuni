@@ -84,7 +84,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
-        user = UserTestUtils.createUser("testUser", admin.getOrg().getId());
+        user = new UserTestUtils.UserBuilder().orgId(admin.getOrg().getId()).build();
     }
 
     @Test
@@ -135,7 +135,6 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         Object[] clonedForEmptyErrata =
                 handler.cloneAsOriginal(admin, clonedChannelForEmptyErrata.getLabel(),
                         Arrays.asList(emptyErrata.getAdvisoryName()));
-        assertNotNull(clonedForEmptyErrata);
         assertNotNull(clonedForEmptyErrata);
         assertEquals(1, clonedForEmptyErrata.length);
 

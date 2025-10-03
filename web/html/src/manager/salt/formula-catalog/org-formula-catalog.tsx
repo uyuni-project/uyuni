@@ -48,12 +48,12 @@ class FormulaCatalog extends React.Component<Props, State> {
     return rowData;
   };
 
-  searchData = (row: string = "", criteria?: string) => {
+  searchData = (row = "", criteria?: string) => {
     return !criteria || row.toLowerCase().includes(criteria.toLowerCase());
   };
 
   render() {
-    var items: MessageType[] = [
+    let items: MessageType[] = [
       {
         severity: "info",
         text: (

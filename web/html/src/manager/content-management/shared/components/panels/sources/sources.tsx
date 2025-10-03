@@ -18,9 +18,9 @@ import styles from "./sources.module.scss";
 
 type SourcesProps = {
   projectId: string;
-  softwareSources: Array<ProjectSoftwareSourceType>;
+  softwareSources: ProjectSoftwareSourceType[];
   onChange: Function;
-  messages?: Array<ProjectMessageType>;
+  messages?: ProjectMessageType[];
 };
 
 const ModalSourceCreationContent = ({ isLoading, softwareSources, onChange }) => {
@@ -65,9 +65,7 @@ const renderSourceEntry = (source) => {
 
   if (source.state === statesEnum.enum.ATTACHED.key) {
     return (
-      // TODO: If you touch this code, please make sure the `href` property here is obsolete and remove it
-      // @ts-expect-error
-      <div className={`text-success ${styles.attached}`} href="#">
+      <div className={`text-success ${styles.attached}`}>
         <i className="fa fa-plus" />
         <b>{source.name}</b>
         &nbsp;

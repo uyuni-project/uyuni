@@ -7,7 +7,7 @@ export type ProjectPropertiesType = {
   label: string;
   name: string;
   description?: string;
-  historyEntries: Array<ProjectHistoryEntry>;
+  historyEntries: ProjectHistoryEntry[];
 };
 
 export type ProjectSoftwareSourceType = {
@@ -50,8 +50,8 @@ export type ProjectMessageType = {
 
 export type ProjectType = {
   properties: ProjectPropertiesType;
-  softwareSources: Array<ProjectSoftwareSourceType>;
-  filters: Array<any>;
-  environments: Array<ProjectEnvironmentType>;
-  messages: Array<ProjectMessageType>;
+  softwareSources: ProjectSoftwareSourceType[];
+  filters: any[];
+  environments: ProjectEnvironmentType[];
+  messages: ProjectMessageType[];
 };

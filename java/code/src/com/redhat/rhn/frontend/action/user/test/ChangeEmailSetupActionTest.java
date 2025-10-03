@@ -41,7 +41,7 @@ public class ChangeEmailSetupActionTest extends RhnBaseTestCase {
         LocalizationService ls = LocalizationService.getInstance();
         User user = sah.getUser();
         //Test verified
-        sah.getRequest().setupAddParameter("uid", "");
+        sah.getRequest().addParameter("uid", "");
 
         user.setEmail("myemail@somewhere.com");
         UserManager.storeUser(user);

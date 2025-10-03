@@ -148,7 +148,7 @@
              bcprov bcpg postgresql-jdbc ongres-scram/client ongres-scram/common
              ${stringprep-jars} taglibs-standard-impl taglibs-standard-jstlel
              taglibs-standard-spec logdriver quartz slf4j-api log4j/log4j-slf4j-impl
-             velocity-engine-core simple-core  mockobjects mockobjects-core mockobjects-jdk1.4-j2ee1.3 strutstest" />
+             velocity-engine-core simple-core strutstest" />
 
   <!-- deps needed for testing, but required to build -->
   <property name="test.build.jar.dependencies" value="junit ${log4j-jars} regexp ${jmock-jars} postgresql-jdbc" />
@@ -176,7 +176,7 @@
   <!-- =================== RPM build, use jpackage syntax ======================= -->
   <!-- property name="install.test.jar.dependencies"
       value="antlr checkstyle dom4j emma emma_ant jdom ${jta11-jars} junit
-             ${log4j-jars} mockobjects mockobjects-core mockobjects-jdk1.4-j2ee1.3
+             ${log4j-jars}
              regexp ${jmock-jars} strutstest" / -->
 
   <!-- SUSE extra dependencies: build and runtime -->

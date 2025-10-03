@@ -17,7 +17,7 @@ export type Channel = {
   recommended: boolean;
 };
 
-export type availableChannelsType = Array<{ base: Channel | null | undefined; children: Array<Channel> }>;
+export type availableChannelsType = { base: Channel | null | undefined; children: Channel[] }[];
 
 type ChildrenArgsProps = {
   messages: any[];
@@ -37,12 +37,12 @@ type ActivationKeyChannelsProps = {
 };
 
 type ActivationKeyChannelsState = {
-  messages: Array<any>;
+  messages: any[];
   loading: boolean;
   loadingChildren: boolean;
-  availableBaseChannels: Array<Channel>; //[base1, base2],
+  availableBaseChannels: Channel[]; //[base1, base2],
   availableChannels: availableChannelsType; //[{base : null, children: []}]
-  fetchedData: Map<number, Array<number>>;
+  fetchedData: Map<number, number[]>;
 };
 
 class ActivationKeyChannelsApi extends React.Component<ActivationKeyChannelsProps, ActivationKeyChannelsState> {
@@ -66,10 +66,9 @@ class ActivationKeyChannelsApi extends React.Component<ActivationKeyChannelsProp
   }
 
   fetchBaseChannels = () => {
-    let future;
     this.setState({ loading: true });
 
-    future = Network.get(`/rhn/manager/api/activation-keys/base-channels`)
+    const future = Network.get(`/rhn/manager/api/activation-keys/base-channels`)
       .then((data) => {
         this.setState({
           availableBaseChannels: Array.from(data.data).map((channel: any) => channel.base),
@@ -96,7 +95,7 @@ class ActivationKeyChannelsApi extends React.Component<ActivationKeyChannelsProp
         })
         .catch(this.handleResponseError);
     } else {
-      future = new Promise(function (resolve, reject) {
+      future = new Promise(function (resolve) {
         resolve();
       });
     }
@@ -108,7 +107,7 @@ class ActivationKeyChannelsApi extends React.Component<ActivationKeyChannelsProp
 
     const currentObject: any = this;
     if (currentObject.state.fetchedData && currentObject.state.fetchedData.has(baseId)) {
-      future = new Promise((resolve, reject) => {
+      future = new Promise((resolve) => {
         resolve(
           currentObject.setState({
             availableChannels: currentObject.state.fetchedData.get(baseId),

@@ -5,7 +5,7 @@ import { useImmer } from "use-immer";
 import Network from "utils/network";
 
 type LoginApiStateType = {
-  messages: Array<string>;
+  messages: string[];
   success: boolean;
   loading: boolean;
 };

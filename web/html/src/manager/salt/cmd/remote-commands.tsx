@@ -152,7 +152,7 @@ class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandSta
   }
 
   render() {
-    var msgs: React.ReactNode[] = [];
+    const msgs: React.ReactNode[] = [];
     const style = {
       paddingBottom: "0px",
     };
@@ -167,7 +167,7 @@ class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandSta
       });
     }
 
-    var button;
+    let button;
     if (this.state.executing.state() === "pending") {
       button = (
         <Button
@@ -316,16 +316,17 @@ class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandSta
     );
   };
 
-  onBeforeUnload = (event) => {
+  onBeforeUnload = () => {
     this.setState({
       pageUnloading: true,
     });
   };
 
   componentDidMount() {
-    var port = window.location.port;
-    var url = "wss://" + window.location.hostname + (port ? ":" + port : "") + "/rhn/websocket/minion/remote-commands";
-    var ws = new WebSocket(url);
+    const port = window.location.port;
+    const url =
+      "wss://" + window.location.hostname + (port ? ":" + port : "") + "/rhn/websocket/minion/remote-commands";
+    const ws = new WebSocket(url);
     ws.onopen = () => {
       this.setState({
         previewed: jQuery.Deferred(),
@@ -333,8 +334,8 @@ class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandSta
         executing: jQuery.Deferred().resolve(),
       });
     };
-    ws.onclose = (e) => {
-      var errs = this.state.errors ? this.state.errors : [];
+    ws.onclose = () => {
+      const errs = this.state.errors ? this.state.errors : [];
       if (!this.state.pageUnloading && !this.state.websocketErr) {
         errs.push(t("Websocket connection closed. Refresh the page to try again."));
       }
@@ -361,10 +362,10 @@ class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandSta
       });
     };
     ws.onmessage = (e) => {
-      var event = JSON.parse(e.data);
-      var minionsMap: Map<any, any> | undefined;
-      var previewed;
-      var ran;
+      const event = JSON.parse(e.data);
+      let minionsMap: Map<any, any> | undefined;
+      let previewed;
+      let ran;
       switch (event.type) {
         case "asyncJobStart":
           this.setState({
@@ -431,9 +432,9 @@ class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandSta
           break;
         case "timedOut":
           minionsMap = this.state.result.minions;
-          var waitForSSH = this.state.result.waitForSSH;
-          var timedOutSSH = this.state.result.timedOutSSH;
-          var timedOutDone;
+          let waitForSSH = this.state.result.waitForSSH;
+          let timedOutSSH = this.state.result.timedOutSSH;
+          let timedOutDone;
 
           if (event.minion) {
             minionsMap.set(event.minion, { type: "timedOut", value: null });
@@ -472,7 +473,7 @@ class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandSta
           });
           break;
         case "error":
-          var globalErr: any[] = [];
+          let globalErr: any[] = [];
 
           if (event.minion) {
             minionsMap = this.state.result.minions;
@@ -546,7 +547,7 @@ class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandSta
 
   commandResult = (result) => {
     const elements: React.ReactNode[] = [];
-    for (var kv of result.minions) {
+    for (const kv of result.minions) {
       const id = kv[0];
       const value = kv[1];
       elements.push(<MinionResultView key={id} id={id} result={value} />);

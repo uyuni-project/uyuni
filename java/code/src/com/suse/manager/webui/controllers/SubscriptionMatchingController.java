@@ -139,7 +139,7 @@ public class SubscriptionMatchingController {
                     new HashMap<>());
         }
         catch (TaskomaticApiException e) {
-            new RuntimeException(e);
+            throw new RuntimeException(e);
         }
         return "";
     }

@@ -14,14 +14,13 @@
  */
 package com.redhat.rhn.frontend.taglibs.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.frontend.taglibs.RhnHiddenTag;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.RhnMockJspWriter;
-
-import com.mockobjects.helpers.TagTestHelper;
-import com.mockobjects.servlet.MockJspWriter;
+import com.redhat.rhn.testing.TagTestHelper;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,7 +37,7 @@ public class RhnHiddenTagTest extends RhnBaseTestCase {
 
     private TagTestHelper tth;
     private RhnHiddenTag ht;
-    private MockJspWriter out;
+    private RhnMockJspWriter out;
 
     @Override
     @BeforeEach
@@ -46,7 +45,7 @@ public class RhnHiddenTagTest extends RhnBaseTestCase {
         ht = new RhnHiddenTag();
         tth = new TagTestHelper(ht);
         tth.getPageContext().setJspWriter(new RhnMockJspWriter());
-        out = (MockJspWriter) tth.getPageContext().getOut();
+        out = (RhnMockJspWriter) tth.getPageContext().getOut();
     }
 
     @Override
@@ -59,9 +58,8 @@ public class RhnHiddenTagTest extends RhnBaseTestCase {
     }
 
     public void verifyTag(String output) throws JspException {
-        out.setExpectedData(output);
         tth.assertDoStartTag(Tag.SKIP_BODY);
-        out.verify();
+        assertEquals(output, out.toString());
     }
 
     @Test

@@ -18,6 +18,7 @@ import sys
 import os.path
 from shutil import rmtree
 from shutil import copyfile
+import solv
 import time
 import re
 import fnmatch
@@ -32,8 +33,6 @@ from spacewalk.satellite_tools.repo_plugins import ContentPackage, CACHE_DIR
 from spacewalk.satellite_tools.syncLib import log2
 from spacewalk.server import rhnSQL
 from spacewalk.common import repo
-
-import looseversion
 
 try:
     #  python 2
@@ -52,7 +51,7 @@ log = logging.getLogger(__name__)
 
 # pylint: disable-next=missing-class-docstring
 class DebPackage:
-    def __init__(self):
+    def __init__(self, deb_repo=None):
         self.name = None
         self.epoch = None
         self.version = None
@@ -61,27 +60,48 @@ class DebPackage:
         self.relativepath = None
         self.checksum_type = None
         self.checksum = None
+        self.solvable = None
+        if deb_repo is not None and deb_repo.solv_repo is not None:
+            self.solvable = deb_repo.solv_repo.add_solvable()
 
     def __getitem__(self, key):
         return getattr(self, key)
 
     def __setitem__(self, key, value):
-        return setattr(self, key, value)
+        setattr(self, key, value)
+        if self.solvable is not None:
+            if key in ("name", "arch"):
+                setattr(self.solvable, key, value)
+            if key in ("epoch", "version", "release"):
+                self.solvable.evr = self.evr()
+
+    def __getstate__(self):
+        state = self.__dict__.copy()
+        del state["solvable"]
+        return state
+
+    def __setstate__(self, state):
+        self.__dict__.update(state)
+        self.solvable = None
 
     def evr(self):
         # The format is: [epoch:]upstream_version[-debian_revision].
         # https://www.debian.org/doc/debian-policy/ch-controlfields.html#version
         evr = ""
         if self.epoch:
-            # pylint: disable-next=consider-using-f-string
-            evr = evr + "{}:".format(self.epoch)
+            evr = f"{self.epoch}:"
         if self.version:
-            # pylint: disable-next=consider-using-f-string
-            evr = evr + "{}".format(self.version)
+            evr = f"{evr}{self.version}"
         if self.release:
-            # pylint: disable-next=consider-using-f-string
-            evr = evr + "-{}".format(self.release)
+            evr = f"{evr}-{self.release}"
         return evr
+
+    def evrcmp(self, pkg):
+        if self.solvable is None or pkg.solvable is None:
+            raise NotImplementedError(
+                "Unable to compare versions as libsolv is unavalable"
+            )
+        return self.solvable.evrcmp(pkg.solvable)
 
     def nevra(self):
         return f"{self.name}_{self.evr()}_{self.arch}"
@@ -212,6 +232,10 @@ class DebRepo:
         self.pkgdir = pkg_dir
         self.http_headers = {}
 
+        self.solv_pool = solv.Pool()
+        self.solv_pool.setdisttype(self.solv_pool.DISTTYPE_DEB)
+        self.solv_repo = self.solv_pool.add_repo("libsolv")
+
     def verify(self):
         """
         Verify package index checksum and signature.
@@ -325,7 +349,7 @@ class DebRepo:
 
         # Parse and format package metadata
         for chunk in packages_raw:
-            package = DebPackage()
+            package = DebPackage(self)
             package.epoch = ""
             lines = chunk.split("\n")
             checksums = {}
@@ -478,12 +502,8 @@ class ContentSource:
         if latest:
             latest_pkgs = {}
             for pkg in pkglist:
-                # pylint: disable-next=consider-using-f-string
-                ident = "{}.{}".format(pkg.name, pkg.arch)
-                # pylint: disable-next=consider-iterating-dictionary
-                if ident not in latest_pkgs.keys() or looseversion.LooseVersion(
-                    pkg.evr()
-                ) > looseversion.LooseVersion(latest_pkgs[ident].evr()):
+                ident = f"{pkg.name}.{pkg.arch}"
+                if ident not in latest_pkgs or pkg.evrcmp(latest_pkgs[ident]) > 0:
                     latest_pkgs[ident] = pkg
             pkglist = list(latest_pkgs.values())
         pkglist.sort(key=cmp_to_key(self._sort_packages))

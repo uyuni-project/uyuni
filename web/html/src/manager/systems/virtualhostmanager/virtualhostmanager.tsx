@@ -65,7 +65,7 @@ class VirtualHostManager extends React.Component<Props, State> {
 
   updateView(action, id) {
     if ((action === "edit" || action === "details") && id)
-      this.getVhmDetails(id, action).then((data) => this.setState({ selected: data.data, action: action }));
+      this.getVhmDetails(id).then((data) => this.setState({ selected: data.data, action: action }));
     else if (!action) {
       this.getAvailableModules();
       this.getVhmList();
@@ -87,7 +87,7 @@ class VirtualHostManager extends React.Component<Props, State> {
     });
   }
 
-  getVhmDetails(id, action?: any) {
+  getVhmDetails(id) {
     return Network.get("/rhn/manager/api/vhms/" + id).catch(this.handleResponseError);
   }
 
@@ -110,7 +110,7 @@ class VirtualHostManager extends React.Component<Props, State> {
   deleteVhm = (item) => {
     if (!item) return false;
     return Network.del("/rhn/manager/api/vhms/delete/" + item.id)
-      .then((data) => {
+      .then(() => {
         this.handleBackAction();
         this.setState({
           messages: MessagesUtils.info("Virtual Host Manager has been deleted."),
@@ -120,7 +120,7 @@ class VirtualHostManager extends React.Component<Props, State> {
   };
 
   handleBackAction = () => {
-    this.getVhmList().then((data) => {
+    this.getVhmList().then(() => {
       const loc = window.location;
       window.history.pushState(null, "", loc.pathname + loc.search);
     });

@@ -1,0 +1,2 @@
+- Use libsolv for version comparison for reposync with --latest
+  (bsc#1248799)

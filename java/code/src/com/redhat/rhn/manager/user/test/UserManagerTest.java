@@ -111,7 +111,7 @@ public class UserManagerTest extends RhnBaseTestCase {
     @Test
     public void testGrantServerGroupPermission() {
         //Group and user have the same org, so should be possible to grant permits
-        User user = UserTestUtils.findNewUser("user_1", "org_1");
+        User user = UserTestUtils.createUser("user_1", "org_1");
         this.users.add(user);
 
         Server server = ServerFactoryTest.createTestServer(user, false,
@@ -151,7 +151,7 @@ public class UserManagerTest extends RhnBaseTestCase {
         assertTrue(userGroups.stream().allMatch(g -> g.getId().equals(group.getId())));
 
         //Group and user have different orgs, so should not be possible to grant permits
-        User user2 = UserTestUtils.findNewUser("user_2", "org_2");
+        User user2 = UserTestUtils.createUser("user_2", "org_2");
         this.users.add(user);
 
         User foundUser2 = UserFactory.lookupById(user2.getId());
@@ -210,7 +210,7 @@ public class UserManagerTest extends RhnBaseTestCase {
 
     @Test
     public void testRevokeServerGroupPermission() {
-        User user = UserTestUtils.findNewUser("user_test_revoke", "org_test_revoke");
+        User user = UserTestUtils.createUser("user_test_revoke", "org_test_revoke");
         this.users.add(user);
 
         Server server = ServerFactoryTest.createTestServer(user, false,
@@ -261,14 +261,14 @@ public class UserManagerTest extends RhnBaseTestCase {
 
     @Test
     public void testListRolesAssignable() {
-        User user = UserTestUtils.findNewUser();
+        User user = UserTestUtils.createUser();
         assertTrue(UserManager.listRolesAssignableBy(user).isEmpty());
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         UserManager.storeUser(user);
         assertFalse(UserManager.listRolesAssignableBy(user).
                 contains(RoleFactory.SAT_ADMIN));
 
-        User satAdmin = UserTestUtils.createUser("satUser", user.getOrg().getId());
+        User satAdmin = UserTestUtils.createUser(TestStatics.TEST_SAT_USER, user.getOrg().getId());
         satAdmin.addPermanentRole(RoleFactory.SAT_ADMIN);
         assertTrue(UserManager.listRolesAssignableBy(satAdmin).contains(RoleFactory.SAT_ADMIN));
 
@@ -277,7 +277,7 @@ public class UserManagerTest extends RhnBaseTestCase {
 
     @Test
     public void testVerifyPackageAccess() {
-        User user = UserTestUtils.findNewUser("testuser", "testorg");
+        User user = UserTestUtils.createUser();
         Package pkg = PackageTest.createTestPackage(user.getOrg());
         assertTrue(UserManager.verifyPackageAccess(user.getOrg(), pkg.getId()));
 
@@ -287,8 +287,7 @@ public class UserManagerTest extends RhnBaseTestCase {
 
     @Test
     public void testLookup() {
-        User admin = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User admin = UserTestUtils.createUser(this);
         admin.addPermanentRole(RoleFactory.ORG_ADMIN);
 
         User regular = UserTestUtils.createUser("testUser2", admin.getOrg().getId());
@@ -335,23 +334,18 @@ public class UserManagerTest extends RhnBaseTestCase {
     @Test
     public void testUserDisableEnable() {
         //Create test users
-        User org1admin = UserTestUtils.createUser("orgAdmin1",
-                                            UserTestUtils.createOrg("UMTOrg1"));
+        User org1admin = UserTestUtils.createUser("orgAdmin1", "UMTOrg1");
         org1admin.addPermanentRole(RoleFactory.ORG_ADMIN);
         UserManager.storeUser(org1admin);
 
-        User org1admin2 = UserTestUtils.createUser("orgAdmin2",
-                                                  org1admin.getOrg().getId());
+        User org1admin2 = UserTestUtils.createUser("orgAdmin2", org1admin.getOrg().getId());
         org1admin2.addPermanentRole(RoleFactory.ORG_ADMIN);
         UserManager.storeUser(org1admin2);
 
-        User org1normal = UserTestUtils.createUser("normaluser1",
-                                                    org1admin.getOrg().getId());
-        User org1normal2 = UserTestUtils.createUser("normaluser2",
-                                                    org1admin.getOrg().getId());
+        User org1normal = UserTestUtils.createUser("normaluser1", org1admin.getOrg().getId());
+        User org1normal2 = UserTestUtils.createUser("normaluser2", org1admin.getOrg().getId());
 
-        User org2admin = UserTestUtils.createUser("orgAdmin2",
-                                             UserTestUtils.createOrg("UMTOrg2"));
+        User org2admin = UserTestUtils.createUser("orgAdmin2", "UMTOrg2");
         org2admin.addPermanentRole(RoleFactory.ORG_ADMIN);
         UserManager.storeUser(org2admin);
 
@@ -379,8 +373,6 @@ public class UserManagerTest extends RhnBaseTestCase {
         //admin -> self
         UserManager.disableUser(org1admin, org1admin);
 
-
-        //Normal users can only disable themselves
         //Normal users can only disable themselves
         assertTrue(org1admin.isDisabled());
         //normal user -> self
@@ -399,8 +391,7 @@ public class UserManagerTest extends RhnBaseTestCase {
         }
 
         //Add a new user to org2
-        User org2normal = UserTestUtils.createUser("normaluser2",
-                                                   org2admin.getOrg().getId());
+        User org2normal = UserTestUtils.createUser("normaluser2", org2admin.getOrg().getId());
 
         //Can't enable a user who isn't disabled
         try {
@@ -435,8 +426,7 @@ public class UserManagerTest extends RhnBaseTestCase {
         int numTotal = 1;
         int numDisabled = 0;
         int numActive = 1;
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User user = UserTestUtils.createUser(this);
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         PageControl pc = new PageControl();
         pc.setStart(1);
@@ -491,8 +481,11 @@ public class UserManagerTest extends RhnBaseTestCase {
 
     @Test
     public void testLookupUserOrgBoundaries() {
-        User usr1 = UserTestUtils.findNewUser("testUser", "testOrg1", true);
-        User usr2 = UserTestUtils.findNewUser("testUser", "testOrg2");
+        User usr1 = new UserTestUtils.UserBuilder()
+                .orgName("testOrg1")
+                .orgAdmin(true)
+                .build();
+        User usr2 = new UserTestUtils.UserBuilder().orgName("testOrg2").build();
         User usr3 = UserTestUtils.createUser("testUser123", usr1.getOrg().getId());
         try {
             UserManager.lookupUser(usr1, usr2.getLogin());
@@ -509,8 +502,7 @@ public class UserManagerTest extends RhnBaseTestCase {
     }
     @Test
     public void testStoreUser() {
-        User usr = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User usr = UserTestUtils.createUser(this);
         Long id = usr.getId();
         usr.setEmail("something@changed.redhat.com");
         UserManager.storeUser(usr);
@@ -520,8 +512,7 @@ public class UserManagerTest extends RhnBaseTestCase {
 
     @Test
     public void testGetSystemGroups() {
-        User usr = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        User usr = UserTestUtils.createUser(this);
         PageControl pc = new PageControl();
         pc.setIndexData(false);
         pc.setFilterColumn("name");
@@ -584,9 +575,8 @@ public class UserManagerTest extends RhnBaseTestCase {
 
     @Test
    public void testUsersInSet() {
-       User user = UserTestUtils.findNewUser("testUser",
-               "testOrg" + this.getClass().getSimpleName());
-       RhnSet set = RhnSetManager.createSet(user.getId(), "test_user_list",
+       User user = UserTestUtils.createUser();
+        RhnSet set = RhnSetManager.createSet(user.getId(), "test_user_list",
                SetCleanup.NOOP);
 
        for (int i = 0; i < 5; i++) {
@@ -609,8 +599,7 @@ public class UserManagerTest extends RhnBaseTestCase {
 
     @Test
    public void testLookupServerPreferenceValue() {
-       User user = UserTestUtils.findNewUser(TestStatics.TESTUSER,
-               TestStatics.TESTORG);
+       User user = UserTestUtils.createUser();
 
        Server s = ServerFactoryTest.createTestServer(user, true,
                ServerConstants.getServerGroupTypeEnterpriseEntitled());
@@ -640,9 +629,7 @@ public class UserManagerTest extends RhnBaseTestCase {
 
     @Test
    public void testVisibleSystemsAsDtoFromList() {
-       User user = UserTestUtils.findNewUser(TestStatics.TESTUSER,
-               TestStatics.TESTORG);
-
+       User user = UserTestUtils.createUser();
        Server s = ServerFactoryTest.createTestServer(user, true,
                ServerConstants.getServerGroupTypeEnterpriseEntitled());
        List<Long> ids = new ArrayList<>();
@@ -654,9 +641,7 @@ public class UserManagerTest extends RhnBaseTestCase {
 
     @Test
    public void testSystemSearchResults() {
-       User user = UserTestUtils.findNewUser(TestStatics.TESTUSER,
-               TestStatics.TESTORG);
-
+       User user = UserTestUtils.createUser();
        Server s = ServerFactoryTest.createTestServer(user, true,
                ServerConstants.getServerGroupTypeEnterpriseEntitled());
        NetworkInterface lo =

@@ -7,10 +7,10 @@ import { TopPanel } from "./panels/TopPanel";
 import { Column } from "./table/Column";
 import { Table } from "./table/Table";
 
-export interface SystemData {
+export type SystemData = {
   id: number;
   name: string;
-}
+};
 
 type Props = {
   systemsData: SystemData[];

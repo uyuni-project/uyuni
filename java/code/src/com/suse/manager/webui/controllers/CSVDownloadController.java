@@ -23,7 +23,10 @@ import com.redhat.rhn.common.util.CSVWriter;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.dto.VirtualSystemOverview;
+import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.manager.system.SystemManager;
+
+import com.suse.manager.webui.utils.PageControlHelper;
 
 import org.apache.http.HttpStatus;
 import org.apache.logging.log4j.LogManager;
@@ -83,7 +86,13 @@ public class CSVDownloadController {
      * @return the json response
      */
     public static String allSystemsCSV(Request request, Response response, User user) {
-        DataResult<SystemOverview> all = SystemManager.systemListNew(user, null, null);
+        PageControlHelper pageHelper = new PageControlHelper(request, "server_name");
+        PageControl pc = pageHelper.getPageControl();
+        pc.setStart(1);
+        pc.setPageSize(0);
+
+        var parser = SystemsController.getFilterParser(pc);
+        DataResult<SystemOverview> all = SystemManager.systemListNew(user, parser, pc);
 
         List<String> columns = Arrays.asList("serverName", "id", "securityErrata", "bugErrata", "enhancementErrata",
                 "outdatedPackages", "extraPkgCount", "configFilesWithDifferences", "lastCheckin", "entitlementLevel",

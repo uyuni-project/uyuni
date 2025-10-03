@@ -41,6 +41,7 @@ import com.redhat.rhn.common.validator.ValidatorWarning;
 import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFamily;
+import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.common.RhnConfiguration;
 import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
@@ -2054,7 +2055,8 @@ public class SystemManager extends BaseManager {
             Set<Channel> channels = server.getChannels();
             for (Channel c : channels) {
                 ChannelFamily cf = c.getChannelFamily();
-                if (cf.getLabel().equals("SMP")) {
+                if (cf.getLabel().equals(ChannelFamilyFactory.PROXY_CHANNEL_FAMILY_LABEL) ||
+                        cf.getLabel().equals(ChannelFamilyFactory.PROXY_ARM_CHANNEL_FAMILY_LABEL)) {
                     SystemManager.unsubscribeServerFromChannel(server, c);
                 }
             }

@@ -174,7 +174,7 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
      * @throws Exception something bad happened
      */
     public static KickstartableTree createTestKickstartableTree() throws Exception {
-        User u = UserTestUtils.findNewUser("testUser", "testCreateTestKickstartableTree");
+        User u = UserTestUtils.createUser();
         Channel channel = ChannelFactoryTest.createTestChannel(u);
         ChannelTestUtils.addDistMapToChannel(channel);
         return createTestKickstartableTree(channel);
@@ -268,7 +268,7 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
         KickstartTreeType treetype = (KickstartTreeType)
                 TestUtils.lookupFromCacheById(1L, "KickstartTreeType.findById");
 
-        User u = UserTestUtils.findNewUser("testUser", "testCreateTestKickstartableTree");
+        User u = UserTestUtils.createUser();
         Channel channel = ChannelFactoryTest.createTestChannel(u);
         ChannelTestUtils.addDistMapToChannel(channel);
         channel.setChannelArch(arch);

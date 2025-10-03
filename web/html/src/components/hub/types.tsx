@@ -47,7 +47,7 @@ export type PeripheralListData = {
   nSyncedOrgs: number;
 };
 
-export interface IssServerDetailData {
+export type IssServerDetailData = {
   id: number;
   role: IssRole;
   fqdn: string;
@@ -55,16 +55,16 @@ export interface IssServerDetailData {
   sccUsername: string;
   created: Date;
   modified: Date;
-}
+};
 
-export interface HubDetailData extends IssServerDetailData {
+export type HubDetailData = {
   gpgKey: string | null;
-}
+} & IssServerDetailData;
 
-export interface PeripheralDetailData extends IssServerDetailData {
+export type PeripheralDetailData = {
   nSyncedChannels: number;
   nSyncedOrgs: number;
-}
+} & IssServerDetailData;
 
 export enum MigrationVersion {
   v1 = "v1",
@@ -99,7 +99,7 @@ export type MigrationMessage = {
 
 export type MigrationResult = {
   resultCode: MigrationResultCode;
-  messageSet: Array<MigrationMessage>;
+  messageSet: MigrationMessage[];
 };
 
 export type Org = {

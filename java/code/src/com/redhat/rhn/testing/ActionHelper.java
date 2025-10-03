@@ -22,8 +22,6 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RequestContext.Pagination;
 import com.redhat.rhn.frontend.struts.RhnHelper;
-import com.redhat.rhn.frontend.taglibs.list.ListTagUtil;
-import com.redhat.rhn.frontend.taglibs.list.TagHelper;
 import com.redhat.rhn.manager.user.UserManager;
 
 import org.apache.struts.action.Action;
@@ -82,7 +80,7 @@ public class ActionHelper  {
         // we have to get the actual user here so we can call setupAddParamter
         // a second time.  The MockRequest counts the number of times getParamter
         // is called.
-        request.setupAddParameter("uid", user.getId().toString());
+        request.addParameter("uid", user.getId().toString());
 
     }
 
@@ -151,6 +149,7 @@ public class ActionHelper  {
     public RhnMockHttpServletResponse getResponse() {
         return response;
     }
+
     /**
     * Get the Request associated with this test
     * @return RhnMockHttpServletRequest used.
@@ -202,10 +201,10 @@ public class ActionHelper  {
      * @param filterString the filter string we want to test out.
      */
     public void setupClampListBounds(String filterString) {
-        getRequest().setupAddParameter(RequestContext.FILTER_STRING, filterString);
-        getRequest().setupAddParameter(RequestContext.PREVIOUS_FILTER_STRING, filterString);
-        getRequest().setupAddParameter("newset", (String)null);
-        getRequest().setupAddParameter("returnvisit", (String) null);
+        getRequest().addParameter(RequestContext.FILTER_STRING, filterString);
+        getRequest().addParameter(RequestContext.PREVIOUS_FILTER_STRING, filterString);
+        getRequest().addParameter("newset", (String)null);
+        getRequest().addParameter("returnvisit", (String) null);
         setupProcessPagination();
     }
 
@@ -214,32 +213,15 @@ public class ActionHelper  {
      * listview Actions.
      */
     public void setupProcessPagination() {
-        getRequest().setupAddParameter(Pagination.FIRST.getElementName(), "someValue");
-        getRequest().setupAddParameter(Pagination.FIRST.getLowerAttributeName(), "10");
-        getRequest().setupAddParameter(Pagination.PREV.getElementName(), "0");
-        getRequest().setupAddParameter(Pagination.PREV.getLowerAttributeName(), "");
-        getRequest().setupAddParameter(Pagination.NEXT.getElementName(), "20");
-        getRequest().setupAddParameter(Pagination.NEXT.getLowerAttributeName(), "");
-        getRequest().setupAddParameter(Pagination.LAST.getElementName(), "");
-        getRequest().setupAddParameter(Pagination.LAST.getLowerAttributeName(), "20");
-        getRequest().setupAddParameter("lower", "10");
-    }
-
-
-    /**
-     * Setup the request parameters for ListSelection
-     * @param listName The name of the list, from
-     *  com.redhat.rhn.frontend.taglibs.list.ListTag
-     */
-    public void setupListSelection(String listName) {
-        String uniqueName = TagHelper.generateUniqueName(listName);
-        String selectAction = ListTagUtil.makeSelectActionName(uniqueName);
-        String sel = ListTagUtil.makeSelectedItemsName(uniqueName);
-        String items = ListTagUtil.makePageItemsName(uniqueName);
-        getRequest().setupAddParameter(selectAction, (String)null);
-        getRequest().setupAddParameter(sel, (String)null);
-        getRequest().setupAddParameter(items, (String)null);
-
+        getRequest().addParameter(Pagination.FIRST.getElementName(), "someValue");
+        getRequest().addParameter(Pagination.FIRST.getLowerAttributeName(), "10");
+        getRequest().addParameter(Pagination.PREV.getElementName(), "0");
+        getRequest().addParameter(Pagination.PREV.getLowerAttributeName(), "");
+        getRequest().addParameter(Pagination.NEXT.getElementName(), "20");
+        getRequest().addParameter(Pagination.NEXT.getLowerAttributeName(), "");
+        getRequest().addParameter(Pagination.LAST.getElementName(), "");
+        getRequest().addParameter(Pagination.LAST.getLowerAttributeName(), "20");
+        getRequest().addParameter("lower", "10");
     }
 
     /**

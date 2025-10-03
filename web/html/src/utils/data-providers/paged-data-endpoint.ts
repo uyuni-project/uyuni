@@ -1,6 +1,7 @@
 import { debounce } from "lodash";
 
 import { Cancelable } from "utils/functions";
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network from "utils/network";
 
 import PageControl from "./page-control";
@@ -68,7 +69,7 @@ export default class PagedDataEndpoint {
       query.set("ps", String(pageControl.pageSize));
       if (pageControl.query) {
         query.set("q", pageControl.query);
-        if (pageControl.queryField != null) {
+        if (!DEPRECATED_unsafeEquals(pageControl.queryField, null)) {
           query.set("qc", pageControl.queryField);
         }
       }

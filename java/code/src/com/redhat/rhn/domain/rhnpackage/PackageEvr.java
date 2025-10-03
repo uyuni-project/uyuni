@@ -22,6 +22,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * PackageEvr
@@ -360,10 +361,10 @@ public class PackageEvr implements Comparable<PackageEvr>, Serializable {
      * @return package type
      */
     public PackageType getPackageType() {
-        if (type.equals(PackageType.DEB.getDbString())) {
+        if (Objects.equals(type, PackageType.DEB.getDbString())) {
             return PackageType.DEB;
         }
-        else if (type.equals(PackageType.RPM.getDbString())) {
+        else if (Objects.equals(type, PackageType.RPM.getDbString())) {
             return PackageType.RPM;
         }
         else {

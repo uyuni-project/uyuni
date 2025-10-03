@@ -64,7 +64,7 @@ public class PackagesHandlerTest extends BaseHandlerTestCase {
 
     @Test
     public void testListFiles() {
-        User user = UserTestUtils.createUser("testUser", admin.getOrg().getId());
+        User user = new UserTestUtils.UserBuilder().orgId(admin.getOrg().getId()).build();
         Package pkg = PackageTest.createTestPackage(user.getOrg());
 
         Object[] files = handler.listFiles(admin,
@@ -80,7 +80,7 @@ public class PackagesHandlerTest extends BaseHandlerTestCase {
 
     @Test
     public void testListProvidingErrata() {
-        User user = UserTestUtils.createUser("testUser", admin.getOrg().getId());
+        User user = new UserTestUtils.UserBuilder().orgId(admin.getOrg().getId()).build();
         Package pkg = PackageTest.createTestPackage(user.getOrg());
 
         Object[] result = handler.listProvidingErrata(admin,
@@ -90,7 +90,7 @@ public class PackagesHandlerTest extends BaseHandlerTestCase {
 
     @Test
     public void testListProvidingChannels() {
-        User user = UserTestUtils.createUser("testUser", admin.getOrg().getId());
+        User user = new UserTestUtils.UserBuilder().orgId(admin.getOrg().getId()).build();
         Package pkg = PackageTest.createTestPackage(user.getOrg());
 
         Object[] result = handler.listProvidingChannels(admin,
@@ -101,7 +101,7 @@ public class PackagesHandlerTest extends BaseHandlerTestCase {
 
     @Test
     public void testListDependencies() throws Exception {
-        User user = UserTestUtils.createUser("testUser", admin.getOrg().getId());
+        User user = new UserTestUtils.UserBuilder().orgId(admin.getOrg().getId()).build();
         Package pkg = PackageTest.createTestPackage(user.getOrg());
 
         PackageFactoryTest.createPackageProperties(pkg);
@@ -159,14 +159,14 @@ public class PackagesHandlerTest extends BaseHandlerTestCase {
 
     @Test
     public void testRemovePackage() {
-        User user = UserTestUtils.createUser("testUser", admin.getOrg().getId());
+        User user = new UserTestUtils.UserBuilder().orgId(admin.getOrg().getId()).build();
         Package pkg = PackageTest.createTestPackage(user.getOrg());
         handler.removePackage(admin, pkg.getId().intValue());
     }
 
     @Test
     public void testRemovePackageSource() {
-        User user = UserTestUtils.createUser("testUser", admin.getOrg().getId());
+        User user = new UserTestUtils.UserBuilder().orgId(admin.getOrg().getId()).build();
         SourceRpm srpm = SourceRpmTest.createTestSourceRpm();
         PackageSource pkg = PackageTest.createTestPackageSource(srpm, user.getOrg());
         HibernateFactory.getSession().save(pkg);
@@ -192,7 +192,7 @@ public class PackagesHandlerTest extends BaseHandlerTestCase {
 
     @Test
     public void testListSourcePackages() {
-        User user = UserTestUtils.createUser("testUser", regular.getOrg().getId());
+        User user = new UserTestUtils.UserBuilder().orgId(regular.getOrg().getId()).build();
         Object[] result1 = handler.listSourcePackages(user);
         for (int i = 0; i < 3; i++) {
             SourceRpm srpm = SourceRpmTest.createTestSourceRpm();

@@ -5,7 +5,7 @@ export type Severity = "info" | "success" | "warning" | "error";
 export type ServerMessageType = {
   severity: Severity;
   text: string;
-  args: Array<string>;
+  args: string[];
 };
 
 export type MessageType = {
@@ -15,7 +15,7 @@ export type MessageType = {
 
 type Props = {
   /** Message objects to display */
-  items: Array<MessageType> | MessageType;
+  items: MessageType[] | MessageType;
 };
 
 /**
@@ -77,10 +77,10 @@ export class Messages extends React.Component<Props> {
   }
 
   render() {
-    const items: Array<MessageType> = Array.isArray(this.props.items) ? this.props.items : [this.props.items];
+    const items: MessageType[] = Array.isArray(this.props.items) ? this.props.items : [this.props.items];
     if (items.length === 0) return null;
 
-    var msgs = items.map((item, index) => (
+    const msgs = items.map((item, index) => (
       <div key={"msg" + index} className={"alert alert-" + _classNames[item.severity]}>
         {item.text}
       </div>
@@ -92,9 +92,7 @@ export class Messages extends React.Component<Props> {
 
 export const fromServerMessage = (
   message: ServerMessageType,
-  messageMap?: {
-    [key: string]: React.ReactNode;
-  }
+  messageMap?: Record<string, React.ReactNode>
 ): MessageType | null | undefined => {
   let messageText: React.ReactNode = message.text;
   if (messageMap && message.text in messageMap) {
@@ -167,16 +165,16 @@ function msg(severityIn: Severity, textIn: React.ReactNode, listMultiple: boolea
  * entries will generate multiple separated messages.
  */
 export const Utils = {
-  info: function (text: React.ReactNode, listMultiple: boolean = false, header?: string): Array<MessageType> {
+  info: function (text: React.ReactNode, listMultiple: boolean = false, header?: string): MessageType[] {
     return msg("info", text, listMultiple, header);
   },
-  success: function (text: React.ReactNode, listMultiple: boolean = false, header?: string): Array<MessageType> {
+  success: function (text: React.ReactNode, listMultiple: boolean = false, header?: string): MessageType[] {
     return msg("success", text, listMultiple, header);
   },
-  warning: function (text: React.ReactNode, listMultiple: boolean = false, header?: string): Array<MessageType> {
+  warning: function (text: React.ReactNode, listMultiple: boolean = false, header?: string): MessageType[] {
     return msg("warning", text, listMultiple, header);
   },
-  error: function (text: React.ReactNode, listMultiple: boolean = false, header?: string): Array<MessageType> {
+  error: function (text: React.ReactNode, listMultiple: boolean = false, header?: string): MessageType[] {
     return msg("error", text, listMultiple, header);
   },
 };

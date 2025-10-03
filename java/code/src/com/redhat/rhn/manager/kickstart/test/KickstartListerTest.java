@@ -39,7 +39,6 @@ import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.manager.kickstart.KickstartLister;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
-import com.redhat.rhn.testing.TestStatics;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -74,7 +73,7 @@ public class KickstartListerTest extends BaseTestCaseWithUser {
 
     @Test
    public void testListKeys() {
-       Org o = UserTestUtils.findNewOrg(TestStatics.TESTORG);
+       Org o = UserTestUtils.createOrg();
        CryptoKey key = CryptoTest.createTestKey(o);
        KickstartFactory.saveCryptoKey(key);
        flushAndEvict(key);
@@ -86,7 +85,7 @@ public class KickstartListerTest extends BaseTestCaseWithUser {
 
     @Test
    public void testListFiles() {
-       Org o = UserTestUtils.findNewOrg(TestStatics.TESTORG);
+       Org o = UserTestUtils.createOrg();
        FileList f = FileListTest.createTestFileList(o);
        CommonFactory.saveFileList(f);
        flushAndEvict(f);

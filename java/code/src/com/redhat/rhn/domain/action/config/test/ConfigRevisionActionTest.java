@@ -85,10 +85,8 @@ public class ConfigRevisionActionTest extends RhnBaseTestCase {
      */
     @Test
     public void testLookupConfigRevision() throws Exception {
-        User user = UserTestUtils.createUser("testUser", UserTestUtils
-                .createOrg("testOrg" + this.getClass().getSimpleName()));
-        Action a = ActionFactoryTest.createAction(user,
-                   ActionFactory.TYPE_CONFIGFILES_DEPLOY);
+        User user = UserTestUtils.createUser(this);
+        Action a = ActionFactoryTest.createAction(user, ActionFactory.TYPE_CONFIGFILES_DEPLOY);
 
         assertNotNull(a);
         assertInstanceOf(ConfigAction.class, a);
@@ -102,8 +100,7 @@ public class ConfigRevisionActionTest extends RhnBaseTestCase {
         assertNotNull(cra.getId());
     }
 
-    public static ConfigRevisionAction createTestRevision(User user, Action parent)
-                                                                     throws Exception {
+    public static void createTestRevision(User user, Action parent) {
         ConfigRevisionAction cra = new ConfigRevisionAction();
         cra.setServer(ServerFactoryTest.createTestServer(user));
 
@@ -111,7 +108,6 @@ public class ConfigRevisionActionTest extends RhnBaseTestCase {
         cra.setCreated(new Date());
         cra.setModified(new Date());
         ((ConfigAction) parent).addConfigRevisionAction(cra);
-        return cra;
     }
 
 }

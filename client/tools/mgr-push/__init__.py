@@ -1,3 +1,4 @@
+# pylint: disable=invalid-name,missing-module-docstring
 #
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
@@ -12,3 +13,4 @@
 # granted to use or replicate Red Hat trademarks that are incorporated
 # in this software or its documentation.
 #
+...  # needed by pylint to parse the disable comment

@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.TestStatics;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.webui.services.SaltStateGeneratorService;
@@ -59,9 +60,12 @@ public class BaseHandlerTestCase extends RhnBaseTestCase {
 
         committed = false;
 
-        admin = UserTestUtils.findNewUser("adminUser", "testOrg" + this.getClass().getSimpleName(), true);
-        regular = UserTestUtils.createUser("testUser", admin.getOrg().getId());
-        satAdmin = UserTestUtils.createUser("satUser", admin.getOrg().getId());
+        admin = new UserTestUtils.UserBuilder()
+                .userName(TestStatics.TEST_ADMIN_USER)
+                .orgAdmin(true)
+                .build();
+        regular = new UserTestUtils.UserBuilder().orgId(admin.getOrg().getId()).build();
+        satAdmin = UserTestUtils.createUser(TestStatics.TEST_SAT_USER, admin.getOrg().getId());
         satAdmin.addPermanentRole(RoleFactory.SAT_ADMIN);
         UserFactory.save(satAdmin);
 

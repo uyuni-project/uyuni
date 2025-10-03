@@ -17,9 +17,9 @@ import FiltersProjectSelection from "./filters-project-selection";
 
 type FiltersProps = {
   projectId: string;
-  selectedFilters: Array<ProjectFilterServerType>;
+  selectedFilters: ProjectFilterServerType[];
   onChange: Function;
-  messages?: Array<ProjectMessageType>;
+  messages?: ProjectMessageType[];
 };
 
 const renderFilterEntry = (filter, projectId, symbol, last) => {

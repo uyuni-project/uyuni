@@ -27,8 +27,8 @@ class Messages extends React.Component<Props> {
   buildRows = (rawMessages, systems, subscriptions) => {
     return rawMessages.map(function (rawMessage, index) {
       const data = rawMessage["data"];
-      var message: string;
-      var additionalInformation: any;
+      let message: string;
+      let additionalInformation: any;
       switch (rawMessage["type"]) {
         case "unknown_part_number":
           message = t("Unsupported part number detected");
@@ -87,7 +87,7 @@ class Messages extends React.Component<Props> {
   };
 
   render() {
-    var body;
+    let body;
     if (this.props.messages.length > 0) {
       body = (
         <div>

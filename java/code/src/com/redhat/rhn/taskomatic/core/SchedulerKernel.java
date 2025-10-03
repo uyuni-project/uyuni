@@ -56,7 +56,7 @@ public class SchedulerKernel {
     private static final String[] TASKOMATIC_PACKAGE_NAMES =
             {"com.redhat.rhn.taskomatic.domain"};
     private static Logger log = LogManager.getLogger(SchedulerKernel.class);
-    private byte[] shutdownLock = new byte[0];
+    private final byte[] shutdownLock = new byte[0];
     private static SchedulerFactory factory = null;
     private static Scheduler scheduler = null;
     private static TaskoXmlRpcServer xmlrpcServer = null;
@@ -178,7 +178,7 @@ public class SchedulerKernel {
             HibernateFactory.closeSessionFactory();
             // Wake up thread waiting in startup() so it can exit
             synchronized (this.shutdownLock) {
-                this.shutdownLock.notify();
+                this.shutdownLock.notifyAll();
             }
         }
     }

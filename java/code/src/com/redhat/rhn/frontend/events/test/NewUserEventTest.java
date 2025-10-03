@@ -24,18 +24,14 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.events.NewUserAction;
 import com.redhat.rhn.frontend.events.NewUserEvent;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.UserTestUtils;
-
-import com.mockobjects.servlet.MockHttpServletRequest;
-import com.mockobjects.servlet.MockHttpSession;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
-import java.util.Vector;
 
 /**
  * Test for NewUserEvent
@@ -93,19 +89,8 @@ public class NewUserEventTest extends RhnBaseTestCase {
 
     private NewUserEvent createTestEvent() {
         NewUserEvent evt = new NewUserEvent();
-        // In the implementation we use getHeaderNames so we override it with
-        // one that returns an empty implementation.
-        MockHttpServletRequest request = new MockHttpServletRequest() {
-            @Override
-            public Enumeration<String> getHeaderNames() {
-                return new Vector<String>().elements();
-            }
-        };
-        request.setSession(new MockHttpSession());
-        request.setupGetRequestURI("http://localhost:8080");
-        request.setupGetMethod("POST");
-        User usr = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        RhnMockHttpServletRequest request = new RhnMockHttpServletRequest();
+        User usr = UserTestUtils.createUser(this);
 
         evt.setUser(usr);
         evt.setDomain("someserver.rhndev.redhat.com");
@@ -115,8 +100,16 @@ public class NewUserEventTest extends RhnBaseTestCase {
     }
 
     private List<User> createAdmins() {
-        User adminOne = UserTestUtils.findNewUser("testUserOne", "testOrgOne", true);
-        User adminTwo = UserTestUtils.findNewUser("testUserTwo", "testOrgTwo", true);
+        User adminOne = new UserTestUtils.UserBuilder()
+                .userName("testUserOne")
+                .orgName("testOrgOne")
+                .orgAdmin(true)
+                .build();
+        User adminTwo = new UserTestUtils.UserBuilder()
+                .userName("testUserTwo")
+                .orgName("testOrgTwo")
+                .orgAdmin(true)
+                .build();
         List<User> admins = new ArrayList<>();
         admins.add(adminOne);
         admins.add(adminTwo);

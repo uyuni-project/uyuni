@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.redhat.rhn.common.translation.Translator;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.TestStatics;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.junit.jupiter.api.Test;
@@ -78,17 +79,16 @@ public class TranslatorTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testLong2SomethingElse() throws Exception {
+    public void testLong2SomethingElse() {
         Long bl = 10L;
         long ll = Translator.long2Objlong(bl);
         assertEquals(10, ll);
 
-        Long uid = UserTestUtils.createUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+        Long uid = UserTestUtils.createUser().getId();
         User user = Translator.long2User(uid.intValue());
         assertNotNull(user);
         assertEquals(uid, user.getId());
-        assertTrue(user.getLogin().startsWith("testUser"));
+        assertTrue(user.getLogin().startsWith(TestStatics.TEST_USER));
     }
 
     @Test

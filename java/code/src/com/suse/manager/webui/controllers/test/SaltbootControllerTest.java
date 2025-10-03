@@ -22,7 +22,6 @@ import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.server.Pillar;
 import com.redhat.rhn.testing.ImageTestUtils;
-import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 import com.redhat.rhn.testing.SparkTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
@@ -31,6 +30,7 @@ import com.suse.utils.Json;
 
 import com.google.gson.reflect.TypeToken;
 
+import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -71,8 +71,6 @@ public class SaltbootControllerTest extends BaseControllerTestCase {
         Map<String, String> queryParams = new HashMap<>();
         queryParams.put("orgid", user.getOrg().getId().toString());
 
-        ((RhnMockHttpServletResponse)response.raw()).setExpectedStatus(301);
-
         Request request = SparkTestUtils.createMockRequestWithParams(
             "http://localhost:8080/saltboot/boot/POS_Image_JeOS7.x86_64-7.1.0-1/POS_Image_JeOS7.x86_64-7.1.0.initrd",
             queryParams);
@@ -92,6 +90,7 @@ public class SaltbootControllerTest extends BaseControllerTestCase {
         SaltbootController.redirectImage(request, response);
         assertEquals("https://server.suse.com/os-images/1/POS_Image_JeOS7-7.1.0-1/POS_Image_JeOS7.x86_64-7.1.0",
             response.raw().getHeader("Location"));
+        assertEquals(HttpStatus.SC_MOVED_PERMANENTLY, response.raw().getStatus());
     }
 
 

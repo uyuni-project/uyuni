@@ -21,7 +21,7 @@ type Props = {
 
 type State = {
   loading: boolean;
-  allowedActions: Array<string>;
+  allowedActions: string[];
 };
 
 class PtfOverview extends React.Component<Props, State> {

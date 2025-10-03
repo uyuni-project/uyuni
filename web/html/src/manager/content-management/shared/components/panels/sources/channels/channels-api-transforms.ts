@@ -12,7 +12,7 @@ export const canonicalizeChild = (channel: ChildChannelType, parentChannel: Base
 };
 
 export const toCanonicalRequires = (
-  rawRequiresMap: { [key: string]: number[] | undefined },
+  rawRequiresMap: Record<string, number[] | undefined>,
   channelsMap: Map<number, BaseChannelType | ChildChannelType>
 ) => {
   // Create a two-way mapping of what channels require what channels, and what channels are required by what channels

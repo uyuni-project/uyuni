@@ -153,8 +153,10 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
         ChannelFamily cfam = getChannelFamily();
 
         if (cfam != null) {
-            return cfam.getLabel().startsWith(
-                    ChannelFamilyFactory.PROXY_CHANNEL_FAMILY_LABEL);
+            return List.of(
+                    ChannelFamilyFactory.PROXY_CHANNEL_FAMILY_LABEL,
+                    ChannelFamilyFactory.PROXY_ARM_CHANNEL_FAMILY_LABEL
+            ).contains(cfam.getLabel());
         }
         return false;
     }
