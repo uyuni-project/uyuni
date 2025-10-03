@@ -709,7 +709,17 @@ public class ActionFactory extends HibernateFactory {
         if (label == null) {
             return null;
         }
-        return singleton.lookupObjectByNamedQuery("ActionType.findByLabel", Map.of("label", label), true);
+        try {
+            Session session = HibernateFactory.getSession();
+            return session.createQuery("FROM ActionType WHERE label = :label", ActionType.class)
+                    .setParameter("label", label)
+                    //Retrieve from cache if there
+                    .setCacheable(true)
+                    .uniqueResult();
+        }
+        catch (HibernateException he) {
+            throw new HibernateRuntimeException("lookupActionTypeByLabel failed with label: " + label, he);
+        }
     }
 
     /**
@@ -718,8 +728,17 @@ public class ActionFactory extends HibernateFactory {
      * @return Returns the ActionStatus corresponding to name
      */
     private static ActionStatus lookupActionStatusByName(String name) {
-        return singleton.lookupObjectByNamedQuery("ActionStatus.findByName", Map.of("name", name), true);
-
+        try {
+            Session session = HibernateFactory.getSession();
+            return session.createQuery("FROM ActionStatus WHERE name = :name", ActionStatus.class)
+                    .setParameter("name", name)
+                    //Retrieve from cache if there
+                    .setCacheable(true)
+                    .uniqueResult();
+        }
+        catch (HibernateException he) {
+            throw new HibernateRuntimeException("lookupActionStatusByName failed with name: " + name, he);
+        }
     }
 
     /**

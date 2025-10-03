@@ -19,15 +19,36 @@ import com.redhat.rhn.domain.action.dup.DistUpgradeActionDetails;
 
 import java.io.Serializable;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 /**
  * Class representation of a SUSE product upgrade.
  */
+@Entity
+@Table(name = "rhnActionDupProduct")
+@IdClass(ProductUpgradeId.class)
 public class SUSEProductUpgrade extends BaseDomainHelper implements Serializable {
 
     private static final long serialVersionUID = 1865254811004902667L;
 
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "action_dup_id")
     private DistUpgradeActionDetails details;
+
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "from_pdid")
     private SUSEProduct fromProduct;
+
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "to_pdid")
     private SUSEProduct toProduct;
 
     /**
