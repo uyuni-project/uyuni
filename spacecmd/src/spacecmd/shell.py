@@ -130,7 +130,7 @@ class SpacewalkShell(Cmd):
         try:
             # don't split on hyphens or colons during tab completion
             newdelims = readline.get_completer_delims()
-            newdelims = re.sub("[:-/]", "", newdelims)
+            newdelims = re.sub(r"[:\-/]", "", newdelims)
             readline.set_completer_delims(newdelims)
 
             if not options.nohistory:
