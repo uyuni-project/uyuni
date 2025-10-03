@@ -77,7 +77,7 @@ export function mapResponseToFilterForm(filtersResponse: FilterServerType[] = []
     const selectedFilterOption = findClmFilterByKey(filterResponse.criteriaKey);
     // If we can find a filter option using the CriteriaKey we assume the default behavior
     if (selectedFilterOption) {
-      filterForm.type = selectedFilterOption && selectedFilterOption.key;
+      filterForm.type = selectedFilterOption.key;
       filterForm[selectedFilterOption.key] = filterResponse.criteriaValue;
     } else {
       Loggerhead.error(`${filterResponse.name}: We couldn't find a matching filter for ${filterResponse.criteriaKey}`);

@@ -276,11 +276,7 @@ const FilterForm = (props: Props) => {
               />
             )}
 
-            {clmFilterOptions.STREAM.key === filterType && (
-              <>
-                <AppStreamsForm matcher={filter.matcher} />
-              </>
-            )}
+            {clmFilterOptions.STREAM.key === filterType && <AppStreamsForm matcher={filter.matcher} />}
 
             {clmFilterOptions.PTF_NUMBER.key === filterType && (
               <Text

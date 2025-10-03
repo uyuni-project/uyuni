@@ -148,7 +148,7 @@ const PageSelector = (props: PageSelectorProps) => {
               value={props.currentValue}
               onChange={(e) => props.onChange(parseInt(e.target.value, 10))}
             >
-              {Array.from(Array(props.lastPage)).map((_, i) => (
+              {Array.from(new Array(props.lastPage)).map((_, i) => (
                 <option value={i + 1} key={i + 1}>
                   {i + 1}
                 </option>

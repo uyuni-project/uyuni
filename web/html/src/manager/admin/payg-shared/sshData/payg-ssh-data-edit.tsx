@@ -61,11 +61,7 @@ const PaygSshDataEdit = (props: Props) => {
           setErrors(null);
         }}
         disableEditing={props.readOnly}
-        renderContent={() => (
-          <React.Fragment>
-            <PaygSshDataView payg={props.paygSshData} isInstance={props.isInstance} />
-          </React.Fragment>
-        )}
+        renderContent={() => <PaygSshDataView payg={props.paygSshData} isInstance={props.isInstance} />}
         renderCreationContent={({ item, setItem, errors }) => {
           if (isLoading) {
             return <Loading text={t("Editing ssh connection data..")} />;

@@ -61,11 +61,10 @@ const CreatorPanel = (props: Props) => {
               target={modalNameId}
               onClick={() => {
                 setOpen(true);
-                props.onOpen &&
-                  props.onOpen({
-                    setItem: setStateItem,
-                    setErrors: setStateErrors,
-                  });
+                props.onOpen?.({
+                  setItem: setStateItem,
+                  setErrors: setStateErrors,
+                });
               }}
             />
           )
@@ -97,8 +96,7 @@ const CreatorPanel = (props: Props) => {
                     text={t("Delete")}
                     disabled={props.disableDelete || props.disableOperations}
                     handler={() =>
-                      props.onDelete &&
-                      props.onDelete({
+                      props.onDelete?.({
                         item,
                         closeDialog: () => setOpen(false),
                       })
