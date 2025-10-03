@@ -82,26 +82,23 @@ ORDER BY id DESC
 <mode name="pending_action_list"
       class="com.redhat.rhn.frontend.dto.ScheduledAction">
   <query params="user_id, org_id">
-WITH actionCounts AS (
+WITH userActionOverviewData AS (
+    SELECT * FROM rhnUserActionOverview
+    WHERE user_id = :user_id AND org_id = :org_id
+), actionCounts AS (
     SELECT
-        action_id,
-        COUNT(1) FILTER (WHERE status IN (0, 1)) AS in_progress_systems,
-        COUNT(1) FILTER (WHERE status = 2) AS completed_systems,
-        COUNT(1) FILTER (WHERE status = 3) AS failed_systems
-    FROM rhnServerAction
-    GROUP BY action_id
-),
-prereqStatus AS (
-    SELECT
-        action_id,
-        (COUNT(*) = COUNT(*) FILTER (WHERE status = 3)) AS all_failed
-    FROM rhnServerAction
-    GROUP BY action_id
+        id AS action_id,
+        SUM(tally) AS total_systems,
+        SUM(tally) FILTER (WHERE action_status_id IN (0, 1)) AS in_progress_systems,
+        SUM(tally) FILTER (WHERE action_status_id = 2) AS completed_systems,
+        SUM(tally) FILTER (WHERE action_status_id = 3) AS failed_systems
+    FROM userActionOverviewData
+    GROUP BY id
 )
 SELECT  DISTINCT UAO.id AS ID,
         UAO.earliest_action AS EARLIEST,
         A.prerequisite AS PREREQUISITE,
-        COALESCE(PS.all_failed, FALSE) AS PREREQUISITE_ALL_FAILED,
+        COALESCE(PS.total_systems = PS.failed_systems, FALSE) AS PREREQUISITE_ALL_FAILED,
         UAO.type_name,
         (CASE WHEN UAO.action_name IS NULL THEN UAO.type_name ELSE UAO.action_name END)
             || ' scheduled by '
@@ -111,14 +108,12 @@ SELECT  DISTINCT UAO.id AS ID,
         COALESCE(AC.in_progress_systems, 0) AS "IN_PROGRESS_SYSTEMS",
         COALESCE(AC.completed_systems, 0) AS "COMPLETED_SYSTEMS",
         COALESCE(AC.failed_systems, 0) AS "FAILED_SYSTEMS"
-  FROM  rhnUserActionOverview UAO
+  FROM  userActionOverviewData UAO
   JOIN rhnAction A ON UAO.id = A.id
   LEFT JOIN web_contact WC on UAO.scheduler = WC.id
   LEFT JOIN actionCounts AC ON UAO.id = AC.action_id
-  LEFT JOIN prereqStatus PS ON A.prerequisite = PS.action_id
- WHERE  UAO.org_id = :org_id
-   AND  UAO.user_id = :user_id
-   AND  UAO.action_status_id IN (0,1)
+  LEFT JOIN actionCounts PS ON A.prerequisite = PS.action_id
+ WHERE  UAO.action_status_id IN (0,1)
    AND  UAO.archived = 0
 ORDER BY EARLIEST DESC
   </query>
@@ -128,40 +123,35 @@ ORDER BY EARLIEST DESC
 <mode name="pending_actions_in_set"
       class="com.redhat.rhn.frontend.dto.ScheduledAction">
   <query params="user_id, org_id, set_label">
-WITH actionCounts AS (
+WITH userActionOverviewData AS (
+    SELECT * FROM rhnUserActionOverview
+    WHERE user_id = :user_id AND org_id = :org_id
+), actionCounts AS (
     SELECT
-        action_id,
-        COUNT(1) FILTER (WHERE status IN (0, 1)) AS in_progress_systems,
-        COUNT(1) FILTER (WHERE status = 2) AS completed_systems,
-        COUNT(1) FILTER (WHERE status = 3) AS failed_systems
-    FROM rhnServerAction
-    GROUP BY action_id
-),
-prereqStatus AS (
-    SELECT
-        action_id,
-        (COUNT(*) = COUNT(*) FILTER (WHERE status = 3)) AS all_failed
-    FROM rhnServerAction
-    GROUP BY action_id
+        id AS action_id,
+        SUM(tally) AS total_systems,
+        SUM(tally) FILTER (WHERE action_status_id IN (0, 1)) AS in_progress_systems,
+        SUM(tally) FILTER (WHERE action_status_id = 2) AS completed_systems,
+        SUM(tally) FILTER (WHERE action_status_id = 3) AS failed_systems
+    FROM userActionOverviewData
+    GROUP BY id
 )
 SELECT  DISTINCT UAO.id AS ID,
         UAO.earliest_action AS EARLIEST,
         A.prerequisite AS PREREQUISITE,
-        COALESCE(PS.all_failed, FALSE) AS PREREQUISITE_ALL_FAILED,
+        COALESCE(PS.total_systems = PS.failed_systems, FALSE) AS PREREQUISITE_ALL_FAILED,
         UAO.type_name,
         (CASE WHEN UAO.action_name IS NULL THEN UAO.type_name ELSE UAO.action_name END) AS ACTION_NAME,
         UAO.scheduler,
         COALESCE(AC.in_progress_systems, 0) AS "IN_PROGRESS_SYSTEMS",
         COALESCE(AC.completed_systems, 0) AS "COMPLETED_SYSTEMS",
         COALESCE(AC.failed_systems, 0) AS "FAILED_SYSTEMS"
-  FROM  rhnUserActionOverview UAO
+  FROM  userActionOverviewData UAO
   JOIN rhnAction A ON UAO.id = A.id
   JOIN rhnSet ST ON ST.element = A.id
   LEFT JOIN actionCounts AC ON UAO.id = AC.action_id
-  LEFT JOIN prereqStatus PS ON A.prerequisite = PS.action_id
- WHERE  UAO.org_id = :org_id
-   AND  UAO.user_id = :user_id
-   AND  UAO.action_status_id IN (0,1)
+  LEFT JOIN actionCounts PS ON A.prerequisite = PS.action_id
+ WHERE  UAO.action_status_id IN (0,1)
    AND  UAO.archived = 0
    AND  ST.user_id = :user_id
    AND  ST.label = :set_label
@@ -173,14 +163,17 @@ ORDER BY EARLIEST DESC
 <mode name="all_action_list"
       class="com.redhat.rhn.frontend.dto.ScheduledAction">
   <query params="user_id, org_id">
-WITH actionCounts AS (
+WITH userActionOverviewData AS (
+    SELECT * FROM rhnUserActionOverview
+    WHERE user_id = :user_id AND org_id = :org_id
+), actionCounts AS (
     SELECT
-        action_id,
-        COUNT(1) FILTER (WHERE status IN (0, 1)) AS in_progress_systems,
-        COUNT(1) FILTER (WHERE status = 2) AS completed_systems,
-        COUNT(1) FILTER (WHERE status = 3) AS failed_systems
-    FROM rhnServerAction
-    GROUP BY action_id
+        id AS action_id,
+        SUM(tally) FILTER (WHERE action_status_id IN (0, 1)) AS in_progress_systems,
+        SUM(tally) FILTER (WHERE action_status_id = 2) AS completed_systems,
+        SUM(tally) FILTER (WHERE action_status_id = 3) AS failed_systems
+    FROM userActionOverviewData
+    GROUP BY id
 )
 SELECT  DISTINCT UAO.id AS ID,
         UAO.earliest_action AS EARLIEST,
@@ -191,11 +184,9 @@ SELECT  DISTINCT UAO.id AS ID,
         COALESCE(AC.in_progress_systems, 0) AS "IN_PROGRESS_SYSTEMS",
         COALESCE(AC.completed_systems, 0) AS "COMPLETED_SYSTEMS",
         COALESCE(AC.failed_systems, 0) AS "FAILED_SYSTEMS"
-  FROM  rhnUserActionOverview UAO
+  FROM  userActionOverviewData UAO
   LEFT JOIN web_contact WC on UAO.scheduler = WC.id
   LEFT JOIN actionCounts AC ON UAO.id = AC.action_id
- WHERE  UAO.org_id = :org_id
-   AND  UAO.user_id = :user_id
 ORDER BY EARLIEST DESC
   </query>
   <elaborator name="action_overview_elab" />
@@ -204,14 +195,17 @@ ORDER BY EARLIEST DESC
 <mode name="completed_action_list"
       class="com.redhat.rhn.frontend.dto.ScheduledAction">
   <query params="user_id, org_id">
-WITH actionCounts AS (
+WITH userActionOverviewData AS (
+    SELECT * FROM rhnUserActionOverview
+    WHERE user_id = :user_id AND org_id = :org_id
+), actionCounts AS (
     SELECT
-        action_id,
-        COUNT(1) FILTER (WHERE status IN (0, 1)) AS in_progress_systems,
-        COUNT(1) FILTER (WHERE status = 2) AS completed_systems,
-        COUNT(1) FILTER (WHERE status = 3) AS failed_systems
-    FROM rhnServerAction
-    GROUP BY action_id
+        id AS action_id,
+        SUM(tally) FILTER (WHERE action_status_id IN (0, 1)) AS in_progress_systems,
+        SUM(tally) FILTER (WHERE action_status_id = 2) AS completed_systems,
+        SUM(tally) FILTER (WHERE action_status_id = 3) AS failed_systems
+    FROM userActionOverviewData
+    GROUP BY id
 )
 SELECT  DISTINCT UAO.id AS ID,
         UAO.earliest_action AS EARLIEST,
@@ -222,12 +216,10 @@ SELECT  DISTINCT UAO.id AS ID,
         COALESCE(AC.in_progress_systems, 0) AS "IN_PROGRESS_SYSTEMS",
         COALESCE(AC.completed_systems, 0) AS "COMPLETED_SYSTEMS",
         COALESCE(AC.failed_systems, 0) AS "FAILED_SYSTEMS"
-  FROM  rhnUserActionOverview UAO
+  FROM  userActionOverviewData UAO
   LEFT JOIN web_contact WC on UAO.scheduler = WC.id
   LEFT JOIN actionCounts AC ON UAO.id = AC.action_id
- WHERE  UAO.org_id = :org_id
-   AND  UAO.user_id = :user_id
-   AND  UAO.action_status_id = 2
+ WHERE  UAO.action_status_id = 2
    AND  UAO.archived = 0
 ORDER BY EARLIEST DESC
   </query>
@@ -237,14 +229,17 @@ ORDER BY EARLIEST DESC
 <mode name="failed_action_list"
     class="com.redhat.rhn.frontend.dto.ScheduledAction">
   <query params="user_id, org_id">
-WITH actionCounts AS (
+WITH userActionOverviewData AS (
+    SELECT * FROM rhnUserActionOverview
+    WHERE user_id = :user_id AND org_id = :org_id
+), actionCounts AS (
     SELECT
-        action_id,
-        COUNT(1) FILTER (WHERE status IN (0, 1)) AS in_progress_systems,
-        COUNT(1) FILTER (WHERE status = 2) AS completed_systems,
-        COUNT(1) FILTER (WHERE status = 3) AS failed_systems
-    FROM rhnServerAction
-    GROUP BY action_id
+        id AS action_id,
+        SUM(tally) FILTER (WHERE action_status_id IN (0, 1)) AS in_progress_systems,
+        SUM(tally) FILTER (WHERE action_status_id = 2) AS completed_systems,
+        SUM(tally) FILTER (WHERE action_status_id = 3) AS failed_systems
+    FROM userActionOverviewData
+    GROUP BY id
 )
 SELECT  DISTINCT UAO.id AS ID,
         UAO.earliest_action AS EARLIEST,
@@ -255,12 +250,10 @@ SELECT  DISTINCT UAO.id AS ID,
         COALESCE(AC.in_progress_systems, 0) AS "IN_PROGRESS_SYSTEMS",
         COALESCE(AC.completed_systems, 0) AS "COMPLETED_SYSTEMS",
         COALESCE(AC.failed_systems, 0) AS "FAILED_SYSTEMS"
-  FROM  rhnUserActionOverview UAO
+  FROM  userActionOverviewData UAO
   LEFT JOIN web_contact WC on UAO.scheduler = WC.id
   LEFT JOIN actionCounts AC ON UAO.id = AC.action_id
- WHERE  UAO.org_id = :org_id
-   AND  UAO.user_id = :user_id
-   AND  UAO.action_status_id  = 3
+ WHERE  UAO.action_status_id  = 3
    AND  UAO.archived = 0
 ORDER BY EARLIEST DESC
   </query>
@@ -270,14 +263,18 @@ ORDER BY EARLIEST DESC
 <mode name="archived_action_list"
       class="com.redhat.rhn.frontend.dto.ScheduledAction">
   <query params="user_id, org_id, include_orphans">
-WITH actionCounts AS (
+WITH userActionOverviewData AS (
+    SELECT * FROM rhnUserActionOverview
+    WHERE org_id = :org_id
+      AND (user_id = :user_id OR (:include_orphans = 'Y' AND user_id IS NULL))
+), actionCounts AS (
     SELECT
-        action_id,
-        COUNT(1) FILTER (WHERE status IN (0, 1)) AS in_progress_systems,
-        COUNT(1) FILTER (WHERE status = 2) AS completed_systems,
-        COUNT(1) FILTER (WHERE status = 3) AS failed_systems
-    FROM rhnServerAction
-    GROUP BY action_id
+        id AS action_id,
+        SUM(tally) FILTER (WHERE action_status_id IN (0, 1)) AS in_progress_systems,
+        SUM(tally) FILTER (WHERE action_status_id = 2) AS completed_systems,
+        SUM(tally) FILTER (WHERE action_status_id = 3) AS failed_systems
+    FROM userActionOverviewData
+    GROUP BY id
 )
 SELECT  DISTINCT UAO.id AS ID,
         UAO.earliest_action AS EARLIEST,
@@ -287,12 +284,10 @@ SELECT  DISTINCT UAO.id AS ID,
         COALESCE(AC.in_progress_systems, 0) AS "IN_PROGRESS_SYSTEMS",
         COALESCE(AC.completed_systems, 0) AS "COMPLETED_SYSTEMS",
         COALESCE(AC.failed_systems, 0) AS "FAILED_SYSTEMS"
-  FROM  rhnUserActionOverview UAO
+  FROM  userActionOverviewData UAO
   LEFT JOIN web_contact WC on UAO.scheduler = WC.id
   LEFT JOIN actionCounts AC ON UAO.id = AC.action_id
- WHERE  UAO.org_id = :org_id
-   AND  (UAO.user_id = :user_id OR (:include_orphans = 'Y' AND UAO.user_id IS NULL))
-   AND  UAO.archived = 1
+ WHERE  UAO.archived = 1
 ORDER BY EARLIEST DESC
   </query>
   <elaborator name="action_overview_elab" />
