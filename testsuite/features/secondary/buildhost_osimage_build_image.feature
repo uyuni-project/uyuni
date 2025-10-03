@@ -46,14 +46,18 @@ Feature: Build OS images
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
-  Scenario: Check the built OS image
+  Scenario: Wait for the built OS image
     Given I am on the Systems overview page of this "build_host"
     Then I should see a "[OS Image Build Host]" text
     When I wait until the image build "suse_os_image" is completed
     And I wait until the image inspection for "pxeboot_minion" is completed
     And I wait until no Salt job is running on "build_host"
-    And I am on the image store of the Kiwi image for organization "1"
-    Then I should see the name of the image for "pxeboot_minion"
+    And I follow the left menu "Images > Image List"
+    Then I should see the image for "pxeboot_minion" is built
+
+  Scenario: Check the built OS image
+    When I open the details page of the image for "pxeboot_minion"
+    Then I should see a link to download the image for "pxeboot_minion"
 
   Scenario: Cleanup: remove remaining systems from SSM after OS image tests
     When I go to the home page
