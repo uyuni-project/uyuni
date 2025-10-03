@@ -1,5 +1,3 @@
-import { hot } from "react-hot-loader/root";
-
 import * as React from "react";
 import { useState } from "react";
 
@@ -61,4 +59,4 @@ const CreateProject = () => {
   );
 };
 
-export default hot(withPageWrapper<{}>(CreateProject));
+export default withPageWrapper<{}>(CreateProject);

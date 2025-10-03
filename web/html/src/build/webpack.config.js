@@ -4,6 +4,8 @@ const CleanWebpackPlugin = require("clean-webpack-plugin");
 const webpackAlias = require("./webpack.alias");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
+const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
+
 const autoprefixer = require("autoprefixer");
 
 const GenerateStoriesPlugin = require("./plugins/generate-stories-plugin");
@@ -17,6 +19,14 @@ module.exports = (env, opts) => {
 
   if (opts.measurePerformance) {
     pluginsInUse.push(new SpeedMeasurePlugin());
+  }
+
+  if (!isProductionMode) {
+    pluginsInUse.push(
+      new ReactRefreshWebpackPlugin({
+        overlay: false,
+      })
+    );
   }
 
   pluginsInUse = [
@@ -122,6 +132,7 @@ module.exports = (env, opts) => {
                   loader: require.resolve("babel-loader"),
                   options: {
                     configFile: path.resolve(__dirname, "../.babelrc"),
+                    plugins: isProductionMode ? undefined : [require.resolve("react-refresh/babel")],
                   },
                 },
               ],
@@ -205,7 +216,7 @@ module.exports = (env, opts) => {
               loader: require.resolve("sass-loader"),
               options: {
                 sassOptions: {
-                  loadPaths: path.resolve(__dirname, "../"),
+                  loadPaths: [path.resolve(__dirname, "../")],
                 },
               },
             },
@@ -264,9 +275,7 @@ module.exports = (env, opts) => {
       ],
       devMiddleware: {
         publicPath: "/",
-        // Don't write changes to disk so we can do hard reloads only on static file changes in the future
-        // TODO: Revert
-        // writeToDisk: false,
+        // If we ever integrate theme loading locally as opposeds to a global load in jsp, we can set this to false to get faster HMR
         writeToDisk: true,
         // Allow proxying requests to root "/" (disabled by default), see https://webpack.js.org/configuration/dev-server/#devserverproxy
         index: false,

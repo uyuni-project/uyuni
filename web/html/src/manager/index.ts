@@ -4,7 +4,6 @@ All the routes exported on the files '<*folder_name*>/index.ts' will be automati
 Check the file content-management/index.js for an example
 */
 import "./polyfills";
-import "react-hot-loader";
 import "core/spa/spa-engine";
 import "core/log";
 import "core/debugUtils";

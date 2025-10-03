@@ -7,6 +7,4 @@ module.exports = {
   utils: path.resolve(__dirname, "../utils/"),
   branding: path.resolve(__dirname, "../branding/"),
   jquery: path.resolve(__dirname, "./inject.global.jquery.js"),
-  // Support HRM with hooks, see https://github.com/gaearon/react-hot-loader#hot-loaderreact-dom
-  "react-dom": "@hot-loader/react-dom",
 };

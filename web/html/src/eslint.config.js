@@ -92,8 +92,6 @@ module.exports = defineConfig([
           groups: [
             // Side effect imports
             ["^\\u0000"],
-            // HMR needs to be imported before everything else
-            ["^react-hot-loader/root"],
             ["^react$", "^react-dom$"],
             // Fullcalendar needs to be imported before its plugins
             ["^@fullcalendar/react"],
