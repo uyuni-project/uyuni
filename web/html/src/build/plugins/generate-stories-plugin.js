@@ -64,7 +64,7 @@ module.exports = class GenerateStoriesPlugin {
   }
 
   wordify(input) {
-    return input.replace(/[\W_]+/g, "_");
+    return input.replaceAll(/[\W_]+/g, "_");
   }
 };
 
