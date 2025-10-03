@@ -1,0 +1,106 @@
+name: Schedule the collection of PR tests results into Database
+
+on:
+  schedule:
+    - cron: '0 */12 * * *'  # Every 12 hours
+  workflow_dispatch: # Allow manual triggering
+
+jobs:
+  obtain-pull-requests-to-process:
+    runs-on: ubuntu-latest
+    outputs:
+      pull_requests_to_process: ${{ steps.search_prs.outputs.pr_list }}
+
+    steps:
+      - name: Set Search Dates
+        id: set_dates
+        run: |
+          START_DATE=$(date -Iseconds -d "12 hours ago" | sed 's/\+00:00/Z/')
+          echo "START_DATE=$START_DATE" >> $GITHUB_OUTPUT
+
+      - name: Search for Recent PRs and Set Matrix Output
+        id: search_prs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          START_DATE: ${{ steps.set_dates.outputs.START_DATE }}
+          REPO_NAME: ${{ github.repository }}
+        run: |
+          GH_QUERY="repo:$REPO_NAME is:pr created:>$START_DATE"
+          PR_RESULTS=$(gh search issues \
+            --query "$GH_QUERY" \
+            --limit 50 \
+            --json number)
+          PR_NUMBERS_JSON=$(echo "$PR_RESULTS" | jq -r '[.[] | .number | tostring] | tostring')
+          echo "pr_list=$PR_NUMBERS_JSON" >> $GITHUB_OUTPUT
+          echo "Matrix set (PR Numbers): $PR_NUMBERS_JSON"
+
+
+  scheduled-test-results-collector:
+    name: Insert test run for PR ${{ matrix.set }} into DB
+    needs: obtain-pull-requests-to-process
+    runs-on: ubuntu-latest
+    env:
+      DOWNLOADED_CUCUMBER_REPORTS_PATH: cucumber-reports-path
+      PR_NUMBER: ${{ matrix.set }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        set: ${{ fromJSON(needs.obtain-pull-requests-to-process.outputs.pull_requests_to_process) }}
+
+    steps:
+      - name: Get PR Details
+        id: pr-details
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PR_JSON=$(gh pr view $PR_NUMBER --json headRefName,headRefOid,baseRefName)
+          
+          HEAD_SHA=$(echo $PR_JSON | jq -r '.headRefOid')
+          BASE_REF=$(echo $PR_JSON | jq -r '.baseRefName')
+          
+          echo "head_sha=$HEAD_SHA" >> $GITHUB_OUTPUT
+          echo "base_ref=$BASE_REF" >> $GITHUB_OUTPUT
+          
+          echo "PR #$PR_NUMBER Head SHA: $HEAD_SHA"
+          echo "PR #$PR_NUMBER Base Ref: $BASE_REF"
+
+      - name: Checkout PR Branch
+        uses: actions/checkout@v4
+        with:
+          ref: 'refs/pull/${{ env.PR_NUMBER }}/merge'
+          fetch-depth: 0
+
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v46.0.5
+        with:
+          files_ignore: '**/*.changes*'
+          json: true
+          base_sha: ${{ steps.pr-details.outputs.base_ref }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5.6
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: pip install -r testsuite/ext-tools/predictive-test-selection/requirements.txt
+
+      - name: Download all Cucumber reports uploaded by previous jobs as artifacts
+        uses: actions/download-artifact@v5.0
+        with:
+          path: ${{ env.DOWNLOADED_CUCUMBER_REPORTS_PATH }}
+          pattern: cucumber_json_reports_*
+          merge-multiple: true
+
+      - name: Process test run data and insert it into database
+        env:
+          TEST_RUNS_DATABASE_CONNECTION_STRING: postgresql://${{ secrets.PGSQL_USERNAME }}:${{ secrets.PGSQL_PASSWORD }}@${{ secrets.PGSQL_SERVER }}/${{ secrets.PGSQL_DATABASE }}
+        run: |
+          python .github/scripts/insert_test_run_into_db.py \
+            --run-id ${{ github.run_id }} \
+            --pr-number ${{ env.PR_NUMBER }} \
+            --commit-sha ${{ steps.pr-details.outputs.head_sha }} \
+            --modified-files ${{ steps.changed-files.outputs.all_modified_files }} \
+            --cucumber-reports-path "${{ env.DOWNLOADED_CUCUMBER_REPORTS_PATH }}"
