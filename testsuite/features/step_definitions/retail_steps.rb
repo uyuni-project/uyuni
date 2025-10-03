@@ -534,7 +534,7 @@ end
 
 Then(/^I should see the name of the image for "([^"]*)"$/) do |host|
   name = compute_kiwi_profile_name(host)
-  step %(I should see a "#{name}" text)
+  step %(I wait until I see "#{name}" text)
 end
 
 Then(/^the image for "([^"]*)" should exist on the branch server$/) do |host|
