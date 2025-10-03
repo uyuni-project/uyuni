@@ -133,7 +133,6 @@ class CoCoSettingsForm extends React.Component<Props, State> {
             <RecurringEventPicker
               mode="Inline"
               hideScheduleName
-              timezone={window.timezone}
               scheduleName={this.state.scheduleName}
               type={this.state.scheduleType}
               cron={this.state.scheduleCron}
