@@ -30,7 +30,6 @@ import org.hibernate.type.StandardBasicTypes;
 
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -155,7 +154,6 @@ public class SUSEProductFactory extends HibernateFactory {
      * Removes all products except the ones passed as parameter.
      * @param products products to keep
      */
-    @SuppressWarnings("unchecked")
     public static void removeAllExcept(Collection<SUSEProduct> products) {
         if (!products.isEmpty()) {
             List<Long> ids = products.stream().map(SUSEProduct::getId).collect(Collectors.toList());
@@ -557,7 +555,6 @@ public class SUSEProductFactory extends HibernateFactory {
      * Find all {@link SUSEProductChannel} relationships.
      * @return list of SUSE product channel relationships
      */
-    @SuppressWarnings("unchecked")
     public static List<SUSEProductChannel> findAllSUSEProductChannels() {
         return getSession().createNativeQuery("SELECT * from SUSEProductChannel", SUSEProductChannel.class)
                 .getResultList();
@@ -606,11 +603,16 @@ public class SUSEProductFactory extends HibernateFactory {
      * @return list of product extension of the given product and root
      */
     public static List<SUSEProduct> findAllExtensionProductsForRootOf(SUSEProduct base, SUSEProduct root) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("baseId", base.getId());
-        params.put("rootId", root.getId());
-        return singleton.listObjectsByNamedQuery(
-                "SUSEProductExtension.findAllExtensionProductsForRootOf", params);
+        return getSession().createQuery("""
+                SELECT ext
+                FROM   SUSEProductExtension pe
+                JOIN   SUSEProduct ext ON pe.extensionProduct = ext
+                WHERE  pe.baseProduct = :base
+                AND    pe.rootProduct = :root
+                """, SUSEProduct.class)
+                .setParameter("base", base)
+                .setParameter("root", root)
+                .list();
     }
 
     /**
@@ -619,7 +621,6 @@ public class SUSEProductFactory extends HibernateFactory {
      * @param root root product to find extensions in
      * @return list of product extension of the given product
      */
-    @SuppressWarnings("unchecked")
     public static List<SUSEProductExtension> findAllProductExtensionsOf(SUSEProduct product, SUSEProduct root) {
         return getSession().createNativeQuery("""
                                       SELECT * from suseProductExtension
@@ -632,26 +633,22 @@ public class SUSEProductFactory extends HibernateFactory {
     }
 
     /**
-     * Find all base products of a product.
-     * @param ext product to find bases for
-     * @return list of base products of the given product
-     */
-    public static List<SUSEProduct> findAllBaseProductsOf(SUSEProduct ext) {
-        Map<String, Object> params = Map.of("extId", ext.getId());
-        return singleton.listObjectsByNamedQuery("SUSEProductExtension.findAllBaseProductsOf", params);
-    }
-
-    /**
      * Find all base products of a product in the tree of a specified root product.
      * @param ext product to find bases for
      * @param root the root product
      * @return list of base products of the given product and root
      */
     public static List<SUSEProduct> findAllBaseProductsOf(SUSEProduct ext, SUSEProduct root) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("extId", ext.getId());
-        params.put("rootId", root.getId());
-        return singleton.listObjectsByNamedQuery("SUSEProductExtension.findAllBaseProductsForRootOf", params);
+        return getSession().createQuery("""
+                SELECT base
+                FROM   SUSEProductExtension pe
+                JOIN   SUSEProduct base ON base = pe.baseProduct
+                WHERE  pe.extensionProduct = :ext
+                AND    pe.rootProduct = :root
+                """, SUSEProduct.class)
+                .setParameter("ext", ext)
+                .setParameter("root", root)
+                .list();
     }
 
     /**
@@ -660,19 +657,22 @@ public class SUSEProductFactory extends HibernateFactory {
      * @return list of root products of the given product
      */
     public static List<SUSEProduct> findAllRootProductsOf(SUSEProduct prd) {
-        return singleton.listObjectsByNamedQuery("SUSEProductExtension.findAllRootProductsOf",
-                Map.of("extId", prd.getId()));
+        return getSession().createQuery("""
+                SELECT root
+                FROM SUSEProductExtension pe
+                JOIN SUSEProduct root ON pe.rootProduct = root
+                where pe.extensionProduct = :prd
+                """, SUSEProduct.class)
+                .setParameter("prd", prd)
+                .list();
     }
 
     /**
      * Find all {@link SUSEProduct}.
      * @return list of all known products
      */
-    @SuppressWarnings("unchecked")
     public static List<SUSEProduct> findAllSUSEProducts() {
-        return getSession().createNativeQuery("""
-                                      SELECT * from suseProducts
-                                      """, SUSEProduct.class)
+        return getSession().createQuery("FROM SUSEProduct", SUSEProduct.class)
                 .getResultList();
     }
 
@@ -683,9 +683,13 @@ public class SUSEProductFactory extends HibernateFactory {
      * @return List of {@link SUSEProduct} extensions
      */
     public static List<SUSEProduct> findAllExtensionsOfRootProduct(SUSEProduct root) {
-        return getSession()
-                .createNamedQuery("SUSEProductExtension.findAllExtensionsOfRootProduct", SUSEProduct.class)
-                .setParameter("rootId", root.getId())
+        return getSession().createQuery("""
+                SELECT ext
+                FROM SUSEProductExtension e
+                JOIN SUSEProduct ext ON e.extensionProduct = ext
+                WHERE e.rootProduct = :root
+                """, SUSEProduct.class)
+                .setParameter("root", root)
                 .list();
     }
 
@@ -771,13 +775,14 @@ public class SUSEProductFactory extends HibernateFactory {
      * @return the stream of products
      */
     public static Stream<SUSEProduct> getLivePatchSupportedProducts() {
-        return HibernateFactory.getSession().createQuery(
-                "SELECT root FROM SUSEProduct root " +
-                "JOIN SUSEProductExtension x ON x.rootProduct = root " +
-                "JOIN SUSEProduct ext ON x.extensionProduct = ext " +
-                "JOIN ChannelFamily cf ON ext.channelFamily = cf " +
-                "WHERE cf.label LIKE 'SLE-LP%' " +
-                "AND EXISTS (FROM SUSEProductChannel WHERE product = root)", SUSEProduct.class)
+        return getSession().createQuery("""
+                SELECT root FROM SUSEProduct root
+                JOIN SUSEProductExtension x ON x.rootProduct = root
+                JOIN SUSEProduct ext ON x.extensionProduct = ext
+                JOIN ChannelFamily cf ON ext.channelFamily = cf
+                WHERE cf.label LIKE 'SLE-LP%'
+                AND EXISTS (FROM SUSEProductChannel WHERE product = root)
+                """, SUSEProduct.class)
                 .getResultStream();
     }
 
