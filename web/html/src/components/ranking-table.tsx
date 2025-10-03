@@ -4,7 +4,7 @@ import _cloneDeep from "lodash/cloneDeep";
 
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
-type Instance = JQuery & {};
+type Instance = JQuery;
 type Sortable = <T>(arg0: T, options?: any) => T extends string ? string[] : Instance;
 
 declare global {

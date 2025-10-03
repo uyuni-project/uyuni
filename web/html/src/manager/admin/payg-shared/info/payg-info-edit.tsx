@@ -47,11 +47,7 @@ const PaygInfoEdit = (props: Props) => {
           setErrors(null);
         }}
         disableEditing={props.readOnly}
-        renderContent={() => (
-          <React.Fragment>
-            <PaygInfoView payg={props.payg} />
-          </React.Fragment>
-        )}
+        renderContent={() => <PaygInfoView payg={props.payg} />}
         renderCreationContent={({ item, setItem, errors }) => {
           if (isLoading) {
             return <Loading text={t("Editing properties..")} />;
