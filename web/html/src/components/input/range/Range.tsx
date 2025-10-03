@@ -31,8 +31,8 @@ export const Range = (props: Props) => {
         const onChange = (event: any) => {
           setValue(event.target.name, event.target.value);
         };
-        const startValue = (formContext.model || {})[`${props.prefix}_start`] || props.defaultStart || "";
-        const endValue = (formContext.model || {})[`${props.prefix}_end`] || props.defaultEnd || "";
+        const startValue = formContext.model?.[`${props.prefix}_start`] || props.defaultStart || "";
+        const endValue = formContext.model?.[`${props.prefix}_end`] || props.defaultEnd || "";
         return (
           <div className="input-group">
             <ControlledInput

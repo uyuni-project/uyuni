@@ -30,7 +30,7 @@ export const Text = (props: Props) => {
         const onChange = (event: any) => {
           setValue(event.target.name, event.target.value);
         };
-        const fieldValue = (formContext.model || {})[props.name] || props.defaultValue || "";
+        const fieldValue = formContext.model?.[props.name] || props.defaultValue || "";
         return (
           <ControlledInput
             className={`form-control${inputClass ? ` ${inputClass}` : ""}`}
