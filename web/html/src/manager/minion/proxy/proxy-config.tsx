@@ -140,7 +140,7 @@ export function ProxyConfig({
       helpUrl="installation-and-upgrade/proxy-container-setup.html"
     >
       <p>{t("Convert an already onboarded minion to a proxy or update the configuration of an existing proxy.")}</p>
-      {ContainerConfigMessages(success, messages, loading)}
+      {ContainerConfigMessages(success, messages, loading, true)}
       {!initFailMessage && (
         <Form
           className=""
