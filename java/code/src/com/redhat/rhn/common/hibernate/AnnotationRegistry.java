@@ -38,6 +38,7 @@ import com.redhat.rhn.domain.cloudpayg.CloudRmtHost;
 import com.redhat.rhn.domain.cloudpayg.PaygCredentialsProduct;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
 import com.redhat.rhn.domain.common.ArchType;
+import com.redhat.rhn.domain.common.ChecksumType;
 import com.redhat.rhn.domain.common.ProvisionState;
 import com.redhat.rhn.domain.common.RhnConfiguration;
 import com.redhat.rhn.domain.config.ConfigChannel;
@@ -220,6 +221,7 @@ public class AnnotationRegistry {
             Channel.class,
             ChannelSyncFlag.class,
             ChannelTemplate.class,
+            ChecksumType.class,
             ClientCapability.class,
             ClientCapabilityId.class,
             ClonedChannel.class,
