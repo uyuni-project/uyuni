@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-10-03 11:04+0200\n"
-"PO-Revision-Date: 2025-09-13 09:59+0000\n"
+"PO-Revision-Date: 2025-10-04 09:59+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/web/ca/>\n"
 "Language: ca\n"
@@ -726,16 +726,12 @@ msgid "Confirm deregistration"
 msgstr "Confirmeu la baixa"
 
 #: ../html/src/components/hub/DeregisterServer.tsx:55
-#, fuzzy
-#| msgid "Error when deleting the "
 msgid "Error deregistering server"
-msgstr "S'ha produït un error en suprimir el "
+msgstr "Error en cancel·lar el registre del servidor"
 
 #: ../html/src/components/hub/DeregisterServer.tsx:60
-#, fuzzy
-#| msgid "Delete Profile Without Cleanup"
 msgid "Deregister without cleanup"
-msgstr "Suprimeix el perfil sense netejar"
+msgstr "Dona't de baixa sense netejar"
 
 #: ../html/src/components/hub/DeregisterServer.tsx:68
 #: ../html/src/manager/systems/delete-system.tsx:11
@@ -6437,7 +6433,7 @@ msgstr "Diffs de configuració"
 
 #: ../html/src/manager/systems/all-list.tsx:165
 msgid "Last Checked In"
-msgstr ""
+msgstr "Últim registre d'entrada"
 
 #: ../html/src/manager/systems/all-list.tsx:171
 #: ../html/src/manager/systems/list-filter.tsx:50
