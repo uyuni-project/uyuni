@@ -14,18 +14,36 @@
  */
 package com.redhat.rhn.domain.common;
 
-import com.redhat.rhn.domain.BaseDomainHelper;
-
 import java.util.Objects;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 /**
  * Checksum
  * Class for checksums of files, packages and erratas.
  */
-public class Checksum extends BaseDomainHelper {
+@Entity
+@Table(name = "rhnChecksum")
+public class Checksum {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rhn_checksum_seq")
+    @SequenceGenerator(name = "rhn_checksum_seq", sequenceName = "rhnChecksum_seq", allocationSize = 1)
     private Long id;
+
+    @Column
     private String checksum;
+
+    @ManyToOne
+    @JoinColumn(name = "checksum_type_id")
     private ChecksumType checksumType;
 
     /**
