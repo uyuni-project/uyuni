@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -18,17 +19,32 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.hibernate.query.Query;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Immutable;
 import org.hibernate.type.StandardBasicTypes;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.NoResultException;
+import javax.persistence.Table;
 
 /**
  * RhnException
  */
+@Entity
+@Table(name = "rhnException")
+@Immutable
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class ExceptionMessage {
+    @Id
     private Long id;
+
+    @Column
     private String label;
+
+    @Column
     private String message;
 
     protected ExceptionMessage() {
@@ -43,14 +59,13 @@ public class ExceptionMessage {
      * @return the associated exception object / null if not found otherwise
      */
     public static ExceptionMessage lookup(long exceptionId) {
-        String sql = "SELECT * FROM exception_message WHERE id = :id OR id = :negId";
-
-        Query<ExceptionMessage> query = HibernateFactory.getSession()
-                .createNativeQuery(sql, ExceptionMessage.class);
-        query.setParameter("id", exceptionId, StandardBasicTypes.LONG);
-        query.setParameter("negId", -1 * exceptionId, StandardBasicTypes.LONG);
         try {
-            return query.getSingleResult();
+            return HibernateFactory.getSession()
+                    .createNativeQuery("SELECT * FROM exception_message WHERE id = :id OR id = :negId",
+                            ExceptionMessage.class)
+                    .setParameter("id", exceptionId, StandardBasicTypes.LONG)
+                    .setParameter("negId", -1 * exceptionId, StandardBasicTypes.LONG)
+                    .getSingleResult();
         }
         catch (NoResultException e) {
             return null;
