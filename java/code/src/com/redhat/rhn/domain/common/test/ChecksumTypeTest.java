@@ -15,15 +15,16 @@
 package com.redhat.rhn.domain.common.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.common.ChecksumFactory;
 import com.redhat.rhn.domain.common.ChecksumType;
 import com.redhat.rhn.testing.RhnBaseTestCase;
-import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.Test;
+
+import java.util.Map;
 
 /**
  * ArchTypeTest
@@ -32,16 +33,12 @@ public class ChecksumTypeTest extends RhnBaseTestCase {
 
     @Test
     public void testChecksumType() {
+        Map<String, Long> typeIdRelation = Map.of("md5", 1L, "sha1", 2L, "sha256", 3L, "sha384", 4L, "sha512", 5L);
 
-        Long testid = 1L;
-        String query = "ChecksumType.findById";
-
-        ChecksumType at1 = (ChecksumType) TestUtils.lookupFromCacheById(testid, query);
-        assertNotNull(at1);
-        assertEquals(at1.getId(), testid);
-
-        ChecksumType at2 = (ChecksumType) TestUtils.lookupFromCacheById(at1.getId(), query);
-        assertEquals(at1.getLabel(), at2.getLabel());
+        typeIdRelation.forEach((k, v) -> {
+            ChecksumType cType = ChannelFactory.findChecksumTypeByLabel(k);
+            assertEquals(v, cType.getId());
+        });
     }
 
     @Test

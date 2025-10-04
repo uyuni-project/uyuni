@@ -14,15 +14,30 @@
  */
 package com.redhat.rhn.domain.server;
 
+import static org.hibernate.annotations.CacheConcurrencyStrategy.READ_ONLY;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.Immutable;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 
 /**
  * Capability
  */
+@Entity
+@Table(name = "rhnClientCapabilityName")
+@Immutable
+@Cache(usage = READ_ONLY)
 public class Capability {
+    @Id
     private Long id;
+    @Column
     private String name;
 
 
@@ -36,7 +51,7 @@ public class Capability {
     /**
      * @param i The id to set.
      */
-    public void setId(Long i) {
+    protected void setId(Long i) {
         this.id = i;
     }
 
