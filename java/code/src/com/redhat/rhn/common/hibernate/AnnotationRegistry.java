@@ -40,6 +40,7 @@ import com.redhat.rhn.domain.cloudpayg.PaygSshData;
 import com.redhat.rhn.domain.common.ArchType;
 import com.redhat.rhn.domain.common.Checksum;
 import com.redhat.rhn.domain.common.ChecksumType;
+import com.redhat.rhn.domain.common.ExceptionMessage;
 import com.redhat.rhn.domain.common.ProvisionState;
 import com.redhat.rhn.domain.common.RhnConfiguration;
 import com.redhat.rhn.domain.config.ConfigChannel;
@@ -250,6 +251,7 @@ public class AnnotationRegistry {
             EnvironmentTarget.class,
             ErrataAdvisoryMap.class,
             ErrataFilter.class,
+            ExceptionMessage.class,
             GroupRecurringAction.class,
             HubSCCCredentials.class,
             ImageFile.class,
