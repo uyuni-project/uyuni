@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-10-03 11:04+0200\n"
-"PO-Revision-Date: 2025-09-17 17:59+0000\n"
+"PO-Revision-Date: 2025-10-04 15:59+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -726,10 +726,8 @@ msgid "Confirm deregistration"
 msgstr "Potvrdiť zrušenie registrácie"
 
 #: ../html/src/components/hub/DeregisterServer.tsx:55
-#, fuzzy
-#| msgid "Error when deleting the "
 msgid "Error deregistering server"
-msgstr "Chyba pri vymazávaní "
+msgstr "Chyba pri zrušení registrácie servera"
 
 #: ../html/src/components/hub/DeregisterServer.tsx:60
 #, fuzzy
