@@ -25,7 +25,7 @@
 %global __python /usr/bin/python3
 %endif
 
-%if !(0%{?rhel} >= 8 || 0%{?sle_version} >= 150000 )
+%if !(0%{?rhel} >= 8 || 0%{?suse_version} >= 1500 )
 %global build_py2   1
 %endif
 
