@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-10-03 11:04+0200\n"
-"PO-Revision-Date: 2025-09-05 16:59+0000\n"
+"PO-Revision-Date: 2025-10-04 15:59+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>\n"
 "Language: sk\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 5.13.1\n"
+"X-Generator: Weblate 5.13.3\n"
 
 #: ../src/spacecmd/activationkey.py:53
 msgid "activationkey_addpackages: Add packages to an activation key"
@@ -8400,10 +8400,9 @@ msgid "print debug messages (can be passed multiple times)"
 msgstr ""
 
 #: ../src/bin/spacecmd:192
-#, fuzzy, c-format
-#| msgid "source channel %s does not exist!"
+#, c-format
 msgid "Config file %s does not exist."
-msgstr "zdrojový kanál %s neexistuje!"
+msgstr "Konfiguračný súbor %s neexistuje."
 
 #: ../src/bin/spacecmd:210
 #, fuzzy, c-format
