@@ -21,7 +21,6 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
-import org.hibernate.Session;
 
 import java.sql.Types;
 import java.util.HashMap;
@@ -40,21 +39,19 @@ public class ChecksumFactory extends HibernateFactory {
      * @return the Checksum or null if none match
      */
     public static Checksum lookupById(Long idIn) {
-        Session session = null;
-        Checksum c = null;
         try {
-            session = HibernateFactory.getSession();
-            c = (Checksum) session.getNamedQuery("Checksum.findById")
-                .setParameter("id", idIn)
-                //Retrieve from cache if there
-                .setCacheable(true)
-                .uniqueResult();
+            return getSession().createQuery("""
+                     FROM com.redhat.rhn.domain.common.Checksum AS t
+                     WHERE t.id = :id""", Checksum.class)
+                    .setParameter("id", idIn)
+                    //Retrieve from cache if there
+                    .setCacheable(true)
+                    .uniqueResult();
         }
         catch (HibernateException e) {
             log.error("Hibernate exception: {}", e.toString());
             throw e;
         }
-        return c;
     }
 
    /**
