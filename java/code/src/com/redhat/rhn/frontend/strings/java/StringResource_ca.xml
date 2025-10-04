@@ -10275,7 +10275,7 @@ lt;stronggt;Note:lt;/stronggt; La documentació addicional sobre l'ús de l'ISO 
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-        <target state="needs-adaptation">S'ha aplicat el tipus&lt;strong&gt;Superviseu aquest amfitrió&lt;/strong&gt;.&lt;br/&gt;&lt;strong&gt;Nota:&lt;/strong&gt; Com que heu afegit el tipus de sistema de monitorització, hem assignat automàticament la fórmula dels exportadors de Prometheus al sistema. Apliqueu el &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; per instal·lar i habilitar els exportadors de mètriques de Prometheus.&lt;br/&gt;&lt;strong&gt;Nota:&lt;/strong&gt; Assegureu-vos d'obrir els &lt;a href="/docs/{1}/installation-and-upgrade/ports.html#_external_client_ports" target="_blank"&gt;ports de xarxa necessaris&lt;/a&gt; per a tots els exportadors instal·lats.</target>
+        <target state="translated">S'ha aplicat el tipus&lt;strong&gt;Superviseu aquest amfitrió&lt;/strong&gt;.&lt;br/&gt;&lt;strong&gt;Nota:&lt;/strong&gt; Com que heu afegit el tipus de sistema de monitorització, hem assignat automàticament la fórmula dels exportadors de Prometheus al sistema. Apliqueu el &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; per instal·lar i habilitar els exportadors de mètriques de Prometheus.&lt;br/&gt;&lt;strong&gt;Nota:&lt;/strong&gt; Assegureu-vos d'obrir els &lt;a href="/docs/{1}/installation-and-upgrade/ports.html#_external_client_ports" target="_blank"&gt;ports de xarxa necessaris&lt;/a&gt; per a tots els exportadors instal·lats.</target>
       </trans-unit>
       <trans-unit id="system.entitle.formula_error" xml:space="preserve">
         <source>There was a problem assigning the Prometheus Exporters formula.</source>
@@ -10988,7 +10988,7 @@ lt;stronggt;Note:lt;/stronggt; La documentació addicional sobre l'ús de l'ISO 
       </trans-unit>
       <trans-unit id="cveaudit.notfound" xml:space="preserve">
         <source>The specified CVE number was not found in our database.</source>
-        <target state="translated">No s'ha trobat el número CVE especificat a la base de dades.</target>
+        <target state="translated">No s'ha trobat el número CVE especificat a la nostra base de dades.</target>
       </trans-unit>
       <trans-unit id="bootstrap.minion.error.salt.unexpected" xml:space="preserve">
         <source>Error during applying the bootstrap state. Check the server logs.</source>
