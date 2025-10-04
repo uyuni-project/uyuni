@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-10-03 11:04+0200\n"
-"PO-Revision-Date: 2025-06-05 09:59+0000\n"
+"PO-Revision-Date: 2025-10-04 09:59+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/spacecmd/ca/>\n"
 "Language: ca\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.11.4\n"
+"X-Generator: Weblate 5.13.3\n"
 
 #: ../src/spacecmd/activationkey.py:53
 msgid "activationkey_addpackages: Add packages to an activation key"
@@ -8353,7 +8353,7 @@ msgstr "El paràmetre {} no és un tipus de cadena, sinó {}."
 
 #: ../src/bin/spacecmd:54
 msgid "Welcome to spacecmd, a command-line interface to Spacewalk."
-msgstr ""
+msgstr "Benvinguts a spacecmd, una interfície de línia d'ordres per a Spacewalk."
 
 #: ../src/bin/spacecmd:82
 msgid "Unhandled exception occurred while getting FQDN:"
@@ -8361,65 +8361,57 @@ msgstr "S'ha produït una excepció no gestionada en obtenir FQDN:"
 
 #: ../src/bin/spacecmd:110
 msgid "config file to use [default: ~/.spacecmd/config]"
-msgstr ""
+msgstr "fitxer de configuració per usar [per defecte: ~/.spacecmd/config]"
 
 #: ../src/bin/spacecmd:113
-#, fuzzy
-#| msgid "logout: Disconnect from the server"
 msgid "use this username to connect to the server"
-msgstr "logout: Desconnecta del servidor"
+msgstr "usa aquest nom d'usuari per connectar amb el servidor"
 
 #: ../src/bin/spacecmd:119
 msgid "use this password to connect to the server (insecure). Use config instead or spacecmd will ask."
-msgstr ""
+msgstr "usa aquesta contrasenya per connectar amb el servidor (no és segura). Usa la configuració o spacecmd us ho preguntarà."
 
 #: ../src/bin/spacecmd:123
 msgid "connect to this server [default: local hostname]"
-msgstr ""
+msgstr "connectar amb aquest servidor [per defecte: nom d'amfitrió local]"
 
 #: ../src/bin/spacecmd:126
 msgid "use HTTP instead of HTTPS"
-msgstr ""
+msgstr "usa HTTP en lloc d'HTTPS"
 
 #: ../src/bin/spacecmd:129
-#, fuzzy
-#| msgid "history: List your command history"
 msgid "do not store command history"
-msgstr "historial: llista l'historial de comandes"
+msgstr "no desis l'historial d'ordres"
 
 #: ../src/bin/spacecmd:132
 msgid "answer yes for all questions"
-msgstr ""
+msgstr "respon sí a totes les preguntes"
 
 #: ../src/bin/spacecmd:135
 msgid "print only error messages"
-msgstr ""
+msgstr "imprimeix només els missatges d'error"
 
 #: ../src/bin/spacecmd:142
 msgid "print debug messages (can be passed multiple times)"
-msgstr ""
+msgstr "imprimeix missatges de depuració (es poden passar diverses vegades)"
 
 #: ../src/bin/spacecmd:192
-#, fuzzy, c-format
-#| msgid "source channel %s does not exist!"
+#, c-format
 msgid "Config file %s does not exist."
-msgstr "el canal d'origen %s no existeix!"
+msgstr "El fitxer de configuració %s no existeix."
 
 #: ../src/bin/spacecmd:210
-#, fuzzy, c-format
-#| msgid "Could not read %s"
+#, c-format
 msgid "Could not create %s"
-msgstr "No s'ha pogut llegir %s"
+msgstr "No s'ha pogut crear %s"
 
 #: ../src/bin/spacecmd:251
 msgid "User Interrupt"
-msgstr ""
+msgstr "Interrupció de l'usuari"
 
 #: ../src/bin/spacecmd:292
-#, fuzzy
-#| msgid "Could not find repo %s"
 msgid "Could not find session"
-msgstr "No s'ha pogut trobar el dipòsit %s"
+msgstr "No s'ha pogut trobar la sessió"
 
 #~ msgid "Could not retrieve the Kickstart file"
 #~ msgstr "No s'ha pogut recuperar el fitxer Kickstart"
