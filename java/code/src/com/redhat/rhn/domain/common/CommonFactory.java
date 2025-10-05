@@ -104,12 +104,13 @@ public class CommonFactory extends HibernateFactory {
      * @return FileList if found.
      */
     public static FileList lookupFileList(String labelIn, Org org) {
-        Session session = null;
         //look for Kickstart data by label
-        session = HibernateFactory.getSession();
-        return (FileList) session.getNamedQuery("FileList.findByLabelAndOrg")
-                .setParameter("label", labelIn, StandardBasicTypes.STRING)
-                .setParameter("org_id", org.getId(), StandardBasicTypes.LONG)
+        return getSession().createQuery("""
+                 FROM  com.redhat.rhn.domain.common.FileList AS f
+                 WHERE f.label = :label
+                 AND   f.org = :org""", FileList.class)
+                .setParameter("label", labelIn)
+                .setParameter("org", org)
                 .uniqueResult();
     }
 

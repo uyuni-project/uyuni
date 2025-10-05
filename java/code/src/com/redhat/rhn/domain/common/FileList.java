@@ -23,14 +23,44 @@ import com.redhat.rhn.domain.org.Org;
 import java.util.Collection;
 import java.util.LinkedList;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 /**
  * FileList
  */
+@Entity
+@Table(name = "rhnFileList")
 public class FileList extends BaseDomainHelper implements Identifiable {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rhn_filelist_seq")
+    @SequenceGenerator(name = "rhn_filelist_seq", sequenceName = "RHN_FILELIST_ID_SEQ", allocationSize = 1)
     private Long id;
+
+    @Column
     private String label;
+
+    @ManyToOne
+    @JoinColumn(name = "org_id")
     private Org org;
+
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinTable(
+            name = "rhnFileListMembers",
+            joinColumns = { @JoinColumn(name = "file_list_id") },
+            inverseJoinColumns = { @JoinColumn(name = "config_file_name_id") }
+    )
     private Collection<ConfigFileName> fileNames;
 
     /**
