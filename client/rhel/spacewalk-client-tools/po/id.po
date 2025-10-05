@@ -14,36 +14,34 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-10-03 11:04+0200\n"
-"PO-Revision-Date: 2020-09-12 19:48+0000\n"
-"Last-Translator: Kukuh Syafaat <syafaatkukuh@gmail.com>\n"
+"PO-Revision-Date: 2025-10-05 11:59+0000\n"
+"Last-Translator: Ferdinan Rizky Budiarto <ferdinan.rizky@yahoo.com>\n"
 "Language-Team: Indonesian <https://l10n.opensuse.org/projects/uyuni/spacewalk-client-tools/id/>\n"
 "Language: id\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 3.6.1\n"
+"X-Generator: Weblate 5.13.3\n"
 
 #. pylint: disable-next=consider-using-f-string
 #: ../src/up2date_client/config.py:166
-#, fuzzy, python-format
+#, python-format
 msgid "%s was not found"
-msgstr "Properti %s::%s tak ditemukan\n"
+msgstr "%s tidak ditemukan"
 
 #: ../src/up2date_client/rpcServer.py:70
-#, fuzzy
 msgid "Error: Server Unavailable. Please try later."
-msgstr "Galat: Server tidak tersedia. Silakan coba nanti."
+msgstr "Kesalahan: Server tidak tersedia. Silakan coba lagi nanti."
 
 #. pylint: disable-next=consider-using-f-string
 #: ../src/up2date_client/rpcServer.py:221
-#, fuzzy
 msgid "ERROR: can not find server CA file"
-msgstr "GALAT: tidak dapat menemukan berkas RHNS CA"
+msgstr "KESALAHAN: Tidak dapat menemukan berkas CA server"
 
 #: ../src/up2date_client/up2dateErrors.py:62
 #: ../src/up2date_client/up2dateErrors.py:101
-#, fuzzy, python-format
+#, python-format
 msgid "class %s has no attribute '%s'"
 msgstr "kelas %s tidak memiliki atribut '%s'"
 
