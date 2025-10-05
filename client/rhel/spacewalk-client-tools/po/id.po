@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-10-03 11:04+0200\n"
-"PO-Revision-Date: 2025-10-05 11:59+0000\n"
+"PO-Revision-Date: 2025-10-05 15:59+0000\n"
 "Last-Translator: Ferdinan Rizky Budiarto <ferdinan.rizky@yahoo.com>\n"
 "Language-Team: Indonesian <https://l10n.opensuse.org/projects/uyuni/spacewalk-client-tools/id/>\n"
 "Language: id\n"
@@ -46,39 +46,32 @@ msgid "class %s has no attribute '%s'"
 msgstr "kelas %s tidak memiliki atribut '%s'"
 
 #: ../src/up2date_client/up2dateErrors.py:135
-#, fuzzy
 msgid "RPM error.  The message was:\n"
-msgstr "Rpm kesalahan.  Pesannya adalah:"
+msgstr "Kesalahan RPM.  Pesannya adalah:\n"
 
 #: ../src/up2date_client/up2dateErrors.py:145
-#, fuzzy
 msgid "Password error. The message was:\n"
-msgstr "Kesalahan kata sandi. Pesannya adalah:"
+msgstr "Kesalahan kata sandi. Pesannya adalah:\n"
 
 #: ../src/up2date_client/up2dateErrors.py:151
-#, fuzzy
 msgid "RPM dependency error. The message was:\n"
-msgstr "Rpm ketergantungan kesalahan. Pesannya adalah:"
+msgstr "Kesalahan dependensi RPM. Pesannya adalah:\n"
 
 #: ../src/up2date_client/up2dateErrors.py:163
-#, fuzzy
 msgid "Error communicating with server. The message was:\n"
-msgstr "Galat saat berkomunikasi dengan server. Pesannya adalah:"
+msgstr "Kesalahan saat berkomunikasi dengan server. Pesannya adalah:\n"
 
 #: ../src/up2date_client/up2dateErrors.py:172
-#, fuzzy
 msgid "File Not Found: \n"
-msgstr "Berkas tidak ditemukan."
+msgstr "Berkas tidak ditemukan \n"
 
 #: ../src/up2date_client/up2dateErrors.py:180
-#, fuzzy
 msgid "Delay error from server.  The message was:\n"
-msgstr "Galat penundaan dari server.  Pesannya adalah:"
+msgstr "Kesalahan penundaan dari server.  Pesannya adalah:\n"
 
 #: ../src/up2date_client/up2dateErrors.py:229
-#, fuzzy
 msgid "Error validating data at server:\n"
-msgstr "Galat saat memvalidasi data di server:"
+msgstr "Kesalahan saat memvalidasi data di server:\n"
 
 #: ../src/up2date_client/up2dateErrors.py:246
 msgid ""
@@ -86,24 +79,23 @@ msgid ""
 "Red Hat Network Classic is not supported.\n"
 "    "
 msgstr ""
+"\n"
+"Red Hat Network Classic tidak didukung.\n"
+"    "
 
 #: ../src/up2date_client/up2dateErrors.py:255
-#, fuzzy
 msgid "The installation number is invalid"
 msgstr "Nomor instalasi tidak valid"
 
 #: ../src/up2date_client/up2dateErrors.py:259
-#, fuzzy
 msgid "Error parsing the oemInfo file at field:\n"
-msgstr "Galat parsing berkas oemInfo di kolom:"
+msgstr "Kesalahan saat mengurai berkas oemInfo pada bidang:\n"
 
 #: ../src/up2date_client/up2dateErrors.py:294
-#, fuzzy
 msgid "Network error: "
-msgstr "Kesalahan jaringan"
+msgstr "Kesalahan jaringan: "
 
 #: ../src/up2date_client/up2dateErrors.py:385
-#, fuzzy
 msgid ""
 "\n"
 "    Your organization does not have enough Management entitlements to register this\n"
@@ -117,15 +109,15 @@ msgid ""
 "    on the account as a universal default, you can disable this key and retry to avoid\n"
 "    requiring a Management entitlement."
 msgstr ""
-"Organisasi Anda tidak memiliki cukup hak manajemen untuk mendaftarkan\n"
-"    sistem ke Red Hat Satellite. Harap beri tahu administrator organisasi Anda tentang kesalahan ini.\n"
-"    Anda harus dapat mendaftarkan sistem ini setelah organisasi Anda membebaskan\n"
-"    atau membeli hak tambahan. Hak tambahan dapat dibeli oleh\n"
-"    administrator organisasi dengan masuk ke Red Hat Network Classic dan mengunjungi\n"
-"    halaman 'Manajemen Langganan' di bagian 'RHN Anda' di RHN.\n"
 "\n"
-"Penyebab umum kode galat ini adalah karena salah setup\n"
-"    Kunci Aktivasi yang ditetapkan sebagai default universal.  Jika kunci aktivasi\n"
+"    Organisasi Anda tidak memiliki hak Manajemen yang cukup untuk mendaftarkan ini\n"
+"    sistem. Harap beri tahu administrator organisasi Anda mengenai kesalahan ini.\n"
+"    Anda seharusnya dapat mendaftarkan sistem ini setelah organisasi Anda membebaskan entitas yang ada.\n"
+"    atau membeli hak tambahan. Hak tambahan dapat dibeli oleh organisasi Anda.\n"
+"    administrator organisasi Anda di SUSE Customer Center.\n"
+"\n"
+"    Penyebab umum dari kode kesalahan ini adalah karena pengaturan\n"
+"    Kunci Aktivasi yang keliru sebagai default universal.  Jika kunci aktivasi\n"
 "    pada akun sebagai default universal, Anda dapat menonaktifkan kunci ini dan mencoba lagi untuk menghindari\n"
 "    memerlukan hak Manajemen."
 
