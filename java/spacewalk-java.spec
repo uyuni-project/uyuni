@@ -134,7 +134,7 @@ BuildRequires:  postgresql-jdbc
 BuildRequires:  prometheus-client-java
 BuildRequires:  quartz
 BuildRequires:  redstone-xmlrpc
-BuildRequires:  salt-netapi-client >= 0.21
+BuildRequires:  salt-netapi-client >= 1.0.0
 BuildRequires:  simple-core
 BuildRequires:  simple-xml
 BuildRequires:  sitemesh
@@ -218,8 +218,7 @@ Requires:       objectweb-asm >= 9.2
 Requires:       pgjdbc-ng
 Requires:       prometheus-client-java
 Requires:       redstone-xmlrpc
-Requires:       salt-netapi-client >= 0.21
-BuildRequires:  servletapi5
+Requires:       salt-netapi-client >= 1.0.0
 Requires:       simple-core
 Requires:       simple-xml
 Requires:       sitemesh
