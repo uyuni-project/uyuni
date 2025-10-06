@@ -49,7 +49,6 @@
 %define ehcache         ( mvn(net.sf.ehcache:ehcache-core) >= 2.10.1 or ehcache-core >= 2.10.1 or ehcache >= 2.10.1)
 %define apache_commons_digester    (apache-commons-digester or jakarta-commons-digester)
 %define apache_commons_discovery   (apache-commons-discovery or jakarta-commons-discovery)
-%define apache_commons_fileupload  (apache-commons-fileupload or jakarta-commons-fileupload)
 %define apache_commons_validator   (apache-commons-validator or jakarta-commons-validator)
 %define apache_commons_compress    (apache-commons-compress or jakarta-commons-compress)
 
@@ -75,7 +74,8 @@ ExcludeArch:    ia64
 
 BuildRequires:  %{apache_commons_compress}
 BuildRequires:  %{apache_commons_discovery}
-BuildRequires:  %{apache_commons_fileupload}
+BuildRequires:  apache-commons-fileupload2-core
+BuildRequires:  apache-commons-fileupload2-javax
 BuildRequires:  %{apache_commons_validator}
 BuildRequires:  %{ehcache}
 BuildRequires:  ant
@@ -166,7 +166,8 @@ BuildRequires:  libxml2-devel
 Requires:       %{apache_commons_compress}
 Requires:       %{apache_commons_digester}
 Requires:       %{apache_commons_discovery}
-Requires:       %{apache_commons_fileupload}
+Requires:       apache-commons-fileupload2-core
+Requires:       apache-commons-fileupload2-javax
 Requires:       %{ehcache}
 Requires:       apache-commons-beanutils
 Requires:       apache-commons-cli

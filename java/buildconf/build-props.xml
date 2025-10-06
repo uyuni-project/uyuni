@@ -142,7 +142,7 @@
   <property name="common.jar.dependencies"
       value="bcel ${cglib-jar} commons-beanutils commons-cli commons-codec
              commons-collections commons-digester commons-discovery
-             commons-fileupload commons-io ${commons-lang} apache-commons-text/commons-text commons-logging ${commons-validator} ${hibernate5deps}
+             commons-fileupload2-core commons-fileupload2-javax commons-io ${commons-lang} apache-commons-text/commons-text commons-logging ${commons-validator} ${hibernate5deps}
              ${commons-compress} ${javamail} smtp jdom ${jmock-jars}
              ${log4j-jars} oro redstone-xmlrpc-client redstone-xmlrpc ${struts-jars} ${tomcat-jars}
              bcprov bcpg postgresql-jdbc ongres-scram/client ongres-scram/common
@@ -198,7 +198,8 @@
   <property name="install.common.jar.dependencies"
       value="bcel ${cglib-jar} commons-beanutils commons-cli commons-codec
              commons-collections commons-digester commons-discovery
-             commons-fileupload commons-io ${commons-lang} apache-commons-text/commons-text commons-logging ${commons-validator} ${hibernate5deps}
+             commons-fileupload2-core commons-fileupload2-javax commons-io ${commons-lang} apache-commons-text/commons-text commons-logging ${commons-validator} 
+             ${hibernate5deps}
              ${commons-compress} ${tomcat-jars} ${javamail} jdom jsch
              ${log4j-jars} oro redstone-xmlrpc-client redstone-xmlrpc ${struts-jars}
              postgresql-jdbc ongres-scram/client ongres-scram/common
@@ -209,7 +210,7 @@
   <property name="dist.jar.dependencies"
       value="antlr objectweb-asm/asm bcel ${c3p0} ${cglib-jar}
              commons-collections commons-beanutils commons-cli commons-codec
-             commons-digester commons-discovery commons-fileupload commons-io
+             commons-digester commons-discovery commons-fileupload2-core commons-fileupload2-javax commons-io
              ${commons-lang} apache-commons-text/commons-text commons-logging ${commons-compress}
              ${commons-validator} dom4j ${hibernate5deps} ${jta11-jars}
              ${jaf} ${jasper-jars} ${javamail} ${jaxb} jdom ${other-jars}
