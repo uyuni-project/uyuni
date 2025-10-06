@@ -13,4 +13,4 @@
 # granted to use or replicate Red Hat trademarks that are incorporated
 # in this software or its documentation.
 #
-...  # needed by pylint to parse the disable comment
+pass  # needed by pylint to parse the disable comment
