@@ -11,7 +11,7 @@ repositories:
   Leap_sle:
     url: https://download.opensuse.org/update/leap/15.6/sle
   Uyuni_MB:
-    project: home:mbussolotto:branches:systemsmanagement:Uyuni:Master
+    project: home:mbussolotto:branches:systemsmanagement:Uyuni:Master:Other
     repository: openSUSE_Leap_15.6
 artifacts:
   - artifact: asm
@@ -60,9 +60,12 @@ artifacts:
   - artifact: commons-discovery
     package: jakarta-commons-discovery
     repository: Leap
-  - artifact: commons-fileupload
-    package: apache-commons-fileupload
-    repository: Leap
+  - artifact: apache-commons-fileupload2-core
+    package: apache-commons-fileupload2-core
+    repository: Uyuni_MB
+  - artifact: apache-commons-fileupload2-javax
+    package: apache-commons-fileupload2-javax
+    repository: Uyuni_MB
   - artifact: commons-io
     package: apache-commons-io
     repository: Leap_sle
