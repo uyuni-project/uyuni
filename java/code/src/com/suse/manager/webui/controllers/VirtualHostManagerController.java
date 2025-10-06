@@ -45,10 +45,10 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileUploadException;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.fileupload2.core.DiskFileItemFactory;
+import org.apache.commons.fileupload2.core.FileItem;
+import org.apache.commons.fileupload2.core.FileUploadException;
+import org.apache.commons.fileupload2.javax.JavaxServletFileUpload;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.apache.logging.log4j.LogManager;
@@ -56,7 +56,6 @@ import org.apache.logging.log4j.Logger;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.reader.ReaderException;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -70,7 +69,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import javax.persistence.NoResultException;
-import javax.servlet.ServletContext;
 
 import spark.ModelAndView;
 import spark.Request;
@@ -473,7 +471,7 @@ public class VirtualHostManagerController {
         catch (IllegalArgumentException e) {
             return badRequest(response, e.getMessage());
         }
-        catch (IOException | FileUploadException e) {
+        catch (IOException e) {
             LOG.error("Could not create Kuberentes Virt Host Mgr", e);
             return internalServerError(response, e.getMessage());
         }
@@ -519,7 +517,7 @@ public class VirtualHostManagerController {
             LOG.error("Error updating Kubernetes Virtual host manage", e);
             return badRequest(response, e.getMessage());
         }
-        catch (IOException | FileUploadException e) {
+        catch (IOException e) {
             LOG.error("Error updating Kubernetes Virtual host manage", e);
             return internalServerError(response, e.getMessage());
         }
@@ -531,12 +529,11 @@ public class VirtualHostManagerController {
 
     private static List<FileItem> parseMultipartRequest(Request request)
             throws FileUploadException {
-        DiskFileItemFactory fileItemFactory = new DiskFileItemFactory();
-        ServletContext servletContext = request.raw().getServletContext();
-        File repository = (File) servletContext
-                .getAttribute("javax.servlet.context.tempdir");
-        fileItemFactory.setRepository(repository);
-        return new ServletFileUpload(fileItemFactory).parseRequest(request.raw());
+        DiskFileItemFactory fileItemFactory = DiskFileItemFactory.builder()
+                .setPath("javax.servlet.context.tempdir")
+                .get();
+
+        return new JavaxServletFileUpload(fileItemFactory).parseRequest(request.raw());
     }
 
     private static void validateKubeconfig(String context,
@@ -569,8 +566,18 @@ public class VirtualHostManagerController {
     }
 
     private static Optional<String> findStringParam(List<FileItem> items, String name) {
-        return findParamItem(items, name)
-                .map(FileItem::getString);
+            return findParamItem(items, name)
+                    .map(item -> {
+                        try {
+                            return item.getString();
+                        }
+                        catch (IOException e) {
+                            LOG.error("cannot find string param", e);
+                        }
+                        return "";
+                    }
+            );
+
     }
 
     private static Optional<FileItem> findParamItem(List<FileItem> items, String name) {

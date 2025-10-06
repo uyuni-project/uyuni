@@ -63,9 +63,12 @@ artifacts:
   - artifact: commons-el
     package: apache-commons-el
     repository: Leap
-  - artifact: commons-fileupload
-    package: apache-commons-fileupload
-    repository: Leap
+  - artifact: apache-commons-fileupload2-core
+    package: apache-commons-fileupload2-core
+    repository: systemsmanagement_Uyuni_Master_jakarta
+  - artifact: apache-commons-fileupload2-javax
+    package: apache-commons-fileupload2-javax
+    repository: systemsmanagement_Uyuni_Master_jakarta
   - artifact: commons-io
     package: apache-commons-io
     repository: Leap_sle
