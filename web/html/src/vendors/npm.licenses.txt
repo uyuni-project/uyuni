@@ -12579,7 +12579,7 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 --------------------------------------------------------------------------------
 
-Package: content-type@1.0.4
+Package: content-type@1.0.5
 License text:
 
 (The MIT License)
@@ -15468,7 +15468,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 --------------------------------------------------------------------------------
 
-Package: gettext-parser@4.0.4
+Package: gettext-parser@4.2.0
 License text:
 
 Copyright (c) 2014-2015 Andris Reinman
@@ -19808,7 +19808,7 @@ SOFTWARE.
 
 --------------------------------------------------------------------------------
 
-Package: prettier@2.4.1
+Package: prettier@3.6.2
 License text:
 
 Copyright © James Long and contributors
@@ -20715,7 +20715,7 @@ IN THE SOFTWARE.
 
 --------------------------------------------------------------------------------
 
-Package: readable-stream@3.6.0
+Package: readable-stream@3.6.2
 License text:
 
 Node.js is licensed for use as follows:

@@ -1,11 +1,10 @@
-const fs = require("fs").promises;
-const { createReadStream } = require("fs");
-const { createHash } = require("crypto");
+import { createHash } from "crypto";
+import { createReadStream, promises as fs } from "node:fs";
 
 /**
  * Check if a given license file exists and does not have Git conflicts
  */
-const isValidLicenseFile = async (path) => {
+export const isValidLicenseFile = async (path) => {
   try {
     const content = await fs.readFile(path, "utf8");
     // This is a shortcut to keep build times low, if this ever causes a bug, add a check for the "=======" and ">>>>>>>" markers too
@@ -16,7 +15,7 @@ const isValidLicenseFile = async (path) => {
   }
 };
 
-const getFileHash = async (path) => {
+export const getFileHash = async (path) => {
   return new Promise((resolve, reject) => {
     const hash = createHash("sha1");
     const stream = createReadStream(path);
@@ -25,9 +24,4 @@ const getFileHash = async (path) => {
     stream.on("end", () => resolve(hash.digest("hex")));
     stream.on("error", reject);
   });
-};
-
-module.exports = {
-  isValidLicenseFile,
-  getFileHash,
 };
