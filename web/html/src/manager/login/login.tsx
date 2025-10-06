@@ -53,7 +53,7 @@ type Props = {
 };
 
 export type ThemeProps = Props & {
-  product: typeof products[keyof typeof products];
+  product: (typeof products)[keyof typeof products];
 };
 
 const Login = (props: Props) => {

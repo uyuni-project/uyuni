@@ -1,6 +1,6 @@
-const { po } = require("gettext-parser");
+import { po } from "gettext-parser";
 
-module.exports = function (source) {
+export default function (source) {
   this.cacheable();
   return JSON.stringify(po.parse(source, "utf8"));
-};
+}

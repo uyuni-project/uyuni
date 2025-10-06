@@ -1,18 +1,24 @@
-const path = require("path");
-const CopyWebpackPlugin = require("copy-webpack-plugin");
-const CleanWebpackPlugin = require("clean-webpack-plugin");
-const webpackAlias = require("./webpack.alias");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
-const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
+import ReactRefreshWebpackPlugin from "@pmmmwh/react-refresh-webpack-plugin";
+import autoprefixer from "autoprefixer";
+import CleanWebpackPlugin from "clean-webpack-plugin";
+import CopyWebpackPlugin from "copy-webpack-plugin";
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
+import { createRequire } from "node:module";
+import path from "node:path";
+import { dirname } from "path";
+import SpeedMeasurePlugin from "speed-measure-webpack-plugin";
+import { fileURLToPath } from "url";
+const require = createRequire(import.meta.url);
 
-const autoprefixer = require("autoprefixer");
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
-const GenerateStoriesPlugin = require("./plugins/generate-stories-plugin");
+import GenerateStoriesPlugin from "./plugins/generate-stories-plugin.js";
+import webpackAlias from "./webpack.alias.js";
 
 const DEVSERVER_WEBSOCKET_PATHNAME = "/ws";
 
-module.exports = (env, opts) => {
+export default (env, opts) => {
   let pluginsInUse = [];
   const isProductionMode = opts.mode === "production";
   const moduleName = isProductionMode ? "[id].[chunkhash]" : "[id]";

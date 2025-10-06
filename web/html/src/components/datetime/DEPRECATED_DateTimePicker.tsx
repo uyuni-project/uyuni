@@ -329,13 +329,13 @@ export class DEPRECATED_DateTimePicker extends React.Component<DateTimePickerPro
     const datePickerId = this.props.legacyId
       ? `${this.props.legacyId}_datepicker_widget_input`
       : this.props.id
-      ? this.props.id + "_date"
-      : undefined;
+        ? this.props.id + "_date"
+        : undefined;
     const timePickerId = this.props.legacyId
       ? `${this.props.legacyId}_timepicker_widget_input`
       : this.props.id
-      ? this.props.id + "_time"
-      : undefined;
+        ? this.props.id + "_time"
+        : undefined;
     return (
       <div className="input-group">
         {!this.state.hideDate && [

@@ -123,10 +123,10 @@ class RecurringActionsDetails extends React.Component<RecurringActionsDetailsPro
                     (details.cronTimes.dayOfMonth === "1"
                       ? "st "
                       : details.cronTimes.dayOfMonth === "2"
-                      ? "nd "
-                      : details.cronTimes.dayOfMonth === "3"
-                      ? "rd "
-                      : "th ")
+                        ? "nd "
+                        : details.cronTimes.dayOfMonth === "3"
+                          ? "rd "
+                          : "th ")
                 }
               </b>
               {"of the month at "}

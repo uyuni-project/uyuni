@@ -89,16 +89,16 @@ function sortByDate(aRaw: any, bRaw: any, columnKey: string, sortDirection: numb
     aRaw[columnKey] === null
       ? null
       : aRaw[columnKey] instanceof Date
-      ? aRaw[columnKey]
-      : // eslint-disable-next-line local-rules/no-raw-date
-        new Date(aRaw[columnKey].replace(unparsableDateRegex, "$1"));
+        ? aRaw[columnKey]
+        : // eslint-disable-next-line local-rules/no-raw-date
+          new Date(aRaw[columnKey].replace(unparsableDateRegex, "$1"));
   const bDate =
     bRaw[columnKey] === null
       ? null
       : bRaw[columnKey] instanceof Date
-      ? bRaw[columnKey]
-      : // eslint-disable-next-line local-rules/no-raw-date
-        new Date(bRaw[columnKey].replace(unparsableDateRegex, "$1"));
+        ? bRaw[columnKey]
+        : // eslint-disable-next-line local-rules/no-raw-date
+          new Date(bRaw[columnKey].replace(unparsableDateRegex, "$1"));
 
   // @ts-ignore
   const result = aDate > bDate ? 1 : aDate < bDate ? -1 : 0;

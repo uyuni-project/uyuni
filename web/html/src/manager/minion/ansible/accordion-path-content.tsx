@@ -228,10 +228,10 @@ class AccordionPathContent extends React.Component<PropsType, StateType> {
               {this.state.errors.length > 0
                 ? errors
                 : this.isPlaybookContent(this.state.content)
-                ? this.renderPlaybookPathContent(this.state.content)
-                : this.isInventoryContent(this.state.content)
-                ? this.renderInventoryPathContent(this.state.content)
-                : null}
+                  ? this.renderPlaybookPathContent(this.state.content)
+                  : this.isInventoryContent(this.state.content)
+                    ? this.renderInventoryPathContent(this.state.content)
+                    : null}
             </>
           ) : null}
         </div>

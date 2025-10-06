@@ -1,20 +1,18 @@
-const { defineConfig, globalIgnores } = require("eslint/config");
+import eslint from "@eslint/js";
+import { defineConfig, globalIgnores } from "eslint/config";
+import jsxA11y from "eslint-plugin-jsx-a11y";
+import prettier from "eslint-plugin-prettier";
+import react from "eslint-plugin-react";
+import reactHooks from "eslint-plugin-react-hooks";
+import simpleImportSort from "eslint-plugin-simple-import-sort";
+import globals from "globals";
+import tseslint from "typescript-eslint";
 
-const eslint = require("@eslint/js");
-const tseslint = require("typescript-eslint");
-
-const reactHooks = require("eslint-plugin-react-hooks");
-const localRules = require("eslint-plugin-local-rules");
-const simpleImportSort = require("eslint-plugin-simple-import-sort");
-const prettier = require("eslint-plugin-prettier");
-const jsxA11y = require("eslint-plugin-jsx-a11y");
-const react = require("eslint-plugin-react");
-
-const globals = require("globals");
+import localRules from "./eslint-local-rules/index.js";
 
 const isProduction = process.env.NODE_ENV === "production";
 
-module.exports = defineConfig([
+export default defineConfig([
   globalIgnores(["dist/**/*", "vendors/**/*", "build/yarn/**/*"]),
   eslint.configs.recommended,
   // In the future, it would be nice to use `tseslint.configs.recommended` here, but legacy code is too far from that for now
@@ -33,9 +31,9 @@ module.exports = defineConfig([
     plugins: {
       react,
       "react-hooks": reactHooks,
-      "local-rules": localRules,
       "simple-import-sort": simpleImportSort,
       "jsx-a11y": jsxA11y,
+      "local-rules": localRules,
       prettier,
     },
 

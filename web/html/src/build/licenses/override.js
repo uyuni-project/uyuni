@@ -1,4 +1,4 @@
-const applyOverrides = (name, version, license) => {
+export const applyOverrides = (name, version, license) => {
   /**
    * If the license is "X OR Y" but doesn't include parentheses, wrap it so it's correct in the aggregate list
    */
@@ -34,8 +34,4 @@ const applyOverrides = (name, version, license) => {
   }
 
   return license;
-};
-
-module.exports = {
-  applyOverrides,
 };

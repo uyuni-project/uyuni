@@ -1,6 +1,7 @@
-const fs = require("fs").promises;
-const path = require("path");
-const { getLicense } = require("./license");
+import { promises as fs } from "node:fs";
+import path from "node:path";
+
+import { getLicense } from "./license.js";
 
 const resolveDependencyPath = (packageName, baseDirectory) => {
   const parts = packageName.startsWith("@") ? packageName.split("/") : [packageName];
@@ -30,7 +31,7 @@ const findPackageJson = async (packageName, searchStartDirectory) => {
 };
 
 // Get a map of all production dependencies and their license information
-const getDependencyMap = async (rootDirectory) => {
+export const getDependencyMap = async (rootDirectory) => {
   const visited = new Set();
   const licenseMap = new Map();
 
@@ -69,5 +70,3 @@ const getDependencyMap = async (rootDirectory) => {
 
   return licenseMap;
 };
-
-module.exports = { getDependencyMap };
