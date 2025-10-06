@@ -25,7 +25,7 @@
 %global build_py3 1
 %endif
 
-%if ( 0%{?rhel} && 0%{?rhel} < 8 ) || 0%{?suse_version}
+%if ( 0%{?rhel} && 0%{?rhel} < 8 ) || ( 0%{?suse_version} && 0%{?suse_version} < 1600 )
 %global build_py2   1
 %endif
 
