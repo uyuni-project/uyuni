@@ -30,10 +30,13 @@ export default () => {
             setModel(newModel);
           }}
           onRemove={(index) => {
-            const newModel = Object.entries(model).reduce((res, entry) => {
-              const property = !entry[0].startsWith(`user${index}_`) ? { [entry[0]]: entry[1] } : undefined;
-              return Object.assign(res, property);
-            }, {} as typeof model);
+            const newModel = Object.entries(model).reduce(
+              (res, entry) => {
+                const property = !entry[0].startsWith(`user${index}_`) ? { [entry[0]]: entry[1] } : undefined;
+                return Object.assign(res, property);
+              },
+              {} as typeof model
+            );
             setModel(newModel);
           }}
           disabled={false}

@@ -52,13 +52,13 @@ export const DateTimePicker = (props: Props) => {
   const datePickerId = props.legacyId
     ? `${props.legacyId}_datepicker_widget_input`
     : props.id
-    ? props.id + "_date"
-    : undefined;
+      ? props.id + "_date"
+      : undefined;
   const timePickerId = props.legacyId
     ? `${props.legacyId}_timepicker_widget_input`
     : props.id
-    ? props.id + "_time"
-    : undefined;
+      ? props.id + "_time"
+      : undefined;
 
   const openDatePicker = () => {
     if (props.disabled) {

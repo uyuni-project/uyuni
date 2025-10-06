@@ -13,7 +13,7 @@
     "watch": "NODE_OPTIONS=\"--trace-warnings --trace-deprecation --trace-uncaught --unhandled-rejections=strict\" webpack --config build/webpack.config.js --mode development --watch",
     "proxy": "NODE_OPTIONS=\"--trace-warnings --trace-deprecation --trace-uncaught --unhandled-rejections=strict\"; proxy () { webpack-dev-server --mode development --config build/webpack.config.js --env server=$*; }; proxy",
     "build": "NODE_OPTIONS=\"--trace-warnings --trace-deprecation --trace-uncaught --unhandled-rejections=strict\" node build.js",
-    "lint": "yarn sort-package --quiet && eslint . -f codeframe",
+    "lint": "yarn sort-package --quiet && eslint . -f codeframe --fix",
     "lint:production": "yarn sort-package --quiet && NODE_ENV=production eslint . -f codeframe",
     "test": "NODE_OPTIONS=\"--trace-warnings --trace-deprecation --trace-uncaught --unhandled-rejections=none\" BABEL_ENV=test jest",
     "test:watch": "NODE_OPTIONS=\"--trace-warnings --trace-deprecation --trace-uncaught --unhandled-rejections=none\" BABEL_ENV=test jest --watch",

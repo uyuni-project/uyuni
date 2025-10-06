@@ -3,7 +3,7 @@
 
 type Headers = Record<string, string>;
 type Level = "info" | "debug" | "trace" | "warning" | "error";
-type LogParams = Parameters<typeof console["log"]>;
+type LogParams = Parameters<(typeof console)["log"]>;
 
 export default class Loggerhead {
   private _log = console.log.bind(console);
