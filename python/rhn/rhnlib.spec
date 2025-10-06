@@ -74,6 +74,7 @@ Requires:       python2-pyOpenSSL
 Requires:       python2-defusedxml
 %else
 BuildRequires:  python-devel
+BuildRequires:  python-setuptools
 Requires:       python-defusedxml
 %if 0%{?suse_version}
 %if 0%{?suse_version} > 1200
@@ -90,6 +91,7 @@ Requires:       pyOpenSSL
 
 %if "%{_vendor}" == "debbuild"
 BuildRequires:  python-dev
+BuildRequires:  python-setuptools
 BuildRequires:  rpm
 Requires(preun):python-minimal
 Requires(post): python-minimal
@@ -122,6 +124,7 @@ Group:          python
 
 %if "%{_vendor}" != "debbuild"
 BuildRequires:  python3-devel
+BuildRequires:  python3-setuptools
 %if 0%{?suse_version}
 BuildRequires:  python-rpm-macros
 %endif
@@ -131,6 +134,7 @@ Requires:       python3-defusedxml
 
 %if "%{_vendor}" == "debbuild"
 BuildRequires:  python3-dev
+BuildRequires:  python3-setuptools
 BuildRequires:  rpm
 Requires(preun): python3-minimal
 Requires(post): python3-minimal
