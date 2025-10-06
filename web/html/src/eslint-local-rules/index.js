@@ -1,7 +1,10 @@
-const noRawDate = require("./no-raw-date");
-const intlApostropheCurly = require("./intl-apostrophe-curly");
+import intlApostropheCurly from "./intl-apostrophe-curly.js";
+import noRawDate from "./no-raw-date.js";
 
-module.exports = {
-  "no-raw-date": noRawDate,
-  "intl-apostrophe-curly": intlApostropheCurly,
+const plugin = {
+  rules: {
+    "no-raw-date": noRawDate,
+    "intl-apostrophe-curly": intlApostropheCurly,
+  },
 };
+export default plugin;

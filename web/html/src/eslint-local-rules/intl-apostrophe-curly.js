@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   // See https://eslint.org/docs/developer-guide/working-with-rules#rule-basics
   meta: {
     type: "problem",
