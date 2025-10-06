@@ -1,8 +1,7 @@
 import child_process from "node:child_process";
-import path from "node:path";
+import path, { dirname } from "node:path";
+import { fileURLToPath } from "node:url";
 import util from "node:util";
-import { dirname } from "path";
-import { fileURLToPath } from "url";
 import v8 from "v8";
 import rawWebpack from "webpack";
 import { hideBin } from "yargs/helpers";
