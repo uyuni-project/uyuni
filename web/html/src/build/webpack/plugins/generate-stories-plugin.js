@@ -42,7 +42,7 @@ export default class GenerateStoriesPlugin {
     }
     this.didApply = true;
 
-    const webHtmlSrc = path.resolve(__dirname, "../..");
+    const webHtmlSrc = path.resolve(__dirname, "../../..");
     if (!this.outputFile.startsWith(webHtmlSrc)) {
       throw new RangeError("GenerateStoriesPlugin: `outputFile` is outside of the source code directory");
     }

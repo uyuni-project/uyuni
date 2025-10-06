@@ -4,19 +4,17 @@ import CleanWebpackPlugin from "clean-webpack-plugin";
 import CopyWebpackPlugin from "copy-webpack-plugin";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import { createRequire } from "node:module";
-import path from "node:path";
-import { dirname } from "path";
+import path, { dirname } from "node:path";
+import { fileURLToPath } from "node:url";
 import SpeedMeasurePlugin from "speed-measure-webpack-plugin";
-import { fileURLToPath } from "url";
 const require = createRequire(import.meta.url);
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+import webpackAlias from "./alias.js";
+import devServer from "./dev-server.js";
 import GenerateStoriesPlugin from "./plugins/generate-stories-plugin.js";
-import webpackAlias from "./webpack.alias.js";
-
-const DEVSERVER_WEBSOCKET_PATHNAME = "/ws";
 
 export default (env, opts) => {
   let pluginsInUse = [];
@@ -37,58 +35,58 @@ export default (env, opts) => {
 
   pluginsInUse = [
     ...pluginsInUse,
-    new CleanWebpackPlugin(["dist"], { root: path.resolve(__dirname, "../") }),
+    new CleanWebpackPlugin(["dist"], { root: path.resolve(__dirname, "../../") }),
     new CopyWebpackPlugin([
       // Legacy scripts
-      { from: path.resolve(__dirname, "../../javascript"), to: path.resolve(__dirname, "../dist/javascript") },
+      { from: path.resolve(__dirname, "../../../javascript"), to: path.resolve(__dirname, "../../dist/javascript") },
       // Translations
-      { from: path.resolve(__dirname, "../../../po"), to: path.resolve(__dirname, "../dist/po") },
+      { from: path.resolve(__dirname, "../../../../po"), to: path.resolve(__dirname, "../../dist/po") },
       // Unimported branding assets
       {
-        from: path.resolve(__dirname, "../branding/fonts/font-spacewalk"),
-        to: path.resolve(__dirname, "../dist/fonts/font-spacewalk"),
+        from: path.resolve(__dirname, "../../branding/fonts/font-spacewalk"),
+        to: path.resolve(__dirname, "../../dist/fonts/font-spacewalk"),
       },
       // TODO: Copy all font licenses too
-      { from: path.resolve(__dirname, "../branding/img"), to: path.resolve(__dirname, "../dist/img") },
+      { from: path.resolve(__dirname, "../../branding/img"), to: path.resolve(__dirname, "../../dist/img") },
       // Any non-compiled CSS files will be compiled by their entry points
       {
-        from: path.resolve(__dirname, "../branding/css/*.css"),
-        context: path.resolve(__dirname, "../branding/css"),
-        to: path.resolve(__dirname, "../dist/css"),
+        from: path.resolve(__dirname, "../../branding/css/*.css"),
+        context: path.resolve(__dirname, "../../branding/css"),
+        to: path.resolve(__dirname, "../../dist/css"),
       },
       {
-        from: path.resolve(__dirname, "../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"),
-        to: path.resolve(__dirname, "../dist/javascript/legacy/bootstrap-webpack.js"),
+        from: path.resolve(__dirname, "../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"),
+        to: path.resolve(__dirname, "../../dist/javascript/legacy/bootstrap-webpack.js"),
       },
       {
-        from: path.resolve(__dirname, "../node_modules/jquery/dist/jquery.min.js"),
-        to: path.resolve(__dirname, "../dist/javascript/legacy"),
+        from: path.resolve(__dirname, "../../node_modules/jquery/dist/jquery.min.js"),
+        to: path.resolve(__dirname, "../../dist/javascript/legacy"),
       },
       {
-        from: path.resolve(__dirname, "../node_modules/jquery-ui/dist/jquery-ui.js"),
-        to: path.resolve(__dirname, "../dist/javascript/legacy"),
+        from: path.resolve(__dirname, "../../node_modules/jquery-ui/dist/jquery-ui.js"),
+        to: path.resolve(__dirname, "../../dist/javascript/legacy"),
       },
       // TODO: In the future it would be nice to bundle this instead of copying it
       {
-        from: path.resolve(__dirname, "../node_modules/font-awesome"),
-        to: path.resolve(__dirname, "../dist/fonts/font-awesome"),
+        from: path.resolve(__dirname, "../../node_modules/font-awesome"),
+        to: path.resolve(__dirname, "../../dist/fonts/font-awesome"),
       },
       {
-        from: path.resolve(__dirname, "../node_modules/pwstrength-bootstrap/dist/pwstrength-bootstrap-1.0.2.js"),
-        to: path.resolve(__dirname, "../dist/javascript/legacy"),
+        from: path.resolve(__dirname, "../../node_modules/pwstrength-bootstrap/dist/pwstrength-bootstrap-1.0.2.js"),
+        to: path.resolve(__dirname, "../../dist/javascript/legacy"),
       },
       // TODO: Take only what we need after we've confirmed it works fine, otherwise there's a lot of fluff in this
       {
-        from: path.resolve(__dirname, "../node_modules/ace-builds/src-min-noconflict"),
-        to: path.resolve(__dirname, "../dist/javascript/legacy/ace-editor"),
+        from: path.resolve(__dirname, "../../node_modules/ace-builds/src-min-noconflict"),
+        to: path.resolve(__dirname, "../../dist/javascript/legacy/ace-editor"),
       },
     ]),
     new MiniCssExtractPlugin({
       chunkFilename: `css/${moduleName}.css`,
     }),
     new GenerateStoriesPlugin({
-      inputDir: path.resolve(__dirname, "../manager"),
-      outputFile: path.resolve(__dirname, "../manager/storybook/stories.generated.ts"),
+      inputDir: path.resolve(__dirname, "../../manager"),
+      outputFile: path.resolve(__dirname, "../../manager/storybook/stories.generated.ts"),
     }),
   ];
 
@@ -101,15 +99,15 @@ export default (env, opts) => {
   const config = {
     mode: opts.mode,
     entry: {
-      "javascript/manager/main": path.resolve(__dirname, "../manager/index.ts"),
-      "css/updated-suse-light": path.resolve(__dirname, "../branding/css/suse-light.scss"),
-      "css/updated-suse-dark": path.resolve(__dirname, "../branding/css/suse-dark.scss"),
-      "css/updated-uyuni": path.resolve(__dirname, "../branding/css/uyuni.scss"),
+      "javascript/manager/main": path.resolve(__dirname, "../../manager/index.ts"),
+      "css/updated-suse-light": path.resolve(__dirname, "../../branding/css/suse-light.scss"),
+      "css/updated-suse-dark": path.resolve(__dirname, "../../branding/css/suse-dark.scss"),
+      "css/updated-uyuni": path.resolve(__dirname, "../../branding/css/uyuni.scss"),
     },
     output: {
       // This needs to be constant as it's referenced from layout_head.jsp etc. All uses need to specify cache bust where imported.
       filename: `[name].js`,
-      path: path.resolve(__dirname, "../dist/"),
+      path: path.resolve(__dirname, "../../dist/"),
       chunkFilename: `javascript/manager/${moduleName}.js`,
       publicPath: "/",
     },
@@ -137,7 +135,7 @@ export default (env, opts) => {
                 {
                   loader: require.resolve("babel-loader"),
                   options: {
-                    configFile: path.resolve(__dirname, "../.babelrc"),
+                    configFile: path.resolve(__dirname, "../../.babelrc"),
                     plugins: isProductionMode ? undefined : [require.resolve("react-refresh/babel")],
                   },
                 },
@@ -169,7 +167,7 @@ export default (env, opts) => {
           test: /\.po$/,
           type: "json",
           use: {
-            loader: path.resolve(__dirname, "loaders/po-loader.js"),
+            loader: path.resolve(__dirname, "./loaders/po-loader.js"),
           },
         },
         {
@@ -222,7 +220,7 @@ export default (env, opts) => {
               loader: require.resolve("sass-loader"),
               options: {
                 sassOptions: {
-                  loadPaths: [path.resolve(__dirname, "../")],
+                  loadPaths: [path.resolve(__dirname, "../../")],
                 },
               },
             },
@@ -236,57 +234,7 @@ export default (env, opts) => {
       symlinks: false,
     },
     plugins: pluginsInUse,
-    devServer: {
-      hot: true,
-      open: true,
-      static: {
-        directory: path.resolve(__dirname, "../dist"),
-        publicPath: "/",
-        // This is currently redundant, but will become relevant when we include static files in Webpack
-        watch: true,
-      },
-      server: {
-        type: "https",
-      },
-      client: {
-        webSocketURL: {
-          // Hardcode this so it always matches
-          pathname: DEVSERVER_WEBSOCKET_PATHNAME,
-        },
-        logging: "error",
-      },
-      // Override CORS headers for `yarn storybook`, these are not required otherwise
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-      },
-      /**
-       * The documentation isn't very good for this, but shortly we're proxying everything besides what comes out of Webpack through to the provided server
-       * See https://webpack.js.org/configuration/dev-server/#devserverproxy and https://github.com/chimurai/http-proxy-middleware#options
-       */
-      proxy: [
-        {
-          target: env && env.server,
-          // Proxy everything, including websockets, besides the Webpack updates websocket
-          context: ["!" + DEVSERVER_WEBSOCKET_PATHNAME],
-          ws: true,
-          /**
-           * Rewrite the host and port on redirects, so we stay on the proxy after logging in, logging out etc
-           * See https://github.com/http-party/node-http-proxy/issues/1227
-           */
-          autoRewrite: true,
-          changeOrigin: true,
-          // Ignore sertificate errors for dev servers
-          secure: false,
-        },
-      ],
-      devMiddleware: {
-        publicPath: "/",
-        // If we ever integrate theme loading locally as opposeds to a global load in jsp, we can set this to false to get faster HMR
-        writeToDisk: true,
-        // Allow proxying requests to root "/" (disabled by default), see https://webpack.js.org/configuration/dev-server/#devserverproxy
-        index: false,
-      },
-    },
+    devServer: devServer(env),
   };
 
   if (opts.force) {
