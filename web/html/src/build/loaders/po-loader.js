@@ -1,6 +1,6 @@
-import gettextParser from "gettext-parser";
+import { po } from "gettext-parser";
 
 export default function (source) {
   this.cacheable();
-  return JSON.stringify(gettextParser.po.parse(source, "utf8"));
+  return JSON.stringify(po.parse(source, "utf8"));
 }
