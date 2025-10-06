@@ -17,12 +17,10 @@ package com.redhat.rhn.domain.action.test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
-import org.hibernate.Session;
-import org.hibernate.type.StandardBasicTypes;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -39,10 +37,10 @@ public class ActionTypeTest extends RhnBaseTestCase {
         ActionType r1 = new ActionType();
         ActionType r2 = null;
         assertNotEquals(r1, r2);
-        r2 = lookupByLabel("reboot.reboot");
-        r1 = lookupByLabel("reboot.reboot");
+        r2 = ActionFactory.lookupActionTypeByLabel("reboot.reboot");
+        r1 = ActionFactory.lookupActionTypeByLabel("reboot.reboot");
         assertEquals(r1, r2);
-        ActionType r3 = lookupByLabel("packages.update");
+        ActionType r3 = ActionFactory.lookupActionTypeByLabel("packages.update");
         assertNotEquals(r1, r3);
         assertEquals(r1, r1);
     }
@@ -57,23 +55,10 @@ public class ActionTypeTest extends RhnBaseTestCase {
      */
     @Test
     public void testFindByLabel() throws Exception {
-        ActionType r1 = lookupByLabel("errata.update");
-        ActionType r2 = lookupByLabel("errata.update");
+        ActionType r1 = ActionFactory.lookupActionTypeByLabel("errata.update");
+        ActionType r2 = ActionFactory.lookupActionTypeByLabel("errata.update");
         assertEquals(r2.getName(), r1.getName());
         assertEquals(r2.getLabel(), r1.getLabel());
     }
 
-    /**
-     * Helper method to get a ActionType by label
-     * @param label the label
-     * @return Returns the ActionType corresponding to label
-     */
-    private ActionType lookupByLabel(String label) {
-        Session session = HibernateFactory.getSession();
-        return (ActionType) session.getNamedQuery("ActionType.findByLabel")
-                                .setParameter("label", label, StandardBasicTypes.STRING)
-                                //Retrieve from cache if there
-                                .setCacheable(true)
-                                .uniqueResult();
-    }
 }

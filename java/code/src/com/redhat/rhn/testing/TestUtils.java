@@ -268,6 +268,19 @@ public class TestUtils {
     }
 
     /**
+     * Helper method to get a single object from the 2nd level cache by id
+     *
+     * @param <T>      type of object to retrieve
+     * @param id       id of the object to retrieve
+     * @param objClass class name of the object to retrieve
+     * @return Returns the object corresponding to the given id
+     */
+    public static <T> T lookupFromCacheById(Long id, Class<T> objClass) {
+        Session session = HibernateFactory.getSession();
+        return session.get(objClass, id);
+    }
+
+    /**
      * Helper method to get a single object from the 2nd level cache by label
      * @param label Label of the object you want
      * @param queryname Queryname for the query you want to run.

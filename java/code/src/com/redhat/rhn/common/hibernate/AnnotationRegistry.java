@@ -16,6 +16,8 @@ import com.redhat.rhn.domain.access.WebEndpoint;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainEntry;
 import com.redhat.rhn.domain.action.ActionChild;
+import com.redhat.rhn.domain.action.ActionStatus;
+import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionDetails;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionResult;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionDetails;
@@ -35,6 +37,7 @@ import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.cloudpayg.CloudRmtHost;
 import com.redhat.rhn.domain.cloudpayg.PaygCredentialsProduct;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
+import com.redhat.rhn.domain.common.ArchType;
 import com.redhat.rhn.domain.common.ProvisionState;
 import com.redhat.rhn.domain.common.RhnConfiguration;
 import com.redhat.rhn.domain.config.ConfigChannel;
@@ -90,6 +93,9 @@ import com.redhat.rhn.domain.org.usergroup.UserGroupMembers;
 import com.redhat.rhn.domain.org.usergroup.UserGroupMembersId;
 import com.redhat.rhn.domain.product.ChannelTemplate;
 import com.redhat.rhn.domain.product.SUSEProduct;
+import com.redhat.rhn.domain.product.SUSEProductChannel;
+import com.redhat.rhn.domain.product.SUSEProductExtension;
+import com.redhat.rhn.domain.product.SUSEProductUpgrade;
 import com.redhat.rhn.domain.recurringactions.GroupRecurringAction;
 import com.redhat.rhn.domain.recurringactions.MinionRecurringAction;
 import com.redhat.rhn.domain.recurringactions.OrgRecurringAction;
@@ -200,11 +206,14 @@ public class AnnotationRegistry {
             ActionChain.class,
             ActionChainEntry.class,
             ActionChild.class,
+            ActionStatus.class,
+            ActionType.class,
             AddressImpl.class,
             AnsiblePath.class,
             AppStreamApi.class,
             AppStreamApiKey.class,
             AppStream.class,
+            ArchType.class,
             BaseCredentials.class,
             Capability.class,
             ChannelArch.class,
@@ -327,6 +336,7 @@ public class AnnotationRegistry {
             SCCRepositoryNoAuth.class,
             SCCRepositoryTokenAuth.class,
             SCCSubscription.class,
+            SUSEProductChannel.class,
             ScriptActionDetails.class,
             ScriptResult.class,
             ServerAppStream.class,
@@ -347,6 +357,8 @@ public class AnnotationRegistry {
             StateRevision.class,
             SupportDataActionDetails.class,
             SUSEProduct.class,
+            SUSEProductExtension.class,
+            SUSEProductUpgrade.class,
             Task.class,
             TaskoBunch.class,
             TaskoTask.class,

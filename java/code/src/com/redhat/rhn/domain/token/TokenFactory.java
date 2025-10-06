@@ -37,7 +37,7 @@ public class TokenFactory extends HibernateFactory {
     private static Logger log = LogManager.getLogger(TokenFactory.class);
 
     /**
-     * Lookup an token by id
+     * Lookup a token by id
      * You probably want ActivationKeyFactory.lookupById() instead.
      * The Token does not include the actual hex string used for
      * registration, or the relationship to the kickstart session(s).
@@ -47,29 +47,12 @@ public class TokenFactory extends HibernateFactory {
      * @return the ActivationKey found
      */
     public static Token lookupById(Long id) {
-        if (id == null) {
-            return null;
-        }
-
-        Session session = null;
-        try {
-            session = HibernateFactory.getSession();
-            return (Token) session.getNamedQuery("Token.findById")
-                .setParameter("id", id)
-                //Retrieve from cache if there
-                .setCacheable(true)
-                .uniqueResult();
-        }
-        catch (HibernateException e) {
-            log.error("Hibernate exception: {}", e.toString());
-            throw e;
-        }
+        Session session = HibernateFactory.getSession();
+        return session.get(Token.class, id);
     }
 
-
-
     /**
-     * Lookup an token by id
+     * Lookup a token by id
      * You probably want ActivationKeyFactory.lookupById() instead.
      * The Token does not include the actual hex string used for
      * registration, or the relationship to the kickstart session(s).
@@ -86,31 +69,30 @@ public class TokenFactory extends HibernateFactory {
                     ls.getMessage("lookup.jsp.reason1.token"),
                     ls.getMessage("lookup.jsp.reason2.token"));
         }
+
         Token t;
-        Session session = null;
         try {
-            session = HibernateFactory.getSession();
-            t = (Token) session.getNamedQuery("Token.findByIdAndOrg")
-                .setParameter("id", id).setParameter("org", org)
-                //Retrieve from cache if there
-                .setCacheable(true)
-                .uniqueResult();
+            Session session = HibernateFactory.getSession();
+            t = session.createQuery("FROM Token WHERE id = :id AND org = :org", Token.class)
+                    .setParameter("id", id)
+                    .setParameter("org", org)
+                    //Retrieve from cache if there
+                    .setCacheable(true)
+                    .uniqueResult();
         }
         catch (HibernateException e) {
             log.error("Hibernate exception: {}", e.toString());
             throw e;
         }
         if (t == null) {
-            LocalizationService ls = LocalizationService.getInstance();
-            throw new LookupException("Could not find " +
-                                                    "token with id =  " + id);
+            throw new LookupException("Could not find token with id =  " + id);
         }
         return t;
-
     }
+
     /**
      * Lookup a Token for the given Server
-     * @param server to lookup the Token for
+     * @param server to look up the Token for
      * @return Token if found.  Null if not
      */
     public static List<Token> listByServer(Server server) {
@@ -118,10 +100,9 @@ public class TokenFactory extends HibernateFactory {
             return new ArrayList<>();
         }
 
-        Session session = null;
         try {
-            session = HibernateFactory.getSession();
-            return session.getNamedQuery("Token.findByServerAndOrg")
+            Session session = HibernateFactory.getSession();
+            return session.createQuery("FROM Token WHERE server = :server AND org = :org", Token.class)
                 .setParameter("server", server)
                 .setParameter("org", server.getOrg())
                 //Retrieve from cache if there

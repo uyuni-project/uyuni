@@ -14,21 +14,40 @@
  */
 package com.redhat.rhn.domain.action;
 
+import static org.hibernate.annotations.CacheConcurrencyStrategy.READ_ONLY;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.Immutable;
 
 import java.io.Serializable;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * ActionType
  */
+@Entity
+@Table(name = "rhnActionType")
+@Immutable
+@Cache(usage = READ_ONLY)
 public class ActionType implements Serializable {
 
+    @Id
     private Integer id;
+    @Column
     private String label;
+    @Column
     private String name;
+    @Column(name = "trigger_snapshot")
     private Character triggersnapshot;
+    @Column(name = "unlocked_only")
     private Character unlockedonly;
+    @Column(name = "maintenance_mode_only")
     private boolean maintenancemodeOnly;
 
     /**
@@ -41,7 +60,7 @@ public class ActionType implements Serializable {
     /**
      * @param i The id to set.
      */
-    public void setId(Integer i) {
+    protected void setId(Integer i) {
         this.id = i;
     }
 
