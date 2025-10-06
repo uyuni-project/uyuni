@@ -609,7 +609,7 @@ public class MenuTree {
             .addChild(new MenuItem("header.jsp.documentation")
                     .withPrimaryUrl(ConfigDefaults.get().isUyuni() ?
                             "https://www.uyuni-project.org/uyuni-docs/" + docsLocale + "/uyuni/index.html" :
-                            "https://documentation.suse.com/suma/" + getMajorMinorProductVersion() + "/")
+                            "https://documentation.suse.com/multi-linux-manager/" + getMajorMinorProductVersion() + "/")
                     .withTarget("_blank"));
     }
 
