@@ -11,7 +11,7 @@ import yargs from "yargs/yargs";
 import checkPackage from "./build/check-package.js";
 import { fillSpecFile } from "./build/fill-spec-file.js";
 import { aggregateLicenses } from "./build/licenses/index.js";
-import config from "./build/webpack.config.js";
+import config from "./build/webpack/config.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
