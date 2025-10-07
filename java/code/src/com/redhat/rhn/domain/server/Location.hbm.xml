@@ -3,7 +3,7 @@
 PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="com.redhat.rhn.domain.server.Location"
+    <!-- <class name="com.redhat.rhn.domain.server.Location"
         table="rhnServerLocation" >
         <id name="id" type="long" column="ID">
             <meta attribute="scope-set">protected</meta>
@@ -25,7 +25,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <property name="country" column="COUNTRY"  type="string" length="2" />
         <property name="created" column="CREATED" not-null="true" type="timestamp" insert="false" update="false"/>
         <property name="modified" column="MODIFIED" not-null="true" type="timestamp" insert="false" update="false"/>
-    </class>
+    <class> -->
 
     <query name="Location.findById">
         <![CDATA[from com.redhat.rhn.domain.server.Location as l where l.id = :id]]>
