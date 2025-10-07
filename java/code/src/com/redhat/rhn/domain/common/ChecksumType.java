@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -16,15 +17,31 @@ package com.redhat.rhn.domain.common;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Immutable;
+
 import java.util.Objects;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * ArchType
  */
+@Entity
+@Table(name = "rhnChecksumType")
+@Immutable
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class ChecksumType extends BaseDomainHelper {
 
+    @Id
     private Long id;
+    @Column
     private String label;
+    @Column
     private String description;
 
     /**
@@ -37,7 +54,7 @@ public class ChecksumType extends BaseDomainHelper {
     /**
      * @param i The id to set.
      */
-    public void setId(Long i) {
+    protected void setId(Long i) {
         this.id = i;
     }
 

@@ -760,7 +760,11 @@ public class ChannelFactory extends HibernateFactory {
      * @return List of ChecksumTypes instances
      */
     public static List<ChecksumType> listYumSupportedChecksums() {
-        return singleton.listObjectsByNamedQuery("ChecksumType.loadAllForYum", Map.of());
+        return getSession().createQuery("""
+                 FROM com.redhat.rhn.domain.common.ChecksumType as t
+                 WHERE t.label LIKE 'sha%'""", ChecksumType.class)
+                .setCacheable(true)
+                .list();
     }
 
     /**
@@ -784,7 +788,12 @@ public class ChannelFactory extends HibernateFactory {
         if (checksum == null) {
             return null;
         }
-        return singleton.lookupObjectByNamedQuery("ChecksumType.findByLabel", Map.of(LABEL, checksum));
+        return getSession().createQuery("""
+                 FROM com.redhat.rhn.domain.common.ChecksumType AS t
+                 WHERE t.label = :label""", ChecksumType.class)
+                .setParameter(LABEL, checksum)
+                .setCacheable(true)
+                .uniqueResult();
     }
 
     /**
