@@ -1027,7 +1027,11 @@ public class ActionFactory extends HibernateFactory {
      * @return history event
      */
     public static ServerHistoryEvent lookupHistoryEventById(Long aid) {
-        return singleton.lookupObjectByNamedQuery("ServerHistory.lookupById", Map.of("id", aid));
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("FROM ServerHistoryEvent AS s WHERE s.id = :id", ServerHistoryEvent.class)
+                .setParameter("id", aid)
+                .uniqueResult();
+
     }
 
     private static void updateActionEarliestDate(Action action) {

@@ -157,6 +157,7 @@ import com.redhat.rhn.domain.server.ServerAppStream;
 import com.redhat.rhn.domain.server.ServerFQDN;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupType;
+import com.redhat.rhn.domain.server.ServerHistoryEvent;
 import com.redhat.rhn.domain.server.ServerPath;
 import com.redhat.rhn.domain.server.ServerPathId;
 import com.redhat.rhn.domain.server.ansible.AnsiblePath;
@@ -369,6 +370,7 @@ public class AnnotationRegistry {
             ServerGroupManager.class,
             ServerGroupStateRevision.class,
             ServerGroupType.class,
+            ServerHistoryEvent.class,
             ServerPath.class,
             ServerPathId.class,
             ServerStateRevision.class,
