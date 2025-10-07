@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2010--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -60,7 +61,13 @@ public class TaskoFactory extends HibernateFactory {
      * @return bunch
      */
     public static TaskoBunch lookupOrgBunchByName(String bunchName) {
-        return singleton.lookupObjectByNamedQuery("TaskoBunch.lookupOrgBunchByName", Map.of("name", bunchName));
+        return getSession()
+                .createQuery("""
+                        FROM com.redhat.rhn.taskomatic.domain.TaskoBunch
+                        WHERE orgBunch IS NOT NULL
+                        AND name = :name""", TaskoBunch.class)
+                .setParameter("name", bunchName)
+                .getSingleResult();
     }
 
     /**
@@ -69,7 +76,13 @@ public class TaskoFactory extends HibernateFactory {
      * @return bunch
      */
     public static TaskoBunch lookupSatBunchByName(String bunchName) {
-        return singleton.lookupObjectByNamedQuery("TaskoBunch.lookupSatBunchByName", Map.of("name", bunchName));
+        return getSession()
+                .createQuery("""
+                        FROM com.redhat.rhn.taskomatic.domain.TaskoBunch
+                        WHERE orgBunch IS NULL
+                        AND name = :name""", TaskoBunch.class)
+                .setParameter("name", bunchName)
+                .getSingleResult();
     }
 
     /**
@@ -77,7 +90,10 @@ public class TaskoFactory extends HibernateFactory {
      * @return list of bunches
      */
     public static List<TaskoBunch> listOrgBunches() {
-        return singleton.listObjectsByNamedQuery("TaskoBunch.listOrgBunches", Map.of());
+        return getSession()
+                .createQuery("FROM com.redhat.rhn.taskomatic.domain.TaskoBunch WHERE orgBunch IS NOT NULL",
+                        TaskoBunch.class)
+                .list();
     }
 
     /**
@@ -85,7 +101,10 @@ public class TaskoFactory extends HibernateFactory {
      * @return list of bunches
      */
     public static List<TaskoBunch> listSatBunches() {
-        return singleton.listObjectsByNamedQuery("TaskoBunch.listSatBunches", Map.of());
+        return getSession()
+                .createQuery("FROM com.redhat.rhn.taskomatic.domain.TaskoBunch WHERE orgBunch IS NULL",
+                        TaskoBunch.class)
+                .list();
     }
 
     /**
@@ -396,7 +415,10 @@ public class TaskoFactory extends HibernateFactory {
      * @return bunch
      */
     public static TaskoBunch lookupBunchByName(String bunchName) {
-        return singleton.lookupObjectByNamedQuery("TaskoBunch.lookupByName", Map.of("name", bunchName));
+        return getSession()
+                .createQuery("FROM com.redhat.rhn.taskomatic.domain.TaskoBunch WHERE name = :name", TaskoBunch.class)
+                .setParameter("name", bunchName)
+                .getSingleResult();
     }
 
     /**
@@ -468,34 +490,6 @@ public class TaskoFactory extends HibernateFactory {
                 .setParameter("job_label", jobLabel)
                 .setParameter("org_id", orgId)
                 .list();
-    }
-
-    /**
-     * lookup run by id
-     * @param runId run id
-     * @return run
-     */
-    public static TaskoRun lookupRunById(Long runId) {
-        return getSession()
-                .createQuery("FROM com.redhat.rhn.taskomatic.domain.TaskoRun WHERE id = :run_id", TaskoRun.class)
-                .setParameter("run_id", runId)
-                .uniqueResult();
-    }
-
-    /**
-     * lookup organizational run by id
-     * @param orgId organizational id
-     * @param runId run id
-     * @return run
-     * @throws InvalidParamException thrown in case of wrong runId
-     */
-    public static TaskoRun lookupRunByOrgAndId(Integer orgId, Integer runId)
-        throws InvalidParamException {
-        TaskoRun run = lookupRunById(runId.longValue());
-        if ((run == null) || (!runBelongToOrg(orgId, run))) {
-            throw new InvalidParamException("No such run id");
-        }
-        return run;
     }
 
     /**
