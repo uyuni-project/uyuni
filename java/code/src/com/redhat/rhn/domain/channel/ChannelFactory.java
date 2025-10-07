@@ -1144,7 +1144,10 @@ public class ChannelFactory extends HibernateFactory {
         if (label == null) {
             return null;
         }
-        return singleton.lookupObjectByNamedQuery("ProductName.findByLabel", Map.of(LABEL, label));
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("FROM ProductName AS p WHERE p.label = :label", ProductName.class)
+                .setParameter(LABEL, label)
+                .uniqueResult();
     }
 
     /**
