@@ -22,7 +22,6 @@ with open("/etc/uyuni/config.yaml", encoding="utf-8") as source:
         file_content = re.sub(
             r"access_log .*", "access_log stdio:/proc/self/fd/1 squid", file_content
         )
-        file_content += "\n" + "include /etc/squid/conf.d/*" + "\n"
         # writing back the content
         config_file.seek(0, 0)
         config_file.write(file_content)

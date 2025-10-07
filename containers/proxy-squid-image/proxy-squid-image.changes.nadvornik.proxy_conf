@@ -1,0 +1,2 @@
+- Allow override all parameters in squid conf (bsc#1250940)
+- Set the default timeout for /pub to 30min (bsc#1247644)
