@@ -181,6 +181,7 @@ import com.redhat.rhn.domain.user.legacy.UserInfo;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.taskomatic.domain.TaskoBunch;
 import com.redhat.rhn.taskomatic.domain.TaskoRun;
+import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
 import com.redhat.rhn.taskomatic.domain.TaskoTask;
 import com.redhat.rhn.taskomatic.domain.TaskoTemplate;
 
@@ -389,6 +390,7 @@ public class AnnotationRegistry {
             Task.class,
             TaskoBunch.class,
             TaskoRun.class,
+            TaskoSchedule.class,
             TaskoTask.class,
             TaskoTemplate.class,
             TemplateString.class,
