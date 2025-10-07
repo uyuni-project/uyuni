@@ -33,6 +33,7 @@ import com.redhat.rhn.domain.channel.AppStreamApi;
 import com.redhat.rhn.domain.channel.AppStreamApiKey;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
+import com.redhat.rhn.domain.channel.ChannelProduct;
 import com.redhat.rhn.domain.channel.ChannelSyncFlag;
 import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.cloudpayg.CloudRmtHost;
@@ -236,6 +237,7 @@ public class AnnotationRegistry {
             Capability.class,
             ChannelArch.class,
             Channel.class,
+            ChannelProduct.class,
             ChannelSyncFlag.class,
             ChannelTemplate.class,
             Checksum.class,

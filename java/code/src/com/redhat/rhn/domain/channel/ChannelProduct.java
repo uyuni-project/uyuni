@@ -16,14 +16,30 @@ package com.redhat.rhn.domain.channel;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 /**
  * ChannelProduct - Class representation of the table rhnChannelProduct.
  */
+@Entity
+@Table(name = "rhnChannelProduct")
 public class ChannelProduct extends BaseDomainHelper {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "channelprod_seq")
+    @SequenceGenerator(name = "channelprod_seq", sequenceName = "rhn_channelprod_id_seq", allocationSize = 1)
     private Long id;
+    @Column
     private String product;
+    @Column
     private String version;
+    @Column(name = "beta")
     private String betaMarker;
 
     /**
@@ -38,7 +54,7 @@ public class ChannelProduct extends BaseDomainHelper {
      * Setter for id
      * @param idIn to set
     */
-    public void setId(Long idIn) {
+    protected void setId(Long idIn) {
         this.id = idIn;
     }
 
