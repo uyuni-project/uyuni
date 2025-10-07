@@ -133,6 +133,7 @@ import com.redhat.rhn.domain.scc.SCCRepositoryCloudRmtAuth;
 import com.redhat.rhn.domain.scc.SCCRepositoryNoAuth;
 import com.redhat.rhn.domain.scc.SCCRepositoryTokenAuth;
 import com.redhat.rhn.domain.scc.SCCSubscription;
+import com.redhat.rhn.domain.server.CPU;
 import com.redhat.rhn.domain.server.Capability;
 import com.redhat.rhn.domain.server.ClientCapability;
 import com.redhat.rhn.domain.server.ClientCapabilityId;
@@ -219,6 +220,7 @@ public class AnnotationRegistry {
             AppStream.class,
             ArchType.class,
             BaseCredentials.class,
+            CPU.class,
             Capability.class,
             ChannelArch.class,
             Channel.class,
