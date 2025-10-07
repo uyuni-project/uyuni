@@ -174,7 +174,9 @@ public class TaskoFactory extends HibernateFactory {
      * @return list of tasks
      */
     public static List<TaskoTask> listTasks() {
-        return singleton.listObjectsByNamedQuery("TaskoTask.listTasks", Map.of());
+        return getSession()
+                .createQuery("from com.redhat.rhn.taskomatic.domain.TaskoTask as t", TaskoTask.class)
+                .list();
     }
 
     /**
