@@ -154,6 +154,7 @@ import com.redhat.rhn.domain.server.Ram;
 import com.redhat.rhn.domain.server.SAPWorkload;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerAppStream;
+import com.redhat.rhn.domain.server.ServerFQDN;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupType;
 import com.redhat.rhn.domain.server.ServerPath;
@@ -363,6 +364,7 @@ public class AnnotationRegistry {
             Server.class,
             ServerCoCoAttestationConfig.class,
             ServerCoCoAttestationReport.class,
+            ServerFQDN.class,
             ServerGroup.class,
             ServerGroupManager.class,
             ServerGroupStateRevision.class,
