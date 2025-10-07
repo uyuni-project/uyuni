@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (c) 2019-2020 SUSE LLC
+# Copyright (c) 2019-2025 SUSE LLC
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -50,15 +50,6 @@ rm -f /etc/machine-id \
       /var/lib/dbus/machine-id
 
 #======================================
-# SuSEconfig
-#--------------------------------------
-echo "** Running suseConfig..."
-suseConfig
-
-echo "** Running ldconfig..."
-/sbin/ldconfig
-
-#======================================
 # Setup baseproduct link
 #--------------------------------------
 suseSetupProduct
@@ -67,11 +58,6 @@ suseSetupProduct
 # Specify default runlevel
 #--------------------------------------
 baseSetRunlevel 3
-
-#======================================
-# Add missing gpg keys to rpm
-#--------------------------------------
-suseImportBuildKey
 
 #======================================
 # Enable DHCP on eth0
@@ -89,11 +75,6 @@ EOF
 # Enable sshd
 #--------------------------------------
 chkconfig sshd on
-
-#======================================
-# Remove doc files
-#--------------------------------------
-baseStripDocs
 
 #======================================
 # Sysconfig Update
@@ -121,10 +102,5 @@ update-ca-certificates
 if [ ! -s /var/log/zypper.log ]; then
 	> /var/log/zypper.log
 fi
-
-# only for debugging
-#systemctl enable debug-shell.service
-
-baseCleanMount
 
 exit 0
