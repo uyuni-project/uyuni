@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2010--2015 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,16 +15,29 @@
  */
 package com.redhat.rhn.taskomatic.domain;
 
+import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.taskomatic.TaskoFactory;
 
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 
 /**
  * TaskoRun
  */
-public class TaskoRun implements Serializable {
+@Entity
+@Table(name = "rhnTaskoRun")
+public class TaskoRun extends BaseDomainHelper implements Serializable {
 
     public static final String STATUS_READY_TO_RUN = "READY";
     public static final String STATUS_RUNNING = "RUNNING";
@@ -32,15 +46,23 @@ public class TaskoRun implements Serializable {
     public static final String STATUS_SKIPPED = "SKIPPED";
     public static final String STATUS_INTERRUPTED = "INTERRUPTED";
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tasko_run_seq")
+    @SequenceGenerator(name = "tasko_run_seq", sequenceName = "RHN_TASKO_RUN_ID_SEQ", allocationSize = 1)
     private Long id;
+    @Column(name = "org_id")
     private Integer orgId;
+    @ManyToOne
+    @JoinColumn(name = "template_id")
     private TaskoTemplate template;
+    @Column(name = "schedule_id")
     private Long scheduleId;
+    @Column(name = "start_time")
     private Date startTime;
+    @Column(name = "end_time")
     private Date endTime;
+    @Column
     private String status;
-    private Date created;
-    private Date modified;
 
     /**
      * default constructor required by hibernate
@@ -176,34 +198,6 @@ public class TaskoRun implements Serializable {
      */
     public void setStatus(String statusIn) {
         this.status = statusIn;
-    }
-
-    /**
-     * @return Returns the created.
-     */
-    public Date getCreated() {
-        return created;
-    }
-
-    /**
-     * @param createdIn The created to set.
-     */
-    public void setCreated(Date createdIn) {
-        this.created = createdIn;
-    }
-
-    /**
-     * @return Returns the modified.
-     */
-    public Date getModified() {
-        return modified;
-    }
-
-    /**
-     * @param modifiedIn The modified to set.
-     */
-    public void setModified(Date modifiedIn) {
-        this.modified = modifiedIn;
     }
 
     /**

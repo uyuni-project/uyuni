@@ -185,7 +185,11 @@ public class TaskoFactory extends HibernateFactory {
      * @return list of runs
      */
     public static List<TaskoRun> listRunsOlderThan(Date limitTime) {
-        return singleton.listObjectsByNamedQuery("TaskoRun.listOlderThan", Map.of("limit_time", limitTime));
+        return getSession()
+                .createQuery("FROM com.redhat.rhn.taskomatic.domain.TaskoRun WHERE endTime < :limit_time",
+                        TaskoRun.class)
+                .setParameter("limit_time", limitTime)
+                .list();
     }
 
     /**
@@ -194,7 +198,11 @@ public class TaskoFactory extends HibernateFactory {
      * @return list of runs
      */
     public static List<TaskoRun> listRunsNewerThan(Date limitTime) {
-        return singleton.listObjectsByNamedQuery("TaskoRun.listNewerThan", Map.of("limit_time", limitTime));
+        return getSession()
+                .createQuery("FROM com.redhat.rhn.taskomatic.domain.TaskoRun WHERE endTime >= :limit_time",
+                        TaskoRun.class)
+                .setParameter("limit_time", limitTime)
+                .list();
     }
 
     /**
@@ -283,8 +291,14 @@ public class TaskoFactory extends HibernateFactory {
      * @return list of runs
      */
     public static List<TaskoRun> listNewerRunsBySchedule(Long scheduleId, Date limitTime) {
-        return singleton.listObjectsByNamedQuery("TaskoRun.listByScheduleNewerThan",
-                Map.of("schedule_id", scheduleId, "limit_time", limitTime));
+        return getSession()
+                .createQuery("""
+                        FROM com.redhat.rhn.taskomatic.domain.TaskoRun
+                        WHERE scheduleId = :schedule_id
+                        AND endTime > :limit_time""", TaskoRun.class)
+                .setParameter("schedule_id", scheduleId)
+                .setParameter("limit_time", limitTime)
+                .list();
     }
 
     private static TaskoBunch lookupBunchByOrgAndName(Integer orgId, String bunchName)
@@ -348,7 +362,11 @@ public class TaskoFactory extends HibernateFactory {
      * @return list of runs
      */
     public static List<TaskoRun> listRunsBySchedule(Long scheduleId) {
-        return singleton.listObjectsByNamedQuery("TaskoRun.listBySchedule", Map.of("schedule_id", scheduleId));
+        return getSession()
+                .createQuery("FROM com.redhat.rhn.taskomatic.domain.TaskoRun WHERE scheduleId = :schedule_id",
+                        TaskoRun.class)
+                .setParameter("schedule_id", scheduleId)
+                .list();
     }
 
     /**
@@ -383,7 +401,10 @@ public class TaskoFactory extends HibernateFactory {
      * @return run
      */
     public static TaskoRun lookupRunById(Long runId) {
-        return singleton.lookupObjectByNamedQuery("TaskoRun.lookupById", Map.of("run_id", runId));
+        return getSession()
+                .createQuery("FROM com.redhat.rhn.taskomatic.domain.TaskoRun WHERE id = :run_id", TaskoRun.class)
+                .setParameter("run_id", runId)
+                .uniqueResult();
     }
 
     /**
@@ -422,7 +443,13 @@ public class TaskoFactory extends HibernateFactory {
      * @return list of runs
      */
     public static List<TaskoRun> listRunsByBunch(String bunchName) {
-        return singleton.listObjectsByNamedQuery("TaskoRun.listByBunch", Map.of("bunch_name", bunchName));
+        return getSession()
+                .createQuery("""
+                        FROM com.redhat.rhn.taskomatic.domain.TaskoRun
+                        WHERE template.bunch.name = :bunch_name
+                        ORDER BY startTime DESC, id DESC""", TaskoRun.class)
+                .setParameter("bunch_name", bunchName)
+                .list();
     }
 
     /**
@@ -489,7 +516,9 @@ public class TaskoFactory extends HibernateFactory {
      * @return list of unfinished runs
      */
     public static List<TaskoRun> listUnfinishedRuns() {
-        return singleton.listObjectsByNamedQuery("TaskoRun.listUnfinished", Map.of());
+        return getSession()
+                .createQuery("FROM com.redhat.rhn.taskomatic.domain.TaskoRun WHERE endTime IS NULL", TaskoRun.class)
+                .list();
     }
 
     /**
