@@ -149,6 +149,7 @@ import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Pillar;
+import com.redhat.rhn.domain.server.PinnedSubscription;
 import com.redhat.rhn.domain.server.SAPWorkload;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerAppStream;
@@ -324,6 +325,7 @@ public class AnnotationRegistry {
             PaygSshData.class,
             PersonalInfo.class,
             Pillar.class,
+            PinnedSubscription.class,
             PlaybookPath.class,
             ProfileCustomDataValue.class,
             ProjectSource.class,

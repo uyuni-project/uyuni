@@ -3,7 +3,7 @@
 PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="com.redhat.rhn.domain.server.PinnedSubscription"
+    <!-- <class name="com.redhat.rhn.domain.server.PinnedSubscription"
         table="susePinnedSubscription">
         <id name="id" type="long" column="id">
             <generator class="org.hibernate.id.enhanced.SequenceStyleGenerator">
@@ -13,7 +13,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         </id>
         <property name="systemId" type="long" column="system_id"/>
         <property name="subscriptionId" type="long" column="subscription_id"/>
-    </class>
+    <class> -->
 
     <query name="PinnedSubscription.cleanStalePins">
         <![CDATA[
