@@ -150,6 +150,7 @@ import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Pillar;
 import com.redhat.rhn.domain.server.PinnedSubscription;
+import com.redhat.rhn.domain.server.Ram;
 import com.redhat.rhn.domain.server.SAPWorkload;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerAppStream;
@@ -331,6 +332,7 @@ public class AnnotationRegistry {
             ProjectSource.class,
             ProvisionState.class,
             PtfFilter.class,
+            Ram.class,
             RhnConfiguration.class,
             RecurringConfigChannel.class,
             RecurringHighstate.class,
