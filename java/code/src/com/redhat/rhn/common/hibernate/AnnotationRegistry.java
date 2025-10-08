@@ -142,6 +142,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageEnhances;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageExtraTagsKeys;
 import com.redhat.rhn.domain.rhnpackage.PackageFile;
+import com.redhat.rhn.domain.rhnpackage.PackageGroup;
 import com.redhat.rhn.domain.rhnpackage.PackageObsoletes;
 import com.redhat.rhn.domain.rhnpackage.PackagePreDepends;
 import com.redhat.rhn.domain.rhnpackage.PackageProvides;
@@ -361,6 +362,7 @@ public class AnnotationRegistry {
             PackageExtraTagsKeys.class,
             PackageFile.class,
             PackageFilter.class,
+            PackageGroup.class,
             PackageObsoletes.class,
             PackagePreDepends.class,
             PackageProvides.class,
