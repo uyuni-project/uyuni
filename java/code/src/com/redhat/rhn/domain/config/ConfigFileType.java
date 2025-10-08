@@ -22,9 +22,16 @@ import java.io.Serializable;
 import java.util.Map;
 import java.util.TreeMap;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * @author Hibernate CodeGenerator
  */
+@Entity
+@Table(name = "rhnConfigFileType")
 public class ConfigFileType implements Serializable {
 
     /**
@@ -33,18 +40,23 @@ public class ConfigFileType implements Serializable {
     private static final long serialVersionUID = 3816155923541633076L;
 
     /** identifier field */
+    @Id
     private long           id;
 
     /** persistent field */
+    @Column(nullable = false)
     private String         label;
 
     /** persistent field */
+    @Column(nullable = false)
     private String         name;
 
     /** persistent field */
+    @Column(nullable = false)
     private java.util.Date created;
 
     /** persistent field */
+    @Column(nullable = false)
     private java.util.Date modified;
 
     public static final String FILE = "file";
