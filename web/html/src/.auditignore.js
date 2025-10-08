@@ -1,6 +1,6 @@
 /**
  * This file outlines known issues or grandfathered modules for audits
  */
-module.exports = {
+export default {
   "node-gettext": "Patched in-tree, see web/html/src/core/intl/node-gettext.ts",
 };

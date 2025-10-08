@@ -45,6 +45,9 @@ sudo -i podman run --cap-add AUDIT_CONTROL --rm \
     -v ${src_dir}/schema/reportdb/upgrade/:/usr/share/susemanager/db/reportdb-schema-upgrade/ \
     -v ${src_dir}/spacewalk/uyuni-setup-reportdb/bin/uyuni-setup-reportdb-user:/usr/bin/uyuni-setup-reportdb-user \
     -v ${src_dir}/web:/web \
+    -v ${src_dir}/.npmrc:/.npmrc \
+    -v ${src_dir}/package.json:/package.json \
+    -v ${src_dir}/package-lock.json:/package-lock.json \
     -v ${src_dir}/branding:/branding \
     -v ${src_dir}/java:/java \
     -v ${src_dir}/client:/client \
