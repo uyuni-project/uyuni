@@ -29,6 +29,7 @@ import com.redhat.rhn.domain.action.supportdata.SupportDataActionDetails;
 import com.redhat.rhn.domain.audit.XccdfBenchmark;
 import com.redhat.rhn.domain.audit.XccdfIdent;
 import com.redhat.rhn.domain.audit.XccdfIdentSystem;
+import com.redhat.rhn.domain.audit.XccdfProfile;
 import com.redhat.rhn.domain.audit.XccdfTestResult;
 import com.redhat.rhn.domain.channel.AccessToken;
 import com.redhat.rhn.domain.channel.AppStream;
@@ -424,6 +425,7 @@ public class AnnotationRegistry {
             XccdfBenchmark.class,
             XccdfIdent.class,
             XccdfIdentSystem.class,
+            XccdfProfile.class,
             XccdfTestResult.class,
             WebEndpoint.class
     );
