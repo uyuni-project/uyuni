@@ -5,8 +5,8 @@
 
 import fs from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 import semver from "semver";
-import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 
@@ -14,15 +14,15 @@ export default async (opts) => {
   let hasFailed = false;
 
   const dirname = path.dirname(__filename);
-  const webHtmlSrc = path.resolve(dirname, "..");
-  const pkg = JSON.parse(await fs.promises.readFile(path.resolve(webHtmlSrc, "package.json"), "utf8"));
+  const projectRoot = path.resolve(dirname, "../../../..");
+  const pkg = JSON.parse(await fs.promises.readFile(path.resolve(projectRoot, "package.json"), "utf8"));
 
   // Currently we only check production dependencies
   const dependencies = pkg.dependencies;
   // If we ever need to support resolutions, they're available here:
   // const resolutions = pkg.resolutions;
 
-  const nodeModules = path.resolve(webHtmlSrc, "node_modules");
+  const nodeModules = path.resolve(projectRoot, "node_modules");
   for (const [dependency, expectedVersion] of Object.entries(dependencies)) {
     const installedPkg = JSON.parse(
       await fs.promises.readFile(path.resolve(nodeModules, dependency, "package.json"), "utf8")
@@ -44,7 +44,7 @@ export default async (opts) => {
     }
   }
   if (hasFailed) {
-    const errorMessage = "Have you installed the latest dependencies? Try running: yarn install";
+    const errorMessage = "Have you installed the latest dependencies? Try running: npm install";
     if (opts.force) {
       console.error(errorMessage);
       console.warn("WARN: Ignoring package check errors because build was called with --force");

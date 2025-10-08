@@ -1,4 +1,4 @@
-name: Frontend lint
+name: Frontend build
 
 on:
   push:
@@ -6,14 +6,14 @@ on:
       - master
     paths:
       - 'web/html/src/**'
-      - '.github/workflows/frontend-lint.yml'
+      - '.github/workflows/frontend-build.yml'
   pull_request:
     paths:
       - 'web/html/src/**'
-      - '.github/workflows/frontend-lint.yml'
+      - '.github/workflows/frontend-build.yml'
 
 jobs:
-  frontend_lint:
+  frontend_build:
     runs-on: ubuntu-latest
 
     strategy:
@@ -43,11 +43,9 @@ jobs:
       continue-on-error: true
       run: npm list
 
+    # We only install production dependencies here to simulate a situation similar to OBS/IBS
     - name: Install production dependencies
-      run: npm ci --ignore-scripts --save=false
+      run: npm ci --ignore-scripts --save=false --omit=dev
 
-    - name: "Check package.json, on failure run: npm run sort-package"
-      run: npm run sort-package -- --check
-
-    - name: "Check lint, on failure run: npm run lint"
-      run: npm run lint:production
+    - name: Build application
+      run: npm run build
