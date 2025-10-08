@@ -140,7 +140,7 @@ export function ProxyConfig({
       helpUrl="installation-and-upgrade/proxy-container-setup.html"
     >
       <p>{t("Convert an already onboarded minion to a proxy or update the configuration of an existing proxy.")}</p>
-      {ContainerConfigMessages(success, messages, loading, true)}
+      {ContainerConfigMessages(success, messages, loading)}
       {!initFailMessage && (
         <Form
           className=""
@@ -297,7 +297,6 @@ export function ProxyConfig({
           />
           <div className="offset-md-3 col-md-6">
             <Messages
-              autoScroll={false}
               items={[
                 {
                   severity: "warning",

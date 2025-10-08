@@ -16,7 +16,7 @@ export type MessageType = {
 type Props = {
   /** Message objects to display */
   items: MessageType[] | MessageType;
-  autoScroll?: boolean;
+  sticky?: boolean;
 };
 
 /**
@@ -57,22 +57,6 @@ const _classNames = {
 };
 
 export class Messages extends React.Component<Props> {
-  componentDidUpdate(prevProps) {
-    const prevItems = Array.isArray(prevProps.items) ? prevProps.items : [prevProps.items];
-    const curItems = Array.isArray(this.props.items) ? this.props.items : [this.props.items];
-
-    const changed =
-      prevItems.length !== curItems.length ||
-      prevItems.some((p, i) => p.text !== curItems[i]?.text || p.severity !== curItems[i]?.severity);
-
-    if (changed && curItems.length > 0) {
-      const el = document.querySelector(".alert-container");
-      if (el) {
-        el.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
-    }
-  }
-
   static info(text: React.ReactNode): MessageType {
     return Messages.message("info", text);
   }
@@ -104,7 +88,7 @@ export class Messages extends React.Component<Props> {
     ));
 
     return (
-      <div className="alert-container" key={"messages-pop-up"}>
+      <div className={`${this.props.sticky ? "sticky-container" : ""}`} key={"messages-pop-up"}>
         {msgs}
       </div>
     );

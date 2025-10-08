@@ -35,21 +35,11 @@ function parseAutoHide(input: boolean) {
   return input === true ? undefined : false;
 }
 
-function onScroll() {
-  requestAnimationFrame(() => {
-    const toastEl = document.querySelector(".Toastify__toast");
-    if (toastEl) {
-      toastEl.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  });
-}
-
 export function showSuccessToastr(message: React.ReactNode, optionalParams: OptionalParams = { autoHide: true }) {
   const notify = (msg) =>
     toast.success(msg, {
       autoClose: parseAutoHide(optionalParams.autoHide),
       containerId: optionalParams.containerId,
-      onOpen: onScroll,
     });
 
   show(message, notify);
@@ -60,7 +50,6 @@ export function showWarningToastr(message: React.ReactNode, optionalParams: Opti
     toast.warning(msg, {
       autoClose: parseAutoHide(optionalParams.autoHide),
       containerId: optionalParams.containerId,
-      onOpen: onScroll,
     });
   show(message, notify);
 }
@@ -70,7 +59,6 @@ export function showErrorToastr(message: React.ReactNode | Error, optionalParams
     toast.error(msg, {
       autoClose: parseAutoHide(optionalParams.autoHide),
       containerId: optionalParams.containerId,
-      onOpen: onScroll,
     });
   };
 
@@ -87,7 +75,6 @@ export function showInfoToastr(message: React.ReactNode, optionalParams: Optiona
     toast.info(msg, {
       autoClose: parseAutoHide(optionalParams.autoHide),
       containerId: optionalParams.containerId,
-      onOpen: onScroll,
     });
   show(message, notify);
 }
