@@ -1,7 +1,6 @@
 import type { ReactNode } from "react";
 
 import { Messages, MessageType } from "components/messages/messages";
-
 type SuccessType = boolean | undefined;
 
 export const ContainerConfigMessages = (success: SuccessType, messagesIn: ReactNode[], loading: boolean) => {
@@ -26,5 +25,5 @@ export const ContainerConfigMessages = (success: SuccessType, messagesIn: ReactN
       },
     ];
   }
-  return <Messages items={items} autoScroll={autoScroll} />;
+  return <Messages sticky items={items} />;
 };

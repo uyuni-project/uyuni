@@ -8,6 +8,7 @@ export const ContainerConfigMessages = (success: SuccessType, messagesIn: ReactN
   if (success) {
     return (
       <Messages
+        sticky
         items={[
           {
             severity: "success",
@@ -19,6 +20,7 @@ export const ContainerConfigMessages = (success: SuccessType, messagesIn: ReactN
   } else if (messagesIn.length > 0) {
     return (
       <Messages
+        sticky
         items={messagesIn.map(function (msg) {
           return Messages.error(msg);
         })}
@@ -27,6 +29,7 @@ export const ContainerConfigMessages = (success: SuccessType, messagesIn: ReactN
   } else if (loading) {
     return (
       <Messages
+        sticky
         items={[
           {
             severity: "info",
