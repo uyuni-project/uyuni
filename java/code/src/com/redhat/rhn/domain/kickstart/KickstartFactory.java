@@ -282,13 +282,26 @@ public class KickstartFactory extends HibernateFactory {
 
 
     private static List<KickstartCommandName> lookupKickstartCommandNames(boolean onlyAdvancedOptions) {
-        String query = "KickstartCommandName.listAllOptions";
-        if (onlyAdvancedOptions) {
-            query = "KickstartCommandName.listAdvancedOptions";
-        }
-
         Session session = HibernateFactory.getSession();
-        List<KickstartCommandName> names = session.getNamedQuery(query).setCacheable(true).list();
+        List<KickstartCommandName> names;
+
+        if (onlyAdvancedOptions) {
+            names = session.createQuery(
+                """
+                    FROM KickstartCommandName AS t
+                    WHERE t.name NOT IN
+                    ('partitions', 'raids', 'logvols', 'volgroups', 'include', 'repo', 'custom', 'custom_partition')
+                    ORDER BY t.order
+                    """, KickstartCommandName.class)
+                    .setCacheable(true)
+                    .list();
+        }
+        else {
+            names = session
+                    .createQuery("FROM KickstartCommandName AS t ORDER BY t.order", KickstartCommandName.class)
+                    .setCacheable(true)
+                    .list();
+        }
 
         // Filter out the unsupported Commands for the passed in profile
         return names.stream()
@@ -323,13 +336,7 @@ public class KickstartFactory extends HibernateFactory {
      * @return found instance, if any
      */
     public static KickstartCommandName lookupKickstartCommandName(String commandName) {
-        Session session = HibernateFactory.getSession();
-        Query<KickstartCommandName> query = session.getNamedQuery("KickstartCommandName.findByLabel");
-        //Retrieve from cache if there
-        query.setCacheable(true);
-        query.setParameter("name", commandName);
-        return query.uniqueResult();
-
+        return singleton.lookupObjectByParam(KickstartCommandName.class, "name", commandName);
     }
 
     /**
@@ -357,11 +364,15 @@ public class KickstartFactory extends HibernateFactory {
      * partitions, logvols, raids, varlogs or includes.
      */
     public static List<KickstartCommandName> lookupKickstartRequiredOptions() {
-        String query = "KickstartCommandName.requiredOptions";
         Session session = HibernateFactory.getSession();
-        return session.getNamedQuery(query)
+        return session.createQuery("""
+                        FROM KickstartCommandName AS t WHERE t.required = 'Y'
+                        AND t.name NOT IN
+                        ('partitions', 'raids', 'logvols', 'volgroups', 'include', 'repo', 'custom', 'custom_partition')
+                         ORDER BY t.order""", KickstartCommandName.class)
                 //Retrieve from cache if there
-                .setCacheable(true).list();
+                .setCacheable(true)
+                .list();
     }
 
     /**
