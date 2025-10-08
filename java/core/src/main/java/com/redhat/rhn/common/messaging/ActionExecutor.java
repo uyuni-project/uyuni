@@ -18,6 +18,7 @@ import com.redhat.rhn.frontend.events.TransactionHelper;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.HibernateException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,8 +69,24 @@ class ActionExecutor implements Runnable {
                     action.execute(msg);
                 }
             }
-            catch (Throwable t) {
-                LOG.error(t);
+            catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                LOG.error("Process was interrupted", e);
+            }
+            catch (HibernateException e) {
+                LOG.error("Database error while executing message action", e);
+            }
+            catch (SecurityException e) {
+                LOG.error("Security error while executing message action", e);
+            }
+            catch (IllegalArgumentException e) {
+                LOG.error("Invalid input while executing message action", e);
+            }
+            catch (IllegalStateException e) {
+                LOG.error("Invalid state while executing message action", e);
+            }
+            catch (RuntimeException e) {
+                LOG.error(e);
             }
         }
     }

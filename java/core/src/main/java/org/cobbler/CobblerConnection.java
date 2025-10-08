@@ -145,6 +145,7 @@ public class CobblerConnection {
      * @param args          to pass to method
      * @return Object returned.
      */
+    @SuppressWarnings("java:S1181")
     private Object invokeMethod(String procedureName, List<Object> args) {
         if (log.isDebugEnabled()) {
             List<Object> dbgArgs = new LinkedList<>(args);
@@ -260,3 +261,4 @@ public class CobblerConnection {
         return inTransaction;
     }
 }
+

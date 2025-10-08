@@ -18,6 +18,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.HibernateException;
 import org.quartz.JobExecutionContext;
 import org.quartz.Trigger;
 import org.quartz.Trigger.CompletedExecutionInstruction;
@@ -60,8 +61,12 @@ public class TaskEnvironmentListener implements TriggerListener {
                     this.vetoedJobs.put(ctx.hashCode(), Boolean.TRUE);
                 }
             }
-            catch (Throwable t) {
-                logger.error(t.getLocalizedMessage(), t);
+            catch (HibernateException e) {
+                logger.error(e.getLocalizedMessage(), e);
+                this.vetoedJobs.put(ctx.hashCode(), Boolean.TRUE);
+            }
+            catch (RuntimeException e) {
+                logger.error("Unexpected exception during Hibernate initialization", e);
                 this.vetoedJobs.put(ctx.hashCode(), Boolean.TRUE);
             }
         }
@@ -69,6 +74,8 @@ public class TaskEnvironmentListener implements TriggerListener {
 
     /**
      * {@inheritDoc}
+     *
+     * Docs inherited from TriggerListener.
      */
     @Override
     public boolean vetoJobExecution(Trigger trigger, JobExecutionContext ctx) {
@@ -79,6 +86,8 @@ public class TaskEnvironmentListener implements TriggerListener {
 
     /**
      * {@inheritDoc}
+     *
+     * Docs inherited from TriggerListener.
      */
     @Override
     public void triggerMisfired(Trigger trigger) {
@@ -87,6 +96,8 @@ public class TaskEnvironmentListener implements TriggerListener {
 
     /**
      * {@inheritDoc}
+     *
+     * Docs inherited from TriggerListener.
      */
     @Override
     public void triggerComplete(Trigger trigger, JobExecutionContext ctx, CompletedExecutionInstruction cei) {
