@@ -173,6 +173,7 @@ import com.redhat.rhn.domain.server.Device;
 import com.redhat.rhn.domain.server.EntitlementServerGroup;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.InstalledProduct;
+import com.redhat.rhn.domain.server.InvalidSnapshotReason;
 import com.redhat.rhn.domain.server.Location;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -323,6 +324,7 @@ public class AnnotationRegistry {
             InstalledPackage.class,
             InstalledProduct.class,
             InternalState.class,
+            InvalidSnapshotReason.class,
             InventoryPath.class,
             IssAccessToken.class,
             IssHub.class,
