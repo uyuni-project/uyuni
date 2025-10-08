@@ -816,9 +816,7 @@ public class KickstartFactory extends HibernateFactory {
     }
 
     private static KickstartTreeType lookupKickstartTreeTypeByLabel(String label) {
-        Session session = HibernateFactory.getSession();
-        return (KickstartTreeType) session.getNamedQuery("KickstartTreeType.findByLabel")
-                .setParameter(LABEL, label).uniqueResult();
+        return singleton.lookupObjectByParam(KickstartTreeType.class, LABEL, label);
     }
 
     /**
