@@ -18,12 +18,10 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Session;
 
 import java.util.List;
-import java.util.Map;
 
-/*
- */
 public class TestFactory extends HibernateFactory {
 
     private static Logger log = LogManager.getLogger(TestFactory.class);
@@ -57,11 +55,13 @@ public class TestFactory extends HibernateFactory {
 
     public static TestInterface lookupByFoobar(String f) {
         // Get PersonalInfo row
-        return singleton.lookupObjectByNamedQuery("Test.findByFoobar", Map.of("fooBar", f));
+        return singleton.lookupObjectByParam(TestImpl.class, "fooBar", f);
     }
 
     public static List<TestInterface> lookupAll() {
-        return singleton.listObjectsByNamedQuery("Test.findAll", Map.of());
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("FROM TestImpl", TestInterface.class)
+                .list();
     }
 
     public static void save(TestInterface t) {

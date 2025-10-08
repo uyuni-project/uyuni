@@ -17,17 +17,38 @@ package com.redhat.rhn.domain.test;
 
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 /**
  */
+@Entity
+@Table(name = "PERSIST_TEST")
 public class TestImpl implements TestInterface {
 
+    @Column(name = "test_column")
     private String testColumn;
+    @Column
     private String foobar;
+    @Column
     private String hidden;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PERSIST_SEQUENCE")
+    @SequenceGenerator(name = "PERSIST_SEQUENCE", sequenceName = "PERSIST_SEQUENCE", allocationSize = 1)
     private Long id;
+    @Column
     private Integer pin;
-    private String noColumnField;
+    @Column(updatable = false, insertable = false)
     private Date created;
+
+    @Transient
+    private String noColumnField;
 
     @Override
     public void setId(Long i) {
