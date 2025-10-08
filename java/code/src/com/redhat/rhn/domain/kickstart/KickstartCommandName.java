@@ -16,18 +16,38 @@ package com.redhat.rhn.domain.kickstart;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.annotations.Type;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 
 /**
  * KickstartCommandName
  * This is a read only table so method access will be private
  */
+@Entity
+@Table(name = "rhnKickstartCommandName")
 public class KickstartCommandName {
     public static final String REPO = "repo";
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_KSCOMMANDNAME_ID_SEQ")
+    @SequenceGenerator(name = "RHN_KSCOMMANDNAME_ID_SEQ", sequenceName = "RHN_KSCOMMANDNAME_ID_SEQ", allocationSize = 1)
     private Long id;
+    @Column(name = "sort_order")
     private Long order;
+    @Column
     private String name;
+    @Column(name = "uses_arguments")
+    @Type(type = "yes_no")
     private Boolean args;
+    @Column
+    @Type(type = "yes_no")
     private Boolean required;
 
     /**

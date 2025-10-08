@@ -3,7 +3,7 @@
 PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="com.redhat.rhn.domain.kickstart.KickstartCommandName"
+    <!-- <class name="com.redhat.rhn.domain.kickstart.KickstartCommandName"
         table="rhnKickstartCommandName">
         <id name="id" type="long" column="id">
             <meta attribute="scope-set">protected</meta>
@@ -18,7 +18,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <property name="order" type="long" column="sort_order" />
         <property name="required" type="yes_no" column="required" />
 
-    </class>
+    <class> -->
 
     <query name="KickstartComandName.findById">
         <![CDATA[from com.redhat.rhn.domain.kickstart.KickstartCommandName as p where p.id = :id]]>
