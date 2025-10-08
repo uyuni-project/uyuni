@@ -300,9 +300,7 @@ public class PackageFactory extends HibernateFactory {
      * doesn't exist
      */
      public static PackageName lookupPackageName(Long id) {
-         return (PackageName) HibernateFactory.getSession().getNamedQuery("PackageName.findById")
-                 .setParameter("id", id, StandardBasicTypes.LONG)
-                 .uniqueResult();
+         return singleton.lookupObjectByParam(PackageName.class, "id", id);
     }
 
     /**
@@ -314,9 +312,7 @@ public class PackageFactory extends HibernateFactory {
      * doesn't exist
      */
     public static PackageName lookupPackageName(String pn) {
-        return (PackageName) HibernateFactory.getSession().getNamedQuery("PackageName.findByName")
-                .setParameter("name", pn, StandardBasicTypes.STRING)
-                .uniqueResult();
+        return singleton.lookupObjectByParam(PackageName.class, "name", pn);
     }
 
     /**
