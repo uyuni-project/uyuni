@@ -77,6 +77,7 @@ import com.redhat.rhn.domain.credentials.RegistryCredentials;
 import com.redhat.rhn.domain.credentials.ReportDBCredentials;
 import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.domain.credentials.VHMCredentials;
+import com.redhat.rhn.domain.errata.Cve;
 import com.redhat.rhn.domain.image.DeltaImageInfo;
 import com.redhat.rhn.domain.image.DockerfileProfile;
 import com.redhat.rhn.domain.image.ImageFile;
@@ -272,6 +273,7 @@ public class AnnotationRegistry {
             CryptoKey.class,
             CryptoKeyType.class,
             CustomDataValue.class,
+            Cve.class,
             DeltaImageInfo.class,
             Device.class,
             DockerfileProfile.class,
