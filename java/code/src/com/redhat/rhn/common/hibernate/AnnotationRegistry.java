@@ -154,6 +154,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageSuggests;
 import com.redhat.rhn.domain.rhnpackage.PackageSupplements;
 import com.redhat.rhn.domain.rhnpackage.profile.ProfileType;
 import com.redhat.rhn.domain.role.RoleImpl;
+import com.redhat.rhn.domain.rpm.SourceRpm;
 import com.redhat.rhn.domain.scc.SCCOrderItem;
 import com.redhat.rhn.domain.scc.SCCRegCacheItem;
 import com.redhat.rhn.domain.scc.SCCRepository;
@@ -432,6 +433,7 @@ public class AnnotationRegistry {
             SnapshotTagName.class,
             SoftwareEnvironmentTarget.class,
             SoftwareProjectSource.class,
+            SourceRpm.class,
             SslCryptoKey.class,
             StateChange.class,
             StateRevision.class,
