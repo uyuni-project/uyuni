@@ -14,17 +14,41 @@
  */
 package com.redhat.rhn.domain.audit;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Immutable;
+
 import java.io.Serializable;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 /**
  * XccdfIdent - Class representation of the table rhnXccdfIdent.
  */
+@Entity
+@Table(name = "rhnXccdfIdent")
+@Immutable
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class XccdfIdent implements Serializable {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rhn_xccdf_ident_seq")
+    @SequenceGenerator(name = "rhn_xccdf_ident_seq", sequenceName = "rhn_xccdf_ident_id_seq", allocationSize = 1)
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "identsystem_id")
     private XccdfIdentSystem identSystem;
 
+    @Column
     private String identifier;
 
     /**

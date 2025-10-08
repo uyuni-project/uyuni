@@ -27,6 +27,7 @@ import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptResult;
 import com.redhat.rhn.domain.action.supportdata.SupportDataActionDetails;
 import com.redhat.rhn.domain.audit.XccdfBenchmark;
+import com.redhat.rhn.domain.audit.XccdfIdent;
 import com.redhat.rhn.domain.audit.XccdfTestResult;
 import com.redhat.rhn.domain.channel.AccessToken;
 import com.redhat.rhn.domain.channel.AppStream;
@@ -420,6 +421,7 @@ public class AnnotationRegistry {
             VHMCredentials.class,
             VirtualHostManagerNodeInfo.class,
             XccdfBenchmark.class,
+            XccdfIdent.class,
             XccdfTestResult.class,
             WebEndpoint.class
     );
