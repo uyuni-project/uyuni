@@ -20,12 +20,22 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 /**
  * Pane. This is the domain object that contains the
  * data represented by a Pane observed by a user.
  * Note this class directly maps to RHNINFOPANE
  * thorough hibernate
  */
+@Entity
+@Table(name = "rhnInfoPane")
 public class Pane implements Serializable {
 
     public static final String TASKS = "tasks";
@@ -46,11 +56,15 @@ public class Pane implements Serializable {
      * preferences.${label}.name and preferences.${label}.description get used
      * while displaying the check boxes in Preferences page.
      */
+    @Column(nullable = false, updatable = false, insertable = false)
     private String label;
 
     /**
      * Maps to RHNINFOPANE.ID
      */
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_INFO_PANE_ID_SEQ")
+    @SequenceGenerator(name = "RHN_INFO_PANE_ID_SEQ", sequenceName = "RHN_INFO_PANE_ID_SEQ", allocationSize = 1)
     private Long id;
 
     /**
@@ -59,6 +73,7 @@ public class Pane implements Serializable {
      * as to whether pane should be Accessible Or Not...
      * This uses the same format as the User ACLs...
      */
+    @Column(nullable = true, updatable = false, insertable = false)
     private String acl;
 
     /**

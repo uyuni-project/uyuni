@@ -208,6 +208,7 @@ import com.redhat.rhn.domain.token.RegTokenOrgDefault;
 import com.redhat.rhn.domain.token.Token;
 import com.redhat.rhn.domain.token.TokenChannelAppStream;
 import com.redhat.rhn.domain.user.AddressImpl;
+import com.redhat.rhn.domain.user.Pane;
 import com.redhat.rhn.domain.user.StateChange;
 import com.redhat.rhn.domain.user.legacy.PersonalInfo;
 import com.redhat.rhn.domain.user.legacy.UserImpl;
@@ -379,6 +380,7 @@ public class AnnotationRegistry {
             PackageRequires.class,
             PackageSuggests.class,
             PackageSupplements.class,
+            Pane.class,
             PaygCredentialsProduct.class,
             PaygDimensionComputation.class,
             PaygDimensionResult.class,
