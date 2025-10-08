@@ -780,9 +780,7 @@ public class KickstartFactory extends HibernateFactory {
      * @return Returns the KickstartSessionState
      */
     public static KickstartSessionState lookupSessionStateByLabel(String label) {
-        Session session = HibernateFactory.getSession();
-        return (KickstartSessionState) session.getNamedQuery("KickstartSessionState.findByLabel")
-                .setParameter(LABEL, label).uniqueResult();
+        return singleton.lookupObjectByParam(KickstartSessionState.class, LABEL, label);
     }
 
     /**
