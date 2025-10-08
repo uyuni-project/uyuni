@@ -45,6 +45,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -132,11 +133,13 @@ public class ProxyBackupEventAction implements MessageAction {
             ServerFactory.save(proxy);
             // Create cobbler records based on PXE entries
             try {
+                List<String> results = new ArrayList<>();
                 String branchid = convertRBSToContainerized(proxy, config.getProxyFqdn());
-                String messages = convertPxeEntriesToCobbler(pxeEntries, proxy, branchid);
-                SystemManager.addHistoryEvent(proxy, "Retail Branch Server migration: finished",
+                Boolean allPass = convertPxeEntriesToCobbler(pxeEntries, proxy, branchid, results);
+                SystemManager.addHistoryEvent(proxy, String.format("Retail Branch Server migration: finished %s",
+                                allPass ? "successfully" : "with errors"),
                         "Proxy was detected to be a Retail Branch Server, branch migration was performed.<ul>" +
-                                messages + "</ul>");
+                                results.stream().collect(Collectors.joining("</li><li>", "<li>", "</li>")) + "</ul>");
                 ServerFactory.save(proxy);
             }
             catch (SaltbootException | ProxyException e) {
@@ -174,6 +177,7 @@ public class ProxyBackupEventAction implements MessageAction {
 
         - note this has a prerequisite migration of the image files, if there are any bundled images left
         */
+
         Pillar branch = proxy.getPillarByCategory(BRANCH_FORMULA).
                 orElseThrow(() -> new ProxyException("Not a branch server"));
         String branchId = (String)branch.getPillarValue("pxe:branch_id");
@@ -225,15 +229,16 @@ public class ProxyBackupEventAction implements MessageAction {
         return branchId;
     }
 
-    private String convertPxeEntriesToCobbler(Path pxeEntries, MinionServer proxy, String branchId)
-            throws SaltbootException {
+    private Boolean convertPxeEntriesToCobbler(Path pxeEntries, MinionServer proxy, String branchId,
+                                              List<String> messages) throws SaltbootException {
         ServerGroup branchGroup = ServerGroupFactory.lookupByNameAndOrg(branchId.trim(), proxy.getOrg());
         if (branchGroup == null) {
             throw new SaltbootException("Unable to find branch group with id " + branchId);
         }
 
         if (pxeEntries == null) {
-            return "<li>No PXE entries found in a backup configuration for branch " + branchId + "</li>";
+            messages.add("No PXE entries found in a backup configuration for branch " + branchId);
+            return true;
         }
 
         Map<String, Object> retailData = YamlHelper.loadAs(
@@ -244,17 +249,18 @@ public class ProxyBackupEventAction implements MessageAction {
             List<Map<String, String>> pixies = (List<Map<String, String>>) retailData.get("pxe_entries");
 
             return pixies.stream().map(
-                    pxe -> this.convertSinglePxeEntry(proxy, branchGroup, pxe)
-            ).collect(Collectors.joining());
+                    pxe -> this.convertSinglePxeEntry(proxy, branchGroup, pxe, messages)
+            ).reduce(true, (a, b) -> a && b);
         }
-        return "<li>No PXE entries found in a backup configuration for branch " + branchId + "</li>";
+        messages.add("No PXE entries found in a backup configuration for branch " + branchId);
+        return true;
     }
 
-    private String convertSinglePxeEntry(MinionServer proxy, ServerGroup branchGroup, Map<String, String> entry) {
+    private Boolean convertSinglePxeEntry(MinionServer proxy, ServerGroup branchGroup, Map<String, String> entry,
+                                         List<String> messages) {
         // Lookup MinionEntry based on MAC address
         String mac = entry.get("mac");
         String branchid = branchGroup.getName();
-        String logMessages = "";
 
         LOG.debug("processing entry for MAC {}", mac);
         List<MinionServer> minions = MinionServerFactory.findMinionsByHwAddrs(Set.of(mac));
@@ -274,20 +280,24 @@ public class ProxyBackupEventAction implements MessageAction {
                 if (branchLostAndFoundGroup == null) {
                     branchLostAndFoundGroup = ServerGroupFactory.create(
                             branchid + "-lostandfound",
-                            "Collection of systems not registered, but present in branch " + branchid + " pxe entries.",
+                            String.format("Collection of systems not registered, but present in branch %s pxe entries.",
+                                    branchid),
                             proxy.getOrg()
                     );
                 }
                 ServerFactory.addServerToGroup(minion, branchLostAndFoundGroup);
                 ServerFactory.addServerToGroup(minion, branchGroup);
 
-                logMessages = "<li>Lost and found: system with HW address " +
-                        mac + " in branch " + branchid + " not found as registered.</li>";
+                messages.add(String.format(
+                "Lost and found: system with HW address %s in branch %s was not found as registered system."
+                                , mac, branchid));
                 minions = List.of(minion);
             }
         }
         if (minions.size() > 1) {
-            return "<li>Multiple minions found by one MAC address " + mac + ". Cannot choose one, ignoring</li>";
+            messages.add(String.format(
+                    "Multiple minions found with the same MAC address %s. Cannot choose one, ignoring", mac));
+            return false;
         }
 
         MinionServer minion = minions.get(0);
@@ -295,22 +305,29 @@ public class ProxyBackupEventAction implements MessageAction {
 
         // Check if minion is part of the branch group. If not, then ignore as this might have been moved minion.
         if (!minion.getGroups().contains(branchGroup)) {
-            return "<li>Not processing minion " + minionId + " not part of a branch group.</li>";
+            messages.add(String.format("Not processing minion '%s' as it is not part of a branch group.", minionId));
+            return false;
         }
 
         // Lookup distro to check if exists
-        String image;
-        if (SaltbootUtils.profileExists(entry.get("probable_boot_image"), proxy.getOrg())) {
-            image = entry.get("probable_boot_image");
+        String probableBootImage = entry.get("probable_boot_image");
+        String image = SaltbootUtils.findImageSaltbootProfile(probableBootImage, proxy.getOrg())
+                .orElseGet(() -> {
+                    messages.add(String.format(
+                            "Image not found: system '%s' is using unknown image '%s'. Using default boot image.",
+                            minionId, probableBootImage));
+                    return SaltbootUtils.DEFAULT_BOOT_IMAGE;
+                });
+
+        try {
+            SaltbootUtils.createSaltbootSystem(minions.get(0), image, branchid,
+                    List.of(mac), entry.get("args"));
         }
-        else {
-            image = SaltbootUtils.DEFAULT_BOOT_IMAGE;
-            logMessages = logMessages + "<li>Image not found: system " + minionId + " is using unknown image " +
-                    entry.get("probable_boot_image") + ". Using default boot image.</li>";
+        catch (SaltbootException e) {
+            messages.add("Failed to create Saltboot system: " + e.getMessage());
+            return false;
         }
-        SaltbootUtils.createSaltbootSystem(minions.get(0).getMinionId(), image, branchid,
-                List.of(mac), entry.get("args"));
-        return logMessages;
+        return true;
     }
 
     @Override
@@ -318,4 +335,3 @@ public class ProxyBackupEventAction implements MessageAction {
         return true;
     }
 }
-
