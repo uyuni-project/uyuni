@@ -108,6 +108,7 @@ import com.redhat.rhn.domain.kickstart.KickstartVirtualizationType;
 import com.redhat.rhn.domain.kickstart.crypto.CryptoKey;
 import com.redhat.rhn.domain.kickstart.crypto.CryptoKeyType;
 import com.redhat.rhn.domain.kickstart.crypto.SslCryptoKey;
+import com.redhat.rhn.domain.matcher.MatcherRunData;
 import com.redhat.rhn.domain.notification.NotificationMessage;
 import com.redhat.rhn.domain.notification.UserNotification;
 import com.redhat.rhn.domain.org.Org;
@@ -330,6 +331,7 @@ public class AnnotationRegistry {
             MaintenanceCalendar.class,
             MaintenanceSchedule.class,
             ManagedServerGroup.class,
+            MatcherRunData.class,
             MinionRecurringAction.class,
             MinionServer.class,
             MinionServerFactory.class,
