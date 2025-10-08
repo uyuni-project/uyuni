@@ -52,6 +52,7 @@ import com.redhat.rhn.domain.common.TinyUrl;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigChannelType;
 import com.redhat.rhn.domain.config.ConfigFile;
+import com.redhat.rhn.domain.config.ConfigFileName;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironmentDiff;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
@@ -256,6 +257,7 @@ public class AnnotationRegistry {
             ConfigChannel.class,
             ConfigChannelType.class,
             ConfigFile.class,
+            ConfigFileName.class,
             ContentEnvironment.class,
             ContentEnvironmentDiff.class,
             ContentFilter.class,

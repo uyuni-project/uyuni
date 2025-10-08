@@ -14,17 +14,32 @@
  */
 package com.redhat.rhn.domain.config;
 
+import static org.hibernate.annotations.CacheConcurrencyStrategy.READ_ONLY;
+
 import com.redhat.rhn.domain.BaseDomainHelper;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.Immutable;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * ConfigFileName - Class representation of the table rhnConfigFileName.
  */
+@Entity
+@Table(name = "rhnConfigFileName")
+@Immutable
+@Cache(usage = READ_ONLY)
 public class ConfigFileName extends BaseDomainHelper {
 
+    @Id
     private Long id;
+    @Column
     private String path;
     /**
      * Getter for id
@@ -38,7 +53,7 @@ public class ConfigFileName extends BaseDomainHelper {
      * Setter for id
      * @param idIn to set
     */
-    public void setId(Long idIn) {
+    protected void setId(Long idIn) {
         this.id = idIn;
     }
 
