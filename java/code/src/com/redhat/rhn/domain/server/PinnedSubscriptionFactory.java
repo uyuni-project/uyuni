@@ -100,7 +100,16 @@ public class PinnedSubscriptionFactory extends HibernateFactory {
      */
     public void cleanStalePins() {
         getSession()
-            .getNamedQuery("PinnedSubscription.cleanStalePins")
+            .createQuery("""
+                    DELETE FROM PinnedSubscription
+                    WHERE id IN (
+                        SELECT id FROM PinnedSubscription
+                            WHERE (
+                                systemId NOT IN (SELECT id FROM Server) OR
+                                subscriptionId NOT IN (SELECT sccId FROM SCCOrderItem)
+                            ) AND systemId <> :selfSystemId
+                    )
+                    """)
             .setParameter("selfSystemId", MatcherJsonIO.SELF_SYSTEM_ID, StandardBasicTypes.LONG)
             .executeUpdate();
     }

@@ -18,26 +18,51 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 /**
  * Location - Class representation of the table rhnServerLocation.
  */
+@Entity
+@Table(name = "rhnServerLocation")
 public class Location extends BaseDomainHelper {
 
+    @Id
+    @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "server_loc_seq")
+    @SequenceGenerator(name = "server_loc_seq", sequenceName = "rhn_server_loc_id_seq", allocationSize = 1)
     private Long id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "server_id")
     private Server server;
+    @Column(name = "MACHINE")
     private String machine;
+    @Column(name = "RACK")
     private String rack;
+    @Column(name = "ROOM")
     private String room;
+    @Column(name = "BUILDING")
     private String building;
+    @Column(name = "ADDRESS1")
     private String address1;
+    @Column(name = "ADDRESS2")
     private String address2;
+    @Column(name = "CITY")
     private String city;
+    @Column(name = "STATE")
     private String state;
+    @Column(name = "COUNTRY")
     private String country;
-    private Date created;
-    private Date modified;
+
     /**
      * Getter for id
      * @return Long to get
@@ -50,7 +75,7 @@ public class Location extends BaseDomainHelper {
      * Setter for id
      * @param idIn to set
     */
-    public void setId(Long idIn) {
+    protected void setId(Long idIn) {
         this.id = idIn;
     }
 
@@ -212,42 +237,6 @@ public class Location extends BaseDomainHelper {
     */
     public void setCountry(String countryIn) {
         this.country = countryIn;
-    }
-
-    /**
-     * Getter for created
-     * @return Date to get
-    */
-    @Override
-    public Date getCreated() {
-        return this.created;
-    }
-
-    /**
-     * Setter for created
-     * @param createdIn to set
-    */
-    @Override
-    public void setCreated(Date createdIn) {
-        this.created = createdIn;
-    }
-
-    /**
-     * Getter for modified
-     * @return Date to get
-    */
-    @Override
-    public Date getModified() {
-        return this.modified;
-    }
-
-    /**
-     * Setter for modified
-     * @param modifiedIn to set
-    */
-    @Override
-    public void setModified(Date modifiedIn) {
-        this.modified = modifiedIn;
     }
 
     /**

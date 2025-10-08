@@ -19,13 +19,25 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-/**
- * CPU
- */
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "rhnTagName")
 public class SnapshotTagName extends BaseDomainHelper {
 
-    private String name;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tagname_seq")
+    @SequenceGenerator(name = "tagname_seq", sequenceName = "rhn_tagname_id_seq", allocationSize = 1)
     private Long id;
+
+    @Column
+    private String name;
 
     /**
      * @return Returns the id.
@@ -37,7 +49,7 @@ public class SnapshotTagName extends BaseDomainHelper {
     /**
      * @param idIn The id to set.
      */
-    public void setId(Long idIn) {
+    protected void setId(Long idIn) {
         this.id = idIn;
     }
 

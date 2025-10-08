@@ -57,7 +57,7 @@ public class LocationTest extends RhnBaseTestCase {
         assertNotEquals(loc1, new Date());
 
         Session session = HibernateFactory.getSession();
-        loc2 = (Location) session.getNamedQuery("Location.findById")
+        loc2 = (Location) session.createQuery("FROM Location WHERE id = :id")
                                       .setParameter("id", loc1.getId(), StandardBasicTypes.LONG)
                                       .uniqueResult();
         assertEquals(loc1, loc2);

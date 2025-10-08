@@ -19,15 +19,37 @@ import com.redhat.rhn.domain.Identifiable;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.annotations.Type;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 /**
  * ServerFQDN - Class representation of the table rhnServerFQDN
  */
+@Entity
+@Table(name = "rhnServerFQDN")
 public class ServerFQDN extends BaseDomainHelper implements Identifiable {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_SERVERFQDN_ID_SEQ")
+    @SequenceGenerator(name = "RHN_SERVERFQDN_ID_SEQ", sequenceName = "RHN_SERVERFQDN_ID_SEQ", allocationSize = 1)
     private Long id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "server_id", nullable = false)
     private Server server;
+    @Column
     private String name;
+    @Column(name = "is_primary")
+    @Type(type = "yes_no")
     private boolean primary;
 
     /**
@@ -56,7 +78,7 @@ public class ServerFQDN extends BaseDomainHelper implements Identifiable {
     /**
      * @param idIn The id to set.
      */
-    public void setId(Long idIn) {
+    protected void setId(Long idIn) {
         this.id = idIn;
     }
 

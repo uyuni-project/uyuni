@@ -28,39 +28,77 @@ import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.Map;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 
 /**
  * CPU
  */
+@Entity
+@Table(name = "rhnCPU")
 public class CPU extends BaseDomainHelper {
     private static final Logger LOG = LogManager.getLogger(CPU.class);
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_CPU_ID_SEQ")
+    @SequenceGenerator(name = "RHN_CPU_ID_SEQ", sequenceName = "RHN_CPU_ID_SEQ", allocationSize = 1)
     private Long id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "server_id")
     private Server server;
+    @Column
     private String bogomips;
+    @Column
     private String cache;
+    @Column
     private String family;
+    @Column(name = "mhz")
     private String MHz;
+    @Column
     private String stepping;
+    @Column
     private String flags;
+    @Column
     private String model;
+    @Column
     private String version;
+    @Column
     private String vendor;
+    @Column(name = "nrcpu")
     private Long nrCPU;
+    @Column
     private Long nrsocket;
+    @Column(name = "nrcore")
     private Long nrCore;
+    @Column(name = "nrthread")
     private Long nrThread;
+    @Column(name = "acpiversion")
     private String acpiVersion;
+    @Column
     private String apic;
+    @Column(name = "apmversion")
     private String apmVersion;
+    @Column(name = "chipset")
     private String chipSet;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "cpu_arch_id")
     private CPUArch arch;
 
     /**
      * This field stores CPU architecture-specific information. Although the corresponding database field is of type
      * JSONB, it is mapped here as a String due to limitations in XML mapping for JSON types.
      */
+    @Column(name = "arch_specs")
+    @org.hibernate.annotations.Type(type = "jsonb")
     private String archSpecs;
 
     /**
@@ -199,7 +237,7 @@ public class CPU extends BaseDomainHelper {
     /**
      * @param idIn The id to set.
      */
-    public void setId(Long idIn) {
+    protected void setId(Long idIn) {
         this.id = idIn;
     }
 

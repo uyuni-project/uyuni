@@ -56,6 +56,7 @@ import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Session;
 import org.hibernate.type.StandardBasicTypes;
 
 import java.util.ArrayList;
@@ -178,7 +179,11 @@ public class ServerFactory extends HibernateFactory {
      * @return List of devices
      */
     public static List<Device> lookupStorageDevicesByServer(Server s) {
-        return SINGLETON.listObjectsByNamedQuery("Device.findStorageByServer", Map.of("server", s));
+        Session session = HibernateFactory.getSession();
+        return session.createQuery(
+                "FROM Device AS t WHERE t.server = :server AND t.deviceClass = 'HD' ORDER BY t.device", Device.class)
+                .setParameter("server", s)
+                .list();
     }
 
     /**

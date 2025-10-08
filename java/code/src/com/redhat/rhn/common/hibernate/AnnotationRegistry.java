@@ -133,25 +133,34 @@ import com.redhat.rhn.domain.scc.SCCRepositoryCloudRmtAuth;
 import com.redhat.rhn.domain.scc.SCCRepositoryNoAuth;
 import com.redhat.rhn.domain.scc.SCCRepositoryTokenAuth;
 import com.redhat.rhn.domain.scc.SCCSubscription;
+import com.redhat.rhn.domain.server.CPU;
 import com.redhat.rhn.domain.server.Capability;
 import com.redhat.rhn.domain.server.ClientCapability;
 import com.redhat.rhn.domain.server.ClientCapabilityId;
 import com.redhat.rhn.domain.server.CustomDataValue;
+import com.redhat.rhn.domain.server.Device;
 import com.redhat.rhn.domain.server.EntitlementServerGroup;
 import com.redhat.rhn.domain.server.InstalledPackage;
+import com.redhat.rhn.domain.server.InstalledProduct;
+import com.redhat.rhn.domain.server.Location;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Pillar;
+import com.redhat.rhn.domain.server.PinnedSubscription;
+import com.redhat.rhn.domain.server.Ram;
 import com.redhat.rhn.domain.server.SAPWorkload;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerAppStream;
+import com.redhat.rhn.domain.server.ServerFQDN;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupType;
+import com.redhat.rhn.domain.server.ServerHistoryEvent;
 import com.redhat.rhn.domain.server.ServerPath;
 import com.redhat.rhn.domain.server.ServerPathId;
+import com.redhat.rhn.domain.server.SnapshotTagName;
 import com.redhat.rhn.domain.server.ansible.AnsiblePath;
 import com.redhat.rhn.domain.server.ansible.InventoryPath;
 import com.redhat.rhn.domain.server.ansible.PlaybookPath;
@@ -219,6 +228,7 @@ public class AnnotationRegistry {
             AppStream.class,
             ArchType.class,
             BaseCredentials.class,
+            CPU.class,
             Capability.class,
             ChannelArch.class,
             Channel.class,
@@ -247,6 +257,7 @@ public class AnnotationRegistry {
             CryptoKeyType.class,
             CustomDataValue.class,
             DeltaImageInfo.class,
+            Device.class,
             DockerfileProfile.class,
             EntitlementServerGroup.class,
             EnvironmentTarget.class,
@@ -269,6 +280,7 @@ public class AnnotationRegistry {
             ImageStore.class,
             ImageStoreType.class,
             InstalledPackage.class,
+            InstalledProduct.class,
             InternalState.class,
             InventoryPath.class,
             IssAccessToken.class,
@@ -277,6 +289,7 @@ public class AnnotationRegistry {
             IssPeripheral.class,
             IssPeripheralChannels.class,
             KiwiProfile.class,
+            Location.class,
             MaintenanceCalendar.class,
             MaintenanceSchedule.class,
             ManagedServerGroup.class,
@@ -316,11 +329,13 @@ public class AnnotationRegistry {
             PaygSshData.class,
             PersonalInfo.class,
             Pillar.class,
+            PinnedSubscription.class,
             PlaybookPath.class,
             ProfileCustomDataValue.class,
             ProjectSource.class,
             ProvisionState.class,
             PtfFilter.class,
+            Ram.class,
             RhnConfiguration.class,
             RecurringConfigChannel.class,
             RecurringHighstate.class,
@@ -351,13 +366,16 @@ public class AnnotationRegistry {
             Server.class,
             ServerCoCoAttestationConfig.class,
             ServerCoCoAttestationReport.class,
+            ServerFQDN.class,
             ServerGroup.class,
             ServerGroupManager.class,
             ServerGroupStateRevision.class,
             ServerGroupType.class,
+            ServerHistoryEvent.class,
             ServerPath.class,
             ServerPathId.class,
             ServerStateRevision.class,
+            SnapshotTagName.class,
             SoftwareEnvironmentTarget.class,
             SoftwareProjectSource.class,
             SslCryptoKey.class,
