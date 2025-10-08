@@ -114,6 +114,7 @@ import com.redhat.rhn.domain.notification.UserNotification;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgAdminManagement;
 import com.redhat.rhn.domain.org.OrgConfig;
+import com.redhat.rhn.domain.org.TemplateCategory;
 import com.redhat.rhn.domain.org.TemplateString;
 import com.redhat.rhn.domain.org.usergroup.UserGroupImpl;
 import com.redhat.rhn.domain.org.usergroup.UserGroupMembers;
@@ -432,6 +433,7 @@ public class AnnotationRegistry {
             TaskoSchedule.class,
             TaskoTask.class,
             TaskoTemplate.class,
+            TemplateCategory.class,
             TemplateString.class,
             TinyUrl.class,
             TokenChannelAppStream.class,
