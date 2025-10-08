@@ -868,9 +868,7 @@ public class KickstartFactory extends HibernateFactory {
      * @return KickstartInstallType if found
      */
     public static KickstartInstallType lookupKickstartInstallTypeByLabel(String label) {
-        Session session = HibernateFactory.getSession();
-        return (KickstartInstallType) session.getNamedQuery("KickstartInstallType.findByLabel")
-                .setParameter(LABEL, label).uniqueResult();
+        return singleton.lookupObjectByParam(KickstartInstallType.class, LABEL, label);
     }
 
     /**
@@ -878,11 +876,12 @@ public class KickstartFactory extends HibernateFactory {
      * @return List of KickstartInstallType instances
      */
     public static List<KickstartInstallType> lookupKickstartInstallTypes() {
-        String query = "KickstartInstallType.loadAll";
         Session session = HibernateFactory.getSession();
-
-        //Retrieve from cache if there
-        return session.getNamedQuery(query).setCacheable(true).list();
+        return session.createQuery("FROM KickstartInstallType AS t ORDER BY t.label DESC",
+                        KickstartInstallType.class)
+                //Retrieve from cache if there
+                .setCacheable(true)
+                .list();
     }
 
     /**
