@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Oct 08 11:51:27 CEST 2025 - rosuna@suse.com
+
+- version 5.1.14-0
+  * Ignore unsupported products when installing missing
+    release packages (bsc#1251278)
+
+-------------------------------------------------------------------
 Fri Aug 29 12:33:20 CEST 2025 - rosuna@suse.com
 
 - version 5.1.13-0
