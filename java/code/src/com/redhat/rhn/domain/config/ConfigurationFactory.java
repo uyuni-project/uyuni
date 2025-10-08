@@ -522,7 +522,7 @@ public class ConfigurationFactory extends HibernateFactory {
      static ConfigChannelType lookupConfigChannelTypeByLabel(String label) {
         Session session = HibernateFactory.getSession();
         return (ConfigChannelType)
-            session.getNamedQuery("ConfigChannelType.findByLabel")
+            session.createQuery("FROM ConfigChannelType AS t WHERE t.label = :label")
                                         .setParameter("label", label, StandardBasicTypes.STRING)
                                         //Retrieve from cache if there
                                         .setCacheable(true)
@@ -539,7 +539,7 @@ public class ConfigurationFactory extends HibernateFactory {
      */
     static ConfigFileState lookupConfigFileStateByLabel(String label) {
         Session session = HibernateFactory.getSession();
-        return (ConfigFileState)session.getNamedQuery("ConfigFileState.findByLabel")
+        return session.createQuery("FROM ConfigFileState AS s WHERE s.label = :label", ConfigFileState.class)
                                        .setParameter("label", label, StandardBasicTypes.STRING)
                                        //Retrieve from cache if there
                                        .setCacheable(true)

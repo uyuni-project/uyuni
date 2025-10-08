@@ -16,13 +16,28 @@ package com.redhat.rhn.domain.common;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 /**
  * ProvisionState
  */
+@Entity
+@Table(name = "rhnProvisionState")
 public class ProvisionState extends BaseDomainHelper {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_PROVSTATE_ID_SEQ")
+    @SequenceGenerator(name = "RHN_PROVSTATE_ID_SEQ", sequenceName = "RHN_PROVSTATE_ID_SEQ", allocationSize = 1)
     private Long id;
+    @Column
     private String label;
+    @Column
     private String description;
 
     /**
@@ -49,7 +64,7 @@ public class ProvisionState extends BaseDomainHelper {
     /**
      * @param i The id to set.
      */
-    public void setId(Long i) {
+    protected void setId(Long i) {
         this.id = i;
     }
 

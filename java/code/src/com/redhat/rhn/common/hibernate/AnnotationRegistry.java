@@ -18,6 +18,7 @@ import com.redhat.rhn.domain.action.ActionChainEntry;
 import com.redhat.rhn.domain.action.ActionChild;
 import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.action.errata.ActionPackageDetails;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionDetails;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionResult;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionDetails;
@@ -32,8 +33,11 @@ import com.redhat.rhn.domain.channel.AppStreamApi;
 import com.redhat.rhn.domain.channel.AppStreamApiKey;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
+import com.redhat.rhn.domain.channel.ChannelProduct;
 import com.redhat.rhn.domain.channel.ChannelSyncFlag;
 import com.redhat.rhn.domain.channel.ClonedChannel;
+import com.redhat.rhn.domain.channel.ContentSourceType;
+import com.redhat.rhn.domain.channel.ProductName;
 import com.redhat.rhn.domain.cloudpayg.CloudRmtHost;
 import com.redhat.rhn.domain.cloudpayg.PaygCredentialsProduct;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
@@ -44,9 +48,12 @@ import com.redhat.rhn.domain.common.ExceptionMessage;
 import com.redhat.rhn.domain.common.FileList;
 import com.redhat.rhn.domain.common.ProvisionState;
 import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.TinyUrl;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigChannelType;
 import com.redhat.rhn.domain.config.ConfigFile;
+import com.redhat.rhn.domain.config.ConfigFileName;
+import com.redhat.rhn.domain.config.ConfigFileState;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironmentDiff;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
@@ -221,6 +228,7 @@ public class AnnotationRegistry {
             ActionChain.class,
             ActionChainEntry.class,
             ActionChild.class,
+            ActionPackageDetails.class,
             ActionStatus.class,
             ActionType.class,
             AddressImpl.class,
@@ -234,6 +242,7 @@ public class AnnotationRegistry {
             Capability.class,
             ChannelArch.class,
             Channel.class,
+            ChannelProduct.class,
             ChannelSyncFlag.class,
             ChannelTemplate.class,
             Checksum.class,
@@ -249,12 +258,15 @@ public class AnnotationRegistry {
             ConfigChannel.class,
             ConfigChannelType.class,
             ConfigFile.class,
+            ConfigFileName.class,
+            ConfigFileState.class,
             ContentEnvironment.class,
             ContentEnvironmentDiff.class,
             ContentFilter.class,
             ContentProject.class,
             ContentProjectFilter.class,
             ContentProjectHistoryEntry.class,
+            ContentSourceType.class,
             CryptoKey.class,
             CryptoKeyType.class,
             CustomDataValue.class,
@@ -333,6 +345,7 @@ public class AnnotationRegistry {
             Pillar.class,
             PinnedSubscription.class,
             PlaybookPath.class,
+            ProductName.class,
             ProfileCustomDataValue.class,
             ProjectSource.class,
             ProvisionState.class,
@@ -394,6 +407,7 @@ public class AnnotationRegistry {
             TaskoTask.class,
             TaskoTemplate.class,
             TemplateString.class,
+            TinyUrl.class,
             TokenChannelAppStream.class,
             Token.class,
             UserGroupImpl.class,

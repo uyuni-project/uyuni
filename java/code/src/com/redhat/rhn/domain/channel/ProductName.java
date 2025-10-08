@@ -20,13 +20,28 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 /**
  *
  * ProductName
  */
+@Entity
+@Table(name = "rhnProductName")
 public class ProductName extends BaseDomainHelper {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "productname_seq")
+    @SequenceGenerator(name = "productname_seq", sequenceName = "rhn_productname_id_seq", allocationSize = 1)
     private Long id;
+    @Column
     private String label;
+    @Column
     private String name;
 
     /**
@@ -40,7 +55,7 @@ public class ProductName extends BaseDomainHelper {
     /**
      * @param val the id to set
      */
-    public void setId(Long val) {
+    protected void setId(Long val) {
         this.id = val;
     }
 
