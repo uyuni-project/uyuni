@@ -15,21 +15,37 @@
 package com.redhat.rhn.domain.errata;
 
 
+import static org.hibernate.annotations.CacheConcurrencyStrategy.READ_ONLY;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.Immutable;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * ErrataFileType
  *
  */
+@Entity
+@Table(name = "rhnErrataFileType")
+@Immutable
+@Cache(usage = READ_ONLY)
 public class ErrataFileType {
 
+    @Id
     private Long id;
 
+    @Column
     private String label;
 
     /**
      * Id
      * @param idIn id
      */
-    public void setId(Long idIn) {
+    protected void setId(Long idIn) {
         id = idIn;
     }
 

@@ -397,9 +397,7 @@ public class ErrataFactory extends HibernateFactory {
     public static ErrataFileType lookupErrataFileType(String label) {
         ErrataFileType retval;
         try {
-            retval = (ErrataFileType) getSession().getNamedQuery("ErrataFileType.findByLabel")
-                    .setParameter("label", label, StandardBasicTypes.STRING)
-                    .setCacheable(true).uniqueResult();
+            retval = singleton.lookupObjectByParam(ErrataFileType.class, "label", label, true);
         }
         catch (HibernateException e) {
             throw new HibernateRuntimeException(e.getMessage(), e);
