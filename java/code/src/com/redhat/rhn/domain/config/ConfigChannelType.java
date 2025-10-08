@@ -14,22 +14,39 @@
  */
 package com.redhat.rhn.domain.config;
 
+import static org.hibernate.annotations.CacheConcurrencyStrategy.READ_ONLY;
+
 import com.redhat.rhn.domain.BaseDomainHelper;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.Immutable;
 
 import java.util.Map;
 import java.util.TreeMap;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * ConfigChannelType - Class representation of the table rhnConfigChannelType.
  */
+@Entity
+@Table(name = "rhnConfigChannelType")
+@Immutable
+@Cache(usage = READ_ONLY)
 public class ConfigChannelType extends BaseDomainHelper {
 
+    @Id
     private Long id;
+    @Column
     private String label;
+    @Column
     private String name;
+    @Column
     private Long priority;
 
     public static final String NORMAL = "normal";
@@ -129,7 +146,7 @@ public class ConfigChannelType extends BaseDomainHelper {
      * Setter for id
      * @param idIn to set
     */
-    public void setId(Long idIn) {
+    protected void setId(Long idIn) {
         this.id = idIn;
     }
 
