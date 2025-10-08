@@ -90,9 +90,9 @@ public class WebSessionFactory extends HibernateFactory {
     @SuppressWarnings("unchecked")
     public static void purgeUserSessions(User user) {
         Session session = HibernateFactory.getSession();
-        Query<Integer> query = session.getNamedQuery("WebSession.deleteByUserId");
-        query.setParameter("user_id", user.getId());
-        query.executeUpdate();
+        session.createQuery("DELETE FROM WebSessionImpl w WHERE w.webUserId = :user_id")
+                .setParameter("user_id", user.getId())
+                .executeUpdate();
     }
 }
 

@@ -197,6 +197,7 @@ import com.redhat.rhn.domain.server.ansible.AnsiblePath;
 import com.redhat.rhn.domain.server.ansible.InventoryPath;
 import com.redhat.rhn.domain.server.ansible.PlaybookPath;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerNodeInfo;
+import com.redhat.rhn.domain.session.WebSessionImpl;
 import com.redhat.rhn.domain.state.OrgStateRevision;
 import com.redhat.rhn.domain.state.ServerGroupStateRevision;
 import com.redhat.rhn.domain.state.ServerStateRevision;
@@ -468,6 +469,7 @@ public class AnnotationRegistry {
             XccdfProfile.class,
             XccdfRuleResult.class,
             XccdfRuleResultType.class,
+            WebSessionImpl.class,
             XccdfTestResult.class,
             WebEndpoint.class
     );
