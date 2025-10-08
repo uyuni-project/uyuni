@@ -109,10 +109,7 @@ public class KickstartFactory extends HibernateFactory {
     }
 
     private static CryptoKeyType lookupKeyType(String label) {
-        return (CryptoKeyType) HibernateFactory.getSession()
-                .getNamedQuery("CryptoKeyType.findByLabel")
-                .setParameter(LABEL, label)
-                .uniqueResult();
+        return singleton.lookupObjectByParam(CryptoKeyType.class, LABEL, label);
     }
 
     /**
