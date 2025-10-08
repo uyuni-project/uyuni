@@ -138,7 +138,8 @@
         <dependency org="org.jmock" name="jmock-junit5" rev="2.12.0" transitive="false"/>
         <dependency org="org.jmock" name="jmock-imposters" rev="2.12.0" transitive="false"/>
         <dependency org="org.objenesis" name="objenesis" rev="1.0" transitive="false"/>
-        <dependency org="javax.websocket" name="javax.websocket-api" rev="1.1" transitive="false"/>
+        <dependency org="jakarta.websocket" name="jakarta.websocket-api" rev="2.2.0" transitive="false"/>
+        <dependency org="jakarta.websocket" name="jakarta.websocket-client-api" rev="2.2.0" transitive="false"/>
         <dependency org="org.jacoco" name="org.jacoco.ant" rev="0.8.7" transitive="false">
            <artifact name="nodeps" type="jar" url="https://repo1.maven.org/maven2/org/jacoco/org.jacoco.ant/0.8.7/org.jacoco.ant-0.8.7-nodeps.jar"/>
         </dependency>

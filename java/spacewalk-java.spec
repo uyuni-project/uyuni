@@ -109,6 +109,7 @@ BuildRequires:  httpcomponents-client
 BuildRequires:  ical4j
 BuildRequires:  istack-commons-runtime
 BuildRequires:  jade4j
+BuildRequires:  jakarta-websocket >= 2.2.0
 BuildRequires:  java-%{java_version}-openjdk-devel
 BuildRequires:  java-saml
 BuildRequires:  javamail
@@ -194,6 +195,7 @@ Requires:       httpcomponents-client
 Requires:       ical4j
 Requires:       istack-commons-runtime
 Requires:       jade4j
+Requires:       jakarta-websocket >= 2.2.0
 Requires:       java-%{java_version}-openjdk
 Requires:       java-saml
 Requires:       javamail
