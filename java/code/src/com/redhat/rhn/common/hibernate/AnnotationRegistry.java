@@ -209,6 +209,7 @@ import com.redhat.rhn.domain.token.Token;
 import com.redhat.rhn.domain.token.TokenChannelAppStream;
 import com.redhat.rhn.domain.user.AddressImpl;
 import com.redhat.rhn.domain.user.Pane;
+import com.redhat.rhn.domain.user.State;
 import com.redhat.rhn.domain.user.StateChange;
 import com.redhat.rhn.domain.user.legacy.PersonalInfo;
 import com.redhat.rhn.domain.user.legacy.UserImpl;
@@ -441,6 +442,7 @@ public class AnnotationRegistry {
             SoftwareProjectSource.class,
             SourceRpm.class,
             SslCryptoKey.class,
+            State.class,
             StateChange.class,
             StateRevision.class,
             SupportDataActionDetails.class,

@@ -86,11 +86,7 @@ public  class UserFactory extends HibernateFactory {
      * @return Returns the appropriate state (or null).
      */
     private static State loadState(String label) {
-        Session session = HibernateFactory.getSession();
-        return (State) session.getNamedQuery("UserState.lookupByLabel").setParameter("label", label)
-                //Retrieve from cache if there
-                .setCacheable(true)
-                .uniqueResult();
+        return SINGLETON.lookupObjectByParam(State.class, "label", label, true);
     }
 
     /**
