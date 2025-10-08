@@ -79,6 +79,7 @@ import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.domain.credentials.VHMCredentials;
 import com.redhat.rhn.domain.errata.Cve;
 import com.redhat.rhn.domain.errata.ErrataFileType;
+import com.redhat.rhn.domain.errata.Severity;
 import com.redhat.rhn.domain.image.DeltaImageInfo;
 import com.redhat.rhn.domain.image.DockerfileProfile;
 import com.redhat.rhn.domain.image.ImageFile;
@@ -396,6 +397,7 @@ public class AnnotationRegistry {
             ServerPath.class,
             ServerPathId.class,
             ServerStateRevision.class,
+            Severity.class,
             SnapshotTagName.class,
             SoftwareEnvironmentTarget.class,
             SoftwareProjectSource.class,
