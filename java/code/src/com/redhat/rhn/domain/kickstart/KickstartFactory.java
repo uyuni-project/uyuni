@@ -336,7 +336,7 @@ public class KickstartFactory extends HibernateFactory {
      * @return found instance, if any
      */
     public static KickstartCommandName lookupKickstartCommandName(String commandName) {
-        return singleton.lookupObjectByParam(KickstartCommandName.class, "name", commandName);
+        return singleton.lookupObjectByParam(KickstartCommandName.class, "name", commandName, true);
     }
 
     /**
