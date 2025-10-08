@@ -230,10 +230,10 @@ artifacts:
     jar: quartz-[0-9.].jar
   - artifact: redstone-xmlrpc
     jar: redstone-xmlrpc-[0-9.]+
-    repository: Uyuni_Other
+    repository: systemsmanagement_Uyuni_Master_jakarta
   - artifact: redstone-xmlrpc-client
     package: redstone-xmlrpc
-    repository: Uyuni_Other
+    repository: systemsmanagement_Uyuni_Master_jakarta
   - artifact: salt-netapi-client
     repository: systemsmanagement_Uyuni_Master_jakarta
   - artifact: simpleclient

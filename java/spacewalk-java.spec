@@ -133,7 +133,7 @@ BuildRequires:  pgjdbc-ng
 BuildRequires:  postgresql-jdbc
 BuildRequires:  prometheus-client-java
 BuildRequires:  quartz
-BuildRequires:  redstone-xmlrpc
+BuildRequires:  redstone-xmlrpc == 1.1_20071120-150752.15.1.testhexagon
 BuildRequires:  salt-netapi-client >= 1.0.0
 BuildRequires:  simple-core
 BuildRequires:  simple-xml
@@ -216,7 +216,7 @@ Requires:       netty
 Requires:       objectweb-asm >= 9.2
 Requires:       pgjdbc-ng
 Requires:       prometheus-client-java
-Requires:       redstone-xmlrpc
+Requires:       redstone-xmlrpc == 1.1_20071120-1
 Requires:       salt-netapi-client >= 1.0.0
 Requires:       simple-core
 Requires:       simple-xml
