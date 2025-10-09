@@ -24,18 +24,35 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import java.io.Serializable;
 import java.util.Objects;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 /**
  * PackageEvr
  */
+@Entity
+@Table(name = "rhnPackageEvr")
 public class PackageEvr implements Comparable<PackageEvr>, Serializable {
 
     private static final RpmVersionComparator RPMVERCMP = new RpmVersionComparator();
     private static final DebVersionComparator DEBVERCMP = new DebVersionComparator();
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_PKG_EVR_SEQ")
+    @SequenceGenerator(name = "RHN_PKG_EVR_SEQ", sequenceName = "RHN_PKG_EVR_SEQ", allocationSize = 1)
     private Long id;
+    @Column
     private String epoch;
+    @Column
     private String version;
+    @Column
     private String release;
+    @Column
     private String type;
 
     /**
@@ -116,7 +133,7 @@ public class PackageEvr implements Comparable<PackageEvr>, Serializable {
     /**
      * @param i The id to set.
      */
-    public void setId(Long i) {
+    protected void setId(Long i) {
         this.id = i;
     }
 

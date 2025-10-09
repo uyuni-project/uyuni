@@ -104,14 +104,17 @@ import com.redhat.rhn.domain.kickstart.KickstartCommandName;
 import com.redhat.rhn.domain.kickstart.KickstartInstallType;
 import com.redhat.rhn.domain.kickstart.KickstartSessionState;
 import com.redhat.rhn.domain.kickstart.KickstartTreeType;
+import com.redhat.rhn.domain.kickstart.KickstartVirtualizationType;
 import com.redhat.rhn.domain.kickstart.crypto.CryptoKey;
 import com.redhat.rhn.domain.kickstart.crypto.CryptoKeyType;
 import com.redhat.rhn.domain.kickstart.crypto.SslCryptoKey;
+import com.redhat.rhn.domain.matcher.MatcherRunData;
 import com.redhat.rhn.domain.notification.NotificationMessage;
 import com.redhat.rhn.domain.notification.UserNotification;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgAdminManagement;
 import com.redhat.rhn.domain.org.OrgConfig;
+import com.redhat.rhn.domain.org.TemplateCategory;
 import com.redhat.rhn.domain.org.TemplateString;
 import com.redhat.rhn.domain.org.usergroup.UserGroupImpl;
 import com.redhat.rhn.domain.org.usergroup.UserGroupMembers;
@@ -134,9 +137,13 @@ import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageBreaks;
 import com.redhat.rhn.domain.rhnpackage.PackageCapability;
 import com.redhat.rhn.domain.rhnpackage.PackageConflicts;
+import com.redhat.rhn.domain.rhnpackage.PackageDelta;
 import com.redhat.rhn.domain.rhnpackage.PackageEnhances;
+import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageExtraTagsKeys;
 import com.redhat.rhn.domain.rhnpackage.PackageFile;
+import com.redhat.rhn.domain.rhnpackage.PackageGroup;
+import com.redhat.rhn.domain.rhnpackage.PackageKeyType;
 import com.redhat.rhn.domain.rhnpackage.PackageObsoletes;
 import com.redhat.rhn.domain.rhnpackage.PackagePreDepends;
 import com.redhat.rhn.domain.rhnpackage.PackageProvides;
@@ -144,6 +151,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageRecommends;
 import com.redhat.rhn.domain.rhnpackage.PackageRequires;
 import com.redhat.rhn.domain.rhnpackage.PackageSuggests;
 import com.redhat.rhn.domain.rhnpackage.PackageSupplements;
+import com.redhat.rhn.domain.rhnpackage.profile.ProfileType;
 import com.redhat.rhn.domain.role.RoleImpl;
 import com.redhat.rhn.domain.scc.SCCOrderItem;
 import com.redhat.rhn.domain.scc.SCCRegCacheItem;
@@ -323,11 +331,13 @@ public class AnnotationRegistry {
             KickstartInstallType.class,
             KickstartSessionState.class,
             KickstartTreeType.class,
+            KickstartVirtualizationType.class,
             KiwiProfile.class,
             Location.class,
             MaintenanceCalendar.class,
             MaintenanceSchedule.class,
             ManagedServerGroup.class,
+            MatcherRunData.class,
             MinionRecurringAction.class,
             MinionServer.class,
             MinionServerFactory.class,
@@ -347,10 +357,14 @@ public class AnnotationRegistry {
             PackageBreaks.class,
             PackageCapability.class,
             PackageConflicts.class,
+            PackageDelta.class,
             PackageEnhances.class,
+            PackageEvr.class,
             PackageExtraTagsKeys.class,
             PackageFile.class,
             PackageFilter.class,
+            PackageGroup.class,
+            PackageKeyType.class,
             PackageObsoletes.class,
             PackagePreDepends.class,
             PackageProvides.class,
@@ -368,6 +382,7 @@ public class AnnotationRegistry {
             PlaybookPath.class,
             ProductName.class,
             ProfileCustomDataValue.class,
+            ProfileType.class,
             ProjectSource.class,
             ProvisionState.class,
             PtfFilter.class,
@@ -428,6 +443,7 @@ public class AnnotationRegistry {
             TaskoSchedule.class,
             TaskoTask.class,
             TaskoTemplate.class,
+            TemplateCategory.class,
             TemplateString.class,
             TinyUrl.class,
             TokenChannelAppStream.class,

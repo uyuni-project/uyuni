@@ -336,7 +336,7 @@ public class KickstartFactory extends HibernateFactory {
      * @return found instance, if any
      */
     public static KickstartCommandName lookupKickstartCommandName(String commandName) {
-        return singleton.lookupObjectByParam(KickstartCommandName.class, "name", commandName);
+        return singleton.lookupObjectByParam(KickstartCommandName.class, "name", commandName, true);
     }
 
     /**
@@ -956,9 +956,10 @@ public class KickstartFactory extends HibernateFactory {
      * @return list of VirtualizationTypes
      */
     public static List<KickstartVirtualizationType> lookupVirtualizationTypes() {
-        String query = "KickstartVirtualizationType.findAll";
         Session session = HibernateFactory.getSession();
-        return session.getNamedQuery(query).setCacheable(true).list();
+        return session.createQuery("FROM KickstartVirtualizationType AS t", KickstartVirtualizationType.class)
+                .setCacheable(true)
+                .list();
     }
 
     /**
@@ -968,9 +969,7 @@ public class KickstartFactory extends HibernateFactory {
      */
     public static KickstartVirtualizationType
     lookupKickstartVirtualizationTypeByLabel(String label) {
-        Session session = HibernateFactory.getSession();
-        return (KickstartVirtualizationType) session.getNamedQuery("KickstartVirtualizationType.findByLabel")
-                .setParameter(LABEL, label).uniqueResult();
+        return singleton.lookupObjectByParam(KickstartVirtualizationType.class, LABEL, label);
     }
 
     /**
