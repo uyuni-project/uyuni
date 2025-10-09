@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2014 SUSE LLC
+ * Copyright (c) 2025 SUSE LLC
+ * Copyright (c) 2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -11,9 +12,6 @@
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
- */
-/**
- * Copyright (c) 2014 Red Hat, Inc.
  */
 package com.redhat.rhn.domain.action;
 
@@ -43,10 +41,10 @@ import java.util.Set;
 public class ActionChainFactory extends HibernateFactory {
 
     /** Logger instance */
-    private static Logger log = LogManager.getLogger(ActionChainFactory.class);
+    private static final Logger LOG = LogManager.getLogger(ActionChainFactory.class);
 
     /** Singleton instance */
-    private static ActionChainFactory singleton = new ActionChainFactory();
+    private static final ActionChainFactory SINGLETON = new ActionChainFactory();
 
     /** Taskomatic API **/
     private static TaskomaticApi taskomaticApi = new TaskomaticApi();
@@ -65,11 +63,19 @@ public class ActionChainFactory extends HibernateFactory {
      * @return the Action Chain or null if not found
      */
     public static ActionChain getActionChain(User requestor, String label) {
-        log.debug("Looking up Action Chain with label {}", label);
-        return singleton.lookupObjectByNamedQuery(
-                "ActionChain.getActionChainByLabel",
-                Map.of("user", requestor, "label", label)
-        );
+        LOG.debug("Looking up Action Chain with label {}", label);
+        return getSession().createQuery("""
+                        SELECT         chain
+                        FROM           ActionChain chain
+                        WHERE          chain.label = :label
+                        AND            chain.user = :user
+                        AND NOT EXISTS (SELECT entry
+                                        FROM   chain.entries entry
+                                        JOIN   ServerAction action ON entry.action = action.parentAction)
+                        """, ActionChain.class)
+                .setParameter("user", requestor)
+                .setParameter("label", label)
+                .uniqueResult();
     }
 
     /**
@@ -81,13 +87,22 @@ public class ActionChainFactory extends HibernateFactory {
      */
     public static ActionChain getActionChain(User requestor, Long id)
     throws ObjectNotFoundException {
-        log.debug("Looking up Action Chain with id {}", id);
+        LOG.debug("Looking up Action Chain with id {}", id);
         if (id == null) {
             return null;
         }
-        ActionChain ac = singleton.lookupObjectByNamedQuery("ActionChain.getActionChain",
-           Map.of("user", requestor, "id", id)
-        );
+        ActionChain ac = getSession().createQuery("""
+                SELECT         chain
+                FROM           ActionChain chain
+                WHERE          chain.id = :id
+                AND            chain.user = :user
+                AND NOT EXISTS (SELECT entry
+                                FROM chain.entries entry
+                                JOIN ServerAction action ON entry.action = action.parentAction)
+                """, ActionChain.class)
+                .setParameter("user", requestor)
+                .setParameter("id", id)
+                .uniqueResult();
         if (ac == null) {
             throw new ObjectNotFoundException(ActionChain.class,
                             "ActionChain Id " + id + " not found for User " + requestor.getLogin());
@@ -131,12 +146,12 @@ public class ActionChainFactory extends HibernateFactory {
      * @return the action chain
      */
     public static ActionChain createActionChain(String label, User user) {
-        log.debug("Creating Action Chain with label {}", label);
+        LOG.debug("Creating Action Chain with label {}", label);
         ActionChain result = new ActionChain();
         result.setLabel(label);
         result.setUser(user);
 
-        singleton.saveObject(result);
+        SINGLETON.saveObject(result);
         return result;
     }
 
@@ -180,7 +195,7 @@ public class ActionChainFactory extends HibernateFactory {
      */
     public static ActionChainEntry queueActionChainEntry(Action action,
         ActionChain actionChain, Server server, int sortOrder) {
-        log.debug("Queuing action {} to Action Chain {} with sort order {}", action, actionChain, sortOrder);
+        LOG.debug("Queuing action {} to Action Chain {} with sort order {}", action, actionChain, sortOrder);
         ActionChainEntry result = new ActionChainEntry();
 
         result.setAction(action);
@@ -213,7 +228,17 @@ public class ActionChainFactory extends HibernateFactory {
      * @return action chains
      */
     public static List<ActionChain> getActionChains(User requestor) {
-        return singleton.listObjectsByNamedQuery("ActionChain.getActionChains", Map.of("user", requestor));
+        return getSession().createQuery("""
+                        SELECT         chain
+                        FROM           ActionChain chain
+                        WHERE          chain.user = :user
+                        AND NOT EXISTS (SELECT entry
+                                        FROM   chain.entries entry
+                                        JOIN   ServerAction action ON entry.action = action.parentAction)
+                        ORDER BY       chain.label ASC
+                        """, ActionChain.class)
+                .setParameter("user", requestor)
+                .list();
     }
 
     /**
@@ -222,9 +247,17 @@ public class ActionChainFactory extends HibernateFactory {
      * @return action chains
      */
     public static List<ActionChain> getActionChainsByModificationDate(User requestor) {
-        return singleton.listObjectsByNamedQuery("ActionChain.getActionChainsByModificationDate",
-                Map.of("user", requestor)
-        );
+        return getSession().createQuery("""
+                        SELECT         chain
+                        FROM           ActionChain chain
+                        WHERE          chain.user = :user
+                        AND NOT EXISTS (SELECT entry
+                                        FROM   chain.entries entry
+                                        JOIN   ServerAction action ON entry.action = action.parentAction)
+                        ORDER BY       chain.modified DESC
+                        """, ActionChain.class)
+                .setParameter("user", requestor)
+                .list();
     }
 
     /**
@@ -234,7 +267,7 @@ public class ActionChainFactory extends HibernateFactory {
      * @return a list of corresponding groups
      */
     public static List<ActionChainEntryGroup> getActionChainEntryGroups(final ActionChain actionChain) {
-        return singleton.listObjectsByNamedQuery("ActionChainEntry.getGroups", Map.of("id", actionChain.getId()));
+        return SINGLETON.listObjectsByNamedQuery("ActionChainEntry.getGroups", Map.of("id", actionChain.getId()));
     }
 
     /**
@@ -244,7 +277,7 @@ public class ActionChainFactory extends HibernateFactory {
      * @return an entry list
      */
     public static List<ActionChainEntry> getActionChainEntries(final ActionChain actionChain, final Integer sortOrder) {
-        return singleton.listObjectsByNamedQuery("ActionChainEntry.getActionChainEntries",
+        return SINGLETON.listObjectsByNamedQuery("ActionChainEntry.getActionChainEntries",
            Map.of("id", actionChain.getId(), "sortOrder", sortOrder)
         );
     }
@@ -255,8 +288,16 @@ public class ActionChainFactory extends HibernateFactory {
      * @return action chains
      */
     public static List<ActionChain> getActionChainsByServer(Server server) {
-        return singleton.listObjectsByNamedQuery(
-                "ActionChain.getActionChainsByServer", Map.of("id", server.getId()));
+        return getSession().createQuery("""
+                SELECT DISTINCT ac
+                FROM            ActionChain ac
+                JOIN            ActionChainEntry ace ON ace.actionChain = ac
+                JOIN            Action a ON a = ace.action
+                JOIN            ServerAction sa ON sa.parentAction = a
+                WHERE           sa.server = :server
+                """, ActionChain.class)
+                .setParameter("server", server)
+                .list();
     }
 
     /**
@@ -265,12 +306,12 @@ public class ActionChainFactory extends HibernateFactory {
      * @return action chains or empty when the action is not part of an action chain
      */
     public static Optional<ActionChain> getActionChainsByAction(Action action) {
-        return getSession().createQuery(
-                "SELECT DISTINCT ac " +
-                        "FROM ActionChain ac " +
-                        "JOIN ActionChainEntry ace" +
-                        "  ON ace.actionChain = ac " +
-                        "WHERE ace.action = :action", ActionChain.class)
+        return getSession().createQuery("""
+                SELECT DISTINCT ac
+                FROM            ActionChain ac
+                JOIN            ActionChainEntry ace ON ace.actionChain = ac
+                WHERE           ace.action = :action
+                """, ActionChain.class)
                 .setParameter("action", action)
                 .uniqueResultOptional();
     }
@@ -282,8 +323,13 @@ public class ActionChainFactory extends HibernateFactory {
      * @return the next sort order value
      */
     public static int getNextSortOrderValue(final ActionChain actionChain) {
-        return singleton.lookupObjectByNamedQuery("ActionChain.getNextSortOrderValue",
-            Map.of("id", actionChain.getId()));
+        return getSession().createQuery("""
+                        SELECT COALESCE(MAX(entry.sortOrder) + 1, 0)
+                        FROM ActionChainEntry entry
+                        WHERE entry.actionChain = :ac
+                        """, Integer.class)
+                .setParameter("ac", actionChain)
+                .getSingleResult();
     }
 
     /**
@@ -291,8 +337,8 @@ public class ActionChainFactory extends HibernateFactory {
      * @param actionChain the action chain to delete
      */
     public static void delete(ActionChain actionChain) {
-        log.debug("Deleting Action Chain {}", actionChain);
-        singleton.removeObject(actionChain);
+        LOG.debug("Deleting Action Chain {}", actionChain);
+        SINGLETON.removeObject(actionChain);
     }
 
     /**
@@ -302,7 +348,7 @@ public class ActionChainFactory extends HibernateFactory {
      * @throws TaskomaticApiException if there was a Taskomatic error
      */
     public static void schedule(ActionChain actionChain, Date date) throws TaskomaticApiException {
-        log.debug("Scheduling Action Chain {} to date {}", actionChain, date);
+        LOG.debug("Scheduling Action Chain {} to date {}", actionChain, date);
         Map<Server, Action> latest = new HashMap<>();
         int maxSortOrder = getNextSortOrderValue(actionChain);
         Date dateInOrder = new Date(date.getTime());
@@ -312,7 +358,7 @@ public class ActionChainFactory extends HibernateFactory {
                 Server server = entry.getServer();
                 Action action = entry.getAction();
 
-                log.debug("Scheduling Action {} to server {}", action, server);
+                LOG.debug("Scheduling Action {} to server {}", action, server);
                 action.setPrerequisite(latest.get(server));
                 action.setEarliestAction(dateInOrder);
                 ActionFactory.addServerToAction(server.getId(), action);
@@ -326,7 +372,7 @@ public class ActionChainFactory extends HibernateFactory {
 
         // Trigger Action Chain execution for Minions via Taskomatic
         taskomaticApi.scheduleActionChainExecution(actionChain);
-        log.debug("Action Chain {} scheduled to date {}", actionChain, date);
+        LOG.debug("Action Chain {} scheduled to date {}", actionChain, date);
     }
 
     /**
@@ -334,7 +380,7 @@ public class ActionChainFactory extends HibernateFactory {
      */
     @Override
     protected Logger getLogger() {
-        return log;
+        return LOG;
     }
 
     /**
@@ -365,8 +411,7 @@ public class ActionChainFactory extends HibernateFactory {
      * @param actionChain An ActionChain from which to be removed.
      * @param entry entry to remove
      */
-    public static void removeActionChainEntry(ActionChain actionChain,
-            ActionChainEntry entry) {
+    public static void removeActionChainEntry(ActionChain actionChain, ActionChainEntry entry) {
         actionChain.getEntries().remove(entry);
         removeActionChainEntrySortGaps(actionChain, entry.getSortOrder());
     }
@@ -385,9 +430,19 @@ public class ActionChainFactory extends HibernateFactory {
      * @return if the action chains contains any minion
      */
     public static boolean isActionChainTargettingMinions(final ActionChain actionChain) {
-        return ((Long)singleton.lookupObjectByNamedQuery("ActionChain.countMinionsInActionChain",
-            Map.of("actionchain_id", actionChain.getId())
-        ) > 0);
+        Long cnt = getSession().createQuery("""
+                        SELECT count(*)
+                        FROM   ActionChain ac
+                        JOIN   ActionChainEntry ace ON ace.actionChain = ac
+                        JOIN   Action a ON ace.action = a
+                        JOIN   ServerAction sa ON sa.parentAction = a
+                        JOIN   Server s ON s = sa.server
+                        JOIN   MinionServer mi ON  mi = sa.server
+                        WHERE  ac = :actionChain
+                        """, Long.class)
+                .setParameter("actionChain", actionChain)
+                .getSingleResult();
+        return cnt > 0;
     }
 
     /**
@@ -396,12 +451,13 @@ public class ActionChainFactory extends HibernateFactory {
      * @return returns a list of actions which are still active
      */
     public static List<Action> getActiveActionsForChain(ActionChain actionChainIn) {
-        return getSession().createQuery(
-                "SELECT sa.parentAction " +
-                        "FROM ActionChainEntry entry " +
-                        "JOIN ServerAction sa ON sa.server = entry.server AND sa.parentAction = entry.action " +
-                        "WHERE entry.actionChain = :actionChain " +
-                        "AND entry.sortOrder = 0", Action.class)
+        return getSession().createQuery("""
+                        SELECT sa.parentAction
+                        FROM   ActionChainEntry entry
+                        JOIN   ServerAction sa ON sa.server = entry.server AND sa.parentAction = entry.action
+                        WHERE  entry.actionChain = :actionChain
+                        AND    entry.sortOrder = 0
+                        """, Action.class)
                 .setParameter("actionChain", actionChainIn)
                 .list();
     }
