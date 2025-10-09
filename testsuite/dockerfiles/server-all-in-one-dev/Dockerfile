@@ -16,7 +16,7 @@ RUN zypper -n rr -a && \
       spacecmd && \
     zypper addrepo --no-gpgcheck --refresh https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Utils/SLE_15_SP6/ systemsmanagement:uyuni:utils && \
     zypper addrepo --no-gpgcheck --refresh https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Stable:/SLE15-Uyuni-Client-Tools/SLE_15/systemsmanagement:Uyuni:Stable:SLE15-Uyuni-Client-Tools.repo && \
-    zypper -n install obs-to-maven yarn prometheus && \
+    zypper -n install obs-to-maven yarn nodejs22 npm22 prometheus && \
     zypper clean -a
 
 COPY minima.yaml /etc/minima.yaml
