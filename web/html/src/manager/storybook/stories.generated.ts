@@ -379,15 +379,27 @@ export const components_panels_TopPanel_example_tsx = {
 };
 
 // @ts-ignore
-import components_table_Table_example_tsx_component from "components/table/Table.example.tsx";
-import components_table_Table_example_tsx_raw from "components/table/Table.example.tsx?raw";
+import components_table_nested_data_example_tsx_component from "components/table/nested-data.example.tsx";
+import components_table_nested_data_example_tsx_raw from "components/table/nested-data.example.tsx?raw";
 
-export const components_table_Table_example_tsx = {
-  path: "components/table/Table.example.tsx",
-  title: "Table.example.tsx",
+export const components_table_nested_data_example_tsx = {
+  path: "components/table/nested-data.example.tsx",
+  title: "nested-data.example.tsx",
   groupName: "table",
-  component: components_table_Table_example_tsx_component,
-  raw: components_table_Table_example_tsx_raw,
+  component: components_table_nested_data_example_tsx_component,
+  raw: components_table_nested_data_example_tsx_raw,
+};
+
+// @ts-ignore
+import components_table_search_example_tsx_component from "components/table/search.example.tsx";
+import components_table_search_example_tsx_raw from "components/table/search.example.tsx?raw";
+
+export const components_table_search_example_tsx = {
+  path: "components/table/search.example.tsx",
+  title: "search.example.tsx",
+  groupName: "table",
+  component: components_table_search_example_tsx_component,
+  raw: components_table_search_example_tsx_raw,
 };
 
 // @ts-ignore

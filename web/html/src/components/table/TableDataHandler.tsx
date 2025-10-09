@@ -53,6 +53,9 @@ type Props = {
   /** 1 for ascending, -1 for descending */
   initialSortDirection?: number;
 
+  /** Callback for search input, setting `onSearch` sets `searchField` to a simple search input if none is provided */
+  onSearch?: (criteria: string) => void;
+
   /** the React Object that contains the filter search field */
   searchField?: React.ReactComponentElement<typeof SearchField>;
 
@@ -242,7 +245,8 @@ export class TableDataHandler extends React.Component<Props, State> {
     return lastPage > 0 ? lastPage : 1;
   };
 
-  onSearch = (criteria?: string): void => {
+  onSearch = (criteria: string = ""): void => {
+    this.props.onSearch?.(criteria);
     this.setState({ currentPage: 1, criteria: criteria }, () => this.getData());
   };
 
@@ -327,7 +331,11 @@ export class TableDataHandler extends React.Component<Props, State> {
     const fromItem = itemCount > 0 ? firstItemIndex + 1 : 0;
     const toItem = firstItemIndex + itemsPerPage <= itemCount ? firstItemIndex + itemsPerPage : itemCount;
     const isEmpty = itemCount === 0;
-    const isTableHeaderEmpty = !this.props.titleButtons && !this.props.searchField && !this.props.additionalFilters;
+    let searchField = this.props.searchField;
+    if (!searchField && this.props.onSearch) {
+      searchField = <SearchField />;
+    }
+    const isTableHeaderEmpty = !this.props.titleButtons && !searchField && !this.props.additionalFilters;
 
     if (this.props.selectable) {
       const isSelectable =
@@ -419,7 +427,7 @@ export class TableDataHandler extends React.Component<Props, State> {
                     selectedCount={selectedItems.length}
                     selectable={isSelectable}
                   >
-                    {this.props.searchField}
+                    {searchField}
                     {this.props.additionalFilters}
                   </SearchPanel>
                   <div className="spacewalk-list-head-addons-extra table-items-per-page-wrapper">
