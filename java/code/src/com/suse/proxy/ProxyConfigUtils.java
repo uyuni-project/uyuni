@@ -197,7 +197,7 @@ public class ProxyConfigUtils {
         pillar.add(PROXY_CERT_FIELD, proxyConfig.getProxyCert());
         pillar.add(PROXY_KEY_FIELD, proxyConfig.getProxyKey());
 
-        pillar.add(PROXY_KEY_FIELD, proxyConfig.getProxySshPub());
+        pillar.add(PROXY_SSH_PUB, proxyConfig.getProxySshPub());
         pillar.add(PROXY_SSH_PRIV, proxyConfig.getProxySshPriv());
         pillar.add(PROXY_SSH_PARENT_PUB, proxyConfig.getParentSshPub());
 

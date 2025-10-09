@@ -18,6 +18,7 @@ package com.suse.proxy.event;
 import static com.suse.manager.webui.services.SaltConstants.SALT_FILE_GENERATION_TEMP_PATH;
 
 import com.redhat.rhn.GlobalInstanceHolder;
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageAction;
@@ -109,6 +110,10 @@ public class ProxyBackupEventAction implements MessageAction {
         Pillar configPillar;
         try {
             config = ProxyConfigUtils.loadFilesToProxyConfig(configPath, httpdPath, sshPath);
+            if (config.getEmail() == null || config.getEmail().isEmpty()) {
+                config.setEmail(Config.get().getString("web.traceback_mail"));
+            }
+            config.setProxyPort(8022);
             configPillar = ProxyConfigUtils.proxyConfigToPillar(config).setMinion(proxy);
         }
         catch (Exception e) {
