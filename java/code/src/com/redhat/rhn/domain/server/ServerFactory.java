@@ -927,7 +927,7 @@ public class ServerFactory extends HibernateFactory {
      * @return The CPUArch
      */
     public static CPUArch lookupCPUArchByName(String name) {
-        return getSession().createNamedQuery("CPUArch.findByName", CPUArch.class)
+        return getSession().createQuery("FROM CPUArch AS t WHERE LOWER(t.name) = LOWER(:name)", CPUArch.class)
                 .setParameter("name", name, StandardBasicTypes.STRING)
                 .setCacheable(true).uniqueResult();
     }

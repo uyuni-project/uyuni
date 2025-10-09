@@ -14,11 +14,22 @@
  */
 package com.redhat.rhn.domain.server;
 
+import static org.hibernate.annotations.CacheConcurrencyStrategy.READ_ONLY;
+
 import com.redhat.rhn.domain.AbstractLabelNameHelper;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.Immutable;
+
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
  * CPUArch
  */
+@Entity
+@Table(name = "rhnCPUArch")
+@Immutable
+@Cache(usage = READ_ONLY)
 public class CPUArch extends AbstractLabelNameHelper {
-
 }
