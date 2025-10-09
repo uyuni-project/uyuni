@@ -19,14 +19,34 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 /**
  * Representation of a single configuration entry of VirtualHostManager.
  */
+@Entity
+@Table(name = "suseVHMConfig")
 public class VirtualHostManagerConfig {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "suse_vhm_config_seq")
+    @SequenceGenerator(name = "suse_vhm_config_seq", sequenceName = "suse_vhm_config_id_seq", allocationSize = 1)
     private Long id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "virtual_host_manager_id", nullable = false)
     private VirtualHostManager virtualHostManager;
+    @Column(nullable = false)
     private String parameter;
+    @Column
     private String value;
 
     /**
