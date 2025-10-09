@@ -800,7 +800,7 @@ public class ServerFactory extends HibernateFactory {
      * @return The ServerGroupType
      */
     public static ServerGroupType lookupServerGroupTypeByLabel(String label) {
-        return getSession().createNamedQuery("ServerGroupType.findByLabel", ServerGroupType.class)
+        return getSession().createQuery("FROM ServerGroupType AS s WHERE s.label = :label", ServerGroupType.class)
                 .setParameter("label", label, StandardBasicTypes.STRING)
                 .setCacheable(true)
                 .uniqueResult();

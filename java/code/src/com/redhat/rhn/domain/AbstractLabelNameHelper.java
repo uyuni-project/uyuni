@@ -18,6 +18,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.persistence.Column;
+import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 /**
@@ -26,9 +27,10 @@ import javax.persistence.MappedSuperclass;
  * to represent them.
  *
  */
-//@MappedSuperclass
+@MappedSuperclass
 public class AbstractLabelNameHelper extends BaseDomainHelper {
 
+    @Id
     @Column
     private Long id;
     @Column
