@@ -13,6 +13,7 @@ package com.redhat.rhn.common.hibernate;
 import com.redhat.rhn.domain.access.AccessGroup;
 import com.redhat.rhn.domain.access.Namespace;
 import com.redhat.rhn.domain.access.WebEndpoint;
+import com.redhat.rhn.domain.action.ActionArchType;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainEntry;
 import com.redhat.rhn.domain.action.ActionChild;
@@ -254,6 +255,7 @@ public class AnnotationRegistry {
             // do not add class at the end, but keep the alphabetical order
             AccessGroup.class,
             AccessToken.class,
+            ActionArchType.class,
             ActionChain.class,
             ActionChainEntry.class,
             ActionChild.class,

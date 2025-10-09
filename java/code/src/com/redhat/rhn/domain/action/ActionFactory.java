@@ -131,12 +131,11 @@ public class ActionFactory extends HibernateFactory {
         setupActionArchTypes();
     }
 
-
-    @SuppressWarnings("unchecked")
     private void setupActionArchTypes() {
         synchronized (this) {
             try {
-                List<ActionArchType> types = getSession().getNamedQuery("ActionArchType.loadAll")
+                List<ActionArchType> types = getSession()
+                        .createQuery("FROM com.redhat.rhn.domain.action.ActionArchType", ActionArchType.class)
                         .setCacheable(true).list();
 
                 // don't cache the entire ActionArchType bean to avoid
