@@ -173,6 +173,7 @@ import com.redhat.rhn.domain.server.ClientCapabilityId;
 import com.redhat.rhn.domain.server.CustomDataValue;
 import com.redhat.rhn.domain.server.Device;
 import com.redhat.rhn.domain.server.EntitlementServerGroup;
+import com.redhat.rhn.domain.server.Feature;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.InvalidSnapshotReason;
@@ -313,6 +314,7 @@ public class AnnotationRegistry {
             ErrataFileType.class,
             ErrataFilter.class,
             ExceptionMessage.class,
+            Feature.class,
             FileList.class,
             GroupRecurringAction.class,
             HubSCCCredentials.class,
