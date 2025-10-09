@@ -23,7 +23,6 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * IssSlaveFactory - the singleton class used to fetch and store
@@ -76,7 +75,7 @@ public class IssFactory extends HibernateFactory {
      * @return the IssMaster entry found
      */
     public static IssMaster lookupMasterById(Long id) {
-        return singleton.lookupObjectByNamedQuery("IssMaster.findById", Map.of("id", id));
+        return singleton.lookupObjectByParam(IssMaster.class, "id", id);
     }
 
     /**
@@ -85,7 +84,7 @@ public class IssFactory extends HibernateFactory {
      * @return the IssMaster entry found
      */
     public static IssMaster lookupMasterByLabel(String label) {
-        return singleton.lookupObjectByNamedQuery("IssMaster.findByLabel", Map.of("label", label));
+        return singleton.lookupObjectByParam(IssMaster.class, "label", label);
     }
 
     /**
@@ -93,7 +92,8 @@ public class IssFactory extends HibernateFactory {
      * @return list of all masters known to this slave
      */
     public static List<IssMaster> listAllMasters() {
-        return singleton.listObjectsByNamedQuery("IssMaster.lookupAll", Map.of());
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("FROM IssMaster AS m ORDER BY m.label", IssMaster.class).list();
     }
 
     /**
@@ -101,7 +101,8 @@ public class IssFactory extends HibernateFactory {
      * @return master where master.isDefaultMaster() == true, null else
      */
     public static IssMaster getCurrentMaster() {
-        return singleton.lookupObjectByNamedQuery("IssMaster.lookupDefaultMaster", Map.of());
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("FROM IssMaster where isCurrentMaster = 'Y'", IssMaster.class).uniqueResult();
     }
 
     /**
