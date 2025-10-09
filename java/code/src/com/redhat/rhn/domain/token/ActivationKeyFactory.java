@@ -33,7 +33,6 @@ import com.redhat.rhn.frontend.struts.Scrubber;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.type.StandardBasicTypes;
 
 import java.util.HashMap;
 import java.util.List;
@@ -59,10 +58,7 @@ public class ActivationKeyFactory extends HibernateFactory {
             return null;
         }
 
-        return (ActivationKey) HibernateFactory.getSession()
-            .getNamedQuery("ActivationKey.findByKey")
-                                      .setParameter("key", key, StandardBasicTypes.STRING)
-                                      .uniqueResult();
+        return singleton.lookupObjectByParam(ActivationKey.class, "key", key);
     }
 
     /**
@@ -75,10 +71,13 @@ public class ActivationKeyFactory extends HibernateFactory {
         if (tokenIn == null) {
             return null;
         }
-        return (ActivationKey) HibernateFactory.getSession()
-            .getNamedQuery("ActivationKey.findByToken")
-                                      .setParameter("token", tokenIn)
-                                      .uniqueResult();
+        return getSession().createQuery("""
+                FROM  com.redhat.rhn.domain.token.ActivationKey AS ak
+                WHERE ak.token = :token
+                AND   kickstartSession IS NULL
+                """, ActivationKey.class)
+                .setParameter("token", tokenIn)
+                .uniqueResult();
     }
 
 
@@ -231,12 +230,7 @@ public class ActivationKeyFactory extends HibernateFactory {
      * @return ActivationKey associated with session
      */
     public static ActivationKey lookupByKickstartSession(KickstartSession sess) {
-        return (ActivationKey) HibernateFactory.getSession()
-                                      .getNamedQuery("ActivationKey.findBySession")
-                                      .setParameter("session", sess)
-                                      //Retrieve from cache if there
-                                      .setCacheable(true)
-                                      .uniqueResult();
+        return singleton.lookupObjectByParam(ActivationKey.class, "kickstartSession", sess, true);
     }
 
     /**
@@ -249,8 +243,14 @@ public class ActivationKeyFactory extends HibernateFactory {
         if (server == null) {
             return null;
         }
-        return getSession().getNamedQuery("ActivationKey.findByServer").
-            setParameter("server", server).list();
+        return getSession().createQuery("""
+                SELECT actKey
+                FROM   ActivationKey actKey
+                JOIN   Token token ON actKey.token = token
+                WHERE  token.server = :server
+                """, ActivationKey.class)
+                .setParameter("server", server)
+                .list();
     }
 
     /**
@@ -260,8 +260,14 @@ public class ActivationKeyFactory extends HibernateFactory {
      * @return list of keys that were used for activation
      */
     public static List<ActivationKey> lookupByActivatedServer(Server server) {
-        return getSession().getNamedQuery("ActivationKey.findByActivatedServer").
-                setParameter("server", server).list();
+        return getSession().createQuery("""
+                SELECT actKey
+                FROM   ActivationKey actKey
+                JOIN   Token token ON actKey.token = token
+                WHERE  :server IN elements(token.activatedServers)
+                """, ActivationKey.class)
+                .setParameter("server", server)
+                .list();
     }
 
     /**
@@ -297,8 +303,12 @@ public class ActivationKeyFactory extends HibernateFactory {
      * @return list of kickstartData objects
      */
     public static List<KickstartData> listAssociatedKickstarts(ActivationKey key) {
-        return singleton.listObjectsByNamedQuery("ActivationKey.listAssociatedKickstarts",
-                Map.of("token", key.getToken()));
+        return getSession().createQuery("""
+                FROM com.redhat.rhn.domain.kickstart.KickstartData AS k
+                WHERE :token MEMBER OF k.defaultRegTokens
+                """, KickstartData.class)
+                .setParameter("token", key.getToken())
+                .list();
     }
 
     /**

@@ -205,6 +205,7 @@ import com.redhat.rhn.domain.state.ServerStateRevision;
 import com.redhat.rhn.domain.state.StateRevision;
 import com.redhat.rhn.domain.task.Task;
 import com.redhat.rhn.domain.test.TestImpl;
+import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.RegTokenOrgDefault;
 import com.redhat.rhn.domain.token.Token;
 import com.redhat.rhn.domain.token.TokenChannelAppStream;
@@ -262,6 +263,7 @@ public class AnnotationRegistry {
             ActionPackageDetails.class,
             ActionStatus.class,
             ActionType.class,
+            ActivationKey.class,
             AddressImpl.class,
             AnsiblePath.class,
             AppStreamApi.class,
