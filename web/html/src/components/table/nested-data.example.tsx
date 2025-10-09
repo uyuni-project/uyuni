@@ -1,7 +1,6 @@
-import { Column } from "./Column";
-import { Table } from "./Table";
+import { Column, Table, useSelected } from "components/table";
+
 import { placeholderData } from "./Table.example.placeholderData";
-import { useSelected } from "./useSelected";
 
 // This is just a placeholder type
 type ChannelWithHierarchy = any & {
@@ -9,7 +8,7 @@ type ChannelWithHierarchy = any & {
 };
 
 export default () => {
-  const identifier = (item: ChannelWithHierarchy) => item.channelId;
+  const identifier = (row: ChannelWithHierarchy) => row.channelId;
   const getAllIdentifiers = () => {
     return new Promise<number[]>((resolve) =>
       window.setTimeout(
