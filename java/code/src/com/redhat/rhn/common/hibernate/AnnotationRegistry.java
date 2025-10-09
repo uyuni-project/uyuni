@@ -44,6 +44,7 @@ import com.redhat.rhn.domain.channel.ChannelProduct;
 import com.redhat.rhn.domain.channel.ChannelSyncFlag;
 import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.channel.ContentSourceType;
+import com.redhat.rhn.domain.channel.DistChannelMap;
 import com.redhat.rhn.domain.channel.ProductName;
 import com.redhat.rhn.domain.cloudpayg.CloudRmtHost;
 import com.redhat.rhn.domain.cloudpayg.PaygCredentialsProduct;
@@ -314,6 +315,7 @@ public class AnnotationRegistry {
             Cve.class,
             DeltaImageInfo.class,
             Device.class,
+            DistChannelMap.class,
             DockerfileProfile.class,
             EntitlementServerGroup.class,
             EnvironmentTarget.class,
