@@ -3,7 +3,7 @@
 PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="com.redhat.rhn.domain.iss.IssSlave"
+    <!-- <class name="com.redhat.rhn.domain.iss.IssSlave"
         table="rhnissslave" >
         <id name="id" type="long" column="ID">
             <meta attribute="scope-set">protected</meta>
@@ -26,7 +26,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
             <key column="slave_id" not-null="true"/>
             <many-to-many column="org_id" class="com.redhat.rhn.domain.org.Org" />
         </set>
-    </class>
+    <class> -->
 
     <query name="IssSlave.findById">
         <![CDATA[from com.redhat.rhn.domain.iss.IssSlave as s where s.id = :id]]>
