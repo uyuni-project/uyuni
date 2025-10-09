@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,15 +15,31 @@
  */
 package com.redhat.rhn.domain.audit;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Immutable;
+
 import java.io.Serializable;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * XccdfProfile - Class representation of the table rhnXccdfProfile.
  */
+@Entity
+@Table(name = "rhnXccdfProfile")
+@Immutable
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class XccdfProfile implements Serializable {
 
+    @Id
     private Long id;
+    @Column
     private String identifier;
+    @Column
     private String title;
 
     /**
@@ -37,7 +54,7 @@ public class XccdfProfile implements Serializable {
      * Setter for id
      * @param idIn to set
     */
-    public void setId(Long idIn) {
+    protected void setId(Long idIn) {
         this.id = idIn;
     }
 
