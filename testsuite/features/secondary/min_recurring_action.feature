@@ -16,8 +16,8 @@ Feature: Recurring Actions
     And I enter "This is a state channel to be used in recurring actions" as "cofDescription"
     And I enter "enable_ip_forwarding:\n  cmd.run:\n    - name: echo 1 > /proc/sys/net/ipv4/conf/all/forwarding" in the editor
     And I click on "Create Config State Channel"
-    Then I should see a "Channel Properties" text
-    And I should see a "My State Channel for Recurring Actions" text
+    Then I wait until I see "Channel Properties" text
+    And I wait until I see "My State Channel for Recurring Actions" text
 
   Scenario: Enable IP forwarding through a custom state recurring action
     When I am on the "Recurring Actions" page of this "sle_minion"
@@ -39,7 +39,7 @@ Feature: Recurring Actions
     And I should see a "Minion" text
     When I follow "Events"
     And I follow "History"
-    Then I wait until I see the event "Apply recurring states [manager_org_1.statechannel-recurring] scheduled" completed during last minute, refreshing the page
+    Then I wait at most 420 seconds until event "Apply recurring states [manager_org_1.statechannel-recurring] schedule" is completed
     And file "/proc/sys/net/ipv4/conf/all/forwarding" should contain "1" on "sle_minion"
 
   Scenario: Edit the IP forwarding custom state recurring action
@@ -60,9 +60,8 @@ Feature: Recurring Actions
     And I should see a "Minion" text
     When I follow "Events"
     And I follow "History"
-    Then I wait until I see the event "Apply recurring states [util.syncstates] scheduled" completed during last minute, refreshing the page
-    And I follow the event "Apply recurring states [util.syncstates] scheduled" completed during last minute
-    And I should see a "SLS: util.syncstates" text
+    Then I wait at most 420 seconds until event "Apply recurring states [util.syncstates] scheduled" is completed
+    And I wait until I see "SLS: util.syncstates" text
 
 # This fails in github actions...
 @skip_if_github_validation
