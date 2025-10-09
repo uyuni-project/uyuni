@@ -199,6 +199,7 @@ import com.redhat.rhn.domain.server.ServerGroupType;
 import com.redhat.rhn.domain.server.ServerHistoryEvent;
 import com.redhat.rhn.domain.server.ServerPath;
 import com.redhat.rhn.domain.server.ServerPathId;
+import com.redhat.rhn.domain.server.ServerSnapshot;
 import com.redhat.rhn.domain.server.SnapshotTag;
 import com.redhat.rhn.domain.server.SnapshotTagName;
 import com.redhat.rhn.domain.server.ansible.AnsiblePath;
@@ -456,6 +457,7 @@ public class AnnotationRegistry {
             ServerHistoryEvent.class,
             ServerPath.class,
             ServerPathId.class,
+            ServerSnapshot.class,
             ServerStateRevision.class,
             Severity.class,
             SnapshotTag.class,
