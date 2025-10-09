@@ -188,6 +188,16 @@ When(/^I wait until I see the event "([^"]*)" completed during last minute, refr
   end
 end
 
+When(/^I follow the event "([^"]*)" completed during last (\d+) minutes$/) do |event, minutes|
+  now = Time.now
+  time_in_seconds = minutes * 60
+  current_minute = now.strftime('%H:%M')
+  previous_minute = (now - time_in_seconds).strftime('%H:%M')
+  xpath_query = "//a[contains(text(), '#{event}')]/../..//td[4]/time[contains(text(),'#{current_minute}') or contains(text(),'#{previous_minute}')]/../../td[3]/a[1]"
+  element = find_and_wait_click(:xpath, xpath_query)
+  element.click
+end
+
 When(/^I follow the event "([^"]*)" completed during last minute$/) do |event|
   now = Time.now
   current_minute = now.strftime('%H:%M')
