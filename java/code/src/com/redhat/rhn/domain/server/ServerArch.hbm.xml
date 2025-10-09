@@ -3,7 +3,7 @@
 PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="com.redhat.rhn.domain.server.ServerArch"
+    <!-- <class name="com.redhat.rhn.domain.server.ServerArch"
         table="rhnServerArch" mutable="false">
         <cache usage="read-only"/>
         <id name="id" type="long" column="id">
@@ -23,7 +23,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
             name="archType"
             class="com.redhat.rhn.domain.common.ArchType"
             column="arch_type_id"/>
-    </class>
+    <class> -->
 
     <query name="ServerArch.findByLabel">
         <![CDATA[from com.redhat.rhn.domain.server.ServerArch as s where s.label = :label]]>
