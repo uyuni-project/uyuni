@@ -18,13 +18,23 @@ import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.manager.errata.ErrataManager;
 
+import org.hibernate.annotations.Immutable;
+
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * Errata Severity
  *
  */
+@Entity
+@Table(name = "rhnErrataSeverity")
+@Immutable
 public class Severity {
 
     // WARNING: These must stay in sync with the values in rhnErrataSeverity
@@ -38,8 +48,11 @@ public class Severity {
     //dummy rank for webui selects
     public static final Integer UNSPECIFIED_RANK = 4;
 
+    @Id
     private long id;
+    @Column
     private int rank;
+    @Column
     private String label;
 
     /**

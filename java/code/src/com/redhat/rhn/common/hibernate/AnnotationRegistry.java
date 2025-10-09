@@ -60,6 +60,7 @@ import com.redhat.rhn.domain.config.ConfigChannelType;
 import com.redhat.rhn.domain.config.ConfigFile;
 import com.redhat.rhn.domain.config.ConfigFileName;
 import com.redhat.rhn.domain.config.ConfigFileState;
+import com.redhat.rhn.domain.config.ConfigFileType;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironmentDiff;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
@@ -82,6 +83,9 @@ import com.redhat.rhn.domain.credentials.RegistryCredentials;
 import com.redhat.rhn.domain.credentials.ReportDBCredentials;
 import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.domain.credentials.VHMCredentials;
+import com.redhat.rhn.domain.errata.Cve;
+import com.redhat.rhn.domain.errata.ErrataFileType;
+import com.redhat.rhn.domain.errata.Severity;
 import com.redhat.rhn.domain.image.DeltaImageInfo;
 import com.redhat.rhn.domain.image.DockerfileProfile;
 import com.redhat.rhn.domain.image.ImageFile;
@@ -96,6 +100,10 @@ import com.redhat.rhn.domain.image.ImageStoreType;
 import com.redhat.rhn.domain.image.KiwiProfile;
 import com.redhat.rhn.domain.image.ProfileCustomDataValue;
 import com.redhat.rhn.domain.iss.IssMaster;
+import com.redhat.rhn.domain.kickstart.KickstartCommandName;
+import com.redhat.rhn.domain.kickstart.KickstartInstallType;
+import com.redhat.rhn.domain.kickstart.KickstartSessionState;
+import com.redhat.rhn.domain.kickstart.KickstartTreeType;
 import com.redhat.rhn.domain.kickstart.crypto.CryptoKey;
 import com.redhat.rhn.domain.kickstart.crypto.CryptoKeyType;
 import com.redhat.rhn.domain.kickstart.crypto.SslCryptoKey;
@@ -266,6 +274,7 @@ public class AnnotationRegistry {
             ConfigFile.class,
             ConfigFileName.class,
             ConfigFileState.class,
+            ConfigFileType.class,
             ContentEnvironment.class,
             ContentEnvironmentDiff.class,
             ContentFilter.class,
@@ -276,12 +285,14 @@ public class AnnotationRegistry {
             CryptoKey.class,
             CryptoKeyType.class,
             CustomDataValue.class,
+            Cve.class,
             DeltaImageInfo.class,
             Device.class,
             DockerfileProfile.class,
             EntitlementServerGroup.class,
             EnvironmentTarget.class,
             ErrataAdvisoryMap.class,
+            ErrataFileType.class,
             ErrataFilter.class,
             ExceptionMessage.class,
             FileList.class,
@@ -308,6 +319,10 @@ public class AnnotationRegistry {
             IssMaster.class,
             IssPeripheral.class,
             IssPeripheralChannels.class,
+            KickstartCommandName.class,
+            KickstartInstallType.class,
+            KickstartSessionState.class,
+            KickstartTreeType.class,
             KiwiProfile.class,
             Location.class,
             MaintenanceCalendar.class,
@@ -396,6 +411,7 @@ public class AnnotationRegistry {
             ServerPath.class,
             ServerPathId.class,
             ServerStateRevision.class,
+            Severity.class,
             SnapshotTagName.class,
             SoftwareEnvironmentTarget.class,
             SoftwareProjectSource.class,

@@ -177,7 +177,7 @@ public abstract class HibernateFactory {
         }
     }
 
-    protected <T> T lookupObjectByParam(Class<T> objClass, String paramName, Long paramValue) {
+    protected <T, V> T lookupObjectByParam(Class<T> objClass, String paramName, V paramValue) {
         return lookupObjectByParam(objClass, paramName, paramValue, false);
     }
 

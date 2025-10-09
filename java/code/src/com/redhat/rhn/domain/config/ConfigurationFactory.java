@@ -552,12 +552,7 @@ public class ConfigurationFactory extends HibernateFactory {
      * @return config filetype object
      */
     static ConfigFileType lookupConfigFileTypeByLabel(String label) {
-        Session session = HibernateFactory.getSession();
-        return (ConfigFileType)session.getNamedQuery("ConfigFileType.findByLabel")
-                                       .setParameter("label", label, StandardBasicTypes.STRING)
-                                       //Retrieve from cache if there
-                                       .setCacheable(true)
-                                       .uniqueResult();
+        return singleton.lookupObjectByParam(ConfigFileType.class, "label", label, true);
     }
 
     /**

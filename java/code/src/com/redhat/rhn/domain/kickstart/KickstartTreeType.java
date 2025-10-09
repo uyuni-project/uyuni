@@ -14,15 +14,32 @@
  */
 package com.redhat.rhn.domain.kickstart;
 
+import static org.hibernate.annotations.CacheConcurrencyStrategy.READ_ONLY;
+
 import com.redhat.rhn.domain.BaseDomainHelper;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.Immutable;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * KickstartTreeType
  */
+@Entity
+@Table(name = "rhnKsTreeType")
+@Immutable
+@Cache(usage = READ_ONLY)
 public class KickstartTreeType extends BaseDomainHelper {
 
+    @Id
     private Long id;
+    @Column
     private String label;
+    @Column
     private String name;
 
     /**
@@ -35,7 +52,7 @@ public class KickstartTreeType extends BaseDomainHelper {
     /**
      * @param i The id to set.
      */
-    public void setId(Long i) {
+    protected void setId(Long i) {
         this.id = i;
     }
 
