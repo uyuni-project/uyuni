@@ -1317,7 +1317,7 @@ public class ServerFactory extends HibernateFactory {
      * @return snapshot tag
      */
     public static SnapshotTag lookupSnapshotTagbyName(String tagName) {
-        return getSession().createNamedQuery("SnapshotTag.lookupByTagName", SnapshotTag.class)
+        return getSession().createQuery("FROM SnapshotTag AS st WHERE st.name.name = :tag_name", SnapshotTag.class)
                 .setParameter("tag_name", tagName, StandardBasicTypes.STRING)
                 // Do not use setCacheable(true), as tag deletion will
                 // usually end up making this query's output out of date
@@ -1329,7 +1329,7 @@ public class ServerFactory extends HibernateFactory {
      * @return snapshot Tag
      */
     public static SnapshotTag lookupSnapshotTagbyId(Long tagId) {
-        return getSession().createNamedQuery("SnapshotTag.lookupById", SnapshotTag.class)
+        return getSession().createQuery("FROM SnapshotTag AS st WHERE st.id = :id", SnapshotTag.class)
                 .setParameter("id", tagId, StandardBasicTypes.LONG)
                 // Do not use setCacheable(true), as tag deletion will
                 // usually end up making this query's output out of date
