@@ -309,12 +309,7 @@ public class OrgFactory extends HibernateFactory {
      * @return the Template found
      */
     public static TemplateString lookupTemplateByLabel(String label) {
-        Session session = HibernateFactory.getSession();
-        return (TemplateString) session.getNamedQuery("TemplateString.findByLabel")
-                .setParameter("label", label)
-                //Retrieve from cache if there
-                .setCacheable(true)
-                .uniqueResult();
+        return singleton.lookupObjectByParam(TemplateString.class, "label", label, true);
     }
 
     public static final TemplateString EMAIL_FOOTER =
