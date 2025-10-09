@@ -16,6 +16,7 @@ export type MessageType = {
 type Props = {
   /** Message objects to display */
   items: MessageType[] | MessageType;
+  sticky?: boolean;
 };
 
 /**
@@ -86,7 +87,11 @@ export class Messages extends React.Component<Props> {
       </div>
     ));
 
-    return <div key={"messages-pop-up"}>{msgs}</div>;
+    return (
+      <div className={`${this.props.sticky ? "sticky-container" : ""}`} key={"messages-pop-up"}>
+        {msgs}
+      </div>
+    );
   }
 }
 

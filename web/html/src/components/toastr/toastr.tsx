@@ -41,6 +41,7 @@ export function showSuccessToastr(message: React.ReactNode, optionalParams: Opti
       autoClose: parseAutoHide(optionalParams.autoHide),
       containerId: optionalParams.containerId,
     });
+
   show(message, notify);
 }
 
