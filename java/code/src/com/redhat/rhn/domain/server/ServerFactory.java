@@ -902,7 +902,7 @@ public class ServerFactory extends HibernateFactory {
      * @return The ServerArch
      */
     public static ServerArch lookupServerArchByLabel(String label) {
-        return getSession().createNamedQuery("ServerArch.findByLabel", ServerArch.class)
+        return getSession().createQuery("FROM ServerArch AS s WHERE s.label = :label", ServerArch.class)
                 .setParameter("label", label, StandardBasicTypes.STRING)
                 .setCacheable(true)
                 .uniqueResult();
@@ -914,7 +914,11 @@ public class ServerFactory extends HibernateFactory {
      * @return The first ServerArch found
      */
     public static ServerArch lookupServerArchByName(String name) {
-        List<ServerArch> archs = SINGLETON.listObjectsByNamedQuery("ServerArch.findByName", Map.of("name", name));
+        Session session = HibernateFactory.getSession();
+        List<ServerArch> archs = session.createQuery("FROM ServerArch AS s WHERE s.name = :name ORDER BY s.id ASC",
+                        ServerArch.class)
+                .setParameter("name", name)
+                .list();
         if (archs != null && !archs.isEmpty()) {
             return archs.get(0);
         }
@@ -963,8 +967,17 @@ public class ServerFactory extends HibernateFactory {
      * @return channel arch
      */
     public static ChannelArch findCompatibleChannelArch(ServerArch serverArch) {
-        return SINGLETON.lookupObjectByNamedQuery("ServerArch.findCompatibleChannelArch",
-                Map.of("server_arch_id", serverArch.getId()), true);
+        Session session = HibernateFactory.getSession();
+        return session.createNativeQuery(
+                        """
+                            SELECT ca.* FROM rhnServerChannelArchCompat sc
+                            JOIN rhnChannelArch ca ON sc.channel_arch_id = ca.id
+                            WHERE sc.server_arch_id = :server_arch_id
+                            """, ChannelArch.class)
+                .setParameter("server_arch_id", serverArch.getId())
+                //Retrieve from cache if there
+                .setCacheable(true)
+                .uniqueResult();
     }
 
     /**
