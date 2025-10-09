@@ -206,6 +206,7 @@ import com.redhat.rhn.domain.server.ansible.PlaybookPath;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerNodeInfo;
 import com.redhat.rhn.domain.session.WebSessionImpl;
 import com.redhat.rhn.domain.state.OrgStateRevision;
+import com.redhat.rhn.domain.state.PackageState;
 import com.redhat.rhn.domain.state.ServerGroupStateRevision;
 import com.redhat.rhn.domain.state.ServerStateRevision;
 import com.redhat.rhn.domain.state.StateRevision;
@@ -394,6 +395,7 @@ public class AnnotationRegistry {
             PackageProvides.class,
             PackageRecommends.class,
             PackageRequires.class,
+            PackageState.class,
             PackageSuggests.class,
             PackageSupplements.class,
             Pane.class,
