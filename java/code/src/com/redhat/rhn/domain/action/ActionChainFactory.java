@@ -267,7 +267,18 @@ public class ActionChainFactory extends HibernateFactory {
      * @return a list of corresponding groups
      */
     public static List<ActionChainEntryGroup> getActionChainEntryGroups(final ActionChain actionChain) {
-        return SINGLETON.listObjectsByNamedQuery("ActionChainEntry.getGroups", Map.of("id", actionChain.getId()));
+        return getSession().createQuery("""
+                        SELECT   NEW com.redhat.rhn.domain.action.ActionChainEntryGroup(
+                                            entry.sortOrder,
+                                            MIN(entry.id),
+                                            COUNT(entry))
+                        FROM     ActionChainEntry entry
+                        WHERE    entry.actionChain = :ac
+                        GROUP BY entry.sortOrder
+                        ORDER BY entry.sortOrder ASC
+                        """, ActionChainEntryGroup.class)
+                .setParameter("ac", actionChain)
+                .list();
     }
 
     /**
@@ -277,9 +288,16 @@ public class ActionChainFactory extends HibernateFactory {
      * @return an entry list
      */
     public static List<ActionChainEntry> getActionChainEntries(final ActionChain actionChain, final Integer sortOrder) {
-        return SINGLETON.listObjectsByNamedQuery("ActionChainEntry.getActionChainEntries",
-           Map.of("id", actionChain.getId(), "sortOrder", sortOrder)
-        );
+        return getSession().createQuery("""
+                        SELECT   entry
+                        FROM     ActionChainEntry entry
+                        WHERE    entry.actionChain = :ac
+                        AND      entry.sortOrder = :sortOrder
+                        ORDER BY entry.server.name ASC
+                        """, ActionChainEntry.class)
+                .setParameter("ac", actionChain)
+                .setParameter("sortOrder", sortOrder)
+                .list();
     }
 
     /**

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 SUSE LLC
+ * Copyright (c) 2014--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.redhat.rhn.domain.action;
 
@@ -21,32 +17,48 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
 /**
  * POJO for a rhnActionChainEntry row.
  * @author Silvio Moioli {@literal <smoioli@suse.de>}
  */
+@Entity
+@Table(name = "rhnActionChainEntry")
 public class ActionChainEntry extends BaseDomainHelper {
 
     /** The id, which is also the associated Action id. */
+    @Id
+    @Column(name = "action_id")
     private Long id;
 
     /** The action. */
+    @OneToOne
+    @JoinColumn(name = "action_id")
+    @MapsId
     private Action action;
 
     /** The action chain. */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "actionchain_id", nullable = false)
     private ActionChain actionChain;
 
     /** The server. */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "server_id", nullable = false)
     private Server server;
 
     /** The sort order. */
+    @Column(name = "sort_order")
     private Integer sortOrder;
-
-    /**
-     * Default constructor.
-     */
-    public ActionChainEntry() {
-    }
 
     /**
      * Gets the id.
