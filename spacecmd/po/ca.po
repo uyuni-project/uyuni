@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-03 11:04+0200\n"
-"PO-Revision-Date: 2025-06-05 09:59+0000\n"
+"POT-Creation-Date: 2025-10-10 09:51+0200\n"
+"PO-Revision-Date: 2025-10-04 09:59+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/spacecmd/ca/>\n"
 "Language: ca\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.11.4\n"
+"X-Generator: Weblate 5.13.3\n"
 
 #: ../src/spacecmd/activationkey.py:53
 msgid "activationkey_addpackages: Add packages to an activation key"
@@ -426,7 +426,6 @@ msgid "File %s exists, confirm overwrite file? (y/n)"
 msgstr "El fitxer %s existeix, confirmeu la sobreescriptura del fitxer? (s/n)"
 
 #: ../src/spacecmd/activationkey.py:1448
-#, python-brace-format
 msgid "Failed to save exported keys to file: {}"
 msgstr "No s'han pogut desar les claus exportades al fitxer: {}"
 
@@ -1266,7 +1265,6 @@ msgid "Exporting cc %s to %s"
 msgstr "S'està exportant el cc %s a %s"
 
 #: ../src/spacecmd/configchannel.py:1364
-#, python-brace-format
 msgid "File '{}' exists, confirm overwrite file? (y/n)"
 msgstr "El fitxer «{}» existeix, confirmeu la sobreescriptura del fitxer? (s/n)"
 
@@ -1588,7 +1586,6 @@ msgid "usage: custominfo_details KEY ..."
 msgstr "ús: clau custominfodetails..."
 
 #: ../src/spacecmd/custominfo.py:167
-#, python-brace-format
 msgid "No keys matched argument '{}'."
 msgstr "No hi ha cap clau que coincideixi amb l'argument «{}»."
 
@@ -3651,7 +3648,6 @@ msgstr "No s'ha trobat cap organització per al nom %s"
 #: ../src/spacecmd/org.py:229 ../src/spacecmd/org.py:264
 #: ../src/spacecmd/org.py:300 ../src/spacecmd/org.py:338
 #: ../src/spacecmd/org.py:460 ../src/spacecmd/org.py:497
-#, python-brace-format
 msgid "Organisation '{}' was not found"
 msgstr "No s'ha trobat l'organització «{}»"
 
@@ -3681,7 +3677,6 @@ msgid "No trust organisation found for the name %s"
 msgstr "No s'ha trobat cap organització de confiança per al nom %s"
 
 #: ../src/spacecmd/org.py:304 ../src/spacecmd/org.py:342
-#, python-brace-format
 msgid "Organisation '{}' to trust for, was not found"
 msgstr "No s'ha trobat l'organització «{}» per a la qual confiar"
 
@@ -3715,7 +3710,6 @@ msgid "No trusted organisation found for the name %s"
 msgstr "No s'ha trobat cap organització de confiança per al nom %s"
 
 #: ../src/spacecmd/org.py:388
-#, python-brace-format
 msgid "Trusted organisation '{}' was not found"
 msgstr "No s'ha trobat l'organització de confiança «{}»"
 
@@ -4013,6 +4007,7 @@ msgid "proxy_container_config: create a proxy system and return its configuratio
 msgstr "proxycontainerconfig: crea un sistema proxy i retorna el seu fitxer de configuració"
 
 #: ../src/spacecmd/proxy.py:46
+#, python-format
 msgid ""
 "usage: proxy_container_config [options] PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL ROOT_CA CRT KEY\n"
 "\n"
@@ -4059,6 +4054,7 @@ msgid "proxy_container_config_generate_cert: create a proxy system and return it
 msgstr "proxycontainerconfiggeneratecert: crea un sistema proxy i retorna el seu fitxer de configuració"
 
 #: ../src/spacecmd/proxy.py:119
+#, python-format
 msgid ""
 "usage: proxy_container_config_generate_cert PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL\n"
 "\n"
@@ -4161,7 +4157,6 @@ msgid "Repository SSL Client Key:         %s"
 msgstr "Clau del client SSL del repositori: %s"
 
 #: ../src/spacecmd/repo.py:116
-#, python-brace-format
 msgid "No repositories found for '{}' query"
 msgstr "No s'ha trobat cap repositori per a la consulta «{}»"
 
@@ -4382,7 +4377,6 @@ msgid "%s  # Systems"
 msgstr "%s   Sistemes"
 
 #: ../src/spacecmd/report.py:197
-#, python-brace-format
 msgid "No errata found for '{}'"
 msgstr "No s'ha trobat cap errata per a «{}»"
 
@@ -4807,7 +4801,6 @@ msgid "If no date is provided it will delete all archived actions"
 msgstr "Si no es proporciona cap data, es suprimiran totes les accions arxivades"
 
 #: ../src/spacecmd/schedule.py:537
-#, python-brace-format
 msgid "Do you want to delete ({}) archived actions? [y/N]"
 msgstr "Voleu suprimir ({}) accions arxivades? [s/N]"
 
@@ -4828,7 +4821,6 @@ msgid "If no date is provided it will archive all completed actions"
 msgstr "Si no es proporciona cap data, s'arxivaran totes les accions completades"
 
 #: ../src/spacecmd/schedule.py:619
-#, python-brace-format
 msgid "Do you want to archive ({}) completed actions? [y/N]"
 msgstr "Voleu arxivar ({}) accions completades? [s/N]"
 
@@ -6093,12 +6085,10 @@ msgid "merging errata from softwarechannel "
 msgstr "fusionant errata des del canal de programari "
 
 #: ../src/spacecmd/softwarechannel.py:2931
-#, python-brace-format
 msgid "{} contains no errata which is not already present in {}"
 msgstr "{} no conté cap errata que no estigui present a {}"
 
 #: ../src/spacecmd/softwarechannel.py:2939
-#, python-brace-format
 msgid "errata to add to channel {}: "
 msgstr "errata a afegir al canal {}: "
 
@@ -6112,7 +6102,6 @@ msgid " errata to  "
 msgstr " errata a  "
 
 #: ../src/spacecmd/softwarechannel.py:2955
-#, python-brace-format
 msgid "Perform these changes to channel {} [y/N]:"
 msgstr "Realitza aquests canvis al canal {} [y/N]:"
 
@@ -7991,7 +7980,6 @@ msgstr "El servidor no admet claus de reactivació en temps d'arrencada"
 
 #. pylint: disable-next=consider-using-f-string
 #: ../src/spacecmd/system.py:5018
-#, python-brace-format
 msgid "Bootstrapping '{}'. This may take a while."
 msgstr "S'està arrencant «{}». Això pot trigar una estona."
 
@@ -8347,13 +8335,12 @@ msgid "Skipping usage of common strings: number of substrings differ"
 msgstr "S'omet l'ús de cadenes comunes: el nombre de subcadenes difereix"
 
 #: ../src/spacecmd/utils.py:992
-#, python-brace-format
 msgid "Parameter {} not a string type, but {}."
 msgstr "El paràmetre {} no és un tipus de cadena, sinó {}."
 
 #: ../src/bin/spacecmd:54
 msgid "Welcome to spacecmd, a command-line interface to Spacewalk."
-msgstr ""
+msgstr "Benvinguts a spacecmd, una interfície de línia d'ordres per a Spacewalk."
 
 #: ../src/bin/spacecmd:82
 msgid "Unhandled exception occurred while getting FQDN:"
@@ -8361,65 +8348,57 @@ msgstr "S'ha produït una excepció no gestionada en obtenir FQDN:"
 
 #: ../src/bin/spacecmd:110
 msgid "config file to use [default: ~/.spacecmd/config]"
-msgstr ""
+msgstr "fitxer de configuració per usar [per defecte: ~/.spacecmd/config]"
 
 #: ../src/bin/spacecmd:113
-#, fuzzy
-#| msgid "logout: Disconnect from the server"
 msgid "use this username to connect to the server"
-msgstr "logout: Desconnecta del servidor"
+msgstr "usa aquest nom d'usuari per connectar amb el servidor"
 
 #: ../src/bin/spacecmd:119
 msgid "use this password to connect to the server (insecure). Use config instead or spacecmd will ask."
-msgstr ""
+msgstr "usa aquesta contrasenya per connectar amb el servidor (no és segura). Usa la configuració o spacecmd us ho preguntarà."
 
 #: ../src/bin/spacecmd:123
 msgid "connect to this server [default: local hostname]"
-msgstr ""
+msgstr "connectar amb aquest servidor [per defecte: nom d'amfitrió local]"
 
 #: ../src/bin/spacecmd:126
 msgid "use HTTP instead of HTTPS"
-msgstr ""
+msgstr "usa HTTP en lloc d'HTTPS"
 
 #: ../src/bin/spacecmd:129
-#, fuzzy
-#| msgid "history: List your command history"
 msgid "do not store command history"
-msgstr "historial: llista l'historial de comandes"
+msgstr "no desis l'historial d'ordres"
 
 #: ../src/bin/spacecmd:132
 msgid "answer yes for all questions"
-msgstr ""
+msgstr "respon sí a totes les preguntes"
 
 #: ../src/bin/spacecmd:135
 msgid "print only error messages"
-msgstr ""
+msgstr "imprimeix només els missatges d'error"
 
 #: ../src/bin/spacecmd:142
 msgid "print debug messages (can be passed multiple times)"
-msgstr ""
+msgstr "imprimeix missatges de depuració (es poden passar diverses vegades)"
 
 #: ../src/bin/spacecmd:192
-#, fuzzy, c-format
-#| msgid "source channel %s does not exist!"
+#, c-format
 msgid "Config file %s does not exist."
-msgstr "el canal d'origen %s no existeix!"
+msgstr "El fitxer de configuració %s no existeix."
 
 #: ../src/bin/spacecmd:210
-#, fuzzy, c-format
-#| msgid "Could not read %s"
+#, c-format
 msgid "Could not create %s"
-msgstr "No s'ha pogut llegir %s"
+msgstr "No s'ha pogut crear %s"
 
 #: ../src/bin/spacecmd:251
 msgid "User Interrupt"
-msgstr ""
+msgstr "Interrupció de l'usuari"
 
 #: ../src/bin/spacecmd:292
-#, fuzzy
-#| msgid "Could not find repo %s"
 msgid "Could not find session"
-msgstr "No s'ha pogut trobar el dipòsit %s"
+msgstr "No s'ha pogut trobar la sessió"
 
 #~ msgid "Could not retrieve the Kickstart file"
 #~ msgstr "No s'ha pogut recuperar el fitxer Kickstart"
