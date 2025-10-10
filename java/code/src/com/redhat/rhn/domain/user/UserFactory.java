@@ -649,9 +649,7 @@ public  class UserFactory extends HibernateFactory {
         }
         else {
             if (usp == null) {
-                id = new UserServerPreferenceId(user, server, preferenceName);
-                usp = new UserServerPreference();
-                usp.setId(id);
+                usp = new UserServerPreference(user, server, preferenceName);
                 usp.setValue("0");
                 session.save(usp);
             }

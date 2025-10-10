@@ -213,6 +213,7 @@ import com.redhat.rhn.domain.user.AddressImpl;
 import com.redhat.rhn.domain.user.Pane;
 import com.redhat.rhn.domain.user.State;
 import com.redhat.rhn.domain.user.StateChange;
+import com.redhat.rhn.domain.user.UserServerPreference;
 import com.redhat.rhn.domain.user.legacy.PersonalInfo;
 import com.redhat.rhn.domain.user.legacy.UserImpl;
 import com.redhat.rhn.domain.user.legacy.UserInfo;
@@ -471,6 +472,7 @@ public class AnnotationRegistry {
             UserImpl.class,
             UserInfo.class,
             UserNotification.class,
+            UserServerPreference.class,
             VHMCredentials.class,
             VirtualHostManagerNodeInfo.class,
             XccdfBenchmark.class,
