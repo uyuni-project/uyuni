@@ -33,7 +33,6 @@ import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
-import com.redhat.rhn.domain.user.legacy.UserImpl;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.DeleteUserException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidOperationException;
@@ -123,7 +122,7 @@ public class UserHandler extends BaseHandler {
      * #array_end()
      */
     @ReadOnly
-    public List<UserImpl> listUsers(User loggedInUser) throws FaultException {
+    public List<User> listUsers(User loggedInUser) throws FaultException {
         // Get the logged in user
         try {
             return UserManager.usersInOrg(loggedInUser);
