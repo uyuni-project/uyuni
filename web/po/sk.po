@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-10-10 09:51+0200\n"
-"PO-Revision-Date: 2025-10-04 15:59+0000\n"
+"PO-Revision-Date: 2025-10-10 17:59+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -2299,10 +2299,8 @@ msgid "No hub is currently configured for this server. "
 msgstr "Pre tento server nie je v súčasnosti nakonfigurovaný žiadny hub. "
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:89
-#, fuzzy
-#| msgid "This server is currently registered as peripheral of hub {fqdn}. This page shows the details of the hub server."
 msgid "This server is currently registered as peripheral of hub {fqdn}. "
-msgstr "Tento server je v súčasnosti registrovaný ako periféria hubu {fqdn}. Táto stránka zobrazuje podrobnosti o hub serveri."
+msgstr "Tento server je v súčasnosti registrovaný ako periféria hubu {fqdn}. "
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:108
 msgid "Successfully scheduled a channels synchronization."
@@ -2325,10 +2323,8 @@ msgid "{fqdn} - Peripheral Details"
 msgstr "{fqdn} - Podrobnosti o periférii"
 
 #: ../html/src/manager/admin/hub/peripheral-details.tsx:51
-#, fuzzy
-#| msgid "The server {fqdn} is currently registered as peripheral of this hub. This page shows the details of the peripheral server."
 msgid "The server {fqdn} is currently registered as peripheral of this hub. "
-msgstr "Server {fqdn} je v súčasnosti registrovaný ako periféria pre hub. Táto stránka zobrazuje podrobnosti o periférnom serveri."
+msgstr "Server {fqdn} je v súčasnosti registrovaný ako periféria pre tento hub. "
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:24
 msgid "Peripherals Configuration"
@@ -4112,20 +4108,16 @@ msgid "If you typed this address into your browser, double-check the spelling an
 msgstr "Ak ste zadali túto adresu do svojho prehliadača, znova skontrolujte pravopis a veľké písmená. Adresa, ktorú kopírujete, môže byť tiež zastaraná."
 
 #: ../html/src/manager/errors/not-found.tsx:18
-#, fuzzy
-#| msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your browser to try a different link, or use the top (or left) navigation bars to find the page you are looking for."
 msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your "
-msgstr "Ak ste nasledovali odkaz, ten môže byť nesprávny alebo zastaraný. Kliknite na tlačidlo späť vo vašom prehliadači a vyskúšajte iný odkaz alebo použite horný (alebo ľavý) navigačný panel, aby ste našli stránku, ktorú hľadáte."
+msgstr "Ak ste nasledovali odkaz, ten môže byť nesprávny alebo zastaraný. Kliknite na tlačidlo späť vo vašom "
 
 #: ../html/src/manager/errors/not-found.tsx:25
 msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was "
 msgstr "Ak ste použili záložku, stránka sa mohla presunúť na iné miesto, odkedy bola záložka "
 
 #: ../html/src/manager/errors/not-found.tsx:32
-#, fuzzy
-#| msgid "If you feel you've reached this page in error, please contact us with details of how you received this message."
 msgid "If you feel you've reached this page in error, please contact us with details of how you received "
-msgstr "Ak si myslíte, že ste sa na túto stránku dostali omylom, prosím, kontaktujte nás s podrobnosťami o tom, ako ste dostali túto správu."
+msgstr "Ak si myslíte, že ste sa na túto stránku dostali omylom, prosím, kontaktujte nás s podrobnosťami o tom, ako ste dostali "
 
 #: ../html/src/manager/groups/config-channels/group-config-channels.tsx:29
 msgid "Applying the config channels has been scheduled for each minion server in this group"
@@ -5117,10 +5109,8 @@ msgid "successfully"
 msgstr "úspešne"
 
 #: ../html/src/manager/maintenance/maintenance-windows.tsx:140
-#, fuzzy
-#| msgid "Error deregistering server"
 msgid "Error when deleting the "
-msgstr "Chyba pri zrušení registrácie servera"
+msgstr "Chyba pri vymazávaní "
 
 #: ../html/src/manager/maintenance/maintenance-windows.tsx:149
 msgid "Calendar successfully refreshed"
