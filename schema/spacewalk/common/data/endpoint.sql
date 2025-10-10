@@ -4960,7 +4960,7 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
     VALUES ('com.redhat.rhn.frontend.xmlrpc.kickstart.profile.ProfileHandler.setVirtualizationType', '/manager/api/kickstart/profile/setVirtualizationType', 'POST', 'A', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
-    VALUES ('com.redhat.rhn.frontend.xmlrpc.proxy.ProxyHandler.activateProxy', '/manager/api/proxy/activateProxy', 'POST', 'A', True)
+    VALUES ('com.redhat.rhn.frontend.xmlrpc.proxy.ProxyHandler.activateProxy', '/manager/api/proxy/activateProxy', 'POST', 'A', False)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('com.redhat.rhn.frontend.xmlrpc.proxy.ProxyHandler.bootstrapProxy', '/manager/api/proxy/bootstrapProxy', 'POST', 'A', True)
@@ -4972,7 +4972,7 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
     VALUES ('com.redhat.rhn.frontend.xmlrpc.proxy.ProxyHandler.createMonitoringScout', '/manager/api/proxy/createMonitoringScout', 'POST', 'A', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
-    VALUES ('com.redhat.rhn.frontend.xmlrpc.proxy.ProxyHandler.deactivateProxy', '/manager/api/proxy/deactivateProxy', 'POST', 'A', True)
+    VALUES ('com.redhat.rhn.frontend.xmlrpc.proxy.ProxyHandler.deactivateProxy', '/manager/api/proxy/deactivateProxy', 'POST', 'A', False)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('com.redhat.rhn.frontend.xmlrpc.proxy.ProxyHandler.isProxy', '/manager/api/proxy/isProxy', 'GET', 'A', True)
