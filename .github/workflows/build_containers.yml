@@ -336,12 +336,12 @@ jobs:
         id: meta
         uses: docker/metadata-action@c1e51972afc2121e065aed6d45c65596fe445f3f #v5.8.0
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/opensuse/leap/15.6
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/opensuse/tumbleweed
 
       - name: Build and push Docker image
         uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 #v6.18.0
         with:
-          context: ./testsuite/dockerfiles/opensuse/leap/15.6
+          context: ./testsuite/dockerfiles/opensuse/tumbleweed
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
