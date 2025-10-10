@@ -14,15 +14,32 @@
  */
 package com.redhat.rhn.domain.server;
 
+import static org.hibernate.annotations.CacheConcurrencyStrategy.READ_ONLY;
+
 import com.redhat.rhn.domain.AbstractLabelNameHelper;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.common.ArchType;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.Immutable;
+
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 /**
  * ServerArch
  */
+@Entity
+@Table(name = "rhnServerArch")
+@Immutable
+@Cache(usage = READ_ONLY)
 public class ServerArch extends AbstractLabelNameHelper {
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "arch_type_id")
     private ArchType archType;
 
     /**

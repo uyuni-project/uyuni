@@ -18,14 +18,33 @@ package com.redhat.rhn.domain.iss;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.frontend.dto.BaseDto;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import java.util.Date;
 import java.util.Set;
 import java.util.StringJoiner;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 /**
  * IssSlave - Class representation of the table rhnissslave.
  *
  */
+@Entity
+@Table(name = "rhnIssSlave")
 public class IssSlave extends BaseDto {
     public static final long NEW_SLAVE_ID = -1L;
     public static final String ID = "id";
@@ -38,13 +57,30 @@ public class IssSlave extends BaseDto {
     /** slave-id parameter name */
     public static final String SID = "sid";
 
+    @Id
+    @Column
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "issslave_seq")
+    @SequenceGenerator(name = "issslave_seq", sequenceName = "rhn_issslave_seq", allocationSize = 1)
     private Long id;
+    @Column
     private String slave;
+    @Column
     private String enabled;
+    @Column(name = "allow_all_orgs")
     private String allowAllOrgs;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "rhnissslaveorgs",
+            joinColumns = @JoinColumn(name = "slave_id"),
+            inverseJoinColumns = @JoinColumn(name = "org_id"))
+    @Fetch(FetchMode.SELECT)
     private Set<Org> allowedOrgs;
-    private Date created;
-    private Date modified;
+    @Column(name = "created", nullable = false, updatable = false)
+    @CreationTimestamp
+    private Date created = new Date();
+    @Column(name = "modified", nullable = false)
+    @UpdateTimestamp
+    private Date modified = new Date();
 
     /**
      * Getter for id
@@ -62,7 +98,7 @@ public class IssSlave extends BaseDto {
      * @param idIn
      *            to set
      */
-    public void setId(Long idIn) {
+    protected void setId(Long idIn) {
         this.id = idIn;
     }
 

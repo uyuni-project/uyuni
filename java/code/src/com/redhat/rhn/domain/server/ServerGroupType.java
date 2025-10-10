@@ -14,20 +14,44 @@
  */
 package com.redhat.rhn.domain.server;
 
+import static org.hibernate.annotations.CacheConcurrencyStrategy.READ_ONLY;
+
 import com.redhat.rhn.domain.AbstractLabelNameHelper;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.Immutable;
+
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 
 /**
  * Class that represents the rhnServerGroupType table.
  *
  */
+@Entity
+@Table(name = "rhnServerGroupType")
+@Immutable
+@Cache(usage = READ_ONLY)
 public class ServerGroupType extends AbstractLabelNameHelper {
+    @Column(updatable = false, insertable = false)
     private char permanent;
+    @Column(name = "is_base", updatable = false, insertable = false)
     private char isBaseChar;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "rhnServerGroupTypeFeature",
+            joinColumns = @JoinColumn(name = "server_group_type_id", nullable = false),
+            inverseJoinColumns = @JoinColumn(name = "feature_id"))
     private Set<Feature> features = new HashSet<>();
 
     /**

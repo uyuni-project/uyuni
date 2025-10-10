@@ -35,7 +35,7 @@ import javax.persistence.Table;
  * IssMaster - Class representation of the table rhnissmaster.
  */
 @Entity
-@Table(name = "rhnissmaster")
+@Table(name = "rhnIssMaster")
 public class IssMaster extends BaseDto {
 
     public static final String FIELD_ID = "id";
@@ -49,13 +49,13 @@ public class IssMaster extends BaseDto {
     @SequenceGenerator(name = "iss_master_seq", sequenceName = "rhn_issmaster_seq", allocationSize = 1)
     private Long id;
 
-    @Column(name = "LABEL", length = 256)
+    @Column
     private String label;
 
-    @Column(name = "IS_CURRENT_MASTER", length = 1, nullable = false)
+    @Column(name = "is_current_master", nullable = false)
     private String isCurrentMaster = "N";
 
-    @Column(name = "CA_CERT", length = 1024)
+    @Column(name = "ca_cert")
     private String caCert;
 
     @OneToMany(mappedBy = "master", cascade = CascadeType.ALL, orphanRemoval = true)

@@ -101,6 +101,7 @@ import com.redhat.rhn.domain.image.ImageStoreType;
 import com.redhat.rhn.domain.image.KiwiProfile;
 import com.redhat.rhn.domain.image.ProfileCustomDataValue;
 import com.redhat.rhn.domain.iss.IssMaster;
+import com.redhat.rhn.domain.iss.IssSlave;
 import com.redhat.rhn.domain.kickstart.KickstartCommandName;
 import com.redhat.rhn.domain.kickstart.KickstartInstallType;
 import com.redhat.rhn.domain.kickstart.KickstartSessionState;
@@ -166,12 +167,14 @@ import com.redhat.rhn.domain.scc.SCCRepositoryNoAuth;
 import com.redhat.rhn.domain.scc.SCCRepositoryTokenAuth;
 import com.redhat.rhn.domain.scc.SCCSubscription;
 import com.redhat.rhn.domain.server.CPU;
+import com.redhat.rhn.domain.server.CPUArch;
 import com.redhat.rhn.domain.server.Capability;
 import com.redhat.rhn.domain.server.ClientCapability;
 import com.redhat.rhn.domain.server.ClientCapabilityId;
 import com.redhat.rhn.domain.server.CustomDataValue;
 import com.redhat.rhn.domain.server.Device;
 import com.redhat.rhn.domain.server.EntitlementServerGroup;
+import com.redhat.rhn.domain.server.Feature;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.InvalidSnapshotReason;
@@ -183,10 +186,12 @@ import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Pillar;
 import com.redhat.rhn.domain.server.PinnedSubscription;
+import com.redhat.rhn.domain.server.PushClientState;
 import com.redhat.rhn.domain.server.Ram;
 import com.redhat.rhn.domain.server.SAPWorkload;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerAppStream;
+import com.redhat.rhn.domain.server.ServerArch;
 import com.redhat.rhn.domain.server.ServerFQDN;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupType;
@@ -273,6 +278,7 @@ public class AnnotationRegistry {
             ArchType.class,
             BaseCredentials.class,
             CPU.class,
+            CPUArch.class,
             Capability.class,
             ChannelArch.class,
             Channel.class,
@@ -315,6 +321,7 @@ public class AnnotationRegistry {
             ErrataFileType.class,
             ErrataFilter.class,
             ExceptionMessage.class,
+            Feature.class,
             FileList.class,
             GroupRecurringAction.class,
             HubSCCCredentials.class,
@@ -340,6 +347,7 @@ public class AnnotationRegistry {
             IssMaster.class,
             IssPeripheral.class,
             IssPeripheralChannels.class,
+            IssSlave.class,
             KickstartCommandName.class,
             KickstartInstallType.class,
             KickstartSessionState.class,
@@ -401,6 +409,7 @@ public class AnnotationRegistry {
             ProjectSource.class,
             ProvisionState.class,
             PtfFilter.class,
+            PushClientState.class,
             Ram.class,
             RhnConfiguration.class,
             RecurringConfigChannel.class,
@@ -430,6 +439,7 @@ public class AnnotationRegistry {
             ScriptResult.class,
             ServerAppStream.class,
             Server.class,
+            ServerArch.class,
             ServerCoCoAttestationConfig.class,
             ServerCoCoAttestationReport.class,
             ServerFQDN.class,
