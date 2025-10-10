@@ -19,8 +19,6 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Map;
-
 /**
  * ErrataFactory - the singleton class used to fetch and store
  * com.redhat.rhn.domain.errata.Errata objects from the
@@ -53,7 +51,7 @@ public class CveFactory extends HibernateFactory {
         if (name == null) {
             return null;
         }
-        return singleton.lookupObjectByNamedQuery("Cve.lookupByName", Map.of("name", name));
+        return singleton.lookupObjectByParam(Cve.class, "name", name);
     }
 
     /**

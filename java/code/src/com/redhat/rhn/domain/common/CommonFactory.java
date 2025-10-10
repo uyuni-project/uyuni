@@ -156,7 +156,7 @@ public class CommonFactory extends HibernateFactory {
      */
     public static TinyUrl lookupTinyUrl(String tokenIn) {
         Session session = HibernateFactory.getSession();
-        return (TinyUrl) session.getNamedQuery("TinyUrl.findByToken")
+        return session.createQuery("FROM TinyUrl AS t WHERE t.token = :token", TinyUrl.class)
                 .setParameter("token", tokenIn, StandardBasicTypes.STRING)
                 .uniqueResult();
     }

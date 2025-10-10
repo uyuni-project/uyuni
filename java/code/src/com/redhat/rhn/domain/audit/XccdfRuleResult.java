@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 SUSE LLC
+ * Copyright (c) 2017--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,28 +7,56 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.redhat.rhn.domain.audit;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Immutable;
 
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 /**
  * XccdfRuleResult - Class representation of the table rhnXccdfRuleresult.
  */
+@Entity
+@Table(name = "rhnXccdfRuleresult")
+@Immutable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class XccdfRuleResult implements Serializable {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rhn_xccdf_rresult_seq")
+    @SequenceGenerator(name = "rhn_xccdf_rresult_seq", sequenceName = "rhn_xccdf_rresult_id_seq", allocationSize = 1)
     private Long id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "testresult_id")
     private XccdfTestResult testResult;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "result_id")
     private XccdfRuleResultType resultType;
 
+    @ManyToMany
+    @JoinTable(
+            name = "rhnXccdfRuleIdentMap",
+            joinColumns = @JoinColumn(name = "rresult_id"),
+            inverseJoinColumns = @JoinColumn(name = "ident_id"))
     private Set<XccdfIdent> idents = new HashSet<>();
 
     /**

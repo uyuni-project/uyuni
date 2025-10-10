@@ -16,19 +16,37 @@ package com.redhat.rhn.domain.common;
 
 import com.redhat.rhn.common.conf.ConfigException;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Type;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * TinyUrl - Class representation of the table rhntinyurl.
  */
+@Entity
+@Table(name = "rhntinyurl")
 public class TinyUrl {
 
+    @Id
+    @Column(unique = true, nullable = false)
     private String token;
+    @Column(nullable = false)
     private String url;
+    @Column
+    @Type(type = "yes_no")
     private boolean enabled;
-    private Date created;
+    @Column(nullable = false, updatable = false, insertable = false)
+    @CreationTimestamp
+    private Date created = new Date();
+    @Column(nullable = false)
     private Date expires;
     /**
      * Getter for token
@@ -42,7 +60,7 @@ public class TinyUrl {
      * Setter for token
      * @param tokenIn to set
     */
-    public void setToken(String tokenIn) {
+    protected void setToken(String tokenIn) {
         this.token = tokenIn;
     }
 

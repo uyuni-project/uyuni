@@ -18,12 +18,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.rhnpackage.profile.ProfileFactory;
 import com.redhat.rhn.domain.rhnpackage.profile.ProfileType;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
-import org.hibernate.Session;
-import org.hibernate.type.StandardBasicTypes;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -72,11 +70,6 @@ public class ProfileTypeTest extends RhnBaseTestCase {
      * @return Returns the ProfileType corresponding to label
      */
     public static ProfileType lookupByLabel(String label) {
-        Session session = HibernateFactory.getSession();
-        return (ProfileType) session.getNamedQuery("ProfileType.findByLabel")
-                                        .setParameter("label", label, StandardBasicTypes.STRING)
-                                        //Retrieve from cache if there
-                                        .setCacheable(true)
-                                        .uniqueResult();
+        return ProfileFactory.lookupByLabel(label);
     }
 }

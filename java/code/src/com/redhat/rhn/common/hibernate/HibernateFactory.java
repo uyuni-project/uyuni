@@ -47,6 +47,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BinaryOperator;
 import java.util.function.Supplier;
@@ -132,6 +133,53 @@ public abstract class HibernateFactory {
      * @return Logger for this class.
      */
     protected abstract Logger getLogger();
+
+    /**
+     * Finds a single instance of a persistent object, given one parameter of type long
+     * This convenience method is aimed at replacing simple named queries on a single parameter
+     * e.g. an environment like:
+     *
+     * ActionType-xbm.xml:
+     *      <query name="ActionType.findById">
+     *         <![CDATA[from com.redhat.rhn.domain.action.ActionType as t where t.id = :id]]>
+     *     </query>
+     * Anywhere in the code:
+     *     ActionType actType =
+     *          hibernateFactory.lookupObjectByNamedQuery("ActionType.findById", Map.of("id", id), true);
+     *
+     * can be substituted with
+     *
+     * ActionType-xbm.xml:
+     *      .... removed! .....
+     * Anywhere in the code:
+     *      ActionType actType = hibernateFactory.lookupObjectByParam("id", id, ActionType.class, true);
+     *
+     * @param paramName the parameter name (e.g. "label", "name", "id" etc.)
+     * @param paramValue the parameter actual value
+     * @param objClass class of the query object
+     * @param cacheable if we should cache the results of this object (default = false)
+     * @return Instance of the found object by the query or null if nothing is found.
+     */
+    protected <T, V> T lookupObjectByParam(Class<T> objClass, String paramName, V paramValue, boolean cacheable) {
+        String sanitizedParamName = paramName.replaceAll("[^A-Za-z]+", "");
+
+        try {
+            Session session = HibernateFactory.getSession();
+            String query = "FROM %s WHERE %s = :param".formatted(objClass.getSimpleName(), sanitizedParamName);
+            return session.createQuery(query, objClass) //NOSONAR dynamically formatted SQL query is safe here
+                    .setParameter("param", Objects.requireNonNull(paramValue, "null value is not supported"))
+                    .setCacheable(cacheable)
+                    .uniqueResult();
+        }
+        catch (HibernateException he) {
+            throw new HibernateRuntimeException("lookupObjectByParam failed with param [%s]=[%s] on class [%s]"
+                    .formatted(paramName, paramValue.toString(), objClass.getSimpleName()), he);
+        }
+    }
+
+    protected <T, V> T lookupObjectByParam(Class<T> objClass, String paramName, V paramValue) {
+        return lookupObjectByParam(objClass, paramName, paramValue, false);
+    }
 
     /**
      * Binds the values of the map to a named query parameter, whose value

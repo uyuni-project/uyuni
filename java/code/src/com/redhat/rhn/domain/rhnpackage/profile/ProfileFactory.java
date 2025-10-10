@@ -60,7 +60,7 @@ public class ProfileFactory extends HibernateFactory {
      * @return statetype whose name matches the given name.
      */
     public static ProfileType lookupByLabel(String name) {
-        return singleton.lookupObjectByNamedQuery("ProfileType.findByLabel", Map.of("label", name), true);
+        return singleton.lookupObjectByParam(ProfileType.class, "label", name, true);
     }
 
     /**

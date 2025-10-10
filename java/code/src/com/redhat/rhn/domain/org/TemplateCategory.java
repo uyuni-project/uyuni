@@ -14,15 +14,37 @@
  */
 package com.redhat.rhn.domain.org;
 
+import static org.hibernate.annotations.CacheConcurrencyStrategy.READ_ONLY;
+
 import com.redhat.rhn.domain.BaseDomainHelper;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.Immutable;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 /**
  * TemplateCategory
  */
+@Entity
+@Table(name = "rhnTemplateCategory")
+@Immutable
+@Cache(usage = READ_ONLY)
 public class TemplateCategory extends BaseDomainHelper {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_TEMPLATE_CAT_ID_SEQ")
+    @SequenceGenerator(name = "RHN_TEMPLATE_CAT_ID_SEQ", sequenceName = "RHN_TEMPLATE_CAT_ID_SEQ", allocationSize = 1)
     private Long id;
+    @Column
     private String label;
+    @Column
     private String description;
 
     /**
@@ -34,7 +56,7 @@ public class TemplateCategory extends BaseDomainHelper {
     /**
      * @param idIn The id to set.
      */
-    public void setId(Long idIn) {
+    protected void setId(Long idIn) {
         this.id = idIn;
     }
     /**

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 SUSE LLC
+ * Copyright (c) 2017--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,22 +7,39 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.redhat.rhn.domain.audit;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Immutable;
+
 import java.io.Serializable;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 /**
  * XccdfIdentSystem - Class representation of the table rhnXccdfIdentSystem.
  */
+@Entity
+@Table(name = "rhnXccdfIdentSystem")
+@Immutable
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class XccdfIdentSystem implements Serializable {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rhn_xccdf_identsystem_seq")
+    @SequenceGenerator(name = "rhn_xccdf_identsystem_seq", sequenceName = "rhn_xccdf_identsytem_id_seq",
+            allocationSize = 1)
     private Long id;
 
+    @Column
     private String system;
 
     /**

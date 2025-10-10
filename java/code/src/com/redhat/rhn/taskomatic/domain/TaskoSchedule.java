@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2010--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -15,6 +16,7 @@
 package com.redhat.rhn.taskomatic.domain;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.BaseDomainHelper;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -26,24 +28,46 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 /**
  * a schedule represents a concrete bunch, that is scheduled with specified parameters,
  * in specified time period with some periodicity
  * TaskoSchedule
  */
-public class TaskoSchedule {
+@Entity
+@Table(name = "rhnTaskoSchedule")
+public class TaskoSchedule extends BaseDomainHelper {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tasko_schedule_seq")
+    @SequenceGenerator(name = "tasko_schedule_seq", sequenceName = "RHN_TASKO_SCHEDULE_ID_SEQ", allocationSize = 1)
     private Long id;
-    private String jobLabel;
-    private TaskoBunch bunch;
-    private Integer orgId;
-    private Date activeFrom;
-    private Date activeTill;
-    private String cronExpr;
-    private byte[] data;
-    private Date created;
-    private Date modified;
 
+    @Column(name = "job_label")
+    private String jobLabel;
+
+    @ManyToOne
+    @JoinColumn(name = "bunch_id")
+    private TaskoBunch bunch;
+    @Column(name = "org_id")
+    private Integer orgId;
+    @Column(name = "active_from")
+    private Date activeFrom;
+    @Column(name = "active_till")
+    private Date activeTill;
+    @Column(name = "cron_expr")
+    private String cronExpr;
+    @Column
+    private byte[] data;
 
     /**
      * default constructor required by hibernate
@@ -160,7 +184,7 @@ public class TaskoSchedule {
     /**
      * @param idIn The id to set.
      */
-    public void setId(Long idIn) {
+    protected void setId(Long idIn) {
         id = idIn;
     }
 
@@ -246,34 +270,6 @@ public class TaskoSchedule {
      */
     public void setData(byte[] datain) {
         this.data = datain;
-    }
-
-    /**
-     * @return Returns the created.
-     */
-    public Date getCreated() {
-        return created;
-    }
-
-    /**
-     * @param createdIn The created to set.
-     */
-    public void setCreated(Date createdIn) {
-        created = createdIn;
-    }
-
-    /**
-     * @return Returns the modified.
-     */
-    public Date getModified() {
-        return modified;
-    }
-
-    /**
-     * @param modifiedIn The modified to set.
-     */
-    public void setModified(Date modifiedIn) {
-        modified = modifiedIn;
     }
 
     /**

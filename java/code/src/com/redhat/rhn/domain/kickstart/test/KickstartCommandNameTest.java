@@ -35,12 +35,16 @@ public class KickstartCommandNameTest extends BaseTestCaseWithUser {
     @Test
     public void testCommandName() {
 
-        String query = "KickstartCommandName.listAdvancedOptions";
-
         Session session = HibernateFactory.getSession();
-        List<KickstartCommandName> l1 = session.getNamedQuery(query)
-                                       //Retrieve from cache if there
-                                       .setCacheable(true).list();
+        List<KickstartCommandName> l1 = session.createQuery(
+                """
+                    FROM KickstartCommandName AS t
+                    WHERE t.name NOT IN
+                    ('partitions', 'raids', 'logvols', 'volgroups', 'include', 'repo', 'custom', 'custom_partition')
+                    ORDER BY t.order
+                    """, KickstartCommandName.class)
+                .setCacheable(true)
+                .list();
 
         assertFalse(l1.isEmpty());
 

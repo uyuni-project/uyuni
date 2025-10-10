@@ -12,7 +12,7 @@ jobs:
       options: --hostname=salt-test-container
     steps:
       - name: Check out repository code
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 #v4.2.2
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 #v5.0.0
       - name: Fix the Salt version in _version.txt file
         run: mkdir $GITHUB_WORKSPACE/salt && rpm -q python3-salt-testsuite --queryformat '%{VERSION}' > $GITHUB_WORKSPACE/salt/_version.txt
       - name: Run susemanager-sls unit tests
@@ -28,7 +28,7 @@ jobs:
       options: --hostname=salt-test-container
     steps:
       - name: Check out repository code
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 #v4.2.2
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 #v5.0.0
       - name: Fix the Salt version in _version.txt file
         run: mkdir $GITHUB_WORKSPACE/salt && rpm -q python311-salt-testsuite --queryformat '%{VERSION}' > $GITHUB_WORKSPACE/salt/_version.txt
       - name: Run susemanager-sls unit tests

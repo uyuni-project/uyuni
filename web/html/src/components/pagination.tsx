@@ -144,6 +144,7 @@ const PageSelector = (props: PageSelectorProps) => {
         {
           dropdown: () => (
             <select
+              key="page-selector-select"
               className="display-number small-select"
               value={props.currentValue}
               onChange={(e) => props.onChange(parseInt(e.target.value, 10))}

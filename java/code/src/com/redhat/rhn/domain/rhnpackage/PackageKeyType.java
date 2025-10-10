@@ -14,17 +14,37 @@
  */
 package com.redhat.rhn.domain.rhnpackage;
 
+import static org.hibernate.annotations.CacheConcurrencyStrategy.READ_ONLY;
+
 import com.redhat.rhn.domain.BaseDomainHelper;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.Immutable;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 /**
  * PackageArch
  */
+@Entity
+@Table(name = "rhnPackageKeyType")
+@Immutable
+@Cache(usage = READ_ONLY)
 public class PackageKeyType extends BaseDomainHelper implements Comparable<PackageKeyType> {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "package_key_type_seq")
+    @SequenceGenerator(name = "package_key_type_seq", sequenceName = "rhn_package_key_type_id_seq", allocationSize = 1)
     private Long id;
+    @Column
     private String label;
 
     /**
@@ -37,7 +57,7 @@ public class PackageKeyType extends BaseDomainHelper implements Comparable<Packa
     /**
      * @param i The id to set.
      */
-    public void setId(Long i) {
+    protected void setId(Long i) {
         this.id = i;
     }
 

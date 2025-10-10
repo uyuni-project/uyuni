@@ -14,15 +14,37 @@
  */
 package com.redhat.rhn.domain.config;
 
+import static org.hibernate.annotations.CacheConcurrencyStrategy.READ_ONLY;
+
 import com.redhat.rhn.domain.BaseDomainHelper;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.Immutable;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 /**
  * ConfigFileState - Class representation of the table rhnConfigFileState.
  */
+@Entity
+@Table(name = "rhnConfigFileState")
+@Immutable
+@Cache(usage = READ_ONLY)
 public class ConfigFileState extends BaseDomainHelper {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cfstate_seq")
+    @SequenceGenerator(name = "cfstate_seq", sequenceName = "rhn_cfstate_id_seq", allocationSize = 1)
     private Long id;
+    @Column
     private String label;
+    @Column
     private String name;
 
     public static final String NORMAL =  "alive";
@@ -63,7 +85,7 @@ public class ConfigFileState extends BaseDomainHelper {
      * Setter for id
      * @param idIn to set
     */
-    public void setId(Long idIn) {
+    protected void setId(Long idIn) {
         this.id = idIn;
     }
 

@@ -14,15 +14,25 @@
  */
 package com.redhat.rhn.domain.kickstart;
 
+import com.redhat.rhn.domain.BaseDomainHelper;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 /**
  * KickstartSessionState - Class representation of the table rhnkickstartsessionstate.
  */
-public class KickstartSessionState {
+@Entity
+@Table(name = "rhnkickstartsessionstate")
+public class KickstartSessionState extends BaseDomainHelper {
 
     public static final String CREATED                 = "created";
     public static final String DEPLOYED                = "deployed";
@@ -38,12 +48,17 @@ public class KickstartSessionState {
     public static final String COMPLETE                = "complete";
     public static final String FAILED                  = "failed";
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_KS_SESSION_STATE_ID_SEQ")
+    @SequenceGenerator(name = "RHN_KS_SESSION_STATE_ID_SEQ", sequenceName = "RHN_KS_SESSION_STATE_ID_SEQ",
+            allocationSize = 1)
     private Long id;
+    @Column(nullable = false)
     private String label;
+    @Column(nullable = false)
     private String name;
+    @Column(nullable = false)
     private String description;
-    private Date created;
-    private Date modified;
 
     /**
      * Getter for id
@@ -57,7 +72,7 @@ public class KickstartSessionState {
      * Setter for id
      * @param idIn to set
     */
-    public void setId(Long idIn) {
+    protected void setId(Long idIn) {
         this.id = idIn;
     }
 
@@ -107,38 +122,6 @@ public class KickstartSessionState {
     */
     public void setDescription(String descriptionIn) {
         this.description = descriptionIn;
-    }
-
-    /**
-     * Getter for created
-     * @return Date to get
-    */
-    public Date getCreated() {
-        return this.created;
-    }
-
-    /**
-     * Setter for created
-     * @param createdIn to set
-    */
-    public void setCreated(Date createdIn) {
-        this.created = createdIn;
-    }
-
-    /**
-     * Getter for modified
-     * @return Date to get
-    */
-    public Date getModified() {
-        return this.modified;
-    }
-
-    /**
-     * Setter for modified
-     * @param modifiedIn to set
-    */
-    public void setModified(Date modifiedIn) {
-        this.modified = modifiedIn;
     }
 
     /**

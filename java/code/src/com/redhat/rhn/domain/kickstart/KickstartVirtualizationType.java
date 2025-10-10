@@ -15,17 +15,26 @@
 package com.redhat.rhn.domain.kickstart;
 
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.domain.BaseDomainHelper;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 /**
  * KickstartVirtualizationType -
  * Class representation of the table rhnKickstartVirtualizationType.
  */
-public class KickstartVirtualizationType
+@Entity
+@Table(name = "rhnKickstartVirtualizationType")
+public class KickstartVirtualizationType extends BaseDomainHelper
                         implements Comparable<KickstartVirtualizationType> {
 
     /**
@@ -38,11 +47,14 @@ public class KickstartVirtualizationType
     public static final String PARA_HOST  = "para_host";
     public static final String NONE  = "none";
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "kvt_seq")
+    @SequenceGenerator(name = "kvt_seq", sequenceName = "rhn_kvt_id_seq", allocationSize = 1)
     private Long id;
+    @Column(nullable = false)
     private String label;
+    @Column(nullable = false)
     private String name;
-    private Date created;
-    private Date modified;
 
     /**
      * @return the Kickstart Virtualization type associated to xen para virt
@@ -92,7 +104,7 @@ public class KickstartVirtualizationType
      * Setter for id
      * @param idIn to set
     */
-    public void setId(Long idIn) {
+    protected void setId(Long idIn) {
         this.id = idIn;
     }
 
@@ -126,38 +138,6 @@ public class KickstartVirtualizationType
     */
     public void setName(String nameIn) {
         this.name = nameIn;
-    }
-
-    /**
-     * Getter for created
-     * @return Date to get
-    */
-    public Date getCreated() {
-        return this.created;
-    }
-
-    /**
-     * Setter for created
-     * @param createdIn to set
-    */
-    public void setCreated(Date createdIn) {
-        this.created = createdIn;
-    }
-
-    /**
-     * Getter for modified
-     * @return Date to get
-    */
-    public Date getModified() {
-        return this.modified;
-    }
-
-    /**
-     * Setter for modified
-     * @param modifiedIn to set
-    */
-    public void setModified(Date modifiedIn) {
-        this.modified = modifiedIn;
     }
 
     /**

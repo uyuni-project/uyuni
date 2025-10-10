@@ -14,13 +14,26 @@
  */
 package com.redhat.rhn.domain.kickstart;
 
+import static org.hibernate.annotations.CacheConcurrencyStrategy.READ_ONLY;
+
 import com.redhat.rhn.domain.BaseDomainHelper;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.Immutable;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * KickstartInstallType
  */
+@Entity
+@Table(name = "rhnKsInstallType")
+@Immutable
+@Cache(usage = READ_ONLY)
 public class KickstartInstallType extends BaseDomainHelper {
 
     // Spacewalk's install type strings. Those may or may not correspond
@@ -44,8 +57,11 @@ public class KickstartInstallType extends BaseDomainHelper {
     public static final String SUSE_BREED = "suse";
     public static final String REDHAT_BREED = "redhat";
 
+    @Id
     private Long id;
+    @Column
     private String label;
+    @Column
     private String name;
 
     /**
@@ -207,7 +223,7 @@ public class KickstartInstallType extends BaseDomainHelper {
     /**
      * @param i The id to set.
      */
-    public void setId(Long i) {
+    protected void setId(Long i) {
         this.id = i;
     }
 

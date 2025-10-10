@@ -144,7 +144,10 @@ public class ChannelFactory extends HibernateFactory {
      * @return the ContentSourceType
      */
     public static ContentSourceType lookupContentSourceType(String label) {
-        return singleton.lookupObjectByNamedQuery("ContentSourceType.findByLabel", Map.of(LABEL, label));
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("FROM ContentSourceType AS c WHERE c.label = :label", ContentSourceType.class)
+                .setParameter(LABEL, label)
+                .uniqueResult();
     }
 
     /**
@@ -153,7 +156,9 @@ public class ChannelFactory extends HibernateFactory {
      * @return list of ContentSourceType
      */
     public static List<ContentSourceType> listContentSourceTypes() {
-        return singleton.listObjectsByNamedQuery("ContentSourceType.listAllTypes", Map.of());
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("FROM ContentSourceType", ContentSourceType.class)
+                .list();
     }
 
     /**
@@ -1139,7 +1144,10 @@ public class ChannelFactory extends HibernateFactory {
         if (label == null) {
             return null;
         }
-        return singleton.lookupObjectByNamedQuery("ProductName.findByLabel", Map.of(LABEL, label));
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("FROM ProductName AS p WHERE p.label = :label", ProductName.class)
+                .setParameter(LABEL, label)
+                .uniqueResult();
     }
 
     /**

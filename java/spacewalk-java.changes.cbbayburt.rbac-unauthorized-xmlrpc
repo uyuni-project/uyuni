@@ -1,0 +1,1 @@
+- Fix RBAC access of unauthorized XMLRPC methods (bsc#1251814)

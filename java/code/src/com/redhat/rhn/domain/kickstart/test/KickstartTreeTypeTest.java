@@ -31,19 +31,15 @@ public class KickstartTreeTypeTest extends RhnBaseTestCase {
     @Test
     public void testKsTreeType() {
         Long testid = 1L;
-        String query = "KickstartTreeType.findById";
 
-        KickstartTreeType ktt1 = (KickstartTreeType)
-                                 TestUtils.lookupFromCacheById(testid, query);
+        KickstartTreeType ktt1 = TestUtils.lookupFromCacheById(testid, KickstartTreeType.class);
         assertNotNull(ktt1);
         assertEquals(ktt1.getId(), testid);
 
-        KickstartTreeType ktt2 = (KickstartTreeType)
-                                 TestUtils.lookupFromCacheById(ktt1.getId(), query);
+        KickstartTreeType ktt2 = TestUtils.lookupFromCacheById(ktt1.getId(), KickstartTreeType.class);
         assertEquals(ktt1.getLabel(), ktt2.getLabel());
 
-        KickstartTreeType ktt3 = (KickstartTreeType)
-                                 TestUtils.lookupFromCacheById(ktt1.getId(), query);
+        KickstartTreeType ktt3 = TestUtils.lookupFromCacheById(ktt1.getId(), KickstartTreeType.class);
         assertNotNull(ktt3);
     }
 

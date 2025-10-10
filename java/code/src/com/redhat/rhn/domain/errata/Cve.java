@@ -17,13 +17,27 @@ package com.redhat.rhn.domain.errata;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 /**
  *
  *
  */
+@Entity
+@Table(name = "rhnCve")
 public class Cve {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cve_seq")
+    @SequenceGenerator(name = "cve_seq", sequenceName = "rhn_cve_id_seq", allocationSize = 1)
     private Long id;
+    @Column
     private String name;
     /**
      * @return Returns the id.
@@ -35,7 +49,7 @@ public class Cve {
     /**
      * @param i The id to set.
      */
-    public void setId(Long i) {
+    protected void setId(Long i) {
         this.id = i;
     }
     /**

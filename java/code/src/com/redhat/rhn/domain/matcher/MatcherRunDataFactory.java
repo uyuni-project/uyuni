@@ -32,7 +32,7 @@ public class MatcherRunDataFactory extends HibernateFactory {
      * @param newData - new MatcherRunData
      */
     public static void updateData(MatcherRunData newData) {
-        getSession().getNamedQuery("MatcherRunData.deleteAll").executeUpdate();
+        getSession().createQuery("DELETE FROM MatcherRunData").executeUpdate();
         getSession().save(newData);
     }
 

@@ -344,11 +344,7 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
      * @return KickstartCommandName (single object)
      */
     private static KickstartCommandName lookupByLabel(String lbl) {
-        Session session = HibernateFactory.getSession();
-        return (KickstartCommandName)session
-                  .getNamedQuery("KickstartCommandName.findByLabel")
-                  .setParameter("name", lbl).
-                  uniqueResult();
+        return KickstartFactory.lookupKickstartCommandName(lbl);
     }
 
     /**

@@ -18,6 +18,7 @@ import com.redhat.rhn.domain.action.ActionChainEntry;
 import com.redhat.rhn.domain.action.ActionChild;
 import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.action.errata.ActionPackageDetails;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionDetails;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionResult;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionDetails;
@@ -25,6 +26,12 @@ import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionResult;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptResult;
 import com.redhat.rhn.domain.action.supportdata.SupportDataActionDetails;
+import com.redhat.rhn.domain.audit.XccdfBenchmark;
+import com.redhat.rhn.domain.audit.XccdfIdent;
+import com.redhat.rhn.domain.audit.XccdfIdentSystem;
+import com.redhat.rhn.domain.audit.XccdfProfile;
+import com.redhat.rhn.domain.audit.XccdfRuleResult;
+import com.redhat.rhn.domain.audit.XccdfRuleResultType;
 import com.redhat.rhn.domain.audit.XccdfTestResult;
 import com.redhat.rhn.domain.channel.AccessToken;
 import com.redhat.rhn.domain.channel.AppStream;
@@ -32,8 +39,11 @@ import com.redhat.rhn.domain.channel.AppStreamApi;
 import com.redhat.rhn.domain.channel.AppStreamApiKey;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
+import com.redhat.rhn.domain.channel.ChannelProduct;
 import com.redhat.rhn.domain.channel.ChannelSyncFlag;
 import com.redhat.rhn.domain.channel.ClonedChannel;
+import com.redhat.rhn.domain.channel.ContentSourceType;
+import com.redhat.rhn.domain.channel.ProductName;
 import com.redhat.rhn.domain.cloudpayg.CloudRmtHost;
 import com.redhat.rhn.domain.cloudpayg.PaygCredentialsProduct;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
@@ -44,9 +54,13 @@ import com.redhat.rhn.domain.common.ExceptionMessage;
 import com.redhat.rhn.domain.common.FileList;
 import com.redhat.rhn.domain.common.ProvisionState;
 import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.TinyUrl;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigChannelType;
 import com.redhat.rhn.domain.config.ConfigFile;
+import com.redhat.rhn.domain.config.ConfigFileName;
+import com.redhat.rhn.domain.config.ConfigFileState;
+import com.redhat.rhn.domain.config.ConfigFileType;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironmentDiff;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
@@ -69,6 +83,9 @@ import com.redhat.rhn.domain.credentials.RegistryCredentials;
 import com.redhat.rhn.domain.credentials.ReportDBCredentials;
 import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.domain.credentials.VHMCredentials;
+import com.redhat.rhn.domain.errata.Cve;
+import com.redhat.rhn.domain.errata.ErrataFileType;
+import com.redhat.rhn.domain.errata.Severity;
 import com.redhat.rhn.domain.image.DeltaImageInfo;
 import com.redhat.rhn.domain.image.DockerfileProfile;
 import com.redhat.rhn.domain.image.ImageFile;
@@ -83,14 +100,21 @@ import com.redhat.rhn.domain.image.ImageStoreType;
 import com.redhat.rhn.domain.image.KiwiProfile;
 import com.redhat.rhn.domain.image.ProfileCustomDataValue;
 import com.redhat.rhn.domain.iss.IssMaster;
+import com.redhat.rhn.domain.kickstart.KickstartCommandName;
+import com.redhat.rhn.domain.kickstart.KickstartInstallType;
+import com.redhat.rhn.domain.kickstart.KickstartSessionState;
+import com.redhat.rhn.domain.kickstart.KickstartTreeType;
+import com.redhat.rhn.domain.kickstart.KickstartVirtualizationType;
 import com.redhat.rhn.domain.kickstart.crypto.CryptoKey;
 import com.redhat.rhn.domain.kickstart.crypto.CryptoKeyType;
 import com.redhat.rhn.domain.kickstart.crypto.SslCryptoKey;
+import com.redhat.rhn.domain.matcher.MatcherRunData;
 import com.redhat.rhn.domain.notification.NotificationMessage;
 import com.redhat.rhn.domain.notification.UserNotification;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgAdminManagement;
 import com.redhat.rhn.domain.org.OrgConfig;
+import com.redhat.rhn.domain.org.TemplateCategory;
 import com.redhat.rhn.domain.org.TemplateString;
 import com.redhat.rhn.domain.org.usergroup.UserGroupImpl;
 import com.redhat.rhn.domain.org.usergroup.UserGroupMembers;
@@ -113,9 +137,13 @@ import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageBreaks;
 import com.redhat.rhn.domain.rhnpackage.PackageCapability;
 import com.redhat.rhn.domain.rhnpackage.PackageConflicts;
+import com.redhat.rhn.domain.rhnpackage.PackageDelta;
 import com.redhat.rhn.domain.rhnpackage.PackageEnhances;
+import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageExtraTagsKeys;
 import com.redhat.rhn.domain.rhnpackage.PackageFile;
+import com.redhat.rhn.domain.rhnpackage.PackageGroup;
+import com.redhat.rhn.domain.rhnpackage.PackageKeyType;
 import com.redhat.rhn.domain.rhnpackage.PackageObsoletes;
 import com.redhat.rhn.domain.rhnpackage.PackagePreDepends;
 import com.redhat.rhn.domain.rhnpackage.PackageProvides;
@@ -123,6 +151,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageRecommends;
 import com.redhat.rhn.domain.rhnpackage.PackageRequires;
 import com.redhat.rhn.domain.rhnpackage.PackageSuggests;
 import com.redhat.rhn.domain.rhnpackage.PackageSupplements;
+import com.redhat.rhn.domain.rhnpackage.profile.ProfileType;
 import com.redhat.rhn.domain.role.RoleImpl;
 import com.redhat.rhn.domain.scc.SCCOrderItem;
 import com.redhat.rhn.domain.scc.SCCRegCacheItem;
@@ -180,6 +209,8 @@ import com.redhat.rhn.domain.user.legacy.UserImpl;
 import com.redhat.rhn.domain.user.legacy.UserInfo;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.taskomatic.domain.TaskoBunch;
+import com.redhat.rhn.taskomatic.domain.TaskoRun;
+import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
 import com.redhat.rhn.taskomatic.domain.TaskoTask;
 import com.redhat.rhn.taskomatic.domain.TaskoTemplate;
 
@@ -219,6 +250,7 @@ public class AnnotationRegistry {
             ActionChain.class,
             ActionChainEntry.class,
             ActionChild.class,
+            ActionPackageDetails.class,
             ActionStatus.class,
             ActionType.class,
             AddressImpl.class,
@@ -232,6 +264,7 @@ public class AnnotationRegistry {
             Capability.class,
             ChannelArch.class,
             Channel.class,
+            ChannelProduct.class,
             ChannelSyncFlag.class,
             ChannelTemplate.class,
             Checksum.class,
@@ -247,21 +280,27 @@ public class AnnotationRegistry {
             ConfigChannel.class,
             ConfigChannelType.class,
             ConfigFile.class,
+            ConfigFileName.class,
+            ConfigFileState.class,
+            ConfigFileType.class,
             ContentEnvironment.class,
             ContentEnvironmentDiff.class,
             ContentFilter.class,
             ContentProject.class,
             ContentProjectFilter.class,
             ContentProjectHistoryEntry.class,
+            ContentSourceType.class,
             CryptoKey.class,
             CryptoKeyType.class,
             CustomDataValue.class,
+            Cve.class,
             DeltaImageInfo.class,
             Device.class,
             DockerfileProfile.class,
             EntitlementServerGroup.class,
             EnvironmentTarget.class,
             ErrataAdvisoryMap.class,
+            ErrataFileType.class,
             ErrataFilter.class,
             ExceptionMessage.class,
             FileList.class,
@@ -288,11 +327,17 @@ public class AnnotationRegistry {
             IssMaster.class,
             IssPeripheral.class,
             IssPeripheralChannels.class,
+            KickstartCommandName.class,
+            KickstartInstallType.class,
+            KickstartSessionState.class,
+            KickstartTreeType.class,
+            KickstartVirtualizationType.class,
             KiwiProfile.class,
             Location.class,
             MaintenanceCalendar.class,
             MaintenanceSchedule.class,
             ManagedServerGroup.class,
+            MatcherRunData.class,
             MinionRecurringAction.class,
             MinionServer.class,
             MinionServerFactory.class,
@@ -312,10 +357,14 @@ public class AnnotationRegistry {
             PackageBreaks.class,
             PackageCapability.class,
             PackageConflicts.class,
+            PackageDelta.class,
             PackageEnhances.class,
+            PackageEvr.class,
             PackageExtraTagsKeys.class,
             PackageFile.class,
             PackageFilter.class,
+            PackageGroup.class,
+            PackageKeyType.class,
             PackageObsoletes.class,
             PackagePreDepends.class,
             PackageProvides.class,
@@ -331,7 +380,9 @@ public class AnnotationRegistry {
             Pillar.class,
             PinnedSubscription.class,
             PlaybookPath.class,
+            ProductName.class,
             ProfileCustomDataValue.class,
+            ProfileType.class,
             ProjectSource.class,
             ProvisionState.class,
             PtfFilter.class,
@@ -375,6 +426,7 @@ public class AnnotationRegistry {
             ServerPath.class,
             ServerPathId.class,
             ServerStateRevision.class,
+            Severity.class,
             SnapshotTagName.class,
             SoftwareEnvironmentTarget.class,
             SoftwareProjectSource.class,
@@ -387,9 +439,13 @@ public class AnnotationRegistry {
             SUSEProductUpgrade.class,
             Task.class,
             TaskoBunch.class,
+            TaskoRun.class,
+            TaskoSchedule.class,
             TaskoTask.class,
             TaskoTemplate.class,
+            TemplateCategory.class,
             TemplateString.class,
+            TinyUrl.class,
             TokenChannelAppStream.class,
             Token.class,
             UserGroupImpl.class,
@@ -400,6 +456,12 @@ public class AnnotationRegistry {
             UserNotification.class,
             VHMCredentials.class,
             VirtualHostManagerNodeInfo.class,
+            XccdfBenchmark.class,
+            XccdfIdent.class,
+            XccdfIdentSystem.class,
+            XccdfProfile.class,
+            XccdfRuleResult.class,
+            XccdfRuleResultType.class,
             XccdfTestResult.class,
             WebEndpoint.class
     );

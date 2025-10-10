@@ -709,17 +709,7 @@ public class ActionFactory extends HibernateFactory {
         if (label == null) {
             return null;
         }
-        try {
-            Session session = HibernateFactory.getSession();
-            return session.createQuery("FROM ActionType WHERE label = :label", ActionType.class)
-                    .setParameter("label", label)
-                    //Retrieve from cache if there
-                    .setCacheable(true)
-                    .uniqueResult();
-        }
-        catch (HibernateException he) {
-            throw new HibernateRuntimeException("lookupActionTypeByLabel failed with label: " + label, he);
-        }
+        return singleton.lookupObjectByParam(ActionType.class, "label", label, true);
     }
 
     /**
@@ -728,17 +718,7 @@ public class ActionFactory extends HibernateFactory {
      * @return Returns the ActionStatus corresponding to name
      */
     private static ActionStatus lookupActionStatusByName(String name) {
-        try {
-            Session session = HibernateFactory.getSession();
-            return session.createQuery("FROM ActionStatus WHERE name = :name", ActionStatus.class)
-                    .setParameter("name", name)
-                    //Retrieve from cache if there
-                    .setCacheable(true)
-                    .uniqueResult();
-        }
-        catch (HibernateException he) {
-            throw new HibernateRuntimeException("lookupActionStatusByName failed with name: " + name, he);
-        }
+        return singleton.lookupObjectByParam(ActionStatus.class, "name", name, true);
     }
 
     /**
@@ -747,8 +727,7 @@ public class ActionFactory extends HibernateFactory {
      * @return The ConfigRevisionActionResult corresponding to the revison ID.
      */
     public static ConfigRevisionActionResult lookupConfigActionResult(Long actionConfigRevisionId) {
-        return singleton.lookupObjectByNamedQuery("ConfigRevisionActionResult.findById",
-                Map.of("id", actionConfigRevisionId), true);
+        return singleton.lookupObjectByParam(ConfigRevisionActionResult.class, "id", actionConfigRevisionId, true);
     }
 
     /**

@@ -517,7 +517,7 @@ public class PackageFactory extends HibernateFactory {
      * @return the key type
      */
     public static PackageKeyType lookupKeyTypeByLabel(String label) {
-        return singleton.lookupObjectByNamedQuery("PackageKeyType.findByLabel", Map.of("label", label));
+        return singleton.lookupObjectByParam(PackageKeyType.class, "label", label);
     }
 
     /**

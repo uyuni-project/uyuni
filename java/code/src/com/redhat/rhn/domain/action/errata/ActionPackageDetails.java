@@ -18,14 +18,31 @@ package com.redhat.rhn.domain.action.errata;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChild;
 
+import org.hibernate.annotations.Type;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 /**
  * ActionPackageDetails
  *
  * Handles the vendor change flag for patching, upgrading, installing
  */
+@Entity
+@Table(name = "rhnActionPackageDetails")
 public class ActionPackageDetails extends ActionChild {
-     private long id;
-     private boolean allowVendorChange = false;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "actiondpd_seq")
+    @SequenceGenerator(name = "actiondpd_seq", sequenceName = "rhn_actiondpd_id_seq", allocationSize = 1)
+    private long id;
+    @Column(name = "allow_vendor_change")
+    @Type(type = "yes_no")
+    private boolean allowVendorChange = false;
 
     /**
      * Constructor
@@ -54,7 +71,7 @@ public class ActionPackageDetails extends ActionChild {
      * Set the ID.
      * @param idIn id
      */
-    public void setId(long idIn) {
+    protected void setId(long idIn) {
         this.id = idIn;
     }
 

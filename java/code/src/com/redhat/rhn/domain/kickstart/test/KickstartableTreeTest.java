@@ -191,13 +191,9 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
         Date lastmodified = new Date();
 
         Long testid = 1L;
-        String query = "KickstartInstallType.findById";
-        KickstartInstallType installtype = (KickstartInstallType)
-                                            TestUtils.lookupFromCacheById(testid, query);
+        KickstartInstallType installtype = TestUtils.lookupFromCacheById(testid, KickstartInstallType.class);
 
-        query = "KickstartTreeType.findById";
-        KickstartTreeType treetype = (KickstartTreeType)
-                                     TestUtils.lookupFromCacheById(testid, query);
+        KickstartTreeType treetype = TestUtils.lookupFromCacheById(testid, KickstartTreeType.class);
 
         KickstartableTree k = new KickstartableTree();
         k.setLabel("ks-" + treeChannel.getLabel() +
@@ -251,9 +247,9 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
     public static KickstartableTree createTestKickstartableTree(
             Channel treeChannel, String installTypeLabel) throws Exception {
         KickstartableTree tree = createTestKickstartableTree(treeChannel);
-        String query = "KickstartInstallType.findByLabel";
-        KickstartInstallType installtype = (KickstartInstallType)
-                TestUtils.lookupFromCacheByLabel(installTypeLabel, query);
+
+        KickstartInstallType installtype = KickstartFactory.lookupKickstartInstallTypeByLabel(installTypeLabel);
+
         tree.setInstallType(installtype);
         TestUtils.saveAndFlush(tree);
         return tree;
@@ -263,10 +259,8 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
             throws Exception {
         ChannelArch arch = (ChannelArch)
                 TestUtils.lookupFromCacheById(archId, "ChannelArch.findById");
-        KickstartInstallType suseInstallType = (KickstartInstallType)
-                TestUtils.lookupFromCacheById(9L, "KickstartInstallType.findById");
-        KickstartTreeType treetype = (KickstartTreeType)
-                TestUtils.lookupFromCacheById(1L, "KickstartTreeType.findById");
+        KickstartInstallType suseInstallType = TestUtils.lookupFromCacheById(9L, KickstartInstallType.class);
+        KickstartTreeType treetype = TestUtils.lookupFromCacheById(1L, KickstartTreeType.class);
 
         User u = UserTestUtils.createUser();
         Channel channel = ChannelFactoryTest.createTestChannel(u);
