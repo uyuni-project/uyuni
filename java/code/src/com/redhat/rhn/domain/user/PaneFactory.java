@@ -48,7 +48,10 @@ public class PaneFactory {
         Session session;
         try {
             session = HibernateFactory.getSession();
-            List<Pane> list = session.getNamedQuery("Pane.findAllPanes").list();
+            List<Pane> list = session
+                    .createQuery("FROM Pane pane ORDER BY pane.id", Pane.class)
+                    .setCacheable(true)
+                    .list();
             Map<String, Pane> paneMap = new LinkedHashMap<>();
             for (Pane pane : list) {
                 paneMap.put(pane.getLabel(), pane);

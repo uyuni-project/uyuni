@@ -144,6 +144,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageExtraTagsKeys;
 import com.redhat.rhn.domain.rhnpackage.PackageFile;
 import com.redhat.rhn.domain.rhnpackage.PackageGroup;
 import com.redhat.rhn.domain.rhnpackage.PackageKeyType;
+import com.redhat.rhn.domain.rhnpackage.PackageName;
 import com.redhat.rhn.domain.rhnpackage.PackageObsoletes;
 import com.redhat.rhn.domain.rhnpackage.PackagePreDepends;
 import com.redhat.rhn.domain.rhnpackage.PackageProvides;
@@ -153,6 +154,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageSuggests;
 import com.redhat.rhn.domain.rhnpackage.PackageSupplements;
 import com.redhat.rhn.domain.rhnpackage.profile.ProfileType;
 import com.redhat.rhn.domain.role.RoleImpl;
+import com.redhat.rhn.domain.rpm.SourceRpm;
 import com.redhat.rhn.domain.scc.SCCOrderItem;
 import com.redhat.rhn.domain.scc.SCCRegCacheItem;
 import com.redhat.rhn.domain.scc.SCCRepository;
@@ -171,6 +173,7 @@ import com.redhat.rhn.domain.server.Device;
 import com.redhat.rhn.domain.server.EntitlementServerGroup;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.InstalledProduct;
+import com.redhat.rhn.domain.server.InvalidSnapshotReason;
 import com.redhat.rhn.domain.server.Location;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -194,15 +197,19 @@ import com.redhat.rhn.domain.server.ansible.AnsiblePath;
 import com.redhat.rhn.domain.server.ansible.InventoryPath;
 import com.redhat.rhn.domain.server.ansible.PlaybookPath;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerNodeInfo;
+import com.redhat.rhn.domain.session.WebSessionImpl;
 import com.redhat.rhn.domain.state.OrgStateRevision;
 import com.redhat.rhn.domain.state.ServerGroupStateRevision;
 import com.redhat.rhn.domain.state.ServerStateRevision;
 import com.redhat.rhn.domain.state.StateRevision;
 import com.redhat.rhn.domain.task.Task;
+import com.redhat.rhn.domain.test.TestImpl;
 import com.redhat.rhn.domain.token.RegTokenOrgDefault;
 import com.redhat.rhn.domain.token.Token;
 import com.redhat.rhn.domain.token.TokenChannelAppStream;
 import com.redhat.rhn.domain.user.AddressImpl;
+import com.redhat.rhn.domain.user.Pane;
+import com.redhat.rhn.domain.user.State;
 import com.redhat.rhn.domain.user.StateChange;
 import com.redhat.rhn.domain.user.legacy.PersonalInfo;
 import com.redhat.rhn.domain.user.legacy.UserImpl;
@@ -321,6 +328,7 @@ public class AnnotationRegistry {
             InstalledPackage.class,
             InstalledProduct.class,
             InternalState.class,
+            InvalidSnapshotReason.class,
             InventoryPath.class,
             IssAccessToken.class,
             IssHub.class,
@@ -365,6 +373,7 @@ public class AnnotationRegistry {
             PackageFilter.class,
             PackageGroup.class,
             PackageKeyType.class,
+            PackageName.class,
             PackageObsoletes.class,
             PackagePreDepends.class,
             PackageProvides.class,
@@ -372,6 +381,7 @@ public class AnnotationRegistry {
             PackageRequires.class,
             PackageSuggests.class,
             PackageSupplements.class,
+            Pane.class,
             PaygCredentialsProduct.class,
             PaygDimensionComputation.class,
             PaygDimensionResult.class,
@@ -430,7 +440,9 @@ public class AnnotationRegistry {
             SnapshotTagName.class,
             SoftwareEnvironmentTarget.class,
             SoftwareProjectSource.class,
+            SourceRpm.class,
             SslCryptoKey.class,
+            State.class,
             StateChange.class,
             StateRevision.class,
             SupportDataActionDetails.class,
@@ -445,6 +457,7 @@ public class AnnotationRegistry {
             TaskoTemplate.class,
             TemplateCategory.class,
             TemplateString.class,
+            TestImpl.class,
             TinyUrl.class,
             TokenChannelAppStream.class,
             Token.class,
@@ -462,6 +475,7 @@ public class AnnotationRegistry {
             XccdfProfile.class,
             XccdfRuleResult.class,
             XccdfRuleResultType.class,
+            WebSessionImpl.class,
             XccdfTestResult.class,
             WebEndpoint.class
     );

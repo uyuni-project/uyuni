@@ -15,12 +15,26 @@
 package com.redhat.rhn.domain.rpm;
 
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 /**
  * SourceRpm
  */
+@Entity
+@Table(name = "rhnSourceRpm")
 public class SourceRpm {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_SOURCERPM_ID_SEQ")
+    @SequenceGenerator(name = "RHN_SOURCERPM_ID_SEQ", sequenceName = "RHN_SOURCERPM_ID_SEQ", allocationSize = 1)
     private Long id;
+    @Column
     private String name;
 
     /**
@@ -32,7 +46,7 @@ public class SourceRpm {
     /**
      * @param i The id to set.
      */
-    public void setId(Long i) {
+    protected void setId(Long i) {
         this.id = i;
     }
 

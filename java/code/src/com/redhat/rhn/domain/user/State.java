@@ -15,14 +15,30 @@
 package com.redhat.rhn.domain.user;
 
 
+import static org.hibernate.annotations.CacheConcurrencyStrategy.READ_ONLY;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.Immutable;
+
 import java.io.Serializable;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * State
  */
+@Entity
+@Table(name = "rhnWebContactChangeState")
+@Immutable
+@Cache(usage = READ_ONLY)
 public class State implements Serializable {
 
+    @Id
     private Long id;
+    @Column
     private String label;
 
 
@@ -36,7 +52,7 @@ public class State implements Serializable {
     /**
      * @param i The id to set.
      */
-    public void setId(Long i) {
+    protected void setId(Long i) {
         this.id = i;
     }
 

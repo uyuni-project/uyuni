@@ -67,9 +67,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.hibernate.type.StandardBasicTypes;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -634,17 +632,7 @@ public class PackageManager extends BaseManager {
      * @return PackageName associated with the given string name.
      */
     public static PackageName lookupPackageName(String name) {
-        Session session = null;
-        try {
-            session = HibernateFactory.getSession();
-            return (PackageName)session.getNamedQuery("PackageName.findByName")
-                                       .setParameter("name", name, StandardBasicTypes.STRING)
-                                       .uniqueResult();
-        }
-        catch (HibernateException e) {
-            LOG.error("Hibernate exception: {}", e.toString());
-        }
-        return null;
+        return PackageFactory.lookupPackageName(name);
     }
 
     /**
