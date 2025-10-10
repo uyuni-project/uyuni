@@ -13,22 +13,20 @@ The `web` subdirectory consists of roughly the following main chunks:
 ## Frontend development quick start
 
  - Install [Node](https://nodejs.org/en/download)  
- - Install [Yarn](https://classic.yarnpkg.com/en/docs/install)  
- - In the repository root, run `yarn install`  
- - Run development against a server of your choice `yarn proxy https://server.example.com`  
+ - In the repository root, run `npm install`  
+ - Run development against a server of your choice `npm run proxy https://server.example.com`  
 
 ## Scripts
 
-We use [Yarn](https://yarnpkg.com/) as the package manager and script runner for the frontend codebase. All scripts are scoped to `web/html/src`.  
-The following scripts cover most day-to-day uses, see `web/html/src/package.json` for more:  
+The following scripts cover most day-to-day uses, see `package.json` for more:  
 
- - Run lint with autofixer: `yarn lint`
- - Run unit tests: `yarn test`  
- - Run the Typescript checker: `yarn tsc`  
- - Build the web UI: `yarn build`  
- - Run lint, tests, Typescript checker, and build the application: `yarn all`  
- - Audit production dependencies: `yarn audit-production-dependencies`
- - Run a development proxy against a server: `yarn proxy https://server.example.com`  
+ - Run lint with autofixer: `npm run lint`
+ - Run unit tests: `npm run test`  
+ - Run the Typescript checker: `npm run tsc`  
+ - Build the web UI: `npm run build`  
+ - Run lint, tests, Typescript checker, and build the application: `npm run all`  
+ - Audit production dependencies: `npm run audit-production-dependencies`
+ - Run a development proxy against a server: `npm run proxy https://server.example.com`  
 
 ## VSCode
 
