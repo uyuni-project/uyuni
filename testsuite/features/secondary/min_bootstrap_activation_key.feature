@@ -69,9 +69,9 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
     And I enter "Minion testing" as "description"
     And I enter "MINION-TEST" as "key"
     And I enter "20" as "usageLimit"
-    And I select "openSUSE Leap 15.6 (x86_64)" from "selectedBaseChannel"
+    And I select "openSUSE Tumbleweed (x86_64)" from "selectedBaseChannel"
     And I wait for child channels to appear
-    And I check "Uyuni Client Tools for openSUSE Leap 15.6 (x86_64) (Development)"
+    And I check "Uyuni Client Tools for openSUSE Tumbleweed (x86_64) (Development)"
     And I check "Fake-RPM-SUSE-Channel"
     And I click on "Create Activation Key"
     And I follow "Configuration" in the content area
@@ -117,7 +117,7 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
 @uyuni
   Scenario: Verify that minion bootstrapped with base channel
     Given I am on the Systems page
-    Then I should see a "openSUSE Leap 15.6 (x86_64)" text
+    Then I should see a "openSUSE Tumbleweed (x86_64)" text
 
   # bsc#1080807 - Assigning configuration channel in activation key doesn't work
   Scenario: Verify that minion bootstrapped with configuration channel
