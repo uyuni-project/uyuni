@@ -35,6 +35,11 @@ public class UserServerPreferenceId implements Serializable {
     private String name;
 
     /**
+     * Constructor
+     */
+    public UserServerPreferenceId() { }
+
+    /**
      * Create a new UserServerPreferenceId
      * @param userIn user corresponding to the preference
      * @param serverIn server corresponding to the preference

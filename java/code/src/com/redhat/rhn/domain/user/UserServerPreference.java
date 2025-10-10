@@ -14,16 +14,95 @@
  */
 package com.redhat.rhn.domain.user;
 
-import java.util.Date;
+import com.redhat.rhn.domain.BaseDomainHelper;
+import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.user.legacy.UserImpl;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  * UserServerPreference - Class representation of the table rhnUserServerprefs.
  */
-public class UserServerPreference {
-    private UserServerPreferenceId id;
+@Entity
+@Table(name = "rhnUserServerprefs")
+@IdClass(UserServerPreferenceId.class)
+public class UserServerPreference extends BaseDomainHelper {
+    @Id
+    @ManyToOne(targetEntity = UserImpl.class)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "server_id")
+    private Server server;
+
+    @Id
+    @Column
+    private String name;
+
+    @Column
     private String value;
-    private Date created;
-    private Date modified;
+
+    /**
+     * Constructor
+     */
+    public UserServerPreference() { }
+
+    /**
+     * Create a new UserServerPreference
+     * @param userIn user corresponding to the preference
+     * @param serverIn server corresponding to the preference
+     * @param nameIn property name corresponding to the preference
+     */
+    public UserServerPreference(User userIn, Server serverIn, String nameIn) {
+        this.user = userIn;
+        this.server = serverIn;
+        this.name = nameIn;
+    }
+
+    /**
+     * @return Returns the name.
+     */
+    public String getName() {
+        return name;
+    }
+    /**
+     * @param nameIn The name to set.
+     */
+    public void setName(String nameIn) {
+        this.name = nameIn;
+    }
+    /**
+     * @return Returns the server.
+     */
+    public Server getServer() {
+        return server;
+    }
+    /**
+     * @param serverIn The server to set.
+     */
+    public void setServer(Server serverIn) {
+        this.server = serverIn;
+    }
+    /**
+     * @return Returns the user.
+     */
+    public User getUser() {
+        return user;
+    }
+    /**
+     * @param userIn The user to set.
+     */
+    public void setUser(User userIn) {
+        this.user = userIn;
+    }
 
     /**
      * Getter for value
@@ -40,51 +119,4 @@ public class UserServerPreference {
     public void setValue(String valueIn) {
         this.value = valueIn;
     }
-
-    /**
-     * Getter for created
-     * @return Date to get
-    */
-    public Date getCreated() {
-        return this.created;
-    }
-
-    /**
-     * Setter for created
-     * @param createdIn to set
-    */
-    public void setCreated(Date createdIn) {
-        this.created = createdIn;
-    }
-
-    /**
-     * Getter for modified
-     * @return Date to get
-    */
-    public Date getModified() {
-        return this.modified;
-    }
-
-    /**
-     * Setter for modified
-     * @param modifiedIn to set
-    */
-    public void setModified(Date modifiedIn) {
-        this.modified = modifiedIn;
-    }
-
-    /**
-     * @return Returns the id.
-     */
-    public UserServerPreferenceId getId() {
-        return id;
-    }
-
-    /**
-     * @param idIn The id to set.
-     */
-    public void setId(UserServerPreferenceId idIn) {
-        this.id = idIn;
-    }
-
 }

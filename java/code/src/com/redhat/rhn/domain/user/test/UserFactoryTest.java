@@ -316,13 +316,7 @@ public class UserFactoryTest extends RhnBaseTestCase {
         Server s = ServerFactoryTest.createTestServer(user, true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
 
-        UserServerPreferenceId id = new UserServerPreferenceId(user,
-                                                               s,
-                                                               UserServerPreferenceId
-                                                               .RECEIVE_NOTIFICATIONS);
-
-        UserServerPreference usp = new UserServerPreference();
-        usp.setId(id);
+        UserServerPreference usp = new UserServerPreference(user, s, UserServerPreferenceId.RECEIVE_NOTIFICATIONS);
         usp.setValue("0");
         TestUtils.saveAndFlush(usp);
 

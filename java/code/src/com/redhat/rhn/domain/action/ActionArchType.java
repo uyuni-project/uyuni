@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -18,17 +19,41 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Immutable;
 
 import java.io.Serializable;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  * ActionType
  */
+@Entity
+@Table(name = "rhnArchTypeActions")
+@Immutable
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
+@IdClass(ActionArchTypeId.class)
 public class ActionArchType extends BaseDomainHelper implements Serializable {
 
+    @Id
+    @Column(name = "arch_type_id")
     private Long archTypeId;
+    @Id
+    @Column(name = "action_style")
     private String actionStyle;
 
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "action_type_id", updatable = false)
     private ActionType actionType;
 
     /**

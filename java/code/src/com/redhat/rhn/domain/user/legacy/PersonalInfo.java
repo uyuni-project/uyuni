@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -19,20 +20,45 @@ import com.redhat.rhn.domain.user.User;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
 /**
  * Class PersonalInfo that reflects the DB representation of WEB_USER_PERSONAL_INFO
  * DB table: WEB_USER_PERSONAL_INFO
  */
+@Entity
+@Table(name = "web_user_personal_info")
 public class PersonalInfo extends AbstractUserChild implements Serializable {
 
+    @Id
+    @Column(name = "web_user_id")
+    private Long id;
+
+    @Column
     private String prefix;
+    @Column(name = "first_names")
     private String firstNames;
+    @Column(name = "last_name")
     private String lastName;
+    @Column
     private String company;
+    @Column
     private String title;
+    @Column
     private String phone;
+    @Column
     private String fax;
+    @Column
     private String email;
+    @OneToOne(targetEntity = UserImpl.class)
+    @JoinColumn(name = "web_user_id")
+    @MapsId
     private User user;
 
     /**

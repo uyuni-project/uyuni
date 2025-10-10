@@ -13,6 +13,7 @@ package com.redhat.rhn.common.hibernate;
 import com.redhat.rhn.domain.access.AccessGroup;
 import com.redhat.rhn.domain.access.Namespace;
 import com.redhat.rhn.domain.access.WebEndpoint;
+import com.redhat.rhn.domain.action.ActionArchType;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainEntry;
 import com.redhat.rhn.domain.action.ActionChild;
@@ -204,6 +205,7 @@ import com.redhat.rhn.domain.state.ServerStateRevision;
 import com.redhat.rhn.domain.state.StateRevision;
 import com.redhat.rhn.domain.task.Task;
 import com.redhat.rhn.domain.test.TestImpl;
+import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.RegTokenOrgDefault;
 import com.redhat.rhn.domain.token.Token;
 import com.redhat.rhn.domain.token.TokenChannelAppStream;
@@ -211,6 +213,7 @@ import com.redhat.rhn.domain.user.AddressImpl;
 import com.redhat.rhn.domain.user.Pane;
 import com.redhat.rhn.domain.user.State;
 import com.redhat.rhn.domain.user.StateChange;
+import com.redhat.rhn.domain.user.UserServerPreference;
 import com.redhat.rhn.domain.user.legacy.PersonalInfo;
 import com.redhat.rhn.domain.user.legacy.UserImpl;
 import com.redhat.rhn.domain.user.legacy.UserInfo;
@@ -254,12 +257,14 @@ public class AnnotationRegistry {
             // do not add class at the end, but keep the alphabetical order
             AccessGroup.class,
             AccessToken.class,
+            ActionArchType.class,
             ActionChain.class,
             ActionChainEntry.class,
             ActionChild.class,
             ActionPackageDetails.class,
             ActionStatus.class,
             ActionType.class,
+            ActivationKey.class,
             AddressImpl.class,
             AnsiblePath.class,
             AppStreamApi.class,
@@ -467,6 +472,7 @@ public class AnnotationRegistry {
             UserImpl.class,
             UserInfo.class,
             UserNotification.class,
+            UserServerPreference.class,
             VHMCredentials.class,
             VirtualHostManagerNodeInfo.class,
             XccdfBenchmark.class,
