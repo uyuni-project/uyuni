@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-03 11:04+0200\n"
+"POT-Creation-Date: 2025-10-10 09:51+0200\n"
 "PO-Revision-Date: 2025-06-16 14:59+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/spacecmd/ja/>\n"
@@ -426,7 +426,6 @@ msgid "File %s exists, confirm overwrite file? (y/n)"
 msgstr "ファイル %s は既に存在しています。上書きしてよろしいですか？ (y/n)"
 
 #: ../src/spacecmd/activationkey.py:1448
-#, python-brace-format
 msgid "Failed to save exported keys to file: {}"
 msgstr "エクスポートしたキーをファイルに書き込む処理が失敗しました: {}"
 
@@ -1265,7 +1264,6 @@ msgid "Exporting cc %s to %s"
 msgstr "cc %s を %s にエクスポートしています"
 
 #: ../src/spacecmd/configchannel.py:1364
-#, python-brace-format
 msgid "File '{}' exists, confirm overwrite file? (y/n)"
 msgstr "ファイル '{}' は既に存在しています。ファイルを上書きしますか？ (y/n)"
 
@@ -1587,7 +1585,6 @@ msgid "usage: custominfo_details KEY ..."
 msgstr "使用方法: custominfo_details 鍵 ..."
 
 #: ../src/spacecmd/custominfo.py:167
-#, python-brace-format
 msgid "No keys matched argument '{}'."
 msgstr "パラメータ '{}' に該当する鍵はありません。"
 
@@ -3646,7 +3643,6 @@ msgstr "%s という名前の組織は見つかりませんでした"
 #: ../src/spacecmd/org.py:229 ../src/spacecmd/org.py:264
 #: ../src/spacecmd/org.py:300 ../src/spacecmd/org.py:338
 #: ../src/spacecmd/org.py:460 ../src/spacecmd/org.py:497
-#, python-brace-format
 msgid "Organisation '{}' was not found"
 msgstr "組織 '{}' が見つかりませんでした"
 
@@ -3676,7 +3672,6 @@ msgid "No trust organisation found for the name %s"
 msgstr "名前 %s に対する信頼する組織が見つかりませんでした"
 
 #: ../src/spacecmd/org.py:304 ../src/spacecmd/org.py:342
-#, python-brace-format
 msgid "Organisation '{}' to trust for, was not found"
 msgstr "信頼先の組織 '{}' が見つかりませんでした"
 
@@ -3710,7 +3705,6 @@ msgid "No trusted organisation found for the name %s"
 msgstr "%s に対する信頼する組織が見つかりませんでした"
 
 #: ../src/spacecmd/org.py:388
-#, python-brace-format
 msgid "Trusted organisation '{}' was not found"
 msgstr "信頼する組織 '{}' が見つかりませんでした"
 
@@ -4008,7 +4002,7 @@ msgid "proxy_container_config: create a proxy system and return its configuratio
 msgstr "proxy_container_config: プロキシシステムを作成し、その設定ファイルを返します"
 
 #: ../src/spacecmd/proxy.py:46
-#, fuzzy
+#, fuzzy, python-format
 #| msgid ""
 #| "usage: proxy_container_config [options] PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL ROOT_CA CRT KEY\n"
 #| "\n"
@@ -4075,7 +4069,7 @@ msgid "proxy_container_config_generate_cert: create a proxy system and return it
 msgstr "proxy_container_config_generate_cert: プロキシシステムを作成し、その設定ファイルを返します"
 
 #: ../src/spacecmd/proxy.py:119
-#, fuzzy
+#, fuzzy, python-format
 #| msgid ""
 #| "usage: proxy_container_config_generate_cert PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL\n"
 #| "\n"
@@ -4205,7 +4199,6 @@ msgid "Repository SSL Client Key:         %s"
 msgstr "リポジトリーの SSL クライアント鍵:         %s"
 
 #: ../src/spacecmd/repo.py:116
-#, python-brace-format
 msgid "No repositories found for '{}' query"
 msgstr "'{}' の問い合わせに対してリポジトリーが見つかりませんでした"
 
@@ -4426,7 +4419,6 @@ msgid "%s  # Systems"
 msgstr "%s  # システム"
 
 #: ../src/spacecmd/report.py:197
-#, python-brace-format
 msgid "No errata found for '{}'"
 msgstr "'{}' に対するエラータは見つかりませんでした"
 
@@ -4851,7 +4843,6 @@ msgid "If no date is provided it will delete all archived actions"
 msgstr "日付が指定されていない場合、アーカイブ済みのすべてのアクションが削除されます"
 
 #: ../src/spacecmd/schedule.py:537
-#, python-brace-format
 msgid "Do you want to delete ({}) archived actions? [y/N]"
 msgstr "アーカイブ済みのアクション ({}) を削除しますか? [y / N]"
 
@@ -4872,7 +4863,6 @@ msgid "If no date is provided it will archive all completed actions"
 msgstr "日付が指定されていない場合は、完了したすべてのアクションがアーカイブされます"
 
 #: ../src/spacecmd/schedule.py:619
-#, python-brace-format
 msgid "Do you want to archive ({}) completed actions? [y/N]"
 msgstr "完了したアクション ({}) をアーカイブしますか? [y / N]"
 
@@ -6137,12 +6127,10 @@ msgid "merging errata from softwarechannel "
 msgstr "下記のソフトウェアチャンネルからのエラータを併合します: "
 
 #: ../src/spacecmd/softwarechannel.py:2931
-#, python-brace-format
 msgid "{} contains no errata which is not already present in {}"
 msgstr "{} には {} に含まれていないエラータがありません"
 
 #: ../src/spacecmd/softwarechannel.py:2939
-#, python-brace-format
 msgid "errata to add to channel {}: "
 msgstr "チャンネル {} に追加されるエラータ: "
 
@@ -6156,7 +6144,6 @@ msgid " errata to  "
 msgstr " 個のエラータを下記に追加:  "
 
 #: ../src/spacecmd/softwarechannel.py:2955
-#, python-brace-format
 msgid "Perform these changes to channel {} [y/N]:"
 msgstr "チャンネル {} に対する変更を適用します [y/N]:"
 
@@ -8035,7 +8022,6 @@ msgstr "サーバは、ブートストラップ時に再アクティベーショ
 
 #. pylint: disable-next=consider-using-f-string
 #: ../src/spacecmd/system.py:5018
-#, python-brace-format
 msgid "Bootstrapping '{}'. This may take a while."
 msgstr "「{}」をブートストラップしています。 これにはしばらく時間がかかる場合があります。"
 
@@ -8391,7 +8377,6 @@ msgid "Skipping usage of common strings: number of substrings differ"
 msgstr "共通する文字列を使用しているため読み飛ばしています: 複数の箇所に違いがあります"
 
 #: ../src/spacecmd/utils.py:992
-#, python-brace-format
 msgid "Parameter {} not a string type, but {}."
 msgstr "パラメータ {} は文字列型ではなく {} です。"
 

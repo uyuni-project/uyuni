@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-03 11:04+0200\n"
+"POT-Creation-Date: 2025-10-10 09:51+0200\n"
 "PO-Revision-Date: 2025-06-12 08:59+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/spacecmd/zh_CN/>\n"
@@ -426,7 +426,6 @@ msgid "File %s exists, confirm overwrite file? (y/n)"
 msgstr "文件 %s 已存在，请确认是否重写文件？(y/n)"
 
 #: ../src/spacecmd/activationkey.py:1448
-#, python-brace-format
 msgid "Failed to save exported keys to file: {}"
 msgstr "无法将导出的密钥保存到文件：{}"
 
@@ -1266,7 +1265,6 @@ msgid "Exporting cc %s to %s"
 msgstr "正在将 cc %s 导出到 %s"
 
 #: ../src/spacecmd/configchannel.py:1364
-#, python-brace-format
 msgid "File '{}' exists, confirm overwrite file? (y/n)"
 msgstr "文件 '{}' 已存在，请确认是否重写文件？(y/n)"
 
@@ -1588,7 +1586,6 @@ msgid "usage: custominfo_details KEY ..."
 msgstr "用法：custominfo_details KEY ..."
 
 #: ../src/spacecmd/custominfo.py:167
-#, python-brace-format
 msgid "No keys matched argument '{}'."
 msgstr "没有任何密钥与参数 '{}' 相匹配。"
 
@@ -3651,7 +3648,6 @@ msgstr "找不到名为 %s 的组织"
 #: ../src/spacecmd/org.py:229 ../src/spacecmd/org.py:264
 #: ../src/spacecmd/org.py:300 ../src/spacecmd/org.py:338
 #: ../src/spacecmd/org.py:460 ../src/spacecmd/org.py:497
-#, python-brace-format
 msgid "Organisation '{}' was not found"
 msgstr "未找到组织 '{}'"
 
@@ -3681,7 +3677,6 @@ msgid "No trust organisation found for the name %s"
 msgstr "找不到名为 %s 的信任组织"
 
 #: ../src/spacecmd/org.py:304 ../src/spacecmd/org.py:342
-#, python-brace-format
 msgid "Organisation '{}' to trust for, was not found"
 msgstr "未找到要信任的组织 '{}'"
 
@@ -3715,7 +3710,6 @@ msgid "No trusted organisation found for the name %s"
 msgstr "找不到名为 %s 的可信组织"
 
 #: ../src/spacecmd/org.py:388
-#, python-brace-format
 msgid "Trusted organisation '{}' was not found"
 msgstr "未找到可信组织 '{}'"
 
@@ -4013,7 +4007,7 @@ msgid "proxy_container_config: create a proxy system and return its configuratio
 msgstr "proxy_container_config：创建代理系统并返回其配置文件"
 
 #: ../src/spacecmd/proxy.py:46
-#, fuzzy
+#, fuzzy, python-format
 #| msgid ""
 #| "usage: proxy_container_config [options] PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL ROOT_CA CRT KEY\n"
 #| "\n"
@@ -4080,7 +4074,7 @@ msgid "proxy_container_config_generate_cert: create a proxy system and return it
 msgstr "proxy_container_config_generate_cert：创建代理系统并返回其配置文件"
 
 #: ../src/spacecmd/proxy.py:119
-#, fuzzy
+#, fuzzy, python-format
 #| msgid ""
 #| "usage: proxy_container_config_generate_cert PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL\n"
 #| "\n"
@@ -4210,7 +4204,6 @@ msgid "Repository SSL Client Key:         %s"
 msgstr "储存库 SSL 客户端密钥：%s"
 
 #: ../src/spacecmd/repo.py:116
-#, python-brace-format
 msgid "No repositories found for '{}' query"
 msgstr "未找到查询 '{}' 的储存库"
 
@@ -4431,7 +4424,6 @@ msgid "%s  # Systems"
 msgstr "%s  系统数"
 
 #: ../src/spacecmd/report.py:197
-#, python-brace-format
 msgid "No errata found for '{}'"
 msgstr "未找到 '{}' 的勘误"
 
@@ -4856,7 +4848,6 @@ msgid "If no date is provided it will delete all archived actions"
 msgstr "如果不提供日期，将删除所有存档的操作"
 
 #: ../src/spacecmd/schedule.py:537
-#, python-brace-format
 msgid "Do you want to delete ({}) archived actions? [y/N]"
 msgstr "您要删除 ({}) 个存档的操作吗？[y/N]"
 
@@ -4877,7 +4868,6 @@ msgid "If no date is provided it will archive all completed actions"
 msgstr "如果不提供日期，将存档所有已完成操作"
 
 #: ../src/spacecmd/schedule.py:619
-#, python-brace-format
 msgid "Do you want to archive ({}) completed actions? [y/N]"
 msgstr "您要存档 ({}) 个已完成操作吗？[y/N]"
 
@@ -6142,12 +6132,10 @@ msgid "merging errata from softwarechannel "
 msgstr "正在合并以下软件通道中的勘误 "
 
 #: ../src/spacecmd/softwarechannel.py:2931
-#, python-brace-format
 msgid "{} contains no errata which is not already present in {}"
 msgstr "{} 不包含 {} 中尚不存在的勘误"
 
 #: ../src/spacecmd/softwarechannel.py:2939
-#, python-brace-format
 msgid "errata to add to channel {}: "
 msgstr "要添加到通道 {} 的勘误： "
 
@@ -6161,7 +6149,6 @@ msgid " errata to  "
 msgstr " 勘误至  "
 
 #: ../src/spacecmd/softwarechannel.py:2955
-#, python-brace-format
 msgid "Perform these changes to channel {} [y/N]:"
 msgstr "对通道 {} 执行这些更改 [y/N]："
 
@@ -8040,7 +8027,6 @@ msgstr "服务器在引导时不支持重新激活密钥"
 
 #. pylint: disable-next=consider-using-f-string
 #: ../src/spacecmd/system.py:5018
-#, python-brace-format
 msgid "Bootstrapping '{}'. This may take a while."
 msgstr "正在引导 \"{}\"。这可能需要一段时间。"
 
@@ -8396,7 +8382,6 @@ msgid "Skipping usage of common strings: number of substrings differ"
 msgstr "正在跳过公用字符串的使用：子字符串数目不同"
 
 #: ../src/spacecmd/utils.py:992
-#, python-brace-format
 msgid "Parameter {} not a string type, but {}."
 msgstr "参数 {} 不是字符串类型，而是 {}。"
 
