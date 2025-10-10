@@ -68,7 +68,7 @@ with open(config_path + "httpd.yaml", encoding="utf-8") as httpdSource:
 
     server_version = config.get("server_version")
     # Only check version for SUSE Multi-Linux Manager, not Uyuni
-    matcher = re.fullmatch(r"([0-9]+\.[0-9]+\.)[0-9]+", server_version)
+    matcher = re.fullmatch(r"([0-9]+\.)[0-9]+\.[0-9]+", server_version)
     if matcher:
         major_version = matcher.group(1)
         container_version = subprocess.run(

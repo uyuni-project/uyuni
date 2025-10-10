@@ -52,8 +52,8 @@ class SubscriptionMatching extends React.Component<SubscriptionMatchingProps> {
           error: DEPRECATED_unsafeEquals(response.status, 401)
             ? "authentication"
             : response.status >= 500
-            ? "general"
-            : null,
+              ? "general"
+              : null,
         });
       });
   };
@@ -108,8 +108,8 @@ const ErrorMessage = (props) => (
       props.error === "authentication"
         ? MessagesUtils.warning(t("Session expired, please reload the page to see up-to-date data."))
         : props.error === "general"
-        ? MessagesUtils.warning(t("Server error, please check log files."))
-        : []
+          ? MessagesUtils.warning(t("Server error, please check log files."))
+          : []
     }
   />
 );

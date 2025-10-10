@@ -31,15 +31,12 @@ public class KickstartInstallTypeTest extends RhnBaseTestCase {
     @Test
     public void testKsInstallType() {
         Long testid = 1L;
-        String query = "KickstartInstallType.findById";
 
-        KickstartInstallType kit1 = (KickstartInstallType)
-                                    TestUtils.lookupFromCacheById(testid, query);
+        KickstartInstallType kit1 = TestUtils.lookupFromCacheById(testid, KickstartInstallType.class);
         assertNotNull(kit1);
         assertEquals(kit1.getId(), testid);
 
-        KickstartInstallType kit2 = (KickstartInstallType)
-                                    TestUtils.lookupFromCacheById(testid, query);
+        KickstartInstallType kit2 = TestUtils.lookupFromCacheById(testid, KickstartInstallType.class);
         assertEquals(kit1.getLabel(), kit2.getLabel());
     }
 

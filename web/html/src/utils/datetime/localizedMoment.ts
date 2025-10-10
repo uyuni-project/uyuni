@@ -179,7 +179,7 @@ let userTimeZoneAbbr: undefined | string = undefined;
 Object.defineProperties(moment, {
   serverTimeZone: {
     get() {
-      return config.serverTimeZone as typeof moment["serverTimeZone"];
+      return config.serverTimeZone as (typeof moment)["serverTimeZone"];
     },
   },
   serverTimeZoneAbbr: {
@@ -189,7 +189,7 @@ Object.defineProperties(moment, {
   },
   userTimeZone: {
     get() {
-      return config.userTimeZone as typeof moment["serverTimeZone"];
+      return config.userTimeZone as (typeof moment)["serverTimeZone"];
     },
   },
   userTimeZoneAbbr: {

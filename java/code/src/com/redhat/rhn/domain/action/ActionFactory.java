@@ -709,7 +709,7 @@ public class ActionFactory extends HibernateFactory {
         if (label == null) {
             return null;
         }
-        return singleton.lookupObjectByNamedQuery("ActionType.findByLabel", Map.of("label", label), true);
+        return singleton.lookupObjectByParam(ActionType.class, "label", label, true);
     }
 
     /**
@@ -718,8 +718,7 @@ public class ActionFactory extends HibernateFactory {
      * @return Returns the ActionStatus corresponding to name
      */
     private static ActionStatus lookupActionStatusByName(String name) {
-        return singleton.lookupObjectByNamedQuery("ActionStatus.findByName", Map.of("name", name), true);
-
+        return singleton.lookupObjectByParam(ActionStatus.class, "name", name, true);
     }
 
     /**
@@ -728,8 +727,7 @@ public class ActionFactory extends HibernateFactory {
      * @return The ConfigRevisionActionResult corresponding to the revison ID.
      */
     public static ConfigRevisionActionResult lookupConfigActionResult(Long actionConfigRevisionId) {
-        return singleton.lookupObjectByNamedQuery("ConfigRevisionActionResult.findById",
-                Map.of("id", actionConfigRevisionId), true);
+        return singleton.lookupObjectByParam(ConfigRevisionActionResult.class, "id", actionConfigRevisionId, true);
     }
 
     /**
@@ -1008,7 +1006,11 @@ public class ActionFactory extends HibernateFactory {
      * @return history event
      */
     public static ServerHistoryEvent lookupHistoryEventById(Long aid) {
-        return singleton.lookupObjectByNamedQuery("ServerHistory.lookupById", Map.of("id", aid));
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("FROM ServerHistoryEvent AS s WHERE s.id = :id", ServerHistoryEvent.class)
+                .setParameter("id", aid)
+                .uniqueResult();
+
     }
 
     private static void updateActionEarliestDate(Action action) {

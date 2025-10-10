@@ -1,5 +1,3 @@
-import { hot } from "react-hot-loader/root";
-
 import { useState } from "react";
 
 import { AsyncButton } from "components/buttons";
@@ -154,4 +152,4 @@ const PasswordPolicy = (prop: PasswordPolicyProps) => {
   );
 };
 
-export default hot(withPageWrapper(PasswordPolicy));
+export default withPageWrapper(PasswordPolicy);

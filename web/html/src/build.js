@@ -1,16 +1,23 @@
-const util = require("util");
-const exec = util.promisify(require("child_process").exec);
-const webpack = util.promisify(require("webpack"));
+import child_process from "node:child_process";
+import path from "node:path";
+import util from "node:util";
+import { dirname } from "path";
+import { fileURLToPath } from "url";
+import v8 from "v8";
+import rawWebpack from "webpack";
+import { hideBin } from "yargs/helpers";
+import yargs from "yargs/yargs";
 
-const path = require("path");
-const v8 = require("v8");
-const yargs = require("yargs/yargs");
-const { hideBin } = require("yargs/helpers");
+import checkPackage from "./build/check-package.js";
+import { fillSpecFile } from "./build/fill-spec-file.js";
+import { aggregateLicenses } from "./build/licenses/index.js";
+import config from "./build/webpack.config.js";
 
-const { fillSpecFile } = require("./build/fill-spec-file");
-const config = require("./build/webpack.config");
-const checkPackage = require("./build/check-package");
-const { aggregateLicenses } = require("./build/licenses");
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const exec = util.promisify(child_process.exec);
+const webpack = util.promisify(rawWebpack);
 
 const opts = yargs(hideBin(process.argv))
   .version(false)

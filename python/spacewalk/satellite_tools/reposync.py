@@ -1223,9 +1223,6 @@ class RepoSync(object):
         ):
             return None
 
-        # pylint: disable-next=consider-using-f-string
-        log(0, "Add Patch %s" % patch_name)
-
         e["errata_from"] = notice["from"]
         e["advisory"] = e["advisory_name"] = patch_name
         e["advisory_rel"] = notice["version"]
@@ -1272,6 +1269,9 @@ class RepoSync(object):
                 % e["advisory_name"],
             )
             return None
+
+        # pylint: disable-next=consider-using-f-string
+        log(0, "Add Patch %s" % patch_name)
 
         e["keywords"] = self._update_keywords(notice)
         e["bugs"] = self._update_bugs(notice)
@@ -1489,12 +1489,13 @@ class RepoSync(object):
         downloader.set_log_obj(logger)
         downloader.run()
 
-        log(0, "Filtering packages that failed to download")
-        to_process = [
-            i
-            for i in to_process
-            if os.path.basename(i[0].path) not in downloader.failed_pkgs
-        ]
+        if downloader.failed_pkgs:
+            log(0, "Filtering packages that failed to download")
+            to_process = [
+                i
+                for i in to_process
+                if os.path.basename(i[0].path) not in downloader.failed_pkgs
+            ]
 
         log2background(0, "Importing packages started.")
         log(0, "")

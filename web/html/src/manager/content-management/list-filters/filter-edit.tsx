@@ -156,51 +156,49 @@ const FilterEdit = (props: FilterEditProps) => {
         }
         onClosePopUp={() => setOpen(false)}
         buttons={
-          <React.Fragment>
-            <div className="w-100">
-              {props.editing && (
-                <Button
-                  id={`${props.id}-modal-delete-button`}
-                  className="btn-danger pull-left"
-                  text={t("Delete")}
-                  disabled={isLoading}
-                  handler={() => {
-                    onAction(mapFilterFormToRequest(item, props.projectLabel), "delete", itemId)
-                      .then((updatedListOfFilters) => {
-                        closeDialog(modalNameId);
-                        showSuccessToastr(t("Filter deleted successfully"));
-                        props.onChange(updatedListOfFilters);
-                      })
-                      .catch((error) => {
-                        showErrorToastr(error.messages, { autoHide: false });
-                      });
-                  }}
-                />
-              )}
-              <div className="pull-right btn-group">
-                <Button
-                  id={`${props.id}-modal-cancel-button`}
-                  className="btn-default"
-                  text={t("Cancel")}
-                  handler={() => {
-                    cancelAction();
-                    if (props.projectLabel) {
-                      redirectToProject(props.projectLabel);
-                    } else {
+          <div className="w-100">
+            {props.editing && (
+              <Button
+                id={`${props.id}-modal-delete-button`}
+                className="btn-danger pull-left"
+                text={t("Delete")}
+                disabled={isLoading}
+                handler={() => {
+                  onAction(mapFilterFormToRequest(item, props.projectLabel), "delete", itemId)
+                    .then((updatedListOfFilters) => {
                       closeDialog(modalNameId);
-                    }
-                  }}
-                />
-                <Button
-                  id={`${props.id}-modal-save-button`}
-                  className="btn-primary"
-                  text={t("Save")}
-                  disabled={isLoading}
-                  handler={onSave}
-                />
-              </div>
+                      showSuccessToastr(t("Filter deleted successfully"));
+                      props.onChange(updatedListOfFilters);
+                    })
+                    .catch((error) => {
+                      showErrorToastr(error.messages, { autoHide: false });
+                    });
+                }}
+              />
+            )}
+            <div className="pull-right btn-group">
+              <Button
+                id={`${props.id}-modal-cancel-button`}
+                className="btn-default"
+                text={t("Cancel")}
+                handler={() => {
+                  cancelAction();
+                  if (props.projectLabel) {
+                    redirectToProject(props.projectLabel);
+                  } else {
+                    closeDialog(modalNameId);
+                  }
+                }}
+              />
+              <Button
+                id={`${props.id}-modal-save-button`}
+                className="btn-primary"
+                text={t("Save")}
+                disabled={isLoading}
+                handler={onSave}
+              />
             </div>
-          </React.Fragment>
+          </div>
         }
       />
     </React.Fragment>

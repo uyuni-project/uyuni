@@ -35,44 +35,42 @@ const PropertiesView = (props: Props) => {
 
   return (
     <div>
-      <React.Fragment>
-        <dl className="row">
-          <dt className="col-2 col-xs-2">{t("Name")}</dt>
-          <dd className="col-10 col-xs-10">{propertiesToShow.name}</dd>
-        </dl>
-        <dl className="row">
-          <dt className="col-2 col-xs-2">{t("Label:")}</dt>
-          <dd className="col-6 col-xs-6">{propertiesToShow.label}</dd>
-        </dl>
-        <dl className="row">
-          <dt className="col-2 col-xs-2">{t("Description")}</dt>
-          <dd className="col-10 col-xs-10">{propertiesToShow.description}</dd>
-        </dl>
-        <dl className="row">
-          <dt className="col-2 col-xs-2">{t("Versions history:")}</dt>
-          <dd className="col-10 col-xs-10">
-            <PropertiesHistoryEntries
-              id="resume"
-              entries={propertiesToShow.historyEntries.slice(0, NUMBER_HISTORY_ENTRIES)}
-            />
+      <dl className="row">
+        <dt className="col-2 col-xs-2">{t("Name")}</dt>
+        <dd className="col-10 col-xs-10">{propertiesToShow.name}</dd>
+      </dl>
+      <dl className="row">
+        <dt className="col-2 col-xs-2">{t("Label:")}</dt>
+        <dd className="col-6 col-xs-6">{propertiesToShow.label}</dd>
+      </dl>
+      <dl className="row">
+        <dt className="col-2 col-xs-2">{t("Description")}</dt>
+        <dd className="col-10 col-xs-10">{propertiesToShow.description}</dd>
+      </dl>
+      <dl className="row">
+        <dt className="col-2 col-xs-2">{t("Versions history:")}</dt>
+        <dd className="col-10 col-xs-10">
+          <PropertiesHistoryEntries
+            id="resume"
+            entries={propertiesToShow.historyEntries.slice(0, NUMBER_HISTORY_ENTRIES)}
+          />
 
-            {propertiesToShow.historyEntries.length > NUMBER_HISTORY_ENTRIES && (
-              <>
-                <ModalLink
-                  id={`properties-longlist-modal-button`}
-                  text={t("show more")}
-                  target="properties-longlist-modal-content"
-                />
-                <Dialog
-                  id="properties-longlist-modal-content"
-                  content={<PropertiesHistoryEntries id="longlist" entries={propertiesToShow.historyEntries} />}
-                  title={t("Versions history")}
-                />
-              </>
-            )}
-          </dd>
-        </dl>
-      </React.Fragment>
+          {propertiesToShow.historyEntries.length > NUMBER_HISTORY_ENTRIES && (
+            <>
+              <ModalLink
+                id={`properties-longlist-modal-button`}
+                text={t("show more")}
+                target="properties-longlist-modal-content"
+              />
+              <Dialog
+                id="properties-longlist-modal-content"
+                content={<PropertiesHistoryEntries id="longlist" entries={propertiesToShow.historyEntries} />}
+                title={t("Versions history")}
+              />
+            </>
+          )}
+        </dd>
+      </dl>
     </div>
   );
 };

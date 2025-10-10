@@ -1,22 +1,38 @@
-const path = require("path");
-const CopyWebpackPlugin = require("copy-webpack-plugin");
-const CleanWebpackPlugin = require("clean-webpack-plugin");
-const webpackAlias = require("./webpack.alias");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
-const autoprefixer = require("autoprefixer");
+import ReactRefreshWebpackPlugin from "@pmmmwh/react-refresh-webpack-plugin";
+import autoprefixer from "autoprefixer";
+import CleanWebpackPlugin from "clean-webpack-plugin";
+import CopyWebpackPlugin from "copy-webpack-plugin";
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
+import { createRequire } from "node:module";
+import path from "node:path";
+import { dirname } from "path";
+import SpeedMeasurePlugin from "speed-measure-webpack-plugin";
+import { fileURLToPath } from "url";
+const require = createRequire(import.meta.url);
 
-const GenerateStoriesPlugin = require("./plugins/generate-stories-plugin");
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+import GenerateStoriesPlugin from "./plugins/generate-stories-plugin.js";
+import webpackAlias from "./webpack.alias.js";
 
 const DEVSERVER_WEBSOCKET_PATHNAME = "/ws";
 
-module.exports = (env, opts) => {
+export default (env, opts) => {
   let pluginsInUse = [];
   const isProductionMode = opts.mode === "production";
   const moduleName = isProductionMode ? "[id].[chunkhash]" : "[id]";
 
   if (opts.measurePerformance) {
     pluginsInUse.push(new SpeedMeasurePlugin());
+  }
+
+  if (!isProductionMode) {
+    pluginsInUse.push(
+      new ReactRefreshWebpackPlugin({
+        overlay: false,
+      })
+    );
   }
 
   pluginsInUse = [
@@ -122,6 +138,7 @@ module.exports = (env, opts) => {
                   loader: require.resolve("babel-loader"),
                   options: {
                     configFile: path.resolve(__dirname, "../.babelrc"),
+                    plugins: isProductionMode ? undefined : [require.resolve("react-refresh/babel")],
                   },
                 },
               ],
@@ -205,7 +222,7 @@ module.exports = (env, opts) => {
               loader: require.resolve("sass-loader"),
               options: {
                 sassOptions: {
-                  loadPaths: path.resolve(__dirname, "../"),
+                  loadPaths: [path.resolve(__dirname, "../")],
                 },
               },
             },
@@ -264,9 +281,7 @@ module.exports = (env, opts) => {
       ],
       devMiddleware: {
         publicPath: "/",
-        // Don't write changes to disk so we can do hard reloads only on static file changes in the future
-        // TODO: Revert
-        // writeToDisk: false,
+        // If we ever integrate theme loading locally as opposeds to a global load in jsp, we can set this to false to get faster HMR
         writeToDisk: true,
         // Allow proxying requests to root "/" (disabled by default), see https://webpack.js.org/configuration/dev-server/#devserverproxy
         index: false,

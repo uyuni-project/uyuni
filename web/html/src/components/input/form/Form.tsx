@@ -109,7 +109,7 @@ export class Form extends React.Component<Props> {
   }
 
   unregisterInput = (component: InputBaseRef) => {
-    if (component.props && component.props.name) {
+    if (component.props?.name) {
       const name = this.getComponentName(component);
       if (typeof name !== "undefined" && this.inputs[name] === component) {
         delete this.inputs[name];
@@ -118,7 +118,7 @@ export class Form extends React.Component<Props> {
   };
 
   registerInput = (component: InputBaseRef) => {
-    if (component.props && component.props.name) {
+    if (component.props?.name) {
       const name = this.getComponentName(component);
       if (typeof name !== "undefined") {
         this.inputs[name] = component;

@@ -122,10 +122,10 @@ REGISTER_THIS_BOX=1
 # Set if you want to specify profilename for client systems.
 # NOTE: Make sure it's set correctly if any external command is used.
 #
-# ex. PROFILENAME="foo.example.com"  # For specific client system
-#     PROFILENAME=`hostname -s`      # Short hostname
-#     PROFILENAME=`hostname -f`      # FQDN
-PROFILENAME=""   # Empty by default to let it be set automatically.
+# ex. PROFILE_NAME="foo.example.com"  # For specific client system
+#     PROFILE_NAME=`hostname -s`      # Short hostname
+#     PROFILE_NAME=`hostname -f`      # FQDN
+PROFILE_NAME=""   # Empty by default to let it be set automatically.
 
 # SUSE Multi-Linux Manager Specific settings:
 #

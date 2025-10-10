@@ -16,12 +16,26 @@ package com.redhat.rhn.domain.rhnpackage;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 /**
  * PackageGroup
  */
+@Entity
+@Table(name = "rhnPackageGroup")
 public class PackageGroup extends BaseDomainHelper {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_PACKAGE_GROUP_ID_SEQ")
+    @SequenceGenerator(name = "RHN_PACKAGE_GROUP_ID_SEQ", sequenceName = "RHN_PACKAGE_GROUP_ID_SEQ", allocationSize = 1)
     private Long id;
+    @Column
     private String name;
 
     /**
@@ -34,7 +48,7 @@ public class PackageGroup extends BaseDomainHelper {
     /**
      * @param i The id to set.
      */
-    public void setId(Long i) {
+    protected void setId(Long i) {
         this.id = i;
     }
 

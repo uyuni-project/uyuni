@@ -1,5 +1,3 @@
-import { hot } from "react-hot-loader/root";
-
 import * as React from "react";
 import { useEffect, useState } from "react";
 
@@ -136,4 +134,4 @@ const Payg = (props: Props) => {
   );
 };
 
-export default hot(withPageWrapper<Props>(Payg));
+export default withPageWrapper<Props>(Payg);

@@ -14,21 +14,35 @@
  */
 package com.redhat.rhn.domain.kickstart.crypto;
 
+import com.redhat.rhn.domain.BaseDomainHelper;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 /**
  * CryptoKeyType - Class representation of the table rhnCryptoKeyType.
  */
-public class CryptoKeyType {
+@Entity
+@Table(name = "rhnCryptoKeyType")
+public class CryptoKeyType extends BaseDomainHelper {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_CRYPTOKEY_TYPE_ID_SEQ")
+    @SequenceGenerator(name = "RHN_CRYPTOKEY_TYPE_ID_SEQ", sequenceName = "RHN_CRYPTOKEY_TYPE_ID_SEQ",
+            allocationSize = 1)
     private Long id;
+    @Column(nullable = false)
     private String label;
+    @Column(nullable = false)
     private String description;
-    private Date created;
-    private Date modified;
 
     /**
      * Getter for id
@@ -42,7 +56,7 @@ public class CryptoKeyType {
      * Setter for id
      * @param idIn to set
     */
-    public void setId(Long idIn) {
+    protected void setId(Long idIn) {
         this.id = idIn;
     }
 
@@ -76,38 +90,6 @@ public class CryptoKeyType {
     */
     public void setDescription(String descriptionIn) {
         this.description = descriptionIn;
-    }
-
-    /**
-     * Getter for created
-     * @return Date to get
-    */
-    public Date getCreated() {
-        return this.created;
-    }
-
-    /**
-     * Setter for created
-     * @param createdIn to set
-    */
-    public void setCreated(Date createdIn) {
-        this.created = createdIn;
-    }
-
-    /**
-     * Getter for modified
-     * @return Date to get
-    */
-    public Date getModified() {
-        return this.modified;
-    }
-
-    /**
-     * Setter for modified
-     * @param modifiedIn to set
-    */
-    public void setModified(Date modifiedIn) {
-        this.modified = modifiedIn;
     }
 
     /**

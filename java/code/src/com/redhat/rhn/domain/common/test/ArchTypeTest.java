@@ -32,13 +32,12 @@ public class ArchTypeTest extends RhnBaseTestCase {
     public void testArchType() {
 
         Long testid = 1L;
-        String query = "ArchType.findById";
 
-        ArchType at1 = (ArchType) TestUtils.lookupFromCacheById(testid, query);
+        ArchType at1 = TestUtils.lookupFromCacheById(testid, ArchType.class);
         assertNotNull(at1);
-        assertEquals(at1.getId(), testid);
+        assertEquals(testid, at1.getId());
 
-        ArchType at2 = (ArchType) TestUtils.lookupFromCacheById(at1.getId(), query);
+        ArchType at2 = TestUtils.lookupFromCacheById(at1.getId(), ArchType.class);
         assertEquals(at1.getLabel(), at2.getLabel());
     }
 

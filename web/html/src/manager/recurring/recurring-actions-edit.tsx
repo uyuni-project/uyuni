@@ -263,7 +263,6 @@ class RecurringActionsEdit extends React.Component<Props, State> {
           />
         </Form>
         <RecurringEventPicker
-          timezone={window.timezone}
           scheduleName={this.state.scheduleName}
           type={this.state.details.type}
           cron={this.state.cron}

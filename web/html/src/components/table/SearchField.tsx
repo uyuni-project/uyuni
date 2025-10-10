@@ -34,7 +34,7 @@ type SearchFieldProps = {
   onSearchField?: (field: string) => void;
 
   /** filtering function */
-  // This is manually used in TableDataHandler as an argument to SimpleDataProvider
+  // This is manually used in TableDataHandler as an argument to filter rows locally in SimpleDataProvider
   filter?: (datum: any, criteria?: string) => boolean;
 
   /** input field name */
@@ -65,7 +65,7 @@ export function SearchField(props: SearchFieldProps) {
           className="form-control table-input-search"
           data-testid="default-table-search"
           value={props.criteria || ""}
-          placeholder={props.placeholder}
+          placeholder={props.placeholder ?? t("Search")}
           type="text"
           onChange={(e) => props.onSearch?.(e.target.value)}
           name={props.name}

@@ -1,9 +1,16 @@
-const fs = require("fs");
-const path = require("path");
+import fs from "node:fs";
+import { createRequire } from "node:module";
+import path from "node:path";
+import { dirname } from "path";
+import { fileURLToPath } from "url";
 
-function fillSpecFile() {
-  delete require.cache[require.resolve("../vendors/npm.licenses.structured")];
-  const npmLicensesArray = require("../vendors/npm.licenses.structured");
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const require = createRequire(import.meta.url);
+
+export function fillSpecFile() {
+  delete require.cache[require.resolve("../vendors/npm.licenses.structured.js")];
+  const npmLicensesArray = require("../vendors/npm.licenses.structured.js").default;
 
   // Keep the original base license
   npmLicensesArray.push("GPL-2.0-only");
@@ -46,7 +53,3 @@ function fillSpecFile() {
     });
   });
 }
-
-module.exports = {
-  fillSpecFile,
-};

@@ -1,0 +1,2 @@
+- Do not build python2 flavor for openSUSE Tumbleweed
+- Migrate rhnlib building to setuptools

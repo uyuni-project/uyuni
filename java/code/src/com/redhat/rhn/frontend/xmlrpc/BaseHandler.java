@@ -195,10 +195,12 @@ public class BaseHandler implements XmlRpcInvocationHandler {
 
     protected void ensureRoleBasedAccess(User user, String className, String methodName) {
         String apiEndpoint = className + "." + methodName;
+        if (WebEndpointFactory.getUnauthorizedApiMethods().contains(apiEndpoint)) {
+            return;
+        }
+
         if (user == null) {
-            if (!WebEndpointFactory.getUnauthorizedApiMethods().contains(apiEndpoint)) {
-                throw new SecurityException("The " + methodName + " API is not available for unauthenticated users.");
-            }
+            throw new SecurityException("The " + methodName + " API is not available for unauthenticated users.");
         }
         else {
             if (!user.hasRole(RoleFactory.SAT_ADMIN)) {

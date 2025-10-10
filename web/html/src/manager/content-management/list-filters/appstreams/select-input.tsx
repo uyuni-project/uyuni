@@ -13,7 +13,7 @@ type SelectInputProps = {
 
 export default function SelectInput(props: SelectInputProps) {
   const [modules, setModules] = useState({});
-  const [isShowInputs, setShowInputs] = useState(false);
+  const [showInputs, setShowInputs] = useState(false);
   const { onAction, isLoading } = useLifecycleActionsApi({ resource: "appstreams" });
 
   const onChannelChange = (name, value) => {
@@ -39,7 +39,7 @@ export default function SelectInput(props: SelectInputProps) {
         getOptionValue={(c) => c.id}
         getOptionLabel={(c) => c.name}
       />
-      {isShowInputs && <ModuleSelector modules={modules} isLoading={isLoading} />}
+      {showInputs && <ModuleSelector modules={modules} isLoading={isLoading} />}
     </>
   );
 }

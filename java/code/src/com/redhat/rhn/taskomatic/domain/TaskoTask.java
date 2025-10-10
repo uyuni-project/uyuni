@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -16,13 +17,29 @@ package com.redhat.rhn.taskomatic.domain;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 /**
  * TaskoTask
  */
+@Entity
+@Table(name = "rhnTaskoTask")
 public class TaskoTask extends BaseDomainHelper {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_TASKO_TASK_SEQ")
+    @SequenceGenerator(name = "RHN_TASKO_TASK_SEQ", sequenceName = "RHN_TASKO_TASK_ID_SEQ", allocationSize = 1)
     private Long id;
+
+    @Column
     private String name;
+    @Column(name = "class")
     private String taskClass;
 
     /**
@@ -36,7 +53,7 @@ public class TaskoTask extends BaseDomainHelper {
     /**
      * @param idIn The id to set.
      */
-    public void setId(Long idIn) {
+    protected void setId(Long idIn) {
         this.id = idIn;
     }
 

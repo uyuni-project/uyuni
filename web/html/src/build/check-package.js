@@ -3,11 +3,14 @@
  * This avoids issues with mismatched packages when building patches or working in OBS/IBS.
  */
 
-const fs = require("fs");
-const path = require("path");
-const semver = require("semver");
+import fs from "node:fs";
+import path from "node:path";
+import semver from "semver";
+import { fileURLToPath } from "url";
 
-module.exports = async (opts) => {
+const __filename = fileURLToPath(import.meta.url);
+
+export default async (opts) => {
   let hasFailed = false;
 
   const dirname = path.dirname(__filename);

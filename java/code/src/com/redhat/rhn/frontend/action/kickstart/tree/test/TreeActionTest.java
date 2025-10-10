@@ -210,8 +210,7 @@ public class TreeActionTest extends RhnPostMockStrutsTestCase {
         addRequestParameter(TreeCreateAction.CHANNEL_ID,
                 c.getId().toString());
         addRequestParameter(TreeCreateAction.LABEL, newLabel);
-        KickstartInstallType installtype = (KickstartInstallType)
-                TestUtils.lookupFromCacheById(1L, "KickstartInstallType.findById");
+        KickstartInstallType installtype = TestUtils.lookupFromCacheById(1L, KickstartInstallType.class);
         addRequestParameter(TreeCreateAction.INSTALL_TYPE, installtype.getLabel());
         actionPerform();
         verifyNoActionErrors();

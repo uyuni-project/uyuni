@@ -1,12 +1,10 @@
 import { getDefaultNormalizer, queryHelpers, Screen, screen as rawScreen } from "@testing-library/react";
 
 // Utility type, if a function TargetFunction returns a Promise, return an intersection with Promise<T>, otherwise with T
-type ReturnFromWith<
-  TargetFunction extends (...args: any[]) => any,
-  T
-> = ReturnType<TargetFunction> extends Promise<unknown>
-  ? ReturnType<TargetFunction> & Promise<T>
-  : ReturnType<TargetFunction> & T;
+type ReturnFromWith<TargetFunction extends (...args: any[]) => any, T> =
+  ReturnType<TargetFunction> extends Promise<unknown>
+    ? ReturnType<TargetFunction> & Promise<T>
+    : ReturnType<TargetFunction> & T;
 
 /**
  * Testing-library doesn't ship generic versions of queries so sometimes it's a pain to annotate what we know comes out of them.

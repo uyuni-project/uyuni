@@ -12,16 +12,14 @@ export default () => {
   };
 
   return (
-    <>
-      <Form initialValues={initialValues} onSubmit={onSubmit} labelClass="col-md-3" divClass="col-md-6">
-        {({ isSubmitting }) => (
-          <>
-            <Field name="foo" label={t("Checkbox")} as={Field.Check} />
+    <Form initialValues={initialValues} onSubmit={onSubmit} labelClass="col-md-3" divClass="col-md-6">
+      {({ isSubmitting }) => (
+        <>
+          <Field name="foo" label={t("Checkbox")} as={Field.Check} />
 
-            <SubmitButton className="btn-primary" text={t("Submit")} disabled={isSubmitting} />
-          </>
-        )}
-      </Form>
-    </>
+          <SubmitButton className="btn-primary" text={t("Submit")} disabled={isSubmitting} />
+        </>
+      )}
+    </Form>
   );
 };

@@ -18,22 +18,41 @@ package com.redhat.rhn.domain.matcher;
 import static com.redhat.rhn.common.hibernate.HibernateFactory.getByteArrayContents;
 import static com.redhat.rhn.common.hibernate.HibernateFactory.stringToByteArray;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 /**
  * Data corresponding to one Subscription Matcher run (contents of I/O files).
  */
+@Entity
+@Table(name = "suseMatcherRunData")
 public class MatcherRunData {
 
     /** db id */
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "suse_matcher_run_data_seq")
+    @SequenceGenerator(name = "suse_matcher_run_data_seq", sequenceName = "suse_matcher_run_data_id_seq",
+            allocationSize = 1)
     private Long id;
     /** input.json contents */
+    @Column
     private byte[] inputBinary;
     /** output.json contents */
+    @Column
     private byte[] outputBinary;
     /** subscription_report.csv contents */
+    @Column
     private byte[] subscriptionReportBinary;
     /** message_report.csv contents */
+    @Column
     private byte[] messageReportBinary;
     /** unmatched_product_report.csv contents */
+    @Column
     private byte[] unmatchedProductReportBinary;
 
     /**

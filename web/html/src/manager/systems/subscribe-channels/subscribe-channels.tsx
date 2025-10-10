@@ -1,5 +1,3 @@
-import { hot } from "react-hot-loader/root";
-
 import * as React from "react";
 
 import * as ChannelUtils from "core/channels/utils/channels-dependencies.utils";
@@ -723,6 +721,4 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
   };
 }
 
-const HotSubscribeChannels = hot(SystemChannels);
-
-export { HotSubscribeChannels as SubscribeChannels };
+export { SystemChannels as SubscribeChannels };

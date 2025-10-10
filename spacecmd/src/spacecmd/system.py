@@ -5024,7 +5024,7 @@ def do_system_bootstrap(self, args):
             options.ssh_user,
             options.ssh_password,
             options.activation_key,
-            *args,
+            *args  # fmt: skip
         )
     else:
         # pylint: disable-next=unspecified-encoding
@@ -5040,7 +5040,7 @@ def do_system_bootstrap(self, args):
                 pkey,
                 options.ssh_privatekey_password,
                 options.activation_key,
-                *args,
+                *args  # fmt: skip
             )
     print(
         _(

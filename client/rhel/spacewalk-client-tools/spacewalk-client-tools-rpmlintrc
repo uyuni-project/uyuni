@@ -1,1 +1,2 @@
 addFilter("suse-filelist-forbidden-sysconfig .*/sysconfig")
+addFilter("filelist-forbidden-sysconfig .*/sysconfig")

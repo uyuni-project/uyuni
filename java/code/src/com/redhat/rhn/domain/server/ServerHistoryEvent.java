@@ -22,20 +22,38 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 
 /**
  * Class representation of the rhnserverhistory table
  * ServerHistoryEvent
  */
+@Entity
+@Table(name = "rhnserverhistory")
 public class ServerHistoryEvent extends BaseDomainHelper {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "event_seq")
+    @SequenceGenerator(name = "event_seq", sequenceName = "rhn_event_id_seq", allocationSize = 1)
     private Long id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "server_id", updatable = true, insertable = true)
     private Server server;
+    @Column
     private String summary;
+    @Column
     private String details;
-    private Date created;
 
     /**
      * Constructor for ServerHistoryEvent
@@ -74,7 +92,7 @@ public class ServerHistoryEvent extends BaseDomainHelper {
      * Set the id of an event
      * @param idIn the id to set
      */
-    public void setId(Long idIn) {
+    protected void setId(Long idIn) {
         this.id = idIn;
     }
 
@@ -111,32 +129,16 @@ public class ServerHistoryEvent extends BaseDomainHelper {
     }
 
     /**
-     * @return Returns date of creating of the event
-     */
-    @Override
-    public Date getCreated() {
-        return created;
-    }
-
-    /**
-     * @param createdIn Date of creation of the event
-     */
-    @Override
-    public void setCreated(Date createdIn) {
-        this.created = createdIn;
-    }
-
-    /**
      * @param createdIn Date of creation of the event
      */
     public void setCreated(String createdIn) {
         if (createdIn == null) {
-            this.created = null;
+            super.setCreated(null);
         }
         else {
             try {
-                this.created = new SimpleDateFormat(
-                        LocalizationService.RHN_DB_DATEFORMAT).parse(createdIn);
+                super.setCreated(new SimpleDateFormat(
+                        LocalizationService.RHN_DB_DATEFORMAT).parse(createdIn));
             }
             catch (ParseException e) {
                 throw new IllegalArgumentException("lastCheckin must be of the: [" +

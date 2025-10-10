@@ -1,19 +1,22 @@
-const fs = require("fs").promises;
-const path = require("path");
+import { promises as fs } from "node:fs";
+import path, { dirname } from "node:path";
+import { fileURLToPath } from "node:url";
 
-const { getDependencyMap } = require("./package");
-const { isValidLicenseFile, getFileHash } = require("./fs");
-const { fileTemplate, itemTemplate } = require("./template");
+import { getFileHash, isValidLicenseFile } from "./fs.js";
+import { getDependencyMap } from "./package.js";
+import { fileTemplate, itemTemplate } from "./template.js";
 
-const dirname = path.dirname(__filename);
-const webHtmlSrc = path.resolve(dirname, "../..");
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const webHtmlSrc = path.resolve(__dirname, "../..");
 
 const vendors = path.resolve(webHtmlSrc, "vendors");
 const licenseTextFile = path.resolve(vendors, "npm.licenses.txt");
 const licenseListFile = path.resolve(vendors, "npm.licenses.structured.js");
 const hashFile = path.resolve(vendors, "npm.licenses.hash.txt");
 
-async function aggregateLicenses(opts) {
+export async function aggregateLicenses(opts) {
   const licenseTextExists = await isValidLicenseFile(licenseTextFile);
   const licenseListExists = await isValidLicenseFile(licenseListFile);
 
@@ -57,7 +60,7 @@ async function aggregateLicenses(opts) {
           .sort((a, b) => a.localeCompare(b))
       ),
     ];
-    await fs.writeFile(licenseListFile, `module.exports = ${JSON.stringify(licenseTypes)};`, "utf8");
+    await fs.writeFile(licenseListFile, `export default ${JSON.stringify(licenseTypes)};`, "utf8");
 
     await fs.writeFile(hashFile, currentHash, "utf8");
   } catch (error) {
@@ -65,7 +68,3 @@ async function aggregateLicenses(opts) {
     throw new Error("Unable to identify all licenses, did you run `yarn install`?");
   }
 }
-
-module.exports = {
-  aggregateLicenses,
-};

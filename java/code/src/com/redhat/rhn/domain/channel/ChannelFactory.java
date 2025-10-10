@@ -144,7 +144,10 @@ public class ChannelFactory extends HibernateFactory {
      * @return the ContentSourceType
      */
     public static ContentSourceType lookupContentSourceType(String label) {
-        return singleton.lookupObjectByNamedQuery("ContentSourceType.findByLabel", Map.of(LABEL, label));
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("FROM ContentSourceType AS c WHERE c.label = :label", ContentSourceType.class)
+                .setParameter(LABEL, label)
+                .uniqueResult();
     }
 
     /**
@@ -153,7 +156,9 @@ public class ChannelFactory extends HibernateFactory {
      * @return list of ContentSourceType
      */
     public static List<ContentSourceType> listContentSourceTypes() {
-        return singleton.listObjectsByNamedQuery("ContentSourceType.listAllTypes", Map.of());
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("FROM ContentSourceType", ContentSourceType.class)
+                .list();
     }
 
     /**
@@ -760,7 +765,11 @@ public class ChannelFactory extends HibernateFactory {
      * @return List of ChecksumTypes instances
      */
     public static List<ChecksumType> listYumSupportedChecksums() {
-        return singleton.listObjectsByNamedQuery("ChecksumType.loadAllForYum", Map.of());
+        return getSession().createQuery("""
+                 FROM com.redhat.rhn.domain.common.ChecksumType as t
+                 WHERE t.label LIKE 'sha%'""", ChecksumType.class)
+                .setCacheable(true)
+                .list();
     }
 
     /**
@@ -784,7 +793,12 @@ public class ChannelFactory extends HibernateFactory {
         if (checksum == null) {
             return null;
         }
-        return singleton.lookupObjectByNamedQuery("ChecksumType.findByLabel", Map.of(LABEL, checksum));
+        return getSession().createQuery("""
+                 FROM com.redhat.rhn.domain.common.ChecksumType AS t
+                 WHERE t.label = :label""", ChecksumType.class)
+                .setParameter(LABEL, checksum)
+                .setCacheable(true)
+                .uniqueResult();
     }
 
     /**
@@ -1130,7 +1144,10 @@ public class ChannelFactory extends HibernateFactory {
         if (label == null) {
             return null;
         }
-        return singleton.lookupObjectByNamedQuery("ProductName.findByLabel", Map.of(LABEL, label));
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("FROM ProductName AS p WHERE p.label = :label", ProductName.class)
+                .setParameter(LABEL, label)
+                .uniqueResult();
     }
 
     /**

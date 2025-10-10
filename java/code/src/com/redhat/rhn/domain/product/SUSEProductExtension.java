@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 SUSE LLC
+ * Copyright (c) 2016--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.redhat.rhn.domain.product;
 
@@ -18,17 +14,43 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.annotations.Type;
 
 import java.io.Serializable;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  * Class representation of SUSE product extensions.
  */
+@Entity
+@Table(name = "suseProductExtension")
+@IdClass(ProductExtensionId.class)
 public class SUSEProductExtension extends BaseDomainHelper implements Serializable {
 
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "base_pdid")
     private SUSEProduct baseProduct;
+
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "ext_pdid")
     private SUSEProduct extensionProduct;
+
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "root_pdid")
     private SUSEProduct rootProduct;
+
+    @Column
+    @Type(type = "yes_no")
     private boolean recommended = false;
 
     /**

@@ -1,5 +1,3 @@
-import { hot } from "react-hot-loader/root";
-
 import * as React from "react";
 
 import withPageWrapper from "components/general/with-page-wrapper";
@@ -117,4 +115,4 @@ class FormulaCatalog extends React.Component<Props, State> {
   }
 }
 
-export default hot(withPageWrapper(FormulaCatalog));
+export default withPageWrapper(FormulaCatalog);

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<image schemaversion="6.1" name="POS_Image_JeOS7_head">
+<image schemaversion="7.4" name="POS_Image_JeOS7_head">
     <description type="system">
         <author>Admin User</author>
         <contact>noemail@example.com</contact>
@@ -11,20 +11,15 @@
         <packagemanager>zypper</packagemanager>
         <bootsplash-theme>SLE</bootsplash-theme>
         <bootloader-theme>SLE</bootloader-theme>
-
         <locale>en_US</locale>
         <keytable>us.map.gz</keytable>
         <timezone>Europe/Berlin</timezone>
-        <hwclock>utc</hwclock>
-
         <rpm-excludedocs>true</rpm-excludedocs>
         <type filesystem="ext3" image="pxe" initrd_system="dracut" compressed="true"/>
     </preferences>
-
     <drivers>
-      <file name="drivers/block/virtio_blk.ko" />
+        <file name="drivers/block/virtio_blk.ko"/>
     </drivers>
-
     <!-- remove all the following repositories if you want to get their packages through Uyuni;
          in that case, sync those repos in Uyuni, and add them to the activation key;
          finally, re-enable option  '- -ignore-repos-used-for-build' in file 'kiwi-image-build.sls' -->
@@ -61,7 +56,6 @@
     <repository type="rpm-md">  <!-- head development client toools -->
         <source path="http://minima-mirror-ci-bv.mgr.suse.de/ibs/Devel:/Galaxy:/Manager:/Head:/SLE15-SUSE-Manager-Tools/images/repo/SLE-15-Manager-Tools-POOL-x86_64-Media1/"/>
     </repository>
-
     <packages type="image">
         <package name="patterns-base-minimal_base"/>
         <package name="aaa_base-extras"/>
@@ -82,7 +76,7 @@
         <package name="grub2"/>
         <package name="grub2-x86_64-efi" arch="x86_64"/>
         <package name="haveged"/>
-        <package name="less" />
+        <package name="less"/>
         <package name="tar"/>
         <package name="parted"/>
         <package name="SUSEConnect"/>
@@ -116,10 +110,9 @@
         <package name="dosfstools"/>
         <package name="xfsprogs"/>
     </packages>
-    <users group="root">
-      <user home="/root" name="root" password="linux" pwdformat="plain" shell="/bin/bash"/>
+    <users>
+        <user home="/root" name="root" password="linux" pwdformat="plain" shell="/bin/bash" groups="root"/>
     </users>
-
     <packages type="bootstrap">
         <package name="udev"/>
         <package name="filesystem"/>

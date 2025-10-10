@@ -23,7 +23,6 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.type.StandardBasicTypes;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -42,7 +41,7 @@ public class ScapFactory extends HibernateFactory {
      * @return the XccdfTestResult found
      */
     public static XccdfTestResult lookupTestResultById(Long xid) {
-        return singleton.lookupObjectByNamedQuery("XccdfTestResult.findById", Map.of("xid", xid));
+        return singleton.lookupObjectByParam(XccdfTestResult.class, "id", xid);
     }
 
     /**
@@ -76,7 +75,12 @@ public class ScapFactory extends HibernateFactory {
      */
     public static void clearTestResult(long serverId, long actionId) {
         List<XccdfTestResult> results = getSession()
-                .getNamedQuery("XccdfTestResult.findByActionId")
+                .createQuery("""
+                        SELECT r
+                        FROM com.redhat.rhn.domain.audit.XccdfTestResult AS r
+                        JOIN r.scapActionDetails d
+                        WHERE d.parentAction.id=:actionId
+                        AND r.server.id=:serverId""", XccdfTestResult.class)
                 .setParameter("serverId", serverId, StandardBasicTypes.LONG)
                 .setParameter("actionId", actionId, StandardBasicTypes.LONG)
                 .list();

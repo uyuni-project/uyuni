@@ -97,8 +97,8 @@ class RankingTable extends React.Component<RankingTableProps, RankingTableState>
       DEPRECATED_unsafeEquals(a.position, undefined)
         ? 1
         : DEPRECATED_unsafeEquals(b.position, undefined)
-        ? -1
-        : a.position - b.position
+          ? -1
+          : a.position - b.position
     );
 
     return sortedItems.map((i) => {

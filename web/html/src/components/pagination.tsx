@@ -144,11 +144,12 @@ const PageSelector = (props: PageSelectorProps) => {
         {
           dropdown: () => (
             <select
+              key="page-selector-select"
               className="display-number small-select"
               value={props.currentValue}
               onChange={(e) => props.onChange(parseInt(e.target.value, 10))}
             >
-              {Array.from(Array(props.lastPage)).map((_, i) => (
+              {Array.from(new Array(props.lastPage)).map((_, i) => (
                 <option value={i + 1} key={i + 1}>
                   {i + 1}
                 </option>
