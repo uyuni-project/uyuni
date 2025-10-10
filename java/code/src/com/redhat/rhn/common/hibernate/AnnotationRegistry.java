@@ -187,6 +187,7 @@ import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Pillar;
 import com.redhat.rhn.domain.server.PinnedSubscription;
+import com.redhat.rhn.domain.server.PushClient;
 import com.redhat.rhn.domain.server.PushClientState;
 import com.redhat.rhn.domain.server.Ram;
 import com.redhat.rhn.domain.server.SAPWorkload;
@@ -416,6 +417,7 @@ public class AnnotationRegistry {
             ProjectSource.class,
             ProvisionState.class,
             PtfFilter.class,
+            PushClient.class,
             PushClientState.class,
             Ram.class,
             RhnConfiguration.class,
