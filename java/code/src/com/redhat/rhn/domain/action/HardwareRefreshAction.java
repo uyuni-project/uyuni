@@ -17,6 +17,8 @@ package com.redhat.rhn.domain.action;
 import static com.suse.proxy.ProxyConfigUtils.USE_CERTS_MODE_REPLACE;
 
 import com.redhat.rhn.GlobalInstanceHolder;
+import com.redhat.rhn.common.RhnRuntimeException;
+import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionSummary;
@@ -24,7 +26,9 @@ import com.redhat.rhn.domain.server.Pillar;
 import com.redhat.rhn.domain.server.SAPWorkload;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
+import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 
 import com.suse.manager.reactor.hardware.CpuArchUtil;
 import com.suse.manager.reactor.hardware.HardwareMapper;
@@ -236,6 +240,13 @@ public class HardwareRefreshAction extends Action {
                 tftpdURL, tftpdTag,
                 config.getProxySshPub(), config.getProxySshPriv(), config.getParentSshPub()
         );
+        if (!proxy.hasProxyEntitlement()) {
+            ValidatorResult result = new SystemEntitler(this.SALT_API)
+                    .addEntitlementToServer(proxy, EntitlementManager.PROXY);
+            if (result.hasErrors()) {
+                throw new RhnRuntimeException(result.getMessage());
+            }
+        }
         updater.update(request, systemManager, null);
     }
 
