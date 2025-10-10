@@ -59,14 +59,16 @@ public class ProxyContainerConfigCreateAcquisitor implements ProxyContainerConfi
         this.saltApi = context.getSaltApi();
 
         // Generate SSH keys for proxy
-        MgrUtilRunner.SshKeygenResult proxySshKey = saltApi.generateSSHKey(null, null)
-                .orElseThrow(raiseAndLog(this, "Could not generate proxy salt-ssh SSH keys."));
+        if (context.getProxySshKey() == null) {
+            MgrUtilRunner.SshKeygenResult proxySshKey = saltApi.generateSSHKey(null, null)
+                    .orElseThrow(raiseAndLog(this, "Could not generate proxy salt-ssh SSH keys."));
 
-        if (!(proxySshKey.getReturnCode() == 0 || proxySshKey.getReturnCode() == -1)) {
-            raiseAndLog(this, "Generating proxy salt-ssh SSH keys failed: " + proxySshKey.getStderr()).get();
+            if (!(proxySshKey.getReturnCode() == 0 || proxySshKey.getReturnCode() == -1)) {
+                raiseAndLog(this, "Generating proxy salt-ssh SSH keys failed: " + proxySshKey.getStderr()).get();
+            }
+
+            context.setProxySshKey(proxySshKey);
         }
-
-        context.setProxySshKey(proxySshKey);
 
         //config.yaml
         SSLCertPair proxyPair = context.getProxyCertKey();
@@ -98,7 +100,8 @@ public class ProxyContainerConfigCreateAcquisitor implements ProxyContainerConfi
 
         Server proxySystem = getOrCreateProxySystem(
                 context.getSystemEntitlementManager(),
-                context.getUser(), context.getProxyFqdn(), fqdns, context.getProxyPort(), proxySshKey.getPublicKey()
+                context.getUser(), context.getProxyFqdn(), fqdns, context.getProxyPort(),
+                context.getProxySshKey().getPublicKey()
         );
         SystemManager.updateSystemOverview(proxySystem);
         try {
@@ -118,7 +121,9 @@ public class ProxyContainerConfigCreateAcquisitor implements ProxyContainerConfi
         }
 
         //ssh.yaml
-        context.setServerSshPublicKey(getServerSshPublicKey(context.getUser(), context.getServerFqdn()));
+        if (context.getServerSshPublicKey() == null) {
+            context.setServerSshPublicKey(getServerSshPublicKey(context.getUser(), context.getServerFqdn()));
+        }
     }
 
     /**

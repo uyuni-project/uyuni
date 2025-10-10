@@ -51,6 +51,7 @@ import com.suse.manager.ssl.SSLCertGenerationException;
 import com.suse.manager.ssl.SSLCertManager;
 import com.suse.manager.ssl.SSLCertPair;
 import com.suse.manager.webui.utils.gson.ProxyConfigUpdateJson;
+import com.suse.proxy.migrate.ProxyBackupApplyState;
 import com.suse.proxy.update.ProxyConfigUpdateFacade;
 
 
@@ -586,7 +587,8 @@ public class ProxyHandler extends BaseHandler {
                 registrySaltbrokerURL, registrySaltbrokerTag,
                 registrySquidURL, registrySquidTag,
                 registrySshURL, registrySshTag,
-                registryTftpdURL, registryTftpdTag
+                registryTftpdURL, registryTftpdTag,
+                null, null, null
             );
 
             proxyConfigUpdateFacade.update(request, systemManager, loggedInUser);
@@ -594,6 +596,32 @@ public class ProxyHandler extends BaseHandler {
         catch (RhnRuntimeException | UyuniGeneralException e) {
             LOG.error("Failed to apply proxy configuration to minion", e);
             throw new ValidationException(e.getMessage());
+        }
+        return 1;
+    }
+
+    /**
+     * Backup the proxy configuration in order to migrate it later.
+     *
+     * @param loggedInUser the connected user
+     * @param serverId the ID of the proxy to backup
+     *
+     * @return 1 in case of success
+     *
+     * @apidoc.doc Backup the proxy configuration in order to migrate it later.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "serverId", "The ID of the target server")
+     * @apidoc.returntype #return_int_success()
+     */
+    public int backupConfiguration(User loggedInUser, Integer serverId) {
+        try {
+            Server server = xmlRpcSystemHelper.lookupServer(loggedInUser, serverId);
+            server.asMinionServer().ifPresent(
+                    minion -> ProxyBackupApplyState.backupProxyConfig(loggedInUser, minion));
+        }
+        catch (InvalidProxyVersionException | RhnRuntimeException e) {
+            LOG.error("Failed to backup a proxy configuration", e);
+            throw new RhnRuntimeException(e.getMessage());
         }
         return 1;
     }

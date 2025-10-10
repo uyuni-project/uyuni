@@ -3083,3 +3083,6 @@ INSERT INTO access.namespace (namespace, access_mode, description)
 INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.virtualhostmanager.list_virtual_host_managers', 'R', 'Lists Virtual Host Managers visible to a user')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.proxy.backup_configuration', 'W', 'Saves the configuration of a proxy to the server for later conversion')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
