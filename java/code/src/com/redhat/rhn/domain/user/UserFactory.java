@@ -293,8 +293,12 @@ public  class UserFactory extends HibernateFactory {
      * @return Returns true if the user is disabled
      */
     public static boolean isDisabled(User user) {
-        List<StateChange>  changes =  getInstance().
-                listObjectsByNamedQuery("StateChanges.lookupByUserId", Map.of("user", user));
+        List<StateChange>  changes = getSession().createQuery("""
+                FROM com.redhat.rhn.domain.user.StateChange AS s
+                WHERE s.user = :user ORDER BY s.id DESC
+                """, StateChange.class)
+                .setParameter("user", user)
+                .list();
         return changes != null && !changes.isEmpty() &&
                 DISABLED.equals(changes.get(0).getState());
     }
