@@ -37,13 +37,13 @@ Feature: Assign child channel to a system
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    And I check radio button "openSUSE Leap 15.6 (x86_64)"
-    Then radio button "openSUSE Leap 15.6 (x86_64)" should be checked
+    And I check radio button "openSUSE Tumbleweed (x86_64)"
+    Then radio button "openSUSE Tumbleweed (x86_64)" should be checked
     When I wait until I do not see "Loading..." text
-    And I uncheck "Uyuni Client Tools for openSUSE Leap 15.6 (x86_64)" by label
-    Then I should see "Uyuni Client Tools for openSUSE Leap 15.6 (x86_64)" as unchecked
-    When I uncheck "Uyuni Client Tools for openSUSE Leap 15.6 (x86_64) (Development)" by label
-    Then I should see "Uyuni Client Tools for openSUSE Leap 15.6 (x86_64) (Development)" as unchecked
+    And I uncheck "Uyuni Client Tools for openSUSE Tumbleweed (x86_64)" by label
+    Then I should see "Uyuni Client Tools for openSUSE Tumbleweed (x86_64)" as unchecked
+    When I uncheck "Uyuni Client Tools for openSUSE Tumbleweed (x86_64) (Development)" by label
+    Then I should see "Uyuni Client Tools for openSUSE Tumbleweed (x86_64) (Development)" as unchecked
     When I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"
@@ -58,8 +58,8 @@ Feature: Assign child channel to a system
 @uyuni
   Scenario: Pre-requisite: check via API that the system is unsubscribed from old channels
     When I refresh the metadata for "sle_minion"
-    Then channel "openSUSE Leap 15.6 (x86_64)" should be enabled on "sle_minion"
-    And channel "Uyuni Client Tools for openSUSE Leap 15.6 (x86_64)" should be disabled on "sle_minion"
+    Then channel "openSUSE Tumbleweed (x86_64)" should be enabled on "sle_minion"
+    And channel "Uyuni Client Tools for openSUSE Tumbleweed (x86_64)" should be disabled on "sle_minion"
 
 @susemanager
   Scenario: Assign a child channel to the system
@@ -82,17 +82,17 @@ Feature: Assign child channel to a system
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    Then radio button "openSUSE Leap 15.6 (x86_64)" should be checked
+    Then radio button "openSUSE Tumbleweed (x86_64)" should be checked
     When I wait until I do not see "Loading..." text
-    And I check "Uyuni Client Tools for openSUSE Leap 15.6 (x86_64)" by label
-    Then I should see "Uyuni Client Tools for openSUSE Leap 15.6 (x86_64)" as checked
+    And I check "Uyuni Client Tools for openSUSE Tumbleweed (x86_64)" by label
+    Then I should see "Uyuni Client Tools for openSUSE Tumbleweed (x86_64)" as checked
     When I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"
     Then I should see a "Changing the channels has been scheduled." text
     When I follow "scheduled" in the content area
     And I wait until I see "1 system successfully completed this action." text, refreshing the page
-    Then channel "Uyuni Client Tools for openSUSE Leap 15.6 (x86_64)" should be enabled on "sle_minion"
+    Then channel "Uyuni Client Tools for openSUSE Tumbleweed (x86_64)" should be enabled on "sle_minion"
 
   Scenario: Check channel change has completed for the system
     Given I am on the Systems overview page of this "sle_minion"
@@ -113,9 +113,9 @@ Feature: Assign child channel to a system
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    Then radio button "openSUSE Leap 15.6 (x86_64)" should be checked
+    Then radio button "openSUSE Tumbleweed (x86_64)" should be checked
     And I wait until I do not see "Loading..." text
-    And I should see "Uyuni Client Tools for openSUSE Leap 15.6 (x86_64)" as checked
+    And I should see "Uyuni Client Tools for openSUSE Tumbleweed (x86_64)" as checked
 
 @susemanager
   Scenario: Check via API the new channels are enabled on the system
@@ -126,8 +126,8 @@ Feature: Assign child channel to a system
 @uyuni
   Scenario: Check via API the new channels are enabled on the system
     When I refresh the metadata for "sle_minion"
-    Then channel "openSUSE Leap 15.6 (x86_64)" should be enabled on "sle_minion"
-    And channel "Uyuni Client Tools for openSUSE Leap 15.6 (x86_64)" should be enabled on "sle_minion"
+    Then channel "openSUSE Tumbleweed (x86_64)" should be enabled on "sle_minion"
+    And channel "Uyuni Client Tools for openSUSE Tumbleweed (x86_64)" should be enabled on "sle_minion"
 
 @susemanager
   Scenario: Cleanup: subscribe the system back to previous channels
@@ -154,13 +154,13 @@ Feature: Assign child channel to a system
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    Then radio button "openSUSE Leap 15.6 (x86_64)" should be checked
+    Then radio button "openSUSE Tumbleweed (x86_64)" should be checked
     And I wait until I do not see "Loading..." text
-    And I wait until I see "Uyuni Client Tools for openSUSE Leap 15.6 (x86_64)" text
-    And I uncheck "Uyuni Client Tools for openSUSE Leap 15.6 (x86_64)" by label
-    Then I should see "Uyuni Client Tools for openSUSE Leap 15.6 (x86_64)" as unchecked
-    When I check "Uyuni Client Tools for openSUSE Leap 15.6 (x86_64) (Development)" by label
-    Then I should see "Uyuni Client Tools for openSUSE Leap 15.6 (x86_64) (Development)" as checked
+    And I wait until I see "Uyuni Client Tools for openSUSE Tumbleweed (x86_64)" text
+    And I uncheck "Uyuni Client Tools for openSUSE Tumbleweed (x86_64)" by label
+    Then I should see "Uyuni Client Tools for openSUSE Tumbleweed (x86_64)" as unchecked
+    When I check "Uyuni Client Tools for openSUSE Tumbleweed (x86_64) (Development)" by label
+    Then I should see "Uyuni Client Tools for openSUSE Tumbleweed (x86_64) (Development)" as checked
     When I check "Fake-RPM-SUSE-Channel"
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
@@ -168,4 +168,4 @@ Feature: Assign child channel to a system
     And I wait until I see "Changing the channels has been scheduled." text
     And I follow "scheduled" in the content area
     And I wait until I see "1 system successfully completed this action." text, refreshing the page
-    Then channel "Uyuni Client Tools for openSUSE Leap 15.6 (x86_64)" should be disabled on "sle_minion"
+    Then channel "Uyuni Client Tools for openSUSE Tumbleweed (x86_64)" should be disabled on "sle_minion"

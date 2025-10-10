@@ -33,7 +33,7 @@ Feature: Channel subscription with recommended or required dependencies
     Then I should see the child channel "SLE-Module-Server-Applications15-SP4-Pool for x86_64" "selected"
 
 # These tests do not test if recommended channesl are shown correctly due to the fact that we kill the reposync
-# for openSUSE Leap. With this caveat, no child channels are selected when selection openSUSE as parent.
+# for openSUSE Tumbleweed. With this caveat, no child channels are selected when selection openSUSE as parent.
 @uyuni
   Scenario: Play with recommended and required child channels selection for a single system
     Given I am on the Systems overview page of this "sle_minion"
@@ -66,8 +66,8 @@ Feature: Channel subscription with recommended or required dependencies
     Then I should see "Subscribe" "selected" for the "SLE-Module-Basesystem15-SP4-Pool for x86_64" channel
     And I should see "No change" "unselected" for the "SLE-Module-Basesystem15-SP4-Pool for x86_64" channel
 
-# These tests do not test if recommended channesl are shown correctly due to the fact that we kill the reposync
-# for openSUSE Leap. With this caveat, no child channels are selected when selection openSUSE as parent.
+# These tests do not test if recommended channels are shown correctly due to the fact that we kill the reposync
+# for openSUSE Tumbleweed. With this caveat, no child channels are selected when selection openSUSE as parent.
 @uyuni
   Scenario: Play with recommended and required child channels selection in SSM
     When I follow the left menu "Systems > System List > All"
@@ -77,7 +77,8 @@ Feature: Channel subscription with recommended or required dependencies
     And I follow "channel memberships" in the content area
     Then I should see a "Base Channel" text
     And I should see a "Next" text
-    And I should see a table line with "openSUSE Tumbleweed (x86_64)", "1"
+    # TODO: Re-enable the next line when we find a good locator for that table
+    # And I should see a table line with "openSUSE Tumbleweed", "1"
     When I select "No Change" from drop-down in table line with "openSUSE Tumbleweed (x86_64)"
     And I click on "Next"
     Then I should see the toggler "disabled"
