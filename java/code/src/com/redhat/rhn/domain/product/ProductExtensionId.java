@@ -10,6 +10,9 @@
  */
 package com.redhat.rhn.domain.product;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import java.io.Serializable;
 
 public class ProductExtensionId implements Serializable {
@@ -33,6 +36,27 @@ public class ProductExtensionId implements Serializable {
         baseProduct = baseProductIn;
         extensionProduct = extensionProductIn;
         rootProduct = rootProductIn;
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .append(baseProduct)
+                .append(extensionProduct)
+                .append(rootProduct)
+                .toHashCode();
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof ProductExtensionId otherId)) {
+            return false;
+        }
+        return new EqualsBuilder()
+                .append(baseProduct, otherId.baseProduct)
+                .append(extensionProduct, otherId.extensionProduct)
+                .append(rootProduct, otherId.rootProduct)
+                .isEquals();
     }
 }
 
