@@ -22,7 +22,8 @@
         <dependency org="suse" name="commons-digester" rev="2.1" />
         <dependency org="suse" name="commons-discovery" rev="0.5" />
         <dependency org="suse" name="commons-el" rev="1.0" />
-        <dependency org="suse" name="commons-fileupload" rev="1.5" />
+        <dependency org="suse" name="apache-commons-fileupload2-core" rev="2.0.0~M4" />
+        <dependency org="suse" name="apache-commons-fileupload2-javax" rev="2.0.0~M4" />
         <dependency org="suse" name="commons-io" rev="2.18.0" />
         <dependency org="suse" name="commons-jexl" rev="2.1.1" />
         <dependency org="suse" name="commons-lang3" rev="3.18.0" />
@@ -72,10 +73,10 @@
         <dependency org="suse" name="oro" rev="2.0.8" />
         <dependency org="suse" name="pgjdbc-ng" rev="0.8.7" />
         <dependency org="suse" name="postgresql-jdbc" rev="42.2.25" />
-        <dependency org="suse" name="quartz" rev="2.3.0" />
+        <dependency org="suse" name="quartz" rev="2.5.0" />
         <dependency org="suse" name="redstone-xmlrpc" rev="1.1_20071120" />
         <dependency org="suse" name="redstone-xmlrpc-client" rev="1.1_20071120" />
-        <dependency org="suse" name="salt-netapi-client" rev="0.21.0" />
+        <dependency org="suse" name="salt-netapi-client" rev="1.0.0" />
         <dependency org="suse" name="simpleclient" rev="0.3.0" />
         <dependency org="suse" name="simpleclient_common" rev="0.3.0" />
         <dependency org="suse" name="simpleclient_hibernate" rev="0.3.0" />
