@@ -69,10 +69,10 @@ public class UbuntuVulnerablePackageExtractor extends CriteriaTreeBasedExtractor
             vulnerablePackage = extractAffectedPackage(affectedPackageMatcher);
         }
         else if (affectedPackageMatcherV2.matches()) {
-            vulnerablePackage = extractPatchedPackage(affectedPackageMatcherV2);
+            vulnerablePackage = extractAffectedPackage(affectedPackageMatcherV2);
         }
         else if (affectedPackageMatcherV3.matches()) {
-            vulnerablePackage = extractPatchedPackage(affectedPackageMatcherV3);
+            vulnerablePackage = extractAffectedPackage(affectedPackageMatcherV3);
         }
         else if (patchedPackageMatcher.matches()) {
             vulnerablePackage = extractPatchedPackage(patchedPackageMatcher);
