@@ -23,6 +23,8 @@ const AccessGroupPermissions = (props: Props) => {
   const [apiNamespace, setApiNamespace] = useState(false);
   const [webNamespace, setWebNamespace] = useState(false);
   const [showOnlySelected, setShowOnlySelected] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
 
   const isItemDisabled = useCallback((item, type) => {
     const requiredAccessMode = type === "view" ? "R" : "W";
@@ -94,13 +96,19 @@ const AccessGroupPermissions = (props: Props) => {
     }
   };
 
-  useEffect(() => {
+  const getNamespaces = (filter: string) => {
     let endpoint = "/rhn/manager/api/admin/access-control/access-group/list_namespaces";
     const hasCopy = props.state.accessGroups && props.state.accessGroups.length > 0;
+    const hasFilter = filter && filter.trim().length > 0;
     if (hasCopy) {
       endpoint += `?copyFrom=${props.state.accessGroups.join(",")}`;
     }
-
+    else if (hasFilter) {
+      endpoint += `?filter=${filter}`;
+    }
+    else if (hasCopy && hasFilter) {
+      endpoint += `?copyFrom=${props.state.accessGroups.join(",")}&filter=${filter}`;
+    }
     Network.get(endpoint)
       .then((response) => {
         const namespacesToSet = response["namespaces"] || [];
@@ -120,11 +128,20 @@ const AccessGroupPermissions = (props: Props) => {
             props.onChange(initialChanges);
           }
         }
+        setIsLoading(false);
       })
       .catch(() => {
+        setIsLoading(false);
         showErrorToastr(t("An unexpected error occurred while fetching namespaces."));
       });
-  }, []);
+  }
+
+  useEffect(() => {
+    if (!isLoading) {
+      setIsLoading(true);
+      getNamespaces(searchValue);
+    }
+  }, [searchValue]);
 
   useEffect(() => {
     namespaces.forEach((item) => {
@@ -159,27 +176,6 @@ const AccessGroupPermissions = (props: Props) => {
     }
     return true;
   });
-
-  const searchData = (row: NamespaceNode, criteria?: string): boolean => {
-    if (!criteria) return true;
-
-    const keysToSearch = ["name", "description"];
-
-    const currentMatch = keysToSearch
-      .map((key) => getValue(row, key))
-      .filter(Boolean)
-      .join()
-      .toLowerCase()
-      .includes(criteria.toLowerCase());
-
-    if (currentMatch) return true;
-
-    if (row.children && row.children.length > 0) {
-      return row.children.some((child) => searchData(child, criteria));
-    }
-
-    return false;
-  };
 
   const namespacesFilter = (
     <div className="d-flex">
@@ -261,11 +257,12 @@ const AccessGroupPermissions = (props: Props) => {
       <p>{t("Review and modify the permissions for this custom group as needed.")}</p>
       <Table
         data={finalData}
+        onSearch={setSearchValue}
         identifier={(item) => `${item.namespace}-${item.isAPI ? "api" : "ui"}`}
         expandable
         stickyHeader
         searchPanelInline
-        searchField={<SearchField filter={searchData} placeholder={t("Filter by name")} />}
+        searchField={<SearchField placeholder={t("Filter by name")} />}
         additionalFilters={[namespacesFilter]}
         titleButtons={[selectedToggle]}
         tableClass="table-hover"

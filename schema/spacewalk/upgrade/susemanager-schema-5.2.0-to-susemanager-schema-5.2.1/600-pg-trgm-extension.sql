@@ -1,4 +1,3 @@
---
 -- Copyright (c) 2025 SUSE LLC
 --
 -- This software is licensed to you under the GNU General Public License,
@@ -8,19 +7,12 @@
 -- along with this software; if not, see
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
+-- Red Hat trademarks are not licensed under GPLv2. No permission is
+-- granted to use or replicate Red Hat trademarks that are incorporated
+-- in this software or its documentation.
+--
+CREATE EXTENSION IF NOT EXISTS pg_trgm;
 
-CREATE TABLE access.namespace (
-    id          BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    namespace   VARCHAR NOT NULL,
-    access_mode CHAR(1) NOT NULL
-                    CHECK (access_mode IN ('R', 'W')),
-    description TEXT
-);
-COMMENT ON TABLE access.namespace IS 'Namespace definitions to provide access to';
-
-CREATE UNIQUE INDEX namespace_ns_mode_uq
-ON access.namespace(namespace, access_mode);
-
-CREATE INDEX namespace_trgm_idx
+CREATE INDEX IF NOT EXISTS namespace_trgm_idx
 ON access.namespace
 USING gist (lower(namespace||description) gist_trgm_ops);
