@@ -58,6 +58,22 @@ public class NamespaceFactory extends HibernateFactory {
     }
 
     /**
+     * Lists namespaces defined in MLM filter by a search parameter.
+     * @param filterParam the search parameter to filter by
+     * @return the list of all namespaces
+     */
+    public static List<Namespace> list(String filterParam) {
+        return getSession()
+                .createNativeQuery("""
+                SELECT *
+                FROM access.namespace
+                WHERE :filter <% lower(namespace||description)
+                """, Namespace.class)
+                .setParameter("filter", filterParam)
+                .getResultList();
+    }
+
+    /**
      * Lists s paginated list of namespaces
      * @param pc the page control
      * @param parser the parser for filters when building query
