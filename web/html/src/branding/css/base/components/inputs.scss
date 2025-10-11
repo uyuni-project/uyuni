@@ -98,6 +98,7 @@ div.form-control {
 // TODO: Bind this class to the react-select control once we upgrade react-select, see https://react-select.com/styles#the-classnames-prop
 .form-control--react-select > div:first-of-type {
   outline: none !important;
+  height: auto;
 
   &[class*="--is-focused"],
   &[class*="--menu-is-open"] {

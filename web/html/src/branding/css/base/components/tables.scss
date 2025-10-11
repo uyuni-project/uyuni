@@ -111,3 +111,16 @@ tbody tr td .modal-link {
     font-weight: 600;
   }
 }
+
+.panel-default > .panel-heading {
+  &.sticky-panel-heading {
+    position: sticky;
+    background: #f2f2f2;
+    top: 0;
+    z-index: 11;
+  }
+}
+
+.table-hover>tbody>tr:hover {
+  background-color: rgba($eos-bc-gray-100, 50%) !important;
+}

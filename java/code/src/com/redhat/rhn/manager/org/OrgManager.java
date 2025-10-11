@@ -270,6 +270,20 @@ public class OrgManager extends BaseManager {
     }
 
     /**
+     * Returns a list of orgs visible to the passed in user.
+     * @param user - the user to check
+     * @return - list of orgs visible to the user
+     */
+    public static List<Org> visibleOrgs(User user) {
+        if (user.hasRole(RoleFactory.SAT_ADMIN)) {
+            return OrgFactory.lookupAllOrgs();
+        }
+        else {
+            return List.of(user.getOrg());
+        }
+    }
+
+    /**
      * Check if the passed in org is a valid name and raises an
      * exception if its invalid..
      * @param newOrgName the orgname to be applied
