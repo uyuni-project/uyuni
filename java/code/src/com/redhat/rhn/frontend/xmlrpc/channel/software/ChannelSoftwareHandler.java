@@ -75,6 +75,8 @@ import com.redhat.rhn.manager.channel.UpdateChannelCommand;
 import com.redhat.rhn.manager.channel.repo.BaseRepoCommand;
 import com.redhat.rhn.manager.channel.repo.CreateRepoCommand;
 import com.redhat.rhn.manager.channel.repo.EditRepoCommand;
+import com.redhat.rhn.manager.content.ContentSyncException;
+import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import com.redhat.rhn.manager.kickstart.crypto.NoSuchCryptoKeyException;
@@ -3143,6 +3145,68 @@ public class ChannelSoftwareHandler extends BaseHandler {
         }
     }
 
+    /**
+     * Synchronizes the unmirrored "Manager Client Tools" channels
+     * associated with products that are currently in a finished sync state.
+     *
+     * @param loggedInUser The current user, required for channel lookups and permission checks.
+     * @return 1 on success
+     * @throws com.redhat.rhn.taskomatic.TaskomaticApiException if the sync job
+     * cannot be scheduled with the Taskomatic service.
+     *
+     * @apidoc.doc Synchronizes the unmirrored "Manager Client Tools" channels
+     * associated with products that are currently in a finished sync state.
+     * The method identifies the channels, and schedules repository synchronization job
+     * for all discovered channels.
+     * @apidoc.param #session_key()
+     * @apidoc.returntype #return_int_success()
+     */
+    public int syncUnmirroredClientToolsChannels(User loggedInUser) {
+        var psm = new com.redhat.rhn.manager.setup.ProductSyncManager();
+        var unSyncedClientToolsChannelsLabels = new HashSet<String>();
+        try {
+            var products = psm.getBaseAndAddonProducts();
+            for (var baseProduct : products) {
+                var status = baseProduct.getSyncStatus();
+
+                if (baseProduct.isBase() && status != null && status.isFinished()) {
+
+                    // Check add-on products for "Multi-Linux Manager Client Tools"
+                    for (var addon : baseProduct.getAddonProducts()) {
+                        var addonStatus = addon.getSyncStatus();
+                        if (addon.getName().contains("Manager Client Tools") && addonStatus != null &&
+                                addonStatus.isNotMirrored()) {
+                            for (var channel : addon.getMandatoryChannels()) {
+                                unSyncedClientToolsChannelsLabels.add(channel.getLabel());
+                            }
+                        }
+                    }
+                }
+            }
+            var csm = new ContentSyncManager();
+            var channelsToSync = new ArrayList<Channel>();
+            for (var label : unSyncedClientToolsChannelsLabels) {
+                try {
+                    csm.addChannel(label, null);
+                    var lookedUpChannel = ChannelManager.lookupByLabelAndUser(label, loggedInUser);
+                    channelsToSync.add(lookedUpChannel);
+                }
+                catch (ContentSyncException | LookupException e) {
+                    log.error("addChannel() failed for {}", label, e);
+                }
+            }
+
+            if (!channelsToSync.isEmpty()) {
+                // Schedule sync for all discovered channels
+                var tapi = new TaskomaticApi();
+                tapi.scheduleSingleRepoSync(channelsToSync);
+            }
+            return BaseHandler.VALID;
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
+        }
+    }
     private ContentSource lookupContentSourceById(Long repoId, Org org) {
         ContentSource cs = ChannelFactory.lookupContentSource(repoId, org);
         if (cs == null) {
