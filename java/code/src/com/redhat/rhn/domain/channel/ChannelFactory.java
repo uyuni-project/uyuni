@@ -938,7 +938,8 @@ public class ChannelFactory extends HibernateFactory {
      * @return DistChannelMap[], empty if none is found
      */
     public static List<DistChannelMap> listAllDistChannelMaps() {
-        return singleton.listObjectsByNamedQuery("DistChannelMap.listAll", Map.of());
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("FROM DistChannelMap WHERE org_id IS NULL", DistChannelMap.class).list();
     }
 
     /**
@@ -948,7 +949,13 @@ public class ChannelFactory extends HibernateFactory {
      * @return list of dist channel maps
      */
     public static List<DistChannelMap> listAllDistChannelMapsByOrg(Org org) {
-        return singleton.listObjectsByNamedQuery("DistChannelMap.listAllByOrg", Map.of(ORG_ID, org.getId()));
+        Session session = HibernateFactory.getSession();
+        return session.createNativeQuery("""
+                        SELECT dcm.id, dcm.org_id, dcm.os, dcm.release, dcm.channel_arch_id, dcm.channel_id
+                        FROM rhnOrgDistChannelMap dcm WHERE dcm.for_org_id = :org_id
+                        """, DistChannelMap.class)
+                .setParameter(ORG_ID, org.getId())
+                .list();
     }
 
     /**
@@ -958,7 +965,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return DistChannelMap, null if none is found
      */
     public static DistChannelMap lookupDistChannelMapById(Long id) {
-        return singleton.lookupObjectByNamedQuery("DistChannelMap.lookupById", Map.of("id", id));
+        return singleton.lookupObjectByParam(DistChannelMap.class, "id", id);
     }
 
     /**
@@ -973,9 +980,22 @@ public class ChannelFactory extends HibernateFactory {
      */
     public static DistChannelMap lookupDistChannelMapByPnReleaseArch(
             Org org, String productName, String release, ChannelArch channelArch) {
-        return singleton.lookupObjectByNamedQuery("DistChannelMap.findByProductNameReleaseAndChannelArch",
-                Map.of("for_org_id", org.getId(), "product_name", productName,
-                        "release", release, "channel_arch_id", channelArch.getId()));
+        Session session = HibernateFactory.getSession();
+        return session.createNativeQuery("""
+                        SELECT dcm.*
+                        FROM rhnOrgDistChannelMap dcm
+                        JOIN rhnChannel chan on chan.id = dcm.channel_id
+                        LEFT JOIN rhnProductName pn on pn.id = chan.product_name_id
+                        WHERE dcm.release = :release
+                        AND dcm.channel_arch_id = :channel_arch_id
+                        AND dcm.for_org_id = :for_org_id
+                        AND pn.label = :product_name
+                        """, DistChannelMap.class)
+                .setParameter("for_org_id", org.getId())
+                .setParameter("product_name", productName)
+                .setParameter("release", release)
+                .setParameter("channel_arch_id", channelArch.getId())
+                .uniqueResult();
     }
 
     /**
@@ -989,8 +1009,18 @@ public class ChannelFactory extends HibernateFactory {
      */
     public static DistChannelMap lookupDistChannelMapByOrgReleaseArch(Org org, String release,
                                                                       ChannelArch channelArch) {
-        return singleton.lookupObjectByNamedQuery("DistChannelMap.findByOrgReleaseArch",
-                Map.of(ORG_ID, org.getId(), "release", release, "channel_arch_id", channelArch.getId()));
+        Session session = HibernateFactory.getSession();
+        return session.createNativeQuery("""
+                        SELECT dcm.id, dcm.org_id, dcm.os, dcm.release, dcm.channel_arch_id, dcm.channel_id
+                        FROM rhnOrgDistChannelMap dcm
+                        WHERE dcm.org_id = :org_id
+                        AND dcm.release = :release
+                        AND dcm.channel_arch_id = :channel_arch_id
+                        """, DistChannelMap.class)
+                .setParameter(ORG_ID, org.getId())
+                .setParameter("release", release)
+                .setParameter("channel_arch_id", channelArch.getId())
+                .uniqueResult();
     }
 
     /**
@@ -1001,8 +1031,18 @@ public class ChannelFactory extends HibernateFactory {
      * @return list of dist channel mappings, empty list if none is found
      */
     public static List<DistChannelMap> listCompatibleDcmByServerInNullOrg(Server server) {
-        return singleton.listObjectsByNamedQuery("DistChannelMap.findCompatibleByServerInNullOrg",
-                Map.of("release", server.getRelease(), "server_arch_id", server.getServerArch().getId()));
+        Session session = HibernateFactory.getSession();
+        return session.createNativeQuery("""
+                        SELECT dcm.*
+                        FROM rhnServerChannelArchCompat scac
+                        JOIN rhnDistChannelMap dcm ON dcm.channel_arch_id = scac.channel_arch_id
+                        WHERE scac.server_arch_id = :server_arch_id
+                        AND dcm.release = :release
+                        AND dcm.org_id IS NULL
+                        """, DistChannelMap.class)
+                .setParameter("release", server.getRelease())
+                .setParameter("server_arch_id", server.getServerArch().getId())
+                .list();
     }
 
     /**
@@ -1084,7 +1124,11 @@ public class ChannelFactory extends HibernateFactory {
         if (c == null) {
             return List.of();
         }
-        return singleton.listObjectsByNamedQuery("DistChannelMap.findByChannel", Map.of("channel", c));
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("FROM DistChannelMap as dcm WHERE dcm.channel = :channel", DistChannelMap.class)
+                .setParameter("channel", c)
+                .list();
+
     }
 
     /**

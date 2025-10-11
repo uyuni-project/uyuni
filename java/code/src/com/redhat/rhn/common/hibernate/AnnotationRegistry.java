@@ -44,6 +44,7 @@ import com.redhat.rhn.domain.channel.ChannelProduct;
 import com.redhat.rhn.domain.channel.ChannelSyncFlag;
 import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.channel.ContentSourceType;
+import com.redhat.rhn.domain.channel.DistChannelMap;
 import com.redhat.rhn.domain.channel.ProductName;
 import com.redhat.rhn.domain.cloudpayg.CloudRmtHost;
 import com.redhat.rhn.domain.cloudpayg.PaygCredentialsProduct;
@@ -186,6 +187,7 @@ import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Pillar;
 import com.redhat.rhn.domain.server.PinnedSubscription;
+import com.redhat.rhn.domain.server.PushClient;
 import com.redhat.rhn.domain.server.PushClientState;
 import com.redhat.rhn.domain.server.Ram;
 import com.redhat.rhn.domain.server.SAPWorkload;
@@ -198,13 +200,17 @@ import com.redhat.rhn.domain.server.ServerGroupType;
 import com.redhat.rhn.domain.server.ServerHistoryEvent;
 import com.redhat.rhn.domain.server.ServerPath;
 import com.redhat.rhn.domain.server.ServerPathId;
+import com.redhat.rhn.domain.server.ServerSnapshot;
+import com.redhat.rhn.domain.server.SnapshotTag;
 import com.redhat.rhn.domain.server.SnapshotTagName;
 import com.redhat.rhn.domain.server.ansible.AnsiblePath;
 import com.redhat.rhn.domain.server.ansible.InventoryPath;
 import com.redhat.rhn.domain.server.ansible.PlaybookPath;
+import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerConfig;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerNodeInfo;
 import com.redhat.rhn.domain.session.WebSessionImpl;
 import com.redhat.rhn.domain.state.OrgStateRevision;
+import com.redhat.rhn.domain.state.PackageState;
 import com.redhat.rhn.domain.state.ServerGroupStateRevision;
 import com.redhat.rhn.domain.state.ServerStateRevision;
 import com.redhat.rhn.domain.state.StateRevision;
@@ -314,6 +320,7 @@ public class AnnotationRegistry {
             Cve.class,
             DeltaImageInfo.class,
             Device.class,
+            DistChannelMap.class,
             DockerfileProfile.class,
             EntitlementServerGroup.class,
             EnvironmentTarget.class,
@@ -392,6 +399,7 @@ public class AnnotationRegistry {
             PackageProvides.class,
             PackageRecommends.class,
             PackageRequires.class,
+            PackageState.class,
             PackageSuggests.class,
             PackageSupplements.class,
             Pane.class,
@@ -409,6 +417,7 @@ public class AnnotationRegistry {
             ProjectSource.class,
             ProvisionState.class,
             PtfFilter.class,
+            PushClient.class,
             PushClientState.class,
             Ram.class,
             RhnConfiguration.class,
@@ -450,8 +459,10 @@ public class AnnotationRegistry {
             ServerHistoryEvent.class,
             ServerPath.class,
             ServerPathId.class,
+            ServerSnapshot.class,
             ServerStateRevision.class,
             Severity.class,
+            SnapshotTag.class,
             SnapshotTagName.class,
             SoftwareEnvironmentTarget.class,
             SoftwareProjectSource.class,
@@ -484,6 +495,7 @@ public class AnnotationRegistry {
             UserNotification.class,
             UserServerPreference.class,
             VHMCredentials.class,
+            VirtualHostManagerConfig.class,
             VirtualHostManagerNodeInfo.class,
             XccdfBenchmark.class,
             XccdfIdent.class,
