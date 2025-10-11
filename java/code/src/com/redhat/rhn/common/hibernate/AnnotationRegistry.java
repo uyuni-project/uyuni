@@ -215,7 +215,6 @@ import com.redhat.rhn.domain.state.ServerGroupStateRevision;
 import com.redhat.rhn.domain.state.ServerStateRevision;
 import com.redhat.rhn.domain.state.StateRevision;
 import com.redhat.rhn.domain.task.Task;
-import com.redhat.rhn.domain.test.TestImpl;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.RegTokenOrgDefault;
 import com.redhat.rhn.domain.token.Token;
@@ -443,7 +442,6 @@ public class AnnotationRegistry {
             SCCRepositoryNoAuth.class,
             SCCRepositoryTokenAuth.class,
             SCCSubscription.class,
-            SUSEProductChannel.class,
             ScriptActionDetails.class,
             ScriptResult.class,
             ServerAppStream.class,
@@ -473,6 +471,7 @@ public class AnnotationRegistry {
             StateRevision.class,
             SupportDataActionDetails.class,
             SUSEProduct.class,
+            SUSEProductChannel.class,
             SUSEProductExtension.class,
             SUSEProductUpgrade.class,
             Task.class,
@@ -483,7 +482,6 @@ public class AnnotationRegistry {
             TaskoTemplate.class,
             TemplateCategory.class,
             TemplateString.class,
-            TestImpl.class,
             TinyUrl.class,
             TokenChannelAppStream.class,
             Token.class,

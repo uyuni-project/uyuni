@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.domain.test;
 
+import com.redhat.rhn.common.hibernate.ConnectionManagerFactory;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 
 import org.apache.logging.log4j.LogManager;
@@ -38,7 +39,6 @@ public class TestFactory extends HibernateFactory {
      */
     protected Class getImplementationClass() {
         return TestImpl.class;
-
     }
 
     /** Get the Logger for the derived class so log messages
@@ -68,4 +68,8 @@ public class TestFactory extends HibernateFactory {
         singleton.saveObject(t);
     }
 
+    public static Session getSession() {
+        setConnectionManager(ConnectionManagerFactory.testConnectionManager());
+        return HibernateFactory.getSession();
+    }
 }
