@@ -46,7 +46,7 @@ public class TestFactoryWrapperTest extends RhnBaseTestCase {
     @Override
     @BeforeEach
     public void setUp() {
-        HibernateFactory.createSessionFactory();
+        TestFactory.createSessionFactory();
     }
 
     @Test
@@ -155,7 +155,7 @@ public class TestFactoryWrapperTest extends RhnBaseTestCase {
 
     @BeforeAll
     public static void oneTimeSetup() {
-        HibernateFactory.getSession().doWork(connection -> {
+        TestFactory.getSession().doWork(connection -> {
             Statement statement = null;
             try {
                 statement = connection.createStatement();
@@ -200,7 +200,7 @@ public class TestFactoryWrapperTest extends RhnBaseTestCase {
 
     @AfterAll
     public static void oneTimeTeardown() {
-        HibernateFactory.getSession().doWork(connection -> {
+        TestFactory.getSession().doWork(connection -> {
             Statement statement = null;
             try {
                 statement = connection.createStatement();

@@ -77,6 +77,14 @@ public abstract class HibernateFactory {
     }
 
     /**
+     * Set a new conntionManager instance
+     * @param conMgr the new connection manager
+     */
+    protected static void setConnectionManager(ConnectionManager conMgr) {
+        connectionManager = conMgr;
+    }
+
+    /**
      * Register a class with HibernateFactory, to give the registered class a
      * chance to modify the Hibernate configuration before creating the
      * SessionFactory.
