@@ -116,6 +116,7 @@ public class AccessGroupController {
      */
     public static String listNamespaces(Request request, Response response, User user) {
         String copyFromParam = request.queryParams("copyFrom");
+        String filterParam = request.queryParams("filter");
         List<Long> copyFromIds = Collections.emptyList();
         if (copyFromParam != null && !copyFromParam.isBlank()) {
             copyFromIds = Arrays.stream(copyFromParam.split(","))
@@ -133,8 +134,15 @@ public class AccessGroupController {
             .values()
             .stream()
             .toList();
-        var namespaces = ACCESS_CONTROL_NAMESPACE_TREE_HELPER.buildTree(NamespaceFactory.list());
-        var result = Map.of("namespaces", namespaces, "toCopy", copyFrom);
+        List<Namespace> namespaces;
+        if (filterParam != null && !filterParam.isBlank()) {
+            namespaces = NamespaceFactory.list(filterParam);
+        }
+        else {
+            namespaces = NamespaceFactory.list();
+        }
+        var namespaceTree = ACCESS_CONTROL_NAMESPACE_TREE_HELPER.buildTree(namespaces);
+        var result = Map.of("namespaces", namespaceTree, "toCopy", copyFrom);
         return json(GSON, response, result, new TypeToken<>() { });
     }
 
