@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-10-10 09:51+0200\n"
-"PO-Revision-Date: 2025-10-10 17:59+0000\n"
+"PO-Revision-Date: 2025-10-11 14:59+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -717,10 +717,8 @@ msgid "Error deregistering server"
 msgstr "Chyba pri zrušení registrácie servera"
 
 #: ../html/src/components/hub/DeregisterServer.tsx:60
-#, fuzzy
-#| msgid "Delete Profile Without Cleanup"
 msgid "Deregister without cleanup"
-msgstr "Vymazať profil bez vyčistenia"
+msgstr "Zrušiť registráciu bez vyčistenia"
 
 #: ../html/src/components/hub/DeregisterServer.tsx:68
 #: ../html/src/manager/systems/delete-system.tsx:11
@@ -2007,10 +2005,8 @@ msgid "Modify"
 msgstr "Zmeniť"
 
 #: ../html/src/components/table/search.example.tsx:20
-#, fuzzy
-#| msgid "System Kind"
 msgid "Item id"
-msgstr "Druh systému"
+msgstr "Id položky"
 
 #: ../html/src/components/target-systems.tsx:26
 msgid "Target Systems"
@@ -4102,10 +4098,8 @@ msgid "The page you requested, {currentUrl}, was not found."
 msgstr "Požadovaná stránka {currentUrl} sa nenašla."
 
 #: ../html/src/manager/errors/not-found.tsx:12
-#, fuzzy
-#| msgid "If you typed this address into your browser, double-check the spelling and capitalization. The address you are copying may also be outdated."
 msgid "If you typed this address into your browser, double-check the spelling and capitalization."
-msgstr "Ak ste zadali túto adresu do svojho prehliadača, znova skontrolujte pravopis a veľké písmená. Adresa, ktorú kopírujete, môže byť tiež zastaraná."
+msgstr "Ak ste zadali túto adresu do svojho prehliadača, znova skontrolujte pravopis a veľké písmená."
 
 #: ../html/src/manager/errors/not-found.tsx:18
 msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your "
@@ -6448,7 +6442,7 @@ msgstr "Konfiguračné rozdiely"
 
 #: ../html/src/manager/systems/all-list.tsx:165
 msgid "Last Checked In"
-msgstr ""
+msgstr "Naposledy prihlásený"
 
 #: ../html/src/manager/systems/all-list.tsx:171
 #: ../html/src/manager/systems/list-filter.tsx:50
