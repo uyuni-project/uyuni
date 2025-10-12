@@ -939,8 +939,11 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
     }
 
     /**
-     * @return the clonedChannels
+     * @return return the channel sync state
      */
+    public ChannelSyncStatus getSyncStatus() {
+        return ChannelManager.getChannelSyncStatus(this);
+    }
 
     /**
      * Returns all cloned channels of this channel which includes all clones of clones.
@@ -950,6 +953,9 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
         return getClonedChannels().stream().flatMap(c -> Stream.concat(Stream.of(c), c.allClonedChannels()));
     }
 
+    /**
+     * @return the clonedChannels
+     */
     public Set<ClonedChannel> getClonedChannels() {
         return clonedChannels;
     }
