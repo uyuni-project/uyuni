@@ -10,6 +10,7 @@
  */
 package com.redhat.rhn.domain.channel;
 
+import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.Labeled;
 
 import java.util.Arrays;
@@ -29,6 +30,10 @@ public enum ChannelSyncStatus implements Labeled {
     @Override
     public String getLabel() {
         return label;
+    }
+
+    public String getDescription() {
+        return LocalizationService.getInstance().getMessage("channel.jsp.sync.status." + name().toLowerCase());
     }
 
     /**
