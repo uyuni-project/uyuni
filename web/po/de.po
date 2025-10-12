@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-10-10 09:51+0200\n"
-"PO-Revision-Date: 2025-09-22 23:59+0000\n"
+"PO-Revision-Date: 2025-10-12 22:59+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/web/de/>\n"
 "Language: de\n"
@@ -6508,10 +6508,8 @@ msgid "Base Channel:"
 msgstr ""
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:133
-#, fuzzy
-#| msgid "Channel Name"
 msgid "${defaultChannelName}"
-msgstr "Kanalname"
+msgstr "${defaultChannelName}"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:143
 msgid "${this.getDefaultBase().name}"
