@@ -24073,11 +24073,14 @@ given channel.</source>
       <trans-unit id="channel.jsp.repodata" xml:space="preserve">
         <source>Repo Cache Status</source>
       </trans-unit>
-      <trans-unit id="channel.jsp.repodata.completed" xml:space="preserve">
+      <trans-unit id="channel.jsp.sync.status.ready" xml:space="preserve">
         <source> Completed </source>
       </trans-unit>
-      <trans-unit id="channel.jsp.repodata.inProgress" xml:space="preserve">
+      <trans-unit id="channel.jsp.sync.status.syncing" xml:space="preserve">
         <source> In Progress </source>
+      </trans-unit>
+      <trans-unit id="channel.jsp.sync.status.created" xml:space="preserve">
+        <source> New Created </source>
       </trans-unit>
       <trans-unit id="channel.jsp.gpgcheck" xml:space="preserve">
         <source>Enable GPG Check </source>
