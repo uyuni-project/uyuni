@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.action.ActionChainEntry;
 import com.redhat.rhn.domain.action.ActionChild;
 import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.action.ansible.InventoryActionDetails;
 import com.redhat.rhn.domain.action.errata.ActionPackageDetails;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionDetails;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionResult;
@@ -347,6 +348,7 @@ public class AnnotationRegistry {
             InstalledProduct.class,
             InternalState.class,
             InvalidSnapshotReason.class,
+            InventoryActionDetails.class,
             InventoryPath.class,
             IssAccessToken.class,
             IssHub.class,
