@@ -25,7 +25,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
@@ -33,25 +33,19 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "PXTSessions")
+@NamedQuery(
+        name = "WebSession.deleteByUserId",
+        query = "DELETE FROM WebSessionImpl w WHERE w.webUserId = :user_id")
 public class WebSessionImpl implements WebSession {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pxt_seq")
-    @SequenceGenerator(name = "pxt_seq", sequenceName = "pxt_id_seq", allocationSize = 1)
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column
+    @Column(name = "expires", nullable = false)
     private long expires;
     @Column(name = "web_user_id")
     private Long webUserId;
-    @Column
-    private String value;
-
-    /**
-     * Protected Constructor
-     */
-    protected WebSessionImpl() {
-        // keep Hibernate & perl from blowing chunks
-        value = " ";
-    }
 
     /** {@inheritDoc} */
     @Override
@@ -116,11 +110,7 @@ public class WebSessionImpl implements WebSession {
      */
     @Override
     public String getValue() {
-        return value;
-    }
-
-    private void setValue(String val) {
-        value = val;
+        return " ";
     }
 
     /**
@@ -133,7 +123,7 @@ public class WebSessionImpl implements WebSession {
                                                 "an invalid id");
         }
 
-        return id.toString() + "x" + SessionManager.generateSessionKey(id.toString());
+        return id + "x" + SessionManager.generateSessionKey(id.toString());
     }
 
 }
