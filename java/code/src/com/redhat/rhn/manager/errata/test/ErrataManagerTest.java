@@ -28,8 +28,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
-import com.redhat.rhn.common.db.datasource.ModeFactory;
-import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.action.Action;
@@ -55,8 +53,6 @@ import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
-import com.redhat.rhn.domain.session.WebSession;
-import com.redhat.rhn.domain.session.WebSessionFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.listview.PageControl;
@@ -87,7 +83,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -154,7 +149,6 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         // errata search is done by the search-server. The search
         // in ErrataManager is to load ErrataOverview objects from
         // the results of the search-server searches.
-        Bug b1 = ErrataManagerTest.createTestBug(42L, "test bug");
         Errata e = new Errata();
         e.setAdvisory("ZEUS-2007");
         e.setAdvisoryName("ZEUS-2007");
@@ -171,19 +165,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
 
         channel.ifPresent(e::addChannel);
 
-        WebSession session = WebSessionFactory.createSession();
-        WebSessionFactory.save(session);
-        assertNotNull(session.getId());
-
-        // for package search, we need to insert an entry into rhnVisibleObjects
-        WriteMode mode = ModeFactory.getWriteMode(
-                "test_queries", "insert_into_visibleobjects");
-        Map<String, Object> params = new HashMap<>();
-        //"sessionid, obj_id, obj_type"
-        params.put("sessionid", session.getId());
-        params.put("obj_id", e.getId());
-        params.put("obj_type", "errata");
-        mode.executeUpdate(params);
+        HibernateFactory.getSession().flush();
 
         // now test for errata
         List<Long> pids = new ArrayList<>();
