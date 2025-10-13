@@ -14,21 +14,57 @@
  */
 package com.redhat.rhn.domain.action.image;
 
-import com.redhat.rhn.domain.action.ActionChild;
+import com.redhat.rhn.domain.BaseDomainHelper;
+import com.redhat.rhn.domain.action.Action;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 /**
  * DeployImageActionDetails - Class representation of the table rhnActionImageDeploy.
  */
-public class DeployImageActionDetails extends ActionChild {
+@Entity
+@Table(name = "rhnActionImageDeploy")
+public class DeployImageActionDetails extends BaseDomainHelper {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_ACTION_IMAGE_DEPLOY_ID_SEQ")
+    @SequenceGenerator(name = "RHN_ACTION_IMAGE_DEPLOY_ID_SEQ", sequenceName = "RHN_ACTION_IMAGE_DEPLOY_ID_SEQ",
+            allocationSize = 1)
     private Long id;
+
+    @Column
     private Long vcpus;
+
+    @Column(name = "mem_kb")
     private Long memKb;
+
+    @Column(name = "bridge_device")
     private String bridgeDevice;
+
+    @Column(name = "download_url")
     private String downloadUrl;
+
+    @Column(name = "proxy_server")
     private String proxyServer;
+
+    @Column(name = "proxy_user")
     private String proxyUser;
+
+    @Column(name = "proxy_pass")
     private String proxyPass;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "action_id", updatable = false, nullable = false, insertable = true)
+    private Action parentAction;
 
     /**
      * Return the ID.
@@ -42,7 +78,7 @@ public class DeployImageActionDetails extends ActionChild {
      * Set the ID.
      * @param idIn id
      */
-    public void setId(Long idIn) {
+    protected void setId(Long idIn) {
         this.id = idIn;
     }
 
@@ -156,5 +192,21 @@ public class DeployImageActionDetails extends ActionChild {
      */
     public void setProxyPass(String proxyPassIn) {
         this.proxyPass = proxyPassIn;
+    }
+
+    /**
+     * Gets the parent Action associated with this ServerAction record
+     * @return Returns the parentAction.
+     */
+    public Action getParentAction() {
+        return parentAction;
+    }
+
+    /**
+     * Sets the parent Action associated with this ServerAction record
+     * @param parentActionIn The parentAction to set.
+     */
+    public void setParentAction(Action parentActionIn) {
+        this.parentAction = parentActionIn;
     }
 }

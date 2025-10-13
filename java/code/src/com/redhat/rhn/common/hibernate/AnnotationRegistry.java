@@ -25,6 +25,7 @@ import com.redhat.rhn.domain.action.appstream.AppStreamActionDetails;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsActionDetails;
 import com.redhat.rhn.domain.action.config.ConfigDateDetails;
 import com.redhat.rhn.domain.action.errata.ActionPackageDetails;
+import com.redhat.rhn.domain.action.image.DeployImageActionDetails;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionDetails;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionResult;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionDetails;
@@ -326,6 +327,7 @@ public class AnnotationRegistry {
             CustomDataValue.class,
             Cve.class,
             DeltaImageInfo.class,
+            DeployImageActionDetails.class,
             Device.class,
             DistChannelMap.class,
             DockerfileProfile.class,
