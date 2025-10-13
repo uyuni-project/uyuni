@@ -15,18 +15,39 @@
 package com.redhat.rhn.domain.action.kickstart;
 
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 /**
  * KickstartGuestActionDetails - java representation of the rhnActionKickstart table
  */
+@Entity
+@Table(name = "rhnActionKickstartGuest")
 public class KickstartGuestActionDetails extends BaseKickstartActionDetails {
 
+    @Column(name = "ks_session_id")
     private Long kickstartSessionId;
+
+    @Column(name = "guest_name")
     private String guestName;
+
+    @Column(name = "mem_kb")
     private Long memMb;
+
+    @Column
     private Long vcpus;
+
+    @Column(name = "disk_gb")
     private Long diskGb;
+
+    @Column(name = "virt_bridge")
     private String virtBridge;
+
+    @Column(name = "disk_path")
     private String diskPath;
+
+    @Column(name = "mac_address")
     private String macAddress;
 
     /**
