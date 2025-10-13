@@ -39,5 +39,5 @@
     }
   },
 
-  "postCreateCommand": "cd ${containerWorkspaceFolder} &&  ant -f java/manager-build.xml ivy && yarn install"
+  "postCreateCommand": "cd ${containerWorkspaceFolder} && ant -f java/manager-build.xml ivy && npm install"
 }
