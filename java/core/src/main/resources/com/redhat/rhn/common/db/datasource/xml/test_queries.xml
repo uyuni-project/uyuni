@@ -323,13 +323,6 @@ SELECT name FROM web_customer WHERE id IN (%s) AND name = :name
         </query>
 </mode>
 
-<write-mode name="insert_into_visibleobjects">
-  <query params="sessionid, obj_id, obj_type">
-    INSERT INTO rhnVisibleObjects (pxt_session_id, object_id, object_type)
-    VALUES (:sessionid, :obj_id, :obj_type)
-  </query>
-</write-mode>
-
 <mode name="select_test_time_series">
     <query params="data">
 SELECT 1 FROM dual
