@@ -22,8 +22,8 @@
         <dependency org="suse" name="commons-digester" rev="2.1" />
         <dependency org="suse" name="commons-discovery" rev="0.5" />
         <dependency org="suse" name="commons-el" rev="1.0" />
-        <dependency org="suse" name="apache-commons-fileupload2-core" rev="2.0.0~M4" />
-        <dependency org="suse" name="apache-commons-fileupload2-javax" rev="2.0.0~M4" />
+<!--        <dependency org="suse" name="apache-commons-fileupload2-core" rev="2.0.0~M4" />-->
+<!--        <dependency org="suse" name="apache-commons-fileupload2-javax" rev="2.0.0~M4" />-->
         <dependency org="suse" name="commons-io" rev="2.18.0" />
         <dependency org="suse" name="commons-jexl" rev="2.1.1" />
         <dependency org="suse" name="commons-lang3" rev="3.18.0" />
@@ -51,8 +51,8 @@
         <dependency org="suse" name="jackson-databind" rev="2.17.3" />
         <dependency org="suse" name="jade4j" rev="1.2.7" />
         <dependency org="suse" name="jakarta-persistence-api" rev="2.2.2" />
-        <dependency org="suse" name="java-saml" rev="2.4.0" />
-        <dependency org="suse" name="java-saml-core" rev="2.4.0" />
+<!--        <dependency org="suse" name="java-saml" rev="2.4.0" />-->
+<!--        <dependency org="suse" name="java-saml-core" rev="2.4.0" />-->
         <dependency org="suse" name="javassist" rev="3.29.2" />
         <dependency org="suse" name="jboss-logging" rev="3.4.1" />
         <dependency org="suse" name="jdom" rev="1.1.3" />
@@ -84,16 +84,16 @@
         <dependency org="suse" name="simpleclient_servlet" rev="0.3.0" />
         <dependency org="suse" name="simple-core" rev="3.1.3" />
         <dependency org="suse" name="simple-xml" rev="2.6.2" />
-        <dependency org="suse" name="sitemesh" rev="2.1" />
+<!--        <dependency org="suse" name="sitemesh" rev="2.1" />-->
         <dependency org="suse" name="slf4j-api" rev="1.7.36" />
         <dependency org="suse" name="log4j-slf4j-impl" rev="2.17.2" />
         <dependency org="suse" name="snakeyaml" rev="2.2" />
-        <dependency org="suse" name="spark-core" rev="2.9.3" />
+<!--        <dependency org="suse" name="spark-core" rev="2.9.3" />-->
         <dependency org="suse" name="spark-template-jade" rev="2.7.1" />
         <dependency org="suse" name="spy" rev="0.8.7" />
         <dependency org="suse" name="statistics" rev="1.0.2" />
         <dependency org="suse" name="stax2-api" rev="3.1.4" />
-        <dependency org="suse" name="struts" rev="1.2.9" />
+<!--        <dependency org="suse" name="struts" rev="1.2.9" />-->
         <dependency org="suse" name="taglibs-standard-impl" rev="1.2.5" />
         <dependency org="suse" name="taglibs-standard-jstlel" rev="1.2.5" />
         <dependency org="suse" name="taglibs-standard-spec" rev="1.2.5" />
@@ -111,12 +111,12 @@
         <dependency org="suse" name="stax-ex" rev="1.8" />
 
         <!-- Tomcat jars -->
-        <dependency org="suse" name="jasper" rev="[9.0.75,10.0.0[" />
-        <dependency org="suse" name="jasper-el" rev="[9.0.75,10.0.0["/>
-        <dependency org="suse" name="tomcat-el-3.0-api" rev="[9.0.75,10.0.0[" />
-        <dependency org="suse" name="tomcat-jsp-2.3-api" rev="[9.0.75,10.0.0[" />
-        <dependency org="suse" name="tomcat-juli" rev="[9.0.75,10.0.0[" />
-        <dependency org="suse" name="tomcat-servlet-4.0-api" rev="[9.0.75,10.0.0[" />
+<!--        <dependency org="suse" name="jasper" rev="[9.0.75,10.0.0[" />-->
+<!--        <dependency org="suse" name="jasper-el" rev="[9.0.75,10.0.0["/>-->
+<!--        <dependency org="suse" name="tomcat-el-3.0-api" rev="[9.0.75,10.0.0[" />-->
+<!--        <dependency org="suse" name="tomcat-jsp-2.3-api" rev="[9.0.75,10.0.0[" />-->
+<!--        <dependency org="suse" name="tomcat-juli" rev="[9.0.75,10.0.0[" />-->
+<!--        <dependency org="suse" name="tomcat-servlet-4.0-api" rev="[9.0.75,10.0.0[" />-->
 
         <!-- Compilation and testing -->
         <dependency org="suse" name="velocity-engine-core" rev="2.3"/>
@@ -139,14 +139,32 @@
         <dependency org="org.jmock" name="jmock-junit5" rev="2.12.0" transitive="false"/>
         <dependency org="org.jmock" name="jmock-imposters" rev="2.12.0" transitive="false"/>
         <dependency org="org.objenesis" name="objenesis" rev="1.0" transitive="false"/>
-        <dependency org="javax.websocket" name="javax.websocket-api" rev="1.1" transitive="false"/>
+        <dependency org="jakarta.websocket" name="jakarta.websocket-api" rev="2.2.0" transitive="false"/>
+        <dependency org="jakarta.websocket" name="jakarta.websocket-client-api" rev="2.2.0" transitive="false"/>
         <dependency org="org.jacoco" name="org.jacoco.ant" rev="0.8.7" transitive="false">
            <artifact name="nodeps" type="jar" url="https://repo1.maven.org/maven2/org/jacoco/org.jacoco.ant/0.8.7/org.jacoco.ant-0.8.7-nodeps.jar"/>
         </dependency>
         <dependency org="com.github.tomakehurst" name="wiremock-standalone" rev="2.27.2" transitive="false"/>
         <!-- todo move to our org -->
-        <dependency org="strutstest" name="strutstest" rev="0.0.1" transitive="false">
-            <artifact name="strutstestcase" type="jar" url="https://github.com/hustodemon/strutstestcase-uyuni/releases/download/v.0.0.1-alpha/strutstest-uyuni-0.0.1.jar"/>
+        <dependency org="strutstest" name="strutstest" rev="1.0.0" transitive="false">
+            <artifact name="strutstestcase" type="jar" url="https://github.com/uyuni-project/strutstestcase/releases/download/v1.0.0-uyuni/strutstest-uyuni-1.0.0.jar"/>
         </dependency>
+
+        <dependency org="strutstest" name="struts-rime" rev="1.2.9" />
+        <dependency org="strutstest" name="jakarta.servlet-api" rev="6.1.0" />
+        <dependency org="strutstest" name="jakarta.servlet.jsp-api" rev="4.0.0" />
+        <dependency org="strutstest" name="jakarta.el-api" rev="6.0.1" />
+        <dependency org="strutstest" name="jakarta.servlet.jsp.jstl-api" rev="3.0.2" />
+        <dependency org="strutstest" name="spark-core" rev="2.9.3" />
+        <dependency org="strutstest" name="java-saml-rime" rev="2.4.0" />
+        <dependency org="strutstest" name="java-saml-core-rime" rev="2.4.0" />
+        <dependency org="strutstest" name="apache-commons-fileupload2-core" rev="2.0.0~M4" />
+        <dependency org="strutstest" name="commons-fileupload2-jakarta-servlet6" rev="2.0.0~M4" />
+        <dependency org="strutstest" name="tomcat-juli" rev="11.0.12" />
+        <dependency org="strutstest" name="tomcat-jasper" rev="11.0.12" />
+        <dependency org="strutstest" name="tomcat-jasper-el" rev="11.0.12" />
+        <dependency org="strutstest" name="sitemesh" rev="2.6.0" />
+
+
     </dependencies>
 </ivy-module>

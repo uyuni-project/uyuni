@@ -18,9 +18,9 @@ import com.redhat.rhn.frontend.taglibs.list.row.RowRenderer;
 
 import org.apache.commons.lang3.StringUtils;
 
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.tagext.BodyTagSupport;
-import javax.servlet.jsp.tagext.TagSupport;
+import jakarta.servlet.jsp.JspException;
+import jakarta.servlet.jsp.tagext.BodyTagSupport;
+import jakarta.servlet.jsp.tagext.TagSupport;
 
 
 /**

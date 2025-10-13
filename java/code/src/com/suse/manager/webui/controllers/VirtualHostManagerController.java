@@ -48,7 +48,7 @@ import com.google.gson.reflect.TypeToken;
 import org.apache.commons.fileupload2.core.DiskFileItemFactory;
 import org.apache.commons.fileupload2.core.FileItem;
 import org.apache.commons.fileupload2.core.FileUploadException;
-import org.apache.commons.fileupload2.javax.JavaxServletFileUpload;
+import org.apache.commons.fileupload2.jakarta.servlet6.JakartaServletFileUpload;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.apache.logging.log4j.LogManager;
@@ -533,7 +533,7 @@ public class VirtualHostManagerController {
                 .setPath("javax.servlet.context.tempdir")
                 .get();
 
-        return new JavaxServletFileUpload(fileItemFactory).parseRequest(request.raw());
+        return new JakartaServletFileUpload(fileItemFactory).parseRequest(request.raw());
     }
 
     private static void validateKubeconfig(String context,

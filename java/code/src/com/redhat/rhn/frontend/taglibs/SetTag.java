@@ -20,8 +20,8 @@ import com.redhat.rhn.frontend.html.HtmlTag;
 
 import java.io.IOException;
 
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.JspWriter;
+import jakarta.servlet.jsp.JspException;
+import jakarta.servlet.jsp.JspWriter;
 
 /**
  * SetTag

@@ -20,8 +20,8 @@ import com.redhat.rhn.frontend.listview.ListControl;
 
 import org.apache.commons.lang3.StringUtils;
 
-import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * RhnUnpagedListAction

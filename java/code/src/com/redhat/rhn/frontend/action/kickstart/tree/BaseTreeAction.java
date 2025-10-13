@@ -34,7 +34,7 @@ import org.apache.struts.util.LabelValueBean;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * TreeCreate class for creating Kickstart Trees

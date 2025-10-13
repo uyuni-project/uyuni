@@ -21,7 +21,7 @@ import com.redhat.rhn.manager.kickstart.KickstartScriptDeleteCommand;
 
 import org.apache.struts.action.DynaActionForm;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * KickstartScriptDeleteAction - Action to delete a KickstartScript

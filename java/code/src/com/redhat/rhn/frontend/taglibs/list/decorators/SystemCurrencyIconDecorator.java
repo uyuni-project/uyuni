@@ -21,7 +21,7 @@ import com.redhat.rhn.frontend.taglibs.list.ListTag;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 
 /**

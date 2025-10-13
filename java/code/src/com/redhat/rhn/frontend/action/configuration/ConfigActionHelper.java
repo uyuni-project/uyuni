@@ -27,7 +27,7 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * BaseCompareFileAction - A base class for doing typical config file request processing.

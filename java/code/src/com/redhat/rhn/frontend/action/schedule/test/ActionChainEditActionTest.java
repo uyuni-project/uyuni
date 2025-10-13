@@ -37,7 +37,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * Tests for {@link ActionChainEditAction}.

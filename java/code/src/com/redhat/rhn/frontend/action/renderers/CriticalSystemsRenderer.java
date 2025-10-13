@@ -26,7 +26,7 @@ import com.redhat.rhn.manager.system.SystemManager;
 
 import java.util.HashMap;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * Renders YourRhn fragment for critical systems

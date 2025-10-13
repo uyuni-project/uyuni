@@ -25,7 +25,7 @@ import org.apache.struts.action.ActionMessages;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * BaseProfilesAction is an abstract class which aids in

@@ -26,7 +26,7 @@ import com.redhat.rhn.manager.kickstart.KickstartUrlHelper;
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.struts.action.DynaActionForm;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * KickstartFileDownloadAction extends RhnAction
