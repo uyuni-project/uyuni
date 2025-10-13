@@ -10,6 +10,9 @@ repositories:
     repository: openSUSE_Leap_15.6
   Leap_sle:
     url: https://download.opensuse.org/update/leap/15.6/sle
+  Uyuni_MB:
+    project: home:mbussolotto:branches:systemsmanagement:Uyuni:Master
+    repository: openSUSE_Leap_15.6
 artifacts:
   - artifact: asm
     package: objectweb-asm
@@ -260,7 +263,7 @@ artifacts:
   - artifact: snakeyaml
     repository: Leap_sle
   - artifact: spark-core
-    repository: Uyuni_Other
+    repository: Uyuni_MB
   - artifact: spark-template-jade
     repository: Uyuni_Other
   - artifact: spy
