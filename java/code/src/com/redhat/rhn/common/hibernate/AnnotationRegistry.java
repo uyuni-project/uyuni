@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.ansible.InventoryActionDetails;
 import com.redhat.rhn.domain.action.ansible.PlaybookActionDetails;
+import com.redhat.rhn.domain.action.appstream.AppStreamActionDetails;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsActionDetails;
 import com.redhat.rhn.domain.action.config.ConfigDateDetails;
 import com.redhat.rhn.domain.action.errata.ActionPackageDetails;
@@ -281,6 +282,7 @@ public class AnnotationRegistry {
             ActivationKey.class,
             AddressImpl.class,
             AnsiblePath.class,
+            AppStreamActionDetails.class,
             AppStreamApi.class,
             AppStreamApiKey.class,
             AppStream.class,
