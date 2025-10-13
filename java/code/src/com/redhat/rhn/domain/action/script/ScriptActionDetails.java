@@ -15,7 +15,8 @@
 package com.redhat.rhn.domain.action.script;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.domain.action.ActionChild;
+import com.redhat.rhn.domain.BaseDomainHelper;
+import com.redhat.rhn.domain.action.Action;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -23,9 +24,12 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -35,7 +39,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "rhnActionScript")
-public class ScriptActionDetails extends ActionChild {
+public class ScriptActionDetails extends BaseDomainHelper {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "script_action_seq")
@@ -44,13 +48,23 @@ public class ScriptActionDetails extends ActionChild {
 
     @Column(nullable = false)
     private String username = "";
+
     @Column(nullable = false)
     private String groupname = "";
+
     @Column(name = "script", columnDefinition = "bytea")
     private byte[] script = {};
+
+    @Column
     private Long timeout;
+
     @OneToMany(mappedBy = "parentScriptActionDetails", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ScriptResult> results = new HashSet<>();
+
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "action_id", nullable = false)
+    private Action parentAction;
 
     /**
      * @return Returns the groupname.
@@ -158,4 +172,19 @@ public class ScriptActionDetails extends ActionChild {
         return HibernateFactory.getByteArrayContents(this.script);
     }
 
+    /**
+     * Gets the parent Action associated with this ServerAction record
+     * @return Returns the parentAction.
+     */
+    public Action getParentAction() {
+        return parentAction;
+    }
+
+    /**
+     * Sets the parent Action associated with this ServerAction record
+     * @param parentActionIn The parentAction to set.
+     */
+    public void setParentAction(Action parentActionIn) {
+        this.parentAction = parentActionIn;
+    }
 }
