@@ -14,7 +14,8 @@
  */
 package com.redhat.rhn.domain.action.rhnpackage;
 
-import com.redhat.rhn.domain.action.ActionChild;
+import com.redhat.rhn.domain.BaseDomainHelper;
+import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
@@ -41,7 +42,7 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table(name = "rhnActionPackage")
-public class PackageActionDetails extends ActionChild {
+public class PackageActionDetails extends BaseDomainHelper {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "package_action_seq")
@@ -66,6 +67,10 @@ public class PackageActionDetails extends ActionChild {
 
     @Transient
     private Set<PackageActionResult> results = new HashSet<>();
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "action_id", nullable = false)
+    private Action parentAction;
 
     /**
      * @param resultsIn The results to set.
@@ -156,6 +161,22 @@ public class PackageActionDetails extends ActionChild {
      */
     public void setParameter(String p) {
         this.parameter = p;
+    }
+
+    /**
+     * Gets the parent Action associated with this ServerAction record
+     * @return Returns the parentAction.
+     */
+    public Action getParentAction() {
+        return parentAction;
+    }
+
+    /**
+     * Sets the parent Action associated with this ServerAction record
+     * @param parentActionIn The parentAction to set.
+     */
+    public void setParentAction(Action parentActionIn) {
+        this.parentAction = parentActionIn;
     }
 
     /**
