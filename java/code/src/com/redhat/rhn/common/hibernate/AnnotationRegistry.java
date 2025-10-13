@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.ansible.InventoryActionDetails;
 import com.redhat.rhn.domain.action.ansible.PlaybookActionDetails;
+import com.redhat.rhn.domain.action.config.ConfigDateDetails;
 import com.redhat.rhn.domain.action.errata.ActionPackageDetails;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionDetails;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionResult;
@@ -304,6 +305,7 @@ public class AnnotationRegistry {
             CoCoResultTypeConverter.class,
             ConfigChannel.class,
             ConfigChannelType.class,
+            ConfigDateDetails.class,
             ConfigFile.class,
             ConfigFileName.class,
             ConfigFileState.class,
