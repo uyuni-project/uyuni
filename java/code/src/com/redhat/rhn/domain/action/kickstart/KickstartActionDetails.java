@@ -15,13 +15,24 @@
 package com.redhat.rhn.domain.action.kickstart;
 
 
+import org.hibernate.annotations.Type;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 /**
  * KickstartActionDetails - java representation of the rhnActionKickstart table
  */
+@Entity
+@Table(name = "rhnActionKickstart")
 public class KickstartActionDetails extends BaseKickstartActionDetails {
 
-
+    @Column(name = "static_device")
     private String staticDevice;
+
+    @Column(nullable = false)
+    @Type(type = "yes_no")
     private boolean upgrade = false;
 
 
