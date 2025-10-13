@@ -27,6 +27,7 @@ import com.redhat.rhn.domain.action.config.ConfigDateDetails;
 import com.redhat.rhn.domain.action.errata.ActionPackageDetails;
 import com.redhat.rhn.domain.action.image.DeployImageActionDetails;
 import com.redhat.rhn.domain.action.kickstart.KickstartActionDetails;
+import com.redhat.rhn.domain.action.kickstart.KickstartGuestActionDetails;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionDetails;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionResult;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionDetails;
@@ -368,6 +369,7 @@ public class AnnotationRegistry {
             IssSlave.class,
             KickstartActionDetails.class,
             KickstartCommandName.class,
+            KickstartGuestActionDetails.class,
             KickstartInstallType.class,
             KickstartSessionState.class,
             KickstartTreeType.class,
