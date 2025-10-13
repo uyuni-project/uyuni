@@ -14,20 +14,42 @@
  */
 package com.redhat.rhn.domain.action.config;
 
-import com.redhat.rhn.domain.action.ActionChild;
+import com.redhat.rhn.domain.BaseDomainHelper;
+import com.redhat.rhn.domain.action.Action;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 /**
  * ConfigDateFileAction - Class representation of the table rhnActionConfigDateFile.
  *
  */
-public class ConfigDateFileAction extends ActionChild implements Serializable {
+@Entity
+@Table(name = "rhnActionConfigDateFile")
+@IdClass(ConfigDateFileActionId.class)
+public class ConfigDateFileAction extends BaseDomainHelper implements Serializable {
 
+    @Id
+    @Column(name = "file_name")
     private String fileName;
+
+    @Id
+    @ManyToOne(targetEntity = Action.class, fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "action_id", nullable = false)
+    private Action parentAction;
+
+    @Column(name = "file_type")
     private String fileType;
 
     /**
@@ -60,6 +82,22 @@ public class ConfigDateFileAction extends ActionChild implements Serializable {
     */
     public void setFileType(String fileTypeIn) {
         this.fileType = fileTypeIn;
+    }
+
+    /**
+     * Gets the parent Action associated with this ServerAction record
+     * @return Returns the parentAction.
+     */
+    public Action getParentAction() {
+        return parentAction;
+    }
+
+    /**
+     * Sets the parent Action associated with this ServerAction record
+     * @param parentActionIn The parentAction to set.
+     */
+    public void setParentAction(Action parentActionIn) {
+        this.parentAction = parentActionIn;
     }
 
     /**
