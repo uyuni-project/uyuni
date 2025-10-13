@@ -635,8 +635,8 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
         DaemonConfigDetails dcd = new DaemonConfigDetails();
         dcd.setRestart("Y");
         dcd.setInterval(1440L);
-        dcd.setDaemonConfigCreated(new Date());
-        dcd.setDaemonConfigModified(new Date());
+        dcd.setCreated(new Date());
+        dcd.setModified(new Date());
         dcd.setParentAction(newA);
         newA.setDaemonConfigDetails(dcd);
     }
