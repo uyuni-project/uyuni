@@ -4,16 +4,14 @@ import CleanWebpackPlugin from "clean-webpack-plugin";
 import CopyWebpackPlugin from "copy-webpack-plugin";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import { createRequire } from "node:module";
-import path, { dirname } from "node:path";
-import { fileURLToPath } from "node:url";
+import path from "node:path";
+import { dirname } from "path";
 import SpeedMeasurePlugin from "speed-measure-webpack-plugin";
+import { fileURLToPath } from "url";
 const require = createRequire(import.meta.url);
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const projectRoot = path.resolve(__dirname, "../../../..");
-const webHtmlSrc = path.resolve(__dirname, "..");
-const dist = path.resolve(webHtmlSrc, "./dist");
 
 import GenerateStoriesPlugin from "./plugins/generate-stories-plugin.js";
 import webpackAlias from "./webpack.alias.js";
@@ -39,58 +37,58 @@ export default (env, opts) => {
 
   pluginsInUse = [
     ...pluginsInUse,
-    new CleanWebpackPlugin(["dist"], { root: dist }),
+    new CleanWebpackPlugin(["dist"], { root: path.resolve(__dirname, "../") }),
     new CopyWebpackPlugin([
       // Legacy scripts
-      { from: path.resolve(projectRoot, "./web/html/javascript"), to: path.resolve(dist, "./javascript") },
+      { from: path.resolve(__dirname, "../../javascript"), to: path.resolve(__dirname, "../dist/javascript") },
       // Translations
-      { from: path.resolve(projectRoot, "./web/po"), to: path.resolve(dist, "./po") },
+      { from: path.resolve(__dirname, "../../../po"), to: path.resolve(__dirname, "../dist/po") },
       // Unimported branding assets
       {
-        from: path.resolve(webHtmlSrc, "./branding/fonts/font-spacewalk"),
-        to: path.resolve(dist, "./fonts/font-spacewalk"),
+        from: path.resolve(__dirname, "../branding/fonts/font-spacewalk"),
+        to: path.resolve(__dirname, "../dist/fonts/font-spacewalk"),
       },
       // TODO: Copy all font licenses too
-      { from: path.resolve(webHtmlSrc, "./branding/img"), to: path.resolve(dist, "./img") },
+      { from: path.resolve(__dirname, "../branding/img"), to: path.resolve(__dirname, "../dist/img") },
       // Any non-compiled CSS files will be compiled by their entry points
       {
-        from: path.resolve(webHtmlSrc, "./branding/css/*.css"),
-        context: path.resolve(webHtmlSrc, "./branding/css"),
-        to: path.resolve(dist, "./css"),
+        from: path.resolve(__dirname, "../branding/css/*.css"),
+        context: path.resolve(__dirname, "../branding/css"),
+        to: path.resolve(__dirname, "../dist/css"),
       },
       {
-        from: path.resolve(projectRoot, "./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"),
-        to: path.resolve(dist, "./javascript/legacy/bootstrap-webpack.js"),
+        from: path.resolve(__dirname, "../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"),
+        to: path.resolve(__dirname, "../dist/javascript/legacy/bootstrap-webpack.js"),
       },
       {
-        from: path.resolve(projectRoot, "./node_modules/jquery/dist/jquery.min.js"),
-        to: path.resolve(dist, "./javascript/legacy"),
+        from: path.resolve(__dirname, "../node_modules/jquery/dist/jquery.min.js"),
+        to: path.resolve(__dirname, "../dist/javascript/legacy"),
       },
       {
-        from: path.resolve(projectRoot, "./node_modules/jquery-ui/dist/jquery-ui.js"),
-        to: path.resolve(dist, "./javascript/legacy"),
+        from: path.resolve(__dirname, "../node_modules/jquery-ui/dist/jquery-ui.js"),
+        to: path.resolve(__dirname, "../dist/javascript/legacy"),
       },
       // TODO: In the future it would be nice to bundle this instead of copying it
       {
-        from: path.resolve(projectRoot, "./node_modules/font-awesome"),
-        to: path.resolve(dist, "./fonts/font-awesome"),
+        from: path.resolve(__dirname, "../node_modules/font-awesome"),
+        to: path.resolve(__dirname, "../dist/fonts/font-awesome"),
       },
       {
-        from: path.resolve(projectRoot, "./node_modules/pwstrength-bootstrap/dist/pwstrength-bootstrap-1.0.2.js"),
-        to: path.resolve(dist, "./javascript/legacy"),
+        from: path.resolve(__dirname, "../node_modules/pwstrength-bootstrap/dist/pwstrength-bootstrap-1.0.2.js"),
+        to: path.resolve(__dirname, "../dist/javascript/legacy"),
       },
       // TODO: Take only what we need after we've confirmed it works fine, otherwise there's a lot of fluff in this
       {
-        from: path.resolve(projectRoot, "./node_modules/ace-builds/src-min-noconflict"),
-        to: path.resolve(dist, "./javascript/legacy/ace-editor"),
+        from: path.resolve(__dirname, "../node_modules/ace-builds/src-min-noconflict"),
+        to: path.resolve(__dirname, "../dist/javascript/legacy/ace-editor"),
       },
     ]),
     new MiniCssExtractPlugin({
       chunkFilename: `css/${moduleName}.css`,
     }),
     new GenerateStoriesPlugin({
-      inputDir: path.resolve(webHtmlSrc, "./manager"),
-      outputFile: path.resolve(webHtmlSrc, "./manager/storybook/stories.generated.ts"),
+      inputDir: path.resolve(__dirname, "../manager"),
+      outputFile: path.resolve(__dirname, "../manager/storybook/stories.generated.ts"),
     }),
   ];
 
@@ -139,7 +137,7 @@ export default (env, opts) => {
                 {
                   loader: require.resolve("babel-loader"),
                   options: {
-                    configFile: path.resolve(webHtmlSrc, "./.babelrc"),
+                    configFile: path.resolve(__dirname, "../.babelrc"),
                     plugins: isProductionMode ? undefined : [require.resolve("react-refresh/babel")],
                   },
                 },
@@ -171,7 +169,7 @@ export default (env, opts) => {
           test: /\.po$/,
           type: "json",
           use: {
-            loader: path.resolve(__dirname, "./loaders/po-loader.js"),
+            loader: path.resolve(__dirname, "loaders/po-loader.js"),
           },
         },
         {
@@ -224,7 +222,7 @@ export default (env, opts) => {
               loader: require.resolve("sass-loader"),
               options: {
                 sassOptions: {
-                  loadPaths: [webHtmlSrc],
+                  loadPaths: [path.resolve(__dirname, "../")],
                 },
               },
             },
@@ -242,7 +240,7 @@ export default (env, opts) => {
       hot: true,
       open: true,
       static: {
-        directory: dist,
+        directory: path.resolve(__dirname, "../dist"),
         publicPath: "/",
         // This is currently redundant, but will become relevant when we include static files in Webpack
         watch: true,
@@ -257,7 +255,7 @@ export default (env, opts) => {
         },
         logging: "error",
       },
-      // Override CORS headers for `npm run storybook`, these are not required otherwise
+      // Override CORS headers for `yarn storybook`, these are not required otherwise
       headers: {
         "Access-Control-Allow-Origin": "*",
       },

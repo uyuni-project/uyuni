@@ -1,4 +1,4 @@
-import Redis from 'ioredis';
+const Redis = require('ioredis');
 
 const main = async () => {
     const changedFiles = process.argv.slice(2);

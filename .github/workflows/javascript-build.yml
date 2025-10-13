@@ -1,4 +1,4 @@
-name: Frontend lint
+name: Javascript build
 
 on:
   push:
@@ -6,14 +6,14 @@ on:
       - master
     paths:
       - 'web/html/src/**'
-      - '.github/workflows/frontend-lint.yml'
+      - '.github/workflows/javascript-build.yml'
   pull_request:
     paths:
       - 'web/html/src/**'
-      - '.github/workflows/frontend-lint.yml'
+      - '.github/workflows/javascript-build.yml'
 
 jobs:
-  frontend_lint:
+  javascript_build:
     runs-on: ubuntu-latest
 
     strategy:
@@ -39,11 +39,9 @@ jobs:
         path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
         key: ${{ runner.os }}-yarn-${{ matrix.node-version }}-${{ hashFiles('**/yarn.lock') }}
 
-    - name: Install dependencies
-      run: yarn install --frozen-lockfile --prefer-offline --ignore-scripts
+    # We only install production dependencies here to simulate a situation similar to OBS/IBS
+    - name: Install production dependencies
+      run: yarn install --force --ignore-optional --production=true --frozen-lockfile --prefer-offline
 
-    - name: "Check package.json, on failure run: yarn sort-package"
-      run: yarn sort-package --check
-
-    - name: "Check lint, on failure run: yarn lint"
-      run: yarn lint:production
+    - name: Build application
+      run: yarn build

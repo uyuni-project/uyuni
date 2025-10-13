@@ -25,25 +25,20 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
-    # See https://docs.github.com/en/actions/reference/workflows-and-actions/dependency-caching
-    - name: Use cached NPM dependencies
-      id: cache-node-modules
-      uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 #v4.3.0
-      env:
-        cache-name: cache-node-modules
+    - name: Get Yarn cache directory
+      id: yarn-cache-dir-path
+      run: echo "::set-output name=dir::$(yarn cache dir)"
+
+    - name: Use Yarn cache
+      uses: actions/cache@d4323d4df104b026a6aa633fdb11d772146be0bf #v4.2.2
+      id: yarn-cache
       with:
-        path: ~/.npm
-        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+        key: ${{ runner.os }}-yarn-${{ matrix.node-version }}-${{ hashFiles('**/yarn.lock') }}
 
-    - if: ${{ steps.cache-node-modules.outputs.cache-hit != 'true' }}
-      name: List cache misses
-      continue-on-error: true
-      run: npm list
-
-    # We only install production dependencies here to simulate a situation similar to OBS/IBS
-    - name: Install production dependencies
-      run: npm ci --ignore-scripts --save=false --omit=dev
+    - name: Install dependencies
+      run: yarn install --frozen-lockfile --prefer-offline --ignore-scripts
 
     # Audit will exit with non-zero if there are any vulnerabilities, whoever triggered the run will get an email by default
     - name: Run audit
-      run: npm run audit-production-dependencies
+      run: yarn audit-production-dependencies

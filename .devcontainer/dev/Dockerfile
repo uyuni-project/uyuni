@@ -31,5 +31,6 @@ RUN zypper ref && \
     servletapi5 \
     sudo \
     tar \
-    wget && \
+    wget \
+    yarn && \
     zypper clean -a

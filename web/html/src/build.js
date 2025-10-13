@@ -1,7 +1,8 @@
 import child_process from "node:child_process";
-import path, { dirname } from "node:path";
-import { fileURLToPath } from "node:url";
+import path from "node:path";
 import util from "node:util";
+import { dirname } from "path";
+import { fileURLToPath } from "url";
 import v8 from "v8";
 import rawWebpack from "webpack";
 import { hideBin } from "yargs/helpers";
@@ -116,7 +117,7 @@ if (opts.verbose) {
 
         console.error(`
                 It seems changes to license and/or spec files haven't been committed.
-                Please run "npm run build" again and commit the following files: ${uncommittedFiles.join(", ")}`);
+                Please run "yarn build" again and commit the following files: ${uncommittedFiles.join(", ")}`);
 
         if (opts.force) {
           console.error(`WARN: Ignoring uncommitted spec changes because build was called with --force`);
