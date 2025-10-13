@@ -14,20 +14,45 @@
  */
 package com.redhat.rhn.domain.action.config;
 
-import com.redhat.rhn.domain.action.ActionChild;
+import com.redhat.rhn.domain.BaseDomainHelper;
+import com.redhat.rhn.domain.action.Action;
 
 import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
+import javax.persistence.Table;
 
 /**
  * ConfigDateDetails - Class representation of the table rhnActionConfigDate.
  *
  */
-public class ConfigDateDetails extends ActionChild {
+@Entity
+@Table(name = "rhnActionConfigDate")
+public class ConfigDateDetails extends BaseDomainHelper {
 
+    @Id
+    @Column(name = "action_id")
     private Long actionId;
+
+    @Column(name = "start_date")
     private Date startDate;
+
+    @Column(name = "end_date")
     private Date endDate;
+
+    @Column(name = "import_contents")
     private String importContents;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "action_id", updatable = false, nullable = false, insertable = false)
+    @MapsId
+    private Action parentAction;
 
     /**
      * @return Returns the actionId.
@@ -38,7 +63,7 @@ public class ConfigDateDetails extends ActionChild {
     /**
      * @param actionIdIn The actionId to set.
      */
-    public void setActionId(Long actionIdIn) {
+    protected void setActionId(Long actionIdIn) {
         this.actionId = actionIdIn;
     }
     /**
@@ -87,5 +112,21 @@ public class ConfigDateDetails extends ActionChild {
     */
     public void setImportContents(String importContentsIn) {
         this.importContents = importContentsIn;
+    }
+
+    /**
+     * Gets the parent Action associated with this ServerAction record
+     * @return Returns the parentAction.
+     */
+    public Action getParentAction() {
+        return parentAction;
+    }
+
+    /**
+     * Sets the parent Action associated with this ServerAction record
+     * @param parentActionIn The parentAction to set.
+     */
+    public void setParentAction(Action parentActionIn) {
+        this.parentAction = parentActionIn;
     }
 }
