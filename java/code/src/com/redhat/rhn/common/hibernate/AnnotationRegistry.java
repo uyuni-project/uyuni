@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.action.ansible.PlaybookActionDetails;
 import com.redhat.rhn.domain.action.appstream.AppStreamActionDetails;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsActionDetails;
 import com.redhat.rhn.domain.action.config.ConfigDateDetails;
+import com.redhat.rhn.domain.action.config.ConfigDateFileAction;
 import com.redhat.rhn.domain.action.errata.ActionPackageDetails;
 import com.redhat.rhn.domain.action.image.DeployImageActionDetails;
 import com.redhat.rhn.domain.action.kickstart.KickstartActionDetails;
@@ -313,6 +314,7 @@ public class AnnotationRegistry {
             ConfigChannel.class,
             ConfigChannelType.class,
             ConfigDateDetails.class,
+            ConfigDateFileAction.class,
             ConfigFile.class,
             ConfigFileName.class,
             ConfigFileState.class,
