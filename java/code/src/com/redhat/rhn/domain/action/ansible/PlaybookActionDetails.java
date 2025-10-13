@@ -15,20 +15,54 @@
 package com.redhat.rhn.domain.action.ansible;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.domain.action.ActionChild;
+import com.redhat.rhn.domain.BaseDomainHelper;
+import com.redhat.rhn.domain.action.Action;
+
+import org.hibernate.annotations.Type;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 /**
  * PlaybookActionDetails - Class representation of the table rhnActionPlaybook.
  */
-public class PlaybookActionDetails extends ActionChild {
+@Entity
+@Table(name = "rhnActionPlaybook")
+public class PlaybookActionDetails extends BaseDomainHelper {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "act_playbook_seq")
+    @SequenceGenerator(name = "act_playbook_seq", sequenceName = "rhn_act_playbook_id_seq", allocationSize = 1)
     private long id;
-    private long actionId;
+
+    @Column(name = "playbook_path")
     private String playbookPath;
+
+    @Column(name = "inventory_path")
     private String inventoryPath;
+
+    @Column(name = "test_mode")
+    @Type(type = "yes_no")
     private boolean testMode;
+
+    @Column(name = "flush_cache")
+    @Type(type = "yes_no")
     private boolean flushCache;
+
+    @Column(name = "extra_vars")
     private byte[] extraVars;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "action_id", updatable = false, nullable = false)
+    private Action parentAction;
 
     /**
      * @return the id
@@ -40,22 +74,8 @@ public class PlaybookActionDetails extends ActionChild {
     /**
      * @param idIn the id to set
      */
-    public void setId(long idIn) {
+    protected void setId(long idIn) {
         this.id = idIn;
-    }
-
-    /**
-     * @return the action id
-     */
-    public long getActionId() {
-        return actionId;
-    }
-
-    /**
-     * @param actionIdIn the action id to set
-     */
-    public void setActionId(long actionIdIn) {
-        this.actionId = actionIdIn;
     }
 
     public String getPlaybookPath() {
@@ -100,5 +120,21 @@ public class PlaybookActionDetails extends ActionChild {
 
     public String getExtraVarsContents() {
         return HibernateFactory.getByteArrayContents(getExtraVars());
+    }
+
+    /**
+     * Gets the parent Action associated with this ServerAction record
+     * @return Returns the parentAction.
+     */
+    public Action getParentAction() {
+        return parentAction;
+    }
+
+    /**
+     * Sets the parent Action associated with this ServerAction record
+     * @param parentActionIn The parentAction to set.
+     */
+    public void setParentAction(Action parentActionIn) {
+        this.parentAction = parentActionIn;
     }
 }
