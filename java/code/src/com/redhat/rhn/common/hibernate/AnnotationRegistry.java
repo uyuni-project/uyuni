@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.ansible.InventoryActionDetails;
 import com.redhat.rhn.domain.action.ansible.PlaybookActionDetails;
+import com.redhat.rhn.domain.action.channel.SubscribeChannelsActionDetails;
 import com.redhat.rhn.domain.action.config.ConfigDateDetails;
 import com.redhat.rhn.domain.action.errata.ActionPackageDetails;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionDetails;
@@ -475,6 +476,7 @@ public class AnnotationRegistry {
             State.class,
             StateChange.class,
             StateRevision.class,
+            SubscribeChannelsActionDetails.class,
             SupportDataActionDetails.class,
             SUSEProduct.class,
             SUSEProductChannel.class,
