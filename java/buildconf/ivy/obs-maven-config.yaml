@@ -270,7 +270,7 @@ artifacts:
   - artifact: snakeyaml
     repository: Leap_sle
   - artifact: spark-core
-    repository: Uyuni_Other
+    repository: systemsmanagement_Uyuni_Master_jakarta
   - artifact: spark-template-jade
     repository: Uyuni_Other
   - artifact: spy
