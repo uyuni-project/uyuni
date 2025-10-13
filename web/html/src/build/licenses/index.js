@@ -9,9 +9,9 @@ import { fileTemplate, itemTemplate } from "./template.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const projectRoot = path.resolve(__dirname, "../../../../..");
+const webHtmlSrc = path.resolve(__dirname, "../..");
 
-const vendors = path.resolve(projectRoot, "./web/html/src/vendors");
+const vendors = path.resolve(webHtmlSrc, "vendors");
 const licenseTextFile = path.resolve(vendors, "npm.licenses.txt");
 const licenseListFile = path.resolve(vendors, "npm.licenses.structured.js");
 const hashFile = path.resolve(vendors, "npm.licenses.hash.txt");
@@ -27,14 +27,14 @@ export async function aggregateLicenses(opts) {
     // Do nothing
   }
 
-  const currentHash = await getFileHash(path.resolve(projectRoot, "package-lock.json"));
+  const currentHash = await getFileHash(path.resolve(webHtmlSrc, "yarn.lock"));
   if (opts.force !== true && previousHash && previousHash === currentHash && licenseTextExists && licenseListExists) {
     console.info("Skipping license check, hashes match");
     return;
   }
 
   try {
-    const dependencies = await getDependencyMap(projectRoot);
+    const dependencies = await getDependencyMap(webHtmlSrc);
 
     // Aggregate all available license texts into `web/html/src/vendors/npm.licenses.txt`
     const lines = Array.from(dependencies.keys())
@@ -65,6 +65,6 @@ export async function aggregateLicenses(opts) {
     await fs.writeFile(hashFile, currentHash, "utf8");
   } catch (error) {
     console.error(error);
-    throw new Error("Unable to identify all licenses, did you run `npm install`?");
+    throw new Error("Unable to identify all licenses, did you run `yarn install`?");
   }
 }

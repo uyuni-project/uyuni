@@ -1,23 +1,30 @@
-import { exec } from "child_process";
+const { exec } = require("child_process");
 
-import ignore from "../.auditignore.js";
+const ignore = require("../.auditignore.js");
 
-// npm audit doesn't currently support muting known issues nor issues with no fix available
-exec(`npm audit --json --omit=dev --dry-run`, (_, stdout) => {
+const inline = (message) => {
+  return (message || "").replaceAll(/\r?\n/g, " ");
+};
+
+// Yarn 1.x doesn't currently support muting known issues, see https://github.com/yarnpkg/yarn/issues/6669
+exec(`yarn audit --json --groups "dependencies"`, (_, stdout) => {
   try {
-    const result = JSON.parse(stdout);
-    if (result.auditReportVersion !== 2) {
-      throw new RangeError("Unknown audit report version");
+    const lines = (stdout || "").split(/\r?\n/).filter((line) => line.trim() !== "");
+    const results = lines.map((line) => JSON.parse(line));
+
+    if (!results.some((item) => item.type === "auditSummary")) {
+      throw new TypeError("No audit result found");
     }
 
-    const vulnerabilities = Object.values(result.vulnerabilities);
+    const advisories = results.filter((item) => item.type === "auditAdvisory");
 
-    const validVulnerabilities = vulnerabilities.filter((item) => {
-      const { name: moduleName, via: advisories } = item;
+    const validAdvisories = advisories.filter((item) => {
+      const { module_name: moduleName, id, overview, recommendation } = item.data.advisory;
       if (ignore[moduleName]) {
-        const urls = (advisories || []).map(item => item.url).filter(Boolean);
         console.info(
-          `Warning: Ignoring advisories for module "${moduleName}"${urls.length ? ': ' : ''}${urls.join(", ")}\nReason: "${ignore[moduleName]}"`
+          `Warning: Ignoring advisory ${id} for module "${moduleName}"\n\tOverview: ${inline(
+            overview
+          )}\n\tRecommendation: ${inline(recommendation)}\n\tReason for ignoring: ${ignore[moduleName]}\n`
         );
         delete ignore[moduleName];
         return false;
@@ -28,18 +35,19 @@ exec(`npm audit --json --omit=dev --dry-run`, (_, stdout) => {
     const unusedIgnores = Object.keys(ignore);
     if (unusedIgnores.length) {
       process.exitCode = 1;
-      unusedIgnores.forEach((moduleName) => {
-        console.error(`Error: Unused ignore for module "${moduleName}", please check .auditignore.js`);
+      unusedIgnores.forEach((item) => {
+        console.error(`Error: Unused ignore for module "${item}", please check .auditignore.js`);
       });
     }
 
-    if (validVulnerabilities.length) {
+    if (validAdvisories.length) {
       process.exitCode = 1;
-      validVulnerabilities.forEach((item) => {
-        const { name: moduleName, via: advisories } = item;
-        const urls = advisories?.map(item => item.url).filter(Boolean);
+      validAdvisories.forEach((item) => {
+        const { module_name: moduleName, id, overview, recommendation } = item.data.advisory;
         console.error(
-          `Error: Found advisories for module "${moduleName}": ${urls.join(", ")}`
+          `Error: Found advisory ${id} for module "${moduleName}"\n\tOverview: ${inline(
+            overview
+          )}\n\tRecommendation: ${inline(recommendation)}\n`
         );
       });
     }

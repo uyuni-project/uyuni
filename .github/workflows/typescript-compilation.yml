@@ -1,4 +1,4 @@
-name: Frontend lint
+name: Typescript compilation
 
 on:
   push:
@@ -6,14 +6,14 @@ on:
       - master
     paths:
       - 'web/html/src/**'
-      - '.github/workflows/frontend-lint.yml'
+      - '.github/workflows/typescript-compilation.yml'
   pull_request:
     paths:
       - 'web/html/src/**'
-      - '.github/workflows/frontend-lint.yml'
+      - '.github/workflows/typescript-compilation.yml'
 
 jobs:
-  frontend_lint:
+  typescript_compilation:
     runs-on: ubuntu-latest
 
     strategy:
@@ -42,8 +42,5 @@ jobs:
     - name: Install dependencies
       run: yarn install --frozen-lockfile --prefer-offline --ignore-scripts
 
-    - name: "Check package.json, on failure run: yarn sort-package"
-      run: yarn sort-package --check
-
-    - name: "Check lint, on failure run: yarn lint"
-      run: yarn lint:production
+    - name: Compile Typescript
+      run: yarn tsc

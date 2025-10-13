@@ -54,15 +54,13 @@ web/setup.sh @uyuni-project/frontend
 branding/ @uyuni-project/frontend
 *.jsp @uyuni-project/frontend
 *.jspf @uyuni-project/frontend
-.github/workflows/frontend-build.yml @uyuni-project/frontend
+.github/workflows/automatic-frontend-lint-fix-pr.yml @uyuni-project/frontend
 .github/workflows/frontend-dependency-audit.yml @uyuni-project/frontend
-.github/workflows/frontend-lint-fix-pr.yml @uyuni-project/frontend
 .github/workflows/frontend-lint.yml @uyuni-project/frontend
-.github/workflows/frontend-typescript-compilation.yml @uyuni-project/frontend
-.github/workflows/frontend-unit-tests.yml @uyuni-project/frontend
-.npmrc @uyuni-project/frontend
-package.json @uyuni-project/frontend
-package-lock.json @uyuni-project/frontend
+.github/workflows/javascript-build.yml @uyuni-project/frontend
+.github/workflows/javascript-unit-tests.yml @uyuni-project/frontend
+.github/workflows/typescript-compilation.yml @uyuni-project/frontend
+.yarnrc @uyuni-project/frontend
 
 # QE
 testsuite/ @uyuni-project/qe

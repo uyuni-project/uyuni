@@ -26,7 +26,7 @@
       "type": "node-terminal",
       "name": "Frontend Development Proxy",
       "request": "launch",
-      "command": "npm run proxy server.tf.local"
+      "command": "yarn proxy server.tf.local"
     }
   ]
 }
