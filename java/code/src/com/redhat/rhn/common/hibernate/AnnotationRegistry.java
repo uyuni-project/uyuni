@@ -29,6 +29,7 @@ import com.redhat.rhn.domain.action.rhnpackage.PackageActionDetails;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionResult;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionDetails;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionResult;
+import com.redhat.rhn.domain.action.scap.ScapActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptResult;
 import com.redhat.rhn.domain.action.supportdata.SupportDataActionDetails;
@@ -451,6 +452,7 @@ public class AnnotationRegistry {
             SCCRepositoryNoAuth.class,
             SCCRepositoryTokenAuth.class,
             SCCSubscription.class,
+            ScapActionDetails.class,
             ScriptActionDetails.class,
             ScriptResult.class,
             ServerAppStream.class,
