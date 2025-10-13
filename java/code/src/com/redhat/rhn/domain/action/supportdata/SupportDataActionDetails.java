@@ -10,15 +10,19 @@
  */
 package com.redhat.rhn.domain.action.supportdata;
 
-import com.redhat.rhn.domain.action.ActionChild;
+import com.redhat.rhn.domain.BaseDomainHelper;
+import com.redhat.rhn.domain.action.Action;
 
 import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -26,7 +30,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "suseActionSupportDataDetails")
-public class SupportDataActionDetails extends ActionChild {
+public class SupportDataActionDetails extends BaseDomainHelper {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,6 +46,10 @@ public class SupportDataActionDetails extends ActionChild {
     @Column(name = "upload_geo")
     @Type(type = "com.redhat.rhn.domain.action.supportdata.UploadGeoEnumType")
     private UploadGeoType geoType;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "action_id", nullable = false)
+    private Action parentAction;
 
     /**
      * @return Returns the id.
@@ -98,5 +106,21 @@ public class SupportDataActionDetails extends ActionChild {
      */
     public void setGeoType(UploadGeoType geoTypeIn) {
         geoType = geoTypeIn;
+    }
+
+    /**
+     * Gets the parent Action associated with this ServerAction record
+     * @return Returns the parentAction.
+     */
+    public Action getParentAction() {
+        return parentAction;
+    }
+
+    /**
+     * Sets the parent Action associated with this ServerAction record
+     * @param parentActionIn The parentAction to set.
+     */
+    public void setParentAction(Action parentActionIn) {
+        this.parentAction = parentActionIn;
     }
 }
