@@ -17,14 +17,34 @@ package com.redhat.rhn.domain.action.config;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.BaseDomainHelper;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
 /**
  * ConfigRevisionAction - Class representation of the table rhnActionConfigRevision.
  *
  */
+@Entity
+@Table(name = "rhnActionConfigRevisionResult")
 public class ConfigRevisionActionResult extends BaseDomainHelper {
 
+    @Id
+    @Column(name = "action_config_revision_id")
     private Long actionConfigRevisionId;
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinColumn(name = "action_config_revision_id")
+    @MapsId
     private ConfigRevisionAction configRevisionAction;
+
+    @Column
     private byte[] result;
 
     /**
@@ -39,7 +59,7 @@ public class ConfigRevisionActionResult extends BaseDomainHelper {
      * Setter for actionConfigRevisionId
      * @param actionConfigRevisionIdIn to set
     */
-    public void setActionConfigRevisionId(Long actionConfigRevisionIdIn) {
+    protected void setActionConfigRevisionId(Long actionConfigRevisionIdIn) {
         this.actionConfigRevisionId = actionConfigRevisionIdIn;
     }
 
