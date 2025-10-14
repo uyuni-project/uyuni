@@ -110,8 +110,6 @@
         <dependency org="suse" name="stax-ex" rev="1.8" />
 
         <!-- Tomcat jars -->
-        <dependency org="suse" name="jasper" rev="[9.0.75,10.0.0[" />
-        <dependency org="suse" name="jasper-el" rev="[9.0.75,10.0.0["/>
         <dependency org="suse" name="tomcat-el-3.0-api" rev="[9.0.75,10.0.0[" />
         <dependency org="suse" name="tomcat-jsp-2.3-api" rev="[9.0.75,10.0.0[" />
         <dependency org="suse" name="tomcat-juli" rev="[9.0.75,10.0.0[" />
