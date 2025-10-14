@@ -19,14 +19,33 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 /**
  * ImageBuildActionResult
  */
+@Entity
+@Table(name = "rhnActionImageBuildResult")
+@IdClass(ImageBuildActionResultId.class)
 public class ImageBuildActionResult implements Serializable {
 
+    @Id
+    @Column(name = "server_id")
     private Long serverId;
+
+    @Id
+    @Column(name = "action_image_build_id")
     private Long actionImageBuildId;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "action_image_build_id", nullable = true, insertable = false, updatable = false)
     private ImageBuildActionDetails parentActionDetails;
 
     /**
