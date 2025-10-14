@@ -36,6 +36,7 @@ import com.redhat.rhn.domain.action.kickstart.KickstartActionDetails;
 import com.redhat.rhn.domain.action.kickstart.KickstartGuestActionDetails;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionDetails;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionResult;
+import com.redhat.rhn.domain.action.salt.build.ImageBuildActionDetails;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildActionResult;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionDetails;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionResult;
@@ -356,6 +357,7 @@ public class AnnotationRegistry {
             FileList.class,
             GroupRecurringAction.class,
             HubSCCCredentials.class,
+            ImageBuildActionDetails.class,
             ImageBuildActionResult.class,
             ImageFile.class,
             ImageInfo.class,
