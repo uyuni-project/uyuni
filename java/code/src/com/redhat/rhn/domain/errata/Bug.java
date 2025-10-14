@@ -24,14 +24,33 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 /**
  * Bug
  */
+@Entity
+@Table(name = "rhnErrataBuglist")
 public class Bug extends BaseDomainHelper implements Serializable {
 
+    @Id
+    @Column(name = "bug_id")
     private Long id;
-    private String summary;
+
+    @Id
+    @ManyToOne(targetEntity = Errata.class)
+    @JoinColumn(name = "errata_id")
     private Errata errata;
+
+    @Column
+    private String summary;
+
+    @Column(name = "href")
     private String url;
 
     /**

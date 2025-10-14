@@ -85,6 +85,7 @@ import com.redhat.rhn.domain.credentials.RegistryCredentials;
 import com.redhat.rhn.domain.credentials.ReportDBCredentials;
 import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.domain.credentials.VHMCredentials;
+import com.redhat.rhn.domain.errata.Bug;
 import com.redhat.rhn.domain.errata.Cve;
 import com.redhat.rhn.domain.errata.ErrataFileType;
 import com.redhat.rhn.domain.errata.Severity;
@@ -282,6 +283,7 @@ public class AnnotationRegistry {
             AppStream.class,
             ArchType.class,
             BaseCredentials.class,
+            Bug.class,
             CPU.class,
             CPUArch.class,
             Capability.class,
