@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.action.channel.SubscribeChannelsActionDetails;
 import com.redhat.rhn.domain.action.config.ConfigDateDetails;
 import com.redhat.rhn.domain.action.config.ConfigDateFileAction;
 import com.redhat.rhn.domain.action.config.ConfigRevisionAction;
+import com.redhat.rhn.domain.action.config.ConfigRevisionActionResult;
 import com.redhat.rhn.domain.action.config.DaemonConfigDetails;
 import com.redhat.rhn.domain.action.dup.DistUpgradeChannelTask;
 import com.redhat.rhn.domain.action.errata.ActionPackageDetails;
@@ -323,6 +324,7 @@ public class AnnotationRegistry {
             ConfigFileState.class,
             ConfigFileType.class,
             ConfigRevisionAction.class,
+            ConfigRevisionActionResult.class,
             ContentEnvironment.class,
             ContentEnvironmentDiff.class,
             ContentFilter.class,
