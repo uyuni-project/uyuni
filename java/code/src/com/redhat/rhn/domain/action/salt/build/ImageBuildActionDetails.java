@@ -14,21 +14,50 @@
  */
 package com.redhat.rhn.domain.action.salt.build;
 
-import com.redhat.rhn.domain.action.ActionChild;
+import com.redhat.rhn.domain.BaseDomainHelper;
+import com.redhat.rhn.domain.action.Action;
 
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 /**
  * ApplyStatesActionDetails - Class representation of the table rhnActionApplyStates.
  */
-public class ImageBuildActionDetails extends ActionChild {
+@Entity
+@Table(name = "rhnActionImageBuild")
+public class ImageBuildActionDetails extends BaseDomainHelper {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_ACT_IMAGE_BUILD_ID_SEQ")
+    @SequenceGenerator(name = "RHN_ACT_IMAGE_BUILD_ID_SEQ", sequenceName = "RHN_ACT_IMAGE_BUILD_ID_SEQ",
+            allocationSize = 1)
     private Long id;
-    private Long actionId;
+
+    @Column
     private String version;
+
+    @Column(name = "image_profile_id")
     private Long imageProfileId;
+
+    @OneToMany(mappedBy = "actionImageBuildId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<ImageBuildActionResult> results = new HashSet<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "action_id", updatable = false, nullable = false, insertable = true)
+    private Action parentAction;
 
     /**
      * Gets version.
@@ -76,22 +105,8 @@ public class ImageBuildActionDetails extends ActionChild {
     /**
      * @param idIn the id to set
      */
-    public void setId(Long idIn) {
+    protected void setId(Long idIn) {
         this.id = idIn;
-    }
-
-    /**
-     * @return the action id
-     */
-    public Long getActionId() {
-        return actionId;
-    }
-
-    /**
-     * @param actionIdIn the action id to set
-     */
-    public void setActionId(Long actionIdIn) {
-        this.actionId = actionIdIn;
     }
 
     /**
@@ -117,5 +132,21 @@ public class ImageBuildActionDetails extends ActionChild {
     public void addResult(ImageBuildActionResult resultIn) {
         resultIn.setParentScriptActionDetails(this);
         results.add(resultIn);
+    }
+
+    /**
+     * Gets the parent Action associated with this ServerAction record
+     * @return Returns the parentAction.
+     */
+    public Action getParentAction() {
+        return parentAction;
+    }
+
+    /**
+     * Sets the parent Action associated with this ServerAction record
+     * @param parentActionIn The parentAction to set.
+     */
+    public void setParentAction(Action parentActionIn) {
+        this.parentAction = parentActionIn;
     }
 }
