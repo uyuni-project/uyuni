@@ -305,13 +305,6 @@ artifacts:
   - artifact: velocity-engine-core
     repository: Uyuni_Other
 
-  - artifact: jasper
-    package: tomcat-lib
-    jar: jasper\.jar
-    repository: Leap
-  - artifact: jasper-el
-    package: tomcat-lib
-    repository: Leap
   - artifact: tomcat-el-3.0-api
     package: tomcat-el-3_0-api
     repository: Leap
