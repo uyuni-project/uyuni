@@ -11,7 +11,7 @@ repositories:
   Leap_sle:
     url: https://download.opensuse.org/update/leap/15.6/sle
   Uyuni_MB:
-    project: home:mbussolotto:branches:systemsmanagement:Uyuni:Master:Other
+    project: home:mbussolotto:branches:systemsmanagement:Uyuni:Master
     repository: openSUSE_Leap_15.6
 artifacts:
   - artifact: asm
@@ -266,6 +266,7 @@ artifacts:
   - artifact: snakeyaml
     repository: Leap_sle
   - artifact: spark-core
+    package: spark-core
     repository: Uyuni_MB
   - artifact: spark-template-jade
     repository: Uyuni_Other
@@ -278,7 +279,7 @@ artifacts:
     package: woodstox
     repository: Uyuni_Other
   - artifact: struts
-    repository: Uyuni_Other
+    repository: Uyuni_MB
   - artifact: taglibs-standard-impl
     package: tomcat-taglibs-standard-1_2_5
     repository: Uyuni_Other
