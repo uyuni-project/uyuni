@@ -28,6 +28,7 @@ import com.redhat.rhn.domain.action.config.ConfigDateFileAction;
 import com.redhat.rhn.domain.action.config.ConfigRevisionAction;
 import com.redhat.rhn.domain.action.config.ConfigRevisionActionResult;
 import com.redhat.rhn.domain.action.config.DaemonConfigDetails;
+import com.redhat.rhn.domain.action.dup.DistUpgradeActionDetails;
 import com.redhat.rhn.domain.action.dup.DistUpgradeChannelTask;
 import com.redhat.rhn.domain.action.errata.ActionPackageDetails;
 import com.redhat.rhn.domain.action.image.DeployImageActionDetails;
@@ -341,6 +342,7 @@ public class AnnotationRegistry {
             DeployImageActionDetails.class,
             Device.class,
             DistChannelMap.class,
+            DistUpgradeActionDetails.class,
             DistUpgradeChannelTask.class,
             DockerfileProfile.class,
             EntitlementServerGroup.class,
