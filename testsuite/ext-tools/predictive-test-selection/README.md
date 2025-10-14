@@ -16,14 +16,22 @@ The project is composed of several interconnected parts. This README explains ea
   - [5. Backfill Test Runs Into Database Script](#5-backfill-test-runs-into-database-script)
   - [6. Generate Training Data Script](#6-generate-training-data-script)
 
-High-level diagram of this phase
 
 ![](images/gather_training_data_diagram.png)
 
-- [Phase 2 - Training \& Testing](#phase-2---training--testing)
+- [Phase 2 - Training \& Cutoffs Calibration](#phase-2---training--cutoffs-calibration)
   - [1. Preprocessing Data](#1-preprocessing-data)
+  - [2. Train XGBoost Classifier](#2-train-xgboost-classifier)
+  - [3. Calibrate Cutoffs \& Predict](#3-calibrate-cutoffs--predict)
+
+
+![](images/training_and_cutoff_calibration_diagram.png)
 
 # Phase 1 - Gathering Training Data
+
+High-level diagram of this phase
+
+![](images/gather_training_data_diagram.png)
 
 ## 1. Storing Test Runs' Test Results
 
@@ -317,7 +325,11 @@ Additionally, failed features/tests are underrepresented in our data. To try to 
 
 <br>
 
-# Phase 2 - Training & Testing
+# Phase 2 - Training & Cutoffs Calibration
+
+High-level diagram of this phase
+
+![](images/training_and_cutoff_calibration_diagram.png)
 
 ## 1. Preprocessing Data
 
@@ -361,3 +373,169 @@ Additionally, failed features/tests are underrepresented in our data. To try to 
 1. Preprocessed training data CSV
 2. Preprocessed testing data CSV
 3. Preprocessing pipeline to be used in production
+
+## 2. Train XGBoost Classifier
+
+[train_xgboost_classifier.py](train_xgboost_classifier.py)
+
+### Functionality
+
+This script trains an XGBoost classifier on the preprocessed training data to predict test failures. It handles the severe class imbalance in our dataset using `scale_pos_weight` and performs comprehensive hyperparameter tuning.
+
+### How to Use the Script
+
+- Run `preprocessing_pipeline.py` first to generate the preprocessed training data
+
+Usage:
+```bash
+python train_xgboost_classifier.py
+```
+
+### Outputs
+
+1. Trained XGBoost Classifier: Saved as artifacts/xgboost_classifier.joblib
+2. Training Logs: Detailed logs saved to logs/train_xgboost_classifier.log
+3. Feature Importance: Top features logged
+
+## 3. Calibrate Cutoffs & Predict
+
+[predict.py](predict.py)
+
+### Functionality
+
+This script operates in two distinct modes to complete the predictive test selection pipeline:
+
+#### Calibration Mode
+Calibrates `ScoreCutOff` and `CountCutOff` parameters to meet desired performance metrics on the test set.
+
+#### Prediction Mode  
+Applies the trained model and calibrated cutoffs to predict which subset of tests should be executed for a new pull request.
+
+### How to Use the Script
+
+Prerequisites:
+- Run `preprocessing_pipeline.py` to generate test data
+- Run `train_xgboost_classifier.py` to train the model
+
+#### Calibration Mode
+
+Usage:
+```bash
+python predict.py --mode calibration --test-recall 0.90 --change-recall 1.0 --selection-rate 0.50
+```
+
+Parameters:
+- `--test-recall`: Desired minimum TestRecall (range: 0.0–1.0) — ensures that at least this proportion of failed tests are correctly identified.
+- `--change-recall`: Desired minimum ChangeRecall (0.0-1.0) - ensures that at least this proportion of PRs with failures are correctly identified.
+- `--selection-rate`: Desired average SelectionRate (range: 0.0–1.0) — specifies the maximum proportion of tests to be selected on average, controlling the percentage of the total tests run per PR.
+
+#### Prediction Mode
+
+Usage:
+```bash
+python predict.py --mode prediction --input-csv new_pr.csv --cutoff-params calibration.json
+```
+
+Parameters:
+- `--input-csv`: Preprocessed CSV file for the new PR, like the training data but for a single PR.
+- `--cutoff-params`: JSON file containing calibrated cutoff parameters
+
+### Outputs
+
+#### Calibration Mode Outputs
+
+1. Calibrated Parameters JSON: Contains optimal ScoreCutOff and CountCutOff
+2. Performance Visualizations:
+   - `selection_rate_vs_change_recall.png`: Trade-off between selection efficiency and change detection
+   - `selection_rate_vs_test_recall.png`: Trade-off between selection efficiency and test detection
+   - `change_recall_heatmap.png`: ChangeRecall across all cutoff combinations
+   - `test_recall_heatmap.png`: TestRecall across all cutoff combinations
+
+Example Calibrated Parameters JSON:
+
+> [!IMPORTANT]
+> The `status` field shows if the program was able to find a cutoffs combination that satisfies, or is better than the desired recalls and selection rate.
+
+```json
+{
+  "status": "success",
+  "calibrated_cutoffs": {
+    "score_cutoff": 0.45,
+    "count_cutoff": 30
+  },
+  "achieved_metrics": {
+    "test_recall": 0.943,
+    "change_recall": 1.000,
+    "selection_rate": 0.453
+  },
+  "target_metrics": {
+    "test_recall": 0.90,
+    "change_recall": 1.0,
+    "selection_rate": 0.50
+  }
+}
+```
+
+Example Calibration Visualizations:
+
+`selection_rate_vs_change_recall.png`
+
+![](images/selection_rate_vs_change_recall.png)
+
+`change_recall_heatmap.png`
+
+![](images/change_recall_heatmap.png)
+
+The calibration process generates several visualization files in a `visualizations/` folder to help understand the performance trade-offs. These visualizations help you understand how different cutoff settings affect performance and make informed decisions about target metrics.
+
+#### Prediction Mode Output
+
+Prediction Results JSON: Contains selected tests with failure probabilities
+
+Example Prediction Output:
+```json
+{
+  "cutoff_parameters": {
+    "score_cutoff": 0.45,
+    "count_cutoff": 4
+  },
+  "selected_tests": [
+    {
+      "test_name": "min_retracted_patches",
+      "failure_probability": 0.69,
+      "rank": 1
+    },
+    {
+      "test_name": "min_salt_lock_packages",
+      "failure_probability": 0.64,
+      "rank": 2
+    },
+    {
+      "test_name": "min_recurring_action",
+      "failure_probability": 0.59,
+      "rank": 3
+    },
+    {
+      "test_name": "min_config_state_channel",
+      "failure_probability": 0.58,
+      "rank": 4
+    }
+  ],
+  "summary": {
+    "total_tests": 67,
+    "selected_tests": 4,
+    "selection_rate": 0.06
+  }
+}
+```
+
+### Q&A
+
+<details>
+<summary>Expand</summary>
+
+#### Why prioritize ChangeRecall over TestRecall?
+
+ChangeRecall measures whether we catch PRs that introduce failures, which is more critical for preventing broken code from being merged. TestRecall measures individual test failure detection, which is important but secondary to overall change quality.
+
+</details>
