@@ -10,32 +10,75 @@
  */
 package com.redhat.rhn.domain.action.dup;
 
-import com.redhat.rhn.domain.action.ActionChild;
+import com.redhat.rhn.domain.BaseDomainHelper;
+import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.product.SUSEProductUpgrade;
 import com.redhat.rhn.domain.server.Server;
+
+import org.hibernate.annotations.Type;
 
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 /**
  * DistUpgradeActionDetails - Class representation of the table rhnActionDup.
  */
-public class DistUpgradeActionDetails extends ActionChild {
+@Entity
+@Table(name = "rhnActionDup")
+public class DistUpgradeActionDetails extends BaseDomainHelper {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_ACTIONDUP_ID_SEQ")
+    @SequenceGenerator(name = "RHN_ACTIONDUP_ID_SEQ", sequenceName = "RHN_ACTIONDUP_ID_SEQ", allocationSize = 1)
     private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "server_id")
     private Server server;
+
+    @Column(name = "dry_run")
+    @Type(type = "yes_no")
     private boolean dryRun;
+
+    @Column(name = "allow_vendor_change")
+    @Type(type = "yes_no")
     private boolean allowVendorChange;
+
+    @Column(name = "full_update")
+    @Type(type = "yes_no")
     private boolean fullUpdate;
+
+    @Column(name = "missing_successors")
     private String missingSuccessors;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "action_id", updatable = false, nullable = false, insertable = true)
+    private Action parentAction;
 
 
     // Set of tasks to perform on single channels
-    private Set<DistUpgradeChannelTask> channelTasks =
-            new HashSet<>();
+    @OneToMany(mappedBy = "details", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OrderBy("task asc")
+    private Set<DistUpgradeChannelTask> channelTasks = new HashSet<>();
 
     // Set of product upgrades that will be performed
     // Note: product upgrades are relevant for SLE 10 only!
+    @OneToMany(mappedBy = "details", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OrderBy("to_pdid asc")
     private Set<SUSEProductUpgrade> productUpgrades = new HashSet<>();
 
     /**
@@ -50,7 +93,7 @@ public class DistUpgradeActionDetails extends ActionChild {
      * Set the ID.
      * @param idIn id
      */
-    public void setId(Long idIn) {
+    protected void setId(Long idIn) {
         this.id = idIn;
     }
 
@@ -165,5 +208,20 @@ public class DistUpgradeActionDetails extends ActionChild {
     public void addProductUpgrade(SUSEProductUpgrade upgrade) {
         upgrade.setDetails(this);
         this.productUpgrades.add(upgrade);
+    }
+    /**
+     * Gets the parent Action associated with this ServerAction record
+     * @return Returns the parentAction.
+     */
+    public Action getParentAction() {
+        return parentAction;
+    }
+
+    /**
+     * Sets the parent Action associated with this ServerAction record
+     * @param parentActionIn The parentAction to set.
+     */
+    public void setParentAction(Action parentActionIn) {
+        this.parentAction = parentActionIn;
     }
 }
