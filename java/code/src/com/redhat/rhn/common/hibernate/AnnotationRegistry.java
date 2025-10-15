@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.errata.ActionPackageDetails;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionDetails;
+import com.redhat.rhn.domain.action.rhnpackage.PackageActionRemovalFailure;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionResult;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionDetails;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionResult;
@@ -381,6 +382,7 @@ public class AnnotationRegistry {
             OrgRecurringAction.class,
             OrgStateRevision.class,
             PackageActionDetails.class,
+            PackageActionRemovalFailure.class,
             PackageActionResult.class,
             PackageArch.class,
             PackageBreaks.class,
