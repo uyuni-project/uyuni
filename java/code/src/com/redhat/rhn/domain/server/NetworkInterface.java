@@ -164,9 +164,13 @@ Serializable {
         }
 
         Session session = HibernateFactory.getSession();
-        sa4 = (ArrayList<ServerNetAddress4>) session.getNamedQuery("ServerNetAddress4.lookup")
-                .setParameter("interface_id", this.interfaceId)
-                .list();
+        sa4 = (ArrayList<ServerNetAddress4>)
+                session.createQuery("""
+                        FROM ServerNetAddress4 AS sa
+                        WHERE sa.interfaceId = :interface_id
+                        ORDER BY address""", ServerNetAddress4.class)
+                        .setParameter("interface_id", this.interfaceId)
+                        .list();
     }
 
     /**
@@ -343,8 +347,12 @@ Serializable {
         if (sa4 == null) {
             Session session = HibernateFactory.getSession();
             sa4 = (ArrayList<ServerNetAddress4>)
-                    session.getNamedQuery("ServerNetAddress4.lookup")
-                    .setParameter("interface_id", this.interfaceId).list();
+                    session.createQuery("""
+                        FROM ServerNetAddress4 AS sa
+                        WHERE sa.interfaceId = :interface_id
+                        ORDER BY address""", ServerNetAddress4.class)
+                    .setParameter("interface_id", this.interfaceId)
+                    .list();
         }
 
         return sa4;
