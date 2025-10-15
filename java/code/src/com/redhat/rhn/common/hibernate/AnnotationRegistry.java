@@ -118,6 +118,7 @@ import com.redhat.rhn.domain.notification.UserNotification;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgAdminManagement;
 import com.redhat.rhn.domain.org.OrgConfig;
+import com.redhat.rhn.domain.org.SystemMigration;
 import com.redhat.rhn.domain.org.TemplateCategory;
 import com.redhat.rhn.domain.org.TemplateString;
 import com.redhat.rhn.domain.org.usergroup.UserGroupImpl;
@@ -482,6 +483,7 @@ public class AnnotationRegistry {
             SUSEProductChannel.class,
             SUSEProductExtension.class,
             SUSEProductUpgrade.class,
+            SystemMigration.class,
             Task.class,
             TaskoBunch.class,
             TaskoRun.class,
