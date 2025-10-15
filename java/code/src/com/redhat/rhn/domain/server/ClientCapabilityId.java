@@ -17,12 +17,16 @@ package com.redhat.rhn.domain.server;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
  * ClientCapabilityId
  */
 public class ClientCapabilityId implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 3615516971337361224L;
 
     private Server server;
     private Capability capability;
@@ -90,5 +94,13 @@ public class ClientCapabilityId implements Serializable {
                 .append(server)
                 .append(capability)
                 .toHashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "ClientCapabilityId{" +
+                "server=" + server +
+                ", capability=" + capability +
+                '}';
     }
 }
