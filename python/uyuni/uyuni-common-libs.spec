@@ -53,6 +53,7 @@ Summary:        Uyuni server and client libs
 License:        GPL-2.0-only
 Group:          Development/Languages/Python
 URL:            https://github.com/uyuni-project/uyuni
+#!CreateArchive: %{name}
 Source0:        %{name}-%{version}.tar.gz
 BuildRequires:  fdupes
 BuildRequires:  make

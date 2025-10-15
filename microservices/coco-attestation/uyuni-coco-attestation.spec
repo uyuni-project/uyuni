@@ -26,6 +26,7 @@ Summary:        %{productprettyname} utility for Confidential Computing Attestat
 License:        GPL-2.0-only
 Group:          System/Daemons
 URL:            https://www.uyuni-project.org
+#!CreateArchive: %{name}
 Source0:        %{name}-%{version}.tar.gz
 BuildRequires:  fdupes
 BuildRequires:  java-devel >= 17

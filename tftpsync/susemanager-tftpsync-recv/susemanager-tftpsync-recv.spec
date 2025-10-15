@@ -26,6 +26,7 @@ License:        GPL-2.0-only
 # FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/System
 URL:            https://github.com/uyuni-project/uyuni
+#!CreateArchive: %{name}
 Source0:        %{name}-%{version}.tar.gz
 BuildRequires:  uyuni-base-common
 Requires:       (apache2-mod_wsgi or python3-mod_wsgi)

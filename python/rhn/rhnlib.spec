@@ -45,6 +45,7 @@ Release:        0
 Summary:        Python libraries for the Spacewalk project
 License:        GPL-2.0-only
 URL:            https://github.com/uyuni-project/uyuni
+#!CreateArchive: %{name}
 Source0:        %{name}-%{version}.tar.gz
 %if "%{_vendor}" == "debbuild"
 Group:          python
