@@ -17,7 +17,7 @@ The project is composed of several interconnected parts. This README explains ea
   - [6. Generate Training Data Script](#6-generate-training-data-script)
 
 
-![](images/gather_training_data_diagram.png)
+![](readme_resources/gather_training_data_diagram.png)
 
 - [Phase 2 - Training \& Cutoffs Calibration](#phase-2---training--cutoffs-calibration)
   - [1. Preprocessing Data](#1-preprocessing-data)
@@ -25,13 +25,13 @@ The project is composed of several interconnected parts. This README explains ea
   - [3. Calibrate Cutoffs \& Predict](#3-calibrate-cutoffs--predict)
 
 
-![](images/training_and_cutoff_calibration_diagram.png)
+![](readme_resources/training_and_cutoff_calibration_diagram.png)
 
 # Phase 1 - Gathering Training Data
 
 High-level diagram of this phase
 
-![](images/gather_training_data_diagram.png)
+![](readme_resources/gather_training_data_diagram.png)
 
 ## 1. Storing Test Runs' Test Results
 
@@ -67,7 +67,7 @@ We chose to use a relational database, specifically PostgreSQL, for three key re
 
 Below is the Postgres schema I designed:
 
-![](images/postgres_db_schema.png)
+![](readme_resources/postgres_db_schema.png)
 
 [postgres_schema.sql](postgres_schema.sql)
 
@@ -135,14 +135,14 @@ python pr_data_extraction.py <N> | <YYYY-MM-DD> | '#<PR_NUMBER>'
 #### Test Runs' Cucumber Reports
 Notice how for each PR, data is extracted for **each test run** that ran on this PR and produced Cucumber reports, `run_1` is the first test run that ran on the PR, `run_2` is the second, and so on.
 
-<img src="images/pr_data_extract_test_runs_output.png" style="width:40%;">
+<img src="readme_resources/pr_data_extract_test_runs_output.png" style="width:40%;">
 
 #### Run data JSON file
 
-<img src="images/pr_data_extract_run_data_json.png" style="width:80%;">
+<img src="readme_resources/pr_data_extract_run_data_json.png" style="width:80%;">
 
 #### CSV File
-<img src="images/pr_data_extract_output_csv.png" style="width:80%;">
+<img src="readme_resources/pr_data_extract_output_csv.png" style="width:80%;">
 
 > [!IMPORTANT]
 > - `Changes_last_X_days` indicate the number of changes/modifications that happened on the modified files over several recent days.
@@ -215,7 +215,7 @@ A direct example of this is `srv_users.feature`, in which always two scenarios a
 
 This can be shown in the below test statistic generated from a PR that had `srv_users` run on it as a recommended test. Here, the two scenarios were detected as skipped, but still, the feature was considered as passed.
 
-![](images/cucumber_results_srv_users.png)
+![](readme_resources/cucumber_results_srv_users.png)
 
 </details>
 
@@ -279,7 +279,7 @@ This script is responsible for backfilling test runs into the database.
 
 The example below shows the contents of the `test_runs` table. Other tables are populated as well.
 
-![](images/postgres_test_runs_table.png)
+![](readme_resources/postgres_test_runs_table.png)
 
 I tested the database using https://neon.com/
 
@@ -303,7 +303,7 @@ Each pull request is represented by **one test run**:
 
 ### Example Output
 
-![](images/training_data_csv.png)
+![](readme_resources/training_data_csv.png)
 
 > [!IMPORTANT]
 > - `Modifications_Xd` indicate the number of modifications that happened on the modified files over several recent days.
@@ -329,7 +329,7 @@ Additionally, failed features/tests are underrepresented in our data. To try to 
 
 High-level diagram of this phase
 
-![](images/training_and_cutoff_calibration_diagram.png)
+![](readme_resources/training_and_cutoff_calibration_diagram.png)
 
 ## 1. Preprocessing Data
 
@@ -374,6 +374,13 @@ High-level diagram of this phase
 2. Preprocessed testing data CSV
 3. Preprocessing pipeline to be used in production
 
+### Preprocessing Example
+
+> [!TIP]
+> View the CSVs using a CSV viewer instead of viewing them as plain text.
+
+You can view how the explained above preprocessing takes effect on a single PR by viewing the [training data CSV file for PR 10883](readme_resources/pr.csv) and the [same PR data after preprocessing it](readme_resources/preprocessed_pr.csv).
+
 ## 2. Train XGBoost Classifier
 
 [train_xgboost_classifier.py](train_xgboost_classifier.py)
@@ -398,6 +405,9 @@ python train_xgboost_classifier.py
 3. Feature Importance: Top features logged
 
 ## 3. Calibrate Cutoffs & Predict
+
+> [!TIP]
+> It is strongly adviced to check the "Prediction Program Development" and specifically the "Parameter Tuning & Evaluation" section in the "Project Details" in my [GSoC Proposal](https://drive.google.com/file/d/1M9X60Arj5J-LVw0fQSaVWgtxCChwtq6T/view?usp=sharing) to completely understand this part. The ScoreCutOff, CountCutOff, TestRecall, ChanegeRecall, and SelectionRate are all thoroughly explained there.
 
 [predict.py](predict.py)
 
@@ -437,24 +447,30 @@ python predict.py --mode prediction --input-csv new_pr.csv --cutoff-params calib
 ```
 
 Parameters:
-- `--input-csv`: Preprocessed CSV file for the new PR, like the training data but for a single PR.
-- `--cutoff-params`: JSON file containing calibrated cutoff parameters
+- `--input-csv`: Preprocessed CSV file for the new PR, like the preprocessed training data but for a single PR. ([example](readme_resources/preprocessed_pr.csv))
+- `--cutoff-params`: JSON file containing calibrated cutoff parameters (the output of the calibration mode)
 
 ### Outputs
 
 #### Calibration Mode Outputs
 
-1. Calibrated Parameters JSON: Contains optimal ScoreCutOff and CountCutOff
+1. Calibrated CutOffs JSON: Contains optimal ScoreCutOff and CountCutOff
 2. Performance Visualizations:
    - `selection_rate_vs_change_recall.png`: Trade-off between selection efficiency and change detection
    - `selection_rate_vs_test_recall.png`: Trade-off between selection efficiency and test detection
    - `change_recall_heatmap.png`: ChangeRecall across all cutoff combinations
    - `test_recall_heatmap.png`: TestRecall across all cutoff combinations
 
-Example Calibrated Parameters JSON:
+Example Calibrated CutOffs JSON:
 
 > [!IMPORTANT]
 > The `status` field shows if the program was able to find a cutoffs combination that satisfies, or is better than the desired recalls and selection rate.
+
+The below is an example of the output when running the following:
+
+```bash
+python predict.py --mode calibration --test-recall 0.90 --change-recall 1.0 --selection-rate 0.50
+```
 
 ```json
 {
@@ -480,24 +496,32 @@ Example Calibration Visualizations:
 
 `selection_rate_vs_change_recall.png`
 
-![](images/selection_rate_vs_change_recall.png)
+![](readme_resources/selection_rate_vs_change_recall.png)
 
 `change_recall_heatmap.png`
 
-![](images/change_recall_heatmap.png)
+![](readme_resources/change_recall_heatmap.png)
 
 The calibration process generates several visualization files in a `visualizations/` folder to help understand the performance trade-offs. These visualizations help you understand how different cutoff settings affect performance and make informed decisions about target metrics.
 
 #### Prediction Mode Output
 
-Prediction Results JSON: Contains selected tests with failure probabilities
+Prediction Results JSON: Contains selected tests ranked with failure probabilities.
 
-Example Prediction Output:
+The below is an example of the output when running the following:
+
+```bash
+python predict.py --mode prediction --input-csv new_preprocessed_pr.csv --cutoff-params calibrated_cutoffs.json
+```
+
+- `new_preprocessed_pr.csv` is exactly the same as [preprocessed_pr.csv](readme_resources/preprocessed_pr.csv) but with the `failed` column non-existent since this is now what we're trying to predict.
+- `calibrated_cutoffs.json` is the output JSON file from the calibration mode, which is demonstrated above in the calibration mode outputs.
+
 ```json
 {
   "cutoff_parameters": {
     "score_cutoff": 0.45,
-    "count_cutoff": 4
+    "count_cutoff": 30
   },
   "selected_tests": [
     {
@@ -507,27 +531,41 @@ Example Prediction Output:
     },
     {
       "test_name": "min_salt_lock_packages",
-      "failure_probability": 0.64,
+      "failure_probability": 0.66,
       "rank": 2
     },
     {
       "test_name": "min_recurring_action",
-      "failure_probability": 0.59,
+      "failure_probability": 0.66,
       "rank": 3
     },
     {
       "test_name": "min_config_state_channel",
-      "failure_probability": 0.58,
+      "failure_probability": 0.65,
       "rank": 4
-    }
+    },
+    {
+      "test_name": "buildhost_docker_build_image",
+      "failure_probability": 0.64,
+      "rank": 5
+    },
+    {
+      "test_name": "allcli_software_channels",
+      "failure_probability": 0.61,
+      "rank": 6
+    },
+    // And so on till the test number 30.
+    // Output is truncated to not take too much space in the readme.
   ],
   "summary": {
     "total_tests": 67,
-    "selected_tests": 4,
-    "selection_rate": 0.06
+    "selected_tests": 30,
+    "selection_rate": 0.44776119402985076
   }
 }
 ```
+
+If you closely examine the [original CSV file](readme_resources/pr.csv) for the [new_preprocessed_pr.csv](readme_resources/preprocessed_pr.csv), you will find that the test that had failed on this PR was `min_retracted_patches`, and this is the test predicted with the highest probability of failure by our model 😉
 
 ### Q&A
 
