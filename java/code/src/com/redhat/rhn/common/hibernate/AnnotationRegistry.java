@@ -81,6 +81,7 @@ import com.redhat.rhn.domain.common.RhnConfiguration;
 import com.redhat.rhn.domain.common.TinyUrl;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigChannelType;
+import com.redhat.rhn.domain.config.ConfigContent;
 import com.redhat.rhn.domain.config.ConfigFile;
 import com.redhat.rhn.domain.config.ConfigFileName;
 import com.redhat.rhn.domain.config.ConfigFileState;
@@ -338,6 +339,7 @@ public class AnnotationRegistry {
             CoCoResultTypeConverter.class,
             ConfigChannel.class,
             ConfigChannelType.class,
+            ConfigContent.class,
             ConfigDateDetails.class,
             ConfigDateFileAction.class,
             ConfigFile.class,
