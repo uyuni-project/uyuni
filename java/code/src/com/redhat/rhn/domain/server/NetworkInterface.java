@@ -181,10 +181,13 @@ Serializable {
     private ArrayList<String> findServerNetAddress6ByScope(String scope) {
         Session session = HibernateFactory.getSession();
         ArrayList<ServerNetAddress6> ad6 = (ArrayList<ServerNetAddress6>)
-                session.getNamedQuery("ServerNetAddress6.lookup_by_scope_and_id")
-                .setParameter("interface_id", this.interfaceId)
-                .setParameter("scope", scope)
-                .list();
+                session.createQuery("""
+                                FROM ServerNetAddress6 AS sa
+                                WHERE sa.interfaceId = :interface_id AND
+                                sa.scope = :scope""", ServerNetAddress6.class)
+                        .setParameter("interface_id", this.interfaceId)
+                        .setParameter("scope", scope)
+                        .list();
 
         if (ad6 == null) {
             return null;
@@ -374,8 +377,12 @@ Serializable {
         if (sa6 == null) {
             Session session = HibernateFactory.getSession();
             sa6 = (ArrayList<ServerNetAddress6>)
-                    session.getNamedQuery("ServerNetAddress6.lookup_by_id")
-                    .setParameter("interface_id", this.interfaceId).list();
+                    session.createQuery("""
+                                    FROM ServerNetAddress6 AS sa
+                                    WHERE sa.interfaceId = :interface_id
+                                    ORDER BY scope, address""", ServerNetAddress6.class)
+                            .setParameter("interface_id", this.interfaceId)
+                            .list();
         }
 
         return sa6;
