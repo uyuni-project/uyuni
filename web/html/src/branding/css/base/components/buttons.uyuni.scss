@@ -1,7 +1,8 @@
 .btn,
 .btn-default,
 .btn-primary,
-.btn-danger {
+.btn-danger, 
+.btn-tertiary {
   --bs-border-width: 1px;
 
   padding: 6px 12px;
@@ -45,4 +46,38 @@
   &, &:disabled, &.disabled {
     border-color: #d43f3a;
   }
+}
+
+.btn-tertiary {
+  background: none;
+  color: $eos-bc-pine-500;
+  font-weight: bold;
+  text-decoration: underline;
+  text-underline-offset: .3rem;
+  gap: 0.3em;
+ 
+  &:active,
+  &:hover:not(:disabled):not(.disabled) {
+    text-decoration: underline;
+    text-underline-offset: .3rem;
+    color: $eos-bc-green-900;
+    border-color: transparent ;
+  }
+
+  &.disabled,
+  &:disabled {
+    &,
+    &:active {
+      pointer-events: auto;
+      cursor: not-allowed;
+      border-color: transparent;
+      text-decoration: underline;
+      text-underline-offset: .3rem;
+    }
+  }
+}
+
+th .orderBy {
+  border: none;
+  background-color: transparent;
 }
