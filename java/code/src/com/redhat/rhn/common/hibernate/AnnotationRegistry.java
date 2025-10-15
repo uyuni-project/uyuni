@@ -108,6 +108,7 @@ import com.redhat.rhn.domain.image.ProfileCustomDataValue;
 import com.redhat.rhn.domain.iss.IssMaster;
 import com.redhat.rhn.domain.iss.IssSlave;
 import com.redhat.rhn.domain.kickstart.KickstartCommandName;
+import com.redhat.rhn.domain.kickstart.KickstartDefaultRegToken;
 import com.redhat.rhn.domain.kickstart.KickstartInstallType;
 import com.redhat.rhn.domain.kickstart.KickstartSessionState;
 import com.redhat.rhn.domain.kickstart.KickstartTreeType;
@@ -361,6 +362,7 @@ public class AnnotationRegistry {
             IssSlave.class,
             Keyword.class,
             KickstartCommandName.class,
+            KickstartDefaultRegToken.class,
             KickstartInstallType.class,
             KickstartSessionState.class,
             KickstartTreeType.class,

@@ -14,24 +14,39 @@
  */
 package com.redhat.rhn.domain.kickstart;
 
+import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.token.Token;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import java.io.Serializable;
-import java.util.Date;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  * KickstartDefaultRegToken - Class representation of the table rhnkickstartdefaultregtoken.
  */
-public class KickstartDefaultRegToken implements Serializable {
+@Entity
+@Table(name = "rhnKickstartDefaultRegToken")
+@IdClass(KickstartDefaultRegTokenId.class)
+public class KickstartDefaultRegToken extends BaseDomainHelper {
 
     private static final long serialVersionUID = 1L;
+
+    @Id
+    @ManyToOne(targetEntity = KickstartData.class)
+    @JoinColumn(name = "kickstart_id")
     private KickstartData ksdata;
+
+    @Id
+    @ManyToOne(targetEntity = Token.class)
+    @JoinColumn(name = "regtoken_id")
     private Token token;
-    private Date created;
-    private Date modified;
+
     /**
      * Getter for kickstartId
      * @return KickstartData to get
@@ -62,38 +77,6 @@ public class KickstartDefaultRegToken implements Serializable {
     */
     public void setToken(Token tokenIn) {
         this.token = tokenIn;
-    }
-
-    /**
-     * Getter for created
-     * @return Date to get
-    */
-    public Date getCreated() {
-        return this.created;
-    }
-
-    /**
-     * Setter for created
-     * @param createdIn to set
-    */
-    public void setCreated(Date createdIn) {
-        this.created = createdIn;
-    }
-
-    /**
-     * Getter for modified
-     * @return Date to get
-    */
-    public Date getModified() {
-        return this.modified;
-    }
-
-    /**
-     * Setter for modified
-     * @param modifiedIn to set
-    */
-    public void setModified(Date modifiedIn) {
-        this.modified = modifiedIn;
     }
 
     /**
