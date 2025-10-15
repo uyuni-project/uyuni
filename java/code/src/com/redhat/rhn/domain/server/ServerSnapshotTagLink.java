@@ -21,15 +21,37 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.io.Serializable;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 /**
  *
  * ServerSnapshot
  */
+@Entity
+@Table(name = "rhnSnapshotTag")
+@IdClass(ServerSnapshotTagLinkId.class)
 public class ServerSnapshotTagLink extends BaseDomainHelper implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    @Id
+    @ManyToOne(targetEntity = Server.class)
+    @JoinColumn(name = "server_id")
     private Server server;
+
+    @Id
+    @ManyToOne(targetEntity = ServerSnapshot.class)
+    @JoinColumn(name = "snapshot_id")
     private ServerSnapshot snapshot;
+
+    @Id
+    @ManyToOne(targetEntity = SnapshotTag.class)
+    @JoinColumn(name = "tag_id")
     private SnapshotTag tag;
 
     /**
