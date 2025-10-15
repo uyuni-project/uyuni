@@ -86,6 +86,7 @@ import com.redhat.rhn.domain.config.ConfigFile;
 import com.redhat.rhn.domain.config.ConfigFileName;
 import com.redhat.rhn.domain.config.ConfigFileState;
 import com.redhat.rhn.domain.config.ConfigFileType;
+import com.redhat.rhn.domain.config.ConfigInfo;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironmentDiff;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
@@ -346,6 +347,7 @@ public class AnnotationRegistry {
             ConfigFileName.class,
             ConfigFileState.class,
             ConfigFileType.class,
+            ConfigInfo.class,
             ConfigRevisionAction.class,
             ConfigRevisionActionResult.class,
             ContentEnvironment.class,
