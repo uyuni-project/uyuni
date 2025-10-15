@@ -125,13 +125,13 @@
                     </label>
                     <div class="col-lg-6">
                         <c:choose>
-                            <c:when test="${repo_status ==  null}">
+                            <c:when test="${repo_status == 'C'}">
                                 (none)
                             </c:when>
-                            <c:when test="${repo_status == true}">
+                            <c:when test="${repo_status == 'S'}">
                                 <bean:message key="channel.jsp.repodata.inProgress"/>
                             </c:when>
-                            <c:when test="${repo_status == false && repo_last_build != null}">
+			    <c:when test="${repo_status == 'R'}">
                                 <bean:message key="channel.jsp.repodata.completed"/>
                             </c:when>
                             <c:otherwise>
