@@ -14,24 +14,42 @@
  */
 package com.redhat.rhn.domain.kickstart;
 
+import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.io.Serializable;
-import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  * KickstartPackage
  */
-public class KickstartPackage
-        implements Serializable, Comparable<KickstartPackage> {
+@Entity
+@Table(name = "rhnKickstartPackage")
+@IdClass(KickstartPackageId.class)
+public class KickstartPackage extends BaseDomainHelper implements Serializable, Comparable<KickstartPackage> {
 
     private static final long serialVersionUID = 1L;
+
+    @Column(nullable = false)
     private Long position;
-    private Date created;
-    private Date modified;
+
+    @Id
+    @ManyToOne(targetEntity = KickstartData.class)
+    @JoinColumn(name = "kickstart_id")
     private KickstartData ksData;
+
+    @Id
+    @ManyToOne(targetEntity = PackageName.class)
+    @JoinColumn(name = "package_name_id")
     private PackageName packageName;
 
     /**
@@ -76,34 +94,6 @@ public class KickstartPackage
      */
     public void setPosition(Long positionIn) {
         this.position = positionIn;
-    }
-
-    /**
-     * @return Returns the created.
-     */
-    public Date getCreated() {
-        return created;
-    }
-
-    /**
-     * @param createdIn The created to set.
-     */
-    public void setCreated(Date createdIn) {
-        this.created = createdIn;
-    }
-
-    /**
-     * @return Returns the modified.
-     */
-    public Date getModified() {
-        return modified;
-    }
-
-    /**
-     * @param modifiedIn The modified to set.
-     */
-    public void setModified(Date modifiedIn) {
-        this.modified = modifiedIn;
     }
 
     /**
