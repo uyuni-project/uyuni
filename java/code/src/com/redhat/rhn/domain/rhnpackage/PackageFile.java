@@ -23,9 +23,21 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 /**
  * PackageArch
  */
+@Entity
+@Table(name = "rhnPackageFile")
+@IdClass(PackageFileId.class)
 public class PackageFile extends BaseDomainHelper implements Serializable {
 
     /**
@@ -33,20 +45,54 @@ public class PackageFile extends BaseDomainHelper implements Serializable {
      */
     private static final long serialVersionUID = 8009150853428038205L;
 
+    @Id
+    @ManyToOne(targetEntity = Package.class)
+    @JoinColumn(name = "package_id")
     private Package pack;
+
+    @Id
+    @ManyToOne(targetEntity = PackageCapability.class)
+    @JoinColumn(name = "capability_id")
     private PackageCapability capability;
+
+    @Column
     private Long device;
+
+    @Column
     private Long inode;
+
+    @Column(name = "file_mode")
     private Long fileMode;
+
+    @Column
     private String username;
+
+    @Column
     private String groupname;
+
+    @Column
     private Long rdev;
+
+    @Column(name = "file_size")
     private Long fileSize;
+
+    @Column
     private Date mtime;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "checksum_id")
     private Checksum checksum;
+
+    @Column(name = "linkto")
     private String linkTo;
+
+    @Column
     private Long flags;
+
+    @Column(name = "verifyflags")
     private Long verifyFlags;
+
+    @Column
     private String lang;
 
     /**
