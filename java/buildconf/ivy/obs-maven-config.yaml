@@ -66,8 +66,8 @@ artifacts:
   - artifact: apache-commons-fileupload2-core
     package: apache-commons-fileupload2-core
     repository: systemsmanagement_Uyuni_Master_jakarta
-  - artifact: apache-commons-fileupload2-javax
-    package: apache-commons-fileupload2-javax
+  - artifact: apache-commons-fileupload2-jakarta-servlet6
+    package: apache-commons-fileupload2-jakarta-servlet6
     repository: systemsmanagement_Uyuni_Master_jakarta
   - artifact: commons-io
     package: apache-commons-io
@@ -145,12 +145,21 @@ artifacts:
   - artifact: jakarta-persistence-api
     package: jpa-api
     repository: Uyuni_Other
+  - artifact: jakarta-expression-language
+    jar: jakarta-expression-language-[0-9.]+
+    repository: systemsmanagement_Uyuni_Master_jakarta
+  - artifact: jakarta-pages
+    jar: jakarta-pages-[0-9.]+
+    repository: systemsmanagement_Uyuni_Master_jakarta
+  - artifact: jakarta-servlet
+    jar: jakarta.servlet-api-[0-9.]+
+    repository: systemsmanagement_Uyuni_Master_jakarta
   - artifact: java-saml
     jar: java-saml-[0-9.]+
-    repository: Uyuni_Other
+    repository: systemsmanagement_Uyuni_Master_jakarta
   - artifact: java-saml-core
     package: java-saml
-    repository: Uyuni_Other
+    repository: systemsmanagement_Uyuni_Master_jakarta
   - artifact: javassist
     repository: Leap
   - artifact: jboss-logging
@@ -262,7 +271,7 @@ artifacts:
   - artifact: simple-xml
     repository: Uyuni_Other
   - artifact: sitemesh
-    repository: Uyuni_Other
+    repository: systemsmanagement_Uyuni_Master_jakarta
   - artifact: slf4j-api
     package: slf4j
     jar: api
@@ -282,16 +291,15 @@ artifacts:
     package: woodstox
     repository: Uyuni_Other
   - artifact: struts
-    repository: Uyuni_Other
-  - artifact: taglibs-standard-impl
-    package: tomcat-taglibs-standard-1_2_5
-    repository: Uyuni_Other
-  - artifact: taglibs-standard-jstlel
-    package: tomcat-taglibs-standard-1_2_5
-    repository: Uyuni_Other
-  - artifact: taglibs-standard-spec
-    package: tomcat-taglibs-standard-1_2_5
-    repository: Uyuni_Other
+    repository: systemsmanagement_Uyuni_Master_jakarta
+  - artifact: jakarta-jstl-api
+    package: jakarta-jstl
+    jar: jakarta.servlet.jsp.jstl-api.jar
+    repository: systemsmanagement_Uyuni_Master_jakarta
+  - artifact: jakarta-jstl-impl
+    package: jakarta-jstl
+    jar: jakarta.servlet.jsp.jstl.jar
+    repository: systemsmanagement_Uyuni_Master_jakarta
   - artifact: woodstox-core-asl
     package: woodstox
     repository: Uyuni_Other
