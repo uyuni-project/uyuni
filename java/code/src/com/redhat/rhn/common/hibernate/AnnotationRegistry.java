@@ -111,6 +111,7 @@ import com.redhat.rhn.domain.kickstart.KickstartCommandName;
 import com.redhat.rhn.domain.kickstart.KickstartDefaultRegToken;
 import com.redhat.rhn.domain.kickstart.KickstartInstallType;
 import com.redhat.rhn.domain.kickstart.KickstartIpRange;
+import com.redhat.rhn.domain.kickstart.KickstartPackage;
 import com.redhat.rhn.domain.kickstart.KickstartSessionState;
 import com.redhat.rhn.domain.kickstart.KickstartTreeType;
 import com.redhat.rhn.domain.kickstart.KickstartVirtualizationType;
@@ -366,6 +367,7 @@ public class AnnotationRegistry {
             KickstartDefaultRegToken.class,
             KickstartInstallType.class,
             KickstartIpRange.class,
+            KickstartPackage.class,
             KickstartSessionState.class,
             KickstartTreeType.class,
             KickstartVirtualizationType.class,
