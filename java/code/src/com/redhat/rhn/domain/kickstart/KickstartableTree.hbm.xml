@@ -3,7 +3,7 @@
 PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="com.redhat.rhn.domain.kickstart.KickstartableTree"
+    <!-- <class name="com.redhat.rhn.domain.kickstart.KickstartableTree"
         table="rhnKickstartableTree">
 
         <id name="id" type="long" column="id">
@@ -47,7 +47,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
             column="kstree_type"
             cascade="none"/>
 
-    </class>
+    <class> -->
 
     <query name="KickstartableTree.findById">
         <![CDATA[from com.redhat.rhn.domain.kickstart.KickstartableTree as k
