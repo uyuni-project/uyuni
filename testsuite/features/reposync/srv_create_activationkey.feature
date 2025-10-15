@@ -35,6 +35,7 @@ Feature: Create activation keys
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
+@sle_minion
   Scenario: Create an activation key with a channel
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Create Key"
@@ -72,6 +73,7 @@ Feature: Create activation keys
     And I click on "Create Activation Key"
     Then I should see a "Activation key Debian-like Test Key has been created" text
 
+@ssh_minion
   Scenario: Create an activation key with a channel for salt-ssh
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Create Key"
@@ -83,6 +85,7 @@ Feature: Create activation keys
     And I click on "Create Activation Key"
     Then I should see a "Activation key SUSE SSH Test Key x86_64 has been created" text
 
+@ssh_minion
   Scenario: Create an activation key with a channel for salt-ssh via tunnel
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Create Key"
@@ -93,15 +96,18 @@ Feature: Create activation keys
     And I select "Push via SSH tunnel" from "contact-method"
     And I click on "Create Activation Key"
 
+@proxy
   Scenario: Create an activation key for the proxy
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Create Key"
     And I wait until I do not see "Loading..." text
     And I enter "Proxy Key x86_64" as "description"
     And I enter "PROXY-KEY-x86_64" as "key"
+    And I enter "1" as "usageLimit"
     And I click on "Create Activation Key"
-    Then I wait until I see "Activation key Proxy Key x86_64 has been created" text
+    Then I should see a "Activation key Proxy Key x86_64 has been created" text
 
+@build_host
   Scenario: Create an activation key for the build host
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Create Key"
