@@ -564,7 +564,7 @@ public class KickstartFactory extends HibernateFactory {
      */
     public static List<KickstartIpRange> lookupRangeByOrg(Org org) {
         Session session = HibernateFactory.getSession();
-        return session.getNamedQuery("KickstartIpRange.lookupByOrg")
+        return session.createQuery("FROM KickstartIpRange AS t WHERE t.org = :org ", KickstartIpRange.class)
                 .setParameter("org", org)
                 .list();
     }
