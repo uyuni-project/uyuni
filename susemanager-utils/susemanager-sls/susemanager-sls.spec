@@ -46,6 +46,7 @@ URL:            https://github.com/uyuni-project/uyuni
 License:        Apache-2.0 AND LGPL-2.1-only
 # FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
+#!CreateArchive: %{name}
 Source:         %{name}-%{version}.tar.gz
 Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-0/susemanager-utils/susemanager-sls/%{name}-rpmlintrc
 Requires(pre):  coreutils

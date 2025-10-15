@@ -29,6 +29,7 @@ Group:          Applications/System
 URL:            https://github.com/uyuni-project/uyuni
 BuildArch:      noarch
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
+#!CreateArchive: %{name}
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 BuildRequires:  perl(ExtUtils::MakeMaker)
 %if 0%{?suse_version}

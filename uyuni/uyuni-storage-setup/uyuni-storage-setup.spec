@@ -26,6 +26,7 @@ Summary:        Tools for managing storage on %{productprettyname}
 License:        GPL-3.0-only
 Group:          System/Management
 URL:            https://github.com/uyuni-project/uyuni
+#!CreateArchive: %{name}
 Source0:        %{name}-%{version}.tar.gz
 
 %description

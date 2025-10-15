@@ -26,6 +26,7 @@ Summary:        Parent POM for all Uyuni Maven components
 License:        GPL-2.0-only
 Group:          Development/Libraries/Java
 URL:            https://www.uyuni-project.org
+#!CreateArchive: %{name}
 Source0:        %{name}-%{version}.tar.gz
 BuildRequires:  fdupes
 BuildRequires:  java-devel >= 17

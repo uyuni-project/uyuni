@@ -5,5 +5,5 @@ rm -rf node_modules;
 yarn install --force --ignore-optional --production=true --frozen-lockfile;
 yarn autoclean --force;
 yarn zip;
-mv node-modules.tar.gz ../../node-modules.tar.gz;
-echo "node-modules.tar.gz"
+mv node_modules.tar.gz ../../node_modules.tar.gz;
+echo "node_modules.tar.gz"

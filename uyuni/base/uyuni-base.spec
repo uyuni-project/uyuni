@@ -39,6 +39,7 @@ Summary:        %{productprettyname} Base Package
 License:        GPL-2.0-only
 Group:          System/Fhs
 URL:            https://github.com/uyuni-project/uyuni
+#!CreateArchive: %{name}
 Source0:        %{name}-%{version}.tar.gz
 
 %description

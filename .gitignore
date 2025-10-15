@@ -64,6 +64,7 @@ sqlnet.log
 backend/satellite_tools/spacewalk-repo-syncc
 node_modules
 node-modules.tar.gz
+node_modules.tar.gz
 yarn-error.log
 # This should never be used since we use Yarn, but avoid anyone accidentally committing it
 package-lock.json

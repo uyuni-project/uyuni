@@ -39,6 +39,7 @@ Group:          Applications/Internet
 # cd search-server
 # make test-srpm
 URL:            https://github.com/uyuni-project/uyuni
+#!CreateArchive: %{name}
 Source0:        %{name}-%{version}.tar.gz
 BuildRequires:  %{oro}
 BuildRequires:  ant

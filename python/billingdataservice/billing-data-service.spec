@@ -23,6 +23,7 @@ Summary:        Server to request billing information
 License:        GPL-2.0-only
 Group:          System/Daemons
 URL:            https://github.com/uyuni-project/uyuni
+#!CreateArchive: %{name}
 Source:         %{name}-%{version}.tar.gz
 Requires:       apache2
 Requires:       python3-Flask
