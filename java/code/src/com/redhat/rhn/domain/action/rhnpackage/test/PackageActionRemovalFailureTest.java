@@ -71,16 +71,19 @@ public class PackageActionRemovalFailureTest extends RhnBaseTestCase {
     }
 
     /**
-     * Helper method to lookup a PackageActionRemovalFailure
+     * Helper method to look up a PackageActionRemovalFailure
      * by Server, PackageAction, and PackageName.
      */
-    private PackageActionRemovalFailure lookupByKey(Server s,
-                                                   Action a,
-                                                   PackageName n) {
+    private PackageActionRemovalFailure lookupByKey(Server s, Action a, PackageName n) {
         Session session = HibernateFactory.getSession();
-        String queryname = "PackageActionRemovalFailure.findByKey";
-        return (PackageActionRemovalFailure) session.getNamedQuery(queryname)
-                .setParameter("server", s).setParameter("action", a).setParameter(
-                        "packageName", n).uniqueResult();
+        return session.createQuery("""
+                        FROM PackageActionRemovalFailure AS p
+                            WHERE p.server = :server
+                            AND p.action = :action
+                            AND p.packageName = :packageName""", PackageActionRemovalFailure.class)
+                .setParameter("server", s)
+                .setParameter("action", a)
+                .setParameter("packageName", n)
+                .uniqueResult();
     }
 }

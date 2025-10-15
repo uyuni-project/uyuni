@@ -34,6 +34,7 @@ import com.redhat.rhn.domain.action.image.DeployImageActionDetails;
 import com.redhat.rhn.domain.action.kickstart.KickstartActionDetails;
 import com.redhat.rhn.domain.action.kickstart.KickstartGuestActionDetails;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionDetails;
+import com.redhat.rhn.domain.action.rhnpackage.PackageActionRemovalFailure;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionResult;
 import com.redhat.rhn.domain.action.salt.ApplyStatesActionDetails;
 import com.redhat.rhn.domain.action.salt.ApplyStatesActionResult;
@@ -415,6 +416,7 @@ public class AnnotationRegistry {
             OrgRecurringAction.class,
             OrgStateRevision.class,
             PackageActionDetails.class,
+            PackageActionRemovalFailure.class,
             PackageActionResult.class,
             PackageArch.class,
             PackageBreaks.class,
