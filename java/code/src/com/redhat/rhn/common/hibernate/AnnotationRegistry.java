@@ -182,6 +182,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageRecommends;
 import com.redhat.rhn.domain.rhnpackage.PackageRequires;
 import com.redhat.rhn.domain.rhnpackage.PackageSuggests;
 import com.redhat.rhn.domain.rhnpackage.PackageSupplements;
+import com.redhat.rhn.domain.rhnpackage.profile.ProfileEntry;
 import com.redhat.rhn.domain.rhnpackage.profile.ProfileType;
 import com.redhat.rhn.domain.role.RoleImpl;
 import com.redhat.rhn.domain.rpm.SourceRpm;
@@ -463,6 +464,7 @@ public class AnnotationRegistry {
             PrivateChannelFamily.class,
             ProductName.class,
             ProfileCustomDataValue.class,
+            ProfileEntry.class,
             ProfileType.class,
             ProjectSource.class,
             ProvisionState.class,
