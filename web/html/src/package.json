@@ -21,7 +21,7 @@
     "sort-package": "sort-package-json package.json",
     "postinstall": "yarn sort-package --quiet",
     "clean": "rm -rf node_modules && rm -rf dist",
-    "zip": "rm -f node-modules.tar.gz && (tar czf node-modules.tar.gz node_modules/)"
+    "zip": "rm -f node_modules.tar.gz && (tar czf node_modules.tar.gz node_modules/)"
   },
   "resolutions": {
     "@babel/helpers": "7.26.10",

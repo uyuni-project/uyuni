@@ -38,8 +38,10 @@ License:        GPL-2.0-only
 # FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
 URL:            https://github.com/uyuni-project/uyuni
+#!CreateArchive: %{name}
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}.tar.gz
-Source1:        node-modules.tar.gz
+#!CreateArchive: node_modules
+Source1:        node_modules.tar.gz
 Source2:        spacewalk-web-rpmlintrc
 BuildRequires:  gettext
 BuildRequires:  make
