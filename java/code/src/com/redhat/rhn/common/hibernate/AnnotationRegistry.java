@@ -90,6 +90,7 @@ import com.redhat.rhn.domain.credentials.VHMCredentials;
 import com.redhat.rhn.domain.errata.Bug;
 import com.redhat.rhn.domain.errata.Cve;
 import com.redhat.rhn.domain.errata.ErrataFileType;
+import com.redhat.rhn.domain.errata.Keyword;
 import com.redhat.rhn.domain.errata.Severity;
 import com.redhat.rhn.domain.image.DeltaImageInfo;
 import com.redhat.rhn.domain.image.DockerfileProfile;
@@ -358,6 +359,7 @@ public class AnnotationRegistry {
             IssPeripheral.class,
             IssPeripheralChannels.class,
             IssSlave.class,
+            Keyword.class,
             KickstartCommandName.class,
             KickstartInstallType.class,
             KickstartSessionState.class,
