@@ -23,16 +23,40 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 /**
  * Class representation of the rhnSystemMigrations table
  * SystemMigration
  */
+@Entity
+@Table(name = "rhnSystemMigrations")
+@IdClass(SystemMigrationId.class)
 public class SystemMigration implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private Server server;
+
+    @Id
+    @ManyToOne(targetEntity = Org.class)
+    @JoinColumn(name = "org_id_to")
     private Org toOrg;
+
+    @Id
+    @ManyToOne(targetEntity = Org.class)
+    @JoinColumn(name = "org_id_from")
     private Org fromOrg;
+
+    @Id
+    @ManyToOne(targetEntity = Server.class)
+    @JoinColumn(name = "server_id")
+    private Server server;
+
+    @Id
     private Date migrated;
 
     /**

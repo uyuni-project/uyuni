@@ -19,9 +19,9 @@ import com.redhat.rhn.domain.server.Server;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Session;
 
 import java.util.List;
-import java.util.Map;
 
  /**
   * A small wrapper around hibernate files to remove some of the complexities
@@ -53,7 +53,11 @@ import java.util.Map;
      * @return list of SystemMigrations found
      */
     public static List<SystemMigration> lookupByFromOrg(Org fromOrg) {
-        return singleton.listObjectsByNamedQuery("SystemMigration.lookupByFromOrg", Map.of("fromOrg", fromOrg));
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("FROM SystemMigration AS sm WHERE sm.fromOrg = :fromOrg ORDER BY sm.migrated DESC",
+                        SystemMigration.class)
+                .setParameter("fromOrg", fromOrg)
+                .list();
     }
 
     /**
@@ -63,7 +67,11 @@ import java.util.Map;
      * @return list of SystemMigrations found
      */
     public static List<SystemMigration> lookupByToOrg(Org toOrg) {
-        return singleton.listObjectsByNamedQuery("SystemMigration.lookupByToOrg", Map.of("toOrg", toOrg));
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("FROM SystemMigration AS sm WHERE sm.toOrg = :toOrg ORDER BY sm.migrated DESC",
+                        SystemMigration.class)
+                .setParameter("toOrg", toOrg)
+                .list();
     }
 
     /**
@@ -72,7 +80,11 @@ import java.util.Map;
      * @return list of SystemMigrations found
      */
     public static List<SystemMigration> lookupByServer(Server server) {
-        return singleton.listObjectsByNamedQuery("SystemMigration.lookupByServer", Map.of("server", server));
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("FROM SystemMigration AS sm WHERE sm.server = :server ORDER BY sm.migrated DESC",
+                        SystemMigration.class)
+                .setParameter("server", server)
+                .list();
     }
 
     /**
