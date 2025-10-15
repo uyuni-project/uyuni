@@ -155,6 +155,7 @@ BuildRequires:  mvn(org.apache.velocity:velocity-engine-core) >= 2.2
 BuildRequires:  mvn(org.hibernate:hibernate-c3p0)
 BuildRequires:  mvn(org.hibernate:hibernate-core)
 BuildRequires:  mvn(org.hibernate:hibernate-ehcache)
+BuildRequires:  servletapi5
 %if 0%{?suse_version}
 BuildRequires:  ant-nodeps
 BuildRequires:  libxml2-tools
@@ -218,6 +219,7 @@ Requires:       pgjdbc-ng
 Requires:       prometheus-client-java
 Requires:       redstone-xmlrpc
 Requires:       salt-netapi-client >= 0.21
+BuildRequires:  servletapi5
 Requires:       simple-core
 Requires:       simple-xml
 Requires:       sitemesh
