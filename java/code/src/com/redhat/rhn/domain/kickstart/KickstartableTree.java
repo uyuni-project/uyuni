@@ -51,26 +51,68 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 /**
  * KickstartableTree
  */
+@Entity
+@Table(name = "rhnKickstartableTree")
 public class KickstartableTree extends BaseDomainHelper {
 
     private static Logger log = LogManager.getLogger(KickstartableTree.class);
     private static final String INVALID_INITRD = "kickstart.tree.invalidinitrd";
     private static final String INVALID_KERNEL = "kickstart.tree.invalidkernel";
-    private String basePath;
-    private Channel channel;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_KSTREE_ID_SEQ")
+    @SequenceGenerator(name = "RHN_KSTREE_ID_SEQ", sequenceName = "RHN_KSTREE_ID_SEQ", allocationSize = 1)
     private Long id;
+
+    @Column(name = "base_path")
+    private String basePath;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "channel_id")
+    private Channel channel;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "install_type")
     private KickstartInstallType installType;
+
+    @Column
     private String label;
+
+    @Column(name = "last_modified")
     private Date lastModified;
+
+    @Column(name = "cobbler_id")
     private String cobblerId;
+
+    @Column(name = "cobbler_xen_id")
     private String cobblerXenId;
+
+    @Column(name = "kernel_options")
     private String kernelOptions;
+
+    @Column(name = "kernel_options_post")
     private String kernelOptionsPost;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "org_id")
     private Org org;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "kstree_type")
     private KickstartTreeType treeType;
 
     /**
@@ -111,7 +153,7 @@ public class KickstartableTree extends BaseDomainHelper {
     /**
      * @param i The id to set.
      */
-    public void setId(Long i) {
+    protected void setId(Long i) {
         this.id = i;
     }
 
