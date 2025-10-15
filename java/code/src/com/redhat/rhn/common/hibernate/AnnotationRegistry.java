@@ -199,6 +199,7 @@ import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupType;
 import com.redhat.rhn.domain.server.ServerHistoryEvent;
 import com.redhat.rhn.domain.server.ServerNetAddress4;
+import com.redhat.rhn.domain.server.ServerNetAddress6;
 import com.redhat.rhn.domain.server.ServerPath;
 import com.redhat.rhn.domain.server.ServerPathId;
 import com.redhat.rhn.domain.server.ServerSnapshot;
@@ -458,6 +459,7 @@ public class AnnotationRegistry {
             ServerGroupType.class,
             ServerHistoryEvent.class,
             ServerNetAddress4.class,
+            ServerNetAddress6.class,
             ServerPath.class,
             ServerPathId.class,
             ServerSnapshot.class,
