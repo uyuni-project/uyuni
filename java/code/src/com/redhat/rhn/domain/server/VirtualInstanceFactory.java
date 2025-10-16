@@ -283,9 +283,7 @@ public class VirtualInstanceFactory extends HibernateFactory {
      * @return The running state
      */
     public VirtualInstanceState getRunningState() {
-        return (VirtualInstanceState)getSession().getNamedQuery("VirtualInstanceState.findByLabel")
-                .setParameter("label", "running", StandardBasicTypes.STRING)
-                .uniqueResult();
+        return getState("running").orElse(null);
     }
 
     /**
@@ -294,9 +292,7 @@ public class VirtualInstanceFactory extends HibernateFactory {
      * @return The stopped state
      */
     public VirtualInstanceState getStoppedState() {
-        return (VirtualInstanceState)getSession().getNamedQuery("VirtualInstanceState.findByLabel")
-                .setParameter("label", "stopped", StandardBasicTypes.STRING)
-                .uniqueResult();
+        return getState("stopped").orElse(null);
     }
 
     /**
@@ -305,9 +301,7 @@ public class VirtualInstanceFactory extends HibernateFactory {
      * @return The paused state
      */
     public VirtualInstanceState getPausedState() {
-        return (VirtualInstanceState)getSession().getNamedQuery("VirtualInstanceState.findByLabel")
-                .setParameter("label", "paused", StandardBasicTypes.STRING)
-                .uniqueResult();
+        return getState("paused").orElse(null);
     }
 
     /**
@@ -316,9 +310,7 @@ public class VirtualInstanceFactory extends HibernateFactory {
      * @return The crashed state
      */
     public VirtualInstanceState getCrashedState() {
-        return (VirtualInstanceState)getSession().getNamedQuery("VirtualInstanceState.findByLabel")
-                .setParameter("label", "crashed", StandardBasicTypes.STRING)
-                .uniqueResult();
+        return getState("crashed").orElse(null);
     }
 
     /**
@@ -327,9 +319,7 @@ public class VirtualInstanceFactory extends HibernateFactory {
      *  @return The unknown state
      */
     public VirtualInstanceState getUnknownState() {
-        return (VirtualInstanceState)getSession().getNamedQuery("VirtualInstanceState.findByLabel")
-                .setParameter("label", "unknown", StandardBasicTypes.STRING)
-                .uniqueResult();
+        return getState("unknown").orElse(null);
     }
 
     /**
@@ -339,9 +329,10 @@ public class VirtualInstanceFactory extends HibernateFactory {
      * @return virtualInstanceState found by label or null
      */
     public Optional<VirtualInstanceState> getState(String label) {
-        return Optional.ofNullable((VirtualInstanceState)getSession().getNamedQuery("VirtualInstanceState.findByLabel")
+        return getSession().createQuery("FROM VirtualInstanceState AS state WHERE state.label = :label",
+                                VirtualInstanceState.class)
                 .setParameter("label", label, StandardBasicTypes.STRING)
-                .uniqueResult());
+                .uniqueResultOptional();
     }
 
     /**
