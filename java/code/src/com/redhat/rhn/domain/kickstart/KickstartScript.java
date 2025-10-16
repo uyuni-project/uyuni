@@ -18,12 +18,27 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.frontend.dto.BaseDto;
 
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.annotations.Type;
 
 import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * KickstartScript - Class representation of the table rhnKickstartScript.
  */
+@Entity
+@Table(name = "rhnKickstartScript")
 public class KickstartScript extends BaseDto implements Comparable<KickstartScript> {
 
     public static final String TYPE_PRE = "pre";
@@ -33,20 +48,49 @@ public class KickstartScript extends BaseDto implements Comparable<KickstartScri
     private static final String POST = "Post";
     private static final String NOCHROOTPOST = "Nochroot Post";
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_KSSCRIPT_ID_SEQ")
+    @SequenceGenerator(name = "RHN_KSSCRIPT_ID_SEQ", sequenceName = "RHN_KSSCRIPT_ID_SEQ", allocationSize = 1)
     private Long id;
-    private Long position;
-    private String scriptType;
-    private String chroot;
-    private Boolean errorOnFail = false;
-    private String interpreter;
-    private String scriptName;
-    private byte[] data;
-    private Date created;
-    private Date modified;
-    private Boolean raw = true;
-    private boolean editable = true;
 
+    @Column(nullable = false)
+    private Long position;
+
+    @Column(name = "script_type", nullable = false)
+    private String scriptType;
+
+    @Column(nullable = false)
+    private String chroot;
+
+    @Column(name = "error_on_fail", nullable = false)
+    @Type(type = "yes_no")
+    private Boolean errorOnFail = false;
+
+    @Column
+    private String interpreter;
+
+    @Column(name = "script_name")
+    private String scriptName;
+
+    @Column
+    private byte[] data;
+
+    @Column(nullable = false, updatable = false, insertable = false)
+    private Date created;
+
+    @Column(nullable = false, updatable = false, insertable = false)
+    private Date modified;
+
+    @Column(name = "raw_script", nullable = false)
+    @Type(type = "yes_no")
+    private Boolean raw = true;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "kickstart_id")
     private KickstartData ksdata;
+
+    @Transient
+    private boolean editable = true;
 
     /**
      * @return True if the script is editable
