@@ -768,10 +768,7 @@ public class KickstartFactory extends HibernateFactory {
      * @return KickstartSession if found.
      */
     public static KickstartSession lookupKickstartSessionByServer(Long sidIn) {
-        Session session = HibernateFactory.getSession();
-        List<KickstartSession> ksessions = session.getNamedQuery("KickstartSession.findByServer")
-                .setParameter("server", sidIn, StandardBasicTypes.LONG)
-                .list();
+        List<KickstartSession> ksessions = lookupAllKickstartSessionsByServer(sidIn);
         if (!ksessions.isEmpty()) {
             return ksessions.iterator().next();
         }
@@ -787,8 +784,11 @@ public class KickstartFactory extends HibernateFactory {
     public static KickstartSession
     lookupDefaultKickstartSessionForKickstartData(KickstartData ksdata) {
         Session session = HibernateFactory.getSession();
-        List<KickstartSession> ksessions = session.getNamedQuery(
-                "KickstartSession.findDefaultKickstartSessionForKickstartData")
+        List<KickstartSession> ksessions = session.createQuery(
+                        """
+                            FROM KickstartSession AS t WHERE
+                            t.ksdata = :ksdata AND t.kickstartMode = :mode ORDER BY created DESC
+                            """, KickstartSession.class)
                 .setParameter("ksdata", ksdata.getId(), StandardBasicTypes.LONG)
                 .setParameter("mode", KickstartSession.MODE_DEFAULT_SESSION)
                 .list();
@@ -825,7 +825,10 @@ public class KickstartFactory extends HibernateFactory {
      */
     public static List<KickstartSession> lookupAllKickstartSessionsByServer(Long sidIn) {
         Session session = HibernateFactory.getSession();
-        return session.getNamedQuery("KickstartSession.findByServer")
+        return session.createQuery("""
+                        FROM KickstartSession AS t WHERE
+                        t.newServer = :server OR t.oldServer = :server OR t.hostServer = :server
+                        ORDER BY created DESC""", KickstartSession.class)
                 .setParameter("server", sidIn, StandardBasicTypes.LONG)
                 .list();
     }
@@ -1007,13 +1010,20 @@ public class KickstartFactory extends HibernateFactory {
      * This method does not remove serverAction entries, the caller is supposed to do it.
      *
      * @param actionsToDelete Actions associated with the kickstart sessions to fail.
-     * @param servers Servers assocaited with the kickstart sessions to fail.
+     * @param servers Servers associated with the kickstart sessions to fail.
      */
     public static void failKickstartSessions(Set<Action> actionsToDelete, Set<Server> servers) {
         Session session = HibernateFactory.getSession();
         KickstartSessionState failed = KickstartFactory.SESSION_STATE_FAILED;
-        Query<KickstartSession> kickstartSessionQuery = session.getNamedQuery(
-                "KickstartSession.findPendingForActions");
+        Query<KickstartSession> kickstartSessionQuery = session.createQuery("""
+               FROM KickstartSession s
+               WHERE (s.oldServer IN (:servers) OR
+               s.newServer IN (:servers))
+               AND s.action IN (:actions_to_delete)
+               AND NOT exists
+                    (select 1 FROM KickstartSessionState ss
+                    WHERE ss.id = s.state AND ss.label IN ('failed', 'complete'))
+               """, KickstartSession.class);
         kickstartSessionQuery.setParameterList("actions_to_delete", actionsToDelete);
         int subStart = 0;
         List<Server> serverList = new ArrayList<>(servers);
