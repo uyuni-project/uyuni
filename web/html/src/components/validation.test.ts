@@ -43,7 +43,7 @@ describe("validation", () => {
 
     test("gt ranges", () => {
       expect(Validation.isInt({ gt: 0 })("-1")).toEqual(false);
-      expect(Validation.isInt({ gt: 0 })("-1.5")).toEqual(false);
+      expect(Validation.isInt({ gt: 0 })("-0.5")).toEqual(false);
       expect(Validation.isInt({ gt: 0 })("0")).toEqual(false);
       expect(Validation.isInt({ gt: 0 })("0.5")).toEqual(false);
       expect(Validation.isInt({ gt: 0 })("1")).toEqual(true);
@@ -51,7 +51,7 @@ describe("validation", () => {
 
     test("lt ranges", () => {
       expect(Validation.isInt({ lt: 0 })("-1")).toEqual(true);
-      expect(Validation.isInt({ lt: 0 })("-1.5")).toEqual(false);
+      expect(Validation.isInt({ lt: 0 })("-0.5")).toEqual(false);
       expect(Validation.isInt({ lt: 0 })("0")).toEqual(false);
       expect(Validation.isInt({ lt: 0 })("0.5")).toEqual(false);
       expect(Validation.isInt({ lt: 0 })("1")).toEqual(false);
