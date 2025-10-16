@@ -111,9 +111,8 @@ end
 
 When(/^I connect the second interface of the proxy to the private network$/) do
   node = get_target('proxy')
-  _result, return_code = node.run('which nmcli')
+  _result, return_code = node.run('which nmcli', check_errors: false)
   if return_code.zero?
-
     # Network manager: we give second interface precedence over first interface
     #                  otherwise the name server we get from DHCP is lost at the end of the list
     #                  (the name servers list in resolv.conf is limited to 3 entries)
