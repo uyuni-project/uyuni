@@ -105,6 +105,7 @@ import com.redhat.rhn.domain.image.KiwiProfile;
 import com.redhat.rhn.domain.image.ProfileCustomDataValue;
 import com.redhat.rhn.domain.iss.IssMaster;
 import com.redhat.rhn.domain.iss.IssSlave;
+import com.redhat.rhn.domain.kickstart.KickstartCommand;
 import com.redhat.rhn.domain.kickstart.KickstartCommandName;
 import com.redhat.rhn.domain.kickstart.KickstartInstallType;
 import com.redhat.rhn.domain.kickstart.KickstartSessionState;
@@ -359,6 +360,7 @@ public class AnnotationRegistry {
             IssPeripheral.class,
             IssPeripheralChannels.class,
             IssSlave.class,
+            KickstartCommand.class,
             KickstartCommandName.class,
             KickstartInstallType.class,
             KickstartSessionState.class,
