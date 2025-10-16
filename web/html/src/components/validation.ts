@@ -8,7 +8,7 @@ const isNoValue = (input: any): input is null | undefined => {
 type MaybeInput = string | null | undefined;
 type Validator = (input: MaybeInput) => boolean;
 
-const matches = (regex: RegExp): Validator => {
+function matches(regex: RegExp): Validator {
   return (input: MaybeInput) => {
     if (isNoValue(input)) {
       return false;
@@ -17,15 +17,18 @@ const matches = (regex: RegExp): Validator => {
     const stringified = String(input);
     return regex.test(stringified);
   };
-};
+}
 
-const isInt = (inputOrRange: MaybeInput | { gt: number } | { gt: number; lt: number } | { lt: number }) => {
-  if (isNoValue(inputOrRange)) {
+type IsIntConfig = { gt: number } | { gt: number; lt: number } | { lt: number };
+function isInt(inputOrConfig: MaybeInput): boolean;
+function isInt(inputOrConfig: IsIntConfig): Validator;
+function isInt(inputOrConfig: MaybeInput | IsIntConfig) {
+  if (isNoValue(inputOrConfig)) {
     return false;
   }
 
-  if (typeof inputOrRange === "string") {
-    const parsed = parseFloat(inputOrRange);
+  if (typeof inputOrConfig === "string") {
+    const parsed = parseFloat(inputOrConfig);
     if (isNaN(parsed) || !Number.isInteger(parsed)) {
       return false;
     }
@@ -42,19 +45,19 @@ const isInt = (inputOrRange: MaybeInput | { gt: number } | { gt: number; lt: num
       return false;
     }
 
-    if (inputOrRange) {
-      if ("gt" in inputOrRange && parsed <= inputOrRange.gt) {
+    if (inputOrConfig) {
+      if ("gt" in inputOrConfig && parsed <= inputOrConfig.gt) {
         return false;
       }
-      if ("lt" in inputOrRange && parsed >= inputOrRange.lt) {
+      if ("lt" in inputOrConfig && parsed >= inputOrConfig.lt) {
         return false;
       }
     }
     return true;
   };
-};
+}
 
-const isFloat: Validator = (input: MaybeInput) => {
+function isFloat(input: MaybeInput): boolean {
   if (isNoValue(input)) {
     return false;
   }
@@ -64,9 +67,9 @@ const isFloat: Validator = (input: MaybeInput) => {
     return false;
   }
   return true;
-};
+}
 
-const isURL: Validator = (input: MaybeInput) => {
+function isURL(input: MaybeInput): boolean {
   if (isNoValue(input)) {
     return false;
   }
@@ -79,6 +82,6 @@ const isURL: Validator = (input: MaybeInput) => {
   }
 
   return url.protocol === "http:" || url.protocol === "https:";
-};
+}
 
 export default { matches, isInt, isFloat, isURL };

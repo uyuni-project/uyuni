@@ -10,17 +10,14 @@ describe("validation", () => {
       expect(Validation.isInt(undefined)).toEqual(false);
       expect(Validation.isInt(NaN as any)).toEqual(false);
 
-      expect(Validation.isInt({ gt: 0 })()).toEqual(false);
       expect(Validation.isInt({ gt: 0 })("")).toEqual(false);
       expect(Validation.isInt({ gt: 0 })(null)).toEqual(false);
       expect(Validation.isInt({ gt: 0 })(undefined)).toEqual(false);
 
-      expect(Validation.isInt({ gt: 0, lt: 255 })()).toEqual(false);
       expect(Validation.isInt({ gt: 0, lt: 255 })("")).toEqual(false);
       expect(Validation.isInt({ gt: 0, lt: 255 })(null)).toEqual(false);
       expect(Validation.isInt({ gt: 0, lt: 255 })(undefined)).toEqual(false);
 
-      expect(Validation.isInt({ lt: 255 })()).toEqual(false);
       expect(Validation.isInt({ lt: 255 })("")).toEqual(false);
       expect(Validation.isInt({ lt: 255 })(null)).toEqual(false);
       expect(Validation.isInt({ lt: 255 })(undefined)).toEqual(false);
