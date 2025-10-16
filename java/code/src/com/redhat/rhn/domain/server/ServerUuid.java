@@ -15,14 +15,32 @@
 package com.redhat.rhn.domain.server;
 
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 /**
  * ServerUuid - Class representation of the table rhnServeruuid.
  */
+@Entity
+@Table(name = "rhnServeruuid")
 public class ServerUuid {
 
+    @Id
+    @Column(name = "server_id")
     private Long id;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "server_id")
+    @MapsId
     private Server server;
+
+    @Column(nullable = false)
     private String uuid;
 
     /**
@@ -35,7 +53,7 @@ public class ServerUuid {
     /**
      * @param idIn The id to set.
      */
-    public void setId(Long idIn) {
+    protected void setId(Long idIn) {
         this.id = idIn;
     }
 
