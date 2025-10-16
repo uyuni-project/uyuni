@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.rhnpackage;
 
+import static org.hibernate.annotations.CacheConcurrencyStrategy.READ_ONLY;
+
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.common.ArchType;
 
@@ -21,16 +23,38 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.Immutable;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  * PackageArch
  */
+@Entity
+@Table(name = "rhnPackageArch")
+@Immutable
+@Cache(usage = READ_ONLY)
 public class PackageArch extends BaseDomainHelper implements Comparable<PackageArch> {
 
-    private ArchType archType;
+    @Id
     private Long id;
+
+    @Column
     private String label;
+
+    @Column
     private String name;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "arch_type_id")
+    private ArchType archType;
 
     /**
      * @return Returns the archType.
@@ -56,7 +80,7 @@ public class PackageArch extends BaseDomainHelper implements Comparable<PackageA
     /**
      * @param i The id to set.
      */
-    public void setId(Long i) {
+    protected void setId(Long i) {
         this.id = i;
     }
 
