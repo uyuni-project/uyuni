@@ -1071,7 +1071,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     public void testErrataAction() throws Exception {
         PackageName p1Name = PackageNameTest.createTestPackageName("testPackage1-" + TestUtils.randomString());
 
-        PackageArch parch1 = (PackageArch) TestUtils.lookupFromCacheById(100L, "PackageArch.findById");
+        PackageArch parch1 = PackageFactory.lookupPackageArchById(100L);
 
         Package zypper = new Package();
         PackageTest.populateTestPackage(zypper, user.getOrg(),  PackageFactory.lookupOrCreatePackageByName("zypper"),
@@ -1162,8 +1162,8 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         PackageName p1Name = PackageNameTest.createTestPackageName("testPackage1-" + TestUtils.randomString());
         PackageName p2Name = PackageNameTest.createTestPackageName("testPackage2-" + TestUtils.randomString());
 
-        PackageArch parch1 = (PackageArch) TestUtils.lookupFromCacheById(100L, "PackageArch.findById");
-        PackageArch parch2 = (PackageArch) TestUtils.lookupFromCacheById(101L, "PackageArch.findById");
+        PackageArch parch1 = PackageFactory.lookupPackageArchById(100L);
+        PackageArch parch2 = PackageFactory.lookupPackageArchById(101L);
 
         Package p1v1 = new Package();
         PackageTest.populateTestPackage(p1v1, user.getOrg(), p1Name,
@@ -1607,7 +1607,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     @Test
     public void testGetInstalledKernelVersions() throws Exception {
         Server srv = createTestServer(user);
-        PackageArch pkgArch = (PackageArch) TestUtils.lookupFromCacheById(100L, "PackageArch.findById");
+        PackageArch pkgArch = PackageFactory.lookupPackageArchById(100L);
 
         Package pkg1 = PackageTest.createTestPackage(null);
         PackageEvr pkgEvr1 = PackageEvrFactoryTest.createTestPackageEvr(null, "1.1.0", "1", PackageType.RPM);
