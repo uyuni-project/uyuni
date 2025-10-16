@@ -102,7 +102,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import jakarta.servlet.http.HttpServletResponse;
-
 import spark.route.HttpMethod;
 
 public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {

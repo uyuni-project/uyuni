@@ -19,7 +19,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import jakarta.servlet.http.HttpSession;
-
 import jakarta.websocket.HandshakeResponse;
 import jakarta.websocket.server.HandshakeRequest;
 import jakarta.websocket.server.ServerEndpointConfig;

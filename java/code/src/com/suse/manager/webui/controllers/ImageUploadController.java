@@ -105,9 +105,10 @@ public class ImageUploadController {
                     }
 
                     // copy file to final location using salt
-                    GlobalInstanceHolder.SALT_API.copyFile(tempFile,
-                                    Paths.get(OSImageStoreUtils.getOSImageStorePathForOrg(user.getOrg()) + item.getName()))
-                            .orElseThrow(() -> new RuntimeException("Can't move the image file"));
+                    GlobalInstanceHolder.SALT_API.copyFile(
+                            tempFile,
+                            Paths.get(OSImageStoreUtils.getOSImageStorePathForOrg(user.getOrg()) + item.getName())
+                    ).orElseThrow(() -> new RuntimeException("Can't move the image file"));
                 });
             }
             finally {

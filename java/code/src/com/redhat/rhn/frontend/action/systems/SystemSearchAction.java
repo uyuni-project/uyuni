@@ -47,7 +47,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import jakarta.servlet.http.HttpServletRequest;
-
 import redstone.xmlrpc.XmlRpcException;
 import redstone.xmlrpc.XmlRpcFault;
 
