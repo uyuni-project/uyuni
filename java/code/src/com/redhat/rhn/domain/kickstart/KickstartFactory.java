@@ -1040,12 +1040,16 @@ public class KickstartFactory extends HibernateFactory {
      */
     private static void setKickstartSessionHistoryMessage(KickstartSession ksSession,
             KickstartSessionState state, String message) {
+
         Session session = HibernateFactory.getSession();
-        Query<KickstartSessionHistory> q = session.getNamedQuery(
-                "KickstartSessionHistory.findByKickstartSessionAndState");
-        q.setParameter("state", state);
-        q.setParameter("kickstartSession", ksSession);
-        List<KickstartSessionHistory> results = q.list();
+        List<KickstartSessionHistory> results = session.createQuery("""
+                        FROM KickstartSessionHistory AS history
+                        WHERE history.session = :kickstartSession AND history.state = :state
+                        ORDER BY time DESC""", KickstartSessionHistory.class)
+                .setParameter("state", state)
+                .setParameter("kickstartSession", ksSession)
+                .list();
+
         results.forEach(history -> history.setMessage(message));
 
         ksSession.addHistory(state, message);
