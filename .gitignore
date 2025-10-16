@@ -65,9 +65,9 @@ backend/satellite_tools/spacewalk-repo-syncc
 node_modules
 node-modules.tar.gz
 node_modules.tar.gz
+# This should never be used since we use NPM, but avoid anyone accidentally committing it
+yarn.lock
 yarn-error.log
-# This should never be used since we use Yarn, but avoid anyone accidentally committing it
-package-lock.json
 
 rel-eng/custom/__pycache__
 

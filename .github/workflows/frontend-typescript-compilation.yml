@@ -1,4 +1,4 @@
-name: Frontend lint
+name: Frontend Typescript compilation
 
 on:
   push:
@@ -6,14 +6,14 @@ on:
       - master
     paths:
       - 'web/html/src/**'
-      - '.github/workflows/frontend-lint.yml'
+      - '.github/workflows/frontend-typescript-compilation.yml'
   pull_request:
     paths:
       - 'web/html/src/**'
-      - '.github/workflows/frontend-lint.yml'
+      - '.github/workflows/frontend-typescript-compilation.yml'
 
 jobs:
-  frontend_lint:
+  frontend_typescript_compilation:
     runs-on: ubuntu-latest
 
     strategy:
@@ -46,8 +46,5 @@ jobs:
     - name: Install production dependencies
       run: npm --prefix web ci --ignore-scripts --save=false
 
-    - name: "Check package.json, on failure run: npm run sort-package"
-      run: npm --prefix web run sort-package -- --check
-
-    - name: "Check lint, on failure run: npm run lint"
-      run: npm --prefix web run lint:production
+    - name: Compile Typescript
+      run: npm --prefix web run tsc
