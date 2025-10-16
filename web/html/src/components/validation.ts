@@ -1,17 +1,32 @@
-// https://github.com/chriso/validator.js
-import validator from "validator";
+type Validator = (input?: any) => boolean;
 
-const f =
-  (fn) =>
-  (...args) =>
-  (str) =>
-    fn(str, ...args);
-const validations: Record<string, any> = {};
+function matches(regex: RegExp): Validator {
+  return (input?: any) => {
+    const stringified = String(input);
+    return regex.test(stringified);
+  };
+}
 
-Object.keys(validator).forEach((v) => {
-  if (typeof validator[v] === "function") {
-    validations[v] = f(validator[v]);
-  }
-});
+function isInt(range?: { gt: number } | { gt: number; lt: number } | { lt: number }): Validator {
+  return (input?: any) => {
+    const parsed = parseFloat(input);
+    if (isNaN(parsed) || !Number.isInteger(parsed)) {
+      return false;
+    }
 
-export default validations;
+    if (range) {
+      if (range) {
+        if ("gt" in range && parsed <= range.gt) {
+          return false;
+        }
+        if ("lt" in range && parsed >= range.lt) {
+          return false;
+        }
+      }
+    }
+
+    return true;
+  };
+}
+
+export default { matches, isInt };
