@@ -153,6 +153,7 @@ import com.redhat.rhn.domain.rhnpackage.PackagePreDepends;
 import com.redhat.rhn.domain.rhnpackage.PackageProvides;
 import com.redhat.rhn.domain.rhnpackage.PackageRecommends;
 import com.redhat.rhn.domain.rhnpackage.PackageRequires;
+import com.redhat.rhn.domain.rhnpackage.PackageSource;
 import com.redhat.rhn.domain.rhnpackage.PackageSuggests;
 import com.redhat.rhn.domain.rhnpackage.PackageSupplements;
 import com.redhat.rhn.domain.rhnpackage.profile.ProfileType;
@@ -398,6 +399,7 @@ public class AnnotationRegistry {
             PackageProvides.class,
             PackageRecommends.class,
             PackageRequires.class,
+            PackageSource.class,
             PackageState.class,
             PackageSuggests.class,
             PackageSupplements.class,
