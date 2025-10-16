@@ -271,13 +271,18 @@ public class KickstartFactory extends HibernateFactory {
     }
 
     /**
-     * lookup kickstart tree by it's cobbler id
+     * lookup kickstart tree by its cobbler id
      * @param cobblerId the cobbler id to lookup
      * @return the Kickstartable Tree object
      */
     public static KickstartableTree lookupKickstartTreeByCobblerIdOrXenId(String cobblerId) {
-        return singleton.lookupObjectByNamedQuery("KickstartableTree.findByCobblerIdOrXenId",
-                Map.of("cid", cobblerId));
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("""
+                        FROM KickstartableTree AS k
+                        WHERE k.cobblerId = :cid OR k.cobblerXenId = :cid
+                        ORDER BY k.label""", KickstartableTree.class)
+                .setParameter("cid", cobblerId)
+                .uniqueResult();
     }
 
 
@@ -581,7 +586,7 @@ public class KickstartFactory extends HibernateFactory {
     public static KickstartableTree lookupKickstartTreeByLabel(String label, Org org) {
         Session session = HibernateFactory.getSession();
         KickstartableTree retval = (KickstartableTree)
-                session.getNamedQuery("KickstartableTree.findByLabelAndOrg")
+                session.createQuery("FROM KickstartableTree AS k WHERE k.label = :label AND k.org = :org_id")
                 .setParameter(LABEL, label, StandardBasicTypes.STRING)
                 .setParameter(ORG_ID, org.getId(), StandardBasicTypes.LONG)
                 .uniqueResult();
@@ -589,7 +594,7 @@ public class KickstartFactory extends HibernateFactory {
         // we try by label and NULL org (RHN owned channel)
         if (retval == null) {
             retval = (KickstartableTree)
-                    session.getNamedQuery("KickstartableTree.findByLabelAndNullOrg")
+                    session.createQuery("FROM KickstartableTree AS k WHERE k.label = :label AND k.org IS NULL")
                     .setParameter(LABEL, label)
                     .uniqueResult();
         }
@@ -604,7 +609,7 @@ public class KickstartFactory extends HibernateFactory {
      */
     public static KickstartableTree lookupKickstartTreeByLabel(String label) {
         Session session = HibernateFactory.getSession();
-        return (KickstartableTree) session.getNamedQuery("KickstartableTree.findByLabel")
+        return (KickstartableTree) session.createQuery("FROM KickstartableTree AS k WHERE k.label = :label")
                 .setParameter(LABEL, label)
                 .uniqueResult();
     }
@@ -618,13 +623,16 @@ public class KickstartFactory extends HibernateFactory {
      * @return List of KickstartableTree objects
      */
     public static List<KickstartableTree> lookupKickstartTreesByChannelAndOrg(Long channelId, Org org) {
-        String query = "KickstartableTree.findByChannelAndOrg";
         Session session = HibernateFactory.getSession();
-        return session.getNamedQuery(query).
+        return session.createQuery("""
+                        FROM KickstartableTree AS k
+                        WHERE k.channel = :channel_id AND k.org = :org_id
+                        ORDER BY k.label""", KickstartableTree.class).
                 setParameter("channel_id", channelId, StandardBasicTypes.LONG).
                 setParameter(ORG_ID, org.getId(), StandardBasicTypes.LONG)
                 //Retrieve from cache if there
-                .setCacheable(true).list();
+                .setCacheable(true)
+                .list();
     }
 
     /**
@@ -634,12 +642,15 @@ public class KickstartFactory extends HibernateFactory {
      */
     public static List<KickstartableTree> lookupKickstartTreesByChannelAndNullOrg(
             Long channelId) {
-        String query = "KickstartableTree.findByChannelAndNullOrg";
         Session session = HibernateFactory.getSession();
-        return session.getNamedQuery(query)
+        return session.createQuery("""
+                        FROM KickstartableTree AS k
+                        WHERE k.channel = :channel_id AND k.org IS NULL
+                        ORDER BY k.label""", KickstartableTree.class)
                 .setParameter("channel_id", channelId, StandardBasicTypes.LONG)
                 // Retrieve from cache if there
-                .setCacheable(true).list();
+                .setCacheable(true)
+                .list();
     }
 
     /**
@@ -654,10 +665,11 @@ public class KickstartFactory extends HibernateFactory {
 
         Session session = null;
         List<KickstartableTree> retval = null;
-        String query = null;
-        query = "KickstartableTree.findByChannel";
         session = HibernateFactory.getSession();
-        retval = session.getNamedQuery(query).
+        retval = session.createQuery("""
+                        FROM KickstartableTree AS k
+                        WHERE k.channel.id = :channel_id AND (k.org IS NULL OR k.org = :org_id)
+                        ORDER BY k.label""", KickstartableTree.class).
                 setParameter("channel_id", channelId, StandardBasicTypes.LONG).
                 setParameter(ORG_ID, org.getId(), StandardBasicTypes.LONG).
                 list();
@@ -672,10 +684,13 @@ public class KickstartFactory extends HibernateFactory {
      * @return list of KickstartableTrees
      */
     public static List<KickstartableTree> lookupAccessibleTreesByOrg(Org org) {
-        Map<String, Object> params = new HashMap<>();
-        params.put(ORG_ID, org.getId());
-        return singleton.listObjectsByNamedQuery(
-                "KickstartableTree.findAccessibleToOrg", params, false);
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("""
+                        FROM KickstartableTree AS k
+                        WHERE k.org.id = :org_id OR k.org IS NULL
+                        ORDER BY k.label""", KickstartableTree.class)
+                .setParameter(ORG_ID, org.getId())
+                .list();
     }
 
     /**
@@ -684,10 +699,12 @@ public class KickstartFactory extends HibernateFactory {
      * @return List of KickstartableTree objects if found
      */
     public static List<KickstartableTree> listTreesByOrg(Org org) {
-        Map<String, Object> params = new HashMap<>();
-        params.put(ORG_ID, org.getId());
-        return singleton.listObjectsByNamedQuery(
-                "KickstartableTree.findByOrg", params, false);
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("""
+                        FROM KickstartableTree AS k
+                        WHERE k.org.id = :org_id ORDER BY k.label""", KickstartableTree.class)
+                .setParameter(ORG_ID, org.getId())
+                .list();
     }
 
     /**
@@ -708,8 +725,14 @@ public class KickstartFactory extends HibernateFactory {
      * @return list of kickstart trees
      */
     public static List<KickstartableTree> lookupKickstartTrees() {
-        String query = "KickstartableTree.findBase";
-        return singleton.listObjectsByNamedQuery(query, Collections.emptyMap(), false);
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("""
+                        SELECT k FROM KickstartableTree AS k,
+                        com.redhat.rhn.domain.channel.Channel AS c
+                        WHERE c.id = k.channel
+                        AND c.parentChannel IS NULL
+                        ORDER BY k.label""", KickstartableTree.class)
+                .list();
     }
 
     /**
@@ -719,14 +742,16 @@ public class KickstartFactory extends HibernateFactory {
      * @return KickstartableTree if found, otherwise null
      */
     public static KickstartableTree lookupKickstartTreeByIdAndOrg(Long treeId, Org org) {
-        String queryName = "KickstartableTree.findByIdAndOrg";
         if (treeId != null && org != null) {
             Session session = HibernateFactory.getSession();
-            Query<KickstartableTree> query = session.getNamedQuery(queryName);
-            query.setParameter(ORG_ID, org.getId(), StandardBasicTypes.LONG);
-            query.setParameter("tree_id", treeId, StandardBasicTypes.LONG);
-            //Retrieve from cache if there
-            return query.setCacheable(true).uniqueResult();
+            return session.createQuery("""
+                            FROM KickstartableTree AS k
+                            WHERE k.id = :tree_id AND (k.org = :org_id OR k.org IS NULL)""", KickstartableTree.class)
+                    .setParameter(ORG_ID, org.getId(), StandardBasicTypes.LONG)
+                    .setParameter("tree_id", treeId, StandardBasicTypes.LONG)
+                    //Retrieve from cache if there
+                    .setCacheable(true)
+                    .uniqueResult();
         }
         return null;
     }
@@ -830,12 +855,16 @@ public class KickstartFactory extends HibernateFactory {
     public static boolean verifyTreeAssignment(Long channelId, Long orgId, Long treeId) {
         if (channelId != null && orgId != null && treeId != null) {
             Session session = HibernateFactory.getSession();
-            Query<KickstartableTree> query = session.
-                    getNamedQuery("KickstartableTree.verifyTreeAssignment");
-            query.setParameter("channel_id", channelId, StandardBasicTypes.LONG);
-            query.setParameter(ORG_ID, orgId, StandardBasicTypes.LONG);
-            query.setParameter("tree_id", treeId, StandardBasicTypes.LONG);
-            KickstartableTree tree = query.uniqueResult();
+            KickstartableTree tree = session.createQuery("""
+                            FROM KickstartableTree AS k
+                            WHERE (k.org IS NULL OR k.org = :org_id) AND
+                            k.channel.id = :channel_id AND
+                            k.id = :tree_id""", KickstartableTree.class)
+                    .setParameter("channel_id", channelId, StandardBasicTypes.LONG)
+                    .setParameter(ORG_ID, orgId, StandardBasicTypes.LONG)
+                    .setParameter("tree_id", treeId, StandardBasicTypes.LONG)
+                    .uniqueResult();
+
             return tree != null;
         }
         return false;
@@ -1050,9 +1079,15 @@ public class KickstartFactory extends HibernateFactory {
      * @return list of trees
      */
     public static List<KickstartableTree> listUnsyncedKickstartTrees() {
-        String query = "KickstartableTree.getUnsyncedKickstartTrees";
         Session session = HibernateFactory.getSession();
-        return session.getNamedQuery(query).list();
+        return session.createQuery("""
+                        SELECT k FROM KickstartableTree AS k,
+                        com.redhat.rhn.domain.channel.Channel AS c
+                        WHERE c.id = k.channel
+                        AND k.cobblerId IS NULL
+                        AND c.parentChannel IS NULL
+                        ORDEr by k.label""", KickstartableTree.class)
+                .list();
     }
 
     /**
