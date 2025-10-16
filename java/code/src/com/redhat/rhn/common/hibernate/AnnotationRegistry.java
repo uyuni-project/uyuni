@@ -108,6 +108,7 @@ import com.redhat.rhn.domain.iss.IssSlave;
 import com.redhat.rhn.domain.kickstart.KickstartCommand;
 import com.redhat.rhn.domain.kickstart.KickstartCommandName;
 import com.redhat.rhn.domain.kickstart.KickstartInstallType;
+import com.redhat.rhn.domain.kickstart.KickstartScript;
 import com.redhat.rhn.domain.kickstart.KickstartSessionState;
 import com.redhat.rhn.domain.kickstart.KickstartTreeType;
 import com.redhat.rhn.domain.kickstart.KickstartVirtualizationType;
@@ -363,6 +364,7 @@ public class AnnotationRegistry {
             KickstartCommand.class,
             KickstartCommandName.class,
             KickstartInstallType.class,
+            KickstartScript.class,
             KickstartSessionState.class,
             KickstartTreeType.class,
             KickstartVirtualizationType.class,
