@@ -46,6 +46,7 @@ import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.channel.ContentSourceType;
 import com.redhat.rhn.domain.channel.DistChannelMap;
 import com.redhat.rhn.domain.channel.ProductName;
+import com.redhat.rhn.domain.channel.PublicChannelFamily;
 import com.redhat.rhn.domain.cloudpayg.CloudRmtHost;
 import com.redhat.rhn.domain.cloudpayg.PaygCredentialsProduct;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
@@ -420,6 +421,7 @@ public class AnnotationRegistry {
             ProjectSource.class,
             ProvisionState.class,
             PtfFilter.class,
+            PublicChannelFamily.class,
             PushClient.class,
             PushClientState.class,
             Ram.class,
