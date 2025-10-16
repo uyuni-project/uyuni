@@ -237,6 +237,7 @@ import com.redhat.rhn.domain.server.ServerPath;
 import com.redhat.rhn.domain.server.ServerPathId;
 import com.redhat.rhn.domain.server.ServerSnapshot;
 import com.redhat.rhn.domain.server.ServerSnapshotTagLink;
+import com.redhat.rhn.domain.server.ServerUuid;
 import com.redhat.rhn.domain.server.SnapshotTag;
 import com.redhat.rhn.domain.server.SnapshotTagName;
 import com.redhat.rhn.domain.server.ansible.AnsiblePath;
@@ -529,6 +530,7 @@ public class AnnotationRegistry {
             ServerSnapshot.class,
             ServerSnapshotTagLink.class,
             ServerStateRevision.class,
+            ServerUuid.class,
             Severity.class,
             SnapshotTag.class,
             SnapshotTagName.class,
