@@ -251,9 +251,7 @@ public class VirtualInstanceFactory extends HibernateFactory {
      * @return  The para-virt type
      */
     public VirtualInstanceType getParaVirtType() {
-        return (VirtualInstanceType)getSession().getNamedQuery("VirtualInstanceType.findByLabel")
-                .setParameter("label", "para_virtualized", StandardBasicTypes.STRING)
-                .setCacheable(true).uniqueResult();
+        return getVirtualInstanceType("para_virtualized");
     }
 
     /**
@@ -262,9 +260,7 @@ public class VirtualInstanceFactory extends HibernateFactory {
      * @return The fully-virt type.
      */
     public VirtualInstanceType getFullyVirtType() {
-        return (VirtualInstanceType)getSession().getNamedQuery("VirtualInstanceType.findByLabel")
-                .setParameter("label", "fully_virtualized", StandardBasicTypes.STRING)
-                .setCacheable(true).uniqueResult();
+        return getVirtualInstanceType("fully_virtualized");
     }
 
     /**
@@ -274,9 +270,11 @@ public class VirtualInstanceFactory extends HibernateFactory {
      * @return The type or null
      */
     public VirtualInstanceType getVirtualInstanceType(String label) {
-        return (VirtualInstanceType)getSession().getNamedQuery("VirtualInstanceType.findByLabel")
+        return getSession().createQuery("FROM VirtualInstanceType AS vit WHERE vit.label = :label",
+                        VirtualInstanceType.class)
                 .setParameter("label", label, StandardBasicTypes.STRING)
-                .setCacheable(true).uniqueResult();
+                .setCacheable(true)
+                .uniqueResult();
     }
 
     /**

@@ -15,20 +15,68 @@
  */
 package com.redhat.rhn.domain.server;
 
-import com.redhat.rhn.domain.Label;
+import static org.hibernate.annotations.CacheConcurrencyStrategy.READ_ONLY;
+
+import com.redhat.rhn.domain.BaseDomainHelper;
+
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.Immutable;
 
 import java.util.Optional;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * VirtualInstanceType
  */
-public class VirtualInstanceType extends Label {
+@Entity
+@Table(name = "RhnVirtualInstanceType")
+@Immutable
+@Cache(usage = READ_ONLY)
+public class VirtualInstanceType extends BaseDomainHelper {
+
+    @Id
+    private Long id;
+
+    @Column
+    private String name;
+
+    @Column
+    private String label;
 
     /**
      * Constructor
      */
     VirtualInstanceType() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    protected void setId(Long idIn) {
+        id = idIn;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String nameIn) {
+        name = nameIn;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String labelIn) {
+        label = labelIn;
     }
 
     /**
@@ -65,6 +113,18 @@ public class VirtualInstanceType extends Label {
             default: return Optional.empty();
         }
     }
+
+    @Override
+    public boolean equals(Object oIn) {
+        if (!(oIn instanceof VirtualInstanceType that)) {
+            return false;
+        }
+        return new EqualsBuilder().append(this.getName(), that.getName())
+                .append(this.getLabel(), that.getLabel()).isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(getName()).append(getLabel()).toHashCode();
+    }
 }
-
-
