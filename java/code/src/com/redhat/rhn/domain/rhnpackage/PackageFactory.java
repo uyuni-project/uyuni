@@ -548,7 +548,16 @@ public class PackageFactory extends HibernateFactory {
         if (pack == null) {
             return new ArrayList<>();
         }
-        return singleton.listObjectsByNamedQuery("PackageSource.findByPackage", Map.of("pack", pack));
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("""
+                                SELECT ps
+                                FROM Package AS p, SourceRpm AS sr, PackageSource ps
+                                WHERE p.sourceRpm = sr
+                                AND ps.sourceRpm = sr
+                                AND p = :pack""",
+                        PackageSource.class)
+                .setParameter("pack", pack)
+                .list();
     }
 
     /**
@@ -558,7 +567,12 @@ public class PackageFactory extends HibernateFactory {
      * @return the package source
      */
     public static PackageSource lookupPackageSourceByIdAndOrg(Long psid, Org org) {
-        return singleton.lookupObjectByNamedQuery("PackageSource.findByIdAndOrg", Map.of("id", psid, "org", org));
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("FROM PackageSource AS ps WHERE ps.id = :id AND ps.org = :org",
+                        PackageSource.class)
+                .setParameter("id", psid)
+                .setParameter("org", org)
+                .uniqueResult();
     }
 
     /**
