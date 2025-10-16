@@ -606,7 +606,9 @@ public class PackageFactory extends HibernateFactory {
      * @return list of package providers
      */
     public static List<PackageProvider> listPackageProviders() {
-        return singleton.listObjectsByNamedQuery("PackageProvider.listProviders", Map.of());
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("FROM PackageProvider", PackageProvider.class)
+                .list();
     }
 
     /**
@@ -615,7 +617,7 @@ public class PackageFactory extends HibernateFactory {
      * @return the package provider
      */
     public static PackageProvider lookupPackageProvider(String name) {
-        return singleton.lookupObjectByNamedQuery("PackageProvider.findByName", Map.of("name", name));
+        return singleton.lookupObjectByParam(PackageProvider.class, "name", name);
     }
 
     /**
