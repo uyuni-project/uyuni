@@ -610,7 +610,7 @@ public class PackageFactory extends HibernateFactory {
      * @return the package key
      */
     public static PackageKey lookupPackageKey(String key) {
-        return singleton.lookupObjectByNamedQuery("PackageKey.findByKey", Map.of("key", key));
+        return singleton.lookupObjectByParam(PackageKey.class, "key", key);
     }
 
     /**
