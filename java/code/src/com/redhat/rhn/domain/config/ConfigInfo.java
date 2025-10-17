@@ -14,18 +14,47 @@
  */
 package com.redhat.rhn.domain.config;
 
+import static org.hibernate.annotations.CacheConcurrencyStrategy.READ_ONLY;
+
 import com.redhat.rhn.domain.BaseDomainHelper;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.Immutable;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  * ConfigInfo - Class representation of the table rhnConfigInfo.
  */
+@Entity
+@Table(name = "rhnConfigInfo")
+@Immutable
+@Cache(usage = READ_ONLY)
 public class ConfigInfo extends BaseDomainHelper {
 
+    @Id
     private Long id;
+
+    @Column
     private String username;
+
+    @Column
     private String groupname;
+
+    @Column
     private Long filemode;
+
+    @Column(name = "selinux_ctx")
     private String selinuxCtx;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "SYMLINK_TARGET_FILENAME_ID")
     private ConfigFileName targetFileName;
 
     /**
@@ -48,7 +77,7 @@ public class ConfigInfo extends BaseDomainHelper {
      * Setter for id
      * @param idIn to set
     */
-    public void setId(Long idIn) {
+    protected void setId(Long idIn) {
         this.id = idIn;
     }
 

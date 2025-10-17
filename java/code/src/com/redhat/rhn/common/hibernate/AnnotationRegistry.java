@@ -59,10 +59,12 @@ import com.redhat.rhn.domain.common.RhnConfiguration;
 import com.redhat.rhn.domain.common.TinyUrl;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigChannelType;
+import com.redhat.rhn.domain.config.ConfigContent;
 import com.redhat.rhn.domain.config.ConfigFile;
 import com.redhat.rhn.domain.config.ConfigFileName;
 import com.redhat.rhn.domain.config.ConfigFileState;
 import com.redhat.rhn.domain.config.ConfigFileType;
+import com.redhat.rhn.domain.config.ConfigInfo;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironmentDiff;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
@@ -103,11 +105,15 @@ import com.redhat.rhn.domain.image.KiwiProfile;
 import com.redhat.rhn.domain.image.ProfileCustomDataValue;
 import com.redhat.rhn.domain.iss.IssMaster;
 import com.redhat.rhn.domain.iss.IssSlave;
+import com.redhat.rhn.domain.kickstart.KickstartCommand;
 import com.redhat.rhn.domain.kickstart.KickstartCommandName;
 import com.redhat.rhn.domain.kickstart.KickstartInstallType;
+import com.redhat.rhn.domain.kickstart.KickstartScript;
+import com.redhat.rhn.domain.kickstart.KickstartSessionHistory;
 import com.redhat.rhn.domain.kickstart.KickstartSessionState;
 import com.redhat.rhn.domain.kickstart.KickstartTreeType;
 import com.redhat.rhn.domain.kickstart.KickstartVirtualizationType;
+import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.domain.kickstart.crypto.CryptoKey;
 import com.redhat.rhn.domain.kickstart.crypto.CryptoKeyType;
 import com.redhat.rhn.domain.kickstart.crypto.SslCryptoKey;
@@ -146,8 +152,10 @@ import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageExtraTagsKeys;
 import com.redhat.rhn.domain.rhnpackage.PackageFile;
 import com.redhat.rhn.domain.rhnpackage.PackageGroup;
+import com.redhat.rhn.domain.rhnpackage.PackageKey;
 import com.redhat.rhn.domain.rhnpackage.PackageKeyType;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
+import com.redhat.rhn.domain.rhnpackage.PackageNevra;
 import com.redhat.rhn.domain.rhnpackage.PackageObsoletes;
 import com.redhat.rhn.domain.rhnpackage.PackagePreDepends;
 import com.redhat.rhn.domain.rhnpackage.PackageProvides;
@@ -302,10 +310,12 @@ public class AnnotationRegistry {
             CoCoResultTypeConverter.class,
             ConfigChannel.class,
             ConfigChannelType.class,
+            ConfigContent.class,
             ConfigFile.class,
             ConfigFileName.class,
             ConfigFileState.class,
             ConfigFileType.class,
+            ConfigInfo.class,
             ContentEnvironment.class,
             ContentEnvironmentDiff.class,
             ContentFilter.class,
@@ -354,11 +364,15 @@ public class AnnotationRegistry {
             IssPeripheral.class,
             IssPeripheralChannels.class,
             IssSlave.class,
+            KickstartCommand.class,
             KickstartCommandName.class,
             KickstartInstallType.class,
+            KickstartScript.class,
+            KickstartSessionHistory.class,
             KickstartSessionState.class,
             KickstartTreeType.class,
             KickstartVirtualizationType.class,
+            KickstartableTree.class,
             KiwiProfile.class,
             Location.class,
             MaintenanceCalendar.class,
@@ -391,8 +405,10 @@ public class AnnotationRegistry {
             PackageFile.class,
             PackageFilter.class,
             PackageGroup.class,
+            PackageKey.class,
             PackageKeyType.class,
             PackageName.class,
+            PackageNevra.class,
             PackageObsoletes.class,
             PackagePreDepends.class,
             PackageProvides.class,

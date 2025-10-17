@@ -14,26 +14,53 @@
  */
 package com.redhat.rhn.domain.kickstart;
 
+import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.action.Action;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 /**
  * KickstartSessionHistory - Class representation of the table rhnkickstartsessionhistory.
  */
-public class KickstartSessionHistory {
+@Entity
+@Table(name = "rhnKickstartSessionHistory")
+public class KickstartSessionHistory extends BaseDomainHelper {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_KS_SESSIONHIST_ID_SEQ")
+    @SequenceGenerator(name = "RHN_KS_SESSIONHIST_ID_SEQ", sequenceName = "RHN_KS_SESSIONHIST_ID_SEQ",
+            allocationSize = 1)
     private Long id;
 
+    @Column
     private String message;
 
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    @JoinColumn(name = "kickstart_session_id")
     private KickstartSession session;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "state_id")
     private KickstartSessionState state;
+
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    @JoinColumn(name = "action_id")
     private Action action;
 
+    @Column(nullable = false, updatable = false, insertable = false)
     private Date time;
-    private Date created;
-    private Date modified;
 
     /**
      * Getter for id
@@ -47,7 +74,7 @@ public class KickstartSessionHistory {
      * Setter for id
      * @param idIn to set
     */
-    public void setId(Long idIn) {
+    protected void setId(Long idIn) {
         this.id = idIn;
     }
 
@@ -115,37 +142,6 @@ public class KickstartSessionHistory {
         this.time = timeIn;
     }
 
-    /**
-     * Getter for created
-     * @return Date to get
-    */
-    public Date getCreated() {
-        return this.created;
-    }
-
-    /**
-     * Setter for created
-     * @param createdIn to set
-    */
-    public void setCreated(Date createdIn) {
-        this.created = createdIn;
-    }
-
-    /**
-     * Getter for modified
-     * @return Date to get
-    */
-    public Date getModified() {
-        return this.modified;
-    }
-
-    /**
-     * Setter for modified
-     * @param modifiedIn to set
-    */
-    public void setModified(Date modifiedIn) {
-        this.modified = modifiedIn;
-    }
 
     /**
      * Getter for message

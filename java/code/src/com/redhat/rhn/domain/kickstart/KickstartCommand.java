@@ -14,21 +14,47 @@
  */
 package com.redhat.rhn.domain.kickstart;
 
+import com.redhat.rhn.domain.BaseDomainHelper;
+
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 /**
  * KickstartCommandName
  */
-public class KickstartCommand implements Comparable<KickstartCommand> {
+@Entity
+@Table(name = "rhnKickstartCommand")
+public class KickstartCommand extends BaseDomainHelper implements Comparable<KickstartCommand> {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_KSCOMMAND_ID_SEQ")
+    @SequenceGenerator(name = "RHN_KSCOMMAND_ID_SEQ", sequenceName = "RHN_KSCOMMAND_ID_SEQ", allocationSize = 1)
     private Long id;
+
+    @Column
     private String arguments;
-    private Date created;
-    private Date modified;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ks_command_name_id")
     private KickstartCommandName commandName;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "kickstart_id")
     private KickstartData kickstartData;
+
+    @Column(name = "custom_position")
     private Integer customPosition;
 
     /**
@@ -41,7 +67,7 @@ public class KickstartCommand implements Comparable<KickstartCommand> {
     /**
      * @param i The id to set.
      */
-    public void setId(Long i) {
+    protected void setId(Long i) {
         this.id = i;
     }
 
@@ -57,32 +83,6 @@ public class KickstartCommand implements Comparable<KickstartCommand> {
      */
     public void setArguments(String argsIn) {
         this.arguments = argsIn;
-    }
-
-    /**
-     * @return Returns the created.
-     */
-    public Date getCreated() {
-        return created;
-    }
-    /**
-     * @param createdIn The created to set.
-     */
-    public void setCreated(Date createdIn) {
-        this.created = createdIn;
-    }
-
-    /**
-     * @return Returns the modified.
-     */
-    public Date getModified() {
-        return modified;
-    }
-    /**
-     * @param modifiedIn The modified to set.
-     */
-    public void setModified(Date modifiedIn) {
-        this.modified = modifiedIn;
     }
 
     /**
