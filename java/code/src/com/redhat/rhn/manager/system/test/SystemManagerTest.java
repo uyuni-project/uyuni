@@ -1428,6 +1428,86 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     /**
+     * Tests creating an empty system profile.
+     */
+    @Test
+    public void testCreateSystemProfileWithUserOrg() {
+        String hwAddr = "be:b0:bc:a3:a7:ae";
+        Map<String, Object> data = singletonMap("hwAddress", hwAddr);
+        MinionServer minion = systemManager.createSystemProfile(user, user.getOrg(), "test system", data);
+        Server minionFromDb = SystemManager.lookupByIdAndOrg(minion.getId(), user.getOrg());
+
+        // flush & refresh iface because generated="insert"
+        // on interfaceId does not seem to work
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().refresh(minionFromDb);
+
+        assertEquals("test system", minionFromDb.getName());
+        assertEquals("_" + hwAddr, minion.getMinionId());
+        assertEquals("_" + hwAddr, minion.getMachineId());
+        assertEquals("_" + hwAddr, minion.getDigitalServerId());
+        assertEquals("(unknown)", minion.getOs());
+        assertEquals("(unknown)", minion.getOsFamily());
+        assertEquals("(unknown)", minion.getRelease());
+        assertEquals(ContactMethodUtil.DEFAULT, minion.getContactMethod().getLabel());
+        assertEquals("N", minion.getAutoUpdate());
+        assertEquals("x86_64-redhat-linux", minion.getServerArch().getLabel());
+        assertEquals(1, minionFromDb.getNetworkInterfaces().size());
+
+        NetworkInterface networkInterface = minionFromDb.getNetworkInterfaces().iterator().next();
+        assertEquals("unknown", networkInterface.getName());
+        assertEquals(hwAddr, networkInterface.getHwaddr());
+        assertTrue(minion.hasEntitlement(EntitlementManager.BOOTSTRAP));
+    }
+
+    @Test
+    public void testCreateSystemProfileWithJustOrg() {
+        String hwAddr = "be:b0:bc:a3:a7:af";
+        Map<String, Object> data = singletonMap("hwAddress", hwAddr);
+        MinionServer minion = systemManager.createSystemProfile(null, user.getOrg(), "test system", data);
+        Server minionFromDb = SystemManager.lookupByIdAndOrg(minion.getId(), user.getOrg());
+
+        // flush & refresh iface because generated="insert"
+        // on interfaceId does not seem to work
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().refresh(minionFromDb);
+
+        assertEquals("test system", minionFromDb.getName());
+        assertEquals("_" + hwAddr, minion.getMinionId());
+        assertEquals("_" + hwAddr, minion.getMachineId());
+        assertEquals("_" + hwAddr, minion.getDigitalServerId());
+        assertEquals("(unknown)", minion.getOs());
+        assertEquals("(unknown)", minion.getOsFamily());
+        assertEquals("(unknown)", minion.getRelease());
+        assertEquals(ContactMethodUtil.DEFAULT, minion.getContactMethod().getLabel());
+        assertEquals("N", minion.getAutoUpdate());
+        assertEquals("x86_64-redhat-linux", minion.getServerArch().getLabel());
+        assertEquals(1, minionFromDb.getNetworkInterfaces().size());
+
+        NetworkInterface networkInterface = minionFromDb.getNetworkInterfaces().iterator().next();
+        assertEquals("unknown", networkInterface.getName());
+        assertEquals(hwAddr, networkInterface.getHwaddr());
+        assertTrue(minion.hasEntitlement(EntitlementManager.BOOTSTRAP));
+    }
+
+    @Test
+    public void testFailToCreateSystemProfileWithConflictingOrg() {
+        Org org = UserTestUtils.createOrg();
+        String hwAddr = "be:b0:bc:a3:a7:af";
+        Map<String, Object> data = singletonMap("hwAddress", hwAddr);
+        Assertions.assertThrows(IllegalArgumentException.class,
+                () -> systemManager.createSystemProfile(user, org, "test system", data));
+    }
+
+    @Test
+    public void testFailToCreateSystemProfileNoUserOrg() {
+        String hwAddr = "be:b0:bc:a3:a7:af";
+        Map<String, Object> data = singletonMap("hwAddress", hwAddr);
+        Assertions.assertThrows(IllegalArgumentException.class,
+                () -> systemManager.createSystemProfile(null, null, "test system", data));
+    }
+
+    /**
      * Tests listing empty system profile.
      *
      * @throws java.lang.Exception if anything goes wrong
