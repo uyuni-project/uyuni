@@ -36,6 +36,7 @@ import com.redhat.rhn.domain.action.kickstart.KickstartActionDetails;
 import com.redhat.rhn.domain.action.kickstart.KickstartGuestActionDetails;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionDetails;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionResult;
+import com.redhat.rhn.domain.action.salt.ApplyStatesActionDetails;
 import com.redhat.rhn.domain.action.salt.ApplyStatesActionResult;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildActionDetails;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildActionResult;
@@ -299,6 +300,7 @@ public class AnnotationRegistry {
             AppStreamApi.class,
             AppStreamApiKey.class,
             AppStream.class,
+            ApplyStatesActionDetails.class,
             ApplyStatesActionResult.class,
             ArchType.class,
             BaseCredentials.class,

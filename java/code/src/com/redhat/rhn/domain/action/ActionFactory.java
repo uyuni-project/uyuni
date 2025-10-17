@@ -745,8 +745,13 @@ public class ActionFactory extends HibernateFactory {
      * @return the {@link ApplyStatesActionDetails} corresponding to the given action id.
      */
     public static ApplyStatesActionDetails lookupApplyStatesActionDetails(Long actionId) {
-        return singleton.lookupObjectByNamedQuery("ApplyStatesActionDetails.findByActionId",
-                Map.of("action_id", actionId), true);
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("FROM ApplyStatesActionDetails WHERE parentAction.id = :action_id",
+                        ApplyStatesActionDetails.class)
+                .setParameter("action_id", actionId)
+                //Retrieve from cache if there
+                .setCacheable(true)
+                .uniqueResult();
     }
 
     /**
