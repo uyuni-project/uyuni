@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-10-10 09:51+0200\n"
-"PO-Revision-Date: 2025-10-10 17:59+0000\n"
+"PO-Revision-Date: 2025-10-17 23:59+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>\n"
 "Language: sk\n"
@@ -8340,7 +8340,7 @@ msgstr "Parameter {} nie je typ reťazca, ale {}."
 
 #: ../src/bin/spacecmd:54
 msgid "Welcome to spacecmd, a command-line interface to Spacewalk."
-msgstr ""
+msgstr "Vitajte v spacecmd, rozhraní príkazového riadku pre Spacewalk."
 
 #: ../src/bin/spacecmd:82
 msgid "Unhandled exception occurred while getting FQDN:"
@@ -8348,13 +8348,11 @@ msgstr "Pri získavaní FQDN sa vyskytla neošetrená výnimka:"
 
 #: ../src/bin/spacecmd:110
 msgid "config file to use [default: ~/.spacecmd/config]"
-msgstr ""
+msgstr "konfiguračný súbor na použitie [predvolený: ~/.spacecmd/config]"
 
 #: ../src/bin/spacecmd:113
-#, fuzzy
-#| msgid "logout: Disconnect from the server"
 msgid "use this username to connect to the server"
-msgstr "logout: Odpojiť sa od servera"
+msgstr "použiť toto používateľské meno na pripojenie k serveru"
 
 #: ../src/bin/spacecmd:119
 msgid "use this password to connect to the server (insecure). Use config instead or spacecmd will ask."
