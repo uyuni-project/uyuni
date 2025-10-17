@@ -173,6 +173,7 @@ class Responder:
                 except Exception as err2:
                     log.error("Error commiting: %s", err2)
                     self.connection.close()
+                raise
             finally:
                 log.debug("Cursor query: %s", self.cursor.query)
         else:
@@ -210,7 +211,15 @@ class Responder:
             self.counter < self._commit_burst or self._commit_burst == 0
         ):
             tag, data = self._queue.pop(0)
-            self._insert(tag, data)
+            try:
+                self._insert(tag, data)
+            # pylint: disable-next=broad-exception-caught
+            except Exception:
+                # Exception while inserting the data, put the data back to the queue
+                # and repeat the attempt of pushing it with the next cycle of queue_thread
+                # The exception was logged before in _insert
+                self._queue.insert(0, (tag, data))
+                break
 
     @salt.ext.tornado.gen.coroutine
     def add_event_to_queue(self, raw):
