@@ -10,7 +10,7 @@ Manager's PostgreSQL database. Additionally, it sends notifications via the
 LISTEN/NOTIFY mechanism to alert SUSE Multi-Linux Manager of newly available events.
 
 mgr_events.py tries to keep the I/O low in high load scenarios. Therefore
-events are INSERTed with the separate thread with no blocking the event bus
+events are INSERTed with the separate thread without blocking the event bus
 and COMMITted every `commit_interval`.
 
 .. versionadded:: 2018.3.0
