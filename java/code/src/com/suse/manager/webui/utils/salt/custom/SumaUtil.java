@@ -112,6 +112,30 @@ public class SumaUtil {
     }
 
     /**
+     * The result of 'proxy.info' method.
+     */
+    public static class ProxyInfo {
+        @SerializedName("mgrpxy_version")
+        private String version;
+        @SerializedName("has_config")
+        private boolean hasConfig;
+
+        /**
+         * @return the mgrpxy version string.
+         */
+        public String getVersion() {
+            return Optional.ofNullable(version).orElse("");
+        }
+
+        /**
+         * @return whether the proxy config files are available or not.
+         */
+        public boolean hasConfigFiles() {
+            return hasConfig;
+        }
+    }
+
+    /**
      * Result of sumautil.instance_flavor
      */
     public enum PublicCloudInstanceFlavor {

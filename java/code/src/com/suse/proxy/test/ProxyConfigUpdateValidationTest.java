@@ -63,7 +63,6 @@ public class ProxyConfigUpdateValidationTest extends MockObjectTestCase {
                 "parentFQDN is required",
                 "proxyPort is required",
                 "maxSquidCacheSize is required",
-                "proxyAdminEmail is required",
                 "rootCA is required",
                 "proxyCertificate is required",
                 "proxyKey is required",
