@@ -60,8 +60,7 @@ public class ServerAction extends BaseDomainHelper implements Serializable {
     private Long serverId;
 
     @Id
-    @ManyToOne(targetEntity = Action.class, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.DETACH}) //WORKS!
-    //@ManyToOne(targetEntity = Action.class, cascade = {CascadeType.MERGE, CascadeType.PERSIST, /*CascadeType.REMOVE,*/ CascadeType.REFRESH, CascadeType.DETACH}) //WORKS!
+    @ManyToOne(targetEntity = Action.class, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.DETACH})
     @JoinColumn(name = "action_id")
     private Action parentAction;
 
