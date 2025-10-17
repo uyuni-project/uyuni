@@ -1,0 +1,2 @@
+- Make mgr_events salt engine non-blocking on reading events
+- Avoid losing the events on DB connection issues (bsc#1252098)
