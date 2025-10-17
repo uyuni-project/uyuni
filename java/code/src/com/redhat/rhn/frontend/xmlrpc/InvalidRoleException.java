@@ -29,7 +29,7 @@ public class InvalidRoleException extends FaultException {
      */
     public InvalidRoleException(String role) {
         super(4856, "invalidErrata", LocalizationService.getInstance().getMessage(
-                "api.externalgroup.invalidrole", new Object[] { role }));
+                "api.externalgroup.invalidrole", role));
     }
 
 }

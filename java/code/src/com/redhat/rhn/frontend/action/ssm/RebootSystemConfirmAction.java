@@ -129,13 +129,13 @@ public class RebootSystemConfirmAction extends RhnAction
 
         if (actionChain == null) {
             createMessage(request, "ssm.misc.reboot.message.success." + messageKeySuffix,
-                    new String[] {ls.formatNumber(n, request.getLocale()),
-                            ls.formatDate(earliest, request.getLocale())});
+                    ls.formatNumber(n, request.getLocale()),
+                            ls.formatDate(earliest, request.getLocale()));
         }
         else {
             createMessage(request, "ssm.misc.reboot.message.queued." + messageKeySuffix,
-                    new String[] {ls.formatNumber(n, request.getLocale()),
-                            actionChain.getId().toString(), actionChain.getLabel()});
+                    ls.formatNumber(n, request.getLocale()),
+                            actionChain.getId().toString(), actionChain.getLabel());
         }
 
         set.clear();

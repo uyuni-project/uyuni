@@ -28,6 +28,6 @@ public class TaskomaticApiException extends FaultException {
      */
     public TaskomaticApiException(String message) {
         super(2802, "taskomaticAPIException", LocalizationService.getInstance().getMessage(
-                "taskomatic.notavailable", new Object [] {message}));
+                "taskomatic.notavailable", message));
     }
 }

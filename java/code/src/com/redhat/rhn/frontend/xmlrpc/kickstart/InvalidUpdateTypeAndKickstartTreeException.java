@@ -29,8 +29,7 @@ public class InvalidUpdateTypeAndKickstartTreeException extends FaultException {
      */
     public InvalidUpdateTypeAndKickstartTreeException(String tree) {
         super(6134, "invalidKickstartLabel", LocalizationService.getInstance()
-                .getMessage("api.kickstart.invalidUpdateTypeAndTree",
-                        new Object[] { tree }));
+                .getMessage("api.kickstart.invalidUpdateTypeAndTree", tree));
     }
 
 }

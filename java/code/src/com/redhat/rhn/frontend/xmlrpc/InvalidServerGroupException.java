@@ -37,7 +37,7 @@ public class InvalidServerGroupException extends FaultException  {
      */
     public InvalidServerGroupException(String name) {
         super(2200, "invalidServerGroup", LocalizationService.getInstance().getMessage(
-                "api.externalgroup.nosuchservergroup", new Object[] { name }));
+                "api.externalgroup.nosuchservergroup", name));
     }
 
     /**

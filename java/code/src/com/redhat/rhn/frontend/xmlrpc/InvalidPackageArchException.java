@@ -32,7 +32,7 @@ public class InvalidPackageArchException extends FaultException  {
      */
     public InvalidPackageArchException(String label) {
         super(2301 , "invalidPackageArch" , LocalizationService.getInstance().
-                getMessage("api.package.invalidpackagearch", new Object [] {label}));
+                getMessage("api.package.invalidpackagearch", label));
         // begin member variable initialization
     }
 
@@ -46,8 +46,7 @@ public class InvalidPackageArchException extends FaultException  {
      */
     public InvalidPackageArchException(String label, Throwable cause) {
         super(2301 , "invalidPackageArch" , LocalizationService.getInstance().
-                getMessage("api.package.invalidpackagearch", new Object [] {label})
-                , cause);
+                getMessage("api.package.invalidpackagearch", label), cause);
         // begin member variable initialization
     }
 

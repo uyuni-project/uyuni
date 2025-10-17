@@ -30,7 +30,7 @@ public class InvalidChannelAccessException extends FaultException  {
      */
     public InvalidChannelAccessException(String access) {
         super(1206, "invalidChannelAccess" , LocalizationService.getInstance().
-                getMessage("api.channel.invalidchannelaccess", new Object [] {access}));
+                getMessage("api.channel.invalidchannelaccess", access));
     }
 
     /**
@@ -40,7 +40,7 @@ public class InvalidChannelAccessException extends FaultException  {
      */
     public InvalidChannelAccessException(String access, Throwable cause) {
         super(1206, "invalidChannelAccess" , LocalizationService.getInstance().
-                getMessage("api.channel.invalidchannelaccess", new Object [] {access}),
+                getMessage("api.channel.invalidchannelaccess", access),
                 cause);
     }
 

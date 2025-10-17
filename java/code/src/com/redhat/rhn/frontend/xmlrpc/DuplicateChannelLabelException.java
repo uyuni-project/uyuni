@@ -30,7 +30,7 @@ public class DuplicateChannelLabelException extends FaultException  {
      */
     public DuplicateChannelLabelException(String label) {
         super(1206, "duplicateChannelLabel" , LocalizationService.getInstance().
-                getMessage("api.channel.duplicatechannellabel", new Object [] {label}));
+                getMessage("api.channel.duplicatechannellabel", label));
     }
 
     /**
@@ -40,7 +40,7 @@ public class DuplicateChannelLabelException extends FaultException  {
      */
     public DuplicateChannelLabelException(String label, Throwable cause) {
         super(1206, "duplicateChannelLabel" , LocalizationService.getInstance().
-                getMessage("api.channel.duplicatechannellabel", new Object [] {label}),
+                getMessage("api.channel.duplicatechannellabel", label),
                 cause);
     }
 

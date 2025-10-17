@@ -32,7 +32,7 @@ public class InvalidAdvisoryReleaseException extends FaultException  {
     public InvalidAdvisoryReleaseException(long value) {
         super(1070, "Invalid Advisory Release" , LocalizationService.getInstance().
             getMessage("api.errata.invalidadvisoryrelease",
-                new Object [] {value, ErrataManager.MAX_ADVISORY_RELEASE}));
+                value, ErrataManager.MAX_ADVISORY_RELEASE));
     }
 
     /**
@@ -43,7 +43,7 @@ public class InvalidAdvisoryReleaseException extends FaultException  {
     public InvalidAdvisoryReleaseException(long value, Throwable cause) {
         super(1070, "Invalid Advisory Release" , LocalizationService.getInstance().
             getMessage("api.errata.invalidadvisoryrelease",
-               new Object [] {value, ErrataManager.MAX_ADVISORY_RELEASE}), cause);
+               value, ErrataManager.MAX_ADVISORY_RELEASE), cause);
     }
 
 }

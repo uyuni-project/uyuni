@@ -29,6 +29,6 @@ public class DuplicateChannelNameException extends FaultException  {
      */
     public DuplicateChannelNameException(String name) {
         super(1215, "duplicateChannelName", LocalizationService.getInstance().getMessage(
-                "api.channel.duplicatechannelname", new Object [] {name}));
+                "api.channel.duplicatechannelname", name));
     }
 }
