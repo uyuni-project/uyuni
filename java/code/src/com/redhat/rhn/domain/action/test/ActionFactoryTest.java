@@ -401,14 +401,14 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
 
         // Should NOT update if already in final state.
         ActionFactory.updateServerActionsPickedUp(a1, list);
-        HibernateFactory.reload(sa1);
+        sa1 = HibernateFactory.reload(sa1);
         assertTrue(sa1.isStatusFailed());
 
         list.clear();
         list.add(sa2.getServerId());
         //Should update to STATUS_COMPLETED
         ActionFactory.updateServerActions(a1, list, ActionFactory.STATUS_COMPLETED);
-        HibernateFactory.reload(sa2);
+        sa2 = HibernateFactory.reload(sa2);
         assertTrue(sa2.isStatusCompleted());
     }
 

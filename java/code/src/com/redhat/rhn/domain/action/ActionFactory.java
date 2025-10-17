@@ -912,7 +912,7 @@ public class ActionFactory extends HibernateFactory {
                         WHERE sa.server = :server
                         AND sa.parentAction.actionType IN (:typeList)""", ServerAction.class)
                 .setParameter("server", serverIn)
-                .setParameter("typeList", typesIn)
+                .setParameterList("typeList", typesIn)
                 .list();
     }
 
@@ -928,7 +928,7 @@ public class ActionFactory extends HibernateFactory {
                         FROM ServerAction AS sa
                         WHERE sa.server = :server AND sa.status IN (:statusList)""", ServerAction.class)
                 .setParameter("server", serverIn)
-                .setParameter("statusList", statusList)
+                .setParameterList("statusList", statusList)
                 .list();
     }
 
@@ -947,7 +947,7 @@ public class ActionFactory extends HibernateFactory {
                         WHERE sa.server = :server AND sa.created >= :date AND sa.status IN (:statusList)""",
                         ServerAction.class)
                 .setParameter("server", serverIn)
-                .setParameter("statusList", statusList)
+                .setParameterList("statusList", statusList)
                 .setParameter("date", createdDate)
                 .list();
     }
