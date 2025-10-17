@@ -3,7 +3,7 @@
         PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="com.redhat.rhn.domain.action.channel.SubscribeChannelsActionDetails"
+    <!-- <class name="com.redhat.rhn.domain.action.channel.SubscribeChannelsActionDetails"
            table="rhnActionSubChannels">
         <id name="id" type="long" column="id">
             <meta attribute="scope-set">protected</meta>
@@ -30,5 +30,5 @@
             <many-to-many column="token_id"
                           class="com.redhat.rhn.domain.channel.AccessToken"/>
         </set>
-    </class>
+    <class> -->
 </hibernate-mapping>

@@ -63,9 +63,6 @@ public class ConfigRevisionActionTest extends RhnBaseTestCase {
         cra.setFailureId(three);
         assertEquals(three, cra.getFailureId());
 
-        cra.setId(three);
-        assertEquals(three, cra.getId());
-
         cra.setParentAction(parent);
         assertEquals(parent, cra.getParentAction());
 

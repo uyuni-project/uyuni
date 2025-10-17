@@ -3,7 +3,7 @@
 PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="com.redhat.rhn.domain.action.salt.ApplyStatesActionDetails"
+    <!-- <class name="com.redhat.rhn.domain.action.salt.ApplyStatesActionDetails"
             table="rhnActionApplyStates">
         <id name="id" type="long" column="id">
             <meta attribute="scope-set">protected</meta>
@@ -25,7 +25,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
             <key column="action_apply_states_id" />
             <one-to-many class="com.redhat.rhn.domain.action.salt.ApplyStatesActionResult" />
         </set>
-    </class>
+    <class> -->
     <query name="ApplyStatesActionDetails.findByActionId">
         <![CDATA[FROM com.redhat.rhn.domain.action.salt.ApplyStatesActionDetails WHERE parentAction.id = :action_id]]>
     </query>

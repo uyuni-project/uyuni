@@ -3,7 +3,7 @@
 PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-        <class name="com.redhat.rhn.domain.action.server.ServerAction"
+        <!-- <class name="com.redhat.rhn.domain.action.server.ServerAction"
                    table="rhnServerAction" >
 
         <composite-id>
@@ -25,14 +25,15 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
             class="com.redhat.rhn.domain.action.ActionStatus"
             column="status" />
 
-                <!-- we do this so that we don't have to load the whole server object as a key which is very expensive
-                                this is the reason for insert="false" update="false" -->
+                we do this so that we don't have to load the whole server object as a key which is very expensive
+                                this is the reason for insert="false" update="false"
             <many-to-one
             name="server"
             class="com.redhat.rhn.domain.server.Server"
             column="server_id" insert="false" update="false"/>
 
-        </class>
+        <class> -->
+<!--
         <query name="ServerAction.findPendingActionsForServer">
            <![CDATA[from com.redhat.rhn.domain.action.server.ServerAction as sa where sa.server.id = :serverId and sa.parentAction.actionType.label = :label
                         and status in ( 0, 1 )]]>
@@ -43,10 +44,10 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                         ]]>
         </query>
 
-        <!--
+
             The explicit cast in this query is needed since the postgresql jdbc driver is not able to define the type.
             See more info at https://bit.ly/3Gh3Ez5
-         -->
+
         <query name="ServerAction.findByServerAndActionTypeAndCreatedDate">
             <![CDATA[from com.redhat.rhn.domain.action.server.ServerAction as sa
                     where sa.server = :server
@@ -78,5 +79,5 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                  where sa.server = :server and sa.created >= :date and sa.status in (:statusList)
             ]]>
         </query>
-
+-->
 </hibernate-mapping>

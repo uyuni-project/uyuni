@@ -14,18 +14,27 @@
  */
 package com.redhat.rhn.domain.action.config;
 
-import com.redhat.rhn.domain.action.ActionChild;
+import com.redhat.rhn.domain.BaseDomainHelper;
+import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.config.ConfigFileName;
 import com.redhat.rhn.domain.server.Server;
+
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 
 /**
  * ConfigFileNameAssociation -- Represents DB table, rhnActionConfigFileName
  */
-public class ConfigFileNameAssociation extends ActionChild {
+public class ConfigFileNameAssociation extends BaseDomainHelper {
 
     private ConfigFileName configFileName;
     private Server server;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "action_id", nullable = false)
+    private Action parentAction;
 
     /**
      * @return Returns the configFileName.
@@ -53,6 +62,22 @@ public class ConfigFileNameAssociation extends ActionChild {
      */
     public void setServer(Server serverIn) {
         server = serverIn;
+    }
+
+    /**
+     * Gets the parent Action associated with this ServerAction record
+     * @return Returns the parentAction.
+     */
+    public Action getParentAction() {
+        return parentAction;
+    }
+
+    /**
+     * Sets the parent Action associated with this ServerAction record
+     * @param parentActionIn The parentAction to set.
+     */
+    public void setParentAction(Action parentActionIn) {
+        this.parentAction = parentActionIn;
     }
 
 }

@@ -14,7 +14,8 @@
  */
 package com.redhat.rhn.domain.action.config;
 
-import com.redhat.rhn.domain.action.ActionChild;
+import com.redhat.rhn.domain.BaseDomainHelper;
+import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.server.Server;
 
@@ -22,6 +23,10 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.io.Serializable;
+
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 /**
  * ConfigChannelAssocation - Class representation of the table rhnActionConfigChannel.  This
@@ -35,11 +40,15 @@ import java.io.Serializable;
  * http://www.hibernate.org/118.html#A11
  *
  */
-public class ConfigChannelAssociation extends ActionChild implements Serializable {
+public class ConfigChannelAssociation extends BaseDomainHelper implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private Server server;
     private ConfigChannel configChannel;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "action_id", nullable = false)
+    private Action parentAction;
 
     /**
      * @return Returns the configChannel.
@@ -64,6 +73,22 @@ public class ConfigChannelAssociation extends ActionChild implements Serializabl
      */
     public void setServer(Server serverIn) {
         this.server = serverIn;
+    }
+
+    /**
+     * Gets the parent Action associated with this ServerAction record
+     * @return Returns the parentAction.
+     */
+    public Action getParentAction() {
+        return parentAction;
+    }
+
+    /**
+     * Sets the parent Action associated with this ServerAction record
+     * @param parentActionIn The parentAction to set.
+     */
+    public void setParentAction(Action parentActionIn) {
+        this.parentAction = parentActionIn;
     }
 
     /**

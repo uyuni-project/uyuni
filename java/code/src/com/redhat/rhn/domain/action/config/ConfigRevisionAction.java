@@ -14,26 +14,54 @@
  */
 package com.redhat.rhn.domain.action.config;
 
-import com.redhat.rhn.domain.action.ActionChild;
+import com.redhat.rhn.domain.BaseDomainHelper;
+import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.server.Server;
 
-import java.util.Date;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 /**
  * ConfigRevisionAction - Class representation of the table rhnActionConfigRevision.
  *
  */
-public class ConfigRevisionAction extends ActionChild {
+@Entity
+@Table(name = "rhnActionConfigRevision")
+public class ConfigRevisionAction extends BaseDomainHelper {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "actioncr_seq")
+    @SequenceGenerator(name = "actioncr_seq", sequenceName = "rhn_actioncr_id_seq", allocationSize = 1)
     private Long id;
-    private Long failureId;
-    private Date created;
-    private Date modified;
 
+    @Column(name = "failure_id")
+    private Long failureId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "server_id")
     private Server server;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "config_revision_id")
     private ConfigRevision configRevision;
+
+    @OneToOne(mappedBy = "configRevisionAction", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private ConfigRevisionActionResult configRevisionActionResult;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "action_id", updatable = false, nullable = false)
+    private Action parentAction;
 
     /**
      * Get the id
@@ -47,7 +75,7 @@ public class ConfigRevisionAction extends ActionChild {
      * Set the id
      * @param idIn The id to set.
      */
-    public void setId(Long idIn) {
+    protected void setId(Long idIn) {
         this.id = idIn;
     }
     /**
@@ -65,43 +93,6 @@ public class ConfigRevisionAction extends ActionChild {
     public void setFailureId(Long failureIdIn) {
         this.failureId = failureIdIn;
     }
-
-    /**
-     * Getter for created
-     * @return Date to get
-    */
-    @Override
-    public Date getCreated() {
-        return this.created;
-    }
-
-    /**
-     * Setter for created
-     * @param createdIn to set
-    */
-    @Override
-    public void setCreated(Date createdIn) {
-        this.created = createdIn;
-    }
-
-    /**
-     * Getter for modified
-     * @return Date to get
-    */
-    @Override
-    public Date getModified() {
-        return this.modified;
-    }
-
-    /**
-     * Setter for modified
-     * @param modifiedIn to set
-    */
-    @Override
-    public void setModified(Date modifiedIn) {
-        this.modified = modifiedIn;
-    }
-
 
     /**
      * Get the server object
@@ -149,6 +140,22 @@ public class ConfigRevisionAction extends ActionChild {
     public void setConfigRevisionActionResult(
             ConfigRevisionActionResult configRevisionActionResultIn) {
         this.configRevisionActionResult = configRevisionActionResultIn;
+    }
+
+    /**
+     * Gets the parent Action associated with this ServerAction record
+     * @return Returns the parentAction.
+     */
+    public Action getParentAction() {
+        return parentAction;
+    }
+
+    /**
+     * Sets the parent Action associated with this ServerAction record
+     * @param parentActionIn The parentAction to set.
+     */
+    public void setParentAction(Action parentActionIn) {
+        this.parentAction = parentActionIn;
     }
 
 }

@@ -14,8 +14,8 @@
  */
 package com.redhat.rhn.domain.action.server;
 
+import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.action.Action;
-import com.redhat.rhn.domain.action.ActionChild;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.server.Server;
@@ -33,25 +33,79 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
+import javax.persistence.Table;
+
 /**
  * Class representation of the table rhnServerAction.
  */
-public class ServerAction extends ActionChild implements Serializable {
+@Entity
+@Table(name = "rhnServerAction")
+@IdClass(ServerActionId.class)
+public class ServerAction extends BaseDomainHelper implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private static final Logger LOG = LogManager.getLogger(ServerAction.class);
 
-    private Long resultCode;
+    @Id
+    @Column(name = "server_id")
     private Long serverId;
+
+    @Id
+    @ManyToOne(targetEntity = Action.class, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.DETACH})
+    @JoinColumn(name = "action_id")
+    private Action parentAction;
+
+
+    @Column(name = "result_code")
+    private Long resultCode;
+
+    @Column(name = "result_msg")
     private String resultMsg;
+
+    @Column(name = "pickup_time")
     private Date pickupTime;
+
+    @Column(name = "completion_time")
     private Date completionTime;
+
+    @Column(name = "remaining_tries")
     private Long remainingTries;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "status")
     private ActionStatus status;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId
     private Server server;
 
+
     private static MaintenanceManager maintenanceManager = new MaintenanceManager();
+
+    /**
+     * Gets the parent Action associated with this ServerAction record
+     * @return Returns the parentAction.
+     */
+    public Action getParentAction() {
+        return parentAction;
+    }
+
+    /**
+     * Sets the parent Action associated with this ServerAction record
+     * @param parentActionIn The parentAction to set.
+     */
+    public void setParentAction(Action parentActionIn) {
+        this.parentAction = parentActionIn;
+    }
 
     /**
      * Getter for status
@@ -226,7 +280,6 @@ public class ServerAction extends ActionChild implements Serializable {
      * @param serverIn The server to set.
      */
     public void setServerWithCheck(Server serverIn) {
-        Action parentAction = getParentAction();
         if (parentAction != null) {
             maintenanceManager.canActionBeScheduled(Set.of(serverIn.getId()), parentAction);
         }
