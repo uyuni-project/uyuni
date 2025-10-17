@@ -20,9 +20,13 @@ import com.suse.oval.ovaltypes.CriteriaType;
 import com.suse.oval.ovaltypes.CriterionType;
 import com.suse.oval.ovaltypes.DefinitionType;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.BooleanSupplier;
 import java.util.stream.Collectors;
 
@@ -31,6 +35,8 @@ import java.util.stream.Collectors;
  * OVAL criteria trees
  */
 public abstract class CriteriaTreeBasedExtractor implements VulnerablePackagesExtractor {
+    private static final Logger LOG = LoggerFactory.getLogger(CriteriaTreeBasedExtractor.class);
+
     protected final DefinitionType definition;
     protected final CriteriaType criteriaRoot;
 
@@ -59,9 +65,17 @@ public abstract class CriteriaTreeBasedExtractor implements VulnerablePackagesEx
     public final List<ProductVulnerablePackages> extract() {
         List<BaseCriteria> matchedCriteriaList = walkCriteriaTree();
 
-        return matchedCriteriaList.stream().map(this::extractItem)
-                .flatMap(Collection::stream)
-                .collect(Collectors.toList());
+        return matchedCriteriaList.stream().map(criteria -> {
+                try {
+                    return extractItem(criteria);
+                }
+                catch (Exception e) {
+                    LOG.warn("Failed to extract vulnerability metadata from Criteria item: {}", criteria, e);
+                    return null;
+                }
+            }).filter(Objects::nonNull)
+            .flatMap(Collection::stream)
+            .collect(Collectors.toList());
     }
 
     /**
