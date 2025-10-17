@@ -150,7 +150,6 @@ Configuration file for spacewalk-base-minimal package.
 %setup -q
 tar xf %{S:1}
 
-# TODO: Check that all paths line up correctly here
 %build
 make -f Makefile.spacewalk-web PERLARGS="INSTALLDIRS=vendor" %{?_smp_mflags}
 mkdir -p %{buildroot}%{nodejs_sitelib}
