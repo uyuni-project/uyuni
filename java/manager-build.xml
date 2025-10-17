@@ -33,6 +33,7 @@
     <property name="tests.coverage.destfile" value="test-results/coverage/jacoco.exec"/>
     <property name="tests.configuration.path" value="${basedir}/buildconf/test"/>
 
+    <property name="root.dir" value="${basedir}/.."/>
     <property name="branding.src.dir" value="${basedir}/../branding/java/code/src"/>
     <property name="frontend.src.dir" value="${basedir}/../web/html/src"/>
     <property name="frontend.dist.dir" value="${basedir}/../web/html/src/dist"/>
@@ -320,20 +321,20 @@
         <deploy-execute command="ln -sf /usr/share/rhn/lib/rhn.jar ${deploy.dir}/WEB-INF/lib"/>
     </target>
 
-    <target name="is-yarn-installed">
-        <exec failifexecutionfails="false" resultproperty="yarn.installed" executable="yarn">
+    <target name="is-npm-installed">
+        <exec failifexecutionfails="false" resultproperty="npm.installed" executable="npm">
             <arg line="--version"/>
         </exec>
     </target>
 
-    <target name="warn-if-yarn-not-installed" depends="is-yarn-installed" unless="yarn.installed">
-        <fail>yarn is not in the PATH. Please install yarn first.</fail>
+    <target name="warn-if-npm-not-installed" depends="is-npm-installed" unless="npm.installed">
+        <fail>npm is not in the PATH. Please install npm first.</fail>
     </target>
 
-    <target name="build-js" depends="warn-if-yarn-not-installed" description="Build js files">
-        <echo message="Calling yarn build --check-spec=false ..."/>
-        <exec failonerror="true" executable="yarn" dir="${frontend.src.dir}">
-            <arg line="build --check-spec=false"/>
+    <target name="build-js" depends="warn-if-npm-not-installed" description="Build js files">
+        <echo message="Calling npm --prefix web run build -- --check-spec=false ..."/>
+        <exec failonerror="true" executable="npm" dir="${root.dir}">
+            <arg line="--prefix web run build -- --check-spec=false"/>
         </exec>
     </target>
 

@@ -148,17 +148,14 @@ Configuration file for spacewalk-base-minimal package.
 
 %prep
 %setup -q
-pushd html/src
 tar xf %{S:1}
-popd
 
+# TODO: Check that all paths line up correctly here
 %build
 make -f Makefile.spacewalk-web PERLARGS="INSTALLDIRS=vendor" %{?_smp_mflags}
-pushd html/src
 mkdir -p %{buildroot}%{nodejs_sitelib}
 cp -pr node_modules/* %{buildroot}%{nodejs_sitelib}
-NODE_OPTIONS="--trace-warnings --trace-deprecation --trace-uncaught --unhandled-rejections=strict" node build.js --check-spec=false
-popd
+npm run build -- --check-spec=false
 rm -rf %{buildroot}%{nodejs_sitelib}
 sed -i -r "s/^(web.buildtimestamp *= *)_OBS_BUILD_TIMESTAMP_$/\1$(date +'%%Y%%m%%d%%H%%M%%S')/" conf/rhn_web.conf
 
