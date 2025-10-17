@@ -422,12 +422,15 @@ public class PackageFactory extends HibernateFactory {
      */
     public static InstalledPackage lookupByNameAndServer(String name, Server server) {
         PackageName packName = lookupPackageName(name);
-        Map<String, Object> params = new HashMap<>();
-        params.put("server", server);
-        params.put("name", packName);
 
-        List<InstalledPackage> original = singleton.listObjectsByNamedQuery(
-                "InstalledPackage.lookupByServerAndName", params);
+        Session session = HibernateFactory.getSession();
+        List<InstalledPackage> original = session.createQuery("""
+                        FROM InstalledPackage AS p
+                        WHERE p.server= :server AND p.name = :name""", InstalledPackage.class)
+                .setParameter("server", server)
+                .setParameter("name", packName)
+                .list();
+
         if (original.isEmpty()) {
             return null;
         }

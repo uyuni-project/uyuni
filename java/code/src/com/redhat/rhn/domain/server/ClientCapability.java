@@ -18,14 +18,36 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.annotations.Immutable;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  * ClientCapability
  */
+@Entity
+@Table(name = "rhnClientCapability")
+@Immutable
+@IdClass(ClientCapabilityId.class)
 public class ClientCapability extends BaseDomainHelper {
 
-    private ClientCapabilityId id;
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "server_id")
+    private Server server;
 
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "capability_name_id")
+    private Capability capability;
+
+    @Column(nullable = false)
     private long version;
 
     /**
@@ -35,27 +57,30 @@ public class ClientCapability extends BaseDomainHelper {
     }
 
     /**
-     * @param server the server
-     * @param capability the capability
+     * @param serverIn the server
+     * @param capabilityIn the capability
      * @param versionIn the version
      */
-    public ClientCapability(Server server, Capability capability, long versionIn) {
-        this.id = new ClientCapabilityId(server, capability);
+    public ClientCapability(Server serverIn, Capability capabilityIn, long versionIn) {
+        this.server = serverIn;
+        this.capability = capabilityIn;
         this.version = versionIn;
     }
 
-    /**
-     * @return the id
-     */
-    public ClientCapabilityId getId() {
-        return id;
+    public Server getServer() {
+        return server;
     }
 
-    /**
-     * @param idIn the id
-     */
-    public void setId(ClientCapabilityId idIn) {
-        this.id = idIn;
+    public void setServer(Server serverIn) {
+        server = serverIn;
+    }
+
+    public Capability getCapability() {
+        return capability;
+    }
+
+    public void setCapability(Capability capabilityIn) {
+        capability = capabilityIn;
     }
 
     /**
@@ -81,7 +106,8 @@ public class ClientCapability extends BaseDomainHelper {
             return false;
         }
         return new EqualsBuilder()
-                .append(getId(), that.getId())
+                .append(getServer(), that.getServer())
+                .append(getCapability(), that.getCapability())
                 .isEquals();
     }
 
@@ -91,7 +117,8 @@ public class ClientCapability extends BaseDomainHelper {
     @Override
     public int hashCode() {
         return new HashCodeBuilder()
-                .append(getId())
+                .append(getServer())
+                .append(getCapability())
                 .toHashCode();
     }
 

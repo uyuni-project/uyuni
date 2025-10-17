@@ -45,7 +45,10 @@ public class ServerNetworkFactory extends HibernateFactory {
      */
     public static List<ServerNetAddress4> findServerNetAddress4(Long interfaceId) {
         return HibernateFactory.getSession()
-                .getNamedQuery("ServerNetAddress4.lookup")
+                .createQuery("""
+                        FROM ServerNetAddress4 AS sa
+                        WHERE sa.interfaceId = :interface_id
+                        ORDER BY address""", ServerNetAddress4.class)
                 .setParameter("interface_id", interfaceId)
                 .list();
     }
@@ -59,7 +62,10 @@ public class ServerNetworkFactory extends HibernateFactory {
      */
     public static List<ServerNetAddress6> findServerNetAddress6(Long interfaceId) {
         return HibernateFactory.getSession()
-                .getNamedQuery("ServerNetAddress6.lookup_by_id")
+                .createQuery("""
+                        FROM ServerNetAddress6 AS sa
+                        WHERE sa.interfaceId = :interface_id
+                        ORDER BY scope, address""", ServerNetAddress6.class)
                 .setParameter("interface_id", interfaceId)
                 .list();
     }

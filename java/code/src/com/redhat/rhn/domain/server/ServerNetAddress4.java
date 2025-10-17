@@ -22,15 +22,32 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.Table;
+
 /**
  * ServerNetAddress4
  */
 
+@Entity
+@Table(name = "rhnServerNetAddress4")
+@IdClass(ServerNetAddress4Id.class)
 public class ServerNetAddress4 extends BaseDomainHelper implements Serializable {
 
+    @Id
+    @Column(name = "interface_id")
     private Long interfaceId;
+
+    @Id
     private String address;
+
+    @Column
     private String netmask;
+
+    @Column
     private String broadcast;
 
     /**
