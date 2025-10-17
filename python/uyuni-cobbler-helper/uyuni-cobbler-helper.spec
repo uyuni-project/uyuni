@@ -26,6 +26,7 @@ Summary:        Python helper functions for %{productprettyname} Cobbler snippet
 License:        Apache-2.0
 Group:          System/Management
 URL:            https://github.com/uyuni-project/uyuni
+#!CreateArchive: %{name}
 Source0:        %{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
