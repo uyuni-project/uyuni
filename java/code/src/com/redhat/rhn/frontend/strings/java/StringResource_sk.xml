@@ -11948,10 +11948,6 @@ Ak chcete túto situáciu napraviť, pridajte prihlasovacie údaje SCC &lt;a hre
         <source>The selected systems do not have a common base product.</source>
         <target state="translated">Vybrané systémy nemajú spoločný základný produkt.</target>
       </trans-unit>
-      <trans-unit id="system.migration.noServersSelected" xml:space="preserve">
-        <source>Unable to identify a valid migration target for the selected systems.</source>
-        <target state="translated">Nie je možné identifikovať platný cieľ migrácie pre vybrané systémy.</target>
-      </trans-unit>
       <trans-unit id="product_migration.os_not_supported" xml:space="preserve">
         <source>Product Migrations are not supported for the OS of this system.</source>
         <target state="translated">Migrácie produktov nie sú podporované pre OS tohto systému.</target>
