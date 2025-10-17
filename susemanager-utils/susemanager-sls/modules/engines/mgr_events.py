@@ -242,10 +242,10 @@ class Responder:
     def add_event_to_queue(self, raw):
         try:
             tag, data = self.event_bus.unpack(raw)
+            self._queue.append((tag, data))
         # pylint: disable-next=broad-exception-caught
         except Exception as e:
             log.warning("Unable to unpack the event data: %s", e)
-        self._queue.append((tag, data))
 
     def db_keepalive(self):
         if self.connection.closed:
