@@ -11508,10 +11508,6 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
           <source>The selected systems do not have a common base product.</source>
       <target state="new"/>
   </trans-unit>
-      <trans-unit id="system.migration.noServersSelected" xml:space="preserve">
-          <source>Unable to identify a valid migration target for the selected systems.</source>
-      <target state="new"/>
-  </trans-unit>
       <trans-unit id="product_migration.os_not_supported" xml:space="preserve">
         <source>Product Migrations are not supported for the OS of this system.</source>
       <target state="new"/>
