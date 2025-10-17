@@ -32,5 +32,7 @@ LABEL org.uyuni.version="${PRODUCT_VERSION}"
 RUN /usr/sbin/groupmod -g 999 postgres && \
     /usr/sbin/usermod -u 999 -g 999 postgres
 
+RUN zypper in postgresql16-contrib
+
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 CMD ["postgres"]
