@@ -601,23 +601,25 @@ public class ProxyHandler extends BaseHandler {
     }
 
     /**
-     * Backup the proxy configuration in order to migrate it later.
+     * Backup the configuration of proxies in order to migrate them later.
      *
      * @param loggedInUser the connected user
-     * @param serverId the ID of the proxy to backup
+     * @param sids the IDs of the proxies to backup
      *
      * @return 1 in case of success
      *
-     * @apidoc.doc Backup the proxy configuration in order to migrate it later.
+     * @apidoc.doc Backup the configuration of proxies in order to migrate them later.
      * @apidoc.param #session_key()
-     * @apidoc.param #param_desc("int", "serverId", "The ID of the target server")
+     * @apidoc.param #array_single("int", "sids")
      * @apidoc.returntype #return_int_success()
      */
-    public int backupConfiguration(User loggedInUser, Integer serverId) {
+    public int backupConfiguration(User loggedInUser, List<Integer> sids) {
         try {
-            Server server = xmlRpcSystemHelper.lookupServer(loggedInUser, serverId);
-            server.asMinionServer().ifPresent(
-                    minion -> ProxyBackupApplyState.backupProxyConfig(loggedInUser, minion));
+            for (Integer sid : sids) {
+                Server server = xmlRpcSystemHelper.lookupServer(loggedInUser, sid);
+                server.asMinionServer().ifPresent(
+                        minion -> ProxyBackupApplyState.backupProxyConfig(loggedInUser, minion));
+            }
         }
         catch (InvalidProxyVersionException | RhnRuntimeException e) {
             LOG.error("Failed to backup a proxy configuration", e);
