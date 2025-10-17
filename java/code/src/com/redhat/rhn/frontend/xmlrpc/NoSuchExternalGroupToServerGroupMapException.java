@@ -31,7 +31,6 @@ public class NoSuchExternalGroupToServerGroupMapException extends FaultException
      */
     public NoSuchExternalGroupToServerGroupMapException(String group) {
         super(6845, "noSuchExternalGroupToServerGroupMap", LocalizationService
-                .getInstance().getMessage("api.externalgroup.nosuchgrouptoservergroup",
-                        new Object[] { group }));
+                .getInstance().getMessage("api.externalgroup.nosuchgrouptoservergroup", group));
     }
 }

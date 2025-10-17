@@ -37,8 +37,7 @@ public class NoSuchActionChainException extends FaultException {
         super(NoSuchActionChainException.ERROR_CODE,
               NoSuchActionChainException.ERROR_LABEL,
               LocalizationService.getInstance().
-                      getMessage("api.action.nosuchactionchain",
-                                 new Object[] {actionChainLabel}));
+                      getMessage("api.action.nosuchactionchain", actionChainLabel));
     }
 
     /**
@@ -53,7 +52,6 @@ public class NoSuchActionChainException extends FaultException {
         super(NoSuchActionChainException.ERROR_CODE,
               NoSuchActionChainException.ERROR_LABEL,
               LocalizationService.getInstance().
-                      getMessage("api.action.nosuchactionchain",
-                                 new Object[] {actionChainLabel}), cause);
+                      getMessage("api.action.nosuchactionchain", actionChainLabel), cause);
     }
 }

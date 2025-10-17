@@ -30,8 +30,7 @@ public class InvalidIpAddressException extends FaultException  {
      */
     public InvalidIpAddressException(String range) {
         super(2787, "ipAddress" , LocalizationService.getInstance().
-                getMessage("api.kickstart.ip.invalid",
-                        new Object [] {range}));
+                getMessage("api.kickstart.ip.invalid", range));
     }
 
     /**
@@ -41,8 +40,7 @@ public class InvalidIpAddressException extends FaultException  {
      */
     public InvalidIpAddressException(String range, Throwable cause) {
         super(2787, "ipAddress" , LocalizationService.getInstance().
-                getMessage("api.kickstart.ip.invalid",
-                        new Object [] {range}), cause);
+                getMessage("api.kickstart.ip.invalid", range), cause);
     }
 
 }

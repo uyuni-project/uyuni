@@ -29,7 +29,7 @@ public class InvalidVirtualizationTypeException extends FaultException {
      */
     public InvalidVirtualizationTypeException(String virtType) {
         super(2751, "invalidVirtType" , LocalizationService.getInstance().
-                getMessage("api.kickstart.invalidvirttype", new Object [] {virtType}));
+                getMessage("api.kickstart.invalidvirttype", virtType));
     }
 
 }

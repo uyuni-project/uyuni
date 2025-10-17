@@ -29,7 +29,7 @@ public class NoChannelsSelectedException extends FaultException  {
      */
     public NoChannelsSelectedException() {
         super(2603, "No Channels Selected" , LocalizationService.getInstance().
-                getMessage("api.errata.nochannelsselected", new Object [] {}));
+                getMessage("api.errata.nochannelsselected"));
     }
 
     /**
@@ -39,8 +39,7 @@ public class NoChannelsSelectedException extends FaultException  {
      */
     public NoChannelsSelectedException(String advisory, Throwable cause) {
         super(2603, "No Channels Selected" , LocalizationService.getInstance().
-                getMessage("api.errata.nochannelsselected",
-                new Object [] {advisory}), cause);
+                getMessage("api.errata.nochannelsselected", advisory), cause);
     }
 
 }

@@ -29,7 +29,6 @@ public class NoSuchKickstartInstallTypeException extends FaultException {
      */
     public NoSuchKickstartInstallTypeException(String installType) {
         super(2756, "invalidKickstartLabel" , LocalizationService.getInstance().
-                getMessage("api.kickstart.invalidkickstartinstalltype",
-                        new Object [] {installType}));
+                getMessage("api.kickstart.invalidkickstartinstalltype", installType));
     }
 }

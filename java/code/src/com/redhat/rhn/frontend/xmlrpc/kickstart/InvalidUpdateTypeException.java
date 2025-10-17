@@ -29,8 +29,7 @@ public class InvalidUpdateTypeException extends FaultException {
      */
     public InvalidUpdateTypeException(String updateType) {
         super(6134, "invalidKickstartLabel", LocalizationService.getInstance()
-                .getMessage("api.kickstart.invalidUpdateType",
-                        new Object[] { updateType }));
+                .getMessage("api.kickstart.invalidUpdateType", updateType));
     }
 
 }

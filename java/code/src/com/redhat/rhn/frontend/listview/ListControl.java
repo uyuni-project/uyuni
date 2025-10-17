@@ -123,8 +123,7 @@ public class ListControl {
         while (di.hasNext()) {
             Object inputRow = di.next();
             String value = (String)MethodUtil.callMethod(inputRow,
-                                                StringUtil.beanify("get " + filterColumn),
-                                                new Object[0]);
+                                                StringUtil.beanify("get " + filterColumn));
             // Make sure that the alpha inputs are converted
             // to uppercase
             if (value != null) {

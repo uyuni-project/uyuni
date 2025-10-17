@@ -114,7 +114,7 @@ public class StrutsDelegate {
      */
     // TODO Write unit tests for addError(String, ActionErrors)
     public void addError(String msgKey, ActionErrors errors) {
-        addError(errors, msgKey, new Object[0]);
+        addError(errors, msgKey);
     }
 
     /**
@@ -140,7 +140,7 @@ public class StrutsDelegate {
      * @param messages Messages set
      */
     public void addInfo(String msgKey, ActionMessages messages) {
-        this.addInfo(messages, msgKey, new Object[0]);
+        this.addInfo(messages, msgKey);
     }
 
     /**

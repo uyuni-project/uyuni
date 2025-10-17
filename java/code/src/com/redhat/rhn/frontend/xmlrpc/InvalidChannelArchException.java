@@ -30,7 +30,7 @@ public class InvalidChannelArchException extends FaultException  {
      */
     public InvalidChannelArchException(String label) {
         super(1205, "invalidChannelArch" , LocalizationService.getInstance().
-                getMessage("channel.invalidchannelarch", new Object [] {label}));
+                getMessage("channel.invalidchannelarch", label));
     }
 
     /**
@@ -43,7 +43,7 @@ public class InvalidChannelArchException extends FaultException  {
      */
     public InvalidChannelArchException(String label, Throwable cause) {
         super(1205, "invalidChannelArch" , LocalizationService.getInstance().
-                getMessage("channel.invalidchannelarch", new Object [] {label}) , cause);
+                getMessage("channel.invalidchannelarch", label) , cause);
     }
 
 }
