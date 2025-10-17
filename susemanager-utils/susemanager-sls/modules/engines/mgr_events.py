@@ -110,6 +110,7 @@ class Responder:
         self._connect_to_database()
         self._queue_thread = threading.Thread(target=self.queue_thread)
         self._queue_thread.start()
+        self._insert_exceptions = 0
 
     def _connect_to_database(self):
         db_config = self.config.get("postgres_db")
@@ -218,8 +219,24 @@ class Responder:
                 # Exception while inserting the data, put the data back to the queue
                 # and repeat the attempt of pushing it with the next cycle of queue_thread
                 # The exception was logged before in _insert
-                self._queue.insert(0, (tag, data))
+                # The event could cause exception on inserting by its payload.
+                # We need to prevent the situation when such event is getting stuck
+                # the processing the rest part of the queue.
+                # The amount of attempts to be pushed to the DB is limited
+                self._insert_exceptions += 1
+                if self._insert_exceptions < 5:
+                    self._queue.insert(0, (tag, data))
+                else:
+                    # Reset the counter on droping the event from the queue
+                    log.error(
+                        "The event '%s' was dropped as reached the maximum attempts to be pushed",
+                        tag,
+                    )
+                    self._insert_exceptions = 0
                 break
+            else:
+                # Reset the counter if there was no exception
+                self._insert_exceptions = 0
 
     @salt.ext.tornado.gen.coroutine
     def add_event_to_queue(self, raw):
