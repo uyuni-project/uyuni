@@ -65,7 +65,11 @@ export class ModalEditButton extends React.Component<Props, State> {
           isOpen={this.state.model !== undefined}
           onClose={() => this.setState({ model: undefined })}
           content={
-            <Form model={this.state.model} onValidate={(valid) => this.setState({ valid })}>
+            <Form
+              model={this.state.model}
+              onChange={(model) => this.setState({ model: { ...model } })}
+              onValidate={(valid) => this.setState({ valid })}
+            >
               <Text
                 name="value"
                 label={this.props.fieldLabel}
