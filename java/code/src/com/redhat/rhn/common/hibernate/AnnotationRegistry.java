@@ -45,6 +45,7 @@ import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionResult;
 import com.redhat.rhn.domain.action.scap.ScapActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptResult;
+import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.supportdata.SupportDataActionDetails;
 import com.redhat.rhn.domain.audit.XccdfBenchmark;
 import com.redhat.rhn.domain.audit.XccdfIdent;
@@ -481,6 +482,7 @@ public class AnnotationRegistry {
             ScapActionDetails.class,
             ScriptActionDetails.class,
             ScriptResult.class,
+            ServerAction.class,
             ServerAppStream.class,
             Server.class,
             ServerArch.class,
