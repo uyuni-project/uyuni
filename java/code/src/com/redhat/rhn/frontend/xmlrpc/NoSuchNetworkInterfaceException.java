@@ -30,7 +30,6 @@ public class NoSuchNetworkInterfaceException extends FaultException  {
      */
     public NoSuchNetworkInterfaceException(String interfaceName) {
         super(1072, "No Such Network Interface" , LocalizationService.getInstance().
-                getMessage("api.system.nosuchnetiface",
-                new Object [] {interfaceName}));
+                getMessage("api.system.nosuchnetiface", interfaceName));
     }
 }

@@ -271,8 +271,7 @@ public class ConfigChannelDto extends BaseDto {
         if (count == null) {
             count = 0;
         }
-        return service.getMessage("system.common.numsystems",
-                                        new Object[] {count});
+        return service.getMessage("system.common.numsystems", count);
     }
 
     /**

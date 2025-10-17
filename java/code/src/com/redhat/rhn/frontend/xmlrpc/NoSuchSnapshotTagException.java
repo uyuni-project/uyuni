@@ -34,6 +34,6 @@ public class NoSuchSnapshotTagException extends FaultException {
      */
     public NoSuchSnapshotTagException(String tagName) {
         super(1212, "NoSuchSnapshotTag", LocalizationService.getInstance().
-                getMessage("api.provisioning.snapshot.nosuchtag", new Object [] {tagName}));
+                getMessage("api.provisioning.snapshot.nosuchtag", tagName));
     }
 }

@@ -30,7 +30,7 @@ public class InvalidPackageProviderException extends FaultException  {
      */
     public InvalidPackageProviderException(String label) {
         super(2349, "invalidPackageProvider" , LocalizationService.getInstance().
-                getMessage("api.package.provider.invalidProvider", new Object [] {label}));
+                getMessage("api.package.provider.invalidProvider", label));
     }
 
     /**
@@ -43,8 +43,7 @@ public class InvalidPackageProviderException extends FaultException  {
      */
     public InvalidPackageProviderException(String label, Throwable cause) {
         super(2349, "invalidPackageProvider" , LocalizationService.getInstance().
-                getMessage("api.package.provider.invalidProvider",
-                        new Object [] {label}) , cause);
+                getMessage("api.package.provider.invalidProvider", label) , cause);
     }
 
 }

@@ -34,7 +34,6 @@ public class SnapshotLookupException extends FaultException {
      */
     public SnapshotLookupException(Integer tagId) {
         super(1212, "SnapshotLookupException", LocalizationService.getInstance().
-                getMessage("api.provisioning.snapshot.nosuchsnapshot",
-                        new Object [] {tagId}));
+                getMessage("api.provisioning.snapshot.nosuchsnapshot", tagId));
     }
 }

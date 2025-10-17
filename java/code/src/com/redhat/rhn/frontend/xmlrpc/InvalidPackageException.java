@@ -30,7 +30,7 @@ public class InvalidPackageException extends FaultException  {
      */
     public InvalidPackageException(String pkg) {
         super(2300, "invalidPackage" , LocalizationService.getInstance().
-                getMessage("api.package.invalidpackage", new Object [] {pkg}));
+                getMessage("api.package.invalidpackage", pkg));
     }
 
     /**
@@ -40,7 +40,7 @@ public class InvalidPackageException extends FaultException  {
      */
     public InvalidPackageException(String pkg, Throwable cause) {
         super(2300, "invalidPackage" , LocalizationService.getInstance().
-                getMessage("api.package.invalidpackage", new Object [] {pkg}), cause);
+                getMessage("api.package.invalidpackage", pkg), cause);
     }
 
 }

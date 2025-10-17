@@ -811,7 +811,7 @@ public class CachedStatement implements Serializable {
             if (isList) { // requires matching get method returning the same
                 // list
                 Collection<Object> c = (Collection<Object>) MethodUtil.callMethod(obj,
-                        getName, new Object[0]);
+                        getName);
                 if (c == null) {
                     c = new ArrayList<>();
                 }
@@ -903,7 +903,7 @@ public class CachedStatement implements Serializable {
         if (obj instanceof Map) {
             return ((Map<String, Object>) obj).get(key);
         }
-        return MethodUtil.callMethod(obj, StringUtil.beanify("get " + key), new Object[0]);
+        return MethodUtil.callMethod(obj, StringUtil.beanify("get " + key));
     }
 
     private Map<Object, Integer> generatePointers(List<Object> dr, String key) {
@@ -920,7 +920,7 @@ public class CachedStatement implements Serializable {
             }
             else {
                 Object keyData = MethodUtil.callMethod(row,
-                        StringUtil.beanify("get " + key), new Object[0]);
+                        StringUtil.beanify("get " + key));
                 pointers.put(keyData, pos);
             }
             pos++;

@@ -104,7 +104,7 @@ public class SystemSearchAction extends BaseSearchAction implements Listable<Sys
                                     SystemSearchHelper.LOC_RACK } };
 
     public static final List<String> VALID_WHERE_STRINGS =
-                    Arrays.asList(new String[] {WHERE_ALL, WHERE_SSM});
+                    Arrays.asList(WHERE_ALL, WHERE_SSM);
 
     private static final Logger LOG = LogManager.getLogger(SystemSearchAction.class);
 

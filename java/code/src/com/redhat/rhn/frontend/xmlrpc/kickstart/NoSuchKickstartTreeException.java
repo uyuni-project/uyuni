@@ -29,8 +29,7 @@ public class NoSuchKickstartTreeException extends FaultException {
      */
     public NoSuchKickstartTreeException(String treeLabel) {
         super(2752, "invalidKickstartTreeLabel" , LocalizationService.getInstance().
-                getMessage("api.kickstart.nosuchkickstarttreelabel",
-                        new Object [] {treeLabel}));
+                getMessage("api.kickstart.nosuchkickstarttreelabel", treeLabel));
     }
 
 }

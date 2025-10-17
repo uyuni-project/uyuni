@@ -30,7 +30,7 @@ public class DuplicateErrataException extends FaultException  {
      */
     public DuplicateErrataException(String advisory) {
         super(2601, "Errata already exists" + advisory, LocalizationService.getInstance().
-                getMessage("api.errata.duplicateerrata", new Object [] {advisory}));
+                getMessage("api.errata.duplicateerrata", advisory));
     }
 
     /**
@@ -40,7 +40,7 @@ public class DuplicateErrataException extends FaultException  {
      */
     public DuplicateErrataException(String advisory, Throwable cause) {
         super(2601, "Errata already exists" , LocalizationService.getInstance().
-                getMessage("api.errata.duplicateerrata", new Object [] {advisory}), cause);
+                getMessage("api.errata.duplicateerrata", advisory), cause);
     }
 
 }

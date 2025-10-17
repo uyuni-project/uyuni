@@ -36,7 +36,7 @@ public class InvalidErrataException extends FaultException {
      */
     public InvalidErrataException(String errata) {
         super(2600, "invalidErrata" , LocalizationService.getInstance().
-                getMessage("api.errata.invaliderrata", new Object [] {errata}));
+                getMessage("api.errata.invaliderrata", errata));
     }
 
     /**
