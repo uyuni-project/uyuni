@@ -21,9 +21,19 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.io.Serializable;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 /**
  * Keyword
  */
+@Entity
+@Table(name = "rhnErrataKeyword")
+@IdClass(KeywordId.class)
 public class Keyword extends BaseDomainHelper implements Serializable {
     /**
      * A keyword signaling that a system reboot is advisable following the application of the errata.
@@ -37,7 +47,12 @@ public class Keyword extends BaseDomainHelper implements Serializable {
      * */
     public static final String RESTART_SUGGESTED = "restart_suggested";
 
+    @Id
     private String keyword;
+
+    @Id
+    @ManyToOne(targetEntity = Errata.class)
+    @JoinColumn(name = "errata_id")
     private Errata errata;
 
     /**

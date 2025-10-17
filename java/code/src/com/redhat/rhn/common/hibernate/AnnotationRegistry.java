@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.errata.ActionPackageDetails;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionDetails;
+import com.redhat.rhn.domain.action.rhnpackage.PackageActionRemovalFailure;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionResult;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionDetails;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionResult;
@@ -45,6 +46,7 @@ import com.redhat.rhn.domain.channel.ChannelSyncFlag;
 import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.channel.ContentSourceType;
 import com.redhat.rhn.domain.channel.DistChannelMap;
+import com.redhat.rhn.domain.channel.PrivateChannelFamily;
 import com.redhat.rhn.domain.channel.ProductName;
 import com.redhat.rhn.domain.cloudpayg.CloudRmtHost;
 import com.redhat.rhn.domain.cloudpayg.PaygCredentialsProduct;
@@ -85,8 +87,10 @@ import com.redhat.rhn.domain.credentials.RegistryCredentials;
 import com.redhat.rhn.domain.credentials.ReportDBCredentials;
 import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.domain.credentials.VHMCredentials;
+import com.redhat.rhn.domain.errata.Bug;
 import com.redhat.rhn.domain.errata.Cve;
 import com.redhat.rhn.domain.errata.ErrataFileType;
+import com.redhat.rhn.domain.errata.Keyword;
 import com.redhat.rhn.domain.errata.Severity;
 import com.redhat.rhn.domain.image.DeltaImageInfo;
 import com.redhat.rhn.domain.image.DockerfileProfile;
@@ -104,7 +108,11 @@ import com.redhat.rhn.domain.image.ProfileCustomDataValue;
 import com.redhat.rhn.domain.iss.IssMaster;
 import com.redhat.rhn.domain.iss.IssSlave;
 import com.redhat.rhn.domain.kickstart.KickstartCommandName;
+import com.redhat.rhn.domain.kickstart.KickstartDefaultRegToken;
 import com.redhat.rhn.domain.kickstart.KickstartInstallType;
+import com.redhat.rhn.domain.kickstart.KickstartIpRange;
+import com.redhat.rhn.domain.kickstart.KickstartPackage;
+import com.redhat.rhn.domain.kickstart.KickstartPreserveFileList;
 import com.redhat.rhn.domain.kickstart.KickstartSessionState;
 import com.redhat.rhn.domain.kickstart.KickstartTreeType;
 import com.redhat.rhn.domain.kickstart.KickstartVirtualizationType;
@@ -155,6 +163,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageRecommends;
 import com.redhat.rhn.domain.rhnpackage.PackageRequires;
 import com.redhat.rhn.domain.rhnpackage.PackageSuggests;
 import com.redhat.rhn.domain.rhnpackage.PackageSupplements;
+import com.redhat.rhn.domain.rhnpackage.profile.ProfileEntry;
 import com.redhat.rhn.domain.rhnpackage.profile.ProfileType;
 import com.redhat.rhn.domain.role.RoleImpl;
 import com.redhat.rhn.domain.rpm.SourceRpm;
@@ -282,6 +291,7 @@ public class AnnotationRegistry {
             AppStream.class,
             ArchType.class,
             BaseCredentials.class,
+            Bug.class,
             CPU.class,
             CPUArch.class,
             Capability.class,
@@ -354,8 +364,13 @@ public class AnnotationRegistry {
             IssPeripheral.class,
             IssPeripheralChannels.class,
             IssSlave.class,
+            Keyword.class,
             KickstartCommandName.class,
+            KickstartDefaultRegToken.class,
             KickstartInstallType.class,
+            KickstartIpRange.class,
+            KickstartPackage.class,
+            KickstartPreserveFileList.class,
             KickstartSessionState.class,
             KickstartTreeType.class,
             KickstartVirtualizationType.class,
@@ -379,6 +394,7 @@ public class AnnotationRegistry {
             OrgRecurringAction.class,
             OrgStateRevision.class,
             PackageActionDetails.class,
+            PackageActionRemovalFailure.class,
             PackageActionResult.class,
             PackageArch.class,
             PackageBreaks.class,
@@ -410,8 +426,10 @@ public class AnnotationRegistry {
             Pillar.class,
             PinnedSubscription.class,
             PlaybookPath.class,
+            PrivateChannelFamily.class,
             ProductName.class,
             ProfileCustomDataValue.class,
+            ProfileEntry.class,
             ProfileType.class,
             ProjectSource.class,
             ProvisionState.class,

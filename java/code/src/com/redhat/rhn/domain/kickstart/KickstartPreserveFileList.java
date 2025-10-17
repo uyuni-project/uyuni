@@ -14,25 +14,40 @@
  */
 package com.redhat.rhn.domain.kickstart;
 
+import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.common.FileList;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import java.io.Serializable;
-import java.util.Date;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  * kickstartpreservefilelist - Class representation of the table
  * rhnkickstartpreservefilelist.
  */
-public class KickstartPreserveFileList implements Serializable {
+@Entity
+@Table(name = "rhnKickstartPreserveFileList")
+@IdClass(KickstartPreserveFileListId.class)
+public class KickstartPreserveFileList extends BaseDomainHelper {
 
     private static final long serialVersionUID = 1L;
+
+    @Id
+    @ManyToOne(targetEntity = KickstartData.class)
+    @JoinColumn(name = "kickstart_id")
     private KickstartData ksdata;
+
+    @Id
+    @ManyToOne(targetEntity = FileList.class)
+    @JoinColumn(name = "file_list_id")
     private FileList fileList;
-    private Date created;
-    private Date modified;
+
     /**
      * Getter for ksdata
      * @return KickstartData to get
@@ -66,38 +81,6 @@ public class KickstartPreserveFileList implements Serializable {
     }
 
     /**
-     * Getter for created
-     * @return Date to get
-    */
-    public Date getCreated() {
-        return this.created;
-    }
-
-    /**
-     * Setter for created
-     * @param createdIn to set
-    */
-    public void setCreated(Date createdIn) {
-        this.created = createdIn;
-    }
-
-    /**
-     * Getter for modified
-     * @return Date to get
-    */
-    public Date getModified() {
-        return this.modified;
-    }
-
-    /**
-     * Setter for modified
-     * @param modifiedIn to set
-    */
-    public void setModified(Date modifiedIn) {
-        this.modified = modifiedIn;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -119,5 +102,4 @@ public class KickstartPreserveFileList implements Serializable {
                                     .append(fileList)
                                     .toHashCode();
     }
-
 }

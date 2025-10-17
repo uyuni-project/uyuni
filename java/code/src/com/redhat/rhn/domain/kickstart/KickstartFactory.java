@@ -564,7 +564,7 @@ public class KickstartFactory extends HibernateFactory {
      */
     public static List<KickstartIpRange> lookupRangeByOrg(Org org) {
         Session session = HibernateFactory.getSession();
-        return session.getNamedQuery("KickstartIpRange.lookupByOrg")
+        return session.createQuery("FROM KickstartIpRange AS t WHERE t.org = :org ", KickstartIpRange.class)
                 .setParameter("org", org)
                 .list();
     }
@@ -1070,14 +1070,16 @@ public class KickstartFactory extends HibernateFactory {
     }
 
     /**
-     * @param ksData KcikstartData to lookup
+     * @param ksData KickstartData to lookup
      * @param packageName PackageName to lookup
-     * @return KickstartPackge list
+     * @return KickstartPackage list
      */
     public static List<KickstartPackage> lookupKsPackageByKsDataAndPackageName(
             KickstartData ksData, PackageName packageName) {
         return HibernateFactory.getSession()
-                .getNamedQuery("KickstartPackage.findByKickstartDataAndPackageName")
+                .createQuery(
+                        "FROM KickstartPackage AS kp WHERE kp.ksData = :ks_data AND kp.packageName = :package_name",
+                        KickstartPackage.class)
                 .setParameter("ks_data", ksData.getId(), StandardBasicTypes.LONG)
                 .setParameter("package_name", packageName.getId(), StandardBasicTypes.LONG)
                 .list();

@@ -23,6 +23,13 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.io.Serializable;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 /**
  *
  * InstalledPackage
@@ -33,12 +40,31 @@ import java.io.Serializable;
  *    satellite does not have.
  *    This object is an instance of a package that is installed on a server
  */
+@Entity
+@Table(name = "rhnServerProfilePackage")
+@IdClass(ProfileEntryId.class)
 public class ProfileEntry implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    @Id
+    @ManyToOne(targetEntity = PackageEvr.class)
+    @JoinColumn(name = "evr_id")
     private PackageEvr evr;
+
+    @Id
+    @ManyToOne(targetEntity = PackageName.class)
+    @JoinColumn(name = "name_id")
     private PackageName name;
+
+    @Id
+    @ManyToOne(targetEntity = PackageArch.class)
+    @JoinColumn(name = "package_arch_id")
     private PackageArch arch;
+
+    @Id
+    @ManyToOne(targetEntity = Profile.class)
+    @JoinColumn(name = "server_profile_id")
     private Profile profile;
 
     /**

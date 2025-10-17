@@ -14,25 +14,38 @@
  */
 package com.redhat.rhn.domain.channel;
 
+import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.org.Org;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import java.io.Serializable;
-import java.util.Date;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  * PrivateChannelFamily - Class representation of the table rhnPrivateChannelFamily.
  */
-public class PrivateChannelFamily implements Serializable {
+@Entity
+@Table(name = "rhnPrivateChannelFamily")
+@IdClass(PrivateChannelFamilyId.class)
+public class PrivateChannelFamily extends BaseDomainHelper {
 
     private static final long serialVersionUID = 1L;
-    private ChannelFamily channelFamily;
-    private Org org;
-    private Date created;
-    private Date modified;
 
+    @Id
+    @ManyToOne(targetEntity = ChannelFamily.class)
+    @JoinColumn(name = "CHANNEL_FAMILY_ID")
+    private ChannelFamily channelFamily;
+
+    @Id
+    @ManyToOne(targetEntity = Org.class)
+    @JoinColumn(name = "ORG_ID")
+    private Org org;
 
     /**
      * @return Returns the channelFamily.
@@ -61,39 +74,6 @@ public class PrivateChannelFamily implements Serializable {
     public void setOrg(Org orgIn) {
         this.org = orgIn;
     }
-
-    /**
-     * Getter for created
-     * @return Date to get
-    */
-    public Date getCreated() {
-        return this.created;
-    }
-
-    /**
-     * Setter for created
-     * @param createdIn to set
-    */
-    public void setCreated(Date createdIn) {
-        this.created = createdIn;
-    }
-
-    /**
-     * Getter for modified
-     * @return Date to get
-    */
-    public Date getModified() {
-        return this.modified;
-    }
-
-    /**
-     * Setter for modified
-     * @param modifiedIn to set
-    */
-    public void setModified(Date modifiedIn) {
-        this.modified = modifiedIn;
-    }
-
 
     /**
      * {@inheritDoc}

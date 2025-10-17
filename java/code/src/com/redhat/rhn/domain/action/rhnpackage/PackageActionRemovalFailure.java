@@ -25,18 +25,54 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 /**
  * PackageActionRemovalFailure
  */
+@Entity
+@Table(name = "rhnActionPackageRemovalFailure")
+@IdClass(PackageActionRemovalFailureId.class)
 public class PackageActionRemovalFailure implements Serializable {
 
+    @Id
+    @ManyToOne(targetEntity = Server.class)
+    @JoinColumn(name = "server_id")
     private Server server;
+
+    @Id
+    @ManyToOne(targetEntity = Action.class)
+    @JoinColumn(name = "action_id")
     private Action action;
+
+    @Id
+    @ManyToOne(targetEntity = PackageName.class)
+    @JoinColumn(name = "name_id")
     private PackageName packageName;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "evr_id")
     private PackageEvr evr;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "capability_id")
     private PackageCapability capability;
+
+    @Column
     private Long flags;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "suggested")
     private PackageName suggested;
+
+    @Column
     private Long sense;
 
     /**

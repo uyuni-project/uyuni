@@ -145,6 +145,9 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
         assertNotNull(kf);
         kf.setKsdata(k);
 
+        kf.setFileList(TestUtils.saveAndReload(kf.getFileList()));
+        TestUtils.saveAndFlush(kf);
+
         KickstartDefaults d = createDefaults(k, user);
         assertNotNull(d);
         d.setKsdata(k);
