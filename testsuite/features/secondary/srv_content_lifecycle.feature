@@ -58,10 +58,10 @@ Feature: Content lifecycle
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "clp_name"
     And I click on "Attach/Detach Sources"
-    And I select "openSUSE Leap 15.6 (x86_64)" from "selectedBaseChannel"
-    And I wait until I see "Uyuni Client Tools for openSUSE Leap 15.6 (x86_64)" text
+    And I select "openSUSE Tumbleweed (x86_64)" from "selectedBaseChannel"
+    And I wait until I see "Uyuni Client Tools for openSUSE Tumbleweed (x86_64)" text
     And I click on "Save"
-    And I wait until I see "openSUSE Leap 15.6 (x86_64)" text
+    And I wait until I see "openSUSE Tumbleweed (x86_64)" text
     Then I should see a "Version 1: (draft - not built) - Check the changes below" text
 
 @susemanager
@@ -75,7 +75,7 @@ Feature: Content lifecycle
   Scenario: Verify added sources
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "clp_name"
-    Then I should see a "openSUSE Leap 15.6 (x86_64)" text
+    Then I should see a "openSUSE Tumbleweed (x86_64)" text
     And I should see a "Build (1)" text
 
   Scenario: Add fonts packages filter to the project
@@ -235,7 +235,7 @@ Scenario: Create CLM filter that allows packages of type Package (Provides Name)
     And I enter "cereal" as "Provides Name"
     And I click on "Save" in "Create a new filter" modal
     Then I should see a "Filter created successfully" text
-  
+
   Scenario: Create CLM filter that denys packages of type Package (Provides Name)
     When I follow the left menu "Content Lifecycle > Filters"
     And I click on "Create Filter"
@@ -260,7 +260,7 @@ Scenario: Create CLM filter of type Package (Build date) that allows packages wh
     And I check radio button "Allow"
     And I click on "Save" in "Create a new filter" modal
     Then I should see a "Filter created successfully" text
-  
+
   Scenario: Create CLM filter of type Package (Build date) that denys packages whose date is lower than a defined one
     When I follow the left menu "Content Lifecycle > Filters"
     And I click on "Create Filter"
@@ -388,7 +388,7 @@ Scenario: Create CLM filter of type Package (Build date) that allows packages wh
     And I check radio button "Allow"
     And I click on "Save" in "Create a new filter" modal
     Then I should see a "Filter created successfully" text
-  
+
   Scenario: Create CLM filter of type Patch(Issue date) that denys patches whose date is greater or equal than a defined one
     When I follow the left menu "Content Lifecycle > Filters"
     And I click on "Create Filter"
@@ -685,10 +685,10 @@ Scenario: Create CLM filter of type Package (Build date) that allows packages wh
   Scenario: Cleanup: remove the created channels
     When I delete these channels with spacewalk-remove-channel:
       | clp_label-prod_label-fake-base-channel-suse-like |
-      | clp_label-prod_label-opensuse_leap15_6-x86_64    |
+      | clp_label-prod_label-opensuse_tumbleweed-x86_64    |
       | clp_label-qa_label-fake-base-channel-suse-like   |
-      | clp_label-qa_label-opensuse_leap15_6-x86_64      |
+      | clp_label-qa_label-opensuse_tumbleweed-x86_64      |
       | clp_label-dev_label-fake-base-channel-suse-like  |
-      | clp_label-dev_label-opensuse_leap15_6-x86_64     |
+      | clp_label-dev_label-opensuse_tumbleweed-x86_64     |
     And I list channels with spacewalk-remove-channel
     Then I shouldn't get "clp_label"
