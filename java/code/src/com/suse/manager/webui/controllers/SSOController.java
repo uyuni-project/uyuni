@@ -45,8 +45,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import javax.servlet.ServletException;
-
+import jakarta.servlet.ServletException;
 import spark.Request;
 import spark.Response;
 

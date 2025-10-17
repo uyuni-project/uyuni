@@ -6,7 +6,7 @@
 
 <page:applyDecorator name="layout_error">
 <body>
-    <c:set value="${requestScope[&quot;javax.servlet.error.request_uri&quot;]}" var="errorUrl" />
+    <c:set value="${requestScope[&quot;jakarta.servlet.error.request_uri&quot;]}" var="errorUrl" />
     <c:set var="escapedUrl" value="${fn:escapeXml(errorUrl)}"/>
 
     <h1>

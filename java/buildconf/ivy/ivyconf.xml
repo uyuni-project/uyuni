@@ -8,9 +8,15 @@
     <url name="github">
       <artifact pattern="https://github.com/[organization]/[artifact]/releases/download/[artifact]-[rev]/[artifact]-[rev].[ext]"/>
     </url>
+
+    <!-- Local JAR resolver must be inside <resolvers> -->
+    <filesystem name="local-test">
+      <artifact pattern="/home/rmestre/gitrepo/spacewalk/java/lib/[artifact]-[revision].[ext]"/>
+    </filesystem>
   </resolvers>
   <modules>
     <module organisation="suse" name="*" resolver="suse"/>
     <module organisation="checkstyle" name="*" resolver="github"/>
+    <module organisation="rimetest" name="*" resolver="local-test"/>
   </modules>
 </ivysettings>

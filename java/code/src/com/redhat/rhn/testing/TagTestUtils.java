@@ -17,7 +17,7 @@ package com.redhat.rhn.testing;
 
 import java.net.URL;
 
-import javax.servlet.jsp.tagext.Tag;
+import jakarta.servlet.jsp.tagext.Tag;
 
 /**
  * A class that allows us to easily test jsp tags.

@@ -19,7 +19,7 @@ import com.redhat.rhn.domain.user.User;
 
 import java.util.Locale;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * BaseEvent - basic superclass that holds common event members.

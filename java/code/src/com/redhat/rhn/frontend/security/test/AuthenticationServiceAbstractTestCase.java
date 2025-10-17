@@ -22,8 +22,8 @@ import org.junit.jupiter.api.BeforeEach;
 import java.util.Enumeration;
 import java.util.Vector;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * AuthenticationServiceTest is a base test class for testing AuthenticationService

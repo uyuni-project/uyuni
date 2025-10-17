@@ -28,8 +28,8 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.servlet.ServletRequest;
-import javax.servlet.jsp.JspException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.jsp.JspException;
 
 /**
  * PageSizeDecorator

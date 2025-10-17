@@ -16,8 +16,8 @@ package com.redhat.rhn.frontend.servlets;
 
 import com.redhat.rhn.domain.session.WebSession;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * PxtSessionDelegate provides an API with operations for retrieving, creating, and

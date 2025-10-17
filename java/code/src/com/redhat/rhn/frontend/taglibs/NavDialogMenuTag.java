@@ -23,8 +23,8 @@ import com.redhat.rhn.frontend.taglibs.helpers.RenderUtils;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.tagext.TagSupport;
+import jakarta.servlet.jsp.JspException;
+import jakarta.servlet.jsp.tagext.TagSupport;
 
 /**
  * NavDialogMenuTag displays the navigation tabs.

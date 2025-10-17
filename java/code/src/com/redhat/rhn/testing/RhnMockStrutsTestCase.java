@@ -45,8 +45,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import javax.servlet.http.Cookie;
-
+import jakarta.servlet.http.Cookie;
 import servletunit.HttpServletRequestSimulator;
 import servletunit.ServletContextSimulator;
 import servletunit.struts.MockStrutsTestCase;

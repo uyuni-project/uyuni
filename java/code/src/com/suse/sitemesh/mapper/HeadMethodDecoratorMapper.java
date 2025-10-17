@@ -18,7 +18,7 @@ import com.opensymphony.module.sitemesh.Decorator;
 import com.opensymphony.module.sitemesh.Page;
 import com.opensymphony.module.sitemesh.mapper.AbstractDecoratorMapper;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * Sitemesh Decorator Mapper to avoid apply decorator in head request method
@@ -38,7 +38,6 @@ public class HeadMethodDecoratorMapper extends AbstractDecoratorMapper {
      * @param page
      * @return if request is HEAD returns null, otherwise delegates in the next decorator mapper
      */
-    @Override
     public Decorator getDecorator(HttpServletRequest request, Page page) {
         if (request.getMethod().equalsIgnoreCase("HEAD")) {
             return null;

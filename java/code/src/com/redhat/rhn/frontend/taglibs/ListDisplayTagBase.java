@@ -30,9 +30,9 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Iterator;
 
-import javax.servlet.jsp.JspTagException;
-import javax.servlet.jsp.JspWriter;
-import javax.servlet.jsp.tagext.BodyTagSupport;
+import jakarta.servlet.jsp.JspTagException;
+import jakarta.servlet.jsp.JspWriter;
+import jakarta.servlet.jsp.tagext.BodyTagSupport;
 
 /**
  * Base class for ListDisplayTag implementation.

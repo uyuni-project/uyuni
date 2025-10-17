@@ -30,14 +30,16 @@ import com.suse.manager.webui.utils.gson.ResultJson;
 
 import com.google.gson.reflect.TypeToken;
 
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.disk.DiskFileItem;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.fileupload2.core.DiskFileItem;
+import org.apache.commons.fileupload2.core.DiskFileItemFactory;
+import org.apache.commons.fileupload2.core.FileItem;
+import org.apache.commons.fileupload2.jakarta.servlet6.JakartaServletFileUpload;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
@@ -74,17 +76,17 @@ public class ImageUploadController {
      */
     public static String uploadImage(Request request, Response response, User user) {
         try {
-            DiskFileItemFactory fileItemFactory = new DiskFileItemFactory();
-            fileItemFactory.setSizeThreshold(0);
+            DiskFileItemFactory fileItemFactory = DiskFileItemFactory.builder()
+                    .setBufferSize(0)
+                    .setPath(SALT_FILE_GENERATION_TEMP_PATH)
+                    .get();
 
-            // tmp directory writable by tomcat, redable by salt
-            fileItemFactory.setRepository(new File(SALT_FILE_GENERATION_TEMP_PATH));
-            List<FileItem> items = new ServletFileUpload(fileItemFactory).parseRequest(request.raw());
+            List<? extends FileItem> items = new JakartaServletFileUpload(fileItemFactory).parseRequest(request.raw());
 
             try {
                 items.stream().forEach(item -> {
                     if (ImageInfoFactory.lookupDeltaImageFile(user.getOrg(), item.getName()).isPresent() ||
-                        ImageInfoFactory.lookupImageFile(user.getOrg(), item.getName()).isPresent()) {
+                            ImageInfoFactory.lookupImageFile(user.getOrg(), item.getName()).isPresent()) {
                         throw new EntityExistsException("Image file already exists");
                     }
                     DiskFileItem diskFileItem = (DiskFileItem) item;
@@ -92,10 +94,21 @@ public class ImageUploadController {
                         throw new RuntimeException("Can't get uploaded file");
                     }
 
+                    Path tempFile = null;
+                    try {
+                        tempFile = Files.createTempFile("upload-", ".img");
+                        diskFileItem.write(tempFile);
+
+                    }
+                    catch (IOException eIn) {
+                        throw new RuntimeException("cannot create tmp file", eIn);
+                    }
+
                     // copy file to final location using salt
-                    GlobalInstanceHolder.SALT_API.copyFile(diskFileItem.getStoreLocation().toPath(),
-                        Paths.get(OSImageStoreUtils.getOSImageStorePathForOrg(user.getOrg()) + item.getName()))
-                        .orElseThrow(() -> new RuntimeException("Can't move the image file"));
+                    GlobalInstanceHolder.SALT_API.copyFile(
+                            tempFile,
+                            Paths.get(OSImageStoreUtils.getOSImageStorePathForOrg(user.getOrg()) + item.getName())
+                    ).orElseThrow(() -> new RuntimeException("Can't move the image file"));
                 });
             }
             finally {
@@ -103,7 +116,12 @@ public class ImageUploadController {
                 items.stream().forEach(item -> {
                     DiskFileItem diskFileItem = (DiskFileItem) item;
                     if (diskFileItem != null) {
-                        diskFileItem.delete();
+                        try {
+                            diskFileItem.delete();
+                        }
+                        catch (IOException eIn) {
+                            LOG.error("cannot delete file", eIn);
+                        }
                     }
                 });
             }

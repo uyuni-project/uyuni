@@ -40,7 +40,7 @@ artifacts:
     package: mybatis
     repository: Leap_sle
   - artifact: quartz
-    repository: Uyuni_Other
+    repository: systemsmanagement_Uyuni_Master_jakarta
   - artifact: log4j-core
     jar: log4j-core.jar
     package: log4j
