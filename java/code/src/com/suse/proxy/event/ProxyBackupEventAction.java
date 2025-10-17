@@ -290,8 +290,8 @@ public class ProxyBackupEventAction implements MessageAction {
             minions = MinionServerFactory.findEmptyProfilesByHwAddrs(Set.of(mac));
             if (minions == null || minions.isEmpty()) {
                 // Create empty profile for minions that do not exist
-                MinionServer minion = GlobalInstanceHolder.SYSTEM_MANAGER.createSystemProfile(proxy.getCreator(), mac,
-                        Map.of("hwAddress", mac));
+                MinionServer minion = GlobalInstanceHolder.SYSTEM_MANAGER.createSystemProfile(proxy.getCreator(),
+                        proxy.getOrg(), mac, Map.of("hwAddress", mac));
                 minion.addGroup(branchGroup);
 
                 // We had to create new empty profile but that might be only forgotten pxe entry. To ease with
