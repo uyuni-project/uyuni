@@ -33,6 +33,7 @@ describe("validation", () => {
       expect(Validation.isInt("0.9999999999")).toEqual(false);
       expect(Validation.isInt("-0.5")).toEqual(false);
       expect(Validation.isInt("abc")).toEqual(false);
+      expect(Validation.isInt("1.2.3.4")).toEqual(false);
 
       expect(Validation.isInt(Number.EPSILON.toString())).toEqual(false);
       expect(Validation.isInt((1 - Number.EPSILON).toString())).toEqual(false);
@@ -81,6 +82,7 @@ describe("validation", () => {
       expect(Validation.isFloat("1")).toEqual(true);
       expect(Validation.isFloat("-1")).toEqual(true);
       expect(Validation.isFloat("abc")).toEqual(false);
+      expect(Validation.isFloat("1.2.3.4")).toEqual(false);
 
       expect(Validation.isFloat(Number.EPSILON.toString())).toEqual(true);
       expect(Validation.isFloat((1 - Number.EPSILON).toString())).toEqual(true);

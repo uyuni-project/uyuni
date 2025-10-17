@@ -1,8 +1,8 @@
 import _isNil from "lodash/isNil";
 
 // We can't infer NaN at a type level here since typeof NaN is number
-const isNoValue = (input: any): input is null | undefined => {
-  return _isNil(input) || (typeof input === "number" && isNaN(input));
+const isNoValue = (input: any): input is null | undefined | "" => {
+  return _isNil(input) || input === "" || (typeof input === "number" && Number.isNaN(input));
 };
 
 type MaybeInput = string | null | undefined;
@@ -28,8 +28,8 @@ function isInt(inputOrConfig: MaybeInput | IsIntConfig) {
   }
 
   if (typeof inputOrConfig === "string") {
-    const parsed = parseFloat(inputOrConfig);
-    if (isNaN(parsed) || !Number.isInteger(parsed)) {
+    const parsed = Number(inputOrConfig);
+    if (Number.isNaN(parsed) || !Number.isInteger(parsed)) {
       return false;
     }
     return true;
@@ -40,8 +40,8 @@ function isInt(inputOrConfig: MaybeInput | IsIntConfig) {
       return false;
     }
 
-    const parsed = parseFloat(input);
-    if (isNaN(parsed) || !Number.isInteger(parsed)) {
+    const parsed = Number(input);
+    if (Number.isNaN(parsed) || !Number.isInteger(parsed)) {
       return false;
     }
 
@@ -62,8 +62,8 @@ function isFloat(input: MaybeInput): boolean {
     return false;
   }
 
-  const parsed = parseFloat(input);
-  if (isNaN(parsed)) {
+  const parsed = Number(input);
+  if (Number.isNaN(parsed)) {
     return false;
   }
   return true;
