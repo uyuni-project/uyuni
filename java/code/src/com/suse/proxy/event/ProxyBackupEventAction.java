@@ -20,6 +20,7 @@ import static com.suse.manager.webui.services.SaltConstants.SALT_FILE_GENERATION
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.hibernate.LookupException;
+import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.common.util.FileUtils;
@@ -74,8 +75,9 @@ public class ProxyBackupEventAction implements MessageAction {
         ProxyBackupEvent proxyEvent = ((ProxyBackupEventMessage) msg).getProxyBackupEvent();
         MinionServer proxy = proxyEvent.getMinion();
 
-        SystemManager.addHistoryEvent(proxy, "Proxy migration: started",
-                "Received event with client side data, starting data migration");
+        SystemManager.addHistoryEvent(proxy,
+                LocalizationService.getInstance().getMessage("event.proxymigrationstarted"),
+                LocalizationService.getInstance().getMessage("event.proxymigrationstarteddetails"));
         ServerFactory.save(proxy);
 
         Path base = Paths.get(SaltConstants.SALT_CP_PUSH_ROOT_PATH, proxy.getMinionId(), "files");
@@ -92,8 +94,9 @@ public class ProxyBackupEventAction implements MessageAction {
         }).toList();
 
         if (!validMigrationFiles(copiedFiles)) {
-            SystemManager.addHistoryEvent(proxy, "Proxy migration: failed",
-                "Received incomplete backup data. Try retrying the migration.");
+            SystemManager.addHistoryEvent(proxy,
+                    LocalizationService.getInstance().getMessage("event.proxymigrationsfailed"),
+                    LocalizationService.getInstance().getMessage("event.proxymigrationfailedincomplete"));
             ServerFactory.save(proxy);
         }
 
@@ -119,8 +122,9 @@ public class ProxyBackupEventAction implements MessageAction {
         }
         catch (Exception e) {
             LOG.error("Failed to parse migration files for minion {}", proxy.getMinionId(), e);
-            SystemManager.addHistoryEvent(proxy, "Proxy migration: failed",
-                    "Unable to parse uploaded data. See log file for details");
+            SystemManager.addHistoryEvent(proxy,
+                    LocalizationService.getInstance().getMessage("event.proxymigrationsfailed"),
+                    LocalizationService.getInstance().getMessage("event.proxymigrationfailedparsing"));
             return;
         }
 
@@ -129,40 +133,46 @@ public class ProxyBackupEventAction implements MessageAction {
             () -> proxy.addPillar(configPillar)
         );
 
-        SystemManager.addHistoryEvent(proxy, "Proxy migration: new configuration created",
-                "Reinstallation of the proxy will now autoconfigure it on the first boot");
+        SystemManager.addHistoryEvent(proxy,
+                LocalizationService.getInstance().getMessage("event.proxymigrationscreated"),
+                LocalizationService.getInstance().getMessage("event.proxymigrationcreateddetails"));
         ServerFactory.save(proxy);
 
         if (proxy.getPillarByCategory(BRANCH_FORMULA).isPresent()) {
-            SystemManager.addHistoryEvent(proxy, "Retail Branch Server migration: started",
-                    "Proxy detected as a Retail Branch Server, migration started");
+            SystemManager.addHistoryEvent(proxy,
+                    LocalizationService.getInstance().getMessage("event.rbsmigrationsstarted"),
+                    LocalizationService.getInstance().getMessage("event.rbsmigrationstarteddetails"));
             ServerFactory.save(proxy);
             // Create cobbler records based on PXE entries
             try {
                 List<String> results = new ArrayList<>();
                 String branchid = convertRBSToContainerized(proxy, config.getProxyFqdn());
                 boolean allPass = convertPxeEntriesToCobbler(pxeEntries, proxy, branchid, results);
-                SystemManager.addHistoryEvent(proxy, String.format("Retail Branch Server migration: finished %s",
-                                allPass ? "successfully" : "with errors"),
-                        "Proxy was detected to be a Retail Branch Server, branch migration was performed.<ul>" +
-                                results.stream().collect(Collectors.joining("</li><li>", "<li>", "</li>")) + "</ul>");
+                SystemManager.addHistoryEvent(proxy,
+                        allPass ? LocalizationService.getInstance().getMessage("event.rbsmigrationsfinishedok") :
+                            LocalizationService.getInstance().getMessage("event.rbsmigrationfinisederror"),
+                        LocalizationService.getInstance().getMessage("event.rbsmigrationfinisheddetails",
+                                results.stream().collect(Collectors.joining("</li><li>", "<li>", "</li>"))));
                 ServerFactory.save(proxy);
             }
             catch (SaltbootException | ProxyException e) {
                 LOG.error("Failed to convert PXE entries for minion {}", proxy.getMinionId(), e);
-                SystemManager.addHistoryEvent(proxy, "Retail Branch Server migration: failed",
-                        "Failed to migrate the branch server. See log files for details.");
+                SystemManager.addHistoryEvent(proxy,
+                        LocalizationService.getInstance().getMessage("event.rbsmigrationsfailed"),
+                        LocalizationService.getInstance().getMessage("event.rbsmigrationfaileddetails"));
                 return;
             }
             catch (Exception e) {
                 LOG.error("Unexpected exception for minion {}", proxy.getMinionId(), e);
-                SystemManager.addHistoryEvent(proxy, "Retail Branch Server migration: failed",
-                        "Failed to migrate the branch server. See log files for details.");
+                SystemManager.addHistoryEvent(proxy,
+                        LocalizationService.getInstance().getMessage("event.rbsmigrationsfailed"),
+                        LocalizationService.getInstance().getMessage("event.rbsmigrationfaileddetails"));
                 return;
             }
         }
-        SystemManager.addHistoryEvent(proxy, "Proxy migration: finished",
-                "All data were migrated. Proceed with reinstallation of the proxy host.");
+        SystemManager.addHistoryEvent(proxy,
+                LocalizationService.getInstance().getMessage("event.proxymigrationsfinished"),
+                LocalizationService.getInstance().getMessage("event.proxymigrationfinisheddetails"));
 
         // Remove the files in the temporary folder
         try {
@@ -248,7 +258,7 @@ public class ProxyBackupEventAction implements MessageAction {
         }
 
         if (pxeEntries == null) {
-            messages.add("No PXE entries found in a backup configuration for branch " + branchId);
+            messages.add(LocalizationService.getInstance().getMessage("event.pxemigrationnoentries", branchId));
             return true;
         }
 
@@ -263,7 +273,7 @@ public class ProxyBackupEventAction implements MessageAction {
                     pxe -> this.convertSinglePxeEntry(proxy, branchGroup, pxe, messages)
             ).reduce(true, (a, b) -> a && b);
         }
-        messages.add("No PXE entries found in a backup configuration for branch " + branchId);
+        messages.add(LocalizationService.getInstance().getMessage("event.pxemigrationnoentries", branchId));
         return true;
     }
 
@@ -291,23 +301,19 @@ public class ProxyBackupEventAction implements MessageAction {
                 if (branchLostAndFoundGroup == null) {
                     branchLostAndFoundGroup = ServerGroupFactory.create(
                             branchid + "-lostandfound",
-                            String.format("Collection of systems not registered, but present in branch %s pxe entries.",
-                                    branchid),
+                            LocalizationService.getInstance().getMessage("rbsmigration.lostfounddescription", branchid),
                             proxy.getOrg()
                     );
                 }
                 ServerFactory.addServerToGroup(minion, branchLostAndFoundGroup);
                 ServerFactory.addServerToGroup(minion, branchGroup);
 
-                messages.add(String.format(
-                "Lost and found: system with HW address %s in branch %s was not found as registered system."
-                                , mac, branchid));
+                messages.add(LocalizationService.getInstance().getMessage("event.pxemigrationlost", mac, branchid));
                 minions = List.of(minion);
             }
         }
         if (minions.size() > 1) {
-            messages.add(String.format(
-                    "Multiple minions found with the same MAC address %s. Cannot choose one, ignoring", mac));
+            messages.add(LocalizationService.getInstance().getMessage("event.pxemigrationduplicate", mac));
             return false;
         }
 
@@ -316,7 +322,7 @@ public class ProxyBackupEventAction implements MessageAction {
 
         // Check if minion is part of the branch group. If not, then ignore as this might have been moved minion.
         if (!minion.getGroups().contains(branchGroup)) {
-            messages.add(String.format("Not processing minion '%s' as it is not part of a branch group.", minionId));
+            messages.add(LocalizationService.getInstance().getMessage("event.pxemigrationnogroup", minionId));
             return false;
         }
 
@@ -324,8 +330,7 @@ public class ProxyBackupEventAction implements MessageAction {
         String probableBootImage = entry.get("probable_boot_image");
         String image = SaltbootUtils.findImageSaltbootProfile(probableBootImage, proxy.getOrg())
                 .orElseGet(() -> {
-                    messages.add(String.format(
-                            "Image not found: system '%s' is using unknown image '%s'. Using default boot image.",
+                    messages.add(LocalizationService.getInstance().getMessage("event.pxemigrationnoimage",
                             minionId, probableBootImage));
                     return SaltbootUtils.DEFAULT_BOOT_IMAGE;
                 });
@@ -335,7 +340,8 @@ public class ProxyBackupEventAction implements MessageAction {
                     List.of(mac), entry.get("args"));
         }
         catch (SaltbootException e) {
-            messages.add("Failed to create Saltboot system: " + e.getMessage());
+            messages.add(LocalizationService.getInstance().getMessage("event.pxemigrationsaltboot",
+                    e.getMessage()));
             return false;
         }
         return true;
