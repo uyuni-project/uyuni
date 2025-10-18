@@ -3,6 +3,7 @@
 PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
+    <!--
     <class name="com.redhat.rhn.domain.channel.Channel"
         table="rhnChannel">
 
@@ -142,13 +143,13 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                 <many-to-one name="original" column="original_id"
                 class="com.redhat.rhn.domain.channel.Channel" />
         </joined-subclass>
-        <!--
-              Need to change delete_channel to return the number of rows
-              affected in order for Hibernate to be able to use this method.
-        <sql-delete callable="true">{? = call rhn.delete_channel(:id)}</sql-delete>
-        -->
-    </class>
 
+        #      Need to change delete_channel to return the number of rows
+        #      affected in order for Hibernate to be able to use this method.
+        #<sql-delete callable="true">{? = call rhn.delete_channel(:id)}</sql-delete>
+
+    </class>
+-->
     <sql-query name="Channel.findAllByUserOrderByChild">
         <![CDATA[
     with user_channel_roles as materialized(

@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2018 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -32,6 +33,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.annotations.Type;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,9 +45,31 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 /**
  * Channel
  */
+@Entity
+@Table(name = "rhnChannel")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Channel extends BaseDomainHelper implements Comparable<Channel> {
 
     /**
@@ -59,44 +83,127 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
     private static List<String> archesToSkipRepodata = new ArrayList<>(Arrays
             .asList("channel-sparc-sun-solaris", "channel-i386-sun-solaris",
                     "channel-sparc"));
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rhn_channel_seq")
+    @SequenceGenerator(name = "rhn_channel_seq", sequenceName = "RHN_CHANNEL_ID_SEQ", allocationSize = 1)
+    private Long id;
+    @Column
     private String baseDir;
+    @Column
+    private String description;
+    @Column(name = "end_of_life")
+    private Date endOfLife;
+    @Column(name = "gpg_check")
+    @Type(type = "yes_no")
+    private boolean GPGCheck;
+    @Column(name = "gpg_key_url")
+    private String GPGKeyUrl;
+    @Column(name = "gpg_key_id")
+    private String GPGKeyId;
+    @Column(name = "gpg_key_fp")
+    private String GPGKeyFp;
+    @Column
+    private String label;
+    @Column(name = "last_modified")
+    private Date lastModified;
+    @Column(name = "last_synced")
+    private Date lastSynced;
+    @Column
+    private String name;
+    @Column
+    private String summary;
+    @Column(name = "channel_access")
+    private String access;
+    @Column(name = "maint_name")
+    private String maintainerName;
+    @Column(name = "maint_email")
+    private String maintainerEmail;
+    @Column(name = "maint_phone")
+    private String maintainerPhone;
+    @Column(name = "support_policy")
+    private String supportPolicy;
+    @Column(name = "update_tag")
+    private String updateTag;
+    @Column(name = "installer_updates")
+    @Type(type = "yes_no")
+    private boolean installerUpdates;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "org_id")
+    private Org org;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "channel_arch_id")
     private ChannelArch channelArch;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "checksum_type_id")
     private ChecksumType checksumType;
 
-    private String description;
-    private Date endOfLife;
-    private boolean GPGCheck;
-    private String GPGKeyUrl;
-    private String GPGKeyId;
-    private String GPGKeyFp;
-    private Long id;
-    private String label;
-    private Date lastModified;
-    private Date lastSynced;
-    private String name;
-    private String access;
-    private Org org;
-    private Channel parentChannel;
-    private ChannelProduct product;
-    private ProductName productName;
-    private Comps comps;
-    private Modules modules;
-    private MediaProducts mediaProducts;
-    private String summary;
-    private Set<Errata> erratas;
-    private Set<Package> packages;
-    private Set<ContentSource> sources;
-    private Set<ChannelFamily> channelFamilies;
+    @OneToMany(mappedBy = "channel", fetch = FetchType.LAZY)
     private Set<DistChannelMap> distChannelMaps;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_channel")
+    private Channel parentChannel;
+
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinTable(name = "rhnChannelFamilyMembers",
+               joinColumns = @JoinColumn(name = "channel_id"),
+               inverseJoinColumns = @JoinColumn(name = "channel_family_id"))
+    private Set<ChannelFamily> channelFamilies;
+
+    @OneToOne(mappedBy = "channel", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Comps comps;
+
+    @OneToOne(mappedBy = "channel", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Modules modules;
+
+    @OneToOne(mappedBy = "channel", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private MediaProducts mediaProducts;
+
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    @JoinTable(name = "rhnChannelTrust",
+            joinColumns = @JoinColumn(name = "channel_id"),
+            inverseJoinColumns = @JoinColumn(name = "org_trust_id"))
     private Set<Org> trustedOrgs;
-    private String maintainerName;
-    private String maintainerEmail;
-    private String maintainerPhone;
-    private String supportPolicy;
-    private String updateTag;
-    private boolean installerUpdates;
+
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    @JoinTable(name = "rhnChannelErrata",
+            joinColumns = @JoinColumn(name = "channel_id"),
+            inverseJoinColumns = @JoinColumn(name = "errata_id"))
+    private Set<Errata> erratas;
+
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    @JoinTable(name = "rhnChannelPackage",
+            joinColumns = @JoinColumn(name = "channel_id"),
+            inverseJoinColumns = @JoinColumn(name = "package_id"))
+    private Set<Package> packages;
+
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    @JoinTable(name = "rhnChannelContentSource",
+            joinColumns = @JoinColumn(name = "channel_id"),
+            inverseJoinColumns = @JoinColumn(name = "source_id"))
+    private Set<ContentSource> sources;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "channel_product_id")
+    private ChannelProduct product;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_name_id")
+    private ProductName productName;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "original_id")
     private Set<ClonedChannel> clonedChannels;
+
+    @OneToMany(mappedBy = "channel", fetch = FetchType.LAZY)
     private Set<SUSEProductChannel> suseProductChannels;
+
+    @OneToOne(mappedBy = "channel", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn(name = "channel_id")
     private ChannelSyncFlag channelSyncFlag;
 
     /**
@@ -677,7 +784,10 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
         if (!(other instanceof Channel castOther)) {
             return false;
         }
-        return new EqualsBuilder().append(getId(), castOther.getId()).isEquals();
+        return new EqualsBuilder()
+                .append(getId(), castOther.getId())
+                .append(isCloned(), castOther.isCloned())
+                .isEquals();
     }
 
     /**
@@ -685,7 +795,7 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
      */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(getId()).toHashCode();
+        return new HashCodeBuilder().append(getId()).append(isCloned()).toHashCode();
     }
 
     /**
