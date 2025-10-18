@@ -47,6 +47,9 @@ public class RecurringActionDetailsDto {
     /** Whether the cache should be flushed on playbook execution */
     private boolean flushCache;
 
+    /** The extra_vars to use for execution */
+    private String extraVars;
+
     /**
      * @return the Array containing Quartz information
      */
@@ -200,4 +203,20 @@ public class RecurringActionDetailsDto {
     public void setFlushCache(boolean flushCacheIn) {
         flushCache = flushCacheIn;
     }
+
+    /**
+     * Gets the extra vars
+     *
+     * @return the extra vars
+     */
+    public String getExtraVars() {
+        return extraVars;
+    }
+
+    /**
+     * Sets the extra vars
+     *
+     * @param extraVarsIn the extra vars
+     */
+    public void setExtraVars(String extraVarsIn) { extraVars = extraVarsIn; }
 }

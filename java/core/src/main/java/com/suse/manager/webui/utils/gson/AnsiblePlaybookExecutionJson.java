@@ -30,6 +30,7 @@ public class AnsiblePlaybookExecutionJson {
     private long controlNodeId;
     private boolean testMode;
     private boolean flushCache;
+    private String extraVars;
     private Optional<LocalDateTime> earliest = Optional.empty();
     private Optional<String> actionChainLabel = Optional.empty();
 
@@ -77,6 +78,13 @@ public class AnsiblePlaybookExecutionJson {
     public boolean isFlushCache() {
         return flushCache;
     }
+
+    /**
+     * Gets the extra_vars
+     *
+     * @return extraVars
+     */
+    public String getExtraVars() { return extraVars; }
 
     /**
      * Gets the earliest.

@@ -49,6 +49,7 @@ const EditAnsibleVarsModal = (props: Props) => {
         }
       }
       props.updatePlaybookContent?.(updatedVars, extraVars);
+      setExtraVars(null);
       setOpen(false);
     } catch (error) {
       if (error instanceof Error) {
@@ -62,9 +63,9 @@ const EditAnsibleVarsModal = (props: Props) => {
   return (
     <>
       <ModalButton
-        id="edit-playbbok-vars"
+        id="edit-playbook-vars"
         text={t("Edit variables")}
-        target="playbbok-vars"
+        target="playbook-vars"
         className="btn-default"
         onClick={() => {
           setOpen(true);

@@ -307,6 +307,8 @@ public class RecurringActionController {
             dto.setPlaybookPath(((RecurringPlaybook) action.getRecurringActionType()).getPlaybookPath());
             dto.setInventoryPath(((RecurringPlaybook) action.getRecurringActionType()).getInventoryPath());
             dto.setFlushCache(((RecurringPlaybook) action.getRecurringActionType()).isFlushCache());
+            dto.setExtraVars(HibernateFactory.getByteArrayContents(
+                    ((RecurringPlaybook) action.getRecurringActionType()).getExtraVars()));
         }
         return dto;
     }
@@ -455,6 +457,7 @@ public class RecurringActionController {
         playbookType.setTestMode(details.isTest());
         playbookType.setInventoryPath(details.getInventoryPath());
         playbookType.setFlushCache(details.isFlushCache());
+        playbookType.setExtraVars(details.getExtraVars().getBytes());
     }
 
     private static void mapJsonToAction(RecurringActionScheduleJson json, RecurringAction action) {

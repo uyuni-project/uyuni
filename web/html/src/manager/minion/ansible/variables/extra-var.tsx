@@ -4,7 +4,7 @@ type Props = {
   setExtraVars: (value: string) => void;
 };
 
-const ExtraVariabl = (props: Props) => {
+const ExtraVariable = (props: Props) => {
   const { setExtraVars } = props;
   const [newValue, setNewValue] = useState("");
 
@@ -47,4 +47,4 @@ const ExtraVariabl = (props: Props) => {
   );
 };
 
-export default ExtraVariabl;
+export default ExtraVariable;
