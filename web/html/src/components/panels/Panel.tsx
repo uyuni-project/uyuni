@@ -11,6 +11,7 @@ type Props = {
   footer?: React.ReactNode;
   children: React.ReactNode;
   buttons?: React.ReactNode;
+  collapsClose?: boolean;
 };
 
 const Panel = (props: Props) => {
@@ -59,6 +60,7 @@ const Panel = (props: Props) => {
                   data-bs-toggle="collapse"
                   data-bs-target={`#${props.collapseId}-panel-closable`}
                   className="accordion-toggle"
+                  aria-expanded="false"
                 >
                   <i
                     className={`fa fa-chevron-down show-on-collapsed ${
@@ -82,7 +84,10 @@ const Panel = (props: Props) => {
       )}
 
       {props.collapseId ? (
-        <div id={`${props.collapseId}-panel-closable`} className="panel-collapse collapse show">
+        <div
+          id={`${props.collapseId}-panel-closable`}
+          className={`panel-collapse collapse ${props.collapsClose ? "" : "show"}`}
+        >
           {bodyContent}
         </div>
       ) : (
