@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-10-10 09:51+0200\n"
-"PO-Revision-Date: 2025-10-17 23:59+0000\n"
+"PO-Revision-Date: 2025-10-18 20:59+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>\n"
 "Language: sk\n"
@@ -8356,33 +8356,31 @@ msgstr "použiť toto používateľské meno na pripojenie k serveru"
 
 #: ../src/bin/spacecmd:119
 msgid "use this password to connect to the server (insecure). Use config instead or spacecmd will ask."
-msgstr ""
+msgstr "použiť toto heslo na pripojenie k serveru (nezabezpečené). Použiť namiesto toho config, inak spacecmd požiada o zadanie."
 
 #: ../src/bin/spacecmd:123
 msgid "connect to this server [default: local hostname]"
-msgstr ""
+msgstr "pripojiť sa k tomuto serveru [predvolené: local hostname]"
 
 #: ../src/bin/spacecmd:126
 msgid "use HTTP instead of HTTPS"
-msgstr ""
+msgstr "použiť HTTP namiesto HTTPS"
 
 #: ../src/bin/spacecmd:129
-#, fuzzy
-#| msgid "history: List your command history"
 msgid "do not store command history"
-msgstr "history: Vypísať zoznam histórie príkazov"
+msgstr "neukladať históriu príkazov"
 
 #: ../src/bin/spacecmd:132
 msgid "answer yes for all questions"
-msgstr ""
+msgstr "odpovedať áno na všetky otázky"
 
 #: ../src/bin/spacecmd:135
 msgid "print only error messages"
-msgstr ""
+msgstr "vypísať len chybové správy"
 
 #: ../src/bin/spacecmd:142
 msgid "print debug messages (can be passed multiple times)"
-msgstr ""
+msgstr "vypísať ladiace správy (možno zadať viackrát)"
 
 #: ../src/bin/spacecmd:192
 #, c-format
@@ -8390,20 +8388,17 @@ msgid "Config file %s does not exist."
 msgstr "Konfiguračný súbor %s neexistuje."
 
 #: ../src/bin/spacecmd:210
-#, fuzzy, c-format
-#| msgid "Could not read %s"
+#, c-format
 msgid "Could not create %s"
-msgstr "Nepodarilo sa prečítať %s"
+msgstr "Nepodarilo sa vytvoriť %s"
 
 #: ../src/bin/spacecmd:251
 msgid "User Interrupt"
-msgstr ""
+msgstr "Prerušenie používateľom"
 
 #: ../src/bin/spacecmd:292
-#, fuzzy
-#| msgid "Could not find repo %s"
 msgid "Could not find session"
-msgstr "Nepodarilo sa nájsť repozitár %s"
+msgstr "Nepodarilo sa nájsť sedenie"
 
 #~ msgid "Could not retrieve the Kickstart file"
 #~ msgstr "Nepodarilo sa získať súbor Kickstart"
