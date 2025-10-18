@@ -13,7 +13,7 @@ import { MessagesContainer } from "components/toastr/toastr";
 import styles from "./Ansible.module.scss";
 import BooleanEditor from "./variables/boolean-editor";
 import DictionaryEditor from "./variables/dictionary-editor";
-import ExtraVariabl from "./variables/extra-var";
+import ExtraVariable from "./variables/extra-var";
 import ListEditor from "./variables/list-editor";
 import StringEditor from "./variables/string-editor";
 
@@ -42,7 +42,10 @@ const AnsibleVarYamlEditor = (props: Props) => {
   const generateId = (path) => `id_${path.split(".").join("_")}`;
 
   // Titles for collapse top level
-  const levelOneTitles = (obj) => Object.keys(obj);
+  const levelOneTitles = (obj) => {
+    if (typeof obj !== "object" || obj === null) return [];
+    return Object.keys(obj);
+  }
 
   // Nested level
   const nestedLevelTitles = (prefix, value) => {
@@ -174,7 +177,7 @@ const AnsibleVarYamlEditor = (props: Props) => {
           {renderVariableDiv(name)}
         </div>
       );
-    } else if (typeof value == "boolean") {
+    } else if (typeof value === "boolean") {
       return (
         <div className="row w-100">
           <div className="col-md-4"></div>
@@ -245,7 +248,7 @@ const AnsibleVarYamlEditor = (props: Props) => {
                 ))}
                 <div>
                   <MessagesContainer containerId="extra-var" />
-                  <ExtraVariabl setExtraVars={onExtraVarChange} />
+                  <ExtraVariable setExtraVars={onExtraVarChange} />
                 </div>
               </div>
               <div className={`${styles.yamlPreview} col-md-4`}>
