@@ -20,9 +20,11 @@ import { PlaybookDetails } from "./accordion-path-content";
 import styles from "./Ansible.module.scss";
 import { AnsiblePath } from "./ansible-path-type";
 import EditAnsibleVarsModal from "./edit-ansible-vars-modal";
+import extraVar from "manager/minion/ansible/variables/extra-var";
 
 type SchedulePlaybookProps = {
   playbook: PlaybookDetails;
+  recurringDetails?: any;
   isRecurring?: boolean;
   onBack: () => void;
   onSelectPlaybook?: (playbook: any) => void;
@@ -32,7 +34,7 @@ type PlaybookArgs = {
   flushCache: boolean;
 };
 
-export default function SchedulePlaybook({ playbook, onBack, onSelectPlaybook, isRecurring }: SchedulePlaybookProps) {
+export default function SchedulePlaybook({ playbook, onBack, onSelectPlaybook, isRecurring, recurringDetails }: SchedulePlaybookProps) {
   const [loading, setLoading] = useState(true);
   const [playbookContent, setPlaybookContent] = useState("");
   const [isTestMode, setIsTestMode] = useState(false);
@@ -40,6 +42,7 @@ export default function SchedulePlaybook({ playbook, onBack, onSelectPlaybook, i
   const [inventoryPath, setInventoryPath] = useState<ComboboxItem | null>(null);
   const [inventories, setInventories] = useState<string[]>([]);
   const [playbookArgs, setPlaybookArgs] = useState<PlaybookArgs>({ flushCache: false });
+  const [variables, setVariables] = useState<string>("")
   const [actionChain, setActionChain] = useState<ActionChain | null>(null);
   const [datetime, setDatetime] = useState(localizedMoment());
   const defaultInventory = "-";
@@ -57,13 +60,18 @@ export default function SchedulePlaybook({ playbook, onBack, onSelectPlaybook, i
     };
 
     const getPlaybookContents = () => {
-      return Network.post("/rhn/manager/api/systems/details/ansible/paths/playbook-contents", {
-        pathId: playbook.path.id,
-        playbookRelPathStr: playbook.name,
-      })
-        .then((res: JsonResult<string>) => (res.success ? res.data : Promise.reject(res)))
-        .then(setPlaybookContent)
-        .catch((res) => setMessages(res.messages?.flatMap(MsgUtils.error) || Network.responseErrorMessage(res)));
+        return Network.post("/rhn/manager/api/systems/details/ansible/paths/playbook-contents", {
+          pathId: playbook.path.id,
+          playbookRelPathStr: playbook.name,
+        })
+          .then((res: JsonResult<string>) => (res.success ? res.data : Promise.reject(res)))
+          .then((res) => {
+            setPlaybookContent(res);
+            if (isRecurring && playbook.fullPath === recurringDetails.fullPath) {
+              recurringDetails.variables && mergePlaybookContent(res, "", recurringDetails.variables);
+            }
+          })
+          .catch((res) => setMessages(res.messages?.flatMap(MsgUtils.error) || Network.responseErrorMessage(res)));
     };
 
     Promise.all([getInventoryPaths(), getPlaybookContents()]).finally(() => setLoading(false));
@@ -76,6 +84,7 @@ export default function SchedulePlaybook({ playbook, onBack, onSelectPlaybook, i
       controlNodeId: playbook.path.minionServerId,
       testMode: isTestMode,
       flushCache: playbookArgs.flushCache,
+      extraVars: variables,
       actionChainLabel: actionChain?.text || null,
       earliest: datetime,
     })
@@ -84,14 +93,18 @@ export default function SchedulePlaybook({ playbook, onBack, onSelectPlaybook, i
       .catch((res) => setMessages(res.messages?.flatMap(MsgUtils.error) || Network.responseErrorMessage(res)));
   };
 
-  const updatePlaybookContent = (updatedPlaybook, extraVars) => {
-    let mergedVars = { ...updatedPlaybook };
+  const updatePlaybookContent = (updatedVariables, extraVars) => {
+    mergePlaybookContent(playbookContent, updatedVariables, extraVars);
+  }
+
+  const mergePlaybookContent = (playbookContent, updatedVariables, extraVars) => {
+    let mergedVars = { ...updatedVariables };
 
     const extraVarsObject = yaml.load(extraVars);
-    if (typeof extraVarsObject === "object" && extraVarsObject !== null) {
-      mergedVars = { ...updatedPlaybook, ...extraVarsObject };
-    }
 
+    if (typeof extraVarsObject === "object" && extraVarsObject !== null) {
+      mergedVars = { ...updatedVariables, ...extraVarsObject };
+    }
     const parsed = yaml.load(playbookContent);
     if (Array.isArray(parsed)) {
       parsed[0].vars = mergedVars;
@@ -101,26 +114,8 @@ export default function SchedulePlaybook({ playbook, onBack, onSelectPlaybook, i
         forceQuotes: true,
       })}`;
       setPlaybookContent(updatedYaml);
-      sendUpdatedPlaybook(updatedYaml);
+      setVariables(JSON.stringify(mergedVars));
     }
-  };
-
-  const sendUpdatedPlaybook = (yamlString: string) => {
-    const yamlObject = yaml.load(yamlString);
-    return fetch("/rhn/manager/api/ansible/playbooks/save-playbook-var", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(yamlObject),
-    }).then((response) => {
-      if (!response.ok) {
-        return response.json().then((errorData) => {
-          throw errorData;
-        });
-      }
-      return response.json();
-    });
   };
 
   const selectPlaybook = () => {
@@ -128,6 +123,7 @@ export default function SchedulePlaybook({ playbook, onBack, onSelectPlaybook, i
       playbookPath: playbook.fullPath,
       inventoryPath: inventoryPath?.text === defaultInventory ? null : inventoryPath?.text,
       flushCache: playbookArgs.flushCache,
+      extraVars: variables,
     });
   };
 
@@ -157,16 +153,15 @@ export default function SchedulePlaybook({ playbook, onBack, onSelectPlaybook, i
   const buttonsRecurring = [
     <div key="rec-btns" className="btn-group pull-right">
       <Button
-        icon="fa-angle-left"
         className="btn-default"
-        text={t("Back")}
-        title={t("Back to playbook list")}
+        text={t("Change Playbook")}
+        title={t("Choose a different Playbook")}
         handler={onBack}
       />
       <Button
         className="btn-primary"
-        text={t("Select")}
-        title={t("Select the current Playbook")}
+        text={t("Save")}
+        title={t("Save the current Playbook")}
         handler={selectPlaybook}
       />
     </div>,
@@ -230,8 +225,8 @@ export default function SchedulePlaybook({ playbook, onBack, onSelectPlaybook, i
           <div className="d-flex justify-content-between">
             <h3>{t("Playbook Content")}</h3>
             <EditAnsibleVarsModal
-              id="anisble-var"
-              className={styles.anisbleVar}
+              id="ansible-var"
+              className={styles.ansibleVar}
               renderContent={playbookContent}
               updatePlaybookContent={updatePlaybookContent}
             />
