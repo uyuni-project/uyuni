@@ -96,14 +96,15 @@ public class ServerFactory extends HibernateFactory {
      * @param server The Server in question
      * @return Returns the CustomDataValue object if found, null if not.
      */
-    protected static CustomDataValue getCustomDataValue(CustomDataKey key,
+    public static CustomDataValue getCustomDataValue(CustomDataKey key,
             Server server) {
-        // Make sure we didn't recieve any nulls
+        // Make sure we didn't receive any nulls
         if (key == null || server == null) {
             return null;
         }
 
-        return getSession().createNamedQuery("CustomDataValue.findByServerAndKey", CustomDataValue.class)
+        return getSession().createQuery("FROM CustomDataValue AS c WHERE c.server = :server AND c.key = :key",
+                        CustomDataValue.class)
                 .setParameter("server", server)
                 .setParameter("key", key)
                 .setCacheable(true)
@@ -145,7 +146,10 @@ public class ServerFactory extends HibernateFactory {
      * @return List of custom data values.
      */
     public static List<CustomDataValue> lookupCustomDataValues(CustomDataKey key) {
-        return SINGLETON.listObjectsByNamedQuery("CustomDataValue.findByKey", Map.of("key", key));
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("FROM CustomDataValue AS c WHERE c.key = :key", CustomDataValue.class)
+                .setParameter("key", key)
+                .list();
     }
 
     /**
