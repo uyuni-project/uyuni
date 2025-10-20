@@ -1,4 +1,15 @@
-const devServer = (env, { websocketPathname, dist }) => ({
+import path, { dirname } from "node:path";
+import { fileURLToPath } from "node:url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const websocketPathname = "/ws";
+const dist = path.resolve(__dirname, "../../dist");
+const hmrTarget = path.resolve(dist, "./javascript/manager");
+const staticCss = path.resolve(dist, "./css");
+
+const devServer = (env) => ({
   hot: true,
   open: true,
   static: {

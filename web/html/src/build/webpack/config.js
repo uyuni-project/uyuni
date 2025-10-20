@@ -238,10 +238,7 @@ export default (env, opts) => {
       symlinks: false,
     },
     plugins: pluginsInUse,
-    devServer: devServer(env, {
-      dist,
-      websocketPathname: "/ws",
-    }),
+    devServer: devServer(env),
   };
 
   if (opts.force) {

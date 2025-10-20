@@ -48,7 +48,6 @@ export default class GenerateStoriesPlugin {
     }
     this.didApply = true;
 
-    console.log(this.inputDir);
     const files = await fs.readdir(this.inputDir, { recursive: true });
     const storyFilePaths = files
       .filter(
