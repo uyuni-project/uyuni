@@ -11,12 +11,12 @@ const require = createRequire(import.meta.url);
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const web = path.resolve(__dirname, "../../..");
-const webHtmlSrc = path.resolve(__dirname, "..");
+const web = path.resolve(__dirname, "../../../..");
+const webHtmlSrc = path.resolve(web, "./html/src");
 const dist = path.resolve(webHtmlSrc, "./dist");
 
 import GenerateStoriesPlugin from "./plugins/generate-stories-plugin.js";
-import webpackAlias from "./webpack.alias.js";
+import webpackAlias from "./alias.js";
 
 const DEVSERVER_WEBSOCKET_PATHNAME = "/ws";
 
@@ -89,7 +89,7 @@ export default (env, opts) => {
       chunkFilename: `css/${moduleName}.css`,
     }),
     new GenerateStoriesPlugin({
-      inputDir: path.resolve(webHtmlSrc, "./manager"),
+      inputDir: webHtmlSrc,
       outputFile: path.resolve(webHtmlSrc, "./manager/storybook/stories.generated.ts"),
     }),
   ];
@@ -103,15 +103,15 @@ export default (env, opts) => {
   const config = {
     mode: opts.mode,
     entry: {
-      "javascript/manager/main": path.resolve(__dirname, "../manager/index.ts"),
-      "css/updated-suse-light": path.resolve(__dirname, "../branding/css/suse-light.scss"),
-      "css/updated-suse-dark": path.resolve(__dirname, "../branding/css/suse-dark.scss"),
-      "css/updated-uyuni": path.resolve(__dirname, "../branding/css/uyuni.scss"),
+      "javascript/manager/main": path.resolve(webHtmlSrc, "./manager/index.ts"),
+      "css/updated-suse-light": path.resolve(webHtmlSrc, "./branding/css/suse-light.scss"),
+      "css/updated-suse-dark": path.resolve(webHtmlSrc, "./branding/css/suse-dark.scss"),
+      "css/updated-uyuni": path.resolve(webHtmlSrc, "./branding/css/uyuni.scss"),
     },
     output: {
       // This needs to be constant as it's referenced from layout_head.jsp etc. All uses need to specify cache bust where imported.
       filename: `[name].js`,
-      path: path.resolve(__dirname, "../dist/"),
+      path: dist,
       chunkFilename: `javascript/manager/${moduleName}.js`,
       publicPath: "/",
     },

@@ -8,9 +8,15 @@ const __dirname = dirname(__filename);
 /** Automatically gather all imports for story files */
 export default class GenerateStoriesPlugin {
   didApply = false;
+  inputDir = undefined;
   outputFile = undefined;
 
-  constructor({ outputFile }) {
+  constructor({ inputDir, outputFile }) {
+    if (!inputDir) {
+      throw new Error("GenerateStoriesPlugin: `inputDir` is not set");
+    }
+    this.inputDir = inputDir;
+
     if (!outputFile) {
       throw new Error("GenerateStoriesPlugin: `outputFile` is not set");
     }
@@ -42,12 +48,8 @@ export default class GenerateStoriesPlugin {
     }
     this.didApply = true;
 
-    const webHtmlSrc = path.resolve(__dirname, "../..");
-    if (!this.outputFile.startsWith(webHtmlSrc)) {
-      throw new RangeError("GenerateStoriesPlugin: `outputFile` is outside of the source code directory");
-    }
-
-    const files = await fs.readdir(webHtmlSrc, { recursive: true });
+    console.log(this.inputDir);
+    const files = await fs.readdir(this.inputDir, { recursive: true });
     const storyFilePaths = files
       .filter(
         (item) => !item.startsWith("node_modules") && (item.endsWith(".example.ts") || item.endsWith(".example.tsx"))
