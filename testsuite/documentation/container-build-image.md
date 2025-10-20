@@ -8,7 +8,7 @@ The Dockerfiles in `authprofile/` and `serverhost/` are based on
 which is built in OBS under
 `systemsmanagement:Uyuni:Master:Docker/uyuni-master-testsuite`.
 
-The image is based on openSUSE Tumbleweed and installs in addition some of
+The image is based on openSUSE Leap and installs in addition some of
 our test packages from the `systemsmanagement:Uyuni:Test-Packages:Pool`
 repositories.
 
