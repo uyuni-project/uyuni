@@ -7,6 +7,8 @@ import { createRequire } from "node:module";
 import path, { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import SpeedMeasurePlugin from "speed-measure-webpack-plugin";
+import devServer from "./dev-server.js";
+
 const require = createRequire(import.meta.url);
 
 const __filename = fileURLToPath(import.meta.url);
@@ -17,8 +19,6 @@ const dist = path.resolve(webHtmlSrc, "./dist");
 
 import GenerateStoriesPlugin from "./plugins/generate-stories-plugin.js";
 import webpackAlias from "./alias.js";
-
-const DEVSERVER_WEBSOCKET_PATHNAME = "/ws";
 
 export default (env, opts) => {
   let pluginsInUse = [];
@@ -238,53 +238,10 @@ export default (env, opts) => {
       symlinks: false,
     },
     plugins: pluginsInUse,
-    devServer: {
-      hot: true,
-      open: true,
-      static: {
-        directory: dist,
-        publicPath: "/",
-        // This is currently redundant, but will become relevant when we include static files in Webpack
-        watch: true,
-      },
-      server: {
-        type: "https",
-      },
-      client: {
-        webSocketURL: {
-          // Hardcode this so it always matches
-          pathname: DEVSERVER_WEBSOCKET_PATHNAME,
-        },
-        logging: "error",
-      },
-      /**
-       * The documentation isn't very good for this, but shortly we're proxying everything besides what comes out of Webpack through to the provided server
-       * See https://webpack.js.org/configuration/dev-server/#devserverproxy and https://github.com/chimurai/http-proxy-middleware#options
-       */
-      proxy: [
-        {
-          target: env && env.server,
-          // Proxy everything, including websockets, besides the Webpack updates websocket
-          context: ["!" + DEVSERVER_WEBSOCKET_PATHNAME],
-          ws: true,
-          /**
-           * Rewrite the host and port on redirects, so we stay on the proxy after logging in, logging out etc
-           * See https://github.com/http-party/node-http-proxy/issues/1227
-           */
-          autoRewrite: true,
-          changeOrigin: true,
-          // Ignore sertificate errors for dev servers
-          secure: false,
-        },
-      ],
-      devMiddleware: {
-        publicPath: "/",
-        // If we ever integrate theme loading locally as opposeds to a global load in jsp, we can set this to false to get faster HMR
-        writeToDisk: true,
-        // Allow proxying requests to root "/" (disabled by default), see https://webpack.js.org/configuration/dev-server/#devserverproxy
-        index: false,
-      },
-    },
+    devServer: devServer(env, {
+      dist,
+      websocketPathname: "/ws",
+    }),
   };
 
   if (opts.force) {
