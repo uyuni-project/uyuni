@@ -32,7 +32,7 @@ public class ChannelSyncFlag implements Serializable {
     @Column(name = "channel_id", nullable = false)
     private Long id;
 
-    @OneToOne(mappedBy = "channelSyncFlag")
+    @OneToOne
     @MapsId
     @JoinColumn(name = "channel_id")
     private Channel channel;
