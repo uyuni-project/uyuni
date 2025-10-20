@@ -44,7 +44,7 @@ mgr_deploy_suse16_gpg_key:
     - source: salt://gpg/suse16-gpg-pubkey-09d9ea69.key
     - makedirs: True
     - mode: 644
-{- endif %}
+{%- endif %}
 
 {%- if grains['os_family'] == 'Suse' and grains.get('osarch').startswith('ppc') %}
 mgr_deploy_ibm_gpg_toolchain_key:
