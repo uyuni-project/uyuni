@@ -205,6 +205,7 @@ import com.redhat.rhn.domain.server.ClientCapability;
 import com.redhat.rhn.domain.server.ClientCapabilityId;
 import com.redhat.rhn.domain.server.CustomDataValue;
 import com.redhat.rhn.domain.server.Device;
+import com.redhat.rhn.domain.server.Dmi;
 import com.redhat.rhn.domain.server.EntitlementServerGroup;
 import com.redhat.rhn.domain.server.Feature;
 import com.redhat.rhn.domain.server.InstalledPackage;
@@ -366,6 +367,7 @@ public class AnnotationRegistry {
             DistChannelMap.class,
             DistUpgradeActionDetails.class,
             DistUpgradeChannelTask.class,
+            Dmi.class,
             DockerfileProfile.class,
             EntitlementServerGroup.class,
             EnvironmentTarget.class,

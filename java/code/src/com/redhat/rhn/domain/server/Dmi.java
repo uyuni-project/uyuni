@@ -19,18 +19,51 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 /**
  * Dmi
  */
+@Entity
+@Table(name = "rhnServerDmi")
 public class Dmi extends BaseDomainHelper {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ram_seq")
+    @SequenceGenerator(name = "ram_seq", sequenceName = "rhn_ram_id_seq", allocationSize = 1)
     private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "server_id")
     private Server server;
+
+    @Column
     private String vendor;
+
+    @Column
     private String system;
+
+    @Column
     private String product;
+
+    @Embedded
     private Bios bios;
+
+    @Column
     private String asset;
+
+    @Column
     private String board;
 
     /**
@@ -102,7 +135,7 @@ public class Dmi extends BaseDomainHelper {
     /**
      * @param idIn The id to set.
      */
-    public void setId(Long idIn) {
+    protected void setId(Long idIn) {
         id = idIn;
     }
 
@@ -212,10 +245,16 @@ public class Dmi extends BaseDomainHelper {
     /**
      * Bios class
      */
+    @Embeddable
     public static class Bios {
 
+        @Column(name = "bios_vendor")
         private String vendor;
+
+        @Column(name = "bios_version")
         private String version;
+
+        @Column(name = "bios_release")
         private String release;
 
         /**
