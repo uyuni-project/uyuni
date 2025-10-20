@@ -146,9 +146,9 @@
              ${commons-compress} ${javamail} smtp jdom ${jmock-jars}
              ${log4j-jars} oro redstone-xmlrpc-client redstone-xmlrpc ${struts-jars} ${tomcat-jars}
              bcprov bcpg postgresql-jdbc ongres-scram/client ongres-scram/common
-             ${stringprep-jars} taglibs-standard-impl taglibs-standard-jstlel
+             ${stringprep-jars} taglibs-standard-impl taglibs-standard-jstlel jakarta-websocket
              taglibs-standard-spec logdriver quartz slf4j-api log4j/log4j-slf4j-impl
-             velocity-engine-core simple-core strutstest" />
+             velocity-engine-core simple-core strutstest " />
 
   <!-- deps needed for testing, but required to build -->
   <property name="test.build.jar.dependencies" value="junit ${log4j-jars} regexp ${jmock-jars} postgresql-jdbc" />
@@ -170,7 +170,7 @@
 
   <property name="run.jar.dependencies"
       value="antlr objectweb-asm/asm ${cglib-jar} ${c3p0} commons-discovery dom4j ${jaf} ${jta11-jars} ojdbc14 sitemesh
-             taglibs-standard-impl taglibs-standard-jstlel taglibs-standard-spec
+             taglibs-standard-impl taglibs-standard-jstlel taglibs-standard-spec jakarta-websocket
              xalan-j2 xalan-j2-serializer xerces-j2 ${common.jar.dependencies}" />
 
   <!-- =================== RPM build, use jpackage syntax ======================= -->
@@ -192,7 +192,7 @@
 
   <property name="install.run.jar.dependencies"
       value="antlr objectweb-asm/asm ${cglib-jar} ${c3p0} commons-discovery dom4j ${jaf} ${jta11-jars} sitemesh
-             taglibs-standard-impl taglibs-standard-jstlel taglibs-standard-spec
+             taglibs-standard-impl taglibs-standard-jstlel taglibs-standard-spec jakarta-websocket
              xalan-j2 xalan-j2-serializer xerces-j2 ${install.common.jar.dependencies}" />
 
   <property name="install.common.jar.dependencies"
@@ -202,7 +202,7 @@
              ${commons-compress} ${tomcat-jars} ${javamail} jdom jsch
              ${log4j-jars} oro redstone-xmlrpc-client redstone-xmlrpc ${struts-jars}
              postgresql-jdbc ongres-scram/client ongres-scram/common
-             ${stringprep-jars} taglibs-standard-impl taglibs-standard-jstlel
+             ${stringprep-jars} taglibs-standard-impl taglibs-standard-jstlel jakarta-websocket
              taglibs-standard-spec quartz ${suse-common-jars} velocity-engine-core
              simple-core snakeyaml simple-xml ${commons-jexl}" />
 
@@ -215,7 +215,7 @@
              ${jaf} ${jasper-jars} ${javamail} ${jaxb} jdom ${other-jars}
              ${tomcat-jars} ${log4j-jars} redstone-xmlrpc-client redstone-xmlrpc
              oro quartz sitemesh ${struts-jars}
-             taglibs-standard-impl taglibs-standard-jstlel taglibs-standard-spec
+             taglibs-standard-impl taglibs-standard-jstlel taglibs-standard-spec jakarta-websocket
              postgresql-jdbc ongres-scram/client ongres-scram/common ${stringprep-jars}
              snakeyaml simple-xml ${suse-common-jars} ${suse-runtime-jars}
 	     xalan-j2 xalan-j2-serializer xerces-j2 simple-core ${ehcache}" />
