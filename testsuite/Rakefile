@@ -231,7 +231,7 @@ namespace :utils do
     sh 'rm -rf ./cucumber_report && mkdir cucumber_report', verbose: false
     sh "timeout 180 bash -c -- \"while find #{result_folder}/output*.json -type f -size 0 | grep json; do sleep 10;done\" ; exit 0", verbose: false
     sh 'find . -size 0 -delete', verbose: false
-    sh "node index.js #{result_folder} &> cucumber_reporter.log", verbose: false
+    sh "node index.cjs #{result_folder} &> cucumber_reporter.log", verbose: false
     sh "cp cucumber_report/cucumber_report.html #{result_folder}"
   end
 
