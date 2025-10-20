@@ -1,5 +1,6 @@
 import _isNil from "lodash/isNil";
-import validator from "validator";
+
+import Validation from "components/validation";
 
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
@@ -63,7 +64,7 @@ export function stripBlankValues<T = any>(flatModel: Record<string, T>): Record<
 export function convertNumbers<T>(flatModel: Record<string, T>): Record<string, T> {
   return Object.fromEntries(
     Object.entries(flatModel).map((entry) => {
-      if (typeof entry[1] === "string" && (validator.isFloat(entry[1]) || validator.isInt(entry[1]))) {
+      if (typeof entry[1] === "string" && (Validation.isFloat(entry[1]) || Validation.isInt(entry[1]))) {
         const floatValue = Number.parseFloat(entry[1]);
         if (!Number.isNaN(floatValue)) {
           return [entry[0], floatValue];

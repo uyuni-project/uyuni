@@ -1,8 +1,6 @@
 import * as React from "react";
 import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 
-import validator from "validator";
-
 import { Button } from "components/buttons";
 import { DangerDialog } from "components/dialog/LegacyDangerDialog";
 import { ModalButton } from "components/dialog/ModalButton";
@@ -10,6 +8,7 @@ import { DEPRECATED_Check } from "components/input/check/DEPRECATED_Check";
 import { Form } from "components/input/form/Form";
 import { Text } from "components/input/text/Text";
 import { MessageType, Utils as MessagesUtils } from "components/messages/messages";
+import Validation from "components/validation";
 
 type CalendarEditProps = {
   messages: (messages: MessageType[]) => any;
@@ -95,7 +94,7 @@ const MaintenanceCalendarEdit = forwardRef((props: CalendarEditProps, ref) => {
     if (urlIn.trim() === "") {
       return true;
     }
-    return validator.isURL(urlIn, { protocols: ["http", "https"] });
+    return Validation.isURL(urlIn);
   };
 
   useImperativeHandle(ref, () => ({
