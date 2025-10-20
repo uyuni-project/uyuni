@@ -7,18 +7,18 @@ import { createRequire } from "node:module";
 import path, { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import SpeedMeasurePlugin from "speed-measure-webpack-plugin";
+import devServer from "./dev-server.js";
+
 const require = createRequire(import.meta.url);
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const web = path.resolve(__dirname, "../../..");
-const webHtmlSrc = path.resolve(__dirname, "..");
+const web = path.resolve(__dirname, "../../../..");
+const webHtmlSrc = path.resolve(web, "./html/src");
 const dist = path.resolve(webHtmlSrc, "./dist");
 
 import GenerateStoriesPlugin from "./plugins/generate-stories-plugin.js";
-import webpackAlias from "./webpack.alias.js";
-
-const DEVSERVER_WEBSOCKET_PATHNAME = "/ws";
+import webpackAlias from "./alias.js";
 
 export default (env, opts) => {
   let pluginsInUse = [];
@@ -89,7 +89,7 @@ export default (env, opts) => {
       chunkFilename: `css/${moduleName}.css`,
     }),
     new GenerateStoriesPlugin({
-      inputDir: path.resolve(webHtmlSrc, "./manager"),
+      inputDir: webHtmlSrc,
       outputFile: path.resolve(webHtmlSrc, "./manager/storybook/stories.generated.ts"),
     }),
   ];
@@ -103,15 +103,15 @@ export default (env, opts) => {
   const config = {
     mode: opts.mode,
     entry: {
-      "javascript/manager/main": path.resolve(__dirname, "../manager/index.ts"),
-      "css/updated-suse-light": path.resolve(__dirname, "../branding/css/suse-light.scss"),
-      "css/updated-suse-dark": path.resolve(__dirname, "../branding/css/suse-dark.scss"),
-      "css/updated-uyuni": path.resolve(__dirname, "../branding/css/uyuni.scss"),
+      "javascript/manager/main": path.resolve(webHtmlSrc, "./manager/index.ts"),
+      "css/updated-suse-light": path.resolve(webHtmlSrc, "./branding/css/suse-light.scss"),
+      "css/updated-suse-dark": path.resolve(webHtmlSrc, "./branding/css/suse-dark.scss"),
+      "css/updated-uyuni": path.resolve(webHtmlSrc, "./branding/css/uyuni.scss"),
     },
     output: {
       // This needs to be constant as it's referenced from layout_head.jsp etc. All uses need to specify cache bust where imported.
       filename: `[name].js`,
-      path: path.resolve(__dirname, "../dist/"),
+      path: dist,
       chunkFilename: `javascript/manager/${moduleName}.js`,
       publicPath: "/",
     },
@@ -238,53 +238,7 @@ export default (env, opts) => {
       symlinks: false,
     },
     plugins: pluginsInUse,
-    devServer: {
-      hot: true,
-      open: true,
-      static: {
-        directory: dist,
-        publicPath: "/",
-        // This is currently redundant, but will become relevant when we include static files in Webpack
-        watch: true,
-      },
-      server: {
-        type: "https",
-      },
-      client: {
-        webSocketURL: {
-          // Hardcode this so it always matches
-          pathname: DEVSERVER_WEBSOCKET_PATHNAME,
-        },
-        logging: "error",
-      },
-      /**
-       * The documentation isn't very good for this, but shortly we're proxying everything besides what comes out of Webpack through to the provided server
-       * See https://webpack.js.org/configuration/dev-server/#devserverproxy and https://github.com/chimurai/http-proxy-middleware#options
-       */
-      proxy: [
-        {
-          target: env && env.server,
-          // Proxy everything, including websockets, besides the Webpack updates websocket
-          context: ["!" + DEVSERVER_WEBSOCKET_PATHNAME],
-          ws: true,
-          /**
-           * Rewrite the host and port on redirects, so we stay on the proxy after logging in, logging out etc
-           * See https://github.com/http-party/node-http-proxy/issues/1227
-           */
-          autoRewrite: true,
-          changeOrigin: true,
-          // Ignore sertificate errors for dev servers
-          secure: false,
-        },
-      ],
-      devMiddleware: {
-        publicPath: "/",
-        // If we ever integrate theme loading locally as opposeds to a global load in jsp, we can set this to false to get faster HMR
-        writeToDisk: true,
-        // Allow proxying requests to root "/" (disabled by default), see https://webpack.js.org/configuration/dev-server/#devserverproxy
-        index: false,
-      },
-    },
+    devServer: devServer(env),
   };
 
   if (opts.force) {
