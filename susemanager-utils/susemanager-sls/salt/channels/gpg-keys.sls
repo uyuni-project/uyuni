@@ -44,7 +44,7 @@ mgr_deploy_suse16_gpg_key:
     - source: salt://gpg/suse16-gpg-pubkey-09d9ea69.key
     - makedirs: True
     - mode: 644
-{- endif %}
+{%- endif %}
 
 {%- if grains['os_family'] == 'RedHat' %}
 {# deploy all keys to the clients. If they get imported dependes on the used channels #}
