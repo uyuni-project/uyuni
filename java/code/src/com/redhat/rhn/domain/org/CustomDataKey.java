@@ -16,20 +16,50 @@ package com.redhat.rhn.domain.org;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.domain.user.legacy.UserImpl;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 /**
  * CustomDataKey
  */
+@Entity
+@Table(name = "rhnCustomDataKey")
 public class CustomDataKey extends BaseDomainHelper {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_CDATAKEY_ID_SEQ")
+    @SequenceGenerator(name = "RHN_CDATAKEY_ID_SEQ", sequenceName = "RHN_CDATAKEY_ID_SEQ", allocationSize = 1)
     private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "org_id", nullable = false)
     private Org org;
+
+    @Column(nullable = false)
     private String label;
+
+    @Column(nullable = false)
     private String description;
+
+    @ManyToOne(targetEntity = UserImpl.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "created_by")
     private User creator;
+
+    @ManyToOne(targetEntity = UserImpl.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "last_modified_by")
     private User lastModifier;
 
     /**
@@ -65,7 +95,7 @@ public class CustomDataKey extends BaseDomainHelper {
     /**
      * @param idIn The id to set.
      */
-    public void setId(Long idIn) {
+    protected void setId(Long idIn) {
         this.id = idIn;
     }
     /**

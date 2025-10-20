@@ -142,6 +142,7 @@ import com.redhat.rhn.domain.kickstart.crypto.SslCryptoKey;
 import com.redhat.rhn.domain.matcher.MatcherRunData;
 import com.redhat.rhn.domain.notification.NotificationMessage;
 import com.redhat.rhn.domain.notification.UserNotification;
+import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgAdminManagement;
 import com.redhat.rhn.domain.org.OrgConfig;
@@ -355,6 +356,7 @@ public class AnnotationRegistry {
             ContentSourceType.class,
             CryptoKey.class,
             CryptoKeyType.class,
+            CustomDataKey.class,
             CustomDataValue.class,
             Cve.class,
             DaemonConfigDetails.class,
