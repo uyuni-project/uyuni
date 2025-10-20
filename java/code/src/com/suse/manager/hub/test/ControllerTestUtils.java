@@ -478,8 +478,7 @@ public class ControllerTestUtils {
 
     public void createTestChannel(ChannelInfoDetailsJson modifyInfo, Org orgIn) throws Exception {
         ChannelFamily cfam = ChannelFamilyFactoryTest.createTestChannelFamily();
-        String query = "ChannelArch.findById";
-        ChannelArch arch = (ChannelArch) TestUtils.lookupFromCacheById(500L, query);
+        ChannelArch arch = TestUtils.lookupChannelArchFromCacheById(500L);
         ChannelFactoryTest.createTestChannel(modifyInfo.getName(), modifyInfo.getLabel(), orgIn, arch, cfam);
     }
 }

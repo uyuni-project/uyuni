@@ -1046,7 +1046,7 @@ public class ChannelFactory extends HibernateFactory {
         if (name == null) {
             return null;
         }
-        return singleton.lookupObjectByNamedQuery("ChannelArch.findByName", Map.of("name", name));
+        return singleton.lookupObjectByParam(ChannelArch.class, "name", name);
     }
 
     /**
@@ -1059,7 +1059,7 @@ public class ChannelFactory extends HibernateFactory {
         if (label == null) {
             return null;
         }
-        return singleton.lookupObjectByNamedQuery("ChannelArch.findByLabel", Map.of(LABEL, label));
+        return singleton.lookupObjectByParam(ChannelArch.class, LABEL, label);
     }
 
     /**
