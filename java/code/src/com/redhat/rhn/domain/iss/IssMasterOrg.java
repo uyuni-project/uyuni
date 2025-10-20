@@ -17,18 +17,45 @@ package com.redhat.rhn.domain.iss;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.frontend.dto.BaseDto;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 
 /**
  * IssMasterOrg - Class representation of the table rhnissmasterorgs.
  */
+@Entity
+@Table(name = "rhnIssMasterOrgs")
 public class IssMasterOrg extends BaseDto {
 
     public static final Long NO_MAP_ID = -1L;
 
+    @Id
+    @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "issmasterorgs_seq")
+    @SequenceGenerator(name = "issmasterorgs_seq", sequenceName = "rhn_issmasterorgs_seq", allocationSize = 1)
     private Long id;
+
+    @Column(name = "master_org_id")
     private Long masterOrgId;
+
+    @Column(name = "master_org_name")
     private String masterOrgName;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "local_org_id")
     private Org localOrg;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "master_id", nullable = false)
     private IssMaster master;
 
     /**
@@ -44,7 +71,7 @@ public class IssMasterOrg extends BaseDto {
      * Setter for id
      * @param idIn to set
     */
-    public void setId(Long idIn) {
+    protected void setId(Long idIn) {
         this.id = idIn;
     }
 
