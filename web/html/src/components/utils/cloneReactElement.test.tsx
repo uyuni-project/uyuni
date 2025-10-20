@@ -54,6 +54,6 @@ describe("cloneReactElement", () => {
         {<Child />}
       </Wrapper>
     );
-    expect(screen.getByText("foo value: foo, bar value: 42"));
+    expect(screen.getByText("foo value: foo, bar value: 42")).not.toBeNull();
   });
 });
