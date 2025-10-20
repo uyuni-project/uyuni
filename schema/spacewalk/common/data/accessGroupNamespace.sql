@@ -1259,3 +1259,15 @@ INSERT INTO access.accessGroupNamespace
         'api.virtualhostmanager.list_virtual_host_managers'
     )
     ON CONFLICT DO NOTHING;
+
+-- Namespace: api.channel.software
+-- Permit to channel_admin
+INSERT INTO access.accessGroupNamespace
+    SELECT ag.id, ns.id
+    FROM access.accessGroup ag, access.namespace ns
+    WHERE ag.label = 'channel_admin'
+    AND ns.namespace IN (
+        'api.channel.software.setAutoSync',
+        'api.channel.software.isAutoSync'
+    )
+    ON CONFLICT DO NOTHING;
