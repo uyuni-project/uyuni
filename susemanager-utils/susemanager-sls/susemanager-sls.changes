@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Oct 20 14:08:40 CEST 2025 - rosuna@suse.com
+
+- version 5.0.15-0
+  * Automatically deploy the SUSE 16 GPG key (bsc#1250911)
+
+-------------------------------------------------------------------
 Tue Jul 01 10:47:53 CEST 2025 - rosuna@suse.com
 
 - version 5.0.14-0
