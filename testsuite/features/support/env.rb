@@ -46,7 +46,8 @@ $context = {}
 # Other global variables
 $pxeboot_mac = ENV.fetch('PXEBOOT_MAC', nil)
 $pxeboot_image = ENV.fetch('PXEBOOT_IMAGE', nil) || 'sles15sp3o'
-$sle15sp4_terminal_mac = ENV.fetch('SLE15SP4_TERMINAL_MAC', nil)
+$sle15sp6_terminal_mac = ENV.fetch('SLE15SP6_TERMINAL_MAC', nil)
+$sle15sp7_terminal_mac = ENV.fetch('SLE15SP7_TERMINAL_MAC', nil)
 $private_net = ENV.fetch('PRIVATENET', nil) if ENV['PRIVATENET']
 $mirror = ENV.fetch('MIRROR', nil)
 $server_http_proxy = ENV.fetch('SERVER_HTTP_PROXY', nil) if ENV['SERVER_HTTP_PROXY']
@@ -571,16 +572,24 @@ Before('@slmicro61_ssh_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['slmicro61_ssh_minion']
 end
 
-Before('@sle15sp4_buildhost') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp4_buildhost']
+Before('@sle15sp6_buildhost') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp6_buildhost']
+end
+
+Before('@sle15sp7_buildhost') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp7_buildhost']
 end
 
 Before('@monitoring_server') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['monitoring_server']
 end
 
-Before('@sle15sp4_terminal') do
-  skip_this_scenario unless $sle15sp4_terminal_mac
+Before('@sle15sp6_terminal') do
+  skip_this_scenario unless $sle15sp6_terminal_mac
+end
+
+Before('@sle15sp7_terminal') do
+  skip_this_scenario unless $sle15sp6_terminal_mac
 end
 
 Before('@suse_minion') do |scenario|
