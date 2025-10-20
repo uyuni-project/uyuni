@@ -15,9 +15,9 @@ exec(`npm audit --json --omit=dev --dry-run`, (_, stdout) => {
     const validVulnerabilities = vulnerabilities.filter((item) => {
       const { name: moduleName, via: advisories } = item;
       if (ignore[moduleName]) {
-        const urls = (advisories || []).map(item => item.url).filter(Boolean);
+        const urls = (advisories || []).map((item) => item.url).filter(Boolean);
         console.info(
-          `Warning: Ignoring advisories for module "${moduleName}"${urls.length ? ': ' : ''}${urls.join(", ")}\nReason: "${ignore[moduleName]}"`
+          `Warning: Ignoring advisories for module "${moduleName}"${urls.length ? ": " : ""}${urls.join(", ")}\nReason: "${ignore[moduleName]}"`
         );
         delete ignore[moduleName];
         return false;
@@ -37,10 +37,8 @@ exec(`npm audit --json --omit=dev --dry-run`, (_, stdout) => {
       process.exitCode = 1;
       validVulnerabilities.forEach((item) => {
         const { name: moduleName, via: advisories } = item;
-        const urls = advisories?.map(item => item.url).filter(Boolean);
-        console.error(
-          `Error: Found advisories for module "${moduleName}": ${urls.join(", ")}`
-        );
+        const urls = advisories?.map((item) => item.url).filter(Boolean);
+        console.error(`Error: Found advisories for module "${moduleName}": ${urls.join(", ")}`);
       });
     }
   } catch (error) {
