@@ -117,8 +117,8 @@ jobs:
           path: ~/.npm
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
 
-      - if: ${{ steps.cache-node-modules.outputs.cache-hit != 'true' }}
-        name: List cache misses
+      - name: List cache misses
+        if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' && steps.cache-node-modules.outputs.cache-hit != 'true' }}
         continue-on-error: true
         run: npm --prefix web list
 
