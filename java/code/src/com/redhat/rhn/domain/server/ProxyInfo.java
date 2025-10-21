@@ -23,15 +23,39 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
 
 /**
  * @author paji
  */
+@Entity
+@Table(name = "rhnProxyInfo")
 public class ProxyInfo implements Serializable {
-    private Server server;
-    private PackageEvr version;
+    @Id
+    @Column(name = "server_id")
     private Long id;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
+    private Server server;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "proxy_evr_id")
+    private PackageEvr version;
+
+    @Column(name = "ssh_port")
     private Integer sshPort;
+
+    @Column(name = "ssh_public_key")
     private byte[] sshPublicKey;
 
     /**
@@ -44,7 +68,7 @@ public class ProxyInfo implements Serializable {
     /**
      * @param sid the server_id to set
      */
-    public void setId(Long sid) {
+    protected void setId(Long sid) {
         this.id = sid;
     }
 

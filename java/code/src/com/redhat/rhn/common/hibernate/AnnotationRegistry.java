@@ -222,6 +222,7 @@ import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Note;
 import com.redhat.rhn.domain.server.Pillar;
 import com.redhat.rhn.domain.server.PinnedSubscription;
+import com.redhat.rhn.domain.server.ProxyInfo;
 import com.redhat.rhn.domain.server.PushClient;
 import com.redhat.rhn.domain.server.PushClientState;
 import com.redhat.rhn.domain.server.Ram;
@@ -483,6 +484,7 @@ public class AnnotationRegistry {
             ProfileType.class,
             ProjectSource.class,
             ProvisionState.class,
+            ProxyInfo.class,
             PtfFilter.class,
             PushClient.class,
             PushClientState.class,
