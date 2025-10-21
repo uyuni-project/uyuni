@@ -1,9 +1,5 @@
 import { promises as fs } from "node:fs";
-import path, { dirname } from "node:path";
-import { fileURLToPath } from "node:url";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+import path from "node:path";
 
 /** Automatically gather all imports for story files */
 export default class GenerateStoriesPlugin {

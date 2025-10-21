@@ -7,6 +7,7 @@ import { createRequire } from "node:module";
 import path, { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import SpeedMeasurePlugin from "speed-measure-webpack-plugin";
+
 import devServer from "./dev-server.js";
 
 const require = createRequire(import.meta.url);
@@ -17,8 +18,8 @@ const web = path.resolve(__dirname, "../../../..");
 const webHtmlSrc = path.resolve(web, "./html/src");
 const dist = path.resolve(webHtmlSrc, "./dist");
 
-import GenerateStoriesPlugin from "./plugins/generate-stories-plugin.js";
 import webpackAlias from "./alias.js";
+import GenerateStoriesPlugin from "./plugins/generate-stories-plugin.js";
 
 export default (env, opts) => {
   let pluginsInUse = [];

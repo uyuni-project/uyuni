@@ -58,5 +58,6 @@
   
 	"vscode-postgres.virtualFolders": [
     "functions"
-  ]
+  ],
+  "prettier.configPath": "web/.prettierrc"
 }
