@@ -165,8 +165,12 @@ with open(config_path + "httpd.yaml", encoding="utf-8") as httpdSource:
         tftpsync.proxy_ip = {proxy_ipv4}
         tftpsync.proxy_ip6 = {proxy_ipv6}
         tftpsync.proxy_fqdn = {config['proxy_fqdn']}
-        tftpsync.tftpboot = /srv/tftpboot"""
+        tftpsync.tftpboot = /srv/tftpboot
+        """
         )
+
+        if "timeout" in config:
+            file.write(f"proxy.timeout = {config['timeout']}")
 
     with open(
         "/etc/apache2/conf.d/smlm-proxy-forwards.conf", "r+", encoding="utf-8"
