@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2015 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -49,11 +50,29 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.persistence.CascadeType;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
+
 /**
  * ErrataAction - Class representation of the table rhnAction.
  */
+@Entity
+@DiscriminatorValue("5")
 public class ErrataAction extends Action {
+
+    @ManyToMany
+    @JoinTable(
+            name = "rhnActionErrataUpdate",
+            joinColumns = @JoinColumn(name = "action_id"),
+            inverseJoinColumns = @JoinColumn(name = "errata_id"))
     private Set<Errata> errata;
+
+    @OneToOne(mappedBy = "parentAction", cascade = CascadeType.ALL)
     private ActionPackageDetails details;
 
     /**

@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -42,9 +43,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+
 /**
  * KickstartInitiateAction
  */
+@Entity
+@DiscriminatorValue("19")
 public class KickstartInitiateAction extends KickstartAction {
     private static final Logger LOG = LogManager.getLogger(KickstartInitiateAction.class);
 

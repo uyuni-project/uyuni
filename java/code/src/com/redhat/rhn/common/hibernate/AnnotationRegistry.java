@@ -13,39 +13,92 @@ package com.redhat.rhn.common.hibernate;
 import com.redhat.rhn.domain.access.AccessGroup;
 import com.redhat.rhn.domain.access.Namespace;
 import com.redhat.rhn.domain.access.WebEndpoint;
+import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionArchType;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainEntry;
 import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.action.AppletUseSatelliteAction;
+import com.redhat.rhn.domain.action.CertificateUpdateAction;
+import com.redhat.rhn.domain.action.CoCoAttestationAction;
+import com.redhat.rhn.domain.action.HardwareRefreshAction;
+import com.redhat.rhn.domain.action.RebootAction;
+import com.redhat.rhn.domain.action.RollbackAction;
+import com.redhat.rhn.domain.action.RollbackConfigAction;
+import com.redhat.rhn.domain.action.RollbackListTransactionsAction;
+import com.redhat.rhn.domain.action.Up2DateConfigGetAction;
+import com.redhat.rhn.domain.action.Up2DateConfigUpdateAction;
+import com.redhat.rhn.domain.action.VirtualInstanceRefreshAction;
+import com.redhat.rhn.domain.action.ansible.InventoryAction;
 import com.redhat.rhn.domain.action.ansible.InventoryActionDetails;
+import com.redhat.rhn.domain.action.ansible.PlaybookAction;
 import com.redhat.rhn.domain.action.ansible.PlaybookActionDetails;
+import com.redhat.rhn.domain.action.appstream.AppStreamAction;
 import com.redhat.rhn.domain.action.appstream.AppStreamActionDetails;
+import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsActionDetails;
+import com.redhat.rhn.domain.action.config.ActivationScheduleDeployAction;
+import com.redhat.rhn.domain.action.config.ActivationSchedulePackageDeployAction;
+import com.redhat.rhn.domain.action.config.ConfigAction;
+import com.redhat.rhn.domain.action.config.ConfigChannelAssociation;
 import com.redhat.rhn.domain.action.config.ConfigDateDetails;
 import com.redhat.rhn.domain.action.config.ConfigDateFileAction;
+import com.redhat.rhn.domain.action.config.ConfigDeployAction;
+import com.redhat.rhn.domain.action.config.ConfigDiffAction;
+import com.redhat.rhn.domain.action.config.ConfigFileNameAssociation;
 import com.redhat.rhn.domain.action.config.ConfigRevisionAction;
 import com.redhat.rhn.domain.action.config.ConfigRevisionActionResult;
+import com.redhat.rhn.domain.action.config.ConfigUploadAction;
+import com.redhat.rhn.domain.action.config.ConfigUploadMtimeAction;
+import com.redhat.rhn.domain.action.config.ConfigVerifyAction;
+import com.redhat.rhn.domain.action.config.DaemonConfigAction;
 import com.redhat.rhn.domain.action.config.DaemonConfigDetails;
+import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeActionDetails;
 import com.redhat.rhn.domain.action.dup.DistUpgradeChannelTask;
 import com.redhat.rhn.domain.action.errata.ActionPackageDetails;
+import com.redhat.rhn.domain.action.errata.ErrataAction;
+import com.redhat.rhn.domain.action.image.DeployImageAction;
 import com.redhat.rhn.domain.action.image.DeployImageActionDetails;
+import com.redhat.rhn.domain.action.kickstart.KickstartAction;
 import com.redhat.rhn.domain.action.kickstart.KickstartActionDetails;
+import com.redhat.rhn.domain.action.kickstart.KickstartGuestAction;
 import com.redhat.rhn.domain.action.kickstart.KickstartGuestActionDetails;
+import com.redhat.rhn.domain.action.kickstart.KickstartGuestToolsChannelSubscriptionAction;
+import com.redhat.rhn.domain.action.kickstart.KickstartHostToolsChannelSubscriptionAction;
+import com.redhat.rhn.domain.action.kickstart.KickstartInitiateAction;
+import com.redhat.rhn.domain.action.kickstart.KickstartInitiateGuestAction;
+import com.redhat.rhn.domain.action.kickstart.KickstartScheduleSyncAction;
+import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionDetails;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionRemovalFailure;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionResult;
+import com.redhat.rhn.domain.action.rhnpackage.PackageAutoUpdateAction;
+import com.redhat.rhn.domain.action.rhnpackage.PackageDeltaAction;
+import com.redhat.rhn.domain.action.rhnpackage.PackageLockAction;
+import com.redhat.rhn.domain.action.rhnpackage.PackageRefreshListAction;
+import com.redhat.rhn.domain.action.rhnpackage.PackageRemoveAction;
+import com.redhat.rhn.domain.action.rhnpackage.PackageRunTransactionAction;
+import com.redhat.rhn.domain.action.rhnpackage.PackageUpdateAction;
+import com.redhat.rhn.domain.action.rhnpackage.PackageVerifyAction;
+import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesActionDetails;
 import com.redhat.rhn.domain.action.salt.ApplyStatesActionResult;
+import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildActionDetails;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildActionResult;
+import com.redhat.rhn.domain.action.salt.inspect.ImageInspectAction;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionDetails;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionResult;
+import com.redhat.rhn.domain.action.scap.ScapAction;
 import com.redhat.rhn.domain.action.scap.ScapActionDetails;
+import com.redhat.rhn.domain.action.script.ScriptAction;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptResult;
+import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.action.supportdata.SupportDataAction;
 import com.redhat.rhn.domain.action.supportdata.SupportDataActionDetails;
 import com.redhat.rhn.domain.audit.XccdfBenchmark;
 import com.redhat.rhn.domain.audit.XccdfIdent;
@@ -322,6 +375,7 @@ public class AnnotationRegistry {
             // do not add class at the end, but keep the alphabetical order
             AccessGroup.class,
             AccessToken.class,
+            Action.class,
             ActionArchType.class,
             ActionChain.class,
             ActionChainEntry.class,
@@ -329,12 +383,17 @@ public class AnnotationRegistry {
             ActionStatus.class,
             ActionType.class,
             ActivationKey.class,
+            ActivationScheduleDeployAction.class,
+            ActivationSchedulePackageDeployAction.class,
             AddressImpl.class,
             AnsiblePath.class,
+            AppletUseSatelliteAction.class,
+            AppStreamAction.class,
             AppStreamActionDetails.class,
             AppStreamApi.class,
             AppStreamApiKey.class,
             AppStream.class,
+            ApplyStatesAction.class,
             ApplyStatesActionDetails.class,
             ApplyStatesActionResult.class,
             ArchType.class,
@@ -350,26 +409,36 @@ public class AnnotationRegistry {
             ChannelTemplate.class,
             Checksum.class,
             ChecksumType.class,
+            CertificateUpdateAction.class,
             ClientCapability.class,
             ClientCapabilityId.class,
             ClonedChannel.class,
             CloudRMTCredentials.class,
             CloudRmtHost.class,
+            CoCoAttestationAction.class,
             CoCoAttestationResult.class,
             CoCoEnvironmentTypeConverter.class,
             CoCoResultTypeConverter.class,
+            ConfigAction.class,
             ConfigChannel.class,
+            ConfigChannelAssociation.class,
             ConfigChannelType.class,
             ConfigContent.class,
             ConfigDateDetails.class,
             ConfigDateFileAction.class,
+            ConfigDeployAction.class,
+            ConfigDiffAction.class,
             ConfigFile.class,
             ConfigFileName.class,
+            ConfigFileNameAssociation.class,
             ConfigFileState.class,
             ConfigFileType.class,
             ConfigInfo.class,
             ConfigRevisionAction.class,
             ConfigRevisionActionResult.class,
+            ConfigUploadAction.class,
+            ConfigUploadMtimeAction.class,
+            ConfigVerifyAction.class,
             ContentEnvironment.class,
             ContentEnvironmentDiff.class,
             ContentFilter.class,
@@ -382,17 +451,21 @@ public class AnnotationRegistry {
             CustomDataKey.class,
             CustomDataValue.class,
             Cve.class,
+            DaemonConfigAction.class,
             DaemonConfigDetails.class,
             DeltaImageInfo.class,
+            DeployImageAction.class,
             DeployImageActionDetails.class,
             Device.class,
             DistChannelMap.class,
+            DistUpgradeAction.class,
             DistUpgradeActionDetails.class,
             DistUpgradeChannelTask.class,
             Dmi.class,
             DockerfileProfile.class,
             EntitlementServerGroup.class,
             EnvironmentTarget.class,
+            ErrataAction.class,
             ErrataAdvisoryMap.class,
             ErrataFileType.class,
             ErrataFilter.class,
@@ -400,12 +473,15 @@ public class AnnotationRegistry {
             Feature.class,
             FileList.class,
             GroupRecurringAction.class,
+            HardwareRefreshAction.class,
             HubSCCCredentials.class,
+            ImageBuildAction.class,
             ImageBuildActionDetails.class,
             ImageBuildActionResult.class,
             ImageFile.class,
             ImageInfo.class,
             ImageInfoCustomDataValue.class,
+            ImageInspectAction.class,
             ImageInspectActionDetails.class,
             ImageInspectActionResult.class,
             ImageInspectActionResult.ImageInspectActionResultId.class,
@@ -419,6 +495,7 @@ public class AnnotationRegistry {
             InstalledProduct.class,
             InternalState.class,
             InvalidSnapshotReason.class,
+            InventoryAction.class,
             InventoryActionDetails.class,
             InventoryPath.class,
             IssAccessToken.class,
@@ -430,14 +507,21 @@ public class AnnotationRegistry {
             IssSlave.class,
             Keyword.class,
             KickstartCommand.class,
+            KickstartAction.class,
             KickstartActionDetails.class,
             KickstartCommandName.class,
             KickstartDefaultRegToken.class,
+            KickstartGuestAction.class,
             KickstartGuestActionDetails.class,
+            KickstartGuestToolsChannelSubscriptionAction.class,
+            KickstartHostToolsChannelSubscriptionAction.class,
+            KickstartInitiateAction.class,
+            KickstartInitiateGuestAction.class,
             KickstartInstallType.class,
             KickstartIpRange.class,
             KickstartPackage.class,
             KickstartPreserveFileList.class,
+            KickstartScheduleSyncAction.class,
             KickstartScript.class,
             KickstartSessionHistory.class,
             KickstartSessionState.class,
@@ -464,14 +548,17 @@ public class AnnotationRegistry {
             OrgConfig.class,
             OrgRecurringAction.class,
             OrgStateRevision.class,
+            PackageAction.class,
             PackageActionDetails.class,
             PackageActionRemovalFailure.class,
             PackageActionResult.class,
             PackageArch.class,
+            PackageAutoUpdateAction.class,
             PackageBreaks.class,
             PackageCapability.class,
             PackageConflicts.class,
             PackageDelta.class,
+            PackageDeltaAction.class,
             PackageEnhances.class,
             PackageEvr.class,
             PackageExtraTagsKeys.class,
@@ -480,6 +567,7 @@ public class AnnotationRegistry {
             PackageGroup.class,
             PackageKey.class,
             PackageKeyType.class,
+            PackageLockAction.class,
             PackageName.class,
             PackageNevra.class,
             PackageObsoletes.class,
@@ -487,11 +575,16 @@ public class AnnotationRegistry {
             PackageProvider.class,
             PackageProvides.class,
             PackageRecommends.class,
+            PackageRefreshListAction.class,
+            PackageRemoveAction.class,
             PackageRequires.class,
+            PackageRunTransactionAction.class,
             PackageSource.class,
             PackageState.class,
             PackageSuggests.class,
             PackageSupplements.class,
+            PackageUpdateAction.class,
+            PackageVerifyAction.class,
             Pane.class,
             PaygCredentialsProduct.class,
             PaygDimensionComputation.class,
@@ -500,6 +593,7 @@ public class AnnotationRegistry {
             PersonalInfo.class,
             Pillar.class,
             PinnedSubscription.class,
+            PlaybookAction.class,
             PlaybookActionDetails.class,
             PlaybookPath.class,
             PrivateChannelFamily.class,
@@ -516,6 +610,7 @@ public class AnnotationRegistry {
             PushClient.class,
             PushClientState.class,
             Ram.class,
+            RebootAction.class,
             ReleaseChannelMap.class,
             RhnConfiguration.class,
             RecurringConfigChannel.class,
@@ -529,6 +624,9 @@ public class AnnotationRegistry {
             RHUICredentials.class,
             RhnTimeZone.class,
             RoleImpl.class,
+            RollbackAction.class,
+            RollbackConfigAction.class,
+            RollbackListTransactionsAction.class,
             SAPWorkload.class,
             SCCCredentials.class,
             SCCOrderItem.class,
@@ -541,9 +639,12 @@ public class AnnotationRegistry {
             SCCRepositoryNoAuth.class,
             SCCRepositoryTokenAuth.class,
             SCCSubscription.class,
+            ScapAction.class,
             ScapActionDetails.class,
+            ScriptAction.class,
             ScriptActionDetails.class,
             ScriptResult.class,
+            ScriptRunAction.class,
             ServerAction.class,
             ServerAppStream.class,
             Server.class,
@@ -574,7 +675,9 @@ public class AnnotationRegistry {
             State.class,
             StateChange.class,
             StateRevision.class,
+            SubscribeChannelsAction.class,
             SubscribeChannelsActionDetails.class,
+            SupportDataAction.class,
             SupportDataActionDetails.class,
             SUSEProduct.class,
             SUSEProductChannel.class,
@@ -593,6 +696,8 @@ public class AnnotationRegistry {
             TokenChannelAppStream.class,
             Token.class,
             TokenPackage.class,
+            Up2DateConfigGetAction.class,
+            Up2DateConfigUpdateAction.class,
             UserGroupImpl.class,
             UserGroupMembers.class,
             UserGroupMembersId.class,
@@ -603,6 +708,7 @@ public class AnnotationRegistry {
             VHMCredentials.class,
             VirtualHostManagerConfig.class,
             VirtualHostManagerNodeInfo.class,
+            VirtualInstanceRefreshAction.class,
             VirtualInstanceState.class,
             VirtualInstanceType.class,
             XccdfBenchmark.class,

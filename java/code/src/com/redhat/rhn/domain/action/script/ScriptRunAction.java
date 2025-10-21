@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2015 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -63,10 +64,15 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+
 
 /**
  * ScriptRunAction
  */
+@Entity
+@DiscriminatorValue("30")
 public class ScriptRunAction extends ScriptAction {
     /* Logger for this class */
     private static final Logger LOG = LogManager.getLogger(ScriptRunAction.class);
