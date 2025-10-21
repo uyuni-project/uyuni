@@ -20,9 +20,9 @@ import com.redhat.rhn.domain.server.Server;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Session;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * ProfileFactory
@@ -70,8 +70,14 @@ public class ProfileFactory extends HibernateFactory {
      * @return the Profile found
      */
     public static Profile lookupByIdAndOrg(Long id, Org org) {
-        return singleton.lookupObjectByNamedQuery("Profile.findByIdAndOrg",
-                Map.of("id", id, "org_id", org.getId()), true);
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("FROM Profile AS p WHERE p.id = :id AND org_id=:org_id", Profile.class)
+                .setParameter("id", id)
+                .setParameter("org_id", org.getId())
+                //Retrieve from cache if there
+                .setCacheable(true)
+                .uniqueResult();
+
     }
 
     /**
@@ -81,8 +87,23 @@ public class ProfileFactory extends HibernateFactory {
      * @return  a list of Profiles which are compatible with the given server.
      */
     public static List<Profile> compatibleWithServer(Server server, Org org) {
-        return singleton.listObjectsByNamedQuery("Profile.compatibleWithServer",
-                Map.of("sid", server.getId(), "org_id", org.getId()), false);
+        Session session = HibernateFactory.getSession();
+        return session.createNativeQuery("""
+                        SELECT DISTINCT P.* FROM rhnServer S, rhnServerProfile P
+                        WHERE P.org_id = S.org_id
+                        AND S.id = :sid
+                        AND P.profile_type_id = (SELECT id FROM rhnServerProfileType WHERE label = 'normal')
+                        AND (EXISTS (SELECT 1 FROM rhnServerChannel SC
+                                     WHERE SC.server_id = S.id
+                                     AND SC.channel_id = P.base_channel)
+                            OR EXISTS (SELECT 1 FROM rhnChannel C
+                                     WHERE C.id = P.base_channel
+                                     AND C.org_id = :org_id
+                                     AND C.parent_channel IS NULL) )
+                        ORDER BY P.name""", Profile.class)
+                .setParameter("sid", server.getId())
+                .setParameter("org_id", org.getId())
+                .list();
     }
 
      /**
@@ -119,8 +140,15 @@ public class ProfileFactory extends HibernateFactory {
      * given org, or null if none found.
      */
     public static Profile findByNameAndOrgId(String name, Long orgid) {
-        return singleton.lookupObjectByNamedQuery("Profile.findByNameAndOrgId",
-                Map.of("name", name, "org_id", orgid), true);
+        Session session = HibernateFactory.getSession();
+        return session.createNativeQuery(
+                "SELECT P.* FROM rhnServerProfile P WHERE P.name = :name AND P.org_id = :org_id",
+                        Profile.class)
+                .setParameter("name", name)
+                .setParameter("org_id", orgid)
+                //Retrieve from cache if there
+                .setCacheable(true)
+                .uniqueResult();
     }
 
 }
