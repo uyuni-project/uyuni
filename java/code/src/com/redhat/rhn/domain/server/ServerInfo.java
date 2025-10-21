@@ -17,14 +17,35 @@ package com.redhat.rhn.domain.server;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
 /**
  * ServerInfo - Class representation of the table rhnServerInfo
  */
+@Entity
+@Table(name = "rhnServerInfo")
 public class ServerInfo implements Serializable {
 
+    @Id
+    @Column(name = "server_id")
     private Long id;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "server_id")
+    @MapsId
     private Server server;
+
+    @Column
     private Date checkin;
+
+    @Column(name = "checkin_counter")
     private Long checkinCounter;
 
     /**
