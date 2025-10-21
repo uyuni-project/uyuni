@@ -35,6 +35,12 @@ import gettext
 import errno
 import multiprocessing
 
+import functools
+try:
+    import rpm  # native RPM EVR comparator
+except Exception:
+    rpm = None
+
 from rhn.connections import idn_puny_to_unicode
 from rhn.stringutils import ustr
 
@@ -130,6 +136,49 @@ class ChannelTimeoutException(ChannelException):
 
     pass
 
+def _evr_normalize(pkg):
+    """
+    Return (epoch:int, version:str, release:str) from a package-like object/dict.
+    Coerce epoch ''/None -> 0. Ensure version/release are strings.
+    """
+    # attribute style (obj) and dict style supported
+    epoch = getattr(pkg, 'epoch', None)
+    if epoch is None and isinstance(pkg, dict):
+        epoch = pkg.get('epoch')
+
+    version = getattr(pkg, 'version', None)
+    if version is None and isinstance(pkg, dict):
+        version = pkg.get('version')
+
+    release = getattr(pkg, 'release', None)
+    if release is None and isinstance(pkg, dict):
+        release = pkg.get('release')
+
+    try:
+        epoch = int(epoch) if epoch not in (None, '') else 0
+    except Exception:
+        epoch = 0
+
+    version = '' if version is None else str(version)
+    release = '' if release is None else str(release)
+    return (epoch, version, release)
+
+
+def _evr_cmp(a, b):
+    """
+    Compare two packages by EVR using rpm.labelCompare if available.
+    Return -1, 0, 1 (never raises Python int<->str TypeError).
+    """
+    ea, va, ra = _evr_normalize(a)
+    eb, vb, rb = _evr_normalize(b)
+    if rpm is not None and hasattr(rpm, 'labelCompare'):
+        return rpm.labelCompare((ea, va, ra), (eb, vb, rb))
+    # safe tuple compare as fallback
+    if (ea, va, ra) < (eb, vb, rb):
+        return -1
+    if (ea, va, ra) > (eb, vb, rb):
+        return 1
+    return 0
 
 def send_mail(sync_type="Repo"):
     """Send email summary"""
