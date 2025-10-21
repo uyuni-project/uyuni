@@ -315,6 +315,7 @@ import com.redhat.rhn.domain.server.VirtualInstanceType;
 import com.redhat.rhn.domain.server.ansible.AnsiblePath;
 import com.redhat.rhn.domain.server.ansible.InventoryPath;
 import com.redhat.rhn.domain.server.ansible.PlaybookPath;
+import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerConfig;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerNodeInfo;
 import com.redhat.rhn.domain.session.WebSessionImpl;
@@ -712,6 +713,7 @@ public class AnnotationRegistry {
             UserNotification.class,
             UserServerPreference.class,
             VHMCredentials.class,
+            VirtualHostManager.class,
             VirtualHostManagerConfig.class,
             VirtualHostManagerNodeInfo.class,
             VirtualInstanceRefreshAction.class,
