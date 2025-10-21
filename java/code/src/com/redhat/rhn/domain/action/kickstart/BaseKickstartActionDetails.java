@@ -14,23 +14,56 @@
  */
 package com.redhat.rhn.domain.action.kickstart;
 
-import com.redhat.rhn.domain.action.ActionChild;
+import com.redhat.rhn.domain.BaseDomainHelper;
+import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.common.FileList;
 
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Column;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.SequenceGenerator;
+
 /**
  *
  * BaseKickstartActionDetails
  */
-public abstract class BaseKickstartActionDetails extends ActionChild {
+@MappedSuperclass
+public abstract class BaseKickstartActionDetails extends BaseDomainHelper {
 
-    private String cobblerSystemName;
-    private String appendString;
-    private String kickstartHost;
-    private Set<FileList> fileLists;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_ACTIONKS_ID_SEQ")
+    @SequenceGenerator(name = "RHN_ACTIONKS_ID_SEQ", sequenceName = "RHN_ACTIONKS_ID_SEQ", allocationSize = 1)
     private Long id;
+
+    @Column(name = "cobbler_system_name")
+    private String cobblerSystemName;
+
+    @Column(name = "append_string")
+    private String appendString;
+
+    @Column(name = "kickstart_host")
+    private String kickstartHost;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "rhnActionKickstartFileList",
+            joinColumns = @JoinColumn(name = "action_ks_id"),
+            inverseJoinColumns = @JoinColumn(name = "file_list_id"))
+    private Set<FileList> fileLists;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "action_id", updatable = false, nullable = false, insertable = true)
+    private Action parentAction;
 
     /**
      * This is the PK for this object.  Its not the
@@ -121,5 +154,21 @@ public abstract class BaseKickstartActionDetails extends ActionChild {
      */
     public void setFileLists(Set<FileList> f) {
         this.fileLists = f;
+    }
+
+    /**
+     * Gets the parent Action associated with this ServerAction record
+     * @return Returns the parentAction.
+     */
+    public Action getParentAction() {
+        return parentAction;
+    }
+
+    /**
+     * Sets the parent Action associated with this ServerAction record
+     * @param parentActionIn The parentAction to set.
+     */
+    public void setParentAction(Action parentActionIn) {
+        this.parentAction = parentActionIn;
     }
 }

@@ -99,6 +99,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -293,12 +294,7 @@ public class ActionFactory extends HibernateFactory {
      */
     @SuppressWarnings("unchecked")
     public static boolean doesServerHaveKickstartScheduled(Long serverId) {
-        Session session = HibernateFactory.getSession();
-        Query<ServerAction> query = session.getNamedQuery("ServerAction.findPendingActionsForServer");
-        query.setParameter("serverId", serverId);
-        query.setParameter("label", "kickstart.initiate");
-        List<ServerAction> retval = query.list();
-        return (retval != null && !retval.isEmpty());
+        return findFirstPendingActionForServerAndActionType(serverId, "kickstart.initiate").isPresent();
     }
 
     /**
@@ -309,15 +305,7 @@ public class ActionFactory extends HibernateFactory {
      */
     @SuppressWarnings("unchecked")
     public static Action isMigrationScheduledForServer(Long serverId) {
-        Query<ServerAction> query = HibernateFactory.getSession().getNamedQuery(
-                "ServerAction.findPendingActionsForServer");
-        query.setParameter("serverId", serverId);
-        query.setParameter("label", "distupgrade.upgrade");
-        List<ServerAction> list = query.list();
-        if (list != null && !list.isEmpty()) {
-            return list.get(0).getParentAction();
-        }
-        return null;
+        return findFirstPendingActionForServerAndActionType(serverId, "distupgrade.upgrade").orElse(null);
     }
 
     /**
@@ -328,15 +316,22 @@ public class ActionFactory extends HibernateFactory {
      */
     @SuppressWarnings("unchecked")
     public static Action isRebootScheduled(Long serverId) {
+        return findFirstPendingActionForServerAndActionType(serverId, "reboot.reboot").orElse(null);
+    }
+
+    private static Optional<Action> findFirstPendingActionForServerAndActionType(Long serverId,
+                                                                                 String actionTypeLabel) {
         Session session = HibernateFactory.getSession();
-        Query<ServerAction> query = session.getNamedQuery("ServerAction.findPendingActionsForServer");
-        query.setParameter("serverId", serverId);
-        query.setParameter("label", "reboot.reboot");
-        List<ServerAction> list = query.list();
-        if (list != null && !list.isEmpty()) {
-            return list.get(0).getParentAction();
-        }
-        return null;
+        return session.createQuery("""
+                        FROM ServerAction AS sa WHERE
+                            sa.server.id = :serverId
+                            AND sa.parentAction.actionType.label = :label
+                            AND status in ( 0, 1 )""", ServerAction.class)
+                .setParameter("serverId", serverId)
+                .setParameter("label", actionTypeLabel)
+                .list().stream()
+                .findFirst()
+                .map(ServerAction::getParentAction);
     }
 
     /**
@@ -745,8 +740,13 @@ public class ActionFactory extends HibernateFactory {
      * @return the {@link ApplyStatesActionDetails} corresponding to the given action id.
      */
     public static ApplyStatesActionDetails lookupApplyStatesActionDetails(Long actionId) {
-        return singleton.lookupObjectByNamedQuery("ApplyStatesActionDetails.findByActionId",
-                Map.of("action_id", actionId), true);
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("FROM ApplyStatesActionDetails WHERE parentAction.id = :action_id",
+                        ApplyStatesActionDetails.class)
+                .setParameter("action_id", actionId)
+                //Retrieve from cache if there
+                .setCacheable(true)
+                .uniqueResult();
     }
 
     /**
@@ -871,7 +871,10 @@ public class ActionFactory extends HibernateFactory {
      * @return List of ServerAction objects
      */
     public static List<ServerAction> listServerActionsForServer(Server serverIn) {
-        return singleton.listObjectsByNamedQuery("ServerAction.findByServer", Map.of("server", serverIn));
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("FROM ServerAction AS sa WHERE sa.server = :server", ServerAction.class)
+                .setParameter("server", serverIn)
+                .list();
     }
 
     /**
@@ -882,11 +885,18 @@ public class ActionFactory extends HibernateFactory {
      * @return List of ServerAction objects
      */
     public static List<ServerAction> listServerActionsForServer(Server serverIn, String actionType, Date date) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("server", serverIn);
-        params.put("actionType", actionType);
-        params.put("date", date);
-        return singleton.listObjectsByNamedQuery("ServerAction.findByServerAndActionTypeAndCreatedDate", params);
+        //The explicit cast in this query is needed since the postgresql jdbc driver is not able to define the type.
+        //See more info at https://bit.ly/3Gh3Ez5
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("""
+                        FROM ServerAction AS sa
+                        WHERE sa.server = :server
+                        AND (cast(:actionType AS string) IS NULL OR sa.parentAction.actionType.name = :actionType)
+                        AND (cast(:date AS date) IS NULL OR sa.created >= :date)""", ServerAction.class)
+                .setParameter("server", serverIn)
+                .setParameter("actionType", actionType)
+                .setParameter("date", date)
+                .list();
     }
 
     /**
@@ -896,8 +906,14 @@ public class ActionFactory extends HibernateFactory {
      * @return List of ServerAction objects
      */
     public static List<ServerAction> listServerActionsForServerAndTypes(Server serverIn, List<ActionType> typesIn) {
-        return singleton.listObjectsByNamedQuery("ServerAction.findServerActionsForServerAndTypes",
-                Map.of("server", serverIn, "typeList", typesIn));
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("""
+                        FROM ServerAction AS sa
+                        WHERE sa.server = :server
+                        AND sa.parentAction.actionType IN (:typeList)""", ServerAction.class)
+                .setParameter("server", serverIn)
+                .setParameterList("typeList", typesIn)
+                .list();
     }
 
     /**
@@ -907,8 +923,13 @@ public class ActionFactory extends HibernateFactory {
      * @return List of ServerAction objects
      */
     public static List<ServerAction> listServerActionsForServer(Server serverIn, List<ActionStatus> statusList) {
-        return singleton.listObjectsByNamedQuery("ServerAction.findByServerAndStatus",
-                Map.of("server", serverIn, "statusList", statusList));
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("""
+                        FROM ServerAction AS sa
+                        WHERE sa.server = :server AND sa.status IN (:statusList)""", ServerAction.class)
+                .setParameter("server", serverIn)
+                .setParameterList("statusList", statusList)
+                .list();
     }
 
     /**
@@ -920,8 +941,15 @@ public class ActionFactory extends HibernateFactory {
      */
     public static List<ServerAction> listServerActionsForServer(Server serverIn, List<ActionStatus> statusList,
                                                                 Date createdDate) {
-        return singleton.listObjectsByNamedQuery("ServerAction.findByServerAndStatusAndCreatedDate",
-                Map.of("server", serverIn, "statusList", statusList, "date", createdDate));
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("""
+                        FROM ServerAction AS sa
+                        WHERE sa.server = :server AND sa.created >= :date AND sa.status IN (:statusList)""",
+                        ServerAction.class)
+                .setParameter("server", serverIn)
+                .setParameterList("statusList", statusList)
+                .setParameter("date", createdDate)
+                .list();
     }
 
     /**
@@ -934,8 +962,14 @@ public class ActionFactory extends HibernateFactory {
         if (serverIn == null || actionIn == null) {
             return null;
         }
-        return singleton.lookupObjectByNamedQuery("ServerAction.findByServerAndAction",
-                Map.of("server", serverIn, "action", actionIn));
+
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("""
+                        FROM ServerAction AS sa
+                        WHERE sa.server = :server AND sa.parentAction = :action""", ServerAction.class)
+                .setParameter("server", serverIn)
+                .setParameter("action", actionIn)
+                .uniqueResult();
     }
 
     /**

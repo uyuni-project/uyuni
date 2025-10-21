@@ -16,16 +16,35 @@ import com.redhat.rhn.domain.access.WebEndpoint;
 import com.redhat.rhn.domain.action.ActionArchType;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainEntry;
-import com.redhat.rhn.domain.action.ActionChild;
 import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.action.ansible.InventoryActionDetails;
+import com.redhat.rhn.domain.action.ansible.PlaybookActionDetails;
+import com.redhat.rhn.domain.action.appstream.AppStreamActionDetails;
+import com.redhat.rhn.domain.action.channel.SubscribeChannelsActionDetails;
+import com.redhat.rhn.domain.action.config.ConfigDateDetails;
+import com.redhat.rhn.domain.action.config.ConfigDateFileAction;
+import com.redhat.rhn.domain.action.config.ConfigRevisionAction;
+import com.redhat.rhn.domain.action.config.ConfigRevisionActionResult;
+import com.redhat.rhn.domain.action.config.DaemonConfigDetails;
+import com.redhat.rhn.domain.action.dup.DistUpgradeActionDetails;
+import com.redhat.rhn.domain.action.dup.DistUpgradeChannelTask;
 import com.redhat.rhn.domain.action.errata.ActionPackageDetails;
+import com.redhat.rhn.domain.action.image.DeployImageActionDetails;
+import com.redhat.rhn.domain.action.kickstart.KickstartActionDetails;
+import com.redhat.rhn.domain.action.kickstart.KickstartGuestActionDetails;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionDetails;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionResult;
+import com.redhat.rhn.domain.action.salt.ApplyStatesActionDetails;
+import com.redhat.rhn.domain.action.salt.ApplyStatesActionResult;
+import com.redhat.rhn.domain.action.salt.build.ImageBuildActionDetails;
+import com.redhat.rhn.domain.action.salt.build.ImageBuildActionResult;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionDetails;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionResult;
+import com.redhat.rhn.domain.action.scap.ScapActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptResult;
+import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.supportdata.SupportDataActionDetails;
 import com.redhat.rhn.domain.audit.XccdfBenchmark;
 import com.redhat.rhn.domain.audit.XccdfIdent;
@@ -270,16 +289,18 @@ public class AnnotationRegistry {
             ActionArchType.class,
             ActionChain.class,
             ActionChainEntry.class,
-            ActionChild.class,
             ActionPackageDetails.class,
             ActionStatus.class,
             ActionType.class,
             ActivationKey.class,
             AddressImpl.class,
             AnsiblePath.class,
+            AppStreamActionDetails.class,
             AppStreamApi.class,
             AppStreamApiKey.class,
             AppStream.class,
+            ApplyStatesActionDetails.class,
+            ApplyStatesActionResult.class,
             ArchType.class,
             BaseCredentials.class,
             CPU.class,
@@ -302,10 +323,14 @@ public class AnnotationRegistry {
             CoCoResultTypeConverter.class,
             ConfigChannel.class,
             ConfigChannelType.class,
+            ConfigDateDetails.class,
+            ConfigDateFileAction.class,
             ConfigFile.class,
             ConfigFileName.class,
             ConfigFileState.class,
             ConfigFileType.class,
+            ConfigRevisionAction.class,
+            ConfigRevisionActionResult.class,
             ContentEnvironment.class,
             ContentEnvironmentDiff.class,
             ContentFilter.class,
@@ -317,9 +342,13 @@ public class AnnotationRegistry {
             CryptoKeyType.class,
             CustomDataValue.class,
             Cve.class,
+            DaemonConfigDetails.class,
             DeltaImageInfo.class,
+            DeployImageActionDetails.class,
             Device.class,
             DistChannelMap.class,
+            DistUpgradeActionDetails.class,
+            DistUpgradeChannelTask.class,
             DockerfileProfile.class,
             EntitlementServerGroup.class,
             EnvironmentTarget.class,
@@ -331,6 +360,8 @@ public class AnnotationRegistry {
             FileList.class,
             GroupRecurringAction.class,
             HubSCCCredentials.class,
+            ImageBuildActionDetails.class,
+            ImageBuildActionResult.class,
             ImageFile.class,
             ImageInfo.class,
             ImageInfoCustomDataValue.class,
@@ -347,6 +378,7 @@ public class AnnotationRegistry {
             InstalledProduct.class,
             InternalState.class,
             InvalidSnapshotReason.class,
+            InventoryActionDetails.class,
             InventoryPath.class,
             IssAccessToken.class,
             IssHub.class,
@@ -354,7 +386,9 @@ public class AnnotationRegistry {
             IssPeripheral.class,
             IssPeripheralChannels.class,
             IssSlave.class,
+            KickstartActionDetails.class,
             KickstartCommandName.class,
+            KickstartGuestActionDetails.class,
             KickstartInstallType.class,
             KickstartSessionState.class,
             KickstartTreeType.class,
@@ -409,6 +443,7 @@ public class AnnotationRegistry {
             PersonalInfo.class,
             Pillar.class,
             PinnedSubscription.class,
+            PlaybookActionDetails.class,
             PlaybookPath.class,
             ProductName.class,
             ProfileCustomDataValue.class,
@@ -442,8 +477,10 @@ public class AnnotationRegistry {
             SCCRepositoryNoAuth.class,
             SCCRepositoryTokenAuth.class,
             SCCSubscription.class,
+            ScapActionDetails.class,
             ScriptActionDetails.class,
             ScriptResult.class,
+            ServerAction.class,
             ServerAppStream.class,
             Server.class,
             ServerArch.class,
@@ -469,6 +506,7 @@ public class AnnotationRegistry {
             State.class,
             StateChange.class,
             StateRevision.class,
+            SubscribeChannelsActionDetails.class,
             SupportDataActionDetails.class,
             SUSEProduct.class,
             SUSEProductChannel.class,

@@ -14,21 +14,40 @@
  */
 package com.redhat.rhn.domain.action.config;
 
-import com.redhat.rhn.domain.action.ActionChild;
+import com.redhat.rhn.domain.BaseDomainHelper;
+import com.redhat.rhn.domain.action.Action;
 
-import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
+import javax.persistence.Table;
 
 /**
  * DamonConfigAction - Class representation of the table rhnActionDaemonConfig.
  *
  */
-public class DaemonConfigDetails extends ActionChild {
+@Entity
+@Table(name = "rhnActionDaemonConfig")
+public class DaemonConfigDetails extends BaseDomainHelper {
 
+    @Id
+    @Column(name = "action_id")
     private Long actionId;
+
+    @Column
     private Long interval;
+
+    @Column
     private String restart;
-    private Date daemonConfigCreated;
-    private Date daemonConfigModified;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "action_id", updatable = false, nullable = false, insertable = false)
+    @MapsId
+    private Action parentAction;
 
     /**
      * @return Returns the actionId.
@@ -39,7 +58,7 @@ public class DaemonConfigDetails extends ActionChild {
     /**
      * @param actionIdIn The actionId to set.
      */
-    public void setActionId(Long actionIdIn) {
+    protected void setActionId(Long actionIdIn) {
         this.actionId = actionIdIn;
     }
     /**
@@ -75,34 +94,19 @@ public class DaemonConfigDetails extends ActionChild {
     }
 
     /**
-     * Getter for daemonConfigCreated
-     * @return Date to get
-    */
-    public Date getDaemonConfigCreated() {
-        return this.daemonConfigCreated;
+     * Gets the parent Action associated with this ServerAction record
+     * @return Returns the parentAction.
+     */
+    public Action getParentAction() {
+        return parentAction;
     }
 
     /**
-     * Setter for daemonConfigCreated
-     * @param daemonConfigCreatedIn to set
-    */
-    public void setDaemonConfigCreated(Date daemonConfigCreatedIn) {
-        this.daemonConfigCreated = daemonConfigCreatedIn;
+     * Sets the parent Action associated with this ServerAction record
+     * @param parentActionIn The parentAction to set.
+     */
+    public void setParentAction(Action parentActionIn) {
+        this.parentAction = parentActionIn;
     }
 
-    /**
-     * Getter for daemonConfigModified
-     * @return Date to get
-    */
-    public Date getDaemonConfigModified() {
-        return this.daemonConfigModified;
-    }
-
-    /**
-     * Setter for daemonConfigModified
-     * @param daemonConfigModifiedIn to set
-    */
-    public void setDaemonConfigModified(Date daemonConfigModifiedIn) {
-        this.daemonConfigModified = daemonConfigModifiedIn;
-    }
 }

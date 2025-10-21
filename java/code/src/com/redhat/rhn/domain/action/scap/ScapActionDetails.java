@@ -15,17 +15,44 @@
 package com.redhat.rhn.domain.action.scap;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.domain.action.ActionChild;
+import com.redhat.rhn.domain.BaseDomainHelper;
+import com.redhat.rhn.domain.action.Action;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 /**
  * ScapActionDetails
  */
-public class ScapActionDetails extends ActionChild {
+@Entity
+@Table(name = "rhnActionScap")
+public class ScapActionDetails extends BaseDomainHelper {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_ACT_SCAP_ID_SEQ")
+    @SequenceGenerator(name = "RHN_ACT_SCAP_ID_SEQ", sequenceName = "RHN_ACT_SCAP_ID_SEQ", allocationSize = 1)
     private Long id;
+
+    @Column
     private String path;
+
+    @Column
     private String ovalfiles;
+
+    @Column
     private byte[] parameters;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "action_id", updatable = false, nullable = false, insertable = true)
+    private Action parentAction;
 
     /**
      * Default constructor.
@@ -121,7 +148,23 @@ public class ScapActionDetails extends ActionChild {
     /**
      * @param i The id to set.
      */
-    public void setId(Long i) {
+    protected void setId(Long i) {
         this.id = i;
+    }
+
+    /**
+     * Gets the parent Action associated with this ServerAction record
+     * @return Returns the parentAction.
+     */
+    public Action getParentAction() {
+        return parentAction;
+    }
+
+    /**
+     * Sets the parent Action associated with this ServerAction record
+     * @param parentActionIn The parentAction to set.
+     */
+    public void setParentAction(Action parentActionIn) {
+        this.parentAction = parentActionIn;
     }
 }

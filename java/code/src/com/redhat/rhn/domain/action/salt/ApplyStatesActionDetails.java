@@ -14,9 +14,12 @@
  */
 package com.redhat.rhn.domain.action.salt;
 
-import com.redhat.rhn.domain.action.ActionChild;
+import com.redhat.rhn.domain.BaseDomainHelper;
+import com.redhat.rhn.domain.action.Action;
 
 import com.suse.utils.Json;
+
+import org.hibernate.annotations.Type;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,18 +31,52 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 /**
  * ApplyStatesActionDetails - Class representation of the table rhnActionApplyStates.
  */
-public class ApplyStatesActionDetails extends ActionChild {
+@Entity
+@Table(name = "rhnActionApplyStates")
+public class ApplyStatesActionDetails extends BaseDomainHelper {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_ACT_APPLY_STATES_ID_SEQ")
+    @SequenceGenerator(name = "RHN_ACT_APPLY_STATES_ID_SEQ", sequenceName = "RHN_ACT_APPLY_STATES_ID_SEQ",
+            allocationSize = 1)
     private long id;
-    private long actionId;
+
+    @Column
     private String states;
+
+    @Column
     private String pillars;
+
+    @OneToMany(mappedBy = "actionApplyStatesId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<ApplyStatesActionResult> results;
+
+    @Column
+    @Type(type = "yes_no")
     private boolean test = false;
+
+    @Column
+    @Type(type = "yes_no")
     private boolean direct = false;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "action_id", updatable = false, nullable = false, insertable = true)
+    private Action parentAction;
 
     /**
      * @return the id
@@ -51,22 +88,8 @@ public class ApplyStatesActionDetails extends ActionChild {
     /**
      * @param idIn the id to set
      */
-    public void setId(long idIn) {
+    protected void setId(long idIn) {
         this.id = idIn;
-    }
-
-    /**
-     * @return the action id
-     */
-    public long getActionId() {
-        return actionId;
-    }
-
-    /**
-     * @param actionIdIn the action id to set
-     */
-    public void setActionId(long actionIdIn) {
-        this.actionId = actionIdIn;
     }
 
     /**
@@ -223,5 +246,21 @@ public class ApplyStatesActionDetails extends ActionChild {
      */
     public void setDirect(boolean directIn) {
         direct = directIn;
+    }
+
+    /**
+     * Gets the parent Action associated with this ServerAction record
+     * @return Returns the parentAction.
+     */
+    public Action getParentAction() {
+        return parentAction;
+    }
+
+    /**
+     * Sets the parent Action associated with this ServerAction record
+     * @param parentActionIn The parentAction to set.
+     */
+    public void setParentAction(Action parentActionIn) {
+        this.parentAction = parentActionIn;
     }
 }
