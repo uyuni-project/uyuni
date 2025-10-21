@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -20,9 +21,14 @@ import com.redhat.rhn.domain.action.server.ServerAction;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+
 /**
  * PackageVerifyAction
  */
+@Entity
+@DiscriminatorValue("33")
 public class PackageVerifyAction extends PackageAction {
     /**
      * {@inheritDoc}

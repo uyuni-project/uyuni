@@ -44,9 +44,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+
 /**
  * ConfigDiffAction - Class representing TYPE_CONFIGFILES_DIFF
  */
+@Entity
+@DiscriminatorValue("18")
 public class ConfigDiffAction extends ConfigAction {
 
     /**
