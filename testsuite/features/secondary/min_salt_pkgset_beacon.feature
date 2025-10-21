@@ -1,6 +1,8 @@
 # Copyright (c) 2016-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+#TODO: Fix this feature in GH Validation, it might be related to the patches available in the test repo
+@skip_if_github_validation
 @scope_salt
 Feature: System package list is updated if packages are manually installed or removed
 
