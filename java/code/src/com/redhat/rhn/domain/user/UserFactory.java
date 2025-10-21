@@ -454,7 +454,7 @@ public  class UserFactory extends HibernateFactory {
      */
     public static RhnTimeZone getTimeZone(int id) {
         Session session = HibernateFactory.getSession();
-        return (RhnTimeZone) session.getNamedQuery("RhnTimeZone.loadTimeZoneById")
+        return session.createQuery("FROM RhnTimeZone AS t WHERE t.timeZoneId = :tid", RhnTimeZone.class)
                 .setParameter("tid", id, StandardBasicTypes.INTEGER)
                 //Retrieve from cache if there
                 .setCacheable(true)
@@ -468,8 +468,7 @@ public  class UserFactory extends HibernateFactory {
      */
     public static RhnTimeZone getTimeZone(String olsonName) {
         Session session = HibernateFactory.getSession();
-        return (RhnTimeZone) session
-                .getNamedQuery("RhnTimeZone.loadTimeZoneByOlsonName")
+        return session.createQuery("FROM RhnTimeZone AS t WHERE t.olsonName = :ton", RhnTimeZone.class)
                 .setParameter("ton", olsonName, StandardBasicTypes.STRING)
                 //Retrieve from cache if there
                 .setCacheable(true)
@@ -485,9 +484,7 @@ public  class UserFactory extends HibernateFactory {
         if (sysDefault != null) {
             return sysDefault;
         }
-        Session session = HibernateFactory.getSession();
-        List<RhnTimeZone> allTimeZones =
-                session.getNamedQuery("RhnTimeZone.loadAll").list();
+        List<RhnTimeZone> allTimeZones = loadAllTimeZones();
         for (RhnTimeZone tz : allTimeZones) {
             if (TimeZone.getDefault().getRawOffset() == TimeZone.getTimeZone(
                     tz.getOlsonName()).getRawOffset()) {
@@ -507,8 +504,7 @@ public  class UserFactory extends HibernateFactory {
         //timeZoneList is manually cached because instance variable is properly sorted
         //whereas the database is not.
         if (timeZoneList == null) {
-            Session session = HibernateFactory.getSession();
-            List<RhnTimeZone> timeZones = session.getNamedQuery("RhnTimeZone.loadAll").list();
+            List<RhnTimeZone> timeZones = loadAllTimeZones();
 
             //Now sort the timezones, GMT+0000 at top, then East-to-West
             if (timeZones != null) {
@@ -518,6 +514,11 @@ public  class UserFactory extends HibernateFactory {
             timeZoneList = timeZones;
         }
         return timeZoneList;
+    }
+
+    private static List<RhnTimeZone> loadAllTimeZones() {
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("FROM RhnTimeZone AS t", RhnTimeZone.class).list();
     }
 
     private static void sortTimezones(List<RhnTimeZone> timeZones) {

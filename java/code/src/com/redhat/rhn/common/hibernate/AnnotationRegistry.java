@@ -260,6 +260,7 @@ import com.redhat.rhn.domain.token.Token;
 import com.redhat.rhn.domain.token.TokenChannelAppStream;
 import com.redhat.rhn.domain.user.AddressImpl;
 import com.redhat.rhn.domain.user.Pane;
+import com.redhat.rhn.domain.user.RhnTimeZone;
 import com.redhat.rhn.domain.user.State;
 import com.redhat.rhn.domain.user.StateChange;
 import com.redhat.rhn.domain.user.UserServerPreference;
@@ -500,6 +501,7 @@ public class AnnotationRegistry {
             RegTokenOrgDefault.class,
             ReportDBCredentials.class,
             RHUICredentials.class,
+            RhnTimeZone.class,
             RoleImpl.class,
             SAPWorkload.class,
             SCCCredentials.class,
