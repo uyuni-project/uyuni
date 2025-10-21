@@ -31,7 +31,7 @@ echo ${HERE}
 echo $GITROOT
 
 INITIAL_CMD="/manager/susemanager-utils/testing/automation/initial-objects.sh"
-CMD="/manager/web/html/src/scripts/docker-javascript-lint.sh"
+CMD="/manager/web/html/src/scripts/docker-frontend-checks.sh"
 CHOWN_CMD="/manager/susemanager-utils/testing/automation/chown-objects.sh $(id -u) $(id -g)"
 
 $EXECUTOR pull $REGISTRY/$NODEJS_CONTAINER
