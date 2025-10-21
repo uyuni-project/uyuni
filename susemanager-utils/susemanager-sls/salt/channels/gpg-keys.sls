@@ -37,7 +37,7 @@ mgr_deploy_suse_addon_key:
     - makedirs: True
     - mode: 644
 
-{%- if salt['cp.list_master'](prefix='gpg/suse16-gpg-pubkey-09d9ea69.key') and grains['os-family'] == 'Suse' %}
+{%- if salt['cp.list_master'](prefix='gpg/suse16-gpg-pubkey-09d9ea69.key') and grains['os_family'] == 'Suse' %}
 mgr_deploy_suse16_gpg_key:
   file.managed:
     - name: /etc/pki/rpm-gpg/suse16-gpg-pubkey-09d9ea69.key
