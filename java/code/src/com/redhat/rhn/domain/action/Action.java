@@ -50,28 +50,78 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderColumn;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import javax.servlet.http.HttpServletRequest;
 
 /**
  * Action - Class representation of the table rhnAction.
  */
+@Entity
+@Table(name = "rhnAction")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name="action_type", discriminatorType = DiscriminatorType.INTEGER)
+@DiscriminatorValue("-1")
 public class Action extends BaseDomainHelper implements Serializable, WebSocketActionIdProvider {
     protected static final Logger LOG = LogManager.getLogger(Action.class);
 
     public static final Integer NAME_LENGTH_LIMIT = 128;
 
     private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rhn_action_seq")
+    @SequenceGenerator(name = "rhn_action_seq", sequenceName = "rhn_event_id_seq", allocationSize = 1)
     private Long id;
+
+    @Column
     private String name;
+
+    @Column(name = "earliest_action")
     private Date earliestAction;
+
+    @Column
     private Long version;
+
+    @Column
     private Long archived;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "prerequisite")
     private Action prerequisite;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "action_type")
     private ActionType actionType;
 
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OrderColumn(name = "modified")
+    //@JoinColumn(name = )
     private Set<ServerAction> serverActions;
+
+
     private Set<ServerCoCoAttestationReport> cocoAttestationReports;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "scheduler")
     private User schedulerUser;
+
     private Org org;
 
     private String ageString;
@@ -109,7 +159,7 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
      * Setter for id
      * @param idIn to set
     */
-    public void setId(Long idIn) {
+    protected void setId(Long idIn) {
         this.id = idIn;
     }
 
