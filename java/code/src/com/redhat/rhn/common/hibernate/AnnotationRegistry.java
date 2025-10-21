@@ -67,6 +67,7 @@ import com.redhat.rhn.domain.channel.ContentSourceType;
 import com.redhat.rhn.domain.channel.DistChannelMap;
 import com.redhat.rhn.domain.channel.PrivateChannelFamily;
 import com.redhat.rhn.domain.channel.ProductName;
+import com.redhat.rhn.domain.channel.ReleaseChannelMap;
 import com.redhat.rhn.domain.cloudpayg.CloudRmtHost;
 import com.redhat.rhn.domain.cloudpayg.PaygCredentialsProduct;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
@@ -144,6 +145,7 @@ import com.redhat.rhn.domain.notification.UserNotification;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgAdminManagement;
 import com.redhat.rhn.domain.org.OrgConfig;
+import com.redhat.rhn.domain.org.SystemMigration;
 import com.redhat.rhn.domain.org.TemplateCategory;
 import com.redhat.rhn.domain.org.TemplateString;
 import com.redhat.rhn.domain.org.usergroup.UserGroupImpl;
@@ -226,9 +228,12 @@ import com.redhat.rhn.domain.server.ServerFQDN;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupType;
 import com.redhat.rhn.domain.server.ServerHistoryEvent;
+import com.redhat.rhn.domain.server.ServerNetAddress4;
+import com.redhat.rhn.domain.server.ServerNetAddress6;
 import com.redhat.rhn.domain.server.ServerPath;
 import com.redhat.rhn.domain.server.ServerPathId;
 import com.redhat.rhn.domain.server.ServerSnapshot;
+import com.redhat.rhn.domain.server.ServerSnapshotTagLink;
 import com.redhat.rhn.domain.server.SnapshotTag;
 import com.redhat.rhn.domain.server.SnapshotTagName;
 import com.redhat.rhn.domain.server.ansible.AnsiblePath;
@@ -472,6 +477,7 @@ public class AnnotationRegistry {
             PushClient.class,
             PushClientState.class,
             Ram.class,
+            ReleaseChannelMap.class,
             RhnConfiguration.class,
             RecurringConfigChannel.class,
             RecurringHighstate.class,
@@ -510,9 +516,12 @@ public class AnnotationRegistry {
             ServerGroupStateRevision.class,
             ServerGroupType.class,
             ServerHistoryEvent.class,
+            ServerNetAddress4.class,
+            ServerNetAddress6.class,
             ServerPath.class,
             ServerPathId.class,
             ServerSnapshot.class,
+            ServerSnapshotTagLink.class,
             ServerStateRevision.class,
             Severity.class,
             SnapshotTag.class,
@@ -530,6 +539,7 @@ public class AnnotationRegistry {
             SUSEProductChannel.class,
             SUSEProductExtension.class,
             SUSEProductUpgrade.class,
+            SystemMigration.class,
             Task.class,
             TaskoBunch.class,
             TaskoRun.class,

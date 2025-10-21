@@ -27,6 +27,14 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Optional;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 /**
  *
  * InstalledPackage
@@ -37,16 +45,37 @@ import java.util.Optional;
  *    satellite does not have.
  *    This object is an instance of a package that is installed on a server
  */
+@Entity
+@Table(name = "rhnServerPackage")
+@IdClass(InstalledPackageId.class)
 public class InstalledPackage implements Serializable, Comparable<InstalledPackage> {
 
     /**
      *
      */
     private static final long serialVersionUID = -6158622200264142583L;
-    private PackageEvr evr;
-    private PackageName name;
-    private PackageArch arch;
+
+    @Id
+    @ManyToOne(targetEntity = Server.class)
+    @JoinColumn(name = "server_id")
     private Server server;
+
+    @Id
+    @ManyToOne(targetEntity = PackageEvr.class)
+    @JoinColumn(name = "evr_id")
+    private PackageEvr evr;
+
+    @Id
+    @ManyToOne(targetEntity = PackageName.class)
+    @JoinColumn(name = "name_id")
+    private PackageName name;
+
+    @Id
+    @ManyToOne(targetEntity = PackageArch.class)
+    @JoinColumn(name = "package_arch_id")
+    private PackageArch arch;
+
+    @Column(name = "installtime")
     private Date installTime;
 
     /**

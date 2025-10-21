@@ -1149,8 +1149,13 @@ public class ChannelFactory extends HibernateFactory {
         if (channel == null) {
             return null;
         }
-        List<ReleaseChannelMap> list = singleton.listObjectsByNamedQuery("ReleaseChannelMap.findDefaultForChannel",
-                Map.of("channel", channel));
+
+        Session session = HibernateFactory.getSession();
+        List<ReleaseChannelMap> list = session.createQuery(
+                "FROM ReleaseChannelMap AS r WHERE r.channel = :channel", ReleaseChannelMap.class)
+                .setParameter("channel", channel)
+                .list();
+
         if (list.isEmpty()) {
             return null;
         }

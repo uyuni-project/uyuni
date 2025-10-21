@@ -25,17 +25,41 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 
 /**
  * ReleaseChannelMap
  */
+@Entity
+@Table(name = "rhnReleaseChannelMap")
+@IdClass(ReleaseChannelMapId.class)
 public class ReleaseChannelMap implements Serializable, Comparable<ReleaseChannelMap> {
 
     private static final long serialVersionUID = 1L;
+
+    @Id
     private String product;
+
+    @Id
     private String version;
+
+    @Id
     private String release;
+
+    @Id
+    @ManyToOne(targetEntity = ChannelArch.class)
+    @JoinColumn(name = "channel_arch_id")
     private ChannelArch channelArch;
+
+    @Id
+    @ManyToOne(targetEntity = Channel.class)
+    @JoinColumn(name = "channel_id")
     private Channel channel;
 
     /**
