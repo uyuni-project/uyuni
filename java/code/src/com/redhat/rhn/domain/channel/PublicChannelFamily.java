@@ -19,15 +19,31 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
 /**
  * POJO for a rhnPublicChannelFamily row.
  */
+@Entity
+@Table(name = "rhnPublicChannelFamily")
 public class PublicChannelFamily extends BaseDomainHelper {
 
     /** The id, which is also the associated channel family id */
+    @Id
+    @Column(name = "channel_family_id")
     private long id;
 
     /** The channel family. */
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "channel_family_id")
+    @MapsId
     private ChannelFamily channelFamily;
 
     /**

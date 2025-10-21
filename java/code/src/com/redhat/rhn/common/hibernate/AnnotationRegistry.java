@@ -67,6 +67,7 @@ import com.redhat.rhn.domain.channel.ContentSourceType;
 import com.redhat.rhn.domain.channel.DistChannelMap;
 import com.redhat.rhn.domain.channel.PrivateChannelFamily;
 import com.redhat.rhn.domain.channel.ProductName;
+import com.redhat.rhn.domain.channel.PublicChannelFamily;
 import com.redhat.rhn.domain.channel.ReleaseChannelMap;
 import com.redhat.rhn.domain.cloudpayg.CloudRmtHost;
 import com.redhat.rhn.domain.cloudpayg.PaygCredentialsProduct;
@@ -187,9 +188,11 @@ import com.redhat.rhn.domain.rhnpackage.PackageName;
 import com.redhat.rhn.domain.rhnpackage.PackageNevra;
 import com.redhat.rhn.domain.rhnpackage.PackageObsoletes;
 import com.redhat.rhn.domain.rhnpackage.PackagePreDepends;
+import com.redhat.rhn.domain.rhnpackage.PackageProvider;
 import com.redhat.rhn.domain.rhnpackage.PackageProvides;
 import com.redhat.rhn.domain.rhnpackage.PackageRecommends;
 import com.redhat.rhn.domain.rhnpackage.PackageRequires;
+import com.redhat.rhn.domain.rhnpackage.PackageSource;
 import com.redhat.rhn.domain.rhnpackage.PackageSuggests;
 import com.redhat.rhn.domain.rhnpackage.PackageSupplements;
 import com.redhat.rhn.domain.rhnpackage.profile.ProfileEntry;
@@ -242,8 +245,11 @@ import com.redhat.rhn.domain.server.ServerPath;
 import com.redhat.rhn.domain.server.ServerPathId;
 import com.redhat.rhn.domain.server.ServerSnapshot;
 import com.redhat.rhn.domain.server.ServerSnapshotTagLink;
+import com.redhat.rhn.domain.server.ServerUuid;
 import com.redhat.rhn.domain.server.SnapshotTag;
 import com.redhat.rhn.domain.server.SnapshotTagName;
+import com.redhat.rhn.domain.server.VirtualInstanceState;
+import com.redhat.rhn.domain.server.VirtualInstanceType;
 import com.redhat.rhn.domain.server.ansible.AnsiblePath;
 import com.redhat.rhn.domain.server.ansible.InventoryPath;
 import com.redhat.rhn.domain.server.ansible.PlaybookPath;
@@ -260,6 +266,7 @@ import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.RegTokenOrgDefault;
 import com.redhat.rhn.domain.token.Token;
 import com.redhat.rhn.domain.token.TokenChannelAppStream;
+import com.redhat.rhn.domain.token.TokenPackage;
 import com.redhat.rhn.domain.user.AddressImpl;
 import com.redhat.rhn.domain.user.Pane;
 import com.redhat.rhn.domain.user.State;
@@ -466,9 +473,11 @@ public class AnnotationRegistry {
             PackageNevra.class,
             PackageObsoletes.class,
             PackagePreDepends.class,
+            PackageProvider.class,
             PackageProvides.class,
             PackageRecommends.class,
             PackageRequires.class,
+            PackageSource.class,
             PackageState.class,
             PackageSuggests.class,
             PackageSupplements.class,
@@ -490,6 +499,7 @@ public class AnnotationRegistry {
             ProjectSource.class,
             ProvisionState.class,
             PtfFilter.class,
+            PublicChannelFamily.class,
             PushClient.class,
             PushClientState.class,
             Ram.class,
@@ -539,6 +549,7 @@ public class AnnotationRegistry {
             ServerSnapshot.class,
             ServerSnapshotTagLink.class,
             ServerStateRevision.class,
+            ServerUuid.class,
             Severity.class,
             SnapshotTag.class,
             SnapshotTagName.class,
@@ -567,6 +578,7 @@ public class AnnotationRegistry {
             TinyUrl.class,
             TokenChannelAppStream.class,
             Token.class,
+            TokenPackage.class,
             UserGroupImpl.class,
             UserGroupMembers.class,
             UserGroupMembersId.class,
@@ -577,6 +589,8 @@ public class AnnotationRegistry {
             VHMCredentials.class,
             VirtualHostManagerConfig.class,
             VirtualHostManagerNodeInfo.class,
+            VirtualInstanceState.class,
+            VirtualInstanceType.class,
             XccdfBenchmark.class,
             XccdfIdent.class,
             XccdfIdentSystem.class,

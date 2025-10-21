@@ -49,11 +49,13 @@ public class TokenPackageFactory extends HibernateFactory {
         try {
             session = HibernateFactory.getSession();
 
-            retval = session.getNamedQuery(
-                "TokenPackage.lookupByToken")
+            retval = session.createQuery("""
+                            FROM TokenPackage AS p WHERE p.token = :token ORDER BY p.packageName.name
+                            """, TokenPackage.class)
                 .setParameter("token", tokenIn)
                 //Retrieve from cache if there
-                .setCacheable(true).list();
+                .setCacheable(true)
+                .list();
         }
         catch (HibernateException e) {
             log.error("Hibernate exception: {}", e.toString());
@@ -80,7 +82,10 @@ public class TokenPackageFactory extends HibernateFactory {
         try {
             session = HibernateFactory.getSession();
 
-            retval = session.getNamedQuery("TokenPackage.lookupByName")
+            retval = session.createQuery("""
+                            FROM TokenPackage AS p WHERE p.token = :token AND p.packageName = :name
+                            """,
+                            TokenPackage.class)
                 .setParameter("token", tokenIn)
                 .setParameter("name", nameIn)
                 //Retrieve from cache if there
@@ -111,14 +116,16 @@ public class TokenPackageFactory extends HibernateFactory {
         TokenPackage retval = null;
         try {
             session = HibernateFactory.getSession();
-            retval = (TokenPackage) session.getNamedQuery(
-                "TokenPackage.lookupByNameAndArch")
-                .setParameter("token", tokenIn)
-                .setParameter("name", nameIn)
-                .setParameter("arch", archIn)
-                //Retrieve from cache if there
-                .setCacheable(true)
-                .uniqueResult();
+            retval = session.createQuery("""
+                                FROM TokenPackage AS p
+                                WHERE p.token = :token AND p.packageName = :name AND p.packageArch = :arch
+                            """, TokenPackage.class)
+                    .setParameter("token", tokenIn)
+                    .setParameter("name", nameIn)
+                    .setParameter("arch", archIn)
+                    //Retrieve from cache if there
+                    .setCacheable(true)
+                    .uniqueResult();
         }
         catch (HibernateException e) {
             log.error("Hibernate exception: {}", e.toString());
