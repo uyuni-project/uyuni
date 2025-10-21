@@ -77,12 +77,11 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I wait until all synchronized channels for "sles15-sp4" have finished
 
 @uyuni
-  Scenario: Partially add openSUSE Leap 15.6 product, only including the required packages to generate the bootstrap repository
-    When I use spacewalk-common-channel to add channel "opensuse_leap15_6" with arch "x86_64"
-    And I kill running spacewalk-repo-sync for "opensuse_leap15_6-x86_64" channel
-    And I use spacewalk-repo-sync to sync channel "opensuse_leap15_6-x86_64" including "python3-ply dmidecode libunwind" packages
-    And I use spacewalk-common-channel to add all "leap15.6-client-tools" channels with arch "x86_64"
-    And I wait until all synchronized channels for "leap15.6-client-tools-x86_64" have finished
+  Scenario: Partially add openSUSE Tumbleweed product, only including the required packages to generate the bootstrap repository
+    When I use spacewalk-common-channel to add channel "opensuse_tumbleweed" with arch "x86_64"
+    And I kill running spacewalk-repo-sync for "opensuse_tumbleweed-x86_64" channel
+    And I use spacewalk-repo-sync to sync channel "opensuse_tumbleweed-x86_64" including "python3-ply dmidecode libunwind" packages
+    And I use spacewalk-common-channel to add all "tumbleweed-client-tools-x86_64" channels with arch "x86_64"
 
 @containerized_server
 @proxy

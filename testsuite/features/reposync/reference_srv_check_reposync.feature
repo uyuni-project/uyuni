@@ -61,6 +61,6 @@ Feature: Synchronize product channels
 
 @uyuni
   Scenario: Reposync of Uyuni client tools has finished
-    When I wait until the channel "opensuse_leap15_6-uyuni-client-x86_64" has been synced
+    When I wait until the channel "opensuse_tumbleweed-uyuni-client-devel-x86_64" has been synced
     And I wait until the channel "rockylinux8-uyuni-client-x86_64" has been synced
     And I wait until the channel "ubuntu-2404-amd64-uyuni-client" has been synced

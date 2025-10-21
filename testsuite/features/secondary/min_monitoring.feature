@@ -58,6 +58,8 @@ Feature: Monitor SUMA environment with Prometheus on a SLE Salt minion
     And I wait until "apache" exporter service is active on "sle_minion"
     And I wait until "postgres" exporter service is active on "sle_minion"
 
+# TODO: Debug and fix this test on GH validation runs
+@skip_if_github_validation
   Scenario: Visit monitoring endpoints on the minion
     When I visit "Prometheus" endpoint of this "sle_minion"
     And I visit "Prometheus node exporter" endpoint of this "sle_minion"

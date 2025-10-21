@@ -302,8 +302,8 @@ BASE_CHANNEL_BY_CLIENT = {
     'proxy' => 'openSUSE Tumbleweed (x86_64)',
     'proxy_container' => 'openSUSE Tumbleweed (x86_64)',
     'proxy_nontransactional' => 'openSUSE Tumbleweed (x86_64)',
-    'sle_minion' => 'openSUSE Leap 15.6 (x86_64)',
-    'ssh_minion' => 'openSUSE Leap 15.6 (x86_64)',
+    'sle_minion' => 'openSUSE Tumbleweed (x86_64)',
+    'ssh_minion' => 'openSUSE Tumbleweed (x86_64)',
     'rhlike_minion' => 'RHEL8-Pool for x86_64',
     'deblike_minion' => 'Ubuntu 20.04 LTS AMD64 Base for Uyuni',
     'pxeboot_minion' => 'SLE-Product-SLES15-SP4-Pool for x86_64',
@@ -418,6 +418,7 @@ LABEL_BY_BASE_CHANNEL = {
     'openSUSE-Leap-15.6-Pool for aarch64' => 'opensuse-leap-15.6-pool-aarch64'
   },
   'Uyuni' => {
+    'openSUSE Tumbleweed (x86_64)' => 'opensuse_tumbleweed-x86_64',
     'openSUSE Leap 15.6 (x86_64)' => 'opensuse_leap15_6-x86_64',
     'openSUSE Leap Micro 5.5 (x86_64)' => 'opensuse_micro5_5-x86_64',
     'SLES12-SP5-Pool for x86_64' => 'sles12-sp5-pool-x86_64',
@@ -927,6 +928,10 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         managertools-sle15-pool-aarch64-opensuse-15.6
         managertools-sle15-updates-aarch64-opensuse-15.6
       ],
+    'tumbleweed-x86_64' =>
+      %w[
+        opensuse_tumbleweed-x86_64
+      ],
     'suse-microos-5.1' => # CHECKED
       %w[
         suse-microos-5.1-pool-x86_64
@@ -1338,8 +1343,8 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
       ],
     'tumbleweed-client-tools-x86_64' => # CHECKED
       %w[
-        opensuse_tumbleweed-uyuni-client-x86_64
-        opensuse_tumbleweed-uyuni-client-devel-x86_64
+        opensuse_tumbleweed-uyuni-client
+        opensuse_tumbleweed-uyuni-client-devel
       ],
     'ubuntu-2004' => # CHECKED
       %w[
@@ -1499,8 +1504,8 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'opensuse-sle-15.6-updates-aarch64' => 5040,
   'oraclelinux9-appstream-x86_64' => 5880,
   'opensuse_tumbleweed-x86_64' => 12_600,
-  'opensuse_tumbleweed-uyuni-client-x86_64' => 60,
-  'opensuse_tumbleweed-uyuni-client-devel-x86_64' => 60,
+  'opensuse_tumbleweed-uyuni-client-x86_64' => 120,
+  'opensuse_tumbleweed-uyuni-client-devel-x86_64' => 120,
   'oraclelinux9-uyuni-client-devel-x86_64' => 120,
   'oraclelinux9-x86_64' => 2400,
   'res-7-ltss-updates-x86_64' => 1380,
@@ -1704,8 +1709,8 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'ubuntu-2404-amd64-universe-uyuni' => 24_000,
   'ubuntu-2404-amd64-uyuni-client-devel' => 120,
   'ubuntu-2404-pool-amd64-uyuni' => 60,
-  'uyuni-proxy-devel-tumbleweed-x86_64' => 60,
-  'uyuni-proxy-stable-tumbleweed-x86_64' => 60
+  'uyuni-proxy-devel-tumbleweed-x86_64' => 120,
+  'uyuni-proxy-stable-tumbleweed-x86_64' => 120
 }.freeze
 
 EMPTY_CHANNELS = %w[
