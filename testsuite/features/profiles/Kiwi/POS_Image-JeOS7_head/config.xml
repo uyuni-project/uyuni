@@ -73,6 +73,7 @@
         <package name="kiwi-tools"/>
         <package name="dosfstools"/>
         <package name="xfsprogs"/>
+        <package name="kbd"/>
     </packages>
     <users>
         <user home="/root" name="root" password="linux" pwdformat="plain" shell="/bin/bash" groups="root"/>
