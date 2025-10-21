@@ -152,19 +152,6 @@ export function generateFormulaComponentForId(
           disabled={isDisabled}
           value={value}
         />
-        <span className="input-group-btn">
-          <button
-            className="btn btn-default"
-            title={t("Reset")}
-            onClick={function (event) {
-              event.preventDefault();
-              Loggerhead.warn("Reseting color picker is not implemented!");
-              /* TODO: reset Value */
-            }}
-          >
-            <i className="fa fa-undo no-margin" />
-          </button>
-        </span>
       </div>,
       element.$help
     );
