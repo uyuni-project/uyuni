@@ -9,3 +9,5 @@ RUN zypper -n ar --no-gpgcheck https://download.opensuse.org/repositories/system
 RUN zypper -n ar --no-gpgcheck https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Test-Packages:/Pool/rpm/ test_repo_rpm_pool
 COPY etc_pam.d_sshd /etc/pam.d/sshd
 CMD ssh-keygen -A && /usr/sbin/sshd -De
+RUN echo "PermitRootLogin yes" > /etc/ssh/sshd_config.d/root.conf
+RUN echo "ChallengeResponseAuthentication yes" >> /etc/ssh/sshd_config.d/root.conf
