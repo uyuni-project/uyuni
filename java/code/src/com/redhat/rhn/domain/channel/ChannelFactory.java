@@ -346,7 +346,12 @@ public class ChannelFactory extends HibernateFactory {
      * @return the ContentSourceFilters
      */
     public static List<ContentSourceFilter> lookupContentSourceFiltersById(Long id) {
-        return singleton.listObjectsByNamedQuery("ContentSourceFilter.findBySourceId", Map.of("source_id", id));
+        Session session = HibernateFactory.getSession();
+        return session.createQuery(
+                "FROM ContentSourceFilter AS f WHERE f.sourceId = :source_id ORDER BY f.sortOrder",
+                        ContentSourceFilter.class)
+                .setParameter("source_id", id)
+                .list();
     }
 
     /**
