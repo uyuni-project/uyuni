@@ -116,6 +116,7 @@ import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelProduct;
 import com.redhat.rhn.domain.channel.ChannelSyncFlag;
 import com.redhat.rhn.domain.channel.ClonedChannel;
+import com.redhat.rhn.domain.channel.ContentSourceFilter;
 import com.redhat.rhn.domain.channel.ContentSourceType;
 import com.redhat.rhn.domain.channel.DistChannelMap;
 import com.redhat.rhn.domain.channel.PrivateChannelFamily;
@@ -449,6 +450,7 @@ public class AnnotationRegistry {
             ContentProject.class,
             ContentProjectFilter.class,
             ContentProjectHistoryEntry.class,
+            ContentSourceFilter.class,
             ContentSourceType.class,
             CryptoKey.class,
             CryptoKeyType.class,
