@@ -19,14 +19,39 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 /**
  * PackageArch
  */
+@Entity
+@Table(name = "rhnPackageKey")
 public class PackageKey extends BaseDomainHelper implements Comparable<PackageKey> {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pkey_seq")
+    @SequenceGenerator(name = "pkey_seq", sequenceName = "rhn_pkey_id_seq", allocationSize = 1)
     private Long id;
+
+    @Column(name = "key_id")
     private String key;
+
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    @JoinColumn(name = "provider_id")
     private PackageProvider provider;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "key_type_id")
     private PackageKeyType type;
 
     /**
@@ -53,7 +78,7 @@ public class PackageKey extends BaseDomainHelper implements Comparable<PackageKe
     /**
      * @param i The id to set.
      */
-    public void setId(Long i) {
+    protected void setId(Long i) {
         this.id = i;
     }
 

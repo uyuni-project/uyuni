@@ -221,7 +221,7 @@ public class PackageFactory extends HibernateFactory {
      */
     public static PackageArch lookupPackageArchById(Long id) {
         return HibernateFactory.doWithoutAutoFlushing(
-          () -> singleton.lookupObjectByNamedQuery("PackageArch.findById", Map.of("id", id), true)
+          () -> singleton.lookupObjectByParam(PackageArch.class, "id", id, true)
         );
     }
 
@@ -234,7 +234,7 @@ public class PackageFactory extends HibernateFactory {
         if (label == null) {
             return null;
         }
-        return singleton.lookupObjectByNamedQuery("PackageArch.findByLabel", Map.of("label", label), true);
+        return singleton.lookupObjectByParam(PackageArch.class, "label", label, true);
     }
 
     /**
@@ -610,7 +610,7 @@ public class PackageFactory extends HibernateFactory {
      * @return the package key
      */
     public static PackageKey lookupPackageKey(String key) {
-        return singleton.lookupObjectByNamedQuery("PackageKey.findByKey", Map.of("key", key));
+        return singleton.lookupObjectByParam(PackageKey.class, "key", key);
     }
 
     /**

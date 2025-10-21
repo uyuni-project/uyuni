@@ -163,7 +163,7 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
      */
     private KickstartableTree lookupById(Long id) {
         Session session = HibernateFactory.getSession();
-        return (KickstartableTree) session.getNamedQuery("KickstartableTree.findById")
+        return (KickstartableTree) session.createQuery("FROM KickstartableTree AS k WHERE k.id = :id")
                           .setParameter("id", id)
                           .uniqueResult();
     }
