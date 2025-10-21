@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -64,9 +65,14 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+
 /**
  * PackageRefreshListAction
  */
+@Entity
+@DiscriminatorValue("1")
 public class PackageRefreshListAction extends PackageAction {
     private static final Logger LOG = LogManager.getLogger(PackageRefreshListAction.class);
 

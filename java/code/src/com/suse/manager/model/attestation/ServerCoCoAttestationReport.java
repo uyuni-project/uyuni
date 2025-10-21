@@ -77,6 +77,7 @@ public class ServerCoCoAttestationReport extends BaseDomainHelper implements Ser
     }
 
     @ManyToOne
+    @JoinColumn(name = "action_id")
     public Action getAction() {
         return action;
     }

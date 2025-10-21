@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2012--2015 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -54,9 +55,17 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.persistence.CascadeType;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToOne;
+
 /**
  * ScapAction - Class representing TYPE_SCAP_*.
  */
+@Entity
+@DiscriminatorValue("50")
 public class ScapAction extends Action {
     private static final Logger LOG = LogManager.getLogger(ScapAction.class);
 
@@ -70,6 +79,7 @@ public class ScapAction extends Action {
         xccdfResumeXsl = xccdfResumeXslIn;
     }
 
+    @OneToOne(mappedBy = "parentAction", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private ScapActionDetails scapActionDetails;
 
     /**
