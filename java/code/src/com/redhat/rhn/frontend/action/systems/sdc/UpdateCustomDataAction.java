@@ -14,12 +14,12 @@
  */
 package com.redhat.rhn.frontend.action.systems.sdc;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.server.CustomDataValue;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
@@ -34,7 +34,6 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.DynaActionForm;
-import org.hibernate.Session;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -80,11 +79,7 @@ public class UpdateCustomDataAction extends RhnAction {
         Long cikid = context.getParamAsLong(CIKID_PARAM);
         CustomDataKey key = OrgFactory.lookupKeyById(cikid);
 
-        Session session = HibernateFactory.getSession();
-        CustomDataValue cdv = (CustomDataValue) session.getNamedQuery(
-                "CustomDataValue.findByServerAndKey").setParameter("server", server)
-                .setParameter("key", key)
-                .setCacheable(true).uniqueResult();
+        CustomDataValue cdv = ServerFactory.getCustomDataValue(key, server);
 
         form.set(LABEL_PARAM, key.getLabel());
         request.setAttribute("system", server);

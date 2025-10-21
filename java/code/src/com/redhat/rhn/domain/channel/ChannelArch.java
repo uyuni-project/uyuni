@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.channel;
 
+import static org.hibernate.annotations.CacheConcurrencyStrategy.READ_ONLY;
+
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.common.ArchType;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
@@ -22,19 +24,56 @@ import com.redhat.rhn.domain.server.ServerArch;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.Immutable;
 
 import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  * ChannelArch
  */
+@Entity
+@Table(name = "rhnChannelArch")
+@Immutable
+@Cache(usage = READ_ONLY)
 public class ChannelArch extends BaseDomainHelper {
 
+    @Id
     private Long id;
+
+    @Column
     private String label;
+
+    @Column
     private String name;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "arch_type_id")
     private ArchType archType;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "rhnServerChannelArchCompat",
+            joinColumns = @JoinColumn(name = "channel_arch_id"),
+            inverseJoinColumns = @JoinColumn(name = "server_arch_id"))
     private Set<ServerArch> compatibleServerArches;
+
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "rhnChannelPackageArchCompat",
+            joinColumns = @JoinColumn(name = "channel_arch_id"),
+            inverseJoinColumns = @JoinColumn(name = "package_arch_id"))
     private Set<PackageArch> compatiblePackageArches;
 
     /**
@@ -61,7 +100,7 @@ public class ChannelArch extends BaseDomainHelper {
     /**
      * @param i The id to set.
      */
-    public void setId(Long i) {
+    protected void setId(Long i) {
         this.id = i;
     }
 

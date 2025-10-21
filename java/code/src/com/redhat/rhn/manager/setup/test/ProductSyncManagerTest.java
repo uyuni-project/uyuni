@@ -490,7 +490,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
     }
 
     private void createConflictingChannel(String channel, ChannelFamily family) {
-        ChannelArch arch = (ChannelArch) TestUtils.lookupFromCacheById(500L, "ChannelArch.findById");
+        ChannelArch arch = TestUtils.lookupChannelArchFromCacheById(500L);
 
         try {
             ChannelFactoryTest.createTestChannel(channel + "-conflict", channel, user.getOrg(), arch,

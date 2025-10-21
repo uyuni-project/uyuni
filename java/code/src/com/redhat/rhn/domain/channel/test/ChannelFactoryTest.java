@@ -60,7 +60,7 @@ import java.util.List;
 public class ChannelFactoryTest extends RhnBaseTestCase {
 
     @Test
-    public void testChannelFactory() throws Exception {
+    public void testChannelFactory() {
         User user = UserTestUtils.createUser(this);
         Channel c = ChannelFactoryTest.createTestChannel(user);
 
@@ -88,7 +88,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         return attempt;
     }
 
-    public static Channel createBaseChannel(User user) throws Exception {
+    public static Channel createBaseChannel(User user) {
         Channel c = ChannelFactoryTest.createTestChannel(user);
         c.setOrg(user.getOrg());
 
@@ -99,7 +99,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         return c;
     }
 
-    public static Channel createBaseChannel(User user, String channelArchLabel) throws Exception {
+    public static Channel createBaseChannel(User user, String channelArchLabel) {
         Channel c = ChannelFactoryTest.createTestChannel(user, channelArchLabel);
         c.setOrg(user.getOrg());
 
@@ -111,15 +111,15 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
     }
 
     public static Channel createBaseChannel(User user,
-                                            ChannelFamily fam) throws Exception {
+                                            ChannelFamily fam) {
         Channel c = createTestChannel(null, fam);
         ProductName pn = lookupOrCreateProductName(ChannelManager.RHEL_PRODUCT_NAME);
         c.setProductName(pn);
         ChannelFactory.save(c);
-        return (Channel) TestUtils.saveAndReload(c);
+        return TestUtils.saveAndReload(c);
     }
 
-    public static Channel createTestChannel(User user) throws Exception {
+    public static Channel createTestChannel(User user) {
         Channel c = ChannelFactoryTest.createTestChannel(user.getOrg());
         // assume we want the user to have access to this channel once created
         UserManager.addChannelPerm(user, c.getId(), "subscribe");
@@ -128,7 +128,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         return c;
     }
 
-    public static Channel createTestChannel(User user, List<String> contentSourceUrls) throws Exception {
+    public static Channel createTestChannel(User user, List<String> contentSourceUrls) {
         Channel c = ChannelFactoryTest.createTestChannel(user.getOrg());
         // assume we want the user to have access to this channel once created
         UserManager.addChannelPerm(user, c.getId(), "subscribe");
@@ -150,8 +150,8 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         return c;
     }
 
-    public static Channel createTestChannel(User user, String channelArch) throws Exception {
-        ChannelArch arch = (ChannelArch) TestUtils.lookupFromCacheByLabel(channelArch, "ChannelArch.findByLabel");
+    public static Channel createTestChannel(User user, String channelArch) {
+        ChannelArch arch = TestUtils.lookupChannelArchFromCacheByLabel(channelArch);
         Channel c = createTestChannel(user.getOrg(), arch, user.getOrg().getPrivateChannelFamily());
         // assume we want the user to have access to this channel once created
         UserManager.addChannelPerm(user, c.getId(), "subscribe");
@@ -160,16 +160,15 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         return c;
     }
 
-    public static Channel createTestChannel(Org org) throws Exception {
+    public static Channel createTestChannel(Org org) {
         ChannelFamily cfam = org.getPrivateChannelFamily();
         Channel c = ChannelFactoryTest.createTestChannel(org, cfam);
         ChannelFactory.save(c);
         return c;
     }
 
-    public static Channel createTestChannel(Org org, ChannelFamily cfam) throws Exception {
-        String query = "ChannelArch.findByLabel";
-        ChannelArch arch = (ChannelArch) TestUtils.lookupFromCacheByLabel("channel-x86_64", query);
+    public static Channel createTestChannel(Org org, ChannelFamily cfam) {
+        ChannelArch arch = TestUtils.lookupChannelArchFromCacheByLabel("channel-x86_64");
         return createTestChannel(org, arch, cfam);
     }
 
@@ -179,9 +178,8 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
      * @param user       the user
      * @param gpgCheckIn the GPGCheck flag to set
      * @return the test channel
-     * @throws Exception
      */
-    public static Channel createTestChannel(User user, boolean gpgCheckIn) throws Exception {
+    public static Channel createTestChannel(User user, boolean gpgCheckIn) {
         Channel c = ChannelFactoryTest.createTestChannel(user.getOrg());
         c.setGPGCheck(gpgCheckIn);
         // assume we want the user to have access to this channel once created
@@ -191,7 +189,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         return c;
     }
 
-    public static Channel createTestChannel(Org org, ChannelArch arch, ChannelFamily cfam) throws Exception {
+    public static Channel createTestChannel(Org org, ChannelArch arch, ChannelFamily cfam) {
         String label = "channellabel" + TestUtils.randomString().toLowerCase();
         String name = "ChannelName" + TestUtils.randomString();
 
@@ -238,10 +236,9 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
     /**
      * TODO: need to fix this test when we put errata management back in.
      *
-     * @throws Exception something bad happened
      */
     @Test
-    public void testChannelsWithClonableErrata() throws Exception {
+    public void testChannelsWithClonableErrata() {
         User user = UserTestUtils.createUser(this);
         ChannelManager.
                 getChannelsWithClonableErrata(user.getOrg());
@@ -259,7 +256,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testLookupByLabel() throws Exception {
+    public void testLookupByLabel() {
         User user = UserTestUtils.createUser();
         Channel rh = createTestChannel(user);
         String label = rh.getLabel();
@@ -284,7 +281,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testIsGloballySubscribable() throws Exception {
+    public void testIsGloballySubscribable() {
         User user = UserTestUtils.createUser(this);
         Channel c = createTestChannel(user);
         assertTrue(ChannelFactory.isGloballySubscribable(user.getOrg(), c));
@@ -302,7 +299,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testVerifyLabel() throws Exception {
+    public void testVerifyLabel() {
         User user = UserTestUtils.createUser(this);
         Channel c = createTestChannel(user);
         assertFalse(ChannelFactory.doesChannelLabelExist("foo"));
@@ -310,7 +307,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testVerifyName() throws Exception {
+    public void testVerifyName() {
         User user = UserTestUtils.createUser(this);
         Channel c = createTestChannel(user);
         assertFalse(ChannelFactory.doesChannelNameExist("power house foo channel"));
@@ -318,7 +315,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testKickstartableTreeChannels() throws Exception {
+    public void testKickstartableTreeChannels() {
         User user = UserTestUtils.createUser(this);
 
         List<Channel> channels = ChannelFactory.getKickstartableTreeChannels(user.getOrg());
@@ -365,7 +362,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testPackageCount() throws Exception {
+    public void testPackageCount() {
         User user = UserTestUtils.createUser(this);
         Channel original = ChannelFactoryTest.createTestChannel(user);
         assertEquals(0, ChannelFactory.getPackageCount(original));
@@ -373,7 +370,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         ChannelFactory.save(original);
         TestUtils.flushAndEvict(original);
 
-        original = (Channel) reload(original);
+        original = reload(original);
         assertEquals(1, ChannelFactory.getPackageCount(original));
     }
 
@@ -428,7 +425,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testAccessibleChildChannels() throws Exception {
+    public void testAccessibleChildChannels() {
         User user = UserTestUtils.createUser(this);
         Channel parent = ChannelFactoryTest.createBaseChannel(user);
         Channel child = ChannelFactoryTest.createTestChannel(user);
@@ -451,7 +448,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testFindChannelArchesSyncdChannels() throws Exception {
+    public void testFindChannelArchesSyncdChannels() {
         // ensure at least one channel is present
         User user = UserTestUtils.createUser();
         ChannelFactoryTest.createTestChannel(user);
@@ -462,7 +459,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testListAllBaseChannels() throws Exception {
+    public void testListAllBaseChannels() {
         User user = UserTestUtils.createUser(this);
         // do NOT use createBaseChannel here because that will create a Red Hat
         // base channel NOT a user owned base channel.
@@ -525,10 +522,9 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
     /**
      * Test user channel accessibility
      *
-     * @throws Exception if anything goes wrong
      */
     @Test
-    public void testAccessibility() throws Exception {
+    public void testAccessibility() {
         User user1 = UserTestUtils.createUser("testuser1", "testorg1");
         User user2 = UserTestUtils.createUser("testuser2", user1.getOrg().getId());
         User user3 = UserTestUtils.createUser("testuser3", "testorg3");
@@ -542,10 +538,9 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
     /**
      * Test org channel accessibility
      *
-     * @throws Exception if anything goes wrong
      */
     @Test
-    public void testOrgAccessibility() throws Exception {
+    public void testOrgAccessibility() {
         User user1 = UserTestUtils.createUser("testuser1", "testorg1");
         User user2 = UserTestUtils.createUser("testuser2", "testorg2");
         User user3 = UserTestUtils.createUser("testuser3", "testorg3");
@@ -594,10 +589,9 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
     /**
      * Test trusted org channel accessibility
      *
-     * @throws Exception if anything goes wrong
      */
     @Test
-    public void testTrustedOrgAccessibility() throws Exception {
+    public void testTrustedOrgAccessibility() {
         User user1 = UserTestUtils.createUser("testuser1", "testorg1");
         User user2 = UserTestUtils.createUser("testuser2", "testorg2");
         User user3 = UserTestUtils.createUser("testuser3", "testorg3");
@@ -655,10 +649,9 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
     /**
      * Test "ChannelFactory.findAllByUserOrderByChild"
      *
-     * @throws Exception
      */
     @Test
-    public void testFindAllByUserOrderByChild() throws Exception {
+    public void testFindAllByUserOrderByChild() {
         User user1 = UserTestUtils.createUser("testuser1", "testorg1");
         User user2 = UserTestUtils.createUser("testuser2", "testorg2");
 
@@ -698,7 +691,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testChannelSyncFlag() throws Exception {
+    public void testChannelSyncFlag() {
 
         User user = UserTestUtils.createUser();
         Channel channel = ChannelFactoryTest.createTestChannel(user);

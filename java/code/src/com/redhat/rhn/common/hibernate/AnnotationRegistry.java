@@ -129,6 +129,7 @@ import com.redhat.rhn.domain.image.ImageStoreType;
 import com.redhat.rhn.domain.image.KiwiProfile;
 import com.redhat.rhn.domain.image.ProfileCustomDataValue;
 import com.redhat.rhn.domain.iss.IssMaster;
+import com.redhat.rhn.domain.iss.IssMasterOrg;
 import com.redhat.rhn.domain.iss.IssSlave;
 import com.redhat.rhn.domain.kickstart.KickstartCommand;
 import com.redhat.rhn.domain.kickstart.KickstartCommandName;
@@ -149,6 +150,7 @@ import com.redhat.rhn.domain.kickstart.crypto.SslCryptoKey;
 import com.redhat.rhn.domain.matcher.MatcherRunData;
 import com.redhat.rhn.domain.notification.NotificationMessage;
 import com.redhat.rhn.domain.notification.UserNotification;
+import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgAdminManagement;
 import com.redhat.rhn.domain.org.OrgConfig;
@@ -195,6 +197,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageRequires;
 import com.redhat.rhn.domain.rhnpackage.PackageSource;
 import com.redhat.rhn.domain.rhnpackage.PackageSuggests;
 import com.redhat.rhn.domain.rhnpackage.PackageSupplements;
+import com.redhat.rhn.domain.rhnpackage.profile.Profile;
 import com.redhat.rhn.domain.rhnpackage.profile.ProfileEntry;
 import com.redhat.rhn.domain.rhnpackage.profile.ProfileType;
 import com.redhat.rhn.domain.role.RoleImpl;
@@ -215,6 +218,7 @@ import com.redhat.rhn.domain.server.ClientCapability;
 import com.redhat.rhn.domain.server.ClientCapabilityId;
 import com.redhat.rhn.domain.server.CustomDataValue;
 import com.redhat.rhn.domain.server.Device;
+import com.redhat.rhn.domain.server.Dmi;
 import com.redhat.rhn.domain.server.EntitlementServerGroup;
 import com.redhat.rhn.domain.server.Feature;
 import com.redhat.rhn.domain.server.InstalledPackage;
@@ -226,8 +230,10 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.NetworkInterface;
+import com.redhat.rhn.domain.server.Note;
 import com.redhat.rhn.domain.server.Pillar;
 import com.redhat.rhn.domain.server.PinnedSubscription;
+import com.redhat.rhn.domain.server.ProxyInfo;
 import com.redhat.rhn.domain.server.PushClient;
 import com.redhat.rhn.domain.server.PushClientState;
 import com.redhat.rhn.domain.server.Ram;
@@ -269,6 +275,7 @@ import com.redhat.rhn.domain.token.TokenChannelAppStream;
 import com.redhat.rhn.domain.token.TokenPackage;
 import com.redhat.rhn.domain.user.AddressImpl;
 import com.redhat.rhn.domain.user.Pane;
+import com.redhat.rhn.domain.user.RhnTimeZone;
 import com.redhat.rhn.domain.user.State;
 import com.redhat.rhn.domain.user.StateChange;
 import com.redhat.rhn.domain.user.UserServerPreference;
@@ -372,6 +379,7 @@ public class AnnotationRegistry {
             ContentSourceType.class,
             CryptoKey.class,
             CryptoKeyType.class,
+            CustomDataKey.class,
             CustomDataValue.class,
             Cve.class,
             DaemonConfigDetails.class,
@@ -381,6 +389,7 @@ public class AnnotationRegistry {
             DistChannelMap.class,
             DistUpgradeActionDetails.class,
             DistUpgradeChannelTask.class,
+            Dmi.class,
             DockerfileProfile.class,
             EntitlementServerGroup.class,
             EnvironmentTarget.class,
@@ -415,6 +424,7 @@ public class AnnotationRegistry {
             IssAccessToken.class,
             IssHub.class,
             IssMaster.class,
+            IssMasterOrg.class,
             IssPeripheral.class,
             IssPeripheralChannels.class,
             IssSlave.class,
@@ -447,6 +457,7 @@ public class AnnotationRegistry {
             ModuleFilter.class,
             Namespace.class,
             NetworkInterface.class,
+            Note.class,
             NotificationMessage.class,
             OrgAdminManagement.class,
             Org.class,
@@ -493,11 +504,13 @@ public class AnnotationRegistry {
             PlaybookPath.class,
             PrivateChannelFamily.class,
             ProductName.class,
+            Profile.class,
             ProfileCustomDataValue.class,
             ProfileEntry.class,
             ProfileType.class,
             ProjectSource.class,
             ProvisionState.class,
+            ProxyInfo.class,
             PtfFilter.class,
             PublicChannelFamily.class,
             PushClient.class,
@@ -514,6 +527,7 @@ public class AnnotationRegistry {
             RegTokenOrgDefault.class,
             ReportDBCredentials.class,
             RHUICredentials.class,
+            RhnTimeZone.class,
             RoleImpl.class,
             SAPWorkload.class,
             SCCCredentials.class,

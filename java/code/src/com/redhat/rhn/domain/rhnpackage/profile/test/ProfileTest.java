@@ -23,7 +23,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
-import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.profile.Profile;
 import com.redhat.rhn.domain.rhnpackage.profile.ProfileFactory;
 import com.redhat.rhn.domain.server.Server;
@@ -36,7 +35,6 @@ import com.redhat.rhn.testing.UserTestUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
-import org.hibernate.query.Query;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -50,10 +48,9 @@ public class ProfileTest extends RhnBaseTestCase {
 
     /**
      * Test the Equals method of Profile
-     * @throws Exception something bad happened
      */
     @Test
-    public void testProfileEquals() throws Exception {
+    public void testProfileEquals() {
         User user = UserTestUtils.createUser(this);
         Channel channel = ChannelFactoryTest.createTestChannel(user);
         Profile p1 = createTestProfile(user, channel);
@@ -66,22 +63,8 @@ public class ProfileTest extends RhnBaseTestCase {
          */
         assertNotEquals(p1, channel);
 
-        p2 = lookupByIdAndOrg(p1.getId(), user.getOrg());
+        p2 = ProfileFactory.lookupByIdAndOrg(p1.getId(), user.getOrg());
         assertEquals(p1, p2);
-    }
-
-    /**
-     * Helper method to get a Profile by id
-     * @param id The profile id
-     * @param org The org for this profile.
-     * @return Returns the Profile corresponding to id
-     */
-    public static Profile lookupByIdAndOrg(Long id, Org org) {
-        Session session = HibernateFactory.getSession();
-        return (Profile) session.getNamedQuery("Profile.findByIdAndOrg")
-                                    .setParameter("id", id)
-                                    .setParameter("org_id", org.getId())
-                                    .uniqueResult();
     }
 
     /**
@@ -108,7 +91,7 @@ public class ProfileTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testCompatibleServer() throws Exception {
+    public void testCompatibleServer() {
         // create a profile
         // create a channel
         // create a server
@@ -124,10 +107,7 @@ public class ProfileTest extends RhnBaseTestCase {
         // gotta make sure the Channel gets saved.
         session.flush();
 
-        Query qry = session.getNamedQuery("Profile.compatibleWithServer");
-        qry.setParameter("sid", server.getId());
-        qry.setParameter("org_id", user.getOrg().getId());
-        List list = qry.list();
+        List<Profile> list = ProfileFactory.compatibleWithServer(server, user.getOrg());
         assertNotNull(list, "List is null");
         assertFalse(list.isEmpty(), "List is empty");
         for (Object o : list) {

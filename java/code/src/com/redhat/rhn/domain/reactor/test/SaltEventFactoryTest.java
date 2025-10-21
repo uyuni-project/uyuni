@@ -88,7 +88,7 @@ public class SaltEventFactoryTest extends RhnBaseTestCase {
         assertEquals(Arrays.asList(0L, 0L, 0L, 0L), saltEventsCount);
 
         // try to pop a salt event when there are none
-        List<SaltEvent> popedSaltEvents = SaltEventFactory.popSaltEvents(1, 0).collect(Collectors.toList());
+        List<SaltEvent> popedSaltEvents = SaltEventFactory.popSaltEvents(1, 0).toList();
         assertEquals(0, popedSaltEvents.size());
 
         // create and pop 1 salt event
@@ -164,14 +164,14 @@ public class SaltEventFactoryTest extends RhnBaseTestCase {
             );
 
         // create and pop another salt event, not associated to a minion
-        SaltEvent saltEvent3 = new SaltEvent(count + 1, null, "data_event_3", 0);
+        SaltEvent saltEvent3 = new SaltEvent(count + 1L, null, "data_event_3", 0);
         insertIntoSuseSaltEvent(saltEvent3);
 
         saltEventsCount = SaltEventFactory.countSaltEvents(4);
         saltEvents.add(saltEvent3);
         assertEquals(Arrays.asList(1L, 1L, 1L, 0L), saltEventsCount);
 
-        List<Long> saltEventIds = saltEvents.stream().map(SaltEvent::getId).collect(Collectors.toList());
+        List<Long> saltEventIds = saltEvents.stream().map(SaltEvent::getId).toList();
         deletedEventIds = SaltEventFactory.deleteSaltEvents(saltEventIds);
         assertEquals(saltEvents.size(), deletedEventIds.size());
         assertTrue(deletedEventIds.stream().allMatch(did -> saltEventIds.stream().anyMatch(id -> id.equals(did))));
@@ -211,7 +211,7 @@ public class SaltEventFactoryTest extends RhnBaseTestCase {
         assertEquals(2, changed);
 
         // pop the events
-        List<SaltEvent> popedSaltEvents = SaltEventFactory.popSaltEvents(3, 2).collect(Collectors.toList());
+        List<SaltEvent> popedSaltEvents = SaltEventFactory.popSaltEvents(3, 2).toList();
         assertEquals(popedSaltEvents.size(), 3);
         popedSaltEvents = SaltEventFactory.popSaltEvents(1, 1).toList();
         assertEquals(popedSaltEvents.size(), 1);
