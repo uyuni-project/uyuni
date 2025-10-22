@@ -1343,8 +1343,8 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
       ],
     'tumbleweed-client-tools-x86_64' => # CHECKED
       %w[
-        opensuse_tumbleweed-uyuni-client
-        opensuse_tumbleweed-uyuni-client-devel
+        opensuse_tumbleweed-uyuni-client-x86_64
+        opensuse_tumbleweed-uyuni-client-devel-x86_64
       ],
     'ubuntu-2004' => # CHECKED
       %w[
