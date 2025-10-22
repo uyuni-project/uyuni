@@ -34,7 +34,9 @@ def set_client_capabilities(capabilities):
         return
 
     caps = {}
-    regexp = re.compile(r"^(?P<name>[^(]*)\((?P<version>[^)]*)\)\s*=\s*(?P<value>.*)$")
+    regexp = re.compile(
+        r"^(?P<name>[^(]*)\((?P<version>[^)]*)\)\s*=\s*(?P<value>\S.*)$"
+    )
     for cap in capabilities:
         mo = regexp.match(cap)
         if not mo:
