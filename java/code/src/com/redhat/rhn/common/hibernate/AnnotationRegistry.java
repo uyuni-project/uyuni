@@ -116,13 +116,17 @@ import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelProduct;
 import com.redhat.rhn.domain.channel.ChannelSyncFlag;
 import com.redhat.rhn.domain.channel.ClonedChannel;
+import com.redhat.rhn.domain.channel.Comps;
 import com.redhat.rhn.domain.channel.ContentSourceFilter;
 import com.redhat.rhn.domain.channel.ContentSourceType;
 import com.redhat.rhn.domain.channel.DistChannelMap;
+import com.redhat.rhn.domain.channel.MediaProducts;
+import com.redhat.rhn.domain.channel.Modules;
 import com.redhat.rhn.domain.channel.PrivateChannelFamily;
 import com.redhat.rhn.domain.channel.ProductName;
 import com.redhat.rhn.domain.channel.PublicChannelFamily;
 import com.redhat.rhn.domain.channel.ReleaseChannelMap;
+import com.redhat.rhn.domain.channel.RepoMetadata;
 import com.redhat.rhn.domain.cloudpayg.CloudRmtHost;
 import com.redhat.rhn.domain.cloudpayg.PaygCredentialsProduct;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
@@ -424,6 +428,7 @@ public class AnnotationRegistry {
             CoCoAttestationResult.class,
             CoCoEnvironmentTypeConverter.class,
             CoCoResultTypeConverter.class,
+            Comps.class,
             ConfigAction.class,
             ConfigChannel.class,
             ConfigChannelAssociation.class,
@@ -541,10 +546,12 @@ public class AnnotationRegistry {
             MaintenanceSchedule.class,
             ManagedServerGroup.class,
             MatcherRunData.class,
+            MediaProducts.class,
             MinionRecurringAction.class,
             MinionServer.class,
             MinionServerFactory.class,
             MinionSummary.class,
+            Modules.class,
             ModuleFilter.class,
             Namespace.class,
             NetworkInterface.class,
@@ -619,6 +626,7 @@ public class AnnotationRegistry {
             Ram.class,
             RebootAction.class,
             ReleaseChannelMap.class,
+            RepoMetadata.class,
             RhnConfiguration.class,
             RecurringConfigChannel.class,
             RecurringHighstate.class,

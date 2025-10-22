@@ -14,9 +14,11 @@
  */
 package com.redhat.rhn.domain.channel;
 
-/**
- * MediaProducts
- */
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+
+@Entity
+@DiscriminatorValue("3")
 public class MediaProducts extends RepoMetadata {
 
 }
