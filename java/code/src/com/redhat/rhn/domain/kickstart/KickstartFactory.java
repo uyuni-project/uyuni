@@ -492,17 +492,21 @@ public class KickstartFactory extends HibernateFactory {
      */
     public static CryptoKey lookupCryptoKey(String description, Org org) {
         Session session = HibernateFactory.getSession();
-        Query<CryptoKey> query = null;
         if (org != null) {
-            query = session.getNamedQuery("CryptoKey.findByDescAndOrg")
-                           .setParameter("description", description, StandardBasicTypes.STRING)
-                           .setParameter(ORG_ID, org.getId(), StandardBasicTypes.LONG);
+            return session.createQuery(
+                            "FROM CryptoKey AS c WHERE c.description = :description AND c.org = :org_id",
+                            CryptoKey.class)
+                    .setParameter("description", description, StandardBasicTypes.STRING)
+                    .setParameter(ORG_ID, org.getId(), StandardBasicTypes.LONG)
+                    .uniqueResult();
         }
         else {
-            query = session.getNamedQuery("CryptoKey.findByDescAndNullOrg")
-                           .setParameter("description", description, StandardBasicTypes.STRING);
+            return session.createQuery(
+                            "FROM CryptoKey AS c WHERE c.description = :description AND c.org IS NULL",
+                            CryptoKey.class)
+                    .setParameter("description", description, StandardBasicTypes.STRING)
+                    .uniqueResult();
         }
-        return query.uniqueResult();
     }
 
     /**
@@ -513,7 +517,7 @@ public class KickstartFactory extends HibernateFactory {
     public static List<CryptoKey> lookupCryptoKeys(Org org) {
         //look for Kickstart data by id
         Session session = HibernateFactory.getSession();
-        return session.getNamedQuery("CryptoKey.findByOrg")
+        return session.createQuery("FROM CryptoKey AS c WHERE c.org = :org_id", CryptoKey.class)
                 .setParameter(ORG_ID, org.getId(), StandardBasicTypes.LONG)
                 .list();
     }
@@ -526,7 +530,9 @@ public class KickstartFactory extends HibernateFactory {
     public static List<SslCryptoKey> lookupSslCryptoKeys(Org org) {
         //look for Kickstart data by id
         Session session = HibernateFactory.getSession();
-        return session.getNamedQuery("SslCryptoKey.findByOrg")
+        return session.createQuery(
+                "FROM com.redhat.rhn.domain.kickstart.crypto.SslCryptoKey AS c WHERE c.org = :org_id",
+                        SslCryptoKey.class)
                 .setParameter(ORG_ID, org.getId(), StandardBasicTypes.LONG)
                 .list();
     }
@@ -540,7 +546,8 @@ public class KickstartFactory extends HibernateFactory {
     public static CryptoKey lookupCryptoKeyById(Long keyId, Org org) {
         //look for Kickstart data by id
         Session session = HibernateFactory.getSession();
-        return (CryptoKey) session.getNamedQuery("CryptoKey.findByIdAndOrg")
+        return session.createQuery("FROM CryptoKey AS c WHERE c.id = :key_id AND c.org = :org_id",
+                        CryptoKey.class)
                 .setParameter("key_id", keyId, StandardBasicTypes.LONG)
                 .setParameter(ORG_ID, org.getId(), StandardBasicTypes.LONG)
                 .uniqueResult();
@@ -555,8 +562,8 @@ public class KickstartFactory extends HibernateFactory {
     public static SslCryptoKey lookupSslCryptoKeyById(Long keyId, Org org) {
         //look for Kickstart data by id
         Session session = HibernateFactory.getSession();
-        Query<SslCryptoKey> query = session.getNamedQuery("SslCryptoKey.findByIdAndOrg");
-        return query
+        return session.createQuery(
+                        "FROM SslCryptoKey AS c WHERE c.id = :key_id AND c.org = :org_id", SslCryptoKey.class)
                 .setParameter("key_id", keyId, StandardBasicTypes.LONG)
                 .setParameter(ORG_ID, org.getId(), StandardBasicTypes.LONG)
                 .uniqueResult();

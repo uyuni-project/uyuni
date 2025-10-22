@@ -205,6 +205,7 @@ import com.redhat.rhn.domain.kickstart.KickstartVirtualizationType;
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.domain.kickstart.crypto.CryptoKey;
 import com.redhat.rhn.domain.kickstart.crypto.CryptoKeyType;
+import com.redhat.rhn.domain.kickstart.crypto.GpgCryptoKey;
 import com.redhat.rhn.domain.kickstart.crypto.SslCryptoKey;
 import com.redhat.rhn.domain.matcher.MatcherRunData;
 import com.redhat.rhn.domain.notification.NotificationMessage;
@@ -485,6 +486,7 @@ public class AnnotationRegistry {
             FileList.class,
             FilterCriteria.class,
             GroupRecurringAction.class,
+            GpgCryptoKey.class,
             HardwareRefreshAction.class,
             HubSCCCredentials.class,
             ImageBuildAction.class,
