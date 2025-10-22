@@ -56,32 +56,34 @@ class Highstate extends React.Component<HighstateProps, HighstateState> {
       test: this.state.test,
     })
       .then((data) => {
-        const msg = MessagesUtils.info(
-          this.state.actionChain ? (
-            <span>
-              {t('Action has been successfully added to the action chain <link>"{name}"</link>.', {
-                name: this.state.actionChain.text,
-                link: (str) => <ActionChainLink id={data}>{str}</ActionChainLink>,
-              })}
-            </span>
-          ) : (
-            <span>
-              {t("Applying the highstate has been <link>scheduled</link>.", {
-                link: (str) => <ActionLink id={data}>{str}</ActionLink>,
-              })}
-            </span>
-          )
-        );
+        this.setState((prevState) => {
+          const msg = MessagesUtils.info(
+            this.state.actionChain ? (
+              <span>
+                {t('Action has been successfully added to the action chain <link>"{name}"</link>.', {
+                  name: this.state.actionChain.text,
+                  link: (str) => <ActionChainLink id={data}>{str}</ActionChainLink>,
+                })}
+              </span>
+            ) : (
+              <span>
+                {t("Applying the highstate has been <link>scheduled</link>.", {
+                  link: (str) => <ActionLink id={data}>{str}</ActionLink>,
+                })}
+              </span>
+            )
+          );
 
-        const msgs = this.state.messages.concat(msg);
+          const msgs = prevState.messages.concat(msg);
 
-        // Do not spam UI showing old messages
-        while (msgs.length > messagesCounterLimit) {
-          msgs.shift();
-        }
+          // Do not spam UI showing old messages
+          while (msgs.length > messagesCounterLimit) {
+            msgs.shift();
+          }
 
-        this.setState({
-          messages: msgs,
+          return {
+            messages: msgs,
+          };
         });
       })
       .catch(this.handleResponseError);
@@ -104,7 +106,7 @@ class Highstate extends React.Component<HighstateProps, HighstateState> {
   };
 
   toggleTestState = () => {
-    this.setState({ test: !this.state.test });
+    this.setState((prevState) => ({ test: !prevState.test }));
   };
 
   isSSM = () => {

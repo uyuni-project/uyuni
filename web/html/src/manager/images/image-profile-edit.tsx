@@ -148,22 +148,24 @@ class CreateImageProfile extends React.Component<Props, State> {
 
   addCustomData(label) {
     if (label) {
-      const data = this.state.customData;
-      data[label] = "";
-
-      this.setState({
-        customData: data,
+      this.setState((prevState) => {
+        const data = prevState.customData;
+        data[label] = "";
+        return {
+          customData: data,
+        };
       });
     }
   }
 
   removeCustomData(label) {
     if (label) {
-      const data = this.state.customData;
-      delete data[label];
-
-      this.setState({
-        customData: data,
+      this.setState((prevState) => {
+        const data = prevState.customData;
+        delete data[label];
+        return {
+          customData: data,
+        };
       });
     }
   }
@@ -255,14 +257,16 @@ class CreateImageProfile extends React.Component<Props, State> {
 
   getImageStores(type) {
     return Network.get("/rhn/manager/api/cm/imagestores/type/" + type).then((data) => {
-      // Preselect store after retrieval
-      const model = Object.assign({}, this.state.model, { imageStore: data[0] && data[0].label });
-      const storeUri = data[0] && data[0].uri;
+      this.setState((prevState) => {
+        // Preselect store after retrieval
+        const model = Object.assign({}, prevState.model, { imageStore: data[0] && data[0].label });
+        const storeUri = data[0] && data[0].uri;
 
-      this.setState({
-        imageStores: data,
-        model: model,
-        storeUri: storeUri,
+        return {
+          imageStores: data,
+          model: model,
+          storeUri: storeUri,
+        };
       });
 
       return data;
@@ -422,11 +426,12 @@ class CreateImageProfile extends React.Component<Props, State> {
                   onChange={(event) => {
                     const target = event.target;
 
-                    const data = this.state.customData;
-                    data[target.name] = target.value;
-
-                    this.setState({
-                      customData: data,
+                    this.setState((prevState) => {
+                      const data = prevState.customData;
+                      data[target.name] = target.value;
+                      return {
+                        customData: data,
+                      };
                     });
                   }}
                 />

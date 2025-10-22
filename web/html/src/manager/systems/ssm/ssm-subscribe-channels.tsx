@@ -113,10 +113,12 @@ class BaseChannelPage extends React.Component<BaseChannelProps, BaseChannelState
   }
 
   onChangeBase = (oldBaseId: string, newBaseId: string) => {
-    const changes = this.state.baseChanges;
-    changes.set(oldBaseId, newBaseId);
-    this.setState({
-      baseChanges: changes,
+    this.setState((prevState) => {
+      const changes = prevState.baseChanges;
+      changes.set(oldBaseId, newBaseId);
+      return {
+        baseChanges: changes,
+      };
     });
     this.props.onSelectBase(oldBaseId, newBaseId);
   };
@@ -347,9 +349,11 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
 
     // change the channel AND its dependencies
     [childId].concat(dependencies).forEach((channelId) => {
-      const allowedId = getAllowedChangeId(allowedChannels, channelId);
-      this.state.selections.set(allowedId, action);
-      this.setState({ selections: this.state.selections });
+      this.setState((prevState) => {
+        const allowedId = getAllowedChangeId(allowedChannels, channelId);
+        prevState.selections.set(allowedId, action);
+        return { selections: prevState.selections };
+      });
       this.props.onChangeChild(allowedChannels, channelId, action);
     });
   };
@@ -914,23 +918,25 @@ class SsmChannelPage extends React.Component<SsmChannelProps, SsmChannelState> {
       }
     }
 
-    this.setState({ messages: this.state.messages.concat(msg) });
+    this.setState((prevState) => ({ messages: prevState.messages.concat(msg) }));
   };
 
   onChangeBase = (oldBaseId: string, newBaseId: string) => {
-    let change = this.state.baseChanges.changes.find((e) => DEPRECATED_unsafeEquals(e.oldBaseId, oldBaseId));
-    if (!change) {
-      change = {
-        oldBaseId: oldBaseId,
-        newBaseId: newBaseId,
-      };
-      this.state.baseChanges.changes.push(change);
-    } else {
-      change.newBaseId = newBaseId;
-    }
+    this.setState((prevState) => {
+      let change = prevState.baseChanges.changes.find((e) => DEPRECATED_unsafeEquals(e.oldBaseId, oldBaseId));
+      if (!change) {
+        change = {
+          oldBaseId: oldBaseId,
+          newBaseId: newBaseId,
+        };
+        prevState.baseChanges.changes.push(change);
+      } else {
+        change.newBaseId = newBaseId;
+      }
 
-    this.setState({
-      baseChanges: this.state.baseChanges,
+      return {
+        baseChanges: prevState.baseChanges,
+      };
     });
   };
 
@@ -1033,23 +1039,25 @@ class SsmChannelPage extends React.Component<SsmChannelProps, SsmChannelState> {
     };
     return Network.post("/rhn/manager/systems/ssm/channels", req)
       .then((data: JsonResult<SsmScheduleChannelChangesResultJson>) => {
-        const msg = MessagesUtils.info(
-          this.state.actionChain ? (
-            <span>
-              {t("Action has been successfully added to the Action Chain ")}
-              <ActionChainLink id={data.data.actionChainId}>
-                {this.state.actionChain ? this.state.actionChain.text : ""}
-              </ActionChainLink>
-              .
-            </span>
-          ) : (
-            <span>{t("Channel changes scheduled.")}</span>
-          )
-        );
-        this.setState({
-          messages: msg,
-          scheduleResults: data.data.result,
-          page: 3,
+        this.setState((prevState) => {
+          const msg = MessagesUtils.info(
+            prevState.actionChain ? (
+              <span>
+                {t("Action has been successfully added to the Action Chain ")}
+                <ActionChainLink id={data.data.actionChainId}>
+                  {prevState.actionChain ? prevState.actionChain.text : ""}
+                </ActionChainLink>
+                .
+              </span>
+            ) : (
+              <span>{t("Channel changes scheduled.")}</span>
+            )
+          );
+          return {
+            messages: msg,
+            scheduleResults: data.data.result,
+            page: 3,
+          };
         });
       })
       .catch(this.handleResponseError);

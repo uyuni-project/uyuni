@@ -45,13 +45,15 @@ class ActivationKeyChannels extends React.Component<ActivationKeyChannelsProps, 
   };
 
   selectChildChannels = (channelIds: number[], selectedFlag: boolean) => {
-    let selectedIds = [...this.state.currentChildSelectedIds];
-    if (selectedFlag) {
-      selectedIds = [...channelIds.filter((c) => !selectedIds.includes(c)), ...selectedIds];
-    } else {
-      selectedIds = [...selectedIds.filter((c) => !channelIds.includes(c))];
-    }
-    this.setState({ currentChildSelectedIds: selectedIds });
+    this.setState((prevState) => {
+      let selectedIds = [...prevState.currentChildSelectedIds];
+      if (selectedFlag) {
+        selectedIds = [...channelIds.filter((c) => !selectedIds.includes(c)), ...selectedIds];
+      } else {
+        selectedIds = [...selectedIds.filter((c) => !channelIds.includes(c))];
+      }
+      return { currentChildSelectedIds: selectedIds };
+    });
   };
 
   onNewBaseChannel = ({ currentSelectedBaseId, currentChildSelectedIds }: ActivationKeyChannelsState) => {

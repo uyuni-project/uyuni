@@ -81,13 +81,13 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
   init = () => {
     Network.get(this.props.matchUrl()).then((data) => {
       data = this.getSortedList(data);
-      this.setState({
+      this.setState((prevState) => ({
         channels: data,
         search: {
-          filter: this.state.filter,
+          filter: prevState.filter,
           results: data,
         },
-      });
+      }));
     });
   };
 
@@ -156,19 +156,19 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
           this.props.type === "state"
             ? messages
             : messages.concat(MessagesUtils.info(t("State assignments have been saved.")));
-        this.setState({
+        this.setState((prevState) => ({
           changed: new Map(), // clear changed
           // Update the channels with the new data
           channels: _unionBy(
             data,
-            this.state.channels.map((c) => Object.assign(c, { assigned: false, position: undefined })),
+            prevState.channels.map((c) => Object.assign(c, { assigned: false, position: undefined })),
             "name"
           ),
           search: {
-            filter: this.state.search.filter,
+            filter: prevState.search.filter,
             results: this.getSortedList(newSearchResults),
           },
-        });
+        }));
         this.setMessages(messages);
         this.hideRanking();
       },
@@ -197,12 +197,12 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
         this.props.type === "state"
           ? this.stateTypeSearch()
           : Network.get(this.props.matchUrl(this.state.filter)).then((data) => {
-              this.setState({
+              this.setState((prevState) => ({
                 search: {
-                  filter: this.state.filter,
+                  filter: prevState.filter,
                   results: this.getSortedList(data),
                 },
-              });
+              }));
               this.clearMessages();
             });
       }
@@ -210,12 +210,12 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
   };
 
   stateTypeSearch = () => {
-    this.setState({
+    this.setState((prevState) => ({
       search: {
-        filter: this.state.filter,
-        results: this.state.channels.filter((c) => c.name.includes(this.state.filter)),
+        filter: prevState.filter,
+        results: prevState.channels.filter((c) => c.name.includes(prevState.filter)),
       },
-    });
+    }));
     this.clearMessages();
   };
 
@@ -229,9 +229,9 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
         value: Object.assign({}, original, { assigned: selected }),
       });
     }
-    this.setState({
-      changed: this.state.changed,
-    });
+    this.setState((prevState) => ({
+      changed: prevState.changed,
+    }));
   };
 
   handleSelectionChange = (original) => {
