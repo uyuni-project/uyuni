@@ -52,7 +52,7 @@
 - features/secondary/minssh_ansible_control_node.feature
 - features/secondary/min_deblike_monitoring.feature
 - features/secondary/min_deblike_salt_install_with_staging.feature
-- features/secondary/min_deblike_salt_install_package.feature
+- features/secondary/min_deblike_salt_install_package_and_patch.feature
 - features/secondary/min_bootstrap_negative.feature
 - features/secondary/min_salt_formulas.feature
 - features/secondary/min_salt_formulas_advanced.feature

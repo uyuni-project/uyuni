@@ -64,7 +64,7 @@ Feature: Smoke tests for <client>
     And I should see a "Location" text
     And I should see a "UUID" text
 
-@skip_for_debianlike
+@skip_for_debian
 @skip_for_rocky9
 @skip_for_alma9
   Scenario: Install a patch on the <client>

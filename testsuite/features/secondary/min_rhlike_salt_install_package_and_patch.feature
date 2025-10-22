@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2024 SUSE LLC
+# Copyright (c) 2015-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_res
@@ -6,10 +6,14 @@
 @rhlike_minion
 Feature: Install a patch on the Red Hat-like minion via Salt through the UI
 
-  Scenario: Pre-requisite: install virgo-dummy-1.0 and remove andromeda-dummy packages
+  Scenario: Pre-requisite: enable test_repo_rpm_pool repository on the Red Hat-like minion
     When I enable repository "test_repo_rpm_pool" on this "rhlike_minion"
-    And I remove package "andromeda-dummy" from this "rhlike_minion"
-    And I install package "virgo-dummy-1.0" on this "rhlike_minion"
+
+  Scenario: Pre-requisite: install virgo-dummy-1.0 package on Red Hat-like minion
+    When I install package "virgo-dummy-1.0" on this "rhlike_minion"
+
+  Scenario: Pre-requisite: remove andromeda-dummy package from Red Hat-like minion
+    When I remove package "andromeda-dummy" from this "rhlike_minion"
 
   Scenario: Pre-requisite: refresh package list and check newly installed packages on Red Hat-like minion
     When I refresh packages list via spacecmd on "rhlike_minion"

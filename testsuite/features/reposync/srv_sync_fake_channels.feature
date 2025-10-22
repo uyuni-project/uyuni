@@ -1,9 +1,9 @@
-# Copyright (c) 2022-2024 SUSE LLC
+# Copyright (c) 2022-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # This feature can cause failures in:
 # If Fake-Base-Channel-Debian-like fails to be updated with the repository:
-# - features/secondary/min_deblike_salt_install_package.feature
+# - features/secondary/min_deblike_salt_install_package_and_patch.feature
 # - features/secondary/min_deblike_salt_install_with_staging.feature
 # If Fake-Base-Channel-RH-like fails to be updated with the repository:
 # - features/secondary/min_rhlike_salt_install_package_and_patch.feature

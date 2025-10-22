@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2024 SUSE LLC
+# Copyright (c) 2017-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # 1) delete Debian-like minion and register as SSH minion
@@ -6,7 +6,7 @@
 # 3) delete Debian-like SSH minion and register as normal minion
 #
 # This feature can cause failures in the following features:
-# - features/secondary/min_deblike_salt_install_package.feature
+# - features/secondary/min_deblike_salt_install_package_and_patch.feature
 # - features/secondary/min_deblike_salt_install_with_staging.feature
 # - features/secondary/min_deblike_monitoring.feature
 # If the cleanup bootstrap scenario fails,

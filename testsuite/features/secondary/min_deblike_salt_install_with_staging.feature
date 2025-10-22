@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2022 SUSE LLC
+# Copyright (c) 2017-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # This feature relies on having properly configured
@@ -60,8 +60,18 @@ Feature: Install a package on the Debian-like minion with staging enabled
     And I wait until the package "orion-dummy_1.1" has been cached on this "deblike_minion"
     And I wait for "orion-dummy-1.1" to be installed on "deblike_minion"
 
-  # TODO:
-  # Scenario: Install patch in the future and check for staging on Debian-like minion
+  Scenario: Install patch in the future and check for staging on Debian-like minion
+    When I follow "Software" in the content area
+    And I follow "Patches" in the content area
+    And I enter "virgo" as the filtered synopsis
+    And I click on the filter button
+    And I check "3456-1" in the list
+    And I click on "Apply Patches"
+    And I pick 3 minutes from now as schedule time
+    And I click on "Confirm"
+    Then I should see a "1 patch update has been scheduled for" text
+    And I wait until the package "virgo-dummy_2.0" has been cached on this "deblike_minion"
+    And I wait for "virgo-dummy-2.0" to be installed on "deblike_minion"
 
   Scenario: Cleanup: remove virgo-dummy and orion-dummy packages from Debian-like minion
     And I remove package "orion-dummy" from this "deblike_minion"

@@ -5,7 +5,7 @@
 @scope_salt
 Feature: Install a package and a patch on the SUSE SSH client via Salt through the UI
 
-  Scenario: Pre-requisite: enable test_repo_rpm_pool repository
+  Scenario: Pre-requisite: enable test_repo_rpm_pool repository on SSH minion
     When I enable repository "test_repo_rpm_pool" on this "ssh_minion"
 
   Scenario: Pre-requisite: install virgo-dummy-1.0 package on SSH minion
@@ -68,7 +68,7 @@ Feature: Install a package and a patch on the SUSE SSH client via Salt through t
     When I wait for "andromeda-dummy-2.0-1.1" to be installed on "ssh_minion"
     Then vendor change should be enabled for package actions on "ssh_minion"
 
-  Scenario: Cleanup: disable test_repo_rpm_pool
+  Scenario: Cleanup: disable test_repo_rpm_pool on SSH minion
     When I disable repository "test_repo_rpm_pool" on this "ssh_minion"
 
   Scenario: Cleanup: remove virgo-dummy package from SSH minion
