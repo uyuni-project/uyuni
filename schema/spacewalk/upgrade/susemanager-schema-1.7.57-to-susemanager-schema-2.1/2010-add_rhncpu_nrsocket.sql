@@ -1,1 +1,0 @@
-ALTER TABLE rhnCpu ADD nrsocket NUMERIC;

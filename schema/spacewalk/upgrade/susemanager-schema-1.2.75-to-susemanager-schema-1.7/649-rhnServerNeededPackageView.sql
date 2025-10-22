@@ -1,3 +1,0 @@
-
-drop view rhnServerNeededPackageView;
-

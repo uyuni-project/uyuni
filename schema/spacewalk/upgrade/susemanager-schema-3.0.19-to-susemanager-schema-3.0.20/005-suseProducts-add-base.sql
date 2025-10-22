@@ -1,1 +1,0 @@
-ALTER TABLE suseProducts ADD base CHAR(1) DEFAULT ('N') NOT NULL;

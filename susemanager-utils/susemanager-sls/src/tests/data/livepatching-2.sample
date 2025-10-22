@@ -1,8 +1,0 @@
-kgraft_patch_1_2_2
-    active: 0
-
-kgraft_patch_2_2_1
-    active: 1
-    RPM: kgraft-patch-3_12_62-60_64_8-default-2-2.1.x86_64
-    CVE: CVE-2016-8666 CVE-2016-6480
-    bug fixes and enhancements: (none)

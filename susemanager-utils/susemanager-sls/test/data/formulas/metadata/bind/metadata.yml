@@ -1,5 +1,0 @@
-description:
-  Settings for bind nameserver
-group: general_system_configuration
-after:
-  - branch-network

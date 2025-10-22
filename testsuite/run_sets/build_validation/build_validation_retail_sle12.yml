@@ -1,9 +1,0 @@
-# This file describes the order of features in a Build Validation test suite run.
-
-## NOTE: This stage has to be run after preparing the proxy
-
-## Prepare configuration for terminal
-- features/build_validation/retail/sle12sp5_terminal_prepare.feature
-
-## Deploy Retail terminal
-- features/build_validation/retail/sle12sp5_terminal_deploy.feature

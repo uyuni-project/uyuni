@@ -1,8 +1,0 @@
-{
-    "cpu_model": "POWER9 (architected), altivec supported",
-    "cpu_numanodes": "1",
-    "cpu_cores": "1",
-    "cpu_sockets": "1",
-    "cpu_sum": "8",
-    "cpu_threads": "8"
-}

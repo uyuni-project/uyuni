@@ -1,5 +1,0 @@
-description:
-  SUSE CaaS Platform 4.x
-cluster:
-  management_node:
-    match: 'I@caasp:management_node:true'

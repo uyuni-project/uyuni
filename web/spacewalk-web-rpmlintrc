@@ -1,2 +1,0 @@
-addFilter("W: explicit-lib-dependency");
-addFilter("W: filename-too-long-for-joliet");

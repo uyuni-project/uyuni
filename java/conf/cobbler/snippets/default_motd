@@ -1,2 +1,0 @@
-# set default MOTD
-echo "Kickstarted on \$(date +'%Y-%m-%d')" >> /etc/motd

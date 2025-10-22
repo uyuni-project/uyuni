@@ -1,5 +1,0 @@
-description:
-  PXE settings for branch server
-group: SUSE_manager_for_retail
-after:
-  - branch-network

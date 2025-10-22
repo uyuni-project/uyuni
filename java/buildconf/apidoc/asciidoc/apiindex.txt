@@ -1,3 +1,0 @@
-#foreach ($handler in $handlers)
-* <<${handler.name}.adoc#apidoc-$handler.name>>
-#end

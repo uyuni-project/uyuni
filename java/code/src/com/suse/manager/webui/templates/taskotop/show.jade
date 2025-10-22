@@ -1,9 +1,0 @@
-include ../common.jade
-#taskotop
-
-script(type='text/javascript').
-    window.csrfToken = "#{csrf_token}";
-
-script(type='text/javascript').
-    spaImportReactPage('admin/task-engine-status/taskotop')
-        .then(function(module) { module.renderer('taskotop') });

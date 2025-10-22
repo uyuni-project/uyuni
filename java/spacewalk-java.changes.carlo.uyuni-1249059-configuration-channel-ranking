@@ -1,2 +1,0 @@
-- Fixes bug: Changing configuration channel ranking in
-  activation key results in internal server error (bsc#1249059)

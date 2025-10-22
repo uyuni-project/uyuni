@@ -1,9 +1,0 @@
-[Unit]
-Description=Uyuni update config
-Before=uyuni-check-database.service cobblerd.service tomcat.service apache2.service rhn-search.service taskomatic.service postfix.service
-
-[Service]
-PassEnvironment=UYUNI_HOSTNAME
-ExecStart=/usr/sbin/uyuni-update-config
-Type=oneshot
-RemainAfterExit=yes

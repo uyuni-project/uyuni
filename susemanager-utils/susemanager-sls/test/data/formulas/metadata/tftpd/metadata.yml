@@ -1,5 +1,0 @@
-description:
-  Settings for tftpd service
-group: general_system_configuration
-after:
-  - branch-network

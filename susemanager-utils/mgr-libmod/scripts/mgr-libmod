@@ -1,9 +1,0 @@
-#!/usr/bin/python3
-# pylint: disable=invalid-name
-"""
-Main CLI app.
-"""
-import mgrlibmod.mlapp
-
-if __name__ == "__main__":
-    mgrlibmod.mlapp.main()

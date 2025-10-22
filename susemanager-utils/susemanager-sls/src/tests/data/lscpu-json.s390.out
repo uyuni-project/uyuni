@@ -1,7 +1,0 @@
-{
-    "cpu_vendor": "IBM/S390",
-    "cpu_numanodes": "1",
-    "cpu_cores": "1",
-    "cpu_sum": "2",
-    "cpu_threads": "1"
-}

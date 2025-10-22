@@ -1,5 +1,0 @@
-{
-  "return": [
-    "\nPassed invalid arguments: 'NoneType' object does not support item assignment\n\nUsage:\n\n    Check that the provided certificates are valid and return the certificate and key to deploy.\n    "
-  ]
-}

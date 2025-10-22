@@ -1,2 +1,0 @@
-- Fix SystemOverview DTO to use boolean for mgr_server and proxy
-  columns (bsc#1247407)

@@ -1,5 +1,0 @@
-AllCops:
-  TargetRubyVersion: 2.5
-  Exclude:
-    - '**/*.spec'
-    - 'susemanager/yast/*.rb'

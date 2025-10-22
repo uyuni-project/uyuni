@@ -1,7 +1,0 @@
-{
-    "function": "list_modules",
-    "paths": [
-        "tests/data/sample-modules.yaml.gz",
-        "tests/data/sample-modules-2.yaml.gz"
-    ]
-}

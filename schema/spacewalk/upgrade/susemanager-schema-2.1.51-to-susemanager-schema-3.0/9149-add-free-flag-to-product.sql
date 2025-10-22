@@ -1,2 +1,0 @@
-ALTER TABLE suseProducts
-ADD free CHAR(1) DEFAULT ('N') NOT NULL;

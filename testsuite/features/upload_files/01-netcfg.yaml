@@ -1,9 +1,0 @@
-# Debian-like netplan configuration for the test suite
-network:
-  version: 2
-  renderer: networkd
-  ethernets:
-    ens3:
-      dhcp4: yes
-    ens4:
-      dhcp4: yes

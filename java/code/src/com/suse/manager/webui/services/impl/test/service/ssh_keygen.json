@@ -1,9 +1,0 @@
-{
-  "return": [
-    {
-      "key": "private key",
-      "public_key": "public key",
-      "retcode": 0
-    }
-  ]
-}

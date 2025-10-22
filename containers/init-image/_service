@@ -1,4 +1,0 @@
-<services>
-	<service mode="buildtime" name="kiwi_metainfo_helper"/>
-	<service mode="buildtime" name="docker_label_helper"/>
-</services>

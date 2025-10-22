@@ -1,9 +1,0 @@
-# SPDX-License-Identifier: MIT
-#!BuildTag: uyuni/server-helm:latest
-apiVersion: v2
-name: server-helm
-description: Uyuni server containers.
-type: application
-home: https://www.uyuni-project.org/
-icon: https://www.uyuni-project.org/img/uyuni-logo.svg
-version: 5.2.0

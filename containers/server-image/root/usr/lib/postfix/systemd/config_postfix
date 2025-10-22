@@ -1,7 +1,0 @@
-#!/bin/bash
-
-if [ ! -e /etc/postfix/postfix.configured ]; then
-	echo "First configuration of postfix"
-        /usr/sbin/config.postfix
-        touch /etc/postfix/postfix.configured
-fi

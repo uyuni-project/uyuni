@@ -1,5 +1,0 @@
--- Schema upgrade scripts.
--- leave this directory empty, all upgrades from 1.7 to 2.1 are covered by 1.7.57 to 2.1 upgrade
--- all scripts in susemanager-schema-1.7.56.22-to-susemanager-schema-1.7.56.23/ are repeated
--- in susemanager-schema-1.7.57-to-susemanager-schema-2.1/ and written in a way that they can
--- be executed multiple times

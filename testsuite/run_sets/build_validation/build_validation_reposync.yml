@@ -1,8 +1,0 @@
-# This file describes the order of features in a Build Validation test suite run.
-
-## Product synchronization features BEGIN ###
-
-- features/build_validation/reposync/srv_disable_scheduled_reposync.feature
-- features/build_validation/reposync/srv_sync_all_products.feature
-
-## Product synchronization features END ###

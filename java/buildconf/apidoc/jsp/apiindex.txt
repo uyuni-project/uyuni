@@ -1,4 +1,0 @@
-#foreach( $handler in $handlers )
-    <li><a href="handlers/${handler.className}.jsp">$handler.name</a></li> 
-#end
-

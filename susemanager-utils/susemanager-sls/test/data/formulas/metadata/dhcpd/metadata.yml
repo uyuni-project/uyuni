@@ -1,5 +1,0 @@
-description:
-  Settings for DHCP server
-group: general_system_configuration
-after:
-  - branch-network

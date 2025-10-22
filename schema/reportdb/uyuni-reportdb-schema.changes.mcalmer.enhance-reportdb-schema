@@ -1,2 +1,0 @@
-- Add last_boot_time to system table
-- Add status and extra_pkg_count to systemoutdated table

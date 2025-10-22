@@ -1,9 +1,0 @@
-include ../common.jade
-#virtual-host-managers
-
-script(type='text/javascript').
-    window.csrfToken = "#{csrf_token}";
-
-script(type='text/javascript').
-    spaImportReactPage('systems/virtualhostmanager/virtualhostmanager')
-        .then(function(module) { module.renderer('virtual-host-managers') });

@@ -1,2 +1,0 @@
-ALTER TABLE SystemOutdated ADD COLUMN IF NOT EXISTS extra_pkg_count BIGINT;
-ALTER TABLE SystemOutdated ADD COLUMN IF NOT EXISTS status VARCHAR(20);

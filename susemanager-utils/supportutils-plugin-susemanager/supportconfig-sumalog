@@ -1,5 +1,0 @@
-#!/bin/bash
-
-/usr/bin/spacewalk-debug --no-compression --dir $1
-echo "Done, SUSE Manager logs can now be found in the supportconfig directory."
-

@@ -1,8 +1,0 @@
-[Unit]
-Description=Spacewalk wait for taskomatic
-After=taskomatic.service
-
-[Service]
-ExecStart=/usr/sbin/spacewalk-startup-helper wait-for-taskomatic
-Type=oneshot
-RemainAfterExit=yes

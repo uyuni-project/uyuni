@@ -1,7 +1,0 @@
-# This file describes the order of features in a Build Validation test suite run.
-
-## Init monitoring server BEGIN ###
-
-- features/build_validation/init_clients/monitoring_server.feature
-
-## Init monitoring server END ###
