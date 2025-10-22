@@ -19,8 +19,10 @@ import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainEntry;
 import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.action.AppletUseSatelliteAction;
 import com.redhat.rhn.domain.action.HardwareRefreshAction;
 import com.redhat.rhn.domain.action.RebootAction;
+import com.redhat.rhn.domain.action.RollbackAction;
 import com.redhat.rhn.domain.action.RollbackConfigAction;
 import com.redhat.rhn.domain.action.RollbackListTransactionsAction;
 import com.redhat.rhn.domain.action.Up2DateConfigGetAction;
@@ -29,11 +31,19 @@ import com.redhat.rhn.domain.action.ansible.InventoryActionDetails;
 import com.redhat.rhn.domain.action.ansible.PlaybookActionDetails;
 import com.redhat.rhn.domain.action.appstream.AppStreamActionDetails;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsActionDetails;
+import com.redhat.rhn.domain.action.config.ActivationScheduleDeployAction;
+import com.redhat.rhn.domain.action.config.ActivationSchedulePackageDeployAction;
+import com.redhat.rhn.domain.action.config.ConfigAction;
 import com.redhat.rhn.domain.action.config.ConfigDateDetails;
 import com.redhat.rhn.domain.action.config.ConfigDateFileAction;
+import com.redhat.rhn.domain.action.config.ConfigDeployAction;
+import com.redhat.rhn.domain.action.config.ConfigDiffAction;
 import com.redhat.rhn.domain.action.config.ConfigRevisionAction;
 import com.redhat.rhn.domain.action.config.ConfigRevisionActionResult;
 import com.redhat.rhn.domain.action.config.ConfigUploadAction;
+import com.redhat.rhn.domain.action.config.ConfigUploadMtimeAction;
+import com.redhat.rhn.domain.action.config.ConfigVerifyAction;
+import com.redhat.rhn.domain.action.config.DaemonConfigAction;
 import com.redhat.rhn.domain.action.config.DaemonConfigDetails;
 import com.redhat.rhn.domain.action.dup.DistUpgradeActionDetails;
 import com.redhat.rhn.domain.action.dup.DistUpgradeChannelTask;
@@ -41,8 +51,13 @@ import com.redhat.rhn.domain.action.errata.ActionPackageDetails;
 import com.redhat.rhn.domain.action.errata.ErrataAction;
 import com.redhat.rhn.domain.action.image.DeployImageAction;
 import com.redhat.rhn.domain.action.image.DeployImageActionDetails;
+import com.redhat.rhn.domain.action.kickstart.KickstartAction;
 import com.redhat.rhn.domain.action.kickstart.KickstartActionDetails;
+import com.redhat.rhn.domain.action.kickstart.KickstartGuestAction;
 import com.redhat.rhn.domain.action.kickstart.KickstartGuestActionDetails;
+import com.redhat.rhn.domain.action.kickstart.KickstartInitiateAction;
+import com.redhat.rhn.domain.action.kickstart.KickstartInitiateGuestAction;
+import com.redhat.rhn.domain.action.kickstart.KickstartScheduleSyncAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionDetails;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionRemovalFailure;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionResult;
@@ -52,9 +67,12 @@ import com.redhat.rhn.domain.action.salt.build.ImageBuildActionDetails;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildActionResult;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionDetails;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionResult;
+import com.redhat.rhn.domain.action.scap.ScapAction;
 import com.redhat.rhn.domain.action.scap.ScapActionDetails;
+import com.redhat.rhn.domain.action.script.ScriptAction;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptResult;
+import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.supportdata.SupportDataActionDetails;
 import com.redhat.rhn.domain.audit.XccdfBenchmark;
@@ -340,8 +358,11 @@ public class AnnotationRegistry {
             ActionStatus.class,
             ActionType.class,
             ActivationKey.class,
+            ActivationScheduleDeployAction.class,
+            ActivationSchedulePackageDeployAction.class,
             AddressImpl.class,
             AnsiblePath.class,
+            AppletUseSatelliteAction.class,
             AppStreamActionDetails.class,
             AppStreamApi.class,
             AppStreamApiKey.class,
@@ -369,11 +390,14 @@ public class AnnotationRegistry {
             CoCoAttestationResult.class,
             CoCoEnvironmentTypeConverter.class,
             CoCoResultTypeConverter.class,
+            ConfigAction.class,
             ConfigChannel.class,
             ConfigChannelType.class,
             ConfigContent.class,
             ConfigDateDetails.class,
             ConfigDateFileAction.class,
+            ConfigDeployAction.class,
+            ConfigDiffAction.class,
             ConfigFile.class,
             ConfigFileName.class,
             ConfigFileState.class,
@@ -382,6 +406,8 @@ public class AnnotationRegistry {
             ConfigRevisionAction.class,
             ConfigRevisionActionResult.class,
             ConfigUploadAction.class,
+            ConfigUploadMtimeAction.class,
+            ConfigVerifyAction.class,
             ContentEnvironment.class,
             ContentEnvironmentDiff.class,
             ContentFilter.class,
@@ -394,6 +420,7 @@ public class AnnotationRegistry {
             CustomDataKey.class,
             CustomDataValue.class,
             Cve.class,
+            DaemonConfigAction.class,
             DaemonConfigDetails.class,
             DeltaImageInfo.class,
             DeployImageAction.class,
@@ -445,14 +472,19 @@ public class AnnotationRegistry {
             IssSlave.class,
             Keyword.class,
             KickstartCommand.class,
+            KickstartAction.class,
             KickstartActionDetails.class,
             KickstartCommandName.class,
             KickstartDefaultRegToken.class,
+            KickstartGuestAction.class,
             KickstartGuestActionDetails.class,
+            KickstartInitiateAction.class,
+            KickstartInitiateGuestAction.class,
             KickstartInstallType.class,
             KickstartIpRange.class,
             KickstartPackage.class,
             KickstartPreserveFileList.class,
+            KickstartScheduleSyncAction.class,
             KickstartScript.class,
             KickstartSessionHistory.class,
             KickstartSessionState.class,
@@ -545,6 +577,7 @@ public class AnnotationRegistry {
             RHUICredentials.class,
             RhnTimeZone.class,
             RoleImpl.class,
+            RollbackAction.class,
             RollbackConfigAction.class,
             RollbackListTransactionsAction.class,
             SAPWorkload.class,
@@ -559,9 +592,12 @@ public class AnnotationRegistry {
             SCCRepositoryNoAuth.class,
             SCCRepositoryTokenAuth.class,
             SCCSubscription.class,
+            ScapAction.class,
             ScapActionDetails.class,
+            ScriptAction.class,
             ScriptActionDetails.class,
             ScriptResult.class,
+            ScriptRunAction.class,
             ServerAction.class,
             ServerAppStream.class,
             Server.class,

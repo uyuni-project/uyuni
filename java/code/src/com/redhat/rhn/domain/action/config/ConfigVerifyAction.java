@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2015 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -19,9 +20,14 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.html.HtmlTag;
 
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+
 /**
  * ConfigVerifyAction - Class representing TYPE_CONFIGFILES_VERIFY
  */
+@Entity
+@DiscriminatorValue("17")
 public class ConfigVerifyAction extends ConfigAction {
 
     /**

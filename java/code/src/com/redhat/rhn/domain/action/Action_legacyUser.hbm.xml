@@ -145,10 +145,8 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                                 <key column="action_id"/>
                                 <composite-element
                                         class="com.redhat.rhn.domain.action.config.ConfigChannelAssociation">
-                                        <property name="created" column="created" type="timestamp"
-                                      insert="false" update="false"/>
-                    <property name="modified" column="modified" type="timestamp"
-                              insert="false" update="false"/>
+                                        <property name="created" column="created" type="timestamp" insert="false" update="false"/>
+                                        <property name="modified" column="modified" type="timestamp" insert="false" update="false"/>
                                         <many-to-one name="server" column="server_id"
                                                 class="com.redhat.rhn.domain.server.Server"
                                                 outer-join="true" not-null="true">
