@@ -33,3 +33,6 @@ CREATE TABLE rhnActionSubChannels (
 ;
 
 CREATE SEQUENCE RHN_ACT_SUBSCR_CHNLS_ID_SEQ;
+
+CREATE INDEX rhn_action_sub_channels_action_id_idx
+on rhnactionsubchannels (action_id);
