@@ -19,6 +19,12 @@ import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainEntry;
 import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.action.HardwareRefreshAction;
+import com.redhat.rhn.domain.action.RebootAction;
+import com.redhat.rhn.domain.action.RollbackConfigAction;
+import com.redhat.rhn.domain.action.RollbackListTransactionsAction;
+import com.redhat.rhn.domain.action.Up2DateConfigGetAction;
+import com.redhat.rhn.domain.action.Up2DateConfigUpdateAction;
 import com.redhat.rhn.domain.action.ansible.InventoryActionDetails;
 import com.redhat.rhn.domain.action.ansible.PlaybookActionDetails;
 import com.redhat.rhn.domain.action.appstream.AppStreamActionDetails;
@@ -27,10 +33,13 @@ import com.redhat.rhn.domain.action.config.ConfigDateDetails;
 import com.redhat.rhn.domain.action.config.ConfigDateFileAction;
 import com.redhat.rhn.domain.action.config.ConfigRevisionAction;
 import com.redhat.rhn.domain.action.config.ConfigRevisionActionResult;
+import com.redhat.rhn.domain.action.config.ConfigUploadAction;
 import com.redhat.rhn.domain.action.config.DaemonConfigDetails;
 import com.redhat.rhn.domain.action.dup.DistUpgradeActionDetails;
 import com.redhat.rhn.domain.action.dup.DistUpgradeChannelTask;
 import com.redhat.rhn.domain.action.errata.ActionPackageDetails;
+import com.redhat.rhn.domain.action.errata.ErrataAction;
+import com.redhat.rhn.domain.action.image.DeployImageAction;
 import com.redhat.rhn.domain.action.image.DeployImageActionDetails;
 import com.redhat.rhn.domain.action.kickstart.KickstartActionDetails;
 import com.redhat.rhn.domain.action.kickstart.KickstartGuestActionDetails;
@@ -372,6 +381,7 @@ public class AnnotationRegistry {
             ConfigInfo.class,
             ConfigRevisionAction.class,
             ConfigRevisionActionResult.class,
+            ConfigUploadAction.class,
             ContentEnvironment.class,
             ContentEnvironmentDiff.class,
             ContentFilter.class,
@@ -386,6 +396,7 @@ public class AnnotationRegistry {
             Cve.class,
             DaemonConfigDetails.class,
             DeltaImageInfo.class,
+            DeployImageAction.class,
             DeployImageActionDetails.class,
             Device.class,
             DistChannelMap.class,
@@ -395,6 +406,7 @@ public class AnnotationRegistry {
             DockerfileProfile.class,
             EntitlementServerGroup.class,
             EnvironmentTarget.class,
+            ErrataAction.class,
             ErrataAdvisoryMap.class,
             ErrataFileType.class,
             ErrataFilter.class,
@@ -402,6 +414,7 @@ public class AnnotationRegistry {
             Feature.class,
             FileList.class,
             GroupRecurringAction.class,
+            HardwareRefreshAction.class,
             HubSCCCredentials.class,
             ImageBuildActionDetails.class,
             ImageBuildActionResult.class,
@@ -518,6 +531,7 @@ public class AnnotationRegistry {
             PushClient.class,
             PushClientState.class,
             Ram.class,
+            RebootAction.class,
             ReleaseChannelMap.class,
             RhnConfiguration.class,
             RecurringConfigChannel.class,
@@ -531,6 +545,8 @@ public class AnnotationRegistry {
             RHUICredentials.class,
             RhnTimeZone.class,
             RoleImpl.class,
+            RollbackConfigAction.class,
+            RollbackListTransactionsAction.class,
             SAPWorkload.class,
             SCCCredentials.class,
             SCCOrderItem.class,
@@ -595,6 +611,8 @@ public class AnnotationRegistry {
             TokenChannelAppStream.class,
             Token.class,
             TokenPackage.class,
+            Up2DateConfigGetAction.class,
+            Up2DateConfigUpdateAction.class,
             UserGroupImpl.class,
             UserGroupMembers.class,
             UserGroupMembersId.class,

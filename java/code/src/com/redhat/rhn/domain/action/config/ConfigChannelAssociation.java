@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,19 +15,27 @@
  */
 package com.redhat.rhn.domain.action.config;
 
-import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.server.Server;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import java.io.Serial;
 import java.io.Serializable;
+import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  * ConfigChannelAssocation - Class representation of the table rhnActionConfigChannel.  This
@@ -40,15 +49,37 @@ import javax.persistence.ManyToOne;
  * http://www.hibernate.org/118.html#A11
  *
  */
-public class ConfigChannelAssociation extends BaseDomainHelper implements Serializable {
+@Entity
+@Table(name = "rhnActionConfigChannel")
+@IdClass(ConfigChannelAssociationId.class)
+public class ConfigChannelAssociation implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
+
+    @Id
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "server_id", nullable = false)
     private Server server;
+
+    @Id
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "config_channel_id", nullable = false)
     private ConfigChannel configChannel;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "action_id", nullable = false)
     private Action parentAction;
+
+    @Id
+    @Column(name = "created", nullable = false, updatable = false)
+    @CreationTimestamp
+    private Date created = new Date();
+
+    @Id
+    @Column(name = "modified", nullable = false)
+    @UpdateTimestamp
+    private Date modified = new Date();
 
     /**
      * @return Returns the configChannel.
@@ -89,6 +120,38 @@ public class ConfigChannelAssociation extends BaseDomainHelper implements Serial
      */
     public void setParentAction(Action parentActionIn) {
         this.parentAction = parentActionIn;
+    }
+
+    /**
+     * Gets the current value of created
+     * @return Date the current value
+     */
+    public Date getCreated() {
+        return this.created;
+    }
+
+    /**
+     * Sets the value of created to new value
+     * @param createdIn New value for created
+     */
+    public void setCreated(Date createdIn) {
+        this.created = createdIn;
+    }
+
+    /**
+     * Gets the current value of modified
+     * @return Date the current value
+     */
+    public Date getModified() {
+        return this.modified;
+    }
+
+    /**
+     * Sets the value of modified to new value
+     * @param modifiedIn New value for modified
+     */
+    public void setModified(Date modifiedIn) {
+        this.modified = modifiedIn;
     }
 
     /**

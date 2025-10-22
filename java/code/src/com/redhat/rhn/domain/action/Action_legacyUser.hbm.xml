@@ -99,18 +99,18 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                             class="com.redhat.rhn.domain.action.config.ConfigChannelAssociation">
                             <property name="created" column="created" type="timestamp"
                                       insert="false" update="false"/>
-                    <property name="modified" column="modified" type="timestamp"
-                              insert="false" update="false"/>
-                    <many-to-one name="server" column="server_id"
+                            <property name="modified" column="modified" type="timestamp"
+                                      insert="false" update="false"/>
+                            <many-to-one name="server" column="server_id"
                                                 class="com.redhat.rhn.domain.server.Server"
                                                 outer-join="true" not-null="true">
-                                        </many-to-one>
-                                        <many-to-one name="configChannel"
-                                                column="config_channel_id"
-                                                class="com.redhat.rhn.domain.config.ConfigChannel"
-                                                outer-join="true" not-null="true">
-                                        </many-to-one>
-                                </composite-element>
+                            </many-to-one>
+                            <many-to-one name="configChannel"
+                                         column="config_channel_id"
+                                         class="com.redhat.rhn.domain.config.ConfigChannel"
+                                         outer-join="true" not-null="true">
+                            </many-to-one>
+                        </composite-element>
                     </set>
                     <set name="configFileNameAssociations" cascade="all" lazy="true" table="rhnActionConfigFileName">
                         <key column="action_id"/>

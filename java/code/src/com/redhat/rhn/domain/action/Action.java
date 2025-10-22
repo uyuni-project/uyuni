@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2015 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -65,9 +66,9 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OrderColumn;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -76,7 +77,7 @@ import javax.servlet.http.HttpServletRequest;
 @Entity
 @Table(name = "rhnAction")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name="action_type", discriminatorType = DiscriminatorType.INTEGER)
+@DiscriminatorColumn(name = "action_type", discriminatorType = DiscriminatorType.INTEGER)
 @DiscriminatorValue("-1")
 public class Action extends BaseDomainHelper implements Serializable, WebSocketActionIdProvider {
     protected static final Logger LOG = LogManager.getLogger(Action.class);
@@ -110,43 +111,27 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
     @JoinColumn(name = "action_type")
     private ActionType actionType;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @OrderColumn(name = "modified")
-    //@JoinColumn(name = )
+    @OneToMany(mappedBy = "parentAction", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<ServerAction> serverActions;
 
-
+    @OneToMany(mappedBy = "action", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<ServerCoCoAttestationReport> cocoAttestationReports;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "scheduler")
     private User schedulerUser;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "org_id")
     private Org org;
-
-    private String ageString;
 
     /**
      * The ActionFormatter associated with this Action.  Protected
      * so subclasses can init it.
      */
+    @Transient
     protected transient ActionFormatter formatter;
 
-    /**
-     * Getter for ageString
-     * @return String to get
-     */
-    public String getAgeString() {
-        return this.ageString;
-    }
-
-    /**
-     * Setter for ageString
-     * @param stringIn String to set ageString to
-     */
-    public void setAgeString(String stringIn) {
-        this.ageString = stringIn;
-    }
     /**
      * Getter for id
      * @return Long to get
@@ -159,7 +144,7 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
      * Setter for id
      * @param idIn to set
     */
-    protected void setId(Long idIn) {
+    public void setId(Long idIn) {
         this.id = idIn;
     }
 
