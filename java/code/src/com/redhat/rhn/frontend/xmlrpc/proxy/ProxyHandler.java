@@ -51,6 +51,7 @@ import com.suse.manager.ssl.SSLCertGenerationException;
 import com.suse.manager.ssl.SSLCertManager;
 import com.suse.manager.ssl.SSLCertPair;
 import com.suse.manager.webui.utils.gson.ProxyConfigUpdateJson;
+import com.suse.proxy.migrate.ProxyBackupApplyState;
 import com.suse.proxy.update.ProxyConfigUpdateFacade;
 
 
@@ -586,7 +587,8 @@ public class ProxyHandler extends BaseHandler {
                 registrySaltbrokerURL, registrySaltbrokerTag,
                 registrySquidURL, registrySquidTag,
                 registrySshURL, registrySshTag,
-                registryTftpdURL, registryTftpdTag
+                registryTftpdURL, registryTftpdTag,
+                null, null, null
             );
 
             proxyConfigUpdateFacade.update(request, systemManager, loggedInUser);
@@ -594,6 +596,34 @@ public class ProxyHandler extends BaseHandler {
         catch (RhnRuntimeException | UyuniGeneralException e) {
             LOG.error("Failed to apply proxy configuration to minion", e);
             throw new ValidationException(e.getMessage());
+        }
+        return 1;
+    }
+
+    /**
+     * Backup the configuration of proxies in order to migrate them later.
+     *
+     * @param loggedInUser the connected user
+     * @param sids the IDs of the proxies to backup
+     *
+     * @return 1 in case of success
+     *
+     * @apidoc.doc Backup the configuration of proxies in order to migrate them later.
+     * @apidoc.param #session_key()
+     * @apidoc.param #array_single("int", "sids")
+     * @apidoc.returntype #return_int_success()
+     */
+    public int backupConfiguration(User loggedInUser, List<Integer> sids) {
+        try {
+            for (Integer sid : sids) {
+                Server server = xmlRpcSystemHelper.lookupServer(loggedInUser, sid);
+                server.asMinionServer().ifPresent(
+                        minion -> ProxyBackupApplyState.backupProxyConfig(loggedInUser, minion));
+            }
+        }
+        catch (InvalidProxyVersionException | RhnRuntimeException e) {
+            LOG.error("Failed to backup a proxy configuration", e);
+            throw new RhnRuntimeException(e.getMessage());
         }
         return 1;
     }

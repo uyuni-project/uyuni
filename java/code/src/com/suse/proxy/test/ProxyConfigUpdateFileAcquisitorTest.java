@@ -25,6 +25,9 @@ import static com.suse.proxy.test.ProxyConfigUpdateTestUtils.DUMMY_PROXY_FQDN;
 import static com.suse.proxy.test.ProxyConfigUpdateTestUtils.DUMMY_PROXY_KEY;
 import static com.suse.proxy.test.ProxyConfigUpdateTestUtils.DUMMY_PROXY_PORT;
 import static com.suse.proxy.test.ProxyConfigUpdateTestUtils.DUMMY_ROOT_CA;
+import static com.suse.proxy.test.ProxyConfigUpdateTestUtils.DUMMY_SSH_KEY;
+import static com.suse.proxy.test.ProxyConfigUpdateTestUtils.DUMMY_SSH_PARENT;
+import static com.suse.proxy.test.ProxyConfigUpdateTestUtils.DUMMY_SSH_PUB;
 import static com.suse.proxy.test.ProxyConfigUpdateTestUtils.assertExpectedErrors;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -219,7 +222,10 @@ public class ProxyConfigUpdateFileAcquisitorTest extends BaseTestCaseWithUser {
                         with.is(anything()),
                         with.is(anything()),
                         with.is(anything()),
-                        with(any(SSLCertManager.class))
+                        with(any(SSLCertManager.class)),
+                        with(any(String.class)),
+                        with(any(String.class)),
+                        with(any(String.class))
                 );
                 will(throwException(new SSLCertGenerationException(expectedErrorMessage)));
             }});
@@ -247,6 +253,9 @@ public class ProxyConfigUpdateFileAcquisitorTest extends BaseTestCaseWithUser {
                 .parentFqdn(DUMMY_PARENT_FQDN)
                 .maxCache(DUMMY_MAX_CACHE)
                 .email(DUMMY_ADMIN_MAIL)
+                .sshParentPub(DUMMY_SSH_PARENT)
+                .sshPub(DUMMY_SSH_PUB)
+                .sshKey(DUMMY_SSH_KEY)
                 .build();
         ProxyConfigUpdateContext proxyConfigUpdateContext =
                 new ProxyConfigUpdateContext(request, systemManager, user);
@@ -286,7 +295,10 @@ public class ProxyConfigUpdateFileAcquisitorTest extends BaseTestCaseWithUser {
                         with.is(anything()),
                         with.is(anything()),
                         with.is(anything()),
-                        with(any(SSLCertManager.class))
+                        with(any(SSLCertManager.class)),
+                        with(any(String.class)),
+                        with(any(String.class)),
+                        with(any(String.class))
                 );
                 will(returnValue(expectedProxyConfigFiles));
             }});
