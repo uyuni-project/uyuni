@@ -1,0 +1,2 @@
+- Add support for a timeout property in the configuration
+  (bsc#1252020)
