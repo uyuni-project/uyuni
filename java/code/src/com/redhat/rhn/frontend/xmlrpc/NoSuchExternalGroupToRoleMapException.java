@@ -32,6 +32,6 @@ public class NoSuchExternalGroupToRoleMapException extends FaultException  {
     public NoSuchExternalGroupToRoleMapException(String group) {
         super(2856, "noSuchExternalGroupToRoleMap", LocalizationService.getInstance()
                 .getMessage(
-                "api.externalgroup.nosuchgroup", new Object[] { group }));
+                "api.externalgroup.nosuchgroup", group));
     }
 }

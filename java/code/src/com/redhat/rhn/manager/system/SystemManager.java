@@ -2445,7 +2445,7 @@ public class SystemManager extends BaseManager {
         if (0 > proposedVcpuSetting || proposedVcpuSetting > 32) {
             result.addError(new ValidatorError(
                     "systems.details.virt.vcpu.limit.msg",
-                    new Object [] {"32", guest.getName()}));
+                    "32", guest.getName()));
         }
 
         if (result.getErrors().isEmpty()) {
@@ -2456,7 +2456,7 @@ public class SystemManager extends BaseManager {
                 if (proposedVcpuSetting > hostCpu.getNrCPU().intValue()) {
                     result.addWarning(new ValidatorWarning(
                             "systems.details.virt.vcpu.exceeds.host.cpus",
-                            new Object [] {host.getCpu().getNrCPU(), guest.getName()}));
+                            host.getCpu().getNrCPU(), guest.getName()));
                 }
             }
 
@@ -2472,8 +2472,7 @@ public class SystemManager extends BaseManager {
                         currentGuestCpus) {
                     result.addWarning(new ValidatorWarning(
                             "systems.details.virt.vcpu.increase.warning",
-                            new Object [] {proposedVcpuSetting,
-                                guest.getName()}));
+                            proposedVcpuSetting, guest.getName()));
                 }
             }
         }
@@ -2522,7 +2521,7 @@ public class SystemManager extends BaseManager {
                         // for the settings to take effect:
                         warnings.add(new ValidatorWarning(
                                 "systems.details.virt.memory.warning",
-                                new Object[]{guest.getName()}));
+                                guest.getName()));
                     }
                 }
                 else {

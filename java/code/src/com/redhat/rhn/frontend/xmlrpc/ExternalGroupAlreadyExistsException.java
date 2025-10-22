@@ -30,6 +30,6 @@ public class ExternalGroupAlreadyExistsException extends FaultException  {
      */
     public ExternalGroupAlreadyExistsException(String value) {
         super(9514, "External Group Already Exists", LocalizationService.getInstance()
-                .getMessage("extgrouplabel.already.exists", new Object[] { value }));
+                .getMessage("extgrouplabel.already.exists", value));
     }
 }

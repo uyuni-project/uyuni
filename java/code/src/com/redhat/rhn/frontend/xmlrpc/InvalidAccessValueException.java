@@ -30,7 +30,7 @@ public class InvalidAccessValueException extends FaultException  {
      */
     public InvalidAccessValueException(String value) {
         super(1064, "Invalid Access Value" , LocalizationService.getInstance().
-                getMessage("api.channel.access.invalidaccessvalue", new Object [] {value}));
+                getMessage("api.channel.access.invalidaccessvalue", value));
     }
 
     /**
@@ -40,7 +40,7 @@ public class InvalidAccessValueException extends FaultException  {
      */
     public InvalidAccessValueException(String value, Throwable cause) {
         super(1064, "Invalid Access Value" , LocalizationService.getInstance().
-                getMessage("api.channel.access.invalidaccessvalue", new Object [] {value}),
+                getMessage("api.channel.access.invalidaccessvalue", value),
                 cause);
     }
 }

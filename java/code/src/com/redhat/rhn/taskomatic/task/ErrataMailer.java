@@ -222,7 +222,7 @@ public class ErrataMailer extends RhnJavaJob {
         }
         else {
             buffy.append(ls.getMessage("email.errata.notification.body.numsystems",
-                    new Object[] {String.valueOf(servers.size())}));
+                    String.valueOf(servers.size())));
         }
         buffy.append("\n").append("\n");
 

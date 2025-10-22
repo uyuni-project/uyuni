@@ -39,7 +39,7 @@ public class InvalidOperationException extends FaultException {
      */
     public InvalidOperationException(String message, String param1) {
         super(1233, "invalidOperation", LocalizationService.getInstance().getMessage(
-                message, new Object[] { param1 }));
+                message, param1));
     }
 
 }

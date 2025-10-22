@@ -29,8 +29,7 @@ public class InvalidUpdateTypeAndNoBaseTreeException extends FaultException {
      */
     public InvalidUpdateTypeAndNoBaseTreeException(String tree) {
         super(6134, "invalidKickstartLabel", LocalizationService.getInstance()
-                .getMessage("api.kickstart.invalidUpdateTypeAndNoBase",
-                        new Object[] { tree }));
+                .getMessage("api.kickstart.invalidUpdateTypeAndNoBase", tree));
     }
 
 }

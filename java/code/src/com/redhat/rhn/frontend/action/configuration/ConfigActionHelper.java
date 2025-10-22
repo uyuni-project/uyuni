@@ -278,12 +278,12 @@ public abstract class ConfigActionHelper {
             return service.getMessage(key);
         }
 
-        String message = service.getMessage(key, new Object[] {
+        String message = service.getMessage(key,
             String.valueOf(slsCount),
             String.valueOf(fileCount),
             String.valueOf(dirCount),
-            String.valueOf(symlinkCount),
-        });
+            String.valueOf(symlinkCount)
+        );
         if (url != null) {
             HtmlTag a = new HtmlTag("a");
             a.setAttribute("href", url);
@@ -322,7 +322,7 @@ public abstract class ConfigActionHelper {
         String key = "config.channels_" + suffix;
         String message;
         if (suffix == PLURAL) {
-            message = service.getMessage(key, new Object[] {count});
+            message = service.getMessage(key, count);
         }
         else {
             message = service.getMessage(key);

@@ -32,7 +32,7 @@ public class DeleteUserException extends FaultException  {
      */
     public DeleteUserException(String resourceKey) {
         super(2000, "Error deleting user", LocalizationService.getInstance().
-                getMessage(resourceKey, new Object [] {}));
+                getMessage(resourceKey));
     }
 
 }

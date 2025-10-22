@@ -30,7 +30,7 @@ public class InvalidAdvisoryTypeException extends FaultException  {
      */
     public InvalidAdvisoryTypeException(String arch) {
         super(1062, "Invalid Errata Type" , LocalizationService.getInstance().
-                getMessage("api.errata.invalidadvisorytype", new Object [] {arch}));
+                getMessage("api.errata.invalidadvisorytype", arch));
     }
 
     /**
@@ -40,7 +40,7 @@ public class InvalidAdvisoryTypeException extends FaultException  {
      */
     public InvalidAdvisoryTypeException(String arch, Throwable cause) {
         super(1062, "Invalid Errata Type" , LocalizationService.getInstance().
-                getMessage("api.errata.invalidadvisorytype", new Object [] {arch}), cause);
+                getMessage("api.errata.invalidadvisorytype", arch), cause);
     }
 
 }

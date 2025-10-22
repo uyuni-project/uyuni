@@ -30,7 +30,7 @@ public class InvalidPackageKeyTypeException extends FaultException  {
      */
     public InvalidPackageKeyTypeException(String label) {
         super(2350, "invalidPackageKeyType" , LocalizationService.getInstance().
-                getMessage("api.package.provider.invalidKeyType", new Object [] {label}));
+                getMessage("api.package.provider.invalidKeyType", label));
     }
 
     /**
@@ -43,8 +43,7 @@ public class InvalidPackageKeyTypeException extends FaultException  {
      */
     public InvalidPackageKeyTypeException(String label, Throwable cause) {
         super(2350, "invalidPackageKeyType" , LocalizationService.getInstance().
-                getMessage("api.package.provider.invalidKeyType",
-                        new Object [] {label}) , cause);
+                getMessage("api.package.provider.invalidKeyType", label) , cause);
     }
 
 }

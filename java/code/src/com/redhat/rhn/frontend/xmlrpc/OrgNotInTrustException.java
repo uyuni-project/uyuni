@@ -52,7 +52,7 @@ public class OrgNotInTrustException extends FaultException  {
      */
     public OrgNotInTrustException(Integer value) {
         super(2854, "Organization Not In Trust" , LocalizationService.getInstance().
-                getMessage("api.org.notintrust", new Object [] {value}));
+                getMessage("api.org.notintrust", value));
     }
 
     /**
@@ -62,8 +62,7 @@ public class OrgNotInTrustException extends FaultException  {
      */
     public OrgNotInTrustException(Integer value, Throwable cause) {
         super(2854, "Organization Not In Trust" , LocalizationService.getInstance().
-                getMessage("api.org.notintrust", new Object [] {value}),
-                cause);
+                getMessage("api.org.notintrust", value), cause);
     }
 
 }

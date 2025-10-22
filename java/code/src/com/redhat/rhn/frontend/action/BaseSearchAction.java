@@ -61,8 +61,8 @@ public abstract class BaseSearchAction extends RhnAction {
             "channel-ppc64le"};
 
     /** List of channel arches we don't really support any more. */
-    public static final List<String> EXCLUDED_ARCHES = Arrays.asList(new String[]
-        {"channel-sparc", "channel-alpha", "channel-iSeries", "channel-pSeries"});
+    public static final List<String> EXCLUDED_ARCHES = Arrays.asList(
+        "channel-sparc", "channel-alpha", "channel-iSeries", "channel-pSeries");
 
     // combinedSearchForm common keys
     public static final String FINE_GRAINED = "fineGrained";

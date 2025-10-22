@@ -29,6 +29,6 @@ public class FileListAlreadyExistsException extends FaultException {
      */
     public FileListAlreadyExistsException(String label) {
         super(1067, "FileListAlreadyExists", LocalizationService.getInstance().
-                getMessage("api.kickstart.filelist.exists", new Object[] {label}));
+                getMessage("api.kickstart.filelist.exists", label));
     }
 }

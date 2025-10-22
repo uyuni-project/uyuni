@@ -66,8 +66,7 @@ public class VirtualHostManagerFactory extends HibernateFactory {
     public static final String CONFIG_PASS = "password";
     public static final String CONFIG_KUBECONFIG = "kubeconfig";
 
-    private static final List<String> CONFIGS_TO_SKIP = Arrays.asList(
-            new String[] {CONFIG_USER, CONFIG_PASS, "id", "module"});
+    private static final List<String> CONFIGS_TO_SKIP = Arrays.asList(CONFIG_USER, CONFIG_PASS, "id", "module");
 
     /**
      * Default constructor.
