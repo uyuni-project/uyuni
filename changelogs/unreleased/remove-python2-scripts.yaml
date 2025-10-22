@@ -1,0 +1,4 @@
+type: changed
+description: Removed legacy Python 2 related scripts from proxy-tftpd-image
+github: #11052
+author: prerna0412
