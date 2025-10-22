@@ -15,9 +15,14 @@
 package com.redhat.rhn.domain.kickstart.crypto;
 
 
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+
 /**
  * SslCryptoKey
  */
+@Entity
+@DiscriminatorValue("SSL")
 public class SslCryptoKey extends CryptoKey {
     /**
     *
