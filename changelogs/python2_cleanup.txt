@@ -1,0 +1,3 @@
+- Removed Python 2 support. 
+- Cleaned up deprecated Python 2 code. 
+- Updated relevant modules to Python 3. 
