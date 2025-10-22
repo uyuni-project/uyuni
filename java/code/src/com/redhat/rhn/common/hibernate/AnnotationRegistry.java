@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.action.ActionChainEntry;
 import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.AppletUseSatelliteAction;
+import com.redhat.rhn.domain.action.CertificateUpdateAction;
 import com.redhat.rhn.domain.action.HardwareRefreshAction;
 import com.redhat.rhn.domain.action.RebootAction;
 import com.redhat.rhn.domain.action.RollbackAction;
@@ -45,6 +46,7 @@ import com.redhat.rhn.domain.action.config.ConfigUploadMtimeAction;
 import com.redhat.rhn.domain.action.config.ConfigVerifyAction;
 import com.redhat.rhn.domain.action.config.DaemonConfigAction;
 import com.redhat.rhn.domain.action.config.DaemonConfigDetails;
+import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeActionDetails;
 import com.redhat.rhn.domain.action.dup.DistUpgradeChannelTask;
 import com.redhat.rhn.domain.action.errata.ActionPackageDetails;
@@ -55,12 +57,23 @@ import com.redhat.rhn.domain.action.kickstart.KickstartAction;
 import com.redhat.rhn.domain.action.kickstart.KickstartActionDetails;
 import com.redhat.rhn.domain.action.kickstart.KickstartGuestAction;
 import com.redhat.rhn.domain.action.kickstart.KickstartGuestActionDetails;
+import com.redhat.rhn.domain.action.kickstart.KickstartGuestToolsChannelSubscriptionAction;
+import com.redhat.rhn.domain.action.kickstart.KickstartHostToolsChannelSubscriptionAction;
 import com.redhat.rhn.domain.action.kickstart.KickstartInitiateAction;
 import com.redhat.rhn.domain.action.kickstart.KickstartInitiateGuestAction;
 import com.redhat.rhn.domain.action.kickstart.KickstartScheduleSyncAction;
+import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionDetails;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionRemovalFailure;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionResult;
+import com.redhat.rhn.domain.action.rhnpackage.PackageAutoUpdateAction;
+import com.redhat.rhn.domain.action.rhnpackage.PackageDeltaAction;
+import com.redhat.rhn.domain.action.rhnpackage.PackageLockAction;
+import com.redhat.rhn.domain.action.rhnpackage.PackageRefreshListAction;
+import com.redhat.rhn.domain.action.rhnpackage.PackageRemoveAction;
+import com.redhat.rhn.domain.action.rhnpackage.PackageRunTransactionAction;
+import com.redhat.rhn.domain.action.rhnpackage.PackageUpdateAction;
+import com.redhat.rhn.domain.action.rhnpackage.PackageVerifyAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesActionDetails;
 import com.redhat.rhn.domain.action.salt.ApplyStatesActionResult;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildActionDetails;
@@ -382,6 +395,7 @@ public class AnnotationRegistry {
             ChannelTemplate.class,
             Checksum.class,
             ChecksumType.class,
+            CertificateUpdateAction.class,
             ClientCapability.class,
             ClientCapabilityId.class,
             ClonedChannel.class,
@@ -427,6 +441,7 @@ public class AnnotationRegistry {
             DeployImageActionDetails.class,
             Device.class,
             DistChannelMap.class,
+            DistUpgradeAction.class,
             DistUpgradeActionDetails.class,
             DistUpgradeChannelTask.class,
             Dmi.class,
@@ -478,6 +493,8 @@ public class AnnotationRegistry {
             KickstartDefaultRegToken.class,
             KickstartGuestAction.class,
             KickstartGuestActionDetails.class,
+            KickstartGuestToolsChannelSubscriptionAction.class,
+            KickstartHostToolsChannelSubscriptionAction.class,
             KickstartInitiateAction.class,
             KickstartInitiateGuestAction.class,
             KickstartInstallType.class,
@@ -511,14 +528,17 @@ public class AnnotationRegistry {
             OrgConfig.class,
             OrgRecurringAction.class,
             OrgStateRevision.class,
+            PackageAction.class,
             PackageActionDetails.class,
             PackageActionRemovalFailure.class,
             PackageActionResult.class,
             PackageArch.class,
+            PackageAutoUpdateAction.class,
             PackageBreaks.class,
             PackageCapability.class,
             PackageConflicts.class,
             PackageDelta.class,
+            PackageDeltaAction.class,
             PackageEnhances.class,
             PackageEvr.class,
             PackageExtraTagsKeys.class,
@@ -527,6 +547,7 @@ public class AnnotationRegistry {
             PackageGroup.class,
             PackageKey.class,
             PackageKeyType.class,
+            PackageLockAction.class,
             PackageName.class,
             PackageNevra.class,
             PackageObsoletes.class,
@@ -534,11 +555,16 @@ public class AnnotationRegistry {
             PackageProvider.class,
             PackageProvides.class,
             PackageRecommends.class,
+            PackageRefreshListAction.class,
+            PackageRemoveAction.class,
             PackageRequires.class,
+            PackageRunTransactionAction.class,
             PackageSource.class,
             PackageState.class,
             PackageSuggests.class,
             PackageSupplements.class,
+            PackageUpdateAction.class,
+            PackageVerifyAction.class,
             Pane.class,
             PaygCredentialsProduct.class,
             PaygDimensionComputation.class,
