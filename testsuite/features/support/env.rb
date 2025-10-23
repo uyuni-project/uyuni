@@ -112,6 +112,9 @@ def capybara_register_driver
     chrome_options.add_preference('unhandledPromptBehavior', 'accept')
     chrome_options.add_preference('unexpectedAlertBehaviour', 'accept')
 
+    # Enabling WebDriver BiDi (https://www.selenium.dev/documentation/webdriver/bidi/)
+    chrome_options.add_option(:web_socket_url, true)
+    
     Capybara::Selenium::Driver.new(app, browser: :chrome, options: chrome_options, http_client: client)
   end
 end
