@@ -55,16 +55,14 @@ export default defineConfig([
       // Too much legacy code holds empty references and such, we can't enable these rules yet, but aim for it in the future
       "@typescript-eslint/no-explicit-any": "off",
       "no-async-promise-executor": "off",
-      "no-case-declarations": "error",
 
+      "no-case-declarations": "error",
       "jsx-a11y/anchor-is-valid": "error",
       "react/jsx-no-target-blank": "error",
       "react-hooks/rules-of-hooks": "error",
       eqeqeq: "error",
       radix: ["error", "always"],
       "unicorn/no-useless-spread": "error",
-      // ESLint doesn't recongize overloads by default
-      "no-redeclare": "off",
       // Align with existing code style
       "@typescript-eslint/no-redeclare": "error",
       "@typescript-eslint/prefer-for-of": "off",
@@ -75,13 +73,6 @@ export default defineConfig([
       "local-rules/no-raw-date": "error",
       "local-rules/intl-apostrophe-curly": "error",
       "no-eq-null": "error",
-      // TODO: This needs to be reworked with Typescript support in mind
-      "no-use-before-define": "off",
-      // See https://reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html#eslint
-      "react/jsx-uses-react": "off",
-      "react/react-in-jsx-scope": "off",
-      // This rule is misleading, using [] as a dependency array is completely valid, see https://stackoverflow.com/a/58579462/1470607
-      "react-hooks/exhaustive-deps": "off",
       // Enforce sanity in imports
       "simple-import-sort/imports": [
         "error",
@@ -107,9 +98,13 @@ export default defineConfig([
       ],
       "sort-imports": "off",
       "no-duplicate-imports": "error",
-      // "no-duplicate-imports": "error",
       // We use a `DEPRECATED_` prefix for old components that doesn't conform with this rule
-      "react/jsx-pascal-case": "off",
+      "react/jsx-pascal-case": [
+        "error",
+        {
+          ignore: ["DEPRECATED_*"],
+        },
+      ],
       "no-restricted-imports": [
         "error",
         {
