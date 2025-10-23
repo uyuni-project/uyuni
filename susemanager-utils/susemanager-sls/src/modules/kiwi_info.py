@@ -461,12 +461,12 @@ def inspect_bundles(dest, basename):
             res1 = match.groupdict()
             sha256_file = f
             sha256_str = __salt__["cp.get_file_str"](os.path.join(dest, sha256_file))
-            pattern2 = re.compile(r"^(?P<hash>[0-9a-f]+)\s+(?P<filename>\S.*)\s*$")
+            pattern2 = re.compile(r"^(?P<hash>[0-9a-f]+)\s+(?P<filename>\S.*)$")
             match = pattern2.match(sha256_str)
             if match:
+                res1["filename"] = res1["filename"].strip()
                 d = match.groupdict()
-                # pylint: disable-next=consider-using-f-string
-                d["hash"] = "sha256:{0}".format(d["hash"])
+                d["hash"] = f'sha256:{d["hash"]}'
                 res1.update(d)
                 res1["filepath"] = os.path.join(dest, res1["filename"])
             else:
@@ -474,8 +474,7 @@ def inspect_bundles(dest, basename):
                 pattern2 = re.compile(r"^(?P<hash>[0-9a-f]+)$")
                 match = pattern2.match(sha256_str)
                 if match:
-                    # pylint: disable-next=consider-using-f-string
-                    res1["hash"] = "sha256:{0}".format(match.groupdict()["hash"])
+                    res1["hash"] = f'sha256:{match.groupdict()["hash"]}'
                     res1["filename"] = sha256_file[0 : -len(".sha256")]
                     res1["filepath"] = os.path.join(dest, res1["filename"])
             res.append(res1)
