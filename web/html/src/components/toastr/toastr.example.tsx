@@ -4,7 +4,16 @@ export default () => {
   return (
     <>
       <MessagesContainer />
-      <button onClick={() => showSuccessToastr("Great success")}>showSuccessToastr</button>
+      <button
+        onClick={() =>
+          showSuccessToastr("Great success", {
+            autoHide: false,
+            closeButton: true,
+          })
+        }
+      >
+        showSuccessToastrs
+      </button>
     </>
   );
 };

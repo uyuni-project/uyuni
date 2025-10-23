@@ -7,8 +7,7 @@ import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
 import { AsyncButton, Button } from "../components/buttons";
 import Network from "../utils/network";
-import { Messages, MessageType } from "./messages/messages";
-
+import { MessagesContainer, showErrorToastr, showInfoToastr, showWarningToastr } from "components/toastr/toastr";
 const capitalize = Utils.capitalize;
 
 type Props = {
@@ -240,27 +239,31 @@ class FormulaSelection extends Component<Props, State> {
     this.forceUpdate();
   };
 
+  componentDidUpdate(prevProps, prevState) {
+     if (this.props.warningMessage !== prevProps.warningMessage && this.props.warningMessage) {
+      showWarningToastr(this.props.warningMessage);
+    }
+    if (this.state.messages !== prevState.messages && this.state.messages.length > 0) {
+      showInfoToastr(
+        <>
+          {this.state.messages.map((msg, i) => (
+            <div key={i}>{msg}</div>
+          ))}
+        </>
+      );
+    }
+    if (this.state.errors !== prevState.errors && this.state.errors.length > 0) {
+      showErrorToastr(
+        <>
+          {this.state.errors.map((err, i) => (
+            <div key={i}>{err}</div>
+          ))}
+        </>, { autoHide: false}
+      );
+    }
+  }
+
   render() {
-    let items: MessageType[] = [];
-    if (this.props.warningMessage) {
-      items.push({ severity: "warning", text: this.props.warningMessage });
-    }
-    if (this.state.messages.length > 0) {
-      items = items.concat(
-        this.state.messages.map(function (msg) {
-          return { severity: "info", text: msg };
-        })
-      );
-    }
-
-    if (this.state.errors && this.state.errors.length > 0) {
-      items = items.concat(
-        this.state.errors.map(function (e) {
-          return { severity: "error", text: e };
-        })
-      );
-    }
-
     this.props.addFormulaNavBar(this.state.activeFormulas);
 
     return (
@@ -270,9 +273,9 @@ class FormulaSelection extends Component<Props, State> {
             "On this page you can select Salt Formulas for this group/system, which can then be configured on group and system level. This allows you to automatically install and configure software."
           )}
         </p>
-        <Messages items={items} />
         <SectionToolbar>
-          <div className="action-button-wrapper">
+          <div className="action-button-wrapper d-block w-100">
+            <MessagesContainer />
             <span className="btn-group pull-right">
               <Button
                 id="clear-btn"
