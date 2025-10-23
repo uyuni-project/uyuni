@@ -57,7 +57,7 @@ export default defineConfig([
       "@typescript-eslint/no-empty-function": "off",
       "no-async-promise-executor": "off",
       "no-prototype-builtins": "off",
-      "no-case-declarations": "off",
+      "no-case-declarations": "error",
 
       "jsx-a11y/anchor-is-valid": "error",
       "react/jsx-no-target-blank": "error",
