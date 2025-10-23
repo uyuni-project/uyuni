@@ -5,6 +5,7 @@ import prettier from "eslint-plugin-prettier";
 import react from "eslint-plugin-react";
 import reactHooks from "eslint-plugin-react-hooks";
 import simpleImportSort from "eslint-plugin-simple-import-sort";
+import unicorn from "eslint-plugin-unicorn";
 import globals from "globals";
 import tseslint from "typescript-eslint";
 
@@ -22,6 +23,7 @@ export default defineConfig([
       globals: {
         ...globals.browser,
         ...globals.node,
+        ...globals.builtin,
         t: true,
         module: true,
         jQuery: true,
@@ -34,6 +36,7 @@ export default defineConfig([
       "simple-import-sort": simpleImportSort,
       "jsx-a11y": jsxA11y,
       "local-rules": localRules,
+      unicorn,
       prettier,
     },
 
@@ -61,6 +64,7 @@ export default defineConfig([
       "react-hooks/rules-of-hooks": "error",
       eqeqeq: "error",
       radix: ["error", "always"],
+      "unicorn/no-useless-spread": "error",
       // ESLint doesn't recongize overloads by default
       "no-redeclare": "off",
       // Align with existing code style

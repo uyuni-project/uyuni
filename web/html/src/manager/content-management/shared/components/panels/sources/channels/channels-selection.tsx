@@ -111,12 +111,12 @@ const ChannelsSelection = (props: PropsType) => {
       selectedChannelIds.add(channel.id);
       const requires = channelProcessor.getRequires(channel.id);
       requires?.forEach((item) => selectedChannelIds.add(item.id));
-      setSelectedChannelIds(new Set([...selectedChannelIds]));
+      setSelectedChannelIds(new Set(selectedChannelIds));
     } else {
       selectedChannelIds.delete(channel.id);
       const requiredBy = channelProcessor.getRequiredBy(channel.id);
       requiredBy?.forEach((item) => selectedChannelIds.delete(item.id));
-      setSelectedChannelIds(new Set([...selectedChannelIds]));
+      setSelectedChannelIds(new Set(selectedChannelIds));
     }
 
     // Propagate selection to parent views
@@ -132,7 +132,7 @@ const ChannelsSelection = (props: PropsType) => {
       setOpenRows(new Set([...openRows, channel.id]));
     } else {
       openRows.delete(channel.id);
-      setOpenRows(new Set([...openRows]));
+      setOpenRows(new Set(openRows));
     }
   };
 
