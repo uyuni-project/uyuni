@@ -15,6 +15,8 @@ import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.product.SUSEProductUpgrade;
 import com.redhat.rhn.domain.server.Server;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 
 import java.util.HashSet;
@@ -25,13 +27,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -42,8 +42,14 @@ import javax.persistence.Table;
 public class DistUpgradeActionDetails extends BaseDomainHelper {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_ACTIONDUP_ID_SEQ")
-    @SequenceGenerator(name = "RHN_ACTIONDUP_ID_SEQ", sequenceName = "RHN_ACTIONDUP_ID_SEQ", allocationSize = 1)
+    @GeneratedValue(generator = "RHN_ACTIONDUP_ID_SEQ")
+    @GenericGenerator(
+        name = "RHN_ACTIONDUP_ID_SEQ",
+        strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+        parameters = {
+                @Parameter(name = "sequence_name", value = "RHN_ACTIONDUP_ID_SEQ"),
+                @Parameter(name = "increment_size", value = "1")
+        })
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -66,7 +72,7 @@ public class DistUpgradeActionDetails extends BaseDomainHelper {
     private String missingSuccessors;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "action_id", updatable = false, nullable = false, insertable = true)
+    @JoinColumn(name = "action_id", updatable = false, nullable = false, insertable = false)
     private Action parentAction;
 
 

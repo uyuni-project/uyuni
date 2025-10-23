@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2013 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -23,6 +24,8 @@ import com.google.gson.reflect.TypeToken;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 import java.lang.reflect.Type;
 import java.util.Collections;
@@ -32,11 +35,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -49,8 +50,14 @@ public class CPU extends BaseDomainHelper {
     private static final Logger LOG = LogManager.getLogger(CPU.class);
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_CPU_ID_SEQ")
-    @SequenceGenerator(name = "RHN_CPU_ID_SEQ", sequenceName = "RHN_CPU_ID_SEQ", allocationSize = 1)
+    @GeneratedValue(generator = "RHN_CPU_ID_SEQ")
+    @GenericGenerator(
+            name = "RHN_CPU_ID_SEQ",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @Parameter(name = "sequence_name", value = "RHN_CPU_ID_SEQ"),
+                    @Parameter(name = "increment_size", value = "1")
+            })
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "server_id")

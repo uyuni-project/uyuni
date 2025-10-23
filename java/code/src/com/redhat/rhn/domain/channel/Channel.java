@@ -33,6 +33,8 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 
 import java.util.ArrayList;
@@ -50,7 +52,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -61,7 +62,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -85,46 +85,71 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
                     "channel-sparc"));
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rhn_channel_seq")
-    @SequenceGenerator(name = "rhn_channel_seq", sequenceName = "RHN_CHANNEL_ID_SEQ", allocationSize = 1)
+    @GeneratedValue(generator = "rhn_channel_seq")
+    @GenericGenerator(
+            name = "rhn_channel_seq",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @Parameter(name = "sequence_name", value = "RHN_CHANNEL_ID_SEQ"),
+                    @Parameter(name = "increment_size", value = "1")
+            })
     private Long id;
+
     @Column
     private String baseDir;
+
     @Column
     private String description;
+
     @Column(name = "end_of_life")
     private Date endOfLife;
+
     @Column(name = "gpg_check")
     @Type(type = "yes_no")
     private boolean GPGCheck;
+
     @Column(name = "gpg_key_url")
     private String GPGKeyUrl;
+
     @Column(name = "gpg_key_id")
     private String GPGKeyId;
+
     @Column(name = "gpg_key_fp")
     private String GPGKeyFp;
+
     @Column
     private String label;
+
     @Column(name = "last_modified")
     private Date lastModified;
+
     @Column(name = "last_synced")
     private Date lastSynced;
+
     @Column
     private String name;
+
     @Column
     private String summary;
+
     @Column(name = "channel_access")
     private String access;
+
     @Column(name = "maint_name")
     private String maintainerName;
+
     @Column(name = "maint_email")
     private String maintainerEmail;
+
     @Column(name = "maint_phone")
     private String maintainerPhone;
+
     @Column(name = "support_policy")
     private String supportPolicy;
+
     @Column(name = "update_tag")
     private String updateTag;
+
     @Column(name = "installer_updates")
     @Type(type = "yes_no")
     private boolean installerUpdates;

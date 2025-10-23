@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2017 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -17,6 +18,8 @@ package com.redhat.rhn.domain.kickstart;
 import com.redhat.rhn.domain.BaseDomainHelper;
 
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 import java.util.Date;
 
@@ -24,11 +27,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -39,8 +40,14 @@ import javax.persistence.Table;
 public class KickstartCommand extends BaseDomainHelper implements Comparable<KickstartCommand> {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_KSCOMMAND_ID_SEQ")
-    @SequenceGenerator(name = "RHN_KSCOMMAND_ID_SEQ", sequenceName = "RHN_KSCOMMAND_ID_SEQ", allocationSize = 1)
+    @GeneratedValue(generator = "RHN_KSCOMMAND_ID_SEQ")
+    @GenericGenerator(
+            name = "RHN_KSCOMMAND_ID_SEQ",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @Parameter(name = "sequence_name", value = "RHN_KSCOMMAND_ID_SEQ"),
+                    @Parameter(name = "increment_size", value = "1")
+            })
     private Long id;
 
     @Column
