@@ -31,7 +31,7 @@ def parse_profile(chroot):
     path = os.path.join(chroot, "image", ".profile")
     if __salt__["file.file_exists"](path):
         profile = __salt__["cp.get_file_str"](path)
-        pattern = re.compile(r"^(?P<name>.*?)='(?P<val>.*)'")
+        pattern = re.compile(r"^(?P<name>[^=]+?)='(?P<val>.*)'")
         for line in profile.splitlines():
             match = pattern.match(line)
             if match:
@@ -133,14 +133,12 @@ def parse_packages(path):
     ret = []
     if __salt__["file.file_exists"](path):
         packages = __salt__["cp.get_file_str"](path)
-        pattern = re.compile(
-            r"^(?P<name>.*?)\|(?P<epoch>.*?)\|(?P<version>.*?)\|(?P<release>.*?)\|(?P<arch>.*?)\|(?P<disturl>.*?)(\|(?P<license>.*))?$"
-        )
+        fields = ["name", "epoch", "version", "release", "arch", "disturl", "license"]
         for line in packages.splitlines():
-            match = pattern.match(line)
-            if match:
+            line_data = line.split("|")
+            if len(line_data) in (6, 7):
                 # translate '(none)' values to ''
-                d = match.groupdict()
+                d = dict(zip(fields, line_data))
                 for k in list(d.keys()):
                     if d[k] == "(none)":
                         d[k] = ""
@@ -461,12 +459,12 @@ def inspect_bundles(dest, basename):
             res1 = match.groupdict()
             sha256_file = f
             sha256_str = __salt__["cp.get_file_str"](os.path.join(dest, sha256_file))
-            pattern2 = re.compile(r"^(?P<hash>[0-9a-f]+)\s+(?P<filename>.*)\s*$")
+            pattern2 = re.compile(r"^(?P<hash>[0-9a-f]+)\s+(?P<filename>\S.*)$")
             match = pattern2.match(sha256_str)
             if match:
                 d = match.groupdict()
-                # pylint: disable-next=consider-using-f-string
-                d["hash"] = "sha256:{0}".format(d["hash"])
+                d["filename"] = d["filename"].strip()
+                d["hash"] = f'sha256:{d["hash"]}'
                 res1.update(d)
                 res1["filepath"] = os.path.join(dest, res1["filename"])
             else:
@@ -474,8 +472,7 @@ def inspect_bundles(dest, basename):
                 pattern2 = re.compile(r"^(?P<hash>[0-9a-f]+)$")
                 match = pattern2.match(sha256_str)
                 if match:
-                    # pylint: disable-next=consider-using-f-string
-                    res1["hash"] = "sha256:{0}".format(match.groupdict()["hash"])
+                    res1["hash"] = f'sha256:{match.groupdict()["hash"]}'
                     res1["filename"] = sha256_file[0 : -len(".sha256")]
                     res1["filepath"] = os.path.join(dest, res1["filename"])
             res.append(res1)
