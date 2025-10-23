@@ -77,7 +77,7 @@ public class DistUpgradeAction extends Action {
     private static final long serialVersionUID = -702781375842108784L;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @MapKey(name = "server_id")
+    @MapKey(name = "server")
     @JoinColumn(name = "action_id", nullable = false)
     private Map<Long, DistUpgradeActionDetails> detailsMap;
 
