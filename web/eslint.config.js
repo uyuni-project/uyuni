@@ -53,7 +53,6 @@ export default defineConfig([
       "prettier/prettier": isProduction ? "error" : "warn",
       "no-console": isProduction ? "error" : "warn",
       // Too much legacy code holds empty references and such, we can't enable these rules yet, but aim for it in the future
-      "@typescript-eslint/no-empty-function": "off",
       "@typescript-eslint/no-explicit-any": "off",
       "no-async-promise-executor": "off",
       "no-prototype-builtins": "off",
