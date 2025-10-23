@@ -1,3 +1,5 @@
+import type Bootstrap from "bootstrap";
+
 import type { tType } from "core/intl";
 
 declare global {
@@ -43,7 +45,7 @@ declare global {
     }
   }
 
-  var bootstrap: any;
+  var bootstrap: Bootstrap;
   var t: tType;
 
   var onDocumentReadyInitOldJS: (...args: any[]) => any;
