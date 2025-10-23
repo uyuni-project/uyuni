@@ -21,6 +21,8 @@ import com.redhat.rhn.frontend.dto.BaseDto;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.Date;
@@ -31,12 +33,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -58,16 +58,25 @@ public class IssSlave extends BaseDto {
     public static final String SID = "sid";
 
     @Id
-    @Column
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "issslave_seq")
-    @SequenceGenerator(name = "issslave_seq", sequenceName = "rhn_issslave_seq", allocationSize = 1)
+    @GeneratedValue(generator = "issslave_seq")
+    @GenericGenerator(
+            name = "issslave_seq",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @Parameter(name = "sequence_name", value = "rhn_issslave_seq"),
+                    @Parameter(name = "increment_size", value = "1")
+            })
     private Long id;
+
     @Column
     private String slave;
+
     @Column
     private String enabled;
+
     @Column(name = "allow_all_orgs")
     private String allowAllOrgs;
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "rhnissslaveorgs",
@@ -75,9 +84,11 @@ public class IssSlave extends BaseDto {
             inverseJoinColumns = @JoinColumn(name = "org_id"))
     @Fetch(FetchMode.SELECT)
     private Set<Org> allowedOrgs;
+
     @Column(name = "created", nullable = false, updatable = false)
     @CreationTimestamp
     private Date created = new Date();
+
     @Column(name = "modified", nullable = false)
     @UpdateTimestamp
     private Date modified = new Date();

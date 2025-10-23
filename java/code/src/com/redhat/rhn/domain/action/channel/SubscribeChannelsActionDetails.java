@@ -22,6 +22,8 @@ import com.redhat.rhn.domain.channel.Channel;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -30,13 +32,11 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -47,9 +47,14 @@ import javax.persistence.Table;
 public class SubscribeChannelsActionDetails extends BaseDomainHelper {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_ACT_SUBSCR_CHNLS_ID_SEQ")
-    @SequenceGenerator(name = "RHN_ACT_SUBSCR_CHNLS_ID_SEQ", sequenceName = "RHN_ACT_SUBSCR_CHNLS_ID_SEQ",
-            allocationSize = 1)
+    @GeneratedValue(generator = "RHN_ACT_SUBSCR_CHNLS_ID_SEQ")
+    @GenericGenerator(
+            name = "RHN_ACT_SUBSCR_CHNLS_ID_SEQ",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @Parameter(name = "sequence_name", value = "RHN_ACT_SUBSCR_CHNLS_ID_SEQ"),
+                    @Parameter(name = "increment_size", value = "1")
+            })
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
