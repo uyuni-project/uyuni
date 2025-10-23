@@ -38,7 +38,7 @@ const messageMap = {
   "": "There was an error.",
 };
 
-type Props = {};
+type Props = Record<never, never>;
 
 type State = {
   imageTypes: any;

@@ -34,7 +34,7 @@ type FormModel = {
   pastedRootCA?: string;
 };
 
-type Props = {};
+type Props = Record<never, never>;
 
 type State = {
   model: FormModel;

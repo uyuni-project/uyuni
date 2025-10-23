@@ -14,20 +14,18 @@ type Props = {
 
 class AceEditor extends React.Component<Props> {
   componentDidMount() {
-    const component = this;
-
-    const node = ReactDOM.findDOMNode(component.refs.editor);
+    const node = ReactDOM.findDOMNode(this.refs.editor);
     try {
       const editor = ace.edit(node);
       editor.setTheme("ace/theme/xcode");
-      editor.getSession().setMode("ace/mode/" + component.props.mode);
+      editor.getSession().setMode("ace/mode/" + this.props.mode);
       editor.setShowPrintMargin(false);
-      editor.setOptions({ minLines: component.props.minLines });
-      editor.setOptions({ maxLines: component.props.maxLines });
-      editor.setReadOnly(component.props.readOnly);
+      editor.setOptions({ minLines: this.props.minLines });
+      editor.setOptions({ maxLines: this.props.maxLines });
+      editor.setReadOnly(this.props.readOnly);
 
-      editor.getSession().on("change", function () {
-        component.props.onChange?.(editor.getSession().getValue());
+      editor.getSession().on("change", () => {
+        this.props.onChange?.(editor.getSession().getValue());
       });
     } catch (error) {
       Loggerhead.error(

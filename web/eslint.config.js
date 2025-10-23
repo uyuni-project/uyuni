@@ -16,8 +16,7 @@ const isProduction = process.env.NODE_ENV === "production";
 export default defineConfig([
   globalIgnores(["html/src/dist/**/*", "html/src/vendors/**/*", "html/javascript/**/*"]),
   eslint.configs.recommended,
-  // In the future, it would be nice to use `tseslint.configs.recommended` here, but legacy code is too far from that for now
-  tseslint.configs.stylistic,
+  tseslint.configs.recommended,
   {
     languageOptions: {
       globals: {
@@ -55,6 +54,7 @@ export default defineConfig([
       "no-console": isProduction ? "error" : "warn",
       // Too much legacy code holds empty references and such, we can't enable these rules yet, but aim for it in the future
       "@typescript-eslint/no-empty-function": "off",
+      "@typescript-eslint/no-explicit-any": "off",
       "no-async-promise-executor": "off",
       "no-prototype-builtins": "off",
       "no-case-declarations": "error",

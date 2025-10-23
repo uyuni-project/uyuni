@@ -16,7 +16,7 @@ type Props = {
   errors?: object;
 
   /** Function to trigger when the Submit button is clicked */
-  onSubmit?: Function;
+  onSubmit?: (...args: any[]) => any;
 
   /** A reference to pass to the <form> element */
   formRef?: React.LegacyRef<HTMLFormElement>;

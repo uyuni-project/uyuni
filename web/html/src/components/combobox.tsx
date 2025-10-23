@@ -65,11 +65,11 @@ export class Combobox extends React.Component<ComboboxProps, ComboboxState> {
 
         return styles;
       },
-      menu: (styles: {}) => ({
+      menu: (styles: Record<string, any>) => ({
         ...styles,
         zIndex: 3,
       }),
-      menuPortal: (styles: {}) => ({
+      menuPortal: (styles: Record<string, any>) => ({
         ...styles,
         zIndex: 9999,
       }),

@@ -100,7 +100,7 @@ function sortByDate(aRaw: any, bRaw: any, columnKey: string, sortDirection: numb
         : // eslint-disable-next-line local-rules/no-raw-date
           new Date(bRaw[columnKey].replace(unparsableDateRegex, "$1"));
 
-  // @ts-ignore
+  // @ts-expect-error This is grandfathered in
   const result = aDate > bDate ? 1 : aDate < bDate ? -1 : 0;
   return result * sortDirection;
 }

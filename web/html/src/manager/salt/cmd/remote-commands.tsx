@@ -114,7 +114,7 @@ function isTimedOutDone(minionsMap: Map<any, any>, waitForSSH, timedOutSSH) {
   return noMinionsPending && anyTimedOutMinion;
 }
 
-type RemoteCommandProps = {};
+type RemoteCommandProps = Record<never, never>;
 
 type RemoteCommandState = {
   command: string;

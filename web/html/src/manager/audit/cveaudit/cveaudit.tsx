@@ -118,7 +118,7 @@ function cveAudit(cveId, target, statuses) {
   });
 }
 
-type Props = {};
+type Props = Record<never, never>;
 
 type State = {
   cveNumber: string;
