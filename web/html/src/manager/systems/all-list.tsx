@@ -75,7 +75,7 @@ export function AllSystems(props: Props) {
         data="/rhn/manager/api/systems/list/all"
         identifier={(item) => item.id}
         initialSortColumnKey="server_name"
-        selectable={(item) => item.hasOwnProperty("id")}
+        selectable={(item) => Object.prototype.hasOwnProperty.call(item, "id")}
         selectedItems={selectedSystems}
         onSelect={handleSelectedSystems}
         searchField={<SystemsListFilter />}

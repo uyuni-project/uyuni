@@ -55,7 +55,6 @@ export default defineConfig([
       // Too much legacy code holds empty references and such, we can't enable these rules yet, but aim for it in the future
       "@typescript-eslint/no-explicit-any": "off",
       "no-async-promise-executor": "off",
-      "no-prototype-builtins": "off",
       "no-case-declarations": "error",
 
       "jsx-a11y/anchor-is-valid": "error",
