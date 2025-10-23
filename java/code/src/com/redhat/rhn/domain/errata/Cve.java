@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -16,13 +17,13 @@ package com.redhat.rhn.domain.errata;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -34,9 +35,16 @@ import javax.persistence.Table;
 public class Cve {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cve_seq")
-    @SequenceGenerator(name = "cve_seq", sequenceName = "rhn_cve_id_seq", allocationSize = 1)
+    @GeneratedValue(generator = "cve_seq")
+    @GenericGenerator(
+            name = "cve_seq",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @Parameter(name = "sequence_name", value = "rhn_cve_id_seq"),
+                    @Parameter(name = "increment_size", value = "1")
+            })
     private Long id;
+
     @Column
     private String name;
     /**

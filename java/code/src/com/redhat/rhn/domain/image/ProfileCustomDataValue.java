@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 SUSE LLC
+ * Copyright (c) 2017--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.redhat.rhn.domain.image;
 
@@ -22,16 +18,16 @@ import com.redhat.rhn.domain.user.legacy.UserImpl;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -53,12 +49,18 @@ public class ProfileCustomDataValue extends BaseDomainHelper {
      * @return Returns the Id
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pcdv_seq")
-    @SequenceGenerator(name = "pcdv_seq", sequenceName = "suse_pcdv_id_seq",
-                       allocationSize = 1)
+    @GeneratedValue(generator = "pcdv_seq")
+    @GenericGenerator(
+            name = "pcdv_seq",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @Parameter(name = "sequence_name", value = "suse_pcdv_id_seq"),
+                    @Parameter(name = "increment_size", value = "1")
+            })
     public Long getId() {
         return id;
     }
+
     /**
      * @return Returns the image profile.
      */
@@ -67,6 +69,7 @@ public class ProfileCustomDataValue extends BaseDomainHelper {
     public ImageProfile getProfile() {
         return profile;
     }
+
     /**
      * @return Returns the key.
      */
@@ -75,6 +78,7 @@ public class ProfileCustomDataValue extends BaseDomainHelper {
     public CustomDataKey getKey() {
         return key;
     }
+
     /**
      * @return Returns the value.
      */
@@ -82,6 +86,7 @@ public class ProfileCustomDataValue extends BaseDomainHelper {
     public String getValue() {
         return value;
     }
+
     /**
      * @return Returns the creator.
      */
@@ -90,6 +95,7 @@ public class ProfileCustomDataValue extends BaseDomainHelper {
     public User getCreator() {
         return creator;
     }
+
     /**
      * @return Returns the lastModifier.
      */

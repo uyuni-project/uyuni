@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2013 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -16,6 +17,9 @@ package com.redhat.rhn.domain.iss;
 
 import com.redhat.rhn.frontend.dto.BaseDto;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -25,10 +29,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -45,8 +47,14 @@ public class IssMaster extends BaseDto {
     public static final long   NEW_MASTER_ID = -1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "iss_master_seq")
-    @SequenceGenerator(name = "iss_master_seq", sequenceName = "rhn_issmaster_seq", allocationSize = 1)
+    @GeneratedValue(generator = "iss_master_seq")
+    @GenericGenerator(
+            name = "iss_master_seq",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @Parameter(name = "sequence_name", value = "rhn_issmaster_seq"),
+                    @Parameter(name = "increment_size", value = "1")
+            })
     private Long id;
 
     @Column
