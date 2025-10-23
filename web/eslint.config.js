@@ -40,8 +40,6 @@ export default defineConfig([
     },
 
     rules: {
-      // We use `@typescript-eslint/no-unused-vars` instead
-      "no-unused-vars": "off",
       "@typescript-eslint/no-unused-vars": [
         isProduction ? "error" : "warn",
         {
@@ -52,10 +50,6 @@ export default defineConfig([
       ],
       "prettier/prettier": isProduction ? "error" : "warn",
       "no-console": isProduction ? "error" : "warn",
-      // Too much legacy code holds empty references and such, we can't enable these rules yet, but aim for it in the future
-      "@typescript-eslint/no-explicit-any": "off",
-      "no-async-promise-executor": "off",
-
       "no-case-declarations": "error",
       "jsx-a11y/anchor-is-valid": "error",
       "react/jsx-no-target-blank": "error",
@@ -63,17 +57,25 @@ export default defineConfig([
       eqeqeq: "error",
       radix: ["error", "always"],
       "unicorn/no-useless-spread": "error",
-      // Align with existing code style
       "@typescript-eslint/no-redeclare": "error",
+      "local-rules/no-raw-date": "error",
+      "local-rules/intl-apostrophe-curly": "error",
+      "no-eq-null": "error",
+
+      // Too much legacy code holds empty references and such, we can't enable these rules yet, but aim for it in the future
+      "@typescript-eslint/no-explicit-any": "off",
+      "no-async-promise-executor": "off",
+
+      // Align with existing code style
+
       "@typescript-eslint/prefer-for-of": "off",
       "@typescript-eslint/consistent-type-definitions": "off",
       "@typescript-eslint/no-redundant-type-constituents": "off",
       "@typescript-eslint/no-inferrable-types": "off",
       "@typescript-eslint/consistent-generic-constructors": "off",
-      "local-rules/no-raw-date": "error",
-      "local-rules/intl-apostrophe-curly": "error",
-      "no-eq-null": "error",
+
       // Enforce sanity in imports
+      "sort-imports": "off",
       "simple-import-sort/imports": [
         "error",
         {
@@ -96,8 +98,8 @@ export default defineConfig([
           ],
         },
       ],
-      "sort-imports": "off",
       "no-duplicate-imports": "error",
+
       // We use a `DEPRECATED_` prefix for old components that doesn't conform with this rule
       "react/jsx-pascal-case": [
         "error",
@@ -105,6 +107,7 @@ export default defineConfig([
           ignore: ["DEPRECATED_*"],
         },
       ],
+
       "no-restricted-imports": [
         "error",
         {
