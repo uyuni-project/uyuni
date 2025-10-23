@@ -12,6 +12,10 @@ import json
 
 log = logging.getLogger(__name__)
 
+# __salt__ variable is populated with Salt Lazy Loader.
+# Define it for testing purposes and to avoid pylint warnings.
+__salt__ = {}
+
 # Kiwi version is always in format "MAJOR.MINOR.RELEASE" with numeric values
 # Source https://osinside.github.io/kiwi/image_description/elements.html#preferences-version
 # Enhanced by allowing also MAJOR.MINOR version, particularly for SL-Micro images
@@ -25,9 +29,7 @@ KIWI_NAME_REGEX = r"[a-zA-Z0-9_\-\.]+"
 def parse_profile(chroot):
     ret = {}
     path = os.path.join(chroot, "image", ".profile")
-    # pylint: disable-next=undefined-variable
     if __salt__["file.file_exists"](path):
-        # pylint: disable-next=undefined-variable
         profile = __salt__["cp.get_file_str"](path)
         pattern = re.compile(r"^(?P<name>.*?)='(?P<val>.*)'")
         for line in profile.splitlines():
@@ -40,9 +42,7 @@ def parse_profile(chroot):
 def parse_buildinfo(dest):
     ret = {}
     path = os.path.join(dest, "kiwi.buildinfo")
-    # pylint: disable-next=undefined-variable
     if __salt__["file.file_exists"](path):
-        # pylint: disable-next=undefined-variable
         profile = __salt__["cp.get_file_str"](path)
         pattern_group = re.compile(r"^\[(?P<name>.*)\]")
         pattern_val = re.compile(r"^(?P<name>.*?)=(?P<val>.*)")
@@ -63,7 +63,6 @@ def parse_buildinfo(dest):
 # fallback for SLES11 Kiwi and for Kiwi NG that does not create the buildinfo file
 def guess_buildinfo(dest):
     ret = {"main": {}}
-    # pylint: disable-next=undefined-variable
     files = __salt__["file.readdir"](dest)
 
     pattern_basename = re.compile(r"^(?P<basename>.*)\.packages$")
@@ -112,7 +111,6 @@ with open(sys.argv[1], 'rb') as f:
 def parse_kiwi_result(dest):
     path = os.path.join(dest, "kiwi.result")
     ret = {}
-    # pylint: disable-next=undefined-variable
     if __salt__["file.file_exists"](path):
         # pickle depends on availability of python kiwi modules
         # which are not under our control so there is certain risk of failure
@@ -121,7 +119,6 @@ def parse_kiwi_result(dest):
         #
         # return empty dict on failure
         # the caller should handle all values as optional
-        # pylint: disable-next=undefined-variable
         result = __salt__["cmd.exec_code_all"](
             "/usr/bin/python3", _kiwi_result_script, args=[path]
         )
@@ -134,9 +131,7 @@ def parse_kiwi_result(dest):
 
 def parse_packages(path):
     ret = []
-    # pylint: disable-next=undefined-variable
     if __salt__["file.file_exists"](path):
-        # pylint: disable-next=undefined-variable
         packages = __salt__["cp.get_file_str"](path)
         pattern = re.compile(
             r"^(?P<name>.*?)\|(?P<epoch>.*?)\|(?P<version>.*?)\|(?P<release>.*?)\|(?P<arch>.*?)\|(?P<disturl>.*?)(\|(?P<license>.*))?$"
@@ -160,13 +155,10 @@ def parse_packages(path):
 
 def get_md5(path):
     res = {}
-    # pylint: disable-next=undefined-variable
     if not __salt__["file.file_exists"](path):
         return res
 
-    # pylint: disable-next=undefined-variable
     res["hash"] = "md5:" + __salt__["file.get_hash"](path, form="md5")
-    # pylint: disable-next=undefined-variable
     res["size"] = __salt__["file.stats"](path).get("size")
     return res
 
@@ -174,11 +166,9 @@ def get_md5(path):
 def parse_kiwi_md5(path, compressed=False):
     res = {}
 
-    # pylint: disable-next=undefined-variable
     if not __salt__["file.file_exists"](path):
         return res
 
-    # pylint: disable-next=undefined-variable
     md5_str = __salt__["cp.get_file_str"](path)
     if md5_str is not None:
         if compressed:
@@ -290,7 +280,6 @@ def image_details(dest, bundle_dest=None):
 
     for c in image_types:
         path = os.path.join(dest, basename + c)
-        # pylint: disable-next=undefined-variable
         if __salt__["file.file_exists"](path):
             filename = basename + c
             filepath = path
@@ -311,7 +300,6 @@ def image_details(dest, bundle_dest=None):
         res["image"].update(
             {
                 "compression": compression,
-                # pylint: disable-next=undefined-variable
                 "compressed_hash": __salt__["hashutil.digest_file"](
                     filepath, checksum="md5"
                 ),
@@ -344,7 +332,6 @@ def inspect_image(dest, build_id, bundle_dest=None):
 
     for fstype in ["ext2", "ext3", "ext4", "btrfs", "xfs"]:
         path = os.path.join(dest, basename + "." + fstype)
-        # pylint: disable-next=undefined-variable
         if __salt__["file.file_exists"](path) or __salt__["file.is_link"](path):
             res["image"]["fstype"] = fstype
             break
@@ -363,7 +350,6 @@ def inspect_boot_image(dest):
     Only valid for PXE/KIS image type.
     """
     res = None
-    # pylint: disable-next=undefined-variable
     files = __salt__["file.readdir"](dest)
 
     pattern = re.compile(
@@ -425,7 +411,6 @@ def inspect_boot_image(dest):
         else:
             file = basename + c
         filepath = os.path.join(dest, file)
-        # pylint: disable-next=undefined-variable
         if __salt__["file.file_exists"](filepath):
             res["initrd"]["filename"] = file
             res["initrd"]["filepath"] = filepath
@@ -440,7 +425,6 @@ def inspect_boot_image(dest):
     if res["kiwi_ng"]:
         file = basename + "-" + res["kernel"]["version"] + ".kernel"
         filepath = os.path.join(dest, file)
-        # pylint: disable-next=undefined-variable
         if __salt__["file.file_exists"](filepath):
             res["kernel"]["filename"] = file
             res["kernel"]["filepath"] = filepath
@@ -448,7 +432,6 @@ def inspect_boot_image(dest):
     else:
         file = basename + ".kernel." + res["kernel"]["version"]
         filepath = os.path.join(dest, file)
-        # pylint: disable-next=undefined-variable
         if __salt__["file.file_exists"](filepath):
             res["kernel"]["filename"] = file
             res["kernel"]["filepath"] = filepath
@@ -465,7 +448,6 @@ def inspect_bundles(dest, basename):
     Not used by default, not compatible with containerized saltboot workflow.
     """
     res = []
-    # pylint: disable-next=undefined-variable
     files = __salt__["file.readdir"](dest)
 
     pattern = re.compile(
@@ -478,7 +460,6 @@ def inspect_bundles(dest, basename):
         if match:
             res1 = match.groupdict()
             sha256_file = f
-            # pylint: disable-next=undefined-variable
             sha256_str = __salt__["cp.get_file_str"](os.path.join(dest, sha256_file))
             pattern2 = re.compile(r"^(?P<hash>[0-9a-f]+)\s+(?P<filename>.*)\s*$")
             match = pattern2.match(sha256_str)
@@ -551,7 +532,6 @@ def build_info(dest, build_id, bundle_dest=None):
     for c in image_types:
         test_name = basename + c
         filepath = os.path.join(dest, test_name)
-        # pylint: disable-next=undefined-variable
         if __salt__["file.file_exists"](filepath):
             image_filename = test_name
             image_filepath = filepath
