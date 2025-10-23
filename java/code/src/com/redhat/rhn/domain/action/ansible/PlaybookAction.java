@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 SUSE LLC
+ * Copyright (c) 2021--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.redhat.rhn.domain.action.ansible;
 
@@ -36,14 +32,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.persistence.CascadeType;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToOne;
 import javax.servlet.http.HttpServletRequest;
 
 /**
  * PlaybookAction - Action class representing the execution of an Ansible playbook
  */
+@Entity
+@DiscriminatorValue("521")
 public class PlaybookAction extends Action {
     private static final String INVENTORY_PATH = "/etc/ansible/hosts";
 
+    @OneToOne(mappedBy = "parentAction", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private PlaybookActionDetails details;
 
     /**

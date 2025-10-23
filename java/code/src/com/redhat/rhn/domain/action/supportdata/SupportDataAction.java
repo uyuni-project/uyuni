@@ -53,12 +53,21 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.persistence.CascadeType;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToOne;
+
 /**
  * SupportDataAction - Class representing TYPE_SUPPORTDATA_GET
  */
+@Entity
+@DiscriminatorValue("526")
 public class SupportDataAction extends Action {
     private static final Logger LOG = LogManager.getLogger(SupportDataAction.class);
 
+    @OneToOne(mappedBy = "parentAction", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private SupportDataActionDetails details;
 
     public SupportDataActionDetails getDetails() {

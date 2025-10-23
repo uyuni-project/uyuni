@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.AppletUseSatelliteAction;
 import com.redhat.rhn.domain.action.CertificateUpdateAction;
+import com.redhat.rhn.domain.action.CoCoAttestationAction;
 import com.redhat.rhn.domain.action.HardwareRefreshAction;
 import com.redhat.rhn.domain.action.RebootAction;
 import com.redhat.rhn.domain.action.RollbackAction;
@@ -28,9 +29,14 @@ import com.redhat.rhn.domain.action.RollbackConfigAction;
 import com.redhat.rhn.domain.action.RollbackListTransactionsAction;
 import com.redhat.rhn.domain.action.Up2DateConfigGetAction;
 import com.redhat.rhn.domain.action.Up2DateConfigUpdateAction;
+import com.redhat.rhn.domain.action.VirtualInstanceRefreshAction;
+import com.redhat.rhn.domain.action.ansible.InventoryAction;
 import com.redhat.rhn.domain.action.ansible.InventoryActionDetails;
+import com.redhat.rhn.domain.action.ansible.PlaybookAction;
 import com.redhat.rhn.domain.action.ansible.PlaybookActionDetails;
+import com.redhat.rhn.domain.action.appstream.AppStreamAction;
 import com.redhat.rhn.domain.action.appstream.AppStreamActionDetails;
+import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsActionDetails;
 import com.redhat.rhn.domain.action.config.ActivationScheduleDeployAction;
 import com.redhat.rhn.domain.action.config.ActivationSchedulePackageDeployAction;
@@ -74,10 +80,13 @@ import com.redhat.rhn.domain.action.rhnpackage.PackageRemoveAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageRunTransactionAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageUpdateAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageVerifyAction;
+import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesActionDetails;
 import com.redhat.rhn.domain.action.salt.ApplyStatesActionResult;
+import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildActionDetails;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildActionResult;
+import com.redhat.rhn.domain.action.salt.inspect.ImageInspectAction;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionDetails;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionResult;
 import com.redhat.rhn.domain.action.scap.ScapAction;
@@ -87,6 +96,7 @@ import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptResult;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.action.supportdata.SupportDataAction;
 import com.redhat.rhn.domain.action.supportdata.SupportDataActionDetails;
 import com.redhat.rhn.domain.audit.XccdfBenchmark;
 import com.redhat.rhn.domain.audit.XccdfIdent;
@@ -376,10 +386,12 @@ public class AnnotationRegistry {
             AddressImpl.class,
             AnsiblePath.class,
             AppletUseSatelliteAction.class,
+            AppStreamAction.class,
             AppStreamActionDetails.class,
             AppStreamApi.class,
             AppStreamApiKey.class,
             AppStream.class,
+            ApplyStatesAction.class,
             ApplyStatesActionDetails.class,
             ApplyStatesActionResult.class,
             ArchType.class,
@@ -401,6 +413,7 @@ public class AnnotationRegistry {
             ClonedChannel.class,
             CloudRMTCredentials.class,
             CloudRmtHost.class,
+            CoCoAttestationAction.class,
             CoCoAttestationResult.class,
             CoCoEnvironmentTypeConverter.class,
             CoCoResultTypeConverter.class,
@@ -458,11 +471,13 @@ public class AnnotationRegistry {
             GroupRecurringAction.class,
             HardwareRefreshAction.class,
             HubSCCCredentials.class,
+            ImageBuildAction.class,
             ImageBuildActionDetails.class,
             ImageBuildActionResult.class,
             ImageFile.class,
             ImageInfo.class,
             ImageInfoCustomDataValue.class,
+            ImageInspectAction.class,
             ImageInspectActionDetails.class,
             ImageInspectActionResult.class,
             ImageInspectActionResult.ImageInspectActionResultId.class,
@@ -476,6 +491,7 @@ public class AnnotationRegistry {
             InstalledProduct.class,
             InternalState.class,
             InvalidSnapshotReason.class,
+            InventoryAction.class,
             InventoryActionDetails.class,
             InventoryPath.class,
             IssAccessToken.class,
@@ -573,6 +589,7 @@ public class AnnotationRegistry {
             PersonalInfo.class,
             Pillar.class,
             PinnedSubscription.class,
+            PlaybookAction.class,
             PlaybookActionDetails.class,
             PlaybookPath.class,
             PrivateChannelFamily.class,
@@ -654,7 +671,9 @@ public class AnnotationRegistry {
             State.class,
             StateChange.class,
             StateRevision.class,
+            SubscribeChannelsAction.class,
             SubscribeChannelsActionDetails.class,
+            SupportDataAction.class,
             SupportDataActionDetails.class,
             SUSEProduct.class,
             SUSEProductChannel.class,
@@ -685,6 +704,7 @@ public class AnnotationRegistry {
             VHMCredentials.class,
             VirtualHostManagerConfig.class,
             VirtualHostManagerNodeInfo.class,
+            VirtualInstanceRefreshAction.class,
             VirtualInstanceState.class,
             VirtualInstanceType.class,
             XccdfBenchmark.class,
