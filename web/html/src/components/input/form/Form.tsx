@@ -53,8 +53,8 @@ type FormContextType = {
   model: any;
   errors: any;
   setModelValue: (name: string, value: any) => any;
-  registerInput: Function;
-  unregisterInput: Function;
+  registerInput: (...args: any[]) => any;
+  unregisterInput: (...args: any[]) => any;
   validateForm: () => void;
 };
 

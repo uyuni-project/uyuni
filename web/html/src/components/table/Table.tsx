@@ -39,7 +39,7 @@ type TableProps = {
   initialSortDirection?: number;
 
   /** a function that return a css class for each row */
-  cssClassFunction?: Function;
+  cssClassFunction?: (...args: any[]) => any;
 
   /** Callback for search input, setting `onSearch` sets `searchField` to a simple search input if none is provided */
   onSearch?: (criteria: string) => void;

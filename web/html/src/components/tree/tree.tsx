@@ -18,7 +18,7 @@ export type TreeData = {
 
 export type Props = {
   data?: TreeData;
-  renderItem: (item: TreeItem, renderNameColumn: Function) => React.ReactNode;
+  renderItem: (item: TreeItem, renderNameColumn: (...args: any[]) => any) => React.ReactNode;
   header?: React.ReactNode;
   initiallyExpanded?: string[];
   onItemSelectionChanged?: (item: TreeItem, checked: boolean) => void;

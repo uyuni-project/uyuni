@@ -8,7 +8,7 @@ type Props = {
   environment: ProjectEnvironmentType;
   errors: any;
   environments: ProjectEnvironmentType[];
-  onChange: Function;
+  onChange: (...args: any[]) => any;
   editing?: boolean;
 };
 

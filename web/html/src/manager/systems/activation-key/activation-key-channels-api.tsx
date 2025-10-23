@@ -32,7 +32,7 @@ type ActivationKeyChannelsProps = {
   defaultBaseId: number;
   activationKeyId: number;
   currentSelectedBaseId: number;
-  onNewBaseChannel: Function;
+  onNewBaseChannel: (...args: any[]) => any;
   children: (arg0: ChildrenArgsProps) => JSX.Element;
 };
 

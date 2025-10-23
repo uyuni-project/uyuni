@@ -13,7 +13,7 @@ import { ProjectFilterServerType } from "../../../type";
 type FiltersProps = {
   projectId: string;
   initialSelectedFiltersIds: number[];
-  onChange: Function;
+  onChange: (...args: any[]) => any;
   isUpdatingFilter: boolean;
 };
 

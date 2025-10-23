@@ -19,7 +19,7 @@ import { SelectedRowDetails } from "./SelectedRowDetails";
 type ChildrenArgsProps = {
   currItems: any[];
   headers: React.ReactNode;
-  handleSelect: Function;
+  handleSelect: (...args: any[]) => any;
   selectedItems: any[];
   criteria?: string;
   field?: string;

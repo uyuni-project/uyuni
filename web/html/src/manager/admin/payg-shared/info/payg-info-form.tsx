@@ -7,7 +7,7 @@ import { Form, Text } from "components/input";
 type Props = {
   payg: paygProperties;
   errors: any;
-  onChange: Function;
+  onChange: (...args: any[]) => any;
   editing?: boolean;
 };
 const PaygInfoForm = (props: Props) => {
