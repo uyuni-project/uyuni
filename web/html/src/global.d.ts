@@ -43,6 +43,7 @@ declare global {
     }
   }
 
+  var bootstrap: any;
   var t: tType;
 
   var onDocumentReadyInitOldJS: (...args: any[]) => any;
