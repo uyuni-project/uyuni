@@ -99,15 +99,6 @@ export default defineConfig([
         },
       ],
       "no-duplicate-imports": "error",
-
-      // We use a `DEPRECATED_` prefix for old components that doesn't conform with this rule
-      "react/jsx-pascal-case": [
-        "error",
-        {
-          ignore: ["DEPRECATED_*"],
-        },
-      ],
-
       "no-restricted-imports": [
         "error",
         {
@@ -116,14 +107,18 @@ export default defineConfig([
               name: "node-gettext",
               message: "Please import from `core/intl/node-gettext` instead.",
             },
-            // TODO: List everything we want to limit once the implementation is done
-            // {
-            //   name: "formik",
-            //   importNames: ["Field", "Form"],
-            //   // TODO: Update message once we move the directory to where it should be
-            //   message: "Please import from `components/formik` instead.",
-            // },
+            {
+              name: "formik",
+              importNames: ["Field", "Form"],
+              message: "Please import from `components/formik` instead.",
+            },
           ],
+        },
+      ],
+      "react/jsx-pascal-case": [
+        "error",
+        {
+          ignore: ["DEPRECATED_*"],
         },
       ],
     },
