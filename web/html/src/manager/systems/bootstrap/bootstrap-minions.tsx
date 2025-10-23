@@ -104,7 +104,7 @@ class ErrorDetailsDialog extends React.Component<ErrorDetailsDialogProps> {
       <Dialog
         id="show-error-details"
         // TODO: If you touch this file, please resolve this linter error
-        // eslint-disable-next-line eqeqeq
+        // eslint-disable-next-line eqeqeq, no-eq-null
         isOpen={this.props.error != null}
         title={title}
         className="modal-xs"

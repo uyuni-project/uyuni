@@ -96,7 +96,7 @@ export function AllSystems(props: Props) {
           header={t("Updates")}
           cell={(item) => {
             // TODO: If you touch this file, please resolve this linter error
-            // eslint-disable-next-line eqeqeq
+            // eslint-disable-next-line eqeqeq, no-eq-null
             if (item.statusType == null) {
               return "";
             }
@@ -171,7 +171,7 @@ export function AllSystems(props: Props) {
           header={t("Base Channel")}
           cell={(item) => {
             // TODO: If you touch this file, please resolve this linter error
-            // eslint-disable-next-line eqeqeq
+            // eslint-disable-next-line eqeqeq, no-eq-null
             if (item.channelId != null) {
               return <a href={`/rhn/channels/ChannelDetail.do?cid=${item.channelId}`}>{item.channelLabels}</a>;
             }

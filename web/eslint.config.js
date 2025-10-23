@@ -72,11 +72,9 @@ export default defineConfig([
       "@typescript-eslint/no-redundant-type-constituents": "off",
       "@typescript-eslint/no-inferrable-types": "off",
       "@typescript-eslint/consistent-generic-constructors": "off",
-      // TODO: Eventually this should be "error"
-      "local-rules/no-raw-date": "warn",
+      "local-rules/no-raw-date": "error",
       "local-rules/intl-apostrophe-curly": "error",
-      // TODO: Eventually we should enforce this as well
-      // "no-eq-null": "error",
+      "no-eq-null": "error",
       // TODO: This needs to be reworked with Typescript support in mind
       "no-use-before-define": "off",
       // See https://reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html#eslint
