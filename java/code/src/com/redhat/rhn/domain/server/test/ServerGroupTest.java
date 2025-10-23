@@ -59,10 +59,12 @@ public class ServerGroupTest extends RhnBaseTestCase {
         assertNotEquals("foo", sg1);
 
         Session session = HibernateFactory.getSession();
-        sg2 = (ServerGroup) session.getNamedQuery("ServerGroup.lookupByIdAndOrg")
-                                            .setParameter("id", sg1.getId())
-                                            .setParameter("org", user.getOrg())
-                                            .uniqueResult();
+        sg2 = session.createQuery(
+                        "FROM ServerGroup AS s WHERE s.id = :id AND s.org = :org AND (s.groupType IS NULL)",
+                        ServerGroup.class)
+                .setParameter("id", sg1.getId())
+                .setParameter("org", user.getOrg())
+                .uniqueResult();
 
         assertEquals(sg1, sg2);
     }
