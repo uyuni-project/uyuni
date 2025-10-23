@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.domain.user.legacy.UserImpl;
 
 import com.suse.manager.model.attestation.ServerCoCoAttestationReport;
 import com.suse.manager.utils.SaltUtils;
@@ -117,7 +118,7 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
     @OneToMany(mappedBy = "action", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<ServerCoCoAttestationReport> cocoAttestationReports;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = UserImpl.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "scheduler")
     private User schedulerUser;
 

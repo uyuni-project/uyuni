@@ -41,10 +41,12 @@ import com.redhat.rhn.domain.action.channel.SubscribeChannelsActionDetails;
 import com.redhat.rhn.domain.action.config.ActivationScheduleDeployAction;
 import com.redhat.rhn.domain.action.config.ActivationSchedulePackageDeployAction;
 import com.redhat.rhn.domain.action.config.ConfigAction;
+import com.redhat.rhn.domain.action.config.ConfigChannelAssociation;
 import com.redhat.rhn.domain.action.config.ConfigDateDetails;
 import com.redhat.rhn.domain.action.config.ConfigDateFileAction;
 import com.redhat.rhn.domain.action.config.ConfigDeployAction;
 import com.redhat.rhn.domain.action.config.ConfigDiffAction;
+import com.redhat.rhn.domain.action.config.ConfigFileNameAssociation;
 import com.redhat.rhn.domain.action.config.ConfigRevisionAction;
 import com.redhat.rhn.domain.action.config.ConfigRevisionActionResult;
 import com.redhat.rhn.domain.action.config.ConfigUploadAction;
@@ -419,6 +421,7 @@ public class AnnotationRegistry {
             CoCoResultTypeConverter.class,
             ConfigAction.class,
             ConfigChannel.class,
+            ConfigChannelAssociation.class,
             ConfigChannelType.class,
             ConfigContent.class,
             ConfigDateDetails.class,
@@ -427,6 +430,7 @@ public class AnnotationRegistry {
             ConfigDiffAction.class,
             ConfigFile.class,
             ConfigFileName.class,
+            ConfigFileNameAssociation.class,
             ConfigFileState.class,
             ConfigFileType.class,
             ConfigInfo.class,
