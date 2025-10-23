@@ -31,19 +31,54 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 /**
  * Server - Class representation of the table rhnServer.
  *
  */
+@Entity
+@Table(name = "rhnServerGroup")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "group_type")
 public class ServerGroup extends BaseDomainHelper implements SaltConfigurable  {
 
     public static final long UNLIMITED = Long.MAX_VALUE;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "server_group_seq")
+    @SequenceGenerator(name = "server_group_seq", sequenceName = "rhn_server_group_id_seq", allocationSize = 1)
     private Long id;
+
+    @Column
     private String name;
+
+    @Column
     private String description;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "group_type", updatable = false, insertable = false)
     private ServerGroupType groupType;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "org_id")
     private Org org;
+
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<Pillar> pillars = new HashSet<>();
 
     /**
@@ -59,7 +94,7 @@ public class ServerGroup extends BaseDomainHelper implements SaltConfigurable  {
      * Setter for id
      * @param idIn to set
      */
-    public void setId(Long idIn) {
+    protected void setId(Long idIn) {
         this.id = idIn;
     }
 
