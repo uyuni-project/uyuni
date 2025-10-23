@@ -57,8 +57,6 @@ import javax.persistence.Table;
 @DiscriminatorColumn(name = "group_type")
 public class ServerGroup extends BaseDomainHelper implements SaltConfigurable  {
 
-    public static final long UNLIMITED = Long.MAX_VALUE;
-
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "server_group_seq")
     @SequenceGenerator(name = "server_group_seq", sequenceName = "rhn_server_group_id_seq", allocationSize = 1)
