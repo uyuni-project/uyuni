@@ -62,8 +62,8 @@ The `web` subdirectory consists of roughly the following main chunks:
 To add a new dependency:
 
 ```sh
-npm install <depency_name> # For run-time or build-time dependencies
-npm install --save-dev <depency_name> # For development-only dependencies
+npm --prefix web install <depency_name> # For run-time or build-time dependencies
+npm --prefix web install --save-dev <depency_name> # For development-only dependencies
 ```
 
 After adding or removing a dependency, run `npm run build` to update any relevant license files.
