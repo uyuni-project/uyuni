@@ -62,12 +62,11 @@ export default defineConfig([
       "local-rules/intl-apostrophe-curly": "error",
       "no-eq-null": "error",
 
-      // Too much legacy code holds empty references and such, we can't enable these rules yet, but aim for it in the future
+      // Too much legacy code relies on these, we can't enable these rules yet, but aim for it in the future
       "@typescript-eslint/no-explicit-any": "off",
       "no-async-promise-executor": "off",
 
       // Align with existing code style
-
       "@typescript-eslint/prefer-for-of": "off",
       "@typescript-eslint/consistent-type-definitions": "off",
       "@typescript-eslint/no-redundant-type-constituents": "off",
