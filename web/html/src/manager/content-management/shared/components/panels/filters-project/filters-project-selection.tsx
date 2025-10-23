@@ -21,7 +21,7 @@ const FiltersProjectSelection = (props: FiltersProps) => {
   const { onAction: onActionAllFilters, isLoading: isLoadingAllFilters } = useLifecycleActionsApi({
     resource: "filters",
   });
-  const [allFilters, setAllFilters]: [ProjectFilterServerType[], Function] = useState([]);
+  const [allFilters, setAllFilters]: [ProjectFilterServerType[], (...args: any[]) => any] = useState([]);
   const [onGoingSelectedFilters, setOnGoingSelectedFilters] = useState(props.initialSelectedFiltersIds);
 
   useEffect(() => {
