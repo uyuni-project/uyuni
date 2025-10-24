@@ -53,10 +53,10 @@ def dns_fqdns():
     cmd_run_all_func = __salt__["cmd.run_all"]
     if _which("host"):
         cmd = "host"
-        cmd_ret_regex = re.compile(r".* domain name pointer (.*)\.$")
+        cmd_ret_regex = re.compile(r" domain name pointer (.*)\.$")
     elif _which("nslookup"):
         cmd = "nslookup"
-        cmd_ret_regex = re.compile(r".*\tname = (.*)\.$")
+        cmd_ret_regex = re.compile(r"\tname = (.*)\.$")
     else:
         log.error("Neither 'host' nor 'nslookup' is available on the system")
         return {"dns_fqdns": []}
@@ -72,7 +72,7 @@ def dns_fqdns():
             return []
         fqdns = []
         for line in ret["stdout"].split("\n"):
-            match = cmd_ret_regex.match(line)
+            match = cmd_ret_regex.search(line)
             if match:
                 fqdns.append(match.group(1))
         return fqdns

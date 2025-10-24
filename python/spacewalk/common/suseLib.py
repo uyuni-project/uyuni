@@ -600,9 +600,8 @@ def _parse_curl_proxy_credentials(text):
 
     """
     try:
-        # pylint: disable=W1401
         user_pass = re.search(
-            '^[\s-]+proxy-user\s*=?\s*"([^:]+:.+)"\s*$', text, re.M
+            r'^[\s-]+proxy-user(?:\s+|=)"([^:]+:[^\n]+)"\s*$', text, re.M
         ).group(1)
     except AttributeError:
         return (None, None)
@@ -612,8 +611,7 @@ def _parse_curl_proxy_credentials(text):
 
 def _parse_curl_proxy_url(text):
     try:
-        # pylint: disable=W1401
-        return re.search('^[\s-]+proxy\s*=?\s*"(.+)"\s*$', text, re.M).group(1)
+        return re.search(r'^[\s-]+proxy(?:\s+|=)"([^\n]+)"\s*$', text, re.M).group(1)
     except AttributeError:
         return None
 
