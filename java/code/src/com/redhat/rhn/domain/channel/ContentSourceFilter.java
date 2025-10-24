@@ -16,14 +16,36 @@ package com.redhat.rhn.domain.channel;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 /**
  * ContentSourceFilter
  */
+@Entity
+@Table(name = "rhnContentSourceFilter")
 public class ContentSourceFilter extends BaseDomainHelper {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "csf_seq")
+    @SequenceGenerator(name = "csf_seq", sequenceName = "rhn_csf_id_seq", allocationSize = 1)
     private Long id;
+
+    @Column(name = "source_id")
     private Long sourceId;
+
+    @Column
     private String flag;
+
+    @Column
     private String filter;
+
+    @Column(name = "sort_order")
     private int sortOrder;
 
     /**
@@ -36,7 +58,7 @@ public class ContentSourceFilter extends BaseDomainHelper {
     /**
      * @param idIn The id to set.
      */
-    public void setId(Long idIn) {
+    protected void setId(Long idIn) {
         this.id = idIn;
     }
 

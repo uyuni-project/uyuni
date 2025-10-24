@@ -15,19 +15,45 @@
 package com.redhat.rhn.domain.server;
 
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.domain.user.legacy.UserImpl;
 
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
 /**
  * ServerLock - Class representation of the table rhnServerLock.
  */
+@Entity
+@Table(name = "rhnServerLock")
 public class ServerLock implements Serializable {
 
+    @Id
+    @Column(name = "server_id")
     private Long id;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "server_id")
+    @MapsId
     private Server server;
+
+    @ManyToOne(targetEntity = UserImpl.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "locker_id", nullable = false)
     private User locker;
+
+    @Column
     private String reason;
+
+    @Column(nullable = false, updatable = false, insertable = false)
     private Date created;
 
     /** Default constructor */
@@ -56,7 +82,7 @@ public class ServerLock implements Serializable {
     /**
      * @param idIn The id to set.
      */
-    public void setId(Long idIn) {
+    protected void setId(Long idIn) {
         this.id = idIn;
     }
 

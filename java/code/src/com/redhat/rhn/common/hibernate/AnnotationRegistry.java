@@ -63,12 +63,17 @@ import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelProduct;
 import com.redhat.rhn.domain.channel.ChannelSyncFlag;
 import com.redhat.rhn.domain.channel.ClonedChannel;
+import com.redhat.rhn.domain.channel.Comps;
+import com.redhat.rhn.domain.channel.ContentSourceFilter;
 import com.redhat.rhn.domain.channel.ContentSourceType;
 import com.redhat.rhn.domain.channel.DistChannelMap;
+import com.redhat.rhn.domain.channel.MediaProducts;
+import com.redhat.rhn.domain.channel.Modules;
 import com.redhat.rhn.domain.channel.PrivateChannelFamily;
 import com.redhat.rhn.domain.channel.ProductName;
 import com.redhat.rhn.domain.channel.PublicChannelFamily;
 import com.redhat.rhn.domain.channel.ReleaseChannelMap;
+import com.redhat.rhn.domain.channel.RepoMetadata;
 import com.redhat.rhn.domain.cloudpayg.CloudRmtHost;
 import com.redhat.rhn.domain.cloudpayg.PaygCredentialsProduct;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
@@ -146,6 +151,7 @@ import com.redhat.rhn.domain.kickstart.KickstartVirtualizationType;
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.domain.kickstart.crypto.CryptoKey;
 import com.redhat.rhn.domain.kickstart.crypto.CryptoKeyType;
+import com.redhat.rhn.domain.kickstart.crypto.GpgCryptoKey;
 import com.redhat.rhn.domain.kickstart.crypto.SslCryptoKey;
 import com.redhat.rhn.domain.matcher.MatcherRunData;
 import com.redhat.rhn.domain.notification.NotificationMessage;
@@ -245,6 +251,8 @@ import com.redhat.rhn.domain.server.ServerFQDN;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupType;
 import com.redhat.rhn.domain.server.ServerHistoryEvent;
+import com.redhat.rhn.domain.server.ServerInfo;
+import com.redhat.rhn.domain.server.ServerLock;
 import com.redhat.rhn.domain.server.ServerNetAddress4;
 import com.redhat.rhn.domain.server.ServerNetAddress6;
 import com.redhat.rhn.domain.server.ServerPath;
@@ -259,6 +267,7 @@ import com.redhat.rhn.domain.server.VirtualInstanceType;
 import com.redhat.rhn.domain.server.ansible.AnsiblePath;
 import com.redhat.rhn.domain.server.ansible.InventoryPath;
 import com.redhat.rhn.domain.server.ansible.PlaybookPath;
+import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerConfig;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerNodeInfo;
 import com.redhat.rhn.domain.session.WebSessionImpl;
@@ -358,6 +367,7 @@ public class AnnotationRegistry {
             CoCoAttestationResult.class,
             CoCoEnvironmentTypeConverter.class,
             CoCoResultTypeConverter.class,
+            Comps.class,
             ConfigChannel.class,
             ConfigChannelType.class,
             ConfigContent.class,
@@ -376,6 +386,7 @@ public class AnnotationRegistry {
             ContentProject.class,
             ContentProjectFilter.class,
             ContentProjectHistoryEntry.class,
+            ContentSourceFilter.class,
             ContentSourceType.class,
             CryptoKey.class,
             CryptoKeyType.class,
@@ -400,6 +411,7 @@ public class AnnotationRegistry {
             Feature.class,
             FileList.class,
             GroupRecurringAction.class,
+            GpgCryptoKey.class,
             HubSCCCredentials.class,
             ImageBuildActionDetails.class,
             ImageBuildActionResult.class,
@@ -450,10 +462,12 @@ public class AnnotationRegistry {
             MaintenanceSchedule.class,
             ManagedServerGroup.class,
             MatcherRunData.class,
+            MediaProducts.class,
             MinionRecurringAction.class,
             MinionServer.class,
             MinionServerFactory.class,
             MinionSummary.class,
+            Modules.class,
             ModuleFilter.class,
             Namespace.class,
             NetworkInterface.class,
@@ -517,6 +531,7 @@ public class AnnotationRegistry {
             PushClientState.class,
             Ram.class,
             ReleaseChannelMap.class,
+            RepoMetadata.class,
             RhnConfiguration.class,
             RecurringConfigChannel.class,
             RecurringHighstate.class,
@@ -556,6 +571,8 @@ public class AnnotationRegistry {
             ServerGroupStateRevision.class,
             ServerGroupType.class,
             ServerHistoryEvent.class,
+            ServerInfo.class,
+            ServerLock.class,
             ServerNetAddress4.class,
             ServerNetAddress6.class,
             ServerPath.class,
@@ -601,6 +618,7 @@ public class AnnotationRegistry {
             UserNotification.class,
             UserServerPreference.class,
             VHMCredentials.class,
+            VirtualHostManager.class,
             VirtualHostManagerConfig.class,
             VirtualHostManagerNodeInfo.class,
             VirtualInstanceState.class,
