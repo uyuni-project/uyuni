@@ -41,6 +41,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.annotations.DiscriminatorOptions;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
@@ -80,6 +81,7 @@ import javax.servlet.http.HttpServletRequest;
 @Table(name = "rhnAction")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "action_type", discriminatorType = DiscriminatorType.INTEGER)
+@DiscriminatorOptions(insert = false)
 @DiscriminatorValue("-1")
 public class Action extends BaseDomainHelper implements Serializable, WebSocketActionIdProvider {
     protected static final Logger LOG = LogManager.getLogger(Action.class);
@@ -116,8 +118,8 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
     @JoinColumn(name = "prerequisite")
     private Action prerequisite;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "action_type", insertable = false, updatable = false)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "action_type")
     private ActionType actionType;
 
     @OneToMany(mappedBy = "parentAction", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
