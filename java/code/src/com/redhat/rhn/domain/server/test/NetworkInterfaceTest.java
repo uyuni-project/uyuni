@@ -53,10 +53,11 @@ public class NetworkInterfaceTest extends RhnBaseTestCase {
         assertNotEquals(netint1, new Date());
 
         Session session = HibernateFactory.getSession();
-        netint2 = (NetworkInterface) session.getNamedQuery("NetworkInterface.lookup")
-                                            .setParameter("server", netint1.getServer())
-                                            .setParameter("name", netint1.getName())
-                                            .uniqueResult();
+        netint2 = session.createQuery("FROM NetworkInterface AS n WHERE n.server = :server AND n.name = :name",
+                        NetworkInterface.class)
+                .setParameter("server", netint1.getServer())
+                .setParameter("name", netint1.getName())
+                .uniqueResult();
 
         assertEquals(netint1, netint2);
     }
