@@ -79,15 +79,23 @@ public class ConfigChannelAssociation implements Serializable {
     @Column(name = "modified", nullable = false)
     private Date modified = new Date();
 
-    //replace @CreationTimestamp on created which does not work on composite keys
-    // https://discourse.hibernate.org/t/java-exception-when-using-creationtimestamp-or-updatetimestamp-annotation-in-embeddable/699/10
+    // replace @CreationTimestamp on created which does not work on composite keys
+    // https://discourse.hibernate.org/t/
+    // java-exception-when-using-creationtimestamp-or-updatetimestamp-annotation-in-embeddable/699/10
+    /**
+     * replace @CreationTimestamp
+     */
     @PrePersist
     public void prePersist() {
         created = new Date();
     }
 
     // replace @UpdateTimestamp on modified which does not work in composite keys
-    // https://discourse.hibernate.org/t/java-exception-when-using-creationtimestamp-or-updatetimestamp-annotation-in-embeddable/699/10
+    // https://discourse.hibernate.org/t/
+    // java-exception-when-using-creationtimestamp-or-updatetimestamp-annotation-in-embeddable/699/10
+    /**
+     * replace @UpdateTimestamp
+     */
     @PreUpdate
     public void preUpdate() {
         modified = new Date();
