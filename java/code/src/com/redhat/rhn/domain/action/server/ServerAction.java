@@ -38,7 +38,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
@@ -49,7 +48,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "rhnServerAction")
-@IdClass(ServerActionId.class)
 public class ServerAction extends BaseDomainHelper implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -60,7 +58,7 @@ public class ServerAction extends BaseDomainHelper implements Serializable {
     private Long serverId;
 
     @Id
-    @ManyToOne(targetEntity = Action.class, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.DETACH})
+    @ManyToOne(targetEntity = Action.class, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "action_id")
     private Action parentAction;
 
