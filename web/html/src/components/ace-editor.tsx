@@ -6,28 +6,30 @@ type Props = {
   minLines: number;
   maxLines: number;
   readOnly: boolean;
-  onChange?: (...args: any[]) => any;
+  onChange?: (value: string) => void;
   className: string;
   id: string;
   content: React.ReactNode;
 };
 
 class AceEditor extends React.Component<Props> {
+  editor: any = null;
+
   componentDidMount() {
-    const component = this;
-
-    const node = ReactDOM.findDOMNode(component.refs.editor);
+    const node = ReactDOM.findDOMNode(this.refs.editor) as HTMLElement;
     try {
-      const editor = ace.edit(node);
-      editor.setTheme("ace/theme/xcode");
-      editor.getSession().setMode("ace/mode/" + component.props.mode);
-      editor.setShowPrintMargin(false);
-      editor.setOptions({ minLines: component.props.minLines });
-      editor.setOptions({ maxLines: component.props.maxLines });
-      editor.setReadOnly(component.props.readOnly);
+      this.editor = ace.edit(node);
+      this.editor.setTheme("ace/theme/xcode");
+      this.editor.getSession().setMode("ace/mode/" + this.props.mode);
+      this.editor.setShowPrintMargin(false);
+      this.editor.setOptions({ minLines: this.props.minLines });
+      this.editor.setOptions({ maxLines: this.props.maxLines });
+      this.editor.setReadOnly(this.props.readOnly);
 
-      editor.getSession().on("change", function () {
-        component.props.onChange?.(editor.getSession().getValue());
+      this.editor.setValue(this.props.content || "", 1);
+
+      this.editor.getSession().on("change", () => {
+        this.props.onChange?.(this.editor.getValue());
       });
     } catch (error) {
       Loggerhead.error(
@@ -37,12 +39,14 @@ class AceEditor extends React.Component<Props> {
     }
   }
 
+  componentDidUpdate(prevProps: Props) {
+    if (prevProps.content !== this.props.content && this.editor) {
+      this.editor.setValue(this.props.content || "", 1);
+    }
+  }
+
   render() {
-    return (
-      <div ref="editor" className={this.props.className} id={this.props.id}>
-        {this.props.content}
-      </div>
-    );
+    return <div ref="editor" className={this.props.className} id={this.props.id} />;
   }
 }
 

@@ -40,7 +40,7 @@
 
 .modal-body {
   height: auto;
-  overflow-y: auto;
+  overflow-y: auto !important;
   padding: 15px;
   
   &,
