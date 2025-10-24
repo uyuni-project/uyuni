@@ -61,8 +61,9 @@ import java.util.stream.Collectors;
 import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.MapKey;
+import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
 import javax.servlet.http.HttpServletRequest;
 
@@ -76,8 +77,8 @@ public class DistUpgradeAction extends Action {
 
     private static final long serialVersionUID = -702781375842108784L;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @MapKey(name = "server")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @MapKeyColumn(name = "server_id")
     @JoinColumn(name = "action_id", nullable = false)
     private Map<Long, DistUpgradeActionDetails> detailsMap;
 

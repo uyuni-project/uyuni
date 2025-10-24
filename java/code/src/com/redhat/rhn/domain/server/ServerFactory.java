@@ -28,6 +28,7 @@ import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.util.RpmVersionComparator;
 import com.redhat.rhn.common.validator.ValidatorError;
+import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.config.ConfigChannel;
@@ -1630,6 +1631,7 @@ public class ServerFactory extends HibernateFactory {
                         AND sa.status IN (0, 1)
                     """, ServerAction.class
                 )
+                .addSynchronizedEntityClass(Action.class)
                 .setParameterList("systemIds", systemIds, StandardBasicTypes.LONG)
                 .getResultList().stream().map(ServerAction::getServerId).collect(Collectors.toSet());
     }

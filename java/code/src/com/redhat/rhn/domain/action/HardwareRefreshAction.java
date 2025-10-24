@@ -53,7 +53,7 @@ import javax.persistence.Entity;
  * HardwareRefreshAction
  */
 @Entity
-@DiscriminatorValue("12")
+@DiscriminatorValue("2")
 public class HardwareRefreshAction extends Action {
     private static final Logger LOG = LogManager.getLogger(HardwareRefreshAction.class);
 

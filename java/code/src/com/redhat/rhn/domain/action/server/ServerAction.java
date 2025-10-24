@@ -59,6 +59,11 @@ public class ServerAction extends BaseDomainHelper implements Serializable {
     @Column(name = "server_id")
     private Long serverId;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "server_id")
+    @MapsId
+    private Server server;
+
     @Id
     @ManyToOne(targetEntity = Action.class, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.DETACH})
     @JoinColumn(name = "action_id")
@@ -84,9 +89,6 @@ public class ServerAction extends BaseDomainHelper implements Serializable {
     @JoinColumn(name = "status")
     private ActionStatus status;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId
-    private Server server;
 
 
     private static MaintenanceManager maintenanceManager = new MaintenanceManager();
