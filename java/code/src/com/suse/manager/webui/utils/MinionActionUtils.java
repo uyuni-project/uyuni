@@ -30,13 +30,12 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.context.Context;
 
 import com.suse.manager.utils.SaltUtils;
-import com.suse.manager.webui.services.FutureUtils;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.calls.modules.SaltUtil;
 import com.suse.salt.netapi.calls.runner.Jobs.Info;
 import com.suse.salt.netapi.datatypes.target.MinionList;
-import com.suse.salt.netapi.errors.GenericError;
+import com.suse.salt.netapi.results.Result;
 import com.suse.utils.Json;
 
 import com.google.gson.JsonElement;
@@ -65,7 +64,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TimeZone;
-import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -251,26 +249,20 @@ public class MinionActionUtils {
                 }
             ).toList();
 
-        List<String> minionIds = serverActions.stream()
-                .flatMap(sa -> sa.getServer().asMinionServer().map(MinionServer::getMinionId).stream())
-                .distinct()
-                .collect(Collectors.toList());
+        List<String> minionIds = serverActions.stream().flatMap(sa ->
+                sa.getServer().asMinionServer()
+                        .map(MinionServer::getMinionId).stream()
+        ).collect(Collectors.toList());
 
-        CompletableFuture<GenericError> failAfter = FutureUtils.failAfter(600);
-        var running = saltApi.running(new MinionList(minionIds), failAfter).entrySet().stream()
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        e -> e.getValue().toCompletableFuture().join()));
+        Map<String, Result<List<SaltUtil.RunningInfo>>> running =
+                saltApi.running(new MinionList(minionIds));
 
         serverActions.forEach(serverAction ->
-                serverAction.getServer().asMinionServer()
-                        .map(minion -> running.get(minion.getMinionId()))
-                        .ifPresentOrElse(
-                                r -> r.consume(
-                                        error -> LOG.error(error.toString()),
-                                        runningInfos -> ActionFactory.save(
-                                                updateMinionActionStatus(serverAction, runningInfos))),
-                                () -> ActionFactory.save(updateMinionActionStatus(serverAction, List.of())))
+            serverAction.getServer().asMinionServer().map(minion -> running.get(minion.getMinionId()))
+              .ifPresent(r -> {
+                  r.consume(error -> LOG.error(error.toString()),
+                  runningInfos -> ActionFactory.save(updateMinionActionStatus(serverAction, runningInfos)));
+              })
         );
     }
 
