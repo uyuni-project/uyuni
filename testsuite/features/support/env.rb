@@ -602,9 +602,8 @@ Before('@transactional_minion') do |scenario|
   skip_this_scenario unless (scenario.location.file.include? 'slemicro') || (scenario.location.file.include? 'slmicro')
 end
 
-Before('@skip_for_debianlike') do |scenario|
-  filename = scenario.location.file
-  skip_this_scenario if (filename.include? 'ubuntu') || (filename.include? 'debian')
+Before('@skip_for_debian') do |scenario|
+  skip_this_scenario if scenario.location.file.include? 'debian'
 end
 
 Before('@skip_for_rocky9') do |scenario|
