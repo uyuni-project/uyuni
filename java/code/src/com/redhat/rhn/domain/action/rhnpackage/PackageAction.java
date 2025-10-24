@@ -52,7 +52,7 @@ public class PackageAction extends Action {
     @Serial
     private static final long serialVersionUID = -6964115307447205711L;
 
-    @OneToMany(mappedBy = "parentAction", fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST})
+    @OneToMany(mappedBy = "parentAction", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<PackageActionDetails> details = new HashSet<>();
 
     protected PackageAction() {

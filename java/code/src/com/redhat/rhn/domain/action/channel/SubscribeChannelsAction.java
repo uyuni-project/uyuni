@@ -40,6 +40,7 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToOne;
+import javax.persistence.Transient;
 
 /**
  * SubscribeChannelsAction - Class representing a channel(s) subscription action
@@ -48,6 +49,7 @@ import javax.persistence.OneToOne;
 @DiscriminatorValue("506")
 public class SubscribeChannelsAction extends Action {
 
+    @Transient
     private SaltApi saltApi = null;
 
     @OneToOne(mappedBy = "parentAction", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
