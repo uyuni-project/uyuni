@@ -102,15 +102,16 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
         formData.set("module_context", "");
       }
       request = Network.post(
-        { url: "/rhn/manager/api/vhms/update/kubernetes", processData: false },
-        formData,
-        "multipart/form-data"
+        { url: "/rhn/manager/api/vhms/update/kubernetes", contentType: "multipart/form-data", processData: false },
+        formData
       );
     } else {
       request = Network.post(
-        "/rhn/manager/api/vhms/update/" + this.state.model.id,
-        jQuery(this.form).serialize(),
-        "application/x-www-form-urlencoded"
+        {
+          url: "/rhn/manager/api/vhms/update/" + this.state.model.id,
+          contentType: "application/x-www-form-urlencoded",
+        },
+        jQuery(this.form).serialize()
       );
     }
 
@@ -133,15 +134,13 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
         formData.set("module_context", "");
       }
       request = Network.post(
-        { url: "/rhn/manager/api/vhms/create/kubernetes", processData: false },
-        formData,
-        "multipart/form-data"
+        { url: "/rhn/manager/api/vhms/create/kubernetes", contentType: "multipart/form-data", processData: false },
+        formData
       );
     } else {
       request = Network.post(
-        "/rhn/manager/api/vhms/create",
-        jQuery(this.form).serialize(),
-        "application/x-www-form-urlencoded"
+        { url: "/rhn/manager/api/vhms/create", contentType: "application/x-www-form-urlencoded" },
+        jQuery(this.form).serialize()
       );
     }
 
@@ -280,9 +279,8 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
     const formData = new FormData();
     formData.append("kubeconfig", kubeconfig);
     Network.post(
-      { url: "/rhn/manager/api/vhms/kubeconfig/validate", processData: false },
-      formData,
-      "multipart/form-data"
+      { url: "/rhn/manager/api/vhms/kubeconfig/validate", contentType: "multipart/form-data", processData: false },
+      formData
     )
       .then((res) => {
         const data = res.data;
