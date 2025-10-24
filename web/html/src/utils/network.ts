@@ -9,6 +9,25 @@ declare global {
   var csrfToken: string;
 }
 
+type RequestOptions = {
+  /** Request url */
+  url: string;
+
+  /** Whether the data should be JSON stringified, default true */
+  processData?: boolean;
+
+  /** Default "application/json" */
+  contentType?: string;
+
+  /** Get notified of request progress, see https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequestEventTarget/progress_event */
+  onProgress?: (
+    /** Request progress, 0 to 1 */
+    progress: number
+  ) => void;
+};
+
+type UrlOrOptions = string | RequestOptions;
+
 export type JsonResult<T> = {
   success: boolean;
   messages: string[];
@@ -30,13 +49,18 @@ type CommonMimeTypes = "application/json" | "application/xml" | "application/x-w
 type DataType<T> = T & (T extends CommonMimeTypes ? never : T);
 
 function request<Returns>(
-  url: string,
+  urlOrOptions: UrlOrOptions,
   type: "GET" | "POST" | "DELETE" | "PUT",
   headers: Record<string, string> | undefined,
-  data: any,
-  contentType: string,
-  processData = true
+  data: any
 ): Cancelable<Returns> {
+  const {
+    url,
+    onProgress,
+    processData = true,
+    contentType = "application/json",
+  } = typeof urlOrOptions === "string" ? { url: urlOrOptions } : urlOrOptions;
+
   const isRegularObject = typeof data === "object" && !(data instanceof FormData);
   const isNumber = typeof data === "number";
   if ((isRegularObject || isNumber) && processData === true) {
@@ -51,6 +75,19 @@ function request<Returns>(
     // Setting the contentType to false lets the browser define the header with the boundary.
     contentType: contentType === "multipart/form-data" ? false : `${contentType}; charset=UTF-8`,
     processData: processData,
+    // Notify parent of request progress, if a listener was provided
+    xhr: () => {
+      const request = new XMLHttpRequest();
+      if (onProgress) {
+        // See https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequestEventTarget/progress_event
+        request.addEventListener("progress", (event) => {
+          if (event.lengthComputable) {
+            onProgress?.(event.loaded / event.total);
+          }
+        });
+      }
+      return request;
+    },
     beforeSend: (xhr) => {
       if (headers !== undefined) {
         Object.keys(headers).forEach((header) => {
@@ -62,35 +99,20 @@ function request<Returns>(
   return Utils.cancelable(Promise.resolve(a), () => a.abort());
 }
 
-function post<Returns = any, Payload = any>(
-  url: string,
-  data?: DataType<Payload>,
-  contentType = "application/json",
-  processData = true
-): Cancelable<Returns> {
-  return request<Returns>(url, "POST", { "X-CSRF-Token": csrfToken }, data, contentType, processData);
+function post<Returns = any, Payload = any>(urlOrOptions: UrlOrOptions, data?: DataType<Payload>): Cancelable<Returns> {
+  return request<Returns>(urlOrOptions, "POST", { "X-CSRF-Token": csrfToken }, data);
 }
 
-function del<Returns = any, Payload = any>(
-  url: string,
-  data?: DataType<Payload>,
-  contentType = "application/json",
-  processData = true
-): Cancelable<Returns> {
-  return request<Returns>(url, "DELETE", { "X-CSRF-Token": csrfToken }, data, contentType, processData);
+function del<Returns = any, Payload = any>(urlOrOptions: UrlOrOptions, data?: DataType<Payload>): Cancelable<Returns> {
+  return request<Returns>(urlOrOptions, "DELETE", { "X-CSRF-Token": csrfToken }, data);
 }
 
-function put<Returns = any, Payload = any>(
-  url: string,
-  data?: DataType<Payload>,
-  contentType = "application/json",
-  processData = true
-): Cancelable<Returns> {
-  return request<Returns>(url, "PUT", { "X-CSRF-Token": csrfToken }, data, contentType, processData);
+function put<Returns = any, Payload = any>(urlOrOptions: UrlOrOptions, data?: DataType<Payload>): Cancelable<Returns> {
+  return request<Returns>(urlOrOptions, "PUT", { "X-CSRF-Token": csrfToken }, data);
 }
 
-function get<Returns = any>(url: string, contentType = "application/json"): Cancelable<Returns> {
-  return request<Returns>(url, "GET", undefined, undefined, contentType);
+function get<Returns = any>(urlOrOptions: UrlOrOptions): Cancelable<Returns> {
+  return request<Returns>(urlOrOptions, "GET", undefined, undefined);
 }
 
 function errorMessageByStatus(status: number): string[] {
