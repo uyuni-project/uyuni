@@ -28,12 +28,13 @@ import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.suse.oval.OVALCachingFactory;
 import com.suse.oval.OVALCleaner;
 import com.suse.oval.OsFamily;
-import com.suse.oval.OvalParser;
 import com.suse.oval.ShallowSystemPackage;
 import com.suse.oval.config.OVALConfigLoader;
 import com.suse.oval.ovaldownloader.OVALDownloadResult;
 import com.suse.oval.ovaldownloader.OVALDownloader;
 import com.suse.oval.ovaltypes.OvalRootType;
+import com.suse.oval.parser.OVALResources;
+import com.suse.oval.parser.OvalParser;
 import com.suse.oval.vulnerablepkgextractor.VulnerablePackage;
 
 import org.apache.logging.log4j.LogManager;
@@ -370,27 +371,28 @@ public class CVEAuditManagerOVAL {
      * Launches the OVAL synchronization process
      * */
     public static void syncOVAL() {
-        Set<OVALProduct> productsToSync = getProductsToSync();
+        Set<OVALOsProduct> osProductsToSync = getProductsToSync();
 
-        LOG.debug("Detected {} products eligible for OVAL synchronization: {}", productsToSync.size(), productsToSync);
+        LOG.debug("Detected {} products eligible for OVAL synchronization: {}",
+            osProductsToSync.size(), osProductsToSync);
 
         OVALDownloader ovalDownloader = new OVALDownloader(OVALConfigLoader.loadDefaultConfig());
-        for (OVALProduct product : productsToSync) {
+        for (OVALOsProduct osProduct : osProductsToSync) {
             try {
-                syncOVALForProduct(product, ovalDownloader);
+                syncOVALForProduct(osProduct, ovalDownloader);
             }
             catch (Exception e) {
-                LOG.error("Failed to sync OVAL for product '{} {}'",
-                        product.getOsFamily().fullname(), product.getOsVersion(), e);
+                LOG.error("Failed to sync OVAL for OS product '{} {}'",
+                        osProduct.getOsFamily().fullname(), osProduct.getOsVersion(), e);
             }
         }
     }
 
-    private static void syncOVALForProduct(OVALProduct product, OVALDownloader ovalDownloader) {
-        LOG.debug("Downloading OVAL for {} {}", product.getOsFamily(), product.getOsVersion());
+    private static void syncOVALForProduct(OVALOsProduct osProduct, OVALDownloader ovalDownloader) {
+        LOG.debug("Downloading OVAL for {} {}", osProduct.getOsFamily(), osProduct.getOsVersion());
         OVALDownloadResult downloadResult;
         try {
-            downloadResult = ovalDownloader.download(product.getOsFamily(), product.getOsVersion());
+            downloadResult = ovalDownloader.download(osProduct.getOsFamily(), osProduct.getOsVersion());
         }
         catch (IOException e) {
             throw new RuntimeException("Failed to download OVAL data", e);
@@ -402,13 +404,16 @@ public class CVEAuditManagerOVAL {
         LOG.debug("OVAL patch file: {}", downloadResult.getPatchFile().map(File::getAbsoluteFile).orElse(null));
 
         downloadResult.getVulnerabilityFile().ifPresent(ovalVulnerabilityFile -> {
-            extractAndSaveOVALData(product, ovalVulnerabilityFile);
-            LOG.debug("Saving Vulnerability OVAL for {} {}", product.getOsFamily(), product.getOsVersion());
+            // we need this to avoid any conflicts with the previously stored OVAL metadata.
+            OVALCachingFactory.clearOVALMetadataByOsProduct(osProduct);
+            extractAndSaveOVALData(osProduct, ovalVulnerabilityFile);
+            LOG.debug("Saving Vulnerability OVAL for {} {}", osProduct.getOsFamily(), osProduct.getOsVersion());
         });
 
         downloadResult.getPatchFile().ifPresent(patchFile -> {
-            extractAndSaveOVALData(product, patchFile);
-            LOG.debug("Saving Patch OVAL for {} {}", product.getOsFamily(), product.getOsVersion());
+            OVALCachingFactory.clearOVALMetadataByOsProduct(osProduct);
+            extractAndSaveOVALData(osProduct, patchFile);
+            LOG.debug("Saving Patch OVAL for {} {}", osProduct.getOsFamily(), osProduct.getOsVersion());
         });
 
         LOG.debug("Saving OVAL finished");
@@ -417,24 +422,33 @@ public class CVEAuditManagerOVAL {
     /**
      * Extracts OVAL metadata from the given {@code ovalFile}, clean it and save it to the database.
      * */
-    private static void extractAndSaveOVALData(OVALProduct product, File ovalFile) {
-        OvalRootType ovalRoot = new OvalParser().parse(ovalFile);
-        OVALCleaner.cleanup(ovalRoot, product.getOsFamily(), product.getOsVersion());
-        OVALCachingFactory.savePlatformsVulnerablePackages(ovalRoot);
+    private static void extractAndSaveOVALData(OVALOsProduct product, File ovalFile) {
+        OvalParser ovalParser = new OvalParser();
+        OVALResources ovalResources = ovalParser.parseResources(ovalFile);
+        ovalParser.parseDefinitionsInBulk(ovalFile, definitionsBulk -> {
+            OvalRootType ovalRoot = new OvalRootType();
+            ovalRoot.setDefinitions(definitionsBulk);
+            ovalRoot.setTests(ovalResources.getTests());
+            ovalRoot.setObjects(ovalResources.getObjects());
+            ovalRoot.setStates(ovalResources.getStates());
+
+            OVALCleaner.cleanup(ovalRoot, product.getOsFamily(), product.getOsVersion());
+            OVALCachingFactory.savePlatformsVulnerablePackages(ovalRoot);
+        });
     }
 
     /**
      * Identifies the OS products to synchronize OVAL data for.
      * */
-    private static Set<OVALProduct> getProductsToSync() {
+    private static Set<OVALOsProduct> getProductsToSync() {
         return ServerFactory.listAllServersOsAndRelease()
                 .stream()
-                .map(OsReleasePair::toOVALProduct)
+                .map(OsReleasePair::toOVALOsProduct)
                 .filter(Optional::isPresent)
                 .map(Optional::get).collect(Collectors.toSet());
     }
 
-    public static class OVALProduct {
+    public static class OVALOsProduct {
         private OsFamily osFamily;
         private String osVersion;
 
@@ -443,7 +457,7 @@ public class CVEAuditManagerOVAL {
          * @param osFamilyIn the os family
          * @param osVersionIn the os version
          * */
-        public OVALProduct(OsFamily osFamilyIn, String osVersionIn) {
+        public OVALOsProduct(OsFamily osFamilyIn, String osVersionIn) {
             this.osFamily = osFamilyIn;
             this.osVersion = osVersionIn;
         }
@@ -472,7 +486,7 @@ public class CVEAuditManagerOVAL {
             if (oIn == null || getClass() != oIn.getClass()) {
                 return false;
             }
-            OVALProduct that = (OVALProduct) oIn;
+            OVALOsProduct that = (OVALOsProduct) oIn;
             return osFamily == that.osFamily && Objects.equals(osVersion, that.osVersion);
         }
 
