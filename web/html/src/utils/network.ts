@@ -17,7 +17,7 @@ type RequestOptions = {
   processData?: boolean;
 
   /** Default "application/json" */
-  contentType: string;
+  contentType?: string;
 
   /** Get notified of request progress, see https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequestEventTarget/progress_event */
   onProgress?: (

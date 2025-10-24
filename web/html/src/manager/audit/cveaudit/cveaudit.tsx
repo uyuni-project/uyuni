@@ -110,14 +110,6 @@ const YEARS = (function () {
   return arr.reverse();
 })();
 
-function cveAudit(cveId, target, statuses) {
-  return Network.post("/rhn/manager/api/audit/cve", {
-    cveIdentifier: cveId,
-    target: target,
-    statuses: statuses,
-  });
-}
-
 type Props = {};
 
 type State = {
@@ -130,6 +122,7 @@ type State = {
   selectedItems: any[];
   target?: any;
   auditExecuted?: boolean;
+  progress?: number;
 };
 
 class CVEAudit extends React.Component<Props, State> {
@@ -145,6 +138,7 @@ class CVEAudit extends React.Component<Props, State> {
       messages: [],
       selectedItems: [],
       auditExecuted: false,
+      progress: undefined,
     };
   }
 
@@ -207,25 +201,42 @@ class CVEAudit extends React.Component<Props, State> {
     return criteria && criteria.length > 0;
   }
 
-  audit = (target) => {
-    cveAudit("CVE-" + this.state.cveYear + "-" + this.state.cveNumber, target, this.state.statuses).then((data) => {
-      if (data.success) {
-        this.setState({
-          results: data.data,
-          selectedItems: data.data.filter((i) => i.selected).map((i) => i.id),
-          resultType: target,
-          messages: [],
-          auditExecuted: true,
-        });
-      } else {
-        this.setState({
-          results: [],
-          selectedItems: [],
-          messages: data.messages,
-          auditExecuted: false,
-        });
+  cveAudit(cveId, target, statuses) {
+    this.setState({ progress: 0 });
+
+    return Network.post(
+      { url: "/rhn/manager/api/audit/cve", onProgress: (progress) => this.setState({ progress }) },
+      {
+        cveIdentifier: cveId,
+        target: target,
+        statuses: statuses,
       }
+    ).finally(() => {
+      this.setState({ progress: undefined });
     });
+  }
+
+  audit = (target) => {
+    this.cveAudit("CVE-" + this.state.cveYear + "-" + this.state.cveNumber, target, this.state.statuses).then(
+      (data) => {
+        if (data.success) {
+          this.setState({
+            results: data.data,
+            selectedItems: data.data.filter((i) => i.selected).map((i) => i.id),
+            resultType: target,
+            messages: [],
+            auditExecuted: true,
+          });
+        } else {
+          this.setState({
+            results: [],
+            selectedItems: [],
+            messages: data.messages,
+            auditExecuted: false,
+          });
+        }
+      }
+    );
   };
 
   getPatchStatusAccuracyWarning = (row) => {
@@ -251,6 +262,8 @@ class CVEAudit extends React.Component<Props, State> {
   render() {
     return (
       <span>
+        {/* TODO: This is just a placeholder demo */}
+        {typeof this.state.progress !== "undefined" ? <p>Progress: {(this.state.progress * 100).toFixed(2)}%</p> : null}
         <TopPanel title={t("CVE Audit")} icon="fa-search" helpUrl="reference/audit/audit-cve-audit.html">
           <Messages
             items={this.state.messages.map((msg) => {
