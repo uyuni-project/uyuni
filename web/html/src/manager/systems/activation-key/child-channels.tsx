@@ -75,7 +75,7 @@ class ChildChannels extends React.Component<ChildChannelsProps, ChildChannelsSta
   };
 
   toggleChannelVisibility = () => {
-    this.setState({ collapsed: !this.state.collapsed });
+    this.setState((prevState) => ({ collapsed: !prevState.collapsed }));
   };
 
   areRecommendedChildrenSelected = (): boolean => {

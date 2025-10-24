@@ -39,13 +39,15 @@ class Notifications extends React.Component<Props, State> {
       ws.send('["user-notifications"]');
     };
     ws.onclose = () => {
-      const errs = this.state.errors ? this.state.errors : [];
-      if (!this.state.pageUnloading && !this.state.websocketErr) {
-        errs.push(t("Websocket connection closed. Refresh the page to try again."));
-      }
-      this.setState({
-        errors: errs,
-        websocket: null,
+      this.setState((prevState) => {
+        const errs = prevState.errors ? prevState.errors : [];
+        if (!prevState.pageUnloading && !prevState.websocketErr) {
+          errs.push(t("Websocket connection closed. Refresh the page to try again."));
+        }
+        return {
+          errors: errs,
+          websocket: null,
+        };
       });
     };
     ws.onerror = (e) => {

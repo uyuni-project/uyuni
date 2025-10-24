@@ -118,11 +118,11 @@ class ActivationKeyChannelsApi extends React.Component<ActivationKeyChannelsProp
       this.setState({ loadingChildren: true });
       future = Network.get(`/rhn/manager/api/activation-keys/base-channels/${baseId}/child-channels`)
         .then((data) => {
-          this.setState({
+          this.setState((prevState) => ({
             availableChannels: data.data,
-            fetchedData: this.state.fetchedData.set(baseId, data.data),
+            fetchedData: prevState.fetchedData.set(baseId, data.data),
             loadingChildren: false,
-          });
+          }));
         })
         .catch(this.handleResponseError);
     }

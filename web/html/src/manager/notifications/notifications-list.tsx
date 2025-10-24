@@ -262,10 +262,11 @@ export class NotificationList extends React.Component<Props, State> {
   }
 
   private async refreshServerData(): Promise<void> {
+    const dataType = this.state.dataType;
     this.setState({ loading: true });
 
     try {
-      const response = await Network.get(`/rhn/manager/notification-messages/${this.state.dataType}`);
+      const response = await Network.get(`/rhn/manager/notification-messages/${dataType}`);
 
       this.setState({
         serverData: response.data,

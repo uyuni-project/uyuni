@@ -95,23 +95,24 @@ class ImageView extends React.Component<ImageViewProps, ImageViewState> {
   }
 
   pushMessages(severity, messages) {
-    const add = this.state.messages;
+    this.setState((prevState) => {
+      const add = prevState.messages;
 
-    const getMsgObj = (msg) => {
-      if (typeof messageMap[msg] === "string") {
-        return { severity: severity, text: messageMap[msg] };
+      const getMsgObj = (msg) => {
+        if (typeof messageMap[msg] === "string") {
+          return { severity: severity, text: messageMap[msg] };
+        } else {
+          return { severity: severity, text: msg };
+        }
+      };
+
+      if (Array.isArray(messages)) {
+        add.concat(messages.map(getMsgObj));
       } else {
-        return { severity: severity, text: msg };
+        add.push(getMsgObj(messages));
       }
-    };
-
-    if (Array.isArray(messages)) {
-      add.concat(messages.map(getMsgObj));
-    } else {
-      add.push(getMsgObj(messages));
-    }
-
-    this.setState({ messages: add });
+      return { messages: add };
+    });
   }
 
   updateView(id, tab) {
@@ -155,7 +156,7 @@ class ImageView extends React.Component<ImageViewProps, ImageViewState> {
     const msg = Network.responseErrorMessage(jqXHR, (status, msg) =>
       messageMap[msg] ? t(messageMap[msg], { arg }) : null
     );
-    this.setState({ messages: this.state.messages.concat(msg) });
+    this.setState((prevState) => ({ messages: prevState.messages.concat(msg) }));
   }
 
   //Accumulate runtime data from individual clusters into 'toData'
@@ -303,11 +304,11 @@ class ImageView extends React.Component<ImageViewProps, ImageViewState> {
         // Waits for the 'Back' action if not in the list page
         const backAction = this.state.selected ? this.handleBackAction() : Promise.resolve();
         backAction.then(() =>
-          this.setState({
-            images: this.state.images.filter((img) => !idList.includes(img.id)),
-            selectedItems: this.state.selectedItems.filter((item) => !idList.includes(item)),
+          this.setState((prevState) => ({
+            images: prevState.images.filter((img) => !idList.includes(img.id)),
+            selectedItems: prevState.selectedItems.filter((item) => !idList.includes(item)),
             messages: MessagesUtils.info(t("Deleted successfully.")),
-          })
+          }))
         );
       })
       .catch(this.handleResponseError);

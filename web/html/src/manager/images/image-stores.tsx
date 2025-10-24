@@ -93,7 +93,7 @@ class ImageStores extends React.Component<Props, State> {
   deleteStores = (idList) => {
     return Network.post("/rhn/manager/api/cm/imagestores/delete", idList).then((data) => {
       if (data.success) {
-        this.setState({
+        this.setState((prevState) => ({
           messages: (
             <Messages
               items={[
@@ -104,9 +104,9 @@ class ImageStores extends React.Component<Props, State> {
               ]}
             />
           ),
-          imagestores: this.state.imagestores.filter((store) => !idList.includes(store.id)),
-          selectedItems: this.state.selectedItems.filter((item) => !idList.includes(item)),
-        });
+          imagestores: prevState.imagestores.filter((store) => !idList.includes(store.id)),
+          selectedItems: prevState.selectedItems.filter((item) => !idList.includes(item)),
+        }));
       } else {
         this.setState({
           messages: (

@@ -56,11 +56,13 @@ type Props = {
   updateSccSyncRunning: (isRunning: boolean) => void;
 };
 
-class SCCDialog extends React.Component<Props> {
-  state = {
-    steps: _SCC_REFRESH_STEPS,
-    errors: [] as MessageType[],
-  };
+class SCCDialogState {
+  steps = _SCC_REFRESH_STEPS;
+  errors: MessageType[] = [];
+}
+
+class SCCDialog extends React.Component<Props, SCCDialogState> {
+  state = new SCCDialogState();
 
   UNSAFE_componentWillMount() {
     if (
@@ -133,16 +135,18 @@ class SCCDialog extends React.Component<Props> {
 
   handleResponseError = (jqXHR: JQueryXHR, arg = {}) => {
     this.finishSync();
-    const stepList = this.state.steps;
-    const currentStep = stepList.find((s) => s.inProgress);
-    if (currentStep) {
-      currentStep.inProgress = false;
-      currentStep.success = false;
-    }
-    const msg = Network.responseErrorMessage(jqXHR, (status, msg) =>
-      messageMap[msg] ? t(messageMap[msg], arg) : null
-    );
-    this.setState({ steps: stepList, errors: this.state.errors.concat(msg) });
+    this.setState((prevState) => {
+      const stepList = prevState.steps;
+      const currentStep = stepList.find((s) => s.inProgress);
+      if (currentStep) {
+        currentStep.inProgress = false;
+        currentStep.success = false;
+      }
+      const msg = Network.responseErrorMessage(jqXHR, (status, msg) =>
+        messageMap[msg] ? t(messageMap[msg], arg) : null
+      );
+      return { steps: stepList, errors: prevState.errors.concat(msg) };
+    });
   };
 
   render() {

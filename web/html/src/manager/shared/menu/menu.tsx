@@ -67,11 +67,22 @@ type ElementProps = {
   forceCollapse?: any;
 };
 
-class Element extends React.Component<ElementProps> {
-  state = {
-    open: this.props.element?.active ? true : false,
-    visiblityForcedByParent: false,
-  };
+class ElementState {
+  open: boolean;
+  visiblityForcedByParent = false;
+
+  constructor(props: ElementProps) {
+    this.open = props.element?.active ? true : false;
+  }
+}
+
+class Element extends React.Component<ElementProps, ElementState> {
+  state: ElementState;
+
+  constructor(props: ElementProps) {
+    super(props);
+    this.state = new ElementState(props);
+  }
 
   UNSAFE_componentWillReceiveProps(nextProps: ElementProps) {
     this.setState({
@@ -105,7 +116,7 @@ class Element extends React.Component<ElementProps> {
   };
 
   toggleView = () => {
-    this.setState({ open: !this.state.open });
+    this.setState((prevState) => ({ open: !prevState.open }));
   };
 
   getUrl = (element) => {
@@ -222,8 +233,6 @@ class Nav extends React.Component {
 SpaRenderer.renderGlobalReact(<Nav />, document.getElementById("nav"));
 
 class Breadcrumb extends React.Component {
-  componentDidMount() {}
-
   onSPAEndNavigation() {
     this.forceUpdate();
   }

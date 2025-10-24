@@ -287,13 +287,13 @@ class CVEAudit extends React.Component<Props, State> {
                       checked={this.state.statuses.includes(status)}
                       onChange={() => {
                         if (this.state.statuses.includes(status)) {
-                          this.setState({
-                            statuses: this.state.statuses.filter((x) => x !== status),
-                          });
+                          this.setState((prevState) => ({
+                            statuses: prevState.statuses.filter((x) => x !== status),
+                          }));
                         } else {
-                          this.setState({
-                            statuses: this.state.statuses.concat([status]),
-                          });
+                          this.setState((prevState) => ({
+                            statuses: prevState.statuses.concat([status]),
+                          }));
                         }
                       }}
                     />
