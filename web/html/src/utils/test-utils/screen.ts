@@ -13,7 +13,7 @@ type ReturnFromWith<TargetFunction extends (...args: any[]) => any, T> =
  */
 type GenericScreen = {
   [Key in keyof Screen]: Screen[Key] extends (...args: any[]) => any
-    ? <T extends unknown>(...args: Parameters<Screen[Key]>) => ReturnFromWith<Screen[Key], T>
+    ? <T>(...args: Parameters<Screen[Key]>) => ReturnFromWith<Screen[Key], T>
     : Screen[Key];
 };
 

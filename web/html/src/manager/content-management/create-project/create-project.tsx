@@ -59,4 +59,4 @@ const CreateProject = () => {
   );
 };
 
-export default withPageWrapper<{}>(CreateProject);
+export default withPageWrapper(CreateProject);

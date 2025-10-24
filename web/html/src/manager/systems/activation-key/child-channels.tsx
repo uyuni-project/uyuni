@@ -13,10 +13,10 @@ type ChildChannelsProps = {
   base: any;
   showBase: boolean;
   selectedChannelsIds: number[];
-  selectChannels: Function;
+  selectChannels: (...args: any[]) => any;
   isDependencyDataLoaded: boolean;
   requiredChannelsResult: RequiredChannelsResultType;
-  fetchMandatoryChannelsByChannelIds: Function;
+  fetchMandatoryChannelsByChannelIds: (...args: any[]) => any;
   collapsed: boolean;
 };
 

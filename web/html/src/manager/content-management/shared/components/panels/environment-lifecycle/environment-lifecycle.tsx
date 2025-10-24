@@ -20,7 +20,7 @@ type Props = {
   projectId: string;
   environments: ProjectEnvironmentType[];
   historyEntries: ProjectHistoryEntry[];
-  onChange: Function;
+  onChange: (...args: any[]) => any;
   messages?: ProjectMessageType[];
 };
 

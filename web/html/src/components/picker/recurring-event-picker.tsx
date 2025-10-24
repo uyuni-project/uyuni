@@ -78,7 +78,11 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
       monthDay: this.monthDays[0],
     };
 
-    this.props.cronTimes ? this.setInitialTimeAndDays(this.state.time) : this.initialize();
+    if (this.props.cronTimes) {
+      this.setInitialTimeAndDays(this.state.time);
+    } else {
+      this.initialize();
+    }
   }
 
   /**

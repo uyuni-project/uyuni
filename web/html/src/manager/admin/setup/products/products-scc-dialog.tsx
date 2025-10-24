@@ -102,14 +102,12 @@ class SCCDialog extends React.Component<Props> {
   };
 
   runSccRefreshStep = (stepList, i) => {
-    const currentObject = this;
-
     // if i-step exists
     if (stepList.length >= i + 1) {
       // run the i-step
       const currentStep = stepList[i];
       currentStep.inProgress = true;
-      currentObject.setState({
+      this.setState({
         steps: stepList,
       });
 
@@ -118,16 +116,16 @@ class SCCDialog extends React.Component<Props> {
           // set the result for the i-step
           currentStep.success = data;
           currentStep.inProgress = false;
-          currentObject.setState({
+          this.setState({
             steps: stepList,
           });
 
           // recoursive recall to run the next step
-          currentObject.runSccRefreshStep(stepList, i + 1);
+          this.runSccRefreshStep(stepList, i + 1);
         })
         .catch(this.handleResponseError);
     } else {
-      currentObject.finishSync();
+      this.finishSync();
     }
   };
 

@@ -41,7 +41,7 @@ const messageMap = {
   ),
 };
 
-type Props = {};
+type Props = Record<never, never>;
 
 type State = {
   model: {

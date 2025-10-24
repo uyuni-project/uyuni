@@ -75,7 +75,7 @@ const useMandatoryChannelsApi = (): UseMandatoryChannelsApiReturnType => {
   };
 
   const dependenciesTooltip = (channelId: number, channels: (MandatoryChannel | Channel)[]) => {
-    const resolveChannelNames: Function = (channelIds: number[]): (string | null | undefined)[] => {
+    const resolveChannelNames: (...args: any[]) => any = (channelIds: number[]): (string | null | undefined)[] => {
       return Array.from(channelIds || new Set())
         .map((channelId: number) => channels.find((c) => c.id === channelId))
         .filter((channel): boolean => !DEPRECATED_unsafeEquals(channel, null))

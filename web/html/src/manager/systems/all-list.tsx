@@ -75,7 +75,7 @@ export function AllSystems(props: Props) {
         data="/rhn/manager/api/systems/list/all"
         identifier={(item) => item.id}
         initialSortColumnKey="server_name"
-        selectable={(item) => item.hasOwnProperty("id")}
+        selectable={(item) => Object.prototype.hasOwnProperty.call(item, "id")}
         selectedItems={selectedSystems}
         onSelect={handleSelectedSystems}
         searchField={<SystemsListFilter />}
@@ -96,7 +96,7 @@ export function AllSystems(props: Props) {
           header={t("Updates")}
           cell={(item) => {
             // TODO: If you touch this file, please resolve this linter error
-            // eslint-disable-next-line eqeqeq
+            // eslint-disable-next-line eqeqeq, no-eq-null
             if (item.statusType == null) {
               return "";
             }
@@ -171,7 +171,7 @@ export function AllSystems(props: Props) {
           header={t("Base Channel")}
           cell={(item) => {
             // TODO: If you touch this file, please resolve this linter error
-            // eslint-disable-next-line eqeqeq
+            // eslint-disable-next-line eqeqeq, no-eq-null
             if (item.channelId != null) {
               return <a href={`/rhn/channels/ChannelDetail.do?cid=${item.channelId}`}>{item.channelLabels}</a>;
             }

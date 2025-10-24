@@ -114,7 +114,7 @@ function isTimedOutDone(minionsMap: Map<any, any>, waitForSSH, timedOutSSH) {
   return noMinionsPending && anyTimedOutMinion;
 }
 
-type RemoteCommandProps = {};
+type RemoteCommandProps = Record<never, never>;
 
 type RemoteCommandState = {
   command: string;
@@ -367,7 +367,7 @@ class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandSta
       let previewed;
       let ran;
       switch (event.type) {
-        case "asyncJobStart":
+        case "asyncJobStart": {
           this.setState({
             executing: jQuery.Deferred(),
             errors: [],
@@ -381,7 +381,8 @@ class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandSta
             },
           });
           break;
-        case "match":
+        }
+        case "match": {
           minionsMap = this.state.result.minions;
           minionsMap.set(event.minion, { type: "matched", value: null });
 
@@ -397,7 +398,8 @@ class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandSta
             },
           });
           break;
-        case "matchSSH":
+        }
+        case "matchSSH": {
           minionsMap = event.minions.reduce(
             (map, minionId) => map.set(minionId, { type: "matched", value: null }),
             this.state.result.minions
@@ -415,7 +417,8 @@ class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandSta
             },
           });
           break;
-        case "runResult":
+        }
+        case "runResult": {
           minionsMap = this.state.result.minions;
           minionsMap.set(event.minion, { type: "result", value: event.out });
 
@@ -430,7 +433,8 @@ class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandSta
             },
           });
           break;
-        case "timedOut":
+        }
+        case "timedOut": {
           minionsMap = this.state.result.minions;
           let waitForSSH = this.state.result.waitForSSH;
           let timedOutSSH = this.state.result.timedOutSSH;
@@ -472,7 +476,8 @@ class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandSta
             },
           });
           break;
-        case "error":
+        }
+        case "error": {
           let globalErr: any[] = [];
 
           if (event.minion) {
@@ -517,6 +522,7 @@ class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandSta
           }
 
           break;
+        }
       }
     };
 

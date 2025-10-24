@@ -39,7 +39,7 @@ class ActivationKeyChannels extends React.Component<ActivationKeyChannelsProps, 
 
   handleBaseChange = (event: React.ChangeEvent<HTMLSelectElement>): Promise<number> => {
     const newBaseId: number = parseInt(event.target.value, 10);
-    return new Promise((resolve: Function) =>
+    return new Promise((resolve: (...args: any[]) => any) =>
       this.setState({ currentSelectedBaseId: newBaseId }, () => resolve(newBaseId))
     );
   };
@@ -49,7 +49,7 @@ class ActivationKeyChannels extends React.Component<ActivationKeyChannelsProps, 
     if (selectedFlag) {
       selectedIds = [...channelIds.filter((c) => !selectedIds.includes(c)), ...selectedIds];
     } else {
-      selectedIds = [...selectedIds.filter((c) => !channelIds.includes(c))];
+      selectedIds = selectedIds.filter((c) => !channelIds.includes(c));
     }
     this.setState({ currentChildSelectedIds: selectedIds });
   };

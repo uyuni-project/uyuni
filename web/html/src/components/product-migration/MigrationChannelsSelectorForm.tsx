@@ -100,7 +100,7 @@ export const MigrationChannelsSelectorForm: React.FC<Props> = ({
       return;
     }
 
-    const updatedSet = new Set([...selectedChildChannels]);
+    const updatedSet = new Set(selectedChildChannels);
     const isAddition = toState ?? !updatedSet.has(channel);
 
     const updateAction = isAddition ? updatedSet.add.bind(updatedSet) : updatedSet.delete.bind(updatedSet);

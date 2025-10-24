@@ -25,9 +25,10 @@ const MaintenanceCalendarList = (props: CalendarListProps) => {
   const [strategy, setStrategy] = useState(false);
 
   const setCheck = (model) => {
-    /* strategy gets initialized as empty string, but we want the initial value to be false.
-     * Is equivalent to: if strategy is "" then set it to false */
-    model.strategy === "" && (model.strategy = false);
+    /* strategy gets initialized as empty string, but we want the initial value to be false. */
+    if (model.strategy === "") {
+      model.strategy = false;
+    }
     setStrategy(model.strategy);
   };
 

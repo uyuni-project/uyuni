@@ -7,7 +7,7 @@ import { ProjectPropertiesType } from "../../../type";
 type Props = {
   properties: ProjectPropertiesType;
   errors: any;
-  onChange: Function;
+  onChange: (...args: any[]) => any;
   editing?: boolean;
 };
 
