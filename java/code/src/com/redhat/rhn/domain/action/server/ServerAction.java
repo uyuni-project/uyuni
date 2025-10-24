@@ -39,7 +39,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
@@ -50,7 +49,17 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "rhnServerAction")
-@IdClass(ServerActionId.class)
+// Note: The id class for ServerAction (@IdClass(ServerActionId)) has been dropped, since it does not work
+// Those two unit tests were failing:
+// ActionFactoryTest.testUpdateServerActions and SaltServerActionServiceTest.testExecuteActionChainWithJobReturnEvent
+// It seems that the problem is in HibernateFactory.reload(obj). The old *.hbm.xml file made the id class be equal
+// to ServerAction, so that the session.get part was reloading the right class where obj was. Using the id class for
+// ServerAction lets session.get reload a class in a different zone of memory, hence creating duplicates and then
+// firing exceptions like "EntityExistsException: A different object with the same identifier value was already
+// associated with the session".
+// Try to substitute session.evict(obj); with session.refresh(obj); solves the problem in some cases but breaks the
+// behaviour on others. Although not strictly correct, we decided for the moment to leave this working solution, and
+// see what happens when migrating to hibernate7
 public class ServerAction extends BaseDomainHelper implements Serializable {
 
     @Serial
@@ -67,7 +76,7 @@ public class ServerAction extends BaseDomainHelper implements Serializable {
     private Server server;
 
     @Id
-    @ManyToOne(targetEntity = Action.class, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.DETACH})
+    @ManyToOne(targetEntity = Action.class, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "action_id")
     private Action parentAction;
 
