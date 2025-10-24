@@ -149,6 +149,7 @@ import com.redhat.rhn.domain.contentmgmt.ContentProjectFilter;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectHistoryEntry;
 import com.redhat.rhn.domain.contentmgmt.EnvironmentTarget;
 import com.redhat.rhn.domain.contentmgmt.ErrataFilter;
+import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
 import com.redhat.rhn.domain.contentmgmt.ModuleFilter;
 import com.redhat.rhn.domain.contentmgmt.PackageFilter;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource;
@@ -472,6 +473,7 @@ public class AnnotationRegistry {
             ExceptionMessage.class,
             Feature.class,
             FileList.class,
+            FilterCriteria.class,
             GroupRecurringAction.class,
             HardwareRefreshAction.class,
             HubSCCCredentials.class,
