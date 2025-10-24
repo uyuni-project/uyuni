@@ -21,8 +21,6 @@ import com.redhat.rhn.domain.server.Server;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -35,6 +33,8 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
 /**
@@ -73,13 +73,25 @@ public class ConfigChannelAssociation implements Serializable {
 
     @Id
     @Column(name = "created", nullable = false, updatable = false)
-    @CreationTimestamp
     private Date created = new Date();
 
     @Id
     @Column(name = "modified", nullable = false)
-    @UpdateTimestamp
     private Date modified = new Date();
+
+    //replace @CreationTimestamp on created which does not work on composite keys
+    // https://discourse.hibernate.org/t/java-exception-when-using-creationtimestamp-or-updatetimestamp-annotation-in-embeddable/699/10
+    @PrePersist
+    public void prePersist() {
+        created = new Date();
+    }
+
+    // replace @UpdateTimestamp on modified which does not work in composite keys
+    // https://discourse.hibernate.org/t/java-exception-when-using-creationtimestamp-or-updatetimestamp-annotation-in-embeddable/699/10
+    @PreUpdate
+    public void preUpdate() {
+        modified = new Date();
+    }
 
     /**
      * @return Returns the configChannel.
