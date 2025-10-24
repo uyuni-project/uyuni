@@ -122,14 +122,10 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
             next.setStatusCompleted();
         }
         ActionFactory.save(a);
-        ConfigRevisionAction cra = a.
-                                                        getConfigRevisionActions().
-                                                            iterator().next();
+        ConfigRevisionAction cra = a.getConfigRevisionActions().iterator().next();
         Server server = cra.getServer();
 
-        Action action = ActionFactory.lookupLastCompletedAction(user,
-                                            ActionFactory.TYPE_CONFIGFILES_DEPLOY,
-                                                        server);
+        Action action = ActionFactory.lookupLastCompletedAction(user, ActionFactory.TYPE_CONFIGFILES_DEPLOY, server);
         assertEquals(a, action);
     }
 

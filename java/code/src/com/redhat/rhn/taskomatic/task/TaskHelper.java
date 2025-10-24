@@ -112,7 +112,13 @@ public class TaskHelper {
      */
     public static void scheduleActionExecution(Action action) {
         boolean minionsInvolved = HibernateFactory.getSession()
-            .getNamedQuery("Action.findMinionIds")
+            .createQuery("""
+                    SELECT sa.server.id
+                    FROM   ServerAction sa
+                    JOIN   sa.server s
+                    WHERE  type(s) = com.redhat.rhn.domain.server.MinionServer
+                    AND    action_id = :id
+                    """, Long.class)
             .setParameter("id", action.getId())
             .setMaxResults(1)
             .stream()
