@@ -23,7 +23,7 @@ import com.redhat.rhn.frontend.dto.ScheduledAction;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.manager.action.ActionManager;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * Renders YourRhn fragment for pending actions

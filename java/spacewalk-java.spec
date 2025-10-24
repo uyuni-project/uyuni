@@ -49,7 +49,6 @@
 %define ehcache         ( mvn(net.sf.ehcache:ehcache-core) >= 2.10.1 or ehcache-core >= 2.10.1 or ehcache >= 2.10.1)
 %define apache_commons_digester    (apache-commons-digester or jakarta-commons-digester)
 %define apache_commons_discovery   (apache-commons-discovery or jakarta-commons-discovery)
-%define apache_commons_fileupload  (apache-commons-fileupload or jakarta-commons-fileupload)
 %define apache_commons_validator   (apache-commons-validator or jakarta-commons-validator)
 %define apache_commons_compress    (apache-commons-compress or jakarta-commons-compress)
 
@@ -75,7 +74,8 @@ ExcludeArch:    ia64
 
 BuildRequires:  %{apache_commons_compress}
 BuildRequires:  %{apache_commons_discovery}
-BuildRequires:  %{apache_commons_fileupload}
+BuildRequires:  apache-commons-fileupload2-core
+BuildRequires:  apache-commons-fileupload2-javax
 BuildRequires:  %{apache_commons_validator}
 BuildRequires:  %{ehcache}
 BuildRequires:  ant
@@ -134,7 +134,7 @@ BuildRequires:  postgresql-jdbc
 BuildRequires:  prometheus-client-java
 BuildRequires:  quartz
 BuildRequires:  redstone-xmlrpc
-BuildRequires:  salt-netapi-client >= 0.21
+BuildRequires:  salt-netapi-client >= 1.0.0
 BuildRequires:  simple-core
 BuildRequires:  simple-xml
 BuildRequires:  sitemesh
@@ -166,7 +166,8 @@ BuildRequires:  libxml2-devel
 Requires:       %{apache_commons_compress}
 Requires:       %{apache_commons_digester}
 Requires:       %{apache_commons_discovery}
-Requires:       %{apache_commons_fileupload}
+Requires:       apache-commons-fileupload2-core
+Requires:       apache-commons-fileupload2-javax
 Requires:       %{ehcache}
 Requires:       apache-commons-beanutils
 Requires:       apache-commons-cli
@@ -213,10 +214,11 @@ Requires:       log4j-slf4j
 Requires:       mgr-libmod
 Requires:       netty
 Requires:       objectweb-asm >= 9.2
+Requires:       quartz == 2.5.0
 Requires:       pgjdbc-ng
 Requires:       prometheus-client-java
 Requires:       redstone-xmlrpc
-Requires:       salt-netapi-client >= 0.21
+Requires:       salt-netapi-client >= 1.0.0
 Requires:       simple-core
 Requires:       simple-xml
 Requires:       sitemesh
@@ -376,7 +378,7 @@ Requires:       jpa-api
 Requires:       jsch
 Requires:       log4j
 Requires:       log4j-jcl
-Requires:       quartz
+Requires:       quartz == 2.5.0
 Requires:       simple-core
 Requires:       spacewalk-java-config
 Requires:       spacewalk-java-jdbc
@@ -389,8 +391,6 @@ Requires:       (/sbin/unix2_chkpwd or /usr/sbin/unix2_chkpwd)
 Requires:       mvn(org.hibernate:hibernate-c3p0)
 Requires:       mvn(org.hibernate:hibernate-core)
 Requires:       mvn(org.hibernate:hibernate-ehcache)
-
-Conflicts:      quartz < 2.0
 
 %description -n spacewalk-taskomatic
 This package contains the Java version of taskomatic.

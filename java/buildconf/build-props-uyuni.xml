@@ -1,7 +1,7 @@
 <project name="build-props-uyuni">
 
     <!-- extra dependencies: build and runtime -->
-    <property name="product-common-jars" value="httpcomponents/httpclient httpcomponents/httpcore httpcomponents/httpcore-nio google-gson/google-gson" />
+    <property name="product-common-jars" value="httpcomponents/httpclient httpcomponents/httpcore httpcomponents/httpcore-nio google-gson/google-gson jakarta-websocket" />
 
     <!-- extra dependencies: runtime only -->
     <property name="product-runtime-jars" value="" />

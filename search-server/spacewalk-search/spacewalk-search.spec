@@ -55,7 +55,7 @@ BuildRequires:  junit
 BuildRequires:  lucene == 2.4.1
 BuildRequires:  objectweb-asm
 BuildRequires:  picocontainer
-BuildRequires:  quartz >= 2.0
+BuildRequires:  quartz == 2.5.0
 BuildRequires:  redstone-xmlrpc
 BuildRequires:  simple-core
 BuildRequires:  slf4j
@@ -82,7 +82,7 @@ Requires:       javapackages-tools
 Requires:       lucene == 2.4.1
 Requires:       objectweb-asm
 Requires:       picocontainer
-Requires:       quartz >= 2.0
+Requires:       quartz == 2.5.0
 Requires:       redstone-xmlrpc
 Requires:       simple-core
 Requires:       mvn(javassist:javassist)
