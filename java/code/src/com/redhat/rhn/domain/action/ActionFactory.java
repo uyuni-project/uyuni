@@ -159,29 +159,6 @@ public class ActionFactory extends HibernateFactory {
     }
 
     /**
-     * Removes an action from all its associated systems
-     * @param actionId action to remove
-     * @return the number of failed systems to remove an action for.
-     */
-    @SuppressWarnings("unchecked")
-    public static int removeAction(Long actionId) {
-
-        List<Long> ids = getSession().getNamedQuery("Action.findServerIds")
-                .setParameter("action_id", actionId).list();
-        int failed = 0;
-        for (long id : ids) {
-            try {
-                removeActionForSystem(actionId, id);
-                SystemManager.updateSystemOverview(id);
-            }
-            catch (Exception e) {
-                failed++;
-            }
-        }
-        return failed;
-    }
-
-    /**
      * Remove an action for an rhnset of system ids with the given label
      * @param actionId the action to remove
      * @param setLabel the set label to pull the ids from
@@ -710,7 +687,7 @@ public class ActionFactory extends HibernateFactory {
                 .setParameter("userId", user.getId())
                 .setParameter("actionTypeId", type.getId())
                 .setParameter("serverId", server.getId())
-                .getSingleResult();
+                .uniqueResult();
     }
 
 
@@ -1069,7 +1046,16 @@ public class ActionFactory extends HibernateFactory {
      * @return list of pending minions that contain minions
      */
     public static List<Action> pendingMinionServerActions() {
-        return singleton.listObjectsByNamedQuery("Action.lookupPendingMinionActions", Map.of());
+        return getSession().createNativeQuery("""
+                SELECT *
+                FROM   rhnAction
+                WHERE  id IN (SELECT     DISTINCT ac.id
+                              FROM       rhnAction ac
+                              INNER JOIN rhnServerAction sa on ac.id = sa.action_id
+                              INNER JOIN suseMinionInfo mi on sa.server_id = mi.server_id
+                              WHERE      sa.status in (0, 1))
+                """, Action.class)
+                .list();
     }
 
     /**
@@ -1130,9 +1116,16 @@ public class ActionFactory extends HibernateFactory {
         Map<String, Object>  parameters = new HashMap<>();
         parameters.put("action_id", actionIn.getId());
         parameters.put("status", ActionFactory.STATUS_PICKED_UP.getId());
-
-        udpateByIds(serverIds, "Action.updateServerActionsPickedUp", "server_ids", parameters);
-        serverIds.forEach(sid -> SystemManager.updateSystemOverview(sid));
+        String sql = """
+                UPDATE rhnServerAction
+                SET    status = :status,
+                       pickup_time = current_timestamp
+                WHERE  action_id  = :action_id
+                AND    server_id  IN (:server_ids)
+                AND    status NOT IN(2,3)
+                """;
+        udpateByIds(serverIds, sql, "server_ids", parameters);
+        serverIds.forEach(SystemManager::updateSystemOverview);
     }
 
     /**
@@ -1146,9 +1139,15 @@ public class ActionFactory extends HibernateFactory {
         Map<String, Object>  parameters = new HashMap<>();
         parameters.put("action_id", actionIn.getId());
         parameters.put("status", status.getId());
-
-        udpateByIds(serverIds, "Action.updateServerActions", "server_ids", parameters);
-        serverIds.forEach(sid -> SystemManager.updateSystemOverview(sid));
+        String sql = """
+                UPDATE rhnServerAction
+                SET    status = :status
+                WHERE  action_id  = :action_id
+                AND    server_id  IN (:server_ids)
+                AND    status NOT IN(2,3)
+                """;
+        udpateByIds(serverIds, sql, "server_ids", parameters);
+        serverIds.forEach(SystemManager::updateSystemOverview);
     }
 
     /**
@@ -1157,15 +1156,28 @@ public class ActionFactory extends HibernateFactory {
      * @param rejectionReason the reason why the scheduled action was not picked up
      */
     public static void rejectScheduledActions(List<Long> actionsId, String rejectionReason) {
-        Query<Long> query = getSession().createNamedQuery("Action.rejectAction", Long.class)
-                                            .setParameter("rejection_reason", rejectionReason)
-                                            .setParameter("completion_time", new Date());
+        Query<Tuple> query = getSession()
+                .createNativeQuery("""
+                        UPDATE rhnServerAction
+                        SET    status = 3,
+                               result_code = -1,
+                               result_msg = :rejection_reason,
+                               completion_time = :completion_time,
+                               remaining_tries = 0
+                        WHERE  action_id IN (:action_ids)
+                        AND    status = 0
+                        RETURNING server_id
+                        """, Tuple.class)
+                .setParameter("rejection_reason", rejectionReason)
+                .setParameter("completion_time", new Date());
 
-        List<Long> updatedServerIds = HibernateFactory.<Long, List<Long>, Long>splitAndExecuteQuery(
+        List<Tuple> updatedServerIds = HibernateFactory.<Long, List<Tuple>, Tuple>splitAndExecuteQuery(
             actionsId, "action_ids", query, query::list, new ArrayList<>(), ListUtils::union
         );
 
-        updatedServerIds.forEach(SystemManager::updateSystemOverview);
+        updatedServerIds.stream()
+                .map(t -> t.get(0, Number.class).longValue())
+                .forEach(SystemManager::updateSystemOverview);
     }
 
     /**
