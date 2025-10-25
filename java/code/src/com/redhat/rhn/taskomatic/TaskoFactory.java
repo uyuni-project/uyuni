@@ -27,14 +27,11 @@ import com.redhat.rhn.taskomatic.domain.TaskoTemplate;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.query.Query;
 import org.quartz.SchedulerException;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import javax.persistence.NoResultException;
 
 /**
  * TaskoFactory
@@ -67,7 +64,7 @@ public class TaskoFactory extends HibernateFactory {
                         WHERE orgBunch IS NOT NULL
                         AND name = :name""", TaskoBunch.class)
                 .setParameter("name", bunchName)
-                .getSingleResult();
+                .uniqueResult();
     }
 
     /**
@@ -82,7 +79,7 @@ public class TaskoFactory extends HibernateFactory {
                         WHERE orgBunch IS NULL
                         AND name = :name""", TaskoBunch.class)
                 .setParameter("name", bunchName)
-                .getSingleResult();
+                .uniqueResult();
     }
 
     /**
@@ -392,7 +389,7 @@ public class TaskoFactory extends HibernateFactory {
                 .createQuery("FROM com.redhat.rhn.taskomatic.domain.TaskoSchedule WHERE id = :schedule_id",
                         TaskoSchedule.class)
                 .setParameter("schedule_id", scheduleId)
-                .getSingleResult();
+                .uniqueResult();
     }
 
     /**
@@ -418,7 +415,7 @@ public class TaskoFactory extends HibernateFactory {
         return getSession()
                 .createQuery("FROM com.redhat.rhn.taskomatic.domain.TaskoBunch WHERE name = :name", TaskoBunch.class)
                 .setParameter("name", bunchName)
-                .getSingleResult();
+                .uniqueResult();
     }
 
     /**
@@ -535,22 +532,14 @@ public class TaskoFactory extends HibernateFactory {
             """;
 
         // Create the native query
-        Query<TaskoRun> query = getSession().createNativeQuery(sql, TaskoRun.class);
-
-        // Set the parameters for bunchName and status
-        query.setParameter("bunchName", bunchName);
-        query.setParameter("status1", TaskoRun.STATUS_RUNNING);
-        query.setParameter("status2", TaskoRun.STATUS_FINISHED);
-        query.setParameter("status3", TaskoRun.STATUS_INTERRUPTED);
-
-        // Execute the query and return the result (or null if no result is found)
-        try {
-            return query.getSingleResult();
-        }
-        catch (NoResultException e) {
-            // Handle the case where no result is found
-            return null;
-        }
+        return getSession().createNativeQuery(sql, TaskoRun.class)
+                // Set the parameters for bunchName and status
+                .setParameter("bunchName", bunchName)
+                .setParameter("status1", TaskoRun.STATUS_RUNNING)
+                .setParameter("status2", TaskoRun.STATUS_FINISHED)
+                .setParameter("status3", TaskoRun.STATUS_INTERRUPTED)
+                // Execute the query and return the result (or null if no result is found)
+                .uniqueResult();
     }
 
     /**
