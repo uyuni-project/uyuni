@@ -124,20 +124,7 @@
                         <bean:message key="channel.jsp.repodata"/>
                     </label>
                     <div class="col-lg-6">
-                        <c:choose>
-                            <c:when test="${repo_status ==  null}">
-                                (none)
-                            </c:when>
-                            <c:when test="${repo_status == true}">
-                                <bean:message key="channel.jsp.repodata.inProgress"/>
-                            </c:when>
-                            <c:when test="${repo_status == false && repo_last_build != null}">
-                                <bean:message key="channel.jsp.repodata.completed"/>
-                            </c:when>
-                            <c:otherwise>
-                                (none)
-                            </c:otherwise>
-                        </c:choose>
+                        <c:out value="${repo_status}" />
                     </div>
                 </div>
                 <div class="form-group">

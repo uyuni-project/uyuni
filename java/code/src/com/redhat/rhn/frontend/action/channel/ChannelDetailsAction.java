@@ -67,9 +67,7 @@ public class ChannelDetailsAction extends RhnAction {
                 (chan.getOrg() == null && user.isMemberOf(AccessGroupFactory.CHANNEL_ADMIN)) ||
                     UserManager.verifyChannelAdmin(user, chan))) {
             String global = (String)form.get("global");
-            chan.setGloballySubscribable((global != null) &&
-                    ("all".equals(global)), user.getOrg());
-
+            chan.setGloballySubscribable("all".equals(global), user.getOrg());
             chan.setGPGCheck(BooleanUtils.isTrue((Boolean)form.get("gpg_check")));
 
 
@@ -77,7 +75,7 @@ public class ChannelDetailsAction extends RhnAction {
                     chan.getName());
 
             //did they enable per user subscriptions?
-            if (!global.equals("all")) {
+            if (!"all".equals(global)) {
                 addMessage(request, "message.channelsubscribers");
             }
 
@@ -85,7 +83,7 @@ public class ChannelDetailsAction extends RhnAction {
             chan = HibernateFactory.reload(chan);
             params.put("cid", cid);
             fwd = "success";
-            ServerFactory.listMinionsByChannel(cid).stream()
+            ServerFactory.listMinionsByChannel(cid)
                     .forEach(ms -> MinionPillarManager.INSTANCE.generatePillar(ms, false, Collections.emptySet()));
         }
 
@@ -97,13 +95,9 @@ public class ChannelDetailsAction extends RhnAction {
         request.setAttribute("channel", chan);
         request.setAttribute("channel_last_modified", LocalizationService.
                     getInstance().formatCustomDate(chan.getLastModified()));
-        //Check if the channel needed repodata,
-        // if so get the status and last build info
-        if (chan.isChannelRepodataRequired()) {
-            request.setAttribute("repo_status",
-                    ChannelManager.isChannelLabelInProgress(chan.getLabel()));
-            request.setAttribute("repo_last_build", ChannelManager.getRepoLastBuild(chan));
-        }
+        //Check the status of the channel
+        request.setAttribute("repo_status", chan.getSyncStatus().getDescription());
+        request.setAttribute("repo_last_build", ChannelManager.getRepoLastBuild(chan));
         // turn on the right radio button
         if (chan.isGloballySubscribable(user.getOrg())) {
             form.set("global", "all");

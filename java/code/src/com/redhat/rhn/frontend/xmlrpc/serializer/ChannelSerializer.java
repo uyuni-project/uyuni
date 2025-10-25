@@ -53,6 +53,7 @@ import java.util.List;
  *      #prop("string", "end_of_life")
  *      #prop("string", "parent_channel_label")
  *      #prop("string", "clone_original")
+ *      #prop_desc("string", "sync_status", "'C' for new created, 'S' for syncing and 'R' for ready")
  *      #prop_array_begin("contentSources")
  *          #struct_begin("content source")
  *              #prop("int", "id")
@@ -133,6 +134,7 @@ public class ChannelSerializer extends ApiResponseSerializer<Channel> {
         else {
             builder.add("clone_original", "");
         }
+        builder.add("sync_status", src.getSyncStatus().getLabel());
 
         return builder.build();
     }
