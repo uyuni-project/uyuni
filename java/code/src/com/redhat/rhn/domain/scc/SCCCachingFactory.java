@@ -52,8 +52,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.persistence.NoResultException;
-
 /**
  * Factory class for populating and reading from SCC caching tables.
  */public class SCCCachingFactory extends HibernateFactory {
@@ -179,15 +177,10 @@ import javax.persistence.NoResultException;
         if (id == null) {
             return null;
         }
-        try {
-            return getSession().createNativeQuery("SELECT * from suseSCCSubscription WHERE scc_id = :scc",
-                            SCCSubscription.class)
-                    .setParameter("scc", id , StandardBasicTypes.LONG)
-                    .getSingleResult();
-        }
-        catch (NoResultException e) {
-            return null;
-        }
+        return getSession().createNativeQuery("SELECT * from suseSCCSubscription WHERE scc_id = :scc",
+                        SCCSubscription.class)
+                .setParameter("scc", id , StandardBasicTypes.LONG)
+                .uniqueResult();
     }
 
     /**
@@ -201,7 +194,6 @@ import javax.persistence.NoResultException;
      * Lookup all Order Items
      * @return list of Order Items
      */
-    @SuppressWarnings("unchecked")
     public static List<SCCOrderItem> lookupOrderItems() {
         log.debug("Retrieving orderItems from cache");
         return getSession().createNativeQuery("SELECT * from suseSCCOrderItem", SCCOrderItem.class)

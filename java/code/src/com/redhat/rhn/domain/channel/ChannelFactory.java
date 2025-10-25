@@ -46,7 +46,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
-import org.hibernate.query.Query;
 import org.hibernate.type.StandardBasicTypes;
 
 import java.util.ArrayList;
@@ -1174,7 +1173,7 @@ public class ChannelFactory extends HibernateFactory {
                 .createNativeQuery(
                         "SELECT * FROM rhnChannelSyncFlag WHERE channel_id = :channel", ChannelSyncFlag.class)
                 .setParameter("channel", channel.getId(), StandardBasicTypes.LONG)
-                .getSingleResult();
+                .uniqueResult();
     }
 
     /**
@@ -2027,15 +2026,10 @@ public class ChannelFactory extends HibernateFactory {
         Session session = getSession();
         String sql
                 = "SELECT * FROM rhnChannelProduct WHERE product = :product AND version = :version";
-        Query<ChannelProduct> query = session.createNativeQuery(sql, ChannelProduct.class);
-        query.setParameter("product", product, StandardBasicTypes.STRING);
-        query.setParameter("version", version, StandardBasicTypes.STRING);
-        try {
-            return query.getSingleResult();
-        }
-        catch (NoResultException e) {
-            return null;
-        }
+        return session.createNativeQuery(sql, ChannelProduct.class)
+                .setParameter("product", product, StandardBasicTypes.STRING)
+                .setParameter("version", version, StandardBasicTypes.STRING)
+                .uniqueResult();
     }
 
     /**

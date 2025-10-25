@@ -73,7 +73,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.persistence.NoResultException;
 import javax.persistence.Tuple;
 
 /**
@@ -1420,14 +1419,9 @@ public class ServerFactory extends HibernateFactory {
      * @return contact method with the given label
      */
     public static ContactMethod findContactMethodByLabel(String label) {
-        try {
-            return getSession().createQuery("FROM ContactMethod WHERE label = :label", ContactMethod.class)
+        return getSession().createQuery("FROM ContactMethod WHERE label = :label", ContactMethod.class)
                 .setParameter("label", label, StandardBasicTypes.STRING)
-                .getSingleResult();
-        }
-        catch (NoResultException e) {
-            return null;
-        }
+                .uniqueResult();
     }
 
     /**
