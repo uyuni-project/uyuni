@@ -27,6 +27,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
@@ -52,6 +53,7 @@ import javax.persistence.Table;
 @IdClass(ServerActionId.class)
 public class ServerAction extends BaseDomainHelper implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
     private static final Logger LOG = LogManager.getLogger(ServerAction.class);
 
@@ -59,11 +61,15 @@ public class ServerAction extends BaseDomainHelper implements Serializable {
     @Column(name = "server_id")
     private Long serverId;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "server_id")
+    @MapsId
+    private Server server;
+
     @Id
     @ManyToOne(targetEntity = Action.class, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.DETACH})
     @JoinColumn(name = "action_id")
     private Action parentAction;
-
 
     @Column(name = "result_code")
     private Long resultCode;
@@ -84,9 +90,6 @@ public class ServerAction extends BaseDomainHelper implements Serializable {
     @JoinColumn(name = "status")
     private ActionStatus status;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId
-    private Server server;
 
 
     private static MaintenanceManager maintenanceManager = new MaintenanceManager();

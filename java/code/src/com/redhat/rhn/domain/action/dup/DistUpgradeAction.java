@@ -58,16 +58,28 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.persistence.CascadeType;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapKeyColumn;
+import javax.persistence.OneToMany;
 import javax.servlet.http.HttpServletRequest;
 
 /**
  * DistUpgradeAction - Class representation of distribution upgrade action.
  */
+@Entity
+@DiscriminatorValue("501")
 public class DistUpgradeAction extends Action {
     private static final Logger LOG = LogManager.getLogger(DistUpgradeAction.class);
 
     private static final long serialVersionUID = -702781375842108784L;
 
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @MapKeyColumn(name = "server_id")
+    @JoinColumn(name = "action_id", nullable = false)
     private Map<Long, DistUpgradeActionDetails> detailsMap;
 
     /**

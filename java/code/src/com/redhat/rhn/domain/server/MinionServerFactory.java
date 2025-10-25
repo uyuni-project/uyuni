@@ -29,7 +29,6 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
-import org.hibernate.query.Query;
 import org.hibernate.type.StandardBasicTypes;
 
 import java.math.BigDecimal;
@@ -196,7 +195,13 @@ public class MinionServerFactory extends HibernateFactory {
     */
    public static List<ServerAction> findTradClientServerActions(long actionId) {
        return HibernateFactory.getSession()
-               .createNamedQuery("Action.findTradClientServerActions", ServerAction.class)
+               .createQuery("""
+                       SELECT sa
+                       FROM   ServerAction AS sa
+                       JOIN   sa.server AS s
+                       WHERE  type(s) != com.redhat.rhn.domain.server.MinionServer
+                       AND    action_id = :id
+                """, ServerAction.class)
                .setParameter("id", actionId)
                .getResultList();
    }
@@ -231,11 +236,25 @@ public class MinionServerFactory extends HibernateFactory {
     private static List<MinionSummary> findMinionSummariesInStatus(Long actionId, List<ActionStatus> allowedStatues) {
         Session session = HibernateFactory.getSession();
 
-        Query<MinionSummary> query = session.createNamedQuery("Action.findMinionSummaries", MinionSummary.class)
-                                            .setParameter("id", actionId)
-                                            .setParameter("allowedStatues", allowedStatues);
-
-        return query.getResultList();
+        return session.createQuery("""
+                        SELECT new com.redhat.rhn.domain.server.MinionSummary(
+                                   sa.server.id,
+                                   s.minionId,
+                                   s.digitalServerId,
+                                   s.machineId,
+                                   c.label,
+                                   s.os
+                                   )
+                        FROM   ServerAction AS sa
+                        JOIN   sa.server AS s
+                        JOIN   s.contactMethod AS c
+                        WHERE  type(s) = com.redhat.rhn.domain.server.MinionServer
+                        AND    action_id = :id
+                        AND    sa.status IN (:allowedStatues)
+                        """, MinionSummary.class)
+                       .setParameter("id", actionId)
+                       .setParameter("allowedStatues", allowedStatues)
+                       .getResultList();
     }
 
     /**

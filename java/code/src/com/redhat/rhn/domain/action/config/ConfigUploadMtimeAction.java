@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -31,15 +32,26 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+
 /**
  * ConfigUploadMtimeAction - Class representing ActionType.TYPE_CONFIGFILES_MTIME_UPLOAD: 23
  */
+@Entity
+@DiscriminatorValue("23")
 public class ConfigUploadMtimeAction extends Action {
 
+    @OneToMany(mappedBy = "parentAction", cascade = CascadeType.ALL)
     private Set<ConfigDateFileAction> configDateFileActions;
 
+    @OneToMany(mappedBy = "parentAction", cascade = CascadeType.ALL)
     private Set<ConfigChannelAssociation> configChannelAssociations;
 
+    @OneToOne(mappedBy = "parentAction", cascade = CascadeType.ALL)
     private ConfigDateDetails configDateDetails;
 
     /**

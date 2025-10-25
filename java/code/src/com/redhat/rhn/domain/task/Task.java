@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.org.Org;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -39,6 +40,7 @@ import javax.persistence.Table;
 @Table(name = "rhnTaskQueue")
 public class Task implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -46,22 +48,18 @@ public class Task implements Serializable {
     @SequenceGenerator(name = "task_queue_seq", sequenceName = "rhn_task_queue_id_seq", allocationSize = 1)
     private Long id;
 
-    @Id
     @Column(name = "task_name", nullable = false, length = 64)
     private String name;
 
-    @Id
     @Column(name = "task_data")
     private Long data;
 
     @Column
     private int priority;
 
-    @Id
     @Column(nullable = false)
     private Date earliest;
 
-    @Id
     @ManyToOne(optional = false)
     @JoinColumn(name = "org_id")
     private Org org;

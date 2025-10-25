@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -32,12 +33,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
+
 /**
  * ConfigUpload - Class representing ActionType.TYPE_CONFIGFILES_MTIME_UPLOAD: 15
  */
+@Entity
+@DiscriminatorValue("15")
 public class ConfigUploadAction extends Action {
 
+    @OneToMany(mappedBy = "parentAction", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<ConfigChannelAssociation> configChannelAssociations;
+
+    @OneToMany(mappedBy = "parentAction", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<ConfigFileNameAssociation> configFileNameAssociations;
 
     /**

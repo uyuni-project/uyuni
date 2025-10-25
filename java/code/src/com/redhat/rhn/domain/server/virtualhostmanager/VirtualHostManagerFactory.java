@@ -46,8 +46,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-import javax.persistence.NoResultException;
-
 /**
  * Singleton representing Virtual Host Manager hibernate factory.
  */
@@ -102,19 +100,12 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      * exist
      */
     public VirtualHostManager lookupByLabel(String label) {
-        VirtualHostManager hostManager;
-        try {
-            hostManager = HibernateFactory.getSession().createNativeQuery("""
-                                      SELECT * from suseVirtualHostManager
-                                      WHERE label = :label
-                                      """, VirtualHostManager.class)
-                    .setParameter("label", label, StandardBasicTypes.STRING)
-                    .getSingleResult();
-        }
-        catch (NoResultException e) {
-            hostManager = null;
-        }
-        return hostManager;
+        return HibernateFactory.getSession().createNativeQuery("""
+                                  SELECT * from suseVirtualHostManager
+                                  WHERE label = :label
+                                  """, VirtualHostManager.class)
+                .setParameter("label", label, StandardBasicTypes.STRING)
+                .uniqueResult();
     }
 
     /**
@@ -135,21 +126,14 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      * exist
      */
     public VirtualHostManager lookupByIdAndOrg(Long id, Org org) {
-        VirtualHostManager hostManager;
-        try {
-            hostManager = HibernateFactory.getSession().createNativeQuery("""
+        return HibernateFactory.getSession().createNativeQuery("""
                                       SELECT * from suseVirtualHostManager
                                       WHERE id = :id
                                       AND  org_id = :org
                                       """, VirtualHostManager.class)
-                    .setParameter("org", org.getId(), StandardBasicTypes.LONG)
-                    .setParameter("id", id, StandardBasicTypes.LONG)
-                    .getSingleResult();
-        }
-        catch (NoResultException e) {
-            hostManager = null;
-        }
-        return hostManager;
+                .setParameter("org", org.getId(), StandardBasicTypes.LONG)
+                .setParameter("id", id, StandardBasicTypes.LONG)
+                .uniqueResult();
     }
 
     /**
@@ -178,21 +162,14 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      * exist
      */
     public VirtualHostManager lookupByLabelAndOrg(String label, Org org) {
-        VirtualHostManager hostManager;
-        try {
-            hostManager = HibernateFactory.getSession().createNativeQuery("""
-                                      SELECT * from suseVirtualHostManager
-                                      WHERE label = :label
-                                      AND org_id = :org
-                                      """, VirtualHostManager.class)
-                    .setParameter("label", label, StandardBasicTypes.STRING)
-                    .setParameter("org", org.getId(), StandardBasicTypes.LONG)
-                    .getSingleResult();
-        }
-        catch (NoResultException e) {
-            hostManager = null;
-        }
-        return hostManager;
+        return HibernateFactory.getSession().createNativeQuery("""
+                                  SELECT * from suseVirtualHostManager
+                                  WHERE label = :label
+                                  AND org_id = :org
+                                  """, VirtualHostManager.class)
+                .setParameter("label", label, StandardBasicTypes.STRING)
+                .setParameter("org", org.getId(), StandardBasicTypes.LONG)
+                .uniqueResult();
     }
 
     /**
@@ -200,7 +177,6 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      * @param org - organization
      * @return a list of corresponding Virtual Host Managers
      */
-    @SuppressWarnings("unchecked")
     public List<VirtualHostManager> listVirtualHostManagers(Org org) {
         return  getSession().createNativeQuery("""
                                       SELECT * from suseVirtualHostManager
@@ -215,7 +191,6 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      * Returns a list of all Virtual Host Managers
      * @return list of all Virtual Host Managers
      */
-    @SuppressWarnings("unchecked")
     public List<VirtualHostManager> listVirtualHostManagers() {
         return HibernateFactory.getSession().createNativeQuery("SELECT * from suseVirtualHostManager",
                         VirtualHostManager.class)

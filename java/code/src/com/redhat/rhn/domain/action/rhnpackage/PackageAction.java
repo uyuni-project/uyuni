@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2015 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -27,6 +28,7 @@ import com.redhat.rhn.manager.rhnpackage.PackageManager;
 
 import org.apache.commons.text.StringEscapeUtils;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -34,11 +36,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
+
 /**
  * PackageAction
  */
+@Entity
+@DiscriminatorValue("-2")
 public class PackageAction extends Action {
+
+    @Serial
     private static final long serialVersionUID = -6964115307447205711L;
+
+    @OneToMany(mappedBy = "parentAction", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<PackageActionDetails> details = new HashSet<>();
 
     protected PackageAction() {

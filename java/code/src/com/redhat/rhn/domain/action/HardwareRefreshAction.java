@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -45,9 +46,14 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+
 /**
  * HardwareRefreshAction
  */
+@Entity
+@DiscriminatorValue("2")
 public class HardwareRefreshAction extends Action {
     private static final Logger LOG = LogManager.getLogger(HardwareRefreshAction.class);
 

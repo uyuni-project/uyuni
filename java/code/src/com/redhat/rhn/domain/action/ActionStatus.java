@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -21,6 +22,8 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.Immutable;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -33,7 +36,7 @@ import javax.persistence.Table;
 @Table(name = "rhnActionStatus")
 @Immutable
 @Cache(usage = READ_ONLY)
-public class ActionStatus {
+public class ActionStatus implements Serializable {
 
     @Id
     private Long id;

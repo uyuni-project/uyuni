@@ -27,7 +27,6 @@ import org.hibernate.type.StandardBasicTypes;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.NoResultException;
 import javax.persistence.Table;
 
 /**
@@ -59,17 +58,12 @@ public class ExceptionMessage {
      * @return the associated exception object / null if not found otherwise
      */
     public static ExceptionMessage lookup(long exceptionId) {
-        try {
-            return HibernateFactory.getSession()
-                    .createNativeQuery("SELECT * FROM exception_message WHERE id = :id OR id = :negId",
-                            ExceptionMessage.class)
-                    .setParameter("id", exceptionId, StandardBasicTypes.LONG)
-                    .setParameter("negId", -1 * exceptionId, StandardBasicTypes.LONG)
-                    .getSingleResult();
-        }
-        catch (NoResultException e) {
-            return null;
-        }
+        return HibernateFactory.getSession()
+                .createNativeQuery("SELECT * FROM exception_message WHERE id = :id OR id = :negId",
+                        ExceptionMessage.class)
+                .setParameter("id", exceptionId, StandardBasicTypes.LONG)
+                .setParameter("negId", -1 * exceptionId, StandardBasicTypes.LONG)
+                .uniqueResult();
     }
 
     /**

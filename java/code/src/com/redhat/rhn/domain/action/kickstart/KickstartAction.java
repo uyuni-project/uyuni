@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -16,12 +17,20 @@ package com.redhat.rhn.domain.action.kickstart;
 
 import com.redhat.rhn.domain.action.Action;
 
+import javax.persistence.CascadeType;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToOne;
+
 /**
  * KickstartAction
  */
+@Entity
+@DiscriminatorValue("-3")
 public class KickstartAction extends Action {
 
-
+    @OneToOne(mappedBy = "parentAction", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private KickstartActionDetails kickstartActionDetails;
 
     /**
