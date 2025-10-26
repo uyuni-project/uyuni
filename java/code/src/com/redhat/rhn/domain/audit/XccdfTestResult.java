@@ -57,7 +57,7 @@ import javax.persistence.Transient;
 @Entity
 @Table(name = "rhnXccdfTestresult")
 @Cacheable
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class XccdfTestResult implements Serializable {
 
     @Id
