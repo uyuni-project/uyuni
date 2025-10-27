@@ -126,7 +126,7 @@ public class VirtualInstanceFactory extends HibernateFactory {
      * is found.
      */
     public VirtualInstance lookupById(final Long id) {
-        return (VirtualInstance)execute(session -> session.get(VirtualInstance.class, id));
+        return instance.lookupObjectByParam(VirtualInstance.class, "id", id);
     }
 
     /**

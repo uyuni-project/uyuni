@@ -329,6 +329,8 @@ import com.redhat.rhn.domain.server.ServerSnapshotTagLink;
 import com.redhat.rhn.domain.server.ServerUuid;
 import com.redhat.rhn.domain.server.SnapshotTag;
 import com.redhat.rhn.domain.server.SnapshotTagName;
+import com.redhat.rhn.domain.server.VirtualInstance;
+import com.redhat.rhn.domain.server.VirtualInstanceInfo;
 import com.redhat.rhn.domain.server.VirtualInstanceState;
 import com.redhat.rhn.domain.server.VirtualInstanceType;
 import com.redhat.rhn.domain.server.ansible.AnsiblePath;
@@ -754,6 +756,8 @@ public class AnnotationRegistry {
             VirtualHostManager.class,
             VirtualHostManagerConfig.class,
             VirtualHostManagerNodeInfo.class,
+            VirtualInstance.class,
+            VirtualInstanceInfo.class,
             VirtualInstanceRefreshAction.class,
             VirtualInstanceState.class,
             VirtualInstanceType.class,

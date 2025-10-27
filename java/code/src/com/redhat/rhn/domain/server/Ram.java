@@ -46,11 +46,14 @@ public class Ram extends BaseDomainHelper {
                     @Parameter(name = "increment_size", value = "1")
             })
     private Long id;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "server_id")
     private Server server;
+
     @Column
     private long ram;
+
     @Column
     private long swap;
 
