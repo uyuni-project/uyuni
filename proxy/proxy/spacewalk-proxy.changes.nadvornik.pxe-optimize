@@ -1,1 +1,0 @@
-- Handle large static files outside of wsgi script (bsc#1244424)
