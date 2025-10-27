@@ -29,7 +29,7 @@ public class NoSuchActionException extends FaultException  {
      */
     public NoSuchActionException(String action) {
         super(2700, "noSuchAction", LocalizationService.getInstance().
-                getMessage("api.action.nosuchaction", new Object[] {action}));
+                getMessage("api.action.nosuchaction", action));
     }
 
     /**
@@ -41,6 +41,6 @@ public class NoSuchActionException extends FaultException  {
      */
     public NoSuchActionException(String action, Throwable cause) {
         super(2700, "noSuchAction", LocalizationService.getInstance().
-                getMessage("api.action.nosuchaction", new Object[] {action}), cause);
+                getMessage("api.action.nosuchaction", action), cause);
     }
 }

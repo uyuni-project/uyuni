@@ -78,22 +78,22 @@
               </c:otherwise>
                 </c:choose>
         </rl:column>
-                <rl:column bound="false"
+        <rl:column bound="false"
                    sortable="false"
                    headerkey="satadmin.displayname"
-                   attr="orgAdmin">
-            <c:choose>
-              <c:when test="${current.satAdmin == 1}">
-                <a href="/rhn/admin/multiorg/ToggleSatAdmin.do?uid=${current.id}">
+                   attr="satAdmin">
+          <c:choose>
+            <c:when test="${current.satAdmin == 1}">
+              <a href="/rhn/admin/multiorg/ToggleSatAdmin.do?uid=${current.id}">
                 <rhn:icon type="item-enabled" />
-                </a>
-              </c:when>
-              <c:otherwise>
-                <a href="/rhn/admin/multiorg/ToggleSatAdmin.do?uid=${current.id}">
+              </a>
+            </c:when>
+            <c:otherwise>
+              <a href="/rhn/admin/multiorg/ToggleSatAdmin.do?uid=${current.id}">
                 <rhn:icon type="item-disabled" />
-                </a>
-              </c:otherwise>
-                </c:choose>
+              </a>
+            </c:otherwise>
+          </c:choose>
         </rl:column>
 
 </rl:list>

@@ -31,8 +31,7 @@ public class MultipleBaseChannelException extends FaultException  {
      */
     public MultipleBaseChannelException(String chan1, String chan2) {
         super(1203, "Multiple Base Channels Selected" , LocalizationService.getInstance().
-                getMessage("api.channel.software.multiplebasechannel",
-                        new Object [] {chan1, chan2}));
+                getMessage("api.channel.software.multiplebasechannel", chan1, chan2));
     }
 
     /**
@@ -43,8 +42,7 @@ public class MultipleBaseChannelException extends FaultException  {
      */
     public MultipleBaseChannelException(String chan1, String chan2, Throwable cause) {
         super(1203, "multipleBaseChannelSelected" , LocalizationService.getInstance().
-                getMessage("api.channel.software.multiplebasechannel",
-                        new Object [] {chan1, chan2}), cause);
+                getMessage("api.channel.software.multiplebasechannel", chan1, chan2), cause);
     }
 
 }

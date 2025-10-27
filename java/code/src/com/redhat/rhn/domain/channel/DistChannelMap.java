@@ -22,18 +22,42 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 /**
  * DistChannelMap - Class representation of the table rhnDistChannelMap.
  */
+@Entity
+@Table(name = "rhnDistChannelMap")
 public class DistChannelMap implements Serializable {
 
     private static final long serialVersionUID = 4083273166300423729L;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "dcm_seq")
+    @SequenceGenerator(name = "dcm_seq", sequenceName = "rhn_dcm_id_seq", allocationSize = 1)
     private Long id;
+    @Column
     private String os;
+    @Column
     private String release;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "channel_arch_id")
     private ChannelArch channelArch;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "org_id")
     private Org org;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "channel_id")
     private Channel channel;
 
     /**
@@ -143,7 +167,7 @@ public class DistChannelMap implements Serializable {
     /**
      * @param idIn The id to set.
      */
-    public void setId(Long idIn) {
+    protected void setId(Long idIn) {
         this.id = idIn;
     }
 

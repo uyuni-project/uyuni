@@ -15,7 +15,8 @@
 
 package com.redhat.rhn.domain.action.channel;
 
-import com.redhat.rhn.domain.action.ActionChild;
+import com.redhat.rhn.domain.BaseDomainHelper;
+import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.channel.AccessToken;
 import com.redhat.rhn.domain.channel.Channel;
 
@@ -25,15 +26,53 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 /**
  * Class representation of the table rhnActionSubChannels
  */
-public class SubscribeChannelsActionDetails extends ActionChild {
+@Entity
+@Table(name = "rhnActionSubChannels")
+public class SubscribeChannelsActionDetails extends BaseDomainHelper {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_ACT_SUBSCR_CHNLS_ID_SEQ")
+    @SequenceGenerator(name = "RHN_ACT_SUBSCR_CHNLS_ID_SEQ", sequenceName = "RHN_ACT_SUBSCR_CHNLS_ID_SEQ",
+            allocationSize = 1)
     private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "base_channel_id", updatable = false, nullable = true)
     private Channel baseChannel;
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "rhnActionSubChannelsList",
+        joinColumns = @JoinColumn(name = "subscribe_channels_id"),
+        inverseJoinColumns = @JoinColumn(name = "channel_id"))
     private Set<Channel> channels = new HashSet<>();
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "rhnActionSubChannelsTokens",
+        joinColumns = @JoinColumn(name = "subscribe_channels_id"),
+        inverseJoinColumns = @JoinColumn(name = "token_id"))
     private Set<AccessToken> accessTokens = new HashSet<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "action_id", updatable = false, nullable = false)
+    private Action parentAction;
 
     /**
      * No arg constructor needed by Hibernate.
@@ -60,7 +99,7 @@ public class SubscribeChannelsActionDetails extends ActionChild {
     /**
      * @param idIn to set
      */
-    public void setId(Long idIn) {
+    protected void setId(Long idIn) {
         this.id = idIn;
     }
 
@@ -97,6 +136,22 @@ public class SubscribeChannelsActionDetails extends ActionChild {
      */
     public Set<AccessToken> getAccessTokens() {
         return accessTokens;
+    }
+
+    /**
+     * Gets the parent Action associated with this ServerAction record
+     * @return Returns the parentAction.
+     */
+    public Action getParentAction() {
+        return parentAction;
+    }
+
+    /**
+     * Sets the parent Action associated with this ServerAction record
+     * @param parentActionIn The parentAction to set.
+     */
+    public void setParentAction(Action parentActionIn) {
+        this.parentAction = parentActionIn;
     }
 
     /**

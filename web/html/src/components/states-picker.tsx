@@ -49,7 +49,7 @@ type StatesPickerProps = {
   matchUrl: (filter?: string) => any;
   applyRequest?: (systems: any[]) => any;
   saveRequest: (channels: any[]) => any;
-  messages?: (messages: MessageType[] | any) => any;
+  messages?: (messages: MessageType[]) => any;
 };
 
 class StatesPickerState {
@@ -61,7 +61,11 @@ class StatesPickerState {
   };
   assigned: any[] = [];
   changed = new Map();
-  showSaltState?: any | null = undefined;
+  showSaltState?: {
+    id: string;
+    name: string;
+    content: React.ReactNode;
+  } = undefined;
   rank?: boolean = undefined;
   messages: MessageType[] = [];
 }
@@ -334,7 +338,7 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
 
   onClosePopUp = () => {
     this.setState({
-      showSaltState: null,
+      showSaltState: undefined,
     });
   };
 

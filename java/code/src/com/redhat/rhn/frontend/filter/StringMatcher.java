@@ -32,12 +32,11 @@ class StringMatcher implements Matcher {
 
         if (StringUtils.isBlank(filterData) ||
                     StringUtils.isBlank(filterColumn)) {
-            return true; ///show all if I entered a blank value
+            return true; //show all if I entered a blank value
         }
         String value = ((String)MethodUtil.callMethod(obj,
                 StringUtil.beanify("get " +
-                                    filterColumn),
-                                new Object[0]));
+                                    filterColumn)));
         if (!StringUtils.isBlank(value)) {
             return value.toUpperCase().contains(filterData.toUpperCase());
         }

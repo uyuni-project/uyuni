@@ -39,11 +39,11 @@ import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.hibernate.type.StandardBasicTypes;
 
+import java.math.BigDecimal;
 import java.sql.Types;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -86,11 +86,7 @@ public  class UserFactory extends HibernateFactory {
      * @return Returns the appropriate state (or null).
      */
     private static State loadState(String label) {
-        Session session = HibernateFactory.getSession();
-        return (State) session.getNamedQuery("UserState.lookupByLabel").setParameter("label", label)
-                //Retrieve from cache if there
-                .setCacheable(true)
-                .uniqueResult();
+        return SINGLETON.lookupObjectByParam(State.class, "label", label, true);
     }
 
     /**
@@ -99,23 +95,30 @@ public  class UserFactory extends HibernateFactory {
      * @param r Role to search for (ORG_ADMIN)
      * @return the responsible user (first org admin) of the org.
      */
-    @SuppressWarnings("unchecked")
     public static User findResponsibleUser(Long orgId, Role r) {
         Session session = HibernateFactory.getSession();
-        Iterator<Object[]> itr = session.getNamedQuery("User.findResponsibleUser")
+
+        Optional<Object> obj = session.createNativeQuery("""
+                        SELECT ugm.user_id AS user_id
+                        FROM   rhnUserGroupMembers ugm
+                        WHERE  ugm.user_group_id = (SELECT id
+                                                    FROM   rhnUserGroup
+                                                    WHERE  org_id = :org_id
+                                                    AND    group_type = :type_id)
+                        ORDER BY ugm.user_id
+                        """)
                 .setParameter("org_id", orgId)
                 .setParameter("type_id", r.getId())
-                //Retrieve from cache if there
-                .list().iterator();
-        if (itr.hasNext()) {
-            // only care about the first one
-            Object[] row = itr.next();
-            User u = createUser();
-            u.setId((Long) row[0]);
-            u.setLogin((String)row[1]);
-            return u;
-        }
-        return null;
+                // only care about the first one
+                .getResultStream()
+                .findFirst();
+        return obj.flatMap(o -> {
+                    if (o instanceof BigDecimal bd) {
+                        return Optional.of(UserFactory.lookupById(bd.longValue()));
+                    }
+                    return Optional.empty();
+                })
+                .orElse(null);
     }
 
     /**
@@ -125,17 +128,7 @@ public  class UserFactory extends HibernateFactory {
      */
     public static User findRandomOrgAdmin(Org orgIn) {
         Role r = RoleFactory.ORG_ADMIN;
-        Session session = HibernateFactory.getSession();
-        Iterator<Long> itr = session.getNamedQuery("User.findRandomOrgAdmin")
-                .setParameter("org_id", orgIn.getId())
-                .setParameter("type_id", r.getId())
-                //Retrieve from cache if there
-                .list().iterator();
-        if (itr.hasNext()) {
-            // only care about the first one
-            return UserFactory.lookupById(itr.next());
-        }
-        return null;
+        return findResponsibleUser(orgIn.getId(), r);
     }
 
     /** Get the Logger for the derived class so log messages
@@ -214,12 +207,13 @@ public  class UserFactory extends HibernateFactory {
         return results;
     }
 
-    @SuppressWarnings("unchecked")
     private static List<User> realLookupByIds(Collection<Long> ids) {
-        Session session = HibernateFactory.getSession();
-        Query<User> query = session.getNamedQuery("User.findByIds")
-                .setParameterList("userIds", ids);
-        return query.list();
+        return getSession().createQuery("""
+                FROM com.redhat.rhn.domain.user.legacy.UserImpl AS u
+                WHERE u.id in (:userIds)
+                """, User.class)
+                .setParameterList("userIds", ids)
+                .list();
     }
 
     /**
@@ -230,8 +224,14 @@ public  class UserFactory extends HibernateFactory {
      * @return the user found
      */
     public static User lookupById(User user, Long id) {
-        User returnedUser  = getInstance().lookupObjectByNamedQuery("User.findByIdandOrgId",
-                Map.of("uid", id, "orgId", user.getOrg().getId()));
+        User returnedUser  = getSession().createQuery("""
+                FROM com.redhat.rhn.domain.user.legacy.UserImpl AS u
+                WHERE u.id = :uid
+                AND org_id = :orgId
+                """, UserImpl.class)
+                .setParameter("uid", id)
+                .setParameter("orgId", user.getOrg().getId())
+                .uniqueResult();
         if (returnedUser == null || !user.getOrg().equals(returnedUser.getOrg())) {
             throw getNoUserException(id.toString());
         }
@@ -252,7 +252,7 @@ public  class UserFactory extends HibernateFactory {
      * @return the User found
      */
     public static User lookupByLogin(String login) {
-        User user = getInstance().lookupObjectByNamedQuery("User.findByLogin", Map.of(LOGIN_UC, login.toUpperCase()));
+        User user = getInstance().lookupObjectByParam(UserImpl.class, LOGIN_UC, login.toUpperCase());
 
         if (user == null) {
             throw getNoUserException(login);
@@ -267,8 +267,14 @@ public  class UserFactory extends HibernateFactory {
      * @return the User found
      */
     public static User lookupByLogin(User user, String login) {
-        User returnedUser  = getInstance().lookupObjectByNamedQuery("User.findByLoginAndOrgId",
-                Map.of(LOGIN_UC, login.toUpperCase(), "orgId", user.getOrg().getId()));
+        User returnedUser  = getSession().createQuery("""
+                FROM com.redhat.rhn.domain.user.legacy.UserImpl AS u
+                WHERE u.loginUc = :loginUc
+                AND org_id = :orgId
+                """, UserImpl.class)
+                .setParameter("orgId", user.getOrg().getId())
+                .setParameter(LOGIN_UC, login.toUpperCase())
+                .uniqueResult();
 
         if (returnedUser == null) {
             throw getNoUserException(login);
@@ -297,8 +303,12 @@ public  class UserFactory extends HibernateFactory {
      * @return Returns true if the user is disabled
      */
     public static boolean isDisabled(User user) {
-        List<StateChange>  changes =  getInstance().
-                listObjectsByNamedQuery("StateChanges.lookupByUserId", Map.of("user", user));
+        List<StateChange>  changes = getSession().createQuery("""
+                FROM com.redhat.rhn.domain.user.StateChange AS s
+                WHERE s.user = :user ORDER BY s.id DESC
+                """, StateChange.class)
+                .setParameter("user", user)
+                .list();
         return changes != null && !changes.isEmpty() &&
                 DISABLED.equals(changes.get(0).getState());
     }
@@ -444,7 +454,7 @@ public  class UserFactory extends HibernateFactory {
      */
     public static RhnTimeZone getTimeZone(int id) {
         Session session = HibernateFactory.getSession();
-        return (RhnTimeZone) session.getNamedQuery("RhnTimeZone.loadTimeZoneById")
+        return session.createQuery("FROM RhnTimeZone AS t WHERE t.timeZoneId = :tid", RhnTimeZone.class)
                 .setParameter("tid", id, StandardBasicTypes.INTEGER)
                 //Retrieve from cache if there
                 .setCacheable(true)
@@ -458,8 +468,7 @@ public  class UserFactory extends HibernateFactory {
      */
     public static RhnTimeZone getTimeZone(String olsonName) {
         Session session = HibernateFactory.getSession();
-        return (RhnTimeZone) session
-                .getNamedQuery("RhnTimeZone.loadTimeZoneByOlsonName")
+        return session.createQuery("FROM RhnTimeZone AS t WHERE t.olsonName = :ton", RhnTimeZone.class)
                 .setParameter("ton", olsonName, StandardBasicTypes.STRING)
                 //Retrieve from cache if there
                 .setCacheable(true)
@@ -475,9 +484,7 @@ public  class UserFactory extends HibernateFactory {
         if (sysDefault != null) {
             return sysDefault;
         }
-        Session session = HibernateFactory.getSession();
-        List<RhnTimeZone> allTimeZones =
-                session.getNamedQuery("RhnTimeZone.loadAll").list();
+        List<RhnTimeZone> allTimeZones = loadAllTimeZones();
         for (RhnTimeZone tz : allTimeZones) {
             if (TimeZone.getDefault().getRawOffset() == TimeZone.getTimeZone(
                     tz.getOlsonName()).getRawOffset()) {
@@ -497,8 +504,7 @@ public  class UserFactory extends HibernateFactory {
         //timeZoneList is manually cached because instance variable is properly sorted
         //whereas the database is not.
         if (timeZoneList == null) {
-            Session session = HibernateFactory.getSession();
-            List<RhnTimeZone> timeZones = session.getNamedQuery("RhnTimeZone.loadAll").list();
+            List<RhnTimeZone> timeZones = loadAllTimeZones();
 
             //Now sort the timezones, GMT+0000 at top, then East-to-West
             if (timeZones != null) {
@@ -508,6 +514,11 @@ public  class UserFactory extends HibernateFactory {
             timeZoneList = timeZones;
         }
         return timeZoneList;
+    }
+
+    private static List<RhnTimeZone> loadAllTimeZones() {
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("FROM RhnTimeZone AS t", RhnTimeZone.class).list();
     }
 
     private static void sortTimezones(List<RhnTimeZone> timeZones) {
@@ -639,9 +650,7 @@ public  class UserFactory extends HibernateFactory {
         }
         else {
             if (usp == null) {
-                id = new UserServerPreferenceId(user, server, preferenceName);
-                usp = new UserServerPreference();
-                usp.setId(id);
+                usp = new UserServerPreference(user, server, preferenceName);
                 usp.setValue("0");
                 session.save(usp);
             }
@@ -654,12 +663,13 @@ public  class UserFactory extends HibernateFactory {
      * @param email String to find users for.
      * @return list of users.
      */
-    @SuppressWarnings("unchecked")
     public static List<User> lookupByEmail(String email) {
-        Session session = HibernateFactory.getSession();
-        Query<User> query = session.getNamedQuery("User.findByEmail")
-                .setParameter("userEmail", email);
-        return query.list();
+        return getSession().createQuery("""
+                FROM com.redhat.rhn.domain.user.legacy.UserImpl AS u
+                WHERE UPPER(u.personalInfo.email) = UPPER(:userEmail)
+                """, User.class)
+                .setParameter("userEmail", email)
+                .list();
     }
 
     /**
@@ -668,10 +678,12 @@ public  class UserFactory extends HibernateFactory {
      * @param inOrg Optional Org to find users for.
      * @return list of users.
      */
-    public List<UserImpl> findAllUsers(Optional<Org> inOrg) {
+    public List<User> findAllUsers(Optional<Org> inOrg) {
         return Opt.fold(inOrg,
-            () -> listObjectsByNamedQuery("User.getAllUsers", Map.of()),
-            org -> listObjectsByNamedQuery("User.findAllUsersByOrg", Map.of("org_id", org.getId())));
+            () -> getSession().createQuery("FROM UserImpl AS u", User.class).list(),
+            org -> getSession().createQuery("FROM UserImpl AS u WHERE org_id = :org_id", User.class)
+                    .setParameter("org_id", org.getId()).list()
+        );
     }
 
     /**

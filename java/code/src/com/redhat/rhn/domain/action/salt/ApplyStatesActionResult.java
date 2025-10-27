@@ -28,16 +28,39 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 /**
  * ApplyStatesActionResult
  */
+@Entity
+@Table(name = "rhnActionApplyStatesResult")
+@IdClass(ApplyStatesActionResultId.class)
 public class ApplyStatesActionResult implements Serializable {
 
+    @Id
+    @Column(name = "server_id")
     private Long serverId;
+
+    @Id
+    @Column(name = "action_apply_states_id")
     private Long actionApplyStatesId;
+
+    @Column(name = "return_code")
     private Long returnCode;
+
+    @Column
     private byte[] output;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "action_apply_states_id", nullable = false, insertable = false, updatable = false)
     private ApplyStatesActionDetails parentActionDetails;
 
     /**

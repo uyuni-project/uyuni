@@ -142,12 +142,11 @@ public class ErrataListConfirmAction extends RhnAction implements
             createMessage(
                 request,
                 "ssm.errata.message.scheduled",
-                new String[] {LocalizationService.getInstance().formatDate(earliest,
-                    request.getLocale())});
+                LocalizationService.getInstance().formatDate(earliest, request.getLocale()));
         }
         else {
-            createMessage(request, "ssm.errata.message.queued", new String[] {
-                actionChain.getId().toString(), actionChain.getLabel()});
+            createMessage(request, "ssm.errata.message.queued",
+                actionChain.getId().toString(), actionChain.getLabel());
         }
 
         RhnSet set = getSetDecl().get(context.getCurrentUser());

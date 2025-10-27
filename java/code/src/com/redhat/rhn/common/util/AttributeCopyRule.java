@@ -33,8 +33,7 @@ public class AttributeCopyRule extends Rule {
         Object param = digester.peek();
         Method me;
         try {
-            me = param.getClass().getMethod("put",
-                                            new Class[] { Object.class, Object.class });
+            me = param.getClass().getMethod("put", Object.class, Object.class);
         }
         catch (NoSuchMethodException e) {
             return;

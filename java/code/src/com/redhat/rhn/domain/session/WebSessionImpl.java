@@ -18,13 +18,29 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.session.SessionManager;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 /**
  * A web session
  */
+@Entity
+@Table(name = "PXTSessions")
 public class WebSessionImpl implements WebSession {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pxt_seq")
+    @SequenceGenerator(name = "pxt_seq", sequenceName = "pxt_id_seq", allocationSize = 1)
     private Long id;
+    @Column
     private long expires;
+    @Column(name = "web_user_id")
     private Long webUserId;
+    @Column
     private String value;
 
     /**

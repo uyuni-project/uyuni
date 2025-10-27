@@ -19,9 +19,20 @@ import com.redhat.rhn.domain.channel.Channel;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 /**
  * Class representation of a task to perform during a distribution upgrade.
  */
+@Entity
+@Table(name = "rhnActionDupChannel")
+@IdClass(DistUpgradeChannelTaskId.class)
 public class DistUpgradeChannelTask extends BaseDomainHelper implements Serializable {
 
     private static final long serialVersionUID = -5332431075711058873L;
@@ -29,8 +40,17 @@ public class DistUpgradeChannelTask extends BaseDomainHelper implements Serializ
     public static final char SUBSCRIBE = 'S';
     public static final char UNSUBSCRIBE = 'U';
 
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "action_dup_id")
     private DistUpgradeActionDetails details;
+
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "channel_id")
     private Channel channel;
+
+    @Column
     private char task;
 
     /**

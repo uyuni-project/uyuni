@@ -14,28 +14,45 @@
  */
 package com.redhat.rhn.domain.kickstart;
 
+import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.manager.kickstart.IpAddress;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import java.io.Serializable;
-import java.util.Date;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  * KickstartIpRange - Class representation of the table rhnkickstartiprange.
  */
-public class KickstartIpRange implements Serializable {
+@Entity
+@Table(name = "rhnKickstartIpRange")
+@IdClass(KickstartIpRangeId.class)
+public class KickstartIpRange extends BaseDomainHelper {
 
     private static final long serialVersionUID = 1L;
-    private KickstartData ksdata;
-    private Org org;
-    private Long min;
-    private Long max;
-    private Date created;
-    private Date modified;
 
+    @Id
+    @ManyToOne(targetEntity = KickstartData.class)
+    @JoinColumn(name = "kickstart_id")
+    private KickstartData ksdata;
+
+    @Id
+    @ManyToOne(targetEntity = Org.class)
+    @JoinColumn(name = "org_id")
+    private Org org;
+
+    @Id
+    private Long min;
+
+    @Id
+    private Long max;
 
     /**
      * Getter for kickstartId
@@ -101,37 +118,6 @@ public class KickstartIpRange implements Serializable {
         this.max = maxIn;
     }
 
-    /**
-     * Getter for created
-     * @return Date to get
-    */
-    public Date getCreated() {
-        return this.created;
-    }
-
-    /**
-     * Setter for created
-     * @param createdIn to set
-    */
-    public void setCreated(Date createdIn) {
-        this.created = createdIn;
-    }
-
-    /**
-     * Getter for modified
-     * @return Date to get
-    */
-    public Date getModified() {
-        return this.modified;
-    }
-
-    /**
-     * Setter for modified
-     * @param modifiedIn to set
-    */
-    public void setModified(Date modifiedIn) {
-        this.modified = modifiedIn;
-    }
     /**
      * {@inheritDoc}
      */

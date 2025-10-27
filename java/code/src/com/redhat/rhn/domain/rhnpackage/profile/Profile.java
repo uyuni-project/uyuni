@@ -25,20 +25,55 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.Set;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 /**
  * Profile
  */
+@Entity
+@Table(name = "rhnServerProfile")
 public class Profile extends BaseDomainHelper implements Identifiable {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_SERVER_PROFILE_ID_SEQ")
+    @SequenceGenerator(name = "RHN_SERVER_PROFILE_ID_SEQ", sequenceName = "RHN_SERVER_PROFILE_ID_SEQ",
+            allocationSize = 1)
     private Long id;
-    private String name;
-    private String description;
-    private String info;
-    private Org org;
-    private Channel baseChannel;
-    private ProfileType profileType;
-    private Set<ProfileEntry> packageEntries;
 
+    @Column
+    private String name;
+
+    @Column
+    private String description;
+
+    @Column
+    private String info;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "org_id")
+    private Org org;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "base_channel")
+    private Channel baseChannel;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "profile_type_id")
+    private ProfileType profileType;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "server_profile_id")
+    private Set<ProfileEntry> packageEntries;
 
     /**
      * Default constructor
@@ -93,7 +128,7 @@ public class Profile extends BaseDomainHelper implements Identifiable {
     /**
      * @param i The id to set.
      */
-    public void setId(Long i) {
+    protected void setId(Long i) {
         this.id = i;
     }
 

@@ -142,7 +142,8 @@ public class OrgFactory extends HibernateFactory {
     public static CustomDataKey lookupKeyByLabelAndOrg(String label, Org org) {
         Session session = HibernateFactory.getSession();
 
-        return (CustomDataKey) session.getNamedQuery("CustomDataKey.findByLabelAndOrg")
+        return session.createQuery("FROM CustomDataKey AS c WHERE c.label = :label AND c.org = :org",
+                        CustomDataKey.class)
                 .setParameter("label", label)
                 .setParameter("org", org)
                 //Retrieve from cache if there
@@ -158,7 +159,7 @@ public class OrgFactory extends HibernateFactory {
     public static CustomDataKey lookupKeyById(Long cikid) {
         Session session = HibernateFactory.getSession();
 
-        return (CustomDataKey) session.getNamedQuery("CustomDataKey.findById")
+        return session.createQuery("FROM CustomDataKey AS c WHERE c.id = :id", CustomDataKey.class)
                 .setParameter("id", cikid, StandardBasicTypes.LONG)
                 //Retrieve from cache if there
                 .setCacheable(true)
@@ -309,12 +310,7 @@ public class OrgFactory extends HibernateFactory {
      * @return the Template found
      */
     public static TemplateString lookupTemplateByLabel(String label) {
-        Session session = HibernateFactory.getSession();
-        return (TemplateString) session.getNamedQuery("TemplateString.findByLabel")
-                .setParameter("label", label)
-                //Retrieve from cache if there
-                .setCacheable(true)
-                .uniqueResult();
+        return singleton.lookupObjectByParam(TemplateString.class, "label", label, true);
     }
 
     public static final TemplateString EMAIL_FOOTER =

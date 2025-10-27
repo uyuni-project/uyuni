@@ -149,7 +149,7 @@ end
 Then(/^it should contain the OS of "([^"]*)"$/) do |host|
   node = get_target(host)
   os_family = node.os_family
-  family = os_family.match?(/^opensuse/) ? 'Leap' : 'SLES'
+  family = os_family.match?(/^opensuse/) ? '(Leap|Tumbleweed)' : 'SLES'
   assert_match(/#{family}/, $output)
 end
 

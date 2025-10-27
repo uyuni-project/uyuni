@@ -29,7 +29,7 @@ public class NoSuchOrgException extends FaultException  {
      */
     public NoSuchOrgException(String orgId) {
         super(2850, "noSuchOrg", LocalizationService.getInstance().
-                getMessage("api.org.nosuchorg", new Object[] {orgId}));
+                getMessage("api.org.nosuchorg", orgId));
     }
 
     /**
@@ -41,6 +41,6 @@ public class NoSuchOrgException extends FaultException  {
      */
     public NoSuchOrgException(String orgId, Throwable cause) {
         super(2850, "noSuchOrg", LocalizationService.getInstance().
-                getMessage("api.org.nosuchorg", new Object[] {orgId}), cause);
+                getMessage("api.org.nosuchorg", orgId), cause);
     }
 }

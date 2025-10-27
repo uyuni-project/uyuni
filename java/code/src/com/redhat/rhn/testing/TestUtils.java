@@ -23,6 +23,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.HibernateRuntimeException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.MethodUtil;
+import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.servlets.PxtSessionDelegate;
 import com.redhat.rhn.frontend.servlets.PxtSessionDelegateFactory;
@@ -296,6 +297,35 @@ public class TestUtils {
                       .setCacheable(true)
                       .uniqueResult();
     }
+
+    /**
+     * Helper method to get a ChannelArch from the 2nd level cache by id
+     * @param id Id of the ChannelArch
+     * @return Returns the ChannelArch corresponding to id
+     */
+    public static ChannelArch lookupChannelArchFromCacheById(Long id) {
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("FROM ChannelArch AS c WHERE c.id = :id", ChannelArch.class)
+                .setParameter("id", id, StandardBasicTypes.LONG)
+                //Retrieve from cache if there
+                .setCacheable(true)
+                .uniqueResult();
+    }
+
+    /**
+     * Helper method to get a ChannelArch from the 2nd level cache by label
+     * @param label label of the ChannelArch
+     * @return Returns the ChannelArch corresponding to label
+     */
+    public static ChannelArch lookupChannelArchFromCacheByLabel(String label) {
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("FROM ChannelArch AS c WHERE c.label = :label", ChannelArch.class)
+                .setParameter("label", label, StandardBasicTypes.STRING)
+                //Retrieve from cache if there
+                .setCacheable(true)
+                .uniqueResult();
+    }
+
 
     /**
      * Print the first few lines from a stacktrace so we can figure out who the caller

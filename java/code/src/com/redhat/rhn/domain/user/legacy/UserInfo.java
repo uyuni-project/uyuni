@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2015 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -18,25 +19,72 @@ package com.redhat.rhn.domain.user.legacy;
 import com.redhat.rhn.domain.user.RhnTimeZone;
 import com.redhat.rhn.domain.user.User;
 
+import org.hibernate.annotations.Type;
+
 import java.io.Serializable;
 import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 /**
  * UserInfo represents the bean version of the DB table
  * RHNUSERINFO
  */
+@Entity
+@Table(name = "rhnUserInfo")
 public class UserInfo extends AbstractUserChild implements Serializable {
+
+    @Id
+    @Column(name = "user_id")
+    private long id;
+
+    @Column(name = "page_size")
     private int pageSize;
+
+    @Column(name = "email_notify")
     private int emailNotify;
+
+    @Column(name = "tasko_notify", nullable = false)
+    @Type(type = "yes_no")
     private boolean taskoNotify;
+
+    @Column(name = "use_pam_authentication")
+    @Type(type = "yes_no")
     private boolean usePamAuthentication;
+
+    @Column(name = "show_system_group_list")
     private String showSystemGroupList;
+
+    @Column(name = "preferred_locale")
     private String preferredLocale;
+
+    @Column(name = "preferred_docs_locale")
     private String preferredDocsLocale;
+
+    @Column(name = "last_logged_in")
     private Date lastLoggedIn;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "timezone_id")
     private RhnTimeZone timeZone;
+
+    @OneToOne(targetEntity = UserImpl.class)
+    @JoinColumn(name = "user_id")
+    @MapsId
     private User user;
+
+    @Column(name = "csv_separator")
     private char csvSeparator;
+
+    @Column(name = "web_theme")
     private String webTheme;
 
     /**
@@ -90,8 +138,7 @@ public class UserInfo extends AbstractUserChild implements Serializable {
      * @return showSystemGroupList
      */
     public String getShowSystemGroupList() {
-        if (showSystemGroupList == null ||
-                showSystemGroupList.equals("")) {
+        if (showSystemGroupList == null || showSystemGroupList.isEmpty()) {
             showSystemGroupList = "N";
         }
         return this.showSystemGroupList;

@@ -29,6 +29,6 @@ public class FileListNotFoundException extends FaultException {
      */
     public FileListNotFoundException(String label) {
         super(1068, "FileListNotFoundException", LocalizationService.getInstance().
-                getMessage("api.kickstart.filelist.notfound", new Object[] {label}));
+                getMessage("api.kickstart.filelist.notfound", label));
     }
 }

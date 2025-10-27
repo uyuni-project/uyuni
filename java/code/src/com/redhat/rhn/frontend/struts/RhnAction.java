@@ -77,8 +77,8 @@ public abstract class RhnAction extends Action {
         List retval = new LinkedList<>();
         while (i.hasNext()) {
             Object o = i.next();
-            String name = (String) MethodUtil.callMethod(o, nameMethod, new Object[0]);
-            Object value = MethodUtil.callMethod(o, valueMethod, new Object[0]);
+            String name = (String) MethodUtil.callMethod(o, nameMethod);
+            Object value = MethodUtil.callMethod(o, valueMethod);
             LabelValueBean lb = lv(name, value.toString());
             if (!retval.contains(lb)) {
                 retval.add(lb);

@@ -1,0 +1,2 @@
+- Add indexes to rhnActionSubChannelsTokens table
+- Add index to rhnChannelNewestPackage table (bsc#1249089)

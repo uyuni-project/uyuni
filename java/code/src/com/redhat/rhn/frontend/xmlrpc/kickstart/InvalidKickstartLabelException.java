@@ -29,8 +29,7 @@ public class InvalidKickstartLabelException extends FaultException {
      */
     public InvalidKickstartLabelException(String virtType) {
         super(2753, "invalidKickstartLabel" , LocalizationService.getInstance().
-                getMessage("api.kickstart.invalidkickstartlabel",
-                        new Object [] {virtType}));
+                getMessage("api.kickstart.invalidkickstartlabel", virtType));
     }
 
 }

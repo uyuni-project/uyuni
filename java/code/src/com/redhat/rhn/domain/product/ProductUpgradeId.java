@@ -12,6 +12,9 @@ package com.redhat.rhn.domain.product;
 
 import com.redhat.rhn.domain.action.dup.DistUpgradeActionDetails;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import java.io.Serializable;
 
 public class ProductUpgradeId implements Serializable {
@@ -35,5 +38,26 @@ public class ProductUpgradeId implements Serializable {
         details = detailsIn;
         fromProduct = fromProductIn;
         toProduct = toProductIn;
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .append(details)
+                .append(fromProduct)
+                .append(toProduct)
+                .toHashCode();
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof ProductUpgradeId otherId)) {
+            return false;
+        }
+        return new EqualsBuilder()
+                .append(details, otherId.details)
+                .append(fromProduct, otherId.fromProduct)
+                .append(toProduct, otherId.toProduct)
+                .isEquals();
     }
 }

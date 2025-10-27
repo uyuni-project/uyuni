@@ -341,7 +341,7 @@ public class ActionChainManager {
                 earliest, actionChain, null, sidSet);
         for (Action action : result) {
             ApplyStatesActionDetails applyState = new ApplyStatesActionDetails();
-            applyState.setActionId(action.getId());
+            applyState.setParentAction(action);
             test.ifPresent(applyState::setTest);
             ((ApplyStatesAction)action).setDetails(applyState);
             ActionFactory.save(action);

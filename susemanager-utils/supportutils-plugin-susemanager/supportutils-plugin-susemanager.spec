@@ -23,6 +23,7 @@ Release:        0
 Summary:        Supportconfig Plugin for %{productprettyname}
 License:        GPL-2.0-only
 Group:          Documentation/SUSE
+#!CreateArchive: %{name}
 Source:         %{name}-%{version}.tar.gz
 URL:            https://github.com/uyuni-project/uyuni
 Requires:       supportutils

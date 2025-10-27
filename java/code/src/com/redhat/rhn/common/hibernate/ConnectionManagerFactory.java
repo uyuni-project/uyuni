@@ -49,4 +49,12 @@ public final class ConnectionManagerFactory {
     public static ConnectionManager reportingConnectionManager(String user, String password, String url) {
         return new ReportDbConnectionManager(user, password, url);
     }
+
+    /**
+     * Creates an instance of the connection manager to access the application master database for testing.
+     * @return a {@link ConnectionManager} that connects to the main db
+     */
+    public static ConnectionManager testConnectionManager() {
+        return new TestConnectionManager();
+    }
 }

@@ -38,8 +38,10 @@ License:        GPL-2.0-only
 # FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
 URL:            https://github.com/uyuni-project/uyuni
+#!CreateArchive: %{name}
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}.tar.gz
-Source1:        node-modules.tar.gz
+#!CreateArchive: node_modules
+Source1:        node_modules.tar.gz
 Source2:        spacewalk-web-rpmlintrc
 BuildRequires:  gettext
 BuildRequires:  make
@@ -146,17 +148,13 @@ Configuration file for spacewalk-base-minimal package.
 
 %prep
 %setup -q
-pushd html/src
 tar xf %{S:1}
-popd
 
 %build
 make -f Makefile.spacewalk-web PERLARGS="INSTALLDIRS=vendor" %{?_smp_mflags}
-pushd html/src
 mkdir -p %{buildroot}%{nodejs_sitelib}
 cp -pr node_modules/* %{buildroot}%{nodejs_sitelib}
-NODE_OPTIONS="--trace-warnings --trace-deprecation --trace-uncaught --unhandled-rejections=strict" node build.js --check-spec=false
-popd
+NODE_OPTIONS="--trace-warnings --trace-deprecation --trace-uncaught --unhandled-rejections=strict" node html/src/build.js --check-spec=false
 rm -rf %{buildroot}%{nodejs_sitelib}
 sed -i -r "s/^(web.buildtimestamp *= *)_OBS_BUILD_TIMESTAMP_$/\1$(date +'%%Y%%m%%d%%H%%M%%S')/" conf/rhn_web.conf
 

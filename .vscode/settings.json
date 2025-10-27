@@ -1,5 +1,5 @@
 {
-  "typescript.tsdk": "${workspaceFolder}/web/html/src/node_modules/typescript/lib",
+  "typescript.tsdk": "${workspaceFolder}/web/node_modules/typescript/lib",
   "[javascript][javascriptreact][typescript][typescriptreact][json][jsonc][css][less][scss][html]": {
     "editor.tabSize": 2,
     "files.insertFinalNewline": true,
@@ -58,5 +58,6 @@
   
 	"vscode-postgres.virtualFolders": [
     "functions"
-  ]
+  ],
+  "prettier.configPath": "web/.prettierrc"
 }

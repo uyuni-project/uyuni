@@ -163,7 +163,7 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
      */
     private KickstartableTree lookupById(Long id) {
         Session session = HibernateFactory.getSession();
-        return (KickstartableTree) session.getNamedQuery("KickstartableTree.findById")
+        return (KickstartableTree) session.createQuery("FROM KickstartableTree AS k WHERE k.id = :id")
                           .setParameter("id", id)
                           .uniqueResult();
     }
@@ -257,8 +257,7 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
 
     private KickstartableTree createSUSEKsTreeByArch(Long archId, File ksRoot)
             throws Exception {
-        ChannelArch arch = (ChannelArch)
-                TestUtils.lookupFromCacheById(archId, "ChannelArch.findById");
+        ChannelArch arch = TestUtils.lookupChannelArchFromCacheById(archId);
         KickstartInstallType suseInstallType = TestUtils.lookupFromCacheById(9L, KickstartInstallType.class);
         KickstartTreeType treetype = TestUtils.lookupFromCacheById(1L, KickstartTreeType.class);
 

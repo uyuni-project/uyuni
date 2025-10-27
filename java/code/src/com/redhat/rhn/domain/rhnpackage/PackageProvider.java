@@ -22,14 +22,33 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 /**
  * PackageArch
  */
-public class PackageProvider extends BaseDomainHelper implements
-        Comparable<PackageProvider> {
+@Entity
+@Table(name = "rhnPackageProvider")
+public class PackageProvider extends BaseDomainHelper implements Comparable<PackageProvider> {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "package_provider_seq")
+    @SequenceGenerator(name = "package_provider_seq", sequenceName = "rhn_package_provider_id_seq", allocationSize = 1)
     private Long id;
+
+    @Column
     private String name;
+
+    @OneToMany(mappedBy = "provider", cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
     private Set<PackageKey> keys = new HashSet<>();
 
     /**
@@ -64,7 +83,7 @@ public class PackageProvider extends BaseDomainHelper implements
     /**
      * @param i The id to set.
      */
-    public void setId(Long i) {
+    protected void setId(Long i) {
         this.id = i;
     }
 

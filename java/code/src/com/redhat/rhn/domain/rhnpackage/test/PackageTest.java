@@ -180,12 +180,13 @@ public class PackageTest extends BaseTestCaseWithUser {
     }
 
     public static Package populateTestPackage(Package p, Org org) {
-        PackageArch parch = (PackageArch) TestUtils.lookupFromCacheByLabel("noarch", "PackageArch.findByLabel");
+        PackageArch parch = PackageFactory.lookupPackageArchByLabel("noarch");
+
         return populateTestPackage(p, org, parch);
     }
 
     public static Package populateTestPackage(Package p, String packageName, Org org) {
-        PackageArch parch = (PackageArch) TestUtils.lookupFromCacheByLabel("noarch", "PackageArch.findByLabel");
+        PackageArch parch = PackageFactory.lookupPackageArchByLabel("noarch");
         return populateTestPackage(p, org, parch, PackageNameTest.createTestPackageName(packageName));
     }
     public static PackageSource createTestPackageSource(SourceRpm rpm, Org org) {

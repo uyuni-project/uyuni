@@ -19,13 +19,16 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Session;
+import org.hibernate.type.StandardBasicTypes;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
+
+import javax.persistence.Tuple;
 
 /**
  * Creates {@link SaltEvent} objects.
@@ -33,7 +36,6 @@ import java.util.stream.Stream;
 public class SaltEventFactory extends HibernateFactory {
 
     private static final Logger LOG = LogManager.getLogger(SaltEventFactory.class);
-    private static final SaltEventFactory SINGLETON = new SaltEventFactory();
 
     @Override
     protected Logger getLogger() {
@@ -50,11 +52,16 @@ public class SaltEventFactory extends HibernateFactory {
      *  without any minion ID. This queue is referred to as queue 0.
      */
     public static List<Long> countSaltEvents(int queuesCount) {
-        List<Object[]> countObjects = SINGLETON.listObjectsByNamedQuery("SaltEvent.countSaltEvents", Map.of());
+        Session session = HibernateFactory.getSession();
+        List<Tuple> countObjects = session.createNativeQuery(
+                "SELECT queue, COUNT(*) AS count FROM suseSaltEvent GROUP BY queue", Tuple.class)
+                .addScalar("queue", StandardBasicTypes.INTEGER)
+                .addScalar("count", StandardBasicTypes.LONG)
+                .list();
 
         return IntStream.range(0, queuesCount).mapToLong(i -> countObjects.stream()
-                .filter(c -> c[0].equals(i))
-                .map(c -> (Long) c[1])
+                .filter(c -> c.get(0, Integer.class).equals(i))
+                .map(c -> c.get(1, Long.class))
                 .findFirst()
                 .orElse(0L)).boxed().collect(Collectors.toList());
     }
@@ -66,11 +73,28 @@ public class SaltEventFactory extends HibernateFactory {
      * @return events
      */
     public static Stream<SaltEvent> popSaltEvents(int limit, int queue) {
-        List<Object[]> eventObjects = SINGLETON.listObjectsByNamedQuery("SaltEvent.popSaltEvents",
-                Map.of("limit", limit, "queue", queue));
+        Session session = HibernateFactory.getSession();
+        List<Tuple> eventObjects = session.createNativeQuery("""
+                        DELETE FROM suseSaltEvent
+                        WHERE id IN (
+                                     SELECT id FROM suseSaltEvent
+                                     WHERE queue = :queue
+                                     ORDER BY id
+                                     FOR UPDATE SKIP LOCKED
+                                     LIMIT :limit)
+                        RETURNING id, minion_id, data, queue
+                        """, Tuple.class)
+                .setParameter("limit", limit)
+                .setParameter("queue", queue)
+                .addScalar("id", StandardBasicTypes.LONG)
+                .addScalar("minion_id", StandardBasicTypes.STRING)
+                .addScalar("data", StandardBasicTypes.STRING)
+                .addScalar("queue", StandardBasicTypes.INTEGER)
+                .list();
 
         return eventObjects.stream()
-                .map(o -> new SaltEvent((long)o[0], (String)o[1], (String)o[2], (int)o[3]));
+                .map(o -> new SaltEvent(o.get(0, Long.class), o.get(1, String.class),
+                        o.get(2, String.class), o.get(3, Integer.class)));
     }
 
     /**
@@ -79,7 +103,11 @@ public class SaltEventFactory extends HibernateFactory {
      * @return event ids actually deleted
      */
     public static List<Long> deleteSaltEvents(Collection<Long> ids) {
-        return SINGLETON.listObjectsByNamedQuery("SaltEvent.deleteSaltEvents", Map.of("ids", ids));
+        Session session = HibernateFactory.getSession();
+        return session.createNativeQuery("DELETE FROM suseSaltEvent WHERE id IN :ids RETURNING id")
+                .setParameter("ids", ids)
+                .addScalar("id", StandardBasicTypes.LONG)
+                .list();
     }
 
     /**

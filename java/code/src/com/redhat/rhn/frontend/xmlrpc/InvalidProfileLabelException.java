@@ -30,7 +30,7 @@ public class InvalidProfileLabelException extends FaultException  {
      */
     public InvalidProfileLabelException(String label) {
         super(2756, "invalidPackageProfileLabel" , LocalizationService.getInstance().
-                getMessage("api.system.invalidprofilelabel", new Object [] {label}));
+                getMessage("api.system.invalidprofilelabel", label));
     }
 
     /**
@@ -43,8 +43,7 @@ public class InvalidProfileLabelException extends FaultException  {
      */
     public InvalidProfileLabelException(String label, Throwable cause) {
         super(2756, "invalidPackageProfileLabel" , LocalizationService.getInstance().
-                getMessage("api.system.invalidprofilelabel",
-                new Object [] {label}) , cause);
+                getMessage("api.system.invalidprofilelabel", label) , cause);
     }
 
 }

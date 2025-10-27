@@ -96,14 +96,15 @@ public class ServerFactory extends HibernateFactory {
      * @param server The Server in question
      * @return Returns the CustomDataValue object if found, null if not.
      */
-    protected static CustomDataValue getCustomDataValue(CustomDataKey key,
+    public static CustomDataValue getCustomDataValue(CustomDataKey key,
             Server server) {
-        // Make sure we didn't recieve any nulls
+        // Make sure we didn't receive any nulls
         if (key == null || server == null) {
             return null;
         }
 
-        return getSession().createNamedQuery("CustomDataValue.findByServerAndKey", CustomDataValue.class)
+        return getSession().createQuery("FROM CustomDataValue AS c WHERE c.server = :server AND c.key = :key",
+                        CustomDataValue.class)
                 .setParameter("server", server)
                 .setParameter("key", key)
                 .setCacheable(true)
@@ -145,7 +146,10 @@ public class ServerFactory extends HibernateFactory {
      * @return List of custom data values.
      */
     public static List<CustomDataValue> lookupCustomDataValues(CustomDataKey key) {
-        return SINGLETON.listObjectsByNamedQuery("CustomDataValue.findByKey", Map.of("key", key));
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("FROM CustomDataValue AS c WHERE c.key = :key", CustomDataValue.class)
+                .setParameter("key", key)
+                .list();
     }
 
     /**
@@ -800,7 +804,7 @@ public class ServerFactory extends HibernateFactory {
      * @return The ServerGroupType
      */
     public static ServerGroupType lookupServerGroupTypeByLabel(String label) {
-        return getSession().createNamedQuery("ServerGroupType.findByLabel", ServerGroupType.class)
+        return getSession().createQuery("FROM ServerGroupType AS s WHERE s.label = :label", ServerGroupType.class)
                 .setParameter("label", label, StandardBasicTypes.STRING)
                 .setCacheable(true)
                 .uniqueResult();
@@ -902,7 +906,7 @@ public class ServerFactory extends HibernateFactory {
      * @return The ServerArch
      */
     public static ServerArch lookupServerArchByLabel(String label) {
-        return getSession().createNamedQuery("ServerArch.findByLabel", ServerArch.class)
+        return getSession().createQuery("FROM ServerArch AS s WHERE s.label = :label", ServerArch.class)
                 .setParameter("label", label, StandardBasicTypes.STRING)
                 .setCacheable(true)
                 .uniqueResult();
@@ -914,7 +918,11 @@ public class ServerFactory extends HibernateFactory {
      * @return The first ServerArch found
      */
     public static ServerArch lookupServerArchByName(String name) {
-        List<ServerArch> archs = SINGLETON.listObjectsByNamedQuery("ServerArch.findByName", Map.of("name", name));
+        Session session = HibernateFactory.getSession();
+        List<ServerArch> archs = session.createQuery("FROM ServerArch AS s WHERE s.name = :name ORDER BY s.id ASC",
+                        ServerArch.class)
+                .setParameter("name", name)
+                .list();
         if (archs != null && !archs.isEmpty()) {
             return archs.get(0);
         }
@@ -927,7 +935,7 @@ public class ServerFactory extends HibernateFactory {
      * @return The CPUArch
      */
     public static CPUArch lookupCPUArchByName(String name) {
-        return getSession().createNamedQuery("CPUArch.findByName", CPUArch.class)
+        return getSession().createQuery("FROM CPUArch AS t WHERE LOWER(t.name) = LOWER(:name)", CPUArch.class)
                 .setParameter("name", name, StandardBasicTypes.STRING)
                 .setCacheable(true).uniqueResult();
     }
@@ -963,8 +971,17 @@ public class ServerFactory extends HibernateFactory {
      * @return channel arch
      */
     public static ChannelArch findCompatibleChannelArch(ServerArch serverArch) {
-        return SINGLETON.lookupObjectByNamedQuery("ServerArch.findCompatibleChannelArch",
-                Map.of("server_arch_id", serverArch.getId()), true);
+        Session session = HibernateFactory.getSession();
+        return session.createNativeQuery(
+                        """
+                            SELECT ca.* FROM rhnServerChannelArchCompat sc
+                            JOIN rhnChannelArch ca ON sc.channel_arch_id = ca.id
+                            WHERE sc.server_arch_id = :server_arch_id
+                            """, ChannelArch.class)
+                .setParameter("server_arch_id", serverArch.getId())
+                //Retrieve from cache if there
+                .setCacheable(true)
+                .uniqueResult();
     }
 
     /**
@@ -1109,23 +1126,47 @@ public class ServerFactory extends HibernateFactory {
     public static List<ServerSnapshot> listSnapshots(Org org, Server server,
             Date startDate, Date endDate) {
 
-        Map<String, Object> params = new HashMap<>();
-        params.put("org", org);
-        params.put("server", server);
-
         List<ServerSnapshot> snaps = null;
 
+        Session session = HibernateFactory.getSession();
+
         if ((startDate != null) && (endDate != null)) {
-            params.put("start_date", startDate);
-            params.put("end_date", endDate);
-            snaps = SINGLETON.listObjectsByNamedQuery("ServerSnapshot.findBetweenDates", params);
+            snaps = session.createQuery("""
+                                    FROM ServerSnapshot AS s
+                                    WHERE s.server = :server AND
+                                    s.org = :org AND
+                                    s.created >= :start_date AND
+                                    s.created <= :end_date
+                                    ORDER BY s.id DESC""",
+                            ServerSnapshot.class)
+                    .setParameter("server", server)
+                    .setParameter("org", org)
+                    .setParameter("start_date", startDate)
+                    .setParameter("end_date", endDate)
+                    .list();
         }
         else if (startDate != null) {
-            params.put("start_date", startDate);
-            snaps = SINGLETON.listObjectsByNamedQuery("ServerSnapshot.findAfterDate", params);
+            snaps = session.createQuery("""
+                                    FROM ServerSnapshot AS s
+                                    WHERE s.server = :server AND
+                                    s.org = :org AND
+                                    s.created >= :start_date
+                                    ORDER BY s.id DESC""",
+                            ServerSnapshot.class)
+                    .setParameter("server", server)
+                    .setParameter("org", org)
+                    .setParameter("start_date", startDate)
+                    .list();
         }
         else {
-            snaps = SINGLETON.listObjectsByNamedQuery("ServerSnapshot.findForServer", params);
+            snaps = session.createQuery("""
+                                    FROM ServerSnapshot AS s
+                                    WHERE s.server = :server AND
+                                    s.org = :org""",
+                            ServerSnapshot.class)
+                    .setParameter("server", server)
+                    .setParameter("org", org)
+                    .list();
         }
         return snaps;
     }
@@ -1136,7 +1177,7 @@ public class ServerFactory extends HibernateFactory {
      * @return the server snapshot
      */
     public static ServerSnapshot lookupSnapshotById(Integer id) {
-        return SINGLETON.lookupObjectByNamedQuery("ServerSnapshot.findById", Map.of("snapId", Long.valueOf(id)));
+        return SINGLETON.lookupObjectByParam(ServerSnapshot.class, "id", Long.valueOf(id));
     }
 
     /**
@@ -1145,7 +1186,14 @@ public class ServerFactory extends HibernateFactory {
      * @return the server snapshot
      */
     public static ServerSnapshot lookupLatestForServer(Server server) {
-        return SINGLETON.lookupObjectByNamedQuery("ServerSnapshot.findLatestForServer", Map.of("sid", server));
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("""
+                       FROM ServerSnapshot AS s
+                       WHERE s.server = :sid AND
+                       s.created = (SELECT max(s1.created) FROM ServerSnapshot AS s1 WHERE s1.server = :sid)
+                       """, ServerSnapshot.class)
+                .setParameter("sid", server)
+                .uniqueResult();
     }
 
     /**
@@ -1174,22 +1222,31 @@ public class ServerFactory extends HibernateFactory {
     public static void deleteSnapshots(Org org, Date startDate, Date endDate) {
 
         if ((startDate != null) && (endDate != null)) {
-            getSession().createNamedQuery("ServerSnapshot.deleteBetweenDates")
-            .setParameter("org", org)
-            .setParameter("start_date", startDate)
-            .setParameter("end_date", endDate)
-            .executeUpdate();
+            getSession().createQuery("""
+                            DELETE FROM ServerSnapshot AS s
+                            WHERE s.org = :org AND
+                            s.created >= :start_date AND
+                            s.created <= :end_date""")
+                    .setParameter("org", org)
+                    .setParameter("start_date", startDate)
+                    .setParameter("end_date", endDate)
+                    .executeUpdate();
         }
         else if (startDate != null) {
-            getSession().createNamedQuery("ServerSnapshot.deleteAfterDate")
-            .setParameter("org", org)
-            .setParameter("start_date", startDate)
-            .executeUpdate();
+            getSession().createQuery("""
+                            DELETE FROM ServerSnapshot AS s
+                            WHERE s.org = :org AND
+                            s.created >= :start_date""")
+                    .setParameter("org", org)
+                    .setParameter("start_date", startDate)
+                    .executeUpdate();
         }
         else {
-            getSession().createNamedQuery("ServerSnapshot.delete")
-            .setParameter("org", org)
-            .executeUpdate();
+            getSession().createQuery("""
+                            DELETE FROM ServerSnapshot AS s
+                            WHERE s.org = :org""")
+                    .setParameter("org", org)
+                    .executeUpdate();
         }
     }
 
@@ -1213,25 +1270,37 @@ public class ServerFactory extends HibernateFactory {
             Date startDate, Date endDate) {
 
         if ((startDate != null) && (endDate != null)) {
-            getSession().createNamedQuery("ServerSnapshot.deleteForServerBetweenDates")
-            .setParameter("org", org)
-            .setParameter("server", server)
-            .setParameter("start_date", startDate)
-            .setParameter("end_date", endDate)
-            .executeUpdate();
+            getSession().createQuery("""
+                            DELETE FROM ServerSnapshot AS s
+                            WHERE s.server = :server AND
+                            s.org = :org AND
+                            s.created >= :start_date AND
+                            s.created <= :end_date""")
+                    .setParameter("server", server)
+                    .setParameter("org", org)
+                    .setParameter("start_date", startDate)
+                    .setParameter("end_date", endDate)
+                    .executeUpdate();
         }
         else if (startDate != null) {
-            getSession().createNamedQuery("ServerSnapshot.deleteForServerAfterDate")
-            .setParameter("org", org)
-            .setParameter("server", server)
-            .setParameter("start_date", startDate)
-            .executeUpdate();
+            getSession().createQuery("""
+                            DELETE FROM ServerSnapshot AS s
+                            WHERE s.server = :server AND
+                            s.org = :org AND
+                            s.created >= :start_date""")
+                    .setParameter("server", server)
+                    .setParameter("org", org)
+                    .setParameter("start_date", startDate)
+                    .executeUpdate();
         }
         else {
-            getSession().createNamedQuery("ServerSnapshot.deleteForServer")
-            .setParameter("org", org)
-            .setParameter("server", server)
-            .executeUpdate();
+            getSession().createQuery("""
+                            DELETE FROM ServerSnapshot AS s
+                            WHERE s.server = :server AND
+                            s.org = :org""")
+                    .setParameter("server", server)
+                    .setParameter("org", org)
+                    .executeUpdate();
         }
     }
 
@@ -1241,7 +1310,11 @@ public class ServerFactory extends HibernateFactory {
      * @return list of tags
      */
     public static List<SnapshotTag> getSnapshotTags(ServerSnapshot snap) {
-        return SINGLETON.listObjectsByNamedQuery("ServerSnapshot.findTags", Map.of("snap", snap));
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("SELECT l.tag FROM ServerSnapshotTagLink AS l WHERE l.snapshot = :snap",
+                        SnapshotTag.class)
+                .setParameter("snap", snap)
+                .list();
     }
 
     /**
@@ -1304,7 +1377,7 @@ public class ServerFactory extends HibernateFactory {
      * @return snapshot tag
      */
     public static SnapshotTag lookupSnapshotTagbyName(String tagName) {
-        return getSession().createNamedQuery("SnapshotTag.lookupByTagName", SnapshotTag.class)
+        return getSession().createQuery("FROM SnapshotTag AS st WHERE st.name.name = :tag_name", SnapshotTag.class)
                 .setParameter("tag_name", tagName, StandardBasicTypes.STRING)
                 // Do not use setCacheable(true), as tag deletion will
                 // usually end up making this query's output out of date
@@ -1316,7 +1389,7 @@ public class ServerFactory extends HibernateFactory {
      * @return snapshot Tag
      */
     public static SnapshotTag lookupSnapshotTagbyId(Long tagId) {
-        return getSession().createNamedQuery("SnapshotTag.lookupById", SnapshotTag.class)
+        return getSession().createQuery("FROM SnapshotTag AS st WHERE st.id = :id", SnapshotTag.class)
                 .setParameter("id", tagId, StandardBasicTypes.LONG)
                 // Do not use setCacheable(true), as tag deletion will
                 // usually end up making this query's output out of date

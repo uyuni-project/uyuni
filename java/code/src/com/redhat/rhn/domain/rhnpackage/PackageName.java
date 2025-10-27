@@ -20,12 +20,26 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 /**
  * PackageName
  */
+@Entity
+@Table(name = "rhnPackageName")
 public class PackageName implements Comparable<PackageName>, Serializable {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_PKG_NAME_SEQ")
+    @SequenceGenerator(name = "RHN_PKG_NAME_SEQ", sequenceName = "RHN_PKG_NAME_SEQ", allocationSize = 1)
     private Long id;
+    @Column
     private String name;
 
     /**
@@ -38,7 +52,7 @@ public class PackageName implements Comparable<PackageName>, Serializable {
     /**
      * @param i The id to set.
      */
-    public void setId(Long i) {
+    protected void setId(Long i) {
         this.id = i;
     }
 

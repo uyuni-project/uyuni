@@ -221,7 +221,7 @@ public class PackageFactory extends HibernateFactory {
      */
     public static PackageArch lookupPackageArchById(Long id) {
         return HibernateFactory.doWithoutAutoFlushing(
-          () -> singleton.lookupObjectByNamedQuery("PackageArch.findById", Map.of("id", id), true)
+          () -> singleton.lookupObjectByParam(PackageArch.class, "id", id, true)
         );
     }
 
@@ -234,7 +234,7 @@ public class PackageFactory extends HibernateFactory {
         if (label == null) {
             return null;
         }
-        return singleton.lookupObjectByNamedQuery("PackageArch.findByLabel", Map.of("label", label), true);
+        return singleton.lookupObjectByParam(PackageArch.class, "label", label, true);
     }
 
     /**
@@ -300,9 +300,7 @@ public class PackageFactory extends HibernateFactory {
      * doesn't exist
      */
      public static PackageName lookupPackageName(Long id) {
-         return (PackageName) HibernateFactory.getSession().getNamedQuery("PackageName.findById")
-                 .setParameter("id", id, StandardBasicTypes.LONG)
-                 .uniqueResult();
+         return singleton.lookupObjectByParam(PackageName.class, "id", id);
     }
 
     /**
@@ -314,9 +312,7 @@ public class PackageFactory extends HibernateFactory {
      * doesn't exist
      */
     public static PackageName lookupPackageName(String pn) {
-        return (PackageName) HibernateFactory.getSession().getNamedQuery("PackageName.findByName")
-                .setParameter("name", pn, StandardBasicTypes.STRING)
-                .uniqueResult();
+        return singleton.lookupObjectByParam(PackageName.class, "name", pn);
     }
 
     /**
@@ -426,12 +422,15 @@ public class PackageFactory extends HibernateFactory {
      */
     public static InstalledPackage lookupByNameAndServer(String name, Server server) {
         PackageName packName = lookupPackageName(name);
-        Map<String, Object> params = new HashMap<>();
-        params.put("server", server);
-        params.put("name", packName);
 
-        List<InstalledPackage> original = singleton.listObjectsByNamedQuery(
-                "InstalledPackage.lookupByServerAndName", params);
+        Session session = HibernateFactory.getSession();
+        List<InstalledPackage> original = session.createQuery("""
+                        FROM InstalledPackage AS p
+                        WHERE p.server= :server AND p.name = :name""", InstalledPackage.class)
+                .setParameter("server", server)
+                .setParameter("name", packName)
+                .list();
+
         if (original.isEmpty()) {
             return null;
         }
@@ -549,7 +548,16 @@ public class PackageFactory extends HibernateFactory {
         if (pack == null) {
             return new ArrayList<>();
         }
-        return singleton.listObjectsByNamedQuery("PackageSource.findByPackage", Map.of("pack", pack));
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("""
+                                SELECT ps
+                                FROM Package AS p, SourceRpm AS sr, PackageSource ps
+                                WHERE p.sourceRpm = sr
+                                AND ps.sourceRpm = sr
+                                AND p = :pack""",
+                        PackageSource.class)
+                .setParameter("pack", pack)
+                .list();
     }
 
     /**
@@ -559,7 +567,12 @@ public class PackageFactory extends HibernateFactory {
      * @return the package source
      */
     public static PackageSource lookupPackageSourceByIdAndOrg(Long psid, Org org) {
-        return singleton.lookupObjectByNamedQuery("PackageSource.findByIdAndOrg", Map.of("id", psid, "org", org));
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("FROM PackageSource AS ps WHERE ps.id = :id AND ps.org = :org",
+                        PackageSource.class)
+                .setParameter("id", psid)
+                .setParameter("org", org)
+                .uniqueResult();
     }
 
     /**
@@ -593,7 +606,9 @@ public class PackageFactory extends HibernateFactory {
      * @return list of package providers
      */
     public static List<PackageProvider> listPackageProviders() {
-        return singleton.listObjectsByNamedQuery("PackageProvider.listProviders", Map.of());
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("FROM PackageProvider", PackageProvider.class)
+                .list();
     }
 
     /**
@@ -602,7 +617,7 @@ public class PackageFactory extends HibernateFactory {
      * @return the package provider
      */
     public static PackageProvider lookupPackageProvider(String name) {
-        return singleton.lookupObjectByNamedQuery("PackageProvider.findByName", Map.of("name", name));
+        return singleton.lookupObjectByParam(PackageProvider.class, "name", name);
     }
 
     /**
@@ -611,7 +626,7 @@ public class PackageFactory extends HibernateFactory {
      * @return the package key
      */
     public static PackageKey lookupPackageKey(String key) {
-        return singleton.lookupObjectByNamedQuery("PackageKey.findByKey", Map.of("key", key));
+        return singleton.lookupObjectByParam(PackageKey.class, "key", key);
     }
 
     /**

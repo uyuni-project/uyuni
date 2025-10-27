@@ -18,23 +18,52 @@ import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.domain.user.legacy.UserImpl;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.io.Serial;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 /**
  * CustomDataValue
  */
+@Entity
+@Table(name = "rhnServerCustomDataValue")
+@IdClass(CustomDataValueId.class)
 public class CustomDataValue extends BaseDomainHelper {
 
     @Serial
     private static final long serialVersionUID = 1L;
+
+    @Id
+    @ManyToOne(targetEntity = Server.class)
+    @JoinColumn(name = "server_id")
     private Server server;
+
+    @Id
+    @ManyToOne(targetEntity = CustomDataKey.class)
+    @JoinColumn(name = "key_id")
     private CustomDataKey key;
+
+    @Column
     private String value;
+
+    @ManyToOne(targetEntity = UserImpl.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "created_by")
     private User creator;
+
+    @ManyToOne(targetEntity = UserImpl.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "last_modified_by")
     private User lastModifier;
 
     /**

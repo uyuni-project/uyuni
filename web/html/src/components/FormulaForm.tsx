@@ -190,7 +190,7 @@ class FormulaForm extends React.Component<Props, State> {
             this.setState({
               errors: [JSON.parse(error.responseText)],
             });
-          } catch (e) {
+          } catch (_) {
             this.setState({
               errors: Network.errorMessageByStatus(error.status),
             });

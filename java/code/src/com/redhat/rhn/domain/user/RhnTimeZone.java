@@ -14,15 +14,33 @@
  */
 package com.redhat.rhn.domain.user;
 
+import static org.hibernate.annotations.CacheConcurrencyStrategy.READ_ONLY;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.Immutable;
+
 import java.util.TimeZone;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * TimeZone
  */
+@Entity
+@Table(name = "rhnTimeZone")
+@Immutable
+@Cache(usage = READ_ONLY)
 public class RhnTimeZone {
+
+    @Id
+    @Column(name = "id")
     private int timeZoneId;
+
+    @Column(name = "olson_name")
     private String olsonName;
-    private TimeZone timeZone;
 
     /**
      * @return Returns the olsonName.
@@ -36,9 +54,6 @@ public class RhnTimeZone {
      */
     public void setOlsonName(String o) {
         this.olsonName = o;
-        if (o != null) {
-            timeZone = TimeZone.getTimeZone(o);
-        }
     }
 
     /**
@@ -59,7 +74,10 @@ public class RhnTimeZone {
      * @return Returns the timeZone.
      */
     public TimeZone getTimeZone() {
-        return timeZone;
+        if (null == olsonName) {
+            return null;
+        }
+        return TimeZone.getTimeZone(olsonName);
     }
 
     /**
@@ -81,9 +99,8 @@ public class RhnTimeZone {
     @Override
     public int hashCode() {
         int result = 17;
-        result = 37 * timeZoneId;
+        result += 37 * timeZoneId;
         result += 37 * (olsonName == null ? 0 : olsonName.hashCode());
-        result += 37 * (timeZone == null ? 0 : timeZone.hashCode());
         return result;
     }
 }

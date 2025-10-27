@@ -22,20 +22,46 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 /**
  * Representation of a single package state: it includes the package name, evr and
  * architecture as well as the state together with a version constraint.
  */
+@Entity
+@Table(name = "susePackageState")
 public class PackageState {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "suse_pkg_state_seq")
+    @SequenceGenerator(name = "suse_pkg_state_seq", sequenceName = "suse_pkg_state_id_seq", allocationSize = 1)
     private Long id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "name_id")
     private PackageName name;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "evr_id")
     private PackageEvr evr;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "package_arch_id")
     private PackageArch arch;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "state_revision_id")
     private StateRevision stateRevision;
 
     // IDs of enum values
+    @Column(name = "package_state_type_id", nullable = false)
     private int packageStateTypeId;
+    @Column(name = "version_constraint_id", nullable = false)
     private int versionConstraintId;
 
     /**

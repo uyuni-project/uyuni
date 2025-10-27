@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,6 +15,8 @@
  */
 package com.redhat.rhn.domain.user;
 
+import com.redhat.rhn.domain.user.legacy.UserImpl;
+
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -22,15 +25,41 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 /**
  * StateChange
  */
+@Entity
+@Table(name = "rhnWebContactChangeLog")
 public class StateChange implements Comparable<StateChange>, Serializable {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_WCON_CHLOG_SEQ")
+    @SequenceGenerator(name = "RHN_WCON_CHLOG_SEQ", sequenceName = "RHN_WCON_DISABLED_SEQ", allocationSize = 1)
     private Long id;
+
+    @Column(name = "date_completed")
     private Date date = new Date();
+
+    @ManyToOne(targetEntity = UserImpl.class)
+    @JoinColumn(name = "web_contact_id", nullable = false)
     private User user;
+
+    @ManyToOne(targetEntity = UserImpl.class)
+    @JoinColumn(name = "web_contact_from_id", nullable = false)
     private User changedBy;
+
+    @ManyToOne
+    @JoinColumn(name = "change_state_id", nullable = false)
     private State state;
 
 

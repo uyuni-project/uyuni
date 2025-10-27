@@ -1,0 +1,2 @@
+- Optimize schedule page queries for better performance
+  (bsc#1244641)

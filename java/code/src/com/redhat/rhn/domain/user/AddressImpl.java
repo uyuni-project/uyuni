@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -12,27 +13,48 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-
 package com.redhat.rhn.domain.user;
 
-
 import com.redhat.rhn.domain.BaseDomainHelper;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 /**
  * Class AddressImpl that implements Address
  */
+@Entity
+@Table(name = "web_user_site_info")
 public class AddressImpl extends BaseDomainHelper implements Address {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "WEB_USER_SITE_INFO_SEQ")
+    @SequenceGenerator(name = "WEB_USER_SITE_INFO_SEQ", sequenceName = "WEB_USER_SITE_INFO_ID_SEQ", allocationSize = 1)
     private Long id;
+    @Column
     private String address1;
+    @Column
     private String address2;
+    @Column
     private String city;
+    @Column
     private String state;
+    @Column
     private String zip;
+    @Column
     private String country;
+    @Column
     private String phone;
+    @Column
     private String fax;
+    @Column(name = "is_po_box")
     private String isPoBox;
+    @Column(name = "type")
     private String privType;
 
     /**
@@ -54,7 +76,7 @@ public class AddressImpl extends BaseDomainHelper implements Address {
      * is the unique id for this address.
      * @param idIn the in id
      */
-    public void setId(Long idIn) {
+    protected void setId(Long idIn) {
         this.id = idIn;
     }
 
@@ -234,7 +256,7 @@ public class AddressImpl extends BaseDomainHelper implements Address {
      */
     @Override
     public String getType() {
-        if (privType == null || privType.equals("")) {
+        if (privType == null || privType.isEmpty()) {
             return Address.TYPE_MARKETING;
         }
         return privType;

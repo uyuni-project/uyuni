@@ -119,6 +119,11 @@ USING_GPG={using_gpg}
 
 REGISTER_THIS_BOX=1
 
+# Flag to generate a custom machine_id to be used in the context of uyuni server.
+# This will ignore the existing machine_id and generate a grain based machine_id
+# using uuidgen.
+GENERATE_OWN_MACHINEID=0
+
 # Set if you want to specify profilename for client systems.
 # NOTE: Make sure it's set correctly if any external command is used.
 #
@@ -1002,6 +1007,15 @@ system-environment:
       _:
         SALT_RUNNING: 1
 EOF
+
+if [ $GENERATE_OWN_MACHINEID -eq 1 ]; then
+    echo "* generating machine ID file"
+    NEW_MACHINID=$(uuidgen | sed 's/-//g')
+    cat <<EOF >> "${{MINION_CONFIG_DIR}}/machine_id.conf"
+grains:
+    machine_id: $NEW_MACHINID
+EOF
+fi
 
 if [ -n "$SNAPSHOT_ID" ]; then
     cat <<EOF >> "${{MINION_CONFIG_DIR}}/transactional_update.conf"

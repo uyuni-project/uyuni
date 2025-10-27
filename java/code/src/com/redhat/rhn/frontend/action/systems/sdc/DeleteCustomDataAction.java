@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.frontend.action.systems.sdc;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.server.CustomDataValue;
@@ -30,7 +29,6 @@ import com.redhat.rhn.manager.system.SystemManager;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.hibernate.Session;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -70,11 +68,7 @@ public class DeleteCustomDataAction extends RhnAction {
 
         params.put(RequestContext.SID, request.getParameter(RequestContext.SID));
 
-        Session session = HibernateFactory.getSession();
-        CustomDataValue cdv = (CustomDataValue) session.getNamedQuery(
-                "CustomDataValue.findByServerAndKey").setParameter("server", server)
-                .setParameter("key", key)
-                .setCacheable(true).uniqueResult();
+        CustomDataValue cdv = ServerFactory.getCustomDataValue(key, server);
 
         if (cdv != null) {
             request.setAttribute(CIKID_PARAM, cikid);

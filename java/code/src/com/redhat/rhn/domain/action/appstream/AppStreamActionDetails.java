@@ -14,19 +14,47 @@
  */
 package com.redhat.rhn.domain.action.appstream;
 
-import com.redhat.rhn.domain.action.ActionChild;
+import com.redhat.rhn.domain.BaseDomainHelper;
+import com.redhat.rhn.domain.action.Action;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 /**
  * Represents details of an AppStream action.
  */
-public class AppStreamActionDetails extends ActionChild {
+@Entity
+@Table(name = "suseActionAppstream")
+public class AppStreamActionDetails extends BaseDomainHelper {
 
     private static final String DISABLE_TYPE = "DISABLE";
     private static final String ENABLE_TYPE = "ENABLE";
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "suse_act_appstream_seq")
+    @SequenceGenerator(name = "suse_act_appstream_seq", sequenceName = "suse_act_appstream_id_seq", allocationSize = 1)
     private Long id;
+
+    @Column(name = "module_name")
     private String moduleName;
+
+    @Column
     private String stream;
+
+    @Column
     private String type;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "action_id", updatable = false, nullable = false)
+    private Action parentAction;
 
     /**
      * Constructs a new AppStreamActionDetails instance.
@@ -73,7 +101,7 @@ public class AppStreamActionDetails extends ActionChild {
         return id;
     }
 
-    public void setId(Long idIn) {
+    protected void setId(Long idIn) {
         id = idIn;
     }
 
@@ -103,5 +131,21 @@ public class AppStreamActionDetails extends ActionChild {
 
     public boolean isEnable() {
         return ENABLE_TYPE.equals(type);
+    }
+
+    /**
+     * Gets the parent Action associated with this ServerAction record
+     * @return Returns the parentAction.
+     */
+    public Action getParentAction() {
+        return parentAction;
+    }
+
+    /**
+     * Sets the parent Action associated with this ServerAction record
+     * @param parentActionIn The parentAction to set.
+     */
+    public void setParentAction(Action parentActionIn) {
+        this.parentAction = parentActionIn;
     }
 }

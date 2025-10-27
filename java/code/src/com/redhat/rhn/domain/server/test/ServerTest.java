@@ -129,7 +129,7 @@ public class ServerTest extends BaseTestCaseWithUser {
         assertFalse(s.getCapabilities().isEmpty());
         boolean containsDeploy = false;
         for (ClientCapability c : s.getCapabilities()) {
-            if (SystemManager.CAP_CONFIGFILES_DEPLOY.equals(c.getId().getCapability().getName())) {
+            if (SystemManager.CAP_CONFIGFILES_DEPLOY.equals(c.getCapability().getName())) {
                 containsDeploy = true;
                 break;
             }
@@ -146,7 +146,7 @@ public class ServerTest extends BaseTestCaseWithUser {
                 SystemManager.CAP_SCRIPT_RUN, 2L);
         assertEquals(2, s.getCapabilities().size());
         Optional<ClientCapability> cap1 = s.getCapabilities()
-                .stream().filter(c -> c.getId().getCapability().getName().equals(SystemManager.CAP_SCRIPT_RUN))
+                .stream().filter(c -> c.getCapability().getName().equals(SystemManager.CAP_SCRIPT_RUN))
                 .findFirst();
         s.getCapabilities().clear();
         s.getCapabilities().add(cap1.get());
@@ -200,6 +200,7 @@ public class ServerTest extends BaseTestCaseWithUser {
         Server s = ServerFactoryTest.createTestServer(user, true,
                 ServerConstants.getServerGroupTypeSaltEntitled(),
                 ServerFactoryTest.TYPE_SERVER_MINION);
+        s.setOsFamily(ServerConstants.OS_FAMILY_SUSE);
         s.setOs("SLES");
         s.setRelease("12.1");
         assertTrue(s.doesOsSupportsOSImageBuilding());
@@ -304,8 +305,9 @@ public class ServerTest extends BaseTestCaseWithUser {
         Server s = ServerFactoryTest.createTestServer(user, true,
                 ServerConstants.getServerGroupTypeSaltEntitled(),
                 ServerFactoryTest.TYPE_SERVER_MINION);
-        s.setOs("SLES");
-        s.setRelease("10.4");
+        s.setOsFamily(ServerConstants.OS_FAMILY_DEBIAN);
+        s.setOs(ServerConstants.UBUNTU);
+        s.setRelease("18.04");
         assertFalse(s.doesOsSupportsOSImageBuilding());
     }
 

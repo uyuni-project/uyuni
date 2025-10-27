@@ -42,7 +42,7 @@ export class Combobox extends React.Component<ComboboxProps, ComboboxState> {
       });
     }
 
-    const sanitizedLabel = selectedOption.label && selectedOption.label.replace(/[',]/g, "");
+    const sanitizedLabel = selectedOption.label?.replace(/[',]/g, "");
 
     // It means a new option was created
     return this.props.onSelect({

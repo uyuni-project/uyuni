@@ -17,16 +17,25 @@ package com.redhat.rhn.domain;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+
 /**
  * AbstractLabelNameHelper - We have a set of tables in our schema
  * that are basic name/label pairs.  This class can be used by these tables
  * to represent them.
  *
  */
+@MappedSuperclass
 public class AbstractLabelNameHelper extends BaseDomainHelper {
 
+    @Id
+    @Column
     private Long id;
+    @Column
     private String label;
+    @Column
     private String name;
 
 

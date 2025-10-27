@@ -253,8 +253,7 @@ public class TestSaltApi implements SaltApi {
     }
 
     @Override
-    public Map<String, CompletionStage<Result<List<SaltUtil.RunningInfo>>>> running(MinionList target,
-            CompletableFuture<GenericError> cancel) {
+    public Map<String, Result<List<SaltUtil.RunningInfo>>> running(MinionList target) {
         throw new UnsupportedOperationException();
     }
 

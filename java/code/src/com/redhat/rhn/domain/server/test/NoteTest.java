@@ -39,10 +39,9 @@ public class NoteTest extends RhnBaseTestCase {
 
     /**
      * Test Note creation and equals method
-     * @throws Exception something bad happened
      */
     @Test
-    public void testEquals() throws Exception {
+    public void testEquals() {
         Note note1 = createTestNote();
         Note note2 = new Note();
 
@@ -50,7 +49,7 @@ public class NoteTest extends RhnBaseTestCase {
         assertNotEquals(note1, new Date());
 
         Session session = HibernateFactory.getSession();
-        note2 = (Note) session.getNamedQuery("Note.findById")
+        note2 = (Note) session.createQuery("FROM Note AS n WHERE n.id = :id")
                                   .setParameter("id", note1.getId(), StandardBasicTypes.LONG)
                                   .uniqueResult();
         assertEquals(note1, note2);

@@ -16,16 +16,31 @@ package com.redhat.rhn.domain.server;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 /**
  *
  * InvalidSnapshotReason
  */
+@Entity
+@Table(name = "rhnSnapshotInvalidReason")
 public class InvalidSnapshotReason extends BaseDomainHelper {
 
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ssinvalid_seq")
+    @SequenceGenerator(name = "ssinvalid_seq", sequenceName = "rhn_ssinvalid_id_seq", allocationSize = 1)
     private Long id;
+    @Column
     private String label;
-    private String Name;
+    @Column
+    private String name;
 
 
     /**
@@ -38,7 +53,7 @@ public class InvalidSnapshotReason extends BaseDomainHelper {
     /**
      * @param idIn The id to set.
      */
-    public void setId(Long idIn) {
+    protected void setId(Long idIn) {
         this.id = idIn;
     }
 
@@ -60,14 +75,14 @@ public class InvalidSnapshotReason extends BaseDomainHelper {
      * @return Returns the name.
      */
     public String getName() {
-        return Name;
+        return name;
     }
 
     /**
      * @param nameIn The name to set.
      */
     public void setName(String nameIn) {
-        Name = nameIn;
+        name = nameIn;
     }
 
 

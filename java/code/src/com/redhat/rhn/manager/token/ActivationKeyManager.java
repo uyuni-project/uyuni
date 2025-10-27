@@ -320,11 +320,15 @@ public class ActivationKeyManager {
      * @return All activation keys visible to user.
      */
     public List<ActivationKey> findAll(User requester) {
-        Session session = null;
-        session = HibernateFactory.getSession();
-        return session.getNamedQuery("ActivationKey.findByOrg")
-           .setParameter("org", requester.getOrg())
-           .list();
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("""
+                     FROM  com.redhat.rhn.domain.token.ActivationKey AS ak
+                     WHERE ak.token.org = :org
+                     AND ak.kickstartSession IS NULL
+                     AND ak.token.server IS NULL
+                     """, ActivationKey.class)
+                .setParameter("org", requester.getOrg())
+                .list();
     }
 
     /**
@@ -335,9 +339,15 @@ public class ActivationKeyManager {
      */
     public List<ActivationKey> findAllActive(User requester) {
         Session session = HibernateFactory.getSession();
-        return session.getNamedQuery("ActivationKey.findActiveByOrg")
-            .setParameter("org", requester.getOrg())
-            .list();
+        return session.createQuery("""
+                     FROM  com.redhat.rhn.domain.token.ActivationKey AS ak
+                     WHERE ak.token.org = :org
+                     AND   ak.kickstartSession IS NULL
+                     AND   ak.token.server IS NULL
+                     AND   ak.token.disabled = 0
+                     """, ActivationKey.class)
+                .setParameter("org", requester.getOrg())
+                .list();
     }
 
     /**

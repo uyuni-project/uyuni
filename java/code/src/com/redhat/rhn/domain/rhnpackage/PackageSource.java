@@ -23,26 +23,76 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 /**
  * Package
  */
+@Entity
+@Table(name = "rhnPackageSource")
 public class PackageSource extends BaseDomainHelper {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_PACKAGE_SOURCE_ID_SEQ")
+    @SequenceGenerator(name = "RHN_PACKAGE_SOURCE_ID_SEQ", sequenceName = "RHN_PACKAGE_SOURCE_ID_SEQ",
+            allocationSize = 1)
     private Long id;
+
+    @Column(name = "rpm_version")
     private String rpmVersion;
+
+    @Column(name = "package_size")
     private Long packageSize;
+
+    @Column(name = "payload_size")
     private Long payloadSize;
+
+    @Column(name = "build_host")
     private String buildHost;
+
+    @Column(name = "build_time")
     private Date buildTime;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "checksum_id")
     private Checksum checksum;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sigchecksum_id")
     private Checksum sigchecksum;
+
+    @Column
     private String vendor;
+
+    @Column
     private String path;
+
+    @Column
     private String cookie;
+
+    @Column(name = "last_modified")
     private Date lastModified;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "org_id")
     private Org org;
+
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    @JoinColumn(name = "package_group")
     private PackageGroup packageGroup;
+
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    @JoinColumn(name = "source_rpm_id")
     private SourceRpm sourceRpm;
 
     /**
@@ -125,7 +175,7 @@ public class PackageSource extends BaseDomainHelper {
     /**
      * @param i The id to set.
      */
-    public void setId(Long i) {
+    protected void setId(Long i) {
         this.id = i;
     }
 

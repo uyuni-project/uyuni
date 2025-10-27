@@ -14,14 +14,38 @@
  */
 package com.redhat.rhn.domain.rhnpackage;
 
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 /**
  * PackageName
  */
+@Entity
+@Table(name = "rhnPackageNevra")
 public class PackageNevra {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pkgnevra_seq")
+    @SequenceGenerator(name = "pkgnevra_seq", sequenceName = "rhn_pkgnevra_id_seq", allocationSize = 1)
     private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "name_id")
     private PackageName name;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "evr_id")
     private PackageEvr evr;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "package_arch_id")
     private PackageArch arch;
 
     /**
@@ -62,7 +86,7 @@ public class PackageNevra {
     /**
      * @param idIn The id to set.
      */
-    public void setId(Long idIn) {
+    protected void setId(Long idIn) {
         this.id = idIn;
     }
 

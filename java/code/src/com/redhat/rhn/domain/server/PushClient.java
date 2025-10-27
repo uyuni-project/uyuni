@@ -14,25 +14,51 @@
  */
 package com.redhat.rhn.domain.server;
 
-import java.io.Serializable;
+import com.redhat.rhn.domain.BaseDomainHelper;
+
 import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 /**
  * PushClient - Class representation of the table rhnpushclient.
  */
-public class PushClient implements Serializable {
+@Entity
+@Table(name = "rhnPushClient")
+public class PushClient extends BaseDomainHelper {
 
+    @Id
+    @Column
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pclient_seq")
+    @SequenceGenerator(name = "pclient_seq", sequenceName = "rhn_pclient_id_seq", allocationSize = 1)
     private Long id;
+    @Column(nullable = false)
     private String name;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "server_id")
     private Server server;
+    @Column(name = "jabber_id")
     private String jabberId;
+    @Column(name = "shared_key", nullable = false)
     private String sharedKey;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "state_id")
     private PushClientState state;
+    @Column(name = "next_action_time")
     private Date nextActionTime;
+    @Column(name = "last_message_time")
     private Date lastMessageTime;
+    @Column(name = "last_ping_time")
     private Date lastPingTime;
-    private Date created;
-    private Date modified;
     /**
      * Getter for id
      * @return Long to get
@@ -45,7 +71,7 @@ public class PushClient implements Serializable {
      * Setter for id
      * @param idIn to set
     */
-    public void setId(Long idIn) {
+    protected void setId(Long idIn) {
         this.id = idIn;
     }
 
@@ -175,38 +201,6 @@ public class PushClient implements Serializable {
     */
     public void setLastPingTime(Date lastPingTimeIn) {
         this.lastPingTime = lastPingTimeIn;
-    }
-
-    /**
-     * Getter for created
-     * @return Date to get
-    */
-    public Date getCreated() {
-        return this.created;
-    }
-
-    /**
-     * Setter for created
-     * @param createdIn to set
-    */
-    public void setCreated(Date createdIn) {
-        this.created = createdIn;
-    }
-
-    /**
-     * Getter for modified
-     * @return Date to get
-    */
-    public Date getModified() {
-        return this.modified;
-    }
-
-    /**
-     * Setter for modified
-     * @param modifiedIn to set
-    */
-    public void setModified(Date modifiedIn) {
-        this.modified = modifiedIn;
     }
 
 }

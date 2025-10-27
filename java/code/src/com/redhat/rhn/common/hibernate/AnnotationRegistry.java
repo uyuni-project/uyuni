@@ -13,18 +13,39 @@ package com.redhat.rhn.common.hibernate;
 import com.redhat.rhn.domain.access.AccessGroup;
 import com.redhat.rhn.domain.access.Namespace;
 import com.redhat.rhn.domain.access.WebEndpoint;
+import com.redhat.rhn.domain.action.ActionArchType;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainEntry;
-import com.redhat.rhn.domain.action.ActionChild;
 import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.action.ansible.InventoryActionDetails;
+import com.redhat.rhn.domain.action.ansible.PlaybookActionDetails;
+import com.redhat.rhn.domain.action.appstream.AppStreamActionDetails;
+import com.redhat.rhn.domain.action.channel.SubscribeChannelsActionDetails;
+import com.redhat.rhn.domain.action.config.ConfigDateDetails;
+import com.redhat.rhn.domain.action.config.ConfigDateFileAction;
+import com.redhat.rhn.domain.action.config.ConfigRevisionAction;
+import com.redhat.rhn.domain.action.config.ConfigRevisionActionResult;
+import com.redhat.rhn.domain.action.config.DaemonConfigDetails;
+import com.redhat.rhn.domain.action.dup.DistUpgradeActionDetails;
+import com.redhat.rhn.domain.action.dup.DistUpgradeChannelTask;
 import com.redhat.rhn.domain.action.errata.ActionPackageDetails;
+import com.redhat.rhn.domain.action.image.DeployImageActionDetails;
+import com.redhat.rhn.domain.action.kickstart.KickstartActionDetails;
+import com.redhat.rhn.domain.action.kickstart.KickstartGuestActionDetails;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionDetails;
+import com.redhat.rhn.domain.action.rhnpackage.PackageActionRemovalFailure;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionResult;
+import com.redhat.rhn.domain.action.salt.ApplyStatesActionDetails;
+import com.redhat.rhn.domain.action.salt.ApplyStatesActionResult;
+import com.redhat.rhn.domain.action.salt.build.ImageBuildActionDetails;
+import com.redhat.rhn.domain.action.salt.build.ImageBuildActionResult;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionDetails;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionResult;
+import com.redhat.rhn.domain.action.scap.ScapActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptResult;
+import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.supportdata.SupportDataActionDetails;
 import com.redhat.rhn.domain.audit.XccdfBenchmark;
 import com.redhat.rhn.domain.audit.XccdfIdent;
@@ -43,7 +64,11 @@ import com.redhat.rhn.domain.channel.ChannelProduct;
 import com.redhat.rhn.domain.channel.ChannelSyncFlag;
 import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.channel.ContentSourceType;
+import com.redhat.rhn.domain.channel.DistChannelMap;
+import com.redhat.rhn.domain.channel.PrivateChannelFamily;
 import com.redhat.rhn.domain.channel.ProductName;
+import com.redhat.rhn.domain.channel.PublicChannelFamily;
+import com.redhat.rhn.domain.channel.ReleaseChannelMap;
 import com.redhat.rhn.domain.cloudpayg.CloudRmtHost;
 import com.redhat.rhn.domain.cloudpayg.PaygCredentialsProduct;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
@@ -57,10 +82,12 @@ import com.redhat.rhn.domain.common.RhnConfiguration;
 import com.redhat.rhn.domain.common.TinyUrl;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigChannelType;
+import com.redhat.rhn.domain.config.ConfigContent;
 import com.redhat.rhn.domain.config.ConfigFile;
 import com.redhat.rhn.domain.config.ConfigFileName;
 import com.redhat.rhn.domain.config.ConfigFileState;
 import com.redhat.rhn.domain.config.ConfigFileType;
+import com.redhat.rhn.domain.config.ConfigInfo;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironmentDiff;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
@@ -83,8 +110,10 @@ import com.redhat.rhn.domain.credentials.RegistryCredentials;
 import com.redhat.rhn.domain.credentials.ReportDBCredentials;
 import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.domain.credentials.VHMCredentials;
+import com.redhat.rhn.domain.errata.Bug;
 import com.redhat.rhn.domain.errata.Cve;
 import com.redhat.rhn.domain.errata.ErrataFileType;
+import com.redhat.rhn.domain.errata.Keyword;
 import com.redhat.rhn.domain.errata.Severity;
 import com.redhat.rhn.domain.image.DeltaImageInfo;
 import com.redhat.rhn.domain.image.DockerfileProfile;
@@ -100,20 +129,32 @@ import com.redhat.rhn.domain.image.ImageStoreType;
 import com.redhat.rhn.domain.image.KiwiProfile;
 import com.redhat.rhn.domain.image.ProfileCustomDataValue;
 import com.redhat.rhn.domain.iss.IssMaster;
+import com.redhat.rhn.domain.iss.IssMasterOrg;
+import com.redhat.rhn.domain.iss.IssSlave;
+import com.redhat.rhn.domain.kickstart.KickstartCommand;
 import com.redhat.rhn.domain.kickstart.KickstartCommandName;
+import com.redhat.rhn.domain.kickstart.KickstartDefaultRegToken;
 import com.redhat.rhn.domain.kickstart.KickstartInstallType;
+import com.redhat.rhn.domain.kickstart.KickstartIpRange;
+import com.redhat.rhn.domain.kickstart.KickstartPackage;
+import com.redhat.rhn.domain.kickstart.KickstartPreserveFileList;
+import com.redhat.rhn.domain.kickstart.KickstartScript;
+import com.redhat.rhn.domain.kickstart.KickstartSessionHistory;
 import com.redhat.rhn.domain.kickstart.KickstartSessionState;
 import com.redhat.rhn.domain.kickstart.KickstartTreeType;
 import com.redhat.rhn.domain.kickstart.KickstartVirtualizationType;
+import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.domain.kickstart.crypto.CryptoKey;
 import com.redhat.rhn.domain.kickstart.crypto.CryptoKeyType;
 import com.redhat.rhn.domain.kickstart.crypto.SslCryptoKey;
 import com.redhat.rhn.domain.matcher.MatcherRunData;
 import com.redhat.rhn.domain.notification.NotificationMessage;
 import com.redhat.rhn.domain.notification.UserNotification;
+import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgAdminManagement;
 import com.redhat.rhn.domain.org.OrgConfig;
+import com.redhat.rhn.domain.org.SystemMigration;
 import com.redhat.rhn.domain.org.TemplateCategory;
 import com.redhat.rhn.domain.org.TemplateString;
 import com.redhat.rhn.domain.org.usergroup.UserGroupImpl;
@@ -143,16 +184,24 @@ import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageExtraTagsKeys;
 import com.redhat.rhn.domain.rhnpackage.PackageFile;
 import com.redhat.rhn.domain.rhnpackage.PackageGroup;
+import com.redhat.rhn.domain.rhnpackage.PackageKey;
 import com.redhat.rhn.domain.rhnpackage.PackageKeyType;
+import com.redhat.rhn.domain.rhnpackage.PackageName;
+import com.redhat.rhn.domain.rhnpackage.PackageNevra;
 import com.redhat.rhn.domain.rhnpackage.PackageObsoletes;
 import com.redhat.rhn.domain.rhnpackage.PackagePreDepends;
+import com.redhat.rhn.domain.rhnpackage.PackageProvider;
 import com.redhat.rhn.domain.rhnpackage.PackageProvides;
 import com.redhat.rhn.domain.rhnpackage.PackageRecommends;
 import com.redhat.rhn.domain.rhnpackage.PackageRequires;
+import com.redhat.rhn.domain.rhnpackage.PackageSource;
 import com.redhat.rhn.domain.rhnpackage.PackageSuggests;
 import com.redhat.rhn.domain.rhnpackage.PackageSupplements;
+import com.redhat.rhn.domain.rhnpackage.profile.Profile;
+import com.redhat.rhn.domain.rhnpackage.profile.ProfileEntry;
 import com.redhat.rhn.domain.rhnpackage.profile.ProfileType;
 import com.redhat.rhn.domain.role.RoleImpl;
+import com.redhat.rhn.domain.rpm.SourceRpm;
 import com.redhat.rhn.domain.scc.SCCOrderItem;
 import com.redhat.rhn.domain.scc.SCCRegCacheItem;
 import com.redhat.rhn.domain.scc.SCCRepository;
@@ -163,47 +212,73 @@ import com.redhat.rhn.domain.scc.SCCRepositoryNoAuth;
 import com.redhat.rhn.domain.scc.SCCRepositoryTokenAuth;
 import com.redhat.rhn.domain.scc.SCCSubscription;
 import com.redhat.rhn.domain.server.CPU;
+import com.redhat.rhn.domain.server.CPUArch;
 import com.redhat.rhn.domain.server.Capability;
 import com.redhat.rhn.domain.server.ClientCapability;
 import com.redhat.rhn.domain.server.ClientCapabilityId;
 import com.redhat.rhn.domain.server.CustomDataValue;
 import com.redhat.rhn.domain.server.Device;
+import com.redhat.rhn.domain.server.Dmi;
 import com.redhat.rhn.domain.server.EntitlementServerGroup;
+import com.redhat.rhn.domain.server.Feature;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.InstalledProduct;
+import com.redhat.rhn.domain.server.InvalidSnapshotReason;
 import com.redhat.rhn.domain.server.Location;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.NetworkInterface;
+import com.redhat.rhn.domain.server.Note;
 import com.redhat.rhn.domain.server.Pillar;
 import com.redhat.rhn.domain.server.PinnedSubscription;
+import com.redhat.rhn.domain.server.ProxyInfo;
+import com.redhat.rhn.domain.server.PushClient;
+import com.redhat.rhn.domain.server.PushClientState;
 import com.redhat.rhn.domain.server.Ram;
 import com.redhat.rhn.domain.server.SAPWorkload;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerAppStream;
+import com.redhat.rhn.domain.server.ServerArch;
 import com.redhat.rhn.domain.server.ServerFQDN;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupType;
 import com.redhat.rhn.domain.server.ServerHistoryEvent;
+import com.redhat.rhn.domain.server.ServerNetAddress4;
+import com.redhat.rhn.domain.server.ServerNetAddress6;
 import com.redhat.rhn.domain.server.ServerPath;
 import com.redhat.rhn.domain.server.ServerPathId;
+import com.redhat.rhn.domain.server.ServerSnapshot;
+import com.redhat.rhn.domain.server.ServerSnapshotTagLink;
+import com.redhat.rhn.domain.server.ServerUuid;
+import com.redhat.rhn.domain.server.SnapshotTag;
 import com.redhat.rhn.domain.server.SnapshotTagName;
+import com.redhat.rhn.domain.server.VirtualInstanceState;
+import com.redhat.rhn.domain.server.VirtualInstanceType;
 import com.redhat.rhn.domain.server.ansible.AnsiblePath;
 import com.redhat.rhn.domain.server.ansible.InventoryPath;
 import com.redhat.rhn.domain.server.ansible.PlaybookPath;
+import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerConfig;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerNodeInfo;
+import com.redhat.rhn.domain.session.WebSessionImpl;
 import com.redhat.rhn.domain.state.OrgStateRevision;
+import com.redhat.rhn.domain.state.PackageState;
 import com.redhat.rhn.domain.state.ServerGroupStateRevision;
 import com.redhat.rhn.domain.state.ServerStateRevision;
 import com.redhat.rhn.domain.state.StateRevision;
 import com.redhat.rhn.domain.task.Task;
+import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.RegTokenOrgDefault;
 import com.redhat.rhn.domain.token.Token;
 import com.redhat.rhn.domain.token.TokenChannelAppStream;
+import com.redhat.rhn.domain.token.TokenPackage;
 import com.redhat.rhn.domain.user.AddressImpl;
+import com.redhat.rhn.domain.user.Pane;
+import com.redhat.rhn.domain.user.RhnTimeZone;
+import com.redhat.rhn.domain.user.State;
 import com.redhat.rhn.domain.user.StateChange;
+import com.redhat.rhn.domain.user.UserServerPreference;
 import com.redhat.rhn.domain.user.legacy.PersonalInfo;
 import com.redhat.rhn.domain.user.legacy.UserImpl;
 import com.redhat.rhn.domain.user.legacy.UserInfo;
@@ -247,20 +322,26 @@ public class AnnotationRegistry {
             // do not add class at the end, but keep the alphabetical order
             AccessGroup.class,
             AccessToken.class,
+            ActionArchType.class,
             ActionChain.class,
             ActionChainEntry.class,
-            ActionChild.class,
             ActionPackageDetails.class,
             ActionStatus.class,
             ActionType.class,
+            ActivationKey.class,
             AddressImpl.class,
             AnsiblePath.class,
+            AppStreamActionDetails.class,
             AppStreamApi.class,
             AppStreamApiKey.class,
             AppStream.class,
+            ApplyStatesActionDetails.class,
+            ApplyStatesActionResult.class,
             ArchType.class,
             BaseCredentials.class,
+            Bug.class,
             CPU.class,
+            CPUArch.class,
             Capability.class,
             ChannelArch.class,
             Channel.class,
@@ -279,10 +360,16 @@ public class AnnotationRegistry {
             CoCoResultTypeConverter.class,
             ConfigChannel.class,
             ConfigChannelType.class,
+            ConfigContent.class,
+            ConfigDateDetails.class,
+            ConfigDateFileAction.class,
             ConfigFile.class,
             ConfigFileName.class,
             ConfigFileState.class,
             ConfigFileType.class,
+            ConfigInfo.class,
+            ConfigRevisionAction.class,
+            ConfigRevisionActionResult.class,
             ContentEnvironment.class,
             ContentEnvironmentDiff.class,
             ContentFilter.class,
@@ -292,10 +379,17 @@ public class AnnotationRegistry {
             ContentSourceType.class,
             CryptoKey.class,
             CryptoKeyType.class,
+            CustomDataKey.class,
             CustomDataValue.class,
             Cve.class,
+            DaemonConfigDetails.class,
             DeltaImageInfo.class,
+            DeployImageActionDetails.class,
             Device.class,
+            DistChannelMap.class,
+            DistUpgradeActionDetails.class,
+            DistUpgradeChannelTask.class,
+            Dmi.class,
             DockerfileProfile.class,
             EntitlementServerGroup.class,
             EnvironmentTarget.class,
@@ -303,9 +397,12 @@ public class AnnotationRegistry {
             ErrataFileType.class,
             ErrataFilter.class,
             ExceptionMessage.class,
+            Feature.class,
             FileList.class,
             GroupRecurringAction.class,
             HubSCCCredentials.class,
+            ImageBuildActionDetails.class,
+            ImageBuildActionResult.class,
             ImageFile.class,
             ImageInfo.class,
             ImageInfoCustomDataValue.class,
@@ -321,17 +418,32 @@ public class AnnotationRegistry {
             InstalledPackage.class,
             InstalledProduct.class,
             InternalState.class,
+            InvalidSnapshotReason.class,
+            InventoryActionDetails.class,
             InventoryPath.class,
             IssAccessToken.class,
             IssHub.class,
             IssMaster.class,
+            IssMasterOrg.class,
             IssPeripheral.class,
             IssPeripheralChannels.class,
+            IssSlave.class,
+            Keyword.class,
+            KickstartCommand.class,
+            KickstartActionDetails.class,
             KickstartCommandName.class,
+            KickstartDefaultRegToken.class,
+            KickstartGuestActionDetails.class,
             KickstartInstallType.class,
+            KickstartIpRange.class,
+            KickstartPackage.class,
+            KickstartPreserveFileList.class,
+            KickstartScript.class,
+            KickstartSessionHistory.class,
             KickstartSessionState.class,
             KickstartTreeType.class,
             KickstartVirtualizationType.class,
+            KickstartableTree.class,
             KiwiProfile.class,
             Location.class,
             MaintenanceCalendar.class,
@@ -345,6 +457,7 @@ public class AnnotationRegistry {
             ModuleFilter.class,
             Namespace.class,
             NetworkInterface.class,
+            Note.class,
             NotificationMessage.class,
             OrgAdminManagement.class,
             Org.class,
@@ -352,6 +465,7 @@ public class AnnotationRegistry {
             OrgRecurringAction.class,
             OrgStateRevision.class,
             PackageActionDetails.class,
+            PackageActionRemovalFailure.class,
             PackageActionResult.class,
             PackageArch.class,
             PackageBreaks.class,
@@ -364,14 +478,21 @@ public class AnnotationRegistry {
             PackageFile.class,
             PackageFilter.class,
             PackageGroup.class,
+            PackageKey.class,
             PackageKeyType.class,
+            PackageName.class,
+            PackageNevra.class,
             PackageObsoletes.class,
             PackagePreDepends.class,
+            PackageProvider.class,
             PackageProvides.class,
             PackageRecommends.class,
             PackageRequires.class,
+            PackageSource.class,
+            PackageState.class,
             PackageSuggests.class,
             PackageSupplements.class,
+            Pane.class,
             PaygCredentialsProduct.class,
             PaygDimensionComputation.class,
             PaygDimensionResult.class,
@@ -379,14 +500,23 @@ public class AnnotationRegistry {
             PersonalInfo.class,
             Pillar.class,
             PinnedSubscription.class,
+            PlaybookActionDetails.class,
             PlaybookPath.class,
+            PrivateChannelFamily.class,
             ProductName.class,
+            Profile.class,
             ProfileCustomDataValue.class,
+            ProfileEntry.class,
             ProfileType.class,
             ProjectSource.class,
             ProvisionState.class,
+            ProxyInfo.class,
             PtfFilter.class,
+            PublicChannelFamily.class,
+            PushClient.class,
+            PushClientState.class,
             Ram.class,
+            ReleaseChannelMap.class,
             RhnConfiguration.class,
             RecurringConfigChannel.class,
             RecurringHighstate.class,
@@ -397,6 +527,7 @@ public class AnnotationRegistry {
             RegTokenOrgDefault.class,
             ReportDBCredentials.class,
             RHUICredentials.class,
+            RhnTimeZone.class,
             RoleImpl.class,
             SAPWorkload.class,
             SCCCredentials.class,
@@ -410,11 +541,13 @@ public class AnnotationRegistry {
             SCCRepositoryNoAuth.class,
             SCCRepositoryTokenAuth.class,
             SCCSubscription.class,
-            SUSEProductChannel.class,
+            ScapActionDetails.class,
             ScriptActionDetails.class,
             ScriptResult.class,
+            ServerAction.class,
             ServerAppStream.class,
             Server.class,
+            ServerArch.class,
             ServerCoCoAttestationConfig.class,
             ServerCoCoAttestationReport.class,
             ServerFQDN.class,
@@ -423,20 +556,31 @@ public class AnnotationRegistry {
             ServerGroupStateRevision.class,
             ServerGroupType.class,
             ServerHistoryEvent.class,
+            ServerNetAddress4.class,
+            ServerNetAddress6.class,
             ServerPath.class,
             ServerPathId.class,
+            ServerSnapshot.class,
+            ServerSnapshotTagLink.class,
             ServerStateRevision.class,
+            ServerUuid.class,
             Severity.class,
+            SnapshotTag.class,
             SnapshotTagName.class,
             SoftwareEnvironmentTarget.class,
             SoftwareProjectSource.class,
+            SourceRpm.class,
             SslCryptoKey.class,
+            State.class,
             StateChange.class,
             StateRevision.class,
+            SubscribeChannelsActionDetails.class,
             SupportDataActionDetails.class,
             SUSEProduct.class,
+            SUSEProductChannel.class,
             SUSEProductExtension.class,
             SUSEProductUpgrade.class,
+            SystemMigration.class,
             Task.class,
             TaskoBunch.class,
             TaskoRun.class,
@@ -448,20 +592,26 @@ public class AnnotationRegistry {
             TinyUrl.class,
             TokenChannelAppStream.class,
             Token.class,
+            TokenPackage.class,
             UserGroupImpl.class,
             UserGroupMembers.class,
             UserGroupMembersId.class,
             UserImpl.class,
             UserInfo.class,
             UserNotification.class,
+            UserServerPreference.class,
             VHMCredentials.class,
+            VirtualHostManagerConfig.class,
             VirtualHostManagerNodeInfo.class,
+            VirtualInstanceState.class,
+            VirtualInstanceType.class,
             XccdfBenchmark.class,
             XccdfIdent.class,
             XccdfIdentSystem.class,
             XccdfProfile.class,
             XccdfRuleResult.class,
             XccdfRuleResultType.class,
+            WebSessionImpl.class,
             XccdfTestResult.class,
             WebEndpoint.class
     );

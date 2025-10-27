@@ -40,9 +40,8 @@ public class ChannelArchTest extends RhnBaseTestCase {
     @Test
     public void testChannelArch() {
         Long testid = 500L;
-        String query = "ChannelArch.findById";
-        ChannelArch ca = (ChannelArch) TestUtils.lookupFromCacheById(testid, query);
-        ChannelArch ca2 = (ChannelArch) TestUtils.lookupFromCacheById(ca.getId(), query);
+        ChannelArch ca = TestUtils.lookupChannelArchFromCacheById(testid);
+        ChannelArch ca2 = TestUtils.lookupChannelArchFromCacheById(ca.getId());
         assertNotNull(ca.getArchType());
         assertEquals(ca.getLabel(), ca2.getLabel());
     }

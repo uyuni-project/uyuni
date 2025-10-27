@@ -14,15 +14,78 @@
  */
 package com.redhat.rhn.domain.server;
 
-import com.redhat.rhn.domain.Label;
+import static org.hibernate.annotations.CacheConcurrencyStrategy.READ_ONLY;
+
+import com.redhat.rhn.domain.BaseDomainHelper;
+
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.Immutable;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 
 /**
  * VirtualInstanceState
  */
-public class VirtualInstanceState extends Label {
+@Entity
+@Table(name = "rhnVirtualInstanceState")
+@Immutable
+@Cache(usage = READ_ONLY)
+public class VirtualInstanceState extends BaseDomainHelper {
+
+    @Id
+    private Long id;
+
+    @Column
+    private String name;
+
+    @Column
+    private String label;
 
     VirtualInstanceState() {
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    protected void setId(Long idIn) {
+        id = idIn;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String nameIn) {
+        name = nameIn;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String labelIn) {
+        label = labelIn;
+    }
+
+
+    @Override
+    public boolean equals(Object oIn) {
+        if (!(oIn instanceof VirtualInstanceState that)) {
+            return false;
+        }
+        return new EqualsBuilder().append(this.getName(), that.getName())
+                .append(this.getLabel(), that.getLabel()).isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(getName()).append(getLabel()).toHashCode();
+    }
 }

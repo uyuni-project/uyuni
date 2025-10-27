@@ -610,13 +610,7 @@ public class UserManagerTest extends RhnBaseTestCase {
                                                               UserServerPreferenceId
                                                               .RECEIVE_NOTIFICATIONS));
 
-       UserServerPreferenceId id = new UserServerPreferenceId(user,
-                                       s,
-                                       UserServerPreferenceId
-                                       .RECEIVE_NOTIFICATIONS);
-
-       UserServerPreference usp = new UserServerPreference();
-       usp.setId(id);
+       UserServerPreference usp = new UserServerPreference(user, s, UserServerPreferenceId.RECEIVE_NOTIFICATIONS);
        usp.setValue("0");
 
        TestUtils.saveAndFlush(usp);

@@ -14,8 +14,8 @@
  */
 package com.redhat.rhn.domain.action.salt.inspect;
 
+import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.action.Action;
-import com.redhat.rhn.domain.action.ActionChild;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -23,9 +23,12 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -35,7 +38,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "rhnActionImageInspect")
-public class ImageInspectActionDetails extends ActionChild {
+public class ImageInspectActionDetails extends BaseDomainHelper {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "image_inspect_seq")
@@ -56,6 +59,10 @@ public class ImageInspectActionDetails extends ActionChild {
 
     @Column(name = "build_action_id")
     private Long buildActionId;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "action_id", nullable = false)
+    private Action parentAction;
 
     /**
      * @return the version
@@ -114,20 +121,6 @@ public class ImageInspectActionDetails extends ActionChild {
     }
 
     /**
-     * @return the action
-     */
-    public Action getAction() {
-        return super.getParentAction();
-    }
-
-    /**
-     * @param actionIn the action to set
-     */
-    public void setAction(Action actionIn) {
-        super.setParentAction(actionIn);
-    }
-
-    /**
      * @return the build action id
      */
     public Long getBuildActionId() {
@@ -164,5 +157,21 @@ public class ImageInspectActionDetails extends ActionChild {
     public void addResult(ImageInspectActionResult resultIn) {
         resultIn.setParentScriptActionDetails(this);
         results.add(resultIn);
+    }
+
+    /**
+     * Gets the parent Action associated with this ServerAction record
+     * @return Returns the parentAction.
+     */
+    public Action getParentAction() {
+        return parentAction;
+    }
+
+    /**
+     * Sets the parent Action associated with this ServerAction record
+     * @param parentActionIn The parentAction to set.
+     */
+    public void setParentAction(Action parentActionIn) {
+        this.parentAction = parentActionIn;
     }
 }

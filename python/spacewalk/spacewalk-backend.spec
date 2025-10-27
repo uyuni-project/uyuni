@@ -55,6 +55,7 @@ Summary:        Common programs needed to be installed on the %{productprettynam
 License:        GPL-2.0-only
 Group:          System/Management
 URL:            https://github.com/uyuni-project/uyuni
+#!CreateArchive: %{name}
 Source0:        %{name}-%{version}.tar.gz
 %if !0%{?suse_version} || 0%{?suse_version} >= 1120
 BuildArch:      noarch

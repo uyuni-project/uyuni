@@ -14,16 +14,15 @@
  */
 package com.redhat.rhn.domain.test;
 
+import com.redhat.rhn.common.hibernate.ConnectionManagerFactory;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Session;
 
 import java.util.List;
-import java.util.Map;
 
-/*
- */
 public class TestFactory extends HibernateFactory {
 
     private static Logger log = LogManager.getLogger(TestFactory.class);
@@ -40,7 +39,6 @@ public class TestFactory extends HibernateFactory {
      */
     protected Class getImplementationClass() {
         return TestImpl.class;
-
     }
 
     /** Get the Logger for the derived class so log messages
@@ -57,15 +55,21 @@ public class TestFactory extends HibernateFactory {
 
     public static TestInterface lookupByFoobar(String f) {
         // Get PersonalInfo row
-        return singleton.lookupObjectByNamedQuery("Test.findByFoobar", Map.of("fooBar", f));
+        return singleton.lookupObjectByParam(TestImpl.class, "fooBar", f);
     }
 
     public static List<TestInterface> lookupAll() {
-        return singleton.listObjectsByNamedQuery("Test.findAll", Map.of());
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("FROM TestImpl", TestInterface.class)
+                .list();
     }
 
     public static void save(TestInterface t) {
         singleton.saveObject(t);
     }
 
+    public static Session getSession() {
+        setConnectionManager(ConnectionManagerFactory.testConnectionManager());
+        return HibernateFactory.getSession();
+    }
 }
