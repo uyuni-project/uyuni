@@ -1,4 +1,21 @@
 -------------------------------------------------------------------
+Mon Oct 27 15:12:12 CET 2025 - rosuna@suse.com
+
+- version 5.2.1-0
+  * Make caching code Py 2.7 compatible
+  * Use JSON instead of pickle for spacecmd cache (bsc#1227579)
+  * Python 2.7 cannot re-raise exceptions
+  * Fix methods in api namespace in spacecmd (bsc#1249532)
+  * Use "x not in y" instead of "not x in y"
+  * Replace regex functions with more efficient string functions
+  * Allow existing pylint failures
+  * Reformat Python code with black
+  * Make spacecmd to work with Python 3.12 and higher
+  * Call print statements properly in Python 3
+  * Do not break syntax for Python 2.7
+  * Fix the regular expression leading to exception in spacecmd
+
+-------------------------------------------------------------------
 Fri Jul 18 11:59:14 CEST 2025 - michael.calmer@suse.com
 
 - version 5.1.10-0
