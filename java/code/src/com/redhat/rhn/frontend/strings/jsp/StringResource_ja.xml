@@ -28548,32 +28548,32 @@ given channel.</source>
         <target>パスワード</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.primary" xml:space="preserve">
-        <source>this is the primary credentials</source>
-        <target>これは主となる資格情報です</target>
+        <source>This is the primary credentials</source>
+        <target state="needs-adaptation">これは主となる資格情報です</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.make-primary" xml:space="preserve">
-        <source>make primary credentials</source>
-        <target>主となる資格情報にする</target>
+        <source>Make primary credentials</source>
+        <target state="needs-adaptation">主となる資格情報にする</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.subscriptions" xml:space="preserve">
-        <source>list subscriptions</source>
-        <target>サブスクリプションの一覧</target>
+        <source>List subscriptions</source>
+        <target state="needs-adaptation">サブスクリプションの一覧</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.edit" xml:space="preserve">
-        <source>edit credentials</source>
-        <target>資格情報の編集</target>
+        <source>Edit credentials</source>
+        <target state="needs-adaptation">資格情報の編集</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.delete" xml:space="preserve">
-        <source>delete credentials</source>
-        <target>資格情報の削除</target>
+        <source>Delete credentials</source>
+        <target state="needs-adaptation">資格情報の削除</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.success" xml:space="preserve">
-        <source>credentials verified (click to refresh)</source>
-        <target>資格情報確認済み (クリックして更新)</target>
+        <source>Credentials verified (click to refresh)</source>
+        <target state="needs-adaptation">資格情報確認済み (クリックして更新)</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.failed" xml:space="preserve">
-        <source>verification failed (click to refresh)</source>
-        <target>資格情報失敗 (クリックして更新)</target>
+        <source>Verification failed (click to refresh)</source>
+        <target state="needs-adaptation">資格情報失敗 (クリックして更新)</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.modal-edit.title" xml:space="preserve">
         <source>Edit credentials</source>

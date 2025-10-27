@@ -28549,32 +28549,32 @@ canal indicat.</target>
         <target state="translated">Contrasenya</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.primary" xml:space="preserve">
-        <source>this is the primary credentials</source>
-        <target state="translated">aquestes són les credencials primàries</target>
+        <source>This is the primary credentials</source>
+        <target state="needs-adaptation">aquestes són les credencials primàries</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.make-primary" xml:space="preserve">
-        <source>make primary credentials</source>
-        <target state="translated">fes les credencials primàries</target>
+        <source>Make primary credentials</source>
+        <target state="needs-adaptation">fes les credencials primàries</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.subscriptions" xml:space="preserve">
-        <source>list subscriptions</source>
-        <target state="translated">llista les subscripcions</target>
+        <source>List subscriptions</source>
+        <target state="needs-adaptation">llista les subscripcions</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.edit" xml:space="preserve">
-        <source>edit credentials</source>
-        <target state="translated">edita les credencials</target>
+        <source>Edit credentials</source>
+        <target state="needs-adaptation">edita les credencials</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.delete" xml:space="preserve">
-        <source>delete credentials</source>
-        <target state="translated">suprimeix les credencials</target>
+        <source>Delete credentials</source>
+        <target state="needs-adaptation">suprimeix les credencials</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.success" xml:space="preserve">
-        <source>credentials verified (click to refresh)</source>
-        <target state="translated">s'han verificat les credencials (feu clic per actualitzar)</target>
+        <source>Credentials verified (click to refresh)</source>
+        <target state="needs-adaptation">s'han verificat les credencials (feu clic per actualitzar)</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.failed" xml:space="preserve">
-        <source>verification failed (click to refresh)</source>
-        <target state="translated">ha fallat la verificació (feu clic per actualitzar)</target>
+        <source>Verification failed (click to refresh)</source>
+        <target state="needs-adaptation">ha fallat la verificació (feu clic per actualitzar)</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.modal-edit.title" xml:space="preserve">
         <source>Edit credentials</source>
