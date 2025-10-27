@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-10-10 09:51+0200\n"
-"PO-Revision-Date: 2025-10-04 15:59+0000\n"
+"PO-Revision-Date: 2025-10-18 20:59+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/spacecmd/sk/>\n"
 "Language: sk\n"
@@ -4007,27 +4007,7 @@ msgid "proxy_container_config: create a proxy system and return its configuratio
 msgstr "proxy_container_config: vytvoriť systém proxy a vrátiť jeho konfiguračný súbor"
 
 #: ../src/spacecmd/proxy.py:46
-#, fuzzy, python-format
-#| msgid ""
-#| "usage: proxy_container_config [options] PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL ROOT_CA CRT KEY\n"
-#| "\n"
-#| "parameters:\n"
-#| "  PROXY_FQDN  the unique, DNS-resolvable FQDN of this proxy.\n"
-#| "  SERVER_FQDN the fully qualified domain name of the server to connect to proxy to.\n"
-#| "  MAX_CACHE   the maximum cache size in MB. 60% of the storage is a good value.\n"
-#| "  EMAIL       the email of the proxy administrator\n"
-#| "  CA          path to the root CA used to sign the proxy certificate in PEM format\n"
-#| "  CRT         path to the proxy certificate in PEM format\n"
-#| "  KEY         path to the proxy certificate private key in PEM format\n"
-#| "\n"
-#| "options:\n"
-#| "  -o, --output Path where to create the generated configuration. Default: 'config.tar.gz'\n"
-#| "  -p, --ssh-port SSH port the proxy listens one. Default: 8022\n"
-#| "  -i, --intermediate-ca  Path to an intermediate CA used to sign the proxy\n"
-#| "            certicate in PEM format. May be provided multiple times.\n"
-#| "\n"
-#| "examples:\n"
-#| "  proxy_container_config -o config.zip proxy.lab server.lab 1024 proxy@acme.org root_ca.crt proxy.crt proxy.key\n"
+#, python-format
 msgid ""
 "usage: proxy_container_config [options] PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL ROOT_CA CRT KEY\n"
 "\n"
@@ -4074,34 +4054,7 @@ msgid "proxy_container_config_generate_cert: create a proxy system and return it
 msgstr "proxy_container_config_generate_cert: vytvoriť systém proxy a vrátiť jeho konfiguračný súbor"
 
 #: ../src/spacecmd/proxy.py:119
-#, fuzzy, python-format
-#| msgid ""
-#| "usage: proxy_container_config_generate_cert PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL\n"
-#| "\n"
-#| "parameters:\n"
-#| "  PROXY_FQDN  the unique, DNS-resolvable FQDN of this proxy.\n"
-#| "  SERVER_FQDN the fully qualified domain name of the server to connect to proxy to.\n"
-#| "  MAX_CACHE   the maximum cache size in MB. 60% of the storage is a good value.\n"
-#| "  EMAIL       the email of the proxy administrator\n"
-#| "\n"
-#| "options:\n"
-#| "  -o, --output Path where to create the generated configuration. Default: 'config.tar.gz'\n"
-#| "  -p, --ssh-port SSH port the proxy listens one. Default: 8022\n"
-#| "  --ca-crt path to the certificate of the CA to use to generate a new proxy certificate.\n"
-#| "           Using /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT by default.\n"
-#| "  --ca-key path to the private key of the CA to use to generate a new proxy certificate.\n"
-#| "           Using /root/ssl-build/RHN-ORG-PRIVATE-SSL-KEY by default.\n"
-#| "  --ca-pass path to a file containing the password of the CA private key, will be prompted if not passed.\n"
-#| "  --ssl-cname alternate name of the proxy to set in the certificate. Can be provided multiple times\n"
-#| "  --ssl-country country code to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.\n"
-#| "  --ssl-state state name to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.\n"
-#| "  --ssl-city the city name to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.\n"
-#| "  --ssl-org the organization name to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.\n"
-#| "  --ssl-org-unit the organization unit name to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.\n"
-#| "  --ssl-email the email to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.\n"
-#| "\n"
-#| "examples:\n"
-#| "  proxy_container_config proxy.lab server.lab 1024 proxy@acme.org --ca-pass password-file\n"
+#, python-format
 msgid ""
 "usage: proxy_container_config_generate_cert PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL\n"
 "\n"
@@ -8387,7 +8340,7 @@ msgstr "Parameter {} nie je typ reťazca, ale {}."
 
 #: ../src/bin/spacecmd:54
 msgid "Welcome to spacecmd, a command-line interface to Spacewalk."
-msgstr ""
+msgstr "Vitajte v spacecmd, rozhraní príkazového riadku pre Spacewalk."
 
 #: ../src/bin/spacecmd:82
 msgid "Unhandled exception occurred while getting FQDN:"
@@ -8395,43 +8348,39 @@ msgstr "Pri získavaní FQDN sa vyskytla neošetrená výnimka:"
 
 #: ../src/bin/spacecmd:110
 msgid "config file to use [default: ~/.spacecmd/config]"
-msgstr ""
+msgstr "konfiguračný súbor na použitie [predvolený: ~/.spacecmd/config]"
 
 #: ../src/bin/spacecmd:113
-#, fuzzy
-#| msgid "logout: Disconnect from the server"
 msgid "use this username to connect to the server"
-msgstr "logout: Odpojiť sa od servera"
+msgstr "použiť toto používateľské meno na pripojenie k serveru"
 
 #: ../src/bin/spacecmd:119
 msgid "use this password to connect to the server (insecure). Use config instead or spacecmd will ask."
-msgstr ""
+msgstr "použiť toto heslo na pripojenie k serveru (nezabezpečené). Použiť namiesto toho config, inak spacecmd požiada o zadanie."
 
 #: ../src/bin/spacecmd:123
 msgid "connect to this server [default: local hostname]"
-msgstr ""
+msgstr "pripojiť sa k tomuto serveru [predvolené: local hostname]"
 
 #: ../src/bin/spacecmd:126
 msgid "use HTTP instead of HTTPS"
-msgstr ""
+msgstr "použiť HTTP namiesto HTTPS"
 
 #: ../src/bin/spacecmd:129
-#, fuzzy
-#| msgid "history: List your command history"
 msgid "do not store command history"
-msgstr "history: Vypísať zoznam histórie príkazov"
+msgstr "neukladať históriu príkazov"
 
 #: ../src/bin/spacecmd:132
 msgid "answer yes for all questions"
-msgstr ""
+msgstr "odpovedať áno na všetky otázky"
 
 #: ../src/bin/spacecmd:135
 msgid "print only error messages"
-msgstr ""
+msgstr "vypísať len chybové správy"
 
 #: ../src/bin/spacecmd:142
 msgid "print debug messages (can be passed multiple times)"
-msgstr ""
+msgstr "vypísať ladiace správy (možno zadať viackrát)"
 
 #: ../src/bin/spacecmd:192
 #, c-format
@@ -8439,20 +8388,17 @@ msgid "Config file %s does not exist."
 msgstr "Konfiguračný súbor %s neexistuje."
 
 #: ../src/bin/spacecmd:210
-#, fuzzy, c-format
-#| msgid "Could not read %s"
+#, c-format
 msgid "Could not create %s"
-msgstr "Nepodarilo sa prečítať %s"
+msgstr "Nepodarilo sa vytvoriť %s"
 
 #: ../src/bin/spacecmd:251
 msgid "User Interrupt"
-msgstr ""
+msgstr "Prerušenie používateľom"
 
 #: ../src/bin/spacecmd:292
-#, fuzzy
-#| msgid "Could not find repo %s"
 msgid "Could not find session"
-msgstr "Nepodarilo sa nájsť repozitár %s"
+msgstr "Nepodarilo sa nájsť sedenie"
 
 #~ msgid "Could not retrieve the Kickstart file"
 #~ msgstr "Nepodarilo sa získať súbor Kickstart"

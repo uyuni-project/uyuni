@@ -9926,7 +9926,7 @@ For a detailed analysis, please refer to the log files.
       <trans-unit id="system.migration.noCommonProduct">
           <source>The selected systems do not have a common base product.</source>
       </trans-unit>
-      <trans-unit id="system.migration.noServersSelected">
+      <trans-unit id="system.migration.noTarget">
           <source>Unable to identify a valid migration target for the selected systems.</source>
       </trans-unit>
       <trans-unit id="system.details.support.invalid_case_number">

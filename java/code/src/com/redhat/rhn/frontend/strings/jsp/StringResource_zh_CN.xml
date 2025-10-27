@@ -28548,32 +28548,32 @@ given channel.</source>
         <target>口令</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.primary" xml:space="preserve">
-        <source>this is the primary credentials</source>
-        <target>这是主要身份凭证</target>
+        <source>This is the primary credentials</source>
+        <target state="needs-adaptation">这是主要身份凭证</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.make-primary" xml:space="preserve">
-        <source>make primary credentials</source>
-        <target>设为主要身份凭证</target>
+        <source>Make primary credentials</source>
+        <target state="needs-adaptation">设为主要身份凭证</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.subscriptions" xml:space="preserve">
-        <source>list subscriptions</source>
-        <target>列出订阅</target>
+        <source>List subscriptions</source>
+        <target state="needs-adaptation">列出订阅</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.edit" xml:space="preserve">
-        <source>edit credentials</source>
-        <target>编辑身份凭证</target>
+        <source>Edit credentials</source>
+        <target state="needs-adaptation">编辑身份凭证</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.delete" xml:space="preserve">
-        <source>delete credentials</source>
-        <target>删除身份凭证</target>
+        <source>Delete credentials</source>
+        <target state="needs-adaptation">删除身份凭证</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.success" xml:space="preserve">
-        <source>credentials verified (click to refresh)</source>
-        <target>已校验身份凭证（单击以刷新）</target>
+        <source>Credentials verified (click to refresh)</source>
+        <target state="needs-adaptation">已校验身份凭证（单击以刷新）</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.failed" xml:space="preserve">
-        <source>verification failed (click to refresh)</source>
-        <target>校验失败（单击以刷新）</target>
+        <source>Verification failed (click to refresh)</source>
+        <target state="needs-adaptation">校验失败（单击以刷新）</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.modal-edit.title" xml:space="preserve">
         <source>Edit credentials</source>

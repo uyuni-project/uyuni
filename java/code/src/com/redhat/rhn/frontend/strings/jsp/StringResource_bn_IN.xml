@@ -26615,25 +26615,32 @@ given channel.</source>
         <source>Password</source>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.primary" xml:space="preserve">
-        <source>this is the primary credentials</source>
+        <source>This is the primary credentials</source>
+      <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.make-primary" xml:space="preserve">
-        <source>make primary credentials</source>
+        <source>Make primary credentials</source>
+      <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.subscriptions" xml:space="preserve">
-        <source>list subscriptions</source>
+        <source>List subscriptions</source>
+      <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.edit" xml:space="preserve">
-        <source>edit credentials</source>
+        <source>Edit credentials</source>
+      <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.delete" xml:space="preserve">
-        <source>delete credentials</source>
+        <source>Delete credentials</source>
+      <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.success" xml:space="preserve">
-        <source>credentials verified (click to refresh)</source>
+        <source>Credentials verified (click to refresh)</source>
+      <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.failed" xml:space="preserve">
-        <source>verification failed (click to refresh)</source>
+        <source>Verification failed (click to refresh)</source>
+      <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.modal-edit.title" xml:space="preserve">
         <source>Edit credentials</source>

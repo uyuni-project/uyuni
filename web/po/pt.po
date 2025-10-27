@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-10 09:51+0200\n"
+"POT-Creation-Date: 2025-10-27 10:14+0100\n"
 "PO-Revision-Date: 2021-10-15 12:11+0000\n"
 "Last-Translator: Ricardo Mateus <rmateus@suse.com>\n"
 "Language-Team: Portuguese <https://l10n.opensuse.org/projects/uyuni/web/pt/>\n"
@@ -610,12 +610,6 @@ msgstr ""
 msgid "This field is used as a 'key' identifier in the resulting pillar data."
 msgstr ""
 
-#: ../html/src/components/formulas/FormulaComponentGenerator.tsx:158
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:129
-#: ../html/src/manager/appstreams/actions-appstreams.tsx:8
-msgid "Reset"
-msgstr ""
-
 #: ../html/src/components/formulas/PasswordInput.tsx:70
 msgid "Generate new password"
 msgstr ""
@@ -782,7 +776,7 @@ msgid "Sync"
 msgstr ""
 
 #: ../html/src/components/hub/HierarchicalChannelsTable.tsx:209
-#: ../html/src/components/states-picker.tsx:453
+#: ../html/src/components/states-picker.tsx:457
 msgid "Channel Name"
 msgstr ""
 
@@ -835,7 +829,7 @@ msgid "There are no ISSv1 slaves to migrate."
 msgstr ""
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:211
-#: ../html/src/components/states-picker.tsx:369
+#: ../html/src/components/states-picker.tsx:373
 #: ../html/src/manager/images/image-view.tsx:818
 #: ../html/src/manager/images/image-view.tsx:820
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:29
@@ -1261,11 +1255,11 @@ msgstr ""
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:379
 #: ../html/src/components/package/PackageListActionScheduler.tsx:181
-#: ../html/src/components/states-picker.tsx:371
-#: ../html/src/components/states-picker.tsx:561
+#: ../html/src/components/states-picker.tsx:375
+#: ../html/src/components/states-picker.tsx:565
 #: ../html/src/manager/admin/setup/products/products.tsx:1086
 #: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:38
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:195
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:194
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:16
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1126
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:673
@@ -1364,7 +1358,7 @@ msgid "Confirm access token modification"
 msgstr ""
 
 #: ../html/src/components/hub/TokenTable.tsx:156
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:186
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:185
 msgid "Confirm if you want to proceed."
 msgstr ""
 
@@ -1778,53 +1772,53 @@ msgstr ""
 msgid "Edit Configuration Channel"
 msgstr ""
 
-#: ../html/src/components/states-picker.tsx:92
+#: ../html/src/components/states-picker.tsx:96
 msgid "There are unsaved changes. Do you want to proceed?"
 msgstr ""
 
-#: ../html/src/components/states-picker.tsx:108
+#: ../html/src/components/states-picker.tsx:112
 msgid "State configuration must not be empty"
 msgstr ""
 
-#: ../html/src/components/states-picker.tsx:122
+#: ../html/src/components/states-picker.tsx:126
 msgid "Reboot state will be put last."
 msgstr ""
 
-#: ../html/src/components/states-picker.tsx:131
+#: ../html/src/components/states-picker.tsx:135
 msgid "'Reboot system' and 'Reboot system if needed' states cannot be used together."
 msgstr ""
 
-#: ../html/src/components/states-picker.tsx:154
+#: ../html/src/components/states-picker.tsx:158
 msgid "State assignments have been saved."
 msgstr ""
 
-#: ../html/src/components/states-picker.tsx:172
+#: ../html/src/components/states-picker.tsx:176
 msgid "An error occurred on save."
 msgstr ""
 
-#: ../html/src/components/states-picker.tsx:310
+#: ../html/src/components/states-picker.tsx:314
 msgid "No states assigned. Use search to find and assign states."
 msgstr ""
 
-#: ../html/src/components/states-picker.tsx:379
+#: ../html/src/components/states-picker.tsx:383
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:184
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:192
 msgid "Save Changes"
 msgstr ""
 
-#: ../html/src/components/states-picker.tsx:394
+#: ../html/src/components/states-picker.tsx:398
 msgid "Reorder"
 msgstr ""
 
-#: ../html/src/components/states-picker.tsx:420
+#: ../html/src/components/states-picker.tsx:424
 msgid "Search in states"
 msgstr ""
 
-#: ../html/src/components/states-picker.tsx:420
+#: ../html/src/components/states-picker.tsx:424
 msgid "Search in configuration channels"
 msgstr ""
 
-#: ../html/src/components/states-picker.tsx:426
+#: ../html/src/components/states-picker.tsx:430
 #: ../html/src/components/table/SearchField.tsx:68
 #: ../html/src/manager/header/search/search.tsx:77
 #: ../html/src/manager/header/search/search.tsx:86
@@ -1833,44 +1827,44 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-#: ../html/src/components/states-picker.tsx:436
+#: ../html/src/components/states-picker.tsx:440
 msgid "Edit State Ranks"
 msgstr ""
 
-#: ../html/src/components/states-picker.tsx:436
+#: ../html/src/components/states-picker.tsx:440
 msgid "Edit Channel Ranks"
 msgstr ""
 
-#: ../html/src/components/states-picker.tsx:439
+#: ../html/src/components/states-picker.tsx:443
 msgid "Edit the ranking of the states by dragging them."
 msgstr ""
 
-#: ../html/src/components/states-picker.tsx:440
+#: ../html/src/components/states-picker.tsx:444
 msgid "Edit the ranking of the configuration channels by dragging them."
 msgstr ""
 
-#: ../html/src/components/states-picker.tsx:445
+#: ../html/src/components/states-picker.tsx:449
 msgid "There are no states assigned."
 msgstr ""
 
-#: ../html/src/components/states-picker.tsx:453
+#: ../html/src/components/states-picker.tsx:457
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:283
 #, fuzzy
 msgid "State Name"
 msgstr "Estado"
 
-#: ../html/src/components/states-picker.tsx:454
+#: ../html/src/components/states-picker.tsx:458
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:296
 #, fuzzy
 msgid "State Label"
 msgstr "Estado"
 
-#: ../html/src/components/states-picker.tsx:454
+#: ../html/src/components/states-picker.tsx:458
 #: ../html/src/components/table/nested-data.example.tsx:50
 msgid "Channel Label"
 msgstr ""
 
-#: ../html/src/components/states-picker.tsx:455
+#: ../html/src/components/states-picker.tsx:459
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:46
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:79
 #: ../html/src/manager/admin/payg-shared/info/payg-info-form.tsx:23
@@ -1886,29 +1880,29 @@ msgstr ""
 msgid "Description"
 msgstr ""
 
-#: ../html/src/components/states-picker.tsx:456
+#: ../html/src/components/states-picker.tsx:460
 msgid "Assign"
 msgstr ""
 
-#: ../html/src/components/states-picker.tsx:515
+#: ../html/src/components/states-picker.tsx:519
 msgid "Select the systems to schedule for immediate state execution and confirm."
 msgstr ""
 
-#: ../html/src/components/states-picker.tsx:525
+#: ../html/src/components/states-picker.tsx:529
 msgid "This table is empty"
 msgstr ""
 
-#: ../html/src/components/states-picker.tsx:532
-#: ../html/src/components/states-picker.tsx:573
+#: ../html/src/components/states-picker.tsx:536
+#: ../html/src/components/states-picker.tsx:577
 #, fuzzy
 msgid "System Name"
 msgstr "Estado"
 
-#: ../html/src/components/states-picker.tsx:552
+#: ../html/src/components/states-picker.tsx:556
 msgid "Execute States"
 msgstr ""
 
-#: ../html/src/components/states-picker.tsx:557
+#: ../html/src/components/states-picker.tsx:561
 msgid "Select Sytems"
 msgstr ""
 
@@ -2438,6 +2432,11 @@ msgstr ""
 msgid "Password Policy Changed"
 msgstr ""
 
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:129
+#: ../html/src/manager/appstreams/actions-appstreams.tsx:8
+msgid "Reset"
+msgstr ""
+
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:136
 msgid "Password Policy Reset to Default"
 msgstr ""
@@ -2457,7 +2456,7 @@ msgstr ""
 msgid "Edit Information"
 msgstr ""
 
-#: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:57
+#: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:53
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.tsx:85
 msgid "Editing properties.."
 msgstr ""
@@ -4931,13 +4930,13 @@ msgid "This will remove the current schedule from all the systems assigned to it
 msgstr ""
 
 #: ../html/src/manager/maintenance/details/calendar-details.tsx:46
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:189
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:188
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:105
 msgid "Cancel affected actions?"
 msgstr ""
 
 #: ../html/src/manager/maintenance/details/calendar-details.tsx:83
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:125
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:124
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:47
 msgid "Calendar Name"
 msgstr ""
@@ -4997,7 +4996,7 @@ msgid "Maintenance schedule has been assigned to {count} system(s)"
 msgstr ""
 
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:176
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:133
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:132
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:116
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:14
 #: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:137
@@ -5012,31 +5011,31 @@ msgstr ""
 msgid "Current Schedule"
 msgstr ""
 
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:139
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:138
 msgid "Calendar data"
 msgstr ""
 
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:147
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:146
 msgid "Enter Url to ical file"
 msgstr ""
 
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:161
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:160
 msgid "Attach file"
 msgstr ""
 
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:167
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:166
 msgid "Remove file"
 msgstr ""
 
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:177
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:176
 msgid "Refresh data from url"
 msgstr ""
 
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:182
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:181
 msgid "Confirm calendar refresh"
 msgstr ""
 
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:185
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:184
 msgid "Refreshing the calendar will reschedule all affected actions."
 msgstr ""
 
@@ -5082,24 +5081,24 @@ msgstr ""
 msgid "Create a new Maintenance Calendar"
 msgstr ""
 
-#: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:41
+#: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:40
 #: ../html/src/manager/maintenance/ssm/system-assignment.tsx:17
 msgid "Maintenance Schedules"
 msgstr ""
 
-#: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:41
+#: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:40
 msgid "Maintenance Calendars"
 msgstr ""
 
-#: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:46
+#: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:45
 msgid "Below is a list of Maintenance Schedules available to the current user."
 msgstr ""
 
-#: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:47
+#: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:46
 msgid "Below is a list of Maintenance Calendars available to the current user."
 msgstr ""
 
-#: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:50
+#: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:49
 msgid "schedule"
 msgstr ""
 
