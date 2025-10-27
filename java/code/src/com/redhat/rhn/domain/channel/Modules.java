@@ -14,10 +14,11 @@
  */
 package com.redhat.rhn.domain.channel;
 
-/**
- *
- *
- */
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+
+@Entity
+@DiscriminatorValue("2")
 public class Modules extends RepoMetadata {
 
 }
