@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Mon Oct 27 15:23:03 CET 2025 - rosuna@suse.com
+
+- version 5.2.1-0
+  * For compatibility with existing AutoYast profiles, redirect
+    old branding tools repo name to the new one.
+  * Add support for Hub RPC API through apache httpd.
+  * Fix syntax error in changelog
+  * Do not generate listing for /os-images (bsc#1247544)
+
+-------------------------------------------------------------------
 Tue Jun 17 19:28:01 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.7-0
