@@ -1,4 +1,56 @@
 -------------------------------------------------------------------
+Mon Oct 27 15:33:45 CET 2025 - rosuna@suse.com
+
+- version 5.2.1-0
+  * Optimize schedule page queries for better performance
+    (bsc#1244641)
+  * Fix MLM admin status display in Users pages (bsc#1244321)
+  * RBAC mappings for search box in top bar (bsc#1250514)
+  * Add RBAC mappings for config channel list GUI table operations
+    (bsc#1251236)
+  * Decouple Server and Proxy identification from its
+    software channels (bsc#1248113)
+  * Rename "Proxy" to "Proxy Entitled Servers" (bsc#1250641)
+  * Add missing RBAC endpoints for package search (bsc#1250514)
+  * Add indexes to rhnActionSubChannelsTokens table
+  * Add index to rhnChannelNewestPackage table (bsc#1249089)
+  * Add new DB function to support appstreams clone and
+    prevent timeouts in channel clone (bsc#1247990)
+  * Allow existing pylint failures
+  * Fix blend's module docstring
+  * Reformat Python code with black
+  * Added issv3 scc missing RBAC entries
+  * Add column last_seen_at to suseSCCProxy table
+  * Creation of table suseErrataAdvisoryMap and
+    added errata-advisory-map-sync taskomatic job
+    fixing bug (bsc#1243808)
+  * Add created and modified columns to easily migrate hibernate
+    to annotations
+    tables: rhnActionScap, rhnActionImageDeploy, rhnActionPackage
+  * Remove SCAP File Upload Size Limit from database table
+  * Added support for product migration in SSM
+  * Added RBAC definitions for support data UI
+  * Add taskomatic jobs and tables to generate and store
+    differences between CLM environments (jsc#SUMA-301)
+  * Drop unused column receiving_updates from channel
+  * Fix syntax error in changelog
+  * Fix schema migration when removing the dropped
+    virtualization action types (bsc#1249178)
+  * Add action type to refresh virtual instance data
+  * Add new action type to get supportdata
+  * Trigger saltboot cobbler migration
+  * Optimize system overview table generation
+    * Added new indexes
+    * Simplified queries
+  * Fix activate and deactivate rbac endpoint entries (bsc#1244444)
+  * Optimize CLM by improving AppStream-related queries
+    (bsc#1235847)
+  * Prioritize beacon data for regular minion reboot status
+    (bsc#1245405)
+  * Fix schema migration script for multi-org setups (bsc#1247773)
+  * Store CPU architecture specific data (jsc#SUMA-406)
+
+-------------------------------------------------------------------
 Thu Jul 03 19:11:17 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.10-0

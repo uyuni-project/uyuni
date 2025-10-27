@@ -1,3 +1,0 @@
-- Add created and modified columns to easily migrate hibernate
-  to annotations
-  tables: rhnActionScap, rhnActionImageDeploy, rhnActionPackage
