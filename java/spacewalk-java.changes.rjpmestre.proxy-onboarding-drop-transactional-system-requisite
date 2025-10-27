@@ -1,2 +1,0 @@
-- Drop requirement for minion to be a transactional system
-  to convert it to a proxy (bsc#1246158)
