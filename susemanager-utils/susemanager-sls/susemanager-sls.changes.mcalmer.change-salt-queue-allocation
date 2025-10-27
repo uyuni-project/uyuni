@@ -1,3 +1,0 @@
-- Assign a salt event not anymore to a fix queue but choose the
-  least used one by keeping all events from the same minion in
-  the same queue

@@ -1,4 +1,41 @@
 -------------------------------------------------------------------
+Mon Oct 27 15:34:15 CET 2025 - rosuna@suse.com
+
+- version 5.2.1-0
+  * Fix reebot needed detection of transaction update systems
+  * Remove product installation state from packages as it is
+    already available in the channels state
+  * Allow existing pylint failures
+  * Reformat Python code with black
+  * Add VLEK certificate creation and collection
+    in confidential computing report generation
+  * Use absolute paths when invoking external commands
+  * Automatically deploy IBM GPG keys to SUSE minions (bsc#1246421)
+  * Move jmx configuration to a persisted folder
+    (bsc#1244219)
+  * Succeed liberate product migration also when reinstall
+    packages is disabled (bsc#1248804)
+  * Ignore unsupported products when installing missing
+    release packages (bsc#1251278)
+  * Assign a salt event not anymore to a fix queue but choose the
+    least used one by keeping all events from the same minion in
+    the same queue
+  * Install products automatically on SLE Micro 5 and SL Micro 6
+    (bsc#1243486)
+  * Add state to get virtual instance info from physical hosts
+  * Add a salt execution module to get support data from clients
+  * Add all image types supported by kiwi (bsc#1246663)
+  * Add container based kiwi10 build system
+  * Do not use pkg search in jinja (bsc#1240882)
+  * Remove SLE11 kiwi bundle build support
+  * Allow OS image templates to have just two numbers as a version
+  * Install proxy related packages for RPM installation
+    (bsc#1246654)
+  * Automatically deploy the SUSE 16 GPG key (bsc#1250911)
+  * Collect CPU architecture specific data on hardware
+    profile update (jsc#SUMA-406)
+
+-------------------------------------------------------------------
 Wed Jul 30 13:37:08 CEST 2025 - michael.calmer@suse.com
 
 - version 5.1.12-0
