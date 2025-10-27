@@ -223,7 +223,7 @@ jobs:
       
       - name: Upload Cucumber JSON Reports
         if: ${{ always() && !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
-        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 #v4.6.1
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 #v5.0.0
         with:
           name: cucumber_json_reports_${{ inputs.server_id }}
           path: ./testsuite/results/**/*.json
@@ -245,14 +245,14 @@ jobs:
 
       - name: Upload server log artifacts
         if: ${{ failure() && !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
-        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 #v4.6.1
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 #v5.0.0
         with:
           name: server_rhn_logs_${{ inputs.server_id }}
           path: /tmp/testing/server-logs/${{ inputs.server_id }}
 
       - name: Upload client log artifacts
         if: ${{ failure() && !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
-        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 #v4.6.1
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 #v5.0.0
         with:
           name: client_logs_${{ inputs.server_id }}
           path: ./testsuite/logs
