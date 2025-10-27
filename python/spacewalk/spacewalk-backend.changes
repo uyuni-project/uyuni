@@ -1,4 +1,25 @@
 -------------------------------------------------------------------
+Mon Oct 27 15:17:02 CET 2025 - rosuna@suse.com
+
+- version 5.2.1-0
+  * Fix PREPENDED_DIR error when importing pkgs
+  * Reposync: prevent excessive logging for patches
+    that are skipped (bsc#1250239)
+  * Reposync: show message about filtering failed
+    packages only when there are failing packages
+  * Fix collecting database information in support config
+  * Use libsolv for version comparison for reposync with --latest
+    (bsc#1248799)
+  * Allow existing pylint failures
+  * Reformat Python code with black
+  * Use absolute paths when invoking external commands
+  * Fix parameter error when syncing product repositories in ISS v1
+    (bsc#1244724)
+  * Drop receiving_updates column from ISSv1 queries
+  * Overhaul spacewalk-debug for use inside of a container
+  * Use more secure defusedxml parser (bsc#1227577)
+
+-------------------------------------------------------------------
 Thu Jul 24 16:54:44 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.13-0
