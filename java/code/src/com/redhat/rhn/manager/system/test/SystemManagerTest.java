@@ -767,8 +767,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         cpu.setMHz(CPUTest.MHZ);
         cpu.setModel(CPUTest.MODEL);
         cpu.setNrCPU(NUM_CPUS);
-        TestUtils.saveAndFlush(cpu);
-        TestUtils.reload(s);
+        s.setCpu(cpu);
     }
 
     @Test

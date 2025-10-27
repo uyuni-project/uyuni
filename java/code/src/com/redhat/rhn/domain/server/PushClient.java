@@ -49,24 +49,33 @@ public class PushClient extends BaseDomainHelper {
                     @Parameter(name = "increment_size", value = "1")
             })
     private Long id;
+
     @Column(nullable = false)
     private String name;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "server_id")
     private Server server;
+
     @Column(name = "jabber_id")
     private String jabberId;
+
     @Column(name = "shared_key", nullable = false)
     private String sharedKey;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "state_id")
     private PushClientState state;
+
     @Column(name = "next_action_time")
     private Date nextActionTime;
+
     @Column(name = "last_message_time")
     private Date lastMessageTime;
+
     @Column(name = "last_ping_time")
     private Date lastPingTime;
+
     /**
      * Getter for id
      * @return Long to get

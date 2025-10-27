@@ -3,6 +3,7 @@
 PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
+    <!--
     <class name="com.redhat.rhn.domain.server.Server" table="rhnServer">
         <id name="id" type="long" column="id">
             <meta attribute="scope-set">protected</meta>
@@ -152,12 +153,12 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <one-to-one name="pushClient" class="com.redhat.rhn.domain.server.PushClient"
                     property-ref="server" lazy="proxy" />
 
-        <!--
+
         we want to access the ram object via the field directly.
         The setRam method is used to set the total amount of ram on
         a server with a long.  I don't want th users to have to
         create a RAM object on a server.
-        -->
+
         <one-to-one name="ram" class="com.redhat.rhn.domain.server.Ram"
             property-ref="server" cascade="all" access="field" lazy="proxy"/>
         <one-to-one name="dmi" class="com.redhat.rhn.domain.server.Dmi"
@@ -219,6 +220,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
             </set>
         </joined-subclass>
     </class>
+    -->
 
     <query name="Server.findByIdandOrgId">
         <![CDATA[from com.redhat.rhn.domain.server.Server as s where s.id = :sid and ORG_ID = :orgId]]>
