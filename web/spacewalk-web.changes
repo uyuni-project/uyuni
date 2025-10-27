@@ -1,4 +1,49 @@
 -------------------------------------------------------------------
+Mon Oct 27 15:31:14 CET 2025 - rosuna@suse.com
+
+- version 5.2.1-0
+  * Drop unused build requirements
+  * Drop legacy dependencies (bsc#1247983)
+  * Update web UI dependencies
+  * Build no longer requires susemanager-frontend-libs (bsc#1247983)
+  * Fix URL to salt formular documentation (bsc#1248741)
+  * Added the possibility to deregister an unreachable ISS Hub
+    or Peripheral server
+  * Wrap events output instead of long side scroll (bsc#1250342)
+  * Checked options immediately enable linked password policy
+    fields. (bsc#1244430)
+  * Add the last checked in column back to the system lists
+    (bsc#1248411)
+  * Fix parsing errors in organization credentials list (bsc#1246436)
+  * Fix systems list CSV download to align
+    with UI filtering (bsc#1248409)
+  * Fix physical systems list (bsc#1248661)
+  * Improve error message handling for duplicate filter name.
+  * Fix broken CVE links in CVE audit page.
+  * Fix tooltip text for Create button on Maintenance page.
+  * Show tick next to password when requirements
+    are met. (bsc#1230282)
+  * Replaced href links with buttons to enhance clarity and
+    accessibility.
+  * Improved table pagination controls UI and usability.
+  * Refined UI spacing and alignment in password policy form.
+  * Updated brand name in Formulas page.
+  * Tooltips have been upgraded to styled Bootstrap tooltips for
+    a cleaner and more consistent user experience.
+  * Enhance buttons placement for a more intuitive experience.
+  * Ensure the UI works with an unknown VHM provider
+  * Correct the organization count in the peripheral details
+  * Use specific label for hub/peripheral FQDN
+  * Added support for product migration in SSM
+  * Added a page to generate and upload the support data for a system
+  * Fix Sync Channels button on peripheral server (bsc#1249030)
+  * Adjust defaults and validations for registries in proxy
+    configuration
+  * Trigger proxy configuration validation on mount to enable
+    submit button
+  * Fix recently registered systems filter (bsc#1243183)
+
+-------------------------------------------------------------------
 Thu Jul 24 16:10:38 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.13-0
