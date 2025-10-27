@@ -1,4 +1,23 @@
 -------------------------------------------------------------------
+Mon Oct 27 15:30:43 CET 2025 - rosuna@suse.com
+
+- version 5.2.1-0
+  * Allow existing pylint failures
+  * Reformat Python code with black
+  * Fix errors in spacewalk common channels init file (RHEL clones)
+  * Fix spacewalk-hostname-rename with containers (bsc#1229825)
+  * Fix syntax error in changelog
+  * Add openSUSE Leap Micro 6.2 repositories
+  * Change Uyuni Server and Proxy repositories for new tumbleweed
+    and microos base channels
+  * Drop Debian 9 and 10 repositories after end of LTS
+  * Drop EOL SLES and SLE Micro repositories
+  * Drop EOL openSUSE Leap and Leap Micro repositories
+  * Drop all legacy spacewalk repositories
+  * Drop all Centos 6 and clones
+  * Use a dedicated path for Cobbler settings (bsc#1244027)
+
+-------------------------------------------------------------------
 Tue Jun 17 18:56:54 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.6-0
