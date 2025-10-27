@@ -5,7 +5,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 
 <hibernate-mapping>
         <import class="com.redhat.rhn.domain.server.GuestAndNonVirtHostView"/>
-
+<!--
     <class name="com.redhat.rhn.domain.server.VirtualInstance" table="RhnVirtualInstance">
         <id name="id" type="long" column="id">
             <meta attribute="scope-set">protected</meta>
@@ -34,7 +34,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                     class="com.redhat.rhn.domain.server.VirtualInstanceInfo"
                     cascade="all"/>
     </class>
-
+-->
     <query name="VirtualInstance.lookupGuestBySidAndOrg">
         <![CDATA[
           from VirtualInstance guest

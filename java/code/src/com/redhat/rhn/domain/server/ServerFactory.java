@@ -394,6 +394,7 @@ public class ServerFactory extends HibernateFactory {
             servers.stream()
                     .filter(s -> s.getOrgId().equals(serverGroup.getOrgId()))
                     .forEach(s -> {
+                        HibernateFactory.getSession().refresh(s);
                         s.addGroup(serverGroup);
                         SystemManager.updateSystemOverview(s);
                     });
@@ -695,7 +696,7 @@ public class ServerFactory extends HibernateFactory {
             long sid = tuple.get(0, Number.class).longValue();
             if (current == null || current.getId() != sid) {
                 if (current != null) {
-                    current.setConfigChannelsHibernate(channels);
+                    current.setConfigChannels(channels);
                     data.add(current);
                     channels = new ArrayList<>();
                 }
@@ -712,7 +713,7 @@ public class ServerFactory extends HibernateFactory {
         }
 
         if (current != null) {
-            current.setConfigChannelsHibernate(channels);
+            current.setConfigChannels(channels);
             data.add(current);
         }
 
