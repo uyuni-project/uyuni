@@ -21,14 +21,14 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Immutable;
+import org.hibernate.annotations.Parameter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -41,8 +41,14 @@ import javax.persistence.Table;
 public class PackageKeyType extends BaseDomainHelper implements Comparable<PackageKeyType> {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "package_key_type_seq")
-    @SequenceGenerator(name = "package_key_type_seq", sequenceName = "rhn_package_key_type_id_seq", allocationSize = 1)
+    @GeneratedValue(generator = "package_key_type_seq")
+    @GenericGenerator(
+        name = "package_key_type_seq",
+        strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+        parameters = {
+                @Parameter(name = "sequence_name", value = "rhn_package_key_type_id_seq"),
+                @Parameter(name = "increment_size", value = "1")
+        })
     private Long id;
     @Column
     private String label;

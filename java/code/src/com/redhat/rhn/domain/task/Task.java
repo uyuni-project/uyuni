@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -18,18 +19,19 @@ import com.redhat.rhn.domain.org.Org;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -39,29 +41,32 @@ import javax.persistence.Table;
 @Table(name = "rhnTaskQueue")
 public class Task implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "task_queue_seq")
-    @SequenceGenerator(name = "task_queue_seq", sequenceName = "rhn_task_queue_id_seq", allocationSize = 1)
+    @GeneratedValue(generator = "task_queue_seq")
+    @GenericGenerator(
+            name = "task_queue_seq",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @Parameter(name = "sequence_name", value = "rhn_task_queue_id_seq"),
+                    @Parameter(name = "increment_size", value = "1")
+            })
     private Long id;
 
-    @Id
     @Column(name = "task_name", nullable = false, length = 64)
     private String name;
 
-    @Id
     @Column(name = "task_data")
     private Long data;
 
     @Column
     private int priority;
 
-    @Id
     @Column(nullable = false)
     private Date earliest;
 
-    @Id
     @ManyToOne(optional = false)
     @JoinColumn(name = "org_id")
     private Org org;

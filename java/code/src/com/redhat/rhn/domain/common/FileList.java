@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2015 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -20,6 +21,9 @@ import com.redhat.rhn.domain.config.ConfigFileName;
 import com.redhat.rhn.domain.config.ConfigurationFactory;
 import com.redhat.rhn.domain.org.Org;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
 import java.util.Collection;
 import java.util.LinkedList;
 
@@ -27,13 +31,11 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -44,8 +46,14 @@ import javax.persistence.Table;
 public class FileList extends BaseDomainHelper implements Identifiable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rhn_filelist_seq")
-    @SequenceGenerator(name = "rhn_filelist_seq", sequenceName = "RHN_FILELIST_ID_SEQ", allocationSize = 1)
+    @GeneratedValue(generator = "rhn_filelist_seq")
+    @GenericGenerator(
+            name = "rhn_filelist_seq",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @Parameter(name = "sequence_name", value = "RHN_FILELIST_ID_SEQ"),
+                    @Parameter(name = "increment_size", value = "1")
+            })
     private Long id;
 
     @Column

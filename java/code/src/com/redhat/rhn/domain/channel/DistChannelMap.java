@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -19,6 +20,8 @@ import com.redhat.rhn.domain.org.Org;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 import java.io.Serializable;
 
@@ -26,11 +29,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -43,19 +44,30 @@ public class DistChannelMap implements Serializable {
     private static final long serialVersionUID = 4083273166300423729L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "dcm_seq")
-    @SequenceGenerator(name = "dcm_seq", sequenceName = "rhn_dcm_id_seq", allocationSize = 1)
+    @GeneratedValue(generator = "dcm_seq")
+    @GenericGenerator(
+            name = "dcm_seq",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @Parameter(name = "sequence_name", value = "rhn_dcm_id_seq"),
+                    @Parameter(name = "increment_size", value = "1")
+            })
     private Long id;
+
     @Column
     private String os;
+
     @Column
     private String release;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "channel_arch_id")
     private ChannelArch channelArch;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "org_id")
     private Org org;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "channel_id")
     private Channel channel;

@@ -11,9 +11,14 @@
 package com.redhat.rhn.domain.action;
 
 
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+
 /**
  * VirtualInstanceRefreshAction
  */
+@Entity
+@DiscriminatorValue("527")
 public class VirtualInstanceRefreshAction extends Action {
 
 }

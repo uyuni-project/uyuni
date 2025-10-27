@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,9 +15,14 @@
  */
 package com.redhat.rhn.domain.action.kickstart;
 
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+
 /**
  * KickstartGuestToolsChannelSubscriptionAction
  */
+@Entity
+@DiscriminatorValue("47")
 public class KickstartGuestToolsChannelSubscriptionAction extends
         KickstartAction {
 

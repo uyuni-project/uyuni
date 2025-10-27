@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -16,11 +17,20 @@ package com.redhat.rhn.domain.action.config;
 
 import com.redhat.rhn.domain.action.Action;
 
+import javax.persistence.CascadeType;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToOne;
+
 /**
  * DaemonConfigAction - Class representing ActionType.TYPE_DAEMON_CONFIG: 32
  */
+@Entity
+@DiscriminatorValue("32")
 public class DaemonConfigAction extends Action {
 
+    @OneToOne(mappedBy = "parentAction", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private DaemonConfigDetails daemonConfigDetails;
 
     /**

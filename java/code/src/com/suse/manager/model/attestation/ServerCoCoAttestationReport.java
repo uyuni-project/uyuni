@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 SUSE LLC
+ * Copyright (c) 2024--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.suse.manager.model.attestation;
 
@@ -20,6 +16,8 @@ import com.redhat.rhn.domain.server.Server;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 
 import java.io.Serializable;
@@ -35,12 +33,10 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
@@ -60,9 +56,14 @@ public class ServerCoCoAttestationReport extends BaseDomainHelper implements Ser
      * @return return the ID
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "server_cocoatt_report_seq")
-    @SequenceGenerator(name = "server_cocoatt_report_seq", sequenceName = "suse_srvcocoatt_rep_id_seq",
-            allocationSize = 1)
+    @GeneratedValue(generator = "server_cocoatt_report_seq")
+    @GenericGenerator(
+        name = "server_cocoatt_report_seq",
+        strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+        parameters = {
+                @Parameter(name = "sequence_name", value = "suse_srvcocoatt_rep_id_seq"),
+                @Parameter(name = "increment_size", value = "1")
+         })
     public Long getId() {
         return id;
     }
@@ -77,6 +78,7 @@ public class ServerCoCoAttestationReport extends BaseDomainHelper implements Ser
     }
 
     @ManyToOne
+    @JoinColumn(name = "action_id")
     public Action getAction() {
         return action;
     }

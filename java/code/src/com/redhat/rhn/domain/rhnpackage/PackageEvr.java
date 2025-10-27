@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -20,6 +21,8 @@ import com.redhat.rhn.common.util.RpmVersionComparator;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -27,9 +30,7 @@ import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -43,15 +44,25 @@ public class PackageEvr implements Comparable<PackageEvr>, Serializable {
     private static final DebVersionComparator DEBVERCMP = new DebVersionComparator();
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_PKG_EVR_SEQ")
-    @SequenceGenerator(name = "RHN_PKG_EVR_SEQ", sequenceName = "RHN_PKG_EVR_SEQ", allocationSize = 1)
+    @GeneratedValue(generator = "RHN_PKG_EVR_SEQ")
+    @GenericGenerator(
+            name = "RHN_PKG_EVR_SEQ",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @Parameter(name = "sequence_name", value = "RHN_PKG_EVR_SEQ"),
+                    @Parameter(name = "increment_size", value = "1")
+            })
     private Long id;
+
     @Column
     private String epoch;
+
     @Column
     private String version;
+
     @Column
     private String release;
+
     @Column
     private String type;
 

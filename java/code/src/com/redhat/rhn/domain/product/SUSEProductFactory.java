@@ -38,7 +38,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.persistence.NoResultException;
 
 /**
  * SUSEProductFactory - the class used to fetch and store
@@ -486,17 +485,12 @@ public class SUSEProductFactory extends HibernateFactory {
      * @return SUSE product for given productId
      */
     public static SUSEProduct lookupByProductId(long productId) {
-        try {
-            return getSession().createNativeQuery("""
-                                      SELECT * from suseProducts
-                                      WHERE product_id = :product
-                                      """, SUSEProduct.class)
-                    .setParameter("product", productId, StandardBasicTypes.LONG)
-                    .getSingleResult();
-        }
-        catch (NoResultException e) {
-            return null;
-        }
+        return getSession().createNativeQuery("""
+                                  SELECT * from suseProducts
+                                  WHERE product_id = :product
+                                  """, SUSEProduct.class)
+                .setParameter("product", productId, StandardBasicTypes.LONG)
+                .uniqueResult();
     }
 
     /**
@@ -570,21 +564,16 @@ public class SUSEProductFactory extends HibernateFactory {
     public static Optional<SUSEProductExtension> findSUSEProductExtension(SUSEProduct root,
                                                            SUSEProduct base,
                                                            SUSEProduct ext) {
-        try {
-            return Optional.ofNullable(getSession().createNativeQuery("""
-                                      SELECT * from suseProductExtension
-                                      WHERE base_pdid = :baseid
-                                      AND ext_pdid = :extid
-                                      AND root_pdid = :rootid
-                                      """, SUSEProductExtension.class)
-                    .setParameter("baseid", base.getId(), StandardBasicTypes.LONG)
-                    .setParameter("extid", ext.getId(), StandardBasicTypes.LONG)
-                    .setParameter("rootid", root.getId(), StandardBasicTypes.LONG)
-                    .getSingleResult());
-        }
-        catch (NoResultException e) {
-            return Optional.empty();
-        }
+        return getSession().createNativeQuery("""
+                                  SELECT * from suseProductExtension
+                                  WHERE base_pdid = :baseid
+                                  AND ext_pdid = :extid
+                                  AND root_pdid = :rootid
+                                  """, SUSEProductExtension.class)
+                .setParameter("baseid", base.getId(), StandardBasicTypes.LONG)
+                .setParameter("extid", ext.getId(), StandardBasicTypes.LONG)
+                .setParameter("rootid", root.getId(), StandardBasicTypes.LONG)
+                .uniqueResultOptional();
     }
 
     /**

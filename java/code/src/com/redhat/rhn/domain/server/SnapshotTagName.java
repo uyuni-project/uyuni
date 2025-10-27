@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2017 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -18,13 +19,13 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
@@ -32,8 +33,14 @@ import javax.persistence.Table;
 public class SnapshotTagName extends BaseDomainHelper {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tagname_seq")
-    @SequenceGenerator(name = "tagname_seq", sequenceName = "rhn_tagname_id_seq", allocationSize = 1)
+    @GeneratedValue(generator = "tagname_seq")
+    @GenericGenerator(
+            name = "tagname_seq",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @Parameter(name = "sequence_name", value = "rhn_tagname_id_seq"),
+                    @Parameter(name = "increment_size", value = "1")
+            })
     private Long id;
 
     @Column
