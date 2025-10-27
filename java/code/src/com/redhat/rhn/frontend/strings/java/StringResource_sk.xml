@@ -11996,6 +11996,10 @@ Ak chcete túto situáciu napraviť, pridajte prihlasovacie údaje SCC &lt;a hre
         <source>{0} or higher</source>
         <target state="translated">{0} alebo vyššie</target>
       </trans-unit>
-    </body>
+    <trans-unit id="system.migration.noTarget" xml:space="preserve">
+          <source>Unable to identify a valid migration target for the selected systems.</source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>
