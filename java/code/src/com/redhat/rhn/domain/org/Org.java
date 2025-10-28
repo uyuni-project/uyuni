@@ -57,6 +57,7 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.hibernate.type.StandardBasicTypes;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -79,6 +80,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Tuple;
 
 
 /**
@@ -412,13 +414,22 @@ public class Org extends BaseDomainHelper implements SaltConfigurable {
     @SuppressWarnings("unchecked")
     public int numActiveOrgAdmins() {
         Session session = HibernateFactory.getSession();
-        List<Long> list = session.getNamedQuery("Org.numOfOrgAdmins")
+        return session.createNativeQuery("""
+                            SELECT ugm.user_id FROM rhnUserGroupMembers ugm
+                            JOIN rhnWebContactEnabled wce ON wce.id = ugm.user_id
+                            WHERE ugm.user_group_id =
+                                (SELECT id FROM rhnUserGroup
+                                    WHERE org_id = :org_id
+                                    AND group_type = (SELECT id FROM rhnUserGroupType WHERE label = 'org_admin'))
+                            AND wce.read_only = 'N'
+                            ORDER BY ugm.user_id
+                        """, Tuple.class)
                 .setParameter(ORG_ID_KEY, this.getId())
-                .list();
-        if (list != null) {
-            return list.size();
-        }
-        return 0;
+                .addScalar("user_id", StandardBasicTypes.LONG)
+                .stream()
+                .map(t -> t.get(0, Long.class))
+                .toList()
+                .size();
     }
 
     /**

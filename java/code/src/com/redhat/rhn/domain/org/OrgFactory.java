@@ -45,6 +45,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.Tuple;
+
 /**
  * A small wrapper around hibernate files to remove some of the complexities
  * of writing to hibernate.
@@ -128,7 +130,7 @@ public class OrgFactory extends HibernateFactory {
      */
     public static Org lookupByName(String name) {
         Session session = HibernateFactory.getSession();
-        return  (Org) session.getNamedQuery("Org.findByName")
+        return session.createQuery("FROM Org AS o WHERE o.name = :name", Org.class)
                 .setParameter("name", name)
                 .uniqueResult();
     }
@@ -234,10 +236,16 @@ public class OrgFactory extends HibernateFactory {
      */
     public static Long getActiveUsers(Org orgIn) {
         Session session = HibernateFactory.getSession();
-        return  (Long) session.getNamedQuery("Org.numOfActiveUsers")
-                .setParameter(ORG_ID, orgIn.getId(), StandardBasicTypes.LONG)
-                .uniqueResult();
-
+        return session.createNativeQuery("""
+                            SELECT count(u.id) AS users
+                            FROM   web_contact u
+                            WHERE  1=1
+                            AND    u.org_id = :org_id
+                        """, Tuple.class)
+                .setParameter(ORG_ID, orgIn.getId())
+                .addScalar("users", StandardBasicTypes.LONG)
+                .uniqueResult()
+                .get(0, Long.class);
     }
 
     /**
@@ -247,9 +255,16 @@ public class OrgFactory extends HibernateFactory {
      */
     public static Long getActiveSystems(Org orgIn) {
         Session session = HibernateFactory.getSession();
-        return  (Long) session.getNamedQuery("Org.numOfSystems")
-                .setParameter(ORG_ID, orgIn.getId(), StandardBasicTypes.LONG)
-                .uniqueResult();
+        return session.createNativeQuery("""
+                                SELECT count(s.id) AS systems
+                                FROM   rhnServer s
+                                WHERE  1=1
+                                AND    s.org_id = :org_id
+                        """, Tuple.class)
+                .setParameter(ORG_ID, orgIn.getId())
+                .addScalar("systems", StandardBasicTypes.LONG)
+                .uniqueResult()
+                .get(0, Long.class);
     }
 
     /**
@@ -259,9 +274,17 @@ public class OrgFactory extends HibernateFactory {
      */
     public static Long getServerGroups(Org orgIn) {
         Session session = HibernateFactory.getSession();
-        return  (Long) session.getNamedQuery("Org.numOfServerGroups")
-                .setParameter(ORG_ID, orgIn.getId(), StandardBasicTypes.LONG)
-                .uniqueResult();
+        return session.createNativeQuery("""
+                                SELECT count(g.id) AS groups
+                                FROM   rhnServerGroup g
+                                WHERE  1=1
+                                AND    g.org_id = :org_id
+                                AND group_type is null
+                        """, Tuple.class)
+                .setParameter(ORG_ID, orgIn.getId())
+                .addScalar("groups", StandardBasicTypes.LONG)
+                .uniqueResult()
+                .get(0, Long.class);
     }
 
     /**
@@ -271,9 +294,18 @@ public class OrgFactory extends HibernateFactory {
      */
     public static Long getConfigChannels(Org orgIn) {
         Session session = HibernateFactory.getSession();
-        return  (Long) session.getNamedQuery("Org.numOfConfigChannels")
-                .setParameter(ORG_ID, orgIn.getId(), StandardBasicTypes.LONG)
-                .uniqueResult();
+        return session.createNativeQuery("""
+                        SELECT  count(CC.id) AS channels
+                        FROM  rhnConfigChannel CC, rhnConfigChannelType CCT
+                        WHERE 1=1
+                        AND  CC.org_id = :org_id
+                        AND  CC.confchan_type_id = CCT.id
+                        AND  CCT.label IN ('normal', 'state')
+                        """, Tuple.class)
+                .setParameter(ORG_ID, orgIn.getId())
+                .addScalar("channels", StandardBasicTypes.LONG)
+                .uniqueResult()
+                .get(0, Long.class);
     }
 
     /**
@@ -367,7 +399,12 @@ public class OrgFactory extends HibernateFactory {
      * @return Total number of orgs.
      */
     public static Long getTotalOrgCount() {
-        return singleton.lookupObjectByNamedQuery("Org.numOfOrgs", Map.of());
+        Session session = HibernateFactory.getSession();
+        return session.createNativeQuery("SELECT count(wc.id) AS org_count FROM  WEB_CUSTOMER wc",
+                        Tuple.class)
+                .addScalar("org_count", StandardBasicTypes.LONG)
+                .uniqueResult()
+                .get(0, Long.class);
     }
 
     /**
@@ -376,8 +413,19 @@ public class OrgFactory extends HibernateFactory {
      *  @return date created for Trusted Org
      */
     public static Date getTrustedSince(Long org, Long trustedOrg) {
-        return singleton.lookupObjectByNamedQuery("Org.getTrustedSince",
-                Map.of(ORG_ID, org, "trusted_org_id", trustedOrg));
+        Session session = HibernateFactory.getSession();
+        return session.createNativeQuery("""
+                            SELECT created
+                            FROM   rhnTrustedOrgs rto
+                            WHERE  1=1
+                            AND    rto.org_id = :org_id
+                            AND    rto.org_trust_id = :trusted_org_id
+                        """, Tuple.class)
+                .setParameter(ORG_ID, org)
+                .setParameter("trusted_org_id", trustedOrg)
+                .addScalar("created", StandardBasicTypes.DATE)
+                .uniqueResult()
+                .get(0, Date.class);
     }
 
     /**
@@ -386,18 +434,40 @@ public class OrgFactory extends HibernateFactory {
      * @return number of systems migrated to orgIn
      */
     public static Long getMigratedSystems(Long orgTo, Long orgFrom) {
-        return singleton.lookupObjectByNamedQuery("Org.getMigratedSystems",
-                Map.of("org_to_id", orgTo, "org_from_id", orgFrom));
+        Session session = HibernateFactory.getSession();
+        return session.createNativeQuery("""
+                            SELECT count(s.server_id) AS systems
+                            FROM   rhnSystemMigrations s
+                            WHERE  1=1
+                            AND    s.org_id_from = :org_from_id
+                            AND    s.org_id_to = :org_to_id
+                        """, Tuple.class)
+                .setParameter("org_to_id", orgTo)
+                .setParameter("org_from_id", orgFrom)
+                .addScalar("systems", StandardBasicTypes.LONG)
+                .uniqueResult()
+                .get(0, Long.class);
     }
 
     /**
-     * @param orgId Org to caclulate systems
+     * @param orgId Org to calculate systems
      * @param trustId Org to calculate channel sharing to
      * @return number of systems migrated to orgIn
      */
     public static Long getSharedChannels(Long orgId, Long trustId) {
-        return singleton.lookupObjectByNamedQuery("Org.getSharedChannels",
-                Map.of(ORG_ID, orgId, "org_trust_id", trustId));
+        Session session = HibernateFactory.getSession();
+        return session.createNativeQuery("""
+                            SELECT count(s.id) AS id
+                            FROM   rhnSharedChannelView s
+                            WHERE  1=1
+                            AND    s.org_id = :org_id
+                            AND    s.org_trust_id = :org_trust_id
+                        """, Tuple.class)
+                .setParameter(ORG_ID, orgId)
+                .setParameter("org_trust_id", trustId)
+                .addScalar("id", StandardBasicTypes.LONG)
+                .uniqueResult()
+                .get(0, Long.class);
     }
 
     /**
@@ -406,8 +476,20 @@ public class OrgFactory extends HibernateFactory {
      * @return number of systems trustId has subscribed to orgId channels
      */
     public static Long getSharedSubscribedSys(Long orgId, Long trustId) {
-        return singleton.lookupObjectByNamedQuery("Org.getSharedSubscribedSys",
-                Map.of(ORG_ID, orgId, "org_trust_id", trustId));
+        Session session = HibernateFactory.getSession();
+        return session.createNativeQuery("""
+                            SELECT count(distinct(c.id)) AS channels
+                            FROM   rhnServer s, rhnChannel c, rhnServerChannel sc
+                            WHERE  c.id = sc.channel_id
+                            AND    s.id = sc.server_id
+                            AND    c.org_id = :org_id
+                            AND    s.org_id = :org_trust_id
+                        """, Tuple.class)
+                .setParameter(ORG_ID, orgId)
+                .setParameter("org_trust_id", trustId)
+                .addScalar("channels", StandardBasicTypes.LONG)
+                .uniqueResult()
+                .get(0, Long.class);
     }
 
     /**
@@ -415,7 +497,9 @@ public class OrgFactory extends HibernateFactory {
      * @return List of orgs.
      */
     public static List<Org> lookupAllOrgs() {
-        return singleton.listObjectsByNamedQuery("Org.findAll", Map.of());
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("FROM Org AS o", Org.class)
+                .list();
     }
 
 }
