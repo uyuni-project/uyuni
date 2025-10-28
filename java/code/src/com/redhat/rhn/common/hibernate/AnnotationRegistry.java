@@ -171,6 +171,7 @@ import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.domain.credentials.VHMCredentials;
 import com.redhat.rhn.domain.errata.Bug;
 import com.redhat.rhn.domain.errata.Cve;
+import com.redhat.rhn.domain.errata.ErrataFile;
 import com.redhat.rhn.domain.errata.ErrataFileType;
 import com.redhat.rhn.domain.errata.Keyword;
 import com.redhat.rhn.domain.errata.Severity;
@@ -482,6 +483,7 @@ public class AnnotationRegistry {
             EnvironmentTarget.class,
             ErrataAction.class,
             ErrataAdvisoryMap.class,
+            ErrataFile.class,
             ErrataFileType.class,
             ErrataFilter.class,
             ExceptionMessage.class,
