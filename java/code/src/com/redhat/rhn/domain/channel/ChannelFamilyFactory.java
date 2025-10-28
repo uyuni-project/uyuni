@@ -24,6 +24,7 @@ import com.redhat.rhn.frontend.dto.ChannelOverview;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Session;
 import org.hibernate.query.Query;
 
 import java.util.ArrayList;
@@ -101,13 +102,16 @@ public class ChannelFamilyFactory extends HibernateFactory {
 
     /**
      * Lookup a ChannelFamily by org - this is the org's private
-     * channel family, which has all of the org's custom channels in
+     * channel family, which has all the org's custom channels in
      * it.
-     * @param orgIn the org who's family this is
+     * @param orgIn the org whose family this is
      * @return the ChannelFamily found
      */
     public static ChannelFamily lookupByOrg(Org orgIn) {
-        return singleton.lookupObjectByNamedQuery("ChannelFamily.findByOrgId", Map.of("orgId", orgIn.getId()));
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("FROM ChannelFamily AS cfam WHERE cfam.org.id = :orgId", ChannelFamily.class)
+                .setParameter("orgId", orgIn.getId())
+                .uniqueResult();
     }
 
     /**
@@ -241,19 +245,6 @@ public class ChannelFamilyFactory extends HibernateFactory {
             query.setParameter("org", -1);
         }
         return query.getResultList();
-    }
-
-    /**
-     * Return the name for a given channel family label.
-     * @param label channel family label
-     * @return name for given label or null
-     */
-    public static String getNameByLabel(String label) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("label", label);
-        Object o = singleton.lookupObjectByNamedQuery(
-                "ChannelFamily.getNameByLabel", params, false);
-        return (String) o;
     }
 
     /**
