@@ -20,18 +20,45 @@ import com.redhat.rhn.domain.user.UserFactory;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 /**
  * ConfigRevision - Class representation of the table rhnConfigRevision.
  */
+@Entity
+@Table(name = "rhnConfigRevision")
 public class ConfigRevision extends BaseDomainHelper {
 
+    @Id
     protected Long id;
+
+    @Column
     protected Long revision;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "config_file_id")
     protected ConfigFile configFile;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "config_content_id")
     protected ConfigContent configContent;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "config_info_id")
     protected ConfigInfo configInfo;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "config_file_type_id")
     protected ConfigFileType configFileType;
 
+    @Column(name = "changed_by_id")
     protected Long changedById;
 
     private static final String INIT_SLS_PATH = "/init.sls";
@@ -57,7 +84,7 @@ public class ConfigRevision extends BaseDomainHelper {
      * Setter for id
      * @param idIn to set
     */
-    public void setId(Long idIn) {
+    protected void setId(Long idIn) {
         this.id = idIn;
     }
 
