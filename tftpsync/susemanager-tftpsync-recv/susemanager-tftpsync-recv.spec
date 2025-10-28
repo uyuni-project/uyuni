@@ -19,7 +19,7 @@
 %{!?productprettyname: %global productprettyname Uyuni}
 
 Name:           susemanager-tftpsync-recv
-Version:        5.2.1
+Version:        5.2.2
 Release:        0
 Summary:        Reciever for %{productprettyname} tftp sync
 License:        GPL-2.0-only
