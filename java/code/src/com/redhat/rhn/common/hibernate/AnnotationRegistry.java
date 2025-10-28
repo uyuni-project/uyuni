@@ -199,6 +199,7 @@ import com.redhat.rhn.domain.kickstart.KickstartIpRange;
 import com.redhat.rhn.domain.kickstart.KickstartPackage;
 import com.redhat.rhn.domain.kickstart.KickstartPreserveFileList;
 import com.redhat.rhn.domain.kickstart.KickstartScript;
+import com.redhat.rhn.domain.kickstart.KickstartSession;
 import com.redhat.rhn.domain.kickstart.KickstartSessionHistory;
 import com.redhat.rhn.domain.kickstart.KickstartSessionState;
 import com.redhat.rhn.domain.kickstart.KickstartTreeType;
@@ -540,6 +541,7 @@ public class AnnotationRegistry {
             KickstartPreserveFileList.class,
             KickstartScheduleSyncAction.class,
             KickstartScript.class,
+            KickstartSession.class,
             KickstartSessionHistory.class,
             KickstartSessionState.class,
             KickstartTreeType.class,
