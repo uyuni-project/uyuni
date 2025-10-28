@@ -11996,10 +11996,10 @@ Per a esmenar aquesta situació, afegiu credencials SCC lt;a href""/rhn/admin/se
         <source>{0} or higher</source>
         <target state="translated">{0} o superior</target>
       </trans-unit>
-    <trans-unit id="system.migration.noTarget" xml:space="preserve">
-          <source>Unable to identify a valid migration target for the selected systems.</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+      <trans-unit id="system.migration.noTarget" xml:space="preserve">
+        <source>Unable to identify a valid migration target for the selected systems.</source>
+        <target state="translated">No s'ha pogut identificar un objectiu de migració vàlid per als sistemes seleccionats.</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
