@@ -599,11 +599,21 @@ public class ChannelFactory extends HibernateFactory {
      * Returns the list of Channels accessible by an org
      * Channels are accessible if they are owned by an org or public.
      *
-     * @param orgid The id for the org
+     * @param orgId The id for the org
      * @return A list of Channel Objects.
      */
-    public static List<Channel> getAccessibleChannelsByOrg(Long orgid) {
-        return singleton.listObjectsByNamedQuery("Org.accessibleChannels", Map.of(ORG_ID, orgid));
+    public static List<Channel> getAccessibleChannelsByOrg(Long orgId) {
+        // Handling inheritance: native SQL queries which query for entities that are mapped as part of an inheritance
+        // must include all properties for the baseclass and all its subclasses.
+        // So if you want to use Native queries it looks like you're stuck doing something like this
+        return getSession().createNativeQuery("""
+                            SELECT c.*, ccl.*, 1 as clazz_ FROM rhnChannel c
+                            LEFT JOIN rhnChannelCloned ccl ON c.id = ccl.original_id
+                            JOIN rhnAvailableChannels cfp ON c.id = cfp.channel_id
+                            WHERE cfp.org_id = :org_id
+                        """, Channel.class)
+                .setParameter(ORG_ID, orgId)
+                .list();
     }
 
     /**
