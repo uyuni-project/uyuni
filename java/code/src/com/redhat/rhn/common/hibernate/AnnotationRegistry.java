@@ -286,6 +286,7 @@ import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.InvalidSnapshotReason;
 import com.redhat.rhn.domain.server.Location;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
+import com.redhat.rhn.domain.server.MgrServerInfo;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.MinionSummary;
@@ -549,6 +550,7 @@ public class AnnotationRegistry {
             ManagedServerGroup.class,
             MatcherRunData.class,
             MediaProducts.class,
+            MgrServerInfo.class,
             MinionRecurringAction.class,
             MinionServer.class,
             MinionServerFactory.class,
