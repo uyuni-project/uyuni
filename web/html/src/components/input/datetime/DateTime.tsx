@@ -12,10 +12,10 @@ type Props = InputBaseProps<moment.Moment> & {
   name: string;
 };
 
-export function DateTime(props: Props) {
+export function DateTime({ required = false, disabled = false, ...props }: Props) {
   const formContext = React.useContext(FormContext);
   return (
-    <InputBase<moment.Moment> {...props}>
+    <InputBase<moment.Moment> required={required} disabled={disabled} {...props}>
       {({ setValue }) => {
         const onChange = (value: moment.Moment) => {
           setValue(props.name, value);
@@ -31,15 +31,3 @@ export function DateTime(props: Props) {
     </InputBase>
   );
 }
-
-DateTime.defaultProps = {
-  defaultValue: undefined,
-  label: undefined,
-  hint: undefined,
-  labelClass: undefined,
-  divClass: undefined,
-  required: false,
-  disabled: false,
-  invalidHint: undefined,
-  onChange: undefined,
-};

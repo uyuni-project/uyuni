@@ -11,7 +11,7 @@ type Props = {
 };
 
 export function SsmCounter(props: Props) {
-  const [count, setCount] = React.useState(props.count);
+  const [count, setCount] = React.useState(props.count ?? 0);
   const [errors, setErrors] = React.useState([]);
   useWebSocket(errors, setErrors, "ssm-count", (value: number) => {
     setCount(value);
@@ -42,6 +42,3 @@ export function SsmCounter(props: Props) {
     </>
   );
 }
-SsmCounter.defaultProps = {
-  count: 0,
-};

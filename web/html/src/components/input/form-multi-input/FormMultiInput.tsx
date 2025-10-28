@@ -132,7 +132,7 @@ export function getOrderedItemsFromModel(model: any, prefix: string): number[] {
  * }}
  * ```
  */
-export function FormMultiInput(props: Props) {
+export function FormMultiInput({ disabled = false, ...props }: Props) {
   const formContext = React.useContext(FormContext);
   const items = getOrderedItemsFromModel(formContext.model, props.prefix);
   const new_index = (items.length > 0 && items[items.length - 1] + 1) || 0;
@@ -161,7 +161,7 @@ export function FormMultiInput(props: Props) {
             id={`remove_${props.prefix}${index}`}
             className="btn-default btn-sm"
             handler={() => props.onRemove(index)}
-            disabled={props.disabled}
+            disabled={disabled}
           />
         );
         const children = props.children(index);
@@ -184,11 +184,3 @@ export function FormMultiInput(props: Props) {
     </Panel>
   );
 }
-
-FormMultiInput.defaultProps = {
-  disabled: false,
-  panelIcon: undefined,
-  panelTitle: undefined,
-  rowClass: undefined,
-  header: undefined,
-};

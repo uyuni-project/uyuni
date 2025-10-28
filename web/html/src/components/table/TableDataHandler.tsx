@@ -298,7 +298,7 @@ export class TableDataHandler extends React.Component<Props, State> {
         if (column.props.header) {
           const sortDirection = column.props.columnKey === this.state.sortColumnKey ? this.state.sortDirection : 0;
           let comparator = column.props.comparator;
-          if (!comparator && column.props.sortable) {
+          if (!comparator && !!column.props.sortable) {
             comparator = Utils.sortByText;
           }
 
@@ -415,17 +415,10 @@ export class TableDataHandler extends React.Component<Props, State> {
               <div className=" panel-heading">
                 <div className="spacewalk-list-head-addons align-items-center">
                   <SearchPanel
-                    fromItem={fromItem}
-                    toItem={toItem}
-                    itemCount={itemCount}
                     criteria={this.state.criteria}
                     field={this.state.field}
                     onSearch={this.onSearch}
                     onSearchField={this.onSearchField}
-                    onClear={handleSearchPanelClear}
-                    onSelectAll={handleSearchPanelSelectAll}
-                    selectedCount={selectedItems.length}
-                    selectable={isSelectable}
                   >
                     {searchField}
                     {this.props.additionalFilters}
@@ -436,8 +429,6 @@ export class TableDataHandler extends React.Component<Props, State> {
                 </div>
               </div>
               <SelectedRowDetails
-                fromItem={fromItem}
-                toItem={toItem}
                 itemCount={itemCount}
                 onClear={handleSearchPanelClear}
                 onSelectAll={handleSearchPanelSelectAll}

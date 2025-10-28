@@ -22,10 +22,18 @@ type Props = InputBaseProps & {
 };
 
 export const Text = (props: Props) => {
-  const { type, maxLength, placeholder, inputClass, ...propsToPass } = props;
+  const {
+    type = "text",
+    required = false,
+    disabled = false,
+    maxLength,
+    placeholder,
+    inputClass,
+    ...propsToPass
+  } = props;
   const formContext = React.useContext(FormContext);
   return (
-    <InputBase {...propsToPass}>
+    <InputBase required={required} disabled={disabled} {...propsToPass}>
       {({ setValue, onBlur }) => {
         const onChange = (event: any) => {
           setValue(event.target.name, event.target.value);
@@ -50,21 +58,4 @@ export const Text = (props: Props) => {
       }}
     </InputBase>
   );
-};
-
-Text.defaultProps = {
-  type: "text",
-  maxLength: undefined,
-  placeholder: undefined,
-  inputClass: undefined,
-  defaultValue: undefined,
-  label: undefined,
-  hint: undefined,
-  labelClass: undefined,
-  divClass: undefined,
-  className: undefined,
-  required: false,
-  disabled: false,
-  invalidHint: undefined,
-  onChange: undefined,
 };

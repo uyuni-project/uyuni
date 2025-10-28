@@ -28,9 +28,3 @@ export function TopPanel(props: Props) {
     </div>
   );
 }
-
-TopPanel.defaultProps = {
-  helpUrl: undefined,
-  button: undefined,
-  icon: undefined,
-};

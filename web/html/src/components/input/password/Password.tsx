@@ -14,20 +14,6 @@ type Props = InputBaseProps & {
   name: string;
 };
 
-export function Password(props: Props) {
-  return <Text type="password" {...props} />;
+export function Password({ required = false, disabled = false, ...props }: Props) {
+  return <Text type="password" required={required} disabled={disabled} {...props} />;
 }
-
-Password.defaultProps = {
-  placeholder: undefined,
-  inputClass: undefined,
-  defaultValue: undefined,
-  label: undefined,
-  hint: undefined,
-  labelClass: undefined,
-  divClass: undefined,
-  required: false,
-  disabled: false,
-  invalidHint: undefined,
-  onChange: undefined,
-};
