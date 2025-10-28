@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Oct 28 15:31:20 CET 2025 - rosuna@suse.com
+
+- version 5.2.3-0
+  * CVE-2025-53883: Escape input strings in system search form
+    (bsc#1246439)
+
+-------------------------------------------------------------------
 Mon Oct 27 16:10:04 CET 2025 - rosuna@suse.com
 
 - version 5.2.2-0
