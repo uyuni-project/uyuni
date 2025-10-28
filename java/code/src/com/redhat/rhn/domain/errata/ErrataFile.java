@@ -19,30 +19,69 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.common.Checksum;
 import com.redhat.rhn.domain.rhnpackage.Package;
 
-import java.util.Date;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OrderBy;
+import javax.persistence.Table;
 
 /**
  * ErrataFile
  */
+@Entity
+@Table(name = "rhnErrataFile")
 public class ErrataFile extends BaseDomainHelper {
+    @Id
+    @GeneratedValue(generator = "RHN_ERRATAFILE_ID_SEQ")
+    @GenericGenerator(
+        name = "RHN_ERRATAFILE_ID_SEQ",
+        strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+        parameters = {
+            @Parameter(name = "sequence_name", value = "RHN_ERRATAFILE_ID_SEQ"),
+            @Parameter(name = "increment_size", value = "1")
+        })
     protected Long id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "type")
     protected ErrataFileType fileType;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "checksum_id")
     protected Checksum checksum;
 
+    @Column
     protected String fileName;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "errata_id")
     protected Errata owningErrata;
 
-    protected Date created;
-
-    protected Date modified;
-
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "rhnErrataFileChannel",
+            joinColumns = @JoinColumn(name = "errata_file_id"),
+            inverseJoinColumns = @JoinColumn(name = "channel_id"))
     protected Set<Channel> channels;
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "rhnErrataFilePackage",
+            joinColumns = @JoinColumn(name = "errata_file_id"),
+            inverseJoinColumns = @JoinColumn(name = "package_id"))
+    @OrderBy("package_id asc")
     protected Set<Package> packages;
 
     /**
@@ -74,7 +113,7 @@ public class ErrataFile extends BaseDomainHelper {
      * Id
      * @param idIn id
      */
-    public void setId(Long idIn) {
+    protected void setId(Long idIn) {
         id = idIn;
     }
 
@@ -133,58 +172,6 @@ public class ErrataFile extends BaseDomainHelper {
      */
     public String getFileName() {
         return fileName;
-    }
-
-    /**
-     * Owning errata
-     * @param errata owning errata
-     */
-    public void setErrata(Errata errata) {
-        owningErrata = errata;
-    }
-
-    /**
-     * Owning errata
-     * @return owning errata
-     */
-    public Errata getErrata() {
-        return owningErrata;
-    }
-
-    /**
-     * Created
-     * @param createdIn created
-     */
-    @Override
-    public void setCreated(Date createdIn) {
-        created = createdIn;
-    }
-
-    /**
-     * Created
-     * @return created
-     */
-    @Override
-    public Date getCreated() {
-        return created;
-    }
-
-    /**
-     * Modified
-     * @param mod modified
-     */
-    @Override
-    public void setModified(Date mod) {
-        modified = mod;
-    }
-
-    /**
-     * Modified
-     * @return modified
-     */
-    @Override
-    public Date getModified() {
-        return modified;
     }
 
     /**
