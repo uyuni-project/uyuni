@@ -113,6 +113,7 @@ import com.redhat.rhn.domain.channel.AppStreamApi;
 import com.redhat.rhn.domain.channel.AppStreamApiKey;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
+import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelProduct;
 import com.redhat.rhn.domain.channel.ChannelSyncFlag;
 import com.redhat.rhn.domain.channel.ClonedChannel;
@@ -419,6 +420,7 @@ public class AnnotationRegistry {
             Capability.class,
             ChannelArch.class,
             Channel.class,
+            ChannelFamily.class,
             ChannelProduct.class,
             ChannelSyncFlag.class,
             ChannelTemplate.class,
