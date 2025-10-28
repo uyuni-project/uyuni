@@ -31,6 +31,8 @@ import com.redhat.rhn.frontend.security.AuthenticationServiceFactory;
 import com.redhat.rhn.manager.acl.AclManager;
 import com.redhat.rhn.manager.user.UserManager;
 
+import com.suse.manager.webui.services.OidcAuthException;
+import com.suse.manager.webui.services.OidcAuthHandler;
 import com.suse.manager.webui.utils.LoginHelper;
 import com.suse.manager.webui.utils.SparkApplicationHelper;
 import com.suse.utils.Json;
@@ -66,6 +68,7 @@ public class LoginController {
     private static Logger log = LogManager.getLogger(LoginController.class);
     private static final Gson GSON = Json.GSON;
     private static final String URL_CREATE_FIRST_USER = "/rhn/newlogin/CreateFirstUser.do";
+    private static final OidcAuthHandler OIDC_AUTH_HANDLER = new OidcAuthHandler();
 
     private LoginController() { }
 
@@ -76,6 +79,7 @@ public class LoginController {
     public static void initRoutes(JadeTemplateEngine jade) {
         get("/manager/login", withCsrfToken(LoginController::loginView), jade);
         post("/manager/api/login", LoginController::login);
+        post("/manager/api/oidcLogin", LoginController::performOidcLogin);
         // TODO: Use this endpoint with the "Logout" button
         get("/manager/api/logout", withUser(LoginController::logout));
     }
@@ -219,6 +223,61 @@ public class LoginController {
             response.status(HttpServletResponse.SC_UNAUTHORIZED);
             return SparkApplicationHelper.json(response, new LoginResult(false, errorMsg.get()), new TypeToken<>() { });
         }
+    }
+
+    /**
+     * Perform an OpenID connect authentication, if enabled and properly configured.
+     * @param request the request object
+     * @param response the response object
+     * @return the JSON result of the login operation
+     */
+    private static String performOidcLogin(Request request, Response response) {
+        if (!OIDC_AUTH_HANDLER.isOidcEnabled()) {
+            log.error("OIDC AUTH FAILURE: OpenID Connect authentication is disabled.");
+            response.status(HttpServletResponse.SC_UNAUTHORIZED);
+            return SparkApplicationHelper.json(response, new LoginResult(false,
+                    "OpenID Connect authentication is disabled."), new TypeToken<>() { });
+        }
+
+        // Validate Authorization header
+        String authHeader = request.headers("Authorization");
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            log.error("OIDC AUTH FAILURE: Missing or invalid Authorization header.");
+            response.status(HttpServletResponse.SC_UNAUTHORIZED);
+            return SparkApplicationHelper.json(response, new LoginResult(false,
+                    "Missing or invalid Authorization header."), new TypeToken<>() { });
+        }
+
+        String token = authHeader.substring(7); // Removes "Bearer "
+        String username;
+        User user;
+
+        // Handle OIDC login and get username from the JWT
+        try {
+            username = OIDC_AUTH_HANDLER.handleOidcLogin(token);
+        }
+        catch (OidcAuthException e) {
+            // Log the full exception for debugging, but provide a generic message to the user/log
+            log.error("OIDC AUTH FAILURE: Error during OIDC token handling.", e);
+            response.status(HttpServletResponse.SC_UNAUTHORIZED);
+            return SparkApplicationHelper.json(response, new LoginResult(false,
+                    "OpenID Connect authentication failed."), new TypeToken<>() { });
+        }
+
+        // Log in the user with username
+        try {
+            user = UserManager.loginUser(username);
+            log.info("OIDC AUTH SUCCESS: [{}]", user.getLogin());
+        }
+        catch (LoginException e) {
+            log.error("OIDC AUTH FAILURE: User login failed for user [{}].", username, e);
+            response.status(HttpServletResponse.SC_UNAUTHORIZED);
+            return SparkApplicationHelper.json(response, new LoginResult(false,
+                    LocalizationService.getInstance().getMessage(e.getMessage())), new TypeToken<>() { });
+        }
+
+        LoginHelper.successfulLogin(request.raw(), response.raw(), user);
+        return SparkApplicationHelper.json(response, new LoginResult(true, null), new TypeToken<>() { });
     }
 
     /**

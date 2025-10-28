@@ -403,6 +403,68 @@ public class ConfigDefaults {
      */
     private static final String ERRATA_ADVISORY_MAP_CSV_DOWNLOAD_URL = "java.errata_advisory_map_csv_download_url";
 
+    /**
+     * OpenID Connect authentication parameters
+     */
+    public static final String OIDC_ENABLED = "web.oidc.enabled";
+    public static final String OIDC_IDP_ISSUER = "web.oidc.idp.issuer";
+    public static final String OIDC_IDP_JWKS_PATH = "web.oidc.idp.jwks_path";
+    public static final String OIDC_JWT_AUDIENCE = "web.oidc.jwt.audience";
+    public static final String OIDC_JWT_USERNAME_CLAIM = "web.oidc.jwt.username_claim";
+
+    /**
+     * Returns true if OIDC authentication is enabled
+     * @return true if OIDC authentication is enabled
+     */
+    public boolean isOidcEnabled() {
+        return Config.get().getBoolean(OIDC_ENABLED, false);
+    }
+
+    /**
+     * Returns the JWT issuer (the identity provider) URI
+     * <p>
+     * By OIDC specification, the URI must match the `iss` claim in the JWT token.
+     * @see <a href=https://openid.net/specs/openid-connect-discovery-1_0.html#ProviderConfigurationValidation>
+     *     OpenID Connect Discovery 1.0, Section 4.2
+     *     </a>
+     * @return the JWT issuer URI
+     */
+    public String getOidcIssuer() {
+        return Config.get().getString(OIDC_IDP_ISSUER, "");
+    }
+
+    /**
+     * Returns the JSON Web Key Set (JWKS) endpoint of the idP
+     * <p>
+     * The path is appended to the issuer URL to get the complete URI.
+     * <p>
+     * If not provided, it will be resolved from the OIDC discovery endpoint of the idP.
+     * @return the JWKS path
+     */
+    public String getOidcJwksPath() {
+        return Config.get().getString(OIDC_IDP_JWKS_PATH, "");
+    }
+
+    /**
+     * The audience to which the JWT is issued
+     * <p>
+     * It will be validated against the 'aud' claim in the JWT.
+     * @return the JWT audience
+     */
+    public String getOidcAudience() {
+        return Config.get().getString(OIDC_JWT_AUDIENCE, "uyuni-server");
+    }
+
+    /**
+     * The name of the claim that provides the internal Uyuni username
+     * <p>
+     * This claim is used to match a user of the idP to a user in Uyuni.
+     * @return the name of the Uyuni username claim
+     */
+    public String getOidcUsernameClaim() {
+        return Config.get().getString(OIDC_JWT_USERNAME_CLAIM, "uyuni_username");
+    }
+
 
     private ConfigDefaults() {
     }
