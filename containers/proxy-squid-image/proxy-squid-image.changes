@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue Oct 28 10:18:49 CET 2025 - rosuna@suse.com
+
+- version 5.2.1
+  * Allow override all parameters in squid conf (bsc#1250940)
+  * Set the default timeout for /pub to 30min (bsc#1247644)
+  * Use absolute paths when invoking external commands
+
+-------------------------------------------------------------------
 Tue Jun 17 19:42:10 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.7
