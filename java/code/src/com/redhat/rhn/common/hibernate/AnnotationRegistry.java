@@ -193,6 +193,7 @@ import com.redhat.rhn.domain.iss.IssSlave;
 import com.redhat.rhn.domain.kickstart.KickstartCommand;
 import com.redhat.rhn.domain.kickstart.KickstartCommandName;
 import com.redhat.rhn.domain.kickstart.KickstartDefaultRegToken;
+import com.redhat.rhn.domain.kickstart.KickstartDefaults;
 import com.redhat.rhn.domain.kickstart.KickstartInstallType;
 import com.redhat.rhn.domain.kickstart.KickstartIpRange;
 import com.redhat.rhn.domain.kickstart.KickstartPackage;
@@ -526,6 +527,7 @@ public class AnnotationRegistry {
             KickstartActionDetails.class,
             KickstartCommandName.class,
             KickstartDefaultRegToken.class,
+            KickstartDefaults.class,
             KickstartGuestAction.class,
             KickstartGuestActionDetails.class,
             KickstartGuestToolsChannelSubscriptionAction.class,
