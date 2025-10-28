@@ -20,24 +20,65 @@ import com.redhat.rhn.domain.org.Org;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
 /**
  * ChannelFamily
  */
+@Entity
+@Table(name = "rhnChannelFamily")
 public class ChannelFamily extends BaseDomainHelper {
 
+    @Id
+    @GeneratedValue(generator = "RHN_CHANNEL_FAMILY_ID_SEQ")
+    @GenericGenerator(
+        name = "RHN_CHANNEL_FAMILY_ID_SEQ",
+        strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+        parameters = {
+            @Parameter(name = "sequence_name", value = "RHN_CHANNEL_FAMILY_ID_SEQ"),
+            @Parameter(name = "increment_size", value = "1")
+        })
     private Long id;
+
+    @Column
     private String name;
+
+    @Column
     private String label;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "org_id")
     private Org org;
+
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "rhnChannelFamilyMembers",
+            joinColumns = @JoinColumn(name = "channel_family_id"),
+            inverseJoinColumns = @JoinColumn(name = "channel_id"))
     private Set<Channel> channels = new HashSet<>();
 
-    private Set<PrivateChannelFamily> privateChannelFamilies =
-            new HashSet<>();
+    @OneToMany(mappedBy = "channelFamily", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private Set<PrivateChannelFamily> privateChannelFamilies = new HashSet<>();
 
+    @OneToOne(mappedBy = "channelFamily", fetch = FetchType.LAZY)
     private PublicChannelFamily publicChannelFamily;
 
     /**
@@ -115,7 +156,7 @@ public class ChannelFamily extends BaseDomainHelper {
     /**
      * @param idIn The id to set.
      */
-    public void setId(Long idIn) {
+    protected void setId(Long idIn) {
         this.id = idIn;
     }
 
