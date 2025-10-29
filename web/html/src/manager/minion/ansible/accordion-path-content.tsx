@@ -195,15 +195,7 @@ class AccordionPathContent extends React.Component<PropsType, StateType> {
             </ul>
           </dd>
         </dl>
-        <AceEditor
-          className="form-control"
-          id="content-state"
-          minLines={20}
-          maxLines={40}
-          readOnly={true}
-          mode="yaml"
-          content={content?.dump}
-        ></AceEditor>
+        <AceEditor className="form-control" id="content-state" readOnly mode="yaml" content={content?.dump} />
       </div>
     );
   }

@@ -1,49 +1,81 @@
-import * as React from "react";
-import ReactDOM from "react-dom";
+import { useEffect, useRef } from "react";
 
-type Props = {
-  mode: string;
-  minLines: number;
-  maxLines: number;
-  readOnly: boolean;
-  onChange?: (...args: any[]) => any;
-  className: string;
-  id: string;
-  content: React.ReactNode;
-};
+import type { Ace } from "ace-builds";
 
-class AceEditor extends React.Component<Props> {
-  componentDidMount() {
-    const component = this;
+import { useId } from "utils/hooks";
 
-    const node = ReactDOM.findDOMNode(component.refs.editor);
-    try {
-      const editor = ace.edit(node);
-      editor.setTheme("ace/theme/xcode");
-      editor.getSession().setMode("ace/mode/" + component.props.mode);
-      editor.setShowPrintMargin(false);
-      editor.setOptions({ minLines: component.props.minLines });
-      editor.setOptions({ maxLines: component.props.maxLines });
-      editor.setReadOnly(component.props.readOnly);
-
-      editor.getSession().on("change", function () {
-        component.props.onChange?.(editor.getSession().getValue());
-      });
-    } catch (error) {
-      Loggerhead.error(
-        "Failed to initialize AceEditor, please check if `ace-editor/ace.js` and related dependencies have been imported in your Jade/JSP template"
-      );
-      Loggerhead.error(error);
-    }
-  }
-
-  render() {
-    return (
-      <div ref="editor" className={this.props.className} id={this.props.id}>
-        {this.props.content}
-      </div>
-    );
+declare global {
+  interface Window {
+    ace: {
+      edit(node: HTMLDivElement): Ace.Editor;
+    };
   }
 }
+
+type Props = {
+  mode?: string;
+  minLines?: number;
+  maxLines?: number;
+  readOnly?: boolean;
+  onChange?: (...args: any[]) => any;
+  className?: string;
+  id?: string;
+  content?: React.ReactNode;
+};
+
+const AceEditor = ({ minLines = 20, maxLines = 40, readOnly = false, ...props }: Props) => {
+  const fallbackId = useId();
+  const nodeRef = useRef<HTMLDivElement>(null);
+  const editorRef = useRef<Ace.Editor>();
+
+  useEffect(() => {
+    const s1 = document.createElement("script");
+    s1.setAttribute("src", `/javascript/legacy/ace-editor/ace.js?cb=${Math.random() * 100}`);
+    s1.addEventListener("load", () => {
+      const s2 = document.createElement("script");
+      s2.setAttribute("src", `/javascript/legacy/ace-editor/ext-modelist.js?cb=${Math.random() * 100}`);
+
+      s2.addEventListener("load", () => {
+        // TODO: Move down
+
+        try {
+          const node = nodeRef.current;
+          if (!node) {
+            throw new RangeError("Unable to find node for ace-editor");
+          }
+
+          if (!editorRef.current) {
+            const editor = window.ace.edit(node);
+            editor.setTheme("ace/theme/xcode");
+            editor.setShowPrintMargin(false);
+            editor.on("change", () => props.onChange?.(editor.getSession().getValue()));
+            editorRef.current = editor;
+          }
+
+          if (props.mode) {
+            editorRef.current.getSession().setMode("ace/mode/" + props.mode);
+          }
+          editorRef.current.setOptions({ minLines, maxLines });
+          editorRef.current.setReadOnly(readOnly);
+        } catch (error) {
+          Loggerhead.error("Failed to configure Ace editor");
+          Loggerhead.error(error);
+        }
+      });
+      document.head.appendChild(s2);
+    });
+    document.head.appendChild(s1);
+  }, []);
+
+  useEffect(() => {
+    // TODO: Copy over
+  }, [props.mode, minLines, maxLines, readOnly]);
+
+  return (
+    <div ref={nodeRef} className={props.className} id={props.id ?? fallbackId}>
+      {props.content}
+    </div>
+  );
+};
 
 export { AceEditor };

@@ -35,12 +35,10 @@ class SaltStatePopup extends React.Component<SaltStatePopupProps> {
         <AceEditor
           className="form-control"
           id="content-state"
-          minLines={20}
-          maxLines={40}
-          readOnly={true}
+          readOnly
           mode="yaml"
           content={this.props.saltState.content}
-        ></AceEditor>
+        />
       );
 
       icon = this.props.saltState && channelIcon(this.props.saltState);

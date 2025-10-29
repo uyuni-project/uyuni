@@ -337,9 +337,11 @@ var spacewalkContentObserver = new MutationObserver(function(mutations) {
 
 function registerSpacewalkContentObservers() {
   var target = document.getElementById('spacewalk-content');
-  // configuration of the observer:
+  if (!target) {
+    Loggerhead.error("Unable to find #spacewalk-content");
+    return;
+  }
   var config = { childList: true, characterData: true, subtree: true };
-  // pass in the target node, as well as the observer options
   spacewalkContentObserver.observe(target, config);
 }
 

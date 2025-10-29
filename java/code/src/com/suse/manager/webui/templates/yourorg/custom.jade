@@ -12,8 +12,6 @@ script(type='text/javascript').
     window.csrfToken = "#{csrf_token}";
     window.orgId = "#{orgId}";
 
-script(src='/javascript/legacy/ace-editor/ace.js?cb=#{webBuildtimestamp}')
-script(src='/javascript/legacy/ace-editor/ext-modelist.js?cb=#{webBuildtimestamp}')
 script(src='/javascript/legacy/jquery-ui.js?cb=#{webBuildtimestamp}')
 
 script(type='text/javascript').
