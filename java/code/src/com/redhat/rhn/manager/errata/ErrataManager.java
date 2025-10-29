@@ -742,7 +742,7 @@ public class ErrataManager extends BaseManager {
      * @param advisoryType the advisory type to use to query the set of Errata
      * @return List of Errata found
      */
-    public static List lookupErrataByType(String advisoryType) {
+    public static List<Errata> lookupErrataByType(String advisoryType) {
         return ErrataFactory.lookupErratasByAdvisoryType(advisoryType);
     }
 
