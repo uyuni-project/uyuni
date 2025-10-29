@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Oct 29 14:12:05 CET 2025 - marina.latini@suse.com
+
+- version 5.2.2
+  * Remove unused susemanager-tftpsync package
+
+-------------------------------------------------------------------
 Tue Oct 28 10:21:35 CET 2025 - rosuna@suse.com
 
 - version 5.2.1
