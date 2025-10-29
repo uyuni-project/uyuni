@@ -197,12 +197,14 @@ import com.redhat.rhn.domain.iss.IssMasterOrg;
 import com.redhat.rhn.domain.iss.IssSlave;
 import com.redhat.rhn.domain.kickstart.KickstartCommand;
 import com.redhat.rhn.domain.kickstart.KickstartCommandName;
+import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartDefaultRegToken;
 import com.redhat.rhn.domain.kickstart.KickstartDefaults;
 import com.redhat.rhn.domain.kickstart.KickstartInstallType;
 import com.redhat.rhn.domain.kickstart.KickstartIpRange;
 import com.redhat.rhn.domain.kickstart.KickstartPackage;
 import com.redhat.rhn.domain.kickstart.KickstartPreserveFileList;
+import com.redhat.rhn.domain.kickstart.KickstartRawData;
 import com.redhat.rhn.domain.kickstart.KickstartScript;
 import com.redhat.rhn.domain.kickstart.KickstartSession;
 import com.redhat.rhn.domain.kickstart.KickstartSessionHistory;
@@ -537,6 +539,7 @@ public class AnnotationRegistry {
             KickstartAction.class,
             KickstartActionDetails.class,
             KickstartCommandName.class,
+            KickstartData.class,
             KickstartDefaultRegToken.class,
             KickstartDefaults.class,
             KickstartGuestAction.class,
@@ -549,6 +552,7 @@ public class AnnotationRegistry {
             KickstartIpRange.class,
             KickstartPackage.class,
             KickstartPreserveFileList.class,
+            KickstartRawData.class,
             KickstartScheduleSyncAction.class,
             KickstartScript.class,
             KickstartSession.class,
