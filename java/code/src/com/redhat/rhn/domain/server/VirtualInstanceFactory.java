@@ -22,11 +22,13 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.type.StandardBasicTypes;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
+
+import javax.persistence.Tuple;
 
 /**
  * VirtualInstanceFactory provides data access operations for virtual instances.
@@ -75,48 +77,19 @@ public class VirtualInstanceFactory extends HibernateFactory {
     }
 
     /**
-     * Gets the virtual Instance for a given Sid and Org for a guest
-     * @param id the system id of the guest
-     * @param org the org to check against
-     * @return the guest's virtual instance
-     */
-    public VirtualInstance lookupByGuestId(Org org, Long id) {
-        Session session = HibernateFactory.getSession();
-
-        return (VirtualInstance) session.getNamedQuery("VirtualInstance.lookupGuestBySidAndOrg")
-                .setParameter("org", org)
-                .setParameter("sid", id, StandardBasicTypes.LONG)
-                .uniqueResult();
-
-    }
-
-    /**
      * Gets the virtual Instance for a given Sid for a guest
      * @param id the system id of the guest
      * @return the guest's virtual instance
      */
-    @SuppressWarnings("unchecked")
     public VirtualInstance lookupByGuestId(Long id) {
         Session session = HibernateFactory.getSession();
-        return (VirtualInstance) session.getNamedQuery("VirtualInstance.lookupGuestBySid")
+        return session.createQuery("""
+                        FROM VirtualInstance guest
+                        WHERE guest.guestSystem.id = :sid
+                """, VirtualInstance.class)
                 .setParameter("sid", id, StandardBasicTypes.LONG)
                 .uniqueResult();
     }
-
-    /**
-     * Check if the given guest instance is outdated. (i.e. a newer instance
-     * exists with the same UUID)
-     *
-     * @param guest Virtual instance to check.
-     * @return True if outdated, false otherwise.
-     */
-    public boolean isOutdated(VirtualInstance guest) {
-        Session session = HibernateFactory.getSession();
-        VirtualInstance results = (VirtualInstance) session.getNamedQuery("VirtualInstance.isOutdatedVirtualInstance")
-                .setParameter("guest", guest).uniqueResult();
-        return results != null;
-    }
-
 
     /**
      * Retrieves the virtual instance with the specified ID.
@@ -161,68 +134,49 @@ public class VirtualInstanceFactory extends HibernateFactory {
      *
      * @see GuestAndNonVirtHostView
      */
-    @SuppressWarnings("unchecked")
     public Set<GuestAndNonVirtHostView> findGuestsWithNonVirtHostByOrg(Org org) {
         Session session = HibernateFactory.getSession();
-        List<Object[]> results = session.getNamedQuery("VirtualInstance.findGuestsWithNonVirtHostByOrg")
+        return session.createNativeQuery("""
+                        select
+                              guest.id as guest_id,
+                              guest.org_id as guest_org_id,
+                              guest.name as guest_name,
+                              host.id as host_id,
+                              host.org_id as host_org_id,
+                              host.name as host_name
+                        from
+                          RhnVirtualInstance vi
+                              inner join rhnServer guest on vi.virtual_system_id = guest.id
+                              inner join rhnServer host on vi.host_system_id = host.id
+                        where
+                          guest.org_id = :org_id and
+                          (host.org_id != :org_id  or
+                          not exists (
+                            select 1 from rhnServerGroupMembers sgm
+                                      inner join rhnServerGroup sg on sgm.server_group_id = sg.id
+                                      inner join rhnServerGroupType sgt on sg.group_type = sgt.id
+                             where
+                                  sgt.label = 'virtualization_host'
+                                  and sgm.server_id = host.id
+                          ))
+                        """, Tuple.class)
                 .setParameter("org_id", org.getId(), StandardBasicTypes.LONG)
-                .list();
-
-        return new HashSet<>(convertToView(results));
+                .addScalar("guest_id", StandardBasicTypes.LONG)
+                .addScalar("guest_org_id", StandardBasicTypes.LONG)
+                .addScalar("guest_name", StandardBasicTypes.STRING)
+                .addScalar("host_id", StandardBasicTypes.LONG)
+                .addScalar("host_org_id", StandardBasicTypes.LONG)
+                .addScalar("host_name", StandardBasicTypes.STRING)
+                .stream()
+                .map(t -> new GuestAndNonVirtHostView(
+                        t.get(0, Long.class),
+                        t.get(1, Long.class),
+                        t.get(2, String.class),
+                        t.get(3, Long.class),
+                        t.get(4, Long.class),
+                        t.get(5, String.class)))
+                .collect(Collectors.toSet());
     }
-
-    /**
-     * transforms a result set of
-     * guest.id as guest_id
-     * guest.org_id as guest_org_id,
-     * guest.name as guest_name,
-     * host.org_id as host_org_id,
-     * host.id as host_id,
-     * host.name as host_name
-     * @param result a list of Object array of  id,name, count
-     * @return list of GuestAndNonVirtHostView objects
-     */
-    private static List<GuestAndNonVirtHostView> convertToView(List<Object[]> out) {
-        List<GuestAndNonVirtHostView> ret = new ArrayList<>(out.size());
-        /*
-         guest.id as guest_id,
-         guest.org_id as guest_org_id,
-         guest.name as guest_name,
-         host.org_id as host_org_id,
-         host.id as host_id,
-         host.name as host_name
-         */
-        for (Object[] row : out) {
-
-            /*
-             guest.id as guest_id,
-             guest.org_id as guest_org_id,
-             guest.name as guest_name,
-             host.org_id as host_org_id,
-             host.id as host_id,
-             host.name as host_name
-             */
-
-            Number guestId = (Number) row[0];
-            Number guestOrgId = (Number) row[1];
-            String guestName = (String) row[2];
-
-            Number hostId = (Number) row[3];
-            Number hostOrgId = (Number) row[4];
-            String hostName = (String) row[5];
-
-            GuestAndNonVirtHostView view = new GuestAndNonVirtHostView(
-                    guestId.longValue(),
-                    guestOrgId.longValue(),
-                    guestName,
-                    hostId.longValue(),
-                    hostOrgId.longValue(),
-                    hostName);
-            ret.add(view);
-        }
-        return ret;
-    }
-
 
     /**
      * Finds all registered guests, within a particular org, who do not have a registered
@@ -234,11 +188,18 @@ public class VirtualInstanceFactory extends HibernateFactory {
      *
      * @see GuestAndNonVirtHostView
      */
-    @SuppressWarnings("unchecked")
     public Set<GuestAndNonVirtHostView> findGuestsWithoutAHostByOrg(Org org) {
         Session session = HibernateFactory.getSession();
 
-        List<GuestAndNonVirtHostView> results = session.getNamedQuery("VirtualInstance.findGuestsWithoutAHostByOrg")
+        List<GuestAndNonVirtHostView> results = session.createQuery("""
+                        select
+                          new com.redhat.rhn.domain.server.GuestAndNonVirtHostView(guest.id, guest.org.id, guest.name)
+                        from
+                          VirtualInstance virtualInstance join virtualInstance.guestSystem guest
+                        where
+                          virtualInstance.hostSystem is null and
+                          guest.org = :org
+                        """, GuestAndNonVirtHostView.class)
                 .setParameter("org", org)
                 .list();
 
@@ -342,7 +303,10 @@ public class VirtualInstanceFactory extends HibernateFactory {
      */
     public List<VirtualInstance> lookupVirtualInstanceByUuid(String uuid) {
         return getSession()
-                .getNamedQuery("VirtualInstance.lookupVirtualInstanceByUuid")
+                .createQuery("""
+                        FROM VirtualInstance guestVI
+                        WHERE guestVI.uuid = :uuid
+                        """, VirtualInstance.class)
                 .setParameter("uuid", uuid, StandardBasicTypes.STRING)
                 .list();
     }
@@ -353,8 +317,12 @@ public class VirtualInstanceFactory extends HibernateFactory {
      * @return VirtualInstance linked to the host with given id
      */
     public VirtualInstance lookupHostVirtInstanceByHostId(Long hostId) {
-        return (VirtualInstance) getSession()
-                .getNamedQuery("VirtualInstance.lookupHostVirtInstanceByHostId")
+        return getSession()
+                .createQuery("""
+                        FROM  VirtualInstance hostVI
+                        WHERE hostVI.uuid IS NULL
+                        AND   hostVI.hostSystem.id = :hostId
+                        """, VirtualInstance.class)
                 .setParameter("hostId", hostId, StandardBasicTypes.LONG)
             .uniqueResult();
     }
@@ -366,8 +334,12 @@ public class VirtualInstanceFactory extends HibernateFactory {
      * @return VirtualInstance with uuid running on host matching hostId
      */
     public VirtualInstance lookupVirtualInstanceByHostIdAndUuid(Long hostId, String uuid) {
-        return (VirtualInstance) getSession()
-                .getNamedQuery("VirtualInstance.lookupHostVirtInstanceByHostIdAndUuid")
+        return getSession()
+                .createQuery("""
+                        FROM  VirtualInstance guestVI
+                        WHERE guestVI.uuid = :uuid
+                        AND   guestVI.hostSystem.id = :hostId
+                        """, VirtualInstance.class)
                 .setParameter("hostId", hostId, StandardBasicTypes.LONG)
                 .setParameter("uuid", uuid, StandardBasicTypes.STRING)
             .uniqueResult();
