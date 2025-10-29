@@ -677,23 +677,6 @@ When(/^I uninstall the managed file from "([^"]*)"$/) do |host|
   node.run('rm /tmp/test_user_defined_state')
 end
 
-# TODO: remove this step definition when we deprecate the non-containerized components
-When(/^I configure tftp on the "([^"]*)"$/) do |host|
-  raise ScriptError, "This step doesn't support #{host}" unless %w[server proxy].include? host
-
-  case host
-  when 'server'
-    get_target('server').run("/usr/sbin/configure-tftpsync.sh #{get_target('proxy').full_hostname}")
-  when 'proxy'
-    cmd = "/usr/sbin/configure-tftpsync.sh --non-interactive --tftpbootdir=/srv/tftpboot \
---server-fqdn=#{get_target('server').full_hostname} \
---proxy-fqdn='proxy.example.org'"
-    get_target('proxy').run(cmd)
-  else
-    log "Host #{host} not supported"
-  end
-end
-
 When(/^I set the default PXE menu entry to the (target profile|local boot) on the "([^"]*)"$/) do |entry, host|
   raise ScriptError, "This step doesn't support #{host}" unless %w[server proxy].include? host
 
@@ -1045,35 +1028,6 @@ When(/^I remove packages? "([^"]*)" from this "([^"]*)"((?: without error contro
     successcodes = [0, 100, 101, 102, 103, 104, 106]
   end
   node.run(cmd, check_errors: error_control.empty?, successcodes: successcodes)
-end
-
-# TODO: remove this step definition when we deprecate the non-containerized components
-When(/^I install package tftpboot-installation on the server$/) do
-  server = get_target('server')
-
-  # set this variable to true when the server and the build host run the same operating system version
-  # examples:
-  # * the server's container is either SLES 15 SP6 or Leap 15.6, and the build host is SLES 15 SP4:
-  #   same_version_on_server_and_build_host = false
-  # * the server's container is either SLES 15 SP6 or Leap 15.6, and the build host is SLES 15 SP6:
-  #   same_version_on_server_and_build_host = product != 'Uyuni'
-  same_version_on_server_and_build_host = false
-
-  # set this variable to the name of the desired tftpboot package
-  # beware that "-x86_64" is part of the package name, the package itself is noarch!
-  tftpboot_package = 'tftpboot-installation-SLE-15-SP4-x86_64'
-
-  # if same version, fetch the package directly, otherwise search it among the reposynced packages
-  if same_version_on_server_and_build_host
-    server.run("zypper --non-interactive install #{tftpboot_package}", verbose: true)
-  else
-    output, _code = server.run("find /var/spacewalk/packages -name #{tftpboot_package}-*.noarch.rpm")
-    packages = output.split("\n")
-    pattern = '/tftpboot-installation-([^/]+)*.noarch.rpm'
-    # Reverse sort the package names to get the latest version first
-    latest_version = packages.min { |a, b| b.match(pattern)[0] <=> a.match(pattern)[0] }
-    server.run("rpm -q #{tftpboot_package} || rpm -i #{latest_version}", verbose: true)
-  end
 end
 
 When(/I copy "([^"]*)" from "([^"]*)" to "([^"]*)" via scp in the path "([^"]*)"$/) do |file, origin, dest, dest_folder|
