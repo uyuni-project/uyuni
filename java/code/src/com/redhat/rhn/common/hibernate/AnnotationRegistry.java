@@ -172,7 +172,9 @@ import com.redhat.rhn.domain.credentials.ReportDBCredentials;
 import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.domain.credentials.VHMCredentials;
 import com.redhat.rhn.domain.errata.Bug;
+import com.redhat.rhn.domain.errata.ClonedErrata;
 import com.redhat.rhn.domain.errata.Cve;
+import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFile;
 import com.redhat.rhn.domain.errata.ErrataFileType;
 import com.redhat.rhn.domain.errata.Keyword;
@@ -430,6 +432,7 @@ public class AnnotationRegistry {
             ClientCapability.class,
             ClientCapabilityId.class,
             ClonedChannel.class,
+            ClonedErrata.class,
             CloudRMTCredentials.class,
             CloudRmtHost.class,
             CoCoAttestationAction.class,
@@ -485,6 +488,7 @@ public class AnnotationRegistry {
             DockerfileProfile.class,
             EntitlementServerGroup.class,
             EnvironmentTarget.class,
+            Errata.class,
             ErrataAction.class,
             ErrataAdvisoryMap.class,
             ErrataFile.class,
