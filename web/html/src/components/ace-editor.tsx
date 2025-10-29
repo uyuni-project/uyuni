@@ -37,30 +37,6 @@ const AceEditor = ({ minLines = 20, maxLines = 40, readOnly = false, ...props }:
 
       s2.addEventListener("load", () => {
         // TODO: Move down
-
-        try {
-          const node = nodeRef.current;
-          if (!node) {
-            throw new RangeError("Unable to find node for ace-editor");
-          }
-
-          if (!editorRef.current) {
-            const editor = window.ace.edit(node);
-            editor.setTheme("ace/theme/xcode");
-            editor.setShowPrintMargin(false);
-            editor.on("change", () => props.onChange?.(editor.getSession().getValue()));
-            editorRef.current = editor;
-          }
-
-          if (props.mode) {
-            editorRef.current.getSession().setMode("ace/mode/" + props.mode);
-          }
-          editorRef.current.setOptions({ minLines, maxLines });
-          editorRef.current.setReadOnly(readOnly);
-        } catch (error) {
-          Loggerhead.error("Failed to configure Ace editor");
-          Loggerhead.error(error);
-        }
       });
       document.head.appendChild(s2);
     });
@@ -69,6 +45,30 @@ const AceEditor = ({ minLines = 20, maxLines = 40, readOnly = false, ...props }:
 
   useEffect(() => {
     // TODO: Copy over
+
+    try {
+      const node = nodeRef.current;
+      if (!node) {
+        throw new RangeError("Unable to find node for ace-editor");
+      }
+
+      if (!editorRef.current) {
+        const editor = window.ace.edit(node);
+        editor.setTheme("ace/theme/xcode");
+        editor.setShowPrintMargin(false);
+        editor.on("change", () => props.onChange?.(editor.getSession().getValue()));
+        editorRef.current = editor;
+      }
+
+      if (props.mode) {
+        editorRef.current.getSession().setMode("ace/mode/" + props.mode);
+      }
+      editorRef.current.setOptions({ minLines, maxLines });
+      editorRef.current.setReadOnly(readOnly);
+    } catch (error) {
+      Loggerhead.error("Failed to configure Ace editor");
+      Loggerhead.error(error);
+    }
   }, [props.mode, minLines, maxLines, readOnly]);
 
   return (
