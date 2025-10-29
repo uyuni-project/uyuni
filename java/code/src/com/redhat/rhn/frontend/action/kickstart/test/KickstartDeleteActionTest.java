@@ -17,13 +17,10 @@ package com.redhat.rhn.frontend.action.kickstart.test;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.domain.kickstart.KickstartData;
+import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.frontend.action.kickstart.KickstartDetailsEditAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
 
-import org.hibernate.Session;
-import org.hibernate.type.StandardBasicTypes;
 import org.junit.jupiter.api.Test;
 
 public class KickstartDeleteActionTest extends BaseKickstartEditTestCase {
@@ -53,19 +50,7 @@ public class KickstartDeleteActionTest extends BaseKickstartEditTestCase {
         String[] keys = {"kickstart.delete.success"};
         verifyActionMessages(keys);
 
-        assertNull(lookupById(Long.valueOf(request.getParameter(KICKSTART_ID))));
-    }
-
-    /**
-     * Helper method to lookup KickstartData by id
-     * @param id Id to lookup
-     * @return Returns the KickstartData
-     */
-    private KickstartData lookupById(Long id) {
-        Session session = HibernateFactory.getSession();
-        return (KickstartData) session.getNamedQuery("KickstartData.findByIdAndOrg")
-                          .setParameter("id", id, StandardBasicTypes.LONG)
-                          .setParameter("org_id", user.getOrg().getId(), StandardBasicTypes.LONG)
-                          .uniqueResult();
+        assertNull(KickstartFactory.lookupKickstartDataByIdAndOrg(user.getOrg(),
+                Long.valueOf(request.getParameter(KICKSTART_ID))));
     }
 }
