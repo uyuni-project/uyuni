@@ -22,7 +22,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.common.util.SHA256Crypt;
 import com.redhat.rhn.domain.channel.Channel;
@@ -72,8 +71,6 @@ import com.redhat.rhn.testing.UserTestUtils;
 import org.cobbler.CobblerConnection;
 import org.cobbler.Distro;
 import org.cobbler.test.MockConnection;
-import org.hibernate.Session;
-import org.hibernate.type.StandardBasicTypes;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -332,11 +329,7 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
      * @return Returns the KickstartData
      */
     private KickstartData lookupById(Org orgIn, Long id) {
-        Session session = HibernateFactory.getSession();
-        return (KickstartData) session.getNamedQuery("KickstartData.findByIdAndOrg")
-                          .setParameter("id", id)
-                          .setParameter("org_id", orgIn.getId(), StandardBasicTypes.LONG)
-                          .uniqueResult();
+        return KickstartFactory.lookupKickstartDataByIdAndOrg(orgIn, id);
     }
 
     /**
