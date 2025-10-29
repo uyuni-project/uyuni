@@ -569,7 +569,7 @@ public class Errata extends BaseDomainHelper implements Selectable {
         }
 
         this.files.add(fileIn);
-        fileIn.setErrata(this);
+        fileIn.setOwningErrata(this);
     }
 
     /**

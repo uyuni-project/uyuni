@@ -49,7 +49,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.hibernate.query.Query;
 import org.hibernate.type.StandardBasicTypes;
 
 import java.util.ArrayList;
@@ -337,7 +336,7 @@ public class ErrataFactory extends HibernateFactory {
         var file = ErrataFactory.createErrataFile(
                 ErrataFactory.lookupErrataFileType("RPM"), pack.getChecksum().getChecksum(), pack.getPath());
         file.addPackage(pack);
-        file.setErrata(errata);
+        file.setOwningErrata(errata);
         file.setModified(new Date());
         file.addChannel(chan);
         return file;
@@ -414,17 +413,20 @@ public class ErrataFactory extends HibernateFactory {
     public static List<ErrataFile> lookupErrataFilesByErrataAndFileType(Long errataId, String fileType) {
         List<ErrataFile> retval;
         try {
-            Query<ErrataFile> q = getSession().getNamedQuery("ErrataFile.listByErrataAndFileType")
-            .setParameter("errata_id", errataId, StandardBasicTypes.LONG)
-            .setParameter("file_type", fileType.toUpperCase(), StandardBasicTypes.STRING);
-            retval =  q.list();
+            retval = getSession().createQuery("""
+                                    FROM ErrataFile AS pef
+                                    WHERE pef.owningErrata.id = :errata_id
+                                    AND pef.fileType.label = :file_type
+                                    """,
+                            ErrataFile.class)
+                    .setParameter("errata_id", errataId, StandardBasicTypes.LONG)
+                    .setParameter("file_type", fileType.toUpperCase(), StandardBasicTypes.STRING)
+                    .list();
         }
         catch (HibernateException e) {
             throw new HibernateRuntimeException(e.getMessage(), e);
         }
         return retval;
-
-
     }
 
     /**
@@ -724,7 +726,7 @@ public class ErrataFactory extends HibernateFactory {
 
 
     /**
-     * Lookup an errataFile object by it's errata id and package filename.
+     * Lookup an errataFile object by its errata id and package filename.
      * @param errataId the ID of the errata associated
      * @param filename the filename of the package associated
      * @return an Optional that may or may not contain the requested errata file object
@@ -732,7 +734,10 @@ public class ErrataFactory extends HibernateFactory {
     @SuppressWarnings("unchecked")
     public static Optional<ErrataFile> lookupErrataFile(Long errataId, String filename) {
         Session session = HibernateFactory.getSession();
-        return session.getNamedQuery("ErrataFile.lookupByErrataAndPackage")
+        return session.createQuery("""
+                        FROM ErrataFile as pef
+                        WHERE pef.owningErrata.id = :errata_id
+                        AND pef.fileName = :filename""", ErrataFile.class)
                 .setParameter("errata_id", errataId, StandardBasicTypes.LONG)
                 .setParameter("filename", filename, StandardBasicTypes.STRING)
                 .uniqueResultOptional();

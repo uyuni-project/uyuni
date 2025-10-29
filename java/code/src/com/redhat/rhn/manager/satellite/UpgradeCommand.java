@@ -255,7 +255,20 @@ public class UpgradeCommand extends BaseTransactionCommand {
      */
     private void importLegacyStatesToDb() {
         List<Object[]> candidates = HibernateFactory.getSession()
-                .getNamedQuery("ConfigRevision.stateContentMigrationCandidates").list();
+                .createQuery("""
+                        SELECT DISTINCT channel.org.id, channel.label, revision
+                        FROM ConfigRevision AS revision
+                        INNER JOIN revision.configContent AS content
+                        INNER JOIN revision.configFile AS file
+                        INNER JOIN file.configFileName AS fileName
+                        INNER JOIN file.configChannel AS channel
+                        WHERE channel.configChannelType.label = 'state'
+                        AND fileName.path = '/init.sls'
+                        AND revision.revision = 1
+                        AND length(content.contents) = 0
+                        """, Object[].class)
+                .list();
+
         // Use WARN here because we want this operation logged.
         log.warn("Migrating content of {} custom states from disk to database.", candidates.size());
         candidates.forEach(row -> {

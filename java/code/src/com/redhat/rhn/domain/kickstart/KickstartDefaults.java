@@ -14,26 +14,55 @@
  */
 package com.redhat.rhn.domain.kickstart;
 
+import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.rhnpackage.profile.Profile;
 
-import java.util.Date;
+import org.hibernate.annotations.Type;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 /**
  * KickstartDefaults - Class representation of the table rhnkickstartdefaults.
  */
-public class KickstartDefaults {
+@Entity
+@Table(name = "rhnKickstartDefaults")
+public class KickstartDefaults extends BaseDomainHelper {
+    @Id
+    @Column(name = "kickstart_id")
+    private Long id;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "kickstart_id")
+    @MapsId
     private KickstartData ksdata;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "kstree_id")
     private KickstartableTree kstree;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "server_profile_id")
     private Profile profile;
 
-    private Long id;
+    @Column(name = "cfg_management_flag", nullable = false)
+    @Type(type = "yes_no")
     private Boolean cfgManagementFlag;
-    private Boolean remoteCommandFlag;
-    private KickstartVirtualizationType virtualizationType;
-    private Date created;
-    private Date modified;
 
+    @Column(name = "remote_command_flag", nullable = false)
+    @Type(type = "yes_no")
+    private Boolean remoteCommandFlag;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "virtualization_type")
+    private KickstartVirtualizationType virtualizationType;
 
     /**
      * Getter for id
@@ -130,39 +159,6 @@ public class KickstartDefaults {
     public void setVirtualizationType(KickstartVirtualizationType typeIn) {
         this.virtualizationType = typeIn;
     }
-
-    /**
-     * Getter for created
-     * @return Date to get
-    */
-    public Date getCreated() {
-        return this.created;
-    }
-
-    /**
-     * Setter for created
-     * @param createdIn to set
-    */
-    public void setCreated(Date createdIn) {
-        this.created = createdIn;
-    }
-
-    /**
-     * Getter for modified
-     * @return Date to get
-    */
-    public Date getModified() {
-        return this.modified;
-    }
-
-    /**
-     * Setter for modified
-     * @param modifiedIn to set
-    */
-    public void setModified(Date modifiedIn) {
-        this.modified = modifiedIn;
-    }
-
 
     /**
      * @return the profile

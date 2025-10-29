@@ -23,19 +23,50 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
 /**
  * MgrServerInfo
  */
+@Entity
+@Table(name = "suseMgrServerInfo")
 public class MgrServerInfo implements Serializable {
 
-    private Server server;
-    private PackageEvr version;
-    private String reportDbName;
-    private String reportDbHost;
-    private Integer reportDbPort;
-    private ReportDBCredentials reportDbCredentials;
-    private Date reportDbLastSynced;
+    @Id
+    @Column(name = "server_id")
     private Long id;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
+    private Server server;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "mgr_evr_id")
+    private PackageEvr version;
+
+    @Column(name = "report_db_name")
+    private String reportDbName;
+
+    @Column(name = "report_db_host")
+    private String reportDbHost;
+
+    @Column(name = "report_db_port")
+    private Integer reportDbPort;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "report_db_cred_id")
+    private ReportDBCredentials reportDbCredentials;
+
+    @Column(name = "report_db_last_synced")
+    private Date reportDbLastSynced;
 
     /**
      * @return the id
@@ -47,7 +78,7 @@ public class MgrServerInfo implements Serializable {
     /**
      * @param sid the server_id to set
      */
-    public void setId(Long sid) {
+    protected void setId(Long sid) {
         this.id = sid;
     }
 

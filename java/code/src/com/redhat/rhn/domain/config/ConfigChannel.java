@@ -21,22 +21,48 @@ import com.redhat.rhn.domain.org.Org;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.hibernate.annotations.SortComparator;
 
 import java.util.Date;
 import java.util.SortedSet;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 /**
  * ConfigChannel - Class representation of the table rhnConfigChannel.
  */
+@Entity
+@Table(name = "rhnConfigChannel")
 public class ConfigChannel extends BaseDomainHelper implements Identifiable {
+    @Id
     private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "org_id")
     private Org org;
+
+    @Column
     private String name;
+
+    @Column
     private String label;
+
+    @Column
     private String description;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "confchan_type_id")
     private ConfigChannelType configChannelType;
 
+    @OneToMany(mappedBy = "configChannel", fetch = FetchType.LAZY)
+    @SortComparator(com.redhat.rhn.domain.config.ConfigFileTypeComparator.class)
     private SortedSet<ConfigFile> configFiles;
 
     /**
@@ -60,7 +86,7 @@ public class ConfigChannel extends BaseDomainHelper implements Identifiable {
      * Setter for id
      * @param idIn to set
     */
-    public void setId(Long idIn) {
+    protected void setId(Long idIn) {
         this.id = idIn;
     }
 

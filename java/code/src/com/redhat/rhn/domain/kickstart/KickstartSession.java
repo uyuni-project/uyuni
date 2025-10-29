@@ -15,6 +15,7 @@
 package com.redhat.rhn.domain.kickstart;
 
 import com.redhat.rhn.common.security.SessionSwap;
+import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.common.CommonFactory;
@@ -23,7 +24,12 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.profile.Profile;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.domain.user.legacy.UserImpl;
 import com.redhat.rhn.manager.system.SystemManager;
+
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -31,10 +37,23 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 /**
  * KickstartSession - Class representation of the table rhnkickstartsession.
  */
-public class KickstartSession {
+@Entity
+@Table(name = "rhnKickstartSession")
+public class KickstartSession extends BaseDomainHelper {
 
     // Indicating this KickstartSession is being
     // used for a 'one time' kickstart of a System
@@ -44,31 +63,88 @@ public class KickstartSession {
     // that is associated with the KickstartData at creation time.
     public static final String MODE_DEFAULT_SESSION = "default_session";
 
+    @Id
+    @GeneratedValue(generator = "RHN_KS_SESSION_ID_SEQ")
+    @GenericGenerator(
+        name = "RHN_KS_SESSION_ID_SEQ",
+        strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+        parameters = {
+            @Parameter(name = "sequence_name", value = "RHN_KS_SESSION_ID_SEQ"),
+            @Parameter(name = "increment_size", value = "1")
+        })
     private Long id;
+
+    @Column(name = "package_fetch_count", nullable = false)
     private Long packageFetchCount;
 
+    @Column(name = "kickstart_mode")
     private String kickstartMode;
+
+    @Column(name = "last_file_request")
     private String lastFileRequest;
+
+    @Column(name = "system_rhn_host")
     private String systemRhnHost;
+
+    @Column(name = "kickstart_from_host")
     private String kickstartFromHost;
+
+    @Column(name = "deploy_configs", nullable = false)
+    @Type(type = "yes_no")
     private Boolean deployConfigs;
 
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    @JoinColumn(name = "kstree_id")
     private KickstartableTree kstree;
+
+    @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+    @JoinColumn(name = "kickstart_id")
     private KickstartData ksdata;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "org_id", nullable = false)
     private Org org;
+
+    @ManyToOne(targetEntity = UserImpl.class, cascade = {CascadeType.MERGE, CascadeType.PERSIST},
+            fetch = FetchType.LAZY)
+    @JoinColumn(name = "scheduler")
     private User user;
+
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    @JoinColumn(name = "action_id")
     private Action action;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "state_id")
     private KickstartSessionState state;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "virtualization_type")
     private KickstartVirtualizationType virtualizationType;
+
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    @JoinColumn(name = "old_server_id")
     private Server oldServer;
+
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    @JoinColumn(name = "new_server_id")
     private Server newServer;
+
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    @JoinColumn(name = "host_server_id")
     private Server hostServer;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "server_profile_id")
     private Profile serverProfile;
+
+    @OneToMany(mappedBy = "session", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<KickstartSessionHistory> history;
+
+    @Column(name = "client_ip")
     private String clientIp;
 
-    private Date created;
-    private Date modified;
+    @Column(name = "last_action", nullable = false, updatable = false, insertable = false)
     private Date lastAction;
 
     /**
@@ -83,7 +159,7 @@ public class KickstartSession {
      * Setter for id
      * @param idIn to set
     */
-    public void setId(Long idIn) {
+    protected void setId(Long idIn) {
         this.id = idIn;
     }
 
@@ -277,38 +353,6 @@ public class KickstartSession {
     */
     public void setLastFileRequest(String lastFileRequestIn) {
         this.lastFileRequest = lastFileRequestIn;
-    }
-
-    /**
-     * Getter for created
-     * @return Date to get
-    */
-    public Date getCreated() {
-        return this.created;
-    }
-
-    /**
-     * Setter for created
-     * @param createdIn to set
-    */
-    public void setCreated(Date createdIn) {
-        this.created = createdIn;
-    }
-
-    /**
-     * Getter for modified
-     * @return Date to get
-    */
-    public Date getModified() {
-        return this.modified;
-    }
-
-    /**
-     * Setter for modified
-     * @param modifiedIn to set
-    */
-    public void setModified(Date modifiedIn) {
-        this.modified = modifiedIn;
     }
 
     /**

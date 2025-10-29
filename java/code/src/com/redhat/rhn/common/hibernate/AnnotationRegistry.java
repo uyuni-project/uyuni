@@ -113,6 +113,7 @@ import com.redhat.rhn.domain.channel.AppStreamApi;
 import com.redhat.rhn.domain.channel.AppStreamApiKey;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
+import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelProduct;
 import com.redhat.rhn.domain.channel.ChannelSyncFlag;
 import com.redhat.rhn.domain.channel.ClonedChannel;
@@ -146,6 +147,7 @@ import com.redhat.rhn.domain.config.ConfigFileName;
 import com.redhat.rhn.domain.config.ConfigFileState;
 import com.redhat.rhn.domain.config.ConfigFileType;
 import com.redhat.rhn.domain.config.ConfigInfo;
+import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironmentDiff;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
@@ -171,6 +173,7 @@ import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.domain.credentials.VHMCredentials;
 import com.redhat.rhn.domain.errata.Bug;
 import com.redhat.rhn.domain.errata.Cve;
+import com.redhat.rhn.domain.errata.ErrataFile;
 import com.redhat.rhn.domain.errata.ErrataFileType;
 import com.redhat.rhn.domain.errata.Keyword;
 import com.redhat.rhn.domain.errata.Severity;
@@ -193,11 +196,13 @@ import com.redhat.rhn.domain.iss.IssSlave;
 import com.redhat.rhn.domain.kickstart.KickstartCommand;
 import com.redhat.rhn.domain.kickstart.KickstartCommandName;
 import com.redhat.rhn.domain.kickstart.KickstartDefaultRegToken;
+import com.redhat.rhn.domain.kickstart.KickstartDefaults;
 import com.redhat.rhn.domain.kickstart.KickstartInstallType;
 import com.redhat.rhn.domain.kickstart.KickstartIpRange;
 import com.redhat.rhn.domain.kickstart.KickstartPackage;
 import com.redhat.rhn.domain.kickstart.KickstartPreserveFileList;
 import com.redhat.rhn.domain.kickstart.KickstartScript;
+import com.redhat.rhn.domain.kickstart.KickstartSession;
 import com.redhat.rhn.domain.kickstart.KickstartSessionHistory;
 import com.redhat.rhn.domain.kickstart.KickstartSessionState;
 import com.redhat.rhn.domain.kickstart.KickstartTreeType;
@@ -286,6 +291,7 @@ import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.InvalidSnapshotReason;
 import com.redhat.rhn.domain.server.Location;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
+import com.redhat.rhn.domain.server.MgrServerInfo;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.MinionSummary;
@@ -414,6 +420,7 @@ public class AnnotationRegistry {
             Capability.class,
             ChannelArch.class,
             Channel.class,
+            ChannelFamily.class,
             ChannelProduct.class,
             ChannelSyncFlag.class,
             ChannelTemplate.class,
@@ -445,6 +452,7 @@ public class AnnotationRegistry {
             ConfigFileState.class,
             ConfigFileType.class,
             ConfigInfo.class,
+            ConfigRevision.class,
             ConfigRevisionAction.class,
             ConfigRevisionActionResult.class,
             ConfigUploadAction.class,
@@ -479,6 +487,7 @@ public class AnnotationRegistry {
             EnvironmentTarget.class,
             ErrataAction.class,
             ErrataAdvisoryMap.class,
+            ErrataFile.class,
             ErrataFileType.class,
             ErrataFilter.class,
             ExceptionMessage.class,
@@ -525,6 +534,7 @@ public class AnnotationRegistry {
             KickstartActionDetails.class,
             KickstartCommandName.class,
             KickstartDefaultRegToken.class,
+            KickstartDefaults.class,
             KickstartGuestAction.class,
             KickstartGuestActionDetails.class,
             KickstartGuestToolsChannelSubscriptionAction.class,
@@ -537,6 +547,7 @@ public class AnnotationRegistry {
             KickstartPreserveFileList.class,
             KickstartScheduleSyncAction.class,
             KickstartScript.class,
+            KickstartSession.class,
             KickstartSessionHistory.class,
             KickstartSessionState.class,
             KickstartTreeType.class,
@@ -549,6 +560,7 @@ public class AnnotationRegistry {
             ManagedServerGroup.class,
             MatcherRunData.class,
             MediaProducts.class,
+            MgrServerInfo.class,
             MinionRecurringAction.class,
             MinionServer.class,
             MinionServerFactory.class,
