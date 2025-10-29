@@ -95,15 +95,17 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                 class="com.redhat.rhn.domain.errata.Errata" />
         </joined-subclass>
     </class>
-    -->
+
     <query name="Errata.findByAdvisoryType">
         <![CDATA[from com.redhat.rhn.domain.errata.Errata as e
                 where e.advisoryType = :type]]>
     </query>
+
     <query name="Errata.findById">
         <![CDATA[from com.redhat.rhn.domain.errata.Errata as e
                 where e.id = :id]]>
     </query>
+
     <query name="Errata.listByIds">
         <![CDATA[from com.redhat.rhn.domain.errata.Errata as e
                 where e.id in (:list)]]>
@@ -113,12 +115,12 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <![CDATA[from com.redhat.rhn.domain.errata.Errata as e
                  where e.advisoryName = :advisory and ((:org is not null and e.org = :org) or (:org is null and e.org is null))]]>
     </query>
-    
+
     <query name="Errata.findVendorAnUserErrataByAdvisoryNameAndOrg">
         <![CDATA[from com.redhat.rhn.domain.errata.Errata as e
                  where e.advisoryName = :advisory and (e.org = :org or e.org is null)]]>
     </query>
-    
+
     <query name="Errata.findErrataInBothChannels">
         <![CDATA[
         from com.redhat.rhn.domain.errata.Errata as e
@@ -152,6 +154,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                  where c.original = :original
                  and c.org = :org]]>
     </query>
+
     <query name="Errata.findByAdvisory">
         <![CDATA[from com.redhat.rhn.domain.errata.Errata as e
                  where e.advisory = :advisory and (e.org = :org or e.org is null)]]>
@@ -176,6 +179,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                   order by e.issueDate
                 ]]>
     </query>
+     -->
     <sql-query name="Errata.retractedPackages">
         <![CDATA[
             select pid, sid

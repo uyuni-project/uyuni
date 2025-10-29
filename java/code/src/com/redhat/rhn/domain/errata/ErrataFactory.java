@@ -108,8 +108,6 @@ public class ErrataFactory extends HibernateFactory {
         return dr.stream().map(file -> file.getPackageId()).collect(Collectors.toList());
     }
 
-
-
     /**
      * Tries to locate errata based on either the errataum's id or the
      * CVE/CAN identifier string.
@@ -444,14 +442,14 @@ public class ErrataFactory extends HibernateFactory {
      * @param advisoryType to search for
      * @return the Errata found
      */
-    @SuppressWarnings("unchecked")
     public static List<Errata> lookupErratasByAdvisoryType(String advisoryType) {
         List<Errata> retval;
         try {
-            retval = getSession().getNamedQuery("Errata.findByAdvisoryType")
+            retval = getSession().createQuery("FROM Errata AS e WHERE e.advisoryType = :type", Errata.class)
                     .setParameter("type", advisoryType, StandardBasicTypes.STRING)
                     //Retrieve from cache if there
-                    .setCacheable(true).list();
+                    .setCacheable(true)
+                    .list();
         }
         catch (HibernateException he) {
             log.error("Error loading ActionArchTypes from DB", he);
@@ -468,13 +466,13 @@ public class ErrataFactory extends HibernateFactory {
     public static Errata lookupErrataById(Long id) {
         Errata retval;
         try {
-            retval = (Errata) getSession().getNamedQuery("Errata.findById")
+            retval = getSession().createQuery("FROM Errata AS e WHERE e.id = :id", Errata.class)
                     .setParameter("id", id, StandardBasicTypes.LONG)
                     .uniqueResult();
         }
         catch (HibernateException he) {
-            log.error("Error loading ActionArchTypes from DB", he);
-            throw new HibernateRuntimeException("Error loading ActionArchTypes from db");
+            log.error("Error loading Errata from DB", he);
+            throw new HibernateRuntimeException("Error loading Errata from db");
         }
         return retval;
     }
@@ -485,10 +483,12 @@ public class ErrataFactory extends HibernateFactory {
      * @param org the organization
      * @return Returns the errata corresponding to the passed in advisory name.
      */
-    @SuppressWarnings("unchecked")
     public static List<Errata> lookupVendorAndUserErrataByAdvisoryAndOrg(String advisory, Org org) {
         Session session = HibernateFactory.getSession();
-        return session.getNamedQuery("Errata.findVendorAnUserErrataByAdvisoryNameAndOrg")
+        return session.createQuery("""
+                        FROM Errata AS e
+                        WHERE e.advisoryName = :advisory AND (e.org = :org OR e.org is null)
+                        """, Errata.class)
                 .setParameter("advisory", advisory, StandardBasicTypes.STRING)
                 .setParameter("org", org)
                 .getResultList();
@@ -501,8 +501,12 @@ public class ErrataFactory extends HibernateFactory {
      * @return Returns the errata corresponding to the passed in advisory name.
      */
     public static Errata lookupByAdvisoryAndOrg(String advisory, Org org) {
-        return (Errata) HibernateFactory.getSession()
-                .getNamedQuery("Errata.findByAdvisoryNameAndOrg")
+        return HibernateFactory.getSession()
+                .createQuery("""
+                       FROM Errata AS e
+                       WHERE e.advisoryName = :advisory
+                       AND ((:org is NOT null AND e.org = :org) OR (:org is null AND e.org is null))
+                       """, Errata.class)
                 .setParameter("advisory", advisory, StandardBasicTypes.STRING)
                 .setParameter("org", org)
                 .uniqueResult();
@@ -514,11 +518,13 @@ public class ErrataFactory extends HibernateFactory {
      * @param org User organization
      * @return Errata if found, otherwise null
      */
-    @SuppressWarnings("unchecked")
     public static List<Errata> lookupByAdvisoryId(String advisoryId, Org org) {
         List<Errata> retval;
         try {
-            retval = getSession().getNamedQuery("Errata.findByAdvisory")
+            retval = getSession().createQuery("""
+                            FROM Errata AS e
+                            WHERE e.advisory = :advisory AND (e.org = :org OR e.org is null)
+                            """, Errata.class)
                     .setParameter("advisory", advisoryId, StandardBasicTypes.STRING)
                     .setParameter("org", org)
                     .getResultList();
@@ -569,14 +575,18 @@ public class ErrataFactory extends HibernateFactory {
      * @param original Original errata that the clones are clones of
      * @return list of clones of the errata
      */
-    @SuppressWarnings("unchecked")
     public static List<Errata> lookupErrataByOriginal(Org org, Errata original) {
         List<Errata> retval;
 
         try {
-            retval = getSession().getNamedQuery("ClonedErrata.findByOriginal")
+            retval = getSession().createQuery("""
+                            FROM ClonedErrata AS c
+                            WHERE c.original = :original
+                            AND c.org = :org
+                            """, Errata.class)
                     .setParameter("original", original)
-                    .setParameter("org", org).list();
+                    .setParameter("org", org)
+                    .list();
         }
         catch (HibernateException e) {
             throw new HibernateRuntimeException("Error looking up errata by original errata");
@@ -590,14 +600,18 @@ public class ErrataFactory extends HibernateFactory {
      * @param channelTo channel2
      * @return list of errata
      */
-    @SuppressWarnings("unchecked")
     public static List<Errata> listErrataInBothChannels(Channel channelFrom, Channel channelTo) {
         List<Errata> retval;
 
         try {
-            retval = getSession().getNamedQuery("Errata.findErrataInBothChannels")
+            retval = getSession().createQuery("""
+                            FROM Errata AS e
+                            WHERE :channel_from IN elements(e.channels)
+                            AND :channel_to IN elements(e.channels)
+                            """, Errata.class)
                     .setParameter("channel_from", channelFrom)
-                    .setParameter("channel_to", channelTo).list();
+                    .setParameter("channel_to", channelTo)
+                    .list();
         }
         catch (HibernateException e) {
             throw new HibernateRuntimeException("Error looking up errata by original errata");
@@ -612,14 +626,19 @@ public class ErrataFactory extends HibernateFactory {
      * @param channelTo channel2
      * @return list of errata
      */
-    @SuppressWarnings("unchecked")
     public static List<Errata> listSiblingsInChannels(Channel channelFrom, Channel channelTo) {
         List<Errata> retval;
 
         try {
-            retval = getSession().getNamedQuery("ClonedErrata.findSiblingsInChannel")
+            retval = getSession().createQuery("""
+                        SELECT e_from FROM ClonedErrata AS e_from, ClonedErrata AS e_to
+                        WHERE :channel_from IN elements(e_from.channels)
+                        AND e_from.original = e_to.original
+                        AND :channel_to IN elements(e_to.channels)
+                        """, Errata.class)
                     .setParameter("channel_from", channelFrom)
-                    .setParameter("channel_to", channelTo).list();
+                    .setParameter("channel_to", channelTo)
+                    .list();
         }
         catch (HibernateException e) {
             throw new HibernateRuntimeException("Error looking up errata by original errata");
@@ -633,19 +652,23 @@ public class ErrataFactory extends HibernateFactory {
      * @param channelTo channel2
      * @return list of errata
      */
-    @SuppressWarnings("unchecked")
     public static List<Errata> listClonesInChannels(Channel channelFrom, Channel channelTo) {
         List<Errata> retval;
 
         try {
-            retval = getSession().getNamedQuery("Errata.findClonesInChannel")
+            retval = getSession().createQuery("""
+                             SELECT e
+                             FROM Errata AS e, ClonedErrata AS c
+                             WHERE :channel_from IN elements(e.channels)
+                             AND c.original = e
+                             AND :channel_to IN elements(c.channels)
+                            """, Errata.class)
                     .setParameter("channel_from", channelFrom)
                     .setParameter("channel_to", channelTo)
                     .list();
         }
         catch (HibernateException e) {
-            throw new
-            HibernateRuntimeException("Error looking up errata by original errata");
+            throw new HibernateRuntimeException("Error looking up errata by original errata");
         }
         return retval;
     }
@@ -690,10 +713,13 @@ public class ErrataFactory extends HibernateFactory {
      * @param channel the channel you want to get the errata for
      * @return A list of Errata objects
      */
-    @SuppressWarnings("unchecked")
     public static List<Errata> listByChannel(Org org, Channel channel) {
         return HibernateFactory.getSession().
-                getNamedQuery("Errata.listByChannel")
+                createQuery("""
+                        FROM Errata e
+                        WHERE :channel member of e.channels
+                        AND (e.org = :org OR e.org is null)
+                        """, Errata.class)
                 .setParameter("org", org)
                 .setParameter("channel", channel)
                 .list();
@@ -709,11 +735,17 @@ public class ErrataFactory extends HibernateFactory {
      * @param endDate the end date
      * @return A list of Errata objects
      */
-    @SuppressWarnings("unchecked")
     public static List<Errata> lookupByChannelBetweenDates(Org org, Channel channel, String startDate, String endDate) {
 
         return HibernateFactory.getSession().
-                getNamedQuery("Errata.lookupByChannelBetweenDates")
+                createQuery("""
+                        FROM Errata AS e
+                        WHERE :channel IN elements(e.channels)
+                        AND (e.org = :org OR e.org is null)
+                        AND (e.lastModified > to_timestamp(:start_date, 'YYYY-MM-DD HH24:MI:SS'))
+                        AND (e.lastModified < to_timestamp(:end_date, 'YYYY-MM-DD HH24:MI:SS'))
+                        ORDER BY e.issueDate
+                        """, Errata.class)
                 .setParameter("org", org)
                 .setParameter("channel", channel)
                 .setParameter("start_date", startDate, StandardBasicTypes.STRING)
@@ -721,17 +753,12 @@ public class ErrataFactory extends HibernateFactory {
                 .list();
     }
 
-
-
-
-
     /**
      * Lookup an errataFile object by its errata id and package filename.
      * @param errataId the ID of the errata associated
      * @param filename the filename of the package associated
      * @return an Optional that may or may not contain the requested errata file object
      */
-    @SuppressWarnings("unchecked")
     public static Optional<ErrataFile> lookupErrataFile(Long errataId, String filename) {
         Session session = HibernateFactory.getSession();
         return session.createQuery("""
