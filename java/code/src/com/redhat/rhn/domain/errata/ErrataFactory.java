@@ -64,6 +64,8 @@ import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.stream.Collectors;
 
+import javax.persistence.Tuple;
+
 /**
  * ErrataFactory - the singleton class used to fetch and store
  * com.redhat.rhn.domain.errata.Errata objects from the
@@ -780,9 +782,20 @@ public class ErrataFactory extends HibernateFactory {
      * @return pairs of package and server ids of packages that are retracted for a given server.
      */
     public static List<Tuple2<Long, Long>> retractedPackages(List<Long> pids, List<Long> sids) {
-        List<Object[]> results = singleton.listObjectsByNamedQuery("Errata.retractedPackages",
-                Map.of("pids", pids, "sids", sids));
-        return results.stream().map(r -> new Tuple2<>((long)r[0], (long)r[1])).collect(Collectors.toList());
+        Session session = HibernateFactory.getSession();
+        return session.createNativeQuery("""
+                                SELECT pid, sid
+                                FROM suseServerChannelsRetractedPackagesView
+                                WHERE pid IN (:pids) AND sid IN (:sids)
+                                """,
+                        Tuple.class)
+                .addScalar("pid", StandardBasicTypes.LONG)
+                .addScalar("sid", StandardBasicTypes.LONG)
+                .setParameter("pids", pids)
+                .setParameter("sids", sids)
+                .stream()
+                .map(r -> new Tuple2<>(r.get(0, Long.class), r.get(1, Long.class)))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -798,9 +811,26 @@ public class ErrataFactory extends HibernateFactory {
         if (nevras.isEmpty()) {
             return new LinkedList<>();
         }
-        List<Object[]> results = singleton.listObjectsByNamedQuery("Errata.retractedPackagesByNevra",
-                Map.of("nevras", nevras, "sids", sids));
-        return results.stream().map(r -> new Tuple2<>((long)r[0], (long)r[1])).collect(Collectors.toList());
+        Session session = HibernateFactory.getSession();
+        return session.createNativeQuery("""
+                                SELECT pid, sid
+                                FROM suseServerChannelsRetractedPackagesView
+                                JOIN rhnpackage p on p.id = pid
+                                JOIN rhnpackagename pn on pn.id = p.name_id
+                                JOIN rhnpackageevr pevr on pevr.id = p.evr_id
+                                JOIN rhnpackagearch parch on parch.id = p.package_arch_id
+                                WHERE (pn.name || '-' || COALESCE(pevr.epoch || ':', '') ||
+                                        pevr.version || '-' || pevr.release || '.' || parch.label) IN (:nevras)
+                                AND sid IN (:sids)
+                                """,
+                        Tuple.class)
+                .addScalar("pid", StandardBasicTypes.LONG)
+                .addScalar("sid", StandardBasicTypes.LONG)
+                .setParameter("nevras", nevras)
+                .setParameter("sids", sids)
+                .stream()
+                .map(r -> new Tuple2<>(r.get(0, Long.class), r.get(1, Long.class)))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -810,27 +840,62 @@ public class ErrataFactory extends HibernateFactory {
      * @return a list of ErrataOverview that match the given errata ids.
      */
     public static List<ErrataOverview> search(List<Long> eids, Org org) {
-        List<Object[]> results = singleton.listObjectsByNamedQuery("Errata.searchById",
-                Map.of("eids", eids, "org_id", org.getId()));
-        List<ErrataOverview> errata = new ArrayList<>();
-        for (Object[] values : results) {
-            ErrataOverview eo = new ErrataOverview();
-            // e.id, e.advisory, e.advisoryName, e.advisoryType, e.synopsis, e.updateDate
-            eo.setId((Long)values[0]);
-            eo.setAdvisory((String)values[1]);
-            eo.setAdvisoryName((String)values[2]);
-            eo.setAdvisoryType((String)values[3]);
-            eo.setAdvisoryStatus(AdvisoryStatus.fromMetadata((String)values[4]).get());
-            eo.setAdvisorySynopsis((String)values[5]);
-            eo.setUpdateDate((Date)values[6]);
-            eo.setIssueDate((Date)values[7]);
-            eo.setRebootSuggested((Boolean)values[8]);
-            eo.setRestartSuggested((Boolean)values[9]);
-            eo.setSeverityid((Integer)values[10]);
-            errata.add(eo);
-        }
+        Session session = HibernateFactory.getSession();
+        return session.createNativeQuery("""
+                                SELECT DISTINCT e.id, e.advisory,
+                                e.advisory_name AS advisoryName,
+                                e.advisory_type AS advisoryType,
+                                e.synopsis AS advisorySynopsis,
+                                e.advisory_status AS advisoryStatus,
+                                e.update_date AS updateDate,
+                                e.issue_date AS issueDate,
+                                CASE WHEN rb.keyword IS NOT NULL THEN 1 ELSE 0 END AS reboot_suggested,
+                                CASE WHEN rs.keyword IS NOT NULL THEN 1 ELSE 0 END AS restart_suggested,
+                                e.severity_id AS severityId
+                                FROM rhnErrata e
+                                    LEFT JOIN rhnerratakeyword rb
+                                        ON e.id = rb.errata_id AND rb.keyword = 'reboot_suggested'
+                                    LEFT JOIN rhnerratakeyword rs
+                                        ON e.id = rs.errata_id AND rs.keyword = 'restart_suggested',
+                                rhnChannelErrata CE
+                                WHERE e.id IN (:eids)
+                                AND CE.errata_id = e.id
+                                AND CE.channel_id IN
+                                    (SELECT channel_id FROM rhnAvailableChannels WHERE org_id = :org_id)
+                                """,
+                        Tuple.class)
+                .addScalar("id", StandardBasicTypes.LONG) //0
+                .addScalar("advisory", StandardBasicTypes.STRING) //1
+                .addScalar("advisoryName", StandardBasicTypes.STRING) //2
+                .addScalar("advisoryType", StandardBasicTypes.STRING) //3
+                .addScalar("advisoryStatus", StandardBasicTypes.STRING) //4
+                .addScalar("advisorySynopsis", StandardBasicTypes.STRING) //5
+                .addScalar("updateDate", StandardBasicTypes.DATE) //6
+                .addScalar("issueDate", StandardBasicTypes.DATE) //7
+                .addScalar("reboot_suggested", StandardBasicTypes.BOOLEAN) //8
+                .addScalar("restart_suggested", StandardBasicTypes.BOOLEAN) //9
+                .addScalar("severityId", StandardBasicTypes.INTEGER) //10
+                .setParameter("eids", eids)
+                .setParameter("org_id", org.getId())
+                .stream()
+                .map(r -> {
+                    ErrataOverview eo = new ErrataOverview();
+                    // e.id, e.advisory, e.advisoryName, e.advisoryType, e.synopsis, e.updateDate
+                    eo.setId(r.get(0, Long.class));
+                    eo.setAdvisory(r.get(1, String.class));
+                    eo.setAdvisoryName(r.get(2, String.class));
+                    eo.setAdvisoryType(r.get(3, String.class));
+                    eo.setAdvisoryStatus(AdvisoryStatus.fromMetadata(r.get(4, String.class)).orElseThrow());
+                    eo.setAdvisorySynopsis(r.get(5, String.class));
+                    eo.setUpdateDate(r.get(6, Date.class));
+                    eo.setIssueDate(r.get(7, Date.class));
+                    eo.setRebootSuggested(r.get(8, Boolean.class));
+                    eo.setRestartSuggested(r.get(9, Boolean.class));
+                    eo.setSeverityid(r.get(10, Integer.class));
+                    return eo;
+                })
+                .collect(Collectors.toList());
 
-        return errata;
     }
 
     /**
@@ -842,39 +907,89 @@ public class ErrataFactory extends HibernateFactory {
      */
     public static List<ErrataOverview> searchByPackageIds(List<Long> pids) {
         log.debug("pids = {}", pids);
-        List<Object[]> results = singleton.listObjectsByNamedQuery("Errata.searchByPackageIds", Map.of("pids", pids));
-        log.debug("Query 'Errata.searchByPackageIds' returned {} entries", results.size());
-        List<ErrataOverview> errata = new ArrayList<>();
+
+        Session session = HibernateFactory.getSession();
+        List<Tuple> results = session.createNativeQuery("""
+                                SELECT DISTINCT e.id, e.advisory, e.advisory_name AS advisoryName,
+                                e.advisory_type AS advisoryType,
+                                e.synopsis AS advisorySynopsis,
+                                e.advisory_status AS advisoryStatus,
+                                e.update_date AS updateDate,
+                                e.issue_date AS issueDate,
+                                pn.name,
+                                CASE WHEN rb.keyword IS NOT NULL THEN 1 ELSE 0 END AS reboot_suggested,
+                                CASE WHEN rs.keyword IS NOT NULL THEN 1 ELSE 0 END AS restart_suggested,
+                                p.id AS pid
+                                FROM rhnErrata e
+                                    LEFT JOIN rhnerratakeyword rb
+                                        ON e.id = rb.errata_id AND rb.keyword = 'reboot_suggested'
+                                    LEFT JOIN rhnerratakeyword rs
+                                        ON e.id = rs.errata_id AND rs.keyword = 'restart_suggested',
+                                rhnErrataPackage ep,
+                                rhnPackage p,
+                                rhnPackageName pn
+                                WHERE e.id = ep.errata_id
+                                AND p.id = ep.package_id
+                                AND p.name_id = pn.id
+                                AND ep.package_id IN (:pids)
+                                ORDER BY e.id
+                                """,
+                        Tuple.class)
+                .addScalar("id", StandardBasicTypes.LONG) //0
+                .addScalar("advisory", StandardBasicTypes.STRING) //1
+                .addScalar("advisoryName", StandardBasicTypes.STRING) //2
+                .addScalar("advisoryType", StandardBasicTypes.STRING) //3
+                .addScalar("advisoryStatus", StandardBasicTypes.STRING) //4
+                .addScalar("advisorySynopsis", StandardBasicTypes.STRING) //5
+                .addScalar("updateDate", StandardBasicTypes.DATE) //6
+                .addScalar("issueDate", StandardBasicTypes.DATE) //7
+                .addScalar("name", StandardBasicTypes.STRING) //8
+                .addScalar("reboot_suggested", StandardBasicTypes.BOOLEAN) //9
+                .addScalar("restart_suggested", StandardBasicTypes.BOOLEAN) //10
+                .addScalar("pid", StandardBasicTypes.LONG) //11
+                .setParameter("pids", pids)
+                .list();
+
+        log.debug("ErrataFactory.searchByPackageIds returned {} entries", results.size());
+
+        return convertTupleInErrataOverview(results);
+    }
+
+    private static List<ErrataOverview> convertTupleInErrataOverview(List<Tuple> results) {
+
         Long lastId = null;
         ErrataOverview eo = null;
-        for (Object[] values : results) {
+        List<ErrataOverview> errataOverviewList = new ArrayList<>();
+
+        for (Tuple r : results) {
             // e.id, e.advisory, e.advisoryName, e.advisoryType, e.synopsis, e.updateDate
-            Long curId = (Long)values[0];
+            Long curId = r.get(0, Long.class);
 
             if (!curId.equals(lastId)) {
                 eo = new ErrataOverview();
             }
-            eo.setId((Long)values[0]);
-            eo.setAdvisory((String)values[1]);
-            eo.setAdvisoryName((String)values[2]);
-            eo.setAdvisoryType((String)values[3]);
-            eo.setAdvisoryStatus(AdvisoryStatus.fromMetadata((String)values[4]).get());
-            eo.setAdvisorySynopsis((String)values[5]);
-            eo.setUpdateDate((Date)values[6]);
-            eo.setIssueDate((Date)values[7]);
-            eo.addPackageName((String)values[8]);
-            eo.addPackageId((Long)values[11]);
+            eo.setId(r.get(0, Long.class));
+            eo.setAdvisory(r.get(1, String.class));
+            eo.setAdvisoryName(r.get(2, String.class));
+            eo.setAdvisoryType(r.get(3, String.class));
+            eo.setAdvisoryStatus(AdvisoryStatus.fromMetadata(r.get(4, String.class)).orElseThrow());
+            eo.setAdvisorySynopsis(r.get(5, String.class));
+            eo.setUpdateDate(r.get(6, Date.class));
+            eo.setIssueDate(r.get(7, Date.class));
+            eo.addPackageName(r.get(8, String.class));
+            eo.setRebootSuggested(r.get(9, Boolean.class));
+            eo.setRestartSuggested(r.get(10, Boolean.class));
+            eo.addPackageId(r.get(11, Long.class));
             if (!curId.equals(lastId)) {
-                errata.add(eo);
+                errataOverviewList.add(eo);
                 lastId = curId;
             }
             log.debug("curId = {}, lastId = {}", curId, lastId);
             log.debug("ErrataOverview formed: {} for {}", eo.getAdvisoryName(), eo.getPackageNames());
         }
 
-        return errata;
+        return errataOverviewList;
     }
-
 
     /**
      * Returns a list of ErrataOverview of Errata that match the given Package
@@ -886,39 +1001,58 @@ public class ErrataFactory extends HibernateFactory {
      */
     public static List<ErrataOverview> searchByPackageIdsWithOrg(List<Long> pids, Org org) {
         log.debug("org_id = {}, pids = {}", org.getId(), pids);
-        List<Object[]> results = singleton.listObjectsByNamedQuery("Errata.searchByPackageIdsWithOrg",
-                Map.of("pids", pids, "org_id", org.getId()));
-        log.debug("Query 'Errata.searchByPackageIdsWithOrg' returned {} entries", results.size());
-        List<ErrataOverview> errata = new ArrayList<>();
-        Long lastId = null;
-        ErrataOverview eo = null;
-        for (Object[] values : results) {
-            // e.id, e.advisory, e.advisoryName, e.advisoryType, e.synopsis, e.updateDate
-            Long curId = (Long)values[0];
 
-            if (!curId.equals(lastId)) {
-                eo = new ErrataOverview();
-            }
-            eo.setId((Long)values[0]);
-            eo.setAdvisory((String)values[1]);
-            eo.setAdvisoryName((String)values[2]);
-            eo.setAdvisoryType((String)values[3]);
-            eo.setAdvisoryStatus(AdvisoryStatus.fromMetadata((String)values[4]).get());
-            eo.setAdvisorySynopsis((String)values[5]);
-            eo.setUpdateDate((Date)values[6]);
-            eo.setIssueDate((Date)values[7]);
-            eo.addPackageName((String)values[8]);
-            eo.setRebootSuggested((Boolean)values[9]);
-            eo.setRestartSuggested((Boolean)values[10]);
-            if (!curId.equals(lastId)) {
-                errata.add(eo);
-                lastId = curId;
-            }
-            log.debug("curId = {}, lastId = {}", curId, lastId);
-            log.debug("ErrataOverview formed: {} for {}", eo.getAdvisoryName(), eo.getPackageNames());
-        }
+        Session session = HibernateFactory.getSession();
+        List<Tuple> results = session.createNativeQuery("""
+                                SELECT DISTINCT e.id, e.advisory, e.advisory_name AS advisoryName,
+                                e.advisory_type AS advisoryType,
+                                e.synopsis AS advisorySynopsis,
+                                e.advisory_status AS advisoryStatus,
+                                e.update_date AS updateDate,
+                                e.issue_date AS issueDate,
+                                pn.name,
+                                CASE WHEN rb.keyword IS NOT NULL THEN 1 ELSE 0 END AS reboot_suggested,
+                                CASE WHEN rs.keyword IS NOT NULL THEN 1 ELSE 0 END AS restart_suggested,
+                                p.id AS pid
+                                FROM rhnErrata e
+                                    LEFT JOIN rhnerratakeyword rb
+                                        ON e.id = rb.errata_id AND rb.keyword = 'reboot_suggested'
+                                    LEFT JOIN rhnerratakeyword rs
+                                        ON e.id = rs.errata_id AND rs.keyword = 'restart_suggested',
+                                rhnErrataPackage ep,
+                                rhnPackage p,
+                                rhnPackageName pn,
+                                rhnAvailableChannels ac,
+                                rhnChannelErrata ce
+                                WHERE e.id = ep.errata_id
+                                AND p.id = ep.package_id
+                                AND p.name_id = pn.id
+                                AND ep.package_id IN (:pids)
+                                AND e.id = ce.errata_id
+                                AND ce.channel_id = ac.channel_id
+                                AND ac.org_id = :org_id
+                                ORDER BY e.id
+                                """,
+                        Tuple.class)
+                .addScalar("id", StandardBasicTypes.LONG) //0
+                .addScalar("advisory", StandardBasicTypes.STRING) //1
+                .addScalar("advisoryName", StandardBasicTypes.STRING) //2
+                .addScalar("advisoryType", StandardBasicTypes.STRING) //3
+                .addScalar("advisoryStatus", StandardBasicTypes.STRING) //4
+                .addScalar("advisorySynopsis", StandardBasicTypes.STRING) //5
+                .addScalar("updateDate", StandardBasicTypes.DATE) //6
+                .addScalar("issueDate", StandardBasicTypes.DATE) //7
+                .addScalar("name", StandardBasicTypes.STRING) //8
+                .addScalar("reboot_suggested", StandardBasicTypes.BOOLEAN) //9
+                .addScalar("restart_suggested", StandardBasicTypes.BOOLEAN) //10
+                .addScalar("pid", StandardBasicTypes.LONG) //11
+                .setParameter("pids", pids)
+                .setParameter("org_id", org.getId())
+                .list();
 
-        return errata;
+        log.debug("ErrataFactory.searchByPackageIdsWithOrg returned {} entries", results.size());
+
+        return convertTupleInErrataOverview(results);
     }
 
 
@@ -989,7 +1123,26 @@ public class ErrataFactory extends HibernateFactory {
      * @return List of Errata Objects
      */
     public static List<Errata> listErrata(Collection<Long> ids, Long orgId) {
-        return singleton.listObjectsByNamedQuery("Errata.listAvailableToOrgByIds", Map.of("orgId", orgId), ids, "eids");
+        return getSession().createNativeQuery("""
+                        SELECT e.*, ec.original_id, CASE WHEN ec.original_id IS NULL THEN 0 ELSE 1 END AS clazz_
+                        FROM rhnErrata AS e
+                        LEFT JOIN rhnErrataCloned ec ON e.id = ec.id
+                        WHERE e.id IN (:eids)
+                        AND (e.org_id = :orgId
+                            OR EXISTS (SELECT 1 FROM WEB_CUSTOMER org
+                                        INNER JOIN rhnTrustedOrgs torg ON org.id = torg.org_id
+                                        WHERE org.id = :orgId AND e.org_id = torg.org_trust_id)
+                            OR EXISTS (SELECT 1 FROM rhnAvailableChannels ac, rhnChannelErrata ce
+                                        WHERE ce.errata_id = e.id
+                                        AND ce.channel_id = ac.channel_id
+                                        AND ac.org_id = :orgId))
+                        """, Tuple.class)
+                .addEntity("e", Errata.class)
+                .setParameter("orgId", orgId)
+                .setParameterList("eids", ids)
+                .stream()
+                .map(t -> t.get(0, Errata.class))
+                .collect(Collectors.toList());
     }
 
     /**
