@@ -31,7 +31,6 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.type.StandardBasicTypes;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -39,6 +38,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.persistence.NoResultException;
+import javax.persistence.Tuple;
 
 /**
  * MinionFactory - the singleton class used to fetch and store
@@ -265,7 +265,9 @@ public class MinionServerFactory extends HibernateFactory {
      */
     public static List<MinionServer> findMinionsByServerIds(List<Long> serverIds) {
         return serverIds.isEmpty() ? emptyList() :
-                ServerFactory.lookupByServerIds(serverIds, "Server.findMinionsByServerIds");
+                ServerFactory.lookupByServerIds(MinionServer.class, serverIds, """
+                        FROM com.redhat.rhn.domain.server.MinionServer AS s WHERE s.id IN (:serverIds)
+                        """);
     }
 
     /**
@@ -333,9 +335,17 @@ public class MinionServerFactory extends HibernateFactory {
      * @return the list of minion Ids
      */
     public static List<MinionIds> findMinionIdsByServerIds(List<Long> serverIds) {
-        List<Object[]> results = findByIds(serverIds, "Server.findSimpleMinionsByServerIds", "serverIds");
-        return results.stream().map(row -> new MinionIds(((BigDecimal) row[0]).longValue(), row[1].toString()))
-                .collect(toList());
+        return getSession().createNativeQuery("""
+                SELECT m.server_id, m.minion_id
+                FROM   suseMinionInfo m
+                WHERE  m.server_id IN (:serverIds)
+                """, Tuple.class)
+                .setParameterList("serverIds", serverIds)
+                .addScalar("server_id", StandardBasicTypes.BIG_INTEGER)
+                .addScalar("minion_id", StandardBasicTypes.STRING)
+                .stream()
+                .map(t -> new MinionIds(t.get(0, Number.class).longValue(), t.get(1, String.class)))
+                .collect(Collectors.toList());
     }
 
     /**
