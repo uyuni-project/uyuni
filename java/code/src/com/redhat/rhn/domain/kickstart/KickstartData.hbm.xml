@@ -3,7 +3,7 @@
 PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="com.redhat.rhn.domain.kickstart.KickstartData" table="RHNKSDATA" discriminator-value="wizard">
+<!--    <class name="com.redhat.rhn.domain.kickstart.KickstartData" table="RHNKSDATA" discriminator-value="wizard">
 
         <id name="id" type="long" column="id">
             <meta attribute="scope-set">protected</meta>
@@ -92,7 +92,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
             discriminator-value="raw">
         </subclass>
     </class>
-
+-->
 
     <query name="KickstartData.findByCobblerIdAndOrg">
         <![CDATA[from com.redhat.rhn.domain.kickstart.KickstartData as t where t.cobblerId = :id and t.org = :org_id]]>
