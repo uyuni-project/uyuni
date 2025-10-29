@@ -74,9 +74,21 @@ Feature: PXE boot a terminal with Cobbler and containerized proxy
     When I restart cobbler on the server
     Then service "cobblerd" is active on "server"
 
+# Workaround to ssh the pxeboot minions through different interfaces for each product,
+#  maybe in the future we can rename the interfaces directly in sumaform
+@uyuni
   Scenario: PXE boot the PXE boot minion
     When I set the default PXE menu entry to the target profile on the "server"
-    And I reboot the Cobbler terminal "pxeboot_minion"
+    And I reboot the Cobbler terminal "pxeboot_minion" through the interface "ens4"
+    And I wait for "60" seconds
+    And I set the default PXE menu entry to the local boot on the "server"
+    And I wait at most 1200 seconds until Salt master sees "pxeboot_minion" as "unaccepted"
+    And I accept "pxeboot_minion" key in the Salt master
+
+@susemanager
+  Scenario: PXE boot the PXE boot minion
+    When I set the default PXE menu entry to the target profile on the "server"
+    And I reboot the Cobbler terminal "pxeboot_minion" through the interface "eth0"
     And I wait for "60" seconds
     And I set the default PXE menu entry to the local boot on the "server"
     And I wait at most 1200 seconds until Salt master sees "pxeboot_minion" as "unaccepted"
