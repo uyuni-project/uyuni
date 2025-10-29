@@ -19,7 +19,6 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.Package;
-import com.redhat.rhn.frontend.struts.Selectable;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.manager.errata.ErrataManager;
 
@@ -55,7 +54,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 /**
  * Errata - Class representation of the table rhnErrata.
@@ -63,7 +61,7 @@ import javax.persistence.Transient;
 @Entity
 @Table(name = "rhnErrata")
 @Inheritance(strategy = InheritanceType.JOINED)
-public class Errata extends BaseDomainHelper implements Selectable {
+public class Errata extends BaseDomainHelper {
 
     private static Logger log = LogManager.getLogger(Errata.class);
 
@@ -175,9 +173,6 @@ public class Errata extends BaseDomainHelper implements Selectable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "severity_id")
     private Severity severity;
-
-    @Transient
-    private boolean selected;
 
     /**
      * Getter for channels
@@ -852,38 +847,6 @@ public class Errata extends BaseDomainHelper implements Selectable {
             ErrataFile pf = i.next();
             pf.getChannels().clear();
         }
-    }
-
-    /**
-     * @return whether this object is selectable for RhnSet
-     */
-    @Override
-    public boolean isSelectable() {
-        return true;
-    }
-
-    /**
-     * @return the selected
-     */
-    @Override
-    public boolean isSelected() {
-        return selected;
-    }
-
-    /**
-     * @param isSelected the selected to set
-     */
-    @Override
-    public void setSelected(boolean isSelected) {
-        this.selected = isSelected;
-    }
-
-    /**
-     * @return the selection key
-     */
-    @Override
-    public String getSelectionKey() {
-        return String.valueOf(getId());
     }
 
     /**
