@@ -80,7 +80,7 @@ export default (env, opts) => {
         from: path.resolve(web, "./node_modules/pwstrength-bootstrap/dist/pwstrength-bootstrap-1.0.2.js"),
         to: path.resolve(dist, "./javascript/legacy"),
       },
-      // TODO: Take only what we need after we've confirmed it works fine, otherwise there's a lot of fluff in this
+      // Ace uses a webworker and dynamic imports internally, so in order for all the paths to work out, we serve the whole bundle instead of importing it in AceEditor
       {
         from: path.resolve(web, "./node_modules/ace-builds/src-min-noconflict"),
         to: path.resolve(dist, "./javascript/legacy/ace-editor"),
