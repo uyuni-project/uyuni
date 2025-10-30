@@ -20,12 +20,27 @@ import com.redhat.rhn.manager.user.UserManager;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+
 
 /**
  * OrgUserExtGroup
  */
+@Entity
+@DiscriminatorValue("not null")
 public class OrgUserExtGroup extends ExtGroup {
 
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "rhnOrgExtGroupMapping",
+            joinColumns = @JoinColumn(name = "ext_group_id"),
+            inverseJoinColumns = @JoinColumn(name = "server_group_id"))
     private Set<ServerGroup> serverGroups;
 
     /**

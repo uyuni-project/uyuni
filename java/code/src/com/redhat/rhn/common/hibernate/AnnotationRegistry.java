@@ -226,6 +226,9 @@ import com.redhat.rhn.domain.org.OrgConfig;
 import com.redhat.rhn.domain.org.SystemMigration;
 import com.redhat.rhn.domain.org.TemplateCategory;
 import com.redhat.rhn.domain.org.TemplateString;
+import com.redhat.rhn.domain.org.usergroup.ExtGroup;
+import com.redhat.rhn.domain.org.usergroup.OrgUserExtGroup;
+import com.redhat.rhn.domain.org.usergroup.UserExtGroup;
 import com.redhat.rhn.domain.org.usergroup.UserGroupImpl;
 import com.redhat.rhn.domain.org.usergroup.UserGroupMembers;
 import com.redhat.rhn.domain.org.usergroup.UserGroupMembersId;
@@ -497,6 +500,7 @@ public class AnnotationRegistry {
             ErrataFileType.class,
             ErrataFilter.class,
             ExceptionMessage.class,
+            ExtGroup.class,
             Feature.class,
             FileList.class,
             FilterCriteria.class,
@@ -584,6 +588,7 @@ public class AnnotationRegistry {
             OrgConfig.class,
             OrgRecurringAction.class,
             OrgStateRevision.class,
+            OrgUserExtGroup.class,
             PackageAction.class,
             PackageActionDetails.class,
             PackageActionRemovalFailure.class,
@@ -737,6 +742,7 @@ public class AnnotationRegistry {
             TokenPackage.class,
             Up2DateConfigGetAction.class,
             Up2DateConfigUpdateAction.class,
+            UserExtGroup.class,
             UserGroupImpl.class,
             UserGroupMembers.class,
             UserGroupMembersId.class,
