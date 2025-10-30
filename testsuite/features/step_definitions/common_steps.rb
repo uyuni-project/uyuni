@@ -188,6 +188,14 @@ When(/^I wait until I see the event "([^"]*)" completed during last minute, refr
   end
 end
 
+When(/^I wait up to (\d+) minutes to see "([^"]*)" in the last lines of "([^"]*)" on "([^"]*)"$/) do |waiting_time, text, file, host|
+  node = get_target(host)
+  timeout_seconds = waiting_time.to_i * 60
+  # The grep command returns 0 (success) only if the text is found.
+  # node.run_until_ok waits until the command returns an exit code of 0.
+  node.run_until_ok("tail -n 10 #{file} | grep -E '#{text}'", timeout: timeout_seconds)
+end
+
 When(/^I follow the event "([^"]*)" completed during last minute$/) do |event|
   now = Time.now
   current_minute = now.strftime('%H:%M')

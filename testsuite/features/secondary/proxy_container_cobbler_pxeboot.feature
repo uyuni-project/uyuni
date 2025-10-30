@@ -130,6 +130,7 @@ Feature: PXE boot a terminal with Cobbler and containerized proxy
     And I follow "Delete Autoinstallation"
     And I click on "Delete Autoinstallation"
     And I wait until I do not see "15-sp4-cobbler" text
+    And I wait up to 5 minutes to see "TASK COMPLETE" in the last lines of "var/log/cobbler/cobbler.log" on "server"
 
   Scenario: Cleanup: remove the auto installation distribution
     When I follow the left menu "Systems > Autoinstallation > Distributions"
@@ -137,6 +138,7 @@ Feature: PXE boot a terminal with Cobbler and containerized proxy
     And I follow "Delete Distribution"
     And I click on "Delete Distribution"
     And I wait until I do not see "SLE-15-SP4-TFTP" text
+    And I wait up to 5 minutes to see "TASK COMPLETE" in the last lines of "var/log/cobbler/cobbler.log" on "server"
 
   Scenario: Cleanup: remove the auto installation files
     When I remove packages "tftpboot-installation-SLE-15-SP4-x86_64 expect" from this "build_host"
