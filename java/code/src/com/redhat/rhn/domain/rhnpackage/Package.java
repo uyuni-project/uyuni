@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -27,6 +28,8 @@ import com.redhat.rhn.frontend.xmlrpc.packages.PackageHelper;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -34,59 +37,194 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapKeyClass;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 /**
  * Package
  */
+@Entity
+@Table(name = "rhnPackage")
 public class Package extends BaseDomainHelper {
 
+    @Id
+    @GeneratedValue(generator = "RHN_PACKAGE_SEQ")
+    @GenericGenerator(
+        name = "RHN_PACKAGE_SEQ",
+        strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+        parameters = {
+                @Parameter(name = "sequence_name", value = "RHN_PACKAGE_ID_SEQ"),
+                @Parameter(name = "increment_size", value = "1")
+        })
     private Long id;
+
+    @Column(name = "rpm_version")
     private String rpmVersion;
+
+    @Column
     private String description;
+
+    @Column
     private String summary;
+
+    @Column(name = "package_size")
     private Long packageSize;
+
+    @Column(name = "payload_size")
     private Long payloadSize;
+
+    @Column(name = "installed_size")
     private Long installedSize;
+
+    @Column(name = "build_host")
     private String buildHost;
+
+    @Column(name = "build_time")
     private Date buildTime;
-    private Checksum checksum;
+
+    @Column
     private String vendor;
+
+    @Column(name = "payload_format")
     private String payloadFormat;
+
+    @Column
     private Long compat;
+
+    @Column
     private String path;
+
+    @Column(name = "header_sig")
     private String headerSignature;
+
+    @Column
     private String copyright;
+
+    @Column(name = "is_ptf")
     private Boolean isPtfPackage = false;
+
+    @Column(name = "is_part_of_ptf")
     private Boolean isPartOfPtfPackage = false;
+
+    @Column
     private String cookie;
+
+    @Column(name = "last_modified")
     private Date lastModified;
-    private Boolean lockPending = Boolean.FALSE;
+
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinTable(
+            name = "rhnErrataPackage",
+            joinColumns = @JoinColumn(name = "package_id"),
+            inverseJoinColumns = @JoinColumn(name = "errata_id")
+    )
     private Set<Errata> errata = new HashSet<>();
+
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinTable(
+            name = "rhnChannelPackage",
+            joinColumns = @JoinColumn(name = "package_id"),
+            inverseJoinColumns = @JoinColumn(name = "channel_id")
+    )
     private Set<Channel> channels = new HashSet<>();
+
+    @OneToMany(mappedBy = "pack", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<PackageFile> packageFiles = new HashSet<>();
 
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "checksum_id")
+    private Checksum checksum;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "org_id")
     private Org org;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinColumn(name = "name_id")
     private PackageName packageName;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinColumn(name = "evr_id")
     private PackageEvr packageEvr;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinColumn(name = "package_group")
     private PackageGroup packageGroup;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinColumn(name = "source_rpm_id")
     private SourceRpm sourceRpm;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "package_arch_id")
     private PackageArch packageArch;
+
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinTable(
+            name = "rhnPackageKeyAssociation",
+            joinColumns = @JoinColumn(name = "package_id"),
+            inverseJoinColumns = @JoinColumn(name = "key_id")
+    )
     private Set<PackageKey> packageKeys = new HashSet<>();
 
-    private Long headerStart = 0L;
-    private Long headerEnd = 0L;
-
+    @OneToMany(mappedBy = "pack", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<PackageProvides> provides = new HashSet<>();
+
+    @OneToMany(mappedBy = "pack", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<PackageRequires> requires = new HashSet<>();
+
+    @OneToMany(mappedBy = "pack", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<PackageObsoletes> obsoletes = new HashSet<>();
+
+    @OneToMany(mappedBy = "pack", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<PackageConflicts> conflicts = new HashSet<>();
+
+    @OneToMany(mappedBy = "pack", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<PackageRecommends> recommends = new HashSet<>();
+
+    @OneToMany(mappedBy = "pack", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<PackageSuggests> suggests = new HashSet<>();
+
+    @OneToMany(mappedBy = "pack", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<PackageSupplements> supplements = new HashSet<>();
+
+    @OneToMany(mappedBy = "pack", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<PackageEnhances> enhances = new HashSet<>();
+
+    @OneToMany(mappedBy = "pack", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<PackagePreDepends> preDepends = new HashSet<>();
+
+    @OneToMany(mappedBy = "pack", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<PackageBreaks> breaks = new HashSet<>();
 
+    @ManyToMany
+    @JoinTable(
+            name = "rhnPackageExtraTag",
+            joinColumns = @JoinColumn(name = "package_id"),
+            inverseJoinColumns = @JoinColumn(name = "key_id"))
+    @MapKeyClass(PackageExtraTagsKeys.class)
+    @Column(name = "value")
     private Map<PackageExtraTagsKeys, String> extraTags = new HashMap<>();
+
+    @Transient
+    private Boolean lockPending = Boolean.FALSE;
+    @Transient
+    private Long headerStart = 0L;
+    @Transient
+    private Long headerEnd = 0L;
+
 
     /**
      * @param lockPendingIn Set pending status. Default is False.

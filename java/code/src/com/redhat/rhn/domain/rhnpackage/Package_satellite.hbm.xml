@@ -3,6 +3,7 @@
 PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
+    <!--
     <class name="com.redhat.rhn.domain.rhnpackage.Package"
            table="rhnPackage">
 
@@ -175,7 +176,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 
 
     </class>
-
+-->
    <query name="Package.findOtherArches">
         <![CDATA[from com.redhat.rhn.domain.rhnpackage.Package as p
                 where p.packageName = :name and p.org = :org and
