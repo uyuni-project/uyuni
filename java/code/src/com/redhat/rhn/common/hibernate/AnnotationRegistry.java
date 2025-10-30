@@ -288,6 +288,7 @@ import com.redhat.rhn.domain.server.CPUArch;
 import com.redhat.rhn.domain.server.Capability;
 import com.redhat.rhn.domain.server.ClientCapability;
 import com.redhat.rhn.domain.server.ClientCapabilityId;
+import com.redhat.rhn.domain.server.ContactMethod;
 import com.redhat.rhn.domain.server.CustomDataValue;
 import com.redhat.rhn.domain.server.Device;
 import com.redhat.rhn.domain.server.Dmi;
@@ -466,6 +467,7 @@ public class AnnotationRegistry {
             ConfigUploadAction.class,
             ConfigUploadMtimeAction.class,
             ConfigVerifyAction.class,
+            ContactMethod.class,
             ContentEnvironment.class,
             ContentEnvironmentDiff.class,
             ContentFilter.class,
