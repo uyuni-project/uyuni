@@ -18,21 +18,65 @@ import com.redhat.rhn.domain.server.MinionServer;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
 
 import java.util.Date;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 /**
  * Channel access token giving a minion access to one or more channels.
  */
+@Entity
+@Table(name = "suseChannelAccessToken")
 public class AccessToken {
 
+    @Id
+    @GeneratedValue(generator = "suse_chan_access_token_seq")
+    @GenericGenerator(
+        name = "suse_chan_access_token_seq",
+        strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+        parameters = {
+            @Parameter(name = "sequence_name", value = "suse_chan_access_token_id_seq"),
+            @Parameter(name = "increment_size", value = "1")
+        })
     private Long id;
+
+    @Column
     private String token;
+
+    @Column
     private Date expiration;
+
+    @Column(name = "created")
     private Date start;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "minion_id")
     private MinionServer minion;
+
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    @JoinTable(
+                name = "suseChannelAccessTokenChannel",
+                joinColumns = @JoinColumn(name = "token_id"),
+                inverseJoinColumns = @JoinColumn(name = "channel_id"))
     private Set<Channel> channels;
+
+    @Column
+    @Type(type = "yes_no")
     private boolean valid = true;
 
 
@@ -46,7 +90,7 @@ public class AccessToken {
     /**
      * @param idIn the id to set
      */
-    public void setId(Long idIn) {
+    protected void setId(Long idIn) {
         this.id = idIn;
     }
 
