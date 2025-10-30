@@ -2124,7 +2124,13 @@ public class ChannelManager extends BaseManager {
     */
    public static Channel getOriginalChannel(Channel channel) {
        while (channel.isCloned()) {
-           channel = channel.asCloned().map(ClonedChannel::getOriginal).orElse(channel);
+           //in the case of getOriginal() == null, we have to ensure not looping forever
+           Channel originalChannel = channel.asCloned().map(ClonedChannel::getOriginal).orElse(null);
+           if (null == originalChannel) {
+               log.error("Cloned channel with NULL original: {}", channel.getLabel());
+               return channel;
+           }
+           channel = originalChannel;
        }
        return channel;
     }

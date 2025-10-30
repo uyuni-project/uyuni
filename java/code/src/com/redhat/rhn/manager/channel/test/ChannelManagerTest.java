@@ -31,6 +31,7 @@ import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelVersion;
+import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.channel.DistChannelMap;
 import com.redhat.rhn.domain.channel.ProductName;
 import com.redhat.rhn.domain.channel.ReleaseChannelMap;
@@ -1138,6 +1139,38 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
         assertTrue(regularCh.asCloned().isPresent());
         assertEquals(origCh, regularCh.asCloned().orElseThrow().getOriginal());
+    }
+
+    @Test
+    public void ensureGetOriginalChannelNotLoopingForever() throws Exception {
+        // creating a tree with 2 levels
+        Channel parent = ChannelFactoryTest.createBaseChannel(user);
+        Channel child = ChannelFactoryTest.createTestChannel(user);
+
+        child.setParentChannel(parent);
+
+        TestUtils.saveAndFlush(child);
+        TestUtils.saveAndFlush(parent);
+        TestUtils.flushAndEvict(child);
+
+        Channel parent1 = ChannelFactoryTest.createTestClonedChannel(parent, user);
+        ClonedChannel child1 = (ClonedChannel)ChannelFactoryTest.createTestClonedChannel(child, user);
+
+        child1.setParentChannel(parent1);
+
+        ClonedChannel damagedChild2 = (ClonedChannel)ChannelFactoryTest.createTestClonedChannel(child1, user);
+        child1.setOriginal(damagedChild2);
+
+        TestUtils.saveAndFlush(child1);
+        TestUtils.saveAndFlush(parent1);
+        TestUtils.saveAndFlush(damagedChild2);
+        TestUtils.flushAndEvict(child1);
+
+        //now create the damage: child 2 is cloned but for unknown reasons has null original
+        damagedChild2.setOriginal(null);
+
+        Channel original = ChannelManager.getOriginalChannel(child1);
+        assertEquals(damagedChild2, original);
     }
 
     /**
