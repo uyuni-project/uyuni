@@ -6,6 +6,7 @@ import { useId } from "utils/hooks";
 
 declare global {
   interface Window {
+    // See java/code/webapp/WEB-INF/decorators/layout_head.jsp
     ace: {
       edit(node: HTMLDivElement): Ace.Editor;
     };
@@ -29,23 +30,6 @@ const AceEditor = ({ minLines = 20, maxLines = 40, readOnly = false, ...props }:
   const editorRef = useRef<Ace.Editor>();
 
   useEffect(() => {
-    const s1 = document.createElement("script");
-    s1.setAttribute("src", `/javascript/legacy/ace-editor/ace.js?cb=${Math.random() * 100}`);
-    s1.addEventListener("load", () => {
-      const s2 = document.createElement("script");
-      s2.setAttribute("src", `/javascript/legacy/ace-editor/ext-modelist.js?cb=${Math.random() * 100}`);
-
-      s2.addEventListener("load", () => {
-        // TODO: Move down
-      });
-      document.head.appendChild(s2);
-    });
-    document.head.appendChild(s1);
-  }, []);
-
-  useEffect(() => {
-    // TODO: Copy over
-
     try {
       const node = nodeRef.current;
       if (!node) {
