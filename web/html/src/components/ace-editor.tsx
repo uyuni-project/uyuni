@@ -18,7 +18,7 @@ type Props = {
   minLines?: number;
   maxLines?: number;
   readOnly?: boolean;
-  onChange?: (...args: any[]) => any;
+  onChange?: (content: string) => void;
   className?: string;
   id?: string;
   content?: React.ReactNode;
