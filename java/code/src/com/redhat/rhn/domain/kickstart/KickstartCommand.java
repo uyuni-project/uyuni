@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Loader;
 import org.hibernate.annotations.Parameter;
 
 import java.util.Date;
@@ -30,6 +31,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedNativeQuery;
 import javax.persistence.Table;
 
 /**
@@ -37,6 +39,18 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "rhnKickstartCommand")
+@NamedNativeQuery(
+        name = "commandSort",
+        resultClass = KickstartCommand.class,
+        query = """
+            SELECT sortcol.*
+            FROM rhnKickstartCommand sortcol, rhnKickstartCommandName cname
+            WHERE KICKSTART_ID = :id
+            AND sortcol.ks_command_name_id = cname.id
+            ORDER BY cname.sort_order, custom_position
+            """
+)
+@Loader(namedQuery = "commandSort")
 public class KickstartCommand extends BaseDomainHelper implements Comparable<KickstartCommand> {
 
     @Id
