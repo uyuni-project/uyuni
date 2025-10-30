@@ -24,9 +24,9 @@ import com.redhat.rhn.domain.user.User;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Session;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * UserGroupFactory - the singleton class used to fetch and store
@@ -80,7 +80,10 @@ public class UserGroupFactory extends HibernateFactory {
         if (!user.getRoles().contains(RoleFactory.SAT_ADMIN)) {
             throw new PermissionException("Satellite admin role required to access extauth groups");
         }
-        return singleton.listObjectsByNamedQuery("UserExtGroup.listAll", Map.of());
+
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("FROM UserExtGroup ORDER BY label", UserExtGroup.class)
+                .list();
     }
 
     /**
@@ -92,7 +95,11 @@ public class UserGroupFactory extends HibernateFactory {
         if (!user.getRoles().contains(RoleFactory.ORG_ADMIN)) {
             throw new PermissionException("Organization admin role required to access extauth organization groups");
         }
-        return singleton.listObjectsByNamedQuery("OrgUserExtGroup.listAll", Map.of("org_id", user.getOrg().getId()));
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("FROM OrgUserExtGroup WHERE org.id = :org_id ORDER BY label",
+                        OrgUserExtGroup.class)
+                .setParameter("org_id", user.getOrg().getId())
+                .list();
     }
 
     /**
@@ -101,7 +108,10 @@ public class UserGroupFactory extends HibernateFactory {
      * @return external group object
      */
     public static UserExtGroup lookupExtGroupById(Long gidIn) {
-        return singleton.lookupObjectByNamedQuery("UserExtGroup.lookupById", Map.of("gid", gidIn));
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("FROM UserExtGroup WHERE id = :gid", UserExtGroup.class)
+                .setParameter("gid", gidIn)
+                .uniqueResult();
     }
 
     /**
@@ -111,8 +121,12 @@ public class UserGroupFactory extends HibernateFactory {
      * @return external group object
      */
     public static OrgUserExtGroup lookupOrgExtGroupByIdAndOrg(Long gidIn, Org orgIn) {
-        return singleton.lookupObjectByNamedQuery("OrgUserExtGroup.lookupByIdAndOrg",
-                Map.of("gid", gidIn, "org_id", orgIn.getId()));
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("FROM OrgUserExtGroup WHERE id = :gid AND org_id = :org_id",
+                        OrgUserExtGroup.class)
+                .setParameter("gid", gidIn)
+                .setParameter("org_id", orgIn.getId())
+                .uniqueResult();
     }
 
     /**
@@ -145,7 +159,10 @@ public class UserGroupFactory extends HibernateFactory {
      * @return external group object
      */
     public static UserExtGroup lookupExtGroupByLabel(String labelIn) {
-        return singleton.lookupObjectByNamedQuery("UserExtGroup.lookupByLabel", Map.of("label", labelIn));
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("FROM UserExtGroup WHERE label = :label", UserExtGroup.class)
+                .setParameter("label", labelIn)
+                .uniqueResult();
     }
 
     /**
@@ -155,8 +172,12 @@ public class UserGroupFactory extends HibernateFactory {
      * @return external group object
      */
     public static OrgUserExtGroup lookupOrgExtGroupByLabelAndOrg(String labelIn, Org orgIn) {
-        return singleton.lookupObjectByNamedQuery("OrgUserExtGroup.lookupByLabelAndOrg",
-                Map.of("label", labelIn, "org_id", orgIn.getId()));
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("FROM OrgUserExtGroup WHERE label = :label AND org_id = :org_id",
+                        OrgUserExtGroup.class)
+                .setParameter("label", labelIn)
+                .setParameter("org_id", orgIn.getId())
+                .uniqueResult();
     }
 
     /**
