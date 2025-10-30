@@ -118,6 +118,7 @@ import com.redhat.rhn.domain.channel.ChannelProduct;
 import com.redhat.rhn.domain.channel.ChannelSyncFlag;
 import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.channel.Comps;
+import com.redhat.rhn.domain.channel.ContentSource;
 import com.redhat.rhn.domain.channel.ContentSourceFilter;
 import com.redhat.rhn.domain.channel.ContentSourceType;
 import com.redhat.rhn.domain.channel.DistChannelMap;
@@ -128,6 +129,7 @@ import com.redhat.rhn.domain.channel.ProductName;
 import com.redhat.rhn.domain.channel.PublicChannelFamily;
 import com.redhat.rhn.domain.channel.ReleaseChannelMap;
 import com.redhat.rhn.domain.channel.RepoMetadata;
+import com.redhat.rhn.domain.channel.SslContentSource;
 import com.redhat.rhn.domain.cloudpayg.CloudRmtHost;
 import com.redhat.rhn.domain.cloudpayg.PaygCredentialsProduct;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
@@ -476,6 +478,7 @@ public class AnnotationRegistry {
             ContentProject.class,
             ContentProjectFilter.class,
             ContentProjectHistoryEntry.class,
+            ContentSource.class,
             ContentSourceFilter.class,
             ContentSourceType.class,
             CryptoKey.class,
@@ -719,6 +722,7 @@ public class AnnotationRegistry {
             SoftwareEnvironmentTarget.class,
             SoftwareProjectSource.class,
             SourceRpm.class,
+            SslContentSource.class,
             SslCryptoKey.class,
             State.class,
             StateChange.class,
