@@ -312,6 +312,13 @@ When(/^I create an activation key including custom channels for "([^"]*)" via AP
     child_channels.reject! { |channel| channel.include? 'suse-manager-retail-branch-server-5.0-updates-x86_64' }
   end
 
+  # filter out wrong child channels for SL Micro 6.1 as normal Minion
+  if client.include? 'slmicro61'
+    child_channels.reject! { |channel| channel.include? 'suse-multi-linux-manager-proxy-5.1-x86_64' }
+    child_channels.reject! { |channel| channel.include? 'suse-multi-linux-manager-retail-branch-server-5.1-x86_64' }
+    child_channels.reject! { |channel| channel.include? 'suse-multi-linux-manager-server-5.1-x86_64' }
+  end
+
   $stdout.puts "Child_channels for #{key}: <#{child_channels}>"
 
   # Add child channels to the key
