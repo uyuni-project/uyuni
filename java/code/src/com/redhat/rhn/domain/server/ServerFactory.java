@@ -1574,7 +1574,10 @@ public class ServerFactory extends HibernateFactory {
      * @return available contact methods
      */
     public static List<ContactMethod> listContactMethods() {
-        return SINGLETON.listObjectsByNamedQuery("ContactMethod.findAll", Map.of(), true);
+        return getSession().createQuery("FROM ContactMethod AS cm ORDER BY cm.id", ContactMethod.class)
+                //Retrieve from cache if there
+                .setCacheable(true)
+                .list();
     }
 
     /**
@@ -1583,7 +1586,11 @@ public class ServerFactory extends HibernateFactory {
      * @return contact method
      */
     public static ContactMethod findContactMethodById(Long id) {
-        return SINGLETON.lookupObjectByNamedQuery("ContactMethod.findById", Map.of("id", id), true);
+        return getSession().createQuery("FROM ContactMethod AS cm WHERE cm.id = :id", ContactMethod.class)
+                .setParameter("id", id)
+                //Retrieve from cache if there
+                .setCacheable(true)
+                .uniqueResult();
     }
 
     /**

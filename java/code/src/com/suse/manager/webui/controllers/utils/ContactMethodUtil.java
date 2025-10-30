@@ -14,7 +14,6 @@
  */
 package com.suse.manager.webui.controllers.utils;
 
-import com.redhat.rhn.domain.AbstractLabelNameHelper;
 import com.redhat.rhn.domain.server.ContactMethod;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
@@ -44,7 +43,7 @@ public class ContactMethodUtil {
         return activationKey
                 .map(ActivationKeyFactory::lookupByKey)
                 .map(ActivationKey::getContactMethod)
-                .map(AbstractLabelNameHelper::getLabel)
+                .map(ContactMethod::getLabel)
                 .orElse(defaultContactMethod);
     }
 
