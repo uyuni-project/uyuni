@@ -39,7 +39,6 @@ import org.apache.logging.log4j.Logger;
 import org.cobbler.CobblerConnection;
 import org.cobbler.Profile;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Loader;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.SortNatural;
 import org.hibernate.annotations.Type;
@@ -182,10 +181,7 @@ public class KickstartData extends BaseDomainHelper {
     private Set<KickstartPackage> ksPackages = new HashSet<>();
 
     @OneToMany(mappedBy = "kickstartData", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @Loader(namedQuery = "commandSort")
     private Collection<KickstartCommand> commands = new LinkedHashSet<>();
-    //private Set<KickstartCommand> commands = new LinkedHashSet<>();
-
 
     @OneToMany(mappedBy = "ksdata", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<KickstartIpRange> ips; // rhnKickstartIpRange
@@ -193,7 +189,6 @@ public class KickstartData extends BaseDomainHelper {
     @OneToMany(mappedBy = "ksdata", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<KickstartScript> scripts;      // rhnKickstartScript
 
-    //@OneToOne(mappedBy = "ksdata", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @OneToOne(mappedBy = "ksdata", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private KickstartDefaults kickstartDefaults;
 
