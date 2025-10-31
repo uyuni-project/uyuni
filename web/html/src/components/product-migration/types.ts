@@ -23,7 +23,8 @@ export type MigrationSystemData = {
 
 export type MigrationChannelsSelection = {
   baseChannelTrees: ChannelTreeType[];
-  mandatoryMap: Record<string, number[]>;
+  mandatoryMap: Array<[number, number[]]>;
+  reversedMandatoryMap: Array<[number, number[]]>;
   systemsData: MigrationSystemData[];
 };
 

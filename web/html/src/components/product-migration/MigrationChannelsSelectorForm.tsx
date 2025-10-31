@@ -4,13 +4,7 @@ import { useMemo, useState } from "react";
 import BaseChannel from "manager/content-management/shared/components/panels/sources/channels/base-channel";
 import { ChannelProcessor } from "manager/content-management/shared/components/panels/sources/channels/channel-processor";
 
-import {
-  BaseChannelType,
-  ChannelTreeType,
-  ChannelType,
-  ChildChannelType,
-  isChildChannel,
-} from "core/channels/type/channels.type";
+import { BaseChannelType, ChannelTreeType, ChildChannelType, isChildChannel } from "core/channels/type/channels.type";
 
 import { Button, SubmitButton } from "components/buttons";
 import { Form, FormGroup, Label, Select } from "components/input";
@@ -24,7 +18,8 @@ type Props = {
   migrationSource: MigrationProduct;
   migrationTarget: MigrationTarget;
   baseChannelTrees: ChannelTreeType[];
-  mandatoryMap: Record<string, number[]>;
+  mandatoryMap: Array<[number, number[]]>;
+  reversedMandatoryMap: Array<[number, number[]]>;
   baseChannel?: BaseChannelType;
   childChannels?: ChildChannelType[];
   allowVendorChange?: boolean;
@@ -37,6 +32,7 @@ export const MigrationChannelsSelectorForm: React.FC<Props> = ({
   migrationTarget,
   baseChannelTrees,
   mandatoryMap,
+  reversedMandatoryMap,
   baseChannel,
   childChannels,
   allowVendorChange,
@@ -45,7 +41,7 @@ export const MigrationChannelsSelectorForm: React.FC<Props> = ({
 }): JSX.Element => {
   // Compute and cache the data
   const { channelTrees, channelsMap, baseChannels, requiresMap, requiredByMap } = useMemo(() => {
-    return MigrationUtils.processChannelData(baseChannelTrees, mandatoryMap);
+    return MigrationUtils.processChannelData(baseChannelTrees, mandatoryMap, reversedMandatoryMap);
   }, [baseChannelTrees, mandatoryMap]);
 
   // Cache the processor
@@ -109,9 +105,7 @@ export const MigrationChannelsSelectorForm: React.FC<Props> = ({
       ? channelProcessor.getRequires(channel.id)
       : channelProcessor.getRequiredBy(channel.id);
 
-    [channel, ...(relatedChannels ?? new Set<ChannelType>())]
-      .filter((item) => isChildChannel(item))
-      .forEach((item) => updateAction(item));
+    [channel, ...(relatedChannels ?? [])].filter((item) => isChildChannel(item)).forEach((item) => updateAction(item));
 
     setSelectedChildChannels(updatedSet);
   }
