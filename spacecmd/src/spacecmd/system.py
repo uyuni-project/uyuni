@@ -5060,6 +5060,7 @@ def help_system_needrebootafterupdate(self):
         )
     )
     print("")
+    print(self.HELP_SYSTEM_OPTS)
 
 
 def complete_system_needrebootafterupdate(self, text, line, beg, end):
@@ -5110,10 +5111,10 @@ def do_system_needrebootafterupdate(self, args, short=False):
                 # pylint: disable-next=consider-using-f-string
                 print("{}: 0".format(system))
             else:
-                # pylint: disable-next=consider-using-f-string
                 print(
                     _(
-                        "No reboot needed for system '{}' after appying available updates".format(
+                        # pylint: disable-next=consider-using-f-string
+                        "No reboot needed for system '{}' after applying available updates".format(
                             system
                         )
                     )

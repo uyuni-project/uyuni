@@ -1,1 +1,2 @@
-- Subcommand if reboot is needed after applying available patches
+- Add subcommand to check if reboot is needed
+  after applying all available patches
