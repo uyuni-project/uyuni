@@ -1,5 +1,4 @@
 import { BaseChannelType, ChannelTreeType, ChannelType, ChildChannelType } from "core/channels/type/channels.type";
-import { computeReverseDependencies } from "core/channels/utils/channels-dependencies.utils";
 
 import { ActionChainLink, ActionLink } from "components/links";
 import { MessageType, Utils as MessagesUtils } from "components/messages/messages";
@@ -20,7 +19,11 @@ import { MigrationScheduleRequest } from "./types";
  *  - requiresMap a mapping detailing for each channel id which other channels it requries
  *  - requiredByMap a mapping detailing for each channel id, which other channels requires it
  */
-function processChannelData(baseChannelTrees: ChannelTreeType[], mandatoryMap: Record<string, number[]>) {
+function processChannelData(
+  baseChannelTrees: ChannelTreeType[],
+  mandatoryMap: [number, number[]][],
+  reversedMandatoryMap: [number, number[]][]
+) {
   const channelsMap: Map<number, ChannelType> = new Map();
   const baseChannels: BaseChannelType[] = [];
 
@@ -43,29 +46,34 @@ function processChannelData(baseChannelTrees: ChannelTreeType[], mandatoryMap: R
     return { base: updatedBase, children: updatedChildren };
   });
 
-  // Compute the dependencies
-  const [requiresMap, requiredByMap] = processMandatoryMap(mandatoryMap, channelsMap);
+  // Convert the Array<[number, number[]]> we receive from json to a Map<number, Set<ChannelType>>
+  const requiresMap = arrayToMapWithSets(mandatoryMap, channelsMap);
+  const requiredByMap = arrayToMapWithSets(reversedMandatoryMap, channelsMap);
 
   return { channelTrees, channelsMap, baseChannels, requiresMap, requiredByMap };
 }
 
-// Buildst the requiresMap and the requiredByMap
-function processMandatoryMap(mandatoryData: Record<string, number[]>, channelsMap: Map<number, ChannelType>) {
-  const requiresMap: Map<number, Set<number>> = new Map();
+function arrayToMapWithSets(
+  entries: [number, number[]][],
+  channelsMap: Map<number, ChannelType>
+): Map<number, Set<ChannelType>> {
+  // Convert each entry's array of values into a Set
+  const entriesWithSets: [number, Set<ChannelType>][] = entries.map(([key, values]) => {
+    const channelSet = new Set<ChannelType>();
+    values.forEach((channelId) => {
+      const channel = channelsMap.get(channelId);
+      if (channel !== undefined) {
+        channelSet.add(channel);
+      } else {
+        Loggerhead.warn(`Cannot find channel with id ${channelId}. Ignoring.`);
+      }
+    });
 
-  Object.entries(mandatoryData).forEach(([id, mandatoryIds]) => {
-    requiresMap.set(parseInt(id, 10), new Set(mandatoryIds));
+    return [key, channelSet];
   });
 
-  return [requiresMap, computeReverseDependencies(requiresMap)].map(
-    (map) =>
-      new Map(
-        Array.from(map.entries()).map(([channelId, dependentSet]) => [
-          channelId,
-          new Set([...dependentSet].map((id) => channelsMap.get(id)).filter((channel) => channel !== undefined)),
-        ])
-      )
-  );
+  // Create the final Map from the new entries
+  return new Map(entriesWithSets);
 }
 
 /**
