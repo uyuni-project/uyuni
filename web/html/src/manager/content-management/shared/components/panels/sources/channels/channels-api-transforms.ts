@@ -3,12 +3,12 @@ import { BaseChannelType, ChildChannelType } from "core/channels/type/channels.t
 export const canonicalizeBase = (channel: BaseChannelType): void => {
   // Precompute a name value for filtering so we only do this once
   channel.standardizedName = channel.name.toLocaleLowerCase();
-  channel.recommendedChildren = [];
+  channel.recommendedChildrenIds = [];
 };
 
 export const canonicalizeChild = (channel: ChildChannelType, parentChannel: BaseChannelType): void => {
   channel.standardizedName = channel.name.toLocaleLowerCase();
-  channel.parent = parentChannel;
+  channel.parentId = parentChannel.id;
 };
 
 export const toCanonicalRequires = (

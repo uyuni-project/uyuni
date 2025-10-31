@@ -93,7 +93,8 @@ export const MigrationChannelsSelectorForm: FC<Props> = ({
     [selectedChildChannels]
   );
 
-  function onToggleChannelSelect(channel: ChannelType, toState?: boolean): void {
+  function onToggleChannelSelect(channelId: number, toState?: boolean): void {
+    const channel = channelProcessor.getChannelById(channelId);
     // Ignore any updates for base channels, the UI uses the dropdown to choose it
     if (!isChildChannel(channel)) {
       return;
@@ -107,7 +108,7 @@ export const MigrationChannelsSelectorForm: FC<Props> = ({
       ? channelProcessor.getRequires(channel.id)
       : channelProcessor.getRequiredBy(channel.id);
 
-    [channel, ...(relatedChannels ?? new Set())]
+    [channel, ...(relatedChannels ?? new Set<ChannelType>())]
       .filter((item) => isChildChannel(item))
       .forEach((item) => updateAction(item));
 

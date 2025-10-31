@@ -17,12 +17,12 @@ export type MandatoryChannel = ChannelTypePartial & {
 export type BaseChannelType = ChannelTypePartial & {
   // These are fields which we compute and tack on, they don't exist originally
   standardizedName: string;
-  recommendedChildren: ChildChannelType[];
+  recommendedChildrenIds: number[];
 };
 
 export type ChildChannelType = ChannelTypePartial & {
   standardizedName: string;
-  parent: BaseChannelType;
+  parentId: number;
 };
 
 export type ChannelTreeType = {
@@ -33,9 +33,9 @@ export type ChannelTreeType = {
 export type ChannelType = BaseChannelType | ChildChannelType;
 
 export function isBaseChannel(input: ChannelType): input is BaseChannelType {
-  return Boolean(input && Object.prototype.hasOwnProperty.call(input, "recommendedChildren"));
+  return Boolean(input && Object.prototype.hasOwnProperty.call(input, "recommendedChildrenIds"));
 }
 
 export function isChildChannel(input: ChannelType): input is ChildChannelType {
-  return Boolean(input && Object.prototype.hasOwnProperty.call(input, "parent"));
+  return Boolean(input && Object.prototype.hasOwnProperty.call(input, "parentId"));
 }
