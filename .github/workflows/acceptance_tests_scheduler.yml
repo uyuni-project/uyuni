@@ -8,7 +8,9 @@ on:
 jobs:
   scheduled-acceptance-tests:
     name: Acceptance
-    if: github.repository == 'uyuni-project/uyuni' && github.ref == 'refs/heads/master'
+    if: |
+      (github.event_name == 'schedule' && github.repository == 'uyuni-project/uyuni' && github.ref == 'refs/heads/master') || 
+      (github.event_name == 'workflow_dispatch')
     uses: ./.github/workflows/acceptance_tests_base.yml
     with:
       tests: "18_run_secondary_tests.sh"
@@ -18,7 +20,9 @@ jobs:
 
   scheduled-additional-tests:
     name: (${{ matrix.set }}) Additional
-    if: github.repository == 'uyuni-project/uyuni' && github.ref == 'refs/heads/master'
+    if: |
+      (github.event_name == 'schedule' && github.repository == 'uyuni-project/uyuni' && github.ref == 'refs/heads/master') || 
+      (github.event_name == 'workflow_dispatch')
     uses: ./.github/workflows/acceptance_tests_base.yml
     strategy:
       fail-fast: false

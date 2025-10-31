@@ -1,6 +1,12 @@
 #!/bin/bash
 set -ex
 
+if [[ "$(uname)" == "Darwin" ]]; then
+  PODMAN_CMD="podman"
+else
+  PODMAN_CMD="sudo -i podman"
+fi
+
 print_usage()
 {
     echo "Usage: $0 [-s subnet]" 1>&2
@@ -21,5 +27,5 @@ while getopts "s:" options; do
 done
 shift $((OPTIND-1))
 
-sudo -i podman network create --ipv6 --subnet ${subnet} network
+$PODMAN_CMD network create --ipv6 --subnet ${subnet} network
 

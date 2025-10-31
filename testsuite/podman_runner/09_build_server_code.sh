@@ -1,11 +1,18 @@
 #!/bin/bash
 set -xe
-sudo -i podman exec server bash -c "cp /testsuite/podman_runner/debug_logging.properties /etc/tomcat/logging.properties"
+
+if [[ "$(uname)" == "Darwin" ]]; then
+  PODMAN_CMD="podman"
+else
+  PODMAN_CMD="sudo -i podman"
+fi
+
+$PODMAN_CMD exec server bash -c "cp /testsuite/podman_runner/debug_logging.properties /etc/tomcat/logging.properties"
 
 # Create missing directories that will be created by the new RPM https://github.com/uyuni-project/uyuni/pull/7651
-sudo -i podman exec server bash -c "[ -d /usr/share/susemanager/www ] || mkdir -p /usr/share/susemanager/www"
-sudo -i podman exec server bash -c "[ -d /usr/share/susemanager/www/htdocs ] || mkdir -p /usr/share/susemanager/www/htdocs"
-sudo -i podman exec server bash -c "[ -d /usr/share/susemanager/www/tomcat/webapps ] || mkdir -p /usr/share/susemanager/www/tomcat/webapps"
+$PODMAN_CMD exec server bash -c "[ -d /usr/share/susemanager/www ] || mkdir -p /usr/share/susemanager/www"
+$PODMAN_CMD exec server bash -c "[ -d /usr/share/susemanager/www/htdocs ] || mkdir -p /usr/share/susemanager/www/htdocs"
+$PODMAN_CMD exec server bash -c "[ -d /usr/share/susemanager/www/tomcat/webapps ] || mkdir -p /usr/share/susemanager/www/tomcat/webapps"
 
 # WORKAROUND: If ivy build fails, try again, because 50% of times fails when
 # downloading the new jar files from download.opensuse.org.
@@ -29,17 +36,23 @@ sudo -i podman exec server bash -c "[ -d /usr/share/susemanager/www/tomcat/webap
 # While we do not have a mirror for the jar files, the easiest workaround is
 # to try again and hope it succeeds.
 
-# TODO: Remove this debugging code once we stabilize opensuse mirror issues.
-ANT_BUILD_IVY_COMMAND='sudo -i podman exec server bash -c "cd /java && ant -f manager-build.xml ivy"'
-set +e
-eval "$ANT_BUILD_IVY_COMMAND"
-ANT_BUILD_IVY_COMMAND=$?
-set -e
+set +e # Temporarily disable 'exit on error'
 
-echo "Check GH Runner IP:"
-curl https://api.ipify.org ||:
-echo "Test a RPM file URL that failed previously. So we can debug redirections:"
-curl -vIL https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Master:/Other/openSUSE_Leap_15.6/noarch/hibernate5-core-5.3.25-4.170.uyuni3.noarch.rpm ||:
+$PODMAN_CMD exec server bash -c '
+    SECONDS=0; TIMEOUT=1200; cd /java;
+    while ! ant -f manager-build.xml ivy; do
+        if [ "$SECONDS" -ge "${TIMEOUT:-1200}" ]; then
+            echo "Ant Ivy build failed: Timed out after 20 minutes." >&2;
+            echo "Check GH Runner IP:" >&2; curl https://api.ipify.org ||:;
+            exit 1;
+        fi;
+        echo "Ant Ivy build failed. Retrying! (Elapsed: $SECONDS/$TIMEOUT seconds)";
+    done;
+    echo "Ant Ivy build succeeded."
+'
+
+ANT_BUILD_IVY_COMMAND=$?
+set -e # Re-enable 'exit on error'
 
 if [ $ANT_BUILD_IVY_COMMAND -ne 0 ]; then
     echo "ERROR: The main command failed. Exiting script with original status $ANT_BUILD_IVY_COMMAND." >&2
@@ -47,17 +60,17 @@ if [ $ANT_BUILD_IVY_COMMAND -ne 0 ]; then
 fi
 ###
 
-sudo -i podman exec server bash -c "cd /java && ant -f manager-build.xml -Ddeploy.mode=local refresh-branding-jar deploy"
-sudo -i podman exec server bash -c "cd /java && ant -f manager-build.xml apidoc-jsp"
-sudo -i podman exec server bash -c "mkdir /usr/share/susemanager/www/tomcat/webapps/rhn/apidoc/ && rsync -av /java/build/reports/apidocs/jsp/ /usr/share/susemanager/www/tomcat/webapps/rhn/apidoc/"
-sudo -i podman exec server bash -c "set -xe;npm --prefix web ci --ignore-scripts --save=false --omit=dev;npm --prefix web run build -- --check-spec=false; rsync -a web/html/src/dist/ /usr/share/susemanager/www/htdocs/"
-sudo -i podman exec server bash -c "rctomcat restart"
-sudo -i podman exec server bash -c "rctaskomatic restart"
+$PODMAN_CMD exec server bash -c "cd /java && ant -f manager-build.xml -Ddeploy.mode=local refresh-branding-jar deploy"
+$PODMAN_CMD exec server bash -c "cd /java && ant -f manager-build.xml apidoc-jsp"
+$PODMAN_CMD exec server bash -c "mkdir /usr/share/susemanager/www/tomcat/webapps/rhn/apidoc/ && rsync -av /java/build/reports/apidocs/jsp/ /usr/share/susemanager/www/tomcat/webapps/rhn/apidoc/"
+$PODMAN_CMD exec server bash -c "set -xe;npm --prefix web ci --ignore-scripts --save=false --omit=dev;npm --prefix web run build -- --check-spec=false; rsync -a web/html/src/dist/ /usr/share/susemanager/www/htdocs/"
+$PODMAN_CMD exec server bash -c "rctomcat restart"
+$PODMAN_CMD exec server bash -c "rctaskomatic restart"
 
 # mgr-push
-sudo -i podman exec server bash -c "cp /client/tools/mgr-push/*.py /usr/lib/python3.6/site-packages/rhnpush/"
-sudo -i podman exec server bash -c "cp /client/tools/mgr-push/rhnpushrc /etc/sysconfig/rhn/rhnpushrc"
+$PODMAN_CMD exec server bash -c "cp /client/tools/mgr-push/*.py /usr/lib/python3.6/site-packages/rhnpush/"
+$PODMAN_CMD exec server bash -c "cp /client/tools/mgr-push/rhnpushrc /etc/sysconfig/rhn/rhnpushrc"
 
-sudo -i podman exec server bash -c "cd /susemanager-utils/susemanager-sls/; cp -R modules/* /usr/share/susemanager/modules; cp -R salt/* /usr/share/susemanager/salt; cp -R src/modules/* /usr/share/susemanager/salt/_modules; cp -R src/grains/* /usr/share/susemanager/salt/_grains; cp -R src/states/* /usr/share/susemanager/salt/_states; cp -R src/beacons/* /usr/share/susemanager/salt/_beacons; cp -R salt-ssh/* /usr/share/susemanager/salt-ssh"
-sudo -i podman exec server bash -c "cd /susemanager/; cp src/mgr-salt-ssh /usr/bin/; chmod a+x /usr/bin/mgr-salt-ssh"
-sudo -i podman exec server bash -c "cd /susemanager/src; cp mgr_sync/*.py /usr/lib/python3.6/site-packages/spacewalk/susemanager/mgr_sync/; cp *.py /usr/lib/python3.6/site-packages/spacewalk/susemanager/; mv /usr/lib/python3.6/site-packages/spacewalk/susemanager/mgr_bootstrap_data.py /usr/share/susemanager/"
+$PODMAN_CMD exec server bash -c "cd /susemanager-utils/susemanager-sls/; cp -R modules/* /usr/share/susemanager/modules; cp -R salt/* /usr/share/susemanager/salt; cp -R src/modules/* /usr/share/susemanager/salt/_modules; cp -R src/grains/* /usr/share/susemanager/salt/_grains; cp -R src/states/* /usr/share/susemanager/salt/_states; cp -R src/beacons/* /usr/share/susemanager/salt/_beacons; cp -R salt-ssh/* /usr/share/susemanager/salt-ssh"
+$PODMAN_CMD exec server bash -c "cd /susemanager/; cp src/mgr-salt-ssh /usr/bin/; chmod a+x /usr/bin/mgr-salt-ssh"
+$PODMAN_CMD exec server bash -c "cd /susemanager/src; cp mgr_sync/*.py /usr/lib/python3.6/site-packages/spacewalk/susemanager/mgr_sync/; cp *.py /usr/lib/python3.6/site-packages/spacewalk/susemanager/; mv /usr/lib/python3.6/site-packages/spacewalk/susemanager/mgr_bootstrap_data.py /usr/share/susemanager/"
