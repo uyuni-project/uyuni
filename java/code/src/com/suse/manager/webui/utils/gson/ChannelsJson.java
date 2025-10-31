@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 SUSE LLC
+ * Copyright (c) 2017--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 
 package com.suse.manager.webui.utils.gson;
@@ -21,207 +17,88 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * The Channels JSON class
  */
 public class ChannelsJson {
 
-    private String activationKey;
-    private ChannelJson base;
-    private List<ChannelJson> children;
+    private final BaseChannelJson base;
+    private final List<ChildChannelJson> children;
+    private final String activationKey;
 
     /**
-     * The Channel(single) JSON class
+     * Builds an instance
+     * @param baseIn the base channel
+     * @param childrenIn the list of children
      */
-    public static class ChannelJson {
-
-        private Long id;
-        private String label;
-        private String archLabel;
-
-        private String name;
-        private boolean custom;
-        private boolean subscribable;
-        private boolean recommended;
-        private boolean isCloned;
-        private Long compatibleChannelPreviousSelection;
-
-        /**
-         * Instantiates a new Channel json.
-         *
-         * @param idIn   the id
-         * @param labelIn the label
-         * @param nameIn the name
-         * @param customIn custom channel flag
-         * @param subscribableIn subscribable flag
-         * @param recommendedIn the channel is recommended by its parent channel
-         * @param compatibleChannelPreviousSelectionIn the compatible channel id of the previous selection
-         * @param isClonedIn if the channel is clonned
-         * @param archLabelIn the architecture label
-         */
-        public ChannelJson(Long idIn, String labelIn, String nameIn, boolean customIn, boolean subscribableIn,
-                           boolean isClonedIn, String archLabelIn, boolean recommendedIn,
-                           Long compatibleChannelPreviousSelectionIn) {
-            this.id = idIn;
-            this.label = labelIn;
-            this.name = nameIn;
-            this.custom = customIn;
-            this.subscribable = subscribableIn;
-            this.recommended = recommendedIn;
-            this.compatibleChannelPreviousSelection = compatibleChannelPreviousSelectionIn;
-            this.isCloned = isClonedIn;
-            this.archLabel = archLabelIn;
-        }
-
-        /**
-         * Instantiates a new Channel json.
-         *
-         * @param idIn   the id
-         * @param labelIn the label
-         * @param nameIn the name
-         * @param customIn custom channel flag
-         * @param subscribableIn subscribable flag
-         * @param isClonedIn if the channel is clonned
-         * @param archLabelIn the architecture label
-         */
-        public ChannelJson(Long idIn, String labelIn, String nameIn, boolean customIn, boolean subscribableIn,
-                           boolean isClonedIn, String archLabelIn) {
-            this(idIn, labelIn, nameIn, customIn, subscribableIn, isClonedIn, archLabelIn, false, null);
-        }
-
-        /**
-         * Instantiates a new Channel json from a Channel object
-         *
-         * @param channel the channel object
-         */
-        public ChannelJson(Channel channel) {
-            this(channel.getId(), channel.getLabel(), channel.getName(), channel.isCustom(), false,
-                    channel.isCloned(), channel.getChannelArch().getLabel());
-        }
-
-        /**
-         * @return the id
-         */
-        public Long getId() {
-            return id;
-        }
-
-        /**
-         * @return the label
-         */
-        public String getLabel() {
-            return label;
-        }
-
-        /**
-         * @return the name
-         */
-        public String getName() {
-            return name;
-        }
-
-
-        /**
-         * @return custom to get
-         */
-        public boolean isCustom() {
-            return custom;
-        }
-
-        /**
-         * @return subscribable to get
-         */
-        public boolean isSubscribable() {
-            return subscribable;
-        }
-
-        /**
-         * @return recommented to get
-         */
-        public boolean isRecommended() {
-            return recommended;
-        }
-
-        /**
-         * @return compatibleChannelPreviousSelection to get
-         */
-        public Long getCompatibleChannelPreviousSelection() {
-            return compatibleChannelPreviousSelection;
-        }
-
-        public String getArchLabel() {
-            return archLabel;
-        }
-
+    public ChannelsJson(Channel baseIn, List<Channel> childrenIn) {
+        this(baseIn, childrenIn, null, null);
     }
 
     /**
-     * @return the activation key
-     */
-    public String getActivationKey() {
-        return activationKey;
-    }
-
-    /**
+     * Builds an instance
+     * @param baseIn the base channel
+     * @param childrenIn the list of children
      * @param activationKeyIn the activation key
      */
-    public void setActivationKey(String activationKeyIn) {
-        this.activationKey = activationKeyIn;
+    public ChannelsJson(Channel baseIn, List<Channel> childrenIn, String activationKeyIn) {
+        this(baseIn, childrenIn, activationKeyIn, null);
     }
 
     /**
-     * @return the base channel
+     * Builds an instance
+     * @param baseIn the base channel
+     * @param childrenIn the list of children
+     * @param recommendedFlagsIn a map detailing which channels are recommended
      */
-    public ChannelJson getBase() {
+    public ChannelsJson(Channel baseIn, List<Channel> childrenIn, Map<Long, Boolean> recommendedFlagsIn) {
+        this(baseIn, childrenIn, null, recommendedFlagsIn);
+    }
+
+    private ChannelsJson(Channel baseIn, List<Channel> childrenIn, String activationKeyIn,
+                         Map<Long, Boolean> recommendedFlagsIn) {
+        List<Long> recommendedChildrenId;
+
+        this.activationKey = activationKeyIn;
+        if (childrenIn != null) {
+            Long parentIdIn = baseIn != null ? baseIn.getId() : null;
+
+            recommendedChildrenId = new ArrayList<>();
+            this.children = childrenIn.stream()
+                .map(child -> {
+                    boolean recommended = recommendedFlagsIn != null && recommendedFlagsIn.get(child.getId());
+                    if (recommended) {
+                        recommendedChildrenId.add(child.getId());
+                    }
+
+                    return new ChildChannelJson(child, parentIdIn, recommended);
+                })
+                .toList();
+        }
+        else {
+            recommendedChildrenId = List.of();
+            this.children = List.of();
+        }
+
+        if (baseIn != null) {
+            this.base = new BaseChannelJson(baseIn, recommendedChildrenId);
+        }
+        else {
+            this.base = null;
+        }
+    }
+
+    public BaseChannelJson getBase() {
         return base;
     }
 
-    /**
-     * @param baseIn the base channel
-     */
-    public void setBase(Channel baseIn) {
-        this.base = new ChannelJson(
-                baseIn.getId(), baseIn.getLabel(), baseIn.getName(), baseIn.isCustom(), true, baseIn.isCloned(),
-                baseIn.getChannelArch().getLabel());
-    }
-
-    /**
-     * @return the child channels
-     */
-    public List<ChannelJson> getChildren() {
+    public List<ChildChannelJson> getChildren() {
         return children;
     }
 
-    /**
-     * @param childrenIn the child channels
-     */
-    public void setChildren(Stream<Channel> childrenIn) {
-        this.children = childrenIn.map(
-                (c) -> new ChannelJson(c.getId(), c.getLabel(), c.getName(), c.isCustom(), true,
-                        c.isCloned(), c.getChannelArch().getLabel()))
-                .collect(Collectors.toList());
-    }
-
-    /**
-     * @param childrenIn the child channels
-     * @param recommendedFlags the map of channels with recommended flag value
-     */
-    public void setChildrenWithRecommendedAndArch(Stream<Channel> childrenIn, Map<Long, Boolean> recommendedFlags) {
-        this.children = childrenIn.map(c ->
-             new ChannelJson(
-                    c.getId(),
-                    c.getLabel(),
-                    c.getName(),
-                    c.isCustom(),
-                    true,
-                    c.isCloned(),
-                    c.getChannelArch().getLabel(),
-                    recommendedFlags.get(c.getId()),
-                    null)
-        ).collect(Collectors.toList());
+    public String getActivationKey() {
+        return activationKey;
     }
 
     /**
@@ -231,20 +108,29 @@ public class ChannelsJson {
      * @return the channels json
      */
     public static ChannelsJson fromChannelSet(Set<Channel> channels) {
-        ChannelsJson channelsJson = new ChannelsJson();
+        return fromChannelSet(channels, null);
+    }
 
+    /**
+     * Create an object from a channel set and an activation key
+     *
+     * @param channels the channels
+     * @param activationKey the activation key
+     * @return the channels json
+     */
+    public static ChannelsJson fromChannelSet(Set<Channel> channels, String activationKey) {
+        Channel base = null;
         List<Channel> children = new ArrayList<>();
 
         for (Channel ch : channels) {
             if (ch.isBaseChannel()) {
-                channelsJson.setBase(ch);
+                base = ch;
             }
             else {
                 children.add(ch);
             }
         }
-        channelsJson.setChildren(children.stream());
 
-        return channelsJson;
+        return new ChannelsJson(base, children, activationKey);
     }
 }

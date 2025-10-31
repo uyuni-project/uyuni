@@ -63,6 +63,7 @@ import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.utils.FlashScopeHelper;
 import com.suse.manager.webui.utils.MinionActionUtils;
 import com.suse.manager.webui.utils.PageControlHelper;
+import com.suse.manager.webui.utils.gson.ChannelJson;
 import com.suse.manager.webui.utils.gson.ChannelsJson;
 import com.suse.manager.webui.utils.gson.PagedDataResultJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
@@ -83,6 +84,7 @@ import java.io.IOException;
 import java.security.cert.CertificateException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -490,12 +492,8 @@ public class SystemsController {
     public String getChannels(Request request, Response response, User user) {
         return withServer(request, response, user, server -> {
             Channel base = server.getBaseChannel();
-            ChannelsJson jsonChannels = new ChannelsJson();
-            if (base != null) {
-                jsonChannels.setBase(base);
-                jsonChannels.setChildren(server.getChildChannels().stream());
-            }
-
+            List<Channel> children = base != null ? new ArrayList<>(server.getChildChannels()) : null;
+            ChannelsJson jsonChannels = new ChannelsJson(base, children);
             return result(response, ResultJson.success(jsonChannels), new TypeToken<>() { });
         });
     }
@@ -511,15 +509,8 @@ public class SystemsController {
     public String getAvailableBaseChannels(Request request, Response response, User user) {
         return withServer(request, response, user, server -> {
             List<EssentialChannelDto> orgChannels = ChannelManager.listBaseChannelsForSystem(user, server);
-            List<ChannelsJson.ChannelJson> baseChannels =
-                    orgChannels.stream().map(c -> new ChannelsJson.ChannelJson(c.getId(),
-                            c.getLabel(),
-                            c.getName(),
-                            c.isCustom(),
-                            true,
-                            c.isCloned(),
-                            c.getArchLabel()
-                            ))
+            List<ChannelJson> baseChannels =
+                    orgChannels.stream().map(c -> new ChannelJson(c, true))
                     .collect(Collectors.toList());
 
             return result(response, ResultJson.success(baseChannels), new TypeToken<>() { });
@@ -679,18 +670,16 @@ public class SystemsController {
                         baseChannel,
                         children.stream().filter(c -> c.isSubscribable(user.getOrg(), server)));
 
-                List<ChannelsJson.ChannelJson> jsonList = children.stream()
-                        .filter(c -> c.isSubscribable(user.getOrg(), server))
-                        .map(c -> new ChannelsJson.ChannelJson(c.getId(),
-                                c.getLabel(),
-                                c.getName(),
-                                c.isCustom(),
-                                c.isSubscribable(user.getOrg(), server),
-                                c.isCloned(),
-                                c.getChannelArch().getLabel(),
-                                channelRecommendedFlags.get(c.getId()),
-                                preservationsByNewChild.get(c) != null ? preservationsByNewChild.get(c).getId() : null))
-                        .collect(Collectors.toList());
+                List<ChannelJson> jsonList = children.stream()
+                    .filter(c -> c.isSubscribable(user.getOrg(), server))
+                    .map(c -> new ChannelJson(
+                            c,
+                            true,
+                            channelRecommendedFlags.get(c.getId()),
+                            preservationsByNewChild.get(c) != null ? preservationsByNewChild.get(c).getId() : null
+                        )
+                    )
+                    .collect(Collectors.toList());
                 return result(response, ResultJson.success(jsonList), new TypeToken<>() { });
             }
             catch (LookupException e) {
