@@ -306,7 +306,7 @@ public class PackageTest extends BaseTestCaseWithUser {
     @Test
     public void testGetExtraTag() {
         Package pkg = createTestPackage(user.getOrg());
-        pkg.getExtraTags().put(PackageManagerTest.createExtraTagKey("mytag"), "myvalue");
+        pkg.getExtraTags().add(PackageManagerTest.createExtraTag("mytag", "myvalue", pkg));
 
         assertEquals("myvalue", pkg.getExtraTag("mytag"));
         assertNull(pkg.getExtraTag("doesnotexist"));

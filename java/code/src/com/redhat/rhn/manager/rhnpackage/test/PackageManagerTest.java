@@ -38,6 +38,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageCapability;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
+import com.redhat.rhn.domain.rhnpackage.PackageExtraTag;
 import com.redhat.rhn.domain.rhnpackage.PackageExtraTagsKeys;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
@@ -645,6 +646,19 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         PackageDto dto = (PackageDto) dr.get(0);
         String prim = dto.getPrimaryXml();
         assertEquals(prim, test);
+    }
+
+    public static PackageExtraTag createExtraTag(PackageExtraTagsKeys key, String value, Package pkg) {
+        PackageExtraTag tag = new PackageExtraTag();
+        tag.setKey(key);
+        tag.setPack(pkg);
+        tag.setValue(value);
+        return tag;
+    }
+
+    public static PackageExtraTag createExtraTag(String keyName, String value, Package pkg) {
+        PackageExtraTagsKeys key = createExtraTagKey(keyName);
+        return createExtraTag(key, value, pkg);
     }
 
     public static PackageExtraTagsKeys createExtraTagKey(String name) {

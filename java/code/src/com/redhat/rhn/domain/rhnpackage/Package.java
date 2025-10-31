@@ -31,11 +31,12 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
+import java.io.Serial;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -47,7 +48,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.MapKeyClass;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -58,6 +58,9 @@ import javax.persistence.Transient;
 @Entity
 @Table(name = "rhnPackage")
 public class Package extends BaseDomainHelper {
+
+    @Serial
+    private static final long serialVersionUID = -8283380935275540315L;
 
     @Id
     @GeneratedValue(generator = "RHN_PACKAGE_SEQ")
@@ -171,7 +174,7 @@ public class Package extends BaseDomainHelper {
     @JoinColumn(name = "package_arch_id")
     private PackageArch packageArch;
 
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "rhnPackageKeyAssociation",
             joinColumns = @JoinColumn(name = "package_id"),
@@ -209,14 +212,8 @@ public class Package extends BaseDomainHelper {
     @OneToMany(mappedBy = "pack", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<PackageBreaks> breaks = new HashSet<>();
 
-    @ManyToMany
-    @JoinTable(
-            name = "rhnPackageExtraTag",
-            joinColumns = @JoinColumn(name = "package_id"),
-            inverseJoinColumns = @JoinColumn(name = "key_id"))
-    @MapKeyClass(PackageExtraTagsKeys.class)
-    @Column(name = "value")
-    private Map<PackageExtraTagsKeys, String> extraTags = new HashMap<>();
+    @OneToMany(mappedBy = "pack", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<PackageExtraTag> extraTags = new HashSet<>();
 
     @Transient
     private Boolean lockPending = Boolean.FALSE;
@@ -958,7 +955,7 @@ public class Package extends BaseDomainHelper {
     /**
      * @return extraTags to get
      */
-    public Map<PackageExtraTagsKeys, String> getExtraTags() {
+    public Set<PackageExtraTag> getExtraTags() {
         return extraTags;
     }
 
@@ -969,15 +966,25 @@ public class Package extends BaseDomainHelper {
      * @return the rpm tag value
      */
     public String getExtraTag(String key) {
-        PackageExtraTagsKeys headerKey = new PackageExtraTagsKeys();
-        headerKey.setName(key);
-        return this.extraTags.get(headerKey);
+        return extraTags.stream()
+                .filter(t -> t.getKey().getName().equals(key))
+                .map(PackageExtraTag::getValue)
+                .findFirst().orElse(null);
+    }
+
+    /**
+     * Return extra tags as Key-Value Map
+     * @return return extra tags as key-value map
+     */
+    public Map<PackageExtraTagsKeys, String> getExtraTagsKV() {
+        return extraTags.stream()
+                .collect(Collectors.toMap(PackageExtraTag::getKey, PackageExtraTag::getValue));
     }
 
     /**
      * @param extraTagsIn to set
      */
-    public void setExtraTags(Map<PackageExtraTagsKeys, String> extraTagsIn) {
+    public void setExtraTags(Set<PackageExtraTag> extraTagsIn) {
         this.extraTags = extraTagsIn;
     }
 

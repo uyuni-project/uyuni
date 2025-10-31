@@ -142,7 +142,7 @@ public class PackageDetailsAction extends RhnAction {
             request.setAttribute("erratumEmpty", pkg.getErrata().isEmpty());
             request.setAttribute("erratum", pkg.getErrata());
 
-            request.setAttribute("extraTags", pkg.getExtraTags()
+            request.setAttribute("extraTags", pkg.getExtraTagsKV()
                     .entrySet().stream().map(e -> Map.entry(e.getKey().getName(), e.getValue()))
                     .collect(Collectors.toList()));
 
