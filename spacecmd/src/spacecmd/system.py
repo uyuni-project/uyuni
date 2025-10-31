@@ -5054,31 +5054,36 @@ def do_system_bootstrap(self, args):
 
 
 def help_system_needrebootafterupdate(self):
-    print(_("system_needrebootafterupdate: Shows whether a reboot would be needed if available patches were applied"))
-    print('')
+    print(
+        _(
+            "system_needrebootafterupdate: Shows whether a reboot would be needed if available patches were applied"
+        )
+    )
+    print("")
+
 
 def complete_system_needrebootafterupdate(self, text, line, beg, end):
     return self.tab_complete_systems(text)
 
+
 def do_system_needrebootafterupdate(self, args, short=False):
     arg_parser = get_argument_parser()
 
+    # pylint: disable-next=unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_system_needrebootafterupdate()
         return 1
 
-    add_separator = False
-
     # use the systems listed in the SSM
-    if re.match('ssm', args[0], re.I):
+    if re.match("ssm", args[0], re.I):
         systems = self.ssm.keys()
     else:
         systems = self.expand_systems(args)
 
     if not systems:
-        logging.warning(_N('No systems selected'))
+        logging.warning(_N("No systems selected"))
         return 1
 
     for system in sorted(systems):
@@ -5086,21 +5091,33 @@ def do_system_needrebootafterupdate(self, args, short=False):
         system_needs_reboot = False
         erratas = self.client.system.getRelevantErrata(self.session, system_id)
         for errata in erratas:
-            errata_details = self.client.errata.getDetails(self.session, errata['advisory_name'])
-            if errata_details['reboot_suggested']:
+            errata_details = self.client.errata.getDetails(
+                self.session, errata["advisory_name"]
+            )
+            if errata_details["reboot_suggested"]:
                 system_needs_reboot = True
                 break
 
         if system_needs_reboot:
             if self.options.quiet:
+                # pylint: disable-next=consider-using-f-string
                 print("{}: 1".format(system))
             else:
+                # pylint: disable-next=consider-using-f-string
                 print(_("System '{}' needs to be rebooted after update".format(system)))
         else:
             if self.options.quiet:
+                # pylint: disable-next=consider-using-f-string
                 print("{}: 0".format(system))
             else:
-                print(_("No reboot needed for system '{}' after appying available updates".format(system)))
+                # pylint: disable-next=consider-using-f-string
+                print(
+                    _(
+                        "No reboot needed for system '{}' after appying available updates".format(
+                            system
+                        )
+                    )
+                )
     return 0
 
 
