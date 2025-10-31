@@ -5,7 +5,7 @@ import { BaseChannelType, ChannelTreeType, ChildChannelType } from "core/channel
 import { asyncIdleCallback } from "utils";
 import Network, { JsonResult } from "utils/network";
 
-import { canonicalizeBase, canonicalizeChild, toCanonicalRequires } from "./channels-api-transforms";
+import { toCanonicalRequires } from "./channels-api-transforms";
 
 const pageSize = window.userPrefPageSize || 15;
 
@@ -51,18 +51,11 @@ export const useChannelsWithMandatoryApi = () => {
         const base = item.base;
         channelIds.push(base.id);
         channelsMap.set(base.id, base);
-        // Canonicalize the channel as a side-effect
-        canonicalizeBase(base);
 
         for (let jj = 0; jj < item.children.length; jj++) {
           const child = item.children[jj];
           channelIds.push(child.id);
           channelsMap.set(child.id, child);
-          if (child.recommended) {
-            base.recommendedChildrenIds.push(child.id);
-          }
-          // Canonicalize the channel as a side-effect
-          canonicalizeChild(child, base);
         }
       }
     });

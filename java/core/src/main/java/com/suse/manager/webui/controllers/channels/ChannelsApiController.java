@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 SUSE LLC
+ * Copyright (c) 2019--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.suse.manager.webui.controllers.channels;
 
@@ -27,6 +23,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.ChannelTreeNode;
 import com.redhat.rhn.manager.channel.ChannelManager;
 
+import com.suse.manager.webui.utils.gson.ChannelJson;
 import com.suse.manager.webui.utils.gson.ChannelsJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
 
@@ -102,10 +99,10 @@ public class ChannelsApiController {
      * @return the json response
      */
     public static String getModularChannels(Request req, Response res, User user) {
-        List<ChannelsJson.ChannelJson> jsonChannels = user.getOrg().getAccessibleChannels().stream()
+        List<ChannelJson> jsonChannels = user.getOrg().getAccessibleChannels().stream()
                 .distinct()
                 .filter(Channel::isModular)
-                .map(ChannelsJson.ChannelJson::new)
+                .map(c -> new ChannelJson(c, false))
                 .collect(Collectors.toList());
 
         return result(res, ResultJson.success(jsonChannels), new TypeToken<>() { });
