@@ -45,7 +45,7 @@ function processChannelData(baseChannelTrees: ChannelTreeType[], mandatoryMap: R
       canonicalizeChild(updateChild, updatedBase);
       // If it's a reccomended child update the base
       if (updateChild.recommended) {
-        updatedBase.recommendedChildren.push(updateChild);
+        updatedBase.recommendedChildrenIds.push(updateChild.id);
       }
 
       // Add to the channels map
@@ -83,25 +83,15 @@ function processMandatoryMap(mandatoryData: Record<string, number[]>, channelsMa
 }
 
 /**
- * Removes the circular dependencies from the channel intances, introduced by calling processChannelData and construct a
- * new ChannelTreeType instance.
- * @param channelTree the channel tree object
- * @returns a new instance of {@link ChannelTreeType} with the computed fields removed
+ * Constructs a new ChannelTreeType instance from the base and its children.
+ * @param baseChannel the base channel
+ * @param children the children channels
+ * @returns a new instance of {@link ChannelTreeType}
  */
 function getAsChannelTree(baseChannel: BaseChannelType, children: Set<ChildChannelType>): ChannelTreeType {
-  // Clone the base object while omitting the computed fields.
-  const { standardizedName: _ignoredName, recommendedChildren: _ignoreRecommended, ...cleanBase } = baseChannel;
-
-  // Map the children set to create a new array of clean child objects.
-  const cleanChildren = Array.from(children.values()).map((child) => {
-    const { standardizedName: _snChild, parent: _pChild, ...cleanChild } = child;
-    return cleanChild as ChildChannelType;
-  });
-
-  // Return the new object composed of the cleaned parts.
   return {
-    base: cleanBase as BaseChannelType,
-    children: cleanChildren,
+    base: baseChannel,
+    children: Array.from(children.values()),
   };
 }
 

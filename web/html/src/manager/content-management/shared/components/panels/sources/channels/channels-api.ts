@@ -59,7 +59,7 @@ export const useChannelsWithMandatoryApi = () => {
           channelIds.push(child.id);
           channelsMap.set(child.id, child);
           if (child.recommended) {
-            base.recommendedChildren.push(child);
+            base.recommendedChildrenIds.push(child.id);
           }
           // Canonicalize the channel as a side-effect
           canonicalizeChild(child, base);
