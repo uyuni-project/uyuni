@@ -172,7 +172,9 @@ import com.redhat.rhn.domain.credentials.ReportDBCredentials;
 import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.domain.credentials.VHMCredentials;
 import com.redhat.rhn.domain.errata.Bug;
+import com.redhat.rhn.domain.errata.ClonedErrata;
 import com.redhat.rhn.domain.errata.Cve;
+import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFile;
 import com.redhat.rhn.domain.errata.ErrataFileType;
 import com.redhat.rhn.domain.errata.Keyword;
@@ -195,12 +197,14 @@ import com.redhat.rhn.domain.iss.IssMasterOrg;
 import com.redhat.rhn.domain.iss.IssSlave;
 import com.redhat.rhn.domain.kickstart.KickstartCommand;
 import com.redhat.rhn.domain.kickstart.KickstartCommandName;
+import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartDefaultRegToken;
 import com.redhat.rhn.domain.kickstart.KickstartDefaults;
 import com.redhat.rhn.domain.kickstart.KickstartInstallType;
 import com.redhat.rhn.domain.kickstart.KickstartIpRange;
 import com.redhat.rhn.domain.kickstart.KickstartPackage;
 import com.redhat.rhn.domain.kickstart.KickstartPreserveFileList;
+import com.redhat.rhn.domain.kickstart.KickstartRawData;
 import com.redhat.rhn.domain.kickstart.KickstartScript;
 import com.redhat.rhn.domain.kickstart.KickstartSession;
 import com.redhat.rhn.domain.kickstart.KickstartSessionHistory;
@@ -222,6 +226,9 @@ import com.redhat.rhn.domain.org.OrgConfig;
 import com.redhat.rhn.domain.org.SystemMigration;
 import com.redhat.rhn.domain.org.TemplateCategory;
 import com.redhat.rhn.domain.org.TemplateString;
+import com.redhat.rhn.domain.org.usergroup.ExtGroup;
+import com.redhat.rhn.domain.org.usergroup.OrgUserExtGroup;
+import com.redhat.rhn.domain.org.usergroup.UserExtGroup;
 import com.redhat.rhn.domain.org.usergroup.UserGroupImpl;
 import com.redhat.rhn.domain.org.usergroup.UserGroupMembers;
 import com.redhat.rhn.domain.org.usergroup.UserGroupMembersId;
@@ -430,6 +437,7 @@ public class AnnotationRegistry {
             ClientCapability.class,
             ClientCapabilityId.class,
             ClonedChannel.class,
+            ClonedErrata.class,
             CloudRMTCredentials.class,
             CloudRmtHost.class,
             CoCoAttestationAction.class,
@@ -485,12 +493,14 @@ public class AnnotationRegistry {
             DockerfileProfile.class,
             EntitlementServerGroup.class,
             EnvironmentTarget.class,
+            Errata.class,
             ErrataAction.class,
             ErrataAdvisoryMap.class,
             ErrataFile.class,
             ErrataFileType.class,
             ErrataFilter.class,
             ExceptionMessage.class,
+            ExtGroup.class,
             Feature.class,
             FileList.class,
             FilterCriteria.class,
@@ -533,6 +543,7 @@ public class AnnotationRegistry {
             KickstartAction.class,
             KickstartActionDetails.class,
             KickstartCommandName.class,
+            KickstartData.class,
             KickstartDefaultRegToken.class,
             KickstartDefaults.class,
             KickstartGuestAction.class,
@@ -545,6 +556,7 @@ public class AnnotationRegistry {
             KickstartIpRange.class,
             KickstartPackage.class,
             KickstartPreserveFileList.class,
+            KickstartRawData.class,
             KickstartScheduleSyncAction.class,
             KickstartScript.class,
             KickstartSession.class,
@@ -576,6 +588,7 @@ public class AnnotationRegistry {
             OrgConfig.class,
             OrgRecurringAction.class,
             OrgStateRevision.class,
+            OrgUserExtGroup.class,
             PackageAction.class,
             PackageActionDetails.class,
             PackageActionRemovalFailure.class,
@@ -729,6 +742,7 @@ public class AnnotationRegistry {
             TokenPackage.class,
             Up2DateConfigGetAction.class,
             Up2DateConfigUpdateAction.class,
+            UserExtGroup.class,
             UserGroupImpl.class,
             UserGroupMembers.class,
             UserGroupMembersId.class,

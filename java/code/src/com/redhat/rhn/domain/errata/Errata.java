@@ -19,7 +19,6 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.Package;
-import com.redhat.rhn.frontend.struts.Selectable;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.manager.errata.ErrataManager;
 
@@ -29,6 +28,9 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -36,40 +38,140 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+import javax.persistence.OrderColumn;
+import javax.persistence.Table;
+
 /**
  * Errata - Class representation of the table rhnErrata.
  */
-public class Errata extends BaseDomainHelper implements Selectable {
+@Entity
+@Table(name = "rhnErrata")
+@Inheritance(strategy = InheritanceType.JOINED)
+public class Errata extends BaseDomainHelper {
 
     private static Logger log = LogManager.getLogger(Errata.class);
+
+    @Id
+    @GeneratedValue(generator = "errata_seq")
+    @GenericGenerator(
+            name = "errata_seq",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @Parameter(name = "sequence_name", value = "rhn_errata_id_seq"),
+                    @Parameter(name = "increment_size", value = "1")
+            })
+    private Long id;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+                name = "rhnErrataPackage",
+                joinColumns = @JoinColumn(name = "errata_id"),
+                inverseJoinColumns = @JoinColumn(name = "package_id"))
+    @OrderColumn(name = "package_id")
     protected Set<Package> packages;
 
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(
+                name = "rhnChannelErrata",
+                joinColumns = @JoinColumn(name = "errata_id"),
+                inverseJoinColumns = @JoinColumn(name = "channel_id"))
     private Set<Channel> channels = new HashSet<>();
+
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    @JoinTable(
+                name = "rhnErrataCve",
+                joinColumns = @JoinColumn(name = "errata_id"),
+                inverseJoinColumns = @JoinColumn(name = "cve_id"))
     private Set<Cve> cves = new HashSet<>();
-    private Long id;
+
+    @Column
     private String advisory;
+
+    @Column(name = "advisory_type")
     private String advisoryType;
+
+    @Column(name = "advisory_status")
+    @Type(type = "com.redhat.rhn.domain.errata.AdvisoryStatusEnumType")
     private AdvisoryStatus advisoryStatus = AdvisoryStatus.FINAL;
+
+    @Column
     private String product;
+
+    @Column
     private String description;
+
+    @Column
     private String synopsis;
+
+    @Column
     private String topic;
+
+    @Column
     private String solution;
+
+    @Column(name = "issue_date")
     private Date issueDate;
+
+    @Column(name = "update_date")
     private Date updateDate;
+
+    @Column
     private String notes;
+
+    @Column
     private String rights;
+
+    @Column(name = "refers_to")
     private String refersTo;
+
+    @Column(name = "advisory_name")
     private String advisoryName;
+
+    @Column(name = "advisory_rel")
     private Long advisoryRel;
+
+    @Column(name = "locally_modified")
+    @Type(type = "yes_no")
     private Boolean locallyModified;
+
+    @Column(name = "last_modified", updatable = false, insertable = false)
     private Date lastModified;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "org_id")
     private Org org;
+
+    @OneToMany(mappedBy = "errata", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OrderBy("bug_id ASC")
     private Set<Bug> bugs = new HashSet<>();
+
+    @OneToMany(mappedBy = "owningErrata", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OrderBy("id ASC")
     private Set<ErrataFile> files;
+
+    @OneToMany(mappedBy = "errata", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OrderBy("keyword ASC")
     private Set<Keyword> keywords;
-    private boolean selected;
+
+    @Column(name = "errata_from")
     private String errataFrom;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "severity_id")
     private Severity severity;
 
     /**
@@ -745,38 +847,6 @@ public class Errata extends BaseDomainHelper implements Selectable {
             ErrataFile pf = i.next();
             pf.getChannels().clear();
         }
-    }
-
-    /**
-     * @return whether this object is selectable for RhnSet
-     */
-    @Override
-    public boolean isSelectable() {
-        return true;
-    }
-
-    /**
-     * @return the selected
-     */
-    @Override
-    public boolean isSelected() {
-        return selected;
-    }
-
-    /**
-     * @param isSelected the selected to set
-     */
-    @Override
-    public void setSelected(boolean isSelected) {
-        this.selected = isSelected;
-    }
-
-    /**
-     * @return the selection key
-     */
-    @Override
-    public String getSelectionKey() {
-        return String.valueOf(getId());
     }
 
     /**

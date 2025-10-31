@@ -15,17 +15,32 @@
 package com.redhat.rhn.domain.org.usergroup;
 
 import com.redhat.rhn.domain.role.Role;
+import com.redhat.rhn.domain.role.RoleImpl;
 import com.redhat.rhn.manager.user.UserManager;
 
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+
 
 /**
  * UserExtGroup
  */
+@Entity
+@DiscriminatorValue("null")
 public class UserExtGroup extends ExtGroup {
 
+    @ManyToMany(targetEntity = RoleImpl.class, fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "rhnUserExtGroupMapping",
+            joinColumns = @JoinColumn(name = "ext_group_id"),
+            inverseJoinColumns = @JoinColumn(name = "int_group_type_id"))
     private Set<Role> roles;
 
     /**

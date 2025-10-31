@@ -18,6 +18,7 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.util.SHA256Crypt;
 import com.redhat.rhn.common.util.StringUtil;
+import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.common.FileList;
 import com.redhat.rhn.domain.kickstart.crypto.CryptoKey;
@@ -37,11 +38,14 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.cobbler.CobblerConnection;
 import org.cobbler.Profile;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.SortNatural;
+import org.hibernate.annotations.Type;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -54,39 +58,149 @@ import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
 /**
  * KickstartData - Class representation of the table RhnKSData.
  */
-public class KickstartData {
+@Entity
+@Table(name = "rhnKSData")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "ks_type")
+@DiscriminatorValue("wizard")
+public class KickstartData extends BaseDomainHelper {
 
+    @Id
+    @GeneratedValue(generator = "RHN_KS_ID_SEQ")
+    @GenericGenerator(
+        name = "RHN_KS_ID_SEQ",
+        strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+        parameters = {
+            @Parameter(name = "sequence_name", value = "RHN_KS_ID_SEQ"),
+            @Parameter(name = "increment_size", value = "1")
+        })
     private Long id;
+
+    @Column(name = "ks_type", updatable = false, insertable = false)
     protected String kickstartType;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "org_id", nullable = false)
     private Org org;
+
+    @Column(nullable = false)
     private String label;
+
+    @Column
     private String comments;
+
+    @Column(nullable = false)
+    @Type(type = "yes_no")
     private Boolean active;
+
+    @Column
+    @Type(type = "yes_no")
     private Boolean postLog;
+
+    @Column
+    @Type(type = "yes_no")
     private Boolean preLog;
+
+    @Column(name = "kscfg")
+    @Type(type = "yes_no")
     private Boolean ksCfg;
-    private Date created;
-    private Date modified;
+
+    @Column(name = "is_org_default", nullable = false)
+    @Type(type = "yes_no")
     private boolean isOrgDefault;
+
+    @Column(name = "kernel_params")
     private String kernelParams;
+
+    @Column(name = "nonchrootpost")
+    @Type(type = "yes_no")
     private Boolean nonChrootPost;
+
+    @Column(name = "verboseup2date")
+    @Type(type = "yes_no")
     private Boolean verboseUp2date;
+
+    @Column(name = "cobbler_id")
     private String cobblerId;
+
+    @Column(name = "partition_data")
+    @Type(type = "binary")
     private byte[] partitionData;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "rhnCryptoKeyKickstart",
+            joinColumns = @JoinColumn(name = "ksdata_id"),
+            inverseJoinColumns = @JoinColumn(name = "crypto_key_id"))
     private Set<CryptoKey> cryptoKeys;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "rhnKickstartChildChannel",
+            joinColumns = @JoinColumn(name = "ksdata_id"),
+            inverseJoinColumns = @JoinColumn(name = "channel_id"))
     private Set<Channel> childChannels;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "rhnKickstartDefaultRegtoken",
+            joinColumns = @JoinColumn(name = "kickstart_id"),
+            inverseJoinColumns = @JoinColumn(name = "regtoken_id"))
     private Set<Token> defaultRegTokens;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "rhnKickstartPreserveFileList",
+            joinColumns = @JoinColumn(name = "kickstart_id"),
+            inverseJoinColumns = @JoinColumn(name = "file_list_id"))
     private Set<FileList> preserveFileLists;
+
+    @OneToMany(mappedBy = "ksData", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @SortNatural
     private Set<KickstartPackage> ksPackages = new HashSet<>();
+
+    @OneToMany(mappedBy = "kickstartData", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Collection<KickstartCommand> commands = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "ksdata", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<KickstartIpRange> ips; // rhnKickstartIpRange
+
+    @OneToMany(mappedBy = "ksdata", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<KickstartScript> scripts;      // rhnKickstartScript
+
+    @OneToOne(mappedBy = "ksdata", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private KickstartDefaults kickstartDefaults;
+
+    @Column(name = "no_base")
+    @Type(type = "yes_no")
     private boolean noBase;
+
+    @Column(name = "ignore_missing")
+    @Type(type = "yes_no")
     private boolean ignoreMissing;
+
+    @Column(name = "update_type", nullable = false)
     private String updateType;
 
     private static final Pattern URL_REGEX =
@@ -146,7 +260,7 @@ public class KickstartData {
      * Setter for id
      * @param idIn to set
      */
-    public void setId(Long idIn) {
+    protected void setId(Long idIn) {
         this.id = idIn;
     }
 
@@ -212,38 +326,6 @@ public class KickstartData {
      */
     public void setActive(Boolean activeIn) {
         this.active = activeIn;
-    }
-
-    /**
-     * Getter for created
-     * @return Date to get
-     */
-    public Date getCreated() {
-        return this.created;
-    }
-
-    /**
-     * Setter for created
-     * @param createdIn to set
-     */
-    public void setCreated(Date createdIn) {
-        this.created = createdIn;
-    }
-
-    /**
-     * Getter for modified
-     * @return Date to get
-     */
-    public Date getModified() {
-        return this.modified;
-    }
-
-    /**
-     * Setter for modified
-     * @param modifiedIn to set
-     */
-    public void setModified(Date modifiedIn) {
-        this.modified = modifiedIn;
     }
 
     /**
