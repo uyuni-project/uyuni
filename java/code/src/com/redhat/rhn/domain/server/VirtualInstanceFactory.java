@@ -37,24 +37,16 @@ import javax.persistence.Tuple;
  */
 public class VirtualInstanceFactory extends HibernateFactory {
 
-    private static VirtualInstanceFactory instance = new VirtualInstanceFactory();
+    private static final VirtualInstanceFactory INSTANCE = new VirtualInstanceFactory();
 
     /**
      * Logger for this class
      */
-    private static Logger log = LogManager.getLogger(VirtualInstanceFactory.class);
-
-    private interface HibernateCallback {
-        Object executeInSession(Session session);
-    }
+    private static final Logger LOG = LogManager.getLogger(VirtualInstanceFactory.class);
 
     @Override
     protected Logger getLogger() {
-        return log;
-    }
-
-    private Object execute(HibernateCallback command) {
-        return command.executeInSession(HibernateFactory.getSession());
+        return LOG;
     }
 
     /**
@@ -62,7 +54,7 @@ public class VirtualInstanceFactory extends HibernateFactory {
      * @return VirtualInstanceFactory instance
      */
     public static VirtualInstanceFactory getInstance() {
-        return instance;
+        return INSTANCE;
     }
 
     /**
@@ -99,7 +91,7 @@ public class VirtualInstanceFactory extends HibernateFactory {
      * is found.
      */
     public VirtualInstance lookupById(final Long id) {
-        return instance.lookupObjectByParam(VirtualInstance.class, "id", id);
+        return INSTANCE.lookupObjectByParam(VirtualInstance.class, "id", id);
     }
 
     /**
@@ -112,7 +104,7 @@ public class VirtualInstanceFactory extends HibernateFactory {
      * @param virtualInstance The virtual instance to delete
      */
     public void deleteVirtualInstanceOnly(VirtualInstance virtualInstance) {
-        log.debug("Deleting virtual instance without removing associated objects {}", virtualInstance);
+        LOG.debug("Deleting virtual instance without removing associated objects {}", virtualInstance);
         Server hostSystem = virtualInstance.getHostSystem();
         if (hostSystem != null) {
             hostSystem.removeGuest(virtualInstance);

@@ -411,7 +411,6 @@ public class Org extends BaseDomainHelper implements SaltConfigurable {
      * Gets the number of active org admins in this org.
      * @return Returns the number of active org admins in this org.
      */
-    @SuppressWarnings("unchecked")
     public int numActiveOrgAdmins() {
         Session session = HibernateFactory.getSession();
         return session.createNativeQuery("""
@@ -425,7 +424,7 @@ public class Org extends BaseDomainHelper implements SaltConfigurable {
                             ORDER BY ugm.user_id
                         """, Tuple.class)
                 .setParameter(ORG_ID_KEY, this.getId())
-                .addScalar("user_id", StandardBasicTypes.LONG)
+                .addScalar(USER_ID_KEY, StandardBasicTypes.LONG)
                 .stream()
                 .map(t -> t.get(0, Long.class))
                 .toList()
