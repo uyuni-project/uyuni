@@ -4,39 +4,24 @@
 ARG BASE=registry.suse.com/bci/bci-base:15.7
 FROM $BASE AS base
 
-ARG PRODUCT_REPO
-
-# Add distro and product repos
-COPY add_repos.sh /usr/bin
-RUN sh add_repos.sh ${PRODUCT_REPO}
-
 # Main packages
-COPY remove_unused.sh .
-RUN echo "rpm.install.excludedocs = yes" >>/etc/zypp/zypp.conf
 RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses \
-    openssh-server \
-    openssh \
-    python3 \
-    python3-PyYAML && \
-    sh remove_unused.sh
+        openssh-server \
+        openssh \
+        python3 \
+        python3-PyYAML && \
+    zypper --non-interactive clean --all && \
+    rm -rf /var/log/{alternatives.log,lastlog,tallylog,suseconnect.log,zypper.log,zypp/history,YaST2}
 
 # Additional material
-COPY mgr-proxy-ssh-force-cmd /usr/sbin/mgr-proxy-ssh-force-cmd
-RUN chmod a+x /usr/sbin/mgr-proxy-ssh-force-cmd
+COPY --chmod=a+x mgr-proxy-ssh-force-cmd /usr/sbin/mgr-proxy-ssh-force-cmd
+COPY --chmod=+x uyuni-configure.py /usr/bin/uyuni-configure.py
 
-COPY uyuni-configure.py /usr/bin/uyuni-configure.py
-RUN chmod +x /usr/bin/uyuni-configure.py
-
-# Define slim image
-ARG BASE=registry.suse.com/bci/bci-base:15.7
-FROM $BASE AS slim
-
+# LABELs
 ARG PRODUCT=Uyuni
 ARG VENDOR="Uyuni project"
 ARG URL="https://www.uyuni-project.org/"
 ARG REFERENCE_PREFIX="registry.opensuse.org/uyuni"
-
-COPY --from=base / /
 
 # Build Service required labels
 # labelprefix=org.opensuse.uyuni.proxy-ssh

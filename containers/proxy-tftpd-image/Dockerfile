@@ -6,36 +6,24 @@ FROM $BASE AS base
 
 ARG PRODUCT_REPO
 
-# Add distro and product repos
-COPY add_repos.sh /usr/bin
-RUN sh add_repos.sh ${PRODUCT_REPO}
-
 # Main packages
-COPY remove_unused.sh .
-RUN echo "rpm.install.excludedocs = yes" >>/etc/zypp/zypp.conf
-RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses \
-    python3-PyYAML \
-    python3-fbtftp \
-    python3-requests && \
-    sh remove_unused.sh
+RUN [ -n "$PRODUCT_REPO" ] && zypper addrepo $PRODUCT_REPO product; \
+    zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses \
+        python3-PyYAML \
+        python3-fbtftp \
+        python3-requests && \
+    zypper --non-interactive clean --all && \
+    rm -rf /var/log/{alternatives.log,lastlog,tallylog,suseconnect.log,zypper.log,zypp/history,YaST2}
 
 # Additional material
-COPY uyuni-configure.py /usr/bin/uyuni-configure.py
-RUN chmod +x /usr/bin/uyuni-configure.py
+COPY --chmod=+x uyuni-configure.py /usr/bin/uyuni-configure.py
+COPY --chmod=+x tftp_wrapper.py /usr/bin/tftp_wrapper.py
 
-COPY tftp_wrapper.py /usr/bin/tftp_wrapper.py
-RUN chmod +x /usr/bin/tftp_wrapper.py
-
-# Define slim image
-ARG BASE=registry.suse.com/bci/bci-base:15.7
-FROM $BASE AS slim
-
+# LABELs
 ARG PRODUCT=Uyuni
 ARG VENDOR="Uyuni project"
 ARG URL="https://www.uyuni-project.org/"
 ARG REFERENCE_PREFIX="registry.opensuse.org/uyuni"
-
-COPY --from=base / /
 
 # Build Service required labels
 # labelprefix=org.opensuse.uyuni.proxy-tftpd
