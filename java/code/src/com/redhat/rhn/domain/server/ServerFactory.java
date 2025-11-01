@@ -1108,10 +1108,13 @@ public class ServerFactory extends HibernateFactory {
     public static List<Server> lookupProxiesByOrg(User user) {
 
         return getSession().createNativeQuery("""
-                select     S.*
+                select     S.*,
+                           mi.*,
+                           case when mi.server_id is not null then 1 else 0 end as clazz_
                 from       rhnServer S
                 inner join rhnUserServerPerms USP on USP.server_id = S.id
                 inner join rhnProxyInfo rpi on rpi.server_id = S.id
+                left join  suseMinionInfo mi on mi.server_id = S.id
                 where      S.org_id = :orgId
                 and        USP.user_id = :userId
                 """, Server.class)
