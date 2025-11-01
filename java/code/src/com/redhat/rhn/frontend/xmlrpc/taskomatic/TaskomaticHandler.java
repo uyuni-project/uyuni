@@ -40,7 +40,8 @@ import redstone.xmlrpc.XmlRpcFault;
  */
 public class TaskomaticHandler extends BaseHandler {
 
-    private String TASKOMATIC_NAMESPACE = "tasko";
+    @SuppressWarnings("unchecked")
+    private final String TASKOMATIC_NAMESPACE = "tasko";
     private XmlRpcClient client;
     private static Logger log = LogManager.getLogger(TaskomaticHandler.class);
 

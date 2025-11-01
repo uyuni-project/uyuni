@@ -36,7 +36,7 @@ public class OSImageInspectSlsResult {
         @SerializedName("hash")
         private Checksum checksum;
         private String compression;
-        private String compressed_hash;
+        private String compressedHash;
         private String name;
         private String filepath;
         private String type;
@@ -45,7 +45,7 @@ public class OSImageInspectSlsResult {
         private String version;
         private String filename;
         private String arch;
-        private String build_id;
+        private String buildId;
         private Long size;
 
         /**
@@ -66,7 +66,7 @@ public class OSImageInspectSlsResult {
          * @return the compression checksum
          */
         public String getCompressedHash() {
-            return compressed_hash;
+            return compressedHash;
         }
 
         /**
@@ -129,7 +129,7 @@ public class OSImageInspectSlsResult {
          * @return the build id
          */
         public String getId() {
-            return build_id;
+            return buildId;
         }
 
         /**
@@ -337,7 +337,7 @@ public class OSImageInspectSlsResult {
     }
 
     private Image image;
-    @SerializedName("boot_image")
+    @SerializedName("bootImage")
     private BootImage bootImage;
     private Bundle bundle;
     private List<Bundle> bundles;

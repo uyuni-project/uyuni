@@ -94,6 +94,7 @@ import java.util.TreeMap;
 public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
 
     @RegisterExtension
+    @SuppressWarnings("unchecked")
     protected final JUnit5Mockery CONTEXT = new JUnit5Mockery() {{
         setThreadingPolicy(new Synchroniser());
     }};

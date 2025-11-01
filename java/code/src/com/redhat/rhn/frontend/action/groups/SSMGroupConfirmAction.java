@@ -55,9 +55,16 @@ public class SSMGroupConfirmAction extends RhnAction
     implements Listable<SystemGroupOverview> {
 
     // must match rl:list dataset and name tags!!
+    @SuppressWarnings("unchecked")
     private String ADD_DATA = "addSet";
+
+    @SuppressWarnings("unchecked")
     private String ADD_LIST = "addList";
+
+    @SuppressWarnings("unchecked")
     private String RMV_DATA = "removeSet";
+
+    @SuppressWarnings("unchecked")
     private String RMV_LIST = "removeList";
 
     private static final ServerGroupManager SERVER_GROUP_MANAGER = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
@@ -153,4 +160,3 @@ public class SSMGroupConfirmAction extends RhnAction
         return null;
     }
 }
-

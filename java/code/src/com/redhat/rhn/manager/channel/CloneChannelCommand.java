@@ -39,6 +39,8 @@ public class CloneChannelCommand extends CreateChannelCommand {
 
     private CloneBehavior cloneBehavior;
     private Channel original;
+
+    @SuppressWarnings("unchecked")
     private String DEFAULT_PREFIX = "clone-of-";
     private boolean stripModularMetadata = false;
     private CloudPaygManager cloudPaygManager;

@@ -42,7 +42,7 @@ public class NamedPreparedStatementTest extends RhnBaseTestCase {
     private static final int FIRST_POS = 2;
     private static final int SECOND_POS = 3;
 
-
+    @SuppressWarnings("unchecked")
     private String SIMPLE_QUERY = "SELECT wc.id AS ID, " +
                                   "wc.login, " +
                                   "wc.login_uc " +
@@ -50,6 +50,7 @@ public class NamedPreparedStatementTest extends RhnBaseTestCase {
                                   " WHERE wc.org_id = :org_id " +
                                   " ORDER BY wc.login_uc, wc.id";
 
+    @SuppressWarnings("unchecked")
     private String SIMPLE_QUERY_SUBST = "SELECT wc.id AS ID, " +
                                         "wc.login, " +
                                         "wc.login_uc " +
@@ -57,6 +58,7 @@ public class NamedPreparedStatementTest extends RhnBaseTestCase {
                                         " WHERE wc.org_id = ? " +
                                         " ORDER BY wc.login_uc, wc.id";
 
+    @SuppressWarnings("unchecked")
     private String TWO_VAR_QUERY = "SELECT DISTINCT E.id, E.update_date " +
                                    "FROM rhnErrata E, " +
                                    "rhnServerNeededCache SNC " +
@@ -68,6 +70,7 @@ public class NamedPreparedStatementTest extends RhnBaseTestCase {
                                    "AND SNC.errata_id = E.id " +
                                    "ORDER BY E.update_date, E.id";
 
+    @SuppressWarnings("unchecked")
     private String TWO_VAR_QUERY_SUBST = "SELECT DISTINCT E.id, " +
                                          "E.update_date " +
                                          "FROM rhnErrata E, " +
@@ -80,6 +83,7 @@ public class NamedPreparedStatementTest extends RhnBaseTestCase {
                                          "AND SNC.errata_id = E.id " +
                                          "ORDER BY E.update_date, E.id";
 
+    @SuppressWarnings("unchecked")
     private String COLON_IN_QUOTES = "SELECT 'FOO:BAR:MI:SS' " +
                                      "FROM FOOBAR";
 

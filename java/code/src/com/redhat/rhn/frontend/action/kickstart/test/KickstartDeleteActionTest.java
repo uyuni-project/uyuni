@@ -28,6 +28,7 @@ import org.junit.jupiter.api.Test;
 
 public class KickstartDeleteActionTest extends BaseKickstartEditTestCase {
 
+    @SuppressWarnings("unchecked")
     private final String KICKSTART_ID = "ksid";
 
     @Test

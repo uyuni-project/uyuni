@@ -29,10 +29,10 @@ public enum ListCommand {
     AFTER_RENDER("__tbl__after_render__"),
     TBL_FOOTER("__tbl_footer__");
 
-    private String _cmd;
+    private String cmd;
 
     ListCommand(String cmd) {
-        _cmd = cmd;
+        this.cmd = cmd;
     }
 
     /**
@@ -40,6 +40,6 @@ public enum ListCommand {
      */
     @Override
     public String toString() {
-        return _cmd;
+        return cmd;
     }
 }

@@ -26,10 +26,10 @@ public enum VersionConstraints {
     LATEST(0), ANY(1);
 
     /** This ID corresponds to the id column in the database */
-    private final int ID;
+    private final int id;
 
     VersionConstraints(int id) {
-        ID = id;
+        this.id = id;
     }
 
     /**
@@ -38,7 +38,7 @@ public enum VersionConstraints {
      * @return the id
      */
     public int id() {
-        return ID;
+        return id;
     }
 
     /**

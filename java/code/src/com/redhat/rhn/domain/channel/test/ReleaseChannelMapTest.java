@@ -27,8 +27,13 @@ import org.junit.jupiter.api.Test;
  */
 public class ReleaseChannelMapTest extends BaseTestCaseWithUser {
 
+    @SuppressWarnings("unchecked")
     private final String PRODUCT = "RHEL";
+
+    @SuppressWarnings("unchecked")
     private final String VERSION = "5Server";
+
+    @SuppressWarnings("unchecked")
     private final String RELEASE = "5.0.0";
 
     @Test

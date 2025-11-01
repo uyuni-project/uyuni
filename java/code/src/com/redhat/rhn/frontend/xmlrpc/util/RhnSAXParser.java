@@ -31,7 +31,8 @@ import org.xml.sax.SAXNotSupportedException;
  */
 public class RhnSAXParser extends SAXParser {
     // This is unnecessary functionality for XMLRPC XML parser.
-    private String DISALLOW_DOCTYPE_DECL
+    @SuppressWarnings("unchecked")
+    private final String DISALLOW_DOCTYPE_DECL
         = "http://apache.org/xml/features/disallow-doctype-decl";
 
     /**

@@ -46,9 +46,9 @@ public class NGramTestSetup extends TestCase {
     protected RAMDirectory ngramDir;
     protected RAMDirectory stanDir;
 
-    protected double score_threshold = .10;
-    protected int min_ngram = 1;
-    protected int max_ngram = 5;
+    protected double scoreThreshold = .10;
+    protected int minNgram = 1;
+    protected int maxNgram = 5;
 
     protected List<Map<String,String>> items =
         new LinkedList<Map<String, String>>();
@@ -109,7 +109,7 @@ public class NGramTestSetup extends TestCase {
         IndexWriter stanWriter = new IndexWriter(this.stanDir, new StandardAnalyzer(), true);
 
         this.ngramDir = new RAMDirectory();
-        IndexWriter ngramWriter = new IndexWriter(this.ngramDir, new NGramAnalyzer(min_ngram, max_ngram), true);
+        IndexWriter ngramWriter = new IndexWriter(this.ngramDir, new NGramAnalyzer(minNgram, maxNgram), true);
 
         for (Map<String, String> item: items) {
             String name = item.get("name");
@@ -140,7 +140,7 @@ public class NGramTestSetup extends TestCase {
          */
         int counter = 0;
         for (int i=0; i < hits.length(); i++) {
-            if (hits.score(i) >= score_threshold) {
+            if (hits.score(i) >= scoreThreshold) {
                 counter++;
             }
             else {

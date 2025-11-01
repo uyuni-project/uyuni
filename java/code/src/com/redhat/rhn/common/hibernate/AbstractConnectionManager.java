@@ -46,6 +46,7 @@ import io.prometheus.client.hibernate.HibernateStatisticsCollector;
  */
 abstract class AbstractConnectionManager implements ConnectionManager {
 
+    @SuppressWarnings("unchecked")
     protected final Logger LOG;
 
     protected SessionFactory sessionFactory;

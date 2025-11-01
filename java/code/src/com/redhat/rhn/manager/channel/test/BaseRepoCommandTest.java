@@ -35,7 +35,7 @@ import org.junit.jupiter.api.Test;
 public class BaseRepoCommandTest extends RhnBaseTestCase {
 
     private BaseRepoCommand ccc = null;
-    private int label_count = 0;
+    private int labelCount = 0;
 
     @Override
     @BeforeEach
@@ -115,7 +115,7 @@ public class BaseRepoCommandTest extends RhnBaseTestCase {
         // give it a valid url
         ccc.setUrl(url);
         // need to create unique label names.
-        ccc.setLabel("valid-label-name-" + label_count++);
+        ccc.setLabel("valid-label-name-" + labelCount++);
         // need to specify a type
         ccc.setType(type);
         // need to specify MetadataSigned
@@ -164,7 +164,7 @@ public class BaseRepoCommandTest extends RhnBaseTestCase {
 
     private void validRepoLabelInput(String label) {
         // give it a valid url
-        ccc.setUrl("http://localhost/" + label_count++);
+        ccc.setUrl("http://localhost/" + labelCount++);
         // need to create unique label names.
         ccc.setLabel(label);
         // need to specify a type
