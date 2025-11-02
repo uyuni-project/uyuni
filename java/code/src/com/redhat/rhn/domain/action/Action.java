@@ -118,7 +118,7 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
     @JoinColumn(name = "prerequisite")
     private Action prerequisite;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "action_type")
     private ActionType actionType;
 
