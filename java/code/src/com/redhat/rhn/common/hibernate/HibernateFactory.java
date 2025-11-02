@@ -797,15 +797,15 @@ public abstract class HibernateFactory {
      * Executes a 'lookup' query to retrieve data from the database given a list of ids.
      * The query will be execute in batches of LIST_BATCH_MAX_SIZE ids each.
      * @param <T> the type of the returned objects
-     * @param <ID>
+     * @param <I>
      * @param resultClass the result class
      * @param ids the ids to search for
      * @param sqlQuery the SQL query to be executed
      * @param idsParameterName the name of the parameter to match the ids
      * @return a list of the objects found
      */
-    protected static <T, ID> List<T> findByIds(Class<T> resultClass, List<ID> ids, String sqlQuery,
-                                               String idsParameterName) {
+    protected static <T, I> List<T> findByIds(Class<T> resultClass, List<I> ids, String sqlQuery,
+                                              String idsParameterName) {
         return findByIds(resultClass, ids, sqlQuery, idsParameterName, new HashMap<>());
     }
 
@@ -831,7 +831,7 @@ public abstract class HibernateFactory {
      * Executes a 'lookup' query to retrieve data from the database given a list of ids.
      * The query will be execute in batches of LIST_BATCH_MAX_SIZE ids each.
      * @param <T> the type of the returned objects
-     * @param <ID> the type of the ids
+     * @param <I> the type of the ids
      * @param resultClass the result class
      * @param ids the ids to search for
      * @param sqlQuery the SQL query to be executed
@@ -840,8 +840,8 @@ public abstract class HibernateFactory {
      * @return a list of the objects found
      */
     @SuppressWarnings("unchecked")
-    protected static <T, ID> List<T> findByIds(Class<T> resultClass, List<ID> ids, String sqlQuery,
-                                               String idsParameterName, Map<String, Object> parameters) {
+    protected static <T, I> List<T> findByIds(Class<T> resultClass, List<I> ids, String sqlQuery,
+                                              String idsParameterName, Map<String, Object> parameters) {
         Query<T> query = HibernateFactory.getSession().createQuery(sqlQuery, resultClass);
 
         parameters.forEach(query::setParameter);
