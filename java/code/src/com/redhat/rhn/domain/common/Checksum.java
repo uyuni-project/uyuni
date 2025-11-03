@@ -18,6 +18,8 @@ package com.redhat.rhn.domain.common;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -34,7 +36,10 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "rhnChecksum")
-public class Checksum {
+public class Checksum implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 8883696876618902664L;
 
     @Id
     @GeneratedValue(generator = "rhn_checksum_seq")

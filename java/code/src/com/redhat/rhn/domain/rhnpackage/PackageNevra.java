@@ -18,6 +18,9 @@ package com.redhat.rhn.domain.rhnpackage;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -31,7 +34,10 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "rhnPackageNevra")
-public class PackageNevra {
+public class PackageNevra implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 5428733207958125122L;
 
     @Id
     @GeneratedValue(generator = "pkgnevra_seq")

@@ -15,6 +15,8 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Optional;
 
@@ -32,7 +34,10 @@ import javax.persistence.Transient;
 
 @Entity
 @Table(name = "suseCoCoAttestationResult")
-public class CoCoAttestationResult {
+public class CoCoAttestationResult implements Serializable {
+    @Serial
+    private static final long serialVersionUID = -8527665110758960151L;
+
     private Long id;
     private ServerCoCoAttestationReport report;
     private CoCoResultType resultType;

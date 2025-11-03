@@ -21,6 +21,9 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -34,8 +37,12 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "rhnKickstartCommandName")
-public class KickstartCommandName {
+public class KickstartCommandName implements Serializable {
     public static final String REPO = "repo";
+
+    @Serial
+    private static final long serialVersionUID = 5014180467135195244L;
+
     @Id
     @GeneratedValue(generator = "RHN_KSCOMMANDNAME_ID_SEQ")
     @GenericGenerator(

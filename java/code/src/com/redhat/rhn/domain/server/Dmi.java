@@ -22,6 +22,9 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
@@ -254,7 +257,10 @@ public class Dmi extends BaseDomainHelper {
      * Bios class
      */
     @Embeddable
-    public static class Bios {
+    public static class Bios implements Serializable {
+
+        @Serial
+        private static final long serialVersionUID = -7633424071837169094L;
 
         @Column(name = "bios_vendor")
         private String vendor;

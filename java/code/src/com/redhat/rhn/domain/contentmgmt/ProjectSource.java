@@ -15,6 +15,8 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Optional;
 
 import javax.persistence.Column;
@@ -39,7 +41,10 @@ import javax.persistence.Table;
 @Table(name = "suseContentProjectSource")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "type")
-public abstract class ProjectSource {
+public abstract class ProjectSource implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 7767660718074294645L;
 
     private Long id;
     private Integer position;

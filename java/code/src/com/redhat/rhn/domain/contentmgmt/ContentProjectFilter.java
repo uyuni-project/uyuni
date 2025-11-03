@@ -16,6 +16,9 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -30,7 +33,10 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "suseContentFilterProject")
-public class ContentProjectFilter {
+public class ContentProjectFilter implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = -7815314048984388240L;
 
     private Long id;
     private State state;

@@ -19,6 +19,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -40,7 +42,10 @@ import javax.persistence.Table;
             query = "SELECT MAX(e.version) " +
                     "FROM ContentProjectHistoryEntry e " +
                     "WHERE contentProject = :project")
-public class ContentProjectHistoryEntry {
+public class ContentProjectHistoryEntry implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = -4007161635528460287L;
 
     private Long id;
     private ContentProject contentProject;

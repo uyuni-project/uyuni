@@ -19,6 +19,8 @@ import static org.hibernate.annotations.CacheConcurrencyStrategy.READ_ONLY;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.Immutable;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.TimeZone;
 
 import javax.persistence.Column;
@@ -33,7 +35,10 @@ import javax.persistence.Table;
 @Table(name = "rhnTimeZone")
 @Immutable
 @Cache(usage = READ_ONLY)
-public class RhnTimeZone {
+public class RhnTimeZone implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 5662180343397557513L;
 
     @Id
     @Column(name = "id")
