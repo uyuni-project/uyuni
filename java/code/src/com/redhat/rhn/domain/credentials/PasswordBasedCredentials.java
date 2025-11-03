@@ -19,9 +19,9 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import javax.persistence.Column;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Transient;
+import jakarta.persistence.Column;
+import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.Transient;
 
 @MappedSuperclass
 public abstract class PasswordBasedCredentials extends BaseCredentials {
