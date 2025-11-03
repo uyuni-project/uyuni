@@ -17,10 +17,10 @@ package com.redhat.rhn.domain.action.image;
 
 import com.redhat.rhn.domain.action.Action;
 
-import javax.persistence.CascadeType;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToOne;
 
 /**
  * DeployImageAction - Class representation of image deployment action

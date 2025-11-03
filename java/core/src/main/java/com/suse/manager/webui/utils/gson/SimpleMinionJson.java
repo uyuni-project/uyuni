@@ -18,7 +18,7 @@ package com.suse.manager.webui.utils.gson;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.frontend.dto.BaseTupleDto;
 
-import javax.persistence.Tuple;
+import jakarta.persistence.Tuple;
 
 /**
  * Simple JSON representation of a Salt Minion.

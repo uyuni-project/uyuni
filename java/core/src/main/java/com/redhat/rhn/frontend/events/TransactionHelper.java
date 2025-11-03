@@ -28,7 +28,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-import javax.persistence.PersistenceException;
+import jakarta.persistence.PersistenceException;
 
 /**
  * Offers utility methods to handle database transactions.

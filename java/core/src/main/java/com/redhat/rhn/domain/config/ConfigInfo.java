@@ -21,13 +21,13 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.Immutable;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 /**
  * ConfigInfo - Class representation of the table rhnConfigInfo.
