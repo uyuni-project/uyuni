@@ -604,6 +604,9 @@ public class ActionFactory extends HibernateFactory {
         else if (typeIn.equals(TYPE_SUPPORTDATA_GET)) {
             retval = new SupportDataAction();
         }
+        else if (typeIn.equals(TYPE_VIRT_PROFILE_REFRESH)) {
+            retval = new VirtualInstanceRefreshAction();
+        }
         else {
             retval = new Action();
         }
@@ -867,7 +870,7 @@ public class ActionFactory extends HibernateFactory {
      * @return return a list of server actions
      */
     public static List<ServerAction> listPendingServerActionsByTypes(List<ActionType> typesIn) {
-        return getSession().createQuery("""
+        return getSession().createNativeQuery("""
             SELECT sa.*
               FROM rhnAction a
               JOIN rhnserveraction sa ON a.id = sa.action_id
@@ -876,6 +879,7 @@ public class ActionFactory extends HibernateFactory {
                AND a.earliest_action <= current_timestamp
             """, ServerAction.class)
                 .setParameterList("types", typesIn.stream().map(ActionType::getId).toList())
+                .addSynchronizedEntityClass(Action.class)
                 .list();
     }
 
