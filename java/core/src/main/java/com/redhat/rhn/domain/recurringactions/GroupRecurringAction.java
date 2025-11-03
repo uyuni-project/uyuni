@@ -33,11 +33,11 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Transient;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Transient;
 
 /**
  * Recurring Action for server group implementation

@@ -16,8 +16,8 @@
 package com.redhat.rhn.domain.action.kickstart;
 
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
 
 /**
  * KickstartInitiateGuestAction

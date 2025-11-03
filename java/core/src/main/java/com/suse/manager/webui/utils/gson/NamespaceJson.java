@@ -17,7 +17,7 @@ package com.suse.manager.webui.utils.gson;
 
 import com.redhat.rhn.frontend.dto.BaseTupleDto;
 
-import javax.persistence.Tuple;
+import jakarta.persistence.Tuple;
 
 /**
  * Simple JSON representation of {@link com.redhat.rhn.domain.access.Namespace} for listing roles
