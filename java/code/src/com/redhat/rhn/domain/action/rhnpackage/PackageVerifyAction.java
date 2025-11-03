@@ -21,8 +21,8 @@ import com.redhat.rhn.domain.action.server.ServerAction;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
 
 /**
  * PackageVerifyAction
