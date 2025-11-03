@@ -19,6 +19,9 @@ package com.redhat.rhn.domain.rpm;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -30,7 +33,10 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "rhnSourceRpm")
-public class SourceRpm {
+public class SourceRpm implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 6588701748928726469L;
 
     @Id
     @GeneratedValue(generator = "RHN_SOURCERPM_ID_SEQ")

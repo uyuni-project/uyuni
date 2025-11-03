@@ -15,6 +15,8 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Optional;
 
@@ -39,7 +41,10 @@ import javax.persistence.Table;
 @Table(name = "suseContentEnvironmentTarget")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "type")
-public abstract class EnvironmentTarget {
+public abstract class EnvironmentTarget implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = -764569287303965488L;
 
     private Long id;
     private ContentEnvironment contentEnvironment;

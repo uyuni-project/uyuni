@@ -21,6 +21,9 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.Immutable;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -34,7 +37,10 @@ import javax.persistence.Table;
 @Table(name = "rhnClientCapabilityName")
 @Immutable
 @Cache(usage = READ_ONLY)
-public class Capability {
+public class Capability implements Serializable {
+    @Serial
+    private static final long serialVersionUID = -7178061911138575661L;
+
     @Id
     private Long id;
     @Column

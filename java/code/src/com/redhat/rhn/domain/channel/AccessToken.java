@@ -22,6 +22,8 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
@@ -42,7 +44,10 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "suseChannelAccessToken")
-public class AccessToken {
+public class AccessToken implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = -6987986592710703016L;
 
     @Id
     @GeneratedValue(generator = "suse_chan_access_token_seq")

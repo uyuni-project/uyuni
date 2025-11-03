@@ -20,6 +20,9 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -32,7 +35,10 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "rhnCve")
-public class Cve {
+public class Cve implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 2046672870410666138L;
 
     @Id
     @GeneratedValue(generator = "cve_seq")
