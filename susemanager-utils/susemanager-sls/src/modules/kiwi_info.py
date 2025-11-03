@@ -127,6 +127,13 @@ def parse_kiwi_result(dest):
         )
         if result["retcode"] == 0:
             ret = json.loads(result["stdout"])
+        else:
+            # pylint: disable-next=undefined-variable
+            result = __salt__["cmd.exec_code_all"](
+                "/usr/bin/python3.11", _kiwi_result_script, args=[path]
+            )
+            if result["retcode"] == 0:
+                ret = json.loads(result["stdout"])
         # else return empty dict
 
     return ret

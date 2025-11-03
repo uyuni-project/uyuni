@@ -12,7 +12,11 @@
 {%- if kiwi_method == 'legacy' %}
 {%-   set kiwi_modules = ['kiwi', 'kiwi-desc-netboot', 'kiwi-desc-saltboot', 'kiwi-desc-vmxboot', 'kiwi-desc-oemboot', 'kiwi-desc-isoboot'] %}
 {%- elif kiwi_method == 'kiwi-ng' %}
-{%-   set kiwi_modules = ['python3-kiwi', 'kiwi-systemdeps-disk-images', 'kiwi-systemdeps-image-validation', 'kiwi-systemdeps-iso-media', 'kiwi-systemdeps-containers', 'kiwi-boot-descriptions'] %}
+{%-   if grains['osfullname'] == "SLES" and grains['osrelease'] in ['15.6', '15.7'] %}
+{%-      set kiwi_modules = ['python311-kiwi', 'kiwi-systemdeps-disk-images', 'kiwi-systemdeps-image-validation', 'kiwi-systemdeps-iso-media', 'kiwi-systemdeps-containers', 'kiwi-boot-descriptions'] %}
+{%-   else %}
+{%-      set kiwi_modules = ['python3-kiwi', 'kiwi-systemdeps-disk-images', 'kiwi-systemdeps-image-validation', 'kiwi-systemdeps-iso-media', 'kiwi-systemdeps-containers', 'kiwi-boot-descriptions'] %}
+{%-   endif %}
 {%- elif kiwi_method == 'podman' %}
 {#- TODO: add kiwi container rpm once available#}
 {%-   set kiwi_modules = ['podman', 'xorriso'] %}
