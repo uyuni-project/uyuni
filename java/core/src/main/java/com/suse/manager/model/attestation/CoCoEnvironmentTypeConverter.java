@@ -14,8 +14,8 @@
  */
 package com.suse.manager.model.attestation;
 
-import javax.persistence.AttributeConverter;
-import javax.persistence.Converter;
+import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
 
 @Converter(autoApply = true)
 public class CoCoEnvironmentTypeConverter implements AttributeConverter<CoCoEnvironmentType, Long> {
