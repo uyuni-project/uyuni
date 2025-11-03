@@ -25,9 +25,9 @@ import org.apache.logging.log4j.Logger;
 import java.util.Set;
 import java.util.function.Predicate;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.Transient;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Transient;
 
 @Entity
 @DiscriminatorValue("ptf")

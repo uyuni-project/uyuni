@@ -38,8 +38,8 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.persistence.PersistenceException;
-import javax.persistence.Tuple;
+import jakarta.persistence.PersistenceException;
+import jakarta.persistence.Tuple;
 
 /**
  * Helps building paged SQL queries
