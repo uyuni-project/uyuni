@@ -7,14 +7,11 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 
 package com.redhat.rhn.common;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -32,6 +29,17 @@ public class UyuniErrorReport {
      */
     public void register(String message) {
         errors.add(new UyuniError(message));
+    }
+
+    /**
+     * Registers a new error in the error report with formatted message.
+     *
+     * @param format    The format string with {} placeholders.
+     * @param arguments The arguments to substitute into the placeholders.
+     */
+    public void register(String format, Object... arguments) {
+        String formattedMessage = format == null ? null : MessageFormat.format(format, arguments);
+        errors.add(new UyuniError(formattedMessage));
     }
 
     /**
@@ -65,6 +73,14 @@ public class UyuniErrorReport {
      */
     public void report() {
         ErrorReportingStrategies.validationReportingStrategy().report(errors);
+    }
+
+    /**
+     * Returns all error messages as a string array
+     * @return String array of error messages
+     */
+    public String[] getErrorMessages() {
+        return errors.stream().map(UyuniError::getMessage).toList().toArray(new String[0]);
     }
 
 }

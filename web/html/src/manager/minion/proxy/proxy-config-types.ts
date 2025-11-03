@@ -39,18 +39,18 @@ export type ProxyConfigModel = {
   registryTftpdTag: string;
 };
 
-export type Parent = {
+export interface Parent {
   id: number;
   name: string;
   selected: boolean;
   disabled: boolean;
-};
+}
 
 export type ProxyConfigProps = {
   serverId: string;
   parents: Parent[];
   currentConfig: ProxyConfigModel;
-  initFailMessage?: string;
+  validationErrors?: string[];
   registryUrlExample?: string;
   registryTagExample?: string;
   hasCertificates?: boolean;

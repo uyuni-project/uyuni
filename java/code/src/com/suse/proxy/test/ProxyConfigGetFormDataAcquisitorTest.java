@@ -24,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -61,8 +62,8 @@ public class ProxyConfigGetFormDataAcquisitorTest extends BaseTestCaseWithUser {
     @Test
     public void testWhenNoProxyConfigAndNoProxies() {
         final String expectedElectableParent = Config.get().getString(ConfigDefaults.SERVER_HOSTNAME);
-        ProxyConfigGetFormDataContext proxyConfigGetFormDataContext =
-                new ProxyConfigGetFormDataContext(user, testMinionServer, null);
+        ProxyConfigGetFormDataContext proxyConfigGetFormDataContext = new ProxyConfigGetFormDataContext(user,
+                testMinionServer, null, GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER);
 
         //
         new ProxyConfigGetFormDataAcquisitor().handle(proxyConfigGetFormDataContext);
@@ -104,8 +105,8 @@ public class ProxyConfigGetFormDataAcquisitorTest extends BaseTestCaseWithUser {
                 proxyB.getName(),
         };
 
-        ProxyConfigGetFormDataContext proxyConfigGetFormDataContext =
-                new ProxyConfigGetFormDataContext(user, testMinionServer, new ProxyConfig());
+        ProxyConfigGetFormDataContext proxyConfigGetFormDataContext = new ProxyConfigGetFormDataContext(user,
+                testMinionServer, new ProxyConfig(), GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER);
 
         //
         new ProxyConfigGetFormDataAcquisitor().handle(proxyConfigGetFormDataContext);
