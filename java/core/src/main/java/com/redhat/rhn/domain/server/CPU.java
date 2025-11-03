@@ -385,7 +385,7 @@ public class CPU extends BaseDomainHelper {
      *
      * @return the arch that the cpu is.
      */
-    public String getArchName() {
+    public String  getArchName() {
         return arch.getName();
     }
 
