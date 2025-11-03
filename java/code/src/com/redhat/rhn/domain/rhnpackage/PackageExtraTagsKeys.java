@@ -17,13 +17,17 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -35,9 +39,15 @@ import javax.persistence.TemporalType;
 @Table(name = "rhnPackageExtraTagKey")
 public class PackageExtraTagsKeys implements Serializable {
 
+    @Serial
+    private static final long serialVersionUID = 8834129583627927866L;
+
     private Long id;
     private String name;
     private Date created;
+
+    private Set<PackageExtraTag> tags;
+
 
     /**
      * @return id to get
@@ -61,6 +71,21 @@ public class PackageExtraTagsKeys implements Serializable {
      */
     public void setId(Long idIn) {
         this.id = idIn;
+    }
+
+    /**
+     * @return return the tag
+     */
+    @OneToMany(mappedBy = "key", cascade = CascadeType.ALL, orphanRemoval = true)
+    public Set<PackageExtraTag> getTags() {
+        return tags;
+    }
+
+    /**
+     * @param tagsIn the tag to set
+     */
+    public void setTags(Set<PackageExtraTag> tagsIn) {
+        tags = tagsIn;
     }
 
     /**

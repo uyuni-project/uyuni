@@ -27,6 +27,7 @@ import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.HardwareRefreshAction;
 import com.redhat.rhn.domain.action.RebootAction;
+import com.redhat.rhn.domain.action.VirtualInstanceRefreshAction;
 import com.redhat.rhn.domain.action.config.ConfigAction;
 import com.redhat.rhn.domain.action.config.ConfigDateDetails;
 import com.redhat.rhn.domain.action.config.ConfigDateFileAction;
@@ -78,6 +79,8 @@ import org.junit.jupiter.api.Test;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -127,6 +130,26 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
 
         Action action = ActionFactory.lookupLastCompletedAction(user, ActionFactory.TYPE_CONFIGFILES_DEPLOY, server);
         assertEquals(a, action);
+    }
+
+    /**
+     * Test listing of pending actions
+     * @throws Exception exceptions
+     */
+    @Test
+    public void testListPendingActions() throws Exception {
+        VirtualInstanceRefreshAction a = (VirtualInstanceRefreshAction) createAction(user,
+                ActionFactory.TYPE_VIRT_PROFILE_REFRESH);
+        assertInstanceOf(VirtualInstanceRefreshAction.class, a);
+        //complete it
+        assertNotNull(a.getServerActions());
+        Date earliest = Date.from(LocalDateTime.now().minusHours(1).atZone(ZoneId.systemDefault()).toInstant());
+        a.setEarliestAction(earliest);
+
+        List<ServerAction> sa = ActionFactory.listPendingServerActionsByTypes(
+                List.of(ActionFactory.TYPE_VIRT_PROFILE_REFRESH));
+
+        assertEquals(1, sa.size());
     }
 
     /**
@@ -497,6 +520,9 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
         else if (newA instanceof DaemonConfigAction newAction) {
             setupTestDaemonConfigAction(newAction);
         }
+        else if (newA instanceof VirtualInstanceRefreshAction newAction) {
+            setupTestVirtualInstRefAction(newAction, user);
+        }
 
         newA.setName("RHN-JAVA Test Action");
         newA.setActionType(type);
@@ -554,6 +580,11 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
                 ConfigurationFactory.lookupOrInsertConfigFileName("/etc/bar");
         cua.addConfigFileName(name1, newS);
         cua.addConfigFileName(name2, newS);
+    }
+
+    private static void setupTestVirtualInstRefAction(VirtualInstanceRefreshAction newA, User userIn) {
+        Server newS = ServerFactoryTest.createTestServer(userIn, true);
+        newA.addServerAction(ServerActionTest.createServerAction(newS, newA));
     }
 
     private static void setupTestConfigDeployAction(ConfigDeployAction newA, User user) {

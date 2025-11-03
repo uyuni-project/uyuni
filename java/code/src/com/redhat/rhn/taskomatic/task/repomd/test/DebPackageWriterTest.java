@@ -64,8 +64,8 @@ public class DebPackageWriterTest extends JMockBaseTestCaseWithUser {
 
         Package pkg1 = PackageManagerTest.addPackageToChannel("pkg_1", channel);
         pkg1.setVendor(null);
-        pkg1.getExtraTags().put(tag1, "value1");
-        pkg1.getExtraTags().put(tag2, "value2");
+        pkg1.getExtraTags().add(PackageManagerTest.createExtraTag(tag1, "value1", pkg1));
+        pkg1.getExtraTags().add(PackageManagerTest.createExtraTag(tag2, "value2", pkg1));
 
         PackageCapability cap1 = PackageCapabilityTest.createTestCapability("python:any _0");
         cap1.setVersion(" 2.4~");
@@ -85,8 +85,8 @@ public class DebPackageWriterTest extends JMockBaseTestCaseWithUser {
         pkg1.getRequires().add(req2);
 
         Package pkg2 = PackageManagerTest.addPackageToChannel("pkg_2", channel);
-        pkg2.getExtraTags().put(tag2, "value2");
-        pkg2.getExtraTags().put(tag3, "value3");
+        pkg2.getExtraTags().add(PackageManagerTest.createExtraTag(tag2, "value2", pkg2));
+        pkg2.getExtraTags().add(PackageManagerTest.createExtraTag(tag3, "value3", pkg2));
 
         Package pkg3 = PackageManagerTest.addPackageToChannel("pkg_3", channel);
 

@@ -248,6 +248,7 @@ import com.redhat.rhn.domain.recurringactions.state.RecurringInternalState;
 import com.redhat.rhn.domain.recurringactions.type.RecurringHighstate;
 import com.redhat.rhn.domain.recurringactions.type.RecurringPlaybook;
 import com.redhat.rhn.domain.recurringactions.type.RecurringState;
+import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageBreaks;
 import com.redhat.rhn.domain.rhnpackage.PackageCapability;
@@ -255,6 +256,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageConflicts;
 import com.redhat.rhn.domain.rhnpackage.PackageDelta;
 import com.redhat.rhn.domain.rhnpackage.PackageEnhances;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
+import com.redhat.rhn.domain.rhnpackage.PackageExtraTag;
 import com.redhat.rhn.domain.rhnpackage.PackageExtraTagsKeys;
 import com.redhat.rhn.domain.rhnpackage.PackageFile;
 import com.redhat.rhn.domain.rhnpackage.PackageGroup;
@@ -596,6 +598,7 @@ public class AnnotationRegistry {
             OrgRecurringAction.class,
             OrgStateRevision.class,
             OrgUserExtGroup.class,
+            Package.class,
             PackageAction.class,
             PackageActionDetails.class,
             PackageActionRemovalFailure.class,
@@ -609,6 +612,7 @@ public class AnnotationRegistry {
             PackageDeltaAction.class,
             PackageEnhances.class,
             PackageEvr.class,
+            PackageExtraTag.class,
             PackageExtraTagsKeys.class,
             PackageFile.class,
             PackageFilter.class,
