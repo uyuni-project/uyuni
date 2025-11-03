@@ -693,7 +693,7 @@ public class ServerFactory extends HibernateFactory {
             }
 
             final RpmVersionComparator rpmVersionComparator = new RpmVersionComparator();
-            if (server.isSLES15()) {
+            if (server.isSLES15() || server.isSLES16()) {
                 return rpmVersionComparator.compare(zypperEvr.getVersion(), "1.14.59") >= 0;
             }
             else if (server.isSLES12()) {
