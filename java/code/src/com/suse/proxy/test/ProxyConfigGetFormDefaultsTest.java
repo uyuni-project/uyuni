@@ -27,6 +27,7 @@ import static com.suse.proxy.get.formdata.ProxyConfigGetFormDefaults.MLM_REGISTR
 import static com.suse.proxy.get.formdata.ProxyConfigGetFormDefaults.UYUNI_REGISTRY_URL_EXAMPLE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -98,8 +99,8 @@ public class ProxyConfigGetFormDefaultsTest extends BaseTestCaseWithUser {
         setConfigDefaultsInstance(mockConfigDefaults);
 
         //
-        ProxyConfigGetFormDataContext proxyConfigGetFormDataContext =
-                new ProxyConfigGetFormDataContext(user, testMinionServer, null);
+        ProxyConfigGetFormDataContext proxyConfigGetFormDataContext = new ProxyConfigGetFormDataContext(user,
+                testMinionServer, null, GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER);
 
         //
         new ProxyConfigGetFormDefaults().handle(proxyConfigGetFormDataContext);
@@ -136,8 +137,8 @@ public class ProxyConfigGetFormDefaultsTest extends BaseTestCaseWithUser {
 
 
         //
-        ProxyConfigGetFormDataContext proxyConfigGetFormDataContext =
-                new ProxyConfigGetFormDataContext(user, testMinionServer, null);
+        ProxyConfigGetFormDataContext proxyConfigGetFormDataContext = new ProxyConfigGetFormDataContext(user,
+                testMinionServer, null, GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER);
 
         //
         new ProxyConfigGetFormDefaults().handle(proxyConfigGetFormDataContext);

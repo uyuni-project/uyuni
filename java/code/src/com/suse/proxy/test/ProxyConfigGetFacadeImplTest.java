@@ -7,32 +7,38 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 
 package com.suse.proxy.test;
 
+import static com.suse.proxy.get.ProxyConfigGetFacadeImpl.MGRPXY;
 import static com.suse.proxy.test.ProxyConfigUpdateTestUtils.DUMMY_PARENT_FQDN;
 import static com.suse.proxy.test.ProxyConfigUpdateTestUtils.DUMMY_PROXY_FQDN;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Pillar;
-import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
+import com.redhat.rhn.domain.server.test.ServerFactoryTest;
+import com.redhat.rhn.manager.rhnpackage.test.PackageManagerTest;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.proxy.ProxyConfigUtils;
 import com.suse.proxy.get.ProxyConfigGetFacadeImpl;
 import com.suse.proxy.model.ProxyConfig;
+
+import com.google.gson.Gson;
 
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
@@ -120,14 +126,18 @@ public class ProxyConfigGetFacadeImplTest extends BaseTestCaseWithUser {
     public void getFormDataWithNullServer() {
         final String expectedCurrentConfig = "{}";
         final String expectedParents = "[]";
-        final String expectedInitFailMessage = "Server not found";
+        final String[] expectedValidationErrorMessages = { "Server not found" };
 
         //
-        Map<String, Object> formData = new ProxyConfigGetFacadeImpl().getFormData(user, null);
+        Map<String, Object> formData = new ProxyConfigGetFacadeImpl().getFormData(user, null,
+                GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER);
 
         assertEquals(expectedCurrentConfig, formData.get("currentConfig"));
         assertEquals(expectedParents, formData.get("parents"));
-        assertEquals(expectedInitFailMessage, formData.get("initFailMessage"));
+
+        String validationErrorsJson = (String) formData.get("validationErrors");
+        String[] errors = new Gson().fromJson(validationErrorsJson, String[].class);
+        assertArrayEquals(expectedValidationErrorMessages, errors);
     }
 
     /**
@@ -135,14 +145,17 @@ public class ProxyConfigGetFacadeImplTest extends BaseTestCaseWithUser {
      */
     @SuppressWarnings({"java:S3599", "java:S1171"})
     @Test
-    public void getFormDataWithWhenNewProxyConfiguration() throws NoSuchFieldException, IllegalAccessException {
+    public void getFormDataWithWhenNewProxyConfiguration() throws Exception {
         final String expectedCurrentConfig = "{\"sourceMode\":\"rpm\",\"registryMode\":\"simple\"," +
                 "\"registryBaseTag\":\"99.98.97\",\"registryBaseURL\":" +
                 "\"registry.suse.com/suse/multi-linux-manager/99.98/x86_64\"}";
         final String expectedParents = "[\"" + Config.get().getString(ConfigDefaults.SERVER_HOSTNAME) + "\"]";
 
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
-        minion.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
+        Server server = ServerFactoryTest.createTestServer(user, false,
+                ServerConstants.getServerGroupTypeProxyEntitled(),
+                ServerFactoryTest.TYPE_SERVER_PROXY);
+        Channel channel = ChannelFactoryTest.createTestChannel(user);
+        PackageManagerTest.addPackageToSystemAndChannel(MGRPXY, server, channel);
 
         // mocking the ConfigDefaults
         ConfigDefaults mockConfigDefaults = context.mock(ConfigDefaults.class);
@@ -156,11 +169,12 @@ public class ProxyConfigGetFacadeImplTest extends BaseTestCaseWithUser {
         setConfigDefaultsInstance(mockConfigDefaults);
 
         //
-        Map<String, Object> formData = new ProxyConfigGetFacadeImpl().getFormData(user, minion);
+        Map<String, Object> formData = new ProxyConfigGetFacadeImpl().getFormData(user, server,
+                GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER);
 
         assertEquals(expectedCurrentConfig, formData.get("currentConfig"));
         assertEquals(expectedParents, formData.get("parents"));
-        assertNull(formData.get("initFailMessage"));
+        assertEquals("[]", formData.get("validationErrors"));
     }
 
     /**
@@ -176,4 +190,5 @@ public class ProxyConfigGetFacadeImplTest extends BaseTestCaseWithUser {
         field.setAccessible(true);
         field.set(null, configDefaultsIn);
     }
+
 }

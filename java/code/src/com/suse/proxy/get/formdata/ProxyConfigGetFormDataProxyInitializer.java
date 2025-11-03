@@ -15,76 +15,117 @@
 
 package com.suse.proxy.get.formdata;
 
-import com.redhat.rhn.GlobalInstanceHolder;
+import static java.util.Collections.singleton;
+
 import com.redhat.rhn.common.validator.ValidatorResult;
+import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.server.ProxyInfo;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
+
 /**
- * Ensures the correct behavior of the "Convert to Proxy" button.
- * If the server is convertible to a proxy and:
- * a) Does not have the proxy entitlement, it is added.
- * b) Does not have a {@link ProxyInfo}, it is created.
+ * Ensures the server is properly initialized for proxy configuration.
+ * This means:
+ * a) If server does not have a {@link ProxyInfo}, it is created.
+ * b) If server does not have a proxy entitlement, it is added.
+ * c) If server is not subscribed to the appropriate proxy extension channel,it is subscribed to it.
  */
 public class ProxyConfigGetFormDataProxyInitializer implements ProxyConfigGetFormDataContextHandler {
     private static final Logger LOG = LogManager.getLogger(ProxyConfigGetFormDataProxyInitializer.class);
-    private static final SystemEntitlementManager SYSTEM_ENTITLEMENT_MANAGER =
-            GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER;
+
+    private Server server;
+    private User user;
 
     @Override
     public void handle(ProxyConfigGetFormDataContext context) {
-        Server server = context.getServer();
-        if (!server.isConvertibleToProxy()) {
-            return;
+        this.server = context.getServer();
+        this.user = context.getUser();
+
+        ensureServerHasProxyInfo();
+
+        if (!ensureServerHasProxyEntitlement(context.getSystemEntitlementManager())) {
+            context.getErrorReport().register("Failed to add proxy entitlement to server ID {0}", server.getId());
         }
 
-        ensureServerHasProxyInfo(server);
-        if (!ensureServerHasProxyEntitlement(context)) {
-            context.setInitFailMessage("Failed to add proxy entitlement to server.");
+        if (!ensureMgrpxyIsAvailable(context)) {
+            context.getErrorReport().register(
+                    "Failed to subscribe to appropriate proxy extension channel for server ID {0}", server.getId());
         }
     }
 
     /**
      * Ensures that the server has a {@link ProxyInfo}.
-     *
-     * @param server the server
      */
-    public void ensureServerHasProxyInfo(Server server) {
+    private void ensureServerHasProxyInfo() {
         if (server.getProxyInfo() != null) {
             return;
         }
 
+        LOG.debug("ProxyInfo not found for server. Creating new ProxyInfo for server ID: {}", server.getId());
         ProxyInfo proxyInfo = new ProxyInfo();
         proxyInfo.setServer(server);
         server.setProxyInfo(proxyInfo);
         SystemManager.updateSystemOverview(server.getId());
     }
 
-    private boolean ensureServerHasProxyEntitlement(ProxyConfigGetFormDataContext context) {
-        Server server = context.getServer();
+    /**
+     * Ensures server has a proxy entitlement
+     * @param systemEntitlementManager the System Entitlement Manager
+     * @return true if the server has proxy entitlement, false otherwise
+     */
+    private boolean ensureServerHasProxyEntitlement(SystemEntitlementManager systemEntitlementManager) {
         if (server.hasProxyEntitlement()) {
             return true;
         }
 
-        if (!SYSTEM_ENTITLEMENT_MANAGER.canEntitleServer(server, EntitlementManager.PROXY)) {
-            LOG.error("Server is not entitleable for proxy entitlement. ID: {}", server.getId());
-            return false;
-        }
-
-        ValidatorResult result = SYSTEM_ENTITLEMENT_MANAGER.addEntitlementToServer(server, EntitlementManager.PROXY);
-        if (!result.getErrors().isEmpty()) {
+        ValidatorResult result = systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.PROXY);
+        if (result.hasErrors()) {
             LOG.error("Failed to add proxy entitlement to server. ID: {}, Errors: {}",
                     server.getId(), result.getErrors());
-            return false;
         }
 
-        return true;
+        return !result.hasErrors();
     }
 
+     /**
+      * Ensure mgrpxy package is available on the server by subscribing to appropriate channels.
+      * @param context the ProxyConfigGetFormDataContext
+      * @return true if mgrpxy is available, false otherwise
+      */
+    private boolean ensureMgrpxyIsAvailable(ProxyConfigGetFormDataContext context) {
+        Set<Channel> subscribableChannels = context.getSubscribableChannels();
+        if (context.getSubscribableChannels().isEmpty()) {
+            return true;
+        }
+
+        Set<Channel> newChildChannels = new HashSet<>(server.getChildChannels());
+        newChildChannels.addAll(subscribableChannels);
+
+        try {
+            ActionChainManager.scheduleSubscribeChannelsAction(user,
+                    singleton(server.getId()),
+                    Optional.ofNullable(server.getBaseChannel()),
+                    newChildChannels,
+                    new Date(System.currentTimeMillis() - 1000), null);
+        }
+        catch (TaskomaticApiException e) {
+            LOG.error("Failed to subscribe server to proxy extensions channels {}. ID: {}, Error: {}",
+                    subscribableChannels, server.getId(), e.getMessage());
+            return false;
+        }
+        return true;
+    }
 }

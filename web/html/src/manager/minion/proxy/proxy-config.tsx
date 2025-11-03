@@ -22,7 +22,7 @@ export function ProxyConfig({
   serverId,
   parents,
   currentConfig,
-  initFailMessage,
+  validationErrors,
   registryUrlExample,
   registryTagExample,
   hasCertificates,
@@ -46,9 +46,9 @@ export function ProxyConfig({
   useEffect(() => {
     setModel((prev) => ({ ...prev }));
 
-    if (initFailMessage) {
+    if (validationErrors && validationErrors.length > 0) {
       setSuccess(false);
-      setMessages([initFailMessage]);
+      setMessages(validationErrors);
     }
   }, [currentConfig]);
 
@@ -141,7 +141,7 @@ export function ProxyConfig({
     >
       <p>{t("Convert an already onboarded minion to a proxy or update the configuration of an existing proxy.")}</p>
       {ContainerConfigMessages(success, messages, loading)}
-      {!initFailMessage && (
+      {(!validationErrors || validationErrors.length === 0) && (
         <Form
           className=""
           divClass="row"

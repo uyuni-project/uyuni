@@ -68,4 +68,19 @@ public class ErrorReportingStrategies {
             return new RhnRuntimeException(message);
         };
     }
+
+    /**
+     * All errors are logged using the logger of the provided object
+     * @param obj Object to log
+     * @return UyuniReportStrategy
+     */
+    public static UyuniReportStrategy<UyuniError> logReportingStrategy(Object obj) {
+        Logger logger = OBJ_LOGGER.computeIfAbsent(obj, key -> LogManager.getLogger(obj.getClass().getName()));
+
+        return errors -> {
+            for (UyuniError error : errors) {
+                logger.error(error.getMessage());
+            }
+        };
+    }
 }

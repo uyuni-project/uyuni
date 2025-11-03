@@ -7,17 +7,15 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 
 package com.redhat.rhn.common.test;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -51,12 +49,16 @@ public class UyuniErrorReportTest {
 
     @Test
     public void testGetErrors() {
-        errorReport.register("Test error 1");
-        errorReport.register("Test error 2");
+        final String dummyError1 = "Test error 1";
+        final String dummyError2 = "Test error 2";
+        errorReport.register(dummyError1);
+        errorReport.register(dummyError2);
         List<UyuniError> errors = errorReport.getErrors();
+        String[] expectedMessages = {dummyError1, dummyError2};
         assertEquals(2, errors.size());
-        assertEquals("Test error 1", errors.get(0).getMessage());
-        assertEquals("Test error 2", errors.get(1).getMessage());
+        assertEquals(dummyError1, errors.get(0).getMessage());
+        assertEquals(dummyError2, errors.get(1).getMessage());
+        assertArrayEquals(expectedMessages, errorReport.getErrorMessages());
     }
 
     @Test
@@ -75,5 +77,31 @@ public class UyuniErrorReportTest {
     @Test
     public void testReportWithDefaultStrategyNoException() {
         assertDoesNotThrow(() -> errorReport.report());
+    }
+
+    @Test
+    public void testRegisterWithFormatString() {
+        errorReport.register("Failed to subscribe server ID {0} to channels: {1}. Error: {2}",
+                123, "channel1, channel2", "Network error");
+        List<UyuniError> errors = errorReport.getErrors();
+        assertEquals(1, errors.size());
+        assertEquals("Failed to subscribe server ID 123 to channels: channel1, channel2. Error: Network error",
+                errors.get(0).getMessage());
+    }
+
+    @Test
+    public void testRegisterWithNullArguments() {
+        errorReport.register("Error with null value: {0}", (Object) null);
+        List<UyuniError> errors = errorReport.getErrors();
+        assertEquals(1, errors.size());
+        assertEquals("Error with null value: null", errors.get(0).getMessage());
+    }
+
+    @Test
+    public void testRegisterWithNullFormatString() {
+        errorReport.register(null, "arg1", "arg2");
+        List<UyuniError> errors = errorReport.getErrors();
+        assertEquals(1, errors.size());
+        assertNull(errors.get(0).getMessage());
     }
 }
