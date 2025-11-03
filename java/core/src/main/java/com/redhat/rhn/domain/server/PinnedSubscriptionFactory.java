@@ -24,7 +24,7 @@ import org.hibernate.type.StandardBasicTypes;
 
 import java.util.List;
 
-import javax.persistence.TypedQuery;
+import jakarta.persistence.TypedQuery;
 
 /**
  * A factory for creating PinnedSubscription objects.
