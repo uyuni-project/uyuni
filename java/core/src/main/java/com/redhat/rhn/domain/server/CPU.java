@@ -17,22 +17,27 @@ package com.redhat.rhn.domain.server;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 
+import com.suse.utils.Json;
+
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.lang.reflect.Type;
+import java.util.Collections;
 import java.util.Map;
-import java.util.TreeMap;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 /**
  * CPU
@@ -91,9 +96,9 @@ public class CPU extends BaseDomainHelper {
      * This field stores CPU architecture-specific information. Although the corresponding database field is of type
      * JSONB, it is mapped here as a String due to limitations in XML mapping for JSON types.
      */
-    @org.hibernate.annotations.Type(type = "json")
-    @Column(columnDefinition = "jsonb", name = "arch_specs")
-    private Map<String, Object> archSpecs = new TreeMap<>();
+    @Column(name = "arch_specs")
+    @org.hibernate.annotations.Type(type = "jsonb")
+    private String archSpecs;
 
     /**
      * @return Returns the acpiVersion.
@@ -386,14 +391,32 @@ public class CPU extends BaseDomainHelper {
     /**
      * @return Returns the archSpecs.
      */
-    public Map<String, Object> getArchSpecs() {
+    public String getArchSpecs() {
         return archSpecs;
+    }
+
+    /**
+     * @return Returns the archSpecs as a Map.
+     */
+    @Transient
+    public Map<String, Object> getArchSpecsMap() {
+        if (archSpecs == null || archSpecs.isBlank()) {
+            return Collections.emptyMap();
+        }
+        try {
+            Type type = new TypeToken<Map<String, Object>>() { }.getType();
+            return Json.GSON.fromJson(archSpecs, type);
+        }
+        catch (JsonSyntaxException e) {
+            LOG.warn("Failed to parse arch specs JSON, ignoring. Error: {}. Raw JSON: {}", e.getMessage(), archSpecs);
+            return Collections.emptyMap();
+        }
     }
 
     /**
      * @param archSpecsIn The archSpecs to set.
      */
-    public void setArchSpecs(Map<String, Object> archSpecsIn) {
+    public void setArchSpecs(String archSpecsIn) {
         this.archSpecs = archSpecsIn;
     }
 

@@ -18,7 +18,7 @@ import com.redhat.rhn.domain.user.User;
 
 import java.util.Objects;
 
-import javax.persistence.Tuple;
+import jakarta.persistence.Tuple;
 
 /**
  * Simple DTO for transfering data from the DB to the UI through datasource.
