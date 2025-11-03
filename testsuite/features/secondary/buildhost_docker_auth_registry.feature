@@ -16,7 +16,7 @@ Feature: Build image with authenticated registry
     When I follow the left menu "Images > Stores"
     And I follow "Create"
     And I enter "auth_registry" as "label"
-    And I check "useCredentials"
+    And I check "useCredentials" by label
     And I enter URI, username and password for registry
     And I click on "create-btn"
     Then I wait until I see "registry" text
