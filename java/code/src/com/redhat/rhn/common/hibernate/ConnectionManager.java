@@ -60,13 +60,6 @@ public interface ConnectionManager {
     boolean isInitialized();
 
     /**
-     * Allow loading hbm.xml files from additional locations.
-     *
-     * @param additionalLocation the array of package names to be added to the scan.
-     */
-    void setAdditionalPackageNames(String[] additionalLocation);
-
-    /**
      * Set the name for Prometheus Hiberante Statistics collector
      *
      * @param componentName The component name for collector registration, used for metric label value

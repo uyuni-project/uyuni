@@ -41,12 +41,9 @@ import javax.persistence.Table;
  * ConfigChannelAssocation - Class representation of the table rhnActionConfigChannel.  This
  * class has to exist because we need to map *two* objects with this mapping table instead
  * of the standard one.  usually with Hibernate you don't need a class to represent a
- * mapping table but since this maps two objects we gotta have a class.
+ * mapping table but since this maps two objects we have to have a class.
  *
- * The mapping for this class is a composite element in Action.hbm.xml
- *
- * See:
- * http://www.hibernate.org/118.html#A11
+ * See: http://www.hibernate.org/118.html#A11
  *
  */
 @Entity
