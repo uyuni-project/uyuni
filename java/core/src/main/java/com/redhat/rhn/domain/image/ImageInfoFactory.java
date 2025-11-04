@@ -451,15 +451,15 @@ public class ImageInfoFactory extends HibernateFactory {
     }
 
     /**
-     * List all image infos
+     * List all image infos, sorted from the oldest to the newest
      * @return Returns a list of ImageInfos
      */
     public static List<ImageInfo> list() {
-        return getSession().createQuery("FROM ImageInfo", ImageInfo.class).list();
+        return getSession().createQuery("FROM ImageInfo AS im ORDER BY im.modified ASC", ImageInfo.class).list();
     }
 
     /**
-     * List all image infos from a given organization
+     * List all image infos from a given organization, sorted from the oldest to the newest
      * @param org the organization
      * @return Returns a list of ImageInfos
      */
@@ -468,6 +468,7 @@ public class ImageInfoFactory extends HibernateFactory {
         CriteriaQuery<ImageInfo> criteria = builder.createQuery(ImageInfo.class);
         Root<ImageInfo> root = criteria.from(ImageInfo.class);
         criteria.where(builder.equal(root.get("org"), org));
+        criteria.orderBy(builder.asc(root.get("modified")));
         return getSession().createQuery(criteria).getResultList();
     }
 
