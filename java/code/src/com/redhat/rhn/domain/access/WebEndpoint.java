@@ -31,43 +31,23 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.NamedNativeQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "endpoint", schema = "access")
-@NamedNativeQuery(name = "WebEndpoint_user_access_endpoint_scope",
-        // Select an accessible endpoint by path, http method (GET, POST, etc.) and scope (Web UI or API)
-        query = "SELECT * FROM access.userAccessTable e WHERE user_id = :user_id AND e.endpoint = :endpoint " +
-                "AND e.http_method = :http_method AND e.scope = :scope LIMIT 1"
-)
-@NamedNativeQuery(name = "WebEndpoint_user_access_endpoint",
-        // Select an accessible endpoint by path, http method (GET, POST, etc.)
-        query = "SELECT * FROM access.userAccessTable e WHERE user_id = :user_id AND e.endpoint = :endpoint " +
-                "AND e.http_method = :http_method LIMIT 1"
-)
-@NamedNativeQuery(name = "WebEndpoint_user_access_class_method",
-        // Select an accessible endpoint by its handler class and method
-        query = "SELECT * FROM access.userAccessTable e WHERE user_id = :user_id AND e.scope = :scope " +
-                "AND e.class_method = :class_method LIMIT 1"
-)
-@NamedNativeQuery(name = "WebEndpoint_get_unauthorized",
-        // Get all endpoints that don't require authorization
-        query = "SELECT endpoint FROM access.endpoint WHERE auth_required = false"
-)
-@NamedNativeQuery(name = "WebEndpoint_get_unauthorized_api",
-        // Get API handler class and methods that don't require authorization
-        query = "SELECT class_method FROM access.endpoint WHERE scope = 'A' AND auth_required = false"
-)
 public class WebEndpoint extends BaseDomainHelper {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(name = "class_method")
     private String className;
     private String endpoint;
+
     @Column(name = "http_method")
     private String httpMethod;
+
     @ManyToMany
     @JoinTable(
             name = "endpointNamespace",
@@ -76,8 +56,10 @@ public class WebEndpoint extends BaseDomainHelper {
             inverseJoinColumns = @JoinColumn(name = "namespace_id")
     )
     private Set<Namespace> namespaces = new HashSet<>();
+
     @Enumerated(EnumType.STRING)
     private Scope scope;
+
     @Column(name = "auth_required")
     private Boolean authRequired;
 
