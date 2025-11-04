@@ -95,6 +95,7 @@ Feature: Create activation keys
     And I enter "20" as "usageLimit"
     And I select "Push via SSH tunnel" from "contact-method"
     And I click on "Create Activation Key"
+    Then I should see a "Activation key SUSE SSH Tunnel Test Key x86_64 has been created" text
 
 @proxy
   Scenario: Create an activation key for the proxy
