@@ -44,7 +44,7 @@ Feature: Create activation keys
     And I enter "SUSE-KEY-x86_64" as "key"
     And I enter "20" as "usageLimit"
     And I click on "Create Activation Key"
-    Then I should see a "Activation key SUSE Test Key x86_64 has been created" text
+    Then I wait until I see "Activation key SUSE Test Key x86_64 has been created" text
     And I should see a "Details" link
     And I should see a "Packages" link
     And I should see a "Configuration" link in the content area
@@ -60,7 +60,7 @@ Feature: Create activation keys
     And I enter "RH-LIKE-KEY" as "key"
     And I select "Fake-Base-Channel-RH-like" from "selectedBaseChannel"
     And I click on "Create Activation Key"
-    Then I should see a "Activation key RedHat like Test Key has been created" text
+    Then I wait until I see "Activation key RedHat like Test Key has been created" text
 
 @deblike_minion
   Scenario: Create an activation key for Debian-like minion
@@ -71,7 +71,7 @@ Feature: Create activation keys
     And I enter "DEBLIKE-KEY" as "key"
     And I select "Fake-Base-Channel-Debian-like" from "selectedBaseChannel"
     And I click on "Create Activation Key"
-    Then I should see a "Activation key Debian-like Test Key has been created" text
+    Then  I wait until I see "Activation key Debian-like Test Key has been created" text
 
 @ssh_minion
   Scenario: Create an activation key with a channel for salt-ssh
@@ -83,7 +83,7 @@ Feature: Create activation keys
     And I enter "20" as "usageLimit"
     And I select "Push via SSH" from "contact-method"
     And I click on "Create Activation Key"
-    Then I should see a "Activation key SUSE SSH Test Key x86_64 has been created" text
+    Then I wait until I see "Activation key SUSE SSH Test Key x86_64 has been created" text
 
 @ssh_minion
   Scenario: Create an activation key with a channel for salt-ssh via tunnel
@@ -105,7 +105,7 @@ Feature: Create activation keys
     And I enter "PROXY-KEY-x86_64" as "key"
     And I enter "1" as "usageLimit"
     And I click on "Create Activation Key"
-    Then I should see a "Activation key Proxy Key x86_64 has been created" text
+    Then I wait until I see "Activation key Proxy Key x86_64 has been created" text
 
 @build_host
   Scenario: Create an activation key for the build host
@@ -117,7 +117,7 @@ Feature: Create activation keys
     And I check "Container Build Host"
     And I check "OS Image Build Host"
     And I click on "Create Activation Key"
-    Then I should see a "Activation key Build host Key x86_64 has been created" text
+    Then I wait until I see "Activation key Build host Key x86_64 has been created" text
 
 @scc_credentials
   Scenario: Create an activation key for the terminal
@@ -127,4 +127,4 @@ Feature: Create activation keys
     And I enter "Terminal Key x86_64" as "description"
     And I enter "TERMINAL-KEY-x86_64" as "key"
     And I click on "Create Activation Key"
-    Then I should see a "Activation key Terminal Key x86_64 has been created" text
+    Then I wait until I see "Activation key Terminal Key x86_64 has been created" text
