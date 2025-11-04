@@ -39,6 +39,8 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "rhnKickstartCommand")
+// note: commandSort should be the only named query around. This is because it is referenced by @Loader
+// as a named query, since we didn't find any other way of defining a loader for this class
 @NamedNativeQuery(
         name = "commandSort",
         resultClass = KickstartCommand.class,
