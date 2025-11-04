@@ -312,6 +312,29 @@ When(/^I create an activation key including custom channels for "([^"]*)" via AP
     child_channels.reject! { |channel| channel.include? 'suse-manager-retail-branch-server-5.0-updates-x86_64' }
   end
 
+  # filter out wrong child channels for SLES15sp6 as normal Minion
+  if client.include? 'sle15sp6'
+    child_channels.reject! { |channel| channel.include? 'suse-manager-proxy-5.0-pool-x86_64-sp6' }
+    child_channels.reject! { |channel| channel.include? 'suse-manager-proxy-5.0-updates-x86_64-sp6' }
+    child_channels.reject! { |channel| channel.include? 'suse-manager-retail-branch-server-5.0-pool-x86_64-sp6' }
+    child_channels.reject! { |channel| channel.include? 'suse-manager-retail-branch-server-5.0-updates-x86_64-sp6' }
+  end
+
+  # filter out wrong child channels for SL Micro 6.1 as normal Minion
+  if client.include? 'slmicro61'
+    child_channels.reject! { |channel| channel.include? 'suse-multi-linux-manager-proxy-5.1-x86_64' }
+    child_channels.reject! { |channel| channel.include? 'suse-multi-linux-manager-retail-branch-server-5.1-x86_64' }
+    child_channels.reject! { |channel| channel.include? 'suse-multi-linux-manager-server-5.1-x86_64' }
+  end
+
+  # filter out wrong child channels for SLES15SP7 as normal Minion
+  if client.include? 'sle15sp7'
+    child_channels.reject! { |channel| channel.include? 'suse-multi-linux-manager-proxy-sle-5.1-pool-x86_64-sp7' }
+    child_channels.reject! { |channel| channel.include? 'suse-multi-linux-manager-proxy-sle-5.1-updates-x86_64-sp7' }
+    child_channels.reject! { |channel| channel.include? 'suse-multi-linux-manager-retail-branch-server-sle-5.1-pool-x86_64-sp7' }
+    child_channels.reject! { |channel| channel.include? 'suse-multi-linux-manager-retail-branch-server-sle-5.1-updates-x86_64-sp7' }
+  end
+
   $stdout.puts "Child_channels for #{key}: <#{child_channels}>"
 
   # Add child channels to the key
