@@ -13,7 +13,6 @@ ENV_VAR_BY_HOST = {
   # Build Validation environment
   'sle12sp5_minion' => 'SLE12SP5_MINION',
   'sle12sp5_ssh_minion' => 'SLE12SP5_SSHMINION',
-  'sle12sp5_buildhost' => 'SLE12SP5_BUILDHOST',
   'sle15sp3_minion' => 'SLE15SP3_MINION',
   'sle15sp3_ssh_minion' => 'SLE15SP3_SSHMINION',
   'sle15sp4_minion' => 'SLE15SP4_MINION',
@@ -73,12 +72,11 @@ ENV_VAR_BY_HOST = {
   'salt_migration_minion' => 'SALT_MIGRATION_MINION'
 }.freeze
 
-# TODO: the values for pxeboot_minion, sle12sp5_terminal, sle15sp4_terminal, and proxy can now be set in sumaform
+# TODO: the values for pxeboot_minion, sle15sp4_terminal, and proxy can now be set in sumaform
 #       remove them from this array when we read them from .bashrc
 PRIVATE_ADDRESSES = {
   'network'           => '0',
   'pxeboot_minion'    => '4',
-  'sle12sp5_terminal' => '5',
   'sle15sp4_terminal' => '6',
   'dhcp_dns'          => '53',
   'range begin'       => '128',
@@ -237,8 +235,6 @@ BASE_CHANNEL_BY_CLIENT = {
     'build_host' => 'SLE-Product-SLES15-SP4-Pool for x86_64',
     'sle12sp5_minion' => 'SLES12-SP5-Pool for x86_64',
     'sle12sp5_ssh_minion' => 'SLES12-SP5-Pool for x86_64',
-    'sle12sp5_buildhost' => 'SLES12-SP5-Pool for x86_64',
-    'sle12sp5_terminal' => 'SLES12-SP5-Pool for x86_64',
     'sle15sp3_minion' => 'SLE-Product-SLES15-SP3-Pool for x86_64',
     'sle15sp3_ssh_minion' => 'SLE-Product-SLES15-SP3-Pool for x86_64',
     'sle15sp4_minion' => 'SLE-Product-SLES15-SP4-Pool for x86_64',
@@ -310,8 +306,6 @@ BASE_CHANNEL_BY_CLIENT = {
     'build_host' => 'SLE-Product-SLES15-SP4-Pool for x86_64',
     'sle12sp5_minion' => 'SLES12-SP5-Pool for x86_64',
     'sle12sp5_ssh_minion' => 'SLES12-SP5-Pool for x86_64',
-    'sle12sp5_buildhost' => 'SLES12-SP5-Pool for x86_64',
-    'sle12sp5_terminal' => 'SLES12-SP5-Pool for x86_64',
     'sle15sp3_minion' => 'SLE-Product-SLES15-SP3-Pool for x86_64',
     'sle15sp3_ssh_minion' => 'SLE-Product-SLES15-SP3-Pool for x86_64',
     'sle15sp4_minion' => 'SLE-Product-SLES15-SP4-Pool for x86_64',
