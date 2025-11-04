@@ -53,8 +53,6 @@ import java.util.Set;
  */
 public class SchedulerKernel {
 
-    private static final String[] TASKOMATIC_PACKAGE_NAMES =
-            {"com.redhat.rhn.taskomatic.domain"};
     private static Logger log = LogManager.getLogger(SchedulerKernel.class);
     private final byte[] shutdownLock = new byte[0];
     private static SchedulerFactory factory = null;
@@ -127,7 +125,7 @@ public class SchedulerKernel {
      */
     public void startup() throws TaskomaticException {
         HibernateFactory.registerComponentName("taskomatic");
-        HibernateFactory.createSessionFactory(TASKOMATIC_PACKAGE_NAMES);
+        HibernateFactory.createSessionFactory();
         if (!HibernateFactory.isInitialized()) {
             throw new TaskomaticException("HibernateFactory failed to initialize");
         }

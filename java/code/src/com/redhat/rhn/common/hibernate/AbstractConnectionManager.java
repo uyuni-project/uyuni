@@ -18,8 +18,6 @@ package com.redhat.rhn.common.hibernate;
 import static org.hibernate.resource.transaction.spi.TransactionStatus.COMMITTED;
 import static org.hibernate.resource.transaction.spi.TransactionStatus.ROLLED_BACK;
 
-import com.redhat.rhn.common.finder.FinderFactory;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -30,12 +28,9 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.metadata.ClassMetadata;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
-import java.util.Set;
 
 import io.prometheus.client.hibernate.HibernateStatisticsCollector;
 
@@ -52,28 +47,17 @@ abstract class AbstractConnectionManager implements ConnectionManager {
 
     private final List<Configurator> configurators;
     private final ThreadLocal<SessionInfo> sessionInfoThreadLocal;
-    private final Set<String> packageNames;
     private String unitLabelValue;
 
 
     /**
      * Set up the connection manager.
      *
-     * @param packageNamesSet set of packages that will be scanned for hbm.xml files on initialization.
      */
-    protected AbstractConnectionManager(Set<String> packageNamesSet) {
+    protected AbstractConnectionManager() {
         this.LOG = LogManager.getLogger(getClass());
         this.configurators = new ArrayList<>();
         this.sessionInfoThreadLocal = new ThreadLocal<>();
-        this.packageNames = new HashSet<>(packageNamesSet);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setAdditionalPackageNames(String[] packageNamesIn) {
-        packageNames.addAll(Arrays.asList(packageNamesIn));
     }
 
     /**
@@ -173,8 +157,7 @@ abstract class AbstractConnectionManager implements ConnectionManager {
     }
 
     /**
-     * Create a SessionFactory, loading the hbm.xml files from the specified
-     * location.
+     * Create a SessionFactory
      */
     protected void createSessionFactory() {
         if (sessionFactory != null && !sessionFactory.isClosed()) {
@@ -190,13 +173,6 @@ abstract class AbstractConnectionManager implements ConnectionManager {
              */
             LOG.info("Adding hibernate properties to hibernate Configuration");
             config.addProperties(getConfigurationProperties());
-
-            // Collect all the hbm files available in the specified packages
-            packageNames.stream()
-                        .map(FinderFactory::getFinder)
-                        .flatMap(finder -> finder.find("hbm.xml").stream())
-                        .peek(hbmFile -> LOG.debug("Adding resource {}", hbmFile))
-                        .forEach(config::addResource);
 
             // Invoke each configurator to add additional entries to Hibernate config
             configurators.forEach(configurator -> configurator.addConfig(config));
