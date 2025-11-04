@@ -38,7 +38,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.type.StandardBasicTypes;
 
-import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
@@ -297,7 +296,8 @@ import javax.persistence.Tuple;
      */
     public static boolean refreshNeeded(Optional<Date> lastRefreshDateIn) {
         return getSession()
-                .createNamedQuery("BaseCredentials.getLastSCCRefreshDate", Date.class)
+                .createQuery("SELECT MAX(modified) FROM BaseCredentials WHERE type IN ('scc', 'cloudrmt')",
+                        Date.class)
                 .uniqueResultOptional()
                 .map(credsLastModified -> {
                     // When was the cache last modified?

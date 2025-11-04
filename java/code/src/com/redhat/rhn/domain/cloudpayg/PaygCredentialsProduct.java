@@ -24,19 +24,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "susePaygProduct")
-@NamedQuery(
-    name = "PaygCredentialsProduct.listByCredentialsId",
-    query = "SELECT p FROM com.redhat.rhn.domain.cloudpayg.PaygCredentialsProduct AS p WHERE p.credentialsId = :credsId"
-)
-@NamedQuery(
-    name = "PaygCredentialsProduct.deleteByCredentialsId",
-    query = "DELETE FROM com.redhat.rhn.domain.cloudpayg.PaygCredentialsProduct AS p WHERE p.credentialsId = :credsId"
-)
 public class PaygCredentialsProduct extends BaseDomainHelper {
 
     private Long id;
