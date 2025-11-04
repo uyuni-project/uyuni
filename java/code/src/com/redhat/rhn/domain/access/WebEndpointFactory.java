@@ -19,12 +19,14 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.query.NativeQuery;
+import org.hibernate.type.StandardBasicTypes;
 
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import javax.persistence.Tuple;
 
 public class WebEndpointFactory extends HibernateFactory {
 
@@ -48,12 +50,20 @@ public class WebEndpointFactory extends HibernateFactory {
      */
     public static Optional<WebEndpoint> lookupByUserIdEndpointScope(Long userId, String endpoint, String httpMethod,
                                                                     WebEndpoint.Scope scope) {
-        NativeQuery<WebEndpoint> query = getSession().getNamedNativeQuery("WebEndpoint_user_access_endpoint_scope");
-        query.setParameter("user_id", userId);
-        query.setParameter("endpoint", endpoint);
-        query.setParameter("http_method", httpMethod);
-        query.setParameter("scope", scope.name());
-        return query.uniqueResultOptional();
+        // Select an accessible endpoint by path, http method (GET, POST, etc.) and scope (Web UI or API)
+        return getSession().createNativeQuery("""
+                        SELECT * FROM access.userAccessTable e
+                        WHERE user_id = :user_id
+                        AND e.endpoint = :endpoint
+                        AND e.http_method = :http_method
+                        AND e.scope = :scope
+                        LIMIT 1
+                        """, WebEndpoint.class)
+                .setParameter("user_id", userId)
+                .setParameter("endpoint", endpoint)
+                .setParameter("http_method", httpMethod)
+                .setParameter("scope", scope.name())
+                .uniqueResultOptional();
     }
 
     /**
@@ -64,11 +74,18 @@ public class WebEndpointFactory extends HibernateFactory {
      * @return the web endpoint if found in the user access table
      */
     public static Optional<WebEndpoint> lookupByUserIdEndpoint(Long userId, String endpoint, String httpMethod) {
-        NativeQuery<WebEndpoint> query = getSession().getNamedNativeQuery("WebEndpoint_user_access_endpoint");
-        query.setParameter("user_id", userId);
-        query.setParameter("endpoint", endpoint);
-        query.setParameter("http_method", httpMethod);
-        return query.uniqueResultOptional();
+        // Select an accessible endpoint by path, http method (GET, POST, etc.)
+        return getSession().createNativeQuery("""
+                        SELECT * FROM access.userAccessTable e
+                        WHERE user_id = :user_id
+                        AND e.endpoint = :endpoint
+                        AND e.http_method = :http_method
+                        LIMIT 1
+                        """, WebEndpoint.class)
+                .setParameter("user_id", userId)
+                .setParameter("endpoint", endpoint)
+                .setParameter("http_method", httpMethod)
+                .uniqueResultOptional();
     }
 
     /**
@@ -80,11 +97,18 @@ public class WebEndpointFactory extends HibernateFactory {
      */
     public static Optional<WebEndpoint> lookupByUserIdClassMethodScope(Long userId, String classMethod,
                                                                        WebEndpoint.Scope scope) {
-        NativeQuery<WebEndpoint> query = getSession().getNamedNativeQuery("WebEndpoint_user_access_class_method");
-        query.setParameter("user_id", userId);
-        query.setParameter("class_method", classMethod);
-        query.setParameter("scope", scope.name());
-        return query.uniqueResultOptional();
+        // Select an accessible endpoint by its handler class and method
+        return getSession().createNativeQuery("""
+                        SELECT * FROM access.userAccessTable e
+                        WHERE user_id = :user_id
+                        AND e.scope = :scope
+                        AND e.class_method = :class_method
+                        LIMIT 1
+                        """, WebEndpoint.class)
+                .setParameter("user_id", userId)
+                .setParameter("class_method", classMethod)
+                .setParameter("scope", scope.name())
+                .uniqueResultOptional();
     }
 
     /**
@@ -92,9 +116,14 @@ public class WebEndpointFactory extends HibernateFactory {
      * @return the set of endpoints that don't require authorization
      */
     public static Set<String> getUnauthorizedWebEndpoints() {
+        // Get all endpoints that don't require authorization
         // TODO: Cache
-        NativeQuery<String> query = getSession().getNamedNativeQuery("WebEndpoint_get_unauthorized");
-        return query.getResultStream().collect(Collectors.toUnmodifiableSet());
+        return getSession()
+                .createNativeQuery("SELECT endpoint FROM access.endpoint WHERE auth_required = false", Tuple.class)
+                .addScalar("endpoint", StandardBasicTypes.STRING)
+                .getResultStream()
+                .map(r -> r.get(0, String.class))
+                .collect(Collectors.toUnmodifiableSet());
     }
 
     /**
@@ -102,9 +131,15 @@ public class WebEndpointFactory extends HibernateFactory {
      * @return the set of unauthorized API methods as a string of qualified class name & method
      */
     public static Set<String> getUnauthorizedApiMethods() {
+        // Get API handler class and methods that don't require authorization
         // TODO: Cache
-        NativeQuery<String> query = getSession().getNamedNativeQuery("WebEndpoint_get_unauthorized_api");
-        return query.getResultStream().collect(Collectors.toUnmodifiableSet());
+        return getSession().createNativeQuery(
+                        "SELECT class_method FROM access.endpoint WHERE scope = 'A' AND auth_required = false",
+                        Tuple.class)
+                .addScalar("class_method", StandardBasicTypes.STRING)
+                .getResultStream()
+                .map(r -> r.get(0, String.class))
+                .collect(Collectors.toUnmodifiableSet());
     }
 
     /**

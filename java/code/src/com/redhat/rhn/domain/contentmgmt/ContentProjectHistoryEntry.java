@@ -29,7 +29,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
@@ -37,11 +36,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "suseContentProjectHistoryEntry")
-@NamedQuery(
-            name = "ContentProjectHistoryEntry.latestEntryVersion",
-            query = "SELECT MAX(e.version) " +
-                    "FROM ContentProjectHistoryEntry e " +
-                    "WHERE contentProject = :project")
 public class ContentProjectHistoryEntry implements Serializable {
 
     @Serial

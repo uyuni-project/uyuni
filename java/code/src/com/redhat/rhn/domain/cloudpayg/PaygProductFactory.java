@@ -65,9 +65,9 @@ public class PaygProductFactory extends HibernateFactory {
         Session session = getSession();
 
         // First delete all the existing products
-        session.createNamedQuery("PaygCredentialsProduct.deleteByCredentialsId")
-            .setParameter("credsId", credentials.getId())
-            .executeUpdate();
+        session.createQuery("DELETE FROM PaygCredentialsProduct AS p WHERE p.credentialsId = :credsId")
+                .setParameter("credsId", credentials.getId())
+                .executeUpdate();
 
         if (CollectionUtils.isEmpty(productInfos)) {
             return;
@@ -85,7 +85,9 @@ public class PaygProductFactory extends HibernateFactory {
      * @return the list of products associated with the credentials or an empty list if none are set.
      */
     public static List<PaygProductInfo> getProductsForCredentials(CloudRMTCredentials credentials) {
-        return getSession().createNamedQuery("PaygCredentialsProduct.listByCredentialsId", PaygCredentialsProduct.class)
+        return getSession()
+                .createQuery("SELECT p FROM PaygCredentialsProduct AS p WHERE p.credentialsId = :credsId",
+                        PaygCredentialsProduct.class)
             .setParameter("credsId", credentials.getId())
             .stream()
             .map(p -> new PaygProductInfo(p.getName(), p.getVersion(), p.getArch()))

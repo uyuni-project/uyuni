@@ -125,7 +125,8 @@ public class SUSEProductFactory extends HibernateFactory {
      * @return list of {@link ChannelTemplate}
      */
     public static List<ChannelTemplate> lookupChannelTemplateByChannelLabel(String channelLabel) {
-        return getSession().createNamedQuery("ChannelTemplate.lookupByLabel", ChannelTemplate.class)
+        return getSession().createQuery("FROM ChannelTemplate pr WHERE pr.channelLabel = :label",
+                        ChannelTemplate.class)
                 .setParameter("label", channelLabel)
                 .stream()
                 .sorted((a, b) ->

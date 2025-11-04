@@ -29,7 +29,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -38,9 +37,6 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table(name = "suseMaintenanceSchedule")
-@NamedQuery(name = "MaintenanceSchedule.lookupByUserAndName",
-           query = "from com.suse.manager.model.maintenance.MaintenanceSchedule s " +
-                   "where s.org.id = :orgId and s.name = :name")
 public class MaintenanceSchedule extends BaseDomainHelper {
     private Long id;
     private Org org;

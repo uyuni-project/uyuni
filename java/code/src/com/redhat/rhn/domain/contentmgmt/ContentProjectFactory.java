@@ -489,7 +489,10 @@ public class ContentProjectFactory extends HibernateFactory {
     }
 
     private static Optional<Long> latestHistoryEntryVersion(ContentProject project) {
-        return HibernateFactory.getSession().getNamedQuery("ContentProjectHistoryEntry.latestEntryVersion")
+        return HibernateFactory.getSession()
+                .createQuery(
+                        "SELECT MAX(e.version) FROM ContentProjectHistoryEntry e WHERE contentProject = :project",
+                        Long.class)
                 .setParameter("project", project)
                 .uniqueResultOptional();
     }

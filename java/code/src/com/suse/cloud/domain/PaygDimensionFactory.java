@@ -39,9 +39,10 @@ public class PaygDimensionFactory extends HibernateFactory {
      * @return the computation result if present, or null
      */
     public PaygDimensionComputation lookupById(Long id) {
-        return getSession().createNamedQuery("PaygDimensionComputation.lookupById", PaygDimensionComputation.class)
-                           .setParameter("id", id)
-                           .uniqueResult();
+        return getSession().createQuery("FROM PaygDimensionComputation AS c WHERE c.id = :id",
+                        PaygDimensionComputation.class)
+                .setParameter("id", id)
+                .uniqueResult();
     }
 
     /**
@@ -59,8 +60,10 @@ public class PaygDimensionFactory extends HibernateFactory {
      */
     public PaygDimensionComputation getLatestSuccessfulComputation() {
         Session session = getSession();
-        return session.createNamedQuery("PaygDimensionComputation.getLatestSuccessful", PaygDimensionComputation.class)
-                      .setMaxResults(1)
-                      .uniqueResult();
+        return session.createQuery(
+                        "FROM PaygDimensionComputation AS c WHERE c.success = true ORDER BY c.timestamp DESC",
+                        PaygDimensionComputation.class)
+                .setMaxResults(1)
+                .uniqueResult();
     }
 }
