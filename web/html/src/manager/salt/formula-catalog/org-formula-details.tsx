@@ -71,15 +71,7 @@ class FormulaDetail extends React.Component<Props, State> {
           <div className="form-group">
             <label className="col-md-3 control-label">Name:</label>
             <div className="col-md-6">
-              <input
-                className="form-control"
-                type="text"
-                name="name"
-                ref="formulaName"
-                value={window.formulaName}
-                readOnly
-                disabled
-              />
+              <input className="form-control" type="text" name="name" value={window.formulaName} readOnly disabled />
             </div>
           </div>
           {this.generateMetadata()}
