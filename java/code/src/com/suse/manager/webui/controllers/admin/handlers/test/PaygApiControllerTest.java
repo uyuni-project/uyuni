@@ -59,7 +59,7 @@ public class PaygApiControllerTest extends BaseControllerTestCase {
     private TaskomaticApi taskomaticMock;
     private static final Gson GSON = new GsonBuilder().create();
 
-    private PaygApiContoller PaygApiContoller;
+    private PaygApiContoller paygApiContoller;
     private User satAdmin;
 
     @Override
@@ -73,7 +73,7 @@ public class PaygApiControllerTest extends BaseControllerTestCase {
 
         context.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         taskomaticMock = context.mock(TaskomaticApi.class);
-        PaygApiContoller = new PaygApiContoller(new PaygAdminManager(taskomaticMock));
+        paygApiContoller = new PaygApiContoller(new PaygAdminManager(taskomaticMock));
     }
 
     @Override

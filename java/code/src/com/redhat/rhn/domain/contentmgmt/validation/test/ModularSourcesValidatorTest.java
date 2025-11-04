@@ -28,7 +28,11 @@ public class ModularSourcesValidatorTest extends ContentValidatorTestBase {
     private ModularSourcesValidator validator;
 
     private static final String ENTITY_SOURCES = "softwareSources";
+
+    @SuppressWarnings("unchecked")
     private final String MSG_NOMODULEFILTERS = getLoc().getMessage("contentmanagement.validation.nomodulefilters");
+
+    @SuppressWarnings("unchecked")
     private final String MSG_NOMODULARSOURCES = getLoc().getMessage("contentmanagement.validation.nomodularsources");
 
     @Override

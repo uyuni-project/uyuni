@@ -106,15 +106,19 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
 
     @Column(name = "gpg_check")
     @Type(type = "yes_no")
+    @SuppressWarnings("unchecked")
     private boolean GPGCheck;
 
     @Column(name = "gpg_key_url")
+    @SuppressWarnings("unchecked")
     private String GPGKeyUrl;
 
     @Column(name = "gpg_key_id")
+    @SuppressWarnings("unchecked")
     private String GPGKeyId;
 
     @Column(name = "gpg_key_fp")
+    @SuppressWarnings("unchecked")
     private String GPGKeyFp;
 
     @Column
@@ -1209,4 +1213,3 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
         return this.channelSyncFlag;
     }
 }
-

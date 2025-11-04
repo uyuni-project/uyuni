@@ -36,7 +36,7 @@ import org.junit.jupiter.api.Test;
 public class CreateCommandTest extends RhnBaseTestCase {
 
     private CreateChannelCommand ccc = null;
-    private int label_count = 0;
+    private int labelCount = 0;
     private User user = null;
 
     @Override
@@ -111,7 +111,7 @@ public class CreateCommandTest extends RhnBaseTestCase {
         // Give it an valid name
         ccc.setName(cname);
         // need to create unique label names.
-        ccc.setLabel("valid-label-name-" + label_count++);
+        ccc.setLabel("valid-label-name-" + labelCount++);
         // need to specify a checksum type
         ccc.setChecksumLabel("sha256");
 
@@ -197,7 +197,7 @@ public class CreateCommandTest extends RhnBaseTestCase {
         // Give it an valid label
         ccc.setLabel(clabel);
         // need to create unique label names.
-        ccc.setName("Valid Name" + label_count++);
+        ccc.setName("Valid Name" + labelCount++);
         // need to specify a checksum type
         ccc.setChecksumLabel("sha256");
 
