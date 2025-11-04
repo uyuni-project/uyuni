@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 SUSE LLC
+ * Copyright (c) 2021--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.redhat.rhn.domain.server;
 
@@ -21,9 +17,10 @@ import com.redhat.rhn.domain.org.Org;
 
 import com.vladmihalcea.hibernate.type.json.JsonType;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
-import org.hibernate.annotations.TypeDefs;
 
 import java.io.Serializable;
 import java.util.List;
@@ -37,7 +34,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -47,19 +43,24 @@ import javax.persistence.criteria.Root;
 /**
  * Pillar - Class representation of the table suseSaltPillars entries
  *
- * https://github.com/uyuni-project/uyuni-rfc/pull/51
+ * <a href="https://github.com/uyuni-project/uyuni-rfc/pull/51">RFC</a>
  */
 
-@TypeDefs({
-        @TypeDef(name = "json", typeClass = JsonType.class)
-})
+
+@TypeDef(name = "json", typeClass = JsonType.class)
 @Entity
 @Table(name = "suseSaltPillar")
 public class Pillar implements Identifiable, Serializable {
 
     @Id
     @GeneratedValue(generator = "pillar_seq")
-    @SequenceGenerator(name = "pillar_seq", sequenceName = "suse_salt_pillar_id_seq", allocationSize = 1)
+    @GenericGenerator(
+            name = "pillar_seq",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @Parameter(name = "sequence_name", value = "suse_salt_pillar_id_seq"),
+                    @Parameter(name = "increment_size", value = "1")
+            })
     @Column(name = "id")
     private Long id;
 

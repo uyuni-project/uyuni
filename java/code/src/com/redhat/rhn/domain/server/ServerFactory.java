@@ -26,8 +26,10 @@ import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.hibernate.HibernateRuntimeException;
 import com.redhat.rhn.common.util.RpmVersionComparator;
 import com.redhat.rhn.common.validator.ValidatorError;
+import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.config.ConfigChannel;
@@ -40,6 +42,7 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.product.Tuple2;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.domain.user.legacy.UserImpl;
 import com.redhat.rhn.frontend.dto.HistoryEvent;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.xmlrpc.ChannelSubscriptionException;
@@ -72,7 +75,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.persistence.NoResultException;
 import javax.persistence.Tuple;
 
 /**
@@ -158,7 +160,14 @@ public class ServerFactory extends HibernateFactory {
      * @return List of minions.
      */
     public static List<MinionServer> listMinionsByChannel(long cid) {
-        return SINGLETON.listObjectsByNamedQuery("Server.listMinionsByChannel", Map.of("cid", cid));
+        return getSession().createQuery("""
+                select     ms
+                from       com.redhat.rhn.domain.server.MinionServer as ms
+                inner join ms.channels as c
+                where      c.id = :cid
+                """, MinionServer.class)
+                .setParameter("cid", cid)
+                .list();
     }
 
     /**
@@ -254,10 +263,14 @@ public class ServerFactory extends HibernateFactory {
      * @return the set of unique pairs of os and release version used by servers
      * */
     public static Set<OsReleasePair> listAllServersOsAndRelease() {
-        List<Object[]> result = SINGLETON.listObjectsByNamedQuery("Server.listAllServersOsAndRelease",
-                Collections.emptyMap());
 
-        return result.stream().map(row -> new OsReleasePair((String) row[0], (String) row[1]))
+        return getSession().createNativeQuery("""
+                SELECT DISTINCT s.os, s.release FROM rhnServer s
+                """, Tuple.class)
+                .addScalar("os", StandardBasicTypes.STRING)
+                .addScalar("release", StandardBasicTypes.STRING)
+                .stream()
+                .map(t -> new OsReleasePair(t.get(0, String.class), t.get(1, String.class)))
                 .collect(Collectors.toSet());
     }
 
@@ -269,11 +282,22 @@ public class ServerFactory extends HibernateFactory {
      * @return the minion ID to system ID map
      */
     public static Map<String, Long> getMinionIdMap(Long id) {
-        List<Object[]> result = SINGLETON.listObjectsByNamedQuery("Server.listMinionIdMappings", Map.of("user_id", id));
-        return result.stream().collect(toMap(
-                row -> (String)(row[0]),
-                row -> (Long)(row[1]))
-        );
+        return getSession().createNativeQuery("""
+                SELECT m.minion_id AS minion_id, s.id AS server_id
+                FROM   rhnServer s
+                JOIN   suseMinionInfo m ON s.id = m.server_id
+                WHERE  EXISTS (SELECT 1
+                               FROM   rhnUserServerPerms USP
+                               WHERE  USP.user_id = :user_id
+                               AND    USP.server_id = s.id)
+                """, Tuple.class)
+                .setParameter("user_id", id)
+                .addScalar("minion_id", StandardBasicTypes.STRING)
+                .addScalar("server_id", StandardBasicTypes.LONG)
+                .stream()
+                .collect(toMap(
+                                t -> t.get(0, String.class),
+                                t -> t.get(1, Long.class)));
     }
 
     /**
@@ -394,6 +418,7 @@ public class ServerFactory extends HibernateFactory {
             servers.stream()
                     .filter(s -> s.getOrgId().equals(serverGroup.getOrgId()))
                     .forEach(s -> {
+                        HibernateFactory.getSession().refresh(s);
                         s.addGroup(serverGroup);
                         SystemManager.updateSystemOverview(s);
                     });
@@ -546,15 +571,38 @@ public class ServerFactory extends HibernateFactory {
      * @return the ids of the erratas grouped by server id
      */
     public static Map<Long, List<Long>> findUnscheduledErrataByServerIds(User user, List<Long> serverIds) {
-        List<Object[]> result = SINGLETON.listObjectsByNamedQuery("Server.findUnscheduledErrataByServerIds",
-                Map.of("user_id", user.getId()), serverIds, "serverIds");
-
-        return result.stream().collect(
-                Collectors.groupingBy(
-                        row -> Long.valueOf(row[0].toString()),
-                        Collectors.mapping(row -> Long.valueOf(row[1].toString()), Collectors.toList())
-                        )
-                );
+        if (serverIds.isEmpty()) {
+            return Collections.emptyMap();
+        }
+        return getSession().createNativeQuery("""
+                SELECT SNPC.server_id as serverId, E.id as errataId
+                FROM   rhnErrata E, rhnServerNeededErrataCache SNPC
+                WHERE  EXISTS (SELECT 1
+                               FROM   rhnUserServerPerms USP
+                               WHERE  USP.user_id = :user_id
+                               AND    USP.server_id = SNPC.server_id)
+                AND    SNPC.server_id in (:serverIds)
+                AND    SNPC.errata_id = E.id
+                AND    NOT EXISTS (SELECT 1
+                                   FROM   rhnActionErrataUpdate AEU, rhnServerAction SA, rhnActionStatus AST
+                                   WHERE  SA.server_id = SNPC.server_id
+                                   AND    SA.status = AST.id
+                                   AND    AST.name IN('Queued', 'Picked Up')
+                                   AND    AEU.action_id = SA.action_id
+                                   AND    AEU.errata_id = E.id )
+                ORDER BY E.id
+                """, Tuple.class)
+                .setParameterList("serverIds", serverIds)
+                .setParameter("user_id", user.getId())
+                .addScalar("serverId", StandardBasicTypes.LONG)
+                .addScalar("errataId", StandardBasicTypes.LONG)
+                .stream()
+                .collect(
+                    Collectors.groupingBy(
+                            t -> t.get(0, Long.class),
+                            Collectors.mapping(t -> t.get(1, Long.class), Collectors.toList())
+                )
+        );
     }
 
     /**
@@ -564,7 +612,13 @@ public class ServerFactory extends HibernateFactory {
      */
     public static List<Long> findSystemsPendingRebootActions(List<SystemOverview> systems) {
         List<Long> sids = systems.stream().map(SystemOverview::getId).collect(Collectors.toList());
-        return getSession().createNamedQuery("Server.findServersPendingRebootAction", Long.class)
+        return getSession().createQuery("""
+                        SELECT distinct(sa.server.id)
+                        FROM   ServerAction sa
+                        WHERE  sa.server.id IN (:systemIds)
+                        AND    sa.parentAction.actionType.label = 'reboot.reboot'
+                        AND    status in ( 0, 1 )
+                        """, Long.class)
                 .setParameter("systemIds", sids)
                 .list();
     }
@@ -576,8 +630,14 @@ public class ServerFactory extends HibernateFactory {
      * @return the list of servers
      */
     public static List<Server> lookupByIdsAndOrg(Set<Long> serverIds, Org org) {
-        return SINGLETON.listObjectsByNamedQuery("Server.findByIdsAndOrgId",
-                Map.of("orgId", org.getId()), serverIds, "serverIds");
+        if (serverIds.isEmpty()) {
+            return Collections.emptyList();
+        }
+        return getSession()
+                .createQuery("FROM Server AS s WHERE ORG_ID = :orgId AND s.id IN (:serverIds)", Server.class)
+                .setParameter("orgId", org.getId())
+                .setParameterList("serverIds", serverIds)
+                .list();
     }
 
     /**
@@ -586,7 +646,23 @@ public class ServerFactory extends HibernateFactory {
      * @return the list of non-zypper server ids
      */
     public static List<Long> findNonZypperTradClientsIds(Set<Long> ids) {
-        return SINGLETON.listObjectsByNamedQuery("Server.findNonZypperTradClientsIds", Map.of(), ids, "serverIds");
+        if (ids.isEmpty()) {
+            return Collections.emptyList();
+        }
+        return getSession().createQuery("""
+                SELECT s.id
+                FROM   Server s
+                WHERE  type(s) != com.redhat.rhn.domain.server.MinionServer
+                AND    s.id in (:serverIds)
+                AND    NOT EXISTS (SELECT 1
+                                   FROM   com.redhat.rhn.domain.server.InstalledPackage as p
+                                   JOIN   p.name as n
+                                   JOIN   p.server as s2
+                                   WHERE  s.id = s2.id
+                                   AND    n.name = 'zypper')
+                """, Long.class)
+                .setParameterList("serverIds", ids)
+                .list();
     }
 
 
@@ -601,9 +677,17 @@ public class ServerFactory extends HibernateFactory {
         }
 
         if (ServerConstants.SLES.equals(server.getOs())) {
-            PackageEvr zypperEvr = getSession().createNamedQuery("Server.findZypperEvr", PackageEvr.class)
-                                               .setParameter("sid", server.getId())
-                                               .uniqueResult();
+            PackageEvr zypperEvr = getSession()
+                    .createQuery("""
+                            SELECT p.evr
+                            FROM   com.redhat.rhn.domain.server.InstalledPackage as p
+                            JOIN   p.name as n
+                            JOIN   p.server as s
+                            WHERE  s.id = :sid
+                            AND    n.name = 'zypper'
+                            """, PackageEvr.class)
+                    .setParameter("sid", server.getId())
+                    .uniqueResult();
             if (zypperEvr == null) {
                 return false;
             }
@@ -630,7 +714,10 @@ public class ServerFactory extends HibernateFactory {
         if (id == null || orgIn == null) {
             return null;
         }
-        return SINGLETON.lookupObjectByNamedQuery("Server.findByIdandOrgId", Map.of("sid", id, "orgId", orgIn.getId()));
+        return getSession().createQuery("FROM Server AS s WHERE s.id = :sid AND ORG_ID = :orgId", Server.class)
+                .setParameter("sid", id)
+                .setParameter("orgId", orgIn.getId())
+                .uniqueResult();
     }
 
     /**
@@ -674,7 +761,7 @@ public class ServerFactory extends HibernateFactory {
                        AND EXISTS(SELECT 1 FROM rhnServerFeaturesView SFV WHERE SFV.server_id = ST.element
                        AND SFV.label = 'ftr_config')
                     ORDER BY S.name, SCC.position""", Tuple.class)
-                .addScalar("id", StandardBasicTypes.BIG_INTEGER)
+                .addScalar("id", StandardBasicTypes.LONG)
                 .addScalar("machine_id", StandardBasicTypes.STRING)
                 .addScalar("minion_id", StandardBasicTypes.STRING)
                 .addEntity("CC", ConfigChannel.class)
@@ -692,10 +779,10 @@ public class ServerFactory extends HibernateFactory {
         List<ConfigChannel> channels = new ArrayList<>();
 
         for (Tuple tuple : tuples) {
-            long sid = tuple.get(0, Number.class).longValue();
+            long sid = tuple.get(0, Long.class);
             if (current == null || current.getId() != sid) {
                 if (current != null) {
-                    current.setConfigChannelsHibernate(channels);
+                    current.setConfigChannels(channels);
                     data.add(current);
                     channels = new ArrayList<>();
                 }
@@ -712,7 +799,7 @@ public class ServerFactory extends HibernateFactory {
         }
 
         if (current != null) {
-            current.setConfigChannelsHibernate(channels);
+            current.setConfigChannels(channels);
             data.add(current);
         }
 
@@ -740,7 +827,7 @@ public class ServerFactory extends HibernateFactory {
                                    AND EXISTS(SELECT 1 FROM rhnServerFeaturesView SFV WHERE SFV.server_id = S.id
                                    AND SFV.label = 'ftr_config')
                                 ORDER BY S.name, SCC.position""", Tuple.class)
-                .addScalar("id", StandardBasicTypes.BIG_INTEGER)
+                .addScalar("id", StandardBasicTypes.LONG)
                 .addScalar("machine_id", StandardBasicTypes.STRING)
                 .addScalar("minion_id", StandardBasicTypes.STRING)
                 .addEntity("CC", ConfigChannel.class)
@@ -784,18 +871,21 @@ public class ServerFactory extends HibernateFactory {
      * @return the Servers found
      */
     public static List<Server> lookupByIds(List<Long> ids) {
-        return lookupByServerIds(ids, "Server.findByIds");
+        return lookupByServerIds(Server.class, ids, """
+                FROM com.redhat.rhn.domain.server.Server AS s WHERE s.id IN (:serverIds)
+                """);
     }
 
     /**
      * Lookup Servers by their ids
      * @param <T> the type of the returned servers
+     * @param resultClass the  result class
      * @param ids the ids to search for
-     * @param queryName the name of the query to be executed
+     * @param sqlQuery the SQL query to be executed
      * @return the Servers found
      */
-    public static <T extends Server> List<T> lookupByServerIds(List<Long> ids, String queryName) {
-        return findByIds(ids, queryName, "serverIds");
+    public static <T extends Server> List<T> lookupByServerIds(Class<T> resultClass, List<Long> ids, String sqlQuery) {
+        return findByIds(resultClass, ids, sqlQuery, "serverIds");
     }
 
     /**
@@ -961,8 +1051,19 @@ public class ServerFactory extends HibernateFactory {
      * @return list of User objects that can administer the system
      */
     public static List<User> listAdministrators(Server server) {
-        return SINGLETON.listObjectsByNamedQuery("Server.lookupAdministrators",
-                Map.of("sid", server.getId(), "org_id", server.getOrg().getId()));
+        return getSession().createNativeQuery("""
+                select     wc.*
+                from       WEB_CONTACT wc
+                inner join rhnUserServerPerms usp on wc.id = usp.user_id
+                inner join rhnServer S on S.id = usp.server_id
+                where      s.id = :sid
+                and        s.org_id = :org_id
+                """, UserImpl.class)
+                .setParameter("sid", server.getId())
+                .setParameter("org_id", server.getOrg().getId())
+                .stream()
+                .map(User.class::cast)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -1005,13 +1106,21 @@ public class ServerFactory extends HibernateFactory {
      * @return a list of Proxy Server objects
      */
     public static List<Server> lookupProxiesByOrg(User user) {
-        List<Number> ids = SINGLETON.listObjectsByNamedQuery("Server.listProxies",
-                Map.of("userId", user.getId(), "orgId", user.getOrg().getId()));
-        List<Server> servers = new ArrayList<>(ids.size());
-        for (Number id : ids) {
-            servers.add(lookupById(id.longValue()));
-        }
-        return servers;
+
+        return getSession().createNativeQuery("""
+                select     S.*,
+                           mi.*,
+                           case when mi.server_id is not null then 1 else 0 end as clazz_
+                from       rhnServer S
+                inner join rhnUserServerPerms USP on USP.server_id = S.id
+                inner join rhnProxyInfo rpi on rpi.server_id = S.id
+                left join  suseMinionInfo mi on mi.server_id = S.id
+                where      S.org_id = :orgId
+                and        USP.user_id = :userId
+                """, Server.class)
+                .setParameter("userId", user.getId())
+                .setParameter("orgId", user.getOrg().getId())
+                .list();
     }
 
     /**
@@ -1039,8 +1148,22 @@ public class ServerFactory extends HibernateFactory {
      * @return List of servers.
      */
     public static List<Server> listSystemsInSsm(User user) {
-        return SINGLETON.listObjectsByNamedQuery("Server.findInSet",
-                Map.of("userId", user.getId(), "label", RhnSetDecl.SYSTEMS.getLabel()));
+        return getSession().createNativeQuery("""
+                select           S.*,
+                                 case when ss.server_id is not null then 2
+                                      when proxy.server_id is not null then 3
+                                      when S.id is not null then 0 end as clazz_
+                from             rhnServer S
+                left outer join  suseMgrServerInfo SS on S.id = SS.server_id
+                left outer join  rhnProxyInfo proxy on S.id = proxy.server_id
+                inner join       rhnSet ST on S.id = st.element
+                where            ST.user_id = :userId
+                and              ST.label = :label
+                and              S.id not in (SELECT server_id FROM rhnProxyInfo)
+                """, Server.class)
+                .setParameter("userId", user.getId())
+                .setParameter("label", RhnSetDecl.SYSTEMS.getLabel())
+                .list();
     }
 
     /**
@@ -1050,7 +1173,17 @@ public class ServerFactory extends HibernateFactory {
      * @return a list of config enabled systems
      */
     public static List<Server> listConfigEnabledSystems() {
-        return SINGLETON.listObjectsByNamedQuery("Server.listConfigEnabledSystems", Map.of());
+        return getSession().createQuery("""
+                select     s
+                from       com.redhat.rhn.domain.server.Server as s
+                inner join s.groups as sg
+                inner join sg.groupType.features as f
+                inner join s.capabilities as c
+                where      (sg.groupType is not null)
+                and        f.label='ftr_config'
+                and        c.id.capability.name like 'configfiles%'
+                """, Server.class)
+                .list();
     }
 
     /**
@@ -1059,7 +1192,13 @@ public class ServerFactory extends HibernateFactory {
      * @return a list of FQDNs
      */
     public static List<String> listFqdns(Long sid) {
-        return SINGLETON.listObjectsByNamedQuery("Server.listFqdns", Map.of("sid", sid));
+        return getSession().createQuery("""
+                select name
+                from   com.redhat.rhn.domain.server.ServerFQDN as fqdn
+                where  fqdn.server.id = :sid
+                """, String.class)
+                .setParameter("sid", sid)
+                .list();
     }
 
     /**
@@ -1083,8 +1222,17 @@ public class ServerFactory extends HibernateFactory {
      * @return the Server found
      */
     public static Optional<Server> findByFqdn(String name) {
-        return Optional.ofNullable(name)
-                .map(n -> SINGLETON.lookupObjectByNamedQuery("Server.findByFqdn", Map.of("name", name)));
+        Optional<List<Server>> servers = Optional.ofNullable(name)
+                .map(ServerFactory::listByFqdn);
+        List<Server> list = servers.orElse(new ArrayList<>());
+        if (list.size() == 1) {
+            return Optional.of(list.get(0));
+        }
+        else if (list.size() > 1) {
+            throw new HibernateRuntimeException("Executing query findByFqdn" +
+                    " with params " + name + " failed. NonUniqueResultException");
+        }
+        return Optional.empty();
     }
 
     /**
@@ -1093,7 +1241,14 @@ public class ServerFactory extends HibernateFactory {
      * @return the Servers found
      */
     public static List<Server> listByFqdn(String name) {
-        return SINGLETON.listObjectsByNamedQuery("Server.findByFqdn", Map.of("name", name));
+        return getSession().createQuery("""
+                select s
+                from   com.redhat.rhn.domain.server.Server as s
+                join   s.fqdns as fqdn
+                where  LOWER(fqdn.name) = LOWER(:name)
+                """, Server.class)
+                .setParameter("name", name)
+                .list();
     }
 
     /**
@@ -1103,7 +1258,18 @@ public class ServerFactory extends HibernateFactory {
      * @return a list of config-diff enabled systems
      */
     public static List<Server> listConfigDiffEnabledSystems() {
-        return SINGLETON.listObjectsByNamedQuery("Server.listConfigDiffEnabledSystems", Map.of());
+        return getSession().createQuery("""
+                select     s
+                from       com.redhat.rhn.domain.server.Server as s
+                inner join s.groups as sg
+                inner join sg.groupType.features as f
+                inner join s.capabilities as c
+                where      (sg.groupType is not null)
+                and        f.label='ftr_config'
+                and        c.id.capability.name = 'configfiles.diff'
+                order by   s.id asc
+                """, Server.class)
+                .list();
     }
 
     /**
@@ -1126,7 +1292,7 @@ public class ServerFactory extends HibernateFactory {
     public static List<ServerSnapshot> listSnapshots(Org org, Server server,
             Date startDate, Date endDate) {
 
-        List<ServerSnapshot> snaps = null;
+        List<ServerSnapshot> snaps;
 
         Session session = HibernateFactory.getSession();
 
@@ -1324,7 +1490,17 @@ public class ServerFactory extends HibernateFactory {
      * @return list of system ids that are linux systems
      */
     public static List<Long> listLinuxSystems(Collection<Long> systemIds) {
-        return SINGLETON.listObjectsByNamedQuery("Server.listRedHatSystems", Map.of(), systemIds, "sids");
+        if (systemIds.isEmpty()) {
+            return Collections.emptyList();
+        }
+        return getSession().createQuery("""
+                SELECT s.id
+                FROM   com.redhat.rhn.domain.server.Server AS s
+                WHERE  s.id IN (:sids)
+                AND    s.serverArch.archType.label != 'sysv-solaris'
+                """, Long.class)
+                .setParameterList("sids", systemIds)
+                .list();
     }
 
     /**
@@ -1401,7 +1577,10 @@ public class ServerFactory extends HibernateFactory {
      * @return available contact methods
      */
     public static List<ContactMethod> listContactMethods() {
-        return SINGLETON.listObjectsByNamedQuery("ContactMethod.findAll", Map.of(), true);
+        return getSession().createQuery("FROM ContactMethod AS cm ORDER BY cm.id", ContactMethod.class)
+                //Retrieve from cache if there
+                .setCacheable(true)
+                .list();
     }
 
     /**
@@ -1410,7 +1589,11 @@ public class ServerFactory extends HibernateFactory {
      * @return contact method
      */
     public static ContactMethod findContactMethodById(Long id) {
-        return SINGLETON.lookupObjectByNamedQuery("ContactMethod.findById", Map.of("id", id), true);
+        return getSession().createQuery("FROM ContactMethod AS cm WHERE cm.id = :id", ContactMethod.class)
+                .setParameter("id", id)
+                //Retrieve from cache if there
+                .setCacheable(true)
+                .uniqueResult();
     }
 
     /**
@@ -1419,14 +1602,9 @@ public class ServerFactory extends HibernateFactory {
      * @return contact method with the given label
      */
     public static ContactMethod findContactMethodByLabel(String label) {
-        try {
-            return getSession().createQuery("FROM ContactMethod WHERE label = :label", ContactMethod.class)
+        return getSession().createQuery("FROM ContactMethod WHERE label = :label", ContactMethod.class)
                 .setParameter("label", label, StandardBasicTypes.STRING)
-                .getSingleResult();
-        }
-        catch (NoResultException e) {
-            return null;
-        }
+                .uniqueResult();
     }
 
     /**
@@ -1443,7 +1621,11 @@ public class ServerFactory extends HibernateFactory {
      * @return the list of all the ids of the servers
      */
     public static List<Long> listAllServerIds() {
-        return getSession().createNamedQuery("Server.listAllServerIds", Long.class).list();
+        return getSession().createQuery("""
+                SELECT   s.id
+                FROM     com.redhat.rhn.domain.server.Server AS s
+                ORDER BY s.id
+                """, Long.class).list();
     }
 
     /**
@@ -1494,26 +1676,67 @@ public class ServerFactory extends HibernateFactory {
         if (serverIds.isEmpty() || errataIds.isEmpty()) {
             return new HashMap<>();
         }
-        List<Object[]> result = SINGLETON.listObjectsByNamedQuery("Server.listErrataNamesForServers",
-                Map.of("serverIds", serverIds, "errataIds", errataIds));
+        List<Tuple> result = getSession().createNativeQuery("""
+                SELECT DISTINCT e.id AS errataId,
+                                sc.server_id AS serverId,
+                                e.advisory_name AS advisoryName,
+                                c.update_tag AS updateTag,
+                                CASE WHEN (SELECT COUNT(*)
+                                          FROM   rhnErrataKeyword k
+                                          WHERE  e.id = k.errata_id
+                                          AND k.keyword = 'restart_suggested') > 0
+                                     THEN TRUE
+                                     ELSE FALSE
+                                END AS updateStack,
+                                CASE WHEN (SELECT COUNT(*)
+                                           FROM   rhnErrataPackage k
+                                           WHERE  e.id = k.errata_id
+                                           AND k.package_id IN (SELECT id
+                                                                FROM   rhnPackage p
+                                                                WHERE p.name_id IN (SELECT id
+                                                                                    FROM   rhnPackageName pn
+                                                                                    WHERE  pn.name = 'salt'
+                                                                                    OR     pn.name = 'venv-salt-minion')
+                                                                )
+                                           ) > 0
+                                     THEN TRUE
+                                     ELSE FALSE
+                                END AS includeSalt
+                FROM            rhnErrata e
+                JOIN            rhnChannelErrata ce ON e.id = ce.errata_id
+                JOIN            rhnChannel c ON ce.channel_id = c.id
+                JOIN            rhnServerChannel sc ON c.id = sc.channel_id
+                WHERE           e.id in (:errataIds)
+                AND             sc.server_id in (:serverIds)
+                """, Tuple.class)
+                .setParameterList("serverIds", serverIds)
+                .setParameterList("errataIds", errataIds)
+                .addScalar("errataId", StandardBasicTypes.LONG)
+                .addScalar("serverId", StandardBasicTypes.LONG)
+                .addScalar("advisoryName", StandardBasicTypes.STRING)
+                .addScalar("updateTag", StandardBasicTypes.STRING)
+                .addScalar("updateStack", StandardBasicTypes.BOOLEAN)
+                .addScalar("includeSalt", StandardBasicTypes.BOOLEAN)
+                .list();
+
         return result.stream().collect(
             // Group by server id
-            Collectors.groupingBy(row -> (Long) row[1],
+            Collectors.groupingBy(t -> t.get(1, Long.class),
                 // Group by errata id
-                Collectors.groupingBy(row -> (Long) row[0],
+                Collectors.groupingBy(t -> t.get(0, Long.class),
                     // Generate names including the update tag
-                    Collectors.mapping(row -> {
-                        String name = (String) row[2];
-                        String tag = (String) row[3];
+                    Collectors.mapping(t -> {
+                        String name = t.get(2, String.class);
+                        String tag = t.get(3, String.class);
                         if (StringUtils.isBlank(tag)) {
-                            return new ErrataInfo(name, (boolean)row[4], (boolean)row[5]);
+                            return new ErrataInfo(name, t.get(4, Boolean.class), t.get(5, Boolean.class));
                         }
                         if (name.matches("^([C-Z][A-Z]-)*SUSE-(.*)$")) {
                             return new ErrataInfo(name.replaceFirst("SUSE", "SUSE-" + tag),
-                                    (boolean)row[4], (boolean)row[5]);
+                                    t.get(4, Boolean.class), t.get(5, Boolean.class));
                         }
                         else {
-                            return new ErrataInfo(tag + "-" + name, (boolean)row[4], (boolean)row[5]);
+                            return new ErrataInfo(tag + "-" + name, t.get(4, Boolean.class), t.get(5, Boolean.class));
                         }
                     }, Collectors.toSet())
                 )
@@ -1534,17 +1757,55 @@ public class ServerFactory extends HibernateFactory {
         if (serverIds.isEmpty() || errataIds.isEmpty()) {
             return new HashMap<>();
         }
-        List<Object[]> result = SINGLETON.listObjectsByNamedQuery("Server.listNewestPkgsForServerErrata",
-                Map.of("serverIds", serverIds, "errataIds", errataIds));
+        return getSession().createNativeQuery("""
+                WITH NewPackageForServerErrata as (
+                 SELECT DISTINCT sc.server_id, pn.name, max(pevr.evr) evr, pa.label as package_arch
+                   FROM rhnErrata e
+                            INNER JOIN rhnErrataPackage ep ON e.id = ep.errata_id
+                            INNER JOIN rhnPackage p ON ep.package_id = p.id
+                            INNER JOIN rhnPackageEVR pevr ON p.evr_id = pevr.id
+                            INNER JOIN rhnPackageName pn ON p.name_id = pn.id
+                            INNER JOIN rhnPackageArch pa ON p.package_arch_id = pa.id
 
-        return result.stream().collect(
-                // Group by server id
-                Collectors.groupingBy(row -> (Long) row[0],
-                        // Map from package name to version (requires package names
-                        // to be unique which is guaranteed by the sql query
-                        toMap(row -> (String)row[1], row -> new Tuple2<>((String)row[2], (String)row[3]))
+                            INNER JOIN rhnChannelErrata ce ON e.id = ce.errata_id
+                            INNER JOIN rhnServerChannel sc ON (sc.channel_id = ce.channel_id
+                                                           AND sc.server_id in (:serverIds))
+                            INNER JOIN rhnChannelPackage pc ON (pc.channel_id = sc.channel_id AND pc.package_id = p.id)
+
+                            INNER JOIN rhnServerPackage sp ON (sp.server_id = sc.server_id
+                                                           AND p.name_id = sp.name_id
+                                                           AND p.package_arch_id = sp.package_arch_id)
+                            INNER JOIN rhnPackageEVR spevr ON (sp.evr_id = spevr.id
+                                                           AND (pevr.evr).type = (spevr.evr).type
+                                                           AND pevr.evr > spevr.evr)
+                          WHERE e.id in (:errataIds)
+                       GROUP BY sc.server_id, pn.name, pa.label
                 )
-        );
+                SELECT pse.server_id AS serverId
+                     , pse.name AS packageName
+                     , pse.package_arch AS packageArch
+                     , CASE WHEN (pse.evr).epoch IS NULL
+                         THEN (pse.evr).version || '-' || (pse.evr).release
+                         ELSE (pse.evr).epoch || ':' || (pse.evr).version || '-' || (pse.evr).release
+                       END AS packageVersion
+                FROM NewPackageForServerErrata pse
+                """, Tuple.class)
+                .setParameterList("serverIds", serverIds)
+                .setParameterList("errataIds", errataIds)
+                .addScalar("serverId", StandardBasicTypes.LONG)
+                .addScalar("packageName", StandardBasicTypes.STRING)
+                .addScalar("packageArch", StandardBasicTypes.STRING)
+                .addScalar("packageVersion", StandardBasicTypes.STRING)
+                .stream()
+                .collect(
+                        // Group by server id
+                        Collectors.groupingBy(t -> t.get(0, Long.class),
+                                // Map from package name to version (requires package names
+                                // to be unique which is guaranteed by the sql query
+                                toMap(t -> t.get(1, String.class),
+                                        t -> new Tuple2<>(t.get(2, String.class), t.get(3, String.class)))
+                        )
+                );
     }
 
     /**
@@ -1586,9 +1847,18 @@ public class ServerFactory extends HibernateFactory {
      * given channel
      */
     public static List<Long> findServersInSetByChannel(User user, long channelId) {
-        return SINGLETON.listObjectsByNamedQuery("Server.findServerInSSMByChannel",
-                Map.of("user_id", user.getId(), "channel_id", channelId));
-
+        return getSession().createNativeQuery("""
+                SELECT s.id AS serverId
+                FROM   rhnServer s
+                JOIN   rhnServerChannel sc ON s.id=sc.server_id AND sc.channel_id=:channel_id
+                JOIN   rhnSet rset ON rset.element = s.id AND rset.user_id = :user_id AND rset.label = 'system_list'
+                """, Tuple.class)
+                .setParameter("user_id", user.getId())
+                .setParameter("channel_id", channelId)
+                .addScalar("serverId", StandardBasicTypes.LONG)
+                .stream()
+                .map(t -> t.get(0, Long.class))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -1598,8 +1868,21 @@ public class ServerFactory extends HibernateFactory {
      * @return a map containing the minion id as key and the server id as value
      */
     public static Map<String, Long> findServerIdsByMinionIds(List<String> minionIds) {
-        List<Object[]> results = findByIds(minionIds, "Server.findServerIdsByMinionIds", "minionIds");
-        return results.stream().collect(toMap(row -> row[0].toString(), row -> (Long)row[1]));
+        if (minionIds.isEmpty()) {
+            return Collections.emptyMap();
+        }
+        return getSession().createQuery("""
+                        SELECT s.minionId, s.id
+                        FROM   Server AS s
+                        WHERE  type(s) = com.redhat.rhn.domain.server.MinionServer
+                        AND    s.minionId IN (:minionIds)
+                        """, Tuple.class)
+                .setParameterList("minionIds", minionIds)
+                .stream()
+                .collect(toMap(
+                        t -> t.get(0, String.class),
+                        t -> t.get(1, Long.class)
+                ));
     }
 
     /**
@@ -1609,7 +1892,10 @@ public class ServerFactory extends HibernateFactory {
      * @return List of servers
      */
     public static List<Server> listOrgSystems(long orgId) {
-        return SINGLETON.listObjectsByNamedQuery("Server.listOrgSystems", Map.of("orgId", orgId));
+        return getSession()
+                .createQuery("FROM com.redhat.rhn.domain.server.Server AS s WHERE ORG_ID = :orgId", Server.class)
+                .setParameter("orgId", orgId)
+                .list();
     }
 
     /**
@@ -1630,6 +1916,7 @@ public class ServerFactory extends HibernateFactory {
                         AND sa.status IN (0, 1)
                     """, ServerAction.class
                 )
+                .addSynchronizedEntityClass(Action.class)
                 .setParameterList("systemIds", systemIds, StandardBasicTypes.LONG)
                 .getResultList().stream().map(ServerAction::getServerId).collect(Collectors.toSet());
     }
@@ -1645,7 +1932,11 @@ public class ServerFactory extends HibernateFactory {
         if (systemIds.isEmpty()) {
             return 0;
         }
-        return getSession().createNamedQuery("Server.setMaintenanceScheduleToSystems")
+        return getSession().createQuery("""
+                UPDATE Server s
+                SET    s.maintenanceSchedule = :schedule
+                WHERE  s.id IN (:systemIds)
+                """)
                 .setParameter("schedule", schedule)
                 .setParameter("systemIds", systemIds)
                 .executeUpdate();

@@ -20,15 +20,25 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.io.Serializable;
 
+import javax.persistence.Embeddable;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
 /**
  * Composite id for {@link ServerPath}.
  */
+@Embeddable
 public class ServerPathId implements Serializable {
 
     /** The server. */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "server_id", nullable = false)
     private Server server;
 
     /** The proxy server. */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "proxy_server_id", nullable = false)
     private Server proxyServer;
 
     /**

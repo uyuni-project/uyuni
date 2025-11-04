@@ -61,7 +61,7 @@ public class DebRepositoryWriterTest extends JMockBaseTestCaseWithUser {
         PackageExtraTagsKeys multiArchTag = PackageManagerTest.createExtraTagKey("Multi-Arch");
 
         Package pkg1 = PackageManagerTest.addPackageToChannel("pkg_1", channel);
-        pkg1.getExtraTags().put(multiArchTag, "same");
+        pkg1.getExtraTags().add(PackageManagerTest.createExtraTag(multiArchTag, "same", pkg1));
         Package pkg2 = PackageManagerTest.addPackageToChannel("pkg_2", channel);
         Package pkg3 = PackageManagerTest.addPackageToChannel("pkg_3", channel);
 

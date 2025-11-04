@@ -156,8 +156,12 @@ with open(config_path + "httpd.yaml", encoding="utf-8") as httpdSource:
         proxy.proxy_fqdn = {config['proxy_fqdn']}
         
         # Destination of all tracebacks, etc.
-        traceback_mail = {config['email']}"""
+        traceback_mail = {config['email']}
+        """
         )
+
+        if "timeout" in config:
+            file.write(f"proxy.timeout = {config['timeout']}")
 
     with open(
         "/etc/apache2/conf.d/smlm-proxy-forwards.conf", "r+", encoding="utf-8"

@@ -36,9 +36,9 @@ public class NetworkInterfaceFactory {
      */
     public static Stream<NetworkInterface> lookupNetworkInterfacesByHwAddress(String hwAddress) {
         return HibernateFactory.getSession()
-                .getNamedQuery("NetworkInterface.lookupByHwAddress")
+                .createQuery("FROM NetworkInterface AS n WHERE lower(n.hwaddr) = lower(:hwAddress)",
+                        NetworkInterface.class)
                 .setParameter("hwAddress", hwAddress)
                 .stream();
     }
-
 }

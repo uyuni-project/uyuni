@@ -19,15 +19,49 @@ import com.redhat.rhn.domain.org.Org;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.annotations.DiscriminatorOptions;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 
 /**
  * ExtGroup
  */
+@Entity
+@Table(name = "rhnUserExtGroup")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "org_id")
+@DiscriminatorOptions(insert = false)
 public abstract class ExtGroup extends BaseDomainHelper implements Comparable<ExtGroup> {
 
+    @Id
+    @GeneratedValue(generator = "userextgroup_seq")
+    @GenericGenerator(
+        name = "userextgroup_seq",
+        strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+        parameters = {
+            @Parameter(name = "sequence_name", value = "rhn_userextgroup_seq"),
+            @Parameter(name = "increment_size", value = "1")
+        })
     private Long id;
+
+    @Column
     private String label;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "org_id")
     private Org org;
 
     /**
@@ -40,7 +74,7 @@ public abstract class ExtGroup extends BaseDomainHelper implements Comparable<Ex
     /**
      * @param idIn The id to set.
      */
-    public void setId(Long idIn) {
+    protected void setId(Long idIn) {
         id = idIn;
     }
 

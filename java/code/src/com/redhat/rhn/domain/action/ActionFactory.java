@@ -104,6 +104,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javax.persistence.Tuple;
+
 /**
  * ActionFactory - the singleton class used to fetch and store
  * com.redhat.rhn.domain.action.Action objects from the
@@ -154,29 +156,6 @@ public class ActionFactory extends HibernateFactory {
 
     private static String toActionArchTypeKey(Integer id, String actionStyle) {
         return id + "_" + actionStyle;
-    }
-
-    /**
-     * Removes an action from all its associated systems
-     * @param actionId action to remove
-     * @return the number of failed systems to remove an action for.
-     */
-    @SuppressWarnings("unchecked")
-    public static int removeAction(Long actionId) {
-
-        List<Long> ids = getSession().getNamedQuery("Action.findServerIds")
-                .setParameter("action_id", actionId).list();
-        int failed = 0;
-        for (long id : ids) {
-            try {
-                removeActionForSystem(actionId, id);
-                SystemManager.updateSystemOverview(id);
-            }
-            catch (Exception e) {
-                failed++;
-            }
-        }
-        return failed;
     }
 
     /**
@@ -625,6 +604,9 @@ public class ActionFactory extends HibernateFactory {
         else if (typeIn.equals(TYPE_SUPPORTDATA_GET)) {
             retval = new SupportDataAction();
         }
+        else if (typeIn.equals(TYPE_VIRT_PROFILE_REFRESH)) {
+            retval = new VirtualInstanceRefreshAction();
+        }
         else {
             retval = new Action();
         }
@@ -651,8 +633,10 @@ public class ActionFactory extends HibernateFactory {
      * @return the Action found
      */
     public static Action lookupByUserAndId(User user, Long id) {
-        return singleton.lookupObjectByNamedQuery("Action.findByIdandOrgId",
-                Map.of("aid", id, "orgId", user.getOrg().getId()));
+        return getSession().createQuery("FROM Action AS a where a.id = :aid AND org_id = :orgId", Action.class)
+                .setParameter("aid", id)
+                .setParameter("orgId", user.getOrg().getId())
+                .uniqueResult();
     }
 
     /**
@@ -662,8 +646,16 @@ public class ActionFactory extends HibernateFactory {
      * @return the count
      */
     public static Integer getServerActionCountByStatus(Action action, ActionStatus status) {
-        return singleton.lookupObjectByNamedQuery("Action.getServerActionCountByStatus",
-                Map.of("aid", action.getId(), "stid", status.getId()));
+        return getSession().createNativeQuery("""
+                SELECT COUNT(sa.server_id) AS count
+                FROM   rhnServerAction sa
+                WHERE  sa.action_id = :aid
+                AND    sa.status = :stid
+                """, Tuple.class)
+                .setParameter("aid", action.getId())
+                .setParameter("stid", status.getId())
+                .uniqueResult()
+                .get("count", Number.class).intValue();
     }
 
 
@@ -679,8 +671,26 @@ public class ActionFactory extends HibernateFactory {
      * @return the Action found or null if none exists
      */
     public static Action lookupLastCompletedAction(User user, ActionType type, Server server) {
-        return singleton.lookupObjectByNamedQuery("Action.findLastActionByServerIdAndActionTypeIdAndUserId",
-                Map.of("userId", user.getId(), "actionTypeId", type.getId(), "serverId", server.getId()));
+        return getSession().createNativeQuery("""
+                SELECT *
+                FROM   rhnAction a
+                WHERE  a.id = (SELECT     MAX(rA.id)
+                               FROM       rhnAction rA
+                               inner join rhnServerAction rsa ON rsa.action_id = rA.id
+                               inner join rhnActionStatus ras ON ras.id = rsa.status
+                               inner join rhnUserServerPerms usp ON usp.server_id = rsa.server_id
+                               WHERE      usp.user_id = :userId
+                               AND        rsa.server_id = :serverId
+                               AND        ras.name IN ('Completed', 'Failed')
+                               AND        rA.action_type = :actionTypeId
+                              )
+                """, Action.class)
+                .addSynchronizedEntityClass(Server.class)
+                .addSynchronizedEntityClass(ServerAction.class)
+                .setParameter("userId", user.getId())
+                .setParameter("actionTypeId", type.getId())
+                .setParameter("serverId", server.getId())
+                .uniqueResult();
     }
 
 
@@ -816,7 +826,6 @@ public class ActionFactory extends HibernateFactory {
      * @param parentAction Parent action.
      * @return Set of actions dependent on the given parent.
      */
-    @SuppressWarnings("unchecked")
     public static Stream<Action> lookupDependentActions(Action parentAction) {
         Session session = HibernateFactory.getSession();
 
@@ -824,12 +833,13 @@ public class ActionFactory extends HibernateFactory {
         List<Long> actionsAtHierarchyLevel = new LinkedList<>();
         actionsAtHierarchyLevel.add(parentAction.getId());
         do {
-            Query<Action> findDependentActions = session.getNamedQuery("Action.findDependentActions");
-            findDependentActions.setParameterList("action_ids", actionsAtHierarchyLevel);
-            List<Action> results = findDependentActions.list();
+            List<Action> results = session
+                    .createQuery("from Action a where a.prerequisite.id in (:action_ids)", Action.class)
+                    .setParameterList("action_ids", actionsAtHierarchyLevel)
+                    .list();
             returnSet.addAll(results);
             // Reset list of actions for the next hierarchy level:
-            actionsAtHierarchyLevel = results.stream().map(a -> a.getId()).collect(Collectors.toList());
+            actionsAtHierarchyLevel = results.stream().map(Action::getId).collect(Collectors.toList());
         }
         while (!actionsAtHierarchyLevel.isEmpty());
 
@@ -843,8 +853,15 @@ public class ActionFactory extends HibernateFactory {
      * @return List of Action objects
      */
     public static List<Action> listActionsForServer(User user, Server serverIn) {
-        return singleton.listObjectsByNamedQuery("Action.findByServerAndOrgId",
-                Map.of("orgId", user.getOrg().getId(), "server", serverIn));
+        return getSession().createQuery("""
+                FROM  com.redhat.rhn.domain.action.Action AS a
+                LEFT  JOIN FETCH a.serverActions AS sa
+                WHERE a.org = :org
+                AND   sa.server = :server
+                """, Action.class)
+                .setParameter("org", user.getOrg())
+                .setParameter("server", serverIn)
+                .list();
     }
 
     /**
@@ -853,7 +870,7 @@ public class ActionFactory extends HibernateFactory {
      * @return return a list of server actions
      */
     public static List<ServerAction> listPendingServerActionsByTypes(List<ActionType> typesIn) {
-        return getSession().createQuery("""
+        return getSession().createNativeQuery("""
             SELECT sa.*
               FROM rhnAction a
               JOIN rhnserveraction sa ON a.id = sa.action_id
@@ -862,6 +879,7 @@ public class ActionFactory extends HibernateFactory {
                AND a.earliest_action <= current_timestamp
             """, ServerAction.class)
                 .setParameterList("types", typesIn.stream().map(ActionType::getId).toList())
+                .addSynchronizedEntityClass(Action.class)
                 .list();
     }
 
@@ -979,16 +997,26 @@ public class ActionFactory extends HibernateFactory {
      */
     public static void rescheduleFailedServerActions(Action action, Long tries) {
         updateActionEarliestDate(action);
-        HibernateFactory.getSession().getNamedQuery("Action.rescheduleFailedActions")
-        .setParameter("action", action)
-        .setParameter("tries", tries)
-        .setParameter("failed", ActionFactory.STATUS_FAILED)
-        .setParameter("queued", ActionFactory.STATUS_QUEUED).executeUpdate();
+        HibernateFactory.getSession().createQuery("""
+                        UPDATE ServerAction sa
+                        SET    sa.status = :queued,
+                               sa.remainingTries = :tries,
+                               sa.pickupTime = null,
+                               sa.completionTime = null,
+                               resultCode = null,
+                               resultMsg = null
+                        WHERE  sa.status = :failed
+                        AND    sa.parentAction = :action
+                        """)
+                .setParameter("action", action)
+                .setParameter("tries", tries)
+                .setParameter("failed", ActionFactory.STATUS_FAILED)
+                .setParameter("queued", ActionFactory.STATUS_QUEUED).executeUpdate();
         action.removeInvalidResults();
         action.getServerActions().stream()
-                .filter(sa -> sa.isFailed())
-                .map(sa -> sa.getServerId())
-                .forEach(sid -> SystemManager.updateSystemOverview(sid));
+                .filter(ServerAction::isFailed)
+                .map(ServerAction::getServerId)
+                .forEach(SystemManager::updateSystemOverview);
     }
 
     /**
@@ -998,14 +1026,23 @@ public class ActionFactory extends HibernateFactory {
      */
     public static void rescheduleAllServerActions(Action action, Long tries) {
         updateActionEarliestDate(action);
-        HibernateFactory.getSession().getNamedQuery("Action.rescheduleAllActions")
-        .setParameter("action", action)
-        .setParameter("tries", tries)
-        .setParameter("queued", ActionFactory.STATUS_QUEUED).executeUpdate();
+        HibernateFactory.getSession().createQuery("""
+                        UPDATE  ServerAction sa
+                        SET     sa.status = :queued,
+                                sa.remainingTries = :tries,
+                                sa.pickupTime = null,
+                                sa.completionTime = null,
+                                resultCode = null,
+                                resultMsg = null
+                        WHERE   sa.parentAction = :action
+                        """)
+                .setParameter("action", action)
+                .setParameter("tries", tries)
+                .setParameter("queued", ActionFactory.STATUS_QUEUED).executeUpdate();
         action.removeInvalidResults();
         action.getServerActions().stream()
-                .map(sa -> sa.getServerId())
-                .forEach(sid -> SystemManager.updateSystemOverview(sid));
+                .map(ServerAction::getServerId)
+                .forEach(SystemManager::updateSystemOverview);
     }
 
     /**
@@ -1013,7 +1050,16 @@ public class ActionFactory extends HibernateFactory {
      * @return list of pending minions that contain minions
      */
     public static List<Action> pendingMinionServerActions() {
-        return singleton.listObjectsByNamedQuery("Action.lookupPendingMinionActions", Map.of());
+        return getSession().createNativeQuery("""
+                SELECT *
+                FROM   rhnAction
+                WHERE  id IN (SELECT     DISTINCT ac.id
+                              FROM       rhnAction ac
+                              INNER JOIN rhnServerAction sa on ac.id = sa.action_id
+                              INNER JOIN suseMinionInfo mi on sa.server_id = mi.server_id
+                              WHERE      sa.status in (0, 1))
+                """, Action.class)
+                .list();
     }
 
     /**
@@ -1025,7 +1071,17 @@ public class ActionFactory extends HibernateFactory {
     public static void rescheduleSingleServerAction(Action action, Long tries,
             Long server) {
         updateActionEarliestDate(action);
-        HibernateFactory.getSession().getNamedQuery("Action.rescheduleSingleServerAction")
+        HibernateFactory.getSession().createQuery("""
+                        UPDATE ServerAction sa
+                        SET    sa.status = :queued,
+                               sa.remainingTries = :tries,
+                               sa.pickupTime = null,
+                               sa.completionTime = null,
+                               resultCode = null,
+                               resultMsg = null
+                        WHERE  sa.parentAction = :action
+                        AND    sa.serverId = :server
+                        """)
         .setParameter("action", action)
         .setParameter("tries", tries)
         .setParameter("queued", ActionFactory.STATUS_QUEUED)
@@ -1064,9 +1120,16 @@ public class ActionFactory extends HibernateFactory {
         Map<String, Object>  parameters = new HashMap<>();
         parameters.put("action_id", actionIn.getId());
         parameters.put("status", ActionFactory.STATUS_PICKED_UP.getId());
-
-        udpateByIds(serverIds, "Action.updateServerActionsPickedUp", "server_ids", parameters);
-        serverIds.forEach(sid -> SystemManager.updateSystemOverview(sid));
+        String sql = """
+                UPDATE rhnServerAction
+                SET    status = :status,
+                       pickup_time = current_timestamp
+                WHERE  action_id  = :action_id
+                AND    server_id  IN (:server_ids)
+                AND    status NOT IN(2,3)
+                """;
+        udpateByIds(serverIds, sql, "server_ids", parameters);
+        serverIds.forEach(SystemManager::updateSystemOverview);
     }
 
     /**
@@ -1080,9 +1143,15 @@ public class ActionFactory extends HibernateFactory {
         Map<String, Object>  parameters = new HashMap<>();
         parameters.put("action_id", actionIn.getId());
         parameters.put("status", status.getId());
-
-        udpateByIds(serverIds, "Action.updateServerActions", "server_ids", parameters);
-        serverIds.forEach(sid -> SystemManager.updateSystemOverview(sid));
+        String sql = """
+                UPDATE rhnServerAction
+                SET    status = :status
+                WHERE  action_id  = :action_id
+                AND    server_id  IN (:server_ids)
+                AND    status NOT IN(2,3)
+                """;
+        udpateByIds(serverIds, sql, "server_ids", parameters);
+        serverIds.forEach(SystemManager::updateSystemOverview);
     }
 
     /**
@@ -1091,15 +1160,28 @@ public class ActionFactory extends HibernateFactory {
      * @param rejectionReason the reason why the scheduled action was not picked up
      */
     public static void rejectScheduledActions(List<Long> actionsId, String rejectionReason) {
-        Query<Long> query = getSession().createNamedQuery("Action.rejectAction", Long.class)
-                                            .setParameter("rejection_reason", rejectionReason)
-                                            .setParameter("completion_time", new Date());
+        Query<Tuple> query = getSession()
+                .createNativeQuery("""
+                        UPDATE rhnServerAction
+                        SET    status = 3,
+                               result_code = -1,
+                               result_msg = :rejection_reason,
+                               completion_time = :completion_time,
+                               remaining_tries = 0
+                        WHERE  action_id IN (:action_ids)
+                        AND    status = 0
+                        RETURNING server_id
+                        """, Tuple.class)
+                .setParameter("rejection_reason", rejectionReason)
+                .setParameter("completion_time", new Date());
 
-        List<Long> updatedServerIds = HibernateFactory.<Long, List<Long>, Long>splitAndExecuteQuery(
+        List<Tuple> updatedServerIds = HibernateFactory.<Long, List<Tuple>, Tuple>splitAndExecuteQuery(
             actionsId, "action_ids", query, query::list, new ArrayList<>(), ListUtils::union
         );
 
-        updatedServerIds.forEach(SystemManager::updateSystemOverview);
+        updatedServerIds.stream()
+                .map(t -> t.get(0, Number.class).longValue())
+                .forEach(SystemManager::updateSystemOverview);
     }
 
     /**

@@ -32,6 +32,7 @@ import org.hibernate.MappingException;
 import org.hibernate.Session;
 import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.metadata.ClassMetadata;
+import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 
 import java.io.ByteArrayOutputStream;
@@ -54,6 +55,7 @@ import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
 import javax.persistence.FlushModeType;
+import javax.persistence.Tuple;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.Root;
@@ -705,7 +707,7 @@ public abstract class HibernateFactory {
      */
     public static <T> T doWithoutAutoFlushing(Supplier<T> body, boolean createSession) {
         Optional<Session> session = getSessionIfPresent();
-        if (!session.isPresent() && !createSession) {
+        if (session.isEmpty() && !createSession) {
             return body.get();
         }
 
@@ -795,14 +797,16 @@ public abstract class HibernateFactory {
      * Executes a 'lookup' query to retrieve data from the database given a list of ids.
      * The query will be execute in batches of LIST_BATCH_MAX_SIZE ids each.
      * @param <T> the type of the returned objects
-     * @param <ID>
+     * @param <I>
+     * @param resultClass the result class
      * @param ids the ids to search for
-     * @param queryName the name of the query to be executed
+     * @param sqlQuery the SQL query to be executed
      * @param idsParameterName the name of the parameter to match the ids
      * @return a list of the objects found
      */
-    protected static <T, ID> List<T> findByIds(List<ID> ids, String queryName, String idsParameterName) {
-        return findByIds(ids, queryName, idsParameterName, new HashMap<>());
+    protected static <T, I> List<T> findByIds(Class<T> resultClass, List<I> ids, String sqlQuery,
+                                              String idsParameterName) {
+        return findByIds(resultClass, ids, sqlQuery, idsParameterName, new HashMap<>());
     }
 
     /**
@@ -810,16 +814,15 @@ public abstract class HibernateFactory {
      * The query will be executed in batches of LIST_BATCH_MAX_SIZE parameters each.
      * @param <E> the type of the list parameters
      * @param list the list of parameters to search for
-     * @param queryName the name of the query to be executed
+     * @param sqlQuery the sql query to be executed
      * @param parameterName the name of the parameter to match the parameters in the list
      * @return the count of affected rows
      */
-    @SuppressWarnings("unchecked")
-    protected static <E> int udpateByIds(List<E> list, String queryName, String parameterName,
-            Map<String, Object> parameters) {
-        Query<Integer> query = HibernateFactory.getSession().getNamedQuery(queryName);
+    protected static <E> int udpateByIds(List<E> list, String sqlQuery, String parameterName,
+                                         Map<String, Object> parameters) {
+        NativeQuery<Tuple> query = HibernateFactory.getSession().createNativeQuery(sqlQuery, Tuple.class);
 
-        parameters.entrySet().stream().forEach(entry -> query.setParameter(entry.getKey(), entry.getValue()));
+        parameters.forEach(query::setParameter);
 
         return splitAndExecuteQuery(list, parameterName, query, query::executeUpdate, 0, Integer::sum);
     }
@@ -828,19 +831,20 @@ public abstract class HibernateFactory {
      * Executes a 'lookup' query to retrieve data from the database given a list of ids.
      * The query will be execute in batches of LIST_BATCH_MAX_SIZE ids each.
      * @param <T> the type of the returned objects
-     * @param <ID> the type of the ids
+     * @param <I> the type of the ids
+     * @param resultClass the result class
      * @param ids the ids to search for
-     * @param queryName the name of the query to be executed
+     * @param sqlQuery the SQL query to be executed
      * @param idsParameterName the name of the parameter to match the ids
      * @param parameters extra parameters to include in the query
      * @return a list of the objects found
      */
     @SuppressWarnings("unchecked")
-    protected static <T, ID> List<T> findByIds(List<ID> ids, String queryName,
-            String idsParameterName, Map<String, Object> parameters) {
-        Query<T> query = HibernateFactory.getSession().getNamedQuery(queryName);
+    protected static <T, I> List<T> findByIds(Class<T> resultClass, List<I> ids, String sqlQuery,
+                                              String idsParameterName, Map<String, Object> parameters) {
+        Query<T> query = HibernateFactory.getSession().createQuery(sqlQuery, resultClass);
 
-        parameters.entrySet().stream().forEach(entry -> query.setParameter(entry.getKey(), entry.getValue()));
+        parameters.forEach(query::setParameter);
 
         return splitAndExecuteQuery(ids, idsParameterName, query, query::getResultList,
                 new ArrayList<T>(), ListUtils::union);
@@ -872,7 +876,7 @@ public abstract class HibernateFactory {
                     query.setParameterList(parameterName, b);
                     return queryFunction.get();
                 })
-                .reduce(identity, accumulator::apply);
+                .reduce(identity, accumulator);
     }
 
     /**

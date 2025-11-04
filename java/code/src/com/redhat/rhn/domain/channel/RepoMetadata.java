@@ -16,14 +16,46 @@ package com.redhat.rhn.domain.channel;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 /**
  *
  *
  */
+@Entity
+@Table(name = "rhnChannelComps")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "comps_type_id")
+@DiscriminatorValue("-1")
 public class RepoMetadata extends BaseDomainHelper {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "channelcomps_seq")
+    @SequenceGenerator(name = "channelcomps_seq", sequenceName = "rhn_channelcomps_id_seq", allocationSize = 1)
     private Long id;
+
+    @Column(name = "relative_filename", nullable = false)
     private String relativeFilename;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "channel_id", nullable = false, unique = true)
+    @Fetch(FetchMode.SELECT)
     private Channel channel;
 
     /**
@@ -38,7 +70,7 @@ public class RepoMetadata extends BaseDomainHelper {
      *
      * @param idIn The Id to set.
      */
-    public void setId(Long idIn) {
+    protected void setId(Long idIn) {
         this.id = idIn;
     }
 

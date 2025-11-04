@@ -32,9 +32,7 @@ import com.redhat.rhn.domain.user.User;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Session;
-import org.hibernate.query.Query;
 import org.hibernate.type.StandardBasicTypes;
 
 import java.io.IOException;
@@ -438,17 +436,15 @@ public class ConfigurationFactory extends HibernateFactory {
     @SuppressWarnings("unchecked")
     public static ConfigFile lookupConfigFileByChannelAndName(Long channel, Long name) {
         Session session = HibernateFactory.getSession();
-        Query<ConfigFile> query =
-            session.getNamedQuery("ConfigFile.findByChannelAndName")
+        return session.createQuery("""
+                                FROM ConfigFile as c
+                                WHERE c.configChannel.id = :channel_id
+                                AND c.configFileName.id = :name_id
+                                AND c.configFileState.id = :state_id""", ConfigFile.class)
                     .setParameter("channel_id", channel, StandardBasicTypes.LONG)
                     .setParameter("name_id", name, StandardBasicTypes.LONG)
-                    .setParameter("state_id", ConfigFileState.normal().getId(), StandardBasicTypes.LONG);
-        try {
-            return query.uniqueResult();
-        }
-        catch (ObjectNotFoundException e) {
-            return null;
-        }
+                    .setParameter("state_id", ConfigFileState.normal().getId(), StandardBasicTypes.LONG)
+                .uniqueResult();
     }
 
     /**
@@ -471,10 +467,11 @@ public class ConfigurationFactory extends HibernateFactory {
     @SuppressWarnings("unchecked")
     public static ConfigRevision lookupConfigRevisionByRevId(ConfigFile cf, Long revId) {
         Session session = HibernateFactory.getSession();
-        Query<ConfigRevision> q = session.getNamedQuery("ConfigRevision.findByRevisionAndConfigFile");
-        q.setParameter("rev", revId, StandardBasicTypes.LONG);
-        q.setParameter("cf", cf);
-        return q.uniqueResult();
+        return session.createQuery("FROM ConfigRevision AS cr WHERE cr.revision = :rev AND cr.configFile = :cf",
+                        ConfigRevision.class)
+                .setParameter("rev", revId, StandardBasicTypes.LONG)
+                .setParameter("cf", cf)
+                .uniqueResult();
     }
 
     /**
@@ -485,9 +482,10 @@ public class ConfigurationFactory extends HibernateFactory {
     @SuppressWarnings("unchecked")
     public static List<ConfigRevision> lookupConfigRevisions(ConfigFile cf) {
         Session session = HibernateFactory.getSession();
-        Query<ConfigRevision> q = session.getNamedQuery("ConfigRevision.findByConfigFile");
-        q.setParameter("cf", cf);
-        return q.list();
+        return session.createQuery(
+                        "FROM ConfigRevision AS cr WHERE cr.configFile = :cf", ConfigRevision.class)
+                .setParameter("cf", cf)
+                .list();
     }
 
     /**

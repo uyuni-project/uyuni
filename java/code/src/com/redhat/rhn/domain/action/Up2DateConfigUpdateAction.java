@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -15,9 +16,14 @@
 package com.redhat.rhn.domain.action;
 
 
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+
 /**
  * Up2DateConfigUpdateAction - Class representing TYPE_UP2DATE_CONFIG_UPDATE
  */
+@Entity
+@DiscriminatorValue("7")
 public class Up2DateConfigUpdateAction extends Action {
 
 }

@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,10 +15,15 @@
  */
 package com.redhat.rhn.domain.action.config;
 
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+
 /**
  * ActivationSchedulePackageDeployAction -
  * Class representing TYPE_ACTIVATION_SCHEDULE_DEPLOY
  */
+@Entity
+@DiscriminatorValue("21")
 public class ActivationSchedulePackageDeployAction extends ConfigAction {
 
 }

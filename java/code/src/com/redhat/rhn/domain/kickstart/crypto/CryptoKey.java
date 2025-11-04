@@ -17,18 +17,46 @@ package com.redhat.rhn.domain.kickstart.crypto;
 import com.redhat.rhn.domain.Identifiable;
 import com.redhat.rhn.domain.org.Org;
 
+import org.hibernate.annotations.DiscriminatorFormula;
+
 import java.nio.charset.StandardCharsets;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 /**
  * CryptoKey - Class representation of the table rhnCryptoKey.
  */
+@Entity
+@Table(name = "rhnCryptoKey")
+@DiscriminatorFormula("(SELECT type.label FROM rhnCryptoKeyType type WHERE type.id = crypto_key_type_id)")
 public class CryptoKey implements Identifiable {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_CRYPTOKEY_ID_SEQ")
+    @SequenceGenerator(name = "RHN_CRYPTOKEY_ID_SEQ", sequenceName = "RHN_CRYPTOKEY_ID_SEQ", allocationSize = 1)
     private Long id;
+
+    @Column(nullable = false)
     private String description;
+
+    @Column
     private byte[] key;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "crypto_key_type_id")
     private CryptoKeyType cryptoKeyType;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "org_id")
     private Org org;
 
 
@@ -45,7 +73,7 @@ public class CryptoKey implements Identifiable {
      * Setter for id
      * @param idIn to set
     */
-    public void setId(Long idIn) {
+    protected void setId(Long idIn) {
         this.id = idIn;
     }
 

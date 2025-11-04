@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -18,17 +19,17 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -39,8 +40,14 @@ import javax.persistence.Table;
 public class PackageKey extends BaseDomainHelper implements Comparable<PackageKey> {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pkey_seq")
-    @SequenceGenerator(name = "pkey_seq", sequenceName = "rhn_pkey_id_seq", allocationSize = 1)
+    @GeneratedValue(generator = "pkey_seq")
+    @GenericGenerator(
+            name = "pkey_seq",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @Parameter(name = "sequence_name", value = "rhn_pkey_id_seq"),
+                    @Parameter(name = "increment_size", value = "1")
+            })
     private Long id;
 
     @Column(name = "key_id")

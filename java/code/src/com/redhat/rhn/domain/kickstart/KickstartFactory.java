@@ -43,7 +43,6 @@ import org.hibernate.type.StandardBasicTypes;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -51,6 +50,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.persistence.Tuple;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -115,8 +115,8 @@ public class KickstartFactory extends HibernateFactory {
     /**
      * Returns the most recently modified KickstartableTree for that channel
      * @param updateType The type of kickstart tree to allow, all or redhat-only
-     * @param channelId The base chanenl
-     * @param org The users org to look for cusome kickstart trees in
+     * @param channelId The base channel
+     * @param org The users org to look for customer kickstart trees in
      * @return most recently modified KickstartableTree
      */
     public static KickstartableTree getNewestTree(
@@ -129,9 +129,7 @@ public class KickstartFactory extends HibernateFactory {
             if (trees.isEmpty()) {
                 return null;
             }
-            // they are ordered by last_modified, get the last element to get
-            // newest
-            // tree
+            // they are ordered by last_modified, get the last element to get the newest tree
             return trees.get(trees.size() - 1);
         }
         else if (updateType.equals(KickstartTreeUpdateType.RED_HAT)) {
@@ -185,8 +183,8 @@ public class KickstartFactory extends HibernateFactory {
      * @return Kickstart Data object by ksid
      */
     public static KickstartData lookupKickstartDataByIdAndOrg(Org orgIn, Long ksid) {
-        return (KickstartData)  HibernateFactory.getSession()
-                .getNamedQuery("KickstartData.findByIdAndOrg")
+        return HibernateFactory.getSession()
+                .createQuery("FROM KickstartData AS t WHERE t.id = :id AND t.org = :org_id", KickstartData.class)
                 .setParameter("id", ksid, StandardBasicTypes.LONG)
                 .setParameter(ORG_ID, orgIn.getId(), StandardBasicTypes.LONG)
                 .uniqueResult();
@@ -194,13 +192,13 @@ public class KickstartFactory extends HibernateFactory {
 
     /**
      * @param orgIn Org associated with Kickstart Data
-     * @param cobblerId Kickstart Data Cobbler Id Id to lookup
+     * @param cobblerId Kickstart Data cobbler id to lookup
      * @return Kickstart Data object by cobbler id
      */
-    public static KickstartData lookupKickstartDataByCobblerIdAndOrg(Org orgIn,
-            String cobblerId) {
-        return (KickstartData)  HibernateFactory.getSession()
-                .getNamedQuery("KickstartData.findByCobblerIdAndOrg")
+    public static KickstartData lookupKickstartDataByCobblerIdAndOrg(Org orgIn, String cobblerId) {
+        return HibernateFactory.getSession()
+                .createQuery("FROM KickstartData AS t WHERE t.cobblerId = :id AND t.org = :org_id",
+                        KickstartData.class)
                 .setParameter("id", cobblerId)
                 .setParameter(ORG_ID, orgIn.getId(), StandardBasicTypes.LONG)
                 .uniqueResult();
@@ -212,62 +210,46 @@ public class KickstartFactory extends HibernateFactory {
      * @param orgId who owns KickstartData
      * @return KickstartData if found, null if not
      */
-    public static KickstartData lookupKickstartDataByLabelAndOrgId(
-            String label, Long orgId) {
+    public static KickstartData lookupKickstartDataByLabelAndOrgId(String label, Long orgId) {
         if (StringUtils.isBlank(label)) {
             throw new IllegalArgumentException("kickstartLabel cannot be null");
         }
-        return (KickstartData) HibernateFactory.getSession().
-                getNamedQuery("KickstartData.findByLabelAndOrg")
+        return HibernateFactory.getSession().
+                createQuery("FROM KickstartData AS t WHERE t.label = :label AND t.org = :org_id",
+                        KickstartData.class)
                 .setParameter(LABEL, label)
                 .setParameter(ORG_ID, orgId, StandardBasicTypes.LONG)
                 .uniqueResult();
     }
 
     /**
-     * Lookup a KickstartData based on a case insensitive label and orgId
-     * This is needed due to the cobbler converts the kickstart profiles to lowecase
+     * Lookup a KickstartData based on a case-insensitive label and orgId
+     * This is needed due to the cobbler converts the kickstart profiles to lowercase
      * @param label to lookup
      * @param orgId who owns KickstartData
      * @return KickstartData if found, null if not
      */
-    public static KickstartData lookupKickstartDataByCILabelAndOrgId(
-            String label, Long orgId) {
+    public static KickstartData lookupKickstartDataByCILabelAndOrgId(String label, Long orgId) {
         if (StringUtils.isBlank(label)) {
             throw new IllegalArgumentException("kickstartLabel cannot be null");
         }
-        return (KickstartData) HibernateFactory.getSession().
-                getNamedQuery("KickstartData.findByCILabelAndOrg")
+        return HibernateFactory.getSession().
+                createQuery("FROM KickstartData AS t WHERE LOWER(t.label) = LOWER(:label) AND t.org = :org_id",
+                        KickstartData.class)
                 .setParameter(LABEL, label)
                 .setParameter(ORG_ID, orgId, StandardBasicTypes.LONG)
                 .uniqueResult();
     }
 
     /**
-     * Lookup a KickstartData based on a label
-     * @param label to lookup
-     * @return KickstartData if found, null if not
-     */
-    public static KickstartData lookupKickstartDataByLabel(
-            String label) {
-        if (StringUtils.isBlank(label)) {
-            throw new IllegalArgumentException("kickstartLabel cannot be null");
-        }
-        return (KickstartData) HibernateFactory.getSession().
-                getNamedQuery("KickstartData.findByLabel")
-                .setParameter(LABEL, label)
-                .uniqueResult();
-    }
-
-
-    /**
      * Returns a list of kickstart data cobbler ids
-     * this is useful for cobbler only profiles..
+     * this is useful for cobbler only profiles.
      * @return a list of cobbler ids.
      */
     public static List<String> listKickstartDataCobblerIds() {
-        return singleton.listObjectsByNamedQuery("KickstartData.cobblerIds", Collections.emptyMap());
-
+        return getSession().createQuery(
+                "SELECT t.cobblerId FROM com.redhat.rhn.domain.kickstart.KickstartData AS t", String.class)
+                .list();
     }
 
     /**
@@ -284,7 +266,6 @@ public class KickstartFactory extends HibernateFactory {
                 .setParameter("cid", cobblerId)
                 .uniqueResult();
     }
-
 
     private static List<KickstartCommandName> lookupKickstartCommandNames(boolean onlyAdvancedOptions) {
         Session session = HibernateFactory.getSession();
@@ -350,11 +331,9 @@ public class KickstartFactory extends HibernateFactory {
      * @param nameIn of KickstartCommand
      * @return KickstartCommand created
      */
-    public static KickstartCommand createKickstartCommand(KickstartData ksdata,
-            String nameIn) {
+    public static KickstartCommand createKickstartCommand(KickstartData ksdata, String nameIn) {
         KickstartCommand retval = new KickstartCommand();
-        KickstartCommandName name =
-                KickstartFactory.lookupKickstartCommandName(nameIn);
+        KickstartCommandName name = KickstartFactory.lookupKickstartCommandName(nameIn);
         retval.setCommandName(name);
         retval.setKickstartData(ksdata);
         retval.setCreated(new Date());
@@ -413,8 +392,7 @@ public class KickstartFactory extends HibernateFactory {
      * @param ksdataIn Kickstart Data to be stored in db
      * @param ksession KickstartSession to associate with this save.
      */
-    public static void saveKickstartData(KickstartData ksdataIn,
-            KickstartSession ksession) {
+    public static void saveKickstartData(KickstartData ksdataIn, KickstartSession ksession) {
         log.debug("saveKickstartData: {}", ksdataIn.getLabel());
         singleton.saveObject(ksdataIn);
         String fileData = null;
@@ -492,17 +470,21 @@ public class KickstartFactory extends HibernateFactory {
      */
     public static CryptoKey lookupCryptoKey(String description, Org org) {
         Session session = HibernateFactory.getSession();
-        Query<CryptoKey> query = null;
         if (org != null) {
-            query = session.getNamedQuery("CryptoKey.findByDescAndOrg")
-                           .setParameter("description", description, StandardBasicTypes.STRING)
-                           .setParameter(ORG_ID, org.getId(), StandardBasicTypes.LONG);
+            return session.createQuery(
+                            "FROM CryptoKey AS c WHERE c.description = :description AND c.org = :org_id",
+                            CryptoKey.class)
+                    .setParameter("description", description, StandardBasicTypes.STRING)
+                    .setParameter(ORG_ID, org.getId(), StandardBasicTypes.LONG)
+                    .uniqueResult();
         }
         else {
-            query = session.getNamedQuery("CryptoKey.findByDescAndNullOrg")
-                           .setParameter("description", description, StandardBasicTypes.STRING);
+            return session.createQuery(
+                            "FROM CryptoKey AS c WHERE c.description = :description AND c.org IS NULL",
+                            CryptoKey.class)
+                    .setParameter("description", description, StandardBasicTypes.STRING)
+                    .uniqueResult();
         }
-        return query.uniqueResult();
     }
 
     /**
@@ -513,7 +495,7 @@ public class KickstartFactory extends HibernateFactory {
     public static List<CryptoKey> lookupCryptoKeys(Org org) {
         //look for Kickstart data by id
         Session session = HibernateFactory.getSession();
-        return session.getNamedQuery("CryptoKey.findByOrg")
+        return session.createQuery("FROM CryptoKey AS c WHERE c.org = :org_id", CryptoKey.class)
                 .setParameter(ORG_ID, org.getId(), StandardBasicTypes.LONG)
                 .list();
     }
@@ -526,7 +508,9 @@ public class KickstartFactory extends HibernateFactory {
     public static List<SslCryptoKey> lookupSslCryptoKeys(Org org) {
         //look for Kickstart data by id
         Session session = HibernateFactory.getSession();
-        return session.getNamedQuery("SslCryptoKey.findByOrg")
+        return session.createQuery(
+                "FROM com.redhat.rhn.domain.kickstart.crypto.SslCryptoKey AS c WHERE c.org = :org_id",
+                        SslCryptoKey.class)
                 .setParameter(ORG_ID, org.getId(), StandardBasicTypes.LONG)
                 .list();
     }
@@ -540,7 +524,8 @@ public class KickstartFactory extends HibernateFactory {
     public static CryptoKey lookupCryptoKeyById(Long keyId, Org org) {
         //look for Kickstart data by id
         Session session = HibernateFactory.getSession();
-        return (CryptoKey) session.getNamedQuery("CryptoKey.findByIdAndOrg")
+        return session.createQuery("FROM CryptoKey AS c WHERE c.id = :key_id AND c.org = :org_id",
+                        CryptoKey.class)
                 .setParameter("key_id", keyId, StandardBasicTypes.LONG)
                 .setParameter(ORG_ID, org.getId(), StandardBasicTypes.LONG)
                 .uniqueResult();
@@ -555,8 +540,8 @@ public class KickstartFactory extends HibernateFactory {
     public static SslCryptoKey lookupSslCryptoKeyById(Long keyId, Org org) {
         //look for Kickstart data by id
         Session session = HibernateFactory.getSession();
-        Query<SslCryptoKey> query = session.getNamedQuery("SslCryptoKey.findByIdAndOrg");
-        return query
+        return session.createQuery(
+                        "FROM SslCryptoKey AS c WHERE c.id = :key_id AND c.org = :org_id", SslCryptoKey.class)
                 .setParameter("key_id", keyId, StandardBasicTypes.LONG)
                 .setParameter(ORG_ID, org.getId(), StandardBasicTypes.LONG)
                 .uniqueResult();
@@ -640,8 +625,7 @@ public class KickstartFactory extends HibernateFactory {
      * @param channelId The base channel of the kickstart trees
      * @return List of KickstartableTree objects
      */
-    public static List<KickstartableTree> lookupKickstartTreesByChannelAndNullOrg(
-            Long channelId) {
+    public static List<KickstartableTree> lookupKickstartTreesByChannelAndNullOrg(Long channelId) {
         Session session = HibernateFactory.getSession();
         return session.createQuery("""
                         FROM KickstartableTree AS k
@@ -660,22 +644,16 @@ public class KickstartFactory extends HibernateFactory {
      * @param org who owns the trees
      * @return List of KickstartableTree objects
      */
-    public static List<KickstartableTree> lookupKickstartableTrees(
-            Long channelId, Org org) {
-
-        Session session = null;
-        List<KickstartableTree> retval = null;
-        session = HibernateFactory.getSession();
-        retval = session.createQuery("""
+    public static List<KickstartableTree> lookupKickstartableTrees(Long channelId, Org org) {
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("""
                         FROM KickstartableTree AS k
                         WHERE k.channel.id = :channel_id AND (k.org IS NULL OR k.org = :org_id)
                         ORDER BY k.label""", KickstartableTree.class).
                 setParameter("channel_id", channelId, StandardBasicTypes.LONG).
                 setParameter(ORG_ID, org.getId(), StandardBasicTypes.LONG).
                 list();
-        return retval;
     }
-
 
     /**
      * Fetch all trees for an org, these include
@@ -712,12 +690,18 @@ public class KickstartFactory extends HibernateFactory {
      * @param ckDescription crypto key description
      * @return List of kickstart data with associated crypto key
      */
-    public static List<KickstartData> listKickstartDataByCKeyDescription(
-            String ckDescription) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("ck_description", ckDescription);
-        return singleton.listObjectsByNamedQuery(
-                "KickstartData.findByCKeyDescription", params, true);
+    public static List<KickstartData> listKickstartDataByCKeyDescription(String ckDescription) {
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("""
+                        SELECT kd FROM KickstartData kd,
+                        CryptoKey ck
+                        WHERE ck.description = :ck_description
+                        AND ck IN elements(kd.cryptoKeys)
+                        """, KickstartData.class)
+                .setParameter("ck_description", ckDescription)
+                //Retrieve from cache if there
+                .setCacheable(true)
+                .list();
     }
 
     /**
@@ -757,13 +741,13 @@ public class KickstartFactory extends HibernateFactory {
     }
 
     /**
-     * Lookup a KickstartSession for a the passed in Server.  This method
+     * Lookup a KickstartSession for a passed in Server.  This method
      * finds the *most recent* KickstartSession associated with this Server.
      *
      * We use the serverId instead of the Hibernate object because this method gets
      * called by our ACL layer.
      *
-     * @param sidIn id of the Server that you want to lookup the most
+     * @param sidIn id of the Server that you want to look up the most
      * recent KickstartSession for
      * @return KickstartSession if found.
      */
@@ -776,7 +760,7 @@ public class KickstartFactory extends HibernateFactory {
     }
 
     /**
-     * Lookup most recent KickstartSession for a the passed in KickstartData
+     * Lookup most recent KickstartSession for a passed in KickstartData
      *
      * @param ksdata object you want to get recent KickstartSession for
      * @return KickstartSession if found.
@@ -848,7 +832,7 @@ public class KickstartFactory extends HibernateFactory {
     }
 
     /**
-     * Verfies that a given kickstart tree can be used based on a channel id
+     * Verifies that a given kickstart tree can be used based on a channel id
      * and org id
      * @param channelId base channel
      * @param orgId org
@@ -931,18 +915,22 @@ public class KickstartFactory extends HibernateFactory {
 
     /**
      * Lookup a list of KickstartData objects by the KickstartableTree.
-     *
      * Useful for finding KickstartData objects that are using a specified Tree.
      *
      * @param tree to lookup by
      * @return List of KickstartData objects if found
      */
     public static List<KickstartData> lookupKickstartDatasByTree(KickstartableTree tree) {
-        String query = "KickstartData.lookupByTreeId";
-        Session session = HibernateFactory.getSession();
-        return session.getNamedQuery(query)
-                .setParameter("kstree_id", tree.getId(), StandardBasicTypes.LONG)
-                .list();
+        return getSession().createNativeQuery("""
+                        SELECT k.* FROM rhnKickstartDefaults ksd, rhnksdata k
+                        WHERE k.id = ksd.kickstart_id
+                        AND ksd.kstree_id = :kstree_id
+                        """, Tuple.class)
+                .addEntity("k", KickstartData.class)
+                .setParameter("kstree_id", tree.getId())
+                .stream()
+                .map(t -> t.get(0, KickstartData.class))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -962,9 +950,10 @@ public class KickstartFactory extends HibernateFactory {
      * @return List of KickstartData objects if found
      */
     public static List<KickstartData> lookupKickstartDataByUpdateable() {
-        String query = "KickstartData.lookupByUpdateable";
         Session session = HibernateFactory.getSession();
-        return session.getNamedQuery(query).list();
+        return session.createQuery("FROM KickstartData AS t WHERE NOT t.updateType = 'none' ",
+                        KickstartData.class)
+                .list();
     }
 
     /**
@@ -976,8 +965,9 @@ public class KickstartFactory extends HibernateFactory {
      */
     public static KickstartData lookupOrgDefault(Org org) {
         Session session = HibernateFactory.getSession();
-        return (KickstartData) session
-                .getNamedQuery("KickstartData.findOrgDefault")
+        return session
+                .createQuery("FROM KickstartData AS t WHERE t.isOrgDefault = :isOrgDefault AND t.org = :org",
+                        KickstartData.class)
                 .setParameter("org", org)
                 .setParameter("isOrgDefault", "Y", StandardBasicTypes.STRING)
                 .uniqueResult();
@@ -1123,8 +1113,8 @@ public class KickstartFactory extends HibernateFactory {
      * @param packageName PackageName to lookup
      * @return KickstartPackage list
      */
-    public static List<KickstartPackage> lookupKsPackageByKsDataAndPackageName(
-            KickstartData ksData, PackageName packageName) {
+    public static List<KickstartPackage> lookupKsPackageByKsDataAndPackageName(KickstartData ksData,
+                                                                               PackageName packageName) {
         return HibernateFactory.getSession()
                 .createQuery(
                         "FROM KickstartPackage AS kp WHERE kp.ksData = :ks_data AND kp.packageName = :package_name",

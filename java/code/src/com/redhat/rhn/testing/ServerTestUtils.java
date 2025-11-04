@@ -169,28 +169,28 @@ public class ServerTestUtils {
         throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         TestUtils.saveAndFlush(user);
-        Server s = null;
+        Server host = null;
         if (salt) {
-            s = MinionServerFactoryTest.createTestMinionServer(user);
+            host = MinionServerFactoryTest.createTestMinionServer(user);
             Channel baseChannel = ChannelTestUtils.createBaseChannel(user);
-            s.addChannel(baseChannel);
+            host.addChannel(baseChannel);
         }
         else {
-            s = createTestSystem(user, ServerConstants.getServerGroupTypeEnterpriseEntitled());
+            host = createTestSystem(user, ServerConstants.getServerGroupTypeEnterpriseEntitled());
         }
 
         // Lets give the org/server virt.
         UserTestUtils.addVirtualization(user.getOrg());
-        ServerTestUtils.addVirtualization(user, s);
-        systemEntitlementManager.addEntitlementToServer(s, EntitlementManager.VIRTUALIZATION);
+        ServerTestUtils.addVirtualization(user, host);
+        systemEntitlementManager.addEntitlementToServer(host, EntitlementManager.VIRTUALIZATION);
 
         for (int i = 0; i < numberOfGuests; i++) {
             VirtualInstance vi = new VirtualInstanceManufacturer(user).newRegisteredGuestWithoutHost(salt);
             vi.setConfirmed((long) 0);
-            s.addGuest(vi);
+            host.addGuest(vi);
         }
 
-        return s;
+        return host;
     }
 
     /**

@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2015 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -23,6 +24,7 @@ import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.domain.user.legacy.UserImpl;
 
 import com.suse.manager.model.attestation.ServerCoCoAttestationReport;
 import com.suse.manager.utils.SaltUtils;
@@ -39,7 +41,11 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.annotations.DiscriminatorOptions;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -50,53 +56,93 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.servlet.http.HttpServletRequest;
 
 /**
  * Action - Class representation of the table rhnAction.
  */
+@Entity
+@Table(name = "rhnAction")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "action_type", discriminatorType = DiscriminatorType.INTEGER)
+@DiscriminatorOptions(insert = false)
+@DiscriminatorValue("-1")
 public class Action extends BaseDomainHelper implements Serializable, WebSocketActionIdProvider {
     protected static final Logger LOG = LogManager.getLogger(Action.class);
 
     public static final Integer NAME_LENGTH_LIMIT = 128;
 
+    @Serial
     private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(generator = "rhn_action_seq")
+    @GenericGenerator(
+        name = "rhn_action_seq",
+        strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+        parameters = {
+                @Parameter(name = "sequence_name", value = "rhn_event_id_seq"),
+                @Parameter(name = "increment_size", value = "1")
+        })
     private Long id;
+
+    @Column
     private String name;
+
+    @Column(name = "earliest_action")
     private Date earliestAction;
+
+    @Column
     private Long version;
+
+    @Column
     private Long archived;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "prerequisite")
     private Action prerequisite;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "action_type")
     private ActionType actionType;
 
+    @OneToMany(mappedBy = "parentAction", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<ServerAction> serverActions;
-    private Set<ServerCoCoAttestationReport> cocoAttestationReports;
-    private User schedulerUser;
-    private Org org;
 
-    private String ageString;
+    @OneToMany(mappedBy = "action", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<ServerCoCoAttestationReport> cocoAttestationReports;
+
+    @ManyToOne(targetEntity = UserImpl.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "scheduler")
+    private User schedulerUser;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "org_id")
+    private Org org;
 
     /**
      * The ActionFormatter associated with this Action.  Protected
      * so subclasses can init it.
      */
+    @Transient
     protected transient ActionFormatter formatter;
 
-    /**
-     * Getter for ageString
-     * @return String to get
-     */
-    public String getAgeString() {
-        return this.ageString;
-    }
-
-    /**
-     * Setter for ageString
-     * @param stringIn String to set ageString to
-     */
-    public void setAgeString(String stringIn) {
-        this.ageString = stringIn;
-    }
     /**
      * Getter for id
      * @return Long to get

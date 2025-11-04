@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 SUSE LLC
+ * Copyright (c) 2015--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 
 package com.redhat.rhn.domain.server;
@@ -22,6 +18,8 @@ import com.redhat.rhn.domain.rhnpackage.PackageArch;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 
 import java.util.Objects;
@@ -30,11 +28,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -45,18 +41,29 @@ import javax.persistence.Table;
 public class InstalledProduct extends BaseDomainHelper {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "suse_inst_pr_seq")
-    @SequenceGenerator(name = "suse_inst_pr_seq", sequenceName = "suse_inst_pr_id_seq", allocationSize = 1)
+    @GeneratedValue(generator = "suse_inst_pr_seq")
+    @GenericGenerator(
+            name = "suse_inst_pr_seq",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @Parameter(name = "sequence_name", value = "suse_inst_pr_id_seq"),
+                    @Parameter(name = "increment_size", value = "1")
+            })
     private Long id;
+
     @Column
     private String name;
+
     @Column
     private String version;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "arch_type_id")
     private PackageArch arch;
+
     @Column
     private String release;
+
     @Column(name = "is_baseproduct")
     @Type(type = "yes_no")
     private boolean baseproduct;

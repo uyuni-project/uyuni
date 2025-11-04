@@ -99,6 +99,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
@@ -125,7 +126,7 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
     private static Integer systemSize;
     private Integer batchSize;
     private static int virtualHostsSize = 0;
-    private static boolean allowFirstCallToFail;
+    private static int allowedFirstCallsToFailForKnownSystems;
     private static boolean allowAllCallsToFail;
 
     private static final String HUB_FQDN = "hub.local";
@@ -174,20 +175,46 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
             assertEquals(virtualHostsSize, virtHostInfo.size());
         }
 
-        @Override
-        public SCCOrganizationSystemsUpdateResponse createUpdateSystems(List<SCCRegisterSystemItem> systems,
-                                                                        String username, String password) {
-            callCnt += 1;
-            if (allowFirstCallToFail) {
-                // allow first call to fail
-                boolean setBadRequest = (callCnt == 1);
+        private void handleWhenAllCallsAreFailing() {
+            if (allowAllCallsToFail) {
+                throw new SCCClientException(400, "Bad Request");
+            }
+        }
+
+        private boolean allAreTestSystems(List<SCCRegisterSystemItem> systems) {
+            Set<String> systemLogins = systems.stream()
+                    .map(SCCRegisterSystemItem::getLogin)
+                    .collect(Collectors.toSet());
+
+            Set<String> testSystemsLogins = testSystems.stream()
+                    .map(SCCRegCacheItem::getOptSccLogin)
+                    .filter(Optional::isPresent)
+                    .map(Optional::get)
+                    .collect(Collectors.toSet());
+
+            return testSystemsLogins.containsAll(systemLogins);
+        }
+
+        private void handleWhenFirstCallsAreFailingForKnownSystems(List<SCCRegisterSystemItem> systems) {
+            if (allowedFirstCallsToFailForKnownSystems > 0) {
+                // allow first N calls to fail for known systems
+                if (!allAreTestSystems(systems)) {
+                    callCnt -= 1;
+                    return;
+                }
+                boolean setBadRequest = (callCnt <= allowedFirstCallsToFailForKnownSystems);
                 if (setBadRequest) {
                     throw new SCCClientException(400, "Bad Request");
                 }
             }
-            if (allowAllCallsToFail) {
-                throw new SCCClientException(400, "Bad Request");
-            }
+        }
+
+        @Override
+        public SCCOrganizationSystemsUpdateResponse createUpdateSystems(List<SCCRegisterSystemItem> systems,
+                                                                        String username, String password) {
+            callCnt += 1;
+            handleWhenFirstCallsAreFailingForKnownSystems(systems);
+            handleWhenAllCallsAreFailing();
             return new SCCOrganizationSystemsUpdateResponse(
                     systems.stream()
                             .map(system ->
@@ -445,7 +472,7 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
         synchronized (this) {
             systemSize = 15;
             batchSize = 3;
-            allowFirstCallToFail = false;
+            allowedFirstCallsToFailForKnownSystems = 0;
             allowAllCallsToFail = false;
             virtualHostsSize = 0;
         }
@@ -744,8 +771,8 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
     public void testSuccessSystemRegistration() throws Exception {
         synchronized (this) {
             systemSize = 30;
-            batchSize = 9;
-            allowFirstCallToFail = true;
+            batchSize = 1;
+            allowedFirstCallsToFailForKnownSystems = 9;
         }
         final int skipRegister = 5;
         setupTest();

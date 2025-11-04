@@ -67,7 +67,9 @@ public abstract class BaseTestCaseWithUser extends RhnBaseTestCase {
         }
         committed = false;
         user = null;
-        FileUtils.deleteDirectory(tmpSaltRoot.toFile());
+        if (tmpSaltRoot != null) {
+            FileUtils.deleteDirectory(tmpSaltRoot.toFile());
+        }
     }
 
     // If we have to commit in mid-test, set up the next transaction correctly

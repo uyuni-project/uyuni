@@ -16,20 +16,38 @@ package com.redhat.rhn.domain.server;
 
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.domain.user.legacy.UserImpl;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 
 
 /**
  * This class represents the User Managed Server Groups
  * i.e. the types
  */
+@Entity
+@DiscriminatorValue("null")
 public class ManagedServerGroup extends ServerGroup {
 
-    private Set<User> associatedAdmins = new HashSet<>();
     private static final ServerGroupManager SERVER_GROUP_MANAGER = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
+
+    @ManyToMany(targetEntity = UserImpl.class, cascade = {CascadeType.MERGE, CascadeType.PERSIST},
+            fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "rhnUserServerGroupPerms",
+            joinColumns = @JoinColumn(name = "server_group_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private Set<User> associatedAdmins = new HashSet<>();
 
     /**
      * returns the set of 'non-org-admin' users that have been

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016--2021 SUSE LLC
+ * Copyright (c) 2016--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.redhat.rhn.domain.server;
 
@@ -37,19 +33,49 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Table;
+
 /**
  * MinionServer
  */
+@Entity
+@Table(name = "suseMinionInfo")
+@PrimaryKeyJoinColumn(name = "server_id")
 public class MinionServer extends Server implements SaltConfigurable {
 
+    @Column(name = "minion_id")
     private String minionId;
+
+    @Column(name = "kernel_live_version")
     private String kernelLiveVersion;
+
+    @Column(name = "ssh_push_port")
     private Integer sshPushPort;
+
+    @OneToMany(mappedBy = "minion", fetch = FetchType.LAZY)
     private Set<AccessToken> accessTokens = new HashSet<>();
+
+    @OneToMany(mappedBy = "minion", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private final Set<Pillar> pillars = new HashSet<>();
+
+    @Column(name = "reboot_required_after")
     private Date rebootRequiredAfter;
+
+    @Column(name = "container_runtime")
     private String containerRuntime;
+
+    @Column
     private String uname;
+
+    @Column(name = "os_family")
+    private String osFamily;
+
 
     /**
      * Constructs a MinionServer instance.
@@ -348,4 +374,42 @@ public class MinionServer extends Server implements SaltConfigurable {
     public void setUname(String unameIn) {
         uname = unameIn;
     }
+
+    /**
+     * Getter for os family
+     *
+     * @return String to get
+     */
+    @Override
+    public String getOsFamily() {
+        return this.osFamily;
+    }
+
+    /**
+     * Predicate to check for Suse os family
+     * @return true is Suse os family
+     */
+    @Override
+    public boolean isOsFamilySuse() {
+        return this.osFamily.equals(ServerConstants.OS_FAMILY_SUSE);
+    }
+
+    /**
+     * Setter for os family
+     *
+     * @param osFamilyIn to set
+     */
+    @Override
+    public void setOsFamily(String osFamilyIn) {
+        this.osFamily = osFamilyIn;
+    }
+
+    /**
+     * Setter for Suse os family
+     */
+    @Override
+    public void setOsFamilySuse() {
+        this.osFamily = ServerConstants.OS_FAMILY_SUSE;
+    }
+
 }

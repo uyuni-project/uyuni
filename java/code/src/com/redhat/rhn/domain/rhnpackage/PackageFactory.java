@@ -100,7 +100,7 @@ public class PackageFactory extends HibernateFactory {
      * @return the Package found
      */
     private static Package lookupById(Long id) {
-        return singleton.lookupObjectByNamedQuery("Package.findById", Map.of("id", id));
+        return singleton.lookupObjectByParam(Package.class, "id", id);
     }
 
     /**
@@ -109,7 +109,13 @@ public class PackageFactory extends HibernateFactory {
      * @return list of Packages found
      */
     private static List<Package> lookupById(List<Long> ids) {
-        return singleton.listObjectsByNamedQuery("Package.findByIds", Map.of(), ids, "pids");
+        if (ids.isEmpty()) {
+            return new ArrayList<>();
+        }
+        return getSession()
+                .createQuery("FROM com.redhat.rhn.domain.rhnpackage.Package AS p WHERE p.id IN (:pids)", Package.class)
+                .setParameterList("pids", ids)
+                .list();
     }
 
     /**
@@ -256,7 +262,10 @@ public class PackageFactory extends HibernateFactory {
     public static List<Package> listPackagesByPackageName(PackageName pn) {
         Session session = HibernateFactory.getSession();
 
-        return session.createNamedQuery("Package.findByPackageName", Package.class)
+        return session.createQuery("""
+                        FROM  com.redhat.rhn.domain.rhnpackage.Package AS p
+                        WHERE p.packageName = :packageName
+                        """, Package.class)
                 .setParameter("packageName", pn)
                 .list();
     }
@@ -321,9 +330,13 @@ public class PackageFactory extends HibernateFactory {
      * @param org the org to check for
      * @return a List of package objects that are not in any channel
      */
-    @SuppressWarnings("unchecked")
     public static List<Package> lookupOrphanPackages(Org org) {
-        return HibernateFactory.getSession().getNamedQuery("Package.listOrphans")
+        return HibernateFactory.getSession().createQuery("""
+                        SELECT p
+                        FROM   com.redhat.rhn.domain.rhnpackage.Package AS p
+                        WHERE  p.org = :org
+                        AND    p.channels is empty
+                        """, Package.class)
                 .setParameter("org", org)
                 .list();
     }
@@ -341,8 +354,15 @@ public class PackageFactory extends HibernateFactory {
     public static List<Package> lookupByNevra(Org org, String name, String version,
             String release, String epoch, PackageArch arch) {
 
-        List<Package> packages = HibernateFactory.getSession().getNamedQuery(
-                "Package.lookupByNevra")
+        List<Package> packages = HibernateFactory.getSession().createQuery("""
+                        SELECT p
+                        FROM   com.redhat.rhn.domain.rhnpackage.Package AS p
+                        WHERE  p.packageArch = :arch
+                        AND    p.packageName.name = :name
+                        AND    p.packageEvr.release = :release
+                        AND    p.packageEvr.version = :version
+                        AND    (p.org IS NULL OR p.org = :org)
+                        """, Package.class)
                 .setParameter("org", org)
                 .setParameter("name", name, StandardBasicTypes.STRING)
                 .setParameter("version", version, StandardBasicTypes.STRING)
@@ -367,13 +387,20 @@ public class PackageFactory extends HibernateFactory {
      */
     public static List<Package> lookupByNevraIds(Org org, long nameId, long evrId, long archId) {
 
-        return HibernateFactory.getSession().createNamedQuery("Package.lookupByNevraIds", Package.class)
-                                            .setParameter("org", org)
-                                            .setParameter("nameId", nameId, StandardBasicTypes.LONG)
-                                            .setParameter("evrId", evrId, StandardBasicTypes.LONG)
-                                            .setParameter("archId", archId, StandardBasicTypes.LONG)
-                                            .list();
-
+        return HibernateFactory.getSession()
+                .createQuery("""
+                        SELECT p
+                        FROM   com.redhat.rhn.domain.rhnpackage.Package as p
+                        WHERE  p.packageArch.id = :archId
+                        AND    p.packageName.id = :nameId
+                        AND    p.packageEvr.id = :evrId
+                        AND    (p.org IS NULL OR p.org = :org)
+                        """, Package.class)
+                .setParameter("org", org)
+                .setParameter("nameId", nameId, StandardBasicTypes.LONG)
+                .setParameter("evrId", evrId, StandardBasicTypes.LONG)
+                .setParameter("archId", archId, StandardBasicTypes.LONG)
+                .list();
     }
 
     /**
@@ -389,9 +416,29 @@ public class PackageFactory extends HibernateFactory {
      */
     public static Package lookupByChannelLabelNevraCs(String channel, String name,
             String version, String release, String epoch, String arch, Optional<String> checksum) {
-        @SuppressWarnings("unchecked")
         List<Package> packages = HibernateFactory.getSession()
-                .getNamedQuery("Package.lookupByChannelLabelNevraCs")
+                .createNativeQuery("""
+                        select p.*
+                        from   rhnPackageArch pa,
+                               rhnChannelPackage cp,
+                               rhnPackage p,
+                               rhnChecksum cs,
+                               rhnPackageEVR pe,
+                               rhnPackageName pn,
+                               rhnChannel c
+                        where  c.label = :channel
+                        and pn.name = :name
+                        and pe.version = :version
+                        and pe.release = :release
+                        and c.id = cp.channel_id
+                        and pa.label = :arch
+                        and pn.id = p.name_id
+                        and p.id = cp.package_id
+                        and p.evr_id = pe.id
+                        and p.package_arch_id = pa.id
+                        and p.checksum_id = cs.id
+                        and (:checksum is null or cs.checksum = :checksum)
+                        """, Package.class)
                 .setParameter("channel", channel, StandardBasicTypes.STRING)
                 .setParameter("name", name, StandardBasicTypes.STRING)
                 .setParameter("version", version, StandardBasicTypes.STRING)
@@ -581,13 +628,18 @@ public class PackageFactory extends HibernateFactory {
      * @return List of package objects
      */
     public static List<Package> findPackagesWithDifferentArch(Package pack) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("evr", pack.getPackageEvr());
-        params.put("name", pack.getPackageName());
-        params.put("arch", pack.getPackageArch());
-        params.put("org", pack.getOrg());
-
-        return singleton.listObjectsByNamedQuery("Package.findOtherArches", params);
+        return getSession().createQuery("""
+                FROM  com.redhat.rhn.domain.rhnpackage.Package AS p
+                WHERE p.packageName = :name
+                AND   p.org = :org
+                AND   p.packageEvr = :evr
+                AND   p.packageArch != :arch
+                """, Package.class)
+                .setParameter("evr", pack.getPackageEvr())
+                .setParameter("name", pack.getPackageName())
+                .setParameter("arch", pack.getPackageArch())
+                .setParameter("org", pack.getOrg())
+                .list();
     }
 
     /**
@@ -668,7 +720,57 @@ public class PackageFactory extends HibernateFactory {
      * @return Return missing packages which contains a product
      */
     public static List<Package> findMissingProductPackagesOnServer(Long sid) {
-        return singleton.listObjectsByNamedQuery("Package.findMissingProductPackagesOnServer", Map.of("sid", sid));
+        return getSession().createNativeQuery("""
+                select rp.*
+                from   (SELECT pn.name,
+                               latest.name_id,
+                               lookup_evr((latest.evr).epoch, (latest.evr).version, (latest.evr).release,
+                                          (latest.evr).type) AS evr_id,
+                               latest.arch_label AS ARCH,
+                               latest.arch_id
+                        FROM   (SELECT p.name_id AS name_id,
+                                       max(pe.evr) AS evr,
+                                       pa.label AS arch_label,
+                                       pa.id AS arch_id
+                                FROM   rhnPackageEVR pe
+                                JOIN   rhnPackage p ON p.evr_id = pe.id
+                                JOIN   rhnChannelPackage cp ON cp.package_id = p.id
+                                JOIN   rhnPackageArch pa ON pa.id = p.package_arch_id
+                                JOIN   rhnPackageProvides pv on p.id = pv.package_id
+                                JOIN   rhnPackageCapability c on pv.capability_id = c.id
+                                JOIN   rhnServerChannel sc on cp.channel_id = sc.channel_id
+                                WHERE  sc.server_id = :sid
+                                AND    c.name = 'product()'
+                                GROUP BY p.name_id, pa.label, pa.id
+                               ) latest
+                        JOIN   rhnPackageName pn ON pn.id = latest.name_id
+                        WHERE  pn.name not like '%-migration'
+                        AND    EXISTS (SELECT 1
+                                       FROM   rhnServerPackage SP
+                                       WHERE  SP.server_id = :sid
+                                       )
+                        AND    NOT EXISTS (SELECT 1
+                                           FROM   rhnServerPackage SP
+                                           WHERE  SP.server_id = :sid
+                                           AND    SP.name_id = latest.name_id
+                                           AND    (SP.package_arch_id = latest.arch_id OR SP.package_arch_id IS NULL)
+                                          )
+                        AND NOT EXISTS (SELECT 1
+                                        FROM   rhnServerPackage SP
+                                        JOIN   rhnPackage p_p ON SP.name_id = p_p.name_id and SP.evr_id = p_p.evr_id
+                                                              AND SP.package_arch_id = p_p.package_arch_id
+                                        JOIN   rhnPackageProvides p_pv on p_p.id = p_pv.package_id
+                                        JOIN   rhnPackageCapability p_c on p_pv.capability_id = p_c.id
+                                        WHERE  SP.server_id = :sid
+                                        AND    p_c.name = pn.name
+                                       )
+                       ) X
+                JOIN   rhnPackage rp ON rp.name_id = X.name_id
+                                    AND rp.evr_id = X.evr_id
+                                    AND rp.package_arch_id = X.arch_id
+                """, Package.class)
+                .setParameter("sid", sid)
+                .list();
     }
 
     /**

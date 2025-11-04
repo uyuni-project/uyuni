@@ -46,7 +46,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
-import org.hibernate.query.Query;
 import org.hibernate.type.StandardBasicTypes;
 
 import java.util.ArrayList;
@@ -194,7 +193,10 @@ public class ChannelFactory extends HibernateFactory {
      * @return the ContentSource(s)
      */
     public static List<ContentSource> lookupContentSources(Org org) {
-        return singleton.listObjectsByNamedQuery("ContentSource.findByOrg", Map.of("org", org));
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("FROM ContentSource AS c WHERE c.org = :org", ContentSource.class)
+                .setParameter("org", org)
+                .list();
     }
 
     /**
@@ -203,7 +205,12 @@ public class ChannelFactory extends HibernateFactory {
      * @return the ContentSource(s)
      */
     public static List<ContentSource> lookupOrphanVendorContentSources() {
-        return singleton.listObjectsByNamedQuery("ContentSource.findOrphanVendorContentSources", Map.of());
+        return getSession().createNativeQuery("""
+                SELECT cs.* FROM rhnContentSource cs
+                WHERE cs.org_id IS NULL
+                AND NOT EXISTS (SELECT 1 FROM suseSccRepositoryAuth a WHERE a.source_id = cs.id)
+                """, ContentSource.class)
+                .list();
     }
 
     /**
@@ -228,8 +235,13 @@ public class ChannelFactory extends HibernateFactory {
      * Remove all Vendor ContentSources which are not bound to a channel
      */
     public static void cleanupOrphanVendorContentSource() {
-        List<ContentSource> unused = singleton.listObjectsByNamedQuery(
-                "ContentSource.findUnusedVendorContentSources", Map.of());
+        List<ContentSource> unused = getSession().createNativeQuery("""
+                 SELECT cs.* FROM rhnContentSource cs
+                 WHERE cs.org_id IS NULL
+                 AND NOT EXISTS (SELECT 1 FROM rhnChannelContentSource ccs WHERE ccs.source_id = cs.id)
+                 AND NOT EXISTS (SELECT 1 FROM suseSccRepositoryAuth sccra WHERE sccra.source_id = cs.id)
+                 """, ContentSource.class)
+                .list();
         unused.forEach(ChannelFactory::remove);
     }
 
@@ -281,14 +293,29 @@ public class ChannelFactory extends HibernateFactory {
      * @return the ContentSource(s)
      */
     public static List<ContentSource> lookupContentSources(Org org, Channel c) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("channel", c);
+        Session session = HibernateFactory.getSession();
         if (org != null) {
-            params.put("org", org);
-            return singleton.listObjectsByNamedQuery("ContentSource.findByOrgandChannel", params);
+            return session.createQuery("""
+                                    SELECT cs FROM ContentSource AS cs, Channel AS c
+                                    WHERE cs.org = :org
+                                    AND c = :channel
+                                    AND cs IN elements(c.sources)
+                                    """,
+                            ContentSource.class)
+                    .setParameter("channel", c)
+                    .setParameter("org", org)
+                    .list();
         }
         else {
-            return singleton.listObjectsByNamedQuery("ContentSource.findVendorContentSourceByChannel", params);
+            return session.createQuery("""
+                                    SELECT cs FROM ContentSource AS cs, Channel AS c
+                                    WHERE cs.org IS NULL
+                                    AND c = :channel
+                                    AND cs IN elements(c.sources)
+                                    """,
+                            ContentSource.class)
+                    .setParameter("channel", c)
+                    .list();
         }
     }
 
@@ -300,8 +327,12 @@ public class ChannelFactory extends HibernateFactory {
      * @return the ContentSource(s)
      */
     public static ContentSource lookupContentSourceByOrgAndLabel(Org org, String label) {
-        return singleton.lookupObjectByNamedQuery("ContentSource.findByOrgAndLabel",
-                Map.of("org", org, LABEL, label));
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("FROM ContentSource AS c WHERE c.org = :org AND c.label = :label",
+                        ContentSource.class)
+                .setParameter("org", org)
+                .setParameter(LABEL, label)
+                .uniqueResult();
     }
 
     /**
@@ -311,8 +342,11 @@ public class ChannelFactory extends HibernateFactory {
      * @return the ContentSource(s)
      */
     public static ContentSource lookupVendorContentSourceByLabel(String label) {
-        return singleton.lookupObjectByNamedQuery("ContentSource.findVendorContentSourceByLabel",
-                Map.of(LABEL, label));
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("FROM ContentSource AS c WHERE c.org is NULL AND c.label = :label",
+                        ContentSource.class)
+                .setParameter(LABEL, label)
+                .uniqueResult();
     }
 
     /**
@@ -325,8 +359,17 @@ public class ChannelFactory extends HibernateFactory {
      */
     public static List<ContentSource> lookupContentSourceByOrgAndRepo(Org org,
                                                                       ContentSourceType repoType, String repoUrl) {
-        return singleton.listObjectsByNamedQuery("ContentSource.findByOrgAndRepo",
-                Map.of("org", org, "type_id", repoType.getId(), "url", repoUrl));
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("""
+                        FROM ContentSource AS c
+                        WHERE c.org = :org
+                        AND c.type.id = :type_id
+                        AND c.sourceUrl = :url
+                        """, ContentSource.class)
+                .setParameter("org", org)
+                .setParameter("type_id", repoType.getId())
+                .setParameter("url", repoUrl)
+                .list();
     }
 
     /**
@@ -337,7 +380,11 @@ public class ChannelFactory extends HibernateFactory {
      * @return content source
      */
     public static ContentSource lookupContentSource(Long id, Org orgIn) {
-        return singleton.lookupObjectByNamedQuery("ContentSource.findByIdandOrg", Map.of("id", id, "org", orgIn));
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("FROM ContentSource AS c WHERE c.id = :id AND c.org = :org", ContentSource.class)
+                .setParameter("id", id)
+                .setParameter("org", orgIn)
+                .uniqueResult();
     }
 
     /**
@@ -347,7 +394,12 @@ public class ChannelFactory extends HibernateFactory {
      * @return the ContentSourceFilters
      */
     public static List<ContentSourceFilter> lookupContentSourceFiltersById(Long id) {
-        return singleton.listObjectsByNamedQuery("ContentSourceFilter.findBySourceId", Map.of("source_id", id));
+        Session session = HibernateFactory.getSession();
+        return session.createQuery(
+                "FROM ContentSourceFilter AS f WHERE f.sourceId = :source_id ORDER BY f.sortOrder",
+                        ContentSourceFilter.class)
+                .setParameter("source_id", id)
+                .list();
     }
 
     /**
@@ -547,11 +599,20 @@ public class ChannelFactory extends HibernateFactory {
      * Returns the list of Channels accessible by an org
      * Channels are accessible if they are owned by an org or public.
      *
-     * @param orgid The id for the org
+     * @param orgId The id for the org
      * @return A list of Channel Objects.
      */
-    public static List<Channel> getAccessibleChannelsByOrg(Long orgid) {
-        return singleton.listObjectsByNamedQuery("Org.accessibleChannels", Map.of(ORG_ID, orgid));
+    public static List<Channel> getAccessibleChannelsByOrg(Long orgId) {
+        return getSession().createNativeQuery("""
+                            SELECT  c.*, cl.original_id,
+                                    CASE WHEN cl.original_id IS NULL THEN 0 ELSE 1 END AS clazz_
+                            FROM rhnChannel c
+                            LEFT OUTER JOIN rhnChannelCloned cl ON c.id = cl.id
+                            JOIN rhnAvailableChannels cfp ON c.id = cfp.channel_id
+                            WHERE cfp.org_id = :org_id
+                        """, Channel.class)
+                .setParameter(ORG_ID, orgId)
+                .list();
     }
 
     /**
@@ -1174,7 +1235,7 @@ public class ChannelFactory extends HibernateFactory {
                 .createNativeQuery(
                         "SELECT * FROM rhnChannelSyncFlag WHERE channel_id = :channel", ChannelSyncFlag.class)
                 .setParameter("channel", channel.getId(), StandardBasicTypes.LONG)
-                .getSingleResult();
+                .uniqueResult();
     }
 
     /**
@@ -2027,15 +2088,10 @@ public class ChannelFactory extends HibernateFactory {
         Session session = getSession();
         String sql
                 = "SELECT * FROM rhnChannelProduct WHERE product = :product AND version = :version";
-        Query<ChannelProduct> query = session.createNativeQuery(sql, ChannelProduct.class);
-        query.setParameter("product", product, StandardBasicTypes.STRING);
-        query.setParameter("version", version, StandardBasicTypes.STRING);
-        try {
-            return query.getSingleResult();
-        }
-        catch (NoResultException e) {
-            return null;
-        }
+        return session.createNativeQuery(sql, ChannelProduct.class)
+                .setParameter("product", product, StandardBasicTypes.STRING)
+                .setParameter("version", version, StandardBasicTypes.STRING)
+                .uniqueResult();
     }
 
     /**

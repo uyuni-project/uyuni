@@ -19,18 +19,48 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
 
 /**
  * VirtualInstanceInfo
  */
+@Entity
+@Table(name = "rhnVirtualInstanceInfo")
 public class VirtualInstanceInfo extends BaseDomainHelper {
 
+    @Id
+    @Column(name = "instance_id")
     private Long id;
+
+    @Column
     private String name;
+
+    @Column(name = "memory_size")
     private Long totalMemory;
+
+    @Column(name = "vcpus")
     private Integer virtualCPUs;
+
+    @OneToOne
+    @JoinColumn(name = "instance_id")
+    @MapsId
     private VirtualInstance parent;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "instance_type", updatable = false, nullable = false)
     private VirtualInstanceType type;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "state", updatable = false, nullable = true)
     private VirtualInstanceState state;
 
     private Long getId() {
