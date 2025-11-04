@@ -187,18 +187,16 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         ImageInfo img1 = createImageInfo("myimage1", "1.0.0", user);
         ImageInfo img2 = createImageInfo("myimage1", "2.0.0", user);
         ImageInfo img3 = createImageInfo("myimage2", "1.0.0", user);
+        ImageInfo img4 = createImageInfo("myimage1", "1.1.0", user);
 
         List<ImageInfo> result = ImageInfoFactory.list();
 
-        assertEquals(3, result.size());
-        ImageInfo img = result.stream().filter(i -> i.equals(img1)).findFirst().get();
-        assertEquals(img, img1);
-
-        img = result.stream().filter(i -> i.equals(img2)).findFirst().get();
-        assertEquals(img, img2);
-
-        img = result.stream().filter(i -> i.equals(img3)).findFirst().get();
-        assertEquals(img, img3);
+        // Validate all images are listed and are listed from the oldest to the newest
+        assertEquals(4, result.size());
+        assertEquals(result.get(0), img1);
+        assertEquals(result.get(1), img2);
+        assertEquals(result.get(2), img3);
+        assertEquals(result.get(3), img4);
     }
 
     @Test
