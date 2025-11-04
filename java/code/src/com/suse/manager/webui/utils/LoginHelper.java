@@ -23,7 +23,6 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.messaging.MessageQueue;
-import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.common.RhnConfiguration;
 import com.redhat.rhn.domain.common.RhnConfigurationFactory;
@@ -346,24 +345,8 @@ public class LoginHelper {
             pgVersion = (String) dr.get(0).get("server_version");
         }
 
-        String osrelease = FileUtils.readStringFromFile("/etc/os-release");
-        for (String line : osrelease.split("\\r?\\n")) {
-            String[] resultKV = line.split("=", 2);
-            if (resultKV[0].equalsIgnoreCase("VERSION_ID")) {
-                try {
-                    osVersion = Double.valueOf(resultKV[1].replaceAll("\"", ""));
-                }
-                catch (NumberFormatException e) {
-                    log.error("Unable to parse OS versionnumber {}", resultKV[1]);
-                }
-            }
-            else if (resultKV[0].equalsIgnoreCase("PRETTY_NAME")) {
-                osName = resultKV[1].replaceAll("\"", "'");
-            }
-        }
         if (log.isDebugEnabled()) {
             log.debug("PG DB version is: {}", serverVersion);
-            log.debug("OS Version is: {} {}", osVersion, osVersion);
         }
         if (serverVersion < MIN_PG_DB_VERSION) {
             validationErrors.add(ls.getMessage("error.unsupported_db_min", pgVersion, MIN_PG_DB_VERSION_STRING));
