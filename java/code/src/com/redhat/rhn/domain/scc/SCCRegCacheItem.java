@@ -36,8 +36,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -47,54 +45,6 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table(name = "suseSCCRegCache")
-@NamedQueries
-({
-        @NamedQuery(
-                name = "SCCRegCache.serversRequireRegistration",
-                query = "SELECT rci " +
-                        "FROM com.redhat.rhn.domain.scc.SCCRegCacheItem as rci " +
-                        "JOIN rci.server as s " +
-                        "WHERE rci.sccRegistrationRequired = 'Y' " +
-                        "AND (rci.registrationErrorTime IS NULL " +
-                        "     OR rci.registrationErrorTime < :retryTime) " +
-                        "ORDER BY s.id ASC"),
-        @NamedQuery(
-                name = "SCCRegCache.newServersRequireRegistration",
-                query = "SELECT s " +
-                        "FROM com.redhat.rhn.domain.server.Server as s " +
-                        "WHERE s.id not in (" +
-                        "    SELECT rci.server.id " +
-                        "    FROM com.redhat.rhn.domain.scc.SCCRegCacheItem as rci " +
-                        "    WHERE rci.server.id IS NOT NULL) " +
-                        "ORDER BY s.id ASC"),
-        @NamedQuery(
-                name = "SCCRegCache.listDeRegisterItems",
-                query = "SELECT rci " +
-                        "FROM com.redhat.rhn.domain.scc.SCCRegCacheItem as rci " +
-                        "WHERE rci.server is NULL " +
-                        "AND (rci.registrationErrorTime IS NULL " +
-                        "     OR rci.registrationErrorTime < :retryTime) " +
-                        "ORDER BY rci.sccId ASC"),
-        @NamedQuery(
-                name = "SCCRegCache.listRegItemsByCredentials",
-                query = "SELECT rci " +
-                        "FROM com.redhat.rhn.domain.scc.SCCRegCacheItem as rci " +
-                        "WHERE rci.credentials = :creds " +
-                        "ORDER BY rci.sccId ASC"),
-        @NamedQuery(
-                name = "SCCRegCache.hypervisorInfo",
-                query = "SELECT new com.suse.scc.model.SCCVirtualizationHostJson(rci.sccLogin, s) " +
-                        "FROM SCCRegCacheItem rci " +
-                        "JOIN rci.server s " +
-                        "WHERE rci.sccRegistrationRequired = 'Y' " +
-                        "AND (rci.registrationErrorTime IS NULL " +
-                        "     OR rci.registrationErrorTime < :retryTime) " +
-                        "AND EXISTS (SELECT distinct 1 " +
-                        "              FROM VirtualInstance vi" +
-                        "             WHERE vi.hostSystem = s" +
-                        "               AND vi.uuid IS NOT NULL" +
-                        "               AND vi.guestSystem IS NOT NULL)"),
-})
 public class SCCRegCacheItem extends BaseDomainHelper {
 
     private Long id;
