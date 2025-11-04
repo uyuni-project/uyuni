@@ -28,8 +28,6 @@ def compute_image(host)
   case host
   when 'pxeboot_minion'
     $pxeboot_image
-  when 'sle12sp5_terminal'
-    'sles12sp5o'
   when 'sle15sp4_terminal'
     'sles15sp4o'
   when 'sle15sp7_terminal'
@@ -45,8 +43,6 @@ def compute_kiwi_profile_filename(host)
   case image
   when 'sles15sp7o', 'sles15sp4o'
     product == 'Uyuni' ? 'Kiwi/POS_Image-JeOS7_uyuni' : 'Kiwi/POS_Image-JeOS7_head'
-  when 'sles12sp5o'
-    'Kiwi/POS_Image-JeOS6_head'
   else
     raise "Is #{image} a supported image version?"
   end
@@ -58,8 +54,6 @@ def compute_kiwi_profile_name(host)
   case image
   when 'sles15sp7o', 'sles15sp4o'
     product == 'Uyuni' ? 'POS_Image_JeOS7_uyuni' : 'POS_Image_JeOS7_head'
-  when 'sles12sp5o'
-    'POS_Image_JeOS6_head'
   else
     raise "Is #{image} a supported image version?"
   end
@@ -71,8 +65,6 @@ def compute_kiwi_profile_version(host)
   case image
   when 'sles15sp7o', 'sles15sp4o'
     '7.0.0'
-  when 'sles12sp5o'
-    '6.0.0'
   else
     raise "Is #{image} a supported image version?"
   end

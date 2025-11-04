@@ -189,8 +189,6 @@ When(/^I reboot the (Retail|Cobbler) terminal "([^"]*)" through the interface "(
   case host
   when 'pxeboot_minion'
     mac = $pxeboot_mac
-  when 'sle12sp5_terminal'
-    mac = $sle12sp5_terminal_mac
   when 'sle15sp4_terminal'
     mac = $sle15sp4_terminal_mac
   end
@@ -421,9 +419,6 @@ end
 When(/^I enter the MAC address of "([^"]*)" in (.*) field$/) do |host, field|
   if host == 'pxeboot_minion'
     mac = $pxeboot_mac
-  elsif host == 'sle12sp5_terminal'
-    mac = $sle12sp5_terminal_mac
-    mac = 'EE:EE:EE:00:00:05' if mac.nil?
   elsif host == 'sle15sp4_terminal'
     mac = $sle15sp4_terminal_mac
     mac = 'EE:EE:EE:00:00:06' if mac.nil?
