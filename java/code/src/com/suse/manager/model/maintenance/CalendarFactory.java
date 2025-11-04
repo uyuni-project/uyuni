@@ -80,7 +80,9 @@ public class CalendarFactory extends HibernateFactory {
      * @return Optional Maintenance Calendar
      */
     public Optional<MaintenanceCalendar> lookupByUserAndLabel(User user, String label) {
-        return getSession().createNamedQuery("MaintenanceCalendar.lookupByUserAndName", MaintenanceCalendar.class)
+        return getSession()
+                .createQuery("FROM MaintenanceCalendar c WHERE c.org.id = :orgId AND c.label = :label",
+                        MaintenanceCalendar.class)
                 .setParameter("orgId", user.getOrg().getId())
                 .setParameter("label", label).uniqueResultOptional();
     }

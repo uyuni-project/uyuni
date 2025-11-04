@@ -31,7 +31,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -41,23 +40,6 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table(name = "suseSCCRepository")
-@NamedQuery(name = "SCCRepository.lookupByChannelFamily",
-            query = "select r from SCCRepository r " +
-                    " join r.channelTemplates ct " +
-                    " join ct.product p " +
-                    " join p.channelFamily cf " +
-                    "where cf.label = :channelFamily")
-@NamedQuery(name = "SCCRepository.lookupByUrlEndpoint",
-            query = "select r from SCCRepository r " +
-                    "where r.url like :urlEndpoint")
-@NamedQuery(name = "SCCRepository.lookupByProductNameAndArchForPayg",
-            query = "select distinct r from SCCRepository r " +
-                    " join r.channelTemplates ct " +
-                    " join ct.product p " +
-                    " join p.arch a " +
-                    " where lower(p.name) = lower(:product_name) " +
-                    " and lower(a.label) = lower(:arch_name) " +
-                    " and r.installerUpdates = 'N' ")
 public class SCCRepository extends BaseDomainHelper {
 
     private Long id;

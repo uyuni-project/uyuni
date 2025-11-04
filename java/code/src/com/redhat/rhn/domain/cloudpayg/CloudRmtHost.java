@@ -23,16 +23,11 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "suseCloudRmtHost")
-@NamedQuery(name = "CloudRmtHost.listHostToUpdate",
-        query = "from CloudRmtHost s where not exists " +
-                "(select 1 from CloudRmtHost s1 where s1.id != s.id and s1.host = s.host and s1.modified > s.modified)"
-)
 public class CloudRmtHost extends BaseDomainHelper {
     private Long id;
     private String host;

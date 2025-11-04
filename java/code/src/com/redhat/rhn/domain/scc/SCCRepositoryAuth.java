@@ -36,7 +36,6 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedNativeQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -48,8 +47,6 @@ import javax.persistence.Transient;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "auth_type")
 @Table(name = "suseSCCRepositoryAuth")
-@NamedNativeQuery(name = "SCCRepositoryAuth.lookupRepoIdWithAuth",
-        query = "select distinct ra.repo_id from suseSCCRepositoryAuth ra")
 public abstract class SCCRepositoryAuth extends BaseDomainHelper {
 
     private Long id;

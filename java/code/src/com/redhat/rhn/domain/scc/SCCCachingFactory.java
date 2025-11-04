@@ -52,6 +52,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javax.persistence.Tuple;
+
 /**
  * Factory class for populating and reading from SCC caching tables.
  */public class SCCCachingFactory extends HibernateFactory {
@@ -273,7 +275,7 @@ import java.util.stream.Stream;
             return;
         }
         getSession()
-        .getNamedQuery("SCCOrderItem.deleteByCredential")
+        .createQuery("DELETE FROM SCCOrderItem AS o WHERE o.credentials = :creds")
         .setParameter("creds", c)
         .executeUpdate();
     }
@@ -283,7 +285,7 @@ import java.util.stream.Stream;
      */
     public static void clearOrderItems() {
         getSession()
-        .getNamedQuery("SCCOrderItem.deleteAll")
+        .createQuery("DELETE FROM SCCOrderItem")
         .executeUpdate();
     }
 
@@ -437,9 +439,12 @@ import java.util.stream.Stream;
      * @return list of repository ids which can be accessed
      */
     public static List<Long> lookupRepositoryIdsWithAuth() {
-        List<BigDecimal> resultList =
-                getSession().getNamedNativeQuery("SCCRepositoryAuth.lookupRepoIdWithAuth").getResultList();
-        return resultList.stream().map(BigDecimal::longValue).collect(Collectors.toList());
+        return getSession()
+                .createNativeQuery("SELECT DISTINCT ra.repo_id FROM suseSCCRepositoryAuth ra", Tuple.class)
+                .addScalar("repo_id", StandardBasicTypes.LONG)
+                .stream()
+                .map(t -> t.get(0, Long.class))
+                .toList();
     }
 
     /**
@@ -447,7 +452,13 @@ import java.util.stream.Stream;
      * @return list of {@link SCCRepository} for the given channel family label
      */
     public static List<SCCRepository> lookupRepositoriesByChannelFamily(String channelFamily) {
-        return getSession().createNamedQuery("SCCRepository.lookupByChannelFamily", SCCRepository.class)
+        return getSession().createQuery("""
+                        SELECT r FROM SCCRepository r
+                        JOIN r.channelTemplates ct
+                        JOIN ct.product p
+                        JOIN p.channelFamily cf
+                        WHERE cf.label = :channelFamily
+                        """, SCCRepository.class)
                 .setParameter("channelFamily", channelFamily).getResultList();
     }
 
@@ -460,10 +471,18 @@ import java.util.stream.Stream;
      */
     public static Stream<SCCRepository> lookupRepositoriesByProductNameAndArchForPayg(
             String productName, String archName) {
-        return getSession().createNamedQuery("SCCRepository.lookupByProductNameAndArchForPayg", SCCRepository.class)
-            .setParameter("product_name", productName)
-            .setParameter("arch_name", archName)
-            .stream();
+        return getSession().createQuery("""
+                        SELECT DISTINCT r FROM SCCRepository r
+                        JOIN r.channelTemplates ct
+                        JOIN ct.product p
+                        JOIN p.arch a
+                        WHERE lower(p.name) = lower(:product_name)
+                        AND lower(a.label) = lower(:arch_name)
+                        AND r.installerUpdates = 'N'
+                        """, SCCRepository.class)
+                .setParameter("product_name", productName)
+                .setParameter("arch_name", archName)
+                .stream();
     }
 
     /**
