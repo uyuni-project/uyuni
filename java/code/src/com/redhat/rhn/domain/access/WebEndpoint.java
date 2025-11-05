@@ -43,6 +43,8 @@ public class WebEndpoint extends BaseDomainHelper {
 
     @Column(name = "class_method")
     private String className;
+
+    @Column
     private String endpoint;
 
     @Column(name = "http_method")
