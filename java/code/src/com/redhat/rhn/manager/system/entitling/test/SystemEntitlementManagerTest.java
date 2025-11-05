@@ -15,6 +15,8 @@
 package com.redhat.rhn.manager.system.entitling.test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
@@ -25,6 +27,7 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
+import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
@@ -220,5 +223,23 @@ public class SystemEntitlementManagerTest extends JMockBaseTestCaseWithUser {
 
         systemEntitlementManager.removeServerEntitlement(server, EntitlementManager.ANSIBLE_CONTROL_NODE);
         assertFalse(server.hasEntitlement(EntitlementManager.ANSIBLE_CONTROL_NODE));
+    }
+
+    @Test
+    public void testEntitlementsOnProxy() throws Exception {
+        User user = UserTestUtils.createUser(this);
+        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        Server server = ServerFactoryTest.createTestProxyServer(user, true);
+        server = HibernateFactory.reload(server);
+
+        assertTrue(server.hasProxyEntitlement());
+        assertNotNull(server.getProxyInfo());
+
+        //
+        systemEntitlementManager.removeServerEntitlement(server, EntitlementManager.PROXY);
+
+        //
+        assertFalse(server.hasProxyEntitlement());
+        assertNull(server.getProxyInfo());
     }
 }

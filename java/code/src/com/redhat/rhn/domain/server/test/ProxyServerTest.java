@@ -35,12 +35,14 @@ public class ProxyServerTest extends RhnBaseTestCase {
         User user = UserTestUtils.createUser();
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server server = ServerFactoryTest.createTestServer(user, true,
-                ServerConstants.getServerGroupTypeEnterpriseEntitled(),
+                ServerConstants.getServerGroupTypeProxyEntitled(),
                 ServerFactoryTest.TYPE_SERVER_PROXY);
 
         Server s = ServerFactory.lookupById(server.getId());
         assertNotNull(s, "Server not found");
         assertFalse(s.isMgrServer());
         assertTrue(s.isProxy());
+        assertTrue(server.hasProxyEntitlement());
+        assertNotNull(server.getProxyInfo());
     }
 }
