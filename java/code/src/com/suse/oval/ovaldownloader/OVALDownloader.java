@@ -17,6 +17,8 @@ package com.suse.oval.ovaldownloader;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.util.download.DownloadException;
+import com.redhat.rhn.common.util.http.HttpClientAdapter;
 
 import com.suse.oval.OsFamily;
 import com.suse.oval.config.OVALConfig;
@@ -26,12 +28,14 @@ import org.apache.commons.compress.compressors.bzip2.BZip2CompressorInputStream;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.HttpGet;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
@@ -118,11 +122,28 @@ public class OVALDownloader {
     }
 
     private File downloadOVALFile(String vulnerabilityInfoSource) throws IOException {
-        URL vulnerabilityInfoURL = new URL(vulnerabilityInfoSource);
-        String vulnerabilityInfoOVALFilename = FilenameUtils.getName(vulnerabilityInfoURL.getPath());
+        String vulnerabilityInfoOVALFilename = FilenameUtils.getName(vulnerabilityInfoSource);
         File vulnerabilityFile = Path.of(ovalCacheDir, vulnerabilityInfoOVALFilename).toFile();
-        // Start downloading
-        FileUtils.copyURLToFile(vulnerabilityInfoURL, vulnerabilityFile, 15_000, 15_000);
+
+        HttpClientAdapter httpClient = new HttpClientAdapter();
+        HttpGet request = new HttpGet(vulnerabilityInfoSource);
+        try {
+            HttpResponse res = httpClient.executeRequest(request);
+            int statusCode = res.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK) {
+                throw new DownloadException(vulnerabilityInfoSource, res.getStatusLine().getReasonPhrase(), statusCode);
+            }
+            FileUtils.copyInputStreamToFile(
+                    res.getEntity().getContent(),
+                    vulnerabilityFile
+                    );
+        }
+        catch (IOException e) {
+            throw new DownloadException(vulnerabilityInfoSource, e.getMessage(), 500);
+        }
+        finally {
+            request.releaseConnection();
+        }
 
         return decompressIfNeeded(vulnerabilityFile);
     }
