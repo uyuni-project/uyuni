@@ -35,11 +35,11 @@
         <dependency org="suse" name="ehcache-core" rev="2.10.1" />
         <dependency org="suse" name="geronimo-jta-1.1-api" rev="1.2" />
         <dependency org="suse" name="google-gson" rev="2.8.9" />
-        <dependency org="suse" name="hibernate-c3p0" rev="5.3.25" />
-        <dependency org="suse" name="hibernate-commons-annotations" rev="5.0.4" />
-        <dependency org="suse" name="hibernate-core" rev="5.3.25" />
-        <dependency org="suse" name="hibernate-ehcache" rev="5.3.25" />
-        <dependency org="suse" name="hibernate-types-52" rev="2.16.2" />
+        <dependency org="suse" name="hibernate-c3p0" rev="6.5.2.Final" />
+        <dependency org="suse" name="hibernate-commons-annotations" rev="6.0.6" />
+        <dependency org="suse" name="hibernate-core" rev="6.5.2.Final" />
+        <dependency org="suse" name="hibernate-jcache" rev="6.5.2.Final" />
+        <dependency org="suse" name="hypersistence-utils-hibernate-63" rev="3.8.2" />
         <dependency org="suse" name="httpasyncclient" rev="4.1.4" />
         <dependency org="suse" name="httpclient" rev="4.5.14" />
         <dependency org="suse" name="httpcore" rev="4.4.14" />
@@ -49,7 +49,7 @@
         <dependency org="suse" name="jackson-core" rev="2.17.3" />
         <dependency org="suse" name="jackson-databind" rev="2.17.3" />
         <dependency org="suse" name="jade4j" rev="1.2.7" />
-        <dependency org="suse" name="jakarta-persistence-api" rev="2.2.2" />
+        <dependency org="suse" name="jakarta-persistence-api" rev="3.1.0" />
         <dependency org="suse" name="java-saml" rev="2.4.0" />
         <dependency org="suse" name="java-saml-core" rev="2.4.0" />
         <dependency org="suse" name="javassist" rev="3.29.2" />
