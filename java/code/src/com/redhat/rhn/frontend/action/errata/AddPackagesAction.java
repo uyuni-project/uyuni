@@ -145,7 +145,7 @@ public class AddPackagesAction extends RhnAction implements Listable<PackageOver
      * @return Returns a list of LabelValueBeans to set in the request for
      *         the page.
      */
-    private List getViewOptions(User user) {
+    private List<LabelValueBean> getViewOptions(User user) {
         // List containing the names of the channels this user has permissions to.
         List<String> subscribableChannels = ChannelManager.channelsForUser(user);
 
@@ -155,13 +155,12 @@ public class AddPackagesAction extends RhnAction implements Listable<PackageOver
             "any_channel"));
 
         Org org = user.getOrg();
-        Set channels = org.getOwnedChannels();
+        Set<Channel> channels = org.getOwnedChannels();
 
         // Loop through the channels and see if the channel name is in the list of
         // subscribable channels. If so, add it to the viewoptions list.
-        for (Object channelIn : channels) {
+        for (Channel channel : channels) {
             //get the channel from the list
-            Channel channel = (Channel) channelIn;
             if (subscribableChannels.contains(channel.getName())) {
                 //Channel is subscribable by this user so add it to the list of options
                 viewoptions.add(new LabelValueBean(channel.getName(),

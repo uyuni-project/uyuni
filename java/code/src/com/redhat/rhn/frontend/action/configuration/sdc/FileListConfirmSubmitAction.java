@@ -100,7 +100,7 @@ public class FileListConfirmSubmitAction extends RhnListDispatchAction {
 
         //The set of config file names to add to the action.
         RhnSet set = RhnSetDecl.CONFIG_IMPORT_FILE_NAMES.get(user);
-        Set cfnids = getCfnids(set);
+        Set<Long> cfnids = getCfnids(set);
         //if they don't have a set, don't do anything.
         if (cfnids.isEmpty()) {
             return createErrorMessage(request, mapping, formIn, server.getId(),
@@ -171,7 +171,7 @@ public class FileListConfirmSubmitAction extends RhnListDispatchAction {
 
         //create a set of config revisions from the set of config file names
         RhnSet set = RhnSetDecl.CONFIG_FILE_NAMES.get(user);
-        Set revisions = getCrids(set, sid);
+        Set<Long> revisions = getCrids(set, sid);
         //if they don't have a set, don't do anything.
         if (revisions.isEmpty()) {
             return createErrorMessage(request, mapping, form, sid,
@@ -179,7 +179,7 @@ public class FileListConfirmSubmitAction extends RhnListDispatchAction {
         }
 
         //we need a set, so add our one server to a set.
-        Set servers = new HashSet<>();
+        Set<Long> servers = new HashSet<>();
         servers.add(sid);
 
         //create the action
@@ -211,10 +211,10 @@ public class FileListConfirmSubmitAction extends RhnListDispatchAction {
                 mapping.findForward("success"), "sid", sid.toString());
     }
 
-    private Set getCfnids(RhnSet rhnSet) {
+    private Set<Long> getCfnids(RhnSet rhnSet) {
         //We currently have a set of RhnSetElements, but we need a set
         //of Longs, this does that conversion.
-        Set cfnids = new HashSet<>();
+        Set<Long> cfnids = new HashSet<>();
         for (RhnSetElement rhnSetElementIn : rhnSet.getElements()) {
             cfnids.add(rhnSetElementIn.getElement());
         }
@@ -239,8 +239,8 @@ public class FileListConfirmSubmitAction extends RhnListDispatchAction {
         getStrutsDelegate().saveMessages(request, msgs);
     }
 
-    private Set getCrids(RhnSet rhnSet, Long sid) {
-        Set revisions = new HashSet<>();
+    private Set<Long> getCrids(RhnSet rhnSet, Long sid) {
+        Set<Long> revisions = new HashSet<>();
 
         //go through all of the selected file names
         for (RhnSetElement rhnSetElementIn : rhnSet.getElements()) {

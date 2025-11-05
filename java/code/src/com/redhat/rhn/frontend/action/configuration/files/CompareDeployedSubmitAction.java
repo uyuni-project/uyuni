@@ -113,7 +113,7 @@ public class CompareDeployedSubmitAction extends RhnSetAction {
 
         //We want a set of ids, but we have a set of RhnSetElements.  This
         //does the conversion.
-        Set sids = new HashSet<>();
+        Set<Long> sids = new HashSet<>();
         for (RhnSetElement rhnSetElementIn : set.getElements()) {
             Long sid = rhnSetElementIn.getElement();
             sids.add(sid);
@@ -122,7 +122,7 @@ public class CompareDeployedSubmitAction extends RhnSetAction {
         //We need a set of ids to send to ActionManager.  We only have one id.
         ConfigRevision revision =
             ConfigActionHelper.getRevision(request, ConfigActionHelper.getFile(request));
-        Set crids = new HashSet<>();
+        Set<Long> crids = new HashSet<>();
         crids.add(revision.getId());
 
         Action action = null;

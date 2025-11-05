@@ -97,7 +97,7 @@ public class ErrataRemoveAction extends RhnListAction implements Listable<Errata
            Map<String, Object> params = new HashMap<>();
            params.put(CID, cid);
            ActionMessages msg = new ActionMessages();
-           Set args = new HashSet<>();
+           Set<Object> args = new HashSet<>();
            args.add(decl.get(user).size());
            msg.add(ActionMessages.GLOBAL_MESSAGE,
               new ActionMessage("channel.jsp.errata.remove.finalmessage", args.toArray()));
