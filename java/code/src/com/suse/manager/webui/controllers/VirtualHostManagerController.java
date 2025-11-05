@@ -45,6 +45,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
+import org.apache.commons.fileupload2.core.DiskFileItem;
 import org.apache.commons.fileupload2.core.DiskFileItemFactory;
 import org.apache.commons.fileupload2.core.FileItem;
 import org.apache.commons.fileupload2.core.FileUploadException;
@@ -309,9 +310,9 @@ public class VirtualHostManagerController {
     public static String validateKubeconfig(Request request, Response response,
                                             User user) {
         try {
-            List<FileItem> items = parseMultipartRequest(request);
+            List<DiskFileItem> items = parseMultipartRequest(request);
 
-            Optional<FileItem> kubeconfigFile = findFileItem(items, CONFIG_KUBECONFIG);
+            Optional<DiskFileItem> kubeconfigFile = findFileItem(items, CONFIG_KUBECONFIG);
 
             if (kubeconfigFile.isEmpty()) {
                 throw new IllegalArgumentException("No kubeconfig file found in request");
@@ -444,7 +445,7 @@ public class VirtualHostManagerController {
      */
     public static String createKubernetes(Request request, Response response, User user) {
         try {
-            List<FileItem> items = parseMultipartRequest(request);
+            List<DiskFileItem> items = parseMultipartRequest(request);
 
             String label = findStringParam(items, "label")
                     .orElseThrow(() ->
@@ -452,7 +453,7 @@ public class VirtualHostManagerController {
             String context = findStringParam(items, "module_context")
                     .orElseThrow(() ->
                             new IllegalArgumentException("context param missing"));
-            FileItem kubeconfig = findFileItem(items, "module_" + CONFIG_KUBECONFIG)
+            DiskFileItem kubeconfig = findFileItem(items, "module_" + CONFIG_KUBECONFIG)
                     .orElseThrow(() ->
                             new IllegalArgumentException("kubeconfig param missing"));
 
@@ -489,7 +490,7 @@ public class VirtualHostManagerController {
                                           Response response,
                                           User user) {
         try {
-            List<FileItem> items = parseMultipartRequest(request);
+            List<DiskFileItem> items = parseMultipartRequest(request);
 
             long id = Long.parseLong(findStringParam(items, "id")
                     .orElseThrow(() ->
@@ -500,7 +501,7 @@ public class VirtualHostManagerController {
             String context = findStringParam(items, "module_context")
                     .orElseThrow(() ->
                             new IllegalArgumentException("context param missing"));
-            Optional<FileItem> kubeconfig = findFileItem(items,
+            Optional<DiskFileItem> kubeconfig = findFileItem(items,
                     "module_" + CONFIG_KUBECONFIG);
             Optional<InputStream> kubeconfigIn = Optional.empty();
             if (kubeconfig.isPresent()) {
@@ -527,17 +528,17 @@ public class VirtualHostManagerController {
         }
     }
 
-    private static List<FileItem> parseMultipartRequest(Request request)
+    private static List<DiskFileItem> parseMultipartRequest(Request request)
             throws FileUploadException {
         DiskFileItemFactory fileItemFactory = DiskFileItemFactory.builder()
                 .setPath("javax.servlet.context.tempdir")
                 .get();
 
-        return new JavaxServletFileUpload(fileItemFactory).parseRequest(request.raw());
+        return new JavaxServletFileUpload<>(fileItemFactory).parseRequest(request.raw());
     }
 
     private static void validateKubeconfig(String context,
-                                           FileItem kubeconfig) throws IOException {
+                                           DiskFileItem kubeconfig) throws IOException {
         Map<String, Object> map;
         try (InputStream fi = kubeconfig.getInputStream()) {
             map = new Yaml().loadAs(fi, Map.class);
@@ -565,7 +566,7 @@ public class VirtualHostManagerController {
                 });
     }
 
-    private static Optional<String> findStringParam(List<FileItem> items, String name) {
+    private static Optional<String> findStringParam(List<DiskFileItem> items, String name) {
             return findParamItem(items, name)
                     .map(item -> {
                         try {
@@ -580,14 +581,14 @@ public class VirtualHostManagerController {
 
     }
 
-    private static Optional<FileItem> findParamItem(List<FileItem> items, String name) {
+    private static Optional<DiskFileItem> findParamItem(List<DiskFileItem> items, String name) {
         return items.stream()
                 .filter(FileItem::isFormField)
                 .filter(item -> name.equals(item.getFieldName()))
                 .findFirst();
     }
 
-    private static Optional<FileItem> findFileItem(List<FileItem> items, String name) {
+    private static Optional<DiskFileItem> findFileItem(List<DiskFileItem> items, String name) {
         return items.stream()
                 .filter(item -> !item.isFormField())
                 .filter(item -> name.equals(item.getFieldName()))
@@ -704,7 +705,7 @@ public class VirtualHostManagerController {
         }).collect(Collectors.toList());
     }
 
-    private static ResultJson getJsonDetails(VirtualHostManager vhm) {
+    private static ResultJson<?> getJsonDetails(VirtualHostManager vhm) {
         JsonObject json = new JsonObject();
         json.addProperty("id", vhm.getId());
         json.addProperty("label", vhm.getLabel());
@@ -723,7 +724,7 @@ public class VirtualHostManagerController {
     }
 
 
-    private static ResultJson getJsonNodes(VirtualHostManager vhm) {
+    private static ResultJson<?> getJsonNodes(VirtualHostManager vhm) {
         JsonArray list = new JsonArray();
 
         vhm.getServers().stream().map(srv -> {
