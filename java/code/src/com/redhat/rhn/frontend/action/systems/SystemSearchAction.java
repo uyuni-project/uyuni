@@ -295,7 +295,7 @@ public class SystemSearchAction extends BaseSearchAction implements Listable<Sys
      * @param value the value for value
      * @return Returns the map.
      */
-    private Map createDisplayMap(String display, String value) {
+    private Map<String, String> createDisplayMap(String display, String value) {
         Map<String, String> selection = new HashMap<>();
         selection.put("display", display);
         selection.put("value", value);

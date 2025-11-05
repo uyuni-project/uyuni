@@ -1046,7 +1046,7 @@ public class UserManager extends BaseManager {
      * Gets all timezone objects in the appropriate order
      * @return a list of ordered timezones
      */
-    public static List lookupAllTimeZones() {
+    public static List<RhnTimeZone> lookupAllTimeZones() {
         return UserFactory.lookupAllTimeZones();
     }
 
