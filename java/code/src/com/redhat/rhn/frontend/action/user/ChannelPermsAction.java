@@ -65,11 +65,10 @@ public class ChannelPermsAction extends RhnListAction {
         String[] channels = (String[]) form.get("cid");
         String[] selected = (String[]) form.get("selectedChannels");
 
-        List channelList = Arrays.asList(channels);
-        List selectedList = Arrays.asList(selected);
+        List<String> channelList = Arrays.asList(channels);
+        List<String> selectedList = Arrays.asList(selected);
 
-        for (Object oIn : channelList) {
-            String currentChannel = (String) oIn;
+        for (String currentChannel : channelList) {
             boolean isSet = selectedList.contains(currentChannel);
 
             if (isSet) {
