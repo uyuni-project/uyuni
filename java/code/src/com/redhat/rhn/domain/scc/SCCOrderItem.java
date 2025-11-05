@@ -30,7 +30,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
@@ -38,9 +37,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "suseSCCOrderItem")
-@NamedQuery(name = "SCCOrderItem.deleteAll", query = "delete from com.redhat.rhn.domain.scc.SCCOrderItem")
-@NamedQuery(name = "SCCOrderItem.deleteByCredential",
-            query = "delete from com.redhat.rhn.domain.scc.SCCOrderItem as o where o.credentials = :creds")
 public class SCCOrderItem extends BaseDomainHelper {
 
     private Long id;

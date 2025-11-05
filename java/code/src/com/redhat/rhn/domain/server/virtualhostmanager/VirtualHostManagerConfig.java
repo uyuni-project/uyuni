@@ -17,6 +17,9 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -31,7 +34,10 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "suseVHMConfig")
-public class VirtualHostManagerConfig {
+public class VirtualHostManagerConfig implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = -7325139987779462195L;
 
     @Id
     @GeneratedValue(generator = "suse_vhm_config_seq")

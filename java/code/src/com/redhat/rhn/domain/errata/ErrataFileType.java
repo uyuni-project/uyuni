@@ -20,6 +20,9 @@ import static org.hibernate.annotations.CacheConcurrencyStrategy.READ_ONLY;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.Immutable;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -33,7 +36,10 @@ import javax.persistence.Table;
 @Table(name = "rhnErrataFileType")
 @Immutable
 @Cache(usage = READ_ONLY)
-public class ErrataFileType {
+public class ErrataFileType implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 3903327144819669787L;
 
     @Id
     private Long id;

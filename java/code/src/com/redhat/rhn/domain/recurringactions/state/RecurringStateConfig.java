@@ -17,6 +17,9 @@ import org.hibernate.annotations.DiscriminatorFormula;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -37,7 +40,10 @@ import javax.persistence.Transient;
 @Table(name = "suseRecurringStateConfig")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorFormula("CASE WHEN state_id IS NOT NULL THEN 'STATE' ELSE 'CONFCHAN' END")
-public abstract class RecurringStateConfig {
+public abstract class RecurringStateConfig implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1772543788360679832L;
 
     private Long id;
     private Long position;

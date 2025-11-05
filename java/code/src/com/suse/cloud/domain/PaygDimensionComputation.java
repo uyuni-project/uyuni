@@ -28,7 +28,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -40,14 +39,6 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "susepaygdimensioncomputation")
-@NamedQuery(
-    name = "PaygDimensionComputation.lookupById",
-    query = "FROM PaygDimensionComputation AS c WHERE c.id = :id"
-)
-@NamedQuery(
-    name = "PaygDimensionComputation.getLatestSuccessful",
-    query = "FROM PaygDimensionComputation AS c WHERE c.success = true ORDER BY c.timestamp DESC"
-)
 public class PaygDimensionComputation {
 
     private Long id;

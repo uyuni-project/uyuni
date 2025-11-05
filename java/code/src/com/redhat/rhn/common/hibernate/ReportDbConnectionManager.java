@@ -51,7 +51,7 @@ public class ReportDbConnectionManager extends AbstractConnectionManager {
      * @param dbConnectionUrlIn the connection url to reach the database
      */
     ReportDbConnectionManager(String dbUserIn, String dbPasswordIn, String dbConnectionUrlIn) {
-        super(Collections.emptySet());
+        super();
 
         dbUser = dbUserIn;
         dbPass = dbPasswordIn;

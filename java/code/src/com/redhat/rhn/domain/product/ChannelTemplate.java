@@ -28,7 +28,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
@@ -39,9 +38,6 @@ import javax.persistence.UniqueConstraint;
 @Entity
 @Table(name = "suseChannelTemplate", uniqueConstraints =
 @UniqueConstraint(columnNames = {"product_id", "root_product_id", "repo_id"}))
-@NamedQuery(
-        name = "ChannelTemplate.lookupByLabel",
-        query = "FROM ChannelTemplate pr WHERE pr.channelLabel = :label")
 public class ChannelTemplate extends BaseDomainHelper {
 
     private Long id;

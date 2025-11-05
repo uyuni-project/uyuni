@@ -95,20 +95,9 @@ public class ReportDbHibernateFactory {
     }
 
     /**
-     * Create a SessionFactory, loading the hbm.xml files from the default
-     * location (com.redhat.rhn.domain).
+     * Create a SessionFactory
      */
     public void createSessionFactory() {
-        connectionManager.initialize();
-    }
-
-    /**
-     * Create a SessionFactory, loading the hbm.xml files from alternate
-     * location
-     * @param additionalLocation Alternate location for hbm.xml files
-     */
-    public void createSessionFactory(String[] additionalLocation) {
-        connectionManager.setAdditionalPackageNames(additionalLocation);
         connectionManager.initialize();
     }
 

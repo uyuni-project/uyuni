@@ -30,8 +30,6 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedNativeQuery;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
@@ -44,22 +42,6 @@ import javax.persistence.Table;
 @Table(name = "suseCredentials")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
-@NamedNativeQuery(
-    name = "BaseCredentials.lookupByPaygSSHDataId",
-    query = "SELECT sc.* FROM suseCredentials sc WHERE sc.payg_ssh_data_id = :sshDataId",
-    resultClass = BaseCredentials.class
-)
-@NamedNativeQuery(
-    name = "BaseCredentials.lookupByPaygSSHDataHostname",
-    query = "SELECT sc.* " +
-        "FROM suseCredentials sc INNER JOIN susepaygsshdata sd ON sc.payg_ssh_data_id = sd.id " +
-        "WHERE sd.host = :hostname",
-    resultClass = BaseCredentials.class
-)
-@NamedQuery(
-    name = "BaseCredentials.getLastSCCRefreshDate",
-    query = "SELECT MAX(modified) FROM BaseCredentials WHERE type IN ('scc', 'cloudrmt')"
-)
 public abstract class BaseCredentials extends BaseDomainHelper implements Credentials {
 
     private Long id;

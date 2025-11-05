@@ -20,6 +20,8 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 
 import org.hibernate.annotations.Immutable;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,7 +37,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "rhnErrataSeverity")
 @Immutable
-public class Severity {
+public class Severity implements Serializable {
 
     // WARNING: These must stay in sync with the values in rhnErrataSeverity
     // there's no need to keep 'unspecified' in db, it equals to null...
@@ -47,6 +49,9 @@ public class Severity {
 
     //dummy rank for webui selects
     public static final Integer UNSPECIFIED_RANK = 4;
+
+    @Serial
+    private static final long serialVersionUID = 9009862760448217549L;
 
     @Id
     private long id;

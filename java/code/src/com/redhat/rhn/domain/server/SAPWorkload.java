@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.server;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -27,7 +29,10 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "suseServerSAPWorkload")
-public class SAPWorkload {
+public class SAPWorkload implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 5293378241323211232L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -23,6 +23,9 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.Immutable;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Column;
@@ -37,7 +40,10 @@ import javax.persistence.Table;
 @Table(name = "suseServerContactMethod")
 @Immutable
 @Cache(usage = READ_ONLY)
-public class ContactMethod {
+public class ContactMethod implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 3134472160888520168L;
 
     @Id
     @Column

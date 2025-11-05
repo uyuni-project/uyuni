@@ -117,10 +117,14 @@ public class PaygSshDataFactory extends HibernateFactory {
      * @return The appropriate {@link CloudCredentials} if present
      */
     public static Optional<CloudCredentials> lookupCloudCredentialsByHostname(String hostname) {
-        return getSession().createNamedQuery("BaseCredentials.lookupByPaygSSHDataHostname", BaseCredentials.class)
-            .setParameter("hostname", hostname)
-            .uniqueResultOptional()
-            .flatMap(creds -> creds.castAs(CloudCredentials.class));
+        return getSession().createNativeQuery("""
+                        SELECT sc.*
+                        FROM suseCredentials sc INNER JOIN susepaygsshdata sd ON sc.payg_ssh_data_id = sd.id
+                        WHERE sd.host = :hostname
+                        """, BaseCredentials.class)
+                .setParameter("hostname", hostname)
+                .uniqueResultOptional()
+                .flatMap(creds -> creds.castAs(CloudCredentials.class));
     }
 
     /**
@@ -129,7 +133,9 @@ public class PaygSshDataFactory extends HibernateFactory {
      * @return The appropriate {@link CloudCredentials} if present
      */
     public static Optional<CloudCredentials> lookupCloudCredentials(PaygSshData sshData) {
-        return getSession().createNamedQuery("BaseCredentials.lookupByPaygSSHDataId", BaseCredentials.class)
+        return getSession()
+                .createNativeQuery("SELECT sc.* FROM suseCredentials sc WHERE sc.payg_ssh_data_id = :sshDataId",
+                        BaseCredentials.class)
             .setParameter("sshDataId", sshData.getId())
             .uniqueResultOptional()
             .flatMap(creds -> creds.castAs(CloudCredentials.class))
