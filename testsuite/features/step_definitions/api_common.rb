@@ -256,10 +256,35 @@ Then(/^I should get some activation keys$/) do
   raise ScriptError if $api_test.activationkey.get_activation_keys_count < 1
 end
 
-When(/^I create an activation key with id "([^"]*)", description "([^"]*)" and limit of (\d+)$/) do |id, dscr, limit|
-  key = $api_test.activationkey.create(id, dscr, '', limit.to_i)
-  raise ScriptError, 'Key creation failed' if key.nil?
-  raise ScriptError, 'Bad key name' if key != "1-#{id}"
+When(/^I create an activation key with id "([^"]*)", description "([^"]*)"(?:, base channel "([^"]*)")?(?:, limit of (\d+))?(?: and contact method "([^"]*)")?$/) do |id, description, base_channel_label, usage_limit_str, contact_method|
+  base_channel_label ||= ''
+  contact_method     ||= 'default'
+  usage_limit        = usage_limit_str.nil? ? 10 : usage_limit_str.to_i
+
+  activation_key = $api_test.activationkey.create(
+    id,
+    description,
+    base_channel_label,
+    usage_limit
+  )
+
+  raise ScriptError, 'Key creation failed' if activation_key.nil?
+  raise ScriptError, 'Bad key name' unless activation_key == "1-#{id}"
+
+  success = $api_test.activationkey.set_details(
+    activation_key,
+    description,
+    base_channel_label,
+    usage_limit,
+    contact_method
+  )
+
+  raise 'Failed to set activation key details' unless success
+end
+
+When(/^I set the entitlements of the activation key "([^"]*)" to "([^"]*)"$/) do |activation_key, entitlements|
+  entitlements_array = entitlements.split(',').map(&:strip).reject(&:empty?)
+  $api_test.activationkey.set_entitlement(activation_key, entitlements_array)
 end
 
 Then(/^I should get the new activation key "([^"]*)"$/) do |activation_key|
