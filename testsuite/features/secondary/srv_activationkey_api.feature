@@ -8,7 +8,7 @@ Feature: API "activationkey" namespace
     Then I should get some activation keys
 
   Scenario: Create activation key
-    When I create an activation key with id "testkey", description "Key for testing" and limit of 10
+    When I create an activation key with id "testkey", description "Key for testing", limit of 10 and contact method "default"
     Then I should get the new activation key "1-testkey"
 
   Scenario: Activation key details
