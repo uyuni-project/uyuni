@@ -5271,6 +5271,26 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     WHERE ns.namespace = 'systems.software.migration' AND ns.access_mode = 'W'
     AND ep.endpoint = '/manager/api/systems/migration/schedule' AND http_method = 'POST'
     ON CONFLICT DO NOTHING;
+
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id
+    FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'systems.appstreams' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/rhn/manager/systems/ssm/appstreams' AND ep.http_method = 'GET'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id
+    FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'systems.appstreams' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/rhn/manager/systems/ssm/appstreams/configure/:channelId' AND ep.http_method = 'GET'
+    ON CONFLICT (endpoint_id, namespace_id) DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id
+    FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'systems.appstreams' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/rhn/manager/api/ssm/appstreams/save' AND ep.http_method = 'POST'
+    ON CONFLICT (endpoint_id, namespace_id) DO NOTHING;
+
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
     WHERE ns.namespace = 'users.list.active' AND ns.access_mode = 'R'

@@ -15,4 +15,6 @@ export default {
   "systems/coco-schedule": () => import("./coco/ssm-schedule.renderer"),
   "systems/product-migration": () => import("./product-migration/ssm-product-migration.renderer"),
   "systems/migration-from-dry-run": () => import("./product-migration/migration-from-dry-run.renderer"),
+  "systems/ssm/appstreams-channel-selection": () => import("./appstreams/ssm-appstreams-channel-selection.renderer"),
+  "systems/ssm/appstreams-configure": () => import("./appstreams/ssm-appstreams-configure.renderer"),
 };

@@ -116,6 +116,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -1643,6 +1644,29 @@ public class ChannelManager extends BaseManager {
         params.put("set_label", RhnSetDecl.SYSTEMS.getLabel());
 
         return makeDataResult(params, params, lc, m);
+    }
+
+    /**
+     * Returns all modular channels that are applicable to the systems currently selected in the SSM.
+     *
+     * @param user logged in user
+     * @return all modular channels applicable to the systems
+     */
+    public static List<ChannelTreeNode> getModularChannelsForSsm(User user) {
+        List<ChannelTreeNode> allChannels = getChannelsForSsm(user, null);
+        allChannels.forEach(channel ->
+            channel.setModular(ChannelFactory.lookupById(channel.getId()).isModular())
+        );
+        Set<Long> requiredParentIds = allChannels.stream()
+            .filter(ChannelTreeNode::isModular)
+            .map(ChannelTreeNode::getParentId)
+            .filter(Objects::nonNull)
+            .collect(Collectors.toSet());
+
+        return allChannels
+            .stream()
+            .filter(ch -> ch.isModular() || requiredParentIds.contains(ch.getId()))
+            .toList();
     }
 
     /**

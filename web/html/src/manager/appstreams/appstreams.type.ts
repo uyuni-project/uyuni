@@ -18,4 +18,5 @@ export type AppStreamModule = {
   context: string;
   arch: string;
   enabled: boolean;
+  systemCount: number;
 };
