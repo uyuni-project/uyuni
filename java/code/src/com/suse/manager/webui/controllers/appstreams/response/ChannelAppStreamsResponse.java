@@ -38,7 +38,7 @@ public class ChannelAppStreamsResponse {
         List<AppStream> appStreamsIn,
         BiPredicate<String, String> appStreamEnabledChecker
     ) {
-        channel = new ChannelJson(channelIn);
+        channel = new ChannelAppStreamsJson(channelIn);
         appStreams = new HashMap<>();
         appStreamsIn.forEach(it -> {
             var enabled = appStreamEnabledChecker.test(it.getName(), it.getStream());
@@ -52,10 +52,10 @@ public class ChannelAppStreamsResponse {
         });
     }
 
-    private final ChannelJson channel;
+    private final ChannelAppStreamsJson channel;
     private final Map<String, Set<AppStreamModuleResponse>> appStreams;
 
-    public ChannelJson getChannel() {
+    public ChannelAppStreamsJson getChannel() {
         return channel;
     }
 
@@ -63,34 +63,4 @@ public class ChannelAppStreamsResponse {
         return appStreams;
     }
 
-    /**
-     * A JSON object representation of an AppStream channel
-     */
-    public static class ChannelJson {
-        /**
-         * Instantiate a JSON object
-         * @param channelIn the channel
-         */
-        public ChannelJson(Channel channelIn) {
-            id = channelIn.getId();
-            label = channelIn.getLabel();
-            name = channelIn.getName();
-        }
-
-        private final Long id;
-        private final String label;
-        private final String name;
-
-        public Long getId() {
-            return id;
-        }
-
-        public String getLabel() {
-            return label;
-        }
-
-        public String getName() {
-            return name;
-        }
-    }
 }
