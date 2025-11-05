@@ -178,7 +178,24 @@ def get_md5(path):
     return res
 
 
-def parse_kiwi_md5(path, compressed=False):
+def get_decompressed_md5(path, decompress_cmd):
+    res = {}
+    # pylint: disable-next=undefined-variable
+    if not __salt__["file.file_exists"](path):
+        return res
+
+    cmd = decompress_cmd + " '" + path + "' | md5sum"
+    # pylint: disable-next=undefined-variable
+    shell_result = __salt__["cmd.run_all"](cmd, python_shell=True)
+
+    if shell_result["retcode"] == 0:
+        hash_val = shell_result["stdout"].split()[0].strip()
+        res["hash"] = "md5:" + hash_val
+
+    return res
+
+
+def parse_kiwi_hash(path, compressed=False, hash_type="md5"):
     res = {}
 
     # pylint: disable-next=undefined-variable
@@ -186,19 +203,19 @@ def parse_kiwi_md5(path, compressed=False):
         return res
 
     # pylint: disable-next=undefined-variable
-    md5_str = __salt__["cp.get_file_str"](path)
-    if md5_str is not None:
+    hash_str = __salt__["cp.get_file_str"](path)
+    if hash_str is not None:
         if compressed:
             pattern = re.compile(
-                r"^(?P<md5>[0-9a-f]+)\s+(?P<size1>[0-9]+)\s+(?P<size2>[0-9]+)\s+(?P<csize1>[0-9]+)\s+(?P<csize2>[0-9]+)\s*$"
+                r"^(?P<hash>[0-9a-f]+)\s+(?P<size1>[0-9]+)\s+(?P<size2>[0-9]+)\s+(?P<csize1>[0-9]+)\s+(?P<csize2>[0-9]+)\s*$"
             )
         else:
             pattern = re.compile(
-                r"^(?P<md5>[0-9a-f]+)\s+(?P<size1>[0-9]+)\s+(?P<size2>[0-9]+)\s*$"
+                r"^(?P<hash>[0-9a-f]+)\s+(?P<size1>[0-9]+)\s+(?P<size2>[0-9]+)\s*$"
             )
-        match = pattern.match(md5_str)
+        match = pattern.match(hash_str)
         if match:
-            res["hash"] = "md5:" + match.group("md5")
+            res["hash"] = hash_type + ":" + match.group("hash")
             res["size"] = int(match.group("size1")) * int(match.group("size2"))
             if compressed:
                 res["compressed_size"] = int(match.group("csize1")) * int(
@@ -213,6 +230,14 @@ _compression_types = {
     ".xz": "xz",
     "": None,
 }
+
+
+_decompress_cmd = {
+    "gzip": "gzip -dc",
+    "bzip": "bzip2 -dc",
+    "xz": "xz -dc",
+}
+
 
 # suffixes for pxe/kis image type
 _pxe_image_types = [
@@ -326,8 +351,23 @@ def image_details(dest, bundle_dest=None):
         )
 
     res["image"].update(
-        parse_kiwi_md5(os.path.join(dest, basename + ".md5"), compression is not None)
+        parse_kiwi_hash(
+            os.path.join(dest, basename + ".sha256"), compression is not None, "sha256"
+        )
     )
+    res["image"].update(
+        parse_kiwi_hash(
+            os.path.join(dest, basename + ".md5"), compression is not None, "md5"
+        )
+    )
+
+    # remove this when saltboot supports sha256:
+    if "hash" not in res["image"] or not res["image"]["hash"].startswith("md5:"):
+        if compression:
+            decompress_cmd = _decompress_cmd[compression]
+            res["image"].update(get_decompressed_md5(filepath, decompress_cmd))
+        else:
+            res["image"].update(get_md5(filepath))
 
     if bundle_dest is not None:
         res["bundles"] = inspect_bundles(bundle_dest, basename)
@@ -440,7 +480,7 @@ def inspect_boot_image(dest):
                 res["initrd"].update(get_md5(filepath))
             else:
                 res["initrd"].update(
-                    parse_kiwi_md5(os.path.join(dest, basename + ".md5"))
+                    parse_kiwi_hash(os.path.join(dest, basename + ".md5"))
                 )
             break
 
@@ -459,7 +499,7 @@ def inspect_boot_image(dest):
         if __salt__["file.file_exists"](filepath):
             res["kernel"]["filename"] = file
             res["kernel"]["filepath"] = filepath
-            res["kernel"].update(parse_kiwi_md5(filepath + ".md5"))
+            res["kernel"].update(parse_kiwi_hash(filepath + ".md5"))
 
     return res
 
