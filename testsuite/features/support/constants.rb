@@ -1341,6 +1341,13 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sl-micro-6.1-pool-x86_64
         sl-micro-6.1-devel-uyuni-client-x86_64
       ],
+    'tumbleweed' =>
+      %w[
+        opensuse_tumbleweed-x86_64
+        opensuse_tumbleweed-updates-x86_64
+        opensuse_tumbleweed-uyuni-client-x86_64
+        opensuse_tumbleweed-uyuni-client-devel-x86_64
+      ],
     'tumbleweed-client-tools-x86_64' => # CHECKED
       %w[
         opensuse_tumbleweed-uyuni-client-x86_64
