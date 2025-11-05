@@ -5,37 +5,22 @@ ARG BASE=registry.suse.com/bci/bci-base:15.7
 FROM $BASE AS fat
 
 # Main packages
-RUN [ -n "$PRODUCT_REPO" ] && zypper addrepo $PRODUCT_REPO product; \
-    zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses \
-        spacewalk-proxy-salt && \
+RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses \
+        spacewalk-proxy-salt \
+        python3 \
+        python3-PyYAML \
+        python3-pyzmq && \
     zypper --non-interactive clean --all && \
     rm -rf /var/log/{alternatives.log,lastlog,tallylog,suseconnect.log,zypper.log,zypp/history,YaST2}
 
 # Additional material
-COPY --chmod=+x uyuni-configure.py /usr/bin/uyuni-configure.py
-
-# Prepare for slimming down
-COPY prepare_target.sh .
-RUN sh prepare_target.sh
-
-# Define slim image
-ARG BASE=registry.suse.com/bci/bci-base:15.7
-FROM $BASE AS slim
+COPY --chmod=555 uyuni-configure.py /usr/bin/uyuni-configure.py
 
 # LABELs
 ARG PRODUCT=Uyuni
 ARG VENDOR="Uyuni project"
 ARG URL="https://www.uyuni-project.org/"
 ARG REFERENCE_PREFIX="registry.opensuse.org/uyuni"
-
-RUN [ -n "$PRODUCT_REPO" ] && zypper addrepo $PRODUCT_REPO product; \
-    zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses \
-        python3 \
-        python3-PyYAML \
-        python3-pyzmq && \
-    zypper --non-interactive clean --all && \
-    rm -rf /var/log/{alternatives.log,lastlog,tallylog,suseconnect.log,zypper.log,zypp/history,YaST2}
-COPY --from=fat /target /
 
 # Build Service required labels
 # labelprefix=org.opensuse.uyuni.proxy-salt-broker

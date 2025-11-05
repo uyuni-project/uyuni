@@ -4,11 +4,8 @@
 ARG BASE=registry.suse.com/bci/bci-base:15.7
 FROM $BASE AS base
 
-ARG PRODUCT_REPO
-
 # Main packages
-RUN [ -n "$PRODUCT_REPO" ] && zypper addrepo $PRODUCT_REPO product; \
-    zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses \
+RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses \
         python3-PyYAML \
         python3-fbtftp \
         python3-requests && \
@@ -16,8 +13,8 @@ RUN [ -n "$PRODUCT_REPO" ] && zypper addrepo $PRODUCT_REPO product; \
     rm -rf /var/log/{alternatives.log,lastlog,tallylog,suseconnect.log,zypper.log,zypp/history,YaST2}
 
 # Additional material
-COPY --chmod=+x uyuni-configure.py /usr/bin/uyuni-configure.py
-COPY --chmod=+x tftp_wrapper.py /usr/bin/tftp_wrapper.py
+COPY --chmod=555 uyuni-configure.py /usr/bin/uyuni-configure.py
+COPY --chmod=555 tftp_wrapper.py /usr/bin/tftp_wrapper.py
 
 # LABELs
 ARG PRODUCT=Uyuni

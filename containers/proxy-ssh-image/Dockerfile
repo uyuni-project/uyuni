@@ -14,8 +14,8 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
     rm -rf /var/log/{alternatives.log,lastlog,tallylog,suseconnect.log,zypper.log,zypp/history,YaST2}
 
 # Additional material
-COPY --chmod=a+x mgr-proxy-ssh-force-cmd /usr/sbin/mgr-proxy-ssh-force-cmd
-COPY --chmod=+x uyuni-configure.py /usr/bin/uyuni-configure.py
+COPY --chmod=555 mgr-proxy-ssh-force-cmd /usr/sbin/mgr-proxy-ssh-force-cmd
+COPY --chmod=555 uyuni-configure.py /usr/bin/uyuni-configure.py
 
 # LABELs
 ARG PRODUCT=Uyuni

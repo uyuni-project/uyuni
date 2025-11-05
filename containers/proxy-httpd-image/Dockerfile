@@ -7,11 +7,8 @@ FROM $BASE AS base
 # The name of the package is controlled in the prjconf. This is just the fallback
 ARG PXYRELEASENOTESPKG="release-notes-uyuni-proxy"
 
-ARG PRODUCT_REPO
-
 # Main packages
-RUN [ -n "$PRODUCT_REPO" ] && zypper addrepo $PRODUCT_REPO product; \
-    zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses  \
+RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses  \
         spacewalk-proxy-broker \
         spacewalk-proxy-redirect \
         spacewalk-proxy-html \
@@ -27,7 +24,7 @@ RUN [ -n "$PRODUCT_REPO" ] && zypper addrepo $PRODUCT_REPO product; \
 COPY mod_log_config.conf /etc/apache2/mod_log_config.conf
 
 # Additional material
-COPY --chmod=+x uyuni-configure.py /usr/bin/uyuni-configure.py
+COPY --chmod=555 uyuni-configure.py /usr/bin/uyuni-configure.py
 
 # LABELs
 ARG PRODUCT=Uyuni
