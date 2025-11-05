@@ -48,7 +48,7 @@ public class ChannelTreeNode extends BaseDto implements BaseListDto,
     private Long orgId;
     private String orgName;
     private String archName;
-
+    private boolean modular = false;
 
     /**
      * Handle the orphan'd child channels by adding a "fake" node
@@ -478,4 +478,15 @@ public class ChannelTreeNode extends BaseDto implements BaseListDto,
         this.errataCount = errataCountIn;
     }
 
+    /**
+     * Indicates if the channel itself is modular.
+     * @return true if the channel is modular.
+     */
+    public boolean isModular() {
+        return modular;
+    }
+
+    public void setModular(boolean isModular) {
+        this.modular = isModular;
+    }
 }

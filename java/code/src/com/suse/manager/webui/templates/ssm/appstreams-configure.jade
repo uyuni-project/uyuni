@@ -1,0 +1,20 @@
+proxy.jade.spacewalk-toolbar-h1
+  h1
+    i.fa.spacewalk-icon-system-groups
+    | #{' System Set Manager Overview '}
+    a(href="/docs/#{docsLocale}/reference/systems/ssm-overview.html", target="_blank")
+      i.fa.fa-question-circle.spacewalk-help-link
+
+!{tabs}
+#appstreams-configure
+
+script(type="text/javascript").
+    window.csrfToken = "#{csrf_token}";
+
+script(type='text/javascript').
+    spaImportReactPage('systems/ssm/appstreams-configure').then(function(module) {
+        module.renderer('appstreams-configure', {
+            "actionChains": !{actionChains},
+            "appstreams": !{appstreams},
+        });
+    });

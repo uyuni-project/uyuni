@@ -2,22 +2,50 @@ import { useState } from "react";
 
 import { ActionChain, ActionSchedule } from "components/action-schedule";
 import { AsyncButton, Button } from "components/buttons";
+import { MessageType } from "components/messages/messages";
 
 import { localizedMoment } from "utils";
 import Network from "utils/network";
 
-export const AppStreamsChangesConfirm = ({ toEnable, toDisable, onConfirm, onError, onCancelClick }) => {
+type AppStreamsChangesConfirmProps = {
+  sid?: string;
+  channelId?: number;
+  toEnable: string[];
+  toDisable: string[];
+  apiURL: string;
+  onConfirm: (responseData: number, actionChain: ActionChain | null) => void;
+  onError: (errorMessages: MessageType[]) => void;
+  onCancelClick: () => void;
+};
+
+export const AppStreamsChangesConfirm = ({
+  sid,
+  channelId,
+  toEnable,
+  toDisable,
+  apiURL,
+  onConfirm,
+  onError,
+  onCancelClick,
+}: AppStreamsChangesConfirmProps) => {
   const [earliest, setEarliest] = useState(localizedMoment());
   const [actionChain, setActionChain] = useState<ActionChain | null>(null);
+  const payload = {
+    toEnable: toEnable,
+    toDisable: toDisable,
+    actionChainLabel: actionChain?.text,
+    earliest: earliest,
+  };
+
+  if (sid) {
+    payload["sid"] = sid;
+  }
+  if (channelId) {
+    payload["channelId"] = channelId;
+  }
 
   const applyChanges = () => {
-    const request = Network.post("/rhn/manager/api/appstreams/save", {
-      sid: window.serverId,
-      toEnable: toEnable,
-      toDisable: toDisable,
-      actionChainLabel: actionChain?.text,
-      earliest: earliest,
-    })
+    const request = Network.post(apiURL, payload)
       .then((data) => {
         onConfirm(data.data, actionChain);
       })
@@ -28,7 +56,7 @@ export const AppStreamsChangesConfirm = ({ toEnable, toDisable, onConfirm, onErr
 
   return (
     <>
-      <p>{t("Please review the changes below before scheduling an action to apply the changes on the system.")}</p>
+      <p>{t("Please review the changes below before scheduling an action to apply the changes.")}</p>
       <div className="text-right margin-bottom-sm">
         <div className="btn-group">
           <Button id="cancelAppStreamChanges" className="btn btn-default" text={t("Cancel")} handler={onCancelClick} />
