@@ -1399,6 +1399,17 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
   }
 }.freeze
 
+CLIENT_TOOLS_DEPENDENCIES_BY_BASE_CHANNEL = {
+  'opensuse_tumbleweed-x86_64' => %w[
+    dmidecode
+    libunwind
+    golang-github-prometheus-node_exporter
+    golang-github-lusitaniae-apache_exporter
+    prometheus-postgres_exporter
+    golang-github-QubitProducts-exporter_exporter
+  ]
+}.freeze
+
 # The timeouts are determining experimentally, by looking at the files in /var/log/rhn/reposync on the server
 # Formula: (end date - startup date) * 2, rounded to upper 60 seconds
 # Please keep this list sorted alphabetically

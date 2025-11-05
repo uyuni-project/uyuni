@@ -181,8 +181,9 @@ When(/^I use spacewalk-repo-sync to sync channel "([^"]*)"$/) do |channel|
   $command_output, _code = get_target('server').run("spacewalk-repo-sync -c #{channel}", check_errors: false, verbose: true)
 end
 
-When(/^I use spacewalk-repo-sync to sync channel "([^"]*)" including "([^"]*)" packages?$/) do |channel, packages|
-  append_includes = packages.split.map { |pkg| "--include #{pkg}" }.join(' ')
+When(/^I use spacewalk-repo-sync to sync channel "([^"]*)" including only client tools dependencies$/) do |channel|
+  packages = CLIENT_TOOLS_DEPENDENCIES_BY_BASE_CHANNEL[channel]
+  append_includes = packages.map { |pkg| "--include #{pkg}" }.join(' ')
   $command_output, _code = get_target('server').run("spacewalk-repo-sync -c #{channel} #{append_includes}", check_errors: false, verbose: true)
 end
 

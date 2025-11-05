@@ -1,7 +1,6 @@
 # Copyright (c) 2022-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 # This feature depends on:
-# - features/secondary/srv_monitoring.feature : As this feature disable/re-enable monitoring capabilities
 # - sumaform : As it is configuring monitoring to be enabled after deployment
 
 @sle_minion
@@ -44,22 +43,18 @@ Feature: Monitor SUMA environment with Prometheus on a SLE Salt minion
     And I click on "Save"
     Then I should see a "Formula saved" text
 
-@skip_if_github_validation
   Scenario: Apply highstate for Prometheus exporters
     When I follow "States" in the content area
     And I click on "Apply Highstate"
     Then I should see a "Applying the highstate has been scheduled." text
     And I wait until event "Apply highstate scheduled" is completed
 
-@skip_if_github_validation
   Scenario: Wait for services
     When I wait until "prometheus" service is active on "sle_minion"
     And I wait until "node" exporter service is active on "sle_minion"
     And I wait until "apache" exporter service is active on "sle_minion"
     And I wait until "postgres" exporter service is active on "sle_minion"
 
-# TODO: Debug and fix this test on GH validation runs
-@skip_if_github_validation
   Scenario: Visit monitoring endpoints on the minion
     When I visit "Prometheus" endpoint of this "sle_minion"
     And I visit "Prometheus node exporter" endpoint of this "sle_minion"
@@ -73,7 +68,6 @@ Feature: Monitor SUMA environment with Prometheus on a SLE Salt minion
     And I click on "Save"
     Then I wait until I see "Formula saved" text
 
-@skip_if_github_validation
   Scenario: Cleanup: apply highstate after test monitoring
     And I follow "States" in the content area
     And I click on "Apply Highstate"
