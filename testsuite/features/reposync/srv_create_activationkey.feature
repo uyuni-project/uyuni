@@ -71,7 +71,7 @@ Feature: Create activation keys
     And I enter "DEBLIKE-KEY" as "key"
     And I select "Fake-Base-Channel-Debian-like" from "selectedBaseChannel"
     And I click on "Create Activation Key"
-    Then  I wait until I see "Activation key Debian-like Test Key has been created" text
+    Then I wait until I see "Activation key Debian-like Test Key has been created" text
 
 @ssh_minion
   Scenario: Create an activation key with a channel for salt-ssh
@@ -95,6 +95,7 @@ Feature: Create activation keys
     And I enter "20" as "usageLimit"
     And I select "Push via SSH tunnel" from "contact-method"
     And I click on "Create Activation Key"
+    Then I wait until I see "Activation key SUSE SSH Tunnel Test Key x86_64 has been created" text
 
 @proxy
   Scenario: Create an activation key for the proxy
