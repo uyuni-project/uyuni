@@ -158,7 +158,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
             exactly(1).of(taskomaticMock).scheduleStagingJobs(with(actionsMatcher));
         } });
 
-        DataResult dr = ActionManager.recentlyScheduledActions(user, null, 30);
+        DataResult<ScheduledAction> dr = ActionManager.recentlyScheduledActions(user, null, 30);
         int preScheduleSize = dr.size();
 
         handler.schedulePackageInstall(user, minion1.getId().intValue(), packageIds,
@@ -166,7 +166,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
 
         dr = ActionManager.recentlyScheduledActions(user, null, 30);
         assertEquals(1, dr.size() - preScheduleSize);
-        assertEquals("Package Install", ((ScheduledAction)dr.get(0)).getTypeName());
+        assertEquals("Package Install", dr.get(0).getTypeName());
     }
 
     /**
@@ -210,7 +210,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
             exactly(1).of(taskomaticMock).scheduleStagingJobs(with(actionsMatcher));
         } });
 
-        DataResult dr = ActionManager.recentlyScheduledActions(user, null, 30);
+        DataResult<ScheduledAction> dr = ActionManager.recentlyScheduledActions(user, null, 30);
         int preScheduleSize = dr.size();
 
         handler.schedulePackageInstall(user, minion1.getId().intValue(), packageIds,
@@ -218,7 +218,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
 
         dr = ActionManager.recentlyScheduledActions(user, null, 30);
         assertEquals(1, dr.size() - preScheduleSize);
-        assertEquals("Package Install", ((ScheduledAction)dr.get(0)).getTypeName());
+        assertEquals("Package Install", dr.get(0).getTypeName());
     }
 
     /**
@@ -260,7 +260,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
                     with(any(Date.class)));
         } });
 
-        DataResult dr = ActionManager.recentlyScheduledActions(user, null, 30);
+        DataResult<ScheduledAction> dr = ActionManager.recentlyScheduledActions(user, null, 30);
         int preScheduleSize = dr.size();
 
         handler.schedulePackageInstall(user, minion1.getId().intValue(), packageIds,
@@ -268,7 +268,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
 
         dr = ActionManager.recentlyScheduledActions(user, null, 30);
         assertEquals(1, dr.size() - preScheduleSize);
-        assertEquals("Package Install", ((ScheduledAction)dr.get(0)).getTypeName());
+        assertEquals("Package Install", dr.get(0).getTypeName());
     }
 
     /**
@@ -312,7 +312,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
             exactly(1).of(taskomaticMock).scheduleStagingJobs(with(actionsMatcher));
         }});
 
-        DataResult dr = ActionManager.recentlyScheduledActions(user, null, 30);
+        DataResult<ScheduledAction> dr = ActionManager.recentlyScheduledActions(user, null, 30);
         int preScheduleSize = dr.size();
 
         handler.schedulePackageInstall(user, minion1.getId().intValue(), packageIds,
@@ -320,7 +320,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
 
         dr = ActionManager.recentlyScheduledActions(user, null, 30);
         assertEquals(1, dr.size() - preScheduleSize);
-        assertEquals("Package Install", ((ScheduledAction)dr.get(0)).getTypeName());
+        assertEquals("Package Install", dr.get(0).getTypeName());
     }
 
     /**
@@ -362,7 +362,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
                     with(any(Date.class)));
         } });
 
-        DataResult dr = ActionManager.recentlyScheduledActions(user, null, 30);
+        DataResult<ScheduledAction> dr = ActionManager.recentlyScheduledActions(user, null, 30);
         int preScheduleSize = dr.size();
 
         handler.schedulePackageInstall(user, minion1.getId().intValue(), packageIds,
@@ -370,7 +370,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
 
         dr = ActionManager.recentlyScheduledActions(user, null, 30);
         assertEquals(1, dr.size() - preScheduleSize);
-        assertEquals("Package Install", ((ScheduledAction)dr.get(0)).getTypeName());
+        assertEquals("Package Install", dr.get(0).getTypeName());
     }
 
     /**

@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
+import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
 import com.redhat.rhn.frontend.struts.MaintenanceWindowHelper;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -219,7 +220,7 @@ public class ErrataConfirmSetupAction extends RhnAction implements Listable, Mai
      * {@inheritDoc}
      */
     @Override
-    public List getResult(RequestContext context) {
+    public List<ErrataOverview> getResult(RequestContext context) {
         Long sid = context.getParamAsLong("sid");
         return SystemManager.errataInSet(context.getCurrentUser(),
                     ErrataSetupAction.getSetDecl(sid).getLabel(), null);

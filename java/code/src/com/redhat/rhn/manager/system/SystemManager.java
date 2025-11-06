@@ -1549,8 +1549,7 @@ public class SystemManager extends BaseManager {
      * @param pc PageControl
      * @return a list of ErrataOverviews
      */
-    public static DataResult errataInSet(User user, String label,
-            PageControl pc) {
+    public static DataResult<ErrataOverview> errataInSet(User user, String label, PageControl pc) {
         SelectMode m = ModeFactory.getMode("Errata_queries", "in_set");
 
         Map<String, Object> params = new HashMap<>();
@@ -1560,7 +1559,7 @@ public class SystemManager extends BaseManager {
         Map<String, Object> elabParams = new HashMap<>();
         elabParams.put("user_id", user.getId());
 
-        DataResult dr =  m.execute(params);
+        DataResult<ErrataOverview> dr =  m.execute(params);
         dr.setElaborationParams(elabParams);
         return dr;
     }
@@ -2393,7 +2392,7 @@ public class SystemManager extends BaseManager {
         Map<String, Object> params = new HashMap<>();
         params.put("oid", oid);
         params.put("sid", sid);
-        DataResult result = m.execute(params);
+        DataResult<Long> result = m.execute(params);
         return !result.isEmpty();
     }
 
@@ -2910,7 +2909,7 @@ public class SystemManager extends BaseManager {
         }
         SelectMode m =
                 ModeFactory.getMode("System_queries", mode);
-        DataResult toReturn = m.execute(params);
+        DataResult<Long> toReturn = m.execute(params);
         return !toReturn.isEmpty();
     }
 

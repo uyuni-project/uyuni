@@ -533,11 +533,12 @@ public class TestUtils {
 
     /**
      * Run a test query
+     * @param <T> type
      * @param mode to run
      * @param params map
      * @return DataResult List
      */
-    public static DataResult runTestQuery(String mode, Map params) {
+    public static <T> DataResult<T> runTestQuery(String mode, Map<String, ?> params) {
         SelectMode m =
             ModeFactory.
             getMode("test_queries", mode);
