@@ -136,7 +136,7 @@ def parse_packages(path):
         fields = ["name", "epoch", "version", "release", "arch", "disturl", "license"]
         for line in packages.splitlines():
             line_data = line.split("|")
-            if len(line_data) in (6, 7):
+            if len(line_data) == len(fields):
                 # translate '(none)' values to ''
                 d = dict(zip(fields, line_data))
                 for k in list(d.keys()):
