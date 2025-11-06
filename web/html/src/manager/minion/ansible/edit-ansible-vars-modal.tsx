@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 import yaml from "js-yaml";
 
@@ -31,12 +31,13 @@ const EditAnsibleVarsModal = (props: Props) => {
   const varsObject = data[0].vars;
 
   // State to store updated YAML and extra added variables
-  const [updatedVars, setUpdatedVars] = useState(varsObject);
   const [extraVars, setExtraVars] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
+  const editorRef = useRef<any>(null);
 
   const onSave = () => {
     try {
+      const savedVars = editorRef.current?.getValues?.();
       if (extraVars) {
         const parsedExtraVars = yaml.load(extraVars);
         if (typeof parsedExtraVars !== "object" || parsedExtraVars === null) {
@@ -48,8 +49,7 @@ const EditAnsibleVarsModal = (props: Props) => {
           return;
         }
       }
-      props.updatePlaybookContent?.(updatedVars, extraVars);
-      setExtraVars(null);
+      props.updatePlaybookContent?.(savedVars, extraVars);
       setOpen(false);
     } catch (error) {
       if (error instanceof Error) {
@@ -77,7 +77,7 @@ const EditAnsibleVarsModal = (props: Props) => {
         title="Edit Variables"
         className={`modal-lg ${props.className}`}
         content={
-          <AnsibleVarYamlEditor data={varsObject} onDataChange={setUpdatedVars} onExtraVarChange={setExtraVars} />
+          <AnsibleVarYamlEditor ref={editorRef} data={varsObject} onExtraVarChange={setExtraVars} />
         }
         onClose={() => setOpen(false)}
         footer={
