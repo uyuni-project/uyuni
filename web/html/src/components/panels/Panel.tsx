@@ -44,7 +44,7 @@ export const Panel = (props: Props) => {
               className="pull-right btn-group"
               style={{
                 position: "absolute",
-                right: "20px",
+                right: "15px",
                 top: "50%",
                 transform: "translateY(-50%)",
               }}

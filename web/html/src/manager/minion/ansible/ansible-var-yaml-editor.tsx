@@ -1,8 +1,9 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState, forwardRef, useImperativeHandle, useRef } from "react";
 
 import { FieldProps } from "formik";
 import yaml from "js-yaml";
 import get from "lodash/get";
+import unset from "lodash/unset";
 
 import { Button, DropdownButton } from "components/buttons";
 import { Field, MultiField } from "components/formik/field";
@@ -28,16 +29,20 @@ const variablesList = ["List", "Dictionary", "String", "Boolean"];
 
 type Props = {
   data: Record<string, any>;
-  onDataChange: (values: Record<string, any>) => void;
   onExtraVarChange: (extravalues: string) => void;
 };
 
-const AnsibleVarYamlEditor = (props: Props) => {
-  const { data, onDataChange, onExtraVarChange } = props;
+const AnsibleVarYamlEditor = React.forwardRef((props: Props, ref) => {
+  const { data, onExtraVarChange } = props;
   const [visibleInputPath, setVisibleInputPath] = useState(null);
   const [varType, setVarType] = useState(null);
   const [expandAllClicked, setExpandAllClicked] = useState(false);
   const [expandAllState, setExpandAllState] = useState(false);
+
+  const formRef = React.useRef<any>(null);
+  useImperativeHandle(ref, () => ({
+    getValues: () => formRef.current?.values,
+  }));
 
   const generateId = (path) => `id_${path.split(".").join("_")}`;
 
@@ -72,11 +77,10 @@ const AnsibleVarYamlEditor = (props: Props) => {
     const [yamlOutput, setYamlOutput] = useState("");
 
     useEffect(() => {
-      onDataChange?.(values);
       setYamlOutput(yaml.dump({ vars: values }, { quotingType: '"', forceQuotes: true }));
     }, [values]);
 
-    return <pre>{yamlOutput}</pre>;
+    return <pre className="overflow-visible">{yamlOutput}</pre>;
   };
 
   const handleVariable = useCallback((path, name) => {
@@ -101,6 +105,15 @@ const AnsibleVarYamlEditor = (props: Props) => {
     },
     [varType, visibleInputPath]
   );
+
+  const removeTopLevelItem = (key) => {
+    const form = formRef.current;
+    if (!form?.values) return;
+
+    const updated = { ...form.values };
+    unset(updated, key);
+    form.setValues(updated);
+  };
 
   const RenderVariableField = ({ field, form }: FieldProps<any>) => {
     const { name, value } = field;
@@ -218,7 +231,7 @@ const AnsibleVarYamlEditor = (props: Props) => {
         </div>
       </div>
       <div className={styles.variableContent}>
-        <Form initialValues={data} onSubmit={() => {}} enableReinitialize className="d-flex w-100">
+        <Form innerRef={formRef} initialValues={data} onSubmit={() => {}} enableReinitialize className="d-flex w-100">
           {({ values }) => (
             <>
               <div className={`${styles.yamlEditor} col-md-7`}>
@@ -230,6 +243,12 @@ const AnsibleVarYamlEditor = (props: Props) => {
                     title={path.split(".").join(" > ")}
                     className="panel-trasnparent"
                     collapsClose={expandAllClicked ? !expandAllState : false}
+                    buttons={<Button
+                      className="btn-default btn-sm"
+                      handler={() => removeTopLevelItem(p)}
+                      title={t("Remove item")}
+                      icon="fa-trash-o"
+                    />}
                   >
                     <Field name={path} component={RenderVariableField} />
                     {nestedLevelTitles(path, values).map((p) => (
@@ -240,6 +259,12 @@ const AnsibleVarYamlEditor = (props: Props) => {
                         title={p.split(".").join(" > ")}
                         className="panel-trasnparent"
                         collapsClose={expandAllClicked ? !expandAllState : true}
+                        buttons={<Button
+                          className="btn-default btn-sm"
+                          handler={() => removeTopLevelItem(p)}
+                          title={t("Remove item")}
+                          icon="fa-trash-o"
+                        />}
                       >
                         <Field name={p} component={RenderVariableField} />
                       </Panel>
@@ -260,6 +285,6 @@ const AnsibleVarYamlEditor = (props: Props) => {
       </div>
     </>
   );
-};
+});
 
 export default AnsibleVarYamlEditor;

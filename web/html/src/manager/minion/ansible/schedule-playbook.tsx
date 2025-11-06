@@ -224,12 +224,14 @@ export default function SchedulePlaybook({ playbook, onBack, onSelectPlaybook, i
         <div>
           <div className="d-flex justify-content-between">
             <h3>{t("Playbook Content")}</h3>
-            <EditAnsibleVarsModal
-              id="ansible-var"
-              className={styles.ansibleVar}
-              renderContent={playbookContent}
-              updatePlaybookContent={updatePlaybookContent}
-            />
+            <div className="py-4">
+              <EditAnsibleVarsModal
+                id="anisble-var"
+                className={styles.anisbleVar}
+                renderContent={playbookContent}
+                updatePlaybookContent={updatePlaybookContent}
+              />
+            </div>
           </div>
           <AceEditor
             className="form-control"
