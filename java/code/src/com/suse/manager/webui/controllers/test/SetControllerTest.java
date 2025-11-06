@@ -90,7 +90,7 @@ public class SetControllerTest extends BaseControllerTestCase {
     public void canClearExistingDeclSet() {
         Server s0 = ServerFactoryTest.createTestServer(user, true);
         Server s1 = ServerFactoryTest.createTestServer(user, true);
-        Server s2 = ServerFactoryTest.createTestServer(user, true);
+        ServerFactoryTest.createTestServer(user, true); //s2
 
         RhnSetDecl testSetDecl = initializeSet(SetLabels.SYSTEM_LIST, user, s0.getId(), s1.getId());
 

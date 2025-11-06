@@ -41,10 +41,7 @@ public final class UserLocalizationDateAdapter extends TypeAdapter<Date> {
         }
         String dateString = in.nextString();
 
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ISO_DATE_TIME;
-        OffsetDateTime offsetDateTime = OffsetDateTime.parse(
-                dateString, DateTimeFormatter.ISO_DATE_TIME
-        );
+        OffsetDateTime offsetDateTime = OffsetDateTime.parse(dateString, DateTimeFormatter.ISO_DATE_TIME);
 
         return Date.from(Instant.from(offsetDateTime));
     }

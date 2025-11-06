@@ -19,7 +19,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
-import com.redhat.rhn.domain.action.ActionChainEntry;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
@@ -107,7 +106,6 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
         running.put(minion1.getMinionId(), new Result<>(Xor.right(Collections.emptyList())));
         running.put(minion2.getMinionId(), new Result<>(Xor.right(Collections.emptyList())));
 
-        Jobs.Info listJobResult = listJob("jobs.list_job.state.apply.json", action.getId());
         SaltService saltServiceMock = mock(SaltService.class);
 
         context().checking(new Expectations() { {
@@ -195,27 +193,6 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
         assertEquals(2, scriptRun.size());
 
         HibernateFactory.getSession().flush();
-
-        Action action11 = actionChain.getEntries().stream()
-                .filter(e -> e.getServer().equals(minion1))
-                .filter(e -> e.getAction().getActionType().equals(ActionFactory.TYPE_APPLY_STATES))
-                .map(ActionChainEntry::getAction)
-                .findFirst().get();
-        Action action12 = actionChain.getEntries().stream()
-                .filter(e -> e.getServer().equals(minion1))
-                .filter(e -> e.getAction().getActionType().equals(ActionFactory.TYPE_SCRIPT_RUN))
-                .map(ActionChainEntry::getAction)
-                .findFirst().get();
-        Action action21 = actionChain.getEntries().stream()
-                .filter(e -> e.getServer().equals(minion2))
-                .filter(e -> e.getAction().getActionType().equals(ActionFactory.TYPE_APPLY_STATES))
-                .map(ActionChainEntry::getAction)
-                .findFirst().get();
-        Action action22 = actionChain.getEntries().stream()
-                .filter(e -> e.getServer().equals(minion2))
-                .filter(e -> e.getAction().getActionType().equals(ActionFactory.TYPE_SCRIPT_RUN))
-                .map(ActionChainEntry::getAction)
-                .findFirst().get();
 
         context().checking(new Expectations() {
             {

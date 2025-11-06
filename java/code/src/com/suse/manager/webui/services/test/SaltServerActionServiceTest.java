@@ -589,15 +589,14 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
 
         ScriptActionDetails sad = ActionFactory.createScriptActionDetails(
                 "root", "root", 10L, "#!/bin/csh\necho hello");
-        Set<Action> scriptActions = ActionChainManager.scheduleScriptRuns(user,
+        ActionChainManager.scheduleScriptRuns(user,
                 Arrays.asList(testMinion1.getId(), testMinion2.getId(), testServer1.getId()),
                 "script", sad, earliestAction, testActionChain);
 
         Set<Long> allServerIds = new HashSet<>();
         Collections.addAll(allServerIds, testMinion1.getId(), testMinion2.getId(), testServer1.getId());
 
-        Set<Action> rebootActions = ActionChainManager.scheduleRebootActions(user,
-                allServerIds, earliestAction, testActionChain);
+        ActionChainManager.scheduleRebootActions(user, allServerIds, earliestAction, testActionChain);
 
         testHighstateActions = ActionChainManager.scheduleApplyStates(user,
                 Arrays.asList(testMinion1.getId(), testMinion2.getId()), Optional.empty(),

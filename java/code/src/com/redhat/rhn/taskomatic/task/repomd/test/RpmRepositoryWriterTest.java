@@ -79,7 +79,7 @@ public class RpmRepositoryWriterTest extends JMockBaseTestCaseWithUser {
         PackageManager.createRepoEntrys(channel.getId());
 
         for (int i = 0; i < 25; i++) {
-            com.redhat.rhn.domain.rhnpackage.Package pkg = PackageManagerTest.addPackageToChannel("pkgpg" + i, channel);
+            PackageManagerTest.addPackageToChannel("pkgpg" + i, channel);
         }
 
         HibernateFactory.getSession().flush();
