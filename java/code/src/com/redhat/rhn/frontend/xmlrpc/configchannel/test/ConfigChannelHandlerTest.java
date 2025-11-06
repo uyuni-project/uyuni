@@ -568,7 +568,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
                                     "777",
                                     false, cc, "unconfined_u:object_r:tmp_t");
 
-        DataResult dr = ActionManager.recentlyScheduledActions(admin, null, 30);
+        DataResult<ScheduledAction> dr = ActionManager.recentlyScheduledActions(admin, null, 30);
         int preScheduleSize = dr.size();
 
         // schedule file comparison action
@@ -583,9 +583,9 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
         assertEquals(1, dr.size() - preScheduleSize);
         assertEquals(
                 "Show differences between profiled config files and deployed config files",
-                ((ScheduledAction)dr.get(0)).getTypeName());
+                dr.get(0).getTypeName());
         assertEquals(actionId, Integer.valueOf(
-                ((ScheduledAction)dr.get(0)).getId().intValue()));
+                dr.get(0).getId().intValue()));
     }
 
     @Test

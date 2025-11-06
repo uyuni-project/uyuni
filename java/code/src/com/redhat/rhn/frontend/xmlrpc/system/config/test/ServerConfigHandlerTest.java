@@ -550,7 +550,7 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
                 admin, Collections.singletonList(testServer.getId().intValue()), scheduleDate, false);
         assertNotNull(actionId);
 
-        DataResult schedule = ActionManager.recentlyScheduledActions(admin, null, 30);
+        DataResult<ScheduledAction> schedule = ActionManager.recentlyScheduledActions(admin, null, 30);
         assertEquals(1, schedule.size() - preScheduleSize);
         assertEquals(actionId, ((ScheduledAction) schedule.get(0)).getId());
 
