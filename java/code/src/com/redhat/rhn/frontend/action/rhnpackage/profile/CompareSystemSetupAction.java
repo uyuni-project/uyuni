@@ -56,7 +56,7 @@ public class CompareSystemSetupAction extends RhnAction {
 
         Long sid = requestContext.getRequiredParam(RequestContext.SID);
         Long sid1 = requestContext.getRequiredParam(RequestContext.SID1);
-        Set sessionSet = SessionSetHelper.lookupAndBind(request, getDecl(sid));
+        Set<String> sessionSet = SessionSetHelper.lookupAndBind(request, getDecl(sid));
 
         //if its not submitted
         // ==> this is the first visit to this page

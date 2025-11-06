@@ -72,7 +72,7 @@ public class ErrataSearchAction extends BaseSearchAction {
         String viewmode = form.getString(VIEW_MODE);
         Boolean fineGrained = (Boolean)form.get(FINE_GRAINED);
 
-        List searchOptions = new ArrayList<>();
+        List<Map<String, String>> searchOptions = new ArrayList<>();
         // setup the option list for select box (view_mode).
         addOption(searchOptions, OPT_ALL_FIELDS, OPT_ALL_FIELDS);
         addOption(searchOptions, OPT_ADVISORY, OPT_ADVISORY);
@@ -121,7 +121,7 @@ public class ErrataSearchAction extends BaseSearchAction {
                 LOG.debug("Issue Start Date = {}", dates.getStart().getDate());
                 LOG.debug("End Start Date = {}", dates.getEnd().getDate());
             }
-            List results = performSearch(request, ctx.getWebSession().getId(),
+            List<ErrataOverview> results = performSearch(request, ctx.getWebSession().getId(),
                     search, viewmode, form);
 
             request.setAttribute(RequestContext.PAGE_LIST,

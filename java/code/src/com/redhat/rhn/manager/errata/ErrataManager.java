@@ -1069,7 +1069,7 @@ public class ErrataManager extends BaseManager {
      * @param original Original errata that the clones are clones of
      * @return list of clones of the errata
      */
-    public static List lookupByOriginal(User user, Errata original) {
+    public static List<Errata> lookupByOriginal(User user, Errata original) {
         return ErrataFactory.lookupByOriginal(user.getOrg(), original);
     }
 

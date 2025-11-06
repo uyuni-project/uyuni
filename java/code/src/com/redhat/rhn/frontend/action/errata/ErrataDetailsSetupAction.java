@@ -114,12 +114,12 @@ public class ErrataDetailsSetupAction extends RhnAction {
 
     private String findOvalFile(Long errataId) {
         String retval = null;
-        List files =
+        List<ErrataFile> files =
             ErrataFactory.lookupErrataFilesByErrataAndFileType(errataId, "oval");
         if (files == null || files.isEmpty()) {
             return null;
         }
-        ErrataFile ef = (ErrataFile) files.get(0);
+        ErrataFile ef = files.get(0);
         StringBuilder buf = new StringBuilder();
         buf.append("<a href=\"/rhn/oval?errata=").append(errataId).append("\">");
         String name = ef.getOwningErrata().getAdvisoryName().toLowerCase();

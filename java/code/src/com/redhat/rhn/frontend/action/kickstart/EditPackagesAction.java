@@ -113,11 +113,10 @@ public class EditPackagesAction extends RhnAction {
     }
 
     private void prepareForm(KickstartData ksdata, DynaActionForm form) {
-        Set ksPackages = ksdata.getKsPackages();
+        Set<KickstartPackage> ksPackages = ksdata.getKsPackages();
         if (ksPackages != null && !ksPackages.isEmpty()) {
             StringBuilder buf = new StringBuilder();
-            for (Object ksPackageIn : ksPackages) {
-                KickstartPackage pn = (KickstartPackage) ksPackageIn;
+            for (KickstartPackage pn : ksPackages) {
                 buf.append(pn.getPackageName().getName());
                 buf.append("\n");
             }

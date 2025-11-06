@@ -80,7 +80,7 @@ public class Tuple3<A, B, C> {
 
     @Override
     public boolean equals(Object otherObject) {
-        if (!(otherObject instanceof Tuple3 other)) {
+        if (!(otherObject instanceof Tuple3<?, ?, ?> other)) {
             return false;
         }
         return new EqualsBuilder()

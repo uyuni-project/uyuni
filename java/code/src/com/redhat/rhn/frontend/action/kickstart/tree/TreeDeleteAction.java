@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.action.kickstart.tree;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.validator.ValidatorError;
+import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.PersistOperation;
@@ -45,7 +46,7 @@ public class TreeDeleteAction extends BaseTreeAction {
     protected void processRequestAttributes(RequestContext rctx, PersistOperation opr) {
         super.processRequestAttributes(rctx, opr);
         BaseTreeEditOperation bte = (BaseTreeEditOperation) opr;
-        List profiles = KickstartFactory.lookupKickstartDatasByTree(bte.getTree());
+        List<KickstartData> profiles = KickstartFactory.lookupKickstartDatasByTree(bte.getTree());
         if (profiles != null && !profiles.isEmpty()) {
             rctx.getRequest().setAttribute(RequestContext.PAGE_LIST,
                     new DataResult(profiles));
