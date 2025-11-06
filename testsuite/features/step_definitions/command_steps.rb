@@ -1347,17 +1347,17 @@ When(/^I copy vCenter configuration file on server$/) do
 end
 
 When(/^I export software channels "([^"]*)" with ISS v2 to "([^"]*)"$/) do |channel, path|
-  get_target('server').run("inter-server-sync export --channels=#{channel} --outputDir=#{path}")
+  get_target('server').run("inter-server-sync export --channels=#{channel} --outputDir=#{path}", verbose: true)
 end
 
 When(/^I export config channels "([^"]*)" with ISS v2 to "([^"]*)"$/) do |channel, path|
-  get_target('server').run("inter-server-sync export --configChannels=#{channel} --outputDir=#{path}")
+  get_target('server').run("inter-server-sync export --configChannels=#{channel} --outputDir=#{path}", verbose: true)
 end
 
 When(/^I import data with ISS v2 from "([^"]*)"$/) do |path|
   # WORKAROUND for bsc#1249127
-  # Remove "echo UglyWorkaround |" when the product issue is solved
-  get_target('server').run("echo UglyWorkaround | inter-server-sync import --importDir=#{path}")
+  # Remove "echo admin |" when the product issue is solved
+  get_target('server').run("echo admin | inter-server-sync import --importDir=#{path}", verbose: true)
 end
 
 Then(/^"(.*?)" folder on server is ISS v2 export directory$/) do |folder|
