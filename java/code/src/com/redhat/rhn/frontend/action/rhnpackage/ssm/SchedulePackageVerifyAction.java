@@ -114,8 +114,6 @@ public class SchedulePackageVerifyAction extends RhnAction implements Listable, 
                 DataResult result = (DataResult) getResult(context);
                 result.elaborate();
 
-                int numPackages = result.size();
-
                 // Remove the packages from session and the DB
                 SessionSetHelper.obliterate(request, request.getParameter("packagesDecl"));
 
@@ -128,7 +126,6 @@ public class SchedulePackageVerifyAction extends RhnAction implements Listable, 
 
                 // Check to determine to display single or plural confirmation message
                 ActionMessages msgs = new ActionMessages();
-                LocalizationService l10n = LocalizationService.getInstance();
                 msgs.add(ActionMessages.GLOBAL_MESSAGE,
                     new ActionMessage("ssm.package.verify.message.packageverifications"));
                 strutsDelegate.saveMessages(request, msgs);

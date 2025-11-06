@@ -16,7 +16,7 @@
 package com.redhat.rhn.frontend.xmlrpc.admin.monitoring.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.frontend.xmlrpc.admin.monitoring.AdminMonitoringHandler;
@@ -102,19 +102,12 @@ public class AdminMonitoringHandlerTest extends BaseHandlerTestCase {
     public void testRoleCheck() {
         AdminMonitoringHandler handler = new AdminMonitoringHandler();
 
-        try {
-            Map<String, String> res = handler.enable(regular);
-            fail("PermissionCheckFailureException should be thrown");
-        }
-        catch (PermissionCheckFailureException e) {
-            //should be here
-        }
+        assertThrows(PermissionCheckFailureException.class, () -> {
+            handler.enable(regular);
+        });
 
-        try {
-            Map<String, String> res = handler.enable(admin);
-            fail("PermissionCheckFailureException should be thrown");
-        }
-        catch (PermissionCheckFailureException e) {
-        }
+        assertThrows(PermissionCheckFailureException.class, () -> {
+            handler.enable(admin);
+        });
     }
 }

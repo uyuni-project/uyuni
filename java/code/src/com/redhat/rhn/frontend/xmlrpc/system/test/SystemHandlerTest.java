@@ -342,28 +342,17 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertEquals(1, result);
         assertFalse(systemEntitlementManager.canEntitleServer(server, ent));
 
-        //Cause PermissionCheckFailureException
-        try {
-            result = handler.upgradeEntitlement(admin,
+        assertThrows(PermissionCheckFailureException.class, () -> {
+            handler.upgradeEntitlement(admin,
                     server.getId().intValue(),
                     ent.getLabel());
-            fail("SystemHandler.upgradeEntitlement allowed upgrade when canEntitleServer " +
-            "evalueated to false.");
-        }
-        catch (PermissionCheckFailureException e) {
-            //success
-        }
+        });
 
-        //Cause InvalidEntitlementException
-        try {
-            result = handler.upgradeEntitlement(admin,
+        assertThrows(InvalidEntitlementException.class, () -> {
+            handler.upgradeEntitlement(admin,
                     server.getId().intValue(),
                     TestUtils.randomString());
-            fail("SystemHandler.upgradeEntitlement allowed upgrade to phoney entitlement");
-        }
-        catch (InvalidEntitlementException e) {
-            //success
-        }
+        });
     }
 
     @Test
