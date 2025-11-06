@@ -425,16 +425,8 @@ end
 When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
   time_spent = 0
   checking_rate = 10
-  if channel.include?('custom_channel') || channel.include?('ptf')
-    log 'Timeout of 10 minutes for a custom channel'
-    timeout = 600
-  elsif TIMEOUT_BY_CHANNEL_NAME[channel].nil?
-    log "Unknown timeout for channel #{channel}, assuming one minute"
-    timeout = 60
-  else
-    timeout = TIMEOUT_BY_CHANNEL_NAME[channel]
-    timeout *= 2 if $code_coverage_mode
-  end
+  timeout = channel_timeout(channel)
+
   begin
     repeat_until_timeout(timeout: timeout, message: 'Channel not fully synced') do
       break if channel_sync_completed?(channel)
@@ -442,6 +434,8 @@ When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
       log "#{time_spent / 60} minutes out of #{timeout / 60} waiting for '#{channel}' channel to be synchronized" if ((time_spent += checking_rate) % 60).zero?
       sleep checking_rate
     end
+  rescue Timeout::Error
+    warn "Hit timeout during channel #{channel} reposync."
   rescue StandardError => e
     log e.message
     unless $build_validation
@@ -452,41 +446,47 @@ When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
 end
 
 When(/^I wait until all synchronized channels for "([^"]*)" have finished$/) do |os_product_version|
-  channels_to_wait = CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, os_product_version).clone
-  channels_to_wait = filter_channels(channels_to_wait, ['beta']) unless $beta_enabled
-  raise ScriptError, "Synchronization error, channels for #{os_product_version} in #{product} not found" if channels_to_wait.nil?
+  channels_to_reposync = CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, os_product_version).clone
+  channels_to_reposync = filter_channels(channels_to_reposync, ['beta']) unless $beta_enabled
+  raise ScriptError, "Synchronization error, channels for #{os_product_version} in #{product} not found" if channels_to_reposync.nil?
 
   time_spent = 0
   checking_rate = 10
   # Let's start with a timeout margin aside from the sum of the timeouts for each channel
-  timeout = 900
-  channels_to_wait.each do |channel|
-    if TIMEOUT_BY_CHANNEL_NAME[channel].nil?
-      log "Unknown timeout for channel #{channel}, assuming one minute"
-      timeout += 60
-    else
-      timeout += TIMEOUT_BY_CHANNEL_NAME[channel]
-      timeout += TIMEOUT_BY_CHANNEL_NAME[channel] if $code_coverage_mode
+  timeout =
+    channels_to_reposync.reduce(900) do |sum, channel|
+      sum + channel_timeout(channel)
     end
-  end
+
   begin
     repeat_until_timeout(timeout: timeout, message: 'Product not fully synced') do
-      channels_to_wait.each do |channel|
+      channels_to_reposync.delete_if do |channel|
         if channel_sync_completed?(channel)
-          channels_to_wait.delete(channel)
-          log "Channel #{channel} finished syncing"
+          log "Channel #{channel} finished reposync"
+          true
+        else
+          false
         end
       end
-      break if channels_to_wait.empty?
 
-      log "#{time_spent / 60} minutes out of #{timeout / 60} waiting for '#{os_product_version}' channels to be synchronized" if ((time_spent += checking_rate) % 60).zero?
+      break if channels_to_reposync.empty?
+
+      if ((time_spent += checking_rate) % 60).zero?
+        log "#{(time_spent / 60).to_i} minutes out of #{(timeout / 60).to_i} waiting for '#{os_product_version}' channels to finish reposync"
+      end
+
       sleep checking_rate
     end
+  rescue Timeout::Error
+    raise ScriptError, "Hit timeout during reposync. These channels did not complete:\n #{channels_to_reposync}"
   rescue StandardError => e
-    log "These channels were not fully synced:\n #{channels_to_wait}. \n#{e.message}"
     # It might be that the MU repository is wrong, but on BV we want to continue in any case
-    raise unless $build_validation
+    unless $build_validation
+      raise ScriptError, "Error during reposync:\n#{e.message}\nReposync for these channels did not complete:\n #{channels_to_reposync}"
+    end
   end
+
+  log "All channels for #{os_product_version} have been fully synced"
 end
 
 When(/^I execute mgr-bootstrap "([^"]*)"$/) do |arg1|

@@ -590,71 +590,32 @@ def update_controller_ca
   certutil -d sql:/root/.pki/nssdb -A -t TC -n "susemanager" -i  /etc/pki/trust/anchors/#{server_name}.cert`
 end
 
-# This method checks if the synchronization for the given channel is completed
+# This method returns the timeout, in seconds, for syncing the given channel
 #
-# @param channel_name [String] the channel to check
-# @return [Boolean] true if the synchronization is completed, false otherwise
-def channel_sync_completed?(channel_name)
-  log_tmp_file = '/tmp/reposync.log'
-  get_target('server').extract('/var/log/rhn/reposync.log', log_tmp_file)
-  raise ScriptError, 'The file with repository synchronization logs doesn\'t exist or is empty' if !File.exist?(log_tmp_file) || File.empty?(log_tmp_file)
-
-  log_content = File.readlines(log_tmp_file)
-  channel_found = false
-  log_content.each do |line|
-    if line.include?('Channel: ') && line.include?(channel_name)
-      channel_found = true
-    elsif line.include?('Channel: ') && !line.include?(channel_name)
-      channel_found = false
-    elsif line.include?('Sync of channel completed.') && channel_found
-      return true if channel_is_synced?(channel_name)
-
-      log "WARN: Repository metadata for #{channel_name} seems not synchronized. Even if the reposync log says it is."
-      return false
-    end
+# @param channel [String] the channel to check
+# @return [Integer] number of seconds representing the timeout
+def channel_timeout(channel)
+  if channel.include?('custom_channel') || channel.include?('ptf')
+    $stdout.puts "#{channel} is a custom or PTF channel - timeout set to 10 minutes"
+    return 600
+  elsif TIMEOUT_BY_CHANNEL_NAME[channel].nil?
+    $stdout.puts "Unknown timeout for channel #{channel}, assuming one minute"
+    return 60
   end
 
-  false
+  timeout = TIMEOUT_BY_CHANNEL_NAME[channel]
+  timeout *= 2 if $code_coverage_mode
+  timeout
 end
 
-# Determines whether a channel is synchronized on the server.
+# This method checks if the channel with the given label has been fully synced
 #
-# @param channel [String] The name of the channel to check.
-# @return [Boolean] Returns true if the channel is synchronized, false otherwise.
-def channel_is_synced?(channel)
-  sync_status = false
-  # solv is the last file to be written when the server synchronizes a channel, therefore we wait until it exist
-  result, code = get_target('server').run("dumpsolv /var/cache/rhn/repodata/#{channel}/solv", verbose: false, check_errors: false)
-  if code.zero? && !result.include?('repo size: 0')
-    # We want to check if no .new files exists. On a re-sync, the old files stay, the new one have this suffix until it's ready.
-    _result, new_code = get_target('server').run("dumpsolv /var/cache/rhn/repodata/#{channel}/solv.new", verbose: false, check_errors: false)
-    log 'Channel synced, no .new files exist and number of solvables is bigger than 0' unless new_code.zero?
-    sync_status = !new_code.zero?
-  elsif result.include?('repo size: 0')
-    if EMPTY_CHANNELS.include?(channel)
-      sync_status = true
-    else
-      _result, code = get_target('server').run("zcat /var/cache/rhn/repodata/#{channel}/*primary.xml.gz | grep 'packages=\"0\"'", verbose: false, check_errors: false)
-      log "/var/cache/rhn/repodata/#{channel}/*primary.xml.gz contains 0 packages" if code.zero?
-      sync_status = false
-    end
-  else
-    # If the solv file doesn't exist, we check if we are under a Debian-like repository
-    command = "test -s /var/cache/rhn/repodata/#{channel}/Release && test -e /var/cache/rhn/repodata/#{channel}/Packages"
-    _result, new_code = get_target('server').run(command, verbose: false, check_errors: false)
-    log 'Debian-like channel synced, if Release and Packages files exist' if new_code.zero?
-    sync_status = new_code.zero?
-  end
-  if sync_status
-    begin
-      duration = channel_synchronization_duration(channel)
-      log "Channel #{channel} synchronized in #{duration} seconds"
-    rescue ScriptError => e
-      log "Error while checking synchronization duration: #{e.message}"
-      sync_status = false
-    end
-  end
-  sync_status
+# @param channel_label [String] the label of the channel to check
+# @return [Boolean] true if the synchronization is completed, false otherwise
+def channel_sync_completed?(channel_label)
+  channel_details = $api_test.channel.software.get_details(channel_label)
+  # 'C' for new created, 'S' for syncing and 'R' for ready
+  channel_details['sync_status'] == 'R'
 end
 
 # This function initializes the API client
