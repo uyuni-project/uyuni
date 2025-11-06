@@ -14,6 +14,7 @@
  */
 package com.suse.manager.reactor.messaging.test;
 
+import static java.lang.Math.abs;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -510,7 +511,14 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         // Verify Uptime is set
         Date bootTime = new Date(System.currentTimeMillis() - (600 * 1000));
-        assertEquals((long) minion.getLastBoot(), (bootTime.getTime() / 1000));
+        long expectedBootTimeSeconds = bootTime.getTime() / 1000;
+        long actualBootTimeSeconds = minion.getLastBoot();
+        // Minion's lastBoot is stored in seconds, and it is usually set as System.currentTimeMillis()/1000.
+        // This means that there can be 1 second approximation when setting it and 1 when computing expected value
+        // from System.currentTimeMillis(). Add to this at least 1 second of potential computing delay, so it all
+        // sums up to 3: this does not change the aim of the test
+        long bootTimeDiffSeconds = 3;
+        assertTrue(abs(expectedBootTimeSeconds - actualBootTimeSeconds) <= bootTimeDiffSeconds);
 
         //Switch back from live patching
         message = new JobReturnEventMessage(JobReturnEvent
