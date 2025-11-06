@@ -137,31 +137,29 @@ When(/^I call user\.remove_role\(\) on "([^"]*)" with the role "([^"]*)"$/) do |
   refute($api_test.user.remove_role(luser, rolename) != 1)
 end
 
-Given(/^I create a user with name "([^"]*)" and password "([^"]*)"/) do |user, password|
+Given(/^I create a user with name "([^"]*)" and password "([^"]*)"(?: with roles "([^"]*)")?/) do |user, password, roles_string|
   $current_user = user
   $current_password = password
   next if $api_test.user.list_users.to_s.include? user
 
-  $api_test.user.create(user, password, user, user, 'galaxy-noise@localhost')
-  roles = %w[org_admin channel_admin config_admin system_group_admin activation_key_admin image_admin]
-  roles.each do |role|
-    $api_test.user.add_role(user, role)
-  end
-  add_context('user', user)
-  add_context('password', password)
-  log "New user #{user} created"
-end
-
-Given(/^I attempt to create a user with username "([^"]*)" and password "([^"]*)"/) do |user, password|
-  raise "User #{user} already exists. Cannot create duplicate." if $api_test.user.list_users.to_s.include?(user)
-
   begin
     $api_test.user.create(user, password, user, user, 'galaxy-noise@localhost')
-    roles = %w[config_admin system_group_admin activation_key_admin image_admin]
-    roles.each { |role| $api_test.user.add_role(user, role) }
+    default_roles = %w[org_admin channel_admin config_admin system_group_admin activation_key_admin image_admin]
+    roles_to_assign =
+      if roles_string
+        roles_string.split(',').map(&:strip).reject(&:empty?)
+      else
+        default_roles
+      end
 
+    roles_to_assign.each do |role|
+      $api_test.user.add_role(user, role)
+    end
+
+    add_context('user', user)
+    add_context('password', password)
     add_context('user_creation_status', 'success')
-    log "New user #{user} created"
+    log "New user #{user} created with roles: #{roles_to_assign.join(', ')}"
   rescue StandardError => e
     add_context('user_creation_status', 'error')
     add_context('user_creation_error', e.message)
