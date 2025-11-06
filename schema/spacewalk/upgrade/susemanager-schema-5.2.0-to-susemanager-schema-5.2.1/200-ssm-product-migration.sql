@@ -10,6 +10,9 @@ DO $$
         FROM rhnserveraction
        WHERE rhnActionDup.action_id = rhnserveraction.action_id AND rhnActionDup.server_id IS NULL;
 
+      -- Remove any line for which we cannot figure out the server (orphan actions executed on deleted servers)
+      DELETE FROM rhnActionDup WHERE server_id IS NULL;
+
       -- Alter the table to add the non null and the foreign key
       ALTER TABLE rhnActionDup
           ALTER COLUMN server_id SET NOT NULL;
