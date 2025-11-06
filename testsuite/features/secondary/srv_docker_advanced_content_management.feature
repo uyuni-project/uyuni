@@ -28,19 +28,7 @@ Feature: Advanced content management
 
   Scenario: Create a user without rights nor roles
     Given I am authorized for the "Admin" section
-    When I follow the left menu "Users > User List > Active"
-    And I follow "Create User"
-    And I enter "norole" as "login"
-    And I enter "norole" as "desiredpassword"
-    And I enter "norole" as "desiredpasswordConfirm"
-    And I select "Mr." from "prefix"
-    And I enter "norole" as "firstNames"
-    And I enter "norole" as "lastName"
-    And I enter "norole-ginae@susy.de" as "email"
-    And I click on "Create Login"
-    Then I should see a "Account norole created" text
-    And I should see a "norole" link
-    And I should see a "normal user" text
+    When I create a user with name "norole" and password "norole" with roles ""
 
   Scenario: Log in as docker user
     Given I am authorized as "docker" with password "docker"
@@ -63,11 +51,4 @@ Feature: Advanced content management
 
   Scenario: Cleanup: delete no role user
     Given I am authorized for the "Admin" section
-    When I follow the left menu "Users > User List > Active"
-    And I follow "norole"
-    And I follow "Delete User"
-    Then I should see a "Confirm User Deletion" text
-    And I should see a "This will delete this user permanently." text
-    When I click on "Delete User"
-    Then I should see a "Active Users" text
-    And I should not see a "norole" link
+    When I delete user "norole"
