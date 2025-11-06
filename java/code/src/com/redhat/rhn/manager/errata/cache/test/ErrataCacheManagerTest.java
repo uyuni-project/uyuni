@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.errata.Errata;
@@ -320,8 +321,7 @@ public class ErrataCacheManagerTest extends RhnBaseTestCase {
                 sid, eid, pid);
         assertEquals(1, rows);
 
-        DataResult dr = ErrataCacheManager.packagesNeedingUpdates(
-                server.getId());
+        DataResult<ErrataCacheDto> dr = ErrataCacheManager.packagesNeedingUpdates(server.getId());
 
         assertFalse(dr.isEmpty());
         assertEquals(1, dr.size());
@@ -342,7 +342,7 @@ public class ErrataCacheManagerTest extends RhnBaseTestCase {
         User user = new UserTestUtils.UserBuilder().orgId(org.getId()).build();
         ServerFactoryTest.createTestServer(user);
 
-        DataResult dr = ErrataCacheManager.allServerIdsForOrg(org);
+        DataResult<Row> dr = ErrataCacheManager.allServerIdsForOrg(org);
         assertFalse(dr.isEmpty());
         assertTrue(dr.size() >= 1);
     }

@@ -99,15 +99,15 @@ public class RetractedPatchesCacheManagerTest extends BaseTestCaseWithUser {
         ErrataCacheManager.insertCacheForChannelPackages(subscribedChannel.getId(), null, List.of(newerPkg.getId()));
 
         // only the newer should be in the cache since newest is retracted
-        DataResult needingUpdates = ErrataCacheManager.packagesNeedingUpdates(server.getId());
+        DataResult<ErrataCacheDto> needingUpdates = ErrataCacheManager.packagesNeedingUpdates(server.getId());
         assertEquals(1, needingUpdates.size());
-        assertEquals(newerPkg.getId(), ((ErrataCacheDto) needingUpdates.get(0)).getPackageId());
+        assertEquals(newerPkg.getId(), (needingUpdates.get(0)).getPackageId());
 
         // just to be sure, recompute the cache and verify that the results are same
         ServerFactory.updateServerNeededCache(server.getId());
         needingUpdates = ErrataCacheManager.packagesNeedingUpdates(server.getId());
         assertEquals(1, needingUpdates.size());
-        assertEquals(newerPkg.getId(), ((ErrataCacheDto) needingUpdates.get(0)).getPackageId());
+        assertEquals(newerPkg.getId(), (needingUpdates.get(0)).getPackageId());
     }
 
     /**
@@ -135,15 +135,15 @@ public class RetractedPatchesCacheManagerTest extends BaseTestCaseWithUser {
         ErrataCacheManager.insertCacheForChannelPackages(subscribedChannel.getId(), null, List.of(newerPkg.getId()));
 
         // only the newer should be in the cache since newest is retracted
-        DataResult needingUpdates = ErrataCacheManager.packagesNeedingUpdates(server.getId());
+        DataResult<ErrataCacheDto> needingUpdates = ErrataCacheManager.packagesNeedingUpdates(server.getId());
         assertEquals(1, needingUpdates.size());
-        assertEquals(newerPkg.getId(), ((ErrataCacheDto) needingUpdates.get(0)).getPackageId());
+        assertEquals(newerPkg.getId(), (needingUpdates.get(0)).getPackageId());
 
         // just to be sure, recompute the cache and verify that the results are same
         ServerFactory.updateServerNeededCache(server.getId());
         needingUpdates = ErrataCacheManager.packagesNeedingUpdates(server.getId());
         assertEquals(1, needingUpdates.size());
-        assertEquals(newerPkg.getId(), ((ErrataCacheDto) needingUpdates.get(0)).getPackageId());
+        assertEquals(newerPkg.getId(), (needingUpdates.get(0)).getPackageId());
     }
 
     /**
@@ -175,13 +175,13 @@ public class RetractedPatchesCacheManagerTest extends BaseTestCaseWithUser {
 
         // insert "newer" into cache should be ok
         ErrataCacheManager.insertCacheForChannelPackages(subscribedChannel.getId(), null, List.of(newerPkg.getId()));
-        ErrataCacheDto needingUpdates = (ErrataCacheDto) assertSingleAndGet(
+        ErrataCacheDto needingUpdates = assertSingleAndGet(
                 ErrataCacheManager.packagesNeedingUpdates(server.getId()));
         assertEquals(newerPkg.getId(), needingUpdates.getPackageId());
 
         // insert "newest" into cache should be a no-op
         ErrataCacheManager.insertCacheForChannelPackages(subscribedChannel.getId(), null, List.of(newestPkg.getId()));
-        needingUpdates = (ErrataCacheDto) assertSingleAndGet(ErrataCacheManager.packagesNeedingUpdates(server.getId()));
+        needingUpdates = assertSingleAndGet(ErrataCacheManager.packagesNeedingUpdates(server.getId()));
         assertEquals(newerPkg.getId(), needingUpdates.getPackageId()); // the "newer" is still in cache
 
         // but if we subscribe to a channel, where the "newest" is not retracted, it should make it to the cache

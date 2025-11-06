@@ -793,7 +793,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         ActionFactory.save(parent);
         UserFactory.save(user);
 
-        DataResult dr = ActionManager.recentlyScheduledActions(user, null, 30);
+        DataResult<ScheduledAction> dr = ActionManager.recentlyScheduledActions(user, null, 30);
         assertNotEmpty(dr);
     }
 

@@ -59,6 +59,7 @@ import com.redhat.rhn.domain.session.WebSession;
 import com.redhat.rhn.domain.session.WebSessionFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.ErrataOverview;
+import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.xmlrpc.system.test.SystemHandlerTest;
 import com.redhat.rhn.manager.errata.ErrataManager;
@@ -309,11 +310,11 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
 
         Errata a = ErrataFactoryTest.createTestErrata(UserTestUtils.createOrg(this).getId());
 
-        DataResult systems = ErrataManager.systemsAffected(user, a.getId(), pc);
+        DataResult<SystemOverview> systems = ErrataManager.systemsAffected(user, a.getId(), pc);
         assertNotNull(systems);
         assertTrue(systems.isEmpty());
 
-        DataResult systems2 = ErrataManager.systemsAffected(user, (long) -2, pc);
+        DataResult<SystemOverview> systems2 = ErrataManager.systemsAffected(user, (long) -2, pc);
         assertTrue(systems2.isEmpty());
     }
 
