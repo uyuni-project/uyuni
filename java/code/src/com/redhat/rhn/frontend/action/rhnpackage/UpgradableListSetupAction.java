@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.action.rhnpackage;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.frontend.dto.UpgradablePackageListItem;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 
 /**
@@ -23,7 +24,7 @@ import com.redhat.rhn.manager.rhnpackage.PackageManager;
  */
 public class UpgradableListSetupAction extends BaseSystemPackagesAction {
     @Override
-    protected DataResult getDataResult(Server server) {
+    protected DataResult<UpgradablePackageListItem> getDataResult(Server server) {
             return PackageManager.upgradable(server.getId(), null);
     }
 }

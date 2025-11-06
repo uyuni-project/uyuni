@@ -29,6 +29,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.RhnSetAction;
 import com.redhat.rhn.frontend.action.configuration.ConfigActionHelper;
 import com.redhat.rhn.frontend.action.configuration.ConfigFileForm;
+import com.redhat.rhn.frontend.dto.ConfigRevisionDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.StrutsDelegate;
@@ -66,9 +67,9 @@ public class ManageRevisionSubmit extends RhnSetAction {
      * {@inheritDoc}
      */
     @Override
-    protected DataResult getDataResult(User userIn,
-                                       ActionForm formIn,
-                                       HttpServletRequest requestIn) {
+    protected DataResult<ConfigRevisionDto> getDataResult(User userIn,
+                                                          ActionForm formIn,
+                                                          HttpServletRequest requestIn) {
         ConfigFile file = ConfigActionHelper.getFile(requestIn);
         return ConfigurationManager.getInstance().listRevisionsForFile(userIn, file, null);
     }

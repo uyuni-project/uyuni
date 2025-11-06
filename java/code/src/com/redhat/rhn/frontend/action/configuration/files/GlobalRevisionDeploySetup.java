@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigFile;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.configuration.ConfigActionHelper;
+import com.redhat.rhn.frontend.dto.ConfigGlobalDeployDto;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.struts.BaseSetListAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -31,7 +32,7 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 public class GlobalRevisionDeploySetup extends BaseSetListAction {
 
     @Override
-    protected DataResult getDataResult(RequestContext ctx, PageControl pc) {
+    protected DataResult<ConfigGlobalDeployDto> getDataResult(RequestContext ctx, PageControl pc) {
         User usr = ctx.getCurrentUser();
         ConfigFile cf = ConfigActionHelper.getFile(ctx.getRequest());
         ConfigChannel cc = cf.getConfigChannel();
