@@ -177,7 +177,7 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testEnableFormula() throws Exception {
         String contentsData = TestUtils.readAll(TestUtils.findTestData(FORMULA_DATA));
-        Map<String, Object> contents = Json.GSON.fromJson(contentsData, Map.class);
+        Json.GSON.fromJson(contentsData, Map.class);
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         FormulaFactory.setMetadataDirOfficial(metadataDir.toString());
 

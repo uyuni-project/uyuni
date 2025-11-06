@@ -937,7 +937,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         channel.addErrata(e2);
 
         // Create a later version for the second patch
-        Package pkg2 = createLaterTestPackage(user, e2, channel, pkg1);
+        createLaterTestPackage(user, e2, channel, pkg1); //pkg2
 
         // Create a server assigned to the cloned channel and install the first patch only
         Server server = createTestServer(user, Collections.singleton(cloned));
@@ -1000,7 +1000,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         // Create package p2 as initially included in both channels
         Package p2 = createTestPackage(user, c1, "noarch");
         // Create a later version of p2 which is only included in e2
-        Package p2later = createLaterTestPackage(user, e2, c1, p2);
+        createLaterTestPackage(user, e2, c1, p2); //p2later
 
         // Clone p1 and the older p2 package and the clone of errata e1 into a cloned channel
         // Errata 2 which patches p2 package to a newer version is the only thing missing in the cloned channel
@@ -1195,7 +1195,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
 
         // as this is a very hypothetical scenario, the LTSS package has higher version than the
         // next SP package, otherwise it would show up as "installed"
-        Package patchedLTSS = createLaterTestPackage(user, errataLTSS, ltssChannelSP2, patchedSP3);
+        createLaterTestPackage(user, errataLTSS, ltssChannelSP2, patchedSP3); //patchedLTSS
 
         // Setup SP2 channels
         Set<Channel> channelsSP2 = new HashSet<>();
@@ -1255,9 +1255,8 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         TestUtils.saveAndFlush(updateChannelSP3);
 
         Package unpatched = createTestPackage(user, null, baseChannelSP2, "noarch");
-        Package patchedSP2 = createLaterTestPackage(user, errataSP2, updateChannelSP2, unpatched);
-        @SuppressWarnings("unused")
-        Package patchedSP3 = createLaterTestPackage(user, errataSP3, updateChannelSP3, unpatched);
+        createLaterTestPackage(user, errataSP2, updateChannelSP2, unpatched); //patchedSP2
+        createLaterTestPackage(user, errataSP3, updateChannelSP3, unpatched); //patchedSP3
 
         // Create server: no patch is installed
         Set<Channel> channelsSP2 = new HashSet<>();
@@ -1396,9 +1395,9 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         // Create packages for SP2 and SP3, but SP3 has an update not available in SP2 patch
         Package basePackage1 = createTestPackage(user, null, baseChannelSP2, "noarch");
         Package basePackage2 = createTestPackage(user, null, baseChannelSP2, "noarch");
-        Package updatePackage1SP2 = createLaterTestPackage(user, errataSP2, updateChannelSP2, basePackage1);
-        Package updatePackage1SP3 = createLaterTestPackage(user, errataSP3, updateChannelSP3, basePackage1);
-        Package updatePackage2SP3 = createLaterTestPackage(user, errataSP3, updateChannelSP3, basePackage2);
+        createLaterTestPackage(user, errataSP2, updateChannelSP2, basePackage1); //updatePackage1SP2
+        createLaterTestPackage(user, errataSP3, updateChannelSP3, basePackage1); //updatePackage1SP3
+        createLaterTestPackage(user, errataSP3, updateChannelSP3, basePackage2); //updatePackage2SP3
 
         // Create server: no patch is installed
         Set<Channel> channelsSP2 = new HashSet<>();
@@ -1468,8 +1467,8 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         Package basePackage1 = createTestPackage(user, null, baseChannelSP2, "noarch");
         Package basePackage2 = createTestPackage(user, null, baseChannelSP2, "noarch");
         Package updatePackage1SP2 = createLaterTestPackage(user, errataSP2, updateChannelSP2, basePackage1);
-        Package updatePackage1SP3 = createLaterTestPackage(user, errataSP3, updateChannelSP3, basePackage1);
-        Package updatePackage2SP3 = createLaterTestPackage(user, errataSP3, updateChannelSP3, basePackage2);
+        createLaterTestPackage(user, errataSP3, updateChannelSP3, basePackage1); //updatePackage1SP3
+        createLaterTestPackage(user, errataSP3, updateChannelSP3, basePackage2); //updatePackage2SP3
 
         // Create server: patch is installed
         Set<Channel> channelsSP2 = new HashSet<>();
