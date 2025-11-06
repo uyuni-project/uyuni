@@ -101,7 +101,7 @@ public abstract class BaseSystemsAction extends RhnListAction {
 
     }
 
-    protected abstract DataResult getDataResult(User user,
+    protected abstract DataResult<?> getDataResult(User user,
                                                 PageControl pc,
                                                 ActionForm formIn);
 }

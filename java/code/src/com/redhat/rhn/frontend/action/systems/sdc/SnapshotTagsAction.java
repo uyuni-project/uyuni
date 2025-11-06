@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.access.Namespace;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.SnapshotTagDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -77,7 +78,7 @@ public class SnapshotTagsAction extends RhnAction {
             RhnHelper.handleEmptySelection(request);
         }
 
-        DataResult result = SystemManager.snapshotTagsForSystem(sid, null);
+        DataResult<SnapshotTagDto> result = SystemManager.snapshotTagsForSystem(sid, null);
 
         if (ListTagHelper.getListAction(RequestContext.PAGE_LIST, request) != null) {
             helper.execute(set, RequestContext.PAGE_LIST, result);
