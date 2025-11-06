@@ -3,7 +3,7 @@ import { useCallback, useMemo, useState } from "react";
 
 import { DEPRECATED_Select, Form } from "components/input";
 import { Column } from "components/table/Column";
-import { HierarchicalRow, HierarchicalTable } from "components/table/HierarchicalTable";
+import { HierarchicalRow, DEPRECATED_HierarchicalTable } from "components/table/HierarchicalTable";
 import { SearchField } from "components/table/SearchField";
 
 import { FlatChannel, Org } from "./types";
@@ -195,7 +195,7 @@ const HierarchicalChannelsTable: React.FC<ChannelTableProps> = ({
   );
 
   return (
-    <HierarchicalTable
+    <DEPRECATED_HierarchicalTable
       className="channel-hierarchy"
       data={filteredData}
       identifier={identifier}
@@ -209,7 +209,7 @@ const HierarchicalChannelsTable: React.FC<ChannelTableProps> = ({
       <Column columnClass="col" columnKey="channelName" header={t("Channel Name")} cell={renderChannelNameCell} />
       <Column columnClass="col col-md-2" columnKey="channelArch" header={t("Architecture")} cell={renderArchCell} />
       <Column columnClass="col col-md-3" columnKey="channelOrg" header={t("Sync Org")} cell={renderSyncOrgCell} />
-    </HierarchicalTable>
+    </DEPRECATED_HierarchicalTable>
   );
 };
 
