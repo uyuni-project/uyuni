@@ -371,11 +371,11 @@ public class ErrataManager extends BaseManager {
     }
 
     /**
-     * Returns all of the errata in a channel
+     * Returns all the errata in a channel
      * @param cid the channel id
-     * @return all of the errata in the channel.
+     * @return all the errata in the channel.
      */
-    public static DataResult errataInChannel(Long cid) {
+    public static DataResult<ErrataOverview> errataInChannel(Long cid) {
         SelectMode m = ModeFactory.getMode(ERRATA_QUERIES, "channel_errata_for_list");
         Map<String, Object> params = new HashMap<>();
         params.put("cid", cid);

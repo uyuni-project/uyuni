@@ -18,6 +18,7 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.RhnListAction;
@@ -57,7 +58,7 @@ public class AffectedSystemsSetupAction extends RhnListAction {
 
 
         Errata errata = requestContext.lookupErratum();
-        DataResult dr = ErrataManager.systemsAffected(user, errata.getId(), null);
+        DataResult<SystemOverview> dr = ErrataManager.systemsAffected(user, errata.getId(), null);
 
         RhnSet set = RhnSetDecl.SYSTEMS_AFFECTED.get(user);
         RhnListSetHelper helper = new RhnListSetHelper(request);
