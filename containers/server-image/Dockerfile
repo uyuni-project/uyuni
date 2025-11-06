@@ -65,15 +65,14 @@ RUN echo "rpm.install.excludedocs = yes" >>/etc/zypp/zypp.conf && \
         virtual-host-gatherer-libcloud \
         virtualization-formulas \
         zchunk && \
+    zypper --non-interactive clean --all && \
     systemctl enable prometheus-node_exporter && \
     systemctl enable sssd && \
     rm /etc/krb5.conf.d/crypto-policies && \
     ln -s /etc/crypto-policies/back-ends/krb5.config /etc/krb5.conf.d/crypto-policies && \
     mv "/etc/krb5.conf.d" "/etc/rhn/krb5.conf.d" && \
-    ln -s "/etc/rhn/krb5.conf.d" "/etc/krb5.conf.d"
-
-RUN set -euo pipefail; zypper -n rr -a; \
-    rm -rf /var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
+    ln -s "/etc/rhn/krb5.conf.d" "/etc/krb5.conf.d" && \
+    rm -rf /var/log/{alternatives.log,lastlog,tallylog,suseconnect.log,zypper.log,zypp/history,YaST2}
 
 ADD --chown=root:root root.tar.gz /
 
