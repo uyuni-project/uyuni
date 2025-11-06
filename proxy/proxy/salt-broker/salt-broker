@@ -45,18 +45,13 @@ import yaml
 log = logging.getLogger(__name__)
 log.setLevel(logging.DEBUG)
 
-try:
-    # Import RHN libs
-    from spacewalk.common.rhnConfig import RHNOptions
-except ImportError:
-    log.info("RHNOptions is not available, running standalone")
-    RHNOptions = None
 
 # Import pyzmq lib
 import zmq
 
 from zmq.utils.monitor import recv_monitor_message
 
+UYUNI_CONFIG_FILE = os.environ.get("UYUNI_CONFIG_FILE", "/etc/uyuni/config.yaml")
 SALT_BROKER_CONF_FILE = os.environ.get("SALT_BROKER_CONF_FILE", "/etc/salt/broker")
 SALT_BROKER_LOGFILE = os.environ.get("SALT_BROKER_LOGFILE", "/var/log/salt/broker")
 SUPERVISOR_TIMEOUT = 5
@@ -435,14 +430,21 @@ class SaltBroker(object):
 
 
 if __name__ == "__main__":
-    # Try to get config from /etc/rhn/rhn.conf
+    # Try to get config from /etc/uyuni/config.yaml
     rhn_parent = None
-    if RHNOptions is not None:
-        rhn_proxy_conf = RHNOptions(component="proxy")
-        rhn_proxy_conf.parse()
-        if rhn_proxy_conf.get("rhn_parent"):
-            log.debug("Using 'rhn_parent' from /etc/rhn/rhn.conf as 'master'")
-            rhn_parent = rhn_proxy_conf["rhn_parent"]
+    if os.path.isfile(UYUNI_CONFIG_FILE):
+        try:
+            uyuni_config = yaml.load(open(UYUNI_CONFIG_FILE), Loader=yaml.SafeLoader)
+            if uyuni_config:
+                rhn_parent = uyuni_config["server"]
+        except yaml.scanner.ScannerError as exc:
+            # pylint: disable-next=consider-using-f-string
+            log.error("Error reading YAML config file: %s", exc)
+    if not rhn_parent:
+        log.debug(
+            "Missing or invalid config file %s, running as standalone",
+            UYUNI_CONFIG_FILE,
+        )
 
     # Check for the config file
     if not os.path.isfile(SALT_BROKER_CONF_FILE):
