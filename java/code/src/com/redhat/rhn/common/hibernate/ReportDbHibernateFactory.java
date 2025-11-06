@@ -706,12 +706,12 @@ public class ReportDbHibernateFactory {
         return connectionManager.isInitialized();
     }
 
-    protected DataResult executeSelectMode(String name, String mode, Map<String, Object> params) {
+    protected <T> DataResult<T> executeSelectMode(String name, String mode, Map<String, ?> params) {
         SelectMode m = ModeFactory.getMode(name, mode);
         return m.execute(params);
     }
 
-    protected void executeCallableMode(String name, String mode, Map params) {
+    protected void executeCallableMode(String name, String mode, Map<String, Object> params) {
         CallableMode m = ModeFactory.getCallableMode(name, mode);
         m.execute(params, new HashMap<>());
     }
