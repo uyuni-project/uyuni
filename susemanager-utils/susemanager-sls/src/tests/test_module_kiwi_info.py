@@ -65,7 +65,7 @@ kiwi_type='vmx'
 def test_parse_packages():
     example_packages = """bash|(none)|4.3|83.23.1|x86_64|obs://build.suse.de/SUSE:Maintenance:10724/SUSE_SLE-12-SP2_Update/b5cfe46def8616297059178c4336d762-bash.SUSE_SLE-12-SP2_Update|GPL-3.0-or-later
 kernel-default-base|(none)|4.12.14|120.1|x86_64|obs://build.suse.de/SUSE:SLE-12-SP5:GA/standard/a0ea4b03e8d7e6568f24d720f0153afd-kernel-default|GPL-2.0
-filesystem|(none)|13.1|14.15|x86_64|obs://build.suse.de/SUSE:SLE-12-SP3:GA/standard/ae15081902ea27fd632375aeb0ce0da6-filesystem
+filesystem|(none)|13.1|14.15|x86_64|obs://build.suse.de/SUSE:SLE-12-SP3:GA/standard/ae15081902ea27fd632375aeb0ce0da6-filesystem|MIT
 less|(none)|458|5.13|x86_64|obs://build.suse.de/SUSE:SLE-12:GA/standard/827c24a5ea5849b1fc081138c6b394bf-less|GPL-3.0+ or BSD-2-Clause
 openssl|(none)|1.0.2p|1.13|noarch|obs://build.suse.de/SUSE:SLE-12-SP4:GA/standard/15a6602b5249eac363d3adec4a6b7f4e-openssl|OpenSSL
 gpg-pubkey|(none)|39db7c82|5847eb1f|(none)|(none)|pubkey
@@ -97,6 +97,7 @@ gpg-pubkey|(none)|50a3dd1c|50f35137|(none)|(none)|pubkey
             "release": "14.15",
             "arch": "x86_64",
             "disturl": "obs://build.suse.de/SUSE:SLE-12-SP3:GA/standard/ae15081902ea27fd632375aeb0ce0da6-filesystem",
+            "license": "MIT",
         },
         {
             "name": "less",
