@@ -3,7 +3,7 @@ import { useCallback, useMemo, useState } from "react";
 
 import { DEPRECATED_Select, Form } from "components/input";
 import { Column } from "components/table/Column";
-import { HierarchicalRow, DEPRECATED_HierarchicalTable } from "components/table/HierarchicalTable";
+import { DEPRECATED_HierarchicalTable, HierarchicalRow } from "components/table/HierarchicalTable";
 import { SearchField } from "components/table/SearchField";
 
 import { FlatChannel, Org } from "./types";
