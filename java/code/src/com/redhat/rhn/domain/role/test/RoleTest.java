@@ -102,7 +102,7 @@ public class RoleTest extends RhnBaseTestCase {
         Org o1 = usr.getOrg();
         // Add the CHANNEL_ADMIN role to the Org
         o1.addRole(RoleFactory.CHANNEL_ADMIN);
-        o1 = OrgFactory.save(o1);
+        OrgFactory.save(o1);
         usr.addPermanentRole(ORG_ADMIN);
         UserFactory.save(usr);
         // Now check to see if the user gets the implied CHANNEL_ADMIN role

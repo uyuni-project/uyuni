@@ -82,7 +82,6 @@ public class SchedulePackageUpgradeAction extends RhnAction implements Listable,
                                  HttpServletResponse response) {
 
         RequestContext requestContext = new RequestContext(request);
-        DynaActionForm f = (DynaActionForm) actionForm;
 
         ListHelper helper = new ListHelper(this, request);
         helper.setDataSetName(RequestContext.PAGE_LIST);
@@ -93,7 +92,6 @@ public class SchedulePackageUpgradeAction extends RhnAction implements Listable,
                 requestContext.getRequiredParamAsString(RequestContext.MODE));
 
         if (request.getParameter("dispatch") != null) {
-            String packagesDecl = request.getParameter("packagesDecl");
             if (requestContext.wasDispatched("installconfirm.jsp.confirm")) {
                 return executePackageAction(actionMapping, actionForm, request, response);
             }

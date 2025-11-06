@@ -36,7 +36,6 @@ import com.redhat.rhn.manager.system.SystemManager;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.DynaActionForm;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -73,7 +72,6 @@ public class SSMGroupConfirmAction extends RhnAction
 
         RequestContext rctx = new RequestContext(request);
         User user = rctx.getCurrentUser();
-        DynaActionForm daForm = (DynaActionForm)form;
 
         RhnSet groupSet = RhnSetDecl.SSM_GROUP_LIST.lookup(user);
         if (groupSet == null) {

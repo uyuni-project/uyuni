@@ -122,7 +122,6 @@ public class OrgDetailsAction extends RhnAction {
             Long oid,
             Org org) {
 
-        RequestContext requestContext = new RequestContext(request);
         if (validateForm(request, dynaForm, oid, org)) {
             String name = dynaForm.getString("orgName");
             OrgManager.renameOrg(org, name);
@@ -147,7 +146,6 @@ public class OrgDetailsAction extends RhnAction {
         boolean retval = true;
 
         String orgName = form.getString("orgName");
-        RequestContext requestContext = new RequestContext(request);
 
         if (currOrg.getName().equals(orgName)) {
             getStrutsDelegate().saveMessage("message.org_name_not_updated",

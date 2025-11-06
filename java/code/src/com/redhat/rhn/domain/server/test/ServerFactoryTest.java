@@ -963,7 +963,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
         ChannelFactory.save(baseChan);
         ChannelFactory.save(proxyChan);
-        product = TestUtils.saveAndReload(product);
+        TestUtils.saveAndReload(product);
 
         SystemManager.activateProxy(server, "1.1");
         SystemManager.storeServer(server);
