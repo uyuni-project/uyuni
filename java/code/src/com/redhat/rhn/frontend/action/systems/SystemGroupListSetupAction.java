@@ -35,7 +35,6 @@ import org.apache.struts.action.ActionMapping;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -55,9 +54,6 @@ public class SystemGroupListSetupAction extends RhnAction
 
         ListRhnSetHelper helper = new ListRhnSetHelper(this, request, getSetDecl());
         helper.execute();
-
-        Map m = helper.getParamMap();
-        Map m1 = request.getParameterMap();
 
         if (helper.isDispatched()) {
             LocalizationService l18nSvc = LocalizationService.getInstance();

@@ -65,7 +65,6 @@ import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.test.CustomDataKeyTest;
 import com.redhat.rhn.domain.product.SUSEProduct;
-import com.redhat.rhn.domain.product.SUSEProductExtension;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.rhnpackage.Package;
@@ -342,28 +341,17 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertEquals(1, result);
         assertFalse(systemEntitlementManager.canEntitleServer(server, ent));
 
-        //Cause PermissionCheckFailureException
-        try {
-            result = handler.upgradeEntitlement(admin,
+        assertThrows(PermissionCheckFailureException.class, () -> {
+            handler.upgradeEntitlement(admin,
                     server.getId().intValue(),
                     ent.getLabel());
-            fail("SystemHandler.upgradeEntitlement allowed upgrade when canEntitleServer " +
-            "evalueated to false.");
-        }
-        catch (PermissionCheckFailureException e) {
-            //success
-        }
+        });
 
-        //Cause InvalidEntitlementException
-        try {
-            result = handler.upgradeEntitlement(admin,
+        assertThrows(InvalidEntitlementException.class, () -> {
+            handler.upgradeEntitlement(admin,
                     server.getId().intValue(),
                     TestUtils.randomString());
-            fail("SystemHandler.upgradeEntitlement allowed upgrade to phoney entitlement");
-        }
-        catch (InvalidEntitlementException e) {
-            //success
-        }
+        });
     }
 
     @Test
@@ -442,13 +430,10 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         cids.add(-32339);
         assertEquals(1, cids.size());
 
-        try {
-            result = handler.setChildChannels(admin, sid, cids);
-            fail("SystemHandler.setChildChannels allowed invalid child channel to be set.");
-        }
-        catch (InvalidChannelException e) {
-            //success
-        }
+        List finalCids = cids;
+        assertThrows(InvalidChannelException.class, () -> {
+            handler.setChildChannels(admin, sid, finalCids);
+        }, "SystemHandler.setChildChannels allowed invalid child channel to be set.");
         assertEquals(2, server.getChannels().size());
 
         Channel base2 = ChannelFactoryTest.createTestChannel(admin);
@@ -458,7 +443,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertEquals(1, cids.size());
 
         try {
-            result = handler.setChildChannels(admin, sid, cids);
+            handler.setChildChannels(admin, sid, cids);
             fail("SystemHandler.setChildChannels allowed invalid child channel to be set.");
         }
         catch (InvalidChannelException | ChannelSubscriptionException e) {
@@ -471,23 +456,19 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         // try setting the base channel of an s390 server to
         // IA-32.
-        try {
+        Server finalServer = server;
+        assertThrows(InvalidChannelException.class, () -> {
             List ia32Children = new ArrayList<>();
             ia32Children.add(child1.getId().intValue());
             ia32Children.add(child2.getId().intValue());
 
             // change the arch of the server
-            server.setServerArch(
+            finalServer.setServerArch(
                     ServerFactory.lookupServerArchByLabel("s390-redhat-linux"));
-            ServerFactory.save(server);
+            ServerFactory.save(finalServer);
 
-
-            result = handler.setChildChannels(admin, sid, ia32Children);
-            fail("allowed invalid child channel to be set.");
-        }
-        catch (InvalidChannelException e) {
-            // success
-        }
+            handler.setChildChannels(admin, sid, ia32Children);
+        }, "allowed invalid child channel to be set.");
     }
 
     @Test
@@ -569,13 +550,10 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         channelLabels.add("invalid-unknown-channel-label");
         assertEquals(1, channelLabels.size());
 
-        try {
-            result = handler.setChildChannels(admin, sid, channelLabels);
-            fail("SystemHandler.setChildChannels allowed invalid child channel to be set.");
-        }
-        catch (InvalidChannelLabelException e) {
-            //success
-        }
+        List<String> finalChannelLabels = channelLabels;
+        assertThrows(InvalidChannelLabelException.class, () -> {
+            handler.setChildChannels(admin, sid, finalChannelLabels);
+        }, "SystemHandler.setChildChannels allowed invalid child channel to be set.");
         assertEquals(2, server.getChannels().size());
 
         TestUtils.flushAndEvict(server);
@@ -588,7 +566,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertEquals(1, channelLabels.size());
 
         try {
-            result = handler.setChildChannels(admin, sid, channelLabels);
+            handler.setChildChannels(admin, sid, channelLabels);
             fail("SystemHandler.setChildChannels allowed invalid child channel to be set.");
         }
         catch (InvalidChannelException | ChannelSubscriptionException e) {
@@ -601,23 +579,18 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         // try setting the base channel of an s390 server to
         // IA-32.
-        try {
+        Server finalServer = server;
+        assertThrows(InvalidChannelException.class, () -> {
             List ia32Children = new ArrayList<>();
             ia32Children.add(new String(child1.getLabel()));
             ia32Children.add(new String(child2.getLabel()));
 
             // change the arch of the server
-            server.setServerArch(
-                    ServerFactory.lookupServerArchByLabel("s390-redhat-linux"));
-            ServerFactory.save(server);
+            finalServer.setServerArch(ServerFactory.lookupServerArchByLabel("s390-redhat-linux"));
+            ServerFactory.save(finalServer);
 
-
-            result = handler.setChildChannels(admin, sid, ia32Children);
-            fail("allowed invalid child channel to be set.");
-        }
-        catch (InvalidChannelException e) {
-            // success
-        }
+            handler.setChildChannels(admin, sid, ia32Children);
+        }, "allowed invalid child channel to be set.");
     }
 
     @Test
@@ -772,30 +745,23 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertEquals(server.getBaseChannel().getLabel(), base2.getLabel());
 
         // Try setting base channel to child
-        try {
-            result = handler.setBaseChannel(admin, sid, child1.getLabel());
-            fail("SystemHandler.setBaseChannel allowed invalid base channel to be set.");
-        }
-        catch (InvalidChannelException e) {
-            // success
-        }
+        assertThrows(InvalidChannelException.class, () -> {
+            handler.setBaseChannel(admin, sid, child1.getLabel());
+        }, "SystemHandler.setBaseChannel allowed invalid base channel to be set.");
+
         assertEquals(server.getBaseChannel().getLabel(), base2.getLabel());
 
         // try setting the base channel of an s390 server to
         // IA-32.
-        try {
+        MinionServer finalServer = server;
+        assertThrows(InvalidChannelException.class, () -> {
             // change the arch of the server
-            server.setServerArch(
+            finalServer.setServerArch(
                     ServerFactory.lookupServerArchByLabel("s390-redhat-linux"));
-            ServerFactory.save(server);
+            ServerFactory.save(finalServer);
 
-
-            result = handler.setBaseChannel(admin, sid, base1.getLabel());
-            fail("allowed channel with incompatible arch to be set");
-        }
-        catch (InvalidChannelException e) {
-            // success
-        }
+            handler.setBaseChannel(admin, sid, base1.getLabel());
+        }, "allowed channel with incompatible arch to be set");
     }
 
     @Test
@@ -1275,33 +1241,19 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         Server server = ServerFactoryTest.createTestServer(admin);
         int result;
         //try empty string
-        try {
-            result = handler.setProfileName(admin,
-                    server.getId().intValue(), "    ");
-            fail("SystemHandler.setProfileName allowed an invalid profile name to be set.");
-        }
-        catch (FaultException e) {
-            //success
-        }
+        assertThrows(FaultException.class, () -> {
+            handler.setProfileName(admin, server.getId().intValue(), "    ");
+        }, "SystemHandler.setProfileName allowed an invalid profile name to be set.");
+
         //try name that is too short
-        try {
-            result = handler.setProfileName(admin,
-                    server.getId().intValue(), "   f   ");
-            fail("SystemHandler.setProfileName allowed an invalid profile name to be set.");
-        }
-        catch (FaultException e) {
-            //success
-        }
+        assertThrows(FaultException.class, () -> {
+            handler.setProfileName(admin, server.getId().intValue(), "   f   ");
+        }, "SystemHandler.setProfileName allowed an invalid profile name to be set.");
 
         //try name that is too long
-        try {
-            result = handler.setProfileName(admin,
-                    server.getId().intValue(), getLongTestString());
-            fail("SystemHandler.setProfileName allowed an invalid profile name to be set.");
-        }
-        catch (FaultException e) {
-            //success
-        }
+        assertThrows(FaultException.class, () -> {
+            handler.setProfileName(admin, server.getId().intValue(), getLongTestString());
+        }, "SystemHandler.setProfileName allowed an invalid profile name to be set.");
 
         String validProfileName = "XmlRpcTest - " + TestUtils.randomString();
         result = handler.setProfileName(admin,
@@ -3022,7 +2974,6 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         sp1AddOnProduct.setBase(false);
         Channel sp1ChildChannel = SUSEProductTestUtils.createChildChannelsForProduct(sp1AddOnProduct, sp1BaseChannel,
                 admin);
-        SUSEProductExtension ext = new SUSEProductExtension(sp1BaseProduct, sp1AddOnProduct, sp1BaseProduct, false);
         sp1Addons.add(sp1AddOnProduct);
 
         // Setup repos for base and addon products
@@ -3127,7 +3078,6 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         sp1AddOnProduct.setBase(false);
         Channel sp1ChildChannel = SUSEProductTestUtils.createChildChannelsForProduct(sp1AddOnProduct, sp1BaseChannel,
                 admin);
-        SUSEProductExtension ext = new SUSEProductExtension(sp1BaseProduct, sp1AddOnProduct, sp1BaseProduct, false);
         sp1Addons.add(sp1AddOnProduct);
 
         // Setup repos for base and addon products
@@ -3487,7 +3437,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(admin);
         Channel baseChannel = ChannelTestUtils.createBaseChannel(admin);
         server.addChannel(baseChannel);
-        ActionManager.recentlyScheduledActions(admin, null, 30).size();
+        ActionManager.recentlyScheduledActions(admin, null, 30);
 
         Package pkg = PackageTest.createTestPackage(admin.getOrg());
 

@@ -341,7 +341,7 @@ public class EditChannelAction extends RhnAction implements Listable<OrgTrust> {
                     }
                     // unsubscribe server from channel
                     ChannelFactory.save(channelIn);
-                    s = SystemManager.unsubscribeServerFromChannel(s, channelIn);
+                    SystemManager.unsubscribeServerFromChannel(s, channelIn);
                 }
             }
         }

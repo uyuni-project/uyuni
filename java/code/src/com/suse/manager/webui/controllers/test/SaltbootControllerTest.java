@@ -53,7 +53,7 @@ public class SaltbootControllerTest extends BaseControllerTestCase {
     @Test
     public void testSaltbootController() throws Exception {
         ImageStore store = ImageTestUtils.createImageStore("registry.reg", user);
-        ImageInfo imageNoPillar = ImageTestUtils.createImageInfo("myimage1", "1.0.0", store, user);
+        ImageTestUtils.createImageInfo("myimage1", "1.0.0", store, user);
         ImageInfo image = ImageTestUtils.createImageInfo("myimage2", "1.0.0", store, user);
 
         String path = new File(TestUtils.findTestData(TEST_DIR + "image_pillar.json")

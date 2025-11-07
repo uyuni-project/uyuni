@@ -19,7 +19,6 @@ import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.domain.config.ConfigChannel;
-import com.redhat.rhn.domain.config.ConfigContent;
 import com.redhat.rhn.domain.config.ConfigFile;
 import com.redhat.rhn.domain.config.ConfigFileState;
 import com.redhat.rhn.domain.config.ConfigFileType;
@@ -123,7 +122,6 @@ public class ConfigFileBuilder {
     private ConfigRevision makeNewRevision(User user, ConfigFileData form,
             ConfigFile cf, boolean onCreate) {
 
-        ConfigurationManager manager = ConfigurationManager.getInstance();
         ConfigRevision prevRevision = cf.getLatestConfigRevision();
         ConfigRevision revision;
         String delimStart = form.getMacroStart();
@@ -131,7 +129,6 @@ public class ConfigFileBuilder {
 
         if (onCreate) {
             revision = ConfigurationFactory.newConfigRevision();
-            ConfigContent content = null;
             if (ConfigFileType.file().equals(form.getType())) {
                 if (form.isBinary()) {
                     // if not given, use the default value

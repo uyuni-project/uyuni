@@ -164,7 +164,6 @@ public class ExtGroupDetailAction extends RhnAction {
             }
             else {
                 // org and satellite admin
-                boolean hasSatAdmin = extGroup != null && extGroup.getRoles().contains((RoleFactory.SAT_ADMIN));
                 SelectableLabelValueBean bean = new SelectableLabelValueBean(
                         LocalizationService.getInstance().getMessage(label),
                         label,

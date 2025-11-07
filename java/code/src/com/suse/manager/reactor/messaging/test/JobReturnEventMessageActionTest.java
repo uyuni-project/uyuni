@@ -1820,7 +1820,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
         ServerFactory.save(server);
 
-        MgrUtilRunner.ExecResult mockResult = new MgrUtilRunner.ExecResult();
         context().checking(new Expectations() {{
             allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)),
                     with(equal(SaltSSHService.SUMA_SSH_PUB_KEY)));

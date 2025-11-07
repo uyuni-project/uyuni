@@ -92,7 +92,7 @@ public class PackagePushAction extends RhnSetAction {
             filePackages.add(p);
         }
         //publish them and the errata to the channel
-        errata = ErrataFactory.addToChannel(errata, c, user, filePackages);
+        ErrataFactory.addToChannel(errata, c, user, filePackages);
 
         RhnSet targetChannels = RhnSetDecl.CHANNELS_FOR_ERRATA.get(user);
         targetChannels.removeElement(cid);

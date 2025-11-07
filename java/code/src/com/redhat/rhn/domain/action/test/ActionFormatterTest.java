@@ -75,14 +75,14 @@ public class ActionFormatterTest extends RhnBaseTestCase {
         ActionFormatter af = areboot.getFormatter();
         ServerAction sa = (ServerAction) areboot.getServerActions().toArray()[0];
         sa.setStatusFailed();
-        sa = (ServerAction) TestUtils.saveAndReload(sa);
+        TestUtils.saveAndReload(sa);
         assertTrue(af.getNotes().startsWith(
                 "<a href=\"/rhn/schedule/FailedSystems.do?aid="));
         assertTrue(af.getNotes().endsWith(
                 ">1 system</a></strong> failed to complete this action.<br/><br/>"));
 
         sa.setStatusCompleted();
-        sa = (ServerAction) TestUtils.saveAndReload(sa);
+        TestUtils.saveAndReload(sa);
         assertTrue(af.getNotes().startsWith(
                 "<a href=\"/rhn/schedule/CompletedSystems.do?aid="));
         assertTrue(af.getNotes().endsWith(

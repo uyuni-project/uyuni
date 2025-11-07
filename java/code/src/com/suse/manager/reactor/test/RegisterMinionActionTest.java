@@ -803,8 +803,6 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
     public void testRegisterMinionWithInvalidActivationKeyNoSyncProducts() throws Exception {
         ChannelFamily channelFamily = createTestChannelFamily();
         SUSEProduct product = SUSEProductTestUtils.createTestSUSEProduct(channelFamily);
-        MinionStartupGrains.SuseManagerGrain suseManagerGrain =
-                new MinionStartupGrains.SuseManagerGrain(Optional.of("non-existent-key"));
         executeTest(
                 (key) -> new Expectations() {{
                     allowing(saltServiceMock).getSystemInfoFull(MINION_ID);
@@ -1055,9 +1053,6 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         Channel baseChannel = channels != null ? channels.get(0) : null;
         MinionPendingRegistrationService.addMinion(user, MINION_ID, ContactMethodUtil.DEFAULT);
         HibernateFactory.getSession().flush();
-        MinionStartupGrains minionStartUpGrains = new MinionStartupGrains.MinionStartupGrainsBuilder()
-                .machineId(MACHINE_ID).saltbootInitrd(false)
-                .createMinionStartUpGrains();
         try {
             executeTest(
                     (key) -> new Expectations() {{

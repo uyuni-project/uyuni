@@ -184,7 +184,6 @@ public class UserPreferenceUtils {
         }
 
         Context ctx = Context.getCurrentContext();
-        Locale locale = ctx != null ? ctx.getLocale() : Locale.getDefault();
         TimeZone timezone = ctx != null ? ctx.getTimezone() : TimeZone.getDefault();
         return timezone.getID();
     }

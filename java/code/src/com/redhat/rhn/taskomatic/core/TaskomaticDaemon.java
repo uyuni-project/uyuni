@@ -64,7 +64,7 @@ public class TaskomaticDaemon {
     public Integer start(String[] argv) {
         Integer retval = null;
         Options options = buildOptionsList();
-        int status = SUCCESS;
+        int status;
         if (options != null) {
             status = startupWithOptions(options, argv);
             if (status != SUCCESS) {
@@ -140,11 +140,10 @@ public class TaskomaticDaemon {
     }
 
     protected int onStartup(CommandLine commandLine) {
-        Map<String, Object> overrides;
         int retval = SUCCESS;
 
         if (commandLine != null) {
-            overrides = parseOverrides(commandLine);
+            parseOverrides(commandLine);
         }
         try {
             this.kernel = new SchedulerKernel();

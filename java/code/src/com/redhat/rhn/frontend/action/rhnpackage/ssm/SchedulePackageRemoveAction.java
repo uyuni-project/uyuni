@@ -84,7 +84,6 @@ public class SchedulePackageRemoveAction extends RhnListAction implements
                                  HttpServletResponse response) {
 
         RequestContext requestContext = new RequestContext(request);
-        DynaActionForm f = (DynaActionForm) actionForm;
 
         ListHelper helper = new ListHelper(this, request);
         helper.setDataSetName(RequestContext.PAGE_LIST);
@@ -95,7 +94,6 @@ public class SchedulePackageRemoveAction extends RhnListAction implements
                 requestContext.getRequiredParamAsString(RequestContext.MODE));
 
         if (request.getParameter("dispatch") != null) {
-            String packagesDecl = request.getParameter("packagesDecl");
             if (requestContext.wasDispatched("installconfirm.jsp.confirm")) {
                 return executePackageAction(actionMapping, actionForm, request, response);
             }

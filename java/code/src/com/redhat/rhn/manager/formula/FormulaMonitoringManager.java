@@ -65,7 +65,6 @@ public class FormulaMonitoringManager implements MonitoringManager {
     public void disableMonitoring(MinionServer minion) {
         if (this.isMonitoringCleanupNeeded(minion)) {
             // Get the current data and set all exporters to disabled
-            String minionId = minion.getMinionId();
             Map<String, Object> data = FormulaFactory
                     .getFormulaValuesByNameAndMinion(PROMETHEUS_EXPORTERS, minion)
                     .orElse(FormulaFactory.getPillarExample(PROMETHEUS_EXPORTERS));

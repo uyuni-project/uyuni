@@ -18,7 +18,6 @@ import static com.redhat.rhn.domain.action.ActionFactory.TYPE_PACKAGES_VERIFY;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.Row;
-import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.action.ActionChain;
@@ -114,8 +113,6 @@ public class SchedulePackageVerifyAction extends RhnAction implements Listable, 
                 DataResult result = (DataResult) getResult(context);
                 result.elaborate();
 
-                int numPackages = result.size();
-
                 // Remove the packages from session and the DB
                 SessionSetHelper.obliterate(request, request.getParameter("packagesDecl"));
 
@@ -128,7 +125,6 @@ public class SchedulePackageVerifyAction extends RhnAction implements Listable, 
 
                 // Check to determine to display single or plural confirmation message
                 ActionMessages msgs = new ActionMessages();
-                LocalizationService l10n = LocalizationService.getInstance();
                 msgs.add(ActionMessages.GLOBAL_MESSAGE,
                     new ActionMessage("ssm.package.verify.message.packageverifications"));
                 strutsDelegate.saveMessages(request, msgs);
