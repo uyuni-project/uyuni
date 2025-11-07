@@ -24,37 +24,37 @@
          in that case, sync those repos in Uyuni, and add them to the activation key;
          finally, re-enable option  '- -ignore-repos-used-for-build' in file 'kiwi-image-build.sls' -->
     <repository type="rpm-md">  <!-- product -->
-        <source path="http://minima-mirror-ci-bv.mgr.prv.suse.net/SUSE/Products/SLE-Product-SLES/15-SP4/x86_64/product/"/>
+        <source path="http://minima-mirror-ci-bv.mgr.slc1.suse.org/SUSE/Products/SLE-Product-SLES/15-SP4/x86_64/product/"/>
     </repository>
     <repository type="rpm-md">
-        <source path="http://minima-mirror-ci-bv.mgr.prv.suse.net/SUSE/Updates/SLE-Product-SLES/15-SP4/x86_64/update/"/>
+        <source path="http://minima-mirror-ci-bv.mgr.slc1.suse.org/SUSE/Updates/SLE-Product-SLES/15-SP4/x86_64/update/"/>
     </repository>
     <repository type="rpm-md">  <!-- base system -->
-        <source path="http://minima-mirror-ci-bv.mgr.prv.suse.net/SUSE/Products/SLE-Module-Basesystem/15-SP4/x86_64/product/"/>
+        <source path="http://minima-mirror-ci-bv.mgr.slc1.suse.org/SUSE/Products/SLE-Module-Basesystem/15-SP4/x86_64/product/"/>
     </repository>
     <repository type="rpm-md">
-        <source path="http://minima-mirror-ci-bv.mgr.prv.suse.net/SUSE/Updates/SLE-Module-Basesystem/15-SP4/x86_64/update/"/>
+        <source path="http://minima-mirror-ci-bv.mgr.slc1.suse.org/SUSE/Updates/SLE-Module-Basesystem/15-SP4/x86_64/update/"/>
     </repository>
     <repository type="rpm-md">  <!-- desktop applications -->
-        <source path="http://minima-mirror-ci-bv.mgr.prv.suse.net/SUSE/Products/SLE-Module-Desktop-Applications/15-SP4/x86_64/product/"/>
+        <source path="http://minima-mirror-ci-bv.mgr.slc1.suse.org/SUSE/Products/SLE-Module-Desktop-Applications/15-SP4/x86_64/product/"/>
     </repository>
     <repository type="rpm-md">
-        <source path="http://minima-mirror-ci-bv.mgr.prv.suse.net/SUSE/Updates/SLE-Module-Desktop-Applications/15-SP4/x86_64/update/"/>
+        <source path="http://minima-mirror-ci-bv.mgr.slc1.suse.org/SUSE/Updates/SLE-Module-Desktop-Applications/15-SP4/x86_64/update/"/>
     </repository>
     <repository type="rpm-md">  <!-- development tools -->
-        <source path="http://minima-mirror-ci-bv.mgr.prv.suse.net/SUSE/Products/SLE-Module-Development-Tools/15-SP4/x86_64/product/"/>
+        <source path="http://minima-mirror-ci-bv.mgr.slc1.suse.org/SUSE/Products/SLE-Module-Development-Tools/15-SP4/x86_64/product/"/>
     </repository>
     <repository type="rpm-md">
-        <source path="http://minima-mirror-ci-bv.mgr.prv.suse.net/SUSE/Updates/SLE-Module-Development-Tools/15-SP4/x86_64/update/"/>
+        <source path="http://minima-mirror-ci-bv.mgr.slc1.suse.org/SUSE/Updates/SLE-Module-Development-Tools/15-SP4/x86_64/update/"/>
     </repository>
     <repository type="rpm-md">  <!-- manager tools -->
-        <source path="http://minima-mirror-ci-bv.mgr.prv.suse.net/SUSE/Products/SLE-Manager-Tools/15/x86_64/product/"/>
+        <source path="http://minima-mirror-ci-bv.mgr.slc1.suse.org/SUSE/Products/SLE-Manager-Tools/15/x86_64/product/"/>
     </repository>
     <repository type="rpm-md">
-        <source path="http://minima-mirror-ci-bv.mgr.prv.suse.net/SUSE/Updates/SLE-Manager-Tools/15/x86_64/update/"/>
+        <source path="http://minima-mirror-ci-bv.mgr.slc1.suse.org/SUSE/Updates/SLE-Manager-Tools/15/x86_64/update/"/>
     </repository>
     <repository type="rpm-md">  <!-- head development client toools -->
-        <source path="http://minima-mirror-ci-bv.mgr.prv.suse.net/ibs/Devel:/Galaxy:/Manager:/Head:/SLE15-SUSE-Manager-Tools/images/repo/SLE-15-Manager-Tools-POOL-x86_64-Media1/"/>
+        <source path="http://minima-mirror-ci-bv.mgr.slc1.suse.org/ibs/Devel:/Galaxy:/Manager:/Head:/SLE15-SUSE-Manager-Tools/images/repo/SLE-15-Manager-Tools-POOL-x86_64-Media1/"/>
     </repository>
     <packages type="image">
         <package name="patterns-base-minimal_base"/>

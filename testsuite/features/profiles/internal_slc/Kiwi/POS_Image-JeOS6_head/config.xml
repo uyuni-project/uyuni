@@ -32,19 +32,19 @@
     </drivers>
 
     <repository type="rpm-md">  <!-- product -->
-        <source path="http://minima-mirror-ci-bv.mgr.prv.suse.net/SUSE/Products/SLE-SERVER/12-SP5/x86_64/product/"/>
+        <source path="http://minima-mirror-ci-bv.mgr.slc1.suse.org/SUSE/Products/SLE-SERVER/12-SP5/x86_64/product/"/>
     </repository>
     <repository type="rpm-md">
-        <source path="http://minima-mirror-ci-bv.mgr.prv.suse.net/SUSE/Updates/SLE-SERVER/12-SP5/x86_64/update/"/>
+        <source path="http://minima-mirror-ci-bv.mgr.slc1.suse.org/SUSE/Updates/SLE-SERVER/12-SP5/x86_64/update/"/>
     </repository>
     <repository type="rpm-md">
-        <source path="http://minima-mirror-ci-bv.mgr.prv.suse.net/SUSE/Products/SLE-Manager-Tools/12/x86_64/product/"/>
+        <source path="http://minima-mirror-ci-bv.mgr.slc1.suse.org/SUSE/Products/SLE-Manager-Tools/12/x86_64/product/"/>
     </repository>
     <repository type="rpm-md">  <!-- manager tools -->
-        <source path="http://minima-mirror-ci-bv.mgr.prv.suse.net/SUSE/Updates/SLE-Manager-Tools/12/x86_64/update/"/>
+        <source path="http://minima-mirror-ci-bv.mgr.slc1.suse.org/SUSE/Updates/SLE-Manager-Tools/12/x86_64/update/"/>
     </repository>
     <repository type="rpm-md">  <!-- head development client tools -->
-        <source path="http://minima-mirror-ci-bv.mgr.prv.suse.net/ibs/Devel:/Galaxy:/Manager:/Head:/SLE12-SUSE-Manager-Tools/images/repo/SLE-12-Manager-Tools-Beta-POOL-x86_64-Media1/"/>
+        <source path="http://minima-mirror-ci-bv.mgr.slc1.suse.org/ibs/Devel:/Galaxy:/Manager:/Head:/SLE12-SUSE-Manager-Tools/images/repo/SLE-12-Manager-Tools-Beta-POOL-x86_64-Media1/"/>
     </repository>
 
     <packages type="image">

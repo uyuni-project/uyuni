@@ -2,5 +2,5 @@
 name=sles15sp4
 enabled=1
 autorefresh=0
-baseurl=http://minima-mirror-ci-bv.mgr.prv.suse.net/SUSE/Products/SLE-Module-Basesystem/15-SP4/x86_64/product/
+baseurl=http://minima-mirror-ci-bv.mgr.slc1.suse.org/SUSE/Products/SLE-Module-Basesystem/15-SP4/x86_64/product/
 type=rpm-md
