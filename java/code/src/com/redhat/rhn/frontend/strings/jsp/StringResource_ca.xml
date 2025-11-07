@@ -27557,14 +27557,6 @@ canal indicat.</target>
         <source>Repo Cache Status</source>
         <target state="translated">Estat de la memòria cau de repòs</target>
       </trans-unit>
-      <trans-unit id="channel.jsp.repodata.completed" xml:space="preserve">
-        <source> Completed </source>
-        <target state="translated"> Completat </target>
-      </trans-unit>
-      <trans-unit id="channel.jsp.repodata.inProgress" xml:space="preserve">
-        <source> In Progress </source>
-        <target state="translated"> En curs </target>
-      </trans-unit>
       <trans-unit id="channel.jsp.gpgcheck" xml:space="preserve">
         <source>Enable GPG Check </source>
         <target state="translated">Activa la comprovació GPG </target>
@@ -29661,6 +29653,18 @@ lt;/pgt;
         </context-group>
         <target state="translated">Atura la sincronització si es produeix un error.</target>
       </trans-unit>
-    </body>
+    <trans-unit id="channel.jsp.sync.status.ready" xml:space="preserve">
+        <source> Completed </source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="channel.jsp.sync.status.syncing" xml:space="preserve">
+        <source> In Progress </source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="channel.jsp.sync.status.created" xml:space="preserve">
+        <source> New Created </source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>
