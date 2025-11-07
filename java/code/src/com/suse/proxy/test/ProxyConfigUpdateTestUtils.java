@@ -42,6 +42,9 @@ public class ProxyConfigUpdateTestUtils {
     public static final String DUMMY_TAG = "tag";
     public static final String DUMMY_ADMIN_MAIL = "admin@suse.com";
     public static final String DUMMY_URL_PREFIX = "http://suse.com/images/";
+    public static final String DUMMY_SSH_PARENT = "dummyServerSshKeyPub";
+    public static final String DUMMY_SSH_PUB = "dummyServerSshPush";
+    public static final String DUMMY_SSH_KEY = "dummyServerSshPushPub";
 
     public static final long DUMMY_SERVER_ID = 123L;
     public static final int DUMMY_PROXY_PORT = 8080;

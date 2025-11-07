@@ -491,12 +491,46 @@ public class SystemManager extends BaseManager {
      * @return the created system
      */
     public MinionServer createSystemProfile(User creator, String systemName, Map<String, Object> data) {
+        return createSystemProfile(creator, creator.getOrg(), systemName, data);
+    }
+
+    /**
+     * Create an empty system profile with required values based on given data.
+     *
+     * The data must contain at least one of the following fields:
+     * - hwAddress - HW address of a NetworkInterface of the profile
+     * - hostname - hostname (FQDN) of the profile
+     *
+     * The creator or org can be null, but not both
+     *
+     * @param creator the creator user, can be null
+     * @param org the organization under which the system profile is to be created, can be null
+     * @param systemName the system name
+     * @param data the data of the new profile
+     * @throws SystemsExistException when a system based on the input data already exists
+     * @throws java.lang.IllegalArgumentException when the input data contains insufficient information or
+     * if the format of the hardware address is invalid
+     * @return the created system
+     */
+    public MinionServer createSystemProfile(User creator, Org org, String systemName, Map<String, Object> data) {
         Optional<String> hwAddress = ofNullable((String) data.get("hwAddress"));
         Optional<String> hostname = ofNullable((String) data.get("hostname"));
 
         // at least one identifier must be contained
         if (!hwAddress.isPresent() && !hostname.isPresent()) {
             throw new IllegalArgumentException("hwAddress or hostname key must be present.");
+        }
+
+        if (org == null && creator == null) {
+            throw new IllegalArgumentException("Either user or organization needs to be provided");
+        }
+
+        if (org == null) {
+            org = creator.getOrg();
+        }
+
+        if (creator != null && !creator.getOrg().equals(org)) {
+            throw new IllegalArgumentException("User organization is different then passed one");
         }
 
         Set<String> hwAddrs = hwAddress.map(Collections::singleton).orElse(emptySet());
@@ -510,10 +544,12 @@ public class SystemManager extends BaseManager {
 
         MinionServer server = new MinionServer();
         server.setName(systemName);
-        server.setOrg(creator.getOrg());
+        server.setOrg(org);
 
         // Set network device information to the server so we have something to match with
-        server.setCreator(creator);
+        if (creator != null) {
+            server.setCreator(creator);
+        }
         hostname.ifPresent(server::setHostname);
         server.setDigitalServerId(uniqueId);
         server.setMachineId(uniqueId);
@@ -2195,6 +2231,9 @@ public class SystemManager extends BaseManager {
      * @param certData        the data needed to generate the new proxy SSL certificate.
      *                        Can be omitted if proxyCertKey is provided
      * @param certManager     the SSLCertManager to use
+     * @param sshPub          the proxy SSH public key if known
+     * @param sshPriv         the proxy SSH private key if known
+     * @param sshParent       the parent SSH public key if known
      * @return the configuration files as a map
      */
     public Map<String, Object> createProxyContainerConfigFiles(
@@ -2203,11 +2242,13 @@ public class SystemManager extends BaseManager {
             String rootCA, List<String> intermediateCAs,
             SSLCertPair proxyCertKey,
             SSLCertPair caPair, String caPassword, SSLCertData certData,
-            SSLCertManager certManager
+            SSLCertManager certManager,
+            String sshPub, String sshPriv, String sshParent
     ) throws SSLCertGenerationException {
         return this.proxyContainerConfigCreateFacade.createFiles(
                 saltApi, systemEntitlementManager, user, server, proxyName, proxyPort, maxCache, email,
-                rootCA, intermediateCAs, proxyCertKey, caPair, caPassword, certData, certManager
+                rootCA, intermediateCAs, proxyCertKey, caPair, caPassword, certData, certManager,
+                sshPub, sshPriv, sshParent
         );
     }
 

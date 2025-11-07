@@ -263,13 +263,14 @@ public class Pillar implements Identifiable, Serializable {
     }
 
     /**
-     * Get a single string value from the pillar
-     * The path consists of : separated components. An empty component takes the first item.
+     * Get a single value from the pillar
      *
-     * @param path the path in the pillar
-     * @return the value
+     * @param path  A colon-delimited string describing the JSON path (e.g., "A:B:C").
+     *              An empty component means first available item is used (e.g., "A::B")
+     * @throws LookupException if the path is invalid or entry does not exist
+     * @return A pillar value object
      */
-    public String getPillarValue(String path) {
+    public Object getPillarValue(String path) throws LookupException {
         Object value = getPillar();
         try {
             for (String key: path.split(":")) {
@@ -289,7 +290,43 @@ public class Pillar implements Identifiable, Serializable {
             throw new LookupException("The pillar entry does not exist");
         }
 
-        return (String)value;
+        return value;
+    }
+
+    /**
+     * Inserts or updates a value in the pillar structure at the specified path.
+     * The method will create the necessary nested objects if they do not exist.
+     *
+     * @param path  A colon-delimited string describing the JSON path (e.g., "A:B:C").
+     *              Unlike in getter, empty components are not allowed.
+     * @param value The value to be inserted.
+     * @throws LookupException if the path is invalid (e.g., empty component)
+     */
+    public void setPillarValue(String path, Object value) throws LookupException {
+        Map<String, Object> entry = this.pillar;
+        String[] keys = path.split(":");
+        for (int i = 0; i < keys.length; i++) {
+            String key = keys[i];
+            if (key.isEmpty()) {
+                throw new LookupException("Empty key is not allowed");
+            }
+            // This is the last key
+            if (i == keys.length - 1) {
+                entry.put(key, value);
+            }
+            else {
+                if (entry.containsKey(key)) {
+                    // Traverse a level below
+                    entry = (Map<String, Object>) entry.get(key);
+                }
+                else {
+                    // Missing struct, create one
+                    Map<String, Object> tmp = new TreeMap<>();
+                    entry.put(key, tmp);
+                    entry = tmp;
+                }
+            }
+        }
     }
 
     /**

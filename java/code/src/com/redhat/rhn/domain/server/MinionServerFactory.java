@@ -282,6 +282,20 @@ public class MinionServerFactory extends HibernateFactory {
                 .orElseThrow(() -> new UnsupportedOperationException("Salt minion not found, id: " + serverId));
     }
 
+    private static List<Long> findSidsByHwAddrs(Set<String> hwAddrs) {
+        if (hwAddrs.isEmpty()) {
+            return emptyList();
+        }
+
+        return getSession().createNativeQuery("""
+                                      SELECT * from rhnServerNetInterface
+                                      WHERE hw_addr IN (:hwaddr)
+                                      """, NetworkInterface.class)
+                .setParameterList("hwaddr", hwAddrs, StandardBasicTypes.STRING)
+                .getResultList().stream()
+                .map(x -> x.getServer().getId()).collect(Collectors.toList());
+    }
+
     /**
      * Find empty profiles with a HW address matching some of given HW addresses.
      *
@@ -289,24 +303,24 @@ public class MinionServerFactory extends HibernateFactory {
      * @return the List of MinionServer with a HW address matching some of given HW addresses
      */
     public static List<MinionServer> findEmptyProfilesByHwAddrs(Set<String> hwAddrs) {
-        if (hwAddrs.isEmpty()) {
-            return emptyList();
-        }
-
-        List<Long> serverIds = getSession().createNativeQuery("""
-                                      SELECT * from rhnServerNetInterface
-                                      WHERE hw_addr IN (:hwaddr)
-                                      """, NetworkInterface.class)
-                .setParameterList("hwaddr", hwAddrs, StandardBasicTypes.STRING)
-                .getResultList().stream()
-                .map(x -> x.getServer().getId()).collect(Collectors.toList());
-
-        if (serverIds.isEmpty()) {
-            return List.of();
-        }
+        List<Long> serverIds = findSidsByHwAddrs(hwAddrs);
 
         return lookupByIds(serverIds)
                 .filter(s -> s.hasEntitlement(EntitlementManager.BOOTSTRAP))
+                .collect(toList());
+    }
+
+    /**
+     * Find Salt Minions by a HW address.
+     *
+     * @param hwAddrs the set of HW addresses
+     * @return the List of MinionServer with a HW address matching some of given HW addresses
+     */
+    public static List<MinionServer> findMinionsByHwAddrs(Set<String> hwAddrs) {
+        List<Long> serverIds = findSidsByHwAddrs(hwAddrs);
+
+        return lookupByIds(serverIds)
+                .filter(s -> s.hasEntitlement(EntitlementManager.SALT))
                 .collect(toList());
     }
 

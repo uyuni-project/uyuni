@@ -62,7 +62,7 @@ public class MinionServer extends Server implements SaltConfigurable {
     private Set<AccessToken> accessTokens = new HashSet<>();
 
     @OneToMany(mappedBy = "minion", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private final Set<Pillar> pillars = new HashSet<>();
+    private Set<Pillar> pillars = new HashSet<>();
 
     @Column(name = "reboot_required_after")
     private Date rebootRequiredAfter;
@@ -173,8 +173,7 @@ public class MinionServer extends Server implements SaltConfigurable {
      * @param pillarsIn value of pillars
      */
     public void setPillars(Set<Pillar> pillarsIn) {
-        pillars.clear();
-        pillars.addAll(pillarsIn);
+        this.pillars = pillarsIn;
     }
 
     /**

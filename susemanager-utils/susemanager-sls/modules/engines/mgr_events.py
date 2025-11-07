@@ -142,6 +142,7 @@ class Responder:
                     fnmatch.fnmatch(tag, "suse/manager/image_synced"),
                     fnmatch.fnmatch(tag, "suse/manager/pxe_update"),
                     fnmatch.fnmatch(tag, "suse/systemid/generate"),
+                    fnmatch.fnmatch(tag, "suse/proxy/backup_finished"),
                 ]
             )
             and not self._is_salt_mine_event(tag, data)
