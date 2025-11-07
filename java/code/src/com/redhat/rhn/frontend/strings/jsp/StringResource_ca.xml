@@ -27557,14 +27557,6 @@ canal indicat.</target>
         <source>Repo Cache Status</source>
         <target state="translated">Estat de la memòria cau de repòs</target>
       </trans-unit>
-      <trans-unit id="channel.jsp.repodata.completed" xml:space="preserve">
-        <source> Completed </source>
-        <target state="translated"> Completat </target>
-      </trans-unit>
-      <trans-unit id="channel.jsp.repodata.inProgress" xml:space="preserve">
-        <source> In Progress </source>
-        <target state="translated"> En curs </target>
-      </trans-unit>
       <trans-unit id="channel.jsp.gpgcheck" xml:space="preserve">
         <source>Enable GPG Check </source>
         <target state="translated">Activa la comprovació GPG </target>
@@ -28550,31 +28542,31 @@ canal indicat.</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.primary" xml:space="preserve">
         <source>This is the primary credentials</source>
-        <target state="needs-adaptation">aquestes són les credencials primàries</target>
+        <target state="translated">Aquestes són les credencials primàries</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.make-primary" xml:space="preserve">
         <source>Make primary credentials</source>
-        <target state="needs-adaptation">fes les credencials primàries</target>
+        <target state="translated">Fes les credencials primàries</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.subscriptions" xml:space="preserve">
         <source>List subscriptions</source>
-        <target state="needs-adaptation">llista les subscripcions</target>
+        <target state="translated">Llista les subscripcions</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.edit" xml:space="preserve">
         <source>Edit credentials</source>
-        <target state="needs-adaptation">edita les credencials</target>
+        <target state="translated">Edita les credencials</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.delete" xml:space="preserve">
         <source>Delete credentials</source>
-        <target state="needs-adaptation">suprimeix les credencials</target>
+        <target state="translated">Suprimeix credencials</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.success" xml:space="preserve">
         <source>Credentials verified (click to refresh)</source>
-        <target state="needs-adaptation">s'han verificat les credencials (feu clic per actualitzar)</target>
+        <target state="translated">Credencials verificades (clic per actualitzar)</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.failed" xml:space="preserve">
         <source>Verification failed (click to refresh)</source>
-        <target state="needs-adaptation">ha fallat la verificació (feu clic per actualitzar)</target>
+        <target state="translated">Ha fallat la verificació (clic per actualitzar)</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.modal-edit.title" xml:space="preserve">
         <source>Edit credentials</source>
@@ -29661,6 +29653,18 @@ lt;/pgt;
         </context-group>
         <target state="translated">Atura la sincronització si es produeix un error.</target>
       </trans-unit>
-    </body>
+    <trans-unit id="channel.jsp.sync.status.ready" xml:space="preserve">
+        <source> Completed </source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="channel.jsp.sync.status.syncing" xml:space="preserve">
+        <source> In Progress </source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="channel.jsp.sync.status.created" xml:space="preserve">
+        <source> New Created </source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>
