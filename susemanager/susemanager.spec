@@ -171,6 +171,15 @@ BuildRequires:  docbook-utils
 %description tools
 This package contains %{productprettyname} tools
 
+%package tools-salt
+Summary:        Salt related tools for %{productprettyname}
+Group:          Productivity/Other
+License:        Apache-2.0
+Supplements:    susemanager-tools
+
+%description tools-salt
+This package contains %{productprettyname} tools related with Salt
+
 %package bash-completion
 Summary:        Bash completion for %{productprettyname} CLI tools
 Group:          Productivity/Other
@@ -306,7 +315,6 @@ sed -i '/You can access .* via https:\/\//d' /tmp/motd 2> /dev/null ||:
 %dir %{_sysconfdir}/apache2/conf.d
 %config(noreplace) %{_sysconfdir}/logrotate.d/susemanager-tools
 %{_datadir}/rhn/config-defaults/rhn_*.conf
-%attr(0755,root,root) %{_bindir}/mgr-salt-ssh
 %attr(0755,root,root) %{_sbindir}/mgr-clean-old-patchnames
 %attr(0755,root,root) %{_sbindir}/mgr-create-bootstrap-repo
 %attr(0755,root,root) %{_sbindir}/mgr-delete-patch
@@ -330,6 +338,9 @@ sed -i '/You can access .* via https:\/\//d' /tmp/motd 2> /dev/null ||:
 %{reporoot}/repositories/empty-deb/Packages
 %{reporoot}/repositories/empty-deb/Release
 %{_sysconfdir}/apache2/conf.d/empty-repo.conf
+
+%files tools-salt
+%attr(0755,root,root) %{_bindir}/mgr-salt-ssh
 
 %files bash-completion
 %{_datadir}/bash-completion/completions/mgr-sync
