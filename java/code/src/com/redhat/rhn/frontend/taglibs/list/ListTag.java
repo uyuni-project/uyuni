@@ -159,8 +159,7 @@ public class ListTag extends BodyTagSupport {
                     decName = "com.redhat.rhn.frontend.taglibs.list.decorators." +
                                                             decName;
                 }
-                ListDecorator dec = (ListDecorator) cl.loadClass(decName)
-                        .newInstance();
+                ListDecorator dec = (ListDecorator) cl.loadClass(decName).getDeclaredConstructor().newInstance();
                 ListSetTag parent = (ListSetTag) TagSupport.findAncestorWithClass(this, ListSetTag.class);
                 dec.setEnvironment(pageContext, parent, getUniqueName());
                 return dec;
@@ -279,7 +278,7 @@ public class ListTag extends BodyTagSupport {
         ClassLoader cl = Thread.currentThread().getContextClassLoader();
         try {
             Class klass = cl.loadClass(filterIn);
-            filter = (ListFilter) klass.newInstance();
+            filter = (ListFilter) klass.getDeclaredConstructor().newInstance();
             Context threadContext = Context.getCurrentContext();
             filter.prepare(threadContext.getLocale());
         }
