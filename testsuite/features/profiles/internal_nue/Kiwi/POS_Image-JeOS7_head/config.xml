@@ -12,7 +12,7 @@
         <bootsplash-theme>SLE</bootsplash-theme>
         <bootloader-theme>SLE</bootloader-theme>
         <locale>en_US</locale>
-        <keytable>us.map.gz</keytable>
+        <keytable>us</keytable>
         <timezone>Europe/Berlin</timezone>
         <rpm-excludedocs>true</rpm-excludedocs>
         <type filesystem="ext3" image="pxe" initrd_system="dracut" compressed="true"/>
