@@ -27,6 +27,7 @@ const devServer = (env) => ({
       pathname: websocketPathname,
     },
     logging: "error",
+    overlay: false,
   },
   /**
    * The documentation isn't very good for this, but shortly we're proxying everything besides what comes out of Webpack through to the provided server
