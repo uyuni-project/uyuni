@@ -105,9 +105,9 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
                 controlNode.getId().intValue(), scheduleDate, null, false);
         assertNotNull(actionId);
 
-        DataResult schedule = ActionManager.recentlyScheduledActions(admin, null, 30);
+        DataResult<ScheduledAction> schedule = ActionManager.recentlyScheduledActions(admin, null, 30);
         assertEquals(1, schedule.size() - preScheduleSize);
-        assertEquals(actionId, ((ScheduledAction) schedule.get(0)).getId());
+        assertEquals(actionId, schedule.get(0).getId());
 
         // Look up the action and verify the details
         PlaybookAction action = (PlaybookAction) ActionFactory.lookupByUserAndId(admin, actionId);
@@ -133,9 +133,9 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
                 Map.of(AnsibleHandler.ANSIBLE_FLUSH_CACHE, true, AnsibleHandler.ANSIBLE_EXTRA_VARS, "{test: 123}"));
         assertNotNull(actionId);
 
-        DataResult schedule = ActionManager.recentlyScheduledActions(admin, null, 30);
+        DataResult<ScheduledAction> schedule = ActionManager.recentlyScheduledActions(admin, null, 30);
         assertEquals(1, schedule.size() - preScheduleSize);
-        assertEquals(actionId, ((ScheduledAction) schedule.get(0)).getId());
+        assertEquals(actionId, schedule.get(0).getId());
 
         // Look up the action and verify the details
         PlaybookAction action = (PlaybookAction) ActionFactory.lookupByUserAndId(admin, actionId);

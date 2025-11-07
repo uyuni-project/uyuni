@@ -49,7 +49,7 @@ public abstract class BaseSystemListAction extends RhnSetAction {
     }
 
     @Override
-    protected abstract DataResult getDataResult(User user,
+    protected abstract DataResult<?> getDataResult(User user,
                                                 ActionForm formIn,
                                                 HttpServletRequest request);
 

@@ -61,7 +61,8 @@ public class ErrataConfirmSetupAction extends RhnListAction implements Maintenan
         clampListBounds(pc, request, user);
 
         Errata errata = requestContext.lookupErratum();
-        DataResult dr = ErrataManager.relevantSystemsInSet(user, SetLabels.AFFECTED_SYSTEMS_LIST, errata.getId(), pc);
+        DataResult<SystemOverview> dr = ErrataManager.relevantSystemsInSet(user, SetLabels.AFFECTED_SYSTEMS_LIST,
+                errata.getId(), pc);
 
         //Setup the datepicker widget
         DatePicker picker = getStrutsDelegate().prepopulateDatePicker(request,

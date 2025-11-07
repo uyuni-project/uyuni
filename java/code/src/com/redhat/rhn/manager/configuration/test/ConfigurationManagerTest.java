@@ -384,7 +384,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         srv5.subscribeConfigChannel(gcc1, user);
         ServerFactory.save(srv5);
 
-        DataResult dr = ConfigurationManager.getInstance().
+        DataResult<ConfigGlobalDeployDto> dr = ConfigurationManager.getInstance().
             listGlobalFileDeployInfo(user, gcc1, theFile, null);
 
         assertNotNull(dr);
@@ -396,7 +396,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         dr.elaborate(params);
 
         for (int i = 0; i < dr.getTotalSize(); i++) {
-            ConfigGlobalDeployDto dto = (ConfigGlobalDeployDto)dr.get(i);
+            ConfigGlobalDeployDto dto = dr.get(i);
             assertNotNull(dto);
             if (dto.getId().longValue() == srv1.getId().longValue()) {
                 assertEquals(srv1.getName(), dto.getName());
@@ -449,10 +449,10 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         ConfigTestUtils.giveUserChanAccess(user, cc);  //option 2
         //UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);  //option 1
 
-        DataResult dr = cm.listGlobalChannels(user, pc);
+        DataResult<ConfigChannelDto> dr = cm.listGlobalChannels(user, pc);
         assertEquals(1, dr.getTotalSize());
         assertInstanceOf(ConfigChannelDto.class, dr.get(0));
-        assertEquals(1, ((ConfigChannelDto)dr.get(0)).getSystemCount().intValue());
+        assertEquals(1, (dr.get(0)).getSystemCount().intValue());
     }
 
     @Test

@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.RhnSetElement;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.PackageComparison;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -90,7 +91,7 @@ public class PackagePushSetupAction extends RhnListAction {
 
             RhnSetElement element = i.next();
             Long cid = element.getElement();
-            DataResult dr = PackageManager.
+            DataResult<PackageComparison> dr = PackageManager.
                             possiblePackagesForPushingIntoChannel(cid, eid, pc);
 
             i.remove();

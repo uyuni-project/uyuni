@@ -82,7 +82,7 @@ public abstract class ActionSystemsSetupAction extends RhnListAction {
      * @param pc The page control for the page
      * @return Returns the DataResult for the page.
      */
-    protected abstract DataResult getDataResult(User user, Action action, PageControl pc);
+    protected abstract DataResult<?> getDataResult(User user, Action action, PageControl pc);
 
     /**
      * The declaration of the set we are working with, must be one of the

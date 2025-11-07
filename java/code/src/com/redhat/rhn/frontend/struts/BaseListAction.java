@@ -116,7 +116,7 @@ public abstract class BaseListAction extends RhnListAction {
      * @param pc boundary values
      * @return List of things bounded by the values of the PageControl.
      */
-    protected abstract DataResult getDataResult(RequestContext rctx, PageControl pc);
+    protected abstract DataResult<?> getDataResult(RequestContext rctx, PageControl pc);
 
     /**
      * Process a form. Used for adding datepickers on confirm pages (for example).

@@ -18,6 +18,7 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.RhnSetAction;
+import com.redhat.rhn.frontend.dto.ChannelOverview;
 import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.errata.ErrataManager;
@@ -84,7 +85,7 @@ public class CloneConfirmAction extends RhnSetAction {
     }
 
     @Override
-    protected DataResult getDataResult(User user, ActionForm formIn, HttpServletRequest request) {
+    protected DataResult<ChannelOverview> getDataResult(User user, ActionForm formIn, HttpServletRequest request) {
         return channelAction.getDataResult(user, formIn, request);
     }
 

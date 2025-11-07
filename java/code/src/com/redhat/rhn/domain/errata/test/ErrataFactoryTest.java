@@ -476,8 +476,8 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         assertEquals(regeneratedNeedingUpdates, needingUpdates);
     }
 
-    private Set<ErrataCacheDto> intoSet(DataResult packagesNeedingUpdates) {
-        return (Set<ErrataCacheDto>) packagesNeedingUpdates.stream().collect(Collectors.toSet());
+    private Set<ErrataCacheDto> intoSet(DataResult<ErrataCacheDto> packagesNeedingUpdates) {
+        return packagesNeedingUpdates.stream().collect(Collectors.toSet());
     }
 
     // flush the needed updates cache for a server and re-generate it from scratch.

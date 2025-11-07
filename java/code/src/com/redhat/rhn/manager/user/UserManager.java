@@ -120,7 +120,7 @@ public class UserManager extends BaseManager {
         Map<String, Object> params = new HashMap<>();
         params.put("pid", packageId);
         params.put("org_id", org.getId());
-        DataResult dr = m.execute(params);
+        DataResult<Integer> dr = m.execute(params);
         /*
          * Ok... this query will result in returning a single row containing '1' if the
          * org has access to this channel. If the org *does not* have access to the given

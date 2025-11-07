@@ -31,8 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 public abstract class BasePackageListAction extends BaseListAction {
     /** {@inheritDoc} */
     @Override
-    protected abstract DataResult getDataResult(RequestContext rctx,
-            PageControl pc);
+    protected abstract DataResult<?> getDataResult(RequestContext rctx, PageControl pc);
 
     /**
      * {@inheritDoc}

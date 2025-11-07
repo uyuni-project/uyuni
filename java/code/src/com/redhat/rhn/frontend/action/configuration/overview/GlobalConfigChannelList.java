@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.action.configuration.overview;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.ConfigChannelDto;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -64,7 +65,7 @@ public class GlobalConfigChannelList extends RhnListAction {
      * @param pc A page control for this user
      * @return A list of Config Channels as a DTO
      */
-    private DataResult getDataResult(User user, PageControl pc) {
+    private DataResult<ConfigChannelDto> getDataResult(User user, PageControl pc) {
         return ConfigurationManager.getInstance().listGlobalChannels(user, pc);
     }
 

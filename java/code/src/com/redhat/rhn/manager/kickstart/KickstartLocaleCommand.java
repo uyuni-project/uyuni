@@ -135,11 +135,10 @@ public class KickstartLocaleCommand extends BaseKickstartCommand {
      */
     public Boolean isValidTimezone(String timezone) {
 
-        DataResult dr = KickstartLister.getInstance()
+        DataResult<TimezoneDto> dr = KickstartLister.getInstance()
         .getValidTimezones(getKickstartData().getId());
 
-        for (Object oIn : dr) {
-            TimezoneDto tz = (TimezoneDto) oIn;
+        for (TimezoneDto tz : dr) {
             if (tz.getLabel().equals(timezone)) {
                 return Boolean.TRUE;
             }

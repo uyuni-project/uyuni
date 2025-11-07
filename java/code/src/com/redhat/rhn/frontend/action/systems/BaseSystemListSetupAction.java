@@ -78,7 +78,7 @@ public abstract class BaseSystemListSetupAction extends RhnListAction {
      * @param dr The list of System Overviews
      * @param user The user viewing the System List
      */
-    public void setStatusDisplay(DataResult dr, User user) {
+    public void setStatusDisplay(DataResult<?> dr, User user) {
 
         for (Object oIn : dr) {
             SystemOverview next = (SystemOverview) oIn;
@@ -87,7 +87,7 @@ public abstract class BaseSystemListSetupAction extends RhnListAction {
 
     }
 
-    protected abstract DataResult getDataResult(User user,
+    protected abstract DataResult<?> getDataResult(User user,
                                                 PageControl pc,
                                                 ActionForm formIn);
 }

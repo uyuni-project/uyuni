@@ -216,7 +216,7 @@ public class KickstartManager extends BaseManager {
      * @return best KickstartData Profile
      */
     public KickstartData findProfileForIpAddress(IpAddress clientIpIn, Org orgIn) {
-        DataResult ipRanges = null;
+        DataResult<KickstartIpRangeDto> ipRanges = null;
         SelectMode mode = ModeFactory.getMode("General_queries",
             "org_ks_ip_ranges_for_ip");
         Map<String, Object> params = new HashMap<>();
@@ -227,8 +227,7 @@ public class KickstartManager extends BaseManager {
         IpAddressRange bestRange = null;
 
         // find innermost range and return profile
-        for (Object ipRangeIn : ipRanges) {
-            KickstartIpRangeDto range = (KickstartIpRangeDto) ipRangeIn;
+        for (KickstartIpRangeDto range : ipRanges) {
             IpAddressRange iprange = new IpAddressRange(range.getMin().longValue(),
                     range.getMax().longValue(),
                     range.getId().longValue());

@@ -160,7 +160,7 @@ public class OVALCachingFactory extends HibernateFactory {
         Map<String, Object> params = new HashMap<>();
         params.put("cpe", cpe);
 
-        DataResult result = m.execute(params);
+        DataResult<Integer> result = m.execute(params);
 
         return !result.isEmpty();
     }
@@ -176,7 +176,7 @@ public class OVALCachingFactory extends HibernateFactory {
         Map<String, Object> params = new HashMap<>();
         params.put("server_id", serverId);
 
-        DataResult result = m.execute(params);
+        DataResult<Integer> result = m.execute(params);
 
         return !result.isEmpty();
     }

@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.BaseSetOperateOnSelectedItemsAction;
+import com.redhat.rhn.frontend.dto.ConfigChannelDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
@@ -54,8 +55,8 @@ public class SubscriptionsSubmitAction extends BaseSetOperateOnSelectedItemsActi
      * {@inheritDoc}
      */
     @Override
-    protected DataResult getDataResult(User user, ActionForm formIn,
-                                       HttpServletRequest request) {
+    protected DataResult<ConfigChannelDto> getDataResult(User user, ActionForm formIn,
+                                                         HttpServletRequest request) {
         RequestContext context = new RequestContext(request);
         ConfigurationManager cm = ConfigurationManager.getInstance();
         Server server = context.lookupAndBindServer();
