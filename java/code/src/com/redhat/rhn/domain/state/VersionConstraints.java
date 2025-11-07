@@ -26,10 +26,10 @@ public enum VersionConstraints {
     LATEST(0), ANY(1);
 
     /** This ID corresponds to the id column in the database */
-    private final int ID;
+    private final int id;
 
-    VersionConstraints(int id) {
-        ID = id;
+    VersionConstraints(int idIn) {
+        id = idIn;
     }
 
     /**
@@ -37,18 +37,18 @@ public enum VersionConstraints {
      *
      * @return the id
      */
-    public int id() {
-        return ID;
+    public int getId() {
+        return id;
     }
 
     /**
      * Get enum value for a given ID.
      *
-     * @param id the ID
+     * @param idIn the ID
      * @return enum value or empty if the given id is invalid
      */
-    public static Optional<VersionConstraints> byId(int id) {
+    public static Optional<VersionConstraints> byId(int idIn) {
         return Arrays.asList(VersionConstraints.values()).stream()
-                .filter(constraint -> constraint.ID == id).findFirst();
+                .filter(constraint -> constraint.id == idIn).findFirst();
     }
 }

@@ -175,7 +175,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
 
     }
 
-    private ExpectationsFunction SLES_EXPECTATIONS = (key) ->
+    private ExpectationsFunction slesExpectations = (key) ->
             new Expectations() {{
                 allowing(saltServiceMock).getSystemInfoFull(MINION_ID);
                 will(returnValue(getSystemInfo(MINION_ID, null, key)));
@@ -183,7 +183,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 will(returnValue(Optional.of(new MgrUtilRunner.RemoveKnowHostResult("removed", ""))));
             }};
 
-    private ExpectationsFunction SLES_EXPECTATIONS_NO_STARTUPGRAINS = (key) ->
+    private ExpectationsFunction slesExpectationsNoStartupgrains = (key) ->
             new Expectations() {{
                 allowing(saltServiceMock)
                         .getGrains(with(any(String.class)), with(any(TypeToken.class)), with(any(String[].class)));
@@ -194,13 +194,13 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 will(returnValue(Optional.of(new MgrUtilRunner.RemoveKnowHostResult("removed", ""))));
             }};
 
-    private ExpectationsFunction SLES_EXPECTATIONS_ALREADY_REGISTERED = (key) ->
+    private ExpectationsFunction slesExpectationsAlreadyRegistered = (key) ->
             new Expectations() {{
                 allowing(saltServiceMock).updateSystemInfo(with(any(MinionList.class)));
             }};
 
     @SuppressWarnings("unchecked")
-    private final ExpectationsFunction SLES_NO_AK_EXPECTATIONS = (key) ->
+    private final ExpectationsFunction slesNoAkExpectations = (key) ->
             new Expectations() {{
                 allowing(saltServiceMock)
                         .getGrains(with(any(String.class)), with(any(TypeToken.class)), with(any(String[].class)));
@@ -211,7 +211,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 will(returnValue(Optional.empty()));
             }};
 
-    private ActivationKeySupplier ACTIVATION_KEY_SUPPLIER = (contactMethod) -> {
+    private ActivationKeySupplier activationKeySupplier = (contactMethod) -> {
         Channel baseChannel = ChannelFactoryTest.createBaseChannel(user, "channel-x86_64");
         ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
         key.setBaseChannel(baseChannel);
@@ -225,7 +225,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         return key.getKey();
     };
 
-    private Assertions SLES_ASSERTIONS = (optMinion, machineId, key) -> {
+    private Assertions slesAssertions = (optMinion, machineId, key) -> {
         assertTrue(optMinion.isPresent());
         MinionServer minion = optMinion.get();
         assertEquals(MINION_ID, minion.getName());
@@ -270,7 +270,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         }
     };
 
-    private Consumer<Void> CLEANUP = (arg) -> MinionServerFactory.findByMachineId(MACHINE_ID)
+    private Consumer<Void> cleanupFunction = (arg) -> MinionServerFactory.findByMachineId(MACHINE_ID)
             .ifPresent(ServerFactory::delete);
 
     @Override
@@ -316,14 +316,14 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testDoExecute() throws Exception {
         executeTest(
-                SLES_EXPECTATIONS,
-                ACTIVATION_KEY_SUPPLIER,
-                SLES_ASSERTIONS,
+                slesExpectations,
+                activationKeySupplier,
+                slesAssertions,
                 DEFAULT_CONTACT_METHOD);
     }
     public void executeTest(ExpectationsFunction expectations, ActivationKeySupplier keySupplier,
                             Assertions assertions, String contactMethod) throws Exception {
-        executeTest(expectations, keySupplier, assertions, CLEANUP, contactMethod);
+        executeTest(expectations, keySupplier, assertions, cleanupFunction, contactMethod);
     }
 
     public void executeTest(ExpectationsFunction expectations, ActivationKeySupplier keySupplier,
@@ -341,7 +341,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
     public void executeTest(ExpectationsFunction expectations, ActivationKeySupplier keySupplier,
                             Assertions assertions, String contactMethod,
                             Optional<MinionStartupGrains> startupGrains) throws Exception {
-        executeTest(expectations, keySupplier, assertions, CLEANUP, contactMethod, startupGrains, MACHINE_ID);
+        executeTest(expectations, keySupplier, assertions, cleanupFunction, contactMethod, startupGrains, MACHINE_ID);
     }
 
 
@@ -398,8 +398,8 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         ActivationKey activationKey = ActivationKeyTest.createTestActivationKey(user);
         activationKey.getToken().getActivatedServers().add(server);
 
-        executeTest(SLES_EXPECTATIONS, ACTIVATION_KEY_SUPPLIER, (optMinion, machineId, key) -> {
-            SLES_ASSERTIONS.accept(optMinion, machineId, key);
+        executeTest(slesExpectations, activationKeySupplier, (optMinion, machineId, key) -> {
+            slesAssertions.accept(optMinion, machineId, key);
             MinionServer minion = optMinion.get();
             assertEquals(server.getId(), minion.getId());
             assertEquals(1, ActivationKeyFactory.lookupByActivatedServer(minion).size());
@@ -420,7 +420,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
 
         try {
             attestationManager.createConfig(user, server, CoCoEnvironmentType.KVM_AMD_EPYC_GENOA, false);
-            executeTest(SLES_EXPECTATIONS_ALREADY_REGISTERED, null, (minion, machineId, key) -> {
+            executeTest(slesExpectationsAlreadyRegistered, null, (minion, machineId, key) -> {
                 assertTrue(MinionServerFactory.findByMachineId(MACHINE_ID).isPresent());
                 MinionServerFactory.findByMachineId(MACHINE_ID).ifPresentOrElse(
                         m -> {
@@ -445,7 +445,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
 
         try {
             attestationManager.createConfig(user, server, CoCoEnvironmentType.KVM_AMD_EPYC_GENOA, true);
-            executeTest(SLES_EXPECTATIONS_ALREADY_REGISTERED, null, (minion, machineId, key) -> {
+            executeTest(slesExpectationsAlreadyRegistered, null, (minion, machineId, key) -> {
                 assertTrue(MinionServerFactory.findByMachineId(MACHINE_ID).isPresent());
                 MinionServerFactory.findByMachineId(MACHINE_ID).ifPresentOrElse(
                         m -> {
@@ -470,7 +470,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
 
         try {
             attestationManager.createConfig(user, server, CoCoEnvironmentType.KVM_AMD_EPYC_GENOA, true, true);
-            executeTest(SLES_EXPECTATIONS_ALREADY_REGISTERED, null, (minion, machineId, key) -> {
+            executeTest(slesExpectationsAlreadyRegistered, null, (minion, machineId, key) -> {
                 assertTrue(MinionServerFactory.findByMachineId(MACHINE_ID).isPresent());
                 MinionServerFactory.findByMachineId(MACHINE_ID).ifPresentOrElse(
                         m -> {
@@ -499,7 +499,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         server.setMinionId(MINION_ID);
         server.setHostname(MINION_ID);
         try {
-            executeTest(SLES_EXPECTATIONS_ALREADY_REGISTERED, ACTIVATION_KEY_SUPPLIER, (minion, machineId, key) -> {
+            executeTest(slesExpectationsAlreadyRegistered, activationKeySupplier, (minion, machineId, key) -> {
                 assertTrue(MinionServerFactory.findByMachineId(MACHINE_ID).isPresent());
                 MinionServerFactory.findByMachineId(MACHINE_ID).ifPresentOrElse(
                         m -> {
@@ -523,7 +523,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
         server.setMinionId(MINION_ID);
         server.setMachineId(MACHINE_ID);
-        executeTest(SLES_EXPECTATIONS_ALREADY_REGISTERED, ACTIVATION_KEY_SUPPLIER,
+        executeTest(slesExpectationsAlreadyRegistered, activationKeySupplier,
                 (minion, machineId, key) -> MinionServerFactory.findByMachineId(MACHINE_ID).ifPresentOrElse(
                 m -> {
                     assertEquals(m.getCreated(), server.getCreated());
@@ -552,7 +552,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 allowing(saltServiceMock).removeSaltSSHKnownHost(with(any(String.class)));
                 will(returnValue(Optional.of(new MgrUtilRunner.RemoveKnowHostResult("removed", ""))));
                 allowing(saltServiceMock).deleteKey(server2.getMinionId());
-            }}, ACTIVATION_KEY_SUPPLIER, (optMinion, machineId, key) -> assertFalse(optMinion.isPresent()),
+            }}, activationKeySupplier, (optMinion, machineId, key) -> assertFalse(optMinion.isPresent()),
                     null, DEFAULT_CONTACT_METHOD);
         }
         catch (RegisterMinionEventMessageAction.RegisterMinionException e) {
@@ -628,8 +628,8 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         ServerFactory.save(server);
         SystemManager.giveCapability(server.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
 
-        executeTest(SLES_EXPECTATIONS, ACTIVATION_KEY_SUPPLIER, (optMinion, machineId, key) -> {
-            SLES_ASSERTIONS.accept(optMinion, machineId, key);
+        executeTest(slesExpectations, activationKeySupplier, (optMinion, machineId, key) -> {
+            slesAssertions.accept(optMinion, machineId, key);
             MinionServer minion = optMinion.get();
             assertEquals(server.getId(), minion.getId());
             assertEquals(minion.getContactMethod().getLabel(), DEFAULT_CONTACT_METHOD);
@@ -1121,7 +1121,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         MinionPendingRegistrationService.addMinion(creator, MINION_ID, ContactMethodUtil.DEFAULT);
         try {
             executeTest(
-                    SLES_NO_AK_EXPECTATIONS,
+                    slesNoAkExpectations,
                     (cm) -> null,
                     (minion, machineId, key) -> assertEquals(creator.getOrg(), minion.get().getOrg()),
                     DEFAULT_CONTACT_METHOD
@@ -1145,8 +1145,8 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         MinionPendingRegistrationService.addMinion(creator, MINION_ID, ContactMethodUtil.DEFAULT);
         try {
             executeTest(
-                    SLES_EXPECTATIONS,
-                    ACTIVATION_KEY_SUPPLIER,
+                    slesExpectations,
+                    activationKeySupplier,
                     (minion, machineId, key) -> assertEquals(ActivationKeyFactory.lookupByKey(key).getOrg(),
                             minion.get().getOrg()),
                     DEFAULT_CONTACT_METHOD
@@ -1860,7 +1860,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                         allowing(saltServiceMock).getProducts(with(any(String.class)));
                         will(returnValue(Optional.of(pil)));
                     }},
-                    ACTIVATION_KEY_SUPPLIER,
+                    activationKeySupplier,
                     (optMinion, machineId, key) -> assertTrue(optMinion.isEmpty()),
                     DEFAULT_CONTACT_METHOD);
         }
@@ -1904,7 +1904,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                         allowing(saltServiceMock).getProducts(with(any(String.class)));
                         will(returnValue(Optional.of(pil)));
                     }},
-                    ACTIVATION_KEY_SUPPLIER,
+                    activationKeySupplier,
                     (optMinion, machineId, key) -> assertTrue(optMinion.isEmpty()),
                     DEFAULT_CONTACT_METHOD);
         }
@@ -1946,7 +1946,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     allowing(saltServiceMock).getProducts(with(any(String.class)));
                     will(returnValue(Optional.of(pil)));
                 }},
-                ACTIVATION_KEY_SUPPLIER,
+                activationKeySupplier,
                 (optMinion, machineId, key) -> {
                     assertTrue(optMinion.isPresent());
                     assertFalse(optMinion.get().isPayg(), "Unexpected: instance is PAYG");
@@ -1989,7 +1989,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     allowing(saltServiceMock).getProducts(with(any(String.class)));
                     will(returnValue(Optional.of(pil)));
                 }},
-                ACTIVATION_KEY_SUPPLIER,
+                activationKeySupplier,
                 (optMinion, machineId, key) -> {
                     assertTrue(optMinion.isPresent());
                     assertFalse(optMinion.get().isPayg(), "Unexpected: instance is PAYG");
@@ -2011,7 +2011,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     allowing(saltServiceMock).getInstanceFlavor(MINION_ID);
                     will(returnValue(SumaUtil.PublicCloudInstanceFlavor.PAYG));
                 }},
-                ACTIVATION_KEY_SUPPLIER,
+                activationKeySupplier,
                 (optMinion, machineId, key) -> {
                     assertTrue(optMinion.isPresent());
                     assertTrue(optMinion.get().isPayg(), "Unexpected: instance is not PAYG");

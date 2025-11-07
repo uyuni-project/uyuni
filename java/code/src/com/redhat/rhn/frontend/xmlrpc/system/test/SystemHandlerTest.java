@@ -3545,8 +3545,8 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         Set<PackageState> packageStates = systemHandler.listPackageState(admin, server.getId().intValue());
         assertNotEmpty(packageStates);
         assertEquals(1, packageStates.size());
-        assertEquals(PackageStates.REMOVED.id(), packageStates.iterator().next().getPackageStateTypeId());
-        assertEquals(VersionConstraints.LATEST.id(), packageStates.iterator().next().getVersionConstraintId());
+        assertEquals(PackageStates.REMOVED.getId(), packageStates.iterator().next().getPackageStateTypeId());
+        assertEquals(VersionConstraints.LATEST.getId(), packageStates.iterator().next().getVersionConstraintId());
     }
 
     /**

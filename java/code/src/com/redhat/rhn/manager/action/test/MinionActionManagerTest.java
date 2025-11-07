@@ -90,8 +90,8 @@ import java.util.Map;
  */
 public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
 
-    private final String SALT_CONTENT_STAGING_WINDOW = "salt_content_staging_window";
-    private final String SALT_CONTENT_STAGING_ADVANCE = "salt_content_staging_advance";
+    private static final String SALT_CONTENT_STAGING_WINDOW = "salt_content_staging_window";
+    private static final String SALT_CONTENT_STAGING_ADVANCE = "salt_content_staging_advance";
 
     private final SystemQuery systemQuery = new TestSystemQuery();
     private final SaltApi saltApi = new TestSaltApi();

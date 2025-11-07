@@ -25,10 +25,10 @@ public enum PackageStates {
     INSTALLED(0), REMOVED(1), PURGED(2);
 
     /** This ID corresponds to the id column in the database */
-    private final int ID;
+    private final int id;
 
-    PackageStates(int id) {
-        ID = id;
+    PackageStates(int idIn) {
+        id = idIn;
     }
 
     /**
@@ -36,19 +36,19 @@ public enum PackageStates {
      *
      * @return the id
      */
-    public int id() {
-        return ID;
+    public int getId() {
+        return id;
     }
 
     /**
      * Get enum value for a given ID.
      *
-     * @param id the ID
+     * @param idIn the ID
      * @return enum value or empty if the given id is invalid
      */
-    public static Optional<PackageStates> byId(int id) {
+    public static Optional<PackageStates> byId(int idIn) {
         return Arrays.asList(PackageStates.values()).stream()
-                .filter(state -> state.ID == id).findFirst();
+                .filter(state -> state.id == idIn).findFirst();
     }
 
     /**

@@ -39,7 +39,7 @@ public class CloneChannelCommand extends CreateChannelCommand {
 
     private CloneBehavior cloneBehavior;
     private Channel original;
-    private String DEFAULT_PREFIX = "clone-of-";
+    private static final String DEFAULT_PREFIX = "clone-of-";
     private boolean stripModularMetadata = false;
     private CloudPaygManager cloudPaygManager;
 
