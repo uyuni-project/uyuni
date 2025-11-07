@@ -17,7 +17,7 @@ package com.redhat.rhn.frontend.action.rhnpackage.ssm;
 import static com.redhat.rhn.domain.action.ActionFactory.TYPE_PACKAGES_VERIFY;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
-import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.action.ActionChain;
@@ -113,8 +113,6 @@ public class SchedulePackageVerifyAction extends RhnAction implements Listable, 
                 DataResult result = (DataResult) getResult(context);
                 result.elaborate();
 
-                int numPackages = result.size();
-
                 // Remove the packages from session and the DB
                 SessionSetHelper.obliterate(request, request.getParameter("packagesDecl"));
 
@@ -127,7 +125,6 @@ public class SchedulePackageVerifyAction extends RhnAction implements Listable, 
 
                 // Check to determine to display single or plural confirmation message
                 ActionMessages msgs = new ActionMessages();
-                LocalizationService l10n = LocalizationService.getInstance();
                 msgs.add(ActionMessages.GLOBAL_MESSAGE,
                     new ActionMessage("ssm.package.verify.message.packageverifications"));
                 strutsDelegate.saveMessages(request, msgs);
@@ -153,7 +150,7 @@ public class SchedulePackageVerifyAction extends RhnAction implements Listable, 
 
     /** {@inheritDoc} */
     @Override
-    public List getResult(RequestContext context) {
+    public List<Row> getResult(RequestContext context) {
 
         HttpServletRequest request = context.getRequest();
         User user = context.getCurrentUser();
@@ -174,7 +171,7 @@ public class SchedulePackageVerifyAction extends RhnAction implements Listable, 
             RhnSetManager.store(packageSet);
         }
 
-        DataResult results = SystemManager.ssmSystemPackagesToRemove(user,
+        DataResult<Row> results = SystemManager.ssmSystemPackagesToRemove(user,
             RhnSetDecl.SSM_VERIFY_PACKAGES_LIST.getLabel(), false);
 
         TagHelper.bindElaboratorTo("groupList", results.getElaborator(), request);

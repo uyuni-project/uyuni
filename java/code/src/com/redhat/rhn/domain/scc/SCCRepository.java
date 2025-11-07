@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014--2018 SUSE LLC
+ * Copyright (c) 2014--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.redhat.rhn.domain.scc;
 
@@ -22,6 +18,8 @@ import com.suse.scc.model.SCCRepositoryJson;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 
 import java.util.HashSet;
@@ -32,11 +30,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -45,23 +40,6 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table(name = "suseSCCRepository")
-@NamedQuery(name = "SCCRepository.lookupByChannelFamily",
-            query = "select r from SCCRepository r " +
-                    " join r.channelTemplates ct " +
-                    " join ct.product p " +
-                    " join p.channelFamily cf " +
-                    "where cf.label = :channelFamily")
-@NamedQuery(name = "SCCRepository.lookupByUrlEndpoint",
-            query = "select r from SCCRepository r " +
-                    "where r.url like :urlEndpoint")
-@NamedQuery(name = "SCCRepository.lookupByProductNameAndArchForPayg",
-            query = "select distinct r from SCCRepository r " +
-                    " join r.channelTemplates ct " +
-                    " join ct.product p " +
-                    " join p.arch a " +
-                    " where lower(p.name) = lower(:product_name) " +
-                    " and lower(a.label) = lower(:arch_name) " +
-                    " and r.installerUpdates = 'N' ")
 public class SCCRepository extends BaseDomainHelper {
 
     private Long id;
@@ -200,9 +178,14 @@ public class SCCRepository extends BaseDomainHelper {
      */
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sccrepository_seq")
-    @SequenceGenerator(name = "sccrepository_seq", sequenceName = "suse_sccrepository_id_seq",
-                       allocationSize = 1)
+    @GeneratedValue(generator = "sccrepository_seq")
+    @GenericGenerator(
+            name = "sccrepository_seq",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @Parameter(name = "sequence_name", value = "suse_sccrepository_id_seq"),
+                    @Parameter(name = "increment_size", value = "1")
+            })
     public Long getId() {
         return id;
     }

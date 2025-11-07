@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.config.ConfigFile;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.BaseSetOperateOnSelectedItemsAction;
 import com.redhat.rhn.frontend.action.configuration.ConfigActionHelper;
+import com.redhat.rhn.frontend.dto.ConfigGlobalDeployDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
@@ -46,8 +47,8 @@ public class GlobalRevisionDeploySubmit extends BaseSetOperateOnSelectedItemsAct
     }
 
     @Override
-    protected DataResult getDataResult(User user, ActionForm formIn,
-                                       HttpServletRequest request) {
+    protected DataResult<ConfigGlobalDeployDto> getDataResult(User user, ActionForm formIn,
+                                                              HttpServletRequest request) {
         RequestContext ctx = new RequestContext(request);
         User usr = ctx.getCurrentUser();
         ConfigFile cf = ConfigActionHelper.getFile(ctx.getRequest());

@@ -220,11 +220,43 @@ public class StateFactory extends HibernateFactory {
      * @return a {@link StateRevisionsUsage} bean holding the latest
      * server/group/org revisions where the given config channel is used
      */
-    public static StateRevisionsUsage latestStateRevisionsByConfigChannel(
-            ConfigChannel configChannelIn) {
-        List<Long[]> idList = getSession().getNamedQuery("StateRevision.findChannelUsage")
+    public static StateRevisionsUsage latestStateRevisionsByConfigChannel(ConfigChannel configChannelIn) {
+
+        List<Long[]> idList = getSession().createNativeQuery("""
+            SELECT srcc.state_revision_id AS state_revision_id, srvrev.entity_id AS server_id,
+                    grprev.entity_id AS group_id, orgrev.entity_id AS org_id
+                    FROM rhnconfigchannel cc
+                    INNER JOIN suseStateRevisionConfigChannel srcc ON cc.id=srcc.config_channel_id
+                    LEFT JOIN (
+                        SELECT ssr.state_revision_id AS state_revision_id, ssr.server_id AS entity_id
+                        FROM suseServerStateRevision ssr
+                        WHERE ssr.state_revision_id =
+                            (SELECT max(ssrmax.state_revision_id) FROM suseServerStateRevision ssrmax
+                            WHERE ssrmax.server_id=ssr.server_id)
+                    ) srvrev ON srvrev.state_revision_id = srcc.state_revision_id
+                    LEFT JOIN (
+                        SELECT sgsr.state_revision_id AS state_revision_id, sgsr.group_id AS entity_id
+                        FROM suseServerGroupStateRevision sgsr
+                        WHERE sgsr.state_revision_id =
+                            (SELECT max(sgsrmax.state_revision_id) FROM suseServerGroupStateRevision sgsrmax
+                            WHERE sgsrmax.group_id=sgsr.group_id)
+                    ) grprev ON grprev.state_revision_id = srcc.state_revision_id
+                    LEFT JOIN (
+                        SELECT osr.state_revision_id AS state_revision_id, osr.org_id AS entity_id
+                        FROM suseOrgStateRevision osr
+                        WHERE osr.state_revision_id =
+                            (SELECT max(osrmax.state_revision_id) FROM suseOrgStateRevision osrmax
+                            WHERE osrmax.org_id=osr.org_id)
+                    ) orgrev ON orgrev.state_revision_id=srcc.state_revision_id
+                    WHERE cc.org_id = :orgId AND cc.id = :channelId
+                    AND (srvrev.entity_id IS NOT NULL OR grprev.entity_id IS NOT NULL OR orgrev.entity_id IS NOT NULL)
+                   """)
                 .setParameter("orgId", configChannelIn.getOrgId())
                 .setParameter("channelId", configChannelIn.getId())
+                .addScalar("state_revision_id", StandardBasicTypes.LONG)
+                .addScalar("server_id", StandardBasicTypes.LONG)
+                .addScalar("group_id", StandardBasicTypes.LONG)
+                .addScalar("org_id", StandardBasicTypes.LONG)
                 .list();
 
         StateRevisionsUsage usage = new StateRevisionsUsage();
@@ -255,8 +287,15 @@ public class StateFactory extends HibernateFactory {
      * @return list of group ids
      */
     public static List<Long> listConfigChannelsSubscribedGroupIds(ConfigChannel channel) {
-        return getSession().getNamedQuery("StateRevision.findGroupsAssignedToChannel")
+        return getSession().createNativeQuery("""
+                        SELECT latest.group_id FROM
+                            (SELECT max(gsr.state_revision_id) state_revision_id, gsr.group_id
+                            FROM suseServerGroupStateRevision gsr GROUP BY gsr.group_id) latest
+                        JOIN susestaterevisionconfigchannel cc ON latest.state_revision_id = cc.state_revision_id
+                        WHERE cc.config_channel_id = :channelId
+                        """)
                 .setParameter("channelId", channel.getId())
+                .addScalar("group_id", StandardBasicTypes.LONG)
                 .list();
     }
 }

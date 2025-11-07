@@ -4047,7 +4047,7 @@ public class SystemHandler extends BaseHandler {
             throw new InvalidSystemException();
         }
 
-        DataResult result = null;
+        DataResult<PackageMetadata> result = null;
         try {
             result = ProfileManager.compareServerToServer(
                     sid1.longValue(),

@@ -19,7 +19,6 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 
 import java.util.List;
 import java.util.Properties;
-import java.util.Set;
 
 /**
  * Manages the lifecycle of Hibernate SessionFactory and associated
@@ -28,7 +27,6 @@ import java.util.Set;
 class DefaultConnectionManager extends AbstractConnectionManager {
 
     DefaultConnectionManager() {
-        super(Set.of("com.redhat.rhn.domain", "com.redhat.rhn.taskomatic.domain"));
     }
 
     @Override
@@ -37,6 +35,7 @@ class DefaultConnectionManager extends AbstractConnectionManager {
         hibProperties.put("hibernate.connection.username", Config.get().getString(ConfigDefaults.DB_USER));
         hibProperties.put("hibernate.connection.password", Config.get().getString(ConfigDefaults.DB_PASSWORD));
         hibProperties.put("hibernate.connection.url", ConfigDefaults.get().getJdbcConnectionString());
+        hibProperties.put("hibernate.cache.ehcache.missing_cache_strategy", "create");
         return hibProperties;
     }
 

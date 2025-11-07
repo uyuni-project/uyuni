@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Mon Oct 27 15:27:35 CET 2025 - rosuna@suse.com
+
+- version 5.2.1-0
+  * CVE-2025-53192: Do not use apache-commons-ognl but its successor
+    ognl (bsc#1248252)
+  * Harden XML RPC server error handling (bsc#1243087)
+  * Fix syntax error in changelog
+
+-------------------------------------------------------------------
 Fri Jun 20 17:09:53 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.4-0

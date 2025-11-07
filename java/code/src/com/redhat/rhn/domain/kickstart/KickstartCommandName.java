@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -16,14 +17,17 @@ package com.redhat.rhn.domain.kickstart;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
+
+import java.io.Serial;
+import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 
@@ -33,19 +37,33 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "rhnKickstartCommandName")
-public class KickstartCommandName {
+public class KickstartCommandName implements Serializable {
     public static final String REPO = "repo";
+
+    @Serial
+    private static final long serialVersionUID = 5014180467135195244L;
+
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_KSCOMMANDNAME_ID_SEQ")
-    @SequenceGenerator(name = "RHN_KSCOMMANDNAME_ID_SEQ", sequenceName = "RHN_KSCOMMANDNAME_ID_SEQ", allocationSize = 1)
+    @GeneratedValue(generator = "RHN_KSCOMMANDNAME_ID_SEQ")
+    @GenericGenerator(
+            name = "RHN_KSCOMMANDNAME_ID_SEQ",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @Parameter(name = "sequence_name", value = "RHN_KSCOMMANDNAME_ID_SEQ"),
+                    @Parameter(name = "increment_size", value = "1")
+            })
     private Long id;
+
     @Column(name = "sort_order")
     private Long order;
+
     @Column
     private String name;
+
     @Column(name = "uses_arguments")
     @Type(type = "yes_no")
     private Boolean args;
+
     @Column
     @Type(type = "yes_no")
     private Boolean required;

@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2017 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -19,6 +20,8 @@ import com.redhat.rhn.domain.org.Org;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 import java.util.Set;
 
@@ -26,13 +29,11 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -44,21 +45,29 @@ public class SnapshotTag extends BaseDomainHelper {
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tag_seq")
-    @SequenceGenerator(name = "tag_seq", sequenceName = "rhn_tag_id_seq", allocationSize = 1)
+    @GeneratedValue(generator = "tag_seq")
+    @GenericGenerator(
+            name = "tag_seq",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @Parameter(name = "sequence_name", value = "rhn_tag_id_seq"),
+                    @Parameter(name = "increment_size", value = "1")
+            })
     private Long id;
+
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "name_id")
     private SnapshotTagName name;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "org_id")
     private Org org;
 
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
     @JoinTable(
-    name = "rhnSnapshotTag",
-    joinColumns = @JoinColumn(name = "tag_id"),
-    inverseJoinColumns = @JoinColumn(name = "snapshot_id"))
+        name = "rhnSnapshotTag",
+        joinColumns = @JoinColumn(name = "tag_id"),
+        inverseJoinColumns = @JoinColumn(name = "snapshot_id"))
     private Set<ServerSnapshot> snapshots;
 
     /**

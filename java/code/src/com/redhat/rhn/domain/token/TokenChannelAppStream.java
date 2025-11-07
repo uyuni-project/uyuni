@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 SUSE LLC
+ * Copyright (c) 2024--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,25 +7,22 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.redhat.rhn.domain.token;
 
 import com.redhat.rhn.domain.channel.Channel;
+
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
@@ -54,9 +51,14 @@ public class TokenChannelAppStream implements Serializable {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "suse_reg_tok_ch_as_id_seq")
-    @SequenceGenerator(name = "suse_reg_tok_ch_as_id_seq", sequenceName = "suse_reg_tok_ch_as_id_seq",
-            allocationSize = 1)
+    @GeneratedValue(generator = "suse_reg_tok_ch_as_id_seq")
+    @GenericGenerator(
+            name = "suse_reg_tok_ch_as_id_seq",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @Parameter(name = "sequence_name", value = "suse_reg_tok_ch_as_id_seq"),
+                    @Parameter(name = "increment_size", value = "1")
+            })
     private Long id;
 
     @ManyToOne

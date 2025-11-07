@@ -49,7 +49,6 @@
 %define ehcache         ( mvn(net.sf.ehcache:ehcache-core) >= 2.10.1 or ehcache-core >= 2.10.1 or ehcache >= 2.10.1)
 %define apache_commons_digester    (apache-commons-digester or jakarta-commons-digester)
 %define apache_commons_discovery   (apache-commons-discovery or jakarta-commons-discovery)
-%define apache_commons_fileupload  (apache-commons-fileupload or jakarta-commons-fileupload)
 %define apache_commons_validator   (apache-commons-validator or jakarta-commons-validator)
 %define apache_commons_compress    (apache-commons-compress or jakarta-commons-compress)
 
@@ -60,7 +59,7 @@
 %endif
 
 Name:           spacewalk-java
-Version:        5.2.0
+Version:        5.2.3
 Release:        0
 Summary:        Java web application files for %{productprettyname}
 License:        GPL-2.0-only
@@ -75,7 +74,8 @@ ExcludeArch:    ia64
 
 BuildRequires:  %{apache_commons_compress}
 BuildRequires:  %{apache_commons_discovery}
-BuildRequires:  %{apache_commons_fileupload}
+BuildRequires:  apache-commons-fileupload2-core
+BuildRequires:  apache-commons-fileupload2-javax
 BuildRequires:  %{apache_commons_validator}
 BuildRequires:  %{ehcache}
 BuildRequires:  ant
@@ -155,6 +155,7 @@ BuildRequires:  mvn(org.apache.velocity:velocity-engine-core) >= 2.2
 BuildRequires:  mvn(org.hibernate:hibernate-c3p0)
 BuildRequires:  mvn(org.hibernate:hibernate-core)
 BuildRequires:  mvn(org.hibernate:hibernate-ehcache)
+BuildRequires:  servletapi5
 %if 0%{?suse_version}
 BuildRequires:  ant-nodeps
 BuildRequires:  libxml2-tools
@@ -166,7 +167,8 @@ BuildRequires:  libxml2-devel
 Requires:       %{apache_commons_compress}
 Requires:       %{apache_commons_digester}
 Requires:       %{apache_commons_discovery}
-Requires:       %{apache_commons_fileupload}
+Requires:       apache-commons-fileupload2-core
+Requires:       apache-commons-fileupload2-javax
 Requires:       %{ehcache}
 Requires:       apache-commons-beanutils
 Requires:       apache-commons-cli
@@ -217,6 +219,7 @@ Requires:       pgjdbc-ng
 Requires:       prometheus-client-java
 Requires:       redstone-xmlrpc
 Requires:       salt-netapi-client >= 0.21
+BuildRequires:  servletapi5
 Requires:       simple-core
 Requires:       simple-xml
 Requires:       sitemesh

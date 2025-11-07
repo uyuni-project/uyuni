@@ -18,8 +18,8 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Session;
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -100,6 +100,15 @@ public class CloudRmtHostFactory extends HibernateFactory {
      */
     public static List<CloudRmtHost> lookupCloudRmtHostsToUpdate() {
         log.debug("Retrieving repositories from cache");
-        return SINGLETON.listObjectsByNamedQuery("CloudRmtHost.listHostToUpdate", Collections.emptyMap());
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("""
+                        FROM CloudRmtHost s
+                        WHERE NOT EXISTS
+                            (SELECT 1 FROM CloudRmtHost s1
+                                WHERE s1.id != s.id
+                                AND s1.host = s.host
+                                AND s1.modified > s.modified)
+                        """, CloudRmtHost.class)
+                .list();
     }
 }

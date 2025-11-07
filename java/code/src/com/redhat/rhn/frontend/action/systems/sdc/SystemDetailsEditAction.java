@@ -53,7 +53,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
+import java.util.SortedMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -386,11 +386,11 @@ public class SystemDetailsEditAction extends RhnAction {
         }
     }
 
-    protected List createBaseEntitlementDropDownList(User user, Server s) {
+    protected List<LabelValueBean> createBaseEntitlementDropDownList(User user, Server s) {
         LocalizationService ls = LocalizationService.getInstance();
         Entitlement baseEntitlement = s.getBaseEntitlement();
 
-        List entitlements = new ArrayList<>();
+        List<LabelValueBean> entitlements = new ArrayList<>();
 
         if (baseEntitlement == null) {
             entitlements.add(new LabelValueBean(
@@ -416,16 +416,16 @@ public class SystemDetailsEditAction extends RhnAction {
         return entitlements;
     }
 
-    protected List getCountries() {
+    protected List<LabelValueBean> getCountries() {
         LocalizationService ls = LocalizationService.getInstance();
-        Map cmap = ls.availableCountries();
-        Iterator i = cmap.keySet().iterator();
-        List countries = new LinkedList<>();
+        SortedMap<String, String> cmap = ls.availableCountries();
+        Iterator<String> i = cmap.keySet().iterator();
+        List<LabelValueBean> countries = new LinkedList<>();
 
         countries.add(new LabelValueBean(ls.getMessage("sdc.details.edit.none"), ""));
         while (i.hasNext()) {
-            String name = (String) i.next();
-            String code = (String) cmap.get(name);
+            String name = i.next();
+            String code = cmap.get(name);
             countries.add(new LabelValueBean(String.format("%s (%s)", name, code), code));
         }
         return countries;

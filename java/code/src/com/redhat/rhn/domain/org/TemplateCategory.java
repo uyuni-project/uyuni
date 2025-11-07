@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -19,14 +20,14 @@ import static org.hibernate.annotations.CacheConcurrencyStrategy.READ_ONLY;
 import com.redhat.rhn.domain.BaseDomainHelper;
 
 import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Immutable;
+import org.hibernate.annotations.Parameter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -39,11 +40,19 @@ import javax.persistence.Table;
 public class TemplateCategory extends BaseDomainHelper {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_TEMPLATE_CAT_ID_SEQ")
-    @SequenceGenerator(name = "RHN_TEMPLATE_CAT_ID_SEQ", sequenceName = "RHN_TEMPLATE_CAT_ID_SEQ", allocationSize = 1)
+    @GeneratedValue(generator = "RHN_TEMPLATE_CAT_ID_SEQ")
+    @GenericGenerator(
+            name = "RHN_TEMPLATE_CAT_ID_SEQ",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @Parameter(name = "sequence_name", value = "RHN_TEMPLATE_CAT_ID_SEQ"),
+                    @Parameter(name = "increment_size", value = "1")
+            })
     private Long id;
+
     @Column
     private String label;
+
     @Column
     private String description;
 

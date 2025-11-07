@@ -102,7 +102,7 @@ public class GlobalRevisionDeployConfirmSubmit extends RhnListDispatchAction {
             user);
 
         //create the set needed for the action
-        Set revisions = new HashSet<>();
+        Set<Long> revisions = new HashSet<>();
         revisions.add(cr.getId());
 
         ActionType deploy = ActionFactory.TYPE_CONFIGFILES_DEPLOY;
@@ -110,7 +110,7 @@ public class GlobalRevisionDeployConfirmSubmit extends RhnListDispatchAction {
         //go through all of the selected systems
         for (RhnSetElement rhnSetElementIn : systems.getElements()) {
             // Each server-deploy should succeed or fail on its own merits (?)
-            Set servers = new HashSet<>();
+            Set<Long> servers = new HashSet<>();
             //the current system
             Long sid = rhnSetElementIn.getElement();
             servers.add(sid);

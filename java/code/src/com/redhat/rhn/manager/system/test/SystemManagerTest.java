@@ -27,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -302,13 +303,9 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
         systemManager.deleteServer(user, id);
 
-        try {
-            test = SystemManager.lookupByIdAndUser(id, user);
-            fail("Found deleted server");
-        }
-        catch (LookupException e) {
-            //success
-        }
+        assertThrows(LookupException.class, () -> {
+            SystemManager.lookupByIdAndUser(id, user);
+        }, "Found deleted server");
     }
 
     /**
@@ -373,13 +370,9 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
         systemManager.deleteServer(user, sid);
 
-        try {
-            test = SystemManager.lookupByIdAndUser(sid, user);
-            fail("Found deleted server");
-        }
-        catch (LookupException e) {
-            // expected
-        }
+        assertThrows(LookupException.class, () -> {
+            SystemManager.lookupByIdAndUser(sid, user);
+        }, "Found deleted server");
 
         DataResult<VirtualSystemOverview> data = SystemManager.virtualGuestsForHostList(user, host.getId(), null);
         assertEquals(1, data.getTotalSize(), "Guest not found");
@@ -404,13 +397,9 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         systemManager.deleteServer(user, sid);
         TestUtils.flushAndEvict(guest);
 
-        try {
-            test = SystemManager.lookupByIdAndUser(sid, user);
-            fail("Found deleted server");
-        }
-        catch (LookupException e) {
-            // expected
-        }
+        assertThrows(LookupException.class, () -> {
+            SystemManager.lookupByIdAndUser(sid, user);
+        }, "Found deleted server");
 
     }
 
@@ -767,8 +756,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         cpu.setMHz(CPUTest.MHZ);
         cpu.setModel(CPUTest.MODEL);
         cpu.setNrCPU(NUM_CPUS);
-        TestUtils.saveAndFlush(cpu);
-        TestUtils.reload(s);
+        s.setCpu(cpu);
     }
 
     @Test

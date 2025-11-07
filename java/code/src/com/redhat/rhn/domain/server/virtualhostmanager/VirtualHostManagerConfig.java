@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 SUSE LLC
+ * Copyright (c) 2015--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 
 package com.redhat.rhn.domain.server.virtualhostmanager;
@@ -18,16 +14,19 @@ package com.redhat.rhn.domain.server.virtualhostmanager;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
+import java.io.Serial;
+import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -35,11 +34,20 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "suseVHMConfig")
-public class VirtualHostManagerConfig {
+public class VirtualHostManagerConfig implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = -7325139987779462195L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "suse_vhm_config_seq")
-    @SequenceGenerator(name = "suse_vhm_config_seq", sequenceName = "suse_vhm_config_id_seq", allocationSize = 1)
+    @GeneratedValue(generator = "suse_vhm_config_seq")
+    @GenericGenerator(
+            name = "suse_vhm_config_seq",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @Parameter(name = "sequence_name", value = "suse_vhm_config_id_seq"),
+                    @Parameter(name = "increment_size", value = "1")
+            })
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "virtual_host_manager_id", nullable = false)

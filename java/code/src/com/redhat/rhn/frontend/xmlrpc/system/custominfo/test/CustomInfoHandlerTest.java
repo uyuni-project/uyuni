@@ -42,13 +42,12 @@ public class CustomInfoHandlerTest extends BaseHandlerTestCase {
 
         handler.createKey(admin, "testlabel", "test description");
 
-        DataResult result = SystemManager.listDataKeys(admin);
+        DataResult<CustomDataKeyOverview> result = SystemManager.listDataKeys(admin);
 
         assertEquals(initialSize + 1, result.size());
 
         boolean foundKey = false;
-        for (Object oIn : result) {
-            CustomDataKeyOverview key = (CustomDataKeyOverview) oIn;
+        for (CustomDataKeyOverview key : result) {
             if (key.getLabel().equals("testlabel") &&
                     key.getDescription().equals("test description")) {
                 foundKey = true;
@@ -63,15 +62,14 @@ public class CustomInfoHandlerTest extends BaseHandlerTestCase {
 
         // default setup already includes a custom key; therefore, let's
         // grab the initial size
-        DataResult initialKeys = SystemManager.listDataKeys(admin);
+        DataResult<CustomDataKeyOverview> initialKeys = SystemManager.listDataKeys(admin);
 
         handler.createKey(admin, "testlabel", "test description");
-        DataResult result = SystemManager.listDataKeys(admin);
+        DataResult<CustomDataKeyOverview> result = SystemManager.listDataKeys(admin);
         assertEquals(initialKeys.size() + 1, result.size());
 
         boolean foundKey = false;
-        for (Object valueIn : result) {
-            CustomDataKeyOverview key = (CustomDataKeyOverview) valueIn;
+        for (CustomDataKeyOverview key : result) {
             if (key.getLabel().equals("testlabel") &&
                     key.getDescription().equals("test description")) {
                 foundKey = true;
@@ -85,8 +83,7 @@ public class CustomInfoHandlerTest extends BaseHandlerTestCase {
         assertEquals(initialKeys.size(), result.size());
 
         foundKey = false;
-        for (Object oIn : result) {
-            CustomDataKeyOverview key = (CustomDataKeyOverview) oIn;
+        for (CustomDataKeyOverview key : result) {
             if (key.getLabel().equals("testlabel") &&
                     key.getDescription().equals("test description")) {
                 foundKey = true;

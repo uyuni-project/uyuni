@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.action.rhnpackage;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 
 /**
@@ -28,7 +29,7 @@ public class InstallPackageSetupAction extends BaseSystemPackagesAction {
      * @return List of packages that can be installed..
      */
     @Override
-    protected DataResult getDataResult(Server server) {
+    protected DataResult<PackageListItem> getDataResult(Server server) {
         return PackageManager.systemAvailablePackages(server.getId(), null);
     }
 }

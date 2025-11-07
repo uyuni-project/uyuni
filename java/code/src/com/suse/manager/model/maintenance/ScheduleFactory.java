@@ -116,7 +116,8 @@ public class ScheduleFactory extends HibernateFactory {
      * @return Optional Maintenance Schedule
      */
     public Optional<MaintenanceSchedule> lookupByUserAndName(User user, String name) {
-        return getSession().createNamedQuery("MaintenanceSchedule.lookupByUserAndName", MaintenanceSchedule.class)
+        return getSession().createQuery("FROM MaintenanceSchedule s WHERE s.org.id = :orgId AND s.name = :name",
+                        MaintenanceSchedule.class)
                 .setParameter("orgId", user.getOrg().getId())
                 .setParameter("name", name)
                 .uniqueResultOptional();

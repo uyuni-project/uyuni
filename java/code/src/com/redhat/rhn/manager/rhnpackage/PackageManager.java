@@ -43,6 +43,7 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.PackageComparison;
+import com.redhat.rhn.frontend.dto.PackageDto;
 import com.redhat.rhn.frontend.dto.PackageFileDto;
 import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.frontend.dto.PackageMergeDto;
@@ -233,7 +234,7 @@ public class PackageManager extends BaseManager {
      * @param cid the channel id
      * @return the list of packages
      */
-    public static DataResult listPackagesInChannelForList(Long cid) {
+    public static DataResult<PackageOverview> listPackagesInChannelForList(Long cid) {
         SelectMode m = ModeFactory.getMode("Package_queries", "packages_in_channel");
         Map<String, Object> params = new HashMap<>();
         params.put("cid", cid);
@@ -874,7 +875,7 @@ public class PackageManager extends BaseManager {
      * @param pc PageControl object needed to handle pagination issues.
      * @return DataResult of PackageComparisons
      */
-    public static DataResult possiblePackagesForPushingIntoChannel(Long cid, Long eid,
+    public static DataResult<PackageComparison> possiblePackagesForPushingIntoChannel(Long cid, Long eid,
                                                             PageControl pc) {
         Map<String, Object> params = new HashMap<>();
         params.put("cid", cid);
@@ -883,19 +884,18 @@ public class PackageManager extends BaseManager {
         SelectMode m1 = ModeFactory.getMode("Package_queries",
                                            "possible_packages_for_pushing_into_channel");
 
-        DataResult possiblePackages = m1.execute(params);
+        DataResult<PackageComparison> possiblePackages = m1.execute(params);
 
         SelectMode m2 = ModeFactory.getMode("Package_queries",
             "packages_in_errata_not_in_channel");
 
-        DataResult notInChannelPackages = m2.execute(params);
-        Iterator i = notInChannelPackages.iterator();
+        DataResult<PackageComparison> notInChannelPackages = m2.execute(params);
+        Iterator<PackageComparison> i = notInChannelPackages.iterator();
 
         // Remove packages that are in both queries
         while (i.hasNext()) {
-            PackageComparison po = (PackageComparison) i.next();
-            for (Object possiblePackageIn : possiblePackages) {
-                PackageComparison pinner = (PackageComparison) possiblePackageIn;
+            PackageComparison po = i.next();
+            for (PackageComparison pinner : possiblePackages) {
                 if (pinner.getId().equals(po.getId())) {
                     LOG.debug("possiblePackagesForPushingIntoChannel removing: {}", pinner.getId());
                     i.remove();
@@ -1117,19 +1117,19 @@ public class PackageManager extends BaseManager {
      * @param cmpType compare type
      * @return DataResult of PackageMergeDto objects
      */
-    public static DataResult comparePackagesBetweenChannelsPreview(Long thisCid,
+    public static DataResult<PackageMergeDto> comparePackagesBetweenChannelsPreview(Long thisCid,
                          Long otherCid, String cmpType) {
         Map<String, Object> params = new HashMap<>();
         params.put("this_cid", thisCid);
         params.put("other_cid", otherCid);
         params.put("cmp_type", cmpType);
 
-            SelectMode m = ModeFactory.getMode(
-                    "Package_queries", "managed_channel_merge_preview");
+        SelectMode m = ModeFactory.getMode(
+                "Package_queries", "managed_channel_merge_preview");
 
-            DataResult dr = m.execute(params);
-            dr.setElaborationParams(new HashMap<>());
-            return dr;
+        DataResult<PackageMergeDto> dr = m.execute(params);
+        dr.setElaborationParams(new HashMap<>());
+        return dr;
     }
 
     /**
@@ -1710,7 +1710,7 @@ public class PackageManager extends BaseManager {
      * @param packageId the package id
      * @return A list of package dto objects
      */
-    public static DataResult getRepoData(Long packageId) {
+    public static DataResult<PackageDto> getRepoData(Long packageId) {
         SelectMode m = ModeFactory.getMode("Package_queries", "lookup_repodata");
         Map<String, Object> params = new HashMap<>();
         params.put("pid", packageId);

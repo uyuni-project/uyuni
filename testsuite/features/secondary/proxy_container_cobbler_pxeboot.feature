@@ -74,9 +74,21 @@ Feature: PXE boot a terminal with Cobbler and containerized proxy
     When I restart cobbler on the server
     Then service "cobblerd" is active on "server"
 
+# Workaround to ssh the pxeboot minions through different interfaces for each product,
+#  maybe in the future we can rename the interfaces directly in sumaform
+@uyuni
   Scenario: PXE boot the PXE boot minion
     When I set the default PXE menu entry to the target profile on the "server"
-    And I reboot the Cobbler terminal "pxeboot_minion"
+    And I reboot the Cobbler terminal "pxeboot_minion" through the interface "ens4"
+    And I wait for "60" seconds
+    And I set the default PXE menu entry to the local boot on the "server"
+    And I wait at most 1200 seconds until Salt master sees "pxeboot_minion" as "unaccepted"
+    And I accept "pxeboot_minion" key in the Salt master
+
+@susemanager
+  Scenario: PXE boot the PXE boot minion
+    When I set the default PXE menu entry to the target profile on the "server"
+    And I reboot the Cobbler terminal "pxeboot_minion" through the interface "eth1"
     And I wait for "60" seconds
     And I set the default PXE menu entry to the local boot on the "server"
     And I wait at most 1200 seconds until Salt master sees "pxeboot_minion" as "unaccepted"
@@ -118,6 +130,7 @@ Feature: PXE boot a terminal with Cobbler and containerized proxy
     And I follow "Delete Autoinstallation"
     And I click on "Delete Autoinstallation"
     And I wait until I do not see "15-sp4-cobbler" text
+    And I wait up to 5 minutes to see "TASK COMPLETE" in the last lines of "var/log/cobbler/cobbler.log" on "server"
 
   Scenario: Cleanup: remove the auto installation distribution
     When I follow the left menu "Systems > Autoinstallation > Distributions"
@@ -125,6 +138,7 @@ Feature: PXE boot a terminal with Cobbler and containerized proxy
     And I follow "Delete Distribution"
     And I click on "Delete Distribution"
     And I wait until I do not see "SLE-15-SP4-TFTP" text
+    And I wait up to 5 minutes to see "TASK COMPLETE" in the last lines of "var/log/cobbler/cobbler.log" on "server"
 
   Scenario: Cleanup: remove the auto installation files
     When I remove packages "tftpboot-installation-SLE-15-SP4-x86_64 expect" from this "build_host"

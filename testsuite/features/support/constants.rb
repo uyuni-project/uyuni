@@ -172,20 +172,20 @@ PACKAGE_BY_CLIENT = {
   'sle15sp6_ssh_minion' => 'bison',
   'sle15sp7_minion' => 'bison',
   'sle15sp7_ssh_minion' => 'bison',
-  'slemicro51_minion' => 'chrony',
-  'slemicro51_ssh_minion' => 'chrony',
-  'slemicro52_minion' => 'chrony',
-  'slemicro52_ssh_minion' => 'chrony',
-  'slemicro53_minion' => 'chrony',
-  'slemicro53_ssh_minion' => 'chrony',
-  'slemicro54_minion' => 'chrony',
-  'slemicro54_ssh_minion' => 'chrony',
-  'slemicro55_minion' => 'chrony',
-  'slemicro55_ssh_minion' => 'chrony',
-  'slmicro60_minion' => 'chrony',
-  'slmicro60_ssh_minion' => 'chrony',
-  'slmicro61_minion' => 'chrony',
-  'slmicro61_ssh_minion' => 'chrony',
+  'slemicro51_minion' => 'dejavu',
+  'slemicro51_ssh_minion' => 'dejavu',
+  'slemicro52_minion' => 'dejavu',
+  'slemicro52_ssh_minion' => 'dejavu',
+  'slemicro53_minion' => 'dejavu',
+  'slemicro53_ssh_minion' => 'dejavu',
+  'slemicro54_minion' => 'dejavu',
+  'slemicro54_ssh_minion' => 'dejavu',
+  'slemicro55_minion' => 'dejavu',
+  'slemicro55_ssh_minion' => 'dejavu',
+  'slmicro60_minion' => 'dejavu',
+  'slmicro60_ssh_minion' => 'dejavu',
+  'slmicro61_minion' => 'dejavu',
+  'slmicro61_ssh_minion' => 'dejavu',
   'alma8_minion' => 'autoconf',
   'alma8_ssh_minion' => 'autoconf',
   'alma9_minion' => 'autoconf',
@@ -1340,6 +1340,13 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
       %w[
         sl-micro-6.1-pool-x86_64
         sl-micro-6.1-devel-uyuni-client-x86_64
+      ],
+    'tumbleweed' =>
+      %w[
+        opensuse_tumbleweed-x86_64
+        opensuse_tumbleweed-updates-x86_64
+        opensuse_tumbleweed-uyuni-client-x86_64
+        opensuse_tumbleweed-uyuni-client-devel-x86_64
       ],
     'tumbleweed-client-tools-x86_64' => # CHECKED
       %w[

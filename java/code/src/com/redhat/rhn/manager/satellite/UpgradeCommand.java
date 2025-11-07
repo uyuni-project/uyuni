@@ -138,10 +138,9 @@ public class UpgradeCommand extends BaseTransactionCommand {
      * Executes the upgrade step
      */
     public void upgrade() {
-        List upgradeTasks = TaskFactory.getTaskListByNameLike(UPGRADE_TASK_NAME);
+        List<Task> upgradeTasks = TaskFactory.getTaskListByNameLike(UPGRADE_TASK_NAME);
         // Loop over upgrade tasks and execute the steps.
-        for (Object upgradeTaskIn : upgradeTasks) {
-            Task t = (Task) upgradeTaskIn;
+        for (Task t : upgradeTasks) {
             // Use WARN because we want this logged.
             if (t != null) {
                 log.warn("got upgrade task: {}", t.getName());
@@ -181,9 +180,8 @@ public class UpgradeCommand extends BaseTransactionCommand {
     private void processKickstartProfiles() {
         // Use WARN here because we want this operation logged.
         log.warn("Processing ks profiles.");
-        List allKickstarts = KickstartFactory.listAllKickstartData();
-        for (Object allKickstartIn : allKickstarts) {
-            KickstartData ksdata = (KickstartData) allKickstartIn;
+        List<KickstartData> allKickstarts = KickstartFactory.listAllKickstartData();
+        for (KickstartData ksdata : allKickstarts) {
             KickstartSession ksession =
                     KickstartFactory.lookupDefaultKickstartSessionForKickstartData(ksdata);
             if (ksession == null) {
@@ -255,7 +253,20 @@ public class UpgradeCommand extends BaseTransactionCommand {
      */
     private void importLegacyStatesToDb() {
         List<Object[]> candidates = HibernateFactory.getSession()
-                .getNamedQuery("ConfigRevision.stateContentMigrationCandidates").list();
+                .createQuery("""
+                        SELECT DISTINCT channel.org.id, channel.label, revision
+                        FROM ConfigRevision AS revision
+                        INNER JOIN revision.configContent AS content
+                        INNER JOIN revision.configFile AS file
+                        INNER JOIN file.configFileName AS fileName
+                        INNER JOIN file.configChannel AS channel
+                        WHERE channel.configChannelType.label = 'state'
+                        AND fileName.path = '/init.sls'
+                        AND revision.revision = 1
+                        AND length(content.contents) = 0
+                        """, Object[].class)
+                .list();
+
         // Use WARN here because we want this operation logged.
         log.warn("Migrating content of {} custom states from disk to database.", candidates.size());
         candidates.forEach(row -> {

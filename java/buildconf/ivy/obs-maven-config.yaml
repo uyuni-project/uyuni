@@ -57,12 +57,12 @@ artifacts:
   - artifact: commons-discovery
     package: jakarta-commons-discovery
     repository: Leap
-  - artifact: commons-el
-    package: apache-commons-el
-    repository: Leap
-  - artifact: commons-fileupload
-    package: apache-commons-fileupload
-    repository: Leap
+  - artifact: apache-commons-fileupload2-core
+    package: apache-commons-fileupload2-core
+    repository: Uyuni_Other
+  - artifact: apache-commons-fileupload2-javax
+    package: apache-commons-fileupload2-javax
+    repository: Uyuni_Other
   - artifact: commons-io
     package: apache-commons-io
     repository: Leap_sle
@@ -79,7 +79,7 @@ artifacts:
   - artifact: commons-logging
     package: apache-commons-logging
     jar: apache-commons-logging\.jar
-    repository: Leap
+    repository: Leap_sle
   - artifact: commons-validator
     package: apache-commons-validator
     repository: Leap
@@ -263,6 +263,7 @@ artifacts:
   - artifact: snakeyaml
     repository: Leap_sle
   - artifact: spark-core
+    package: spark-core
     repository: Uyuni_Other
   - artifact: spark-template-jade
     repository: Uyuni_Other
@@ -301,13 +302,6 @@ artifacts:
   - artifact: velocity-engine-core
     repository: Uyuni_Other
 
-  - artifact: jasper
-    package: tomcat-lib
-    jar: jasper\.jar
-    repository: Leap
-  - artifact: jasper-el
-    package: tomcat-lib
-    repository: Leap
   - artifact: tomcat-el-3.0-api
     package: tomcat-el-3_0-api
     repository: Leap
@@ -332,12 +326,6 @@ artifacts:
   - artifact: ical4j
     repository: Uyuni_Other
   - artifact: jetty-util
-    repository: Leap_sle
-  - artifact: jetty-server
-    repository: Leap_sle
-  - artifact: jetty-http
-    repository: Leap_sle
-  - artifact: jetty-io
     repository: Leap_sle
   - artifact: glassfish-jaxb-api
     repository: Leap

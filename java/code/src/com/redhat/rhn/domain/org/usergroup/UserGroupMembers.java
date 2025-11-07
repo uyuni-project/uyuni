@@ -23,7 +23,6 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.NamedNativeQuery;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -31,10 +30,6 @@ import javax.persistence.UniqueConstraint;
  * UserGroupMembers
  */
 @Entity
-@NamedNativeQuery(
-        name = "UserGroupMembers.deleteTemporary",
-        query = "DELETE FROM rhnUserGroupMembers ugs WHERE temporary = 'Y'"
-)
 @Table(name = "rhnUserGroupMembers", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"user_id", "user_group_id"})
 })

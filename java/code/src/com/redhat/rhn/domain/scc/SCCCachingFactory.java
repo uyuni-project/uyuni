@@ -38,7 +38,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.type.StandardBasicTypes;
 
-import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
@@ -52,7 +51,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.persistence.NoResultException;
+import javax.persistence.Tuple;
 
 /**
  * Factory class for populating and reading from SCC caching tables.
@@ -179,15 +178,10 @@ import javax.persistence.NoResultException;
         if (id == null) {
             return null;
         }
-        try {
-            return getSession().createNativeQuery("SELECT * from suseSCCSubscription WHERE scc_id = :scc",
-                            SCCSubscription.class)
-                    .setParameter("scc", id , StandardBasicTypes.LONG)
-                    .getSingleResult();
-        }
-        catch (NoResultException e) {
-            return null;
-        }
+        return getSession().createNativeQuery("SELECT * from suseSCCSubscription WHERE scc_id = :scc",
+                        SCCSubscription.class)
+                .setParameter("scc", id , StandardBasicTypes.LONG)
+                .uniqueResult();
     }
 
     /**
@@ -201,7 +195,6 @@ import javax.persistence.NoResultException;
      * Lookup all Order Items
      * @return list of Order Items
      */
-    @SuppressWarnings("unchecked")
     public static List<SCCOrderItem> lookupOrderItems() {
         log.debug("Retrieving orderItems from cache");
         return getSession().createNativeQuery("SELECT * from suseSCCOrderItem", SCCOrderItem.class)
@@ -281,7 +274,7 @@ import javax.persistence.NoResultException;
             return;
         }
         getSession()
-        .getNamedQuery("SCCOrderItem.deleteByCredential")
+        .createQuery("DELETE FROM SCCOrderItem AS o WHERE o.credentials = :creds")
         .setParameter("creds", c)
         .executeUpdate();
     }
@@ -291,7 +284,7 @@ import javax.persistence.NoResultException;
      */
     public static void clearOrderItems() {
         getSession()
-        .getNamedQuery("SCCOrderItem.deleteAll")
+        .createQuery("DELETE FROM SCCOrderItem")
         .executeUpdate();
     }
 
@@ -303,7 +296,8 @@ import javax.persistence.NoResultException;
      */
     public static boolean refreshNeeded(Optional<Date> lastRefreshDateIn) {
         return getSession()
-                .createNamedQuery("BaseCredentials.getLastSCCRefreshDate", Date.class)
+                .createQuery("SELECT MAX(modified) FROM BaseCredentials WHERE type IN ('scc', 'cloudrmt')",
+                        Date.class)
                 .uniqueResultOptional()
                 .map(credsLastModified -> {
                     // When was the cache last modified?
@@ -445,9 +439,12 @@ import javax.persistence.NoResultException;
      * @return list of repository ids which can be accessed
      */
     public static List<Long> lookupRepositoryIdsWithAuth() {
-        List<BigDecimal> resultList =
-                getSession().getNamedNativeQuery("SCCRepositoryAuth.lookupRepoIdWithAuth").getResultList();
-        return resultList.stream().map(BigDecimal::longValue).collect(Collectors.toList());
+        return getSession()
+                .createNativeQuery("SELECT DISTINCT ra.repo_id FROM suseSCCRepositoryAuth ra", Tuple.class)
+                .addScalar("repo_id", StandardBasicTypes.LONG)
+                .stream()
+                .map(t -> t.get(0, Long.class))
+                .toList();
     }
 
     /**
@@ -455,7 +452,13 @@ import javax.persistence.NoResultException;
      * @return list of {@link SCCRepository} for the given channel family label
      */
     public static List<SCCRepository> lookupRepositoriesByChannelFamily(String channelFamily) {
-        return getSession().createNamedQuery("SCCRepository.lookupByChannelFamily", SCCRepository.class)
+        return getSession().createQuery("""
+                        SELECT r FROM SCCRepository r
+                        JOIN r.channelTemplates ct
+                        JOIN ct.product p
+                        JOIN p.channelFamily cf
+                        WHERE cf.label = :channelFamily
+                        """, SCCRepository.class)
                 .setParameter("channelFamily", channelFamily).getResultList();
     }
 
@@ -468,10 +471,18 @@ import javax.persistence.NoResultException;
      */
     public static Stream<SCCRepository> lookupRepositoriesByProductNameAndArchForPayg(
             String productName, String archName) {
-        return getSession().createNamedQuery("SCCRepository.lookupByProductNameAndArchForPayg", SCCRepository.class)
-            .setParameter("product_name", productName)
-            .setParameter("arch_name", archName)
-            .stream();
+        return getSession().createQuery("""
+                        SELECT DISTINCT r FROM SCCRepository r
+                        JOIN r.channelTemplates ct
+                        JOIN ct.product p
+                        JOIN p.arch a
+                        WHERE lower(p.name) = lower(:product_name)
+                        AND lower(a.label) = lower(:arch_name)
+                        AND r.installerUpdates = 'N'
+                        """, SCCRepository.class)
+                .setParameter("product_name", productName)
+                .setParameter("arch_name", archName)
+                .stream();
     }
 
     /**
@@ -527,11 +538,16 @@ import javax.persistence.NoResultException;
     /**
      * Initialize new systems to get forwarded to SCC
      */
-    @SuppressWarnings("unchecked")
     public static void initNewSystemsToForward() {
 
         List<Server> newServer = getSession()
-                .getNamedQuery("SCCRegCache.newServersRequireRegistration")
+                .createQuery("""
+                        SELECT s FROM Server AS s
+                        WHERE s.id not in (
+                            SELECT rci.server.id
+                            FROM com.redhat.rhn.domain.scc.SCCRegCacheItem AS rci
+                            WHERE rci.server.id IS NOT NULL)
+                        ORDER BY s.id ASC""", Server.class)
                 .getResultList();
         newServer.stream()
                 .forEach(s -> {
@@ -552,7 +568,15 @@ import javax.persistence.NoResultException;
         Calendar retryTime = Calendar.getInstance();
         retryTime.add(Calendar.HOUR, -1 * regErrorExpireTime);
 
-        return getSession().getNamedQuery("SCCRegCache.serversRequireRegistration")
+        return getSession().createQuery("""
+                        SELECT rci
+                        FROM SCCRegCacheItem as rci
+                        JOIN rci.server as s
+                        WHERE rci.sccRegistrationRequired = 'Y'
+                        AND (rci.registrationErrorTime IS NULL
+                             OR rci.registrationErrorTime < :retryTime)
+                        ORDER BY s.id ASC
+                        """, SCCRegCacheItem.class)
                 .setParameter("retryTime", new Date(retryTime.getTimeInMillis()))
                 .getResultList();
     }
@@ -568,7 +592,13 @@ import javax.persistence.NoResultException;
         Calendar retryTime = Calendar.getInstance();
         retryTime.add(Calendar.HOUR, -1 * regErrorExpireTime);
 
-        return getSession().getNamedQuery("SCCRegCache.listDeRegisterItems")
+        return getSession().createQuery("""
+                        SELECT rci FROM SCCRegCacheItem as rci
+                        WHERE rci.server is NULL
+                        AND (rci.registrationErrorTime IS NULL
+                             OR rci.registrationErrorTime < :retryTime)
+                        ORDER BY rci.sccId ASC
+                        """)
                 .setParameter("retryTime", new Date(retryTime.getTimeInMillis()))
                 .getResultList();
     }
@@ -580,10 +610,13 @@ import javax.persistence.NoResultException;
      * @param cred the organization credential
      * @return list of {@link SCCRegCacheItem}
      */
-    @SuppressWarnings("unchecked")
     public static List<SCCRegCacheItem> listRegItemsByCredentials(Credentials cred) {
 
-        return getSession().getNamedQuery("SCCRegCache.listRegItemsByCredentials")
+        return getSession().createQuery("""
+                        SELECT rci FROM SCCRegCacheItem as rci
+                        WHERE rci.credentials = :creds
+                        ORDER BY rci.sccId ASC
+                        """, SCCRegCacheItem.class)
                 .setParameter("creds", cred)
                 .getResultList();
     }
@@ -639,14 +672,26 @@ import javax.persistence.NoResultException;
     }
 
     /**
-     * @return a list of Virtualization Hosts which need to be send to SCC
+     * @return a list of Virtualization Hosts which need to be sent to SCC
      */
     public static List<SCCVirtualizationHostJson> listVirtualizationHosts() {
         int regErrorExpireTime = Config.get().getInt(ConfigDefaults.REG_ERROR_EXPIRE_TIME, 168);
         Calendar retryTime = Calendar.getInstance();
         retryTime.add(Calendar.HOUR, -1 * regErrorExpireTime);
 
-        return getSession().createNamedQuery("SCCRegCache.hypervisorInfo", SCCVirtualizationHostJson.class)
+        return getSession().createQuery("""
+                        SELECT new com.suse.scc.model.SCCVirtualizationHostJson(rci.sccLogin, s)
+                        FROM SCCRegCacheItem rci
+                        JOIN rci.server s
+                        WHERE rci.sccRegistrationRequired = 'Y'
+                        AND (rci.registrationErrorTime IS NULL
+                             OR rci.registrationErrorTime < :retryTime)
+                        AND EXISTS (SELECT distinct 1
+                                      FROM VirtualInstance vi
+                                     WHERE vi.hostSystem = s
+                                       AND vi.uuid IS NOT NULL
+                                       AND vi.guestSystem IS NOT NULL)
+                        """, SCCVirtualizationHostJson.class)
                 .setParameter("retryTime", new Date(retryTime.getTimeInMillis()))
                 .getResultList();
     }

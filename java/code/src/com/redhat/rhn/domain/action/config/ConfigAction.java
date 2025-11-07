@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2015 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -31,10 +32,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
+
 /**
  * ConfigAction
  */
+@Entity
+@DiscriminatorValue("-16")
 public class ConfigAction extends Action {
+
+    @OneToMany(mappedBy = "parentAction", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<ConfigRevisionAction> configRevisionActions;
 
     protected ConfigAction() {

@@ -98,7 +98,7 @@ public class PackageEvrFactory {
         return HibernateFactory.getSession()
                 .createNativeQuery("SELECT * FROM rhnPackageEvr WHERE id = :id ", PackageEvr.class)
                 .setParameter("id", id, StandardBasicTypes.LONG)
-                .getSingleResult();
+                .uniqueResult();
     }
 
     /**

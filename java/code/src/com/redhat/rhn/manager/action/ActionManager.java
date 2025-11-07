@@ -474,7 +474,7 @@ public class ActionManager extends BaseManager {
      * @return The created upload action
      * @throws TaskomaticApiException if there was a Taskomatic error (typically: Taskomatic is down)
      */
-    public static Action createConfigUploadAction(User user, Set filenames, Server server,
+    public static Action createConfigUploadAction(User user, Set<Long> filenames, Server server,
                                                   ConfigChannel channel, Date earliest)
             throws TaskomaticApiException {
         //TODO: right now, our general rule is that upload actions will
@@ -491,8 +491,7 @@ public class ActionManager extends BaseManager {
         ActionFactory.addServerToAction(server.getId(), a);
 
         //now put a row into rhnActionConfigFileName for each path we have.
-        for (Object filenameIn : filenames) {
-            Long cfnid = (Long) filenameIn;
+        for (Long cfnid : filenames) {
             /*
              * We are using ConfigurationFactory to lookup the config file name
              * instead of ConfigurationManager.  If we used ConfigurationManager,

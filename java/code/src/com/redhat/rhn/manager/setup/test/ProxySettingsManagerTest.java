@@ -199,4 +199,25 @@ public class ProxySettingsManagerTest extends RhnBaseTestCase {
 
         assertEquals("UYUNICFG_PWD_PLACEHOLDER=%s".formatted(TEST_PASSWD), configCommand.getFirstEnvironmentVar());
     }
+
+    @Test
+    public void testProxySettingsConfigureSatelliteCommandArgumentsOnlyEmptyPasswd() {
+        MockProxySettingsConfigureCommand configCommand = new MockProxySettingsConfigureCommand(satAdmin);
+
+        proxySettingsDto.setPassword("");
+        configCommand.updateString(ConfigDefaults.HTTP_PROXY_PASSWORD, proxySettingsDto.getPassword());
+
+        String[] cmdArgs = configCommand.getCommandArguments();
+        assertEquals(8, cmdArgs.length);
+        assertEquals("/usr/bin/sudo", cmdArgs[0]);
+        assertEquals("-E", cmdArgs[1]);
+        assertEquals("/usr/bin/rhn-config-satellite.pl", cmdArgs[2]);
+        assertTrue(cmdArgs[3].startsWith("--target="));
+        assertEquals("--option=server.satellite.http_proxy_password=PWD_PLACEHOLDER", cmdArgs[4]);
+        assertEquals("2>&1", cmdArgs[5]);
+        assertEquals(">", cmdArgs[6]);
+        assertEquals("/dev/null", cmdArgs[7]);
+
+        assertEquals("UYUNICFG_PWD_PLACEHOLDER=", configCommand.getFirstEnvironmentVar());
+    }
 }

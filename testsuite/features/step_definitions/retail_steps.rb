@@ -183,7 +183,7 @@ When(/^I restart the network on the PXE boot minion$/) do
   get_target('proxy').run("expect -f /tmp/#{file} #{ipv6}")
 end
 
-When(/^I reboot the (Retail|Cobbler) terminal "([^"]*)"$/) do |context, host|
+When(/^I reboot the (Retail|Cobbler) terminal "([^"]*)" through the interface "([^"]*)"$/) do |context, host, interface|
   # we might have no or any IPv4 address on that machine
   # convert MAC address to IPv6 link-local address
   case host
@@ -196,7 +196,7 @@ When(/^I reboot the (Retail|Cobbler) terminal "([^"]*)"$/) do |context, host|
   end
   mac = mac.tr(':', '')
   hex = (("#{mac[0..5]}fffe#{mac[6..11]}").to_i(16) ^ 0x0200000000000000).to_s(16)
-  ipv6 = "fe80::#{hex[0..3]}:#{hex[4..7]}:#{hex[8..11]}:#{hex[12..15]}%eth1"
+  ipv6 = "fe80::#{hex[0..3]}:#{hex[4..7]}:#{hex[8..11]}:#{hex[12..15]}%#{interface}"
   log "Rebooting #{ipv6}..."
   file = 'reboot-pxeboot.exp'
   source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"

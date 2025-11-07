@@ -17,12 +17,12 @@
     <parent>
         <groupId>org.uyuni-project</groupId>
         <artifactId>uyuni-java-parent</artifactId>
-        <version>5.1.3</version>
+        <version>5.2.1</version>
         <relativePath>../uyuni-java-parent</relativePath>
     </parent>
 
     <artifactId>uyuni-java-common</artifactId>
-    <version>5.1.3</version>
+    <version>5.2.1</version>
 
     <dependencies>
         <dependency>

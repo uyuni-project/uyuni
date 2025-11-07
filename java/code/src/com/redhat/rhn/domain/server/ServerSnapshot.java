@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2017 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -35,6 +36,8 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -51,13 +54,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -68,48 +69,63 @@ import javax.persistence.Table;
 @Table(name = "rhnSnapshot")
 public class ServerSnapshot extends BaseDomainHelper {
 
+    @Id
+    @GeneratedValue(generator = "snapshot_seq")
+    @GenericGenerator(
+            name = "snapshot_seq",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @Parameter(name = "sequence_name", value = "rhn_snapshot_id_seq"),
+                    @Parameter(name = "increment_size", value = "1")
+            })
+    private Long id;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "org_id")
     private Org org;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "server_id")
     private Server server;
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "snapshot_seq")
-    @SequenceGenerator(name = "snapshot_seq", sequenceName = "rhn_snapshot_id_seq", allocationSize = 1)
-    private Long id;
+
     @Column
     private String reason;
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
     name = "rhnSnapshotChannel",
     joinColumns = @JoinColumn(name = "snapshot_id"),
     inverseJoinColumns = @JoinColumn(name = "channel_id"))
     private Set<Channel> channels = new HashSet<>();
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
     name = "rhnSnapshotConfigChannel",
     joinColumns = @JoinColumn(name = "snapshot_id"),
     inverseJoinColumns = @JoinColumn(name = "config_channel_id"))
     private Set<ConfigChannel> configChannels = new HashSet<>();
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
     name = "rhnSnapshotConfigRevision",
     joinColumns = @JoinColumn(name = "snapshot_id"),
     inverseJoinColumns = @JoinColumn(name = "config_revision_id"))
     private Set<ConfigRevision> configRevisions = new HashSet<>();
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
     name = "rhnSnapshotServerGroup",
     joinColumns = @JoinColumn(name = "snapshot_id"),
     inverseJoinColumns = @JoinColumn(name = "server_group_id"))
     private Set<ServerGroup> groups = new HashSet<>();
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
     name = "rhnSnapshotPackage",
     joinColumns = @JoinColumn(name = "snapshot_id"),
     inverseJoinColumns = @JoinColumn(name = "nevra_id"))
     private Set<PackageNevra> packages = new HashSet<>();
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "invalid")
     private InvalidSnapshotReason invalidReason;

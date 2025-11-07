@@ -15,6 +15,9 @@
 package com.redhat.rhn.domain.server;
 
 
+import java.io.Serial;
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -29,7 +32,10 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "rhnServeruuid")
-public class ServerUuid {
+public class ServerUuid implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 6799417386777078258L;
 
     @Id
     @Column(name = "server_id")

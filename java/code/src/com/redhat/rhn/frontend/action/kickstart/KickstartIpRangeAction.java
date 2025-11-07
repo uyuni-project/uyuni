@@ -30,7 +30,6 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.DynaActionForm;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -119,8 +118,7 @@ public class KickstartIpRangeAction extends RhnAction {
             setupFormValues(form);
         }
 
-        List displayList = new LinkedList<>();
-        displayList = cmd.getDisplayRanges();
+        List displayList = cmd.getDisplayRanges();
 
         //Create the kickstart urls to display
 

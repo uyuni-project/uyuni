@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -21,14 +22,14 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Immutable;
+import org.hibernate.annotations.Parameter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -42,8 +43,14 @@ import javax.persistence.Table;
 public class RoleImpl extends BaseDomainHelper implements Role {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rhn_usergroup_type_seq")
-    @SequenceGenerator(name = "rhn_usergroup_type_seq", sequenceName = "rhn_usergroup_type_seq", allocationSize = 1)
+    @GeneratedValue(generator = "rhn_usergroup_type_seq")
+    @GenericGenerator(
+            name = "rhn_usergroup_type_seq",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @Parameter(name = "sequence_name", value = "rhn_usergroup_type_seq"),
+                    @Parameter(name = "increment_size", value = "1")
+            })
     @Column(name = "id", nullable = false, updatable = false)
     protected Long id;
 

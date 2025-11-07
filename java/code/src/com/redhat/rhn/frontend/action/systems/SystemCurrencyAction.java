@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.action.systems;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.SystemCurrency;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.manager.system.SystemManager;
 
@@ -27,7 +28,7 @@ import org.apache.struts.action.ActionForm;
 public class SystemCurrencyAction extends BaseSystemsAction {
 
     @Override
-    protected DataResult getDataResult(User user, PageControl pc, ActionForm formIn) {
+    protected DataResult<SystemCurrency> getDataResult(User user, PageControl pc, ActionForm formIn) {
 
         return SystemManager.systemCurrencyList(user, pc);
     }

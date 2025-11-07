@@ -54,7 +54,7 @@ public class DownloadManager extends BaseManager {
 
         //If the package is on our list of non-expiring packages, then generate
         //   a non-expiring URL
-        List packs = Config.get().getList(ConfigDefaults.NON_EXPIRABLE_PACKAGE_URLS);
+        List<String> packs = Config.get().getList(ConfigDefaults.NON_EXPIRABLE_PACKAGE_URLS);
         if (packs != null && packs.contains(pack.getPackageName().getName())) {
             return getNonExpiringDownloadPath(pack.getId(), pack.getFile(), user,
                     DownloadManager.DOWNLOAD_TYPE_PACKAGE);

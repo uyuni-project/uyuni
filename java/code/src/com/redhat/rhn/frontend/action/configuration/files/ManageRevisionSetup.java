@@ -19,6 +19,7 @@ import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.config.ConfigFile;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.configuration.ConfigActionHelper;
+import com.redhat.rhn.frontend.dto.ConfigRevisionDto;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.struts.BaseSetListAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -55,7 +56,7 @@ public class ManageRevisionSetup extends BaseSetListAction {
      * {@inheritDoc}
      */
     @Override
-    protected DataResult getDataResult(RequestContext rctxIn, PageControl pcIn) {
+    protected DataResult<ConfigRevisionDto> getDataResult(RequestContext rctxIn, PageControl pcIn) {
         User user = rctxIn.getCurrentUser();
         ConfigFile file = ConfigActionHelper.getFile(rctxIn.getRequest());
         ConfigActionHelper.processRequestAttributes(rctxIn);

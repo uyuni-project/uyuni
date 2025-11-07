@@ -108,8 +108,8 @@ public class UserTest extends RhnBaseTestCase {
         User usr = UserTestUtils.createUser(this);
         Long userId = usr.getId();
         usr.getOrg();
-        usr = null;
-        usr = UserFactory.lookupById(userId);
+        usr = null; //NOSONAR
+        usr = UserFactory.lookupById(userId); //NOSONAR
     }
 
     /**

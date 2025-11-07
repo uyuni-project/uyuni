@@ -21,18 +21,39 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 /**
  * ConfigFile - Class representation of the table rhnConfigFile.
  */
+@Entity
+@Table(name = "rhnConfigFile")
 public class ConfigFile extends BaseDomainHelper {
-
-    private Long id;
-    private ConfigChannel configChannel;
-    private ConfigFileName configFileName;
-    private ConfigFileState configFileState;
-    private ConfigRevision latestConfigRevision;
     private static Logger log = LogManager.getLogger(ConfigFile.class);
 
+    @Id
+    private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "config_channel_id")
+    private ConfigChannel configChannel;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "config_file_name_id")
+    private ConfigFileName configFileName;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "state_id")
+    private ConfigFileState configFileState;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "latest_config_revision_id")
+    private ConfigRevision latestConfigRevision;
 
     /**
      * Protected constructor
@@ -69,7 +90,7 @@ public class ConfigFile extends BaseDomainHelper {
      * Setter for id
      * @param idIn to set
     */
-    public void setId(Long idIn) {
+    protected void setId(Long idIn) {
         this.id = idIn;
     }
 

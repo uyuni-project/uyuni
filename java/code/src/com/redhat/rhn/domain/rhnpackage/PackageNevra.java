@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,14 +15,18 @@
  */
 package com.redhat.rhn.domain.rhnpackage;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
+import java.io.Serial;
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -29,11 +34,20 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "rhnPackageNevra")
-public class PackageNevra {
+public class PackageNevra implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 5428733207958125122L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pkgnevra_seq")
-    @SequenceGenerator(name = "pkgnevra_seq", sequenceName = "rhn_pkgnevra_id_seq", allocationSize = 1)
+    @GeneratedValue(generator = "pkgnevra_seq")
+    @GenericGenerator(
+            name = "pkgnevra_seq",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @Parameter(name = "sequence_name", value = "rhn_pkgnevra_id_seq"),
+                    @Parameter(name = "increment_size", value = "1")
+            })
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

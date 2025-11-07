@@ -1294,23 +1294,23 @@ end
 ## Password Policy navigation steps
 ###################################
 
-And(/^I set the minimum password length to "([^"]*)"$/) do |min_length|
+When(/^I set the minimum password length to "([^"]*)"$/) do |min_length|
   fill_in 'minLength', with: min_length
 end
 
-And(/^I set the maximum password length to "([^"]*)"$/) do |max_length|
+When(/^I set the maximum password length to "([^"]*)"$/) do |max_length|
   fill_in 'maxLength', with: max_length
 end
 
-And(/^I set the special characters list to "([^"]*)"$/) do |characters_list|
+When(/^I set the special characters list to "([^"]*)"$/) do |characters_list|
   fill_in 'specialChars', with: characters_list
 end
 
-And(/^I set the maximum allowed occurrence of any character to "([^"]*)"$/) do |max_occurence|
+When(/^I set the maximum allowed occurrence of any character to "([^"]*)"$/) do |max_occurence|
   fill_in 'maxCharacterOccurrence', with: max_occurence
 end
 
-And(/^I (enable|disable) the following restrictions:$/) do |action, table|
+When(/^I (enable|disable) the following restrictions:$/) do |action, table|
   restriction_map = {
     'Require Digits' => 'digitFlag',
     'Require Lowercase Characters' => 'lowerCharFlag',

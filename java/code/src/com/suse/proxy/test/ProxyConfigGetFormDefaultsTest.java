@@ -92,7 +92,7 @@ public class ProxyConfigGetFormDefaultsTest extends BaseTestCaseWithUser {
             allowing(mockConfigDefaults).isUyuni();
             will(returnValue(true));
             allowing(mockConfigDefaults).getProductVersion();
-            will(returnValue("2025.07"));
+            will(returnValue("2025.10"));
         }});
 
         setConfigDefaultsInstance(mockConfigDefaults);

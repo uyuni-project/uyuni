@@ -23,22 +23,75 @@ import com.redhat.rhn.domain.server.Server;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Table;
+
 /**
  * Virtual Host Manager entity
  */
+@Entity
+@Table(name = "suseVirtualHostManager")
 public class VirtualHostManager extends BaseDomainHelper {
 
+    @Id
+    @GeneratedValue(generator = "suse_vhms_seq")
+    @GenericGenerator(
+            name = "suse_vhms_seq",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @Parameter(name = "sequence_name", value = "suse_vhms_id_seq"),
+                    @Parameter(name = "increment_size", value = "1")
+            })
     private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "org_id", nullable = false)
     private Org org;
+
+    @Column(nullable = false)
     private String label;
+
+    @Column(name = "gatherer_module", nullable = false)
     private String gathererModule;
+
+    @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+    @JoinColumn(name = "cred_id")
     private VHMCredentials credentials;
+
+    @OneToMany(mappedBy = "virtualHostManager",
+            cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @PrimaryKeyJoinColumn(name = "virtual_host_manager_id")
     private Set<VirtualHostManagerConfig> configs;
+
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "suseServerVirtualHostManager",
+            joinColumns = @JoinColumn(name = "vhmserver_id"),
+            inverseJoinColumns = @JoinColumn(name = "server_id"))
     private Set<Server> servers;
+
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "suseServerVirtualHostManager",
+            joinColumns = @JoinColumn(name = "vhmserver_id"),
+            inverseJoinColumns = @JoinColumn(name = "node_id"))
     private Set<VirtualHostManagerNodeInfo> nodes;
 
     /**

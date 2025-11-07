@@ -14,11 +14,26 @@
  */
 package com.redhat.rhn.domain.errata;
 
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Table;
+
 /**
  * ClonedErrata
  */
+@Entity
+@Table(name = "rhnErrataCloned")
+@Inheritance(strategy = InheritanceType.JOINED)
+@PrimaryKeyJoinColumn(name = "id")
 public class ClonedErrata extends Errata {
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "original_id")
     private Errata original;
 
     /**

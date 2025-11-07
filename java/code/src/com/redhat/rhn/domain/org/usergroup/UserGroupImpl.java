@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -20,14 +21,15 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleImpl;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -39,8 +41,14 @@ import javax.persistence.Table;
 public class UserGroupImpl extends BaseDomainHelper implements UserGroup {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rhn_user_group_id_seq")
-    @SequenceGenerator(name = "rhn_user_group_id_seq", sequenceName = "rhn_user_group_id_seq", allocationSize = 1)
+    @GeneratedValue(generator = "rhn_user_group_id_seq")
+    @GenericGenerator(
+            name = "rhn_user_group_id_seq",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @Parameter(name = "sequence_name", value = "rhn_user_group_id_seq"),
+                    @Parameter(name = "increment_size", value = "1")
+            })
     @Column(name = "id")
     private Long id;
 

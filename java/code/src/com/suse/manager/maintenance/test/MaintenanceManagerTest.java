@@ -237,7 +237,6 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
                 user, "test-schedule-1", MaintenanceSchedule.ScheduleType.SINGLE, Optional.empty());
 
         Server withSchedule = MinionServerFactoryTest.createTestMinionServer(user);
-        Server withoutSchedule = MinionServerFactoryTest.createTestMinionServer(user);
 
         mm.assignScheduleToSystems(user, schedule, Set.of(withSchedule.getId()), false);
 
@@ -385,8 +384,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
 
         StringReader sin = new StringReader(FileUtils.readStringFromFile(icalKde.getAbsolutePath()));
         CalendarBuilder builder = new CalendarBuilder();
-        Calendar calendar = null;
-        calendar = builder.build(sin);
+        Calendar calendar = builder.build(sin);
 
         assertFalse(mm.isActionInMaintenanceWindow(action, ms, Optional.ofNullable(calendar)));
 
@@ -398,7 +396,6 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         // icalKde2 has an EXDATE 20200420 set
         sin = new StringReader(FileUtils.readStringFromFile(icalKde2.getAbsolutePath()));
         builder = new CalendarBuilder();
-        calendar = null;
         calendar = builder.build(sin);
         assertFalse(mm.isActionInMaintenanceWindow(action, ms, Optional.ofNullable(calendar)));
     }
@@ -423,7 +420,8 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         mm.assignScheduleToSystems(user, sapSchedule, Collections.singleton(sapServer.getId()), false);
         mm.assignScheduleToSystems(user, coreSchedule, Collections.singleton(coreServer.getId()), false);
 
-        Action sapAction1 = MaintenanceTestUtils.createActionForServerAt(
+        //sapAction1
+        MaintenanceTestUtils.createActionForServerAt(
                 user, ActionFactory.TYPE_ERRATA, sapServer, "2020-04-13T08:15:00+02:00"); //moved
         Action sapActionEx = MaintenanceTestUtils.createActionForServerAt(
                 user, ActionFactory.TYPE_HARDWARE_REFRESH_LIST, sapServer, "2020-04-13T08:15:00+02:00"); //moved
@@ -433,7 +431,8 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
                 user, ActionFactory.TYPE_ERRATA, coreServer, "2020-04-30T09:15:00+02:00"); //stay
         Action coreActionEx = MaintenanceTestUtils.createActionForServerAt(
                 user, ActionFactory.TYPE_HARDWARE_REFRESH_LIST, coreServer, "2020-05-21T09:15:00+02:00"); //moved
-        Action coreAction2 = MaintenanceTestUtils.createActionForServerAt(
+        //coreAction2
+        MaintenanceTestUtils.createActionForServerAt(
                 user, ActionFactory.TYPE_ERRATA, coreServer, "2020-05-21T09:15:00+02:00"); //moved
 
         List sapActionsBefore = ActionFactory.listActionsForServer(user, sapServer);
@@ -508,7 +507,8 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         // Expected Result: Cancel all Actions
         Action sapAction3 = MaintenanceTestUtils.createActionForServerAt(
                 user, ActionFactory.TYPE_HARDWARE_REFRESH_LIST, sapServer, "2020-04-13T09:59:00+02:00"); //moved
-        Action sapAction4 = MaintenanceTestUtils.createActionForServerAt(
+        //sapAction4
+        MaintenanceTestUtils.createActionForServerAt(
                 user, ActionFactory.TYPE_ERRATA, sapServer, "2020-04-13T08:10:02+02:00", sapAction3); //moved
 
         List<Action> sapActionsBefore = ActionFactory.listActionsForServer(user, sapServer);
@@ -518,7 +518,8 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         // Expected Result: Cancel all Actions
         Action coreAction1 = MaintenanceTestUtils.createActionForServerAt(
                 user, ActionFactory.TYPE_ERRATA, coreServer, "2020-05-21T09:15:00+02:00"); //moved
-        Action coreAction2 = MaintenanceTestUtils.createActionForServerAt(
+        //coreAction2
+        MaintenanceTestUtils.createActionForServerAt(
                 user, ActionFactory.TYPE_REBOOT, coreServer, "2020-05-21T09:16:00+02:00", coreAction1); //moved
 
         // Action Chain which start with an action not tied to a maintenance window

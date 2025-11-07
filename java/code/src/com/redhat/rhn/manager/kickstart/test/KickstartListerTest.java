@@ -60,9 +60,9 @@ public class KickstartListerTest extends BaseTestCaseWithUser {
     @Test
    public void testKickstartsInOrg() throws Exception {
         KickstartData k = KickstartDataTest.createKickstartWithOptions(user.getOrg());
-        DataResult dr = KickstartLister.getInstance().kickstartsInOrg(k.getOrg(), null);
+        DataResult<KickstartDto> dr = KickstartLister.getInstance().kickstartsInOrg(k.getOrg(), null);
         assertFalse(dr.isEmpty());
-        KickstartDto row = (KickstartDto) dr.get(0);
+        KickstartDto row = dr.get(0);
         assertNotNull(row.getId());
         assertEquals(k.getOrg().getId().longValue(), row.getOrgId().longValue());
         assertNotNull(row.getOrgId());

@@ -19,6 +19,20 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 /**
  * VirtualInstance represents a virtual guest system. When the guest is
@@ -30,15 +44,41 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * being implemented in the RHN 500 release.
  *
  */
+@Entity
+@Table(name = "rhnVirtualInstance")
 public class VirtualInstance extends BaseDomainHelper {
 
     private static final VirtualInstanceInfo NULL_INFO = new VirtualInstanceInfo();
 
+    @Id
+    @GeneratedValue(generator = "rhn_vi_seq")
+    @GenericGenerator(
+            name = "rhn_vi_seq",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @Parameter(name = "sequence_name", value = "rhn_vi_id_seq"),
+                    @Parameter(name = "increment_size", value = "1")
+            })
     private Long id;
-    private Server guest;
-    private Server host;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @Cascade({CascadeType.SAVE_UPDATE})
+    @JoinColumn(name = "virtual_system_id")
+    private Server guestSystem;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @Cascade({CascadeType.SAVE_UPDATE})
+    @JoinColumn(name = "host_system_id")
+    private Server hostSystem;
+
+    @Column
     private String uuid;
+
+    @Column
     private Long confirmed;
+
+    @OneToOne(mappedBy = "parent")
+    @Cascade(CascadeType.ALL)
     private VirtualInstanceInfo info;
 
     /**
@@ -109,7 +149,7 @@ public class VirtualInstance extends BaseDomainHelper {
      * <code>null</code> is returned
      */
     public Server getGuestSystem() {
-        return guest;
+        return guestSystem;
     }
 
     /**
@@ -118,10 +158,10 @@ public class VirtualInstance extends BaseDomainHelper {
      * @param system the guest system
      */
     public void setGuestSystem(Server system) {
-        this.guest = system;
+        this.guestSystem = system;
 
-        if (guest != null) {
-            guest.setVirtualInstance(this);
+        if (guestSystem != null) {
+            guestSystem.setVirtualInstance(this);
         }
     }
 
@@ -137,7 +177,7 @@ public class VirtualInstance extends BaseDomainHelper {
      * @return A Server object that represents the actual host
      */
     public Server getHostSystem() {
-        return host;
+        return hostSystem;
     }
 
     /**
@@ -146,7 +186,7 @@ public class VirtualInstance extends BaseDomainHelper {
      * @param system The host system
      */
     public void setHostSystem(Server system) {
-        host = system;
+        hostSystem = system;
     }
 
     /**
@@ -306,12 +346,12 @@ public class VirtualInstance extends BaseDomainHelper {
      */
     @Override
     public boolean equals(Object object) {
-        if (object == null || object.getClass() != getClass()) {
+        if (this == object) {
+            return true;
+        }
+        if (!(object instanceof VirtualInstance that)) {
             return false;
         }
-
-        VirtualInstance that = (VirtualInstance) object;
-
         return new EqualsBuilder()
                 .append(this.getUuid(), that.getUuid())
                 .append(this.getHostSystem(), that.getHostSystem())
@@ -345,12 +385,12 @@ public class VirtualInstance extends BaseDomainHelper {
      * @return A GuestAndNonVirtHostView
      */
     public GuestAndNonVirtHostView asGuestAndNonVirtHostView() {
-        if (host == null) {
-            return new GuestAndNonVirtHostView(guest.getId(), guest.getOrg().getId(),
-                    guest.getName());
+        if (hostSystem == null) {
+            return new GuestAndNonVirtHostView(guestSystem.getId(), guestSystem.getOrg().getId(),
+                    guestSystem.getName());
         }
-        return new GuestAndNonVirtHostView(guest.getId(), guest.getOrg().getId(),
-                guest.getName(), host.getOrg().getId(), host.getId(), host.getName());
+        return new GuestAndNonVirtHostView(guestSystem.getId(), guestSystem.getOrg().getId(),
+                guestSystem.getName(), hostSystem.getOrg().getId(), hostSystem.getId(), hostSystem.getName());
     }
 
 }

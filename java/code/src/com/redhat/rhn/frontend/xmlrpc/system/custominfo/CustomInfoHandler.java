@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.CustomDataKeyOverview;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.manager.system.SystemManager;
 
@@ -152,7 +153,7 @@ public class CustomInfoHandler extends BaseHandler {
     @ReadOnly
     public Object[] listAllKeys(User loggedInUser) throws FaultException {
 
-        DataResult result = SystemManager.listDataKeys(loggedInUser);
+        DataResult<CustomDataKeyOverview> result = SystemManager.listDataKeys(loggedInUser);
         return result.toArray();
     }
 }

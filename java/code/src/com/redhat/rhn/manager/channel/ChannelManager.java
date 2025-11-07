@@ -38,6 +38,7 @@ import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
+import com.redhat.rhn.domain.channel.ChannelSyncStatus;
 import com.redhat.rhn.domain.channel.ChannelVersion;
 import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.channel.ContentSourceType;
@@ -84,8 +85,12 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.ssm.SsmChannelDto;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.user.UserManager;
+import com.redhat.rhn.taskomatic.TaskoFactory;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
+import com.redhat.rhn.taskomatic.domain.TaskoRun;
+import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
+import com.redhat.rhn.taskomatic.task.RepoSyncTask;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
 
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
@@ -96,6 +101,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.sql.Timestamp;
 import java.sql.Types;
 import java.text.SimpleDateFormat;
@@ -2117,7 +2124,13 @@ public class ChannelManager extends BaseManager {
     */
    public static Channel getOriginalChannel(Channel channel) {
        while (channel.isCloned()) {
-           channel = channel.asCloned().map(ClonedChannel::getOriginal).orElse(channel);
+           //in the case of getOriginal() == null, we have to ensure not looping forever
+           Channel originalChannel = channel.asCloned().map(ClonedChannel::getOriginal).orElse(null);
+           if (null == originalChannel) {
+               log.error("Cloned channel with NULL original: {}", channel.getLabel());
+               return channel;
+           }
+           channel = originalChannel;
        }
        return channel;
     }
@@ -2541,6 +2554,89 @@ public class ChannelManager extends BaseManager {
         return LocalizationService.getInstance().formatCustomDate(fileModifiedDateIn);
     }
 
+    /**
+     * Return the Sync Status of the given {@link Channel}
+     * @param channelIn the channel
+     * @return the {@link ChannelSyncStatus} status
+     */
+    public static ChannelSyncStatus getChannelSyncStatus(Channel channelIn) {
+        String  pathPrefix = Config.get().getString(ConfigDefaults.REPOMD_PATH_PREFIX,
+                "rhn/repodata");
+        String mountPoint = Config.get().getString(ConfigDefaults.REPOMD_CACHE_MOUNT_POINT,
+                "/pub");
+        Path mdPath = Path.of(mountPoint, pathPrefix, channelIn.getLabel());
+        File mainFile = new File(mdPath.toString(), (channelIn.isTypeDeb() ? "Release" : "repomd.xml"));
+        if (!mainFile.exists()) {
+            if (isSyncInProgress(channelIn)) {
+                return ChannelSyncStatus.SYNCING;
+            }
+            // No repo file, we are at the beginning
+            return ChannelSyncStatus.CREATED;
+        }
+
+        if (ChannelFactory.getPackageCount(channelIn) == 0) {
+            // no packages and repo file exists => we are ready
+            return ChannelSyncStatus.READY;
+        }
+
+        boolean isEmpty = true;
+        try (Stream<Path> stream = Files.list(mdPath)) {
+            Optional<String> pkgsFileOpt = stream
+                    .filter(f -> !Files.isDirectory(f))
+                    .map(Path::getFileName)
+                    .map(Path::toString)
+                    .filter(s -> (channelIn.isTypeDeb() ? s.equals("Packages") : s.endsWith("primary.xml.gz")))
+                    .findFirst();
+
+            // empty Debian Packages file should be empty while primary.xml still has a bit of XML.
+            isEmpty = pkgsFileOpt.map(fileName -> new File(mdPath.toString(), fileName))
+                    .map(path -> path.length() < (channelIn.isTypeDeb() ? 200 : 500))
+                    .orElse(true);
+        }
+        catch (Exception eIn) {
+            isEmpty = false;
+        }
+        return isEmpty ? ChannelSyncStatus.SYNCING : ChannelSyncStatus.READY;
+    }
+
+    /**
+     * @param channelIn the channel
+     * @return returns true when a sync of this channel is planned or in progress
+     */
+    public static boolean isSyncInProgress(Channel channelIn) {
+        // No success (metadata), check for jobs in taskomatic
+        List<TaskoRun> runs = TaskoFactory.listRunsByBunch("repo-sync-bunch");
+        Long channelId = channelIn.getId();
+
+        // Runs are sorted by start time, recent ones first
+        for (TaskoRun run : runs) {
+            // Get the channel id of that run
+            TaskoSchedule schedule = TaskoFactory.lookupScheduleById(run.getScheduleId());
+            List<Long> scheduleChannelIds = RepoSyncTask.getChannelIds(schedule.getDataMap());
+
+            if (scheduleChannelIds.contains(channelId)) {
+                // We found a repo-sync run for this channel
+                log.debug("Repo sync run found for channel {} ({})", channelIn.getLabel(), run.getStatus());
+
+                if (run.getEndTime() == null) {
+                    return true;
+                }
+                // We look at the latest run only
+                break;
+            }
+        }
+        // Check if channel metadata generation is in progress
+        if (ChannelManager.isChannelLabelInProgress(channelIn.getLabel())) {
+            return true;
+        }
+
+        // Check for queued items (merge this with the above method?)
+        SelectMode selector = ModeFactory.getMode(TaskConstants.MODE_NAME,
+                TaskConstants.TASK_QUERY_REPOMD_CANDIDATES_DETAILS_QUERY);
+        Map<String, Object> params = new HashMap<>();
+        params.put("channel_label", channelIn.getLabel());
+        return !selector.execute(params).isEmpty();
+    }
 
     /**
      * get the latest log file for spacewalk-repo-sync

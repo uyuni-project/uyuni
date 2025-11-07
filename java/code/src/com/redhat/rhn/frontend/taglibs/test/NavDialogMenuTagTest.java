@@ -15,7 +15,7 @@
 package com.redhat.rhn.frontend.taglibs.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.frontend.taglibs.NavDialogMenuTag;
@@ -65,26 +65,18 @@ public class NavDialogMenuTagTest extends RhnBaseTestCase {
     public void testExceptionHandling() {
         TagTestHelper tth = TagTestUtils.setupTagTest(nmt, url);
 
-        boolean exceptionNotThrown = false;
-
-        try {
+        assertThrows(JspException.class, () -> {
             // ok let's test the tag
             setupTag(nmt, 10, 4, NAV_XML, "throw.class.not.found.exception");
             tth.assertDoStartTag(Tag.SKIP_BODY);
-            exceptionNotThrown = true;
-        }
-        catch (JspException e) {
-            assertFalse(exceptionNotThrown);
-        }
+        });
     }
 
     @Test
     public void testIOExceptionHandling() {
         TagTestHelper tth = TagTestUtils.setupTagTest(nmt, url);
 
-        boolean exceptionNotThrown = false;
-
-        try {
+        assertThrows(JspException.class, () -> {
             // need to override the JspWriter
             RhnMockExceptionJspWriter out = new RhnMockExceptionJspWriter();
             tth.getPageContext().setJspWriter(out);
@@ -92,11 +84,7 @@ public class NavDialogMenuTagTest extends RhnBaseTestCase {
             // ok let's test the tag
             setupTag(nmt, 10, 4, NAV_XML, DIALOG_NAV);
             tth.assertDoStartTag(Tag.SKIP_BODY);
-            exceptionNotThrown = true;
-        }
-        catch (JspException e) {
-            assertFalse(exceptionNotThrown);
-        }
+        });
     }
 
     @Test

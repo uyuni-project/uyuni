@@ -1,4 +1,20 @@
 -------------------------------------------------------------------
+Mon Oct 27 15:25:52 CET 2025 - rosuna@suse.com
+
+- version 5.2.1-0
+  * Use startswith() or endswith() in Python code
+  * Allow existing pylint failures
+  * Reformat Python code with black
+  * Fix syntax error in changelog
+  * Handle large static files outside of wsgi script (bsc#1244424)
+  * Reorganize proxy apache configuration
+    * remove unused access to pub dir
+    * move cobbler configs from the uyuni-config to the proxy package
+    * add max workers limit to 150 (bsc#1244552)
+    * use proxypass instead of wsgi to pass API calls to the server
+    and anonymous dirs (bsc#1241880)
+
+-------------------------------------------------------------------
 Tue Jun 17 19:26:50 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.5-0

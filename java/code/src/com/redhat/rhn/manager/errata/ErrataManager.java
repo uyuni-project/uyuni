@@ -371,11 +371,11 @@ public class ErrataManager extends BaseManager {
     }
 
     /**
-     * Returns all of the errata in a channel
+     * Returns all the errata in a channel
      * @param cid the channel id
-     * @return all of the errata in the channel.
+     * @return all the errata in the channel.
      */
-    public static DataResult errataInChannel(Long cid) {
+    public static DataResult<ErrataOverview> errataInChannel(Long cid) {
         SelectMode m = ModeFactory.getMode(ERRATA_QUERIES, "channel_errata_for_list");
         Map<String, Object> params = new HashMap<>();
         params.put("cid", cid);
@@ -742,7 +742,7 @@ public class ErrataManager extends BaseManager {
      * @param advisoryType the advisory type to use to query the set of Errata
      * @return List of Errata found
      */
-    public static List lookupErrataByType(String advisoryType) {
+    public static List<Errata> lookupErrataByType(String advisoryType) {
         return ErrataFactory.lookupErratasByAdvisoryType(advisoryType);
     }
 
@@ -1069,7 +1069,7 @@ public class ErrataManager extends BaseManager {
      * @param original Original errata that the clones are clones of
      * @return list of clones of the errata
      */
-    public static List lookupByOriginal(User user, Errata original) {
+    public static List<Errata> lookupByOriginal(User user, Errata original) {
         return ErrataFactory.lookupByOriginal(user.getOrg(), original);
     }
 

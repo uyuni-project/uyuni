@@ -20,18 +20,28 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 /**
  * POJO for a rhnServerPath row.
  */
+@Entity
+@Table(name = "rhnServerPath")
 public class ServerPath extends BaseDomainHelper {
 
     /** The id. */
+    @EmbeddedId
     private ServerPathId id;
 
     /** The position. */
+    @Column
     private Long position;
 
     /** The hostname. */
+    @Column
     private String hostname;
 
     /**

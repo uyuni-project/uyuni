@@ -50,7 +50,7 @@ public class PackageIndexActionTest extends RhnBaseTestCase {
         SelectMode m = ModeFactory.getMode("test_queries", "scheduled_actions");
         Map<String, Object> params = new HashMap<>();
         params.put("user_id", ah.getUser().getId());
-        DataResult dr = m.execute(params);
+        DataResult<String> dr = m.execute(params);
         assertEquals(1, dr.size());
         assertEquals(ah.getRequest().getAttribute("system"), svr);
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 SUSE LLC
+ * Copyright (c) 2023--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,16 +7,14 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 
 package com.suse.cloud.domain;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -29,11 +27,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -44,14 +39,6 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "susepaygdimensioncomputation")
-@NamedQuery(
-    name = "PaygDimensionComputation.lookupById",
-    query = "FROM PaygDimensionComputation AS c WHERE c.id = :id"
-)
-@NamedQuery(
-    name = "PaygDimensionComputation.getLatestSuccessful",
-    query = "FROM PaygDimensionComputation AS c WHERE c.success = true ORDER BY c.timestamp DESC"
-)
 public class PaygDimensionComputation {
 
     private Long id;
@@ -72,9 +59,14 @@ public class PaygDimensionComputation {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "paygDimensionComputation_seq")
-    @SequenceGenerator(name = "paygDimensionComputation_seq", sequenceName = "susePaygDimensionComputation_id_seq",
-        allocationSize = 1)
+    @GeneratedValue(generator = "paygDimensionComputation_seq")
+    @GenericGenerator(
+            name = "paygDimensionComputation_seq",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @Parameter(name = "sequence_name", value = "susePaygDimensionComputation_id_seq"),
+                    @Parameter(name = "increment_size", value = "1")
+            })
     public Long getId() {
         return id;
     }

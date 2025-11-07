@@ -231,7 +231,7 @@ public class RhnSetActionTest extends RhnBaseTestCase {
          * {@inheritDoc}
          */
         @Override
-        protected DataResult getDataResult(User user,
+        protected DataResult<?> getDataResult(User user,
                                            ActionForm formIn,
                                            HttpServletRequest request) {
             return null;
@@ -270,11 +270,11 @@ public class RhnSetActionTest extends RhnBaseTestCase {
          * {@inheritDoc}
          */
         @Override
-        protected DataResult getDataResult(User user,
+        protected DataResult<String> getDataResult(User user,
                                            ActionForm formIn,
                                            HttpServletRequest request) {
-            List retval = Arrays.asList(Locale.getISOCountries());
-            return new DataResult(retval);
+            List<String> retval = Arrays.asList(Locale.getISOCountries());
+            return new DataResult<>(retval);
         }
 
         /**

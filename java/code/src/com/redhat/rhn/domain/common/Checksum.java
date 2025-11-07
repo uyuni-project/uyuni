@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,16 +15,19 @@
  */
 package com.redhat.rhn.domain.common;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -32,11 +36,20 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "rhnChecksum")
-public class Checksum {
+public class Checksum implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 8883696876618902664L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rhn_checksum_seq")
-    @SequenceGenerator(name = "rhn_checksum_seq", sequenceName = "rhnChecksum_seq", allocationSize = 1)
+    @GeneratedValue(generator = "rhn_checksum_seq")
+    @GenericGenerator(
+            name = "rhn_checksum_seq",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @Parameter(name = "sequence_name", value = "rhnChecksum_seq"),
+                    @Parameter(name = "increment_size", value = "1")
+            })
     private Long id;
 
     @Column

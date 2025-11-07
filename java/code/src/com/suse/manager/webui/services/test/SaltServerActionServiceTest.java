@@ -60,6 +60,8 @@ import com.redhat.rhn.testing.ErrataTestUtils;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
+import com.suse.manager.reactor.messaging.JobReturnEventMessage;
+import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
@@ -73,14 +75,19 @@ import com.suse.manager.webui.utils.SaltState;
 import com.suse.manager.webui.utils.SaltSystemReboot;
 import com.suse.salt.netapi.calls.LocalAsyncResult;
 import com.suse.salt.netapi.calls.LocalCall;
+import com.suse.salt.netapi.datatypes.Event;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.datatypes.target.Target;
+import com.suse.salt.netapi.event.JobReturnEvent;
+import com.suse.salt.netapi.parser.JsonParser;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.utils.Xor;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.jmock.Expectations;
@@ -88,8 +95,10 @@ import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -505,12 +514,19 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         }
     }
 
+    private Set<Action> testHighstateActions;
+    private ActionChain testActionChain;
+    private MinionServer testMinion1;
+    private MinionServer testMinion2;
+    private Server testServer1;
+    private SaltUtils testSaltUtils;
+
     @Test
     public void testExecuteActionChain() throws Exception {
         SystemQuery systemQuery = new TestSystemQuery();
         SaltApi saltApi = new TestSaltApi();
-        SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi);
-        saltUtils.setScriptsDir(Files.createTempDirectory("actionscripts"));
+        testSaltUtils = new SaltUtils(systemQuery, saltApi);
+        testSaltUtils.setScriptsDir(Files.createTempDirectory("actionscripts"));
 
         SaltActionChainGeneratorService generatorService = new SaltActionChainGeneratorService() {
             @Override
@@ -555,45 +571,100 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         saltServerActionService.setSaltActionChainGeneratorService(generatorService);
         ActionChainFactory.setTaskomaticApi(taskomaticMock);
 
-        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(user);
-        SystemManager.giveCapability(minion1.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
+        testMinion1 = MinionServerFactoryTest.createTestMinionServer(user);
+        SystemManager.giveCapability(testMinion1.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
 
-        MinionServer minion2 = MinionServerFactoryTest.createTestMinionServer(user);
-        SystemManager.giveCapability(minion2.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
+        testMinion2 = MinionServerFactoryTest.createTestMinionServer(user);
+        SystemManager.giveCapability(testMinion2.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
 
-        Server server1 = ServerFactoryTest.createTestServer(user, false,
+        testServer1 = ServerFactoryTest.createTestServer(user, false,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
-        SystemManager.giveCapability(server1.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
+        SystemManager.giveCapability(testServer1.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
 
         String label = TestUtils.randomString();
-        ActionChain actionChain = ActionChainFactory.createActionChain(label, user);
+        testActionChain = ActionChainFactory.createActionChain(label, user);
 
 
         Date earliestAction = new Date();
 
         ScriptActionDetails sad = ActionFactory.createScriptActionDetails(
                 "root", "root", 10L, "#!/bin/csh\necho hello");
-        Set<Action> scriptActions = ActionChainManager.scheduleScriptRuns(user,
-                Arrays.asList(minion1.getId(), minion2.getId(), server1.getId()),
-                "script", sad, earliestAction, actionChain);
+        ActionChainManager.scheduleScriptRuns(user,
+                Arrays.asList(testMinion1.getId(), testMinion2.getId(), testServer1.getId()),
+                "script", sad, earliestAction, testActionChain);
 
         Set<Long> allServerIds = new HashSet<>();
-        Collections.addAll(allServerIds, minion1.getId(), minion2.getId(), server1.getId());
+        Collections.addAll(allServerIds, testMinion1.getId(), testMinion2.getId(), testServer1.getId());
 
-        Set<Action> rebootActions = ActionChainManager.scheduleRebootActions(user,
-                allServerIds, earliestAction, actionChain);
+        ActionChainManager.scheduleRebootActions(user, allServerIds, earliestAction, testActionChain);
 
-        Set<Action> highstateActions = ActionChainManager.scheduleApplyStates(user,
-                Arrays.asList(minion1.getId(), minion2.getId()), Optional.empty(),
-                earliestAction, actionChain);
+        testHighstateActions = ActionChainManager.scheduleApplyStates(user,
+                Arrays.asList(testMinion1.getId(), testMinion2.getId()), Optional.empty(),
+                earliestAction, testActionChain);
 
         context().checking(new Expectations() { {
             allowing(taskomaticMock).scheduleActionChainExecution(with(any(ActionChain.class)));
         } });
 
-        ActionChainFactory.schedule(actionChain, earliestAction);
+        ActionChainFactory.schedule(testActionChain, earliestAction);
 
-        saltServerActionService.executeActionChain(actionChain.getId());
+        saltServerActionService.executeActionChain(testActionChain.getId());
+    }
+
+    private Event getJobReturnEvent(String filename, long actionId, Map<String, String> placeholders) throws Exception {
+        Path path = new File(TestUtils.findTestData(
+                "/com/suse/manager/reactor/messaging/test/" + filename).getPath()).toPath();
+        String eventString = Files.lines(path)
+                .collect(Collectors.joining("\n"))
+                .replaceAll("\"suma-action-id\": \\d+", "\"suma-action-id\": " + actionId);
+        if (placeholders != null) {
+            for (Map.Entry<String, String> entries : placeholders.entrySet()) {
+                String placeholder = entries.getKey();
+                String value = entries.getValue();
+                eventString = StringUtils.replace(eventString, placeholder, value);
+            }
+        }
+
+        JsonParser<Event> eventsJsonParser = new JsonParser<>(new TypeToken<>() {
+        });
+        return eventsJsonParser.parse(eventString);
+    }
+
+    @Test
+    public void testExecuteActionChainWithJobReturnEvent() throws Exception {
+        //setup: do the same operations as in testExecuteActionChain
+        testExecuteActionChain();
+
+        //then inspire from JobReturnEventMessageActionTest.testActionChainPackageRefreshNeeded
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        Map<String, String> placeholders = new HashMap<>();
+        placeholders.put("${minion-id}", minion.getMinionId());
+
+        long highstateFirstActionId = testHighstateActions.stream()
+                .findFirst()
+                .map(Action::getId)
+                .orElse(0L);
+
+        placeholders.put("${action1-id}", highstateFirstActionId + "");
+        placeholders.put("${actionchain-id}", testActionChain.getId() + "");
+
+        Optional<JobReturnEvent> event = JobReturnEvent.parse(
+                getJobReturnEvent("action.chain.job.return.json", highstateFirstActionId, placeholders));
+        JobReturnEventMessage message = new JobReturnEventMessage(event.get());
+
+        //Process the event message
+        JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService,
+                testSaltUtils);
+        messageAction.execute(message);
+
+        assertEquals(3, ActionFactory.listActionsForServer(user, testMinion1).size(),
+                "3 actions have been scheduled for minion 1");
+        assertEquals(3, ActionFactory.listActionsForServer(user, testMinion2).size(),
+                "3 actions have been scheduled for minion 2");
+        assertEquals(2, ActionFactory.listActionsForServer(user, testServer1).size(),
+                "2 actions have been scheduled for server 1");
     }
 
     @Test

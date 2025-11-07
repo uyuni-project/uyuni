@@ -20,7 +20,7 @@
 %{!?productprettyname: %global productprettyname Uyuni}
 
 Name:           spacewalk
-Version:        5.2.0
+Version:        5.2.1
 Release:        0
 Summary:        %{productprettyname} Systems Management Application
 License:        GPL-2.0-only

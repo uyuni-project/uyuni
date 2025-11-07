@@ -52,12 +52,11 @@ public class KickstartActivationKeysTest extends BaseKickstartCommandTestCase {
         ActivationKeyFactory.save(key);
         key = (ActivationKey) reload(key);
 
-        DataResult dr = KickstartLister.getInstance()
+        DataResult<ActivationKeyDto> dr = KickstartLister.getInstance()
             .getActivationKeysInOrg(ksdata.getOrg(), null);
         assertFalse(dr.isEmpty());
         boolean found = false;
-        for (Object oIn : dr) {
-            ActivationKeyDto row = (ActivationKeyDto) oIn;
+        for (ActivationKeyDto row : dr) {
             assertNotNull(row.getId());
             assertNotNull(row.getNote());
             if (note.equals(row.getNote())) {

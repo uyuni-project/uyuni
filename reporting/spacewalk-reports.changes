@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Mon Oct 27 15:27:11 CET 2025 - rosuna@suse.com
+
+- version 5.2.1-0
+  * Allow existing pylint failures
+  * Reformat Python code with black
+  * Add new system columns to the Inventory Report
+  * Fix a typo in the System Hardware Report
+  * Add a System Hardware Report (jsc#SUMA-316)
+  * Fix syntax error in changelog
+
+-------------------------------------------------------------------
 Tue Jun 17 19:32:57 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.2-0

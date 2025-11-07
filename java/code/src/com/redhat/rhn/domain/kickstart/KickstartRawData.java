@@ -22,13 +22,20 @@ import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 
 import org.cobbler.Profile;
 
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.Transient;
+
 
 /**
  * @author paji
  * KickstartRawData
  */
+@Entity
+@DiscriminatorValue("raw")
 public class KickstartRawData extends KickstartData {
 
+    @Transient
     private String data;
 
     /**

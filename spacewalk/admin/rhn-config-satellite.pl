@@ -73,7 +73,7 @@ foreach my $opt_name (keys %options) {
   my $val = $options{$opt_name};
   if ($val =~ /^[A-Z0-9_]+$/) {
     my $envkey = "UYUNICFG_" . $val;
-    if (exists $ENV{$envkey} && defined $ENV{$envkey} && $ENV{$envkey} ne '') {
+    if (exists $ENV{$envkey} && defined $ENV{$envkey}) {
       $options{$opt_name} = $ENV{$envkey};
     }
   }

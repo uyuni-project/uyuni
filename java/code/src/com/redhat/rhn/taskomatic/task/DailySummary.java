@@ -456,8 +456,7 @@ public class DailySummary extends RhnJavaJob {
                    StringUtils.repeat(" ", (longestActionLength - (actionName.length()))));
             for (String status : statusSet) {
                 Map<String, Integer> counts = actionTree.get(actionName);
-                Integer theCount = counts.get(status);
-                theCount = counts.getOrDefault(status, 0);
+                Integer theCount = counts.getOrDefault(status, 0);
                 formattedActions.append(theCount);
                 formattedActions.append(StringUtils.repeat(" ", longestStatusLength +
                         ERRATA_SPACER - theCount.toString().length()));

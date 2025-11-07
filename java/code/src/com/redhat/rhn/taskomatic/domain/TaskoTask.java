@@ -17,12 +17,13 @@ package com.redhat.rhn.taskomatic.domain;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -33,8 +34,14 @@ import javax.persistence.Table;
 public class TaskoTask extends BaseDomainHelper {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_TASKO_TASK_SEQ")
-    @SequenceGenerator(name = "RHN_TASKO_TASK_SEQ", sequenceName = "RHN_TASKO_TASK_ID_SEQ", allocationSize = 1)
+    @GeneratedValue(generator = "RHN_TASKO_TASK_SEQ")
+    @GenericGenerator(
+            name = "RHN_TASKO_TASK_SEQ",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @Parameter(name = "sequence_name", value = "RHN_TASKO_TASK_ID_SEQ"),
+                    @Parameter(name = "increment_size", value = "1")
+            })
     private Long id;
 
     @Column

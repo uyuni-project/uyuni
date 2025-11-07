@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -15,12 +16,16 @@
 package com.redhat.rhn.domain.rpm;
 
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
+import java.io.Serial;
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -28,12 +33,22 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "rhnSourceRpm")
-public class SourceRpm {
+public class SourceRpm implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 6588701748928726469L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_SOURCERPM_ID_SEQ")
-    @SequenceGenerator(name = "RHN_SOURCERPM_ID_SEQ", sequenceName = "RHN_SOURCERPM_ID_SEQ", allocationSize = 1)
+    @GeneratedValue(generator = "RHN_SOURCERPM_ID_SEQ")
+    @GenericGenerator(
+            name = "RHN_SOURCERPM_ID_SEQ",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @Parameter(name = "sequence_name", value = "RHN_SOURCERPM_ID_SEQ"),
+                    @Parameter(name = "increment_size", value = "1")
+            })
     private Long id;
+
     @Column
     private String name;
 

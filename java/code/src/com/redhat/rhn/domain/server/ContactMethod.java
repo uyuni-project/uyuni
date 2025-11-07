@@ -14,19 +14,124 @@
  */
 package com.redhat.rhn.domain.server;
 
+import static org.hibernate.annotations.CacheConcurrencyStrategy.READ_ONLY;
+
 import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.domain.AbstractLabelNameHelper;
+
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.Immutable;
+
+import java.io.Serial;
+import java.io.Serializable;
+
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * Class representation of the table suseServerContactMethod.
  */
-public class ContactMethod extends AbstractLabelNameHelper {
+@Entity
+@Table(name = "suseServerContactMethod")
+@Immutable
+@Cache(usage = READ_ONLY)
+public class ContactMethod implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 3134472160888520168L;
+
+    @Id
+    @Column
+    private Long id;
+
+    @Column
+    private String label;
+
+    // AccessType.PROPERTY is needed for this field, so that the method setName() is called when loading the object
+    // with annotations, otherwise, the default is AccessType.FIELD, meaning that the field is filled directly
+    // by hibernate without calling the setter
+    @Column
+    @Access(AccessType.PROPERTY)
+    private String name;
+
+    /**
+     * @return Returns the id.
+     */
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     * @param i The id to set.
+     */
+    public void setId(Long i) {
+        this.id = i;
+    }
+
+    /**
+     * @return Returns the label.
+     */
+    public String getLabel() {
+        return label;
+    }
+
+    /**
+     * @param l The label to set.
+     */
+    public void setLabel(String l) {
+        this.label = l;
+    }
+
+    /**
+     * @return Returns the name.
+     */
+    public String getName() {
+        return name;
+    }
+
     /**
      * Set the localized name.
-     * @param key the key to lookup the localized name
+     * @param key the key to look up the localized name
+     * */
+    public void setName(String key) {
+        this.name = LocalizationService.getInstance().getMessage(key);
+    }
+
+    /**
+     * {@inheritDoc}
      */
     @Override
-    public void setName(String key) {
-        super.setName(LocalizationService.getInstance().getMessage(key));
+    public int hashCode() {
+        return new HashCodeBuilder().append(this.getId())
+                .append(this.getName())
+                .append(this.getLabel())
+                .toHashCode();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object oth) {
+        if (!(oth instanceof ContactMethod other)) {
+            return false;
+        }
+        return new EqualsBuilder().append(this.getId(), other.getId())
+                .append(this.getName(), other.getName())
+                .append(this.getLabel(), other.getLabel())
+                .isEquals();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return getClass().getName() + " : id: " + getId();
     }
 }

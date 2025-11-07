@@ -1,4 +1,26 @@
 -------------------------------------------------------------------
+Wed Oct 29 14:13:14 CET 2025 - marina.latini@suse.com
+
+- version 5.2.2
+  * Remove unused susemanager-tftpsync-recv package
+    and config
+
+-------------------------------------------------------------------
+Tue Oct 28 10:17:39 CET 2025 - rosuna@suse.com
+
+- version 5.2.1
+  * Use absolute paths when invoking external commands
+  * Handle large static files outside of wsgi script (bsc#1244424)
+  * Check only for major version for proxy containers
+  * Reorganize proxy apache configuration
+    * remove unused access to pub dir
+    * move cobbler configs from the uyuni-config to the proxy package
+    * add max workers limit to 150 (bsc#1244552)
+    * use proxypass instead of wsgi to pass API calls to the server
+    and anonymous dirs (bsc#1241880)
+  * Use existing systemid in proxy httpd if present (bsc#1246789)
+
+-------------------------------------------------------------------
 Fri Jun 27 13:05:49 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.8

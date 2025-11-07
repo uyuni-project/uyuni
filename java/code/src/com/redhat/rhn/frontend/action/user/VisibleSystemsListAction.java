@@ -62,7 +62,7 @@ public class VisibleSystemsListAction extends RhnSetAction {
         User user = new RequestContext(request).getCurrentUser();
 
         //Get a DataResult containing all of the user's systems
-        DataResult dr = getDataResult(user, formIn, request);
+        DataResult<VisibleSystems> dr = getDataResult(user, formIn, request);
 
         //Get the old set
         RhnSet rs = getSetDecl().get(user);
@@ -71,8 +71,7 @@ public class VisibleSystemsListAction extends RhnSetAction {
          * Loop through all items in the DataResult and
          * add each item to the set.
          */
-        for (Object oIn : dr) {
-            BaseDto dto = (BaseDto) oIn;
+        for (BaseDto dto : dr) {
             if (dto.isSelectable()) {
                 dto.addToSet(rs);
             }

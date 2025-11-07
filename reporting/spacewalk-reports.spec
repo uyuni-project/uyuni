@@ -24,7 +24,7 @@
 %define pythonX %{?build_py3:python3}%{!?build_py3:python2}
 
 Name:           spacewalk-reports
-Version:        5.2.0
+Version:        5.2.1
 Release:        0
 Summary:        Script based reporting
 License:        GPL-2.0-only

@@ -22,22 +22,74 @@ import com.redhat.rhn.domain.Identifiable;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.scc.SCCRepositoryAuth;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
+
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 /**
  * ContentSourceType
  */
+@Entity
+@Table(name = "rhnContentSource")
 public class ContentSource extends BaseDomainHelper implements Identifiable {
 
+    @Id
+    @GeneratedValue(generator = "chan_content_src_seq")
+    @GenericGenerator(
+        name = "chan_content_src_seq",
+        strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+        parameters = {
+            @Parameter(name = "sequence_name", value = "rhn_chan_content_src_id_seq"),
+            @Parameter(name = "increment_size", value = "1")
+        })
     private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "org_id")
     private Org org;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "type_id")
     private ContentSourceType type;
+
+    @Column(name = "source_url")
     private String sourceUrl;
+
+    @Column
     private String label;
+
+    @Column(name = "metadata_signed")
+    @Type(type = "yes_no")
     private boolean metadataSigned;
+
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    @JoinTable(
+                name = "rhnChannelContentSource",
+                joinColumns = @JoinColumn(name = "source_id"),
+                inverseJoinColumns = @JoinColumn(name = "channel_id"))
     private Set<Channel> channels = new HashSet<>();
+
+    @OneToMany(mappedBy = "contentSource", cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
     private Set<SslContentSource> sslSets = new HashSet<>();
+
+    @OneToOne(mappedBy = "contentSource", fetch = FetchType.LAZY)
     private SCCRepositoryAuth repositoryAuth;
 
     /**
@@ -60,7 +112,6 @@ public class ContentSource extends BaseDomainHelper implements Identifiable {
         sslSets = new HashSet<>(cs.getSslSets());
         repositoryAuth = cs.getRepositoryAuth();
     }
-
 
     /**
      * @return Returns the label.
@@ -104,7 +155,7 @@ public class ContentSource extends BaseDomainHelper implements Identifiable {
     /**
      * @param idIn The id to set.
      */
-    public void setId(Long idIn) {
+    protected void setId(Long idIn) {
         this.id = idIn;
     }
 

@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -17,16 +18,16 @@ package com.redhat.rhn.domain.server;
 import com.redhat.rhn.domain.BaseDomainHelper;
 
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -38,28 +39,44 @@ public class Location extends BaseDomainHelper {
 
     @Id
     @Column(name = "ID")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "server_loc_seq")
-    @SequenceGenerator(name = "server_loc_seq", sequenceName = "rhn_server_loc_id_seq", allocationSize = 1)
+    @GeneratedValue(generator = "server_loc_seq")
+    @GenericGenerator(
+            name = "server_loc_seq",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @Parameter(name = "sequence_name", value = "rhn_server_loc_id_seq"),
+                    @Parameter(name = "increment_size", value = "1")
+            })
     private Long id;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "server_id")
     private Server server;
+
     @Column(name = "MACHINE")
     private String machine;
+
     @Column(name = "RACK")
     private String rack;
+
     @Column(name = "ROOM")
     private String room;
+
     @Column(name = "BUILDING")
     private String building;
+
     @Column(name = "ADDRESS1")
     private String address1;
+
     @Column(name = "ADDRESS2")
     private String address2;
+
     @Column(name = "CITY")
     private String city;
+
     @Column(name = "STATE")
     private String state;
+
     @Column(name = "COUNTRY")
     private String country;
 

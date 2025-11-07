@@ -115,7 +115,7 @@ public abstract class BaseSystemPackagesAction extends RhnAction {
      * @param server The system.
      * @return List of packages that can be installed..
      */
-    protected abstract DataResult getDataResult(Server server);
+    protected abstract DataResult<?> getDataResult(Server server);
 
     /**
      * Basically returns the declaration used to store the set of keys..

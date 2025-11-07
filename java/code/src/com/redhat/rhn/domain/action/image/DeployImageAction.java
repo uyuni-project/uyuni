@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 SUSE LLC
+ * Copyright (c) 2012--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -17,12 +17,21 @@ package com.redhat.rhn.domain.action.image;
 
 import com.redhat.rhn.domain.action.Action;
 
+import javax.persistence.CascadeType;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.OneToOne;
+
 /**
  * DeployImageAction - Class representation of image deployment action
  */
+@Entity
+@DiscriminatorValue("500")
 public class DeployImageAction extends Action {
 
     private static final long serialVersionUID = 1438261396065921002L;
+
+    @OneToOne(mappedBy = "parentAction", cascade = CascadeType.ALL)
     private DeployImageActionDetails details;
 
     /**
