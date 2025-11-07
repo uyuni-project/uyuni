@@ -48,7 +48,7 @@ public final class ClassBuilder implements ManifestFactoryBuilder {
         }
 
         try {
-            return Class.forName(className).newInstance();
+            return Class.forName(className).getDeclaredConstructor().newInstance();
         }
         catch (Exception e) {
             throw new ObjectCreateWrapperException("Unable to create: " +
