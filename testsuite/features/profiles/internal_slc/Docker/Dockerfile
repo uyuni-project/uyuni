@@ -1,4 +1,4 @@
-FROM registry.mgr.prv.suse.net/opensuse/leap:15.4
+FROM registry.mgr.slc1.suse.org/opensuse/leap:15.4
 MAINTAINER Admin User "noemail@example.com"
 
 ARG repo
