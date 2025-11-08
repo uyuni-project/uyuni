@@ -1,0 +1,1 @@
+- Fix execution of virtual instance refresh action (bsc#1253161)

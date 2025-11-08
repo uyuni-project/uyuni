@@ -30,7 +30,7 @@ public class VmInfoSlsResult {
     private StateApplyResult<Ret<Map<String, Map<String, Object>>>> vminfo;
 
     /**
-     * @return return virtual machine informations
+     * @return return virtual machine information
      */
     public Map<String, Map<String, Object>> getVmInfos() {
         if (vminfo == null) {
