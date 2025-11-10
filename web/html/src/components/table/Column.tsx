@@ -69,12 +69,3 @@ export function Column(props: ColumnProps) {
     </td>
   );
 }
-
-Column.defaultProps = {
-  header: undefined,
-  comparator: undefined,
-  sortable: false,
-  columnClass: undefined,
-  data: undefined,
-  criteria: undefined,
-};

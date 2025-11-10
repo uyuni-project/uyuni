@@ -15,11 +15,11 @@ type HighlightProps = {
 };
 
 /** Search and highlight part of a text */
-export function Highlight(props: HighlightProps) {
+export function Highlight({ enabled = false, ...props }: HighlightProps) {
   const text = props.text;
   const high = props.highlight;
 
-  if (!props.enabled || !high) {
+  if (!enabled || !high) {
     return (
       <span key="hl" className={props.className}>
         {text}
@@ -56,6 +56,3 @@ export function Highlight(props: HighlightProps) {
     </span>
   );
 }
-Highlight.defaultProps = {
-  enabled: false,
-};

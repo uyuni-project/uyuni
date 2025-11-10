@@ -37,7 +37,7 @@ function getTooltip(channelDependencies: ChannelDependencyData): string {
   return tooltip;
 }
 
-const ChildChannel: React.FC<Props> = (props: Props): React.ReactElement => {
+const ChildChannel: React.FC<Props> = ({ search = "", ...props }: Props): React.ReactElement => {
   const { id, name, recommended, parent } = props.channel;
   const identifier = "child_" + id;
 
@@ -64,11 +64,7 @@ const ChildChannel: React.FC<Props> = (props: Props): React.ReactElement => {
         disabled={isRequiredBySelectedBaseChannel}
       />
       <label className={`${styles.collapsible} ${styles.child_name}`} title={tooltip || undefined} htmlFor={identifier}>
-        <Highlight
-          enabled={props.search !== undefined && props.search.length > 0}
-          text={name}
-          highlight={props.search}
-        ></Highlight>
+        <Highlight enabled={search !== undefined && search.length > 0} text={name} highlight={search}></Highlight>
       </label>
       <span>
         {tooltip ? (
@@ -90,10 +86,6 @@ const ChildChannel: React.FC<Props> = (props: Props): React.ReactElement => {
       </span>
     </div>
   );
-};
-
-ChildChannel.defaultProps = {
-  search: "",
 };
 
 export default ChildChannel;
