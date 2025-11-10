@@ -123,7 +123,7 @@ export const SSMAppStreamsConfigure: React.FC<Props> = ({ channelAppStreams }: P
 
   return (
     <>
-      {scheduledMsg.length > 0 && <Messages items={scheduledMsg} />}
+      <Messages items={scheduledMsg} />
       <h2>
         <i className={"fa spacewalk-icon-salt-add"} />
         {t("AppStreams")}
