@@ -50,6 +50,7 @@ RUN echo "rpm.install.excludedocs = yes" >>/etc/zypp/zypp.conf && \
         spacecmd \
         spacewalk-backend-sql-postgresql \
         spacewalk-java-postgresql \
+        susemanager-tools-salt \
         sssd \
         sssd-ad \
         sssd-dbus \
