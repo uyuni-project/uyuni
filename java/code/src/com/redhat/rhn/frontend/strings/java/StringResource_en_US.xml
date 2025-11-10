@@ -1871,6 +1871,12 @@
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="virt.refresh_list" xml:space="preserve">
+        <source>Virtualization List Refresh</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="packages.update" xml:space="preserve">
         <source>Package Install</source>
         <context-group name="ctx">
