@@ -20,3 +20,10 @@ export type AppStreamModule = {
   enabled: boolean;
   systemCount: number;
 };
+
+export type SSMAppStreamChannel = {
+  id: number;
+  name: string;
+  modular: boolean;
+  parentId: number | null;
+};

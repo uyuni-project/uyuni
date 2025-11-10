@@ -1,10 +1,10 @@
-import SpaRenderer from "core/spa/spa-renderer";
+import { SSMAppStreamChannel } from "manager/appstreams/appstreams.type";
 
-import { HierarchicalRow } from "components/table/HierarchicalTable";
+import SpaRenderer from "core/spa/spa-renderer";
 
 import { AppStreamsChannelSelection } from "./ssm-appstreams-channel-selection";
 
-type RendererProps = { channels: HierarchicalRow[] };
+type RendererProps = { channels: SSMAppStreamChannel[] };
 
 export const renderer = (id: string, { channels }: RendererProps) =>
   SpaRenderer.renderNavigationReact(<AppStreamsChannelSelection channels={channels} />, document.getElementById(id));
