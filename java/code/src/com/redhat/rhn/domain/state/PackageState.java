@@ -162,7 +162,7 @@ public class PackageState {
      * @param packageState the packageState to set
      */
     public void setPackageState(PackageStates packageState) {
-        this.packageStateTypeId = packageState.id();
+        this.packageStateTypeId = packageState.getId();
     }
 
     /**
@@ -191,7 +191,7 @@ public class PackageState {
      * @param versionConstraint the versionConstraint to set
      */
     public void setVersionConstraint(VersionConstraints versionConstraint) {
-        versionConstraintId = versionConstraint.id();
+        versionConstraintId = versionConstraint.getId();
     }
 
     /**

@@ -56,7 +56,7 @@ public abstract class BaseRepoCommand {
     private Set<SslContentSource> sslSetsToAdd = new HashSet<>();
     private Set<SslContentSource> sslSetsToDelete = new HashSet<>();
     private Org org;
-    private boolean metadata_signed;
+    private boolean metadataSigned;
 
     /**
      *
@@ -178,7 +178,7 @@ public abstract class BaseRepoCommand {
      * @return true if metadata should be signed
      */
     public boolean getMetadataSigned() {
-        return metadata_signed;
+        return metadataSigned;
     }
 
     /**
@@ -186,7 +186,7 @@ public abstract class BaseRepoCommand {
      * @param md set if metadata are signed
      */
     public void setMetadataSigned(boolean md) {
-        this.metadata_signed = md;
+        this.metadataSigned = md;
     }
 
     /**
@@ -267,7 +267,7 @@ public abstract class BaseRepoCommand {
                 repo.setType(cst);
             }
         }
-        repo.setMetadataSigned(this.metadata_signed);
+        repo.setMetadataSigned(this.metadataSigned);
 
         ChannelFactory.save(repo);
         HibernateFactory.commitTransaction();
