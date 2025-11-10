@@ -29,10 +29,10 @@ sudo -i podman exec server bash -c "[ -d /usr/share/susemanager/www/tomcat/webap
 # While we do not have a mirror for the jar files, the easiest workaround is
 # to try again and hope it succeeds.
 
-curl -4 -o me.txt ifconfig.me
-cat me.txt
-curl -6 -o me.txt ifconfig.me
-cat me.txt
+curl -4 -o me.txt ifconfig.me ||:
+cat me.txt ||:
+curl -6 -o me.txt ifconfig.me ||:
+cat me.txt ||:
 
 sudo -i podman exec server bash -c "cd /java && ant -f manager-build.xml ivy || ant -f manager-build.xml ivy || ant -f manager-build.xml ivy"
 sudo -i podman exec server bash -c "cd /java && ant -f manager-build.xml -Ddeploy.mode=local refresh-branding-jar deploy"
