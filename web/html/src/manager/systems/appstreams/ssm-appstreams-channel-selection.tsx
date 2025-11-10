@@ -1,17 +1,15 @@
 import * as React from "react";
 
+import { SSMAppStreamChannel } from "manager/appstreams/appstreams.type";
+
+import { Table } from "components/table";
 import { Column } from "components/table/Column";
-import { HierarchicalRow, HierarchicalTable } from "components/table/HierarchicalTable";
 
 type ChannelSelectionProps = {
-  channels: HierarchicalRow[];
+  channels: SSMAppStreamChannel[];
 };
 
 export const AppStreamsChannelSelection: React.FC<ChannelSelectionProps> = ({ channels }) => {
-  const getRowClass = (row: HierarchicalRow, index: number): string => {
-    return index % 2 === 0 ? "list-row-even" : "list-row-odd";
-  };
-
   return (
     <>
       {!channels || channels.length === 0 ? (
@@ -22,19 +20,12 @@ export const AppStreamsChannelSelection: React.FC<ChannelSelectionProps> = ({ ch
           <div className="page-summary">
             {t("First, select the channel containing the AppStreams to be configured upon the selected systems.")}
           </div>
-          <HierarchicalTable
-            data={channels}
-            identifier={(row) => row.id}
-            expandColumnKey="channelName"
-            initiallyExpanded={true}
-            cssClassFunction={getRowClass}
-            className="table"
-          >
+          <Table data={channels} identifier={(row) => row.id}>
             <Column
               header="Channel Name"
               columnKey="channelName"
               columnClass="col"
-              cell={(row: HierarchicalRow) => (
+              cell={(row) => (
                 <>
                   {row.parentId && (
                     <img
@@ -51,7 +42,7 @@ export const AppStreamsChannelSelection: React.FC<ChannelSelectionProps> = ({ ch
                 </>
               )}
             />
-          </HierarchicalTable>
+          </Table>
         </>
       )}
     </>
