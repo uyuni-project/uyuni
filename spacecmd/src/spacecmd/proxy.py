@@ -127,7 +127,7 @@ parameters:
 options:
   -o, --output Path where to create the generated configuration. Default: 'config.tar.gz'
   -p, --ssh-port SSH port the proxy listens one. Default: 8022
-  --ca-crt path to the certificate of the CA to use to generate a new proxy certificate.
+  --ca-cert path to the certificate of the CA to use to generate a new proxy certificate.
            Using /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT by default.
   --ca-key path to the private key of the CA to use to generate a new proxy certificate.
            Using /root/ssl-build/RHN-ORG-PRIVATE-SSL-KEY by default.
