@@ -5,12 +5,10 @@ import { cssTransition, toast, ToastContainer } from "react-toastify";
 type OptionalParams = {
   autoHide: boolean;
   containerId?: string;
-  closeButton?: boolean;
 };
 
 type MessagesContainerProps = {
   containerId?: string;
-  closeButton?: boolean;
 };
 
 const FadeTransition = cssTransition({
@@ -37,15 +35,11 @@ function parseAutoHide(input: boolean) {
   return input === true ? undefined : false;
 }
 
-export function showSuccessToastr(
-  message: React.ReactNode,
-  optionalParams: OptionalParams = { autoHide: true }
-) {
-  const notify = (msg: React.ReactNode) =>
+export function showSuccessToastr(message: React.ReactNode, optionalParams: OptionalParams = { autoHide: true }) {
+  const notify = (msg) =>
     toast.success(msg, {
       autoClose: parseAutoHide(optionalParams.autoHide),
       containerId: optionalParams.containerId,
-      closeButton: optionalParams.closeButton,
     });
 
   show(message, notify);
