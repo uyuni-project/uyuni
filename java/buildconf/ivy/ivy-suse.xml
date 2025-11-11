@@ -1,6 +1,31 @@
 <ivy-module version="1.0">
     <info organisation="suse" module="manager" />
     <dependencies>
+
+        <!-- FROM POM -->
+        <dependency org="suse" name="angus-activation" rev="2.0.2" />
+        <!-- <dependency org="suse" name="antlr4" rev="4.13.0" /> -->
+
+        <dependency org="suse" name="hibernate-models" rev="1.0.1" />
+        <!--<dependency org="suse" name="istack-commons" rev="3.0.7" /> -->
+        <dependency org="suse" name="jakarta.activation-api" rev="2.1.3" />
+
+        <dependency org="suse" name="jakarta.inject-api" rev="2.0.1" />
+        <dependency org="suse" name="jakarta-persistence-api" rev="3.2.0" />
+        <dependency org="suse" name="jakarta.transaction-api" rev="2.0.1" />
+        <dependency org="suse" name="jakarta.xml.bind-api" rev="4.0.0" />
+
+        <dependency org="suse" name="jaxb-core" rev="4.0.0" />
+        <dependency org="suse" name="jaxb-runtime" rev="4.0.0" />
+
+        <dependency org="suse" name="txw2" rev="4.0.0" />
+
+
+        <!-- ADDED TO COMPILE -->
+        <dependency org="suse" name="jakarta.annotation-api" rev="3.0.0" />
+
+
+
         <!-- Runtime dependencies -->
         <dependency org="suse" name="antlr" rev="2.7.7" />
         <dependency org="suse" name="asm" rev="9.7" />
@@ -33,13 +58,12 @@
         <dependency org="suse" name="concurrentlinkedhashmap-lru" rev="1.3.2" />
         <dependency org="suse" name="dom4j" rev="2.1.4" />
         <dependency org="suse" name="ehcache-core" rev="2.10.1" />
-        <dependency org="suse" name="geronimo-jta_1.1_spec" rev="1.2" />
-        <dependency org="suse" name="gson" rev="2.8.9" />
-        <dependency org="suse" name="hibernate-c3p0" rev="5.3.25" />
-        <dependency org="suse" name="hibernate-commons-annotations" rev="5.0.4" />
-        <dependency org="suse" name="hibernate-core" rev="5.3.25" />
-        <dependency org="suse" name="hibernate-ehcache" rev="5.3.25" />
-        <dependency org="suse" name="hibernate-types-52" rev="2.16.2" />
+        <dependency org="suse" name="geronimo-jta-1.1-api" rev="1.2" />
+        <dependency org="suse" name="google-gson" rev="2.8.9" />
+        <dependency org="suse" name="hibernate-c3p0" rev="7.1.6" />
+        <dependency org="suse" name="hibernate-core" rev="7.1.6" />
+        <dependency org="suse" name="hibernate-jcache" rev="7.1.6" />
+        <dependency org="suse" name="hypersistence-utils-hibernate-71" rev="3.11.0" />
         <dependency org="suse" name="httpasyncclient" rev="4.1.4" />
         <dependency org="suse" name="httpclient" rev="4.5.14" />
         <dependency org="suse" name="httpcore" rev="4.4.14" />
@@ -49,11 +73,11 @@
         <dependency org="suse" name="jackson-core" rev="2.17.3" />
         <dependency org="suse" name="jackson-databind" rev="2.17.3" />
         <dependency org="suse" name="jade4j" rev="1.2.7" />
-        <dependency org="suse" name="jakarta.persistence-api" rev="2.2.2" />
+        <dependency org="suse" name="jakarta-persistence-api" rev="3.1.0" />
         <dependency org="suse" name="java-saml" rev="2.4.0" />
         <dependency org="suse" name="java-saml-core" rev="2.4.0" />
         <dependency org="suse" name="javassist" rev="3.29.2" />
-        <dependency org="suse" name="jboss-logging" rev="3.4.1" />
+        <dependency org="suse" name="jboss-logging" rev="3.5.0" />
         <dependency org="suse" name="jdom" rev="1.1.3" />
         <dependency org="suse" name="joda-time" rev="2.10.1" />
         <dependency org="suse" name="jose4j" rev="0.9.6" />
@@ -101,20 +125,21 @@
         <dependency org="suse" name="serializer" rev="2.7.3" />
         <dependency org="suse" name="xercesImpl" rev="2.12.2" />
         <dependency org="suse" name="xmlsec" rev="2.0.7" />
-        <dependency org="suse" name="jaxb-api" rev="2.4.0" />
-        <dependency org="suse" name="javax.activation" rev="1.2.0" />
+        <dependency org="suse" name="jaxb-core" rev="4.0.0" />
+        <dependency org="suse" name="jakarta.xml.bind-api" rev="4.0.0" />
+        <dependency org="suse" name="jakarta.activation-api" rev="2.1.3" />
         <dependency org="suse" name="jaxb-runtime" rev="2.3.1" />
-        <dependency org="suse" name="jaxb-impl" rev="2.3.1" />
-        <dependency org="suse" name="txw2" rev="2.3.1" />
+        <!-- <dependency org="suse" name="txw2" rev="2.3.1" /> -->
         <dependency org="suse" name="istack-commons-runtime" rev="3.0.7" />
         <dependency org="suse" name="stax-ex" rev="1.8" />
 
         <!-- Tomcat jars -->
-        <dependency org="suse" name="tomcat-el-api" rev="[9.0.75,10.0.0[" />
-        <dependency org="suse" name="tomcat-jsp-api" rev="[9.0.75,10.0.0[" />
-        <dependency org="suse" name="tomcat-juli" rev="[9.0.75,10.0.0[" />
-        <dependency org="suse" name="tomcat-servlet-api" rev="[9.0.75,10.0.0[" />
-        <dependency org="suse" name="tomcat-websocket-api" rev="[9.0.75,10.0.0[" />
+
+        <dependency org="suse" name="tomcat-el-api" rev="[11.0.0,12.0.0[" />
+        <dependency org="suse" name="tomcat-jsp-api" rev="[11.0.0,12.0.0[" />
+        <dependency org="suse" name="tomcat-juli" rev="[11.0.0,12.0.0[" />
+        <dependency org="suse" name="tomcat-servlet-api" rev="[11.0.0,12.0.0[" />
+
 
         <!-- Compilation and testing -->
         <dependency org="suse" name="velocity-engine-core" rev="2.4"/>
