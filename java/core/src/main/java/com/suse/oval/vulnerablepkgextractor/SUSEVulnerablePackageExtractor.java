@@ -15,6 +15,8 @@
 
 package com.suse.oval.vulnerablepkgextractor;
 
+import com.redhat.rhn.domain.rhnpackage.PackageEvr;
+
 import com.suse.oval.OsFamily;
 import com.suse.oval.cpe.Cpe;
 import com.suse.oval.cpe.CpeBuilder;
@@ -23,7 +25,6 @@ import com.suse.oval.ovaltypes.BaseCriteria;
 import com.suse.oval.ovaltypes.CriteriaType;
 import com.suse.oval.ovaltypes.CriterionType;
 import com.suse.oval.ovaltypes.DefinitionType;
-import com.suse.oval.ovaltypes.EVRType;
 import com.suse.oval.ovaltypes.LogicOperatorType;
 import com.suse.oval.ovaltypes.ObjectType;
 import com.suse.oval.ovaltypes.StateType;
@@ -99,8 +100,8 @@ public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
             vulnerablePackage.setName(packageName);
 
             if (comment.endsWith("is installed")) {
-                String evr = packageState.getPackageEVR().map(EVRType::getValue).orElse("");
-                vulnerablePackage.setFixVersion(evr);
+                vulnerablePackage.setFixVersion(packageState.getPackageEVR().map(
+                        evr -> PackageEvr.parseRpm(evr.getValue())).orElse(null));
             }
             else if (comment.endsWith("is affected")) {
                 // Affected packages don't have a fix version yet.
@@ -110,7 +111,7 @@ public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
                 // Package 'is not affected' implies that the vulnerability is too old that all supported products
                 // have the fixed package version or that a fix was backported to vulnerable products. Hence,
                 // the fix versionis 0.
-                vulnerablePackage.setFixVersion("0:0-0");
+                vulnerablePackage.setFixVersion(new PackageEvr("0", "0", "0", "rpm"));
                 continue;
             }
 

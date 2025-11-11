@@ -227,15 +227,9 @@ public class CVEAuditManagerOVAL {
             boolean allPackagesPatched = patchedVulnerablePackages.stream().allMatch(patchedPackage ->
                     getInstalledPackageVersions(patchedPackage, allInstalledPackages)
                             .stream().allMatch(installedPackage -> {
-                                String fixVersion = patchedPackage.getFixVersion().get();
-                                if ("deb".equals(installedPackage.getType())) {
-                                    return installedPackage.getPackageEVR()
-                                            .compareTo(PackageEvr.parseDebian(fixVersion)) >= 0;
-                                }
-                                else {
-                                    return installedPackage.getPackageEVR()
-                                            .compareTo(PackageEvr.parseRpm(fixVersion)) >= 0;
-                                }
+                                PackageEvr fixVersion = patchedPackage.getFixVersion().orElse(null);
+                                return installedPackage.getPackageEVR()
+                                        .compareTo(fixVersion) >= 0;
                             }));
 
             if (allPackagesPatched) {

@@ -24,6 +24,7 @@ import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 
 import com.suse.oval.manager.OVALLookupHelper;
 import com.suse.oval.ovaltypes.DefinitionType;
@@ -41,6 +42,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class OVALCachingFactory extends HibernateFactory {
@@ -82,12 +84,15 @@ public class OVALCachingFactory extends HibernateFactory {
         DataResult<Map<String, Object>> batch = new DataResult<>(new ArrayList<>(1000));
         for (ProductVulnerablePackages pvp : productVulnerablePackages) {
             for (String cve : pvp.getCves()) {
-                for (VulnerablePackage vulnerablePackage : pvp.getVulnerablePackages()) {
+                for (VulnerablePackage vp : pvp.getVulnerablePackages()) {
                     Map<String, Object> params = new HashMap<>();
                     params.put("product_name", pvp.getProductCpe());
                     params.put("cve_name", cve);
-                    params.put("package_name", vulnerablePackage.getName());
-                    params.put("fix_version", vulnerablePackage.getFixVersion().orElse(null));
+                    params.put("package_name", vp.getName());
+                    params.put("fix_epoch", vp.getFixVersion().map(PackageEvr::getEpoch).orElse(null));
+                    params.put("fix_version", vp.getFixVersion().map(PackageEvr::getVersion).orElse(null));
+                    params.put("fix_release", vp.getFixVersion().map(PackageEvr::getRelease).orElse(null));
+                    params.put("fix_type", vp.getFixVersion().map(PackageEvr::getType).orElse(null));
 
                     batch.add(params);
 
@@ -126,8 +131,17 @@ public class OVALCachingFactory extends HibernateFactory {
 
         return result.stream().map(row -> {
             VulnerablePackage vulnerablePackage = new VulnerablePackage();
-            vulnerablePackage.setName((String) row.get("vulnerablepkgname"));
-            vulnerablePackage.setFixVersion((String) row.get("vulnerablepkgfixversion"));
+            vulnerablePackage.setName((String) row.get("package_name"));
+            vulnerablePackage.setFixVersion(
+                    Optional.ofNullable((String) row.get("fix_version"))
+                            .map(v -> new PackageEvr(
+                                    (String) row.get("fix_epoch"),
+                                    v,
+                                    (String) row.get("fix_release"),
+                                    (String) row.get("fix_type")
+                            ))
+                            .orElse(null)
+            );
             return vulnerablePackage;
         }).collect(Collectors.toList());
     }
