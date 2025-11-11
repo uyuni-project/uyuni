@@ -121,19 +121,16 @@ def parse_kiwi_result(dest):
         #
         # return empty dict on failure
         # the caller should handle all values as optional
-        # pylint: disable-next=undefined-variable
-        result = __salt__["cmd.exec_code_all"](
-            "/usr/bin/python3", _kiwi_result_script, args=[path]
-        )
-        if result["retcode"] == 0:
-            ret = json.loads(result["stdout"])
-        else:
+        for python in ["/usr/bin/python3.11", "/usr/bin/python3"]:
             # pylint: disable-next=undefined-variable
-            result = __salt__["cmd.exec_code_all"](
-                "/usr/bin/python3.11", _kiwi_result_script, args=[path]
-            )
-            if result["retcode"] == 0:
-                ret = json.loads(result["stdout"])
+            if __salt__["file.file_exists"](python):
+                # pylint: disable-next=undefined-variable
+                result = __salt__["cmd.exec_code_all"](
+                    python, _kiwi_result_script, args=[path]
+                )
+                if result["retcode"] == 0:
+                    ret = json.loads(result["stdout"])
+                    break
         # else return empty dict
 
     return ret
