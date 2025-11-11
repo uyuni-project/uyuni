@@ -142,7 +142,7 @@ export function ProxyConfig({
       {ContainerConfigMessages(success, messages, loading)}
       {(!validationErrors || validationErrors.length === 0) && (
         <Form
-          className=""
+          className="mt-5"
           divClass="row"
           model={model}
           onValidate={onValidate}

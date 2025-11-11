@@ -1,13 +1,14 @@
 import { type ReactNode, Component } from "react";
 
 import { SectionToolbar } from "components/section-toolbar/section-toolbar";
+import { MessagesContainer, showErrorToastr, showInfoToastr, showWarningToastr } from "components/toastr/toastr";
 
 import { Utils } from "utils/functions";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
 import { AsyncButton, Button } from "../components/buttons";
 import Network from "../utils/network";
-import { MessagesContainer, showErrorToastr, showInfoToastr, showWarningToastr } from "components/toastr/toastr";
+import { MessageType } from "./messages/messages";
 const capitalize = Utils.capitalize;
 
 type Props = {
@@ -25,7 +26,7 @@ type State = {
   acviteSelectedFormulas: any[];
   showDescription: boolean;
   messages: MessageType[];
-  errors?: MessageType[];
+  errors: MessageType[];
 };
 
 class FormulaSelection extends Component<Props, State> {
@@ -39,6 +40,7 @@ class FormulaSelection extends Component<Props, State> {
       acviteSelectedFormulas: [],
       showDescription: false,
       messages: [],
+      errors: [],
     };
     this.init();
   }
@@ -240,14 +242,14 @@ class FormulaSelection extends Component<Props, State> {
   };
 
   componentDidUpdate(prevProps, prevState) {
-     if (this.props.warningMessage !== prevProps.warningMessage && this.props.warningMessage) {
+    if (this.props.warningMessage !== prevProps.warningMessage && this.props.warningMessage) {
       showWarningToastr(this.props.warningMessage);
     }
     if (this.state.messages !== prevState.messages && this.state.messages.length > 0) {
       showInfoToastr(
         <>
           {this.state.messages.map((msg, i) => (
-            <div key={i}>{msg}</div>
+            <div key={msg}>{msg}</div>
           ))}
         </>
       );
@@ -256,9 +258,10 @@ class FormulaSelection extends Component<Props, State> {
       showErrorToastr(
         <>
           {this.state.errors.map((err, i) => (
-            <div key={i}>{err}</div>
+            <div key={err}>{err}</div>
           ))}
-        </>, { autoHide: false}
+        </>,
+        { autoHide: false }
       );
     }
   }
