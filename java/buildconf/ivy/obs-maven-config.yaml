@@ -10,7 +10,68 @@ repositories:
     repository: openSUSE_Leap_15.6
   Leap_sle:
     url: https://download.opensuse.org/update/leap/15.6/sle
+###################################
+  Uyuni_Jakarta:
+    project: systemsmanagement:Uyuni:Master:jakarta
+    repository: openSUSE_Leap_15.6
+  Temp_Jakarta:
+    project:  home:CDellaGiusta:branches:jakarta
+    repository: standard
+###################################
 artifacts:
+###################################
+  #runtime
+  - artifact: angus-activation
+    package: angus-activation
+    jar: angus-activation.jar
+    repository: Temp_Jakarta
+  #runtime
+  #- artifact: antlr4
+  #  package: antlr4
+  #  jar: org.abego.treelayout.core.jar
+  #  repository: Temp_Jakarta
+  #runtime
+  - artifact: byte-buddy
+    package: byte-buddy
+    repository: Leap_sle
+    jar: byte-buddy.jar
+  #runtime
+  - artifact: classmate
+    repository: Leap
+
+  #compile
+  - artifact: hibernate-core
+    repository: Uyuni_Jakarta
+  #runtime
+  - artifact: hibernate-models
+    repository: Uyuni_Jakarta
+  #runtime
+  #- artifact: istack-commons
+  #  package: byte-buddy
+  #  repository: Leap
+  #runtime
+  - artifact: jakarta.activation-api
+    package: jakarta-activation
+    repository: Temp_Jakarta
+
+  #runtime
+  - artifact: jakarta.inject-api
+    package: jakarta-inject
+    repository: Leap_sle
+  #runtime
+#  - artifact: jakarta.persistence-api
+#    package: jakarta.persistence
+#    repository: Temp_Jakarta
+  #runtime
+#  - artifact: jakarta.transaction-api
+#    package: jakarta.transaction
+#    repository: Uyuni_Jakarta
+#runtime
+#  - artifact: jakarta.xml.bind-api
+#    repository: ??
+
+
+###################################
   - artifact: asm
     package: objectweb-asm
     jar: asm-all
@@ -20,21 +81,21 @@ artifacts:
     repository: Leap
   - artifact: bcel
     repository: Leap_sle
-  - artifact: byte-buddy
-    package: byte-buddy
-    repository: Leap_sle
-    jar: byte-buddy.jar
-  - artifact: byte-buddy-dep
-    package: byte-buddy
-    repository: Leap_sle
-    jar: byte-buddy-dep.jar
+  #- artifact: byte-buddy
+  #  package: byte-buddy
+  #  repository: Leap_sle
+  #  jar: byte-buddy.jar
+  #- artifact: byte-buddy-dep
+  #  package: byte-buddy
+  #  repository: Leap_sle
+  #  jar: byte-buddy-dep.jar
   - artifact: c3p0
     repository: Leap
   - artifact: cglib
     jar: cglib.jar
     repository: Leap
-  - artifact: classmate
-    repository: Leap
+  #- artifact: classmate
+  #  repository: Leap
   - artifact: javax.mail
     jar: javax.mail.jar
     package: javamail
@@ -327,20 +388,20 @@ artifacts:
     repository: Uyuni_Other
   - artifact: jetty-util
     repository: Leap_sle
-  - artifact: glassfish-jaxb-api
-    repository: Leap
-  - artifact: jaxb-runtime
-    package: glassfish-jaxb-runtime
-    repository: Leap 
-  - artifact: jaxb-impl
-    package: glassfish-jaxb-runtime
-    repository: Leap
-  - artifact: txw2
-    package: glassfish-jaxb-txw2
-    repository: Leap
-  - artifact: glassfish-activation
-    repository: Leap
-  - artifact: istack-commons-runtime
-    repository: Leap
+  #- artifact: glassfish-jaxb-api
+  #  repository: Leap
+  #- artifact: jaxb-runtime
+  #  package: glassfish-jaxb-runtime
+  #  repository: Leap
+  #- artifact: jaxb-impl
+  #  package: glassfish-jaxb-runtime
+  #  repository: Leap
+  #- artifact: txw2
+  #  package: glassfish-jaxb-txw2
+  #  repository: Leap
+  #- artifact: glassfish-activation
+  #  repository: Leap
+  #- artifact: istack-commons-runtime
+  #  repository: Leap
   - artifact: stax-ex
     repository: Leap 
