@@ -21,13 +21,15 @@ type SubscriptionMatchingProps = {
   refreshInterval: number;
 };
 
-class SubscriptionMatching extends React.Component<SubscriptionMatchingProps> {
+class SubscriptionMatchingState {
+  serverData: any | null = null;
+  error: any | null = null;
+}
+
+class SubscriptionMatching extends React.Component<SubscriptionMatchingProps, SubscriptionMatchingState> {
   timerId?: number;
   refreshRequest?: Cancelable;
-  state = {
-    serverData: null as any | null,
-    error: null as any | null,
-  };
+  state = new SubscriptionMatchingState();
 
   UNSAFE_componentWillMount() {
     this.refreshServerData();
@@ -62,9 +64,11 @@ class SubscriptionMatching extends React.Component<SubscriptionMatchingProps> {
     if (this.refreshRequest) {
       this.refreshRequest.cancel();
     }
-    const serverData = this.state.serverData;
-    serverData.pinnedMatches = pinnedMatches;
-    this.setState({ serverData: serverData });
+    this.setState((prevState) => {
+      const serverData = prevState.serverData;
+      serverData.pinnedMatches = pinnedMatches;
+      return { serverData: serverData };
+    });
   };
 
   onMatcherRunSchedule = () => {

@@ -73,9 +73,11 @@ export class AnsibleControlNode extends React.Component<PropsType, StateType> {
     Network.post("/rhn/manager/api/systems/details/ansible/paths/delete", path.id?.toString()).then((blob) => {
       if (blob.success) {
         if (path.type === "playbook") {
-          this.setState({ playbooksPaths: this.state.playbooksPaths.filter((p) => p.id !== path.id) });
+          this.setState((prevState) => ({ playbooksPaths: prevState.playbooksPaths.filter((p) => p.id !== path.id) }));
         } else {
-          this.setState({ inventoriesPaths: this.state.inventoriesPaths.filter((p) => p.id !== path.id) });
+          this.setState((prevState) => ({
+            inventoriesPaths: prevState.inventoriesPaths.filter((p) => p.id !== path.id),
+          }));
         }
       } else {
         this.setState({ errors: blob.errors.path });
@@ -109,15 +111,15 @@ export class AnsibleControlNode extends React.Component<PropsType, StateType> {
           path: editPath.path,
         });
         if (type === "playbook") {
-          this.setState({
-            playbooksPaths: this.state.playbooksPaths.filter((p) => p.id !== editPath?.id).concat(newPath),
+          this.setState((prevState) => ({
+            playbooksPaths: prevState.playbooksPaths.filter((p) => p.id !== editPath?.id).concat(newPath),
             editPlaybookPath: {},
-          });
+          }));
         } else {
-          this.setState({
-            inventoriesPaths: this.state.inventoriesPaths.filter((p) => p.id !== editPath?.id).concat(newPath),
+          this.setState((prevState) => ({
+            inventoriesPaths: prevState.inventoriesPaths.filter((p) => p.id !== editPath?.id).concat(newPath),
             editInventoryPath: {},
-          });
+          }));
         }
       } else {
         this.setState({ errors: blob.errors.path });
@@ -140,9 +142,15 @@ export class AnsibleControlNode extends React.Component<PropsType, StateType> {
           path: newPath,
         };
         if (type === "playbook") {
-          this.setState({ playbooksPaths: this.state.playbooksPaths.concat(newAnsiblePath), newPlaybookPath: "" });
+          this.setState((prevState) => ({
+            playbooksPaths: prevState.playbooksPaths.concat(newAnsiblePath),
+            newPlaybookPath: "",
+          }));
         } else {
-          this.setState({ inventoriesPaths: this.state.inventoriesPaths.concat(newAnsiblePath), newInventoryPath: "" });
+          this.setState((prevState) => ({
+            inventoriesPaths: prevState.inventoriesPaths.concat(newAnsiblePath),
+            newInventoryPath: "",
+          }));
         }
       } else {
         this.setState({ errors: blob.errors.path });

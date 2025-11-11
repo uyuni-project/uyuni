@@ -93,7 +93,7 @@ class ImageProfiles extends React.Component<Props, State> {
   deleteProfiles = (idList) => {
     return Network.post("/rhn/manager/api/cm/imageprofiles/delete", idList).then((data) => {
       if (data.success) {
-        this.setState({
+        this.setState((prevState) => ({
           messages: (
             <Messages
               items={[
@@ -104,9 +104,9 @@ class ImageProfiles extends React.Component<Props, State> {
               ]}
             />
           ),
-          imageprofiles: this.state.imageprofiles.filter((profile) => !idList.includes(profile.profileId)),
-          selectedItems: this.state.selectedItems.filter((item) => !idList.includes(item)),
-        });
+          imageprofiles: prevState.imageprofiles.filter((profile) => !idList.includes(profile.profileId)),
+          selectedItems: prevState.selectedItems.filter((item) => !idList.includes(item)),
+        }));
       } else {
         this.setState({
           messages: (
