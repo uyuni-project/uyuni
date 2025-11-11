@@ -38,7 +38,7 @@ const AnsibleVarYamlEditor = React.forwardRef((props: Props, ref) => {
   const [varType, setVarType] = useState(null);
   const [expandAllClicked, setExpandAllClicked] = useState(false);
   const [expandAllState, setExpandAllState] = useState(false);
-
+  
   const formRef = React.useRef<any>(null);
   useImperativeHandle(ref, () => ({
     getValues: () => formRef.current?.values,
@@ -69,7 +69,6 @@ const AnsibleVarYamlEditor = React.forwardRef((props: Props, ref) => {
         paths = paths.concat(nestedLevelTitles(path, value));
       }
     }
-    // console.log(paths)
     return paths;
   };
 
@@ -80,7 +79,7 @@ const AnsibleVarYamlEditor = React.forwardRef((props: Props, ref) => {
       setYamlOutput(yaml.dump({ vars: values }, { quotingType: '"', forceQuotes: true }));
     }, [values]);
 
-    return <pre className="overflow-visible">{yamlOutput}</pre>;
+    return <pre>{yamlOutput}</pre>;
   };
 
   const handleVariable = useCallback((path, name) => {
@@ -115,9 +114,9 @@ const AnsibleVarYamlEditor = React.forwardRef((props: Props, ref) => {
     form.setValues(updated);
   };
 
+
   const RenderVariableField = ({ field, form }: FieldProps<any>) => {
     const { name, value } = field;
-
     const removeItem = (name) => {
       form.setFieldValue(name, undefined);
     };
@@ -177,13 +176,16 @@ const AnsibleVarYamlEditor = React.forwardRef((props: Props, ref) => {
             <DropdownButton
               text={t("Add Variable")}
               icon="fa-plus"
-              title={t("Add a Variable")}
               className="btn-default"
               items={variablesList.map((varType) => (
-                // eslint-disable-next-line jsx-a11y/anchor-is-valid
-                <a key={varType} data-senna-off href="#" onClick={() => handleVariable(name, varType)}>
+                <Button
+                  key={varType}
+                  data-senna-off
+                  handler={() => handleVariable(name, varType)}
+                  className="dropdown-item"
+                >
                   {varType.toLocaleLowerCase()}
-                </a>
+                </Button>
               ))}
             />
           </div>
@@ -213,7 +215,7 @@ const AnsibleVarYamlEditor = React.forwardRef((props: Props, ref) => {
   return (
     <>
       <div className="row">
-        <div className="col-md-7">
+        <div className="col-md-12">
           <div className="d-flex justify-content-between align-items-center mb-3">
             Set the value of existing variables to override previously defined variables.
             <Button
@@ -226,51 +228,56 @@ const AnsibleVarYamlEditor = React.forwardRef((props: Props, ref) => {
             />
           </div>
         </div>
-        <div className="col-md-4 d-flex align-items-center">
-          <h4 className="m-0">Yaml Preview</h4>
-        </div>
       </div>
       <div className={styles.variableContent}>
-        <Form innerRef={formRef} initialValues={data} onSubmit={() => {}} enableReinitialize className="d-flex w-100">
+        <Form innerRef={formRef} initialValues={data} onSubmit={() => {}} enableReinitialize className={`d-flex w-100 ${styles.variableContent}`}>
           {({ values }) => (
             <>
               <div className={`${styles.yamlEditor} col-md-7`}>
-                {levelOneTitles(values).map((path) => (
-                  <Panel
-                    key={generateId(path)}
-                    headingLevel="h5"
-                    collapseId={generateId(path)}
-                    title={path.split(".").join(" > ")}
-                    className="panel-trasnparent"
-                    collapsClose={expandAllClicked ? !expandAllState : false}
-                    buttons={<Button
-                      className="btn-default btn-sm"
-                      handler={() => removeTopLevelItem(p)}
-                      title={t("Remove item")}
-                      icon="fa-trash-o"
-                    />}
-                  >
-                    <Field name={path} component={RenderVariableField} />
-                    {nestedLevelTitles(path, values).map((p) => (
-                      <Panel
-                        key={generateId(p)}
-                        headingLevel="h5"
-                        collapseId={generateId(p)}
-                        title={p.split(".").join(" > ")}
-                        className="panel-trasnparent"
-                        collapsClose={expandAllClicked ? !expandAllState : true}
-                        buttons={<Button
-                          className="btn-default btn-sm"
+                {levelOneTitles(values).map((path) => {
+                 return (
+                    <Panel
+                      key={generateId(path)}
+                      headingLevel="h5"
+                      collapseId={generateId(path)}
+                      title={path.split(".").join(" > ")}
+                      className="panel-trasnparent"
+                      collapsClose={expandAllClicked ? !expandAllState : false}
+                      buttons={
+                        <Button
+                          className="btn-tertiary btn-sm"
                           handler={() => removeTopLevelItem(p)}
-                          title={t("Remove item")}
+                          title={t("Delete")}
                           icon="fa-trash-o"
-                        />}
-                      >
-                        <Field name={p} component={RenderVariableField} />
-                      </Panel>
-                    ))}
-                  </Panel>
-                ))}
+                        />
+                      }
+                    >
+                      <Field name={path} component={RenderVariableField} />
+                      {nestedLevelTitles(path, values).map((p) => {
+                        return (
+                          <Panel
+                            key={generateId(p)}
+                            headingLevel="h5"
+                            collapseId={generateId(p)}
+                            title={p.split(".").join(" > ")}
+                            className="panel-trasnparent"
+                            collapsClose={expandAllClicked ? !expandAllState : true}
+                            buttons={
+                              <Button
+                                className="btn-tertiary btn-sm"
+                                handler={() => removeTopLevelItem(p)}
+                                title={t("Delete")}
+                                icon="fa-trash-o"
+                              />
+                            }
+                          >
+                            <Field name={p} component={RenderVariableField} />
+                          </Panel>
+                        )})
+                      }
+                    </Panel>
+                  )})
+                }
                 <div>
                   <MessagesContainer containerId="extra-var" />
                   <ExtraVariable setExtraVars={onExtraVarChange} />

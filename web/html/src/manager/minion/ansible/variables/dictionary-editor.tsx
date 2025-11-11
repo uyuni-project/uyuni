@@ -65,7 +65,7 @@ const DictionaryEditor = (props: FieldInputProps<PlainObject> & { edit?: boolean
         <>
           <div className="d-flex justify-content-between">
             <h5>Add Dictionary</h5>
-            <Button icon="fa-times" handler={onClose} />
+            <Button className="btn-tertiary btn-sm" title="Close" icon="fa-times" handler={onClose} />
           </div>
 
           <div className="row">

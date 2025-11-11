@@ -2,24 +2,26 @@
 
 :global(.old-theme),
 :global(.new-theme) {
-  .ansibleVar {
+  .ansibleModal {
     max-width: 75%;
     :global(.modal-body) {
-      overflow: hidden;
       margin-bottom: 0;
-
-      .variableContent {
-        display: flex;
-        max-height: inherit;
-        border-top: 1px solid $eos-bc-gray-100;
-
-        .yamlEditor {
-          overflow: auto;
-          width: 60%;
-          margin-bottom: 75px;
-        }
-      }
+      height: calc(100vh - 200px);
+      overflow-y: hidden !important;
+      display: flex;
+      flex-direction: column;
     }
+  }
+  .variableContent {
+    border-top: 1px solid $eos-bc-gray-100;
+    max-height: 100%;
+    overflow: visible;
+  }
+
+  .yamlEditor {
+    overflow: auto;
+    width: 60%;
+    margin-bottom: 30px;
   }
 
   .yamlPreview {
@@ -27,11 +29,13 @@
     border: 0;
     background-color: $eos-bc-yellow-100;
     overflow: auto;
-    margin-bottom: 75px;
+    margin-bottom: 30px;
 
     pre {
       background-color: transparent;
       border: 0;
+      white-space: pre;
+      overflow: visible;
     }
   }
 }

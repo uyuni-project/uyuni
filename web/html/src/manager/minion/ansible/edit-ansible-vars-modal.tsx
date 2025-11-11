@@ -9,6 +9,7 @@ import { ModalButton } from "components/dialog/ModalButton";
 import { showErrorToastr } from "components/toastr/toastr";
 
 import AnsibleVarYamlEditor from "./ansible-var-yaml-editor";
+import styles from "./Ansible.module.scss";
 
 type Props = {
   id: string;
@@ -75,7 +76,7 @@ const EditAnsibleVarsModal = (props: Props) => {
         id={props.id}
         isOpen={open}
         title="Edit Variables"
-        className={`modal-lg ${props.className}`}
+        className={`modal-lg ${styles.ansibleModal} ${props.className}`}
         content={
           <AnsibleVarYamlEditor ref={editorRef} data={varsObject} onExtraVarChange={setExtraVars} />
         }

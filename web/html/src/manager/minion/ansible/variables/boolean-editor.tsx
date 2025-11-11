@@ -25,7 +25,7 @@ const BooleanEditor = (props: FieldInputProps<PlainObject> & { onClose?: () => v
         <div className="border-top mt-4 mb-4 p-0 w-100">
           <div className="d-block">
             <h5 className="pull-left">{t("Add Boolean")}</h5>
-            <Button className="pull-right" icon="fa-times" handler={onClose} />
+            <Button className="pull-right btn-tertiary btn-sm" title="Close" icon="fa-times" handler={onClose} />
           </div>
           <div className="row">
             <div className="col-md-4 control-label">
