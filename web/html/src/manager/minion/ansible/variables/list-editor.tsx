@@ -29,7 +29,7 @@ const ListEditor = (props: FieldInputProps<PlainObject> & { onClose?: () => void
     <div className="border-top mt-4 mb-4 p-0 w-100">
       <div className="d-flex justify-content-between">
         <h5>Add List</h5>
-        <Button icon="fa-times" handler={onClose} />
+        <Button className="btn-tertiary btn-sm" title="Close" icon="fa-times" handler={onClose} />
       </div>
       <div className="row">
         <div className="col-md-4 control-label">
