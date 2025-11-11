@@ -1293,11 +1293,11 @@ public class ContentManager {
      * @return Pair containing (left side) a set of entities not filtered-out
      * and (right side) a set of entities filtered out
      */
-    private <T> Pair<Set<T>, Set<T>> filterEntities(Set<T> entities, Collection<? extends ContentFilter<T>> filters) {
-        Map<ContentFilter.Rule, List<ContentFilter<T>>> filtersByRule = filters.stream()
+    private <T> Pair<Set<T>, Set<T>> filterEntities(Set<T> entities, Collection<? extends ContentFilter> filters) {
+        Map<ContentFilter.Rule, List<ContentFilter>> filtersByRule = filters.stream()
                 .collect(groupingBy(ContentFilter::getRule));
-        List<ContentFilter<T>> denyFilters = filtersByRule.getOrDefault(ContentFilter.Rule.DENY, emptyList());
-        List<ContentFilter<T>> allowFilters = filtersByRule.getOrDefault(ContentFilter.Rule.ALLOW, emptyList());
+        List<ContentFilter> denyFilters = filtersByRule.getOrDefault(ContentFilter.Rule.DENY, emptyList());
+        List<ContentFilter> allowFilters = filtersByRule.getOrDefault(ContentFilter.Rule.ALLOW, emptyList());
 
         // First add the denied packages by testing all DENY filters against a package, and then filter out any package
         // that is explicitly allowed by testing all ALLOW filters against the same package and negating the result.
