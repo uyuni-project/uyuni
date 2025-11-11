@@ -29,7 +29,24 @@ sudo -i podman exec server bash -c "[ -d /usr/share/susemanager/www/tomcat/webap
 # While we do not have a mirror for the jar files, the easiest workaround is
 # to try again and hope it succeeds.
 
-sudo -i podman exec server bash -c "cd /java && ant -f manager-build.xml ivy || ant -f manager-build.xml ivy || ant -f manager-build.xml ivy"
+# TODO: Remove this debugging code once we stabilize opensuse mirror issues.
+ANT_BUILD_IVY_COMMAND='sudo -i podman exec server bash -c "cd /java && ant -f manager-build.xml ivy"'
+set +e
+eval "$ANT_BUILD_IVY_COMMAND"
+ANT_BUILD_IVY_COMMAND=$?
+set -e
+
+echo "Check GH Runner IP:"
+curl https://api.ipify.org ||:
+echo "Test a RPM file URL that failed previously. So we can debug redirections:"
+curl -vIL https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Master:/Other/openSUSE_Leap_15.6/noarch/hibernate5-core-5.3.25-4.170.uyuni3.noarch.rpm ||:
+
+if [ $ANT_BUILD_IVY_COMMAND -ne 0 ]; then
+    echo "ERROR: The main command failed. Exiting script with original status $ANT_BUILD_IVY_COMMAND." >&2
+    exit $ANT_BUILD_IVY_COMMAND
+fi
+###
+
 sudo -i podman exec server bash -c "cd /java && ant -f manager-build.xml -Ddeploy.mode=local refresh-branding-jar deploy"
 sudo -i podman exec server bash -c "cd /java && ant -f manager-build.xml apidoc-jsp"
 sudo -i podman exec server bash -c "mkdir /usr/share/susemanager/www/tomcat/webapps/rhn/apidoc/ && rsync -av /java/build/reports/apidocs/jsp/ /usr/share/susemanager/www/tomcat/webapps/rhn/apidoc/"
