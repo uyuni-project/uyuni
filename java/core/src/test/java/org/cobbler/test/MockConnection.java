@@ -22,6 +22,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.cobbler.CobblerConnection;
+import org.cobbler.XmlRpcException;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 class MockItem {
@@ -338,6 +340,13 @@ public class MockConnection extends CobblerConnection {
             );
         }
         Map<String, Object> distro = distroFound.get().getDataMap();
+
+        if (arg1.startsWith("modify_interface")) {
+            Map<String, Object> input = (Map<String, Object>)arg2;
+            modifyInterfaces(collection, distro, input);
+            return;
+        }
+
         if (arg1.startsWith("kernel_options") && arg2.equals("")) {
             arg2 = new HashMap<>();
         }
@@ -349,6 +358,54 @@ public class MockConnection extends CobblerConnection {
         if (REMAP_KEYS.containsKey(arg1)) {
             distro.put(REMAP_KEYS.get(arg1), arg2);
         }
+    }
+
+    private void modifyInterfaces(List<MockItem> collection, Map<String, Object> system,
+                                  Map<String, Object> input) {
+        // Translate to the interface name - key - value
+        Map<String, Map<String, Object>> newInterfaces = input.entrySet().stream()
+                .collect(Collectors.groupingBy(
+                        // 1. Outer Map Key (Grouping Key): 'name'
+                        //    This gets the part *after* the last dash.
+                        entry -> entry.getKey().substring(entry.getKey().lastIndexOf('-') + 1),
+
+                        // 2. Downstream Collector (Value for Outer Map):
+                        //    This creates the inner Map<String, Object> for each group.
+                        Collectors.toMap(
+                                // 2a. Inner Map Key: 'somekey'
+                                //     This gets the part *before* the last dash.
+                                entry -> entry.getKey().substring(0, entry.getKey().lastIndexOf('-')),
+
+                                // 2b. Inner Map Value: (the original value)
+                                Map.Entry::getValue
+                        )
+                ));
+        List<String> macs = newInterfaces.values().stream().map(
+                nic -> (String) nic.get("mac_address")
+        ).toList();
+
+        // Check if the MAC is already present for some system. Cobbler throws XmlRpcException in this case.
+        collection.stream()
+                .filter(
+                    item -> !item.getDataMap().get("name").equals(system.get("name")))
+                .filter(
+                    item -> {
+                    Map<String, Map<String, Object>> ifaces =
+                            (Map<String, Map<String, Object>>) item.getDataMap().get("interfaces");
+                    return ifaces.entrySet().stream().anyMatch(
+                            nic -> macs.contains(nic.getValue().get("mac_address").toString())
+                    );
+                }
+                ).findAny().ifPresent(
+                item -> {
+                    throw new XmlRpcException(
+                            "MAC address duplicate found. Object with the conflict has the name \"" +
+                                    item.getDataMap().get("name") + "\"");
+                }
+        );
+
+        Map<String, Map<String, Object>> interfaces = (Map<String, Map<String, Object>>) system.get("interfaces");
+        interfaces.putAll(newInterfaces);
     }
 
     private String newImage() {

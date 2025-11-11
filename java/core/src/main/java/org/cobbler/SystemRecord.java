@@ -89,7 +89,7 @@ public class SystemRecord extends CobblerObject {
     /**
      * Constant to define the field name for the getter of the interfaces of a System
      */
-    private static final String GET_INTERFACES = "interface";
+    private static final String GET_INTERFACES = "interfaces";
     /**
      * Constant to define the field name for the ipv6 autoconfiguration of a System
      */
