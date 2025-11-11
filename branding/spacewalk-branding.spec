@@ -44,7 +44,7 @@ Requires:       susemanager-best-practices_en-pdf
 Requires:       susemanager-docs_en
 Requires:       susemanager-getting-started_en-pdf
 Requires:       susemanager-reference_en-pdf
-Requires(pre):  tomcat
+Requires(pre):  tomcat11
 #BuildArch:  noarch
 %if 0%{?suse_version}
 BuildRequires:  apache2
