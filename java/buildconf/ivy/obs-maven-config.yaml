@@ -10,7 +10,70 @@ repositories:
     repository: openSUSE_Leap_15.6
   Leap_sle:
     url: https://download.opensuse.org/update/leap/15.6/sle
+###################################
+  Uyuni_Jakarta:
+    project: systemsmanagement:Uyuni:Master:jakarta
+    repository: openSUSE_Leap_15.6
+  Temp_Jakarta:
+    project:  home:CDellaGiusta:branches:jakarta
+    repository: standard
+###################################
 artifacts:
+###################################
+  #runtime
+  - artifact: angus-activation
+    package: angus-activation
+    jar: angus-activation.jar
+    repository: Temp_Jakarta
+  #runtime
+  #- artifact: antlr4
+  #  package: antlr4
+  #  jar: org.abego.treelayout.core.jar
+  #  repository: Temp_Jakarta
+  #runtime
+  - artifact: classmate
+    repository: Leap
+
+  #compile
+  - artifact: hibernate-core
+    repository: Uyuni_Jakarta
+  #runtime
+  - artifact: hibernate-models
+    repository: Uyuni_Jakarta
+  #runtime
+  #- artifact: istack-commons
+  #  package: byte-buddy
+  #  repository: Leap
+  #runtime
+
+  #runtime
+  - artifact: jakarta.inject-api
+    package: jakarta-transactions
+    repository: Uyuni_Jakarta
+  #runtime
+  - artifact: jakarta.transaction-api
+    package: jakarta-transactions
+    repository: Uyuni_Jakarta
+  #runtime
+  - artifact: jaxb-core
+    package: jaxb-api
+    repository: Uyuni_Jakarta
+  #runtime
+  - artifact: jaxb-runtime
+    package: jaxb-api
+    repository: Uyuni_Jakarta
+
+  #runtime
+  - artifact: txw2
+    package: jaxb-api
+    repository: Uyuni_Jakarta
+
+
+
+  ###################################
+  #ADDED TO COMPILE
+
+###################################
   - artifact: asm
     package: objectweb-asm
     jar: asm-all
@@ -33,8 +96,8 @@ artifacts:
   - artifact: cglib
     jar: cglib\.jar
     repository: Leap
-  - artifact: classmate
-    repository: Leap
+  #- artifact: classmate
+  #  repository: Leap
   - artifact: javax.mail
     jar: javax\.mail\.jar
     package: javamail
@@ -101,26 +164,24 @@ artifacts:
     jar: gson\.jar
     repository: Leap
   - artifact: hibernate-c3p0
-    package: hibernate5-c3p0
+    package: hibernate-c3p0
     jar: hibernate-c3p0
-    repository: Uyuni_Other
-  - artifact: hibernate-types-52
-    package: hibernate-types
-    repository: Uyuni_Other
+    repository: Uyuni_Jakarta
+  - artifact: hypersistence-utils-hibernate-71
+    package: hypersistence-utils-hibernate-71
+    repository: Uyuni_Jakarta
   - artifact: jackson-annotations
     repository: Leap_sle
   - artifact: jackson-core
     repository: Leap_sle
   - artifact: jackson-databind
     repository: Leap_sle
-  - artifact: hibernate-commons-annotations
-    repository: Uyuni_Other
   - artifact: hibernate-core
-    package: hibernate5-core
-    repository: Uyuni_Other
-  - artifact: hibernate-ehcache
-    package: hibernate5-ehcache
-    repository: Uyuni_Other
+    package: hibernate-core
+    repository: Uyuni_Jakarta
+  - artifact: hibernate-jcache
+    package: hibernate-jcache
+    repository: Uyuni_Jakarta
   - artifact: httpasyncclient
     package: httpcomponents-asyncclient
     jar: httpasyncclient-[0-9.]+
@@ -137,9 +198,9 @@ artifacts:
     repository: Leap_sle
   - artifact: jade4j
     repository: Uyuni_Other
-  - artifact: jakarta.persistence-api
-    package: jpa-api
-    repository: Uyuni_Other
+  - artifact: jakarta-persistence-api
+    jar: jakarta.persistence-api.jar
+    repository: Temp_Jakarta
   - artifact: java-saml
     jar: java-saml-[0-9.]+
     repository: Uyuni_Other
@@ -149,7 +210,7 @@ artifacts:
   - artifact: javassist
     repository: Leap
   - artifact: jboss-logging
-    repository: Leap
+    repository: Uyuni_Jakarta
   - artifact: jctools-core
     package: jctools
     repository: Leap_sle
@@ -307,20 +368,19 @@ artifacts:
     repository: Leap_sle
 
   - artifact: tomcat-el-api
-    package: tomcat-el-3_0-api
-    repository: Leap
+    package: tomcat11-el-6_0-api
+    repository: Uyuni_Jakarta
   - artifact: tomcat-jsp-api
-    package: tomcat-jsp-2_3-api
-    repository: Leap
+    package: tomcat11-jsp-4_0-api
+    repository: Uyuni_Jakarta
   - artifact: tomcat-juli
-    package: tomcat-lib
-    repository: Leap
+    package: tomcat11-lib
+    repository: Uyuni_Jakarta
   - artifact: tomcat-servlet-api
-    package: tomcat-servlet-4_0-api
-    repository: Leap
-  - artifact: tomcat-websocket-api
-    jar: websocket-api\.jar
-    package: tomcat-lib
+    package: tomcat11-servlet-6_1-api
+    repository: Uyuni_Jakarta
+
+  - artifact: hamcrest-core
     repository: Leap
 
   - artifact: hamcrest
@@ -331,21 +391,21 @@ artifacts:
     repository: Uyuni_Other
   - artifact: jetty-util
     repository: Leap_sle
-  - artifact: jaxb-api
-    package: glassfish-jaxb-api
-    repository: Leap
-  - artifact: jaxb-runtime
-    package: glassfish-jaxb-runtime
-    repository: Leap
-  - artifact: jaxb-impl
-    package: glassfish-jaxb-runtime
-    repository: Leap
-  - artifact: txw2
-    package: glassfish-jaxb-txw2
-    repository: Leap
-  - artifact: javax.activation
-    package: glassfish-activation
-    repository: Leap
+  - artifact: jakarta.xml.bind-api
+    package: jaxb-api
+    repository: Uyuni_Jakarta
+  #- artifact: jaxb-runtime
+  #  package: glassfish-jaxb-runtime
+  #  repository: Leap
+  #- artifact: jaxb-impl
+  #  package: glassfish-jaxb-runtime
+  #  repository: Leap
+  #- artifact: txw2
+  #  package: glassfish-jaxb-txw2
+  #  repository: Leap
+  - artifact: jakarta.activation-api
+    package: jakarta-activation
+    repository: Temp_Jakarta
   - artifact: istack-commons-runtime
     repository: Leap
   - artifact: stax-ex

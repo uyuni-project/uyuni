@@ -59,7 +59,7 @@ BuildRequires:  python3-Sphinx
 %else
 BuildRequires:  python3-sphinx
 %endif
-BuildRequires:  tomcat
+BuildRequires:  tomcat11
 ## non-core
 #BuildRequires:  perl(Getopt::Long), perl(Pod::Usage)
 #BuildRequires:  perl(Test::Pod::Coverage), perl(Test::Pod)
@@ -95,7 +95,7 @@ Requires:       perl-Satcon
 Requires:       spacewalk-admin
 Requires:       spacewalk-backend-tools
 Requires:       spacewalk-certs-tools
-Requires(post): tomcat
+Requires(post): tomcat11
 %if 0%{?build_py3}
 Requires:       (python3-PyYAML or python3-pyyaml)
 %else
