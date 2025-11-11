@@ -14,13 +14,19 @@
 --
 
 
-CREATE TABLE suseOVALPlatformVulnerablePackage
+CREATE TABLE suseOVALPlatformVulnerable
 (
+    id                   BIGINT
+                            GENERATED ALWAYS AS IDENTITY
+                            CONSTRAINT suse_oval_plat_vuln_id_pk PRIMARY KEY,
     platform_id          NUMERIC NOT NULL
-                            REFERENCES suseOVALPlatform (id),
+                            REFERENCES suseOVALPlatform (id)
+                            ON DELETE CASCADE,
     cve_id               NUMERIC NOT NULL
                             REFERENCES rhnCve (id),
-    vulnerable_pkg_id    NUMERIC NOT NULL
-                            REFERENCES suseOVALVulnerablePackage (id),
-    CONSTRAINT suse_oval_platform_vulnerable_pkg_id_pk PRIMARY KEY (platform_id, cve_id, vulnerable_pkg_id)
+                         CONSTRAINT platform_cve_id_uq UNIQUE (platform_id, cve_id)
 );
+
+CREATE INDEX suse_oval_plat_vuln_plat_id_idx ON suseOVALPlatformVulnerable(platform_id);
+CREATE INDEX suse_oval_plat_vuln_cve_id_idx ON suseOVALPlatformVulnerable(cve_id);
+CREATE INDEX suse_oval_plat_vuln_plat_cve_id_idx ON suseOVALPlatformVulnerable(platform_id, cve_id);
