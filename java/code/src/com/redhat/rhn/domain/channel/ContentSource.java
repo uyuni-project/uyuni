@@ -23,12 +23,14 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.scc.SCCRepositoryAuth;
 
 import org.hibernate.annotations.Type;
+import org.hibernate.type.YesNoConverter;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -68,7 +70,7 @@ public class ContentSource extends BaseDomainHelper implements Identifiable {
     private String label;
 
     @Column(name = "metadata_signed")
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     private boolean metadataSigned;
 
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)

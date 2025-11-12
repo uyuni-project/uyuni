@@ -19,8 +19,10 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.action.Action;
 
 import org.hibernate.annotations.Type;
+import org.hibernate.type.YesNoConverter;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -43,7 +45,7 @@ public class ActionPackageDetails extends BaseDomainHelper {
     private long id;
 
     @Column(name = "allow_vendor_change")
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     private boolean allowVendorChange = false;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

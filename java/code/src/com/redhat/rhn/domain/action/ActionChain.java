@@ -19,6 +19,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.Type;
+import org.hibernate.type.YesNoConverter;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -26,6 +27,7 @@ import java.util.Set;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -51,7 +53,7 @@ public class ActionChain extends BaseDomainHelper {
     private String label;
 
     @Column(name = "dispatched", nullable = false)
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     private boolean dispatched;
 
 
