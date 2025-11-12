@@ -101,7 +101,7 @@ public class Errata extends BaseDomainHelper {
     private String advisoryType;
 
     @Column(name = "advisory_status")
-    @Type(type = "com.redhat.rhn.domain.errata.AdvisoryStatusEnumType")
+    @Type(value = com.redhat.rhn.domain.errata.AdvisoryStatusEnumType.class)
     private AdvisoryStatus advisoryStatus = AdvisoryStatus.FINAL;
 
     @Column
