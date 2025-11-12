@@ -47,7 +47,7 @@ import java.util.List;
 import java.util.function.BooleanSupplier;
 import java.util.stream.Collectors;
 
-import javax.persistence.Tuple;
+import jakarta.persistence.Tuple;
 
 public class ChannelRepodataTest extends JMockBaseTestCaseWithUser {
 
@@ -127,6 +127,7 @@ public class ChannelRepodataTest extends JMockBaseTestCaseWithUser {
             .setParameter("label", channel.getLabel())
             .getSingleResult()
                 .get(0, Integer.class);
+
 
         return items == 0;
     }
