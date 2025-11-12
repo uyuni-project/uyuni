@@ -66,7 +66,7 @@ public class CredentialsFactory extends HibernateFactory {
      * @return credentials object or null
      */
     public static Credentials lookupCredentialsById(long id) {
-        return getSession().get(BaseCredentials.class, id);
+        return getSession().find(BaseCredentials.class, id);
     }
 
     /**
@@ -75,7 +75,7 @@ public class CredentialsFactory extends HibernateFactory {
      * @return an optional containing the SCCCredentials with the given id, or empty if not found
      */
     public static Optional<SCCCredentials> lookupSCCCredentialsById(long id) {
-        SCCCredentials creds = getSession().get(SCCCredentials.class, id);
+        SCCCredentials creds = getSession().find(SCCCredentials.class, id);
         return Optional.ofNullable(creds);
     }
 

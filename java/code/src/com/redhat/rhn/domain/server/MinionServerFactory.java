@@ -138,7 +138,7 @@ public class MinionServerFactory extends HibernateFactory {
      * @return the minion found
      */
     public static Optional<MinionServer> lookupById(Long id) {
-        return Optional.ofNullable(getSession().get(MinionServer.class, id));
+        return Optional.ofNullable(getSession().find(MinionServer.class, id));
     }
 
     /**

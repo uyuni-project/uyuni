@@ -286,7 +286,7 @@ public class ConfigurationFactory extends HibernateFactory {
         commit(file.getConfigChannel());
         if (file.getId() == null) {
             Long fileId = saveNewConfigFile(file);
-            file = getSession().get(ConfigFile.class, fileId);
+            file = getSession().find(ConfigFile.class, fileId);
         }
         else {
             save(file);
@@ -309,7 +309,7 @@ public class ConfigurationFactory extends HibernateFactory {
             // and set it after reload not to lose it
             Long changedById = revision.getChangedById();
             Long revId = saveNewConfigRevision(revision);
-            revision = getSession().get(ConfigRevision.class, revId);
+            revision = getSession().find(ConfigRevision.class, revId);
             revision.setChangedById(changedById);
             file.setLatestConfigRevision(revision);
             //and now we have to save the file again

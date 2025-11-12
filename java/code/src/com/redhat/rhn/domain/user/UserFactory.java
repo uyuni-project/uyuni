@@ -621,7 +621,7 @@ public  class UserFactory extends HibernateFactory {
      */
     public UserServerPreference lookupServerPreferenceByUserServerAndName(User user, Server server, String name) {
         UserServerPreferenceId id = new UserServerPreferenceId(user, server, name);
-        return getSession().get(UserServerPreference.class, id);
+        return getSession().find(UserServerPreference.class, id);
     }
 
     /**
