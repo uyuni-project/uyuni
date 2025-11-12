@@ -119,7 +119,7 @@ public class NotificationMessage implements Serializable {
      * @return notification type
      */
     @Column(columnDefinition = "type")
-    @Type(type = "com.redhat.rhn.domain.notification.types.NotificationTypeEnumType")
+    @Type(value = com.redhat.rhn.domain.notification.types.NotificationTypeEnumType.class)
     public NotificationType getType() {
         return type;
     }
