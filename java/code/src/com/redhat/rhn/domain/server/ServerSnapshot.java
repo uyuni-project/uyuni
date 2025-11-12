@@ -36,8 +36,6 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -53,12 +51,14 @@ import java.util.stream.Collectors;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 /**
@@ -70,14 +70,8 @@ import jakarta.persistence.Table;
 public class ServerSnapshot extends BaseDomainHelper {
 
     @Id
-    @GeneratedValue(generator = "snapshot_seq")
-    @GenericGenerator(
-            name = "snapshot_seq",
-            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-            parameters = {
-                    @Parameter(name = "sequence_name", value = "rhn_snapshot_id_seq"),
-                    @Parameter(name = "increment_size", value = "1")
-            })
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "snapshot_seq")
+	@SequenceGenerator(name = "snapshot_seq", sequenceName = "rhn_snapshot_id_seq", allocationSize = 1)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

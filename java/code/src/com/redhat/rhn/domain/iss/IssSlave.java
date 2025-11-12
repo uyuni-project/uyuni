@@ -21,8 +21,6 @@ import com.redhat.rhn.frontend.dto.BaseDto;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.Date;
@@ -32,11 +30,13 @@ import java.util.StringJoiner;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 /**
@@ -58,14 +58,8 @@ public class IssSlave extends BaseDto {
     public static final String SID = "sid";
 
     @Id
-    @GeneratedValue(generator = "issslave_seq")
-    @GenericGenerator(
-            name = "issslave_seq",
-            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-            parameters = {
-                    @Parameter(name = "sequence_name", value = "rhn_issslave_seq"),
-                    @Parameter(name = "increment_size", value = "1")
-            })
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "issslave_seq")
+	@SequenceGenerator(name = "issslave_seq", sequenceName = "rhn_issslave_seq", allocationSize = 1)
     private Long id;
 
     @Column

@@ -19,8 +19,6 @@ import com.redhat.rhn.domain.user.legacy.UserImpl;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 import org.hibernate.type.YesNoConverter;
 
@@ -33,6 +31,7 @@ import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
@@ -41,6 +40,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrimaryKeyJoinColumn;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 
@@ -146,14 +146,8 @@ public abstract class RecurringAction extends BaseDomainHelper {
      * @return id
      */
     @Id
-    @GeneratedValue(generator = "recurring_action_seq")
-    @GenericGenerator(
-            name = "recurring_action_seq",
-            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-            parameters = {
-                    @Parameter(name = "sequence_name", value = "suse_recurring_action_id_seq"),
-                    @Parameter(name = "increment_size", value = "1")
-            })
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "recurring_action_seq")
+	@SequenceGenerator(name = "recurring_action_seq", sequenceName = "suse_recurring_action_id_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }

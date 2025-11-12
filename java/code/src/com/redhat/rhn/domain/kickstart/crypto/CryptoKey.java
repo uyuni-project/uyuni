@@ -18,18 +18,18 @@ import com.redhat.rhn.domain.Identifiable;
 import com.redhat.rhn.domain.org.Org;
 
 import org.hibernate.annotations.DiscriminatorFormula;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 import java.nio.charset.StandardCharsets;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 /**
@@ -41,14 +41,8 @@ import jakarta.persistence.Table;
 public class CryptoKey implements Identifiable {
 
     @Id
-    @GeneratedValue(generator = "RHN_CRYPTOKEY_ID_SEQ")
-    @GenericGenerator(
-            name = "RHN_CRYPTOKEY_ID_SEQ",
-            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-            parameters = {
-                    @Parameter(name = "sequence_name", value = "RHN_CRYPTOKEY_ID_SEQ"),
-                    @Parameter(name = "increment_size", value = "1")
-            })
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_CRYPTOKEY_ID_SEQ")
+	@SequenceGenerator(name = "RHN_CRYPTOKEY_ID_SEQ", sequenceName = "RHN_CRYPTOKEY_ID_SEQ", allocationSize = 1)
     private Long id;
 
     @Column(nullable = false)

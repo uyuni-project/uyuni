@@ -16,8 +16,6 @@ import com.redhat.rhn.domain.user.User;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 import org.hibernate.type.YesNoConverter;
 
@@ -25,10 +23,12 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
@@ -67,14 +67,8 @@ public class UserNotification {
      */
     @Id
     @Column(name = "id")
-    @GeneratedValue(generator = "unsg_seq")
-    @GenericGenerator(
-            name = "unsg_seq",
-            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-            parameters = {
-                    @Parameter(name = "sequence_name", value = "suse_user_notif_id_seq"),
-                    @Parameter(name = "increment_size", value = "1")
-            })
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "unsg_seq")
+	@SequenceGenerator(name = "unsg_seq", sequenceName = "suse_user_notif_id_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }

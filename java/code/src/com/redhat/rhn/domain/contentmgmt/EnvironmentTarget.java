@@ -12,8 +12,6 @@
 package com.redhat.rhn.domain.contentmgmt;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -26,12 +24,14 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 /**
@@ -106,14 +106,8 @@ public abstract class EnvironmentTarget implements Serializable {
      * @return id
      */
     @Id
-    @GeneratedValue(generator = "content_prj_env_target_seq")
-    @GenericGenerator(
-            name = "content_prj_env_target_seq",
-            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-            parameters = {
-                    @Parameter(name = "sequence_name", value = "suse_ct_env_tgt_seq"),
-                    @Parameter(name = "increment_size", value = "1")
-            })
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "content_prj_env_target_seq")
+	@SequenceGenerator(name = "content_prj_env_target_seq", sequenceName = "suse_ct_env_tgt_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }

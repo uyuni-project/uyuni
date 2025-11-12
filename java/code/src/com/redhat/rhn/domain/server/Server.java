@@ -63,9 +63,7 @@ import org.apache.logging.log4j.Logger;
 import org.cobbler.CobblerConnection;
 import org.cobbler.SystemRecord;
 import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.ListIndexBase;
-import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.SQLJoinTableRestriction;
 import org.hibernate.annotations.Type;
 import org.hibernate.type.YesNoConverter;
@@ -95,6 +93,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
@@ -106,6 +105,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.OrderColumn;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 
@@ -123,15 +123,9 @@ public class Server extends BaseDomainHelper implements Identifiable {
     private static Logger log = LogManager.getLogger(Server.class);
 
     @Id
-    @GeneratedValue(generator = "rhn_server_seq")
-    @GenericGenerator(
-        name = "rhn_server_seq",
-        strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-        parameters = {
-                @Parameter(name = "sequence_name", value = "rhn_server_id_seq"),
-                @Parameter(name = "initial_value", value = "1000010000"),
-                @Parameter(name = "increment_size", value = "1")
-        })
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rhn_server_seq")
+	@SequenceGenerator(name = "rhn_server_seq", sequenceName = "rhn_server_id_seq", allocationSize = 1,
+    initialValue = 1000010000)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

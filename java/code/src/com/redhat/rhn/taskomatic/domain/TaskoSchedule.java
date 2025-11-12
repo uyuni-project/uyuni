@@ -18,8 +18,6 @@ package com.redhat.rhn.taskomatic.domain;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.BaseDomainHelper;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -33,10 +31,12 @@ import java.util.Objects;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 /**
@@ -49,14 +49,8 @@ import jakarta.persistence.Table;
 public class TaskoSchedule extends BaseDomainHelper {
 
     @Id
-    @GeneratedValue(generator = "tasko_schedule_seq")
-    @GenericGenerator(
-            name = "tasko_schedule_seq",
-            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-            parameters = {
-                    @Parameter(name = "sequence_name", value = "RHN_TASKO_SCHEDULE_ID_SEQ"),
-                    @Parameter(name = "increment_size", value = "1")
-            })
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tasko_schedule_seq")
+	@SequenceGenerator(name = "tasko_schedule_seq", sequenceName = "RHN_TASKO_SCHEDULE_ID_SEQ", allocationSize = 1)
     private Long id;
 
     @Column(name = "job_label")

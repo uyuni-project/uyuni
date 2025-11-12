@@ -42,8 +42,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.annotations.DiscriminatorOptions;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -63,6 +61,7 @@ import jakarta.persistence.DiscriminatorType;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
@@ -70,6 +69,7 @@ import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import javax.servlet.http.HttpServletRequest;
@@ -92,14 +92,8 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(generator = "rhn_action_seq")
-    @GenericGenerator(
-        name = "rhn_action_seq",
-        strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-        parameters = {
-                @Parameter(name = "sequence_name", value = "rhn_event_id_seq"),
-                @Parameter(name = "increment_size", value = "1")
-        })
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rhn_action_seq")
+	@SequenceGenerator(name = "rhn_action_seq", sequenceName = "rhn_event_id_seq", allocationSize = 1)
     private Long id;
 
     @Column

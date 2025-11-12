@@ -16,8 +16,6 @@ import com.redhat.rhn.domain.server.Server;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 
 import java.io.Serializable;
@@ -33,11 +31,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 @Entity
@@ -57,14 +57,8 @@ public class ServerCoCoAttestationReport extends BaseDomainHelper implements Ser
      * @return return the ID
      */
     @Id
-    @GeneratedValue(generator = "server_cocoatt_report_seq")
-    @GenericGenerator(
-        name = "server_cocoatt_report_seq",
-        strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-        parameters = {
-                @Parameter(name = "sequence_name", value = "suse_srvcocoatt_rep_id_seq"),
-                @Parameter(name = "increment_size", value = "1")
-         })
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "server_cocoatt_report_seq")
+	@SequenceGenerator(name = "server_cocoatt_report_seq", sequenceName = "suse_srvcocoatt_rep_id_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }

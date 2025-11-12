@@ -21,8 +21,6 @@ import com.redhat.rhn.domain.common.Checksum;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 import org.hibernate.type.YesNoConverter;
 
@@ -30,10 +28,12 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 /**
@@ -44,14 +44,8 @@ import jakarta.persistence.Table;
 public class ConfigContent extends BaseDomainHelper {
 
     @Id
-    @GeneratedValue(generator = "confcontent_seq")
-    @GenericGenerator(
-            name = "confcontent_seq",
-            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-            parameters = {
-                    @Parameter(name = "sequence_name", value = "rhn_confcontent_id_seq"),
-                    @Parameter(name = "increment_size", value = "1")
-            })
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "confcontent_seq")
+	@SequenceGenerator(name = "confcontent_seq", sequenceName = "rhn_confcontent_id_seq", allocationSize = 1)
     private Long id;
 
     @Column(name = "file_size")

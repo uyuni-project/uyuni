@@ -15,8 +15,6 @@
  */
 package com.redhat.rhn.domain.common;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -24,10 +22,12 @@ import java.util.Objects;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 /**
@@ -42,14 +42,8 @@ public class Checksum implements Serializable {
     private static final long serialVersionUID = 8883696876618902664L;
 
     @Id
-    @GeneratedValue(generator = "rhn_checksum_seq")
-    @GenericGenerator(
-            name = "rhn_checksum_seq",
-            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-            parameters = {
-                    @Parameter(name = "sequence_name", value = "rhnChecksum_seq"),
-                    @Parameter(name = "increment_size", value = "1")
-            })
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rhn_checksum_seq")
+	@SequenceGenerator(name = "rhn_checksum_seq", sequenceName = "rhnChecksum_seq", allocationSize = 1)
     private Long id;
 
     @Column

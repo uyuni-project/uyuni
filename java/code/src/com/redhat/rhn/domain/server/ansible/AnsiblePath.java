@@ -18,8 +18,6 @@ import com.redhat.rhn.domain.server.MinionServer;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 import java.nio.file.Path;
 
@@ -27,12 +25,14 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 
@@ -109,14 +109,8 @@ public abstract class AnsiblePath extends BaseDomainHelper {
      * @return id
      */
     @Id
-    @GeneratedValue(generator = "ansible_path_seq")
-    @GenericGenerator(
-            name = "ansible_path_seq",
-            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-            parameters = {
-                    @Parameter(name = "sequence_name", value = "suse_ansible_path_seq"),
-                    @Parameter(name = "increment_size", value = "1")
-            })
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ansible_path_seq")
+	@SequenceGenerator(name = "ansible_path_seq", sequenceName = "suse_ansible_path_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }

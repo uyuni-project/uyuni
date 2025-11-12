@@ -17,13 +17,13 @@ package com.redhat.rhn.domain.user;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 /**
@@ -34,14 +34,8 @@ import jakarta.persistence.Table;
 public class AddressImpl extends BaseDomainHelper implements Address {
 
     @Id
-    @GeneratedValue(generator = "WEB_USER_SITE_INFO_SEQ")
-    @GenericGenerator(
-            name = "WEB_USER_SITE_INFO_SEQ",
-            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-            parameters = {
-                    @Parameter(name = "sequence_name", value = "WEB_USER_SITE_INFO_ID_SEQ"),
-                    @Parameter(name = "increment_size", value = "1")
-            })
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "WEB_USER_SITE_INFO_SEQ")
+	@SequenceGenerator(name = "WEB_USER_SITE_INFO_SEQ", sequenceName = "WEB_USER_SITE_INFO_ID_SEQ", allocationSize = 1)
     private Long id;
     @Column
     private String address1;

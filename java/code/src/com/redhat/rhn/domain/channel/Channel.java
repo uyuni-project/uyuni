@@ -33,8 +33,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 import org.hibernate.type.YesNoConverter;
 
@@ -53,6 +51,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
@@ -64,6 +63,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrimaryKeyJoinColumn;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 /**
@@ -87,14 +87,8 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
                     "channel-sparc"));
 
     @Id
-    @GeneratedValue(generator = "rhn_channel_seq")
-    @GenericGenerator(
-            name = "rhn_channel_seq",
-            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-            parameters = {
-                    @Parameter(name = "sequence_name", value = "RHN_CHANNEL_ID_SEQ"),
-                    @Parameter(name = "increment_size", value = "1")
-            })
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rhn_channel_seq")
+	@SequenceGenerator(name = "rhn_channel_seq", sequenceName = "RHN_CHANNEL_ID_SEQ", allocationSize = 1)
     private Long id;
 
     @Column

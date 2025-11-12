@@ -16,8 +16,6 @@ import com.redhat.rhn.domain.org.Org;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 import java.util.function.Predicate;
 
@@ -27,11 +25,13 @@ import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 
@@ -145,14 +145,8 @@ public abstract class ContentFilter<T> extends BaseDomainHelper implements Predi
      * @return id
      */
     @Id
-    @GeneratedValue(generator = "content_filter_seq")
-    @GenericGenerator(
-            name = "content_filter_seq",
-            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-            parameters = {
-                    @Parameter(name = "sequence_name", value = "suse_ct_filter_seq"),
-                    @Parameter(name = "increment_size", value = "1")
-            })
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "content_filter_seq")
+	@SequenceGenerator(name = "content_filter_seq", sequenceName = "suse_ct_filter_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }

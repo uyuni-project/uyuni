@@ -18,14 +18,13 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.common.FileList;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -42,14 +41,8 @@ import jakarta.persistence.MappedSuperclass;
 public abstract class BaseKickstartActionDetails extends BaseDomainHelper {
 
     @Id
-    @GeneratedValue(generator = "RHN_ACTIONKS_ID_SEQ")
-    @GenericGenerator(
-        name = "RHN_ACTIONKS_ID_SEQ",
-        strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-        parameters = {
-                @Parameter(name = "sequence_name", value = "RHN_ACTIONKS_ID_SEQ"),
-                @Parameter(name = "increment_size", value = "1")
-        })
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_ACTIONKS_ID_SEQ")
+	@SequenceGenerator(name = "RHN_ACTIONKS_ID_SEQ", sequenceName = "RHN_ACTIONKS_ID_SEQ", allocationSize = 1)
     private Long id;
 
     @Column(name = "cobbler_system_name")

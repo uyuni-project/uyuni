@@ -33,8 +33,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.cobbler.CobblerConnection;
 import org.cobbler.Distro;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 import java.io.File;
 import java.io.IOException;
@@ -56,10 +54,12 @@ import java.util.List;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 /**
@@ -74,14 +74,8 @@ public class KickstartableTree extends BaseDomainHelper {
     private static final String INVALID_KERNEL = "kickstart.tree.invalidkernel";
 
     @Id
-    @GeneratedValue(generator = "RHN_KSTREE_ID_SEQ")
-    @GenericGenerator(
-            name = "RHN_KSTREE_ID_SEQ",
-            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-            parameters = {
-                    @Parameter(name = "sequence_name", value = "RHN_KSTREE_ID_SEQ"),
-                    @Parameter(name = "increment_size", value = "1")
-            })
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_KSTREE_ID_SEQ")
+	@SequenceGenerator(name = "RHN_KSTREE_ID_SEQ", sequenceName = "RHN_KSTREE_ID_SEQ", allocationSize = 1)
     private Long id;
 
     @Column(name = "base_path")
