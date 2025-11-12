@@ -21,10 +21,12 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 /**
@@ -78,8 +80,8 @@ public class Device extends BaseDomainHelper {
     public static final String CLASS_VIDEO = "VIDEO";
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "hw_dev_seq")
-    @SequenceGenerator(name = "hw_dev_seq", sequenceName = "rhn_hw_dev_id_seq", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "hw_dev_seq")
+	@SequenceGenerator(name = "hw_dev_seq", sequenceName = "rhn_hw_dev_id_seq", allocationSize = 1)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

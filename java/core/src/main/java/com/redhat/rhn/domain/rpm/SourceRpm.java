@@ -22,8 +22,10 @@ import java.io.Serializable;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 /**
@@ -37,8 +39,8 @@ public class SourceRpm implements Serializable {
     private static final long serialVersionUID = 6588701748928726469L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_SOURCERPM_ID_SEQ")
-    @SequenceGenerator(name = "RHN_SOURCERPM_ID_SEQ", sequenceName = "RHN_SOURCERPM_ID_SEQ", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_SOURCERPM_ID_SEQ")
+	@SequenceGenerator(name = "RHN_SOURCERPM_ID_SEQ", sequenceName = "RHN_SOURCERPM_ID_SEQ", allocationSize = 1)
     private Long id;
 
     @Column

@@ -17,10 +17,12 @@ import com.redhat.rhn.domain.action.Action;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 /**
@@ -31,8 +33,8 @@ import jakarta.persistence.Table;
 public class InventoryActionDetails extends BaseDomainHelper {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "act_inventory_seq")
-    @SequenceGenerator(name = "act_inventory_seq", sequenceName = "rhn_act_inventory_id_seq", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "act_inventory_seq")
+	@SequenceGenerator(name = "act_inventory_seq", sequenceName = "rhn_act_inventory_id_seq", allocationSize = 1)
     private long id;
 
     @Column(name = "inventory_path")

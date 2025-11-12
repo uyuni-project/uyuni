@@ -22,12 +22,14 @@ import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.DiscriminatorType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 /**
@@ -52,8 +54,8 @@ public abstract class BaseCredentials extends BaseDomainHelper implements Creden
     @Override
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "suse_credentials_seq")
-    @SequenceGenerator(name = "suse_credentials_seq", sequenceName = "suse_credentials_id_seq", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "suse_credentials_seq")
+	@SequenceGenerator(name = "suse_credentials_seq", sequenceName = "suse_credentials_id_seq", allocationSize = 1)
     public Long getId() {
         return this.id;
     }
