@@ -59,9 +59,10 @@ artifacts:
     package: jakarta-transactions
     repository: Uyuni_Jakarta
   #runtime
-  - artifact: jakarta.persistence-api
-    package: jakarta-annotations
-    repository: Uyuni_Jakarta
+  - artifact: jakarta-persistence-api
+    #package: jakarta-persistence
+    jar: jakarta.persistence-api.jar
+    repository: Temp_Jakarta
   #runtime
   - artifact: jakarta.transaction-api
     package: jakarta-transactions
@@ -220,9 +221,9 @@ artifacts:
     repository: Leap_sle
   - artifact: jade4j
     repository: Uyuni_Other
-  - artifact: jakarta-persistence-api
-    package: jpa-api
-    repository: Uyuni_Other
+  #- artifact: jakarta-persistence-api
+  #  package: jpa-api
+  #  repository: Uyuni_Other
   - artifact: java-saml
     jar: java-saml-[0-9.]+
     repository: Uyuni_Other
