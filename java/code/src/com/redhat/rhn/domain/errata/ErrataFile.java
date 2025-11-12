@@ -26,6 +26,7 @@ import java.util.Set;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -33,6 +34,7 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OrderBy;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 /**
@@ -42,8 +44,8 @@ import jakarta.persistence.Table;
 @Table(name = "rhnErrataFile")
 public class ErrataFile extends BaseDomainHelper {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_ERRATAFILE_ID_SEQ")
-    @SequenceGenerator(name = "RHN_ERRATAFILE_ID_SEQ", sequenceName = "RHN_ERRATAFILE_ID_SEQ", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_ERRATAFILE_ID_SEQ")
+	@SequenceGenerator(name = "RHN_ERRATAFILE_ID_SEQ", sequenceName = "RHN_ERRATAFILE_ID_SEQ", allocationSize = 1)
     protected Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

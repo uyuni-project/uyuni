@@ -21,8 +21,10 @@ import java.util.Date;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 
@@ -39,8 +41,8 @@ public class TestImpl implements TestInterface {
     @Column
     private String hidden;
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PERSIST_SEQUENCE")
-    @SequenceGenerator(name = "PERSIST_SEQUENCE", sequenceName = "PERSIST_SEQUENCE", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PERSIST_SEQUENCE")
+	@SequenceGenerator(name = "PERSIST_SEQUENCE", sequenceName = "PERSIST_SEQUENCE", allocationSize = 1)
     private Long id;
     @Column
     private Integer pin;

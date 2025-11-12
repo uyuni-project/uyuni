@@ -23,9 +23,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 
@@ -126,8 +128,8 @@ public class PaygSshData extends BaseDomainHelper {
      */
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "susePaygSshData_seq")
-    @SequenceGenerator(name = "susePaygSshData_seq", sequenceName = "susePaygSshData_id_seq", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "susePaygSshData_seq")
+	@SequenceGenerator(name = "susePaygSshData_seq", sequenceName = "susePaygSshData_id_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }

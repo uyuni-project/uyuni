@@ -42,6 +42,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
@@ -53,6 +54,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OrderBy;
 import jakarta.persistence.OrderColumn;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 /**
@@ -66,8 +68,8 @@ public class Errata extends BaseDomainHelper {
     private static Logger log = LogManager.getLogger(Errata.class);
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "errata_seq")
-    @SequenceGenerator(name = "errata_seq", sequenceName = "rhn_errata_id_seq", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "errata_seq")
+	@SequenceGenerator(name = "errata_seq", sequenceName = "rhn_errata_id_seq", allocationSize = 1)
     private Long id;
 
     @ManyToMany(fetch = FetchType.LAZY)
