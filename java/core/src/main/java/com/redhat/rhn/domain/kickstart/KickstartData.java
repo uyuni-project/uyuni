@@ -70,6 +70,7 @@ import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -139,7 +140,8 @@ public class KickstartData extends BaseDomainHelper {
     private String cobblerId;
 
     @Column(name = "partition_data")
-    @Type(type = "binary")
+    @Lob
+    //@Type(type = "binary")
     private byte[] partitionData;
 
     @ManyToMany(fetch = FetchType.LAZY)
