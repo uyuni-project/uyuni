@@ -18,8 +18,10 @@ package com.redhat.rhn.domain.recurringactions.type;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 
 import org.hibernate.annotations.Type;
+import org.hibernate.type.YesNoConverter;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
@@ -94,7 +96,7 @@ public class RecurringPlaybook extends RecurringActionType {
      * @return flushCache - if the cache should be flushed
      */
     @Column(name = "flush_cache")
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     public boolean isFlushCache() {
         return flushCache;
     }
@@ -152,7 +154,7 @@ public class RecurringPlaybook extends RecurringActionType {
      * @return testMode - if action is testMode
      */
     @Column(name = "test_mode")
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     public boolean isTestMode() {
         return this.testMode;
     }

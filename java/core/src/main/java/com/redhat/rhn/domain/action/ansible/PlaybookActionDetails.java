@@ -15,8 +15,10 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.action.Action;
 
 import org.hibernate.annotations.Type;
+import org.hibernate.type.YesNoConverter;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -44,11 +46,11 @@ public class PlaybookActionDetails extends BaseDomainHelper {
     private String inventoryPath;
 
     @Column(name = "test_mode")
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     private boolean testMode;
 
     @Column(name = "flush_cache")
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     private boolean flushCache;
 
     @Column(name = "extra_vars")
