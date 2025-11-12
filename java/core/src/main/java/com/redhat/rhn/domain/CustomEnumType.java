@@ -10,9 +10,7 @@
  */
 package com.redhat.rhn.domain;
 
-import org.checkerframework.checker.units.qual.K;
 import org.hibernate.HibernateException;
-import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.type.descriptor.WrapperOptions;
 import org.hibernate.usertype.UserType;
 
