@@ -66,8 +66,10 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.ListIndexBase;
 import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.SQLJoinTableRestriction;
 import org.hibernate.annotations.Type;
-import org.hibernate.annotations.WhereJoinTable;
+import org.hibernate.type.YesNoConverter;
+//import org.hibernate.annotations.WhereJoinTable;
 
 import java.net.IDN;
 import java.sql.Timestamp;
@@ -90,6 +92,7 @@ import java.util.stream.Stream;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -232,7 +235,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @OrderColumn(name = "position")
-    @WhereJoinTable(clause = "(position > 0)")
+    @SQLJoinTableRestriction(value = "(position > 0)")
     @JoinTable(
             name = "rhnServerConfigChannel",
             joinColumns = @JoinColumn(name = "server_id"),
@@ -242,7 +245,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
     private List<ConfigChannel> configChannels = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @WhereJoinTable(clause = "(position is null)")
+    @SQLJoinTableRestriction(value = "(position is null)")
     @JoinTable(
             name = "rhnServerConfigChannel",
             joinColumns = @JoinColumn(name = "server_id"),
