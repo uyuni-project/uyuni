@@ -85,7 +85,7 @@ mgr_eib:
 {%- set bootstrap_packages = ['findutils', 'rhn-org-trusted-ssl-cert-osimage'] %}
 
 {%- macro kiwi_params() -%}
-  --ignore-repos-used-for-build --add-repo file:{{ common_repo }},rpm-dir,common_repo,90,false,false
+  --ignore-repos-used-for-build --add-repo file:{{ common_repo }},rpm-md,common_repo,90,false,false
 {% for pkg in bootstrap_packages -%}
   --add-bootstrap-package {{ pkg }}
 {% endfor -%}
