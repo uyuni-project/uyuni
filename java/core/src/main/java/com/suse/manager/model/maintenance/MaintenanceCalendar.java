@@ -25,10 +25,12 @@ import java.util.Optional;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 
@@ -46,8 +48,8 @@ public class MaintenanceCalendar extends BaseDomainHelper {
      */
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mtcal_seq")
-    @SequenceGenerator(name = "mtcal_seq", sequenceName = "suse_mtcal_id_seq", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mtcal_seq")
+	@SequenceGenerator(name = "mtcal_seq", sequenceName = "suse_mtcal_id_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }

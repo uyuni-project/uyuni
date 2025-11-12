@@ -22,10 +22,12 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 /**
@@ -67,8 +69,8 @@ public class ImageInfoCustomDataValue extends BaseDomainHelper {
      * @return Returns the Id
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "icdv_seq")
-    @SequenceGenerator(name = "icdv_seq", sequenceName = "suse_icdv_id_seq", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "icdv_seq")
+	@SequenceGenerator(name = "icdv_seq", sequenceName = "suse_icdv_id_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }
