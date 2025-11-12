@@ -143,7 +143,7 @@ setup tasks, re-installation, upgrades and managing.
 
 %package tools
 Summary:        %{productprettyname} Tools
-License:        GPL-2.0 AND LGPL-2.1
+License:        GPL-2.0-only AND LGPL-2.1-only
 Group:          Productivity/Other
 
 %if 0%{?build_py3}
