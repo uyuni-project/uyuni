@@ -18,8 +18,10 @@ package com.redhat.rhn.domain.org;
 import com.redhat.rhn.domain.BaseDomainHelper;
 
 import org.hibernate.annotations.Type;
+import org.hibernate.type.YesNoConverter;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -44,7 +46,7 @@ public class OrgAdminManagement extends BaseDomainHelper {
     private Org org;
 
     @Column(name = "enabled", nullable = false)
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     private boolean enabled;
 
     /**

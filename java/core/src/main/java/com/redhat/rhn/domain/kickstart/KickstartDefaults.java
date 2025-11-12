@@ -18,8 +18,10 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.rhnpackage.profile.Profile;
 
 import org.hibernate.annotations.Type;
+import org.hibernate.type.YesNoConverter;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
@@ -53,11 +55,11 @@ public class KickstartDefaults extends BaseDomainHelper {
     private Profile profile;
 
     @Column(name = "cfg_management_flag", nullable = false)
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     private Boolean cfgManagementFlag;
 
     @Column(name = "remote_command_flag", nullable = false)
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     private Boolean remoteCommandFlag;
 
     @ManyToOne(fetch = FetchType.LAZY)
