@@ -130,7 +130,7 @@ public class ChannelFamilyFactoryTest extends RhnBaseTestCase {
         if (nullOrg) {
             PublicChannelFamily pcf = new PublicChannelFamily();
             pcf.setChannelFamily(cfam);
-            HibernateFactory.getSession().save(pcf);
+            HibernateFactory.getSession().persist(pcf);
 
             cfam.setPublicChannelFamily(pcf);
         }
@@ -138,7 +138,7 @@ public class ChannelFamilyFactoryTest extends RhnBaseTestCase {
             PrivateChannelFamily pcf = new PrivateChannelFamily();
             pcf.setOrg(user.getOrg());
             pcf.setChannelFamily(cfam);
-            HibernateFactory.getSession().save(pcf);
+            HibernateFactory.getSession().persist(pcf);
 
             cfam.addPrivateChannelFamily(pcf);
         }

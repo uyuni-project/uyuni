@@ -142,7 +142,7 @@ public enum SaltStateGeneratorService {
             }
 
             Pillar pillarEntry = new Pillar("Image" + imageInfo.getId(), pillar.getData(), imageInfo.getOrg());
-            HibernateFactory.getSession().save(pillarEntry);
+            HibernateFactory.getSession().persist(pillarEntry);
             imageInfo.setPillar(pillarEntry);
     }
 

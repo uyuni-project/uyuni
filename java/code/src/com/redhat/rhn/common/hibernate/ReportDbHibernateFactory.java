@@ -285,7 +285,7 @@ public class ReportDbHibernateFactory {
             session.saveOrUpdate(toSave);
         }
         else {
-            session.save(toSave);
+            session.persist(toSave);
         }
     }*/
 

@@ -83,7 +83,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
             attempt = new ProductName();
             attempt.setLabel(label);
             attempt.setName(label);
-            HibernateFactory.getSession().save(attempt);
+            HibernateFactory.getSession().persist(attempt);
         }
         return attempt;
     }

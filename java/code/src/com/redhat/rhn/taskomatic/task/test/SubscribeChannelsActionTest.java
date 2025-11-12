@@ -90,7 +90,7 @@ public class SubscribeChannelsActionTest extends JMockBaseTestCaseWithUser {
         details.setChannels(Arrays.asList(ch1, ch2).stream().collect(Collectors.toSet()));
         action.setDetails(details);
         details.setParentAction(action);
-        HibernateFactory.getSession().save(details);
+        HibernateFactory.getSession().persist(details);
 
         SaltServerActionService saltServerActionService = mock(SaltServerActionService.class);
         JobExecutionContext ctx = mock(JobExecutionContext.class);

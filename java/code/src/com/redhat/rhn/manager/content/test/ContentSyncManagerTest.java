@@ -1010,16 +1010,16 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testCredentials() {
         SCCCredentials sccCredentials = SUSEProductTestUtils.createSCCCredentials("scccred", user);
-        HibernateFactory.getSession().save(sccCredentials);
+        HibernateFactory.getSession().persist(sccCredentials);
 
         CloudRMTCredentials rmtCredential = CredentialsFactory.createCloudRmtCredentials("rmtuser", "rmtpassword",
             "dummy");
         rmtCredential.setUser(user);
-        HibernateFactory.getSession().save(rmtCredential);
+        HibernateFactory.getSession().persist(rmtCredential);
 
         VHMCredentials vhmCredentials = CredentialsFactory.createVHMCredentials("vhmuser", "vhmpassword");
         vhmCredentials.setUser(user);
-        HibernateFactory.getSession().save(vhmCredentials);
+        HibernateFactory.getSession().persist(vhmCredentials);
 
         List<SCCCredentials> sccCredentials1 = CredentialsFactory.listCredentialsByType(SCCCredentials.class);
         List<CloudRMTCredentials> rmtCredentials = CredentialsFactory.listCredentialsByType(CloudRMTCredentials.class);

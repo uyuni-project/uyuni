@@ -333,7 +333,7 @@ public abstract class HibernateFactory {
             session.saveOrUpdate(toSave);
         }
         else {
-            session.save(toSave);
+            session.persist(toSave);
         }
     }
 
