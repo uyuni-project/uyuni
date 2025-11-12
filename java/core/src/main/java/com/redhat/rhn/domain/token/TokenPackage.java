@@ -25,10 +25,12 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 /**
@@ -39,8 +41,8 @@ import jakarta.persistence.Table;
 public class TokenPackage implements Identifiable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "reg_tok_pkg_seq")
-    @SequenceGenerator(name = "reg_tok_pkg_seq", sequenceName = "rhn_reg_tok_pkg_id_seq", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "reg_tok_pkg_seq")
+	@SequenceGenerator(name = "reg_tok_pkg_seq", sequenceName = "rhn_reg_tok_pkg_id_seq", allocationSize = 1)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
