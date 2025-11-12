@@ -93,7 +93,9 @@ artifacts:
   - artifact: jakarta.annotation-api
     package: jakarta.annotations
     repository: Uyuni_Jakarta
-
+  - artifact: hypersistence-utils-hibernate-71
+    package: hypersistence-utils-hibernate-71
+    repository: Uyuni_Jakarta
 
 ###################################
   - artifact: asm

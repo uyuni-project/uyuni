@@ -26,6 +26,7 @@
 
         <!-- ADDED TO COMPILE -->
         <dependency org="suse" name="jakarta.annotation-api" rev="3.0.0" />
+        <dependency org="suse" name="hypersistence-utils-hibernate-71" rev="3.11.0" />
 
 
         <!-- Runtime dependencies -->

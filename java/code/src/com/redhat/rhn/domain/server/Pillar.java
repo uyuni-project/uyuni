@@ -15,12 +15,11 @@ import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.Identifiable;
 import com.redhat.rhn.domain.org.Org;
 
-import com.vladmihalcea.hibernate.type.json.JsonType;
+import io.hypersistence.utils.hibernate.type.json.JsonType;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
-import org.hibernate.annotations.TypeDef;
 
 import java.io.Serializable;
 import java.util.List;
@@ -47,7 +46,6 @@ import jakarta.persistence.criteria.Root;
  */
 
 
-@TypeDef(name = "json", typeClass = JsonType.class)
 @Entity
 @Table(name = "suseSaltPillar")
 public class Pillar implements Identifiable, Serializable {
@@ -79,7 +77,7 @@ public class Pillar implements Identifiable, Serializable {
     @Column(name = "category")
     private String category;
 
-    @Type(type = "json")
+    @Type(JsonType.class)
     @Column(columnDefinition = "jsonb")
     private Map<String, Object> pillar = new TreeMap<>();
 
