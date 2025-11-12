@@ -56,19 +56,42 @@ artifacts:
 
   #runtime
   - artifact: jakarta.inject-api
-    package: jakarta-inject
-    repository: Leap_sle
+    package: jakarta-transactions
+    repository: Uyuni_Jakarta
   #runtime
-#  - artifact: jakarta.persistence-api
-#    package: jakarta.persistence
-#    repository: Temp_Jakarta
+  - artifact: jakarta.persistence-api
+    package: jakarta-annotations
+    repository: Uyuni_Jakarta
   #runtime
-#  - artifact: jakarta.transaction-api
-#    package: jakarta.transaction
-#    repository: Uyuni_Jakarta
+  - artifact: jakarta.transaction-api
+    package: jakarta-transactions
+    repository: Uyuni_Jakarta
 #runtime
-#  - artifact: jakarta.xml.bind-api
-#    repository: ??
+  - artifact: jakarta.xml.bind-api
+    package: jaxb-api
+    repository: Uyuni_Jakarta
+
+  #runtime
+  - artifact: jaxb-core
+    package: jaxb-api
+    repository: Uyuni_Jakarta
+  #runtime
+  - artifact: jaxb-runtime
+    package: jaxb-api
+    repository: Uyuni_Jakarta
+
+  #runtime
+  - artifact: txw2
+    package: jaxb-api
+    repository: Uyuni_Jakarta
+
+
+
+  ###################################
+  #ADDED TO COMPILE
+  - artifact: jakarta.annotation-api
+    package: jakarta.annotations
+    repository: Uyuni_Jakarta
 
 
 ###################################
@@ -160,27 +183,27 @@ artifacts:
   - artifact: google-gson
     jar: gson.jar
     repository: Leap
-  - artifact: hibernate-c3p0
-    package: hibernate5-c3p0
-    jar: hibernate-c3p0
-    repository: Uyuni_Other
-  - artifact: hibernate-types-52
-    package: hibernate-types
-    repository: Uyuni_Other
+#  - artifact: hibernate-c3p0
+#    package: hibernate5-c3p0
+#    jar: hibernate-c3p0
+#    repository: Uyuni_Other
+#  - artifact: hibernate-types-52
+#    package: hibernate-types
+#    repository: Uyuni_Other
   - artifact: jackson-annotations
     repository: Leap_sle
   - artifact: jackson-core
     repository: Leap_sle
   - artifact: jackson-databind
     repository: Leap_sle
-  - artifact: hibernate-commons-annotations
-    repository: Uyuni_Other
-  - artifact: hibernate-core
-    package: hibernate5-core
-    repository: Uyuni_Other
-  - artifact: hibernate-ehcache
-    package: hibernate5-ehcache
-    repository: Uyuni_Other
+#  - artifact: hibernate-commons-annotations
+#    repository: Uyuni_Other
+#  - artifact: hibernate-core
+#    package: hibernate5-core
+#    repository: Uyuni_Other
+#  - artifact: hibernate-ehcache
+#    package: hibernate5-ehcache
+#    repository: Uyuni_Other
   - artifact: httpasyncclient
     package: httpcomponents-asyncclient
     jar: httpasyncclient-[0-9.]+
@@ -300,9 +323,9 @@ artifacts:
   - artifact: simpleclient_common
     package: prometheus-client-java
     repository: Uyuni_Other
-  - artifact: simpleclient_hibernate
-    package: prometheus-client-java
-    repository: Uyuni_Other
+  #- artifact: simpleclient_hibernate
+  #  package: prometheus-client-java
+  #  repository: Uyuni_Other
   - artifact: simpleclient_httpserver
     package: prometheus-client-java
     repository: Uyuni_Other
