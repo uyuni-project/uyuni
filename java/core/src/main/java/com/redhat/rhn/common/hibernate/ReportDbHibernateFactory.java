@@ -28,6 +28,7 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.engine.jdbc.LobCreator;
 import org.hibernate.query.Query;
 
 import java.io.ByteArrayOutputStream;
@@ -549,8 +550,8 @@ public class ReportDbHibernateFactory {
         if (data.length == 0) {
             return null;
         }
-        return Hibernate.getLobCreator(getSession()).createBlob(data);
 
+        return Hibernate.getLobHelper().createBlob(data);
     }
 
     /**
