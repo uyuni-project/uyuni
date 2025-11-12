@@ -27,7 +27,7 @@ import java.util.Objects;
  *
  * @param <T> the type of the enum
  */
-public abstract class DatabaseEnumType<T extends Enum<T>> extends CustomEnumType<T, String> {
+public abstract class DatabaseEnumType<T extends Enum<T>> extends CustomEnumType<T> {
 
     /**
      * Construct an instance for the specified enum class.
@@ -35,7 +35,7 @@ public abstract class DatabaseEnumType<T extends Enum<T>> extends CustomEnumType
      * @param enumClassIn the enum class
      */
     protected DatabaseEnumType(Class<T> enumClassIn) {
-        super(enumClassIn, String.class, e -> getLabel(e), v -> findByLabel(enumClassIn, v));
+        super(enumClassIn, e -> getLabel(e), v -> findByLabel(enumClassIn, v));
     }
 
     // Converts the given enum constant to the string representation used in the database.
