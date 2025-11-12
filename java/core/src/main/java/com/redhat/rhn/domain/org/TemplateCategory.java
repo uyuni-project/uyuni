@@ -24,8 +24,10 @@ import org.hibernate.annotations.Immutable;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 /**
@@ -38,8 +40,8 @@ import jakarta.persistence.Table;
 public class TemplateCategory extends BaseDomainHelper {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_TEMPLATE_CAT_ID_SEQ")
-    @SequenceGenerator(name = "RHN_TEMPLATE_CAT_ID_SEQ", sequenceName = "RHN_TEMPLATE_CAT_ID_SEQ", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_TEMPLATE_CAT_ID_SEQ")
+	@SequenceGenerator(name = "RHN_TEMPLATE_CAT_ID_SEQ", sequenceName = "RHN_TEMPLATE_CAT_ID_SEQ", allocationSize = 1)
     private Long id;
 
     @Column

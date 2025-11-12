@@ -23,10 +23,12 @@ import java.io.Serializable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 /**
@@ -38,9 +40,8 @@ public class SUSEProductChannel extends BaseDomainHelper implements Serializable
 
     /** The id. */
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "suse_product_channel_seq")
-    @SequenceGenerator(name = "suse_product_channel_seq", sequenceName = "suse_product_channel_id_seq",
-            allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "suse_product_channel_seq")
+	@SequenceGenerator(name = "suse_product_channel_seq", sequenceName = "suse_product_channel_id_seq", allocationSize = 1)
     private Long id;
 
     /** The product. */

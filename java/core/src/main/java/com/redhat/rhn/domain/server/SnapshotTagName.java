@@ -22,8 +22,10 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 @Entity
@@ -31,8 +33,8 @@ import jakarta.persistence.Table;
 public class SnapshotTagName extends BaseDomainHelper {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tagname_seq")
-    @SequenceGenerator(name = "tagname_seq", sequenceName = "rhn_tagname_id_seq", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tagname_seq")
+	@SequenceGenerator(name = "tagname_seq", sequenceName = "rhn_tagname_id_seq", allocationSize = 1)
     private Long id;
 
     @Column

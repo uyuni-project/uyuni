@@ -25,10 +25,12 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 /**
@@ -39,9 +41,8 @@ import jakarta.persistence.Table;
 public class KickstartSessionHistory extends BaseDomainHelper {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_KS_SESSIONHIST_ID_SEQ")
-    @SequenceGenerator(name = "RHN_KS_SESSIONHIST_ID_SEQ", sequenceName = "RHN_KS_SESSIONHIST_ID_SEQ",
-            allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_KS_SESSIONHIST_ID_SEQ")
+	@SequenceGenerator(name = "RHN_KS_SESSIONHIST_ID_SEQ", sequenceName = "RHN_KS_SESSIONHIST_ID_SEQ", allocationSize = 1)
     private Long id;
 
     @Column
