@@ -29,6 +29,8 @@ import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.Map;
 
+import io.hypersistence.utils.hibernate.type.json.JsonBinaryType;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -97,7 +99,7 @@ public class CPU extends BaseDomainHelper {
      * JSONB, it is mapped here as a String due to limitations in XML mapping for JSON types.
      */
     @Column(name = "arch_specs")
-    @org.hibernate.annotations.Type(type = "jsonb")
+    @org.hibernate.annotations.Type(JsonBinaryType.class)
     private String archSpecs;
 
     /**
