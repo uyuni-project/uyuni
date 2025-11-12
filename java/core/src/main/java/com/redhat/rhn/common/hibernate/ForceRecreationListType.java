@@ -15,9 +15,10 @@
 package com.redhat.rhn.common.hibernate;
 
 import org.hibernate.HibernateException;
-import org.hibernate.collection.internal.PersistentList;
 import org.hibernate.collection.spi.PersistentCollection;
+import org.hibernate.collection.spi.PersistentList;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
+import org.hibernate.metamodel.CollectionClassification;
 import org.hibernate.persister.collection.CollectionPersister;
 import org.hibernate.usertype.UserCollectionType;
 
@@ -68,10 +69,26 @@ import java.util.Map;
 public class ForceRecreationListType implements UserCollectionType {
 
     /**
+     * @return 
+     */
+    @Override
+    public CollectionClassification getClassification() {
+        return null;
+    }
+
+    /**
+     * @return 
+     */
+    @Override
+    public Class<?> getCollectionClass() {
+        return null;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
-    public PersistentCollection instantiate(SharedSessionContractImplementor session,
+    public PersistentCollection<?> instantiate(SharedSessionContractImplementor session,
             CollectionPersister persister) throws HibernateException {
         return new ForceRecreationList(session);
     }
@@ -125,7 +142,7 @@ public class ForceRecreationListType implements UserCollectionType {
     public Object replaceElements(Object original, Object target,
             CollectionPersister persister, Object owner, Map copyCache,
             SharedSessionContractImplementor session) throws HibernateException {
-        List result = (List) target;
+        List<?> result = (List<?>) target;
         result.clear();
         result.addAll((Collection) original);
         return result;
@@ -158,7 +175,7 @@ public class ForceRecreationListType implements UserCollectionType {
      *
      * ForceRecreationList
      */
-    private static class ForceRecreationList extends PersistentList {
+    private static class ForceRecreationList<T> extends PersistentList<T> {
 
         /**
          * Comment for <code>serialVersionUID</code>
@@ -177,7 +194,7 @@ public class ForceRecreationListType implements UserCollectionType {
          * @param session session implementation
          * @param list  list to persist
          */
-        ForceRecreationList(SharedSessionContractImplementor session, List list) {
+        ForceRecreationList(SharedSessionContractImplementor session, List<T> list) {
             super(session, list);
         }
 
