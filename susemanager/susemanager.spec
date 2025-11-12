@@ -143,6 +143,7 @@ setup tasks, re-installation, upgrades and managing.
 
 %package tools
 Summary:        %{productprettyname} Tools
+License:        GPL-2.0-only AND LGPL-2.1-only
 Group:          Productivity/Other
 
 %if 0%{?build_py3}
@@ -300,6 +301,7 @@ sed -i '/You can access .* via https:\/\//d' /tmp/motd 2> /dev/null ||:
 
 %files tools
 %defattr(-,root,root,-)
+%license COPYING COPYING.LGPL-2.1
 %dir %{pythonsmroot}
 %dir %{pythonsmroot}/susemanager
 %dir %{_datadir}/rhn/
@@ -340,6 +342,7 @@ sed -i '/You can access .* via https:\/\//d' /tmp/motd 2> /dev/null ||:
 %{_sysconfdir}/apache2/conf.d/empty-repo.conf
 
 %files tools-salt
+%license COPYING.Apache-2.0
 %attr(0755,root,root) %{_bindir}/mgr-salt-ssh
 
 %files bash-completion
