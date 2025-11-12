@@ -15,12 +15,12 @@ import com.redhat.rhn.domain.CustomEnumType;
 /**
  * AdvisoryStatusEnumType
  */
-public class AdvisoryStatusEnumType extends CustomEnumType<AdvisoryStatus, String> {
+public class AdvisoryStatusEnumType extends CustomEnumType<AdvisoryStatus> {
     /**
      * Constructor
      */
     public AdvisoryStatusEnumType() {
-        super(AdvisoryStatus.class, String.class, AdvisoryStatus::getMetadataValue,
+        super(AdvisoryStatus.class, AdvisoryStatus::getMetadataValue,
             s -> AdvisoryStatus.fromMetadata(s).orElse(null));
     }
 }
