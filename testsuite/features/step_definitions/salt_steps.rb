@@ -1,5 +1,5 @@
 # Copyright 2015-2025 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 ### This file contains all step definitions concerning Salt and bootstrapping
 ### Salt minions.

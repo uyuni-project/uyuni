@@ -1,5 +1,5 @@
 # Copyright (c) 2017 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 @scope_salt
 Feature: Endpoint to download packages

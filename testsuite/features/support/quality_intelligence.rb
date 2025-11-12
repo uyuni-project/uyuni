@@ -1,5 +1,5 @@
 # Copyright (c) 2024 SUSE LLC.
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 require_relative 'metrics_collector_handler'
 
 # Quality Intelligence handler to produce, parse and report Quality Intelligence from the test suite

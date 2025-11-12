@@ -1,5 +1,5 @@
 # Copyright (c) 2018-2025 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 Feature: List available products
   In order to use software channels
