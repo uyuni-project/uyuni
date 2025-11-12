@@ -64,6 +64,7 @@ import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
@@ -75,6 +76,7 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 /**
@@ -88,8 +90,8 @@ import jakarta.persistence.Table;
 public class KickstartData extends BaseDomainHelper {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_KS_ID_SEQ")
-    @SequenceGenerator(name = "RHN_KS_ID_SEQ", sequenceName = "RHN_KS_ID_SEQ", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_KS_ID_SEQ")
+	@SequenceGenerator(name = "RHN_KS_ID_SEQ", sequenceName = "RHN_KS_ID_SEQ", allocationSize = 1)
     private Long id;
 
     @Column(name = "ks_type", updatable = false, insertable = false)

@@ -27,12 +27,14 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 /**
@@ -60,8 +62,8 @@ public class SCCSubscription extends BaseDomainHelper {
      */
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sccsub_seq")
-    @SequenceGenerator(name = "sccsub_seq", sequenceName = "suse_sccsub_id_seq", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sccsub_seq")
+	@SequenceGenerator(name = "sccsub_seq", sequenceName = "suse_sccsub_id_seq", allocationSize = 1)
     public long getId() {
         return id;
     }

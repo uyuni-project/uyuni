@@ -25,12 +25,14 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 
@@ -107,8 +109,8 @@ public abstract class AnsiblePath extends BaseDomainHelper {
      * @return id
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ansible_path_seq")
-    @SequenceGenerator(name = "ansible_path_seq", sequenceName = "suse_ansible_path_seq", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ansible_path_seq")
+	@SequenceGenerator(name = "ansible_path_seq", sequenceName = "suse_ansible_path_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }

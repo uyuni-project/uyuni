@@ -67,6 +67,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -75,6 +76,7 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 
@@ -90,8 +92,8 @@ public class UserImpl extends BaseDomainHelper implements User {
     private static final Logger LOG = LogManager.getLogger(UserImpl.class);
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "web_contact_seq")
-    @SequenceGenerator(name = "web_contact_seq", sequenceName = "WEB_CONTACT_ID_SEQ", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "web_contact_seq")
+	@SequenceGenerator(name = "web_contact_seq", sequenceName = "WEB_CONTACT_ID_SEQ", allocationSize = 1)
     @Column(name = "id", insertable = false, updatable = false)
     private Long id;
 

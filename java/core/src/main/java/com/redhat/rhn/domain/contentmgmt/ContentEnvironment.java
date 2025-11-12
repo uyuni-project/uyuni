@@ -34,12 +34,14 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 
@@ -85,8 +87,8 @@ public class ContentEnvironment extends BaseDomainHelper {
      * @return the id
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "content_env_seq")
-    @SequenceGenerator(name = "content_env_seq", sequenceName = "suse_ct_env_seq", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "content_env_seq")
+	@SequenceGenerator(name = "content_env_seq", sequenceName = "suse_ct_env_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }
