@@ -20,7 +20,9 @@ import com.redhat.rhn.domain.user.legacy.UserImpl;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.Type;
+import org.hibernate.type.YesNoConverter;
 
+import jakarta.persistence.Convert;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -84,7 +86,7 @@ public class UserGroupMembers  extends BaseDomainHelper {
     /**
      * @return Returns the temporary.
      */
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     public boolean isTemporary() {
         return this.getId().isTemporary();
     }
@@ -92,7 +94,7 @@ public class UserGroupMembers  extends BaseDomainHelper {
     /**
      * @param temporaryIn The temporary to set.
      */
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     public void setTemporary(boolean temporaryIn) {
         this.getId().setTemporary(temporaryIn);
     }

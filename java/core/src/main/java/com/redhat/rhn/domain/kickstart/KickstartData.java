@@ -40,6 +40,7 @@ import org.cobbler.CobblerConnection;
 import org.cobbler.Profile;
 import org.hibernate.annotations.SortNatural;
 import org.hibernate.annotations.Type;
+import org.hibernate.type.YesNoConverter;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -58,6 +59,7 @@ import java.util.regex.Pattern;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
@@ -103,34 +105,34 @@ public class KickstartData extends BaseDomainHelper {
     private String comments;
 
     @Column(nullable = false)
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     private Boolean active;
 
     @Column
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     private Boolean postLog;
 
     @Column
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     private Boolean preLog;
 
     @Column(name = "kscfg")
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     private Boolean ksCfg;
 
     @Column(name = "is_org_default", nullable = false)
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     private boolean isOrgDefault;
 
     @Column(name = "kernel_params")
     private String kernelParams;
 
     @Column(name = "nonchrootpost")
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     private Boolean nonChrootPost;
 
     @Column(name = "verboseup2date")
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     private Boolean verboseUp2date;
 
     @Column(name = "cobbler_id")
@@ -185,11 +187,11 @@ public class KickstartData extends BaseDomainHelper {
     private KickstartDefaults kickstartDefaults;
 
     @Column(name = "no_base")
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     private boolean noBase;
 
     @Column(name = "ignore_missing")
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     private boolean ignoreMissing;
 
     @Column(name = "update_type", nullable = false)

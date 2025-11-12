@@ -16,6 +16,7 @@ import com.redhat.rhn.domain.action.Action;
 import com.suse.utils.Json;
 
 import org.hibernate.annotations.Type;
+import org.hibernate.type.YesNoConverter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,6 +30,7 @@ import java.util.stream.Collectors;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -61,11 +63,11 @@ public class ApplyStatesActionDetails extends BaseDomainHelper {
     private Set<ApplyStatesActionResult> results;
 
     @Column
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     private boolean test = false;
 
     @Column
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     private boolean direct = false;
 
     @ManyToOne(fetch = FetchType.LAZY)
