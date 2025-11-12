@@ -189,7 +189,7 @@ public class SCCProxyRecord extends BaseDomainHelper {
     }
 
 
-    @Type(type = "com.suse.scc.proxy.SccProxyStatusEnumType")
+    @Type(value = com.suse.scc.proxy.SccProxyStatusEnumType.class)
     public SccProxyStatus getStatus() {
         return status;
     }
