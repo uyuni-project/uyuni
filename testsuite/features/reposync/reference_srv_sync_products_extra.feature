@@ -1,5 +1,5 @@
 # Copyright (c) 2023-2025 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 Feature: Synchronize extra products in the products page of the Setup Wizard
 

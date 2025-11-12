@@ -1,5 +1,5 @@
 # Copyright (c) 2017-2024 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 #
 # 1) delete Red Hat-like minion and register as SSH minion
 # 2) run a remote command

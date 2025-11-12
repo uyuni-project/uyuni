@@ -1,5 +1,5 @@
 # Copyright (c) 2018-2025 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 @scope_changing_software_channels
 @scc_credentials

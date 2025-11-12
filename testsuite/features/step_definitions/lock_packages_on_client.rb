@@ -1,5 +1,5 @@
 # Copyright (c) 2010-2023 SUSE LLC.
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 ### This file contains the definitions for all steps used to lock packages on a system.
 

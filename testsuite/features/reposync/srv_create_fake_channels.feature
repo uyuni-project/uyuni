@@ -1,5 +1,5 @@
 # Copyright (c) 2015-2024 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 #
 # This feature can cause failures in:
 # - features/reposync/srv_create_activationkey.feature

@@ -1,5 +1,5 @@
 # Copyright (c) 2023-2025 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 @monitoring_server
 Feature: Add a Maintenance Update custom channel and the custom repositories for monitoring_server

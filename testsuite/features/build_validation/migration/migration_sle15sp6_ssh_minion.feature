@@ -1,5 +1,5 @@
 # Copyright (c) 2025 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 @sle15sp6_ssh_minion
 Feature: Migrate a SLES 15 SP6 Salt SSH minion to 15 SP7

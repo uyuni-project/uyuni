@@ -1,5 +1,5 @@
 # Copyright (c) 2022-2023 SUSE LLC.
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 # Represents a namespace for system-related operations.
 class NamespaceSystem

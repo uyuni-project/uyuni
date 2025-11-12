@@ -1,5 +1,5 @@
 # Copyright (c) 2010-2025 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 #
 # This feature can cause failures in:
 # If the SUSE-KEY-x86_64 fails to be created:

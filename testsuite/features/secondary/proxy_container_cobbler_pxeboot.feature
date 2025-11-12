@@ -1,5 +1,5 @@
 # Copyright (c) 2024 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 #
 # We also test 'Bootstrapping using the command line' in this feature with the following script:
 # https://github.com/uyuni-project/uyuni/blob/master/java/conf/cobbler/snippets/minion_script
