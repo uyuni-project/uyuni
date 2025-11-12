@@ -23,10 +23,12 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 
@@ -83,8 +85,8 @@ public class MaintenanceSchedule extends BaseDomainHelper {
      */
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mtsched_seq")
-    @SequenceGenerator(name = "mtsched_seq", sequenceName = "suse_mtsched_id_seq", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mtsched_seq")
+	@SequenceGenerator(name = "mtsched_seq", sequenceName = "suse_mtsched_id_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }

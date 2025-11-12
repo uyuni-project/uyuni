@@ -61,6 +61,7 @@ import jakarta.persistence.DiscriminatorType;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
@@ -68,6 +69,7 @@ import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import javax.servlet.http.HttpServletRequest;
@@ -90,8 +92,8 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rhn_action_seq")
-    @SequenceGenerator(name = "rhn_action_seq", sequenceName = "rhn_event_id_seq", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rhn_action_seq")
+	@SequenceGenerator(name = "rhn_action_seq", sequenceName = "rhn_event_id_seq", allocationSize = 1)
     private Long id;
 
     @Column

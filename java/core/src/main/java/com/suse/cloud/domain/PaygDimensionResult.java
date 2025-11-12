@@ -23,10 +23,12 @@ import java.util.StringJoiner;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 
@@ -62,9 +64,8 @@ public class PaygDimensionResult {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "paygDimensionResult_seq")
-    @SequenceGenerator(name = "paygDimensionResult_seq", sequenceName = "susePaygDimensionResult_id_seq",
-            allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "paygDimensionResult_seq")
+	@SequenceGenerator(name = "paygDimensionResult_seq", sequenceName = "susePaygDimensionResult_id_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }

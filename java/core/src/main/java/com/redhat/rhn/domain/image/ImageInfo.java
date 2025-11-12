@@ -35,6 +35,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -43,6 +44,7 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 
@@ -85,8 +87,8 @@ public class ImageInfo extends BaseDomainHelper {
      */
     @Id
     @Column(name = "id", insertable = false, updatable = false)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "imginfo_seq")
-    @SequenceGenerator(name = "imginfo_seq", sequenceName = "suse_imginfo_imgid_seq", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "imginfo_seq")
+	@SequenceGenerator(name = "imginfo_seq", sequenceName = "suse_imginfo_imgid_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }

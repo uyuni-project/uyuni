@@ -23,8 +23,10 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 /**
@@ -47,8 +49,8 @@ public class KickstartVirtualizationType extends BaseDomainHelper
     public static final String NONE  = "none";
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "kvt_seq")
-    @SequenceGenerator(name = "kvt_seq", sequenceName = "rhn_kvt_id_seq", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "kvt_seq")
+	@SequenceGenerator(name = "kvt_seq", sequenceName = "rhn_kvt_id_seq", allocationSize = 1)
     private Long id;
 
     @Column(nullable = false)

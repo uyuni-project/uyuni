@@ -27,11 +27,13 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 /**
@@ -42,8 +44,8 @@ import jakarta.persistence.Table;
 public class ScriptActionDetails extends BaseDomainHelper {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "script_action_seq")
-    @SequenceGenerator(name = "script_action_seq", sequenceName = "RHN_ACTSCRIPT_ID_SEQ", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "script_action_seq")
+	@SequenceGenerator(name = "script_action_seq", sequenceName = "RHN_ACTSCRIPT_ID_SEQ", allocationSize = 1)
     private Long id;
 
     @Column(nullable = false)

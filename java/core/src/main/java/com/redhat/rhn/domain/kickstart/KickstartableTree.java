@@ -54,10 +54,12 @@ import java.util.List;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 /**
@@ -72,8 +74,8 @@ public class KickstartableTree extends BaseDomainHelper {
     private static final String INVALID_KERNEL = "kickstart.tree.invalidkernel";
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_KSTREE_ID_SEQ")
-    @SequenceGenerator(name = "RHN_KSTREE_ID_SEQ", sequenceName = "RHN_KSTREE_ID_SEQ", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_KSTREE_ID_SEQ")
+	@SequenceGenerator(name = "RHN_KSTREE_ID_SEQ", sequenceName = "RHN_KSTREE_ID_SEQ", allocationSize = 1)
     private Long id;
 
     @Column(name = "base_path")
