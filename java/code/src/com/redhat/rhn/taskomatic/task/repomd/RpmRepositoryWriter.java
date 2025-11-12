@@ -222,7 +222,7 @@ public class RpmRepositoryWriter extends RepositoryWriter {
         PackageManager.createRepoEntrys(channel.getId());
 
         // we closed the session, so we need to reload the object
-        channel = HibernateFactory.getSession().get(channel.getClass(), channel.getId());
+        channel = HibernateFactory.getSession().find(channel.getClass(), channel.getId());
 
         // Initialize the directory, and keep a list of already existing files in the directory, if any
         String prefix = mountPoint + File.separator + pathPrefix + File.separator + channel.getLabel() + File.separator;

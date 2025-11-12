@@ -367,7 +367,7 @@ public class ConfigurationFactory extends HibernateFactory {
      */
     public static ConfigChannel lookupConfigChannelById(Long id) {
         Session session = HibernateFactory.getSession();
-        return session.get(ConfigChannel.class, id);
+        return session.find(ConfigChannel.class, id);
     }
 
     /**
@@ -424,7 +424,7 @@ public class ConfigurationFactory extends HibernateFactory {
      */
     public static ConfigFile lookupConfigFileById(Long id) {
         Session session = HibernateFactory.getSession();
-        return session.get(ConfigFile.class, id);
+        return session.find(ConfigFile.class, id);
     }
 
     /**
@@ -454,7 +454,7 @@ public class ConfigurationFactory extends HibernateFactory {
      */
     public static ConfigRevision lookupConfigRevisionById(Long id) {
         Session session = HibernateFactory.getSession();
-        return session.get(ConfigRevision.class, id);
+        return session.find(ConfigRevision.class, id);
     }
 
 
@@ -495,7 +495,7 @@ public class ConfigurationFactory extends HibernateFactory {
      */
     public static ConfigInfo lookupConfigInfoById(Long id) {
         Session session = HibernateFactory.getSession();
-        return session.get(ConfigInfo.class, id);
+        return session.find(ConfigInfo.class, id);
     }
 
     /**
@@ -505,7 +505,7 @@ public class ConfigurationFactory extends HibernateFactory {
      */
     public static ConfigFileName lookupConfigFileNameById(Long id) {
         Session session = HibernateFactory.getSession();
-        return session.get(ConfigFileName.class, id);
+        return session.find(ConfigFileName.class, id);
     }
 
 

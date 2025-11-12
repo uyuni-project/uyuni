@@ -2899,7 +2899,7 @@ public class SystemManager extends BaseManager {
         Server server = lookupByIdAndUser(serverId, user);
 
         Session session = HibernateFactory.getSession();
-        Note doomed = session.get(Note.class, noteId);
+        Note doomed = session.find(Note.class, noteId);
 
         boolean deletedOnServer = server.getNotes().remove(doomed);
         if (deletedOnServer) {
