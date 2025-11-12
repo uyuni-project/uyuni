@@ -114,7 +114,7 @@ public class IssAccessToken extends BaseDomainHelper {
     }
 
     @Column(name = "type")
-    @Type(type = "com.suse.manager.model.hub.TokenTypeEnumType")
+    @Type(value = com.suse.manager.model.hub.TokenTypeEnumType.class)
     public TokenType getType() {
         return type;
     }

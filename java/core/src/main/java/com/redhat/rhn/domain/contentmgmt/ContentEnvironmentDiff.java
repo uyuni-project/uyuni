@@ -116,7 +116,7 @@ public class ContentEnvironmentDiff extends BaseDomainHelper {
     }
 
     @Column(name = "diff_action")
-    @Type(type = "com.redhat.rhn.domain.contentmgmt.DiffActionEnumType")
+    @Type(value = com.redhat.rhn.domain.contentmgmt.DiffActionEnumType.class)
     public DiffAction getAction() {
         return action;
     }
@@ -135,7 +135,7 @@ public class ContentEnvironmentDiff extends BaseDomainHelper {
     }
 
     @Column(name = "entry_type")
-    @Type(type = "com.redhat.rhn.domain.contentmgmt.EntryTypeEnumType")
+    @Type(value = com.redhat.rhn.domain.contentmgmt.EntryTypeEnumType.class)
     public EntryType getEntryType() {
         return entryType;
     }
