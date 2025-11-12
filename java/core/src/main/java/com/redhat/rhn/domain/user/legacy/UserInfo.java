@@ -20,11 +20,13 @@ import com.redhat.rhn.domain.user.RhnTimeZone;
 import com.redhat.rhn.domain.user.User;
 
 import org.hibernate.annotations.Type;
+import org.hibernate.type.YesNoConverter;
 
 import java.io.Serializable;
 import java.util.Date;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
@@ -53,11 +55,11 @@ public class UserInfo extends AbstractUserChild implements Serializable {
     private int emailNotify;
 
     @Column(name = "tasko_notify", nullable = false)
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     private boolean taskoNotify;
 
     @Column(name = "use_pam_authentication")
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     private boolean usePamAuthentication;
 
     @Column(name = "show_system_group_list")

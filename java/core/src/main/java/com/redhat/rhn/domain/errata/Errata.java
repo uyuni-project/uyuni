@@ -29,6 +29,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.annotations.Type;
+import org.hibernate.type.YesNoConverter;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -38,6 +39,7 @@ import java.util.Set;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -137,7 +139,7 @@ public class Errata extends BaseDomainHelper {
     private Long advisoryRel;
 
     @Column(name = "locally_modified")
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     private Boolean locallyModified;
 
     @Column(name = "last_modified", updatable = false, insertable = false)

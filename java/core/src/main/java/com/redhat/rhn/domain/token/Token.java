@@ -34,6 +34,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.ListIndexBase;
 import org.hibernate.annotations.Type;
+import org.hibernate.type.YesNoConverter;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -43,6 +44,7 @@ import java.util.Set;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -74,7 +76,7 @@ public class Token implements Identifiable {
     private Long disabled;
 
     @Column(name = "deploy_configs")
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     private boolean deployConfigs;
 
     @Column(name = "usage_limit")
