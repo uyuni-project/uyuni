@@ -614,8 +614,7 @@ public abstract class HibernateFactory {
         if (data.length == 0) {
             return null;
         }
-        return Hibernate.getLobCreator(getSession()).createBlob(data);
-
+        return Hibernate.getLobHelper().createBlob(data);
     }
 
     /**
