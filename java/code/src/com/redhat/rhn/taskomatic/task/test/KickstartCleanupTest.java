@@ -64,12 +64,12 @@ public class KickstartCleanupTest extends RhnBaseTestCase {
         backdateKickstartSession(session, ksession, 2);
         session.clear();
         ksession = (KickstartSession)
-            session.load(KickstartSession.class, ksession.getId());
+            session.getReference(KickstartSession.class, ksession.getId());
         KickstartCleanup j = new KickstartCleanup();
         j.execute(null);
         session.clear();
         ksession = (KickstartSession)
-            session.load(KickstartSession.class, ksession.getId());
+            session.getReference(KickstartSession.class, ksession.getId());
         assertEquals(ksession.getState().getId(), failedState.getId());
     }
 
@@ -84,12 +84,12 @@ public class KickstartCleanupTest extends RhnBaseTestCase {
         backdateKickstartSession(session, ksession, 7);
         session.clear();
         ksession = (KickstartSession)
-            session.load(KickstartSession.class, ksession.getId());
+            session.getReference(KickstartSession.class, ksession.getId());
         KickstartCleanup j = new KickstartCleanup();
         j.execute(null);
         session.clear();
         ksession = (KickstartSession)
-            session.load(KickstartSession.class, ksession.getId());
+            session.getReference(KickstartSession.class, ksession.getId());
         assertEquals(ksession.getState().getId(), failedState.getId());
     }
 
