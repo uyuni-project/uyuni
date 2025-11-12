@@ -182,6 +182,8 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+import jakarta.persistence.Tuple;
+
 
 public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
@@ -278,11 +280,14 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
      */
     private Integer numberOfSnapshots(Long sid) {
         Session session = HibernateFactory.getSession();
-        return (Integer) session.createSQLQuery("Select count(*) as cnt " +
+        return session.createNativeQuery("Select count(*) as cnt " +
                                                          "  from rhnSnapshot " +
-                                                         " where server_id = " + sid)
+                                                         " where server_id = " + sid, Tuple.class)
                                          .addScalar("cnt", StandardBasicTypes.INTEGER)
-                                         .uniqueResult();
+                                        .stream()
+                .map(t -> t.get(0, Integer.class))
+                .findFirst().orElse(0);
+
     }
 
     @Test
