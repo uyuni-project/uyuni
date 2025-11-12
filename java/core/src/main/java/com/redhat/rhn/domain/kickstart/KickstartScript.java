@@ -20,10 +20,12 @@ import com.redhat.rhn.frontend.dto.BaseDto;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.Type;
+import org.hibernate.type.YesNoConverter;
 
 import java.util.Date;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -62,7 +64,7 @@ public class KickstartScript extends BaseDto implements Comparable<KickstartScri
     private String chroot;
 
     @Column(name = "error_on_fail", nullable = false)
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     private Boolean errorOnFail = false;
 
     @Column
@@ -81,7 +83,7 @@ public class KickstartScript extends BaseDto implements Comparable<KickstartScri
     private Date modified;
 
     @Column(name = "raw_script", nullable = false)
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     private Boolean raw = true;
 
     @ManyToOne(fetch = FetchType.LAZY)
