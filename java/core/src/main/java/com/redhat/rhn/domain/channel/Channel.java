@@ -33,6 +33,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.annotations.Type;
+import org.hibernate.type.YesNoConverter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,6 +47,7 @@ import java.util.stream.Stream;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -96,7 +98,7 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
     private Date endOfLife;
 
     @Column(name = "gpg_check")
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     private boolean GPGCheck;
 
     @Column(name = "gpg_key_url")
@@ -142,7 +144,7 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
     private String updateTag;
 
     @Column(name = "installer_updates")
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     private boolean installerUpdates;
 
     @ManyToOne(fetch = FetchType.LAZY)

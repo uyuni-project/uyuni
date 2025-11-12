@@ -46,7 +46,7 @@ public class ServerFQDN extends BaseDomainHelper implements Identifiable {
     private String name;
 
     @Column(name = "is_primary")
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     private boolean primary;
 
     /**
