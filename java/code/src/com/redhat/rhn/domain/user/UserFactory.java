@@ -645,7 +645,7 @@ public  class UserFactory extends HibernateFactory {
          */
         if (value) {
             if (usp != null) {
-                session.delete(usp);
+                session.remove(usp);
             }
         }
         else {

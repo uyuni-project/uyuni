@@ -309,7 +309,7 @@ public class ReportDbHibernateFactory {
         int numDeleted = 0;
         session = getSession();
 
-        session.delete(toRemove);
+        session.remove(toRemove);
         numDeleted++;
 
         return numDeleted;

@@ -574,7 +574,7 @@ public class PackageFactory extends HibernateFactory {
      * @param pack the package to delete
      */
     public static void deletePackage(Package pack) {
-        HibernateFactory.getSession().delete(pack);
+        HibernateFactory.getSession().remove(pack);
 
     }
 
@@ -583,7 +583,7 @@ public class PackageFactory extends HibernateFactory {
      * @param src the package source object
      */
     public static void deletePackageSource(PackageSource src) {
-        HibernateFactory.getSession().delete(src);
+        HibernateFactory.getSession().remove(src);
     }
 
     /**

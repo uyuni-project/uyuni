@@ -420,7 +420,7 @@ public class TestUtils {
         try {
             session = HibernateFactory.getSession();
 
-            session.delete(toRemove);
+            session.remove(toRemove);
             numDeleted++;
 
         }
