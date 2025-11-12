@@ -29,6 +29,7 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
@@ -38,6 +39,7 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OrderColumn;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 /**
@@ -49,8 +51,8 @@ import jakarta.persistence.Table;
 public class StateRevision {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "state_revision_seq")
-    @SequenceGenerator(name = "state_revision_seq", sequenceName = "suse_state_revision_id_seq", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "state_revision_seq")
+	@SequenceGenerator(name = "state_revision_seq", sequenceName = "suse_state_revision_id_seq", allocationSize = 1)
     private Long id;
 
     @OneToMany(mappedBy = "stateRevision", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

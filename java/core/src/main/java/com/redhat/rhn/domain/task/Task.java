@@ -26,10 +26,12 @@ import java.util.Date;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 /**
@@ -43,8 +45,8 @@ public class Task implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "task_queue_seq")
-    @SequenceGenerator(name = "task_queue_seq", sequenceName = "rhn_task_queue_id_seq", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "task_queue_seq")
+	@SequenceGenerator(name = "task_queue_seq", sequenceName = "rhn_task_queue_id_seq", allocationSize = 1)
     private Long id;
 
     @Column(name = "task_name", nullable = false, length = 64)

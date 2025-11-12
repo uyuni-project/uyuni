@@ -26,10 +26,12 @@ import java.util.Optional;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 /**
@@ -56,8 +58,8 @@ public class ImageStore extends BaseDomainHelper {
      * @return the id
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "imgstore_seq")
-    @SequenceGenerator(name = "imgstore_seq", sequenceName = "suse_imgstore_id_seq", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "imgstore_seq")
+	@SequenceGenerator(name = "imgstore_seq", sequenceName = "suse_imgstore_id_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }

@@ -21,10 +21,12 @@ import java.io.Serializable;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 /**
@@ -38,8 +40,8 @@ public class PackageNevra implements Serializable {
     private static final long serialVersionUID = 5428733207958125122L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pkgnevra_seq")
-    @SequenceGenerator(name = "pkgnevra_seq", sequenceName = "rhn_pkgnevra_id_seq", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pkgnevra_seq")
+	@SequenceGenerator(name = "pkgnevra_seq", sequenceName = "rhn_pkgnevra_id_seq", allocationSize = 1)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

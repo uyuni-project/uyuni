@@ -23,8 +23,10 @@ import java.util.Set;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Temporal;
@@ -52,9 +54,8 @@ public class PackageExtraTagsKeys implements Serializable {
      */
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pkgxtratagkeys_seq")
-    @SequenceGenerator(name = "pkgxtratagkeys_seq", sequenceName = "rhn_package_extra_tags_keys_id_seq",
-            allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pkgxtratagkeys_seq")
+	@SequenceGenerator(name = "pkgxtratagkeys_seq", sequenceName = "rhn_package_extra_tags_keys_id_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }
