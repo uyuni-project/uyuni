@@ -53,6 +53,7 @@ This package provides utility functions to expose %{productprettyname} data to C
 
 
 %files %{python_files}
+%license LICENSE
 %{python_sitelib}/uyuni_cobbler_helper.py
 
 %changelog
