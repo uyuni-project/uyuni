@@ -44,7 +44,7 @@ public class SupportDataActionDetails extends BaseDomainHelper {
     private String parameter;
 
     @Column(name = "upload_geo")
-    @Type(type = "com.redhat.rhn.domain.action.supportdata.UploadGeoEnumType")
+    @Type(value = com.redhat.rhn.domain.action.supportdata.UploadGeoEnumType.class)
     private UploadGeoType geoType;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
