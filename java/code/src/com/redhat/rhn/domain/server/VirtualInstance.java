@@ -19,9 +19,8 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -55,13 +54,11 @@ public class VirtualInstance extends BaseDomainHelper {
 	@SequenceGenerator(name = "rhn_vi_seq", sequenceName = "rhn_vi_id_seq", allocationSize = 1)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @Cascade({CascadeType.SAVE_UPDATE})
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "virtual_system_id")
     private Server guestSystem;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @Cascade({CascadeType.SAVE_UPDATE})
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "host_system_id")
     private Server hostSystem;
 
@@ -71,8 +68,7 @@ public class VirtualInstance extends BaseDomainHelper {
     @Column
     private Long confirmed;
 
-    @OneToOne(mappedBy = "parent")
-    @Cascade(CascadeType.ALL)
+    @OneToOne(mappedBy = "parent", cascade = CascadeType.ALL)
     private VirtualInstanceInfo info;
 
     /**
