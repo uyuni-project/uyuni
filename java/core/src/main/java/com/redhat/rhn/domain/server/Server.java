@@ -15,7 +15,6 @@
  */
 package com.redhat.rhn.domain.server;
 
-import static org.hibernate.annotations.CascadeType.SAVE_UPDATE;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
@@ -62,12 +61,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.cobbler.CobblerConnection;
 import org.cobbler.SystemRecord;
-import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.ListIndexBase;
 import org.hibernate.annotations.SQLJoinTableRestriction;
-import org.hibernate.annotations.Type;
 import org.hibernate.type.YesNoConverter;
-//import org.hibernate.annotations.WhereJoinTable;
 
 import java.net.IDN;
 import java.sql.Timestamp;
@@ -259,8 +255,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
     @OneToMany(mappedBy = "hostSystem", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<VirtualInstance> virtualGuests = new HashSet<>();
 
-    @OneToOne(mappedBy = "guestSystem", fetch = FetchType.LAZY)
-    @Cascade(SAVE_UPDATE)
+    @OneToOne(mappedBy = "guestSystem", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private VirtualInstance virtualInstance;
 
     @OneToOne(mappedBy = "server", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
