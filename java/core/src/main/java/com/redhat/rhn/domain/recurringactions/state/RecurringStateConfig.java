@@ -21,12 +21,14 @@ import java.io.Serializable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 
@@ -76,9 +78,8 @@ public abstract class RecurringStateConfig implements Serializable {
      * @return the id
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "recurring_state_config_seq")
-    @SequenceGenerator(name = "recurring_state_config_seq", sequenceName = "suse_recurring_state_config_id_seq",
-            allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "recurring_state_config_seq")
+	@SequenceGenerator(name = "recurring_state_config_seq", sequenceName = "suse_recurring_state_config_id_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }

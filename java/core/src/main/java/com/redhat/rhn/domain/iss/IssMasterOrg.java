@@ -22,10 +22,12 @@ import com.redhat.rhn.frontend.dto.BaseDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 
@@ -40,8 +42,8 @@ public class IssMasterOrg extends BaseDto {
 
     @Id
     @Column(name = "ID")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "issmasterorgs_seq")
-    @SequenceGenerator(name = "issmasterorgs_seq", sequenceName = "rhn_issmasterorgs_seq", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "issmasterorgs_seq")
+	@SequenceGenerator(name = "issmasterorgs_seq", sequenceName = "rhn_issmasterorgs_seq", allocationSize = 1)
     private Long id;
 
     @Column(name = "master_org_id")
