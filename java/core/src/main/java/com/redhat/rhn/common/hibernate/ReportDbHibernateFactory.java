@@ -282,7 +282,7 @@ public class ReportDbHibernateFactory {
         Session session = null;
         session = getSession();
         if (saveOrUpdate) {
-            session.saveOrUpdate(toSave);
+            session.merge(toSave);
         }
         else {
             session.persist(toSave);

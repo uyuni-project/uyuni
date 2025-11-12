@@ -328,7 +328,7 @@ public abstract class HibernateFactory {
         Session session = null;
         session = HibernateFactory.getSession();
         if (saveOrUpdate) {
-            session.saveOrUpdate(toSave);
+            session.merge(toSave);
         }
         else {
             session.persist(toSave);
