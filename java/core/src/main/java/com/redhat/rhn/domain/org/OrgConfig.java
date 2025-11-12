@@ -19,9 +19,10 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.annotations.Type;
+import org.hibernate.type.YesNoConverter;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -49,26 +50,26 @@ public class OrgConfig extends BaseDomainHelper {
     private Org org;
 
     @Column(name = "staging_content_enabled", nullable = false)
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     private boolean stagingContentEnabled;
 
     @Column(name = "errata_emails_enabled", nullable = false)
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     private boolean errataEmailsEnabled;
 
     @Column(name = "scapfile_upload_enabled", nullable = false)
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     private boolean scapfileUploadEnabled;
 
     @Column(name = "scap_retention_period_days")
     private Long scapRetentionPeriodDays;
 
     @Column(name = "create_default_sg", nullable = false)
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     private boolean createDefaultSg;
 
     @Column(name = "clm_sync_patches", nullable = false)
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     private boolean clmSyncPatches;
 
     /**

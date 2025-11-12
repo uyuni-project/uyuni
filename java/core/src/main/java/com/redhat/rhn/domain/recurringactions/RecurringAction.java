@@ -20,11 +20,13 @@ import com.redhat.rhn.domain.user.legacy.UserImpl;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.annotations.Type;
+import org.hibernate.type.YesNoConverter;
 
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -201,7 +203,7 @@ public abstract class RecurringAction extends BaseDomainHelper {
      * @return active - if action is active
      */
     @Column
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     public boolean isActive() {
         return active;
     }

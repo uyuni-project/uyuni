@@ -19,10 +19,12 @@ import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.Type;
+import org.hibernate.type.YesNoConverter;
 
 import java.util.Objects;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -57,7 +59,7 @@ public class InstalledProduct extends BaseDomainHelper {
     private String release;
 
     @Column(name = "is_baseproduct")
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     private boolean baseproduct;
 
     /**
