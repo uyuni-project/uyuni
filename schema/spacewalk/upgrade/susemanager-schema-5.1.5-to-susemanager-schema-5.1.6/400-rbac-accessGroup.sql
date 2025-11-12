@@ -8,6 +8,8 @@
 -- along with this software; if not, see
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
+-- SPDX-License-Identifier: GPL-2.0-only
+--
 
 DROP INDEX IF EXISTS access.access_group_label_uq;
 CREATE UNIQUE INDEX IF NOT EXISTS access_group_org_label_uq

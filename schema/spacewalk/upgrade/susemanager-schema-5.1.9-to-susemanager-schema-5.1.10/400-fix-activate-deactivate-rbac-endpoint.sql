@@ -8,6 +8,8 @@
 -- along with this software; if not, see
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
+-- SPDX-License-Identifier: GPL-2.0-only
+--
 
 UPDATE access.endpoint SET auth_required = false
 WHERE endpoint in ('/manager/api/proxy/activateProxy', '/manager/api/proxy/deactivateProxy');

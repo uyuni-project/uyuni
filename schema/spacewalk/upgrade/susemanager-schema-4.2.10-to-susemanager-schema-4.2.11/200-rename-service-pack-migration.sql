@@ -8,5 +8,7 @@
 -- along with this software; if not, see
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
+-- SPDX-License-Identifier: GPL-2.0-only
+--
 
 UPDATE rhnActionType SET name='Product Migration' WHERE label='distupgrade.upgrade' AND name!='Product Migration';

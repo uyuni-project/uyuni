@@ -8,6 +8,8 @@
 -- along with this software; if not, see
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
+-- SPDX-License-Identifier: GPL-2.0-only
+--
 --
 
 ALTER TABLE rhnActionPackage DROP CONSTRAINT rhn_act_p_param_ck;
