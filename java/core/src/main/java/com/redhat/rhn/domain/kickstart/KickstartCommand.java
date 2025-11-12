@@ -18,7 +18,9 @@ package com.redhat.rhn.domain.kickstart;
 import com.redhat.rhn.domain.BaseDomainHelper;
 
 import org.apache.commons.lang3.StringUtils;
-import org.hibernate.annotations.Loader;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.SQLSelect;
 
 import java.util.Date;
 
@@ -50,7 +52,13 @@ import jakarta.persistence.Table;
             ORDER BY cname.sort_order, custom_position
             """
 )
-@Loader(namedQuery = "commandSort")
+@SQLSelect(sql = """
+            SELECT sortcol.*
+            FROM rhnKickstartCommand sortcol, rhnKickstartCommandName cname
+            WHERE KICKSTART_ID = :id
+            AND sortcol.ks_command_name_id = cname.id
+            ORDER BY cname.sort_order, custom_position
+            """)
 public class KickstartCommand extends BaseDomainHelper implements Comparable<KickstartCommand> {
 
     @Id
