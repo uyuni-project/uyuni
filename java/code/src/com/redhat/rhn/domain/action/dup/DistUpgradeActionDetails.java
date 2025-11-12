@@ -18,12 +18,14 @@ import com.redhat.rhn.domain.server.Server;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
+import org.hibernate.type.YesNoConverter;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -57,15 +59,15 @@ public class DistUpgradeActionDetails extends BaseDomainHelper {
     private Server server;
 
     @Column(name = "dry_run")
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     private boolean dryRun;
 
     @Column(name = "allow_vendor_change")
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     private boolean allowVendorChange;
 
     @Column(name = "full_update")
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     private boolean fullUpdate;
 
     @Column(name = "missing_successors")

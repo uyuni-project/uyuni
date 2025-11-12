@@ -307,7 +307,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
     private String hostname;
 
     @Column
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     private boolean payg;
 
     @ManyToOne(fetch = FetchType.LAZY)

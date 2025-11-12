@@ -30,6 +30,7 @@ import com.redhat.rhn.manager.system.SystemManager;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
+import org.hibernate.type.YesNoConverter;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -39,6 +40,7 @@ import java.util.TreeMap;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -90,7 +92,7 @@ public class KickstartSession extends BaseDomainHelper {
     private String kickstartFromHost;
 
     @Column(name = "deploy_configs", nullable = false)
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     private Boolean deployConfigs;
 
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
