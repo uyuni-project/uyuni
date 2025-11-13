@@ -1104,7 +1104,7 @@ public class ActionFactory extends HibernateFactory {
 
     private static void updateActionEarliestDate(Action action) {
         action.setEarliestAction(new Date());
-        HibernateFactory.getSession().save(action);
+        HibernateFactory.getSession().persist(action);
     }
 
     /**

@@ -524,7 +524,7 @@ public class ProfileHandler extends BaseHandler {
         for (KickstartScript script : scripts) {
             script.setPosition(fakePosition);
             fakePosition += 1;
-            HibernateFactory.getSession().save(script);
+            HibernateFactory.getSession().persist(script);
         }
         KickstartFactory.saveKickstartData(data);
 
@@ -535,19 +535,19 @@ public class ProfileHandler extends BaseHandler {
             KickstartScript script = idToScript.get(id);
             script.setPosition(nextPosition);
             nextPosition += 1;
-            HibernateFactory.getSession().save(script);
+            HibernateFactory.getSession().persist(script);
         }
         for (Integer id : postScriptsBeforeRegistration) {
             KickstartScript script = idToScript.get(id);
             script.setPosition(nextNegativePosition);
             nextNegativePosition -= 1;
-            HibernateFactory.getSession().save(script);
+            HibernateFactory.getSession().persist(script);
         }
         for (Integer id : postScriptsAfterRegistration) {
             KickstartScript script = idToScript.get(id);
             script.setPosition(nextPosition);
             nextPosition += 1;
-            HibernateFactory.getSession().save(script);
+            HibernateFactory.getSession().persist(script);
         }
         KickstartFactory.saveKickstartData(data);
 
@@ -680,7 +680,7 @@ public class ProfileHandler extends BaseHandler {
         script.setErrorOnFail(erroronfail);
         script.setKsdata(ksData);
         ksData.addScript(script);
-        HibernateFactory.getSession().save(script);
+        HibernateFactory.getSession().persist(script);
         KickstartFactory.saveKickstartData(ksData);
         return script.getId().intValue();
     }
