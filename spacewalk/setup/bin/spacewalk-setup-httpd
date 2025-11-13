@@ -23,31 +23,6 @@ use warnings;
 use Getopt::Long;
 use Spacewalk::Setup;
 
-sub id_like_match {
-  $what = shift;
-  my $filename = '/etc/os-release';
-  if(! -e $filename) {
-    return 0;
-  }
-  open my $fh, "<", $filename or die "Could not open '$filename': $!\n";
-  while( my $line = <$fh> ) {
-    if ($line =~ m/ID_LIKE="$what"/) {
-      close $fh;
-      return 1;
-    }
-  }
-  close $fh;
-  return 0;
-}
-
-sub is_suse_like {
-   return id_like_match(".*suse.*");
-}
-
-sub is_opensuse {
-   return id_like_match(".*opensuse.*");
-}
-
 sub os_fips_mode_on {
         # For kernels without CONFIG_CRYPTO_FIPS enabled
         return 0 if (!-e '/proc/sys/crypto/fips_enabled');
@@ -60,19 +35,7 @@ sub os_fips_mode_on {
 }
 
 sub mod_ssl_fipsmode_option {
-        # Remove this IF as soon as we have FIPS support enabled at openSUSE Leap 15.2.
-        if (is_opensuse()) {
-                return 0;
-        }
-        if(is_suse_like()) {
-                # Remove this return as soon as we have FIPS support enabled at SLE15SP2.
-                return 0;
-
-                $mod_ssl_version = `rpm -q --qf='%{VERSION}' apache2-prefork`;
-        }
-        else {
-                $mod_ssl_version = `rpm -q --qf='%{VERSION}' mod_ssl`;
-        }
+        $mod_ssl_version = `rpm -q --qf='%{VERSION}' apache2-prefork`;
         # mod_ssl > 2.4 supports SSLFIPS directive (Fedora 19, 20, ...)
         # apache2-prefork > 2.4 supports SSLFIPS directive (SLE15, openSUSE Leap 15.0, ...)
         if ($mod_ssl_version gt '2.4.0') {
@@ -104,11 +67,11 @@ sub modify_conf_content {
 }
 
 sub setup_mod_nossl {
-    my $sslconf_dir = is_suse_like() ? '/etc/apache2/vhosts.d' : '/etc/httpd/conf.d';
-    my $sslconf     = is_suse_like() ? 'vhost-nossl.conf' : 'nossl.conf';
+    my $sslconf_dir = '/etc/apache2/vhosts.d';
+    my $sslconf     = 'vhost-nossl.conf';
 
 	my $sslconf_path = "$sslconf_dir/$sslconf";
-    if(is_suse_like() && ! -f $sslconf_path)
+    if(! -f $sslconf_path)
 	{
         my $config_path = Spacewalk::Setup::SHARED_DIR . "/vhost-nossl.conf";
 		`cp "$config_path" "$sslconf_path"`;
@@ -121,17 +84,15 @@ sub setup_mod_ssl {
         my $fips_mode_on = shift;
 
         my ($sslconf_content, $original_sslconf_content, $pre, $vhost, $post);
-        my $sslconf_dir = '/etc/httpd/conf.d';
-        $sslconf_dir = '/etc/apache2/vhosts.d' if(is_suse_like());
-        my $sslconf     = 'ssl.conf';
-        $sslconf = 'vhost-ssl.conf' if(is_suse_like());
+        my $sslconf_dir = '/etc/apache2/vhosts.d';
+        my $sslconf = 'vhost-ssl.conf';
 
-	my $sslconf_path = "$sslconf_dir/$sslconf";
-	local *FILE;
-        if(is_suse_like() && ! -f $sslconf_path)
-	{
-		`cp "$sslconf_dir/vhost-ssl.template" "$sslconf_path"`;
-	}
+        my $sslconf_path = "$sslconf_dir/$sslconf";
+        local *FILE;
+            if(! -f $sslconf_path)
+        {
+            `cp "$sslconf_dir/vhost-ssl.template" "$sslconf_path"`;
+        }
         die "$sslconf_path does not exist.\n" unless (-f $sslconf_path);
 
         {

@@ -566,6 +566,12 @@ elif [ "$INSTALLER" == zypper ]; then
             grep -q 'Micro' /etc/os-release && BASE="${{BASE}}micro"
             VERSION="$(grep '^\(VERSION_ID\)' /etc/os-release | sed -n 's/.*"\([[:digit:]]\+\).*/\\1/p')"
             PATCHLEVEL="$(grep '^\(VERSION_ID\)' /etc/os-release | sed -n 's/.*\.\([[:digit:]]*\).*/\\1/p')"
+            # With SLES 16.0 / SL Micro 6.2, the VERSION_ID is common, we need to rely on the SUSE_SUPPORT_PRODUCT_VERSION
+            if grep '^SUSE_SUPPORT_PRODUCT_VERSION=' /etc/os-release; then
+                VERSION="$(grep '^\(SUSE_SUPPORT_PRODUCT_VERSION\)' /etc/os-release | sed -n 's/.*"\([[:digit:]]\+\).*/\1/p')"
+                PATCHLEVEL="$(grep '^\(SUSE_SUPPORT_PRODUCT_VERSION\)' /etc/os-release | sed -n 's/.*\.\([[:digit:]]*\).*/\1/p')"
+                grep -q 'Micro' /etc/os-release && BASE="slmicro"
+            fi
             # openSUSE MicroOS
             grep -q 'MicroOS' /etc/os-release && BASE='opensusemicroos' && VERSION='latest'
             # openSUSE Tumbleweed
