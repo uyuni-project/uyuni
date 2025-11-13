@@ -266,7 +266,7 @@ public class HubFactory extends HibernateFactory {
         }
 
         // Store the new token
-        getSession().saveOrUpdate(accessToken);
+        HibernateFactory.saveOrUpdateObject(accessToken);
         return accessToken;
     }
 
