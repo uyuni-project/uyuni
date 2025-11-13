@@ -10,8 +10,7 @@
   -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.uyuni-project</groupId>
@@ -33,7 +32,77 @@
     <properties>
         <!-- Skip unit tests, as they require running the database -->
         <skipTests>true</skipTests>
+        <!-- Do not force obs-to-maven to run each time by default -->
+        <obs-to-maven.force-parameter />
+        <!-- Dependecies version group -->
+        <version.group>uyuni</version.group>
+        <!-- Root project directory -->
+        <spacewalk-java.dir>${project.basedir}</spacewalk-java.dir>
     </properties>
+
+    <profiles>
+        <!-- Handle the parameter to force a refresh of obs-to-maven dependencies -->
+        <profile>
+            <id>obs-to-maven-force</id>
+            <activation>
+                <property>
+                    <name>obs-to-maven.force</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <properties>
+                <obs-to-maven.force-parameter>--force</obs-to-maven.force-parameter>
+            </properties>
+        </profile>
+        <profile>
+            <id>use-obs-to-maven</id>
+            <activation>
+                <property>
+                    <name>disable-local-repository</name>
+                    <value>!true</value>
+                </property>
+            </activation>
+            <repositories>
+                <repository>
+                    <id>local-repository</id>
+                    <name>Local Repository with artifacts downloaded from OBS</name>
+                    <url>file://${spacewalk-java.dir}/repository/${version.group}</url>
+                    <releases>
+                        <updatePolicy>always</updatePolicy>
+                    </releases>
+                </repository>
+            </repositories>
+            <build>
+                <plugins>
+                    <!-- Configuration to download the dependencies from OBS on initialize -->
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>3.4.1</version>
+                        <inherited>false</inherited>
+                        <executions>
+                            <execution>
+                                <id>download-dependencies</id>
+                                <phase>initialize</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>/bin/bash</executable>
+                                    <commandlineArgs>
+                                        ${spacewalk-java.dir}/scripts/maven/download-to-local-repository.sh
+                                        ${obs-to-maven.force-parameter}
+                                        ${spacewalk-java.dir}/buildconf/ivy/obs-maven-config.yaml
+                                        ${spacewalk-java.dir} ${version.group}
+                                    </commandlineArgs>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
     <dependencyManagement>
         <dependencies>

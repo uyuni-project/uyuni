@@ -23,6 +23,10 @@
     <artifactId>webapp</artifactId>
     <packaging>war</packaging>
 
+    <properties>
+        <spacewalk-java.dir>${project.basedir}/..</spacewalk-java.dir>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.uyuni-project.spacewalk-java</groupId>

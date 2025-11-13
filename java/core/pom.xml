@@ -23,6 +23,10 @@
     <artifactId>core</artifactId>
     <packaging>jar</packaging>
 
+    <properties>
+        <spacewalk-java.dir>${project.basedir}/..</spacewalk-java.dir>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.uyuni-project</groupId>
