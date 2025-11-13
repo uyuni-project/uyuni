@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2009--2010 Red Hat, Inc.
+ * Copyright (c) 2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -14,8 +15,8 @@
  */
 package com.redhat.rhn.domain.test;
 
-import com.redhat.rhn.common.hibernate.ConnectionManagerFactory;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.hibernate.TestConnectionManager;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -69,7 +70,7 @@ public class TestFactory extends HibernateFactory {
     }
 
     public static Session getSession() {
-        setConnectionManager(ConnectionManagerFactory.testConnectionManager());
+        setConnectionManager(new TestConnectionManager());
         return HibernateFactory.getSession();
     }
 }

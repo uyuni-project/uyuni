@@ -20,11 +20,7 @@ import java.util.List;
  * Manages the lifecycle of Hibernate SessionFactory and associated
  * thread-scoped Hibernate sessions.
  */
-class TestConnectionManager extends DefaultConnectionManager {
-
-    TestConnectionManager() {
-        super();
-    }
+public class TestConnectionManager extends DefaultConnectionManager {
 
     @Override
     protected List<Class<?>> getAnnotatedClasses() {
