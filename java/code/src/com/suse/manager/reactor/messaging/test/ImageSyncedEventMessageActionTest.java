@@ -32,6 +32,7 @@ import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.reactor.messaging.ImageSyncedEventMessage;
 import com.suse.manager.reactor.messaging.ImageSyncedEventMessageAction;
+import com.suse.manager.webui.utils.salt.custom.ImageDeployedEvent;
 import com.suse.manager.webui.utils.salt.custom.ImageSyncedEvent;
 import com.suse.salt.netapi.datatypes.Event;
 import com.suse.salt.netapi.parser.JsonParser;
@@ -107,7 +108,7 @@ public class ImageSyncedEventMessageActionTest extends JMockBaseTestCaseWithUser
         assertTrue(testGroup1.getPillarByCategory(category).isPresent());
 
 
-        HibernateFactory.getSession().delete(img1);
+        HibernateFactory.getSession().remove(img1);
         HibernateFactory.getSession().flush();
         testGroup1 = TestUtils.reload(testGroup1);
 

@@ -2169,7 +2169,7 @@ public class ChannelFactory extends HibernateFactory {
     public static void cloneModulesMetadata(Channel from, Channel to) {
         if (!from.isModular()) {
             if (to.isModular()) {
-                HibernateFactory.getSession().delete(to.getModules());
+                HibernateFactory.getSession().remove(to.getModules());
                 to.setModules(null);
             }
         }

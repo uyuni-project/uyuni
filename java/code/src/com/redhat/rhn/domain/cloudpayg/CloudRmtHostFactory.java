@@ -54,7 +54,7 @@ public class CloudRmtHostFactory extends HibernateFactory {
      * @param host cloud rmt host to be deleted
      */
     public static void deleteCloudRmtHost(CloudRmtHost host) {
-        getSession().delete(host);
+        getSession().remove(host);
     }
 
     /**

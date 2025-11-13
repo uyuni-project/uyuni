@@ -355,7 +355,7 @@ public abstract class HibernateFactory {
         int numDeleted = 0;
         session = HibernateFactory.getSession();
 
-        session.delete(toRemove);
+        session.remove(toRemove);
         numDeleted++;
 
         return numDeleted;

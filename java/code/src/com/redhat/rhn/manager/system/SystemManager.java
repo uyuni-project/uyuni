@@ -2357,7 +2357,7 @@ public class SystemManager extends BaseManager {
         if (!isAvailableToUser(user, server.getId())) {
            throw getNoServerException(server.getId(), user.getId());
         }
-        HibernateFactory.getSession().delete(server.getLock());
+        HibernateFactory.getSession().remove(server.getLock());
         server.setLock(null);
     }
 
@@ -2374,7 +2374,7 @@ public class SystemManager extends BaseManager {
      * @param server Server that is attempting to be unlocked
      */
     public static void unlockServer(Server server) {
-        HibernateFactory.getSession().delete(server.getLock());
+        HibernateFactory.getSession().remove(server.getLock());
         server.setLock(null);
     }
 
@@ -2903,7 +2903,7 @@ public class SystemManager extends BaseManager {
 
         boolean deletedOnServer = server.getNotes().remove(doomed);
         if (deletedOnServer) {
-            session.delete(doomed);
+            session.remove(doomed);
         }
     }
 
@@ -2919,7 +2919,7 @@ public class SystemManager extends BaseManager {
 
         Session session = HibernateFactory.getSession();
         for (Object doomed : server.getNotes()) {
-            session.delete(doomed);
+            session.remove(doomed);
         }
 
         server.getNotes().clear();

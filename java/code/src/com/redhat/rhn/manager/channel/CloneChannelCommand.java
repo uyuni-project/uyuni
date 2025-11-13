@@ -155,11 +155,11 @@ public class CloneChannelCommand extends CreateChannelCommand {
 
         if (stripModularMetadata) {
             if (c.getModules() != null) {
-                HibernateFactory.getSession().delete(c.getModules());
+                HibernateFactory.getSession().remove(c.getModules());
             }
             c.setModules(null);
             AppStreamsManager.listChannelAppStreams(c.getId()).forEach(a ->
-                    HibernateFactory.getSession().delete(a)
+                    HibernateFactory.getSession().remove(a)
             );
         }
         else {
