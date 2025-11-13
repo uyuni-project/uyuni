@@ -48,7 +48,7 @@ public class TokenFactory extends HibernateFactory {
      */
     public static Token lookupById(Long id) {
         Session session = HibernateFactory.getSession();
-        return session.get(Token.class, id);
+        return session.find(Token.class, id);
     }
 
     /**

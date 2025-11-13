@@ -844,7 +844,7 @@ public class ServerFactory extends HibernateFactory {
      * @return the Server found
      */
     public static Server lookupById(Long id) {
-        return HibernateFactory.getSession().get(Server.class, id);
+        return HibernateFactory.getSession().find(Server.class, id);
     }
 
     /**

@@ -408,7 +408,7 @@ public class ReportDbHibernateFactory {
         try {
             session = getSession();
 
-            retval = session.get(clazz, id);
+            retval = session.find(clazz, id);
         }
         catch (MappingException me) {
             getLogger().error("Mapping not found for " + clazz.getName(), me);
@@ -438,7 +438,7 @@ public class ReportDbHibernateFactory {
         try {
             session = getSession();
 
-            retval = session.get(clazz, id, LockMode.PESSIMISTIC_WRITE);
+            retval = session.find(clazz, id, LockModeType.PESSIMISTIC_WRITE);
         }
         catch (MappingException me) {
             getLogger().error("Mapping not found for " + clazz.getName(), me);
@@ -474,7 +474,7 @@ public class ReportDbHibernateFactory {
          * session.get is set to not return the proxy class, so that is what we'll use.
          *
         // assertNotSame(obj, result);
-        return (T) session.get(obj.getClass(), id);
+        return (T) session.find(obj.getClass(), id);
     }*/
 
     /**

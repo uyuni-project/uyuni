@@ -824,7 +824,7 @@ public class KickstartFactory extends HibernateFactory {
      */
     public static KickstartSession lookupKickstartSessionById(Long sessionId) {
         Session session = HibernateFactory.getSession();
-        return session.get(KickstartSession.class, sessionId);
+        return session.find(KickstartSession.class, sessionId);
     }
 
     private static KickstartTreeType lookupKickstartTreeTypeByLabel(String label) {
