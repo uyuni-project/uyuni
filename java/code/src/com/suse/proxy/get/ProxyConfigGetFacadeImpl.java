@@ -25,7 +25,6 @@ import com.suse.proxy.get.formdata.ProxyConfigGetFormDataAcquisitor;
 import com.suse.proxy.get.formdata.ProxyConfigGetFormDataContext;
 import com.suse.proxy.get.formdata.ProxyConfigGetFormDataContextHandler;
 import com.suse.proxy.get.formdata.ProxyConfigGetFormDataPreConditions;
-import com.suse.proxy.get.formdata.ProxyConfigGetFormDataProxyInitializer;
 import com.suse.proxy.get.formdata.ProxyConfigGetFormDefaults;
 import com.suse.proxy.model.ProxyConfig;
 import com.suse.utils.Json;
@@ -39,7 +38,7 @@ import java.util.Map;
  * Class responsible for getting proxy configurations
  */
 public class ProxyConfigGetFacadeImpl implements ProxyConfigGetFacade {
-    public static final String MGRPXY = "mgrpxy";
+
     private final List<ProxyConfigGetFormDataContextHandler> getFormDataContextHandlerChain = new ArrayList<>();
 
     /**
@@ -48,7 +47,6 @@ public class ProxyConfigGetFacadeImpl implements ProxyConfigGetFacade {
     public ProxyConfigGetFacadeImpl() {
         this.getFormDataContextHandlerChain.addAll(asList(
                 new ProxyConfigGetFormDataPreConditions(),
-                new ProxyConfigGetFormDataProxyInitializer(),
                 new ProxyConfigGetFormDefaults(),
                 new ProxyConfigGetFormDataAcquisitor()
         ));

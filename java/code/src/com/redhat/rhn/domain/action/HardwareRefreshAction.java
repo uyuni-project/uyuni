@@ -252,7 +252,7 @@ public class HardwareRefreshAction extends Action {
                 throw new RhnRuntimeException(result.getMessage());
             }
         }
-        updater.update(request, systemManager, null);
+        updater.update(request, systemManager, GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER, null);
     }
 
     /**

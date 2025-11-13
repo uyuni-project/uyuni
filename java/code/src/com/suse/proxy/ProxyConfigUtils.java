@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 
 package com.suse.proxy;
@@ -26,7 +22,12 @@ import static com.suse.utils.Predicates.isAbsent;
 import static com.suse.utils.Predicates.isProvided;
 
 import com.redhat.rhn.common.util.FileUtils;
+import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.server.Pillar;
+import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.channel.ChannelManager;
+import com.redhat.rhn.manager.rhnpackage.PackageManager;
 
 import com.suse.manager.webui.utils.YamlHelper;
 import com.suse.proxy.model.ProxyConfig;
@@ -55,6 +56,8 @@ public class ProxyConfigUtils {
     private ProxyConfigUtils() {
         throw new UnsupportedOperationException(NOT_INSTANTIABLE);
     }
+
+    public static final String MGRPXY = "mgrpxy";
 
     //
     public static final String PROXY_PILLAR_CATEGORY = "proxy";
@@ -436,4 +439,75 @@ public class ProxyConfigUtils {
         return imageUrlPrefixes.size() == 1 ? Optional.of(imageUrlPrefixes.iterator().next()) : Optional.empty();
     }
 
+    /**
+     * Check if mgrpxy is installed on the server
+     * @param server the server to check
+     * @return true if installed, false otherwise
+     */
+    public static boolean isMgrpxyInstalled(Server server) {
+        return PackageManager.shallowSystemPackageList(server.getId())
+                .stream().anyMatch(p -> p.getName().equals(MGRPXY));
+    }
+
+    /**
+     * Returns the set of channels providing the mgrpxy package that should be subscribed to.
+     * Logic:
+     * - If mgrpxy is already available from a subscribed channel, returns an empty set.
+     * - If mgrpxy is available only from non-subscribed channels, returns those channels.
+     * - If no channels provide mgrpxy at all, returns {@code null}.
+     *
+     * @param server the server to inspect
+     * @param user   the user requesting the channels
+     * @return set of subscribable channels providing mgrpxy, an empty set if already subscribed,
+     * or {@code null} if unavailable
+     */
+    public static Set<Channel> getSubscribableMgrpxyChannels(Server server, User user) {
+        Channel baseChannel = server.getBaseChannel();
+        if (baseChannel == null) {
+            return null;
+        }
+
+        Map<Boolean, Set<Channel>> channelsBySubscription =
+                collectAccessibleChannels(baseChannel, user).stream()
+                        .filter(c -> !ChannelManager.listLatestPackagesEqual(c.getId(), MGRPXY).isEmpty())
+                        .collect(Collectors.partitioningBy(
+                                server::isSubscribed,
+                                Collectors.toSet()
+                        ));
+
+        Set<Channel> subscribed = channelsBySubscription.getOrDefault(true, Set.of());
+        Set<Channel> unsubscribed = channelsBySubscription.getOrDefault(false, Set.of());
+
+        if (!subscribed.isEmpty()) {
+            return Set.of();
+        }
+
+        return unsubscribed.isEmpty() ? null : unsubscribed;
+    }
+
+    /**
+     * Recursively collects accessible channels for a given user.
+     * @param channel the channel to check
+     * @param user the user requesting access
+     * @return a set of accessible channels
+     */
+    private static Set<Channel> collectAccessibleChannels(Channel channel, User user) {
+        Set<Channel> collected = new HashSet<>();
+        collected.add(channel);
+        for (Channel child : channel.getAccessibleChildrenFor(user)) {
+            collected.addAll(collectAccessibleChannels(child, user));
+        }
+        return collected;
+    }
+
+    /**
+     * Helper method to check if mgrpxy is available on server on a subscribed channel
+     * @param server the server to check
+     * @return true if available, false otherwise
+     */
+    public static boolean isMgrpxyAvailable(Server server) {
+        return server.getChildChannels().stream()
+                .flatMap(c -> c.getPackages().stream())
+                .anyMatch(p -> MGRPXY.equals(p.getPackageName().getName()));
+    }
 }

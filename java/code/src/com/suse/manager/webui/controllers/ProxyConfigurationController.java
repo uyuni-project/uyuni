@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 
 package com.suse.manager.webui.controllers;
@@ -144,7 +140,7 @@ public class ProxyConfigurationController {
                 GSON.fromJson(request.body(), new TypeToken<ProxyConfigUpdateJson>() { }.getType());
 
         try {
-            proxyConfigUpdateFacade.update(data, systemManager, user);
+            proxyConfigUpdateFacade.update(data, systemManager, GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER, user);
             return result(response, ResultJson.success("Proxy configuration applied"));
         }
         catch (RhnRuntimeException e) {
