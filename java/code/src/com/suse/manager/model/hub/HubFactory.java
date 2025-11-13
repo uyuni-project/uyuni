@@ -275,7 +275,7 @@ public class HubFactory extends HibernateFactory {
      * @param accessToken the access token to update
      */
     public void updateToken(IssAccessToken accessToken) {
-        getSession().update(accessToken);
+        getSession().merge(accessToken);
     }
 
     /**
