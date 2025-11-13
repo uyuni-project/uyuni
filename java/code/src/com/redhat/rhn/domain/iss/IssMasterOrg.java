@@ -18,16 +18,16 @@ package com.redhat.rhn.domain.iss;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.frontend.dto.BaseDto;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 
@@ -42,14 +42,8 @@ public class IssMasterOrg extends BaseDto {
 
     @Id
     @Column(name = "ID")
-    @GeneratedValue(generator = "issmasterorgs_seq")
-    @GenericGenerator(
-            name = "issmasterorgs_seq",
-            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-            parameters = {
-                    @Parameter(name = "sequence_name", value = "rhn_issmasterorgs_seq"),
-                    @Parameter(name = "increment_size", value = "1")
-            })
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "issmasterorgs_seq")
+    @SequenceGenerator(name = "issmasterorgs_seq", sequenceName = "rhn_issmasterorgs_seq", allocationSize = 1)
     private Long id;
 
     @Column(name = "master_org_id")

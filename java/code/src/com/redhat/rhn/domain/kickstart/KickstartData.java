@@ -38,8 +38,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.cobbler.CobblerConnection;
 import org.cobbler.Profile;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.SortNatural;
 import org.hibernate.annotations.Type;
 
@@ -65,6 +63,7 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -74,6 +73,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -87,14 +87,8 @@ import javax.persistence.Table;
 public class KickstartData extends BaseDomainHelper {
 
     @Id
-    @GeneratedValue(generator = "RHN_KS_ID_SEQ")
-    @GenericGenerator(
-        name = "RHN_KS_ID_SEQ",
-        strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-        parameters = {
-            @Parameter(name = "sequence_name", value = "RHN_KS_ID_SEQ"),
-            @Parameter(name = "increment_size", value = "1")
-        })
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_KS_ID_SEQ")
+    @SequenceGenerator(name = "RHN_KS_ID_SEQ", sequenceName = "RHN_KS_ID_SEQ", allocationSize = 1)
     private Long id;
 
     @Column(name = "ks_type", updatable = false, insertable = false)

@@ -14,8 +14,6 @@ import com.redhat.rhn.domain.server.Server;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 import java.io.Serializable;
 
@@ -23,9 +21,11 @@ import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
@@ -60,14 +60,9 @@ public class ServerCoCoAttestationConfig implements Serializable  {
      */
     @Id
     @Column(name = "id")
-    @GeneratedValue(generator = "suse_srvcocoatt_cnf_seq")
-    @GenericGenerator(
-        name = "suse_srvcocoatt_cnf_seq",
-        strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-        parameters = {
-                @Parameter(name = "sequence_name", value = "suse_srvcocoatt_cnf_id_seq"),
-                @Parameter(name = "increment_size", value = "1")
-         })
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "suse_srvcocoatt_cnf_seq")
+    @SequenceGenerator(name = "suse_srvcocoatt_cnf_seq", sequenceName = "suse_srvcocoatt_cnf_id_seq",
+            allocationSize = 1)
     public Long getId() {
         return id;
     }

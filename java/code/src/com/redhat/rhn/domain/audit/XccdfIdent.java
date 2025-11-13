@@ -12,9 +12,7 @@ package com.redhat.rhn.domain.audit;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Immutable;
-import org.hibernate.annotations.Parameter;
 
 import java.io.Serializable;
 
@@ -22,9 +20,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -37,14 +37,8 @@ import javax.persistence.Table;
 public class XccdfIdent implements Serializable {
 
     @Id
-    @GeneratedValue(generator = "rhn_xccdf_ident_seq")
-    @GenericGenerator(
-            name = "rhn_xccdf_ident_seq",
-            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-            parameters = {
-                    @Parameter(name = "sequence_name", value = "rhn_xccdf_ident_id_seq"),
-                    @Parameter(name = "increment_size", value = "1")
-            })
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rhn_xccdf_ident_seq")
+    @SequenceGenerator(name = "rhn_xccdf_ident_seq", sequenceName = "rhn_xccdf_ident_id_seq", allocationSize = 1)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

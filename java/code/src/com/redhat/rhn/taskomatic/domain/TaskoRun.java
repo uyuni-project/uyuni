@@ -18,8 +18,6 @@ package com.redhat.rhn.taskomatic.domain;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.taskomatic.TaskoFactory;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -27,9 +25,11 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 
@@ -48,14 +48,8 @@ public class TaskoRun extends BaseDomainHelper implements Serializable {
     public static final String STATUS_INTERRUPTED = "INTERRUPTED";
 
     @Id
-    @GeneratedValue(generator = "tasko_run_seq")
-    @GenericGenerator(
-            name = "tasko_run_seq",
-            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-            parameters = {
-                    @Parameter(name = "sequence_name", value = "RHN_TASKO_RUN_ID_SEQ"),
-                    @Parameter(name = "increment_size", value = "1")
-            })
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tasko_run_seq")
+    @SequenceGenerator(name = "tasko_run_seq", sequenceName = "RHN_TASKO_RUN_ID_SEQ", allocationSize = 1)
     private Long id;
     @Column(name = "org_id")
     private Integer orgId;

@@ -17,16 +17,16 @@ package com.redhat.rhn.domain.org;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -37,14 +37,8 @@ import javax.persistence.Table;
 public class TemplateString extends BaseDomainHelper {
 
     @Id
-    @GeneratedValue(generator = "RHN_TEMPLATE_STR_ID_SEQ")
-    @GenericGenerator(
-            name = "RHN_TEMPLATE_STR_ID_SEQ",
-            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-            parameters = {
-                    @Parameter(name = "sequence_name", value = "RHN_TEMPLATE_STR_ID_SEQ"),
-                    @Parameter(name = "increment_size", value = "1")
-            })
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_TEMPLATE_STR_ID_SEQ")
+    @SequenceGenerator(name = "RHN_TEMPLATE_STR_ID_SEQ", sequenceName = "RHN_TEMPLATE_STR_ID_SEQ", allocationSize = 1)
     private Long id;
 
     @Column

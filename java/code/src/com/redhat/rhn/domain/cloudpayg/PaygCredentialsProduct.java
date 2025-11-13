@@ -17,13 +17,13 @@ import com.redhat.rhn.taskomatic.task.payg.beans.PaygProductInfo;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
@@ -60,14 +60,8 @@ public class PaygCredentialsProduct extends BaseDomainHelper {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(generator = "susePaygProduct_seq")
-    @GenericGenerator(
-            name = "susePaygProduct_seq",
-            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-            parameters = {
-                    @Parameter(name = "sequence_name", value = "susePaygProduct_id_seq"),
-                    @Parameter(name = "increment_size", value = "1")
-            })
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "susePaygProduct_seq")
+    @SequenceGenerator(name = "susePaygProduct_seq", sequenceName = "susePaygProduct_id_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }

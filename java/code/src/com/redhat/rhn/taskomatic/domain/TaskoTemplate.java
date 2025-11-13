@@ -17,8 +17,6 @@ package com.redhat.rhn.taskomatic.domain;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 import java.util.Set;
 
@@ -27,10 +25,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 
@@ -41,14 +41,8 @@ import javax.persistence.Table;
 @Table(name = "rhnTaskoTemplate")
 public class TaskoTemplate extends BaseDomainHelper {
     @Id
-    @GeneratedValue(generator = "tasko_template_seq")
-    @GenericGenerator(
-            name = "tasko_template_seq",
-            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-            parameters = {
-                    @Parameter(name = "sequence_name", value = "RHN_TASKO_TEMPLATE_ID_SEQ"),
-                    @Parameter(name = "increment_size", value = "1")
-            })
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tasko_template_seq")
+    @SequenceGenerator(name = "tasko_template_seq", sequenceName = "RHN_TASKO_TEMPLATE_ID_SEQ", allocationSize = 1)
     @Column(name = "id", nullable = false)
     private Long id;
 

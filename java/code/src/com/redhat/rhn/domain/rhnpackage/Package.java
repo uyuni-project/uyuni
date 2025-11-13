@@ -28,8 +28,6 @@ import com.redhat.rhn.frontend.xmlrpc.packages.PackageHelper;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 import java.io.Serial;
 import java.util.Date;
@@ -43,12 +41,14 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -63,14 +63,8 @@ public class Package extends BaseDomainHelper {
     private static final long serialVersionUID = -8283380935275540315L;
 
     @Id
-    @GeneratedValue(generator = "RHN_PACKAGE_SEQ")
-    @GenericGenerator(
-        name = "RHN_PACKAGE_SEQ",
-        strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-        parameters = {
-                @Parameter(name = "sequence_name", value = "RHN_PACKAGE_ID_SEQ"),
-                @Parameter(name = "increment_size", value = "1")
-        })
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_PACKAGE_SEQ")
+    @SequenceGenerator(name = "RHN_PACKAGE_SEQ", sequenceName = "RHN_PACKAGE_ID_SEQ", allocationSize = 1)
     private Long id;
 
     @Column(name = "rpm_version")
