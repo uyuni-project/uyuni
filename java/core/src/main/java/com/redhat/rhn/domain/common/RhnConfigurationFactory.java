@@ -97,6 +97,7 @@ public class RhnConfigurationFactory extends HibernateFactory {
      * @return the configuration
      */
     public RhnConfiguration getConfiguration(RhnConfiguration.KEYS keyIn) {
+        //return getSession().byId(RhnConfiguration.class).load(keyIn);
         return getSession().find(RhnConfiguration.class, keyIn);
     }
 
