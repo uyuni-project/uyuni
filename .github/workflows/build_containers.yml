@@ -83,7 +83,7 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          platforms: ${{ env.PLATFORMS }}
+          platforms: linux/amd64
 
   build-and-push-opensuse-minion-image:
     runs-on: ubuntu-latest
