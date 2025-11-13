@@ -22,7 +22,7 @@ Then(/^"([^"]*)" should have a FQDN$/) do |host|
   resolution_time = end_time.to_i - initial_time.to_i
   raise ScriptError, 'cannot determine hostname' unless return_code.zero?
   raise ScriptError, "name resolution for #{node.full_hostname} took too long (#{resolution_time} seconds)" unless resolution_time <= 2
-  raise ScriptError, 'hostname is not fully qualified' unless result == node.full_hostname
+  raise ScriptError, "hostname is not fully qualified: #{result} != #{node.full_hostname}" unless result == node.full_hostname
 end
 
 Then(/^reverse resolution should work for "([^"]*)"$/) do |host|

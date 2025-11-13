@@ -7,6 +7,8 @@ RUN zypper -n rr -a && \
     zypper addrepo https://installer-updates.suse.com/SUSE/Products/SLE-BCI/15-SP6/x86_64/product/ SLE_BCI && \
     zypper -n --gpg-auto-import-keys ref && \
     zypper -n install \
+      git \
+      hostname \
       java-17-openjdk-devel \
       rsync \
       apache-ivy \

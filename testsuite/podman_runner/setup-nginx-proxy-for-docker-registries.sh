@@ -17,9 +17,21 @@ set -xe
 echo "127.0.0.1 authregistry.lab" | sudo tee -a /etc/hosts
 echo "127.0.0.1 noauthregistry.lab" | sudo tee -a /etc/hosts
 
-sudo apt -y install nginx
-sudo tee /etc/nginx/sites-available/registry <<EOF
-error_log /var/log/nginx.log debug;
+if ! command -v nginx &>/dev/null; then
+  if [[ "$(uname)" == "Darwin" ]]; then
+    brew install nginx
+  else
+    sudo apt -y install nginx
+  fi
+fi
+
+if [[ "$(uname)" == "Darwin" ]]; then
+  NGINX_SITES=/opt/homebrew/etc/nginx/servers
+else
+  NGINX_SITES=/etc/nginx/sites-enabled
+fi
+
+sudo tee $NGINX_SITES/registry <<EOF
 server {
         listen 80;
         server_name authregistry.lab;
@@ -92,6 +104,8 @@ server {
 
 EOF
 
-cd /etc/nginx/sites-enabled && sudo ln -s /etc/nginx/sites-available/registry
-
-sudo systemctl restart nginx || systemctl status nginx.service && journalctl -xeu nginx.service
+if [[ "$(uname)" == "Darwin" ]]; then
+  brew services restart nginx
+else
+  sudo systemctl restart nginx || systemctl status nginx.service && journalctl -xeu nginx.service
+fi

@@ -22,7 +22,7 @@ RUN useradd -r -s /usr/sbin/nologin -G susemanager,www -g tomcat -d /usr/share/t
   useradd -r -s /usr/bin/bash -g postgres -d /var/lib/pgsql --uid 999 postgres
 
 # Fill the image with content and clean the cache(s)
-RUN set -euo pipefail; zypper -n in --no-recommends systemd gzip -container-suseconnect; zypper -n clean; rm -rf /var/log/*
+RUN set -euo pipefail; zypper -n in --no-recommends systemd gzip container-suseconnect; zypper -n clean; rm -rf /var/log/*
 CMD ["/usr/lib/systemd/systemd"]
 
 RUN mkdir -p /etc/systemd/system.conf.d/ && \
