@@ -17,13 +17,13 @@ package com.redhat.rhn.domain.channel;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -34,14 +34,8 @@ import javax.persistence.Table;
 public class ChannelProduct extends BaseDomainHelper {
 
     @Id
-    @GeneratedValue(generator = "channelprod_seq")
-    @GenericGenerator(
-            name = "channelprod_seq",
-            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-            parameters = {
-                    @Parameter(name = "sequence_name", value = "rhn_channelprod_id_seq"),
-                    @Parameter(name = "increment_size", value = "1")
-            })
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "channelprod_seq")
+    @SequenceGenerator(name = "channelprod_seq", sequenceName = "rhn_channelprod_id_seq", allocationSize = 1)
     private Long id;
 
     @Column

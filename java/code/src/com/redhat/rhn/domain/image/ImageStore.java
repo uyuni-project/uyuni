@@ -16,8 +16,6 @@ import com.redhat.rhn.domain.org.Org;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 import java.beans.Transient;
 import java.util.HashMap;
@@ -29,9 +27,11 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -58,14 +58,8 @@ public class ImageStore extends BaseDomainHelper {
      * @return the id
      */
     @Id
-    @GeneratedValue(generator = "imgstore_seq")
-    @GenericGenerator(
-            name = "imgstore_seq",
-            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-            parameters = {
-                    @Parameter(name = "sequence_name", value = "suse_imgstore_id_seq"),
-                    @Parameter(name = "increment_size", value = "1")
-            })
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "imgstore_seq")
+    @SequenceGenerator(name = "imgstore_seq", sequenceName = "suse_imgstore_id_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }

@@ -19,8 +19,6 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.common.Checksum;
 import com.redhat.rhn.domain.rhnpackage.Package;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -29,12 +27,14 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OrderBy;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -44,14 +44,8 @@ import javax.persistence.Table;
 @Table(name = "rhnErrataFile")
 public class ErrataFile extends BaseDomainHelper {
     @Id
-    @GeneratedValue(generator = "RHN_ERRATAFILE_ID_SEQ")
-    @GenericGenerator(
-        name = "RHN_ERRATAFILE_ID_SEQ",
-        strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-        parameters = {
-            @Parameter(name = "sequence_name", value = "RHN_ERRATAFILE_ID_SEQ"),
-            @Parameter(name = "increment_size", value = "1")
-        })
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_ERRATAFILE_ID_SEQ")
+    @SequenceGenerator(name = "RHN_ERRATAFILE_ID_SEQ", sequenceName = "RHN_ERRATAFILE_ID_SEQ", allocationSize = 1)
     protected Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

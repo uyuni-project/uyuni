@@ -16,13 +16,13 @@ package com.redhat.rhn.domain.channel;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -33,14 +33,8 @@ import javax.persistence.Table;
 public class ContentSourceFilter extends BaseDomainHelper {
 
     @Id
-    @GeneratedValue(generator = "csf_seq")
-    @GenericGenerator(
-            name = "csf_seq",
-            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-            parameters = {
-                    @Parameter(name = "sequence_name", value = "rhn_csf_id_seq"),
-                    @Parameter(name = "increment_size", value = "1")
-            })
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "csf_seq")
+    @SequenceGenerator(name = "csf_seq", sequenceName = "rhn_csf_id_seq", allocationSize = 1)
     private Long id;
 
     @Column(name = "source_id")
