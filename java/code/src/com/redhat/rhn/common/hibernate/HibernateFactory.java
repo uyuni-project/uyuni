@@ -327,14 +327,24 @@ public abstract class HibernateFactory {
      * save() is to be called directly.
      */
     protected void saveObject(Object toSave, boolean saveOrUpdate) {
-        Session session = null;
-        session = HibernateFactory.getSession();
         if (saveOrUpdate) {
-            session.saveOrUpdate(toSave);
+            HibernateFactory.saveOrUpdateObject(toSave);
         }
         else {
+            Session session = HibernateFactory.getSession();
             session.save(toSave);
         }
+    }
+
+    /**
+     * This method has been crafted to collect the use of deprecated hibernate method
+     * void Session::saveOrUpdate(Object obj) in one place only.
+     * We still did not find a replacement for this hibernate call
+     * @param obj argument Object of saveOrUpdate
+     */
+    public static void saveOrUpdateObject(Object obj) {
+        Session session = HibernateFactory.getSession();
+        session.saveOrUpdate(obj);
     }
 
     /**

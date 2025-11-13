@@ -404,7 +404,7 @@ public class TestUtils {
      */
     public static void saveAndFlush(Object obj) throws HibernateException {
         Session session = HibernateFactory.getSession();
-        session.saveOrUpdate(obj);
+        HibernateFactory.saveOrUpdateObject(obj);
         session.flush();
     }
 
