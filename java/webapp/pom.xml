@@ -155,6 +155,33 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.4.1</version>
+                <inherited>false</inherited>
+                <executions>
+                    <execution>
+                        <id>deploy-webbapp</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <useMavenLogger>true</useMavenLogger>
+                            <executable>/bin/bash</executable>
+                            <commandlineArgs>
+                                ${spacewalk-java.dir}/scripts/maven/deploy.sh
+                                backend
+                                --mode ${deploy.mode}
+                                --host ${deploy.host}
+                                --backend ${deploy.container.backend}
+                                --restart
+                            </commandlineArgs>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 

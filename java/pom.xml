@@ -38,6 +38,15 @@
         <version.group>uyuni</version.group>
         <!-- Root project directory -->
         <spacewalk-java.dir>${project.basedir}</spacewalk-java.dir>
+
+        <!-- Deployment properties -->
+
+        <!-- Uyuni server to deploy to -->
+        <deploy.host>server.tf.local</deploy.host>
+        <!-- Deployment mode -->
+        <deploy.mode>remote-container</deploy.mode>
+        <!-- Backend used by mgrctl when deploying in container and remote-container mode -->
+        <deploy.container.backend>podman</deploy.container.backend>
     </properties>
 
     <profiles>
@@ -103,6 +112,22 @@
             </build>
         </profile>
     </profiles>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <!-- Always skip the default deployment plugin -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>3.1.2</version>
+                    <configuration>
+                        <skip>true</skip>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
 
     <dependencyManagement>
         <dependencies>
