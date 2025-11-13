@@ -18,7 +18,7 @@ import FiltersProjectSelection from "./filters-project-selection";
 type FiltersProps = {
   projectId: string;
   selectedFilters: ProjectFilterServerType[];
-  onChange: Function;
+  onChange: (...args: any[]) => any;
   messages?: ProjectMessageType[];
 };
 

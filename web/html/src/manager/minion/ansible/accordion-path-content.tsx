@@ -99,7 +99,7 @@ class AccordionPathContent extends React.Component<PropsType, StateType> {
   }
 
   digestPlaybookPathContent(blob: any) {
-    const content: Map<string, {}> = blob[this.props.path.path];
+    const content: Map<string, object> = blob[this.props.path.path];
     const playbookNameList: string[] = Object.keys(content);
 
     const playbookDetailsList: PlaybookDetails[] = [];

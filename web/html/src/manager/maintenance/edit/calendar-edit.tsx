@@ -39,9 +39,10 @@ const MaintenanceCalendarEdit = forwardRef((props: CalendarEditProps, ref) => {
   }, [props.calendar]);
 
   const onFormChanged = (newModel) => {
-    /* strategy gets initialized as empty string, but we want the initial value to be false.
-     * Is equivalent to: if strategy is "" then set it to false */
-    newModel.strategy === "" && (newModel.strategy = false);
+    /* strategy gets initialized as empty string, but we want the initial value to be false. */
+    if (newModel.strategy === "") {
+      newModel.strategy = false;
+    }
     setModel({ name: newModel.name, strategy: newModel.strategy });
   };
 
@@ -54,7 +55,9 @@ const MaintenanceCalendarEdit = forwardRef((props: CalendarEditProps, ref) => {
     const reader = new FileReader();
     reader.onload = (e) => icalFileLoaded(e.target?.result);
     reader.readAsText(event.target.files[0]);
-    !props.isEdit && setDataText(event.target.files[0].name);
+    if (!props.isEdit) {
+      setDataText(event.target.files[0].name);
+    }
   };
 
   const onIcalFileRemove = () => {
@@ -109,9 +112,11 @@ const MaintenanceCalendarEdit = forwardRef((props: CalendarEditProps, ref) => {
         params.id = props.calendar?.id;
         params.strategy = model.strategy ? "Cancel" : "Fail";
       }
-      validateUrl(params.url)
-        ? props.onEdit(params)
-        : props.messages(MessagesUtils.error(t('Url "{url}" is invalid', { url: params.url })));
+      if (validateUrl(params.url)) {
+        props.onEdit(params);
+      } else {
+        props.messages(MessagesUtils.error(t('Url "{url}" is invalid', { url: params.url })));
+      }
     },
   }));
 

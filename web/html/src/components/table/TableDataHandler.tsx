@@ -19,7 +19,7 @@ import { SelectedRowDetails } from "./SelectedRowDetails";
 type ChildrenArgsProps = {
   currItems: any[];
   headers: React.ReactNode;
-  handleSelect: Function;
+  handleSelect: (...args: any[]) => any;
   selectedItems: any[];
   criteria?: string;
   field?: string;
@@ -358,12 +358,16 @@ export class TableDataHandler extends React.Component<Props, State> {
           <input type="checkbox" checked={allSelected} onChange={(e) => handleSelectAll(e.target.checked)} />
         </Header>
       );
-      headers && headers?.unshift(checkbox);
+      if (headers) {
+        headers.unshift(checkbox);
+      }
     }
 
     if (this.props.expandable) {
       const spacer = <Header key="expandable" width="30px" />;
-      headers && headers.unshift(spacer);
+      if (headers) {
+        headers.unshift(spacer);
+      }
     }
 
     if (this.props.deletable) {
@@ -371,7 +375,9 @@ export class TableDataHandler extends React.Component<Props, State> {
         // Intentionally empty
         <Header key="delete" width="30px" />
       );
-      headers && headers.push(deleteHeader);
+      if (headers) {
+        headers.push(deleteHeader);
+      }
     }
 
     const handleSelect = (id, sel) => {

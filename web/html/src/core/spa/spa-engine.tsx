@@ -18,8 +18,8 @@ window.pageRenderers = window.pageRenderers || {};
 window.pageRenderers.spaengine = window.pageRenderers.spaengine || {};
 
 // Navigation hook for standalone renderers to detect navigation
-const onSpaEndNavigationCallbacks: Function[] = [];
-window.pageRenderers.spaengine.onSpaEndNavigation = function onSpaEndNavigation(callback: Function) {
+const onSpaEndNavigationCallbacks: ((...args: any[]) => any)[] = [];
+window.pageRenderers.spaengine.onSpaEndNavigation = function onSpaEndNavigation(callback: (...args: any[]) => any) {
   if (onSpaEndNavigationCallbacks.indexOf(callback) === -1) {
     onSpaEndNavigationCallbacks.push(callback);
   }

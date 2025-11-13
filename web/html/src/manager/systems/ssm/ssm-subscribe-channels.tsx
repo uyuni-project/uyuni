@@ -817,7 +817,7 @@ type SsmBaseChannelChangesJson = {
   changes: SsmBaseChannelChangesJson_Change[];
 };
 
-type SsmChannelProps = {};
+type SsmChannelProps = Record<never, never>;
 
 type SsmChannelState = {
   groupedChildChannels: SsmAllowedChildChannelsDto[];

@@ -53,7 +53,7 @@ type FilterEditProps = {
   buttonText?: string;
   buttonTitle?: string;
   className?: string;
-  onChange: Function;
+  onChange: (...args: any[]) => any;
   openFilterId?: number;
   projectLabel?: string;
   editing?: boolean;

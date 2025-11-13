@@ -120,28 +120,28 @@ export function DEPRECATED_Select(props: Props) {
   };
 
   const bootstrapStyles = {
-    control: (styles: {}) => ({
+    control: (styles: Record<string, any>) => ({
       ...styles,
       minHeight: "34px",
       display: "flex",
     }),
-    clearIndicator: (styles: {}) => ({
+    clearIndicator: (styles: Record<string, any>) => ({
       ...styles,
       padding: "2px 8px",
     }),
-    dropdownIndicator: (styles: {}) => ({
+    dropdownIndicator: (styles: Record<string, any>) => ({
       ...styles,
       padding: "2px 8px",
     }),
-    loadingIndicator: (styles: {}) => ({
+    loadingIndicator: (styles: Record<string, any>) => ({
       ...styles,
       padding: "2px 8px",
     }),
-    menu: (styles: {}) => ({
+    menu: (styles: Record<string, any>) => ({
       ...styles,
       zIndex: 3,
     }),
-    menuPortal: (styles: {}) => ({
+    menuPortal: (styles: Record<string, any>) => ({
       ...styles,
       zIndex: 9999,
     }),

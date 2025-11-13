@@ -14,7 +14,7 @@ type Props = {
   paygId: string;
   isInstance: boolean;
   labelPrefix: string;
-  onChange: Function;
+  onChange: (...args: any[]) => any;
   readOnly?: boolean;
 };
 

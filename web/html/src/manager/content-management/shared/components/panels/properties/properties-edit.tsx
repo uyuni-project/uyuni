@@ -19,7 +19,7 @@ type Props = {
   projectId: string;
   properties: ProjectPropertiesType;
   showDraftVersion: boolean;
-  onChange: Function;
+  onChange: (...args: any[]) => any;
   currentHistoryEntry?: ProjectHistoryEntry;
   messages?: ProjectMessageType[];
 };
