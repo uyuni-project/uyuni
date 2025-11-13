@@ -2,7 +2,7 @@ import SpaRenderer from "core/spa/spa-renderer";
 
 import { DeleteSystem } from "./delete-system";
 
-// See java/code/webapp/WEB-INF/pages/systems/duplicate/duplicatesystemscompare.jsp
+// See java/core/src/main/resources/WEB-INF/pages/systems/duplicate/duplicatesystemscompare.jsp
 declare global {
   interface Window {
     getServerIdsToDelete: () => any[];

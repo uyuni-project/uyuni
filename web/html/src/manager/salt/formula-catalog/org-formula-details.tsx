@@ -6,7 +6,7 @@ import { TopPanel } from "components/panels/TopPanel";
 
 import Network from "utils/network";
 
-// See java/code/src/com/suse/manager/webui/templates/formula_catalog/formula.jade
+// See java/core/src/main/resources/com/suse/manager/webui/templates/formula_catalog/formula.jade
 declare global {
   interface Window {
     formulaName?: any;

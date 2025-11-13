@@ -11,7 +11,7 @@ import Network from "utils/network";
 
 import { VirtualSystemsListFilter } from "./list-filter";
 
-// See java/code/src/com/suse/manager/webui/templates/systems/virtual-list.jade
+// See java/core/src/main/resources/com/suse/manager/webui/templates/systems/virtual-list.jade
 type Props = {
   /** Locale of the help links */
   docsLocale: string;
