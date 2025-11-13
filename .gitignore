@@ -9,6 +9,7 @@
 branding/target
 java/build
 java/buildconf/ivy/repository/
+java/repository
 java/lib
 java/*.log
 java/*.log.*

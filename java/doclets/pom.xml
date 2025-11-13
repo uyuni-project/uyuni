@@ -28,6 +28,10 @@
     <artifactId>doclets</artifactId>
     <packaging>jar</packaging>
 
+    <properties>
+        <spacewalk-java.dir>${project.basedir}/..</spacewalk-java.dir>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.apache.velocity</groupId>
