@@ -25,7 +25,6 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.metadata.ClassMetadata;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,22 +88,6 @@ abstract class AbstractConnectionManager implements ConnectionManager {
         }
 
         return info.getTransaction() != null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ClassMetadata getMetadata(Object target) {
-        if (target == null || sessionFactory == null) {
-            return null;
-        }
-
-        if (target instanceof Class) {
-            return sessionFactory.getClassMetadata((Class<?>) target);
-        }
-
-        return sessionFactory.getClassMetadata(target.getClass());
     }
 
     /**

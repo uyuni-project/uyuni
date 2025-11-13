@@ -460,10 +460,8 @@ public class ReportDbHibernateFactory {
      */
     /*
     public <T> T reload(T obj) throws HibernateException {
-        // assertNotNull(obj);
-        ClassMetadata cmd = connectionManager.getMetadata(obj);
-        Serializable id = cmd.getIdentifier(obj, (SessionImplementor) getSession());
         Session session = getSession();
+        Serializable id = session.getIdentifier(obj);
         session.flush();
         session.evict(obj);
         *
