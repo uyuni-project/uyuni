@@ -23,7 +23,7 @@ type Props = {
   environmentNextTarget: ProjectEnvironmentType;
   versionToPromote: number;
   historyEntries: ProjectHistoryEntry[];
-  onChange: Function;
+  onChange: (...args: any[]) => any;
 };
 
 const Promote = (props: Props) => {

@@ -89,7 +89,7 @@ function labelFor(state) {
   return <span className={"label label-" + mapping.label}>{mapping.uiName}</span>;
 }
 
-type Props = {};
+type Props = Record<never, never>;
 
 type State = {
   keys: any[];

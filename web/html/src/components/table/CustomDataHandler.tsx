@@ -13,7 +13,7 @@ type Props = {
   identifier: (row: any) => any;
 
   /** a function that return a css class for each row */
-  cssClassFunction?: Function;
+  cssClassFunction?: (...args: any[]) => any;
 
   /** the React Object that contains the filter search field */
   searchField?: React.ReactComponentElement<typeof SearchField>;

@@ -19,13 +19,15 @@ const SEARCH_TYPES = [
   },
 ];
 
+type HeaderSearchProps = Record<string, never>;
+
 class HeaderSearchState {
   isOpen = false;
   searchString = "";
   searchType = SEARCH_TYPES[0].value;
 }
 
-export class HeaderSearch extends React.PureComponent<{}, HeaderSearchState> {
+export class HeaderSearch extends React.PureComponent<HeaderSearchProps, HeaderSearchState> {
   state = new HeaderSearchState();
 
   onSPAEndNavigation() {

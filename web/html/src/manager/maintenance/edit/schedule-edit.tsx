@@ -55,9 +55,10 @@ const MaintenanceScheduleEdit = forwardRef((props: ScheduleEditProps, ref) => {
   }, [props.schedule]);
 
   const onFormChanged = (newModel) => {
-    /* strategy gets initialized as empty string, but we want the initial value to be false.
-     * Is equivalent to: if strategy is "" then set it to false */
-    newModel.strategy === "" && (newModel.strategy = false);
+    /* strategy gets initialized as empty string, but we want the initial value to be false. */
+    if (newModel.strategy === "") {
+      newModel.strategy = false;
+    }
     setModel({
       name: newModel.name,
       type: newModel.type,

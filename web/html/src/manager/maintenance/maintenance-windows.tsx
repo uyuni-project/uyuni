@@ -45,7 +45,9 @@ const MaintenanceWindows = () => {
 
   useEffect(() => {
     updateView(getHashAction(), getHashId());
-    window.type === "schedule" && getCalendarNames();
+    if (window.type === "schedule") {
+      getCalendarNames();
+    }
     window.addEventListener("popstate", () => {
       updateView(getHashAction(), getHashId());
     });

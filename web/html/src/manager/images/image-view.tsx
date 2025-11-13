@@ -116,7 +116,11 @@ class ImageView extends React.Component<ImageViewProps, ImageViewState> {
   }
 
   updateView(id, tab) {
-    id ? this.getImageInfoDetails(id, tab) : this.getImageInfoList();
+    if (id) {
+      this.getImageInfoDetails(id, tab);
+    } else {
+      this.getImageInfoList();
+    }
     this.clearMessages();
   }
 

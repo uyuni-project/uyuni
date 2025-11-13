@@ -71,6 +71,8 @@ function reloadData() {
   return Network.get("/rhn/manager/api/admin/products");
 }
 
+type ProductsPageWrapperProps = Record<string, never>;
+
 class ProductsPageWrapperState {
   issMaster = window.issMaster_flag_from_backend;
   refreshNeeded = window.refreshNeeded_flag_from_backend;
@@ -90,7 +92,7 @@ class ProductsPageWrapperState {
  * Generate the page wrapper, tabs, scc-popup,
  * and everything around the product list except the list
  */
-class ProductsPageWrapper extends React.Component<{}, ProductsPageWrapperState> {
+class ProductsPageWrapper extends React.Component<ProductsPageWrapperProps, ProductsPageWrapperState> {
   state = new ProductsPageWrapperState();
 
   UNSAFE_componentWillMount() {
@@ -110,11 +112,10 @@ class ProductsPageWrapper extends React.Component<{}, ProductsPageWrapperState> 
 
   refreshServerData = () => {
     this.setState({ loading: true });
-    const currentObject = this;
 
     loadMetadata()
       .then((metadata) => {
-        currentObject.setState({
+        this.setState({
           issMaster: metadata.issMaster,
           refreshNeeded: metadata.refreshNeeded,
           refreshRunning: metadata.refreshRunning || metadata.refreshFileLocked,
@@ -122,12 +123,12 @@ class ProductsPageWrapper extends React.Component<{}, ProductsPageWrapperState> 
         });
 
         if (
-          currentObject.state.noToolsChannelSubscription &&
-          currentObject.state.issMaster &&
-          !currentObject.state.refreshNeeded &&
-          !currentObject.state.refreshRunning
+          this.state.noToolsChannelSubscription &&
+          this.state.issMaster &&
+          !this.state.refreshNeeded &&
+          !this.state.refreshRunning
         ) {
-          currentObject.setState({
+          this.setState({
             errors: MessagesUtils.warning(
               t(
                 "No SUSE Multi-Linux Manager Server Subscription available. Products requiring Client Tools Channel will not be shown."
@@ -140,7 +141,7 @@ class ProductsPageWrapper extends React.Component<{}, ProductsPageWrapperState> 
 
     reloadData()
       .then((data) => {
-        currentObject.setState({
+        this.setState({
           serverData: data[_DATA_ROOT_ID],
           loading: false,
           selectedItems: [],
@@ -187,15 +188,14 @@ class ProductsPageWrapper extends React.Component<{}, ProductsPageWrapperState> 
   };
 
   submit = () => {
-    const currentObject = this;
-    currentObject.setState({ addingProducts: true, errors: [] });
+    this.setState({ addingProducts: true, errors: [] });
     Network.post(
       "/rhn/manager/admin/setup/products",
-      currentObject.state.selectedItems.map((i) => i.identifier)
+      this.state.selectedItems.map((i) => i.identifier)
     )
       .then((data) => {
         // returned data format is { productId : "error" }. If the value is null or missing the operation succeeded
-        const failedProducts = currentObject.state.selectedItems.filter(
+        const failedProducts = this.state.selectedItems.filter(
           (i) => !DEPRECATED_unsafeEquals(data[i.identifier], null)
         );
         let resultMessages: MessageType[] | null = null;
@@ -212,38 +212,43 @@ class ProductsPageWrapper extends React.Component<{}, ProductsPageWrapperState> 
             t("The following product installations failed. Please check log files.")
           );
         }
-        currentObject.setState({
+        this.setState({
           errors: resultMessages,
           selectedItems: [],
           addingProducts: false,
         });
         this.refreshServerData();
       })
-      .catch(currentObject.handleResponseError);
+      .catch(this.handleResponseError);
   };
 
   resyncProduct = (id, name) => {
-    const currentObject = this;
-    currentObject.state.scheduledItems.concat([id]);
-    const scheduleResyncItemsNew = currentObject.state.scheduleResyncItems.concat([id]);
-    currentObject.setState({ scheduleResyncItems: scheduleResyncItemsNew });
-    Network.post("/rhn/manager/admin/setup/products", [id])
-      .then((data) => {
-        // if the id is not present in the response or it is null, the operation went fine.
-        if (DEPRECATED_unsafeEquals(data[id], null)) {
-          currentObject.setState({
-            errors: MessagesUtils.success("The product '" + name + "' sync has been scheduled successfully"),
-            scheduleResyncItems: scheduleResyncItemsNew.filter((i) => !DEPRECATED_unsafeEquals(i, id)),
-            scheduledItems: currentObject.state.scheduledItems.concat([id]),
-          });
-        } else {
-          currentObject.setState({
-            errors: MessagesUtils.warning("The product '" + name + "' sync was not scheduled correctly: " + data[id]),
-            scheduleResyncItems: scheduleResyncItemsNew.filter((i) => !DEPRECATED_unsafeEquals(i, id)),
-          });
-        }
-      })
-      .catch(currentObject.handleResponseError);
+    this.setState((prevState) => {
+      prevState.scheduledItems.concat([id]);
+      const scheduleResyncItemsNew = prevState.scheduleResyncItems.concat([id]);
+
+      Network.post("/rhn/manager/admin/setup/products", [id])
+        .then((data) => {
+          // if the id is not present in the response or it is null, the operation went fine.
+          if (DEPRECATED_unsafeEquals(data[id], null)) {
+            this.setState((prevState) => {
+              return {
+                errors: MessagesUtils.success("The product '" + name + "' sync has been scheduled successfully"),
+                scheduleResyncItems: scheduleResyncItemsNew.filter((i) => !DEPRECATED_unsafeEquals(i, id)),
+                scheduledItems: prevState.scheduledItems.concat([id]),
+              };
+            });
+          } else {
+            this.setState({
+              errors: MessagesUtils.warning("The product '" + name + "' sync was not scheduled correctly: " + data[id]),
+              scheduleResyncItems: scheduleResyncItemsNew.filter((i) => !DEPRECATED_unsafeEquals(i, id)),
+            });
+          }
+        })
+        .catch(this.handleResponseError);
+
+      return { scheduleResyncItems: scheduleResyncItemsNew };
+    });
   };
 
   addOptionalChannels = (product, channels) => {
@@ -1067,11 +1072,12 @@ const ChannelsPopUp = (props) => {
     const channels = optionalChannels
       .filter((item, index) => checked[index])
       .filter((c) => c.status === _CHANNEL_STATUS.notSynced || c.status === _CHANNEL_STATUS.failed);
-    channels.length !== 0 &&
+    if (channels.length !== 0) {
       props.addOptionalChannels(
         props.item.label,
         channels.map((c) => c.label)
       );
+    }
   };
 
   const titlePopup = t("Product Channels - ") + props.item.label;

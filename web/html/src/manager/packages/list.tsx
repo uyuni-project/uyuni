@@ -139,7 +139,7 @@ export function PackageList(props: Props) {
           data={`/rhn/manager/api/packages/list/${formModel["binary"]}/${formModel["channel"]}`}
           identifier={(item) => item.id}
           initialSortColumnKey="nvrea"
-          selectable={(item) => item.hasOwnProperty("id")}
+          selectable={(item) => Object.prototype.hasOwnProperty.call(item, "id")}
           selectedItems={selectedPackages}
           onSelect={handleSelectedPackages}
           searchField={<SearchField placeholder={t("Filter by package name")} />}
