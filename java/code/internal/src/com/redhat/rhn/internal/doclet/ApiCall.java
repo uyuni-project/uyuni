@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009--2012 Red Hat, Inc.
+ * Copyright (c) 2009--2025 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -14,19 +14,20 @@
  */
 package com.redhat.rhn.internal.doclet;
 
-import com.suse.manager.api.ReadOnly;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.TypeElement;
 
 /**
  *
  * ApiCall
  */
 public class ApiCall implements Comparable<ApiCall> {
+
+    private static final String READ_ONLY_ANNOTATION = "com.suse.manager.api.ReadOnly";
 
     private String name;
     private String doc;
@@ -53,7 +54,7 @@ public class ApiCall implements Comparable<ApiCall> {
      *
      */
     public ApiCall() {
-
+        // Nothing to do
     }
 
     /**
@@ -208,7 +209,6 @@ public class ApiCall implements Comparable<ApiCall> {
         this.doc = docIn;
     }
 
-
     /**
      * Get the method
      * @return the method
@@ -216,8 +216,6 @@ public class ApiCall implements Comparable<ApiCall> {
     public ExecutableElement getMethod() {
         return method;
     }
-
-
 
     /**
      * Set the method
@@ -243,9 +241,11 @@ public class ApiCall implements Comparable<ApiCall> {
     }
 
     public boolean isReadOnly() {
-        return this.getMethod().getAnnotation(ReadOnly.class) != null;
+        // Process the list of annotation "mirrors". This is safe and doesn't load the class.
+        return method.getAnnotationMirrors().stream()
+            .map(mirror -> (TypeElement) mirror.getAnnotationType().asElement())
+            .anyMatch(annotation -> annotation.getQualifiedName().contentEquals(READ_ONLY_ANNOTATION));
     }
-
 
     @Override
     public boolean equals(Object oIn) {
@@ -259,12 +259,10 @@ public class ApiCall implements Comparable<ApiCall> {
         return Objects.equals(name, apiCall.name);
     }
 
-
     @Override
     public int hashCode() {
         return Objects.hash(name);
     }
-
 
     @Override
     public int compareTo(ApiCall o) {
