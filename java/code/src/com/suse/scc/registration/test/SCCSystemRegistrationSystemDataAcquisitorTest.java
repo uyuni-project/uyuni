@@ -13,13 +13,13 @@
  * in this software or its documentation.
  */
 
-package com.suse.scc.test.registration;
+package com.suse.scc.registration.test;
 
 import static java.util.Optional.ofNullable;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.channel.test.ChannelFamilyFactoryTest;
 import com.redhat.rhn.domain.product.SUSEProduct;
@@ -48,6 +48,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -512,6 +513,7 @@ public class SCCSystemRegistrationSystemDataAcquisitorTest extends AbstractSCCSy
                 }
                 allowing(cpuMock).getNrCPU(); will(returnValue(builder.cpus));
                 allowing(cpuMock).getNrsocket(); will(returnValue(builder.sockets));
+                allowing(cpuMock).getArchSpecsMap(); will(returnValue(Collections.emptyMap()));
 
                 // Arch label setup
                 allowing(serverArchMock).getLabel(); will(returnValue(builder.serverArchLabel));

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 SUSE LLC
+ * Copyright (c) 2023--2024 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.suse.scc.test.registration;
+package com.suse.scc.registration.test;
 
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.credentials.SCCCredentials;
