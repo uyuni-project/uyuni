@@ -172,7 +172,7 @@ public  class UserFactory extends HibernateFactory {
      */
     public static UserImpl lookupById(Long id) {
         Session session = HibernateFactory.getSession();
-        return session.get(UserImpl.class, id);
+        return session.find(UserImpl.class, id);
     }
 
 
@@ -621,7 +621,7 @@ public  class UserFactory extends HibernateFactory {
      */
     public UserServerPreference lookupServerPreferenceByUserServerAndName(User user, Server server, String name) {
         UserServerPreferenceId id = new UserServerPreferenceId(user, server, name);
-        return getSession().get(UserServerPreference.class, id);
+        return getSession().find(UserServerPreference.class, id);
     }
 
     /**
@@ -637,7 +637,7 @@ public  class UserFactory extends HibernateFactory {
         UserServerPreferenceId id = new UserServerPreferenceId(user,
                 server,
                 preferenceName);
-        UserServerPreference usp = session.get(UserServerPreference.class, id);
+        UserServerPreference usp = session.find(UserServerPreference.class, id);
 
         /* Here, we delete the preference's entry if it should be true.
          * We would hopefully be ok setting the value to "1," but I'm emulating

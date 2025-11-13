@@ -116,7 +116,7 @@ public class ActionChainFactory extends HibernateFactory {
      * @return an Action Chain or empty
      */
     public static Optional<ActionChain> getActionChain(long id) {
-        return Optional.ofNullable(getSession().get(ActionChain.class, id));
+        return Optional.ofNullable(getSession().find(ActionChain.class, id));
     }
 
     /**

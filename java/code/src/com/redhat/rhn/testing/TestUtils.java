@@ -278,7 +278,7 @@ public class TestUtils {
      */
     public static <T> T lookupFromCacheById(Long id, Class<T> objClass) {
         Session session = HibernateFactory.getSession();
-        return session.get(objClass, id);
+        return session.find(objClass, id);
     }
 
     /**
@@ -381,7 +381,7 @@ public class TestUtils {
          * Filter$$EnhancerByCGLIB$$9bcc734d_2 instead of Filter.
          * session.get is set to not return the proxy class, so that is what we'll use.
          */
-        T obj = (T)session.get(objClass, id);
+        T obj = (T)session.find(objClass, id);
         return reload(obj);
     }
 

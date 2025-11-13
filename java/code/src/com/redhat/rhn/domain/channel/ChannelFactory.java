@@ -103,7 +103,7 @@ public class ChannelFactory extends HibernateFactory {
      */
     public static Channel lookupById(Long id) {
         Session session = HibernateFactory.getSession();
-        return session.get(Channel.class, id);
+        return session.find(Channel.class, id);
     }
 
     /**

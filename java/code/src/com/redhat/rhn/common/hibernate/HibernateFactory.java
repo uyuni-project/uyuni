@@ -27,7 +27,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
-import org.hibernate.LockMode;
 import org.hibernate.MappingException;
 import org.hibernate.Session;
 import org.hibernate.engine.spi.SessionImplementor;
@@ -55,6 +54,7 @@ import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
 import javax.persistence.FlushModeType;
+import javax.persistence.LockModeType;
 import javax.persistence.Tuple;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;
@@ -478,7 +478,7 @@ public abstract class HibernateFactory {
         try {
             session = HibernateFactory.getSession();
 
-            retval = session.get(clazz, id);
+            retval = session.find(clazz, id);
         }
         catch (MappingException me) {
             getLogger().error("Mapping not found for {}", clazz.getName(), me);
@@ -507,7 +507,7 @@ public abstract class HibernateFactory {
         try {
             session = HibernateFactory.getSession();
 
-            retval = session.get(clazz, id, LockMode.PESSIMISTIC_WRITE);
+            retval = session.find(clazz, id, LockModeType.PESSIMISTIC_WRITE);
         }
         catch (MappingException me) {
             getLogger().error("Mapping not found for {}", clazz.getName(), me);
@@ -540,7 +540,7 @@ public abstract class HibernateFactory {
          * Filter$$EnhancerByCGLIB$$9bcc734d_2 instead of Filter.
          * session.get is set to not return the proxy class, so that is what we'll use.
          */
-        return (T) session.get(obj.getClass(), id);
+        return (T) session.find(obj.getClass(), id);
     }
 
     /**

@@ -436,7 +436,7 @@ public class ErrataFactory extends HibernateFactory {
      */
     public static Errata lookupById(Long id) {
         Session session = HibernateFactory.getSession();
-        return session.get(Errata.class, id);
+        return session.find(Errata.class, id);
     }
 
     /**

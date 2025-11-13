@@ -226,7 +226,7 @@ public class OrgFactory extends HibernateFactory {
      */
     public static Org lookupById(Long id) {
         Session session = HibernateFactory.getSession();
-        return session.get(Org.class, id);
+        return session.find(Org.class, id);
     }
 
     /**
