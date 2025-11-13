@@ -187,7 +187,7 @@ export function ProxyConfig() {
       </p>
       {ContainerConfigMessages(success, messages, loading)}
       <Form
-        className="form-horizontal"
+        className="form-horizontal mt-5"
         model={model}
         onValidate={onValidate}
         onChange={onChange}
