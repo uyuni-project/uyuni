@@ -165,7 +165,7 @@ public class PackageTest extends BaseTestCaseWithUser {
         p.getPackageFiles().add(createTestPackageFile(p));
         p.getPackageFiles().add(createTestPackageFile(p));
 
-        HibernateFactory.getSession().save(createTestPackageSource(srpm, org));
+        HibernateFactory.getSession().persist(createTestPackageSource(srpm, org));
         return p;
     }
 

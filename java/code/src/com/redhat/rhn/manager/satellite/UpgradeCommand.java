@@ -286,7 +286,7 @@ public class UpgradeCommand extends BaseTransactionCommand {
                 ConfigContent content = ConfigurationFactory.createNewContentFromStream(stream,
                         (long) bytes.length, false, "{|", "|}");
                 revision.setConfigContent(content);
-                HibernateFactory.getSession().save(revision);
+                HibernateFactory.getSession().persist(revision);
             }
             catch (IOException e) {
                 log.error("Error when importing state '{}' from file '{}'. Skipping this state.", channelLabel, statePath, e);

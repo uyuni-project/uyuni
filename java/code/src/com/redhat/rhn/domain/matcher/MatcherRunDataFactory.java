@@ -33,7 +33,7 @@ public class MatcherRunDataFactory extends HibernateFactory {
      */
     public static void updateData(MatcherRunData newData) {
         getSession().createQuery("DELETE FROM MatcherRunData").executeUpdate();
-        getSession().save(newData);
+        getSession().persist(newData);
     }
 
     /**

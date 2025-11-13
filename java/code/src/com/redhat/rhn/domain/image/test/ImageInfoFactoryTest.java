@@ -554,7 +554,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         ImageInfo image = createImageInfo("test", "1.0.0", store, user);
         String category = "Image" + image.getId();
         Pillar pillarEntry = new Pillar(category, new TreeMap<String, Object>(), image.getOrg());
-        HibernateFactory.getSession().save(pillarEntry);
+        HibernateFactory.getSession().persist(pillarEntry);
         image.setPillar(pillarEntry);
 
         ImageFile bundleFile = new ImageFile();

@@ -154,7 +154,7 @@ public class Pillar implements Identifiable, Serializable {
      */
     public static Pillar createGlobalPillar(String category, Map<String, Object> data) {
         Pillar pillar = new Pillar(category, data);
-        HibernateFactory.getSession().save(pillar);
+        HibernateFactory.getSession().persist(pillar);
         return pillar;
     }
 
