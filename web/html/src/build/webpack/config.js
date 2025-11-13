@@ -88,6 +88,7 @@ export default (env, opts) => {
     ]),
     new MiniCssExtractPlugin({
       chunkFilename: `css/${moduleName}.css`,
+      ignoreOrder: isProductionMode ? false : true,
     }),
     new GenerateStoriesPlugin({
       inputDir: webHtmlSrc,
