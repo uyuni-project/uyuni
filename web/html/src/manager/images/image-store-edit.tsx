@@ -14,7 +14,7 @@ import { TopPanel } from "components/panels/TopPanel";
 import { Utils } from "utils/functions";
 import Network from "utils/network";
 
-// See java/code/src/com/suse/manager/webui/templates/content_management/edit-store.jade
+// See java/core/src/main/resources/com/suse/manager/webui/templates/content_management/edit-store.jade
 declare global {
   interface Window {
     storeId?: any;

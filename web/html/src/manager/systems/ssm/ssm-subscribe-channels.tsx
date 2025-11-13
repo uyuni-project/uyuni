@@ -18,7 +18,7 @@ import { Utils } from "utils/functions";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network, { JsonResult } from "utils/network";
 
-// See java/code/webapp/WEB-INF/pages/channel/ssm/channelssub.jsp
+// See java/core/src/main/resources/WEB-INF/pages/channel/ssm/channelssub.jsp
 declare global {
   interface Window {
     actionChains?: any;

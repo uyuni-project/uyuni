@@ -1,11 +1,11 @@
 #!/bin/bash
 
 dirs=(
-java/code/src/com/redhat/rhn/frontend/strings/database
-java/code/src/com/redhat/rhn/frontend/strings/java
-java/code/src/com/redhat/rhn/frontend/strings/jsp
-java/code/src/com/redhat/rhn/frontend/strings/nav
-java/code/src/com/redhat/rhn/frontend/strings/template
+java/core/src/main/resources/com/redhat/rhn/frontend/strings/database
+java/core/src/main/resources/com/redhat/rhn/frontend/strings/java
+java/core/src/main/resources/com/redhat/rhn/frontend/strings/jsp
+java/core/src/main/resources/com/redhat/rhn/frontend/strings/nav
+java/core/src/main/resources/com/redhat/rhn/frontend/strings/template
 )
 
 if [ $# -lt 2 ]
