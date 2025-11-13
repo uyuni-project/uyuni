@@ -272,7 +272,7 @@ end
 def slemicro_host?(name, runs_in_container: true)
   node = get_target(name)
   os_family = runs_in_container ? node.os_family : node.local_os_family
-  (name.include? 'slemicro') || (name.include? 'micro') || os_family.include?('sle-micro') || os_family.include?('suse-microos') || os_family.include?('sl-micro')
+  os_family.include?('sle-micro') || os_family.include?('suse-microos') || os_family.include?('sl-micro')
 end
 
 # Determines if the given host name is a openSUSE Leap Micro host.
