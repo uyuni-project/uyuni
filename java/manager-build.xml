@@ -34,7 +34,7 @@
     <property name="tests.configuration.path" value="${basedir}/buildconf/test"/>
 
     <property name="root.dir" value="${basedir}/.."/>
-    <property name="branding.src.dir" value="${basedir}/../branding/java/code/src"/>
+    <property name="branding.dir" value="${basedir}/../branding"/>
     <property name="frontend.src.dir" value="${basedir}/../web/html/src"/>
     <property name="frontend.dist.dir" value="${basedir}/../web/html/src/dist"/>
 
@@ -190,11 +190,11 @@
         <javac destdir="${build.dir}/java-branding"
                includeantruntime="no"
                nowarn="true"
-	       release="17"
-               srcdir="${branding.src.dir}"/>
+               release="17"
+               srcdir="${branding.dir}/src/main/java"/>
 
         <copy toDir="${build.dir}/java-branding">
-            <fileset dir="${branding.src.dir}" excludes="**/*.java"/>
+            <fileset dir="${branding.dir}/src/main/resources" />
         </copy>
 
         <jar destfile="${lib.dir}/java-branding.jar" includes="">
@@ -215,7 +215,7 @@
                nowarn="${nowarn}"
                encoding="utf-8"
                fork="yes"
-	       release="17"
+               release="17"
                memoryMaximumSize="512m"
                includeAntRuntime="false"
                classpathref="libjars"
