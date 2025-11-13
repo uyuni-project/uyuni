@@ -14,8 +14,8 @@
  */
 package com.redhat.rhn.domain.test;
 
-import com.redhat.rhn.common.hibernate.ConnectionManagerFactory;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.hibernate.TestConnectionManager;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -69,7 +69,7 @@ public class TestFactory extends HibernateFactory {
     }
 
     public static Session getSession() {
-        setConnectionManager(ConnectionManagerFactory.testConnectionManager());
+        setConnectionManager(new TestConnectionManager());
         return HibernateFactory.getSession();
     }
 }
