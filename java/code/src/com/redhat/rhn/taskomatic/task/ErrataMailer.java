@@ -107,7 +107,7 @@ public class ErrataMailer extends RhnJavaJob {
     }
 
     private void sendEmails(Long errataId, Long orgId, Long channelId) {
-        Errata errata = HibernateFactory.getSession().load(Errata.class, errataId);
+        Errata errata = HibernateFactory.getSession().getReference(Errata.class, errataId);
         List<Row> orgServers = getOrgRelevantServers(errataId, orgId, channelId);
 
         if (orgServers == null || orgServers.isEmpty()) {

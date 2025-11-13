@@ -535,7 +535,7 @@ public abstract class HibernateFactory {
         session.evict(obj);
         /*
          * In hibernate 3, the following doesn't work:
-         * session.load(obj.getClass(), id)
+         * session.getReference(obj.getClass(), id)
          * load returns the proxy class instead of the persisted class, ie,
          * Filter$$EnhancerByCGLIB$$9bcc734d_2 instead of Filter.
          * session.get is set to not return the proxy class, so that is what we'll use.
