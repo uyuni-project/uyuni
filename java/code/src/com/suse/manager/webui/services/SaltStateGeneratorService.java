@@ -324,7 +324,7 @@ public enum SaltStateGeneratorService {
         branch.getPillarByCategory(category).ifPresentOrElse(
             pillar -> {
                 branch.getPillars().remove(pillar);
-                HibernateFactory.getSession().delete(pillar);
+                HibernateFactory.getSession().remove(pillar);
             },
             () -> {
                 try {
