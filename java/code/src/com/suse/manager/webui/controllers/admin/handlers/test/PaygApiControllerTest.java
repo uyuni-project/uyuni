@@ -59,7 +59,7 @@ public class PaygApiControllerTest extends BaseControllerTestCase {
     private TaskomaticApi taskomaticMock;
     private static final Gson GSON = new GsonBuilder().create();
 
-    private PaygApiContoller PaygApiContoller;
+    private PaygApiContoller paygApiContoller;
     private User satAdmin;
 
     @Override
@@ -73,7 +73,7 @@ public class PaygApiControllerTest extends BaseControllerTestCase {
 
         context.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         taskomaticMock = context.mock(TaskomaticApi.class);
-        PaygApiContoller = new PaygApiContoller(new PaygAdminManager(taskomaticMock));
+        paygApiContoller = new PaygApiContoller(new PaygAdminManager(taskomaticMock));
     }
 
     @Override
@@ -107,7 +107,7 @@ public class PaygApiControllerTest extends BaseControllerTestCase {
     public void testRemovePermitionCheck() {
         try {
             PaygSshData paygInfo = createPaygSshData();
-            PaygApiContoller.removePaygInstance(
+            paygApiContoller.removePaygInstance(
                     getRequestWithCsrf("/manager/api/admin/config/payg/:id", paygInfo.getId()),
                     response, user);
             fail("permission check not ok");
@@ -120,7 +120,7 @@ public class PaygApiControllerTest extends BaseControllerTestCase {
     @Test
     public void testRemove() {
         PaygSshData paygInfo = createPaygSshData();
-        String json = PaygApiContoller.removePaygInstance(
+        String json = paygApiContoller.removePaygInstance(
                 getRequestWithCsrf("/manager/api/admin/config/payg/:id", paygInfo.getId()),
                 response, satAdmin);
         ResultJson resultJson = GSON.fromJson(json, ResultJson.class);
@@ -134,7 +134,7 @@ public class PaygApiControllerTest extends BaseControllerTestCase {
     public void testUpdatePaygPermitionCheck() {
         try {
             PaygSshData paygInfo = createPaygSshData();
-            PaygApiContoller.updatePayg(
+            paygApiContoller.updatePayg(
                     getRequestWithCsrf("/manager/api/admin/config/payg/:id", paygInfo.getId()),
                     response, user);
             fail("permission check not ok");
@@ -147,7 +147,7 @@ public class PaygApiControllerTest extends BaseControllerTestCase {
     @Test
     public void testUpdatePayg1() throws UnsupportedEncodingException {
         PaygSshData paygInfo = createPaygSshData();
-        String dataJson = PaygApiContoller.updatePayg(
+        String dataJson = paygApiContoller.updatePayg(
                 getPostRequestWithCsrfAndBody("/manager/api/admin/config/payg/:id",
                         "",
                         paygInfo.getId()),
@@ -171,7 +171,7 @@ public class PaygApiControllerTest extends BaseControllerTestCase {
                 "u", "p", "k", "kp",
                 "bh", "8002", "bu", "bp", "bk", "bkp", true, true);
 
-        String dataJson = PaygApiContoller.updatePayg(
+        String dataJson = paygApiContoller.updatePayg(
                 getPostRequestWithCsrfAndBody("/manager/api/admin/config/payg/:id",
                         GSON.toJson(properties),
                         paygInfo.getId()),
@@ -204,7 +204,7 @@ public class PaygApiControllerTest extends BaseControllerTestCase {
     @Test
     public void testCreatePaygPermitionCheck() {
         try {
-            PaygApiContoller.createPayg(
+            paygApiContoller.createPayg(
                     getRequestWithCsrf("/manager/api/admin/config/payg"),
                     response, user);
             fail("permission check not ok");
@@ -227,7 +227,7 @@ public class PaygApiControllerTest extends BaseControllerTestCase {
                 "u", "p", "k", "kp",
                 "bh", "8002", "bu", "bp", "bk", "bkp", true, true);
 
-        String dataJson = PaygApiContoller.createPayg(
+        String dataJson = paygApiContoller.createPayg(
                 getPostRequestWithCsrfAndBody("/manager/api/admin/config/payg",
                         GSON.toJson(properties)),
                 response, satAdmin);

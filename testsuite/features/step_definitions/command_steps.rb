@@ -181,8 +181,9 @@ When(/^I use spacewalk-repo-sync to sync channel "([^"]*)"$/) do |channel|
   $command_output, _code = get_target('server').run("spacewalk-repo-sync -c #{channel}", check_errors: false, verbose: true)
 end
 
-When(/^I use spacewalk-repo-sync to sync channel "([^"]*)" including "([^"]*)" packages?$/) do |channel, packages|
-  append_includes = packages.split.map { |pkg| "--include #{pkg}" }.join(' ')
+When(/^I use spacewalk-repo-sync to sync channel "([^"]*)" including only client tools dependencies$/) do |channel|
+  packages = CLIENT_TOOLS_DEPENDENCIES_BY_BASE_CHANNEL[channel]
+  append_includes = packages.map { |pkg| "--include #{pkg}" }.join(' ')
   $command_output, _code = get_target('server').run("spacewalk-repo-sync -c #{channel} #{append_includes}", check_errors: false, verbose: true)
 end
 
@@ -1347,17 +1348,17 @@ When(/^I copy vCenter configuration file on server$/) do
 end
 
 When(/^I export software channels "([^"]*)" with ISS v2 to "([^"]*)"$/) do |channel, path|
-  get_target('server').run("inter-server-sync export --channels=#{channel} --outputDir=#{path}")
+  get_target('server').run("inter-server-sync export --channels=#{channel} --outputDir=#{path}", verbose: true)
 end
 
 When(/^I export config channels "([^"]*)" with ISS v2 to "([^"]*)"$/) do |channel, path|
-  get_target('server').run("inter-server-sync export --configChannels=#{channel} --outputDir=#{path}")
+  get_target('server').run("inter-server-sync export --configChannels=#{channel} --outputDir=#{path}", verbose: true)
 end
 
 When(/^I import data with ISS v2 from "([^"]*)"$/) do |path|
   # WORKAROUND for bsc#1249127
-  # Remove "echo UglyWorkaround |" when the product issue is solved
-  get_target('server').run("echo UglyWorkaround | inter-server-sync import --importDir=#{path}")
+  # Remove "echo admin |" when the product issue is solved
+  get_target('server').run("echo admin | inter-server-sync import --importDir=#{path}", verbose: true)
 end
 
 Then(/^"(.*?)" folder on server is ISS v2 export directory$/) do |folder|

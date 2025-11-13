@@ -197,14 +197,14 @@ class RecurringActionsEdit extends React.Component<Props, State> {
   };
 
   onSelectPlaybook = (playbook) => {
-    this.setState({
+    this.setState((prevState) => ({
       details: {
-        ...this.state.details,
+        ...prevState.details,
         playbookPath: playbook?.playbookPath,
         inventoryPath: playbook?.inventoryPath,
         flushCache: playbook?.flushCache,
       },
-    });
+    }));
   };
 
   toggleTestState = () => {

@@ -18,7 +18,6 @@ package com.redhat.rhn.frontend.action.channel.manage;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
-import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.ChannelTreeNode;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -26,7 +25,6 @@ import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.channel.ChannelManager;
 
-import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -58,12 +56,10 @@ public class CloneChannelAction extends RhnAction {
                                  HttpServletRequest request,
                                  HttpServletResponse response) {
 
-        ActionErrors errors = new ActionErrors();
         DynaActionForm form = (DynaActionForm)formIn;
         Map<String, Object> params = makeParamMap(request);
         RequestContext ctx = new RequestContext(request);
         User user = ctx.getCurrentUser();
-        Org org = user.getOrg();
 
         if (isSubmitted(form)) {
             Channel original = ChannelManager.lookupByIdAndUser((Long) form

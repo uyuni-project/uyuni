@@ -1004,7 +1004,6 @@ public class KickstartFactory extends HibernateFactory {
      */
     public static void failKickstartSessions(Set<Action> actionsToDelete, Set<Server> servers) {
         Session session = HibernateFactory.getSession();
-        KickstartSessionState failed = KickstartFactory.SESSION_STATE_FAILED;
         Query<KickstartSession> kickstartSessionQuery = session.createQuery("""
                FROM KickstartSession s
                WHERE (s.oldServer IN (:servers) OR

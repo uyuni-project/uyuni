@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-10-27 10:14+0100\n"
-"PO-Revision-Date: 2025-10-11 09:59+0000\n"
+"PO-Revision-Date: 2025-11-03 12:04+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/web/ca/>\n"
 "Language: ca\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.13.3\n"
+"X-Generator: Weblate 5.14\n"
 
 #: ../html/javascript/spacewalk-essentials.js:407
 msgid "remaining"
@@ -180,7 +180,7 @@ msgstr "Acreditació"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:53
 msgid "Attestation #{identifier} run on {date} at {time}"
-msgstr "La prova  {identifier} s'executa el dia {date} a les {time}"
+msgstr "La prova {identifier} s'executa el dia {date} a les {time}"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:66
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:49

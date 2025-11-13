@@ -772,12 +772,12 @@ public abstract class HibernateFactory {
         return connectionManager.isInitialized();
     }
 
-    protected static DataResult executeSelectMode(String name, String mode, Map params) {
+    protected static <T> DataResult<T> executeSelectMode(String name, String mode, Map<String, ?>  params) {
         SelectMode m = ModeFactory.getMode(name, mode);
         return m.execute(params);
     }
 
-    protected static void executeCallableMode(String name, String mode, Map params) {
+    protected static void executeCallableMode(String name, String mode, Map<String, Object> params) {
         CallableMode m = ModeFactory.getCallableMode(name, mode);
         m.execute(params, new HashMap<>());
     }

@@ -130,7 +130,7 @@ public class ExtGroupDetailAction extends RhnAction {
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }
 
-    private Map makeValidationMap(DynaActionForm form) {
+    private Map<String, String> makeValidationMap(DynaActionForm form) {
         Map<String, String> map = new HashMap<>();
         map.put("label", (String) form.get("extGroupLabel"));
         return map;
@@ -164,7 +164,6 @@ public class ExtGroupDetailAction extends RhnAction {
             }
             else {
                 // org and satellite admin
-                boolean hasSatAdmin = extGroup != null && extGroup.getRoles().contains((RoleFactory.SAT_ADMIN));
                 SelectableLabelValueBean bean = new SelectableLabelValueBean(
                         LocalizationService.getInstance().getMessage(label),
                         label,

@@ -50,6 +50,7 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.PackageComparison;
 import com.redhat.rhn.frontend.dto.PackageDto;
 import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.frontend.dto.PackageOverview;
@@ -103,7 +104,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
                 "test-package-name" + TestUtils.randomString(), server,
                 ChannelFactoryTest.createTestChannel(user));
 
-        DataResult dr = PackageManager.systemPackageList(server.getId(), pc);
+        DataResult<PackageListItem> dr = PackageManager.systemPackageList(server.getId(), pc);
         assertNotNull(dr);
         assertEquals(1, dr.size());
 
@@ -147,7 +148,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         PackageManagerTest.associateSystemToPackage(server, p1);
         server = SystemManager.subscribeServerToChannel(user, server, c1);
 
-        DataResult dr = PackageManager.systemPackageList(server.getId(), pc);
+        DataResult<PackageListItem> dr = PackageManager.systemPackageList(server.getId(), pc);
         assertNotNull(dr);
         assertEquals(1, dr.size());
 
@@ -230,7 +231,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
                 ChannelFactoryTest.createTestChannel(user));
 
         // hard code for now.
-        DataResult dr = PackageManager.systemAvailablePackages(server.getId(), pc);
+        DataResult<PackageListItem> dr = PackageManager.systemAvailablePackages(server.getId(), pc);
         assertNotNull(dr);
         assertEquals(0, dr.size());
 
@@ -362,7 +363,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
     public void testPossiblePackagesForPushingIntoChannel() throws Exception {
         Errata e = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         Channel c = ChannelTestUtils.createTestChannel(user);
-        DataResult dr = PackageManager.possiblePackagesForPushingIntoChannel(c.getId(),
+        DataResult<PackageComparison> dr = PackageManager.possiblePackagesForPushingIntoChannel(c.getId(),
                 e.getId(), null);
         assertFalse(dr.isEmpty());
    }
@@ -642,8 +643,8 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         PackageManager.createRepoEntrys(c.getId());
 
         PackageManager.updateRepoPrimary(p.getId(), test);
-        DataResult dr = PackageManager.getRepoData(p.getId());
-        PackageDto dto = (PackageDto) dr.get(0);
+        DataResult<PackageDto> dr = PackageManager.getRepoData(p.getId());
+        PackageDto dto = dr.get(0);
         String prim = dto.getPrimaryXml();
         assertEquals(prim, test);
     }

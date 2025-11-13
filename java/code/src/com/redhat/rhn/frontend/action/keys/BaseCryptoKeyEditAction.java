@@ -30,6 +30,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.DynaActionForm;
+import org.apache.struts.util.LabelValueBean;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -65,7 +66,7 @@ public abstract class BaseCryptoKeyEditAction extends RhnAction {
         StrutsDelegate strutsDelegate = getStrutsDelegate();
 
         request.setAttribute(KEY, cmd.getCryptoKey());
-        List types = new LinkedList<>();
+        List<LabelValueBean> types = new LinkedList<>();
         types.add(lvl10n("crypto.key.gpg",
                 KickstartFactory.KEY_TYPE_GPG.getLabel()));
         types.add(lvl10n("crypto.key.ssl",

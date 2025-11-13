@@ -21,7 +21,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class PXEEventMessage implements EventMessage {
 
-    private PXEEvent PXEEvent;
+    private PXEEvent pxeEvent;
 
     /**
      * Standard constructor.
@@ -29,7 +29,7 @@ public class PXEEventMessage implements EventMessage {
      * @param pxeEventIn - 'Saltboot PXE' event
      */
     public PXEEventMessage(PXEEvent pxeEventIn) {
-        this.PXEEvent = pxeEventIn;
+        this.pxeEvent = pxeEventIn;
     }
 
     /**
@@ -38,7 +38,7 @@ public class PXEEventMessage implements EventMessage {
      * @return PXEEvent
      */
     public PXEEvent getPXEEventMessage() {
-        return PXEEvent;
+        return pxeEvent;
     }
 
     @Override
@@ -49,7 +49,7 @@ public class PXEEventMessage implements EventMessage {
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .append("PXEEvent", PXEEvent)
+                .append("PXEEvent", pxeEvent)
                 .toString();
     }
 

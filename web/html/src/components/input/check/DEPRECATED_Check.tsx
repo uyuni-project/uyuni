@@ -18,12 +18,12 @@ type Props = Omit<InputBaseProps, "label"> & {
 /**
  * @deprecated For standalone components use `import { Check } from "components/input";`, for Formik forms use `<Field as={Field.Check} />`.
  */
-export function DEPRECATED_Check(props: Props) {
+export function DEPRECATED_Check({ required = false, disabled = false, ...props }: Props) {
   const { label, inputClass, ...propsToPass } = props;
   const formContext = React.useContext(FormContext);
 
   return (
-    <InputBase {...propsToPass}>
+    <InputBase required={required} disabled={disabled} {...propsToPass}>
       {({ setValue, onBlur }) => {
         const setChecked = (event: any) => {
           setValue(event.target.name, event.target.checked);
@@ -40,7 +40,7 @@ export function DEPRECATED_Check(props: Props) {
                 checked={fieldValue}
                 onChange={setChecked}
                 onBlur={onBlur}
-                disabled={props.disabled}
+                disabled={disabled}
                 title={props.title}
               />
               <span>{label}</span>
@@ -51,16 +51,3 @@ export function DEPRECATED_Check(props: Props) {
     </InputBase>
   );
 }
-
-DEPRECATED_Check.defaultProps = {
-  inputClass: undefined,
-  defaultValue: undefined,
-  label: undefined,
-  hint: undefined,
-  labelClass: undefined,
-  divClass: undefined,
-  required: false,
-  disabled: false,
-  invalidHint: undefined,
-  onChange: undefined,
-};

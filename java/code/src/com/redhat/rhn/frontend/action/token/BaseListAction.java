@@ -69,7 +69,7 @@ public abstract class BaseListAction<T> extends RhnAction implements Listable<T>
         request.setAttribute(DESCRIPTION, ak.getNote());
     }
 
-    protected Map getParamsMap(HttpServletRequest request) {
+    protected Map<String, Object> getParamsMap(HttpServletRequest request) {
         RequestContext context = new RequestContext(request);
         Map<String, Object> params = new HashMap<>();
         params.put(RequestContext.TOKEN_ID,

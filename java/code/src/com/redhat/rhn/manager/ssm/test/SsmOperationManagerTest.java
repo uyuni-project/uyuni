@@ -64,7 +64,7 @@ public class SsmOperationManagerTest extends RhnBaseTestCase {
         // Test
         SsmOperationManager.createOperation(ssmUser, "Test operation", serverSetLabel);
 
-        DataResult result = SsmOperationManager.allOperations(ssmUser);
+        DataResult<OperationDetailsDto> result = SsmOperationManager.allOperations(ssmUser);
 
         // Verify
         assertNotNull(result);
@@ -79,7 +79,7 @@ public class SsmOperationManagerTest extends RhnBaseTestCase {
         SsmOperationManager.associateServersWithOperation(operationId, ssmUser.getId(),
                 new ArrayList<>(serverSet.
                         getElementValues()));
-        DataResult result = SsmOperationManager.allOperations(ssmUser);
+        DataResult<OperationDetailsDto> result = SsmOperationManager.allOperations(ssmUser);
 
         // Verify
         assertNotNull(result);
@@ -151,13 +151,13 @@ public class SsmOperationManagerTest extends RhnBaseTestCase {
             SsmOperationManager.createOperation(ssmUser, "Test operation", serverSetLabel);
 
         // Test
-        DataResult result = SsmOperationManager.findServerDataForOperation(operationId);
+        DataResult<ServerOperationDataDto> result = SsmOperationManager.findServerDataForOperation(operationId);
 
         // Verify
         assertNotNull(result);
         assertEquals(2, result.size());
 
-        ServerOperationDataDto serverData = (ServerOperationDataDto) result.get(0);
+        ServerOperationDataDto serverData = result.get(0);
         assertNotNull(serverData.getId());
         assertNotNull(serverData.getName());
         assertNull(serverData.getNote());
@@ -172,7 +172,7 @@ public class SsmOperationManagerTest extends RhnBaseTestCase {
             SsmOperationManager.createOperation(ssmUser, "Test operation", null);
 
         //   Sanity check
-        DataResult result = SsmOperationManager.findServerDataForOperation(operationId);
+        DataResult<ServerOperationDataDto> result = SsmOperationManager.findServerDataForOperation(operationId);
         assertNotNull(result);
         assertEquals(0, result.size());
 
@@ -185,7 +185,7 @@ public class SsmOperationManagerTest extends RhnBaseTestCase {
         assertNotNull(result);
         assertEquals(2, result.size());
 
-        ServerOperationDataDto serverData = (ServerOperationDataDto) result.get(0);
+        ServerOperationDataDto serverData = result.get(0);
         assertNotNull(serverData.getId());
         assertNotNull(serverData.getName());
         assertNull(serverData.getNote());
@@ -209,7 +209,7 @@ public class SsmOperationManagerTest extends RhnBaseTestCase {
             SsmOperationManager.createOperation(ssmUser, "Test operation", null);
 
         //   Sanity check
-        DataResult result = SsmOperationManager.findServerDataForOperation(operationId);
+        DataResult<ServerOperationDataDto> result = SsmOperationManager.findServerDataForOperation(operationId);
         assertNotNull(result);
         assertEquals(0, result.size());
 
@@ -232,7 +232,7 @@ public class SsmOperationManagerTest extends RhnBaseTestCase {
         assertNotNull(result);
         assertEquals(2, result.size());
 
-        ServerOperationDataDto serverData = (ServerOperationDataDto) result.get(0);
+        ServerOperationDataDto serverData = result.get(0);
         assertNotNull(serverData.getId());
         assertNotNull(serverData.getName());
         assertNull(serverData.getNote());
@@ -256,7 +256,7 @@ public class SsmOperationManagerTest extends RhnBaseTestCase {
             SsmOperationManager.createOperation(ssmUser, "Test operation", null);
 
         //   Sanity check
-        DataResult result = SsmOperationManager.findServerDataForOperation(operationId);
+        DataResult<ServerOperationDataDto> result = SsmOperationManager.findServerDataForOperation(operationId);
         assertNotNull(result);
         assertEquals(0, result.size());
 
@@ -282,7 +282,7 @@ public class SsmOperationManagerTest extends RhnBaseTestCase {
         assertNotNull(result);
         assertEquals(1, result.size());
 
-        ServerOperationDataDto serverData = (ServerOperationDataDto) result.get(0);
+        ServerOperationDataDto serverData = result.get(0);
         assertNotNull(serverData.getId());
         assertNotNull(serverData.getName());
         assertNull(serverData.getNote());

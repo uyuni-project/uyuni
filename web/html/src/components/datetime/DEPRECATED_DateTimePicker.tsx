@@ -277,15 +277,15 @@ export class DEPRECATED_DateTimePicker extends React.Component<DateTimePickerPro
   };
 
   toggleDatepicker = () => {
-    this.setState({
-      dateOpen: !this.state.dateOpen,
-    });
+    this.setState((prevState) => ({
+      dateOpen: !prevState.dateOpen,
+    }));
   };
 
   toggleTimepicker = () => {
-    this.setState({
-      timeOpen: !this.state.timeOpen,
-    });
+    this.setState((prevState) => ({
+      timeOpen: !prevState.timeOpen,
+    }));
   };
 
   onDateChanged = (year: number, month: number, day: number) => {

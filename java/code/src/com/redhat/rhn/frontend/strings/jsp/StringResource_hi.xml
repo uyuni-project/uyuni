@@ -26035,12 +26035,6 @@ given channel.</source>
       <trans-unit id="channel.jsp.repodata" xml:space="preserve">
         <source>Repo Cache Status</source>
       </trans-unit>
-      <trans-unit id="channel.jsp.repodata.completed" xml:space="preserve">
-        <source> Completed </source>
-      </trans-unit>
-      <trans-unit id="channel.jsp.repodata.inProgress" xml:space="preserve">
-        <source> In Progress </source>
-      </trans-unit>
       <trans-unit id="channel.jsp.gpgcheck" xml:space="preserve">
         <source>Enable GPG Check </source>
       </trans-unit>
@@ -27882,6 +27876,18 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
         </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="channel.jsp.sync.status.ready" xml:space="preserve">
+        <source> Completed </source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="channel.jsp.sync.status.syncing" xml:space="preserve">
+        <source> In Progress </source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="channel.jsp.sync.status.created" xml:space="preserve">
+        <source> New Created </source>
       <target state="new"/>
   </trans-unit>
       </body>

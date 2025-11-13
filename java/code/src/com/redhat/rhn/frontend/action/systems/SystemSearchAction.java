@@ -154,7 +154,6 @@ public class SystemSearchAction extends BaseSearchAction implements Listable<Sys
         boolean matchingViewModeFound = false;
         Map<String, List<Map<String, String>>> optGroupsMap =
                 new HashMap<>();
-        LocalizationService ls = LocalizationService.getInstance();
         for (int j = 0; j < OPT_GROUPS_TITLES.length; ++j) {
             List<Map<String, String>> options = new ArrayList<>();
 
@@ -295,7 +294,7 @@ public class SystemSearchAction extends BaseSearchAction implements Listable<Sys
      * @param value the value for value
      * @return Returns the map.
      */
-    private Map createDisplayMap(String display, String value) {
+    private Map<String, String> createDisplayMap(String display, String value) {
         Map<String, String> selection = new HashMap<>();
         selection.put("display", display);
         selection.put("value", value);

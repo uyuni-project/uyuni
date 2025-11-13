@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.RhnSetElement;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.RhnSetAction;
+import com.redhat.rhn.frontend.dto.PackageComparison;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
@@ -91,7 +92,7 @@ public class PackagePushAction extends RhnSetAction {
             filePackages.add(p);
         }
         //publish them and the errata to the channel
-        errata = ErrataFactory.addToChannel(errata, c, user, filePackages);
+        ErrataFactory.addToChannel(errata, c, user, filePackages);
 
         RhnSet targetChannels = RhnSetDecl.CHANNELS_FOR_ERRATA.get(user);
         targetChannels.removeElement(cid);
@@ -120,8 +121,8 @@ public class PackagePushAction extends RhnSetAction {
      * {@inheritDoc}
      */
     @Override
-    protected DataResult getDataResult(User user, ActionForm formIn,
-                                       HttpServletRequest request) {
+    protected DataResult<PackageComparison> getDataResult(User user, ActionForm formIn,
+                                                          HttpServletRequest request) {
         DynaActionForm daForm = (DynaActionForm) formIn;
         Long cid = (Long) daForm.get("cid");
         Long eid = (Long) daForm.get("eid");

@@ -59,6 +59,7 @@ export default defineConfig([
       "jsx-a11y/anchor-is-valid": "error",
       "react/jsx-no-target-blank": "error",
       "react-hooks/rules-of-hooks": "error",
+      "react/no-access-state-in-setstate": "error",
       eqeqeq: "error",
       radix: ["error", "always"],
       // ESLint doesn't recongize overloads by default

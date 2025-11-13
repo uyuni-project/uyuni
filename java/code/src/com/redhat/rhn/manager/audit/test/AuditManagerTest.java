@@ -43,10 +43,10 @@ public class AuditManagerTest  {
         File machinedir = new File(testdir + "/" + machinename);
         machinedir.mkdir();
 
-        DataResult dr = AuditManager.getMachines();
+        DataResult<AuditMachineDto> dr = AuditManager.getMachines();
         assertNotNull(dr);
         assertEquals(1, dr.size());
-        AuditMachineDto dto = (AuditMachineDto) dr.get(0);
+        AuditMachineDto dto = dr.get(0);
         assertEquals(machinename, dto.getName());
 
         machinedir.delete();

@@ -48,10 +48,9 @@ public class KickstartIpCommand extends BaseKickstartCommand {
 
         Long id = this.ksdata.getId();
 
-        Set s = this.ksdata.getIps();
+        Set<KickstartIpRange> s = this.ksdata.getIps();
 
-        for (Object oIn : s) {
-            KickstartIpRange ipr = (KickstartIpRange) oIn;
+        for (KickstartIpRange ipr : s) {
             IpAddress min = new IpAddress(ipr.getMin());
             IpAddress max = new IpAddress(ipr.getMax());
             IpAddressRange iar = new IpAddressRange(min, max, id);
@@ -123,9 +122,8 @@ public class KickstartIpCommand extends BaseKickstartCommand {
      * @return sucess or failure
      */
     public boolean deleteRange(Long ksidIn, String min, String max) {
-        Set s = this.ksdata.getIps();
-        for (Object oIn : s) {
-            KickstartIpRange ipr = (KickstartIpRange) oIn;
+        Set<KickstartIpRange> s = this.ksdata.getIps();
+        for (KickstartIpRange ipr : s) {
             if (ipr.getKsdata().getId().equals(ksidIn) &&
                     ipr.getMax().toString().equals(max) &&
                     ipr.getMin().toString().equals(min)) {
@@ -170,9 +168,9 @@ public class KickstartIpCommand extends BaseKickstartCommand {
         boolean found = false;
         long max = iprIn.getMax().getNumber();
         long min = iprIn.getMin().getNumber();
-        List l = KickstartFactory.lookupRangeByOrg(this.ksdata.getOrg());
-        for (Iterator itr = l.iterator(); (itr.hasNext() && !found);) {
-            KickstartIpRange ksr = (KickstartIpRange) itr.next();
+        List<KickstartIpRange> l = KickstartFactory.lookupRangeByOrg(this.ksdata.getOrg());
+        for (Iterator<KickstartIpRange> itr = l.iterator(); (itr.hasNext() && !found);) {
+            KickstartIpRange ksr = itr.next();
             found = ((ksr.getMax() <= max) && (ksr.getMax() >= min)) ||
                 ((ksr.getMin() <= max) && (ksr.getMin() >= min));
         }

@@ -90,7 +90,7 @@ public abstract class RhnSetAction extends RhnListDispatchAction {
         Map<String, Object> params = makeParamMap(formIn, request);
         RhnSetHelper helper = new RhnSetHelper(mapping, getSetDecl(), request);
         helper.setForward(getForwardName(request));
-        DataResult dr = getDataResult(helper.getUser(), formIn, request);
+        DataResult<?> dr = getDataResult(helper.getUser(), formIn, request);
         return helper.selectall(dr, params);
     }
 
@@ -154,7 +154,7 @@ public abstract class RhnSetAction extends RhnListDispatchAction {
         throw new UnsupportedOperationException();
     }
 
-    protected abstract DataResult getDataResult(User user,
+    protected abstract DataResult<?> getDataResult(User user,
             ActionForm formIn, HttpServletRequest request);
 
 }

@@ -1,5 +1,6 @@
 #!/bin/bash
 set -ex
+
 print_usage()
 {
     echo "Usage: $0 [-s subnet]" 1>&2

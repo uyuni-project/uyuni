@@ -230,8 +230,3 @@ export const HierarchicalTable = React.forwardRef<TableRef, HierarchicalTablePro
     </div>
   );
 });
-
-HierarchicalTable.defaultProps = {
-  initiallyExpanded: false,
-  indentSize: 20,
-};

@@ -177,14 +177,14 @@ public class SystemMigrateAction extends RhnAction {
         List<Long> serversMigrated = MIGRATION_MANAGER.migrateServers(user,
                 toOrg, serverList);
 
-        Iterator it = serversMigrated.iterator();
+        Iterator<Long> it = serversMigrated.iterator();
 
         if (it.hasNext()) {
             // get systems selected in SSM
             RhnSet set = RhnSetDecl.SYSTEMS.get(user);
             // remove migrated servers from SSM
             do {
-                Long value = (Long)it.next();
+                Long value = it.next();
                 set.removeElement(value);
             } while (it.hasNext());
             // save result to database
@@ -198,8 +198,8 @@ public class SystemMigrateAction extends RhnAction {
             DynaActionForm daForm, User user, Server s, Org o, Integer trustedOrgCount) {
 
         //ibm jvm has issues adding set in ArrayList constructor so add separately
-        Set set = user.getOrg().getTrustedOrgs();
-        List orgList = new ArrayList<>();
+        Set<Org> set = user.getOrg().getTrustedOrgs();
+        List<Org> orgList = new ArrayList<>();
         orgList.addAll(set);
 
         request.setAttribute("trustedOrgCount", trustedOrgCount);

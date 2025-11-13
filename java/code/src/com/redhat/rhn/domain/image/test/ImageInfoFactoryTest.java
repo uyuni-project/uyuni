@@ -94,7 +94,7 @@ import java.util.TreeMap;
 public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
 
     @RegisterExtension
-    protected final JUnit5Mockery CONTEXT = new JUnit5Mockery() {{
+    protected final JUnit5Mockery context = new JUnit5Mockery() {{
         setThreadingPolicy(new Synchroniser());
     }};
 
@@ -110,8 +110,8 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
-        CONTEXT.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
-        saltApiMock = CONTEXT.mock(TestSaltApi.class);
+        context.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
+        saltApiMock = context.mock(TestSaltApi.class);
     }
 
     @Test
@@ -542,7 +542,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testDelete() {
-        CONTEXT.checking(new Expectations() {{
+        context.checking(new Expectations() {{
             allowing(saltApiMock).removeFile(
                     with(equal(Paths.get(String.format("/srv/www/os-images/%d/test-1.0.0.tgz",
                                              user.getOrg().getId())))));
@@ -579,7 +579,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testDeltaImage() {
-        CONTEXT.checking(new Expectations() {{
+        context.checking(new Expectations() {{
             allowing(saltApiMock).removeFile(
                     with(equal(Paths.get(String.format("/srv/www/os-images/%d/delta1.tgz",
                                              user.getOrg().getId())))));
@@ -646,8 +646,8 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
 
     private TaskomaticApi getTaskomaticApi() throws TaskomaticApiException {
         if (taskomaticApi == null) {
-            taskomaticApi = CONTEXT.mock(TaskomaticApi.class);
-            CONTEXT.checking(new Expectations() {
+            taskomaticApi = context.mock(TaskomaticApi.class);
+            context.checking(new Expectations() {
                 {
                     allowing(taskomaticApi)
                             .scheduleActionExecution(with(any(Action.class)));

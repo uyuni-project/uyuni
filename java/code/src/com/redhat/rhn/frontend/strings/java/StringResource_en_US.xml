@@ -1871,6 +1871,12 @@
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="virt.refresh_list" xml:space="preserve">
+        <source>Virtualization List Refresh</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="packages.update" xml:space="preserve">
         <source>Package Install</source>
         <context-group name="ctx">
@@ -9652,6 +9658,84 @@ For a detailed analysis, please refer to the log files.</source>
       </trans-unit>
       <trans-unit id="notification.paygauthenticationupdatefailed" xml:space="preserve">
         <source>Error when updating authentication data from: &lt;a href="/rhn/manager/admin/setup/payg/{0}"&gt;{1}&lt;/a&gt;</source>
+      </trans-unit>
+      <trans-unit id="notification.proxybackupfailed" xml:space="preserve">
+        <source>Failed to process proxy backup event</source>
+      </trans-unit>
+      <trans-unit id="notification.proxybackupnominion" xml:space="preserve">
+        <source>No system with {0} name</source>
+      </trans-unit>
+      <trans-unit id="notification.pxeeventfailed" xml:space="preserve">
+        <source>Processing of a PXE event for the minion {0} failed</source>
+      </trans-unit>
+      <trans-unit id="event.proxymigrationstarted" xml:space="preserve">
+        <source>Proxy migration: started</source>
+      </trans-unit>
+      <trans-unit id="event.proxymigrationstarteddetails" xml:space="preserve">
+        <source>Received event with client side data, starting data migration</source>
+      </trans-unit>
+      <trans-unit id="event.proxymigrationfailed" xml:space="preserve">
+        <source>Proxy migration: failed</source>
+      </trans-unit>
+      <trans-unit id="event.proxymigrationfailedincomplete" xml:space="preserve">
+        <source>Received incomplete backup data. Try retrying the migration.</source>
+      </trans-unit>
+      <trans-unit id="event.proxymigrationfailedparsing" xml:space="preserve">
+        <source>Unable to parse uploaded data. See log file for details</source>
+      </trans-unit>
+      <trans-unit id="event.proxymigrationcreated" xml:space="preserve">
+        <source>Proxy migration: new configuration created</source>
+      </trans-unit>
+      <trans-unit id="event.proxymigrationcreateddetails" xml:space="preserve">
+        <source>Reinstallation of the proxy will now autoconfigure it on the first boot</source>
+      </trans-unit>
+      <trans-unit id="event.rbsmigrationstarted" xml:space="preserve">
+        <source>Retail Branch Server migration: started</source>
+      </trans-unit>
+      <trans-unit id="event.rbsmigrationstarteddetails" xml:space="preserve">
+        <source>Proxy detected as a Retail Branch Server, migration started</source>
+      </trans-unit>
+      <trans-unit id="event.rbsmigrationfinishedok" xml:space="preserve">
+        <source>Retail Branch Server migration: finished successfully</source>
+      </trans-unit>
+      <trans-unit id="event.rbsmigrationfinishederror" xml:space="preserve">
+        <source>Retail Branch Server migration: finished with errors</source>
+      </trans-unit>
+      <trans-unit id="event.rbsmigrationfinisheddetails" xml:space="preserve">
+        <source>Proxy was detected to be a Retail Branch Server, branch migration was performed.<ul>{0}</ul></source>
+      </trans-unit>
+      <trans-unit id="event.rbsmigrationfailed" xml:space="preserve">
+        <source>Retail Branch Server migration: failed</source>
+      </trans-unit>
+      <trans-unit id="event.rbsmigrationfaileddetails" xml:space="preserve">
+        <source>Failed to migrate the branch server. See log files for details.</source>
+      </trans-unit>
+      <trans-unit id="event.proxymigrationfinished" xml:space="preserve">
+        <source>Proxy migration: finished</source>
+      </trans-unit>
+      <trans-unit id="event.proxymigrationfinisheddetails" xml:space="preserve">
+        <source>All data were migrated. Proceed with reinstallation of the proxy host.</source>
+      </trans-unit>
+      <trans-unit id="event.pxemigrationnoentries" xml:space="preserve">
+        <source>No PXE entries found in a backup configuration for branch {0}</source>
+      </trans-unit>
+      <trans-unit id="event.pxemigrationlost" xml:space="preserve">
+        <source>Lost and found: system with HW address {0} in branch {1} was not found as registered system.</source>
+      </trans-unit>
+      <trans-unit id="event.pxemigrationduplicate" xml:space="preserve">
+        <source>Multiple minions found with the same MAC address {0}. Cannot choose one, ignoring</source>
+      </trans-unit>
+      <trans-unit id="event.pxemigrationnogroup" xml:space="preserve">
+        <source>Not processing minion '{0}' as it is not part of a branch group.</source>
+      </trans-unit>
+      <trans-unit id="event.pxemigrationnoimage" xml:space="preserve">
+        <source>Image not found: system '{0}' is using unknown image '{1}'. Using default boot image.</source>
+      </trans-unit>
+      <trans-unit id="event.pxemigrationsaltboot" xml:space="preserve">
+        <source>Failed to create Saltboot system: {0}</source>
+      </trans-unit>
+      <trans-unit id="rbsmigration.lostfounddescription" xml:space="preserve">
+        <source>Collection of systems not registered, but present in branch {0} pxe entries.</source>
       </trans-unit>
       <trans-unit id="maintenance.calendar.name.empty" xml:space="preserve">
         <source>Calendar name required</source>

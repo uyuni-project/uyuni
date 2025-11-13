@@ -132,7 +132,7 @@ public class RenderUtils {
         // Store the computed URL in the Session
         req.getSession().setAttribute(locationKey.toString(), lastActive);
 
-        Renderable renderable = (Renderable) Class.forName(rendererClass).newInstance();
+        Renderable renderable = (Renderable) Class.forName(rendererClass).getDeclaredConstructor().newInstance();
         RenderGuardComposite comp = new RenderGuardComposite();
         comp.addRenderGuard(new DepthGuard(minDepth, maxDepth));
         comp.addRenderGuard(guard);

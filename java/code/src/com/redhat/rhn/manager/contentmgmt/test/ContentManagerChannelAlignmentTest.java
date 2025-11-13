@@ -627,7 +627,7 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
 
         contentManager.alignEnvironmentTargetSync(emptyList(), srcChannel, tgtChannel, user);
         // after aligning the channels, the retracted package shouldn't appear in the rhnServerNeeded cache
-        DataResult needingUpdates = ErrataCacheManager.packagesNeedingUpdates(server.getId());
+        DataResult<ErrataCacheDto> needingUpdates = ErrataCacheManager.packagesNeedingUpdates(server.getId());
         assertTrue(needingUpdates.isEmpty());
         // nor should it be reported as the newest package in the channel
         assertEquals(pkg.getId(),

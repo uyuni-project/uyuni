@@ -17,6 +17,7 @@ package com.redhat.rhn.taskomatic;
 import com.redhat.rhn.common.conf.Config;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
@@ -103,9 +104,10 @@ public class TaskoXmlRpcServer {
         for (Class clazz : TaskoSerializerRegistry.getSerializationClasses()) {
             try {
                 xmlrpcServer.getSerializer().addCustomSerializer(
-                        (XmlRpcCustomSerializer)clazz.newInstance());
+                        (XmlRpcCustomSerializer)clazz.getDeclaredConstructor().newInstance());
             }
-            catch (InstantiationException | IllegalAccessException e) {
+            catch (InstantiationException | IllegalAccessException |
+                   InvocationTargetException | NoSuchMethodException e) {
                 e.printStackTrace(System.out);
             }
         }

@@ -712,8 +712,7 @@ public class ColumnTag extends TagSupport {
      */
     @Override
     public int hashCode() {
-        int result = 17;
-        result = 37 * (header == null ? 0 : header.hashCode());
+        int result = 37 * (header == null ? 0 : header.hashCode());
         result += 37 * (width == null ? 0 : width.hashCode());
         result += 37 * (style == null ? 0 : style.hashCode());
         result += 37 * (nowrap == null ? 0 : nowrap.hashCode());

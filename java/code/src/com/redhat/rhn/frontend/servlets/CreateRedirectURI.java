@@ -58,10 +58,10 @@ public class CreateRedirectURI {
         String paramName = null;
         String paramValue = null;
 
-        Enumeration paramNames = request.getParameterNames();
+        Enumeration<String> paramNames = request.getParameterNames();
 
         while (paramNames.hasMoreElements()) {
-            paramName = (String)paramNames.nextElement();
+            paramName = paramNames.nextElement();
             paramValue = request.getParameter(paramName);
 
             paramName = encode(paramName);

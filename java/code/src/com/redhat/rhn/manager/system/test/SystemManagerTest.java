@@ -27,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -302,13 +303,9 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
         systemManager.deleteServer(user, id);
 
-        try {
-            test = SystemManager.lookupByIdAndUser(id, user);
-            fail("Found deleted server");
-        }
-        catch (LookupException e) {
-            //success
-        }
+        assertThrows(LookupException.class, () -> {
+            SystemManager.lookupByIdAndUser(id, user);
+        }, "Found deleted server");
     }
 
     /**
@@ -373,13 +370,9 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
         systemManager.deleteServer(user, sid);
 
-        try {
-            test = SystemManager.lookupByIdAndUser(sid, user);
-            fail("Found deleted server");
-        }
-        catch (LookupException e) {
-            // expected
-        }
+        assertThrows(LookupException.class, () -> {
+            SystemManager.lookupByIdAndUser(sid, user);
+        }, "Found deleted server");
 
         DataResult<VirtualSystemOverview> data = SystemManager.virtualGuestsForHostList(user, host.getId(), null);
         assertEquals(1, data.getTotalSize(), "Guest not found");
@@ -404,13 +397,9 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         systemManager.deleteServer(user, sid);
         TestUtils.flushAndEvict(guest);
 
-        try {
-            test = SystemManager.lookupByIdAndUser(sid, user);
-            fail("Found deleted server");
-        }
-        catch (LookupException e) {
-            // expected
-        }
+        assertThrows(LookupException.class, () -> {
+            SystemManager.lookupByIdAndUser(sid, user);
+        }, "Found deleted server");
 
     }
 
@@ -1425,6 +1414,86 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals("unknown", networkInterface.getName());
         assertEquals(hwAddr, networkInterface.getHwaddr());
         assertTrue(minion.hasEntitlement(EntitlementManager.BOOTSTRAP));
+    }
+
+    /**
+     * Tests creating an empty system profile.
+     */
+    @Test
+    public void testCreateSystemProfileWithUserOrg() {
+        String hwAddr = "be:b0:bc:a3:a7:ae";
+        Map<String, Object> data = singletonMap("hwAddress", hwAddr);
+        MinionServer minion = systemManager.createSystemProfile(user, user.getOrg(), "test system", data);
+        Server minionFromDb = SystemManager.lookupByIdAndOrg(minion.getId(), user.getOrg());
+
+        // flush & refresh iface because generated="insert"
+        // on interfaceId does not seem to work
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().refresh(minionFromDb);
+
+        assertEquals("test system", minionFromDb.getName());
+        assertEquals("_" + hwAddr, minion.getMinionId());
+        assertEquals("_" + hwAddr, minion.getMachineId());
+        assertEquals("_" + hwAddr, minion.getDigitalServerId());
+        assertEquals("(unknown)", minion.getOs());
+        assertEquals("(unknown)", minion.getOsFamily());
+        assertEquals("(unknown)", minion.getRelease());
+        assertEquals(ContactMethodUtil.DEFAULT, minion.getContactMethod().getLabel());
+        assertEquals("N", minion.getAutoUpdate());
+        assertEquals("x86_64-redhat-linux", minion.getServerArch().getLabel());
+        assertEquals(1, minionFromDb.getNetworkInterfaces().size());
+
+        NetworkInterface networkInterface = minionFromDb.getNetworkInterfaces().iterator().next();
+        assertEquals("unknown", networkInterface.getName());
+        assertEquals(hwAddr, networkInterface.getHwaddr());
+        assertTrue(minion.hasEntitlement(EntitlementManager.BOOTSTRAP));
+    }
+
+    @Test
+    public void testCreateSystemProfileWithJustOrg() {
+        String hwAddr = "be:b0:bc:a3:a7:af";
+        Map<String, Object> data = singletonMap("hwAddress", hwAddr);
+        MinionServer minion = systemManager.createSystemProfile(null, user.getOrg(), "test system", data);
+        Server minionFromDb = SystemManager.lookupByIdAndOrg(minion.getId(), user.getOrg());
+
+        // flush & refresh iface because generated="insert"
+        // on interfaceId does not seem to work
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().refresh(minionFromDb);
+
+        assertEquals("test system", minionFromDb.getName());
+        assertEquals("_" + hwAddr, minion.getMinionId());
+        assertEquals("_" + hwAddr, minion.getMachineId());
+        assertEquals("_" + hwAddr, minion.getDigitalServerId());
+        assertEquals("(unknown)", minion.getOs());
+        assertEquals("(unknown)", minion.getOsFamily());
+        assertEquals("(unknown)", minion.getRelease());
+        assertEquals(ContactMethodUtil.DEFAULT, minion.getContactMethod().getLabel());
+        assertEquals("N", minion.getAutoUpdate());
+        assertEquals("x86_64-redhat-linux", minion.getServerArch().getLabel());
+        assertEquals(1, minionFromDb.getNetworkInterfaces().size());
+
+        NetworkInterface networkInterface = minionFromDb.getNetworkInterfaces().iterator().next();
+        assertEquals("unknown", networkInterface.getName());
+        assertEquals(hwAddr, networkInterface.getHwaddr());
+        assertTrue(minion.hasEntitlement(EntitlementManager.BOOTSTRAP));
+    }
+
+    @Test
+    public void testFailToCreateSystemProfileWithConflictingOrg() {
+        Org org = UserTestUtils.createOrg();
+        String hwAddr = "be:b0:bc:a3:a7:af";
+        Map<String, Object> data = singletonMap("hwAddress", hwAddr);
+        Assertions.assertThrows(IllegalArgumentException.class,
+                () -> systemManager.createSystemProfile(user, org, "test system", data));
+    }
+
+    @Test
+    public void testFailToCreateSystemProfileNoUserOrg() {
+        String hwAddr = "be:b0:bc:a3:a7:af";
+        Map<String, Object> data = singletonMap("hwAddress", hwAddr);
+        Assertions.assertThrows(IllegalArgumentException.class,
+                () -> systemManager.createSystemProfile(null, null, "test system", data));
     }
 
     /**

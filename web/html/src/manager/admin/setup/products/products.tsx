@@ -71,25 +71,27 @@ function reloadData() {
   return Network.get("/rhn/manager/api/admin/products");
 }
 
+class ProductsPageWrapperState {
+  issMaster = window.issMaster_flag_from_backend;
+  refreshNeeded = window.refreshNeeded_flag_from_backend;
+  refreshRunning = window.refreshRunning_flag_from_backend || window.scc_refresh_file_locked_status;
+  noToolsChannelSubscription = window.noToolsChannelSubscription_flag_from_backend;
+  serverData: any[] = [];
+  errors: MessageType[] = [];
+  loading = true;
+  selectedItems: any[] = [];
+  sccSyncRunning = false;
+  addingProducts = false;
+  scheduledItems: any[] = [];
+  scheduleResyncItems: any[] = [];
+}
+
 /**
  * Generate the page wrapper, tabs, scc-popup,
  * and everything around the product list except the list
  */
-class ProductsPageWrapper extends React.Component {
-  state = {
-    issMaster: window.issMaster_flag_from_backend,
-    refreshNeeded: window.refreshNeeded_flag_from_backend,
-    refreshRunning: window.refreshRunning_flag_from_backend || window.scc_refresh_file_locked_status,
-    noToolsChannelSubscription: window.noToolsChannelSubscription_flag_from_backend,
-    serverData: [] as any[],
-    errors: [] as MessageType[],
-    loading: true,
-    selectedItems: [] as any[],
-    sccSyncRunning: false,
-    addingProducts: false,
-    scheduledItems: [] as any[],
-    scheduleResyncItems: [] as any[],
-  };
+class ProductsPageWrapper extends React.Component<{}, ProductsPageWrapperState> {
+  state = new ProductsPageWrapperState();
 
   UNSAFE_componentWillMount() {
     if (!this.state.refreshRunning) {
@@ -150,17 +152,21 @@ class ProductsPageWrapper extends React.Component {
   };
 
   handleSelectedItems = (items) => {
-    let arr = this.state.selectedItems;
-    // add all items those are not yet in the existsing set
-    arr = arr.concat(items.filter((i) => !arr.map((a) => a.identifier).includes(i.identifier)));
-    this.setState({ selectedItems: arr });
+    this.setState((prevState) => {
+      let arr = prevState.selectedItems;
+      // add all items those are not yet in the existsing set
+      arr = arr.concat(items.filter((i) => !arr.map((a) => a.identifier).includes(i.identifier)));
+      return { selectedItems: arr };
+    });
   };
 
   handleUnselectedItems = (items) => {
-    let arr = this.state.selectedItems;
-    // keep all items in the existsing set those are not in the unselected items
-    arr = arr.filter((a) => !items.map((i) => i.identifier).includes(a.identifier));
-    this.setState({ selectedItems: arr });
+    this.setState((prevState) => {
+      let arr = prevState.selectedItems;
+      // keep all items in the existsing set those are not in the unselected items
+      arr = arr.filter((a) => !items.map((i) => i.identifier).includes(a.identifier));
+      return { selectedItems: arr };
+    });
   };
 
   clearSelection = () => {
@@ -271,10 +277,12 @@ class ProductsPageWrapper extends React.Component {
   };
 
   handleResponseError = (jqXHR: JQueryXHR, arg = {}) => {
-    const msg = Network.responseErrorMessage(jqXHR, (status, msg) =>
-      messageMap[msg] ? t(messageMap[msg], arg) : null
-    );
-    this.setState({ errors: this.state.errors.concat(msg) });
+    this.setState((prevState) => {
+      const msg = Network.responseErrorMessage(jqXHR, (status, msg) =>
+        messageMap[msg] ? t(messageMap[msg], arg) : null
+      );
+      return { errors: prevState.errors.concat(msg) };
+    });
   };
 
   render() {
@@ -416,15 +424,17 @@ type ProductsProps = {
   handleUnselectedItems: (...args: any[]) => any;
 };
 
+class ProductsState {
+  popupItem: null | unknown = null;
+  archCriteria: any[] = [];
+  visibleSubList: any[] = [];
+}
+
 /**
  * Show the products data
  */
-class Products extends React.Component<ProductsProps> {
-  state = {
-    popupItem: null,
-    archCriteria: [] as any[],
-    visibleSubList: [] as any[],
-  };
+class Products extends React.Component<ProductsProps, ProductsState> {
+  state = new ProductsState();
 
   getDistinctArchsFromData = (data: any[] = []) => {
     return Array.from(new Set(data.map((item) => item.arch)))
@@ -469,13 +479,15 @@ class Products extends React.Component<ProductsProps> {
   };
 
   handleVisibleSublist = (id) => {
-    let arr = this.state.visibleSubList;
-    if (arr.includes(id)) {
-      arr = arr.filter((i) => i !== id);
-    } else {
-      arr = arr.concat([id]);
-    }
-    this.setState({ visibleSubList: arr });
+    this.setState((prevState) => {
+      let arr = prevState.visibleSubList;
+      if (arr.includes(id)) {
+        arr = arr.filter((i) => i !== id);
+      } else {
+        arr = arr.concat([id]);
+      }
+      return { visibleSubList: arr };
+    });
   };
 
   render() {
@@ -639,14 +651,16 @@ type CheckListItemProps = {
   handleUnselectedItems: (...args: any[]) => any;
 };
 
+class CheckListItemState {
+  withRecommended = true;
+}
+
 /**
  * A component to generate a list item which contains
  * all information for a single product
  */
-class CheckListItem extends React.Component<CheckListItemProps> {
-  state = {
-    withRecommended: true,
-  };
+class CheckListItem extends React.Component<CheckListItemProps, CheckListItemState> {
+  state = new CheckListItemState();
 
   UNSAFE_componentWillReceiveProps(nextProps) {
     if (this.isSelected(nextProps.item, nextProps.bypassProps.selectedItems)) {
@@ -720,19 +734,23 @@ class CheckListItem extends React.Component<CheckListItemProps> {
   };
 
   handleWithRecommended = () => {
-    const withRecommendedNow = !this.state.withRecommended;
-    this.setState({ withRecommended: withRecommendedNow });
-    // only if this item is already selected
-    if (this.isSelected(this.props.item, this.props.bypassProps.selectedItems)) {
-      const arr = this.getRecommendedChildrenTree(this.props.item);
-      // if the recommended flag is now enabled, select all recommended children
-      if (withRecommendedNow) {
-        this.props.handleSelectedItems(arr);
-      } // else unselected them all
-      else {
-        this.props.handleUnselectedItems(arr);
+    this.setState((prevState) => {
+      const withRecommendedNow = !prevState.withRecommended;
+
+      // only if this item is already selected
+      if (this.isSelected(this.props.item, this.props.bypassProps.selectedItems)) {
+        const arr = this.getRecommendedChildrenTree(this.props.item);
+        // if the recommended flag is now enabled, select all recommended children
+        if (withRecommendedNow) {
+          this.props.handleSelectedItems(arr);
+        } // else unselected them all
+        else {
+          this.props.handleUnselectedItems(arr);
+        }
       }
-    }
+
+      return { withRecommended: withRecommendedNow };
+    });
   };
 
   // check if all recommended children are in the selection set,

@@ -22,7 +22,7 @@ type Props = {
   initialItemsPerPage?: number;
 
   /** enables item selection */
-  selectable: boolean;
+  selectable?: boolean;
 
   /** the handler to call when the table selection is updated. If not provided, the select boxes won't be rendered */
   onSelect?: (items: any[]) => void;
@@ -47,7 +47,7 @@ type Props = {
 };
 
 export function CustomDataHandler(props: Props) {
-  const { selectable, ...allProps } = props;
+  const { selectable = false, ...allProps } = props;
   return (
     <TableDataHandler {...allProps} selectable={() => selectable}>
       {({ currItems, criteria }) =>
@@ -56,7 +56,3 @@ export function CustomDataHandler(props: Props) {
     </TableDataHandler>
   );
 }
-
-CustomDataHandler.defaultProps = {
-  selectable: false,
-};

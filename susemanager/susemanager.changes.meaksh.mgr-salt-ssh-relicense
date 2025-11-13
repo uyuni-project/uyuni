@@ -1,0 +1,2 @@
+- Relicense mgr-salt-ssh under Apache-2.0 and move it
+  to a separated package named susemanager-tools-salt

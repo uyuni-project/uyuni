@@ -52,9 +52,9 @@ public class KickstartScriptDeleteCommand extends KickstartScriptEditCommand {
     @Override
     public ValidatorError store() {
         // Remove the script from the collection so it gets deleted.
-        Iterator i = ksdata.getScripts().iterator();
+        Iterator<KickstartScript> i = ksdata.getScripts().iterator();
         while (i.hasNext()) {
-            KickstartScript ksstemp = (KickstartScript) i.next();
+            KickstartScript ksstemp = i.next();
         }
 
         if (!this.ksdata.getScripts().remove(this.script)) {

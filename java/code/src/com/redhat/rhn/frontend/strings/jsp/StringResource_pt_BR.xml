@@ -27248,14 +27248,6 @@ Serão exibidos somente pacotes de uma arquitetura compatível.</target>
         <source>Repo Cache Status</source>
         <target>Status do Cache Repo</target>
       </trans-unit>
-      <trans-unit id="channel.jsp.repodata.completed" xml:space="preserve">
-        <source> Completed </source>
-        <target state="needs-adaptation">Concluído</target>
-      </trans-unit>
-      <trans-unit id="channel.jsp.repodata.inProgress" xml:space="preserve">
-        <source> In Progress </source>
-        <target state="needs-adaptation">Em Progresso</target>
-      </trans-unit>
       <trans-unit id="channel.jsp.gpgcheck" xml:space="preserve">
         <source>Enable GPG Check </source>
         <target state="needs-adaptation"/>
@@ -29224,6 +29216,18 @@ Serão exibidos somente pacotes de uma arquitetura compatível.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
         </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="channel.jsp.sync.status.ready" xml:space="preserve">
+        <source> Completed </source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="channel.jsp.sync.status.syncing" xml:space="preserve">
+        <source> In Progress </source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="channel.jsp.sync.status.created" xml:space="preserve">
+        <source> New Created </source>
       <target state="new"/>
   </trans-unit>
       </body>

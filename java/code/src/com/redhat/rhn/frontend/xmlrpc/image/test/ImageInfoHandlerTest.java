@@ -128,7 +128,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
         ImageStore store = createImageStore("registry.reg", admin);
         ActivationKey ak = createActivationKey(admin);
 
-        DataResult dr = ActionManager.recentlyScheduledActions(admin, null, 30);
+        DataResult<ScheduledAction> dr = ActionManager.recentlyScheduledActions(admin, null, 30);
         int preScheduleSize = dr.size();
 
         long ret = handler.importContainerImage(admin, "my-external-image", "1.0",
@@ -141,7 +141,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
 
         dr = ActionManager.recentlyScheduledActions(admin, null, 30);
         assertEquals(1, dr.size() - preScheduleSize);
-        assertEquals("Inspect an Image", ((ScheduledAction)dr.get(0)).getTypeName());
+        assertEquals("Inspect an Image", dr.get(0).getTypeName());
 
         try {
             handler.importContainerImage(admin, "my-external-image", "1.0",
@@ -168,7 +168,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
         ActivationKey ak = createActivationKey(admin);
         ImageProfile prof = createImageProfile("myprofile", store, ak, admin);
 
-        DataResult dr = ActionManager.recentlyScheduledActions(admin, null, 30);
+        DataResult<ScheduledAction> dr = ActionManager.recentlyScheduledActions(admin, null, 30);
         int preScheduleSize = dr.size();
 
         long ret = handler.scheduleImageBuild(admin, prof.getLabel(), "1.0.0",
@@ -177,7 +177,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
 
         dr = ActionManager.recentlyScheduledActions(admin, null, 30);
         assertEquals(1, dr.size() - preScheduleSize);
-        assertEquals("Build an Image Profile", ((ScheduledAction)dr.get(0)).getTypeName());
+        assertEquals("Build an Image Profile", dr.get(0).getTypeName());
     }
 
     @Test
@@ -197,7 +197,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
         ActivationKey ak = createActivationKey(admin);
         ImageProfile prof = createKiwiImageProfile("myprofile", ak, admin);
 
-        DataResult dr = ActionManager.recentlyScheduledActions(admin, null, 30);
+        DataResult<ScheduledAction> dr = ActionManager.recentlyScheduledActions(admin, null, 30);
         int preScheduleSize = dr.size();
 
         long ret = handler.scheduleImageBuild(admin, prof.getLabel(), "1.0.0",
@@ -206,7 +206,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
 
         dr = ActionManager.recentlyScheduledActions(admin, null, 30);
         assertEquals(1, dr.size() - preScheduleSize);
-        assertEquals("Build an Image Profile", ((ScheduledAction)dr.get(0)).getTypeName());
+        assertEquals("Build an Image Profile", dr.get(0).getTypeName());
     }
 
     @Test

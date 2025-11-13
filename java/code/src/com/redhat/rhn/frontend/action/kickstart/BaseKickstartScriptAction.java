@@ -23,6 +23,7 @@ import com.redhat.rhn.manager.kickstart.BaseKickstartCommand;
 import com.redhat.rhn.manager.kickstart.BaseKickstartScriptCommand;
 
 import org.apache.struts.action.DynaActionForm;
+import org.apache.struts.util.LabelValueBean;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -103,7 +104,7 @@ public abstract class BaseKickstartScriptAction extends BaseKickstartEditAction 
     @Override
     protected void setupFormValues(RequestContext ctx, DynaActionForm form,
                                    BaseKickstartCommand cmd) {
-        List types = new LinkedList<>();
+        List<LabelValueBean> types = new LinkedList<>();
         types.add(lvl10n("kickstart.script.pre", KickstartScript.TYPE_PRE));
         types.add(lvl10n("kickstart.script.post", KickstartScript.TYPE_POST));
         ctx.getRequest().setAttribute(TYPES, types);

@@ -4,7 +4,7 @@ type Props = {
   headingLevel?: keyof JSX.IntrinsicElements;
   collapseId?: string | null | undefined;
   customIconClass?: string | null | undefined;
-  title: string | null | undefined;
+  title?: string | null | undefined;
   className?: string;
   icon?: string | null | undefined;
   header?: React.ReactNode;
@@ -13,7 +13,7 @@ type Props = {
   buttons?: React.ReactNode;
 };
 
-const Panel = (props: Props) => {
+export const Panel = (props: Props) => {
   const { headingLevel: HeadingLevel = "h1" } = props;
 
   const titleContent = props.title && (
@@ -91,13 +91,3 @@ const Panel = (props: Props) => {
     </div>
   );
 };
-
-Panel.defaultProps = {
-  title: undefined,
-  icon: undefined,
-  header: undefined,
-  footer: undefined,
-  buttons: undefined,
-};
-
-export { Panel };

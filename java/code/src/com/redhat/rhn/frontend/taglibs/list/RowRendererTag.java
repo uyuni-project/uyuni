@@ -66,8 +66,7 @@ public class RowRendererTag extends BodyTagSupport {
                         name = "com.redhat.rhn.frontend.taglibs.list.row." +
                             name;
                     }
-                    RowRenderer row = (RowRenderer) cl.loadClass(name)
-                            .newInstance();
+                    RowRenderer row = (RowRenderer) cl.loadClass(name).getDeclaredConstructor().newInstance();
                     if (!StringUtils.isEmpty(classes)) {
                         row.setRowClasses(classes);
                     }

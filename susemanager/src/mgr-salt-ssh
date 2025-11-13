@@ -1,5 +1,10 @@
 #!/usr/bin/python3
 # pylint: disable=invalid-name
+
+# SPDX-FileCopyrightText: 2025 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 """
 Execute the salt ssh system
 """

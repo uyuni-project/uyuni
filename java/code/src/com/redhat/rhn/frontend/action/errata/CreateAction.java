@@ -25,6 +25,7 @@ import com.redhat.rhn.domain.errata.Severity;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.RhnSetAction;
+import com.redhat.rhn.frontend.dto.ChannelOverview;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnValidationHelper;
 import com.redhat.rhn.frontend.struts.StrutsDelegate;
@@ -124,9 +125,8 @@ public class CreateAction extends RhnSetAction {
         //add keywords... split on commas and add separately to list
         String keywordsField = form.getString("keywords");
         if (keywordsField != null) {
-            List keywords = Arrays.asList(keywordsField.split(","));
-            for (Object keywordIn : keywords) {
-                String keyword = (String) keywordIn;
+            List<String> keywords = Arrays.asList(keywordsField.split(","));
+            for (String keyword : keywords) {
                 keyword = keyword.trim();
                 if (keyword != null && !keyword.isEmpty()) {
                     e.addKeyword(keyword);
@@ -186,7 +186,7 @@ public class CreateAction extends RhnSetAction {
     }
 
     @Override
-    protected DataResult getDataResult(User user, ActionForm formIn, HttpServletRequest request) {
+    protected DataResult<ChannelOverview> getDataResult(User user, ActionForm formIn, HttpServletRequest request) {
         return channelAction.getDataResult(user, formIn, request);
     }
 

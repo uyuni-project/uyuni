@@ -24,8 +24,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
@@ -59,6 +59,7 @@ import com.redhat.rhn.domain.session.WebSession;
 import com.redhat.rhn.domain.session.WebSessionFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.ErrataOverview;
+import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.xmlrpc.system.test.SystemHandlerTest;
 import com.redhat.rhn.manager.errata.ErrataManager;
@@ -154,7 +155,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         // errata search is done by the search-server. The search
         // in ErrataManager is to load ErrataOverview objects from
         // the results of the search-server searches.
-        Bug b1 = ErrataManagerTest.createTestBug(42L, "test bug");
+        ErrataManagerTest.createTestBug(42L, "test bug");
         Errata e = new Errata();
         e.setAdvisory("ZEUS-2007");
         e.setAdvisoryName("ZEUS-2007");
@@ -272,32 +273,27 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         errata.setOrg(null);
         ErrataFactory.save(errata);
 
-        try {
-            check = ErrataManager.lookupErrata(errata.getId(), user);
-            fail();
-        }
-        catch (LookupException e) {
-            //This means we hit the returnedErrata.getOrg == null path successfully
-        }
+        assertThrows(LookupException.class, () -> {
+            ErrataManager.lookupErrata(errata.getId(), user);
+        });
+        //This means we hit the returnedErrata.getOrg == null path successfully
+
         Org org2 = UserTestUtils.createOrg("testOrg2");
         errata.setOrg(org2);
         ErrataFactory.save(errata);
 
         try {
-            check = ErrataManager.lookupErrata(errata.getId(), user);
+            ErrataManager.lookupErrata(errata.getId(), user);
         }
         catch (LookupException e) {
             //This means we hit returnedErrata.getOrg().getId() != user.getOrg().getId()
         }
 
-        // Check for non-existant errata
-        try {
-            check = ErrataManager.lookupErrata((long) -1234, user);
-            fail();
-        }
-        catch (LookupException e) {
-            //This means we hit the returnedErrata == null path successfully
-        }
+        // Check for non-existent errata
+        assertThrows(LookupException.class, () -> {
+            ErrataManager.lookupErrata((long) -1234, user);
+        });
+        //This means we hit the returnedErrata == null path successfully
     }
 
     @Test
@@ -309,11 +305,11 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
 
         Errata a = ErrataFactoryTest.createTestErrata(UserTestUtils.createOrg(this).getId());
 
-        DataResult systems = ErrataManager.systemsAffected(user, a.getId(), pc);
+        DataResult<SystemOverview> systems = ErrataManager.systemsAffected(user, a.getId(), pc);
         assertNotNull(systems);
         assertTrue(systems.isEmpty());
 
-        DataResult systems2 = ErrataManager.systemsAffected(user, (long) -2, pc);
+        DataResult<SystemOverview> systems2 = ErrataManager.systemsAffected(user, (long) -2, pc);
         assertTrue(systems2.isEmpty());
     }
 

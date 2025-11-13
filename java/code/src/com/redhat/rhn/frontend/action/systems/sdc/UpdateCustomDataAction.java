@@ -25,7 +25,6 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.RhnValidationHelper;
-import com.redhat.rhn.frontend.struts.StrutsDelegate;
 import com.redhat.rhn.manager.system.SystemManager;
 
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
@@ -71,7 +70,6 @@ public class UpdateCustomDataAction extends RhnAction {
         Long sid = context.getRequiredParam(RequestContext.SID);
         Server server = SystemManager.lookupByIdAndUser(sid, loggedInUser);
         Map<String, Object> params = new HashMap<>();
-        StrutsDelegate strutsDelegate = getStrutsDelegate();
 
         params.put(RequestContext.SID, request.getParameter(RequestContext.SID));
 

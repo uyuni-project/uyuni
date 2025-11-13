@@ -53,7 +53,7 @@ public class PreferencesLocaleHandler extends BaseHandler {
      * @apidoc.returntype #return_int_success()
      */
     public int setTimeZone(User loggedInUser, String login, Integer tzid) {
-        List tzs = UserManager.lookupAllTimeZones();
+        List<RhnTimeZone> tzs = UserManager.lookupAllTimeZones();
         Object o = CollectionUtils.find(tzs, new TzPredicate(tzid));
         if (o == null) {
             throw new InvalidTimeZoneException(tzid);
@@ -84,7 +84,7 @@ public class PreferencesLocaleHandler extends BaseHandler {
      */
     public int setLocale(User loggedInUser, String login, String locale) {
         LocalizationService ls = LocalizationService.getInstance();
-        List locales = ls.getConfiguredLocales();
+        List<String> locales = ls.getConfiguredLocales();
         Object o = CollectionUtils.find(locales, new LocalePredicate(locale));
         if (o == null) {
             throw new InvalidLocaleCodeException(locale);

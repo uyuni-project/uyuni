@@ -23,7 +23,6 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
-import com.redhat.rhn.frontend.struts.StrutsDelegate;
 import com.redhat.rhn.manager.system.SystemManager;
 
 import org.apache.struts.action.ActionForm;
@@ -64,7 +63,6 @@ public class DeleteCustomDataAction extends RhnAction {
         Server server = SystemManager.lookupByIdAndUser(sid, user);
         CustomDataKey key = OrgFactory.lookupKeyById(cikid);
         Map<String, Object> params = new HashMap<>();
-        StrutsDelegate strutsDelegate = getStrutsDelegate();
 
         params.put(RequestContext.SID, request.getParameter(RequestContext.SID));
 

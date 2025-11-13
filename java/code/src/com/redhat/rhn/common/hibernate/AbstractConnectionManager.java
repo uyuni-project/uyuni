@@ -41,7 +41,7 @@ import io.prometheus.client.hibernate.HibernateStatisticsCollector;
  */
 abstract class AbstractConnectionManager implements ConnectionManager {
 
-    protected final Logger LOG;
+    protected final Logger log;
 
     protected SessionFactory sessionFactory;
 
@@ -55,7 +55,7 @@ abstract class AbstractConnectionManager implements ConnectionManager {
      *
      */
     protected AbstractConnectionManager() {
-        this.LOG = LogManager.getLogger(getClass());
+        this.log = LogManager.getLogger(getClass());
         this.configurators = new ArrayList<>();
         this.sessionInfoThreadLocal = new ThreadLocal<>();
     }
@@ -118,7 +118,7 @@ abstract class AbstractConnectionManager implements ConnectionManager {
             }
         }
         catch (HibernateException e) {
-            LOG.debug("Could not close the SessionFactory", e);
+            log.debug("Could not close the SessionFactory", e);
         }
         finally {
             sessionFactory = null;
@@ -171,7 +171,7 @@ abstract class AbstractConnectionManager implements ConnectionManager {
              * Let's ask the RHN Config for all properties that begin with
              * hibernate.*
              */
-            LOG.info("Adding hibernate properties to hibernate Configuration");
+            log.info("Adding hibernate properties to hibernate Configuration");
             config.addProperties(getConfigurationProperties());
 
             // Invoke each configurator to add additional entries to Hibernate config
@@ -186,7 +186,7 @@ abstract class AbstractConnectionManager implements ConnectionManager {
             sessionFactory = config.buildSessionFactory();
         }
         catch (HibernateException e) {
-            LOG.error("FATAL ERROR creating HibernateFactory", e);
+            log.error("FATAL ERROR creating HibernateFactory", e);
             throw e;
         }
     }
@@ -245,11 +245,11 @@ abstract class AbstractConnectionManager implements ConnectionManager {
         SessionInfo info = threadSessionInfo();
         if (info == null || info.getSession() == null) {
             try {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("YYY Opening Hibernate Session");
+                if (log.isDebugEnabled()) {
+                    log.debug("YYY Opening Hibernate Session");
                 }
                 info = new SessionInfo(sessionFactory.openSession());
-                LOG.debug("YYY Opened Hibernate session {}", info.getSession());
+                log.debug("YYY Opened Hibernate session {}", info.getSession());
             }
             catch (HibernateException e) {
                 throw new HibernateRuntimeException("couldn't open session", e);
@@ -290,21 +290,21 @@ abstract class AbstractConnectionManager implements ConnectionManager {
                 txn.commit();
             }
             catch (RuntimeException commitException) {
-                LOG.warn("Unable to commit transaction", commitException);
+                log.warn("Unable to commit transaction", commitException);
 
                 try {
                     txn.rollback();
                 }
                 catch (RuntimeException rollbackException) {
-                    LOG.warn("Unable to rollback transaction", rollbackException);
+                    log.warn("Unable to rollback transaction", rollbackException);
                 }
             }
         }
 
         try {
             if (session != null && session.isOpen()) {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("YYY Closing Hibernate Session: {}", session);
+                if (log.isDebugEnabled()) {
+                    log.debug("YYY Closing Hibernate Session: {}", session);
                 }
                 session.close();
             }

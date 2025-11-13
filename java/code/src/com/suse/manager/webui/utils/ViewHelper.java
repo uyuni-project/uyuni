@@ -229,7 +229,6 @@ public enum ViewHelper {
      * @return server timezone to be displayed as a string
      */
     public String getExtendedServerTimeZone() {
-        Locale locale = Locale.getDefault();
         TimeZone timezone = TimeZone.getDefault();
         return timezone.getID();
     }

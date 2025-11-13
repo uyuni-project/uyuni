@@ -78,11 +78,10 @@ public class ChannelFamilyFactoryTest extends RhnBaseTestCase {
     public void testVerifyOrgFamily() {
         User user = UserTestUtils.createUser(this);
         Org org = user.getOrg();
-        ChannelFamily orgfam = ChannelFamilyFactory.lookupByOrg(org);
 
         //In hosted, the org is newly created, and thus doesn't have a channel family
         //In sat, org is the satellite org, and thus probably already has a channel family
-        orgfam = ChannelFamilyFactory.lookupOrCreatePrivateFamily(org);
+        ChannelFamily orgfam = ChannelFamilyFactory.lookupOrCreatePrivateFamily(org);
         assertNotNull(orgfam);
 
         assertEquals("private-channel-family-" + org.getId(), orgfam.getLabel());

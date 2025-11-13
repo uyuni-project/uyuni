@@ -28,9 +28,4 @@ const BuildVersion = ({ id, text }: Props) => {
   );
 };
 
-BuildVersion.defaultProps = {
-  id: undefined,
-  text: undefined,
-};
-
 export default BuildVersion;

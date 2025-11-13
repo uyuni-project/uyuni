@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.rhnset.RhnSetElement;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
 import com.redhat.rhn.frontend.action.configuration.ConfigActionHelper;
+import com.redhat.rhn.frontend.dto.ConfigGlobalDeployDto;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
 import com.redhat.rhn.frontend.struts.BaseListAction;
@@ -49,7 +50,7 @@ public class GlobalRevisionDeployConfirmSetup extends BaseListAction implements 
      * {@inheritDoc}
      */
     @Override
-    protected DataResult getDataResult(RequestContext ctx, PageControl pc) {
+    protected DataResult<ConfigGlobalDeployDto> getDataResult(RequestContext ctx, PageControl pc) {
         User usr = ctx.getCurrentUser();
         ConfigFile cf = ConfigActionHelper.getFile(ctx.getRequest());
         ConfigChannel cc = cf.getConfigChannel();

@@ -69,7 +69,7 @@ public class CPU extends BaseDomainHelper {
     @Column
     private String family;
     @Column(name = "mhz")
-    private String MHz;
+    private String mhz;
     @Column
     private String stepping;
     @Column
@@ -252,14 +252,14 @@ public class CPU extends BaseDomainHelper {
      * @return Returns the mHz.
      */
     public String getMHz() {
-        return MHz;
+        return mhz;
     }
 
     /**
      * @param mhzIn The mHz to set.
      */
     public void setMHz(String mhzIn) {
-        MHz = mhzIn;
+        mhz = mhzIn;
     }
 
     /**

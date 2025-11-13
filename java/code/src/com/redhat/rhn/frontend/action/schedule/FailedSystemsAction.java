@@ -71,7 +71,7 @@ public class FailedSystemsAction extends RhnAction implements Listable<ActionedS
         return "failedSystemsList";
     }
 
-    protected Map getParamsMap(HttpServletRequest request) {
+    protected Map<String, Object> getParamsMap(HttpServletRequest request) {
         RequestContext context = new RequestContext(request);
         Map<String, Object> params = new HashMap<>();
         params.put(RequestContext.AID,

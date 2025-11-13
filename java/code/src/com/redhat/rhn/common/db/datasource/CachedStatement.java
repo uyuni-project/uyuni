@@ -30,6 +30,7 @@ import org.hibernate.Session;
 import org.hibernate.jdbc.ReturningWork;
 
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.sql.CallableStatement;
@@ -678,7 +679,7 @@ public class CachedStatement implements Serializable {
                     Class<?> clazz = Class.forName(className);
                     Object obj;
                     if (pointers == null) {
-                        obj = clazz.newInstance();
+                        obj = clazz.getDeclaredConstructor().newInstance();
                     }
                     else {
                         Integer pos = pointers.get(getObject(rs, getColumn()));
@@ -715,7 +716,8 @@ public class CachedStatement implements Serializable {
         catch (SQLException e) {
             throw SqlExceptionTranslator.sqlException(e);
         }
-        catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
+        catch (ClassNotFoundException | IllegalAccessException | InstantiationException |
+                InvocationTargetException | NoSuchMethodException e) {
             throw new ObjectCreateWrapperException("Could not create " + className, e);
         }
         finally {

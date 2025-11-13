@@ -307,7 +307,7 @@ public class CreateProfileWizardAction extends RhnWizardAction {
 
     private void loadVirtualizationTypes(KickstartWizardHelper cmd, DynaActionForm form,
             HttpServletRequest request) {
-        List types = cmd.getVirtualizationTypes();
+        List<KickstartVirtualizationType> types = cmd.getVirtualizationTypes();
         form.set(VIRTUALIZATION_TYPES_PARAM, types);
         form.set(VIRTUALIZATION_TYPE_LABEL_PARAM,
                 KickstartVirtualizationType.NONE);

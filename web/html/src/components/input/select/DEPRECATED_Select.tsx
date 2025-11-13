@@ -16,7 +16,7 @@ type SingleMode = InputBaseProps<string> & {
   isMulti?: false;
 
   /** Resolves option data to a string to compare options and specify value attributes */
-  getOptionValue: (option: any) => string;
+  getOptionValue?: (option: any) => string;
 };
 
 type MultiMode = InputBaseProps<string | string[]> & {
@@ -24,12 +24,12 @@ type MultiMode = InputBaseProps<string | string[]> & {
   isMulti: true;
 
   /** Resolves option data to a string to compare options and specify value attributes */
-  getOptionValue: (option: any) => string | string[];
+  getOptionValue?: (option: any) => string | string[];
 };
 
 type CommonSelectProps = (SingleMode | MultiMode) & {
   /** Resolves option data to a string to be displayed as the label by components */
-  getOptionLabel: (option: any) => string;
+  getOptionLabel?: (option: any) => string;
 
   /** Formats option labels in the menu and control as React components */
   formatOptionLabel?: (option: any, meta: any) => React.ReactNode;
@@ -41,10 +41,10 @@ type CommonSelectProps = (SingleMode | MultiMode) & {
   isLoading?: boolean;
 
   /** text to display when there are no options to list */
-  emptyText: string | null;
+  emptyText?: string | null;
 
   /** Set to true to allow removing the selected value */
-  isClearable: boolean;
+  isClearable?: boolean;
 
   /** Value placeholder to display when no value is entered */
   inputClass?: string;
@@ -101,13 +101,16 @@ type Props = SelectProps | AsyncSelectProps | AsyncPaginateSelectProps;
 export function DEPRECATED_Select(props: Props) {
   const {
     inputClass,
-    getOptionLabel,
-    getOptionValue,
+    getOptionValue = (option) => (option instanceof Object ? option.value : option),
+    getOptionLabel = (option) => (option instanceof Object ? option.label : option),
     formatOptionLabel,
     placeholder,
-    isLoading,
-    emptyText,
-    isClearable,
+    isLoading = false,
+    emptyText = t("No options"),
+    isClearable = false,
+    isMulti = false,
+    required = false,
+    disabled = false,
     ...propsToPass
   } = props;
 
@@ -170,7 +173,7 @@ export function DEPRECATED_Select(props: Props) {
 
   // TODO: This `any` should be inferred based on the props instead, currently the props expose the right interfaces but we don't have strict checks here
   return (
-    <InputBase<any> {...propsToPass}>
+    <InputBase<any> required={required} disabled={disabled} {...propsToPass}>
       {({ setValue, onBlur }) => {
         const onChange = (newValue) => {
           const value = Array.isArray(newValue)
@@ -197,7 +200,7 @@ export function DEPRECATED_Select(props: Props) {
             noOptionsMessage: () => emptyText,
             isClearable: isClearable,
             styles: bootstrapStyles,
-            isMulti: props.isMulti,
+            isMulti: isMulti,
             menuPortalTarget: document.getElementById("menu-portal-target"),
           },
           withCustomComponents(props["data-testid"], props.name)
@@ -223,7 +226,7 @@ export function DEPRECATED_Select(props: Props) {
           return (
             <AsyncSelect
               loadOptions={props.loadOptions}
-              cacheOptions={props.cacheOptions}
+              cacheOptions={props.cacheOptions ?? false}
               defaultOptions
               aria-label={props.title}
               defaultValue={defaultValueOption}
@@ -252,23 +255,3 @@ export function DEPRECATED_Select(props: Props) {
     </InputBase>
   );
 }
-
-DEPRECATED_Select.defaultProps = {
-  isClearable: false,
-  getOptionValue: (option) => (option instanceof Object ? option.value : option),
-  getOptionLabel: (option) => (option instanceof Object ? option.label : option),
-  isLoading: false,
-  emptyText: t("No options"),
-  inputClass: undefined,
-  defaultValue: undefined,
-  label: undefined,
-  hint: undefined,
-  labelClass: undefined,
-  divClass: undefined,
-  required: false,
-  disabled: false,
-  invalidHint: undefined,
-  onChange: undefined,
-  isMulti: false,
-  cacheOptions: false,
-};

@@ -14,7 +14,7 @@ type HeaderProps = {
   comparator?: (a: any, b: any, columnKey: string, sortDirection: number) => number;
 
   /** 1 for ascending, -1 for descending, 0 for no change */
-  sortDirection: number;
+  sortDirection?: number;
 
   /** Function called when the sort direction is changed. */
   onSortChange?: (columnKey: string | null, sortDirection: number) => void;
@@ -29,15 +29,14 @@ type HeaderProps = {
 /** Represents a header cell in the table.
  *  This component should only be used internally by Table.
  */
-export function Header(props: HeaderProps) {
+export function Header({ sortDirection = 0, ...props }: HeaderProps) {
   const thStyle = props.width ? { width: props.width } : {};
 
   let thClass = props.className || "";
 
   if (props.comparator) {
-    thClass +=
-      (thClass ? " " : "") + (props.sortDirection === 0 ? "" : props.sortDirection > 0 ? "ascSort" : "descSort");
-    const newDirection = props.sortDirection === 0 ? 1 : props.sortDirection * -1;
+    thClass += (thClass ? " " : "") + (sortDirection === 0 ? "" : sortDirection > 0 ? "ascSort" : "descSort");
+    const newDirection = sortDirection === 0 ? 1 : sortDirection * -1;
 
     return (
       <th style={thStyle} className={thClass}>
@@ -53,9 +52,3 @@ export function Header(props: HeaderProps) {
     </th>
   );
 }
-Header.defaultProps = {
-  width: undefined,
-  columnClass: undefined,
-  comparator: undefined,
-  sortDirection: 0,
-};

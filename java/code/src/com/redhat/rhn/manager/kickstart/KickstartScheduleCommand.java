@@ -27,6 +27,7 @@ import com.redhat.rhn.domain.action.kickstart.KickstartAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.common.FileList;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartSession;
@@ -678,14 +679,13 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
 
         log.debug("** ActivationType : Existing profile..");
         if (getTargetServer() != null) {
-            List oldkeys =
+            List<ActivationKey> oldkeys =
                     ActivationKeyFactory.lookupByServer(getTargetServer());
 
             if (oldkeys != null) {
                 log.debug("** Removing old tokens");
-                for (Object oldkeyIn : oldkeys) {
+                for (ActivationKey oldkey : oldkeys) {
                     log.debug("removing key.");
-                    ActivationKey oldkey = (ActivationKey) oldkeyIn;
                     ActivationKeyFactory.removeKey(oldkey);
                 }
             }
@@ -767,7 +767,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
 
         // We will schedule the kickstart action against the host server, since the host
         // server is the liason for the target server.
-        Set fileList = Collections.emptySet();
+        Set<FileList> fileList = Collections.emptySet();
 
         if (!isCobblerOnly()) {
             fileList = ksdata.getPreserveFileLists();
@@ -896,10 +896,10 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
 
         // Add child channels to the key
         if (ksdata.getChildChannels() != null && !ksdata.getChildChannels().isEmpty()) {
-            Iterator i = ksdata.getChildChannels().iterator();
+            Iterator<Channel> i = ksdata.getChildChannels().iterator();
             log.debug("Add the child Channels");
             while (i.hasNext()) {
-                key.addChannel((Channel) i.next());
+                key.addChannel(i.next());
             }
         }
 
@@ -1007,12 +1007,11 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
     private void cancelExistingSessions() {
         Server hostServer = getHostServer();
 
-        List sessions = KickstartFactory.
+        List<KickstartSession> sessions = KickstartFactory.
                 lookupAllKickstartSessionsByServer(hostServer.getId());
         if (sessions != null) {
             log.debug("    Found sessions: {}", sessions);
-            for (Object sessionIn : sessions) {
-                KickstartSession sess = (KickstartSession) sessionIn;
+            for (KickstartSession sess : sessions) {
                 if (sess != null &&
                         sess.getState() != null) {
                     log.debug("    Working with session: {} id: {}", sess.getState().getLabel(), sess.getId());
@@ -1155,7 +1154,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
     /**
      * @return Returns the packagesToInstall.
      */
-    public List getPackagesToInstall() {
+    public List<Map<String, Long>> getPackagesToInstall() {
         return packagesToInstall;
     }
 
@@ -1163,7 +1162,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
     /**
      * @param packagesToInstallIn The packagesToInstall to set.
      */
-    public void setPackagesToInstall(List packagesToInstallIn) {
+    public void setPackagesToInstall(List<Map<String, Long>> packagesToInstallIn) {
         this.packagesToInstall = packagesToInstallIn;
     }
 

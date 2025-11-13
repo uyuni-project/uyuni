@@ -76,8 +76,8 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
 
     private SUSEProduct product2;
     private Channel baseChannel2;
-    private Channel childChannel2_1;
-    private Channel childChannel2_2;
+    private Channel childChannel2Child1;
+    private Channel childChannel2Child2;
 
     private TaskomaticApi taskomaticMock;
 
@@ -128,21 +128,21 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
 
         UserManager.addChannelPerm(user, baseChannel2.getId(), "subscribe");
         UserManager.addChannelPerm(user, baseChannel2.getId(), "manage");
-        childChannel2_1 = createTestVendorChildChannel(baseChannel2, channelProduct);
-        UserManager.addChannelPerm(user, childChannel2_1.getId(), "subscribe");
-        UserManager.addChannelPerm(user, childChannel2_1.getId(), "manage");
-        childChannel2_2 = createTestVendorChildChannel(baseChannel2, channelProduct);
-        UserManager.addChannelPerm(user, childChannel2_2.getId(), "subscribe");
-        UserManager.addChannelPerm(user, childChannel2_2.getId(), "manage");
+        childChannel2Child1 = createTestVendorChildChannel(baseChannel2, channelProduct);
+        UserManager.addChannelPerm(user, childChannel2Child1.getId(), "subscribe");
+        UserManager.addChannelPerm(user, childChannel2Child1.getId(), "manage");
+        childChannel2Child2 = createTestVendorChildChannel(baseChannel2, channelProduct);
+        UserManager.addChannelPerm(user, childChannel2Child2.getId(), "subscribe");
+        UserManager.addChannelPerm(user, childChannel2Child2.getId(), "manage");
 
         baseChannel2.setOrg(user.getOrg());
-        childChannel2_1.setOrg(user.getOrg());
-        childChannel2_2.setOrg(user.getOrg());
+        childChannel2Child1.setOrg(user.getOrg());
+        childChannel2Child2.setOrg(user.getOrg());
 
         // Assign channels to SUSE product
         createTestSUSEProductChannel(baseChannel2, product2, true);
-        createTestSUSEProductChannel(childChannel2_1, product2, true);
-        createTestSUSEProductChannel(childChannel2_2, product2, true);
+        createTestSUSEProductChannel(childChannel2Child1, product2, true);
+        createTestSUSEProductChannel(childChannel2Child2, product2, true);
     }
 
     /**
@@ -675,8 +675,8 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
         change2.setOldBaseId(Optional.of(server2.getBaseChannel().getId()));
         change2.setNewBaseDefault(true);
         change2.setNewBaseId(Optional.of(baseChannel2.getId()));
-        change2.getChildChannelActions().put(childChannel2_1.getId(), ChannelChangeAction.SUBSCRIBE);
-        change2.getChildChannelActions().put(childChannel2_2.getId(), ChannelChangeAction.SUBSCRIBE);
+        change2.getChildChannelActions().put(childChannel2Child1.getId(), ChannelChangeAction.SUBSCRIBE);
+        change2.getChildChannelActions().put(childChannel2Child2.getId(), ChannelChangeAction.SUBSCRIBE);
         changes.add(change2);
 
         Date earliest = new Date();
@@ -719,11 +719,11 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals((Integer)2, details2.map(d -> d.getChannels().size()).get());
         assertTrue(details2
                 .flatMap(d -> d.getChannels().stream()
-                        .filter(c -> c.getId().equals(childChannel2_1.getId())).findFirst())
+                        .filter(c -> c.getId().equals(childChannel2Child1.getId())).findFirst())
                 .isPresent());
         assertTrue(details2
                 .flatMap(d -> d.getChannels().stream()
-                        .filter(c -> c.getId().equals(childChannel2_2.getId())).findFirst())
+                        .filter(c -> c.getId().equals(childChannel2Child2.getId())).findFirst())
                 .isPresent());
     }
 

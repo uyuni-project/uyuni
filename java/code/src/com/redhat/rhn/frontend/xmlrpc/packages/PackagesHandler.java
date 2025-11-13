@@ -134,7 +134,7 @@ public class PackagesHandler extends BaseHandler {
         //Get the logged in user
         Package pkg = lookupPackage(loggedInUser, pid);
 
-        DataResult dr = PackageManager.orgPackageChannels(loggedInUser.getOrg().getId(),
+        DataResult<Row> dr = PackageManager.orgPackageChannels(loggedInUser.getOrg().getId(),
                                                          pkg.getId());
         return dr.toArray();
     }

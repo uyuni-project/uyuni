@@ -87,7 +87,14 @@ When(/^I wait at most (\d+) seconds until the event is completed, refreshing the
 
   repeat_until_timeout(timeout: timeout.to_i, message: 'Event not yet completed') do
     break if has_content?('This action\'s status is: Completed.', wait: 3)
-    raise SystemCallError, 'Event failed' if has_content?('This action\'s status is: Failed.', wait: 3)
+
+    if has_content?('This action\'s status is: Failed.', wait: 3)
+      details = all(:xpath, '//li[.//strong[text()=\'Details:\']]//pre', visible: true)
+      details_array = details.map(&:text)
+      combined_details = details_array.join("\n")
+      log "Event Details:\n#{combined_details}"
+      raise SystemCallError, 'Event failed'
+    end
 
     current = Time.now
     if current - last > 150
