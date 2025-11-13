@@ -179,6 +179,12 @@ When(/^I (check|uncheck) "([^"]*)" by label$/) do |action, label|
   end
 end
 
+When(/^I select the channel "([^"]*)"$/) do |channel|
+  checkbox = find(:xpath, "//a[text()='#{channel}']/preceding-sibling::input[@type='checkbox']").check
+  checkbox.check
+  raise ScriptError, "Checkbox #{label} not checked." unless checkbox.checked?
+end
+
 When(/^I select "([^"]*)" from "([^"]*)"$/) do |option, field|
   if has_select?(field, with_options: [option], wait: 1)
     select(option, from: field)
@@ -199,6 +205,13 @@ end
 When(/^I select "([^"]*)" from drop-down in table line with "([^"]*)"$/) do |value, line|
   select = find(:xpath, ".//div[@class='table-responsive']/table/tbody/tr[contains(td/a,'#{line}')]//select")
   select(value, from: select[:id])
+end
+
+# Choose a radio button by its visible label text.
+# The 'choose' method automatically finds the associated input element by matching the text of a label tag to the radio button's ID/Name.
+When(/^I choose "([^"]*)" radio button$/) do |label_text|
+  choose(label_text)
+  raise ScriptError, "Radio button '#{label_text}' not checked." unless has_checked_field?(label_text)
 end
 
 When(/^I choose radio button "([^"]*)" for child channel "([^"]*)"$/) do |radio, channel|
