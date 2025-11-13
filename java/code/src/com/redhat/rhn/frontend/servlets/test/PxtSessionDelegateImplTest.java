@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2009--2017 Red Hat, Inc.
+ * Copyright (c) 2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -27,8 +28,6 @@ import com.redhat.rhn.testing.MockObjectTestCase;
 import org.apache.commons.collections.Transformer;
 import org.apache.commons.collections.TransformerUtils;
 import org.hamcrest.Description;
-import org.hamcrest.Factory;
-import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 import org.jmock.Expectations;
 import org.junit.jupiter.api.BeforeEach;
@@ -329,11 +328,6 @@ public class PxtSessionDelegateImplTest extends MockObjectTestCase {
         }
     }
 
-    @Factory
-    private static Matcher<Cookie> zeroMaxAgeCookieMatcher() {
-        return new ZeroMaxAgeCookieMatcher();
-    }
-
     @Test
     public final void testInvalidatePxtSessionDeletesPxtCookie() {
         setUpInvalidatePxtSession();
@@ -341,7 +335,7 @@ public class PxtSessionDelegateImplTest extends MockObjectTestCase {
         context().checking(new Expectations() { {
             allowing(mockPxtSession).setWebUserId(null);
             oneOf(mockPxtSession).getWebUserId();
-            oneOf(mockResponse).addCookie(with(zeroMaxAgeCookieMatcher()));
+            oneOf(mockResponse).addCookie(with(new ZeroMaxAgeCookieMatcher()));
         } });
 
         pxtSessionDelegate.invalidatePxtSession(getRequest(), getResponse());

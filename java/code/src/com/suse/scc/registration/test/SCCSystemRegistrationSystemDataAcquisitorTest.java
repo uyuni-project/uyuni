@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023--2024 SUSE LLC
+ * Copyright (c) 2023--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,19 +7,15 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 
-package com.suse.scc.test.registration;
+package com.suse.scc.registration.test;
 
 import static java.util.Optional.ofNullable;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.channel.test.ChannelFamilyFactoryTest;
 import com.redhat.rhn.domain.product.SUSEProduct;
@@ -48,6 +44,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -512,6 +509,7 @@ public class SCCSystemRegistrationSystemDataAcquisitorTest extends AbstractSCCSy
                 }
                 allowing(cpuMock).getNrCPU(); will(returnValue(builder.cpus));
                 allowing(cpuMock).getNrsocket(); will(returnValue(builder.sockets));
+                allowing(cpuMock).getArchSpecsMap(); will(returnValue(Collections.emptyMap()));
 
                 // Arch label setup
                 allowing(serverArchMock).getLabel(); will(returnValue(builder.serverArchLabel));

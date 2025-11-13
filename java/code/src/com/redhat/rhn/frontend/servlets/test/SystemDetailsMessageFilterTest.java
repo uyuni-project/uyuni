@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 SUSE LLC
+ * Copyright (c) 2022--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,14 +7,11 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.servlets.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import com.redhat.rhn.domain.server.MinionServer;
@@ -30,7 +27,6 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -62,7 +58,7 @@ public class SystemDetailsMessageFilterTest extends MockObjectTestCase {
         ActionMessage message = globalMessagesIterator.next();
         assertEquals(SystemDetailsMessageFilter.TRADITIONAL_STACK_MESSAGE_KEY, message.getKey());
         // Ensure only one message is present
-        Assertions.assertFalse(globalMessagesIterator.hasNext());
+        assertFalse(globalMessagesIterator.hasNext());
     }
 
     @Test

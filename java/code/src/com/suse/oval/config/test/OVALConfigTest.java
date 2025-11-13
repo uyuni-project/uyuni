@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 SUSE LLC
+ * Copyright (c) 2024--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 
 package com.suse.oval.config.test;
@@ -27,31 +23,47 @@ import com.suse.oval.config.OVALSourceInfo;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
-import wiremock.com.google.common.io.Files;
+import java.util.stream.Stream;
 
 public class OVALConfigTest {
 
     private static OVALConfig config;
 
+    private static Path tempDir;
 
     @BeforeAll
     public static void setUp() throws IOException, ClassNotFoundException {
-        File tempDir = Files.createTempDir();
-        File configFile = tempDir.toPath().resolve("oval.config.json").toFile();
+        tempDir = Files.createTempDirectory("oval-config-test");
+
+        File configFile = tempDir.resolve("oval.config.json").toFile();
         FileUtils.copyURLToFile(TestUtils.findTestData("oval.config.json"),
                 configFile);
 
         config = new OVALConfigLoader(configFile.getAbsolutePath()).load();
+    }
+
+    @AfterEach
+    public void tearDown() throws IOException {
+        // Delete test files
+        try (Stream<Path> fileStream = Files.walk(tempDir)) {
+            fileStream
+                .sorted(Comparator.reverseOrder())
+                .map(Path::toFile)
+                .forEach(File::delete);
+        }
     }
 
     @Test
