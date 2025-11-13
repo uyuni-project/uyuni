@@ -7,15 +7,11 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 
-package com.suse.proxy.get.formdata.test;
+package com.suse.proxy.test;
 
-import static com.suse.proxy.get.ProxyConfigGetFacadeImpl.MGRPXY;
+import static com.suse.proxy.ProxyConfigUtils.MGRPXY;
 import static com.suse.proxy.get.formdata.test.ProxyConfigGetFormTestUtils.SERVER_ID;
 import static com.suse.proxy.get.formdata.test.ProxyConfigGetFormTestUtils.assertErrors;
 import static com.suse.proxy.get.formdata.test.ProxyConfigGetFormTestUtils.assertNoErrors;
@@ -27,9 +23,9 @@ import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.ProxyInfo;
 import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
@@ -38,14 +34,13 @@ import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.testing.ChannelTestUtils;
-import com.redhat.rhn.testing.RhnJmockBaseTestCase;
+import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
-import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.test.TestSaltApi;
-import com.suse.proxy.get.formdata.ProxyConfigGetFormDataContext;
-import com.suse.proxy.get.formdata.ProxyConfigGetFormDataProxyInitializer;
+import com.suse.proxy.update.ProxyConfigUpdateContext;
+import com.suse.proxy.update.ProxyConfigUpdateInitializer;
 
 import org.jmock.Expectations;
 import org.jmock.api.Invocation;
@@ -57,7 +52,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Tests for ProxyConfigGetFormDataProxyInitializer.
  */
-public class ProxyConfigGetFormDataProxyInitializerTest extends RhnJmockBaseTestCase {
+public class ProxyConfigUpdateInitializerTest extends JMockBaseTestCaseWithUser {
 
     private static final String FAILED_TO_ADD_PROXY_ENTITLEMENT = "Failed to add proxy entitlement to server";
     private static final String FAILED_TO_SUBSCRIBE_CHANNEL =
@@ -67,18 +62,16 @@ public class ProxyConfigGetFormDataProxyInitializerTest extends RhnJmockBaseTest
     private final SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
             new SystemUnentitler(saltApi), new SystemEntitler(saltApi)
     );
-    private final ProxyConfigGetFormDataProxyInitializer initializer = new ProxyConfigGetFormDataProxyInitializer();
+    private final ProxyConfigUpdateInitializer initializer = new ProxyConfigUpdateInitializer();
 
-    private Server mockServer;
-    private User user;
+    private MinionServer mockMinionServer;
 
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws Exception {
+        super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
-        this.mockServer = mock(Server.class);
-        this.user = UserTestUtils.createUser();
+        this.mockMinionServer = mock(MinionServer.class);
     }
-
 
     /**
      * Test success scenario where:
@@ -90,16 +83,18 @@ public class ProxyConfigGetFormDataProxyInitializerTest extends RhnJmockBaseTest
     @Test
     public void testSuccessWhenExistingProxy() {
         context().checking(new Expectations() {{
-            oneOf(mockServer).getProxyInfo();
+            oneOf(mockMinionServer).getProxyInfo();
             will(returnValue(new ProxyInfo()));
-            oneOf(mockServer).hasProxyEntitlement();
+            oneOf(mockMinionServer).hasProxyEntitlement();
             will(returnValue(true));
         }});
 
-        ProxyConfigGetFormDataContext getFormDataContext = createContext();
+        ProxyConfigUpdateContext proxyConfigUpdateContext = ProxyConfigUpdateTestUtils.createContext(
+                context, mockMinionServer, systemEntitlementManager, user
+        );
 
-        initializer.handle(getFormDataContext);
-        assertNoErrors(getFormDataContext.getErrorReport());
+        initializer.handle(proxyConfigUpdateContext);
+        assertNoErrors(proxyConfigUpdateContext.getErrorReport());
     }
 
     /**
@@ -112,20 +107,23 @@ public class ProxyConfigGetFormDataProxyInitializerTest extends RhnJmockBaseTest
     @Test
     public void testSuccessWhenCreateProxyInfo() {
         context().checking(new Expectations() {{
-           oneOf(mockServer).getProxyInfo();
+           oneOf(mockMinionServer).getProxyInfo();
            will(returnValue(null));
-           oneOf(mockServer).hasProxyEntitlement();
+           oneOf(mockMinionServer).hasProxyEntitlement();
            will(returnValue(true));
-           allowing(mockServer).getId();
+           allowing(mockMinionServer).getId();
            will(returnValue(SERVER_ID));
 
             // assert setProxyInfo is invoked once
-            oneOf(mockServer).setProxyInfo(with(aNonNull(ProxyInfo.class)));
-       }});
-        ProxyConfigGetFormDataContext getFormDataContext = createContext();
+            oneOf(mockMinionServer).setProxyInfo(with(aNonNull(ProxyInfo.class)));
+        }});
 
-        initializer.handle(getFormDataContext);
-        assertNoErrors(getFormDataContext.getErrorReport());
+        ProxyConfigUpdateContext proxyConfigUpdateContext = ProxyConfigUpdateTestUtils.createContext(
+                context, mockMinionServer, systemEntitlementManager, user
+        );
+
+        initializer.handle(proxyConfigUpdateContext);
+        assertNoErrors(proxyConfigUpdateContext.getErrorReport());
     }
 
     /**
@@ -139,21 +137,23 @@ public class ProxyConfigGetFormDataProxyInitializerTest extends RhnJmockBaseTest
     public void testSuccessWhenEntitlementAddedToServer() {
         SystemEntitlementManager mockSystemEntitlementManager = mock(SystemEntitlementManager.class);
         context().checking(new Expectations() {{
-            oneOf(mockServer).getProxyInfo();
+            oneOf(mockMinionServer).getProxyInfo();
             will(returnValue(new ProxyInfo()));
-            oneOf(mockServer).hasProxyEntitlement();
+            oneOf(mockMinionServer).hasProxyEntitlement();
             will(returnValue(false));
-            allowing(mockServer).getId();
+            allowing(mockMinionServer).getId();
             will(returnValue(SERVER_ID));
 
             // assert addEntitlementToServer is invoked once
-            oneOf(mockSystemEntitlementManager).addEntitlementToServer(mockServer, EntitlementManager.PROXY);
+            oneOf(mockSystemEntitlementManager).addEntitlementToServer(mockMinionServer, EntitlementManager.PROXY);
         }});
 
-        ProxyConfigGetFormDataContext getFormDataContext = createContext(mockSystemEntitlementManager);
+        ProxyConfigUpdateContext proxyConfigUpdateContext = ProxyConfigUpdateTestUtils.createContext(
+                context, mockMinionServer, mockSystemEntitlementManager, user
+        );
 
-        initializer.handle(getFormDataContext);
-        assertFalse(getFormDataContext.getErrorReport().hasErrors());
+        initializer.handle(proxyConfigUpdateContext);
+        assertFalse(proxyConfigUpdateContext.getErrorReport().hasErrors());
     }
 
     /**
@@ -170,22 +170,24 @@ public class ProxyConfigGetFormDataProxyInitializerTest extends RhnJmockBaseTest
 
         SystemEntitlementManager mockSystemEntitlementManager = mock(SystemEntitlementManager.class);
         context().checking(new Expectations() {{
-            oneOf(mockServer).getProxyInfo();
+            oneOf(mockMinionServer).getProxyInfo();
             will(returnValue(new ProxyInfo()));
-            oneOf(mockServer).hasProxyEntitlement();
+            oneOf(mockMinionServer).hasProxyEntitlement();
             will(returnValue(false));
-            allowing(mockServer).getId();
+            allowing(mockMinionServer).getId();
             will(returnValue(SERVER_ID));
 
             // assert addEntitlementToServer is invoked once
-            oneOf(mockSystemEntitlementManager).addEntitlementToServer(mockServer, EntitlementManager.PROXY);
+            oneOf(mockSystemEntitlementManager).addEntitlementToServer(mockMinionServer, EntitlementManager.PROXY);
             will(returnValue(expectedAddEntitlementToServerResult));
         }});
 
-        ProxyConfigGetFormDataContext getFormDataContext = createContext(mockSystemEntitlementManager);
+        ProxyConfigUpdateContext proxyConfigUpdateContext = ProxyConfigUpdateTestUtils.createContext(
+                context, mockMinionServer, mockSystemEntitlementManager, user
+        );
 
-        initializer.handle(getFormDataContext);
-        assertErrors(getFormDataContext.getErrorReport(), FAILED_TO_ADD_PROXY_ENTITLEMENT);
+        initializer.handle(proxyConfigUpdateContext);
+        assertErrors(proxyConfigUpdateContext.getErrorReport(), FAILED_TO_ADD_PROXY_ENTITLEMENT);
     }
 
     /**
@@ -220,12 +222,13 @@ public class ProxyConfigGetFormDataProxyInitializerTest extends RhnJmockBaseTest
             });
         }});
 
+        ProxyConfigUpdateContext proxyConfigUpdateContext = ProxyConfigUpdateTestUtils.createContext(
+                context, mockMinionServer, systemEntitlementManager, user
+        );
+        proxyConfigUpdateContext.getSubscribableChannels().add(channelWithMgrpxy);
 
-        ProxyConfigGetFormDataContext getFormDataContext = createContext();
-        getFormDataContext.getSubscribableChannels().add(channelWithMgrpxy);
-
-        initializer.handle(getFormDataContext);
-        assertNoErrors(getFormDataContext.getErrorReport());
+        initializer.handle(proxyConfigUpdateContext);
+        assertNoErrors(proxyConfigUpdateContext.getErrorReport());
     }
 
     /**
@@ -250,28 +253,13 @@ public class ProxyConfigGetFormDataProxyInitializerTest extends RhnJmockBaseTest
         }});
 
 
-        ProxyConfigGetFormDataContext getFormDataContext = createContext();
-        getFormDataContext.getSubscribableChannels().add(channelWithMgrpxy);
+        ProxyConfigUpdateContext proxyConfigUpdateContext = ProxyConfigUpdateTestUtils.createContext(
+                context, mockMinionServer, systemEntitlementManager, user
+        );
+        proxyConfigUpdateContext.getSubscribableChannels().add(channelWithMgrpxy);
 
-        initializer.handle(getFormDataContext);
-        assertErrors(getFormDataContext.getErrorReport(), FAILED_TO_SUBSCRIBE_CHANNEL);
-    }
-
-    /**
-     * Helper method to create ProxyConfigGetFormDataContext with default system entitlement manager
-     * @return the created context
-     */
-    private ProxyConfigGetFormDataContext createContext() {
-        return createContext(systemEntitlementManager);
-    }
-
-    /**
-     * Helper method to create ProxyConfigGetFormDataContext with custom system entitlement manager
-     * @param customManager the custom system entitlement manager
-     * @return the created context
-     */
-    private ProxyConfigGetFormDataContext createContext(SystemEntitlementManager customManager) {
-        return new ProxyConfigGetFormDataContext(user, mockServer, null, customManager);
+        initializer.handle(proxyConfigUpdateContext);
+        assertErrors(proxyConfigUpdateContext.getErrorReport(), FAILED_TO_SUBSCRIBE_CHANNEL);
     }
 
     /**
@@ -284,16 +272,16 @@ public class ProxyConfigGetFormDataProxyInitializerTest extends RhnJmockBaseTest
         channelWithMgrpxy.getPackages().add(pkg);
 
         context().checking(new Expectations() {{
-            oneOf(mockServer).getProxyInfo();
+            oneOf(mockMinionServer).getProxyInfo();
             will(returnValue(new ProxyInfo()));
-            oneOf(mockServer).hasProxyEntitlement();
+            oneOf(mockMinionServer).hasProxyEntitlement();
             will(returnValue(true));
-            allowing(mockServer).getId();
+            allowing(mockMinionServer).getId();
             will(returnValue(server.getId()));
 
-            oneOf(mockServer).getBaseChannel();
+            oneOf(mockMinionServer).getBaseChannel();
             will(returnValue(server.getBaseChannel()));
-            oneOf(mockServer).getChildChannels();
+            oneOf(mockMinionServer).getChildChannels();
             will(returnValue(server.getChildChannels()));
         }});
         return channelWithMgrpxy;

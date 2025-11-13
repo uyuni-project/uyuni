@@ -110,7 +110,7 @@ public class ProxyConfigUpdateAcquisitorTest extends BaseTestCaseWithUser {
     @Test
     public void testBlankRequest() {
         ProxyConfigUpdateJson request = Json.GSON.fromJson("{}", ProxyConfigUpdateJson.class);
-        ProxyConfigUpdateContext proxyConfigUpdateContext = new ProxyConfigUpdateContext(request, null, null);
+        ProxyConfigUpdateContext proxyConfigUpdateContext = new ProxyConfigUpdateContext(request, null, null, null);
 
         // execution
         new ProxyConfigUpdateAcquisitor().handle(proxyConfigUpdateContext);
