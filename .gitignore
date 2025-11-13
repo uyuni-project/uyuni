@@ -17,6 +17,7 @@ java/buildconf/builder/config/local
 java/buildconf/manager-developer-build.properties
 java/buildconf/test/rhn.conf
 java/buildconf/tempjars/*
+java/**/target
 java/.checkstyle
 **/.classpath
 java/.externalToolBuilders

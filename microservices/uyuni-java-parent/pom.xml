@@ -11,6 +11,7 @@
   -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xml="http://www.w3.org/XML/1998/namespace"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
@@ -29,6 +30,7 @@
         <module>../uyuni-java-common</module>
         <module>../coco-attestation</module>
         <module>../../branding</module>
+        <module>../../java</module>
     </modules>
 
     <!-- Global dependencies based on the package version in OBS -->
@@ -53,6 +55,13 @@
                 <groupId>org.postgresql</groupId>
                 <artifactId>postgresql</artifactId>
                 <version>42.2.25</version>
+                <exclusions>
+                    <!-- Not used at runtime -->
+                    <exclusion>
+                        <groupId>org.checkerframework</groupId>
+                        <artifactId>checker-qual</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>com.mchange</groupId>
@@ -85,7 +94,7 @@
                 <version>4.2.1</version>
                 <scope>test</scope>
             </dependency>
-        </dependencies>
+         </dependencies>
     </dependencyManagement>
 
     <build>
