@@ -7,6 +7,18 @@
 /* eslint-disable */
 
 // @ts-ignore
+import components_ace_editor_example_tsx_component from "components/ace-editor.example.tsx";
+import components_ace_editor_example_tsx_raw from "components/ace-editor.example.tsx?raw";
+
+export const components_ace_editor_example_tsx = {
+  path: "components/ace-editor.example.tsx",
+  title: "ace-editor.example.tsx",
+  groupName: "components",
+  component: components_ace_editor_example_tsx_component,
+  raw: components_ace_editor_example_tsx_raw,
+};
+
+// @ts-ignore
 import components_action_ActionStatus_example_tsx_component from "components/action/ActionStatus.example.tsx";
 import components_action_ActionStatus_example_tsx_raw from "components/action/ActionStatus.example.tsx?raw";
 

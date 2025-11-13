@@ -12,9 +12,6 @@ if actionChains
     script(type='text/javascript').
         window.actionChains = !{actionChains};
 
-script(src='/javascript/legacy/ace-editor/ace.js?cb=#{webBuildtimestamp}')
-script(src='/javascript/legacy/ace-editor/ext-modelist.js?cb=#{webBuildtimestamp}')
-
 script(type='text/javascript').
     spaImportReactPage('minion/ansible/path-content')
         .then(function (module) {

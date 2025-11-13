@@ -187,15 +187,7 @@ export default function SchedulePlaybook({ playbook, onBack, onSelectPlaybook, i
 
         <div>
           <h3>{t("Playbook Content")}</h3>
-          <AceEditor
-            className="form-control"
-            id="playbook-content"
-            minLines={20}
-            maxLines={40}
-            readOnly={true}
-            mode="yaml"
-            content={playbookContent}
-          />
+          <AceEditor className="form-control" id="playbook-content" readOnly mode="yaml" content={playbookContent} />
         </div>
       </InnerPanel>
     </>

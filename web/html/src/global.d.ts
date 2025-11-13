@@ -46,7 +46,6 @@ declare global {
   var t: tType;
 
   var onDocumentReadyInitOldJS: Function;
-  var ace: any;
   var d3: d3;
 
   // Defined in spacewalk-essentials.js
