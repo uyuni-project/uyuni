@@ -6,6 +6,9 @@ import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import { SearchField } from "./SearchField";
 import { Table, TableRef } from "./Table";
 
+/**
+ * @deprecated
+ */
 export type HierarchicalRow = {
   id: string | number;
   parentId?: string | number | null;
@@ -64,7 +67,10 @@ type HierarchicalTableProps = {
   children: React.ReactNode;
 };
 
-export const HierarchicalTable = React.forwardRef<TableRef, HierarchicalTableProps>((props, ref) => {
+/**
+ * @deprecated Use `Table` instead, it supports nested data, see `/rhn/manager/storybook`.
+ */
+export const DEPRECATED_HierarchicalTable = React.forwardRef<TableRef, HierarchicalTableProps>((props, ref) => {
   const {
     className,
     data,
