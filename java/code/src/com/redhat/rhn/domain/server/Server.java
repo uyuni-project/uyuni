@@ -2593,7 +2593,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * @return <code>true</code> if OS supports monitoring
      */
     public boolean doesOsSupportsMonitoring() {
-        return isSLES12() || isSLES15() || isLeap15() || isLeapMicro() ||
+        return isSLES12() || isSLES15() || isLeap15() || isLeap16() || isLeapMicro() ||
                 isSLEMicro5() || // Micro 6 miss the node exporter
                 isUbuntu1804() || isUbuntu2004() || isUbuntu2204() || isUbuntu2404() ||
                 isRedHat6() || isRedHat7() || isRedHat8() || isRedHat9() || // isRedHat catch also Rocky and Alma
@@ -2613,9 +2613,6 @@ public class Server extends BaseDomainHelper implements Identifiable {
     boolean isSLES() {
         return ServerConstants.SLES.equalsIgnoreCase(getOs());
     }
-    boolean isSLED() {
-        return ServerConstants.SLED.equalsIgnoreCase(getOs());
-    }
 
     /**
      * Return <code>true</code> if OS supports Confidential Computing Attestation
@@ -2624,7 +2621,8 @@ public class Server extends BaseDomainHelper implements Identifiable {
      */
     public boolean doesOsSupportCoCoAttestation() {
         return (isSLES15() && (getRelease().equals("15.6") || getRelease().equals("15.7"))) ||
-                (isLeap15() && (getRelease().equals("15.6") || getRelease().equals("15.7")));
+                (isLeap15() && (getRelease().equals("15.6") || getRelease().equals("15.7"))) ||
+                isLeap16();
     }
 
     /**
@@ -2682,6 +2680,9 @@ public class Server extends BaseDomainHelper implements Identifiable {
 
     boolean isLeap15() {
         return ServerConstants.LEAP.equalsIgnoreCase(getOs()) && getRelease().startsWith("15");
+    }
+    boolean isLeap16() {
+        return ServerConstants.LEAP.equalsIgnoreCase(getOs()) && getRelease().startsWith("16");
     }
 
     /**
