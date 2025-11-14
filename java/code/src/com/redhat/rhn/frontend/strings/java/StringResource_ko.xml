@@ -9603,7 +9603,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="message.scheduledeleted" xml:space="preserve">
         <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; has been disabled.</source>
-        <target state="needs-adaptation">스케줄 &lt;strong&gt;{0}&lt;/strong&gt;이 삭제되었습니다.</target>
+        <target state="needs-translation">스케줄&lt;strong&gt;{0}&lt;/strong&gt; 이 삭제되었습니다.</target>
       </trans-unit>
       <trans-unit id="message.schedulenotactive" xml:space="preserve">
         <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; isn't active any more. It's part of the system just for information purposes and will be deleted automatically.</source>
@@ -10268,9 +10268,9 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         </context-group>
         <target>시스템에 가상화 시스템 유형을 추가한 후에 시스템이 가상 게스트를 보다 효과적으로 관리할 수 있는지를 확인하기 위해 몇 가지 추가적인 단계를 실행했습니다. 보다 자세한 정보는 &lt;a href="{0}"&gt;여기&lt;/a&gt;를 참조하시기 바랍니다.</target>
       </trans-unit>
-      <trans-unit approved="yes" id="system.entitle.added.monitoring_entitled" xml:space="preserve">
+      <trans-unit approved="no" id="system.entitle.added.monitoring_entitled" xml:space="preserve">
         <source>&lt;strong&gt;Monitor this Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Since you added the Monitoring system type we automatically assigned the Prometheus Exporters formula to the system. Please apply the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; in order to install and enable the Prometheus metrics exporters.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Please make sure to open the &lt;a href="/docs/{1}/installation-and-upgrade/network-requirements.html#_external_client_ports" target="_blank"&gt;required network ports&lt;/a&gt; for all installed exporters.</source>
-        <target state="needs-adaptation">&lt;strong&gt;이 호스트 모니터링&lt;/strong&gt; 유형이 적용되었습니다.&lt;br/&gt;&lt;strong&gt;참고:&lt;/strong&gt; 모니터링 시스템 유형을 추가했기 때문에 Prometheus Exporters 공식을 시스템에 자동으로 할당했습니다. Prometheus Metric Exporter를 설치하고 활성화하려면 &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt;를 적용하십시오.&lt;br/&gt;&lt;strong&gt;참고:&lt;/strong&gt; 설치된 모든 내보내기에 대해 &lt;a href="/docs/{1}/installation-and-upgrade/ports.html#_external_client_ports" target="_blank"&gt;필수 네트워크 포트&lt;/a&gt;를 열어야 합니다.</target>
+        <target state="needs-translation">&lt;strong&gt;이 호스트 모니터링&lt;/strong&gt; 유형이 적용되었습니다.&lt;br/&gt;&lt;strong&gt;참고:&lt;/strong&gt; 모니터링 시스템 유형을 추가했기 때문에 Prometheus Exporters 공식을 시스템에 자동으로 할당했습니다. Prometheus Metric Exporter를 설치하고 활성화하려면 &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt;를 적용하십시오.&lt;br/&gt;&lt;strong&gt;참고:&lt;/strong&gt; 설치된 모든 내보내기에 대해 &lt;a href="/docs/{1}/installation-and-upgrade/ports.html#_external_client_ports" target="_blank"&gt;필수 네트워크 포트&lt;/a&gt;를 열었는지 확인하십시오.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
@@ -10984,9 +10984,9 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Unexpected error while adding the product.</source>
         <target state="final">제품을 추가하는 동안 예기치 않은 오류가 발생했습니다.</target>
       </trans-unit>
-      <trans-unit approved="yes" id="cveaudit.notfound" xml:space="preserve">
+      <trans-unit approved="no" id="cveaudit.notfound" xml:space="preserve">
         <source>The specified CVE number was not found in our database.</source>
-        <target state="needs-adaptation">지정된 CVE 번호를 데이터베이스에서 찾을 수 없습니다. 이 CVE에 대한 자세한 내용은 아래에서 제공되는 링크에서 확인할 수 있습니다.</target>
+        <target state="needs-translation">지정된 CVE 번호를 데이터베이스에서 찾을 수 없습니다.</target>
       </trans-unit>
       <trans-unit approved="yes" id="bootstrap.minion.error.salt.unexpected" xml:space="preserve">
         <source>Error during applying the bootstrap state. Check the server logs.</source>
@@ -11400,17 +11400,17 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>None</source>
         <target state="final">없음</target>
       </trans-unit>
-      <trans-unit approved="yes" id="coco.environment.kvm_amd_epyc_milan.description" xml:space="preserve">
+      <trans-unit approved="no" id="coco.environment.kvm_amd_epyc_milan.description" xml:space="preserve">
         <source>KVM on AMD Epyc Processor, third generation (milan)</source>
-        <target state="needs-adaptation">AMD Epyc 프로세서 기반 KVM, 2세대(milan)</target>
+        <target state="needs-translation">AMD Epyc 프로세서 기반 KVM, 3세대(milan)</target>
       </trans-unit>
       <trans-unit approved="yes" id="coco.environment.kvm_amd_epyc_milan.label" xml:space="preserve">
         <source>KVM on AMD Epyc - Milan</source>
         <target state="final">AMD Epyc 기반 KVM - Milan</target>
       </trans-unit>
-      <trans-unit approved="yes" id="coco.environment.kvm_amd_epyc_genoa.description" xml:space="preserve">
+      <trans-unit approved="no" id="coco.environment.kvm_amd_epyc_genoa.description" xml:space="preserve">
         <source>KVM on AMD Epyc Processor, fourth generation (genoa)</source>
-        <target state="needs-adaptation">AMD Epyc 프로세서 기반 KVM, 3세대(genoa)</target>
+        <target state="needs-translation">AMD Epyc 프로세서 기반 KVM, 4세대(genoa)</target>
       </trans-unit>
       <trans-unit approved="yes" id="coco.environment.kvm_amd_epyc_genoa.label" xml:space="preserve">
         <source>KVM on AMD Epyc - Genoa</source>
@@ -11839,165 +11839,165 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
       </trans-unit>
       <trans-unit id="hub.sync_bunch_error" xml:space="preserve">
         <source>Error when triggering the channels sync.</source>
-        <target state="new"/>
+        <target state="needs-translation">채널 동기화 실행 시 오류 발생.</target>
       </trans-unit>
-    <trans-unit id="supportdata.get" xml:space="preserve">
+      <trans-unit id="supportdata.get" xml:space="preserve">
         <source>Get and Upload Support data</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">지원 데이터 가져오기 및 업로드</target>
+      </trans-unit>
       <trans-unit id="message.scheduleactivated" xml:space="preserve">
         <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; activated.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">스케줄 &lt;strong&gt;{0}&lt;/strong&gt; 활성화됨.</target>
+      </trans-unit>
       <trans-unit id="task.status.errata-advisory-map-sync" xml:space="preserve">
         <source>Update SUSE errata advisory map</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">SUSE 오류 수정 사항 권고 맵 업데이트</target>
+      </trans-unit>
       <trans-unit id="bunch.jsp.description.errata-advisory-map-sync-bunch" xml:space="preserve">
         <source>Update SUSE errata advisory map to retrieve announcement ids and advisor URLs</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="supportdata.uploadGeoType.eu" xml:space="preserve">
         <source>EU</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="supportdata.uploadGeoType.us" xml:space="preserve">
         <source>US</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_bergamo.description" xml:space="preserve">
         <source>KVM on AMD Epyc Processor, fourth generation (bergamo)</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_bergamo.label" xml:space="preserve">
         <source>KVM on AMD Epyc - Bergamo</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_siena.description" xml:space="preserve">
         <source>KVM on AMD Epyc Processor, fourth generation (siena)</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_siena.label" xml:space="preserve">
         <source>KVM on AMD Epyc - Siena</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_turin.description" xml:space="preserve">
         <source>KVM on AMD Epyc Processor, fifth generation (turin)</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_turin.label" xml:space="preserve">
         <source>KVM on AMD Epyc - Turin</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="system.details.support.invalid_case_number" xml:space="preserve">
         <source>The case number {0} is not valid.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="system.details.support.invalid_region" xml:space="preserve">
         <source>The region {0] is not valid.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="system.details.support.unable_to_schedule" xml:space="preserve">
         <source>Unexpected error while scheduling the generation of the support data. Please check the server logs for detailed information.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="system.details.support.unable_to_upload" xml:space="preserve">
         <source>Unable to gather and upload the support data. Please check the server logs for detailed information.</source>
-      <target state="new"/>
-  </trans-unit>
-    <trans-unit id="Add address" xml:space="preserve">
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="Add address" xml:space="preserve">
         <source>Add address</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="Edit" xml:space="preserve">
         <source>Edit</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="reportdbupdatefailed" xml:space="preserve">
-          <source>Report Database Update Failed</source>
-      <target state="new"/>
-  </trans-unit>
+        <source>Report Database Update Failed</source>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.reportdbupdatefailed" xml:space="preserve">
         <source>The update of the reporting database has failed and the data is out of sync.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.reportdbupdatefailed.details.local" xml:space="preserve">
         <source>The following error was generated while trying to update the local reporting database:</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.reportdbupdatefailed.details.hub" xml:space="preserve">
         <source>The following error was generated while trying to fetch the data from the peripheral server {0}:</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="system.migration.noServersSelected" xml:space="preserve">
-          <source>Unable to identify the selected systems for the migration.</source>
-      <target state="new"/>
-  </trans-unit>
+        <source>Unable to identify the selected systems for the migration.</source>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="system.migration.noCommonProduct" xml:space="preserve">
-          <source>The selected systems do not have a common base product.</source>
-      <target state="new"/>
-  </trans-unit>
+        <source>The selected systems do not have a common base product.</source>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="product_migration.os_not_supported" xml:space="preserve">
         <source>Product Migrations are not supported for the OS of this system.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="product_migration.source_unknown" xml:space="preserve">
         <source>The base product of this system is unknown.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="product_migration.source_mismatch" xml:space="preserve">
         <source>The base product of this system does not match.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="product_migration.salt_needs_update" xml:space="preserve">
         <source>Salt installed on this system is out of date.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="product_migration.salt_needs_update.details" xml:space="preserve">
         <source>The installed &lt;pre&gt;{0}&lt;/pre&gt; package version on this system is out of date. Please update the package to the latest version before you start a Product migration.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="product_migration.addons_affected" xml:space="preserve">
         <source>Some installed addons are going to be affect, depending on chosen target.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="product_migration.single.addons_affected" xml:space="preserve">
         <source>Some installed addons are going to be affect.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="product_migration.addons_affected.missing_successors" xml:space="preserve">
         <source>&lt;p&gt;Depending on chosen target, some or all of these products will be removed because no successor could be found, so proceed with caution:&lt;/p&gt;{0}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="product_migration.single.addons_affected.missing_successors" xml:space="preserve">
         <source>&lt;p&gt;These products will be removed because no successor could be found, so proceed with caution:&lt;/p&gt;{0}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="product_migration.addons_affected.installed_addons" xml:space="preserve">
         <source>&lt;p&gt;Depending on chosen target, some or all of these products will be installed:&lt;/p&gt;{0}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="product_migration.single.addons_affected.installed_addons" xml:space="preserve">
         <source>&lt;p&gt;These products will be installed:&lt;/p&gt;{0}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="product_migration.addon_or_higher" xml:space="preserve">
         <source>{0} or higher</source>
-      <target state="new"/>
-  </trans-unit>
-    <trans-unit id="system.migration.noTarget" xml:space="preserve">
-          <source>Unable to identify a valid migration target for the selected systems.</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="system.migration.noTarget" xml:space="preserve">
+        <source>Unable to identify a valid migration target for the selected systems.</source>
+        <target state="new"/>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
