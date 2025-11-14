@@ -433,7 +433,7 @@ import components_tooltip_tooltip_example_tsx_raw from "components/tooltip/toolt
 export const components_tooltip_tooltip_example_tsx = {
   path: "components/tooltip/tooltip.example.tsx",
   title: "tooltip.example.tsx",
-  groupName: "Tooltip",
+  groupName: "tooltip",
   component: components_tooltip_tooltip_example_tsx_component,
   raw: components_tooltip_tooltip_example_tsx_raw,
 };
