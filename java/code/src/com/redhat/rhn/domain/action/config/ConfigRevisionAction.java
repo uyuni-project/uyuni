@@ -19,19 +19,19 @@ import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.server.Server;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 
 /**
  * ConfigRevisionAction - Class representation of the table rhnActionConfigRevision.
@@ -42,14 +42,8 @@ import javax.persistence.Table;
 public class ConfigRevisionAction extends BaseDomainHelper {
 
     @Id
-    @GeneratedValue(generator = "actioncr_seq")
-    @GenericGenerator(
-        name = "actioncr_seq",
-        strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-        parameters = {
-                @Parameter(name = "sequence_name", value = "rhn_actioncr_id_seq"),
-                @Parameter(name = "increment_size", value = "1")
-        })
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "actioncr_seq")
+	@SequenceGenerator(name = "actioncr_seq", sequenceName = "rhn_actioncr_id_seq", allocationSize = 1)
     private Long id;
 
     @Column(name = "failure_id")

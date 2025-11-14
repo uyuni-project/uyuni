@@ -64,7 +64,7 @@ import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.stream.Collectors;
 
-import javax.persistence.Tuple;
+import jakarta.persistence.Tuple;
 
 /**
  * ErrataFactory - the singleton class used to fetch and store
@@ -436,7 +436,7 @@ public class ErrataFactory extends HibernateFactory {
      */
     public static Errata lookupById(Long id) {
         Session session = HibernateFactory.getSession();
-        return session.get(Errata.class, id);
+        return session.find(Errata.class, id);
     }
 
     /**
@@ -549,7 +549,7 @@ public class ErrataFactory extends HibernateFactory {
         DataResult<Map<String, Object>> result = mode.execute(params);
         Session session = HibernateFactory.getSession();
         return result.stream()
-                .map(row -> session.load(Errata.class, (Long) row.get("id")))
+                .map(row -> session.getReference(Errata.class, (Long) row.get("id")))
                 .collect(Collectors.toList());
     }
 

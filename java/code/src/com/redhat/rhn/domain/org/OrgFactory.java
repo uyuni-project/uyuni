@@ -45,7 +45,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.Tuple;
+import jakarta.persistence.Tuple;
 
 /**
  * A small wrapper around hibernate files to remove some of the complexities
@@ -226,7 +226,7 @@ public class OrgFactory extends HibernateFactory {
      */
     public static Org lookupById(Long id) {
         Session session = HibernateFactory.getSession();
-        return session.get(Org.class, id);
+        return session.find(Org.class, id);
     }
 
     /**

@@ -15,9 +15,9 @@
 package com.redhat.rhn.domain.action.kickstart;
 
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
 /**
  * KickstartGuestActionDetails - java representation of the rhnActionKickstart table

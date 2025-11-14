@@ -942,9 +942,9 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         ProductName pn = new ProductName();
         pn.setLabel(TEST_OS);
         pn.setName(TEST_OS);
-        HibernateFactory.getSession().save(pn);
+        HibernateFactory.getSession().persist(pn);
         c.setProductName(pn);
-        HibernateFactory.getSession().save(c);
+        HibernateFactory.getSession().persist(c);
 
         String release = MAP_RELEASE + TestUtils.randomString();
         ChannelTestUtils.addDistMapToChannel(c, TEST_OS, release);

@@ -37,8 +37,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.persistence.NoResultException;
-import javax.persistence.Tuple;
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.Tuple;
 
 /**
  * MinionFactory - the singleton class used to fetch and store
@@ -138,7 +138,7 @@ public class MinionServerFactory extends HibernateFactory {
      * @return the minion found
      */
     public static Optional<MinionServer> lookupById(Long id) {
-        return Optional.ofNullable(getSession().get(MinionServer.class, id));
+        return Optional.ofNullable(getSession().find(MinionServer.class, id));
     }
 
     /**

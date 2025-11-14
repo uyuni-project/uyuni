@@ -50,10 +50,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.persistence.Tuple;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import jakarta.persistence.Tuple;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 
 
 /**
@@ -824,7 +824,7 @@ public class KickstartFactory extends HibernateFactory {
      */
     public static KickstartSession lookupKickstartSessionById(Long sessionId) {
         Session session = HibernateFactory.getSession();
-        return session.get(KickstartSession.class, sessionId);
+        return session.find(KickstartSession.class, sessionId);
     }
 
     private static KickstartTreeType lookupKickstartTreeTypeByLabel(String label) {
@@ -864,7 +864,7 @@ public class KickstartFactory extends HibernateFactory {
      * @return KickstartableTree instance if found, otherwise null
      */
     public static KickstartableTree findTreeById(Long treeId, Long orgId) {
-        KickstartableTree retval = HibernateFactory.getSession().load(KickstartableTree.class, treeId);
+        KickstartableTree retval = HibernateFactory.getSession().getReference(KickstartableTree.class, treeId);
         if (retval != null) {
             List<Channel> list = OrgFactory.lookupById(orgId).getAccessibleChannels();
             if (!list.contains(retval.getChannel())) {
@@ -1061,7 +1061,7 @@ public class KickstartFactory extends HibernateFactory {
      * @return the kickstartScript
      */
     public static KickstartScript lookupKickstartScript(Org org, Integer id) {
-        KickstartScript script = HibernateFactory.getSession().load(KickstartScript.class, id.longValue());
+        KickstartScript script = HibernateFactory.getSession().getReference(KickstartScript.class, id.longValue());
         if (!org.equals(script.getKsdata().getOrg())) {
             return null;
         }

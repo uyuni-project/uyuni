@@ -689,7 +689,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         details.setChannels(Arrays.asList(ch1, ch2).stream().collect(Collectors.toSet()));
         action.setDetails(details);
         details.setParentAction(action);
-        HibernateFactory.getSession().save(details);
+        HibernateFactory.getSession().persist(details);
 
         ActionFactory.addServerToAction(minion1, action);
 

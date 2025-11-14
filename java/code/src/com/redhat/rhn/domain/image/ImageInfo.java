@@ -24,27 +24,29 @@ import com.redhat.rhn.domain.server.ServerArch;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
+import org.hibernate.type.YesNoConverter;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 /**
  * ImageInfo
@@ -85,14 +87,8 @@ public class ImageInfo extends BaseDomainHelper {
      */
     @Id
     @Column(name = "id", insertable = false, updatable = false)
-    @GeneratedValue(generator = "imginfo_seq")
-    @GenericGenerator(
-            name = "imginfo_seq",
-            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-            parameters = {
-                    @Parameter(name = "sequence_name", value = "suse_imginfo_imgid_seq"),
-                    @Parameter(name = "increment_size", value = "1")
-            })
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "imginfo_seq")
+	@SequenceGenerator(name = "imginfo_seq", sequenceName = "suse_imginfo_imgid_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }
@@ -256,7 +252,7 @@ public class ImageInfo extends BaseDomainHelper {
      * @return true if the image has been built outside SUSE Manager
      */
     @Column(name = "external_image")
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     public boolean isExternalImage() {
         return externalImage;
     }
@@ -265,7 +261,7 @@ public class ImageInfo extends BaseDomainHelper {
      * @return true if the image is obsolete (has been replaced in the store)
      */
     @Column(name = "obsolete")
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     public boolean isObsolete() {
         return obsolete;
     }
@@ -274,7 +270,7 @@ public class ImageInfo extends BaseDomainHelper {
      * @return true if the image has been successfully built
      */
     @Column(name = "built")
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     public boolean isBuilt() {
         return built;
     }

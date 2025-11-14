@@ -20,14 +20,14 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 
 /**
  * KickstartVirtualizationType -
@@ -49,14 +49,8 @@ public class KickstartVirtualizationType extends BaseDomainHelper
     public static final String NONE  = "none";
 
     @Id
-    @GeneratedValue(generator = "kvt_seq")
-    @GenericGenerator(
-            name = "kvt_seq",
-            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-            parameters = {
-                    @Parameter(name = "sequence_name", value = "rhn_kvt_id_seq"),
-                    @Parameter(name = "increment_size", value = "1")
-            })
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "kvt_seq")
+	@SequenceGenerator(name = "kvt_seq", sequenceName = "rhn_kvt_id_seq", allocationSize = 1)
     private Long id;
 
     @Column(nullable = false)

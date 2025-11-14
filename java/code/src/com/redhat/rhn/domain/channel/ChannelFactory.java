@@ -62,13 +62,13 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import javax.persistence.NoResultException;
-import javax.persistence.Tuple;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.Tuple;
+import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 
 /**
  * ChannelFactory
@@ -103,7 +103,7 @@ public class ChannelFactory extends HibernateFactory {
      */
     public static Channel lookupById(Long id) {
         Session session = HibernateFactory.getSession();
-        return session.get(Channel.class, id);
+        return session.find(Channel.class, id);
     }
 
     /**
@@ -2169,7 +2169,7 @@ public class ChannelFactory extends HibernateFactory {
     public static void cloneModulesMetadata(Channel from, Channel to) {
         if (!from.isModular()) {
             if (to.isModular()) {
-                HibernateFactory.getSession().delete(to.getModules());
+                HibernateFactory.getSession().remove(to.getModules());
                 to.setModules(null);
             }
         }

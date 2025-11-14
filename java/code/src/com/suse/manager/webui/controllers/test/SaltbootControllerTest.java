@@ -64,7 +64,7 @@ public class SaltbootControllerTest extends BaseControllerTestCase {
 
         String category = "Image" + image.getId();
         Pillar pillarEntry = new Pillar(category, pillarData, image.getOrg());
-        HibernateFactory.getSession().save(pillarEntry);
+        HibernateFactory.getSession().persist(pillarEntry);
         image.setPillar(pillarEntry);
 
 

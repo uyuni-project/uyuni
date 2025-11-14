@@ -17,7 +17,7 @@ package com.redhat.rhn.common.hibernate;
 
 import java.nio.file.Path;
 
-import javax.persistence.AttributeConverter;
+import jakarta.persistence.AttributeConverter;
 
 /**
  * JPA converter between Path and String
