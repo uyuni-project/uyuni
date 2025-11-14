@@ -11889,111 +11889,111 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>KVM on AMD Epyc - Turin</source>
         <target state="final">KVM on AMD Epyc - Turin</target>
       </trans-unit>
-      <trans-unit id="system.details.support.invalid_case_number" xml:space="preserve">
+      <trans-unit id="system.details.support.invalid_case_number" xml:space="preserve" approved="yes">
         <source>The case number {0} is not valid.</source>
-        <target state="new"/>
+        <target state="final">ケース番号 {0} は無効です。</target>
       </trans-unit>
-      <trans-unit id="system.details.support.invalid_region" xml:space="preserve">
+      <trans-unit id="system.details.support.invalid_region" xml:space="preserve" approved="yes">
         <source>The region {0] is not valid.</source>
-        <target state="new"/>
+        <target state="final">地域 {0] は無効です。</target>
       </trans-unit>
-      <trans-unit id="system.details.support.unable_to_schedule" xml:space="preserve">
+      <trans-unit id="system.details.support.unable_to_schedule" xml:space="preserve" approved="yes">
         <source>Unexpected error while scheduling the generation of the support data. Please check the server logs for detailed information.</source>
-        <target state="new"/>
+        <target state="final">サポートデータの生成のスケジュール中に予期しないエラーが発生しました。詳細については、サーバログを確認してください。</target>
       </trans-unit>
-      <trans-unit id="system.details.support.unable_to_upload" xml:space="preserve">
+      <trans-unit id="system.details.support.unable_to_upload" xml:space="preserve" approved="yes">
         <source>Unable to gather and upload the support data. Please check the server logs for detailed information.</source>
-        <target state="new"/>
+        <target state="final">サポートデータを収集してアップロードできません。詳細については、サーバログを確認してください。</target>
       </trans-unit>
-      <trans-unit id="Add address" xml:space="preserve">
+      <trans-unit id="Add address" xml:space="preserve" approved="yes">
         <source>Add address</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
-        <target state="new"/>
+        <target state="final">アドレスの追加</target>
       </trans-unit>
-      <trans-unit id="Edit" xml:space="preserve">
+      <trans-unit id="Edit" xml:space="preserve" approved="yes">
         <source>Edit</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
-        <target state="new"/>
+        <target state="final">編集</target>
       </trans-unit>
-      <trans-unit id="reportdbupdatefailed" xml:space="preserve">
+      <trans-unit id="reportdbupdatefailed" xml:space="preserve" approved="yes">
         <source>Report Database Update Failed</source>
-        <target state="new"/>
+        <target state="final">レポートデータベースの更新に失敗しました</target>
       </trans-unit>
-      <trans-unit id="notification.reportdbupdatefailed" xml:space="preserve">
+      <trans-unit id="notification.reportdbupdatefailed" xml:space="preserve" approved="yes">
         <source>The update of the reporting database has failed and the data is out of sync.</source>
-        <target state="new"/>
+        <target state="final">レポーティングデータベースの更新に失敗し、データが同期されていません。</target>
       </trans-unit>
-      <trans-unit id="notification.reportdbupdatefailed.details.local" xml:space="preserve">
+      <trans-unit id="notification.reportdbupdatefailed.details.local" xml:space="preserve" approved="yes">
         <source>The following error was generated while trying to update the local reporting database:</source>
-        <target state="new"/>
+        <target state="final">ローカルレポーティングデータベースを更新しようとした際に次のエラーが生成されました。</target>
       </trans-unit>
-      <trans-unit id="notification.reportdbupdatefailed.details.hub" xml:space="preserve">
+      <trans-unit id="notification.reportdbupdatefailed.details.hub" xml:space="preserve" approved="yes">
         <source>The following error was generated while trying to fetch the data from the peripheral server {0}:</source>
-        <target state="new"/>
+        <target state="final">周辺サーバ {0} からデータを取得しようとした際に次のエラーが生成されました。</target>
       </trans-unit>
-      <trans-unit id="system.migration.noServersSelected" xml:space="preserve">
+      <trans-unit id="system.migration.noServersSelected" xml:space="preserve" approved="yes">
         <source>Unable to identify the selected systems for the migration.</source>
-        <target state="new"/>
+        <target state="final">移行対象として選択されたシステムを特定できません。</target>
       </trans-unit>
-      <trans-unit id="system.migration.noCommonProduct" xml:space="preserve">
+      <trans-unit id="system.migration.noCommonProduct" xml:space="preserve" approved="yes">
         <source>The selected systems do not have a common base product.</source>
-        <target state="new"/>
+        <target state="final">選択されたシステムには共通のベース製品がありません。</target>
       </trans-unit>
-      <trans-unit id="product_migration.os_not_supported" xml:space="preserve">
+      <trans-unit id="product_migration.os_not_supported" xml:space="preserve" approved="yes">
         <source>Product Migrations are not supported for the OS of this system.</source>
-        <target state="new"/>
+        <target state="final">このシステムのOSでは、製品移行はサポートされていません。</target>
       </trans-unit>
-      <trans-unit id="product_migration.source_unknown" xml:space="preserve">
+      <trans-unit id="product_migration.source_unknown" xml:space="preserve" approved="yes">
         <source>The base product of this system is unknown.</source>
-        <target state="new"/>
+        <target state="final">このシステムのベース製品は不明です。</target>
       </trans-unit>
-      <trans-unit id="product_migration.source_mismatch" xml:space="preserve">
+      <trans-unit id="product_migration.source_mismatch" xml:space="preserve" approved="yes">
         <source>The base product of this system does not match.</source>
-        <target state="new"/>
+        <target state="final">このシステムのベース製品は一致しません。</target>
       </trans-unit>
-      <trans-unit id="product_migration.salt_needs_update" xml:space="preserve">
+      <trans-unit id="product_migration.salt_needs_update" xml:space="preserve" approved="yes">
         <source>Salt installed on this system is out of date.</source>
-        <target state="new"/>
+        <target state="final">このシステムにインストールされているSaltは古くなっています。</target>
       </trans-unit>
-      <trans-unit id="product_migration.salt_needs_update.details" xml:space="preserve">
+      <trans-unit id="product_migration.salt_needs_update.details" xml:space="preserve" approved="yes">
         <source>The installed &lt;pre&gt;{0}&lt;/pre&gt; package version on this system is out of date. Please update the package to the latest version before you start a Product migration.</source>
-        <target state="new"/>
+        <target state="final">このシステムにインストールされている&lt;pre&gt;{0}&lt;/pre&gt;パッケージのバージョンは古くなっています。製品移行を開始する前に、パッケージを最新バージョンに更新してください。</target>
       </trans-unit>
-      <trans-unit id="product_migration.addons_affected" xml:space="preserve">
+      <trans-unit id="product_migration.addons_affected" xml:space="preserve" approved="yes">
         <source>Some installed addons are going to be affect, depending on chosen target.</source>
-        <target state="new"/>
+        <target state="final">選択したターゲットによっては、インストールされている一部のアドオンが影響を受ける可能性があります。</target>
       </trans-unit>
-      <trans-unit id="product_migration.single.addons_affected" xml:space="preserve">
+      <trans-unit id="product_migration.single.addons_affected" xml:space="preserve" approved="yes">
         <source>Some installed addons are going to be affect.</source>
-        <target state="new"/>
+        <target state="final">インストールされているアドオンの一部が影響を受ける可能性があります。</target>
       </trans-unit>
-      <trans-unit id="product_migration.addons_affected.missing_successors" xml:space="preserve">
+      <trans-unit id="product_migration.addons_affected.missing_successors" xml:space="preserve" approved="yes">
         <source>&lt;p&gt;Depending on chosen target, some or all of these products will be removed because no successor could be found, so proceed with caution:&lt;/p&gt;{0}</source>
-        <target state="new"/>
+        <target state="final">&lt;p&gt;選択したターゲットによっては、後継製品が見つからなかったため、これらの製品の一部またはすべてが削除されます。注意して続行してください。&lt;/p&gt;{0}</target>
       </trans-unit>
-      <trans-unit id="product_migration.single.addons_affected.missing_successors" xml:space="preserve">
+      <trans-unit id="product_migration.single.addons_affected.missing_successors" xml:space="preserve" approved="yes">
         <source>&lt;p&gt;These products will be removed because no successor could be found, so proceed with caution:&lt;/p&gt;{0}</source>
-        <target state="new"/>
+        <target state="final">&lt;p&gt;後継製品が見つからなかったため、これらの製品は削除されます。注意して続行してください。&lt;/p&gt;{0}</target>
       </trans-unit>
-      <trans-unit id="product_migration.addons_affected.installed_addons" xml:space="preserve">
+      <trans-unit id="product_migration.addons_affected.installed_addons" xml:space="preserve" approved="yes">
         <source>&lt;p&gt;Depending on chosen target, some or all of these products will be installed:&lt;/p&gt;{0}</source>
-        <target state="new"/>
+        <target state="final">&lt;p&gt;選択したターゲットによっては、次の製品の一部またはすべてがインストールされます。&lt;/p&gt;{0}</target>
       </trans-unit>
-      <trans-unit id="product_migration.single.addons_affected.installed_addons" xml:space="preserve">
+      <trans-unit id="product_migration.single.addons_affected.installed_addons" xml:space="preserve" approved="yes">
         <source>&lt;p&gt;These products will be installed:&lt;/p&gt;{0}</source>
-        <target state="new"/>
+        <target state="final">&lt;p&gt;これらの製品がインストールされます。&lt;/p&gt;{0}</target>
       </trans-unit>
-      <trans-unit id="product_migration.addon_or_higher" xml:space="preserve">
+      <trans-unit id="product_migration.addon_or_higher" xml:space="preserve" approved="yes">
         <source>{0} or higher</source>
-        <target state="new"/>
+        <target state="final">{0} 以上</target>
       </trans-unit>
-      <trans-unit id="system.migration.noTarget" xml:space="preserve">
+      <trans-unit id="system.migration.noTarget" xml:space="preserve" approved="yes">
         <source>Unable to identify a valid migration target for the selected systems.</source>
-        <target state="new"/>
+        <target state="final">選択したシステムの有効な移行ターゲットを特定できません。</target>
       </trans-unit>
     </body>
   </file>
