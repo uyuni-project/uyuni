@@ -427,6 +427,18 @@ export const components_toastr_toastr_example_tsx = {
 };
 
 // @ts-ignore
+import components_tooltip_tooltip_example_tsx_component from "components/tooltip/tooltip.example.tsx";
+import components_tooltip_tooltip_example_tsx_raw from "components/tooltip/tooltip.example.tsx?raw";
+
+export const components_tooltip_tooltip_example_tsx = {
+  path: "components/tooltip/tooltip.example.tsx",
+  title: "tooltip.example.tsx",
+  groupName: "tooltip",
+  component: components_tooltip_tooltip_example_tsx_component,
+  raw: components_tooltip_tooltip_example_tsx_raw,
+};
+
+// @ts-ignore
 import components_tree_tree_example_tsx_component from "components/tree/tree.example.tsx";
 import components_tree_tree_example_tsx_raw from "components/tree/tree.example.tsx?raw";
 
