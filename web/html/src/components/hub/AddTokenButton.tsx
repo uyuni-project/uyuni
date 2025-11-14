@@ -122,7 +122,11 @@ export class AddTokenButton extends React.Component<Props, State> {
         isOpen={this.state.createRequest !== undefined}
         onClose={() => this.setState({ createRequest: undefined })}
         content={
-          <Form model={this.state.createRequest} onValidate={(valid) => this.setState({ createRequestValid: valid })}>
+          <Form
+            model={this.state.createRequest}
+            onChange={(model) => this.setState({ createRequest: { ...model } })}
+            onValidate={(valid) => this.setState({ createRequestValid: valid })}
+          >
             <Text
               name="fqdn"
               label={t("Server FQDN")}
