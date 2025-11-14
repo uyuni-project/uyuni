@@ -11858,145 +11858,145 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
       </trans-unit>
       <trans-unit id="bunch.jsp.description.errata-advisory-map-sync-bunch" xml:space="preserve">
         <source>Update SUSE errata advisory map to retrieve announcement ids and advisor URLs</source>
-        <target state="new"/>
+        <target state="needs-translation">SUSE 오류 수정 사항 권고 맵을 업데이트하여 공지 ID 및 어드바이저 URL을 검색합니다.</target>
       </trans-unit>
       <trans-unit id="supportdata.uploadGeoType.eu" xml:space="preserve">
         <source>EU</source>
-        <target state="new"/>
+        <target state="needs-translation">EU</target>
       </trans-unit>
       <trans-unit id="supportdata.uploadGeoType.us" xml:space="preserve">
         <source>US</source>
-        <target state="new"/>
+        <target state="needs-translation">US</target>
       </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_bergamo.description" xml:space="preserve">
         <source>KVM on AMD Epyc Processor, fourth generation (bergamo)</source>
-        <target state="new"/>
+        <target state="needs-translation">AMD Epyc 프로세서 기반 KVM, 4세대(bergamo)</target>
       </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_bergamo.label" xml:space="preserve">
         <source>KVM on AMD Epyc - Bergamo</source>
-        <target state="new"/>
+        <target state="needs-translation">AMD Epyc 기반 KVM - Bergamo</target>
       </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_siena.description" xml:space="preserve">
         <source>KVM on AMD Epyc Processor, fourth generation (siena)</source>
-        <target state="new"/>
+        <target state="needs-translation">AMD Epyc 프로세서 기반 KVM, 4세대(siena)</target>
       </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_siena.label" xml:space="preserve">
         <source>KVM on AMD Epyc - Siena</source>
-        <target state="new"/>
+        <target state="needs-translation">AMD Epyc 기반 KVM - Siena</target>
       </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_turin.description" xml:space="preserve">
         <source>KVM on AMD Epyc Processor, fifth generation (turin)</source>
-        <target state="new"/>
+        <target state="needs-translation">AMD Epyc 프로세서 기반 KVM - 5세대(turin)</target>
       </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_turin.label" xml:space="preserve">
         <source>KVM on AMD Epyc - Turin</source>
-        <target state="new"/>
+        <target state="needs-translation">AMD Epyc 기반 KVM - Turin</target>
       </trans-unit>
       <trans-unit id="system.details.support.invalid_case_number" xml:space="preserve">
         <source>The case number {0} is not valid.</source>
-        <target state="new"/>
+        <target state="needs-translation">사례 번호 {0}이(가) 잘못되었습니다.</target>
       </trans-unit>
       <trans-unit id="system.details.support.invalid_region" xml:space="preserve">
         <source>The region {0] is not valid.</source>
-        <target state="new"/>
+        <target state="translated">영역 {0]이(가) 잘못되었습니다.</target>
       </trans-unit>
       <trans-unit id="system.details.support.unable_to_schedule" xml:space="preserve">
         <source>Unexpected error while scheduling the generation of the support data. Please check the server logs for detailed information.</source>
-        <target state="new"/>
+        <target state="needs-translation">지원 데이터 생성을 예약하는 동안 예기치 못한 오류가 발생했습니다. 자세한 내용은 서버 로그를 확인하십시오.</target>
       </trans-unit>
       <trans-unit id="system.details.support.unable_to_upload" xml:space="preserve">
         <source>Unable to gather and upload the support data. Please check the server logs for detailed information.</source>
-        <target state="new"/>
+        <target state="needs-translation">지원 데이터를 수집하여 업로드할 수 없습니다. 자세한 내용은 서버 로그를 확인하십시오.</target>
       </trans-unit>
       <trans-unit id="Add address" xml:space="preserve">
         <source>Add address</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
-        <target state="new"/>
+        <target state="needs-translation">주소 추가</target>
       </trans-unit>
       <trans-unit id="Edit" xml:space="preserve">
         <source>Edit</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
-        <target state="new"/>
+        <target state="needs-translation">편집</target>
       </trans-unit>
       <trans-unit id="reportdbupdatefailed" xml:space="preserve">
         <source>Report Database Update Failed</source>
-        <target state="new"/>
+        <target state="needs-translation">보고서 데이터베이스 업데이트 실패</target>
       </trans-unit>
       <trans-unit id="notification.reportdbupdatefailed" xml:space="preserve">
         <source>The update of the reporting database has failed and the data is out of sync.</source>
-        <target state="new"/>
+        <target state="needs-translation">보고 데이터베이스의 업데이트가 실패하여 데이터가 동기화되지 않았습니다.</target>
       </trans-unit>
       <trans-unit id="notification.reportdbupdatefailed.details.local" xml:space="preserve">
         <source>The following error was generated while trying to update the local reporting database:</source>
-        <target state="new"/>
+        <target state="needs-translation">로컬 보고 데이터베이스를 업데이트하는 동안 다음 오류가 발생했습니다.</target>
       </trans-unit>
       <trans-unit id="notification.reportdbupdatefailed.details.hub" xml:space="preserve">
         <source>The following error was generated while trying to fetch the data from the peripheral server {0}:</source>
-        <target state="new"/>
+        <target state="needs-translation">주변기기 서버 {0}에서 데이터 가져오기를 시도하는 동안 다음 오류가 발생했습니다.</target>
       </trans-unit>
       <trans-unit id="system.migration.noServersSelected" xml:space="preserve">
         <source>Unable to identify the selected systems for the migration.</source>
-        <target state="new"/>
+        <target state="needs-translation">마이그레이션을 위해 선택한 시스템을 확인할 수 없습니다.</target>
       </trans-unit>
       <trans-unit id="system.migration.noCommonProduct" xml:space="preserve">
         <source>The selected systems do not have a common base product.</source>
-        <target state="new"/>
+        <target state="needs-translation">선택한 시스템에는 공통 기본 제품이 없습니다.</target>
       </trans-unit>
       <trans-unit id="product_migration.os_not_supported" xml:space="preserve">
         <source>Product Migrations are not supported for the OS of this system.</source>
-        <target state="new"/>
+        <target state="needs-translation">이 시스템의 OS에서는 제품 마이그레이션이 지원되지 않습니다.</target>
       </trans-unit>
       <trans-unit id="product_migration.source_unknown" xml:space="preserve">
         <source>The base product of this system is unknown.</source>
-        <target state="new"/>
+        <target state="needs-translation">이 시스템의 기본 제품을 알 수 없습니다.</target>
       </trans-unit>
       <trans-unit id="product_migration.source_mismatch" xml:space="preserve">
         <source>The base product of this system does not match.</source>
-        <target state="new"/>
+        <target state="needs-translation">이 시스템의 기본 제품이 일치하지 않습니다.</target>
       </trans-unit>
       <trans-unit id="product_migration.salt_needs_update" xml:space="preserve">
         <source>Salt installed on this system is out of date.</source>
-        <target state="new"/>
+        <target state="needs-translation">이 시스템에 설치된 Salt가 최신 버전이 아닙니다.</target>
       </trans-unit>
       <trans-unit id="product_migration.salt_needs_update.details" xml:space="preserve">
         <source>The installed &lt;pre&gt;{0}&lt;/pre&gt; package version on this system is out of date. Please update the package to the latest version before you start a Product migration.</source>
-        <target state="new"/>
+        <target state="needs-translation">이 시스템에 설치된 &lt;pre&gt;{0}&lt;/pre&gt; 패키지 버전이 최신 버전이 아닙니다. 제품 마이그레이션을 시작하기 전에 패키지를 최신 버전으로 업데이트하십시오.</target>
       </trans-unit>
       <trans-unit id="product_migration.addons_affected" xml:space="preserve">
         <source>Some installed addons are going to be affect, depending on chosen target.</source>
-        <target state="new"/>
+        <target state="needs-translation">선택한 대상에 따라 설치된 일부 애드온이 영향을 받을 수 있습니다.</target>
       </trans-unit>
       <trans-unit id="product_migration.single.addons_affected" xml:space="preserve">
         <source>Some installed addons are going to be affect.</source>
-        <target state="new"/>
+        <target state="needs-translation">설치된 일부 애드온이 영향을 받을 수 있습니다.</target>
       </trans-unit>
       <trans-unit id="product_migration.addons_affected.missing_successors" xml:space="preserve">
         <source>&lt;p&gt;Depending on chosen target, some or all of these products will be removed because no successor could be found, so proceed with caution:&lt;/p&gt;{0}</source>
-        <target state="new"/>
+        <target state="needs-translation">&lt;p&gt;선택한 대상에 따라, 후속 항목을 찾을 수 없어 일부 또는 전체 제품이 제거될 수 있습니다. 유의하여 진행하십시오:&lt;/p&gt;{0}</target>
       </trans-unit>
       <trans-unit id="product_migration.single.addons_affected.missing_successors" xml:space="preserve">
         <source>&lt;p&gt;These products will be removed because no successor could be found, so proceed with caution:&lt;/p&gt;{0}</source>
-        <target state="new"/>
+        <target state="needs-translation">&lt;p&gt;다음 제품은 후속 제품이 발견되지 않아 제거될 예정입니다. 유의하여 진행하십시오.&lt;/p&gt;{0}</target>
       </trans-unit>
       <trans-unit id="product_migration.addons_affected.installed_addons" xml:space="preserve">
         <source>&lt;p&gt;Depending on chosen target, some or all of these products will be installed:&lt;/p&gt;{0}</source>
-        <target state="new"/>
+        <target state="needs-translation">&lt;p&gt;선택한 대상에 따라, 다음 제품 중 일부 또는 전부가 설치됩니다.&lt;/p&gt;{0}</target>
       </trans-unit>
       <trans-unit id="product_migration.single.addons_affected.installed_addons" xml:space="preserve">
         <source>&lt;p&gt;These products will be installed:&lt;/p&gt;{0}</source>
-        <target state="new"/>
+        <target state="needs-translation">&lt;p&gt;설치될 제품은 다음과 같습니다.&lt;/p&gt;{0}</target>
       </trans-unit>
       <trans-unit id="product_migration.addon_or_higher" xml:space="preserve">
         <source>{0} or higher</source>
-        <target state="new"/>
+        <target state="needs-translation">{0} 이상</target>
       </trans-unit>
       <trans-unit id="system.migration.noTarget" xml:space="preserve">
         <source>Unable to identify a valid migration target for the selected systems.</source>
-        <target state="new"/>
+        <target state="needs-translation">선택된 시스템에 대해 유효한 마이그레이션 대상을 식별할 수 없습니다.</target>
       </trans-unit>
     </body>
   </file>
