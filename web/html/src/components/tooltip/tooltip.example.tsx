@@ -70,39 +70,39 @@ export default () => {
         <StoryRow>
           <a
             href="/rhn/manager/storybook?tab=tooltip"
-            className="mx-4"
+            className="mx-3"
             data-bs-toggle="tooltip"
             data-bs-placement="top"
             title="Top Tooltip"
           >
-            Top{" "}
+            Top
           </a>
           <a
             href="/rhn/manager/storybook?tab=tooltip"
-            className="mx-4"
+            className="mx-3"
             data-bs-toggle="tooltip"
             data-bs-placement="right"
             title="Right Tooltip"
           >
-            Right{" "}
+            Right
           </a>
           <a
             href="/rhn/manager/storybook?tab=tooltip"
-            className="mx-4"
+            className="mx-3"
             data-bs-toggle="tooltip"
             data-bs-placement="left"
             title="Left Tooltip"
           >
-            Left{" "}
+            Left
           </a>
           <a
             href="/rhn/manager/storybook?tab=tooltip"
-            className="mx-4"
+            className="mx-3"
             data-bs-toggle="tooltip"
             data-bs-placement="bottom"
             title="Bottom Tooltip"
           >
-            Bottom{" "}
+            Bottom
           </a>
         </StoryRow>
       </StripedStorySection>
@@ -136,9 +136,7 @@ export default () => {
 
             SLE-Module-Basesystem15-SP5 - aarch64
             SLE-Product-SLES15-SP5 - aarch64`}
-          >
-            {" "}
-          </i>
+          ></i>
         </StoryRow>
       </StripedStorySection>
       <StorySection>
