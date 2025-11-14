@@ -30,7 +30,7 @@ const messageMap = {
   // Nothing for now
 };
 
-type Props = {};
+type Props = Record<never, never>;
 
 type State = {
   storeTypes: string[];

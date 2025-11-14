@@ -1,3 +1,5 @@
+import type Bootstrap from "bootstrap";
+
 import type { tType } from "core/intl";
 
 declare global {
@@ -17,17 +19,17 @@ declare global {
     pageRenderers?: {
       spa?: {
         globalRenderersToUpdate?: {
-          onSPAEndNavigation?: Function;
+          onSPAEndNavigation?: (...args: any[]) => any;
         }[];
         reactAppsName?: string[];
         reactRenderers?: unknown[];
         previousReactRenderers?: unknown[];
       };
       spaengine?: {
-        init?: Function;
-        navigate?: Function;
+        init?: (...args: any[]) => any;
+        navigate?: (...args: any[]) => any;
         appInstance?: any;
-        onSpaEndNavigation?: (callback: Function) => void;
+        onSpaEndNavigation?: (callback: (...args: any[]) => any) => void;
       };
     };
     spaImportReactPage: (pageName: string) => Promise<unknown>;
@@ -43,15 +45,16 @@ declare global {
     }
   }
 
+  var bootstrap: Bootstrap;
   var t: tType;
 
-  var onDocumentReadyInitOldJS: Function;
+  var onDocumentReadyInitOldJS: (...args: any[]) => any;
   var d3: d3;
 
   // Defined in spacewalk-essentials.js
-  var handleSst: Function;
+  var handleSst: (...args: any[]) => any;
   var spacewalkContentObserver: MutationObserver;
-  var registerSpacewalkContentObservers: Function | undefined;
+  var registerSpacewalkContentObservers: (...args: any[]) => any | undefined;
 
   // Defined in spacewalk-checkall.js
   var numericValidate: (event: any) => any;

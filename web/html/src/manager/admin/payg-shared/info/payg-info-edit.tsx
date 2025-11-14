@@ -11,7 +11,7 @@ import { Loading } from "components/utils";
 
 type Props = {
   payg: PaygFullType;
-  onChange: Function;
+  onChange: (...args: any[]) => any;
   readOnly?: boolean;
 };
 

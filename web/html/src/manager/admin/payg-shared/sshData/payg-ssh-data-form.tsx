@@ -8,7 +8,7 @@ import { InputBase } from "components/input/InputBase";
 type PropsForm = {
   paygSshData: paygProperties;
   errors: any;
-  onChange: Function;
+  onChange: (...args: any[]) => any;
   isInstance: boolean;
   editing?: boolean;
 };

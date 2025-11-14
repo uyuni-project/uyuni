@@ -33,7 +33,7 @@ type BaseProps = {
   tooltipPlacement?: "top" | "right" | "bottom" | "left";
 };
 
-type BaseState = {};
+type BaseState = Record<string, any>;
 
 /**
  * Base class for button components.

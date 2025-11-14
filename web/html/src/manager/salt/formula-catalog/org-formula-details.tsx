@@ -13,7 +13,7 @@ declare global {
   }
 }
 
-type Props = {};
+type Props = Record<never, never>;
 
 type State = {
   metadata: any;

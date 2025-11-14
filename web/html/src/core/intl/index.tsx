@@ -19,6 +19,7 @@ function getPoAsJson(locale?: string) {
     return "";
   }
   try {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     return require(`../../../../po/${locale}.po`);
   } catch (_) {
     return "";

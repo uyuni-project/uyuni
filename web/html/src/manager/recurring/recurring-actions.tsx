@@ -46,7 +46,7 @@ function getHashAction() {
   return match ? match[1] : undefined;
 }
 
-type Props = {};
+type Props = Record<never, never>;
 
 type State = {
   messages: any[];
