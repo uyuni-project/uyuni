@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-10-10 09:51+0200\n"
-"PO-Revision-Date: 2025-06-12 08:59+0000\n"
+"PO-Revision-Date: 2025-11-14 09:04+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/spacecmd/zh_CN/>\n"
 "Language: zh_CN\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.11.4\n"
+"X-Generator: Weblate 5.14.3\n"
 
 #: ../src/spacecmd/activationkey.py:53
 msgid "activationkey_addpackages: Add packages to an activation key"
@@ -4007,27 +4007,7 @@ msgid "proxy_container_config: create a proxy system and return its configuratio
 msgstr "proxy_container_config：创建代理系统并返回其配置文件"
 
 #: ../src/spacecmd/proxy.py:46
-#, fuzzy, python-format
-#| msgid ""
-#| "usage: proxy_container_config [options] PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL ROOT_CA CRT KEY\n"
-#| "\n"
-#| "parameters:\n"
-#| "  PROXY_FQDN  the unique, DNS-resolvable FQDN of this proxy.\n"
-#| "  SERVER_FQDN the fully qualified domain name of the server to connect to proxy to.\n"
-#| "  MAX_CACHE   the maximum cache size in MB. 60% of the storage is a good value.\n"
-#| "  EMAIL       the email of the proxy administrator\n"
-#| "  CA          path to the root CA used to sign the proxy certificate in PEM format\n"
-#| "  CRT         path to the proxy certificate in PEM format\n"
-#| "  KEY         path to the proxy certificate private key in PEM format\n"
-#| "\n"
-#| "options:\n"
-#| "  -o, --output Path where to create the generated configuration. Default: 'config.tar.gz'\n"
-#| "  -p, --ssh-port SSH port the proxy listens one. Default: 8022\n"
-#| "  -i, --intermediate-ca  Path to an intermediate CA used to sign the proxy\n"
-#| "            certicate in PEM format. May be provided multiple times.\n"
-#| "\n"
-#| "examples:\n"
-#| "  proxy_container_config -o config.zip proxy.lab server.lab 1024 proxy@acme.org root_ca.crt proxy.crt proxy.key\n"
+#, python-format
 msgid ""
 "usage: proxy_container_config [options] PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL ROOT_CA CRT KEY\n"
 "\n"
@@ -4049,7 +4029,7 @@ msgid ""
 "examples:\n"
 "  proxy_container_config -o config.zip proxy.lab server.lab 1024 proxy@acme.org root_ca.crt proxy.crt proxy.key\n"
 msgstr ""
-"% o用法：proxy_container_config [选项] PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL ROOT_CA CRT KEY\n"
+"用法：proxy_container_config [选项] PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL ROOT_CA CRT KEY\n"
 "\n"
 "参数：\n"
 "  PROXY_FQDN  此代理的唯一且可由 DNS 解析的完全限定域名。\n"
@@ -4074,34 +4054,7 @@ msgid "proxy_container_config_generate_cert: create a proxy system and return it
 msgstr "proxy_container_config_generate_cert：创建代理系统并返回其配置文件"
 
 #: ../src/spacecmd/proxy.py:119
-#, fuzzy, python-format
-#| msgid ""
-#| "usage: proxy_container_config_generate_cert PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL\n"
-#| "\n"
-#| "parameters:\n"
-#| "  PROXY_FQDN  the unique, DNS-resolvable FQDN of this proxy.\n"
-#| "  SERVER_FQDN the fully qualified domain name of the server to connect to proxy to.\n"
-#| "  MAX_CACHE   the maximum cache size in MB. 60% of the storage is a good value.\n"
-#| "  EMAIL       the email of the proxy administrator\n"
-#| "\n"
-#| "options:\n"
-#| "  -o, --output Path where to create the generated configuration. Default: 'config.tar.gz'\n"
-#| "  -p, --ssh-port SSH port the proxy listens one. Default: 8022\n"
-#| "  --ca-crt path to the certificate of the CA to use to generate a new proxy certificate.\n"
-#| "           Using /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT by default.\n"
-#| "  --ca-key path to the private key of the CA to use to generate a new proxy certificate.\n"
-#| "           Using /root/ssl-build/RHN-ORG-PRIVATE-SSL-KEY by default.\n"
-#| "  --ca-pass path to a file containing the password of the CA private key, will be prompted if not passed.\n"
-#| "  --ssl-cname alternate name of the proxy to set in the certificate. Can be provided multiple times\n"
-#| "  --ssl-country country code to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.\n"
-#| "  --ssl-state state name to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.\n"
-#| "  --ssl-city the city name to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.\n"
-#| "  --ssl-org the organization name to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.\n"
-#| "  --ssl-org-unit the organization unit name to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.\n"
-#| "  --ssl-email the email to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.\n"
-#| "\n"
-#| "examples:\n"
-#| "  proxy_container_config proxy.lab server.lab 1024 proxy@acme.org --ca-pass password-file\n"
+#, python-format
 msgid ""
 "usage: proxy_container_config_generate_cert PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL\n"
 "\n"
@@ -8387,7 +8340,7 @@ msgstr "参数 {} 不是字符串类型，而是 {}。"
 
 #: ../src/bin/spacecmd:54
 msgid "Welcome to spacecmd, a command-line interface to Spacewalk."
-msgstr ""
+msgstr "欢迎使用 spacecmd - 一款 Spacewalk 的命令行界面工具。"
 
 #: ../src/bin/spacecmd:82
 msgid "Unhandled exception occurred while getting FQDN:"
@@ -8395,65 +8348,57 @@ msgstr "获取 FQDN 时发生未经处理的异常："
 
 #: ../src/bin/spacecmd:110
 msgid "config file to use [default: ~/.spacecmd/config]"
-msgstr ""
+msgstr "要使用的配置文件 [默认值：~/.spacecmd/config]"
 
 #: ../src/bin/spacecmd:113
-#, fuzzy
-#| msgid "logout: Disconnect from the server"
 msgid "use this username to connect to the server"
-msgstr "logout：从服务器断开连接"
+msgstr "使用该用户名连接服务器"
 
 #: ../src/bin/spacecmd:119
 msgid "use this password to connect to the server (insecure). Use config instead or spacecmd will ask."
-msgstr ""
+msgstr "使用该口令连接服务器（不安全）。建议改用配置文件，否则 spacecmd 会主动询问。"
 
 #: ../src/bin/spacecmd:123
 msgid "connect to this server [default: local hostname]"
-msgstr ""
+msgstr "连接至该服务器 [默认值：本地主机名]"
 
 #: ../src/bin/spacecmd:126
 msgid "use HTTP instead of HTTPS"
-msgstr ""
+msgstr "使用 HTTP 而非 HTTPS"
 
 #: ../src/bin/spacecmd:129
-#, fuzzy
-#| msgid "history: List your command history"
 msgid "do not store command history"
-msgstr "history：列出命令历史记录"
+msgstr "不存储命令历史记录"
 
 #: ../src/bin/spacecmd:132
 msgid "answer yes for all questions"
-msgstr ""
+msgstr "所有问题均回答 \"是\""
 
 #: ../src/bin/spacecmd:135
 msgid "print only error messages"
-msgstr ""
+msgstr "仅列显错误消息"
 
 #: ../src/bin/spacecmd:142
 msgid "print debug messages (can be passed multiple times)"
-msgstr ""
+msgstr "列显调试消息（可多次传入该参数）"
 
 #: ../src/bin/spacecmd:192
-#, fuzzy, c-format
-#| msgid "source channel %s does not exist!"
+#, c-format
 msgid "Config file %s does not exist."
-msgstr "源通道 %s 不存在！"
+msgstr "配置文件 %s 不存在。"
 
 #: ../src/bin/spacecmd:210
-#, fuzzy, c-format
-#| msgid "Could not read %s"
+#, c-format
 msgid "Could not create %s"
-msgstr "无法读取 %s"
+msgstr "无法创建 %s"
 
 #: ../src/bin/spacecmd:251
 msgid "User Interrupt"
-msgstr ""
+msgstr "用户中断"
 
 #: ../src/bin/spacecmd:292
-#, fuzzy
-#| msgid "Could not find repo %s"
 msgid "Could not find session"
-msgstr "找不到储存库 %s"
+msgstr "找不到会话"
 
 #~ msgid "Could not retrieve the Kickstart file"
 #~ msgstr "无法检索 Kickstart 文件"
