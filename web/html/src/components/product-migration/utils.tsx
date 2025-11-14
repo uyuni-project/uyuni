@@ -1,15 +1,8 @@
-import {
-  canonicalizeBase,
-  canonicalizeChild,
-} from "manager/content-management/shared/components/panels/sources/channels/channels-api-transforms";
-
 import { BaseChannelType, ChannelTreeType, ChannelType, ChildChannelType } from "core/channels/type/channels.type";
-import { computeReverseDependencies } from "core/channels/utils/channels-dependencies.utils";
 
 import { ActionChainLink, ActionLink } from "components/links";
 import { MessageType, Utils as MessagesUtils } from "components/messages/messages";
 
-import { Utils } from "utils/functions";
 import Network from "utils/network";
 
 import { MigrationScheduleRequest } from "./types";
@@ -25,83 +18,72 @@ import { MigrationScheduleRequest } from "./types";
  *  - requiresMap a mapping detailing for each channel id which other channels it requries
  *  - requiredByMap a mapping detailing for each channel id, which other channels requires it
  */
-function processChannelData(baseChannelTrees: ChannelTreeType[], mandatoryMap: Record<string, number[]>) {
+function processChannelData(
+  baseChannelTrees: ChannelTreeType[],
+  mandatoryMap: [number, number[]][],
+  reversedMandatoryMap: [number, number[]][]
+) {
   const channelsMap: Map<number, ChannelType> = new Map();
   const baseChannels: BaseChannelType[] = [];
 
   // Process the base channel trees
   const channelTrees: ChannelTreeType[] = baseChannelTrees.map((channelTree) => {
-    const updatedBase: BaseChannelType = Utils.deepCopy(channelTree.base);
+    const base = channelTree.base;
 
-    // Compute the base specific properties
-    canonicalizeBase(updatedBase);
     // Add to the channels map
-    channelsMap.set(updatedBase.id, updatedBase);
-    baseChannels.push(updatedBase);
+    channelsMap.set(base.id, base);
+    baseChannels.push(base);
 
-    const updatedChildren = channelTree.children.map((child) => {
-      const updateChild: ChildChannelType = Utils.deepCopy(child);
-      // Compute the children specific properties
-      canonicalizeChild(updateChild, updatedBase);
-      // If it's a reccomended child update the base
-      if (updateChild.recommended) {
-        updatedBase.recommendedChildren.push(updateChild);
-      }
-
+    const children = channelTree.children.map((child) => {
       // Add to the channels map
-      channelsMap.set(updateChild.id, updateChild);
+      channelsMap.set(child.id, child);
 
-      return updateChild;
+      return child;
     });
 
-    return { base: updatedBase, children: updatedChildren };
+    return { base, children };
   });
 
-  // Compute the dependencies
-  const [requiresMap, requiredByMap] = processMandatoryMap(mandatoryMap, channelsMap);
+  // Convert the Array<[number, number[]]> we receive from json to a Map<number, Set<ChannelType>>
+  const requiresMap = arrayToMapWithSets(mandatoryMap, channelsMap);
+  const requiredByMap = arrayToMapWithSets(reversedMandatoryMap, channelsMap);
 
   return { channelTrees, channelsMap, baseChannels, requiresMap, requiredByMap };
 }
 
-// Buildst the requiresMap and the requiredByMap
-function processMandatoryMap(mandatoryData: Record<string, number[]>, channelsMap: Map<number, ChannelType>) {
-  const requiresMap: Map<number, Set<number>> = new Map();
+function arrayToMapWithSets(
+  entries: [number, number[]][],
+  channelsMap: Map<number, ChannelType>
+): Map<number, Set<ChannelType>> {
+  // Convert each entry's array of values into a Set
+  const entriesWithSets: [number, Set<ChannelType>][] = entries.map(([key, values]) => {
+    const channelSet = new Set<ChannelType>();
+    values.forEach((channelId) => {
+      const channel = channelsMap.get(channelId);
+      if (channel !== undefined) {
+        channelSet.add(channel);
+      } else {
+        Loggerhead.warn(`Cannot find channel with id ${channelId}. Ignoring.`);
+      }
+    });
 
-  Object.entries(mandatoryData).forEach(([id, mandatoryIds]) => {
-    requiresMap.set(parseInt(id, 10), new Set(mandatoryIds));
+    return [key, channelSet];
   });
 
-  return [requiresMap, computeReverseDependencies(requiresMap)].map(
-    (map) =>
-      new Map(
-        Array.from(map.entries()).map(([channelId, dependentSet]) => [
-          channelId,
-          new Set([...dependentSet].map((id) => channelsMap.get(id)).filter((channel) => channel !== undefined)),
-        ])
-      )
-  );
+  // Create the final Map from the new entries
+  return new Map(entriesWithSets);
 }
 
 /**
- * Removes the circular dependencies from the channel intances, introduced by calling processChannelData and construct a
- * new ChannelTreeType instance.
- * @param channelTree the channel tree object
- * @returns a new instance of {@link ChannelTreeType} with the computed fields removed
+ * Constructs a new ChannelTreeType instance from the base and its children.
+ * @param baseChannel the base channel
+ * @param children the children channels
+ * @returns a new instance of {@link ChannelTreeType}
  */
 function getAsChannelTree(baseChannel: BaseChannelType, children: Set<ChildChannelType>): ChannelTreeType {
-  // Clone the base object while omitting the computed fields.
-  const { standardizedName: _ignoredName, recommendedChildren: _ignoreRecommended, ...cleanBase } = baseChannel;
-
-  // Map the children set to create a new array of clean child objects.
-  const cleanChildren = Array.from(children.values()).map((child) => {
-    const { standardizedName: _snChild, parent: _pChild, ...cleanChild } = child;
-    return cleanChild as ChildChannelType;
-  });
-
-  // Return the new object composed of the cleaned parts.
   return {
-    base: cleanBase as BaseChannelType,
-    children: cleanChildren,
+    base: baseChannel,
+    children: Array.from(children.values()),
   };
 }
 
