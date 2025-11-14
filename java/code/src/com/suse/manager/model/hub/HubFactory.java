@@ -98,7 +98,7 @@ public class HubFactory extends HibernateFactory {
      * @return the hub object
      */
     public IssHub findHubById(long id) {
-        return getSession().get(IssHub.class, id);
+        return getSession().find(IssHub.class, id);
     }
 
     /**
@@ -118,7 +118,7 @@ public class HubFactory extends HibernateFactory {
      * @return the peripheral object
      */
     public IssPeripheral findPeripheralById(long id) {
-        return getSession().get(IssPeripheral.class, id);
+        return getSession().find(IssPeripheral.class, id);
     }
 
     /**
@@ -275,7 +275,7 @@ public class HubFactory extends HibernateFactory {
      * @param accessToken the access token to update
      */
     public void updateToken(IssAccessToken accessToken) {
-        getSession().update(accessToken);
+        getSession().merge(accessToken);
     }
 
     /**

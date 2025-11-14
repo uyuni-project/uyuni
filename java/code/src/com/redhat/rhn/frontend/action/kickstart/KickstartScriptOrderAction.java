@@ -189,7 +189,7 @@ public class KickstartScriptOrderAction extends RhnLookupDispatchAction {
             fakeToOld.put(next, script.getPosition());
             script.setPosition(next);
             next += 1;
-            HibernateFactory.getSession().save(script);
+            HibernateFactory.getSession().persist(script);
         }
         KickstartFactory.saveKickstartData(ksdata);
         HibernateFactory.getSession().flush();
@@ -197,7 +197,7 @@ public class KickstartScriptOrderAction extends RhnLookupDispatchAction {
         // update scripts with the appropriate priorities
         for (KickstartScript script : scripts) {
             script.setPosition(oldToNew.get(fakeToOld.get(script.getPosition())));
-            HibernateFactory.getSession().save(script);
+            HibernateFactory.getSession().persist(script);
         }
         KickstartFactory.saveKickstartData(ksdata);
 

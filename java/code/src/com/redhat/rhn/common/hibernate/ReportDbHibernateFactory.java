@@ -285,7 +285,7 @@ public class ReportDbHibernateFactory {
             session.saveOrUpdate(toSave);
         }
         else {
-            session.save(toSave);
+            session.persist(toSave);
         }
     }*/
 
@@ -309,7 +309,7 @@ public class ReportDbHibernateFactory {
         int numDeleted = 0;
         session = getSession();
 
-        session.delete(toRemove);
+        session.remove(toRemove);
         numDeleted++;
 
         return numDeleted;
@@ -408,7 +408,7 @@ public class ReportDbHibernateFactory {
         try {
             session = getSession();
 
-            retval = session.get(clazz, id);
+            retval = session.find(clazz, id);
         }
         catch (MappingException me) {
             getLogger().error("Mapping not found for " + clazz.getName(), me);
@@ -438,7 +438,7 @@ public class ReportDbHibernateFactory {
         try {
             session = getSession();
 
-            retval = session.get(clazz, id, LockMode.PESSIMISTIC_WRITE);
+            retval = session.find(clazz, id, LockModeType.PESSIMISTIC_WRITE);
         }
         catch (MappingException me) {
             getLogger().error("Mapping not found for " + clazz.getName(), me);
@@ -468,13 +468,13 @@ public class ReportDbHibernateFactory {
         session.evict(obj);
         *
          * In hibernate 3, the following doesn't work:
-         * session.load(obj.getClass(), id);
+         * session.getReference(obj.getClass(), id);
          * load returns the proxy class instead of the persisted class, ie,
          * Filter$$EnhancerByCGLIB$$9bcc734d_2 instead of Filter.
          * session.get is set to not return the proxy class, so that is what we'll use.
          *
         // assertNotSame(obj, result);
-        return (T) session.get(obj.getClass(), id);
+        return (T) session.find(obj.getClass(), id);
     }*/
 
     /**

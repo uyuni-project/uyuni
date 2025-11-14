@@ -60,7 +60,7 @@ public class WebSessionFactory extends HibernateFactory {
      */
     public static WebSession lookupById(Long id) {
         Session session = HibernateFactory.getSession();
-        return session.get(WebSessionImpl.class, id);
+        return session.find(WebSessionImpl.class, id);
     }
 
     /**

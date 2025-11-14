@@ -108,7 +108,7 @@ public class PaygSshDataFactory extends HibernateFactory {
      * @param data payg ssh data object
      */
     public static void deletePaygSshData(PaygSshData data) {
-        getSession().delete(data);
+        getSession().remove(data);
     }
 
     /**
