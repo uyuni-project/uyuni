@@ -36,6 +36,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -208,9 +209,7 @@ public class BaseSetHelper {
 
         //add all the items selected
         if (selected != null) {
-            for (String item :  selected) {
-                set.add(item);
-            }
+            Collections.addAll(set, selected);
         } //if
 
         ListTagHelper.setSelectedAmount(listName, set.size(), request);

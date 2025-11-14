@@ -198,9 +198,7 @@ public class NavTreeIndex {
             String[] urls = new String[prefixes.length + 1];
 
             // Add the lastActive to the end
-            for (int i = 0; i < prefixes.length; i++) {
-                urls[i] = prefixes[i];
-            }
+            System.arraycopy(prefixes, 0, urls, 0, prefixes.length);
             urls[prefixes.length] = lastActive;
             prefixes = urls;
         }
