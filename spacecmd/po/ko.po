@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-10-10 09:51+0200\n"
-"PO-Revision-Date: 2025-06-17 07:59+0000\n"
+"PO-Revision-Date: 2025-11-14 20:04+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/spacecmd/ko/>\n"
 "Language: ko\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.12.1\n"
+"X-Generator: Weblate 5.14.3\n"
 
 #: ../src/spacecmd/activationkey.py:53
 msgid "activationkey_addpackages: Add packages to an activation key"
@@ -4044,7 +4044,7 @@ msgid ""
 "examples:\n"
 "  proxy_container_config -o config.zip proxy.lab server.lab 1024 proxy@acme.org root_ca.crt proxy.crt proxy.key\n"
 msgstr ""
-"% o사용: proxy_container_config [options] PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL ROOT_CA CRT KEY\n"
+"사용법: proxy_container_config [options] PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL ROOT_CA CRT KEY\n"
 "\n"
 "파라미터:\n"
 "  PROXY_FQDN  이 프록시의 고유한 DNS 확인 가능 FQDN입니다.\n"
@@ -8381,74 +8381,82 @@ msgid "Parameter {} not a string type, but {}."
 msgstr "{} 파라미터가 문자열 유형이 아니라 {}입니다."
 
 #: ../src/bin/spacecmd:54
+#, fuzzy
 msgid "Welcome to spacecmd, a command-line interface to Spacewalk."
-msgstr ""
+msgstr "Spacewalk의 명령줄 인터페이스인 spacecmd에 오신 것을 환영합니다."
 
 #: ../src/bin/spacecmd:82
 msgid "Unhandled exception occurred while getting FQDN:"
 msgstr "FQDN을 가져오는 중 처리되지 않은 예외 발생:"
 
 #: ../src/bin/spacecmd:110
+#, fuzzy
 msgid "config file to use [default: ~/.spacecmd/config]"
-msgstr ""
+msgstr "[default: ~/.spacecmd/config]를 사용하기 위한 구성 파일"
 
 #: ../src/bin/spacecmd:113
 #, fuzzy
-#| msgid "logout: Disconnect from the server"
 msgid "use this username to connect to the server"
-msgstr "logout: 서버 연결 끊기"
+msgstr "이 사용자 이름을 사용하여 서버에 연결합니다."
 
 #: ../src/bin/spacecmd:119
+#, fuzzy
 msgid "use this password to connect to the server (insecure). Use config instead or spacecmd will ask."
-msgstr ""
+msgstr "이 비밀번호를 사용하여 서버에 연결합니다(안전하지 않음). 대신 config를 사용하거나 spacecmd가 질문합니다."
 
 #: ../src/bin/spacecmd:123
+#, fuzzy
 msgid "connect to this server [default: local hostname]"
-msgstr ""
+msgstr "이 서버 [default: local hostname]에 연결"
 
 #: ../src/bin/spacecmd:126
+#, fuzzy
 msgid "use HTTP instead of HTTPS"
-msgstr ""
+msgstr "HTTPS 대신 HTTP 사용"
 
 #: ../src/bin/spacecmd:129
 #, fuzzy
 #| msgid "history: List your command history"
 msgid "do not store command history"
-msgstr "history: 명령 내역 나열"
+msgstr "명령 내역을 저장하지 않음"
 
 #: ../src/bin/spacecmd:132
+#, fuzzy
 msgid "answer yes for all questions"
-msgstr ""
+msgstr "모든 질문에 예로 답변"
 
 #: ../src/bin/spacecmd:135
+#, fuzzy
 msgid "print only error messages"
-msgstr ""
+msgstr "오류 메시지만 인쇄"
 
 #: ../src/bin/spacecmd:142
+#, fuzzy
 msgid "print debug messages (can be passed multiple times)"
-msgstr ""
+msgstr "디버그 메시지 인쇄(여러 번 전달 가능)"
 
 #: ../src/bin/spacecmd:192
 #, fuzzy, c-format
 #| msgid "source channel %s does not exist!"
 msgid "Config file %s does not exist."
-msgstr "소스 채널 %s이(가) 없습니다!"
+msgstr "구성 파일 %s이(가) 없습니다."
 
 #: ../src/bin/spacecmd:210
 #, fuzzy, c-format
 #| msgid "Could not read %s"
 msgid "Could not create %s"
-msgstr "%s을(를) 읽을 수 없음"
+msgstr "%s을(를) 생성할 수 없음"
 
 #: ../src/bin/spacecmd:251
+#, fuzzy
 msgid "User Interrupt"
-msgstr ""
+msgstr "사용자 중단"
 
 #: ../src/bin/spacecmd:292
 #, fuzzy
 #| msgid "Could not find repo %s"
 msgid "Could not find session"
-msgstr "%s 저장소를 찾을 수 없음"
+msgstr "세션을 찾을 수 없음"
 
 #~ msgid "Could not retrieve the Kickstart file"
 #~ msgstr "킥스타트 파일을 가져올 수 없음"
