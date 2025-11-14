@@ -4,7 +4,7 @@ import SpaRenderer from "core/spa/spa-renderer";
 
 import CoCoSettings from "./coco-settings";
 
-// See java/code/src/com/suse/manager/webui/templates/minion/coco-settings.jade
+// See java/core/src/main/resources/com/suse/manager/webui/templates/minion/coco-settings.jade
 declare global {
   interface Window {
     serverId?: any;

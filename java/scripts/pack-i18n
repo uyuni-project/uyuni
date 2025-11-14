@@ -2,7 +2,7 @@
 
 GIT_ROOT="$( git -c alias.a='!pwd' a )"
 
-pushd $GIT_ROOT/java/code/src/com/redhat/rhn/frontend/
+pushd $GIT_ROOT/java/core/src/main/resources/com/redhat/rhn/frontend/
 
 tar --exclude *.java -c -v -j -f $GIT_ROOT/java/uyuni-java-xliff.tar.bz2 strings/
 

@@ -27,7 +27,7 @@ to `JAVA_OPTS` variable, then restart tomcat: `systemctl restart tomcat.service`
     ```
 3. After that, we can generate a HTML report
     ```bash
-    java -jar jacococli.jar report /tmp/jacoco.exec --html /srv/www/htdocs/pub/jacoco-cucumber-report --xml /srv/www/htdocs/pub/jacoco-cucumber-report.xml --sourcefiles /tmp/uyuni-master/java/code/src --classfiles /srv/tomcat/webapps/rhn/WEB-INF/lib
+    java -jar jacococli.jar report /tmp/jacoco.exec --html /srv/www/htdocs/pub/jacoco-cucumber-report --xml /srv/www/htdocs/pub/jacoco-cucumber-report.xml --sourcefiles /tmp/uyuni-master/java/core/src/main/java --classfiles /srv/tomcat/webapps/rhn/WEB-INF/lib
     ```
 4. From the XML report we want to obtain a list of (source_file_path:line_number) for each line of code triggered during a Cucumber feature execution.
     ```

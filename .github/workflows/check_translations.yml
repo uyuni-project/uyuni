@@ -3,7 +3,7 @@ name: Check if translation is required
 on: 
   pull_request_target:
     paths:
-      - 'java/code/src/com/redhat/rhn/frontend/strings/**'
+      - 'java/core/src/main/resources/com/redhat/rhn/frontend/strings/**'
       - 'backend/**'
       - 'client/rhel/yum-rhn-plugin/**'
       - 'client/rhel/mgr-daemon/**'

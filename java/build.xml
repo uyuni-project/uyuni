@@ -96,7 +96,7 @@
   <target name="apidoc" description="Generate the api documentation" depends="init">
     <path id="javadocpath">
     <path refid="buildjars" />
-      <pathelement location="build/classes" />
+      <pathelement location="${build.dir}/classes" />
     </path>
 
     <move file="${build.dir}/classes/log4j2.xml" tofile="${build.dir}/classes/log4j2.xml.bak" />
@@ -104,14 +104,14 @@
     <mkdir dir="${report.dir}/apidocs" />
     <mkdir dir="${report.dir}/apidocs/${template.dir}/" />
     <mkdir dir="${report.dir}/apidocs/${template.dir}/handlers/" />
-    <javadoc doclet="com.redhat.rhn.internal.doclet.${doclet.class}" docletpathref="javadocpath" classpathref="buildjars" sourcepath="code/src"
-        additionalparam="-d ${apidoc.output} -templates buildconf/apidoc/${template.dir} -product ${product.name} -apiversion '${java.apiversion}'">
-      <fileset dir="code" >
-        <include name="**/src/com/redhat/rhn/frontend/xmlrpc/**/*Handler.java" />
-        <include name="**/src/com/redhat/rhn/frontend/xmlrpc/serializer/*Serializer.java" />
-        <include name="**/src/com/redhat/rhn/domain/config/xmlrpc/serializer/*Serializer.java" />
-        <include name="**/src/com/suse/manager/xmlrpc/**/*Handler.java" />
-        <include name="**/src/com/suse/manager/xmlrpc/serializer/*Serializer.java" />
+    <javadoc doclet="com.redhat.rhn.internal.doclet.${doclet.class}" docletpathref="javadocpath" classpathref="buildjars" sourcepath="core/src/main/java"
+        additionalparam="-d ${apidoc.output} -templates webapp/src/apidoc/${template.dir} -product ${product.name} -apiversion '${java.apiversion}'">
+      <fileset dir="core" >
+        <include name="**/com/redhat/rhn/frontend/xmlrpc/**/*Handler.java" />
+        <include name="**/com/redhat/rhn/frontend/xmlrpc/serializer/*Serializer.java" />
+        <include name="**/com/redhat/rhn/domain/config/xmlrpc/serializer/*Serializer.java" />
+        <include name="**/com/suse/manager/xmlrpc/**/*Handler.java" />
+        <include name="**/com/suse/manager/xmlrpc/serializer/*Serializer.java" />
       </fileset>
       <excludepackage name="**/*" />
     </javadoc>
@@ -143,7 +143,7 @@
             debug="on"
             deprecation="${deprecation}"
             nowarn="${nowarn}"
-            srcdir="code/internal/src"
+            srcdir="doclets/src/main/java"
             classpathref="buildjars"
             includeantruntime="true" >
      </javac>
@@ -151,7 +151,7 @@
 
   <target name="compile-main" depends="link-jars,prepare"
           description="Compile the main codebase" unless="installbuild">
-    <copy tofile="${build.dir}/classes/log4j2.xml" file="${src.dir}/src/log4j2.xml"/>
+    <copy tofile="${build.dir}/classes/log4j2.xml" file="core/src/main/resources/log4j2.xml"/>
     <mkdir dir="${build.dir}/classes" />
     <javac destdir="${build.dir}/classes"
            optimize="off"
@@ -164,17 +164,17 @@
            classpathref="buildjars" >
       <src>
         <path location="${build.dir}/src" />
-        <path location="code/src" />
+        <path location="core/src/main/java" />
+        <path location="core/src/test/java" />
       </src>
       <compilerarg line="-parameters" description="Preserves method parameter names for HTTP API route discovery"/>
     </javac>
 
     <copy toDir="${build.dir}/classes">
-      <fileset dir="${src.dir}/src">
-        <exclude name="**/*.java" />
-        <exclude name="**/package.html" />
-         <exclude name="**/log4j2.xml" />
+      <fileset dir="core/src/main/resources">
+        <exclude name="**/log4j2.xml" />
       </fileset>
+      <fileset dir="core/src/test/resources" />
     </copy>
   </target>
 
@@ -191,20 +191,16 @@
            fork="yes"
            memoryMaximumSize="256m"
            classpathref="alljars"
- 	   	   excludes="**/test/*,**/testing/*,**/*Test*.java"
       >
       <src>
         <path location="${build.dir}/src" />
-        <path location="code/src" />
+        <path location="core/src/main/java" />
       </src>
       <compilerarg line="-parameters" description="Preserves method parameter names for HTTP API route discovery"/>
     </javac>
 
     <copy toDir="${build.dir}/classes">
-      <fileset dir="${src.dir}/src">
-        <exclude name="**/*.java" />
-        <exclude name="**/package.html" />
-      </fileset>
+      <fileset dir="core/src/main/resources" />
     </copy>
   </target>
 
@@ -279,19 +275,9 @@
         <!-- internal is not for publication; tlds go in META-INF;
              html go as javadoc elsewhere -->
         <exclude name="**/internal/**" />
-        <exclude name="**/*.tld" />
         <exclude name="**/*.html" />
-        <exclude name="**/test/" />
-        <exclude name="**/*/testing/**" />
         <exclude name="**/log4j2.xml" />
-        <exclude name="**/*.conf" />
-        <exclude name="**/*.conf.rpmsave" />
       </fileset>
-      <!-- ugh, we can't flatten this like we would with a <copy> tag
-           or use a mapper, alas -->
-      <metainf dir="${build.dir}/classes/com/redhat/rhn/frontend/taglibs">
-        <include name="*.tld" />
-      </metainf>
     </jar>
   </target>
 
@@ -309,8 +295,8 @@
   </target>
 
   <target name="pack-webapp" depends="compile">
-    <war destfile="${rhn.war}" webxml="${src.dir}/webapp/WEB-INF/web.xml">
-      <fileset dir="${src.dir}/webapp">
+    <war destfile="${rhn.war}" webxml="webapp/src/main/webapp/WEB-INF/web.xml">
+      <fileset dir="webapp/src/main/webapp">
         <exclude name="WEB-INF/web.xml"/>
         <exclude name="help/**" unless="includehelp"/>
       </fileset>

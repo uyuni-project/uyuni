@@ -7,7 +7,7 @@ use File::Find;
 
 my $DEBUG = 0;
 
-my $resourceBase="java/code/";
+my $resourceBase="java";
 #my $resourceBase="branding/java";
 my $gitRoot=`git -c alias.a='!pwd' a`;
 chomp($gitRoot);
