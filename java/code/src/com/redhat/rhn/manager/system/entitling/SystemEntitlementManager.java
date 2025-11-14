@@ -83,6 +83,10 @@ public class SystemEntitlementManager {
      * @param ent the entitlement
      */
     public void removeServerEntitlement(Server server, Entitlement ent) {
+        // removing a proxy entitlement from a proxy server means deactivating the proxy
+        if (EntitlementManager.PROXY_ENTITLED.equals(ent.getLabel()) && server.isProxy()) {
+            SystemManager.deactivateProxy(server);
+        }
         this.systemUnentitler.removeServerEntitlement(server, ent);
         SystemManager.updateSystemOverview(server.getId());
     }

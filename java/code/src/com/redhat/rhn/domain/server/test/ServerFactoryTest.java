@@ -938,6 +938,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     public static Server createTestProxyServer(User owner, boolean ensureOwnerAccess)
                 throws Exception {
         Server server = createTestServer(owner, ensureOwnerAccess);
+        SYSTEM_ENTITLEMENT_MANAGER.addEntitlementToServer(server, EntitlementManager.PROXY);
         Channel baseChan = ChannelFactoryTest.createBaseChannel(owner);
         server.addChannel(baseChan);
 
