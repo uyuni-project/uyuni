@@ -97,10 +97,10 @@ public class PowerManagementHandler extends BaseHandler {
      */
     @ReadOnly
     public Map<String, String> getDetails(User loggedInUser, Integer sid) {
-        SystemRecord record = SystemRecord.lookupById(
+        SystemRecord systemRecord = SystemRecord.lookupById(
                 CobblerXMLRPCHelper.getConnection(loggedInUser),
                 lookupServer(loggedInUser, sid).getCobblerId());
-        return getDetails(loggedInUser, record);
+        return getDetails(loggedInUser, systemRecord);
     }
 
     /**
@@ -125,22 +125,22 @@ public class PowerManagementHandler extends BaseHandler {
     @ReadOnly
     public Map<String, String> getDetails(User loggedInUser, String name) {
         ensureOrgAdmin(loggedInUser);
-        SystemRecord record = lookupExistingCobblerRecord(loggedInUser, name);
-        return getDetails(loggedInUser, record);
+        SystemRecord cobblerRecord = lookupExistingCobblerRecord(loggedInUser, name);
+        return getDetails(loggedInUser, cobblerRecord);
     }
 
-    private Map<String, String> getDetails(User loggedInUser, SystemRecord record) {
+    private Map<String, String> getDetails(User loggedInUser, SystemRecord systemRecord) {
         Map<String, String> result = new HashMap<>();
         List<String> types = listTypes(loggedInUser);
-        if (record == null) {
+        if (systemRecord == null) {
             result.put(PowerManagementAction.POWER_TYPE, types.get(0));
         }
         else {
-            result.put(PowerManagementAction.POWER_TYPE, record.getPowerType());
-            result.put(PowerManagementAction.POWER_ADDRESS, record.getPowerAddress());
-            result.put(PowerManagementAction.POWER_USERNAME, record.getPowerUsername());
-            result.put(PowerManagementAction.POWER_PASSWORD, record.getPowerPassword());
-            result.put(PowerManagementAction.POWER_ID, record.getPowerId());
+            result.put(PowerManagementAction.POWER_TYPE, systemRecord.getPowerType());
+            result.put(PowerManagementAction.POWER_ADDRESS, systemRecord.getPowerAddress());
+            result.put(PowerManagementAction.POWER_USERNAME, systemRecord.getPowerUsername());
+            result.put(PowerManagementAction.POWER_PASSWORD, systemRecord.getPowerPassword());
+            result.put(PowerManagementAction.POWER_ID, systemRecord.getPowerId());
         }
         return result;
     }
@@ -376,10 +376,10 @@ public class PowerManagementHandler extends BaseHandler {
      */
     @ReadOnly
     public boolean getStatus(User loggedInUser, Integer sid) {
-        SystemRecord record = SystemRecord.lookupById(
+        SystemRecord systemRecord = SystemRecord.lookupById(
                 CobblerXMLRPCHelper.getConnection(loggedInUser),
                 lookupServer(loggedInUser, sid).getCobblerId());
-        return record.getPowerStatus();
+        return systemRecord.getPowerStatus();
     }
 
     /**
@@ -397,11 +397,11 @@ public class PowerManagementHandler extends BaseHandler {
     @ReadOnly
     public boolean getStatus(User loggedInUser, String name) {
         ensureOrgAdmin(loggedInUser);
-        SystemRecord record = lookupExistingCobblerRecord(loggedInUser, name);
-        if (record == null) {
+        SystemRecord cobblerRecord = lookupExistingCobblerRecord(loggedInUser, name);
+        if (cobblerRecord == null) {
             throw new NoSuchSystemException();
         }
-        return record.getPowerStatus();
+        return cobblerRecord.getPowerStatus();
     }
 
     private SystemRecord lookupExistingCobblerRecord(User loggedInUser, String label) {

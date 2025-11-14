@@ -6009,15 +6009,15 @@ public class SystemHandler extends BaseHandler {
                             }
                             continue;
                         }
-                        String[] record = line.split(",");
-                        if (record.length <= uuidPos || record.length <= systemIdPos) {
+                        String[] mappingFileRecord = line.split(",");
+                        if (mappingFileRecord.length <= uuidPos || mappingFileRecord.length <= systemIdPos) {
                             log.warn("Unexpected format of mapping file {}", file.getName());
                             break;
                         }
-                        if (record[systemIdPos].equals(systemIdStr) &&
+                        if (mappingFileRecord[systemIdPos].equals(systemIdStr) &&
                                 fileStamp > (Integer)map.get(csvStamp)) {
-                            map.put(csvUuid, record[uuidPos]);
-                            map.put(csvSystemId, record[systemIdPos]);
+                            map.put(csvUuid, mappingFileRecord[uuidPos]);
+                            map.put(csvSystemId, mappingFileRecord[systemIdPos]);
                             map.put(csvStamp, fileStamp);
                             String[] cmd = {"/usr/bin/rpm", "--qf=%{NAME}", "-qf", file.getAbsolutePath()};
                             map.remove(csvHostname);
