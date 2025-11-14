@@ -22,15 +22,15 @@ import com.redhat.rhn.domain.rhnpackage.PackageName;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -41,14 +41,8 @@ import javax.persistence.Table;
 public class TokenPackage implements Identifiable {
 
     @Id
-    @GeneratedValue(generator = "reg_tok_pkg_seq")
-    @GenericGenerator(
-            name = "reg_tok_pkg_seq",
-            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-            parameters = {
-                    @Parameter(name = "sequence_name", value = "rhn_reg_tok_pkg_id_seq"),
-                    @Parameter(name = "increment_size", value = "1")
-            })
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "reg_tok_pkg_seq")
+    @SequenceGenerator(name = "reg_tok_pkg_seq", sequenceName = "rhn_reg_tok_pkg_id_seq", allocationSize = 1)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

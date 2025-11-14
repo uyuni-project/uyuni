@@ -22,8 +22,6 @@ import com.redhat.rhn.domain.Identifiable;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.scc.SCCRepositoryAuth;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 
 import java.util.HashSet;
@@ -34,6 +32,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -41,6 +40,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -51,14 +51,8 @@ import javax.persistence.Table;
 public class ContentSource extends BaseDomainHelper implements Identifiable {
 
     @Id
-    @GeneratedValue(generator = "chan_content_src_seq")
-    @GenericGenerator(
-        name = "chan_content_src_seq",
-        strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-        parameters = {
-            @Parameter(name = "sequence_name", value = "rhn_chan_content_src_id_seq"),
-            @Parameter(name = "increment_size", value = "1")
-        })
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "chan_content_src_seq")
+    @SequenceGenerator(name = "chan_content_src_seq", sequenceName = "rhn_chan_content_src_id_seq", allocationSize = 1)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

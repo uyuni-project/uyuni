@@ -13,8 +13,6 @@ package com.redhat.rhn.domain.action.salt.build;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.action.Action;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -24,10 +22,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -38,14 +38,9 @@ import javax.persistence.Table;
 public class ImageBuildActionDetails extends BaseDomainHelper {
 
     @Id
-    @GeneratedValue(generator = "RHN_ACT_IMAGE_BUILD_ID_SEQ")
-    @GenericGenerator(
-            name = "RHN_ACT_IMAGE_BUILD_ID_SEQ",
-            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-            parameters = {
-                    @Parameter(name = "sequence_name", value = "RHN_ACT_IMAGE_BUILD_ID_SEQ"),
-                    @Parameter(name = "increment_size", value = "1")
-            })
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_ACT_IMAGE_BUILD_ID_SEQ")
+    @SequenceGenerator(name = "RHN_ACT_IMAGE_BUILD_ID_SEQ", sequenceName = "RHN_ACT_IMAGE_BUILD_ID_SEQ",
+            allocationSize = 1)
     private Long id;
 
     @Column

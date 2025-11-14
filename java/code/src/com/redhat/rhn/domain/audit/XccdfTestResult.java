@@ -28,8 +28,6 @@ import com.redhat.rhn.manager.audit.scap.file.ScapResultFile;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 import java.io.Serializable;
 import java.util.Calendar;
@@ -44,10 +42,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -61,12 +61,8 @@ import javax.persistence.Transient;
 public class XccdfTestResult implements Serializable {
 
     @Id
-    @GeneratedValue(generator = "xccdf_test_result_seq")
-    @GenericGenerator(name = "xccdf_test_result_seq",
-            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-            parameters = {
-            @Parameter(name = "sequence_name", value = "rhn_xccdf_tresult_id_seq")
-            })
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "xccdf_test_result_seq")
+    @SequenceGenerator(name = "xccdf_test_result_seq", sequenceName = "rhn_xccdf_tresult_id_seq")
     @Column(name = "id", nullable = false)
     private Long id;
 

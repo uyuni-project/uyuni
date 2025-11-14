@@ -18,8 +18,6 @@ import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 
 import java.io.Serializable;
@@ -34,12 +32,14 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -50,14 +50,8 @@ import javax.persistence.Table;
 public class SUSEProduct extends BaseDomainHelper implements Serializable {
 
     @Id
-    @GeneratedValue(generator = "suse_product_seq")
-    @GenericGenerator(
-            name = "suse_product_seq",
-            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-            parameters = {
-                    @Parameter(name = "sequence_name", value = "SUSE_PRODUCTS_ID_SEQ"),
-                    @Parameter(name = "increment_size", value = "1")
-            })
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "suse_product_seq")
+    @SequenceGenerator(name = "suse_product_seq", sequenceName = "SUSE_PRODUCTS_ID_SEQ", allocationSize = 1)
     private Long id;
 
     @Column(name = "name")

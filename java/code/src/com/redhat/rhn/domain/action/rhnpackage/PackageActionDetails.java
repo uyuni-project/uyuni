@@ -22,8 +22,6 @@ import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -32,9 +30,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -46,14 +46,8 @@ import javax.persistence.Transient;
 public class PackageActionDetails extends BaseDomainHelper {
 
     @Id
-    @GeneratedValue(generator = "package_action_seq")
-    @GenericGenerator(
-        name = "package_action_seq",
-        strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-        parameters = {
-                @Parameter(name = "sequence_name", value = "RHN_ACT_P_ID_SEQ"),
-                @Parameter(name = "increment_size", value = "1")
-         })
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "package_action_seq")
+    @SequenceGenerator(name = "package_action_seq", sequenceName = "RHN_ACT_P_ID_SEQ", allocationSize = 1)
     @Column(name = "id")
     private Long packageId;
 

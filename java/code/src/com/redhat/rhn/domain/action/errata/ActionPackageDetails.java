@@ -18,17 +18,17 @@ package com.redhat.rhn.domain.action.errata;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.action.Action;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -40,14 +40,8 @@ import javax.persistence.Table;
 @Table(name = "rhnActionPackageDetails")
 public class ActionPackageDetails extends BaseDomainHelper {
     @Id
-    @GeneratedValue(generator = "actiondpd_seq")
-    @GenericGenerator(
-        name = "actiondpd_seq",
-        strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-        parameters = {
-                @Parameter(name = "sequence_name", value = "rhn_actiondpd_id_seq"),
-                @Parameter(name = "increment_size", value = "1")
-        })
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "actiondpd_seq")
+    @SequenceGenerator(name = "actiondpd_seq", sequenceName = "rhn_actiondpd_id_seq", allocationSize = 1)
     private long id;
 
     @Column(name = "allow_vendor_change")
