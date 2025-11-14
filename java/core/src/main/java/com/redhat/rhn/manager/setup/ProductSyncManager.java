@@ -427,8 +427,7 @@ public class ProductSyncManager {
 
         List<Channel> mandatoryChannelsOut = collect.get(true).stream()
         // Add base channel on top of everything else so it can be added first.
-        .sorted((a, b) -> StringUtils.isBlank(a.getParentLabel()) ? -1 :
-                StringUtils.isBlank(b.getParentLabel()) ? 1 : 0).map(mapping).collect(Collectors.toList());
+        .sorted(ProductSyncManager::sortBaseChannelOnTop).map(mapping).collect(Collectors.toList());
 
         List<Channel> optionalChannelsOut = collect.get(false).stream()
                 .map(mapping).collect(Collectors.toList());
@@ -449,6 +448,15 @@ public class ProductSyncManager {
         }
 
         return displayProduct;
+    }
+
+    private static int sortBaseChannelOnTop(MgrSyncChannelDto a, MgrSyncChannelDto b) {
+        if (StringUtils.isBlank(a.getParentLabel())) {
+            return -1;
+        }
+        else {
+            return StringUtils.isBlank(b.getParentLabel()) ? 1 : 0;
+        }
     }
 
     /**

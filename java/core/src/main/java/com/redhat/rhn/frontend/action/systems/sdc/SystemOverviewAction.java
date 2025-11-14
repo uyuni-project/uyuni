@@ -131,10 +131,9 @@ public class SystemOverviewAction extends RhnAction {
         SdcHelper.ssmCheck(request, sid, user);
 
         //Order entitlements
-        List<Entitlement> entitlements = s.getEntitlements().stream().sorted(
-                (e1, e2) -> (e1.isBase() && e2.isBase()) || (!e1.isBase() && !e2.isBase()) ?
-                        e1.getHumanReadableLabel().compareTo(e2.getHumanReadableLabel()) :
-                        (e1.isBase() ? -1 : 1))
+        List<Entitlement> entitlements = s.getEntitlements()
+                .stream()
+                .sorted(SystemOverviewAction::getEntitlementComparator)
                 .collect(Collectors.toList());
 
         request.setAttribute("rebootRequired", rebootRequired);
@@ -179,6 +178,15 @@ public class SystemOverviewAction extends RhnAction {
         }
 
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
+    }
+
+    private static int getEntitlementComparator(Entitlement e1, Entitlement e2) {
+        if ((e1.isBase() && e2.isBase()) || (!e1.isBase() && !e2.isBase())) {
+            return e1.getHumanReadableLabel().compareTo(e2.getHumanReadableLabel());
+        }
+        else {
+            return (e1.isBase() ? -1 : 1);
+        }
     }
 
     protected List<String> findUserServerPreferences(User user, Server s) {
