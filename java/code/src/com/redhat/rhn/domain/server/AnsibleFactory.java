@@ -177,7 +177,7 @@ public class AnsibleFactory extends HibernateFactory {
      * @return the updated {@link AnsiblePath}
      */
     public static AnsiblePath saveAnsiblePath(AnsiblePath path) {
-        HibernateFactory.getSession().saveOrUpdate(path);
+        HibernateFactory.saveOrUpdateObject(path);
         return path;
     }
 

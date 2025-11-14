@@ -274,24 +274,6 @@ public class ReportDbHibernateFactory {
     /**
      * Saves the given object to the database using Hibernate.
      * @param toSave Object to be persisted.
-     * @param saveOrUpdate true if saveOrUpdate should be called, false if
-     * save() is to be called directly.
-     */
-    /*
-    protected void saveObject(Object toSave, boolean saveOrUpdate) {
-        Session session = null;
-        session = getSession();
-        if (saveOrUpdate) {
-            session.saveOrUpdate(toSave);
-        }
-        else {
-            session.save(toSave);
-        }
-    }*/
-
-    /**
-     * Saves the given object to the database using Hibernate.
-     * @param toSave Object to be persisted.
      */
     /*
     protected void saveObject(Object toSave) {
