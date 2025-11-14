@@ -11847,7 +11847,7 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
       </trans-unit>
       <trans-unit id="message.scheduleactivated" xml:space="preserve" approved="yes">
         <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; activated.</source>
-        <target state="final">スケジュール&lt;strong&gt;{0}&lt;/strong&gt;が有効化されました。</target>
+        <target state="final">スケジュール &lt;strong&gt;{0}&lt;/strong&gt; が有効化されました。</target>
       </trans-unit>
       <trans-unit id="task.status.errata-advisory-map-sync" xml:space="preserve" approved="yes">
         <source>Update SUSE errata advisory map</source>
@@ -11961,7 +11961,7 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
       </trans-unit>
       <trans-unit id="product_migration.salt_needs_update.details" xml:space="preserve" approved="yes">
         <source>The installed &lt;pre&gt;{0}&lt;/pre&gt; package version on this system is out of date. Please update the package to the latest version before you start a Product migration.</source>
-        <target state="final">このシステムにインストールされている&lt;pre&gt;{0}&lt;/pre&gt;パッケージのバージョンは古くなっています。製品移行を開始する前に、パッケージを最新バージョンに更新してください。</target>
+        <target state="final">このシステムにインストールされている &lt;pre&gt;{0}&lt;/pre&gt; パッケージのバージョンは古くなっています。製品移行を開始する前に、パッケージを最新バージョンに更新してください。</target>
       </trans-unit>
       <trans-unit id="product_migration.addons_affected" xml:space="preserve" approved="yes">
         <source>Some installed addons are going to be affect, depending on chosen target.</source>
