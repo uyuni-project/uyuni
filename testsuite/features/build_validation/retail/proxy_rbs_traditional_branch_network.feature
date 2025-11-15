@@ -100,13 +100,9 @@ Feature: Prepare the branch server for PXE booting
     And I enter the local IP address of "broadcast" in broadcast address field
     And I press "Remove" in the routers section
     And I press "Add Item" in host reservations section
-    And I enter "sle12sp5terminal" in first reserved hostname field
-    And I enter the local IP address of "sle12sp5_terminal" in first reserved IP field
-    And I enter the MAC address of "sle12sp5_terminal" in first reserved MAC field
-    And I press "Add Item" in host reservations section
-    And I enter "sle15sp4terminal" in second reserved hostname field
-    And I enter the local IP address of "sle15sp4_terminal" in second reserved IP field
-    And I enter the MAC address of "sle15sp4_terminal" in second reserved MAC field
+    And I enter "sle15sp4terminal" in first reserved hostname field
+    And I enter the local IP address of "sle15sp4_terminal" in first reserved IP field
+    And I enter the MAC address of "sle15sp4_terminal" in first reserved MAC field
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
 
@@ -121,7 +117,7 @@ Feature: Prepare the branch server for PXE booting
     And I enter "no" in first value field
     And I enter "example.org" in first configured zone name field
     And I press "Add Item" in configured zones section
-    And I enter the local zone name in second configured zone name field
+    And I enter the local zone name in first configured zone name field
     # direct zone example.org:
     And I enter "example.org" in first available zone name field
     And I enter "master/db.example.org" in file name field of example.org zone
@@ -131,26 +127,22 @@ Feature: Prepare the branch server for PXE booting
     And I enter "proxy" in first A name field of example.org zone
     And I enter the local IP address of "proxy" in first A address field of example.org zone
     And I press "Add Item" in A section of example.org zone
-    # TODO: don't hardcode anymore the names in the private network once we have them in .bashrc
-    And I enter "sle12sp5terminal" in second A name field of example.org zone
-    And I enter the local IP address of "sle12sp5_terminal" in second A address field of example.org zone
-    And I press "Add Item" in A section of example.org zone
-    And I enter "sle15sp4terminal" in third A name field of example.org zone
-    And I enter the local IP address of "sle15sp4_terminal" in third A address field of example.org zone
+    And I enter "sle15sp4terminal" in second A name field of example.org zone
+    And I enter the local IP address of "sle15sp4_terminal" in second A address field of example.org zone
     And I press "Add Item" in NS section of example.org zone
     And I enter "proxy.example.org." in first NS field of example.org zone
     And I press "Add Item" in CNAME section of example.org zone
     And I enter "ftp" in first CNAME alias field of example.org zone
     And I enter "proxy" in first CNAME name field of example.org zone
     And I press "Add Item" in CNAME section of example.org zone
-    And I enter "tftp" in second CNAME alias field of example.org zone
-    And I enter "proxy" in second CNAME name field of example.org zone
+    And I enter "tftp" in first CNAME alias field of example.org zone
+    And I enter "proxy" in first CNAME name field of example.org zone
     And I press "Add Item" in CNAME section of example.org zone
-    And I enter "salt" in third CNAME alias field of example.org zone
-    And I enter "proxy" in third CNAME name field of example.org zone
+    And I enter "salt" in second CNAME alias field of example.org zone
+    And I enter "proxy" in second CNAME name field of example.org zone
     # reverse zone xx.168.192.in-addr.arpa:
     And I press "Add Item" in available zones section
-    And I enter the local zone name in second available zone name field
+    And I enter the local zone name in first available zone name field
     And I enter the local file name in file name field of zone with local name
     And I enter "proxy.example.org." in SOA name server field of zone with local name
     And I enter "admin@example.org." in SOA contact field of zone with local name

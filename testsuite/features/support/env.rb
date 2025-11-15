@@ -46,7 +46,6 @@ $context = {}
 # Other global variables
 $pxeboot_mac = ENV.fetch('PXEBOOT_MAC', nil)
 $pxeboot_image = ENV.fetch('PXEBOOT_IMAGE', nil) || 'sles15sp3o'
-$sle12sp5_terminal_mac = ENV.fetch('SLE12SP5_TERMINAL_MAC', nil)
 $sle15sp4_terminal_mac = ENV.fetch('SLE15SP4_TERMINAL_MAC', nil)
 $private_net = ENV.fetch('PRIVATENET', nil) if ENV['PRIVATENET']
 $mirror = ENV.fetch('MIRROR', nil)
@@ -570,14 +569,6 @@ end
 
 Before('@slmicro61_ssh_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['slmicro61_ssh_minion']
-end
-
-Before('@sle12sp5_buildhost') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle12sp5_buildhost']
-end
-
-Before('@sle12sp5_terminal') do
-  skip_this_scenario unless $sle12sp5_terminal_mac
 end
 
 Before('@sle15sp4_buildhost') do
