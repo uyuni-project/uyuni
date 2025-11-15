@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-10-27 10:14+0100\n"
-"PO-Revision-Date: 2025-05-30 08:59+0000\n"
+"PO-Revision-Date: 2025-11-15 12:04+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.11.4\n"
+"X-Generator: Weblate 5.14.3\n"
 
 #: ../html/javascript/spacewalk-essentials.js:407
 msgid "remaining"
@@ -536,10 +536,8 @@ msgid "Select"
 msgstr "選択"
 
 #: ../html/src/components/formik/Form.example.tsx:66
-#, fuzzy
-#| msgid "foo"
 msgid "Foo"
-msgstr "foo"
+msgstr "Foo"
 
 #: ../html/src/components/formik/Form.example.tsx:70
 msgid "Bar"
@@ -709,16 +707,12 @@ msgid "Confirm deregistration"
 msgstr "登録解除の確認"
 
 #: ../html/src/components/hub/DeregisterServer.tsx:55
-#, fuzzy
-#| msgid "Error when deleting the "
 msgid "Error deregistering server"
-msgstr "下記の削除に失敗しました "
+msgstr "サーバの登録解除中にエラーが発生しました"
 
 #: ../html/src/components/hub/DeregisterServer.tsx:60
-#, fuzzy
-#| msgid "Delete Profile Without Cleanup"
 msgid "Deregister without cleanup"
-msgstr "クリーンアップ無しでのプロファイル削除"
+msgstr "クリーンアップ無しでの登録解除"
 
 #: ../html/src/components/hub/DeregisterServer.tsx:68
 #: ../html/src/manager/systems/delete-system.tsx:11
@@ -825,10 +819,8 @@ msgid "The migration process was not successfull and reported the following erro
 msgstr "移行プロセスは成功せず、次のエラーが報告されました"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:203
-#, fuzzy
-#| msgid "There are no states assigned."
 msgid "There are no ISSv1 slaves to migrate."
-msgstr "状態が何も割り当てられていません。"
+msgstr "移行するISSv1スレーブはありません。"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:211
 #: ../html/src/components/states-picker.tsx:373
@@ -1073,16 +1065,12 @@ msgid "Clear fields"
 msgstr "項目の消去"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:15
-#, fuzzy
-#| msgid "Server FQDN:"
 msgid "Hub server FQDN:"
-msgstr "サーバFQDN:"
+msgstr "ハブサーバFQDN:"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:16
-#, fuzzy
-#| msgid "Peripheral Server FQDN"
 msgid "Peripheral server FQDN:"
-msgstr "周辺機器サーバFQDN"
+msgstr "周辺機器サーバFQDN:"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:20
 msgid "A customized Root Certificate Authority is currently configured for this hub."
@@ -1157,32 +1145,22 @@ msgid "Edit channels"
 msgstr "チャネルの編集"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:191
-#, fuzzy
-#| msgid " channels synced"
 msgid "No channels synchronized."
-msgstr " チャンネルを同期しました"
+msgstr "同期されたチャネルはありません。"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:195
-#, fuzzy
-#| msgid "One syncronized channel"
 msgid "One synchronized channel"
 msgstr "1つの同期チャネル"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:200
-#, fuzzy
-#| msgid "{nSyncedChannels} syncronized channels, from one organization"
 msgid "{nSyncedChannels} synchronized channels"
-msgstr "1つの組織からの、{nSyncedChannels} 個の同期チャネル"
+msgstr "{nSyncedChannels} 個の同期チャネル"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:204
-#, fuzzy
-#| msgid "{nSyncedChannels} syncronized channels, from one organization"
 msgid "{nSyncedChannels} synchronized channels, from one organization"
 msgstr "1つの組織からの、{nSyncedChannels} 個の同期チャネル"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:207
-#, fuzzy
-#| msgid "{nSyncedChannels} syncronized channels, from {nSyncedOrgs} different organizations"
 msgid "{nSyncedChannels} synchronized channels, from {nSyncedOrgs} different organizations"
 msgstr "{nSyncedOrgs} 個の異なる組織からの、{nSyncedChannels} 個の同期チャネル"
 
