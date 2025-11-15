@@ -1,3 +1,0 @@
-[buildconfig]
-tagger = tito.tagger.SUSEContainerTagger
-builder = custom.ContainerBuilder

@@ -11,10 +11,8 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
         python3-PyYAML \
         python3-pyzmq && \
     zypper --non-interactive clean --all && \
+    rpm -e zypper && \
     rm -rf /var/log/{alternatives.log,lastlog,tallylog,suseconnect.log,zypper.log,zypp/history,YaST2}
-
-# Additional material
-COPY --chmod=555 uyuni-configure.py /usr/bin/uyuni-configure.py
 
 # LABELs
 ARG PRODUCT=Uyuni
@@ -42,4 +40,4 @@ EXPOSE 4506/tcp
 
 VOLUME "/etc/uyuni"
 
-CMD uyuni-configure.py && salt-broker
+CMD salt-broker
