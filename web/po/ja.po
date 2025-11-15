@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-10-27 10:14+0100\n"
-"PO-Revision-Date: 2025-11-15 12:04+0000\n"
+"PO-Revision-Date: 2025-11-15 15:04+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -541,7 +541,7 @@ msgstr "Foo"
 
 #: ../html/src/components/formik/Form.example.tsx:70
 msgid "Bar"
-msgstr ""
+msgstr "バー"
 
 #: ../html/src/components/formik/Form.example.tsx:77
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:245
@@ -1146,19 +1146,19 @@ msgstr "チャネルの編集"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:191
 msgid "No channels synchronized."
-msgstr "同期されたチャネルはありません。"
+msgstr "同期されたチャンネルはありません。"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:195
 msgid "One synchronized channel"
-msgstr "1つの同期チャネル"
+msgstr "1つの同期チャンネル"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:200
 msgid "{nSyncedChannels} synchronized channels"
-msgstr "{nSyncedChannels} 個の同期チャネル"
+msgstr "{nSyncedChannels} 個の同期チャンネル"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:204
 msgid "{nSyncedChannels} synchronized channels, from one organization"
-msgstr "1つの組織からの、{nSyncedChannels} 個の同期チャネル"
+msgstr "1つの組織からの、{nSyncedChannels} 個の同期チャンネル"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:207
 msgid "{nSyncedChannels} synchronized channels, from {nSyncedOrgs} different organizations"
@@ -1643,49 +1643,37 @@ msgstr "スケジュールの選択:"
 
 #: ../html/src/components/product-migration/MigrationChannelsSelectorForm.tsx:159
 #: ../html/src/components/product-migration/MigrationTargetSelectorForm.tsx:56
-#, fuzzy
-#| msgid "Product"
 msgid "Source Product"
-msgstr "製品"
+msgstr "ソース製品"
 
 #: ../html/src/components/product-migration/MigrationChannelsSelectorForm.tsx:166
-#, fuzzy
-#| msgid "Target Host"
 msgid "Target Product"
-msgstr "ターゲットホスト"
+msgstr "ターゲット製品"
 
 #: ../html/src/components/product-migration/MigrationChannelsSelectorForm.tsx:173
-#, fuzzy
-#| msgid "New base channel"
 msgid "Target base channel"
-msgstr "新しいベースチャンネル"
+msgstr "ターゲットベースチャンネル"
 
 #: ../html/src/components/product-migration/MigrationChannelsSelectorForm.tsx:187
-#, fuzzy
-#| msgid "no child channels"
 msgid "Target child channels"
-msgstr "子チャンネル無し"
+msgstr "ターゲット子チャンネル"
 
 #: ../html/src/components/product-migration/MigrationChannelsSelectorForm.tsx:194
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:85
 msgid "Allow vendor change"
-msgstr ""
+msgstr "ベンダの変更を許可する"
 
 #: ../html/src/components/product-migration/MigrationChannelsSelectorForm.tsx:207
-#, fuzzy
-#| msgid "Back to sytem selection"
 msgid "Back to target selection"
-msgstr "システム選択に戻る"
+msgstr "ターゲット選択に戻る"
 
 #: ../html/src/components/product-migration/MigrationChannelsSelectorForm.tsx:210
-#, fuzzy
-#| msgid "Schedule Attestation"
 msgid "Schedule Migration"
-msgstr "認証のスケジュールを設定する"
+msgstr "移行のスケジュール"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:41
 msgid "Please review your selection and confirm below to schedule the migration."
-msgstr ""
+msgstr "選択内容を確認し、以下を確認して移行をスケジュールしてください。"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:45
 #: ../html/src/manager/header/search/search.tsx:10
@@ -1694,36 +1682,28 @@ msgid "Systems"
 msgstr "システム"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:60
-#, fuzzy
-#| msgid "Product Description"
 msgid "Product after migration"
-msgstr "製品説明"
+msgstr "移行後の製品"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:66
-#, fuzzy
-#| msgid "No subscriptions found."
 msgid "Channel subscriptions after migration"
-msgstr "サブスクリプションが見つかりませんでした。"
+msgstr "移行後のチャンネルサブスクリプション"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:91
 msgid "Schedule action for no sooner than"
-msgstr ""
+msgstr "指定日時以降にアクションをスケジュール"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:104
 msgid "In order to detect any possible problems it is recommended to always do a Dry Run before scheduling the actual Product Migration."
-msgstr ""
+msgstr "潜在的な問題を検出するために、実際の製品移行をスケジュールする前に必ず予行演習を実行することをお勧めします。"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:114
-#, fuzzy
-#| msgid "Back to sytem selection"
 msgid "Back to channel selection"
-msgstr "システム選択に戻る"
+msgstr "チャンネル選択に戻る"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:121
-#, fuzzy
-#| msgid " ready to run"
 msgid "Dry run"
-msgstr " 実行可能"
+msgstr "予行演習"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:127
 #: ../html/src/manager/admin/hub/peripherals.tsx:37
@@ -1736,24 +1716,21 @@ msgid ""
 "\n"
 "{missingChannels}"
 msgstr ""
+"ターゲットが利用できません。以下のチャンネルは同期されていません:\n"
+"\n"
+"{missingChannels}"
 
 #: ../html/src/components/product-migration/MigrationTargetSelectorForm.tsx:63
-#, fuzzy
-#| msgid "Product"
 msgid "Product id"
-msgstr "製品"
+msgstr "製品ID"
 
 #: ../html/src/components/product-migration/MigrationTargetSelectorForm.tsx:64
-#, fuzzy
-#| msgid "Products"
 msgid "Target Products"
-msgstr "製品"
+msgstr "ターゲット製品"
 
 #: ../html/src/components/product-migration/MigrationTargetSelectorForm.tsx:84
-#, fuzzy
-#| msgid "Desync Channel"
 msgid "Select Channels"
-msgstr "チャネルの同期解除"
+msgstr "チャンネルの選択"
 
 #: ../html/src/components/ranking-table.tsx:20
 #: ../html/src/components/salt-state-popup.tsx:11
@@ -2006,8 +1983,6 @@ msgid "All"
 msgstr "すべて"
 
 #: ../html/src/components/table/nested-data.example.tsx:39
-#, fuzzy
-#| msgid "Channel Name"
 msgid "Channel name"
 msgstr "チャンネル名"
 
@@ -2017,17 +1992,15 @@ msgstr "ハブ組織"
 
 #: ../html/src/components/table/nested-data.example.tsx:65
 msgid "View"
-msgstr ""
+msgstr "表示"
 
 #: ../html/src/components/table/nested-data.example.tsx:66
 msgid "Modify"
-msgstr ""
+msgstr "変更"
 
 #: ../html/src/components/table/search.example.tsx:20
-#, fuzzy
-#| msgid "System Kind"
 msgid "Item id"
-msgstr "システムの種類"
+msgstr "項目ID"
 
 #: ../html/src/components/target-systems.tsx:26
 msgid "Target Systems"
@@ -2091,7 +2064,7 @@ msgstr "このチャンネルが必要"
 
 #: ../html/src/core/intl/index.example.tsx:7
 msgid "Please see <link>Format.JS docs</link> for the message syntax."
-msgstr ""
+msgstr "メッセージの構文については、<link>Format.JSドキュメント</link>を参照してください。"
 
 #: ../html/src/core/intl/index.test.tsx:9
 msgid "foo"
@@ -2292,26 +2265,20 @@ msgid "Create"
 msgstr "作成"
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:36
-#, fuzzy
-#| msgid "Desync Channel"
 msgid "Sync Channels"
-msgstr "チャネルの同期解除"
+msgstr "チャンネルの同期"
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:37
-#, fuzzy
-#| msgid "Schedule channels product resync"
 msgid "Schedule Sync Channels task"
-msgstr "チャンネル製品の再同期をスケジュール"
+msgstr "チャンネル同期タスクをスケジュール"
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:42
-#, fuzzy
-#| msgid "Confirm Channel Synchronization Changes"
 msgid "Confirm channels synchronization"
-msgstr "チャネル同期の変更確認"
+msgstr "チャンネル同期の確認"
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:43
 msgid "Do you want to schedule a channels synchronization from the hub?"
-msgstr ""
+msgstr "ハブからのチャンネル同期をスケジュールしますか?"
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:57
 msgid "Hub Details"
@@ -2322,14 +2289,12 @@ msgid "No hub is currently configured for this server. "
 msgstr "このサーバには現在ハブが設定されていません。 "
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:89
-#, fuzzy
-#| msgid "This server is currently registered as peripheral of hub {fqdn}. "
 msgid "This server is currently registered as peripheral of hub {fqdn}. "
 msgstr "このサーバは現在、ハブ {fqdn} の周辺機器として登録されています。 "
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:108
 msgid "Successfully scheduled a channels synchronization."
-msgstr ""
+msgstr "チャンネル同期が正常にスケジュールされました。"
 
 #: ../html/src/manager/admin/hub/list-tokens.tsx:20
 msgid "Access Tokens"
@@ -2348,8 +2313,6 @@ msgid "{fqdn} - Peripheral Details"
 msgstr "{fqdn} - 周辺機器の詳細"
 
 #: ../html/src/manager/admin/hub/peripheral-details.tsx:51
-#, fuzzy
-#| msgid "The server {fqdn} is currently registered as peripheral of this hub. "
 msgid "The server {fqdn} is currently registered as peripheral of this hub. "
 msgstr "サーバ {fqdn} は現在、このハブの周辺機器として登録されています。 "
 
@@ -2938,10 +2901,8 @@ msgstr "影響を受ける、割り当てられていないチャンネルで利
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:45
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:53
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:89
-#, fuzzy
-#| msgid "The client is affected by a vulnerability for which a patch has been released,"
 msgid "The client is affected by a vulnerability and we have a patch for it,"
-msgstr "クライアントは、パッチがリリースされている脆弱性の影響を受けます。"
+msgstr "クライアントは脆弱性の影響を受けており、そのパッチは用意されています。"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:51
 msgid "Affected, patches available in a Product Migration target"
@@ -3388,10 +3349,8 @@ msgid "Create project"
 msgstr "プロジェクトの作成"
 
 #: ../html/src/manager/content-management/list-filters/appstreams/appstreams.tsx:39
-#, fuzzy
-#| msgid "Select a channel to browse available modules"
 msgid "Browse available modules"
-msgstr "利用可能なモジュールを表示するチャンネルを選択してください"
+msgstr "使用可能なモジュールをブラウズ"
 
 #: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:29
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:35
@@ -3585,10 +3544,8 @@ msgid "Some of the selected filters are used in projects and can not be deleted.
 msgstr "選択したフィルタのうちのいくつかがプロジェクト内で使用されているため、削除できません。"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:126
-#, fuzzy
-#| msgid "Create New Filter"
 msgid "Create Filter"
-msgstr "新しいフィルタの作成"
+msgstr "フィルタの作成"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:138
 msgid "Select unused"
@@ -3607,10 +3564,8 @@ msgid "Projects in use"
 msgstr "使用しているプロジェクト"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:207
-#, fuzzy
-#| msgid "Edit Filter {name}"
 msgid "Edit Filter"
-msgstr "フィルタ{name}の編集"
+msgstr "フィルタの編集"
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:32
 msgid "Live patching based on a specific system"
@@ -4142,14 +4097,10 @@ msgid "The page you requested, {currentUrl}, was not found."
 msgstr "リクエストされたページ{currentUrl}が見つかりませんでした。"
 
 #: ../html/src/manager/errors/not-found.tsx:12
-#, fuzzy
-#| msgid "If you typed this address into your browser, double-check the spelling and capitalization."
 msgid "If you typed this address into your browser, double-check the spelling and capitalization."
-msgstr "このアドレスをご使用のブラウザに入力している場合は、スペリングや大文字の使い方に誤りがないかを再度確認してください。"
+msgstr "このアドレスをご使用のブラウザに入力したら、スペリングや大文字の使い方に誤りがないかを再度確認してください。"
 
 #: ../html/src/manager/errors/not-found.tsx:18
-#, fuzzy
-#| msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your "
 msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your "
 msgstr "リンクをたどっている場合、リンクが正しくないか、古くなっている可能性があります。戻るボタンを押して戻ってください。 "
 
@@ -4158,10 +4109,8 @@ msgid "If you used a bookmark, the page may have moved to a different location s
 msgstr "ブックマークを使用している場合は、ブックマークの作成後に異なる場所に移動している場合もあります。 "
 
 #: ../html/src/manager/errors/not-found.tsx:32
-#, fuzzy
-#| msgid "If you feel you've reached this page in error, please contact us with details of how you received "
 msgid "If you feel you've reached this page in error, please contact us with details of how you received "
-msgstr "このページはエラーにならないはずであるとお考えの場合は、表示されたメッセージと共にご連絡ください。 "
+msgstr "このページが間違って表示されたと判断する場合は、このメッセージを受け取った状況の詳細を弊社にご報告ください。 "
 
 #: ../html/src/manager/groups/config-channels/group-config-channels.tsx:29
 msgid "Applying the config channels has been scheduled for each minion server in this group"
@@ -4242,10 +4191,8 @@ msgid "Profile Summary"
 msgstr "プロファイル概要"
 
 #: ../html/src/manager/images/image-build.tsx:247
-#, fuzzy
-#| msgid "Profile Summary"
 msgid "Edit Profile Summary"
-msgstr "プロファイル概要"
+msgstr "プロファイル概要の編集"
 
 #: ../html/src/manager/images/image-build.tsx:267
 msgid "No profile selected"
@@ -4400,10 +4347,8 @@ msgid "Image profiles have been deleted."
 msgstr "イメージプロファイルを削除しました。"
 
 #: ../html/src/manager/images/image-profiles.tsx:137
-#, fuzzy
-#| msgid "Create Image Profile"
 msgid "Delete Image Profile"
-msgstr "イメージプロファイルの作成"
+msgstr "イメージプロファイルの削除"
 
 #: ../html/src/manager/images/image-profiles.tsx:158
 msgid "Image Profiles"
@@ -4471,17 +4416,13 @@ msgid "Image stores have been deleted."
 msgstr "イメージストアを削除しました。"
 
 #: ../html/src/manager/images/image-stores.tsx:137
-#, fuzzy
-#| msgid "Delete Profile"
 msgid "Delete Store Profile"
-msgstr "プロファイルの削除"
+msgstr "ストアプロファイルの削除"
 
 #: ../html/src/manager/images/image-stores.tsx:147
 #: ../html/src/manager/images/image-stores.tsx:148
-#, fuzzy
-#| msgid "Create Image Profile"
 msgid "Create Store Profile"
-msgstr "イメージプロファイルの作成"
+msgstr "ストアプロファイルの作成"
 
 #: ../html/src/manager/images/image-stores.tsx:158
 msgid "Image Stores"
@@ -5120,16 +5061,12 @@ msgid "This will unassign all schedules from this calendar."
 msgstr "このカレンダーから全てのスケジュールの割り当てを解除します。"
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:30
-#, fuzzy
-#| msgid "Create a new maintenance schedule"
 msgid "Create a new Maintenance Schedule"
 msgstr "新しいメンテナンススケジュールの作成"
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:30
-#, fuzzy
-#| msgid "Create a new maintenance schedule"
 msgid "Create a new Maintenance Calendar"
-msgstr "新しいメンテナンススケジュールの作成"
+msgstr "新しいメンテナンスカレンダの作成"
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:40
 #: ../html/src/manager/maintenance/ssm/system-assignment.tsx:17
@@ -5165,10 +5102,8 @@ msgid "successfully"
 msgstr "成功"
 
 #: ../html/src/manager/maintenance/maintenance-windows.tsx:140
-#, fuzzy
-#| msgid "Error when deleting the "
 msgid "Error when deleting the "
-msgstr "下記の削除に失敗しました "
+msgstr "以下の削除中にエラーが発生しました: "
 
 #: ../html/src/manager/maintenance/maintenance-windows.tsx:149
 msgid "Calendar successfully refreshed"
@@ -5353,66 +5288,52 @@ msgid "Applying the config channels has been "
 msgstr "設定チャンネルの適用を "
 
 #: ../html/src/manager/minion/details/support-data.tsx:51
-#, fuzzy
-#| msgid "The Salt version on this system does not support virtual network creating and editing"
 msgid "The OS of this system does not support the collection of support data."
-msgstr "このシステムの Salt バージョンは、仮想ネットワークの作成や編集に対応していません"
+msgstr "このシステムのOSは、サポートデータの収集に対応していません。"
 
 #: ../html/src/manager/minion/details/support-data.tsx:90
 msgid "Upload Support Data"
-msgstr ""
+msgstr "サポートデータのアップロード"
 
 #: ../html/src/manager/minion/details/support-data.tsx:102
-#, fuzzy
-#| msgid "Report Database Name"
 msgid "Support Case Number"
-msgstr "レポートデータベース名"
+msgstr "サポートケース番号"
 
 #: ../html/src/manager/minion/details/support-data.tsx:103
 msgid "The support case number to which this data will be attached."
-msgstr ""
+msgstr "このデータが添付されるサポートケース番号。"
 
 #: ../html/src/manager/minion/details/support-data.tsx:105
-#, fuzzy
-#| msgid "e.g., 2048"
 msgid "e.g. 12345"
-msgstr "例: 2048"
+msgstr "例: 12345"
 
 #: ../html/src/manager/minion/details/support-data.tsx:109
-#, fuzzy
-#| msgid "Has to be a valid qualified host name"
 msgid "Has to be a valid support case number"
-msgstr "正しい修飾ホスト名でなければなりません"
+msgstr "有効なサポートケース番号でなければなりません"
 
 #: ../html/src/manager/minion/details/support-data.tsx:113
-#, fuzzy
-#| msgid "Upload a file"
 msgid "Upload Region"
-msgstr "ファイルのアップロード"
+msgstr "アップロードリージョン"
 
 #: ../html/src/manager/minion/details/support-data.tsx:114
 msgid "The location of the FTP server where the data is uploaded."
-msgstr ""
+msgstr "データがアップロードされるFTPサーバの場所。"
 
 #: ../html/src/manager/minion/details/support-data.tsx:124
 msgid "Command-line Arguments"
-msgstr ""
+msgstr "コマンドライン引数"
 
 #: ../html/src/manager/minion/details/support-data.tsx:125
 msgid "Optional command line arguments for the execution of <programName></programName>."
-msgstr ""
+msgstr "<programName></programName> の実行のためのオプションのコマンドライン引数。"
 
 #: ../html/src/manager/minion/details/support-data.tsx:133
-#, fuzzy
-#| msgid "Earliest:"
 msgid "Earliest"
-msgstr "指定時刻以降にスケジュール:"
+msgstr "指定時刻以降にスケジュール"
 
 #: ../html/src/manager/minion/details/support-data.tsx:134
-#, fuzzy
-#| msgid "There are no relevant actions that can be executed on this system."
 msgid "The earliest moment the action can be executed."
-msgstr "このシステムで実行できる関連アクションはありません。"
+msgstr "アクションを実行可能な最も早い瞬間。"
 
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:65
 #: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:32
@@ -5587,10 +5508,8 @@ msgid "Root CA"
 msgstr "ルートCA"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:232
-#, fuzzy
-#| msgid "CA certificate to use to sign the SSL certificate in PEM format"
 msgid "Certificate authority that issued the proxy certificate (PEM format)"
-msgstr "PEM形式でSSL証明書に署名するために使用するCA証明書"
+msgstr "プロキシ証明書を発行した認証局(PEM形式)"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:241
 #: ../html/src/manager/proxy/container-config.tsx:344
@@ -5598,10 +5517,8 @@ msgid "Intermediate CAs"
 msgstr "中間CA"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:251
-#, fuzzy
-#| msgid "To sign the SSL certificate in PEM format"
 msgid "An intermediate CA certificate (PEM format)"
-msgstr "PEM形式のSSL証明書に署名するには"
+msgstr "中間CA証明書(PEM形式)"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:263
 #: ../html/src/manager/proxy/container-config.tsx:365
@@ -5609,10 +5526,8 @@ msgid "Proxy certificate"
 msgstr "プロキシ証明書"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:264
-#, fuzzy
-#| msgid "CA certificate to use to sign the SSL certificate in PEM format"
 msgid "SSL certificate issued for the proxy system (PEM format)"
-msgstr "PEM形式でSSL証明書に署名するために使用するCA証明書"
+msgstr "プロキシシステム用に発行されたSSL証明書(PEM形式)"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:272
 #: ../html/src/manager/proxy/container-config.tsx:374
@@ -5621,7 +5536,7 @@ msgstr "プロキシSSL機密鍵"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:273
 msgid "SSL private key for the proxy system (PEM format)"
-msgstr ""
+msgstr "プロキシシステムのSSL機密鍵(PEM形式)"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:284
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:285
@@ -5638,7 +5553,7 @@ msgstr "レジストリ"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:304
 msgid "The availability of container images depends on your environment’s connectivity. In air-gapped/restricted environments, using RPM as the source mode is recommended to ensure all required images are available locally. Selecting an incompatible source mode may result in deployment failures."
-msgstr ""
+msgstr "コンテナイメージの可用性は、環境の接続性に依存します。エアギャップ環境/制限された環境では、必要なすべてのイメージがローカルで利用できるように、ソースモードとしてRPMを使用することをお勧めします。互換性のないソースモードを選択すると、配備に失敗する可能性があります。"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:314
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:315
@@ -5672,7 +5587,7 @@ msgstr "コンテナタグ"
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:411
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:428
 msgid "e.g. {registryTagExample}"
-msgstr ""
+msgstr "例: {registryTagExample}"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:351
 msgid "HTTPD URL"
@@ -5680,7 +5595,7 @@ msgstr "HTTPD URL"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:352
 msgid "e.g., {registryUrlExample}/proxy-httpd"
-msgstr ""
+msgstr "例: {registryUrlExample}/proxy-httpd"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:359
 msgid "HTTPD Tag"
@@ -5692,7 +5607,7 @@ msgstr "Salt Broker URL"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:369
 msgid "e.g. {registryUrlExample}/proxy-salt-broker"
-msgstr ""
+msgstr "例: {registryUrlExample}/proxy-salt-broker"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:376
 msgid "Salt Broker Tag"
@@ -5704,7 +5619,7 @@ msgstr "Squid URL"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:386
 msgid "e.g. {registryUrlExample}/proxy-squid"
-msgstr ""
+msgstr "例: {registryUrlExample}/proxy-squid"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:393
 msgid "Squid Tag"
@@ -5716,7 +5631,7 @@ msgstr "SSH URL"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:403
 msgid "e.g. {registryUrlExample}/proxy-ssh"
-msgstr ""
+msgstr "例: {registryUrlExample}/proxy-ssh"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:410
 msgid "SSH Tag"
@@ -5728,7 +5643,7 @@ msgstr "TFTPD URL"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:420
 msgid "e.g. {registryUrlExample}/proxy-tftpd"
-msgstr ""
+msgstr "例: {registryUrlExample}/proxy-tftpd"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:427
 msgid "TFTPD Tag"
@@ -5812,10 +5727,8 @@ msgid "Filter by summary"
 msgstr "概要でフィルタ"
 
 #: ../html/src/manager/notifications/notifications-list.tsx:123
-#, fuzzy
-#| msgid "Flag as Read"
 msgid "Mark as Read"
-msgstr "読み込み済みとして設定"
+msgstr "読み込み済みとしてマーク"
 
 #: ../html/src/manager/notifications/notifications-list.tsx:133
 msgid "Severity"
@@ -6167,10 +6080,8 @@ msgid "Configure states to execute"
 msgstr "実行する状態を設定する"
 
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:105
-#, fuzzy
-#| msgid "Create Recurring"
 msgid "Create Recurring Action"
-msgstr "繰り返し作成"
+msgstr "定期的なアクションの作成"
 
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:116
 msgid " Recurring Actions "
@@ -6530,7 +6441,7 @@ msgstr "設定の差分"
 
 #: ../html/src/manager/systems/all-list.tsx:165
 msgid "Last Checked In"
-msgstr ""
+msgstr "最終チェックイン"
 
 #: ../html/src/manager/systems/all-list.tsx:171
 #: ../html/src/manager/systems/list-filter.tsx:50
@@ -6802,69 +6713,59 @@ msgstr "仮想システム"
 #: ../html/src/manager/systems/product-migration/migration-from-dry-run.tsx:59
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:97
 msgid "Product Migration - Schedule outcome"
-msgstr ""
+msgstr "製品移行 - スケジュールの結果"
 
 #: ../html/src/manager/systems/product-migration/migration-from-dry-run.tsx:62
-#, fuzzy
-#| msgid "{productName} Configuration - Monitoring"
 msgid "Product Migration - Confirm from dry run"
-msgstr "{productName} 設定 - モニタリング"
+msgstr "製品移行 - 予行演習からの確認"
 
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:88
 msgid "Product Migration - Choose target product"
-msgstr ""
+msgstr "製品移行 - ターゲット製品の選択"
 
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:91
-#, fuzzy
-#| msgid "configuration channels"
 msgid "Product Migration - Select channels"
-msgstr "設定チャンネル"
+msgstr "製品移行 - チャンネルの選択"
 
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:94
 msgid "Product Migration - Schedule"
-msgstr ""
+msgstr "製品移行 - スケジュール"
 
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:116
-#, fuzzy
-#| msgid "Show product's channels"
 msgid "Show product details"
-msgstr "製品チャンネルの表示"
+msgstr "製品詳細の表示"
 
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:131
 msgid "The products installed on this system can be migrated"
-msgstr ""
+msgstr "このシステムにインストールされている製品は移行できます"
 
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:134
 msgid "The products installed on this system cannot be migrated"
-msgstr ""
+msgstr "このシステムにインストールされている製品は移行できません"
 
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:140
 msgid "The products installed on this system can be migrated."
-msgstr ""
+msgstr "このシステムにインストールされている製品は移行できます。"
 
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:159
-#, fuzzy
-#| msgid "Product"
 msgid "Base Product"
-msgstr "製品"
+msgstr "ベース製品"
 
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:161
 msgid "Can be migrated?"
-msgstr ""
+msgstr "移行できますか?"
 
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:217
 msgid "Product details for {system}"
-msgstr ""
+msgstr "{system} の製品詳細"
 
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:221
 msgid "These are the products currently installed on {system}:"
-msgstr ""
+msgstr "{system} に現在インストールされている製品は次のとおりです:"
 
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:232
-#, fuzzy
-#| msgid "This slave is currently disabled and cannot be selected for migration"
 msgid "The systems currently selected cannot be migrated in batch."
-msgstr "このスレーブは現在無効になっており、移行対象として選択できません"
+msgstr "現在選択されているシステムは一括移行できません。"
 
 #: ../html/src/manager/systems/proxy.tsx:43
 msgid "Please select a list of minions (not proxies or traditional clients)."
@@ -7202,7 +7103,7 @@ msgstr "Nutanix AHV"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:25
 msgid "Libvirt API"
-msgstr ""
+msgstr "Libvirt API"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:150
 msgid "Add a {type} Virtual Host Manager"
