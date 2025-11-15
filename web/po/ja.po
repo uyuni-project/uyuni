@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-10-27 10:14+0100\n"
-"PO-Revision-Date: 2025-11-15 15:04+0000\n"
+"PO-Revision-Date: 2025-11-15 18:04+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -1162,7 +1162,7 @@ msgstr "1つの組織からの、{nSyncedChannels} 個の同期チャンネル"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:207
 msgid "{nSyncedChannels} synchronized channels, from {nSyncedOrgs} different organizations"
-msgstr "{nSyncedOrgs} 個の異なる組織からの、{nSyncedChannels} 個の同期チャネル"
+msgstr "{nSyncedOrgs} 個の異なる組織からの、{nSyncedChannels} 個の同期チャンネル"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:213
 msgid "Root Certificate Authority successfully modified."
@@ -5103,7 +5103,7 @@ msgstr "成功"
 
 #: ../html/src/manager/maintenance/maintenance-windows.tsx:140
 msgid "Error when deleting the "
-msgstr "以下の削除中にエラーが発生しました: "
+msgstr "以下の削除時にエラーが発生しました: "
 
 #: ../html/src/manager/maintenance/maintenance-windows.tsx:149
 msgid "Calendar successfully refreshed"
