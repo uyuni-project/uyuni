@@ -1,5 +1,5 @@
 # Copyright (c) 2024 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 @rhlike_minion
 Feature: Native AppStreams support for Red Hat-like Salt minion

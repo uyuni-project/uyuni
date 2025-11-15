@@ -1,5 +1,5 @@
 # Copyright (c) 2021-2022 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 @skip_if_github_validation
 @scope_power_management

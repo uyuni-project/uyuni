@@ -1,5 +1,5 @@
 # Copyright (c) 2024-2025 SUSE LLC.
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 ### This file contains all steps concerning setting up a test environment.
 ### This may include the creation and handeling of SCC credentials, adding products, etc.

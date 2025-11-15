@@ -1,5 +1,5 @@
 # Copyright (c) 2019-2025 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 ENV_VAR_BY_HOST = {
   'localhost' => 'HOSTNAME',
