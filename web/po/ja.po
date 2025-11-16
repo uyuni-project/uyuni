@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-10-27 10:14+0100\n"
-"PO-Revision-Date: 2025-11-15 18:04+0000\n"
+"PO-Revision-Date: 2025-11-16 18:04+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -1691,7 +1691,7 @@ msgstr "移行後のチャンネルサブスクリプション"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:91
 msgid "Schedule action for no sooner than"
-msgstr "指定日時以降にアクションをスケジュール"
+msgstr "早くとも指定日時以降にアクションをスケジュール"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:104
 msgid "In order to detect any possible problems it is recommended to always do a Dry Run before scheduling the actual Product Migration."
