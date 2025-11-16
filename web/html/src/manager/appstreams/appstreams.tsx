@@ -51,7 +51,7 @@ const AppStreams = ({ channelsAppStreams }: Props) => {
     setShowConfirm(true);
   };
 
-  const handleConfirmChanges = (id: number, actionChain?: ActionChain) => {
+  const handleConfirmChanges = (id: number, actionChain?: ActionChain | null) => {
     setShowConfirm(false);
     applyChanges();
 
@@ -87,8 +87,10 @@ const AppStreams = ({ channelsAppStreams }: Props) => {
     if (showConfirm) {
       return (
         <AppStreamsChangesConfirm
+          sid={window.serverId}
           toEnable={[...toEnable.values()].flat()}
           toDisable={[...toDisable.values()].flat()}
+          apiURL="/rhn/manager/api/appstreams/save"
           onCancelClick={() => setShowConfirm(false)}
           onConfirm={handleConfirmChanges}
           onError={handleConfirmError}
