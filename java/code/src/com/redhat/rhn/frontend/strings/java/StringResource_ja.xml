@@ -11895,7 +11895,7 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
       </trans-unit>
       <trans-unit id="system.details.support.invalid_region" xml:space="preserve" approved="yes">
         <source>The region {0] is not valid.</source>
-        <target state="final">地域 {0] は無効です。</target>
+        <target state="final">リージョン {0] は無効です。</target>
       </trans-unit>
       <trans-unit id="system.details.support.unable_to_schedule" xml:space="preserve" approved="yes">
         <source>Unexpected error while scheduling the generation of the support data. Please check the server logs for detailed information.</source>
@@ -11933,7 +11933,7 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
       </trans-unit>
       <trans-unit id="notification.reportdbupdatefailed.details.hub" xml:space="preserve" approved="yes">
         <source>The following error was generated while trying to fetch the data from the peripheral server {0}:</source>
-        <target state="final">周辺サーバ {0} からデータを取得しようとした際に次のエラーが生成されました。</target>
+        <target state="final">周辺サーバ {0} からデータをフェッチしようとした際に次のエラーが生成されました。</target>
       </trans-unit>
       <trans-unit id="system.migration.noServersSelected" xml:space="preserve" approved="yes">
         <source>Unable to identify the selected systems for the migration.</source>
@@ -11965,11 +11965,11 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
       </trans-unit>
       <trans-unit id="product_migration.addons_affected" xml:space="preserve" approved="yes">
         <source>Some installed addons are going to be affect, depending on chosen target.</source>
-        <target state="final">選択したターゲットによっては、インストールされている一部のアドオンが影響を受ける可能性があります。</target>
+        <target state="final">選択したターゲットによっては、インストールされている一部のアドオンが影響を受けます。</target>
       </trans-unit>
       <trans-unit id="product_migration.single.addons_affected" xml:space="preserve" approved="yes">
         <source>Some installed addons are going to be affect.</source>
-        <target state="final">インストールされているアドオンの一部が影響を受ける可能性があります。</target>
+        <target state="final">インストールされているアドオンの一部が影響を受けます。</target>
       </trans-unit>
       <trans-unit id="product_migration.addons_affected.missing_successors" xml:space="preserve" approved="yes">
         <source>&lt;p&gt;Depending on chosen target, some or all of these products will be removed because no successor could be found, so proceed with caution:&lt;/p&gt;{0}</source>
