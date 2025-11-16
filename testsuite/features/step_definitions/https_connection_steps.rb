@@ -28,7 +28,7 @@ end
 When(/^I connect to the server securely$/) do
   uri_open_result = URI.open(Capybara.app_host.gsub('http:', 'https:'), redirect: false, open_timeout: 5, ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE)
   add_context(:uri_open_result, uri_open_result)
-  htmldoc_title = uri_open_result.readlines().join("").gsub(/\n/, '').gsub(/^.*<title>(.*)<\/title>.*$/, '\1')
+  htmldoc_title = uri_open_result.readlines.join.gsub('\n', '').gsub(/^.*<title>(.*)<\/title>.*$/, '\1')
   add_context(:htmldoc_title, htmldoc_title)
 end
 
@@ -56,7 +56,7 @@ When(/^I connect to the server securely while using CA certificate file$/) do
   begin
     uri_open_result = URI.open(url, redirect: false, open_timeout: 5, ssl_ca_cert: ssl_ca_cert_file, ssl_verify_mode: OpenSSL::SSL::VERIFY_PEER)
     add_context(:uri_open_result, uri_open_result)
-    htmldoc_title = uri_open_result.readlines().join("").gsub(/\n/, '').gsub(/^.*<title>(.*)<\/title>.*$/, '\1')
+    htmldoc_title = uri_open_result.readlines.join.gsub('\n', '').gsub(/^.*<title>(.*)<\/title>.*$/, '\1')
     add_context(:htmldoc_title, htmldoc_title)
   rescue StandardError => e
     add_context(:error, e)
@@ -79,6 +79,7 @@ end
 Then(/^the secure connection should fail due to unverified certificate signature$/) do
   error = get_context(:error)
   raise ScriptError, 'Connection passed unexpectidly!' if error.message.nil?
+
   unless error.instance_of?(OpenSSL::SSL::SSLError)
     ssl_cacert = get_dummy_cacert(get_context(:ssl_cacert_file))
     log("Dummy CA certificate:\n#{ssl_cacert}")
