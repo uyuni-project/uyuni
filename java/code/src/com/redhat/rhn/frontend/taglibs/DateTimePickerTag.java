@@ -113,9 +113,9 @@ public class DateTimePickerTag extends TagSupport {
             .replaceAll("(^|[^M])MM([^M]|$)", "$1mm$2")
             .replaceAll("(^|[^M])M([^M]|$)", "$1m$2")
             .replaceAll("MMMM+", "MM")
-            .replaceAll("MMM", "M")
+            .replace("MMM", "M")
             .replaceAll("DD+", "dd")
-            .replaceAll("D", "d")
+            .replace("D", "d")
             .replaceAll("EEEE+", "DD")
             .replaceAll("E+", "D")
             .replaceAll("(^|[^y])y{1,3}([^y]|$)", "$1yy$2")
@@ -140,10 +140,10 @@ public class DateTimePickerTag extends TagSupport {
             .replaceAll("hh+", "h")
             // k (1-24) not supported, convert to the 0-23 format
             .replaceAll("kk+", "H")
-            .replaceAll("k", "G")
+            .replace("k", "G")
             // K (0-11) not supported, convert to the 1-12 format
             .replaceAll("KK+", "h")
-            .replaceAll("K", "g")
+            .replace("K", "g")
             .replaceAll("m+", "i")
             .replaceAll("s+", "s")
             // ignore others
