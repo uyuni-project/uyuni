@@ -27051,7 +27051,7 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/DeleteSchedule.do</context>
         </context-group>
-        <target state="final">本当にスケジュールを削除してもよいですか? 関連付けられているバンチがスケジュールされなくなります。これにより@@PRODUCT_NAME@@の機能性に多大な影響を及ぼす可能性があります。削除による影響をよく理解した上で続行してください。</target>
+        <target state="final">スケジュールを無効にしてよろしいですか? 関連付けられているバンチがスケジュールされなくなります。これにより@@PRODUCT_NAME@@の機能性に多大な影響を及ぼす可能性があります。無効化による影響をよく理解した上で続行してください。</target>
       </trans-unit>
       <trans-unit id="schedule.jsp.schedulenameinuse" xml:space="preserve">
         <source>Schedule name {0} is already in use. Please choose another one.</source>
