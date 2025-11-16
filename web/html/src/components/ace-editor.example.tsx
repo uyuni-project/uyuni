@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-
 import { AceEditor } from "components/ace-editor";
 
 import exampleContent from "./ace-editor.example.tsx?raw";
