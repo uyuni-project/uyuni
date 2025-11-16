@@ -106,16 +106,16 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
 
     @Column(name = "gpg_check")
     @Type(type = "yes_no")
-    private boolean GPGCheck;
+    private boolean gpgCheck;
 
     @Column(name = "gpg_key_url")
-    private String GPGKeyUrl;
+    private String gpgKeyUrl;
 
     @Column(name = "gpg_key_id")
-    private String GPGKeyId;
+    private String gpgKeyId;
 
     @Column(name = "gpg_key_fp")
-    private String GPGKeyFp;
+    private String gpgKeyFp;
 
     @Column
     private String label;
@@ -245,7 +245,7 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
         packages = new HashSet<>();
         erratas = new HashSet<>();
         access = PRIVATE;
-        GPGCheck = true;
+        gpgCheck = true;
         channelSyncFlag = new ChannelSyncFlag();
         channelSyncFlag.setChannel(this);
     }
@@ -446,43 +446,43 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
     /**
      * @return Returns the gPGKeyFp.
      */
-    public String getGPGKeyFp() {
-        return GPGKeyFp;
+    public String getGpgKeyFp() {
+        return gpgKeyFp;
     }
 
     /**
      * @param k The gPGKeyFP to set.
      */
-    public void setGPGKeyFp(String k) {
-        GPGKeyFp = k;
+    public void setGpgKeyFp(String k) {
+        gpgKeyFp = k;
     }
 
     /**
      * @return Returns the gPGKeyId.
      */
-    public String getGPGKeyId() {
-        return GPGKeyId;
+    public String getGpgKeyId() {
+        return gpgKeyId;
     }
 
     /**
      * @param k The gPGKeyId to set.
      */
-    public void setGPGKeyId(String k) {
-        GPGKeyId = k;
+    public void setGpgKeyId(String k) {
+        gpgKeyId = k;
     }
 
     /**
      * @return Returns the gPGKeyUrl.
      */
-    public String getGPGKeyUrl() {
-        return GPGKeyUrl;
+    public String getGpgKeyUrl() {
+        return gpgKeyUrl;
     }
 
     /**
      * @param k The gPGKeyUrl to set.
      */
-    public void setGPGKeyUrl(String k) {
-        GPGKeyUrl = k;
+    public void setGpgKeyUrl(String k) {
+        gpgKeyUrl = k;
     }
 
     /**
@@ -1105,15 +1105,15 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
     /**
      * @return the GPGCheck
      */
-    public boolean isGPGCheck() {
-        return GPGCheck;
+    public boolean isGpgCheck() {
+        return gpgCheck;
     }
 
     /**
      * @param gpgCheckIn the GPGCheck to set
      */
-    public void setGPGCheck(boolean gpgCheckIn) {
-        this.GPGCheck = gpgCheckIn;
+    public void setGpgCheck(boolean gpgCheckIn) {
+        this.gpgCheck = gpgCheckIn;
     }
 
     /**
