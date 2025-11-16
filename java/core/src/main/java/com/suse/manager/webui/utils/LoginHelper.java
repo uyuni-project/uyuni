@@ -23,6 +23,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.messaging.MessageQueue;
+import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.common.RhnConfiguration;
 import com.redhat.rhn.domain.common.RhnConfigurationFactory;
@@ -54,9 +55,9 @@ import org.apache.logging.log4j.Logger;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -113,101 +114,80 @@ public class LoginHelper {
                     remoteUser = null;
                 }
                 if (remoteUser != null) {
-                    updateRemoteUser(remoteUser, firstname, lastname, email, roles);
+                    UpdateUserCommand updateCmd = new UpdateUserCommand(remoteUser);
+                    if (!StringUtils.isEmpty(firstname)) {
+                        updateCmd.setFirstNames(firstname);
+                    }
+                    if (!StringUtils.isEmpty(lastname)) {
+                        updateCmd.setLastName(lastname);
+                    }
+                    if (!StringUtils.isEmpty(email)) {
+                        updateCmd.setEmail(email);
+                    }
+                    updateCmd.setTemporaryRoles(roles);
+                    updateCmd.updateUser();
+                    if (log.isWarnEnabled()) {
+                        log.warn("Externally authenticated login {} ({} {})",
+                                StringUtil.sanitizeLogInput(remoteUserString), firstname, lastname);
+                    }
                 }
             }
             catch (LookupException le) {
-                return newRemoteUser(request, remoteUserString, firstname, lastname, email, roles, extGroups, messages);
-            }
-        }
-        return remoteUser;
-    }
-
-    private static User newRemoteUser(HttpServletRequest request,
-                                      String remoteUserString,
-                                      String firstname,
-                                      String lastname,
-                                      String email,
-                                      Set<Role> roles,
-                                      Set<String> extGroups,
-                                      List<String> messages) {
-        User remoteUser = null;
-        Org newUserOrg = null;
-        RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
-        Boolean useOrgUnit =
-                factory.getBooleanConfiguration(RhnConfiguration.KEYS.EXTAUTH_USE_ORGUNIT).getValue();
-        if (BooleanUtils.isTrue(useOrgUnit)) {
-            String orgUnitString =
-                    (String) request.getAttribute("REMOTE_USER_ORGUNIT");
-            newUserOrg = OrgFactory.lookupByName(orgUnitString);
-            if (newUserOrg == null) {
-                log.error("Cannot find organization with name: {}", orgUnitString);
-            }
-        }
-        if (newUserOrg == null) {
-            Long defaultOrgId =
-                    factory.getLongConfiguration(RhnConfiguration.KEYS.EXTAUTH_DEFAULT_ORGID).getValue();
-            if (defaultOrgId != null) {
-                newUserOrg = OrgFactory.lookupById(defaultOrgId);
+                Org newUserOrg = null;
+                RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
+                Boolean useOrgUnit =
+                        factory.getBooleanConfiguration(RhnConfiguration.KEYS.EXTAUTH_USE_ORGUNIT).getValue();
+                if (BooleanUtils.isTrue(useOrgUnit)) {
+                    String orgUnitString =
+                            (String) request.getAttribute("REMOTE_USER_ORGUNIT");
+                    newUserOrg = OrgFactory.lookupByName(orgUnitString);
+                    if (newUserOrg == null) {
+                        log.error("Cannot find organization with name: {}", orgUnitString);
+                    }
+                }
                 if (newUserOrg == null) {
-                    log.error("Cannot find organization with id: {}", defaultOrgId);
+                    Long defaultOrgId =
+                            factory.getLongConfiguration(RhnConfiguration.KEYS.EXTAUTH_DEFAULT_ORGID).getValue();
+                    if (defaultOrgId != null) {
+                        newUserOrg = OrgFactory.lookupById(defaultOrgId);
+                        if (newUserOrg == null) {
+                            log.error("Cannot find organization with id: {}", defaultOrgId);
+                        }
+                    }
+                }
+                if (newUserOrg != null) {
+                    Set<ServerGroup> sgs = getSgsFromExtGroups(extGroups, newUserOrg);
+                    try {
+                        CreateUserCommand createCmd = new CreateUserCommand();
+                        createCmd.setLogin(remoteUserString);
+                        // set a password, that cannot really be used
+                        createCmd.setRawPassword(DEFAULT_KERB_USER_PASSWORD);
+                        createCmd.setFirstNames(firstname);
+                        createCmd.setLastName(lastname);
+                        createCmd.setEmail(email);
+                        createCmd.setOrg(newUserOrg);
+                        createCmd.setTemporaryRoles(roles);
+                        createCmd.setServerGroups(sgs);
+                        createCmd.validate();
+                        createCmd.storeNewUser();
+                        remoteUser = createCmd.getUser();
+                        log.warn("Externally authenticated login {} ({} {}) created in {}.", remoteUserString,
+                                firstname, lastname, newUserOrg.getName());
+                    }
+                    catch (WrappedSQLException wse) {
+                        log.error("Creation of user failed with: {}", wse.getMessage());
+                        HibernateFactory.rollbackTransaction();
+                    }
+                }
+                if (remoteUser != null &&
+                        remoteUser.getPassword().equals(DEFAULT_KERB_USER_PASSWORD)) {
+                    messages.add("You have logged in as an externally authenticated user. " +
+                            "To be able to login using this account with login and password " +
+                            "set your username and password in the user details page.");
                 }
             }
         }
-        if (newUserOrg != null) {
-            Set<ServerGroup> sgs = getSgsFromExtGroups(extGroups, newUserOrg);
-            try {
-                CreateUserCommand createCmd = new CreateUserCommand();
-                createCmd.setLogin(remoteUserString);
-                // set a password, that cannot really be used
-                createCmd.setRawPassword(DEFAULT_KERB_USER_PASSWORD);
-                createCmd.setFirstNames(firstname);
-                createCmd.setLastName(lastname);
-                createCmd.setEmail(email);
-                createCmd.setOrg(newUserOrg);
-                createCmd.setTemporaryRoles(roles);
-                createCmd.setServerGroups(sgs);
-                createCmd.validate();
-                createCmd.storeNewUser();
-                remoteUser = createCmd.getUser();
-                log.warn("Externally authenticated login {} ({} {}) created in {}.", remoteUserString,
-                        firstname, lastname, newUserOrg.getName());
-            }
-            catch (WrappedSQLException wse) {
-                log.error("Creation of user failed with: {}", wse.getMessage());
-                HibernateFactory.rollbackTransaction();
-            }
-        }
-        if (remoteUser != null &&
-                remoteUser.getPassword().equals(DEFAULT_KERB_USER_PASSWORD)) {
-            messages.add("You have logged in as an externally authenticated user. " +
-                    "To be able to login using this account with login and password " +
-                    "set your username and password in the user details page.");
-        }
         return remoteUser;
-    }
-
-    private static void updateRemoteUser(User remoteUser,
-                                         String firstname,
-                                         String lastname,
-                                         String email,
-                                         Set<Role> roles) {
-        UpdateUserCommand updateCmd = new UpdateUserCommand(remoteUser);
-        if (!StringUtils.isEmpty(firstname)) {
-            updateCmd.setFirstNames(firstname);
-        }
-        if (!StringUtils.isEmpty(lastname)) {
-            updateCmd.setLastName(lastname);
-        }
-        if (!StringUtils.isEmpty(email)) {
-            updateCmd.setEmail(email);
-        }
-        updateCmd.setTemporaryRoles(roles);
-        updateCmd.updateUser();
-        if (log.isWarnEnabled()) {
-            log.warn("Externally authenticated login {} ({} {})",
-                    StringUtil.sanitizeLogInput(remoteUser.getLogin()), firstname, lastname);
-        }
     }
 
     private static String decodeFromIso88591(String string, String defaultString) {
@@ -349,9 +329,11 @@ public class LoginHelper {
         LocalizationService ls = LocalizationService.getInstance();
         Long serverVersion = 0L;
         String pgVersion = "";
+        Double osVersion = 0.0;
+        String osName = "";
 
         SelectMode m = ModeFactory.getMode("General_queries", "pg_version_num");
-        DataResult<Map<String, Object>> dr = m.execute();
+        DataResult<HashMap> dr = m.execute();
         if (!dr.isEmpty()) {
             serverVersion = Long.valueOf((String) dr.get(0).get("server_version_num"));
         }
@@ -364,29 +346,39 @@ public class LoginHelper {
             pgVersion = (String) dr.get(0).get("server_version");
         }
 
+        String osrelease = FileUtils.readStringFromFile("/etc/os-release");
+        for (String line : osrelease.split("\\r?\\n")) {
+            String[] resultKV = line.split("=", 2);
+            if (resultKV[0].equalsIgnoreCase("VERSION_ID")) {
+                try {
+                    osVersion = Double.valueOf(resultKV[1].replace("\"", ""));
+                }
+                catch (NumberFormatException e) {
+                    log.error("Unable to parse OS versionnumber {}", resultKV[1]);
+                }
+            }
+            else if (resultKV[0].equalsIgnoreCase("PRETTY_NAME")) {
+                osName = resultKV[1].replace("\"", "'");
+            }
+        }
         if (log.isDebugEnabled()) {
             log.debug("PG DB version is: {}", serverVersion);
+            log.debug("OS Version is: {} {}", osVersion, osVersion);
         }
         if (serverVersion < MIN_PG_DB_VERSION) {
             validationErrors.add(ls.getMessage("error.unsupported_db_min", pgVersion, MIN_PG_DB_VERSION_STRING));
-            if (log.isErrorEnabled()) {
-                log.error(ls.getMessage("error.unsupported_db_min", pgVersion, MIN_PG_DB_VERSION_STRING));
-            }
+            log.error(ls.getMessage("error.unsupported_db_min", pgVersion, MIN_PG_DB_VERSION_STRING));
         }
         else if (serverVersion > MAX_PG_DB_VERSION) {
             validationErrors.add(ls.getMessage("error.unsupported_db_max", pgVersion, MAX_PG_DB_VERSION_STRING));
-            if (log.isErrorEnabled()) {
-                log.error(ls.getMessage("error.unsupported_db_max", pgVersion, MAX_PG_DB_VERSION_STRING));
-            }
+            log.error(ls.getMessage("error.unsupported_db_max", pgVersion, MAX_PG_DB_VERSION_STRING));
         }
 
         m = ModeFactory.getMode("General_queries", "installed_schema_version");
         dr = m.execute();
         if (dr.isEmpty()) {
             validationErrors.add(ls.getMessage("error.unfinished_schema_upgrade"));
-            if (log.isErrorEnabled()) {
-                log.error(ls.getMessage("error.unfinished_schema_upgrade"));
-            }
+            log.error(ls.getMessage("error.unfinished_schema_upgrade"));
         }
         return validationErrors;
     }
@@ -404,7 +396,7 @@ public class LoginHelper {
         }
 
         SelectMode m = ModeFactory.getMode("General_queries", "installed_schema_version");
-        DataResult<Map<String, Object>> dr = m.execute();
+        DataResult<HashMap> dr = m.execute();
         String installedSchemaVersion = null;
         if (!dr.isEmpty()) {
             installedSchemaVersion = (String) dr.get(0).get("version");
