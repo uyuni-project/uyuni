@@ -11,12 +11,12 @@ Feature: Secure connection
   Scenario: Connecting to the server securely
     When I connect to the server securely
     Then the connection should be secured
-    Then the page title should contain "Sign In" text
+    And the page title should contain "Sign In" text
 
   Scenario: Connecting to the server securely while using CA certificate file
     When I connect to the server securely while using CA certificate file
     Then the connection should be secured
-    Then the page title should contain "Sign In" text
+    And the page title should contain "Sign In" text
 
   Scenario: Connecting to the server securely while using incorrect CA certificate file
     When I connect to the server securely while using incorrect certificate as a CA certificate file
