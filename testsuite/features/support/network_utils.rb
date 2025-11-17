@@ -3,8 +3,8 @@
 
 require 'net/scp'
 require 'net/ssh'
-require 'stringio'
 require 'openssl'
+require 'stringio'
 
 Net::SSH::Transport::Algorithms::ALGORITHMS.each_value { |algs| algs.reject! { |a| a.match(/^ecd(sa|h)-sha2/) } }
 Net::SSH::KnownHosts::SUPPORTED_TYPE.reject! { |t| t.match(/^ecd(sa|h)-sha2/) }
@@ -116,28 +116,29 @@ end
 
 # This helper method generates dummy CA certificate
 #
-# @param [String] file name, it the CA certificate will be stored there.
+# @param [String] file name, the CA certificate will be stored there.
 # @param [String] CA certificate subject.
-def generate_dummy_cacert(filename, subject="/DC=localdomain/DC=localhost/CN=dummy CA")
+def generate_dummy_cacert(filename, subject = '/DC=localdomain/DC=localhost/CN=dummy CA')
   begin
-    root_key = OpenSSL::PKey::RSA.new 2048
+    root_key = OpenSSL::PKey::RSA.new(2048)
     root_ca = OpenSSL::X509::Certificate.new
     root_ca.public_key = root_key.public_key
-    root_ca.version = 2  # RFC 5280, "v3" certificate
+    # RFC 5280, "v3" certificate
+    root_ca.version = 2
     root_ca.serial = 1
     root_ca.subject = OpenSSL::X509::Name.parse(subject)
     root_ca.issuer = root_ca.subject
     root_ca.not_before = Time.now
     # 10 days
-    root_ca.not_after = root_ca.not_before + 864000
+    root_ca.not_after = root_ca.not_before + (60 * 60 * 24 * 10)
     ef = OpenSSL::X509::ExtensionFactory.new
     ef.subject_certificate = root_ca
     ef.issuer_certificate = root_ca
-    root_ca.add_extension(ef.create_extension("basicConstraints","CA:TRUE",true))
-    root_ca.add_extension(ef.create_extension("keyUsage","keyCertSign, cRLSign", true))
-    root_ca.sign(root_key, OpenSSL::Digest::SHA256.new)
-    File.open(filename, 'w') { |file| file.write(root_ca.to_pem) }
-  rescue => e
+    root_ca.add_extension(ef.create_extension('basicConstraints', 'CA:TRUE', true))
+    root_ca.add_extension(ef.create_extension('keyUsage', 'keyCertSign', 'cRLSign', true))
+    root_ca.sign(root_key, OpenSSL::Digest.new('SHA256'))
+    File.write(filename) { |file| file.write(root_ca.to_pem) }
+  rescue StandardError => e
     # issues to generate certificate
     puts e.message
   end
@@ -150,9 +151,9 @@ end
 def get_dummy_cacert(filename)
   begin
     certificate = File.read(filename)
-  rescue => e
+  rescue StandardError => e
     # issues to read certificate file
     puts e.message
   end
-  return(certificate)
+  certificate
 end
