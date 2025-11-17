@@ -10,46 +10,23 @@ SERVICE_PACK_PLACEHOLDER    = SERVICE_PACK
 
 update: $(SERVICE_PACK)
 
-SP4: clean-sp4
-	if test -n "$@" ; then \
-	  mkdir $@ ; \
-	  cp -r $(TEMPLATE_KIWI_DIR) $(IMAGE_VERSION)_$() $@/ ; \
-	  find $@ -type f | xargs sed -i 's/$(SERVICE_PACK)/SLES15/g' ; \
-	  find $@ -type f | xargs sed -i 's/$(SERVICE_PACK_PLACEHOLDER)/SP4/g' ; \
-	fi
+# --- Main Generation Rule ---
+# Static pattern rule to generate all Service Pack profiles (SP4, SP5, SP6, SP7).
+# The '%' represents the stem (e.g., 'SP4') which is the target name ($@).
+$(SERVICE_PACK): %: clean-%
+	@echo "-> Generating Kiwi profile for SLES15-$@"
+	# Copy template to the new profile directory: SPX/POS_Image_JeOS7_SLES15SPX
+	@cp -r $(TEMPLATE_KIWI_DIR) $(IMAGE_VERSION)_$(SLES_FAMILY)$@ ;
+	# Replace generic SLE_VERSION placeholder with SLES15
+	@find $(IMAGE_VERSION)_$(SLES_FAMILY)$@ -type f | xargs sed -i 's/$(SLE_VERSION_PLACEHOLDER)/$(SLES_FAMILY)/g' ;
+	# Replace SERVICE_PACK placeholder with the current service pack (e.g., SP4)
+	@find $(IMAGE_VERSION)_$(SLES_FAMILY)$@ -type f | xargs sed -i 's/$(SERVICE_PACK_PLACEHOLDER)/$@/g' ;
 
-SP5: clean-sp5
-	if test -n "$@" ; then \
-	  mkdir $@ ; \
-	  cp -r $(TEMPLATE_KIWI_DIR) $@/ ; \
-	  find $@ -type f | xargs sed -i 's/$(SERVICE_PACK)/SLES15/g' ; \
-	  find $@ -type f | xargs sed -i 's/$(SERVICE_PACK_PLACEHOLDER)/SP5/g' ; \
-	fi
+# --- Cleanup Rules ---
 
-SP6: clean-sp6
-	if test -n "$@" ; then \
-	  mkdir $@ ; \
-	  cp -r $(TEMPLATE_KIWI_DIR) $@/ ; \
-	  find $@ -type f | xargs sed -i 's/$(SERVICE_PACK)/SLES15/g' ; \
-	  find $@ -type f | xargs sed -i 's/$(SERVICE_PACK_PLACEHOLDER)/SP6/g' ; \
-	fi
+# Generic pattern rule to define prerequisites and clean up the generated SPX directories.
+# The '$*' variable is the stem (e.g., 'SP4').
+clean-%:
+	@rm -rf $*
 
-SP7: clean-sp7
-	if test -n "$@" ; then \
-	  mkdir $@ ; \
-	  cp -r $(TEMPLATE_KIWI_DIR) $@/ ; \
-	  find $@ -type f | xargs sed -i 's/$(SERVICE_PACK)/SLES15/g' ; \
-	  find $@ -type f | xargs sed -i 's/$(SERVICE_PACK_PLACEHOLDER)/SP7/g' ; \
-	fi
-
-clean-sp4:
-	rm -rf internal_nue
-
-clean-sp5:
-	rm -rf internal_prv
-
-clean-sp6:
-	rm -rf cloud_aws
-
-clean-sp7:
-	rm -rf cloud_aws
+.PHONY: $(SERVICE_PACK) clean update
