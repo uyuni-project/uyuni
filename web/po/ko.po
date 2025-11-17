@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-10-27 10:14+0100\n"
-"PO-Revision-Date: 2025-11-14 20:04+0000\n"
+"PO-Revision-Date: 2025-11-17 09:04+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
 "Language: ko\n"
@@ -536,13 +536,10 @@ msgid "Select"
 msgstr "선택"
 
 #: ../html/src/components/formik/Form.example.tsx:66
-#, fuzzy
-#| msgid "foo"
 msgid "Foo"
 msgstr "Foo"
 
 #: ../html/src/components/formik/Form.example.tsx:70
-#, fuzzy
 msgid "Bar"
 msgstr "막대"
 
@@ -710,14 +707,10 @@ msgid "Confirm deregistration"
 msgstr "등록 취소 확인"
 
 #: ../html/src/components/hub/DeregisterServer.tsx:55
-#, fuzzy
-#| msgid "Error when deleting the "
 msgid "Error deregistering server"
 msgstr "서버 등록 취소 중 오류 발생"
 
 #: ../html/src/components/hub/DeregisterServer.tsx:60
-#, fuzzy
-#| msgid "Delete Profile Without Cleanup"
 msgid "Deregister without cleanup"
 msgstr "정리하지 않고 등록 취소"
 
@@ -1708,7 +1701,6 @@ msgid "Schedule Migration"
 msgstr "마이그레이션 예약"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:41
-#, fuzzy
 msgid "Please review your selection and confirm below to schedule the migration."
 msgstr "선택한 내용을 검토하고 아래에서 확인하여 마이그레이션을 예약하십시오."
 
@@ -1719,36 +1711,26 @@ msgid "Systems"
 msgstr "시스템"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:60
-#, fuzzy
-#| msgid "Product Description"
 msgid "Product after migration"
 msgstr "마이그레이션 후 제품"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:66
-#, fuzzy
-#| msgid "No subscriptions found."
 msgid "Channel subscriptions after migration"
 msgstr "마이그레이션 후 채널 구독"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:91
-#, fuzzy
 msgid "Schedule action for no sooner than"
 msgstr "다음 이전에 작업 예약:"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:104
-#, fuzzy
 msgid "In order to detect any possible problems it is recommended to always do a Dry Run before scheduling the actual Product Migration."
 msgstr "발생할 수 있는 문제를 감지하기 위해 실제 제품 마이그레이션을 예약하기 전에 항상 드라이런을 수행하는 것이 좋습니다."
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:114
-#, fuzzy
-#| msgid "Back to sytem selection"
 msgid "Back to channel selection"
 msgstr "채널 선택으로 돌아가기"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:121
-#, fuzzy
-#| msgid " ready to run"
 msgid "Dry run"
 msgstr "드라이 런"
 
@@ -1758,7 +1740,6 @@ msgid "Migrate"
 msgstr "마이그레이트"
 
 #: ../html/src/components/product-migration/MigrationTargetSelectorForm.tsx:44
-#, fuzzy
 msgid ""
 "Target not available, the following channels are not synced:\n"
 "\n"
@@ -1769,20 +1750,14 @@ msgstr ""
 "{missingChannels}"
 
 #: ../html/src/components/product-migration/MigrationTargetSelectorForm.tsx:63
-#, fuzzy
-#| msgid "Product"
 msgid "Product id"
 msgstr "제품 ID"
 
 #: ../html/src/components/product-migration/MigrationTargetSelectorForm.tsx:64
-#, fuzzy
-#| msgid "Products"
 msgid "Target Products"
 msgstr "대상 제품"
 
 #: ../html/src/components/product-migration/MigrationTargetSelectorForm.tsx:84
-#, fuzzy
-#| msgid "Desync Channel"
 msgid "Select Channels"
 msgstr "채널 선택"
 
@@ -2037,8 +2012,6 @@ msgid "All"
 msgstr "모두"
 
 #: ../html/src/components/table/nested-data.example.tsx:39
-#, fuzzy
-#| msgid "Channel Name"
 msgid "Channel name"
 msgstr "채널 이름"
 
@@ -2047,18 +2020,14 @@ msgid "Hub Org"
 msgstr "허브 조직"
 
 #: ../html/src/components/table/nested-data.example.tsx:65
-#, fuzzy
 msgid "View"
 msgstr "보기"
 
 #: ../html/src/components/table/nested-data.example.tsx:66
-#, fuzzy
 msgid "Modify"
 msgstr "수정"
 
 #: ../html/src/components/table/search.example.tsx:20
-#, fuzzy
-#| msgid "System Kind"
 msgid "Item id"
 msgstr "항목 ID"
 
@@ -2123,7 +2092,6 @@ msgid "Require this channel"
 msgstr "이 채널 필요"
 
 #: ../html/src/core/intl/index.example.tsx:7
-#, fuzzy
 msgid "Please see <link>Format.JS docs</link> for the message syntax."
 msgstr "메시지 구문은 <link>Format.JS docs</link>를 참조하십시오."
 
@@ -2326,25 +2294,18 @@ msgid "Create"
 msgstr "만들기"
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:36
-#, fuzzy
-#| msgid "Desync Channel"
 msgid "Sync Channels"
 msgstr "채널 동기화"
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:37
-#, fuzzy
-#| msgid "Schedule channels product resync"
 msgid "Schedule Sync Channels task"
 msgstr "채널 동기화 작업 예약"
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:42
-#, fuzzy
-#| msgid "Confirm Channel Synchronization Changes"
 msgid "Confirm channels synchronization"
 msgstr "채널 동기화 확인"
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:43
-#, fuzzy
 msgid "Do you want to schedule a channels synchronization from the hub?"
 msgstr "허브에서 채널 동기화를 예약하시겠습니까?"
 
@@ -2357,13 +2318,10 @@ msgid "No hub is currently configured for this server. "
 msgstr "현재 이 서버에 허브가 구성되어 있지 않습니다. "
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:89
-#, fuzzy
-#| msgid "This server is currently registered as peripheral of hub {fqdn}. "
 msgid "This server is currently registered as peripheral of hub {fqdn}. "
 msgstr "이 서버는 현재 허브 {fqdn}의 주변기기로 등록되어 있습니다. "
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:108
-#, fuzzy
 msgid "Successfully scheduled a channels synchronization."
 msgstr "채널 동기화를 예약했습니다."
 
@@ -2384,8 +2342,6 @@ msgid "{fqdn} - Peripheral Details"
 msgstr "{fqdn} - 주변 장치 세부 정보"
 
 #: ../html/src/manager/admin/hub/peripheral-details.tsx:51
-#, fuzzy
-#| msgid "The server {fqdn} is currently registered as peripheral of this hub. "
 msgid "The server {fqdn} is currently registered as peripheral of this hub. "
 msgstr "이 서버 {fqdn}은 현재 이 허브의 주변기기로 등록되어 있습니다. "
 
@@ -2974,8 +2930,6 @@ msgstr "할당되지 않은 채널에서 사용 가능한 패치가 적용됨"
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:45
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:53
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:89
-#, fuzzy
-#| msgid "The client is affected by a vulnerability for which a patch has been released,"
 msgid "The client is affected by a vulnerability and we have a patch for it,"
 msgstr "클라이언트가 취약점의 영향을 받고 있으며 이에 대한 패치가 있습니다."
 
@@ -3424,8 +3378,6 @@ msgid "Create project"
 msgstr "프로젝트 만들기"
 
 #: ../html/src/manager/content-management/list-filters/appstreams/appstreams.tsx:39
-#, fuzzy
-#| msgid "disable all modules"
 msgid "Browse available modules"
 msgstr "사용 가능한 모듈 찾아보기"
 
@@ -3621,8 +3573,6 @@ msgid "Some of the selected filters are used in projects and can not be deleted.
 msgstr "선택한 필터 중 일부가 프로젝트에서 사용되며 삭제할 수 없습니다."
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:126
-#, fuzzy
-#| msgid "Create New Filter"
 msgid "Create Filter"
 msgstr "필터 만들기"
 
@@ -3643,8 +3593,6 @@ msgid "Projects in use"
 msgstr "사용 중 프로젝트"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:207
-#, fuzzy
-#| msgid "Edit Filter {name}"
 msgid "Edit Filter"
 msgstr "필터 편집"
 
@@ -4178,14 +4126,10 @@ msgid "The page you requested, {currentUrl}, was not found."
 msgstr "요청한 페이지 {currentUrl}을(를) 찾을 수 없습니다."
 
 #: ../html/src/manager/errors/not-found.tsx:12
-#, fuzzy
-#| msgid "If you typed this address into your browser, double-check the spelling and capitalization."
 msgid "If you typed this address into your browser, double-check the spelling and capitalization."
 msgstr "이 주소를 브라우저에 입력한 경우 맞춤법과 대/소문자를 다시 확인하십시오."
 
 #: ../html/src/manager/errors/not-found.tsx:18
-#, fuzzy
-#| msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your "
 msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your "
 msgstr "링크를 따라간 경우 링크가 잘못되었거나 오래되었을 수 있습니다. 뒤로 버튼을 클릭하십시오. "
 
@@ -4194,8 +4138,6 @@ msgid "If you used a bookmark, the page may have moved to a different location s
 msgstr "책갈피를 사용한 경우, 책갈피가 이전에 사용된 이후 페이지가 다른 위치로 이동했을 수 있습니다. "
 
 #: ../html/src/manager/errors/not-found.tsx:32
-#, fuzzy
-#| msgid "If you feel you've reached this page in error, please contact us with details of how you received "
 msgid "If you feel you've reached this page in error, please contact us with details of how you received "
 msgstr "이 페이지에 실수로 접속했다고 생각되는 경우, 접속 경로에 대한 상세 내용을 기재하여 문의해 주시기 바랍니다. "
 
@@ -4278,8 +4220,6 @@ msgid "Profile Summary"
 msgstr "프로파일 요약"
 
 #: ../html/src/manager/images/image-build.tsx:247
-#, fuzzy
-#| msgid "Profile Summary"
 msgid "Edit Profile Summary"
 msgstr "프로파일 요약 편집"
 
@@ -4436,8 +4376,6 @@ msgid "Image profiles have been deleted."
 msgstr "이미지 프로파일이 삭제되었습니다."
 
 #: ../html/src/manager/images/image-profiles.tsx:137
-#, fuzzy
-#| msgid "Create Image Profile"
 msgid "Delete Image Profile"
 msgstr "이미지 프로파일 삭제"
 
@@ -4507,15 +4445,11 @@ msgid "Image stores have been deleted."
 msgstr "이미지 저장소가 삭제되었습니다."
 
 #: ../html/src/manager/images/image-stores.tsx:137
-#, fuzzy
-#| msgid "Delete Profile"
 msgid "Delete Store Profile"
 msgstr "저장소 프로파일 삭제"
 
 #: ../html/src/manager/images/image-stores.tsx:147
 #: ../html/src/manager/images/image-stores.tsx:148
-#, fuzzy
-#| msgid "Create Image Profile"
 msgid "Create Store Profile"
 msgstr "저장소 프로파일 만들기"
 
@@ -5156,14 +5090,10 @@ msgid "This will unassign all schedules from this calendar."
 msgstr "이 작업을 수행하면 이 달력에서 모든 일정의 할당이 해제됩니다."
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:30
-#, fuzzy
-#| msgid "Create a new maintenance schedule"
 msgid "Create a new Maintenance Schedule"
 msgstr "새 유지보수 일정 만들기"
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:30
-#, fuzzy
-#| msgid "Create a new maintenance schedule"
 msgid "Create a new Maintenance Calendar"
 msgstr "새 유지보수 달력 만들기"
 
@@ -5201,8 +5131,6 @@ msgid "successfully"
 msgstr "성공"
 
 #: ../html/src/manager/maintenance/maintenance-windows.tsx:140
-#, fuzzy
-#| msgid "Error when deleting the "
 msgid "Error when deleting the "
 msgstr "다음 삭제 중 오류 발생: "
 
@@ -5389,13 +5317,10 @@ msgid "Applying the config channels has been "
 msgstr "구성 채널 적용이 "
 
 #: ../html/src/manager/minion/details/support-data.tsx:51
-#, fuzzy
-#| msgid "The Salt version on this system does not support virtual network creating and editing"
 msgid "The OS of this system does not support the collection of support data."
 msgstr "이 시스템의 운영 체제는 지원 데이터 수집을 지원하지 않습니다."
 
 #: ../html/src/manager/minion/details/support-data.tsx:90
-#, fuzzy
 msgid "Upload Support Data"
 msgstr "지원 데이터 업로드"
 
@@ -5661,7 +5586,6 @@ msgid "Proxy SSL private key"
 msgstr "프록시 SSL 개인 키"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:273
-#, fuzzy
 msgid "SSL private key for the proxy system (PEM format)"
 msgstr "프록시 시스템용 SSL 개인 키(PEM 형식)"
 
