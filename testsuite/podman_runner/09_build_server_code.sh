@@ -37,20 +37,7 @@ $PODMAN_CMD exec server bash -c "[ -d /usr/share/susemanager/www/tomcat/webapps 
 # to try again and hope it succeeds.
 
 set +e # Temporarily disable 'exit on error'
-
-$PODMAN_CMD exec server bash -c '
-    SECONDS=0; TIMEOUT=1200; cd /java;
-    while ! ant -f manager-build.xml ivy; do
-        if [ "$SECONDS" -ge "${TIMEOUT:-1200}" ]; then
-            echo "Ant Ivy build failed: Timed out after 20 minutes." >&2;
-            echo "Check GH Runner IP:" >&2; curl https://api.ipify.org ||:;
-            exit 1;
-        fi;
-        echo "Ant Ivy build failed. Retrying! (Elapsed: $SECONDS/$TIMEOUT seconds)";
-    done;
-    echo "Ant Ivy build succeeded."
-'
-
+$PODMAN_CMD exec server bash -c 'MAX_WAIT=1200; START_TIME=$(date +%s); cd /java; while ! ant -f manager-build.xml ivy; do CURRENT_TIME=$(date +%s); ELAPSED_SECONDS=$((CURRENT_TIME - START_TIME)); if [ "$ELAPSED_SECONDS" -ge "$MAX_WAIT" ]; then echo "Ant Ivy build failed: Timed out after $((MAX_WAIT / 60)) minutes." >&2; echo "Check GH Runner IP:" >&2; curl https://api.ipify.org ||:; exit 1; fi; echo "Ant Ivy build failed. Retrying immediately! (Elapsed: $ELAPSED_SECONDS/$MAX_WAIT seconds)"; done; echo "Ant Ivy build succeeded."'
 ANT_BUILD_IVY_COMMAND=$?
 set -e # Re-enable 'exit on error'
 
