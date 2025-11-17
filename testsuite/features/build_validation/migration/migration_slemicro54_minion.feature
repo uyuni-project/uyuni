@@ -1,5 +1,5 @@
 # Copyright (c) 2022-2025 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 @slemicro54_minion
 Feature: Migrate a SLE Micro 5.4 Salt minion to SLE Micro 5.5

@@ -1,5 +1,5 @@
 # Copyright (c) 2023 SUSE LLC.
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 # Collect all the issues from a GitHub project board column
 # and tag the corresponding Cucumber feature files with a given tag

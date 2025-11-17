@@ -1,5 +1,5 @@
 # Copyright (c) 2010-2025 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 Feature: Manipulate activation keys
   In order to register systems to the spacewalk server

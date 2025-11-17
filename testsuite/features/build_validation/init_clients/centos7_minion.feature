@@ -1,5 +1,5 @@
 # Copyright (c) 2020-2022 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 #
 #  1) bootstrap a new CentOS 7 minion
 #  2) subscribe it to a base channel for testing

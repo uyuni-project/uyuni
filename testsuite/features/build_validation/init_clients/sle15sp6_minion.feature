@@ -1,5 +1,5 @@
 # Copyright (c) 2024 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 @sle15sp6_minion
 Feature: Bootstrap a SLES 15 SP6 Salt minion
