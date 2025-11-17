@@ -44,7 +44,7 @@ def compute_kiwi_profile_filename(host)
   image = compute_image(host)
   case image
   when 'sles15sp7o', 'sles15sp4o'
-    product == 'Uyuni' ? 'Kiwi/POS_Image-JeOS7_uyuni' : 'Kiwi/POS_Image-JeOS7_head'
+    product == 'Uyuni' ? 'Kiwi/POS_Image-JeOS7_uyuni' : 'Kiwi/POS_Image-JeOS7'
   when 'sles12sp5o'
     'Kiwi/POS_Image-JeOS6_head'
   else
