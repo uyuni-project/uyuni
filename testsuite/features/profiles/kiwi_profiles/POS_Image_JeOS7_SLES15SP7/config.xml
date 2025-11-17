@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<image schemaversion="7.4" name="POS_Image_JeOS7_SLES15SP7">
+<image schemaversion="7.4" name="POS_Image_JeOS7_SLES15_SP7">
     <description type="system">
         <author>Admin User</author>
         <contact>noemail@example.com</contact>
-        <specification>SUSE Linux Enterprise 15 SP7 JeOS</specification>
+        <specification>SUSE Linux Enterprise SLES15 SP7 JeOS</specification>
     </description>
     <preferences>
         <version>7.0.0</version>
