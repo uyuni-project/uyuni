@@ -1,14 +1,14 @@
-import * as React from "react";
+import type { ReactNode } from "react";
 
 import { Panel } from "./Panel";
 
 type Props = {
   title?: string;
   icon?: string;
-  header?: React.ReactNode;
-  footer?: React.ReactNode;
-  children?: React.ReactNode;
-  buttons?: React.ReactNode;
+  header?: ReactNode;
+  footer?: ReactNode;
+  children?: ReactNode;
+  buttons?: ReactNode;
 };
 
 function BootstrapPanel(props: Props) {

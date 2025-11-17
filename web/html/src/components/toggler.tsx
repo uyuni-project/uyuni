@@ -1,5 +1,4 @@
-import * as React from "react";
-
+import { type ReactNode, Component } from "react";
 /** @module toggler */
 
 type Props = {
@@ -7,7 +6,7 @@ type Props = {
   handler: (value: boolean) => void;
 
   /** Text to display on the toggler. */
-  text?: React.ReactNode;
+  text?: ReactNode;
 
   /** The boolean value represented by the toggler. */
   value?: boolean;
@@ -22,7 +21,7 @@ type Props = {
 /**
  * A customized toggle switch element to represent boolean values.
  */
-class Toggler extends React.Component<Props> {
+class Toggler extends Component<Props> {
   render() {
     let classes = this.props.disabled ? "text-muted" : "pointer";
 

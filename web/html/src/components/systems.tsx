@@ -1,4 +1,4 @@
-import * as React from "react";
+import type { ReactNode } from "react";
 
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
@@ -110,7 +110,7 @@ function statusDisplay(system: any, isAdmin: boolean) {
 
   const { iconType, iconTitle, url } = systems[type];
 
-  let locked: React.ReactNode = "";
+  let locked: ReactNode = "";
   if (DEPRECATED_unsafeEquals(system["locked"], 1)) {
     locked = <IconTag type="system-locked" title={t("System Locked")} />;
   }

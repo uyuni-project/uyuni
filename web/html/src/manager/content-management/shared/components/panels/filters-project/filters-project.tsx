@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Fragment } from "react";
 
 import { isOrgAdmin } from "core/auth/auth.utils";
 import useRoles from "core/auth/use-roles";
@@ -53,7 +53,7 @@ const renderFilterEntry = (filter, projectId, symbol, last) => {
   }
 
   return (
-    <React.Fragment key={`filter_list_item_${filter.id}`}>
+    <Fragment key={`filter_list_item_${filter.id}`}>
       <li className={`list-group-item ${styles.wrapper} ${filterClassName}`}>
         {filterIconName && <i className={`fa ${filterIconName}`}></i>}
         {descr}
@@ -64,7 +64,7 @@ const renderFilterEntry = (filter, projectId, symbol, last) => {
           {symbol}
         </div>
       )}
-    </React.Fragment>
+    </Fragment>
   );
 };
 

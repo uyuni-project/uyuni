@@ -1,5 +1,3 @@
-import * as React from "react";
-
 import SpaRenderer from "core/spa/spa-renderer";
 
 const NotFound = ({ currentUrl }) => (

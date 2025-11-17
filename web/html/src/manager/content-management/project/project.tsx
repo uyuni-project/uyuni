@@ -1,6 +1,5 @@
 import "./project.css";
 
-import * as React from "react";
 import { useEffect, useState } from "react";
 
 import _groupBy from "lodash/groupBy";

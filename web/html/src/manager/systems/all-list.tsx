@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState } from "react";
 
 import { LinkButton } from "components/buttons";
 import { IconTag } from "components/icontag";
@@ -37,7 +37,7 @@ const DownloadCSVButton = ({ search }) => {
 };
 
 export function AllSystems(props: Props) {
-  const [selectedSystems, setSelectedSystems] = React.useState<string[]>([]);
+  const [selectedSystems, setSelectedSystems] = useState<string[]>([]);
 
   const handleSelectedSystems = (items: string[]) => {
     const removed = selectedSystems.filter((item) => !items.includes(item)).map((item) => [item, false]);

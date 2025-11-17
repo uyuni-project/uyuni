@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type MouseEvent, type ReactNode, Component } from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 import { isUyuni } from "core/user-preferences";
@@ -16,8 +16,8 @@ type LinkProps = {
   className?: string;
   target?: string;
   title?: string;
-  responsiveLabel?: React.ReactNode;
-  label?: React.ReactNode;
+  responsiveLabel?: ReactNode;
+  label?: ReactNode;
 };
 
 const Link = (props: LinkProps) => (
@@ -28,7 +28,7 @@ const Link = (props: LinkProps) => (
 );
 
 type NodeProps = {
-  handleClick: ((event?: React.MouseEvent) => any) | null;
+  handleClick: ((event?: MouseEvent) => any) | null;
   isLeaf?: boolean;
   icon?: string;
   url: string;
@@ -38,7 +38,7 @@ type NodeProps = {
   isOpen?: boolean;
 };
 
-class Node extends React.Component<NodeProps> {
+class Node extends Component<NodeProps> {
   handleClick = (event) => {
     // if the click is triggered on a link, do not toggle the menu, just offload the page and go to the requested link
     if (!event.target.href) {
@@ -76,7 +76,7 @@ class ElementState {
   }
 }
 
-class Element extends React.Component<ElementProps, ElementState> {
+class Element extends Component<ElementProps, ElementState> {
   state: ElementState;
 
   constructor(props: ElementProps) {
@@ -166,7 +166,7 @@ type MenuLevelProps = {
   forceCollapse?: any;
 };
 
-class MenuLevel extends React.Component<MenuLevelProps> {
+class MenuLevel extends Component<MenuLevelProps> {
   render() {
     const contentMenu = this.props.elements.map((el, i) => (
       <Element
@@ -182,7 +182,7 @@ class MenuLevel extends React.Component<MenuLevelProps> {
   }
 }
 
-class Nav extends React.Component {
+class Nav extends Component {
   state = { search: "", forceCollapse: false };
 
   onSearch = (e) => {
@@ -232,7 +232,7 @@ class Nav extends React.Component {
 
 SpaRenderer.renderGlobalReact(<Nav />, document.getElementById("nav"));
 
-class Breadcrumb extends React.Component {
+class Breadcrumb extends Component {
   onSPAEndNavigation() {
     this.forceUpdate();
   }

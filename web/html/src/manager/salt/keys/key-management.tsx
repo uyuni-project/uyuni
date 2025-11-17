@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 
@@ -97,7 +97,7 @@ type State = {
   loading: boolean;
 };
 
-class KeyManagement extends React.Component<Props, State> {
+class KeyManagement extends Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {

@@ -1,11 +1,10 @@
-import * as React from "react";
-
-type Props = React.InputHTMLAttributes<HTMLInputElement> & {
-  onPressEnter?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
+import { type InputHTMLAttributes, type KeyboardEvent, Component } from "react";
+type Props = InputHTMLAttributes<HTMLInputElement> & {
+  onPressEnter?: (event: KeyboardEvent<HTMLInputElement>) => void;
 };
 
-class TextField extends React.Component<Props> {
-  onKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+class TextField extends Component<Props> {
+  onKeyPress = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter" && this.props.onPressEnter) {
       this.props.onPressEnter(event);
     }

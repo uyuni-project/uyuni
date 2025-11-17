@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type ReactNode, Component } from "react";
 
 import _partition from "lodash/partition";
 import _sortBy from "lodash/sortBy";
@@ -64,13 +64,13 @@ class StatesPickerState {
   showSaltState?: {
     id: string;
     name: string;
-    content: React.ReactNode;
+    content: ReactNode;
   } = undefined;
   rank?: boolean = undefined;
   messages: MessageType[] = [];
 }
 
-class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState> {
+class StatesPicker extends Component<StatesPickerProps, StatesPickerState> {
   state = new StatesPickerState();
 
   constructor(props: StatesPickerProps) {
@@ -243,7 +243,7 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
   };
 
   tableBody = () => {
-    const elements: React.ReactNode[] = [];
+    const elements: ReactNode[] = [];
     let rows: any[] = [];
     rows = this.state.search.results.map((channel) => {
       const changed = this.state.changed.get(channelKey(channel));
@@ -480,7 +480,7 @@ type ExecuteStatesProps = {
   applySaltState: (memberIds: any[]) => any;
 };
 
-class ExecuteStatesButton extends React.Component<ExecuteStatesProps> {
+class ExecuteStatesButton extends Component<ExecuteStatesProps> {
   state = {
     selected: [],
     showPopup: false,
@@ -576,7 +576,7 @@ class ExecuteStatesButton extends React.Component<ExecuteStatesProps> {
   }
 }
 
-class ExecuteStatesFilter extends React.Component {
+class ExecuteStatesFilter extends Component {
   render() {
     const filterOptions = [{ value: "name", label: t("System Name") }];
     return <TableFilter filterOptions={filterOptions} {...this.props} />;

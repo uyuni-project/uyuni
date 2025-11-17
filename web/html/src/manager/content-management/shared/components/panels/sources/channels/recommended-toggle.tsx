@@ -1,5 +1,3 @@
-import * as React from "react";
-
 import { BaseChannelType, ChildChannelType } from "core/channels/type/channels.type";
 
 import { Toggler } from "components/toggler";

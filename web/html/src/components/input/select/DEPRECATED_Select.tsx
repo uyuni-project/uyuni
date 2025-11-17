@@ -1,5 +1,4 @@
-import * as React from "react";
-import { useEffect } from "react";
+import { type ReactNode, useContext, useEffect } from "react";
 
 import ReactSelect from "react-select";
 import AsyncSelect from "react-select/async";
@@ -32,10 +31,10 @@ type CommonSelectProps = (SingleMode | MultiMode) & {
   getOptionLabel?: (option: any) => string;
 
   /** Formats option labels in the menu and control as React components */
-  formatOptionLabel?: (option: any, meta: any) => React.ReactNode;
+  formatOptionLabel?: (option: any, meta: any) => ReactNode;
 
   /** Placeholder for the select value */
-  placeholder?: React.ReactNode;
+  placeholder?: ReactNode;
 
   /** whether the component's data is loading or not (async) */
   isLoading?: boolean;
@@ -114,7 +113,7 @@ export function DEPRECATED_Select(props: Props) {
     ...propsToPass
   } = props;
 
-  const formContext = React.useContext(FormContext);
+  const formContext = useContext(FormContext);
   const isAsync = (props: Props): props is AsyncSelectProps | AsyncPaginateSelectProps => {
     return (props as AsyncSelectProps).loadOptions !== undefined;
   };

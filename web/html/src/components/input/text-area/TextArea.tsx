@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useContext } from "react";
 
 import { FormContext } from "../form/Form";
 import { InputBase, InputBaseProps } from "../InputBase";
@@ -22,7 +22,7 @@ type Props = InputBaseProps & {
 
 export const TextArea = (props: Props) => {
   const { required = false, disabled = false, rows, cols, placeholder, inputClass, ...propsToPass } = props;
-  const formContext = React.useContext(FormContext);
+  const formContext = useContext(FormContext);
   return (
     <InputBase required={required} disabled={disabled} {...propsToPass}>
       {({ setValue, onBlur }) => {

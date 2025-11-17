@@ -1,5 +1,4 @@
-import * as React from "react";
-import { useCallback, useMemo, useState } from "react";
+import { type FC, useCallback, useMemo, useState } from "react";
 
 import { DEPRECATED_Select, Form } from "components/input";
 import { Column } from "components/table/Column";
@@ -23,7 +22,7 @@ type ChannelTableProps = {
   availableOrgs: Org[];
 };
 
-const HierarchicalChannelsTable: React.FC<ChannelTableProps> = ({
+const HierarchicalChannelsTable: FC<ChannelTableProps> = ({
   channels,
   onChannelSelect,
   availableOrgs,

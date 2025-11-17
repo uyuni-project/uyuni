@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 
@@ -55,7 +55,7 @@ type State = {
   selected?: any;
 };
 
-class RecurringActions extends React.Component<Props, State> {
+class RecurringActions extends Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {

@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type ChangeEvent, type ReactNode, Component } from "react";
 
 import * as ChannelUtils from "core/channels/utils/channels-dependencies.utils";
 
@@ -58,7 +58,7 @@ type SystemChannelsState = {
   dependencyDataAvailable: boolean;
 };
 
-class SystemChannels extends React.Component<SystemChannelsProps, SystemChannelsState> {
+class SystemChannels extends Component<SystemChannelsProps, SystemChannelsState> {
   constructor(props: SystemChannelsProps) {
     super(props);
     this.state = {
@@ -232,7 +232,7 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
     this.setState((prevState) => ({ messages: prevState.messages.concat(msg) }));
   };
 
-  handleBaseChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  handleBaseChange = (event: ChangeEvent<HTMLInputElement>) => {
     const baseId: number = parseInt(event.target.value, 10);
     this.setState((prevState) => ({
       selectedBase:
@@ -247,7 +247,7 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
     return { id: -1, name: t("(none, disable service)"), custom: false, subscribable: true, recommended: false };
   };
 
-  handleChildChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  handleChildChange = (event: ChangeEvent<HTMLInputElement>) => {
     this.selectChildChannel(parseInt(event.target.value, 10), event.target.checked);
   };
 
@@ -447,7 +447,7 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
   }
 
   renderSelectionPage = () => {
-    const baseChannels: React.ReactNode[] = [];
+    const baseChannels: ReactNode[] = [];
     let childChannels;
     const isNoneChecked = -1 === (this.state.selectedBase && this.state.selectedBase.id);
     baseChannels.push(

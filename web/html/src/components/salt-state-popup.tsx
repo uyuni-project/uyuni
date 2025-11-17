@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type ReactNode, Component } from "react";
 
 import { AceEditor } from "./ace-editor";
 import { LinkButton } from "./buttons";
@@ -21,12 +21,12 @@ type SaltStatePopupProps = {
   saltState?: {
     id: string;
     name: string;
-    content: React.ReactNode;
+    content: ReactNode;
   };
   onClosePopUp: () => any;
 };
 
-class SaltStatePopup extends React.Component<SaltStatePopupProps> {
+class SaltStatePopup extends Component<SaltStatePopupProps> {
   render() {
     let popUpContent, icon, title, footer;
 

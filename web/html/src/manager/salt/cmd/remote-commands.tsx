@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type ReactNode, Component } from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 
@@ -8,14 +8,14 @@ import { TopPanel } from "components/panels/TopPanel";
 type MinionResultViewProps = {
   id?: any;
   result?: any;
-  label?: React.ReactNode;
+  label?: ReactNode;
 };
 
 type MinionResultViewState = {
   open: boolean;
 };
 
-class MinionResultView extends React.Component<MinionResultViewProps, MinionResultViewState> {
+class MinionResultView extends Component<MinionResultViewProps, MinionResultViewState> {
   constructor(props) {
     super(props);
     this.state = {
@@ -134,7 +134,7 @@ type RemoteCommandState = {
   pageUnloading?: boolean;
 };
 
-class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandState> {
+class RemoteCommand extends Component<RemoteCommandProps, RemoteCommandState> {
   constructor(props) {
     super(props);
     this.state = {
@@ -152,7 +152,7 @@ class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandSta
   }
 
   render() {
-    const msgs: React.ReactNode[] = [];
+    const msgs: ReactNode[] = [];
     const style = {
       paddingBottom: "0px",
     };
@@ -558,7 +558,7 @@ class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandSta
   };
 
   commandResult = (result) => {
-    const elements: React.ReactNode[] = [];
+    const elements: ReactNode[] = [];
     for (const kv of result.minions) {
       const id = kv[0];
       const value = kv[1];

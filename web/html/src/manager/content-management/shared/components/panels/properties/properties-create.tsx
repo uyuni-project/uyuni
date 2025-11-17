@@ -1,5 +1,3 @@
-import * as React from "react";
-
 import { Panel } from "components/panels/Panel";
 
 import { ProjectPropertiesType } from "../../../type/project.type";

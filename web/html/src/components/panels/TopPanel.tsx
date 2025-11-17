@@ -1,13 +1,13 @@
-import * as React from "react";
+import type { ReactNode } from "react";
 
 import { HelpLink } from "components/utils/HelpLink";
 
 type Props = {
   helpUrl?: string;
-  button?: React.ReactNode;
+  button?: ReactNode;
   title: string;
   icon?: string;
-  children?: React.ReactNode;
+  children?: ReactNode;
 };
 
 export function TopPanel(props: Props) {

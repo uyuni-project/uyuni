@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import { AsyncButton } from "components/buttons";
 import { Messages, MessageType, Utils as MessagesUtils } from "components/messages/messages";
@@ -32,7 +32,7 @@ const messageMap = {
   set_reportdb_creds_failed: t("Setting new credentials for the report database failed"),
 };
 
-class MgrServer extends React.Component<Props, State> {
+class MgrServer extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {

@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type ReactNode, Component } from "react";
 
 import { ActionChain, ActionSchedule } from "components/action-schedule";
 import { AsyncButton, Button } from "components/buttons";
@@ -28,7 +28,7 @@ type Props = {
   listSummary: string;
   listEmptyText: string;
   listActionLabel: string;
-  listColumns: React.ReactNode[];
+  listColumns: ReactNode[];
   confirmTitle: string;
 };
 
@@ -40,7 +40,7 @@ type State = {
   actionChain?: ActionChain;
 };
 
-export class PackageListActionScheduler extends React.Component<Props, State> {
+export class PackageListActionScheduler extends Component<Props, State> {
   constructor(props) {
     super(props);
 

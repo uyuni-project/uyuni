@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 
@@ -26,7 +26,7 @@ class SubscriptionMatchingState {
   error: any | null = null;
 }
 
-class SubscriptionMatching extends React.Component<SubscriptionMatchingProps, SubscriptionMatchingState> {
+class SubscriptionMatching extends Component<SubscriptionMatchingProps, SubscriptionMatchingState> {
   timerId?: number;
   refreshRequest?: Cancelable;
   state = new SubscriptionMatchingState();
@@ -123,7 +123,7 @@ type SubscriptionMatchingTabContainerProps = {
   onPinChanged: (...args: any[]) => any;
 };
 
-class SubscriptionMatchingTabContainer extends React.Component<SubscriptionMatchingTabContainerProps> {
+class SubscriptionMatchingTabContainer extends Component<SubscriptionMatchingTabContainerProps> {
   state = { activeTabHash: document.location.hash };
 
   UNSAFE_componentWillMount() {

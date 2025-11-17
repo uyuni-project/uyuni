@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Fragment } from "react";
 
 import { paygProperties } from "manager/admin/payg/payg";
 
@@ -38,7 +38,7 @@ type PropsFields = {
 export const PaygSshDataFormFields = (props: PropsFields) => {
   const prefix = props.isInstance ? "" : "bastion_";
   return (
-    <React.Fragment>
+    <Fragment>
       {props.editing && (
         <div className="alert alert-info" style={{ marginTop: "0px" }}>
           {t("When editing the SSH connection all needed credentials must be re-provided.")}
@@ -104,6 +104,6 @@ export const PaygSshDataFormFields = (props: PropsFields) => {
           divClass="col-md-10"
         />
       </div>
-    </React.Fragment>
+    </Fragment>
   );
 };

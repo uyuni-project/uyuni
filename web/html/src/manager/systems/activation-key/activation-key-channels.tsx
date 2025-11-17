@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type ChangeEvent, Component } from "react";
 
 import MandatoryChannelsApi from "core/channels/api/mandatory-channels-api";
 import { productName } from "core/user-preferences";
@@ -18,7 +18,7 @@ type ActivationKeyChannelsState = {
   currentChildSelectedIds: number[];
 };
 
-class ActivationKeyChannels extends React.Component<ActivationKeyChannelsProps, ActivationKeyChannelsState> {
+class ActivationKeyChannels extends Component<ActivationKeyChannelsProps, ActivationKeyChannelsState> {
   constructor(props: ActivationKeyChannelsProps) {
     super(props);
     this.state = {
@@ -37,7 +37,7 @@ class ActivationKeyChannels extends React.Component<ActivationKeyChannelsProps, 
     };
   }
 
-  handleBaseChange = (event: React.ChangeEvent<HTMLSelectElement>): Promise<number> => {
+  handleBaseChange = (event: ChangeEvent<HTMLSelectElement>): Promise<number> => {
     const newBaseId: number = parseInt(event.target.value, 10);
     return new Promise((resolve) => this.setState({ currentSelectedBaseId: newBaseId }, () => resolve(newBaseId)));
   };

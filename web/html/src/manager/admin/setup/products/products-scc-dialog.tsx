@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import { Button } from "components/buttons";
 import { Messages, MessageType } from "components/messages/messages";
@@ -61,7 +61,7 @@ class SCCDialogState {
   errors: MessageType[] = [];
 }
 
-class SCCDialog extends React.Component<Props, SCCDialogState> {
+class SCCDialog extends Component<Props, SCCDialogState> {
   state = new SCCDialogState();
 
   UNSAFE_componentWillMount() {

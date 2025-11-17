@@ -1,5 +1,4 @@
-import * as React from "react";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 
 import { Button } from "components/buttons";
 import { Dialog } from "components/dialog/Dialog";
@@ -45,7 +44,7 @@ const CreatorPanel = (props: Props) => {
   const panelCollapseId = props.collapsible ? `${props.id}-panel` : null;
 
   return (
-    <React.Fragment>
+    <Fragment>
       <Panel
         headingLevel={panelLevels[props.panelLevel]}
         collapseId={panelCollapseId}
@@ -87,7 +86,7 @@ const CreatorPanel = (props: Props) => {
           })}
           onClose={() => setOpen(false)}
           footer={
-            <React.Fragment>
+            <Fragment>
               <div className="btn-group col-lg-6">
                 {props.onDelete && (
                   <Button
@@ -132,11 +131,11 @@ const CreatorPanel = (props: Props) => {
                   />
                 </div>
               </div>
-            </React.Fragment>
+            </Fragment>
           }
         />
       )}
-    </React.Fragment>
+    </Fragment>
   );
 };
 

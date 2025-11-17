@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import _isEqual from "lodash/isEqual";
 
@@ -36,7 +36,7 @@ type State = {
   details?: any;
 };
 
-class RecurringActionsEdit extends React.Component<Props, State> {
+class RecurringActionsEdit extends Component<Props, State> {
   constructor(props) {
     super(props);
 

@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type ChangeEvent, Component } from "react";
 
 import { RequiredChannelsResultType } from "core/channels/api/use-mandatory-channels-api";
 
@@ -24,7 +24,7 @@ type ChildChannelsState = {
   collapsed: boolean;
 };
 
-class ChildChannels extends React.Component<ChildChannelsProps, ChildChannelsState> {
+class ChildChannels extends Component<ChildChannelsProps, ChildChannelsState> {
   constructor(props: ChildChannelsProps) {
     super(props);
 
@@ -37,7 +37,7 @@ class ChildChannels extends React.Component<ChildChannelsProps, ChildChannelsSta
     this.props.fetchMandatoryChannelsByChannelIds({ base: this.props.base, channels: this.props.channels });
   };
 
-  handleChannelChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  handleChannelChange = (event: ChangeEvent<HTMLInputElement>) => {
     const channelId = parseInt(event.target.value, 10);
     const selectedFlag = event.target.checked;
     const channelIds: number[] = this.selectChannelWithDependencies(channelId, selectedFlag);

@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type ReactNode, Component } from "react";
 
 import { Button, LinkButton } from "components/buttons";
 import { DangerDialog } from "components/dialog/DangerDialog";
@@ -64,7 +64,7 @@ type State = {
 /**
  * Component to handle large text data. It allows the user to download, edit and delete the text data.
  */
-export class LargeTextAttachment extends React.Component<Props, State> {
+export class LargeTextAttachment extends Component<Props, State> {
   private static readonly INITAL_MODEL: EditFormModel = { method: EditMethod.Upload };
 
   static defaultProps: Partial<Props> = {
@@ -94,7 +94,7 @@ export class LargeTextAttachment extends React.Component<Props, State> {
     };
   }
 
-  public render(): React.ReactNode {
+  public render(): ReactNode {
     const valueObject = new Blob([this.props.value ?? ""], { type: "text/plain" });
     const valuePresent = this.props.value !== null;
     const downloadUrl = URL.createObjectURL(valueObject);

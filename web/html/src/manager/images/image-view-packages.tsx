@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import { FromNow } from "components/datetime";
 import { Column } from "components/table/Column";
@@ -22,7 +22,7 @@ type Props = {
   data: any;
 };
 
-class ImageViewPackages extends React.Component<Props> {
+class ImageViewPackages extends Component<Props> {
   searchData(row, criteria) {
     if (criteria) {
       return (

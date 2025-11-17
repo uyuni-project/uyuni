@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component, PureComponent } from "react";
 
 import { localizedMoment } from "utils";
 
@@ -54,7 +54,7 @@ type DatePickerProps = {
   onDateChanged: (year: number, month: number, date: number) => void;
 };
 
-class DatePicker extends React.PureComponent<DatePickerProps> {
+class DatePicker extends PureComponent<DatePickerProps> {
   _input: JQuery | null = null;
 
   componentDidMount() {
@@ -147,7 +147,7 @@ type TimePickerProps = {
   onTimeChanged: (hours: number, minutes: number, seconds: number) => void;
 };
 
-class TimePicker extends React.PureComponent<TimePickerProps> {
+class TimePicker extends PureComponent<TimePickerProps> {
   _input: JQuery | null = null;
 
   componentDidMount() {
@@ -252,7 +252,7 @@ type DateTimePickerState = {
   timeZone: typeof localizedMoment.userTimeZone | typeof localizedMoment.serverTimeZone;
 };
 
-export class DEPRECATED_DateTimePicker extends React.Component<DateTimePickerProps, DateTimePickerState> {
+export class DEPRECATED_DateTimePicker extends Component<DateTimePickerProps, DateTimePickerState> {
   constructor(props: DateTimePickerProps) {
     super(props);
     this.state = {

@@ -1,5 +1,4 @@
-import * as React from "react";
-
+import { type ReactNode, Component } from "react";
 export type Severity = "info" | "success" | "warning" | "error";
 
 export type ServerMessageType = {
@@ -10,7 +9,7 @@ export type ServerMessageType = {
 
 export type MessageType = {
   severity: Severity;
-  text: React.ReactNode;
+  text: ReactNode;
 };
 
 type Props = {
@@ -55,24 +54,24 @@ const _classNames = {
   warning: "warning",
 };
 
-export class Messages extends React.Component<Props> {
-  static info(text: React.ReactNode): MessageType {
+export class Messages extends Component<Props> {
+  static info(text: ReactNode): MessageType {
     return Messages.message("info", text);
   }
 
-  static success(text: React.ReactNode): MessageType {
+  static success(text: ReactNode): MessageType {
     return Messages.message("success", text);
   }
 
-  static error(text: React.ReactNode): MessageType {
+  static error(text: ReactNode): MessageType {
     return Messages.message("error", text);
   }
 
-  static warning(text: React.ReactNode): MessageType {
+  static warning(text: ReactNode): MessageType {
     return Messages.message("warning", text);
   }
 
-  static message(severityIn: Severity, textIn: React.ReactNode): MessageType {
+  static message(severityIn: Severity, textIn: ReactNode): MessageType {
     return { severity: severityIn, text: textIn };
   }
 
@@ -92,9 +91,9 @@ export class Messages extends React.Component<Props> {
 
 export const fromServerMessage = (
   message: ServerMessageType,
-  messageMap?: Record<string, React.ReactNode>
+  messageMap?: Record<string, ReactNode>
 ): MessageType | null | undefined => {
-  let messageText: React.ReactNode = message.text;
+  let messageText: ReactNode = message.text;
   if (messageMap && message.text in messageMap) {
     const mappedMessage = messageMap[message.text];
     if (typeof mappedMessage === "function") {
@@ -121,7 +120,7 @@ export const fromServerMessage = (
   return msg;
 };
 
-function msg(severityIn: Severity, textIn: React.ReactNode, listMultiple: boolean, header?: string) {
+function msg(severityIn: Severity, textIn: ReactNode, listMultiple: boolean, header?: string) {
   if (textIn === null || textIn === undefined) {
     return [];
   }
@@ -165,16 +164,16 @@ function msg(severityIn: Severity, textIn: React.ReactNode, listMultiple: boolea
  * entries will generate multiple separated messages.
  */
 export const Utils = {
-  info: function (text: React.ReactNode, listMultiple: boolean = false, header?: string): MessageType[] {
+  info: function (text: ReactNode, listMultiple: boolean = false, header?: string): MessageType[] {
     return msg("info", text, listMultiple, header);
   },
-  success: function (text: React.ReactNode, listMultiple: boolean = false, header?: string): MessageType[] {
+  success: function (text: ReactNode, listMultiple: boolean = false, header?: string): MessageType[] {
     return msg("success", text, listMultiple, header);
   },
-  warning: function (text: React.ReactNode, listMultiple: boolean = false, header?: string): MessageType[] {
+  warning: function (text: ReactNode, listMultiple: boolean = false, header?: string): MessageType[] {
     return msg("warning", text, listMultiple, header);
   },
-  error: function (text: React.ReactNode, listMultiple: boolean = false, header?: string): MessageType[] {
+  error: function (text: ReactNode, listMultiple: boolean = false, header?: string): MessageType[] {
     return msg("error", text, listMultiple, header);
   },
 };

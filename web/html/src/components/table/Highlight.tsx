@@ -1,4 +1,4 @@
-import * as React from "react";
+import type { ReactNode } from "react";
 
 type HighlightProps = {
   /** text to display */
@@ -36,9 +36,9 @@ export function Highlight({ enabled = false, ...props }: HighlightProps) {
     );
   }
 
-  let chunk1: React.ReactNode = text.substring(0, pos);
-  let chunk2: React.ReactNode = text.substring(pos, pos + high.length);
-  let chunk3: React.ReactNode = text.substring(pos + high.length, text.length);
+  let chunk1: ReactNode = text.substring(0, pos);
+  let chunk2: ReactNode = text.substring(pos, pos + high.length);
+  let chunk3: ReactNode = text.substring(pos + high.length, text.length);
 
   chunk1 = chunk1 ? <span key="m1">{chunk1}</span> : null;
   chunk2 = chunk2 ? (

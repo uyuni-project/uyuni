@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type ReactNode, Component } from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 
@@ -46,7 +46,7 @@ type State = {
   id?: any;
 };
 
-class VirtualHostManager extends React.Component<Props, State> {
+class VirtualHostManager extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -158,8 +158,7 @@ class VirtualHostManager extends React.Component<Props, State> {
       // first use the localized name
       msgModuleTypes[moduleId] ??
       // then the module name as returned by the server
-      this.state.availableModules.find((name) => name.toLocaleLowerCase() === moduleId) ??
-      // if still undefined, fallback to the lowercase module id (execution should never reach here)
+      this.state.availableModules.find((name) => name.toLocaleLowerCase() === moduleId) ?? // if still undefined, fallback to the lowercase module id (execution should never reach here)
       moduleId
     );
   }
@@ -195,7 +194,7 @@ class VirtualHostManager extends React.Component<Props, State> {
     );
   }
 
-  renderContent(action: string): React.ReactNode {
+  renderContent(action: string): ReactNode {
     switch (action) {
       case "details":
         return (

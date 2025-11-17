@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import Creatable from "react-select/creatable";
 
@@ -33,7 +33,7 @@ type ComboboxState = {
   focused: boolean;
 };
 
-export class Combobox extends React.Component<ComboboxProps, ComboboxState> {
+export class Combobox extends Component<ComboboxProps, ComboboxState> {
   onChange = (selectedOption: ReactSelectItem) => {
     if (selectedOption.id && selectedOption.value) {
       return this.props.onSelect({

@@ -1,5 +1,4 @@
-import * as React from "react";
-import { useState } from "react";
+import { type FC, type ReactNode, useState } from "react";
 
 import { SubmitButton } from "components/buttons";
 import { DateTime, DEPRECATED_Select, Form, Text } from "components/input";
@@ -38,7 +37,7 @@ type Props = {
   supportProgramName: string | null;
 };
 
-export const SupportData: React.FC<Props> = ({ serverId, availableRegions, supportProgramName }): JSX.Element => {
+export const SupportData: FC<Props> = ({ serverId, availableRegions, supportProgramName }): JSX.Element => {
   const [formModel, setFormModel] = useState(
     () => new SupportDataRequest("", availableRegions[0].label, "", localizedMoment())
   );
@@ -52,11 +51,11 @@ export const SupportData: React.FC<Props> = ({ serverId, availableRegions, suppo
       : []
   );
 
-  function getFormattedProgramName(programName: string): React.ReactNode {
+  function getFormattedProgramName(programName: string): ReactNode {
     return <code>{programName}</code>;
   }
 
-  function getActionLink(text: string, actionId: number): React.ReactNode {
+  function getActionLink(text: string, actionId: number): ReactNode {
     return <ActionLink id={actionId}>{text}</ActionLink>;
   }
 

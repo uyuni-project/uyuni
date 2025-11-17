@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type ReactComponentElement, type ReactElement, type ReactNode, Children, Component } from "react";
 
 import _isEqual from "lodash/isEqual";
 
@@ -18,7 +18,7 @@ import { SelectedRowDetails } from "./SelectedRowDetails";
 
 type ChildrenArgsProps = {
   currItems: any[];
-  headers: React.ReactNode;
+  headers: ReactNode;
   handleSelect: (...args: any[]) => any;
   selectedItems: any[];
   criteria?: string;
@@ -26,7 +26,7 @@ type ChildrenArgsProps = {
 };
 
 type Props = {
-  columns: React.ReactElement<any>[];
+  columns: ReactElement<any>[];
 
   /**
    * Either an array of data items of any type where each element is a row data,
@@ -57,7 +57,7 @@ type Props = {
   onSearch?: (criteria: string) => void;
 
   /** the React Object that contains the filter search field */
-  searchField?: React.ReactComponentElement<typeof SearchField>;
+  searchField?: ReactComponentElement<typeof SearchField>;
 
   /** Default column to search on */
   defaultSearchField?: string;
@@ -103,13 +103,13 @@ type Props = {
   onLoad?: () => void;
 
   /** Children node in the table */
-  children: (args: ChildrenArgsProps) => React.ReactNode;
+  children: (args: ChildrenArgsProps) => ReactNode;
 
   /** Other filter fields */
-  additionalFilters?: React.ReactNode[];
+  additionalFilters?: ReactNode[];
 
   /** Title buttons to add next to the items per page selection */
-  titleButtons?: React.ReactNode[];
+  titleButtons?: ReactNode[];
 };
 
 type State = {
@@ -125,7 +125,7 @@ type State = {
   loading: boolean;
 };
 
-export class TableDataHandler extends React.Component<Props, State> {
+export class TableDataHandler extends Component<Props, State> {
   static defaultProps = {
     selectable: false,
     deletable: false,
@@ -283,7 +283,7 @@ export class TableDataHandler extends React.Component<Props, State> {
   };
 
   renderTitleButtons = () => {
-    return React.Children.map(this.props.titleButtons, (item: React.ReactNode) =>
+    return Children.map(this.props.titleButtons, (item: ReactNode) =>
       cloneReactElement(item, {
         search: { field: this.state.field, criteria: this.state.criteria },
       })

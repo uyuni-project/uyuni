@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useContext } from "react";
 
 import { DateTimePicker } from "components/datetime";
 
@@ -13,7 +13,7 @@ type Props = InputBaseProps<moment.Moment> & {
 };
 
 export function DateTime({ required = false, disabled = false, ...props }: Props) {
-  const formContext = React.useContext(FormContext);
+  const formContext = useContext(FormContext);
   return (
     <InputBase<moment.Moment> required={required} disabled={disabled} {...props}>
       {({ setValue }) => {

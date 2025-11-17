@@ -3,7 +3,7 @@
  * Module specific tests belong on the submodule instead.
  */
 
-import * as React from "react";
+import type { ReactElement } from "react";
 
 import { render, RenderOptions, screen, server, type, waitForElementToBeRemoved } from "utils/test-utils";
 
@@ -22,7 +22,7 @@ describe("Table component", () => {
   };
 
   /** Render and wait for the first load to be done */
-  async function renderAndLoad(ui: React.ReactElement, options?: Omit<RenderOptions, "queries">) {
+  async function renderAndLoad(ui: ReactElement, options?: Omit<RenderOptions, "queries">) {
     const result = render(ui, options);
     await waitForElementToBeRemoved(() => screen.queryByText(baseProps.loadingText));
     return result;

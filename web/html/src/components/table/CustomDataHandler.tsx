@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type ReactComponentElement, type ReactNode, Children } from "react";
 
 import { cloneReactElement } from "components/utils";
 
@@ -16,7 +16,7 @@ type Props = {
   cssClassFunction?: (...args: any[]) => any;
 
   /** the React Object that contains the filter search field */
-  searchField?: React.ReactComponentElement<typeof SearchField>;
+  searchField?: ReactComponentElement<typeof SearchField>;
 
   /** the initial number of how many row-per-page to show */
   initialItemsPerPage?: number;
@@ -40,10 +40,10 @@ type Props = {
   loadingText?: string;
 
   /** Children node in the table */
-  children: React.ReactNode;
+  children: ReactNode;
 
   /** Other filter fields */
-  additionalFilters?: React.ReactNode[];
+  additionalFilters?: ReactNode[];
 };
 
 export function CustomDataHandler(props: Props) {
@@ -51,7 +51,7 @@ export function CustomDataHandler(props: Props) {
   return (
     <TableDataHandler {...allProps} selectable={() => selectable}>
       {({ currItems, criteria }) =>
-        React.Children.toArray(props.children).map((child) => cloneReactElement(child, { data: currItems, criteria }))
+        Children.toArray(props.children).map((child) => cloneReactElement(child, { data: currItems, criteria }))
       }
     </TableDataHandler>
   );

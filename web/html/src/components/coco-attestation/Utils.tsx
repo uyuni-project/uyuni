@@ -1,4 +1,4 @@
-import React from "react";
+import type { ReactNode } from "react";
 
 import { FromNow } from "components/datetime";
 import { CronTimes, RecurringType } from "components/picker/recurring-event-picker";
@@ -44,7 +44,7 @@ export type AttestationReport = {
   results: AttestationResult[];
 };
 
-export function renderTime(time: Date): React.ReactNode {
+export function renderTime(time: Date): ReactNode {
   if (time === null) {
     return t("N/A");
   }
@@ -52,7 +52,7 @@ export function renderTime(time: Date): React.ReactNode {
   return <FromNow value={time} />;
 }
 
-export function renderStatus(status: string, description: string): React.ReactNode {
+export function renderStatus(status: string, description: string): ReactNode {
   let icon, textStyle;
 
   switch (status) {

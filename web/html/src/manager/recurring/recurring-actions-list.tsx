@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type RefObject, Component, createRef } from "react";
 
 import { pageSize } from "core/user-preferences";
 
@@ -34,11 +34,11 @@ type State = {
   schedules: any[];
 };
 
-class RecurringActionsList extends React.Component<Props, State> {
-  tableRef: React.RefObject<any>;
+class RecurringActionsList extends Component<Props, State> {
+  tableRef: RefObject<any>;
   constructor(props) {
     super(props);
-    this.tableRef = React.createRef();
+    this.tableRef = createRef();
     this.state = {
       schedules: [],
       itemsToDelete: [],
