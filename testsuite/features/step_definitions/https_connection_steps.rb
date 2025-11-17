@@ -26,6 +26,7 @@ Then(/^the connection should redirect to the secured channel$/) do
 end
 
 When(/^I connect to the server securely$/) do
+  # OpenSSL::SSL::VERIFY_NONE - we connect to the server using secured connection but we don't verify certificate issuer there
   uri_open_result = URI.open(Capybara.app_host.gsub('http:', 'https:'), redirect: false, open_timeout: 5, ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE)
   add_context(:uri_open_result, uri_open_result)
   htmldoc_title = uri_open_result.readlines.join.gsub('\n', '').gsub(/^.*<title>(.*)<\/title>.*$/, '\1')
@@ -54,6 +55,7 @@ When(/^I connect to the server securely while using CA certificate file$/) do
   ssl_ca_cert_file = "/etc/ssl/certs/#{url.gsub('https://', '')}.pem"
   log("ssl_ca_cert_file: #{ssl_ca_cert_file}")
   begin
+    # OpenSSL::SSL::VERIFY_PEER - we connect to the server using secured connection and we want to verify certificate issuer there
     uri_open_result = URI.open(url, redirect: false, open_timeout: 5, ssl_ca_cert: ssl_ca_cert_file, ssl_verify_mode: OpenSSL::SSL::VERIFY_PEER)
     add_context(:uri_open_result, uri_open_result)
     htmldoc_title = uri_open_result.readlines.join.gsub('\n', '').gsub(/^.*<title>(.*)<\/title>.*$/, '\1')
@@ -69,6 +71,7 @@ When(/^I connect to the server securely while using incorrect certificate as a C
   generate_dummy_cacert(ssl_cacert_file, '/DC=localdomain/DC=localhost/CN=dummy https test CA')
   begin
     add_context(:ssl_cacert_file, ssl_cacert_file)
+    # OpenSSL::SSL::VERIFY_PEER - we connect to the server using secured connection and we want to verify certificate issuer there. Intentionaly the wrong issuer is used, fail expected.
     uri_open_result = URI.open(Capybara.app_host.gsub('http:', 'https:'), redirect: false, open_timeout: 5, ssl_ca_cert: ssl_cacert_file, ssl_verify_mode: OpenSSL::SSL::VERIFY_PEER)
     add_context(:uri_open_result, uri_open_result)
   rescue StandardError => e
