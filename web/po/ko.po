@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-10-27 10:14+0100\n"
-"PO-Revision-Date: 2025-11-17 09:04+0000\n"
+"PO-Revision-Date: 2025-11-17 12:04+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
 "Language: ko\n"
@@ -819,8 +819,6 @@ msgid "The migration process was not successfull and reported the following erro
 msgstr "마이그레이션 프로세스가 성공하지 못했으며 다음 오류가 보고되었습니다."
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:203
-#, fuzzy
-#| msgid "There are no states assigned."
 msgid "There are no ISSv1 slaves to migrate."
 msgstr "마이그레이션할 ISSv1 슬레이브가 없습니다."
 
@@ -1067,14 +1065,10 @@ msgid "Clear fields"
 msgstr "필드 지우기"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:15
-#, fuzzy
-#| msgid "Server FQDN:"
 msgid "Hub server FQDN:"
 msgstr "Hub 서버 FQDN:"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:16
-#, fuzzy
-#| msgid "Peripheral Server FQDN"
 msgid "Peripheral server FQDN:"
 msgstr "주변기기 서버 FQDN:"
 
@@ -1151,32 +1145,22 @@ msgid "Edit channels"
 msgstr "채널 편집"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:191
-#, fuzzy
-#| msgid " channels synced"
 msgid "No channels synchronized."
 msgstr "채널이 동기화되지 않았습니다."
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:195
-#, fuzzy
-#| msgid "One syncronized channel"
 msgid "One synchronized channel"
 msgstr "1개의 동기화된 채널"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:200
-#, fuzzy
-#| msgid "{nSyncedChannels} syncronized channels, from one organization"
 msgid "{nSyncedChannels} synchronized channels"
 msgstr "1개의 조직에서 {nSyncedChannels}개의 동기화된 채널"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:204
-#, fuzzy
-#| msgid "{nSyncedChannels} syncronized channels, from one organization"
 msgid "{nSyncedChannels} synchronized channels, from one organization"
 msgstr "1개의 조직에서 {nSyncedChannels}개의 동기화된 채널"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:207
-#, fuzzy
-#| msgid "{nSyncedChannels} syncronized channels, from {nSyncedOrgs} different organizations"
 msgid "{nSyncedChannels} synchronized channels, from {nSyncedOrgs} different organizations"
 msgstr "{nSyncedOrgs}개의 다른 조직에서 {nSyncedChannels}개의 동기화된 채널"
 
@@ -1659,44 +1643,31 @@ msgstr "일정 선택"
 
 #: ../html/src/components/product-migration/MigrationChannelsSelectorForm.tsx:159
 #: ../html/src/components/product-migration/MigrationTargetSelectorForm.tsx:56
-#, fuzzy
-#| msgid "Product"
 msgid "Source Product"
 msgstr "소스 제품"
 
 #: ../html/src/components/product-migration/MigrationChannelsSelectorForm.tsx:166
-#, fuzzy
-#| msgid "Target Host"
 msgid "Target Product"
 msgstr "대상 제품"
 
 #: ../html/src/components/product-migration/MigrationChannelsSelectorForm.tsx:173
-#, fuzzy
-#| msgid "New base channel"
 msgid "Target base channel"
 msgstr "대상 기본 채널"
 
 #: ../html/src/components/product-migration/MigrationChannelsSelectorForm.tsx:187
-#, fuzzy
-#| msgid "no child channels"
 msgid "Target child channels"
 msgstr "대상 하위 채널"
 
 #: ../html/src/components/product-migration/MigrationChannelsSelectorForm.tsx:194
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:85
-#, fuzzy
 msgid "Allow vendor change"
 msgstr "공급업체 변경 허용"
 
 #: ../html/src/components/product-migration/MigrationChannelsSelectorForm.tsx:207
-#, fuzzy
-#| msgid "Back to sytem selection"
 msgid "Back to target selection"
 msgstr "대상 선택으로 돌아가기"
 
 #: ../html/src/components/product-migration/MigrationChannelsSelectorForm.tsx:210
-#, fuzzy
-#| msgid "Schedule Attestation"
 msgid "Schedule Migration"
 msgstr "마이그레이션 예약"
 
@@ -5325,58 +5296,42 @@ msgid "Upload Support Data"
 msgstr "지원 데이터 업로드"
 
 #: ../html/src/manager/minion/details/support-data.tsx:102
-#, fuzzy
-#| msgid "Report Database Name"
 msgid "Support Case Number"
 msgstr "지원 케이스 번호"
 
 #: ../html/src/manager/minion/details/support-data.tsx:103
-#, fuzzy
 msgid "The support case number to which this data will be attached."
 msgstr "이 데이터가 첨부될 지원 케이스 번호입니다."
 
 #: ../html/src/manager/minion/details/support-data.tsx:105
-#, fuzzy
-#| msgid "e.g., 2048"
 msgid "e.g. 12345"
 msgstr "예: 12345"
 
 #: ../html/src/manager/minion/details/support-data.tsx:109
-#, fuzzy
-#| msgid "Has to be a valid qualified host name"
 msgid "Has to be a valid support case number"
 msgstr "유효한 지원 케이스 번호여야 합니다."
 
 #: ../html/src/manager/minion/details/support-data.tsx:113
-#, fuzzy
-#| msgid "Upload a file"
 msgid "Upload Region"
 msgstr "업로드 영역"
 
 #: ../html/src/manager/minion/details/support-data.tsx:114
-#, fuzzy
 msgid "The location of the FTP server where the data is uploaded."
 msgstr "데이터가 업로드되는 FTP 서버의 위치입니다."
 
 #: ../html/src/manager/minion/details/support-data.tsx:124
-#, fuzzy
 msgid "Command-line Arguments"
 msgstr "명령줄 인수"
 
 #: ../html/src/manager/minion/details/support-data.tsx:125
-#, fuzzy
 msgid "Optional command line arguments for the execution of <programName></programName>."
 msgstr "<programName></programName> 행을 위한 선택적 명령줄 인수입니다."
 
 #: ../html/src/manager/minion/details/support-data.tsx:133
-#, fuzzy
-#| msgid "Earliest:"
 msgid "Earliest"
 msgstr "가장 빠른 날짜"
 
 #: ../html/src/manager/minion/details/support-data.tsx:134
-#, fuzzy
-#| msgid "There are no relevant actions that can be executed on this system."
 msgid "The earliest moment the action can be executed."
 msgstr "작업이 실행될 수 있는 가장 이른 시점."
 
@@ -5553,8 +5508,6 @@ msgid "Root CA"
 msgstr "루트 CA"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:232
-#, fuzzy
-#| msgid "CA certificate to use to sign the SSL certificate in PEM format"
 msgid "Certificate authority that issued the proxy certificate (PEM format)"
 msgstr "프록시 인증서를 발급한 인증 기관 (PEM 형식)"
 
@@ -5564,8 +5517,6 @@ msgid "Intermediate CAs"
 msgstr "중간 CA"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:251
-#, fuzzy
-#| msgid "To sign the SSL certificate in PEM format"
 msgid "An intermediate CA certificate (PEM format)"
 msgstr "중간 CA 인증서(PEM 형식)"
 
@@ -5575,8 +5526,6 @@ msgid "Proxy certificate"
 msgstr "프록시 인증서"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:264
-#, fuzzy
-#| msgid "CA certificate to use to sign the SSL certificate in PEM format"
 msgid "SSL certificate issued for the proxy system (PEM format)"
 msgstr "프록시 시스템용 SSL 인증서 발급(PEM 형식)"
 
@@ -5603,7 +5552,6 @@ msgid "Registry"
 msgstr "등록"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:304
-#, fuzzy
 msgid "The availability of container images depends on your environment’s connectivity. In air-gapped/restricted environments, using RPM as the source mode is recommended to ensure all required images are available locally. Selecting an incompatible source mode may result in deployment failures."
 msgstr "컨테이너 이미지의 가용성은 환경의 연결 상태에 따라 달라집니다. 에어 갭/제한 환경에서는 필요한 모든 이미지를 로컬에서 사용할 수 있도록 RPM을 소스 모드로 사용하는 것이 좋습니다. 호환되지 않는 소스 모드를 선택하면 배포에 실패할 수 있습니다."
 
@@ -5638,7 +5586,6 @@ msgstr "컨테이너 태그"
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:394
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:411
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:428
-#, fuzzy
 msgid "e.g. {registryTagExample}"
 msgstr "예: {registryTagExample}"
 
@@ -5647,7 +5594,6 @@ msgid "HTTPD URL"
 msgstr "HTTPD URL"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:352
-#, fuzzy
 msgid "e.g., {registryUrlExample}/proxy-httpd"
 msgstr "예: {registryUrlExample}/proxy-httpd"
 
@@ -5660,7 +5606,6 @@ msgid "Salt Broker URL"
 msgstr "Salt 브로커 URL"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:369
-#, fuzzy
 msgid "e.g. {registryUrlExample}/proxy-salt-broker"
 msgstr "예: {registryUrlExample}/proxy-salt-broker"
 
@@ -5673,7 +5618,6 @@ msgid "Squid URL"
 msgstr "Squid URL"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:386
-#, fuzzy
 msgid "e.g. {registryUrlExample}/proxy-squid"
 msgstr "예: {registryUrlExample}/proxy-squid"
 
@@ -5686,7 +5630,6 @@ msgid "SSH URL"
 msgstr "SSH URL"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:403
-#, fuzzy
 msgid "e.g. {registryUrlExample}/proxy-ssh"
 msgstr "예: {registryUrlExample}/proxy-ssh"
 
@@ -5699,7 +5642,6 @@ msgid "TFTPD URL"
 msgstr "TFTPD URL"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:420
-#, fuzzy
 msgid "e.g. {registryUrlExample}/proxy-tftpd"
 msgstr "예: {registryUrlExample}/proxy-tftpd"
 
@@ -5785,8 +5727,6 @@ msgid "Filter by summary"
 msgstr "요약을 기준으로 필터링"
 
 #: ../html/src/manager/notifications/notifications-list.tsx:123
-#, fuzzy
-#| msgid "Flag as Read"
 msgid "Mark as Read"
 msgstr "읽음으로 표시"
 
@@ -6140,8 +6080,6 @@ msgid "Configure states to execute"
 msgstr "실행할 상태 구성"
 
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:105
-#, fuzzy
-#| msgid "Create Recurring"
 msgid "Create Recurring Action"
 msgstr "반복 작업 만들기"
 
@@ -6502,7 +6440,6 @@ msgid "Config Diffs"
 msgstr "구성 차이"
 
 #: ../html/src/manager/systems/all-list.tsx:165
-#, fuzzy
 msgid "Last Checked In"
 msgstr "최근 체크인"
 
@@ -6775,76 +6712,58 @@ msgstr "가상 시스템"
 
 #: ../html/src/manager/systems/product-migration/migration-from-dry-run.tsx:59
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:97
-#, fuzzy
 msgid "Product Migration - Schedule outcome"
 msgstr "제품 마이그레이션 - 결과 예약"
 
 #: ../html/src/manager/systems/product-migration/migration-from-dry-run.tsx:62
-#, fuzzy
 msgid "Product Migration - Confirm from dry run"
 msgstr "제품 마이그레이션 - 드라이런 결과 확인"
 
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:88
-#, fuzzy
 msgid "Product Migration - Choose target product"
 msgstr "제품 마이그레이션 - 대상 제품 선택"
 
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:91
-#, fuzzy
-#| msgid "configuration channels"
 msgid "Product Migration - Select channels"
 msgstr "제품 마이그레이션 - 채널 선택"
 
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:94
-#, fuzzy
 msgid "Product Migration - Schedule"
 msgstr "제품 마이그레이션 - 스케줄"
 
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:116
-#, fuzzy
-#| msgid "Show product's channels"
 msgid "Show product details"
 msgstr "제품 세부 정보 표시"
 
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:131
-#, fuzzy
 msgid "The products installed on this system can be migrated"
 msgstr "이 시스템에 설치된 제품을 마이그레이션할 수 있습니다."
 
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:134
-#, fuzzy
 msgid "The products installed on this system cannot be migrated"
 msgstr "이 시스템에 설치된 제품을 마이그레이션할 수 없습니다."
 
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:140
-#, fuzzy
 msgid "The products installed on this system can be migrated."
 msgstr "이 시스템에 설치된 제품을 마이그레이션할 수 있습니다."
 
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:159
-#, fuzzy
-#| msgid "Product"
 msgid "Base Product"
 msgstr "기본 제품"
 
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:161
-#, fuzzy
 msgid "Can be migrated?"
 msgstr "마이그레이션이 가능합니까?"
 
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:217
-#, fuzzy
 msgid "Product details for {system}"
 msgstr "{system}에 대한 제품 세부 정보"
 
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:221
-#, fuzzy
 msgid "These are the products currently installed on {system}:"
 msgstr "현재 {system}에 설치된 제품:"
 
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:232
-#, fuzzy
-#| msgid "This slave is currently disabled and cannot be selected for migration"
 msgid "The systems currently selected cannot be migrated in batch."
 msgstr "현재 선택된 시스템은 일괄적으로 마이그레이션할 수 없습니다."
 
@@ -7183,7 +7102,6 @@ msgid "Nutanix AHV"
 msgstr "Nutanix AHV"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:25
-#, fuzzy
 msgid "Libvirt API"
 msgstr "Libvirt API"
 
