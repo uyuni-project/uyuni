@@ -375,6 +375,8 @@ def extract_logs_from_node(node, host)
     `mkdir logs` unless Dir.exist?('logs')
     success = file_extract(node, "/tmp/#{node.full_hostname}-logs.tar.xz", "logs/#{node.full_hostname}-logs.tar.xz")
     raise ScriptError, 'Download log archive failed' unless success
+  rescue Errno::ECONNRESET
+    $stdout.puts "⚠️ WARN: Skipping log extraction for node #{host} due to connection reset."
   rescue RuntimeError => e
     $stdout.puts e.message
   end
