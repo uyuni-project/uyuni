@@ -9603,7 +9603,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="message.scheduledeleted" xml:space="preserve">
         <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; has been disabled.</source>
-        <target state="needs-translation">스케줄&lt;strong&gt;{0}&lt;/strong&gt; 이 삭제되었습니다.</target>
+        <target state="translated">스케줄&lt;strong&gt;{0}&lt;/strong&gt; 이(가) 삭제되었습니다.</target>
       </trans-unit>
       <trans-unit id="message.schedulenotactive" xml:space="preserve">
         <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; isn't active any more. It's part of the system just for information purposes and will be deleted automatically.</source>
@@ -11886,7 +11886,7 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
       </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_turin.description" xml:space="preserve">
         <source>KVM on AMD Epyc Processor, fifth generation (turin)</source>
-        <target state="needs-translation">AMD Epyc 프로세서 기반 KVM - 5세대(turin)</target>
+        <target state="translated">AMD Epyc 프로세서 기반 KVM, 5세대(turin)</target>
       </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_turin.label" xml:space="preserve">
         <source>KVM on AMD Epyc - Turin</source>
