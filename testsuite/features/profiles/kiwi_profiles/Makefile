@@ -1,7 +1,7 @@
 #
 # generate profiles for specific environments from a template
 #
-IMAGE_VERSION               = POS_Image_JeOS7
+IMAGE_VERSION               = POS_Image-JeOS7
 TEMPLATE_KIWI_DIR           = $(IMAGE_VERSION)
 SERVICE_PACK                = SP4 SP5 SP6 SP7
 SLES_FAMILY                 = SLES15
