@@ -28,6 +28,7 @@ import com.redhat.rhn.manager.system.SystemManager;
 
 import com.suse.manager.api.ReadOnly;
 import com.suse.manager.webui.controllers.appstreams.response.ChannelAppStreamsResponse;
+import com.suse.manager.webui.controllers.appstreams.response.SsmAppStreamModuleResponse;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -193,6 +194,98 @@ public class SystemAppStreamHandler extends BaseHandler {
         }
         catch (LookupException e) {
             throw new NoSuchSystemException();
+        }
+    }
+
+    /**
+     * Schedule module stream enable for the SSM (System Set Manager) systems subscribed to a given modular channel.
+     *
+     * @param loggedInUser The current user
+     * @param channelId ID of the channel containing the streams
+     * @param moduleStreams struct containing module and stream
+     * @param earliestOccurrence Earliest occurrence of the module enable
+     * @return appstreams changes action id
+     * @apidoc.doc Schedule enabling of module streams from a given modular channel for the SSM (System Set Manager)
+     * systems. Invalid modules will be filtered out. If all provided modules are invalid the request will fail.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "channelId")
+     * @apidoc.param #array_begin("moduleStreams")
+     *     #struct_begin("Module Stream")
+     *         #prop("string", "module")
+     *         #prop("string", "stream")
+     *     #struct_end()
+     * #array_end()
+     * @apidoc.param #param("$date", "earliestOccurrence")
+     * @apidoc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
+     */
+    public int ssmEnable(User loggedInUser, Integer channelId, List<Map<String, String>> moduleStreams,
+                         Date earliestOccurrence) {
+        var validStreams = new HashSet<String>();
+        var availableAppStreams = AppStreamsManager.listSsmChannelAppStreams(channelId.longValue(), loggedInUser)
+                .stream()
+                .map(s -> s.getName() + ":" + s.getStream())
+                .collect(Collectors.toSet());
+        moduleStreams.forEach(moduleStream -> {
+            String appStream = moduleStream.get("module") + ":" + moduleStream.get("stream");
+            if (availableAppStreams.contains(appStream)) {
+                validStreams.add(appStream);
+            }
+            else {
+                log.warn("Invalid appstream: {} {}. Skipping ...", appStream, channelId);
+            }
+        });
+        return ssmSchedule(loggedInUser, channelId, validStreams, new HashSet<>(), earliestOccurrence);
+    }
+
+    /**
+     * Schedule module stream disable for the SSM (System Set Manager) systems subscribed to a given modular channel.
+     *
+     * @param loggedInUser The current user
+     * @param channelId ID of the channel containing the streams
+     * @param moduleNames list of module names do be disabled
+     * @param earliestOccurrence Earliest occurrence of the module disable
+     * @return appstreams changes action id
+     * @apidoc.doc Schedule disabling of module streams from a given modular channel for the SSM (System Set Manager)
+     * systems. Invalid modules will be filtered out. If all provided modules are invalid the request will fail.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "channelId")
+     * @apidoc.param #array_begin("moduleNames")
+     *      #param("string", "moduleName")
+     * #array_end()
+     * @apidoc.param #param("$date", "earliestOccurrence")
+     * @apidoc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
+     */
+    public int ssmDisable(User loggedInUser, Integer channelId, List<String> moduleNames, Date earliestOccurrence) {
+        var availableModules = AppStreamsManager
+            .listSsmChannelAppStreams(channelId.longValue(), loggedInUser)
+            .stream()
+            .map(SsmAppStreamModuleResponse::getName)
+            .collect(Collectors.toSet());
+        var validModules = moduleNames.stream().filter(availableModules::contains).collect(Collectors.toSet());
+        return ssmSchedule(loggedInUser, channelId, new HashSet<>(), validModules, earliestOccurrence);
+    }
+
+    /**
+     * Private helper to schedule SSM AppStream changes.
+     */
+    private int ssmSchedule(User loggedInUser, Integer channelId, Set<String> toEnable, Set<String> toDisable,
+                            Date earliestOccurrence) {
+        if (toEnable.isEmpty() && toDisable.isEmpty()) {
+            throw new NoSuchAppStreamException("No valid AppStreams provided for SSM from channel " + channelId);
+        }
+        try {
+            Long actionId = AppStreamsManager.scheduleSsmAppStreamsChanges(
+                channelId.longValue(),
+                toEnable,
+                toDisable,
+                loggedInUser,
+                Optional.empty(),
+                earliestOccurrence
+            );
+            return actionId.intValue();
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
         }
     }
 }
