@@ -30,7 +30,7 @@ export CATCH_TIMEOUT_MESSAGE="False"
 export SERVER_INSTANCE_ID="None"
 export BETA_ENABLED="False"
 export GITPROFILES="https://github.com/uyuni-project/uyuni.git#:testsuite/features/profiles/github_runner"
-export PXEBOOT_IMAGE=sles15sp6
+export PXEBOOT_IMAGE=sles15sp7
 export TAGS="\"not @flaky\""
 EOF
 

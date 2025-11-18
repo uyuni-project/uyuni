@@ -4,188 +4,6 @@
             "x86_64"
         ],
         "autorefresh": false,
-        "description": "SLE-Product-SLES15-SP4-Pool for sle-15-x86_64",
-        "distro_target": "sle-15-x86_64",
-        "enabled": true,
-        "id": 5103,
-        "installer_updates": false,
-        "name": "SLE-Product-SLES15-SP4-Pool",
-        "url": "https://updates.suse.com/SUSE/Products/SLE-Product-SLES/15-SP4/x86_64/product/"
-    },
-    {
-        "arch": [
-            "x86_64"
-        ],
-        "autorefresh": true,
-        "description": "SLE-Product-SLES15-SP4-Updates for sle-15-x86_64",
-        "distro_target": "sle-15-x86_64",
-        "enabled": true,
-        "id": 5100,
-        "installer_updates": false,
-        "name": "SLE-Product-SLES15-SP4-Updates",
-        "url": "https://updates.suse.com/SUSE/Updates/SLE-Product-SLES/15-SP4/x86_64/update/"
-    },
-    {
-        "arch": [
-            "x86_64"
-        ],
-        "autorefresh": true,
-        "description": "SLE15-SP4-Installer-Updates for sle-15-x86_64",
-        "distro_target": "sle-15-x86_64",
-        "enabled": false,
-        "id": 5102,
-        "installer_updates": true,
-        "name": "SLE15-SP4-Installer-Updates",
-        "url": "https://installer-updates.suse.com/SUSE/Updates/SLE-INSTALLER/15-SP4/x86_64/update/"
-    },
-    {
-        "arch": [
-            "x86_64"
-        ],
-        "autorefresh": false,
-        "description": "SLE-Module-Basesystem15-SP4-Pool for sle-15-x86_64",
-        "distro_target": "sle-15-x86_64",
-        "enabled": true,
-        "id": 5139,
-        "installer_updates": false,
-        "name": "SLE-Module-Basesystem15-SP4-Pool",
-        "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Basesystem/15-SP4/x86_64/product/"
-    },
-    {
-        "arch": [
-            "x86_64"
-        ],
-        "autorefresh": true,
-        "description": "SLE-Module-Basesystem15-SP4-Updates for sle-15-x86_64",
-        "distro_target": "sle-15-x86_64",
-        "enabled": true,
-        "id": 5137,
-        "installer_updates": false,
-        "name": "SLE-Module-Basesystem15-SP4-Updates",
-        "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Basesystem/15-SP4/x86_64/update/"
-    },
-    {
-        "arch": [
-            "x86_64"
-        ],
-        "autorefresh": false,
-        "description": "SLE-Module-Desktop-Applications15-SP4-Pool for sle-15-x86_64",
-        "distro_target": "sle-15-x86_64",
-        "enabled": true,
-        "id": 5159,
-        "installer_updates": false,
-        "name": "SLE-Module-Desktop-Applications15-SP4-Pool",
-        "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Desktop-Applications/15-SP4/x86_64/product/"
-    },
-    {
-        "arch": [
-            "x86_64"
-        ],
-        "autorefresh": true,
-        "description": "SLE-Module-Desktop-Applications15-SP4-Updates for sle-15-x86_64",
-        "distro_target": "sle-15-x86_64",
-        "enabled": true,
-        "id": 5157,
-        "installer_updates": false,
-        "name": "SLE-Module-Desktop-Applications15-SP4-Updates",
-        "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Desktop-Applications/15-SP4/x86_64/update/"
-    },
-    {
-        "arch": [
-            "x86_64"
-        ],
-        "autorefresh": false,
-        "description": "SLE-Module-Server-Applications15-SP4-Pool for sle-15-x86_64",
-        "distro_target": "sle-15-x86_64",
-        "enabled": true,
-        "id": 5179,
-        "installer_updates": false,
-        "name": "SLE-Module-Server-Applications15-SP4-Pool",
-        "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Server-Applications/15-SP4/x86_64/product/"
-    },
-    {
-        "arch": [
-            "x86_64"
-        ],
-        "autorefresh": true,
-        "description": "SLE-Module-Server-Applications15-SP4-Updates for sle-15-x86_64",
-        "distro_target": "sle-15-x86_64",
-        "enabled": true,
-        "id": 5177,
-        "installer_updates": false,
-        "name": "SLE-Module-Server-Applications15-SP4-Updates",
-        "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Server-Applications/15-SP4/x86_64/update/"
-    },
-    {
-        "arch": [
-            "x86_64"
-        ],
-        "autorefresh": false,
-        "description": "SLE-Module-DevTools15-SP4-Pool for sle-15-x86_64",
-        "distro_target": "sle-15-x86_64",
-        "enabled": true,
-        "id": 5219,
-        "installer_updates": false,
-        "name": "SLE-Module-DevTools15-SP4-Pool",
-        "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Development-Tools/15-SP4/x86_64/product/"
-    },
-    {
-        "arch": [
-            "x86_64"
-        ],
-        "autorefresh": true,
-        "description": "SLE-Module-DevTools15-SP4-Updates for sle-15-x86_64",
-        "distro_target": "sle-15-x86_64",
-        "enabled": true,
-        "id": 5217,
-        "installer_updates": false,
-        "name": "SLE-Module-DevTools15-SP4-Updates",
-        "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Development-Tools/15-SP4/x86_64/update/"
-    },
-    {
-        "arch": [
-            "x86_64"
-        ],
-        "autorefresh": false,
-        "description": "SLE-Module-Containers15-SP4-Pool for sle-15-x86_64",
-        "distro_target": "sle-15-x86_64",
-        "enabled": true,
-        "id": 5199,
-        "installer_updates": false,
-        "name": "SLE-Module-Containers15-SP4-Pool",
-        "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Containers/15-SP4/x86_64/product/"
-    },
-    {
-        "arch": [
-            "x86_64"
-        ],
-        "autorefresh": true,
-        "description": "SLE-Module-Containers15-SP4-Updates for sle-15-x86_64",
-        "distro_target": "sle-15-x86_64",
-        "enabled": true,
-        "id": 5197,
-        "installer_updates": false,
-        "name": "SLE-Module-Containers15-SP4-Updates",
-        "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Containers/15-SP4/x86_64/update/"
-    },
-    {
-        "arch": [
-            "x86_64"
-        ],
-        "autorefresh": true,
-        "description": "SLE-Product-SLES15-SP4-LTSS-Updates for sle-15-x86_64",
-        "distro_target": "sle-15-x86_64",
-        "enabled": true,
-        "id": 6717,
-        "installer_updates": false,
-        "name": "SLE-Product-SLES15-SP4-LTSS-Updates",
-        "url": "https://updates.suse.com/SUSE/Updates/SLE-Product-SLES/15-SP4-LTSS/x86_64/update/"
-    },
-    {
-        "arch": [
-            "x86_64"
-        ],
-        "autorefresh": false,
         "description": "SLE-Manager-Tools-For-Micro5-Pool for sle-15-x86_64",
         "distro_target": "sle-15-x86_64",
         "enabled": true,
@@ -523,6 +341,174 @@
         "installer_updates": false,
         "name": "RES8-Manager-Tools-Pool",
         "url": "https://updates.suse.com/SUSE/Products/RES/8-CLIENT-TOOLS/x86_64/product/"
+    },
+    {
+        "arch": [
+            "x86_64"
+        ],
+        "autorefresh": false,
+        "description": "SLE-Product-SLES15-SP7-Pool for sle-15-x86_64",
+        "distro_target": "sle-15-x86_64",
+        "enabled": true,
+        "id": 8000,
+        "installer_updates": false,
+        "name": "SLE-Product-SLES15-SP7-Pool",
+        "url": "https://updates.suse.com/SUSE/Products/SLE-Product-SLES/15-SP7/x86_64/product/"
+    },
+    {
+        "arch": [
+            "x86_64"
+        ],
+        "autorefresh": true,
+        "description": "SLE-Product-SLES15-SP7-Updates for sle-15-x86_64",
+        "distro_target": "sle-15-x86_64",
+        "enabled": true,
+        "id": 8001,
+        "installer_updates": false,
+        "name": "SLE-Product-SLES15-SP7-Updates",
+        "url": "https://updates.suse.com/SUSE/Updates/SLE-Product-SLES/15-SP7/x86_64/update/"
+    },
+    {
+        "arch": [
+            "x86_64"
+        ],
+        "autorefresh": true,
+        "description": "SLE15-SP7-Installer-Updates for sle-15-x86_64",
+        "distro_target": "sle-15-x86_64",
+        "enabled": false,
+        "id": 8012,
+        "installer_updates": true,
+        "name": "SLE15-SP7-Installer-Updates",
+        "url": "https://installer-updates.suse.com/SUSE/Updates/SLE-INSTALLER/15-SP7/x86_64/update/"
+    },
+    {
+        "arch": [
+            "x86_64"
+        ],
+        "autorefresh": false,
+        "description": "SLE-Module-Basesystem15-SP7-Pool for sle-15-x86_64",
+        "distro_target": "sle-15-x86_64",
+        "enabled": true,
+        "id": 8002,
+        "installer_updates": false,
+        "name": "SLE-Module-Basesystem15-SP7-Pool",
+        "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Basesystem/15-SP7/x86_64/product/"
+    },
+    {
+        "arch": [
+            "x86_64"
+        ],
+        "autorefresh": true,
+        "description": "SLE-Module-Basesystem15-SP7-Updates for sle-15-x86_64",
+        "distro_target": "sle-15-x86_64",
+        "enabled": true,
+        "id": 8003,
+        "installer_updates": false,
+        "name": "SLE-Module-Basesystem15-SP7-Updates",
+        "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Basesystem/15-SP7/x86_64/update/"
+    },
+    {
+        "arch": [
+            "x86_64"
+        ],
+        "autorefresh": false,
+        "description": "SLE-Module-Desktop-Applications15-SP7-Pool for sle-15-x86_64",
+        "distro_target": "sle-15-x86_64",
+        "enabled": true,
+        "id": 8004,
+        "installer_updates": false,
+        "name": "SLE-Module-Desktop-Applications15-SP7-Pool",
+        "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Desktop-Applications/15-SP7/x86_64/product/"
+    },
+    {
+        "arch": [
+            "x86_64"
+        ],
+        "autorefresh": true,
+        "description": "SLE-Module-Desktop-Applications15-SP7-Updates for sle-15-x86_64",
+        "distro_target": "sle-15-x86_64",
+        "enabled": true,
+        "id": 8005,
+        "installer_updates": false,
+        "name": "SLE-Module-Desktop-Applications15-SP7-Updates",
+        "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Desktop-Applications/15-SP7/x86_64/update/"
+    },
+    {
+        "arch": [
+            "x86_64"
+        ],
+        "autorefresh": false,
+        "description": "SLE-Module-DevTools15-SP7-Pool for sle-15-x86_64",
+        "distro_target": "sle-15-x86_64",
+        "enabled": true,
+        "id": 8006,
+        "installer_updates": false,
+        "name": "SLE-Module-DevTools15-SP7-Pool",
+        "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Development-Tools/15-SP7/x86_64/product/"
+    },
+    {
+        "arch": [
+            "x86_64"
+        ],
+        "autorefresh": true,
+        "description": "SLE-Module-DevTools15-SP7-Updates for sle-15-x86_64",
+        "distro_target": "sle-15-x86_64",
+        "enabled": true,
+        "id": 8007,
+        "installer_updates": false,
+        "name": "SLE-Module-DevTools15-SP7-Updates",
+        "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Development-Tools/15-SP7/x86_64/update/"
+    },
+    {
+        "arch": [
+            "x86_64"
+        ],
+        "autorefresh": false,
+        "description": "SLE-Module-Server-Applications15-SP7-Pool for sle-15-x86_64",
+        "distro_target": "sle-15-x86_64",
+        "enabled": true,
+        "id": 8008,
+        "installer_updates": false,
+        "name": "SLE-Module-Server-Applications15-SP7-Pool",
+        "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Server-Applications/15-SP7/x86_64/product/"
+    },
+    {
+        "arch": [
+            "x86_64"
+        ],
+        "autorefresh": true,
+        "description": "SLE-Module-Server-Applications15-SP7-Updates for sle-15-x86_64",
+        "distro_target": "sle-15-x86_64",
+        "enabled": true,
+        "id": 8009,
+        "installer_updates": false,
+        "name": "SLE-Module-Server-Applications15-SP7-Updates",
+        "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Server-Applications/15-SP7/x86_64/update/"
+    },
+    {
+        "arch": [
+            "x86_64"
+        ],
+        "autorefresh": false,
+        "description": "SLE-Module-Containers15-SP7-Pool for sle-15-x86_64",
+        "distro_target": "sle-15-x86_64",
+        "enabled": true,
+        "id": 8010,
+        "installer_updates": false,
+        "name": "SLE-Module-Containers15-SP7-Pool",
+        "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Containers/15-SP7/x86_64/product/"
+    },
+    {
+        "arch": [
+            "x86_64"
+        ],
+        "autorefresh": true,
+        "description": "SLE-Module-Containers15-SP7-Updates for sle-15-x86_64",
+        "distro_target": "sle-15-x86_64",
+        "enabled": true,
+        "id": 8011,
+        "installer_updates": false,
+        "name": "SLE-Module-Containers15-SP7-Updates",
+        "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Containers/15-SP7/x86_64/update/"
     }
 ]
-
