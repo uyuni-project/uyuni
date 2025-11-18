@@ -19,18 +19,16 @@ package com.redhat.rhn.testing;
 import java.io.IOException;
 import java.util.Enumeration;
 
-import javax.el.ELContext;
-import javax.servlet.Servlet;
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.servlet.jsp.JspWriter;
-import javax.servlet.jsp.PageContext;
-import javax.servlet.jsp.el.ExpressionEvaluator;
-import javax.servlet.jsp.el.VariableResolver;
+import jakarta.el.ELContext;
+import jakarta.servlet.Servlet;
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.jsp.JspWriter;
+import jakarta.servlet.jsp.PageContext;
 
 /**
  * RhnMockPageContext
@@ -59,17 +57,7 @@ public class RhnMockPageContext extends PageContext {
     }
 
     @Override
-    public ExpressionEvaluator getExpressionEvaluator() {
-        return null;
-    }
-
-    @Override
     public ELContext getELContext() {
-        return null;
-    }
-
-    @Override
-    public VariableResolver getVariableResolver() {
         return null;
     }
 

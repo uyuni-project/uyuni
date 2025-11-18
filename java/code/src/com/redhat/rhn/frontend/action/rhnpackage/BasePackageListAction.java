@@ -23,7 +23,7 @@ import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.struts.BaseListAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * ChannelPackagesAction

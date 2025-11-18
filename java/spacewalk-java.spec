@@ -110,6 +110,8 @@ BuildRequires:  httpcomponents-client
 BuildRequires:  ical4j
 BuildRequires:  istack-commons-runtime
 BuildRequires:  jade4j
+BuildRequires:  jakarta-websocket >= 2.2.0
+BuildRequires:  jakarta-jstl >= 3.0.2
 BuildRequires:  java-%{java_version}-openjdk-devel
 BuildRequires:  java-saml
 BuildRequires:  javamail
@@ -134,7 +136,7 @@ BuildRequires:  postgresql-jdbc
 BuildRequires:  prometheus-client-java
 BuildRequires:  quartz
 BuildRequires:  redstone-xmlrpc
-BuildRequires:  salt-netapi-client >= 0.21
+BuildRequires:  salt-netapi-client >= 1.0.0
 BuildRequires:  simple-core
 BuildRequires:  simple-xml
 BuildRequires:  sitemesh
@@ -155,7 +157,9 @@ BuildRequires:  mvn(org.apache.velocity:velocity-engine-core) >= 2.2
 BuildRequires:  mvn(org.hibernate:hibernate-c3p0)
 BuildRequires:  mvn(org.hibernate:hibernate-core)
 BuildRequires:  mvn(org.hibernate:hibernate-ehcache)
-BuildRequires:  servletapi5
+BuildRequires:  mvn(jakarta.servlet:jakarta.servlet-api) >= 6.1.0
+BuildRequires:  mvn(jakarta.servlet.jsp:jakarta.servlet.jsp-api) >= 4.0.0
+BuildRequires:  mvn(jakarta.el:jakarta.el-api) >= 6.0.1
 %if 0%{?suse_version}
 BuildRequires:  ant-nodeps
 BuildRequires:  libxml2-tools
@@ -215,11 +219,11 @@ Requires:       log4j-slf4j
 Requires:       mgr-libmod
 Requires:       netty
 Requires:       objectweb-asm >= 9.2
+Requires:       quartz == 2.5.0
 Requires:       pgjdbc-ng
 Requires:       prometheus-client-java
 Requires:       redstone-xmlrpc
-Requires:       salt-netapi-client >= 0.21
-BuildRequires:  servletapi5
+Requires:       salt-netapi-client >= 1.0.0
 Requires:       simple-core
 Requires:       simple-xml
 Requires:       sitemesh
@@ -379,7 +383,7 @@ Requires:       jpa-api
 Requires:       jsch
 Requires:       log4j
 Requires:       log4j-jcl
-Requires:       quartz
+Requires:       quartz == 2.5.0
 Requires:       simple-core
 Requires:       spacewalk-java-config
 Requires:       spacewalk-java-jdbc
@@ -392,8 +396,6 @@ Requires:       (/sbin/unix2_chkpwd or /usr/sbin/unix2_chkpwd)
 Requires:       mvn(org.hibernate:hibernate-c3p0)
 Requires:       mvn(org.hibernate:hibernate-core)
 Requires:       mvn(org.hibernate:hibernate-ehcache)
-
-Conflicts:      quartz < 2.0
 
 %description -n spacewalk-taskomatic
 This package contains the Java version of taskomatic.

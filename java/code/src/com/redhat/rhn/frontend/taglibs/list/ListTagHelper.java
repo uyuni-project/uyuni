@@ -21,8 +21,8 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 
 import org.apache.commons.text.StringEscapeUtils;
 
-import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * Static helper class for the "new-style" list tag

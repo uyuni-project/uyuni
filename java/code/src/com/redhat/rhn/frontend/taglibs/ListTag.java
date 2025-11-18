@@ -20,9 +20,9 @@ import com.redhat.rhn.common.localization.LocalizationService;
 
 import java.io.IOException;
 
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.JspWriter;
-import javax.servlet.jsp.tagext.BodyTagSupport;
+import jakarta.servlet.jsp.JspException;
+import jakarta.servlet.jsp.JspWriter;
+import jakarta.servlet.jsp.tagext.BodyTagSupport;
 
 /**
  * The ListTag is the outer most tag of a ListView. The ListTag has two

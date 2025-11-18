@@ -43,8 +43,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.TimeZone;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 /**
  * StrutsDelegate defines a set of helper operations for working with the Struts API.

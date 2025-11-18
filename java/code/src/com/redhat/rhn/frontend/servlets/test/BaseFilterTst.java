@@ -25,8 +25,8 @@ import org.junit.jupiter.api.BeforeEach;
 
 import java.io.IOException;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
 
 /**
  * BaseFilterTst

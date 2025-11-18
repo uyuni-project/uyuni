@@ -10,6 +10,9 @@ repositories:
     repository: openSUSE_Leap_15.6
   Leap_sle:
     url: https://download.opensuse.org/update/leap/15.6/sle
+  systemsmanagement_Uyuni_Master_jakarta:
+    project: systemsmanagement:Uyuni:Master:jakarta
+    repository: openSUSE_Leap_15.6
 artifacts:
   - artifact: asm
     package: objectweb-asm
@@ -60,8 +63,8 @@ artifacts:
   - artifact: apache-commons-fileupload2-core
     package: apache-commons-fileupload2-core
     repository: Uyuni_Other
-  - artifact: apache-commons-fileupload2-javax
-    package: apache-commons-fileupload2-javax
+  - artifact: apache-commons-fileupload2-jakarta-servlet6
+    package: apache-commons-fileupload2-jakarta-servlet6
     repository: Uyuni_Other
   - artifact: commons-io
     package: apache-commons-io
@@ -139,12 +142,21 @@ artifacts:
   - artifact: jakarta-persistence-api
     package: jpa-api
     repository: Uyuni_Other
+  - artifact: jakarta-expression-language
+    jar: jakarta-expression-language-[0-9.]+
+    repository: systemsmanagement_Uyuni_Master_jakarta
+  - artifact: jakarta-pages
+    jar: jakarta-pages-[0-9.]+
+    repository: systemsmanagement_Uyuni_Master_jakarta
+  - artifact: jakarta-servlet
+    jar: jakarta.servlet-api-[0-9.]+
+    repository: systemsmanagement_Uyuni_Master_jakarta
   - artifact: java-saml
     jar: java-saml-[0-9.]+
-    repository: Uyuni_Other
+    repository: systemsmanagement_Uyuni_Master_jakarta
   - artifact: java-saml-core
     package: java-saml
-    repository: Uyuni_Other
+    repository: systemsmanagement_Uyuni_Master_jakarta
   - artifact: javassist
     repository: Leap
   - artifact: jboss-logging
@@ -223,15 +235,16 @@ artifacts:
   - artifact: postgresql-jdbc
     repository: Leap
   - artifact: quartz
-    repository: Uyuni_Other
+    repository: systemsmanagement_Uyuni_Master_jakarta
+    jar: quartz-[0-9.].jar
   - artifact: redstone-xmlrpc
     jar: redstone-xmlrpc-[0-9.]+
-    repository: Uyuni_Other
+    repository: systemsmanagement_Uyuni_Master_jakarta
   - artifact: redstone-xmlrpc-client
     package: redstone-xmlrpc
-    repository: Uyuni_Other
+    repository: systemsmanagement_Uyuni_Master_jakarta
   - artifact: salt-netapi-client
-    repository: Uyuni
+    repository: systemsmanagement_Uyuni_Master_jakarta
   - artifact: simpleclient
     package: prometheus-client-java
     jar: simpleclient-[0-9.]+
@@ -255,7 +268,7 @@ artifacts:
   - artifact: simple-xml
     repository: Uyuni_Other
   - artifact: sitemesh
-    repository: Uyuni_Other
+    repository: systemsmanagement_Uyuni_Master_jakarta
   - artifact: slf4j-api
     package: slf4j
     jar: api
@@ -264,7 +277,7 @@ artifacts:
     repository: Leap_sle
   - artifact: spark-core
     package: spark-core
-    repository: Uyuni_Other
+    repository: systemsmanagement_Uyuni_Master_jakarta
   - artifact: spark-template-jade
     repository: Uyuni_Other
   - artifact: spy
@@ -276,16 +289,15 @@ artifacts:
     package: woodstox
     repository: Uyuni_Other
   - artifact: struts
-    repository: Uyuni_Other
-  - artifact: taglibs-standard-impl
-    package: tomcat-taglibs-standard-1_2_5
-    repository: Uyuni_Other
-  - artifact: taglibs-standard-jstlel
-    package: tomcat-taglibs-standard-1_2_5
-    repository: Uyuni_Other
-  - artifact: taglibs-standard-spec
-    package: tomcat-taglibs-standard-1_2_5
-    repository: Uyuni_Other
+    repository: systemsmanagement_Uyuni_Master_jakarta
+  - artifact: jakarta-jstl-api
+    package: jakarta-jstl
+    jar: jakarta.servlet.jsp.jstl-api.jar
+    repository: systemsmanagement_Uyuni_Master_jakarta
+  - artifact: jakarta-jstl-impl
+    package: jakarta-jstl
+    jar: jakarta.servlet.jsp.jstl.jar
+    repository: systemsmanagement_Uyuni_Master_jakarta
   - artifact: woodstox-core-asl
     package: woodstox
     repository: Uyuni_Other

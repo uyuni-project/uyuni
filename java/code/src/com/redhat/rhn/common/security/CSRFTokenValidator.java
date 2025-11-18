@@ -17,8 +17,8 @@ package com.redhat.rhn.common.security;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 /**
  * This is a utility class containing static methods for handling creation and

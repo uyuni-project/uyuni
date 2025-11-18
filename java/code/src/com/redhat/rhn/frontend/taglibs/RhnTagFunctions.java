@@ -23,7 +23,7 @@ import com.redhat.rhn.common.util.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
 
-import javax.servlet.jsp.PageContext;
+import jakarta.servlet.jsp.PageContext;
 
 /**
  * RhnTagFunctions - class to encapsulate the set of static methods that

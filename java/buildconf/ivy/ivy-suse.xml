@@ -22,7 +22,7 @@
         <dependency org="suse" name="commons-digester" rev="2.1" />
         <dependency org="suse" name="commons-discovery" rev="0.5" />
         <dependency org="suse" name="apache-commons-fileupload2-core" rev="2.0.0~M4" />
-        <dependency org="suse" name="apache-commons-fileupload2-javax" rev="2.0.0~M4" />
+        <dependency org="suse" name="apache-commons-fileupload2-jakarta-servlet6" rev="2.0.0~M4" />
         <dependency org="suse" name="commons-io" rev="2.18.0" />
         <dependency org="suse" name="commons-jexl" rev="2.1.1" />
         <dependency org="suse" name="commons-lang3" rev="3.18.0" />
@@ -49,7 +49,10 @@
         <dependency org="suse" name="jackson-core" rev="2.17.3" />
         <dependency org="suse" name="jackson-databind" rev="2.17.3" />
         <dependency org="suse" name="jade4j" rev="1.2.7" />
+        <dependency org="suse" name="jakarta-pages" rev="4.0.0" />
+        <dependency org="suse" name="jakarta-expression-language" rev="6.0.1" />
         <dependency org="suse" name="jakarta-persistence-api" rev="2.2.2" />
+        <dependency org="suse" name="jakarta-servlet" rev="6.1.0" />
         <dependency org="suse" name="java-saml" rev="2.4.0" />
         <dependency org="suse" name="java-saml-core" rev="2.4.0" />
         <dependency org="suse" name="javassist" rev="3.29.2" />
@@ -72,10 +75,10 @@
         <dependency org="suse" name="oro" rev="2.0.8" />
         <dependency org="suse" name="pgjdbc-ng" rev="0.8.7" />
         <dependency org="suse" name="postgresql-jdbc" rev="42.2.25" />
-        <dependency org="suse" name="quartz" rev="2.3.0" />
+        <dependency org="suse" name="quartz" rev="2.5.0" />
         <dependency org="suse" name="redstone-xmlrpc" rev="1.1_20071120" />
         <dependency org="suse" name="redstone-xmlrpc-client" rev="1.1_20071120" />
-        <dependency org="suse" name="salt-netapi-client" rev="0.21.0" />
+        <dependency org="suse" name="salt-netapi-client" rev="1.0.0" />
         <dependency org="suse" name="simpleclient" rev="0.3.0" />
         <dependency org="suse" name="simpleclient_common" rev="0.3.0" />
         <dependency org="suse" name="simpleclient_hibernate" rev="0.3.0" />
@@ -93,9 +96,8 @@
         <dependency org="suse" name="statistics" rev="1.0.2" />
         <dependency org="suse" name="stax2-api" rev="3.1.4" />
         <dependency org="suse" name="struts" rev="1.2.9" />
-        <dependency org="suse" name="taglibs-standard-impl" rev="1.2.5" />
-        <dependency org="suse" name="taglibs-standard-jstlel" rev="1.2.5" />
-        <dependency org="suse" name="taglibs-standard-spec" rev="1.2.5" />
+        <dependency org="suse" name="jakarta-jstl-api" rev="3.0.2" />
+        <dependency org="suse" name="jakarta-jstl-impl" rev="3.0.2" />
         <dependency org="suse" name="woodstox-core-asl" rev="4.4.2" />
         <dependency org="suse" name="xalan-j2" rev="2.7.3" />
         <dependency org="suse" name="xalan-j2-serializer" rev="2.7.3" />
@@ -110,10 +112,10 @@
         <dependency org="suse" name="stax-ex" rev="1.8" />
 
         <!-- Tomcat jars -->
-        <dependency org="suse" name="tomcat-el-3.0-api" rev="[9.0.75,10.0.0[" />
-        <dependency org="suse" name="tomcat-jsp-2.3-api" rev="[9.0.75,10.0.0[" />
-        <dependency org="suse" name="tomcat-juli" rev="[9.0.75,10.0.0[" />
-        <dependency org="suse" name="tomcat-servlet-4.0-api" rev="[9.0.75,10.0.0[" />
+<!--        <dependency org="suse" name="tomcat-el-3.0-api" rev="[9.0.75,10.0.0[" />-->
+<!--        <dependency org="suse" name="tomcat-jsp-2.3-api" rev="[9.0.75,10.0.0[" />-->
+<!--        <dependency org="suse" name="tomcat-juli" rev="[9.0.75,10.0.0[" />-->
+<!--        <dependency org="suse" name="tomcat-servlet-4.0-api" rev="[9.0.75,10.0.0[" />-->
 
         <!-- Compilation and testing -->
         <dependency org="suse" name="velocity-engine-core" rev="2.3"/>
@@ -133,14 +135,15 @@
         <dependency org="org.jmock" name="jmock-junit5" rev="2.12.0" transitive="false"/>
         <dependency org="org.jmock" name="jmock-imposters" rev="2.12.0" transitive="false"/>
         <dependency org="org.objenesis" name="objenesis" rev="1.0" transitive="false"/>
-        <dependency org="javax.websocket" name="javax.websocket-api" rev="1.1" transitive="false"/>
+        <dependency org="jakarta.websocket" name="jakarta.websocket-api" rev="2.2.0" transitive="false"/>
+        <dependency org="jakarta.websocket" name="jakarta.websocket-client-api" rev="2.2.0" transitive="false"/>
         <dependency org="org.jacoco" name="org.jacoco.ant" rev="0.8.7" transitive="false">
            <artifact name="nodeps" type="jar" url="https://repo1.maven.org/maven2/org/jacoco/org.jacoco.ant/0.8.7/org.jacoco.ant-0.8.7-nodeps.jar"/>
         </dependency>
         <dependency org="com.github.tomakehurst" name="wiremock-standalone" rev="2.27.2" transitive="false"/>
         <!-- todo move to our org -->
-        <dependency org="strutstest" name="strutstest" rev="0.0.1" transitive="false">
-            <artifact name="strutstestcase" type="jar" url="https://github.com/hustodemon/strutstestcase-uyuni/releases/download/v.0.0.1-alpha/strutstest-uyuni-0.0.1.jar"/>
+        <dependency org="strutstest" name="strutstest" rev="1.0.0" transitive="false">
+            <artifact name="strutstestcase" type="jar" url="https://github.com/uyuni-project/strutstestcase/releases/download/v1.0.0-uyuni/strutstest-uyuni-1.0.0.jar"/>
         </dependency>
     </dependencies>
 </ivy-module>

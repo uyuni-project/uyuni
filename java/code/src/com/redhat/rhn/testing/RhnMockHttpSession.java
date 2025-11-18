@@ -21,9 +21,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpSessionContext;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpSession;
 
 /**
  * RhnMockHttpSession is a mock implementation of the HttpSession interface
@@ -118,16 +117,6 @@ public class RhnMockHttpSession implements HttpSession {
 
     public void setServletContext(MockServletContext servletContextIn) {
         servletContext = servletContextIn;
-    }
-
-    /**
-     * Gets the session context (deprecated method)
-     *
-     * @return null (not implemented in this mock)
-     *
-     */
-    public HttpSessionContext getSessionContext() {
-        return null;
     }
 
     /**
