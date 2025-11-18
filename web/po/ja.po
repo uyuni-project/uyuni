@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-10-27 10:14+0100\n"
-"PO-Revision-Date: 2025-11-16 18:04+0000\n"
+"PO-Revision-Date: 2025-11-18 06:42+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -5103,7 +5103,7 @@ msgstr "成功"
 
 #: ../html/src/manager/maintenance/maintenance-windows.tsx:140
 msgid "Error when deleting the "
-msgstr "以下の削除時にエラーが発生しました: "
+msgstr "カレンダ/スケジュールの削除時にエラーが発生しました: "
 
 #: ../html/src/manager/maintenance/maintenance-windows.tsx:149
 msgid "Calendar successfully refreshed"
