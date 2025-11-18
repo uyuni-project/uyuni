@@ -1201,7 +1201,7 @@ public class ContentManager {
 
         // now request repo regen
         tgt.setLastModified(new Date());
-        HibernateFactory.getSession().saveOrUpdate(tgt);
+        HibernateFactory.saveOrUpdateObject(tgt);
         ChannelManager.queueChannelChange(tgt.getLabel(), "java::alignChannel", "Channel aligned");
     }
 
