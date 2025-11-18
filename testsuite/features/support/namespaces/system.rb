@@ -58,6 +58,36 @@ class NamespaceSystem
     @test.call('system.listAllInstallablePackages', sessionKey: @test.token, sid: server)
   end
 
+  # Deletes a system profile via system.deleteSystem.
+  #
+  # @param system_id [String] The ID of the system to delete.
+  def delete_system(system_id)
+    @test.call('system.deleteSystem', sessionKey: @test.token, sid: system_id)
+  end
+
+  # Deletes a list of systems specified by their exact names.
+  #
+  # @param names_to_delete [Array<String>] A list of EXACT system names to delete.
+  # @return [Array<Hash>] A list of hashes of the systems that were successfully deleted.
+  def delete_systems_by_name(names_to_delete)
+    # Fetch all systems once for efficient lookup
+    all_systems = list_systems
+    @test.logger.info("Systems list #{all_systems}")
+    deleted_systems = []
+    names_to_delete.each do |name|
+      system_to_delete = all_systems.find { |s| s['name'] == name }
+      if system_to_delete
+        system_id = system_to_delete['id']
+        @test.logger.info("Delete system : #{name} | id : #{system_id}")
+        delete_system(system_id)
+        deleted_systems << { name: name, id: system_id }
+      else
+        @test.logger.info("System not found for deletion: #{name}")
+      end
+    end
+    deleted_systems
+  end
+
   # Lists the packages that are upgradable on a given server.
   #
   # @param server [String] The server ID.
@@ -118,7 +148,7 @@ class NamespaceSystem
     @test.call('system.scheduleScriptRun', sessionKey: @test.token, sid: server, username: uid, groupname: gid, timeout: timeout, script: script, earliestOccurrence: date)
   end
 
-  # Creates a Cobbler system record for a system that is not registered on the SUMA server.
+  # Creates a Cobbler system record for a system that is not registered on the MLM server.
   #
   # @param name [String] The name of the system record.
   # @param kslabel [String] The kickstart label to use.

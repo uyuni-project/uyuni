@@ -30,8 +30,7 @@ Feature: Manage a group of systems and the Systems Set Manager
     When I wait until I see "andromeda-dummy" text, refreshing the page
     Then I should see a "andromeda-dummy-6789" link
     When I enter "virgo-dummy" as the filtered synopsis
-    And I click on the filter button
-    And I wait until I see "virgo-dummy" text
+    And I click on the filter button until page does contain "virgo-dummy-3456" text
     Then I should see a "virgo-dummy-3456" link
 
   Scenario: Fail to create a group with only its name
@@ -75,8 +74,7 @@ Feature: Manage a group of systems and the Systems Set Manager
     And I follow "new-systems-group"
     And I follow first "Patches"
     When I enter "virgo-dummy" as the filtered synopsis
-    And I click on the filter button
-    When I wait until I see "virgo-dummy-3456" text, refreshing the page
+    And I click on the filter button until page does contain "virgo-dummy-3456" text
     Then I should see a "virgo-dummy-3456" link
     When I follow "virgo-dummy-3456"
     And I follow first "Affected Systems"
@@ -108,9 +106,9 @@ Feature: Manage a group of systems and the Systems Set Manager
     When I follow the left menu "Systems > System Set Manager > Overview"
     And I follow "Packages"
     And I follow "Remove"
-    And I wait until I see "andromeda-dummy-2.0-1.1" text, refreshing the page
+    And I wait until I see "Package Removal" text, refreshing the page
     And I enter "virgo-dummy" as the filtered package name
-    And I click on the filter button
+    And I click on the filter button until page does contain "virgo-dummy-2.0-1.1" text
     And I check "virgo-dummy-2.0-1.1" in the list
     And I click on "Remove Packages"
     And I click on "Confirm"
@@ -121,11 +119,12 @@ Feature: Manage a group of systems and the Systems Set Manager
     When I follow the left menu "Systems > System Set Manager > Overview"
     And I follow "Packages"
     And I follow "Install"
+    And I wait until I see "Fake-RPM-SUSE-Channel" text, refreshing the page
     Then I should see a "Fake-RPM-SUSE-Channel" text
     When I follow "Fake-RPM-SUSE-Channel"
     Then I should see a "virgo-dummy-2.0-1.1" text
     And I enter "virgo-dummy" as the filtered package name
-    And I click on the filter button
+    And I click on the filter button until page does contain "virgo-dummy-2.0-1.1" text
     When I check "virgo-dummy-2.0-1.1" in the list
     And I click on "Install Packages"
     And I click on "Confirm"
