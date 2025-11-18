@@ -75,7 +75,7 @@ ExcludeArch:    ia64
 BuildRequires:  %{apache_commons_compress}
 BuildRequires:  %{apache_commons_discovery}
 BuildRequires:  apache-commons-fileupload2-core
-BuildRequires:  apache-commons-fileupload2-javax
+BuildRequires:  apache-commons-fileupload2-jakarta-servlet6
 BuildRequires:  %{apache_commons_validator}
 BuildRequires:  %{ehcache}
 BuildRequires:  ant
@@ -172,7 +172,7 @@ Requires:       %{apache_commons_compress}
 Requires:       %{apache_commons_digester}
 Requires:       %{apache_commons_discovery}
 Requires:       apache-commons-fileupload2-core
-Requires:       apache-commons-fileupload2-javax
+Requires:       apache-commons-fileupload2-jakarta-servlet6
 Requires:       %{ehcache}
 Requires:       apache-commons-beanutils
 Requires:       apache-commons-cli
