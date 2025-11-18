@@ -249,6 +249,7 @@ export const SSMProductMigration: React.FC<Props> = ({
             migrationTarget={selectedTarget!}
             baseChannelTrees={channelSelectionData!.baseChannelTrees}
             mandatoryMap={channelSelectionData!.mandatoryMap}
+            reversedMandatoryMap={channelSelectionData!.reversedMandatoryMap}
             baseChannel={selectedChannelTree?.base}
             childChannels={selectedChannelTree?.children}
             allowVendorChange={allowVendorChange}
