@@ -22,51 +22,63 @@ Feature: PXE boot a terminal with Cobbler and containerized proxy
   Scenario: Start Cobbler monitoring
     When I start local monitoring of Cobbler
 
-  # We currently test Cobbler with a SLES 15 SP4 terminal
+  # We currently test Cobbler with a SLES 15 SP7 terminal
   # The build host has same version as the terminal
   Scenario: Prepare the autoinstallation files on the server
-    When I install packages "tftpboot-installation-SLE-15-SP4-x86_64 expect" on this "build_host"
+    When I install packages "tftpboot-installation-SLE-15-SP7-x86_64 expect" on this "build_host"
     And I copy "/usr/share/tftpboot-installation" from "build_host" to "server" via scp in the path "/tmp"
     And I copy the distribution inside the container on the server
 
   Scenario: Create auto installation distribution
     When I follow the left menu "Systems > Autoinstallation > Distributions"
     And I follow "Create Distribution"
-    And I enter "SLE-15-SP4-TFTP" as "label"
-    And I enter "/srv/www/distributions/SLE-15-SP4-TFTP/" as "basepath"
-    And I select "SLE-Product-SLES15-SP4-Pool for x86_64" from "channelid"
+    And I enter "SLE-15-SP7-TFTP" as "label"
+    And I enter "/srv/www/distributions/SLE-15-SP7-TFTP/" as "basepath"
+    And I select "SLE-Product-SLES15-SP7-Pool for x86_64" from "channelid"
     And I select "SUSE Linux Enterprise 15" from "installtype"
     And I click on "Create Autoinstallable Distribution"
     Then I should see a "Autoinstallable Distributions" text
-    And I should see a "SLE-15-SP4-TFTP" link
+    And I should see a "SLE-15-SP7-TFTP" link
 
   # WORKAROUND bsc#1195842
   # Default Cobbler kernel parameters are wrong in case of proxy
   Scenario: Fix kernel parameters
     When I follow the left menu "Systems > Autoinstallation > Distributions"
-    And I follow "SLE-15-SP4-TFTP"
-    And I enter "useonlinerepo insecure=1 install=http://proxy.example.org/ks/dist/SLE-15-SP4-TFTP self_update=http://proxy.example.org/ks/dist/child/sle15-sp4-installer-updates-x86_64/SLE-15-SP4-TFTP" as "kernelopts"
+    And I follow "SLE-15-SP7-TFTP"
+    And I enter "useonlinerepo insecure=1 install=http://proxy.example.org/ks/dist/SLE-15-SP7-TFTP self_update=http://proxy.example.org/ks/dist/child/sle15-sp7-installer-updates-x86_64/SLE-15-SP7-TFTP" as "kernelopts"
     And I click on "Update Autoinstallable Distribution"
     Then I should see a "Autoinstallable Distribution Updated" text
 
+  @susemanager
   Scenario: Create auto installation profile
     When I follow the left menu "Systems > Autoinstallation > Profiles"
     And I follow "Upload Kickstart/AutoYaST File"
-    And I enter "15-sp4-cobbler" as "kickstartLabel"
-    And I select "SLE-15-SP4-TFTP" from "kstreeId"
-    And I attach the file "/sle-15-sp4-autoyast.xml" to "fileUpload"
+    And I enter "15-sp7-cobbler" as "kickstartLabel"
+    And I select "SLE-15-SP7-TFTP" from "kstreeId"
+    And I attach the file "/sle-15-sp7-autoyast.xml" to "fileUpload"
     And I click on "Create"
-    Then I should see a "Autoinstallation: 15-sp4-cobbler" text
+    Then I should see a "Autoinstallation: 15-sp7-cobbler" text
+    And I should see a "Autoinstallation Details" text
+
+  @uyuni
+  Scenario: Create auto installation profile
+    When I follow the left menu "Systems > Autoinstallation > Profiles"
+    And I follow "Upload Kickstart/AutoYaST File"
+    And I enter "15-sp7-cobbler" as "kickstartLabel"
+    And I select "SLE-15-SP7-TFTP" from "kstreeId"
+    And I attach the file "/sle-15-sp7-autoyast-uyuni.xml" to "fileUpload"
+    And I click on "Create"
+    Then I should see a "Autoinstallation: 15-sp7-cobbler" text
     And I should see a "Autoinstallation Details" text
 
   Scenario: Configure auto installation profile
     When I enter "self_update=0" as "kernel_options"
     And I click on "Update"
     And I follow "Variables"
-    And I enter "distrotree=SLE-15-SP4-TFTP\nregistration_key=1-TERMINAL-KEY-x86_64\nredhat_management_server=proxy.example.org" as "variables" text area
+    And I enter "distrotree=SLE-15-SP7-TFTP\nregistration_key=1-TERMINAL-KEY-x86_64\nredhat_management_server=proxy.example.org" as "variables" text area
     And I click on "Update Variables"
     And I follow "Autoinstallation File"
-    Then I should see a "SLE-15-SP4-TFTP" text
+    Then I should see a "SLE-15-SP7-TFTP" text
 
   Scenario: Migration of Cobbler settings
     Given cobblerd is running
@@ -74,21 +86,9 @@ Feature: PXE boot a terminal with Cobbler and containerized proxy
     When I restart cobbler on the server
     Then service "cobblerd" is active on "server"
 
-# Workaround to ssh the pxeboot minions through different interfaces for each product,
-#  maybe in the future we can rename the interfaces directly in sumaform
-@uyuni
   Scenario: PXE boot the PXE boot minion
     When I set the default PXE menu entry to the target profile on the "server"
-    And I reboot the Cobbler terminal "pxeboot_minion" through the interface "ens4"
-    And I wait for "60" seconds
-    And I set the default PXE menu entry to the local boot on the "server"
-    And I wait at most 1200 seconds until Salt master sees "pxeboot_minion" as "unaccepted"
-    And I accept "pxeboot_minion" key in the Salt master
-
-@susemanager
-  Scenario: PXE boot the PXE boot minion
-    When I set the default PXE menu entry to the target profile on the "server"
-    And I reboot the Cobbler terminal "pxeboot_minion" through the interface "eth1"
+    And I reboot the Cobbler terminal "pxeboot_minion"
     And I wait for "60" seconds
     And I set the default PXE menu entry to the local boot on the "server"
     And I wait at most 1200 seconds until Salt master sees "pxeboot_minion" as "unaccepted"
@@ -119,37 +119,33 @@ Feature: PXE boot a terminal with Cobbler and containerized proxy
 
   Scenario: Download the profile from the UI
     When I follow the left menu "Systems > Autoinstallation > Profiles"
-    And I follow "15-sp4-cobbler"
+    And I follow "15-sp7-cobbler"
     And I follow "Autoinstallation File" in the content area
     And I follow "Download Autoinstallation File"
     Then I should see a "<profile " text
 
   Scenario: Cleanup: remove the auto installation profile
     When I follow the left menu "Systems > Autoinstallation > Profiles"
-    And I follow "15-sp4-cobbler"
+    And I follow "15-sp7-cobbler"
     And I follow "Delete Autoinstallation"
     And I click on "Delete Autoinstallation"
-    And I wait until I do not see "15-sp4-cobbler" text
+    And I wait until I do not see "15-sp7-cobbler" text
     And I wait up to 5 minutes to see "TASK COMPLETE" in the last lines of "var/log/cobbler/cobbler.log" on "server"
 
   Scenario: Cleanup: remove the auto installation distribution
     When I follow the left menu "Systems > Autoinstallation > Distributions"
-    And I follow "SLE-15-SP4-TFTP"
+    And I follow "SLE-15-SP7-TFTP"
     And I follow "Delete Distribution"
     And I click on "Delete Distribution"
-    And I wait until I do not see "SLE-15-SP4-TFTP" text
+    And I wait until I do not see "SLE-15-SP7-TFTP" text
     And I wait up to 5 minutes to see "TASK COMPLETE" in the last lines of "var/log/cobbler/cobbler.log" on "server"
 
   Scenario: Cleanup: remove the auto installation files
-    When I remove packages "tftpboot-installation-SLE-15-SP4-x86_64 expect" from this "build_host"
+    When I remove packages "tftpboot-installation-SLE-15-SP7-x86_64 expect" from this "build_host"
     And I remove the autoinstallation files from the server
 
   Scenario: Cleanup: delete the PXE boot minion
-    When I navigate to the Systems overview page of this "pxeboot_minion"
-    And I follow "Delete System"
-    Then I should see a "Confirm System Profile Deletion" text
-    When I click on "Delete Profile"
-    And I wait until I see "has been deleted" text
+    When I delete "pxeboot_minion" system using the api
     And I wait until Salt client is inactive on the PXE boot minion
     Then "pxeboot_minion" should not be registered
 

@@ -162,7 +162,7 @@ When(/^I click the Add Product button$/) do
   raise ScriptError, 'xpath: button#addProducts not found' unless find('button#addProducts').click
 end
 
-Then(/^the SLE15 (SP3|SP4|SP5) product should be added$/) do |sp_version|
+Then(/^the SLE15 (SP3|SP4|SP5|SP6|SP7) product should be added$/) do |sp_version|
   output, _code = get_target('server').run('echo -e "admin\nadmin\n" | mgr-sync list channels', check_errors: false, buffer_size: 1_000_000)
   log "Products list:\n#{output}"
   match = "[I] SLE-Product-SLES15-#{sp_version}-Pool for x86_64 SUSE Linux Enterprise Server 15 #{sp_version} x86_64 [sle-product-sles15-#{sp_version.downcase}-pool-x86_64]"

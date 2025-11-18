@@ -14,12 +14,11 @@ Feature: Operate an Ansible control node in SSH minion
     When I deploy testing playbooks and inventory files to "ssh_minion"
 
   @susemanager
-  Scenario: Pre-requisite: Subscribe SUSE minions to SLE-Module-Python3-15-SP4-Pool for x86_64
+  Scenario: Pre-requisite: Subscribe SUSE minions to SLE-Module-Python3-15-SP7-Pool for x86_64
     Given I am on the Systems overview page of this "ssh_minion"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
-    And I check "SLE-Module-Python3-15-SP4-Pool for x86_64" by label
-    And I check "SLE-Product-SLES15-SP4-LTSS-Updates for x86_64" by label
+    And I check "SLE-Module-Python3-15-SP7-Pool for x86_64" by label
     And I click on "Next"
     And I click on "Confirm"
     And I wait until I see "Changing the channels has been scheduled." text
@@ -102,12 +101,11 @@ Feature: Operate an Ansible control node in SSH minion
     And I remove "/tmp/file.txt" from "ssh_minion"
 
   @susemanager
-  Scenario: Cleanup: Unsubscribe SUSE minions from SLE-Module-Python3-15-SP4-Pool for x86_64
+  Scenario: Cleanup: Unsubscribe SUSE minions from SLE-Module-Python3-15-SP7-Pool for x86_64
     Given I am on the Systems overview page of this "ssh_minion"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
-    And I uncheck "SLE-Module-Python3-15-SP4-Pool for x86_64" by label
-    And I uncheck "SLE-Product-SLES15-SP4-LTSS-Updates for x86_64" by label
+    And I uncheck "SLE-Module-Python3-15-SP7-Pool for x86_64" by label
     And I click on "Next"
     And I click on "Confirm"
     And I wait until I see "Changing the channels has been scheduled." text

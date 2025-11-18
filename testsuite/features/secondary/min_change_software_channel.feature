@@ -3,7 +3,7 @@
 #
 # This feature can cause failures in the following features:
 # - features/secondary/allcli_software_channels.feature
-# If "SLE15-SP4-Installer-Updates for x86_64" fails to be unchecked
+# If "SLE15-SP7-Installer-Updates for x86_64" fails to be unchecked
 
 # This test fails on github validation
 @skip_if_github_validation
@@ -21,11 +21,11 @@ Feature: Assign child channel to a system
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    And I check radio button "SLE-Product-SLES15-SP4-Pool for x86_64"
-    Then radio button "SLE-Product-SLES15-SP4-Pool for x86_64" should be checked
+    And I check radio button "SLE-Product-SLES15-SP7-Pool for x86_64"
+    Then radio button "SLE-Product-SLES15-SP7-Pool for x86_64" should be checked
     And I wait until I do not see "Loading..." text
-    When I uncheck "SLE15-SP4-Installer-Updates for x86_64"
-    And I should see "SLE15-SP4-Installer-Updates for x86_64" as unchecked
+    When I uncheck "SLE15-SP7-Installer-Updates for x86_64"
+    And I should see "SLE15-SP7-Installer-Updates for x86_64" as unchecked
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"
@@ -52,8 +52,8 @@ Feature: Assign child channel to a system
 @susemanager
   Scenario: Pre-requisite: check via API that the system is unsubscribed from old channels
     When I refresh the metadata for "sle_minion"
-    Then channel "SLE-Product-SLES15-SP4-Pool for x86_64" should be enabled on "sle_minion"
-    And channel "SLE15-SP4-Installer-Updates for x86_64" should be disabled on "sle_minion"
+    Then channel "SLE-Product-SLES15-SP7-Pool for x86_64" should be enabled on "sle_minion"
+    And channel "SLE15-SP7-Installer-Updates for x86_64" should be disabled on "sle_minion"
 
 @uyuni
   Scenario: Pre-requisite: check via API that the system is unsubscribed from old channels
@@ -66,16 +66,16 @@ Feature: Assign child channel to a system
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    Then radio button "SLE-Product-SLES15-SP4-Pool for x86_64" should be checked
+    Then radio button "SLE-Product-SLES15-SP7-Pool for x86_64" should be checked
     And I wait until I do not see "Loading..." text
-    And I check "SLE15-SP4-Installer-Updates for x86_64"
+    And I check "SLE15-SP7-Installer-Updates for x86_64"
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
     And I click on "Confirm"
     Then I should see a "Changing the channels has been scheduled." text
     When I follow "scheduled" in the content area
     And I wait until I see "1 system successfully completed this action." text, refreshing the page
-    Then channel "SLE15-SP4-Installer-Updates for x86_64" should be enabled on "sle_minion"
+    Then channel "SLE15-SP7-Installer-Updates for x86_64" should be enabled on "sle_minion"
 
 @uyuni
   Scenario: Assign a child channel to the system
@@ -104,9 +104,9 @@ Feature: Assign child channel to a system
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    Then radio button "SLE-Product-SLES15-SP4-Pool for x86_64" should be checked
+    Then radio button "SLE-Product-SLES15-SP7-Pool for x86_64" should be checked
     And I wait until I do not see "Loading..." text
-    And I should see "SLE15-SP4-Installer-Updates for x86_64" as checked
+    And I should see "SLE15-SP7-Installer-Updates for x86_64" as checked
 
 @uyuni
   Scenario: Check the system is subscribed to the new channels
@@ -120,8 +120,8 @@ Feature: Assign child channel to a system
 @susemanager
   Scenario: Check via API the new channels are enabled on the system
     When I refresh the metadata for "sle_minion"
-    Then channel "SLE-Product-SLES15-SP4-Pool for x86_64" should be enabled on "sle_minion"
-    And channel "SLE15-SP4-Installer-Updates for x86_64" should be enabled on "sle_minion"
+    Then channel "SLE-Product-SLES15-SP7-Pool for x86_64" should be enabled on "sle_minion"
+    And channel "SLE15-SP7-Installer-Updates for x86_64" should be enabled on "sle_minion"
 
 @uyuni
   Scenario: Check via API the new channels are enabled on the system
@@ -134,20 +134,20 @@ Feature: Assign child channel to a system
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    Then radio button "SLE-Product-SLES15-SP4-Pool for x86_64" should be checked
+    Then radio button "SLE-Product-SLES15-SP7-Pool for x86_64" should be checked
     And I wait until I do not see "Loading..." text
-    And I wait until I see "SLE15-SP4-Installer-Updates for x86_64" text
+    And I wait until I see "ManagerTools-SLE15-Pool for x86_64 SP7" text
     And I include the recommended child channels
-    And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
+    And I check "SLE-Module-DevTools15-SP7-Pool for x86_64"
     And I check "Fake-RPM-SUSE-Channel"
-    And I uncheck "SLE15-SP4-Installer-Updates for x86_64"
+    And I uncheck "SLE15-SP7-Installer-Updates for x86_64"
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"
     Then I should see a "Changing the channels has been scheduled." text
     When I follow "scheduled" in the content area
     And I wait until I see "1 system successfully completed this action." text, refreshing the page
-    Then channel "SLE15-SP4-Installer-Updates for x86_64" should be disabled on "sle_minion"
+    Then channel "SLE15-SP7-Installer-Updates for x86_64" should be disabled on "sle_minion"
 
 @uyuni
   Scenario: Cleanup: subscribe the system back to previous channels

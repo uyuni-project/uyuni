@@ -204,16 +204,16 @@ Feature: Recurring Actions
     And I check default base channel radio button of this "sle_minion"
     And I wait for child channels to appear
     And I include the recommended child channels
-    And I wait until "SLE-Module-Basesystem15-SP4-Pool for x86_64" has been checked
-    And I wait until "SLE-Module-Basesystem15-SP4-Updates for x86_64" has been checked
-    And I wait until "SLE-Module-Server-Applications15-SP4-Pool for x86_64" has been checked
-    And I wait until "SLE-Module-Server-Applications15-SP4-Updates for x86_64" has been checked
-    And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
-    And I wait until "SLE-Module-DevTools15-SP4-Updates for x86_64" has been checked
-    And I wait until "SLE-Module-Desktop-Applications15-SP4-Pool for x86_64" has been checked
-    And I wait until "SLE-Module-Desktop-Applications15-SP4-Updates for x86_64" has been checked
-    And I check "SLE-Module-Containers15-SP4-Pool for x86_64"
-    And I wait until "SLE-Module-Containers15-SP4-Updates for x86_64" has been checked
+    And I wait until "SLE-Module-Basesystem15-SP7-Pool for x86_64" has been checked
+    And I wait until "SLE-Module-Basesystem15-SP7-Updates for x86_64" has been checked
+    And I wait until "SLE-Module-Server-Applications15-SP7-Pool for x86_64" has been checked
+    And I wait until "SLE-Module-Server-Applications15-SP7-Updates for x86_64" has been checked
+    And I check "SLE-Module-DevTools15-SP7-Pool for x86_64"
+    And I wait until "SLE-Module-DevTools15-SP7-Updates for x86_64" has been checked
+    And I wait until "SLE-Module-Desktop-Applications15-SP7-Pool for x86_64" has been checked
+    And I wait until "SLE-Module-Desktop-Applications15-SP7-Updates for x86_64" has been checked
+    And I check "SLE-Module-Containers15-SP7-Pool for x86_64"
+    And I wait until "SLE-Module-Containers15-SP7-Updates for x86_64" has been checked
     And I check "Fake-RPM-SUSE-Channel"
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
