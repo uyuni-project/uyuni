@@ -8910,7 +8910,7 @@ public class SystemHandler extends BaseHandler {
                 p -> p.setPillar(pillarData),
                 () -> {
                     Pillar newPillar = new Pillar(category, pillarData, minion);
-                    HibernateFactory.getSession().save(newPillar);
+                    HibernateFactory.getSession().persist(newPillar);
                     minion.addPillar(newPillar);
                 });
         return 1;
@@ -8941,7 +8941,7 @@ public class SystemHandler extends BaseHandler {
                 p -> p.setPillar(pillarData),
                 () -> {
                     Pillar newPillar = new Pillar(category, pillarData, minion);
-                    HibernateFactory.getSession().save(newPillar);
+                    HibernateFactory.getSession().persist(newPillar);
                     minion.addPillar(newPillar);
                 });
         return 1;

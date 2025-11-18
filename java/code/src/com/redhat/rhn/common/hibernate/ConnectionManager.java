@@ -16,7 +16,6 @@ package com.redhat.rhn.common.hibernate;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.hibernate.metadata.ClassMetadata;
 
 import java.util.Optional;
 
@@ -100,13 +99,6 @@ public interface ConnectionManager {
      * @return true if a transaction is currently active.
      */
     boolean isTransactionPending();
-
-    /**
-     * Returns the metadata for the given object.
-     * @param target an object instance or a class to retrieve the metadata for
-     * @return the {@link ClassMetadata} for the given object.
-     */
-    ClassMetadata getMetadata(Object target);
 
     /**
      * Closes Hibernate Session stored in ThreadLocal storage.

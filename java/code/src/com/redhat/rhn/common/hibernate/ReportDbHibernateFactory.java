@@ -28,6 +28,7 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.engine.jdbc.LobCreator;
 import org.hibernate.query.Query;
 
 import java.io.ByteArrayOutputStream;
@@ -45,7 +46,7 @@ import java.util.function.BinaryOperator;
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
-import javax.persistence.FlushModeType;
+import jakarta.persistence.FlushModeType;
 
 /**
  * HibernateFactory - Helper superclass that contains methods for fetching and
@@ -282,10 +283,10 @@ public class ReportDbHibernateFactory {
         Session session = null;
         session = getSession();
         if (saveOrUpdate) {
-            session.saveOrUpdate(toSave);
+            session.merge(toSave);
         }
         else {
-            session.save(toSave);
+            session.persist(toSave);
         }
     }*/
 
@@ -309,7 +310,7 @@ public class ReportDbHibernateFactory {
         int numDeleted = 0;
         session = getSession();
 
-        session.delete(toRemove);
+        session.remove(toRemove);
         numDeleted++;
 
         return numDeleted;
@@ -468,7 +469,7 @@ public class ReportDbHibernateFactory {
         session.evict(obj);
         *
          * In hibernate 3, the following doesn't work:
-         * session.load(obj.getClass(), id);
+         * session.getReference(obj.getClass(), id);
          * load returns the proxy class instead of the persisted class, ie,
          * Filter$$EnhancerByCGLIB$$9bcc734d_2 instead of Filter.
          * session.get is set to not return the proxy class, so that is what we'll use.
@@ -551,8 +552,8 @@ public class ReportDbHibernateFactory {
         if (data.length == 0) {
             return null;
         }
-        return Hibernate.getLobCreator(getSession()).createBlob(data);
 
+        return Hibernate.getLobHelper().createBlob(data);
     }
 
     /**

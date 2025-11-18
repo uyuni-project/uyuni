@@ -30,8 +30,6 @@ import org.hibernate.HibernateException;
 import org.hibernate.LockMode;
 import org.hibernate.MappingException;
 import org.hibernate.Session;
-import org.hibernate.engine.spi.SessionImplementor;
-import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 
@@ -54,11 +52,11 @@ import java.util.function.BinaryOperator;
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
-import javax.persistence.FlushModeType;
-import javax.persistence.Tuple;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaDelete;
-import javax.persistence.criteria.Root;
+import jakarta.persistence.FlushModeType;
+import jakarta.persistence.Tuple;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaDelete;
+import jakarta.persistence.criteria.Root;
 
 /**
  * HibernateFactory - Helper superclass that contains methods for fetching and
@@ -330,10 +328,10 @@ public abstract class HibernateFactory {
         Session session = null;
         session = HibernateFactory.getSession();
         if (saveOrUpdate) {
-            session.saveOrUpdate(toSave);
+            session.merge(toSave);
         }
         else {
-            session.save(toSave);
+            session.persist(toSave);
         }
     }
 
@@ -355,7 +353,7 @@ public abstract class HibernateFactory {
         int numDeleted = 0;
         session = HibernateFactory.getSession();
 
-        session.delete(toRemove);
+        session.remove(toRemove);
         numDeleted++;
 
         return numDeleted;
@@ -478,7 +476,7 @@ public abstract class HibernateFactory {
         try {
             session = HibernateFactory.getSession();
 
-            retval = session.get(clazz, id);
+            retval = session.find(clazz, id);
         }
         catch (MappingException me) {
             getLogger().error("Mapping not found for {}", clazz.getName(), me);
@@ -507,7 +505,7 @@ public abstract class HibernateFactory {
         try {
             session = HibernateFactory.getSession();
 
-            retval = session.get(clazz, id, LockMode.PESSIMISTIC_WRITE);
+            retval = session.find(clazz, id, LockMode.PESSIMISTIC_WRITE);
         }
         catch (MappingException me) {
             getLogger().error("Mapping not found for {}", clazz.getName(), me);
@@ -528,19 +526,18 @@ public abstract class HibernateFactory {
      * @param <T> the entity type
      */
     public static <T> T reload(T obj) throws HibernateException {
-        ClassMetadata cmd = connectionManager.getMetadata(obj);
-        Serializable id = cmd.getIdentifier(obj, (SessionImplementor) getSession());
         Session session = getSession();
+        Object id = session.getIdentifier(obj);
         session.flush();
         session.evict(obj);
         /*
          * In hibernate 3, the following doesn't work:
-         * session.load(obj.getClass(), id)
+         * session.getReference(obj.getClass(), id)
          * load returns the proxy class instead of the persisted class, ie,
          * Filter$$EnhancerByCGLIB$$9bcc734d_2 instead of Filter.
          * session.get is set to not return the proxy class, so that is what we'll use.
          */
-        return (T) session.get(obj.getClass(), id);
+        return (T) session.find(obj.getClass(), id);
     }
 
     /**
@@ -617,8 +614,7 @@ public abstract class HibernateFactory {
         if (data.length == 0) {
             return null;
         }
-        return Hibernate.getLobCreator(getSession()).createBlob(data);
-
+        return Hibernate.getLobHelper().createBlob(data);
     }
 
     /**

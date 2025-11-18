@@ -103,7 +103,7 @@ public class DebRepositoryWriter extends RepositoryWriter {
         File.separator + channel.getLabel() + File.separator;
 
         // we closed the session, so we need to reload the object
-        channel = HibernateFactory.getSession().get(channel.getClass(), channel.getId());
+        channel = HibernateFactory.getSession().find(channel.getClass(), channel.getId());
         if (!new File(prefix).mkdirs() && !new File(prefix).exists()) {
             throw new RepomdRuntimeException("Unable to create directory: " +
                     prefix);

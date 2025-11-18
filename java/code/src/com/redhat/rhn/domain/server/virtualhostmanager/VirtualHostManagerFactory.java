@@ -115,7 +115,7 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      * exist
      */
     public Optional<VirtualHostManager> lookupById(Long id) {
-        return Optional.ofNullable(getSession().get(VirtualHostManager.class, id));
+        return Optional.ofNullable(getSession().find(VirtualHostManager.class, id));
     }
 
     /**

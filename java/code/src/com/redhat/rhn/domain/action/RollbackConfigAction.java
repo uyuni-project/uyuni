@@ -16,8 +16,8 @@
 package com.redhat.rhn.domain.action;
 
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
 
 /**
  * RollbackConfigAction - Class representing TYPE_ROLLBACK_CONFIG

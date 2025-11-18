@@ -19,20 +19,19 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 
 /**
  * VirtualInstance represents a virtual guest system. When the guest is
@@ -51,23 +50,15 @@ public class VirtualInstance extends BaseDomainHelper {
     private static final VirtualInstanceInfo NULL_INFO = new VirtualInstanceInfo();
 
     @Id
-    @GeneratedValue(generator = "rhn_vi_seq")
-    @GenericGenerator(
-            name = "rhn_vi_seq",
-            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-            parameters = {
-                    @Parameter(name = "sequence_name", value = "rhn_vi_id_seq"),
-                    @Parameter(name = "increment_size", value = "1")
-            })
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rhn_vi_seq")
+	@SequenceGenerator(name = "rhn_vi_seq", sequenceName = "rhn_vi_id_seq", allocationSize = 1)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @Cascade({CascadeType.SAVE_UPDATE})
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "virtual_system_id")
     private Server guestSystem;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @Cascade({CascadeType.SAVE_UPDATE})
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "host_system_id")
     private Server hostSystem;
 
@@ -77,8 +68,7 @@ public class VirtualInstance extends BaseDomainHelper {
     @Column
     private Long confirmed;
 
-    @OneToOne(mappedBy = "parent")
-    @Cascade(CascadeType.ALL)
+    @OneToOne(mappedBy = "parent", cascade = CascadeType.ALL)
     private VirtualInstanceInfo info;
 
     /**

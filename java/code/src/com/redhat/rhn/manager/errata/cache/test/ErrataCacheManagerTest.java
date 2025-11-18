@@ -155,7 +155,7 @@ public class ErrataCacheManagerTest extends RhnBaseTestCase {
         ip.setEvr(p.getPackageEvr());
         ip.setName(p.getPackageName());
 
-        HibernateFactory.getSession().save(ip);
+        HibernateFactory.getSession().persist(ip);
 
         retval.put("package", p);
         retval.put("newpackage", newPackage);

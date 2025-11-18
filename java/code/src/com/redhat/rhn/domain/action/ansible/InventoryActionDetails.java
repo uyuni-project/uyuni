@@ -13,17 +13,17 @@ package com.redhat.rhn.domain.action.ansible;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.action.Action;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 
 /**
  * InventoryActionDetails - Class representation of the table rhnActionInventory.
@@ -33,14 +33,8 @@ import javax.persistence.Table;
 public class InventoryActionDetails extends BaseDomainHelper {
 
     @Id
-    @GeneratedValue(generator = "act_inventory_seq")
-    @GenericGenerator(
-            name = "act_inventory_seq",
-            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-            parameters = {
-                    @Parameter(name = "sequence_name", value = "rhn_act_inventory_id_seq"),
-                    @Parameter(name = "increment_size", value = "1")
-            })
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "act_inventory_seq")
+	@SequenceGenerator(name = "act_inventory_seq", sequenceName = "rhn_act_inventory_id_seq", allocationSize = 1)
     private long id;
 
     @Column(name = "inventory_path")

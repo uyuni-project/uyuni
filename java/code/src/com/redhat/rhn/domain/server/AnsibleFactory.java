@@ -177,7 +177,7 @@ public class AnsibleFactory extends HibernateFactory {
      * @return the updated {@link AnsiblePath}
      */
     public static AnsiblePath saveAnsiblePath(AnsiblePath path) {
-        HibernateFactory.getSession().saveOrUpdate(path);
+        HibernateFactory.getSession().merge(path);
         return path;
     }
 
@@ -187,7 +187,7 @@ public class AnsibleFactory extends HibernateFactory {
      * @param path the {@link AnsiblePath}
      */
     public static void removeAnsiblePath(AnsiblePath path) {
-        HibernateFactory.getSession().delete(path);
+        HibernateFactory.getSession().remove(path);
     }
 
     @Override

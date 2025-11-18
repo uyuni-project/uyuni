@@ -76,7 +76,7 @@ public class PaygProductFactory extends HibernateFactory {
         // Store the products
         productInfos.stream()
             .map(product -> new PaygCredentialsProduct(credentials.getId(), product))
-            .forEach(session::save);
+            .forEach(session::persist);
     }
 
     /**

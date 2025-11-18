@@ -10,32 +10,26 @@
  */
 package com.redhat.rhn.domain.server;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 import java.io.Serializable;
 import java.util.Map;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "suseServerAppstream")
 public class ServerAppStream implements Serializable  {
     @Id
-    @GeneratedValue(generator = "appstreams_servermodule_seq")
-    @GenericGenerator(
-            name = "appstreams_servermodule_seq",
-            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-            parameters = {
-                    @Parameter(name = "sequence_name", value = "suse_as_servermodule_seq"),
-                    @Parameter(name = "increment_size", value = "1")
-            })
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "appstreams_servermodule_seq")
+	@SequenceGenerator(name = "appstreams_servermodule_seq", sequenceName = "suse_as_servermodule_seq", allocationSize = 1)
     private Long id;
 
     @Column(nullable = false)

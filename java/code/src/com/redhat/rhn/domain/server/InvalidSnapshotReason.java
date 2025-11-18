@@ -17,14 +17,14 @@ package com.redhat.rhn.domain.server;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 
 /**
  *
@@ -36,14 +36,8 @@ public class InvalidSnapshotReason extends BaseDomainHelper {
 
 
     @Id
-    @GeneratedValue(generator = "ssinvalid_seq")
-    @GenericGenerator(
-            name = "ssinvalid_seq",
-            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-            parameters = {
-                    @Parameter(name = "sequence_name", value = "rhn_ssinvalid_id_seq"),
-                    @Parameter(name = "increment_size", value = "1")
-            })
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ssinvalid_seq")
+	@SequenceGenerator(name = "ssinvalid_seq", sequenceName = "rhn_ssinvalid_id_seq", allocationSize = 1)
     private Long id;
 
     @Column

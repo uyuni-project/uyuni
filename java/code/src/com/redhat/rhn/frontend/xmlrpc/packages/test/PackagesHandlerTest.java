@@ -169,7 +169,7 @@ public class PackagesHandlerTest extends BaseHandlerTestCase {
         User user = new UserTestUtils.UserBuilder().orgId(admin.getOrg().getId()).build();
         SourceRpm srpm = SourceRpmTest.createTestSourceRpm();
         PackageSource pkg = PackageTest.createTestPackageSource(srpm, user.getOrg());
-        HibernateFactory.getSession().save(pkg);
+        HibernateFactory.getSession().persist(pkg);
         handler.removeSourcePackage(admin, pkg.getId().intValue());
     }
 
@@ -197,7 +197,7 @@ public class PackagesHandlerTest extends BaseHandlerTestCase {
         for (int i = 0; i < 3; i++) {
             SourceRpm srpm = SourceRpmTest.createTestSourceRpm();
             PackageSource pkg = PackageTest.createTestPackageSource(srpm, user.getOrg());
-            HibernateFactory.getSession().save(pkg);
+            HibernateFactory.getSession().persist(pkg);
         }
         Object[] result2 = handler.listSourcePackages(user);
         assertEquals(3, result2.length - result1.length);

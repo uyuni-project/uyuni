@@ -18,15 +18,17 @@ import com.redhat.rhn.common.conf.ConfigException;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
+import org.hibernate.type.YesNoConverter;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 /**
  * TinyUrl - Class representation of the table rhntinyurl.
@@ -41,7 +43,7 @@ public class TinyUrl {
     @Column(nullable = false)
     private String url;
     @Column
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     private boolean enabled;
     @Column(nullable = false, updatable = false, insertable = false)
     @CreationTimestamp

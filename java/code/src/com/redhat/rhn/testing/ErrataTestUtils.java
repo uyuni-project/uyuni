@@ -159,7 +159,7 @@ public class ErrataTestUtils {
 
         PublicChannelFamily pcf = new PublicChannelFamily();
         pcf.setChannelFamily(channelFamily);
-        HibernateFactory.getSession().save(pcf);
+        HibernateFactory.getSession().persist(pcf);
 
         channelFamily.setPublicChannelFamily(pcf);
 

@@ -15,12 +15,9 @@ import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.Identifiable;
 import com.redhat.rhn.domain.org.Org;
 
-import com.vladmihalcea.hibernate.type.json.JsonType;
+import io.hypersistence.utils.hibernate.type.json.JsonType;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
-import org.hibernate.annotations.TypeDef;
 
 import java.io.Serializable;
 import java.util.List;
@@ -28,16 +25,18 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 
 
 /**
@@ -47,20 +46,13 @@ import javax.persistence.criteria.Root;
  */
 
 
-@TypeDef(name = "json", typeClass = JsonType.class)
 @Entity
 @Table(name = "suseSaltPillar")
 public class Pillar implements Identifiable, Serializable {
 
     @Id
-    @GeneratedValue(generator = "pillar_seq")
-    @GenericGenerator(
-            name = "pillar_seq",
-            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-            parameters = {
-                    @Parameter(name = "sequence_name", value = "suse_salt_pillar_id_seq"),
-                    @Parameter(name = "increment_size", value = "1")
-            })
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pillar_seq")
+	@SequenceGenerator(name = "pillar_seq", sequenceName = "suse_salt_pillar_id_seq", allocationSize = 1)
     @Column(name = "id")
     private Long id;
 
@@ -79,7 +71,7 @@ public class Pillar implements Identifiable, Serializable {
     @Column(name = "category")
     private String category;
 
-    @Type(type = "json")
+    @Type(JsonType.class)
     @Column(columnDefinition = "jsonb")
     private Map<String, Object> pillar = new TreeMap<>();
 
@@ -160,7 +152,7 @@ public class Pillar implements Identifiable, Serializable {
      */
     public static Pillar createGlobalPillar(String category, Map<String, Object> data) {
         Pillar pillar = new Pillar(category, data);
-        HibernateFactory.getSession().save(pillar);
+        HibernateFactory.getSession().persist(pillar);
         return pillar;
     }
 

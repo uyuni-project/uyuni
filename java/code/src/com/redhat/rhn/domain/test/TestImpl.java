@@ -16,17 +16,17 @@
 
 package com.redhat.rhn.domain.test;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 /**
  */
@@ -41,14 +41,8 @@ public class TestImpl implements TestInterface {
     @Column
     private String hidden;
     @Id
-    @GeneratedValue(generator = "PERSIST_SEQUENCE")
-    @GenericGenerator(
-            name = "PERSIST_SEQUENCE",
-            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-            parameters = {
-                    @Parameter(name = "sequence_name", value = "PERSIST_SEQUENCE"),
-                    @Parameter(name = "increment_size", value = "1")
-            })
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PERSIST_SEQUENCE")
+	@SequenceGenerator(name = "PERSIST_SEQUENCE", sequenceName = "PERSIST_SEQUENCE", allocationSize = 1)
     private Long id;
     @Column
     private Integer pin;

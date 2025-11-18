@@ -17,9 +17,7 @@ import com.redhat.rhn.domain.user.legacy.UserImpl;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.ListIndexBase;
-import org.hibernate.annotations.Parameter;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,20 +25,22 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderColumn;
-import javax.persistence.Table;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderColumn;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 
 /**
  * A generic state revision to be subclassed for instance as {@link ServerStateRevision}.
@@ -51,14 +51,8 @@ import javax.persistence.Table;
 public class StateRevision {
 
     @Id
-    @GeneratedValue(generator = "state_revision_seq")
-    @GenericGenerator(
-            name = "state_revision_seq",
-            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-            parameters = {
-                    @Parameter(name = "sequence_name", value = "suse_state_revision_id_seq"),
-                    @Parameter(name = "increment_size", value = "1")
-            })
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "state_revision_seq")
+	@SequenceGenerator(name = "state_revision_seq", sequenceName = "suse_state_revision_id_seq", allocationSize = 1)
     private Long id;
 
     @OneToMany(mappedBy = "stateRevision", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

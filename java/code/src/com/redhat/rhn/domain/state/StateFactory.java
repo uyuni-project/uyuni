@@ -265,16 +265,16 @@ public class StateFactory extends HibernateFactory {
 
             if (ids[1] != null) {
                 ServerStateRevision rev =
-                        getSession().get(ServerStateRevision.class, stateId);
+                        getSession().find(ServerStateRevision.class, stateId);
                 usage.getServerStateRevisions().add(rev);
             }
             else if (ids[2] != null) {
                 ServerGroupStateRevision rev =
-                        getSession().get(ServerGroupStateRevision.class, stateId);
+                        getSession().find(ServerGroupStateRevision.class, stateId);
                 usage.getServerGroupStateRevisions().add(rev);
             }
             else if (ids[3] != null) {
-                OrgStateRevision rev = getSession().get(OrgStateRevision.class, stateId);
+                OrgStateRevision rev = getSession().find(OrgStateRevision.class, stateId);
                 usage.getOrgStateRevisions().add(rev);
             }
         }

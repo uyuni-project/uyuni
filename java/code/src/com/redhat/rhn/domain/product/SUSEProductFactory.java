@@ -477,7 +477,7 @@ public class SUSEProductFactory extends HibernateFactory {
      */
     public static SUSEProduct getProductById(Long id) {
         Session session = HibernateFactory.getSession();
-        return session.get(SUSEProduct.class, id);
+        return session.find(SUSEProduct.class, id);
     }
 
     /**

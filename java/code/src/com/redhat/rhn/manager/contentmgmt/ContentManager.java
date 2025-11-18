@@ -951,10 +951,10 @@ public class ContentManager {
 
     private static void stripModuleMetadata(Channel channel) {
         if (channel != null && channel.getModules() != null) {
-            HibernateFactory.getSession().delete(channel.getModules());
+            HibernateFactory.getSession().remove(channel.getModules());
             channel.setModules(null);
             AppStreamsManager.listChannelAppStreams(channel.getId()).forEach(a ->
-                    HibernateFactory.getSession().delete(a)
+                    HibernateFactory.getSession().remove(a)
             );
         }
     }
@@ -1201,7 +1201,7 @@ public class ContentManager {
 
         // now request repo regen
         tgt.setLastModified(new Date());
-        HibernateFactory.getSession().saveOrUpdate(tgt);
+        HibernateFactory.getSession().merge(tgt);
         ChannelManager.queueChannelChange(tgt.getLabel(), "java::alignChannel", "Channel aligned");
     }
 
