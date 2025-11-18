@@ -39,7 +39,8 @@ import com.redhat.rhn.domain.task.TaskFactory;
 import com.redhat.rhn.manager.BaseTransactionCommand;
 import com.redhat.rhn.manager.kickstart.KickstartSessionCreateCommand;
 
-import com.suse.manager.saltboot.SaltbootUtils;
+import com.suse.manager.saltboot.SaltbootMigrationException;
+import com.suse.manager.saltboot.SaltbootMigrationUtils;
 import com.suse.manager.webui.services.ConfigChannelSaltManager;
 import com.suse.manager.webui.services.SaltConstants;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
@@ -436,7 +437,7 @@ public class UpgradeCommand extends BaseTransactionCommand {
                 log.info("Cobbler migration: waiting");
                 Thread.sleep(60000);
                 log.info("Cobbler migration: started");
-                SaltbootUtils.migrateSaltboot();
+                SaltbootMigrationUtils.migrateSaltboot();
                 TaskFactory.remove(t);
                 HibernateFactory.commitTransaction();
                 log.info("Cobbler migration: finished");
@@ -444,7 +445,7 @@ public class UpgradeCommand extends BaseTransactionCommand {
             catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
-            catch (Exception e) {
+            catch (SaltbootMigrationException e) {
                 log.error("Cobbler migration failed", e);
             }
             finally {
