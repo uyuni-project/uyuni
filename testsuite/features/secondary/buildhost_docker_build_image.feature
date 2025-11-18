@@ -12,6 +12,7 @@
 # - features/secondary/min_salt_install_with_staging.feature
 # Due to the images listed in the CVE Audit images
 
+@skip_if_github_validation
 @build_host
 @scope_building_container_images
 @scope_cve_audit
