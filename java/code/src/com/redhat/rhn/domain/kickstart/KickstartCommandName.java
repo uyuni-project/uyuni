@@ -17,8 +17,6 @@ package com.redhat.rhn.domain.kickstart;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 
 import java.io.Serial;
@@ -27,7 +25,9 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 
@@ -44,14 +44,8 @@ public class KickstartCommandName implements Serializable {
     private static final long serialVersionUID = 5014180467135195244L;
 
     @Id
-    @GeneratedValue(generator = "RHN_KSCOMMANDNAME_ID_SEQ")
-    @GenericGenerator(
-            name = "RHN_KSCOMMANDNAME_ID_SEQ",
-            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-            parameters = {
-                    @Parameter(name = "sequence_name", value = "RHN_KSCOMMANDNAME_ID_SEQ"),
-                    @Parameter(name = "increment_size", value = "1")
-            })
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_KSCOMMANDNAME_ID_SEQ")
+    @SequenceGenerator(name = "RHN_KSCOMMANDNAME_ID_SEQ", sequenceName = "RHN_KSCOMMANDNAME_ID_SEQ", allocationSize = 1)
     private Long id;
 
     @Column(name = "sort_order")

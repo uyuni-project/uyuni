@@ -17,8 +17,6 @@ package com.suse.cloud.domain;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 
 import java.util.StringJoiner;
@@ -26,9 +24,11 @@ import java.util.StringJoiner;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -64,14 +64,9 @@ public class PaygDimensionResult {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(generator = "paygDimensionResult_seq")
-    @GenericGenerator(
-            name = "paygDimensionResult_seq",
-            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-            parameters = {
-                    @Parameter(name = "sequence_name", value = "susePaygDimensionResult_id_seq"),
-                    @Parameter(name = "increment_size", value = "1")
-            })
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "paygDimensionResult_seq")
+    @SequenceGenerator(name = "paygDimensionResult_seq", sequenceName = "susePaygDimensionResult_id_seq",
+            allocationSize = 1)
     public Long getId() {
         return id;
     }
