@@ -26,7 +26,7 @@ public class OSImageBuildImageInfoResult {
     private OSImageInspectSlsResult.Bundle bundle;
     private List<OSImageInspectSlsResult.Bundle> bundles;
     private OSImageInspectSlsResult.Image image;
-    private OSImageInspectSlsResult.BootImage boot_image;
+    private OSImageInspectSlsResult.BootImage bootImage;
 
     /**
      * @return the bundle info
@@ -54,6 +54,6 @@ public class OSImageBuildImageInfoResult {
      * @return the boot image info
      */
     public Optional<OSImageInspectSlsResult.BootImage> getBootImage() {
-        return Optional.ofNullable(boot_image);
+        return Optional.ofNullable(bootImage);
     }
 }
