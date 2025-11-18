@@ -40,7 +40,6 @@ from spacewalk.common.rhnConfig import CFG
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.common import rhnCache
 from spacewalk.common.rhnTranslate import _
-from up2date_client import config  # pylint: disable=E0012, C0413
 from uyuni.common.rhnLib import parseUrl
 from uyuni.common.usix import raise_with_tb
 from . import rhnAuthCacheClient
@@ -53,7 +52,6 @@ else:
 # To avoid doing unnecessary work, keep ProxyAuth object global
 # pylint: disable-next=invalid-name
 __PROXY_AUTH = None
-UP2DATE_CONFIG = config.Config("/etc/sysconfig/rhn/up2date")
 PRODUCT_NAME = "SUSE Multi-Linux Manager"
 
 
@@ -76,7 +74,7 @@ class ProxyAuth:
     # pylint: disable-next=invalid-name
     __systemid_mtime = None
     # pylint: disable-next=invalid-name
-    __systemid_filename = UP2DATE_CONFIG["systemIdPath"]
+    __systemid_filename = "/etc/sysconfig/rhn/systemid"
 
     # pylint: disable-next=invalid-name
     __nRetries = 3  # number of login retries
