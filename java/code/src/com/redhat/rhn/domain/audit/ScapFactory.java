@@ -93,7 +93,7 @@ public class ScapFactory extends HibernateFactory {
      * @return the {@link XccdfBenchmark} if any
      */
     public static Optional<XccdfBenchmark> lookupBenchmarkById(long benchmarkId) {
-        return Optional.ofNullable(getSession().get(XccdfBenchmark.class, benchmarkId));
+        return Optional.ofNullable(getSession().find(XccdfBenchmark.class, benchmarkId));
     }
 
     /**
@@ -102,7 +102,7 @@ public class ScapFactory extends HibernateFactory {
      * @return the {@link XccdfIdent} if any
      */
     public static Optional<XccdfIdent> lookupIdentById(long identId) {
-        return Optional.ofNullable(getSession().get(XccdfIdent.class, identId));
+        return Optional.ofNullable(getSession().find(XccdfIdent.class, identId));
     }
 
     /**
@@ -111,7 +111,7 @@ public class ScapFactory extends HibernateFactory {
      * @return the {@link XccdfProfile} if any
      */
     public static Optional<XccdfProfile> lookupProfileById(long profileId) {
-        return Optional.ofNullable(getSession().get(XccdfProfile.class, profileId));
+        return Optional.ofNullable(getSession().find(XccdfProfile.class, profileId));
     }
 
     /**

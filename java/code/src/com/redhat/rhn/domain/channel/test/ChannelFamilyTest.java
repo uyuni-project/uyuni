@@ -100,7 +100,7 @@ public class ChannelFamilyTest extends BaseTestCaseWithUser {
             privateChannelFamily.setChannelFamily(channelFamily);
             channelFamily.addPrivateChannelFamily(privateChannelFamily);
 
-            HibernateFactory.getSession().save(privateChannelFamily);
+            HibernateFactory.getSession().persist(privateChannelFamily);
         }
     }
 }

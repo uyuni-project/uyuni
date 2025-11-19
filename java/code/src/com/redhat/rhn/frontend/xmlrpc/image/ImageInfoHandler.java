@@ -163,7 +163,7 @@ public class ImageInfoHandler extends BaseHandler {
             p -> p.setPillar(pillarDataFixed),
             () -> {
                 Pillar newPillar = new Pillar("Image" + imageId, pillarDataFixed, loggedInUser.getOrg());
-                HibernateFactory.getSession().save(newPillar);
+                HibernateFactory.getSession().persist(newPillar);
                 imageOpt.get().setPillar(newPillar);
             });
         return 1;

@@ -844,7 +844,7 @@ public class ServerFactory extends HibernateFactory {
      * @return the Server found
      */
     public static Server lookupById(Long id) {
-        return HibernateFactory.getSession().get(Server.class, id);
+        return HibernateFactory.getSession().find(Server.class, id);
     }
 
     /**
@@ -1367,7 +1367,7 @@ public class ServerFactory extends HibernateFactory {
      * @param snap the snapshot to delete
      */
     public static void deleteSnapshot(ServerSnapshot snap) {
-        getSession().delete(snap);
+        getSession().remove(snap);
     }
 
     /**
@@ -1822,7 +1822,7 @@ public class ServerFactory extends HibernateFactory {
      * @param device the device to delete
      */
     public static void delete(Device device) {
-        getSession().delete(device);
+        getSession().remove(device);
     }
 
     /**

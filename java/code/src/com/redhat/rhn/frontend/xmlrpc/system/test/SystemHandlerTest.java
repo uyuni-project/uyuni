@@ -2633,7 +2633,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         Set<InstalledPackage> set = srv1.getPackages();
         set.add(iPack);
 
-        HibernateFactory.getSession().save(pack);
+        HibernateFactory.getSession().persist(pack);
 
         List<SystemOverview> list = handler.listSystemsWithPackage(admin, iPack.getName().getName(),
                 iPack.getEvr().getVersion(), iPack.getEvr().getRelease());

@@ -436,7 +436,7 @@ public class ErrataFactory extends HibernateFactory {
      */
     public static Errata lookupById(Long id) {
         Session session = HibernateFactory.getSession();
-        return session.get(Errata.class, id);
+        return session.find(Errata.class, id);
     }
 
     /**
@@ -549,7 +549,7 @@ public class ErrataFactory extends HibernateFactory {
         DataResult<Map<String, Object>> result = mode.execute(params);
         Session session = HibernateFactory.getSession();
         return result.stream()
-                .map(row -> session.load(Errata.class, (Long) row.get("id")))
+                .map(row -> session.getReference(Errata.class, (Long) row.get("id")))
                 .collect(Collectors.toList());
     }
 

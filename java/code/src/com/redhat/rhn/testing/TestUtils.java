@@ -278,7 +278,7 @@ public class TestUtils {
      */
     public static <T> T lookupFromCacheById(Long id, Class<T> objClass) {
         Session session = HibernateFactory.getSession();
-        return session.get(objClass, id);
+        return session.find(objClass, id);
     }
 
     /**
@@ -376,12 +376,12 @@ public class TestUtils {
         session.flush();
         /*
          * In hibernate 3, the following doesn't work:
-         * Object obj = session.load(objClass, id)
+         * Object obj = session.getReference(objClass, id)
          * load returns the proxy class instead of the persisted class, ie,
          * Filter$$EnhancerByCGLIB$$9bcc734d_2 instead of Filter.
          * session.get is set to not return the proxy class, so that is what we'll use.
          */
-        T obj = (T)session.get(objClass, id);
+        T obj = (T)session.find(objClass, id);
         return reload(obj);
     }
 
@@ -420,7 +420,7 @@ public class TestUtils {
         try {
             session = HibernateFactory.getSession();
 
-            session.delete(toRemove);
+            session.remove(toRemove);
             numDeleted++;
 
         }
