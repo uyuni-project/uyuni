@@ -21,7 +21,7 @@ import com.redhat.rhn.frontend.struts.MaintenanceWindowHelper;
 
 import java.util.Set;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * DeployFileConfirmSetupAction, for sdc configuration

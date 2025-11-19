@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.frontend.taglibs.list;
 
-import javax.servlet.jsp.JspException;
+import jakarta.servlet.jsp.JspException;
 /**
  * List tag construct to render expandable columns
  * NonExpandableColumnTag

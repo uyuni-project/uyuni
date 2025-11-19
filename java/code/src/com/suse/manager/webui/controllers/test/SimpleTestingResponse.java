@@ -22,9 +22,9 @@ import java.io.PrintWriter;
 import java.util.Collection;
 import java.util.Locale;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 
 public class SimpleTestingResponse implements HttpServletResponse {
 
@@ -48,16 +48,6 @@ public class SimpleTestingResponse implements HttpServletResponse {
 
     @Override
     public String encodeRedirectURL(String s) {
-        throw new NotImplementedException("");
-    }
-
-    @Override
-    public String encodeUrl(String s) {
-        throw new NotImplementedException("");
-    }
-
-    @Override
-    public String encodeRedirectUrl(String s) {
         throw new NotImplementedException("");
     }
 
@@ -108,11 +98,6 @@ public class SimpleTestingResponse implements HttpServletResponse {
 
     @Override
     public void setStatus(int i) {
-        this.status = i;
-    }
-
-    @Override
-    public void setStatus(int i, String s) {
         this.status = i;
     }
 
@@ -214,5 +199,9 @@ public class SimpleTestingResponse implements HttpServletResponse {
     @Override
     public Locale getLocale() {
         throw new NotImplementedException("");
+    }
+
+    @Override
+    public void sendRedirect(String location, int status, boolean encode) {
     }
 }

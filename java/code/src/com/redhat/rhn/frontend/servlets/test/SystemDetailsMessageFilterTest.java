@@ -36,7 +36,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Iterator;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 public class SystemDetailsMessageFilterTest extends MockObjectTestCase {
     private User user;

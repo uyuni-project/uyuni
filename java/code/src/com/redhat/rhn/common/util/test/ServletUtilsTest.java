@@ -41,7 +41,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.Vector;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 public class ServletUtilsTest extends MockObjectTestCase {
 
