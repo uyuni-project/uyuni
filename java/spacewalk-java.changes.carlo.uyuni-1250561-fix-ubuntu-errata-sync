@@ -1,0 +1,2 @@
+- Fix crash in ubuntu errata sync on deleted channel ids
+  (bsc#1250561)
