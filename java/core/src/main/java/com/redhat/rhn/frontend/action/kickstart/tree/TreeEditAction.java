@@ -24,7 +24,7 @@ import com.redhat.rhn.manager.kickstart.tree.TreeEditOperation;
 
 import org.apache.struts.action.DynaActionForm;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * TreeEditAction

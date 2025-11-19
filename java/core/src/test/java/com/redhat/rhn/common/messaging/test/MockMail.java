@@ -19,8 +19,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.messaging.Mail;
 
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
+import jakarta.mail.internet.AddressException;
+import jakarta.mail.internet.InternetAddress;
 
 /**
  * A Mock implementation of our Mail interface.

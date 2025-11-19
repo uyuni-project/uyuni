@@ -32,8 +32,8 @@ import org.junit.jupiter.api.Test;
 
 import java.net.URL;
 
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.tagext.Tag;
+import jakarta.servlet.jsp.JspException;
+import jakarta.servlet.jsp.tagext.Tag;
 
 /**
  * NavDialogMenuTagTest
