@@ -42,7 +42,7 @@ type ActivationKeyChannelsState = {
   loadingChildren: boolean;
   availableBaseChannels: Channel[]; //[base1, base2],
   availableChannels: availableChannelsType; //[{base : null, children: []}]
-  fetchedData: Map<number, number[]>;
+  fetchedData: Map<number, availableChannelsType>;
 };
 
 class ActivationKeyChannelsApi extends React.Component<ActivationKeyChannelsProps, ActivationKeyChannelsState> {
@@ -105,11 +105,12 @@ class ActivationKeyChannelsApi extends React.Component<ActivationKeyChannelsProp
   fetchChildChannels = (baseId: number) => {
     let future: Promise<void>;
 
-    if (this.state.fetchedData && this.state.fetchedData.has(baseId)) {
+    const availableChannels = this.state.fetchedData.get(baseId);
+    if (this.state.fetchedData && availableChannels) {
       future = new Promise((resolve) => {
         resolve(
           this.setState({
-            availableChannels: this.state.fetchedData.get(baseId),
+            availableChannels,
           })
         );
       });
