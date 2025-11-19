@@ -730,6 +730,6 @@
     <function>
         <name>getDocsLocale</name>
         <function-class>com.redhat.rhn.frontend.taglibs.RhnTagFunctions</function-class>
-        <function-signature>java.lang.String getDocsLocale(javax.servlet.jsp.PageContext)</function-signature>
+    <function-signature>java.lang.String getDocsLocale(jakarta.servlet.jsp.PageContext)</function-signature>
     </function>
 </taglib>

@@ -187,11 +187,11 @@
     <target name="refresh-branding-jar" depends="maybe-clean" description="Compiles and builds the SUSE branding jar">
         <mkdir dir="${build.dir}/java-branding"/>
 
-        <javac destdir="${build.dir}/java-branding"
-               includeantruntime="no"
-               nowarn="true"
-	       release="17"
-               srcdir="${branding.src.dir}"/>
+     <javac destdir="${build.dir}/java-branding"
+         includeantruntime="no"
+         nowarn="true"
+         release="${java.release}"
+         srcdir="${branding.src.dir}"/>
 
         <copy toDir="${build.dir}/java-branding">
             <fileset dir="${branding.src.dir}" excludes="**/*.java"/>
@@ -208,18 +208,18 @@
             description="Compiles the main codebase"
     >
         <mkdir dir="${build.dir}/classes"/>
-        <javac destdir="${build.dir}/classes"
-               optimize="off"
-               debug="on"
-               deprecation="${deprecation}"
-               nowarn="${nowarn}"
-               encoding="utf-8"
-               fork="yes"
-	       release="17"
-               memoryMaximumSize="512m"
-               includeAntRuntime="false"
-               classpathref="libjars"
-        >
+     <javac destdir="${build.dir}/classes"
+         optimize="off"
+         debug="on"
+         deprecation="${deprecation}"
+         nowarn="${nowarn}"
+         encoding="utf-8"
+         fork="yes"
+         release="${java.release}"
+         memoryMaximumSize="512m"
+         includeAntRuntime="false"
+         classpathref="libjars"
+     >
             <src>
                 <path location="code/src"/>
                 <path location="code/internal/src"/>

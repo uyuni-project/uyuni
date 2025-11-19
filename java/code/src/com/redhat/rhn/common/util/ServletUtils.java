@@ -45,7 +45,7 @@ public class ServletUtils {
     public static String getRequestPath(HttpServletRequest req) {
         try {
             String requestUri =
-                (String)req.getAttribute("javax.servlet.forward.request_uri");
+                (String)req.getAttribute("jakarta.servlet.forward.request_uri");
             if (StringUtils.isBlank(requestUri)) {
                 requestUri = new URL(req.getRequestURL().toString()).getPath();
             }

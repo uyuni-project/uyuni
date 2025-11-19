@@ -145,9 +145,9 @@ BuildRequires:  spark-core
 BuildRequires:  spark-template-jade
 BuildRequires:  statistics
 BuildRequires:  struts >= 1.2.9
-BuildRequires:  tomcat >= 7
-BuildRequires:  tomcat-lib >= 7
-BuildRequires:  tomcat-taglibs-standard
+BuildRequires:  tomcat >= 11
+BuildRequires:  tomcat-lib >= 11
+#BuildRequires:  tomcat-taglibs-standard
 BuildRequires:  uyuni-base-server
 BuildRequires:  woodstox
 BuildRequires:  xalan-j2
@@ -239,24 +239,24 @@ Requires:       struts >= 1.2.9
 Requires:       sudo
 Requires:       susemanager-docs_en
 Requires:       system-lock-formula
-Requires:       tomcat-lib >= 7
-Requires:       tomcat-taglibs-standard
+Requires:       tomcat-lib >= 11
+#Requires:       tomcat-taglibs-standard
 Requires:       woodstox
 Requires:       xalan-j2 >= 2.6.0
 Requires:       xerces-j2
 Requires:       xmlsec
 Requires:       (/sbin/unix2_chkpwd or /usr/sbin/unix2_chkpwd)
 Requires:       (google-gson >= 2.2.4 with google-gson < 2.10.0)
-Requires:       mvn(org.apache.tomcat:tomcat-servlet-api) > 8
+#Requires:       mvn(org.apache.tomcat:tomcat-servlet-api) > 8
 Requires:       mvn(org.hibernate:hibernate-c3p0)
 Requires:       mvn(org.hibernate:hibernate-core)
 Requires:       mvn(org.hibernate:hibernate-ehcache)
 Requires:       openssl
 # libtcnative-1-0 is only recommended in tomcat.
 # We want it always to prevent warnings about openssl cannot be used
-Requires:       tomcat-native
+#Requires:       tomcat-native
 Requires(pre):  salt
-Requires(pre):  tomcat >= 7
+Requires(pre):  tomcat >= 11
 Requires(pre):  uyuni-base-server
 Requires:       uyuni-cobbler-helper
 
@@ -280,7 +280,7 @@ Summary:        Configuration files for Spacewalk Java
 Group:          Applications/Internet
 Requires(post): %{apache2}
 Requires(post): salt-master
-Requires(post): tomcat
+Requires(post): tomcat11
 
 %description config
 This package contains the configuration files for the %{productprettyname} Java web
@@ -301,7 +301,7 @@ Summary:        PostgreSQL database backend support files for Spacewalk Java
 # FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
 Requires:       postgresql-jdbc
-Requires:       tomcat >= 7
+Requires:       tomcat >= 11
 Provides:       spacewalk-java-jdbc = %{version}-%{release}
 
 %description postgresql
@@ -389,7 +389,7 @@ Requires:       spacewalk-java-config
 Requires:       spacewalk-java-jdbc
 Requires:       spacewalk-java-lib = %{version}
 Requires:       statistics
-Requires:       tomcat-taglibs-standard
+#Requires:       tomcat-taglibs-standard
 Requires:       xalan-j2 >= 2.6.0
 Requires:       xerces-j2
 Requires:       (/sbin/unix2_chkpwd or /usr/sbin/unix2_chkpwd)
@@ -508,13 +508,13 @@ export NO_BRP_STALE_LINK_ERROR=yes
 
 mkdir -p %{buildroot}%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib
 %if 0%{?suse_version}
-ant -Dproduct.name="'$PRODUCT_NAME'" -Dprefix=%{buildroot} -Dtomcat="tomcat9" install-tomcat9-suse
+ant -Dproduct.name="'$PRODUCT_NAME'" -Dprefix=%{buildroot} -Dtomcat="tomcat11" install-tomcat11-suse
 install -d -m 755 %{buildroot}%{serverdir}/tomcat/webapps/rhn/META-INF/
-install -m 755 conf/rhn-tomcat9.xml %{buildroot}%{serverdir}/tomcat/webapps/rhn/META-INF/context.xml
+install -m 755 conf/rhn-tomcat11.xml %{buildroot}%{serverdir}/tomcat/webapps/rhn/META-INF/context.xml
 %else
 ant -Dproduct.name="'$PRODUCT_NAME'" -Dprefix=%{buildroot} install-tomcat
 install -d -m 755 %{buildroot}%{_sysconfdir}/tomcat/Catalina/localhost/
-install -m 644 conf/rhn-tomcat9.xml %{buildroot}%{_sysconfdir}/tomcat/Catalina/localhost/rhn.xml
+install -m 644 conf/rhn-tomcat11.xml %{buildroot}%{_sysconfdir}/tomcat/Catalina/localhost/rhn.xml
 %endif
 
 # check spelling errors in all resources for English if aspell installed

@@ -5,7 +5,13 @@
   <property name="src.dir" location="${rhn-home}/code" />
   <property name="build.dir" location="${rhn-home}/build" />
   <property name="lib.dir" location="${rhn-home}/lib" />
-  <property name="build.lib.dir" location="${build.dir}/build-lib" />
+  <!-- Prefer using a repository-local lib/ directory for developer builds when present.
+       Fall back to the build's build-lib directory for packaged/CI runs. This avoids
+       requiring -Dbuild.lib.dir=lib for most local developer workflows. -->
+  <available file="${rhn-home}/lib" type="dir" property="rhn.home.lib.exists" />
+  <condition property="build.lib.dir" value="${rhn-home}/lib" else="${build.dir}/build-lib">
+    <isset property="rhn.home.lib.exists" />
+  </condition>
 
   <property name="run.lib.dir" location="${build.dir}/run-lib" />
   <property name="run-external.lib.dir" location="${build.dir}/run-lib/external" />
@@ -35,6 +41,10 @@
   <property name="rhn.war" value="${build.dir}/webapp/rhnjava.war"/>
   <property name="megajar.jar" value="${run.lib.dir}/rhn.jar" />
   <property name="testjar.jar" value="${run.lib.dir}/rhn-test.jar" />
+
+  <!-- Java release level used for javac. Default to 17 for the project.
+    Can be overridden on the command line: -Djava.release=11 -->
+  <property name="java.release" value="17" />
 
   <!-- =================== jar dependencies ======================= -->
   <property name="commons-lang" value="commons-lang3"/>
@@ -214,7 +224,7 @@
   <property name="dist.jar.dependencies"
       value="antlr objectweb-asm/asm bcel ${c3p0} ${cglib-jar}
              commons-collections commons-beanutils commons-cli commons-codec
-             commons-digester commons-discovery commons-fileupload2-core commons-fileupload2-javax commons-io
+             commons-digester commons-discovery commons-fileupload2-core commons-fileupload2-jakarta-servlet6 commons-io
              ${commons-lang} apache-commons-text/commons-text commons-logging ${commons-compress}
              ${commons-validator} dom4j ${hibernate5deps} ${jta11-jars}
              ${jaf} ${jasper-jars} ${javamail} ${jaxb} jdom ${other-jars}

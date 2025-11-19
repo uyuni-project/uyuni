@@ -314,18 +314,18 @@ artifacts:
   - artifact: velocity-engine-core
     repository: Uyuni_Other
 
-  - artifact: tomcat-el-3.0-api
-    package: tomcat-el-3_0-api
-    repository: Leap
-  - artifact: tomcat-jsp-2.3-api
-    package: tomcat-jsp-2_3-api
-    repository: Leap
+  - artifact: tomcat-el-api
+    package: tomcat11-el-6_0-api
+    repository: systemsmanagement_Uyuni_Master_jakarta
+  - artifact: tomcat-jsp-api
+    package: tomcat11-jsp-4_0-api
+    repository: systemsmanagement_Uyuni_Master_jakarta
   - artifact: tomcat-juli
-    package: tomcat-lib
-    repository: Leap
-  - artifact: tomcat-servlet-4.0-api
-    package: tomcat-servlet-4_0-api
-    repository: Leap
+    package: tomcat11-lib
+    repository: systemsmanagement_Uyuni_Master_jakarta
+  - artifact: tomcat-servlet-api
+    package: tomcat11-servlet-6_1-api
+    repository: systemsmanagement_Uyuni_Master_jakarta
 
   - artifact: hamcrest-core
     repository: Leap

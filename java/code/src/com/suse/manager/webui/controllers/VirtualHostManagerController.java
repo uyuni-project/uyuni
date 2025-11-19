@@ -531,7 +531,7 @@ public class VirtualHostManagerController {
     private static List<DiskFileItem> parseMultipartRequest(Request request)
             throws FileUploadException {
         DiskFileItemFactory fileItemFactory = DiskFileItemFactory.builder()
-                .setPath("javax.servlet.context.tempdir")
+                .setPath("jakarta.servlet.context.tempdir")
                 .get();
 
         return new JakartaServletFileUpload<>(fileItemFactory).parseRequest(request.raw());

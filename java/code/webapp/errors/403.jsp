@@ -15,7 +15,7 @@
         <c:set var="logoutUrl" value="/rhn/Logout.do"/>
       </c:otherwise>
     </c:choose>
-    <c:set value="${requestScope[&quot;javax.servlet.error.request_uri&quot;]}" var="errorUrl" />
+    <c:set value="${requestScope[&quot;jakarta.servlet.error.request_uri&quot;]}" var="errorUrl" />
     <c:set var="escapedUrl" value="${fn:escapeXml(errorUrl)}"/>
 
     <h1>

@@ -139,13 +139,14 @@
            description="Compile build helpers">
      <mkdir dir="${build.dir}/classes" />
      <javac destdir="${build.dir}/classes"
-            optimize="off"
-            debug="on"
-            deprecation="${deprecation}"
-            nowarn="${nowarn}"
-            srcdir="code/internal/src"
-            classpathref="buildjars"
-            includeantruntime="true" >
+       optimize="off"
+       debug="on"
+       deprecation="${deprecation}"
+       nowarn="${nowarn}"
+       srcdir="code/internal/src"
+       classpathref="buildjars"
+       includeantruntime="true"
+       release="${java.release}" >
      </javac>
   </target>
 
@@ -154,14 +155,15 @@
     <copy tofile="${build.dir}/classes/log4j2.xml" file="${src.dir}/src/log4j2.xml"/>
     <mkdir dir="${build.dir}/classes" />
     <javac destdir="${build.dir}/classes"
-           optimize="off"
-           debug="on"
-           deprecation="${deprecation}"
-           nowarn="${nowarn}"
-           encoding="utf-8"
-           fork="yes"
-           memoryMaximumSize="512m"
-           classpathref="buildjars" >
+      optimize="off"
+      debug="on"
+      deprecation="${deprecation}"
+      nowarn="${nowarn}"
+      encoding="utf-8"
+      fork="yes"
+      release="${java.release}"
+      memoryMaximumSize="512m"
+      classpathref="buildjars" >
       <src>
         <path location="${build.dir}/src" />
         <path location="code/src" />
@@ -183,15 +185,16 @@
           if="installbuild">
     <mkdir dir="${build.dir}/classes" />
     <javac destdir="${build.dir}/classes"
-           optimize="off"
-           debug="on"
-           deprecation="${deprecation}"
-           nowarn="${nowarn}"
-           encoding="utf-8"
-           fork="yes"
-           memoryMaximumSize="256m"
-           classpathref="alljars"
- 	   	   excludes="**/test/*,**/testing/*,**/*Test*.java"
+      optimize="off"
+      debug="on"
+      deprecation="${deprecation}"
+      nowarn="${nowarn}"
+      encoding="utf-8"
+      fork="yes"
+      release="${java.release}"
+      memoryMaximumSize="256m"
+      classpathref="alljars"
+ 	   	 excludes="**/test/*,**/testing/*,**/*Test*.java"
       >
       <src>
         <path location="${build.dir}/src" />
@@ -222,41 +225,77 @@
       <include name="**/*.jspf"/>
       <include name="**/*.jsp"/>
     </fileset>
-    <fileset id="apidoc_jspffiles" dir="${prefix}${webapp-dir}/rhn">
+    <!--
+      If the install-time properties 'prefix' and 'webapp-dir' are available
+      use the installed webapp location for apidoc files; otherwise fall back
+      to the unpacked webapp under the build directory so jspcompile can be
+      run locally without system install paths.
+    -->
+    <condition property="apidoc.root" value="${prefix}${webapp-dir}/rhn" else="${build.dir}/webapp/rhnjava">
+      <and>
+        <isset property="webapp-dir" />
+        <isset property="prefix" />
+      </and>
+    </condition>
+
+    <fileset id="apidoc_jspffiles" dir="${apidoc.root}">
       <include name="**/*.jspf"/>
       <include name="**/*.jsp"/>
     </fileset>
     <pathconvert targetos="unix" pathsep="," property="jspflist" refid="jspffiles"/>
     <pathconvert targetos="unix" pathsep="," property="apidoc_jspflist" refid="apidoc_jspffiles"/>
+    <condition property="compile.apidoc">
+      <and>
+        <isset property="webapp-dir" />
+        <isset property="prefix" />
+      </and>
+    </condition>
     <jasper2
         verbose="2"
         uriroot="${build.dir}/webapp/rhnjava"
         jspfiles="${jspflist}"
-        webXmlFragment="${build.dir}/webapp/generated_web.xml"
         outputDir="${build.dir}/jsp-temp" />
-    <jasper2
-        verbose="2"
-        uriroot="${prefix}${webapp-dir}/rhn"
-        jspfiles="${apidoc_jspflist}"
-        webXmlFragment="${build.dir}/webapp/generated_apidoc.xml"
-        outputDir="${build.dir}/apidoc-temp" />
+  <jasper2
+    verbose="2"
+    uriroot="${apidoc.root}"
+    jspfiles="${apidoc_jspflist}"
+    outputDir="${build.dir}/apidoc-temp" />
     <javac destdir="${build.dir}/webapp/rhnjava/WEB-INF/classes"
-           debug="off" optimize="on"
-           deprecation="${deprecation}"
-           fork="yes"
-           memoryMaximumSize="512m"
-           classpathref="alljars">
-       <src path="${build.dir}/jsp-temp"/>
-       <src path="${build.dir}/apidoc-temp"/>
+      debug="off" optimize="on"
+      deprecation="${deprecation}"
+      fork="yes"
+      release="${java.release}"
+      memoryMaximumSize="512m"
+      classpathref="alljars">
+   <src path="${build.dir}/jsp-temp"/>
+   <!-- NOTE: apidoc-temp contains generated JSP sources for the apidoc
+     documentation. In some local (non-installed) builds the same JSPs
+     can appear in both jsp-temp and apidoc-temp which leads to
+     duplicate-class errors when both are compiled together. To avoid
+     this during local jspcompile runs we do NOT add apidoc-temp to the
+     javac sourcepath. The apidoc jasper generation is still performed
+     above; the generated apidoc classes will not be compiled into the
+     webapp here. If you need apidoc compilation in an installed
+     environment, restore this line or make it conditional.
+   -->
     </javac>
+    <!-- If this is an installed build (prefix+webapp-dir set), also compile
+      the apidoc-generated JSP sources into the webapp classes. This
+      avoids compiling apidoc-temp in local (non-installed) builds where
+      the same JSPs may be generated twice and cause duplicate-class
+      javac errors. -->
+    <antcall target="jspcompile-compile-apidoc" />
+    <!-- If jasper generated web.xml fragment files, load and apply them; otherwise continue. -->
     <loadfile property="jspc.web.fragment"
-              srcfile="${build.dir}/webapp/generated_web.xml" />
+              srcfile="${build.dir}/webapp/generated_web.xml"
+              failonerror="false" />
     <replace file="${build.dir}/webapp/rhnjava/WEB-INF/web.xml">
       <replacefilter token="&lt;!-- add precompiled jsp servlets --&gt;"
               value="${jspc.web.fragment}"/>
     </replace>
     <loadfile property="jspc.web.fragment.apidoc"
-              srcfile="${build.dir}/webapp/generated_apidoc.xml" />
+              srcfile="${build.dir}/webapp/generated_apidoc.xml"
+              failonerror="false" />
     <replace file="${build.dir}/webapp/rhnjava/WEB-INF/web.xml">
       <replacefilter token="&lt;!-- add generated apidoc --&gt;"
               value="${jspc.web.fragment.apidoc}"/>
@@ -265,6 +304,18 @@
     <jar basedir="${build.dir}/webapp/rhnjava"
          destfile="${rhn.war}"
          excludes="**/*.java"/>
+  </target>
+
+  <target name="jspcompile-compile-apidoc" if="compile.apidoc">
+    <javac destdir="${build.dir}/webapp/rhnjava/WEB-INF/classes"
+      debug="off" optimize="on"
+      deprecation="${deprecation}"
+      fork="yes"
+      release="${java.release}"
+      memoryMaximumSize="512m"
+      classpathref="alljars">
+      <src path="${build.dir}/apidoc-temp"/>
+    </javac>
   </target>
 
   <!-- =================== Packaging Tasks ======================= -->
