@@ -84,6 +84,9 @@
                 <rl:column headerkey="system.event.history.time">
                     <rhn:formatDate value="${current.completed}"/>
                 </rl:column>
+                <rl:column headerkey="system.event.actionId">
+                    ${current.id}
+                </rl:column>
             </rl:list>
         </rl:listset>
     </body>
