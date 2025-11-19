@@ -17,7 +17,7 @@ package com.redhat.rhn.frontend.xmlrpc;
 import java.io.InputStream;
 import java.io.Writer;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import redstone.xmlrpc.XmlRpcDispatcher;
 import redstone.xmlrpc.XmlRpcServer;
