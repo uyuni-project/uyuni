@@ -22,7 +22,7 @@ import com.suse.manager.maintenance.MaintenanceManager;
 
 import java.util.Set;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * Helper class for maintenance windows in the Struts area.

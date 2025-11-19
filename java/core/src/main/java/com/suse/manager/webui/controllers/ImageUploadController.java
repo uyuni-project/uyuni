@@ -33,7 +33,7 @@ import com.google.gson.reflect.TypeToken;
 import org.apache.commons.fileupload2.core.DiskFileItem;
 import org.apache.commons.fileupload2.core.DiskFileItemFactory;
 import org.apache.commons.fileupload2.core.FileItem;
-import org.apache.commons.fileupload2.javax.JavaxServletFileUpload;
+import org.apache.commons.fileupload2.jakarta.servlet6.JakartaServletFileUpload;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -81,7 +81,7 @@ public class ImageUploadController {
                     .setPath(SALT_FILE_GENERATION_TEMP_PATH)
                     .get();
 
-            List<? extends FileItem> items = new JavaxServletFileUpload<>(fileItemFactory).parseRequest(request.raw());
+            List<? extends FileItem> items = new JakartaServletFileUpload<>(fileItemFactory).parseRequest(request.raw());
 
             try {
                 items.stream().forEach(item -> {

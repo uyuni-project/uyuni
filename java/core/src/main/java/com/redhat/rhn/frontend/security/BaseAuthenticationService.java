@@ -18,7 +18,7 @@ import org.apache.commons.collections.CollectionUtils;
 
 import java.util.Set;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * BaseAuthenticationService

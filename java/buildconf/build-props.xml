@@ -47,6 +47,13 @@
     <available file="${java.lib.dir}/byte-buddy/byte-buddy-dep.jar"/>
   </condition>
 
+  <available file="${java.lib.dir}/hibernate/hibernate-models.jar" type="file"
+	  property="hibernate-models" value="hibernate/hibernate-models"/>
+  <available file="${java.lib.dir}/hibernate-models/hibernate-models.jar" type="file"
+	  property="hibernate-models" value="hibernate-models/hibernate-models"/>
+  <available file="${java.lib.dir}/hibernate-models.jar" type="file"
+	  property="hibernate-models" value="hibernate-models" />
+
   <condition property="commons-validator" value="apache-commons-validator" else="commons-validator">
     <available file="${java.lib.dir}/apache-commons-validator.jar" />
   </condition>
@@ -138,7 +145,7 @@
   <property name="common.jar.dependencies"
       value="bcel ${cglib-jar} commons-beanutils commons-cli commons-codec
              commons-collections commons-digester commons-discovery
-             commons-fileupload2-core commons-fileupload2-javax commons-io ${commons-lang} apache-commons-text/commons-text commons-logging ${commons-validator} ${hibernate5deps}
+             commons-fileupload2-core commons-fileupload2-jakarta-servlet6 commons-io ${commons-lang} apache-commons-text/commons-text commons-logging ${commons-validator} ${hibernatedeps}
              ${commons-compress} ${javamail} smtp jdom ${jmock-jars}
              ${log4j-jars} oro redstone-xmlrpc-client redstone-xmlrpc ${struts-jars} ${tomcat-jars}
              bcprov bcpg postgresql-jdbc ongres-scram/client ongres-scram/common
@@ -194,8 +201,8 @@
   <property name="install.common.jar.dependencies"
       value="bcel ${cglib-jar} commons-beanutils commons-cli commons-codec
              commons-collections commons-digester commons-discovery
-             commons-fileupload2-core commons-fileupload2-javax commons-io ${commons-lang} apache-commons-text/commons-text commons-logging ${commons-validator} 
-             ${hibernate5deps}
+             commons-fileupload2-core commons-fileupload2-jakarta-servlet6 commons-io ${commons-lang} apache-commons-text/commons-text commons-logging ${commons-validator} 
+             ${hibernatedeps}
              ${commons-compress} ${tomcat-jars} ${javamail} jdom jsch
              ${log4j-jars} oro redstone-xmlrpc-client redstone-xmlrpc ${struts-jars}
              postgresql-jdbc ongres-scram/client ongres-scram/common
@@ -206,9 +213,9 @@
   <property name="dist.jar.dependencies"
       value="antlr objectweb-asm/asm bcel ${c3p0} ${cglib-jar}
              commons-collections commons-beanutils commons-cli commons-codec
-             commons-digester commons-discovery commons-fileupload2-core commons-fileupload2-javax commons-io
+             commons-digester commons-discovery commons-fileupload2-core commons-fileupload2-jakarta-servlet6 commons-io
              ${commons-lang} apache-commons-text/commons-text commons-logging ${commons-compress}
-             ${commons-validator} dom4j ${hibernate5deps} ${jta11-jars}
+             ${commons-validator} dom4j ${hibernatedeps} ${jta11-jars}
              ${jaf} ${jasper-jars} ${javamail} ${jaxb} jdom ${other-jars}
              ${tomcat-jars} ${log4j-jars} redstone-xmlrpc-client redstone-xmlrpc
              oro quartz sitemesh ${struts-jars}

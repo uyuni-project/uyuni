@@ -35,7 +35,7 @@ import org.apache.struts.action.DynaActionForm;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * DiffConfirmAction

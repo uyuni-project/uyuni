@@ -18,10 +18,10 @@ package com.suse.manager.webui.websocket;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.servlet.http.HttpSession;
-import javax.websocket.HandshakeResponse;
-import javax.websocket.server.HandshakeRequest;
-import javax.websocket.server.ServerEndpointConfig;
+import jakarta.servlet.http.HttpSession;
+import jakarta.websocket.HandshakeResponse;
+import jakarta.websocket.server.HandshakeRequest;
+import jakarta.websocket.server.ServerEndpointConfig;
 
 /**
  * A WebSocket Session configuration manager
@@ -40,6 +40,8 @@ public class WebsocketSessionConfigurator extends ServerEndpointConfig.Configura
             LOG.debug("unable to set webUserID for the websession");
             return;
         }
-        config.getUserProperties().put("webUserID", httpSession.getAttribute("webUserID"));
+        Object webUserID = httpSession.getAttribute("webUserID");
+
+        config.getUserProperties().put("webUserID", webUserID);
     }
 }

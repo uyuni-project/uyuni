@@ -19,7 +19,7 @@ import com.redhat.rhn.frontend.action.configuration.BaseAddFilesAction;
 import com.redhat.rhn.frontend.action.configuration.ConfigActionHelper;
 import com.redhat.rhn.frontend.struts.RequestContext;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * ChannelAddFilesAction extends RhnAction
