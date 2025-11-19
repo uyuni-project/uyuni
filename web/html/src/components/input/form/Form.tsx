@@ -6,12 +6,25 @@ import { InputBase } from "../InputBase";
 
 type InputBaseRef = React.ElementRef<typeof InputBase>;
 
-type Props = {
+// If a model is specified, you must listen to changes as well (bsc#1244430)
+type WithModel = {
   /** Object storing the data of the form.
    *  Each field name in the form needs to map to a property of this
    *  object. The value is the one displayed in the form */
-  model?: any;
+  model: any;
 
+  /** Function called when the model has been changed.
+   * Takes a new model as single parameter.
+   */
+  onChange: (model: any) => void;
+};
+
+type WithoutModel = {
+  model?: never;
+  onChange?: never;
+};
+
+type Props = (WithModel | WithoutModel) & {
   /** Object storing form field errors */
   errors?: object;
 
@@ -32,11 +45,6 @@ type Props = {
 
   /** Children elements of the form. Usually includes fields and a submit button */
   children?: React.ReactNode;
-
-  /** Function called when the model has been changed.
-   * Takes a new model as single parameter.
-   */
-  onChange?: (model: any) => void;
 
   /** Function called after having validated the form.
    * Takes a single parameter indicating whether the form is valid or not.
