@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * PackageRemoveAction

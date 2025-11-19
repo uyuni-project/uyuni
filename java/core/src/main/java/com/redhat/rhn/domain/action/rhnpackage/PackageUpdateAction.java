@@ -42,7 +42,7 @@ import java.util.Optional;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * PackageUpdateAction
