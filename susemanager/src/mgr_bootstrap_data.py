@@ -66,6 +66,25 @@ PKGLIST15_PPC = [
 
 PKGLIST15_Z = []
 
+PKGLIST16_SALT = [
+    "venv-salt-minion"
+]
+
+ONLYSLE16 = [
+    "gio-branding-SLE-16",
+]
+
+PKGLIST16_X86_ARM = [
+    "dmidecode",
+    "libunwind8",
+]
+
+PKGLIST16_PPC = [
+    "libunwind8",
+]
+
+PKGLIST16_Z = []
+
 PKGLISTUBUNTU2004 = ["venv-salt-minion", "logrotate"]
 
 PKGLISTUBUNTU2204 = ["venv-salt-minion", "logrotate"]
@@ -668,6 +687,42 @@ DATA = {
         "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/15/7/bootstrap/",
     },
     # When adding new SLE15 Service packs, keep in mind the first PDID is for the BaseSystem product (not the base product)!
+    "SLE-16.0-x86_64": {
+        "PDID": [2930, 3246],
+        "BETAPDID": [3250],
+        "PKGLIST": ONLYSLE16 + PKGLIST16_SALT + PKGLIST16_X86_ARM,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/16/0/bootstrap/",
+    },
+    "SLE-16.0-aarch64": {
+        "PDID": [2931, 3247],
+        "BETAPDID": [3251],
+        "PKGLIST": ONLYSLE16 + PKGLIST16_SALT + PKGLIST16_X86_ARM,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/16/0/bootstrap/",
+    },
+    "SLE-16.0-ppc64le": {
+        "PDID": [2933, 3249],
+        "BETAPDID": [3253],
+        "PKGLIST": ONLYSLE16 + PKGLIST16_SALT + PKGLIST16_PPC,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/16/0/bootstrap/",
+    },
+    "SLE-16.0-s390x": {
+        "PDID": [2932, 3248],
+        "BETAPDID": [3252],
+        "PKGLIST": ONLYSLE16 + PKGLIST16_SALT + PKGLIST16_Z,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/16/0/bootstrap/",
+    },
+    "SLES4SAP-16.0-ppc64le": {
+        "PDID": [2986, 3249],
+        "BETAPDID": [3253],
+        "PKGLIST": ONLYSLE16 + PKGLIST16_SALT + PKGLIST16_PPC,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/16/0/bootstrap/",
+    },
+    "SLES4SAP-16.0-x86_64": {
+        "PDID": [2985, 3246],
+        "BETAPDID": [3251],
+        "PKGLIST": ONLYSLE16 + PKGLIST16_SALT + PKGLIST16_X86_ARM,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/16/0/bootstrap/",
+    },
     "SUMA-43-PROXY-x86_64": {
         "PDID": [2299, 2384, 2379],
         "BETAPDID": [],
@@ -841,6 +896,46 @@ DATA = {
         "BASECHANNEL": "opensuse_leap15_6-aarch64",
         "PKGLIST": PKGLIST15_SALT + PKGLIST15_X86_ARM,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/opensuse/15/6/bootstrap/",
+    },
+    "openSUSE-Leap-16.0-x86_64": {
+        "PDID": [2921, 3246],
+        "PKGLIST": PKGLIST16_SALT + PKGLIST16_X86_ARM,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/opensuse/16/0/bootstrap/",
+    },
+    "openSUSE-Leap-16.0-x86_64-uyuni": {
+        "BASECHANNEL": "opensuse_leap16_0-x86_64",
+        "PKGLIST": PKGLIST16_SALT + PKGLIST16_X86_ARM,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/opensuse/16/0/bootstrap/",
+    },
+    "openSUSE-Leap-16.0-aarch64": {
+        "PDID": [2922, 3247],
+        "PKGLIST": PKGLIST16_SALT + PKGLIST16_X86_ARM,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/opensuse/16/0/bootstrap/",
+    },
+    "openSUSE-Leap-16.0-aarch64-uyuni": {
+        "BASECHANNEL": "opensuse_leap16_0-aarch64",
+        "PKGLIST": PKGLIST16_SALT + PKGLIST16_X86_ARM,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/opensuse/16/0/bootstrap/",
+    },
+    "openSUSE-Leap-16.0-s390x": {
+        "PDID": [2923, 3248],
+        "PKGLIST": PKGLIST16_SALT + PKGLIST16_Z,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/opensuse/16/0/bootstrap/",
+    },
+    "openSUSE-Leap-16.0-s390x-uyuni": {
+        "BASECHANNEL": "opensuse_leap16_0-s390x",
+        "PKGLIST": PKGLIST16_SALT + PKGLIST16_Z,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/opensuse/16/0/bootstrap/",
+    },
+    "openSUSE-Leap-16.0-ppc64le": {
+        "PDID": [2924, 3249],
+        "PKGLIST": PKGLIST16_SALT + PKGLIST16_PPC,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/opensuse/16/0/bootstrap/",
+    },
+    "openSUSE-Leap-16.0-ppc64le-uyuni": {
+        "BASECHANNEL": "opensuse_leap16_0-ppc64le",
+        "PKGLIST": PKGLIST16_SALT + PKGLIST16_PPC,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/opensuse/16/0/bootstrap/",
     },
     "openSUSE-Leap-Micro-5.3-x86_64-uyuni": {
         "BASECHANNEL": "opensuse_micro5_3-x86_64",
