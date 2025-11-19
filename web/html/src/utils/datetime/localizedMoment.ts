@@ -71,12 +71,14 @@ function validateOrGuessTimeZone(input: string | undefined, errorLabel: "Server"
 const config = {
   _serverTimeZone: undefined as string | undefined,
   get serverTimeZone(): string {
-    return (this._serverTimeZone ??= validateOrGuessTimeZone(window.serverTimeZone, "Server"));
+    this._serverTimeZone ??= validateOrGuessTimeZone(window.serverTimeZone, "Server");
+    return this._serverTimeZone;
   },
 
   _userTimeZone: undefined as string | undefined,
   get userTimeZone(): string {
-    return (this._userTimeZone ??= validateOrGuessTimeZone(window.userTimeZone, "User"));
+    this._userTimeZone ??= validateOrGuessTimeZone(window.userTimeZone, "User");
+    return this._userTimeZone;
   },
 
   // We currently don't support configuring these, but keep them in the config in case we ever do.
@@ -184,7 +186,8 @@ Object.defineProperties(moment, {
   },
   serverTimeZoneAbbr: {
     get() {
-      return (serverTimeZoneAbbr ??= moment().tz(config.serverTimeZone).format("z"));
+      serverTimeZoneAbbr ??= moment().tz(config.serverTimeZone).format("z");
+      return serverTimeZoneAbbr;
     },
   },
   userTimeZone: {
@@ -194,7 +197,8 @@ Object.defineProperties(moment, {
   },
   userTimeZoneAbbr: {
     get() {
-      return (userTimeZoneAbbr ??= moment().tz(config.userTimeZone).format("z"));
+      userTimeZoneAbbr ??= moment().tz(config.userTimeZone).format("z");
+      return userTimeZoneAbbr;
     },
   },
 });

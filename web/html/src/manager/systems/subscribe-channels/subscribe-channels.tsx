@@ -358,15 +358,11 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
   };
 
   areRecommendedChildrenSelected = (): boolean => {
-    const selectedChildrenIds = (this.getSelectedChildren() || []).map((channel) => channel.id);
+    const selectedChildrenIds = new Set((this.getSelectedChildren() || []).map((channel) => channel.id));
     const availableChildren = this.getAvailableChildren();
     const recommendedChildren = Array.from(availableChildren.values()).filter((channel) => channel.recommended);
-    const selectedRecommendedChildren = recommendedChildren.filter((channel) =>
-      selectedChildrenIds.includes(channel.id)
-    );
-    const unselectedRecommendedChildren = recommendedChildren.filter(
-      (channel) => !selectedChildrenIds.includes(channel.id)
-    );
+    const selectedRecommendedChildren = recommendedChildren.filter((channel) => selectedChildrenIds.has(channel.id));
+    const unselectedRecommendedChildren = recommendedChildren.filter((channel) => !selectedChildrenIds.has(channel.id));
 
     return selectedRecommendedChildren.length > 0 && unselectedRecommendedChildren.length === 0;
   };
