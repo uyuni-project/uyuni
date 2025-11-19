@@ -18,9 +18,9 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpServletResponseWrapper;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponseWrapper;
 
 /**
  * RhnHttpServletResponse
@@ -86,14 +86,6 @@ public class RhnHttpServletResponse extends HttpServletResponseWrapper {
     public String toString() {
         return "TESTING!!!!!";
 
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String encodeRedirectUrl(String arg0) {
-        return this.encodeRedirectURL(arg0);
     }
 
     /**

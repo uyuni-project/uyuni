@@ -28,7 +28,7 @@ import org.apache.struts.util.LabelValueBean;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * KickstartScriptCreateAction action for creating a new kickstart script

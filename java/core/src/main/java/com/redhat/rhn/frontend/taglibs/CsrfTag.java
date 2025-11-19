@@ -18,9 +18,9 @@ import com.redhat.rhn.common.security.CSRFTokenValidator;
 
 import org.apache.struts.taglib.html.HiddenTag;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import javax.servlet.jsp.JspException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.jsp.JspException;
 
 /**
  * HiddenTag
