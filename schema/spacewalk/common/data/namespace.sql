@@ -690,9 +690,6 @@ INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('systems.vhms', 'W', NULL)
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
-    VALUES ('systems.appstreams', 'W', 'Manage AppStreams on systems (SSM)')
-    ON CONFLICT (namespace, access_mode) DO NOTHING;
-INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('users.list.active', 'R', NULL)
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)

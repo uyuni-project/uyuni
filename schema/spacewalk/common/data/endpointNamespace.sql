@@ -5275,31 +5275,31 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id
     FROM access.namespace ns, access.endpoint ep
-    WHERE ns.namespace = 'systems.appstreams' AND ns.access_mode = 'W'
+    WHERE ns.namespace = 'systems.software.appstreams' AND ns.access_mode = 'W'
     AND ep.endpoint = '/rhn/manager/systems/ssm/appstreams' AND ep.http_method = 'GET'
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id
     FROM access.namespace ns, access.endpoint ep
-    WHERE ns.namespace = 'systems.appstreams' AND ns.access_mode = 'W'
+    WHERE ns.namespace = 'systems.software.appstreams' AND ns.access_mode = 'W'
     AND ep.endpoint = '/rhn/manager/systems/ssm/appstreams/configure/:channelId' AND ep.http_method = 'GET'
     ON CONFLICT (endpoint_id, namespace_id) DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id
     FROM access.namespace ns, access.endpoint ep
-    WHERE ns.namespace = 'systems.appstreams' AND ns.access_mode = 'W'
+    WHERE ns.namespace = 'systems.software.appstreams' AND ns.access_mode = 'W'
     AND ep.endpoint = '/rhn/manager/api/ssm/appstreams/save' AND ep.http_method = 'POST'
     ON CONFLICT (endpoint_id, namespace_id) DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id
     FROM access.namespace ns, access.endpoint ep
-    WHERE ns.namespace = 'system.appstreams' AND ns.access_mode = 'W'
-    AND ep.endpoint = '/rhn/manager/system/api/appstreams/ssmEnable' AND ep.http_method = 'POST'
+    WHERE ns.namespace = 'systems.software.appstreams' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/rhn/manager/api/system/appstreams/ssmEnable' AND ep.http_method = 'POST'
     ON CONFLICT (endpoint_id, namespace_id) DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id
     FROM access.namespace ns, access.endpoint ep
-    WHERE ns.namespace = 'system.appstreams' AND ns.access_mode = 'W'
+    WHERE ns.namespace = 'systems.software.appstreams' AND ns.access_mode = 'W'
     AND ep.endpoint = '/rhn/manager/api/system/appstreams/ssmDisable' AND ep.http_method = 'POST'
     ON CONFLICT (endpoint_id, namespace_id) DO NOTHING;
 
