@@ -32,7 +32,7 @@ type ActivationKeyChannelsProps = {
   defaultBaseId: number;
   activationKeyId: number;
   currentSelectedBaseId: number;
-  onNewBaseChannel: Function;
+  onNewBaseChannel: (...args: any[]) => any;
   children: (arg0: ChildrenArgsProps) => JSX.Element;
 };
 
@@ -105,12 +105,11 @@ class ActivationKeyChannelsApi extends React.Component<ActivationKeyChannelsProp
   fetchChildChannels = (baseId: number) => {
     let future: Promise<void>;
 
-    const currentObject: any = this;
-    if (currentObject.state.fetchedData && currentObject.state.fetchedData.has(baseId)) {
+    if (this.state.fetchedData && this.state.fetchedData.has(baseId)) {
       future = new Promise((resolve) => {
         resolve(
-          currentObject.setState({
-            availableChannels: currentObject.state.fetchedData.get(baseId),
+          this.setState({
+            availableChannels: this.state.fetchedData.get(baseId),
           })
         );
       });
