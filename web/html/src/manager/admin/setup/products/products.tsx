@@ -223,26 +223,29 @@ class ProductsPageWrapper extends React.Component<ProductsPageWrapperProps, Prod
   };
 
   resyncProduct = (id, name) => {
-    this.state.scheduledItems.concat([id]);
-    const scheduleResyncItemsNew = this.state.scheduleResyncItems.concat([id]);
-    this.setState({ scheduleResyncItems: scheduleResyncItemsNew });
-    Network.post("/rhn/manager/admin/setup/products", [id])
-      .then((data) => {
-        // if the id is not present in the response or it is null, the operation went fine.
-        if (DEPRECATED_unsafeEquals(data[id], null)) {
-          this.setState({
-            errors: MessagesUtils.success("The product '" + name + "' sync has been scheduled successfully"),
-            scheduleResyncItems: scheduleResyncItemsNew.filter((i) => !DEPRECATED_unsafeEquals(i, id)),
-            scheduledItems: this.state.scheduledItems.concat([id]),
-          });
-        } else {
-          this.setState({
-            errors: MessagesUtils.warning("The product '" + name + "' sync was not scheduled correctly: " + data[id]),
-            scheduleResyncItems: scheduleResyncItemsNew.filter((i) => !DEPRECATED_unsafeEquals(i, id)),
-          });
-        }
-      })
-      .catch(this.handleResponseError);
+    this.setState((prevState) => {
+      const scheduleResyncItemsNew = prevState.scheduleResyncItems.concat([id]);
+
+      Network.post("/rhn/manager/admin/setup/products", [id])
+        .then((data) => {
+          // if the id is not present in the response or it is null, the operation went fine.
+          if (DEPRECATED_unsafeEquals(data[id], null)) {
+            this.setState((innerPrevState) => ({
+              errors: MessagesUtils.success("The product '" + name + "' sync has been scheduled successfully"),
+              scheduleResyncItems: scheduleResyncItemsNew.filter((i) => !DEPRECATED_unsafeEquals(i, id)),
+              scheduledItems: innerPrevState.scheduledItems.concat([id]),
+            }));
+          } else {
+            this.setState({
+              errors: MessagesUtils.warning("The product '" + name + "' sync was not scheduled correctly: " + data[id]),
+              scheduleResyncItems: scheduleResyncItemsNew.filter((i) => !DEPRECATED_unsafeEquals(i, id)),
+            });
+          }
+        })
+        .catch(this.handleResponseError);
+
+      return { scheduleResyncItems: scheduleResyncItemsNew };
+    });
   };
 
   addOptionalChannels = (product, channels) => {

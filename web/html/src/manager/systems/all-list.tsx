@@ -95,9 +95,7 @@ export function AllSystems(props: Props) {
           comparator={Utils.sortByText}
           header={t("Updates")}
           cell={(item) => {
-            // TODO: If you touch this file, please resolve this linter error
-            // eslint-disable-next-line eqeqeq
-            if (item.statusType == null) {
+            if (!item.statusType) {
               return "";
             }
             return Systems.statusDisplay(item, props.isAdmin);
@@ -170,9 +168,7 @@ export function AllSystems(props: Props) {
           comparator={Utils.sortByText}
           header={t("Base Channel")}
           cell={(item) => {
-            // TODO: If you touch this file, please resolve this linter error
-            // eslint-disable-next-line eqeqeq
-            if (item.channelId != null) {
+            if (item.channelId) {
               return <a href={`/rhn/channels/ChannelDetail.do?cid=${item.channelId}`}>{item.channelLabels}</a>;
             }
             return item.channelLabels;
