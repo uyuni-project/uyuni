@@ -46,6 +46,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -175,12 +176,14 @@ public class ProxyBackupEventAction implements MessageAction {
                 LocalizationService.getInstance().getMessage("event.proxymigrationfinisheddetails"));
 
         // Remove the files in the temporary folder
-        try {
-            org.apache.commons.io.FileUtils.deleteDirectory(tmpPath.toFile());
-        }
-        catch (IOException eIn) {
-            LOG.warn("Failed to clean temporary folder: {}", tmpPath, eIn);
-        }
+        copiedFiles.forEach(file -> {
+            try {
+                Files.deleteIfExists(tmpPath.resolve(file));
+            }
+            catch (IOException eIn) {
+                LOG.warn("Failed to clean temporary file: {}", file, eIn);
+            }
+        });
     }
 
     private boolean validMigrationFiles(List<String> copiedFiles) {
