@@ -135,9 +135,9 @@ def generate_dummy_cacert(filename, subject = '/DC=localdomain/DC=localhost/CN=d
     ef.subject_certificate = root_ca
     ef.issuer_certificate = root_ca
     root_ca.add_extension(ef.create_extension('basicConstraints', 'CA:TRUE', true))
-    root_ca.add_extension(ef.create_extension('keyUsage', 'keyCertSign', 'cRLSign', true))
+    root_ca.add_extension(ef.create_extension('keyUsage', 'keyCertSign, cRLSign', true))
     root_ca.sign(root_key, OpenSSL::Digest.new('SHA256'))
-    File.write(filename) { |file| file.write(root_ca.to_pem) }
+    File.write(filename, root_ca.to_pem)
   rescue StandardError => e
     # issues to generate certificate
     puts e.message
