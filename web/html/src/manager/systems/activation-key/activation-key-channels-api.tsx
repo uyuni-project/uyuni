@@ -17,8 +17,7 @@ export type Channel = {
   recommended: boolean;
 };
 
-type availableChannelType = { base: Channel | null | undefined; children: Channel[] };
-export type availableChannelsType = availableChannelType[];
+export type availableChannelsType = { base: Channel | null | undefined; children: Channel[] }[];
 
 type ChildrenArgsProps = {
   messages: any[];
@@ -33,7 +32,7 @@ type ActivationKeyChannelsProps = {
   defaultBaseId: number;
   activationKeyId: number;
   currentSelectedBaseId: number;
-  onNewBaseChannel: (...args: any[]) => any;
+  onNewBaseChannel: Function;
   children: (arg0: ChildrenArgsProps) => JSX.Element;
 };
 
@@ -43,7 +42,7 @@ type ActivationKeyChannelsState = {
   loadingChildren: boolean;
   availableBaseChannels: Channel[]; //[base1, base2],
   availableChannels: availableChannelsType; //[{base : null, children: []}]
-  fetchedData: Map<number, availableChannelType[]>;
+  fetchedData: Map<number, number[]>;
 };
 
 class ActivationKeyChannelsApi extends React.Component<ActivationKeyChannelsProps, ActivationKeyChannelsState> {
@@ -106,12 +105,12 @@ class ActivationKeyChannelsApi extends React.Component<ActivationKeyChannelsProp
   fetchChildChannels = (baseId: number) => {
     let future: Promise<void>;
 
-    const availableChannels = this.state.fetchedData.get(baseId);
-    if (this.state.fetchedData && availableChannels) {
+    const currentObject: any = this;
+    if (currentObject.state.fetchedData && currentObject.state.fetchedData.has(baseId)) {
       future = new Promise((resolve) => {
         resolve(
-          this.setState({
-            availableChannels,
+          currentObject.setState({
+            availableChannels: currentObject.state.fetchedData.get(baseId),
           })
         );
       });

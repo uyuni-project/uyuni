@@ -49,7 +49,7 @@ export function VirtualSystems(props: Props) {
         data="/rhn/manager/api/systems/list/virtual"
         identifier={(item) => item.virtualSystemId || item.uuid}
         initialSortColumnKey="host_server_name"
-        selectable={(item) => Object.prototype.hasOwnProperty.call(item, "virtualSystemId")}
+        selectable={(item) => item.hasOwnProperty("virtualSystemId")}
         selectedItems={selectedSystems}
         onSelect={handleSelectedSystems}
         searchField={<VirtualSystemsListFilter />}

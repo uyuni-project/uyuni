@@ -25,7 +25,7 @@ const usePackageStatesApi = () => {
         const toSave: any[] = [];
         const changed = action.changed;
         for (const state in changed) {
-          if (Object.prototype.hasOwnProperty.call(changed, state) && typeof changed[state].value === "object") {
+          if (changed.hasOwnProperty(state) && typeof changed[state].value === "object") {
             toSave.push(changed[state].value);
           }
         }
