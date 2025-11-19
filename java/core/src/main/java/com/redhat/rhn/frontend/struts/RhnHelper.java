@@ -23,7 +23,7 @@ import org.apache.struts.action.DynaActionForm;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 
 /**
