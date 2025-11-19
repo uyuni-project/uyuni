@@ -29,7 +29,7 @@ type Props = (WithModel | WithoutModel) & {
   errors?: object;
 
   /** Function to trigger when the Submit button is clicked */
-  onSubmit?: Function;
+  onSubmit?: (...args: any[]) => any;
 
   /** A reference to pass to the <form> element */
   formRef?: React.LegacyRef<HTMLFormElement>;
@@ -61,8 +61,8 @@ type FormContextType = {
   model: any;
   errors: any;
   setModelValue: (name: string, value: any) => any;
-  registerInput: Function;
-  unregisterInput: Function;
+  registerInput: (...args: any[]) => any;
+  unregisterInput: (...args: any[]) => any;
   validateForm: () => void;
 };
 

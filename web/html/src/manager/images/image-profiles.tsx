@@ -33,7 +33,7 @@ const messageMap = {
   delete_success_p: t("Image profiles have been deleted."),
 };
 
-type Props = {};
+type Props = Record<never, never>;
 
 type State = {
   messages: any;

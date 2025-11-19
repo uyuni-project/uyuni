@@ -49,7 +49,7 @@ type HierarchicalTableProps = {
   initialSortDirection?: number;
 
   /** a function that return a css class for each row */
-  cssClassFunction?: Function;
+  cssClassFunction?: (...args: any[]) => any;
 
   /** enables item selection. */
   selectable?: boolean | ((row: any) => boolean);

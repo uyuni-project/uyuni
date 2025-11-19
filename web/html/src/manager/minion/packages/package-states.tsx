@@ -181,7 +181,7 @@ const PackageStates = ({ serverId }: PropsType) => {
       }
     } else if (view === "changes") {
       for (const state in changed) {
-        if (changed.hasOwnProperty(state)) {
+        if (state in changed) {
           rows.push(changed[state]);
         }
       }

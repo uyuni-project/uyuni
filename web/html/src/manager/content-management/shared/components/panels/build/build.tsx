@@ -19,7 +19,7 @@ import DownArrow from "../../down-arrow/down-arrow";
 
 type Props = {
   projectId: string;
-  onBuild: Function;
+  onBuild: (...args: any[]) => any;
   currentHistoryEntry?: Partial<ProjectHistoryEntry>;
   changesToBuild: string[];
   disabled?: boolean;

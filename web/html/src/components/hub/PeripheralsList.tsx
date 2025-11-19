@@ -9,7 +9,7 @@ import { Table, TableRef } from "components/table/Table";
 
 import { Utils } from "utils/functions";
 
-type Props = {};
+type Props = Record<never, never>;
 
 export class PeripheralsList extends React.Component<Props> {
   private tableRef: React.RefObject<TableRef>;

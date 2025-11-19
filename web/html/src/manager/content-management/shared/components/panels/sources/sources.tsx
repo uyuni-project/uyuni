@@ -19,7 +19,7 @@ import styles from "./sources.module.scss";
 type SourcesProps = {
   projectId: string;
   softwareSources: ProjectSoftwareSourceType[];
-  onChange: Function;
+  onChange: (...args: any[]) => any;
   messages?: ProjectMessageType[];
 };
 

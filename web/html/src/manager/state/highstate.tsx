@@ -28,7 +28,7 @@ declare global {
 
 const messagesCounterLimit = 3;
 
-type HighstateProps = {};
+type HighstateProps = Record<never, never>;
 
 type HighstateState = {
   messages: any[];

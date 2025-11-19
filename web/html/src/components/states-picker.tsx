@@ -194,17 +194,19 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
     return Promise.resolve().then(() => {
       if (this.state.filter !== this.state.search.filter) {
         // Since we don't commit our changes to the backend in case of state type we perform a local search
-        this.props.type === "state"
-          ? this.stateTypeSearch()
-          : Network.get(this.props.matchUrl(this.state.filter)).then((data) => {
-              this.setState((prevState) => ({
-                search: {
-                  filter: prevState.filter,
-                  results: this.getSortedList(data),
-                },
-              }));
-              this.clearMessages();
-            });
+        if (this.props.type === "state") {
+          this.stateTypeSearch();
+        } else {
+          Network.get(this.props.matchUrl(this.state.filter)).then((data) => {
+            this.setState((prevState) => ({
+              search: {
+                filter: prevState.filter,
+                results: this.getSortedList(data),
+              },
+            }));
+            this.clearMessages();
+          });
+        }
       }
     });
   };
@@ -486,7 +488,9 @@ class ExecuteStatesButton extends React.Component<ExecuteStatesProps> {
 
   showPopup = () => {
     if (inferEntityParams().includes("MINION")) {
-      window.minions && this.props.applySaltState(window.minions.map((m) => m.id));
+      if (window.minions) {
+        this.props.applySaltState(window.minions.map((m) => m.id));
+      }
     } else {
       this.setState({ showPopup: true });
     }
@@ -519,7 +523,7 @@ class ExecuteStatesButton extends React.Component<ExecuteStatesProps> {
         items={MessagesUtils.info(t("Select the systems to schedule for immediate state execution and confirm."))}
       />,
       <Table
-        selectable={(item) => item.hasOwnProperty("id")}
+        selectable={(item) => Object.prototype.hasOwnProperty.call(item, "id")}
         onSelect={this.onSelect}
         selectedItems={this.state.selected}
         initialSortColumnKey={"name"}

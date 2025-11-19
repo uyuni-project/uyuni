@@ -134,7 +134,7 @@ type SystemPickerProps = {
 const SystemPicker = (props: SystemPickerProps) => {
   const [hasChanges, setHasChanges] = useState(false);
   const [selectedSystems, setSelectedSystems] = useState([]);
-  const [isCancelActions, setCancelActions] = useState(false);
+  const [isCancelActions, setIsCancelActions] = useState(false);
 
   useEffect(() => {
     Network.get(`/rhn/manager/api/maintenance/schedule/${props.scheduleId}/systems`)
@@ -175,7 +175,7 @@ const SystemPicker = (props: SystemPickerProps) => {
             <Toggler
               text={t("Cancel affected actions")}
               className="btn"
-              handler={() => setCancelActions(!isCancelActions)}
+              handler={() => setIsCancelActions(!isCancelActions)}
               value={isCancelActions}
             />,
             isCancelActions && selectedSystems.length > 0 ? (

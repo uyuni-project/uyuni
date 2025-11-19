@@ -8,7 +8,7 @@ import PropertiesForm from "./properties-form";
 type Props = {
   properties: ProjectPropertiesType;
   errors: any;
-  onChange: Function;
+  onChange: (...args: any[]) => any;
 };
 
 const Properties = (props: Props) => {
