@@ -154,7 +154,13 @@ public class SetupWizardSessionCache {
         // Ping SCC if refresh is enforced or status is unknown
         if (forceRefresh || ret == null) {
             try {
-                String url = Config.get().getString(ConfigDefaults.SCC_URL) + "/login";
+                // This URL used to be "https://scc.suse.com/login". The "login" ending has been removed since:
+                // 1) the "https://scc.suse.com/login" page redirects to "myaccount.suse.com" for SSO
+                // 2) "myaccount.suse.com" is not a site that has to be necessarily available behind a proxy
+                // 3) the "https://scc.suse.com" page (with no "/login" ending) does not refer to "myaccount.suse.com"
+                // 4) the aim here is to "ping" an external website to see whether the http proxy let us reach
+                // the external network, so the "login" ending is not strictly necessary
+                String url = Config.get().getString(ConfigDefaults.SCC_URL);
                 ret = MgrSyncUtils.verifyProxy(url);
             }
             catch (IOException e) {
