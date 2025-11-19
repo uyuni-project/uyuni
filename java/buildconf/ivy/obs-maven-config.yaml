@@ -10,6 +10,9 @@ repositories:
     repository: openSUSE_Leap_15.6
   Leap_sle:
     url: https://download.opensuse.org/update/leap/15.6/sle
+  systemsmanagement_Uyuni_Master_jakarta:
+    project: systemsmanagement:Uyuni:Master:jakarta
+    repository: openSUSE_Leap_15.6
 artifacts:
   - artifact: asm
     package: objectweb-asm
@@ -223,15 +226,16 @@ artifacts:
   - artifact: postgresql-jdbc
     repository: Leap
   - artifact: quartz
-    repository: Uyuni_Other
+    repository: systemsmanagement_Uyuni_Master_jakarta
+    jar: quartz-[0-9.].jar
   - artifact: redstone-xmlrpc
     jar: redstone-xmlrpc-[0-9.]+
-    repository: Uyuni_Other
+    repository: systemsmanagement_Uyuni_Master_jakarta
   - artifact: redstone-xmlrpc-client
     package: redstone-xmlrpc
-    repository: Uyuni_Other
+    repository: systemsmanagement_Uyuni_Master_jakarta
   - artifact: salt-netapi-client
-    repository: Uyuni
+    repository: systemsmanagement_Uyuni_Master_jakarta
   - artifact: simpleclient
     package: prometheus-client-java
     jar: simpleclient-[0-9.]+
