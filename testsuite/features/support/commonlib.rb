@@ -534,13 +534,6 @@ def get_system_name(host)
         word.match?(/example.Intel-Genuine-None-/) || word.match?(/example.pxeboot-/) || word.match?(/example.Intel/) || word.match?(/pxeboot-/)
       end
     system_name = 'pxeboot.example.org' if system_name.nil?
-  when 'sle12sp5_terminal'
-    output, _code = get_target('server').run('salt-key')
-    system_name =
-      output.split.find do |word|
-        word.match?(/example.sle12sp5terminal-/)
-      end
-    system_name = 'sle12sp5terminal.example.org' if system_name.nil?
   when 'sle15sp4_terminal'
     output, _code = get_target('server').run('salt-key')
     system_name =
