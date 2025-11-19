@@ -7,7 +7,6 @@
 - features/github_validation/core/first_settings.feature
 - features/core/srv_user_preferences.feature
 - features/reposync/srv_disable_scheduled_reposync.feature
-- features/reposync/srv_sync_channels.feature
 - features/reposync/srv_sync_products.feature
 - features/reposync/srv_create_fake_channels.feature
 - features/reposync/srv_create_fake_repositories.feature

@@ -247,5 +247,6 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I should only see success signs in the product list
 
 @scc_credentials
+@skip_if_github_validation
   Scenario: Report the synchronization duration for SLES 15 SP4
     When I report the synchronization duration for "sles15-sp4"

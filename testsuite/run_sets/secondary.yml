@@ -7,9 +7,6 @@
 ## Secondary features BEGIN ##
 
 # IDEMPOTENT
-
-- features/secondary/srv_users.feature
-- features/secondary/srv_menu.feature
 - features/secondary/srv_mgr_sync_list_products.feature
 - features/secondary/srv_monitoring.feature
 - features/secondary/srv_virtual_host_manager.feature
@@ -23,7 +20,6 @@
 - features/secondary/srv_handle_software_channels_with_ISS_v2.feature
 - features/secondary/srv_handle_config_channels_with_ISS_v2.feature
 - features/secondary/srv_salt_git_pillar.feature
-- features/secondary/srv_password_restriction.feature
 - features/secondary/buildhost_osimage_build_image.feature
 - features/secondary/allcli_reboot.feature
 - features/secondary/min_cve_audit.feature
@@ -52,8 +48,6 @@
 - features/secondary/min_action_chain.feature
 - features/secondary/minssh_action_chain.feature
 - features/secondary/allcli_action_chain.feature
-- features/secondary/buildhost_docker_build_image.feature
-- features/secondary/buildhost_docker_auth_registry.feature
 - features/secondary/min_docker_api.feature
 - features/secondary/min_recurring_action.feature
 - features/secondary/min_change_software_channel.feature
