@@ -57,8 +57,8 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.SortedMap;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * SystemDetailsEditAction

@@ -21,7 +21,7 @@ import com.redhat.rhn.frontend.taglibs.list.ListTagUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 
-import javax.servlet.jsp.JspException;
+import jakarta.servlet.jsp.JspException;
 
 /**
  *

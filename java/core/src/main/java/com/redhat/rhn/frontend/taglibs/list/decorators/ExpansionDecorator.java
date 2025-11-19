@@ -18,7 +18,7 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.frontend.taglibs.list.ListTag;
 import com.redhat.rhn.frontend.taglibs.list.ListTagUtil;
 
-import javax.servlet.jsp.JspException;
+import jakarta.servlet.jsp.JspException;
 
 
 /**

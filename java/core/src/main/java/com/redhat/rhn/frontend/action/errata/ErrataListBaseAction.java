@@ -30,8 +30,8 @@ import org.apache.struts.action.ActionMapping;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * Base action for all pages that display an errata list. Subclasses simply implement
