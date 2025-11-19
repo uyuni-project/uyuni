@@ -29,8 +29,6 @@ import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.MappingException;
 import org.hibernate.Session;
-import org.hibernate.engine.spi.SessionImplementor;
-import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 
@@ -528,9 +526,8 @@ public abstract class HibernateFactory {
      * @param <T> the entity type
      */
     public static <T> T reload(T obj) throws HibernateException {
-        ClassMetadata cmd = connectionManager.getMetadata(obj);
-        Serializable id = cmd.getIdentifier(obj, (SessionImplementor) getSession());
         Session session = getSession();
+        Serializable id = (Serializable) session.getEntityManagerFactory().getPersistenceUnitUtil().getIdentifier(obj);
         session.flush();
         session.evict(obj);
         /*
