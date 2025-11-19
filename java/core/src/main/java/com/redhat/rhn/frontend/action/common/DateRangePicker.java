@@ -24,7 +24,7 @@ import org.apache.struts.action.DynaActionForm;
 
 import java.util.Date;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * Action setup to handle 2 date picker forms for a start and end date.

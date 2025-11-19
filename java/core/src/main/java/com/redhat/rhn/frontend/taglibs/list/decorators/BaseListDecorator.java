@@ -17,8 +17,8 @@ package com.redhat.rhn.frontend.taglibs.list.decorators;
 import com.redhat.rhn.frontend.taglibs.list.ListSetTag;
 import com.redhat.rhn.frontend.taglibs.list.ListTag;
 
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.PageContext;
+import jakarta.servlet.jsp.JspException;
+import jakarta.servlet.jsp.PageContext;
 
 /**
  * General-use base class for writing decorators

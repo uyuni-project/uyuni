@@ -22,7 +22,7 @@ import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.manager.errata.ErrataManager;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * Renders YourRhn fragment for latest errata

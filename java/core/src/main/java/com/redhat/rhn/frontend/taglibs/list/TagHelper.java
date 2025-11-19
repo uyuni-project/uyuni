@@ -18,9 +18,9 @@ import com.redhat.rhn.common.db.datasource.Elaborator;
 
 import java.util.zip.CRC32;
 
-import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 /**
  * general tag helper for common functionality shared between tags
