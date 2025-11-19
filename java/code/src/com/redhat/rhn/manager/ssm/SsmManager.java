@@ -77,7 +77,7 @@ public class SsmManager {
     public static final String SSM_SYSTEM_FEATURE = "ftr_system_grouping";
 
     private static final String LIST_SSM_SERVERS_IN_CHANNEL_SQL = """
-        SELECT DISTINCT ST.element as server_id
+        SELECT ST.element as server_id
         FROM rhnSet ST
         JOIN rhnServerChannel rsc ON ST.element = rsc.server_id
         WHERE ST.user_id = :user_id

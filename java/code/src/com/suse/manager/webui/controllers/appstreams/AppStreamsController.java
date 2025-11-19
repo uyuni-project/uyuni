@@ -244,9 +244,10 @@ public class AppStreamsController {
      * @return the ModelAndView object to render the page
      */
     public static ModelAndView ssmConfigureAppstreams(Request request, Response response, User user) {
-        var channel = getAppStreamChannelFromPath(user, request.params("channelId"));
+        var channel = resolveAppStreamChannel(user, request.params("channelId"));
         if (channel == null) {
-            return ssmAppstreamsChannelSelection(request, response, user);
+            response.redirect("/manager/systems/ssm/appstreams");
+            return null;
         }
         var ssmAppStreams = AppStreamsManager.listSsmChannelAppStreams(channel.getId(), user);
         Map<String, Set<SsmAppStreamModuleResponse>> modulesMap = new HashMap<>();
@@ -284,7 +285,7 @@ public class AppStreamsController {
         return new ModelAndView(data, "templates/ssm/appstreams-channel-selection.jade");
     }
 
-    private static ChannelAppStreamsJson getAppStreamChannelFromPath(User user, String channelId) {
+    private static ChannelAppStreamsJson resolveAppStreamChannel(User user, String channelId) {
         if (channelId == null) {
             LOG.warn("Invalid request, no channelId parameter");
             return null;
