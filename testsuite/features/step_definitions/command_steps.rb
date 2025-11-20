@@ -177,14 +177,29 @@ When(/^I use spacewalk-common-channel to add all "([^"]*)" channels with arch "(
   end
 end
 
-When(/^I use spacewalk-repo-sync to sync channel "([^"]*)"$/) do |channel|
-  $command_output, _code = get_target('server').run("spacewalk-repo-sync -c #{channel}", check_errors: false, verbose: true)
+When(/^I sync channel "([^"]*)"$/) do |channel|
+  $command_output, _code = get_target('server').run("echo -e \"admin\nadmin\n\" | mgr-sync add channel #{channel}", check_errors: false, verbose: true)
 end
 
-When(/^I use spacewalk-repo-sync to sync channel "([^"]*)" including only client tools dependencies$/) do |channel|
-  packages = CLIENT_TOOLS_DEPENDENCIES_BY_BASE_CHANNEL[channel]
-  append_includes = packages.map { |pkg| "--include #{pkg}" }.join(' ')
-  $command_output, _code = get_target('server').run("spacewalk-repo-sync -c #{channel} #{append_includes}", check_errors: false, verbose: true)
+When(/^I sync all channels for "([^"]*)", synchronizing only client tools dependencies$/) do |product_os_version|
+  client_tools_dependencies = CLIENT_TOOLS_DEPENDENCIES_BY_PRODUCT[product_os_version]
+  package_for_testing = PACKAGE_BY_CLIENT[CLIENT_BY_OS_PRODUCT_VERSION[product_os_version]]
+  append_includes = (client_tools_dependencies + [package_for_testing]).compact.map { |pkg| "--include #{pkg}" }.join(' ')
+  channels_to_synchronize = CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, product_os_version).clone ||
+                            CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, "#{product_os_version}-x86_64").clone
+  channels_to_synchronize = filter_channels(channels_to_synchronize, ['beta']) unless $beta_enabled
+  channels_to_synchronize.each do |channel|
+    # This command will synchronize the channel without synchronizing any package
+    $command_output, _code = get_target('server').run("echo -e \"admin\nadmin\n\" | mgr-sync add channel #{channel} --metadata-only", check_errors: false, verbose: true)
+    repeat_until_timeout(timeout: 900, message: "spacewalk-repo-sync running...") {
+      output, _ = get_target('server').run('pgrep -f spacewalk-repo-sync', check_errors: false)
+      break if output.strip.empty?
+
+      sleep 5
+    }
+    # This command will synchronize selected packages only if available on this channel, otherwise the channel keeps empty and valid
+    $command_output, _code = get_target('server').run("spacewalk-repo-sync -c #{channel} #{append_includes}", check_errors: false, verbose: true)
+  end
 end
 
 Then(/^I should get "([^"]*)"$/) do |value|

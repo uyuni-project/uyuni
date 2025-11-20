@@ -166,9 +166,10 @@ class RemoteNode
   def run_local(cmd, separated_results: false, check_errors: true, timeout: DEFAULT_TIMEOUT, successcodes: [0], buffer_size: 65_536, verbose: false)
     out, err, code = ssh_command(cmd, @target, timeout: timeout, buffer_size: buffer_size)
     out_nocolor = out.gsub(/\e\[([;\d]+)?m/, '')
-    raise ScriptError, "FAIL: #{cmd} returned status code = #{code}.\nOutput:\n#{out_nocolor}" if check_errors && !successcodes.include?(code)
+    err_nocolor = err.gsub(/\e\[([;\d]+)?m/, '')
+    raise ScriptError, "FAIL: #{cmd} returned status code = #{code}.\nOutput:\n#{out_nocolor}Error:\n'#{err_nocolor}'" if check_errors && !successcodes.include?(code)
 
-    $stdout.puts "#{cmd} returned status code = #{code}.\nOutput:\n'#{out_nocolor}'" if verbose
+    $stdout.puts "#{cmd} returned status code = #{code}.\nOutput:\n'#{out_nocolor}'\nError:\n'#{err_nocolor}'" if verbose
     if separated_results
       [out, err, code]
     else
