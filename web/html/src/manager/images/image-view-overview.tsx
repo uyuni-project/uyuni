@@ -361,7 +361,7 @@ class ImageInfo extends React.Component<ImageInfoProps, ImageInfoState> {
                 <td>
                   <ul>
                     {data.imageFiles.map((f) => (
-                      <li>
+                      <li key={f.url}>
                         <a href={f.url} target="_blank" rel="noopener noreferrer">
                           {f.name}
                         </a>
@@ -436,7 +436,7 @@ class ImageInfo extends React.Component<ImageInfoProps, ImageInfoState> {
                 <td>
                   <ul>
                     {data.deltaSourceFor.map((d) => (
-                      <li>{d.name}</li>
+                      <li key={d.name}>{d.name}</li>
                     ))}
                   </ul>
                 </td>
@@ -450,7 +450,7 @@ class ImageInfo extends React.Component<ImageInfoProps, ImageInfoState> {
                 <td>
                   <ul>
                     {data.deltaTargetFor.map((d) => (
-                      <li>{d.name}</li>
+                      <li key={d.name}>{d.name}</li>
                     ))}
                   </ul>
                 </td>

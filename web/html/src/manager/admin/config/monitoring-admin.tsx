@@ -108,7 +108,7 @@ const ExportersList = (props: { exporters: Record<string, boolean>; messages: Re
   return (
     <ul style={{ listStyle: "none", paddingLeft: "0px" }}>
       {keys.map((key) => (
-        <ExporterItem name={key} status={props.exporters[key]} message={props.messages[key]} />
+        <ExporterItem name={key} status={props.exporters[key]} message={props.messages[key]} key={key} />
       ))}
     </ul>
   );
@@ -126,8 +126,8 @@ const ListPlaceholderItem = () => {
 const ListPlaceholder = () => {
   return (
     <ul className={styles.placeholder}>
-      {Object.keys(exporterMap).map(() => (
-        <ListPlaceholderItem />
+      {Object.keys(exporterMap).map((_, index) => (
+        <ListPlaceholderItem key={`placeholder-${index}`} />
       ))}
     </ul>
   );

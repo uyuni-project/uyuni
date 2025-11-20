@@ -198,6 +198,7 @@ class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandSta
           handler={this.onPreview}
           icon="fa-search"
           title={t("Check which minions match the target expression")}
+          key="preview"
         />,
         <Button
           id="run"
@@ -206,6 +207,7 @@ class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandSta
           handler={this.onRun}
           icon="fa-play"
           title={t("Run the command on the target minions")}
+          key="run"
         />,
       ];
     }

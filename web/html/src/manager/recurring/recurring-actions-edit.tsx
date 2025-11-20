@@ -218,7 +218,7 @@ class RecurringActionsEdit extends React.Component<Props, State> {
       return false;
     }
     const buttons = [
-      <div className="btn-group pull-right">
+      <div className="btn-group pull-right" key="buttons-right">
         <Toggler
           text={t("Test mode")}
           value={this.state.details.test}
@@ -233,7 +233,7 @@ class RecurringActionsEdit extends React.Component<Props, State> {
       </div>,
     ];
     const buttonsLeft = [
-      <div className="btn-group pull-left">
+      <div className="btn-group pull-left" key="buttons-left">
         <Button
           id="back-btn"
           className="btn-default"

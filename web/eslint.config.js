@@ -53,6 +53,7 @@ export default defineConfig([
       "no-case-declarations": "error",
       "jsx-a11y/anchor-is-valid": "error",
       "react/jsx-no-target-blank": "error",
+      "react/jsx-key": "error",
       "react-hooks/rules-of-hooks": "error",
       "react/no-access-state-in-setstate": "error",
       eqeqeq: "error",
@@ -148,6 +149,7 @@ export default defineConfig([
     files: ["**/*.example.{ts,tsx}", "**/*.test.{ts,tsx}"],
     rules: {
       "@typescript-eslint/no-unused-vars": "off",
+      "react/jsx-key": "off",
     },
   },
 ]);

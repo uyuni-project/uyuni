@@ -152,7 +152,7 @@ function ConfigParams(props) {
     .filter((key) => !key.includes("secret"))
     .map((key) => {
       return (
-        <tr>
+        <tr key={key}>
           <td>{Utils.capitalize(key)}:</td>
           <td>{data.config[key]}</td>
         </tr>

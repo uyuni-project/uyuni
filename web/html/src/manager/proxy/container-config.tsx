@@ -131,7 +131,7 @@ export function ProxyConfig() {
                 {JSON.parse(xhr.responseText)
                   .split("\n")
                   .map((line: string) => (
-                    <p>{line}</p>
+                    <p key={line}>{line}</p>
                   ))}
               </>,
             ]);

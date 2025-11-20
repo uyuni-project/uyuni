@@ -156,22 +156,23 @@ class SubscriptionMatchingTabContainer extends React.Component<SubscriptionMatch
         labels={[
           t("Subscriptions"),
           t("Unmatched Products"),
-          <span>
+          <span key="pins">
             {t("Pins ")}
             {pinLabelIcon}
           </span>,
-          <span>
+          <span key="messages">
             {t("Messages ")}
             {messageLabelIcon}
           </span>,
         ]}
         hashes={["#subscriptions", "#unmatched-products", "#pins", "#messages"]}
         tabs={[
-          <Subscriptions subscriptions={data.subscriptions} />,
+          <Subscriptions subscriptions={data.subscriptions} key="subscriptions" />,
           <UnmatchedProducts
             products={data.products}
             unmatchedProductIds={data.unmatchedProductIds}
             systems={data.systems}
+            key="unmatched-products"
           />,
           <Pins
             pinnedMatches={data.pinnedMatches}
@@ -179,8 +180,14 @@ class SubscriptionMatchingTabContainer extends React.Component<SubscriptionMatch
             systems={data.systems}
             subscriptions={data.subscriptions}
             onPinChanged={this.props.onPinChanged}
+            key="pins"
           />,
-          <Messages messages={data.messages} systems={data.systems} subscriptions={data.subscriptions} />,
+          <Messages
+            messages={data.messages}
+            systems={data.systems}
+            subscriptions={data.subscriptions}
+            key="messages"
+          />,
         ]}
         initialActiveTabHash={this.state.activeTabHash}
         onTabHashChange={this.onTabHashChange}

@@ -100,6 +100,7 @@ class Proxy extends React.Component<Props, State> {
         text={t("Change Proxy")}
         action={this.onSet}
         disabled={!window.minions?.length}
+        key="change"
       />,
     ];
 
