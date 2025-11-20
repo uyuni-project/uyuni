@@ -39,7 +39,7 @@ export function iconAndName(system: SystemOverview) {
   ];
   const systemIcon = iconMapping
     .filter((item) => item.condition(system))
-    .map((item) => <IconTag type={item.iconType} title={item.iconTitle} />)[0];
+    .map((item) => <IconTag type={item.iconType} title={item.iconTitle} key={item.iconTitle || item.iconType} />)[0];
 
   const proxyIcon = system.proxy ? <IconTag type="header-proxy" title={t("Proxy")} /> : "";
   const mgrServerIcon = system.mgrServer ? <IconTag type="header-mgr-server" title={t("Peripheral Server")} /> : "";

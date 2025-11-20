@@ -95,7 +95,7 @@ export default function SchedulePlaybook({ playbook, onBack, onSelectPlaybook, i
   const inventoryOpts: ComboboxItem[] = inventories.map((inv, i) => ({ id: i, text: inv }));
 
   const buttons = [
-    <div className="btn-group pull-right">
+    <div className="btn-group pull-right" key="buttons-right">
       <Toggler text={t("Test mode")} value={isTestMode} className="btn" handler={() => setIsTestMode(!isTestMode)} />
       <Button
         icon="fa-angle-left"

@@ -98,7 +98,7 @@ class RecurringActionsList extends React.Component<Props, State> {
     const emptyListText = `No schedules created.${disableCreate ? "" : " Use Create to add a schedule."}`;
 
     const buttons = [
-      <div className="btn-group pull-right">
+      <div className="btn-group pull-right" key="buttons-right">
         <Button
           className="btn-primary"
           icon="fa-plus"

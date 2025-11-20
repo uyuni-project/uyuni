@@ -136,7 +136,7 @@ function msg(severityIn: Severity, textIn: React.ReactNode, listMultiple: boolea
               {header && <p>{header}</p>}
               <ul>
                 {textIn.map((msg) => (
-                  <li>{msg}</li>
+                  <li key={msg}>{msg}</li>
                 ))}
               </ul>
             </>

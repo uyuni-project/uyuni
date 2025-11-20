@@ -62,12 +62,12 @@ class ActivationKeyChannels extends React.Component<ActivationKeyChannelsProps, 
     return loadingChildren ? (
       <Loading text={t("Loading child channels..")} />
     ) : (
-      availableChannels.map((g) => {
+      availableChannels.map((g, i) => {
         const base = g.base;
         const channels = g.children.sort((c1, c2) => c1.name.localeCompare(c2.name));
 
         return (
-          <MandatoryChannelsApi>
+          <MandatoryChannelsApi key={`available-channels-${base?.id}-${i}`}>
             {({ requiredChannelsResult, isDependencyDataLoaded, fetchMandatoryChannelsByChannelIds }) => (
               <ChildChannels
                 key={base ? base.id : "no-base"}

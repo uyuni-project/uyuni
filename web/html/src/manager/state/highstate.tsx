@@ -116,7 +116,7 @@ class Highstate extends React.Component<HighstateProps, HighstateState> {
   render() {
     const messages = this.state.messages.length > 0 ? <Messages items={this.state.messages} /> : null;
     const buttons = [
-      <div className="btn-group pull-right">
+      <div className="btn-group pull-right" key="buttons-right">
         <Toggler
           text={t("Test mode")}
           value={this.state.test}
@@ -135,7 +135,13 @@ class Highstate extends React.Component<HighstateProps, HighstateState> {
     const loc = window.location;
     const createLink = loc.pathname.replace("/highstate", "/recurring-actions") + loc.search + "#/create";
     const buttonsLeft = [
-      <LinkButton icon="fa-plus" href={createLink} className="btn-primary" text={t("Create Recurring")} />,
+      <LinkButton
+        icon="fa-plus"
+        href={createLink}
+        className="btn-primary"
+        text={t("Create Recurring")}
+        key="buttons-left"
+      />,
     ];
     const showHighstate = [
       <InnerPanel
@@ -143,6 +149,7 @@ class Highstate extends React.Component<HighstateProps, HighstateState> {
         icon="spacewalk-icon-salt"
         buttons={buttons}
         buttonsLeft={this.isSSM() ? undefined : buttonsLeft}
+        key="highstate"
       >
         <div className="panel panel-default">
           <div className="panel-heading">

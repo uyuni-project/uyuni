@@ -266,7 +266,9 @@ class CVEAudit extends React.Component<Props, State> {
               className="form-control"
             >
               {YEARS.map((year) => (
-                <option value={year}>{year}</option>
+                <option value={year} key={year}>
+                  {year}
+                </option>
               ))}
             </select>
             <span className="input-group-addon input-group-text">-</span>
@@ -280,7 +282,7 @@ class CVEAudit extends React.Component<Props, State> {
           <div>
             {ALL.map((status) => {
               return (
-                <div className="checkbox">
+                <div className="checkbox" key={PATCH_STATUS_LABEL[status].label}>
                   <label>
                     <input
                       type="checkbox"
@@ -444,7 +446,7 @@ class CVEAudit extends React.Component<Props, State> {
                         </div>
                         {row.erratas.map((errata) => {
                           return (
-                            <div>
+                            <div key={errata.id}>
                               <a href={"/rhn/errata/details/SystemsAffected.do?eid=" + errata.id}>{errata.advisory}</a>
                             </div>
                           );
@@ -485,7 +487,7 @@ class CVEAudit extends React.Component<Props, State> {
                         </div>
                         {row.erratas.map((errata) => {
                           return (
-                            <div>
+                            <div key={errata.id}>
                               <a href={"/rhn/errata/details/SystemsAffected.do?eid=" + errata.id}>{errata.advisory}</a>
                             </div>
                           );

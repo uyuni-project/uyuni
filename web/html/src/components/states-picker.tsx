@@ -523,6 +523,7 @@ class ExecuteStatesButton extends React.Component<ExecuteStatesProps> {
         items={MessagesUtils.info(t("Select the systems to schedule for immediate state execution and confirm."))}
       />,
       <Table
+        key="table"
         selectable={(item) => Object.prototype.hasOwnProperty.call(item, "id")}
         onSelect={this.onSelect}
         selectedItems={this.state.selected}
