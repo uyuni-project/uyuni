@@ -281,6 +281,10 @@ Before do
   log "This scenario ran at: #{current_time}\n"
 end
 
+Before('@obsolete') do
+  skip_this_scenario
+end
+
 Before('@skip') do
   skip_this_scenario
 end
