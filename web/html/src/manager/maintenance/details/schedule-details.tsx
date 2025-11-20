@@ -177,6 +177,7 @@ const SystemPicker = (props: SystemPickerProps) => {
               className="btn"
               handler={() => setIsCancelActions(!isCancelActions)}
               value={isCancelActions}
+              key="cancel-actions"
             />,
             isCancelActions && selectedSystems.length > 0 ? (
               <ModalButton
@@ -184,6 +185,7 @@ const SystemPicker = (props: SystemPickerProps) => {
                 text={t("Save Changes")}
                 className="btn-primary"
                 disabled={!hasChanges}
+                key="save-changes-modal"
               />
             ) : (
               <AsyncButton
@@ -191,6 +193,7 @@ const SystemPicker = (props: SystemPickerProps) => {
                 defaultType="btn-primary"
                 text={t("Save Changes")}
                 disabled={!hasChanges}
+                key="save-changes-async"
               />
             ),
           ]}

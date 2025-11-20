@@ -21,7 +21,7 @@ const MaintenanceWindowsList = (props: MaintenanceListProps) => {
   const [type] = useState(props.type);
 
   const buttons = [
-    <div className="btn-group pull-right">
+    <div className="btn-group pull-right" key="create-button">
       <Button
         className="btn-primary"
         disabled={!window.isAdmin}
