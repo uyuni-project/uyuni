@@ -2,8 +2,8 @@ import { StoryRow, StorySection, StripedStorySection } from "manager/storybook/l
 
 import { Button } from "components/buttons";
 
-import { Text } from "./input/text/Text";
-import { BootstrapPanel } from "./panels/BootstrapPanel";
+import { Text } from "../input/text/Text";
+import { BootstrapPanel } from "../panels/BootstrapPanel";
 export default () => {
   const listButtons = [
     <div className="form-group btn-group" key="modal-buttons-eg1">
