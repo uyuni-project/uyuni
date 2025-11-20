@@ -133,7 +133,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I sync all channels for "sles15-sp7", synchronizing only client tools dependencies
     And I use spacewalk-common-channel to add channel "sles15-sp7-devel-uyuni-client" with arch "x86_64"
 
-  @proxy
+@proxy
 @susemanager
 @transactional_server
 @obsolete
