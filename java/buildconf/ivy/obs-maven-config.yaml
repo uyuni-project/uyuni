@@ -156,7 +156,7 @@ artifacts:
   - artifact: javassist
     repository: Leap
   - artifact: jboss-logging
-    repository: Leap
+    repository: Uyuni_Jakarta
   - artifact: jctools-core
     package: jctools
     repository: Leap_sle

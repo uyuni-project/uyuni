@@ -68,7 +68,7 @@
   <available file="${java.lib.dir}/log4j/log4j-jcl.jar" type="file" property="log4j-jcl" value="log4j/log4j-jcl" />
   <property name="log4j-jars" value="${log4j-core} ${log4j-api} ${log4j-jcl}"/>
 
-  <available file="${java.lib.dir}/jakarta-transactions/jakarta-transaction-api.jar" type="file" property="jta11-jars" value="jakarta-transactions" />
+  <available file="${java.lib.dir}/jakarta-transactions/jakarta.transaction-api.jar" type="file" property="jta11-jars" value="jakarta-transactions" />
 
   <condition property="javamail" value="jakarta-mail" else="javamail">
     <available file="${java.lib.dir}/jakarta-mail/jakarta.mail-api.jar" />
@@ -91,9 +91,12 @@
     <available file="${java.lib.dir}/jakarta-activation/jakarta.activation-api.jar"/>
   </condition>
 
-<condition property="jaxb-api" value="jakarta.xml.bind-api" else="">
-    <available file="${java.lib.dir}/jakarta.xml.bind-api.jar" />
-  </condition>
+<!--<condition property="jaxb-api" value="jakarta.xml.bind-api" else="">-->
+<!--    <available file="${java.lib.dir}/jakarta.xml.bind-api.jar" />-->
+<!--  </condition>-->
+
+<available file="${java.lib.dir}/jaxb-api/jakarta.xml.bind-api.jar" type="file"
+           property="jaxb-api" value="jaxb-api/jakarta.xml.bind-api" />
 <condition property="jaxb-impl" value="jaxb-impl" else="">
     <available file="${java.lib.dir}/jaxb-impl.jar" />
   </condition>
@@ -104,10 +107,15 @@
     <available file="${java.lib.dir}/istack-commons-runtime.jar" />
   </condition>
 
-<property name="jaxb" value="${jaxb-api} ${jaxb-impl} ${txw2} ${istack-commons}"/>
+  <available file="${java.lib.dir}/jakarta-jstl/jakarta.servlet.jsp.jstl.jar" type="file"
+          property="jakarta-jstl" value="jakarta-jstl/jakarta.servlet.jsp.jstl" />
+  <available file="${java.lib.dir}/jakarta-jstl/jakarta.servlet.jsp.jstl-api.jar" type="file"
+          property="jakarta-jstl-api" value="jakarta-jstl/jakarta.servlet.jsp.jstl-api" />
+
+<property name="jaxb" value="${jaxb-api} ${jaxb-impl} ${jakarta-jstl} ${jakarta-jstl-api} ${txw2} ${istack-commons}"/>
 
   <available file="${java.lib.dir}/hibernate/hibernate-core.jar" type="file"
-	  property="hibernatefiles" value="hibernate"/>
+	  property="hibernatefiles" value="hibernate-core"/>
 
   <available file="${java.lib.dir}/hibernate/hibernate-models.jar" type="file"
 	  property="hibernate-models" value="hibernate/hibernate-models"/>
@@ -116,8 +124,10 @@
   <available file="${java.lib.dir}/hibernate-models.jar" type="file"
 	  property="hibernate-models" value="hibernate-models" />
 
+  <available file="${java.lib.dir}/jakarta-persistence-api/jakarta.persistence-api.jar" type="file"
+	  property="jpa" value="jakarta-persistence-api/jakarta.persistence-api"/>
 
-  <property name="hibernatedeps" value="${hibernatefiles} ${hibernate-models} slf4j/api jpa-api/jakarta.persistence-api ${byte-buddy} ${byte-buddy-dep} jboss-logging javassist log4j/log4j-slf4j-impl ${ehcache} classmate/classmate statistics hypersistence-utils/hypersistence-utils-hibernate-71 jackson-databind jackson-core jackson-annotations"/>
+  <property name="hibernatedeps" value="${hibernatefiles} ${hibernate-models} slf4j/api ${jpa} ${byte-buddy} ${byte-buddy-dep} jboss-logging javassist log4j/log4j-slf4j-impl ${ehcache} classmate/classmate statistics hypersistence-utils/hypersistence-utils-hibernate-71 jackson-databind jackson-core jackson-annotations"/>
 
   <property name="c3p0" value="c3p0"/>
   <available file="${java.lib.dir}/mchange-commons/mchange-commons-java.jar" type="file" property="c3p0" value="${c3p0} mchange-commons/mchange-commons-java"/>
@@ -146,7 +156,7 @@
              ${log4j-jars} oro redstone-xmlrpc-client redstone-xmlrpc ${struts-jars} ${tomcat-jars}
              bcprov bcpg postgresql-jdbc ongres-scram/client ongres-scram/common
              ${stringprep-jars} jakarta-jstl-impl
-             jakarta-jstl-api logdriver quartz slf4j-api log4j/log4j-slf4j-impl
+             jakarta-jstl-api logdriver quartz slf4j-api log4j-slf4j-impl
              velocity-engine-core simple-core strutstest
              jakarta-websocket jakarta-servlet jakarta-pages jakarta-jstl" />
 

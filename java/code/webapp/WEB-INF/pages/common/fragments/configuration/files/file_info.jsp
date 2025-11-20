@@ -1,4 +1,4 @@
-<%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 
 <c:set value="${requestScope[param.configchan]}" var="mychan"/>

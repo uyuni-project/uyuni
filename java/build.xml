@@ -216,8 +216,7 @@
            dest="${build.dir}/webapp/rhnjava" />
   </target>
 
-  <target name="jspcompile" depends="pack,unwar-webapp,apidoc-jsp"
-          description="precompile jsp's">
+  <target name="jspcompile" depends="pack,unwar-webapp,apidoc-jsp" description="precompile jsp's">
     <mkdir dir="${build.dir}/jsp-temp" />
     <mkdir dir="${build.dir}/webapp/rhnjava/WEB-INF/classes" />
     <fileset id="jspffiles" dir="${build.dir}/webapp/rhnjava">
@@ -239,8 +238,8 @@
         <src path="${build.dir}/jsp-temp"/>
     </javac>
     <loadfile property="jspc.web.fragment"
-          srcfile="${build.dir}/webapp/generated_web.xml"
-          failonerror="false" />
+              srcfile="${build.dir}/webapp/generated_web.xml"
+              failonerror="false" />
     <replace file="${build.dir}/webapp/rhnjava/WEB-INF/web.xml">
         <replacefilter token="&lt;!-- add precompiled jsp servlets --&gt;"
               value="${jspc.web.fragment}"/>
@@ -329,13 +328,6 @@
      - initializing prefix otherwise webapp is not copied to tomcat directory
      -->
        <property name="prefix" value="" />
-       <echo message="${prefix}" />
-       <echo message="${webapp-dir}" />
-       <antcall target="install" />
-  </target>
-
-  <target name="install-tomcat11-suse">
-       <property name="webapp-dir" value="/usr/share/susemanager/www/tomcat/webapps/" />
        <echo message="${prefix}" />
        <echo message="${webapp-dir}" />
        <antcall target="install" />
