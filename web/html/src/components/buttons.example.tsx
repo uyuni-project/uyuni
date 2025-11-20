@@ -289,9 +289,9 @@ export default () => {
               </div>
             </div>
             <div className="form-group ">
-              <label className="control-label col-md-3" aria-hidden></label>
+              <label className="control-label col-md-3" htmlFor="add-name"></label>
               <div className="col-md-6">
-                <Button className="btn-tertiary" icon="fa-plus">
+                <Button className="btn-tertiary" icon="fa-plus" id="add-name">
                   Add Name
                 </Button>
               </div>

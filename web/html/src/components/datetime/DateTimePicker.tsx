@@ -136,6 +136,7 @@ export const DateTimePicker = (props: Props) => {
               className="input-group-addon input-group-text"
               data-picker-type="date"
               onClick={() => openDatePicker()}
+              role="button"
             >
               <i className="fa fa-calendar"></i>
             </span>
@@ -186,6 +187,7 @@ export const DateTimePicker = (props: Props) => {
               className="input-group-addon input-group-text no-right-border"
               data-picker-type="time"
               onClick={openTimePicker}
+              role="button"
             >
               <i className="fa fa-clock-o"></i>
             </span>

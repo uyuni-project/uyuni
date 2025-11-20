@@ -344,6 +344,7 @@ export class DEPRECATED_DateTimePicker extends React.Component<DateTimePickerPro
             data-picker-type="date"
             onClick={this.toggleDatepicker}
             key="calendar"
+            role="button"
           >
             &nbsp;<i className="fa fa-calendar"></i>
           </span>,
@@ -364,6 +365,7 @@ export class DEPRECATED_DateTimePicker extends React.Component<DateTimePickerPro
             data-picker-type="time"
             onClick={this.toggleTimepicker}
             key="clock"
+            role="button"
           >
             &nbsp;<i className="fa fa-clock-o"></i>
           </span>,
