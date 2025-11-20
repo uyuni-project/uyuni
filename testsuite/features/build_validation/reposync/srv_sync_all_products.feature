@@ -22,6 +22,13 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until I see "SUSE Linux Enterprise Server 12 SP5 x86_64" product has been added
     And I wait until all synchronized channels for "sles12-sp5" have finished
 
+@sle12sp5_minion
+@fast
+  Scenario: Partially add SUSE Linux Enterprise Server 12 SP5
+    When I sync all channels for "sles12-sp5", synchronizing only client tools dependencies
+    And I sync channel "managertools-sle12-pool-x86_64-sp5"
+    And I sync channel "managertools-sle12-updates-x86_64-sp5"
+
 @uyuni
 @sle12sp5_minion
   Scenario: Add SUSE Linux Enterprise Server 12 SP5 Uyuni Client tools
@@ -82,6 +89,13 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "SUSE Linux Enterprise Server 15 SP4 x86_64" product has been added
     And I wait until all synchronized channels for "sles15-sp4" have finished
+
+@sle15sp4_minion
+@fast
+  Scenario: Partially synchronize SLES 15 SP4 product with recommended sub-products, including Client Tools
+    When I sync all channels for "sles15-sp4", synchronizing only client tools dependencies
+    And I sync channel "managertools-sle15-pool-x86_64-sp4"
+    And I sync channel "managertools-sle15-updates-x86_64-sp4"
 
 @cloud
 @sle15sp4_minion
@@ -749,6 +763,13 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until all synchronized channels for "sl-micro-6.1" have finished
 
 @susemanager
+@run_if_proxy_transactional_or_slmicro61_minion
+@fast
+  Scenario: Partially add SL Micro 6.1 as base OS for proxy
+    When I sync all channels for "sl-micro-6.1", synchronizing only client tools dependencies
+    And I sync channel "managertools-sl-micro-6.1-x86_64"
+
+@susemanager
 @run_if_proxy_not_transactional_or_sles15sp7_minion
   Scenario: Add SUSE Linux Enterprise Server 15 SP7
     Given I am authorized for the "Admin" section
@@ -769,6 +790,14 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "SUSE Linux Enterprise Server 15 SP7 x86_64" product has been added
     And I wait until all synchronized channels for "sles15-sp7" have finished
+
+@susemanager
+@run_if_proxy_not_transactional_or_sles15sp7_minion
+@fast
+  Scenario: Partially add SLES 15 SP7 as base OS for proxy
+    When I sync all channels for "sles15-sp7", synchronizing only client tools dependencies
+    And I sync channel "managertools-sle15-pool-x86_64-sp7"
+    And I sync channel "managertools-sle15-updates-x86_64-sp7"
 
 @susemanager
 @proxy
@@ -851,8 +880,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until all synchronized channels for "suse-multi-linux-manager-retail-branch-server-51-sp7" have finished
 
 # There are no channels for Retail under Uyuni
-
-
+@obsolete
   Scenario: Detect product loading issues from the UI in Build Validation
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
