@@ -96,9 +96,9 @@
             "duration": 15.013,
             "__id__": "jmx_exporter"
         },
-        "cmd_|-remove_tomcat_jmx_host_|-sed -ri 's/JAVA_OPTS=\"(.*)-Dcom\\.sun\\.management\\.jmxremote\\.host=\\S*(.*)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/sysconfig/tomcat_|-run": {
+        "cmd_|-remove_tomcat_jmx_host_|-sed -ri 's/JAVA_OPTS=\"(.*)-Dcom\\.sun\\.management\\.jmxremote\\.host=\\S*(.*)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/sysconfig/tomcat11_|-run": {
             "result": true,
-            "name": "sed -ri 's/JAVA_OPTS=\"(.*)-Dcom\\.sun\\.management\\.jmxremote\\.host=\\S*(.*)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/sysconfig/tomcat",
+            "name": "sed -ri 's/JAVA_OPTS=\"(.*)-Dcom\\.sun\\.management\\.jmxremote\\.host=\\S*(.*)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/sysconfig/tomcat11",
             "changes": {},
             "comment": "onlyif condition is false",
             "skip_watch": true,
@@ -108,9 +108,9 @@
             "duration": 259.692,
             "__id__": "remove_tomcat_jmx_host"
         },
-        "cmd_|-remove_tomcat_jmx_port_|-sed -ri 's/JAVA_OPTS=\"(.*)-Dcom\\.sun\\.management\\.jmxremote\\.port=[0-9]*(.*)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/sysconfig/tomcat_|-run": {
+        "cmd_|-remove_tomcat_jmx_port_|-sed -ri 's/JAVA_OPTS=\"(.*)-Dcom\\.sun\\.management\\.jmxremote\\.port=[0-9]*(.*)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/sysconfig/tomcat11_|-run": {
             "result": true,
-            "name": "sed -ri 's/JAVA_OPTS=\"(.*)-Dcom\\.sun\\.management\\.jmxremote\\.port=[0-9]*(.*)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/sysconfig/tomcat",
+            "name": "sed -ri 's/JAVA_OPTS=\"(.*)-Dcom\\.sun\\.management\\.jmxremote\\.port=[0-9]*(.*)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/sysconfig/tomcat11",
             "changes": {},
             "comment": "onlyif condition is false",
             "skip_watch": true,
@@ -120,9 +120,9 @@
             "duration": 19.932,
             "__id__": "remove_tomcat_jmx_port"
         },
-        "cmd_|-remove_tomcat_jmx_ssl_|-sed -i 's/JAVA_OPTS=\"\\(.*\\)-Dcom\\.sun\\.management\\.jmxremote\\.ssl=false\\(.*\\)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/sysconfig/tomcat_|-run": {
+        "cmd_|-remove_tomcat_jmx_ssl_|-sed -i 's/JAVA_OPTS=\"\\(.*\\)-Dcom\\.sun\\.management\\.jmxremote\\.ssl=false\\(.*\\)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/sysconfig/tomcat11_|-run": {
             "result": true,
-            "name": "sed -i 's/JAVA_OPTS=\"\\(.*\\)-Dcom\\.sun\\.management\\.jmxremote\\.ssl=false\\(.*\\)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/sysconfig/tomcat",
+            "name": "sed -i 's/JAVA_OPTS=\"\\(.*\\)-Dcom\\.sun\\.management\\.jmxremote\\.ssl=false\\(.*\\)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/sysconfig/tomcat11",
             "changes": {},
             "comment": "onlyif condition is false",
             "skip_watch": true,
@@ -132,9 +132,9 @@
             "duration": 17.018,
             "__id__": "remove_tomcat_jmx_ssl"
         },
-        "cmd_|-remove_tomcat_jmx_auth_|-sed -i 's/JAVA_OPTS=\"\\(.*\\)-Dcom\\.sun\\.management\\.jmxremote\\.authenticate=false\\(.*\\)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/sysconfig/tomcat_|-run": {
+        "cmd_|-remove_tomcat_jmx_auth_|-sed -i 's/JAVA_OPTS=\"\\(.*\\)-Dcom\\.sun\\.management\\.jmxremote\\.authenticate=false\\(.*\\)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/sysconfig/tomcat11_|-run": {
             "result": true,
-            "name": "sed -i 's/JAVA_OPTS=\"\\(.*\\)-Dcom\\.sun\\.management\\.jmxremote\\.authenticate=false\\(.*\\)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/sysconfig/tomcat",
+            "name": "sed -i 's/JAVA_OPTS=\"\\(.*\\)-Dcom\\.sun\\.management\\.jmxremote\\.authenticate=false\\(.*\\)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/sysconfig/tomcat11",
             "changes": {},
             "comment": "onlyif condition is false",
             "skip_watch": true,
@@ -144,9 +144,9 @@
             "duration": 16.748,
             "__id__": "remove_tomcat_jmx_auth"
         },
-        "cmd_|-remove_tomcat_jmx_hostname_|-sed -ri 's/JAVA_OPTS=\"(.*)-Djava\\.rmi\\.server\\.hostname=\\S*(.*)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/sysconfig/tomcat_|-run": {
+        "cmd_|-remove_tomcat_jmx_hostname_|-sed -ri 's/JAVA_OPTS=\"(.*)-Djava\\.rmi\\.server\\.hostname=\\S*(.*)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/sysconfig/tomcat11_|-run": {
             "result": true,
-            "name": "sed -ri 's/JAVA_OPTS=\"(.*)-Djava\\.rmi\\.server\\.hostname=\\S*(.*)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/sysconfig/tomcat",
+            "name": "sed -ri 's/JAVA_OPTS=\"(.*)-Djava\\.rmi\\.server\\.hostname=\\S*(.*)\"/JAVA_OPTS=\"\\1 \\2\"/' /etc/sysconfig/tomcat11",
             "changes": {},
             "comment": "onlyif condition is false",
             "skip_watch": true,
@@ -167,13 +167,13 @@
             "duration": 8.879,
             "__id__": "jmx_exporter_tomcat_yaml_config"
         },
-        "file_|-jmx_tomcat_config_|-/etc/sysconfig/tomcat/systemd/jmx.conf_|-managed": {
+        "file_|-jmx_tomcat_config_|-/etc/sysconfig/tomcat11/systemd/jmx.conf_|-managed": {
             "changes": {
                 "diff": "New file",
                 "mode": "0644"
             },
-            "comment": "File /etc/sysconfig/tomcat/systemd/jmx.conf updated",
-            "name": "/etc/sysconfig/tomcat/systemd/jmx.conf",
+            "comment": "File /etc/sysconfig/tomcat11/systemd/jmx.conf updated",
+            "name": "/etc/sysconfig/tomcat11/systemd/jmx.conf",
             "result": true,
             "__sls__": "srvmonitoring.enable",
             "__run_num__": 13,

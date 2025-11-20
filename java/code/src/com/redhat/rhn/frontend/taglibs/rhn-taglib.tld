@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!-- a tag library descriptor -->
-<taglib xmlns="http://java.sun.com/xml/ns/j2ee"
+<taglib xmlns="https://jakarta.ee/xml/ns/jakartaee"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
-  version="2.0">
+  xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-jsptaglibrary_3_0.xsd"
+  version="3.0">
     <description>A tag library from Spacewalk to support navigation.</description>
     <tlib-version>1.2</tlib-version>
     <short-name>rhn</short-name>

@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ include file="/WEB-INF/pages/common/fragments/user/user_attribute_sizes.jspf"%>
 
 <div class="form-group">

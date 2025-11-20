@@ -55,13 +55,6 @@
     <available file="${java.lib.dir}/byte-buddy/byte-buddy-dep.jar"/>
   </condition>
 
-  <available file="${java.lib.dir}/hibernate/hibernate-models.jar" type="file"
-	  property="hibernate-models" value="hibernate/hibernate-models"/>
-  <available file="${java.lib.dir}/hibernate-models/hibernate-models.jar" type="file"
-	  property="hibernate-models" value="hibernate-models/hibernate-models"/>
-  <available file="${java.lib.dir}/hibernate-models.jar" type="file"
-	  property="hibernate-models" value="hibernate-models" />
-
   <condition property="commons-validator" value="apache-commons-validator" else="commons-validator">
     <available file="${java.lib.dir}/apache-commons-validator.jar" />
   </condition>
@@ -75,11 +68,9 @@
   <available file="${java.lib.dir}/log4j/log4j-jcl.jar" type="file" property="log4j-jcl" value="log4j/log4j-jcl" />
   <property name="log4j-jars" value="${log4j-core} ${log4j-api} ${log4j-jcl}"/>
 
-<condition property="jta11-jars" value="jakarta-transaction-api" else="jta">
-    <available file="${java.lib.dir}/jakarta-transaction-api.jar" />
-  </condition>
+  <available file="${java.lib.dir}/jakarta-transactions/jakarta-transaction-api.jar" type="file" property="jta11-jars" value="jakarta-transactions" />
 
-  <condition property="javamail" value="jakarta.mail" else="javamail">
+  <condition property="javamail" value="jakarta-mail" else="javamail">
     <available file="${java.lib.dir}/jakarta-mail/jakarta.mail-api.jar" />
   </condition>
 
@@ -115,11 +106,18 @@
 
 <property name="jaxb" value="${jaxb-api} ${jaxb-impl} ${txw2} ${istack-commons}"/>
 
-  <condition property="hibernate6files" value="hibernate6/hibernate-core hibernate6/hibernate-c3p0 hibernate6/hibernate-jcache">
-    <available file="${java.lib.dir}/hibernate6/hibernate-core.jar" type="file"/>
-  </condition>
+  <available file="${java.lib.dir}/hibernate/hibernate-core.jar" type="file"
+	  property="hibernatefiles" value="hibernate"/>
 
-  <property name="hibernate6deps" value="${hibernate6files} ${hibernate-models} slf4j/api jpa-api/jakarta.persistence-api ${byte-buddy} ${byte-buddy-dep} jboss-logging javassist log4j/log4j-slf4j-impl ${ehcache} classmate/classmate statistics hypersistence-utils/hypersistence-utils-hibernate-63 jackson-databind jackson-core jackson-annotations"/>
+  <available file="${java.lib.dir}/hibernate/hibernate-models.jar" type="file"
+	  property="hibernate-models" value="hibernate/hibernate-models"/>
+  <available file="${java.lib.dir}/hibernate-models/hibernate-models.jar" type="file"
+	  property="hibernate-models" value="hibernate-models/hibernate-models"/>
+  <available file="${java.lib.dir}/hibernate-models.jar" type="file"
+	  property="hibernate-models" value="hibernate-models" />
+
+
+  <property name="hibernatedeps" value="${hibernatefiles} ${hibernate-models} slf4j/api jpa-api/jakarta.persistence-api ${byte-buddy} ${byte-buddy-dep} jboss-logging javassist log4j/log4j-slf4j-impl ${ehcache} classmate/classmate statistics hypersistence-utils/hypersistence-utils-hibernate-71 jackson-databind jackson-core jackson-annotations"/>
 
   <property name="c3p0" value="c3p0"/>
   <available file="${java.lib.dir}/mchange-commons/mchange-commons-java.jar" type="file" property="c3p0" value="${c3p0} mchange-commons/mchange-commons-java"/>
@@ -143,7 +141,7 @@
       value="bcel ${cglib-jar} commons-beanutils commons-cli commons-codec
              commons-collections commons-digester commons-discovery
              commons-fileupload2-core commons-fileupload2-jakarta-servlet6 commons-io ${commons-lang}
-             apache-commons-text/commons-text commons-logging ${commons-validator} ${hibernate6deps}
+             apache-commons-text/commons-text commons-logging ${commons-validator} ${hibernatedeps}
              ${commons-compress} ${javamail} smtp jdom ${jmock-jars}
              ${log4j-jars} oro redstone-xmlrpc-client redstone-xmlrpc ${struts-jars} ${tomcat-jars}
              bcprov bcpg postgresql-jdbc ongres-scram/client ongres-scram/common
@@ -202,7 +200,7 @@
              commons-collections commons-digester commons-discovery
              commons-fileupload2-core commons-fileupload2-jakarta-servlet6 commons-io ${commons-lang}
              apache-commons-text/commons-text commons-logging ${commons-validator}
-             ${hibernate6deps}
+             ${hibernatedeps}
              ${commons-compress} ${tomcat-jars} ${javamail} jdom jsch
              ${log4j-jars} oro redstone-xmlrpc-client redstone-xmlrpc ${struts-jars}
              postgresql-jdbc ongres-scram/client ongres-scram/common
@@ -216,7 +214,7 @@
              commons-collections commons-beanutils commons-cli commons-codec
              commons-digester commons-discovery commons-fileupload2-core commons-fileupload2-jakarta-servlet6 commons-io
              ${commons-lang} apache-commons-text/commons-text commons-logging ${commons-compress}
-             ${commons-validator} dom4j ${hibernate6deps} ${jta11-jars}
+             ${commons-validator} dom4j ${hibernatedeps} ${jta11-jars}
              ${jaf} ${jasper-jars} ${javamail} ${jaxb} jdom ${other-jars}
              ${tomcat-jars} ${log4j-jars} redstone-xmlrpc-client redstone-xmlrpc
              oro quartz sitemesh ${struts-jars}

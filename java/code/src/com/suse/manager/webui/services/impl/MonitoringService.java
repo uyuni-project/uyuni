@@ -286,7 +286,7 @@ public class MonitoringService {
                 new Tuple2<>("postgres",
                         "service_|-postgres_exporter_service_|-prometheus-postgres_exporter_|-running"),
                 new Tuple2<>("tomcat",
-                        "file_|-jmx_tomcat_config_|-/etc/sysconfig/tomcat/systemd/jmx.conf_|-managed"),
+                        "file_|-jmx_tomcat_config_|-/etc/sysconfig/tomcat11/systemd/jmx.conf_|-managed"),
                 new Tuple2<>("taskomatic",
                         "file_|-jmx_taskomatic_config_|-/etc/sysconfig/taskomatic/systemd/jmx.conf_|" +
                         "-managed"),
@@ -325,7 +325,7 @@ public class MonitoringService {
                 new Tuple2<>("postgres",
                         "service_|-postgres_exporter_service_|-prometheus-postgres_exporter_|-dead"),
                 new Tuple2<>("tomcat",
-                        "file_|-jmx_tomcat_config_|-/etc/sysconfig/tomcat/systemd/jmx.conf_|-absent"),
+                        "file_|-jmx_tomcat_config_|-/etc/sysconfig/tomcat11/systemd/jmx.conf_|-absent"),
                 new Tuple2<>("taskomatic",
                         "file_|-jmx_taskomatic_config_|-/etc/sysconfig/taskomatic/systemd/jmx.conf_|" +
                         "-absent"),

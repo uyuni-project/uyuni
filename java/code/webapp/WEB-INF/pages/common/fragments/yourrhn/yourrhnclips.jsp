@@ -1,4 +1,4 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <c:choose>
 <c:when test="${not empty requestScope.pageUrl}">
 <c:import url="${requestScope.pageUrl}"/>

@@ -26,13 +26,13 @@
             "duration": 632.209,
             "__id__": "postgres_exporter_service"
         },
-        "file_|-jmx_tomcat_config_|-/etc/sysconfig/tomcat/systemd/jmx.conf_|-absent": {
-            "name": "/etc/sysconfig/tomcat/systemd/jmx.conf",
+        "file_|-jmx_tomcat_config_|-/etc/sysconfig/tomcat11/systemd/jmx.conf_|-absent": {
+            "name": "/etc/sysconfig/tomcat11/systemd/jmx.conf",
             "changes": {
-                "removed": "/etc/sysconfig/tomcat/systemd/jmx.conf"
+                "removed": "/etc/sysconfig/tomcat11/systemd/jmx.conf"
             },
             "result": true,
-            "comment": "Removed file /etc/sysconfig/tomcat/systemd/jmx.conf",
+            "comment": "Removed file /etc/sysconfig/tomcat11/systemd/jmx.conf",
             "__sls__": "srvmonitoring.disable",
             "__run_num__": 2,
             "start_time": "15:41:30.412150",
