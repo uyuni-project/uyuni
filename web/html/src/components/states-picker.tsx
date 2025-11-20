@@ -442,8 +442,12 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
                 <h2>{this.props.type === "state" ? t("Edit State Ranks") : t("Edit Channel Ranks")}</h2>
                 <p>
                   {this.props.type === "state"
-                    ? t("Edit the ranking of the states by dragging them.")
-                    : t("Edit the ranking of the configuration channels by dragging them.")}
+                    ? t(
+                        "Edit the ranking of the states by dragging them. They are listed in order from highest to lowest rank. In other words, the bottom ones will be applied first."
+                      )
+                    : t(
+                        "Edit the ranking of the configuration channels by dragging them. They are listed in order from highest to lowest rank. Files from a particular channel will override files with the same filepath and name from channels below it. In other words, the bottom ones will be applied first."
+                      )}
                 </p>
                 <RankingTable
                   items={currentAssignment}
