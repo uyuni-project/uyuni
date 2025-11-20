@@ -27,23 +27,24 @@ import com.redhat.rhn.domain.server.MinionServer;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.Immutable;
-import org.hibernate.annotations.Type;
+import org.hibernate.type.YesNoConverter;
 
 import java.util.Date;
 import java.util.Optional;
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 /**
  * View: suseImageOverview
@@ -195,7 +196,7 @@ public class ImageOverview {
      * @return true if the image has been built outside SUSE Manager
      */
     @Column(name = "external_image")
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     public boolean isExternalImage() {
         return externalImage;
     }
@@ -204,7 +205,7 @@ public class ImageOverview {
      * @return true if the image is obsolete (has been replaced in the store)
      */
     @Column(name = "obsolete")
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     public boolean isObsolete() {
         return obsolete;
     }
@@ -213,7 +214,7 @@ public class ImageOverview {
      * @return true if the image has been successfully built
      */
     @Column(name = "built")
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     public boolean isBuilt() {
         return built;
     }

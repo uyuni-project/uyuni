@@ -268,22 +268,8 @@
       memoryMaximumSize="512m"
       classpathref="alljars">
    <src path="${build.dir}/jsp-temp"/>
-   <!-- NOTE: apidoc-temp contains generated JSP sources for the apidoc
-     documentation. In some local (non-installed) builds the same JSPs
-     can appear in both jsp-temp and apidoc-temp which leads to
-     duplicate-class errors when both are compiled together. To avoid
-     this during local jspcompile runs we do NOT add apidoc-temp to the
-     javac sourcepath. The apidoc jasper generation is still performed
-     above; the generated apidoc classes will not be compiled into the
-     webapp here. If you need apidoc compilation in an installed
-     environment, restore this line or make it conditional.
-   -->
     </javac>
-    <!-- If this is an installed build (prefix+webapp-dir set), also compile
-      the apidoc-generated JSP sources into the webapp classes. This
-      avoids compiling apidoc-temp in local (non-installed) builds where
-      the same JSPs may be generated twice and cause duplicate-class
-      javac errors. -->
+
     <antcall target="jspcompile-compile-apidoc" />
     <!-- If jasper generated web.xml fragment files, load and apply them; otherwise continue. -->
     <loadfile property="jspc.web.fragment"

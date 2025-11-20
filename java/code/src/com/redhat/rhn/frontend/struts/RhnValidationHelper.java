@@ -31,9 +31,8 @@ import org.apache.struts.action.DynaActionForm;
 import java.net.URL;
 import java.util.List;
 
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
-
+import jakarta.mail.internet.AddressException;
+import jakarta.mail.internet.InternetAddress;
 import jakarta.servlet.http.HttpServletRequest;
 
 /**

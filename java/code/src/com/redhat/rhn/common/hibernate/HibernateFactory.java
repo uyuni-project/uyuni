@@ -51,12 +51,12 @@ import java.util.function.BinaryOperator;
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
-import javax.persistence.FlushModeType;
-import javax.persistence.LockModeType;
-import javax.persistence.Tuple;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaDelete;
-import javax.persistence.criteria.Root;
+import jakarta.persistence.FlushModeType;
+import jakarta.persistence.LockModeType;
+import jakarta.persistence.Tuple;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaDelete;
+import jakarta.persistence.criteria.Root;
 
 /**
  * HibernateFactory - Helper superclass that contains methods for fetching and
@@ -328,7 +328,7 @@ public abstract class HibernateFactory {
         Session session = null;
         session = HibernateFactory.getSession();
         if (saveOrUpdate) {
-            session.saveOrUpdate(toSave);
+            session.merge(toSave);
         }
         else {
             session.persist(toSave);
@@ -614,8 +614,7 @@ public abstract class HibernateFactory {
         if (data.length == 0) {
             return null;
         }
-        return Hibernate.getLobCreator(getSession()).createBlob(data);
-
+        return Hibernate.getLobHelper().createBlob(data);
     }
 
     /**

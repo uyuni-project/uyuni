@@ -11,7 +11,7 @@
 package com.redhat.rhn.domain;
 
 import org.hibernate.HibernateException;
-import org.hibernate.engine.spi.SharedSessionContractImplementor;
+import org.hibernate.type.descriptor.WrapperOptions;
 import org.hibernate.usertype.UserType;
 
 import java.io.Serializable;
@@ -24,32 +24,22 @@ import java.util.function.Function;
 /**
  * Allows to maps enum in a custom way
  * @param <T> enum class
- * @param <K> type class
  */
-public abstract class CustomEnumType<T extends Enum<T>, K> implements UserType {
+public abstract class CustomEnumType<T extends Enum<T>> implements UserType<T> {
 
     private final Class<T> enumClass;
 
-    private final Class<K> typeClass;
-    private final Function<T, K> toDb;
-    private final Function<K, T> fromDb;
+    private final Function<T, String> toDb;
+    private final Function<String, T> fromDb;
 
     /**
      * Constructor
      * @param enumClassIn the enum class
-     * @param typeClassIn the type class to store in the database. Currently supported: String, Integer
      * @param toDbIn to db
      * @param fromDbIn from db
      */
-    protected CustomEnumType(Class<T> enumClassIn, Class<K> typeClassIn, Function<T, K> toDbIn,
-                             Function<K, T> fromDbIn) {
-        // Enforce type check
-        if (!typeClassIn.equals(Integer.class) && !typeClassIn.equals(String.class)) {
-            throw new IllegalArgumentException("Unsupported type class " + typeClassIn.getSimpleName());
-        }
-
+    protected CustomEnumType(Class<T> enumClassIn, Function<T, String> toDbIn, Function<String, T> fromDbIn) {
         this.enumClass = enumClassIn;
-        this.typeClass = typeClassIn;
         this.toDb = toDbIn;
         this.fromDb = fromDbIn;
     }
@@ -59,18 +49,8 @@ public abstract class CustomEnumType<T extends Enum<T>, K> implements UserType {
      * @return a value from {@link java.sql.SQLType}
      */
     public int getSqlType() {
-        if (typeClass.equals(String.class)) {
             return Types.VARCHAR;
         }
-
-        // Return numeric as type check is enforced in the constructor
-        return Types.NUMERIC;
-    }
-
-    @Override
-    public int[] sqlTypes() {
-        return new int[]{getSqlType()};
-    }
 
     @Override
     public Class<T> returnedClass() {
@@ -78,20 +58,18 @@ public abstract class CustomEnumType<T extends Enum<T>, K> implements UserType {
     }
 
     @Override
-    public boolean equals(Object o, Object o1) throws HibernateException {
+    public boolean equals(T o, T o1) throws HibernateException {
         return o == o1;
     }
 
     @Override
-    public int hashCode(Object o) throws HibernateException {
+    public int hashCode(T o) throws HibernateException {
         return o == null ? 0 : o.hashCode();
     }
 
     @Override
-    public Object nullSafeGet(ResultSet resultSet, String[] names, SharedSessionContractImplementor session, Object o)
-            throws HibernateException, SQLException {
-        String name = names[0];
-        K value = resultSet.getObject(name, typeClass);
+    public T nullSafeGet(ResultSet resultSet, int position, WrapperOptions options) throws SQLException {
+        String value = resultSet.getObject(position, String.class);
         if (resultSet.wasNull()) {
             return null;
         }
@@ -101,9 +79,8 @@ public abstract class CustomEnumType<T extends Enum<T>, K> implements UserType {
     }
 
     @Override
-    public void nullSafeSet(PreparedStatement statement, Object value, int position,
-            SharedSessionContractImplementor session) throws HibernateException, SQLException {
-        K jdbcValue = value == null ? null : toDb.apply(enumClass.cast(value));
+    public void nullSafeSet(PreparedStatement statement, T value, int position, WrapperOptions options) throws SQLException {
+        String jdbcValue = value == null ? null : toDb.apply(enumClass.cast(value));
         if (jdbcValue == null) {
             statement.setNull(position, 12);
         }
@@ -113,7 +90,7 @@ public abstract class CustomEnumType<T extends Enum<T>, K> implements UserType {
     }
 
     @Override
-    public Object deepCopy(Object o) throws HibernateException {
+    public T deepCopy(T o) throws HibernateException {
         return o;
     }
 
@@ -123,17 +100,17 @@ public abstract class CustomEnumType<T extends Enum<T>, K> implements UserType {
     }
 
     @Override
-    public Serializable disassemble(Object o) throws HibernateException {
+    public Serializable disassemble(T o) throws HibernateException {
         return (Serializable)o;
     }
 
     @Override
-    public Object assemble(Serializable serializable, Object o) throws HibernateException {
-        return serializable;
+    public T assemble(Serializable serializable, Object o) throws HibernateException {
+        return (T)serializable;
     }
 
     @Override
-    public Object replace(Object o, Object o1, Object o2) throws HibernateException {
+    public T replace(T o, T o1, Object o2) throws HibernateException {
         return o;
     }
 }

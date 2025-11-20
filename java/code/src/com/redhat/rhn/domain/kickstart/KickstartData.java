@@ -39,7 +39,7 @@ import org.apache.logging.log4j.Logger;
 import org.cobbler.CobblerConnection;
 import org.cobbler.Profile;
 import org.hibernate.annotations.SortNatural;
-import org.hibernate.annotations.Type;
+import org.hibernate.type.YesNoConverter;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -56,25 +56,27 @@ import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
+import jakarta.persistence.DiscriminatorColumn;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.Lob;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 
 /**
  * KickstartData - Class representation of the table RhnKSData.
@@ -105,41 +107,41 @@ public class KickstartData extends BaseDomainHelper {
     private String comments;
 
     @Column(nullable = false)
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     private Boolean active;
 
     @Column
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     private Boolean postLog;
 
     @Column
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     private Boolean preLog;
 
     @Column(name = "kscfg")
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     private Boolean ksCfg;
 
     @Column(name = "is_org_default", nullable = false)
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     private boolean isOrgDefault;
 
     @Column(name = "kernel_params")
     private String kernelParams;
 
     @Column(name = "nonchrootpost")
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     private Boolean nonChrootPost;
 
     @Column(name = "verboseup2date")
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     private Boolean verboseUp2date;
 
     @Column(name = "cobbler_id")
     private String cobblerId;
 
     @Column(name = "partition_data")
-    @Type(type = "binary")
+    @Lob
     private byte[] partitionData;
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -187,11 +189,11 @@ public class KickstartData extends BaseDomainHelper {
     private KickstartDefaults kickstartDefaults;
 
     @Column(name = "no_base")
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     private boolean noBase;
 
     @Column(name = "ignore_missing")
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     private boolean ignoreMissing;
 
     @Column(name = "update_type", nullable = false)

@@ -28,6 +28,7 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.engine.jdbc.LobCreator;
 import org.hibernate.query.Query;
 
 import java.io.ByteArrayOutputStream;
@@ -45,7 +46,7 @@ import java.util.function.BinaryOperator;
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
-import javax.persistence.FlushModeType;
+import jakarta.persistence.FlushModeType;
 
 /**
  * HibernateFactory - Helper superclass that contains methods for fetching and
@@ -282,7 +283,7 @@ public class ReportDbHibernateFactory {
         Session session = null;
         session = getSession();
         if (saveOrUpdate) {
-            session.saveOrUpdate(toSave);
+            session.merge(toSave);
         }
         else {
             session.persist(toSave);
@@ -549,8 +550,8 @@ public class ReportDbHibernateFactory {
         if (data.length == 0) {
             return null;
         }
-        return Hibernate.getLobCreator(getSession()).createBlob(data);
 
+        return Hibernate.getLobHelper().createBlob(data);
     }
 
     /**

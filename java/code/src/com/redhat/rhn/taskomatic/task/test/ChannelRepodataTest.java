@@ -42,7 +42,7 @@ import java.util.List;
 import java.util.function.BooleanSupplier;
 import java.util.stream.Collectors;
 
-import javax.persistence.Tuple;
+import jakarta.persistence.Tuple;
 
 public class ChannelRepodataTest extends JMockBaseTestCaseWithUser {
 
