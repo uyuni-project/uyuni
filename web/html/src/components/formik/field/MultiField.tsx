@@ -28,7 +28,7 @@ export const MultiField = <ValueType, RendererProps>(props: Props<ValueType, Ren
                 {...(rest as FieldProps<ValueType, RendererProps>)}
                 name={`${props.name}.${index}`}
                 label={index === 0 ? props.label : ""}
-                key={index}
+                key={`${props.name}.${index}-field`}
               >
                 <div className={styles.buttons}>
                   <Button

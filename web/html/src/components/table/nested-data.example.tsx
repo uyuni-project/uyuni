@@ -3,7 +3,13 @@ import { Column, Table, useSelected } from "components/table";
 import { placeholderData } from "./Table.example.placeholderData";
 
 // This is just a placeholder type
-type ChannelWithHierarchy = any & {
+type ChannelWithHierarchy = {
+  channelId: number;
+  channelLabel: string;
+  channelArch: string;
+  channelOrg?: {
+    orgName: string;
+  };
   children: ChannelWithHierarchy[];
 };
 

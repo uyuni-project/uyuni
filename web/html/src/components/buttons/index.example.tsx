@@ -2,8 +2,8 @@ import { StoryRow, StorySection, StripedStorySection } from "manager/storybook/l
 
 import { Button } from "components/buttons";
 
-import { Text } from "./input/text/Text";
-import { BootstrapPanel } from "./panels/BootstrapPanel";
+import { Text } from "../input/text/Text";
+import { BootstrapPanel } from "../panels/BootstrapPanel";
 export default () => {
   const listButtons = [
     <div className="form-group btn-group" key="modal-buttons-eg1">
@@ -228,9 +228,12 @@ export default () => {
             <Text name="firstname" label={t("First Name")} labelClass="col-md-3 text-right" divClass="col-md-6" />
             <Text name="lastname" label={t("Last Name")} labelClass="col-md-3 text-right" divClass="col-md-6" />
             <div className="form-group">
-              <label className="control-label col-md-3 text-right">Email ID:</label>
+              <label className="control-label col-md-3 text-right" htmlFor="email-id">
+                Email ID:
+              </label>
               <div className="col-md-6">
-                user@suse.com <Button className="btn-tertiary" title="Edit Email ID" icon="fa-pencil"></Button>
+                user@suse.com{" "}
+                <Button className="btn-tertiary" title="Edit Email ID" icon="fa-pencil" id="email-id"></Button>
               </div>
             </div>
           </BootstrapPanel>
@@ -275,7 +278,9 @@ export default () => {
           >
             <Text name="firstname" label={t("Name")} labelClass="col-md-3 text-right" divClass="col-md-6" />
             <div className="form-group ">
-              <label className="control-label col-md-3 text-right">Name:</label>
+              <label className="control-label col-md-3 text-right" htmlFor="firstname">
+                Name:
+              </label>
               <div className="col-md-6">
                 <input className="form-control" name="firstname" />
               </div>
@@ -284,7 +289,7 @@ export default () => {
               </div>
             </div>
             <div className="form-group ">
-              <label className="control-label col-md-3"></label>
+              <div className="control-label col-md-3" />
               <div className="col-md-6">
                 <Button className="btn-tertiary" icon="fa-plus">
                   Add Name
