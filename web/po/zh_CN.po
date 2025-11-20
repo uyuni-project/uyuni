@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-10-27 10:14+0100\n"
-"PO-Revision-Date: 2025-11-14 09:04+0000\n"
+"PO-Revision-Date: 2025-11-20 05:04+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/zh_CN/>\n"
 "Language: zh_CN\n"
@@ -5549,7 +5549,7 @@ msgstr "RPM"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:294
 msgid "Registry"
-msgstr "注册表"
+msgstr "仓库"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:304
 msgid "The availability of container images depends on your environment’s connectivity. In air-gapped/restricted environments, using RPM as the source mode is recommended to ensure all required images are available locally. Selecting an incompatible source mode may result in deployment failures."
@@ -5558,7 +5558,7 @@ msgstr "容器映像的可用性取决于您环境的网络连通性。在隔离
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:314
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:315
 msgid "Registry Source"
-msgstr "注册表源"
+msgstr "仓库源"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:322
 msgid "Simple"
@@ -5570,7 +5570,7 @@ msgstr "高级"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:331
 msgid "Registry URL"
-msgstr "注册表 URL"
+msgstr "仓库 URL"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:332
 msgid "e.g., "
