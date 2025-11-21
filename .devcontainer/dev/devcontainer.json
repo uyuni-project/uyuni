@@ -16,7 +16,6 @@
       "label": "Debug Search Server",
       "onAutoForward": "notify"
     },
-
     "8003": {
       "label": "Debug Tomcat",
       "onAutoForward": "notify"
@@ -25,6 +24,21 @@
 
   "customizations": {
     "vscode": {
+      "settings": {
+        "java.jdt.ls.java.home": "/usr/lib64/jvm/java-25-openjdk",
+        "java.configuration.runtimes": [
+            {
+                "name": "JavaSE-17",
+                "path": "/usr/lib64/jvm/java-17-openjdk",
+                "default": true
+            },
+            {
+                "name": "JavaSE-25",
+                "path": "/usr/lib64/jvm/java-25-openjdk",
+                "default": true
+            }
+        ]
+      },
       "extensions": [
         "nickheap.vscode-ant",
         "vscjava.vscode-java-debug",
@@ -39,5 +53,6 @@
     }
   },
 
-  "postCreateCommand": "cd ${containerWorkspaceFolder} && ant -f java/manager-build.xml ivy && npm --prefix web install"
+  "remoteUser": "uyuni",
+  "postCreateCommand": "/bin/bash -C -- /home/uyuni/initialize.sh ${containerWorkspaceFolder}"
 }

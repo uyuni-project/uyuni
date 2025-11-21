@@ -11,7 +11,7 @@ import { MaintenanceWindowsDetails } from "./details/maintenance-windows-details
 import { MaintenanceWindowsEdit } from "./edit/maintenance-windows-edit";
 import { MaintenanceWindowsList } from "./list/maintenance-windows-list";
 
-// See java/code/src/com/suse/manager/webui/templates/schedule/maintenance-windows.jade
+// See java/core/src/main/resources/com/suse/manager/webui/templates/schedule/maintenance-windows.jade
 declare global {
   interface Window {
     timezone?: any;

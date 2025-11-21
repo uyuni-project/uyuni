@@ -4,7 +4,7 @@ import type { tType } from "core/intl";
 
 declare global {
   interface Window {
-    // See java/code/webapp/WEB-INF/includes/leftnav.jsp
+    // See java/webapp/src/main/webapp/WEB-INF/includes/leftnav.jsp
     JSONMenu: any[];
 
     // CSRF loopback

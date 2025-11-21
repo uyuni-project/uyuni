@@ -15,7 +15,7 @@ import { Utils } from "utils/functions";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network from "utils/network";
 
-// See java/code/src/com/suse/manager/webui/templates/content_management/list-stores.jade
+// See java/core/src/main/resources/com/suse/manager/webui/templates/content_management/list-stores.jade
 declare global {
   interface Window {
     isAdmin?: any;

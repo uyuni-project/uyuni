@@ -16,7 +16,7 @@ import { localizedMoment } from "utils";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network from "utils/network";
 
-// See java/code/src/com/suse/manager/webui/templates/content_management/build.jade
+// See java/core/src/main/resources/com/suse/manager/webui/templates/content_management/build.jade
 declare global {
   interface Window {
     profileId?: number;

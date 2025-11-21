@@ -15,7 +15,7 @@ const main = async () => {
         const tests = new Set();
 
         for (const filepath of changedFiles) {
-            const classpath = filepath.replace('java/code/src/', '');
+            const classpath = filepath.replace('java/src/main/java/', '');
             const testNames = await redis.smembers(classpath);
             testNames.forEach(test => tests.add(test));
         }

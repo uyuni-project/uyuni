@@ -5,7 +5,7 @@ import { Utils as MessagesUtils } from "components/messages/messages";
 
 import Network from "utils/network";
 
-// See java/code/src/com/suse/manager/webui/templates/yourorg/custom.jade
+// See java/core/src/main/resources/com/suse/manager/webui/templates/yourorg/custom.jade
 declare global {
   interface Window {
     orgId?: any;

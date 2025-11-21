@@ -11,7 +11,7 @@ import { TopPanel } from "components/panels/TopPanel";
 
 import Network from "utils/network";
 
-// See java/code/src/com/suse/manager/webui/templates/minion/bootstrap.jade
+// See java/core/src/main/resources/com/suse/manager/webui/templates/minion/bootstrap.jade
 declare global {
   interface Window {
     availableActivationKeys?: any;
