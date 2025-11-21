@@ -7,19 +7,11 @@ type Props = {
 };
 
 export const StorySection = (props: Props) => {
-  return (
-    <>
-      <div className={styles.section}>{props.children}</div>
-    </>
-  );
+  return <div className={styles.section}>{props.children}</div>;
 };
 
 export const StripedStorySection = (props: Props) => {
-  return (
-    <>
-      <div className={`${styles.section} ${styles.striped}`}>{props.children}</div>
-    </>
-  );
+  return <div className={`${styles.section} ${styles.striped}`}>{props.children}</div>;
 };
 
 type RowProps = {

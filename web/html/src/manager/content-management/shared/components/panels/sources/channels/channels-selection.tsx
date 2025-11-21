@@ -8,6 +8,7 @@ import { ProjectSoftwareSourceType } from "manager/content-management/shared/typ
 import { BaseChannelType, ChannelTreeType, ChildChannelType, isBaseChannel } from "core/channels/type/channels.type";
 
 import { DEPRECATED_Select } from "components/input";
+import { DEPRECATED_onClick } from "components/utils";
 import { Loading } from "components/utils/loading/Loading";
 import { VirtualList } from "components/virtual-list";
 
@@ -212,10 +213,10 @@ const ChannelsSelection = (props: PropsType) => {
                   />
                   <span className={`${styles.search_icon_container} clear`}>
                     <i
-                      onClick={() => {
+                      {...DEPRECATED_onClick(() => {
                         setSearch("");
                         onSearch("");
-                      }}
+                      })}
                       className="fa fa-times-circle-o no-margin"
                       title={t("Clear Search")}
                     />

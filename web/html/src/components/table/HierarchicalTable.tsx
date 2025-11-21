@@ -9,6 +9,8 @@ import {
   useState,
 } from "react";
 
+import { DEPRECATED_onClick } from "components/utils";
+
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
 import { SearchField } from "./SearchField";
@@ -202,7 +204,7 @@ export const DEPRECATED_HierarchicalTable = forwardRef<TableRef, HierarchicalTab
               {!row.isLeaf && (
                 <i
                   className={`fa ${isExpanded ? "fa-angle-down" : "fa-angle-right"} fa-1-5x pointer product-hover`}
-                  onClick={() => toggleRowExpanded(rowId)}
+                  {...DEPRECATED_onClick(() => toggleRowExpanded(rowId))}
                 />
               )}
               {renderCellContent(row, child)}

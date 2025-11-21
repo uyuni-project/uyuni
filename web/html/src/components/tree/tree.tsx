@@ -1,6 +1,7 @@
 import { type ChangeEvent, type ReactNode, useState } from "react";
 
 import { CustomDiv } from "components/custom-objects";
+import { DEPRECATED_onClick } from "components/utils";
 
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
@@ -71,7 +72,10 @@ export const Tree = (props: Props) => {
     const renderNameColumn = (name: string) => {
       const className = children.length > 0 ? "product-hover pointer" : "";
       return (
-        <span className={`product-description ${className}`} onClick={() => handleVisibleSublist(item.id)}>
+        <span
+          className={`product-description ${className}`}
+          {...DEPRECATED_onClick(() => handleVisibleSublist(item.id))}
+        >
           {name}
         </span>
       );
@@ -95,7 +99,7 @@ export const Tree = (props: Props) => {
             {children.length > 0 && (
               <i
                 className={`fa ${openSubListIconClass} fa-1-5x pointer product-hover`}
-                onClick={() => handleVisibleSublist(item.id)}
+                {...DEPRECATED_onClick(() => handleVisibleSublist(item.id))}
               />
             )}
           </CustomDiv>

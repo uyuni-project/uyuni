@@ -4,6 +4,7 @@ import SpaRenderer from "core/spa/spa-renderer";
 import { isUyuni } from "core/user-preferences";
 
 import { MessagesContainer } from "components/toastr/toastr";
+import { DEPRECATED_onClick } from "components/utils";
 
 import { stringToReact } from "utils";
 import { flatten } from "utils/jsx";
@@ -48,7 +49,11 @@ class Node extends Component<NodeProps> {
 
   render() {
     return (
-      <div className={this.props.isLeaf ? "leafLink" : "nodeLink"} onClick={(event) => this.handleClick(event)}>
+      <div
+        className={this.props.isLeaf ? "leafLink" : "nodeLink"}
+        {...DEPRECATED_onClick((event) => this.handleClick(event))}
+        role="button"
+      >
         {this.props.icon ? <i className={"fa " + this.props.icon}></i> : null}
         <Link url={this.props.url} target={this.props.target} label={stringToReact(this.props.label)} />
         {this.props.isLeaf ? null : !this.props.isSearchActive ? (
@@ -189,7 +194,7 @@ class Nav extends Component {
     this.setState({ search: e.target.value });
   };
 
-  closeEmAll = () => {
+  closeAll = () => {
     this.setState({ search: "", forceCollapse: true });
   };
 
@@ -213,7 +218,11 @@ class Nav extends Component {
           />
           <span className={"input-right-icon " + (isSearchActive ? "clear" : "")}>
             {isSearchActive ? (
-              <i className="fa fa-times-circle-o no-margin" onClick={this.closeEmAll} title={t("Clear Menu")}></i>
+              <i
+                className="fa fa-times-circle-o no-margin"
+                {...DEPRECATED_onClick(this.closeAll)}
+                title={t("Clear Menu")}
+              ></i>
             ) : (
               <i className="fa fa-search no-margin" title={t("Filter menu")}></i>
             )}
@@ -294,8 +303,6 @@ class Breadcrumb extends Component {
 SpaRenderer.renderGlobalReact(<Breadcrumb />, document.getElementById("breadcrumb"));
 
 SpaRenderer.renderGlobalReact(
-  <>
-    <MessagesContainer containerId="global" />
-  </>,
+  <MessagesContainer containerId="global" />,
   document.getElementById("messages-container")
 );

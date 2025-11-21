@@ -95,9 +95,7 @@ class ActivationKeyChannelsApi extends Component<ActivationKeyChannelsProps, Act
         })
         .catch(this.handleResponseError);
     } else {
-      future = new Promise(function (resolve) {
-        resolve();
-      });
+      future = Promise.resolve();
     }
     return future;
   };
@@ -107,13 +105,11 @@ class ActivationKeyChannelsApi extends Component<ActivationKeyChannelsProps, Act
 
     const availableChannels = this.state.fetchedData.get(baseId);
     if (this.state.fetchedData && availableChannels) {
-      future = new Promise((resolve) => {
-        resolve(
-          this.setState({
-            availableChannels,
-          })
-        );
-      });
+      future = Promise.resolve(
+        this.setState({
+          availableChannels,
+        })
+      );
     } else {
       this.setState({ loadingChildren: true });
       future = Network.get(`/rhn/manager/api/activation-keys/base-channels/${baseId}/child-channels`)

@@ -6,6 +6,7 @@ import { productName } from "core/user-preferences";
 
 import { SectionState } from "components/FormulaForm";
 import { Highlight } from "components/table/Highlight";
+import { DEPRECATED_onClick } from "components/utils";
 import HelpIcon from "components/utils/HelpIcon";
 
 import { Formulas, Utils } from "utils/functions";
@@ -139,9 +140,9 @@ class EditGroup extends Component<EditGroupProps, EditGroupState> {
             title={
               this.props.element.$maxItems! <= this.props.value.length ? "Max number of items reached" : "Add Item"
             }
-            onClick={this.handleAddItem}
             /* @ts-expect-error: The property `disabled` doesn't exist on the `<i>` tag, but this was here historically */
             disabled={this.props.element.$maxItems! <= this.props.value.length || this.props.disabled}
+            {...DEPRECATED_onClick(this.handleAddItem)}
           ></i>
         </div>
         <div>
@@ -425,12 +426,12 @@ class EditDictionaryGroup extends Component<EditDictionaryGroupProps, EditDictio
             </SectionToggle>
             <i
               className="fa fa-minus"
-              onClick={() => this.props.handleRemoveItem(i)}
               title={
                 this.props.element.$minItems! >= this.props.value.length ? "Min number of items reached" : "Remove item"
               }
               /* @ts-expect-error: The property `disabled` doesn't exist on the `<i>` tag, but this was here historically */
               disabled={this.props.element.$minItems! >= this.props.value.length || this.props.isDisabled}
+              {...DEPRECATED_onClick(() => this.props.handleRemoveItem(i))}
             />
           </div>
           <div>{this.state.visibility.get(i) !== false ? item_elements : null}</div>
