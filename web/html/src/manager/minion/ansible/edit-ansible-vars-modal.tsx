@@ -39,6 +39,9 @@ const EditAnsibleVarsModal = (props: Props) => {
   const onSave = () => {
     try {
       const savedVars = editorRef.current?.getValues?.();
+      if (!savedVars) {
+        return;
+      }
       if (extraVars) {
         const parsedExtraVars = yaml.load(extraVars);
         if (typeof parsedExtraVars !== "object" || parsedExtraVars === null) {
