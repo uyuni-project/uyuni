@@ -1303,6 +1303,7 @@ public class HubManager {
             Optional.ofNullable(originalChannel).map(Channel::getId).orElse(null),
             children,
             clones,
+            selectedChannelOrg != null,
             syncedChannelToIssChannelMap.containsKey(channel.getId())
         );
     }

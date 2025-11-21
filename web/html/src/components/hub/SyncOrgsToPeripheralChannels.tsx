@@ -40,13 +40,6 @@ export class SyncOrgsToPeripheralChannel extends Component<SyncPeripheralsProps,
   constructor(props: SyncPeripheralsProps) {
     super(props);
 
-    props.channels.forEach((channel) => {
-      if (!channel) return;
-      if (channel.peripheralOrg !== null) {
-        channel.strictOrg = true;
-      }
-    });
-
     this.state = {
       peripheralId: props.peripheralId,
       peripheralFqdn: props.peripheralFqdn,
