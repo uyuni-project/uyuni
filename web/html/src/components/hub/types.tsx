@@ -116,24 +116,14 @@ export type Channel = {
   peripheralOrg: Org | null;
   parentId: number | null; // if null, this is a root channel
   children: Channel[]; // for easy hierarchical references
+  clones: Channel[];
   strictOrg: boolean;
   synced: boolean;
-};
-
-export type FlatChannel = {
-  id: number;
-  name: string;
-  label: string;
-  architecture: string;
-  hubOrg: Org | null;
-  peripheralOrg: Org | null;
-  parentId: number | null; // if null, this is a root channel
-  childrenLabels: string[]; // for easy lookup if needed
-  strictOrg: boolean;
-  synced: boolean; // no need for another class that tells us if the channel is synced or not
 };
 
 export type ChannelSyncProps = {
   peripheralOrgs: Org[];
   channels: Channel[];
+  mandatoryMap: [number, number[]][];
+  reversedMandatoryMap: [number, number[]][];
 };

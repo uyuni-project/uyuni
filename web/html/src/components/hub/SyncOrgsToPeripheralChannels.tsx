@@ -11,61 +11,28 @@ import { showSuccessToastr, showWarningToastr } from "components/toastr";
 
 import Network from "utils/network";
 
-import ChannelHierarchicalTable from "./HierarchicalChannelsTable";
-import { Channel, ChannelSyncProps, FlatChannel, Org } from "./types";
+import { ChannelSelectorTable } from "./ChannelSelectorTable";
+import { Channel, ChannelSyncProps, Org } from "./types";
 
 type SyncPeripheralsProps = {
   peripheralId: number;
   peripheralFqdn: string;
   availableOrgs: Org[];
   channels: Channel[];
+  mandatoryMap: Map<number, number[]>;
+  reversedMandatoryMap: Map<number, number[]>;
 };
 
 type State = {
   peripheralId: number;
   peripheralFqdn: string;
-  channels: FlatChannel[];
+  channels: Channel[];
   availableOrgs: Org[];
   syncModalOpen: boolean;
-  channelsToAdd: number[];
-  channelsToRemove: number[];
+  channelsToAdd: Channel[];
+  channelsToRemove: Channel[];
   loading: boolean;
 };
-
-/**
- * Converts a hierarchical array of Channel objects to a flat array of FlatChannel objects.
- * The resulting array includes all channels and their children, with parent-child
- * relationships preserved through the childrenIds property.
- *
- * @param channels - An array of hierarchical Channel objects
- * @returns An array of FlatChannel objects
- */
-function flattenChannels(channels: Channel[]): FlatChannel[] {
-  const flatChannels: FlatChannel[] = [];
-  /**
-   * Process a channel and its children recursively, adding them to the flat array
-   * @param channel - The current channel to process
-   */
-  const processChannel = (channel: Channel): void => {
-    const childrenLabels = channel.children.map((child) => child.label);
-    const flatChannel: FlatChannel = {
-      id: channel.id,
-      name: channel.name,
-      label: channel.label,
-      architecture: channel.architecture,
-      hubOrg: channel.hubOrg,
-      peripheralOrg: channel.peripheralOrg,
-      parentId: channel.parentId,
-      childrenLabels: childrenLabels,
-      strictOrg: channel.strictOrg,
-      synced: channel.synced,
-    };
-    flatChannels.push(flatChannel);
-    channel.children.forEach((child) => processChannel(child));
-  };
-  channels.forEach((channel) => processChannel(channel));
-  return flatChannels;
-}
 
 export class SyncOrgsToPeripheralChannel extends Component<SyncPeripheralsProps, State> {
   private tableRef: RefObject<TableRef> = createRef();
@@ -83,7 +50,7 @@ export class SyncOrgsToPeripheralChannel extends Component<SyncPeripheralsProps,
     this.state = {
       peripheralId: props.peripheralId,
       peripheralFqdn: props.peripheralFqdn,
-      channels: flattenChannels(props.channels),
+      channels: props.channels,
       availableOrgs: props.availableOrgs,
       syncModalOpen: false,
       channelsToAdd: [],
@@ -101,7 +68,7 @@ export class SyncOrgsToPeripheralChannel extends Component<SyncPeripheralsProps,
   private setStateFromApiProps(props: SyncPeripheralsProps) {
     this.setState({
       availableOrgs: props.availableOrgs,
-      channels: flattenChannels(props.channels),
+      channels: props.channels,
       loading: false,
       // Reset change tracking when API data changes
       channelsToAdd: [],
@@ -114,76 +81,43 @@ export class SyncOrgsToPeripheralChannel extends Component<SyncPeripheralsProps,
     this.setState({ syncModalOpen: isOpen });
   }
 
-  handleChannelSelect = (channelId: number, checked: boolean) => {
-    const { channelsToAdd, channelsToRemove, channels } = this.state;
-    // Check if the channel is already synced (has synced flag true)
-    const isChannelSynced = channels.some((channel) => channel.id === channelId && channel.synced);
-    if (checked) {
-      // User is checking the channel (wants to sync it)
-      if (isChannelSynced) {
-        // If it's already synced but was in channelsToRemove (user changed their mind),
-        // remove it from channelsToRemove
-        if (channelsToRemove.includes(channelId)) {
-          this.setState({
-            channelsToRemove: channelsToRemove.filter((id) => id !== channelId),
-          });
-        }
-      } else {
-        // If it's not synced yet, add it to channelsToAdd (unless it's already there)
-        if (!channelsToAdd.includes(channelId)) {
-          this.setState({
-            channelsToAdd: [...channelsToAdd, channelId],
-          });
-        }
-      }
-    } else {
-      // User is unchecking the channel (wants to unsync it)
-      if (isChannelSynced) {
-        // If it's currently synced, add it to channelsToRemove (unless it's already there)
-        if (!channelsToRemove.includes(channelId)) {
-          this.setState({
-            channelsToRemove: [...channelsToRemove, channelId],
-          });
-        }
-      } else {
-        // If it's not synced but was in channelsToAdd (user changed their mind),
-        // remove it from channelsToAdd
-        if (channelsToAdd.includes(channelId)) {
-          this.setState({
-            channelsToAdd: channelsToAdd.filter((id) => id !== channelId),
-          });
-        }
-      }
-    }
-  };
+  handleChannelSelect = (channels: Channel[], selected: boolean) => {
+    const channelsToAddSet = new Set<Channel>(this.state.channelsToAdd);
+    const channelsToRemoveSet = new Set<Channel>(this.state.channelsToRemove);
 
-  handleOrgSelect = (channelId: number, org?: Org) => {
-    this.setState((prevState) => ({
-      channels: prevState.channels.map((channel) => {
-        if (channel.id !== channelId) {
-          return channel;
-        }
+    channels.forEach((channel) => {
+      if (selected && !channel.synced) {
+        // User wants to sync the channel, and it's not synced yet: add it to channelsToAdd
+        channelsToAddSet.add(channel);
+      } else if (selected && channel.synced) {
+        // User wants to sync the channel, but it's already synced: user changed their mind, remove it from channelsToRemove
+        channelsToRemoveSet.delete(channel);
+      } else if (!selected && channel.synced) {
+        // User wants to stop syncing for the channel and it's currently synced: add it to channelsToRemove
+        channelsToRemoveSet.add(channel);
+      } else if (!selected && !channel.synced) {
+        // User wants to stop syncing for the channel but it's not synced: user changed their mind, remove it from channelsToAdd
+        channelsToAddSet.delete(channel);
+      }
+    });
 
-        return {
-          ...channel,
-          peripheralOrg: org ?? null,
-        };
-      }),
-    }));
+    this.setState({
+      channelsToAdd: Array.from(channelsToAddSet),
+      channelsToRemove: Array.from(channelsToRemoveSet),
+    });
   };
 
   onChannelSyncConfirm = () => {
-    const { peripheralId, channelsToAdd, channelsToRemove, channels } = this.state;
+    const { peripheralId, channelsToAdd, channelsToRemove } = this.state;
     // Check if there's anything to do
     if (channelsToAdd.length === 0 && channelsToRemove.length === 0) {
       showWarningToastr(t("No changes to apply"));
       return;
     }
     const channelsToAddByOrg: { orgId: number | null; channelLabels: string[] }[] = [];
-    const orgGroups: Record<string, number[]> = {};
+    const orgGroups: Record<string, Channel[]> = {};
     // First, group channel IDs by orgId
-    channelsToAdd.forEach((id) => {
-      const channel = channels.find((c) => c.id === id);
+    channelsToAdd.forEach((channel) => {
       if (!channel) return;
       // For vendor channels, use null as orgId
       const orgId = channel.peripheralOrg ? channel.peripheralOrg.orgId : null;
@@ -191,12 +125,13 @@ export class SyncOrgsToPeripheralChannel extends Component<SyncPeripheralsProps,
       if (!orgGroups[key]) {
         orgGroups[key] = [];
       }
-      orgGroups[key].push(id);
+      orgGroups[key].push(channel);
     });
+
     // Then, convert each group to the required format
-    Object.entries(orgGroups).forEach(([orgKey, channelIds]) => {
+    Object.entries(orgGroups).forEach(([orgKey, channels]) => {
       const orgId = orgKey === "null" ? null : parseInt(orgKey, 10);
-      const channelLabels = channelIds.map((id) => channels.find((c) => c.id === id)?.label).filter(Boolean);
+      const channelLabels = channels.map((channel) => channel.label);
       if (channelLabels.length > 0) {
         channelsToAddByOrg.push({
           orgId,
@@ -205,9 +140,7 @@ export class SyncOrgsToPeripheralChannel extends Component<SyncPeripheralsProps,
       }
     });
 
-    const channelsToRemoveLabels = channelsToRemove
-      .map((id) => channels.find((c) => c.id === id)?.label)
-      .filter(Boolean);
+    const channelsToRemoveLabels = channelsToRemove.map((channel) => channel.label);
 
     const payload = {
       channelsToAdd: channelsToAddByOrg,
@@ -236,6 +169,8 @@ export class SyncOrgsToPeripheralChannel extends Component<SyncPeripheralsProps,
           peripheralFqdn: this.props.peripheralFqdn,
           availableOrgs: channelSync.peripheralOrgs,
           channels: channelSync.channels,
+          mandatoryMap: this.props.mandatoryMap,
+          reversedMandatoryMap: this.props.reversedMandatoryMap,
         };
         this.setStateFromApiProps(newProps);
         this.openCloseModalState(false);
@@ -263,9 +198,6 @@ export class SyncOrgsToPeripheralChannel extends Component<SyncPeripheralsProps,
 
   render() {
     const { channels, syncModalOpen, availableOrgs, loading, channelsToAdd, channelsToRemove } = this.state;
-
-    const channelsToAddData = channels.filter((channel) => channelsToAdd.includes(channel.id));
-    const channelsToRemoveData = channels.filter((channel) => channelsToRemove.includes(channel.id));
 
     const searchData = (row, criteria) => {
       const keysToSearch = ["channelName"];
@@ -295,11 +227,11 @@ export class SyncOrgsToPeripheralChannel extends Component<SyncPeripheralsProps,
     const channelsToAddTable = (
       <>
         <h4 className="mt-4">{t("Channels to Add")}</h4>
-        {channelsToAddData.length > 0 ? (
+        {channelsToAdd.length > 0 ? (
           <>
             <Table
-              data={channelsToAddData}
-              identifier={(row: FlatChannel) => row.id}
+              data={channelsToAdd}
+              identifier={(row: Channel) => row.id}
               selectable={false}
               initialSortColumnKey="channelName"
               searchField={<SearchField filter={searchData} placeholder={t("Filter by Name")} />}
@@ -310,7 +242,7 @@ export class SyncOrgsToPeripheralChannel extends Component<SyncPeripheralsProps,
               <Column columnKey="organization" header={t("Sync Org")} cell={renderChannelOrganization} />
             </Table>
             {/* Display a warning if any non-vendor channel doesn't have an org mapping */}
-            {channelsToAddData.some(
+            {channelsToAdd.some(
               (channel) =>
                 (channel.hubOrg && channel.peripheralOrg === undefined) ||
                 (channel.hubOrg && channel.peripheralOrg === null)
@@ -332,12 +264,12 @@ export class SyncOrgsToPeripheralChannel extends Component<SyncPeripheralsProps,
     const channelsToRemoveTable = (
       <>
         <h4 className="mt-4">{t("Channels to Remove")}</h4>
-        {channelsToRemoveData.length > 0 ? (
+        {channelsToRemove.length > 0 ? (
           <Table
-            data={channelsToRemoveData}
-            identifier={(row: FlatChannel) => row.id}
+            data={channelsToRemove}
+            identifier={(row: Channel) => row.id}
             selectable={false}
-            initialSortColumnKey="channelName"
+            initialSortColumnKey="name"
             searchField={<SearchField filter={searchData} placeholder={t("Filter by Name")} />}
           >
             <Column columnKey="name" header={t("Name")} cell={renderChannelName} />
@@ -381,19 +313,6 @@ export class SyncOrgsToPeripheralChannel extends Component<SyncPeripheralsProps,
       </div>
     );
 
-    const markedChannels = channels.map((channel) => {
-      const isCurrentlySynced = channel.synced;
-      const isPendingAddition = !isCurrentlySynced && channelsToAdd.includes(channel.id);
-      const isPendingRemoval = isCurrentlySynced && channelsToRemove.includes(channel.id);
-      const isChecked = (isCurrentlySynced && !isPendingRemoval) || (!isCurrentlySynced && isPendingAddition);
-      return {
-        ...channel,
-        isChecked,
-        isPendingAddition,
-        isPendingRemoval,
-      };
-    });
-
     return (
       <TopPanel
         title={t("{peripheralFqdn} - Peripheral Sync Channels", this.props)}
@@ -429,12 +348,13 @@ export class SyncOrgsToPeripheralChannel extends Component<SyncPeripheralsProps,
         </SectionToolbar>
         <div className="container mt-4">
           <h3>{t("Sync Channels from Hub to Peripheral")}</h3>
-          <ChannelHierarchicalTable
-            channels={markedChannels}
+          <ChannelSelectorTable
+            channels={channels}
+            allChannelIds={async () => [101, 102, 103, 104, 105]}
             availableOrgs={availableOrgs}
-            onChannelSelect={this.handleChannelSelect}
-            onOrgSelect={this.handleOrgSelect}
-            loading={loading}
+            requiresMap={this.props.mandatoryMap}
+            requiredByMap={this.props.reversedMandatoryMap}
+            onChannelSyncChange={this.handleChannelSelect}
           />
           <Dialog
             id="sync-channel-modal"

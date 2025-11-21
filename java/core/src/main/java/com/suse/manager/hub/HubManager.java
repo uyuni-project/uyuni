@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.iss.IssMaster;
 import com.redhat.rhn.domain.iss.IssSlave;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
+import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.server.MgrServerInfo;
@@ -71,6 +72,7 @@ import com.suse.manager.webui.utils.token.TokenParsingException;
 import com.suse.scc.SCCTaskManager;
 import com.suse.scc.proxy.SCCProxyFactory;
 import com.suse.utils.CertificateUtils;
+import com.suse.utils.Maps;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -1245,7 +1247,19 @@ public class HubManager {
             .map(channel -> buildChannelSyncDetail(channel, user, syncedChannelToIssChannelMap, peripheralOrgs))
             .toList();
 
-        return new ChannelSyncModel(peripheralOrgs, channelDetails);
+        // Mandatory map, in Javascript compatible format
+        Map<Long, List<Long>>  mandatoryMap = channelDetails.stream()
+            .flatMap(channel -> Stream.concat(Stream.of(channel), channel.children().stream()))
+            .collect(Collectors.toMap(
+                ChannelSyncDetail::id, HubManager::getMandatoryChannelsFor
+            ));
+
+        return new ChannelSyncModel(
+            peripheralOrgs,
+            channelDetails,
+            Maps.mapToEntryList(mandatoryMap),
+            Maps.mapToEntryList(Maps.invertMultimap(mandatoryMap))
+        );
     }
 
     private ChannelSyncDetail buildChannelSyncDetail(Channel channel, User user,
@@ -1747,5 +1761,17 @@ public class HubManager {
 
         // Remove the master
         IssFactory.delete(master);
+    }
+
+    private static List<Long> getMandatoryChannelsFor(ChannelSyncDetail channel) {
+        Stream<Long> mandatoryChannelIds = SUSEProductFactory.findSyncedMandatoryChannels(channel.label())
+            .map(Channel::getId);
+
+        Stream<Long> parentIdStream = Optional.ofNullable(channel.parentId()).stream();
+
+        // Ensure the parent is always marked as mandatory even for custom channels
+        return Stream.concat(parentIdStream, mandatoryChannelIds)
+            .distinct()
+            .toList();
     }
 }
