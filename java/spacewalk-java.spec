@@ -508,15 +508,10 @@ export JAVA_HOME=/usr/lib/jvm/java-%{java_version}-openjdk/
 export NO_BRP_STALE_LINK_ERROR=yes
 
 mkdir -p %{buildroot}%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib
-%if 0%{?suse_version}
-ant -Dproduct.name="'$PRODUCT_NAME'" -Dprefix=%{buildroot} -Dtomcat="tomcat9" install-tomcat9-suse
+
+ant -Dproduct.name="'$PRODUCT_NAME'" -Dprefix=%{buildroot} install-tomcat
 install -d -m 755 %{buildroot}%{serverdir}/tomcat/webapps/rhn/META-INF/
 install -m 755 conf/rhn-tomcat9.xml %{buildroot}%{serverdir}/tomcat/webapps/rhn/META-INF/context.xml
-%else
-ant -Dproduct.name="'$PRODUCT_NAME'" -Dprefix=%{buildroot} install-tomcat
-install -d -m 755 %{buildroot}%{_sysconfdir}/tomcat/Catalina/localhost/
-install -m 644 conf/rhn-tomcat9.xml %{buildroot}%{_sysconfdir}/tomcat/Catalina/localhost/rhn.xml
-%endif
 
 # check spelling errors in all resources for English if aspell installed
 [ -x "$(which aspell)" ] && scripts/spelling/check_java.sh .. en_US

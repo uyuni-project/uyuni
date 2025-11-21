@@ -329,13 +329,6 @@
        <antcall target="install" />
   </target>
 
-  <target name="install-tomcat9-suse">
-       <property name="webapp-dir" value="/usr/share/susemanager/www/tomcat/webapps/" />
-       <echo message="${prefix}" />
-       <echo message="${webapp-dir}" />
-       <antcall target="install" />
-  </target>
-
   <target name="apidoc-install"
           depends="apidoc-jsp"
           description="Copies apidoc to the target directory">
