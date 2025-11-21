@@ -23,6 +23,7 @@ public record ChannelSyncDetail(
     Long originalChannelId,
     List<ChannelSyncDetail> children,
     List<ChannelSyncDetail> clones,
+    boolean strictOrg,
     boolean synced
 ) { }
 
