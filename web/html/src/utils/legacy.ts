@@ -1,5 +1,5 @@
 /**
- * DEPRECATED: Do **NOT** use this function for new code
+ * @deprecated Do **NOT** use this function for new code
  *
  * This function exists solely to account for old code that relies on equalities
  * such as `"1" == 1` or `0 == ""` and similar JS nonsense. This can happen when
