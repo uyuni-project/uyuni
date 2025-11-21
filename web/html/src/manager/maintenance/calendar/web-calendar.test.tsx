@@ -1,12 +1,14 @@
-import localizedMoment from "moment";
+// TODO: This should eventually be localizedMoment instead
+/* eslint-disable local-rules/no-raw-date */
+import moment from "moment";
 
 import { WebCalendar } from "manager/maintenance/calendar/web-calendar";
 
 import { click, render, screen, server, waitFor } from "utils/test-utils";
 
-const initialDate = localizedMoment.utc("2021-07-09", "YYYY-MM-DD");
+const initialDate = moment.utc("2021-07-09", "YYYY-MM-DD");
 
-function getApiPath(operation: string, date: localizedMoment.Moment) {
+function getApiPath(operation: string, date: moment.Moment) {
   return `/rhn/manager/api/maintenance/events/${operation}/schedule/0/${date.valueOf()}/0`;
 }
 
@@ -49,7 +51,7 @@ describe("Web calendar", () => {
       },
     ];
 
-    const date = localizedMoment.utc("2021-08-01", "YYYY-MM-DD");
+    const date = moment.utc("2021-08-01", "YYYY-MM-DD");
 
     server.mockGetJson(getApiPath("initial", initialDate), []);
     server.mockGetJson(getApiPath("next", date), data);
@@ -88,7 +90,7 @@ describe("Web calendar", () => {
       },
     ];
 
-    const date = localizedMoment.utc("2021-06-30", "YYYY-MM-DD");
+    const date = moment.utc("2021-06-30", "YYYY-MM-DD");
 
     server.mockGetJson(getApiPath("initial", initialDate), []);
     server.mockGetJson(getApiPath("back", date), data);
@@ -127,7 +129,7 @@ describe("Web calendar", () => {
       },
     ];
 
-    const date = localizedMoment.utc("2021-08-01", "YYYY-MM-DD");
+    const date = moment.utc("2021-08-01", "YYYY-MM-DD");
 
     server.mockGetJson(getApiPath("initial", initialDate), []);
     server.mockGetJson(getApiPath("skipNext", date), data);
@@ -166,7 +168,7 @@ describe("Web calendar", () => {
       },
     ];
 
-    const date = localizedMoment.utc("2021-06-30", "YYYY-MM-DD");
+    const date = moment.utc("2021-06-30", "YYYY-MM-DD");
 
     server.mockGetJson(getApiPath("initial", initialDate), []);
     server.mockGetJson(getApiPath("skipBack", date), data);
@@ -205,7 +207,7 @@ describe("Web calendar", () => {
       },
     ];
 
-    const date = localizedMoment.utc("2021-08-01", "YYYY-MM-DD");
+    const date = moment.utc("2021-08-01", "YYYY-MM-DD");
 
     server.mockGetJson(getApiPath("initial", initialDate), []);
     server.mockGetJson(getApiPath("next", date), []);
