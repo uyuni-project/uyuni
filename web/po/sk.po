@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-11-21 10:49+0100\n"
-"PO-Revision-Date: 2025-10-11 14:59+0000\n"
+"PO-Revision-Date: 2025-11-21 19:04+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 5.13.3\n"
+"X-Generator: Weblate 5.14.3\n"
 
 #: ../html/javascript/spacewalk-essentials.js:409
 msgid "remaining"
@@ -1830,11 +1830,11 @@ msgstr "Upraviť poradia kanálov"
 
 #: ../html/src/components/states-picker.tsx:446
 msgid "Edit the ranking of the states by dragging them. They are listed in order from highest to lowest rank. In other words, the bottom ones will be applied first."
-msgstr ""
+msgstr "Upraviť poradie stavov ich pretiahnutím. Sú uvedené v poradí od najvyššej po najnižšiu pozíciu. Inými slovami, najskôr sa použijú tie najnižšie."
 
 #: ../html/src/components/states-picker.tsx:449
 msgid "Edit the ranking of the configuration channels by dragging them. They are listed in order from highest to lowest rank. Files from a particular channel will override files with the same filepath and name from channels below it. In other words, the bottom ones will be applied first."
-msgstr ""
+msgstr "Upravte poradie konfiguračných kanálov ich pretiahnutím. Sú uvedené v poradí od najvyššej po najnižšiu pozíciu. Súbory z určitého kanála nahradia súbory s rovnakou cestou a názvom z kanálov pod ním. Inými slovami, najskôr sa použijú tie najnižšie."
 
 #: ../html/src/components/states-picker.tsx:455
 msgid "There are no states assigned."
