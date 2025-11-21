@@ -589,12 +589,13 @@ public class ErrataOverview extends BaseDto {
      * @return the errata severity as string.
      */
     public String getSeverity() {
-        String retval = "low";
-        if (getSeverityLabel() != null) {
-            retval = LocalizationService.getInstance().getMessage(getSeverityLabel())
-                    .toLowerCase();
-        }
-        return retval;
+        return switch (getSeverityLabel()) {
+            case "errata.sev.label.critical" -> "Critical";
+            case "errata.sev.label.important" -> "Important";
+            case "errata.sev.label.moderate" -> "Moderate";
+            case "errata.sev.label.low" -> "Low";
+            default -> "Low";
+        };
     }
 
     /**
