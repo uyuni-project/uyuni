@@ -1,0 +1,26 @@
+Buildfile: /home/naibu3/Escritorio/uyuni-VEX/java/manager-build.xml
+
+check-deploy-mode:
+
+maybe-open-ssh-socket:
+     [echo] call open ssh
+
+check-ssh-socket:
+
+open-ssh-socket:
+
+maybe-check-mgrctl-installed:
+
+maybe-check-remote-mgrctl-installed:
+
+check-remote-mgrctl-installed:
+     [exec] mgrctl version 5.1.4 (Master 3640be2)
+
+ensure-server-access:
+
+maybe-clean:
+
+clean:
+
+compile:
+    [javac] Compiling 3933 source files to /home/naibu3/Escritorio/uyuni-VEX/java/build/classes

@@ -14,6 +14,11 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.audit;
 
+import java.util.Comparator;
+import java.util.EnumSet;
+import java.util.List;
+
+
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
@@ -21,15 +26,12 @@ import com.redhat.rhn.frontend.xmlrpc.MethodInvalidParamException;
 import com.redhat.rhn.frontend.xmlrpc.UnknownCVEIdentifierFaultException;
 import com.redhat.rhn.manager.audit.CVEAuditImage;
 import com.redhat.rhn.manager.audit.CVEAuditManagerOVAL;
+import com.redhat.rhn.manager.audit.CVEAuditManagerVEX;
 import com.redhat.rhn.manager.audit.CVEAuditServer;
 import com.redhat.rhn.manager.audit.PatchStatus;
 import com.redhat.rhn.manager.audit.UnknownCVEIdentifierException;
 
 import com.suse.manager.api.ReadOnly;
-
-import java.util.Comparator;
-import java.util.EnumSet;
-import java.util.List;
 
 /**
  * CVESearchHandler
@@ -38,6 +40,30 @@ import java.util.List;
  * @apidoc.doc Methods to audit systems.
  */
 public class CVEAuditHandler extends BaseHandler {
+
+    /**
+     * List visible systems with their patch status regarding a given CVE
+     * identifier (for VEX).
+     *
+     * Please note that the query code relies on data that is pre-generated
+     * by the 'cve-server-channels' taskomatic job.
+     * @param loggedInUser The current user
+     * @param cveIdentifier the CVE number to search for
+     * @return a list of systems with their patch status
+     *
+     * @apidoc.doc List visible systems with their patch status regarding a given CVE
+     * identifier. Please note that the query code relies on data that is pre-generated
+     * by the python VEX processor module.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "cveIdentifier")
+     * @apidoc.returntype #return_array_begin() $CVEAuditServerSerializer #array_end()
+     */
+    @ReadOnly
+    public List<CVEAuditServer> listSystemsByPatchStatusVEX(User loggedInUser, String cveIdentifier)
+            throws UnknownCVEIdentifierException {
+        return CVEAuditManagerVEX.listSystemsByPatchStatus(loggedInUser, cveIdentifier, null);
+    }
+
     /**
      * List visible systems with their patch status regarding a given CVE
      * identifier.
