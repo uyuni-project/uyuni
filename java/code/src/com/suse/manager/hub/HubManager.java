@@ -1289,6 +1289,7 @@ public class HubManager {
             Optional.ofNullable(originalChannel).map(Channel::getLabel).orElse(null),
             children,
             clones,
+            selectedChannelOrg != null,
             syncedChannelToIssChannelMap.containsKey(channel.getId())
         );
     }

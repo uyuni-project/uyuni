@@ -116,21 +116,9 @@ export type Channel = {
   selectedPeripheralOrg: Org | null;
   parentChannelLabel: string | null; // if null, this is a root channel
   children: Channel[]; // for easy hierarchical references
+  clones: Channel[];
   strictOrg: boolean;
   synced: boolean;
-};
-
-export type FlatChannel = {
-  channelId: number;
-  channelName: string;
-  channelLabel: string;
-  channelArch: string;
-  channelOrg: Org | null;
-  selectedPeripheralOrg: Org | null;
-  parentChannelLabel: string | null; // if null, this is a root channel
-  childrenLabels: string[]; // for easy lookup if needed
-  strictOrg: boolean;
-  synced: boolean; // no need for another class that tells us if the channel is synced or not
 };
 
 export type ChannelSyncProps = {
