@@ -109,7 +109,7 @@ public class UpdateInfoWriterTest extends BaseTestCaseWithUser {
 
         assertContains(xml, "<id>SUSE-SLE-SERVER-2016-1234</id>");
         assertContains(xml, "<title>" + errata.getSynopsis() + "</title>");
-        assertContains(xml, "<severity>" + errata.getSeverity().getLocalizedLabel().toLowerCase() + "</severity>");
+        assertContains(xml, "<severity>" + errata.getSeverity().getLocalizedLabel() + "</severity>");
         assertContains(xml, "<issued date=\"" + df.format(errata.getIssueDate()) + "\"/>");
         assertContains(xml, "<updated date=\"" + df.format(errata.getUpdateDate()) + "\"/>");
         assertContains(xml, "<rights>" + errata.getRights() + "</rights>");
