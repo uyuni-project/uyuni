@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import { ActionLink, SystemLink } from "../links";
 import { TabContainer } from "../tab-container";
@@ -14,7 +14,7 @@ type State = {
   activeTabHash: string;
 };
 
-class CoCoReport extends React.Component<Props, State> {
+class CoCoReport extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
 

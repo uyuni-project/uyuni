@@ -1,5 +1,3 @@
-import * as React from "react";
-
 import { paygProperties } from "manager/admin/payg/payg";
 
 const passHidden = "*****";

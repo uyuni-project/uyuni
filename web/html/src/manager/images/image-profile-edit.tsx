@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import { default as ReactSelect } from "react-select";
 
@@ -52,7 +52,7 @@ type State = {
   isInvalid?: boolean;
 };
 
-class CreateImageProfile extends React.Component<Props, State> {
+class CreateImageProfile extends Component<Props, State> {
   defaultModel: any;
 
   constructor(props) {

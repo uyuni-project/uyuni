@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type ReactNode, Component } from "react";
 
 import * as ChannelUtils from "core/channels/utils/channels-dependencies.utils";
 import SpaRenderer from "core/spa/spa-renderer";
@@ -57,7 +57,7 @@ type ServersListPopupProps = {
   onClosePopUp: () => void;
 };
 
-class ServersListPopup extends React.Component<ServersListPopupProps> {
+class ServersListPopup extends Component<ServersListPopupProps> {
   render() {
     return (
       <PopUp
@@ -92,7 +92,7 @@ class ServersListPopup extends React.Component<ServersListPopupProps> {
 type BaseChannelProps = {
   baseChannels: SsmAllowedBaseChannelsJson[];
   baseChanges: SsmBaseChannelChangesJson;
-  footer: React.ReactNode;
+  footer: ReactNode;
   onSelectBase: (arg0: string, arg1: string) => void;
 };
 
@@ -102,7 +102,7 @@ type BaseChannelState = {
   popupServersChannelName: string;
 };
 
-class BaseChannelPage extends React.Component<BaseChannelProps, BaseChannelState> {
+class BaseChannelPage extends Component<BaseChannelProps, BaseChannelState> {
   constructor(props: BaseChannelProps) {
     super(props);
     this.state = {
@@ -270,7 +270,7 @@ type SsmAllowedChildChannelsDto = {
 type ChildChannelProps = {
   childChannels: SsmAllowedChildChannelsDto[];
   childChanges: ChannelChangeDto[];
-  footer: React.ReactNode;
+  footer: ReactNode;
   // Here and below, strings and numbers are used interchangably for childId, if you work on this code, please choose one or the other
   onChangeChild: (allowedChannels: SsmAllowedChildChannelsDto, childId: string | number, action: string) => void;
 };
@@ -285,7 +285,7 @@ type ChildChannelState = {
   requiredByChannels: Map<number | string, Set<number>>;
 };
 
-class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelState> {
+class ChildChannelPage extends Component<ChildChannelProps, ChildChannelState> {
   constructor(props: ChildChannelProps) {
     super(props);
 
@@ -569,7 +569,7 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
 type SummaryPageProps = {
   allowedChanges: SsmAllowedChildChannelsDto[];
   finalChanges: ChannelChangeDto[];
-  footer: React.ReactNode;
+  footer: ReactNode;
   onChangeEarliest: (earliest: moment.Moment) => void;
   onChangeActionChain: (actionChain: ActionChain | null | undefined) => void;
 };
@@ -581,7 +581,7 @@ type SummaryPageState = {
   actionChain: ActionChain | null | undefined;
 };
 
-class SummaryPage extends React.Component<SummaryPageProps, SummaryPageState> {
+class SummaryPage extends Component<SummaryPageProps, SummaryPageState> {
   constructor(props) {
     super(props);
     this.state = {
@@ -747,10 +747,10 @@ class SummaryPage extends React.Component<SummaryPageProps, SummaryPageState> {
 
 type ResultPageProps = {
   results: ScheduleChannelChangesResultDto[];
-  footer: React.ReactNode;
+  footer: ReactNode;
 };
 
-class ResultPage extends React.Component<ResultPageProps> {
+class ResultPage extends Component<ResultPageProps> {
   render() {
     return (
       <BootstrapPanel
@@ -858,7 +858,7 @@ type SsmScheduleChannelChangesResultJson = {
 
 type FooterProps = {
   page: number;
-  children?: React.ReactNode;
+  children?: ReactNode;
 };
 
 const Footer = (props: FooterProps) => (
@@ -870,7 +870,7 @@ const Footer = (props: FooterProps) => (
   </span>
 );
 
-class SsmChannelPage extends React.Component<SsmChannelProps, SsmChannelState> {
+class SsmChannelPage extends Component<SsmChannelProps, SsmChannelState> {
   constructor(props) {
     super(props);
     this.state = {
@@ -1064,7 +1064,7 @@ class SsmChannelPage extends React.Component<SsmChannelProps, SsmChannelState> {
   };
 
   render() {
-    let content: React.ReactNode;
+    let content: ReactNode;
     if (DEPRECATED_unsafeEquals(this.state.page, 0)) {
       content = (
         <BaseChannelPage

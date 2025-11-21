@@ -1,4 +1,3 @@
-import * as React from "react";
 import { useState } from "react";
 
 import { MessageType, Utils as MessagesUtils } from "components/messages/messages";

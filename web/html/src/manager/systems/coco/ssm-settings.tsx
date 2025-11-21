@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type ReactNode, Component } from "react";
 
 import CoCoSettingsForm from "components/coco-attestation/CoCoSettingsForm";
 import { Settings } from "components/coco-attestation/Utils";
@@ -20,7 +20,7 @@ type State = {
   messages: MessageType[];
 };
 
-class CoCoSSMSettings extends React.Component<Props, State> {
+class CoCoSSMSettings extends Component<Props, State> {
   private readonly emptySettings: Settings;
 
   constructor(props: Props) {
@@ -55,7 +55,7 @@ class CoCoSSMSettings extends React.Component<Props, State> {
     );
   };
 
-  render(): React.ReactNode {
+  render(): ReactNode {
     return (
       <>
         <TopPanel title="Confidential Computing Settings">

@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import { Combobox, ComboboxItem } from "components/combobox";
 import { DateTimePicker } from "components/datetime";
@@ -44,7 +44,7 @@ type RecurringEventPickerState = {
   cronTimes: CronTimes;
 };
 
-class RecurringEventPicker extends React.Component<RecurringEventPickerProps, RecurringEventPickerState> {
+class RecurringEventPicker extends Component<RecurringEventPickerProps, RecurringEventPickerState> {
   public static readonly defaultProps: Partial<RecurringEventPickerProps> = {
     mode: "Panel",
     hideScheduleName: false,

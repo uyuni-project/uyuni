@@ -1,5 +1,4 @@
-import * as React from "react";
-import { useCallback } from "react";
+import { type FC, type ReactNode, useCallback } from "react";
 
 import { MigrationProduct } from "./types";
 
@@ -9,9 +8,9 @@ type Props = {
   customAddonRenderer?: (id: number, name: string) => JSX.Element;
 };
 
-export const MigrationProductList: React.FC<Props> = ({ className, product, customAddonRenderer }): JSX.Element => {
+export const MigrationProductList: FC<Props> = ({ className, product, customAddonRenderer }): JSX.Element => {
   const renderProduct = useCallback(
-    (addon: MigrationProduct): React.ReactNode => {
+    (addon: MigrationProduct): ReactNode => {
       if (customAddonRenderer) {
         return customAddonRenderer(addon.id, addon.name);
       }
@@ -22,7 +21,7 @@ export const MigrationProductList: React.FC<Props> = ({ className, product, cust
   );
 
   const renderAddons = useCallback(
-    (addons: MigrationProduct[]): React.ReactNode => {
+    (addons: MigrationProduct[]): ReactNode => {
       if (addons.length === 0) {
         return <></>;
       }

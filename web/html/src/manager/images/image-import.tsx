@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 
@@ -56,7 +56,7 @@ function emptyModel(): Model {
   };
 }
 
-class ImageImport extends React.Component {
+class ImageImport extends Component {
   state: {
     imageStores?: any | null;
     messages: any[];

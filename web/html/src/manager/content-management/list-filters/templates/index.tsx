@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useContext } from "react";
 
 import { DEPRECATED_Select, FormContext } from "components/input";
 
@@ -13,7 +13,7 @@ export enum Template {
 }
 
 const TemplateForm = (props: FilterFormProps) => {
-  const formContext = React.useContext(FormContext);
+  const formContext = useContext(FormContext);
   const template = formContext.model.template;
   switch (template) {
     case Template.LivePatchingSystem:

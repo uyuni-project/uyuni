@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type ReactNode, Component } from "react";
 
 import { AsyncButton, LinkButton } from "components/buttons";
 import { FromNow, HumanDateTime } from "components/datetime";
@@ -52,7 +52,7 @@ type State = {
   model: IssServerDetailData;
 };
 
-export class ServerDetailsForm extends React.Component<Props, State> {
+export class ServerDetailsForm extends Component<Props, State> {
   public constructor(props: Props) {
     super(props);
 
@@ -61,7 +61,7 @@ export class ServerDetailsForm extends React.Component<Props, State> {
     };
   }
 
-  public render(): React.ReactNode {
+  public render(): ReactNode {
     return (
       <div className="panel panel-default" key="overview">
         <ul className="list-group">

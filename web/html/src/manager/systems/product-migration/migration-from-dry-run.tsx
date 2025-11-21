@@ -1,5 +1,4 @@
-import * as React from "react";
-import { useState } from "react";
+import { type FC, useState } from "react";
 
 import moment from "moment";
 
@@ -26,7 +25,7 @@ export type Props = {
   actionChains?: ActionChain[];
 };
 
-export const SSMProductMigrationFromDryRun: React.FC<Props> = ({
+export const SSMProductMigrationFromDryRun: FC<Props> = ({
   targetProduct,
   selectedChannels,
   systemsData,

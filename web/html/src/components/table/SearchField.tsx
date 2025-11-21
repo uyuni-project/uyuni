@@ -1,5 +1,3 @@
-import * as React from "react";
-
 import { DEPRECATED_Select } from "components/input";
 import { Form } from "components/input/form/Form";
 

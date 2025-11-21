@@ -1,8 +1,6 @@
 import "senna/build/senna.css";
 import "./spa-engine.css";
 
-import * as React from "react";
-
 import App, { HtmlScreen } from "senna";
 
 import SpaRenderer from "core/spa/spa-renderer";

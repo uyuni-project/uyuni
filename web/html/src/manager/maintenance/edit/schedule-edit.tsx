@@ -1,4 +1,3 @@
-import * as React from "react";
 import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 
 import { Button } from "components/buttons";

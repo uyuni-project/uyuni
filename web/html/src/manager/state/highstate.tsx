@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 
@@ -37,7 +37,7 @@ type HighstateState = {
   actionChain?: any;
 };
 
-class Highstate extends React.Component<HighstateProps, HighstateState> {
+class Highstate extends Component<HighstateProps, HighstateState> {
   constructor(props) {
     super(props);
     const state = {

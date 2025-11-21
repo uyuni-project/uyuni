@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import { AceEditor } from "components/ace-editor";
 import { Button } from "components/buttons";
@@ -53,7 +53,7 @@ type InventoryDetails = {
   unknownSystems: string[];
 };
 
-class AccordionPathContent extends React.Component<PropsType, StateType> {
+class AccordionPathContent extends Component<PropsType, StateType> {
   constructor(props) {
     super(props);
 

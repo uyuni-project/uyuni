@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type ReactNode, Component } from "react";
 
 import _isNil from "lodash/isNil";
 
@@ -33,7 +33,7 @@ export type InputBaseProps<ValueType = string> = {
   hideLabel?: boolean;
 
   /** Hint string to display */
-  hint?: React.ReactNode;
+  hint?: ReactNode;
 
   /** CSS class to use for the label */
   labelClass?: string;
@@ -54,7 +54,7 @@ export type InputBaseProps<ValueType = string> = {
   children?: (arg0: {
     setValue: (name: string | undefined, value: ValueType) => void;
     onBlur: () => void;
-  }) => React.ReactNode;
+  }) => ReactNode;
 
   /** Indicates whether the field is required in the form */
   required?: boolean;
@@ -66,7 +66,7 @@ export type InputBaseProps<ValueType = string> = {
   validators?: Validator | Validator[];
 
   /** Hint to display on a validation error */
-  invalidHint?: React.ReactNode;
+  invalidHint?: ReactNode;
 
   /** Function to call when the data model needs to be changed.
    *  Takes a name and a value parameter.
@@ -86,7 +86,7 @@ type State = {
   errors?: string[] | object;
 };
 
-export class InputBase<ValueType = string> extends React.Component<InputBaseProps<ValueType>, State> {
+export class InputBase<ValueType = string> extends Component<InputBaseProps<ValueType>, State> {
   static defaultProps = {
     defaultValue: undefined,
     label: undefined,
@@ -267,7 +267,7 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
     if (this.props.onChange) this.props.onChange(name, value);
   };
 
-  pushHint(hints: React.ReactNode[], hint: React.ReactNode) {
+  pushHint(hints: ReactNode[], hint: ReactNode) {
     if (hint) {
       if (hints.length > 0) {
         hints.push(<br key={hints.length} />);
@@ -280,7 +280,7 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
     const isError = this.state.showErrors && !this.state.isValid;
     const requiredHint = this.props.label ? t(`${this.props.label} is required.`) : t("required");
     const invalidHint = isError && (this.props.invalidHint || (this.props.required && requiredHint));
-    const hints: React.ReactNode[] = [];
+    const hints: ReactNode[] = [];
     this.pushHint(hints, this.props.hint);
 
     const errors = Array.isArray(this.state.errors) ? this.state.errors : this.state.errors ? [this.state.errors] : [];

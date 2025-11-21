@@ -1,4 +1,4 @@
-import * as React from "react";
+import type { ReactNode } from "react";
 
 type HeaderProps = {
   /** key differenciating a header from its siblings */
@@ -20,7 +20,7 @@ type HeaderProps = {
   onSortChange?: (columnKey: string | null, sortDirection: number) => void;
 
   /** children nodes */
-  children?: React.ReactNode;
+  children?: ReactNode;
 
   /** identifier for the column */
   columnKey?: string;

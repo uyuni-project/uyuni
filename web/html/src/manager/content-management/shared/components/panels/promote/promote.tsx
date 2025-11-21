@@ -1,5 +1,4 @@
-import * as React from "react";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 
 import { isOrgAdmin } from "core/auth/auth.utils";
 import useRoles from "core/auth/use-roles";
@@ -75,7 +74,7 @@ const Promote = (props: Props) => {
           isLoading ? (
             <Loading text={t("Promoting project..")} />
           ) : (
-            <React.Fragment>
+            <Fragment>
               <dl className="row">
                 <dt className="col-4">{t("Version")}:</dt>
                 <dd className="col-8">
@@ -92,7 +91,7 @@ const Promote = (props: Props) => {
                 <dt className="col-4">{t("Target environment")}:</dt>
                 <dd className="col-8">{props.environmentTarget.name}</dd>
               </dl>
-            </React.Fragment>
+            </Fragment>
           )
         }
         title={t("Promote version {version} into {environmentName}", {

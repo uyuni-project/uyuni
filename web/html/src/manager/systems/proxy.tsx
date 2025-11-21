@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import { AsyncButton } from "components/buttons";
 import { ActionLink } from "components/links";
@@ -33,7 +33,7 @@ type State = {
   proxy: number;
 };
 
-class Proxy extends React.Component<Props, State> {
+class Proxy extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
 

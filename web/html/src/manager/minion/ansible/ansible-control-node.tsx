@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 
@@ -28,7 +28,7 @@ type StateType = {
   loading: boolean;
 };
 
-export class AnsibleControlNode extends React.Component<PropsType, StateType> {
+export class AnsibleControlNode extends Component<PropsType, StateType> {
   constructor(props) {
     super(props);
 

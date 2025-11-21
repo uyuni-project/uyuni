@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 import { productName } from "core/user-preferences";
@@ -31,7 +31,7 @@ type ErrorDetailsDialogProps = {
   onDialogClose: () => void;
 };
 
-class ErrorDetailsDialog extends React.Component<ErrorDetailsDialogProps> {
+class ErrorDetailsDialog extends Component<ErrorDetailsDialogProps> {
   render() {
     let content, title, buttons;
 
@@ -150,7 +150,7 @@ type State = {
   errorDetails: ErrorDetails | null;
 };
 
-class BootstrapMinions extends React.Component<Props, State> {
+class BootstrapMinions extends Component<Props, State> {
   initState: State;
 
   constructor(props: Props) {

@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type ReactNode, Component, useEffect, useState } from "react";
 
 import _partition from "lodash/partition";
 
@@ -92,7 +92,7 @@ class ProductsPageWrapperState {
  * Generate the page wrapper, tabs, scc-popup,
  * and everything around the product list except the list
  */
-class ProductsPageWrapper extends React.Component<ProductsPageWrapperProps, ProductsPageWrapperState> {
+class ProductsPageWrapper extends Component<ProductsPageWrapperProps, ProductsPageWrapperState> {
   state = new ProductsPageWrapperState();
 
   UNSAFE_componentWillMount() {
@@ -435,7 +435,7 @@ class ProductsState {
 /**
  * Show the products data
  */
-class Products extends React.Component<ProductsProps, ProductsState> {
+class Products extends Component<ProductsProps, ProductsState> {
   state = new ProductsState();
 
   getDistinctArchsFromData = (data: any[] = []) => {
@@ -568,7 +568,7 @@ type CheckListProps = {
 /**
  * Generate a custom list of elements for the products data
  */
-class CheckList extends React.Component<CheckListProps> {
+class CheckList extends Component<CheckListProps> {
   isRootLevel = (level) => {
     return DEPRECATED_unsafeEquals(level, 1);
   };
@@ -661,7 +661,7 @@ class CheckListItemState {
  * A component to generate a list item which contains
  * all information for a single product
  */
-class CheckListItem extends React.Component<CheckListItemProps, CheckListItemState> {
+class CheckListItem extends Component<CheckListItemProps, CheckListItemState> {
   state = new CheckListItemState();
 
   UNSAFE_componentWillReceiveProps(nextProps) {
@@ -825,7 +825,7 @@ class CheckListItem extends React.Component<CheckListItemProps, CheckListItemSta
     const currentItem = this.props.item;
 
     /** generate item selector content **/
-    let selectorContent: React.ReactNode = null;
+    let selectorContent: ReactNode = null;
     if (this.props.bypassProps.isSelectable && currentItem.status === _PRODUCT_STATUS.available) {
       selectorContent = (
         <input
@@ -1042,13 +1042,13 @@ class CheckListItem extends React.Component<CheckListItemProps, CheckListItemSta
 }
 
 const ChannelsPopUp = (props) => {
-  const [checked, setChecked] = React.useState<boolean[]>([]);
-  const [installed, setInstalled] = React.useState<boolean>(props.item.status === _PRODUCT_STATUS.installed);
+  const [checked, setChecked] = useState<boolean[]>([]);
+  const [installed, setInstalled] = useState<boolean>(props.item.status === _PRODUCT_STATUS.installed);
 
   const sorted = props.item.channels.sort((a, b) => a.label.toLowerCase().localeCompare(b.label.toLowerCase()));
   const [mandatoryChannels, optionalChannels] = _partition(sorted, (c) => !c.optional);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setInstalled(props.item.status === _PRODUCT_STATUS.installed);
     setChecked(optionalChannels.map((i) => i.status === _CHANNEL_STATUS.synced));
   }, [props.item]);
@@ -1120,7 +1120,7 @@ const ChannelsPopUp = (props) => {
 };
 
 const decodeChannelStatus = (status) => {
-  let decoded: React.ReactNode = "";
+  let decoded: ReactNode = "";
   switch (status) {
     case _CHANNEL_STATUS.notSynced:
       decoded = <span className="text-muted">{t("not synced")}</span>;

@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type ChangeEvent, type SyntheticEvent, PureComponent } from "react";
 
 import { Button, SubmitButton } from "components/buttons";
 
@@ -27,20 +27,20 @@ class HeaderSearchState {
   searchType = SEARCH_TYPES[0].value;
 }
 
-export class HeaderSearch extends React.PureComponent<HeaderSearchProps, HeaderSearchState> {
+export class HeaderSearch extends PureComponent<HeaderSearchProps, HeaderSearchState> {
   state = new HeaderSearchState();
 
   onSPAEndNavigation() {
     this.setState(new HeaderSearchState());
   }
 
-  onChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  onChange = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     this.setState({
       [event.target.name]: event.target.value,
     } as any);
   };
 
-  onSubmit = (event: React.SyntheticEvent) => {
+  onSubmit = (event: SyntheticEvent) => {
     event.preventDefault();
     window.pageRenderers?.spaengine?.navigate?.(
       `/rhn/Search.do?csrf_token=${window.csrfToken}&submitted=true&search_string=${this.state.searchString}&search_type=${this.state.searchType}`

@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network from "utils/network";
@@ -45,7 +45,7 @@ type ActivationKeyChannelsState = {
   fetchedData: Map<number, availableChannelsType>;
 };
 
-class ActivationKeyChannelsApi extends React.Component<ActivationKeyChannelsProps, ActivationKeyChannelsState> {
+class ActivationKeyChannelsApi extends Component<ActivationKeyChannelsProps, ActivationKeyChannelsState> {
   constructor(props: ActivationKeyChannelsProps) {
     super(props);
 

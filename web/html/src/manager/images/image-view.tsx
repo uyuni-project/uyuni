@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type ReactNode, Component } from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 import { productName } from "core/user-preferences";
@@ -76,7 +76,7 @@ type ImageViewState = {
   selectedCount?: any;
 };
 
-class ImageView extends React.Component<ImageViewProps, ImageViewState> {
+class ImageView extends Component<ImageViewProps, ImageViewState> {
   constructor(props) {
     super(props);
     this.state = {
@@ -436,7 +436,7 @@ type ImageViewListState = {
   showObsolete: boolean;
 };
 
-class ImageViewList extends React.Component<ImageViewListProps, ImageViewListState> {
+class ImageViewList extends Component<ImageViewListProps, ImageViewListState> {
   constructor(props) {
     super(props);
     this.state = {
@@ -604,7 +604,7 @@ class ImageViewList extends React.Component<ImageViewListProps, ImageViewListSta
   };
 
   render() {
-    const runtimeColumns: React.ReactNode[] = [];
+    const runtimeColumns: ReactNode[] = [];
     if (this.props.runtimeInfoEnabled) {
       runtimeColumns.push(
         <Column columnKey="runtime" header={t("Runtime")} cell={(row) => this.renderRuntimeIcon(row)} />
@@ -772,7 +772,7 @@ type ImageViewDetailsProps = {
   onCancel: (...args: any[]) => any;
 };
 
-class ImageViewDetails extends React.Component<ImageViewDetailsProps> {
+class ImageViewDetails extends Component<ImageViewDetailsProps> {
   getHashUrls(tabs) {
     const id = this.props.data.id;
     return tabs.map((t) => "#/" + t + "/" + id);

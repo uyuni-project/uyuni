@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type ReactNode, useContext } from "react";
 
 import { Button } from "components/buttons";
 import { Panel } from "components/panels/Panel";
@@ -34,7 +34,7 @@ type Props = {
    * A function that renders the fields of one row given it's index.
    * The index parameter should be used for the field names.
    */
-  children: (index: number) => React.ReactNode;
+  children: (index: number) => ReactNode;
 
   /** Whether the fields are enabled or not. */
   disabled?: boolean;
@@ -50,7 +50,7 @@ type Props = {
   panelTitle?: (idx: number) => string;
 
   /** Content to display between the title and the first fields */
-  header?: React.ReactNode;
+  header?: ReactNode;
 
   /** CSS class for the row containing the fields of one item */
   rowClass?: string;
@@ -133,7 +133,7 @@ export function getOrderedItemsFromModel(model: any, prefix: string): number[] {
  * ```
  */
 export function FormMultiInput({ disabled = false, ...props }: Props) {
-  const formContext = React.useContext(FormContext);
+  const formContext = useContext(FormContext);
   const items = getOrderedItemsFromModel(formContext.model, props.prefix);
   const new_index = (items.length > 0 && items[items.length - 1] + 1) || 0;
   return (

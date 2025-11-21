@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import withPageWrapper from "components/general/with-page-wrapper";
 import { Messages, MessageType, ServerMessageType } from "components/messages/messages";
@@ -19,7 +19,7 @@ type State = {
   messages: any[];
 };
 
-class FormulaCatalog extends React.Component<Props, State> {
+class FormulaCatalog extends Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {

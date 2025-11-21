@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import { StatesPicker } from "components/states-picker";
 
@@ -14,7 +14,7 @@ class ConfigChannelsState {
   messages: MessageType[] | null = null;
 }
 
-class ConfigChannels extends React.Component<ConfigChannelsProps, ConfigChannelsState> {
+class ConfigChannels extends Component<ConfigChannelsProps, ConfigChannelsState> {
   state = new ConfigChannelsState();
 
   setMessages = (messages) => {

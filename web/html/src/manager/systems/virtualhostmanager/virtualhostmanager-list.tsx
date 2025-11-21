@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import { Button } from "components/buttons";
 import { DeleteDialog } from "components/dialog/DeleteDialog";
@@ -19,7 +19,7 @@ type State = {
   itemToDelete?: any;
 };
 
-class VirtualHostManagerList extends React.Component<Props, State> {
+class VirtualHostManagerList extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {};

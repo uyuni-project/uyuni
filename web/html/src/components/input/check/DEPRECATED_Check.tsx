@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type ReactNode, useContext } from "react";
 
 import { ControlledInput } from "../ControlledInput";
 import { FormContext } from "../form/Form";
@@ -12,7 +12,7 @@ type Props = Omit<InputBaseProps, "label"> & {
   name: string;
 
   /** for historical reasons, label handles differently here  */
-  label: React.ReactNode;
+  label: ReactNode;
 };
 
 /**
@@ -20,7 +20,7 @@ type Props = Omit<InputBaseProps, "label"> & {
  */
 export function DEPRECATED_Check({ required = false, disabled = false, ...props }: Props) {
   const { label, inputClass, ...propsToPass } = props;
-  const formContext = React.useContext(FormContext);
+  const formContext = useContext(FormContext);
 
   return (
     <InputBase required={required} disabled={disabled} {...propsToPass}>

@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import { Button, SubmitButton } from "components/buttons";
 import { DEPRECATED_Select } from "components/input";
@@ -26,7 +26,7 @@ type State = {
   isInvalid?: boolean;
 };
 
-class VirtualHostManagerEdit extends React.Component<Props, State> {
+class VirtualHostManagerEdit extends Component<Props, State> {
   form?: HTMLFormElement;
 
   constructor(props) {

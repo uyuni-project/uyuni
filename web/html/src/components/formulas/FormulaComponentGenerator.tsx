@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type ReactNode, Component, createContext, createRef, Fragment } from "react";
 
 import { default as Jexl } from "jexl";
 
@@ -56,7 +56,7 @@ type Context = {
   searchCriteria: string | null | undefined;
 };
 
-export const FormulaFormContext = React.createContext<Context>({
+export const FormulaFormContext = createContext<Context>({
   scope: null,
   layout: {},
   values: {},
@@ -389,7 +389,7 @@ function isVisibleByCriteria(element: any, criteria: string) {
 }
 
 function generateChildrenFormItems(element, value, formulaForm, id, disabled = false) {
-  const child_items: React.ReactNode[] = [];
+  const child_items: ReactNode[] = [];
   for (const child_name in element) {
     if (child_name.startsWith("$")) continue;
     child_items.push(
@@ -400,7 +400,7 @@ function generateChildrenFormItems(element, value, formulaForm, id, disabled = f
 }
 
 function generateSelectList(data) {
-  const options: React.ReactNode[] = [];
+  const options: ReactNode[] = [];
   for (const key in data)
     options.push(
       <option key={key} value={data[key]}>
@@ -414,14 +414,14 @@ function defaultWrapper(elementName, required, element, help = null) {
   return wrapFormGroupWithLabel(
     elementName,
     required,
-    <React.Fragment>
+    <Fragment>
       <div className="col-lg-6">{element}</div>
       <HelpIcon text={help} />
-    </React.Fragment>
+    </Fragment>
   );
 }
 
-function wrapFormGroupWithLabel(element_name: string, required?: boolean, innerHTML?: React.ReactNode) {
+function wrapFormGroupWithLabel(element_name: string, required?: boolean, innerHTML?: ReactNode) {
   return (
     <div className="form-group" key={element_name}>
       {wrapLabel(element_name, required)}
@@ -430,7 +430,7 @@ function wrapFormGroupWithLabel(element_name: string, required?: boolean, innerH
   );
 }
 
-function wrapLabel(text: React.ReactNode, required?: boolean, label_for?: string) {
+function wrapLabel(text: ReactNode, required?: boolean, label_for?: string) {
   return (
     <label htmlFor={label_for} className="col-lg-3 control-label">
       {text}
@@ -487,8 +487,8 @@ type UnwrappedFormulaFormRendererProps = {
 // layout
 // values
 // onValuesChanged
-class UnwrappedFormulaFormRenderer extends React.Component<UnwrappedFormulaFormRendererProps> {
-  submitButton = React.createRef<HTMLInputElement>();
+class UnwrappedFormulaFormRenderer extends Component<UnwrappedFormulaFormRendererProps> {
+  submitButton = createRef<HTMLInputElement>();
 
   handleChange = (event) => {
     let id, value;
@@ -533,7 +533,7 @@ class UnwrappedFormulaFormRenderer extends React.Component<UnwrappedFormulaFormR
       return null;
     }
 
-    const form: React.ReactNode[] = [];
+    const form: ReactNode[] = [];
     for (const key in layout) {
       form.push(generateFormulaComponent(layout[key], values[key], this));
     }
@@ -675,7 +675,7 @@ type FormulaFormContextProviderState = {
 // groupData
 // scope
 // searchCriteria
-export class FormulaFormContextProvider extends React.Component<
+export class FormulaFormContextProvider extends Component<
   FormulaFormContextProviderProps,
   FormulaFormContextProviderState
 > {

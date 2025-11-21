@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type ReactNode, Component } from "react";
 
 import { Button } from "components/buttons";
 import { Dialog } from "components/dialog/Dialog";
@@ -19,7 +19,7 @@ type Props = {
   /** An array of validators to run against the input, either sync or async, resolve with `true` for valid & `false` for invalid */
   validators?: Validator | Validator[];
   /** Hint to display on a validation error */
-  invalidHint?: React.ReactNode;
+  invalidHint?: ReactNode;
   /** true to disable the button and prevent editing */
   disabled: boolean;
   /** The initial value, show when opening the popup */
@@ -34,7 +34,7 @@ type State = {
 };
 
 /** A component that allows to edit a single value with a modal dialog triggered by a button */
-export class ModalEditButton extends React.Component<Props, State> {
+export class ModalEditButton extends Component<Props, State> {
   static defaultProps: Partial<Props> = {
     disabled: false,
     value: "",
@@ -49,7 +49,7 @@ export class ModalEditButton extends React.Component<Props, State> {
     };
   }
 
-  public render(): React.ReactNode {
+  public render(): ReactNode {
     return (
       <>
         <Button

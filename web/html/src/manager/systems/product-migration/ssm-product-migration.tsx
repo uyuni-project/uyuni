@@ -1,5 +1,4 @@
-import * as React from "react";
-import { useState } from "react";
+import { type FC, type ReactNode, useState } from "react";
 
 import { ChannelTreeType } from "core/channels/type/channels.type";
 
@@ -41,7 +40,7 @@ export type Props = {
   actionChains?: ActionChain[];
 };
 
-export const SSMProductMigration: React.FC<Props> = ({
+export const SSMProductMigration: FC<Props> = ({
   commonBaseProduct,
   migrationSource,
   migrationTargets,
@@ -101,14 +100,14 @@ export const SSMProductMigration: React.FC<Props> = ({
     }
   }
 
-  function renderBaseProduct(system: MigrationSystemData): React.ReactNode {
+  function renderBaseProduct(system: MigrationSystemData): ReactNode {
     const highlight =
       !commonBaseProduct && migrationSource !== null && system.installedProduct.id === migrationSource.id;
 
     return <span className={highlight ? "fw-bold" : ""}>{system.installedProduct.name}</span>;
   }
 
-  function renderProductDetails(system: MigrationSystemData): React.ReactNode {
+  function renderProductDetails(system: MigrationSystemData): ReactNode {
     return (
       <LinkButton
         className="btn-link"
@@ -119,11 +118,11 @@ export const SSMProductMigration: React.FC<Props> = ({
     );
   }
 
-  function renderEligible(system: MigrationSystemData): React.ReactNode {
+  function renderEligible(system: MigrationSystemData): ReactNode {
     return <span>{system.eligible ? t("Yes") : t("No")}</span>;
   }
 
-  function renderReason(system: MigrationSystemData): React.ReactNode {
+  function renderReason(system: MigrationSystemData): ReactNode {
     let title: string, className: string;
 
     if (system.eligible) {
@@ -149,7 +148,7 @@ export const SSMProductMigration: React.FC<Props> = ({
     );
   }
 
-  function renderTargetSystems(data: MigrationSystemData[]): React.ReactNode {
+  function renderTargetSystems(data: MigrationSystemData[]): ReactNode {
     if (migrationStep === MigrationStep.ScheduleConfirmation) {
       return <></>;
     }

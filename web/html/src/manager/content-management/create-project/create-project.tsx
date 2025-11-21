@@ -1,4 +1,3 @@
-import * as React from "react";
 import { useState } from "react";
 
 import { isOrgAdmin } from "core/auth/auth.utils";

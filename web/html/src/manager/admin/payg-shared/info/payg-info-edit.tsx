@@ -1,5 +1,3 @@
-import * as React from "react";
-
 import { PaygFullType } from "manager/admin/payg/payg";
 import useLifecyclePaygActionsApi from "manager/admin/payg-shared/api/payg-actions-api";
 import PaygInfoForm from "manager/admin/payg-shared/info/payg-info-form";

@@ -108,18 +108,25 @@ export default defineConfig([
               name: "node-gettext",
               message: "Please import from `core/intl/node-gettext` instead.",
             },
+
             {
               name: "formik",
               importNames: ["Field", "Form"],
               message: "Please import from `components/formik` instead.",
             },
+            // TODO: List everything we want to limit once the implementation is done
+            // {
+            //   name: "formik",
+            //   importNames: ["Field", "Form"],
+            //   // TODO: Update message once we move the directory to where it should be
+            //   message: "Please import from `components/formik` instead.",
+            // },
+            {
+              name: "react",
+              importNames: ["default"],
+              message: "Not needed anymore thanks to JSX transform.",
+            },
           ],
-        },
-      ],
-      "react/jsx-pascal-case": [
-        "error",
-        {
-          ignore: ["DEPRECATED_*"],
         },
       ],
     },

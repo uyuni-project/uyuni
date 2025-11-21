@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type ReactNode, Children } from "react";
 
 import { cloneReactElement } from "components/utils";
 
@@ -18,14 +18,14 @@ type SearchPanelProps = {
   field?: string;
 
   /** Search field components */
-  children?: React.ReactNode;
+  children?: ReactNode;
 };
 
 /** Panel containing the search fields for a table */
 export function SearchPanel(props: SearchPanelProps) {
   return (
     <div className={`spacewalk-list-filter ${styles.searchPanel}`}>
-      {React.Children.toArray(props.children).map((child) =>
+      {Children.toArray(props.children).map((child) =>
         cloneReactElement(child, {
           criteria: props.criteria,
           field: props.field,

@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import _cloneDeep from "lodash/cloneDeep";
 
@@ -40,7 +40,7 @@ type RankingTableState = {
   items: any[];
 };
 
-class RankingTable extends React.Component<RankingTableProps, RankingTableState> {
+class RankingTable extends Component<RankingTableProps, RankingTableState> {
   defaultEmptyMsg = t("There are no entries to show.");
   node: Element | null = null;
 

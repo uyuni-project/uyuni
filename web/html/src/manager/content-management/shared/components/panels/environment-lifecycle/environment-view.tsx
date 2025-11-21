@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Fragment, memo } from "react";
 
 import _isEmpty from "lodash/isEmpty";
 
@@ -32,9 +32,9 @@ const environmentStatusEnum: EnvironmentStatusEnumType = {
   failed: { key: "failed", text: t("Failed"), isBuilding: false },
 };
 
-const EnvironmentView = React.memo((props: Props) => {
+const EnvironmentView = memo((props: Props) => {
   return (
-    <React.Fragment>
+    <Fragment>
       <dl className="row">
         <dt className="col-3">{t("Label")}:</dt>
         <dd className="col-9">{props.environment.label}</dd>
@@ -70,7 +70,7 @@ const EnvironmentView = React.memo((props: Props) => {
           <dd className="col-9">{props.environment.builtTime}</dd>
         </dl>
       ) : null}
-    </React.Fragment>
+    </Fragment>
   );
 });
 

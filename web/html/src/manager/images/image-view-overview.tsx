@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type ReactNode, Component } from "react";
 
 import { productName } from "core/user-preferences";
 
@@ -100,7 +100,7 @@ function StatusIcon(props) {
 }
 
 function BuildStatus(props) {
-  let status: React.ReactNode;
+  let status: ReactNode;
   if (props.data.external) {
     status = (
       <span>
@@ -162,7 +162,7 @@ type ImageInfoState = {
   instancePopupContent: any;
 };
 
-class ImageInfo extends React.Component<ImageInfoProps, ImageInfoState> {
+class ImageInfo extends Component<ImageInfoProps, ImageInfoState> {
   constructor(props) {
     super(props);
     this.state = {
@@ -474,7 +474,7 @@ type ImageCustomInfoProps = {
   data: any;
 };
 
-class ImageCustomInfo extends React.Component<ImageCustomInfoProps> {
+class ImageCustomInfo extends Component<ImageCustomInfoProps> {
   render() {
     const data = this.props.data.customData;
     return (
@@ -503,7 +503,7 @@ type ImageViewOverviewProps = {
   onDelete?: (...args: any[]) => any;
 };
 
-class ImageViewOverview extends React.Component<ImageViewOverviewProps> {
+class ImageViewOverview extends Component<ImageViewOverviewProps> {
   renderStatus(row) {
     let status;
 
@@ -701,7 +701,7 @@ type BuildDialogState = {
   };
 };
 
-class BuildDialog extends React.Component<BuildDialogProps, BuildDialogState> {
+class BuildDialog extends Component<BuildDialogProps, BuildDialogState> {
   constructor(props) {
     super(props);
     this.state = {
@@ -778,7 +778,7 @@ type InspectDialogState = {
   };
 };
 
-class InspectDialog extends React.Component<InspectDialogProps, InspectDialogState> {
+class InspectDialog extends Component<InspectDialogProps, InspectDialogState> {
   constructor(props) {
     super(props);
     this.state = {

@@ -1,5 +1,4 @@
-import * as React from "react";
-import { useEffect, useState } from "react";
+import { type ComponentProps, Fragment, useEffect, useState } from "react";
 
 import { Button } from "components/buttons";
 import { closeDialog, Dialog } from "components/dialog/LegacyDialog";
@@ -13,7 +12,7 @@ import { FilterFormType } from "../shared/type/filter.type";
 import { mapFilterFormToRequest } from "./filter.utils";
 import FilterForm from "./filter-form";
 
-type FilterEditModalContentProps = React.ComponentProps<typeof FilterForm> & {
+type FilterEditModalContentProps = ComponentProps<typeof FilterForm> & {
   open: boolean;
   isLoading: boolean;
 };
@@ -123,7 +122,7 @@ const FilterEdit = (props: FilterEditProps) => {
   const modalTitle = props.editing ? t("Filter Details") : t("Create a new filter");
 
   return (
-    <React.Fragment>
+    <Fragment>
       <ModalButton
         id={`${props.id}-modal-link`}
         icon={props.icon}
@@ -136,7 +135,6 @@ const FilterEdit = (props: FilterEditProps) => {
           setFormData(props.initialFilterForm);
         }}
       />
-
       <Dialog
         id={modalNameId}
         title={modalTitle}
@@ -201,7 +199,7 @@ const FilterEdit = (props: FilterEditProps) => {
           </div>
         }
       />
-    </React.Fragment>
+    </Fragment>
   );
 };
 

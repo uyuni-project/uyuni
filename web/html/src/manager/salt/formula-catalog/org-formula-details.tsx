@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type ReactNode, Component } from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 
@@ -19,7 +19,7 @@ type State = {
   metadata: any;
 };
 
-class FormulaDetail extends React.Component<Props, State> {
+class FormulaDetail extends Component<Props, State> {
   constructor(props, context) {
     super(props, context);
     this.getServerData();
@@ -36,7 +36,7 @@ class FormulaDetail extends React.Component<Props, State> {
   };
 
   generateMetadata = () => {
-    const metadata: React.ReactNode[] = [];
+    const metadata: ReactNode[] = [];
     for (const item in this.state.metadata) {
       metadata.push(
         <div className="form-group" key={item}>

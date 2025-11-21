@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useEffect, useState } from "react";
 
 export function useWebSocket(
   errors: string[],
@@ -6,14 +6,14 @@ export function useWebSocket(
   property: string,
   callback: (value: any) => void
 ) {
-  const [webSocketErr, setWebSocketErr] = React.useState(false);
-  const [pageUnloading, setPageUnloading] = React.useState(false);
+  const [webSocketErr, setWebSocketErr] = useState(false);
+  const [pageUnloading, setPageUnloading] = useState(false);
 
   const onBeforeUnload = () => {
     setPageUnloading(true);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     const { port } = window.location;
     const url = `wss://${window.location.hostname}${port ? `:${port}` : ""}/rhn/websocket/notifications`;
     const ws = new WebSocket(url);

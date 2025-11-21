@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import { productName } from "core/user-preferences";
 
@@ -20,7 +20,7 @@ type ImageViewRuntimeProps = {
   gotRuntimeInfo: any;
 };
 
-class ImageViewRuntime extends React.Component<ImageViewRuntimeProps> {
+class ImageViewRuntime extends Component<ImageViewRuntimeProps> {
   render() {
     const data = this.props.data;
     const runtimeInfo = data.clusters
@@ -59,7 +59,7 @@ type PodInfoProps = {
   data: any;
 };
 
-class PodInfo extends React.Component<PodInfoProps> {
+class PodInfo extends Component<PodInfoProps> {
   renderStatusIcon(statusId) {
     let icon;
 
@@ -97,7 +97,7 @@ type ClusterInfoProps = {
   data: any;
 };
 
-class ClusterInfo extends React.Component<ClusterInfoProps> {
+class ClusterInfo extends Component<ClusterInfoProps> {
   renderTitle(data) {
     const statusId = data.pods.map((p) => p.statusId).reduce((a, b) => Math.max(a, b));
 

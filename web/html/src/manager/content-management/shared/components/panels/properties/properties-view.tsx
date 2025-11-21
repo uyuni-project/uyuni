@@ -1,5 +1,3 @@
-import * as React from "react";
-
 import { Dialog } from "components/dialog/LegacyDialog";
 import { ModalLink } from "components/dialog/ModalLink";
 

@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type ReactNode, Component } from "react";
 
 import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
@@ -14,7 +14,7 @@ type SubscriptionsProps = {
   subscriptions: any[];
 };
 
-class Subscriptions extends React.Component<SubscriptionsProps> {
+class Subscriptions extends Component<SubscriptionsProps> {
   sortByPolicy = (aRaw, bRaw, columnKey, sortDirection) => {
     let result = 0;
     const aValue = humanReadablePolicy(aRaw[columnKey]);
@@ -47,7 +47,7 @@ class Subscriptions extends React.Component<SubscriptionsProps> {
   };
 
   render() {
-    let body: React.ReactNode = null;
+    let body: ReactNode = null;
     if (Object.keys(this.props.subscriptions).length > 0) {
       body = (
         <div>

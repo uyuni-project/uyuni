@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import { Messages, MessageType, Utils as MessagesUtils } from "components/messages/messages";
 import { TopPanel } from "components/panels/TopPanel";
@@ -32,7 +32,7 @@ type State = {
   activeTab?: string;
 };
 
-class CoCoScansList extends React.Component<Props, State> {
+class CoCoScansList extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
 

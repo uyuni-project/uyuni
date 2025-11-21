@@ -1,5 +1,3 @@
-import * as React from "react";
-
 import { docsLocale } from "core/user-preferences";
 
 import HelpIcon from "./HelpIcon";

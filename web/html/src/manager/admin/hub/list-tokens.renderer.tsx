@@ -1,5 +1,3 @@
-import * as React from "react";
-
 import { TokenList } from "manager/admin/hub/list-tokens";
 
 import { RolesProvider } from "core/auth/roles-context";
