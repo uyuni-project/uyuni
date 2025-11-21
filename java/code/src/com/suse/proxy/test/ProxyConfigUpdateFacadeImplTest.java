@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 
 package com.suse.proxy.test;
@@ -49,7 +45,7 @@ public class ProxyConfigUpdateFacadeImplTest extends MockObjectTestCase {
         ProxyConfigUpdateFacadeImpl proxyConfigUpdate = new ProxyConfigUpdateFacadeImpl();
         replaceHandlers(proxyConfigUpdate, List.of(okHandler1, okHandler2, okHandler3));
 
-        proxyConfigUpdate.update(null, null, null);
+        proxyConfigUpdate.update(null, null, null, null);
     }
 
     /**
@@ -72,7 +68,7 @@ public class ProxyConfigUpdateFacadeImplTest extends MockObjectTestCase {
         replaceHandlers(proxyConfigUpdate, List.of(okHandler, failingHandler, anotherFailingHandler));
 
         try {
-            proxyConfigUpdate.update(null, null, null);
+            proxyConfigUpdate.update(null, null, null, null);
             fail("Expected UyuniGeneralException to be thrown");
         }
         catch (UyuniGeneralException e) {

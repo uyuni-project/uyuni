@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 
 package com.suse.proxy.update;
@@ -31,6 +27,8 @@ import static com.suse.proxy.ProxyConfigUtils.SOURCE_MODE_FIELD;
 import static com.suse.proxy.ProxyConfigUtils.SOURCE_MODE_REGISTRY;
 import static com.suse.proxy.ProxyConfigUtils.SOURCE_MODE_RPM;
 import static com.suse.proxy.ProxyConfigUtils.USE_CERTS_MODE_KEEP;
+import static com.suse.proxy.ProxyConfigUtils.getSubscribableMgrpxyChannels;
+import static com.suse.proxy.ProxyConfigUtils.isMgrpxyInstalled;
 import static com.suse.proxy.ProxyContainerImagesEnum.PROXY_HTTPD;
 import static com.suse.proxy.ProxyContainerImagesEnum.PROXY_SALT_BROKER;
 import static com.suse.proxy.ProxyContainerImagesEnum.PROXY_SQUID;
@@ -40,17 +38,27 @@ import static com.suse.utils.Predicates.isAbsent;
 import static java.lang.String.format;
 
 import com.redhat.rhn.common.UyuniErrorReport;
+import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.manager.entitlement.EntitlementManager;
 
 import com.suse.manager.webui.utils.gson.ProxyConfigUpdateJson;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Set;
 import java.util.regex.Pattern;
 
 /**
  * Validates data acquired from {@link ProxyConfigUpdateJson} and retrieved from {@link ProxyConfigUpdateAcquisitor}
  * that is required for the rest of the process.
+ * Additionally, it verifies whether the target minion satisfies the conditions to apply proxy configuration::
+ *   - The minion is not a Manager instance.
+ *   - The minion either already has proxy entitlement or can be entitled as such.
+ *   - The minion either has mgrpxy installed or can subscribe (or is already subscribed) to a channel
+ *   providing it. - only applicable if running an MLM instance
  */
 public class ProxyConfigUpdateValidation implements ProxyConfigUpdateContextHandler {
     private static final Logger LOG = LogManager.getLogger(ProxyConfigUpdateValidation.class);
@@ -80,6 +88,28 @@ public class ProxyConfigUpdateValidation implements ProxyConfigUpdateContextHand
 
         if (!registerIfMissing(request.getSourceMode(), SOURCE_MODE_FIELD)) {
             validateSourceMode(request);
+        }
+
+        MinionServer minion = context.getProxyMinion();
+        if (isAbsent(minion)) {
+            return;
+        }
+
+        if (minion.isMgrServer()) {
+            errorReport.register("The system is a Management Server and cannot be converted to a Proxy");
+        }
+
+        if (!minion.hasProxyEntitlement() &&
+                !context.getSystemEntitlementManager().canEntitleServer(minion, EntitlementManager.PROXY)) {
+            errorReport.register("Cannot entitle server ID: {0}", minion.getId());
+        }
+
+        if (!ConfigDefaults.get().isUyuni() && !isMgrpxyInstalled(minion)) {
+            Set<Channel> subscribableMgrpxyChannels = getSubscribableMgrpxyChannels(minion, context.getUser());
+            context.setSubscribableChannelsWithMgrpxy(subscribableMgrpxyChannels);
+            if (subscribableMgrpxyChannels == null) {
+                errorReport.register("No channel with mgrpxy package found for server ID: {0}", minion.getId());
+            }
         }
     }
 

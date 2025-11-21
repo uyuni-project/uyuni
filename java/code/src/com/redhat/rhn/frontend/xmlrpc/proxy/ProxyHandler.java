@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -21,6 +22,7 @@ import static com.suse.proxy.ProxyConfigUtils.SOURCE_MODE_RPM;
 import static com.suse.proxy.ProxyConfigUtils.USE_CERTS_MODE_REPLACE;
 import static java.util.stream.Collectors.toList;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.RhnRuntimeException;
 import com.redhat.rhn.common.UyuniGeneralException;
 import com.redhat.rhn.domain.channel.Channel;
@@ -591,7 +593,9 @@ public class ProxyHandler extends BaseHandler {
                 null, null, null
             );
 
-            proxyConfigUpdateFacade.update(request, systemManager, loggedInUser);
+            proxyConfigUpdateFacade.update(
+                    request, systemManager, GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER, loggedInUser
+            );
         }
         catch (RhnRuntimeException | UyuniGeneralException e) {
             LOG.error("Failed to apply proxy configuration to minion", e);

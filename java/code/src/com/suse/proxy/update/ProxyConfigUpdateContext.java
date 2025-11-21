@@ -7,21 +7,19 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 
 package com.suse.proxy.update;
 
 import com.redhat.rhn.common.UyuniErrorReport;
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Pillar;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 
 import com.suse.manager.webui.utils.gson.ProxyConfigUpdateJson;
 import com.suse.proxy.ProxyContainerImagesEnum;
@@ -31,8 +29,10 @@ import com.suse.proxy.get.ProxyConfigGetFacadeImpl;
 import com.suse.proxy.model.ProxyConfig;
 
 import java.util.EnumMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * This class holds relevant data through the steps of the proxy config update process.
@@ -45,6 +45,7 @@ public class ProxyConfigUpdateContext {
     private final Map<ProxyContainerImagesEnum, RegistryUrl> registryUrls =
             new EnumMap<>(ProxyContainerImagesEnum.class);
     private final SystemManager systemManager;
+    private final SystemEntitlementManager systemEntitlementManager;
     private final User user;
     private final ProxyConfigGetFacade proxyConfigGetFacade;
 
@@ -54,6 +55,7 @@ public class ProxyConfigUpdateContext {
     private List<String> intermediateCAs;
     private String proxyCert;
     private String proxyKey;
+    private Set<Channel> subscribableChannels = new HashSet<>();
 
     private MinionServer proxyMinion;
     private Server parentServer;
@@ -63,37 +65,43 @@ public class ProxyConfigUpdateContext {
     private Pillar pillar;
     private Action action;
 
+
     /**
      * Constructor
      *
-     * @param requestIn       the request
-     * @param systemManagerIn the system manager
-     * @param userIn          the user
+     * @param requestIn                  the request
+     * @param systemManagerIn            the system manager
+     * @param systemEntitlementManagerIn   the systemEntitlementManager
+     * @param userIn                     the user
      */
     public ProxyConfigUpdateContext(
             ProxyConfigUpdateJson requestIn,
             SystemManager systemManagerIn,
+            SystemEntitlementManager systemEntitlementManagerIn,
             User userIn
     ) {
-        this(requestIn, systemManagerIn, userIn, new ProxyConfigGetFacadeImpl());
+        this(requestIn, systemManagerIn, systemEntitlementManagerIn, userIn, new ProxyConfigGetFacadeImpl());
     }
 
     /**
      * Full params constructor
      *
-     * @param requestIn              the request
-     * @param systemManagerIn        the system manager
-     * @param userIn                 the user
-     * @param proxyConfigGetFacadeIn the proxy config get facade
+     * @param requestIn                  the request
+     * @param systemManagerIn            the system manager
+     * @param systemEntitlementManagerIn the system entitlement manager
+     * @param userIn                     the user
+     * @param proxyConfigGetFacadeIn     the proxy config get facade
      */
     public ProxyConfigUpdateContext(
             ProxyConfigUpdateJson requestIn,
             SystemManager systemManagerIn,
+            SystemEntitlementManager systemEntitlementManagerIn,
             User userIn,
             ProxyConfigGetFacade proxyConfigGetFacadeIn
     ) {
         this.request = requestIn;
         this.systemManager = systemManagerIn;
+        this.systemEntitlementManager = systemEntitlementManagerIn;
         this.user = userIn;
         this.proxyConfigGetFacade = proxyConfigGetFacadeIn;
     }
@@ -208,6 +216,18 @@ public class ProxyConfigUpdateContext {
 
     public ProxyConfigGetFacade getProxyConfigGetFacade() {
         return proxyConfigGetFacade;
+    }
+
+    public SystemEntitlementManager getSystemEntitlementManager() {
+        return systemEntitlementManager;
+    }
+
+    public Set<Channel> getSubscribableChannels() {
+        return subscribableChannels;
+    }
+
+    public void setSubscribableChannelsWithMgrpxy(Set<Channel> subscribableChannelsIn) {
+        subscribableChannels = subscribableChannelsIn;
     }
 }
 

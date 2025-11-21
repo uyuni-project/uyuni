@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -40,6 +41,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.proxy.ProxyHandler;
 import com.redhat.rhn.frontend.xmlrpc.system.XmlRpcSystemHelper;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.testing.RhnJmockBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -258,6 +260,7 @@ public class ProxyHandlerTest extends RhnJmockBaseTestCase {
                     Matchers.<ProxyConfigUpdateJson>hasProperty("sourceMode", equalTo(SOURCE_MODE_RPM))
                 )),
                 with(equal(mockSystemManager)),
+                with(any(SystemEntitlementManager.class)),
                 with(equal(user))
             );
         }});
@@ -294,6 +297,7 @@ public class ProxyHandlerTest extends RhnJmockBaseTestCase {
                     Matchers.<ProxyConfigUpdateJson>hasProperty("registryBaseTag", equalTo("tag"))
                 )),
                 with(equal(mockSystemManager)),
+                with(any(SystemEntitlementManager.class)),
                 with(equal(user))
             );
         }});
@@ -341,6 +345,7 @@ public class ProxyHandlerTest extends RhnJmockBaseTestCase {
                     Matchers.<ProxyConfigUpdateJson>hasProperty("registryTftpdTag", equalTo("tftpd-tag"))
                 )),
                 with(equal(mockSystemManager)),
+                with(any(SystemEntitlementManager.class)),
                 with(equal(user))
             );
         }});
