@@ -13,12 +13,12 @@
   <condition property="product.name.short" value="susemanager" else="uyuni">
     <equals arg1="${product.name}" arg2="'SUSE Manager'"/>
   </condition>
-  <available file="/usr/share/java/tomcat/tomcat-servlet-4.0-api.jar" type="file" property="tomcat" value="tomcat9" />
+  <available file="/usr/share/java/tomcat-servlet-6.1-api.jar" type="file" property="tomcat" value="tomcat11" />
   <property name="tomcat" value="tomcat" />
   <echo message="Importing buildconf/build-props-${product.name.short}.xml" />
   <import file="buildconf/build-props-${product.name.short}.xml" />
-  <echo message="Importing buildconf/build-props-${tomcat}.xml" />
-  <import file="buildconf/build-props-${tomcat}.xml" />
+  <echo message="Importing buildconf/build-props-tomcat.xml" />
+  <import file="buildconf/build-props-tomcat.xml" />
   <import file="buildconf/build-props.xml" />
   <import file="buildconf/build-taskdefs.xml" />
   <import file="buildconf/build-utils.xml" />
@@ -225,17 +225,25 @@
     <pathconvert targetos="unix" pathsep="," property="jspflist" refid="jspffiles"/>
     <pathconvert targetos="unix" pathsep="," property="apidoc_jspflist" refid="apidoc_jspffiles"/>
     <jasper2
-        verbose="2"
         uriroot="${build.dir}/webapp/rhnjava"
         jspfiles="${jspflist}"
-        webXmlFragment="${build.dir}/webapp/generated_web.xml"
+        webXml="${build.dir}/webapp/generated_web.xml"
         outputDir="${build.dir}/jsp-temp" />
     <jasper2
-        verbose="2"
         uriroot="${prefix}${webapp-dir}/rhn"
         jspfiles="${apidoc_jspflist}"
-        webXmlFragment="${build.dir}/webapp/generated_apidoc.xml"
+        webXml="${build.dir}/webapp/generated_apidoc.xml"
         outputDir="${build.dir}/apidoc-temp" />
+
+    <replaceregexp match="&lt;\?xml.*?\?&gt;" replace="" flags="s">
+        <fileset dir="${build.dir}/webapp" includes="generated_*.xml"/>
+    </replaceregexp>
+    <replaceregexp match="&lt;web-app.*?&gt;" replace="" flags="s">
+        <fileset dir="${build.dir}/webapp" includes="generated_*.xml"/>
+    </replaceregexp>
+    <replaceregexp match="&lt;/web-app&gt;" replace="" flags="s">
+        <fileset dir="${build.dir}/webapp" includes="generated_*.xml"/>
+    </replaceregexp>
     <javac destdir="${build.dir}/webapp/rhnjava/WEB-INF/classes"
            debug="off" optimize="on"
            deprecation="${deprecation}"
