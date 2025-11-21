@@ -15,8 +15,8 @@
  */
 package com.redhat.rhn.domain.action.config;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
 
 /**
  * ActivationSchedulePackageDeployAction -

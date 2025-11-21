@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package javax.servlet;
+package jakarta.servlet;
 
 /**
  * Dummy interface allowing to compile with Tomcat Servlet API < 3.1.

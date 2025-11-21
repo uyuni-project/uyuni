@@ -21,7 +21,7 @@ import com.redhat.rhn.manager.kickstart.KickstartDeleteCommand;
 
 import org.apache.struts.action.DynaActionForm;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * KickstartDeleteAction extends BaseKickstartEditAction

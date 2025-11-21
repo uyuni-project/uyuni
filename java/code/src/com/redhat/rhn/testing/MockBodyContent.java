@@ -19,8 +19,8 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 
-import javax.servlet.jsp.JspWriter;
-import javax.servlet.jsp.tagext.BodyContent;
+import jakarta.servlet.jsp.JspWriter;
+import jakarta.servlet.jsp.tagext.BodyContent;
 
 public class MockBodyContent extends BodyContent {
     private JspWriter jspWriter;

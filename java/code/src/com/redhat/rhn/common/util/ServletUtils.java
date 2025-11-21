@@ -26,8 +26,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * A simple class that assists with Servlet-related activities
@@ -45,7 +45,7 @@ public class ServletUtils {
     public static String getRequestPath(HttpServletRequest req) {
         try {
             String requestUri =
-                (String)req.getAttribute("javax.servlet.forward.request_uri");
+                (String)req.getAttribute("jakarta.servlet.forward.request_uri");
             if (StringUtils.isBlank(requestUri)) {
                 requestUri = new URL(req.getRequestURL().toString()).getPath();
             }

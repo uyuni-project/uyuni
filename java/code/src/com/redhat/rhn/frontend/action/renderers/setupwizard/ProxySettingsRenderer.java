@@ -24,7 +24,7 @@ import com.redhat.rhn.manager.setup.SetupWizardSessionCache;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * Exposes AJAX methods to work with proxy settings.

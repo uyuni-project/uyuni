@@ -19,7 +19,7 @@ import com.redhat.rhn.domain.user.User;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * Simple class to reduce dependencies between Struts and database laysers

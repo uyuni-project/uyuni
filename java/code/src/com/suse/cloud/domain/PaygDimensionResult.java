@@ -21,16 +21,16 @@ import org.hibernate.annotations.Type;
 
 import java.util.StringJoiner;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "susepaygdimensionresult")
@@ -91,7 +91,7 @@ public class PaygDimensionResult {
     }
 
     @Column(name = "dimension")
-    @Type(type = "com.suse.cloud.domain.BillingDimensionEnumType")
+    @Type(value = com.suse.cloud.domain.BillingDimensionEnumType.class)
     public BillingDimension getDimension() {
         return dimension;
     }
