@@ -100,13 +100,14 @@ export const useSelected = <T extends Node<T>, I>(
       return false;
     }
     const isSelected = selected.has(identifier(item));
+    if (isSelected) {
+      return false;
+    }
 
     let selectedChildren = 0;
-    let totalChildren = 0;
     const countChildren = (node: T) => {
       if (node.children) {
         for (const child of node.children) {
-          totalChildren++;
           if (selected.has(identifier(child))) {
             selectedChildren++;
           }
@@ -116,7 +117,7 @@ export const useSelected = <T extends Node<T>, I>(
     };
     countChildren(item);
 
-    return isSelected ? selectedChildren !== totalChildren : selectedChildren > 0;
+    return selectedChildren > 0;
   };
 
   const toggle = (item: T) => {
