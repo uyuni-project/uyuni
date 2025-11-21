@@ -7,7 +7,7 @@ set -o pipefail
 SCRIPT=$(basename ${0})
 help() {
   echo ""
-  echo "Script to run a container to push SUSE Manager/Uyuni packages to IBS/OBS"
+  echo "Script to run a container to push SUSE Multi-Linux Manager/Uyuni packages to IBS/OBS"
   echo ""
   echo "Syntax: "
   echo ""
@@ -101,6 +101,7 @@ if [ "${SSHKEY}" != "" ]; then
     echo "ERROR: File ${SSHKEY}.pub does not exist!"
     exit 1
   fi
+  # Hint: every key provided is mounted as is_rsa, also when it is not an RSA key. It works also for other key types
   MOUNTSSHKEY="--mount type=bind,source=${SSHKEY},target=/root/.ssh/id_rsa --mount type=bind,source=${SSHKEY}.pub,target=/root/.ssh/id_rsa.pub"
   USESSHKEY="-s /root/.ssh/id_rsa"
   SSHDIR=$(dirname ${SSHKEY})
@@ -116,10 +117,6 @@ if [ "${TEACONF}" != "" ]; then
   fi
   MOUNTTEA="--mount type=bind,source=${TEACONF},target=/root/.config/tea/config.yml"
   USETEACONF="-g /root/.config/tea/config.yml"
-# this would be read only which break the next script
-#  if [ -f ${HOME}/.gitconfig ]; then
-#    MOUNTTEA="$MOUNTTEA --mount type=bind,source=${HOME}/.gitconfig,target=/root/.gitconfig"
-#  fi
 fi
 
 COOKIEJAR=$(mktemp /tmp/osc_cookiejar.XXXXXX)
