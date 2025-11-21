@@ -79,7 +79,12 @@ public abstract class CustomEnumType<T extends Enum<T>> implements UserType<T> {
     }
 
     @Override
-    public void nullSafeSet(PreparedStatement statement, T value, int position, WrapperOptions options) throws SQLException {
+    public void nullSafeSet(
+            PreparedStatement statement,
+            T value,
+            int position,
+            WrapperOptions options
+    ) throws SQLException {
         String jdbcValue = value == null ? null : toDb.apply(enumClass.cast(value));
         if (jdbcValue == null) {
             statement.setNull(position, 12);

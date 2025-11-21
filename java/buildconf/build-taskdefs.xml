@@ -1,16 +1,15 @@
 <project name="build-taskdefs">
-  <target name="init-taskdefs" depends="link-jars,compile-internal" unless="init-taskdefs.notrequired">
+    <target name="init-taskdefs" depends="link-jars,compile-internal" unless="init-taskdefs.notrequired">
 
-    <!-- =================== Jspc Tasks ======================= -->
-    <taskdef name="jasper2" classname="org.apache.jasper.JspC">
-         <classpath>
-             <path refid="buildjars" />
-             <!-- this configures commons logging properly for Jasper2 -->
-             <pathelement
-                 location="${src.dir}/internal/src/com/redhat/rhn/internal/jasper2"/>
-         </classpath>
-    </taskdef>
+        <!-- =================== Jspc Tasks ======================= -->
+        <taskdef name="jasper" classname="org.apache.jasper.JspC">
+             <classpath>
+                 <path refid="buildjars" />
+                 <!-- this configures commons logging properly for Jasper -->
+                 <pathelement location="${src.dir}/internal/src/com/redhat/rhn/internal/jasper"/>
+             </classpath>
+        </taskdef>
 
-    <property name="init-taskdefs.notrequired" value="true" />
-  </target>
+        <property name="init-taskdefs.notrequired" value="true" />
+    </target>
 </project>

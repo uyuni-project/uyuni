@@ -514,7 +514,7 @@ mkdir -p %{buildroot}%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib
 
 ant -Dproduct.name="'$PRODUCT_NAME'" -Dprefix=%{buildroot} install-tomcat
 install -d -m 755 %{buildroot}%{serverdir}/tomcat/webapps/rhn/META-INF/
-install -m 755 conf/rhn-tomcat9.xml %{buildroot}%{serverdir}/tomcat/webapps/rhn/META-INF/context.xml
+install -m 755 conf/rhn-tomcat11.xml %{buildroot}%{serverdir}/tomcat/webapps/rhn/META-INF/context.xml
 
 # check spelling errors in all resources for English if aspell installed
 [ -x "$(which aspell)" ] && scripts/spelling/check_java.sh .. en_US

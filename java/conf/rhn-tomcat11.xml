@@ -1,6 +1,6 @@
 <!--
-  This is a Tomcat 9 Context file.  For more information see:
-    https://tomcat.apache.org/tomcat-9.0-doc/config/resources.html
+  This is a Tomcat 11 Context file.  For more information see:
+    https://tomcat.apache.org/tomcat-11.0-doc/config/resources.html
 
   path - is the url path you specify after http://hostname:8080/.  To
     take over the root, you leave it empty.
