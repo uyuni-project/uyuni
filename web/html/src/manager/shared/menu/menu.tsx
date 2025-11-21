@@ -48,7 +48,11 @@ class Node extends Component<NodeProps> {
 
   render() {
     return (
-      <div className={this.props.isLeaf ? "leafLink" : "nodeLink"} onClick={(event) => this.handleClick(event)}>
+      <div
+        className={this.props.isLeaf ? "leafLink" : "nodeLink"}
+        onClick={(event) => this.handleClick(event)}
+        role="button"
+      >
         {this.props.icon ? <i className={"fa " + this.props.icon}></i> : null}
         <Link url={this.props.url} target={this.props.target} label={stringToReact(this.props.label)} />
         {this.props.isLeaf ? null : !this.props.isSearchActive ? (
@@ -213,7 +217,12 @@ class Nav extends Component {
           />
           <span className={"input-right-icon " + (isSearchActive ? "clear" : "")}>
             {isSearchActive ? (
-              <i className="fa fa-times-circle-o no-margin" onClick={this.closeEmAll} title={t("Clear Menu")}></i>
+              <i
+                className="fa fa-times-circle-o no-margin"
+                onClick={this.closeEmAll}
+                title={t("Clear Menu")}
+                role="button"
+              ></i>
             ) : (
               <i className="fa fa-search no-margin" title={t("Filter menu")}></i>
             )}
