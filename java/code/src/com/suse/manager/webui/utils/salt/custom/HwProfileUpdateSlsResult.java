@@ -93,6 +93,9 @@ public class HwProfileUpdateSlsResult {
     @SerializedName("cmd_|-uname_|-/usr/bin/uname -r -v_|-run")
     private Optional<StateApplyResult<CmdResult>> uname = Optional.empty();
 
+    @SerializedName("mgrcompat_|-proxy_info_|-proxy.info_|-module_run")
+    private Optional<StateApplyResult<Ret<SumaUtil.ProxyInfo>>> proxyInfo = Optional.empty();
+
     /**
      * @return the grains
      */
@@ -273,5 +276,18 @@ public class HwProfileUpdateSlsResult {
      */
     public String getUname() {
         return uname.map(ret -> ret.getChanges().getStdout()).orElse(null);
+    }
+
+    /**
+     * Evaluate existence of proxy config
+     * @return true if proxy config is present
+     */
+    public boolean missesProxyConfig() {
+        return proxyInfo.map(res -> {
+
+            SumaUtil.ProxyInfo info = res.getChanges().getRet();
+            return !info.hasConfigFiles() && !info.getVersion().isEmpty();
+        }
+        ).orElse(false);
     }
 }

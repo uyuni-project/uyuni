@@ -258,7 +258,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
 
         Org org2 = OrgFactory.createOrg();
         org2.setName("test org for content project");
-        HibernateFactory.getSession().save(org2);
+        HibernateFactory.getSession().persist(org2);
         ContentProject cp2 = new ContentProject("cplabel2", "cpname2", "cpdesc2", org2);
         ContentProjectFactory.save(cp2);
 

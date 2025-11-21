@@ -1,5 +1,3 @@
-import * as React from "react";
-
 import { DangerDialog } from "./LegacyDangerDialog";
 import { DialogProps } from "./LegacyDialog";
 

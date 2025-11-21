@@ -1,5 +1,4 @@
-import * as React from "react";
-import { useState } from "react";
+import { type FC, useState } from "react";
 
 import { ChannelTreeType } from "core/channels/type/channels.type";
 
@@ -24,7 +23,7 @@ type Props = {
   onConfirm: (dryRun: boolean, earliest: moment.Moment, actionChain?: ActionChain) => Promise<void>;
 };
 
-export const MigrationConfirmScheduleForm: React.FC<Props> = ({
+export const MigrationConfirmScheduleForm: FC<Props> = ({
   systemsData,
   actionChains,
   migrationTarget,

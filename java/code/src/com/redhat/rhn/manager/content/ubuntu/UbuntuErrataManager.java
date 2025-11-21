@@ -65,6 +65,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -256,6 +257,7 @@ public class UbuntuErrataManager {
         // Extract the deb packages from each channel
         var packagesByChannelMap = channelIds.stream()
                                              .map(ChannelFactory::lookupById)
+                                             .filter(Objects::nonNull)
                                              .filter(c -> c.isTypeDeb() && !c.isCloned())
                                              .collect(Collectors.toMap(c -> c,
                                                      c -> Set.copyOf(ChannelManager.listAllPackages(c))));

@@ -31,7 +31,7 @@ from spacewalk.common.rhnException import rhnException
 
 def parse_byteranges(byterange_header, file_size=None):
     log_debug(4, "Parsing byte range", byterange_header)
-    regexp = re.compile(r"^bytes\s*=\s*(.*)$")
+    regexp = re.compile(r"^bytes\s*=\s*(\S.*)$")
     mo = regexp.match(byterange_header)
     if not mo:
         raise InvalidByteRangeException

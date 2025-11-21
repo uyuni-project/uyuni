@@ -1,4 +1,4 @@
-import React from "react";
+import { Fragment } from "react";
 
 import ReactDOMServer from "react-dom/server";
 
@@ -26,9 +26,7 @@ describe("new t()", () => {
     };
     const expected = 'foo <a href="/">bar</a>';
 
-    expect(
-      ReactDOMServer.renderToStaticMarkup(<React.Fragment key="key">{t(input, inputArgs)}</React.Fragment>)
-    ).toEqual(expected);
+    expect(ReactDOMServer.renderToStaticMarkup(<Fragment key="key">{t(input, inputArgs)}</Fragment>)).toEqual(expected);
   });
 
   test("tags with named placeholders", () => {
@@ -39,9 +37,7 @@ describe("new t()", () => {
     };
     const expected = 'foo <a href="/">something</a> bar';
 
-    expect(
-      ReactDOMServer.renderToStaticMarkup(<React.Fragment key="key">{t(input, inputArgs)}</React.Fragment>)
-    ).toEqual(expected);
+    expect(ReactDOMServer.renderToStaticMarkup(<Fragment key="key">{t(input, inputArgs)}</Fragment>)).toEqual(expected);
   });
 
   // This behavior allows existing `handleResponseError` implementations to pass `{ arg: undefined }` even when there is no arg

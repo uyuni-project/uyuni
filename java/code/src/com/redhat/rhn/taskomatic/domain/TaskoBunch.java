@@ -17,8 +17,6 @@ package com.redhat.rhn.taskomatic.domain;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 import java.util.List;
 
@@ -27,9 +25,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -40,14 +40,8 @@ import javax.persistence.Table;
 public class TaskoBunch extends BaseDomainHelper {
 
     @Id
-    @GeneratedValue(generator = "tasko_bunch_seq")
-    @GenericGenerator(
-            name = "tasko_bunch_seq",
-            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-            parameters = {
-                    @Parameter(name = "sequence_name", value = "RHN_TASKO_BUNCH_ID_SEQ"),
-                    @Parameter(name = "increment_size", value = "1")
-            })
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tasko_bunch_seq")
+    @SequenceGenerator(name = "tasko_bunch_seq", sequenceName = "RHN_TASKO_BUNCH_ID_SEQ", allocationSize = 1)
     @Column(name = "id", nullable = false)
     private Long id;
 

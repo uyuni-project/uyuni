@@ -1,4 +1,3 @@
-import * as React from "react";
 import { useEffect, useState } from "react";
 
 import { WebCalendar } from "manager/maintenance/calendar/web-calendar";
@@ -134,7 +133,7 @@ type SystemPickerProps = {
 const SystemPicker = (props: SystemPickerProps) => {
   const [hasChanges, setHasChanges] = useState(false);
   const [selectedSystems, setSelectedSystems] = useState([]);
-  const [isCancelActions, setCancelActions] = useState(false);
+  const [isCancelActions, setIsCancelActions] = useState(false);
 
   useEffect(() => {
     Network.get(`/rhn/manager/api/maintenance/schedule/${props.scheduleId}/systems`)
@@ -175,8 +174,9 @@ const SystemPicker = (props: SystemPickerProps) => {
             <Toggler
               text={t("Cancel affected actions")}
               className="btn"
-              handler={() => setCancelActions(!isCancelActions)}
+              handler={() => setIsCancelActions(!isCancelActions)}
               value={isCancelActions}
+              key="cancel-actions"
             />,
             isCancelActions && selectedSystems.length > 0 ? (
               <ModalButton
@@ -184,6 +184,7 @@ const SystemPicker = (props: SystemPickerProps) => {
                 text={t("Save Changes")}
                 className="btn-primary"
                 disabled={!hasChanges}
+                key="save-changes-modal"
               />
             ) : (
               <AsyncButton
@@ -191,6 +192,7 @@ const SystemPicker = (props: SystemPickerProps) => {
                 defaultType="btn-primary"
                 text={t("Save Changes")}
                 disabled={!hasChanges}
+                key="save-changes-async"
               />
             ),
           ]}

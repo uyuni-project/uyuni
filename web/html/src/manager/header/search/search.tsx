@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type ChangeEvent, type SyntheticEvent, PureComponent } from "react";
 
 import { Button, SubmitButton } from "components/buttons";
 
@@ -19,25 +19,28 @@ const SEARCH_TYPES = [
   },
 ];
 
-export class HeaderSearch extends React.PureComponent {
-  private readonly initialState = {
-    isOpen: false,
-    searchString: "",
-    searchType: SEARCH_TYPES[0].value,
-  };
-  state = this.initialState;
+type HeaderSearchProps = Record<string, never>;
+
+class HeaderSearchState {
+  isOpen = false;
+  searchString = "";
+  searchType = SEARCH_TYPES[0].value;
+}
+
+export class HeaderSearch extends PureComponent<HeaderSearchProps, HeaderSearchState> {
+  state = new HeaderSearchState();
 
   onSPAEndNavigation() {
-    this.setState(this.initialState);
+    this.setState(new HeaderSearchState());
   }
 
-  onChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  onChange = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     this.setState({
       [event.target.name]: event.target.value,
-    });
+    } as any);
   };
 
-  onSubmit = (event: React.SyntheticEvent) => {
+  onSubmit = (event: SyntheticEvent) => {
     event.preventDefault();
     window.pageRenderers?.spaengine?.navigate?.(
       `/rhn/Search.do?csrf_token=${window.csrfToken}&submitted=true&search_string=${this.state.searchString}&search_type=${this.state.searchType}`
@@ -53,7 +56,7 @@ export class HeaderSearch extends React.PureComponent {
           title={t("Open search")}
           tooltipPlacement="bottom"
           className={`is-plain header-non-link manual-toggle-box ${this.state.isOpen ? "open" : ""}`}
-          handler={() => this.setState({ isOpen: !this.state.isOpen })}
+          handler={() => this.setState((prevState) => ({ isOpen: !prevState.isOpen }))}
         />
         {this.state.isOpen ? (
           <form id="search-form" name="form1" className="box-wrapper form-inline" onSubmit={this.onSubmit}>

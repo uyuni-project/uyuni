@@ -250,7 +250,7 @@ public class AccessTokenFactory extends HibernateFactory {
      * @param token AccessToken to delete.
      */
     public static void delete(AccessToken token) {
-        HibernateFactory.getSession().delete(token);
+        HibernateFactory.getSession().remove(token);
     }
 
     /**

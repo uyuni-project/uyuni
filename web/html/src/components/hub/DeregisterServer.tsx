@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type ReactNode, Component } from "react";
 
 import { Button } from "components/buttons";
 import { DangerDialog } from "components/dialog/DangerDialog";
@@ -23,14 +23,14 @@ type State = {
   showDeleteErrorModal: boolean;
 };
 
-export class DeregisterServer extends React.Component<Props, State> {
+export class DeregisterServer extends Component<Props, State> {
   public constructor(props: Props) {
     super(props);
 
     this.state = { confirmDeregistration: false, showDeleteErrorModal: false };
   }
 
-  public render(): React.ReactNode {
+  public render(): ReactNode {
     return (
       <>
         <Button

@@ -1,0 +1,332 @@
+import { type HTMLProps, type ReactNode, Component } from "react";
+/**
+ * Various HTML button components.
+ * @module buttons
+ */
+
+type BaseProps = {
+  /** Text to display on the button. */
+  text?: ReactNode;
+  /** Text to display on the button. */
+  children?: ReactNode;
+  /**
+   * FontAwesome icon class of the button. Can also include additional FA classes
+   * (sizing, animation etc.).
+   */
+  icon?: string;
+
+  /** 'id' attribute of the button. */
+  id?: string;
+
+  /** 'title' attribute of the button. */
+  title?: string;
+
+  /** If true, disable the button. */
+  disabled?: boolean;
+
+  /**
+   * Any additional css classes for the button, `"btn"` is prepended automatically
+   */
+  className?: string;
+  /** Tooltip placement */
+  tooltipPlacement?: "top" | "right" | "bottom" | "left";
+};
+
+type BaseState = Record<string, any>;
+
+/**
+ * Base class for button components.
+ */
+class _ButtonBase<P extends BaseProps = BaseProps, S extends BaseState = BaseState> extends Component<P, S> {
+  renderIcon() {
+    const text = this.props.text ?? this.props.children;
+    const margin = text ? "" : " no-margin";
+    const icon = this.props.icon && <i className={"fa " + this.props.icon + margin} />;
+
+    return icon;
+  }
+}
+
+type AsyncProps = BaseProps & {
+  /**
+   * The async action function to be performed when clicked.
+   * The function is required and must return a Promise object or 'false'.
+   * @return {Promise} The asynchronous action.
+   */
+  action?: (...args: any[]) => Promise<any> | false | void;
+
+  /**
+   * One of Bootstrap button type classes (e.g. 'btn-primary').
+   * Defaults to 'btn-default'.
+   * @see className
+   */
+  defaultType?: string;
+
+  /**
+   * Initial state of the button ('failure', 'warning' or 'initial')
+   */
+  initialValue?: string;
+
+  /**
+   * HTML type attribute for the button ('button', 'submit', 'reset').
+   * Defaults to 'button'.
+   */
+  type?: "button" | "submit" | "reset";
+};
+
+type AsyncState = {
+  value: string;
+};
+
+/**
+ * A button which performs an asynchronous action and displays an animation while waiting for the result.
+ */
+export class AsyncButton extends _ButtonBase<AsyncProps, AsyncState> {
+  constructor(props: AsyncProps) {
+    super(props);
+    this.state = {
+      value: props.initialValue ? props.initialValue : "initial",
+    };
+  }
+
+  trigger = () => {
+    this.setState({
+      value: "waiting",
+    });
+    const future = this.props.action?.();
+    if (!future) {
+      this.setState({
+        value: "initial",
+      });
+      return;
+    }
+    future.then(
+      () => {
+        this.setState({
+          value: "success",
+        });
+      },
+      () => {
+        this.setState({
+          value: "failure",
+        });
+      }
+    );
+  };
+
+  render() {
+    let style = "btn ";
+    switch (this.state.value) {
+      case "failure":
+        style += "btn-danger";
+        break;
+      case "waiting":
+      case "initial":
+        style += this.props.defaultType ? this.props.defaultType : "btn-default";
+        break;
+      default:
+        style += this.props.defaultType ? this.props.defaultType : "btn-default";
+        break;
+    }
+
+    if (this.props.className) {
+      style += " " + this.props.className;
+    }
+
+    const text = this.props.text ?? this.props.children;
+    const margin = text ? "" : " no-margin";
+    const tooltipProps = this.props.title
+      ? {
+          "data-bs-toggle": "tooltip",
+          "aria-label": this.props.title,
+          "data-bs-placement": this.props.tooltipPlacement,
+        }
+      : {};
+    return (
+      <button
+        id={this.props.id}
+        {...tooltipProps}
+        title={this.props.title}
+        className={style}
+        disabled={this.state.value === "waiting" || this.props.disabled}
+        onClick={this.trigger}
+        type={this.props.type ?? "button"}
+      >
+        {this.state.value === "waiting" ? (
+          <i className={"fa fa-circle-o-notch fa-spin" + margin}></i>
+        ) : (
+          this.renderIcon()
+        )}
+        {text}
+      </button>
+    );
+  }
+}
+
+export type ButtonProps = BaseProps & {
+  /** Callback function to execute on button click. */
+  handler?: (...args: any[]) => any;
+};
+
+/**
+ * A simple HTML button with an icon and an optional text.
+ */
+export class Button extends _ButtonBase<ButtonProps> {
+  render() {
+    const text = this.props.text ?? this.props.children;
+    const cssClasses = "btn " + (this.props.className ?? "btn-default");
+    const tooltipProps = this.props.title
+      ? {
+          "data-bs-toggle": "tooltip",
+          "aria-label": this.props.title,
+          "data-bs-placement": this.props.tooltipPlacement,
+        }
+      : {};
+
+    return (
+      <button
+        id={this.props.id}
+        {...tooltipProps}
+        type="button"
+        title={this.props.title}
+        className={cssClasses}
+        onClick={this.props.handler}
+        disabled={this.props.disabled}
+      >
+        {this.renderIcon()}
+        {text}
+      </button>
+    );
+  }
+}
+
+type LinkProps = BaseProps & {
+  /** 'href' attribute of the anchor. */
+  href?: string;
+
+  /** target of the link */
+  target?: string;
+
+  /** to treat the link URL as a download  */
+  download?: string;
+
+  /** Callback function to execute on button click. */
+  handler?: (...args: any[]) => any;
+};
+
+/**
+ * An HTML anchor which displays as a button.
+ */
+export class LinkButton extends _ButtonBase<LinkProps> {
+  render() {
+    const text = this.props.text ?? this.props.children;
+    const cssClasses = "btn " + (this.props.className ?? "btn-default");
+    const tooltipProps = this.props.title
+      ? {
+          "data-bs-toggle": "tooltip",
+          "aria-label": this.props.title,
+          "data-bs-placement": this.props.tooltipPlacement,
+        }
+      : {};
+
+    const targetProps: Partial<HTMLProps<HTMLAnchorElement>> =
+      this.props.target === "_blank"
+        ? {
+            target: "_blank",
+            rel: "noopener noreferrer",
+          }
+        : {
+            target: this.props.target,
+          };
+    return (
+      <a
+        id={this.props.id}
+        title={this.props.title}
+        className={cssClasses}
+        {...tooltipProps}
+        href={this.props.href}
+        onClick={this.props.handler}
+        download={this.props.download}
+        {...targetProps}
+      >
+        {this.renderIcon()}
+        {text}
+      </a>
+    );
+  }
+}
+
+/**
+ * A simple submit button with an icon and an optional text.
+ */
+export class SubmitButton extends _ButtonBase {
+  render() {
+    const text = this.props.text ?? this.props.children;
+    const tooltipProps = this.props.title
+      ? {
+          "data-bs-toggle": "tooltip",
+          "aria-label": this.props.title,
+          "data-bs-placement": this.props.tooltipPlacement,
+        }
+      : {};
+    return (
+      <button
+        {...tooltipProps}
+        id={this.props.id}
+        type="submit"
+        className={"btn " + this.props.className}
+        disabled={this.props.disabled}
+      >
+        {this.renderIcon()}
+        {text}
+      </button>
+    );
+  }
+}
+
+type DropdownProps = BaseProps & {
+  /** 'dropdown-toggle' and 'btn' classes are always prepended for dropdowns */
+  className: string;
+
+  /** Callback function to execute on button click. */
+  handler?: (...args: any[]) => any;
+
+  items: ReactNode[];
+};
+
+/**
+ * A bootstrap-style dropdown button.
+ */
+export class DropdownButton extends _ButtonBase<DropdownProps> {
+  render() {
+    const text = this.props.text ?? this.props.children;
+    const tooltipProps = this.props.title
+      ? {
+          "data-bs-toggle": "tooltip",
+          "aria-label": this.props.title,
+          "data-bs-placement": this.props.tooltipPlacement,
+        }
+      : {};
+    return (
+      <div className="dropdown" {...tooltipProps} title={this.props.title}>
+        <button
+          id={this.props.id}
+          type="button"
+          title={this.props.title}
+          className={"dropdown-toggle dropdown-custom btn " + this.props.className}
+          onClick={this.props.handler}
+          data-bs-toggle="dropdown"
+          disabled={this.props.disabled}
+        >
+          {this.renderIcon()}
+          {text} <span className="caret" />
+        </button>
+        <ul className="dropdown-menu dropdown-menu-right">
+          {this.props.items.map((i, index) => (
+            <li key={`${index}-${i?.toString()}`}>{i}</li>
+          ))}
+        </ul>
+      </div>
+    );
+  }
+}

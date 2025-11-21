@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type ReactNode, Component } from "react";
 
 import { SectionToolbar } from "components/section-toolbar/section-toolbar";
 
@@ -29,7 +29,7 @@ type State = {
   errors?: MessageType[];
 };
 
-class FormulaSelection extends React.Component<Props, State> {
+class FormulaSelection extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
@@ -124,7 +124,7 @@ class FormulaSelection extends React.Component<Props, State> {
   }
 
   generateList = () => {
-    const list: React.ReactNode[] = [];
+    const list: ReactNode[] = [];
     const groups = this.state.groups;
 
     if (groups.groupless.length > 0) {

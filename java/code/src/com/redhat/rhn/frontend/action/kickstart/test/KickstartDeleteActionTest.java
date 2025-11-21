@@ -25,7 +25,7 @@ import org.junit.jupiter.api.Test;
 
 public class KickstartDeleteActionTest extends BaseKickstartEditTestCase {
 
-    private final String KICKSTART_ID = "ksid";
+    private static final String KICKSTART_ID = "ksid";
 
     @Test
     public void testExecute() {

@@ -14,7 +14,7 @@ script(type='text/javascript').
                 serverId: "#{server.id}",
                 parents: JSON.parse('!{parents}'),
                 currentConfig: !{currentConfig},
-                initFailMessage: "#{initFailMessage}",
+                validationErrors: JSON.parse('!{validationErrors}'),
                 registryUrlExample: "#{registryUrlExample}",
                 registryTagExample: "#{registryTagExample}",
                 hasCertificates: JSON.parse("#{hasCertificates}")

@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type ReactNode, Component } from "react";
 
 import { productName } from "core/user-preferences";
 
@@ -34,7 +34,7 @@ type FormModel = {
   pastedRootCA?: string;
 };
 
-type Props = {};
+type Props = Record<never, never>;
 
 type State = {
   model: FormModel;
@@ -43,7 +43,7 @@ type State = {
   validated: boolean;
 };
 
-export class RegisterPeripheralForm extends React.Component<Props, State> {
+export class RegisterPeripheralForm extends Component<Props, State> {
   // Initial form model
   private static readonly INITIAL_MODEL: FormModel = {
     serverFqdn: "",
@@ -131,7 +131,7 @@ export class RegisterPeripheralForm extends React.Component<Props, State> {
     this.setState({ model: { ...RegisterPeripheralForm.INITIAL_MODEL } });
   }
 
-  public render(): React.ReactNode {
+  public render(): ReactNode {
     return (
       <TopPanel title={t("Register a new peripheral server")} icon="fa fa-plus">
         {this.state.loading && (

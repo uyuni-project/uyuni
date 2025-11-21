@@ -22,7 +22,7 @@ Then(/^"([^"]*)" should have a FQDN$/) do |host|
   resolution_time = end_time.to_i - initial_time.to_i
   raise ScriptError, 'cannot determine hostname' unless return_code.zero?
   raise ScriptError, "name resolution for #{node.full_hostname} took too long (#{resolution_time} seconds)" unless resolution_time <= 2
-  raise ScriptError, 'hostname is not fully qualified' unless result == node.full_hostname
+  raise ScriptError, "hostname is not fully qualified: #{result} != #{node.full_hostname}" unless result == node.full_hostname
 end
 
 Then(/^reverse resolution should work for "([^"]*)"$/) do |host|
@@ -181,8 +181,9 @@ When(/^I use spacewalk-repo-sync to sync channel "([^"]*)"$/) do |channel|
   $command_output, _code = get_target('server').run("spacewalk-repo-sync -c #{channel}", check_errors: false, verbose: true)
 end
 
-When(/^I use spacewalk-repo-sync to sync channel "([^"]*)" including "([^"]*)" packages?$/) do |channel, packages|
-  append_includes = packages.split.map { |pkg| "--include #{pkg}" }.join(' ')
+When(/^I use spacewalk-repo-sync to sync channel "([^"]*)" including only client tools dependencies$/) do |channel|
+  packages = CLIENT_TOOLS_DEPENDENCIES_BY_BASE_CHANNEL[channel]
+  append_includes = packages.map { |pkg| "--include #{pkg}" }.join(' ')
   $command_output, _code = get_target('server').run("spacewalk-repo-sync -c #{channel} #{append_includes}", check_errors: false, verbose: true)
 end
 

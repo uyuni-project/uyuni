@@ -87,7 +87,14 @@ When(/^I wait at most (\d+) seconds until the event is completed, refreshing the
 
   repeat_until_timeout(timeout: timeout.to_i, message: 'Event not yet completed') do
     break if has_content?('This action\'s status is: Completed.', wait: 3)
-    raise SystemCallError, 'Event failed' if has_content?('This action\'s status is: Failed.', wait: 3)
+
+    if has_content?('This action\'s status is: Failed.', wait: 3)
+      details = all(:xpath, '//li[.//strong[text()=\'Details:\']]//pre', visible: true)
+      details_array = details.map(&:text)
+      combined_details = details_array.join("\n")
+      log "Event Details:\n#{combined_details}"
+      raise SystemCallError, 'Event failed'
+    end
 
     current = Time.now
     if current - last > 150
@@ -172,6 +179,12 @@ When(/^I (check|uncheck) "([^"]*)" by label$/) do |action, label|
   end
 end
 
+When(/^I select the channel "([^"]*)"$/) do |channel|
+  checkbox = find(:xpath, "//a[text()='#{channel}']/preceding-sibling::input[@type='checkbox']").check
+  checkbox.check
+  raise ScriptError, "Checkbox #{label} not checked." unless checkbox.checked?
+end
+
 When(/^I select "([^"]*)" from "([^"]*)"$/) do |option, field|
   if has_select?(field, with_options: [option], wait: 1)
     select(option, from: field)
@@ -192,6 +205,13 @@ end
 When(/^I select "([^"]*)" from drop-down in table line with "([^"]*)"$/) do |value, line|
   select = find(:xpath, ".//div[@class='table-responsive']/table/tbody/tr[contains(td/a,'#{line}')]//select")
   select(value, from: select[:id])
+end
+
+# Choose a radio button by its visible label text.
+# The 'choose' method automatically finds the associated input element by matching the text of a label tag to the radio button's ID/Name.
+When(/^I choose "([^"]*)" radio button$/) do |label_text|
+  choose(label_text)
+  raise ScriptError, "Radio button '#{label_text}' not checked." unless has_checked_field?(label_text)
 end
 
 When(/^I choose radio button "([^"]*)" for child channel "([^"]*)"$/) do |radio, channel|

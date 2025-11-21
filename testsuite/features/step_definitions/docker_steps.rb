@@ -9,11 +9,13 @@ require 'timeout'
 
 When(/^I enter "([^"]*)" relative to profiles as "([^"]*)"$/) do |path, field|
   git_profiles = ENV.fetch('GITPROFILES', nil)
+  log "GITPROFILES: #{git_profiles}"
   step %(I enter "#{git_profiles}/#{path}" as "#{field}")
 end
 
 When(/^I enter URI, username and password for registry$/) do
   auth_registry_username, auth_registry_password = ENV['AUTH_REGISTRY_CREDENTIALS'].split('|')
+  log "AUTH_REGISTRY_CREDENTIALS: #{auth_registry_username}|#{auth_registry_password}"
   steps %(
     When I enter "#{$auth_registry}" as "uri"
     And I enter "#{auth_registry_username}" as "username"

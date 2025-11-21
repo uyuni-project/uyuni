@@ -3,7 +3,7 @@
 Test suite for spacecmd.system module.
 """
 from datetime import datetime
-from unittest.mock import MagicMock, patch, mock_open
+from unittest.mock import MagicMock, patch, mock_open, call
 
 # pylint: disable-next=unused-import
 from helpers import shell, assert_expect, assert_list_args_expect, assert_args_expect
@@ -370,6 +370,7 @@ class TestSystem:
             "Completed:    20211015T16:56:14",
         ]
 
+        # pylint: disable-next=redefined-outer-name
         for call in m_print.call_args_list:
             assert_expect([call], next(iter(expected)))
             expected.pop(0)
@@ -478,6 +479,7 @@ class TestSystem:
             "Completed:       20211005T09:47:49",
         ]
 
+        # pylint: disable-next=redefined-outer-name
         for call in m_print.call_args_list:
             assert_expect([call], next(iter(expected)))
             expected.pop(0)
@@ -567,6 +569,7 @@ class TestSystem:
               mode: '0644'""",
         ]
 
+        # pylint: disable-next=redefined-outer-name
         for call in m_print.call_args_list:
             assert_expect([call], next(iter(expected)))
             expected.pop(0)
@@ -989,4 +992,87 @@ class TestSystem:
                     {},
                 )
             ],
+        )
+
+    # pylint: disable-next=redefined-outer-name
+    def test_do_system_needrebootafterupdate_noargs(self, shell):
+        spacecmd.system.do_system_needrebootafterupdate(shell, "")
+        assert shell.help_system_needrebootafterupdate.called
+
+    # pylint: disable-next=redefined-outer-name
+    def test_do_system_needrebootafterupdate_ssm_nosystems(self, shell):
+        logger = MagicMock()
+        shell.ssm.keys = MagicMock(return_value={})
+
+        with patch("spacecmd.system.logging", logger):
+            spacecmd.system.do_system_needrebootafterupdate(shell, "ssm")
+
+        assert shell.ssm.keys.called
+        assert logger.warning.called
+        assert not shell.client.system.getRelevantErrata.called
+        assert not shell.client.errata.getDetail.called
+        assert_expect(logger.warning.call_args_list, "No systems selected")
+
+    # pylint: disable-next=redefined-outer-name
+    def test_do_system_needrebootafterupdate_ssm_valid(self, shell):
+        m_print = MagicMock()
+        shell.options.quiet = False
+        shell.ssm.keys = MagicMock(return_value={"acme": {}, "beigebox": {}})
+        shell.client.system.getRelevantErrata = MagicMock(
+            return_value=[{"advisory_name": "errata1"}]
+        )
+        shell.client.errata.getDetails = MagicMock(
+            return_value={"reboot_suggested": True}
+        )
+
+        with patch("spacecmd.system.print", m_print):
+            spacecmd.system.do_system_needrebootafterupdate(shell, "ssm")
+
+        assert shell.ssm.keys.called
+        assert shell.client.system.getRelevantErrata.called
+        assert shell.client.errata.getDetails.called
+        assert (
+            call("System 'acme' needs to be rebooted after update")
+            in m_print.call_args_list
+        )
+        assert (
+            call("System 'beigebox' needs to be rebooted after update")
+            in m_print.call_args_list
+        )
+
+    # pylint: disable-next=redefined-outer-name
+    def test_do_system_needrebootafterupdate_nosystems(self, shell):
+        logger = MagicMock()
+        shell.expand_systems = MagicMock(return_value=[])
+
+        with patch("spacecmd.system.logging", logger):
+            spacecmd.system.do_system_needrebootafterupdate(shell, "foobar")
+
+        assert shell.expand_systems.called
+        assert logger.warning.called
+        assert not shell.client.system.getRelevantErrata.called
+        assert not shell.client.errata.getDetail.called
+        assert_expect(logger.warning.call_args_list, "No systems selected")
+
+    # pylint: disable-next=redefined-outer-name
+    def test_do_system_needrebootafterupdate_valid(self, shell):
+        m_print = MagicMock()
+        shell.options.quiet = False
+        shell.expand_systems = MagicMock(return_value=["system-a"])
+        shell.client.system.getRelevantErrata = MagicMock(
+            return_value=[{"advisory_name": "errata1"}]
+        )
+        shell.client.errata.getDetails = MagicMock(
+            return_value={"reboot_suggested": True}
+        )
+
+        with patch("spacecmd.system.print", m_print):
+            spacecmd.system.do_system_needrebootafterupdate(shell, "system-a")
+
+        assert shell.expand_systems.called
+        assert shell.client.system.getRelevantErrata.called
+        assert shell.client.errata.getDetails.called
+        assert (
+            call("System 'system-a' needs to be rebooted after update")
+            in m_print.call_args_list
         )

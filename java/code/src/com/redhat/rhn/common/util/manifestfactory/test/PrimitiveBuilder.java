@@ -52,7 +52,7 @@ public class PrimitiveBuilder implements ManifestFactoryBuilder {
             List ret = new ArrayList<>();
             for (int i = 0; i < len; i++) {
                 try {
-                    ret.add(Class.forName(containedType).newInstance());
+                    ret.add(Class.forName(containedType).getDeclaredConstructor().newInstance());
                 }
                 catch (Exception e) {
                     throw new RuntimeException("Instantiation of " + containedType +

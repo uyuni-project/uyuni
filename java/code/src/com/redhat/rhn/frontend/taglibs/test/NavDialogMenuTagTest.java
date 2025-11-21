@@ -40,9 +40,9 @@ import javax.servlet.jsp.tagext.Tag;
  */
 public class NavDialogMenuTagTest extends RhnBaseTestCase {
 
-    private final String NAV_XML = "sitenav-test.xml";
+    private static final String NAV_XML = "sitenav-test.xml";
     private URL url;
-    private final String DIALOG_NAV = "com.redhat.rhn.frontend.nav.DialognavRenderer";
+    private static final String DIALOG_NAV = "com.redhat.rhn.frontend.nav.DialognavRenderer";
     private NavDialogMenuTag nmt;
 
     @Override

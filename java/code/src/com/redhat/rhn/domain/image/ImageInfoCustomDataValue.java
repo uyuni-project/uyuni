@@ -18,16 +18,16 @@ import com.redhat.rhn.domain.user.legacy.UserImpl;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -69,14 +69,8 @@ public class ImageInfoCustomDataValue extends BaseDomainHelper {
      * @return Returns the Id
      */
     @Id
-    @GeneratedValue(generator = "icdv_seq")
-    @GenericGenerator(
-            name = "icdv_seq",
-            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-            parameters = {
-                    @Parameter(name = "sequence_name", value = "suse_icdv_id_seq"),
-                    @Parameter(name = "increment_size", value = "1")
-            })
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "icdv_seq")
+    @SequenceGenerator(name = "icdv_seq", sequenceName = "suse_icdv_id_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }

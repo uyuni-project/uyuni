@@ -1,5 +1,4 @@
-import * as React from "react";
-import { useMemo, useState } from "react";
+import { type FC, type ReactNode, useMemo, useState } from "react";
 
 import BaseChannel from "manager/content-management/shared/components/panels/sources/channels/base-channel";
 import { ChannelProcessor } from "manager/content-management/shared/components/panels/sources/channels/channel-processor";
@@ -32,7 +31,7 @@ type Props = {
   onBack: () => void;
 };
 
-export const MigrationChannelsSelectorForm: React.FC<Props> = ({
+export const MigrationChannelsSelectorForm: FC<Props> = ({
   migrationSource,
   migrationTarget,
   baseChannelTrees,
@@ -100,7 +99,7 @@ export const MigrationChannelsSelectorForm: React.FC<Props> = ({
       return;
     }
 
-    const updatedSet = new Set([...selectedChildChannels]);
+    const updatedSet = new Set(selectedChildChannels);
     const isAddition = toState ?? !updatedSet.has(channel);
 
     const updateAction = isAddition ? updatedSet.add.bind(updatedSet) : updatedSet.delete.bind(updatedSet);
@@ -134,7 +133,7 @@ export const MigrationChannelsSelectorForm: React.FC<Props> = ({
     onChannelSelection(channelTree, selectedAllowVendorChange);
   }
 
-  function renderChildren(): React.ReactNode {
+  function renderChildren(): ReactNode {
     if (selectedChannelTree === undefined) {
       return <></>;
     }

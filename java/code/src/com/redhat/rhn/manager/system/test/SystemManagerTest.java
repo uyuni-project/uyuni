@@ -151,7 +151,6 @@ import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.apache.commons.io.FileUtils;
 import org.cobbler.test.MockConnection;
 import org.hibernate.Session;
-import org.hibernate.type.StandardBasicTypes;
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.junit.jupiter.api.AfterEach;
@@ -212,7 +211,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         context().checking(new Expectations() {
             {
                 allowing(taskomaticMock)
-                    .scheduleActionExecution(with(any(Action.class)));
+                        .scheduleActionExecution(with(any(Action.class)));
                 allowing(saltServiceMock).refreshPillar(with(any(MinionList.class)));
                 allowing(saltServiceMock).deleteKey(with(any(String.class)));
             }
@@ -242,7 +241,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         try {
             // prometheus-exporter files
             Path prometheusDir = metadataDirOfficial.resolve("prometheus-exporters");
-            Path prometheusFile = Paths.get(prometheusDir.toString(),  "form.yml");
+            Path prometheusFile = Paths.get(prometheusDir.toString(), "form.yml");
             Files.createDirectories(prometheusDir);
             Files.createFile(prometheusFile);
 
@@ -278,11 +277,10 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
      */
     private Integer numberOfSnapshots(Long sid) {
         Session session = HibernateFactory.getSession();
-        return (Integer) session.createSQLQuery("Select count(*) as cnt " +
-                                                         "  from rhnSnapshot " +
-                                                         " where server_id = " + sid)
-                                         .addScalar("cnt", StandardBasicTypes.INTEGER)
-                                         .uniqueResult();
+        return session.createQuery("SELECT COUNT(s) FROM ServerSnapshot s WHERE s.server.id = :sid", Long.class)
+                .setParameter("sid", sid)
+                .uniqueResult()
+                .intValue();
     }
 
     @Test
@@ -362,7 +360,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server host = ServerTestUtils.createVirtHostWithGuests(user, 1, systemEntitlementManager);
         Server guest = (host.getGuests().iterator().next()).
-            getGuestSystem();
+                getGuestSystem();
         Long sid = guest.getId();
 
         Server test = SystemManager.lookupByIdAndUser(sid, user);
@@ -384,7 +382,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server host = ServerTestUtils.createVirtHostWithGuests(user, 1, systemEntitlementManager);
         Server guest = (host.getGuests().iterator().next()).
-            getGuestSystem();
+                getGuestSystem();
         Long sid = guest.getId();
 
         Server test = SystemManager.lookupByIdAndUser(sid, user);
@@ -413,7 +411,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         ManagedServerGroup sg = ServerGroupTestUtils.createManaged(user);
 
         DataResult<SystemOverview> systems = SystemManager.
-                                          systemsNotInGroup(user, sg, null);
+                systemsNotInGroup(user, sg, null);
         assertNotNull(systems);
         assertFalse(systems.isEmpty());
         assertTrue(serverInList(s, systems));
@@ -602,14 +600,15 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
      * This utility method associates a particular system with a given
      * capability.  This is backend code that has not yet been implemented
      * in Java. This type of code should NEVER EVER be seen outside of a test.
-     * @param sid Server id
+     *
+     * @param sid        Server id
      * @param capability Capability to add
-     * @param version version number
+     * @param version    version number
      */
     public static void giveCapability(Long sid, String capability, Long version) {
 
         WriteMode m = ModeFactory.getWriteMode("test_queries",
-                                                    "add_to_client_capabilities");
+                "add_to_client_capabilities");
         Map<String, Object> params = new HashMap<>();
         params.put("sid", sid);
         params.put("capability", capability);
@@ -647,7 +646,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertNotNull(list, "List is null");
         assertFalse(list.isEmpty(), "List is empty");
         boolean found = false;
-        for (Row o: list) {
+        for (Row o : list) {
             if (srvr1.getName().equals(o.get("name"))) {
                 found = true;
             }
@@ -671,7 +670,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
         List<Map<String, Object>> systems =
                 SystemManager.getSsmSystemsSubscribedToChannel(user,
-                s.getBaseChannel().getId());
+                        s.getBaseChannel().getId());
         assertEquals(1, systems.size());
         Map<String, Object> result1 = systems.get(0);
         assertEquals(s.getName(), result1.get("name"));
@@ -813,7 +812,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         guestIds.add(vi.getId());
 
         ValidatorResult result = SystemManager.validateGuestMemorySetting(guestIds,
-            512);
+                512);
         List<ValidatorError> errors = result.getErrors();
         assertEquals(0, errors.size());
         List<ValidatorWarning> warnings = result.getWarnings();
@@ -847,7 +846,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         key.setDescription("test desc");
         key.setOrg(admin.getOrg());
         key.setLastModifier(admin);
-        HibernateFactory.getSession().save(key);
+        HibernateFactory.getSession().persist(key);
 
 
         List<CustomDataKeyOverview> list = SystemManager.listDataKeys(admin);
@@ -875,20 +874,20 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         // Will be used for both errata types. Represents an upgraded version of a package
         // that comes with the errata.
         PackageEvr upgradedPackageEvr =
-            PackageEvrFactory.lookupOrCreatePackageEvr("1", "1.0.0", "2", server.getPackageType());
+                PackageEvrFactory.lookupOrCreatePackageEvr("1", "1.0.0", "2", server.getPackageType());
         upgradedPackageEvr =
-            TestUtils.saveAndReload(upgradedPackageEvr);
+                TestUtils.saveAndReload(upgradedPackageEvr);
 
         ServerTestUtils.populateServerErrataPackages(org, server,
-            upgradedPackageEvr, ErrataFactory.ERRATA_TYPE_SECURITY);
+                upgradedPackageEvr, ErrataFactory.ERRATA_TYPE_SECURITY);
         ServerTestUtils.populateServerErrataPackages(org, server,
-            upgradedPackageEvr, ErrataFactory.ERRATA_TYPE_BUG);
+                upgradedPackageEvr, ErrataFactory.ERRATA_TYPE_BUG);
 
         // Test
         int criticalCount =
-            SystemManager.countCriticalErrataForSystem(admin, server.getId());
+                SystemManager.countCriticalErrataForSystem(admin, server.getId());
         int nonCriticalCount =
-            SystemManager.countNoncriticalErrataForSystem(admin, server.getId());
+                SystemManager.countNoncriticalErrataForSystem(admin, server.getId());
 
         // Verify
         assertEquals(1, criticalCount);
@@ -921,10 +920,10 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
         //    Add the servers to the SSM set
         RhnSet ssmSet = RhnSetManager.findByLabel(admin.getId(),
-            RhnSetDecl.SYSTEMS.getLabel(), SetCleanup.NOOP);
+                RhnSetDecl.SYSTEMS.getLabel(), SetCleanup.NOOP);
         if (ssmSet == null) {
             ssmSet = RhnSetManager.createSet(admin.getId(),
-                RhnSetDecl.SYSTEMS.getLabel(), SetCleanup.NOOP);
+                    RhnSetDecl.SYSTEMS.getLabel(), SetCleanup.NOOP);
         }
 
         assert ssmSet != null;
@@ -934,7 +933,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         RhnSetManager.store(ssmSet);
 
         ssmSet = RhnSetManager.findByLabel(admin.getId(),
-            RhnSetDecl.SYSTEMS.getLabel(), SetCleanup.NOOP);
+                RhnSetDecl.SYSTEMS.getLabel(), SetCleanup.NOOP);
         assert ssmSet != null;
 
         //    Add the servers to the SSM set
@@ -942,28 +941,28 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
         //    Simulate the user selecting every package in the list
         RhnSet packagesSet =
-            RhnSetManager.createSet(admin.getId(),
-                RhnSetDecl.SSM_REMOVE_PACKAGES_LIST.getLabel(), SetCleanup.NOOP);
+                RhnSetManager.createSet(admin.getId(),
+                        RhnSetDecl.SSM_REMOVE_PACKAGES_LIST.getLabel(), SetCleanup.NOOP);
 
         packagesSet.addElement(installedPackage1.getPackageName().getId(),
-            installedPackage1.getPackageEvr().getId(),
-            installedPackage1.getPackageArch().getId());
+                installedPackage1.getPackageEvr().getId(),
+                installedPackage1.getPackageArch().getId());
 
         packagesSet.addElement(installedPackage2.getPackageName().getId(),
-            installedPackage2.getPackageEvr().getId(),
-            installedPackage2.getPackageArch().getId());
+                installedPackage2.getPackageEvr().getId(),
+                installedPackage2.getPackageArch().getId());
 
         RhnSetManager.store(packagesSet);
 
         packagesSet = RhnSetManager.findByLabel(admin.getId(),
-            RhnSetDecl.SSM_REMOVE_PACKAGES_LIST.getLabel(), SetCleanup.NOOP);
+                RhnSetDecl.SSM_REMOVE_PACKAGES_LIST.getLabel(), SetCleanup.NOOP);
         assert packagesSet != null;
 
         assertNotNull(packagesSet);
 
         // Test
         DataResult<Row> result =
-            SystemManager.ssmSystemPackagesToRemove(admin, packagesSet.getLabel(), false);
+                SystemManager.ssmSystemPackagesToRemove(admin, packagesSet.getLabel(), false);
         assertNotNull(result);
 
         //   Need explicit elaborate call here; list tag will do this in the UI
@@ -978,14 +977,14 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
                 assertEquals(server1.getName(), map.get("system_name"));
 
                 assertInstanceOf(List.class, map.get("elaborator0"));
-                List result1Packages = (List)map.get("elaborator0");
+                List result1Packages = (List) map.get("elaborator0");
                 assertEquals(2, result1Packages.size());
             }
             else if (map.get("id").equals(server2.getId())) {
                 assertEquals(server2.getName(), (map.get("system_name")));
 
                 assertInstanceOf(List.class, map.get("elaborator0"));
-                List result2Packages = (List)map.get("elaborator0");
+                List result2Packages = (List) map.get("elaborator0");
                 assertEquals(1, result2Packages.size());
             }
             else {
@@ -1071,6 +1070,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
                 pack.getPackageEvr().getId()));
 
     }
+
     @Test
     public void testListSystemsWithNeededPackage() throws Exception {
         User user = UserTestUtils.createUser(this);
@@ -1228,7 +1228,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(0, actual);
 
         Server server = ServerFactoryTest.createTestServer(user, true,
-            ServerConstants.getServerGroupTypeEnterpriseEntitled());
+                ServerConstants.getServerGroupTypeEnterpriseEntitled());
 
         RhnSet set = RhnSetManager.createSet(user.getId(), setLabel, SetCleanup.NOOP);
         set.addElement(server.getId());
@@ -1239,7 +1239,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(0, actual);
 
         Server unentitledServer = ServerFactoryTest.createUnentitledTestServer(user, true,
-                        ServerFactoryTest.TYPE_SERVER_NORMAL, new Date());
+                ServerFactoryTest.TYPE_SERVER_NORMAL, new Date());
         set.addElement(unentitledServer.getId());
         RhnSetManager.store(set);
 
@@ -1263,27 +1263,27 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(0, actual);
 
         Server server = ServerFactoryTest.createTestServer(user, true,
-            ServerConstants.getServerGroupTypeEnterpriseEntitled());
+                ServerConstants.getServerGroupTypeEnterpriseEntitled());
 
         RhnSet set = RhnSetManager.createSet(user.getId(), setLabel, SetCleanup.NOOP);
         set.addElement(server.getId());
         RhnSetManager.store(set);
 
         actual = SystemManager.countSystemsInSetWithoutFeature(user, setLabel,
-                        "ftr_kickstart");
+                "ftr_kickstart");
         assertEquals(0, actual);
 
         Server unentitledServer = ServerFactoryTest.createUnentitledTestServer(user, true,
-                        ServerFactoryTest.TYPE_SERVER_NORMAL, new Date());
+                ServerFactoryTest.TYPE_SERVER_NORMAL, new Date());
         set.addElement(unentitledServer.getId());
         RhnSetManager.store(set);
 
         actual = SystemManager.countSystemsInSetWithoutFeature(user, setLabel,
-                        "ftr_kickstart");
+                "ftr_kickstart");
         assertEquals(1, actual);
 
         actual = SystemManager.countSystemsInSetWithoutFeature(user, "non matching",
-                        "ftr_kickstart");
+                "ftr_kickstart");
         assertEquals(0, actual);
     }
 
@@ -1414,6 +1414,86 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals("unknown", networkInterface.getName());
         assertEquals(hwAddr, networkInterface.getHwaddr());
         assertTrue(minion.hasEntitlement(EntitlementManager.BOOTSTRAP));
+    }
+
+    /**
+     * Tests creating an empty system profile.
+     */
+    @Test
+    public void testCreateSystemProfileWithUserOrg() {
+        String hwAddr = "be:b0:bc:a3:a7:ae";
+        Map<String, Object> data = singletonMap("hwAddress", hwAddr);
+        MinionServer minion = systemManager.createSystemProfile(user, user.getOrg(), "test system", data);
+        Server minionFromDb = SystemManager.lookupByIdAndOrg(minion.getId(), user.getOrg());
+
+        // flush & refresh iface because generated="insert"
+        // on interfaceId does not seem to work
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().refresh(minionFromDb);
+
+        assertEquals("test system", minionFromDb.getName());
+        assertEquals("_" + hwAddr, minion.getMinionId());
+        assertEquals("_" + hwAddr, minion.getMachineId());
+        assertEquals("_" + hwAddr, minion.getDigitalServerId());
+        assertEquals("(unknown)", minion.getOs());
+        assertEquals("(unknown)", minion.getOsFamily());
+        assertEquals("(unknown)", minion.getRelease());
+        assertEquals(ContactMethodUtil.DEFAULT, minion.getContactMethod().getLabel());
+        assertEquals("N", minion.getAutoUpdate());
+        assertEquals("x86_64-redhat-linux", minion.getServerArch().getLabel());
+        assertEquals(1, minionFromDb.getNetworkInterfaces().size());
+
+        NetworkInterface networkInterface = minionFromDb.getNetworkInterfaces().iterator().next();
+        assertEquals("unknown", networkInterface.getName());
+        assertEquals(hwAddr, networkInterface.getHwaddr());
+        assertTrue(minion.hasEntitlement(EntitlementManager.BOOTSTRAP));
+    }
+
+    @Test
+    public void testCreateSystemProfileWithJustOrg() {
+        String hwAddr = "be:b0:bc:a3:a7:af";
+        Map<String, Object> data = singletonMap("hwAddress", hwAddr);
+        MinionServer minion = systemManager.createSystemProfile(null, user.getOrg(), "test system", data);
+        Server minionFromDb = SystemManager.lookupByIdAndOrg(minion.getId(), user.getOrg());
+
+        // flush & refresh iface because generated="insert"
+        // on interfaceId does not seem to work
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().refresh(minionFromDb);
+
+        assertEquals("test system", minionFromDb.getName());
+        assertEquals("_" + hwAddr, minion.getMinionId());
+        assertEquals("_" + hwAddr, minion.getMachineId());
+        assertEquals("_" + hwAddr, minion.getDigitalServerId());
+        assertEquals("(unknown)", minion.getOs());
+        assertEquals("(unknown)", minion.getOsFamily());
+        assertEquals("(unknown)", minion.getRelease());
+        assertEquals(ContactMethodUtil.DEFAULT, minion.getContactMethod().getLabel());
+        assertEquals("N", minion.getAutoUpdate());
+        assertEquals("x86_64-redhat-linux", minion.getServerArch().getLabel());
+        assertEquals(1, minionFromDb.getNetworkInterfaces().size());
+
+        NetworkInterface networkInterface = minionFromDb.getNetworkInterfaces().iterator().next();
+        assertEquals("unknown", networkInterface.getName());
+        assertEquals(hwAddr, networkInterface.getHwaddr());
+        assertTrue(minion.hasEntitlement(EntitlementManager.BOOTSTRAP));
+    }
+
+    @Test
+    public void testFailToCreateSystemProfileWithConflictingOrg() {
+        Org org = UserTestUtils.createOrg();
+        String hwAddr = "be:b0:bc:a3:a7:af";
+        Map<String, Object> data = singletonMap("hwAddress", hwAddr);
+        Assertions.assertThrows(IllegalArgumentException.class,
+                () -> systemManager.createSystemProfile(user, org, "test system", data));
+    }
+
+    @Test
+    public void testFailToCreateSystemProfileNoUserOrg() {
+        String hwAddr = "be:b0:bc:a3:a7:af";
+        Map<String, Object> data = singletonMap("hwAddress", hwAddr);
+        Assertions.assertThrows(IllegalArgumentException.class,
+                () -> systemManager.createSystemProfile(null, null, "test system", data));
     }
 
     /**
@@ -1633,6 +1713,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
     /**
      * Test for handling the monitoring entitlement via addServerToGroup() and removeServerFromGroup().
+     *
      * @throws Exception in case of an error
      */
     @Test
@@ -1695,7 +1776,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     /**
      * Test that installedPackages method of {@link SystemManager} returns both packages known and unknown
      * to Uyuni. For the known packages it includes the package id.
-     *
+     * <p>
      * This tests 2 cases:
      * - reporting architecture by its label
      * - reporting architecture by its name
@@ -1928,7 +2009,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
         Map<String, Object> configYaml = new Yaml().load(content.get("config.yaml"));
         assertEquals(serverName, configYaml.get("server"));
-        assertEquals(maxCache, Long.valueOf((int)configYaml.get("max_cache_size_mb")));
+        assertEquals(maxCache, Long.valueOf((int) configYaml.get("max_cache_size_mb")));
         assertEquals(email, configYaml.get("email"));
         assertEquals(ConfigDefaults.get().getProductVersion(), configYaml.get("server_version"));
         assertEquals(proxyName, configYaml.get("proxy_fqdn"));

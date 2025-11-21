@@ -2012,7 +2012,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals("srcfilename",  tgtChannel.getModules().getRelativeFilename());
 
         // verify that a non-modular source strips the modular data
-        HibernateFactory.getSession().delete(channel.getModules());
+        HibernateFactory.getSession().remove(channel.getModules());
         channel.setModules(null);
         contentManager.buildProject("cplabel", empty(), false, user);
         assertFalse(env.getTargets().get(0).asSoftwareTarget().get().getChannel().isModular());

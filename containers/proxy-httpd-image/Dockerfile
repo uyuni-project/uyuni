@@ -18,6 +18,7 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
     sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES headers && \
     sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES proxy_http && \
     zypper --non-interactive clean --all && \
+    rpm -e zypper && \
     rm -rf /var/log/{alternatives.log,lastlog,tallylog,suseconnect.log,zypper.log,zypp/history,YaST2}
 
 # Replace mod_log_config.conf so that the logger takes a special var HANDLER_TYPE

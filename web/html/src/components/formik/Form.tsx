@@ -1,4 +1,10 @@
-import { Form as FormikForm, Formik, FormikConfig, FormikValues } from "formik";
+import {
+  // eslint-disable-next-line no-restricted-imports
+  Form as FormikForm,
+  Formik,
+  FormikConfig,
+  FormikValues,
+} from "formik";
 
 import { SharedFieldConfigProvider, SharedFieldConfigType } from "./sharedFieldConfig";
 

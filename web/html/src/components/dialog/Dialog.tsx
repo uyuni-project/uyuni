@@ -1,5 +1,4 @@
-import * as React from "react";
-
+import type { ReactNode } from "react";
 import ReactModal from "react-modal";
 
 export type DialogProps = {
@@ -12,11 +11,11 @@ export type DialogProps = {
   /** The css className for the 'modal-dialog' div */
   className?: string;
   /** Title of the dialog */
-  title?: React.ReactNode;
+  title?: ReactNode;
   /** The body of the popup */
-  content?: React.ReactNode;
+  content?: ReactNode;
   /** The footer content of the dialog. Usually buttons. */
-  footer?: React.ReactNode;
+  footer?: ReactNode;
   /** Should the dialog show a header with a title. Defaults to False */
   hideHeader?: boolean;
   /** Can the modal be closed using the cross button, ESC or by clicking on the overlay? */

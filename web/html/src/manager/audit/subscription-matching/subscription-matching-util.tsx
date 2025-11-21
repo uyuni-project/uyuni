@@ -1,5 +1,3 @@
-import * as React from "react";
-
 const ToolTip = (props) => <span title={props.title}>{props.content}</span>;
 
 const CsvLink = (props) => (

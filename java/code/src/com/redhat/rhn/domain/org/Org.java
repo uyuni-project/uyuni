@@ -55,8 +55,6 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.hibernate.type.StandardBasicTypes;
 
 import java.util.ArrayList;
@@ -73,12 +71,14 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Tuple;
 
@@ -97,14 +97,8 @@ public class Org extends BaseDomainHelper implements SaltConfigurable {
     protected static Logger log = LogManager.getLogger(Org.class);
 
     @Id
-    @GeneratedValue(generator = "web_customer_seq")
-    @GenericGenerator(
-            name = "web_customer_seq",
-            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-            parameters = {
-                    @Parameter(name = "sequence_name", value = "web_customer_id_seq"),
-                    @Parameter(name = "increment_size", value = "1")
-            })
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "web_customer_seq")
+    @SequenceGenerator(name = "web_customer_seq", sequenceName = "web_customer_id_seq", allocationSize = 1)
     @Column(name = "id")
     private Long id;
 

@@ -42,6 +42,8 @@ import java.util.List;
 import java.util.function.BooleanSupplier;
 import java.util.stream.Collectors;
 
+import javax.persistence.Tuple;
+
 public class ChannelRepodataTest extends JMockBaseTestCaseWithUser {
 
     private JobExecutionContext jobContext;
@@ -101,11 +103,13 @@ public class ChannelRepodataTest extends JMockBaseTestCaseWithUser {
     }
 
     private static boolean isChannelProcessed(Channel channel) {
-        Integer items = (Integer) HibernateFactory.getSession()
-            .createSQLQuery("SELECT COUNT(*) AS count FROM rhnRepoRegenQueue WHERE channel_label = :label")
+        Integer items = HibernateFactory.getSession()
+            .createNativeQuery("SELECT COUNT(*) AS count FROM rhnRepoRegenQueue WHERE channel_label = :label",
+                    Tuple.class)
             .addScalar("count", StandardBasicTypes.INTEGER)
             .setParameter("label", channel.getLabel())
-            .getSingleResult();
+            .getSingleResult()
+                .get(0, Integer.class);
 
         return items == 0;
     }

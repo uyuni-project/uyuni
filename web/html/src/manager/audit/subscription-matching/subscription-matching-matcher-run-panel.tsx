@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import { fromNow } from "components/datetime/FromNow";
 
@@ -19,7 +19,7 @@ type MatcherRunPanelState = {
   error: boolean;
 };
 
-class MatcherRunPanel extends React.Component<MatcherRunPanelProps, MatcherRunPanelState> {
+class MatcherRunPanel extends Component<MatcherRunPanelProps, MatcherRunPanelState> {
   state = {
     latestStart: this.props.initialLatestStart,
     latestEnd: this.props.initialLatestEnd,
@@ -145,7 +145,7 @@ type MatcherScheduleButtonProps = {
   matcherRunning?: boolean;
 };
 
-class MatcherScheduleButton extends React.Component<MatcherScheduleButtonProps> {
+class MatcherScheduleButton extends Component<MatcherScheduleButtonProps> {
   onClick = () => {
     Network.post("/rhn/manager/api/subscription-matching/schedule-matcher-run").catch(() => this.props.onError());
     this.props.onScheduled();

@@ -143,6 +143,7 @@ setup tasks, re-installation, upgrades and managing.
 
 %package tools
 Summary:        %{productprettyname} Tools
+License:        GPL-2.0-only AND LGPL-2.1-only
 Group:          Productivity/Other
 
 %if 0%{?build_py3}
@@ -170,6 +171,15 @@ BuildRequires:  docbook-utils
 
 %description tools
 This package contains %{productprettyname} tools
+
+%package tools-salt
+Summary:        Salt related tools for %{productprettyname}
+Group:          Productivity/Other
+License:        Apache-2.0
+Supplements:    susemanager-tools
+
+%description tools-salt
+This package contains %{productprettyname} tools related with Salt
 
 %package bash-completion
 Summary:        Bash completion for %{productprettyname} CLI tools
@@ -231,11 +241,6 @@ mkdir -p %{buildroot}/%{_sysconfdir}/firewalld/services
 install -m 0644 etc/firewalld/services/suse-manager-server.xml %{buildroot}/%{_sysconfdir}/firewalld/services
 %endif
 
-%if 0%{?sle_version} && !0%{?is_opensuse}
-# this script migrate the server to Uyuni. It should not be available on SUSE Multi-Linux Manager
-rm -f %{buildroot}/%{_prefix}/lib/susemanager/bin/server-migrator.sh
-%endif
-
 make -C po install PREFIX=%{buildroot}
 
 %find_lang susemanager
@@ -291,6 +296,7 @@ sed -i '/You can access .* via https:\/\//d' /tmp/motd 2> /dev/null ||:
 
 %files tools
 %defattr(-,root,root,-)
+%license COPYING COPYING.LGPL-2.1
 %dir %{pythonsmroot}
 %dir %{pythonsmroot}/susemanager
 %dir %{_datadir}/rhn/
@@ -306,7 +312,6 @@ sed -i '/You can access .* via https:\/\//d' /tmp/motd 2> /dev/null ||:
 %dir %{_sysconfdir}/apache2/conf.d
 %config(noreplace) %{_sysconfdir}/logrotate.d/susemanager-tools
 %{_datadir}/rhn/config-defaults/rhn_*.conf
-%attr(0755,root,root) %{_bindir}/mgr-salt-ssh
 %attr(0755,root,root) %{_sbindir}/mgr-clean-old-patchnames
 %attr(0755,root,root) %{_sbindir}/mgr-create-bootstrap-repo
 %attr(0755,root,root) %{_sbindir}/mgr-delete-patch
@@ -330,6 +335,10 @@ sed -i '/You can access .* via https:\/\//d' /tmp/motd 2> /dev/null ||:
 %{reporoot}/repositories/empty-deb/Packages
 %{reporoot}/repositories/empty-deb/Release
 %{_sysconfdir}/apache2/conf.d/empty-repo.conf
+
+%files tools-salt
+%license COPYING.Apache-2.0
+%attr(0755,root,root) %{_bindir}/mgr-salt-ssh
 
 %files bash-completion
 %{_datadir}/bash-completion/completions/mgr-sync

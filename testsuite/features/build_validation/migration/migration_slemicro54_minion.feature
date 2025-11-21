@@ -14,7 +14,7 @@ Feature: Migrate a SLE Micro 5.4 Salt minion to SLE Micro 5.5
     And I wait until I see "Target Products:" text, refreshing the page
     And I wait until I see "SUSE Linux Enterprise Micro 5.5 x86_64" text
     And I click on "Select Channels"
-    And I click on "child_channel"
+    When I select the channel "Custom Channel for slemicro55_minion"
     And I check "allowVendorChange"
     And I click on "Schedule Migration"
     Then I should see a "Product Migration - Confirm" text

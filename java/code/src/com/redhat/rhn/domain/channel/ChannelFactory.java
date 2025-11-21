@@ -103,7 +103,7 @@ public class ChannelFactory extends HibernateFactory {
      */
     public static Channel lookupById(Long id) {
         Session session = HibernateFactory.getSession();
-        return session.get(Channel.class, id);
+        return session.find(Channel.class, id);
     }
 
     /**
@@ -2169,7 +2169,7 @@ public class ChannelFactory extends HibernateFactory {
     public static void cloneModulesMetadata(Channel from, Channel to) {
         if (!from.isModular()) {
             if (to.isModular()) {
-                HibernateFactory.getSession().delete(to.getModules());
+                HibernateFactory.getSession().remove(to.getModules());
                 to.setModules(null);
             }
         }

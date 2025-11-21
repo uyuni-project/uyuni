@@ -1,4 +1,3 @@
-import * as React from "react";
 import { useState } from "react";
 
 import { WebCalendar } from "manager/maintenance/calendar/web-calendar";
@@ -83,7 +82,9 @@ const MaintenanceCalendarOverview = (props: OverviewProps) => {
     { left: t("Calendar Name") + ":", right: props.name },
     { left: t("Used by Schedule") + ":", right: props.scheduleNames.map((name) => name.name).join(", ") },
   ];
-  props.url && tableData.push({ left: t("Url") + ":", right: props.url });
+  if (props.url) {
+    tableData.push({ left: t("Url") + ":", right: props.url });
+  }
 
   return (
     <div>

@@ -1,5 +1,4 @@
-import * as React from "react";
-import { memo, useCallback, useEffect, useState } from "react";
+import { Fragment, memo, useCallback, useEffect, useState } from "react";
 
 import debounce from "lodash/debounce";
 import xor from "lodash/xor";
@@ -111,12 +110,12 @@ const ChannelsSelection = (props: PropsType) => {
       selectedChannelIds.add(channel.id);
       const requires = channelProcessor.getRequires(channel.id);
       requires?.forEach((item) => selectedChannelIds.add(item.id));
-      setSelectedChannelIds(new Set([...selectedChannelIds]));
+      setSelectedChannelIds(new Set(selectedChannelIds));
     } else {
       selectedChannelIds.delete(channel.id);
       const requiredBy = channelProcessor.getRequiredBy(channel.id);
       requiredBy?.forEach((item) => selectedChannelIds.delete(item.id));
-      setSelectedChannelIds(new Set([...selectedChannelIds]));
+      setSelectedChannelIds(new Set(selectedChannelIds));
     }
 
     // Propagate selection to parent views
@@ -132,7 +131,7 @@ const ChannelsSelection = (props: PropsType) => {
       setOpenRows(new Set([...openRows, channel.id]));
     } else {
       openRows.delete(channel.id);
-      setOpenRows(new Set([...openRows]));
+      setOpenRows(new Set(openRows));
     }
   };
 
@@ -169,7 +168,7 @@ const ChannelsSelection = (props: PropsType) => {
     : undefined;
 
   return (
-    <React.Fragment>
+    <Fragment>
       <div className="row">
         <DEPRECATED_Select
           data-testid="selectedBaseChannel"
@@ -241,7 +240,7 @@ const ChannelsSelection = (props: PropsType) => {
           <VirtualList items={rows} renderItem={Row} defaultItemHeight={29} itemKey={(row) => row.base.id} />
         </div>
       )}
-    </React.Fragment>
+    </Fragment>
   );
 };
 

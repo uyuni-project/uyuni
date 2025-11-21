@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import { ModalButton } from "components/dialog/ModalButton";
 import { PopUp } from "components/popup";
@@ -16,7 +16,7 @@ type UnmatchedProductsProps = {
   products: any[];
 };
 
-class UnmatchedProducts extends React.Component<UnmatchedProductsProps> {
+class UnmatchedProducts extends Component<UnmatchedProductsProps> {
   state = {
     selectedProductId: null,
   };
@@ -111,7 +111,7 @@ type UnmatchedSystemPopUpProps = {
   onClosePopUp?: (...args: any[]) => any;
 };
 
-class UnmatchedSystemPopUp extends React.Component<UnmatchedSystemPopUpProps> {
+class UnmatchedSystemPopUp extends Component<UnmatchedSystemPopUpProps> {
   buildTableData = (props) => {
     if (!props.selectedProductId) {
       return [];

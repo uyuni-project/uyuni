@@ -1,5 +1,3 @@
-import * as React from "react";
-
 import { Dialog } from "components/dialog/LegacyDialog";
 import { ModalLink } from "components/dialog/ModalLink";
 
@@ -36,20 +34,20 @@ const PropertiesView = (props: Props) => {
   return (
     <div>
       <dl className="row">
-        <dt className="col-2 col-xs-2">{t("Name")}</dt>
-        <dd className="col-10 col-xs-10">{propertiesToShow.name}</dd>
+        <dt className="col-2">{t("Name")}</dt>
+        <dd className="col-10">{propertiesToShow.name}</dd>
       </dl>
       <dl className="row">
-        <dt className="col-2 col-xs-2">{t("Label:")}</dt>
-        <dd className="col-6 col-xs-6">{propertiesToShow.label}</dd>
+        <dt className="col-2">{t("Label:")}</dt>
+        <dd className="col-6">{propertiesToShow.label}</dd>
       </dl>
       <dl className="row">
-        <dt className="col-2 col-xs-2">{t("Description")}</dt>
-        <dd className="col-10 col-xs-10">{propertiesToShow.description}</dd>
+        <dt className="col-2">{t("Description")}</dt>
+        <dd className="col-10">{propertiesToShow.description}</dd>
       </dl>
       <dl className="row">
-        <dt className="col-2 col-xs-2">{t("Versions history:")}</dt>
-        <dd className="col-10 col-xs-10">
+        <dt className="col-2">{t("Versions history:")}</dt>
+        <dd className="col-10">
           <PropertiesHistoryEntries
             id="resume"
             entries={propertiesToShow.historyEntries.slice(0, NUMBER_HISTORY_ENTRIES)}

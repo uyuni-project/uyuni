@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type ReactNode, Component } from "react";
 
 import { AsyncButton, LinkButton } from "components/buttons";
 import { Dialog } from "components/dialog/Dialog";
@@ -39,7 +39,7 @@ type State = {
   typeCriteria: string[];
 };
 
-export class NotificationList extends React.Component<Props, State> {
+export class NotificationList extends Component<Props, State> {
   private readonly typeMap: Map<string, string>;
 
   public constructor(props: Props) {
@@ -72,7 +72,7 @@ export class NotificationList extends React.Component<Props, State> {
     }
   }
 
-  public render(): React.ReactNode {
+  public render(): ReactNode {
     return (
       <TopPanel title={t("Notification Messages")} icon="fa-envelope">
         <MessageContainer items={this.state.messages} />
@@ -174,7 +174,7 @@ export class NotificationList extends React.Component<Props, State> {
     );
   }
 
-  private renderFilters(): React.ReactNode[] {
+  private renderFilters(): ReactNode[] {
     return [
       <div key="typeFilter" className="multiple-select-wrapper table-input-search">
         {/* TODO: Remove this <Form> wrapper once https://github.com/SUSE/spacewalk/issues/14250 is implemented */}
@@ -193,7 +193,7 @@ export class NotificationList extends React.Component<Props, State> {
     ];
   }
 
-  private renderTabs(): React.ReactNode {
+  private renderTabs(): ReactNode {
     return (
       <div className="spacewalk-content-nav">
         <ul className="nav nav-tabs">
@@ -212,7 +212,7 @@ export class NotificationList extends React.Component<Props, State> {
     );
   }
 
-  private renderSummary(data: Notification): React.ReactNode {
+  private renderSummary(data: Notification): ReactNode {
     return (
       <span className="align-middle" style={{ whiteSpace: "pre" }}>
         {stringToReact(data.summary)}
@@ -227,7 +227,7 @@ export class NotificationList extends React.Component<Props, State> {
     );
   }
 
-  private renderReaction(data: Notification): React.ReactNode {
+  private renderReaction(data: Notification): ReactNode {
     if (!data.actionable) {
       return <></>;
     }
@@ -242,7 +242,7 @@ export class NotificationList extends React.Component<Props, State> {
     );
   }
 
-  private renderItemActions(row: Notification): React.ReactNode {
+  private renderItemActions(row: Notification): ReactNode {
     return (
       <div className="btn-group">
         <AsyncButton
@@ -262,10 +262,11 @@ export class NotificationList extends React.Component<Props, State> {
   }
 
   private async refreshServerData(): Promise<void> {
+    const dataType = this.state.dataType;
     this.setState({ loading: true });
 
     try {
-      const response = await Network.get(`/rhn/manager/notification-messages/${this.state.dataType}`);
+      const response = await Network.get(`/rhn/manager/notification-messages/${dataType}`);
 
       this.setState({
         serverData: response.data,
@@ -328,7 +329,7 @@ export class NotificationList extends React.Component<Props, State> {
     }
   }
 
-  private decodeIconBySeverity(severity: Severity): React.ReactNode {
+  private decodeIconBySeverity(severity: Severity): ReactNode {
     switch (severity) {
       case Severity.Info:
         return (

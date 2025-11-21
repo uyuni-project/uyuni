@@ -1,5 +1,4 @@
-import * as React from "react";
-import { useState } from "react";
+import { type FC, useState } from "react";
 
 import { AsyncButton } from "components/buttons";
 import { IconTag } from "components/icontag";
@@ -19,7 +18,7 @@ type FormModel = {
   selectedTarget?: string;
 };
 
-export const MigrationTargetSelectorForm: React.FC<Props> = ({
+export const MigrationTargetSelectorForm: FC<Props> = ({
   migrationSource,
   migrationTargets,
   targetId,

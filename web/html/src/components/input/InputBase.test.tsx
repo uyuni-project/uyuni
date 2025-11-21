@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Children } from "react";
 
 import { render, screen } from "utils/test-utils";
 
@@ -21,7 +21,7 @@ describe("InputBase", () => {
   function renderWithForm(content) {
     return render(
       <Form model={model} onChange={onChange}>
-        {React.Children.toArray(content)}
+        {Children.toArray(content)}
       </Form>
     );
   }

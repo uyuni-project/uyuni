@@ -21,7 +21,7 @@ import java.util.Date;
  */
 public class FilePreservationDto extends BaseDto {
     private Long id;
-    private Long org_id;
+    private Long orgId;
     private String label;
     private Date created;
     private Date modified;
@@ -80,14 +80,14 @@ public class FilePreservationDto extends BaseDto {
      * @return Returns The FileList org_id.
      */
     public Long getOrgId() {
-        return org_id;
+        return orgId;
     }
 
     /**
      * @param orgIn The orgIn to set.
      */
     public void setOrgId(Long orgIn) {
-        this.org_id = orgIn;
+        this.orgId = orgIn;
     }
 
     /**

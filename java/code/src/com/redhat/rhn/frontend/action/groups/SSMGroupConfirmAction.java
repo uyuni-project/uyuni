@@ -54,10 +54,10 @@ public class SSMGroupConfirmAction extends RhnAction
     implements Listable<SystemGroupOverview> {
 
     // must match rl:list dataset and name tags!!
-    private String ADD_DATA = "addSet";
-    private String ADD_LIST = "addList";
-    private String RMV_DATA = "removeSet";
-    private String RMV_LIST = "removeList";
+    private static final String ADD_DATA = "addSet";
+    private static final String ADD_LIST = "addList";
+    private static final String RMV_DATA = "removeSet";
+    private static final String RMV_LIST = "removeList";
 
     private static final ServerGroupManager SERVER_GROUP_MANAGER = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
 
@@ -147,7 +147,6 @@ public class SSMGroupConfirmAction extends RhnAction
 
     @Override
     public List getResult(RequestContext context) {
-        // TODO Auto-generated method stub
         return null;
     }
 }

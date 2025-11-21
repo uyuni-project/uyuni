@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import isNil from "lodash/isNil";
 
@@ -23,7 +23,7 @@ type PinsProps = {
   subscriptions: any[];
 };
 
-class Pins extends React.Component<PinsProps> {
+class Pins extends Component<PinsProps> {
   state = {
     showPopUp: false,
   };
@@ -228,7 +228,7 @@ type AddPinPopUpProps = {
   subscriptions: any[];
 };
 
-class AddPinPopUp extends React.Component<AddPinPopUpProps> {
+class AddPinPopUp extends Component<AddPinPopUpProps> {
   state = {
     systemId: null,
   };
@@ -362,7 +362,7 @@ type PinSubscriptionSelectorProps = {
   onSubscriptionSelected: (...args: any[]) => any;
 };
 
-class PinSubscriptionSelector extends React.Component<PinSubscriptionSelectorProps> {
+class PinSubscriptionSelector extends Component<PinSubscriptionSelectorProps> {
   render() {
     if (this.props.subscriptions.length > 0) {
       return (

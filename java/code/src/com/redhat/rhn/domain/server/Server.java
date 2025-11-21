@@ -63,9 +63,7 @@ import org.apache.logging.log4j.Logger;
 import org.cobbler.CobblerConnection;
 import org.cobbler.SystemRecord;
 import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.ListIndexBase;
-import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.WhereJoinTable;
 
@@ -93,6 +91,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -103,6 +102,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderColumn;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -120,15 +120,9 @@ public class Server extends BaseDomainHelper implements Identifiable {
     private static Logger log = LogManager.getLogger(Server.class);
 
     @Id
-    @GeneratedValue(generator = "rhn_server_seq")
-    @GenericGenerator(
-        name = "rhn_server_seq",
-        strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-        parameters = {
-                @Parameter(name = "sequence_name", value = "rhn_server_id_seq"),
-                @Parameter(name = "initial_value", value = "1000010000"),
-                @Parameter(name = "increment_size", value = "1")
-        })
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rhn_server_seq")
+    @SequenceGenerator(name = "rhn_server_seq", sequenceName = "rhn_server_id_seq", allocationSize = 1,
+            initialValue = 1000010000)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -2593,7 +2587,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * @return <code>true</code> if OS supports monitoring
      */
     public boolean doesOsSupportsMonitoring() {
-        return isSLES12() || isSLES15() || isLeap15() || isLeapMicro() ||
+        return isSLES12() || isSLES15() || isSLES16() || isLeap15() || isLeap16() || isLeapMicro() ||
                 isSLEMicro5() || // Micro 6 miss the node exporter
                 isUbuntu1804() || isUbuntu2004() || isUbuntu2204() || isUbuntu2404() ||
                 isRedHat6() || isRedHat7() || isRedHat8() || isRedHat9() || // isRedHat catch also Rocky and Alma
@@ -2613,9 +2607,6 @@ public class Server extends BaseDomainHelper implements Identifiable {
     boolean isSLES() {
         return ServerConstants.SLES.equalsIgnoreCase(getOs());
     }
-    boolean isSLED() {
-        return ServerConstants.SLED.equalsIgnoreCase(getOs());
-    }
 
     /**
      * Return <code>true</code> if OS supports Confidential Computing Attestation
@@ -2624,7 +2615,8 @@ public class Server extends BaseDomainHelper implements Identifiable {
      */
     public boolean doesOsSupportCoCoAttestation() {
         return (isSLES15() && (getRelease().equals("15.6") || getRelease().equals("15.7"))) ||
-                (isLeap15() && (getRelease().equals("15.6") || getRelease().equals("15.7")));
+                (isLeap15() && (getRelease().equals("15.6") || getRelease().equals("15.7"))) ||
+                isLeap16() || isSLES16();
     }
 
     /**
@@ -2676,12 +2668,22 @@ public class Server extends BaseDomainHelper implements Identifiable {
         return ServerConstants.SLES.equals(getOs()) && getRelease().startsWith("15");
     }
 
+    /**
+     * @return true if the installer type is of SLES 16
+     */
+    boolean isSLES16() {
+        return ServerConstants.SLES.equals(getOs()) && getRelease().startsWith("16");
+    }
+
     boolean isLeap() {
        return ServerConstants.LEAP.equalsIgnoreCase(getOs());
     }
 
     boolean isLeap15() {
         return ServerConstants.LEAP.equalsIgnoreCase(getOs()) && getRelease().startsWith("15");
+    }
+    boolean isLeap16() {
+        return ServerConstants.LEAP.equalsIgnoreCase(getOs()) && getRelease().startsWith("16");
     }
 
     /**
@@ -2879,12 +2881,13 @@ public class Server extends BaseDomainHelper implements Identifiable {
 
     /**
      * Checks if a server in convertible to a proxy.
-     * Servers that are already proxies are not convertible. For the remaining, SUSE Manager considers only:
+     * Servers that are already proxies or are manager servers are not convertible.
+     * For the remaining, SUSE Manager considers only:
      * SE Micro 6.1 and SLE15 SP7.
      * @return true if the server is convertible to a proxy, false otherwise
      */
     public boolean isConvertibleToProxy() {
-        return !isProxy() && (
+        return !isProxy() && !isMgrServer() && (
                 ConfigDefaults.get().isUyuni() ||
                         (ServerConstants.SLMICRO.equalsIgnoreCase(getOs()) && getRelease().equals("6.1")) ||
                         (isSLES() && getRelease().equals("15.7"))

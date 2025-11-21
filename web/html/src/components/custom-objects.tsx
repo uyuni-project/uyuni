@@ -1,4 +1,4 @@
-import * as React from "react";
+import type { ReactNode } from "react";
 
 type Props = {
   width: string;
@@ -10,7 +10,7 @@ type Props = {
 
   title?: string;
 
-  children?: React.ReactNode;
+  children?: ReactNode;
 };
 
 export const CustomDiv = (props: Props) => {

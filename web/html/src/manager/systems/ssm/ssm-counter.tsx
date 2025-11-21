@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState } from "react";
 
 import { Button } from "components/buttons";
 
@@ -11,8 +11,8 @@ type Props = {
 };
 
 export function SsmCounter(props: Props) {
-  const [count, setCount] = React.useState(props.count);
-  const [errors, setErrors] = React.useState([]);
+  const [count, setCount] = useState(props.count ?? 0);
+  const [errors, setErrors] = useState([]);
   useWebSocket(errors, setErrors, "ssm-count", (value: number) => {
     setCount(value);
   });
@@ -42,6 +42,3 @@ export function SsmCounter(props: Props) {
     </>
   );
 }
-SsmCounter.defaultProps = {
-  count: 0,
-};

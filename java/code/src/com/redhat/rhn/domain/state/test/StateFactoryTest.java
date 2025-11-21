@@ -129,9 +129,9 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
         assertNotNull(channel1.getId());
         assertNotNull(channel2.getId());
 
-        serverState = StateFactory.getSession().get(ServerStateRevision.class, serverState.getId());
-        channel1 = StateFactory.getSession().get(ConfigChannel.class, channel1.getId());
-        channel2 = StateFactory.getSession().get(ConfigChannel.class, channel2.getId());
+        serverState = StateFactory.getSession().find(ServerStateRevision.class, serverState.getId());
+        channel1 = StateFactory.getSession().find(ConfigChannel.class, channel1.getId());
+        channel2 = StateFactory.getSession().find(ConfigChannel.class, channel2.getId());
 
         assertNotNull(serverState);
         assertNotNull(channel1);
@@ -161,9 +161,9 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
         StateFactory.save(serverState);
         clearFlush();
 
-        serverState = StateFactory.getSession().get(ServerStateRevision.class, serverState.getId());
-        channel1 = StateFactory.getSession().get(ConfigChannel.class, channel1.getId());
-        channel2 = StateFactory.getSession().get(ConfigChannel.class, channel2.getId());
+        serverState = StateFactory.getSession().find(ServerStateRevision.class, serverState.getId());
+        channel1 = StateFactory.getSession().find(ConfigChannel.class, channel1.getId());
+        channel2 = StateFactory.getSession().find(ConfigChannel.class, channel2.getId());
 
         serverState.getConfigChannels().remove(channel1);
         assertEquals(1, serverState.getConfigChannels().size());
@@ -171,8 +171,8 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
         StateFactory.save(serverState);
         clearFlush();
 
-        serverState = StateFactory.getSession().get(ServerStateRevision.class, serverState.getId());
-        channel2 = StateFactory.getSession().get(ConfigChannel.class, channel2.getId());
+        serverState = StateFactory.getSession().find(ServerStateRevision.class, serverState.getId());
+        channel2 = StateFactory.getSession().find(ConfigChannel.class, channel2.getId());
 
         assertEquals(1, serverState.getConfigChannels().size());
         assertTrue(serverState.getConfigChannels().contains(channel2));
@@ -195,7 +195,7 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
         StateFactory.save(groupRevision);
         clearFlush();
 
-        groupRevision = StateFactory.getSession().get(ServerGroupStateRevision.class, groupRevision.getId());
+        groupRevision = StateFactory.getSession().find(ServerGroupStateRevision.class, groupRevision.getId());
         assertEquals(2, groupRevision.getConfigChannels().size());
         assertTrue(groupRevision.getConfigChannels().stream().anyMatch(s -> s.getId().equals(channel1.getId())));
         assertTrue(groupRevision.getConfigChannels().stream().anyMatch(s -> s.getId().equals(channel2.getId())));
@@ -216,7 +216,7 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
         StateFactory.save(orgRevision);
         clearFlush();
 
-        orgRevision = StateFactory.getSession().get(OrgStateRevision.class, orgRevision.getId());
+        orgRevision = StateFactory.getSession().find(OrgStateRevision.class, orgRevision.getId());
         assertEquals(2, orgRevision.getConfigChannels().size());
         assertTrue(orgRevision.getConfigChannels().stream().anyMatch(s -> s.getId().equals(channel1.getId())));
         assertTrue(orgRevision.getConfigChannels().stream().anyMatch(s -> s.getId().equals(channel2.getId())));

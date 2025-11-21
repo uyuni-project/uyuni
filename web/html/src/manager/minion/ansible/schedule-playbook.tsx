@@ -1,4 +1,3 @@
-import * as React from "react";
 import { useEffect, useState } from "react";
 
 import { AceEditor } from "components/ace-editor";
@@ -95,7 +94,7 @@ export default function SchedulePlaybook({ playbook, onBack, onSelectPlaybook, i
   const inventoryOpts: ComboboxItem[] = inventories.map((inv, i) => ({ id: i, text: inv }));
 
   const buttons = [
-    <div className="btn-group pull-right">
+    <div className="btn-group pull-right" key="buttons-right">
       <Toggler text={t("Test mode")} value={isTestMode} className="btn" handler={() => setIsTestMode(!isTestMode)} />
       <Button
         icon="fa-angle-left"
@@ -187,15 +186,7 @@ export default function SchedulePlaybook({ playbook, onBack, onSelectPlaybook, i
 
         <div>
           <h3>{t("Playbook Content")}</h3>
-          <AceEditor
-            className="form-control"
-            id="playbook-content"
-            minLines={20}
-            maxLines={40}
-            readOnly={true}
-            mode="yaml"
-            content={playbookContent}
-          />
+          <AceEditor className="form-control" id="playbook-content" readOnly mode="yaml" content={playbookContent} />
         </div>
       </InnerPanel>
     </>

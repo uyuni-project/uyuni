@@ -57,6 +57,8 @@
     </script>
 
     <script src="/javascript/legacy/jquery.min.js?cb=${cb_version}"></script>
+    <script src="/javascript/legacy/ace-editor/ace.js?cb=${cb_version}"></script>
+    <script src="/javascript/legacy/ace-editor/ext-modelist.js?cb=${cb_version}"></script>
     <script src="/javascript/legacy/bootstrap-webpack.js?cb=${cb_version}"></script>
     <script src="/javascript/spacewalk-essentials.js?cb=${cb_version}"></script>
     <script src="/javascript/spacewalk-checkall.js?cb=${cb_version}"></script>

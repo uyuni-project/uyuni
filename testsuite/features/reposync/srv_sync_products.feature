@@ -80,14 +80,13 @@ Feature: Synchronize products in the products page of the Setup Wizard
   Scenario: Partially add openSUSE Tumbleweed product, only including the required packages to generate the bootstrap repository
     When I use spacewalk-common-channel to add channel "opensuse_tumbleweed" with arch "x86_64"
     And I kill running spacewalk-repo-sync for "opensuse_tumbleweed-x86_64" channel
-    And I use spacewalk-repo-sync to sync channel "opensuse_tumbleweed-x86_64" including "python3-ply dmidecode libunwind" packages
+    And I use spacewalk-repo-sync to sync channel "opensuse_tumbleweed-x86_64" including only client tools dependencies
     And I use spacewalk-common-channel to add all "tumbleweed-client-tools-x86_64" channels with arch "x86_64"
 
 @containerized_server
 @proxy
 @uyuni
   Scenario: Add Uyuni Proxy product for Tumbleweed, including Uyuni Client Tools
-    # TODO: Refactor the scenarios in order to not require a full synchronization of Uyuni proxy product (OpenSUSE Micro 5.5)
     When I use spacewalk-common-channel to add all "uyuni-proxy" channels with arch "x86_64"
     And I wait until all synchronized channels for "uyuni-proxy" have finished
 
@@ -248,5 +247,6 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I should only see success signs in the product list
 
 @scc_credentials
+@skip_if_github_validation
   Scenario: Report the synchronization duration for SLES 15 SP4
     When I report the synchronization duration for "sles15-sp4"

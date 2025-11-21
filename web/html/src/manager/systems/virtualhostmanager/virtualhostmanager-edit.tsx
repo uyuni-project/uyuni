@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import { Button, SubmitButton } from "components/buttons";
 import { DEPRECATED_Select } from "components/input";
@@ -26,7 +26,7 @@ type State = {
   isInvalid?: boolean;
 };
 
-class VirtualHostManagerEdit extends React.Component<Props, State> {
+class VirtualHostManagerEdit extends Component<Props, State> {
   form?: HTMLFormElement;
 
   constructor(props) {
@@ -79,9 +79,9 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
   setKubeconfigContexts = (id) => {
     Network.get("/rhn/manager/api/vhms/kubeconfig/" + id + "/contexts")
       .then((data) => {
-        this.setState({
-          model: Object.assign(this.state.model, { contexts: data.data }),
-        });
+        this.setState((prevState) => ({
+          model: Object.assign(prevState.model, { contexts: data.data }),
+        }));
       })
       .catch(this.handleResponseError);
   };
@@ -152,9 +152,9 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
 
   onValidate = (isValid) => {
     if (this.props.type.toLowerCase() === "kubernetes" && !this.isEdit()) {
-      this.setState({
-        isInvalid: !isValid || !this.state.validKubeconfig,
-      });
+      this.setState((prevState) => ({
+        isInvalid: !isValid || !prevState.validKubeconfig,
+      }));
     } else {
       this.setState({
         isInvalid: !isValid,
@@ -279,14 +279,14 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
           data.currentContext = "<default>";
         }
         if (data.contexts) {
-          this.setState({
+          this.setState((prevState) => ({
             messages: null,
             validKubeconfig: true,
-            model: Object.assign(this.state.model, {
+            model: Object.assign(prevState.model, {
               contexts: data.contexts,
               module_context: data.currentContext,
             }),
-          });
+          }));
         }
       })
       .catch((jqXHR) => {

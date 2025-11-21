@@ -1,4 +1,4 @@
-import * as React from "react";
+import type { ReactNode } from "react";
 
 import { Button } from "components/buttons";
 
@@ -8,7 +8,7 @@ type Props = {
   id?: string;
   className?: string;
   title?: string;
-  text?: React.ReactNode;
+  text?: ReactNode;
   icon?: string;
   disabled?: boolean;
   item?: any;

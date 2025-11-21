@@ -1,9 +1,9 @@
-import React from "react";
+import type { ReactNode } from "react";
 
 import styles from "./layout.module.scss";
 
 type Props = {
-  children?: React.ReactNode;
+  children?: ReactNode;
 };
 
 export const StorySection = (props: Props) => {
@@ -23,7 +23,7 @@ export const StripedStorySection = (props: Props) => {
 };
 
 type RowProps = {
-  children?: React.ReactNode;
+  children?: ReactNode;
 };
 
 export const StoryRow = (props: RowProps) => {

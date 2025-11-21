@@ -1,5 +1,4 @@
-import * as React from "react";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 
 import { isOrgAdmin } from "core/auth/auth.utils";
 import useRoles from "core/auth/use-roles";
@@ -23,7 +22,7 @@ type Props = {
   environmentNextTarget: ProjectEnvironmentType;
   versionToPromote: number;
   historyEntries: ProjectHistoryEntry[];
-  onChange: Function;
+  onChange: (...args: any[]) => any;
 };
 
 const Promote = (props: Props) => {
@@ -75,10 +74,10 @@ const Promote = (props: Props) => {
           isLoading ? (
             <Loading text={t("Promoting project..")} />
           ) : (
-            <React.Fragment>
+            <Fragment>
               <dl className="row">
-                <dt className="col-4 col-xs-4">{t("Version")}:</dt>
-                <dd className="col-8 col-xs-8">
+                <dt className="col-4">{t("Version")}:</dt>
+                <dd className="col-8">
                   <BuildVersion
                     id={`${props.environmentPromote.version}_promote_${props.environmentTarget.id}`}
                     text={
@@ -89,10 +88,10 @@ const Promote = (props: Props) => {
                 </dd>
               </dl>
               <dl className="row">
-                <dt className="col-4 col-xs-4">{t("Target environment")}:</dt>
-                <dd className="col-8 col-xs-8">{props.environmentTarget.name}</dd>
+                <dt className="col-4">{t("Target environment")}:</dt>
+                <dd className="col-8">{props.environmentTarget.name}</dd>
               </dl>
-            </React.Fragment>
+            </Fragment>
           )
         }
         title={t("Promote version {version} into {environmentName}", {

@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type ReactNode, Component } from "react";
 
 import { DangerDialog } from "./DangerDialog";
 
@@ -13,7 +13,7 @@ type Props = {
   canForce: boolean;
   forceName?: string;
   onClose: () => void;
-  children?: React.ReactNode;
+  children?: ReactNode;
   /** whether the dialog should be shown or hidden */
   isOpen: boolean;
 };
@@ -29,7 +29,7 @@ type State = {
  * Related items are passed to the 'selected' property as an array. Each
  * item is expected to have a 'name' property.
  */
-export class ActionConfirm extends React.Component<Props, State> {
+export class ActionConfirm extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {

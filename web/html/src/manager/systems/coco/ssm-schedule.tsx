@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type ReactNode, Component } from "react";
 
 import { ActionChain, ActionSchedule } from "components/action-schedule";
 import { AsyncButton } from "components/buttons";
@@ -24,7 +24,7 @@ type State = {
   actionChain?: ActionChain;
 };
 
-class CoCoSSMSchedule extends React.Component<Props, State> {
+class CoCoSSMSchedule extends Component<Props, State> {
   public constructor(props) {
     super(props);
 
@@ -89,7 +89,7 @@ class CoCoSSMSchedule extends React.Component<Props, State> {
       });
   };
 
-  render(): React.ReactNode {
+  render(): ReactNode {
     return (
       <>
         <TopPanel title="Confidential Computing Schedule">

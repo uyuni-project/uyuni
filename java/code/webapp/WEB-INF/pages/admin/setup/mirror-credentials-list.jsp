@@ -12,7 +12,7 @@
         </div>
         <div class="panel-footer">
             <div class="row">
-                <div class="text-left col-10 col-xs-10 d-flex">
+                <div class="text-left col-10 d-flex">
                     <span id="verify-${current.id}" class="d-flex"></span>
                     <span id="primary-${current.id}">
                         <c:if test="${current.primary}">
@@ -44,7 +44,7 @@
                         <rhn:icon type="setup-wizard-creds-edit" title="mirror-credentials.jsp.edit" />
                     </button>
                 </div>
-                <div class="text-right col-2 col-xs-2">
+                <div class="text-right col-2">
                     <span id="delete-${current.id}">
                         <button type="button"
                             data-id="<c:out value='${current.id}' />"

@@ -1452,6 +1452,18 @@ public class SaltService implements SystemQuery, SaltApi {
         return callSync(call);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Optional<Boolean> copyFile(Path src, Path dst, boolean recurse, boolean force) {
+        ensureAbsolutePath(src);
+        ensureAbsolutePath(dst);
+        RunnerCall<Boolean> call = MgrRunner.copyFile(src.toAbsolutePath().toString(),
+                dst.toAbsolutePath().toString(), recurse, force);
+        return callSync(call);
+    }
+
     private void ensureAbsolutePath(Path path) {
         if (!path.isAbsolute()) {
             throw new IllegalStateException("Given path is not absolute: " + path);

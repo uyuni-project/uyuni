@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Fragment } from "react";
 
 import { isOrgAdmin } from "core/auth/auth.utils";
 import useRoles from "core/auth/use-roles";
@@ -20,7 +20,7 @@ type Props = {
   projectId: string;
   environments: ProjectEnvironmentType[];
   historyEntries: ProjectHistoryEntry[];
-  onChange: Function;
+  onChange: (...args: any[]) => any;
   messages?: ProjectMessageType[];
 };
 
@@ -83,7 +83,7 @@ const EnvironmentLifecycle = (props: Props) => {
             {messages.messages}
             {props.environments.length === 0 && <h4>{t("No environments created")}</h4>}
             {props.environments.map((environment, i) => (
-              <React.Fragment key={environment.label}>
+              <Fragment key={environment.label}>
                 <CreatorPanel
                   id={`environment${environment.label}`}
                   title={environment.name}
@@ -173,7 +173,7 @@ const EnvironmentLifecycle = (props: Props) => {
                     onChange={props.onChange}
                   />
                 )}
-              </React.Fragment>
+              </Fragment>
             ))}
           </>
         </div>

@@ -15,7 +15,6 @@
 
 package com.suse.proxy.update;
 
-import static com.suse.proxy.ProxyConfigUtils.EMAIL_FIELD;
 import static com.suse.proxy.ProxyConfigUtils.MAX_CACHE_FIELD;
 import static com.suse.proxy.ProxyConfigUtils.PARENT_FQDN_FIELD;
 import static com.suse.proxy.ProxyConfigUtils.PROXY_CERT_FIELD;
@@ -77,7 +76,6 @@ public class ProxyConfigUpdateValidation implements ProxyConfigUpdateContextHand
         }
         registerIfMissing(request.getProxyPort(), PROXY_PORT_FIELD);
         registerIfMissing(request.getMaxCache(), MAX_CACHE_FIELD);
-        registerIfMissing(request.getEmail(), EMAIL_FIELD);
         validateCertificates(context);
 
         if (!registerIfMissing(request.getSourceMode(), SOURCE_MODE_FIELD)) {

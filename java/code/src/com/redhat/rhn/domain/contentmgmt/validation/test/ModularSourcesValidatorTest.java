@@ -28,8 +28,8 @@ public class ModularSourcesValidatorTest extends ContentValidatorTestBase {
     private ModularSourcesValidator validator;
 
     private static final String ENTITY_SOURCES = "softwareSources";
-    private final String MSG_NOMODULEFILTERS = getLoc().getMessage("contentmanagement.validation.nomodulefilters");
-    private final String MSG_NOMODULARSOURCES = getLoc().getMessage("contentmanagement.validation.nomodularsources");
+    private final String msgNoModuleFilters = getLoc().getMessage("contentmanagement.validation.nomodulefilters");
+    private final String msgNoModularSources = getLoc().getMessage("contentmanagement.validation.nomodularsources");
 
     @Override
     @BeforeEach
@@ -68,15 +68,15 @@ public class ModularSourcesValidatorTest extends ContentValidatorTestBase {
     @Test
     public void testModularSourcesWithNoModuleFilters() throws Exception {
         attachModularSource();
-        assertSingleMessage(MSG_NOMODULEFILTERS, TYPE_INFO, ENTITY_SOURCES, validator.validate(getProject()));
+        assertSingleMessage(msgNoModuleFilters, TYPE_INFO, ENTITY_SOURCES, validator.validate(getProject()));
         attachFilter();
-        assertSingleMessage(MSG_NOMODULEFILTERS, TYPE_INFO, ENTITY_SOURCES, validator.validate(getProject()));
+        assertSingleMessage(msgNoModuleFilters, TYPE_INFO, ENTITY_SOURCES, validator.validate(getProject()));
     }
 
     @Test
     public void testNonModularSourcesWithModuleFilters() throws Exception {
         attachSource();
         attachModularFilter();
-        assertSingleMessage(MSG_NOMODULARSOURCES, TYPE_WARN, ENTITY_SOURCES, validator.validate(getProject()));
+        assertSingleMessage(msgNoModularSources, TYPE_WARN, ENTITY_SOURCES, validator.validate(getProject()));
     }
 }

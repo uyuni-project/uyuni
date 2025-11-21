@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 
@@ -17,7 +17,7 @@ type Props = {
   refreshInterval: number;
 };
 
-class TaskoTop extends React.Component<Props> {
+class TaskoTop extends Component<Props> {
   timerId?: number;
   state = {
     serverData: null,
@@ -34,16 +34,15 @@ class TaskoTop extends React.Component<Props> {
   }
 
   refreshServerData = () => {
-    const currentObject = this;
     Network.get("/rhn/manager/api/admin/runtime-status/data")
       .then((data) => {
-        currentObject.setState({
+        this.setState({
           serverData: data,
           error: null,
         });
       })
       .catch((response) => {
-        currentObject.setState({
+        this.setState({
           error: DEPRECATED_unsafeEquals(response.status, 401)
             ? "authentication"
             : response.status >= 500

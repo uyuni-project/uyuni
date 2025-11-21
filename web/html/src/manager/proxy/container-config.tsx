@@ -1,4 +1,3 @@
-import * as React from "react";
 import { useState } from "react";
 
 import { AsyncButton, SubmitButton } from "components/buttons";
@@ -131,7 +130,7 @@ export function ProxyConfig() {
                 {JSON.parse(xhr.responseText)
                   .split("\n")
                   .map((line: string) => (
-                    <p>{line}</p>
+                    <p key={line}>{line}</p>
                   ))}
               </>,
             ]);

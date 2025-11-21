@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 
@@ -21,13 +21,15 @@ type SubscriptionMatchingProps = {
   refreshInterval: number;
 };
 
-class SubscriptionMatching extends React.Component<SubscriptionMatchingProps> {
+class SubscriptionMatchingState {
+  serverData: any | null = null;
+  error: any | null = null;
+}
+
+class SubscriptionMatching extends Component<SubscriptionMatchingProps, SubscriptionMatchingState> {
   timerId?: number;
   refreshRequest?: Cancelable;
-  state = {
-    serverData: null as any | null,
-    error: null as any | null,
-  };
+  state = new SubscriptionMatchingState();
 
   UNSAFE_componentWillMount() {
     this.refreshServerData();
@@ -62,9 +64,11 @@ class SubscriptionMatching extends React.Component<SubscriptionMatchingProps> {
     if (this.refreshRequest) {
       this.refreshRequest.cancel();
     }
-    const serverData = this.state.serverData;
-    serverData.pinnedMatches = pinnedMatches;
-    this.setState({ serverData: serverData });
+    this.setState((prevState) => {
+      const serverData = prevState.serverData;
+      serverData.pinnedMatches = pinnedMatches;
+      return { serverData: serverData };
+    });
   };
 
   onMatcherRunSchedule = () => {
@@ -119,7 +123,7 @@ type SubscriptionMatchingTabContainerProps = {
   onPinChanged: (...args: any[]) => any;
 };
 
-class SubscriptionMatchingTabContainer extends React.Component<SubscriptionMatchingTabContainerProps> {
+class SubscriptionMatchingTabContainer extends Component<SubscriptionMatchingTabContainerProps> {
   state = { activeTabHash: document.location.hash };
 
   UNSAFE_componentWillMount() {
@@ -152,22 +156,23 @@ class SubscriptionMatchingTabContainer extends React.Component<SubscriptionMatch
         labels={[
           t("Subscriptions"),
           t("Unmatched Products"),
-          <span>
+          <span key="pins">
             {t("Pins ")}
             {pinLabelIcon}
           </span>,
-          <span>
+          <span key="messages">
             {t("Messages ")}
             {messageLabelIcon}
           </span>,
         ]}
         hashes={["#subscriptions", "#unmatched-products", "#pins", "#messages"]}
         tabs={[
-          <Subscriptions subscriptions={data.subscriptions} />,
+          <Subscriptions subscriptions={data.subscriptions} key="subscriptions" />,
           <UnmatchedProducts
             products={data.products}
             unmatchedProductIds={data.unmatchedProductIds}
             systems={data.systems}
+            key="unmatched-products"
           />,
           <Pins
             pinnedMatches={data.pinnedMatches}
@@ -175,8 +180,14 @@ class SubscriptionMatchingTabContainer extends React.Component<SubscriptionMatch
             systems={data.systems}
             subscriptions={data.subscriptions}
             onPinChanged={this.props.onPinChanged}
+            key="pins"
           />,
-          <Messages messages={data.messages} systems={data.systems} subscriptions={data.subscriptions} />,
+          <Messages
+            messages={data.messages}
+            systems={data.systems}
+            subscriptions={data.subscriptions}
+            key="messages"
+          />,
         ]}
         initialActiveTabHash={this.state.activeTabHash}
         onTabHashChange={this.onTabHashChange}

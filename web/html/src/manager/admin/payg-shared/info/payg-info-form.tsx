@@ -1,5 +1,3 @@
-import * as React from "react";
-
 import { paygProperties } from "manager/admin/payg/payg";
 
 import { Form, Text } from "components/input";
@@ -7,7 +5,7 @@ import { Form, Text } from "components/input";
 type Props = {
   payg: paygProperties;
   errors: any;
-  onChange: Function;
+  onChange: (...args: any[]) => any;
   editing?: boolean;
 };
 const PaygInfoForm = (props: Props) => {

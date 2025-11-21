@@ -9550,3 +9550,8 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     WHERE ns.namespace = 'api.virtualhostmanager.list_virtual_host_managers' AND ns.access_mode = 'R'
     AND ep.endpoint = '/manager/api/virtualhostmanager/listVirtualHostManagers' AND ep.http_method = 'GET'
     ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'api.proxy.backup_configuration' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/manager/api/proxy/backupConfiguration' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;

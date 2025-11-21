@@ -5,9 +5,16 @@ export UYUNI_VERSION=master
 export NO_AUTH_REGISTRY=noauthregistry.lab
 export AUTH_REGISTRY_CREDENTIALS="cucutest|cucutest"
 export AUTH_REGISTRY=authregistry.lab
+export PUBLISH_CUCUMBER_REPORT=false
 
 set -x
 set -e
+
+if [[ "$(uname)" == "Darwin" ]]; then
+  PODMAN_CMD="podman"
+else
+  PODMAN_CMD="sudo -i podman"
+fi
 
 # Disable firewall so we can connect to debug
 if command -v ufw &>/dev/null; then
@@ -15,14 +22,18 @@ if command -v ufw &>/dev/null; then
 fi
 
 # make sure docker is installed because we need the socket
-if command -v dpkg &>/dev/null; then
-    dpkg -l | grep "^ii  docker.io" || sudo apt -y install docker.io
+if ! command -v docker &>/dev/null; then
+    curl -fsSL https://get.docker.com | sudo sh
 fi
 
-./00_setup_env.sh
+./00_clean_env.sh
 ./01_setup_tmp_dirs.sh
 ./02_setup_network.sh
-./03_run_controller_and_registry_and_buildhost.sh
+if [[ "$(uname)" == "Darwin" ]]; then
+  ./03_run_controller_and_registry_and_buildhost_darwin.sh
+else
+  ./03_run_controller_and_registry_and_buildhost.sh
+fi
 ./04_setup_ssh_controller.sh
 ./05_install_gems_in_controller.sh
 ./06_collect_and_tag_flaky_tests_in_controller.sh

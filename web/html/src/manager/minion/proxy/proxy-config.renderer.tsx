@@ -8,7 +8,7 @@ export const renderer = (
     serverId,
     parents,
     currentConfig,
-    initFailMessage,
+    validationErrors,
     registryUrlExample,
     registryTagExample,
     hasCertificates,
@@ -16,7 +16,7 @@ export const renderer = (
     serverId: string;
     parents: any[];
     currentConfig: any;
-    initFailMessage: string;
+    validationErrors?: any[];
     registryUrlExample: string;
     registryTagExample: string;
     hasCertificates?: boolean;
@@ -27,7 +27,7 @@ export const renderer = (
       serverId={serverId}
       parents={parents}
       currentConfig={currentConfig}
-      initFailMessage={initFailMessage}
+      validationErrors={validationErrors}
       registryUrlExample={registryUrlExample}
       registryTagExample={registryTagExample}
       hasCertificates={hasCertificates}

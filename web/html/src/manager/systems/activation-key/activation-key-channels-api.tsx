@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network from "utils/network";
@@ -32,7 +32,7 @@ type ActivationKeyChannelsProps = {
   defaultBaseId: number;
   activationKeyId: number;
   currentSelectedBaseId: number;
-  onNewBaseChannel: Function;
+  onNewBaseChannel: (...args: any[]) => any;
   children: (arg0: ChildrenArgsProps) => JSX.Element;
 };
 
@@ -42,10 +42,10 @@ type ActivationKeyChannelsState = {
   loadingChildren: boolean;
   availableBaseChannels: Channel[]; //[base1, base2],
   availableChannels: availableChannelsType; //[{base : null, children: []}]
-  fetchedData: Map<number, number[]>;
+  fetchedData: Map<number, availableChannelsType>;
 };
 
-class ActivationKeyChannelsApi extends React.Component<ActivationKeyChannelsProps, ActivationKeyChannelsState> {
+class ActivationKeyChannelsApi extends Component<ActivationKeyChannelsProps, ActivationKeyChannelsState> {
   constructor(props: ActivationKeyChannelsProps) {
     super(props);
 
@@ -105,12 +105,12 @@ class ActivationKeyChannelsApi extends React.Component<ActivationKeyChannelsProp
   fetchChildChannels = (baseId: number) => {
     let future: Promise<void>;
 
-    const currentObject: any = this;
-    if (currentObject.state.fetchedData && currentObject.state.fetchedData.has(baseId)) {
+    const availableChannels = this.state.fetchedData.get(baseId);
+    if (this.state.fetchedData && availableChannels) {
       future = new Promise((resolve) => {
         resolve(
-          currentObject.setState({
-            availableChannels: currentObject.state.fetchedData.get(baseId),
+          this.setState({
+            availableChannels,
           })
         );
       });
@@ -118,11 +118,11 @@ class ActivationKeyChannelsApi extends React.Component<ActivationKeyChannelsProp
       this.setState({ loadingChildren: true });
       future = Network.get(`/rhn/manager/api/activation-keys/base-channels/${baseId}/child-channels`)
         .then((data) => {
-          this.setState({
+          this.setState((prevState) => ({
             availableChannels: data.data,
-            fetchedData: this.state.fetchedData.set(baseId, data.data),
+            fetchedData: prevState.fetchedData.set(baseId, data.data),
             loadingChildren: false,
-          });
+          }));
         })
         .catch(this.handleResponseError);
     }

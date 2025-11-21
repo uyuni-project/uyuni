@@ -1,4 +1,4 @@
-import * as React from "react";
+import type { ReactNode } from "react";
 
 import { Comparator } from "utils/data-providers";
 
@@ -7,10 +7,10 @@ export type ColumnProps = {
   columnKey: string;
 
   /** Content of the cell or function to compute it from the row data */
-  cell?: React.ReactNode | ((data: any, criteria?: string, nestingLevel?: number) => React.ReactNode);
+  cell?: ReactNode | ((data: any, criteria?: string, nestingLevel?: number) => ReactNode);
 
   /** Title of the row, prefer `string` where possible for consistency */
-  header?: string | React.ReactNode;
+  header?: string | ReactNode;
 
   /** CSS value for the column width */
   width?: string;
@@ -52,7 +52,7 @@ export type ColumnProps = {
  * This component is also used internally to reprent each cell
  */
 export function Column(props: ColumnProps) {
-  let content: React.ReactNode = null;
+  let content: ReactNode = null;
   if (typeof props.cell === "function") {
     content = props.cell(props.data, props.criteria, props.nestingLevel);
   } else {
@@ -69,12 +69,3 @@ export function Column(props: ColumnProps) {
     </td>
   );
 }
-
-Column.defaultProps = {
-  header: undefined,
-  comparator: undefined,
-  sortable: false,
-  columnClass: undefined,
-  data: undefined,
-  criteria: undefined,
-};

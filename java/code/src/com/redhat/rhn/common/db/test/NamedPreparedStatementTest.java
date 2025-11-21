@@ -43,21 +43,21 @@ public class NamedPreparedStatementTest extends RhnBaseTestCase {
     private static final int SECOND_POS = 3;
 
 
-    private String SIMPLE_QUERY = "SELECT wc.id AS ID, " +
+    private static final String SIMPLE_QUERY = "SELECT wc.id AS ID, " +
                                   "wc.login, " +
                                   "wc.login_uc " +
                                   " FROM web_contact wc " +
                                   " WHERE wc.org_id = :org_id " +
                                   " ORDER BY wc.login_uc, wc.id";
 
-    private String SIMPLE_QUERY_SUBST = "SELECT wc.id AS ID, " +
+    private static final String SIMPLE_QUERY_SUBST = "SELECT wc.id AS ID, " +
                                         "wc.login, " +
                                         "wc.login_uc " +
                                         " FROM web_contact wc " +
                                         " WHERE wc.org_id = ? " +
                                         " ORDER BY wc.login_uc, wc.id";
 
-    private String TWO_VAR_QUERY = "SELECT DISTINCT E.id, E.update_date " +
+    private static final String TWO_VAR_QUERY = "SELECT DISTINCT E.id, E.update_date " +
                                    "FROM rhnErrata E, " +
                                    "rhnServerNeededCache SNC " +
                                    "WHERE EXISTS (SELECT server_id FROM " +
@@ -68,7 +68,7 @@ public class NamedPreparedStatementTest extends RhnBaseTestCase {
                                    "AND SNC.errata_id = E.id " +
                                    "ORDER BY E.update_date, E.id";
 
-    private String TWO_VAR_QUERY_SUBST = "SELECT DISTINCT E.id, " +
+    private static final String TWO_VAR_QUERY_SUBST = "SELECT DISTINCT E.id, " +
                                          "E.update_date " +
                                          "FROM rhnErrata E, " +
                                          "rhnServerNeededCache SNC " +
@@ -80,7 +80,7 @@ public class NamedPreparedStatementTest extends RhnBaseTestCase {
                                          "AND SNC.errata_id = E.id " +
                                          "ORDER BY E.update_date, E.id";
 
-    private String COLON_IN_QUOTES = "SELECT 'FOO:BAR:MI:SS' " +
+    private static final String COLON_IN_QUOTES = "SELECT 'FOO:BAR:MI:SS' " +
                                      "FROM FOOBAR";
 
 

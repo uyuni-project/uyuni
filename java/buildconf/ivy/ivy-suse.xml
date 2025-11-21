@@ -62,13 +62,13 @@
         <dependency org="suse" name="jsch" rev="0.2.22" />
         <dependency org="suse" name="jctools-core" rev="4.0.5" />
         <dependency org="suse" name="mchange-commons-java" rev="0.2.20" />
-        <dependency org="suse" name="netty-buffer" rev="4.1.126" />
-        <dependency org="suse" name="netty-codec" rev="4.1.126" />
-        <dependency org="suse" name="netty-common" rev="4.1.126" />
-        <dependency org="suse" name="netty-handler" rev="4.1.126" />
-        <dependency org="suse" name="netty-resolver" rev="4.1.126" />
-        <dependency org="suse" name="netty-transport" rev="4.1.126" />
-        <dependency org="suse" name="netty-transport-native-unix-common" rev="4.1.126" />
+        <dependency org="suse" name="netty-buffer" rev="4.1.128" />
+        <dependency org="suse" name="netty-codec" rev="4.1.128" />
+        <dependency org="suse" name="netty-common" rev="4.1.128" />
+        <dependency org="suse" name="netty-handler" rev="4.1.128" />
+        <dependency org="suse" name="netty-resolver" rev="4.1.128" />
+        <dependency org="suse" name="netty-transport" rev="4.1.128" />
+        <dependency org="suse" name="netty-transport-native-unix-common" rev="4.1.128" />
         <dependency org="suse" name="oro" rev="2.0.8" />
         <dependency org="suse" name="pgjdbc-ng" rev="0.8.7" />
         <dependency org="suse" name="postgresql-jdbc" rev="42.2.25" />

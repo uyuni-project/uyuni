@@ -1,6 +1,5 @@
 // Humanize dates for `FormatDateTag.java` the same way we do in frontend code
 
-import * as React from "react";
 import ReactDOM from "react-dom";
 
 import { FromNow, HumanDateTime } from "components/datetime";

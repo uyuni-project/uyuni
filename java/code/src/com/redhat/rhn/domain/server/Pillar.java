@@ -17,8 +17,6 @@ import com.redhat.rhn.domain.org.Org;
 
 import com.vladmihalcea.hibernate.type.json.JsonType;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 
@@ -31,9 +29,11 @@ import java.util.TreeMap;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -53,14 +53,8 @@ import javax.persistence.criteria.Root;
 public class Pillar implements Identifiable, Serializable {
 
     @Id
-    @GeneratedValue(generator = "pillar_seq")
-    @GenericGenerator(
-            name = "pillar_seq",
-            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-            parameters = {
-                    @Parameter(name = "sequence_name", value = "suse_salt_pillar_id_seq"),
-                    @Parameter(name = "increment_size", value = "1")
-            })
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pillar_seq")
+    @SequenceGenerator(name = "pillar_seq", sequenceName = "suse_salt_pillar_id_seq", allocationSize = 1)
     @Column(name = "id")
     private Long id;
 
@@ -160,7 +154,7 @@ public class Pillar implements Identifiable, Serializable {
      */
     public static Pillar createGlobalPillar(String category, Map<String, Object> data) {
         Pillar pillar = new Pillar(category, data);
-        HibernateFactory.getSession().save(pillar);
+        HibernateFactory.getSession().persist(pillar);
         return pillar;
     }
 
@@ -263,13 +257,14 @@ public class Pillar implements Identifiable, Serializable {
     }
 
     /**
-     * Get a single string value from the pillar
-     * The path consists of : separated components. An empty component takes the first item.
+     * Get a single value from the pillar
      *
-     * @param path the path in the pillar
-     * @return the value
+     * @param path  A colon-delimited string describing the JSON path (e.g., "A:B:C").
+     *              An empty component means first available item is used (e.g., "A::B")
+     * @throws LookupException if the path is invalid or entry does not exist
+     * @return A pillar value object
      */
-    public String getPillarValue(String path) {
+    public Object getPillarValue(String path) throws LookupException {
         Object value = getPillar();
         try {
             for (String key: path.split(":")) {
@@ -289,7 +284,43 @@ public class Pillar implements Identifiable, Serializable {
             throw new LookupException("The pillar entry does not exist");
         }
 
-        return (String)value;
+        return value;
+    }
+
+    /**
+     * Inserts or updates a value in the pillar structure at the specified path.
+     * The method will create the necessary nested objects if they do not exist.
+     *
+     * @param path  A colon-delimited string describing the JSON path (e.g., "A:B:C").
+     *              Unlike in getter, empty components are not allowed.
+     * @param value The value to be inserted.
+     * @throws LookupException if the path is invalid (e.g., empty component)
+     */
+    public void setPillarValue(String path, Object value) throws LookupException {
+        Map<String, Object> entry = this.pillar;
+        String[] keys = path.split(":");
+        for (int i = 0; i < keys.length; i++) {
+            String key = keys[i];
+            if (key.isEmpty()) {
+                throw new LookupException("Empty key is not allowed");
+            }
+            // This is the last key
+            if (i == keys.length - 1) {
+                entry.put(key, value);
+            }
+            else {
+                if (entry.containsKey(key)) {
+                    // Traverse a level below
+                    entry = (Map<String, Object>) entry.get(key);
+                }
+                else {
+                    // Missing struct, create one
+                    Map<String, Object> tmp = new TreeMap<>();
+                    entry.put(key, tmp);
+                    entry = tmp;
+                }
+            }
+        }
     }
 
     /**

@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import { Combobox, ComboboxItem } from "components/combobox";
 import { DateTimePicker } from "components/datetime";
@@ -44,7 +44,7 @@ type RecurringEventPickerState = {
   cronTimes: CronTimes;
 };
 
-class RecurringEventPicker extends React.Component<RecurringEventPickerProps, RecurringEventPickerState> {
+class RecurringEventPicker extends Component<RecurringEventPickerProps, RecurringEventPickerState> {
   public static readonly defaultProps: Partial<RecurringEventPickerProps> = {
     mode: "Panel",
     hideScheduleName: false,
@@ -78,7 +78,11 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
       monthDay: this.monthDays[0],
     };
 
-    this.props.cronTimes ? this.setInitialTimeAndDays(this.state.time) : this.initialize();
+    if (this.props.cronTimes) {
+      this.setInitialTimeAndDays(this.state.time);
+    } else {
+      this.initialize();
+    }
   }
 
   /**

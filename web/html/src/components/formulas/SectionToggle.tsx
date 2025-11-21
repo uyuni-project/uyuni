@@ -1,10 +1,10 @@
-import * as React from "react";
+import type { ReactNode } from "react";
 
 type Props = {
   index?: any;
   isVisible: (index: any) => boolean;
   setVisible: (index: any, isVisible: boolean) => any;
-  children?: React.ReactNode;
+  children?: ReactNode;
 };
 
 const SectionToggle = (props: Props) => {

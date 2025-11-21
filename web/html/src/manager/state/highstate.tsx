@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 
@@ -28,7 +28,7 @@ declare global {
 
 const messagesCounterLimit = 3;
 
-type HighstateProps = {};
+type HighstateProps = Record<never, never>;
 
 type HighstateState = {
   messages: any[];
@@ -37,7 +37,7 @@ type HighstateState = {
   actionChain?: any;
 };
 
-class Highstate extends React.Component<HighstateProps, HighstateState> {
+class Highstate extends Component<HighstateProps, HighstateState> {
   constructor(props) {
     super(props);
     const state = {
@@ -56,32 +56,34 @@ class Highstate extends React.Component<HighstateProps, HighstateState> {
       test: this.state.test,
     })
       .then((data) => {
-        const msg = MessagesUtils.info(
-          this.state.actionChain ? (
-            <span>
-              {t('Action has been successfully added to the action chain <link>"{name}"</link>.', {
-                name: this.state.actionChain.text,
-                link: (str) => <ActionChainLink id={data}>{str}</ActionChainLink>,
-              })}
-            </span>
-          ) : (
-            <span>
-              {t("Applying the highstate has been <link>scheduled</link>.", {
-                link: (str) => <ActionLink id={data}>{str}</ActionLink>,
-              })}
-            </span>
-          )
-        );
+        this.setState((prevState) => {
+          const msg = MessagesUtils.info(
+            this.state.actionChain ? (
+              <span>
+                {t('Action has been successfully added to the action chain <link>"{name}"</link>.', {
+                  name: this.state.actionChain.text,
+                  link: (str) => <ActionChainLink id={data}>{str}</ActionChainLink>,
+                })}
+              </span>
+            ) : (
+              <span>
+                {t("Applying the highstate has been <link>scheduled</link>.", {
+                  link: (str) => <ActionLink id={data}>{str}</ActionLink>,
+                })}
+              </span>
+            )
+          );
 
-        const msgs = this.state.messages.concat(msg);
+          const msgs = prevState.messages.concat(msg);
 
-        // Do not spam UI showing old messages
-        while (msgs.length > messagesCounterLimit) {
-          msgs.shift();
-        }
+          // Do not spam UI showing old messages
+          while (msgs.length > messagesCounterLimit) {
+            msgs.shift();
+          }
 
-        this.setState({
-          messages: msgs,
+          return {
+            messages: msgs,
+          };
         });
       })
       .catch(this.handleResponseError);
@@ -104,7 +106,7 @@ class Highstate extends React.Component<HighstateProps, HighstateState> {
   };
 
   toggleTestState = () => {
-    this.setState({ test: !this.state.test });
+    this.setState((prevState) => ({ test: !prevState.test }));
   };
 
   isSSM = () => {
@@ -114,7 +116,7 @@ class Highstate extends React.Component<HighstateProps, HighstateState> {
   render() {
     const messages = this.state.messages.length > 0 ? <Messages items={this.state.messages} /> : null;
     const buttons = [
-      <div className="btn-group pull-right">
+      <div className="btn-group pull-right" key="buttons-right">
         <Toggler
           text={t("Test mode")}
           value={this.state.test}
@@ -133,7 +135,13 @@ class Highstate extends React.Component<HighstateProps, HighstateState> {
     const loc = window.location;
     const createLink = loc.pathname.replace("/highstate", "/recurring-actions") + loc.search + "#/create";
     const buttonsLeft = [
-      <LinkButton icon="fa-plus" href={createLink} className="btn-primary" text={t("Create Recurring")} />,
+      <LinkButton
+        icon="fa-plus"
+        href={createLink}
+        className="btn-primary"
+        text={t("Create Recurring")}
+        key="buttons-left"
+      />,
     ];
     const showHighstate = [
       <InnerPanel
@@ -141,6 +149,7 @@ class Highstate extends React.Component<HighstateProps, HighstateState> {
         icon="spacewalk-icon-salt"
         buttons={buttons}
         buttonsLeft={this.isSSM() ? undefined : buttonsLeft}
+        key="highstate"
       >
         <div className="panel panel-default">
           <div className="panel-heading">

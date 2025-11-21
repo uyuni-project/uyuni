@@ -1,5 +1,3 @@
-import * as React from "react";
-
 type Props = {
   /** ID of the server the action is running on */
   serverId: string;

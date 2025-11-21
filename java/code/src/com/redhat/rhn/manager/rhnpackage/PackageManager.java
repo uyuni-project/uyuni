@@ -826,7 +826,7 @@ public class PackageManager extends BaseManager {
                     "java::deletePackage",
                     pkg.getPackageName().getName());
         }
-        session.delete(pkg);
+        session.remove(pkg);
     }
 
     /**

@@ -116,7 +116,7 @@ public class ActionChainFactory extends HibernateFactory {
      * @return an Action Chain or empty
      */
     public static Optional<ActionChain> getActionChain(long id) {
-        return Optional.ofNullable(getSession().get(ActionChain.class, id));
+        return Optional.ofNullable(getSession().find(ActionChain.class, id));
     }
 
     /**
@@ -130,7 +130,7 @@ public class ActionChainFactory extends HibernateFactory {
         if (id == null) {
             return null;
         }
-        ActionChainEntry ace = getSession().load(ActionChainEntry.class, id);
+        ActionChainEntry ace = getSession().getReference(ActionChainEntry.class, id);
 
         if (ace.getActionChain().getUser().getId().longValue() == requestor.getId().longValue()) {
             return ace;
@@ -218,7 +218,7 @@ public class ActionChainFactory extends HibernateFactory {
      */
     public static ActionChainEntry queueActionChainEntry(Action action,
         ActionChain actionChain, Long serverId, int sortOrder) {
-        Server server = getSession().load(Server.class, serverId);
+        Server server = getSession().getReference(Server.class, serverId);
         return queueActionChainEntry(action, actionChain, server, sortOrder);
     }
 

@@ -85,7 +85,7 @@ public class ScapManagerTest extends JMockBaseTestCaseWithUser {
                 .openStream();
         XccdfTestResult result = ScapManager.xccdfEval(minion, action, 2, "", resultsIn, resumeXsl);
 
-        result = HibernateFactory.getSession().get(XccdfTestResult.class, result.getId());
+        result = HibernateFactory.getSession().find(XccdfTestResult.class, result.getId());
         assertNotNull(result);
 
         assertEquals("Default", result.getProfile().getIdentifier());
@@ -115,7 +115,7 @@ public class ScapManagerTest extends JMockBaseTestCaseWithUser {
                 .openStream();
         XccdfTestResult result = ScapManager.xccdfEval(minion, action, 2, "", resultsIn, resumeXsl);
 
-        result = HibernateFactory.getSession().get(XccdfTestResult.class, result.getId());
+        result = HibernateFactory.getSession().find(XccdfTestResult.class, result.getId());
         assertNotNull(result);
 
         assertEquals("xccdf_org.ssgproject.content_profile_cis_suse_test", result.getProfile().getIdentifier());
@@ -212,7 +212,7 @@ public class ScapManagerTest extends JMockBaseTestCaseWithUser {
         XccdfTestResult result = ScapManager.xccdfEvalResume(minion, action, 2, "",
                 new ByteArrayInputStream(resume.getBytes(StandardCharsets.UTF_8)));
 
-        result = HibernateFactory.getSession().get(XccdfTestResult.class, result.getId());
+        result = HibernateFactory.getSession().find(XccdfTestResult.class, result.getId());
         assertNotNull(result);
 
         assertEquals("Default", result.getProfile().getIdentifier());
@@ -317,7 +317,7 @@ public class ScapManagerTest extends JMockBaseTestCaseWithUser {
                 .openStream();
         XccdfTestResult result = ScapManager.xccdfEval(minion, action, 2, "", resultsIn, resumeXsl);
 
-        result = HibernateFactory.getSession().get(XccdfTestResult.class, result.getId());
+        result = HibernateFactory.getSession().find(XccdfTestResult.class, result.getId());
         assertNotNull(result);
 
         assertEquals("xccdf_org.ssgproject.content_profile_rht-ccp", result.getProfile().getIdentifier());

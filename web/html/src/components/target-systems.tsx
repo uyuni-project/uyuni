@@ -1,4 +1,4 @@
-import * as React from "react";
+import type { FC, ReactNode } from "react";
 
 import { pageSize } from "core/user-preferences";
 
@@ -14,10 +14,10 @@ export type SystemData = {
 
 type Props = {
   systemsData: SystemData[];
-  children?: React.ReactNode;
+  children?: ReactNode;
 };
 
-export const TargetSystems: React.FC<Props> = ({ systemsData, children }: Props): JSX.Element => {
+export const TargetSystems: FC<Props> = ({ systemsData, children }: Props): JSX.Element => {
   function renderSystemLink(system: SystemData) {
     return <SystemLink id={system.id}>{system.name}</SystemLink>;
   }

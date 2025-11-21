@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import { Column } from "components/table/Column";
 import { Table } from "components/table/Table";
@@ -23,7 +23,7 @@ const systemName = (systems, messageData) => {
   return systems[messageData["id"]].name;
 };
 
-class Messages extends React.Component<Props> {
+class Messages extends Component<Props> {
   buildRows = (rawMessages, systems, subscriptions) => {
     return rawMessages.map(function (rawMessage, index) {
       const data = rawMessage["data"];

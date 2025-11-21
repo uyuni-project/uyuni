@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState } from "react";
 
 import { IconTag } from "components/icontag";
 import * as Systems from "components/systems";
@@ -21,7 +21,7 @@ type Props = {
 };
 
 export function VirtualSystems(props: Props) {
-  const [selectedSystems, setSelectedSystems] = React.useState<string[]>([]);
+  const [selectedSystems, setSelectedSystems] = useState<string[]>([]);
 
   const handleSelectedSystems = (items: string[]) => {
     const removed = selectedSystems.filter((item) => !items.includes(item)).map((item) => [item, false]);
@@ -49,7 +49,7 @@ export function VirtualSystems(props: Props) {
         data="/rhn/manager/api/systems/list/virtual"
         identifier={(item) => item.virtualSystemId || item.uuid}
         initialSortColumnKey="host_server_name"
-        selectable={(item) => item.hasOwnProperty("virtualSystemId")}
+        selectable={(item) => "virtualSystemId" in item}
         selectedItems={selectedSystems}
         onSelect={handleSelectedSystems}
         searchField={<VirtualSystemsListFilter />}

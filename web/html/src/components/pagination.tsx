@@ -1,5 +1,4 @@
-import * as React from "react";
-import { useEffect, useRef } from "react";
+import { type ReactNode, useEffect, useRef } from "react";
 
 import { Button, DropdownButton } from "components/buttons";
 
@@ -61,8 +60,8 @@ const PaginationBlock = (props: PaginationBlockProps) => {
 type PaginationButtonProps = {
   disabled?: boolean;
   onClick: (...args: any[]) => any;
-  text?: React.ReactNode;
-  icon?: React.ReactNode;
+  text?: ReactNode;
+  icon?: ReactNode;
   title?: string;
   ariaLabel: string;
 };

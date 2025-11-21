@@ -79,7 +79,7 @@ public class ProxyConfigUpdateSavePillars implements ProxyConfigUpdateContextHan
             }
             pillar.add(PILLAR_REGISTRY_ENTRY, registryEntries);
         }
-        HibernateFactory.getSession().save(pillar);
+        HibernateFactory.getSession().persist(pillar);
         context.setPillar(pillar);
     }
 }

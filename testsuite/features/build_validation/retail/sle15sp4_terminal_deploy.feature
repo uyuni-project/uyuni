@@ -17,7 +17,7 @@ Feature: PXE boot a SLES 15 SP4 retail terminal
     Given I am authorized for the "Admin" section
 
   Scenario: PXE boot the SLES 15 SP4 retail terminal
-    When I reboot the Retail terminal "sle15sp4_terminal"
+    When I reboot the Retail terminal "sle15sp4_terminal" through the interface "eth1"
     And I wait at most 180 seconds until Salt master sees "sle15sp4_terminal" as "unaccepted"
     And I accept "sle15sp4_terminal" key in the Salt master
     And I follow the left menu "Systems > System List > All"

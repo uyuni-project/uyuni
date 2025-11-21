@@ -1,0 +1,2 @@
+- Ensure proxy extension channel is checked and installed
+  when converting to proxy (bsc#1249438)

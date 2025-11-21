@@ -272,7 +272,7 @@ end
 def slemicro_host?(name, runs_in_container: true)
   node = get_target(name)
   os_family = runs_in_container ? node.os_family : node.local_os_family
-  (name.include? 'slemicro') || (name.include? 'micro') || os_family.include?('sle-micro') || os_family.include?('suse-microos') || os_family.include?('sl-micro')
+  os_family.include?('sle-micro') || os_family.include?('suse-microos') || os_family.include?('sl-micro')
 end
 
 # Determines if the given host name is a openSUSE Leap Micro host.
@@ -375,6 +375,8 @@ def extract_logs_from_node(node, host)
     `mkdir logs` unless Dir.exist?('logs')
     success = file_extract(node, "/tmp/#{node.full_hostname}-logs.tar.xz", "logs/#{node.full_hostname}-logs.tar.xz")
     raise ScriptError, 'Download log archive failed' unless success
+  rescue Errno::ECONNRESET
+    $stdout.puts "⚠️ WARN: Skipping log extraction for node #{host} due to connection reset."
   rescue RuntimeError => e
     $stdout.puts e.message
   end
@@ -532,13 +534,6 @@ def get_system_name(host)
         word.match?(/example.Intel-Genuine-None-/) || word.match?(/example.pxeboot-/) || word.match?(/example.Intel/) || word.match?(/pxeboot-/)
       end
     system_name = 'pxeboot.example.org' if system_name.nil?
-  when 'sle12sp5_terminal'
-    output, _code = get_target('server').run('salt-key')
-    system_name =
-      output.split.find do |word|
-        word.match?(/example.sle12sp5terminal-/)
-      end
-    system_name = 'sle12sp5terminal.example.org' if system_name.nil?
   when 'sle15sp4_terminal'
     output, _code = get_target('server').run('salt-key')
     system_name =

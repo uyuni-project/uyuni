@@ -118,6 +118,18 @@ public interface SaltApi extends Serializable {
     Optional<Boolean> copyFile(Path src, Path dst);
 
     /**
+     * Copy a given file or folder using RunnerCall
+     *
+     * @param src the source path of a file or folder to be copied
+     * @param dst the destination path of the file or folder to be copied
+     * @param recurse true to copy a folder and its content
+     * @param force true to overwrite existing content
+     * @throws IllegalStateException if the given path is not absolute
+     * @return Optional with true if the copy succeeded.
+     */
+    Optional<Boolean> copyFile(Path src, Path dst, boolean recurse, boolean force);
+
+    /**
      * Performs an test.echo on a target set of minions for checkIn purpose.
      * @param targetIn the target
      * @return the LocalAsyncResult of the test.echo call

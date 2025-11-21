@@ -261,7 +261,7 @@ public class MethodUtil {
             Class<?> clazz = Thread.currentThread().
                             getContextClassLoader().loadClass(className);
             if (args == null || args.length == 0) {
-                retval = clazz.newInstance();
+                retval = clazz.getDeclaredConstructor().newInstance();
             }
             else {
                 try {
@@ -278,7 +278,8 @@ public class MethodUtil {
             }
 
         }
-        catch (InstantiationException | ClassNotFoundException | IllegalAccessException e) {
+        catch (InstantiationException | ClassNotFoundException | IllegalAccessException |
+                InvocationTargetException | NoSuchMethodException e) {
            throw new RhnRuntimeException(e);
         }
 

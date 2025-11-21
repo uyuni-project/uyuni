@@ -4,14 +4,11 @@
 # Basic images do not contain zypper nor the name of the server,
 # so the inspect functionality is not tested here.
 #
-#
-# This feature depends on:
-# - features/secondary/min_docker_api.feature
-#
 # This feature can cause failures in the following features:
 # - features/secondary/min_salt_install_with_staging.feature
 # Due to the images listed in the CVE Audit images
 
+@skip_if_github_validation
 @build_host
 @scope_building_container_images
 @scope_cve_audit
@@ -70,7 +67,6 @@ Feature: Build container images and CVE audit them
 @skip_if_github_validation
   Scenario: Check the list of packages is not empty
     Then the list of packages of image "suse_key" with version "latest" is not empty
-
 
   Scenario: Build the suse_simple image with and without activation key
     Given I am on the Systems overview page of this "build_host"

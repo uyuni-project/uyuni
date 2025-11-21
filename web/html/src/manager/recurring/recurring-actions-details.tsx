@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import _sortBy from "lodash/sortBy";
 
@@ -57,7 +57,7 @@ type RecurringActionsDetailsState = {
   details: any;
 };
 
-class RecurringActionsDetails extends React.Component<RecurringActionsDetailsProps, RecurringActionsDetailsState> {
+class RecurringActionsDetails extends Component<RecurringActionsDetailsProps, RecurringActionsDetailsState> {
   weekDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
   constructor(props: RecurringActionsDetailsProps) {
@@ -229,7 +229,7 @@ class RecurringActionsDetails extends React.Component<RecurringActionsDetailsPro
 
   render() {
     const buttons = [
-      <div className="btn-group pull-right">
+      <div className="btn-group pull-right" key="buttons-right">
         <Button
           text={t("Back")}
           icon="fa-chevron-left"

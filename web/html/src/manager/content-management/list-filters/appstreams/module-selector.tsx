@@ -1,4 +1,3 @@
-import * as React from "react";
 import { useContext } from "react";
 
 import { DEPRECATED_Select, FormContext } from "components/input";

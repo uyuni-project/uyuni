@@ -44,7 +44,7 @@ public class NetworkInterfaceFactoryTest extends RhnBaseTestCase {
         netInterface.setName("eth0");
         netInterface.setHwaddr(hwAddress);
         netInterface.setServer(testSystem);
-        HibernateFactory.getSession().save(netInterface);
+        HibernateFactory.getSession().persist(netInterface);
 
         Stream<NetworkInterface> interfaces = NetworkInterfaceFactory
                 .lookupNetworkInterfacesByHwAddress(hwAddressUppercase);

@@ -1,4 +1,3 @@
-import * as React from "react";
 import { useEffect, useState } from "react";
 
 import _last from "lodash/last";
@@ -19,7 +18,7 @@ import DownArrow from "../../down-arrow/down-arrow";
 
 type Props = {
   projectId: string;
-  onBuild: Function;
+  onBuild: (...args: any[]) => any;
   currentHistoryEntry?: Partial<ProjectHistoryEntry>;
   changesToBuild: string[];
   disabled?: boolean;

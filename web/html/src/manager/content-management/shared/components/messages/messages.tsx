@@ -1,6 +1,5 @@
-import * as React from "react";
-
 import _isEmpty from "lodash/isEmpty";
+import type { ReactNode } from "react";
 
 import { Messages } from "components/messages/messages";
 
@@ -8,7 +7,7 @@ import { ProjectMessageType } from "../../type";
 
 type ValidationMessagesType = {
   panelClass: string;
-  messages: React.ReactNode | null | undefined;
+  messages: ReactNode | null | undefined;
 };
 
 const msgClassMap = {

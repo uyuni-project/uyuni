@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Children } from "react";
 
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import { clear, render, screen, type, waitForElementToBeRemoved } from "utils/test-utils";
@@ -19,7 +19,7 @@ describe("Range", () => {
   function renderWithForm(content) {
     return render(
       <Form model={model} onChange={onChange}>
-        {React.Children.toArray(content)}
+        {Children.toArray(content)}
       </Form>
     );
   }

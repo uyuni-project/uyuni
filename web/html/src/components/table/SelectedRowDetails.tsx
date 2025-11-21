@@ -1,14 +1,6 @@
-import * as React from "react";
-
 import { Button } from "components/buttons";
 
 type SearchPanelPropss = {
-  /** number representing the number of the first displayed item */
-  fromItem: number;
-
-  /** number representing the number of the last displayed item */
-  toItem: number;
-
   /** total number of filtered items */
   itemCount: number;
 
@@ -26,13 +18,13 @@ type SearchPanelPropss = {
 };
 
 /** Panel containing the search fields for a table */
-export function SelectedRowDetails(props: SearchPanelPropss) {
+export function SelectedRowDetails({ selectable = false, selectedCount = 0, ...props }: SearchPanelPropss) {
   return (
     <>
-      {props.selectable && props.selectedCount > 0 && (
+      {selectable && selectedCount > 0 && (
         <div className="selected-row-details">
           <span>
-            {props.selectedCount === props.itemCount ? (
+            {selectedCount === props.itemCount ? (
               <>
                 {t(
                   `All {totalCount, plural,
@@ -52,7 +44,7 @@ export function SelectedRowDetails(props: SearchPanelPropss) {
                     one {1 item selected.}
                     other {{itemCount} items selected.}
                   }` as string,
-                  { itemCount: props.selectedCount }
+                  { itemCount: selectedCount }
                 )}
                 <Button className="btn btn-tertiary ms-2" handler={props.onSelectAll}>
                   {t(
@@ -75,8 +67,3 @@ export function SelectedRowDetails(props: SearchPanelPropss) {
     </>
   );
 }
-
-SelectedRowDetails.defaultProps = {
-  selectable: false,
-  selectedCount: 0,
-};

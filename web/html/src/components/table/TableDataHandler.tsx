@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type ReactComponentElement, type ReactElement, type ReactNode, Children, Component } from "react";
 
 import _isEqual from "lodash/isEqual";
 
@@ -18,15 +18,15 @@ import { SelectedRowDetails } from "./SelectedRowDetails";
 
 type ChildrenArgsProps = {
   currItems: any[];
-  headers: React.ReactNode;
-  handleSelect: Function;
+  headers: ReactNode;
+  handleSelect: (...args: any[]) => any;
   selectedItems: any[];
   criteria?: string;
   field?: string;
 };
 
 type Props = {
-  columns: React.ReactElement<any>[];
+  columns: ReactElement<any>[];
 
   /**
    * Either an array of data items of any type where each element is a row data,
@@ -57,7 +57,7 @@ type Props = {
   onSearch?: (criteria: string) => void;
 
   /** the React Object that contains the filter search field */
-  searchField?: React.ReactComponentElement<typeof SearchField>;
+  searchField?: ReactComponentElement<typeof SearchField>;
 
   /** Default column to search on */
   defaultSearchField?: string;
@@ -103,13 +103,13 @@ type Props = {
   onLoad?: () => void;
 
   /** Children node in the table */
-  children: (args: ChildrenArgsProps) => React.ReactNode;
+  children: (args: ChildrenArgsProps) => ReactNode;
 
   /** Other filter fields */
-  additionalFilters?: React.ReactNode[];
+  additionalFilters?: ReactNode[];
 
   /** Title buttons to add next to the items per page selection */
-  titleButtons?: React.ReactNode[];
+  titleButtons?: ReactNode[];
 };
 
 type State = {
@@ -125,7 +125,7 @@ type State = {
   loading: boolean;
 };
 
-export class TableDataHandler extends React.Component<Props, State> {
+export class TableDataHandler extends Component<Props, State> {
   static defaultProps = {
     selectable: false,
     deletable: false,
@@ -283,7 +283,7 @@ export class TableDataHandler extends React.Component<Props, State> {
   };
 
   renderTitleButtons = () => {
-    return React.Children.map(this.props.titleButtons, (item: React.ReactNode) =>
+    return Children.map(this.props.titleButtons, (item: ReactNode) =>
       cloneReactElement(item, {
         search: { field: this.state.field, criteria: this.state.criteria },
       })
@@ -298,7 +298,7 @@ export class TableDataHandler extends React.Component<Props, State> {
         if (column.props.header) {
           const sortDirection = column.props.columnKey === this.state.sortColumnKey ? this.state.sortDirection : 0;
           let comparator = column.props.comparator;
-          if (!comparator && column.props.sortable) {
+          if (!comparator && !!column.props.sortable) {
             comparator = Utils.sortByText;
           }
 
@@ -358,12 +358,16 @@ export class TableDataHandler extends React.Component<Props, State> {
           <input type="checkbox" checked={allSelected} onChange={(e) => handleSelectAll(e.target.checked)} />
         </Header>
       );
-      headers && headers?.unshift(checkbox);
+      if (headers) {
+        headers.unshift(checkbox);
+      }
     }
 
     if (this.props.expandable) {
       const spacer = <Header key="expandable" width="30px" />;
-      headers && headers.unshift(spacer);
+      if (headers) {
+        headers.unshift(spacer);
+      }
     }
 
     if (this.props.deletable) {
@@ -371,7 +375,9 @@ export class TableDataHandler extends React.Component<Props, State> {
         // Intentionally empty
         <Header key="delete" width="30px" />
       );
-      headers && headers.push(deleteHeader);
+      if (headers) {
+        headers.push(deleteHeader);
+      }
     }
 
     const handleSelect = (id, sel) => {
@@ -415,17 +421,10 @@ export class TableDataHandler extends React.Component<Props, State> {
               <div className=" panel-heading">
                 <div className="spacewalk-list-head-addons align-items-center">
                   <SearchPanel
-                    fromItem={fromItem}
-                    toItem={toItem}
-                    itemCount={itemCount}
                     criteria={this.state.criteria}
                     field={this.state.field}
                     onSearch={this.onSearch}
                     onSearchField={this.onSearchField}
-                    onClear={handleSearchPanelClear}
-                    onSelectAll={handleSearchPanelSelectAll}
-                    selectedCount={selectedItems.length}
-                    selectable={isSelectable}
                   >
                     {searchField}
                     {this.props.additionalFilters}
@@ -436,8 +435,6 @@ export class TableDataHandler extends React.Component<Props, State> {
                 </div>
               </div>
               <SelectedRowDetails
-                fromItem={fromItem}
-                toItem={toItem}
                 itemCount={itemCount}
                 onClear={handleSearchPanelClear}
                 onSelectAll={handleSearchPanelSelectAll}

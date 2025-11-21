@@ -1,4 +1,3 @@
-import * as React from "react";
 import { useEffect, useState } from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
@@ -45,7 +44,9 @@ const MaintenanceWindows = () => {
 
   useEffect(() => {
     updateView(getHashAction(), getHashId());
-    window.type === "schedule" && getCalendarNames();
+    if (window.type === "schedule") {
+      getCalendarNames();
+    }
     window.addEventListener("popstate", () => {
       updateView(getHashAction(), getHashId());
     });
