@@ -820,8 +820,8 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
         catch (NoSuchSystemException e) {
             //should be here
         }
-        catch (Throwable t) {
-            fail("Expected NoSuchSystemException but got " + t);
+        catch (Exception e) {
+            fail("Expected NoSuchSystemException but got " + e);
         }
     }
 
@@ -834,8 +834,8 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
         }
         catch (NoSuchActivationKeyException e) {
         }
-        catch (Throwable t) {
-            fail("Expected NoSuchActivationKeyException but got " + t);
+        catch (Exception e) {
+            fail("Expected NoSuchActivationKeyException but got " + e);
         }
     }
 
@@ -850,8 +850,8 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
         catch (AuthenticationException e) {
             assertEquals("wrong machine password.", e.getMessage());
         }
-        catch (Throwable t) {
-            fail("Expected AuthenticationException but got " + t);
+        catch (Exception e) {
+            fail("Expected AuthenticationException but got " + e);
         }
     }
 
