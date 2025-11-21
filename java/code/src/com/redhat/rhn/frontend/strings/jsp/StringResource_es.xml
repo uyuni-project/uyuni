@@ -13737,8 +13737,8 @@ la &lt;strong&gt;Guía de administración del sistema Red Hat Enterprise Linux.&
         </context-group>
       </trans-unit>
       <trans-unit id="activation-keys.config.rank.jsp.para1" xml:space="preserve">
-        <source>This activation key is subscribed to the configuration channels listed below in order from highest to lowest rank. Files from a particular channel will override files with the same filepath and name from channels below it.</source>
-        <target>Esta llave de activación está suscrita a los canales de configuración listados a continuación; éstos van del más alto al más bajo rango. Los archivos de un canal particular sobrescribirán archivos con la misma ruta de archivo y nombre de canales inferiores.</target>
+        <source>This activation key is subscribed to the configuration channels listed below in order from highest to lowest rank. Files from a particular channel will override files with the same filepath and name from channels below it. In other words, the channel listed last will be applied first.</source>
+        <target state="needs-adaptation">Esta llave de activación está suscrita a los canales de configuración listados a continuación; éstos van del más alto al más bajo rango. Los archivos de un canal particular sobrescribirán archivos con la misma ruta de archivo y nombre de canales inferiores.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/activationkeys/configuration/* pages</context>
         </context-group>
@@ -23232,8 +23232,8 @@ La ruta del árbol, el RPM Kickstart, el canal base y la generación del instala
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.rank.jsp.para1" xml:space="preserve">
-        <source>This system is subscribed to the configuration channels listed below in order from highest to lowest rank. Files from a particular channel will override files with the same filepath and name from channels below it.</source>
-        <target>Este sistema está suscrito a los canales de configuración listados a continuación; éstos van del más alto al más bajo rango. Los archivos de un canal particular sobrescribirán los archivos con la misma ruta y nombre de canales inferiores.</target>
+        <source>This system is subscribed to the configuration channels listed below in order from highest to lowest rank. Files from a particular channel will override files with the same filepath and name from channels below it. In other words, the channel listed last will be applied first.</source>
+        <target state="needs-adaptation">Este sistema está suscrito a los canales de configuración listados a continuación; éstos van del más alto al más bajo rango. Los archivos de un canal particular sobrescribirán los archivos con la misma ruta y nombre de canales inferiores.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/RankChannels.do</context>
         </context-group>

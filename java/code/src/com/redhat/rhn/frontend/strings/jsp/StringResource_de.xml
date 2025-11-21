@@ -13698,8 +13698,8 @@ Anschließend wird das nicht-chroot Post-Skript ausgeführt, und zuletzt das Pos
         </context-group>
       </trans-unit>
       <trans-unit id="activation-keys.config.rank.jsp.para1" xml:space="preserve">
-        <source>This activation key is subscribed to the configuration channels listed below in order from highest to lowest rank. Files from a particular channel will override files with the same filepath and name from channels below it.</source>
-        <target>Dieser Aktivierungsschlüssel hat die unten in absteigender Rangfolge aufgelisteten Konfigurations-Channels subskribiert. Dateien eines bestimmten Channels werden Dateien mit demselben Dateipfad und Namen von Channels darunter ersetzen.</target>
+        <source>This activation key is subscribed to the configuration channels listed below in order from highest to lowest rank. Files from a particular channel will override files with the same filepath and name from channels below it. In other words, the channel listed last will be applied first.</source>
+        <target state="needs-adaptation">Dieser Aktivierungsschlüssel hat die unten in absteigender Rangfolge aufgelisteten Konfigurations-Channels subskribiert. Dateien eines bestimmten Channels werden Dateien mit demselben Dateipfad und Namen von Channels darunter ersetzen.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/activationkeys/configuration/* pages</context>
         </context-group>
@@ -23188,8 +23188,8 @@ Tree-Pfad, Kickstart-RPM, Basis-Channel und Installer-Generation sollten immer �
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.rank.jsp.para1" xml:space="preserve">
-        <source>This system is subscribed to the configuration channels listed below in order from highest to lowest rank. Files from a particular channel will override files with the same filepath and name from channels below it.</source>
-        <target>Dieses System hat die unten in absteigender Rangfolge aufgelisteten Konfigurations-Channels subskribiert. Dateien eines bestimmten Channels werden Dateien mit demselben Dateipfad und Namen von Channels darunter ersetzen (override).</target>
+        <source>This system is subscribed to the configuration channels listed below in order from highest to lowest rank. Files from a particular channel will override files with the same filepath and name from channels below it. In other words, the channel listed last will be applied first.</source>
+        <target state="needs-adaptation">Dieses System hat die unten in absteigender Rangfolge aufgelisteten Konfigurations-Channels subskribiert. Dateien eines bestimmten Channels werden Dateien mit demselben Dateipfad und Namen von Channels darunter ersetzen (override).</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/RankChannels.do</context>
         </context-group>
