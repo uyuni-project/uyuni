@@ -17,6 +17,8 @@ import DictionaryEditor from "./variables/dictionary-editor";
 import ExtraVariable from "./variables/extra-var";
 import ListEditor from "./variables/list-editor";
 import StringEditor from "./variables/string-editor";
+import { AceEditor } from "components/ace-editor";
+import { Console } from "console";
 
 const isDictionary = (obj) => {
   if (typeof obj !== "object" || obj === null || Array.isArray(obj)) return false;
@@ -32,16 +34,38 @@ type Props = {
   onExtraVarChange: (extravalues: string) => void;
 };
 
+
 const AnsibleVarYamlEditor = React.forwardRef((props: Props, ref) => {
   const { data, onExtraVarChange } = props;
   const [visibleInputPath, setVisibleInputPath] = useState(null);
   const [varType, setVarType] = useState(null);
   const [expandAllClicked, setExpandAllClicked] = useState(false);
+  const [yamlEditor, setYamlEditor] = useState(false);
   const [expandAllState, setExpandAllState] = useState(false);
+  const [varsData, setVarsData] = useState(data);
   
   const formRef = React.useRef<any>(null);
-  useImperativeHandle(ref, () => ({
-    getValues: () => formRef.current?.values,
+  const aceRef = useRef(null);
+  
+  useImperativeHandle(ref, () => ({    
+    // On save returns either YAML editor content or the form values depending on the active mode.
+    getValues: () => {
+      if (yamlEditor) {
+        const editor = aceRef.current?.editor;
+        const text = editor?.getValue();
+        try {
+          return yaml.load(text);
+        } catch (e) {
+          showErrorToastr("Invalid YAML", {
+            autoHide: false,
+            containerId: "yamlEditorError",
+          });
+          return null;
+        }
+      } else {
+        return formRef.current?.values;
+      }
+    }
   }));
 
   const generateId = (path) => `id_${path.split(".").join("_")}`;
@@ -218,77 +242,127 @@ const AnsibleVarYamlEditor = React.forwardRef((props: Props, ref) => {
         <div className="col-md-12">
           <div className="d-flex justify-content-between align-items-center mb-3">
             Set the value of existing variables to override previously defined variables.
-            <Button
-              text={expandAllState ? "Collapse All" : "Expand All"}
-              className="btn-default btn-sm"
-              handler={() => {
-                setExpandAllClicked(true);
-                setExpandAllState((prev) => !prev);
-              }}
-            />
+            { !yamlEditor ? 
+              <div>
+                <Button
+                  text={t("Edit YAML")}
+                  className="btn-default btn-sm me-3"
+                  handler={() => {
+                    const currentValues = formRef.current?.values;
+                    const currentData = yaml.dump(currentValues);
+                    setVarsData(currentData);
+                    setYamlEditor(true);
+                  }}
+                />
+                <Button
+                  text={expandAllState ? t("Collapse All") : t("Expand All")}
+                  className="btn-default btn-sm"
+                  handler={() => {
+                    setExpandAllClicked(true);
+                    setExpandAllState((prev) => !prev);
+                  }}
+                />
+              </div> :
+              <div>
+                 <Button
+                  text={t("Back")}
+                  className="btn-default btn-sm"
+                  handler={() => {
+                    const editor = aceRef.current?.editor;
+                    const text = editor?.getValue();
+                      try {
+                        const parsed = yaml.load(text);
+                        setVarsData(parsed);
+                        setYamlEditor(false);
+                      } catch (e) {
+                        showErrorToastr(`Invalid YAML`, {
+                          autoHide: false,
+                          containerId: "yamlEditorError",
+                        });
+                      }
+                    }
+                  }
+                />
+              </div>
+            }
           </div>
         </div>
       </div>
       <div className={styles.variableContent}>
-        <Form innerRef={formRef} initialValues={data} onSubmit={() => {}} enableReinitialize className={`d-flex w-100 ${styles.variableContent}`}>
-          {({ values }) => (
-            <>
-              <div className={`${styles.yamlEditor} col-md-7`}>
-                {levelOneTitles(values).map((path) => {
-                 return (
-                    <Panel
-                      key={generateId(path)}
-                      headingLevel="h5"
-                      collapseId={generateId(path)}
-                      title={path.split(".").join(" > ")}
-                      className="panel-trasnparent"
-                      collapsClose={expandAllClicked ? !expandAllState : false}
-                      buttons={
-                        <Button
-                          className="btn-tertiary btn-sm"
-                          handler={() => removeTopLevelItem(p)}
-                          title={t("Delete")}
-                          icon="fa-trash-o"
-                        />
-                      }
-                    >
-                      <Field name={path} component={RenderVariableField} />
-                      {nestedLevelTitles(path, values).map((p) => {
-                        return (
-                          <Panel
-                            key={generateId(p)}
-                            headingLevel="h5"
-                            collapseId={generateId(p)}
-                            title={p.split(".").join(" > ")}
-                            className="panel-trasnparent"
-                            collapsClose={expandAllClicked ? !expandAllState : true}
-                            buttons={
-                              <Button
-                                className="btn-tertiary btn-sm"
-                                handler={() => removeTopLevelItem(p)}
-                                title={t("Delete")}
-                                icon="fa-trash-o"
-                              />
-                            }
-                          >
-                            <Field name={p} component={RenderVariableField} />
-                          </Panel>
-                        )})
-                      }
-                    </Panel>
-                  )})
-                }
-                <div>
-                  <MessagesContainer containerId="extra-var" />
-                  <ExtraVariable setExtraVars={onExtraVarChange} />
+        { !yamlEditor ? 
+          <Form innerRef={formRef} initialValues={varsData} onSubmit={() => {}} enableReinitialize className={`d-flex w-100 ${styles.variableContent}`}>
+            {({ values }) => (
+              <>
+                <div className={`${styles.yamlEditor} col-md-7`}>
+                  {levelOneTitles(values).map((path) => {
+                  return (
+                      <Panel
+                        key={generateId(path)}
+                        headingLevel="h5"
+                        collapseId={generateId(path)}
+                        title={path.split(".").join(" > ")}
+                        className="panel-trasnparent"
+                        collapsClose={expandAllClicked ? !expandAllState : false}
+                        buttons={
+                          <Button
+                            className="btn-tertiary btn-sm"
+                            handler={() => removeTopLevelItem(p)}
+                            title={t("Delete")}
+                            icon="fa-trash-o"
+                          />
+                        }
+                      >
+                        <Field name={path} component={RenderVariableField} />
+                        {nestedLevelTitles(path, values).map((p) => {
+                          return (
+                            <Panel
+                              key={generateId(p)}
+                              headingLevel="h5"
+                              collapseId={generateId(p)}
+                              title={p.split(".").join(" > ")}
+                              className="panel-trasnparent"
+                              collapsClose={expandAllClicked ? !expandAllState : true}
+                              buttons={
+                                <Button
+                                  className="btn-tertiary btn-sm"
+                                  handler={() => removeTopLevelItem(p)}
+                                  title={t("Delete")}
+                                  icon="fa-trash-o"
+                                />
+                              }
+                            >
+                              <Field name={p} component={RenderVariableField} />
+                            </Panel>
+                          )})
+                        }
+                      </Panel>
+                    )})
+                  }
+                  <div>
+                    <MessagesContainer containerId="extra-var" />
+                    <ExtraVariable setExtraVars={onExtraVarChange} />
+                  </div>
                 </div>
-              </div>
-              <div className={`${styles.yamlPreview} col-md-4`}>
-                <YamlPreview values={values} />
-              </div>
-            </>
-          )}
-        </Form>
+                <div className={`${styles.yamlPreview} col-md-4`}>
+                  <YamlPreview values={values} />
+                </div>
+              </>
+            )}
+          </Form> :
+          <div>
+            <MessagesContainer containerId="yamlEditorError" />
+            <AceEditor
+              ref={aceRef}
+              className="form-control"
+              id="playbook-content"
+              minLines={20}
+              maxLines={40}
+              readOnly={false}
+              mode="yaml"
+              content={varsData}
+            />
+          </div>
+        }
       </div>
     </>
   );
