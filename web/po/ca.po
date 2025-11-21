@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-11-21 10:49+0100\n"
-"PO-Revision-Date: 2025-11-03 12:04+0000\n"
+"PO-Revision-Date: 2025-11-21 15:04+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/web/ca/>\n"
 "Language: ca\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.14\n"
+"X-Generator: Weblate 5.14.3\n"
 
 #: ../html/javascript/spacewalk-essentials.js:409
 msgid "remaining"
@@ -1830,11 +1830,11 @@ msgstr "Edita els ranxos del canal"
 
 #: ../html/src/components/states-picker.tsx:446
 msgid "Edit the ranking of the states by dragging them. They are listed in order from highest to lowest rank. In other words, the bottom ones will be applied first."
-msgstr ""
+msgstr "Editeu la classificació dels estats arrossegant-los. Es llisten en ordre de classificació de més alt a més baix. En altres paraules, els inferiors s'aplicaran primer."
 
 #: ../html/src/components/states-picker.tsx:449
 msgid "Edit the ranking of the configuration channels by dragging them. They are listed in order from highest to lowest rank. Files from a particular channel will override files with the same filepath and name from channels below it. In other words, the bottom ones will be applied first."
-msgstr ""
+msgstr "Editeu la classificació dels canals de configuració arrossegant-los. Es llisten en ordre de classificació de més alt a més baix. Els fitxers d'un canal concret substituiran els fitxers amb el mateix camí de fitxer i nom dels canals inferiors. En altres paraules, els inferiors s'aplicaran primer."
 
 #: ../html/src/components/states-picker.tsx:455
 msgid "There are no states assigned."
@@ -4102,7 +4102,7 @@ msgstr "Si heu escrit aquesta adreça al navegador, reviseu-ne l'ortografia i le
 
 #: ../html/src/manager/errors/not-found.tsx:16
 msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your "
-msgstr "Si heu seguit un enllaç, és possible que l'enllaç sigui incorrecte o obsolet. Feu clic al botó Enrere: "
+msgstr "Si heu seguit un enllaç, és possible que l'enllaç sigui incorrecte o obsolet. Feu clic al botó Enrere a "
 
 #: ../html/src/manager/errors/not-found.tsx:23
 msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was "
@@ -4110,7 +4110,7 @@ msgstr "Si heu utilitzat un punt, la pàgina pot haver-se mogut a una ubicació 
 
 #: ../html/src/manager/errors/not-found.tsx:30
 msgid "If you feel you've reached this page in error, please contact us with details of how you received "
-msgstr "Si creieu que heu arribat a aquesta pàgina per error, poseu-vos en contacte amb nosaltres i expliqueu-nos com heu rebut "
+msgstr "Si creieu que heu arribat a aquesta pàgina per error, poseu-vos en contacte amb nosaltres i expliqueu com heu rebut "
 
 #: ../html/src/manager/groups/config-channels/group-config-channels.tsx:27
 msgid "Applying the config channels has been scheduled for each minion server in this group"
