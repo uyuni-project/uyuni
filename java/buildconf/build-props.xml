@@ -5,13 +5,7 @@
   <property name="src.dir" location="${rhn-home}/code" />
   <property name="build.dir" location="${rhn-home}/build" />
   <property name="lib.dir" location="${rhn-home}/lib" />
-  <!-- Prefer using a repository-local lib/ directory for developer builds when present.
-       Fall back to the build's build-lib directory for packaged/CI runs. This avoids
-       requiring -Dbuild.lib.dir=lib for most local developer workflows. -->
-  <available file="${rhn-home}/lib" type="dir" property="rhn.home.lib.exists" />
-  <condition property="build.lib.dir" value="${rhn-home}/lib" else="${build.dir}/build-lib">
-    <isset property="rhn.home.lib.exists" />
-  </condition>
+  <property name="build.lib.dir" location="${build.dir}/build-lib" />
 
   <property name="run.lib.dir" location="${build.dir}/run-lib" />
   <property name="run-external.lib.dir" location="${build.dir}/run-lib/external" />
