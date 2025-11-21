@@ -13689,8 +13689,8 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         </context-group>
       </trans-unit>
       <trans-unit id="activation-keys.config.rank.jsp.para1" xml:space="preserve">
-          <source>This activation key is subscribed to the configuration channels listed below in order from highest to lowest rank. Files from a particular channel will override files with the same filepath and name from channels below it.</source>
-        <target>此啟用金鑰已訂閱至以下所列出的配置頻道中（按照等級由高到低的順序）。特定頻道中的檔案將會把它下面頻道中相同路徑與名稱的檔案給置換掉。</target>
+          <source>This activation key is subscribed to the configuration channels listed below in order from highest to lowest rank. Files from a particular channel will override files with the same filepath and name from channels below it. In other words, the channel listed last will be applied first.</source>
+        <target state="needs-adaptation">此啟用金鑰已訂閱至以下所列出的配置頻道中（按照等級由高到低的順序）。特定頻道中的檔案將會把它下面頻道中相同路徑與名稱的檔案給置換掉。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/activationkeys/configuration/* pages</context>
         </context-group>
@@ -23178,8 +23178,8 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.rank.jsp.para1" xml:space="preserve">
-          <source>This system is subscribed to the configuration channels listed below in order from highest to lowest rank. Files from a particular channel will override files with the same filepath and name from channels below it.</source>
-        <target>此系統已訂閱至以下所列出的配置頻道中（按照等級由高到低的順序）。特定頻道中的檔案將會把它下面頻道中相同路徑與名稱的檔案給置換掉。</target>
+          <source>This system is subscribed to the configuration channels listed below in order from highest to lowest rank. Files from a particular channel will override files with the same filepath and name from channels below it. In other words, the channel listed last will be applied first.</source>
+        <target state="needs-adaptation">此系統已訂閱至以下所列出的配置頻道中（按照等級由高到低的順序）。特定頻道中的檔案將會把它下面頻道中相同路徑與名稱的檔案給置換掉。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/RankChannels.do</context>
         </context-group>

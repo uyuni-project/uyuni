@@ -13188,8 +13188,8 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         </context-group>
         </trans-unit>
         <trans-unit id="activation-keys.config.rank.jsp.para1" xml:space="preserve">
-          <source>This activation key is subscribed to the configuration channels listed below in order from highest to lowest rank. Files from a particular channel will override files with the same filepath and name from channels below it.</source>
-          <target>ਇਸ ਸਰਗਰਮੀ ਕੁੰਜੀ ਨੂੰ ਹੇਠਾਂ ਦਿੱਤੇ ਸੰਰਚਨਾ ਚੈਨਲਾਂ ਤੇ ਵੱਡੇ ਤੋਂ ਛੋਟੇ ਰੈਂਕ ਵੱਲ ਮੈਂਬਰ ਬਣਾਇਆ ਗਿਆ ਹੈ। ਖਾਸ ਚੈਨਲ ਤੋਂ ਫਾਇਲਾਂ ਨੂੰ ਉਸਤੋਂ ਹੇਠਲੇ ਚੈਨਲ ਦੇ ਫਾਇਲ-ਮਾਰਗ ਅਤੇ ਨਾਂ ਨਾਲ ਉਵਰਰਾਈਟ ਹੋ ਜਾਂਦੀਆਂ ਹਨ।</target>
+          <source>This activation key is subscribed to the configuration channels listed below in order from highest to lowest rank. Files from a particular channel will override files with the same filepath and name from channels below it. In other words, the channel listed last will be applied first.</source>
+          <target state="needs-adaptation">ਇਸ ਸਰਗਰਮੀ ਕੁੰਜੀ ਨੂੰ ਹੇਠਾਂ ਦਿੱਤੇ ਸੰਰਚਨਾ ਚੈਨਲਾਂ ਤੇ ਵੱਡੇ ਤੋਂ ਛੋਟੇ ਰੈਂਕ ਵੱਲ ਮੈਂਬਰ ਬਣਾਇਆ ਗਿਆ ਹੈ। ਖਾਸ ਚੈਨਲ ਤੋਂ ਫਾਇਲਾਂ ਨੂੰ ਉਸਤੋਂ ਹੇਠਲੇ ਚੈਨਲ ਦੇ ਫਾਇਲ-ਮਾਰਗ ਅਤੇ ਨਾਂ ਨਾਲ ਉਵਰਰਾਈਟ ਹੋ ਜਾਂਦੀਆਂ ਹਨ।</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/activationkeys/configuration/* pages</context>
         </context-group>
@@ -22264,8 +22264,8 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </context-group>
         </trans-unit>
         <trans-unit id="sdc.config.rank.jsp.para1" xml:space="preserve">
-          <source>This system is subscribed to the configuration channels listed below in order from highest to lowest rank. Files from a particular channel will override files with the same filepath and name from channels below it.</source>
-          <target>ਇਹ ਸਿਸਟਮ ਹੇਠਲੀ ਸੂਚੀ ਵਿਚਲੇ ਸੰਰਚਨਾ ਚੈਨਲਾਂ ਤੇ ਵੱਧ ਤੋਂ ਘੱਟ ਰੈਂਕ ਅਨੁਸਾਰ ਮੈਂਬਰ ਬਣਿਆ ਹੈ। ਖਾਸ ਚੈਨਲ ਤੋਂ ਫਾਇਲਾਂ ਇਸ ਤੋਂ ਹੇਠਲੇ ਚੈਨਲ ਤੋਂ ਇਸੇ ਮਾਰਗ ਅਤੇ ਨਾਂ ਵਾਲੀਆਂ ਫਾਇਲਾਂ ਨੂੰ ਓਵਰਰਾਈਡ ਕਰਨਗੀਆਂ।</target>
+          <source>This system is subscribed to the configuration channels listed below in order from highest to lowest rank. Files from a particular channel will override files with the same filepath and name from channels below it. In other words, the channel listed last will be applied first.</source>
+          <target state="needs-adaptation">ਇਹ ਸਿਸਟਮ ਹੇਠਲੀ ਸੂਚੀ ਵਿਚਲੇ ਸੰਰਚਨਾ ਚੈਨਲਾਂ ਤੇ ਵੱਧ ਤੋਂ ਘੱਟ ਰੈਂਕ ਅਨੁਸਾਰ ਮੈਂਬਰ ਬਣਿਆ ਹੈ। ਖਾਸ ਚੈਨਲ ਤੋਂ ਫਾਇਲਾਂ ਇਸ ਤੋਂ ਹੇਠਲੇ ਚੈਨਲ ਤੋਂ ਇਸੇ ਮਾਰਗ ਅਤੇ ਨਾਂ ਵਾਲੀਆਂ ਫਾਇਲਾਂ ਨੂੰ ਓਵਰਰਾਈਡ ਕਰਨਗੀਆਂ।</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/RankChannels.do</context>
         </context-group>

@@ -13869,8 +13869,8 @@ el lt;stronggt;ENTERENTERPRISELINUXNAME Guide Guia d'administració del sistema.
         </context-group>
       </trans-unit>
       <trans-unit id="activation-keys.config.rank.jsp.para1" xml:space="preserve">
-        <source>This activation key is subscribed to the configuration channels listed below in order from highest to lowest rank. Files from a particular channel will override files with the same filepath and name from channels below it.</source>
-        <target state="translated">Aquesta clau d'activació està subscrita als canals de configuració llistats a continuació per ordre de rang més alt a més baix. Els fitxers d'un canal en particular substituiran els fitxers amb el mateix camí de fitxer i el nom dels canals de sota.</target>
+        <source>This activation key is subscribed to the configuration channels listed below in order from highest to lowest rank. Files from a particular channel will override files with the same filepath and name from channels below it. In other words, the channel listed last will be applied first.</source>
+        <target state="needs-adaptation">Aquesta clau d'activació està subscrita als canals de configuració llistats a continuació per ordre de rang més alt a més baix. Els fitxers d'un canal en particular substituiran els fitxers amb el mateix camí de fitxer i el nom dels canals de sota.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/activationkeys/configuration/* pages</context>
         </context-group>
@@ -23415,8 +23415,8 @@ lt;pgt;El camí a l'arbre ha de ser un camí de disc local al servidor .PRODUCTN
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.rank.jsp.para1" xml:space="preserve">
-        <source>This system is subscribed to the configuration channels listed below in order from highest to lowest rank. Files from a particular channel will override files with the same filepath and name from channels below it.</source>
-        <target state="translated">Aquest sistema està subscrit als canals de configuració llistats a continuació per ordre de rang més alt a més baix. Els fitxers d'un canal en particular substituiran els fitxers amb el mateix camí de fitxer i el nom dels canals de sota.</target>
+        <source>This system is subscribed to the configuration channels listed below in order from highest to lowest rank. Files from a particular channel will override files with the same filepath and name from channels below it. In other words, the channel listed last will be applied first.</source>
+        <target state="needs-adaptation">Aquest sistema està subscrit als canals de configuració llistats a continuació per ordre de rang més alt a més baix. Els fitxers d'un canal en particular substituiran els fitxers amb el mateix camí de fitxer i el nom dels canals de sota.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/RankChannels.do</context>
         </context-group>
@@ -29653,18 +29653,18 @@ lt;/pgt;
         </context-group>
         <target state="translated">Atura la sincronització si es produeix un error.</target>
       </trans-unit>
-    <trans-unit id="channel.jsp.sync.status.ready" xml:space="preserve">
+      <trans-unit id="channel.jsp.sync.status.ready" xml:space="preserve">
         <source> Completed </source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated"> Completat </target>
+      </trans-unit>
       <trans-unit id="channel.jsp.sync.status.syncing" xml:space="preserve">
         <source> In Progress </source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated"> En curs </target>
+      </trans-unit>
       <trans-unit id="channel.jsp.sync.status.created" xml:space="preserve">
         <source> New Created </source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="translated"> De creació nova </target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

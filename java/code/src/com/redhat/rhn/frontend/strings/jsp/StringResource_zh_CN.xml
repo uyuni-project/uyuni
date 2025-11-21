@@ -687,30 +687,30 @@
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="lookup.issslave.title" xml:space="preserve">
+      <trans-unit approved="yes" id="lookup.issslave.title" xml:space="preserve">
         <source>We're sorry, but the requested slave could not be found</source>
-        <target state="translated">抱歉，找不到请求的从属组织</target>
+        <target state="final">抱歉，找不到请求的从属服务器</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="lookup.issslave.reason1" xml:space="preserve">
+      <trans-unit approved="yes" id="lookup.issslave.reason1" xml:space="preserve">
         <source>No slave with the name {0} is identified on this master.</source>
-        <target state="translated">在这台主组织中没有名为 {0} 的从属组织。</target>
+        <target state="final">在该主服务器中没有名为 {0} 的从属服务器。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="lookup.issmaster.title" xml:space="preserve">
+      <trans-unit approved="yes" id="lookup.issmaster.title" xml:space="preserve">
         <source>We're sorry, but the requested master could not be found</source>
-        <target state="translated">抱歉，找不到请求的主组织</target>
+        <target state="final">抱歉，找不到请求的主服务器</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="lookup.issmaster.reason1" xml:space="preserve">
+      <trans-unit approved="yes" id="lookup.issmaster.reason1" xml:space="preserve">
         <source>No master with the label {0} is identified to this slave.</source>
-        <target state="translated">没有为这台从属组织识别的名为 {0} 的主组织。</target>
+        <target state="final">该从属服务器未识别到标签为 {0} 的主服务器。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
@@ -722,9 +722,9 @@
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="lookup.issmaster.local.reason1" xml:space="preserve">
+      <trans-unit approved="yes" id="lookup.issmaster.local.reason1" xml:space="preserve">
         <source>No local organization with the ID  {0} exists on this slave.</source>
-        <target state="translated">此从属组织上不存在 ID 为 {0} 的本地组织。</target>
+        <target state="final">此从属服务器上不存在 ID 为 {0} 的本地组织。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
@@ -736,9 +736,9 @@
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="lookup.issmasterorg.reason1" xml:space="preserve">
+      <trans-unit approved="yes" id="lookup.issmasterorg.reason1" xml:space="preserve">
         <source>No master organization with the ID {0} is identified to this slave.</source>
-        <target state="translated">没有为这台从属组织识别的名为 {0} 的主组织。</target>
+        <target state="final">该从属服务器未识别到 ID 为 {0} 的主服务器组织。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
@@ -1966,12 +1966,12 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
         <target state="translated">用户细节</target>
       </trans-unit>
-      <trans-unit id="userdetails.jsp.noemailaddress" xml:space="preserve">
+      <trans-unit approved="yes" id="userdetails.jsp.noemailaddress" xml:space="preserve">
         <source>Add Email Address</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
-        <target state="needs-adaptation">没有电子邮件地址</target>
+        <target state="final">添加电子邮件地址</target>
       </trans-unit>
       <trans-unit id="userdetails.jsp.disable" xml:space="preserve">
         <source>Deactivate User</source>
@@ -6963,16 +6963,16 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="systems.groups.jsp.remove" xml:space="preserve">
+      <trans-unit approved="yes" id="systems.groups.jsp.remove" xml:space="preserve">
         <source>Leave Groups</source>
-        <target state="needs-adaptation">退出所选的组</target>
+        <target state="final">退出组</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="systems.groups.jsp.add" xml:space="preserve">
+      <trans-unit approved="yes" id="systems.groups.jsp.add" xml:space="preserve">
         <source>Join Groups</source>
-        <target state="needs-adaptation">加入所选的组</target>
+        <target state="final">加入组</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
@@ -7131,9 +7131,9 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="systemgroup.details.editproperties" xml:space="preserve">
+      <trans-unit approved="yes" id="systemgroup.details.editproperties" xml:space="preserve">
         <source>Edit System Group Properties</source>
-        <target state="needs-adaptation">编辑这些属性</target>
+        <target state="final">编辑系统组属性</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
@@ -8020,12 +8020,12 @@ organization. You may grant or remove the organization administrator role in the
         </context-group>
         <target state="translated">该远程命令操作安排在软件包去除操作&lt;strong&gt;前&lt;/strong&gt;运行。</target>
       </trans-unit>
-      <trans-unit id="installpkgs.jsp.installpackages" xml:space="preserve">
+      <trans-unit approved="yes" id="installpkgs.jsp.installpackages" xml:space="preserve">
         <source>Install Packages</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/InstallPackages</context>
         </context-group>
-        <target state="needs-adaptation">安装所选软件包</target>
+        <target state="final">安装软件包</target>
       </trans-unit>
       <trans-unit id="installconfirm.jsp.header" xml:space="preserve">
         <source>Confirm Package Install</source>
@@ -9406,7 +9406,7 @@ organization management tools if you choose to remove this role from your login.
       </trans-unit>
       <trans-unit id="general.jsp.summary" xml:space="preserve">
         <source>In this page, configure your @@PRODUCT_NAME@@. The HTTP proxy settings are for the communication with a @@PRODUCT_NAME@@ parent server, if there is any. The HTTP proxy should be of the form: hostname:port, but the default port 8080 will be used if none is explicitly provided. HTTP proxy settings for client systems to connect to this @@PRODUCT_NAME@@ can be different, and will be configured separately.</source>
-        <target>在此页面中配置 @@PRODUCT_NAME@@。HTTP 代理设置用来与 @@PRODUCT_NAME@@ 父服务器（如果有）通讯。HTTP 代理应采用以下格式：主机名:端口，如果未显式提供端口，将使用默认端口 8080。要连接到此 @@PRODUCT_NAME@@ 的客户端系统的 HTTP 代理设置可能不同，将单独进行配置。</target>
+        <target state="translated">在此页面中配置 @@PRODUCT_NAME@@。HTTP 代理设置用来与 @@PRODUCT_NAME@@ 父服务器（如果有）通信。HTTP 代理应采用以下格式：主机名:端口，如果未显式提供端口，将使用默认端口 8080。要连接到此 @@PRODUCT_NAME@@ 的客户端系统的 HTTP 代理设置可能不同，将单独进行配置。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/GeneralConfig.do</context>
         </context-group>
@@ -13869,8 +13869,8 @@ kickstart 前脚本的更多细节，请参见《&lt;strong&gt;@@ENTERPRISE_LINU
         </context-group>
       </trans-unit>
       <trans-unit id="activation-keys.config.rank.jsp.para1" xml:space="preserve">
-        <source>This activation key is subscribed to the configuration channels listed below in order from highest to lowest rank. Files from a particular channel will override files with the same filepath and name from channels below it.</source>
-        <target state="translated">此激活密钥订阅了下列配置通道，通道按排名以从高到低的顺序列出。特定通道中的文件将覆盖级别比其低的通道中文件路径和文件名相同的文件。</target>
+        <source>This activation key is subscribed to the configuration channels listed below in order from highest to lowest rank. Files from a particular channel will override files with the same filepath and name from channels below it. In other words, the channel listed last will be applied first.</source>
+        <target state="needs-adaptation">此激活密钥订阅了下列配置通道，通道按排名以从高到低的顺序列出。特定通道中的文件将覆盖级别比其低的通道中文件路径和文件名相同的文件。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/activationkeys/configuration/* pages</context>
         </context-group>
@@ -13945,9 +13945,9 @@ kickstart 前脚本的更多细节，请参见《&lt;strong&gt;@@ENTERPRISE_LINU
           <context context-type="sourcefile">/rhn/activationkeys/groups/* pages</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="activation-key.groups.jsp.add" xml:space="preserve">
+      <trans-unit approved="yes" id="activation-key.groups.jsp.add" xml:space="preserve">
         <source>Join Groups</source>
-        <target state="needs-adaptation">加入所选的组</target>
+        <target state="final">加入组</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/activationkeys/groups/* pages</context>
         </context-group>
@@ -14360,16 +14360,16 @@ kickstart 前脚本的更多细节，请参见《&lt;strong&gt;@@ENTERPRISE_LINU
           <context context-type="sourcefile">View of SCAP scans for given system</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="system.audit.listscap.jsp.removebut" xml:space="preserve">
+      <trans-unit approved="yes" id="system.audit.listscap.jsp.removebut" xml:space="preserve">
         <source>Remove</source>
-        <target state="needs-adaptation">去除所选扫描</target>
+        <target state="final">去除</target>
         <context-group name="ctx">
           <context context-type="sourcefile">View of SCAP scans for given system</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="system.audit.listscap.jsp.diffbut" xml:space="preserve">
+      <trans-unit approved="yes" id="system.audit.listscap.jsp.diffbut" xml:space="preserve">
         <source>Compare</source>
-        <target state="needs-adaptation">比较所选扫描</target>
+        <target state="final">比较</target>
         <context-group name="ctx">
           <context context-type="sourcefile">View of SCAP scans for given system</context>
         </context-group>
@@ -15265,9 +15265,9 @@ kickstart 前脚本的更多细节，请参见《&lt;strong&gt;@@ENTERPRISE_LINU
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="system.event.pending.headerPending" xml:space="preserve">
+      <trans-unit approved="yes" id="system.event.pending.headerPending" xml:space="preserve">
         <source>You may cancel events for this system by selecting them and clicking the &lt;strong&gt;Cancel Events&lt;/strong&gt; button.</source>
-        <target state="needs-adaptation">您可以选择事件并单击&lt;strong&gt;取消所选事件&lt;/strong&gt;按钮为此系统取消相应事件。</target>
+        <target state="final">您可以选择相应事件并单击&lt;strong&gt;取消事件&lt;/strong&gt;按钮，为该系统取消这些事件。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
@@ -15286,9 +15286,9 @@ kickstart 前脚本的更多细节，请参见《&lt;strong&gt;@@ENTERPRISE_LINU
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="system.event.pending.cancel" xml:space="preserve">
+      <trans-unit approved="yes" id="system.event.pending.cancel" xml:space="preserve">
         <source>Cancel Events</source>
-        <target state="needs-adaptation">取消所选事件</target>
+        <target state="final">取消事件</target>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
@@ -16502,12 +16502,12 @@ kickstart 前脚本的更多细节，请参见《&lt;strong&gt;@@ENTERPRISE_LINU
         </context-group>
         <target state="translated">配置操作</target>
       </trans-unit>
-      <trans-unit id="channelOverview.jsp.tasks.deploy" xml:space="preserve">
+      <trans-unit approved="yes" id="channelOverview.jsp.tasks.deploy" xml:space="preserve">
         <source>Deploy Files:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
-        <target state="needs-adaptation">部署文件</target>
+        <target state="final">部署文件：</target>
       </trans-unit>
       <trans-unit id="channelOverview.jsp.tasks.deployAll2All" xml:space="preserve">
         <source>Deploy all configuration files to all subscribed systems</source>
@@ -16537,12 +16537,12 @@ kickstart 前脚本的更多细节，请参见《&lt;strong&gt;@@ENTERPRISE_LINU
         </context-group>
         <target state="translated">将所选配置文件部署到所选订阅的系统中</target>
       </trans-unit>
-      <trans-unit id="channelOverview.jsp.tasks.compare" xml:space="preserve">
+      <trans-unit approved="yes" id="channelOverview.jsp.tasks.compare" xml:space="preserve">
         <source>Compare Files:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
-        <target state="needs-adaptation">比较文件</target>
+        <target state="final">比较文件：</target>
       </trans-unit>
       <trans-unit id="channelOverview.jsp.tasks.compareAll" xml:space="preserve">
         <source>Compare all files in channel to files on all subscribed systems</source>
@@ -16551,12 +16551,12 @@ kickstart 前脚本的更多细节，请参见《&lt;strong&gt;@@ENTERPRISE_LINU
         </context-group>
         <target state="translated">将通道中的所有文件与所有订阅系统中的文件进行比较</target>
       </trans-unit>
-      <trans-unit id="channelOverview.jsp.tasks.modify" xml:space="preserve">
+      <trans-unit approved="yes" id="channelOverview.jsp.tasks.modify" xml:space="preserve">
         <source>Add/Create Files:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
-        <target state="needs-adaptation">添加/创建文件</target>
+        <target state="final">添加/创建文件：</target>
       </trans-unit>
       <trans-unit id="channelOverview.jsp.tasks.modifyCreate" xml:space="preserve">
         <source>Create Configuration File or Directory</source>
@@ -16661,12 +16661,12 @@ a file or files, or copy the latest version into a set of local overrides or int
         </context-group>
         <target state="translated">修订版 {0}</target>
       </trans-unit>
-      <trans-unit id="channelfiles.jsp.removeselected" xml:space="preserve">
+      <trans-unit approved="yes" id="channelfiles.jsp.removeselected" xml:space="preserve">
         <source>Remove Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelFiles.do</context>
         </context-group>
-        <target state="needs-adaptation">去除选定的文件</target>
+        <target state="final">去除文件</target>
       </trans-unit>
       <trans-unit id="channelfiles.jsp.copy2systems" xml:space="preserve">
         <source>Copy to Systems</source>
@@ -17720,12 +17720,12 @@ centrally-managed configuration channel, {2}; below is a list of systems you may
         </context-group>
         <target state="translated">下载最新的修订版</target>
       </trans-unit>
-      <trans-unit id="toolbar.delete.configfile" xml:space="preserve">
+      <trans-unit approved="yes" id="toolbar.delete.configfile" xml:space="preserve">
         <source>Delete</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
-        <target state="needs-adaptation">删除此文件修订版</target>
+        <target state="final">删除</target>
       </trans-unit>
       <trans-unit approved="yes" id="toolbar.delete.org" xml:space="preserve">
         <source>Delete Organization</source>
@@ -17734,12 +17734,12 @@ centrally-managed configuration channel, {2}; below is a list of systems you may
         </context-group>
         <target state="final">删除组织</target>
       </trans-unit>
-      <trans-unit id="toolbar.delete.deletefile" xml:space="preserve">
+      <trans-unit approved="yes" id="toolbar.delete.deletefile" xml:space="preserve">
         <source>Delete</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
-        <target state="needs-adaptation">删除此文件</target>
+        <target state="final">删除</target>
       </trans-unit>
       <trans-unit id="filedetails.jsp.download" xml:space="preserve">
         <source>download file revision</source>
@@ -20852,9 +20852,9 @@ any of these revisions.  Are you sure you want to do this?</source>
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/KickstartableSystems.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="ssm.operations.provisioning.remotecommand.form.queue.succeed" xml:space="preserve">
+      <trans-unit approved="yes" id="ssm.operations.provisioning.remotecommand.form.queue.succeed" xml:space="preserve">
         <source>Task "{0}" has been successfully added to Action Chain &lt;a href="/rhn/schedule/ActionChain.do?id={1}"&gt;{2}&lt;/a&gt;.</source>
-        <target state="needs-adaptation">已成功在操作链 {1} 中添加任务 "{0}"。</target>
+        <target state="final">任务 "{0}" 已成功添加到操作链 &lt;a href="/rhn/schedule/ActionChain.do?id={1}"&gt;{2}&lt;/a&gt; 中。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/KickstartableSystems.do</context>
         </context-group>
@@ -21289,22 +21289,22 @@ any of these revisions.  Are you sure you want to do this?</source>
           <context context-type="sourcefile">/rhn/ssm/PackageRemove.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="ssm.package.remove.select.summary" xml:space="preserve">
+      <trans-unit approved="yes" id="ssm.package.remove.select.summary" xml:space="preserve">
         <source>Packages listed below may be removed from one or more systems.
 
              Select one or more and click the &lt;b&gt;Remove Packages&lt;/b&gt; button to schedule package removal.
           </source>
-        <target state="needs-adaptation">可以从一个或多个系统中去除下列软件包。
+        <target state="final">可以从一个或多个系统中去除下列软件包。
 
-             选择一个或多个软件包，然后单击&lt;b&gt;去除所选软件包&lt;/b&gt;按钮以安排软件包去除。
+             选择一个或多个软件包，然后单击&lt;b&gt;去除软件包&lt;/b&gt;按钮安排去除软件包。
           </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/PackageRemove.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="ssm.package.remove.select.confirm" xml:space="preserve">
+      <trans-unit approved="yes" id="ssm.package.remove.select.confirm" xml:space="preserve">
         <source>Remove Packages</source>
-        <target state="needs-adaptation">去除所选软件包</target>
+        <target state="final">去除软件包</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/PackageRemove.do</context>
         </context-group>
@@ -21371,9 +21371,9 @@ any of these revisions.  Are you sure you want to do this?</source>
           <context context-type="sourcefile">/rhn/ssm/PackageUpgrade.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="ssm.package.upgrade.select.confirm" xml:space="preserve">
+      <trans-unit approved="yes" id="ssm.package.upgrade.select.confirm" xml:space="preserve">
         <source>Upgrade Packages</source>
-        <target state="needs-adaptation">升级所选软件包</target>
+        <target state="final">升级软件包</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/PackageUpgrade.do</context>
         </context-group>
@@ -21429,22 +21429,22 @@ any of these revisions.  Are you sure you want to do this?</source>
           <context context-type="sourcefile">/rhn/ssm/PackageVerify.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="ssm.package.verify.select.summary" xml:space="preserve">
+      <trans-unit approved="yes" id="ssm.package.verify.select.summary" xml:space="preserve">
         <source>Packages listed below may be verified on one or more systems.
 
             Select one or more and click the &lt;b&gt;Verify Packages&lt;/b&gt; button to schedule package verification.
          </source>
-        <target state="needs-adaptation">可在一个或多个系统上校验下列软件包。
+        <target state="final">可以在一个或多个系统上校验下列软件包。
 
-             选择一个或多个软件包，然后单击&lt;b&gt;校验所选软件包&lt;/b&gt;按钮以安排软件包校验。
+             选择一个或多个软件包，然后单击&lt;b&gt;校验软件包&lt;/b&gt;按钮安排校验软件包。
          </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/PackageVerify.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="ssm.package.verify.select.confirm" xml:space="preserve">
+      <trans-unit approved="yes" id="ssm.package.verify.select.confirm" xml:space="preserve">
         <source>Verify Packages</source>
-        <target state="needs-adaptation">校验所选软件包</target>
+        <target state="final">校验软件包</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/PackageVerify.do</context>
         </context-group>
@@ -23415,8 +23415,8 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.config.rank.jsp.para1" xml:space="preserve">
-        <source>This system is subscribed to the configuration channels listed below in order from highest to lowest rank. Files from a particular channel will override files with the same filepath and name from channels below it.</source>
-        <target state="translated">此系统订阅了下列配置通道，通道按排名以从高到低的顺序列出。特定通道中的文件将覆盖级别比其低的通道中文件路径和文件名相同的文件。</target>
+        <source>This system is subscribed to the configuration channels listed below in order from highest to lowest rank. Files from a particular channel will override files with the same filepath and name from channels below it. In other words, the channel listed last will be applied first.</source>
+        <target state="needs-adaptation">此系统订阅了下列配置通道，通道按排名以从高到低的顺序列出。特定通道中的文件将覆盖级别比其低的通道中文件路径和文件名相同的文件。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/RankChannels.do</context>
         </context-group>
@@ -23562,12 +23562,12 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </context-group>
         <target state="translated">（&lt;a href="{0}"&gt;锁定系统&lt;/a&gt;）</target>
       </trans-unit>
-      <trans-unit id="sdc.details.overview.subscribedchannels" xml:space="preserve">
+      <trans-unit approved="yes" id="sdc.details.overview.subscribedchannels" xml:space="preserve">
         <source>Subscribed Channels</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target state="needs-adaptation">订阅的通道（&lt;a href="{0}"&gt;更改通道订阅&lt;/a&gt;）</target>
+        <target state="final">订阅的通道</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.sysevents" xml:space="preserve">
         <source>System Events</source>
@@ -23641,12 +23641,12 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </context-group>
         <target state="translated">（&lt;a href="{0}"&gt;安排系统重引导&lt;/a&gt;）</target>
       </trans-unit>
-      <trans-unit id="sdc.details.overview.sysproperties" xml:space="preserve">
+      <trans-unit approved="yes" id="sdc.details.overview.sysproperties" xml:space="preserve">
         <source>System Properties</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target state="needs-adaptation">系统属性（&lt;a href="{0}"&gt;编辑这些属性&lt;/a&gt;）</target>
+        <target state="final">系统属性</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.entitlement" xml:space="preserve">
         <source>System Types:</source>
@@ -25519,7 +25519,7 @@ given channel.</source>
         系统进行更好的优化和控制。
         将 @@PRODUCT_NAME@@ Proxy 服务器与 @@PRODUCT_NAME@@ 服务器结合使用，
         可将客户的单个系统连接到本地托管的 Proxy。
-        Proxy 与 @@PRODUCT_NAME@@ 中央服务器通讯，在本地聚合数据并执行一些任务。
+        Proxy 与 @@PRODUCT_NAME@@ 中央服务器通信，在本地聚合数据并执行一些任务。
         @@PRODUCT_NAME@@ 数据库中存储的所有信息都保留在 @@PRODUCT_NAME@@ 服务器上。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/about</context>
@@ -27052,7 +27052,7 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/DeleteSchedule.do</context>
         </context-group>
-        <target state="needs-adaptation">您确定要删除该日程安排吗？这样将无法再安排关联的组，会对 @@PRODUCT_NAME@@ 功能产生很大影响。请仅在确知操作内容时继续。</target>
+        <target state="final">您确定要禁用该日程安排吗？关联的操作组将无法再安排执行，这可能会对 @@PRODUCT_NAME@@ 的功能造成严重影响。请仅在您清楚操作后果的情况下继续执行。</target>
       </trans-unit>
       <trans-unit id="schedule.jsp.schedulenameinuse" xml:space="preserve">
         <source>Schedule name {0} is already in use. Please choose another one.</source>
@@ -27082,19 +27082,19 @@ given channel.</source>
         </context-group>
         <target state="translated">日程安排 {0}</target>
       </trans-unit>
-      <trans-unit id="toolbar.create.schedule" xml:space="preserve">
+      <trans-unit approved="yes" id="toolbar.create.schedule" xml:space="preserve">
         <source>Create schedule</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/ScheduleDetail.do</context>
         </context-group>
-        <target state="needs-adaptation">创建日程安排</target>
+        <target state="final">创建日程安排</target>
       </trans-unit>
-      <trans-unit id="toolbar.delete.schedule" xml:space="preserve">
+      <trans-unit approved="yes" id="toolbar.delete.schedule" xml:space="preserve">
         <source>disable schedule</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/ScheduleDetail.do</context>
         </context-group>
-        <target state="needs-adaptation">删除日程安排</target>
+        <target state="final">禁用日程安排</target>
       </trans-unit>
       <trans-unit id="schedule.edit.jsp.satschedules" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Schedules</source>
@@ -27169,12 +27169,12 @@ given channel.</source>
           <context context-type="sourcefile">/rhn/admin/ScheduleDetail.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="schedule.delete.jsp.deleteschedule" xml:space="preserve">
+      <trans-unit approved="yes" id="schedule.delete.jsp.deleteschedule" xml:space="preserve">
         <source>Disable Schedule</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/DeleteSchedule.do</context>
         </context-group>
-        <target state="needs-adaptation">删除日程安排</target>
+        <target state="final">禁用日程安排</target>
       </trans-unit>
       <trans-unit id="task.edit.jsp.name" xml:space="preserve">
         <source>Task Name</source>
@@ -27254,9 +27254,9 @@ given channel.</source>
         随时使用 "组织" 选项卡修改对此通道的访问权限。
         </target>
       </trans-unit>
-      <trans-unit id="toolbar.delete.software.channel" xml:space="preserve">
+      <trans-unit approved="yes" id="toolbar.delete.software.channel" xml:space="preserve">
         <source>Delete Channel</source>
-        <target state="needs-adaptation">删除软件通道</target>
+        <target state="final">删除通道</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
@@ -27282,9 +27282,9 @@ given channel.</source>
         </context-group>
         <target state="translated">搜索</target>
       </trans-unit>
-      <trans-unit id="toolbar.delete.channel" xml:space="preserve">
+      <trans-unit approved="yes" id="toolbar.delete.channel" xml:space="preserve">
         <source>Delete Channel</source>
-        <target state="needs-adaptation">删除软件通道</target>
+        <target state="final">删除通道</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/errata//Add.do</context>
         </context-group>
@@ -27765,29 +27765,29 @@ given channel.</source>
         <source>The image URL is mandatory, please specify a qcow2 image by URL.</source>
         <target>映像 URL 是必填项，请按 URL 指定 qcow2 映像。</target>
       </trans-unit>
-      <trans-unit id="iss.unmapped.org" xml:space="preserve">
+      <trans-unit approved="yes" id="iss.unmapped.org" xml:space="preserve">
         <source>MASTER ORG NOT MAPPED</source>
-        <target>未映射主组织</target>
+        <target state="final">未映射主服务器组织</target>
       </trans-unit>
-      <trans-unit id="iss.slave.name" xml:space="preserve">
+      <trans-unit approved="yes" id="iss.slave.name" xml:space="preserve">
         <source>Slave Fully-Qualified Domain Name</source>
-        <target state="translated">从属组织完全限定域名</target>
+        <target state="final">从属服务器完全限定域名</target>
       </trans-unit>
-      <trans-unit id="iss.slave.isEnabled" xml:space="preserve">
+      <trans-unit approved="yes" id="iss.slave.isEnabled" xml:space="preserve">
         <source>Allow Slave to Sync?</source>
-        <target state="translated">允许从属组织同步？</target>
+        <target state="final">允许从属服务器同步？</target>
       </trans-unit>
-      <trans-unit id="iss.slave.enabled" xml:space="preserve">
+      <trans-unit approved="yes" id="iss.slave.enabled" xml:space="preserve">
         <source>Slave is enabled</source>
-        <target state="translated">已启用从属组织</target>
+        <target state="final">已启用从属服务器</target>
       </trans-unit>
-      <trans-unit id="iss.slave.disabled" xml:space="preserve">
+      <trans-unit approved="yes" id="iss.slave.disabled" xml:space="preserve">
         <source>Slave is disabled</source>
-        <target state="translated">已禁用从属组织</target>
+        <target state="final">已禁用从属服务器</target>
       </trans-unit>
-      <trans-unit id="iss.slave.toAll" xml:space="preserve">
+      <trans-unit approved="yes" id="iss.slave.toAll" xml:space="preserve">
         <source>Sync All Orgs to Slave?</source>
-        <target state="translated">将所有组织同步到从属组织？</target>
+        <target state="final">将所有组织同步到从属服务器？</target>
       </trans-unit>
       <trans-unit id="iss.slave.all" xml:space="preserve">
         <source>Sync All</source>
@@ -27809,25 +27809,25 @@ given channel.</source>
         <source>Local Organization</source>
         <target state="translated">本地组织</target>
       </trans-unit>
-      <trans-unit id="toolbar.create.slave" xml:space="preserve">
+      <trans-unit approved="yes" id="toolbar.create.slave" xml:space="preserve">
         <source>Add new slave</source>
-        <target state="translated">添加新从属组织</target>
+        <target state="final">添加新从属服务器</target>
       </trans-unit>
-      <trans-unit id="iss.slave.remove" xml:space="preserve">
+      <trans-unit approved="yes" id="iss.slave.remove" xml:space="preserve">
         <source>Remove slaves</source>
-        <target state="needs-adaptation">去除所选从属组织</target>
+        <target state="final">去除从属服务器</target>
       </trans-unit>
-      <trans-unit id="toolbar.create.master" xml:space="preserve">
+      <trans-unit approved="yes" id="toolbar.create.master" xml:space="preserve">
         <source>Add new master</source>
-        <target state="translated">添加新主组织</target>
+        <target state="final">添加新主服务器</target>
       </trans-unit>
-      <trans-unit id="iss.master.remove" xml:space="preserve">
+      <trans-unit approved="yes" id="iss.master.remove" xml:space="preserve">
         <source>Remove masters</source>
-        <target state="needs-adaptation">去除所选主组织</target>
+        <target state="final">去除主服务器</target>
       </trans-unit>
-      <trans-unit id="toolbar.delete.slave" xml:space="preserve">
+      <trans-unit approved="yes" id="toolbar.delete.slave" xml:space="preserve">
         <source>Delete slave</source>
-        <target state="translated">删除从属组织</target>
+        <target state="final">删除从属服务器</target>
       </trans-unit>
       <trans-unit id="iss.slave.edit" xml:space="preserve">
         <source>Update</source>
@@ -27841,13 +27841,13 @@ given channel.</source>
         <source>Allow Orgs</source>
         <target state="translated">允许组织</target>
       </trans-unit>
-      <trans-unit id="iss.confirm.remove.slaves" xml:space="preserve">
+      <trans-unit approved="yes" id="iss.confirm.remove.slaves" xml:space="preserve">
         <source>Remove Slaves</source>
-        <target state="translated">去除从属组织</target>
+        <target state="final">去除从属服务器</target>
       </trans-unit>
-      <trans-unit id="iss.confirm.remove.masters" xml:space="preserve">
+      <trans-unit approved="yes" id="iss.confirm.remove.masters" xml:space="preserve">
         <source>Remove Masters</source>
-        <target state="translated">去除主组织</target>
+        <target state="final">去除主服务器</target>
       </trans-unit>
       <trans-unit id="iss.num.master.orgs" xml:space="preserve">
         <source>Known Orgs</source>
@@ -27857,29 +27857,29 @@ given channel.</source>
         <source>Unmapped Orgs</source>
         <target state="translated">未映射的组织</target>
       </trans-unit>
-      <trans-unit id="iss.master.label" xml:space="preserve">
+      <trans-unit approved="yes" id="iss.master.label" xml:space="preserve">
         <source>Master Fully-Qualified Domain Name</source>
-        <target state="translated">主组织完全限定域名</target>
+        <target state="final">主服务器完全限定域名</target>
       </trans-unit>
-      <trans-unit id="iss.master.notDefault" xml:space="preserve">
+      <trans-unit approved="yes" id="iss.master.notDefault" xml:space="preserve">
         <source>Not Default Master</source>
-        <target state="translated">不是默认主组织</target>
+        <target state="final">不是默认主服务器</target>
       </trans-unit>
-      <trans-unit id="iss.master.isDefault" xml:space="preserve">
+      <trans-unit approved="yes" id="iss.master.isDefault" xml:space="preserve">
         <source>Default Master?</source>
-        <target state="translated">默认主组织？</target>
+        <target state="final">默认主服务器？</target>
       </trans-unit>
-      <trans-unit id="iss.master.cacert" xml:space="preserve">
+      <trans-unit approved="yes" id="iss.master.cacert" xml:space="preserve">
         <source>Filename of this Master's CA Certificate</source>
-        <target state="translated">此主组织 CA 证书的文件名</target>
+        <target state="final">此主服务器 CA 证书的文件名</target>
       </trans-unit>
       <trans-unit id="iss.master.cacert.note" xml:space="preserve">
         <source>Note that this is the absolute path on the file system of this @@PRODUCT_NAME@@</source>
         <target state="translated">注意：这是此 @@PRODUCT_NAME@@ 在该文件系统中的绝对路径</target>
       </trans-unit>
-      <trans-unit id="iss.master.org.name" xml:space="preserve">
+      <trans-unit approved="yes" id="iss.master.org.name" xml:space="preserve">
         <source>Master Org Name</source>
-        <target state="translated">主组织名称</target>
+        <target state="final">主服务器组织名称</target>
       </trans-unit>
       <trans-unit id="iss.slave.orgs" xml:space="preserve">
         <source>Matching Local Org</source>
@@ -27889,95 +27889,95 @@ given channel.</source>
         <source>Update</source>
         <target state="translated">更新</target>
       </trans-unit>
-      <trans-unit id="iss.master.create" xml:space="preserve">
+      <trans-unit approved="yes" id="iss.master.create" xml:space="preserve">
         <source>Add new master</source>
-        <target state="translated">添加新主组织</target>
+        <target state="final">添加新主服务器</target>
       </trans-unit>
-      <trans-unit id="toolbar.delete.master" xml:space="preserve">
+      <trans-unit approved="yes" id="toolbar.delete.master" xml:space="preserve">
         <source>Delete master</source>
-        <target state="translated">删除主组织</target>
+        <target state="final">删除主服务器</target>
       </trans-unit>
-      <trans-unit id="message.iss_slaves_removed" xml:space="preserve">
+      <trans-unit approved="yes" id="message.iss_slaves_removed" xml:space="preserve">
         <source>Selected slaves have been removed</source>
-        <target state="translated">已去除所选从属组织</target>
+        <target state="final">已去除所选从属服务器</target>
       </trans-unit>
-      <trans-unit id="message.iss_slave_updated" xml:space="preserve">
+      <trans-unit approved="yes" id="message.iss_slave_updated" xml:space="preserve">
         <source>Slave {0} updated</source>
-        <target state="translated">已更新从属组织 {0}</target>
+        <target state="final">已更新从属服务器 {0}</target>
       </trans-unit>
-      <trans-unit id="message.iss_slave_created" xml:space="preserve">
+      <trans-unit approved="yes" id="message.iss_slave_created" xml:space="preserve">
         <source>Slave {0} created</source>
-        <target state="translated">已创建从属组织 {0}</target>
+        <target state="final">已创建从属服务器 {0}</target>
       </trans-unit>
-      <trans-unit id="message.iss_slave_removed" xml:space="preserve">
+      <trans-unit approved="yes" id="message.iss_slave_removed" xml:space="preserve">
         <source>Slave {0} removed</source>
-        <target state="translated">已去除从属组织 {0}</target>
+        <target state="final">已去除从属服务器 {0}</target>
       </trans-unit>
-      <trans-unit id="message.iss_masters_removed" xml:space="preserve">
+      <trans-unit approved="yes" id="message.iss_masters_removed" xml:space="preserve">
         <source>Selected masters have been removed</source>
-        <target state="translated">已去除所选主组织</target>
+        <target state="final">已去除所选主服务器</target>
       </trans-unit>
-      <trans-unit id="message.iss_master_created" xml:space="preserve">
+      <trans-unit approved="yes" id="message.iss_master_created" xml:space="preserve">
         <source>Master {0} created</source>
-        <target state="translated">已创建主组织 {0}</target>
+        <target state="final">已创建主服务器 {0}</target>
       </trans-unit>
-      <trans-unit id="message.iss_master_updated" xml:space="preserve">
+      <trans-unit approved="yes" id="message.iss_master_updated" xml:space="preserve">
         <source>Master {0} updated</source>
-        <target state="translated">已更新主组织 {0}</target>
+        <target state="final">已更新主服务器 {0}</target>
       </trans-unit>
-      <trans-unit id="message.iss_master_removed" xml:space="preserve">
+      <trans-unit approved="yes" id="message.iss_master_removed" xml:space="preserve">
         <source>Master {0} removed</source>
-        <target state="translated">已去除主组织 {0}</target>
+        <target state="final">已去除主服务器 {0}</target>
       </trans-unit>
       <trans-unit id="message.iss_slave_allowed_orgs_updated" xml:space="preserve">
         <source>List of organizations exported to {0} updated</source>
         <target state="translated">已更新导出到 {0} 的组织列表</target>
       </trans-unit>
-      <trans-unit id="iss.master.jsp.toolbar" xml:space="preserve">
+      <trans-unit approved="yes" id="iss.master.jsp.toolbar" xml:space="preserve">
         <source>ISS Configuration - Master Setup</source>
-        <target state="translated">ISS 配置 - 主配置</target>
+        <target state="final">ISS 配置 - 主服务器设置</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/iss/Master.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="iss.master.jsp.explanation" xml:space="preserve">
+      <trans-unit approved="yes" id="iss.master.jsp.explanation" xml:space="preserve">
         <source>Below are the slaves that are allowed to synchronize content from this master @@PRODUCT_NAME@@ instance.</source>
-        <target state="translated">以下是允许从此主 @@PRODUCT_NAME@@ 实例同步内容的从属组织。</target>
+        <target state="final">以下是允许从此主 @@PRODUCT_NAME@@ 实例同步内容的从属服务器。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/iss/Master.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="iss.master.jsp.header2" xml:space="preserve">
+      <trans-unit approved="yes" id="iss.master.jsp.header2" xml:space="preserve">
         <source>Known Slave Instances</source>
-        <target state="translated">已知辅实例</target>
+        <target state="final">已知从属实例</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/iss/Master.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="iss.master.jsp.noslaves" xml:space="preserve">
+      <trans-unit approved="yes" id="iss.master.jsp.noslaves" xml:space="preserve">
         <source>No ISS Slaves are currently defined</source>
-        <target state="translated">目前尚未定义 ISS 辅实例</target>
+        <target state="final">目前尚未定义 ISS 从属实例</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/iss/Master.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="iss.editslave.jsp.toolbar" xml:space="preserve">
+      <trans-unit approved="yes" id="iss.editslave.jsp.toolbar" xml:space="preserve">
         <source>ISS Configuration - Update Slave</source>
-        <target state="translated">ISS 配置 - 更新辅配置</target>
+        <target state="final">ISS 配置 - 更新从属服务器</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/iss/EditSlave.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="iss.editslave.jsp.explanation" xml:space="preserve">
+      <trans-unit approved="yes" id="iss.editslave.jsp.explanation" xml:space="preserve">
         <source>Update the details of the slave selected below.</source>
-        <target state="translated">更新以下所选从属组织的细节。</target>
+        <target state="final">更新以下所选从属服务器的详细信息。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/iss/EditSlave.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="iss.editslave.jsp.header2" xml:space="preserve">
+      <trans-unit approved="yes" id="iss.editslave.jsp.header2" xml:space="preserve">
         <source>Edit Slave Details</source>
-        <target state="translated">编辑从属组织细节</target>
+        <target state="final">编辑从属服务器详细信息</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/iss/EditSlave.do</context>
         </context-group>
@@ -27996,43 +27996,43 @@ given channel.</source>
           <context context-type="sourcefile">/rhn/admin/iss/EditSlave.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="iss.error.slave.exists" xml:space="preserve">
+      <trans-unit approved="yes" id="iss.error.slave.exists" xml:space="preserve">
         <source>Slave with domain name {0} already defined</source>
-        <target>已定义域名为 {0} 的从属组织</target>
+        <target state="final">已定义域名为 {0} 的从属服务器</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/iss/EditSlave.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="iss.confirmslaveremove.jsp.toolbar" xml:space="preserve">
+      <trans-unit approved="yes" id="iss.confirmslaveremove.jsp.toolbar" xml:space="preserve">
         <source>ISS Configuration - Confirm Slave Removal</source>
-        <target state="translated">ISS 配置 - 确认删除辅配置</target>
+        <target state="final">ISS 配置 - 确认去除从属服务器</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/iss/RemoveSlaveConfirm.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="iss.confirmslaveremove.jsp.areyousure" xml:space="preserve">
+      <trans-unit approved="yes" id="iss.confirmslaveremove.jsp.areyousure" xml:space="preserve">
         <source>
           Removing the slave(s) below will remove whatever setup you have done for them, as well as preventing them from being able to synchronize from this @@PRODUCT_NAME@@ instance.
           This operation cannot be undone - make sure you really want to do this!
           </source>
-        <target state="translated">
-          去除下面的从属组织会去除您为其指定的所有设置，并会导致它们无法从此 @@PRODUCT_NAME@@ 实例同步。
+        <target state="final">
+          去除下面的从属服务器会去除您为其指定的所有设置，并会导致它们无法从此 @@PRODUCT_NAME@@ 实例同步。
           此操作不可撤销 - 请确认您确实想要执行此操作！
           </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/iss/RemoveSlaveConfirm.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="iss.confirmslaveremove.jsp.header2" xml:space="preserve">
+      <trans-unit approved="yes" id="iss.confirmslaveremove.jsp.header2" xml:space="preserve">
         <source>Slaves To Be Removed</source>
-        <target state="translated">要去除的从属组织</target>
+        <target state="final">要去除的从属服务器</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/iss/RemoveSlaveConfirm.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="iss.slave.jsp.toolbar" xml:space="preserve">
+      <trans-unit approved="yes" id="iss.slave.jsp.toolbar" xml:space="preserve">
         <source>ISS Configuration - Slave Setup</source>
-        <target state="translated">ISS 配置 - 辅配置</target>
+        <target state="final">ISS 配置 - 从属服务器设置</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/iss/Slave.do</context>
         </context-group>
@@ -28051,60 +28051,60 @@ given channel.</source>
           <context context-type="sourcefile">/rhn/admin/iss/Slave.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="iss.slave.jsp.nomasters" xml:space="preserve">
+      <trans-unit approved="yes" id="iss.slave.jsp.nomasters" xml:space="preserve">
         <source>No Masters known to this Slave</source>
-        <target state="translated">没有此从属组织已知的主组织</target>
+        <target state="final">该从属服务器未识别任何主服务器</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/iss/Slave.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="iss.confirmmasterremove.jsp.toolbar" xml:space="preserve">
+      <trans-unit approved="yes" id="iss.confirmmasterremove.jsp.toolbar" xml:space="preserve">
         <source>ISS Configuration - Confirm Master Removal</source>
-        <target state="translated">ISS 配置 - 删除主配置</target>
+        <target state="final">ISS 配置 - 确认去除主服务器</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/iss/RemoveMasterConfirm.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="iss.confirmmasterremove.jsp.areyousure" xml:space="preserve">
+      <trans-unit approved="yes" id="iss.confirmmasterremove.jsp.areyousure" xml:space="preserve">
         <source>
           Removing the masters below will remove any master-to-slave organization mappings you have created.
           This operation cannot be undone - make sure you really want to do this!
           </source>
-        <target state="translated">
-          去除下面的主组织会去除您创建的所有主组织-从属组织映射。
+        <target state="final">
+          去除下面的主服务器会去除您创建的所有主服务器到从属服务器的组织映射。
           此操作不可撤销 - 请确认您确实想要执行此操作！
           </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/iss/RemoveMasterConfirm.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="iss.confirmmasterremove.jsp.header2" xml:space="preserve">
+      <trans-unit approved="yes" id="iss.confirmmasterremove.jsp.header2" xml:space="preserve">
         <source>Masters To Be Removed</source>
-        <target state="translated">要去除的主组织</target>
+        <target state="final">要去除的主服务器</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/iss/RemoveMasterConfirm.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="iss.confirmslaveremove.jsp.nomasters" xml:space="preserve">
+      <trans-unit approved="yes" id="iss.confirmslaveremove.jsp.nomasters" xml:space="preserve">
         <source>No Masters known to this Slave</source>
-        <target state="translated">没有此从属组织已知的主组织</target>
+        <target state="final">该从属服务器未识别任何主服务器</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/iss/RemoveMasterConfirm.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="iss.editmaster.jsp.toolbar" xml:space="preserve">
+      <trans-unit approved="yes" id="iss.editmaster.jsp.toolbar" xml:space="preserve">
         <source>ISS Configuration - Update Master</source>
-        <target state="translated">ISS 配置 - 更新主配置</target>
+        <target state="final">ISS 配置 - 更新主服务器</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/iss/EditMaster.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="iss.editmaster.jsp.explanation" xml:space="preserve">
+      <trans-unit approved="yes" id="iss.editmaster.jsp.explanation" xml:space="preserve">
         <source>
             Update the details of the master selected below
           </source>
-        <target state="translated">
-            更新下面所选主组织的细节
+        <target state="final">
+            更新下面所选主服务器的详细信息
           </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/iss/EditMaster.do</context>
@@ -28117,47 +28117,47 @@ given channel.</source>
           <context context-type="sourcefile">/rhn/admin/iss/EditMaster.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="iss.editmaster.jsp.newmaster.details.header" xml:space="preserve">
+      <trans-unit approved="yes" id="iss.editmaster.jsp.newmaster.details.header" xml:space="preserve">
         <source>Details for new Master</source>
-        <target state="translated">新主组织细节</target>
+        <target state="final">新主服务器的详细信息</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/iss/EditMaster.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="iss.editmaster.jsp.maporgs.header" xml:space="preserve">
+      <trans-unit approved="yes" id="iss.editmaster.jsp.maporgs.header" xml:space="preserve">
         <source>Configure Master-to-Slave Org Mappings for {0}</source>
-        <target state="translated">为 {0} 配置主-从属组织映射</target>
+        <target state="final">为 {0} 配置主服务器到从属服务器的组织映射</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/iss/EditMaster.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="iss.editmaster.jsp.maporgs.explanation" xml:space="preserve">
+      <trans-unit approved="yes" id="iss.editmaster.jsp.maporgs.explanation" xml:space="preserve">
         <source>
           In order to synchronize channel access-permissions from Master to Slave,
           each known Master organization must be mapped to a local organization in this @@PRODUCT_NAME@@ instance.
           On this page the administrator can accomplish this mapping.  Note that if a Master organization is not mapped,
           channels that were restricted to that organization on the Master will be public in this @@PRODUCT_NAME@@ instance.
           </source>
-        <target state="translated">
-          要同步从主组织到从属组织的通道访问权限，
-           每个已知主组织必须映射到此 @@PRODUCT_NAME@@ 实例中的本地组织。
-           管理员可在此页面上完成这种映射。请注意，如果未映射主组织，
-           仅限该主组织访问的通道将成为此 @@PRODUCT_NAME@@ 实例中的公共通道。
+        <target state="final">
+          为将通道访问权限从主服务器同步至从属服务器，
+           需要将每个已识别的主服务器组织映射到此 @@PRODUCT_NAME@@ 实例中的本地组织。
+           管理员可在此页面完成该映射配置。请注意，如果某个主服务器组织未进行映射，
+           那么在主服务器上仅限该组织访问的通道在此 @@PRODUCT_NAME@@ 实例中将变为公开访问状态。
           </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/iss/EditMaster.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="iss.editmaster.jsp.nomasterorgs" xml:space="preserve">
+      <trans-unit approved="yes" id="iss.editmaster.jsp.nomasterorgs" xml:space="preserve">
         <source>This master did not export any of its organizations to this slave</source>
-        <target state="translated">此主组织未将其任何组织导出到此从属组织</target>
+        <target state="final">此主服务器未将其任何组织导出到此从属服务器</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/iss/EditMaster.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="iss.error.master.exists" xml:space="preserve">
+      <trans-unit approved="yes" id="iss.error.master.exists" xml:space="preserve">
         <source>Master with domain name {0} already defined</source>
-        <target>已定义域名为 {0} 的主组织</target>
+        <target state="final">已定义域名为 {0} 的主服务器</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/iss/EditMaster.do</context>
         </context-group>
@@ -28386,9 +28386,9 @@ given channel.</source>
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="channelOverview.jsp.tasks.initsls" xml:space="preserve">
+      <trans-unit approved="yes" id="channelOverview.jsp.tasks.initsls" xml:space="preserve">
         <source>State File:</source>
-        <target state="needs-adaptation">状态文件</target>
+        <target state="final">状态文件：</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
@@ -28539,33 +28539,33 @@ given channel.</source>
         <source>Password</source>
         <target>口令</target>
       </trans-unit>
-      <trans-unit id="mirror-credentials.jsp.primary" xml:space="preserve">
+      <trans-unit approved="yes" id="mirror-credentials.jsp.primary" xml:space="preserve">
         <source>This is the primary credentials</source>
-        <target state="needs-adaptation">这是主要身份凭证</target>
+        <target state="final">这是主要身份凭证</target>
       </trans-unit>
-      <trans-unit id="mirror-credentials.jsp.make-primary" xml:space="preserve">
+      <trans-unit approved="yes" id="mirror-credentials.jsp.make-primary" xml:space="preserve">
         <source>Make primary credentials</source>
-        <target state="needs-adaptation">设为主要身份凭证</target>
+        <target state="final">设为主要身份凭证</target>
       </trans-unit>
-      <trans-unit id="mirror-credentials.jsp.subscriptions" xml:space="preserve">
+      <trans-unit approved="yes" id="mirror-credentials.jsp.subscriptions" xml:space="preserve">
         <source>List subscriptions</source>
-        <target state="needs-adaptation">列出订阅</target>
+        <target state="final">列出订阅</target>
       </trans-unit>
-      <trans-unit id="mirror-credentials.jsp.edit" xml:space="preserve">
+      <trans-unit approved="yes" id="mirror-credentials.jsp.edit" xml:space="preserve">
         <source>Edit credentials</source>
-        <target state="needs-adaptation">编辑身份凭证</target>
+        <target state="final">编辑身份凭证</target>
       </trans-unit>
-      <trans-unit id="mirror-credentials.jsp.delete" xml:space="preserve">
+      <trans-unit approved="yes" id="mirror-credentials.jsp.delete" xml:space="preserve">
         <source>Delete credentials</source>
-        <target state="needs-adaptation">删除身份凭证</target>
+        <target state="final">删除身份凭证</target>
       </trans-unit>
-      <trans-unit id="mirror-credentials.jsp.success" xml:space="preserve">
+      <trans-unit approved="yes" id="mirror-credentials.jsp.success" xml:space="preserve">
         <source>Credentials verified (click to refresh)</source>
-        <target state="needs-adaptation">已校验身份凭证（单击以刷新）</target>
+        <target state="final">已校验身份凭证（单击以刷新）</target>
       </trans-unit>
-      <trans-unit id="mirror-credentials.jsp.failed" xml:space="preserve">
+      <trans-unit approved="yes" id="mirror-credentials.jsp.failed" xml:space="preserve">
         <source>Verification failed (click to refresh)</source>
-        <target state="needs-adaptation">校验失败（单击以刷新）</target>
+        <target state="final">校验失败（单击以刷新）</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.modal-edit.title" xml:space="preserve">
         <source>Edit credentials</source>
@@ -29552,118 +29552,118 @@ given channel.</source>
           您也可以&lt;a href="{0}"&gt;注销&lt;/a&gt;或&lt;a href="javascript:history.back()"&gt;后退&lt;/a&gt;到上一页。
         </target>
       </trans-unit>
-    <trans-unit id="userdetails.jsp.adminroles" xml:space="preserve">
+      <trans-unit approved="yes" id="userdetails.jsp.adminroles" xml:space="preserve">
         <source>Administrative Roles</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="bunch.jsp.description.compare-task-bunch" xml:space="preserve">
+        <target state="final">管理员角色</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="bunch.jsp.description.compare-task-bunch" xml:space="preserve">
         <source>Schedules a generic comparison task</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="schedule.edit.jsp.activateschedule" xml:space="preserve">
+        <target state="final">安排一般比较任务</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="schedule.edit.jsp.activateschedule" xml:space="preserve">
         <source>Activate Schedule</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/ScheduleDetail.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="task.status.compare-task-files" xml:space="preserve">
+        <target state="final">激活日程安排</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="task.status.compare-task-files" xml:space="preserve">
         <source>Compare Task</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="spmigration.jsp.dryrun.disabled.tooltip" xml:space="preserve">
+        <target state="final">比较任务</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="spmigration.jsp.dryrun.disabled.tooltip" xml:space="preserve">
         <source>Dry run is not available for this product.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="sdc.details.overview.subscribedchannels.edit" xml:space="preserve">
+        <target state="final">此产品不支持进行试运行。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="sdc.details.overview.subscribedchannels.edit" xml:space="preserve">
         <source>Edit Subscribed Channels</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="sdc.details.overview.sysproperties.edit" xml:space="preserve">
+        <target state="final">编辑订阅的通道</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="sdc.details.overview.sysproperties.edit" xml:space="preserve">
         <source>Edit System Properties</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="actionchain.jsp.distupgrade.upgrade" xml:space="preserve">
+        <target state="final">编辑系统属性</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="actionchain.jsp.distupgrade.upgrade" xml:space="preserve">
         <source>Migrate the installed product on</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="auditview.mark.reviewed" xml:space="preserve">
+        <target state="final">合并以下系统上安装的产品</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="auditview.mark.reviewed" xml:space="preserve">
         <source>Mark reviewed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/audit/Search.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="ssm.overview.product_migration" xml:space="preserve">
-            <source>Product Migration</source>
-        <target state="new"/>
-  </trans-unit>
-        <trans-unit id="ssm.overview.product_migration.migrate" xml:space="preserve">
-            <source>&lt;a href="/rhn/manager/systems/ssm/product-migration"&gt;Migrate the products&lt;/a&gt; installed on the selected systems</source>
-        <target state="new"/>
-  </trans-unit>
-        <trans-unit id="channel.manage.sync.noerrata-tt.jsp" xml:space="preserve">
+        <target state="final">标记为已查看</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="ssm.overview.product_migration" xml:space="preserve">
+        <source>Product Migration</source>
+        <target state="final">产品迁移</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="ssm.overview.product_migration.migrate" xml:space="preserve">
+        <source>&lt;a href="/rhn/manager/systems/ssm/product-migration"&gt;Migrate the products&lt;/a&gt; installed on the selected systems</source>
+        <target state="final">&lt;a href="/rhn/manager/systems/ssm/product-migration"&gt;迁移所选系统上安装的产品&lt;/a&gt;</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="channel.manage.sync.noerrata-tt.jsp" xml:space="preserve">
         <source>Do not synchronize patches.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="channel.manage.sync.nostrict-tt.jsp" xml:space="preserve">
+        <target state="final">不要同步补丁。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="channel.manage.sync.nostrict-tt.jsp" xml:space="preserve">
         <source>Allows a channel to deviate from the repository, keeping packages that have been removed from the remote repository.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="channel.manage.sync.latestonly-tt.jsp" xml:space="preserve">
+        <target state="final">允许通道与储存库存在偏差，保留远程储存库中已去除的软件包。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="channel.manage.sync.latestonly-tt.jsp" xml:space="preserve">
         <source>Synchronize the latest package version only.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="channel.manage.sync.synckickstart-tt.jsp" xml:space="preserve">
+        <target state="final">仅同步最新软件包版本。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="channel.manage.sync.synckickstart-tt.jsp" xml:space="preserve">
         <source>This option prepares a directory tree ready for Kickstart auto installation.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="channel.manage.sync.fail-tt.jsp" xml:space="preserve">
+        <target state="final">此选项会准备一个可用于进行 Kickstart 自动安装的目录树。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="channel.manage.sync.fail-tt.jsp" xml:space="preserve">
         <source>Stop synchronizing if an error occurs.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="channel.jsp.sync.status.ready" xml:space="preserve">
+        <target state="final">如果发生错误，则停止同步。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="channel.jsp.sync.status.ready" xml:space="preserve">
         <source> Completed </source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="channel.jsp.sync.status.syncing" xml:space="preserve">
+        <target state="final"> 已完成 </target>
+      </trans-unit>
+      <trans-unit approved="yes" id="channel.jsp.sync.status.syncing" xml:space="preserve">
         <source> In Progress </source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="channel.jsp.sync.status.created" xml:space="preserve">
+        <target state="final"> 进行中 </target>
+      </trans-unit>
+      <trans-unit approved="yes" id="channel.jsp.sync.status.created" xml:space="preserve">
         <source> New Created </source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final"> 已新建 </target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

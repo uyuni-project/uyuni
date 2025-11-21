@@ -13146,7 +13146,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         </context-group>
         </trans-unit>
         <trans-unit id="activation-keys.config.rank.jsp.para1" xml:space="preserve">
-          <source>This activation key is subscribed to the configuration channels listed below in order from highest to lowest rank. Files from a particular channel will override files with the same filepath and name from channels below it.</source> <target>Ниже перечислены каналы конфигурации, упорядоченные в порядке убывания приоритета, на которые подписана система. Файлы канала с более высоким приоритетом переопределяют аналогичные файлы в каналах с более низким приоритетом.</target>
+          <source>This activation key is subscribed to the configuration channels listed below in order from highest to lowest rank. Files from a particular channel will override files with the same filepath and name from channels below it. In other words, the channel listed last will be applied first.</source> <target state="needs-adaptation">Ниже перечислены каналы конфигурации, упорядоченные в порядке убывания приоритета, на которые подписана система. Файлы канала с более высоким приоритетом переопределяют аналогичные файлы в каналах с более низким приоритетом.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/activationkeys/configuration/* pages</context>
         </context-group>
@@ -21819,7 +21819,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </context-group>
         </trans-unit>
         <trans-unit id="sdc.config.rank.jsp.para1" xml:space="preserve">
-          <source>This system is subscribed to the configuration channels listed below in order from highest to lowest rank. Files from a particular channel will override files with the same filepath and name from channels below it.</source> <target>Ниже перечислены каналы конфигурации, упорядоченные в порядке убывания приоритета, к которым подписана система. Файлы канала с более высоким приоритетом переопределяют файлы с тем же путем и именем в каналах с более низким приоритетом.</target>
+          <source>This system is subscribed to the configuration channels listed below in order from highest to lowest rank. Files from a particular channel will override files with the same filepath and name from channels below it. In other words, the channel listed last will be applied first.</source> <target state="needs-adaptation">Ниже перечислены каналы конфигурации, упорядоченные в порядке убывания приоритета, к которым подписана система. Файлы канала с более высоким приоритетом переопределяют файлы с тем же путем и именем в каналах с более низким приоритетом.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/RankChannels.do</context>
         </context-group>

@@ -322,7 +322,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
-        <target state="translated">通讯地址</target>
+        <target state="translated">通信地址</target>
       </trans-unit>
       <trans-unit id="address type S" xml:space="preserve">
         <source>Shipping Address</source>
@@ -2482,12 +2482,12 @@ and try again.
         </context-group>
         <target state="translated">请删除或重命名 {0} 中不恰当的代码段</target>
       </trans-unit>
-      <trans-unit id="toolbar.delete.snippets" xml:space="preserve">
+      <trans-unit approved="yes" id="toolbar.delete.snippets" xml:space="preserve">
         <source>Delete Snippet</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/cobbler/CobblerSnippetEdit</context>
         </context-group>
-        <target state="needs-adaptation">删除代码段</target>
+        <target state="final">删除代码段</target>
       </trans-unit>
       <trans-unit id="kickstart.iprange.url" xml:space="preserve">
         <source>New systems can be autoinstalled based upon their ip address by appending &lt;code&gt;{0}&lt;/code&gt; to the kernel parameters for an autoinstallation.</source>
@@ -6569,7 +6569,7 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
-        <target state="translated">&lt;p&gt;该 Guest 系统在过去 {0} 分钟内未与 @@PRODUCT_NAME@@ 通讯。由于硬件限制，安装过程可能比较慢，甚至可能会冻结。&lt;/p&gt;&lt;p&gt;您可以通过在主机系统运行 &lt;em&gt;virsh console &lt;strong&gt;guestname&lt;/strong&gt;&lt;/em&gt; 来解决此问题。此命令可让您连接到正在进行安装的 Guest 系统的文本控制台，这样可为您提供其他有关 Guest 系统安装状态的信息。&lt;/p&gt;</target>
+        <target state="translated">&lt;p&gt;该 Guest 系统在过去 {0} 分钟内未与 @@PRODUCT_NAME@@ 通信。由于硬件限制，安装过程可能比较慢，甚至可能会冻结。&lt;/p&gt;&lt;p&gt;您可以通过在主机系统运行 &lt;em&gt;virsh console &lt;strong&gt;guestname&lt;/strong&gt;&lt;/em&gt; 来解决此问题。此命令可让您连接到正在进行安装的 Guest 系统的文本控制台，这样可为您提供其他有关 Guest 系统安装状态的信息。&lt;/p&gt;</target>
       </trans-unit>
       <trans-unit id="tree.edit.success" xml:space="preserve">
         <source>Autoinstallable Distribution Updated</source>
@@ -9602,9 +9602,9 @@ Follow this url to see the full list of inactive systems:
         <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; has been updated.</source>
         <target state="translated">已更新日程安排 &lt;strong&gt;{0}&lt;/strong&gt;。</target>
       </trans-unit>
-      <trans-unit id="message.scheduledeleted" xml:space="preserve">
+      <trans-unit approved="yes" id="message.scheduledeleted" xml:space="preserve">
         <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; has been disabled.</source>
-        <target state="needs-adaptation">已删除日程安排 &lt;strong&gt;{0}&lt;/strong&gt;。</target>
+        <target state="final">已禁用日程安排 &lt;strong&gt;{0}&lt;/strong&gt;。</target>
       </trans-unit>
       <trans-unit id="message.schedulenotactive" xml:space="preserve">
         <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; isn't active any more. It's part of the system just for information purposes and will be deleted automatically.</source>
@@ -10272,7 +10272,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit approved="yes" id="system.entitle.added.monitoring_entitled" xml:space="preserve">
         <source>&lt;strong&gt;Monitor this Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Since you added the Monitoring system type we automatically assigned the Prometheus Exporters formula to the system. Please apply the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; in order to install and enable the Prometheus metrics exporters.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Please make sure to open the &lt;a href="/docs/{1}/installation-and-upgrade/network-requirements.html#_external_client_ports" target="_blank"&gt;required network ports&lt;/a&gt; for all installed exporters.</source>
-        <target state="needs-adaptation">已应用&lt;strong&gt;监控此主机&lt;/strong&gt;类型。&lt;br/&gt;&lt;strong&gt;注意：&lt;/strong&gt;由于您添加了 "监控" 系统类型，因此我们已自动将 Prometheus 导出器公式分配给了系统。请应用 &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; 以安装并启用 Prometheus 指标导出器。&lt;br/&gt;&lt;strong&gt;注意：&lt;/strong&gt;请确保为安装的所有导出器打开&lt;a href="/docs/{1}/installation-and-upgrade/ports.html#_external_client_ports" target="_blank"&gt;所需的网络端口&lt;/a&gt;。</target>
+        <target state="final">已应用&lt;strong&gt;监控此主机&lt;/strong&gt;类型。&lt;br/&gt;&lt;strong&gt;注意：&lt;/strong&gt;由于您添加了 "监控" 系统类型，因此我们已自动将 Prometheus 导出器公式分配给了系统。请应用 &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; 以安装并启用 Prometheus 指标导出器。&lt;br/&gt;&lt;strong&gt;注意：&lt;/strong&gt;请确保为安装的所有导出器打开&lt;a href="/docs/{1}/installation-and-upgrade/network-requirements.html#_external_client_ports" target="_blank"&gt;所需的网络端口&lt;/a&gt;。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
@@ -10988,7 +10988,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit approved="yes" id="cveaudit.notfound" xml:space="preserve">
         <source>The specified CVE number was not found in our database.</source>
-        <target state="needs-adaptation">在我们的数据库中找不到指定的 CVE 编号。您可以从下面提供的链接获取有关此 CVE 的详细信息。</target>
+        <target state="final">在我们的数据库中找不到指定的 CVE 编号。</target>
       </trans-unit>
       <trans-unit approved="yes" id="bootstrap.minion.error.salt.unexpected" xml:space="preserve">
         <source>Error during applying the bootstrap state. Check the server logs.</source>
@@ -11404,7 +11404,7 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
       </trans-unit>
       <trans-unit approved="yes" id="coco.environment.kvm_amd_epyc_milan.description" xml:space="preserve">
         <source>KVM on AMD Epyc Processor, third generation (milan)</source>
-        <target state="needs-adaptation">AMD Epyc 第三代处理器 (milan) 上的 KVM</target>
+        <target state="final">AMD Epyc 第三代处理器 (milan) 上的 KVM</target>
       </trans-unit>
       <trans-unit approved="yes" id="coco.environment.kvm_amd_epyc_milan.label" xml:space="preserve">
         <source>KVM on AMD Epyc - Milan</source>
@@ -11412,7 +11412,7 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
       </trans-unit>
       <trans-unit approved="yes" id="coco.environment.kvm_amd_epyc_genoa.description" xml:space="preserve">
         <source>KVM on AMD Epyc Processor, fourth generation (genoa)</source>
-        <target state="needs-adaptation">AMD Epyc 第四代处理器 (genoa) 上的 KVM</target>
+        <target state="final">AMD Epyc 第四代处理器 (genoa) 上的 KVM</target>
       </trans-unit>
       <trans-unit approved="yes" id="coco.environment.kvm_amd_epyc_genoa.label" xml:space="preserve">
         <source>KVM on AMD Epyc - Genoa</source>
@@ -11705,19 +11705,19 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
       </trans-unit>
       <trans-unit approved="yes" id="hub.migration.no_slaves" xml:space="preserve">
         <source>This server does not have any ISSv1 slave</source>
-        <target state="final">此服务器没有 ISSv1 从属设备</target>
+        <target state="final">此服务器没有 ISSv1 从属服务器</target>
       </trans-unit>
       <trans-unit approved="yes" id="hub.migration.slave_not_exit" xml:space="preserve">
         <source>Slave {0} does not exist</source>
-        <target state="final">从属设备 {0} 不存在</target>
+        <target state="final">从属服务器 {0} 不存在</target>
       </trans-unit>
       <trans-unit approved="yes" id="hub.migration.no_migration_data" xml:space="preserve">
         <source>Slave {0} has no migration data and will not be migrated</source>
-        <target state="final">从属设备 {0} 没有迁移数据，将不会迁移</target>
+        <target state="final">从属服务器 {0} 没有迁移数据，将不会迁移</target>
       </trans-unit>
       <trans-unit approved="yes" id="hub.migration.slave_disabled" xml:space="preserve">
         <source>Slave {0} is currently disabled and will not be migrated</source>
-        <target state="final">从属设备 {0} 目前已禁用，将不会迁移</target>
+        <target state="final">从属服务器 {0} 目前已禁用，将不会迁移</target>
       </trans-unit>
       <trans-unit approved="yes" id="hub.migration.unable_to_migrate" xml:space="preserve">
         <source>Unable to migrate server {0}: {1}</source>
@@ -11729,7 +11729,7 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
       </trans-unit>
       <trans-unit approved="yes" id="hub.migration.removal_slave" xml:space="preserve">
         <source>Unable remove ISSv1 data for slave {0}: {1}</source>
-        <target state="final">无法去除从属设备 {0} 的 ISSv1 数据：{1}</target>
+        <target state="final">无法去除从属服务器 {0} 的 ISSv1 数据：{1}</target>
       </trans-unit>
       <trans-unit approved="yes" id="hub.migration.removal_peripheral" xml:space="preserve">
         <source>Unable to remove partially migrated peripheral {0}: {1}</source>
@@ -11839,165 +11839,276 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>The server {0} cannot be registered as a peripheral of this hub</source>
         <target state="final">服务器 {0} 无法注册为此 Hub 的外设</target>
       </trans-unit>
-    <trans-unit id="hub.sync_bunch_error" xml:space="preserve">
+      <trans-unit approved="yes" id="hub.sync_bunch_error" xml:space="preserve">
         <source>Error when triggering the channels sync.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="supportdata.get" xml:space="preserve">
+        <target state="final">触发通道同步时出错。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="supportdata.get" xml:space="preserve">
         <source>Get and Upload Support data</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
+        </context-group>
+        <target state="final">获取并上载支持数据</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="message.scheduleactivated" xml:space="preserve">
+        <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; activated.</source>
+        <target state="final">已激活日程安排 &lt;strong&gt;{0}&lt;/strong&gt;。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="task.status.errata-advisory-map-sync" xml:space="preserve">
+        <source>Update SUSE errata advisory map</source>
+        <target state="final">更新 SUSE 勘误建议映射</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="bunch.jsp.description.errata-advisory-map-sync-bunch" xml:space="preserve">
+        <source>Update SUSE errata advisory map to retrieve announcement ids and advisor URLs</source>
+        <target state="final">更新 SUSE 勘误建议映射，以检索通告 ID 和建议 URL</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="supportdata.uploadGeoType.eu" xml:space="preserve">
+        <source>EU</source>
+        <target state="final">欧盟</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="supportdata.uploadGeoType.us" xml:space="preserve">
+        <source>US</source>
+        <target state="final">美国</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="coco.environment.kvm_amd_epyc_bergamo.description" xml:space="preserve">
+        <source>KVM on AMD Epyc Processor, fourth generation (bergamo)</source>
+        <target state="final">AMD Epyc 第四代处理器 (bergamo) 上的 KVM</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="coco.environment.kvm_amd_epyc_bergamo.label" xml:space="preserve">
+        <source>KVM on AMD Epyc - Bergamo</source>
+        <target state="final">AMD Epyc - Bergamo 上的 KVM</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="coco.environment.kvm_amd_epyc_siena.description" xml:space="preserve">
+        <source>KVM on AMD Epyc Processor, fourth generation (siena)</source>
+        <target state="final">AMD Epyc 第四代处理器 (siena) 上的 KVM</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="coco.environment.kvm_amd_epyc_siena.label" xml:space="preserve">
+        <source>KVM on AMD Epyc - Siena</source>
+        <target state="final">AMD Epyc - Siena 上的 KVM</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="coco.environment.kvm_amd_epyc_turin.description" xml:space="preserve">
+        <source>KVM on AMD Epyc Processor, fifth generation (turin)</source>
+        <target state="final">AMD Epyc 第五代处理器 (turin) 上的 KVM</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="coco.environment.kvm_amd_epyc_turin.label" xml:space="preserve">
+        <source>KVM on AMD Epyc - Turin</source>
+        <target state="final">AMD Epyc - Turin 上的 KVM</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="system.details.support.invalid_case_number" xml:space="preserve">
+        <source>The case number {0} is not valid.</source>
+        <target state="final">案例 ID {0} 无效。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="system.details.support.invalid_region" xml:space="preserve">
+        <source>The region {0] is not valid.</source>
+        <target state="final">区域 {0] 无效。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="system.details.support.unable_to_schedule" xml:space="preserve">
+        <source>Unexpected error while scheduling the generation of the support data. Please check the server logs for detailed information.</source>
+        <target state="final">安排支持数据生成时发生意外错误。请查看服务器日志获取详细信息。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="system.details.support.unable_to_upload" xml:space="preserve">
+        <source>Unable to gather and upload the support data. Please check the server logs for detailed information.</source>
+        <target state="final">无法收集并上载支持数据。请查看服务器日志获取详细信息。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="Add address" xml:space="preserve">
+        <source>Add address</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/users/Addresses</context>
+        </context-group>
+        <target state="final">添加地址</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="Edit" xml:space="preserve">
+        <source>Edit</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/users/Addresses</context>
+        </context-group>
+        <target state="final">编辑</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="reportdbupdatefailed" xml:space="preserve">
+        <source>Report Database Update Failed</source>
+        <target state="final">报告数据库更新失败</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="notification.reportdbupdatefailed" xml:space="preserve">
+        <source>The update of the reporting database has failed and the data is out of sync.</source>
+        <target state="final">报告数据库更新失败，数据已不同步。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="notification.reportdbupdatefailed.details.local" xml:space="preserve">
+        <source>The following error was generated while trying to update the local reporting database:</source>
+        <target state="final">尝试更新本地报告数据库时产生以下错误：</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="notification.reportdbupdatefailed.details.hub" xml:space="preserve">
+        <source>The following error was generated while trying to fetch the data from the peripheral server {0}:</source>
+        <target state="final">尝试从外设服务器 {0} 获取数据时产生以下错误：</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="system.migration.noServersSelected" xml:space="preserve">
+        <source>Unable to identify the selected systems for the migration.</source>
+        <target state="final">无法识别迁移任务中所选的系统。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="system.migration.noCommonProduct" xml:space="preserve">
+        <source>The selected systems do not have a common base product.</source>
+        <target state="final">所选系统无共同的基础产品。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="product_migration.os_not_supported" xml:space="preserve">
+        <source>Product Migrations are not supported for the OS of this system.</source>
+        <target state="final">该系统的操作系统不支持产品迁移。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="product_migration.source_unknown" xml:space="preserve">
+        <source>The base product of this system is unknown.</source>
+        <target state="final">该系统的基础产品未知。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="product_migration.source_mismatch" xml:space="preserve">
+        <source>The base product of this system does not match.</source>
+        <target state="final">该系统的基础产品不匹配。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="product_migration.salt_needs_update" xml:space="preserve">
+        <source>Salt installed on this system is out of date.</source>
+        <target state="final">该系统上安装的 Salt 已过时。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="product_migration.salt_needs_update.details" xml:space="preserve">
+        <source>The installed &lt;pre&gt;{0}&lt;/pre&gt; package version on this system is out of date. Please update the package to the latest version before you start a Product migration.</source>
+        <target state="final">该系统上安装的 &lt;pre&gt;{0}&lt;/pre&gt; 软件包版本已过时。请在启动产品迁移前将其更新至最新版本。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="product_migration.addons_affected" xml:space="preserve">
+        <source>Some installed addons are going to be affect, depending on chosen target.</source>
+        <target state="final">根据所选目标，部分已安装的附加组件可能会受到影响。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="product_migration.single.addons_affected" xml:space="preserve">
+        <source>Some installed addons are going to be affect.</source>
+        <target state="final">部分已安装的附加组件可能会受到影响。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="product_migration.addons_affected.missing_successors" xml:space="preserve">
+        <source>&lt;p&gt;Depending on chosen target, some or all of these products will be removed because no successor could be found, so proceed with caution:&lt;/p&gt;{0}</source>
+        <target state="final">&lt;p&gt;根据所选目标，以下部分或全部产品因未找到替代版本将被去除，请谨慎操作：&lt;/p&gt;{0}</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="product_migration.single.addons_affected.missing_successors" xml:space="preserve">
+        <source>&lt;p&gt;These products will be removed because no successor could be found, so proceed with caution:&lt;/p&gt;{0}</source>
+        <target state="final">&lt;p&gt;以下产品因未找到替代版本将被去除，请谨慎操作：&lt;/p&gt;{0}</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="product_migration.addons_affected.installed_addons" xml:space="preserve">
+        <source>&lt;p&gt;Depending on chosen target, some or all of these products will be installed:&lt;/p&gt;{0}</source>
+        <target state="final">&lt;p&gt;根据所选目标，将安装以下部分或全部产品：&lt;/p&gt;{0}</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="product_migration.single.addons_affected.installed_addons" xml:space="preserve">
+        <source>&lt;p&gt;These products will be installed:&lt;/p&gt;{0}</source>
+        <target state="final">&lt;p&gt;将安装以下产品：&lt;/p&gt;{0}</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="product_migration.addon_or_higher" xml:space="preserve">
+        <source>{0} or higher</source>
+        <target state="final">{0} 或更高版本</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="system.migration.noTarget" xml:space="preserve">
+        <source>Unable to identify a valid migration target for the selected systems.</source>
+        <target state="final">无法为所选系统识别有效的迁移目标。</target>
+      </trans-unit>
+    <trans-unit id="virt.refresh_list" xml:space="preserve">
+        <source>Virtualization List Refresh</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       <target state="new"/>
   </trans-unit>
-      <trans-unit id="message.scheduleactivated" xml:space="preserve">
-        <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; activated.</source>
+      <trans-unit id="notification.proxybackupfailed" xml:space="preserve">
+        <source>Failed to process proxy backup event</source>
       <target state="new"/>
   </trans-unit>
-      <trans-unit id="task.status.errata-advisory-map-sync" xml:space="preserve">
-        <source>Update SUSE errata advisory map</source>
+      <trans-unit id="notification.proxybackupnominion" xml:space="preserve">
+        <source>No system with {0} name</source>
       <target state="new"/>
   </trans-unit>
-      <trans-unit id="bunch.jsp.description.errata-advisory-map-sync-bunch" xml:space="preserve">
-        <source>Update SUSE errata advisory map to retrieve announcement ids and advisor URLs</source>
+      <trans-unit id="notification.pxeeventfailed" xml:space="preserve">
+        <source>Processing of a PXE event for the minion {0} failed</source>
       <target state="new"/>
   </trans-unit>
-      <trans-unit id="supportdata.uploadGeoType.eu" xml:space="preserve">
-        <source>EU</source>
+      <trans-unit id="event.proxymigrationstarted" xml:space="preserve">
+        <source>Proxy migration: started</source>
       <target state="new"/>
   </trans-unit>
-      <trans-unit id="supportdata.uploadGeoType.us" xml:space="preserve">
-        <source>US</source>
+      <trans-unit id="event.proxymigrationstarteddetails" xml:space="preserve">
+        <source>Received event with client side data, starting data migration</source>
       <target state="new"/>
   </trans-unit>
-      <trans-unit id="coco.environment.kvm_amd_epyc_bergamo.description" xml:space="preserve">
-        <source>KVM on AMD Epyc Processor, fourth generation (bergamo)</source>
+      <trans-unit id="event.proxymigrationfailed" xml:space="preserve">
+        <source>Proxy migration: failed</source>
       <target state="new"/>
   </trans-unit>
-      <trans-unit id="coco.environment.kvm_amd_epyc_bergamo.label" xml:space="preserve">
-        <source>KVM on AMD Epyc - Bergamo</source>
+      <trans-unit id="event.proxymigrationfailedincomplete" xml:space="preserve">
+        <source>Received incomplete backup data. Try retrying the migration.</source>
       <target state="new"/>
   </trans-unit>
-      <trans-unit id="coco.environment.kvm_amd_epyc_siena.description" xml:space="preserve">
-        <source>KVM on AMD Epyc Processor, fourth generation (siena)</source>
+      <trans-unit id="event.proxymigrationfailedparsing" xml:space="preserve">
+        <source>Unable to parse uploaded data. See log file for details</source>
       <target state="new"/>
   </trans-unit>
-      <trans-unit id="coco.environment.kvm_amd_epyc_siena.label" xml:space="preserve">
-        <source>KVM on AMD Epyc - Siena</source>
+      <trans-unit id="event.proxymigrationcreated" xml:space="preserve">
+        <source>Proxy migration: new configuration created</source>
       <target state="new"/>
   </trans-unit>
-      <trans-unit id="coco.environment.kvm_amd_epyc_turin.description" xml:space="preserve">
-        <source>KVM on AMD Epyc Processor, fifth generation (turin)</source>
+      <trans-unit id="event.proxymigrationcreateddetails" xml:space="preserve">
+        <source>Reinstallation of the proxy will now autoconfigure it on the first boot</source>
       <target state="new"/>
   </trans-unit>
-      <trans-unit id="coco.environment.kvm_amd_epyc_turin.label" xml:space="preserve">
-        <source>KVM on AMD Epyc - Turin</source>
+      <trans-unit id="event.rbsmigrationstarted" xml:space="preserve">
+        <source>Retail Branch Server migration: started</source>
       <target state="new"/>
   </trans-unit>
-      <trans-unit id="system.details.support.invalid_case_number" xml:space="preserve">
-        <source>The case number {0} is not valid.</source>
+      <trans-unit id="event.rbsmigrationstarteddetails" xml:space="preserve">
+        <source>Proxy detected as a Retail Branch Server, migration started</source>
       <target state="new"/>
   </trans-unit>
-      <trans-unit id="system.details.support.invalid_region" xml:space="preserve">
-        <source>The region {0] is not valid.</source>
+      <trans-unit id="event.rbsmigrationfinishedok" xml:space="preserve">
+        <source>Retail Branch Server migration: finished successfully</source>
       <target state="new"/>
   </trans-unit>
-      <trans-unit id="system.details.support.unable_to_schedule" xml:space="preserve">
-        <source>Unexpected error while scheduling the generation of the support data. Please check the server logs for detailed information.</source>
+      <trans-unit id="event.rbsmigrationfinishederror" xml:space="preserve">
+        <source>Retail Branch Server migration: finished with errors</source>
       <target state="new"/>
   </trans-unit>
-      <trans-unit id="system.details.support.unable_to_upload" xml:space="preserve">
-        <source>Unable to gather and upload the support data. Please check the server logs for detailed information.</source>
+      <trans-unit id="event.rbsmigrationfinisheddetails" xml:space="preserve">
+        <source>Proxy was detected to be a Retail Branch Server, branch migration was performed.<ul>{0}</ul></source>
       <target state="new"/>
   </trans-unit>
-    <trans-unit id="Add address" xml:space="preserve">
-        <source>Add address</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/users/Addresses</context>
-        </context-group>
+      <trans-unit id="event.rbsmigrationfailed" xml:space="preserve">
+        <source>Retail Branch Server migration: failed</source>
       <target state="new"/>
   </trans-unit>
-      <trans-unit id="Edit" xml:space="preserve">
-        <source>Edit</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/users/Addresses</context>
-        </context-group>
+      <trans-unit id="event.rbsmigrationfaileddetails" xml:space="preserve">
+        <source>Failed to migrate the branch server. See log files for details.</source>
       <target state="new"/>
   </trans-unit>
-      <trans-unit id="reportdbupdatefailed" xml:space="preserve">
-          <source>Report Database Update Failed</source>
+      <trans-unit id="event.proxymigrationfinished" xml:space="preserve">
+        <source>Proxy migration: finished</source>
       <target state="new"/>
   </trans-unit>
-      <trans-unit id="notification.reportdbupdatefailed" xml:space="preserve">
-        <source>The update of the reporting database has failed and the data is out of sync.</source>
+      <trans-unit id="event.proxymigrationfinisheddetails" xml:space="preserve">
+        <source>All data were migrated. Proceed with reinstallation of the proxy host.</source>
       <target state="new"/>
   </trans-unit>
-      <trans-unit id="notification.reportdbupdatefailed.details.local" xml:space="preserve">
-        <source>The following error was generated while trying to update the local reporting database:</source>
+      <trans-unit id="event.pxemigrationnoentries" xml:space="preserve">
+        <source>No PXE entries found in a backup configuration for branch {0}</source>
       <target state="new"/>
   </trans-unit>
-      <trans-unit id="notification.reportdbupdatefailed.details.hub" xml:space="preserve">
-        <source>The following error was generated while trying to fetch the data from the peripheral server {0}:</source>
+      <trans-unit id="event.pxemigrationlost" xml:space="preserve">
+        <source>Lost and found: system with HW address {0} in branch {1} was not found as registered system.</source>
       <target state="new"/>
   </trans-unit>
-      <trans-unit id="system.migration.noServersSelected" xml:space="preserve">
-          <source>Unable to identify the selected systems for the migration.</source>
+      <trans-unit id="event.pxemigrationduplicate" xml:space="preserve">
+        <source>Multiple minions found with the same MAC address {0}. Cannot choose one, ignoring</source>
       <target state="new"/>
   </trans-unit>
-      <trans-unit id="system.migration.noCommonProduct" xml:space="preserve">
-          <source>The selected systems do not have a common base product.</source>
+      <trans-unit id="event.pxemigrationnogroup" xml:space="preserve">
+        <source>Not processing minion '{0}' as it is not part of a branch group.</source>
       <target state="new"/>
   </trans-unit>
-      <trans-unit id="product_migration.os_not_supported" xml:space="preserve">
-        <source>Product Migrations are not supported for the OS of this system.</source>
+      <trans-unit id="event.pxemigrationnoimage" xml:space="preserve">
+        <source>Image not found: system '{0}' is using unknown image '{1}'. Using default boot image.</source>
       <target state="new"/>
   </trans-unit>
-      <trans-unit id="product_migration.source_unknown" xml:space="preserve">
-        <source>The base product of this system is unknown.</source>
+      <trans-unit id="event.pxemigrationsaltboot" xml:space="preserve">
+        <source>Failed to create Saltboot system: {0}</source>
       <target state="new"/>
   </trans-unit>
-      <trans-unit id="product_migration.source_mismatch" xml:space="preserve">
-        <source>The base product of this system does not match.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="product_migration.salt_needs_update" xml:space="preserve">
-        <source>Salt installed on this system is out of date.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="product_migration.salt_needs_update.details" xml:space="preserve">
-        <source>The installed &lt;pre&gt;{0}&lt;/pre&gt; package version on this system is out of date. Please update the package to the latest version before you start a Product migration.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="product_migration.addons_affected" xml:space="preserve">
-        <source>Some installed addons are going to be affect, depending on chosen target.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="product_migration.single.addons_affected" xml:space="preserve">
-        <source>Some installed addons are going to be affect.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="product_migration.addons_affected.missing_successors" xml:space="preserve">
-        <source>&lt;p&gt;Depending on chosen target, some or all of these products will be removed because no successor could be found, so proceed with caution:&lt;/p&gt;{0}</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="product_migration.single.addons_affected.missing_successors" xml:space="preserve">
-        <source>&lt;p&gt;These products will be removed because no successor could be found, so proceed with caution:&lt;/p&gt;{0}</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="product_migration.addons_affected.installed_addons" xml:space="preserve">
-        <source>&lt;p&gt;Depending on chosen target, some or all of these products will be installed:&lt;/p&gt;{0}</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="product_migration.single.addons_affected.installed_addons" xml:space="preserve">
-        <source>&lt;p&gt;These products will be installed:&lt;/p&gt;{0}</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="product_migration.addon_or_higher" xml:space="preserve">
-        <source>{0} or higher</source>
-      <target state="new"/>
-  </trans-unit>
-    <trans-unit id="system.migration.noTarget" xml:space="preserve">
-          <source>Unable to identify a valid migration target for the selected systems.</source>
+      <trans-unit id="rbsmigration.lostfounddescription" xml:space="preserve">
+        <source>Collection of systems not registered, but present in branch {0} pxe entries.</source>
       <target state="new"/>
   </trans-unit>
       </body>

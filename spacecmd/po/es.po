@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-10 09:51+0200\n"
+"POT-Creation-Date: 2025-11-21 10:50+0100\n"
 "PO-Revision-Date: 2025-06-14 00:59+0000\n"
 "Last-Translator: Fran Serrador <serrador@proton.me>\n"
 "Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/spacecmd/es/>\n"
@@ -3806,7 +3806,7 @@ msgid ""
 "options:\n"
 "  -o, --output Path where to create the generated configuration. Default: 'config.tar.gz'\n"
 "  -p, --ssh-port SSH port the proxy listens one. Default: 8022\n"
-"  --ca-crt path to the certificate of the CA to use to generate a new proxy certificate.\n"
+"  --ca-cert path to the certificate of the CA to use to generate a new proxy certificate.\n"
 "           Using /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT by default.\n"
 "  --ca-key path to the private key of the CA to use to generate a new proxy certificate.\n"
 "           Using /root/ssl-build/RHN-ORG-PRIVATE-SSL-KEY by default.\n"
@@ -4104,7 +4104,7 @@ msgstr ""
 #: ../src/spacecmd/system.py:3957 ../src/spacecmd/system.py:4280
 #: ../src/spacecmd/system.py:4443 ../src/spacecmd/system.py:4514
 #: ../src/spacecmd/system.py:4568 ../src/spacecmd/system.py:4638
-#: ../src/spacecmd/system.py:4705
+#: ../src/spacecmd/system.py:4705 ../src/spacecmd/system.py:5087
 msgid "No systems selected"
 msgstr ""
 
@@ -7429,6 +7429,20 @@ msgstr ""
 
 #: ../src/spacecmd/system.py:5047
 msgid "Initial phase successfully finished. Check event history for actions still running"
+msgstr ""
+
+#: ../src/spacecmd/system.py:5059
+msgid "system_needrebootafterupdate: Shows whether a reboot would be needed if available patches were applied"
+msgstr ""
+
+#. pylint: disable-next=consider-using-f-string
+#: ../src/spacecmd/system.py:5108
+msgid "System '{}' needs to be rebooted after update"
+msgstr ""
+
+#. pylint: disable-next=consider-using-f-string
+#: ../src/spacecmd/system.py:5117
+msgid "No reboot needed for system '{}' after applying available updates"
 msgstr ""
 
 #: ../src/spacecmd/user.py:53
