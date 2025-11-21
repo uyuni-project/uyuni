@@ -23,6 +23,7 @@ public record ChannelSyncDetail(
     String originalChannelLabel,
     List<ChannelSyncDetail> children,
     List<ChannelSyncDetail> clones,
+    boolean strictOrg,
     boolean synced
 ) { }
 
