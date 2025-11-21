@@ -1,0 +1,3 @@
+- Added `os_product` column to `suseOVALPlatformVulnerablePackage`
+  table to map vulnerabilities to operating system products found
+  in OVAL config.

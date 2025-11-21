@@ -1,0 +1,4 @@
+- Optimized memory usage by replacing DOM-based XML parsing with
+  a streaming StaX parser for OVAL metadata files.
+- Improved resilience of OVAL metadata synchronization to handle
+  invalid Criterion elements.
