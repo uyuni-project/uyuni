@@ -3,6 +3,7 @@ import type { FC, ReactElement } from "react";
 import { BaseChannelType, ChannelTreeType, ChildChannelType } from "core/channels/type/channels.type";
 
 import { Highlight } from "components/table/Highlight";
+import { DEPRECATED_onClick } from "components/utils";
 
 import { ChannelProcessor } from "./channel-processor";
 import styles from "./channels-selection.module.scss";
@@ -56,7 +57,7 @@ const BaseChannel: FC<Props> = ({
       <h4
         className={`${styles.base_channel} ${isSelectedBaseChannel ? styles.initial_selected : ""}`}
         title={isSelectedBaseChannel ? t("New base channel") : undefined}
-        onClick={() => onToggleChannelOpen?.(base)}
+        {...DEPRECATED_onClick(() => onToggleChannelOpen?.(base))}
       >
         <input
           type="checkbox"

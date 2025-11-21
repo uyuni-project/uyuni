@@ -3,6 +3,9 @@ import { SubmitButton } from "components/buttons";
 import { Form } from "../form/Form";
 import { DEPRECATED_Check } from "./DEPRECATED_Check";
 
+/**
+ * @deprecated
+ */
 export default () => {
   const model = {
     booleanValue: false,

@@ -252,6 +252,9 @@ type DateTimePickerState = {
   timeZone: typeof localizedMoment.userTimeZone | typeof localizedMoment.serverTimeZone;
 };
 
+/**
+ * @deprecated
+ */
 export class DEPRECATED_DateTimePicker extends Component<DateTimePickerProps, DateTimePickerState> {
   constructor(props: DateTimePickerProps) {
     super(props);

@@ -4,6 +4,7 @@ import SpaRenderer from "core/spa/spa-renderer";
 import { isUyuni } from "core/user-preferences";
 
 import { MessagesContainer } from "components/toastr/toastr";
+import { DEPRECATED_onClick } from "components/utils";
 
 import { stringToReact } from "utils";
 import { flatten } from "utils/jsx";
@@ -50,7 +51,7 @@ class Node extends Component<NodeProps> {
     return (
       <div
         className={this.props.isLeaf ? "leafLink" : "nodeLink"}
-        onClick={(event) => this.handleClick(event)}
+        {...DEPRECATED_onClick((event) => this.handleClick(event))}
         role="button"
       >
         {this.props.icon ? <i className={"fa " + this.props.icon}></i> : null}
@@ -193,7 +194,7 @@ class Nav extends Component {
     this.setState({ search: e.target.value });
   };
 
-  closeEmAll = () => {
+  closeAll = () => {
     this.setState({ search: "", forceCollapse: true });
   };
 
@@ -219,9 +220,8 @@ class Nav extends Component {
             {isSearchActive ? (
               <i
                 className="fa fa-times-circle-o no-margin"
-                onClick={this.closeEmAll}
+                {...DEPRECATED_onClick(this.closeAll)}
                 title={t("Clear Menu")}
-                role="button"
               ></i>
             ) : (
               <i className="fa fa-search no-margin" title={t("Filter menu")}></i>
@@ -303,8 +303,6 @@ class Breadcrumb extends Component {
 SpaRenderer.renderGlobalReact(<Breadcrumb />, document.getElementById("breadcrumb"));
 
 SpaRenderer.renderGlobalReact(
-  <>
-    <MessagesContainer containerId="global" />
-  </>,
+  <MessagesContainer containerId="global" />,
   document.getElementById("messages-container")
 );
