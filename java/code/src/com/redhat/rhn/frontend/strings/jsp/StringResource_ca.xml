@@ -13870,7 +13870,7 @@ el lt;stronggt;ENTERENTERPRISELINUXNAME Guide Guia d'administració del sistema.
       </trans-unit>
       <trans-unit id="activation-keys.config.rank.jsp.para1" xml:space="preserve">
         <source>This activation key is subscribed to the configuration channels listed below in order from highest to lowest rank. Files from a particular channel will override files with the same filepath and name from channels below it. In other words, the channel listed last will be applied first.</source>
-        <target state="needs-adaptation">Aquesta clau d'activació està subscrita als canals de configuració llistats a continuació per ordre de rang més alt a més baix. Els fitxers d'un canal en particular substituiran els fitxers amb el mateix camí de fitxer i el nom dels canals de sota.</target>
+        <target state="translated">Aquesta clau d'activació està subscrita als canals de configuració que s'enumeren a continuació, en ordre de rang més alt a més baix. Els fitxers d'un canal concret substituiran els fitxers amb el mateix camí de fitxer i nom dels canals inferiors. En altres paraules, el canal que apareix a l'últim lloc s'aplicarà primer.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/activationkeys/configuration/* pages</context>
         </context-group>
@@ -16134,7 +16134,7 @@ el lt;stronggt;ENTERENTERPRISELINUXNAME Guide Guia d'administració del sistema.
       </trans-unit>
       <trans-unit id="summary.jsp.stepone" xml:space="preserve">
         <source>Run &lt;code&gt;mgr_check&lt;/code&gt; to complete pending salt-minion package installs.</source>
-        <target state="translated">Executeu lt;codigt;mgrchecklt;/codigt; per a completar les instal·lacions pendents del paquet «sal-minion».</target>
+        <target state="translated">Executeu &lt;code&gt;mgr_check&lt;/code&gt; per completar les instal·lacions pendents del paquet salt-minion.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/Summary.do</context>
         </context-group>
@@ -16176,7 +16176,7 @@ el lt;stronggt;ENTERENTERPRISELINUXNAME Guide Guia d'administració del sistema.
       </trans-unit>
       <trans-unit id="summary.jsp.packages" xml:space="preserve">
         <source>Could not schedule salt-minion package installations.</source>
-        <target state="translated">No s'han pogut programar les instal·lacions de paquets de mineria de sal.</target>
+        <target state="translated">No s'han pogut programar les instal·lacions del paquet salt-minion.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/Summary.do</context>
         </context-group>
@@ -19871,7 +19871,7 @@ qualsevol d'aquestes revisions.  Estàs segur que vols fer-ho?</target>
       </trans-unit>
       <trans-unit id="ssmenable.jsp.summary" xml:space="preserve">
         <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management. For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they will need to have particular salt-minion packages installed. You can enable configuration management on the systems listed below. &lt;strong&gt;Note:&lt;/strong&gt; nothing will happen to already enabled systems.</source>
-        <target state="translated">Els sistemes llistats a continuació no tenen fitxers gestionats mitjançant la gestió de configuració del .PRODUCTNAME.. Perquè els sistemes puguin ser gestionats per la gestió de la configuració del .PRODUCTNAME., hauran de tenir instal·lats determinats paquets de mineria de sal. Podeu habilitar la gestió de la configuració en els sistemes llistats a continuació. lt;stronggt;Note:lt;/stronggt; no passarà res als sistemes ja habilitats.</target>
+        <target state="translated">Els sistemes que s'enumeren a continuació no tenen fitxers gestionats mitjançant la gestió de configuració @@PRODUCT_NAME@@. Perquè els sistemes puguin ser gestionats per la gestió de configuració @@PRODUCT_NAME@@, hauran de tenir instal·lats paquets salt-minion específics. Podeu habilitar la gestió de configuració als sistemes que s'enumeren a continuació. &lt;strong&gt;Nota:&lt;/strong&gt; no passarà res als sistemes que ja estiguin habilitats.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/config/Enable.do</context>
         </context-group>
@@ -21116,7 +21116,7 @@ qualsevol d'aquestes revisions.  Estàs segur que vols fer-ho?</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/KickstartableSystems.do</context>
         </context-group>
-        <target state="translated">Heu d'habilitar l'execució de l'ordre remota al sistema de destinació instal·lant el RPM lt;codigt;salt-minionlt;/codigt;.</target>
+        <target state="translated">Heu d'habilitar l'execució remota d'ordres al sistema de destinació instal·lant l'RPM &lt;code&gt;salt-minion&lt;/code&gt;.</target>
       </trans-unit>
       <trans-unit id="stringutil.scriptcheck.error.noshelldefined" xml:space="preserve">
         <source>Script does not contain shell definition.</source>
@@ -23416,7 +23416,7 @@ lt;pgt;El camí a l'arbre ha de ser un camí de disc local al servidor .PRODUCTN
       </trans-unit>
       <trans-unit id="sdc.config.rank.jsp.para1" xml:space="preserve">
         <source>This system is subscribed to the configuration channels listed below in order from highest to lowest rank. Files from a particular channel will override files with the same filepath and name from channels below it. In other words, the channel listed last will be applied first.</source>
-        <target state="needs-adaptation">Aquest sistema està subscrit als canals de configuració llistats a continuació per ordre de rang més alt a més baix. Els fitxers d'un canal en particular substituiran els fitxers amb el mateix camí de fitxer i el nom dels canals de sota.</target>
+        <target state="translated">Aquest sistema està subscrit als canals de configuració que s'enumeren a continuació, en ordre de rang més alt a més baix. Els fitxers d'un canal concret substituiran els fitxers amb el mateix camí de fitxer i nom dels canals inferiors. En altres paraules, el canal que apareix per últim lloc s'aplicarà primer.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/RankChannels.do</context>
         </context-group>
@@ -23466,7 +23466,7 @@ lt;pgt;El camí a l'arbre ha de ser un camí de disc local al servidor .PRODUCTN
       </trans-unit>
       <trans-unit id="sdc.details.overview.minionId" xml:space="preserve">
         <source>Minion Id:</source>
-        <target state="translated">Identificador de minion:</target>
+        <target state="translated">Identificador del mínion:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
@@ -24386,7 +24386,7 @@ lt;pgt;El camí a l'arbre ha de ser un camí de disc local al servidor .PRODUCTN
       </trans-unit>
       <trans-unit id="sdc.details.hardware.machine_id_empty_warning" xml:space="preserve">
         <source>This system does not have a machine id. This is needed in the event of re-registering it as a Salt minion. Make sure the system has the latest version of the client tools installed and use the Schedule Hardware Refresh button bellow to fill the machine id.</source>
-        <target state="translated">Aquest sistema no té un identificador de màquina. Això és necessari en cas de tornar a registrar-lo com a minió de Salt. Assegureu-vos que el sistema té instal·lada l'última versió de les eines del client i utilitzeu el botó Planifica Actualització de maquinari per omplir l'identificador de la màquina.</target>
+        <target state="translated">Aquest sistema no té un ID de màquina. Això és necessari en cas de tornar-lo a registrar com a mínion de Salt. Assegureu-vos que el sistema tingui instal·lada la darrera versió de les eines del client i utilitzeu el botó Programa l'actualització del maquinari a continuació per omplir l'ID de màquina.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
         </context-group>
@@ -28656,7 +28656,7 @@ lt;/pgt;
       </trans-unit>
       <trans-unit id="yourrhn.jsp.tasks.minions" xml:space="preserve">
         <source>Manage &lt;strong&gt;Pending Minions&lt;/strong&gt; ({0})</source>
-        <target state="translated">Gestiona lt;stronggt;Minions pendentslt;/stronggt; ({0})</target>
+        <target state="translated">Gestiona &lt;strong&gt;Minions pendents&lt;/strong&gt; ({0})</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
@@ -28692,7 +28692,7 @@ lt;/pgt;
       <trans-unit id="delete_confirm.jsp.summary.sshpush" xml:space="preserve">
         <source>For Salt minions @@PRODUCT_NAME@@ will also cleanup any specific configuration installed on the minion.
               This might take a few extra seconds.</source>
-        <target state="translated">Per als minions de Salt, @@PRODUCT_NAME@@ també netejarà qualsevol configuració específica instal·lada al minion.
+        <target state="translated">Per als mínions de Salt, @@PRODUCT_NAME@@ també netejarà qualsevol configuració específica instal·lada al mínion.
               Això pot trigar uns segons addicionals.</target>
       </trans-unit>
       <trans-unit id="ssm.delete.systems.salt.cleanup" xml:space="preserve">
@@ -28703,7 +28703,7 @@ lt;/pgt;
       </trans-unit>
       <trans-unit id="ssm.delete.systems.salt.cleanup.type" xml:space="preserve">
         <source>Please chose how to handle Salt minions cleanup and delete:</source>
-        <target state="translated">Escolliu com gestionar la neteja i eliminació de minions de sal:</target>
+        <target state="translated">Si us plau, trieu com gestionar la neteja i eliminació dels mínions de Salt:</target>
       </trans-unit>
       <trans-unit id="ssm.delete.systems.salt.cleanup.no_cleanup" xml:space="preserve">
         <source>Delete systems without cleanup</source>
@@ -28745,9 +28745,9 @@ lt;/pgt;
           <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
         </context-group>
         <target state="translated">
-           L'aplicació de l'estat del canal es programarà immediatament després de confirmar en qualsevol minions
-           que actualment té assignat aquest canal. Això actualitzarà els fitxers del repositori en aquests minions a
-           suprimeix el canal suprimit.
+           L'aplicació de l'estat del canal es programarà immediatament després de confirmar-ho en qualsevol mínion
+           que actualment tingui aquest canal assignat. Això actualitzarà els fitxers del repositori d'aquests mínions per
+           eliminar el canal suprimit.
         </target>
       </trans-unit>
       <trans-unit id="filedetails.jsp.note.macrosalt" xml:space="preserve">
@@ -28999,7 +28999,7 @@ lt;/pgt;
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-        <target state="translated">Neteja les dades obsoletes de la cadena d'acció</target>
+        <target state="translated">Neteja les dades de la cadena d'accions obsoletes</target>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.token-cleanup-bunch" xml:space="preserve">
         <source>Cleanup outdated token data</source>
@@ -29126,7 +29126,7 @@ lt;/pgt;
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
-        <target state="translated">Connecta els minions a un altre lt;a href""/rhn/manager/systems/ssm/proxy"gt;proxy serverlt;/agt;</target>
+        <target state="translated">Connecta els mínions a un altre servidor intermediari &lt;a href="/rhn/manager/systems/ssm/proxy"&gt;</target>
       </trans-unit>
       <trans-unit id="ssm.misc.index.tabs.proxy" xml:space="preserve">
         <source>Proxy</source>
@@ -29280,7 +29280,7 @@ lt;/pgt;
       </trans-unit>
       <trans-unit id="overview.jsp.traditionalstack.deprecated" xml:space="preserve">
         <source>The traditional stack is unsupported and scheduled for removal. Consider migrating to salt minions.</source>
-        <target state="translated">La pila tradicional no està suportada i està programada per a la seva eliminació. Considereu migrar a minions de sal.</target>
+        <target state="translated">La pila tradicional no té suport i està programada per a suprimir. Considereu la possibilitat de migrar a mínions de Salt.</target>
       </trans-unit>
       <trans-unit id="ssm.misc.reboot.message.scheduled" xml:space="preserve">
         <source>Some systems already have a reboot scheduled.</source>
