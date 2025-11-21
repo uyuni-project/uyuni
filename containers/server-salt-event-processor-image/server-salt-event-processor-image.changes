@@ -1,0 +1,1 @@
+- Extract salt event processing from Tomcat to standalone container
