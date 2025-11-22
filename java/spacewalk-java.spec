@@ -86,7 +86,6 @@ BuildRequires:  antlr >= 2.7.6
 BuildRequires:  apache-commons-cli
 BuildRequires:  apache-commons-codec
 BuildRequires:  apache-commons-collections
-BuildRequires:  apache-commons-el
 BuildRequires:  apache-commons-io >= 2.11.0
 BuildRequires:  apache-commons-jexl
 BuildRequires:  apache-commons-lang3 >= 3.4
@@ -177,7 +176,6 @@ Requires:       apache-commons-beanutils
 Requires:       apache-commons-cli
 Requires:       apache-commons-codec
 Requires:       apache-commons-collections
-Requires:       apache-commons-el
 Requires:       apache-commons-io
 Requires:       apache-commons-jexl
 Requires:       apache-commons-lang3
