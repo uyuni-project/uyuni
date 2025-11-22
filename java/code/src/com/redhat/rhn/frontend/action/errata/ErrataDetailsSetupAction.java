@@ -123,7 +123,7 @@ public class ErrataDetailsSetupAction extends RhnAction {
         StringBuilder buf = new StringBuilder();
         buf.append("<a href=\"/rhn/oval?errata=").append(errataId).append("\">");
         String name = ef.getOwningErrata().getAdvisoryName().toLowerCase();
-        name = name.replaceAll(":", "");
+        name = name.replace(":", "");
         buf.append("com.redhat.").append(name).append(".xml");
         buf.append("</a>");
         retval = buf.toString();

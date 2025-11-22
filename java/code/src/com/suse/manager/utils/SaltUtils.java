@@ -882,7 +882,7 @@ public class SaltUtils {
         target.rewind();
 
         UUID uuidSwap = new UUID(target.getLong(), target.getLong());
-        return uuidSwap.toString().replaceAll("-", "");
+        return uuidSwap.toString().replace("-", "");
     }
 
     private static JsonElement parseJsonError(SaltError message) {
