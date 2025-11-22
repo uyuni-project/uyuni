@@ -12033,43 +12033,43 @@ Ak chcete túto situáciu napraviť, pridajte prihlasovacie údaje SCC &lt;a hre
       </trans-unit>
       <trans-unit id="event.proxymigrationfailedincomplete" xml:space="preserve">
         <source>Received incomplete backup data. Try retrying the migration.</source>
-        <target state="new"/>
+        <target state="translated">Prijaté neúplné záložné dáta. Skúste zopakovať migráciu.</target>
       </trans-unit>
       <trans-unit id="event.proxymigrationfailedparsing" xml:space="preserve">
         <source>Unable to parse uploaded data. See log file for details</source>
-        <target state="new"/>
+        <target state="translated">Nie je možné analyzovať nahraté dáta. Podrobnosti nájdete v súbore záznamu</target>
       </trans-unit>
       <trans-unit id="event.proxymigrationcreated" xml:space="preserve">
         <source>Proxy migration: new configuration created</source>
-        <target state="new"/>
+        <target state="translated">Migrácia proxy: nová konfigurácia vytvorená</target>
       </trans-unit>
       <trans-unit id="event.proxymigrationcreateddetails" xml:space="preserve">
         <source>Reinstallation of the proxy will now autoconfigure it on the first boot</source>
-        <target state="new"/>
+        <target state="translated">Pri opätovnej inštalácii proxy sa teraz pri prvom štarte systému automaticky nakonfiguruje</target>
       </trans-unit>
       <trans-unit id="event.rbsmigrationstarted" xml:space="preserve">
         <source>Retail Branch Server migration: started</source>
-        <target state="new"/>
+        <target state="translated">Migrácia Retail Branch Server: spustená</target>
       </trans-unit>
       <trans-unit id="event.rbsmigrationstarteddetails" xml:space="preserve">
         <source>Proxy detected as a Retail Branch Server, migration started</source>
-        <target state="new"/>
+        <target state="translated">Proxy zistené ako Retail Branch Server, migrácia spustená</target>
       </trans-unit>
       <trans-unit id="event.rbsmigrationfinishedok" xml:space="preserve">
         <source>Retail Branch Server migration: finished successfully</source>
-        <target state="new"/>
+        <target state="translated">Migrácia Retail Branch Server: úspešne dokončená</target>
       </trans-unit>
       <trans-unit id="event.rbsmigrationfinishederror" xml:space="preserve">
         <source>Retail Branch Server migration: finished with errors</source>
-        <target state="new"/>
+        <target state="translated">Migrácia Retail Branch Server: dokončená s chybami</target>
       </trans-unit>
       <trans-unit id="event.rbsmigrationfinisheddetails" xml:space="preserve">
         <source>Proxy was detected to be a Retail Branch Server, branch migration was performed.<ul>{0}</ul></source>
-        <target state="new"/>
+        <target state="translated">Proxy zistené ako Retail Branch Server, bola vykonaná migrácia pobočky.<ul>{0}</ul></target>
       </trans-unit>
       <trans-unit id="event.rbsmigrationfailed" xml:space="preserve">
         <source>Retail Branch Server migration: failed</source>
-        <target state="new"/>
+        <target state="translated">Migrácia Retail Branch Server: neúspešná</target>
       </trans-unit>
       <trans-unit id="event.rbsmigrationfaileddetails" xml:space="preserve">
         <source>Failed to migrate the branch server. See log files for details.</source>
