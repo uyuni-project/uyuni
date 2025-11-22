@@ -26,17 +26,17 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 /**
  * PackageActionDetails
@@ -46,8 +46,8 @@ import javax.persistence.Transient;
 public class PackageActionDetails extends BaseDomainHelper {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "package_action_seq")
-    @SequenceGenerator(name = "package_action_seq", sequenceName = "RHN_ACT_P_ID_SEQ", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "package_action_seq")
+	@SequenceGenerator(name = "package_action_seq", sequenceName = "RHN_ACT_P_ID_SEQ", allocationSize = 1)
     @Column(name = "id")
     private Long packageId;
 

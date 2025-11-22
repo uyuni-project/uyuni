@@ -29,17 +29,19 @@ import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.Map;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import io.hypersistence.utils.hibernate.type.json.JsonBinaryType;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 /**
  * CPU
@@ -50,8 +52,8 @@ public class CPU extends BaseDomainHelper {
     private static final Logger LOG = LogManager.getLogger(CPU.class);
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_CPU_ID_SEQ")
-    @SequenceGenerator(name = "RHN_CPU_ID_SEQ", sequenceName = "RHN_CPU_ID_SEQ", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_CPU_ID_SEQ")
+	@SequenceGenerator(name = "RHN_CPU_ID_SEQ", sequenceName = "RHN_CPU_ID_SEQ", allocationSize = 1)
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "server_id")
@@ -99,7 +101,7 @@ public class CPU extends BaseDomainHelper {
      * JSONB, it is mapped here as a String due to limitations in XML mapping for JSON types.
      */
     @Column(name = "arch_specs")
-    @org.hibernate.annotations.Type(type = "jsonb")
+    @org.hibernate.annotations.Type(JsonBinaryType.class)
     private String archSpecs;
 
     /**

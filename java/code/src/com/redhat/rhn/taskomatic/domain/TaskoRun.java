@@ -22,15 +22,15 @@ import com.redhat.rhn.taskomatic.TaskoFactory;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 
 
 /**
@@ -48,8 +48,8 @@ public class TaskoRun extends BaseDomainHelper implements Serializable {
     public static final String STATUS_INTERRUPTED = "INTERRUPTED";
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tasko_run_seq")
-    @SequenceGenerator(name = "tasko_run_seq", sequenceName = "RHN_TASKO_RUN_ID_SEQ", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tasko_run_seq")
+	@SequenceGenerator(name = "tasko_run_seq", sequenceName = "RHN_TASKO_RUN_ID_SEQ", allocationSize = 1)
     private Long id;
     @Column(name = "org_id")
     private Integer orgId;

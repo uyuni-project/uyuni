@@ -17,9 +17,9 @@ package com.redhat.rhn.domain.contentmgmt;
 
 import com.redhat.rhn.domain.contentmgmt.modulemd.Module;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.Transient;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Transient;
 
 /**
  * This filter must be applied on {@link Module} objects. In order to apply the filtering on

@@ -18,16 +18,16 @@ package com.redhat.rhn.domain.server;
 import com.redhat.rhn.domain.BaseDomainHelper;
 
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 
 /**
  * Device represents a hardware device on a server.
@@ -80,8 +80,8 @@ public class Device extends BaseDomainHelper {
     public static final String CLASS_VIDEO = "VIDEO";
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "hw_dev_seq")
-    @SequenceGenerator(name = "hw_dev_seq", sequenceName = "rhn_hw_dev_id_seq", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "hw_dev_seq")
+	@SequenceGenerator(name = "hw_dev_seq", sequenceName = "rhn_hw_dev_id_seq", allocationSize = 1)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

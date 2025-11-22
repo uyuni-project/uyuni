@@ -25,7 +25,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Enumeration;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * An event representing an error generated from the web frontend

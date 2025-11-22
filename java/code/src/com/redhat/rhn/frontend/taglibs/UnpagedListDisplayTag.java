@@ -24,11 +24,11 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import java.io.IOException;
 import java.io.Writer;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.JspTagException;
-import javax.servlet.jsp.JspWriter;
-import javax.servlet.jsp.tagext.BodyContent;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.jsp.JspException;
+import jakarta.servlet.jsp.JspTagException;
+import jakarta.servlet.jsp.JspWriter;
+import jakarta.servlet.jsp.tagext.BodyContent;
 
 /**
  * The UnpagedListDisplayTag defines the structure of the ListView.  This tag iterates

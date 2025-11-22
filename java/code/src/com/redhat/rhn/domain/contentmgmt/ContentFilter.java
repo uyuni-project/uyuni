@@ -19,21 +19,21 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.util.function.Predicate;
 
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorColumn;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 /**
  * Content Filter
@@ -145,8 +145,8 @@ public abstract class ContentFilter<T> extends BaseDomainHelper implements Predi
      * @return id
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "content_filter_seq")
-    @SequenceGenerator(name = "content_filter_seq", sequenceName = "suse_ct_filter_seq", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "content_filter_seq")
+	@SequenceGenerator(name = "content_filter_seq", sequenceName = "suse_ct_filter_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }
