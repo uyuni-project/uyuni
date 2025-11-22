@@ -178,13 +178,21 @@ When(/^I use spacewalk-common-channel to add all "([^"]*)" channels with arch "(
 end
 
 When(/^I use spacewalk-repo-sync to sync channel "([^"]*)"$/) do |channel|
+  $command_output, _code = get_target('server').run("mgr-sync add channel #{channel} --no-sync", check_errors: false, verbose: true)
   $command_output, _code = get_target('server').run("spacewalk-repo-sync -c #{channel}", check_errors: false, verbose: true)
 end
 
-When(/^I use spacewalk-repo-sync to sync channel "([^"]*)" including only client tools dependencies$/) do |channel|
-  packages = CLIENT_TOOLS_DEPENDENCIES_BY_BASE_CHANNEL[channel]
-  append_includes = packages.map { |pkg| "--include #{pkg}" }.join(' ')
-  $command_output, _code = get_target('server').run("spacewalk-repo-sync -c #{channel} #{append_includes}", check_errors: false, verbose: true)
+When(/^I use spacewalk-repo-sync to sync all channels for "([^"]*)" including only client tools dependencies$/) do |product_os_version|
+  client_tools_dependencies = CLIENT_TOOLS_DEPENDENCIES_BY_PRODUCT[product_os_version]
+  package_for_testing = PACKAGE_BY_CLIENT[CLIENT_BY_OS_PRODUCT_VERSION[product_os_version]]
+  append_includes = (client_tools_dependencies + [package_for_testing]).compact.map { |pkg| "--include #{pkg}" }.join(' ')
+  channels_to_synchronize = CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, product_os_version).clone ||
+                            CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, "#{product_os_version}-x86_64").clone
+  channels_to_synchronize = filter_channels(channels_to_synchronize, ['beta']) unless $beta_enabled
+  channels_to_synchronize.each do |channel|
+    $command_output, _code = get_target('server').run("mgr-sync add channel #{channel} --no-sync", check_errors: false, verbose: true)
+    $command_output, _code = get_target('server').run("spacewalk-repo-sync -c #{channel} #{append_includes}", check_errors: false, verbose: true)
+  end
 end
 
 Then(/^I should get "([^"]*)"$/) do |value|
