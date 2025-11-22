@@ -110,8 +110,11 @@ class RemoteNode
   # @param successcodes [Array<Integer>] An array with the values to be accepted as success codes from the command run.
   # @param buffer_size [Integer] The maximum buffer size in bytes.
   # @param verbose [Boolean] Whether to log the output of the command in case of success.
+  # @param exec_option [Boolean] The container exec option.
+  # @param check_stderr_of_pipes [Boolean] Check the stderr of all the commands separated by pipes or not.
   # @return [Array<String, String, Integer>] The output, error, and exit code.
-  def run(cmd, runs_in_container: true, separated_results: false, check_errors: true, timeout: DEFAULT_TIMEOUT, successcodes: [0], buffer_size: 65_536, verbose: false, exec_option: '-i')
+  def run(cmd, runs_in_container: true, separated_results: false, check_errors: true, timeout: DEFAULT_TIMEOUT, successcodes: [0], buffer_size: 65_536, verbose: false, exec_option: '-i', check_stderr_of_pipes: false)
+    cmd = "set -o pipefail ; #{cmd.gsub('\'', '\'"\'"\'')}" if check_stderr_of_pipes && cmd.include?('|')
     cmd_prefixed = @has_mgrctl && runs_in_container ? "mgrctl exec #{exec_option} '#{cmd.gsub('\'', '\'"\'"\'')}'" : cmd
     run_local(cmd_prefixed, separated_results: separated_results, check_errors: check_errors, timeout: timeout, successcodes: successcodes, buffer_size: buffer_size, verbose: verbose)
   end
