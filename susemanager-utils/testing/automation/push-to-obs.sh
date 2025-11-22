@@ -7,7 +7,7 @@ set -o pipefail
 SCRIPT=$(basename ${0})
 help() {
   echo ""
-  echo "Script to run a docker container to push SUSE Manager/Uyuni packages to IBS/OBS"
+  echo "Script to run a container to push SUSE Multi-Linux Manager/Uyuni packages to IBS/OBS"
   echo ""
   echo "Syntax: "
   echo ""
@@ -19,6 +19,7 @@ help() {
   echo "  -c  Path to the OSC credentials (usually ~/.osrc)"
   echo "  -s  Path to the private key used for MFA, a file ending with .pub must also"
   echo "      exist, containing the public key"
+  echo "  -g  Path to TEA config (usually ~/.config/tea/config.yml)"
   echo "  -p  Comma separated list of packages. If absent, all packages are submitted"
   echo "  -v  Verbose mode"
   echo "  -t  For tito, use current branch HEAD instead of latest package tag"
@@ -29,7 +30,13 @@ help() {
   echo "  -x  Enable parallel builds"
   echo "  -P  Is the product name, for example Uyuni or SUSE-Manager. This is to load VERSION.Uyuni or VERSION.SUSE-Manager. By default is Uyuni."
   echo ""
+  echo "By default 'docker' is used to run the container. To use podman instead set EXECUTOR=podman"
+  echo "Extra options for the executor please provide set EXECUTOR_OPTS"
+  echo ""
 }
+
+EXECUTOR="${EXECUTOR:=docker}"
+EXECUTOR_OPTS="${EXECUTOR_OPTS}"
 
 PARALLEL_BUILD="FALSE"
 if [ -z ${PRODUCT+x} ];then
@@ -38,13 +45,14 @@ else
     VPRODUCT="VERSION.${PRODUCT}"
 fi
 
-while getopts ":d:c:s:p:P:n:vthex" opts; do
+while getopts ":d:c:s:g:p:P:n:vthex" opts; do
   case "${opts}" in
     d) DESTINATIONS=${OPTARG};;
     p) PACKAGES="$(echo ${OPTARG}|tr ',' ' ')";;
     P) VPRODUCT="VERSION.${OPTARG}" ;;
     c) CREDENTIALS=${OPTARG};;
     s) SSHKEY=${OPTARG};;
+    g) TEACONF=${OPTARG};;
     v) VERBOSE="-v";;
     t) TEST="-t";;
     n) OBS_TEST_PROJECT="-n ${OPTARG}";;
@@ -93,8 +101,22 @@ if [ "${SSHKEY}" != "" ]; then
     echo "ERROR: File ${SSHKEY}.pub does not exist!"
     exit 1
   fi
+  # Hint: every key provided is mounted as is_rsa, also when it is not an RSA key. It works also for other key types
   MOUNTSSHKEY="--mount type=bind,source=${SSHKEY},target=/root/.ssh/id_rsa --mount type=bind,source=${SSHKEY}.pub,target=/root/.ssh/id_rsa.pub"
   USESSHKEY="-s /root/.ssh/id_rsa"
+  SSHDIR=$(dirname ${SSHKEY})
+  if [ -f ${SSHDIR}/known_hosts ]; then
+    MOUNTSSHKEY="$MOUNTSSHKEY --mount type=bind,source=${SSHDIR}/known_hosts,target=/root/.ssh/known_hosts"
+  fi
+fi
+
+if [ "${TEACONF}" != "" ]; then
+  if [ ! -f ${TEACONF} ]; then
+    echo "ERROR: File ${TEACONF} does not exist!"
+    exit 1
+  fi
+  MOUNTTEA="--mount type=bind,source=${TEACONF},target=/root/.config/tea/config.yml"
+  USETEACONF="-g /root/.config/tea/config.yml"
 fi
 
 COOKIEJAR=$(mktemp /tmp/osc_cookiejar.XXXXXX)
@@ -102,7 +124,7 @@ MOUNTCOOKIEJAR="--mount type=bind,source=${COOKIEJAR},target=/root/.osc_cookieja
 
 INITIAL_CMD="/manager/susemanager-utils/testing/automation/initial-objects.sh"
 CHOWN_CMD="/manager/susemanager-utils/testing/automation/chown-objects.sh $(id -u) $(id -g)"
-docker pull $REGISTRY/$PUSH2OBS_CONTAINER
+$EXECUTOR pull $REGISTRY/$PUSH2OBS_CONTAINER
 
 test -n "$PACKAGES" || {
     PACKAGES=$(ls "$GITROOT"/rel-eng/packages/)
@@ -115,30 +137,30 @@ PIDS=""
 for p in ${PACKAGES};do
     pkg_dir=$(cat rel-eng/packages/${p} | tr -s " " | cut -d" " -f 2)
     CHOWN_CMD="${CHOWN_CMD}; chown -f -R $(id -u):$(id -g) /manager/$pkg_dir"
-    CMD="/manager/susemanager-utils/testing/docker/scripts/push-to-obs.sh -d '${DESTINATIONS}' -c /tmp/.oscrc ${USESSHKEY} -p '${p}' ${VERBOSE} ${TEST} ${OBS_TEST_PROJECT} ${EXTRA_OPTS}"
+    CMD="/manager/susemanager-utils/testing/docker/scripts/push-to-obs.sh -d '${DESTINATIONS}' -c /tmp/.oscrc ${USESSHKEY} ${USETEACONF} -p '${p}' ${VERBOSE} ${TEST} ${OBS_TEST_PROJECT} ${EXTRA_OPTS}"
     if [ "$PARALLEL_BUILD" == "TRUE" ];then
         echo "Building ${p} in parallel"
-        docker run --rm=true -v ${GITROOT}:/manager -v /srv/mirror:/srv/mirror --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc ${MOUNTCOOKIEJAR} ${MOUNTSSHKEY} ${REGISTRY}/${PUSH2OBS_CONTAINER} /bin/bash -c "${INITIAL_CMD};${CMD};RET=\${?};${CHOWN_CMD} && exit \${RET}" 2>&1 > ${GITROOT}/logs/${p}.log &
+        $EXECUTOR run --rm=true -v ${GITROOT}:/manager ${EXECUTOR_OPTS} --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc ${MOUNTCOOKIEJAR} ${MOUNTSSHKEY} ${MOUNTTEA} ${REGISTRY}/${PUSH2OBS_CONTAINER} /bin/bash -c "${INITIAL_CMD};${CMD};RET=\${?};${CHOWN_CMD} && exit \${RET}" 2>&1 > ${GITROOT}/logs/${p}.log &
         pid=${!}
         PIDS="${PIDS} ${pid}"
         ln -s ${GITROOT}/logs/${p}.log ${GITROOT}/logs/${pid}.log
     else
         echo "Building ${p}"
-        docker run --rm=true -v ${GITROOT}:/manager -v /srv/mirror:/srv/mirror --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc ${MOUNTCOOKIEJAR} ${MOUNTSSHKEY} ${REGISTRY}/${PUSH2OBS_CONTAINER} /bin/bash -c "${INITIAL_CMD};${CMD};RET=\${?};${CHOWN_CMD} && exit \${RET}" | tee ${GITROOT}/logs/${p}.log
+        $EXECUTOR run --rm=true -v ${GITROOT}:/manager ${EXECUTOR_OPTS} --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc ${MOUNTCOOKIEJAR} ${MOUNTSSHKEY} ${MOUNTTEA} ${REGISTRY}/${PUSH2OBS_CONTAINER} /bin/bash -c "${INITIAL_CMD};${CMD};RET=\${?};${CHOWN_CMD} && exit \${RET}" | tee ${GITROOT}/logs/${p}.log
     fi
 done
 
 for p in ${IMAGES};do
-    CMD="/manager/susemanager-utils/testing/docker/scripts/push-to-obs.sh -d '${DESTINATIONS}' -c /tmp/.oscrc  ${USESSHKEY} -p '${p}' ${VERBOSE} ${TEST} ${OBS_TEST_PROJECT} ${EXTRA_OPTS}"
+    CMD="/manager/susemanager-utils/testing/docker/scripts/push-to-obs.sh -d '${DESTINATIONS}' -c /tmp/.oscrc  ${USESSHKEY} ${USETEACONF} -p '${p}' ${VERBOSE} ${TEST} ${OBS_TEST_PROJECT} ${EXTRA_OPTS}"
     if [ "$PARALLEL_BUILD" == "TRUE" ];then
         echo "Building ${p} in parallel"
-        docker run --rm=true -v ${GITROOT}:/manager -v /srv/mirror:/srv/mirror --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc ${MOUNTSSHKEY} ${REGISTRY}/${PUSH2OBS_CONTAINER} /bin/bash -c "${INITIAL_CMD};${CMD};RET=\${?} && exit \${RET}" 2>&1 > ${GITROOT}/logs/${p}.log &
+        $EXECUTOR run --rm=true -v ${GITROOT}:/manager ${EXECUTOR_OPTS} --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc ${MOUNTSSHKEY} ${MOUNTTEA} ${REGISTRY}/${PUSH2OBS_CONTAINER} /bin/bash -c "${INITIAL_CMD};${CMD};RET=\${?} && exit \${RET}" 2>&1 > ${GITROOT}/logs/${p}.log &
         pid=${!}
         PIDS="${PIDS} ${pid}"
         ln -s ${GITROOT}/logs/${p}.log ${GITROOT}/logs/${pid}.log
     else
         echo "Building ${p}"
-        docker run --rm=true -v ${GITROOT}:/manager -v /srv/mirror:/srv/mirror --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc ${MOUNTCOOKIEJAR} ${MOUNTSSHKEY} ${REGISTRY}/${PUSH2OBS_CONTAINER} /bin/bash -c "${INITIAL_CMD};${CMD};RET=\${?} && exit \${RET}" | tee ${GITROOT}/logs/${p}.log
+        $EXECUTOR run --rm=true -v ${GITROOT}:/manager ${EXECUTOR_OPTS} --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc ${MOUNTCOOKIEJAR} ${MOUNTSSHKEY} ${MOUNTTEA} ${REGISTRY}/${PUSH2OBS_CONTAINER} /bin/bash -c "${INITIAL_CMD};${CMD};RET=\${?} && exit \${RET}" | tee ${GITROOT}/logs/${p}.log
     fi
 done
 
