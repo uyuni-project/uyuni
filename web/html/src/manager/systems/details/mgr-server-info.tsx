@@ -6,7 +6,7 @@ import { TopPanel } from "components/panels/TopPanel";
 
 import Network from "utils/network";
 
-// See java/code/src/com/suse/manager/webui/templates/systems/mgr-server.jade
+// See java/core/src/main/resources/com/suse/manager/webui/templates/systems/mgr-server.jade
 type Props = {
   serverId: string;
   name: string;

@@ -8,7 +8,7 @@ import { Loading } from "components/utils/loading/Loading";
 
 import Network from "utils/network";
 
-// See java/code/src/com/suse/manager/webui/templates/minion/ptf-overview.jade
+// See java/core/src/main/resources/com/suse/manager/webui/templates/minion/ptf-overview.jade
 declare global {
   interface Window {
     serverId?: any;

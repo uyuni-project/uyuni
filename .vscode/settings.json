@@ -28,8 +28,6 @@
   "java.project.referencedLibraries": [
     "java/lib/*.jar", "java/buildconf/ivy/repository/suse/*jar"
   ],
-  "java.project.outputPath": "java/code/out/",
-  "java.project.sourcePaths": ["java/code", "branding/java/code"],
   "editor.defaultFormatter": "dbaeumer.vscode-eslint",
   "editor.formatOnSave": true,
   "ant.home": "/usr/share/ant",

@@ -1,0 +1,189 @@
+#!/bin/bash
+#
+# Copyright (c) 2025 SUSE LLC
+#
+# This software is licensed to you under the GNU General Public License,
+# version 2 (GPLv2). There is NO WARRANTY for this software, express or
+# implied, including the implied warranties of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+# along with this software; if not, see
+# http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+#
+
+# Defaults
+CATEGORY="src"
+TYPE="main/java"
+OPERATION="git mv"
+DRY_RUN=false
+SKIP_CONFIRMATION=false
+SUPPRESS_PATH=false
+
+INCLUDE_REGEX="^.*$"
+EXCLUDE_REGEX="^$"
+
+function move_file() {
+    local PREFIX=""
+    if [[ $DRY_RUN == true ]]; then
+        PREFIX="echo"
+    fi
+
+    local FILE=$1
+    if [[ $SUPPRESS_PATH == true ]]; then
+        FILE=$(basename "$1")
+    fi
+
+    local SOURCE=${INPUT_DIR%/}/$1
+    local DESTINATION=${OUTPUT_DIR%/}/$CATEGORY/$TYPE/$FILE
+
+    eval "$PREFIX" mkdir -p "$(dirname "$DESTINATION")"
+    eval "$PREFIX" "$OPERATION" "$SOURCE" "$DESTINATION"
+}
+
+function usage() {
+    echo "Usage: $0 [OPTION]... source [destination]"
+    echo "Restructure the codebase in the source folder to match the maven standard layout."
+    echo
+    echo "    -p, --copy                copy the files to the new directory instead of moving them with git mv"
+    echo
+    echo "    -c, --category CATEGORY   maven category folder for the files [default: src]"
+    echo "    -t, --type TYPE           type of sources for the files [default: main/java]"
+    echo
+    echo "    -i, --include REGEX       regular expression to match the files to include [default: all files]"
+    echo "    -e, --exclude REGEX       regular expression to match the files to exclude [default: none]"
+    echo "    -s, --suppress-path       do not replicate source folder structure [default: false]"
+    echo
+    echo "    -d, --dry-run             print the commands instead of executing them"
+    echo "    -y, --yes                 do not ask for confirmation"
+    echo
+    echo "    -h, --help                display this help and exit"
+    echo
+    exit 0
+}
+
+function argument_required() {
+    echo "Error: Argument for $2 is missing" >&2
+    echo "Try '$1 --help' for more information."
+    exit 1
+}
+
+export -f move_file
+
+# Argument parsing
+POSITIONAL=()
+while (("$#")); do
+    case "$1" in
+    -p | --copy)
+        OPERATION="cp"
+        shift
+        ;;
+    -c | --category)
+        if [ -n "$2" ] && [ "${2:0:1}" != "-" ]; then
+            CATEGORY=$2
+            shift 2
+        else
+            argument_required "$0" "$1"
+        fi
+        ;;
+    -t | --type)
+        if [ -n "$2" ] && [ "${2:0:1}" != "-" ]; then
+            TYPE=$2
+            shift 2
+        else
+            argument_required "$0" "$1"
+        fi
+        ;;
+    -i | --include)
+        if [ -n "$2" ] && [ "${2:0:1}" != "-" ]; then
+            INCLUDE_REGEX=$2
+            shift 2
+        else
+            argument_required "$0" "$1"
+        fi
+        ;;
+    -e | --exclude)
+        if [ -n "$2" ] && [ "${2:0:1}" != "-" ]; then
+            EXCLUDE_REGEX=$2
+            shift 2
+        else
+            argument_required "$0" "$1"
+        fi
+        ;;
+    -s | --suppress-path)
+        SUPPRESS_PATH=true
+        shift
+        ;;
+    -d | --dry-run)
+        DRY_RUN=true
+        shift
+        ;;
+    -y | --yes)
+        SKIP_CONFIRMATION=true
+        shift
+        ;;
+    -h | --help)
+        usage
+        ;;
+    -*) # unsupported flags
+        echo "Error: Unsupported flag $1" >&2
+        echo "Try '$0 --help' for more information."
+        exit 1
+        ;;
+    *) # preserve positional arguments
+        POSITIONAL+=("$1")
+        shift
+        ;;
+    esac
+done
+
+set -- "${POSITIONAL[@]}" # restore positional parameters
+
+if [[ "$1" == "" ]]; then
+    echo "Missing required input folder"
+    echo "Try '$0 --help' for more information."
+    exit 1
+fi
+
+if [[ ! -d "$1" ]]; then
+    echo "Directory $1 does not exists"
+    exit 1
+fi
+
+if [[ "$2" != "" ]]; then
+    OUTPUT_DIR=$2
+else
+    OUTPUT_DIR=$(pwd)
+fi
+
+INPUT_DIR=$1
+
+# Main
+
+if [[ $SKIP_CONFIRMATION == false ]]; then
+    echo "Refactoring sources to maven standard with the following configuration: "
+    echo "    Source           : $(realpath "$INPUT_DIR")"
+    echo "    Destination      : $(realpath -m "$OUTPUT_DIR")"
+    echo "    Category         : $CATEGORY"
+    echo "    Type of sources  : $TYPE"
+    echo "    Inclusion regex  : $INCLUDE_REGEX"
+    echo "    Exclusion regex  : $EXCLUDE_REGEX"
+    echo "    Suppress path    : $SUPPRESS_PATH"
+    echo "    Dry run          : $DRY_RUN"
+    echo
+
+    while true; do
+        read -r -p "Do you wish to continue? " yn
+        case $yn in
+        [Yy][Ee][Ss] | [Yy])
+            break
+            ;;
+        *)
+            exit
+            ;;
+        esac
+    done
+fi
+
+export INPUT_DIR OUTPUT_DIR CATEGORY TYPE SUPPRESS_PATH DRY_RUN OPERATION
+
+find "$INPUT_DIR" -type f | grep "$INCLUDE_REGEX" | grep -v "$EXCLUDE_REGEX" | xargs -I{} realpath --relative-to "$INPUT_DIR" {} |
+    xargs -I{} bash -c "move_file \$0" {}

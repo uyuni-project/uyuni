@@ -23,20 +23,20 @@ artifacts:
   - artifact: byte-buddy
     package: byte-buddy
     repository: Leap_sle
-    jar: byte-buddy.jar
+    jar: byte-buddy\.jar
   - artifact: byte-buddy-dep
     package: byte-buddy
     repository: Leap_sle
-    jar: byte-buddy-dep.jar
+    jar: byte-buddy-dep\.jar
   - artifact: c3p0
     repository: Leap
   - artifact: cglib
-    jar: cglib.jar
+    jar: cglib\.jar
     repository: Leap
   - artifact: classmate
     repository: Leap
   - artifact: javax.mail
-    jar: javax.mail.jar
+    jar: javax\.mail\.jar
     package: javamail
     repository: Leap_sle
   - artifact: commons-beanutils
@@ -57,10 +57,10 @@ artifacts:
   - artifact: commons-discovery
     package: jakarta-commons-discovery
     repository: Leap
-  - artifact: apache-commons-fileupload2-core
+  - artifact: commons-fileupload2-core
     package: apache-commons-fileupload2-core
     repository: Uyuni_Other
-  - artifact: apache-commons-fileupload2-javax
+  - artifact: commons-fileupload2-javax
     package: apache-commons-fileupload2-javax
     repository: Uyuni_Other
   - artifact: commons-io
@@ -93,11 +93,12 @@ artifacts:
   - artifact: ehcache-core
     package: ehcache
     repository: Uyuni_Other
-  - artifact: geronimo-jta-1.1-api
+  - artifact: geronimo-jta_1.1_spec
     package: geronimo-jta-1_1-api
     repository: Leap
-  - artifact: google-gson
-    jar: gson.jar
+  - artifact: gson
+    package: google-gson
+    jar: gson\.jar
     repository: Leap
   - artifact: hibernate-c3p0
     package: hibernate5-c3p0
@@ -129,14 +130,14 @@ artifacts:
     repository: Leap_sle
   - artifact: httpcore
     package: httpcomponents-core
-    jar: httpcore.jar
+    jar: httpcore\.jar
     repository: Leap_sle
   - artifact: httpcore-nio
     package: httpcomponents-core
     repository: Leap_sle
   - artifact: jade4j
     repository: Uyuni_Other
-  - artifact: jakarta-persistence-api
+  - artifact: jakarta.persistence-api
     package: jpa-api
     repository: Uyuni_Other
   - artifact: java-saml
@@ -159,15 +160,12 @@ artifacts:
   - artifact: jose4j
     repository: Uyuni_Other
   - artifact: log4j-core
-    jar: log4j-core.jar
     package: log4j
     repository: Leap
   - artifact: log4j-api
-    jar: log4j-api.jar
     package: log4j
     repository: Leap
   - artifact: log4j-slf4j-impl
-    jar: log4j-slf4j-impl.jar
     package: log4j-slf4j
     repository: Leap
   - artifact: jsch
@@ -180,26 +178,26 @@ artifacts:
     repository: Leap_sle
   - artifact: netty-codec
     package: netty
-    jar: netty-codec.jar
+    jar: netty-codec\.jar
     repository: Leap_sle
   - artifact: netty-common
     package: netty
     repository: Leap_sle
   - artifact: netty-handler
     package: netty
-    jar: netty-handler.jar
+    jar: netty-handler\.jar
     repository: Leap_sle
   - artifact: netty-resolver
     package: netty
-    jar: netty-resolver.jar
+    jar: netty-resolver\.jar
     repository: Leap_sle
   - artifact: netty-transport
     package: netty
-    jar: netty-transport.jar
+    jar: netty-transport\.jar
     repository: Leap_sle
   - artifact: netty-transport-native-unix-common
     package: netty
-    jar: netty-transport-native-unix-common.jar
+    jar: netty-transport-native-unix-common\.jar
     repository: Leap_sle
   - artifact: netty-transport-native-unix-common-linux-x86_64
     package: netty
@@ -220,7 +218,8 @@ artifacts:
     repository: Leap
   - artifact: pgjdbc-ng
     repository: Uyuni_Other
-  - artifact: postgresql-jdbc
+  - artifact: postgresql
+    package: postgresql-jdbc
     repository: Leap
   - artifact: quartz
     repository: Uyuni_Other
@@ -289,37 +288,40 @@ artifacts:
   - artifact: woodstox-core-asl
     package: woodstox
     repository: Uyuni_Other
-  - artifact: xalan-j2
-    jar: xalan-j2.jar
-    repository: Leap_sle
-  - artifact: xalan-j2-serializer
+  - artifact: xalan
     package: xalan-j2
+    jar: xalan-j2\.jar
     repository: Leap_sle
-  - artifact: xerces-j2
+  - artifact: serializer
+    package: xalan-j2
+    jar: xalan-j2-serializer\.jar
+    repository: Leap_sle
+  - artifact: xercesImpl
+    package: xerces-j2
     repository: Leap
   - artifact: xmlsec
     repository: Uyuni_Other
   - artifact: velocity-engine-core
     repository: Uyuni_Other
 
-  - artifact: tomcat-el-3.0-api
+  - artifact: tomcat-el-api
     package: tomcat-el-3_0-api
     repository: Leap
-  - artifact: tomcat-jsp-2.3-api
+  - artifact: tomcat-jsp-api
     package: tomcat-jsp-2_3-api
     repository: Leap
   - artifact: tomcat-juli
     package: tomcat-lib
     repository: Leap
-  - artifact: tomcat-servlet-4.0-api
+  - artifact: tomcat-servlet-api
     package: tomcat-servlet-4_0-api
     repository: Leap
-
-  - artifact: hamcrest-core
+  - artifact: tomcat-websocket-api
+    jar: websocket-api\.jar
+    package: tomcat-lib
     repository: Leap
-  - artifact: hamcrest-library
-    package: hamcrest
-    jar: hamcrest/library
+
+  - artifact: hamcrest
     repository: Leap_sle
   - artifact: junit
     repository: Leap
@@ -327,20 +329,22 @@ artifacts:
     repository: Uyuni_Other
   - artifact: jetty-util
     repository: Leap_sle
-  - artifact: glassfish-jaxb-api
+  - artifact: jaxb-api
+    package: glassfish-jaxb-api
     repository: Leap
   - artifact: jaxb-runtime
     package: glassfish-jaxb-runtime
-    repository: Leap 
+    repository: Leap
   - artifact: jaxb-impl
     package: glassfish-jaxb-runtime
     repository: Leap
   - artifact: txw2
     package: glassfish-jaxb-txw2
     repository: Leap
-  - artifact: glassfish-activation
+  - artifact: javax.activation
+    package: glassfish-activation
     repository: Leap
   - artifact: istack-commons-runtime
     repository: Leap
   - artifact: stax-ex
-    repository: Leap 
+    repository: Leap

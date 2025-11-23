@@ -575,7 +575,7 @@ install -m 644 build/webapp/rhnjava/WEB-INF/lib/rhn-test.jar %{buildroot}%{_data
 cp -a build/classes/com/redhat/rhn/common/conf/test/conf %{buildroot}%{_datadir}/rhn/unit-tests/
 %endif
 install -m 644 conf/log4j2.xml.taskomatic %{buildroot}%{_datadir}/rhn/classes/log4j2.xml
-install -m 644 code/src/ehcache.xml %{buildroot}%{_datadir}/rhn/classes/ehcache.xml
+install -m 644 core/src/main/resources/ehcache.xml %{buildroot}%{_datadir}/rhn/classes/ehcache.xml
 
 install -d -m 755 %{buildroot}%{spacewalksnippetsdir}
 install -m 644 conf/cobbler/snippets/default_motd  %{buildroot}%{spacewalksnippetsdir}/default_motd
