@@ -12073,43 +12073,43 @@ Ak chcete túto situáciu napraviť, pridajte prihlasovacie údaje SCC &lt;a hre
       </trans-unit>
       <trans-unit id="event.rbsmigrationfaileddetails" xml:space="preserve">
         <source>Failed to migrate the branch server. See log files for details.</source>
-        <target state="new"/>
+        <target state="translated">Migrácia servera pobočky sa nepodarila. Podrobnosti nájdete v súbore záznamu.</target>
       </trans-unit>
       <trans-unit id="event.proxymigrationfinished" xml:space="preserve">
         <source>Proxy migration: finished</source>
-        <target state="new"/>
+        <target state="translated">Migrácia proxy: dokončená</target>
       </trans-unit>
       <trans-unit id="event.proxymigrationfinisheddetails" xml:space="preserve">
         <source>All data were migrated. Proceed with reinstallation of the proxy host.</source>
-        <target state="new"/>
+        <target state="translated">Všetky dáta boli prenesené. Pokračujte v reinštalácii proxy hostiteľa.</target>
       </trans-unit>
       <trans-unit id="event.pxemigrationnoentries" xml:space="preserve">
         <source>No PXE entries found in a backup configuration for branch {0}</source>
-        <target state="new"/>
+        <target state="translated">V záložnej konfigurácii pre pobočku {0} neboli nájdené žiadne položky PXE</target>
       </trans-unit>
       <trans-unit id="event.pxemigrationlost" xml:space="preserve">
         <source>Lost and found: system with HW address {0} in branch {1} was not found as registered system.</source>
-        <target state="new"/>
+        <target state="translated">Stratené a nájdené: systém s HW adresou {0} na pobočke {1} nebol nájdený ako registrovaný systém.</target>
       </trans-unit>
       <trans-unit id="event.pxemigrationduplicate" xml:space="preserve">
         <source>Multiple minions found with the same MAC address {0}. Cannot choose one, ignoring</source>
-        <target state="new"/>
+        <target state="translated">Nájdených viacero klientov minion s rovnakou MAC adresou {0}. Nie je možné vybrať jeden, ignoruje sa</target>
       </trans-unit>
       <trans-unit id="event.pxemigrationnogroup" xml:space="preserve">
         <source>Not processing minion '{0}' as it is not part of a branch group.</source>
-        <target state="new"/>
+        <target state="translated">Neanalyzuje sa minion '{0}', pretože nie je súčasťou skupiny pobočky.</target>
       </trans-unit>
       <trans-unit id="event.pxemigrationnoimage" xml:space="preserve">
         <source>Image not found: system '{0}' is using unknown image '{1}'. Using default boot image.</source>
-        <target state="new"/>
+        <target state="translated">Obraz sa nenašiel: systém '{0}' používa neznámy obraz '{1}'. Použitie predvoleného obrazu pre štart systému.</target>
       </trans-unit>
       <trans-unit id="event.pxemigrationsaltboot" xml:space="preserve">
         <source>Failed to create Saltboot system: {0}</source>
-        <target state="new"/>
+        <target state="translated">Nepodarilo sa vytvoriť systém Saltboot: {0}</target>
       </trans-unit>
       <trans-unit id="rbsmigration.lostfounddescription" xml:space="preserve">
         <source>Collection of systems not registered, but present in branch {0} pxe entries.</source>
-        <target state="new"/>
+        <target state="translated">Zoznam systémov, ktoré nie sú registrované, ale sú prítomné v pxe záznamoch pobočky {0}.</target>
       </trans-unit>
     </body>
   </file>
