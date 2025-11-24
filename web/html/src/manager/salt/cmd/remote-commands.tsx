@@ -4,6 +4,7 @@ import SpaRenderer from "core/spa/spa-renderer";
 
 import { Button } from "components/buttons";
 import { TopPanel } from "components/panels/TopPanel";
+import { DEPRECATED_onClick } from "components/utils";
 
 type MinionResultViewProps = {
   id?: any;
@@ -44,7 +45,7 @@ class MinionResultView extends Component<MinionResultViewProps, MinionResultView
         <div
           id={id}
           className="panel-heading"
-          onClick={this.onClick}
+          {...DEPRECATED_onClick(this.onClick)}
           style={props.result ? { cursor: "pointer" } : { cursor: "default" }}
         >
           <span>{props.label ? props.label : id}</span>

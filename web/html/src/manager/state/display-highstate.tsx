@@ -1,5 +1,7 @@
 import { type ReactNode, Component, useState } from "react";
 
+import { DEPRECATED_onClick } from "components/utils";
+
 import HighstateSummary from "./highstate-summary";
 
 function MinionHighstateSingle({ minion }: { minion: { id: number; name: string } }) {
@@ -18,9 +20,9 @@ function MinionHighstate({ minion }: { minion: { id: number; name: string } }) {
     <div className="panel panel-default" style={{ marginBottom: 10 }}>
       <div
         className="panel-heading"
-        onClick={() => {
+        {...DEPRECATED_onClick(() => {
           setShow(!show);
-        }}
+        })}
         style={{ cursor: "pointer" }}
       >
         <div className="row">

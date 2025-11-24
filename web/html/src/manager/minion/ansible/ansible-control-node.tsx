@@ -4,6 +4,7 @@ import SpaRenderer from "core/spa/spa-renderer";
 
 import { Messages, Utils } from "components/messages/messages";
 import { Panel } from "components/panels/Panel";
+import { DEPRECATED_onClick } from "components/utils";
 import { Loading } from "components/utils/loading/Loading";
 
 import Network from "utils/network";
@@ -185,7 +186,7 @@ export class AnsibleControlNode extends Component<PropsType, StateType> {
                     />
                   ) : (
                     <div className="d-block" key={p.id}>
-                      <pre className="pointer" onClick={() => this.setState({ editPlaybookPath: p })}>
+                      <pre className="pointer" {...DEPRECATED_onClick(() => this.setState({ editPlaybookPath: p }))}>
                         {p.path}
                         <i className="fa fa-edit pull-right" data-bs-toggle="tooltip" title="Edit" />
                       </pre>
@@ -218,7 +219,7 @@ export class AnsibleControlNode extends Component<PropsType, StateType> {
                     />
                   ) : (
                     <div className="d-block" key={p.id}>
-                      <pre className="pointer" onClick={() => this.setState({ editInventoryPath: p })}>
+                      <pre className="pointer" {...DEPRECATED_onClick(() => this.setState({ editInventoryPath: p }))}>
                         {p.path}
                         <i className="fa fa-edit pull-right" data-bs-toggle="tooltip" title="Edit" />
                       </pre>

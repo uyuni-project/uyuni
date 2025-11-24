@@ -33,5 +33,3 @@ export function mapUpdateEnvironmentRequest(environment, projectId) {
 
   return environmentRequest;
 }
-
-export function addEnvironmentAction() {}

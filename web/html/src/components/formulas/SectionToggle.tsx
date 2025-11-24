@@ -1,5 +1,7 @@
 import type { ReactNode } from "react";
 
+import { DEPRECATED_onClick } from "components/utils";
+
 type Props = {
   index?: any;
   isVisible: (index: any) => boolean;
@@ -17,7 +19,7 @@ const SectionToggle = (props: Props) => {
   };
 
   return (
-    <span onClick={() => toggleSection()}>
+    <span {...DEPRECATED_onClick(() => toggleSection())}>
       <i
         className={"fa " + (props.isVisible(props.index) ? "fa-angle-up" : "fa-angle-down")}
         title={t("Toggle section visibility")}

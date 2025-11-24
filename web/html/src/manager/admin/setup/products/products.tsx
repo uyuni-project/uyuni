@@ -15,6 +15,7 @@ import { SectionToolbar } from "components/section-toolbar/section-toolbar";
 import { CustomDataHandler } from "components/table/CustomDataHandler";
 import { SearchField } from "components/table/SearchField";
 import { Toggler } from "components/toggler";
+import { DEPRECATED_onClick } from "components/utils";
 
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network from "utils/network";
@@ -862,7 +863,7 @@ class CheckListItem extends Component<CheckListItemProps, CheckListItemState> {
       showNestedDataIconContent = (
         <i
           className={"fa " + openSubListIconClass + " fa-1-5x pointer product-hover"}
-          onClick={() => this.props.bypassProps.handleVisibleSublist(currentItem.identifier)}
+          {...DEPRECATED_onClick(() => this.props.bypassProps.handleVisibleSublist(currentItem.identifier))}
         />
       );
     }
@@ -875,7 +876,10 @@ class CheckListItem extends Component<CheckListItemProps, CheckListItemState> {
       hoverableDescriptionClass = "product-hover pointer";
     }
     const productDescriptionContent = (
-      <span className={"product-description " + hoverableDescriptionClass} onClick={handleDescriptionClick}>
+      <span
+        className={"product-description " + hoverableDescriptionClass}
+        {...DEPRECATED_onClick(handleDescriptionClick)}
+      >
         {currentItem.label}&nbsp;
         {currentItem.recommended ? (
           <span className="recommended-tag" title={"This extension is recommended"}>
