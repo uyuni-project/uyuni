@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-11-21 10:49+0100\n"
-"PO-Revision-Date: 2025-11-20 05:04+0000\n"
+"PO-Revision-Date: 2025-11-24 05:04+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/zh_CN/>\n"
 "Language: zh_CN\n"
@@ -5169,11 +5169,11 @@ msgstr "完整路径"
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:145
 msgid "Custom Inventory"
-msgstr "自定义库存"
+msgstr "自定义清单"
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:159
 msgid "Inventory file empty."
-msgstr "库存文件为空。"
+msgstr "清单文件为空。"
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:166
 msgid "Registered Systems"
@@ -5198,7 +5198,7 @@ msgstr "加载数据时出错。请查看服务器日志。"
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:167
 msgid "Ansible Control Node Configuration: add paths for Playbook discovery and Inventory files introspection."
-msgstr "Ansible 控制节点配置：添加用于剧本发现和库存文件自检的路径。"
+msgstr "Ansible 控制节点配置：添加用于剧本发现和清单文件自检的路径。"
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:174
 msgid "Playbook Directories"
@@ -5214,11 +5214,11 @@ msgstr "例如 /srv/playbooks"
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:207
 msgid "Inventory Files"
-msgstr "库存文件"
+msgstr "清单文件"
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:230
 msgid "Add an Inventory file"
-msgstr "添加库存文件"
+msgstr "添加清单文件"
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:233
 msgid "e.g., /etc/ansible/testing/hosts"
@@ -5257,7 +5257,7 @@ msgstr "安排剧本的执行"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:165
 msgid "Inventory Path"
-msgstr "库存路径"
+msgstr "清单路径"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:179
 msgid "Flush Ansible fact cache"
@@ -5265,7 +5265,7 @@ msgstr "刷新 Ansible 事实缓存"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:180
 msgid "Clear the fact cache for every host in inventory"
-msgstr "为正在库存的每个主机清除事实缓存"
+msgstr "为清单中的的每个主机清除事实缓存"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:188
 msgid "Playbook Content"
@@ -5656,7 +5656,7 @@ msgstr "应用"
 #: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:18
 #: ../html/src/manager/notifications/notifications-list.tsx:145
 msgid "Summary"
-msgstr "摘要"
+msgstr "总结"
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:25
 msgid "Install Program Temporary Fixes (PTFs)"
@@ -6019,7 +6019,7 @@ msgstr "剧本路径"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:216
 msgid "Inventory path"
-msgstr "库存路径"
+msgstr "清单路径"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:220
 msgid "Flush fact cache"
@@ -6141,7 +6141,7 @@ msgstr "剧本路径："
 
 #: ../html/src/manager/recurring/recurring-playbook-picker.tsx:85
 msgid "Inventory path:"
-msgstr "库存路径："
+msgstr "清单路径："
 
 #: ../html/src/manager/recurring/recurring-playbook-picker.tsx:91
 msgid "Flush fact cache:"
