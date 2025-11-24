@@ -39,12 +39,8 @@ Package that contains the parent POM used by all %{productprettyname} Maven comp
 %prep
 %setup -q
 
-# Disable the modules as they are added only to streamline tito tagging
-%pom_disable_module '../uyuni-java-common'
-%pom_disable_module '../coco-attestation'
-
 %build
-%{mvn_build} -j
+%{mvn_build} -j -- --non-recursive
 
 %install
 %{mvn_install}
