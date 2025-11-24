@@ -128,11 +128,11 @@ $EXECUTOR pull $REGISTRY/$PUSH2OBS_CONTAINER
 
 test -n "$PACKAGES" || {
     PACKAGES=$(ls "$GITROOT"/rel-eng/packages/)
-    IMAGES=$(cd "$GITROOT"/containers; ls -d *-{image,helm})
 }
 echo "Starting building and submission at $(date)"
 date
 PIDS=""
+
 [ -d ${GITROOT}/logs ] || mkdir ${GITROOT}/logs
 for p in ${PACKAGES};do
     pkg_dir=$(cat rel-eng/packages/${p} | tr -s " " | cut -d" " -f 2)
@@ -147,20 +147,6 @@ for p in ${PACKAGES};do
     else
         echo "Building ${p}"
         $EXECUTOR run --rm=true -v ${GITROOT}:/manager ${EXECUTOR_OPTS} --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc ${MOUNTCOOKIEJAR} ${MOUNTSSHKEY} ${MOUNTTEA} ${REGISTRY}/${PUSH2OBS_CONTAINER} /bin/bash -c "${INITIAL_CMD};${CMD};RET=\${?};${CHOWN_CMD} && exit \${RET}" | tee ${GITROOT}/logs/${p}.log
-    fi
-done
-
-for p in ${IMAGES};do
-    CMD="/manager/susemanager-utils/testing/docker/scripts/push-to-obs.sh -d '${DESTINATIONS}' -c /tmp/.oscrc  ${USESSHKEY} ${USETEACONF} -p '${p}' ${VERBOSE} ${TEST} ${OBS_TEST_PROJECT} ${EXTRA_OPTS}"
-    if [ "$PARALLEL_BUILD" == "TRUE" ];then
-        echo "Building ${p} in parallel"
-        $EXECUTOR run --rm=true -v ${GITROOT}:/manager ${EXECUTOR_OPTS} --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc ${MOUNTSSHKEY} ${MOUNTTEA} ${REGISTRY}/${PUSH2OBS_CONTAINER} /bin/bash -c "${INITIAL_CMD};${CMD};RET=\${?} && exit \${RET}" 2>&1 > ${GITROOT}/logs/${p}.log &
-        pid=${!}
-        PIDS="${PIDS} ${pid}"
-        ln -s ${GITROOT}/logs/${p}.log ${GITROOT}/logs/${pid}.log
-    else
-        echo "Building ${p}"
-        $EXECUTOR run --rm=true -v ${GITROOT}:/manager ${EXECUTOR_OPTS} --mount type=bind,source=${CREDENTIALS},target=/tmp/.oscrc ${MOUNTCOOKIEJAR} ${MOUNTSSHKEY} ${MOUNTTEA} ${REGISTRY}/${PUSH2OBS_CONTAINER} /bin/bash -c "${INITIAL_CMD};${CMD};RET=\${?} && exit \${RET}" | tee ${GITROOT}/logs/${p}.log
     fi
 done
 
