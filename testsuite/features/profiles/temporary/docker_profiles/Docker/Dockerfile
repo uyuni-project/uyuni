@@ -1,4 +1,4 @@
-FROM registry.suse.de/suse/containers/bci-base/containers/suse/sle15:15.7
+FROM registry.mgr.suse.de/suse/sle15:15.7
 MAINTAINER Admin User "noemail@example.com"
 
 ARG repo
