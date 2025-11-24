@@ -68,6 +68,8 @@ public class PxtCookieManager {
         pxtCookie.setPath(DEFAULT_PATH);
         pxtCookie.setSecure(true);
 
+        pxtCookie.setHttpOnly(true);
+
         return pxtCookie;
     }
 
