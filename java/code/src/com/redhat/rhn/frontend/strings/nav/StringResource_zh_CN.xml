@@ -1222,12 +1222,12 @@
         </context-group>
         <target state="final">剧本</target>
       </trans-unit>
-      <trans-unit approved="yes" id="Inventories" xml:space="preserve">
+      <trans-unit approved="no" id="Inventories" xml:space="preserve">
         <source>Inventories</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu (system details)</context>
         </context-group>
-        <target state="final">库存</target>
+        <target state="translated">清单</target>
       </trans-unit>
       <trans-unit approved="yes" id="configchannel.nav.systems.appstream" xml:space="preserve">
         <source>AppStreams</source>
@@ -1304,13 +1304,13 @@
         </context-group>
         <target state="final">查看排名</target>
       </trans-unit>
-    <trans-unit id="Support" xml:space="preserve">
+      <trans-unit id="Support" xml:space="preserve">
         <source>Support</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="new"/>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
