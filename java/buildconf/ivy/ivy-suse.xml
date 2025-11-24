@@ -15,7 +15,7 @@
         <dependency org="suse" name="common" rev="2.1" />
         <dependency org="suse" name="stringprep" rev="1.1" />
         <dependency org="suse" name="saslprep" rev="1.1" />
-        <dependency org="suse" name="commons-beanutils" rev="1.9.4" />
+        <dependency org="suse" name="commons-beanutils" rev="1.11.0" />
         <dependency org="suse" name="commons-cli" rev="1.5.0" />
         <dependency org="suse" name="commons-codec" rev="1.16.1" />
         <dependency org="suse" name="commons-collections" rev="3.2.2" />
