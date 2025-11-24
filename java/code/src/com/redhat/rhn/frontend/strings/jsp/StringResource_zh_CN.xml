@@ -29505,12 +29505,12 @@ given channel.</source>
         </context-group>
         <target state="final">创建发行套件</target>
       </trans-unit>
-      <trans-unit approved="yes" id="system.event.inventory" xml:space="preserve">
+      <trans-unit approved="no" id="system.event.inventory" xml:space="preserve">
         <source>Inventory:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
-        <target state="final">库存：</target>
+        <target state="translated">清单：</target>
       </trans-unit>
       <trans-unit approved="yes" id="ansible_managed" xml:space="preserve">
         <source>Ansible Managed</source>
