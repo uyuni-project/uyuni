@@ -245,10 +245,11 @@ public class ProxyBackupEventAction implements MessageAction {
         ));
         FormulaFactory.saveGroupFormulaData(data, branchGroup, SALTBOOT_GROUP_FORMULA);
 
-        // Disable tftp and pxe formulas
+        // Disable vsftpd, tftp and pxe formulas
         List<String> branchFormulas = FormulaFactory.getFormulasByMinion(proxy);
         branchFormulas.remove("pxe");
         branchFormulas.remove("tftpd");
+        branchFormulas.remove("vsftpd");
         FormulaFactory.saveServerFormulas(proxy, branchFormulas);
         return branchId;
     }
