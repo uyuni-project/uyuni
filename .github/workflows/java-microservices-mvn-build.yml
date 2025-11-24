@@ -30,6 +30,14 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Build Java Microservices
+      - name: Install and verify uyuni-java-parent
         run: >
-          mvn -B --no-transfer-progress --file microservices/uyuni-java-parent/pom.xml verify checkstyle:check
+          mvn -B --no-transfer-progress --file microservices/uyuni-java-parent/pom.xml --non-recursive install checkstyle:check
+
+      - name: Install and verify uyuni-java-common
+        run: >
+          mvn -B --no-transfer-progress --file microservices/uyuni-java-common/pom.xml install checkstyle:check
+
+      - name: Install and verify coco-attestation
+        run: >
+          mvn -B --no-transfer-progress --file microservices/coco-attestation/pom.xml install checkstyle:check
