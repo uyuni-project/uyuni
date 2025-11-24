@@ -1,0 +1,14 @@
+[Unit]
+Description=Notify SUSE Manager about newly deployed image
+Requires=salt-minion.service
+After=salt-minion.service
+
+# only if there are no susemanager channels configured
+ConditionPathExists=!/etc/zypp/repos.d/susemanager:channels.repo
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/salt-call event.send suse/manager/image_deployed with_grains=True
+
+[Install]
+WantedBy=multi-user.target
