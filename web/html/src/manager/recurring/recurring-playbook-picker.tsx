@@ -4,10 +4,10 @@ import yaml from "js-yaml";
 
 import { AnsiblePathContent } from "manager/minion/ansible/ansible-path-content";
 
+import { AceEditor } from "components/ace-editor";
 import { Button } from "components/buttons";
 import { BootstrapPanel } from "components/panels";
 import { SectionToolbar } from "components/section-toolbar/section-toolbar";
-import { AceEditor } from "components/ace-editor";
 
 type PropsType = {
   minionServerId: number;
@@ -38,12 +38,12 @@ class RecurringPlaybookPicker extends Component<PropsType, StateType> {
   }
 
   loadVariables = () => {
-    const variables = `{\"vars\":${this.props.variables}}`;
+    const variables = `{"vars":${this.props.variables}}`;
     return yaml.dump(yaml.load(variables), {
-        quotingType: '"',
-        forceQuotes: true,
-      });
-  }
+      quotingType: '"',
+      forceQuotes: true,
+    });
+  };
 
   onEditPlaybook = () => {
     this.setState({
@@ -74,7 +74,7 @@ class RecurringPlaybookPicker extends Component<PropsType, StateType> {
         <AnsiblePathContent
           minionServerId={this.props.minionServerId}
           pathContentType="playbook"
-          recurringDetails={{fullPath: this.props.playbookPath, variables: this.props.variables}}
+          recurringDetails={{ fullPath: this.props.playbookPath, variables: this.props.variables }}
           isRecurring={true}
           onSelectPlaybook={this.onSelectPlaybook}
         />

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 type Props = {
   setExtraVars: (value: string) => void;
@@ -21,8 +21,8 @@ const ExtraVariable = (props: Props) => {
           <div className="d-grid">
             <h4 className="pull-left">{t("Additonal variables")}</h4>
             <p>
-              Use this free-form text field to define any additional variables that are not included in the
-              main vars section.
+              Use this free-form text field to define any additional variables that are not included in the main vars
+              section.
             </p>
             <small className="mb-4">
               <strong>Note:</strong> If any variable defined in the Additonal variables already exists in the main

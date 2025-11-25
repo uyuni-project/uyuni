@@ -20,7 +20,6 @@ import { PlaybookDetails } from "./accordion-path-content";
 import styles from "./Ansible.module.scss";
 import { AnsiblePath } from "./ansible-path-type";
 import EditAnsibleVarsModal from "./edit-ansible-vars-modal";
-import extraVar from "manager/minion/ansible/variables/extra-var";
 
 type SchedulePlaybookProps = {
   playbook: PlaybookDetails;
@@ -34,7 +33,13 @@ type PlaybookArgs = {
   flushCache: boolean;
 };
 
-export default function SchedulePlaybook({ playbook, onBack, onSelectPlaybook, isRecurring, recurringDetails }: SchedulePlaybookProps) {
+export default function SchedulePlaybook({
+  playbook,
+  onBack,
+  onSelectPlaybook,
+  isRecurring,
+  recurringDetails,
+}: SchedulePlaybookProps) {
   const [loading, setLoading] = useState(true);
   const [playbookContent, setPlaybookContent] = useState("");
   const [isTestMode, setIsTestMode] = useState(false);
@@ -42,7 +47,7 @@ export default function SchedulePlaybook({ playbook, onBack, onSelectPlaybook, i
   const [inventoryPath, setInventoryPath] = useState<ComboboxItem | null>(null);
   const [inventories, setInventories] = useState<string[]>([]);
   const [playbookArgs, setPlaybookArgs] = useState<PlaybookArgs>({ flushCache: false });
-  const [variables, setVariables] = useState<string>("")
+  const [variables, setVariables] = useState<string>("");
   const [actionChain, setActionChain] = useState<ActionChain | null>(null);
   const [datetime, setDatetime] = useState(localizedMoment());
   const defaultInventory = "-";
@@ -60,18 +65,18 @@ export default function SchedulePlaybook({ playbook, onBack, onSelectPlaybook, i
     };
 
     const getPlaybookContents = () => {
-        return Network.post("/rhn/manager/api/systems/details/ansible/paths/playbook-contents", {
-          pathId: playbook.path.id,
-          playbookRelPathStr: playbook.name,
+      return Network.post("/rhn/manager/api/systems/details/ansible/paths/playbook-contents", {
+        pathId: playbook.path.id,
+        playbookRelPathStr: playbook.name,
+      })
+        .then((res: JsonResult<string>) => (res.success ? res.data : Promise.reject(res)))
+        .then((res) => {
+          setPlaybookContent(res);
+          if (isRecurring && playbook.fullPath === recurringDetails.fullPath && recurringDetails.variables) {
+            mergePlaybookContent(res, "", recurringDetails.variables);
+          }
         })
-          .then((res: JsonResult<string>) => (res.success ? res.data : Promise.reject(res)))
-          .then((res) => {
-            setPlaybookContent(res);
-            if (isRecurring && playbook.fullPath === recurringDetails.fullPath) {
-              recurringDetails.variables && mergePlaybookContent(res, "", recurringDetails.variables);
-            }
-          })
-          .catch((res) => setMessages(res.messages?.flatMap(MsgUtils.error) || Network.responseErrorMessage(res)));
+        .catch((res) => setMessages(res.messages?.flatMap(MsgUtils.error) || Network.responseErrorMessage(res)));
     };
 
     Promise.all([getInventoryPaths(), getPlaybookContents()]).finally(() => setLoading(false));
@@ -95,7 +100,7 @@ export default function SchedulePlaybook({ playbook, onBack, onSelectPlaybook, i
 
   const updatePlaybookContent = (updatedVariables, extraVars) => {
     mergePlaybookContent(playbookContent, updatedVariables, extraVars);
-  }
+  };
 
   const mergePlaybookContent = (playbookContent, updatedVariables, extraVars) => {
     let mergedVars = { ...updatedVariables };
@@ -104,6 +109,8 @@ export default function SchedulePlaybook({ playbook, onBack, onSelectPlaybook, i
 
     if (typeof extraVarsObject === "object" && extraVarsObject !== null) {
       mergedVars = { ...updatedVariables, ...extraVarsObject };
+    } else {
+      mergedVars = { ...updatedVariables };
     }
     const parsed = yaml.load(playbookContent);
     if (Array.isArray(parsed)) {
@@ -113,6 +120,7 @@ export default function SchedulePlaybook({ playbook, onBack, onSelectPlaybook, i
         quotingType: '"',
         forceQuotes: true,
       })}`;
+
       setPlaybookContent(updatedYaml);
       setVariables(JSON.stringify(mergedVars));
     }

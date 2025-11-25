@@ -1,5 +1,4 @@
-import * as React from "react";
-import { useState, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import yaml from "js-yaml";
 
@@ -8,33 +7,44 @@ import { Dialog } from "components/dialog/Dialog";
 import { ModalButton } from "components/dialog/ModalButton";
 import { showErrorToastr } from "components/toastr/toastr";
 
-import AnsibleVarYamlEditor from "./ansible-var-yaml-editor";
 import styles from "./Ansible.module.scss";
+import AnsibleVarYamlEditor from "./ansible-var-yaml-editor";
 
 type Props = {
   id: string;
   className?: string;
   title?: string;
   creatingText?: string;
-  onSave?: Function;
+  onSave?: () => void;
   renderContent?: React.ReactNode;
   disableEditing?: boolean;
-  onCancel?: Function;
-  onOpen?: Function;
+  onCancel?: () => void;
+  onOpen?: () => void;
   collapsible?: boolean;
   icon?: string;
   customIconClass?: string;
-  updatePlaybookContent?: Function;
+  updatePlaybookContent?: () => void;
 };
 
 const EditAnsibleVarsModal = (props: Props) => {
-  const data = yaml.load(props.renderContent);
-  const varsObject = data[0].vars;
-
   // State to store updated YAML and extra added variables
   const [extraVars, setExtraVars] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
+  const [editorData, setEditorData] = useState<any>(null);
+
   const editorRef = useRef<any>(null);
+
+  useEffect(() => {
+    if (open) {
+      try {
+        const data = yaml.load(props.renderContent);
+        setEditorData(data?.[0]?.vars || {});
+        setExtraVars(null);
+      } catch (e) {
+        showErrorToastr("Invalid playbook YAML", { containerId: "extra-var" });
+      }
+    }
+  }, [open, props.renderContent]);
 
   const onSave = () => {
     try {
@@ -81,7 +91,7 @@ const EditAnsibleVarsModal = (props: Props) => {
         title="Edit Variables"
         className={`modal-lg ${styles.ansibleModal} ${props.className}`}
         content={
-          <AnsibleVarYamlEditor ref={editorRef} data={varsObject} onExtraVarChange={setExtraVars} />
+          editorData && <AnsibleVarYamlEditor ref={editorRef} data={editorData} onExtraVarChange={setExtraVars} />
         }
         onClose={() => setOpen(false)}
         footer={
