@@ -21,10 +21,11 @@ export const Storybook = () => {
 
   const activeTab = normalize(tab) || normalize(stories[0]?.title);
 
-  const [, _invalidate] = useState(0);
-  const invalidate = () => _invalidate((ii) => ii + 1);
+  const [_invalidate, _setInvalidate] = useState(0);
+  const invalidate = () => _setInvalidate((ii) => ii + 1);
 
-  const [showCode, _setShowCode] = useState(!!localStorage.getItem(STORAGE_KEY));
+  const [_showCode, _setShowCode] = useState(!!localStorage.getItem(STORAGE_KEY));
+  const showCode = _showCode;
   const setShowCode = (value: boolean) => {
     _setShowCode(value);
     if (value) {
