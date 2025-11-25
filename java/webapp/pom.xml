@@ -34,7 +34,7 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>struts</groupId>
+            <groupId>suse</groupId>
             <artifactId>struts</artifactId>
         </dependency>
         <dependency>

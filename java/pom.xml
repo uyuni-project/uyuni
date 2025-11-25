@@ -644,7 +644,7 @@
                 <version>3.1.4</version>
             </dependency>
             <dependency>
-                <groupId>struts</groupId>
+                <groupId>suse</groupId>
                 <artifactId>struts</artifactId>
                 <version>1.2.9</version>
                 <exclusions>
