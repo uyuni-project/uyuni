@@ -258,7 +258,7 @@ export function getClmFiltersOptions(): ClmFilterOptionType[] {
   return Object.values(clmFilterOptions) as any;
 }
 
-function findFilterMatcherByKey(key: string | undefined): FilterMatcherType | Partial<FilterMatcherEnumType> {
+function findFilterMatcherByKey(key: string | undefined): FilterMatcherType | Partial<FilterMatcherType> {
   return _find(filterMatchers, (entry) => entry.key === key) || {};
 }
 

@@ -64,7 +64,7 @@ const redirectToProject = (projectLabel: string) => {
 
 const FilterEdit = (props: FilterEditProps) => {
   const [open, setOpen] = useState(false);
-  const [item, setFormData] = useState(props.initialFilterForm);
+  const [item, setItem] = useState(props.initialFilterForm);
   const [errors, setErrors] = useState({});
   const [formValidInClient, setFormValidInClient] = useState(true);
   const { onAction, cancelAction, isLoading } = useLifecycleActionsApi({ resource: "filters" });
@@ -78,7 +78,7 @@ const FilterEdit = (props: FilterEditProps) => {
     if (openWithInitial || openCreateWithParams) {
       showDialog(modalNameId);
       setOpen(true);
-      setFormData(props.initialFilterForm);
+      setItem(props.initialFilterForm);
     }
   }, []);
 
@@ -132,7 +132,7 @@ const FilterEdit = (props: FilterEditProps) => {
         className={props.className}
         onClick={() => {
           setOpen(true);
-          setFormData(props.initialFilterForm);
+          setItem(props.initialFilterForm);
         }}
       />
       <Dialog
@@ -146,7 +146,7 @@ const FilterEdit = (props: FilterEditProps) => {
             filter={item}
             errors={errors}
             open={open}
-            onChange={setFormData}
+            onChange={setItem}
             onClientValidate={setFormValidInClient}
             isLoading={isLoading}
             editing={props.editing}
