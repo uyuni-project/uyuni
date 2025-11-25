@@ -79,9 +79,6 @@ Obsoletes:      susemanager-web-libs < %{version}
 Provides:       susemanager-web-libs = %{version}
 Obsoletes:      susemanager-nodejs-sdk-devel < %{version}
 Provides:       susemanager-nodejs-sdk-devel = %{version}
-# files html/javascript/{builder.js,controls.js,dragdrop.js,effects.js,
-# prototype-1.6.0.js,scriptaculous.js,slider.js,sound.js,unittest.js}
-# are licensed under MIT license
 
 %description -n spacewalk-html
 This package contains the HTML files for the Spacewalk web site.

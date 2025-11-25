@@ -1,5 +1,5 @@
 # Copyright (c) 2021-2025 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 # skip if container because we do not have a domain name and the
 # javascript validation fails on validating the URL

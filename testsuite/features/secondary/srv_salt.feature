@@ -1,5 +1,5 @@
 # Copyright (c) 2015-2018 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 @scope_salt
 Feature: Salt is configured and running

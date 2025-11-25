@@ -1,5 +1,5 @@
 # Copyright (c) 2023-2025 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 # This feature depends on
 # - srv_sync_all_products.feature which syncs SLES 15 SP5 channels and the client tools.

@@ -8,6 +8,8 @@
 -- along with this software; if not, see
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
+-- SPDX-License-Identifier: GPL-2.0-only
+--
 --
 
 update rhn_probe_types set type_description = 'Node Probe' where probe_type = 'satnode' ;

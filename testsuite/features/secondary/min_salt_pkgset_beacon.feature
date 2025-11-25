@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2024 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 #TODO: Fix this feature in GH Validation, it might be related to the patches available in the test repo
 @skip_if_github_validation

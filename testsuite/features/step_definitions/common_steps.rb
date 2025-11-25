@@ -1,5 +1,5 @@
 # Copyright (c) 2010-2024 SUSE LLC.
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 ### This file contains all step definitions concerning general product funtionality
 ### as well as those which do not fit into any other category or are temporary workarounds.

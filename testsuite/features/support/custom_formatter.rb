@@ -1,5 +1,5 @@
 # Copyright (c) 2019-2023 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 # CustomFormatter module provides a custom formatter for Cucumber tests.
 # It extends the Cucumber Pretty Formatter and prepends the feature name on each step.

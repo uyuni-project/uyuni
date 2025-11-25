@@ -1,5 +1,5 @@
 # Copyright (c) 2017-2024 SUSE LLC.
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 @scope_visualization
 Feature: The system details of each minion and client provides an overview of the system

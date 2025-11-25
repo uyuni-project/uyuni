@@ -1,5 +1,5 @@
 # Copyright 2025 SUSE LLC.
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 ### SSL connection checks to server
 # helpers in features/support/network_utils.rb

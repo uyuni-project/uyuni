@@ -1,5 +1,5 @@
 # Copyright (c) 2010-2025 SUSE LLC.
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 ### This file contains the definitions for all steps concerning navigation through the Web UI
 ### as well as validating the UI output.

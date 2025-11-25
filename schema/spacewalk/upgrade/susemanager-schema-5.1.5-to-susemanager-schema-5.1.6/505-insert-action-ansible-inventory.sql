@@ -8,6 +8,8 @@
 -- along with this software; if not, see
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
+-- SPDX-License-Identifier: GPL-2.0-only
+--
 INSERT INTO rhnActionType
     SELECT 525, 'ansible.inventory', 'Refresh Ansible inventories', 'N', 'N', 'N'
     WHERE NOT EXISTS (SELECT 1 FROM rhnActionType WHERE id = 525);

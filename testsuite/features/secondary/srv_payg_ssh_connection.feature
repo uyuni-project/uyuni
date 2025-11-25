@@ -1,5 +1,5 @@
 # Copyright (c) 2022 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 Feature: Pay as you go
   In order to use payg

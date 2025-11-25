@@ -1,5 +1,5 @@
 # Copyright (c) 2020-2024 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 #
 # This feature can cause failures in the following features:
 # - features/secondary/min_bootstrap_activation_key.feature

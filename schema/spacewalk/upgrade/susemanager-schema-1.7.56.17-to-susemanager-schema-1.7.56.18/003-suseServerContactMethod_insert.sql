@@ -8,6 +8,8 @@
 -- along with this software; if not, see
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
+-- SPDX-License-Identifier: GPL-2.0-only
+--
 
 insert into suseServerContactMethod (id, label, name, rank) values
 	(0, 'default', 'server.contact-method.default', 0);

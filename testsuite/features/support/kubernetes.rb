@@ -1,5 +1,5 @@
 # Copyright (c) 2023 SUSE LLC.
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 
 # Create an SSL certificate using cert-manager and return the path on the server where the files have been copied
 #

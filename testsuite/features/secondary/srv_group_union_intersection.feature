@@ -1,5 +1,5 @@
 # Copyright (c) 2018-2024 SUSE LLC
-# Licensed under the terms of the MIT license.
+# SPDX-License-Identifier: MIT
 #
 # This feature will be fully tested only if we have a Red Hat-like client
 # and a Debian-like client running
