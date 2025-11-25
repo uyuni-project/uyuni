@@ -24,7 +24,7 @@ type Props = {
   content?: React.ReactNode;
 };
 
-const AceEditor = ({ minLines = 20, maxLines = 40, readOnly = false, ...props }: Props) => {
+const AceEditor = ({ minLines = 20, maxLines = 40, readOnly = false, content = "", onChange, ...props }: Props) => {
   const fallbackId = useId();
   const nodeRef = useRef<HTMLDivElement>(null);
   const editorRef = useRef<Ace.Editor>();
@@ -35,31 +35,44 @@ const AceEditor = ({ minLines = 20, maxLines = 40, readOnly = false, ...props }:
       if (!node) {
         throw new RangeError("Unable to find node for ace-editor");
       }
-
       if (!editorRef.current) {
         const editor = window.ace.edit(node);
         editor.setTheme("ace/theme/xcode");
         editor.setShowPrintMargin(false);
-        editor.on("change", () => props.onChange?.(editor.getSession().getValue()));
+        editor.getSession().setValue(content || "");
+        editor.on("change", () => {
+          onChange?.(editor.getSession().getValue());
+        });
+
         editorRef.current = editor;
       }
-
-      if (props.mode) {
-        editorRef.current.getSession().setMode("ace/mode/" + props.mode);
-      }
-      editorRef.current.setOptions({ minLines, maxLines });
-      editorRef.current.setReadOnly(readOnly);
     } catch (error) {
       Loggerhead.error("Failed to configure Ace editor");
       Loggerhead.error(error);
     }
+  }, []);
+
+  // Update editor value when `content` prop changes in edit mode
+  useEffect(() => {
+    const editor = editorRef.current;
+    if (!editor) return;
+    const currentValue = editor.getSession().getValue();
+    if (currentValue !== content) {
+      editor.setValue(content || "");
+    }
+  }, [content]);
+
+  useEffect(() => {
+    if (!editorRef.current) return;
+
+    if (props.mode) {
+      editorRef.current.getSession().setMode("ace/mode/" + props.mode);
+    }
+    editorRef.current.setOptions({ minLines, maxLines });
+    editorRef.current.setReadOnly(readOnly);
   }, [props.mode, minLines, maxLines, readOnly]);
 
-  return (
-    <div ref={nodeRef} className={props.className} id={props.id ?? fallbackId}>
-      {props.content}
-    </div>
-  );
+  return <div ref={nodeRef} className={props.className} id={props.id ?? fallbackId} />;
 };
 
 export { AceEditor };

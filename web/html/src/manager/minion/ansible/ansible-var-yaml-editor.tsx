@@ -1,10 +1,11 @@
-import React, { useCallback, useEffect, useState, forwardRef, useImperativeHandle, useRef } from "react";
+import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from "react";
 
 import { FieldProps } from "formik";
 import yaml from "js-yaml";
 import get from "lodash/get";
 import unset from "lodash/unset";
 
+import { AceEditor } from "components/ace-editor";
 import { Button, DropdownButton } from "components/buttons";
 import { Field, MultiField } from "components/formik/field";
 import { Form } from "components/formik/Form";
@@ -17,8 +18,6 @@ import DictionaryEditor from "./variables/dictionary-editor";
 import ExtraVariable from "./variables/extra-var";
 import ListEditor from "./variables/list-editor";
 import StringEditor from "./variables/string-editor";
-import { AceEditor } from "components/ace-editor";
-import { Console } from "console";
 
 const isDictionary = (obj) => {
   if (typeof obj !== "object" || obj === null || Array.isArray(obj)) return false;
@@ -34,8 +33,7 @@ type Props = {
   onExtraVarChange: (extravalues: string) => void;
 };
 
-
-const AnsibleVarYamlEditor = React.forwardRef((props: Props, ref) => {
+const AnsibleVarYamlEditor = forwardRef((props: Props, ref) => {
   const { data, onExtraVarChange } = props;
   const [visibleInputPath, setVisibleInputPath] = useState(null);
   const [varType, setVarType] = useState(null);
@@ -43,29 +41,28 @@ const AnsibleVarYamlEditor = React.forwardRef((props: Props, ref) => {
   const [yamlEditor, setYamlEditor] = useState(false);
   const [expandAllState, setExpandAllState] = useState(false);
   const [varsData, setVarsData] = useState(data);
-  
-  const formRef = React.useRef<any>(null);
-  const aceRef = useRef(null);
-  
-  useImperativeHandle(ref, () => ({    
-    // On save returns either YAML editor content or the form values depending on the active mode.
+  const [yamlEditorContent, setYamlEditorContent] = useState("");
+  const formRef = useRef<any>(null);
+
+  useImperativeHandle(ref, () => ({
     getValues: () => {
       if (yamlEditor) {
-        const editor = aceRef.current?.editor;
-        const text = editor?.getValue();
         try {
-          return yaml.load(text);
-        } catch (e) {
-          showErrorToastr("Invalid YAML", {
+          const parsed = yaml.load(yamlEditorContent);
+          if (typeof parsed === "object" && parsed !== null) return parsed;
+          showErrorToastr("Invalid YAML: root must be an object", {
             autoHide: false,
             containerId: "yamlEditorError",
           });
-          return null;
+          return {};
+        } catch (e) {
+          showErrorToastr("Invalid YAML", { autoHide: false, containerId: "yamlEditorError" });
+          return {};
         }
       } else {
         return formRef.current?.values;
       }
-    }
+    },
   }));
 
   const generateId = (path) => `id_${path.split(".").join("_")}`;
@@ -74,7 +71,7 @@ const AnsibleVarYamlEditor = React.forwardRef((props: Props, ref) => {
   const levelOneTitles = (obj) => {
     if (typeof obj !== "object" || obj === null) return [];
     return Object.keys(obj);
-  }
+  };
 
   // Nested level
   const nestedLevelTitles = (prefix, value) => {
@@ -137,7 +134,6 @@ const AnsibleVarYamlEditor = React.forwardRef((props: Props, ref) => {
     unset(updated, key);
     form.setValues(updated);
   };
-
 
   const RenderVariableField = ({ field, form }: FieldProps<any>) => {
     const { name, value } = field;
@@ -242,16 +238,17 @@ const AnsibleVarYamlEditor = React.forwardRef((props: Props, ref) => {
         <div className="col-md-12">
           <div className="d-flex justify-content-between align-items-center mb-3">
             Set the value of existing variables to override previously defined variables.
-            { !yamlEditor ? 
+            {!yamlEditor ? (
               <div>
                 <Button
                   text={t("Edit YAML")}
                   className="btn-default btn-sm me-3"
                   handler={() => {
-                    const currentValues = formRef.current?.values;
-                    const currentData = yaml.dump(currentValues);
-                    setVarsData(currentData);
+                    const currentValues = formRef.current?.values || varsData;
+                    const yamlString = yaml.dump(currentValues);
+                    setVarsData(currentValues);
                     setYamlEditor(true);
+                    setYamlEditorContent(yamlString);
                   }}
                 />
                 <Button
@@ -262,40 +259,41 @@ const AnsibleVarYamlEditor = React.forwardRef((props: Props, ref) => {
                     setExpandAllState((prev) => !prev);
                   }}
                 />
-              </div> :
+              </div>
+            ) : (
               <div>
-                 <Button
+                <Button
                   text={t("Back")}
                   className="btn-default btn-sm"
                   handler={() => {
-                    const editor = aceRef.current?.editor;
-                    const text = editor?.getValue();
-                      try {
-                        const parsed = yaml.load(text);
-                        setVarsData(parsed);
-                        setYamlEditor(false);
-                      } catch (e) {
-                        showErrorToastr(`Invalid YAML`, {
-                          autoHide: false,
-                          containerId: "yamlEditorError",
-                        });
-                      }
+                    try {
+                      const parsed = yaml.load(yamlEditorContent);
+                      setVarsData(parsed);
+                      setYamlEditor(false);
+                    } catch (e) {
+                      showErrorToastr("Invalid YAML", { autoHide: false, containerId: "yamlEditorError" });
                     }
-                  }
+                  }}
                 />
               </div>
-            }
+            )}
           </div>
         </div>
       </div>
       <div className={styles.variableContent}>
-        { !yamlEditor ? 
-          <Form innerRef={formRef} initialValues={varsData} onSubmit={() => {}} enableReinitialize className={`d-flex w-100 ${styles.variableContent}`}>
+        {!yamlEditor ? (
+          <Form
+            innerRef={formRef}
+            initialValues={varsData}
+            onSubmit={() => {}}
+            enableReinitialize
+            className={`d-flex w-100 ${styles.variableContent}`}
+          >
             {({ values }) => (
               <>
                 <div className={`${styles.yamlEditor} col-md-7`}>
                   {levelOneTitles(values).map((path) => {
-                  return (
+                    return (
                       <Panel
                         key={generateId(path)}
                         headingLevel="h5"
@@ -333,11 +331,11 @@ const AnsibleVarYamlEditor = React.forwardRef((props: Props, ref) => {
                             >
                               <Field name={p} component={RenderVariableField} />
                             </Panel>
-                          )})
-                        }
+                          );
+                        })}
                       </Panel>
-                    )})
-                  }
+                    );
+                  })}
                   <div>
                     <MessagesContainer containerId="extra-var" />
                     <ExtraVariable setExtraVars={onExtraVarChange} />
@@ -348,21 +346,22 @@ const AnsibleVarYamlEditor = React.forwardRef((props: Props, ref) => {
                 </div>
               </>
             )}
-          </Form> :
+          </Form>
+        ) : (
           <div>
             <MessagesContainer containerId="yamlEditorError" />
             <AceEditor
-              ref={aceRef}
               className="form-control"
               id="playbook-content"
               minLines={20}
               maxLines={40}
               readOnly={false}
               mode="yaml"
-              content={varsData}
+              content={yamlEditorContent} // string
+              onChange={setYamlEditorContent}
             />
           </div>
-        }
+        )}
       </div>
     </>
   );

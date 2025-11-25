@@ -1,4 +1,4 @@
-import { type ReactNode, Fragment } from "react";
+import { Fragment } from "react";
 type Props = {
   headingLevel?: keyof JSX.IntrinsicElements;
   collapseId?: string | null | undefined;
