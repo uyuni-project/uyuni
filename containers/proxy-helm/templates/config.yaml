@@ -16,6 +16,9 @@ data:
   squid_tuning: |
     # Add your Squid tuning configuration here
 {{ .Values.squid_tuning | indent 4 }}
+  ssh_tuning: |
+    # Add your SSHd tuning configuration here
+{{ .Values.ssh_tuning | indent 4 }}
   apache_tuning: |
     # Add your Apache tuning configuration here
 {{ .Values.apache_tuning | indent 4 }}
