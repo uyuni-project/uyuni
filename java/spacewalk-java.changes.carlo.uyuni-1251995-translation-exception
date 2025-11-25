@@ -1,0 +1,1 @@
+- Fix exception error on spacecmd package refresh (bsc#1251995)

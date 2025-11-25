@@ -17,6 +17,7 @@ package com.redhat.rhn.common.translation.test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.translation.Translator;
@@ -106,6 +107,22 @@ public class TranslatorTest extends RhnBaseTestCase {
         assertFalse(Translator.string2boolean("false"));
         assertFalse(Translator.string2boolean("faLSe"));
         assertFalse(Translator.string2boolean("rock on"));
+    }
+
+    @Test
+    public void testString2Int() {
+        assertEquals(1000010006, Translator.string2Int("1000010006"));
+        assertEquals(123, Translator.string2Int("+123"));
+        assertEquals(0, Translator.string2Int("0"));
+        assertEquals(-1, Translator.string2Int("-1"));
+        assertEquals(-1000010006, Translator.string2Int("-1000010006"));
+
+        assertThrows(NumberFormatException.class, () -> Translator.string2Int(null));
+        assertThrows(NumberFormatException.class, () -> Translator.string2Int(""));
+        assertThrows(NumberFormatException.class, () -> Translator.string2Int("true"));
+        assertThrows(NumberFormatException.class, () -> Translator.string2Int("F"));
+        assertThrows(NumberFormatException.class, () -> Translator.string2Int("n"));
+        assertThrows(NumberFormatException.class, () -> Translator.string2Int("rock on"));
     }
 
     @Test

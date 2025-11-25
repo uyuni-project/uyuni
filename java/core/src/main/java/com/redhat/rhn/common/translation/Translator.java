@@ -168,6 +168,15 @@ public class Translator extends Translations {
     }
 
     /**
+     * Convert from String to Integer.
+     * @param str The string to convert
+     * @return the resulting Integer
+     */
+    public static Integer string2Int(String str) {
+        return Integer.parseInt(str);
+    }
+
+    /**
      * Convert from Double to String.
      * @param d The double to convert
      * @return The resulting string.
