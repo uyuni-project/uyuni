@@ -42,11 +42,10 @@ public class ErrataFilter extends ContentFilter {
 
     @Override
     public boolean test(Object o) {
-        if (!(o instanceof Errata)) {
+        if (!(o instanceof Errata erratum)) {
             return false;
         }
 
-        Errata erratum = (Errata) o;
         FilterCriteria.Matcher matcher = getCriteria().getMatcher();
         String field = getCriteria().getField();
         String value = getCriteria().getValue();

@@ -34,11 +34,10 @@ public class ModuleFilter extends ContentFilter {
 
     @Override
     public boolean test(Object o) {
-        if (!(o instanceof Module)) {
+        if (!(o instanceof Module module)) {
             return false;
         }
 
-        Module module = (Module) o;
         FilterCriteria.Matcher matcher = getCriteria().getMatcher();
         String field = getCriteria().getField();
 

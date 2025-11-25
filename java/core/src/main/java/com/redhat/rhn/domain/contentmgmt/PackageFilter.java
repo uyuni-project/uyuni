@@ -40,11 +40,10 @@ public class PackageFilter extends ContentFilter {
 
     @Override
     public boolean test(Object o) {
-        if (!(o instanceof Package)) {
+        if (!(o instanceof Package pack)) {
             return false;
         }
 
-        Package pack = (Package) o;
         FilterCriteria.Matcher matcher = getCriteria().getMatcher();
         String field = getCriteria().getField();
         String value = getCriteria().getValue();

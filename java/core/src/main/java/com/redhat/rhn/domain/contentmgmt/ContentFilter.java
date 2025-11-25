@@ -239,15 +239,9 @@ public abstract class ContentFilter extends BaseDomainHelper implements Predicat
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof ContentFilter that)) {
             return false;
         }
-
-        ContentFilter that = (ContentFilter) o;
 
         return new EqualsBuilder()
                 .append(org, that.org)

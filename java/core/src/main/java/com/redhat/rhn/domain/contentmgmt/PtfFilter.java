@@ -41,10 +41,9 @@ public class PtfFilter extends ContentFilter {
 
     @Override
     public boolean test(Object o) {
-        if (!(o instanceof Package)) {
+        if (!(o instanceof Package pack)) {
             return false;
         }
-        Package pack = (Package) o;
         // If the package is neither a ptf nor part of a ptf we cannot have a match
         if (!pack.isMasterPtfPackage() && !pack.isPartOfPtf()) {
             return false;
