@@ -44,7 +44,12 @@ const PasswordPolicy = (prop: PasswordPolicyProps) => {
           />
           <div className="row">
             <div className="col-md-3 text-right">
-              <label className="control-label">Password Complexity:</label>
+              <label
+                className="control-label"
+                htmlFor="digitFlag lowerCharFlag upperCharFlag consecutiveCharsFlag specialCharFlag"
+              >
+                Password Complexity:
+              </label>
             </div>
             <div className="col-md-8">
               {/* Require Digits */}

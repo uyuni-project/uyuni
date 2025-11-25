@@ -124,7 +124,7 @@ class AccordionPathContent extends Component<PropsType, StateType> {
     }
 
     return content.map((p, i) => (
-      <div key={p.toString() + "_" + i.toString()}>
+      <div key={p.fullPath}>
         {i === 0 ? <br /> : null}
         <dl className="row">
           <dt className="col-2">{t("Playbook File Name")}:</dt>

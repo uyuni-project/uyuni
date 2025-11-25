@@ -914,7 +914,7 @@ class SsmChannelPage extends Component<SsmChannelProps, SsmChannelState> {
     if (jqXHR.responseJSON.data) {
       const anySuccess = jqXHR.responseJSON.data.some((dto) => dto.actionId && !dto.errorMessage);
       if (anySuccess) {
-        msg.concat(MessagesUtils.warning(t("Some changes scheduled successfully.")));
+        msg.push(...MessagesUtils.warning(t("Some changes scheduled successfully.")));
       }
     }
 

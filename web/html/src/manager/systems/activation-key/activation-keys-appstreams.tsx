@@ -21,7 +21,7 @@ type Props = {
 };
 
 const AppStreams = (props: Props) => {
-  const [channelsAppStreams, setChannelAppStreams] = useState(props.channelsAppStreams);
+  const [channelsAppStreams, setChannelsAppStreams] = useState(props.channelsAppStreams);
   const [toEnable, setToEnable] = useState<Map<number, string[]>>(new Map());
   const [toDisable, setToDisable] = useState<Map<number, string[]>>(new Map());
   const [statusMessage, setStatusMessage] = useState<MessageType[]>([]);
@@ -41,7 +41,7 @@ const AppStreams = (props: Props) => {
   const handleConfirm = (data) => {
     setStatusMessage(MessageUtils.info(t("Activation key has been modified.")));
     handleReset();
-    setChannelAppStreams(data);
+    setChannelsAppStreams(data);
   };
 
   const handleSubmit = () => {

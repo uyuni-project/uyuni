@@ -360,7 +360,7 @@ class RemoteCommand extends Component<RemoteCommandProps, RemoteCommandState> {
       });
     };
     ws.onerror = (e) => {
-      Loggerhead.error("Websocket error: " + e);
+      Loggerhead.error("Websocket error: ", e);
       this.setState({
         errors: [t("Error connecting to server. Refresh the page to try again.")],
         websocketErr: true,

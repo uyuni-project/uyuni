@@ -1,5 +1,7 @@
 import { Component, PureComponent } from "react";
 
+import { DEPRECATED_onClick } from "components/utils";
+
 import { localizedMoment } from "utils";
 
 // These aren't the actual proper types, just what I've inferred from code usage below
@@ -345,9 +347,8 @@ export class DEPRECATED_DateTimePicker extends Component<DateTimePickerProps, Da
           <span
             className="input-group-addon input-group-text"
             data-picker-type="date"
-            onClick={this.toggleDatepicker}
+            {...DEPRECATED_onClick(this.toggleDatepicker)}
             key="calendar"
-            role="button"
           >
             &nbsp;<i className="fa fa-calendar"></i>
           </span>,
@@ -366,9 +367,8 @@ export class DEPRECATED_DateTimePicker extends Component<DateTimePickerProps, Da
           <span
             className="input-group-addon input-group-text"
             data-picker-type="time"
-            onClick={this.toggleTimepicker}
+            {...DEPRECATED_onClick(this.toggleDatepicker)}
             key="clock"
-            role="button"
           >
             &nbsp;<i className="fa fa-clock-o"></i>
           </span>,
