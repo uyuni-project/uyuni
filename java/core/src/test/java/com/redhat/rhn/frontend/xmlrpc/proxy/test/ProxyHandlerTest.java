@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2009--2014 Red Hat, Inc.
+ * Copyright (c) 2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -51,7 +52,6 @@ import com.suse.manager.ssl.SSLCertManager;
 import com.suse.manager.ssl.SSLCertPair;
 import com.suse.manager.webui.controllers.bootstrap.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.bootstrap.SSHMinionBootstrapper;
-import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.test.TestSaltApi;
@@ -89,9 +89,9 @@ public class ProxyHandlerTest extends RhnJmockBaseTestCase {
     private final ProxyConfigUpdateFacade proxyConfigUpdateFacade = new ProxyConfigUpdateFacadeImpl();
 
     @BeforeEach
-    protected void setUp() {
+    public void setup() throws Exception {
+        super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
-        SaltStateGeneratorService.INSTANCE.setSkipSetOwner(true);
     }
 
     @Test

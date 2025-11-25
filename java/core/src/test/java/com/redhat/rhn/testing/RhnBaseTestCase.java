@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2009--2013 Red Hat, Inc.
+ * Copyright (c) 2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -23,13 +24,13 @@ import com.redhat.rhn.common.RhnRuntimeException;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.messaging.MessageQueue;
 
-import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.test.TestSaltApi;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Date;
 
@@ -39,7 +40,9 @@ import java.util.Date;
  * test to similuate what happens when the code is run
  * in a web application server.
  */
-public abstract class RhnBaseTestCase implements HibernateTestCaseUtils  {
+public abstract class RhnBaseTestCase implements HibernateTestCaseUtils, SaltTestCaseUtils  {
+
+    protected Path tmpSaltRoot;
 
     /**
      * Default Constructor
@@ -54,7 +57,7 @@ public abstract class RhnBaseTestCase implements HibernateTestCaseUtils  {
      */
     @BeforeEach
     protected void setUp() throws Exception {
-        SaltStateGeneratorService.INSTANCE.setSkipSetOwner(true);
+        tmpSaltRoot = setupSaltConfigurationForTests();
     }
 
     /**
@@ -64,6 +67,8 @@ public abstract class RhnBaseTestCase implements HibernateTestCaseUtils  {
     @AfterEach
     public void tearDown() throws Exception {
         TestCaseHelper.tearDownHelper();
+
+        cleanupSaltConfiguration(tmpSaltRoot);
     }
 
     /**

@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2009--2013 Red Hat, Inc.
+ * Copyright (c) 2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -23,22 +24,22 @@ import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 
 import org.junit.jupiter.api.BeforeEach;
 
-import java.io.IOException;
-
 import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
 
 /**
- * BaseFilterTst
+ * BaseFilterTest
  */
-public abstract class BaseFilterTst extends RhnJmockBaseTestCase {
+public abstract class BaseFilterTest extends RhnJmockBaseTestCase {
 
     protected RhnMockHttpServletRequest request;
     protected RhnMockHttpServletResponse response;
     protected FilterChain chain;
 
     @BeforeEach
-    public void setUp() throws ServletException, IOException {
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
+
         request = new RhnMockHttpServletRequest();
 
         PxtCookieManager pcm = new PxtCookieManager();

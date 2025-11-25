@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2009--2013 Red Hat, Inc.
+ * Copyright (c) 2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -14,20 +15,12 @@
  */
 package com.redhat.rhn.testing;
 
-import static com.suse.manager.webui.services.SaltConstants.SALT_CONFIG_STATES_DIR;
-
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.user.User;
 
-import com.suse.manager.webui.services.SaltStateGeneratorService;
-
-import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 /**
  * Basic test class class with a User
@@ -36,7 +29,6 @@ public abstract class JMockBaseTestCaseWithUser extends RhnJmockBaseTestCase {
 
     protected User user;
     private boolean committed = false;
-    protected Path tmpSaltRoot;
 
     /**
      * Called once per test method to setup the test environment.
@@ -44,14 +36,12 @@ public abstract class JMockBaseTestCaseWithUser extends RhnJmockBaseTestCase {
      * @throws Exception if an error occurs during setup
      */
     @BeforeEach
+    @Override
     public void setUp() throws Exception {
+        super.setUp();
+
         user = UserTestUtils.createUser();
         KickstartDataTest.setupTestConfiguration(user);
-        tmpSaltRoot = Files.createTempDirectory("salt");
-        SaltStateGeneratorService.INSTANCE.setSkipSetOwner(true);
-        SaltStateGeneratorService.INSTANCE.setSuseManagerStatesFilesRoot(tmpSaltRoot
-                .toAbsolutePath());
-        Files.createDirectory(tmpSaltRoot.resolve(SALT_CONFIG_STATES_DIR));
     }
 
     @Override
@@ -67,7 +57,6 @@ public abstract class JMockBaseTestCaseWithUser extends RhnJmockBaseTestCase {
         }
         committed = false;
         user = null;
-        FileUtils.deleteDirectory(tmpSaltRoot.toFile());
     }
 
     // If we have to commit in mid-test, set up the next transaction correctly
