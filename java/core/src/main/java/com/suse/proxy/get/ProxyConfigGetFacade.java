@@ -17,7 +17,6 @@ package com.suse.proxy.get;
 
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 
 import com.suse.proxy.model.ProxyConfig;
 
@@ -40,9 +39,8 @@ public interface ProxyConfigGetFacade {
      *
      * @param user                       the user
      * @param server                     the server
-     * @param systemEntitlementManagerIn the systemEntitlementManager
      * @return the form data
      */
-    Map<String, Object> getFormData(User user, Server server, SystemEntitlementManager systemEntitlementManagerIn);
+    Map<String, Object> getFormData(User user, Server server);
 
 }

@@ -47,7 +47,7 @@ public class ProxyConfigUpdateContext {
             new EnumMap<>(ProxyContainerImagesEnum.class);
     private final SystemManager systemManager;
     private final User user;
-    private final ProxyConfigGetFacade proxyConfigGetFacade;
+    private final ProxyConfigGetFacade proxyConfigGetFacade = new ProxyConfigGetFacadeImpl();
 
     // Acquired/computed data
     private String proxyFqdn;
@@ -78,27 +78,9 @@ public class ProxyConfigUpdateContext {
             SystemManager systemManagerIn,
             User userIn
     ) {
-        this(requestIn, systemManagerIn, userIn, new ProxyConfigGetFacadeImpl());
-    }
-
-    /**
-     * Full params constructor
-     *
-     * @param requestIn                  the request
-     * @param systemManagerIn            the system manager
-     * @param userIn                     the user
-     * @param proxyConfigGetFacadeIn     the proxy config get facade
-     */
-    public ProxyConfigUpdateContext(
-            ProxyConfigUpdateJson requestIn,
-            SystemManager systemManagerIn,
-            User userIn,
-            ProxyConfigGetFacade proxyConfigGetFacadeIn
-    ) {
         this.request = requestIn;
         this.systemManager = systemManagerIn;
         this.user = userIn;
-        this.proxyConfigGetFacade = proxyConfigGetFacadeIn;
     }
 
     public ProxyConfigUpdateJson getRequest() {

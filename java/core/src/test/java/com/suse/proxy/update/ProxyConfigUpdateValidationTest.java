@@ -9,27 +9,26 @@
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  */
 
-package com.suse.proxy.test;
+package com.suse.proxy.update;
 
+import static com.suse.proxy.ProxyConfigTestUtils.assertErrors;
 import static com.suse.proxy.ProxyConfigUtils.MGRPXY;
 import static com.suse.proxy.ProxyConfigUtils.REGISTRY_MODE_ADVANCED;
 import static com.suse.proxy.ProxyConfigUtils.REGISTRY_MODE_SIMPLE;
 import static com.suse.proxy.ProxyConfigUtils.SOURCE_MODE_REGISTRY;
 import static com.suse.proxy.ProxyConfigUtils.isMgrpxyAvailable;
 import static com.suse.proxy.ProxyConfigUtils.isMgrpxyInstalled;
-import static com.suse.proxy.get.formdata.test.ProxyConfigGetFormTestUtils.assertErrors;
-import static com.suse.proxy.get.formdata.test.ProxyConfigGetFormTestUtils.setConfigDefaultsInstance;
-import static com.suse.proxy.test.ProxyConfigUpdateTestUtils.DUMMY_ADMIN_MAIL;
-import static com.suse.proxy.test.ProxyConfigUpdateTestUtils.DUMMY_MAX_CACHE;
-import static com.suse.proxy.test.ProxyConfigUpdateTestUtils.DUMMY_PARENT_FQDN;
-import static com.suse.proxy.test.ProxyConfigUpdateTestUtils.DUMMY_PROXY_CERT;
-import static com.suse.proxy.test.ProxyConfigUpdateTestUtils.DUMMY_PROXY_FQDN;
-import static com.suse.proxy.test.ProxyConfigUpdateTestUtils.DUMMY_PROXY_KEY;
-import static com.suse.proxy.test.ProxyConfigUpdateTestUtils.DUMMY_PROXY_PORT;
-import static com.suse.proxy.test.ProxyConfigUpdateTestUtils.DUMMY_ROOT_CA;
-import static com.suse.proxy.test.ProxyConfigUpdateTestUtils.DUMMY_SERVER_ID;
-import static com.suse.proxy.test.ProxyConfigUpdateTestUtils.DUMMY_TAG;
-import static com.suse.proxy.test.ProxyConfigUpdateTestUtils.assertExpectedErrors;
+import static com.suse.proxy.update.ProxyConfigUpdateTestUtils.DUMMY_ADMIN_MAIL;
+import static com.suse.proxy.update.ProxyConfigUpdateTestUtils.DUMMY_MAX_CACHE;
+import static com.suse.proxy.update.ProxyConfigUpdateTestUtils.DUMMY_PARENT_FQDN;
+import static com.suse.proxy.update.ProxyConfigUpdateTestUtils.DUMMY_PROXY_CERT;
+import static com.suse.proxy.update.ProxyConfigUpdateTestUtils.DUMMY_PROXY_FQDN;
+import static com.suse.proxy.update.ProxyConfigUpdateTestUtils.DUMMY_PROXY_KEY;
+import static com.suse.proxy.update.ProxyConfigUpdateTestUtils.DUMMY_PROXY_PORT;
+import static com.suse.proxy.update.ProxyConfigUpdateTestUtils.DUMMY_ROOT_CA;
+import static com.suse.proxy.update.ProxyConfigUpdateTestUtils.DUMMY_SERVER_ID;
+import static com.suse.proxy.update.ProxyConfigUpdateTestUtils.DUMMY_TAG;
+import static com.suse.proxy.update.ProxyConfigUpdateTestUtils.assertExpectedErrors;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -53,11 +52,8 @@ import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 
 import com.suse.manager.webui.utils.gson.ProxyConfigUpdateJson;
-import com.suse.proxy.get.formdata.test.ProxyConfigGetFormTestUtils;
+import com.suse.proxy.ProxyConfigTestUtils;
 import com.suse.proxy.model.ProxyConfig;
-import com.suse.proxy.update.ProxyConfigUpdateAcquisitor;
-import com.suse.proxy.update.ProxyConfigUpdateContext;
-import com.suse.proxy.update.ProxyConfigUpdateValidation;
 import com.suse.utils.Json;
 
 import org.jmock.Expectations;
@@ -97,7 +93,7 @@ public class ProxyConfigUpdateValidationTest extends JMockBaseTestCaseWithUser {
         };
 
         ProxyConfigUpdateJson request = Json.GSON.fromJson("{}", ProxyConfigUpdateJson.class);
-        ProxyConfigUpdateContext proxyConfigUpdateContext = new ProxyConfigUpdateContext(request, null, null, null);
+        ProxyConfigUpdateContext proxyConfigUpdateContext = new ProxyConfigUpdateContext(request, null, null);
 
 
         // execution
@@ -128,8 +124,7 @@ public class ProxyConfigUpdateValidationTest extends JMockBaseTestCaseWithUser {
                 .sourceRPM()
                 .build();
 
-        ProxyConfigUpdateContext proxyConfigUpdateContext =
-                new ProxyConfigUpdateContext(request, null, null, null);
+        ProxyConfigUpdateContext proxyConfigUpdateContext = new ProxyConfigUpdateContext(request, null, null);
         // certificate content is handled in {@link ProxyConfigUpdateAcquisitor} and set directly in the context
         proxyConfigUpdateContext.setRootCA(DUMMY_ROOT_CA);
         proxyConfigUpdateContext.setProxyCert(DUMMY_PROXY_CERT);
@@ -149,8 +144,7 @@ public class ProxyConfigUpdateValidationTest extends JMockBaseTestCaseWithUser {
                 .replaceCerts(null, null, null, null)
                 .build();
 
-        ProxyConfigUpdateContext proxyConfigUpdateContext =
-                new ProxyConfigUpdateContext(request, null, null, null);
+        ProxyConfigUpdateContext proxyConfigUpdateContext = new ProxyConfigUpdateContext(request, null, null);
         // certificate content is handled in {@link ProxyConfigUpdateAcquisitor} and set directly in the context
         proxyConfigUpdateContext.setRootCA(DUMMY_ROOT_CA);
         proxyConfigUpdateContext.setProxyCert(DUMMY_PROXY_CERT);
@@ -193,7 +187,7 @@ public class ProxyConfigUpdateValidationTest extends JMockBaseTestCaseWithUser {
                 .keepCerts(null, null, null, null)
                 .build();
 
-        ProxyConfigUpdateContext proxyConfigUpdateContext = new ProxyConfigUpdateContext(request, null, null, null);
+        ProxyConfigUpdateContext proxyConfigUpdateContext = new ProxyConfigUpdateContext(request, null, null);
         proxyConfigUpdateContext.setParentServer(new Server(DUMMY_SERVER_ID, DUMMY_PARENT_FQDN));
         proxyConfigUpdateContext.setProxyFqdn(DUMMY_PROXY_FQDN);
 
@@ -218,7 +212,7 @@ public class ProxyConfigUpdateValidationTest extends JMockBaseTestCaseWithUser {
                 .keepCerts(null, null, null, null)
                 .build();
 
-        ProxyConfigUpdateContext proxyConfigUpdateContext = new ProxyConfigUpdateContext(request, null, null, null);
+        ProxyConfigUpdateContext proxyConfigUpdateContext = new ProxyConfigUpdateContext(request, null, null);
         proxyConfigUpdateContext.setParentServer(new Server(DUMMY_SERVER_ID, DUMMY_PARENT_FQDN));
         proxyConfigUpdateContext.setProxyFqdn(DUMMY_PROXY_FQDN);
         proxyConfigUpdateContext.setProxyConfig(new ProxyConfig());
@@ -384,7 +378,7 @@ public class ProxyConfigUpdateValidationTest extends JMockBaseTestCaseWithUser {
 
         ConfigDefaults configDefaults = ConfigDefaults.get();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
-        ProxyConfigGetFormTestUtils.mockConfigDefaults(context, false);
+        ProxyConfigTestUtils.mockConfigDefaults(context, false);
         SystemEntitlementManager mockSystemEntitlementManager = mock(SystemEntitlementManager.class);
 
         // set up the minion
@@ -437,7 +431,7 @@ public class ProxyConfigUpdateValidationTest extends JMockBaseTestCaseWithUser {
         );
 
         try {
-            setConfigDefaultsInstance(configDefaults);
+            ProxyConfigTestUtils.setConfigDefaultsInstance(configDefaults);
         }
         catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException("Error resetting ConfigDefaults instance", e);
@@ -460,7 +454,7 @@ public class ProxyConfigUpdateValidationTest extends JMockBaseTestCaseWithUser {
 
         ConfigDefaults configDefaults = ConfigDefaults.get();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
-        ProxyConfigGetFormTestUtils.mockConfigDefaults(context, false);
+        ProxyConfigTestUtils.mockConfigDefaults(context, false);
 
         // set up the minion
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
@@ -485,7 +479,7 @@ public class ProxyConfigUpdateValidationTest extends JMockBaseTestCaseWithUser {
         assertTrue(proxyConfigUpdateContext.getSubscribableChannels().isEmpty());
 
         try {
-            setConfigDefaultsInstance(configDefaults);
+            ProxyConfigTestUtils.setConfigDefaultsInstance(configDefaults);
         }
         catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException("Error resetting ConfigDefaults instance", e);
@@ -508,7 +502,7 @@ public class ProxyConfigUpdateValidationTest extends JMockBaseTestCaseWithUser {
 
         ConfigDefaults configDefaults = ConfigDefaults.get();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
-        ProxyConfigGetFormTestUtils.mockConfigDefaults(context, false);
+        ProxyConfigTestUtils.mockConfigDefaults(context, false);
 
         // set up the minion with base channel
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
@@ -533,7 +527,7 @@ public class ProxyConfigUpdateValidationTest extends JMockBaseTestCaseWithUser {
         assertEquals(channelWithMgrpxy, subscribableChannels.iterator().next());
 
         try {
-            setConfigDefaultsInstance(configDefaults);
+            ProxyConfigTestUtils.setConfigDefaultsInstance(configDefaults);
         }
         catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException("Error resetting ConfigDefaults instance", e);
@@ -554,7 +548,7 @@ public class ProxyConfigUpdateValidationTest extends JMockBaseTestCaseWithUser {
 
         ConfigDefaults configDefaults = ConfigDefaults.get();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
-        ProxyConfigGetFormTestUtils.mockConfigDefaults(context, false);
+        ProxyConfigTestUtils.mockConfigDefaults(context, false);
 
         // set up the minion with base channel
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
@@ -579,7 +573,7 @@ public class ProxyConfigUpdateValidationTest extends JMockBaseTestCaseWithUser {
         assertFalse(proxyConfigUpdateContext.getErrorReport().hasErrors());
 
         try {
-            setConfigDefaultsInstance(configDefaults);
+            ProxyConfigTestUtils.setConfigDefaultsInstance(configDefaults);
         }
         catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException("Error resetting ConfigDefaults instance", e);
@@ -595,9 +589,7 @@ public class ProxyConfigUpdateValidationTest extends JMockBaseTestCaseWithUser {
      * @return the context
      */
     private static ProxyConfigUpdateContext getProxyConfigUpdateContext(ProxyConfigUpdateJson request) {
-        return fillContextWithDummyData(
-                new ProxyConfigUpdateContext(request, null, null, null)
-        );
+        return fillContextWithDummyData(new ProxyConfigUpdateContext(request, null, null));
     }
 
     private static ProxyConfigUpdateContext fillContextWithDummyData(
