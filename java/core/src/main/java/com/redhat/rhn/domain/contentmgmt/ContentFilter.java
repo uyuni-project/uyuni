@@ -38,13 +38,12 @@ import javax.persistence.Transient;
 /**
  * Content Filter
  *
- * @param <T> the entity being filtered
  */
 @Entity
 @Table(name = "suseContentFilter")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "type")
-public abstract class ContentFilter<T> extends BaseDomainHelper implements Predicate<T> {
+public abstract class ContentFilter extends BaseDomainHelper implements Predicate<Object> {
 
     private Long id;
     private Org org;
@@ -240,15 +239,9 @@ public abstract class ContentFilter<T> extends BaseDomainHelper implements Predi
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof ContentFilter that)) {
             return false;
         }
-
-        ContentFilter<?> that = (ContentFilter<?>) o;
 
         return new EqualsBuilder()
                 .append(org, that.org)

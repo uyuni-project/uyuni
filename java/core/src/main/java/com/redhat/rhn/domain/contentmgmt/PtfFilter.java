@@ -31,7 +31,7 @@ import javax.persistence.Transient;
 
 @Entity
 @DiscriminatorValue("ptf")
-public class PtfFilter extends ContentFilter<Package> {
+public class PtfFilter extends ContentFilter {
 
     public static final String FIELD_PTF_ALL = "ptf_all";
     public static final String FIELD_PTF_NUMBER = "ptf_number";
@@ -40,7 +40,10 @@ public class PtfFilter extends ContentFilter<Package> {
     private static final Logger LOGGER = LogManager.getLogger(PtfFilter.class);
 
     @Override
-    public boolean test(Package pack) {
+    public boolean test(Object o) {
+        if (!(o instanceof Package pack)) {
+            return false;
+        }
         // If the package is neither a ptf nor part of a ptf we cannot have a match
         if (!pack.isMasterPtfPackage() && !pack.isPartOfPtf()) {
             return false;

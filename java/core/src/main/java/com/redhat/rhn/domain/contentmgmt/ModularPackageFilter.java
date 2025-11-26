@@ -30,7 +30,10 @@ public class ModularPackageFilter extends PackageFilter {
     }
 
     @Override
-    public boolean test(Package pack) {
+    public boolean test(Object o) {
+        if (!(o instanceof Package pack)) {
+            return false;
+        }
         return pack.getPackageEvr().getRelease().contains(".module");
     }
 
