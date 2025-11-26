@@ -398,7 +398,7 @@
             <artifactId>stax2-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>struts</groupId>
+            <groupId>suse</groupId>
             <artifactId>struts</artifactId>
         </dependency>
         <dependency>
