@@ -29,7 +29,7 @@ mvn -f microservices/uyuni-java-parent --non-recursive install
 mvn -f branding install
 
 # Initialize spacewalk-java so we donwload all the dependencies
-mvn -f java compile --non-recursive initialize
+mvn -f java --non-recursive initialize
 
 # Install frontend dependencies
 npm --prefix web install
