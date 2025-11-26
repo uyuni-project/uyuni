@@ -1,35 +1,36 @@
-# Copyright (c) 2021-2024 SUSE LLC
+# Copyright (c) 2025 SUSE LLC
 # Licensed under the terms of the MIT license.
+#
+# This feature depends on:
+#   features/build_validation/retail/proxy_container_branch_network.feature
+#   features/build_validation/retail/sle15sp7_buildhost_build_kiwi_image.feature
 
 @proxy
-@sle15sp4_terminal
-Feature: Prepare prerequisites for SLES 15 SP4 terminal deployment
+@sle15sp7_terminal
+Feature: Prepare prerequisites for SLES 15 SP7 terminal deployment
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
-  Scenario: Prepare activation key for SLES 15 SP4 terminal
-    When I create an activation key including custom channels for "sle15sp4_terminal" via API
-
-  Scenario: Create hardware type group for SLES 15 SP4 terminal
+  Scenario: Create hardware type group for SLES 15 SP7 terminal
     When I follow the left menu "Systems > System Groups"
     And I follow "Create Group"
-    And I enter "HWTYPE:HP-ProLiantDL360Gen9" as "name"
+    And I enter "HWTYPE:HP-ProLiantDL580Gen9" as "name"
     And I enter "Terminal hardware type: HP host" as "description"
     And I click on "Create Group"
-    Then I should see a "System group HWTYPE:HP-ProLiantDL360Gen9 created." text
+    Then I should see a "System group HWTYPE:HP-ProLiantDL580Gen9 created." text
 
-  Scenario: Enable Saltboot formula for hardware type group SLES 15 SP4 terminal
+  Scenario: Enable Saltboot formula for hardware type group SLES 15 SP7 terminal
     When I follow the left menu "Systems > System Groups"
-    And I follow "HWTYPE:HP-ProLiantDL360Gen9" in the content area
+    And I follow "HWTYPE:HP-ProLiantDL580Gen9" in the content area
     And I follow "Formulas" in the content area
     And I check the "saltboot" formula
     And I click on "Save"
     Then the "saltboot" formula should be checked
 
-  Scenario: Parametrize the Saltboot formula SLES 15 SP4 terminal
+  Scenario: Parametrize the Saltboot formula SLES 15 SP7 terminal
     When I follow the left menu "Systems > System Groups"
-    And I follow "HWTYPE:HP-ProLiantDL360Gen9" in the content area
+    And I follow "HWTYPE:HP-ProLiantDL580Gen9" in the content area
     And I follow "Formulas" in the content area
     And I follow first "Saltboot" in the content area
     And I click on "Expand All Sections"
@@ -49,6 +50,6 @@ Feature: Prepare prerequisites for SLES 15 SP4 terminal deployment
     And I enter "p3" in third partition id field
     And I enter "/" in third mount point field
     And I select "boot" in third partition flags field
-    And I enter the image name for "sle15sp4_terminal" in third OS image field
+    And I enter the image name for "sle15sp7_terminal" in third OS image field
     And I click on "Save Formula"
     Then I should see a "Formula saved" text

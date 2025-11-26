@@ -189,8 +189,10 @@ When(/^I reboot the (Retail|Cobbler) terminal "([^"]*)" through the interface "(
   case host
   when 'pxeboot_minion'
     mac = $pxeboot_mac
-  when 'sle15sp4_terminal'
-    mac = $sle15sp4_terminal_mac
+  when 'sle15sp6_terminal'
+    mac = $sle15sp6_terminal_mac
+  when 'sle15sp7_terminal'
+    mac = $sle15sp7_terminal_mac
   end
   mac = mac.tr(':', '')
   hex = (("#{mac[0..5]}fffe#{mac[6..11]}").to_i(16) ^ 0x0200000000000000).to_s(16)
@@ -419,9 +421,12 @@ end
 When(/^I enter the MAC address of "([^"]*)" in (.*) field$/) do |host, field|
   if host == 'pxeboot_minion'
     mac = $pxeboot_mac
-  elsif host == 'sle15sp4_terminal'
-    mac = $sle15sp4_terminal_mac
+  elsif host == 'sle15sp6_terminal'
+    mac = $sle15sp6_terminal_mac
     mac = 'EE:EE:EE:00:00:06' if mac.nil?
+  elsif host == 'sle15sp7_terminal'
+    mac = $sle15sp7_terminal_mac
+    mac = 'EE:EE:EE:00:00:07' if mac.nil?
   elsif (host.include? 'deblike') || (host.include? 'debian12') || (host.include? 'ubuntu')
     node = get_target(host)
     output, _code = node.run('ip link show dev ens4')

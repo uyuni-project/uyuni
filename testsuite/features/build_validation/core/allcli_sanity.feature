@@ -425,12 +425,19 @@ Feature: Sanity checks
     And "sle15sp5s390_ssh_minion" should communicate with the server using public interface
     And the clock from "sle15sp5s390_ssh_minion" should be exact
 
-@sle15sp4_buildhost
-  Scenario: The SLES 15 SP4 build host is healthy
-    Then "sle15sp4_buildhost" should have a FQDN
-    And reverse resolution should work for "sle15sp4_buildhost"
-    And "sle15sp4_buildhost" should communicate with the server using public interface
-    And the clock from "sle15sp4_buildhost" should be exact
+@sle15sp6_buildhost
+  Scenario: The SLES 15 SP6 build host is healthy
+    Then "sle15sp6_buildhost" should have a FQDN
+    And reverse resolution should work for "sle15sp6_buildhost"
+    And "sle15sp6_buildhost" should communicate with the server using public interface
+    And the clock from "sle15sp6_buildhost" should be exact
+
+@sle15sp7_buildhost
+Scenario: The SLES 15 SP7 build host is healthy
+  Then "sle15sp7_buildhost" should have a FQDN
+  And reverse resolution should work for "sle15sp7_buildhost"
+  And "sle15sp7_buildhost" should communicate with the server using public interface
+  And the clock from "sle15sp7_buildhost" should be exact
 
 @monitoring_server
   Scenario: The monitoring server is healthy
