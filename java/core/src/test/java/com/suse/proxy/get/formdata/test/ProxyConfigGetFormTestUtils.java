@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 
 package com.suse.proxy.get.formdata.test;
@@ -52,6 +48,9 @@ public class ProxyConfigGetFormTestUtils {
         context.checking(new Expectations() {{
             allowing(mockConfigDefaults).isUyuni();
             will(returnValue(expectedIsUyuni));
+
+            allowing(mockConfigDefaults).getProductVersion();
+            will(returnValue(expectedIsUyuni ? "2026.01" : "5.2.0"));
 
             allowing(mockConfigDefaults);
             will(new CustomAction("delegate to real object") {

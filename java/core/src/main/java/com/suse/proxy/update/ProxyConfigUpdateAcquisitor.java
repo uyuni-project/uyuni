@@ -61,13 +61,11 @@ public class ProxyConfigUpdateAcquisitor implements ProxyConfigUpdateContextHand
         Long serverId = context.getRequest().getServerId();
         if (isProvided(serverId)) {
             MinionServerFactory.lookupById(serverId).ifPresent(minionServer -> {
-                if (minionServer.hasProxyEntitlement()) {
-                    context.setProxyMinion(minionServer);
-                    context.setProxyFqdn(ofNullable(minionServer.findPrimaryFqdn())
-                            .map(ServerFQDN::getName)
-                            .orElse(minionServer.getName()));
-                    context.setProxyConfig(context.getProxyConfigGetFacade().getProxyConfig(minionServer));
-                }
+                context.setProxyMinion(minionServer);
+                context.setProxyFqdn(ofNullable(minionServer.findPrimaryFqdn())
+                        .map(ServerFQDN::getName)
+                        .orElse(minionServer.getName()));
+                context.setProxyConfig(context.getProxyConfigGetFacade().getProxyConfig(minionServer));
             });
         }
     }

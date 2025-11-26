@@ -7,14 +7,12 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 
 package com.suse.proxy.update;
 
+import static com.redhat.rhn.common.ErrorReportingStrategies.logReportingStrategy;
+import static com.redhat.rhn.common.ErrorReportingStrategies.validationReportingStrategy;
 import static java.util.Arrays.asList;
 
 import com.redhat.rhn.domain.user.User;
@@ -43,6 +41,7 @@ public class ProxyConfigUpdateFacadeImpl implements ProxyConfigUpdateFacade {
                 new ProxyConfigUpdateAcquisitor(),
                 new ProxyConfigUpdateValidation(),
                 new ProxyConfigUpdateFileAcquisitor(),
+                new ProxyConfigUpdateInitializer(),
                 new ProxyConfigUpdateSavePillars(),
                 new ProxyConfigUpdateApplySaltState()
         ));
@@ -51,17 +50,23 @@ public class ProxyConfigUpdateFacadeImpl implements ProxyConfigUpdateFacade {
     /**
      * Update the proxy configuration, following the chain of responsibility pattern defined in the constructor.
      *
-     * @param request       the proxy configuration update JSON with the new values
-     * @param systemManager the system manager
-     * @param user          the user
+     * @param request                    the proxy configuration update JSON with the new values
+     * @param systemManager              the system manager
+     * @param user                       the user
      */
     @Override
-    public void update(ProxyConfigUpdateJson request, SystemManager systemManager, User user) {
-        ProxyConfigUpdateContext context = new ProxyConfigUpdateContext(request, systemManager, user);
+    public void update(
+            ProxyConfigUpdateJson request,
+            SystemManager systemManager,
+            User user
+    ) {
+        ProxyConfigUpdateContext context =
+                new ProxyConfigUpdateContext(request, systemManager, user);
 
         for (ProxyConfigUpdateContextHandler handler : contextHandlerChain) {
             handler.handle(context);
-            context.getErrorReport().report();
+            context.getErrorReport().report(logReportingStrategy(this));
+            context.getErrorReport().report(validationReportingStrategy());
         }
     }
 }

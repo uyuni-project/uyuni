@@ -20,10 +20,19 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.UyuniError;
+import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 
 import com.suse.proxy.ProxyContainerImagesEnum;
 import com.suse.proxy.update.ProxyConfigUpdateContext;
 
+import org.jmock.Expectations;
+import org.jmock.api.Invocation;
+import org.jmock.junit5.JUnit5Mockery;
+import org.jmock.lib.action.CustomAction;
+
+import java.lang.reflect.Method;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -85,6 +94,49 @@ public class ProxyConfigUpdateTestUtils {
      */
     public static String getDummyTag(ProxyContainerImagesEnum proxyContainerImagesEnum) {
         return DUMMY_TAG + "_" + proxyContainerImagesEnum.getImageName();
+    }
+
+    /**
+     * Creates a ProxyConfigUpdateContext for testing with a custom SystemEntitlementManager.
+     *
+     * @param context the JUnit5Mockery context
+     * @param minionServer the minion server to set in the context
+     * @param customManager the custom system entitlement manager to use in this context
+     * @param user the user to set in the context
+     * @return a ProxyConfigUpdateContext mock that delegates everything to a real context
+     *         except getSystemEntitlementManager(), which returns the customManager
+     */
+    public static ProxyConfigUpdateContext createContext(
+            JUnit5Mockery context,
+            MinionServer minionServer,
+            SystemEntitlementManager customManager,
+            User user
+    ) {
+        // Create a real context with standard initialization
+        ProxyConfigUpdateContext proxyConfigUpdateContext =
+                new ProxyConfigUpdateContext(null, null, user, null);
+        proxyConfigUpdateContext.setProxyMinion(minionServer);
+
+        // Create a mock context
+        ProxyConfigUpdateContext mockProxyConfigUpdateContext = context.mock(ProxyConfigUpdateContext.class);
+
+        // Configure the mock
+        context.checking(new Expectations() {{
+            // Handle everything we want actually to mock
+            allowing(mockProxyConfigUpdateContext).getSystemEntitlementManager();
+            will(returnValue(customManager));
+
+            // For all other methods, delegate to the real context
+            allowing(mockProxyConfigUpdateContext);
+            will(new CustomAction("delegate to real object") {
+                public Object invoke(Invocation invocation) throws Throwable {
+                    Method m = invocation.getInvokedMethod();
+                    return m.invoke(proxyConfigUpdateContext, invocation.getParametersAsArray());
+                }
+            });
+        }});
+
+        return mockProxyConfigUpdateContext;
     }
 
 }

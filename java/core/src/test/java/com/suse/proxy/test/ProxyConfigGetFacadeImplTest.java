@@ -11,7 +11,6 @@
 
 package com.suse.proxy.test;
 
-import static com.suse.proxy.get.ProxyConfigGetFacadeImpl.MGRPXY;
 import static com.suse.proxy.test.ProxyConfigUpdateTestUtils.DUMMY_PARENT_FQDN;
 import static com.suse.proxy.test.ProxyConfigUpdateTestUtils.DUMMY_PROXY_FQDN;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -155,7 +154,7 @@ public class ProxyConfigGetFacadeImplTest extends BaseTestCaseWithUser {
                 ServerConstants.getServerGroupTypeProxyEntitled(),
                 ServerFactoryTest.TYPE_SERVER_PROXY);
         Channel channel = ChannelFactoryTest.createTestChannel(user);
-        PackageManagerTest.addPackageToSystemAndChannel(MGRPXY, server, channel);
+        PackageManagerTest.addPackageToSystemAndChannel(ProxyConfigUtils.MGRPXY, server, channel);
 
         // mocking the ConfigDefaults
         ConfigDefaults mockConfigDefaults = context.mock(ConfigDefaults.class);

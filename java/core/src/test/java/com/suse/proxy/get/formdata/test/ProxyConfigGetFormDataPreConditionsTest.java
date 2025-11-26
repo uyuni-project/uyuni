@@ -11,7 +11,9 @@
 
 package com.suse.proxy.get.formdata.test;
 
-import static com.suse.proxy.get.ProxyConfigGetFacadeImpl.MGRPXY;
+import static com.suse.proxy.ProxyConfigUtils.MGRPXY;
+import static com.suse.proxy.ProxyConfigUtils.isMgrpxyAvailable;
+import static com.suse.proxy.ProxyConfigUtils.isMgrpxyInstalled;
 import static com.suse.proxy.get.formdata.test.ProxyConfigGetFormTestUtils.SERVER_ID;
 import static com.suse.proxy.get.formdata.test.ProxyConfigGetFormTestUtils.assertErrors;
 import static com.suse.proxy.get.formdata.test.ProxyConfigGetFormTestUtils.assertNoErrors;
@@ -30,7 +32,6 @@ import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
-import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.rhnpackage.test.PackageManagerTest;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
@@ -365,26 +366,4 @@ public class ProxyConfigGetFormDataPreConditionsTest extends RhnJmockBaseTestCas
     private ProxyConfigGetFormDataContext createContext(Server server) {
         return new ProxyConfigGetFormDataContext(user, server, null, systemEntitlementManager);
     }
-
-    /**
-     * Helper method to check if mgrpxy is installed on server
-     * @param server the server to check
-     * @return true if installed, false otherwise
-     */
-    private boolean isMgrpxyInstalled(Server server) {
-        return PackageManager.shallowSystemPackageList(server.getId())
-                .stream().anyMatch(p -> p.getName().equals(MGRPXY));
-    }
-
-    /**
-     * Helper method to check if mgrpxy is available on server on a subscribed channel
-     * @param server the server to check
-     * @return true if available, false otherwise
-     */
-    private boolean isMgrpxyAvailable(Server server) {
-        return server.getChildChannels().stream()
-                .flatMap(c -> c.getPackages().stream())
-                .anyMatch(p -> MGRPXY.equals(p.getPackageName().getName()));
-    }
-
 }
