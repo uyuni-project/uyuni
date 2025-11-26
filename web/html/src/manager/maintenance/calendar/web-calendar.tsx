@@ -358,7 +358,6 @@ const WebCalendar = (props: WebCalendarProps) => {
         eventColor={"#192072"}
         editable={false}
         eventContent={(eventContent) => setEventContent(eventContent)}
-        eventsSet={() => setEvents(events)}
         eventDisplay={"block"}
         nowIndicator={true}
       />
