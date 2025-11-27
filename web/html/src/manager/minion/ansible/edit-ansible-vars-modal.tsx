@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, Fragment } from "react";
 
 import yaml from "js-yaml";
 
@@ -95,7 +95,7 @@ const EditAnsibleVarsModal = (props: Props) => {
         }
         onClose={() => setOpen(false)}
         footer={
-          <React.Fragment>
+          <Fragment>
             <div className="btn-group col-lg-6"></div>
             <div className="col-lg-6">
               <div className="pull-right btn-group">
@@ -117,7 +117,7 @@ const EditAnsibleVarsModal = (props: Props) => {
                 />
               </div>
             </div>
-          </React.Fragment>
+          </Fragment>
         }
       />
     </>
