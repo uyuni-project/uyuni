@@ -17,8 +17,8 @@ When(/^I (enable|disable) repositories (before|after) installing branch server$/
   # Server Applications, proxy product and modules, proxy devel
   if os_family.match?(/^sles/) && os_version.match?(/^15/)
     repos += 'proxy_module_pool_repo proxy_module_update_repo ' \
-      'proxy_product_pool_repo proxy_product_update_repo ' \
-      'module_server_applications_pool_repo module_server_applications_update_repo '
+             'proxy_product_pool_repo proxy_product_update_repo ' \
+             'module_server_applications_pool_repo module_server_applications_update_repo '
     repos += 'proxy_devel_releasenotes_repo proxy_devel_repo ' unless $build_validation || product_version_full.include?('-released')
   elsif os_family.match?(/^opensuse/)
     repos += 'proxy_pool_repo ' unless $is_containerized_server
@@ -33,9 +33,9 @@ When(/^I start tftp on the proxy$/) do
   when 'Uyuni'
     step 'I enable repositories before installing branch server'
     cmd = 'zypper --non-interactive --ignore-unknown remove atftp && ' \
-      'zypper --non-interactive install tftp && ' \
-      'systemctl enable tftp.service && ' \
-      'systemctl start tftp.service'
+          'zypper --non-interactive install tftp && ' \
+          'systemctl enable tftp.service && ' \
+          'systemctl start tftp.service'
     get_target('proxy').run(cmd)
     step 'I disable repositories after installing branch server'
   else
@@ -117,17 +117,17 @@ When(/^I connect the second interface of the proxy to the private network$/) do
     #                  otherwise the name server we get from DHCP is lost at the end of the list
     #                  (the name servers list in resolv.conf is limited to 3 entries)
     cmd = 'nmcli connection modify "Wired connection 1" ipv4.dns-priority 20 && ' \
-      "nmcli device modify #{node.public_interface} ipv4.dns-priority 20 && " \
-      'nmcli connection modify "Wired connection 2" ipv4.dns-priority 10 && ' \
-      "nmcli device modify #{node.private_interface} ipv4.dns-priority 10"
+          "nmcli device modify #{node.public_interface} ipv4.dns-priority 20 && " \
+          'nmcli connection modify "Wired connection 2" ipv4.dns-priority 10 && ' \
+          "nmcli device modify #{node.private_interface} ipv4.dns-priority 10"
   else
     # Wicked: is there a way to give eth1 precedence?
     #         we use a static setting for the name server instead
     static_dns = net_prefix + PRIVATE_ADDRESSES['dhcp_dns']
     cmd = 'echo -e "BOOTPROTO=dhcp\nSTARTMODE=auto\n" > /etc/sysconfig/network/ifcfg-eth1 && ' \
-      'ifup eth1 && ' \
-      "sed -i 's/^NETCONFIG_DNS_STATIC_SERVERS=\".*\"/NETCONFIG_DNS_STATIC_SERVERS=\"#{static_dns}\"/' /etc/sysconfig/network/config && " \
-      'netconfig update -f'
+          'ifup eth1 && ' \
+          "sed -i 's/^NETCONFIG_DNS_STATIC_SERVERS=\".*\"/NETCONFIG_DNS_STATIC_SERVERS=\"#{static_dns}\"/' /etc/sysconfig/network/config && " \
+          'netconfig update -f'
   end
   node.run(cmd)
 end

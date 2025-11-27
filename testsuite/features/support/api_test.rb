@@ -38,12 +38,15 @@ class ApiTest
     @token = nil
     @semaphore = Mutex.new
 
-    file = File.open('api.log', 'a')
-    file.sync = true
-    @logger = Logger.new(file)
-    @logger.level = Logger::INFO
-    @logger.formatter = proc do |severity, datetime, progname, msg|
-      "#{datetime.strftime('%H:%M:%S')} [#{severity}] #{msg}\n"
+    File.open('api.log', 'a') do |file|
+      file.sync = true
+      @logger = Logger.new(file)
+      @logger.level = Logger::INFO
+
+      @logger.formatter =
+        proc do |severity, datetime, _progname, msg|
+          "#{datetime.strftime('%H:%M:%S')} [#{severity}] #{msg}\n"
+        end
     end
   end
 

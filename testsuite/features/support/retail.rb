@@ -97,9 +97,9 @@ def execute_expect_command_proxy(host, exp_file, interface)
     mac = $sle15sp7_terminal_mac
   end
   mac = mac.tr(':', '')
-  hex = (("#{mac[0..5]}fffe#{mac[6..11]}").to_i(16) ^ 0x0200000000000000).to_s(16)
+  eui64_base = "#{mac[0..5]}fffe#{mac[6..11]}"
+  hex = (eui64_base.to_i(16) ^ 0x0200000000000000).to_s(16)
   ipv6 = "fe80::#{hex[0..3]}:#{hex[4..7]}:#{hex[8..11]}:#{hex[12..15]}%#{interface}"
-
   source = "#{File.dirname(__FILE__)}/../upload_files/#{exp_file}"
   dest = "/tmp/#{exp_file}"
   success = file_inject(get_target('proxy'), source, dest)

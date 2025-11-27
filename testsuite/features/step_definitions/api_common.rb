@@ -10,16 +10,18 @@ require 'socket'
 
 When(/^I delete all the imported terminals$/) do
   terminals = read_terminals_from_yaml
-  short_names_to_process = terminals.reject do |terminal_name|
-    terminal_name.include?('minion') || terminal_name.include?('client')
-  end
+  short_names_to_process =
+    terminals.reject do |terminal_name|
+      terminal_name.include?('minion') || terminal_name.include?('client')
+    end
   log "Terminals identified for deletion (short names): #{short_names_to_process.join(', ')}"
   current_systems = $api_test.system.list_systems
   full_names_to_delete = []
   short_names_to_process.each do |short_name|
-    match = current_systems.find do |s|
-      s['name'].split('.').include?(short_name)
-    end
+    match =
+      current_systems.find do |s|
+        s['name'].split('.').include?(short_name)
+      end
     if match
       full_names_to_delete << match['name']
     else
@@ -29,7 +31,7 @@ When(/^I delete all the imported terminals$/) do
   if full_names_to_delete.any?
     $api_test.system.delete_systems_by_name(full_names_to_delete)
   else
-    log "No matching systems found to delete."
+    log 'No matching systems found to delete.'
   end
 end
 
