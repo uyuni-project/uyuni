@@ -75,7 +75,6 @@ Requires:       perl(Term::Completion::Path)
 %if 0%{?suse_version}
 Requires:       curl
 Requires:       patch
-Requires:       perl-Frontier-RPC
 Requires:       perl-XML-LibXML
 Requires:       perl-XML-SAX
 Requires:       perl-libwww-perl
