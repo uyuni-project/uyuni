@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Nov 27 10:48:26 CET 2025 - michael.calmer@suse.com
+
+- version 5.2.2
+  * Use BCI base image as base
+  * Clean up the image
+
+-------------------------------------------------------------------
 Tue Oct 28 10:22:39 CET 2025 - rosuna@suse.com
 
 - version 5.2.1
