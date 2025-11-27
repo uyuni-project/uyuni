@@ -13,6 +13,7 @@ import Network from "utils/network";
 import AccessGroupDetails, { AccessGroupDetailsHandle } from "./access-group-details";
 import AccessGroupPermissions from "./access-group-permissions";
 import AccessGroupUsers from "./access-group-user";
+import AccessGroupReview from "./access-group-review";
 
 type Permission = {
   id: number;
@@ -189,7 +190,18 @@ const AccessGroup = (props: AccessGroupProps) => {
     },
     {
       title: t("Users"),
-      content: <AccessGroupUsers state={accessGroupState} onChange={handleUsers} errors={accessGroupState.errors} />,
+      content: (
+        <AccessGroupUsers
+          state={accessGroupState}
+          onChange={handleUsers}
+          errors={accessGroupState.errors} 
+        />
+      ),
+      validate: null,
+    },
+    {
+      title: t("Review"),
+      content: <AccessGroupReview state={accessGroupState} />,
       validate: null,
     },
   ];
