@@ -71,7 +71,6 @@ Requires:       perl
 %endif
 Requires:       perl-Params-Validate
 Requires:       spacewalk-schema
-Requires:       perl(Term::Completion::Path)
 %if 0%{?suse_version}
 Requires:       curl
 Requires:       patch
