@@ -28,6 +28,7 @@ const AceEditor = ({ minLines = 20, maxLines = 40, readOnly = false, content = "
   const fallbackId = useId();
   const nodeRef = useRef<HTMLDivElement>(null);
   const editorRef = useRef<Ace.Editor>();
+  const ignoreNextUpdate = useRef(false);
 
   useEffect(() => {
     try {
@@ -41,6 +42,7 @@ const AceEditor = ({ minLines = 20, maxLines = 40, readOnly = false, content = "
         editor.setShowPrintMargin(false);
         editor.getSession().setValue(content || "");
         editor.on("change", () => {
+          ignoreNextUpdate.current = true;
           onChange?.(editor.getSession().getValue());
         });
 
@@ -56,9 +58,15 @@ const AceEditor = ({ minLines = 20, maxLines = 40, readOnly = false, content = "
   useEffect(() => {
     const editor = editorRef.current;
     if (!editor) return;
+    
+    if (ignoreNextUpdate.current) {
+      ignoreNextUpdate.current = false;
+      return;
+    }
     const currentValue = editor.getSession().getValue();
+
     if (currentValue !== content) {
-      editor.setValue(content || "");
+      editor.setValue(content || "", -1);
     }
   }, [content]);
 

@@ -271,7 +271,7 @@ const AnsibleVarYamlEditor = forwardRef((props: Props, ref) => {
                       setVarsData(parsed);
                       setYamlEditor(false);
                     } catch (e) {
-                      showErrorToastr("Invalid YAML", { autoHide: false, containerId: "yamlEditorError" });
+                      showErrorToastr(`Invalid YAML: Line ${e.mark.snippet}`, { autoHide: false, containerId: "yamlEditorError" });
                     }
                   }}
                 />
@@ -304,7 +304,7 @@ const AnsibleVarYamlEditor = forwardRef((props: Props, ref) => {
                         buttons={
                           <Button
                             className="btn-tertiary btn-sm"
-                            handler={() => removeTopLevelItem(p)}
+                            handler={() => removeTopLevelItem(path)}
                             title={t("Delete")}
                             icon="fa-trash-o"
                           />
@@ -357,7 +357,7 @@ const AnsibleVarYamlEditor = forwardRef((props: Props, ref) => {
               maxLines={40}
               readOnly={false}
               mode="yaml"
-              content={yamlEditorContent} // string
+              content={yamlEditorContent}
               onChange={setYamlEditorContent}
             />
           </div>
