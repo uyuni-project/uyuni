@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Thu Nov 27 11:10:40 CET 2025 - michael.calmer@suse.com
+
+- version 5.2.2-0
+  * Fix and add license files for susemanager and subpackages
+  * Relicense mgr-salt-ssh under Apache-2.0 and move it
+    to a separated package named susemanager-tools-salt
+
+-------------------------------------------------------------------
 Mon Oct 27 15:33:23 CET 2025 - rosuna@suse.com
 
 - version 5.2.1-0
