@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Thu Nov 27 10:44:25 CET 2025 - michael.calmer@suse.com
+
+- version 5.2.2-0
+  * Add RBAC rules for proxy config backup API
+  * Add leftovers of partially missing ARMHF for Debian (bsc#1248783)
+  * Add GPG key for SLFO packages
+  * Remove any associated dist upgrade action when removing a server
+  * Remove any orphan dist upgrade action data during upgrade
+
+-------------------------------------------------------------------
 Mon Oct 27 15:33:45 CET 2025 - rosuna@suse.com
 
 - version 5.2.1-0
