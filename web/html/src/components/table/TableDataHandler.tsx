@@ -1,4 +1,4 @@
-import { type ReactComponentElement, type ReactElement, type ReactNode, Children, Component } from "react";
+import { type ReactComponentElement, type ReactElement, type ReactNode, Children, Component, createRef, } from "react";
 
 import _isEqual from "lodash/isEqual";
 
@@ -140,7 +140,7 @@ export class TableDataHandler extends Component<Props, State> {
 
   constructor(props: Props) {
     super(props);
-    this.panelHeaderRef = React.createRef();
+    this.panelHeaderRef = createRef();
     this.state = {
       data: [],
       provider: this.getProvider(),

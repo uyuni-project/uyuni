@@ -415,17 +415,6 @@ export const components_table_search_example_tsx = {
 };
 
 // @ts-ignore
-import components_steps_progress_bar_stories_tsx_component from "components/steps-progress-bar.stories.tsx";
-import components_steps_progress_bar_stories_tsx_raw from "components/steps-progress-bar.stories.tsx?raw";
-
-export const components_steps_progress_bar_stories_tsx = {
-  path: "components/steps-progress-bar.stories.tsx",
-  title: "steps-progress-bar.stories.tsx",
-  groupName: "components",
-  component: components_steps_progress_bar_stories_tsx_component,
-  raw: components_steps_progress_bar_stories_tsx_raw,
-};
-
 import components_toastr_toastr_example_tsx_component from "components/toastr/toastr.example.tsx";
 import components_toastr_toastr_example_tsx_raw from "components/toastr/toastr.example.tsx?raw";
 

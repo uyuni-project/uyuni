@@ -84,12 +84,16 @@
         transition: width 0.5s linear;
       }
     }
+
+    &:last-child {
+      flex-basis: 0;
+    }
   }
 }
 
 .progress-bar-footer {
   position: sticky;
-  bottom: -4em;
+  bottom: -3em;
   width: 100%;
   background: $white;
   padding: 10px 0;
