@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Thu Nov 27 10:43:12 CET 2025 - michael.calmer@suse.com
+
+- version 5.2.2-0
+  * Add proxy migration execution module
+  * Adjust sls files for python311-kiwi (bsc#1251864)(bsc#1253024)
+  * Fix the preflight script to distingish SLES 16.0 and SL Micro 6.2
+  * SLE12 Kiwi is located under sbin, fix command path (bsc#1251928)
+  * Avoid pylint undefined __salt__ variable warnings
+    in kiwi_info module
+  * Fix regular expressions in kiwi_info and mgrnet modules
+    to avoid SonarCloud warnings
+
+-------------------------------------------------------------------
 Mon Oct 27 15:34:15 CET 2025 - rosuna@suse.com
 
 - version 5.2.1-0
