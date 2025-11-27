@@ -1,4 +1,36 @@
 -------------------------------------------------------------------
+Thu Nov 27 10:36:44 CET 2025 - michael.calmer@suse.com
+
+- version 5.2.4-0
+  * Fix crash in ubuntu errata sync on deleted channel ids
+    (bsc#1250561)
+  * Add details on config channels and state order in UI
+    (bsc#1253285)
+  * Add product identification for openSUSE Leap 16.0 and
+    SUSE Linux Enterprise 16
+  * Ensure proxy extension channel is checked and installed
+    when converting to proxy (bsc#1249438)
+  * Fix missing ProxyInfo cleanup on entitlement removal
+    (bsc#1252950)
+  * Correctly handles http proxy empty passwords (bsc#1249502)
+  * Fix intermittently failing test in ForwardRegistrationTaskTest
+  * Upgrade to commons-fileupload2
+  * Bump apache-commons-logging version
+  * Remove unused apache-commons-el dependency
+  * Remove unused jetty dependencies
+  * Identify the state of a channel synchronized and show it in
+    Software Channel Details API
+  * Adapt oval file download to use configured proxy(bsc#1247822)
+  * Add proxy migration automation
+  * Fix execution of virtual instance refresh action (bsc#1253161)
+  * Fix http proxy verification (bsc#1253501)
+  * Fix dnf updateinfo showing wrong severity for
+    security updates (bsc#1252937)
+  * Only show subscription warning to authorized users (bsc#1253127)
+  * Move proxy initialization to run when proxy config is
+    applied (bsc#1252948)
+
+-------------------------------------------------------------------
 Tue Oct 28 15:31:20 CET 2025 - rosuna@suse.com
 
 - version 5.2.3-0

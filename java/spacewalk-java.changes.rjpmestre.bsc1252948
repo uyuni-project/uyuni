@@ -1,2 +1,0 @@
-- Move proxy initialization to run when proxy config is
-  applied (bsc#1252948)

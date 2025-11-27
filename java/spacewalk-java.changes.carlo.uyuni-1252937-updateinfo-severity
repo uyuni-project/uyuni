@@ -1,2 +1,0 @@
-- Fix dnf updateinfo showing wrong severity for
-  security updates (bsc#1252937)

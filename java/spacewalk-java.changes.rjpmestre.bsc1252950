@@ -1,2 +1,0 @@
-- Fix missing ProxyInfo cleanup on entitlement removal
-  (bsc#1252950)

@@ -15,12 +15,12 @@
     <parent>
         <groupId>org.uyuni-project</groupId>
         <artifactId>uyuni-java-parent</artifactId>
-        <version>5.2.1</version>
+        <version>5.2.2</version>
         <relativePath>../microservices/uyuni-java-parent</relativePath>
     </parent>
 
     <artifactId>spacewalk-java</artifactId>
-    <version>5.2.3</version>
+    <version>5.2.4</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -134,7 +134,7 @@
             <dependency>
                 <groupId>org.uyuni-project</groupId>
                 <artifactId>branding</artifactId>
-                <version>5.2.1</version>
+                <version>5.2.2</version>
             </dependency>
 
             <dependency>
