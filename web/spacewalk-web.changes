@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Thu Nov 27 11:11:24 CET 2025 - michael.calmer@suse.com
+
+- version 5.2.3-0
+  * Add details on config channels and state order in UI
+    (bsc#1253285)
+  * Ensure proxy extension channel is checked and installed
+    when converting to proxy (bsc#1249438)
+
+-------------------------------------------------------------------
 Mon Oct 27 16:10:36 CET 2025 - rosuna@suse.com
 
 - version 5.2.2-0
