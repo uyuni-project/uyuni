@@ -16,7 +16,7 @@
     <parent>
         <groupId>org.uyuni-project</groupId>
         <artifactId>spacewalk-java</artifactId>
-        <version>5.2.4</version>
+        <version>5.2.5</version>
     </parent>
 
     <groupId>org.uyuni-project.spacewalk-java</groupId>
