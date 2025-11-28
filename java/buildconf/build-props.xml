@@ -205,7 +205,7 @@
              postgresql-jdbc ongres-scram/client ongres-scram/common
              ${stringprep-jars} taglibs-standard-impl taglibs-standard-jstlel
              taglibs-standard-spec quartz ${suse-common-jars} velocity-engine-core
-             simple-core snakeyaml simple-xml ${commons-jexl}" />
+             simple-core snakeyaml simpleframework/simplexml ${commons-jexl}" />
 
   <property name="dist.jar.dependencies"
       value="antlr objectweb-asm/asm bcel ${c3p0} ${cglib-jar}
@@ -218,7 +218,7 @@
              oro quartz sitemesh ${struts-jars}
              taglibs-standard-impl taglibs-standard-jstlel taglibs-standard-spec
              postgresql-jdbc ongres-scram/client ongres-scram/common ${stringprep-jars}
-             snakeyaml simple-xml ${suse-common-jars} ${suse-runtime-jars}
+             snakeyaml simpleframework/simplexml ${suse-common-jars} ${suse-runtime-jars}
 	     xalan-j2 xalan-j2-serializer xerces-j2 simple-core ${ehcache}" />
 
   <property name="taskomatic.jar.dependencies"

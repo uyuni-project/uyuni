@@ -774,7 +774,7 @@
             <dependency>
                 <groupId>org.simpleframework</groupId>
                 <artifactId>simple-xml</artifactId>
-                <version>2.6.2</version>
+                <version>2.7.1</version>
                 <exclusions>
                     <!-- StAX is no longer needed since it's included in Java 6+ -->
                     <exclusion>

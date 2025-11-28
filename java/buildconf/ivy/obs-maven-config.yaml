@@ -252,6 +252,8 @@ artifacts:
     arch: x86_64
     repository: Uyuni_Other
   - artifact: simple-xml
+    package: simplexml
+    jar: simplexml\.jar
     repository: Uyuni_Other
   - artifact: sitemesh
     repository: Uyuni_Other
