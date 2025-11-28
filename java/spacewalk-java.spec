@@ -136,7 +136,7 @@ BuildRequires:  quartz
 BuildRequires:  redstone-xmlrpc
 BuildRequires:  salt-netapi-client >= 0.21
 BuildRequires:  simple-core
-BuildRequires:  simple-xml
+BuildRequires:  simplexml
 BuildRequires:  sitemesh
 BuildRequires:  snakeyaml >= 1.33
 BuildRequires:  spark-core
@@ -221,7 +221,7 @@ Requires:       redstone-xmlrpc
 Requires:       salt-netapi-client >= 0.21
 BuildRequires:  servletapi5
 Requires:       simple-core
-Requires:       simple-xml
+Requires:       simplexml
 Requires:       sitemesh
 Requires:       snakeyaml >= 1.33
 Requires:       spacewalk-branding
