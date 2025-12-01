@@ -128,13 +128,11 @@ public class XccdfTestResultDto extends XccdfTestResultCounts {
     }
 
     /**
-     * Returns completetion time of scan
-     * @return completetion time
+     * Returns completion time of scan
+     * @return completion time
      */
     public Date getCompleted() {
-        return new Date(this.completed.getYear(), this.completed.getMonth(),
-                this.completed.getDate(), this.completed.getHours(),
-                this.completed.getMinutes(), this.completed.getSeconds());
+        return new Date(completed.getTime());
     }
 
     /**
