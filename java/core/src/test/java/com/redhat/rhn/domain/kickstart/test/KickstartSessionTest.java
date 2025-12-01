@@ -94,7 +94,7 @@ public class KickstartSessionTest extends BaseTestCaseWithUser {
     @Test
     public void testLookupAllForServerAndFail() throws Exception {
 
-        KickstartSession session2 = createKickstartSession(s, k, user);
+        KickstartSession session2 = createKickstartSession(s, k);
         KickstartFactory.saveKickstartSession(session2);
         assertEquals(2, KickstartFactory.
                 lookupAllKickstartSessionsByServer(s.getId()).size());
@@ -140,13 +140,11 @@ public class KickstartSessionTest extends BaseTestCaseWithUser {
         return session;
     }
 
-    public static KickstartSession createKickstartSession(Server s, KickstartData k,
-            User userIn) throws Exception {
-        return createKickstartSession(s, k, userIn, null);
+    public static KickstartSession createKickstartSession(Server s, KickstartData k) throws Exception {
+        return createKickstartSession(s, k, null);
 
     }
-    public static KickstartSession createKickstartSession(Server s, KickstartData k,
-            User userIn, Action actionIn) throws Exception {
+    public static KickstartSession createKickstartSession(Server s, KickstartData k, Action actionIn) throws Exception {
 
         KickstartSessionState state = KickstartFactory.SESSION_STATE_CREATED;
         KickstartSession ksession = new KickstartSession();
@@ -173,14 +171,13 @@ public class KickstartSessionTest extends BaseTestCaseWithUser {
 
     }
 
-    public static KickstartSession createKickstartSession(KickstartData k,
-            User userIn) throws Exception {
+    public static KickstartSession createKickstartSession(KickstartData k, User userIn) throws Exception {
         Server s = ServerFactoryTest.createTestServer(userIn, true);
         Channel baseChannel = ChannelFactoryTest.createTestChannel(userIn);
         baseChannel.setParentChannel(null);
         s.addChannel(baseChannel);
         TestUtils.saveAndFlush(s);
-        return createKickstartSession(s, k, userIn);
+        return createKickstartSession(s, k);
     }
 
 }

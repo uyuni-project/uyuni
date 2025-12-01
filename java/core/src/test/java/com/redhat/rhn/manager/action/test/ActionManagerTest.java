@@ -340,7 +340,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         return parent;
     }
 
-    private List<Action> createActionList(User user, Action... actions) {
+    private List<Action> createActionList(Action... actions) {
         List<Action> returnList = new LinkedList<>();
 
         for (Action actionIn : actions) {
@@ -400,7 +400,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         ActionManager.setTaskomaticApi(taskomaticMock);
 
         Action parent = createActionWithServerActions(user, 1);
-        List<Action> actionList = createActionList(user, parent);
+        List<Action> actionList = createActionList(parent);
 
         context().checking(new Expectations() { {
             allowing(taskomaticMock).deleteScheduledActions(with(any(Map.class)));
@@ -416,7 +416,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testSimpleCancelMinionActions() throws Exception {
         Action parent = createActionWithMinionServerActions(user, ServerAction::setStatusQueued, 3);
-        List actionList = createActionList(user, new Action [] {parent});
+        List actionList = createActionList(new Action [] {parent});
 
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
         ActionManager.setTaskomaticApi(taskomaticMock);
@@ -472,7 +472,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         ServerAction pickedUp = iterator.next();
         Server serverPickedUp = pickedUp.getServer();
 
-        List<Action> actionList = createActionList(user, action);
+        List<Action> actionList = createActionList(action);
         ActionManager.cancelActions(user, actionList);
 
         assertServerActionCount(action, 3);
@@ -498,7 +498,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
                         throw new RuntimeException(e);
                     }
                 });
-        List actionList = createActionList(user, new Action [] {parent});
+        List actionList = createActionList(new Action [] {parent});
 
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
         ActionManager.setTaskomaticApi(taskomaticMock);
@@ -543,7 +543,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         Action parent = createActionWithServerActions(user, 1);
         Action child = createActionWithServerActions(user, 1);
         child.setPrerequisite(parent);
-        List<Action> actionList = createActionList(user, parent);
+        List<Action> actionList = createActionList(parent);
 
         assertServerActionCount(parent, 1);
         assertActionsForUser(user, 2);
@@ -677,7 +677,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         Action parent = createActionWithServerActions(user, 1);
         Action child = createActionWithServerActions(user, 1);
         child.setPrerequisite(parent);
-        List actionList = createActionList(user, new Action [] {child});
+        List actionList = createActionList(new Action [] {child});
 
         try {
             ActionManager.cancelActions(user, actionList);
@@ -705,7 +705,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         }
         assertServerActionCount(user, 42);
 
-        List<Action> actionList = createActionList(user, parent1, parent2);
+        List<Action> actionList = createActionList(parent1, parent2);
 
         assertServerActionCount(parent1, 3);
         assertActionsForUser(user, 20);
@@ -732,12 +732,11 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
         KickstartDataTest.setupTestConfiguration(user);
         KickstartData ksData = KickstartDataTest.createKickstartWithOptions(user.getOrg());
-        KickstartSession ksSession = KickstartSessionTest.createKickstartSession(server,
-                ksData, user, parentAction);
+        KickstartSession ksSession = KickstartSessionTest.createKickstartSession(server, ksData, parentAction);
         TestUtils.saveAndFlush(ksSession);
         ksSession = reload(ksSession);
 
-        List<Action> actionList = createActionList(user, parentAction);
+        List<Action> actionList = createActionList(parentAction);
 
         Query<KickstartSession> kickstartSessions = session.createQuery(
                 "from KickstartSession ks where ks.action = :action", KickstartSession.class);
@@ -1018,9 +1017,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
             = KickstartDataTest.createKickstartWithChannel(user.getOrg());
 
         KickstartSession ksSession =
-            KickstartSessionTest.createKickstartSession(srvr,
-                                                        testKickstartData,
-                                                        user);
+            KickstartSessionTest.createKickstartSession(srvr, testKickstartData);
         TestUtils.saveAndFlush(ksSession);
 
         String kickstartHost = "localhost.localdomain";

@@ -516,7 +516,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         Server s = ServerTestUtils.createTestSystem(user);
         String version = "5Server";
         String release = "5.0.0.9";
-        s = ServerTestUtils.addRedhatReleasePackageToServer(user, s, version, release);
+        s = ServerTestUtils.addRedhatReleasePackageToServer(s, version, release);
         String release2 = "5.2.0.4";
         String release3 = "5.3.0.3";
         // Create some base channels and corresponding entries in rhnReleaseChannelMap:

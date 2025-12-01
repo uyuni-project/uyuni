@@ -40,9 +40,9 @@ public class ActivationKeyPackagesCommandTest extends BaseTestCaseWithUser {
 
         // setup
         ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
-        TokenPackage pkg1 = TokenPackageTest.createTestPackage(user, key);
-        TokenPackage pkg2 = TokenPackageTest.createTestPackage(user, key);
-        TokenPackage pkg3 = TokenPackageTest.createTestPackage(user, key);
+        TokenPackage pkg1 = TokenPackageTest.createTestPackage(key);
+        TokenPackage pkg2 = TokenPackageTest.createTestPackage(key);
+        TokenPackage pkg3 = TokenPackageTest.createTestPackage(key);
 
         TestUtils.flushAndEvict(pkg1);
         TestUtils.flushAndEvict(pkg2);

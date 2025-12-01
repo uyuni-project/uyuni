@@ -25,7 +25,6 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.TokenPackage;
 import com.redhat.rhn.domain.token.TokenPackageFactory;
-import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
@@ -48,7 +47,7 @@ public class TokenPackageTest extends BaseTestCaseWithUser {
     public void testTokenPackage() throws Exception {
 
         ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
-        TokenPackage pkg = createTestPackage(user, key);
+        TokenPackage pkg = createTestPackage(key);
         assertNotNull(pkg);
 
         //make sure we got written to the db
@@ -65,18 +64,18 @@ public class TokenPackageTest extends BaseTestCaseWithUser {
         assertNotNull(lookup.getPackageArch());
     }
 
-    public static TokenPackage createTestPackage(User user, ActivationKey key)
+    public static TokenPackage createTestPackage(ActivationKey key)
         throws Exception {
 
         TokenPackage p = new TokenPackage();
 
-        p = populateTestPackage(user, key, p);
+        p = populateTestPackage(key, p);
         TestUtils.saveAndFlush(p);
 
         return p;
     }
 
-    public static TokenPackage populateTestPackage(User user, ActivationKey key,
+    public static TokenPackage populateTestPackage(ActivationKey key,
             TokenPackage p) {
 
         PackageName pname = PackageNameTest.createTestPackageName();

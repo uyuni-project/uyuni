@@ -374,7 +374,7 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
             throws Exception {
         Channel channel = ChannelFactoryTest.createTestChannel(owner);
         ChannelTestUtils.addDistMapToChannel(channel);
-        addKickstartPackagesToChannel(channel, false);
+        addKickstartPackagesToChannel(channel);
         return createDefaults(data, channel);
     }
 
@@ -382,10 +382,9 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
      * Adds the minimal amount of packages to the channel for the channel to be a
      * valid kickstart channel.
      * @param c The channel to which to add kickstart packages.
-     * @param rhel2 Whether to include rhel2 required packages.
      * @throws Exception for creating packages.
      */
-    public static void addKickstartPackagesToChannel(Channel c, boolean rhel2)
+    public static void addKickstartPackagesToChannel(Channel c)
             throws Exception {
        addPackages(c, KickstartFormatter.UPDATE_PKG_NAMES);
        PackageManagerTest.addPackageToChannel(

@@ -112,7 +112,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
     public void testGetProductBaseChannelDto() throws Exception {
         // Create SUSE product and channel product
         ChannelFamily channelFamily = createTestChannelFamily();
-        SUSEProduct product = createTestSUSEProductNoArch(channelFamily);
+        SUSEProduct product = createTestSUSEProductNoArch();
         ChannelProduct channelProduct = createTestChannelProduct();
 
         // Create product base channels with different channel archs
@@ -788,10 +788,9 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
      * Create a SUSE product with arch == null. This is actually the case with
      * e.g. SLES for VMWARE.
      *
-     * @param family the channel family
      * @return the channel product
      */
-    public static SUSEProduct createTestSUSEProductNoArch(ChannelFamily family) {
+    public static SUSEProduct createTestSUSEProductNoArch() {
         SUSEProduct product = new SUSEProduct();
         String name = TestUtils.randomString().toLowerCase();
         product.setName(name);

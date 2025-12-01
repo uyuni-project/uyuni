@@ -84,7 +84,7 @@ public class RefreshGeneratedSaltFilesEventMessageActionTest extends BaseTestCas
         assertTrue(Files.exists(customPath.resolve(
                 SALT_SERVER_STATE_FILE_PREFIX + server.getMachineId() + ".sls")));
 
-        checkAssertions(action);
+        checkAssertions();
     }
 
     @Test
@@ -97,10 +97,10 @@ public class RefreshGeneratedSaltFilesEventMessageActionTest extends BaseTestCas
                 tmpSaltRoot.toString(), tmpFileRoot.toString());
         action.refreshFiles();
 
-        checkAssertions(action);
+        checkAssertions();
     }
 
-    private void checkAssertions(RefreshGeneratedSaltFilesEventMessageAction action) throws IOException {
+    private void checkAssertions() throws IOException {
 
         Path customPath = tmpSaltRoot.resolve(SALT_CONFIG_STATES_DIR);
         for (Org org : OrgFactory.lookupAllOrgs()) {

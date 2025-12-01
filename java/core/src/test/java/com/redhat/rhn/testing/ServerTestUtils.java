@@ -93,14 +93,12 @@ public class ServerTestUtils {
 
     /**
      * Adds a simulated redhat-release rpm to the given server.
-     * @param user User performing the action.
      * @param addTo Server to add to.
      * @param version redhat-release version. (i.e. 5Server)
      * @param release redhat-release release. (i.e. 5.1.0)
      * @return Reloaded server object.
      */
-    public static Server addRedhatReleasePackageToServer(User user, Server addTo,
-            String version, String release) {
+    public static Server addRedhatReleasePackageToServer(Server addTo, String version, String release) {
 
         InstalledPackage testInstPack = new InstalledPackage();
         String epoch = null;

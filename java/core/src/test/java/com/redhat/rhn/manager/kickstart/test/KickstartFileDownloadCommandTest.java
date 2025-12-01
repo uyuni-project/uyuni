@@ -36,7 +36,7 @@ public class KickstartFileDownloadCommandTest extends
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Channel c = ChannelFactoryTest.createTestChannel(user);
         ksdata.getKickstartDefaults().getKstree().setChannel(c);
-        KickstartDataTest.addKickstartPackagesToChannel(c, true);
+        KickstartDataTest.addKickstartPackagesToChannel(c);
         ksdata.getTree().setInstallType(KickstartFactory.
                 lookupKickstartInstallTypeByLabel(KickstartInstallType.RHEL_6));
 

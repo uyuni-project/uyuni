@@ -37,7 +37,6 @@ import com.redhat.rhn.frontend.xmlrpc.kickstart.InvalidKickstartLabelException;
 import com.redhat.rhn.frontend.xmlrpc.kickstart.filepreservation.FilePreservationListHandler;
 import com.redhat.rhn.frontend.xmlrpc.kickstart.profile.system.SystemDetailsHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
-import com.redhat.rhn.frontend.xmlrpc.test.XmlRpcTestUtils;
 import com.redhat.rhn.manager.kickstart.KickstartCryptoKeyCommand;
 import com.redhat.rhn.manager.kickstart.KickstartEditCommand;
 import com.redhat.rhn.testing.TestUtils;
@@ -61,14 +60,12 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
     private SystemDetailsHandler handler = new SystemDetailsHandler();
     private FilePreservationListHandler fpHandler = new FilePreservationListHandler();
     private User userNotOrgOne;
-    private String userKey;
 
     @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         userNotOrgOne = UserTestUtils.createUser();
-        userKey = XmlRpcTestUtils.getSessionKey(userNotOrgOne);
         userNotOrgOne.addPermanentRole(RoleFactory.ORG_ADMIN);
     }
 
@@ -200,12 +197,12 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
         assertTrue(profile.isUsingUtc());
     }
 
-    private KickstartData createProfile(User user, String key) throws Exception {
+    private KickstartData createProfile(User user) throws Exception {
         return KickstartDataTest.createKickstartWithChannel(user.getOrg());
     }
 
     private KickstartData createProfile() throws Exception {
-        return createProfile(admin, adminKey);
+        return createProfile(admin);
     }
 
     @Test
@@ -219,7 +216,7 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
         flushAndEvict(key);
 
         //   Create profile to add the key to
-        KickstartData profile = createProfile(userNotOrgOne, userKey);
+        KickstartData profile = createProfile(userNotOrgOne);
 
         //   Add the key to the profile
         KickstartCryptoKeyCommand command =
@@ -243,7 +240,7 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
     @Test
     public void testListKeysNoKeys() throws Exception {
         // Setup
-        KickstartData profile = createProfile(userNotOrgOne, userKey);
+        KickstartData profile = createProfile(userNotOrgOne);
 
         // Test
         Set associatedKeys = handler.listKeys(userNotOrgOne, profile.getLabel());
@@ -264,7 +261,7 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
         flushAndEvict(key);
 
         //   Create profile to add the key to
-        KickstartData profile = createProfile(userNotOrgOne, userKey);
+        KickstartData profile = createProfile(userNotOrgOne);
 
         // Test
         List descriptions = new ArrayList<>();
@@ -299,7 +296,7 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
         flushAndEvict(key);
 
         //   Create profile to add the key to
-        KickstartData profile = createProfile(userNotOrgOne, userKey);
+        KickstartData profile = createProfile(userNotOrgOne);
 
         List descriptions = new ArrayList<>();
         descriptions.add(key.getDescription());
