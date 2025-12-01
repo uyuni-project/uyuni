@@ -18,7 +18,7 @@ package com.suse.manager.reactor;
  * Wraps a Runnable Exception handler. Made to work with {@link PGEventListener}
  */
 public class PGEventListenerException extends RuntimeException {
-    private final Runnable exceptionHandler;
+    private final transient Runnable exceptionHandler;
 
     /**
      * Wraps an Exception handler

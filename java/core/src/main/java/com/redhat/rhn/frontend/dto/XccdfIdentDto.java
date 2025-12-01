@@ -14,10 +14,12 @@
  */
 package com.redhat.rhn.frontend.dto;
 
+import java.io.Serializable;
+
 /**
  * Simple DTO for transfering data from the DB to the UI through datasource.
  */
-public class XccdfIdentDto {
+public class XccdfIdentDto implements Serializable {
 
     private Long id;
     private String identifier;

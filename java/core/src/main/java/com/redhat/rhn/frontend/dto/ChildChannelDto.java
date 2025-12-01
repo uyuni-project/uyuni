@@ -14,10 +14,12 @@
  */
 package com.redhat.rhn.frontend.dto;
 
+import java.io.Serializable;
+
 /**
  * ChildChannelDTO
  */
-public class ChildChannelDto {
+public class ChildChannelDto implements Serializable {
 
     private Long id;
     private Long parentId;

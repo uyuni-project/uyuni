@@ -15,6 +15,7 @@
 
 package com.redhat.rhn.domain.user;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -22,7 +23,7 @@ import java.util.Date;
  * and ancillary tables.
  * DB table: WEB_USER_SITE_INFO
  */
-public interface Address {
+public interface Address extends Serializable {
 
     /**
     * Public string representing the marketing type of address
