@@ -1,40 +1,37 @@
 {
-  "name": "Uyuni Ephemeral (Master)",
-  // Use openSUSE Tumbleweed as the base OS for the dev environment
+  "name": "Uyuni Master (Podman)",
+  // Use Tumbleweed so we can easily 'zypper install mgradm'
   "image": "registry.opensuse.org/opensuse/tumbleweed:latest",
   
   "features": {
-    // Installs Docker (required to host the Uyuni containers)
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {
-      "moby": true,
-      "azureDnsAutoDetection": false,
-      "installDockerBuildx": false
-    },
     // Installs common tools (git, curl, etc.)
-    "ghcr.io/devcontainers/features/common-utils:2": {}
+    "ghcr.io/devcontainers/features/common-utils:2": {},
+    // Installs Podman and configures user namespaces
+    "ghcr.io/devcontainers/features/podman:1": {
+      "version": "latest",
+      "dockerSocketPath": "/var/run/docker.sock" 
+    }
   },
 
-  // Crucial: Enable Systemd and Privileged mode for mgradm
-  "overrideCommand": false,
+  // CRITICAL: Podman-in-Docker/Container requires privileged mode
   "runArgs": [
-    "--privileged",
+    "--privileged", 
     "--cgroupns=host",
-    "-v", "/sys/fs/cgroup:/sys/fs/cgroup:rw"
+    "-v", "/sys/fs/cgroup:/sys/fs/cgroup:rw" 
   ],
+
+  // Expose Uyuni ports
+  "forwardPorts": [443, 80, 4505, 4506],
+
+  // Run setup script
+  "postCreateCommand": "bash .devcontainer/ephemeral/setup_uyuni.sh",
   
   "customizations": {
     "vscode": {
       "extensions": [
-        "ms-azuretools.vscode-docker"
+        // Useful for managing the inner containers
+        "ms-azuretools.vscode-docker" 
       ]
     }
-  },
-
-  // Ports: 443 (UI), 80 (Redirect), 4505/4506 (Salt)
-  "forwardPorts": [443, 80, 4505, 4506],
-
-  // Run our setup script after the container starts
-  "postCreateCommand": "bash .devcontainer/ephemeral/setup_uyuni.sh",
-
-  "remoteUser": "root"
+  }
 }
