@@ -168,7 +168,7 @@ public final class SaltbootUtils {
         Matcher matcher = pattern.matcher(input);
 
         while (matcher.find()) {
-            String tmp = matcher.group(1).replaceAll("'\"", ""); // Remove quotes
+            String tmp = matcher.group(1).replace("'\"", ""); // Remove quotes
             // Now we should have individual options, let's get key=value
             String[] keyvalues = tmp.split("=", 2);
             if (keyvalues.length != 2) {
