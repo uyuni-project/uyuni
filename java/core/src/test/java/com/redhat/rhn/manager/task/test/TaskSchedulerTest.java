@@ -42,11 +42,7 @@ import java.util.List;
 public class TaskSchedulerTest extends RhnBaseTestCase {
 
     @Test
-    public void testNull() {
-        // A null test until the one below is fixed.
-    }
-
-    public void aTestUpdateByChannel() throws Exception {
+    public void testUpdateByChannel() throws Exception {
         Org org = UserTestUtils.createOrg();
         Errata e = ErrataFactoryTest.createTestErrata(org.getId());
 
@@ -65,10 +61,9 @@ public class TaskSchedulerTest extends RhnBaseTestCase {
 
 
         //Ok, we should have stuff in our list now...
-        List tasks = TaskFactory.getTaskListByChannel(org);
+        List<Task> tasks = TaskFactory.getTaskListByChannel(org);
         assertTrue(tasks.size() >= 2);
 
-        Task t = null;
         Date initialDate = null;
         Long data = null;
 
@@ -79,9 +74,8 @@ public class TaskSchedulerTest extends RhnBaseTestCase {
         while (i.hasNext()) {
             Task itask = (Task) i.next();
             if (itask.getData().equals(c1.getId())) {
-                t = itask;
-                initialDate = t.getEarliest();
-                data = t.getData();
+                initialDate = itask.getEarliest();
+                data = itask.getData();
             }
         }
 
@@ -94,17 +88,15 @@ public class TaskSchedulerTest extends RhnBaseTestCase {
 
         assertTrue(tasks.size() >= 2);
 
-        t = (Task) tasks.toArray()[0];
 
         boolean found = false;
         i = tasks.iterator();
         while (i.hasNext()) {
-            t = (Task) i.next();
+            Task t = (Task) i.next();
             Date finalDate = t.getEarliest();
             if (t.getData().equals(data)) {
                 found = true;
-                // TODO: fix when we turn on errata post 410
-                //assertTrue(finalDate.after(initialDate));
+                assertTrue(finalDate.after(initialDate));
             }
         }
         assertTrue(found);
@@ -122,8 +114,6 @@ public class TaskSchedulerTest extends RhnBaseTestCase {
 
         assertNotNull(t1);
         assertNotNull(t2);
-        // fixing build.  This test needs a little work :)  It's a problem
-        // with the test not the code.
-        //assertEquals(t1.getEarliest(), t2.getEarliest());
+        assertEquals(t1.getEarliest(), t2.getEarliest());
     }
 }

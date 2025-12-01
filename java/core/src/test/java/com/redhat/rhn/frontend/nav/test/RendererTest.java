@@ -176,9 +176,6 @@ public class RendererTest extends RhnBaseTestCase {
         boolean rc = r.nodeRenderInline(depth);
         Boolean v = (Boolean) exp.get("nodeRenderInline");
         assertEquals(v.booleanValue(), rc);
-
-        // cleanup
-        buf = null;
     }
 
     private NavTreeIndex forgeTreeIndex() {
