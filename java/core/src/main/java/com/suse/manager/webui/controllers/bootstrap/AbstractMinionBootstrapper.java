@@ -389,15 +389,17 @@ public abstract class AbstractMinionBootstrapper {
             return Collections.singletonList(reactivationKeyError.get());
         }
 
+        if (params.getReactivationKey().isPresent()) {
+            return Collections.emptyList();
+        }
+        
         if (saltApi.keyExists(params.getHost(), KeyStatus.ACCEPTED, KeyStatus.DENIED, KeyStatus.REJECTED)) {
             return Collections.singletonList("A salt key for this" +
                     " host (" + params.getHost() +
                     ") seems to already exist, please check!");
         }
 
-        if (params.getReactivationKey().isPresent()) {
-            return Collections.emptyList();
-        }
+        
 
         return MinionServerFactory.findByMinionId(params.getHost())
                 .map(m -> Collections.singletonList("A system '" +
