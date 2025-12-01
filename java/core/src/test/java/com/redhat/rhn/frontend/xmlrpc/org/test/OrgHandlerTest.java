@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -268,7 +269,7 @@ public class OrgHandlerTest extends BaseHandlerTestCase {
         servers.add(server.getId().intValue());
         // Actual migration is tested internally, just make sure the API call doesn't
         // error out:
-        handler.migrateSystems(admin, newOrgAdmin.getOrg().getId().intValue(), servers);
+        handler.transferSystems(admin, newOrgAdmin.getOrg().getId().intValue(), servers);
     }
 
     @Test
@@ -291,55 +292,28 @@ public class OrgHandlerTest extends BaseHandlerTestCase {
         List<Integer> servers = new LinkedList<>();
         servers.add(server.getId().intValue());
 
-        // attempt migration where user is not a satellite admin and orginating
+        // attempt migration where user is not a satellite admin and originating
         // org is not the same as the user's.
-        try {
-            handler.migrateSystems(orgAdmin2, orgAdmin1.getOrg().getId().intValue(),
-                    servers);
-            fail();
-        }
-        catch (PermissionCheckFailureException e) {
-            // expected
-        }
+
+        assertThrows(PermissionCheckFailureException.class,
+                () -> handler.transferSystems(orgAdmin2, orgAdmin1.getOrg().getId().intValue(), servers));
 
         // attempt to migrate systems to an org that does not exist
-        try {
-            handler.migrateSystems(admin, -1, servers);
-            fail();
-        }
-        catch (NoSuchOrgException e) {
-            // expected
-        }
+        assertThrows(NoSuchOrgException.class,
+                () -> handler.transferSystems(admin, -1, servers));
 
         // attempt to migrate systems from/to the same org
-        try {
-            handler.migrateSystems(admin, admin.getOrg().getId().intValue(), servers);
-            fail();
-        }
-        catch (MigrationToSameOrgException e) {
-            // expected
-        }
+        assertThrows(MigrationToSameOrgException.class,
+                () -> handler.transferSystems(admin, admin.getOrg().getId().intValue(), servers));
 
         // attempt to migrate systems to an org that isn't defined in trust
-        try {
-            handler.migrateSystems(admin, orgAdmin2.getOrg().getId().intValue(),
-                    servers);
-            fail();
-        }
-        catch (OrgNotInTrustException e) {
-            // expected
-        }
+        assertThrows(OrgNotInTrustException.class,
+                () -> handler.transferSystems(admin, orgAdmin2.getOrg().getId().intValue(), servers));
 
         // attempt to migrate systems that do not exist
         List<Integer> invalidServers = new LinkedList<>();
         invalidServers.add(-1);
-        try {
-            handler.migrateSystems(admin, orgAdmin1.getOrg().getId().intValue(),
-                    invalidServers);
-            fail();
-        }
-        catch (NoSuchSystemException e) {
-            // expected
-        }
+        assertThrows(NoSuchSystemException.class,
+                () -> handler.transferSystems(admin, orgAdmin1.getOrg().getId().intValue(), invalidServers));
     }
 }
