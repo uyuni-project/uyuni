@@ -25,6 +25,7 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.channel.ChannelTestUtility;
 import com.redhat.rhn.domain.channel.NoBaseChannelFoundException;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.rhnpackage.Package;
@@ -81,8 +82,8 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         Package p1 = PackageTest.createTestPackage(user.getOrg());
         Package p2 = PackageTest.createTestPackage(user.getOrg());
 
-        testChannel.addPackage(p1);
-        testChannel.addPackage(p2);
+        ChannelTestUtility.testAddPackage(testChannel, p1);
+        ChannelTestUtility.testAddPackage(testChannel, p2);
         ChannelFactory.save(testChannel);
 
         Server s1 = ServerFactoryTest.createTestServer(user, true,
