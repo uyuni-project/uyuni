@@ -1,0 +1,2 @@
+- Ensure consistency of pending package updates
+  after CLM build (bsc#1253007)

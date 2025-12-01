@@ -1180,6 +1180,9 @@ public class ContentManager {
         // align errata and the cache (rhnServerNeededCache)
         alignErrata(src, tgt, errataFilters, user);
 
+        // refresh the target channel to get the latest state, alignErrata may have changed it directly in DB
+        HibernateFactory.getSession().refresh(tgt);
+
         // align the package cache
         // this must be done after aligning errata since some packages may belong to a retracted erratum and we don't
         // want them in the cache. For this we need the errata to be up-to-date in target
