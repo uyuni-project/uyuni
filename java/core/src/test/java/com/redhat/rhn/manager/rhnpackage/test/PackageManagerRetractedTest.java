@@ -23,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.channel.ChannelTestUtility;
 import com.redhat.rhn.domain.errata.AdvisoryStatus;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
@@ -96,7 +97,7 @@ public class PackageManagerRetractedTest extends BaseTestCaseWithUser {
         vendorPatch.addChannel(channel);
         ErrataFactory.save(vendorPatch);
 
-        channel.addPackage(oldPkg);
+        ChannelTestUtility.testAddPackage(channel, oldPkg);
 
         // clone the channel
         CloneChannelCommand ccc = new CloneChannelCommand(CURRENT_STATE, channel);

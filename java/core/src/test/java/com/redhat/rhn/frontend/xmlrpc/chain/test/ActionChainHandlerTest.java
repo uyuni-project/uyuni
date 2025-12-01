@@ -39,6 +39,7 @@ import com.redhat.rhn.domain.action.rhnpackage.PackageUpdateAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.ChannelTestUtility;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.config.ConfigFile;
 import com.redhat.rhn.domain.config.ConfigRevision;
@@ -124,10 +125,10 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
         // Channels
         this.pkg = PackageTest.createTestPackage(this.admin.getOrg());
         Channel channel = ChannelFactoryTest.createBaseChannel(this.admin);
-        channel.addPackage(this.pkg);
+        ChannelTestUtility.testAddPackage(channel, this.pkg);
         // Add package, available to the installation
         this.channelPackage = PackageTest.createTestPackage(this.admin.getOrg());
-        channel.addPackage(this.channelPackage);
+        ChannelTestUtility.testAddPackage(channel, this.channelPackage);
         this.server.addChannel(channel);
         this.server2.addChannel(channel);
 
