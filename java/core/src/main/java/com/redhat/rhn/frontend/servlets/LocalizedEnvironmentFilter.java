@@ -76,6 +76,7 @@ public class LocalizedEnvironmentFilter implements Filter {
      */
     @Override
     public void init(FilterConfig config) {
+        //do nothing
     }
 
     private void initializeContext(HttpServletRequest request) {

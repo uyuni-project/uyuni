@@ -23,14 +23,6 @@ import com.redhat.rhn.frontend.taglibs.list.ListTagHelper;
  */
 public class ExpandableRowRenderer extends RowRenderer {
 
-
-    /**
-     * ExpandableRowRenderer Construtor
-     */
-    public ExpandableRowRenderer() {
-
-    }
-
     /**
      * get the row style for the current object
      * @param current the current object that is being rendered

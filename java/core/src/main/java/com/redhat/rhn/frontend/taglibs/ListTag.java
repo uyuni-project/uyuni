@@ -64,11 +64,6 @@ public class ListTag extends BodyTagSupport {
     private boolean formatMessage = true;
 
 
-    /** Public constructor  */
-    public ListTag() {
-    }
-
-
     /** {@inheritDoc} */
     @Override
     public int doStartTag() throws JspException {

@@ -96,10 +96,6 @@ public class UnpagedListDisplayTag extends ListDisplayTagBase {
     /** determines whether we should show the disabled CSS */
     private String nodeIdString = null;
 
-    /** Public constructor  */
-    public UnpagedListDisplayTag() {
-    }
-
     /**
      * @return returns whether or not the table is transparent
      */

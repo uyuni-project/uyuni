@@ -66,8 +66,6 @@ public class FormulaMonitoringManagerTest extends BaseTestCaseWithUser {
     private FormulaMonitoringManager manager = new FormulaMonitoringManager(saltApi);
     private Path metadataDir;
 
-    public FormulaMonitoringManagerTest() { }
-
     @Override
     @BeforeEach
     public void setUp() throws Exception {

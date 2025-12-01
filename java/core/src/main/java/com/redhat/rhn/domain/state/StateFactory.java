@@ -48,11 +48,6 @@ public class StateFactory extends HibernateFactory {
         private List<OrgStateRevision> orgStateRevisions = new LinkedList<>();
 
         /**
-         * No arg constructor.
-         */
-        public StateRevisionsUsage() { }
-
-        /**
          * @return the server state revisions
          */
         public List<ServerStateRevision> getServerStateRevisions() {

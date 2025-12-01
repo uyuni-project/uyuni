@@ -29,12 +29,6 @@ import java.util.List;
 public class CobblerSnippetLister extends BaseManager {
 
     private static final CobblerSnippetLister INSTANCE = new CobblerSnippetLister();
-    /**
-     * Default constructor
-     */
-    public CobblerSnippetLister() {
-
-    }
 
     /**
      * Get the instance of the CobblerSnippetLister

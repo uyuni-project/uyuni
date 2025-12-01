@@ -75,11 +75,6 @@ public class BootstrapHostsJson {
     }
 
     /**
-     * Default constructor.
-     */
-    public BootstrapHostsJson() { }
-
-    /**
      * @return the host
      */
     public String getHost() {

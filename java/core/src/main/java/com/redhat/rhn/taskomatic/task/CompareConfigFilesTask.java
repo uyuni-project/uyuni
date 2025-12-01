@@ -40,12 +40,6 @@ public class CompareConfigFilesTask extends RhnJavaJob {
 
     private Queue<Action> actionsToSchedule = new LinkedList<>();
 
-    /**
-     * Default constructor
-     */
-    public CompareConfigFilesTask() {
-    }
-
     @Override
     public String getConfigNamespace() {
         return "compare_config_files";

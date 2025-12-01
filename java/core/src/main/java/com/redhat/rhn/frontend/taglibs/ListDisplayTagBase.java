@@ -62,11 +62,6 @@ public class ListDisplayTagBase extends BodyTagSupport {
     private String title;
     private String hiddenvars;
 
-    /** Public constructor */
-    public ListDisplayTagBase() {
-
-    }
-
     /**
      * @return returns the iterator of the data for this list
      */

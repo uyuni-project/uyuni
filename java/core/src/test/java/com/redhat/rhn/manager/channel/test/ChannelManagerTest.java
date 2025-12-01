@@ -122,18 +122,6 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
     private static TaskomaticApi taskomaticApi;
 
     @Test
-    public void testAllDownloadsTree() {
-    }
-
-    @Test
-    public void testListDownloadCategories() {
-    }
-
-    @Test
-    public void testListDownloadImages() {
-    }
-
-    @Test
     public void testAddRemoveSubscribeRole() throws Exception {
         User admin = UserTestUtils.createUser(TestStatics.TEST_ADMIN_USER, user.getOrg().getId());
         Channel channel = ChannelFactoryTest.createTestChannel(admin);
@@ -372,10 +360,6 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         catch (NoSuchChannelException e) {
             assertTrue(true);
         }
-    }
-
-    @Test
-    public void testLatestPackages() {
     }
 
     @Test

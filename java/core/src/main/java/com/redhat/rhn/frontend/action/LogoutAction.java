@@ -34,12 +34,6 @@ public class LogoutAction extends RhnAction {
 
     private static Logger log = LogManager.getLogger(LogoutAction.class);
 
-    /**
-     * Initializes this action.
-     */
-    public LogoutAction() {
-    }
-
     /** {@inheritDoc} */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,

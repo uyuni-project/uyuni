@@ -30,7 +30,6 @@ import com.suse.manager.webui.utils.gson.ResultJson;
 import com.google.gson.reflect.TypeToken;
 
 import org.apache.http.HttpStatus;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.InaccessibleObjectException;
@@ -43,10 +42,6 @@ import spark.Response;
 
 
 public class JsonSerializationTest {
-
-    @BeforeEach
-    public void setUp() throws Exception {
-    }
 
     @Test
     public void testOptionalEncodingFail() {

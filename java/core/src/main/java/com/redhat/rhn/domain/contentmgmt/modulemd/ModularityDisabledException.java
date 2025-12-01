@@ -19,10 +19,4 @@ package com.redhat.rhn.domain.contentmgmt.modulemd;
  * Exception thrown when a module is selected while the modularity is disabled via the 'none' matcher
  */
 public class ModularityDisabledException extends ModulemdApiException {
-
-    /**
-     * Initialize a new instance
-     */
-    public ModularityDisabledException() {
-    }
 }

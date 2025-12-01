@@ -118,8 +118,4 @@ public class ServerGroupFactoryTest extends BaseTestCaseWithUser {
         assertNull(sg1);
     }
 
-    @Test
-    public void testListAdministrators() {
-
-    }
 }

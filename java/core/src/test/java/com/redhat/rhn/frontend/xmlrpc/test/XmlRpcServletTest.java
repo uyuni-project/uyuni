@@ -28,7 +28,6 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 import org.jmock.Expectations;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.PrintWriter;
@@ -39,10 +38,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class XmlRpcServletTest extends MockObjectTestCase {
-
-    @BeforeEach
-    public void setUp() {
-    }
 
     @AfterEach
     public void tearDown() {

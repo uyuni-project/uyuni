@@ -2053,6 +2053,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         SaltService saltService = new SaltService() {
             @Override
             public void refreshPillar(MinionList minionList) {
+                //do nothing
             }
         };
         saltServerActionService.setSaltApi(saltService);

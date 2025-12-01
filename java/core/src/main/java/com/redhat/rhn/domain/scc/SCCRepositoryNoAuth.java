@@ -33,11 +33,6 @@ import javax.persistence.Transient;
 public class SCCRepositoryNoAuth extends SCCRepositoryAuth {
 
     /**
-     * Default Constructor
-     */
-    public SCCRepositoryNoAuth() { }
-
-    /**
      * @return the URL including authentication info
      */
     @Override

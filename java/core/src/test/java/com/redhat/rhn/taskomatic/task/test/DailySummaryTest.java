@@ -34,7 +34,7 @@ import java.util.Map;
 public class DailySummaryTest extends RhnBaseTestCase {
 
     @Test
-    public void testDequeueOrg() {
+    void testDequeueOrg() {
         WriteMode clear = ModeFactory.getWriteMode("test_queries",
             "delete_from_daily_summary_queue");
         clear.executeUpdate(new HashMap<>());
@@ -53,31 +53,5 @@ public class DailySummaryTest extends RhnBaseTestCase {
         assertEquals(1, rows);
         rows = ds.dequeueOrg(oid);
         assertEquals(1, rows);
-    }
-
-    @Test
-    public void testGetAwolServers() {
-    }
-
-    @Test
-    public void testGetActionInfo() {
-    }
-
-    public void aTestRenderAwolServersMessage() {
-    }
-
-    public void aTestPrepareEmail() {
-    }
-
-    public void aTestRenderActionMessage() {
-    }
-
-    @Test
-    public void testQueueOrgEmails() {
-    }
-
-    public void aTestExcecute() {
-        // using jesusr_redhat orgid for this test.  Run only on hosted.
-        // TODO: how do we create good test data for something like this?
     }
 }
