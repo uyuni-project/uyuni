@@ -1,9 +1,27 @@
 {
-  "name": "Uyuni Master Ephemeral",
-  "image": "mcr.microsoft.com/devcontainers/base:opensuse-tumbleweed",
+  "name": "Uyuni Ephemeral (Master)",
+  // Use openSUSE Tumbleweed as the base OS for the dev environment
+  "image": "registry.opensuse.org/opensuse/tumbleweed:latest",
+  
   "features": {
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {} 
+    // Installs Docker (required to host the Uyuni containers)
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "moby": true,
+      "azureDnsAutoDetection": false,
+      "installDockerBuildx": false
+    },
+    // Installs common tools (git, curl, etc.)
+    "ghcr.io/devcontainers/features/common-utils:2": {}
   },
+
+  // Crucial: Enable Systemd and Privileged mode for mgradm
+  "overrideCommand": false,
+  "runArgs": [
+    "--privileged",
+    "--cgroupns=host",
+    "-v", "/sys/fs/cgroup:/sys/fs/cgroup:rw"
+  ],
+  
   "customizations": {
     "vscode": {
       "extensions": [
@@ -11,10 +29,12 @@
       ]
     }
   },
-  "postCreateCommand": "bash .devcontainer/setup_uyuni.sh",
-  "forwardPorts": [443, 80],
-  "hostRequirements": {
-    "cpus": 4,
-    "memory": "8gb"
-  }
+
+  // Ports: 443 (UI), 80 (Redirect), 4505/4506 (Salt)
+  "forwardPorts": [443, 80, 4505, 4506],
+
+  // Run our setup script after the container starts
+  "postCreateCommand": "bash .devcontainer/ephemeral/setup.sh",
+
+  "remoteUser": "root"
 }
