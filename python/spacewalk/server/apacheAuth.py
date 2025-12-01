@@ -16,7 +16,7 @@
 #
 
 import time
-import re
+import socket
 
 from spacewalk.common import rhnFlags
 from spacewalk.common.rhnLog import log_debug, log_error
@@ -50,16 +50,24 @@ def _verifyProxyAuthToken(auth_token):
     log_debug(4, auth_token)
     token, hostname = splitProxyAuthToken(auth_token)
     hostname = hostname.strip()
-    ipv4_regex = "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])$"
-    # This ipv6 regex was develeoped by Stephen Ryan at Dataware.
-    # (http://forums.intermapper.com/viewtopic.php?t=452) It is licenced
-    # under a Creative Commons Attribution-ShareAlike 3.0 Unported
-    # License, so we are free to use it as long as we attribute it to him.
-    # pylint: disable-next=anomalous-backslash-in-string
-    ipv6_regex = "^((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?$"
-    hostname_is_ip_address = re.match(ipv4_regex, hostname) or re.match(
-        ipv6_regex, hostname
-    )
+
+    def _is_valid_ip(addr):
+        """
+        Check if `addr` is a valid IPv4 or IPv6 address
+        """
+        try:
+            socket.inet_pton(socket.AF_INET, addr)
+            return True
+        except socket.error:
+            pass
+        try:
+            socket.inet_pton(socket.AF_INET6, addr)
+            return True
+        except socket.error:
+            pass
+        return False
+
+    hostname_is_ip_address = _is_valid_ip(hostname)
 
     headers = rhnFlags.get("outputTransportOptions")
     if len(token) < 5:
