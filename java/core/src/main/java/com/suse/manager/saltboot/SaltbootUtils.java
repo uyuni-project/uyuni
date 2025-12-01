@@ -162,13 +162,14 @@ public final class SaltbootUtils {
 
     private static Map<String, String> splitStringIgnoreQuotes(String input) {
         Map<String, String> result = new HashMap<>();
-        // This regexp mather the sub-strings separated by whitespace characters except if the whitespace is quoted
-        String regex = "(?:\s+|^)([^\s\"]+=\"[^\"]+\"|[^\s']+='[^']+'|[^\s\"']+)";
+        // This regex matches tokens separated by whitespace, respecting quotes.
+        // One match for single options, up to two for the key=value options.
+        String regex = "(?:[^\\s\"']+|\"[^\"]+\"|'[^']+'){1,2}";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(input);
 
         while (matcher.find()) {
-            String tmp = matcher.group(1).replaceAll("'\"", ""); // Remove quotes
+            String tmp = matcher.group();
             // Now we should have individual options, let's get key=value
             String[] keyvalues = tmp.split("=", 2);
             if (keyvalues.length != 2) {

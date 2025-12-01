@@ -63,6 +63,7 @@ public class SaltbootUtilsTest extends JMockBaseTestCaseWithUser {
 
     private CobblerConnection client;
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
@@ -70,8 +71,9 @@ public class SaltbootUtilsTest extends JMockBaseTestCaseWithUser {
         client = new MockConnection("http://localhost", "token");
     }
 
+    @Override
     @AfterEach
-    public void teardown() throws Exception {
+    public void tearDown() throws Exception {
         MockConnection.clear();
         super.tearDown();
     }

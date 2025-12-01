@@ -46,6 +46,7 @@ public class SaltbootMigrationUtilsTest extends JMockBaseTestCaseWithUser {
 
     private CobblerConnection client;
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
@@ -53,20 +54,12 @@ public class SaltbootMigrationUtilsTest extends JMockBaseTestCaseWithUser {
         client = new MockConnection("http://localhost", "token");
     }
 
+    @Override
     @AfterEach
-    public void teardown() throws Exception {
+    public void tearDown() throws Exception {
         MockConnection.clear();
         super.tearDown();
     }
-
-    /* Happy path testing:
-     test where nothing is migrated yet
-     - multiple systems across different distros
-     */
-
-    /**
-     * Happy path testings
-     */
 
     @Test
     public void testMigrateSaltbootWhenThereIsNothing() {

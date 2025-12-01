@@ -50,36 +50,44 @@ public class SaltbootMigrationUtils {
         con.transactionBegin();
         // Image list is sorted from the oldest to the newest.
         // createSaltbootDistro automatically sets default distro to currently created, so it depends on this order
-        for (ImageInfo imageInfo : ImageInfoFactory.list()) {
-            if (!imageInfo.getImageType().equals(ImageProfile.TYPE_KIWI) || !imageInfo.isBuilt()) {
-                continue;
-            }
-            try {
-                SaltbootUtils.createSaltbootDistro(imageInfo, distros, con);
+        try {
+            for (ImageInfo imageInfo : ImageInfoFactory.list()) {
+                if (!imageInfo.getImageType().equals(ImageProfile.TYPE_KIWI) || !imageInfo.isBuilt()) {
+                    continue;
+                }
+                try {
+                    SaltbootUtils.createSaltbootDistro(imageInfo, distros, con);
 
-                String newName = SaltbootUtils.makeCobblerNameVR(imageInfo);
-                Profile newDistroProfile = Profile.lookupByName(con, newName);
-                if (newDistroProfile == null) {
-                    throw new SaltbootMigrationException("Could not find new distribution profile " + newName);
+                    String newName = SaltbootUtils.makeCobblerNameVR(imageInfo);
+                    Profile newDistroProfile = Profile.lookupByName(con, newName);
+                    if (newDistroProfile == null) {
+                        throw new SaltbootMigrationException("Could not find new distribution profile " + newName);
+                    }
+                    String oldName = getOldNamingScheme(imageInfo);
+                    Profile oldDistroProfile = Profile.lookupByName(con, oldName);
+                    if (oldDistroProfile != null) {
+                        migrateSaltbootSystems(con, oldDistroProfile, newDistroProfile);
+                        oldDistroProfile.remove();
+                    }
+                    Distro oldDistro = Distro.lookupByName(con, oldName);
+                    if (oldDistro != null) {
+                        oldDistro.remove();
+                    }
                 }
-                String oldName = getOldNamingScheme(imageInfo);
-                Profile oldDistroProfile = Profile.lookupByName(con, oldName);
-                if (oldDistroProfile != null) {
-                    migrateSaltbootSystems(con, oldDistroProfile, newDistroProfile);
-                    oldDistroProfile.remove();
+                catch (XmlRpcException | SaltbootMigrationException e) {
+                    LOG.error("Error migrating {}-{}-{}", imageInfo.getName(),
+                            imageInfo.getVersion(), imageInfo.getRevisionNumber(), e);
+                    allOk = false;
                 }
-                Distro oldDistro = Distro.lookupByName(con, oldName);
-                if (oldDistro != null) {
-                    oldDistro.remove();
-                }
-            }
-            catch (XmlRpcException | SaltbootMigrationException e) {
-                LOG.error("Error migrating {}-{}-{}", imageInfo.getName(),
-                        imageInfo.getVersion(), imageInfo.getRevisionNumber(), e);
-                allOk = false;
             }
         }
-        con.transactionCommit();
+        catch (RuntimeException e) {
+            LOG.error("Unknown error detected", e);
+            allOk = false;
+        }
+        finally {
+            con.transactionCommit();
+        }
         if (!allOk) {
             throw new SaltbootMigrationException(
                     "Errors encountered when creating new saltboot distributions, see log files");
@@ -89,26 +97,34 @@ public class SaltbootMigrationUtils {
     private static void migrateSaltbootProfiles(CobblerConnection con) {
         boolean allOk = true;
         con.transactionBegin();
-        for (ServerGroup saltbootGroup : Pillar.getGroupsForCategory(FormulaFactory.SALTBOOT_PILLAR)) {
-            try {
-                String groupImageName = SaltbootUtils.getGroupImageName(saltbootGroup).orElseThrow(
-                        () -> new SaltbootException(String.format(
-                                "Cannot get an image for a saltboot group %s under organization %s",
-                                saltbootGroup.getOrg().getId(), saltbootGroup.getName())));
+        try {
+            for (ServerGroup saltbootGroup : Pillar.getGroupsForCategory(FormulaFactory.SALTBOOT_PILLAR)) {
+                try {
+                    String groupImageName = SaltbootUtils.getGroupImageName(saltbootGroup).orElseThrow(
+                            () -> new SaltbootException(String.format(
+                                    "Cannot get an image for a saltboot group %s under organization %s",
+                                    saltbootGroup.getOrg().getId(), saltbootGroup.getName())));
 
-                SaltbootUtils.updateGroupProfile(con, saltbootGroup, groupImageName, false);
-                Profile oldProfile = Profile.lookupByName(con,
-                        saltbootGroup.getOrg().getId() + "-" + saltbootGroup.getName());
-                if (oldProfile != null) {
-                    oldProfile.remove();
+                    SaltbootUtils.updateGroupProfile(con, saltbootGroup, groupImageName, false);
+                    Profile oldProfile = Profile.lookupByName(con,
+                            saltbootGroup.getOrg().getId() + "-" + saltbootGroup.getName());
+                    if (oldProfile != null) {
+                        oldProfile.remove();
+                    }
+                }
+                catch (XmlRpcException e) {
+                    LOG.error("Error migrating {}", saltbootGroup.getName(), e);
+                    allOk = false;
                 }
             }
-            catch (XmlRpcException e) {
-                LOG.error("Error migrating {}", saltbootGroup.getName(), e);
-                allOk = false;
-            }
         }
-        con.transactionCommit();
+        catch (RuntimeException e) {
+            LOG.error("Unknown error detected", e);
+            allOk = false;
+        }
+        finally {
+            con.transactionCommit();
+        }
         if (!allOk) {
             throw new SaltbootMigrationException(
                     "Errors encountered when migrating to new saltboot profiles, see log files");
