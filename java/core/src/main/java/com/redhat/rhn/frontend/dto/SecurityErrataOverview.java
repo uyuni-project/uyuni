@@ -63,6 +63,7 @@ public class SecurityErrataOverview extends ErrataOverview
                 }
             }
             catch (SQLException e) {
+                //nothing to do
             }
         }
     }
