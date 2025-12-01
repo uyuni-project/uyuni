@@ -1,26 +1,35 @@
 #!/bin/bash
 set -e
 
-echo ">>> Installing Podman and mgradm..."
-sudo zypper --non-interactive install podman
-# Add the Master Container Utils repo
-sudo zypper --non-interactive ar --no-gpgcheck https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Master:/ContainerUtils/openSUSE_Tumbleweed/ uyuni-utils
-sudo zypper --non-interactive ref
-sudo zypper --non-interactive install mgradm
+# 1. Install Dependencies (mgradm, podman, etc.)
+echo ">>> Installing Uyuni Tools..."
+zypper --non-interactive ref
+zypper --non-interactive in git iproute2 hostname
 
-echo ">>> Deploying Uyuni Server from Master..."
-# We use a dummy FQDN because Codespaces URLs are dynamic and complex
-export FQDN="uyuni.local"
+# Add the Container Utils Master Repo
+zypper --non-interactive ar --no-gpgcheck https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Master:/ContainerUtils/openSUSE_Tumbleweed/ uyuni-utils
+zypper --non-interactive ref
+zypper --non-interactive in mgradm podman
 
-# Install the server container
-# We disable SSL verification because we are in a dev container environment
-sudo mgradm install podman \
+# 2. Configure Network/FQDN
+# Uyuni is picky about FQDNs. We set a dummy one mapped to the local IP.
+export MY_IP=$(ip route get 1 | awk '{print $7;exit}')
+export FQDN="uyuni-ephemeral.local"
+echo "$MY_IP $FQDN" >> /etc/hosts
+hostnamectl set-hostname $FQDN
+
+# 3. Deploy Uyuni from Master
+# We use the --image flag to pull the specific master build
+echo ">>> Deploying Uyuni Server (Master)..."
+
+mgradm install podman \
   --image registry.opensuse.org/systemsmanagement/uyuni/master/containers/uyuni/server \
   --fqdn $FQDN \
   --admin-password "admin" \
   --email "admin@example.com" \
   --organization "UyuniTest" \
-  --force
+  --force \
+  --debug
 
-echo ">>> Done! Uyuni is running."
-echo ">>> Access it via the PORTS tab in VS Code."
+echo ">>> Deployment Complete!"
+echo ">>> Access the UI at https://localhost (Accept the self-signed cert)"

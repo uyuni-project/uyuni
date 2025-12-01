@@ -34,7 +34,7 @@
   "forwardPorts": [443, 80, 4505, 4506],
 
   // Run our setup script after the container starts
-  "postCreateCommand": "bash .devcontainer/ephemeral/setup.sh",
+  "postCreateCommand": "bash .devcontainer/ephemeral/setup_uyuni.sh",
 
   "remoteUser": "root"
 }
