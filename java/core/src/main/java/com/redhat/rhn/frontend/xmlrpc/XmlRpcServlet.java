@@ -21,6 +21,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.SerializerFactory;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.cobbler.XmlRpcException;
 
 import java.io.IOException;
 
@@ -168,9 +169,15 @@ public class XmlRpcServlet extends HttpServlet {
         }
         // As bad as this is, we have no choice, Marquee-xmlrpc throws
         // Throwable, so we have to catch it.
-        catch (Throwable t) {
+        catch (IOException e) {
             // By the time we get here, it can't be a FaultException, so just log it
-            LOG.error("Unexpected XMLRPC error", t);
+            LOG.error("Unexpected XMLRPC error", e);
+        }
+        catch (XmlRpcException e) {
+            LOG.error("Unexpected XMLRPC runtime error", e);
+        }
+        catch (RuntimeException e) {
+            LOG.error("Unexpected runtime error", e);
         }
     }
 }
