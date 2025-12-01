@@ -304,7 +304,7 @@ artifacts:
   - artifact: xmlsec
     repository: Uyuni_Other
   - artifact: velocity-engine-core
-    repository: Uyuni_Other
+    repository: Leap_sle
 
   - artifact: tomcat-el-api
     package: tomcat-el-3_0-api
