@@ -59,7 +59,7 @@ public class SystemSearchAction extends BaseSearchAction implements Listable<Sys
 
     public static final String DATA_SET = "searchResults";
 
-    public static final String[] OPT_GROUPS_TITLES = {"systemsearch.jsp.details",
+    private static final String[] OPT_GROUPS_TITLES = {"systemsearch.jsp.details",
         "systemsearch.jsp.activity",
         "systemsearch.jsp.hardware",
         "systemsearch.jsp.devices",
@@ -68,7 +68,7 @@ public class SystemSearchAction extends BaseSearchAction implements Listable<Sys
         "systemsearch.jsp.packages",
         "systemsearch.jsp.location"};
 
-    public static final String[][] OPT_GROUPS = {
+    private static final String[][] OPT_GROUPS = {
                     /* details */
                     { SystemSearchHelper.NAME_AND_DESCRIPTION, SystemSearchHelper.ID,
                                     SystemSearchHelper.CUSTOM_INFO,
@@ -104,7 +104,7 @@ public class SystemSearchAction extends BaseSearchAction implements Listable<Sys
                                     SystemSearchHelper.LOC_ROOM,
                                     SystemSearchHelper.LOC_RACK } };
 
-    public static final List<String> VALID_WHERE_STRINGS =
+    private static final List<String> VALID_WHERE_STRINGS =
                     Arrays.asList(WHERE_ALL, WHERE_SSM);
 
     private static final Logger LOG = LogManager.getLogger(SystemSearchAction.class);

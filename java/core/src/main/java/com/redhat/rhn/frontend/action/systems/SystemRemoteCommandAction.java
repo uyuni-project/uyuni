@@ -76,7 +76,7 @@ public class SystemRemoteCommandAction extends RhnAction implements MaintenanceW
         public static final Long DEFAULT_TIMEOUT = 600L;
         public static final Long MAX_TIMEOUT = (long) Integer.MAX_VALUE;
 
-        public static final String[] MANDATORY_FIELDS = {
+        private static final String[] MANDATORY_FIELDS = {
             FormData.UID,
             FormData.GID,
             FormData.SCRIPT,

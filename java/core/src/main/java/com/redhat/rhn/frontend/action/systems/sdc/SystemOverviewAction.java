@@ -56,7 +56,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class SystemOverviewAction extends RhnAction {
 
-    public static final String[] SERVER_PREFERENCES = {UserServerPreferenceId
+    protected static final String[] SERVER_PREFERENCES = {UserServerPreferenceId
                                                        .INCLUDE_IN_DAILY_SUMMARY,
                                                        UserServerPreferenceId
                                                        .RECEIVE_NOTIFICATIONS};

@@ -24,7 +24,7 @@ import java.util.Map;
  * Scrubber
  */
 public class Scrubber {
-    public static final String[] PROHIBITED_INPUT = {"<", ">", "\\(", "\\)", "\\{", "\\}"};
+    private static final String[] PROHIBITED_INPUT = {"<", ">", "\\(", "\\)", "\\{", "\\}"};
     private final String [] prohibitedInput;
 
     private Scrubber(String [] input) {

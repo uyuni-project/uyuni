@@ -38,7 +38,7 @@ public class ConfigDefaults {
 
     private static ConfigDefaults instance = new ConfigDefaults();
 
-    public static final List<String> SPACEWALK = Arrays.asList("Spacewalk", "Uyuni");
+    public static final List<String> SPACEWALK = List.of("Spacewalk", "Uyuni");
     //
     // Names of the configuration parameters
     //
