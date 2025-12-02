@@ -386,7 +386,7 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
      */
     public static void addKickstartPackagesToChannel(Channel c)
             throws Exception {
-       addPackages(c, KickstartFormatter.UPDATE_PKG_NAMES);
+       addPackages(c, KickstartFormatter.getUpdatePkgNames());
        PackageManagerTest.addPackageToChannel(
                ConfigDefaults.get().getKickstartPackageNames().get(0) + "testy", c);
        PackageManagerTest.addPackageToChannel(
@@ -394,7 +394,7 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
                    KickstartableTreeTest.TEST_BOOT_PATH, c);
     }
 
-    private static void addPackages(Channel c, String[] names)
+    private static void addPackages(Channel c, List<String> names)
             throws Exception {
         for (String nameIn : names) {
             PackageManagerTest.addPackageToChannel(nameIn, c);

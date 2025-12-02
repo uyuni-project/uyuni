@@ -91,11 +91,11 @@ public class KickstartFormatter {
         "rm -Rf /tmp/ks-tree-copy" + NEWLINE +
         "# --End " + Config.get().getString("web.product_name") + " command section--" +
         NEWLINE;
-    public static final String[] UPDATE_PKG_NAMES =
-    {"pyOpenSSL", "rhnlib", "libxml2-python", "libxml2"};
-    public static final String[] FRESH_PKG_NAMES_RHEL8 =
-    {"rhn-client-tools", "dnf-plugin-spacewalk", "rhnlib", "spacewalk-koan"};
-    public static final String[] FRESH_PKG_NAMES_RHEL8_FOR_SALT = {"salt-minion"};
+    private static final List<String> UPDATE_PKG_NAMES =
+    List.of("pyOpenSSL", "rhnlib", "libxml2-python", "libxml2");
+    private static final List<String> FRESH_PKG_NAMES_RHEL8 =
+            List.of("rhn-client-tools", "dnf-plugin-spacewalk", "rhnlib", "spacewalk-koan");
+    private static final List<String> FRESH_PKG_NAMES_RHEL8_FOR_SALT = List.of("salt-minion");
     private static final String REMOTE_CMD =
         "mkdir -p /etc/sysconfig/rhn/allowed-actions/script" + NEWLINE +
         "touch /etc/sysconfig/rhn/allowed-actions/script/run";
@@ -172,6 +172,16 @@ public class KickstartFormatter {
             KickstartSession sessionIn) {
         this(hostIn, ksdataIn);
         this.session = sessionIn;
+    }
+
+    public static List<String> getUpdatePkgNames() {
+        return UPDATE_PKG_NAMES;
+    }
+    public static List<String> getFreshPkgNamesRhel8() {
+        return FRESH_PKG_NAMES_RHEL8;
+    }
+    public static List<String> getFreshPkgNamesRhel8ForSalt() {
+        return FRESH_PKG_NAMES_RHEL8_FOR_SALT;
     }
 
     private void addLogBegin(StringBuilder buff, String logFile, String interpreter) {
