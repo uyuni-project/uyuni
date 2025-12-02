@@ -9,12 +9,12 @@
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  */
 
-package com.suse.proxy.test;
+package com.suse.proxy.update;
 
+import static com.suse.proxy.ProxyConfigTestUtils.SERVER_ID;
+import static com.suse.proxy.ProxyConfigTestUtils.assertErrors;
+import static com.suse.proxy.ProxyConfigTestUtils.assertNoErrors;
 import static com.suse.proxy.ProxyConfigUtils.MGRPXY;
-import static com.suse.proxy.get.formdata.test.ProxyConfigGetFormTestUtils.SERVER_ID;
-import static com.suse.proxy.get.formdata.test.ProxyConfigGetFormTestUtils.assertErrors;
-import static com.suse.proxy.get.formdata.test.ProxyConfigGetFormTestUtils.assertNoErrors;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
@@ -39,8 +39,6 @@ import com.redhat.rhn.testing.ServerTestUtils;
 
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.test.TestSaltApi;
-import com.suse.proxy.update.ProxyConfigUpdateContext;
-import com.suse.proxy.update.ProxyConfigUpdateInitializer;
 
 import org.jmock.Expectations;
 import org.jmock.api.Invocation;

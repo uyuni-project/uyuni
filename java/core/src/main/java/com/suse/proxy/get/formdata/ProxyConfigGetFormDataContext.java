@@ -15,6 +15,7 @@
 
 package com.suse.proxy.get.formdata;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.UyuniErrorReport;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.server.Server;
@@ -36,7 +37,6 @@ import java.util.Set;
 public class ProxyConfigGetFormDataContext {
 
     private final UyuniErrorReport errorReport = new UyuniErrorReport();
-    private final SystemEntitlementManager systemEntitlementManager;
     private final User user;
     private final Server server;
     private final ProxyConfig proxyConfig;
@@ -54,18 +54,11 @@ public class ProxyConfigGetFormDataContext {
      * @param userIn        the user
      * @param serverIn      the server
      * @param proxyConfigIn the current proxy configuration
-     * @param systemEntitlementManagerIn the system entitlement manager
      */
-    public ProxyConfigGetFormDataContext(
-            User userIn,
-            Server serverIn,
-            ProxyConfig proxyConfigIn,
-            SystemEntitlementManager systemEntitlementManagerIn
-    ) {
+    public ProxyConfigGetFormDataContext(User userIn, Server serverIn, ProxyConfig proxyConfigIn) {
         this.user = userIn;
         this.server = serverIn;
         this.proxyConfig =  proxyConfigIn;
-        this.systemEntitlementManager = systemEntitlementManagerIn;
     }
 
     public User getUser() {
@@ -122,7 +115,7 @@ public class ProxyConfigGetFormDataContext {
     }
 
     public SystemEntitlementManager getSystemEntitlementManager() {
-        return systemEntitlementManager;
+        return GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER;
     }
 
     public Set<Channel> getSubscribableChannels() {

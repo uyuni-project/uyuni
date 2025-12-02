@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.suse.proxy.test;
+package com.suse.proxy.get;
 
 import static com.suse.proxy.ProxyConfigUtils.REGISTRY_BASE_TAG;
 import static com.suse.proxy.ProxyConfigUtils.REGISTRY_BASE_URL;
@@ -24,7 +24,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -63,7 +62,7 @@ public class ProxyConfigGetFormDataAcquisitorTest extends BaseTestCaseWithUser {
     public void testWhenNoProxyConfigAndNoProxies() {
         final String expectedElectableParent = Config.get().getString(ConfigDefaults.SERVER_HOSTNAME);
         ProxyConfigGetFormDataContext proxyConfigGetFormDataContext = new ProxyConfigGetFormDataContext(user,
-                testMinionServer, null, GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER);
+                testMinionServer, null);
 
         //
         new ProxyConfigGetFormDataAcquisitor().handle(proxyConfigGetFormDataContext);
@@ -106,7 +105,7 @@ public class ProxyConfigGetFormDataAcquisitorTest extends BaseTestCaseWithUser {
         };
 
         ProxyConfigGetFormDataContext proxyConfigGetFormDataContext = new ProxyConfigGetFormDataContext(user,
-                testMinionServer, new ProxyConfig(), GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER);
+                testMinionServer, new ProxyConfig());
 
         //
         new ProxyConfigGetFormDataAcquisitor().handle(proxyConfigGetFormDataContext);

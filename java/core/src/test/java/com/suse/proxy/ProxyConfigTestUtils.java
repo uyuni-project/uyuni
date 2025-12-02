@@ -9,7 +9,7 @@
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  */
 
-package com.suse.proxy.get.formdata.test;
+package com.suse.proxy;
 
 import static com.redhat.rhn.common.ExceptionMessage.NOT_INSTANTIABLE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -30,7 +30,7 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 
-public class ProxyConfigGetFormTestUtils {
+public class ProxyConfigTestUtils {
 
     public static final Long SERVER_ID = 123L;
 
@@ -109,7 +109,7 @@ public class ProxyConfigGetFormTestUtils {
     /**
      * Private constructor to avoid instantiation
      */
-    private ProxyConfigGetFormTestUtils() {
+    private ProxyConfigTestUtils() {
         throw new UnsupportedOperationException(NOT_INSTANTIABLE);
     }
 }
