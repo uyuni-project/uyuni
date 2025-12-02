@@ -46,7 +46,7 @@ public enum Languages {
      */
     public static String t(String key, Object... args) {
         /* Short-circuit LocalizationService.getMessage() assuming always en_US */
-        String escapedKey = key.replaceAll("'", "''");
+        String escapedKey = key.replace("'", "''");
         return new MessageFormat(escapedKey, Locale.US).format(args);
     }
 }

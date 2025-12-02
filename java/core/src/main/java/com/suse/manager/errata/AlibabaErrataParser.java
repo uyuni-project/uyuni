@@ -31,6 +31,6 @@ public class AlibabaErrataParser extends AbstractSimpleErrataParser {
     // Alibaba does not use ':' in the url and uses lower case
     @Override
     protected String getAdvisoryCode(String errataAdvisory) {
-        return errataAdvisory.toLowerCase().replaceAll(":", "");
+        return errataAdvisory.toLowerCase().replace(":", "");
     }
 }
