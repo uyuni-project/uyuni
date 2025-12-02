@@ -89,15 +89,22 @@ public class PackageManager extends BaseManager {
     private static final Logger LOG = LogManager.getLogger(PackageManager.class);
 
     // Valid dependency types
-    public static final String[]
-        DEPENDENCY_TYPES = {"requires", "conflicts", "obsoletes", "provides",
-            "recommends", "suggests", "supplements", "enhances", "predepends", "breaks"};
+    private static final List<String>
+        DEPENDENCY_TYPES = List.of("requires", "conflicts", "obsoletes", "provides",
+            "recommends", "suggests", "supplements", "enhances", "predepends", "breaks");
 
 
     private static final String[]
         CLEANUP_QUERIES = {"requires", "provides", "conflicts", "obsoletes",
             "recommends", "suggests", "supplements", "enhances", "predepends", "breaks",
             "channels", "files", "caps", "changelogs"};
+
+    /**
+     * @return Returns the dependency types array
+     */
+    public static List<String> getDependencyTypes() {
+        return DEPENDENCY_TYPES;
+    }
 
     /**
      * Runs Package_queries.package_obsoletes query, which returns dependencies of the

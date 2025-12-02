@@ -306,8 +306,7 @@ public class PackagesHandler extends BaseHandler {
          * Loop through each of the types of dependencies and create a map representing the
          * dependency to add to the returnList
          */
-        for (int i = 0; i < PackageManager.DEPENDENCY_TYPES.length; i++) {
-            String depType = PackageManager.DEPENDENCY_TYPES[i];
+        for (String depType : PackageManager.getDependencyTypes()) {
             DataResult<Row> dr = getDependencies(depType, pkg);
 
             // In the off chance we get null back, we should skip the next loop
