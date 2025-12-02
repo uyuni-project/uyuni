@@ -232,20 +232,20 @@ artifacts:
   - artifact: salt-netapi-client
     repository: Uyuni
   - artifact: simpleclient
-    package: prometheus-client-java
+    package: prometheus-simpleclient-java
     jar: simpleclient-[0-9.]+
     repository: Uyuni_Other
   - artifact: simpleclient_common
-    package: prometheus-client-java
+    package: prometheus-simpleclient-java
     repository: Uyuni_Other
   - artifact: simpleclient_hibernate
-    package: prometheus-client-java
+    package: prometheus-simpleclient-java
     repository: Uyuni_Other
   - artifact: simpleclient_httpserver
-    package: prometheus-client-java
+    package: prometheus-simpleclient-java
     repository: Uyuni_Other
   - artifact: simpleclient_servlet
-    package: prometheus-client-java
+    package: prometheus-simpleclient-java
     repository: Uyuni_Other
   - artifact: simple-core
     # How comes that package is not noarch?
