@@ -80,7 +80,8 @@ public abstract class KickstartVariableAction extends RhnAction {
     protected void setupFormValues(RequestContext ctx,
             DynaActionForm form, String cId) {
         CobblerObject cobj = getCobblerObject(cId, ctx.getCurrentUser());
-        form.set(VARIABLES, StringUtil.convertMapToString(cobj.getKsMeta().get(), "\n"));
+        cobj.getKsMeta().ifPresent(kernelMeta ->
+                form.set(VARIABLES, StringUtil.convertMapToString(kernelMeta, "\n")));
     }
 
 

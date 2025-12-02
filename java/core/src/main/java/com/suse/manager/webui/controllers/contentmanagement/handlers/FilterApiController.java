@@ -55,6 +55,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import spark.Request;
@@ -105,9 +106,10 @@ public class FilterApiController {
         String projectLabel = projectFiltersUpdateRequest.getProjectLabel();
         List<Long> filtersIdToUpdate =  projectFiltersUpdateRequest.getFiltersIds();
 
-        ContentProject dbContentProject = ContentManager.lookupProject(
-                projectFiltersUpdateRequest.getProjectLabel(), user
-        ).get();
+        ContentProject dbContentProject =
+                ContentManager.lookupProject(projectFiltersUpdateRequest.getProjectLabel(), user)
+                        .orElseThrow(() ->
+                                new NoSuchElementException("No content project found with label: " + projectLabel));
 
 
         List<Long> filterIdsToDetach = dbContentProject.getProjectFilters()

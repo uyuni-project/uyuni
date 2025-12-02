@@ -53,6 +53,8 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.SortedMap;
 
 import javax.servlet.http.HttpServletRequest;
@@ -220,24 +222,29 @@ public class SystemDetailsEditAction extends RhnAction {
 
         if (scheduleId != null && scheduleId != 0) {
             // Assign schedule
-            MaintenanceSchedule schedule = maintenanceManager.lookupScheduleByUserAndId(user, scheduleId).get();
-            boolean cancelAffected = Boolean.TRUE.equals(daForm.get(MAINTENANCE_CANCEL_AFFECTED));
             try {
+                //if optional.get fails, it's caught in the catch part
+                MaintenanceSchedule schedule =
+                        maintenanceManager.lookupScheduleByUserAndId(user, scheduleId).orElseThrow();
+                boolean cancelAffected = Boolean.TRUE.equals(daForm.get(MAINTENANCE_CANCEL_AFFECTED));
                 maintenanceManager.assignScheduleToSystems(user, schedule, Collections.singleton(s.getId()),
                         cancelAffected);
                 log.debug("System {} assigned to schedule {}.", s.getId(), schedule.getName());
             }
-            catch (IllegalArgumentException e) {
+            catch (IllegalArgumentException | NoSuchElementException e) {
                 log.debug(e);
                 getStrutsDelegate().addError("maintenance.action.assign.error.fail", errors);
                 success = false;
             }
         }
-        else if (s.getMaintenanceScheduleOpt().isPresent()) {
-            // Retract schedule
-            String scheduleName = s.getMaintenanceScheduleOpt().get().getName();
-            maintenanceManager.retractScheduleFromSystems(user, Collections.singleton(s.getId()));
-            log.debug("System {} unassigned from schedule {}.", s.getId(), scheduleName);
+        else {
+            Optional<MaintenanceSchedule> maintenanceScheduleOpt = s.getMaintenanceScheduleOpt();
+            if (maintenanceScheduleOpt.isPresent()) {
+                // Retract schedule
+                String scheduleName = maintenanceScheduleOpt.get().getName();
+                maintenanceManager.retractScheduleFromSystems(user, Collections.singleton(s.getId()));
+                log.debug("System {} unassigned from schedule {}.", s.getId(), scheduleName);
+            }
         }
 
         if (!success) {

@@ -1360,7 +1360,7 @@ public class ProfileHandler extends BaseHandler {
 
         KickstartData ksData = lookupKsData(ksLabel, loggedInUser.getOrg());
 
-        return ksData.getCobblerObject(loggedInUser).getKsMeta().get();
+        return ksData.getCobblerObject(loggedInUser).getKsMeta().orElse(new HashMap<>());
     }
 
     /**

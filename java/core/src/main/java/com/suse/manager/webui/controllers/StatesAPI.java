@@ -312,7 +312,8 @@ public class StatesAPI {
                 }
             );
             entity.setConfigChannels(channels, user);
-            StateRevision revision = StateRevisionService.INSTANCE.getLatest(entity).get();
+            //if get() fails, the exception is caught
+            StateRevision revision = StateRevisionService.INSTANCE.getLatest(entity).orElseThrow();
             return SparkApplicationHelper.json(response, ConfigChannelJson.listOrdered(revision.getConfigChannels()),
                     new TypeToken<>() { });
         }

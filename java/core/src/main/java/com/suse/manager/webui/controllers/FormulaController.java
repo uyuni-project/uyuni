@@ -57,6 +57,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 import spark.ModelAndView;
@@ -230,7 +231,8 @@ public class FormulaController {
         try {
             switch (type) {
                 case SERVER:
-                    MinionServer minion = MinionServerFactory.lookupById(id).get();
+                    //if get() fails, the NoSuchElementException is caught below
+                    MinionServer minion = MinionServerFactory.lookupById(id).orElseThrow();
                     FormulaUtil.ensureUserHasPermissionsOnServer(user, minion);
                     FormulaFactory.saveServerFormulaData(formData, minion, formulaName);
                     saltApi.refreshPillar(new MinionList(minion.getMinionId()));
@@ -254,7 +256,7 @@ public class FormulaController {
                     Collections.singletonList("Error while saving formula data: " +
                             e.getMessage()));
         }
-        catch (PermissionException | LookupException e) {
+        catch (PermissionException | LookupException | NoSuchElementException e) {
             return deniedResponse(response);
         }
         Map<String, Object> metadata = FormulaFactory.getMetadata(formulaName);

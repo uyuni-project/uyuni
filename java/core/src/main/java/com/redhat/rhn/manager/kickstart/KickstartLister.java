@@ -367,7 +367,10 @@ public class KickstartLister extends BaseManager {
             if (distro == null) {
                 continue;
             }
-            Object orgId = distro.getKsMeta().get().get("org");
+
+            Object orgId = distro.getKsMeta()
+                    .map(metadataMap -> metadataMap.get("org")).orElse(null);
+
             String name = profile.getName();
             String userOrgId = user.getOrg().getId().toString();
             if (!name.equals(Profile.BOOTSTRAP_NAME) &&
