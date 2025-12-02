@@ -1,0 +1,10 @@
+admin:
+  login: "admin"
+  password: "admin"
+  email: "admin@example.com"
+ssl:
+  password: "admin"
+  organization: "UyuniTest"
+  country: "DE"
+  state: "Bavaria"
+  city: "Nuremberg"

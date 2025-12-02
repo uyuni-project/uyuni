@@ -36,11 +36,14 @@ jobs:
       - name: Build and release devcontainer
         run: |
           npm install -g @devcontainers/cli
+          
           devcontainer build \
             --workspace-folder . \
             --config .devcontainer/dev/devcontainer.json \
             --image-name ghcr.io/${{ github.repository }}/devcontainer:${{ steps.meta.outputs.tag }} \
-            --image-name ghcr.io/${{ github.repository }}/devcontainer:latest \
-            --push
+            --image-name ghcr.io/${{ github.repository }}/devcontainer:latest
+
+          docker push ghcr.io/${{ github.repository }}/devcontainer:${{ steps.meta.outputs.tag }}
+          docker push ghcr.io/${{ github.repository }}/devcontainer:latest
         env:
           BUILDX_NO_DEFAULT_ATTESTATIONS: true

@@ -1,0 +1,34 @@
+services:
+  uyuni-dev:
+    hostname: uyuni.dev.local
+    image: ghcr.io/mbussolotto/uyuni/devcontainer:latest
+    entrypoint: []
+    command: /usr/sbin/init
+    stop_signal: SIGRTMIN+3
+    privileged: true
+    cgroup: host
+    tty: true
+    tmpfs:
+      - /run
+      - /run/lock
+    volumes:
+      - ../../:/workspaces/uyuni:cached
+      - /sys/fs/cgroup:/sys/fs/cgroup:rw
+    user: root
+    links: 
+      - db
+    ports:
+      - "443:443"   # UI HTTPS
+      - "80:80"     # UI HTTP
+      - "4505:4505" # Salt
+      - "4506:4506" # Salt
+      - "8001:8001" # Taskomatic Debug
+      - "8002:8002" # Search Server Debug
+      - "8003:8003" # Tomcat Debug
+  db:
+    image: registry.opensuse.org/systemsmanagement/uyuni/master/docker/containers/uyuni-master-pgsql-4eclipse
+    restart: always
+    ports:
+      - "5432:5432"
+    volumes:
+      - ../../:/manager:cached

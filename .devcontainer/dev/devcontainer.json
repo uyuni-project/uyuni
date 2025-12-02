@@ -1,11 +1,18 @@
 {
-  "name": "uyuni-devcontainer",
-  "build": { "dockerfile": "Dockerfile" },
+  "name": "Uyuni Dev (Compose)",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "uyuni-dev",
+  "workspaceFolder": "/workspaces/uyuni",
 
   "containerEnv": {
     "JAVA_HOME": "/usr/lib64/jvm/java-17-openjdk",
-    "ANT_HOME": "/usr/share/ant"
+    "ANT_HOME": "/usr/share/ant",
+    "DB_HOST": "db",
+    //"CONTAINER_HOST": "unix:///run/podman/podman.sock",
+    //"CONTAINER_CONNECTION_TYPE": "socket"
   },
+
+  "forwardPorts": [8001, 8002, 8003, 443, 80, 5432, 9000],
 
   "portsAttributes": {
     "8001": {
@@ -19,6 +26,19 @@
     "8003": {
       "label": "Debug Tomcat",
       "onAutoForward": "notify"
+    },
+    "5432": {
+      "label": "Unit Test DB (Postgres)",
+      "onAutoForward": "notify"
+    },
+    "443": {
+      "label": "Ephemeral Instance",
+      "onAutoForward": "notify",
+      "protocol": "https"
+    },
+    "9000": { 
+      "label": "Test Reports",
+      "onAutoForward": "notify"
     }
   },
 
@@ -27,16 +47,16 @@
       "settings": {
         "java.jdt.ls.java.home": "/usr/lib64/jvm/java-25-openjdk",
         "java.configuration.runtimes": [
-            {
-                "name": "JavaSE-17",
-                "path": "/usr/lib64/jvm/java-17-openjdk",
-                "default": true
-            },
-            {
-                "name": "JavaSE-25",
-                "path": "/usr/lib64/jvm/java-25-openjdk",
-                "default": true
-            }
+          {
+            "name": "JavaSE-17",
+            "path": "/usr/lib64/jvm/java-17-openjdk",
+            "default": true
+          },
+          {
+            "name": "JavaSE-25",
+            "path": "/usr/lib64/jvm/java-25-openjdk",
+            "default": true
+          }
         ]
       },
       "extensions": [
@@ -54,5 +74,7 @@
   },
 
   "remoteUser": "uyuni",
-  "postCreateCommand": "/bin/bash -C -- /home/uyuni/initialize.sh ${containerWorkspaceFolder}"
+  "overrideCommand": false,
+  "postStartCommand": "mkdir -p java/test-results/html && nohup python3 -m http.server 9000 --directory java/test-results/html >/dev/null 2>&1 &",
+  "postCreateCommand": "cp /workspaces/uyuni/java/buildconf/test/rhn.conf.postgresql-devcontainer-example /workspaces/uyuni/java/buildconf/test/rhn.conf"
 }
