@@ -606,10 +606,10 @@ public class LocalizationService {
      */
     public List<String> getConfiguredLocales() {
         List<String> tmp = new LinkedList<>();
-        for (String key : this.supportedLocales.keySet()) {
-            LocaleInfo li = this.supportedLocales.get(key);
+        for (Map.Entry<String, LocaleInfo> entry : this.supportedLocales.entrySet()) {
+            LocaleInfo li = entry.getValue();
             if (!li.isAlias()) {
-                tmp.add(key);
+                tmp.add(entry.getKey());
             }
         }
         Collections.sort(tmp);

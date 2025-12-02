@@ -8079,9 +8079,9 @@ public class SystemHandler extends BaseHandler {
                 // Consider alternatives (cloned channel trees)
                 SortedMap<ClonedChannel, List<Long>> alternatives = DistUpgradeManager.
                         getAlternatives(targetProducts, arch, loggedInUser);
-                for (ClonedChannel clonedBaseChannel : alternatives.keySet()) {
-                    if (clonedBaseChannel.getLabel().equals(baseChannelLabel)) {
-                        channelIDs.addAll(alternatives.get(clonedBaseChannel));
+                for (Map.Entry<ClonedChannel, List<Long>> entry : alternatives.entrySet()) {
+                    if (entry.getKey().getLabel().equals(baseChannelLabel)) {
+                        channelIDs.addAll(entry.getValue());
 
                         var scheduledAction = DistUpgradeManager.scheduleDistUpgrade(
                             loggedInUser,

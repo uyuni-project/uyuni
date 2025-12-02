@@ -216,9 +216,9 @@ public class ProfileManager extends BaseManager {
         // or they have been identified as being valid difference.  This purpose
         // of having this set is to avoid processing the same package multiple times.
         Set<String> skipPkg = new HashSet<>();
-        for (Object key : systemsNameIdMap.keySet()) {
-            List<PackageListItem> syslist = systemsNameIdMap.get(key);
-            List<PackageListItem> plist = profilesNameIdMap.get(key);
+        for (Map.Entry<String, List<PackageListItem>> systemEntry : systemsNameIdMap.entrySet()) {
+            List<PackageListItem> syslist = systemEntry.getValue();
+            List<PackageListItem> plist = profilesNameIdMap.get(systemEntry.getKey());
             if (plist == null) {
                 // No packages in profile with same name.  We know its only in the System
                 for (PackageListItem packageListItemIn : syslist) {
@@ -355,9 +355,9 @@ public class ProfileManager extends BaseManager {
         }
 
         // Reverse of above so we can check for pkgs that are *only* in the profile
-        for (String key : profilesNameIdMap.keySet()) {
-            List<PackageListItem> syslist = systemsNameIdMap.get(key);
-            List<PackageListItem> plist = profilesNameIdMap.get(key);
+        for (Map.Entry<String, List<PackageListItem>> profilesEntry : profilesNameIdMap.entrySet()) {
+            List<PackageListItem> syslist = systemsNameIdMap.get(profilesEntry.getKey());
+            List<PackageListItem> plist = profilesEntry.getValue();
 
             if (syslist == null) {
                 // No packages in system with same name.  We know its only in the Profile

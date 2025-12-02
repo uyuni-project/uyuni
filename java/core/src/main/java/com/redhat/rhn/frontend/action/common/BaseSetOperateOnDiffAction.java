@@ -121,9 +121,9 @@ public abstract class BaseSetOperateOnDiffAction extends RhnSetAction {
             }
         }
 
-        for (RhnSetElement elem : diffmap.keySet()) {
-            if (diffmap.get(elem).equals("original")) {
-                removed.add(elem);
+        for (Map.Entry<RhnSetElement, String> entry : diffmap.entrySet()) {
+            if (entry.getValue().equals("original")) {
+                removed.add(entry.getKey());
             }
         }
 

@@ -830,8 +830,8 @@ public class SystemRecord extends CobblerObject {
         Map<String, Map<String, Object>> interfaces = (Map<String, Map<String, Object>>)
                 dataMap.get(GET_INTERFACES);
         if (interfaces != null) {
-            for (String name : interfaces.keySet()) {
-                networks.add(Network.load(client, name, interfaces.get(name)));
+            for (Map.Entry<String, Map<String, Object>> entry : interfaces.entrySet()) {
+                networks.add(Network.load(client, entry.getKey(), entry.getValue()));
             }
         }
         return networks;
