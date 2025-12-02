@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 SUSE LLC
+ * Copyright (c) 2017--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 
 package com.suse.manager.webui.services.test;
@@ -62,15 +58,10 @@ import java.util.Random;
  */
 public class ConfigChannelSaltManagerLifecycleTest extends BaseTestCaseWithUser {
 
-    /** the instance used for testing **/
-    private ConfigChannelSaltManager manager;
-
     @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
-        this.manager = ConfigChannelSaltManager.getInstance();
-        manager.setBaseDirPath(tmpSaltRoot.toAbsolutePath().toString());
         user.getOrg().addRole(RoleFactory.CONFIG_ADMIN);
         user.addToGroup(AccessGroupFactory.CONFIG_ADMIN);
         TestUtils.saveAndFlush(user);
@@ -200,7 +191,7 @@ public class ConfigChannelSaltManagerLifecycleTest extends BaseTestCaseWithUser 
 
     private File getGeneratedFile(ConfigChannel channel, String filePathInChannel) {
         return Paths.get(tmpSaltRoot.toAbsolutePath().toString(),
-                manager.getOrgNamespace(channel.getOrgId()),
+                ConfigChannelSaltManager.getInstance().getOrgNamespace(channel.getOrgId()),
                 channel.getLabel(),
                 filePathInChannel)
                 .toFile();

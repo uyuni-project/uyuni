@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2009--2014 Red Hat, Inc.
+ * Copyright (c) 2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -32,14 +33,11 @@ import com.redhat.rhn.frontend.servlets.PxtSessionDelegateFactory;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 
-import com.suse.manager.webui.services.SaltStateGeneratorService;
-
 import org.apache.struts.action.DynaActionForm;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Locale;
@@ -55,8 +53,10 @@ import servletunit.struts.MockStrutsTestCase;
  * RhnMockStrutsTestCase - simple base class that adds a User to the test since all our
  * Struts Actions use a User.
  */
-public class RhnMockStrutsTestCase extends MockStrutsTestCase implements HibernateTestCaseUtils {
+public class RhnMockStrutsTestCase extends MockStrutsTestCase
+    implements HibernateTestCaseUtils, SaltTestCaseUtils {
 
+    protected Path tmpSaltRoot;
     protected User user;
     private boolean committed = false;
 
@@ -95,11 +95,7 @@ public class RhnMockStrutsTestCase extends MockStrutsTestCase implements Hiberna
         pxtDelegate.updateWebUserId(request, response, user.getId());
         KickstartDataTest.setupTestConfiguration(user);
 
-        //Set temporary Salt directories for local runs
-        Path tmpSaltRoot = Files.createTempDirectory("salt");
-        SaltStateGeneratorService.INSTANCE.setSkipSetOwner(true);
-        SaltStateGeneratorService.INSTANCE.setSuseManagerStatesFilesRoot(tmpSaltRoot
-                .toAbsolutePath());
+        tmpSaltRoot = setupSaltConfigurationForTests();
     }
 
     /**
@@ -116,6 +112,8 @@ public class RhnMockStrutsTestCase extends MockStrutsTestCase implements Hiberna
         }
         committed = false;
         user = null;
+
+        cleanupSaltConfiguration(tmpSaltRoot);
     }
 
 

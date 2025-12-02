@@ -79,14 +79,19 @@ public class ProxyConfigGetFormDataPreConditionsTest extends RhnJmockBaseTestCas
     private User user;
 
     @BeforeEach
-    public void setUp() {
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         this.mockServer = mock(Server.class);
         this.user = UserTestUtils.createUser();
     }
 
     @AfterEach
-    public void tearDown() {
+    @Override
+    public void tearDown() throws Exception {
+        super.tearDown();
+
         try {
             setConfigDefaultsInstance(configDefaults);
         }

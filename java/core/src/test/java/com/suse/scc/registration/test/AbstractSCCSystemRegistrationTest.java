@@ -20,10 +20,6 @@ import com.redhat.rhn.domain.server.ServerInfo;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
 
-import com.suse.manager.webui.services.SaltStateGeneratorService;
-
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -41,10 +37,6 @@ public class AbstractSCCSystemRegistrationTest extends BaseTestCaseWithUser {
      * @throws Exception if createTestSystem fails
      */
     protected void setupSystems(int systemSize, int paygSystemSize) throws Exception {
-        Path tmpSaltRoot = Files.createTempDirectory("salt");
-        SaltStateGeneratorService.INSTANCE.setSuseManagerStatesFilesRoot(tmpSaltRoot.toAbsolutePath());
-        SaltStateGeneratorService.INSTANCE.setSkipSetOwner(true);
-
         for (int i = 0; i < systemSize + paygSystemSize; i++) {
             Server testSystem = ServerTestUtils.createTestSystem();
             ServerInfo serverInfo = testSystem.getServerInfo();

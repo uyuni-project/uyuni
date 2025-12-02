@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2009--2010 Red Hat, Inc.
+ * Copyright (c) 2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -36,7 +37,7 @@ import javax.servlet.ServletResponse;
 /**
  * AuthFilterTest
  */
-public class SessionFilterDeadlockTest extends BaseFilterTst {
+public class SessionFilterDeadlockTest extends BaseFilterTest {
 
     @Test
     public void testDeadlockFilter() throws ServletException, IOException {

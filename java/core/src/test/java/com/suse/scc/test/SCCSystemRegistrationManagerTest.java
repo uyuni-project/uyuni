@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 SUSE LLC
+ * Copyright (c) 2021--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.suse.scc.test;
 
@@ -37,7 +33,6 @@ import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
 
-import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.scc.SCCSystemRegistrationManager;
@@ -56,8 +51,6 @@ import com.suse.scc.proxy.SCCProxyFactory;
 import org.junit.jupiter.api.Test;
 
 import java.net.URI;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.security.SecureRandom;
 import java.util.Date;
 import java.util.List;
@@ -71,10 +64,6 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testSCCSystemRegistrationLifecycle() throws Exception {
-        Path tmpSaltRoot = Files.createTempDirectory("salt");
-        SaltStateGeneratorService.INSTANCE.setSuseManagerStatesFilesRoot(tmpSaltRoot
-                .toAbsolutePath());
-        SaltStateGeneratorService.INSTANCE.setSkipSetOwner(true);
         Server testSystem = ServerTestUtils.createTestSystem();
         ServerInfo serverInfo = testSystem.getServerInfo();
         serverInfo.setCheckin(new Date(0)); // 1970-01-01 00:00:00 UTC
@@ -194,10 +183,6 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testUpdateSystems() throws Exception {
-        Path tmpSaltRoot = Files.createTempDirectory("salt");
-        SaltStateGeneratorService.INSTANCE.setSuseManagerStatesFilesRoot(tmpSaltRoot
-                .toAbsolutePath());
-        SaltStateGeneratorService.INSTANCE.setSkipSetOwner(true);
         Server testSystem = ServerTestUtils.createTestSystem();
         ServerInfo serverInfo = testSystem.getServerInfo();
         serverInfo.setCheckin(new Date(0)); // 1970-01-01 00:00:00 UTC
@@ -260,11 +245,6 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testMassUpdateSystems() throws Exception {
-        Path tmpSaltRoot = Files.createTempDirectory("salt");
-        SaltStateGeneratorService.INSTANCE.setSuseManagerStatesFilesRoot(tmpSaltRoot
-                .toAbsolutePath());
-        SaltStateGeneratorService.INSTANCE.setSkipSetOwner(true);
-
         Config.get().setString(ConfigDefaults.REG_BATCH_SIZE, "5");
 
         int c = 0;
@@ -336,11 +316,6 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testVirtualInfoLibvirt() throws Exception {
-        Path tmpSaltRoot = Files.createTempDirectory("salt");
-        SaltStateGeneratorService.INSTANCE.setSuseManagerStatesFilesRoot(tmpSaltRoot
-                .toAbsolutePath());
-        SaltStateGeneratorService.INSTANCE.setSkipSetOwner(true);
-
         SaltApi saltApi = new TestSaltApi();
         SystemEntitlementManager sysEntMgr = new SystemEntitlementManager(
                 new SystemUnentitler(saltApi), new SystemEntitler(saltApi)
@@ -423,11 +398,6 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testVirtualInfoVMware() throws Exception {
-        Path tmpSaltRoot = Files.createTempDirectory("salt");
-        SaltStateGeneratorService.INSTANCE.setSuseManagerStatesFilesRoot(tmpSaltRoot
-                .toAbsolutePath());
-        SaltStateGeneratorService.INSTANCE.setSkipSetOwner(true);
-
         SaltApi saltApi = new TestSaltApi();
         SystemEntitlementManager sysEntMgr = new SystemEntitlementManager(
                 new SystemUnentitler(saltApi), new SystemEntitler(saltApi)
@@ -519,11 +489,6 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testVirtualInfoCloud() throws Exception {
-        Path tmpSaltRoot = Files.createTempDirectory("salt");
-        SaltStateGeneratorService.INSTANCE.setSuseManagerStatesFilesRoot(tmpSaltRoot
-                .toAbsolutePath());
-        SaltStateGeneratorService.INSTANCE.setSkipSetOwner(true);
-
         SaltApi saltApi = new TestSaltApi();
         SystemEntitlementManager sysEntMgr = new SystemEntitlementManager(
                 new SystemUnentitler(saltApi), new SystemEntitler(saltApi)
