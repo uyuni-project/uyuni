@@ -167,6 +167,10 @@ PKGLISTRASPBERRYPIOS12 = [
     "venv-salt-minion",
 ]
 
+PKGLISTZORINOS17 = [
+    "venv-salt-minion",
+]
+
 DATA = {
     "SLE-12-ppc64le": {
         "PDID": [1116, 3045],
@@ -1507,6 +1511,11 @@ DATA = {
         "BETAPDID": [3031],
         "PKGLIST": PKGLISTRASPBERRYPIOS12,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/raspbian/12/bootstrap/",
+        "TYPE": "deb",
+    },
+    "zorinos-17-amd64": {
+        "PKGLIST": PKGLISTZORIN17,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/zorinos/17/bootstrap/",
         "TYPE": "deb",
     },
 }
