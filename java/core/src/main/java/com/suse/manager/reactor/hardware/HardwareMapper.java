@@ -1050,45 +1050,7 @@ public class HardwareMapper {
                 }
                 break;
             case "usb":
-                String vendorId = attrs.getValueAsString("ID_VENDOR_ID");
-                String product = attrs.getValueAsString("PRODUCT");
-                if (StringUtils.isNotBlank(vendorId)) {
-                    String usbDeviceDesc = attrs.getValueAsString("ID_MODEL_ID");
-
-                    if (StringUtils.isNotBlank(vendorFromDb) ||
-                            StringUtils.isNotBlank(modelFromDb)) {
-                        result = String.format("%s|%s", vendorFromDb, modelFromDb);
-                    }
-                    else {
-                        // TODO lookup in hwdata
-                        result = String.format("%s|%s", vendorId, usbDeviceDesc);
-                    }
-                }
-                else {
-                    String devtype = attrs.getValueAsString("DEVTYPE");
-                    if (devtype.equals("usb_interface")) {
-                        String driver = attrs.getValueAsString("DRIVER");
-                        if (driver.equals("usbhid")) {
-                            result = "USB HID Interface";
-                        }
-                        else if (driver.equals("hub")) {
-                            result = "USB Hub Interface";
-                        }
-                        else {
-                            result = "USB Interface";
-                        }
-                    }
-                    else if (devtype.equals("usb_device") && StringUtils.isNotBlank(product)) {
-                        String[] p = product.split("/");
-                        String usbVendorDesc = p.length > 0 ?
-                                String.format("%04x", Integer.parseInt(p[0], 16)) : "";
-                        String usbDeviceDesc = p.length > 1 ?
-                                String.format("%04x", Integer.parseInt(p[1], 16)) : "";
-
-                        // TODO lookup in hwdata
-                        result = String.format("%s|%s", usbVendorDesc, usbDeviceDesc);
-                    }
-                }
+                result = getDeviceDescUsb(attrs, vendorFromDb, modelFromDb);
                 break;
             case "block":
                 result = attrs.getValueAsString("ID_MODEL");
@@ -1099,6 +1061,51 @@ public class HardwareMapper {
         }
 
         return StringUtils.isNotBlank(result) ? result : null;
+    }
+
+    private String getDeviceDescUsb(ValueMap attrs, String vendorFromDb, String modelFromDb) {
+        String result = null;
+
+        String vendorId = attrs.getValueAsString("ID_VENDOR_ID");
+        String product = attrs.getValueAsString("PRODUCT");
+        if (StringUtils.isNotBlank(vendorId)) {
+            String usbDeviceDesc = attrs.getValueAsString("ID_MODEL_ID");
+
+            if (StringUtils.isNotBlank(vendorFromDb) ||
+                    StringUtils.isNotBlank(modelFromDb)) {
+                result = String.format("%s|%s", vendorFromDb, modelFromDb);
+            }
+            else {
+                // TODO lookup in hwdata
+                result = String.format("%s|%s", vendorId, usbDeviceDesc);
+            }
+        }
+        else {
+            String devtype = attrs.getValueAsString("DEVTYPE");
+            if (devtype.equals("usb_interface")) {
+                String driver = attrs.getValueAsString("DRIVER");
+                if (driver.equals("usbhid")) {
+                    result = "USB HID Interface";
+                }
+                else if (driver.equals("hub")) {
+                    result = "USB Hub Interface";
+                }
+                else {
+                    result = "USB Interface";
+                }
+            }
+            else if (devtype.equals("usb_device") && StringUtils.isNotBlank(product)) {
+                String[] p = product.split("/");
+                String usbVendorDesc = p.length > 0 ?
+                        String.format("%04x", Integer.parseInt(p[0], 16)) : "";
+                String usbDeviceDesc = p.length > 1 ?
+                        String.format("%04x", Integer.parseInt(p[1], 16)) : "";
+
+                // TODO lookup in hwdata
+                result = String.format("%s|%s", usbVendorDesc, usbDeviceDesc);
+            }
+        }
+        return result;
     }
 
     private String classifyClass(String minionId, Map<String, Object> device) {
