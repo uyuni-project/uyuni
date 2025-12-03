@@ -335,72 +335,18 @@ public class HardwareMapper {
                 }
                 switch (subsys) {
                     case "block":
-                        if (StringUtils.isNotBlank(props.getValueAsString("ID_BUS"))) {
-                            device.setBus(props.getValueAsString("ID_BUS"));
-                        }
-                        // the sysname is the part after the last "/"
-                        // see libudev/libudev-device.c, udev_device_set_syspath(...)
-                        String name = StringUtils.substringAfterLast(devpath, "/");
-                        device.setDevice(name);
-
-                        if (props.getValueAsString("DEVTYPE").equals("partition")) {
-                            // do not report partitions, just whole disks
+                        if (!mapBlockDevices(props, devpath, device)) {
                             return;
                         }
-                        if (StringUtils.isNotBlank(props.getValueAsString("DM_NAME"))) {
-                            // LVM device
-                            return;
-                        }
-                        if (props.getValueAsString("MAJOR").equals("1")) {
-                            // ram device
-                            return;
-                        }
-                        if (props.getValueAsString("MAJOR").equals("7")) {
-                            // character devices for virtual console terminals
-                            return;
-                        }
-                        // This is interpreted as Physical. But what to do with it?
-                        // result_item['prop1'] = ''
-                        // This is interpreted as Logical. But what to do with it?
-                        // result_item['prop2'] = ''
                         break;
                     case "pci":
-                        String pciClass = props.getValueAsString("PCI_ID");
-                        if (StringUtils.isNotBlank(pciClass)) {
-                            String[] ids = pciClass.split(":");
-                            device.setProp1(ids.length > 0 ? ids[0] : null);
-                            device.setProp2(ids.length > 1 ? ids[1] : null);
-                        }
-                        String pciSubsys = props.getValueAsString("PCI_SUBSYS_ID");
-                        if (StringUtils.isNotBlank(pciSubsys)) {
-                            String[] ids = pciSubsys.split(":");
-                            device.setProp3(ids.length > 0 ? ids[0] : null);
-                            device.setProp4(ids.length > 1 ? ids[1] : null);
-                        }
+                        mapPciDevices(props, device);
                         break;
                     case "usb":
-                        String vendorId = props.getValueAsString("ID_VENDOR_ID");
-                        if (StringUtils.isNotBlank(vendorId)) {
-                            device.setProp1(vendorId);
-                        }
-                        String modelId = props.getValueAsString("ID_MODEL_ID");
-                        if (StringUtils.isNotBlank(modelId)) {
-                            device.setProp2(modelId);
-                        }
+                        mapUsbDevices(props, device);
                         break;
                     case "scsi":
-                        // skip scsi hosts and targets
-                        if (!props.getValueAsString("DEVTYPE").equals("scsi_device")) {
-                            return;
-                        }
-                        // check if this scsi device is already listed as a block device
-                        if (udevdb.stream().anyMatch(dev ->
-                                Objects.toString(dev.get(SYSFS_PATH), "").startsWith(devpath) &&
-                                        Optional.ofNullable(dev.get(ENTRIES))
-                                                .filter(Map.class::isInstance)
-                                                .map(Map.class::cast)
-                                                .filter(m -> "block".equals(m.get("SUBSYSTEM"))
-                                                ).isPresent())) {
+                        if (!mapScsiDevices(udevdb, devpath, props)) {
                             return;
                         }
                         break;
@@ -433,6 +379,82 @@ public class HardwareMapper {
                 server.getDevices().add(device);
             }
         });
+    }
+
+    private boolean mapBlockDevices(ValueMap props, String devpath, Device device) {
+        if (StringUtils.isNotBlank(props.getValueAsString("ID_BUS"))) {
+            device.setBus(props.getValueAsString("ID_BUS"));
+        }
+        // the sysname is the part after the last "/"
+        // see libudev/libudev-device.c, udev_device_set_syspath(...)
+        String name = StringUtils.substringAfterLast(devpath, "/");
+        device.setDevice(name);
+
+        if (props.getValueAsString("DEVTYPE").equals("partition")) {
+            // do not report partitions, just whole disks
+            return false;
+        }
+        if (StringUtils.isNotBlank(props.getValueAsString("DM_NAME"))) {
+            // LVM device
+            return false;
+        }
+        if (props.getValueAsString("MAJOR").equals("1")) {
+            // ram device
+            return false;
+        }
+        if (props.getValueAsString("MAJOR").equals("7")) {
+            // character devices for virtual console terminals
+            return false;
+        }
+        // This is interpreted as Physical. But what to do with it?
+        // result_item['prop1'] = ''
+        // This is interpreted as Logical. But what to do with it?
+        // result_item['prop2'] = ''
+        return true;
+    }
+
+    private void mapPciDevices(ValueMap props, Device device) {
+        String pciClass = props.getValueAsString("PCI_ID");
+        if (StringUtils.isNotBlank(pciClass)) {
+            String[] ids = pciClass.split(":");
+            device.setProp1(ids.length > 0 ? ids[0] : null);
+            device.setProp2(ids.length > 1 ? ids[1] : null);
+        }
+        String pciSubsys = props.getValueAsString("PCI_SUBSYS_ID");
+        if (StringUtils.isNotBlank(pciSubsys)) {
+            String[] ids = pciSubsys.split(":");
+            device.setProp3(ids.length > 0 ? ids[0] : null);
+            device.setProp4(ids.length > 1 ? ids[1] : null);
+        }
+    }
+
+    private void mapUsbDevices(ValueMap props, Device device) {
+        String vendorId = props.getValueAsString("ID_VENDOR_ID");
+        if (StringUtils.isNotBlank(vendorId)) {
+            device.setProp1(vendorId);
+        }
+        String modelId = props.getValueAsString("ID_MODEL_ID");
+        if (StringUtils.isNotBlank(modelId)) {
+            device.setProp2(modelId);
+        }
+    }
+
+    private boolean mapScsiDevices(List<Map<String, Object>> udevdb, String devpath, ValueMap props) {
+        // skip scsi hosts and targets
+        if (!props.getValueAsString("DEVTYPE").equals("scsi_device")) {
+            return false;
+        }
+        // check if this scsi device is already listed as a block device
+        if (udevdb.stream().anyMatch(dev ->
+                Objects.toString(dev.get(SYSFS_PATH), "").startsWith(devpath) &&
+                        Optional.ofNullable(dev.get(ENTRIES))
+                                .filter(Map.class::isInstance)
+                                .map(Map.class::cast)
+                                .filter(m -> "block".equals(m.get("SUBSYSTEM"))
+                                ).isPresent())) {
+            return false;
+        }
+        return true;
     }
 
     /**
