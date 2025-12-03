@@ -236,120 +236,12 @@ public class ProfileManager extends BaseManager {
                 // installed we need to run a different algorithm.
                 log.debug("syslist.size: {} plist.size: {}", syslist.size(), plist.size());
                 if (syslist.size() > 1 || plist.size() > 1) {
-                    Map<String, PackageMetadata> compareMap = new HashMap<>();
-                    for (PackageListItem packageListItemIn : syslist) {
-                        PackageListItem syspkgitem = packageListItemIn;
-                        for (int j = 0; j < plist.size(); j++) {
-
-                            PackageListItem profpkgitem = plist.get(j);
-
-                            if (skipPkg.contains(profpkgitem.getNevra())) {
-                                // this package was evaluated on a previous pass through
-                                // the plist and identified as a match on the syslist
-                                // therefore, it may be skipped
-                                continue;
-                            }
-                            log.debug("Checking on : {}", profpkgitem.getEvr());
-
-                            if (compareArch(syspkgitem.getArch(),
-                                    profpkgitem.getArch()) != 0) {
-                                // if the arch of the packages doesn't match, we don't
-                                // need to compare the EVR; therefore, if at end of the
-                                // list, add both packages to the result
-                                if ((j + 1) == plist.size()) {
-                                    PackageMetadata pm = createPackageMetadata(
-                                            syspkgitem, null,
-                                            PackageMetadata.KEY_THIS_ONLY, param);
-                                    skipPkg.add(syspkgitem.getNevra());
-                                    result.add(pm);
-
-                                    pm = createPackageMetadata(null, profpkgitem,
-                                            PackageMetadata.KEY_OTHER_ONLY, param);
-                                    skipPkg.add(profpkgitem.getNevra());
-                                    result.add(pm);
-                                }
-                            }
-                            else {
-                                PackageMetadata pm = compareAndCreatePackageMetaData(
-                                        syspkgitem, profpkgitem, param);
-                                String evrKey = pm.getSystemEvr() + "|" +
-                                        pm.getOtherEvr();
-                                // If the package exists on one but not the other we
-                                // need to add it to the compare map
-                                if (pm.getComparisonAsInt() !=
-                                        PackageMetadata.KEY_NO_DIFF) {
-
-                                    if ((j + 1) == plist.size()) {
-                                        // this is the last entry in plist; therefore,
-                                        // this must be a difference between pkgs
-                                        log.debug("Adding to cm: {} comp: {}", evrKey, pm.getComparison());
-                                        pm.setComparison(
-                                                PackageMetadata.KEY_OTHER_ONLY);
-                                        compareMap.put(evrKey, pm);
-                                        skipPkg.add(syspkgitem.getNevra());
-                                        skipPkg.add(profpkgitem.getNevra());
-                                    }
-                                }
-                                else {
-                                    log.debug("Removing from cm: {}", evrKey);
-                                    compareMap.remove(evrKey);
-                                    skipPkg.add(profpkgitem.getNevra());
-                                    // pkg found in both plist & syslist, skip to next
-                                    // syslist entry
-                                    break;
-                                }
-                            }
-                        }
-                        if (!skipPkg.contains(syspkgitem.getNevra())) {
-
-                            // reached end of plist w/o finding match in syslist
-                            // or recording a difference; therefore, add one now
-                            log.debug("Checking on : {}", syspkgitem.getEvr());
-
-                            PackageMetadata pm = createPackageMetadata(syspkgitem,
-                                    null, PackageMetadata.KEY_THIS_ONLY, param);
-
-                            log.debug("*** adding a PM(1): {}", pm.hashCode());
-                            skipPkg.add(syspkgitem.getNevra());
-                            result.add(pm);
-                        }
-                    }
-                    // Copy into the result map
-                    for (PackageMetadata pm : compareMap.values()) {
-                        log.debug("*** adding a PM(2): {}", pm.hashCode());
-                        result.add(pm);
-                    }
+                    comparePackagesBothInSystemAndProfile(syslist, plist, skipPkg, param, result);
                 }
                 // Else the system and profile list just have one rev so we
                 // can do a standard compare
                 else {
-                    PackageListItem syspkgitem = syslist.get(0);
-                    PackageListItem profpkgitem = plist.get(0);
-
-                    if (compareArch(syspkgitem.getArch(), profpkgitem.getArch()) != 0) {
-
-                        // pkg arches do not match; therefore, no need to check evr
-                        PackageMetadata pm = createPackageMetadata(syspkgitem, null,
-                                PackageMetadata.KEY_THIS_ONLY, param);
-                        skipPkg.add(syspkgitem.getNevra());
-                        result.add(pm);
-
-                        pm = createPackageMetadata(null, profpkgitem,
-                                PackageMetadata.KEY_OTHER_ONLY, param);
-                        skipPkg.add(profpkgitem.getNevra());
-                        result.add(pm);
-                    }
-                    else {
-                        PackageMetadata pm = compareAndCreatePackageMetaData(syspkgitem,
-                                profpkgitem, param);
-                        if (pm != null && pm.getComparisonAsInt() !=
-                                PackageMetadata.KEY_NO_DIFF) {
-                            log.debug("*** adding a PM(3): {}", pm.hashCode());
-                            result.add(pm);
-                        }
-                    }
-                    skipPkg.add(profpkgitem.getNevra());
-                    skipPkg.add(syspkgitem.getNevra());
+                    comparePackagesOnlyInSystemOrProfile(syslist, plist, skipPkg, param, result);
                 }
             }
         }
@@ -387,14 +279,138 @@ public class ProfileManager extends BaseManager {
         return result;
     }
 
-    /**
-     * Build a map of packages based on the list of PackageListItems provided.
-     * @param packageListItems - set of PackageListItems to be processed
-     * @return Map where the key is the package name Id and the value is a list
-     * of evr values for each of the packages associated with that name.
-     * E.g. for kernel, the nameid might be 23 and there may be multiple
-     * versions of that package in the list 2.1, 2.2, 2.3...etc
-     */
+    private static void comparePackagesBothInSystemAndProfile(List<PackageListItem> syslist,
+                                                              List<PackageListItem> plist,
+                                                              Set<String> skipPkg,
+                                                              String param,
+                                                              List<PackageMetadata> result) {
+        Map<String, PackageMetadata> compareMap = new HashMap<>();
+        for (PackageListItem packageListItemIn : syslist) {
+            PackageListItem syspkgitem = packageListItemIn;
+            for (int j = 0; j < plist.size(); j++) {
+
+                PackageListItem profpkgitem = plist.get(j);
+
+                if (skipPkg.contains(profpkgitem.getNevra())) {
+                    // this package was evaluated on a previous pass through
+                    // the plist and identified as a match on the syslist
+                    // therefore, it may be skipped
+                    continue;
+                }
+                log.debug("Checking on : {}", profpkgitem.getEvr());
+
+                if (compareArch(syspkgitem.getArch(),
+                        profpkgitem.getArch()) != 0) {
+                    // if the arch of the packages doesn't match, we don't
+                    // need to compare the EVR; therefore, if at end of the
+                    // list, add both packages to the result
+                    if ((j + 1) == plist.size()) {
+                        PackageMetadata pm = createPackageMetadata(
+                                syspkgitem, null,
+                                PackageMetadata.KEY_THIS_ONLY, param);
+                        skipPkg.add(syspkgitem.getNevra());
+                        result.add(pm);
+
+                        pm = createPackageMetadata(null, profpkgitem,
+                                PackageMetadata.KEY_OTHER_ONLY, param);
+                        skipPkg.add(profpkgitem.getNevra());
+                        result.add(pm);
+                    }
+                }
+                else {
+                    PackageMetadata pm = compareAndCreatePackageMetaData(
+                            syspkgitem, profpkgitem, param);
+                    String evrKey = pm.getSystemEvr() + "|" +
+                            pm.getOtherEvr();
+                    // If the package exists on one but not the other we
+                    // need to add it to the compare map
+                    if (pm.getComparisonAsInt() !=
+                            PackageMetadata.KEY_NO_DIFF) {
+
+                        if ((j + 1) == plist.size()) {
+                            // this is the last entry in plist; therefore,
+                            // this must be a difference between pkgs
+                            log.debug("Adding to cm: {} comp: {}", evrKey, pm.getComparison());
+                            pm.setComparison(
+                                    PackageMetadata.KEY_OTHER_ONLY);
+                            compareMap.put(evrKey, pm);
+                            skipPkg.add(syspkgitem.getNevra());
+                            skipPkg.add(profpkgitem.getNevra());
+                        }
+                    }
+                    else {
+                        log.debug("Removing from cm: {}", evrKey);
+                        compareMap.remove(evrKey);
+                        skipPkg.add(profpkgitem.getNevra());
+                        // pkg found in both plist & syslist, skip to next
+                        // syslist entry
+                        break;
+                    }
+                }
+            }
+            if (!skipPkg.contains(syspkgitem.getNevra())) {
+
+                // reached end of plist w/o finding match in syslist
+                // or recording a difference; therefore, add one now
+                log.debug("Checking on : {}", syspkgitem.getEvr());
+
+                PackageMetadata pm = createPackageMetadata(syspkgitem,
+                        null, PackageMetadata.KEY_THIS_ONLY, param);
+
+                log.debug("*** adding a PM(1): {}", pm.hashCode());
+                skipPkg.add(syspkgitem.getNevra());
+                result.add(pm);
+            }
+        }
+        // Copy into the result map
+        for (PackageMetadata pm : compareMap.values()) {
+            log.debug("*** adding a PM(2): {}", pm.hashCode());
+            result.add(pm);
+        }
+    }
+
+    private static void comparePackagesOnlyInSystemOrProfile(List<PackageListItem> syslist,
+                                                              List<PackageListItem> plist,
+                                                              Set<String> skipPkg,
+                                                              String param,
+                                                              List<PackageMetadata> result) {
+        PackageListItem syspkgitem = syslist.get(0);
+        PackageListItem profpkgitem = plist.get(0);
+
+        if (compareArch(syspkgitem.getArch(), profpkgitem.getArch()) != 0) {
+
+            // pkg arches do not match; therefore, no need to check evr
+            PackageMetadata pm = createPackageMetadata(syspkgitem, null,
+                    PackageMetadata.KEY_THIS_ONLY, param);
+            skipPkg.add(syspkgitem.getNevra());
+            result.add(pm);
+
+            pm = createPackageMetadata(null, profpkgitem,
+                    PackageMetadata.KEY_OTHER_ONLY, param);
+            skipPkg.add(profpkgitem.getNevra());
+            result.add(pm);
+        }
+        else {
+            PackageMetadata pm = compareAndCreatePackageMetaData(syspkgitem,
+                    profpkgitem, param);
+            if (pm != null && pm.getComparisonAsInt() !=
+                    PackageMetadata.KEY_NO_DIFF) {
+                log.debug("*** adding a PM(3): {}", pm.hashCode());
+                result.add(pm);
+            }
+        }
+        skipPkg.add(profpkgitem.getNevra());
+        skipPkg.add(syspkgitem.getNevra());
+    }
+
+        /**
+         * Build a map of packages based on the list of PackageListItems provided.
+         * @param packageListItems - set of PackageListItems to be processed
+         * @return Map where the key is the package name Id and the value is a list
+         * of evr values for each of the packages associated with that name.
+         * E.g. for kernel, the nameid might be 23 and there may be multiple
+         * versions of that package in the list 2.1, 2.2, 2.3...etc
+         */
     private static Map<String, List<PackageListItem>> buildPackagesMap(DataResult<PackageListItem> packageListItems) {
         Map<String, List<PackageListItem>> packages = new HashMap<>();
 
