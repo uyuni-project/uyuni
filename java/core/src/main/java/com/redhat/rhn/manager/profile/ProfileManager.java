@@ -674,8 +674,7 @@ public class ProfileManager extends BaseManager {
                     EntitlementManager.MANAGEMENT.getHumanReadableLabel());
         }
 
-        DataResult<PackageMetadata> dr = prepareSyncToServer(sid, sid1, user.getOrg().getId(),
-                null, pkgIdCombos);
+        DataResult<PackageMetadata> dr = prepareSyncToServer(sid, sid1, user.getOrg().getId(), null, pkgIdCombos);
 
         if (log.isDebugEnabled()) {
             log.debug("prepareTosyncServer results: {}", dr);
@@ -693,8 +692,9 @@ public class ProfileManager extends BaseManager {
             if (log.isDebugEnabled()) {
                 log.debug("Schedule sync, no missing packages, so we're good");
             }
-            action = ActionManager.schedulePackageRunTransaction(user, server, dr,
-                    earliest);
+
+            action = ActionManager.schedulePackageRunTransaction(user, server, dr, earliest);
+
             if (log.isDebugEnabled()) {
                 log.debug("created an action: {}", action);
             }
@@ -712,8 +712,7 @@ public class ProfileManager extends BaseManager {
 
             for (PackageMetadata pm : missingPackages) {
                 int compare = pm.getComparisonAsInt();
-                if (compare == PackageMetadata.KEY_OTHER_ONLY ||
-                        compare == PackageMetadata.KEY_OTHER_NEWER) {
+                if (compare == PackageMetadata.KEY_OTHER_ONLY || compare == PackageMetadata.KEY_OTHER_NEWER) {
                     dr.remove(pm);
                 }
             }
@@ -722,89 +721,96 @@ public class ProfileManager extends BaseManager {
                 log.debug("DataResult size after removals [{}]", dr.size());
             }
 
-            action = ActionManager.schedulePackageRunTransaction(user, server, dr,
-                    earliest);
+            action = ActionManager.schedulePackageRunTransaction(user, server, dr, earliest);
+
             if (log.isDebugEnabled()) {
                 log.debug("Action: {}", action);
             }
         }
         else if (OPTION_SUBSCRIBE.equals(missingoption)) {
             // subscribe to channels and continue
-            if (log.isDebugEnabled()) {
-                log.debug("Missingoption set to subscribe");
-            }
-
-            // get list of accessible channels for the current user
-            // for each accessible channel found, see if any of the
-            // missing packages are in that channel.  If so,
-            // add the channel to the "needed channels list" and
-            // remove package from missingpackages list.
-            Channel baseChannel = ChannelFactory.getBaseChannel(server.getId());
-            List<Channel> validChannels = ChannelManager.userAccessibleChildChannels(
-                    user.getOrg().getId(), baseChannel.getId());
-            List<Channel> neededChannels = new ArrayList<>();
-
-            for (Channel validChannel : validChannels) {
-                for (Iterator<PackageMetadata> innerItr = missingPackages.iterator(); innerItr.hasNext();) {
-                    PackageMetadata pm = innerItr.next();
-                    if (PackageManager.isPackageInChannel(
-                            validChannel.getId(), pm.getNameId(),
-                            pm.getEvrId())) {
-
-                        if (log.isDebugEnabled()) {
-                            log.debug("Package [{}] is in Channel [{}]", pm.getName(), validChannel.getId());
-                        }
-
-                        neededChannels.add(validChannel);
-                        // remove from missingpkgs
-                        innerItr.remove();
-                    }
-                }
-            }
-
-            // finally for each channel needed, subscribe the server
-            // to that channel. if there's an error throw an exception
-            // TODO: what type of exception
-            // once subscribed, throw away any of the remaining missing
-            // packages.
-
-            for (Channel needed : neededChannels) {
-                if (log.isDebugEnabled()) {
-                    log.debug("Subscribing to [{}]", needed.getName());
-                }
-                SystemManager.subscribeServerToChannel(user, server, needed);
-            }
-
-            // if we still have some missing packages, just remove them.
-            if (!missingPackages.isEmpty()) {
-                for (PackageMetadata pm : missingPackages) {
-                    int compare = pm.getComparisonAsInt();
-                    if (compare == PackageMetadata.KEY_OTHER_ONLY ||
-                            compare == PackageMetadata.KEY_OTHER_NEWER) {
-                        if (log.isDebugEnabled()) {
-                            log.debug("Removing pm [{}]", pm.getName());
-                        }
-                        dr.remove(pm);
-                    }
-                }
-            }
-
-            if (log.isDebugEnabled()) {
-                log.debug("DataResult size after removals [{}]", dr.size());
-            }
-
-            action = ActionManager.schedulePackageRunTransaction(user, server, dr,
-                    earliest);
+            action = syncToSystemSubscribeToChannelsAndContinue(user, server, missingPackages, dr, earliest);
         }
         else {
             if (log.isDebugEnabled()) {
                 log.debug("We have [{}] missing packages", missingPackages.size());
             }
-            throw new MissingPackagesException("There are [" +
-                    missingPackages.size() + "] missing packages");
+            throw new MissingPackagesException("There are [" + missingPackages.size() + "] missing packages");
         }
 
         return action;
+    }
+
+    private static PackageAction syncToSystemSubscribeToChannelsAndContinue(User user, Server server,
+                                                                            List<PackageMetadata> missingPackages,
+                                                                            DataResult<PackageMetadata> dr,
+                                                                            Date earliest)
+            throws TaskomaticApiException {
+        // subscribe to channels and continue
+        if (log.isDebugEnabled()) {
+            log.debug("Missingoption set to subscribe");
+        }
+
+        // get list of accessible channels for the current user
+        // for each accessible channel found, see if any of the
+        // missing packages are in that channel.  If so,
+        // add the channel to the "needed channels list" and
+        // remove package from missingpackages list.
+        Channel baseChannel = ChannelFactory.getBaseChannel(server.getId());
+        List<Channel> validChannels = ChannelManager.userAccessibleChildChannels(
+                user.getOrg().getId(), baseChannel.getId());
+        List<Channel> neededChannels = new ArrayList<>();
+
+        for (Channel validChannel : validChannels) {
+            for (Iterator<PackageMetadata> innerItr = missingPackages.iterator(); innerItr.hasNext();) {
+                PackageMetadata pm = innerItr.next();
+                if (PackageManager.isPackageInChannel(
+                        validChannel.getId(), pm.getNameId(),
+                        pm.getEvrId())) {
+
+                    if (log.isDebugEnabled()) {
+                        log.debug("Package [{}] is in Channel [{}]", pm.getName(), validChannel.getId());
+                    }
+
+                    neededChannels.add(validChannel);
+                    // remove from missingpkgs
+                    innerItr.remove();
+                }
+            }
+        }
+
+        // finally for each channel needed, subscribe the server
+        // to that channel. if there's an error throw an exception
+        // TODO: what type of exception
+        // once subscribed, throw away any of the remaining missing
+        // packages.
+
+        for (Channel needed : neededChannels) {
+            if (log.isDebugEnabled()) {
+                log.debug("Subscribing to [{}]", needed.getName());
+            }
+            SystemManager.subscribeServerToChannel(user, server, needed);
+        }
+
+        // if we still have some missing packages, just remove them.
+        if (!missingPackages.isEmpty()) {
+            for (PackageMetadata pm : missingPackages) {
+                int compare = pm.getComparisonAsInt();
+                if (compare == PackageMetadata.KEY_OTHER_ONLY ||
+                        compare == PackageMetadata.KEY_OTHER_NEWER) {
+                    if (log.isDebugEnabled()) {
+                        log.debug("Removing pm [{}]", pm.getName());
+                    }
+                    dr.remove(pm);
+                }
+            }
+        }
+
+        if (log.isDebugEnabled()) {
+            log.debug("DataResult size after removals [{}]", dr.size());
+        }
+
+        return ActionManager.schedulePackageRunTransaction(user, server, dr, earliest);
     }
 
     private static void updatePackageListWithChannels(Channel baseChannel,
