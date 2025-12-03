@@ -181,7 +181,7 @@ public class SystemOverviewAction extends RhnAction {
     }
 
     private static int getEntitlementComparator(Entitlement e1, Entitlement e2) {
-        if ((e1.isBase() && e2.isBase()) || (!e1.isBase() && !e2.isBase())) {
+        if (e1.isBase() == e2.isBase()) {
             return e1.getHumanReadableLabel().compareTo(e2.getHumanReadableLabel());
         }
         else {
