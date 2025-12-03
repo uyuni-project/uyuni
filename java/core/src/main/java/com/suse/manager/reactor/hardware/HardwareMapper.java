@@ -638,53 +638,7 @@ public class HardwareMapper {
             if (StringUtils.isNotBlank(virtUuid)) {
 
                 virtUuid = StringUtils.remove(virtUuid, '-');
-
-                String virtTypeLabel = virtTypeLowerCase;
-                switch (virtTypeLowerCase) {
-                    case "xen":
-                        if ("Xen PV DomU".equals(virtSubtype)) {
-                            virtTypeLabel = "para_virtualized";
-                        }
-                        else {
-                            virtTypeLabel = "fully_virtualized";
-                        }
-                        break;
-                    case "qemu":
-                    case "kvm":
-                        virtTypeLabel = "qemu";
-                        break;
-                    case "nitro":
-                        virtTypeLabel = "aws_nitro";
-                        break;
-                    default:
-                        LOG.info("Detected virtual instance type '{}' for minion '{}'",
-                                virtTypeLabel, server.getMinionId());
-                }
-                if (virtSubtype.startsWith("Amazon EC2")) {
-                    switch (virtTypeLowerCase) {
-                        case "xen":
-                            virtTypeLabel = "aws_xen";
-                            break;
-                        case "qemu":
-                        case "kvm":
-                        case "nitro":
-                            virtTypeLabel = "aws_nitro";
-                            break;
-                        default:
-                            virtTypeLabel = "aws";
-                    }
-                }
-                type = VirtualInstanceFactory.getInstance()
-                        .getVirtualInstanceType(virtTypeLabel);
-
-                if (type == null) { // fallback
-                    type = VirtualInstanceFactory.getInstance().getFullyVirtType();
-                    LOG.warn(
-                            "Can't find virtual instance type for string '{}'. " +
-                            "Defaulting to '{}' for minion '{}'",
-                            virtTypeLowerCase, type.getLabel(), server.getMinionId());
-                }
-
+                type = getVirtualInstanceType(virtTypeLowerCase, virtSubtype);
             }
         }
         else if (smbiosRecordsSystem.isPresent()) {
@@ -748,6 +702,54 @@ public class HardwareMapper {
                         virtualInstance -> updateVirtualInstance(vCPUs, memory, virtType, virtualInstance));
             }
         }
+    }
+
+    private VirtualInstanceType getVirtualInstanceType(String virtTypeLowerCase, String virtSubtype) {
+        String virtTypeLabel = virtTypeLowerCase;
+        switch (virtTypeLowerCase) {
+            case "xen":
+                if ("Xen PV DomU".equals(virtSubtype)) {
+                    virtTypeLabel = "para_virtualized";
+                }
+                else {
+                    virtTypeLabel = "fully_virtualized";
+                }
+                break;
+            case "qemu":
+            case "kvm":
+                virtTypeLabel = "qemu";
+                break;
+            case "nitro":
+                virtTypeLabel = "aws_nitro";
+                break;
+            default:
+                LOG.info("Detected virtual instance type '{}' for minion '{}'",
+                        virtTypeLabel, server.getMinionId());
+        }
+        if (virtSubtype.startsWith("Amazon EC2")) {
+            switch (virtTypeLowerCase) {
+                case "xen":
+                    virtTypeLabel = "aws_xen";
+                    break;
+                case "qemu":
+                case "kvm":
+                case "nitro":
+                    virtTypeLabel = "aws_nitro";
+                    break;
+                default:
+                    virtTypeLabel = "aws";
+            }
+        }
+
+        VirtualInstanceType type = VirtualInstanceFactory.getInstance().getVirtualInstanceType(virtTypeLabel);
+
+        if (type == null) { // fallback
+            type = VirtualInstanceFactory.getInstance().getFullyVirtType();
+            LOG.warn("Can't find virtual instance type for string '{}'. Defaulting to '{}' for minion '{}'",
+                    virtTypeLowerCase, type.getLabel(), server.getMinionId());
+        }
+
+        return type;
     }
 
     /**
