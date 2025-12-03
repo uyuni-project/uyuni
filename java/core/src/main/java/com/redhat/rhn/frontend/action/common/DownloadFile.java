@@ -501,7 +501,6 @@ public class DownloadFile extends DownloadAction {
         log.debug("getStreamInfo KICKSTART type, path: {}", path);
         String diskPath = null;
         String kickstartMount = Config.get().getString(ConfigDefaults.MOUNT_POINT);
-        String fileName;
         KickstartSession ksession = (KickstartSession) params.get(SESSION);
         KickstartSessionState newState = null;
         KickstartableTree tree = (KickstartableTree) params.get(TREE);
@@ -521,7 +520,7 @@ public class DownloadFile extends DownloadAction {
         // Searching for RPM
         if (path.endsWith(".rpm")) {
             String[] split = StringUtils.split(path, '/');
-            fileName = split[split.length - 1];
+            String fileName = split[split.length - 1];
             String checksum = split[split.length - 2];
             if (checksum.matches("^[0-9a-f]{32,}$")) {
                 // ChannelFactory.lookupPackageByFilename* uses "like" for the path
@@ -534,30 +533,7 @@ public class DownloadFile extends DownloadAction {
                 channel = child;
             }
 
-            if (child != null || !tree.getInstallType().isSUSE() ||
-                    tree.getKernelOptions().contains("useonlinerepo")) {
-                String byteRange = request.getHeader("Range");
-                if (byteRange != null) {
-                    Pattern rangeRegex = Pattern.compile("bytes=(\\d+)-(\\d+)", Pattern.CASE_INSENSITIVE);
-                    Matcher match = rangeRegex.matcher(byteRange);
-                    int newHeaderEnd = 0;
-                    int newHeaderStart = 0;
-
-                    if (match.find()) {
-                        newHeaderStart = Integer.parseInt(match.group(1));
-                        newHeaderEnd = Integer.parseInt(match.group(2));
-                        int modulo = newHeaderEnd % 8;
-                        if (modulo > 0) {
-                            newHeaderEnd = newHeaderEnd + 8 - modulo;
-                        }
-                    }
-                    rpmPackage = ChannelFactory.lookupPackageByFilenameAndRange(
-                            channel, fileName, newHeaderStart, newHeaderEnd);
-                }
-                else {
-                    rpmPackage = ChannelFactory.lookupPackageByFilename(channel, fileName);
-                }
-            }
+            rpmPackage = getRpmPackage(child, channel, request, tree, fileName);
 
             if (rpmPackage != null) {
                 diskPath = Config.get().getString(ConfigDefaults.MOUNT_POINT) + File.separator + rpmPackage.getPath();
@@ -571,58 +547,7 @@ public class DownloadFile extends DownloadAction {
         // either it's not an rpm, or we didn't find it in the channel
         // check for dir pings, virt manager or install, bz #345721
         if (diskPath == null) {
-            if (child == null) {
-                if (path.contains("repodata/") && tree.getKernelOptions().contains("useonlinerepo")) {
-                    if (path.endsWith("/comps.xml")) {
-                        diskPath = Config.get().getString(ConfigDefaults.MOUNT_POINT) +
-                            File.separator + tree.getChannel().getComps().getRelativeFilename();
-                    }
-                    else if (path.endsWith("/modules.yaml")) {
-                        diskPath = Config.get().getString(ConfigDefaults.MOUNT_POINT) +
-                            File.separator + tree.getChannel().getModules().getRelativeFilename();
-                    }
-                    else {
-                        String[] split = StringUtils.split(path, '/');
-                        if (split[0].equals("repodata")) {
-                            split[0] = tree.getChannel().getLabel();
-                        }
-                        diskPath = Config.get().getString(ConfigDefaults.REPOMD_CACHE_MOUNT_POINT, "/pub") +
-                                File.separator + Config.get().getString("repomd_path_prefix", "rhn/repodata/") +
-                                File.separator + StringUtils.join(split, '/');
-                    }
-                }
-                else if (tree.getKernelOptions().contains("useonlinerepo") && path.endsWith("/media.1/products")) {
-                    MediaProducts mediaProducts = Optional.ofNullable(tree.getChannel().getMediaProducts())
-                            .orElse(ChannelManager.getOriginalChannel(tree.getChannel()).getMediaProducts());
-                    if (mediaProducts != null) {
-                        diskPath = Config.get().getString(ConfigDefaults.MOUNT_POINT) +
-                                File.separator + mediaProducts.getRelativeFilename();
-                    }
-                    else {
-                        diskPath = kickstartMount + File.separator + tree.getBasePath() + path;
-                    }
-                }
-                else {
-                    diskPath = kickstartMount + File.separator + tree.getBasePath() + path;
-                }
-            }
-            else if (path.endsWith("/comps.xml")) {
-                diskPath = Config.get().getString(ConfigDefaults.MOUNT_POINT) +
-                    File.separator + child.getComps().getRelativeFilename();
-            }
-            else if (path.endsWith("/modules.yaml")) {
-                diskPath = Config.get().getString(ConfigDefaults.MOUNT_POINT) +
-                    File.separator + child.getModules().getRelativeFilename();
-            }
-            else {
-                String[] split = StringUtils.split(path, '/');
-                if (split.length > 0 && split[0].equals("repodata")) {
-                    split[0] = child.getLabel();
-                }
-                diskPath = Config.get().getString(ConfigDefaults.REPOMD_CACHE_MOUNT_POINT, "/pub") +
-                        File.separator + Config.get().getString("repomd_path_prefix", "rhn/repodata/") +
-                        File.separator + StringUtils.join(split, File.separator);
-            }
+            diskPath = findDiskPath(child, path, tree, kickstartMount);
 
             log.debug("DirCheck path: {}", diskPath);
             File actualFile = new File(diskPath);
@@ -661,6 +586,110 @@ public class DownloadFile extends DownloadAction {
             return manualServeByteRange(response, diskPath, range);
         }
         // Update kickstart session
+        updateKickstartSession(ksession, newState, path);
+        log.debug("returning getStreamForPath");
+
+        File actualFile = new File(diskPath);
+        Date mtime = new Date(actualFile.lastModified());
+        SimpleDateFormat formatter = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
+        formatter.setTimeZone(TimeZone.getTimeZone("GMT"));
+        setContentInfo(response, actualFile.length(), CONTENT_TYPE_OCTET_STREAM);
+        response.addHeader("last-modified", formatter.format(mtime));
+        log.debug("added last-modified and content-length values");
+        return getStreamForPath(diskPath, CONTENT_TYPE_OCTET_STREAM);
+    }
+
+    private Package getRpmPackage(Channel child, Channel channel, HttpServletRequest request, KickstartableTree tree,
+                                  String fileName) {
+        Package rpmPackage = null;
+        if (child != null || !tree.getInstallType().isSUSE() ||
+                tree.getKernelOptions().contains("useonlinerepo")) {
+            String byteRange = request.getHeader("Range");
+            if (byteRange != null) {
+                Pattern rangeRegex = Pattern.compile("bytes=(\\d+)-(\\d+)", Pattern.CASE_INSENSITIVE);
+                Matcher match = rangeRegex.matcher(byteRange);
+                int newHeaderEnd = 0;
+                int newHeaderStart = 0;
+
+                if (match.find()) {
+                    newHeaderStart = Integer.parseInt(match.group(1));
+                    newHeaderEnd = Integer.parseInt(match.group(2));
+                    int modulo = newHeaderEnd % 8;
+                    if (modulo > 0) {
+                        newHeaderEnd = newHeaderEnd + 8 - modulo;
+                    }
+                }
+                rpmPackage = ChannelFactory.lookupPackageByFilenameAndRange(
+                        channel, fileName, newHeaderStart, newHeaderEnd);
+            }
+            else {
+                rpmPackage = ChannelFactory.lookupPackageByFilename(channel, fileName);
+            }
+        }
+        return rpmPackage;
+    }
+
+    private String findDiskPath(Channel child, String path, KickstartableTree tree, String kickstartMount) {
+        String diskPath = null;
+
+        if (child == null) {
+            if (path.contains("repodata/") && tree.getKernelOptions().contains("useonlinerepo")) {
+                if (path.endsWith("/comps.xml")) {
+                    diskPath = Config.get().getString(ConfigDefaults.MOUNT_POINT) +
+                            File.separator + tree.getChannel().getComps().getRelativeFilename();
+                }
+                else if (path.endsWith("/modules.yaml")) {
+                    diskPath = Config.get().getString(ConfigDefaults.MOUNT_POINT) +
+                            File.separator + tree.getChannel().getModules().getRelativeFilename();
+                }
+                else {
+                    String[] split = StringUtils.split(path, '/');
+                    if (split[0].equals("repodata")) {
+                        split[0] = tree.getChannel().getLabel();
+                    }
+                    diskPath = Config.get().getString(ConfigDefaults.REPOMD_CACHE_MOUNT_POINT, "/pub") +
+                            File.separator + Config.get().getString("repomd_path_prefix", "rhn/repodata/") +
+                            File.separator + StringUtils.join(split, '/');
+                }
+            }
+            else if (tree.getKernelOptions().contains("useonlinerepo") && path.endsWith("/media.1/products")) {
+                MediaProducts mediaProducts = Optional.ofNullable(tree.getChannel().getMediaProducts())
+                        .orElse(ChannelManager.getOriginalChannel(tree.getChannel()).getMediaProducts());
+                if (mediaProducts != null) {
+                    diskPath = Config.get().getString(ConfigDefaults.MOUNT_POINT) +
+                            File.separator + mediaProducts.getRelativeFilename();
+                }
+                else {
+                    diskPath = kickstartMount + File.separator + tree.getBasePath() + path;
+                }
+            }
+            else {
+                diskPath = kickstartMount + File.separator + tree.getBasePath() + path;
+            }
+        }
+        else if (path.endsWith("/comps.xml")) {
+            diskPath = Config.get().getString(ConfigDefaults.MOUNT_POINT) +
+                    File.separator + child.getComps().getRelativeFilename();
+        }
+        else if (path.endsWith("/modules.yaml")) {
+            diskPath = Config.get().getString(ConfigDefaults.MOUNT_POINT) +
+                    File.separator + child.getModules().getRelativeFilename();
+        }
+        else {
+            String[] split = StringUtils.split(path, '/');
+            if (split.length > 0 && split[0].equals("repodata")) {
+                split[0] = child.getLabel();
+            }
+            diskPath = Config.get().getString(ConfigDefaults.REPOMD_CACHE_MOUNT_POINT, "/pub") +
+                    File.separator + Config.get().getString("repomd_path_prefix", "rhn/repodata/") +
+                    File.separator + StringUtils.join(split, File.separator);
+        }
+
+        return diskPath;
+    }
+
+    private void updateKickstartSession(KickstartSession ksession, KickstartSessionState newState,
+                                        String path) {
         if (ksession != null &&
                 (!(ksession.getState().getLabel().equals(KickstartSessionState.COMPLETE) ||
                         ksession.getState().getLabel().equals(KickstartSessionState.FAILED)))) {
@@ -678,16 +707,6 @@ public class DownloadFile extends DownloadAction {
             log.debug("Saving session.");
             KickstartFactory.saveKickstartSession(ksession);
         }
-        log.debug("returning getStreamForPath");
-
-        File actualFile = new File(diskPath);
-        Date mtime = new Date(actualFile.lastModified());
-        SimpleDateFormat formatter = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
-        formatter.setTimeZone(TimeZone.getTimeZone("GMT"));
-        setContentInfo(response, actualFile.length(), CONTENT_TYPE_OCTET_STREAM);
-        response.addHeader("last-modified", formatter.format(mtime));
-        log.debug("added last-modified and content-length values");
-        return getStreamForPath(diskPath, CONTENT_TYPE_OCTET_STREAM);
     }
 
     private void setContentInfo(HttpServletResponse responseIn, long lengthIn,
