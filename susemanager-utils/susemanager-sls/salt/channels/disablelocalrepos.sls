@@ -16,6 +16,11 @@ disable_repo_{{ repos_disabled.count }}:
     - repo: {{ "'" ~ entry.line ~ "'" }}
     - kwargs:
         disabled: True
+# Bug: At least for now, salt does not see the existing signedby when modifying a repository
+# But pkg.list_repos is able to show it, so this is a workaround for the moment, to keep the same info
+{%- if entry.file.endswith('.sources') %}
+        signedby: {{ entry.signedby }}
+{%. endif %}
 {% do repos_disabled.update({'count': repos_disabled.count + 1}) %}
 {% endif %}
 {% endfor %}
