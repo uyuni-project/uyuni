@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.action.script.ScriptResult;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.channel.InvalidChannelRoleException;
 import com.redhat.rhn.domain.channel.MediaProducts;
 import com.redhat.rhn.domain.common.CommonFactory;
 import com.redhat.rhn.domain.common.TinyUrl;
@@ -373,66 +374,17 @@ public class DownloadFile extends DownloadAction {
             return getStreamInfoKickstart(request, response);
         }
         else if (type.equals(DownloadManager.DOWNLOAD_TYPE_COBBLER)) {
-            String url = ConfigDefaults.get().getCobblerServerUrl() + params.get(URL_STRING);
-            KickstartHelper helper = new KickstartHelper(request);
-            String data;
-            if (helper.isProxyRequest()) {
-                data = KickstartManager.getInstance().renderKickstart(helper.getKickstartHost(), url);
-            }
-            else {
-                data = KickstartManager.getInstance().renderKickstart(url);
-            }
-            setContentInfo(response, data.getBytes().length, CONTENT_TYPE_TEXT_PLAIN);
-            return getStream(data.getBytes(), CONTENT_TYPE_TEXT_PLAIN);
+            return getStreamInfoCobbler(params, request, response);
         }
         else if (type.equals(DownloadManager.DOWNLOAD_TYPE_COBBLER_API)) {
-            // read data from POST body
-            StringBuilder postData = new StringBuilder();
-            String line;
-            BufferedReader reader = request.getReader();
-            while ((line = reader.readLine()) != null) {
-                postData.append(line);
-            }
-
-            // Send data
-            URL url = new URL(ConfigDefaults.get().getCobblerServerUrl() + "/cobbler_api");
-            URLConnection conn = url.openConnection();
-            conn.setDoOutput(true);
-            OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-            // this will write POST /download//cobbler_api instead of
-            // POST /cobbler_api, but cobbler do not mind
-            wr.write(postData.toString(), 0, postData.length());
-            wr.flush();
-            conn.connect();
-
-            // Get the response
-            StringBuilder output = new StringBuilder();
-            BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            while ((line = rd.readLine()) != null) {
-                output.append(line);
-            }
-            wr.close();
-
-            KickstartHelper helper = new KickstartHelper(request);
-            String outputStr = output.toString();
-            if (helper.isProxyRequest()) {
-                // Search/replacing all instances of cobbler host with host
-                // we pass in, for use with Spacewalk Proxy.
-                outputStr = outputStr.replaceAll(ConfigDefaults.get().getJavaHostname(), helper.getForwardedHost());
-            }
-
-            setContentInfo(response, outputStr.length(), CONTENT_TYPE_TEXT_XML);
-            return getStream(outputStr.getBytes(), CONTENT_TYPE_TEXT_XML);
+            return getStreamInfoCobblerApi(request, response);
         }
         else {
             Long fileId = (Long) params.get(FILEID);
             Long userid = (Long) params.get(USERID);
             User user = UserFactory.lookupById(userid);
             if (type.equals(DownloadManager.DOWNLOAD_TYPE_PACKAGE)) {
-                Package pack = PackageFactory.lookupByIdAndOrg(fileId, user.getOrg());
-                setContentInfo(response, pack.getPackageSize(), CONTENT_TYPE_OCTET_STREAM);
-                path = Config.get().getString(ConfigDefaults.MOUNT_POINT) + File.separator + pack.getPath();
-                return getStreamForPath(path, CONTENT_TYPE_OCTET_STREAM);
+                return getStreamInfoPackage(fileId, user, response);
             }
             else if (type.equals(DownloadManager.DOWNLOAD_TYPE_SOURCE)) {
                 Package pack = PackageFactory.lookupByIdAndOrg(fileId, user.getOrg());
@@ -444,52 +396,124 @@ public class DownloadFile extends DownloadAction {
                 }
             }
             else if (type.equals(DownloadManager.DOWNLOAD_TYPE_REPO_LOG)) {
-                Channel c = ChannelFactory.lookupById(fileId);
-                ChannelManager.verifyChannelAdmin(user, fileId);
-                StringBuilder output = new StringBuilder();
-                for (String fileName : ChannelManager.getLatestSyncLogFiles(c)) {
-                    try (RandomAccessFile file = new RandomAccessFile(fileName, "r")) {
-                        long fileLength = file.length();
-                        if (fileLength > DOWNLOAD_REPO_LOG_LENGTH) {
-                            file.seek(fileLength - DOWNLOAD_REPO_LOG_LENGTH);
-                            // throw away text till end of the actual line
-                            file.readLine();
-                        }
-                        else {
-                            file.seek(0);
-                        }
-                        String line;
-                        while ((line = file.readLine()) != null) {
-                            output.append(line);
-                            output.append("\n");
-                        }
-                    }
-                     if (output.length() > DOWNLOAD_REPO_LOG_MIN_LENGTH) {
-                        break;
-                    }
-                }
-
-                setContentInfo(response, output.length(), CONTENT_TYPE_TEXT_PLAIN);
-                return getStream(output.toString().getBytes(), CONTENT_TYPE_TEXT_PLAIN);
+                return getStreamInfoRepoLog(fileId, user, response);
             }
             else if (type.equals(DownloadManager.DOWNLOAD_TYPE_SCRIPTRAWOUTPUT)) {
-                if (!user.equals(currentUser)) {
-                    throw new PermissionException("missing permission for download link");
-                }
-                ScriptRunAction action = (ScriptRunAction) ActionManager.lookupAction(user, fileId);
-                ScriptActionDetails details = action.getScriptActionDetails();
-
-                StringBuilder results = new StringBuilder();
-                if (details.getResults() != null) {
-                    for (ScriptResult r : details.getResults()) {
-                        results.append(r.getOutputContents());
-                    }
-                }
-                return getStream(results.toString().getBytes(), CONTENT_TYPE_TEXT_PLAIN);
+                return getStreamInfoScriptRawOutput(fileId, user, currentUser);
             }
         }
 
         throw new UnknownDownloadTypeException("The specified download type " + type + " is not currently supported");
+    }
+
+    private StreamInfo getStreamInfoCobbler(Map<String, Object> params, HttpServletRequest request,
+                                            HttpServletResponse response) {
+        String url = ConfigDefaults.get().getCobblerServerUrl() + params.get(URL_STRING);
+        KickstartHelper helper = new KickstartHelper(request);
+        String data;
+        if (helper.isProxyRequest()) {
+            data = KickstartManager.getInstance().renderKickstart(helper.getKickstartHost(), url);
+        }
+        else {
+            data = KickstartManager.getInstance().renderKickstart(url);
+        }
+        setContentInfo(response, data.getBytes().length, CONTENT_TYPE_TEXT_PLAIN);
+        return getStream(data.getBytes(), CONTENT_TYPE_TEXT_PLAIN);
+    }
+
+    private StreamInfo getStreamInfoCobblerApi(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+        // read data from POST body
+        StringBuilder postData = new StringBuilder();
+        String line;
+        BufferedReader reader = request.getReader();
+        while ((line = reader.readLine()) != null) {
+            postData.append(line);
+        }
+
+        // Send data
+        URL url = new URL(ConfigDefaults.get().getCobblerServerUrl() + "/cobbler_api");
+        URLConnection conn = url.openConnection();
+        conn.setDoOutput(true);
+        OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+        // this will write POST /download//cobbler_api instead of
+        // POST /cobbler_api, but cobbler do not mind
+        wr.write(postData.toString(), 0, postData.length());
+        wr.flush();
+        conn.connect();
+
+        // Get the response
+        StringBuilder output = new StringBuilder();
+        BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+        while ((line = rd.readLine()) != null) {
+            output.append(line);
+        }
+        wr.close();
+
+        KickstartHelper helper = new KickstartHelper(request);
+        String outputStr = output.toString();
+        if (helper.isProxyRequest()) {
+            // Search/replacing all instances of cobbler host with host
+            // we pass in, for use with Spacewalk Proxy.
+            outputStr = outputStr.replaceAll(ConfigDefaults.get().getJavaHostname(), helper.getForwardedHost());
+        }
+
+        setContentInfo(response, outputStr.length(), CONTENT_TYPE_TEXT_XML);
+        return getStream(outputStr.getBytes(), CONTENT_TYPE_TEXT_XML);
+    }
+
+    private StreamInfo getStreamInfoPackage(Long fileId, User user, HttpServletResponse response) {
+        Package pack = PackageFactory.lookupByIdAndOrg(fileId, user.getOrg());
+        setContentInfo(response, pack.getPackageSize(), CONTENT_TYPE_OCTET_STREAM);
+        String path = Config.get().getString(ConfigDefaults.MOUNT_POINT) + File.separator + pack.getPath();
+        return getStreamForPath(path, CONTENT_TYPE_OCTET_STREAM);
+    }
+
+    private StreamInfo getStreamInfoRepoLog(Long fileId, User user, HttpServletResponse response)
+            throws IOException, InvalidChannelRoleException {
+        Channel c = ChannelFactory.lookupById(fileId);
+        ChannelManager.verifyChannelAdmin(user, fileId);
+        StringBuilder output = new StringBuilder();
+        for (String fileName : ChannelManager.getLatestSyncLogFiles(c)) {
+            try (RandomAccessFile file = new RandomAccessFile(fileName, "r")) {
+                long fileLength = file.length();
+                if (fileLength > DOWNLOAD_REPO_LOG_LENGTH) {
+                    file.seek(fileLength - DOWNLOAD_REPO_LOG_LENGTH);
+                    // throw away text till end of the actual line
+                    file.readLine();
+                }
+                else {
+                    file.seek(0);
+                }
+                String line;
+                while ((line = file.readLine()) != null) {
+                    output.append(line);
+                    output.append("\n");
+                }
+            }
+            if (output.length() > DOWNLOAD_REPO_LOG_MIN_LENGTH) {
+                break;
+            }
+        }
+
+        setContentInfo(response, output.length(), CONTENT_TYPE_TEXT_PLAIN);
+        return getStream(output.toString().getBytes(), CONTENT_TYPE_TEXT_PLAIN);
+    }
+
+    private StreamInfo getStreamInfoScriptRawOutput(Long fileId, User user, User currentUser) {
+        if (!user.equals(currentUser)) {
+            throw new PermissionException("missing permission for download link");
+        }
+        ScriptRunAction action = (ScriptRunAction) ActionManager.lookupAction(user, fileId);
+        ScriptActionDetails details = action.getScriptActionDetails();
+
+        StringBuilder results = new StringBuilder();
+        if (details.getResults() != null) {
+            for (ScriptResult r : details.getResults()) {
+                results.append(r.getOutputContents());
+            }
+        }
+        return getStream(results.toString().getBytes(), CONTENT_TYPE_TEXT_PLAIN);
     }
 
     @SuppressWarnings("unchecked")
