@@ -1144,54 +1144,9 @@ public class HardwareMapper {
 
         // PCI devices
         if (StringUtils.isNotBlank(baseClass)) {
-            if (baseClass.equals(PciClassCodes.PCI_BASE_CLASS_DISPLAY.getCode())) {
-                return Device.CLASS_VIDEO;
-            }
-            else if (baseClass.equals(PciClassCodes.PCI_BASE_CLASS_SERIAL.getCode())) {
-                if (PciClassCodes.PCI_CLASS_SERIAL_USB.getCode().equals(subClass)) {
-                    return Device.CLASS_USB;
-                }
-                else if (PciClassCodes.PCI_CLASS_SERIAL_FIREWIRE.getCode()
-                        .equals(subClass)) {
-                    return Device.CLASS_FIREWIRE;
-                }
-            }
-            else if (baseClass.equals(PciClassCodes.PCI_BASE_CLASS_STORAGE.getCode())) {
-                if (PciClassCodes.PCI_CLASS_STORAGE_IDE.getCode().equals(subClass)) {
-                    return Device.CLASS_IDE;
-                }
-                if (PciClassCodes.PCI_CLASS_STORAGE_SCSI.getCode().equals(subClass)) {
-                    return Device.CLASS_SCSI;
-                }
-                if (PciClassCodes.PCI_CLASS_STORAGE_RAID.getCode().equals(subClass)) {
-                    return Device.CLASS_RAID;
-                }
-                if (PciClassCodes.PCI_CLASS_STORAGE_FLOPPY.getCode().equals(subClass)) {
-                    return Device.CLASS_FLOPPY;
-                }
-            }
-            else if (baseClass.equals(PciClassCodes.PCI_BASE_CLASS_COMMUNICATION
-                    .getCode()) && PciClassCodes.PCI_CLASS_COMMUNICATION_MODEM
-                    .getCode().equals(subClass)) {
-                return Device.CLASS_MODEM;
-            }
-            else if (baseClass.equals(PciClassCodes.PCI_BASE_CLASS_INPUT.getCode()) &&
-                    PciClassCodes.PCI_CLASS_INPUT_SCANNER.getCode().equals(subClass)) {
-                return Device.CLASS_SCANNER;
-            }
-            else if (baseClass.equals(PciClassCodes.PCI_BASE_CLASS_MULTIMEDIA.getCode())) {
-                if (PciClassCodes.PCI_CLASS_MULTIMEDIA_VIDEO.getCode().equals(subClass)) {
-                    return Device.CLASS_CAPTURE;
-                }
-                if (PciClassCodes.PCI_CLASS_MULTIMEDIA_AUDIO.getCode().equals(subClass)) {
-                    return Device.CLASS_AUDIO;
-                }
-            }
-            else if (baseClass.equals(PciClassCodes.PCI_BASE_CLASS_BRIDGE.getCode()) &&
-                    (PciClassCodes.PCI_CLASS_BRIDGE_PCMCIA.getCode().equals(subClass) ||
-                            PciClassCodes.PCI_CLASS_BRIDGE_CARDBUS.getCode()
-                                    .equals(subClass))) {
-                return Device.CLASS_SOCKET;
+            String classificationValue = classifyPciDevices(baseClass, subClass);
+            if (null != classificationValue) {
+                return classificationValue;
             }
         }
 
@@ -1209,20 +1164,9 @@ public class HardwareMapper {
         }
 
         if (subsys.equals("scsi")) {
-            if (attrs.getValueAsString("DEVTYPE").equals("scsi_device")) {
-                long devType = extraAttrs.getValueAsLong("SCSI_SYS_TYPE").orElse(-1L);
-                if (devType == 0 || devType == 14) {
-                    return Device.CLASS_HD;
-                }
-                else if (devType == 1) {
-                    return Device.CLASS_TAPE;
-                }
-                else if (devType == 5) {
-                    return Device.CLASS_CDROM;
-                }
-                else {
-                    return Device.CLASS_OTHER;
-                }
+            String classificationValue = classifyScsiDevices(attrs, extraAttrs);
+            if (null != classificationValue) {
+                return classificationValue;
             }
         }
 
@@ -1238,6 +1182,80 @@ public class HardwareMapper {
         // Catchall for specific devices, only do this after all the others
         if (subsys.equals("pci") || subsys.equals("usb")) {
             return Device.CLASS_OTHER;
+        }
+
+        return null;
+    }
+
+    private String classifyPciDevices(String baseClass, String subClass) {
+        if (baseClass.equals(PciClassCodes.PCI_BASE_CLASS_DISPLAY.getCode())) {
+            return Device.CLASS_VIDEO;
+        }
+        else if (baseClass.equals(PciClassCodes.PCI_BASE_CLASS_SERIAL.getCode())) {
+            if (PciClassCodes.PCI_CLASS_SERIAL_USB.getCode().equals(subClass)) {
+                return Device.CLASS_USB;
+            }
+            else if (PciClassCodes.PCI_CLASS_SERIAL_FIREWIRE.getCode()
+                    .equals(subClass)) {
+                return Device.CLASS_FIREWIRE;
+            }
+        }
+        else if (baseClass.equals(PciClassCodes.PCI_BASE_CLASS_STORAGE.getCode())) {
+            if (PciClassCodes.PCI_CLASS_STORAGE_IDE.getCode().equals(subClass)) {
+                return Device.CLASS_IDE;
+            }
+            if (PciClassCodes.PCI_CLASS_STORAGE_SCSI.getCode().equals(subClass)) {
+                return Device.CLASS_SCSI;
+            }
+            if (PciClassCodes.PCI_CLASS_STORAGE_RAID.getCode().equals(subClass)) {
+                return Device.CLASS_RAID;
+            }
+            if (PciClassCodes.PCI_CLASS_STORAGE_FLOPPY.getCode().equals(subClass)) {
+                return Device.CLASS_FLOPPY;
+            }
+        }
+        else if (baseClass.equals(PciClassCodes.PCI_BASE_CLASS_COMMUNICATION
+                .getCode()) && PciClassCodes.PCI_CLASS_COMMUNICATION_MODEM
+                .getCode().equals(subClass)) {
+            return Device.CLASS_MODEM;
+        }
+        else if (baseClass.equals(PciClassCodes.PCI_BASE_CLASS_INPUT.getCode()) &&
+                PciClassCodes.PCI_CLASS_INPUT_SCANNER.getCode().equals(subClass)) {
+            return Device.CLASS_SCANNER;
+        }
+        else if (baseClass.equals(PciClassCodes.PCI_BASE_CLASS_MULTIMEDIA.getCode())) {
+            if (PciClassCodes.PCI_CLASS_MULTIMEDIA_VIDEO.getCode().equals(subClass)) {
+                return Device.CLASS_CAPTURE;
+            }
+            if (PciClassCodes.PCI_CLASS_MULTIMEDIA_AUDIO.getCode().equals(subClass)) {
+                return Device.CLASS_AUDIO;
+            }
+        }
+        else if (baseClass.equals(PciClassCodes.PCI_BASE_CLASS_BRIDGE.getCode()) &&
+                (PciClassCodes.PCI_CLASS_BRIDGE_PCMCIA.getCode().equals(subClass) ||
+                        PciClassCodes.PCI_CLASS_BRIDGE_CARDBUS.getCode()
+                                .equals(subClass))) {
+            return Device.CLASS_SOCKET;
+        }
+
+        return null;
+    }
+
+    private String classifyScsiDevices(ValueMap attrs, ValueMap extraAttrs) {
+        if (attrs.getValueAsString("DEVTYPE").equals("scsi_device")) {
+            long devType = extraAttrs.getValueAsLong("SCSI_SYS_TYPE").orElse(-1L);
+            if (devType == 0 || devType == 14) {
+                return Device.CLASS_HD;
+            }
+            else if (devType == 1) {
+                return Device.CLASS_TAPE;
+            }
+            else if (devType == 5) {
+                return Device.CLASS_CDROM;
+            }
+            else {
+                return Device.CLASS_OTHER;
+            }
         }
 
         return null;
