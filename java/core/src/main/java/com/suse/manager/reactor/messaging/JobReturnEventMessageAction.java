@@ -51,7 +51,6 @@ import org.apache.logging.log4j.Logger;
 
 import java.time.Instant;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -131,8 +130,8 @@ public class JobReturnEventMessageAction implements MessageAction {
         Optional<JsonElement> jobResult = eventToJson(jobReturnEvent);
 
         // Check first if the received event was triggered by a single action execution
-        Optional<Long> actionId = jobReturnEvent.getData().getMetadata(ScheduleMetadata.class).map(
-                ScheduleMetadata::getSumaActionId);
+        Optional<Long> actionId = jobReturnEvent.getData().getMetadata(ScheduleMetadata.class)
+                .map(ScheduleMetadata::getSumaActionId);
         actionId.filter(id -> id > 0).ifPresent(id -> jobResult.ifPresent(result ->
             saltServerActionService.handleAction(id,
                     jobReturnEvent.getMinionId(),
@@ -145,103 +144,13 @@ public class JobReturnEventMessageAction implements MessageAction {
         Optional<Boolean> isActionChainResult = isActionChainResult(jobReturnEvent);
         boolean isActionChainInvolved = isActionChainResult.filter(isActionChain -> isActionChain).orElse(false);
         isActionChainResult.filter(isActionChain -> isActionChain).ifPresent(isActionChain -> {
-            if (jobResult.isEmpty()) {
-                return;
-            }
-            AtomicReference<Optional<User>> scheduler = new AtomicReference<>(Optional.empty());
-            JsonElement jsonResult = jobResult.get();
-            // The Salt reactor triggers a "suma-action-chain" job (mgractionchains.resume) at
-            // 'minion/startup/event/'. This means the result might not be a JSON in case of
-            // a Salt error when the 'mgractionchains' custom module is not yet deployed.
-            if (Arrays.asList(1, 254).contains(jobReturnEvent.getData().getRetcode()) &&
-                    !jobReturnEvent.getData().isSuccess() &&
-                    jobReturnEvent.getData().getResult().toString().startsWith("'mgractionchains") &&
-                    jobReturnEvent.getData().getResult().toString().endsWith("' is not available.")
-            ) {
-
-                jobReturnEvent.getData().getMetadata(ScheduleMetadata.class).ifPresent(metadata -> {
-                    Optional<ActionChain> actionChain =
-                            Optional.ofNullable(metadata.getActionChainId())
-                                    .flatMap(ActionChainFactory::getActionChain);
-
-                    actionChain.ifPresent(ac -> {
-                            scheduler.set(Optional.ofNullable(ac.getUser()));
-                            ac.getEntries().stream()
-                                    .flatMap(ace -> ace.getAction().getServerActions().stream())
-                                    .filter(sa -> sa.getServer().asMinionServer()
-                                            .filter(m -> m.getMinionId().equals(jobReturnEvent.getMinionId()))
-                                            .isPresent()
-                                    )
-                                    .filter(sa -> !sa.isDone())
-                                    .forEach(sa -> sa.fail(jobReturnEvent.getData().getResult().toString()));
-                            if (ac.isDone()) {
-                                ActionChainFactory.delete(ac);
-                            }
-                    });
-                });
-
-                return;
-            }
-
-            Map<String, StateApplyResult<Ret<JsonElement>>> actionChainResult;
-            try {
-                actionChainResult = Json.GSON.fromJson(jsonResult,
-                        new TypeToken<Map<String, StateApplyResult<Ret<JsonElement>>>>() {
-                        }.getType());
-            }
-            catch (JsonSyntaxException e) {
-                LOG.error("Error mapping action chain result: {}", jsonResult, e);
-                throw e;
-            }
-
-            saltServerActionService.handleActionChainResult(jobReturnEvent.getMinionId(),
-                    jobReturnEvent.getJobId(),
-                    actionChainResult,
-                    stateResult -> false);
-
-            if (isFunctionTestMode) {
-                return;
-            }
-
-            Set<PackageChangeOutcome> packageRefreshNeeded = actionChainResult.entrySet().stream()
-                    .map(entry -> SaltActionChainGeneratorService.parseActionChainStateId(entry.getKey())
-                            .map(stateId -> handlePackageChanges(jobReturnEvent, entry.getValue().getName(),
-                                    Optional.ofNullable(entry.getValue().getChanges().getRet())))
-                            .orElse(PackageChangeOutcome.DONE)
-                    ).collect(Collectors.toSet());
-
-            if (packageRefreshNeeded.contains(PackageChangeOutcome.NEEDS_DELAYED_REFRESHING)) {
-                schedulePackageRefresh(scheduler.get(), jobReturnEvent.getMinionId(),
-                                       Date.from(Instant.now().plusSeconds(60)));
-            }
-            else if (packageRefreshNeeded.contains(PackageChangeOutcome.NEEDS_REFRESHING)) {
-                schedulePackageRefresh(scheduler.get(), jobReturnEvent.getMinionId());
-            }
+            handleEventInActionChain(jobResult, jobReturnEvent, isFunctionTestMode);
         });
 
         //For all jobs except when action chains are involved or the action was in test mode
-        if (!isActionChainInvolved && !isFunctionTestMode) {
-            Date earliest = new Date();
-            PackageChangeOutcome changeOutcome = handlePackageChanges(jobReturnEvent,
-                            Optional.ofNullable(function).map(Xor::right), jobResult);
-            if (changeOutcome != PackageChangeOutcome.DONE) {
-                if (changeOutcome == PackageChangeOutcome.NEEDS_DELAYED_REFRESHING) {
-                    earliest = Date.from(Instant.now().plusSeconds(60));
-                }
-                Optional<User> scheduler = Optional.empty();
-                if (actionId.isPresent()) {
-                    Optional<Action> action = Optional.ofNullable(ActionFactory.lookupById(actionId.get()));
-                    if (action.isPresent()) {
-                        scheduler = Optional.ofNullable(action.get().getSchedulerUser());
-                        if (action.get().getActionType().equals(ActionFactory.TYPE_DIST_UPGRADE)) {
-                            Calendar calendar = Calendar.getInstance();
-                            calendar.add(Calendar.SECOND, 30);
-                            earliest = calendar.getTime();
-                        }
-                    }
-                }
-                schedulePackageRefresh(scheduler, jobReturnEvent.getMinionId(), earliest);
-            }
+        boolean isStandaloneAction = !isActionChainInvolved && !isFunctionTestMode;
+        if (isStandaloneAction) {
+            handleStandaloneAction(jobResult, jobReturnEvent, function, actionId);
         }
 
         // Check if event was triggered in response to state scheduled at minion start-up event
@@ -276,31 +185,130 @@ public class JobReturnEventMessageAction implements MessageAction {
                     .forEach(ActionChainFactory::delete));
 
         }
-      // For all jobs: update minion last checkin
-        Optional<MinionServer> minion = MinionServerFactory.findByMinionId(
-                jobReturnEvent.getMinionId());
-        if (minion.isPresent()) {
-            MinionServer m = minion.get();
-            if (jobResult.isEmpty()) {
-                LOG.warn("Do not update server info since job={} running " +
-                        "function={} in minion={} is empty",
-                        jobReturnEvent.getJobId(),
-                        function,
-                        jobReturnEvent.getMinionId());
-                return;
-            }
-            m.updateServerInfo();
-            // for s390 update the host as well
-            if (m.getCpu() != null &&
-                CpuArchUtil.isS390(m.getCpu().getArch().getLabel())) {
-                VirtualInstance virtInstance = m.getVirtualInstance();
-                if (virtInstance != null && virtInstance.getHostSystem() != null) {
-                    virtInstance.getHostSystem().updateServerInfo();
-                }
-            }
+        // For all jobs: update minion last checkin
+        MinionServerFactory.findByMinionId(jobReturnEvent.getMinionId())
+                .ifPresent(m -> {
+                    if (jobResult.isEmpty()) {
+                        LOG.warn("Do not update server info since job={} running function={} in minion={} is empty",
+                                jobReturnEvent.getJobId(), function, jobReturnEvent.getMinionId());
+                        return; // Exits the lambda, skipping the update lines below
+                    }
+
+                    m.updateServerInfo();
+                    // for s390 update the host as well
+                    updateHostWhenS390(m);
+                });
+    }
+
+    private void handleEventInActionChain(Optional<JsonElement> jobResult, JobReturnEvent jobReturnEvent,
+                                          boolean isFunctionTestMode) {
+        if (jobResult.isEmpty()) {
+            return;
+        }
+        AtomicReference<Optional<User>> scheduler = new AtomicReference<>(Optional.empty());
+        JsonElement jsonResult = jobResult.get();
+        // The Salt reactor triggers a "suma-action-chain" job (mgractionchains.resume) at
+        // 'minion/startup/event/'. This means the result might not be a JSON in case of
+        // a Salt error when the 'mgractionchains' custom module is not yet deployed.
+        if (Arrays.asList(1, 254).contains(jobReturnEvent.getData().getRetcode()) &&
+                !jobReturnEvent.getData().isSuccess() &&
+                jobReturnEvent.getData().getResult().toString().startsWith("'mgractionchains") &&
+                jobReturnEvent.getData().getResult().toString().endsWith("' is not available.")
+        ) {
+
+            jobReturnEvent.getData().getMetadata(ScheduleMetadata.class)
+                    .map(ScheduleMetadata::getActionChainId)
+                    .flatMap(ActionChainFactory::getActionChain)
+                    .ifPresent(ac -> {
+                        scheduler.set(Optional.ofNullable(ac.getUser()));
+                        ac.getEntries().stream()
+                                .flatMap(ace -> ace.getAction().getServerActions().stream())
+                                .filter(sa -> sa.getServer().asMinionServer()
+                                        .filter(m -> m.getMinionId().equals(jobReturnEvent.getMinionId()))
+                                        .isPresent()
+                                )
+                                .filter(sa -> !sa.isDone())
+                                .forEach(sa -> sa.fail(jobReturnEvent.getData().getResult().toString()));
+                        if (ac.isDone()) {
+                            ActionChainFactory.delete(ac);
+                        }
+                    });
+
+            return;
+        }
+
+        Map<String, StateApplyResult<Ret<JsonElement>>> actionChainResult;
+        try {
+            actionChainResult = Json.GSON.fromJson(jsonResult,
+                    new TypeToken<Map<String, StateApplyResult<Ret<JsonElement>>>>() {
+                    }.getType());
+        }
+        catch (JsonSyntaxException e) {
+            LOG.error("Error mapping action chain result: {}", jsonResult, e);
+            throw e;
+        }
+
+        saltServerActionService.handleActionChainResult(jobReturnEvent.getMinionId(), jobReturnEvent.getJobId(),
+                actionChainResult, stateResult -> false);
+
+        if (isFunctionTestMode) {
+            return;
+        }
+
+        Set<PackageChangeOutcome> packageRefreshNeeded = actionChainResult.entrySet().stream()
+                .map(entry -> SaltActionChainGeneratorService.parseActionChainStateId(entry.getKey())
+                        .map(stateId -> handlePackageChanges(jobReturnEvent, entry.getValue().getName(),
+                                Optional.ofNullable(entry.getValue().getChanges().getRet())))
+                        .orElse(PackageChangeOutcome.DONE)
+                ).collect(Collectors.toSet());
+
+        if (packageRefreshNeeded.contains(PackageChangeOutcome.NEEDS_DELAYED_REFRESHING)) {
+            schedulePackageRefresh(scheduler.get(), jobReturnEvent.getMinionId(),
+                    Date.from(Instant.now().plusSeconds(60)));
+        }
+        else if (packageRefreshNeeded.contains(PackageChangeOutcome.NEEDS_REFRESHING)) {
+            schedulePackageRefresh(scheduler.get(), jobReturnEvent.getMinionId());
         }
     }
 
+    private void handleStandaloneAction(Optional<JsonElement> jobResult, JobReturnEvent jobReturnEvent,
+                                                 String function, Optional<Long> actionId) {
+        PackageChangeOutcome changeOutcome = handlePackageChanges(jobReturnEvent,
+                Optional.ofNullable(function).map(Xor::right), jobResult);
+
+        if (changeOutcome == PackageChangeOutcome.DONE) {
+            return;
+        }
+
+        Optional<Action> action = actionId.map(ActionFactory::lookupById);
+        Optional<User> scheduler = action.map(Action::getSchedulerUser);
+
+        Instant executionTime = Instant.now();
+
+        if (changeOutcome == PackageChangeOutcome.NEEDS_DELAYED_REFRESHING) {
+            executionTime = executionTime.plusSeconds(60);
+        }
+
+        boolean isDistUpgrade = action.map(Action::getActionType)
+                .map(type -> type.equals(ActionFactory.TYPE_DIST_UPGRADE))
+                .orElse(false);
+
+        if (isDistUpgrade) {
+            executionTime = Instant.now().plusSeconds(30);
+        }
+
+        schedulePackageRefresh(scheduler, jobReturnEvent.getMinionId(), Date.from(executionTime));
+    }
+
+    private void updateHostWhenS390(MinionServer m) {
+        if (m.getCpu() != null &&
+                CpuArchUtil.isS390(m.getCpu().getArch().getLabel())) {
+            VirtualInstance virtInstance = m.getVirtualInstance();
+            if (virtInstance != null && virtInstance.getHostSystem() != null) {
+                virtInstance.getHostSystem().updateServerInfo();
+            }
+        }
+    }
 
     /**
      * This method does two things
