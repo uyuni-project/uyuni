@@ -20,7 +20,7 @@ jobs:
     container: registry.opensuse.org/systemsmanagement/uyuni/master/docker/containers_tw/uyuni-master-python:latest
 
     steps:
-    - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 #v5.0.0
+    - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 #v6.0.1
 
     - id: files
       uses: Ana06/get-changed-files@25f79e676e7ea1868813e21465014798211fad8c #v2.3.0
