@@ -332,6 +332,7 @@ public class RouteFactory {
      * @return the comparison value
      */
     private int compareSerializerHierarchy(ApiResponseSerializer<?> a, ApiResponseSerializer<?> b) {
+        //TODO: THIS COMPARATOR IS BROKEN! Do a full review of the logic
         Class<?> aClass = a.getSupportedClass();
         Class<?> bClass = b.getSupportedClass();
 

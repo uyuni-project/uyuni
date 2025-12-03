@@ -50,6 +50,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -426,8 +427,11 @@ public class ProductSyncManager {
         };
 
         List<Channel> mandatoryChannelsOut = collect.get(true).stream()
-        // Add base channel on top of everything else so it can be added first.
-        .sorted(ProductSyncManager::sortBaseChannelOnTop).map(mapping).collect(Collectors.toList());
+                // Add base channel on top of everything else so it can be added first.
+                // Base channels have empty parent, and java sorts false before true
+                .sorted(Comparator.comparing(dto -> StringUtils.isNotBlank(dto.getParentLabel())))
+                .map(mapping)
+                .collect(Collectors.toList());
 
         List<Channel> optionalChannelsOut = collect.get(false).stream()
                 .map(mapping).collect(Collectors.toList());
@@ -448,15 +452,6 @@ public class ProductSyncManager {
         }
 
         return displayProduct;
-    }
-
-    private static int sortBaseChannelOnTop(MgrSyncChannelDto a, MgrSyncChannelDto b) {
-        if (StringUtils.isBlank(a.getParentLabel())) {
-            return -1;
-        }
-        else {
-            return StringUtils.isBlank(b.getParentLabel()) ? 1 : 0;
-        }
     }
 
     /**
