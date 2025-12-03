@@ -174,66 +174,11 @@ public class RemoteMinionCommands {
                         previewedMinions, resSSH.isPresent()));
 
                 res.forEach((minionId, future) -> future.whenComplete((matchResult, err) -> {
-                    if (!previewedMinions.contains(minionId)) {
-                        // minion is not visible to this user
-                        return;
-                    }
-                    if (matchResult != null && matchResult.result().orElse(false)) {
-                        sendMessage(session, new MinionMatchResultEventDto(minionId));
-                    }
-                    if (err != null) {
-                        if (err instanceof TimeoutException) {
-                            sendMessage(session,
-                                    new ActionTimedOutEventDto(minionId, "preview"));
-                            LOG.debug("Timed out waiting for response from minion {}", minionId);
-                        }
-                        else {
-                            LOG.error("Error waiting for minion {}", minionId, err);
-                            sendMessage(session,
-                                    new ActionErrorEventDto(minionId,
-                                            "ERR_WAIT_MATCH",
-                                            "Error waiting for matching: " +
-                                                    err.getMessage()));
-                        }
-                    }
+                    handleMinionsSendMessage(session, err, minionId, matchResult);
                 }));
 
                 resSSH.ifPresent(future -> future.whenComplete((result, err) -> {
-                    if (err != null) {
-                        if (err instanceof TimeoutException) {
-                            sendMessage(session,
-                                    new ActionTimedOutEventDto(true, "preview"));
-                            LOG.debug(
-                                "Timed out waiting for response from salt-ssh minions");
-                        }
-                        else {
-                            LOG.error("Error waiting for salt-ssh minions", err);
-                            sendMessage(session,
-                                    new ActionErrorEventDto(null,
-                                            "ERR_WAIT_SSH_MATCH",
-                                            "Error waiting for matching: " +
-                                                    err.getMessage()));
-                        }
-                        return;
-                    }
-                    if (result != null) {
-                        List<String> sshMinions = result.entrySet().stream()
-                                .filter(entry -> {
-                                    if (!allVisibleMinions.contains(entry.getKey())) {
-                                        // minion is not visible to this user
-                                        return false;
-                                    }
-                                    return entry.getValue() != null &&
-                                            entry.getValue().result().orElse(false);
-                                })
-                                .map(Map.Entry::getKey)
-                                .collect(Collectors.toList());
-
-                        previewedMinions.addAll(sshMinions);
-
-                        sendMessage(session,
-                                new SSHMinionMatchResultDto(sshMinions));
-                    }
+                    handleSshMinionsSendMessage(session, err, result, allVisibleMinions);
                 }));
 
             }
@@ -281,38 +226,7 @@ public class RemoteMinionCommands {
                 sendMessage(session, new AsyncJobStartEventDto("run", allMinions, false));
 
                 res.forEach((minionId, future) -> future.whenComplete((cmdResult, err) -> {
-                    if (cmdResult != null) {
-                        AbstractSaltEventDto event = cmdResult.fold(
-                                error -> {
-                                    String errMsg = parseSaltError(error);
-                                    LOG.info("Received Salt error for minion {}: {}", minionId, errMsg);
-                                    return new ActionErrorEventDto(minionId,
-                                        "ERR_CMD_SALT_ERROR", errMsg);
-                                },
-                                result -> {
-                                    LOG.info("User '{}' received command result from minion {}. Output is logged at" +
-                                            "DEBUG level.", webSession.getUser().getLogin(), minionId);
-                                    addHistoryEvent(webSession.getUser().getLogin(), minionId,
-                                            msg.getCommand(), result);
-                                    LOG.debug("Minion {} returned:\n{}", minionId, result);
-                                    return new MinionCommandResultEventDto(minionId, result);
-                                });
-                        sendMessage(session, event);
-                    }
-                    if (err != null) {
-                        if (err instanceof TimeoutException) {
-                            sendMessage(session,
-                                    new ActionTimedOutEventDto(minionId, "run"));
-                            LOG.debug("Timed out waiting for response from minion {}", minionId);
-                        }
-                        else {
-                            LOG.error("Error waiting for minion {}", minionId, err);
-                            sendMessage(session,
-                                    new ActionErrorEventDto(minionId, "ERR_WAIT_CMD",
-                                            "Error waiting to execute command: " +
-                                                    err.getMessage()));
-                        }
-                    }
+                    handleSendMessageResult(session, webSession, minionId, cmdResult, err, msg.getCommand());
                 }));
             }
         }
@@ -325,6 +239,107 @@ public class RemoteMinionCommands {
             HibernateFactory.closeSession();
         }
 
+    }
+
+    private void handleMinionsSendMessage(Session session, Throwable err, String minionId,
+                     Result<Boolean> matchResult) {
+        if (!previewedMinions.contains(minionId)) {
+            // minion is not visible to this user
+            return;
+        }
+        if (matchResult != null && matchResult.result().orElse(false)) {
+            sendMessage(session, new MinionMatchResultEventDto(minionId));
+        }
+        if (err != null) {
+            if (err instanceof TimeoutException) {
+                sendMessage(session,
+                        new ActionTimedOutEventDto(minionId, "preview"));
+                LOG.debug("Timed out waiting for response from minion {}", minionId);
+            }
+            else {
+                LOG.error("Error waiting for minion {}", minionId, err);
+                sendMessage(session,
+                        new ActionErrorEventDto(minionId,
+                                "ERR_WAIT_MATCH",
+                                "Error waiting for matching: " +
+                                        err.getMessage()));
+            }
+        }
+    }
+    private void handleSshMinionsSendMessage(Session session, Throwable err,
+                     Map<String, Result<Boolean>> result,
+                     List<String> allVisibleMinions) {
+        if (err != null) {
+            if (err instanceof TimeoutException) {
+                sendMessage(session,
+                        new ActionTimedOutEventDto(true, "preview"));
+                LOG.debug(
+                        "Timed out waiting for response from salt-ssh minions");
+            }
+            else {
+                LOG.error("Error waiting for salt-ssh minions", err);
+                sendMessage(session,
+                        new ActionErrorEventDto(null,
+                                "ERR_WAIT_SSH_MATCH",
+                                "Error waiting for matching: " +
+                                        err.getMessage()));
+            }
+            return;
+        }
+        if (result != null) {
+            List<String> sshMinions = result.entrySet().stream()
+                    .filter(entry -> {
+                        if (!allVisibleMinions.contains(entry.getKey())) {
+                            // minion is not visible to this user
+                            return false;
+                        }
+                        return entry.getValue() != null &&
+                                entry.getValue().result().orElse(false);
+                    })
+                    .map(Map.Entry::getKey)
+                    .collect(Collectors.toList());
+
+            previewedMinions.addAll(sshMinions);
+
+            sendMessage(session,
+                    new SSHMinionMatchResultDto(sshMinions));
+        }
+    }
+
+    private void handleSendMessageResult(Session session, WebSession webSession, String minionId,
+                     Result<String> cmdResult, Throwable err, String msgCommand) {
+        if (cmdResult != null) {
+            AbstractSaltEventDto event = cmdResult.fold(
+                    error -> {
+                        String errMsg = parseSaltError(error);
+                        LOG.info("Received Salt error for minion {}: {}", minionId, errMsg);
+                        return new ActionErrorEventDto(minionId,
+                                "ERR_CMD_SALT_ERROR", errMsg);
+                    },
+                    result -> {
+                        LOG.info("User '{}' received command result from minion {}. Output is logged at" +
+                                "DEBUG level.", webSession.getUser().getLogin(), minionId);
+                        addHistoryEvent(webSession.getUser().getLogin(), minionId,
+                                msgCommand, result);
+                        LOG.debug("Minion {} returned:\n{}", minionId, result);
+                        return new MinionCommandResultEventDto(minionId, result);
+                    });
+            sendMessage(session, event);
+        }
+        if (err != null) {
+            if (err instanceof TimeoutException) {
+                sendMessage(session,
+                        new ActionTimedOutEventDto(minionId, "run"));
+                LOG.debug("Timed out waiting for response from minion {}", minionId);
+            }
+            else {
+                LOG.error("Error waiting for minion {}", minionId, err);
+                sendMessage(session,
+                        new ActionErrorEventDto(minionId, "ERR_WAIT_CMD",
+                                "Error waiting to execute command: " +
+                                        err.getMessage()));
+            }
+        }
     }
 
     private void addHistoryEvent(String user, String minionId, String command, String result) {
