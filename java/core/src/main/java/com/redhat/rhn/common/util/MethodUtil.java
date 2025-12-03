@@ -136,45 +136,8 @@ public class MethodUtil {
                     continue;
                 }
 
-                // We have a method that might work, now we need to loop
-                // through the params and make sure that the types match
-                // with what was provided in the Collection.  If they don't
-                // match, try to do a translation, if that fails try the next
-                boolean found = true;
-                for (int j = 0; j < types.length; j++) {
-                    Object curr = params[j];
-                    if (log.isDebugEnabled()) {
-                        log.debug("Trying to translate from: {} to: {} isInstance: {}",
-                                (curr == null) ? null : curr.getClass(), types[j], types[j].isInstance(curr));
-                    }
-                    if (curr != null && curr.getClass().isPrimitive() &&
-                            types[j].isPrimitive()) {
-                        if (log.isDebugEnabled()) {
-                            log.debug("2 primitives");
-                        }
-                        converted[j] = curr;
-                    }
-                    if ((curr == null && !types[j].isPrimitive()) ||
-                            types[j].isInstance(curr)) {
-                        if (log.isDebugEnabled()) {
-                            log.debug("same type");
-                        }
-                        converted[j] = curr;
-                        continue;
-                    }
-                    try {
-                        if (log.isDebugEnabled()) {
-                            log.debug("calling converter: {}", curr);
-                        }
-                        converted[j] = Translator.convert(curr, types[j]);
-                    }
-                    catch (TranslationException e) {
-                        log.debug("Couldn't translate between {} and {}", curr, types[j]);
-                        // move on to the next method.
-                        found = false;
-                        break;
-                    }
-                }
+                boolean found = searchRightMethod(types, params, converted);
+
                 if (found) {
                     rightMethod = found;
                     break;
@@ -210,7 +173,49 @@ public class MethodUtil {
         }
     }
 
+    private static boolean searchRightMethod(Class<?>[] types, Object[] params, Object[] converted) {
+        // We have a method that might work, now we need to loop
+        // through the params and make sure that the types match
+        // with what was provided in the Collection.  If they don't
+        // match, try to do a translation, if that fails try the next
 
+        boolean found = true;
+        for (int j = 0; j < types.length; j++) {
+            Object curr = params[j];
+            if (log.isDebugEnabled()) {
+                log.debug("Trying to translate from: {} to: {} isInstance: {}",
+                        (curr == null) ? null : curr.getClass(), types[j], types[j].isInstance(curr));
+            }
+            if (curr != null && curr.getClass().isPrimitive() &&
+                    types[j].isPrimitive()) {
+                if (log.isDebugEnabled()) {
+                    log.debug("2 primitives");
+                }
+                converted[j] = curr;
+            }
+            if ((curr == null && !types[j].isPrimitive()) ||
+                    types[j].isInstance(curr)) {
+                if (log.isDebugEnabled()) {
+                    log.debug("same type");
+                }
+                converted[j] = curr;
+                continue;
+            }
+            try {
+                if (log.isDebugEnabled()) {
+                    log.debug("calling converter: {}", curr);
+                }
+                converted[j] = Translator.convert(curr, types[j]);
+            }
+            catch (TranslationException e) {
+                log.debug("Couldn't translate between {} and {}", curr, types[j]);
+                // move on to the next method.
+                found = false;
+                break;
+            }
+        }
+        return found;
+    }
 
 
     /**
