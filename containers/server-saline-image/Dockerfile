@@ -28,7 +28,7 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
     mkdir /etc/saline.defaults && cp -r /etc/salt/saline* /etc/saline.defaults/ && \
     chown -R salt:salt /etc/saline.defaults && \
     zypper --non-interactive clean --all && \
-    rpm -e zypper && \
+    rpm -e zypper libzypp container-suseconnect && \
     find /etc -maxdepth 1 -type f -name '*-' -delete && \
     rm -rf /etc/salt /run/zypp.pid /srv/spm /usr/lib/rpm/macros.d/macros.python3 \
            /usr/share/doc /usr/share/licenses /usr/share/man && \
