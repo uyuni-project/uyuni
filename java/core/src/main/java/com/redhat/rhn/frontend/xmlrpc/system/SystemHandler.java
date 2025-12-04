@@ -8004,50 +8004,7 @@ public class SystemHandler extends BaseHandler {
             targets = DistUpgradeManager.removeIncompatibleTargets(installedProducts, targets);
         }
         if (!targets.isEmpty()) {
-            SUSEProductSet targetProducts = null;
-            if (StringUtils.isBlank(targetIdent)) {
-                log.info("Target migration id is empty. " +
-                        "Looking for the closest product version having synced channels.");
-                List<SUSEProductSet> syncedTargets = targets.stream()
-                        .filter(ps -> {
-                            if (log.isDebugEnabled()) {
-                                if (ps.getIsEveryChannelSynced()) {
-                                    log.debug("{} is completely synced.", ps);
-                                }
-                                else {
-                                    log.debug("Discarding {}. Is not completely synced.", ps);
-                                }
-                            }
-                            return ps.getIsEveryChannelSynced();
-                        })
-                        .toList();
-                targetProducts = !syncedTargets.isEmpty() ? syncedTargets.get(syncedTargets.size() - 1) : null;
-                log.info("Using migration target: {}", targetProducts);
-            }
-            else {
-                for (SUSEProductSet target : targets) {
-                    String ident = target.getSerializedProductIDs();
-                    if (ident.equals(targetIdent)) {
-                        targetProducts = target;
-                        break;
-                    }
-                }
-            }
-            if (targetProducts == null) {
-                String targetsInfo = "Possible targets with incompletely synced channels: " +
-                        System.getProperty("line.separator") +
-                        targets.stream().map(t -> t + " : " +
-                                t.getMissingChannelsMessage())
-                                .collect(Collectors.joining(System.getProperty("line.separator")));
-                log.error("No target products found for migration: {}", targetsInfo);
-                throw new FaultException(-1, "productMigrationNoTarget",
-                        "No target found for Product migration. " + targetsInfo);
-            }
-            if (!targetProducts.getIsEveryChannelSynced()) {
-                throw new FaultException(-1, "productMigrationNoTarget",
-                        "Target not available, the following channels are not synced: " +
-                        targetProducts.getMissingChannelsMessage());
-            }
+            SUSEProductSet targetProducts = getTargetProducts(targetIdent, targets);
 
             // See if vendor channels are matching the given base channel
             EssentialChannelDto baseChannel = DistUpgradeManager.getProductBaseChannelDto(
@@ -8113,6 +8070,55 @@ public class SystemHandler extends BaseHandler {
         // We didn't find target products if we are still here
         throw new FaultException(-1, "productMigrationNoTarget",
                 "No target found for Product migration");
+    }
+
+    private SUSEProductSet getTargetProducts(String targetIdent, List<SUSEProductSet> targets) {
+        SUSEProductSet targetProducts = null;
+        if (StringUtils.isBlank(targetIdent)) {
+            log.info("Target migration id is empty. " +
+                    "Looking for the closest product version having synced channels.");
+            List<SUSEProductSet> syncedTargets = targets.stream()
+                    .filter(ps -> {
+                        if (log.isDebugEnabled()) {
+                            if (ps.getIsEveryChannelSynced()) {
+                                log.debug("{} is completely synced.", ps);
+                            }
+                            else {
+                                log.debug("Discarding {}. Is not completely synced.", ps);
+                            }
+                        }
+                        return ps.getIsEveryChannelSynced();
+                    })
+                    .toList();
+            targetProducts = !syncedTargets.isEmpty() ? syncedTargets.get(syncedTargets.size() - 1) : null;
+            log.info("Using migration target: {}", targetProducts);
+        }
+        else {
+            for (SUSEProductSet target : targets) {
+                String ident = target.getSerializedProductIDs();
+                if (ident.equals(targetIdent)) {
+                    targetProducts = target;
+                    break;
+                }
+            }
+        }
+        if (targetProducts == null) {
+            String targetsInfo = "Possible targets with incompletely synced channels: " +
+                    System.getProperty("line.separator") +
+                    targets.stream().map(t -> t + " : " +
+                                    t.getMissingChannelsMessage())
+                            .collect(Collectors.joining(System.getProperty("line.separator")));
+            log.error("No target products found for migration: {}", targetsInfo);
+            throw new FaultException(-1, "productMigrationNoTarget",
+                    "No target found for Product migration. " + targetsInfo);
+        }
+        if (!targetProducts.getIsEveryChannelSynced()) {
+            throw new FaultException(-1, "productMigrationNoTarget",
+                    "Target not available, the following channels are not synced: " +
+                            targetProducts.getMissingChannelsMessage());
+        }
+
+        return targetProducts;
     }
 
     /**
