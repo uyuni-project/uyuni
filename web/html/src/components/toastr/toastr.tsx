@@ -40,6 +40,7 @@ export function showSuccessToastr(message: ReactNode, optionalParams: OptionalPa
       autoClose: parseAutoHide(optionalParams.autoHide),
       containerId: optionalParams.containerId,
     });
+
   show(message, notify);
 }
 
@@ -80,6 +81,7 @@ export function showInfoToastr(message: ReactNode, optionalParams: OptionalParam
 export const MessagesContainer = (props: MessagesContainerProps) => {
   return (
     <ToastContainer
+      className="sticky-container"
       containerId={props.containerId}
       enableMultiContainer={true}
       position="top-center"
