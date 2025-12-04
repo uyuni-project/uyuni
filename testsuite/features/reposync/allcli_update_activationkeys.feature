@@ -18,18 +18,16 @@ Feature: Update activation keys
     And I select the parent channel for the "sle_minion" from "selectedBaseChannel"
     And I wait for child channels to appear
     And I include the recommended child channels
-    And I wait until "SLE-Module-Basesystem15-SP4-Pool for x86_64" has been checked
-    And I wait until "SLE-Module-Basesystem15-SP4-Updates for x86_64" has been checked
-    And I wait until "SLE-Module-Server-Applications15-SP4-Pool for x86_64" has been checked
-    And I wait until "SLE-Module-Server-Applications15-SP4-Updates for x86_64" has been checked
-    And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
-    And I wait until "SLE-Module-DevTools15-SP4-Updates for x86_64" has been checked
-    And I wait until "SLE-Module-Desktop-Applications15-SP4-Pool for x86_64" has been checked
-    And I wait until "SLE-Module-Desktop-Applications15-SP4-Updates for x86_64" has been checked
-    And I check "SLE-Module-Containers15-SP4-Pool for x86_64"
-    And I wait until "SLE-Module-Containers15-SP4-Updates for x86_64" has been checked
-    And I check "SLE-Product-SLES15-SP4-LTSS-Updates for x86_64"
-    And I wait until "SLE-Product-SLES15-SP4-LTSS-Updates for x86_64" has been checked
+    And I wait until "SLE-Module-Basesystem15-SP7-Pool for x86_64" has been checked
+    And I wait until "SLE-Module-Basesystem15-SP7-Updates for x86_64" has been checked
+    And I wait until "SLE-Module-Server-Applications15-SP7-Pool for x86_64" has been checked
+    And I wait until "SLE-Module-Server-Applications15-SP7-Updates for x86_64" has been checked
+    And I check "SLE-Module-DevTools15-SP7-Pool for x86_64"
+    And I wait until "SLE-Module-DevTools15-SP7-Updates for x86_64" has been checked
+    And I wait until "SLE-Module-Desktop-Applications15-SP7-Pool for x86_64" has been checked
+    And I wait until "SLE-Module-Desktop-Applications15-SP7-Updates for x86_64" has been checked
+    And I check "SLE-Module-Containers15-SP7-Pool for x86_64"
+    And I wait until "SLE-Module-Containers15-SP7-Updates for x86_64" has been checked
     And I check "Fake-RPM-SUSE-Channel"
     And I wait until "Fake-RPM-SUSE-Channel" has been checked
     And I click on "Update Activation Key"
@@ -57,12 +55,10 @@ Feature: Update activation keys
     And I select the parent channel for the "sle_minion" from "selectedBaseChannel"
     And I wait for child channels to appear
     And I include the recommended child channels
-    And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
-    And I wait until "SLE-Module-DevTools15-SP4-Updates for x86_64" has been checked
-    And I wait until "SLE-Module-Desktop-Applications15-SP4-Pool for x86_64" has been checked
-    And I wait until "SLE-Module-Desktop-Applications15-SP4-Updates for x86_64" has been checked
-    And I check "SLE-Product-SLES15-SP4-LTSS-Updates for x86_64"
-    And I wait until "SLE-Product-SLES15-SP4-LTSS-Updates for x86_64" has been checked
+    And I check "SLE-Module-DevTools15-SP7-Pool for x86_64"
+    And I wait until "SLE-Module-DevTools15-SP7-Updates for x86_64" has been checked
+    And I wait until "SLE-Module-Desktop-Applications15-SP7-Pool for x86_64" has been checked
+    And I wait until "SLE-Module-Desktop-Applications15-SP7-Updates for x86_64" has been checked
     And I check "Fake-RPM-SUSE-Channel"
     And I wait until "Fake-RPM-SUSE-Channel" has been checked
     And I click on "Update Activation Key"
@@ -90,12 +86,10 @@ Feature: Update activation keys
     And I select the parent channel for the "sle_minion" from "selectedBaseChannel"
     And I wait for child channels to appear
     And I include the recommended child channels
-    And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
-    And I wait until "SLE-Module-DevTools15-SP4-Updates for x86_64" has been checked
-    And I wait until "SLE-Module-Desktop-Applications15-SP4-Pool for x86_64" has been checked
-    And I wait until "SLE-Module-Desktop-Applications15-SP4-Updates for x86_64" has been checked
-    And I check "SLE-Product-SLES15-SP4-LTSS-Updates for x86_64"
-    And I wait until "SLE-Product-SLES15-SP4-LTSS-Updates for x86_64" has been checked
+    And I check "SLE-Module-DevTools15-SP7-Pool for x86_64"
+    And I wait until "SLE-Module-DevTools15-SP7-Updates for x86_64" has been checked
+    And I wait until "SLE-Module-Desktop-Applications15-SP7-Pool for x86_64" has been checked
+    And I wait until "SLE-Module-Desktop-Applications15-SP7-Updates for x86_64" has been checked
     And I check "Fake-RPM-SUSE-Channel"
     And I wait until "Fake-RPM-SUSE-Channel" has been checked
     And I click on "Update Activation Key"
@@ -172,18 +166,20 @@ Feature: Update activation keys
     And I select the parent channel for the "build_host" from "selectedBaseChannel"
     And I wait for child channels to appear
     And I include the recommended child channels
-    And I wait until "SLE-Module-Basesystem15-SP4-Pool for x86_64" has been checked
-    And I wait until "SLE-Module-Basesystem15-SP4-Updates for x86_64" has been checked
-    And I wait until "SLE-Module-Server-Applications15-SP4-Pool for x86_64" has been checked
-    And I wait until "SLE-Module-Server-Applications15-SP4-Updates for x86_64" has been checked
-    And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
-    And I wait until "SLE-Module-DevTools15-SP4-Updates for x86_64" has been checked
-    And I wait until "SLE-Module-Desktop-Applications15-SP4-Pool for x86_64" has been checked
-    And I wait until "SLE-Module-Desktop-Applications15-SP4-Updates for x86_64" has been checked
-    And I check "SLE-Module-Containers15-SP4-Pool for x86_64"
-    And I wait until "SLE-Module-Containers15-SP4-Updates for x86_64" has been checked
-    And I check "SLE-Product-SLES15-SP4-LTSS-Updates for x86_64"
-    And I wait until "SLE-Product-SLES15-SP4-LTSS-Updates for x86_64" has been checked
+    And I wait until "SLE-Module-Basesystem15-SP7-Pool for x86_64" has been checked
+    And I wait until "SLE-Module-Basesystem15-SP7-Updates for x86_64" has been checked
+    And I wait until "SLE-Module-Server-Applications15-SP7-Pool for x86_64" has been checked
+    And I wait until "SLE-Module-Server-Applications15-SP7-Updates for x86_64" has been checked
+    And I check "SLE-Module-DevTools15-SP7-Pool for x86_64"
+    And I wait until "SLE-Module-DevTools15-SP7-Updates for x86_64" has been checked
+    And I wait until "SLE-Module-Desktop-Applications15-SP7-Pool for x86_64" has been checked
+    And I wait until "SLE-Module-Desktop-Applications15-SP7-Updates for x86_64" has been checked
+    And I wait until "ManagerTools-SLE15-Pool for x86_64 SP7" has been checked
+    And I wait until "ManagerTools-SLE15-Updates for x86_64 SP7" has been checked
+    And I wait until "SLE-Module-Systems-Management-15-SP7-Pool for x86_64" has been checked
+    And I wait until "SLE-Module-Systems-Management-15-SP7-Updates for x86_64" has been checked
+    And I wait until "SLE-Module-Python3-15-SP7-Pool for x86_64" has been checked
+    And I wait until "SLE-Module-Python3-15-SP7-Updates for x86_64" has been checked
     And I click on "Update Activation Key"
     Then I should see a "Activation key Build host Key x86_64 has been modified" text
 
@@ -195,8 +191,8 @@ Feature: Update activation keys
     And I wait for child channels to appear
     And I select the parent channel for the "build_host" from "selectedBaseChannel"
     And I wait for child channels to appear
-    And I check "Uyuni Client Tools for SLES15 SP4 x86_64 (Development)"
-    And I wait until "Uyuni Client Tools for SLES15 SP4 x86_64 (Development)" has been checked
+    And I check "Uyuni Client Tools for SLES15 SP7 x86_64 (Development)"
+    And I wait until "Uyuni Client Tools for SLES15 SP7 x86_64 (Development)" has been checked
     And I click on "Update Activation Key"
     Then I should see a "Activation key Build host Key x86_64 has been modified" text
 
@@ -211,6 +207,8 @@ Feature: Update activation keys
     And I wait for child channels to appear
     And I check "Devel-Build-Host-Channel"
     And I wait until "Devel-Build-Host-Channel" has been checked
+    And I check "SLE-Module-Containers15-SP7-Pool for x86_64"
+    And I wait until "SLE-Module-Containers15-SP7-Pool for x86_64" has been checked
     And I click on "Update Activation Key"
     Then I should see a "Activation key Build host Key x86_64 has been modified" text
 
@@ -222,16 +220,16 @@ Feature: Update activation keys
     And I select the parent channel for the "pxeboot_minion" from "selectedBaseChannel"
     And I wait for child channels to appear
     And I include the recommended child channels
-    And I wait until "SLE-Module-Basesystem15-SP4-Pool for x86_64" has been checked
-    And I wait until "SLE-Module-Basesystem15-SP4-Updates for x86_64" has been checked
-    And I wait until "SLE-Module-Server-Applications15-SP4-Pool for x86_64" has been checked
-    And I wait until "SLE-Module-Server-Applications15-SP4-Updates for x86_64" has been checked
-    And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
-    And I wait until "SLE-Module-DevTools15-SP4-Updates for x86_64" has been checked
-    And I wait until "SLE-Module-Desktop-Applications15-SP4-Pool for x86_64" has been checked
-    And I wait until "SLE-Module-Desktop-Applications15-SP4-Updates for x86_64" has been checked
-    And I check "SLE-Module-Containers15-SP4-Pool for x86_64"
-    And I wait until "SLE-Module-Containers15-SP4-Updates for x86_64" has been checked
+    And I wait until "SLE-Module-Basesystem15-SP7-Pool for x86_64" has been checked
+    And I wait until "SLE-Module-Basesystem15-SP7-Updates for x86_64" has been checked
+    And I wait until "SLE-Module-Server-Applications15-SP7-Pool for x86_64" has been checked
+    And I wait until "SLE-Module-Server-Applications15-SP7-Updates for x86_64" has been checked
+    And I check "SLE-Module-DevTools15-SP7-Pool for x86_64"
+    And I wait until "SLE-Module-DevTools15-SP7-Updates for x86_64" has been checked
+    And I wait until "SLE-Module-Desktop-Applications15-SP7-Pool for x86_64" has been checked
+    And I wait until "SLE-Module-Desktop-Applications15-SP7-Updates for x86_64" has been checked
+    And I check "SLE-Module-Containers15-SP7-Pool for x86_64"
+    And I wait until "SLE-Module-Containers15-SP7-Updates for x86_64" has been checked
     And I click on "Update Activation Key"
     Then I should see a "Activation key Terminal Key x86_64 has been modified" text
 

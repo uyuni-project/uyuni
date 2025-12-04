@@ -57,13 +57,17 @@ namespace :cucumber do
 end
 
 namespace :parallel do
+  junit_results = '-f junit -o results_junit'
+  build_number = ENV.fetch('BUILD_NUMBER', nil)
+  result_folder = build_number.nil? ? 'results' : "results/#{build_number}"
+  sh "mkdir -p #{result_folder}", verbose: false
   Dir.glob(File.join(Dir.pwd, 'run_sets', '*.yml')).each do |entry|
     run_set = File.basename(entry, '.yml').to_sym
     desc "Run Cucumber #{run_set} features in parallel"
     task run_set.to_s do
       timestamp = Time.now.strftime('%Y%m%d%H%M%S')
-      json_results = "-f json -o output_#{timestamp}-#{run_set}-$TEST_ENV_NUMBER.json"
-      html_results = "-f html -o output_#{timestamp}-#{run_set}-$TEST_ENV_NUMBER.html"
+      json_results = "-f json -o #{result_folder}/output_#{timestamp}-#{run_set}-$TEST_ENV_NUMBER.json"
+      html_results = "-f html -o #{result_folder}/output_#{timestamp}-#{run_set}-$TEST_ENV_NUMBER.html"
       features = YAML.safe_load(File.read(File.join(Dir.pwd, 'run_sets', "#{run_set}.yml"))).join(' ')
       profiles = ENV.fetch('PROFILE', nil)
       include_profiles = profiles.nil? ? '--profile default' : "--profile #{profiles.gsub(',', ' --profile ')}"

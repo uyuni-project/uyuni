@@ -47,10 +47,10 @@ Feature: Content lifecycle
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "clp_name"
     And I click on "Attach/Detach Sources"
-    And I select "SLE-Product-SLES15-SP4-Pool for x86_64" from "selectedBaseChannel"
+    And I select "SLE-Product-SLES15-SP7-Pool for x86_64" from "selectedBaseChannel"
     And I exclude the recommended child channels
     And I click on "Save"
-    And I wait until I see "SLE-Product-SLES15-SP4-Pool for x86_64" text
+    And I wait until I see "SLE-Product-SLES15-SP7-Pool for x86_64" text
     Then I should see a "Version 1: (draft - not built) - Check the changes below" text
 
 @uyuni
@@ -68,7 +68,7 @@ Feature: Content lifecycle
   Scenario: Verify added sources
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "clp_name"
-    Then I should see a "SLE-Product-SLES15-SP4-Updates for x86_64" text
+    Then I should see a "SLE-Product-SLES15-SP7-Updates for x86_64" text
     And I should see a "Build (2)" text
 
 @uyuni
@@ -663,19 +663,20 @@ Scenario: Create CLM filter of type Package (Build date) that allows packages wh
     And I should not see a "ruby 2.7 module" text
     And I should not see a "key" text
 
+## The channel order is important delete prod -> qa -> dev
 @susemanager
   Scenario: Cleanup: remove the created channels
     When I delete these channels with spacewalk-remove-channel:
       | clp_label-prod_label-fake-base-channel-suse-like           |
-      | clp_label-prod_label-sle-product-sles15-sp4-updates-x86_64 |
+      | clp_label-prod_label-sle-product-sles15-sp7-updates-x86_64 |
       | clp_label-qa_label-fake-base-channel-suse-like             |
-      | clp_label-qa_label-sle-product-sles15-sp4-updates-x86_64   |
+      | clp_label-qa_label-sle-product-sles15-sp7-updates-x86_64   |
       | clp_label-dev_label-fake-base-channel-suse-like            |
-      | clp_label-dev_label-sle-product-sles15-sp4-updates-x86_64|
+      | clp_label-dev_label-sle-product-sles15-sp7-updates-x86_64  |
     And I delete these channels with spacewalk-remove-channel:
-      |clp_label-prod_label-sle-product-sles15-sp4-pool-x86_64|
-      |clp_label-qa_label-sle-product-sles15-sp4-pool-x86_64|
-      |clp_label-dev_label-sle-product-sles15-sp4-pool-x86_64|
+      | clp_label-prod_label-sle-product-sles15-sp7-pool-x86_64    |
+      | clp_label-qa_label-sle-product-sles15-sp7-pool-x86_64      |
+      | clp_label-dev_label-sle-product-sles15-sp7-pool-x86_64     |
     And I list channels with spacewalk-remove-channel
     Then I shouldn't get "clp_label"
 

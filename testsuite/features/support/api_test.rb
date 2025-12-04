@@ -15,6 +15,7 @@ require_relative 'namespaces/user'
 require_relative 'xmlrpc_client'
 require_relative 'http_client'
 require 'date'
+require 'logger'
 
 # Abstract parent class describing an API test
 class ApiTest
@@ -36,6 +37,17 @@ class ApiTest
     @connection = nil
     @token = nil
     @semaphore = Mutex.new
+
+    File.open('api.log', 'a') do |file|
+      file.sync = true
+      @logger = Logger.new(file)
+      @logger.level = Logger::INFO
+
+      @logger.formatter =
+        proc do |severity, datetime, _progname, msg|
+          "#{datetime.strftime('%H:%M:%S')} [#{severity}] #{msg}\n"
+        end
+    end
   end
 
   attr_reader :actionchain
@@ -50,6 +62,7 @@ class ApiTest
   attr_reader :system
   attr_reader :user
   attr_accessor :token
+  attr_reader :logger
 
   # Calls a function with the given name and parameters, and returns its response.
   #
