@@ -66,36 +66,34 @@ public class LockUnlockSystemAction extends RhnListAction {
         RhnSet set = RhnSetDecl.SSM_SYSTEMS_SET_LOCK.get(context.getCurrentUser());
 
         if (request.getParameter("dispatch") != null) {
-            int locledSys = 0;
-            int unlockedSys = 0;
-            boolean lck = context.wasDispatched("ssm.misc.lockunlock.dispatch.lock");
-            boolean unlck = context.wasDispatched("ssm.misc.lockunlock.dispatch.unlock");
-            if (lck || unlck) {
+            int numLockedSystems = 0;
+            int numUnlockedSystems = 0;
+            boolean isLocked = context.wasDispatched("ssm.misc.lockunlock.dispatch.lock");
+            boolean isUnlocked = context.wasDispatched("ssm.misc.lockunlock.dispatch.unlock");
+            if (isLocked || isUnlocked) {
                 String reason = StringUtil.nullIfEmpty(form.getString("lock_reason"));
                 for (Long longIn : set.getElementValues()) {
-                    Server server = SystemManager.lookupByIdAndUser(
-                            longIn, context.getCurrentUser());
-                    if (lck && (server.getLock() == null)) {
+                    Server server = SystemManager.lookupByIdAndUser(longIn, context.getCurrentUser());
+                    if (isLocked && (server.getLock() == null)) {
                         if (reason == null) {
-                            reason = LocalizationService.getInstance()
-                                    .getMessage("sdc.details.overview.lock.reason");
+                            reason = LocalizationService.
+                                    getInstance().getMessage("sdc.details.overview.lock.reason");
                         }
 
-                        SystemManager.lockServer(context.getCurrentUser(),
-                                server, reason);
-                        locledSys++;
+                        SystemManager.lockServer(context.getCurrentUser(), server, reason);
+                        numLockedSystems++;
                     }
-                    else if (unlck && (server.getLock() != null)) {
+                    else if (isUnlocked && (server.getLock() != null)) {
                         SystemManager.unlockServer(context.getCurrentUser(), server);
-                        unlockedSys++;
+                        numUnlockedSystems++;
                     }
                 }
 
-                if (lck) {
-                    addLockUnlockActionMessage(true, set.size(), locledSys, actionMessages);
+                if (isLocked) {
+                    addLockUnlockActionMessage(true, set.size(), numLockedSystems, actionMessages);
                 }
                 else {
-                    addLockUnlockActionMessage(false, set.size(), unlockedSys, actionMessages);
+                    addLockUnlockActionMessage(false, set.size(), numUnlockedSystems, actionMessages);
                 }
             }
         }
