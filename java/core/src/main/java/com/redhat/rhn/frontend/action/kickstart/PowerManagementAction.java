@@ -90,16 +90,10 @@ public class PowerManagementAction extends RhnAction {
         ActionErrors errors = new ActionErrors();
 
         if (context.isSubmitted()) {
-            CobblerPowerSettingsUpdateCommand command = getPowerSettingsUpdateCommand(form,
-                    user, server);
+            CobblerPowerSettingsUpdateCommand command = getPowerSettingsUpdateCommand(form, user, server);
             ValidatorError error;
-            if (context.wasDispatched(
-                    "kickstart.powermanagement.jsp.remove.cobblerprofile")) {
-                error = command.removeSystemProfile();
-                if (error == null) {
-                    log.debug("Cobbler system profile removed for system {}", sid);
-                    addMessage(request, "kickstart.powermanagement.removed.cobblerprofile");
-                }
+            if (context.wasDispatched("kickstart.powermanagement.jsp.remove.cobblerprofile")) {
+                error = handleRemoveCobblerProfile(request, command, sid);
             }
             else {
                 error = command.store();
@@ -109,42 +103,16 @@ public class PowerManagementAction extends RhnAction {
                         addMessage(request, "kickstart.powermanagement.saved");
                     }
                     if (context.wasDispatched("kickstart.powermanagement.jsp.power_on")) {
-                        error = new CobblerPowerCommand(user, server, Operation.POWER_ON)
-                            .store();
-                        if (error == null) {
-                            log.debug("Power on succeded for system {}", sid);
-                            addMessage(request, "kickstart.powermanagement.powered_on");
-                        }
+                        error = handlePowerCommand(request, user, server, Operation.POWER_ON);
                     }
                     if (context.wasDispatched("kickstart.powermanagement.jsp.power_off")) {
-                        error = new CobblerPowerCommand(user, server, Operation.POWER_OFF)
-                            .store();
-                        if (error == null) {
-                            log.debug("Power off succeded for system {}", sid);
-                            addMessage(request, "kickstart.powermanagement.powered_off");
-                        }
+                        error = handlePowerCommand(request, user, server, Operation.POWER_OFF);
                     }
                     if (context.wasDispatched("kickstart.powermanagement.jsp.reboot")) {
-                        error = new CobblerPowerCommand(user, server, Operation.REBOOT).
-                                store();
-                        if (error == null) {
-                            log.debug("Reboot succeded for system {}", sid);
-                            addMessage(request, "kickstart.powermanagement.rebooted");
-                        }
+                        error = handlePowerCommand(request, user, server, Operation.REBOOT);
                     }
-                    if (context.wasDispatched(
-                        "kickstart.powermanagement.jsp.get_status")) {
-                        try {
-                            SystemRecord systemRecord = getSystemRecord(user, server);
-                            request.setAttribute(POWER_STATUS_ON, systemRecord.getPowerStatus());
-                            addMessage(request, "kickstart.powermanagement.saved");
-                        }
-                        catch (XmlRpcException e) {
-                            log.warn("Could not get power status from Cobbler for system {}", server.getId());
-                            createErrorMessage(request,
-                                    "kickstart.powermanagement.jsp.power_status_failed",
-                                    null);
-                        }
+                    if (context.wasDispatched("kickstart.powermanagement.jsp.get_status")) {
+                        handleGetStatus(request, user, server);
                     }
                 }
             }
@@ -155,10 +123,43 @@ public class PowerManagementAction extends RhnAction {
             }
         }
 
-        setAttributes(request, context, server, user, strutsDelegate, errors);
+        setAttributes(request, server, user, strutsDelegate, errors);
 
         return strutsDelegate.forwardParams(
             mapping.findForward(RhnHelper.DEFAULT_FORWARD), request.getParameterMap());
+    }
+
+    private ValidatorError handleRemoveCobblerProfile(HttpServletRequest request,
+                                                      CobblerPowerSettingsUpdateCommand command, Long sid) {
+        ValidatorError error = command.removeSystemProfile();
+        if (error == null) {
+            log.debug("Cobbler system profile removed for system {}", sid);
+            addMessage(request, "kickstart.powermanagement.removed.cobblerprofile");
+        }
+        return error;
+    }
+
+
+    private ValidatorError handlePowerCommand(HttpServletRequest request, User user, Server server,
+                                              Operation operation) {
+        ValidatorError error = new CobblerPowerCommand(user, server, operation).store();
+        if (error == null) {
+            log.debug("{} succeded for system {}", operation, server.getId());
+            addMessage(request, operation.getMessageKey());
+        }
+        return error;
+    }
+
+    private void handleGetStatus(HttpServletRequest request, User user, Server server) {
+        try {
+            SystemRecord systemRecord = getSystemRecord(user, server);
+            request.setAttribute(POWER_STATUS_ON, systemRecord.getPowerStatus());
+            addMessage(request, "kickstart.powermanagement.saved");
+        }
+        catch (XmlRpcException e) {
+            log.warn("Could not get power status from Cobbler for system {}", server.getId());
+            createErrorMessage(request, "kickstart.powermanagement.jsp.power_status_failed", null);
+        }
     }
 
     /**
@@ -199,13 +200,12 @@ public class PowerManagementAction extends RhnAction {
      * Sets the page attributes.
      *
      * @param request the request
-     * @param context the context
      * @param server the server
      * @param user the user
      * @param strutsDelegate the Struts delegate
      * @param errors ActionErrors that might have already been raised
      */
-    private void setAttributes(HttpServletRequest request, RequestContext context,
+    private void setAttributes(HttpServletRequest request,
             Server server, User user, StrutsDelegate strutsDelegate, ActionErrors errors) {
         request.setAttribute(RequestContext.SID, server.getId());
         request.setAttribute(RequestContext.SYSTEM, server);
