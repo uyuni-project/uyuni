@@ -16,7 +16,7 @@ RUN echo "rpm.install.excludedocs = yes" >>/etc/zypp/zypp.conf && \
         ${ARCH_SPECIFIC_MODULES} \
         javassist ognl procps && \
     zypper --non-interactive clean --all && \
-    rpm -e zypper && \
+    rpm -e zypper libzypp container-suseconnect && \
     rm -rf /var/log/{alternatives.log,lastlog,tallylog,suseconnect.log,zypper.log,zypp/history,YaST2}
 
 ARG PRODUCT=Uyuni

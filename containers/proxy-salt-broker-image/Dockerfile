@@ -11,7 +11,7 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
         python3-PyYAML \
         python3-pyzmq && \
     zypper --non-interactive clean --all && \
-    rpm -e zypper && \
+    rpm -e zypper libzypp container-suseconnect && \
     rm -rf /var/log/{alternatives.log,lastlog,tallylog,suseconnect.log,zypper.log,zypp/history,YaST2}
 
 # LABELs
