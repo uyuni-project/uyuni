@@ -22,6 +22,7 @@ services:
       - "80:80"     # UI HTTP
       - "4505:4505" # Salt
       - "4506:4506" # Salt
+      - "5432:5432" # Postgresql
       - "8001:8001" # Taskomatic Debug
       - "8002:8002" # Search Server Debug
       - "8003:8003" # Tomcat Debug

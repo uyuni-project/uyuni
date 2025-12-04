@@ -12,7 +12,7 @@
     //"CONTAINER_CONNECTION_TYPE": "socket"
   },
 
-  "forwardPorts": [8001, 8002, 8003, 443, 80, 54320, 9000],
+  "forwardPorts": [8001, 8002, 8003, 443, 80, 5432, 9000, 54320],
 
   "portsAttributes": {
     "8001": {
@@ -25,6 +25,10 @@
     },
     "8003": {
       "label": "Debug Tomcat",
+      "onAutoForward": "notify"
+    },
+    "5432": {
+      "label": "DB",
       "onAutoForward": "notify"
     },
     "54320": {
@@ -75,6 +79,6 @@
 
   "remoteUser": "uyuni",
   "overrideCommand": false,
-  "postStartCommand": "mkdir -p java/test-results/html && nohup python3 -m http.server 9000 --directory java/test-results/html >/dev/null 2>&1 &",
+  "postStartCommand": "mkdir -p java/test-results/html",
   "postCreateCommand": "cp /workspaces/uyuni/java/buildconf/test/rhn.conf.postgresql-devcontainer-example /workspaces/uyuni/java/buildconf/test/rhn.conf"
 }
