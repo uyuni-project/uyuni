@@ -8,3 +8,5 @@ ssl:
   country: "DE"
   state: "Bavaria"
   city: "Nuremberg"
+debug:
+  java: true
