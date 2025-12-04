@@ -433,47 +433,10 @@ public class SaltServerActionService {
                                 stateResult.getName().map(x -> x.fold(Arrays::asList, List::of)
                                         .contains(SaltParameters.SYSTEM_REBOOT)).orElse(false));
 
-                boolean refreshPkg = false;
-                Optional<User> scheduler = Optional.empty();
-                for (Map.Entry<String, StateApplyResult<Ret<JsonElement>>> entry : actionChainResult.entrySet()) {
-                    String stateIdKey = entry.getKey();
-                    StateApplyResult<Ret<JsonElement>> stateResult = entry.getValue();
+                Pair<Boolean, Optional<User>> result = handleActionChainResult(actionChainResult, minionId);
+                boolean refreshPkg = result.getLeft();
+                Optional<User> scheduler = result.getRight();
 
-                    Optional<SaltActionChainGeneratorService.ActionChainStateId> actionChainStateId =
-                            SaltActionChainGeneratorService.parseActionChainStateId(stateIdKey);
-                    if (actionChainStateId.isPresent()) {
-                        SaltActionChainGeneratorService.ActionChainStateId stateId = actionChainStateId.get();
-                        // only reboot needs special handling,
-                        // for salt pkg update there's no need to split the sls in case of salt-ssh minions
-
-                        Action action = ActionFactory.lookupById(stateId.getActionId());
-                        if (stateResult.getName().map(x -> x.fold(Arrays::asList, List::of)
-                                .contains(SaltParameters.SYSTEM_REBOOT)).orElse(false) && stateResult.isResult() &&
-                                action.getActionType().equals(ActionFactory.TYPE_REBOOT)) {
-
-                            Optional<ServerAction> rebootServerAction =
-                                    action.getServerActions().stream()
-                                            .filter(sa -> sa.getServer().asMinionServer()
-                                                    .map(m -> m.getMinionId().equals(minionId)).orElse(false))
-                                            .findFirst();
-                            rebootServerAction.ifPresentOrElse(
-                                    ract -> {
-                                        if (ract.isStatusQueued()) {
-                                            setActionAsPickedUp(ract);
-                                        }
-                                    },
-                                    () -> LOG.error("Action of type {} found in action chain result but not " +
-                                            "in actions for minion {}", SaltParameters.SYSTEM_REBOOT, minionId));
-                        }
-
-                        if (stateResult.isResult() &&
-                                saltUtils.shouldRefreshPackageList(stateResult.getName(),
-                                        Optional.of(stateResult.getChanges().getRet()))) {
-                            scheduler = Optional.ofNullable(action.getSchedulerUser());
-                            refreshPkg = true;
-                        }
-                    }
-                }
                 Optional<MinionServer> minionServer = MinionServerFactory.findByMinionId(minionId);
                 if (refreshPkg) {
                     Optional<User> finalScheduler = scheduler;
@@ -504,6 +467,54 @@ public class SaltServerActionService {
             return false;
         }
         return true;
+    }
+
+    private Pair<Boolean, Optional<User>> handleActionChainResult(
+            Map<String, StateApplyResult<Ret<JsonElement>>> actionChainResult, String minionId) {
+        boolean refreshPkg = false;
+        Optional<User> scheduler = Optional.empty();
+
+        for (Map.Entry<String, StateApplyResult<Ret<JsonElement>>> entry : actionChainResult.entrySet()) {
+            String stateIdKey = entry.getKey();
+            StateApplyResult<Ret<JsonElement>> stateResult = entry.getValue();
+
+            Optional<SaltActionChainGeneratorService.ActionChainStateId> actionChainStateId =
+                    SaltActionChainGeneratorService.parseActionChainStateId(stateIdKey);
+            if (actionChainStateId.isPresent()) {
+                SaltActionChainGeneratorService.ActionChainStateId stateId = actionChainStateId.get();
+                // only reboot needs special handling,
+                // for salt pkg update there's no need to split the sls in case of salt-ssh minions
+
+                Action action = ActionFactory.lookupById(stateId.getActionId());
+                if (stateResult.getName().map(x -> x.fold(Arrays::asList, List::of)
+                        .contains(SaltParameters.SYSTEM_REBOOT)).orElse(false) && stateResult.isResult() &&
+                        action.getActionType().equals(ActionFactory.TYPE_REBOOT)) {
+
+                    Optional<ServerAction> rebootServerAction =
+                            action.getServerActions().stream()
+                                    .filter(sa -> sa.getServer().asMinionServer()
+                                            .map(m -> m.getMinionId().equals(minionId)).orElse(false))
+                                    .findFirst();
+                    rebootServerAction.ifPresentOrElse(
+                            ract -> {
+                                if (ract.isStatusQueued()) {
+                                    setActionAsPickedUp(ract);
+                                }
+                            },
+                            () -> LOG.error("Action of type {} found in action chain result but not " +
+                                    "in actions for minion {}", SaltParameters.SYSTEM_REBOOT, minionId));
+                }
+
+                if (stateResult.isResult() &&
+                        saltUtils.shouldRefreshPackageList(stateResult.getName(),
+                                Optional.of(stateResult.getChanges().getRet()))) {
+                    scheduler = Optional.ofNullable(action.getSchedulerUser());
+                    refreshPkg = true;
+                }
+            }
+        }
+
+        return Pair.of(refreshPkg, scheduler);
     }
 
     private Optional<Map<String, StateApplyResult<Ret<JsonElement>>>> getActionChainResult(
