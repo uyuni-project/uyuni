@@ -3,13 +3,14 @@
   margin-bottom: 14px;
 
   .panel {
-    background: $eos-bc-white;
+    // Used panel inside panel
+    background: $panel-white-bg;
   }
 
   .panel-footer {
     padding: 10px 15px;
     background: transparent !important;
-    border-top: 1px solid $eos-bc-gray-100;
+    border-top: 1px solid $panel-border;
 
     &:empty {
       display: none;

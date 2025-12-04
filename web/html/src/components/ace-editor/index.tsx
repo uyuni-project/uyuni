@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 
 import type { Ace } from "ace-builds";
-
+import "ace-builds/src-noconflict/theme-monokai";
 import { useId } from "utils/hooks";
 
 declare global {
@@ -12,6 +12,8 @@ declare global {
     };
   }
 }
+
+const isDark = document.body.classList.contains("theme-suse-dark");
 
 type Props = {
   mode?: string;
@@ -46,8 +48,15 @@ const AceEditor = ({ minLines = 20, maxLines = 40, readOnly = false, content = "
           textarea.name = `${props.id ?? fallbackId}-ace-editor`;
         }
 
-        editor.setTheme("ace/theme/xcode");
         editor.setShowPrintMargin(false);
+
+        // Set dark theme
+        if (isDark) {
+          editor.setTheme("ace/theme/monokai");
+        } else {
+          editor.setTheme("ace/theme/xcode");
+        }
+
         editor.getSession().setValue(safeContent);
         editor.on("change", () => {
           ignoreNextUpdate.current = true;
