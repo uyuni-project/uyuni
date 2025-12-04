@@ -1,7 +1,10 @@
 import { Component } from "react";
 
+import yaml from "js-yaml";
+
 import { AnsiblePathContent } from "manager/minion/ansible/ansible-path-content";
 
+import { AceEditor } from "components/ace-editor";
 import { Button } from "components/buttons";
 import { BootstrapPanel } from "components/panels";
 import { SectionToolbar } from "components/section-toolbar/section-toolbar";
@@ -11,6 +14,7 @@ type PropsType = {
   playbookPath: string;
   inventoryPath: string;
   flushCache: boolean;
+  variables?: string;
   onSelectPlaybook: (playbook: any) => void;
 };
 
@@ -32,6 +36,14 @@ class RecurringPlaybookPicker extends Component<PropsType, StateType> {
       this.setState({ editPlaybook: !this.props.playbookPath });
     }
   }
+
+  loadVariables = () => {
+    const variables = `{"vars":${this.props.variables}}`;
+    return yaml.dump(yaml.load(variables), {
+      quotingType: '"',
+      forceQuotes: true,
+    });
+  };
 
   onEditPlaybook = () => {
     this.setState({
@@ -62,6 +74,7 @@ class RecurringPlaybookPicker extends Component<PropsType, StateType> {
         <AnsiblePathContent
           minionServerId={this.props.minionServerId}
           pathContentType="playbook"
+          recurringDetails={{ fullPath: this.props.playbookPath, variables: this.props.variables }}
           isRecurring={true}
           onSelectPlaybook={this.onSelectPlaybook}
         />
@@ -94,6 +107,20 @@ class RecurringPlaybookPicker extends Component<PropsType, StateType> {
               </tr>
             </tbody>
           </table>
+          {this.props.variables && (
+            <>
+              <h5>{t("Variables")}</h5>
+              <AceEditor
+                className="form-control"
+                id="variables-content"
+                minLines={20}
+                maxLines={40}
+                readOnly={true}
+                mode="yaml"
+                content={this.loadVariables()}
+              />
+            </>
+          )}
         </BootstrapPanel>
       </div>
     );

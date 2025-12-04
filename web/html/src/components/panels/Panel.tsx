@@ -1,4 +1,4 @@
-import { type ReactNode, Fragment } from "react";
+import { Fragment } from "react";
 type Props = {
   headingLevel?: keyof JSX.IntrinsicElements;
   collapseId?: string | null | undefined;
@@ -6,10 +6,11 @@ type Props = {
   title?: string | null | undefined;
   className?: string;
   icon?: string | null | undefined;
-  header?: ReactNode;
-  footer?: ReactNode;
-  children: ReactNode;
-  buttons?: ReactNode;
+  header?: React.ReactNode;
+  footer?: React.ReactNode;
+  children: React.ReactNode;
+  buttons?: React.ReactNode;
+  collapsClose?: boolean;
 };
 
 export const Panel = (props: Props) => {
@@ -43,7 +44,7 @@ export const Panel = (props: Props) => {
               className="pull-right btn-group"
               style={{
                 position: "absolute",
-                right: "20px",
+                right: "15px",
                 top: "50%",
                 transform: "translateY(-50%)",
               }}
@@ -58,6 +59,7 @@ export const Panel = (props: Props) => {
                   data-bs-toggle="collapse"
                   data-bs-target={`#${props.collapseId}-panel-closable`}
                   className="accordion-toggle"
+                  aria-expanded="false"
                 >
                   <i
                     className={`fa fa-chevron-down show-on-collapsed ${
@@ -81,7 +83,10 @@ export const Panel = (props: Props) => {
       )}
 
       {props.collapseId ? (
-        <div id={`${props.collapseId}-panel-closable`} className="panel-collapse collapse show">
+        <div
+          id={`${props.collapseId}-panel-closable`}
+          className={`panel-collapse collapse ${props.collapsClose ? "" : "show"}`}
+        >
           {bodyContent}
         </div>
       ) : (
