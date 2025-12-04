@@ -2436,21 +2436,16 @@ public class SystemHandler extends BaseHandler {
 
             Action action = sAction.getParentAction();
 
-            if (action.getFailedCount() != null) {
-                result.put("failed_count", action.getFailedCount());
-            }
-            if (action.getActionTypeName() != null) {
-                result.put("action_type", action.getActionTypeName());
-            }
-            if (action.getSuccessfulCount() != null) {
-                result.put("successful_count", action.getSuccessfulCount());
-            }
-            if (action.getEarliestAction() != null) {
-                result.put("earliest_action", action.getEarliestAction().toString());
-            }
-            if (action.getArchived() != null) {
-                result.put("archived", action.getArchived());
-            }
+            safePutKeyValLong("failed_count", action.getFailedCount(), result);
+
+            safePutKeyValString("action_type", action.getActionTypeName(), result);
+
+            safePutKeyValLong("successful_count", action.getSuccessfulCount(), result);
+
+            safePutKeyValDateAsString("earliest_action", action.getEarliestAction(), result);
+
+            safePutKeyValLong("archived", action.getArchived(), result);
+
             if ((action.getSchedulerUser() != null) &&
                     (action.getSchedulerUser().getLogin() != null)) {
                 result.put("scheduler_user", action.getSchedulerUser().getLogin());
@@ -2458,39 +2453,32 @@ public class SystemHandler extends BaseHandler {
             if (action.getPrerequisite() != null) {
                 result.put("prerequisite", action.getPrerequisite().getId());
             }
-            if (action.getName() != null) {
-                result.put("name", action.getName());
-            }
-            if (action.getId() != null) {
-                result.put("id", action.getId());
-            }
+
+            safePutKeyValString("name", action.getName(), result);
+
+            safePutKeyValLong("id", action.getId(), result);
+
             if (action.getVersion() != null) {
                 result.put("version", action.getVersion().toString());
             }
 
-            if (sAction.getCompletionTime() != null) {
-                result.put("completion_time", sAction.getCompletionTime().toString());
-            }
-            if (sAction.getPickupTime() != null) {
-                result.put("pickup_time", sAction.getPickupTime().toString());
-            }
-            if (sAction.getModified() != null) {
-                result.put("modified", sAction.getModified().toString());
-                result.put("modified_date", sAction.getModified());
-            }
-            if (sAction.getCreated() != null) {
-                result.put("created", sAction.getCreated().toString());
-                result.put("created_date", sAction.getCreated());
-            }
-            if (sAction.getCompletionTime() != null) {
-                result.put("completed_date", sAction.getCompletionTime());
-            }
-            if (sAction.getPickupTime() != null) {
-                result.put("pickup_date", sAction.getPickupTime());
-            }
-            if (sAction.getResultMsg() != null) {
-                result.put("result_msg", sAction.getResultMsg());
-            }
+            safePutKeyValDateAsString("completion_time", sAction.getCompletionTime(), result);
+
+            safePutKeyValDateAsString("pickup_time", sAction.getPickupTime(), result);
+
+            safePutKeyValDateAsString("modified", sAction.getModified(), result);
+
+            safePutKeyValDate("modified_date", sAction.getModified(), result);
+
+            safePutKeyValDateAsString("created", sAction.getCreated(), result);
+
+            safePutKeyValDate("created_date", sAction.getCreated(), result);
+
+            safePutKeyValDate("completed_date", sAction.getCompletionTime(), result);
+
+            safePutKeyValDate("pickup_date", sAction.getPickupTime(), result);
+
+            safePutKeyValString("result_msg", sAction.getResultMsg(), result);
 
             final List<Map<String, String>> additionalInfo = action.createActionSpecificDetails(sAction);
             if (!additionalInfo.isEmpty()) {
@@ -2500,6 +2488,30 @@ public class SystemHandler extends BaseHandler {
             results.add(result);
         }
         return results;
+    }
+
+    private void safePutKeyValLong(String key, Long value, Map<String, Object> result) {
+        if (value != null) {
+            result.put(key, value);
+        }
+    }
+
+    private void safePutKeyValString(String key, String value, Map<String, Object> result) {
+        if (value != null) {
+            result.put(key, value);
+        }
+    }
+
+    private void safePutKeyValDate(String key, Date value, Map<String, Object> result) {
+        if (value != null) {
+            result.put(key, value);
+        }
+    }
+
+    private void safePutKeyValDateAsString(String key, Date value, Map<String, Object> result) {
+        if (value != null) {
+            result.put(key, value.toString());
+        }
     }
 
     /**
