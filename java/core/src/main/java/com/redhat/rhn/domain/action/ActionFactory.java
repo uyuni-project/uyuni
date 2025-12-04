@@ -473,7 +473,9 @@ public class ActionFactory extends HibernateFactory {
      * @param earliestIn The earliest time that this action can occur.
      * @return the Action created
      */
-    public static Action createAction(ActionType typeIn, Date earliestIn) {
+    //SonarCloud signals this method with Cognitive Complexity 45, however this is due to the big number of
+    //action types that could be created in this factory method, hence this is marked as false positive
+    public static Action createAction(ActionType typeIn, Date earliestIn) { //NOSONAR
         Action retval;
 
         if (typeIn.equals(TYPE_PACKAGES_REFRESH_LIST)) {
