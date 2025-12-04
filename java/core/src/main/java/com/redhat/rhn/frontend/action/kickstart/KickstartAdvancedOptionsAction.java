@@ -18,6 +18,7 @@ import com.redhat.rhn.domain.kickstart.KickstartCommand;
 import com.redhat.rhn.domain.kickstart.KickstartCommandName;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.kickstart.KickstartOptionValue;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -73,16 +74,14 @@ public class KickstartAdvancedOptionsAction extends RhnAction {
         RequestContext ctx = new RequestContext(request);
         KickstartHelper helper = new KickstartHelper(request);
         KickstartOptionsCommand cmd =
-            new KickstartOptionsCommand(ctx.getRequiredParam(RequestContext.KICKSTART_ID),
-                                        ctx.getCurrentUser());
+            new KickstartOptionsCommand(ctx.getRequiredParam(RequestContext.KICKSTART_ID), ctx.getCurrentUser());
 
-        List displayList = new LinkedList<>();
+        List<KickstartOptionValue> displayList = new LinkedList<>();
 
         //Display message if this kickstart profile's channel is inadequate.
         User user = new RequestContext(request).getCurrentUser();
         if (!helper.verifyKickstartChannel(cmd.getKickstartData(), user)) {
-            getStrutsDelegate().saveMessages(request,
-                   helper.createInvalidChannelMsg(cmd.getKickstartData()));
+            getStrutsDelegate().saveMessages(request, helper.createInvalidChannelMsg(cmd.getKickstartData()));
         }
 
         // store/refresh the submitted data
@@ -90,82 +89,21 @@ public class KickstartAdvancedOptionsAction extends RhnAction {
 
             ActionErrors messages = new ActionErrors();
 
-            //lets first make sure all required params are set
+            //let's first make sure all required params are set
             for (Object valueIn : cmd.getRequiredOptions()) {
                 KickstartCommandName cn = (KickstartCommandName) valueIn;
                 if ((request.getParameter(cn.getName()) == null) ||
                         (request.getParameter(cn.getName().concat("_txt")).equals(""))) {
-                    messages.add(ActionMessages.GLOBAL_MESSAGE,
-                            new ActionMessage("errors.required", cn.getName()));
+                    messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("errors.required", cn.getName()));
                 }
             }
 
             // store to the db
             if (messages.isEmpty()) {
-                Set s = new HashSet<>();
-
-                for (Object oIn : cmd.getAvailableOptions()) {
-
-                    KickstartCommandName cn = (KickstartCommandName) oIn;
-
-                    if (request.getParameter(cn.getName()) != null) {
-                        KickstartCommand kc = new KickstartCommand();
-                        kc.setCommandName(cn);
-                        kc.setKickstartData(cmd.getKickstartData());
-                        kc.setCreated(new Date());
-                        kc.setModified(new Date());
-                        if (cn.getArgs()) {
-                            String argsName = cn.getName() + "_txt";
-                            // handle password encryption
-                            if (cn.getName().equals("rootpw")) {
-                                String pwarg = request.getParameter(argsName);
-                                // password already encrypted
-                                String encrypt = request.getParameter("encrypt_rootpw");
-                                if (StringUtils.isEmpty(encrypt)) {
-                                    kc.setArguments(pwarg);
-                                }
-                                // password changed, encrypt it
-                                else {
-                                    kc.setArguments(kc.getKickstartData().encryptPassword(
-                                            pwarg));
-                                }
-                            }
-                            else {
-                                kc.setArguments(request.getParameter(argsName));
-                            }
-                        }
-                        s.add(kc);
-                    }
-                }
-                log.debug("updating options");
-                cmd.getKickstartData().setOptions(s);
+                updateOptions(cmd, request);
 
                 //set custom options
-                String customOps = request.getParameter(CUSTOM_OPTIONS);
-                LinkedHashSet customSet = new LinkedHashSet<>();
-                log.debug("Adding custom options");
-                if (customOps != null) {
-                    for (StringTokenizer strtok = new StringTokenizer(
-                            customOps, NEWLINE); strtok.hasMoreTokens();) {
-                        KickstartCommand custom = new KickstartCommand();
-                        KickstartCommandName cn = KickstartFactory
-                                .lookupKickstartCommandName("custom");
-                        custom.setCommandName(cn);
-                        custom.setKickstartData(cmd.getKickstartData());
-                        String args = strtok.nextToken().trim();
-                        if (!args.isEmpty()) {
-                            custom.setArguments(args);
-                            custom.setKickstartData(cmd.getKickstartData());
-                            custom.setCustomPosition(customSet.size());
-                            custom.setCreated(new Date());
-                            custom.setModified(new Date());
-                            customSet.add(custom);
-                        }
-                    }
-                    log.debug("Clearing custom options");
-                    cmd.getKickstartData().setCustomOptions(customSet);
-                    log.debug("Adding all");
-                }
+                setCustomOptions(cmd, request);
 
                 cmd.store();
                 log.debug("stored.");
@@ -182,7 +120,7 @@ public class KickstartAdvancedOptionsAction extends RhnAction {
             displayList = cmd.getDisplayOptions();
         }
         Collections.sort(displayList);
-        LinkedHashSet displaySet = new LinkedHashSet<>();
+        LinkedHashSet<KickstartCommand> displaySet = new LinkedHashSet<>();
         Iterator<KickstartCommand> iter;
         iter = cmd.getKickstartData().getCustomOptions().iterator();
         while (iter.hasNext()) {
@@ -198,6 +136,72 @@ public class KickstartAdvancedOptionsAction extends RhnAction {
                 mapping.findForward(RhnHelper.DEFAULT_FORWARD),
                 request.getParameterMap());
 
+    }
+
+    private void updateOptions(KickstartOptionsCommand cmd, HttpServletRequest request) {
+        Set<KickstartCommand> s = new HashSet<>();
+
+        for (Object oIn : cmd.getAvailableOptions()) {
+
+            KickstartCommandName cn = (KickstartCommandName) oIn;
+
+            if (request.getParameter(cn.getName()) != null) {
+                KickstartCommand kc = new KickstartCommand();
+                kc.setCommandName(cn);
+                kc.setKickstartData(cmd.getKickstartData());
+                kc.setCreated(new Date());
+                kc.setModified(new Date());
+                if (cn.getArgs()) {
+                    String argsName = cn.getName() + "_txt";
+                    // handle password encryption
+                    if (cn.getName().equals("rootpw")) {
+                        String pwarg = request.getParameter(argsName);
+                        // password already encrypted
+                        String encrypt = request.getParameter("encrypt_rootpw");
+                        if (StringUtils.isEmpty(encrypt)) {
+                            kc.setArguments(pwarg);
+                        }
+                        // password changed, encrypt it
+                        else {
+                            kc.setArguments(kc.getKickstartData().encryptPassword(pwarg));
+                        }
+                    }
+                    else {
+                        kc.setArguments(request.getParameter(argsName));
+                    }
+                }
+                s.add(kc);
+            }
+        }
+        log.debug("updating options");
+        cmd.getKickstartData().setOptions(s);
+    }
+
+    private void setCustomOptions(KickstartOptionsCommand cmd, HttpServletRequest request) {
+        //set custom options
+        String customOps = request.getParameter(CUSTOM_OPTIONS);
+        LinkedHashSet<KickstartCommand> customSet = new LinkedHashSet<>();
+        log.debug("Adding custom options");
+        if (customOps != null) {
+            for (StringTokenizer strtok = new StringTokenizer(customOps, NEWLINE); strtok.hasMoreTokens();) {
+                KickstartCommand custom = new KickstartCommand();
+                KickstartCommandName cn = KickstartFactory.lookupKickstartCommandName("custom");
+                custom.setCommandName(cn);
+                custom.setKickstartData(cmd.getKickstartData());
+                String args = strtok.nextToken().trim();
+                if (!args.isEmpty()) {
+                    custom.setArguments(args);
+                    custom.setKickstartData(cmd.getKickstartData());
+                    custom.setCustomPosition(customSet.size());
+                    custom.setCreated(new Date());
+                    custom.setModified(new Date());
+                    customSet.add(custom);
+                }
+            }
+            log.debug("Clearing custom options");
+            cmd.getKickstartData().setCustomOptions(customSet);
+            log.debug("Adding all");
+        }
     }
 
     /**
