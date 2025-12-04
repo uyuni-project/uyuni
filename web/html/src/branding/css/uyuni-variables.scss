@@ -1,6 +1,7 @@
 $body-color: #5f5f5f;
 $body-font: $helvetica;
 $link-color: #337ab7;
+$box-shadow: $gray-light;
 
 $header: $uyuni-blue-900;
 $header-text: $uyuni-gray-100;
@@ -16,8 +17,50 @@ $aside-footer-border: $uyuni-blue-100;
 $aside-search-border: $uyuni-blue-100;
 $aside-footer-logo-background: url("../img/suse-logo-footer-white.svg") right center / 90px 30px no-repeat;
 
-$input-border-color: $uyuni-gray-300;
-
 $border-radius: 4px;
 $border-radius-sm: 4px;
 $border-radius-lg: 4px;
+
+//Tabs
+$tabs-border-color: $eos-bc-gray-100;
+
+//HR gray
+$hr-border: $eos-bc-gray-100;
+
+// Panel
+$panel-border: $eos-bc-gray-100;
+
+//Panel white
+$panel-white-bg: $eos-bc-white;
+
+// Table
+$tb-thead-tr-bg: $eos-bc-gray-100;
+$tb-orderBy-text: $eos-bc-gray-1000;
+$tb-border-color: $eos-bc-gray-100;
+
+// Form
+/* Input */
+$input-placeholder: $gray;
+$input-border-color: $eos-bc-gray-700;
+$input-active-bg: $eos-bc-white;
+$input-color: $eos-bc-gray-1000;
+$input-autofill-bg: $eos-bc-white;
+$input-readonly-color: $eos-bc-gray-700;
+$input-readonly-bg: $gray-lighter;
+$input-group-addon-bg: $gray-lighter;
+$input-group-addon-color: $eos-bc-gray-900;
+$input-disabled-bg: $gray-lighter;
+
+// Input AceEditor
+$ace-gutter-bg: #e8e8e8;
+
+/* Select Dropdown Menu */
+$select-dropdown-bg: $eos-bc-white;
+$select-dropdown-color: $eos-bc-gray-1000;
+$select-dropdown-focused-bg: rgba($eos-bc-cerulean-100, 0.3);
+$select-dropdown-selected-bg: $eos-bc-blue-500;
+$select-dropdown-selected-color: $eos-bc-white;
+
+/* Dropdown Menu */
+$dropdown-bg: $eos-bc-white;
+$dropdown-hover-bg: $eos-bc-gray-50;

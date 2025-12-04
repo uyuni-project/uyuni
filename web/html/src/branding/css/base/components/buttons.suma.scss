@@ -107,11 +107,11 @@
     &,
     &:hover {
       background: transparent;
-      border-color: $eos-bc-pine-500;
-      color: $eos-bc-pine-500;
+      border-color: $btn-default-color;
+      color: $btn-default-color;
 
       &:not(:disabled):not(.disabled):not(.text-muted):hover::after {
-        background: $eos-bc-pine-500;
+        background: $btn-default-color;
       }
     }
   }
@@ -220,6 +220,6 @@ th .orderBy {
   border: none;
   padding: 0;
   font-weight: 600 !important;
-  color: $eos-bc-gray-1000 !important;
+  color: $tb-orderBy-text !important;
   background-color: transparent;
 }
