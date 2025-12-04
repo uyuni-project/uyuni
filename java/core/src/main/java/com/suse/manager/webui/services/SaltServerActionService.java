@@ -889,76 +889,7 @@ public class SaltServerActionService {
                 }
 
                 result.ifPresentOrElse(r -> {
-                    LOG.trace("Salt call result: {}", r);
-
-                    r.consume(error -> {
-                        String errorString = error.toString();
-                        if (sa.getRemainingTries() > 0 && errorString.contains("System is going down")) {
-                            // SSH login is blocked when a reboot is ongoing. Reschedule this action later again
-                            LOG.info("System is going down. Configure re-try in 3 minutes");
-                            sa.setStatusQueued();
-                            sa.setRemainingTries((sa.getRemainingTries() - 1L));
-                            sa.setPickupTime(null);
-                            sa.setCompletionTime(null);
-                            action.setEarliestAction(Date.from(Instant.now().plus(3, ChronoUnit.MINUTES)));
-                            ActionFactory.save(action);
-                            // We commit as we need to take care that the new date is in DB when we
-                            // call taskomatic to execute the action again.
-                            HibernateFactory.commitTransaction();
-                            try {
-                                taskomaticApi.scheduleActionExecution(action);
-                            }
-                            catch (TaskomaticApiException e) {
-                                LOG.error("Unable to reschedule failed Salt SSH Action: {}", errorString, e);
-                                sa.setStatusFailed();
-                                sa.setResultMsg(errorString);
-                                sa.setCompletionTime(new Date());
-                            }
-                        }
-                        else {
-                            sa.setStatusFailed();
-                            sa.setResultMsg(error.fold(
-                                    e -> "function " + e.getFunctionName() + " not available.",
-                                    e -> "module " + e.getModuleName() + " not supported.",
-                                    e -> "error parsing json.",
-                                    GenericError::getMessage,
-                                    e -> "salt ssh error: " + e.getRetcode() + " " + e.getMessage()
-                            ));
-                            LOG.error(sa.getResultMsg());
-                            sa.setCompletionTime(new Date());
-                        }
-                    }, jsonResult -> {
-                        String function = (String) call.getPayload().get("fun");
-
-                        /* bsc#1197591 ssh push reboot has an answer that is not a failure but the action needs to stay
-                        *  in picked up, in this way SSHServiceDriver::getCandidates can schedule a reboot correctly
-                        */
-                        if (!action.getActionType().equals(ActionFactory.TYPE_REBOOT)) {
-                            saltUtils.updateServerAction(sa, 0L, true, "n/a", jsonResult,
-                                    Optional.of(Xor.right(function)), null);
-                        }
-
-                        else if (sa.isStatusQueued()) {
-                            setActionAsPickedUp(sa);
-                        }
-
-                        // Perform a "check-in" after every executed action
-                        minion.updateServerInfo();
-
-                        // Perform a package profile update in the end if necessary
-                        if (forcePkgRefresh || saltUtils.shouldRefreshPackageList(
-                                Optional.of(Xor.right(function)), Optional.of(jsonResult))) {
-                            LOG.info("Scheduling a package profile update");
-
-                            try {
-                                ActionManager.schedulePackageRefresh(
-                                        Optional.ofNullable(action.getSchedulerUser()), minion, new Date());
-                            }
-                            catch (TaskomaticApiException e) {
-                                LOG.error("Could not schedule package refresh for minion: {}", minion.getMinionId(), e);
-                            }
-                        }
-                    });
+                    handleResult(r, sa, action, call, minion, forcePkgRefresh);
                 }, () -> {
                     LOG.error("Action '{}' failed. Got not result from Salt, probably minion is down or " +
                             "could not be contacted.", action.getName());
@@ -966,6 +897,80 @@ public class SaltServerActionService {
                     sa.setResultMsg("Minion is down or could not be contacted.");
                     sa.setCompletionTime(new Date());
                 });
+            }
+        });
+    }
+
+    private void handleResult(Result<JsonElement> r, ServerAction sa, Action action, LocalCall<?> call,
+                              MinionServer minion, boolean forcePkgRefresh) {
+        LOG.trace("Salt call result: {}", r);
+
+        r.consume(error -> {
+            String errorString = error.toString();
+            if (sa.getRemainingTries() > 0 && errorString.contains("System is going down")) {
+                // SSH login is blocked when a reboot is ongoing. Reschedule this action later again
+                LOG.info("System is going down. Configure re-try in 3 minutes");
+                sa.setStatusQueued();
+                sa.setRemainingTries((sa.getRemainingTries() - 1L));
+                sa.setPickupTime(null);
+                sa.setCompletionTime(null);
+                action.setEarliestAction(Date.from(Instant.now().plus(3, ChronoUnit.MINUTES)));
+                ActionFactory.save(action);
+                // We commit as we need to take care that the new date is in DB when we
+                // call taskomatic to execute the action again.
+                HibernateFactory.commitTransaction();
+                try {
+                    taskomaticApi.scheduleActionExecution(action);
+                }
+                catch (TaskomaticApiException e) {
+                    LOG.error("Unable to reschedule failed Salt SSH Action: {}", errorString, e);
+                    sa.setStatusFailed();
+                    sa.setResultMsg(errorString);
+                    sa.setCompletionTime(new Date());
+                }
+            }
+            else {
+                sa.setStatusFailed();
+                sa.setResultMsg(error.fold(
+                        e -> "function " + e.getFunctionName() + " not available.",
+                        e -> "module " + e.getModuleName() + " not supported.",
+                        e -> "error parsing json.",
+                        GenericError::getMessage,
+                        e -> "salt ssh error: " + e.getRetcode() + " " + e.getMessage()
+                ));
+                LOG.error(sa.getResultMsg());
+                sa.setCompletionTime(new Date());
+            }
+        }, jsonResult -> {
+            String function = (String) call.getPayload().get("fun");
+
+            /* bsc#1197591 ssh push reboot has an answer that is not a failure but the action needs to stay
+             *  in picked up, in this way SSHServiceDriver::getCandidates can schedule a reboot correctly
+             */
+            if (!action.getActionType().equals(ActionFactory.TYPE_REBOOT)) {
+                saltUtils.updateServerAction(sa, 0L, true, "n/a", jsonResult,
+                        Optional.of(Xor.right(function)), null);
+            }
+
+            else if (sa.isStatusQueued()) {
+                setActionAsPickedUp(sa);
+            }
+
+            // Perform a "check-in" after every executed action
+            minion.updateServerInfo();
+
+            // Perform a package profile update in the end if necessary
+            if (forcePkgRefresh || saltUtils.shouldRefreshPackageList(
+                    Optional.of(Xor.right(function)), Optional.of(jsonResult))) {
+                LOG.info("Scheduling a package profile update");
+
+                try {
+                    ActionManager.schedulePackageRefresh(
+                            Optional.ofNullable(action.getSchedulerUser()), minion, new Date());
+                }
+                catch (TaskomaticApiException e) {
+                    LOG.error("Could not schedule package refresh for minion: {}", minion.getMinionId(), e);
+                }
             }
         });
     }
