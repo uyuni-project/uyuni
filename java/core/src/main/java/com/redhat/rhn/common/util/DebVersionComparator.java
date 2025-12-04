@@ -94,8 +94,6 @@ public class DebVersionComparator implements Comparator<String> {
     }
 
     private int verrevcmp(String a1, String b1) {
-        char[] a, b;
-
         if (a1 == null) {
             a1 = "";
         }
@@ -103,8 +101,8 @@ public class DebVersionComparator implements Comparator<String> {
             b1 = "";
         }
 
-        a = a1.toCharArray();
-        b = b1.toCharArray();
+        char[] a = a1.toCharArray();
+        char[] b = b1.toCharArray();
 
         int i = 0;
         int j = 0;
@@ -112,7 +110,7 @@ public class DebVersionComparator implements Comparator<String> {
         while (i < a.length || j < b.length) {
             int firstDiff = 0;
 
-            while ((i < a.length && !Character.isDigit(a[i])) || (j < b.length && !Character.isDigit(b[j]))) {
+            while (posIsNotDigit(i, a) || posIsNotDigit(j, b)) {
                 int ac = i >= a.length ? 0 : order(a[i]);
                 int bc = j >= b.length ? 0 : order(b[j]);
 
@@ -123,13 +121,13 @@ public class DebVersionComparator implements Comparator<String> {
                 i++;
                 j++;
             }
-            while (i < a.length && a[i] == '0') {
+            while (posIsCharZero(i, a)) {
                 i++;
             }
-            while (j < b.length && b[j] == '0') {
+            while (posIsCharZero(j, b)) {
                 j++;
             }
-            while (i < a.length && j < b.length && Character.isDigit(a[i]) && Character.isDigit((b[j]))) {
+            while (posIsDigit(i, a) && posIsDigit(j, b)) {
                 if (firstDiff == 0) {
                     firstDiff = a[i] - b[j];
                 }
@@ -137,10 +135,10 @@ public class DebVersionComparator implements Comparator<String> {
                 j++;
             }
 
-            if (i < a.length && Character.isDigit(a[i])) {
+            if (posIsDigit(i, a)) {
                 return 1;
             }
-            if (j < b.length && Character.isDigit(b[j])) {
+            if (posIsDigit(j, b)) {
                 return -1;
             }
             if (firstDiff != 0) {
@@ -148,6 +146,18 @@ public class DebVersionComparator implements Comparator<String> {
             }
         }
         return 0;
+    }
+
+    private boolean posIsDigit(int pos, char[] arr) {
+        return pos < arr.length && Character.isDigit(arr[pos]);
+    }
+
+    private boolean posIsNotDigit(int pos, char[] arr) {
+        return pos < arr.length && !Character.isDigit(arr[pos]);
+    }
+
+    private boolean posIsCharZero(int pos, char[] arr) {
+        return pos < arr.length && arr[pos] == '0';
     }
 }
 
