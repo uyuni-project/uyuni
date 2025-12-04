@@ -12,7 +12,7 @@
     //"CONTAINER_CONNECTION_TYPE": "socket"
   },
 
-  "forwardPorts": [8001, 8002, 8003, 443, 80, 5432, 9000],
+  "forwardPorts": [8001, 8002, 8003, 443, 80, 54320, 9000],
 
   "portsAttributes": {
     "8001": {
@@ -27,7 +27,7 @@
       "label": "Debug Tomcat",
       "onAutoForward": "notify"
     },
-    "5432": {
+    "54320": {
       "label": "Unit Test DB (Postgres)",
       "onAutoForward": "notify"
     },

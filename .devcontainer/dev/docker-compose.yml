@@ -29,6 +29,6 @@ services:
     image: registry.opensuse.org/systemsmanagement/uyuni/master/docker/containers/uyuni-master-pgsql-4eclipse
     restart: always
     ports:
-      - "5432:5432"
+      - "54320:5432"
     volumes:
       - ../../:/manager:cached
