@@ -133,7 +133,6 @@ public class ErrataFactory extends HibernateFactory {
             }
         }
         else if (identifier.length() > 4) {
-            String prefix = null;
             List<Errata> erratas = ErrataFactory.lookupByAdvisoryId(identifier, org);
             if (erratas != null && !erratas.isEmpty()) {
                 retval.addAll(erratas);
@@ -145,44 +144,52 @@ public class ErrataFactory extends HibernateFactory {
                 }
             }
             if (retval.isEmpty()) {
-                prefix = identifier.substring(0, 4);
-                if (prefix.matches("RH.A")) {
-                    StringTokenizer strtok = new StringTokenizer(identifier, "-");
-                    StringBuilder buf = new StringBuilder();
-                    boolean foundFirst = false;
-                    while (strtok.hasMoreTokens()) {
-                        buf.append(strtok.nextToken());
-                        if (!foundFirst) {
-                            buf.append("-");
-                            foundFirst = true;
-                        }
-                        else {
-                            if (strtok.hasMoreTokens()) {
-                                buf.append(":");
-                            }
-                        }
-                    }
-                    identifier = buf.toString();
-                    erratas = ErrataFactory.lookupByAdvisoryId(identifier, org);
-
-                    if (erratas != null && !erratas.isEmpty()) {
-                        retval.addAll(erratas);
-                    }
-                }
+                tryLookupByPrefixRHA(identifier, org, retval);
             }
             if (retval.isEmpty()) {
-                prefix = identifier.substring(0, 3);
-                if ((prefix.equals("CVE") || prefix.equals("CAN")) &&
-                        identifier.length() > 7 && identifier.indexOf('-') == -1) {
-                    identifier = identifier.substring(0, 3) + "-" +
-                            identifier.substring(3, 7) + "-" +
-                            identifier.substring(7);
-                }
-                erratas = ErrataFactory.lookupByCVE(identifier);
-                retval.addAll(erratas);
+                tryLookupByPrefixCveCan(identifier, retval);
             }
         }
         return retval;
+    }
+
+    private static void tryLookupByPrefixRHA(String identifier, Org org, List<Errata> retval) {
+        String prefix = identifier.substring(0, 4);
+        if (prefix.matches("RH.A")) {
+            StringTokenizer strtok = new StringTokenizer(identifier, "-");
+            StringBuilder buf = new StringBuilder();
+            boolean foundFirst = false;
+            while (strtok.hasMoreTokens()) {
+                buf.append(strtok.nextToken());
+                if (!foundFirst) {
+                    buf.append("-");
+                    foundFirst = true;
+                }
+                else {
+                    if (strtok.hasMoreTokens()) {
+                        buf.append(":");
+                    }
+                }
+            }
+            identifier = buf.toString();
+            List<Errata> erratas = ErrataFactory.lookupByAdvisoryId(identifier, org);
+
+            if (erratas != null && !erratas.isEmpty()) {
+                retval.addAll(erratas);
+            }
+        }
+    }
+
+    private static void tryLookupByPrefixCveCan(String identifier, List<Errata> retval) {
+        String prefix = identifier.substring(0, 3);
+        if ((prefix.equals("CVE") || prefix.equals("CAN")) &&
+                identifier.length() > 7 && identifier.indexOf('-') == -1) {
+            identifier = identifier.substring(0, 3) + "-" +
+                    identifier.substring(3, 7) + "-" +
+                    identifier.substring(7);
+        }
+        List<Errata> erratas = ErrataFactory.lookupByCVE(identifier);
+        retval.addAll(erratas);
     }
 
     /**
