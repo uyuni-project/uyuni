@@ -505,6 +505,15 @@ public class CVEAuditManager {
 
         ChannelArch arch = auditTarget.getCompatibleChannelArch();
 
+        handleBaseProductTargets(baseProductTargets, arch, suseProductIDs, result);
+
+        handleBaseProductSources(baseProductSources, arch, suseProductIDs, result);
+
+        return result;
+    }
+
+    private static void handleBaseProductTargets(List<SUSEProductDto> baseProductTargets, ChannelArch arch,
+                                                 List<Long> suseProductIDs, List<RankedChannel> result) {
         int currentRank = SUCCESSOR_PRODUCT_RANK_BOUNDARY - 1;
 
         // for each base product target...
@@ -527,18 +536,18 @@ public class CVEAuditManager {
                         }
 
                         // ...add its channel to the relevant list
-                        List<Channel> productChannels =
-                                findSUSEProductChannels(target.getId(),
-                                        baseProductChannelId);
-                        addRelevantChannels(result, productChannels,
-                                ++currentRank);
+                        List<Channel> productChannels = findSUSEProductChannels(target.getId(), baseProductChannelId);
+                        addRelevantChannels(result, productChannels, ++currentRank);
                     }
                 }
             }
         }
+    }
 
+    private static void handleBaseProductSources(List<SUSEProductDto> baseProductSources, ChannelArch arch,
+                                                 List<Long> suseProductIDs, List<RankedChannel> result) {
         // Increase the rank for indication of older products (previous SPs)
-        currentRank = PREDECESSOR_PRODUCT_RANK_BOUNDARY - 1;
+        int currentRank = PREDECESSOR_PRODUCT_RANK_BOUNDARY - 1;
 
         // for each base product source...
         for (SUSEProductDto baseProductSource : baseProductSources) {
@@ -560,16 +569,12 @@ public class CVEAuditManager {
                         }
 
                         // ...add its channel to the relevant list
-                        List<Channel> productChannels =
-                                findSUSEProductChannels(source.getId(),
-                                        baseProductChannelId);
-                        addRelevantChannels(result, productChannels,
-                                ++currentRank);
+                        List<Channel> productChannels = findSUSEProductChannels(source.getId(), baseProductChannelId);
+                        addRelevantChannels(result, productChannels, ++currentRank);
                     }
                 }
             }
         }
-        return result;
     }
 
     /**
