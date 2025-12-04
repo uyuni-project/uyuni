@@ -44,7 +44,6 @@ import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.SaltGrains;
 import com.suse.manager.webui.utils.salt.custom.SumaUtil;
 import com.suse.salt.netapi.calls.modules.Network;
-import com.suse.utils.Json;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -203,9 +202,8 @@ public class HardwareMapper {
 
         var archSpecs = grains.get("cpu_arch_specs")
             .filter(v -> v instanceof Map)
-            .map(v -> (Map<?, ?>) v)
+            .map(v -> (Map<String, Object>) v)
             .filter(map -> !map.isEmpty())
-            .map(Json.GSON::toJson)
             .orElse(null);
         cpu.setArchSpecs(archSpecs);
 
