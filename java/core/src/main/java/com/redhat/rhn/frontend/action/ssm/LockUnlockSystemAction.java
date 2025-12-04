@@ -92,18 +92,10 @@ public class LockUnlockSystemAction extends RhnListAction {
                 }
 
                 if (lck) {
-                    actionMessages.add(ActionMessages.GLOBAL_MESSAGE,
-                          new ActionMessage("ssm.misc.lockunlock.message.locked" +
-                                            (set.size() == locledSys ? ".all" : "") +
-                                            (locledSys > 0 ? ".success" : ".skipped"),
-                            set.size(), locledSys));
+                    addLockUnlockActionMessage(true, set.size(), locledSys, actionMessages);
                 }
-                else if (unlck) {
-                    actionMessages.add(ActionMessages.GLOBAL_MESSAGE,
-                          new ActionMessage("ssm.misc.lockunlock.message.unlocked" +
-                                            (set.size() == unlockedSys ? ".all" : "") +
-                                            (unlockedSys > 0 ? ".success" : ".skipped"),
-                            set.size(), unlockedSys));
+                else {
+                    addLockUnlockActionMessage(false, set.size(), unlockedSys, actionMessages);
                 }
             }
         }
@@ -115,6 +107,14 @@ public class LockUnlockSystemAction extends RhnListAction {
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }
 
+    private void addLockUnlockActionMessage(boolean isLocked, int setSize, int numSystems,
+                                            ActionMessages actionMessages) {
+        String keyPrefix = isLocked ? "ssm.misc.lockunlock.message.locked" : "ssm.misc.lockunlock.message.unlocked";
+        String allPostfix = (setSize == numSystems ? ".all" : "");
+        String successPostfix = (numSystems > 0 ? ".success" : ".skipped");
+        actionMessages.add(ActionMessages.GLOBAL_MESSAGE,
+                new ActionMessage(keyPrefix + allPostfix + successPostfix, setSize, numSystems));
+    }
 
     private void bindData(RhnListSetHelper listHelper,
                           RhnSet set, HttpServletRequest request) {
