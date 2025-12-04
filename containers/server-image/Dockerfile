@@ -78,6 +78,7 @@ RUN echo "rpm.install.excludedocs = yes" >>/etc/zypp/zypp.conf && \
         virtualization-formulas \
         zchunk && \
     zypper --non-interactive clean --all && \
+    rpm -e container-suseconnect && \
     systemctl enable prometheus-node_exporter && \
     systemctl enable sssd && \
     rm /etc/krb5.conf.d/crypto-policies && \
