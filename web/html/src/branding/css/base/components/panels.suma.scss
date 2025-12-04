@@ -1,5 +1,6 @@
+ // Used in table
 .panel {
-  background: $eos-bc-gray-50;
+  background: $panel-gray-bg;
   box-shadow: none;
 
   &-default {
@@ -8,11 +9,11 @@
     > .panel-heading {
       padding: 1rem;
       background: transparent;
-      border-bottom: 1px solid $eos-bc-gray-100;
+      border-bottom: 1px solid $panel-border;
     }
 
     .list-group-item {
-      border-bottom: 1px solid $eos-bc-gray-100;
+      border-bottom: 1px solid $panel-border;
       text-align: left;
 
       &:last-child {

@@ -28,8 +28,9 @@
 }
 
 thead tr {
-  background:$eos-bc-gray-100 !important;
-  color: $eos-bc-gray-900 !important;
+  background: $tb-thead-tr-bg !important;
+  color: $tb-orderBy-text !important;
+  
 
   .btn-link {
     padding: 0 !important;
