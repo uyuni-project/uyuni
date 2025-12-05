@@ -4,7 +4,7 @@
 
 .modal-header {
   // TODO: Here and elsewhere, standardize border colors after the Bootstrap migration is complete
-  border-bottom: 1px solid #e5e5e5;
+  border-bottom: 1px solid $modal-border; //#e5e5e5;
   padding: 15px;
 
   .close {
@@ -59,7 +59,7 @@
   margin: 0;
   padding: 15px;
   // TODO: Here and elsewhere, standardize border colors after the Bootstrap migration is complete
-  border-top: 1px solid #e5e5e5;
+  border-top: 1px solid $modal-border; //#e5e5e5;
 
   .btn + .btn {
     margin-left: 5px;
@@ -84,13 +84,13 @@
 }
 
 .modal-content {
-  background: white;
+  background: $modal-bg; //white;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
   max-height: 90vh;
 }
 
 .ReactModal__Content {
-  background-color: $modal-color;
+  background-color: $modal-bg;
   border-radius: $border-radius;
   // For modals with unspecified constraints, limit them to the largest
   max-width: $modal-xl;
