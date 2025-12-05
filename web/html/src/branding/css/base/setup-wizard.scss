@@ -125,8 +125,8 @@ body {
     }
 
     .panel-inactive {
-      background: $white;
-      border: 1px solid $inactive;
+      background: $panel-white-bg;
+      border: 1px solid $panel-white-border-color;
       text-align: center;
       .fa-plus-circle {
         font-size: 4em;
@@ -144,7 +144,7 @@ body {
   #wizard-faq {
     display: flex;
     flex-direction: column;
-    border-left: 1px solid $eos-bc-gray-100;
+    border-left: 1px solid $panel-white-border-color;
 
     img {
       margin: 1em auto;
@@ -177,8 +177,9 @@ ul.subscriptions-list {
 }
 
 .list-header {
-  border-bottom: 2px solid $gray-light!important;
+  border-bottom: 2px solid $tb-border-color!important;
   font-weight: 700;
+  background: $tb-thead-tr-bg;
 }
 
 .row-odd {
@@ -200,7 +201,7 @@ ul.product-list {
     line-height: 2em;
     display: block;
     overflow: auto;
-    border-bottom: 1px solid $gray-light;
+    border-bottom: 1px solid $tb-border-color;
     .product-details-wrapper {
       .recommended-tag {
         @extend .recommended-tag-base;
@@ -215,7 +216,7 @@ ul.product-list {
       }
     }
     .product-details-wrapper:hover {
-      background-color: $gray-light;
+      background-color: $table-row-hover-bg;
     }
     .product-installed {
       .product-description {
@@ -264,7 +265,7 @@ ul.product-list {
       border: 0;
       margin-left: 3em;
       > .product-details-wrapper {
-        border-top: 1px dashed $gray-light;
+        border-top: 1px dashed $tb-border-color;
         background-image: url("../img/sub-list.png");
         background-repeat: no-repeat;
         background-position: left center;

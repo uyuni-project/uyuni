@@ -36,7 +36,7 @@ const MaintenanceScheduleList = (props: ScheduleListProps) => {
           header={t("Calendar")}
           cell={(row) =>
             row.calendarId && (
-              <a className="link-tag" href={"/rhn/manager/schedule/maintenance/calendars#/details/" + row.calendarId}>
+              <a href={"/rhn/manager/schedule/maintenance/calendars#/details/" + row.calendarId}>
                 {row.calendarName}
               </a>
             )

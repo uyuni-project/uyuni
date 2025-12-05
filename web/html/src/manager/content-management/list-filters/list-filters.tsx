@@ -184,7 +184,7 @@ const ListFilters = (props: Props) => {
           cell={(row) =>
             sortProjects(row).map((p, index) => (
               <a
-                className="project-tag-link js-spa"
+                className="js-spa"
                 href={`/rhn/manager/contentmanagement/project/${p.left}`}
                 key={`project-tag-link-${index}`}
               >
