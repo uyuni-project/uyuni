@@ -1035,9 +1035,9 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
             ret = profile.getDistro();
         }
         if (!isPost) {
-            return ret.convertOptionsMap(ret.getKernelOptions().get());
+            return ret.convertOptionsMap(ret.getKernelOptions().orElse(new HashMap<>()));
         }
-        return ret.convertOptionsMap(ret.getKernelOptionsPost().get());
+        return ret.convertOptionsMap(ret.getKernelOptionsPost().orElse(new HashMap<>()));
 
     }
 }

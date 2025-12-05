@@ -33,7 +33,7 @@ import javax.servlet.http.HttpServletResponse;
 public class CreateSetupAction extends RhnListAction {
 
     /** This class reuses code in the channel assignment page */
-    private ChannelSetupAction channelSetupAction = new ChannelSetupAction();
+    private final ChannelSetupAction channelSetupAction = new ChannelSetupAction();
 
     /**
      * {@inheritDoc}

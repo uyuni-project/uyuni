@@ -182,7 +182,8 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
         }
 
         // for each old to new base channel value in the form
-        for (Long oldBaseChannelId : changedChannels.keySet()) {
+        for (Map.Entry<Long, Long> entry : changedChannels.entrySet()) {
+            Long oldBaseChannelId = entry.getKey();
             Channel oldBase = null;
             // if old channel was present, get it
             if (oldBaseChannelId.intValue() != -1) {
@@ -191,7 +192,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
             Channel newBase = null;
 
             // get new base channel from the key-value map from the form
-            Long newBaseChannelId = changedChannels.get(oldBaseChannelId);
+            Long newBaseChannelId = entry.getValue();
             log.debug("newBaseChannelId = {}", newBaseChannelId);
 
             // First add an entry for the default base channel:
@@ -301,8 +302,9 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
                 Map<Channel, Channel> preservations = ChannelManager.findCompatibleChildren(
                         oldBase, newBase, user);
 
-                for (Channel c : preservations.keySet()) {
-                    Channel match = preservations.get(c);
+                for (Map.Entry<Channel, Channel> preservationsEntry : preservations.entrySet()) {
+                    Channel c = preservationsEntry.getKey();
+                    Channel match = preservationsEntry.getValue();
                     List<Map<String, Object>> serversAffected =
                             SystemManager.
                         getSsmSystemsSubscribedToChannel(user, c.getId());
@@ -579,11 +581,12 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
         List<ChannelActionDAO> actions = new ArrayList<>();
         Map<Long, Channel> channelMap = new HashMap<>();
 
-        for (Long toId : chgs.keySet()) {
+        for (Map.Entry<Long, List<Long>> entry : chgs.entrySet()) {
+            Long toId = entry.getKey();
             successes.put(toId, new ArrayList<>());
             skipped.put(toId, new ArrayList<>());
 
-            for (Long srvId : chgs.get(toId)) {
+            for (Long srvId : entry.getValue()) {
                 Server s = SystemManager.lookupByIdAndUser(srvId, u);
 
                 Long cid = null;
@@ -630,8 +633,8 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
         Long operationId = SsmOperationManager.createOperation(u,
                 "ssm.base.subscription.operation.label", null);
         List<Long> sids = new ArrayList<>();
-        for (Long cid : successes.keySet()) {
-            sids.addAll(successes.get(cid));
+        for (Map.Entry<Long, List<Long>> entry : successes.entrySet()) {
+            sids.addAll(entry.getValue());
         }
 
         SsmOperationManager.associateServersWithOperation(operationId, u.getId(), sids);
@@ -663,7 +666,9 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
 
         ActionMessages msgs = new ActionMessages();
 
-        for (Long toId : successes.keySet()) {
+        for (Map.Entry<Long, List<Long>> entry : successes.entrySet()) {
+            Long toId = entry.getKey();
+
             Channel c = null;
             if (toId != null && toId != -1L) {
                 c = ChannelManager.lookupByIdAndUser(toId, u);
@@ -672,7 +677,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
             ActionMessage am;
 
             // Success messages
-            List<Long> srvrs = successes.get(toId);
+            List<Long> srvrs = entry.getValue();
             if (srvrs.isEmpty()) {
                 continue;
             }

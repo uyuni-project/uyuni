@@ -31,15 +31,15 @@ public class PillarUtils {
      */
     public static Map<String, Object> convertSizeToString(Map<String, Object> pillar) {
         Map<String, Object> copy = new HashMap<>();
-        for (String key : pillar.keySet()) {
-            Object value = pillar.get(key);
-            if (key.equals("size") && (value instanceof Integer || value instanceof Long)) {
+        for (Map.Entry<String, Object> entry : pillar.entrySet()) {
+            Object value = entry.getValue();
+            if (entry.getKey().equals("size") && (value instanceof Integer || value instanceof Long)) {
                 value = String.valueOf(value);
             }
             else if (value instanceof Map) {
                 value = convertSizeToString((Map<String, Object>) value);
             }
-            copy.put(key, value);
+            copy.put(entry.getKey(), value);
         }
         return copy;
     }
@@ -51,15 +51,15 @@ public class PillarUtils {
      */
     public static Map<String, Object> convertSizeToLong(Map<String, Object> pillar) {
         Map<String, Object> copy = new HashMap<>();
-        for (String key : pillar.keySet()) {
-            Object value = pillar.get(key);
-            if (key.equals("size") && value instanceof String str) {
+        for (Map.Entry<String, Object> entry : pillar.entrySet()) {
+            Object value = entry.getValue();
+            if (entry.getKey().equals("size") && value instanceof String str) {
                 value = Long.parseLong(str);
             }
             else if (value instanceof Map) {
                 value = convertSizeToLong((Map<String, Object>) value);
             }
-            copy.put(key, value);
+            copy.put(entry.getKey(), value);
         }
         return copy;
     }

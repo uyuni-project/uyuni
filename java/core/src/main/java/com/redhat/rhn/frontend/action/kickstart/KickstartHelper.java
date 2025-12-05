@@ -390,9 +390,9 @@ public class KickstartHelper {
         // copy child channel set otherwise you'd modify it as an unwanted side effect
         Set<Channel> channelsToCheck = new HashSet<>(ksdata.getChildChannels());
         channelsToCheck.add(channel);
-        String[] packagesToLook = KickstartFormatter.FRESH_PKG_NAMES_RHEL8;
+        List<String> packagesToLook = KickstartFormatter.getFreshPkgNamesRhel8();
         if (ksdata.isUserSelectedSaltInstallType()) {
-            packagesToLook =  KickstartFormatter.FRESH_PKG_NAMES_RHEL8_FOR_SALT;
+            packagesToLook =  KickstartFormatter.getFreshPkgNamesRhel8ForSalt();
         }
         for (String pkgName : packagesToLook) {
             boolean found = false;
@@ -468,14 +468,14 @@ public class KickstartHelper {
         List<String> packages = new ArrayList<>();
         if (ksdata.isRhel8()) {
             if (ksdata.isUserSelectedSaltInstallType()) {
-                packages.addAll(Arrays.asList(KickstartFormatter.FRESH_PKG_NAMES_RHEL8_FOR_SALT));
+                packages.addAll(KickstartFormatter.getFreshPkgNamesRhel8ForSalt());
             }
             else {
-                packages.addAll(Arrays.asList(KickstartFormatter.FRESH_PKG_NAMES_RHEL8));
+                packages.addAll(KickstartFormatter.getFreshPkgNamesRhel8());
             }
         }
         else {
-            packages.addAll(Arrays.asList(KickstartFormatter.UPDATE_PKG_NAMES));
+            packages.addAll(KickstartFormatter.getUpdatePkgNames());
         }
         String autoKickStartPackages = ksdata.getKickstartPackageNames().stream().map(String::trim)
                 .collect(Collectors.joining("|"));

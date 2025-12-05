@@ -54,7 +54,7 @@ import javax.servlet.http.HttpServletResponse;
 public class CreateAction extends RhnSetAction {
 
     /** This class reuses code in the channel assignment page */
-    private ChannelAction channelAction = new ChannelAction();
+    private final ChannelAction channelAction = new ChannelAction();
 
     /**
      * {@inheritDoc}

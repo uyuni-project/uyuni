@@ -139,7 +139,7 @@ public class ActionManager extends BaseManager {
 
     // List of package names that we want to make sure we don't
     // remove when doing a package sync.  Never remove running kernel for instance.
-    public static final String[] PACKAGES_NOT_REMOVABLE = {"kernel"};
+    private static final String[] PACKAGES_NOT_REMOVABLE = {"kernel"};
 
     private static TaskomaticApi taskomaticApi = new TaskomaticApi();
 
@@ -1350,7 +1350,7 @@ public class ActionManager extends BaseManager {
         Profile cProfile = Profile.lookupById(CobblerXMLRPCHelper.getConnection(
                 pcmd.getUser()), pcmd.getKsdata().getCobblerId());
         if (pcmd.getVirtBridge() == null) {
-            kad.setVirtBridge(cProfile.getVirtBridge().get());
+            kad.setVirtBridge(cProfile.getVirtBridge().orElse(""));
         }
         else {
             kad.setVirtBridge(pcmd.getVirtBridge());

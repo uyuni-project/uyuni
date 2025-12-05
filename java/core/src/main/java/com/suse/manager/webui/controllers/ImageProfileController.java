@@ -385,7 +385,8 @@ public class ImageProfileController {
         }
 
         //Throw NoSuchElementException if not found
-        ImageStore store = ImageStoreFactory.lookupBylabelAndOrg(reqData.getImageStore(), user.getOrg()).get();
+        ImageStore store = ImageStoreFactory
+                .lookupBylabelAndOrg(reqData.getImageStore(), user.getOrg()).orElseThrow();
 
         if (!ImageProfileFactory.getStoreTypeForProfile(profile).equals(store.getStoreType())) {
             return result(res, ResultJson.error("invalid_store_type"), new TypeToken<>() { });

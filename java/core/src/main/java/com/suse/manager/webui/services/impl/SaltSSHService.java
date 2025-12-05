@@ -121,7 +121,7 @@ public class SaltSSHService {
     private static final Logger LOG = LogManager.getLogger(SaltSSHService.class);
     private static final String CLEANUP_SSH_MINION_SALT_STATE = "cleanup_ssh_minion";
 
-    public static final List<String> ACTION_STATES_LIST = Arrays.asList(
+    private static final List<String> ACTION_STATES_LIST = List.of(
             "certs", "channels", "cleanup_ssh_minion", "configuration",
             "distupgrade", "hardware", "images", "packages/init.sls",
             "packages/patchdownload.sls", "packages/patchinstall.sls", "packages/pkgdownload.sls",
@@ -134,7 +134,7 @@ public class SaltSSHService {
             .map(state -> SALT_FS_PREFIX + state)
             .collect(Collectors.joining(","));
 
-    public static final List<String> DEFAULT_TOPS = Arrays.asList(
+    private static final List<String> DEFAULT_TOPS = List.of(
             "channels",
             "certs",
             "packages",
@@ -168,6 +168,20 @@ public class SaltSSHService {
         // with salt-ssh executions
         this.asyncSaltSSHExecutor = Executors.newFixedThreadPool(3);
         this.saltActionChainGeneratorService = saltActionChainGeneratorServiceIn;
+    }
+
+    /**
+     * @return the action states list
+     */
+    public static List<String> getActionStatesList() {
+        return ACTION_STATES_LIST;
+    }
+
+    /**
+     * @return the default tops
+     */
+    public static List<String> getDefaultTops() {
+        return DEFAULT_TOPS;
     }
 
     /**

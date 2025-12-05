@@ -16,13 +16,12 @@ package com.suse.manager.webui.services;
 
 import static com.suse.manager.webui.services.SaltConstants.SALT_FS_PREFIX;
 import static com.suse.manager.webui.services.SaltConstants.SUMA_STATE_FILES_ROOT_PATH;
-import static com.suse.manager.webui.services.impl.SaltSSHService.ACTION_STATES_LIST;
-import static com.suse.manager.webui.services.impl.SaltSSHService.DEFAULT_TOPS;
 
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.MinionSummary;
 
+import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.utils.AbstractSaltRequisites;
 import com.suse.manager.webui.utils.ActionSaltState;
 import com.suse.manager.webui.utils.IdentifiableSaltState;
@@ -489,7 +488,8 @@ public class SaltActionChainGeneratorService {
             while (m.find(start)) {
                 String ref = m.group(2);
                 start = m.start() + 1;
-                if (refInList(DEFAULT_TOPS, ref) || refInList(ACTION_STATES_LIST, ref)) {
+                if (refInList(SaltSSHService.getDefaultTops(), ref) ||
+                        refInList(SaltSSHService.getActionStatesList(), ref)) {
                     // skip refs to tops and action states
                     continue;
                 }

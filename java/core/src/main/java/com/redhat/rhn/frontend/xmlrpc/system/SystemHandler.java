@@ -6636,7 +6636,7 @@ public class SystemHandler extends BaseHandler {
         rec.setHostName(hostName);
         rec.setGateway(gateway);
         rec.setNameServers(Optional.of(nameservers));
-        Map<String, Object> meta = rec.getKsMeta().get();
+        Map<String, Object> meta = rec.getKsMeta().orElse(new HashMap<>());
         meta.put(KickstartFormatter.STATIC_NETWORK_VAR, command);
         rec.setKsMeta(Optional.of(meta));
         rec.save();
@@ -6681,7 +6681,7 @@ public class SystemHandler extends BaseHandler {
         String nm6 = (String) data6.get("netmask");
         String gw6 = (String) data6.get("gateway");
 
-        Map<String, Object> meta = rec.getKsMeta().get();
+        Map<String, Object> meta = rec.getKsMeta().orElse(new HashMap<>());
         String ipv6GatewayMeta = (String) meta.get(KickstartFormatter.USE_IPV6_GATEWAY);
         boolean preferIpv6Gateway = false;
         if (ipv6GatewayMeta != null && ipv6GatewayMeta.equals("true")) {
@@ -8079,9 +8079,9 @@ public class SystemHandler extends BaseHandler {
                 // Consider alternatives (cloned channel trees)
                 SortedMap<ClonedChannel, List<Long>> alternatives = DistUpgradeManager.
                         getAlternatives(targetProducts, arch, loggedInUser);
-                for (ClonedChannel clonedBaseChannel : alternatives.keySet()) {
-                    if (clonedBaseChannel.getLabel().equals(baseChannelLabel)) {
-                        channelIDs.addAll(alternatives.get(clonedBaseChannel));
+                for (Map.Entry<ClonedChannel, List<Long>> entry : alternatives.entrySet()) {
+                    if (entry.getKey().getLabel().equals(baseChannelLabel)) {
+                        channelIDs.addAll(entry.getValue());
 
                         var scheduledAction = DistUpgradeManager.scheduleDistUpgrade(
                             loggedInUser,

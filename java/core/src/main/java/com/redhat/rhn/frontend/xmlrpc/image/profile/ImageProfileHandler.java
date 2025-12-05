@@ -165,8 +165,8 @@ public class ImageProfileHandler extends BaseHandler {
 
         ImageStore store;
         try {
-            store = ImageStoreFactory.lookupBylabelAndOrg(storeLabel,
-                    loggedInUser.getOrg()).get();
+            //if get() finds no value, it's caught by the exception
+            store = ImageStoreFactory.lookupBylabelAndOrg(storeLabel, loggedInUser.getOrg()).orElseThrow();
         }
         catch (NoSuchElementException e) {
             throw new NoSuchImageStoreException();
@@ -295,10 +295,12 @@ public class ImageProfileHandler extends BaseHandler {
 
             switch (profile.getImageType()) {
                 case ImageProfile.TYPE_DOCKERFILE:
-                    profile.asDockerfileProfile().get().setPath(path);
+                    Optional<DockerfileProfile> dockerfileProfileOpt = profile.asDockerfileProfile();
+                    dockerfileProfileOpt.ifPresent(dockerfileProfileIn -> dockerfileProfileIn.setPath(path));
                     break;
                 case ImageProfile.TYPE_KIWI:
-                    profile.asKiwiProfile().get().setPath(path);
+                    Optional<KiwiProfile> kiwiProfileOpt = profile.asKiwiProfile();
+                    kiwiProfileOpt.ifPresent(kiwiProfileIn -> kiwiProfileIn.setPath(path));
                     break;
                 default:
                     throw new InvalidParameterException("The type " + profile.getImageType() +
@@ -310,7 +312,8 @@ public class ImageProfileHandler extends BaseHandler {
 
             switch (profile.getImageType()) {
                 case ImageProfile.TYPE_KIWI:
-                    profile.asKiwiProfile().get().setKiwiOptions(kiwiOptions);
+                    Optional<KiwiProfile> kiwiProfileOpt = profile.asKiwiProfile();
+                    kiwiProfileOpt.ifPresent(kiwiProfileIn -> kiwiProfileIn.setKiwiOptions(kiwiOptions));
                     break;
                 default:
                     throw new InvalidParameterException("The type " + profile.getImageType() +

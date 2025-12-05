@@ -427,9 +427,9 @@ public class DailySummary extends RhnJavaJob {
                 longestStatusLength, statusSet, errataActions);
         body.append(formattedErrataActions);
 
-        for (String advisory : errataSynopsis.keySet()) {
-            legend.append(ERRATA_INDENTION + advisory + ERRATA_INDENTION +
-                    errataSynopsis.get(advisory) + "\n");
+        for (Map.Entry<String, String> entry : errataSynopsis.entrySet()) {
+            legend.append(ERRATA_INDENTION + entry.getKey() + ERRATA_INDENTION +
+                    entry.getValue() + "\n");
         }
 
         StringBuffer formattedNonErrataActions = renderActionTree(longestActionLength,
@@ -451,11 +451,11 @@ public class DailySummary extends RhnJavaJob {
             int longestStatusLength, LinkedHashSet<String> statusSet,
             TreeMap<String, Map<String, Integer>> actionTree) {
         StringBuffer formattedActions = new StringBuffer();
-        for (String actionName : actionTree.keySet()) {
-            formattedActions.append(actionName +
-                   StringUtils.repeat(" ", (longestActionLength - (actionName.length()))));
+        for (Map.Entry<String, Map<String, Integer>> entry : actionTree.entrySet()) {
+            formattedActions.append(entry.getKey() +
+                   StringUtils.repeat(" ", (longestActionLength - (entry.getKey().length()))));
             for (String status : statusSet) {
-                Map<String, Integer> counts = actionTree.get(actionName);
+                Map<String, Integer> counts = entry.getValue();
                 Integer theCount = counts.getOrDefault(status, 0);
                 formattedActions.append(theCount);
                 formattedActions.append(StringUtils.repeat(" ", longestStatusLength +

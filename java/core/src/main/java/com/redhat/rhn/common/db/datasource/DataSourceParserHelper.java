@@ -200,22 +200,22 @@ class DataSourceParserHelper implements ContentHandler, Serializable {
         // statement.
         ArrayList<String> errors = new ArrayList<>();
         String errmsg;
-        for (String modeKey : modes.keySet()) {
-            logger.debug("Sanity check for mode {}", modeKey);
-            ParsedMode pm = modes.get(modeKey);
+        for (Map.Entry<String, ParsedMode> entry : modes.entrySet()) {
+            logger.debug("Sanity check for mode {}", entry.getKey());
+            ParsedMode pm = entry.getValue();
             if (pm == null) {
-                errors.add("ParsedMode is null for key '" + modeKey + "'");
+                errors.add("ParsedMode is null for key '" + entry.getKey() + "'");
                 continue;
             }
 
             logger.debug("Checking query");
-            errmsg = sanityCheckParsedQuery(pm.getParsedQuery(), modeKey);
+            errmsg = sanityCheckParsedQuery(pm.getParsedQuery(), entry.getKey());
             if (errmsg != null) {
                 errors.add(errmsg);
             }
             logger.debug("Checking elaborators");
             for (ParsedQuery pq : pm.getElaborators()) {
-                errmsg = sanityCheckParsedQuery(pq, modeKey);
+                errmsg = sanityCheckParsedQuery(pq, entry.getKey());
                 if (errmsg != null) {
                     errors.add(errmsg);
                 }

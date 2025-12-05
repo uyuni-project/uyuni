@@ -324,9 +324,8 @@ public class SPMigrationAction extends RhnAction {
                     suseBaseChannel, ctx, server, extractIDs(requiredChannels)));
 
             // Put cloned alternatives
-            for (ClonedChannel alternative : alternatives.keySet()) {
-                channelMap.put(alternative, getChildChannels(
-                        alternative, ctx, server, alternatives.get(alternative)));
+            for (Map.Entry<ClonedChannel, List<Long>> entry : alternatives.entrySet()) {
+                channelMap.put(entry.getKey(), getChildChannels(entry.getKey(), ctx, server, entry.getValue()));
             }
 
             // Put all channel data to the request
