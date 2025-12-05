@@ -3,8 +3,12 @@
   margin-bottom: 14px;
 
   .panel {
-    // Used panel inside panel
+    // TODO: Used panel inside panel -> Remove bg color and use border sor secondary panels
     background: $panel-white-bg;
+    
+    > .panel-heading {
+      border-color: $panel-white-border-color;
+    }
   }
 
   .panel-footer {

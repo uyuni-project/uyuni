@@ -10,7 +10,7 @@ code {
   padding: 2px 4px;
   font-size: 90%;
   color: #c7254e;
-  background-color: #f9f2f4;
+  background-color: $code-bg; //#f9f2f4;
   border-radius: 0;
 }
 
@@ -36,10 +36,10 @@ pre {
   margin: 0 0 10.5px;
   font-size: 13px;
   line-height: 1.5;
-  color: #141823;
+  color: $body-color;
   word-wrap: break-word;
-  background-color: #f5f5f5;
-  border: 1px solid #ccc;
+  background-color: $pre-bg;
+  border: 1px solid $pre-border;
   border-radius: 0;
   white-space: pre-wrap;
 }

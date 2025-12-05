@@ -53,7 +53,6 @@ const MaintenanceCalendarList = (props: CalendarListProps) => {
           cell={(row) =>
             row.scheduleNames.map((name) => (
               <a
-                className="link-tag"
                 href={"/rhn/manager/schedule/maintenance/schedules#/details/" + name.id}
                 key={`link-${name.name}`}
               >
