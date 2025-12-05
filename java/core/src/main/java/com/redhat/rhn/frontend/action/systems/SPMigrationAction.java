@@ -180,52 +180,8 @@ public class SPMigrationAction extends RhnAction {
             }
         }
         else if (forward.getName().equals(SETUP)) {
-            // Find target products
-            Optional<SUSEProductSet> installedProducts = server.getInstalledProductSet();
-            ChannelArch arch = server.getServerArch().getCompatibleChannelArch();
-            List<SUSEProductSet> migrationTargets = DistUpgradeManager.
-                    getTargetProductSets(installedProducts,
-                            server.getServerArch().getCompatibleChannelArch(),
-                            ctx.getCurrentUser());
-
-            // Get and decode the target product selected to migrate
-            SUSEProductSet targetProducts = new SUSEProductSet();
-            for (SUSEProductSet target : migrationTargets) {
-                if (target.getSerializedProductIDs()
-                        .equals(targetProductSelected)) {
-                    targetProducts = target;
-                }
-            }
-            request.setAttribute(TARGET_PRODUCTS, targetProducts);
-            setMissingSuccessorsInfo(request, installedProducts, List.of(targetProducts));
-
-            // Get the base channel
-            Channel suseBaseChannel = DistUpgradeManager.getProductBaseChannel(
-                    targetProducts.getBaseProduct().getId(), arch, ctx.getCurrentUser());
-
-            // Determine mandatory channels
-            List<EssentialChannelDto> requiredChannels =
-                    DistUpgradeManager.getRequiredChannels(
-                            targetProducts, suseBaseChannel.getId());
-
-            // Get available alternatives
-            SortedMap<ClonedChannel, List<Long>> alternatives = DistUpgradeManager.
-                    getAlternatives(targetProducts, arch, ctx.getCurrentUser());
-
-            // Create new map, put original channels first
-            HashMap<Channel, List<ChildChannelDto>> channelMap =
-                    new LinkedHashMap<>();
-            channelMap.put(suseBaseChannel, getChildChannels(
-                    suseBaseChannel, ctx, server, extractIDs(requiredChannels)));
-
-            // Put cloned alternatives
-            for (Map.Entry<ClonedChannel, List<Long>> entry : alternatives.entrySet()) {
-                channelMap.put(entry.getKey(), getChildChannels(entry.getKey(), ctx, server, entry.getValue()));
-            }
-
-            // Put all channel data to the request
-            request.setAttribute(CHANNEL_MAP, channelMap);
-        }
+            handleSetupForward(request, ctx, server);
+         }
         else if (forward.getName().equals(CONFIRM)) {
             setConfirmAttributes(request, ctx, server, form,
                     parHolder.getTargetBaseProduct(), parHolder.getTargetAddonProducts(),
@@ -408,6 +364,56 @@ public class SPMigrationAction extends RhnAction {
         }
 
         return false;
+    }
+
+    private void handleSetupForward(HttpServletRequest request, RequestContext ctx, Server server) {
+        // Find target products
+        String targetProductSelected = request.getParameter(TARGET_PRODUCT_SELECTED);
+
+        Optional<SUSEProductSet> installedProducts = server.getInstalledProductSet();
+        ChannelArch arch = server.getServerArch().getCompatibleChannelArch();
+        List<SUSEProductSet> migrationTargets = DistUpgradeManager.
+                getTargetProductSets(installedProducts,
+                        server.getServerArch().getCompatibleChannelArch(),
+                        ctx.getCurrentUser());
+
+        // Get and decode the target product selected to migrate
+        SUSEProductSet targetProducts = new SUSEProductSet();
+        for (SUSEProductSet target : migrationTargets) {
+            if (target.getSerializedProductIDs()
+                    .equals(targetProductSelected)) {
+                targetProducts = target;
+            }
+        }
+        request.setAttribute(TARGET_PRODUCTS, targetProducts);
+        setMissingSuccessorsInfo(request, installedProducts, List.of(targetProducts));
+
+        // Get the base channel
+        Channel suseBaseChannel = DistUpgradeManager.getProductBaseChannel(
+                targetProducts.getBaseProduct().getId(), arch, ctx.getCurrentUser());
+
+        // Determine mandatory channels
+        List<EssentialChannelDto> requiredChannels =
+                DistUpgradeManager.getRequiredChannels(
+                        targetProducts, suseBaseChannel.getId());
+
+        // Get available alternatives
+        SortedMap<ClonedChannel, List<Long>> alternatives = DistUpgradeManager.
+                getAlternatives(targetProducts, arch, ctx.getCurrentUser());
+
+        // Create new map, put original channels first
+        HashMap<Channel, List<ChildChannelDto>> channelMap =
+                new LinkedHashMap<>();
+        channelMap.put(suseBaseChannel, getChildChannels(
+                suseBaseChannel, ctx, server, extractIDs(requiredChannels)));
+
+        // Put cloned alternatives
+        for (Map.Entry<ClonedChannel, List<Long>> entry : alternatives.entrySet()) {
+            channelMap.put(entry.getKey(), getChildChannels(entry.getKey(), ctx, server, entry.getValue()));
+        }
+
+        // Put all channel data to the request
+        request.setAttribute(CHANNEL_MAP, channelMap);
     }
 
     /**
