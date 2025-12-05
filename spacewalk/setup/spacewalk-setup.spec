@@ -38,7 +38,7 @@
 %{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 
 Name:           spacewalk-setup
-Version:        5.2.1
+Version:        5.2.3
 Release:        0
 Summary:        Initial setup tools for %{productprettyname}
 License:        GPL-2.0-only
@@ -71,11 +71,9 @@ Requires:       perl
 %endif
 Requires:       perl-Params-Validate
 Requires:       spacewalk-schema
-Requires:       perl(Term::Completion::Path)
 %if 0%{?suse_version}
 Requires:       curl
 Requires:       patch
-Requires:       perl-Frontier-RPC
 Requires:       perl-XML-LibXML
 Requires:       perl-XML-SAX
 Requires:       perl-libwww-perl

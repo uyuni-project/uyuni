@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Nov 27 11:20:24 CET 2025 - michael.calmer@suse.com
+
+- version 5.2.2
+  * Image rebuilt to the newest version with updated dependencies
+    for SUSE Multi-Linux Manager 5.2.0 Alpha 1
+
+-------------------------------------------------------------------
 Tue Oct 28 10:20:25 CET 2025 - rosuna@suse.com
 
 - version 5.2.1

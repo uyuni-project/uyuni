@@ -28,9 +28,9 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
     mkdir /etc/saline.defaults && cp -r /etc/salt/saline* /etc/saline.defaults/ && \
     chown -R salt:salt /etc/saline.defaults && \
     zypper --non-interactive clean --all && \
-    rpm -e zypper && \
+    rpm -e zypper libzypp container-suseconnect && \
     find /etc -maxdepth 1 -type f -name '*-' -delete && \
-    rm -rf /etc/salt /run/zypp.pid /srv/spm /usr/lib/rpm/macros.d/macros.python3 /usr/lib/sysimage/rpm/* \
+    rm -rf /etc/salt /run/zypp.pid /srv/spm /usr/lib/rpm/macros.d/macros.python3 \
            /usr/share/doc /usr/share/licenses /usr/share/man && \
     rm -rf /var/log/{alternatives.log,lastlog,tallylog,suseconnect.log,zypper.log,zypp/history,YaST2}
 
@@ -42,7 +42,7 @@ LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
 LABEL org.opencontainers.image.name=server-saline-image
-LABEL org.opencontainers.image.version=5.2.1
+LABEL org.opencontainers.image.version=5.2.2
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.reference="${REFERENCE_PREFIX}/salt-saline:${PRODUCT_VERSION}.%RELEASE%"
 # endlabelprefix

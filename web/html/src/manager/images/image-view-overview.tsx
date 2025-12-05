@@ -14,7 +14,7 @@ import { PopUp } from "components/popup";
 
 import { localizedMoment } from "utils";
 
-// See java/code/src/com/suse/manager/webui/templates/content_management/view.jade
+// See java/core/src/main/resources/com/suse/manager/webui/templates/content_management/view.jade
 declare global {
   interface Window {
     imageId?: any;
@@ -30,18 +30,22 @@ const typeMap = {
   kiwi: "OS Image",
 };
 
-function StatusIcon(props) {
+type StatusIconProps = {
+  name: string;
+  data: {
+    buildServer: any;
+  };
+  action?: {
+    status: number;
+    id: any;
+  };
+};
+
+function StatusIcon(props: StatusIconProps) {
   const data = props.data;
   const action = props.action;
 
-  if (!action) {
-    return (
-      <span>
-        <i className="fa fa-question-circle fa-1-5x" title={t("No information")} />
-        {t("No information")}
-      </span>
-    );
-  } else if (action.status === 0) {
+  if (action?.status === 0) {
     return (
       <span>
         <i className="fa fa-clock-o fa-1-5x" title={t("Queued")} />
@@ -53,7 +57,7 @@ function StatusIcon(props) {
         </a>
       </span>
     );
-  } else if (action.status === 1) {
+  } else if (action?.status === 1) {
     return (
       <span>
         <i className="fa fa-exchange fa-1-5x text-info" title={t("In progress")} />
@@ -65,7 +69,7 @@ function StatusIcon(props) {
         </a>
       </span>
     );
-  } else if (action.status === 2) {
+  } else if (action?.status === 2) {
     return (
       <span>
         <i className="fa fa-check-circle fa-1-5x text-success" title={t("Successful")} />
@@ -77,7 +81,7 @@ function StatusIcon(props) {
         </a>
       </span>
     );
-  } else if (action.status === 3) {
+  } else if (action?.status === 3) {
     return (
       <span>
         <i className="fa fa-times-circle-o fa-1-5x text-danger" title={t("Failed")} />

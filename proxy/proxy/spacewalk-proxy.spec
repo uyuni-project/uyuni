@@ -19,7 +19,7 @@
 %{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
 
 Name:           spacewalk-proxy
-Version:        5.2.1
+Version:        5.2.2
 Release:        0
 Summary:        Spacewalk Proxy Server
 License:        GPL-2.0-only

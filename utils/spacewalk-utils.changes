@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Nov 27 11:12:40 CET 2025 - michael.calmer@suse.com
+
+- version 5.2.2-0
+  * Change tumbleweed client tools URL for stable flavor
+  * Add openSUSE Leap 16.0 repositories
+
+-------------------------------------------------------------------
 Mon Oct 27 15:30:43 CET 2025 - rosuna@suse.com
 
 - version 5.2.1-0

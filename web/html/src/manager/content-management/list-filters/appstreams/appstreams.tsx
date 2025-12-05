@@ -10,16 +10,16 @@ import TextInput from "./text-input";
 
 export default function AppStreams({ matcher }) {
   const [channels, setChannels] = useState<{ id: string; name: string }[]>([]);
-  const [isBrowse, setBrowse] = useState(false);
-  const [isLoading, setLoading] = useState(false);
+  const [isBrowse, setIsBrowse] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const enableBrowse = () => {
-    setLoading(true);
+    setIsLoading(true);
     Network.get("/rhn/manager/api/channels/modular")
       .then((channels) => {
         setChannels(channels.data);
-        setLoading(false);
-        setBrowse(true);
+        setIsLoading(false);
+        setIsBrowse(true);
       })
       .catch((xhr) => showErrorToastr(Network.responseErrorMessage(xhr).map((msg) => msg.text)));
   };

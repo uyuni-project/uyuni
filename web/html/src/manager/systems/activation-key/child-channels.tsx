@@ -4,6 +4,7 @@ import { RequiredChannelsResultType } from "core/channels/api/use-mandatory-chan
 
 import { ChannelAnchorLink } from "components/links";
 import { Toggler } from "components/toggler";
+import { DEPRECATED_onClick } from "components/utils";
 import { Loading } from "components/utils/loading/Loading";
 
 import { Channel } from "./activation-key-channels-api";
@@ -159,7 +160,7 @@ class ChildChannels extends Component<ChildChannelsProps, ChildChannelsState> {
   render() {
     return (
       <div className="child-channels-block">
-        <h4 className="pointer" onClick={() => this.toggleChannelVisibility()}>
+        <h4 className="pointer" {...DEPRECATED_onClick(() => this.toggleChannelVisibility())}>
           <i className={"fa " + (this.state.collapsed ? "fa-angle-right" : "fa-angle-down")} />
           {this.props.base.name}
         </h4>

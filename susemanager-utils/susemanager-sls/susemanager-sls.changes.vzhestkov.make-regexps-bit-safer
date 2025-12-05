@@ -1,4 +1,0 @@
-- Avoid pylint undefined __salt__ variable warnings
-  in kiwi_info module
-- Fix regular expressions in kiwi_info and mgrnet modules
-  to avoid SonarCloud warnings

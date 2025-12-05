@@ -11,7 +11,7 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
         python3-PyYAML \
         python3-pyzmq && \
     zypper --non-interactive clean --all && \
-    rpm -e zypper && \
+    rpm -e zypper libzypp container-suseconnect && \
     rm -rf /var/log/{alternatives.log,lastlog,tallylog,suseconnect.log,zypper.log,zypp/history,YaST2}
 
 # LABELs
@@ -28,7 +28,7 @@ LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
 LABEL org.opencontainers.image.name=proxy-salt-broker-image
-LABEL org.opencontainers.image.version=5.2.1
+LABEL org.opencontainers.image.version=5.2.2
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.reference="${REFERENCE_PREFIX}/proxy-salt-broker:${PRODUCT_VERSION}.%RELEASE%"
 # endlabelprefix

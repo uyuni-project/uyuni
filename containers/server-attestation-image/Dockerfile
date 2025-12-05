@@ -8,12 +8,16 @@ FROM $BASE
 ARG ARCH_SPECIFIC_MODULES
 
 # Main packages
-RUN zypper ref && zypper --non-interactive up
-RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses --force-resolution \
-    uyuni-coco-attestation-core \
-    uyuni-coco-attestation-module-secureboot \
-    ${ARCH_SPECIFIC_MODULES} \
-    javassist ognl procps
+RUN echo "rpm.install.excludedocs = yes" >>/etc/zypp/zypp.conf && \
+    zypper ref && zypper --non-interactive up && \
+    zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses --force-resolution \
+        uyuni-coco-attestation-core \
+        uyuni-coco-attestation-module-secureboot \
+        ${ARCH_SPECIFIC_MODULES} \
+        javassist ognl procps && \
+    zypper --non-interactive clean --all && \
+    rpm -e zypper libzypp container-suseconnect && \
+    rm -rf /var/log/{alternatives.log,lastlog,tallylog,suseconnect.log,zypper.log,zypp/history,YaST2}
 
 ARG PRODUCT=Uyuni
 ARG VENDOR="Uyuni project"
@@ -28,7 +32,7 @@ LABEL org.opencontainers.image.description="${PRODUCT} Confidential Computing at
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
-LABEL org.opencontainers.image.version=5.2.1
+LABEL org.opencontainers.image.version=5.2.2
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.reference="${REFERENCE_PREFIX}/server-attestation:${PRODUCT_VERSION}.%RELEASE%"
 # endlabelprefix

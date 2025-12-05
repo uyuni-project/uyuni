@@ -6,7 +6,7 @@ import { TopPanel } from "components/panels/TopPanel";
 
 import Network from "utils/network";
 
-// See java/code/src/com/suse/manager/webui/templates/formula_catalog/formula.jade
+// See java/core/src/main/resources/com/suse/manager/webui/templates/formula_catalog/formula.jade
 declare global {
   interface Window {
     formulaName?: any;
@@ -69,7 +69,9 @@ class FormulaDetail extends Component<Props, State> {
       <TopPanel title={"View Formula: " + window.formulaName} icon="spacewalk-icon-salt-add">
         <form className="form-horizontal">
           <div className="form-group">
-            <label className="col-md-3 control-label">Name:</label>
+            <label className="col-md-3 control-label" htmlFor="name">
+              {t("Name:")}
+            </label>
             <div className="col-md-6">
               <input className="form-control" type="text" name="name" value={window.formulaName} readOnly disabled />
             </div>

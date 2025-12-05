@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Thu Nov 27 11:13:44 CET 2025 - michael.calmer@suse.com
+
+- version 5.2.2-0
+  * Remove the dependency on the old python client tools
+  * Remove rhn_proxy_package_manager tool
+  * Disable listing the content of /icons (bsc#1247544)
+
+-------------------------------------------------------------------
 Mon Oct 27 15:25:52 CET 2025 - rosuna@suse.com
 
 - version 5.2.1-0

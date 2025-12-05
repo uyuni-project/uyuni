@@ -1,0 +1,90 @@
+#!/bin/bash
+#
+# Copyright (c) 2025 SUSE LLC
+#
+# This software is licensed to you under the GNU General Public License,
+# version 2 (GPLv2). There is NO WARRANTY for this software, express or
+# implied, including the implied warranties of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+# along with this software; if not, see
+# http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+#
+
+PARAMS=()
+while (("$#")); do
+    case "$1" in
+    -p | --copy)
+        PARAMS+=("$1")
+        shift
+        ;;
+    -d | --dry-run)
+        PARAMS+=("$1")
+        shift
+        ;;
+    *) # unsupported flags
+        echo "Error: Unsupported parameter $1" >&2
+        echo "Usage: $0 [--dry-run]"
+        exit 1
+        ;;
+    esac
+done
+
+BASE_DIR=../code
+if [ ! -d $BASE_DIR ] || [ ! -x $BASE_DIR ]; then
+    echo "Unable to migrate spacewalk-java, cannot find base directory $BASE_DIR"
+    exit 1
+fi
+
+echo "1 ┬ core sources"
+echo -n "  ├─ Migrate main java"
+./mvn-migrate $BASE_DIR/src/ ../core/ --include "\.java$" --exclude "\(/test/\|/testing/\|/TestConnectionManager\.java$\)" --yes "${PARAMS[@]}"
+echo
+
+# Fix to move tag library definition to the correct path
+echo -n "  ├─ Migrate TLD"
+./mvn-migrate $BASE_DIR/src/ ../core/ --type main/resources/META-INF --include "\.tld$" --exclude "\(\.java$\|/test/\|/testing/\)" --suppress-path --yes "${PARAMS[@]}"
+echo
+
+echo -n "  ├─ Migrate main resources"
+./mvn-migrate $BASE_DIR/src/ ../core/ --type main/resources --exclude "\(\.java$\|/test/\|/testing/\)" --yes "${PARAMS[@]}"
+echo
+
+echo -n "  ├─ Migrate test java"
+./mvn-migrate $BASE_DIR/src/ ../core/ --type test/java --include "\(/test/\|/testing/\|/TestConnectionManager\).*\.java$" --yes "${PARAMS[@]}"
+echo
+
+echo -n "  └─ Migrate test resources"
+./mvn-migrate $BASE_DIR/src/ ../core/ --type test/resources --include "\(/test/\|/testing/\)" --exclude ".java$" --yes "${PARAMS[@]}"
+echo
+
+echo "2 ┬ doclets sources"
+echo -n "  ├─ Migrate main java"
+./mvn-migrate $BASE_DIR/internal/src ../doclets --include "/doclet/.*\.java$" --exclude "/test/" --yes "${PARAMS[@]}"
+echo
+
+echo -n "  ├─ Migrate main resources"
+./mvn-migrate $BASE_DIR/internal/src ../doclets --type main/resources --include "/doclet/" --exclude "\(\.java$\|/test/\)" --yes "${PARAMS[@]}"
+echo
+
+echo -n "  ├─ Migrate test java"
+./mvn-migrate $BASE_DIR/internal/src ../doclets --type test/java --include "/doclet/\(.*/\)\?test/.*\.java$" --yes "${PARAMS[@]}"
+echo
+
+echo -n "  └─ Migrate test resources"
+./mvn-migrate $BASE_DIR/internal/src ../doclets --type test/resources --include "/doclet/\(.*/\)\?test/" --exclude ".java$" --yes "${PARAMS[@]}"
+echo
+
+echo "3 ┬ webapp sources"
+echo -n "  ├─ Migrate apidocs"
+./mvn-migrate ../buildconf/apidoc ../webapp/ --type apidoc --yes "${PARAMS[@]}"
+echo
+
+echo -n "  └─ Migrate main resources"
+./mvn-migrate $BASE_DIR/webapp ../webapp --type main/webapp --yes "${PARAMS[@]}"
+echo
+
+if [ -z "$(find $BASE_DIR -mindepth 1 ! -type d | head -n 1)" ]; then
+    rm -rf $BASE_DIR
+else
+    echo "WARNING: Some files were not migrated correctly" &>2
+fi

@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Nov 27 11:15:47 CET 2025 - michael.calmer@suse.com
+
+- version 5.2.2-0
+  * Fix regular expressions for SonarCloud
+  * Use simple and secure way to generate secret token
+
+-------------------------------------------------------------------
 Mon Oct 27 15:17:02 CET 2025 - rosuna@suse.com
 
 - version 5.2.1-0

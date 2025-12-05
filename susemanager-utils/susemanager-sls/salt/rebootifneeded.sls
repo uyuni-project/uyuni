@@ -1,7 +1,11 @@
 {%- if salt['pillar.get']('mgr_reboot_if_needed', True) and salt['pillar.get']('custom_info:mgr_reboot_if_needed', 'true')|lower in ('true', '1', 'yes', 't') %}
 mgr_reboot_if_needed:
   cmd.run:
+{%- if grains['os_family'] == 'Suse' and grains['osmajorrelease'] <= 12 %}
+    - name: /sbin/shutdown -r +5
+{%- else %}
     - name: /usr/sbin/shutdown -r +5
+{%- endif %}
 {%- if grains['os_family'] == 'RedHat' and grains['osmajorrelease'] >= 8 %}
     - onlyif: '/usr/bin/dnf -q needs-restarting -r; /usr/bin/test $? -eq 1'
 {%- elif grains['os_family'] == 'RedHat' and grains['osmajorrelease'] >= 7 %}

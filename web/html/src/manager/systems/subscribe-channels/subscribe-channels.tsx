@@ -341,10 +341,10 @@ class SystemChannels extends Component<SystemChannelsProps, SystemChannelsState>
   };
 
   enableAllRecommended = () => {
-    const selectedChildrenIds = (this.getSelectedChildren() || []).map((channel) => channel.id);
+    const selectedChildrenIds = new Set((this.getSelectedChildren() || []).map((channel) => channel.id));
     const availableChildren = this.getAvailableChildren();
     const unselectedRecommendedChildren = Array.from(availableChildren.values()).filter(
-      (channel) => channel.recommended && !selectedChildrenIds.includes(channel.id)
+      (channel) => channel.recommended && !selectedChildrenIds.has(channel.id)
     );
     unselectedRecommendedChildren.forEach((channel) => this.selectChildChannel(channel.id, true));
   };

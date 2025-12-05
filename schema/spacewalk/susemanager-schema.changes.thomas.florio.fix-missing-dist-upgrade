@@ -1,2 +1,0 @@
-- Remove any associated dist upgrade action when removing a server
-- Remove any orphan dist upgrade action data during upgrade

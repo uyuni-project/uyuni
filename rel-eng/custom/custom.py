@@ -168,6 +168,14 @@ def tar(src, dest):
             "root",
             "--group",
             "root",
+            "--sort",
+            "name",
+            "--format",
+            "posix",
+            "--pax-option",
+            "delete=atime,delete=ctime",
+            "--mtime",
+            "@0",
             "--directory",
             src,
             ".",
@@ -201,7 +209,9 @@ class ChartBuilder(ContainerBuilder):
             for file in self.helm_chart_files
             if os.path.exists(os.path.join(gitdir, file))
         ]
-        run_command(f'tar cf {tar_file} -C {gitdir} {" ".join(files)}')
+        run_command(
+            f'tar cf {tar_file} -C {gitdir} --sort=name --mtime="@0" --owner=0 --group=0 --numeric-owner --pax-option=delete=atime,delete=ctime {" ".join(files)}'
+        )
         self.sources.append(tar_file)
 
         self.ran_tgz = True

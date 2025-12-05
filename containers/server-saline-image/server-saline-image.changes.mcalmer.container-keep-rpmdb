@@ -1,0 +1,2 @@
+- Keep the RPM database in the image to have information about
+  the packages used to build the container

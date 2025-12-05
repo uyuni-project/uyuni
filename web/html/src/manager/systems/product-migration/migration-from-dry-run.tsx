@@ -62,23 +62,21 @@ export const SSMProductMigrationFromDryRun: FC<Props> = ({
   }
 
   return (
-    <>
-      <TopPanel title={getCurrentTitle()} icon="fa spacewalk-icon-software-channels">
-        <MessagesContainer />
+    <TopPanel title={getCurrentTitle()} icon="fa spacewalk-icon-software-channels">
+      <MessagesContainer />
 
-        {outcomeMessage.length === 0 ? (
-          <MigrationConfirmScheduleForm
-            systemsData={systemsData}
-            actionChains={actionChains ?? []}
-            migrationTarget={targetProduct}
-            migrationChannels={selectedChannels}
-            allowVendorChange={allowVendorChange}
-            onConfirm={performMigration}
-          />
-        ) : (
-          <Messages items={outcomeMessage} />
-        )}
-      </TopPanel>
-    </>
+      {outcomeMessage.length === 0 ? (
+        <MigrationConfirmScheduleForm
+          systemsData={systemsData}
+          actionChains={actionChains ?? []}
+          migrationTarget={targetProduct}
+          migrationChannels={selectedChannels}
+          allowVendorChange={allowVendorChange}
+          onConfirm={performMigration}
+        />
+      ) : (
+        <Messages items={outcomeMessage} />
+      )}
+    </TopPanel>
   );
 };

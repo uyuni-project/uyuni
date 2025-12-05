@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Fri Nov 28 15:59:10 CET 2025 - michael.calmer@suse.com
+
+- version 5.2.3-0
+  * Drop unused dependency
+
+-------------------------------------------------------------------
+Thu Nov 27 11:13:10 CET 2025 - michael.calmer@suse.com
+
+- version 5.2.2-0
+  * Cleanup useless os-release use in httpd setup
+
+-------------------------------------------------------------------
 Mon Oct 27 15:29:54 CET 2025 - rosuna@suse.com
 
 - version 5.2.1-0

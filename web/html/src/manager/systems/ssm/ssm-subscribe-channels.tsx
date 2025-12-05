@@ -18,7 +18,7 @@ import { Utils } from "utils/functions";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network, { JsonResult } from "utils/network";
 
-// See java/code/webapp/WEB-INF/pages/channel/ssm/channelssub.jsp
+// See java/core/src/main/resources/WEB-INF/pages/channel/ssm/channelssub.jsp
 declare global {
   interface Window {
     actionChains?: any;
@@ -914,7 +914,7 @@ class SsmChannelPage extends Component<SsmChannelProps, SsmChannelState> {
     if (jqXHR.responseJSON.data) {
       const anySuccess = jqXHR.responseJSON.data.some((dto) => dto.actionId && !dto.errorMessage);
       if (anySuccess) {
-        msg.concat(MessagesUtils.warning(t("Some changes scheduled successfully.")));
+        msg.push(...MessagesUtils.warning(t("Some changes scheduled successfully.")));
       }
     }
 

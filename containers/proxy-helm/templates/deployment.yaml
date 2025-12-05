@@ -82,6 +82,10 @@ spec:
             mountPath: /etc/uyuni/ssh.yaml
             subPath: ssh.yaml
             readOnly: true
+          - name: config-volume
+            mountPath: /etc/ssh/sshd_config.d/99-tuning.conf
+            subPath:  ssh_tuning
+            readOnly: true
           ports:
             - containerPort: 22
         - name: tftpd
@@ -109,6 +113,8 @@ spec:
                 path: squid_tuning
               - key: apache_tuning
                 path: apache_tuning
+              - key: ssh_tuning
+                path: ssh_tuning
         - name: httpd-secret-volume
           secret:
             secretName: proxy-secret

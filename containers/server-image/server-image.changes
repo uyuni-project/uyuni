@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Nov 27 10:50:46 CET 2025 - michael.calmer@suse.com
+
+- version 5.2.3
+  * Use BCI init image as base
+
+-------------------------------------------------------------------
 Wed Oct 29 14:12:05 CET 2025 - marina.latini@suse.com
 
 - version 5.2.2

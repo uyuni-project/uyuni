@@ -2,7 +2,7 @@ import SpaRenderer from "core/spa/spa-renderer";
 
 import CoCoScansList from "components/CoCoScansList";
 
-// See java/code/src/com/suse/manager/webui/templates/minion/coco-scans-list.jade
+// See java/core/src/main/resources/com/suse/manager/webui/templates/minion/coco-scans-list.jade
 declare global {
   interface Window {
     serverId?: any;

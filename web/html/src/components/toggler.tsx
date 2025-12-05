@@ -1,5 +1,6 @@
 import { type ReactNode, Component } from "react";
-/** @module toggler */
+
+import { DEPRECATED_onClick } from "components/utils";
 
 type Props = {
   /** Callback function to execute on toggle switch. */
@@ -29,7 +30,7 @@ class Toggler extends Component<Props> {
       classes += " " + this.props.className;
     }
     return (
-      <span onClick={() => this.props.handler(!this.props.value)} className={classes}>
+      <span {...DEPRECATED_onClick(() => this.props.handler(!this.props.value))} className={classes}>
         <i className={"v-middle fa " + (this.props.value ? "fa-toggle-on text-success" : "fa-toggle-off")} />
         &nbsp;
         <span className="v-middle">{this.props.text}</span>

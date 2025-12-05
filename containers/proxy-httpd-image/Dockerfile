@@ -18,7 +18,7 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
     sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES headers && \
     sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES proxy_http && \
     zypper --non-interactive clean --all && \
-    rpm -e zypper && \
+    rpm -e zypper libzypp container-suseconnect && \
     rm -rf /var/log/{alternatives.log,lastlog,tallylog,suseconnect.log,zypper.log,zypp/history,YaST2}
 
 # Replace mod_log_config.conf so that the logger takes a special var HANDLER_TYPE
@@ -41,7 +41,7 @@ LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
 LABEL org.opencontainers.image.name=proxy-httpd-image
-LABEL org.opencontainers.image.version=5.2.2
+LABEL org.opencontainers.image.version=5.2.3
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.reference="${REFERENCE_PREFIX}/proxy-httpd:${PRODUCT_VERSION}.%RELEASE%"
 # endlabelprefix

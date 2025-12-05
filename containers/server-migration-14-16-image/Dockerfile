@@ -16,7 +16,7 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
       postgresql14-server \
       postgresql14-contrib && \
     zypper --non-interactive clean --all && \
-    rpm -e zypper && \
+    rpm -e zypper libzypp container-suseconnect && \
     rm -rf /var/log/{alternatives.log,lastlog,tallylog,suseconnect.log,zypper.log,zypp/history,YaST2}
 
 # LABELs
@@ -33,7 +33,7 @@ LABEL org.opencontainers.image.description="${PRODUCT} server migration image"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
-LABEL org.opencontainers.image.version=5.2.1
+LABEL org.opencontainers.image.version=5.2.2
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.reference="${REFERENCE_PREFIX}/server-migration-14-16:${PRODUCT_VERSION}.%RELEASE%"
 # endlabelprefix
