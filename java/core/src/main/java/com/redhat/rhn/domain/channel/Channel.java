@@ -666,21 +666,6 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
         return sources;
     }
 
-
-    /**
-     * Adds a single package to the channel
-     * @param packageIn The package to add
-     * @deprecated Do not use this method.
-     */
-    @Deprecated
-    public void addPackage(Package packageIn) {
-        if (!getChannelArch().isCompatible(packageIn.getPackageArch())) {
-            throw new IncompatibleArchException(packageIn.getPackageArch(),
-                    getChannelArch());
-        }
-        packages.add(packageIn);
-    }
-
     /**
      * Removes a single package from the channel
      * @param user the user doing the remove
@@ -1201,6 +1186,19 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
             channelSyncFlag.setChannel(this);
         }
         return this.channelSyncFlag;
+    }
+
+    /**
+     * Adds a single package to the channel
+     * @param packageIn The package to add
+     */
+    //WARNING: this method is used for testing, and is package-private (not public nor private)
+    void testAddPackage(Package packageIn) {
+        if (!getChannelArch().isCompatible(packageIn.getPackageArch())) {
+            throw new IncompatibleArchException(packageIn.getPackageArch(),
+                    getChannelArch());
+        }
+        packages.add(packageIn);
     }
 }
 

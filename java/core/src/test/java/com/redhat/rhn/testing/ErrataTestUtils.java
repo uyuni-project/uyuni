@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.channel.ChannelProduct;
+import com.redhat.rhn.domain.channel.ChannelTestUtility;
 import com.redhat.rhn.domain.channel.PublicChannelFamily;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.errata.ClonedErrata;
@@ -304,7 +305,7 @@ public class ErrataTestUtils {
         clonedChannel.addErrata(errata);
 
         for (Package package1 : packages) {
-            clonedChannel.addPackage(package1);
+            ChannelTestUtility.testAddPackage(clonedChannel, package1);
             TestUtils.saveAndFlush(clonedChannel);
         }
 
