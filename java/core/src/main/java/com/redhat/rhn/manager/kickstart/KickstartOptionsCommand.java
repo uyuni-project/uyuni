@@ -123,8 +123,8 @@ public class KickstartOptionsCommand  extends BaseKickstartCommand {
      * @param mapIn the request param map
      * @return new display list of values for ui
      */
-    public List refreshOptions(Map mapIn) {
-        List l = new LinkedList<>();
+    public List<KickstartOptionValue> refreshOptions(Map mapIn) {
+        List<KickstartOptionValue> l = new LinkedList<>();
 
         for (KickstartCommandName cn : availableOptions) {
             String name = cn.getName();
