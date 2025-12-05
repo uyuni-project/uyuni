@@ -171,39 +171,12 @@ public class SPMigrationAction extends RhnAction {
         ActionForward forward = findForward(actionMapping, actionStep, dispatch, parHolder.isGoBack());
 
         // Put data to the request
-        if (forward.getName().equals(TARGET) &&
-                parHolder.isTradCliUpgradesViaCapabilitySupported() && migration == null) {
-            // Find target products
-            Optional<SUSEProductSet> installedProducts = server.getInstalledProductSet();
-            if (installedProducts.isEmpty()) {
-                // Installed products are 'unknown'
-                logger.debug("Installed products are 'unknown'");
-                return forward;
-            }
-            installedProducts.ifPresent(pset -> {
-                logger.debug(pset.toString());
-                if (pset.getBaseProduct() == null) {
-                    logger.error("Server: {} has no base product installed. Check your servers installed products.",
-                            server.getId());
-                }
-            });
-            List<SUSEProductSet> migrationTargets = getMigrationTargets(
-                    request,
-                    installedProducts,
-                    server.getServerArch().getCompatibleChannelArch(),
-                    ctx.getCurrentUser()
-            );
+        if (forward.getName().equals(TARGET) && parHolder.isTradCliUpgradesViaCapabilitySupported() &&
+                migration == null) {
 
-            if (migrationTargets.isEmpty()) {
-                // Latest SP is apparently installed
-                logger.debug("Latest SP is apparently installed");
-                request.setAttribute(LATEST_SP, true);
+            boolean mustReturn = handleTargetForward(request, ctx, server);
+            if (mustReturn) {
                 return forward;
-            }
-            else if (!migrationTargets.isEmpty()) {
-                // At least one target available
-                logger.debug("Found at least one migration target");
-                request.setAttribute(TARGET_PRODUCTS, migrationTargets);
             }
         }
         else if (forward.getName().equals(SETUP)) {
@@ -398,6 +371,43 @@ public class SPMigrationAction extends RhnAction {
 
         parHolder.setHasDryRun(!parHolder.isRedHatMinion() && bpProductClass.equals(tgtProductClass));
         request.setAttribute(HAS_DRYRUN_CAPABLITY, parHolder.isHasDryRun());
+    }
+
+    private boolean handleTargetForward(HttpServletRequest request, RequestContext ctx, Server server) {
+        // Find target products
+        Optional<SUSEProductSet> installedProducts = server.getInstalledProductSet();
+        if (installedProducts.isEmpty()) {
+            // Installed products are 'unknown'
+            logger.debug("Installed products are 'unknown'");
+            return true;
+        }
+        installedProducts.ifPresent(pset -> {
+            logger.debug(pset.toString());
+            if (pset.getBaseProduct() == null) {
+                logger.error("Server: {} has no base product installed. Check your servers installed products.",
+                        server.getId());
+            }
+        });
+        List<SUSEProductSet> migrationTargets = getMigrationTargets(
+                request,
+                installedProducts,
+                server.getServerArch().getCompatibleChannelArch(),
+                ctx.getCurrentUser()
+        );
+
+        if (migrationTargets.isEmpty()) {
+            // Latest SP is apparently installed
+            logger.debug("Latest SP is apparently installed");
+            request.setAttribute(LATEST_SP, true);
+            return true;
+        }
+        else if (!migrationTargets.isEmpty()) {
+            // At least one target available
+            logger.debug("Found at least one migration target");
+            request.setAttribute(TARGET_PRODUCTS, migrationTargets);
+        }
+
+        return false;
     }
 
     /**
