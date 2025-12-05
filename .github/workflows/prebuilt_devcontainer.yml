@@ -5,45 +5,39 @@
 name: 'pre-built devcontainer'
 on:
   push:
-    branches:
-      - master
+    branches: [ master ]
+    paths:
+      - '.devcontainer/dev/**'
+  workflow_dispatch:
 
 jobs:
-  devcontainer-build-and-push:
+  build-and-push:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      id-token: write
       packages: write
+
     steps:
-      - name: Checkout
-        id: checkout
-        uses: actions/checkout@v5
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - name: Compute tag for devcontainer image
-        id: meta
-        run: |
-         tag=$(git rev-parse --short HEAD)
-         echo "tag=$tag" >> "$GITHUB_OUTPUT"
-
-      - name: Login to GHCR
+      - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: ${{ github.repository_owner }}
+          username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and release devcontainer
-        run: |
-          npm install -g @devcontainers/cli
+      - name: Build and Push
+        uses: devcontainers/ci@v0.3
+        with:
+          configFile: .devcontainer/dev/devcontainer.ci.json
           
-          devcontainer build \
-            --workspace-folder . \
-            --config .devcontainer/dev/devcontainer.json \
-            --image-name ghcr.io/${{ github.repository }}/devcontainer:${{ steps.meta.outputs.tag }} \
-            --image-name ghcr.io/${{ github.repository }}/devcontainer:latest
+          subFolder: .devcontainer/dev
 
-          docker push ghcr.io/${{ github.repository }}/devcontainer:${{ steps.meta.outputs.tag }}
-          docker push ghcr.io/${{ github.repository }}/devcontainer:latest
-        env:
-          BUILDX_NO_DEFAULT_ATTESTATIONS: true
+          imageName: ghcr.io/${{ github.repository }}/devcontainer
+          imageTag: latest,${{ github.sha }}
+          
+          push: always
+          
+          noCache: true
