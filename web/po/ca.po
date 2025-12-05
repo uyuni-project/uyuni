@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-21 10:49+0100\n"
+"POT-Creation-Date: 2025-12-05 09:23+0100\n"
 "PO-Revision-Date: 2025-11-21 15:04+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/web/ca/>\n"
@@ -255,7 +255,7 @@ msgstr "Accions"
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:74
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:54
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:205
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:378
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:387
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:159
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:77
 msgid "Details"
@@ -334,7 +334,7 @@ msgstr "Seleccioneu una planificació"
 #: ../html/src/components/hub/ModalEditButton.tsx:98
 #: ../html/src/components/large-text-attachment.tsx:195
 #: ../html/src/components/panels/CreatorPanel.tsx:122
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:115
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:120
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:194
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:15
 #: ../html/src/manager/minion/ansible/new-ansible-path.tsx:33
@@ -360,19 +360,19 @@ msgstr "Crea {label}"
 msgid "Configuration Channels"
 msgstr "Canals de configuració"
 
-#: ../html/src/components/datetime/DateTimePicker.tsx:124
+#: ../html/src/components/datetime/DateTimePicker.tsx:126
 msgid "Previous month"
 msgstr "Mes anterior"
 
-#: ../html/src/components/datetime/DateTimePicker.tsx:125
+#: ../html/src/components/datetime/DateTimePicker.tsx:127
 msgid "Next month"
 msgstr "Mes següent"
 
-#: ../html/src/components/datetime/DateTimePicker.tsx:126
+#: ../html/src/components/datetime/DateTimePicker.tsx:128
 msgid "Previous year"
 msgstr "Any anterior"
 
-#: ../html/src/components/datetime/DateTimePicker.tsx:127
+#: ../html/src/components/datetime/DateTimePicker.tsx:129
 msgid "Next year"
 msgstr "Any següent"
 
@@ -400,10 +400,10 @@ msgstr "Esteu segur que voleu {action} el {name} seleccionat? ({count} {name}s s
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:181
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:127
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:106
-#: ../html/src/manager/images/image-view-overview.tsx:725
-#: ../html/src/manager/images/image-view-overview.tsx:726
-#: ../html/src/manager/images/image-view-overview.tsx:802
-#: ../html/src/manager/images/image-view-overview.tsx:803
+#: ../html/src/manager/images/image-view-overview.tsx:729
+#: ../html/src/manager/images/image-view-overview.tsx:730
+#: ../html/src/manager/images/image-view-overview.tsx:806
+#: ../html/src/manager/images/image-view-overview.tsx:807
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:18
 #: ../html/src/manager/systems/delete-system.tsx:79
 #: ../html/src/manager/systems/delete-system.tsx:80
@@ -459,11 +459,11 @@ msgstr "Suprimeix el projecte"
 msgid "Are you sure you want to delete project "
 msgstr "Segur que voleu suprimir el projecte "
 
-#: ../html/src/components/formik/Form.example.tsx:33
+#: ../html/src/components/formik/Form.example.tsx:32
 msgid "Field"
 msgstr "Camp"
 
-#: ../html/src/components/formik/Form.example.tsx:35
+#: ../html/src/components/formik/Form.example.tsx:34
 #: ../html/src/components/input/InputBase.test.tsx:43
 #: ../html/src/components/input/InputBase.test.tsx:69
 #: ../html/src/components/input/InputBase.test.tsx:97
@@ -478,12 +478,12 @@ msgstr "Camp"
 msgid "Minimum 2 characters"
 msgstr "Mínim 2 caràcters"
 
-#: ../html/src/components/formik/Form.example.tsx:38
+#: ../html/src/components/formik/Form.example.tsx:37
 #: ../html/src/components/input/check/form.example.tsx:18
 msgid "Checkbox"
 msgstr "Casella de selecció"
 
-#: ../html/src/components/formik/Form.example.tsx:40
+#: ../html/src/components/formik/Form.example.tsx:39
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:205
 #: ../html/src/components/input/password/Password.example.tsx:23
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:77
@@ -492,60 +492,60 @@ msgstr "Casella de selecció"
 #: ../html/src/manager/images/image-store-edit.tsx:180
 #: ../html/src/manager/login/susemanager/login.tsx:98
 #: ../html/src/manager/login/uyuni/login.tsx:89
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:418
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:541
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:427
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:550
 msgid "Password"
 msgstr "Contrasenya"
 
-#: ../html/src/components/formik/Form.example.tsx:42
+#: ../html/src/components/formik/Form.example.tsx:41
 msgid "Datetime"
 msgstr "Data i hora"
 
-#: ../html/src/components/formik/Form.example.tsx:44
+#: ../html/src/components/formik/Form.example.tsx:43
 msgid "Multiple values"
 msgstr "Valors múltiples"
 
-#: ../html/src/components/formik/Form.example.tsx:46
+#: ../html/src/components/formik/Form.example.tsx:45
 msgid "Long text"
 msgstr "Text llarg"
 
-#: ../html/src/components/formik/Form.example.tsx:48
+#: ../html/src/components/formik/Form.example.tsx:47
 msgid "Range"
 msgstr "Interval"
 
-#: ../html/src/components/formik/Form.example.tsx:52
+#: ../html/src/components/formik/Form.example.tsx:51
 msgid "Radio"
 msgstr "Ràdio"
 
-#: ../html/src/components/formik/Form.example.tsx:54
+#: ../html/src/components/formik/Form.example.tsx:53
 msgid "One"
 msgstr "U"
 
-#: ../html/src/components/formik/Form.example.tsx:55
+#: ../html/src/components/formik/Form.example.tsx:54
 msgid "Two"
 msgstr "Dos"
 
-#: ../html/src/components/formik/Form.example.tsx:56
+#: ../html/src/components/formik/Form.example.tsx:55
 msgid "Three"
 msgstr "Tres"
 
-#: ../html/src/components/formik/Form.example.tsx:63
+#: ../html/src/components/formik/Form.example.tsx:62
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:307
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:126
 msgid "Select"
 msgstr "Selecciona"
 
-#: ../html/src/components/formik/Form.example.tsx:66
+#: ../html/src/components/formik/Form.example.tsx:65
 msgid "Foo"
 msgstr "Foo"
 
-#: ../html/src/components/formik/Form.example.tsx:70
+#: ../html/src/components/formik/Form.example.tsx:69
 msgid "Bar"
 msgstr "Bar"
 
-#: ../html/src/components/formik/Form.example.tsx:77
+#: ../html/src/components/formik/Form.example.tsx:76
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:243
-#: ../html/src/components/input/check/DEPRECATED_Check.example.tsx:23
+#: ../html/src/components/input/check/DEPRECATED_Check.example.tsx:25
 #: ../html/src/components/input/check/form.example.tsx:20
 #: ../html/src/components/input/datetime/DateTime.example.tsx:25
 #: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:69
@@ -602,7 +602,7 @@ msgstr "En aquesta pàgina podeu seleccionar Fórmules de sal per a aquest grup/
 msgid "Formulas"
 msgstr "Fórmules"
 
-#: ../html/src/components/formulas/EditGroup.tsx:360
+#: ../html/src/components/formulas/EditGroup.tsx:361
 msgid "This field is used as a 'key' identifier in the resulting pillar data."
 msgstr "Aquest camp s'utilitza com a identificador de «clau» en les dades de pilar resultants."
 
@@ -614,7 +614,7 @@ msgstr "Genera una contrasenya nova"
 msgid "Show/hide password"
 msgstr "Mostra/oculta la contrasenya"
 
-#: ../html/src/components/formulas/SectionToggle.tsx:23
+#: ../html/src/components/formulas/SectionToggle.tsx:25
 msgid "Toggle section visibility"
 msgstr "Commuta la visibilitat de la secció"
 
@@ -684,8 +684,8 @@ msgstr "Copia"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:224
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:176
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:94
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:95
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:103
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:104
 msgid "Close"
 msgstr "Tanca"
 
@@ -757,7 +757,7 @@ msgid "Select Organization"
 msgstr "Seleccioneu l'organització"
 
 #: ../html/src/components/hub/HierarchicalChannelsTable.tsx:171
-#: ../html/src/manager/admin/setup/products/products.tsx:502
+#: ../html/src/manager/admin/setup/products/products.tsx:503
 msgid "Filter by architecture"
 msgstr "Filtra per arquitectura"
 
@@ -776,8 +776,8 @@ msgstr "Nom del canal"
 
 #: ../html/src/components/hub/HierarchicalChannelsTable.tsx:209
 #: ../html/src/components/table/nested-data.example.tsx:62
-#: ../html/src/manager/admin/setup/products/products.tsx:602
-#: ../html/src/manager/admin/setup/products/products.tsx:993
+#: ../html/src/manager/admin/setup/products/products.tsx:603
+#: ../html/src/manager/admin/setup/products/products.tsx:997
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:165
 #: ../html/src/manager/images/image-view-packages.tsx:50
 #: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:22
@@ -1059,7 +1059,7 @@ msgstr "Registra"
 #: ../html/src/manager/images/image-store-edit.tsx:201
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:442
 #: ../html/src/manager/proxy/container-config.tsx:385
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:409
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:418
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:178
 msgid "Clear fields"
 msgstr "Neteja els camps"
@@ -1215,7 +1215,7 @@ msgstr "Etiqueta"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:312
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:348
-#: ../html/src/manager/admin/setup/products/products.tsx:604
+#: ../html/src/manager/admin/setup/products/products.tsx:605
 msgid "Arch"
 msgstr "Arc"
 
@@ -1247,7 +1247,7 @@ msgstr "Esteu a punt de fer els canvis següents:"
 #: ../html/src/components/package/PackageListActionScheduler.tsx:182
 #: ../html/src/components/states-picker.tsx:377
 #: ../html/src/components/states-picker.tsx:574
-#: ../html/src/manager/admin/setup/products/products.tsx:1107
+#: ../html/src/manager/admin/setup/products/products.tsx:1111
 #: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:38
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:198
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:14
@@ -1479,7 +1479,7 @@ msgstr "Ambdós valors han de ser enters positius"
 #: ../html/src/components/input/select/ClearIndicator.tsx:17
 #: ../html/src/components/table/SelectedRowDetails.tsx:37
 #: ../html/src/components/table/SelectedRowDetails.tsx:60
-#: ../html/src/manager/admin/setup/products/products.tsx:340
+#: ../html/src/manager/admin/setup/products/products.tsx:341
 msgid "Clear"
 msgstr "Neteja"
 
@@ -1917,7 +1917,7 @@ msgid "Non-Virtual System"
 msgstr "Sistema no virtual"
 
 #: ../html/src/components/systems.tsx:44
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:610
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:619
 #: ../html/src/manager/systems/list-filter.tsx:6
 #: ../html/src/manager/systems/list-filter.tsx:22
 msgid "Proxy"
@@ -2010,11 +2010,11 @@ msgstr "Sistemes de destinació"
 msgid "No systems specified."
 msgstr "No s'ha especificat cap sistema."
 
-#: ../html/src/components/tree/tree.tsx:113
+#: ../html/src/components/tree/tree.tsx:117
 msgid "Invalid data"
 msgstr "Dades no vàlides"
 
-#: ../html/src/components/tree/tree.tsx:121
+#: ../html/src/components/tree/tree.tsx:125
 msgid "No data"
 msgstr "Sense dades"
 
@@ -2348,7 +2348,7 @@ msgstr "Filtra per qualsevol valor"
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:68
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:52
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:13
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:477
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:486
 msgid "Host"
 msgstr "Host"
 
@@ -2386,48 +2386,48 @@ msgid "Max Password Length"
 msgstr "Longitud màxima de la contrasenya"
 
 #. Require Digits
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:51
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:56
 msgid "Require Digits"
 msgstr "Requereix dígits"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:54
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:59
 msgid "Require Lowercase Characters"
 msgstr "Requereix caràcters en minúscula"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:61
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:66
 msgid "Require Uppercase Characters"
 msgstr "Requereix caràcters en majúscula"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:68
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:73
 msgid "Restrict Consecutive Characters"
 msgstr "Restringeix els caràcters consecutius"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:75
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:80
 msgid "Require Special Characters"
 msgstr "Requereix caràcters especials"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:85
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:90
 msgid "Allowed Special Characters"
 msgstr "Caràcters especials permesos"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:94
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:99
 msgid "Restrict Characters Occurrences"
 msgstr "Restringeix l'ocurrència de caràcters"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:101
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:106
 msgid "Max Characters Occurrences"
 msgstr "Màxim d'ocurrències de caràcters"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:119
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:124
 msgid "Password Policy Changed"
 msgstr "La política de les contrasenyes ha canviat"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:129
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:134
 #: ../html/src/manager/appstreams/actions-appstreams.tsx:8
 msgid "Reset"
 msgstr "Restableix"
 
-#: ../html/src/manager/admin/password-policy/password-policy.tsx:136
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:141
 msgid "Password Policy Reset to Default"
 msgstr "Restabliment de la política de contrasenyes al valor predeterminat"
 
@@ -2469,26 +2469,26 @@ msgstr "En editar la connexió SSH s'han de tornar a proporcionar totes les cred
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:60
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:17
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:490
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:499
 msgid "SSH Port"
 msgstr "Port SSH"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:71
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:21
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:506
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:515
 msgid "User"
 msgstr "Usuari"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:80
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:31
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:435
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:553
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:444
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:562
 msgid "SSH Private Key"
 msgstr "Clau privada SSH"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:102
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:37
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:447
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:456
 msgid "SSH Private Key Passphrase"
 msgstr "Contrasenya de clau privada SSH"
 
@@ -2525,7 +2525,7 @@ msgid "Please be patient, this might take several minutes."
 msgstr "Si us plau, tingueu paciència, això pot trigar diversos minuts."
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:193
-#: ../html/src/manager/images/image-view-overview.tsx:143
+#: ../html/src/manager/images/image-view-overview.tsx:147
 msgid "Completed"
 msgstr "Completat"
 
@@ -2533,157 +2533,157 @@ msgstr "Completat"
 msgid "Operation not successful: Empty reply from the server"
 msgstr "Operació no correcta: Resposta buida del servidor"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:134
+#: ../html/src/manager/admin/setup/products/products.tsx:135
 msgid "No SUSE Multi-Linux Manager Server Subscription available. Products requiring Client Tools Channel will not be shown."
 msgstr "No hi ha disponible cap subscripció al servidor SUSE MultiLinux. No es mostraran els productes que requereixin el canal Eines del client."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:185
+#: ../html/src/manager/admin/setup/products/products.tsx:186
 msgid "The product catalog refresh is running..."
 msgstr "S'està executant l'actualització del catàleg de productes..."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:212
+#: ../html/src/manager/admin/setup/products/products.tsx:213
 msgid "The following product installations failed. Please check log files."
 msgstr "Han fallat les següents instal·lacions de productes. Si us plau, comproveu els fitxers de registre."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:259
+#: ../html/src/manager/admin/setup/products/products.tsx:260
 msgid "Selected channels were scheduled successfully for syncing."
 msgstr "Els canals seleccionats s'han programat correctament per sincronitzar."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:295
+#: ../html/src/manager/admin/setup/products/products.tsx:296
 msgid "A refresh of the product data is currently running in the background. Please try again later."
 msgstr "Una actualització de les dades del producte s'està executant actualment en segon pla. Torneu-ho a provar més tard."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:300
+#: ../html/src/manager/admin/setup/products/products.tsx:301
 msgid "The product catalog is still refreshing, please wait."
 msgstr "El catàleg de productes encara és refrescant, espereu."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:302
+#: ../html/src/manager/admin/setup/products/products.tsx:303
 msgid "Select some product first."
 msgstr "Seleccioneu primer algun producte."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:311
-#: ../html/src/manager/admin/setup/products/products.tsx:320
+#: ../html/src/manager/admin/setup/products/products.tsx:312
+#: ../html/src/manager/admin/setup/products/products.tsx:321
 msgid "Add products"
 msgstr "Afegeix productes"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:339
+#: ../html/src/manager/admin/setup/products/products.tsx:340
 msgid "Clear products selection"
 msgstr "Neteja la selecció de productes"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:383
+#: ../html/src/manager/admin/setup/products/products.tsx:384
 msgid "Why aren't all products displayed in the list?"
 msgstr "Per què no es mostren tots els productes a la llista?"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:386
+#: ../html/src/manager/admin/setup/products/products.tsx:387
 msgid "The products displayed on this list are directly linked to your Organization credentials (Mirror credentials) as well as your SUSE subscriptions."
 msgstr "Els productes que es mostren en aquesta llista estan directament vinculats a les vostres credencials d'organització (credencials de Microsoft) així com a les vostres subscripcions SUSE."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:391
+#: ../html/src/manager/admin/setup/products/products.tsx:392
 msgid "If you believe there are products missing, make sure you have added the correct Organization credentials in the previous wizard step."
 msgstr "Si creieu que falten productes, assegureu-vos que heu afegit les credencials d'organització correctes en el pas anterior de l'assistent."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:401
+#: ../html/src/manager/admin/setup/products/products.tsx:402
 msgid "This server is configured as a Peripheral server in a Hub configuration. Products can only be managed on the Hub server."
 msgstr "Aquest servidor està configurat com un servidor Perifèric en una configuració de Hub. Els productes només es poden gestionar al servidor Hub."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:520
+#: ../html/src/manager/admin/setup/products/products.tsx:521
 msgid "Filter by product Description"
 msgstr "Filtra per descripció del producte"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:596
+#: ../html/src/manager/admin/setup/products/products.tsx:597
 msgid "Product Description"
 msgstr "Descripció del producte"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:611
+#: ../html/src/manager/admin/setup/products/products.tsx:612
 #: ../html/src/manager/packages/list.tsx:158
 msgid "Channels"
 msgstr "Canals"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:618
+#: ../html/src/manager/admin/setup/products/products.tsx:619
 msgid "Recommended"
 msgstr "Recomanat"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:799
+#: ../html/src/manager/admin/setup/products/products.tsx:800
 msgid " channels sync failed"
 msgstr " ha fallat la sincronització dels canals"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:807
+#: ../html/src/manager/admin/setup/products/products.tsx:808
 msgid " channels sync in progress"
 msgstr " sincronització de canals en curs"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:815
+#: ../html/src/manager/admin/setup/products/products.tsx:816
 msgid " channels synced"
 msgstr " canals sincronitzats"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:840
+#: ../html/src/manager/admin/setup/products/products.tsx:841
 msgid "To enable this product, the parent product should be selected first"
 msgstr "Per a habilitar aquest producte, primer s'ha de seleccionar el producte pare"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:841
+#: ../html/src/manager/admin/setup/products/products.tsx:842
 msgid "Select this product"
 msgstr "Selecciona aquest producte"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:853
+#: ../html/src/manager/admin/setup/products/products.tsx:854
 msgid "This product is mirrored."
 msgstr "Aquest producte està reflectit."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:882
+#: ../html/src/manager/admin/setup/products/products.tsx:886
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:77
-#: ../html/src/manager/systems/activation-key/child-channels.tsx:143
+#: ../html/src/manager/systems/activation-key/child-channels.tsx:144
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:494
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:555
 msgid "recommended"
 msgstr "recomanat"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:938
+#: ../html/src/manager/admin/setup/products/products.tsx:942
 msgid "SCC product catalog refresh in progress"
 msgstr "Actualització del catàleg de productes SCC en curs"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:941
+#: ../html/src/manager/admin/setup/products/products.tsx:945
 msgid "Scheduling channels product resync"
 msgstr "S'estan programant els canals de reinici del producte"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:944
+#: ../html/src/manager/admin/setup/products/products.tsx:948
 msgid "Channels product resync scheduled"
 msgstr "S'ha programat la sincronització del producte dels canals"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:947
+#: ../html/src/manager/admin/setup/products/products.tsx:951
 msgid "Schedule channels product resync"
 msgstr "Planifica canals de reinici del producte"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1007
+#: ../html/src/manager/admin/setup/products/products.tsx:1011
 msgid "Show product's channels"
 msgstr "Mostra els canals del producte"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1080
+#: ../html/src/manager/admin/setup/products/products.tsx:1084
 msgid "Product Channels - "
 msgstr "Canals de producte - "
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1085
+#: ../html/src/manager/admin/setup/products/products.tsx:1089
 msgid "Select the optional channels you wish to add and confirm."
 msgstr "Seleccioneu els canals opcionals que voleu afegir i confirmar."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1089
+#: ../html/src/manager/admin/setup/products/products.tsx:1093
 msgid "Mandatory Channels"
 msgstr "Canals obligatoris"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1091
+#: ../html/src/manager/admin/setup/products/products.tsx:1095
 msgid "Optional Channels"
 msgstr "Canals opcionals"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1126
+#: ../html/src/manager/admin/setup/products/products.tsx:1130
 msgid "not synced"
 msgstr "no sincronitzat"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1129
+#: ../html/src/manager/admin/setup/products/products.tsx:1133
 msgid "sync in progress"
 msgstr "sincronització en curs"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1132
+#: ../html/src/manager/admin/setup/products/products.tsx:1136
 msgid "synced"
 msgstr "sincronitzat"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1135
+#: ../html/src/manager/admin/setup/products/products.tsx:1139
 msgid "sync failed"
 msgstr "ha fallat la sincronització"
 
@@ -3033,7 +3033,7 @@ msgid "If you see this report a bug."
 msgstr "Si veieu aquest informe d'un error."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:513
-#: ../html/src/manager/images/image-view-overview.tsx:641
+#: ../html/src/manager/images/image-view-overview.tsx:645
 msgid "Rebuild"
 msgstr "Reconstrueix"
 
@@ -3487,8 +3487,8 @@ msgstr "Emès"
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:133
 #: ../html/src/manager/images/image-build.tsx:423
 #: ../html/src/manager/images/image-profiles.tsx:199
-#: ../html/src/manager/images/image-view-overview.tsx:626
-#: ../html/src/manager/images/image-view-overview.tsx:733
+#: ../html/src/manager/images/image-view-overview.tsx:630
+#: ../html/src/manager/images/image-view-overview.tsx:737
 #: ../html/src/manager/images/image-view.tsx:676
 msgid "Build"
 msgstr "Construeix"
@@ -3856,19 +3856,19 @@ msgstr "L'entorn s'ha creat correctament"
 msgid "Creating the environment..."
 msgstr "S'està creant l'entorn..."
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:84
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:83
 msgid "No environments created"
 msgstr "No s'ha creat cap entorn"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:100
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:99
 msgid "Environment updated successfully"
 msgstr "L'entorn s'ha actualitzat correctament"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:116
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:115
 msgid "Environment {name} deleted successfully"
 msgstr "L'entorn {name} s'ha suprimit correctament"
 
-#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:138
+#: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:137
 msgid "This environment cannot be deleted since it is being used in an <link>autoinstallation distribution</link>."
 msgstr "Aquest entorn no es pot suprimir perquè s'està utilitzant en una distribució d'instal·lació automàtica <link>."
 
@@ -3890,7 +3890,7 @@ msgid "Built"
 msgstr "Construït"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:32
-#: ../html/src/manager/images/image-view-overview.tsx:83
+#: ../html/src/manager/images/image-view-overview.tsx:87
 #: ../html/src/manager/images/image-view.tsx:514
 msgid "Failed"
 msgstr "Ha fallat"
@@ -4005,25 +4005,25 @@ msgstr "mostra'n més"
 msgid "Versions history"
 msgstr "Historial de versions"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/base-channel.tsx:58
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/base-channel.tsx:59
 msgid "New base channel"
 msgstr "Nou canal base"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:178
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:179
 msgid "New Base Channel"
 msgstr "Canal base nou"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:181
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:182
 msgid "Choose the channel to be elected as the new base channel"
 msgstr "Trieu el canal que s'ha d'escollir com a nou canal base"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:197
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:198
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:543
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:613
 msgid "Child Channels"
 msgstr "Canals fills"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:220
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:221
 msgid "Clear Search"
 msgstr "Neteja la cerca"
 
@@ -4044,18 +4044,18 @@ msgid "This channel is mandatory"
 msgstr "Aquest canal és obligatori"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:82
-#: ../html/src/manager/systems/activation-key/child-channels.tsx:148
+#: ../html/src/manager/systems/activation-key/child-channels.tsx:149
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:560
 msgid "mandatory"
 msgstr "obligatori"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/empty-child.tsx:6
-#: ../html/src/manager/systems/activation-key/child-channels.tsx:98
+#: ../html/src/manager/systems/activation-key/child-channels.tsx:99
 msgid "no child channels"
 msgstr "no hi ha canals fills"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/recommended-toggle.tsx:26
-#: ../html/src/manager/systems/activation-key/child-channels.tsx:172
+#: ../html/src/manager/systems/activation-key/child-channels.tsx:173
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:434
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:602
 msgid "include recommended"
@@ -4215,7 +4215,7 @@ msgstr "Camí"
 #: ../html/src/manager/images/image-build.tsx:299
 #: ../html/src/manager/images/image-import.tsx:230
 #: ../html/src/manager/images/image-profile-edit.tsx:398
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:575
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:584
 msgid "Activation Key"
 msgstr "Tecla d'activació"
 
@@ -4457,14 +4457,48 @@ msgstr "Registre de muntatge"
 msgid "Build log is not available."
 msgstr "El registre de muntatge no està disponible."
 
-#: ../html/src/manager/images/image-view-overview.tsx:40
-#: ../html/src/manager/images/image-view-overview.tsx:41
-#: ../html/src/manager/images/image-view-overview.tsx:95
-#: ../html/src/manager/images/image-view-overview.tsx:96
-#: ../html/src/manager/images/image-view-overview.tsx:255
-#: ../html/src/manager/images/image-view-overview.tsx:256
-#: ../html/src/manager/images/image-view-overview.tsx:513
-#: ../html/src/manager/images/image-view-overview.tsx:514
+#: ../html/src/manager/images/image-view-overview.tsx:51
+#: ../html/src/manager/images/image-view.tsx:508
+msgid "Queued"
+msgstr "En cua"
+
+#: ../html/src/manager/images/image-view-overview.tsx:53
+#: ../html/src/manager/images/image-view-overview.tsx:65
+#: ../html/src/manager/images/image-view-overview.tsx:77
+#: ../html/src/manager/images/image-view-overview.tsx:89
+msgid "Go to event"
+msgstr "Ves a l'esdeveniment"
+
+#: ../html/src/manager/images/image-view-overview.tsx:56
+msgid " is queued"
+msgstr " està en cua"
+
+#: ../html/src/manager/images/image-view-overview.tsx:63
+msgid "In progress"
+msgstr "En curs"
+
+#: ../html/src/manager/images/image-view-overview.tsx:68
+msgid " in progress"
+msgstr " en curs"
+
+#: ../html/src/manager/images/image-view-overview.tsx:75
+msgid "Successful"
+msgstr "Èxit"
+
+#: ../html/src/manager/images/image-view-overview.tsx:80
+msgid " is successful"
+msgstr " és exitós"
+
+#: ../html/src/manager/images/image-view-overview.tsx:92
+msgid " has failed"
+msgstr " ha fallat"
+
+#: ../html/src/manager/images/image-view-overview.tsx:99
+#: ../html/src/manager/images/image-view-overview.tsx:100
+#: ../html/src/manager/images/image-view-overview.tsx:259
+#: ../html/src/manager/images/image-view-overview.tsx:260
+#: ../html/src/manager/images/image-view-overview.tsx:517
+#: ../html/src/manager/images/image-view-overview.tsx:518
 #: ../html/src/manager/images/image-view-runtime.tsx:74
 #: ../html/src/manager/images/image-view-runtime.tsx:114
 #: ../html/src/manager/images/image-view.tsx:487
@@ -4472,181 +4506,145 @@ msgstr "El registre de muntatge no està disponible."
 msgid "No information"
 msgstr "No hi ha informació"
 
-#: ../html/src/manager/images/image-view-overview.tsx:47
-#: ../html/src/manager/images/image-view.tsx:508
-msgid "Queued"
-msgstr "En cua"
-
-#: ../html/src/manager/images/image-view-overview.tsx:49
-#: ../html/src/manager/images/image-view-overview.tsx:61
-#: ../html/src/manager/images/image-view-overview.tsx:73
-#: ../html/src/manager/images/image-view-overview.tsx:85
-msgid "Go to event"
-msgstr "Ves a l'esdeveniment"
-
-#: ../html/src/manager/images/image-view-overview.tsx:52
-msgid " is queued"
-msgstr " està en cua"
-
-#: ../html/src/manager/images/image-view-overview.tsx:59
-msgid "In progress"
-msgstr "En curs"
-
-#: ../html/src/manager/images/image-view-overview.tsx:64
-msgid " in progress"
-msgstr " en curs"
-
-#: ../html/src/manager/images/image-view-overview.tsx:71
-msgid "Successful"
-msgstr "Èxit"
-
-#: ../html/src/manager/images/image-view-overview.tsx:76
-msgid " is successful"
-msgstr " és exitós"
-
-#: ../html/src/manager/images/image-view-overview.tsx:88
-msgid " has failed"
-msgstr " ha fallat"
-
-#: ../html/src/manager/images/image-view-overview.tsx:107
-#: ../html/src/manager/images/image-view-overview.tsx:108
+#: ../html/src/manager/images/image-view-overview.tsx:111
+#: ../html/src/manager/images/image-view-overview.tsx:112
 #: ../html/src/manager/images/image-view.tsx:506
 msgid "Built externally"
 msgstr "Construït externament"
 
-#: ../html/src/manager/images/image-view-overview.tsx:130
+#: ../html/src/manager/images/image-view-overview.tsx:134
 msgid " Status"
 msgstr " Estat"
 
-#: ../html/src/manager/images/image-view-overview.tsx:135
+#: ../html/src/manager/images/image-view-overview.tsx:139
 msgid "Picked Up"
 msgstr "Recollida amunt"
 
-#: ../html/src/manager/images/image-view-overview.tsx:188
+#: ../html/src/manager/images/image-view-overview.tsx:192
 #: ../html/src/manager/images/image-view.tsx:562
 msgid "Cluster"
 msgstr "Clúster"
 
-#: ../html/src/manager/images/image-view-overview.tsx:189
+#: ../html/src/manager/images/image-view-overview.tsx:193
 #: ../html/src/manager/images/image-view.tsx:563
 #: ../html/src/manager/images/image-view.tsx:615
 msgid "Instances"
 msgstr "Instàncies"
 
-#: ../html/src/manager/images/image-view-overview.tsx:199
-#: ../html/src/manager/images/image-view-overview.tsx:236
+#: ../html/src/manager/images/image-view-overview.tsx:203
+#: ../html/src/manager/images/image-view-overview.tsx:240
 #: ../html/src/manager/images/image-view.tsx:524
 #: ../html/src/manager/images/image-view.tsx:573
 msgid "Waiting for update ..."
 msgstr "S'està esperant l'actualització..."
 
-#: ../html/src/manager/images/image-view-overview.tsx:216
+#: ../html/src/manager/images/image-view-overview.tsx:220
 #: ../html/src/manager/images/image-view.tsx:590
 msgid "View cluster summary"
 msgstr "Mostra el resum del clúster"
 
-#: ../html/src/manager/images/image-view-overview.tsx:247
-#: ../html/src/manager/images/image-view-overview.tsx:249
+#: ../html/src/manager/images/image-view-overview.tsx:251
+#: ../html/src/manager/images/image-view-overview.tsx:253
 #: ../html/src/manager/images/image-view.tsx:532
 msgid "All instances are consistent with {productName}"
 msgstr "Totes les instàncies són coherents amb {productName}"
 
-#: ../html/src/manager/images/image-view-overview.tsx:262
-#: ../html/src/manager/images/image-view-overview.tsx:263
+#: ../html/src/manager/images/image-view-overview.tsx:266
+#: ../html/src/manager/images/image-view-overview.tsx:267
 #: ../html/src/manager/images/image-view.tsx:538
 msgid "Outdated instances found"
 msgstr "S'han trobat instàncies obsoletes"
 
-#: ../html/src/manager/images/image-view-overview.tsx:326
+#: ../html/src/manager/images/image-view-overview.tsx:330
 msgid "Edit profile"
 msgstr "Edita el perfil"
 
-#: ../html/src/manager/images/image-view-overview.tsx:350
+#: ../html/src/manager/images/image-view-overview.tsx:354
 msgid "Edit store"
 msgstr "Edita la botiga"
 
-#: ../html/src/manager/images/image-view-overview.tsx:520
-#: ../html/src/manager/images/image-view-overview.tsx:521
+#: ../html/src/manager/images/image-view-overview.tsx:524
+#: ../html/src/manager/images/image-view-overview.tsx:525
 #: ../html/src/manager/images/image-view.tsx:489
 #: ../html/src/manager/systems/list-filter.tsx:28
 msgid "Critical updates available"
 msgstr "Hi ha actualitzacions crítiques"
 
-#: ../html/src/manager/images/image-view-overview.tsx:527
-#: ../html/src/manager/images/image-view-overview.tsx:528
+#: ../html/src/manager/images/image-view-overview.tsx:531
+#: ../html/src/manager/images/image-view-overview.tsx:532
 #: ../html/src/manager/images/image-view.tsx:492
 msgid "Non-critical updates available"
 msgstr "Hi ha actualitzacions no crítiques"
 
-#: ../html/src/manager/images/image-view-overview.tsx:534
-#: ../html/src/manager/images/image-view-overview.tsx:535
+#: ../html/src/manager/images/image-view-overview.tsx:538
+#: ../html/src/manager/images/image-view-overview.tsx:539
 #: ../html/src/manager/images/image-view.tsx:495
 msgid "Package updates available"
 msgstr "Hi ha actualitzacions de paquets disponibles"
 
-#: ../html/src/manager/images/image-view-overview.tsx:541
-#: ../html/src/manager/images/image-view-overview.tsx:542
+#: ../html/src/manager/images/image-view-overview.tsx:545
+#: ../html/src/manager/images/image-view-overview.tsx:546
 #: ../html/src/manager/images/image-view.tsx:497
 msgid "Image is up to date"
 msgstr "La imatge està actualitzada"
 
-#: ../html/src/manager/images/image-view-overview.tsx:610
+#: ../html/src/manager/images/image-view-overview.tsx:614
 msgid "Image Status"
 msgstr "Estat de la imatge"
 
-#: ../html/src/manager/images/image-view-overview.tsx:613
+#: ../html/src/manager/images/image-view-overview.tsx:617
 msgid "Image Info"
 msgstr "Informació de la imatge"
 
-#: ../html/src/manager/images/image-view-overview.tsx:624
+#: ../html/src/manager/images/image-view-overview.tsx:628
 msgid "Build Status"
 msgstr "Estat de la construcció"
 
-#: ../html/src/manager/images/image-view-overview.tsx:632
-#: ../html/src/manager/images/image-view-overview.tsx:810
+#: ../html/src/manager/images/image-view-overview.tsx:636
+#: ../html/src/manager/images/image-view-overview.tsx:814
 msgid "Inspect"
 msgstr "Inspecciona"
 
-#: ../html/src/manager/images/image-view-overview.tsx:642
+#: ../html/src/manager/images/image-view-overview.tsx:646
 msgid "Reschedule the build"
 msgstr "Torna a planificar la construcció"
 
-#: ../html/src/manager/images/image-view-overview.tsx:650
+#: ../html/src/manager/images/image-view-overview.tsx:654
 msgid "Reinspect"
 msgstr "Inspecció"
 
-#: ../html/src/manager/images/image-view-overview.tsx:651
+#: ../html/src/manager/images/image-view-overview.tsx:655
 msgid "Reschedule the inspect"
 msgstr "Torna a planificar la inspecció"
 
-#: ../html/src/manager/images/image-view-overview.tsx:664
+#: ../html/src/manager/images/image-view-overview.tsx:668
 msgid "Custom Image Information"
 msgstr "Informació personalitzada de la imatge"
 
-#: ../html/src/manager/images/image-view-overview.tsx:678
+#: ../html/src/manager/images/image-view-overview.tsx:682
 #: ../html/src/manager/images/image-view.tsx:367
 #: ../html/src/manager/images/image-view.tsx:726
 msgid "Delete Image"
 msgstr "Suprimeix la imatge"
 
-#: ../html/src/manager/images/image-view-overview.tsx:681
+#: ../html/src/manager/images/image-view-overview.tsx:685
 #: ../html/src/manager/images/image-view.tsx:729
 msgid "Are you sure you want to delete image"
 msgstr "Esteu segur que voleu suprimir la imatge"
 
-#: ../html/src/manager/images/image-view-overview.tsx:734
+#: ../html/src/manager/images/image-view-overview.tsx:738
 msgid "Schedule build"
 msgstr "Construcció de la planificació"
 
-#: ../html/src/manager/images/image-view-overview.tsx:766
+#: ../html/src/manager/images/image-view-overview.tsx:770
 msgid "Rebuild Image"
 msgstr "Reconstrueix la imatge"
 
-#: ../html/src/manager/images/image-view-overview.tsx:811
+#: ../html/src/manager/images/image-view-overview.tsx:815
 msgid "Schedule inspect"
 msgstr "Inspecció de la planificació"
 
-#: ../html/src/manager/images/image-view-overview.tsx:837
+#: ../html/src/manager/images/image-view-overview.tsx:841
 msgid "Reinspect Image"
 msgstr "Torna a inspeccionar la imatge"
 
@@ -5191,36 +5189,36 @@ msgstr "bootstrap"
 msgid "Loading content.."
 msgstr "S'està carregant el contingut."
 
-#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:57
+#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:58
 #: ../html/src/manager/minion/ansible/ansible-path-content.tsx:50
 msgid "An error occurred while loading data. Please check server logs."
 msgstr "S'ha produït un error en carregar les dades. Si us plau, comproveu els registres del servidor."
 
-#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:167
+#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:168
 msgid "Ansible Control Node Configuration: add paths for Playbook discovery and Inventory files introspection."
 msgstr "Configuració del node de controlNSNSIBLE: afegeix camins per al descobriment de llibres de reproducció i la introspecció de fitxers d'inventari."
 
-#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:174
+#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:175
 msgid "Playbook Directories"
 msgstr "Directoris de llibres de reproducció"
 
-#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:197
+#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:198
 msgid "Add a Playbook directory"
 msgstr "Afegeix un directori de Playbook"
 
-#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:200
+#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:201
 msgid "e.g., /srv/playbooks"
 msgstr "p. ex., /srv/playbooks"
 
-#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:207
+#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:208
 msgid "Inventory Files"
 msgstr "Fitxers d'inventari"
 
-#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:230
+#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:231
 msgid "Add an Inventory file"
 msgstr "Afegeix un fitxer d'inventari"
 
-#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:233
+#: ../html/src/manager/minion/ansible/ansible-control-node.tsx:234
 msgid "e.g., /etc/ansible/testing/hosts"
 msgstr "p. ex. /etc/ansible/testing/hosts"
 
@@ -5454,7 +5452,7 @@ msgstr "Port SSH del proxy"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:167
 #: ../html/src/manager/proxy/container-config.tsx:221
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:501
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:510
 msgid "Port range: 1 - 65535"
 msgstr "Gamma de ports: 1 - 65535"
 
@@ -5788,13 +5786,13 @@ msgid "Message deleted successfully"
 msgstr "El missatge s'ha suprimit correctament"
 
 #: ../html/src/manager/notifications/notifications.tsx:45
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:343
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:344
 #: ../html/src/manager/shared/websocket/useWebSocket.ts:29
 msgid "Websocket connection closed. Refresh the page to try again."
 msgstr "S'ha tancat la connexió a Websocket. Refresca la pàgina per tornar-ho a provar."
 
 #: ../html/src/manager/notifications/notifications.tsx:59
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:364
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:365
 #: ../html/src/manager/shared/websocket/useWebSocket.ts:35
 msgid "Error connecting to server. Refresh the page to try again."
 msgstr "S'ha produït un error en connectar al servidor. Refresca la pàgina per tornar-ho a provar."
@@ -5932,7 +5930,7 @@ msgstr "Ciutat"
 #: ../html/src/manager/proxy/container-config.tsx:323
 #: ../html/src/manager/recurring/recurring-actions-utils.tsx:8
 #: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:4
-#: ../html/src/manager/state/highstate-summary.tsx:172
+#: ../html/src/manager/state/highstate-summary.tsx:163
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:175
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:63
 msgid "Organization"
@@ -6157,94 +6155,94 @@ msgstr "Altestat"
 msgid "Custom State"
 msgstr "Estat personalitzat"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:53
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:54
 #: ../html/src/manager/salt/keys/key-management.tsx:74
 msgid "pending"
 msgstr "pendent"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:57
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:58
 msgid "timed out"
 msgstr "temps d'espera excedit"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:66
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:67
 msgid "- hide error -"
 msgstr "- amaga un error -"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:66
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:67
 msgid "- show error -"
 msgstr "- mostra un error -"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:73
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:74
 msgid "- hide response -"
 msgstr "- amaga la resposta -"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:73
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:74
 msgid "- show response -"
 msgstr "- mostra la resposta -"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:176
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:177
 msgid "Stop waiting"
 msgstr "Atura l'espera"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:179
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:180
 msgid "Stop waiting for all the minions to respond"
 msgstr "Deixa d'esperar que tots els minions responguin"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:187
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:188
 msgid "Find targets"
 msgstr "Cerca objectius"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:190
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:200
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:191
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:201
 msgid "Check which minions match the target expression"
 msgstr "Comprova quins minions coincideixen amb l'expressió de destinació"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:206
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:207
 msgid "Run command"
 msgstr "Executa l'ordre"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:209
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:210
 msgid "Run the command on the target minions"
 msgstr "Executa l'ordre en els minions de destinació"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:218
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:219
 msgid "Remote Commands"
 msgstr "Ordres remotes"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:231
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:232
 msgid "Type the command here"
 msgstr "Escriviu aquí l'ordre"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:241
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:242
 msgid "Type the minion_id pattern to target here"
 msgstr "Escriviu aquí el patró de minionid a objectiu"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:252
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:253
 msgid "Target systems"
 msgstr "Sistemes objectiu"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:262
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:263
 msgid "No target systems previewed"
 msgstr "No s'ha previsualitzat cap sistema de destinació"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:263
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:264
 msgid "No target systems found"
 msgstr "No s'ha trobat cap sistema objectiu"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:475
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:476
 msgid "Not all minions responded on time."
 msgstr "No tots els minions van respondre a temps."
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:503
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:504
 msgid "No minions matched the target expression."
 msgstr "No hi ha cap minió que coincideixi amb l'expressió de destinació."
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:505
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:506
 msgid "Server returned an error: {message}"
 msgstr "El servidor ha retornat un error: {message}"
 
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:574
-#: ../html/src/manager/salt/cmd/remote-commands.tsx:583
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:575
+#: ../html/src/manager/salt/cmd/remote-commands.tsx:584
 msgid "Matching ssh-push minions..."
 msgstr "Coincidència amb ssh-push minions..."
 
@@ -6264,6 +6262,12 @@ msgstr "Filtra pel nom de la fórmula"
 #: ../html/src/manager/state/highstate-summary.tsx:25
 msgid "Formula"
 msgstr "Formulari"
+
+#: ../html/src/manager/salt/formula-catalog/org-formula-details.tsx:73
+#, fuzzy
+#| msgid "Name"
+msgid "Name:"
+msgstr "Nom"
 
 #: ../html/src/manager/salt/keys/key-management.tsx:36
 msgid "Accept"
@@ -6297,31 +6301,31 @@ msgstr "Cerca per nom o empremta digital"
 msgid "Fingerprint"
 msgstr "Empremta digital"
 
-#: ../html/src/manager/shared/menu/menu.tsx:216
+#: ../html/src/manager/shared/menu/menu.tsx:224
 msgid "Clear Menu"
 msgstr "Neteja el menú"
 
-#: ../html/src/manager/shared/menu/menu.tsx:218
+#: ../html/src/manager/shared/menu/menu.tsx:227
 msgid "Filter menu"
 msgstr "Filtra el menú"
 
-#: ../html/src/manager/shared/menu/menu.tsx:253
+#: ../html/src/manager/shared/menu/menu.tsx:262
 msgid "Uyuni"
 msgstr "Uyuni"
 
-#: ../html/src/manager/shared/menu/menu.tsx:255
+#: ../html/src/manager/shared/menu/menu.tsx:264
 msgid "Uyuni homepage"
 msgstr "Pàgina d'inici d'Uyuni"
 
-#: ../html/src/manager/shared/menu/menu.tsx:268
+#: ../html/src/manager/shared/menu/menu.tsx:277
 msgid "SUSE Multi-Linux Manager homepage"
 msgstr "Pàgina d'inici del gestor de SUSE MultiLinux"
 
-#: ../html/src/manager/state/display-highstate.tsx:8
+#: ../html/src/manager/state/display-highstate.tsx:10
 msgid "State Summary for {name}"
 msgstr "Resum d'estat per a {name}"
 
-#: ../html/src/manager/state/display-highstate.tsx:78
+#: ../html/src/manager/state/display-highstate.tsx:80
 msgid "There are no applicable systems."
 msgstr "No hi ha sistemes aplicables."
 
@@ -6357,7 +6361,7 @@ msgstr "Heretat de"
 msgid "Show full highstate output"
 msgstr "Mostra tota la sortida d'estat alt"
 
-#: ../html/src/manager/state/highstate-summary.tsx:165
+#: ../html/src/manager/state/highstate-summary.tsx:156
 msgid "System Group"
 msgstr "Grup del sistema"
 
@@ -6459,98 +6463,112 @@ msgstr "Tipus de sistema"
 msgid "Error Details"
 msgstr "Detalls de l'error"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:331
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:51
+msgid "Standard Output:"
+msgstr ""
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:67
+msgid "Standard Error:"
+msgstr ""
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:83
+#, fuzzy
+#| msgid "Result Type:"
+msgid "Result:"
+msgstr "Tipus de resultat:"
+
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:340
 msgid "Request interrupted or invalid response received from the server. Please check if your minion was bootstrapped correctly."
 msgstr "Sol·licitud de resposta interrompuda o no vàlida rebuda del servidor. Si us plau, comproveu si el vostre minion s'ha arrencat correctament."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:359
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:368
 msgid "Bootstrap process initiated. Your system should be visible at the following location shortly: <link>systems</link>. If any issues arise, you'll receive an error notification. In case you're working with a transactional system, please perform a system reboot to complete the registration process."
 msgstr "S'ha iniciat el procés de Bootstrap. El vostre sistema hauria de ser visible en la següent ubicació: <link>systems</link>. Si sorgeix algun problema, rebreu una notificació d'error. En cas que treballeu amb un sistema transaccional, si us plau, reinicieu el sistema per completar el procés de registre."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:379
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:388
 msgid "Show additional details about this error"
 msgstr "Mostra els detalls addicionals sobre aquest error"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:388
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:397
 msgid "Unable to bootstrap host. The following errors have happened:"
 msgstr "No s'ha pogut arrencar l'amfitrió. S'han produït els següents errors:"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:391
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:400
 msgid "Your system is bootstrapping: waiting for a response.."
 msgstr "El vostre sistema està arrencant: esperant una resposta.."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:393
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:402
 msgid "Loading SSH Private Key.."
 msgstr "S'està carregant la clau privada SSH."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:401
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:410
 #: ../html/src/manager/systems/list-filter.tsx:14
 msgid "Bootstrap"
 msgstr "Bootstrap"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:425
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:434
 msgid "e.g., ••••••••••••"
 msgstr "per exemple, ,"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:441
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:450
 msgid "The file will be stored in a temporary file on the server and will be deleted after the bootstrapping procedure"
 msgstr "El fitxer s'emmagatzemarà en un fitxer temporal al servidor i s'eliminarà després del procediment d'arrencada"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:454
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:463
 msgid "Leave empty for no passphrase"
 msgstr "Deixeu-ho buit sense contrasenya"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:466
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:475
 msgid "Bootstrap Minions"
 msgstr "Minions Bootstrap"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:469
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:478
 msgid "You can add systems to be managed by providing SSH credentials only. {productName} will prepare the system remotely and will perform the registration."
 msgstr "Podeu afegir sistemes que es gestionaran proporcionant només credencials SSH. {productName} prepararà el sistema remotament i farà el registre."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:483
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:492
 msgid "e.g., host.domain.com"
 msgstr "p. ex., host.domain.com"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:520
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:529
 msgid "The user will have an effect only during the bootstrap process. Further connections will be made by the user specified in rhn.conf. The default user for the key 'ssh_push_sudo_user' is 'root'. This user is set after {productName}'s SSH key is deployed during the bootstrap procedure."
 msgstr "L'usuari només tindrà un efecte durant el procés d'arrencada. L'usuari especificat a rhn.conf farà més connexions. L'usuari per defecte de la clau «sshpushsudouser» és «root». Aquest usuari s'estableix després que la clau SSH de {productName} es desplegui durant el procediment d'arrencada."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:529
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:538
 msgid "Authentication Method"
 msgstr "Mètode d'autenticació"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:566
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:575
 msgid "Ansible control node"
 msgstr "Node de control controlable"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:584
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:614
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:593
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:623
 #: ../html/src/manager/systems/proxy.tsx:124
 msgid "None"
 msgstr "Cap"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:597
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:606
 msgid "Reactivation Key"
 msgstr "Clau de reactivació"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:603
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:612
 msgid "Leave empty when no reactivation is wanted"
 msgstr "Deixeu-ho buit quan no es vulgui reactivar"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:632
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:641
 msgid "The hostname of the proxy is not fully qualified. This may cause problems when accessing the channels."
 msgstr "El nom del servidor intermediari no està completament qualificat. Això pot causar problemes a l'hora d'accedir als canals."
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:649
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:658
 msgid "Disable SSH strict host key checking during bootstrap process"
 msgstr "Inhabilita la comprovació estricta de la clau de l'amfitrió SSH durant el procés d'arrencada"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:665
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:674
 msgid "Manage system completely via SSH (will not install an agent)"
 msgstr "Gestiona completament el sistema via SSH (no instal·larà un agent)"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:681
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:690
 msgid "Are you sure you want to close this page while bootstrapping is in progress ?"
 msgstr "Esteu segur que voleu tancar aquesta pàgina mentre l'arrencada està en curs?"
 
