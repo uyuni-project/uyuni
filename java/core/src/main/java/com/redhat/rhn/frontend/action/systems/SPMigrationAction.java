@@ -156,35 +156,7 @@ public class SPMigrationAction extends RhnAction {
         String dispatch = request.getParameter(RequestContext.DISPATCH);
         if (dispatch != null) {
             actionStep = (String) form.get(ACTION_STEP);
-
-            // Get target product and channel IDs
-            parHolder.setTargetBaseProduct((Long) form.get(BASE_PRODUCT));
-            parHolder.setTargetAddonProducts((Long[]) form.get(ADDON_PRODUCTS));
-            parHolder.setTargetBaseChannel((Long) form.get(BASE_CHANNEL));
-            parHolder.setTargetChildChannels((Long[]) form.get(CHILD_CHANNELS));
-            parHolder.setAllowVendorChange(BooleanUtils.isTrue((Boolean)form.get(ALLOW_VENDOR_CHANGE)));
-
-            // Get additional flags
-            if (dispatch.equals(LocalizationService.getInstance().getMessage(DISPATCH_DRYRUN))) {
-                parHolder.setDryRun(true);
-            }
-
-            // flag to know if we are going back or forward in the setup wizard
-            parHolder.setGoBack(dispatch.equals(LocalizationService.getInstance().getMessage(GO_BACK)));
-
-            // flag to know if we should show the dry-run button or not
-            String bpProductClass = minion.map(m -> m.getInstalledProductSet()
-                    .map(i -> i.getBaseProduct().getChannelFamily().getLabel())
-                    .orElse("")).orElse("");
-
-            String tgtProductClass = Optional.ofNullable(parHolder.getTargetBaseProduct())
-                    .map(SUSEProductFactory::getProductById)
-                    .map(s -> s.getChannelFamily().getLabel())
-                    .orElse("");
-
-            parHolder.setHasDryRun(!parHolder.isRedHatMinion() && bpProductClass.equals(tgtProductClass));
-            request.setAttribute(HAS_DRYRUN_CAPABLITY, parHolder.isHasDryRun());
-
+            handleWhenDispatching(request, form, dispatch,  minion,  parHolder);
         }
 
         // if submitting step 1 (TARGET) but no radio button
@@ -395,6 +367,37 @@ public class SPMigrationAction extends RhnAction {
                 .updateStackUpdateNeeded(ctx.getCurrentUser(), server));
         logger.debug("update stack update needed? {}", parHolder.isTradCliUpdateStackUpdateNeeded());
         request.setAttribute(UPDATESTACK_UPDATE_NEEDED, parHolder.isTradCliUpdateStackUpdateNeeded());
+    }
+
+    private void handleWhenDispatching(HttpServletRequest request, DynaActionForm form, String dispatch,
+                                       Optional<MinionServer> minion, SPMigrationActionParameterHolder parHolder) {
+        // Get target product and channel IDs
+        parHolder.setTargetBaseProduct((Long) form.get(BASE_PRODUCT));
+        parHolder.setTargetAddonProducts((Long[]) form.get(ADDON_PRODUCTS));
+        parHolder.setTargetBaseChannel((Long) form.get(BASE_CHANNEL));
+        parHolder.setTargetChildChannels((Long[]) form.get(CHILD_CHANNELS));
+        parHolder.setAllowVendorChange(BooleanUtils.isTrue((Boolean)form.get(ALLOW_VENDOR_CHANGE)));
+
+        // Get additional flags
+        if (dispatch.equals(LocalizationService.getInstance().getMessage(DISPATCH_DRYRUN))) {
+            parHolder.setDryRun(true);
+        }
+
+        // flag to know if we are going back or forward in the setup wizard
+        parHolder.setGoBack(dispatch.equals(LocalizationService.getInstance().getMessage(GO_BACK)));
+
+        // flag to know if we should show the dry-run button or not
+        String bpProductClass = minion.map(m -> m.getInstalledProductSet()
+                .map(i -> i.getBaseProduct().getChannelFamily().getLabel())
+                .orElse("")).orElse("");
+
+        String tgtProductClass = Optional.ofNullable(parHolder.getTargetBaseProduct())
+                .map(SUSEProductFactory::getProductById)
+                .map(s -> s.getChannelFamily().getLabel())
+                .orElse("");
+
+        parHolder.setHasDryRun(!parHolder.isRedHatMinion() && bpProductClass.equals(tgtProductClass));
+        request.setAttribute(HAS_DRYRUN_CAPABLITY, parHolder.isHasDryRun());
     }
 
     /**
