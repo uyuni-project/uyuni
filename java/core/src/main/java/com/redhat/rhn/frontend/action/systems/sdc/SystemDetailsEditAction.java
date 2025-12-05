@@ -90,7 +90,8 @@ public class SystemDetailsEditAction extends RhnAction {
     public static final String UNENTITLE = "unentitle";
 
     private static MaintenanceManager maintenanceManager = new MaintenanceManager();
-    private SystemEntitlementManager systemEntitlementManager = GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER;
+    private static final SystemEntitlementManager SYSTEM_ENTITLEMENT_MANAGER =
+            GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER;
 
     /** {@inheritDoc} */
     @Override
@@ -155,10 +156,10 @@ public class SystemDetailsEditAction extends RhnAction {
         Entitlement base = EntitlementManager.getByName(selectedEnt);
         log.debug("base: {}", base);
         if (base != null) {
-            systemEntitlementManager.setBaseEntitlement(s, base);
+            SYSTEM_ENTITLEMENT_MANAGER.setBaseEntitlement(s, base);
         }
         else if (selectedEnt.equals(UNENTITLE)) {
-            systemEntitlementManager.removeAllServerEntitlements(s);
+            SYSTEM_ENTITLEMENT_MANAGER.removeAllServerEntitlements(s);
         }
 
         // setup location information
@@ -275,9 +276,9 @@ public class SystemDetailsEditAction extends RhnAction {
             log.debug("Entitlement: {}", e.getLabel());
             log.debug("form.get: {}", daForm.get(e.getLabel()));
             if (Boolean.TRUE.equals(daForm.get(e.getLabel())) &&
-                    systemEntitlementManager.canEntitleServer(s, e)) {
+                    SYSTEM_ENTITLEMENT_MANAGER.canEntitleServer(s, e)) {
                 log.debug("Entitling server with: {}", e);
-                ValidatorResult vr = systemEntitlementManager.addEntitlementToServer(s, e);
+                ValidatorResult vr = SYSTEM_ENTITLEMENT_MANAGER.addEntitlementToServer(s, e);
 
                 if (!vr.getWarnings().isEmpty()) {
                     getStrutsDelegate().saveMessages(request,
@@ -311,7 +312,7 @@ public class SystemDetailsEditAction extends RhnAction {
                      daForm.get(e.getLabel()).equals(Boolean.FALSE)) &&
                      s.hasEntitlement(e)) {
                 log.debug("removing entitlement: {}", e);
-                systemEntitlementManager.removeServerEntitlement(s, e);
+                SYSTEM_ENTITLEMENT_MANAGER.removeServerEntitlement(s, e);
 
                 needsSnapshot = true;
             }
