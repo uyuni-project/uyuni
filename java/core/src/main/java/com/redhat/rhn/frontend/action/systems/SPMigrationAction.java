@@ -38,8 +38,10 @@ import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
 import com.redhat.rhn.manager.distupgrade.DistUpgradePaygException;
+import com.redhat.rhn.manager.distupgrade.NoInstalledProductException;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.maintenance.NotInMaintenanceModeException;
 
@@ -189,61 +191,7 @@ public class SPMigrationAction extends RhnAction {
                     parHolder.isAllowVendorChange());
         }
         else if (forward.getName().equals(SCHEDULE)) {
-            // Create target product set from parameters
-            SUSEProductSet targetProductSet = createProductSet(parHolder.getTargetBaseProduct(),
-                    parHolder.getTargetAddonProducts());
-
-            // Setup list of channels to subscribe to
-            List<Long> channelIDs = new ArrayList<>();
-            if (parHolder.getTargetChildChannels() != null) {
-                channelIDs.addAll(Arrays.asList(parHolder.getTargetChildChannels()));
-            }
-            channelIDs.add(parHolder.getTargetBaseChannel());
-
-            // Schedule the dist upgrade action
-            Date earliest = getStrutsDelegate().readScheduleDate(form, "date",
-                    DatePicker.YEAR_RANGE_POSITIVE);
-            try {
-                List<DistUpgradeAction> actions = DistUpgradeManager.scheduleDistUpgrade(ctx.getCurrentUser(),
-                    List.of(server), targetProductSet, channelIDs, parHolder.isDryRun(),
-                        parHolder.isAllowVendorChange(), GlobalInstanceHolder.PAYG_MANAGER.isPaygInstance(),
-                        earliest, null);
-
-                // Display a message to the user
-                String product = targetProductSet.getBaseProduct().getFriendlyName();
-                String msgKey = parHolder.isDryRun() ? MSG_SCHEDULED_DRYRUN : MSG_SCHEDULED_MIGRATION;
-                List<String> msgParams = List.of(server.getId().toString(), actions.get(0).getId().toString(), product);
-
-                getStrutsDelegate().saveMessage(msgKey, msgParams.toArray(String[]::new), request);
-                Map<String, Long> params = new HashMap<>();
-                params.put("sid", server.getId());
-                return getStrutsDelegate().forwardParams(forward, params);
-            }
-            catch (NotInMaintenanceModeException e) {
-                setConfirmAttributes(request, ctx, server, form, parHolder.getTargetBaseProduct(),
-                        parHolder.getTargetAddonProducts(), parHolder.getTargetBaseChannel(),
-                        parHolder.getTargetChildChannels(), parHolder.isAllowVendorChange());
-                request.setAttribute(NO_MAINTENANCE_WINDOW, true);
-                forward = actionMapping.findForward(CONFIRM);
-            }
-            catch (DistUpgradePaygException e) {
-                Optional<SUSEProductSet> installedProducts = server.getInstalledProductSet();
-                List<SUSEProductSet> migrationTargets = getMigrationTargets(
-                        request,
-                        installedProducts,
-                        server.getServerArch().getCompatibleChannelArch(),
-                        ctx.getCurrentUser()
-                );
-                request.setAttribute(TARGET_PRODUCTS, migrationTargets);
-
-                ActionErrors errors = new ActionErrors();
-                // We do not support migration with individual channels in UI. So we only
-                // need 1 error message as the second case can only happens in API
-                getStrutsDelegate().addError(errors, MSG_ERROR_PAYG_MIGRATION);
-                getStrutsDelegate().saveMessages(request, errors);
-
-                forward = actionMapping.findForward(TARGET);
-            }
+            return handleScheduleForward(actionMapping, request, ctx, server, form, forward, parHolder);
         }
 
         return forward;
@@ -414,6 +362,66 @@ public class SPMigrationAction extends RhnAction {
 
         // Put all channel data to the request
         request.setAttribute(CHANNEL_MAP, channelMap);
+    }
+
+    private ActionForward handleScheduleForward(ActionMapping actionMapping, HttpServletRequest request,
+                                                RequestContext ctx, Server server, DynaActionForm form,
+                                                ActionForward forward, SPMigrationActionParameterHolder parHolder)
+            throws TaskomaticApiException, NoInstalledProductException {
+        // Create target product set from parameters
+        SUSEProductSet targetProductSet = createProductSet(parHolder.getTargetBaseProduct(),
+                parHolder.getTargetAddonProducts());
+
+        // Setup list of channels to subscribe to
+        List<Long> channelIDs = new ArrayList<>();
+        if (parHolder.getTargetChildChannels() != null) {
+            channelIDs.addAll(Arrays.asList(parHolder.getTargetChildChannels()));
+        }
+        channelIDs.add(parHolder.getTargetBaseChannel());
+
+        // Schedule the dist upgrade action
+        Date earliest = getStrutsDelegate().readScheduleDate(form, "date", DatePicker.YEAR_RANGE_POSITIVE);
+        try {
+            List<DistUpgradeAction> actions = DistUpgradeManager.scheduleDistUpgrade(ctx.getCurrentUser(),
+                    List.of(server), targetProductSet, channelIDs, parHolder.isDryRun(),
+                    parHolder.isAllowVendorChange(), GlobalInstanceHolder.PAYG_MANAGER.isPaygInstance(),
+                    earliest, null);
+
+            // Display a message to the user
+            String product = targetProductSet.getBaseProduct().getFriendlyName();
+            String msgKey = parHolder.isDryRun() ? MSG_SCHEDULED_DRYRUN : MSG_SCHEDULED_MIGRATION;
+            List<String> msgParams = List.of(server.getId().toString(), actions.get(0).getId().toString(), product);
+
+            getStrutsDelegate().saveMessage(msgKey, msgParams.toArray(String[]::new), request);
+            Map<String, Long> params = new HashMap<>();
+            params.put("sid", server.getId());
+            return getStrutsDelegate().forwardParams(forward, params);
+        }
+        catch (NotInMaintenanceModeException e) {
+            setConfirmAttributes(request, ctx, server, form, parHolder.getTargetBaseProduct(),
+                    parHolder.getTargetAddonProducts(), parHolder.getTargetBaseChannel(),
+                    parHolder.getTargetChildChannels(), parHolder.isAllowVendorChange());
+            request.setAttribute(NO_MAINTENANCE_WINDOW, true);
+            return actionMapping.findForward(CONFIRM);
+        }
+        catch (DistUpgradePaygException e) {
+            Optional<SUSEProductSet> installedProducts = server.getInstalledProductSet();
+            List<SUSEProductSet> migrationTargets = getMigrationTargets(
+                    request,
+                    installedProducts,
+                    server.getServerArch().getCompatibleChannelArch(),
+                    ctx.getCurrentUser()
+            );
+            request.setAttribute(TARGET_PRODUCTS, migrationTargets);
+
+            ActionErrors errors = new ActionErrors();
+            // We do not support migration with individual channels in UI. So we only
+            // need 1 error message as the second case can only happens in API
+            getStrutsDelegate().addError(errors, MSG_ERROR_PAYG_MIGRATION);
+            getStrutsDelegate().saveMessages(request, errors);
+
+            return actionMapping.findForward(TARGET);
+        }
     }
 
     /**
