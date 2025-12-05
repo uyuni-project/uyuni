@@ -7,6 +7,7 @@ $link-color: $eos-bc-blue-500;
 $box-shadow: $gray-light;
 $content-area-padding-side: 4em;
 $content-area-padding-bottom: 4em;
+$text-success-color: $eos-bc-green-900;
 
 //Tabs
 $tabs-border-color: $eos-bc-gray-100;
@@ -17,17 +18,23 @@ $hr-border: $eos-bc-gray-100;
 //Panel gray
 $panel-gray-bg: $eos-bc-gray-50;
 $panel-border: $eos-bc-gray-100;
+$list-item-border: $eos-bc-gray-100;
+$list-item-hover-bg: $eos-bc-gray-100;
 
 //Panel white
 $panel-white-bg: $eos-bc-white;
+$panel-white-border-color: $eos-bc-gray-100;
 
 // Table
 $tb-thead-tr-bg: $eos-bc-gray-100;
 $tb-orderBy-text: $eos-bc-gray-1000;
 $tb-border-color: $eos-bc-gray-100;
+$table-row-hover-bg: $gray-light;
 
 //buttons
 $btn-default-color: $eos-bc-pine-500;
+$btn-tertiary-color: $eos-bc-pine-500;
+$btn-tertiary-color-hover: $eos-bc-green-900;
 
 // Form
 
@@ -55,10 +62,21 @@ $select-dropdown-selected-color: $eos-bc-white;
 
 /* Dropdown Menu */
 $dropdown-bg: $eos-bc-white;
+$dropdown-border: rgba(0, 0, 0, 0.15);
 $dropdown-hover-bg: $eos-bc-gray-50;
 
 // Tooltip
 $tooltip-bg: $eos-bc-gray-1000;
 $tooltip-color: $eos-bc-white;
 
+// Pre
+$pre-bg: rgba($eos-bc-white, 0.5);
+$pre-border: $eos-bc-gray-100;
 
+// Code
+$code-bg: rgba($eos-bc-gray-100, 0.5);
+
+/* Modals */
+$modal-backdrop-color: rgba($eos-bc-gray-1000, 50%);
+$modal-bg: $eos-bc-white;
+$modal-border: $eos-bc-gray-100;

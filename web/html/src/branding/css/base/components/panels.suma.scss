@@ -13,7 +13,7 @@
     }
 
     .list-group-item {
-      border-bottom: 1px solid $panel-border;
+      border-bottom: 1px solid $list-item-border;
       text-align: left;
 
       &:last-child {
@@ -26,10 +26,10 @@
     }
 
     > .panel-body .list-group {
-      border: 1px solid $eos-bc-gray-100;
+      border: 1px solid $list-item-border;
 
       .list-group-item:hover {
-        background-color: $eos-bc-gray-100;
+        background-color: $list-item-hover-bg;
         text-decoration: none;
       }
     }

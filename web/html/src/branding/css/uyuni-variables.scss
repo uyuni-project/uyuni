@@ -2,6 +2,7 @@ $body-color: #5f5f5f;
 $body-font: $helvetica;
 $link-color: #337ab7;
 $box-shadow: $gray-light;
+$text-success-color: $eos-bc-green-900;
 
 $header: $uyuni-blue-900;
 $header-text: $uyuni-gray-100;
@@ -29,14 +30,17 @@ $hr-border: $eos-bc-gray-100;
 
 // Panel
 $panel-border: $eos-bc-gray-100;
+$list-item-border: $eos-bc-gray-100;
 
 //Panel white
 $panel-white-bg: $eos-bc-white;
+$panel-white-border-color: $eos-bc-gray-100;
 
 // Table
 $tb-thead-tr-bg: $eos-bc-gray-100;
 $tb-orderBy-text: $eos-bc-gray-1000;
 $tb-border-color: $eos-bc-gray-100;
+$table-row-hover-bg: $gray-light;
 
 // Form
 /* Input */
@@ -63,4 +67,17 @@ $select-dropdown-selected-color: $eos-bc-white;
 
 /* Dropdown Menu */
 $dropdown-bg: $eos-bc-white;
+$dropdown-border: rgba(0, 0, 0, 0.15);
 $dropdown-hover-bg: $eos-bc-gray-50;
+
+// Pre
+$pre-bg: rgba($eos-bc-white, 0.5);
+$pre-border: $eos-bc-gray-100;
+
+// Code
+$code-bg: rgba($eos-bc-gray-100, 0.5);
+
+/* Modals */
+$modal-backdrop-color: rgba($eos-bc-gray-1000, 50%);
+$modal-bg: $eos-bc-white;
+$modal-border: $eos-bc-gray-100;
