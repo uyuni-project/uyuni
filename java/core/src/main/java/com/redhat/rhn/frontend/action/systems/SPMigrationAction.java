@@ -140,52 +140,8 @@ public class SPMigrationAction extends RhnAction {
         SPMigrationActionParameterHolder parHolder = new SPMigrationActionParameterHolder();
 
         Optional<MinionServer> minion = MinionServerFactory.lookupById(server.getId());
-        // Check if this server is a minion
-        parHolder.setMinion(minion.isPresent());
-        logger.debug("is a minion system? {}", parHolder.isMinion());
-        request.setAttribute(IS_MINION, parHolder.isMinion());
 
-        // Check if this is a SUSE system (for minions only)
-        parHolder.setSuseMinion(parHolder.isMinion() && minion.get().isOsFamilySuse());
-        logger.debug("is a SUSE minion? {}", parHolder.isSuseMinion());
-        request.setAttribute(IS_SUSE_MINION, parHolder.isSuseMinion());
-
-        // Check if this is a RedHat system (for minions only)
-        parHolder.setRedHatMinion(parHolder.isMinion() && minion.get().getOsFamily().equals("RedHat"));
-        logger.debug("is a RedHat minion? {}", parHolder.isRedHatMinion());
-        request.setAttribute(IS_REDHAT_MINION, parHolder.isRedHatMinion());
-
-        // Check if the salt package on the minion is up to date (for minions only)
-        parHolder.setSaltPackageOnMinion("salt");
-        if (PackageFactory.lookupByNameAndServer("venv-salt-minion", server) != null) {
-            parHolder.setSaltPackageOnMinion("venv-salt-minion");
-        }
-        parHolder.setSaltPackageUpToDateOnMinion(PackageManager.
-                getServerNeededUpdatePackageByName(server.getId(), parHolder.getSaltPackageOnMinion()) == null);
-        logger.debug("salt package is up-to-date? {}", parHolder.isSaltPackageUpToDateOnMinion());
-        request.setAttribute(IS_SALT_UP_TO_DATE, parHolder.isSaltPackageUpToDateOnMinion());
-        request.setAttribute(SALT_PACKAGE, parHolder.getSaltPackageOnMinion());
-
-        // Check if this server supports distribution upgrades via capabilities
-        // (for traditional clients only)
-        parHolder.setTradCliUpgradesViaCapabilitySupported(parHolder.isSuseMinion() || parHolder.isRedHatMinion() ||
-                        DistUpgradeManager.isUpgradeSupported(server, ctx.getCurrentUser()));
-        logger.debug("Upgrade supported for '{}'? {}", server.getName(),
-                parHolder.isTradCliUpgradesViaCapabilitySupported());
-        request.setAttribute(UPGRADE_SUPPORTED, parHolder.isTradCliUpgradesViaCapabilitySupported());
-
-        // Check if zypp-plugin-spacewalk is installed (for traditional clients only)
-        parHolder.setTradCliZyppPluginInstalled(PackageFactory.
-                lookupByNameAndServer("zypp-plugin-spacewalk", server) != null);
-        logger.debug("zypp plugin installed? {}", parHolder.isTradCliZyppPluginInstalled());
-        request.setAttribute(ZYPP_INSTALLED, parHolder.isTradCliZyppPluginInstalled());
-
-        // Check if the newest update stack is installed (for traditional clients only)
-        parHolder.setTradCliUpdateStackUpdateNeeded(ErrataManager
-                .updateStackUpdateNeeded(ctx.getCurrentUser(), server));
-        logger.debug("update stack update needed? {}", parHolder.isTradCliUpdateStackUpdateNeeded());
-        request.setAttribute(UPDATESTACK_UPDATE_NEEDED, parHolder.isTradCliUpdateStackUpdateNeeded());
-
+        setGeneralAttributes(request, ctx, server, minion, parHolder);
 
         // Check if there is already a migration in the schedule
         Action migration = null;
@@ -390,6 +346,55 @@ public class SPMigrationAction extends RhnAction {
         }
 
         return forward;
+    }
+
+    private void setGeneralAttributes(HttpServletRequest request, RequestContext ctx, Server server,
+                                      Optional<MinionServer> minion, SPMigrationActionParameterHolder parHolder) {
+        // Check if this server is a minion
+        parHolder.setMinion(minion.isPresent());
+        logger.debug("is a minion system? {}", parHolder.isMinion());
+        request.setAttribute(IS_MINION, parHolder.isMinion());
+
+        // Check if this is a SUSE system (for minions only)
+        parHolder.setSuseMinion(minion.map(MinionServer::isOsFamilySuse).orElse(false));
+        logger.debug("is a SUSE minion? {}", parHolder.isSuseMinion());
+        request.setAttribute(IS_SUSE_MINION, parHolder.isSuseMinion());
+
+        // Check if this is a RedHat system (for minions only)
+        parHolder.setRedHatMinion(minion.map(m -> m.getOsFamily().equals("RedHat")).orElse(false));
+        logger.debug("is a RedHat minion? {}", parHolder.isRedHatMinion());
+        request.setAttribute(IS_REDHAT_MINION, parHolder.isRedHatMinion());
+
+        // Check if the salt package on the minion is up to date (for minions only)
+        parHolder.setSaltPackageOnMinion("salt");
+        if (PackageFactory.lookupByNameAndServer("venv-salt-minion", server) != null) {
+            parHolder.setSaltPackageOnMinion("venv-salt-minion");
+        }
+        parHolder.setSaltPackageUpToDateOnMinion(PackageManager.
+                getServerNeededUpdatePackageByName(server.getId(), parHolder.getSaltPackageOnMinion()) == null);
+        logger.debug("salt package is up-to-date? {}", parHolder.isSaltPackageUpToDateOnMinion());
+        request.setAttribute(IS_SALT_UP_TO_DATE, parHolder.isSaltPackageUpToDateOnMinion());
+        request.setAttribute(SALT_PACKAGE, parHolder.getSaltPackageOnMinion());
+
+        // Check if this server supports distribution upgrades via capabilities
+        // (for traditional clients only)
+        parHolder.setTradCliUpgradesViaCapabilitySupported(parHolder.isSuseMinion() || parHolder.isRedHatMinion() ||
+                DistUpgradeManager.isUpgradeSupported(server, ctx.getCurrentUser()));
+        logger.debug("Upgrade supported for '{}'? {}", server.getName(),
+                parHolder.isTradCliUpgradesViaCapabilitySupported());
+        request.setAttribute(UPGRADE_SUPPORTED, parHolder.isTradCliUpgradesViaCapabilitySupported());
+
+        // Check if zypp-plugin-spacewalk is installed (for traditional clients only)
+        parHolder.setTradCliZyppPluginInstalled(PackageFactory.
+                lookupByNameAndServer("zypp-plugin-spacewalk", server) != null);
+        logger.debug("zypp plugin installed? {}", parHolder.isTradCliZyppPluginInstalled());
+        request.setAttribute(ZYPP_INSTALLED, parHolder.isTradCliZyppPluginInstalled());
+
+        // Check if the newest update stack is installed (for traditional clients only)
+        parHolder.setTradCliUpdateStackUpdateNeeded(ErrataManager
+                .updateStackUpdateNeeded(ctx.getCurrentUser(), server));
+        logger.debug("update stack update needed? {}", parHolder.isTradCliUpdateStackUpdateNeeded());
+        request.setAttribute(UPDATESTACK_UPDATE_NEEDED, parHolder.isTradCliUpdateStackUpdateNeeded());
     }
 
     /**
