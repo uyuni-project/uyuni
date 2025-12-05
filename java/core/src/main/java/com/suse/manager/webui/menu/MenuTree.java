@@ -711,6 +711,38 @@ public class MenuTree {
         return routes.find(HttpMethod.get, currentUrl, null) != null;
     }
 
+
+    private static class BestActiveItemsHolder {
+        private Integer depthPrecision = 0;
+        private List<MenuItem> bestActiveItems = new LinkedList<>();
+
+        public Integer getDepthPrecision() {
+            return depthPrecision;
+        }
+
+        public void setDepthPrecision(Integer depthPrecisionIn) {
+            depthPrecision = depthPrecisionIn;
+        }
+
+        public List<MenuItem> getBestActiveItems() {
+            return bestActiveItems;
+        }
+
+        public void setBestActiveItems(List<MenuItem> bestActiveItemsIn) {
+            bestActiveItems = bestActiveItemsIn;
+        }
+    }
+
+    private void searchBestActiveItems(String url, MenuItem item, List<MenuItem> menuItems,
+                                       BestActiveItemsHolder holder) {
+        for (String dir : item.getDirectories()) {
+            if (url.contains(dir) && dir.length() > holder.getDepthPrecision()) {
+                holder.setBestActiveItems(menuItems);
+                holder.setDepthPrecision(dir.length());
+            }
+        }
+    }
+
     /**
      * Decode which is the active {@link MenuItem} from the current URL
      * based on the list of directories of the link
@@ -720,48 +752,30 @@ public class MenuTree {
      * @return the current active {@link MenuItem}
      */
     public List<MenuItem> getBestActiveDirs(List<MenuItem> nodes, String url) {
-        Integer depthPrecision = 0;
-        List<MenuItem> bestActiveItems = new LinkedList<>();
+        BestActiveItemsHolder holder = new BestActiveItemsHolder();
+
         for (MenuItem item1 : nodes) {
-            for (String dir : item1.getDirectories()) {
-                if (url.contains(dir) && dir.length() > depthPrecision) {
-                    bestActiveItems = new LinkedList<>();
-                    bestActiveItems.add(item1);
-                    depthPrecision = dir.length();
-                }
-            }
+            searchBestActiveItems(url, item1, List.of(item1), holder);
+
             if (item1.getSubmenu() != null) {
                 for (MenuItem item2 : item1.getSubmenu()) {
-                    for (String dir2 : item2.getDirectories()) {
-                        if (url.contains(dir2) && dir2.length() > depthPrecision) {
-                            bestActiveItems = new LinkedList<>();
-                            bestActiveItems.add(item1);
-                            bestActiveItems.add(item2);
-                            depthPrecision = dir2.length();
-                        }
-                    }
+                    searchBestActiveItems(url, item2, List.of(item1, item2), holder);
+
                     if (item2.getSubmenu() != null) {
                         for (MenuItem item3 : item2.getSubmenu()) {
-                            for (String dir3 : item3.getDirectories()) {
-                                if (url.contains(dir3) && dir3.length() > depthPrecision) {
-                                    bestActiveItems = new LinkedList<>();
-                                    bestActiveItems.add(item1);
-                                    bestActiveItems.add(item2);
-                                    bestActiveItems.add(item3);
-                                    depthPrecision = dir3.length();
-                                }
-                            }
+                            searchBestActiveItems(url, item3, List.of(item1, item2, item3), holder);
                         }
                     }
                 }
             }
         }
 
-        for (MenuItem menuItem : bestActiveItems) {
+        for (MenuItem menuItem : holder.getBestActiveItems()) {
             menuItem.setActive(true);
         }
-        return bestActiveItems;
+        return holder.getBestActiveItems();
     }
+
 
     /**
      * Calculate the web page title on the active flagged MenuItems
