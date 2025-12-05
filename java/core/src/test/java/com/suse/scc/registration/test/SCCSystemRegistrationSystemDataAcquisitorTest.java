@@ -509,7 +509,7 @@ public class SCCSystemRegistrationSystemDataAcquisitorTest extends AbstractSCCSy
                 }
                 allowing(cpuMock).getNrCPU(); will(returnValue(builder.cpus));
                 allowing(cpuMock).getNrsocket(); will(returnValue(builder.sockets));
-                allowing(cpuMock).getArchSpecsMap(); will(returnValue(Collections.emptyMap()));
+                allowing(cpuMock).getArchSpecs(); will(returnValue(Collections.emptyMap()));
 
                 // Arch label setup
                 allowing(serverArchMock).getLabel(); will(returnValue(builder.serverArchLabel));

@@ -97,7 +97,7 @@ public class SCCSystemRegistrationSystemDataAcquisitor implements SCCSystemRegis
             Optional<CPU> cpu = ofNullable(srv.getCpu());
             cpu.flatMap(c -> ofNullable(c.getNrCPU())).ifPresent(c -> hwInfo.setCpus(c.intValue()));
             cpu.flatMap(c -> ofNullable(c.getNrsocket())).ifPresent(c -> hwInfo.setSockets(c.intValue()));
-            cpu.map(CPU::getArchSpecsMap).filter(map -> !map.isEmpty()).ifPresent(hwInfo::setArchSpecs);
+            cpu.map(CPU::getArchSpecs).filter(map -> !map.isEmpty()).ifPresent(hwInfo::setArchSpecs);
 
             hwInfo.setArch(srv.getServerArch().getLabel().split("-")[0]);
             if (srv.isVirtualGuest()) {
