@@ -95,8 +95,8 @@ public class SystemEntitlementsSubmitAction extends
      * {@inheritDoc}
      */
     @Override
-    protected void processParamMap(ActionForm formIn, HttpServletRequest request,
-            Map<String, Object> params) {
+    protected void processParamMap(ActionForm formIn, HttpServletRequest request, Map<String, Object> params) {
+        //do nothing
     }
 
     private Entitlement findAddOnEntitlement(ActionForm formIn) {

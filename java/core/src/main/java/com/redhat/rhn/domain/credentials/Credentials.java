@@ -17,13 +17,14 @@ package com.redhat.rhn.domain.credentials;
 
 import com.redhat.rhn.domain.user.User;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Optional;
 
 /**
  * Common interface for all the credentials used and stored by Uyuni
  */
-public interface Credentials {
+public interface Credentials extends Serializable {
 
     /**
      * Retrieves the ID of this credentials object.

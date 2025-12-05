@@ -91,7 +91,7 @@ public class KickstartScheduleCommandTest extends BaseKickstartCommandTestCase {
         Channel c = ChannelFactoryTest.createTestChannel(server.getCreator());
         server.addChannel(c);
 
-        KickstartDataTest.addKickstartPackagesToChannel(c, false);
+        KickstartDataTest.addKickstartPackagesToChannel(c);
         ksdata.setKernelParams("someparam=asdf");
         ksdata.getTree().setChannel(server.getBaseChannel());
         KickstartSession ksession = KickstartSessionTest.
@@ -326,8 +326,7 @@ public class KickstartScheduleCommandTest extends BaseKickstartCommandTestCase {
         ValidatorError ve = cmd.store();
         assertEquals("kickstart.schedule.noup2date", ve.getKey());
         PackageManagerTest.
-        addUp2dateToSystemAndChannel(user, server,
-                KickstartScheduleCommand.UP2DATE_VERSION, c);
+        addUp2dateToSystemAndChannel(server, KickstartScheduleCommand.UP2DATE_VERSION, c);
         assertCmdSuccess(cmd);
         assertCmdSuccess(cmd);
 

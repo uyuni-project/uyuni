@@ -84,8 +84,7 @@ public class ScheduleKickstartWizardTest extends RhnMockStrutsTestCase {
                 ConfigDefaults.get().getKickstartPackageNames().get(0), s, c);
 
         PackageManagerTest.
-            addUp2dateToSystemAndChannel(user, s,
-                    KickstartScheduleCommand.UP2DATE_VERSION,  c);
+            addUp2dateToSystemAndChannel(s, KickstartScheduleCommand.UP2DATE_VERSION,  c);
 
         TestUtils.flushAndEvict(s);
         TestUtils.flushAndEvict(c);
@@ -98,7 +97,7 @@ public class ScheduleKickstartWizardTest extends RhnMockStrutsTestCase {
 
     @Test
     public void testStepOneWithProxy() throws Exception {
-        addProxy(user, s);
+        addProxy(user);
         actionPerform();
         verifyNoActionErrors();
         assertEquals(Boolean.TRUE.toString(),
@@ -106,7 +105,7 @@ public class ScheduleKickstartWizardTest extends RhnMockStrutsTestCase {
         verifyFormValue(ScheduleKickstartWizardAction.PROXY_HOST, "");
     }
 
-    public static final Server addProxy(User user, Server s) throws Exception {
+    public static final Server addProxy(User user) throws Exception {
         Server proxy = ServerFactoryTest.createTestServer(user, true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled(),
                 ServerFactoryTest.TYPE_SERVER_PROXY);
@@ -132,7 +131,7 @@ public class ScheduleKickstartWizardTest extends RhnMockStrutsTestCase {
 
     @Test
     public void testStepTwoWithProxy() throws Exception {
-       Server proxy = addProxy(user, s);
+       Server proxy = addProxy(user);
         /** Assign a proxy host, this would be the case
          * When user selects a proxy entry from the proxies combo
          */
@@ -204,7 +203,7 @@ public class ScheduleKickstartWizardTest extends RhnMockStrutsTestCase {
         otherServer.addChannel(ChannelFactoryTest.createTestChannel(user));
         Server proxy = null;
         if (addProxy) {
-            proxy = ScheduleKickstartWizardTest.addProxy(user, s);
+            proxy = ScheduleKickstartWizardTest.addProxy(user);
             assertNotNull(proxy.getHostname());
             /** Assign a proxy host, this would be the case
              * When user selects a proxy entry from the proxies combo

@@ -26,12 +26,6 @@ import javax.servlet.http.HttpServletRequest;
 public class HeadMethodDecoratorMapper extends AbstractDecoratorMapper {
 
     /**
-     * Empty constructor
-     */
-    public HeadMethodDecoratorMapper() {
-    }
-
-    /**
      * Decorator resolver which skips decorator apply to HEAD request method
      *
      * @param request

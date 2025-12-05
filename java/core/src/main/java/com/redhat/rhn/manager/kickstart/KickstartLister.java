@@ -68,13 +68,6 @@ public class KickstartLister extends BaseManager {
     private static KickstartLister instance = new KickstartLister();
 
     /**
-     * Default constructor
-     */
-    public KickstartLister() {
-
-    }
-
-    /**
      * Get the instance of the KickstartLister
      * @return KickstartLister instance
      */

@@ -203,13 +203,13 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
                         with(any(Object.class)), with(any(LocalDateTime.class)), with(any(LocalDateTime.class)));
                 will(returnValue(Optional.of(jobsByMetadata("jobs.list_jobs.actionchains.json", 0))));
 
-                mockListJob("20180316234939446951");
-                mockListJob("20180317134012978804");
-                mockListJob("20180317134013012209");
-                mockListJob("20180317134233760065");
+                mockListJob();
+                mockListJob();
+                mockListJob();
+                mockListJob();
             }
 
-            private void mockListJob(String jid) {
+            private void mockListJob() {
                 never(saltServiceMock).jobsByMetadata(with(any(Object.class)));
                 never(saltServiceMock).listJob(with(any(String.class)));
             }

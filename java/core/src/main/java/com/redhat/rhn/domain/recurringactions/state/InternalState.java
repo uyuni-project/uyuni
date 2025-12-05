@@ -17,6 +17,8 @@ package com.redhat.rhn.domain.recurringactions.state;
 
 import org.hibernate.annotations.Immutable;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -29,7 +31,7 @@ import javax.persistence.Table;
 @Entity
 @Immutable
 @Table(name = "suseInternalState")
-public class InternalState {
+public class InternalState implements Serializable {
 
     private Long id;
     private String name;

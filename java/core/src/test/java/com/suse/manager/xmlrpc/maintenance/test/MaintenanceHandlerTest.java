@@ -16,6 +16,7 @@ package com.suse.manager.xmlrpc.maintenance.test;
 
 import static java.util.Collections.emptyList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.util.FileUtils;
@@ -96,6 +97,13 @@ public class MaintenanceHandlerTest extends BaseHandlerTestCase {
                 admin, ActionFactory.TYPE_HARDWARE_REFRESH_LIST, coreServer, "2020-05-21T09:15:00+02:00"); //moved
         Action coreAction2 = MaintenanceTestUtils.createActionForServerAt(
                 admin, ActionFactory.TYPE_ERRATA, coreServer, "2020-05-21T09:15:00+02:00"); //moved
+
+        assertNotNull(sapAction1);
+        assertNotNull(sapActionEx);
+        assertNotNull(sapAction2);
+        assertNotNull(coreAction1);
+        assertNotNull(coreActionEx);
+        assertNotNull(coreAction2);
 
         /* update the calendar */
         Map<String, String> details = new HashMap<>();

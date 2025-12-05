@@ -62,8 +62,8 @@ public class EditAddressActionTest extends RhnBaseTestCase {
         // in the Request.
         usr = UserTestUtils.createUser("differentUser", "differentOrg");
         // Have to grab the UID out of the request so we can reset it
-        String userIdRaw = request.getParameter("uid");
-        userIdRaw = usr.getId().toString();
+        request.getParameter("uid");
+        String userIdRaw = usr.getId().toString();
         // Put it back into the Request
         request.addParameter("uid", userIdRaw);
     }
@@ -86,8 +86,8 @@ public class EditAddressActionTest extends RhnBaseTestCase {
 
         usr = UserTestUtils.createUser("differentUser", loggedInUser.getOrg().getId());
         // Have to grab the UID out of the request so we can reset it
-        String userIdRaw = request.getParameter("uid");
-        userIdRaw = usr.getId().toString();
+        request.getParameter("uid");
+        String userIdRaw = usr.getId().toString();
         // Put it back into the Request
         request.addParameter("uid", userIdRaw);
     }

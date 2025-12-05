@@ -35,7 +35,6 @@ import com.suse.manager.webui.utils.SaltStateGenerator;
 import com.suse.manager.webui.utils.SaltSystemReboot;
 import com.suse.manager.webui.utils.SaltTop;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
@@ -480,7 +479,7 @@ public class SaltActionChainGeneratorService {
                 LOG.debug("{} does not exists", targetFilePath.toFile());
                 return res;
             }
-            String slsContent = FileUtils.readFileToString(targetFilePath.toFile());
+            String slsContent = Files.readString(targetFilePath);
             // first remove line containing ssh_extra_filerefs because it contains
             // all the files used for an action chain and we want to delete
             // salt:// refs that belong only to the given file

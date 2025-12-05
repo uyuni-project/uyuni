@@ -192,10 +192,6 @@ public class ListDisplayTag extends ListDisplayTagBase {
         this.tableId = tableIdIn;
     }
 
-    /** Public constructor  */
-    public ListDisplayTag() {
-    }
-
     /**
      * domainClass is used by the page loader to display what
      * domain object it is loading. For example, if this is

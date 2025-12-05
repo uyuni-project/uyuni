@@ -34,12 +34,6 @@ public class MockMail implements Mail {
     private String subject;
 
     /**
-     * Create a mail message
-     */
-    public MockMail() {
-    }
-
-    /**
     * Send the actual message
     */
     @Override
@@ -117,6 +111,7 @@ public class MockMail implements Mail {
      */
     @Override
     public void setHeader(String name, String value) {
+        //do nothing
     }
 
     /**

@@ -112,7 +112,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
     public void testGetProductBaseChannelDto() throws Exception {
         // Create SUSE product and channel product
         ChannelFamily channelFamily = createTestChannelFamily();
-        SUSEProduct product = createTestSUSEProductNoArch(channelFamily);
+        SUSEProduct product = createTestSUSEProductNoArch();
         ChannelProduct channelProduct = createTestChannelProduct();
 
         // Create product base channels with different channel archs
@@ -301,7 +301,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         master.makeDefaultMaster();
         IssFactory.save(master);
 
-        SCCCredentials sccc = SUSEProductTestUtils.createSCCCredentials("dummy", user);
+        SUSEProductTestUtils.createSCCCredentials("dummy", user);
         // Setup source products
         ChannelFamily family = createTestChannelFamily();
         SUSEProduct sourceBaseProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
@@ -433,7 +433,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         template.setParentChannelLabel(targetBaseChannel.getLabel());
         template.setChannelName(targetBaseChannel.getLabel());
         template.setMandatory(true);
-        template = TestUtils.saveAndReload(template);
+        TestUtils.saveAndReload(template);
 
         // Verify that target products are returned correctly
 
@@ -643,7 +643,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         // Setup product upgrade
         ChannelFamily family = createTestChannelFamily();
         SUSEProduct sourceProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
-        Channel baseChannel = SUSEProductTestUtils.createBaseChannelForBaseProduct(sourceProduct, user);
+        SUSEProductTestUtils.createBaseChannelForBaseProduct(sourceProduct, user);
         SUSEProduct addonProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
         addonProduct.setBase(false);
         SUSEProduct target = SUSEProductTestUtils.createTestSUSEProduct(family);
@@ -712,7 +712,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testGetTargetProductSetsLTSScase() throws Exception {
-        SCCCredentials sccc = SUSEProductTestUtils.createSCCCredentials("dummy", user);
+        SUSEProductTestUtils.createSCCCredentials("dummy", user);
         // Setup source products
         ChannelFamily family = createTestChannelFamily();
         SUSEProduct slesSP1BaseProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
@@ -788,10 +788,9 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
      * Create a SUSE product with arch == null. This is actually the case with
      * e.g. SLES for VMWARE.
      *
-     * @param family the channel family
      * @return the channel product
      */
-    public static SUSEProduct createTestSUSEProductNoArch(ChannelFamily family) {
+    public static SUSEProduct createTestSUSEProductNoArch() {
         SUSEProduct product = new SUSEProduct();
         String name = TestUtils.randomString().toLowerCase();
         product.setName(name);

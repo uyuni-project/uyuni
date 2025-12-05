@@ -106,10 +106,6 @@ public class SystemSearchActionTest extends RhnMockStrutsTestCase {
         assertEquals(302, getMockResponse().getStatusCode());
     }
 
-    @Test
-    public void testQueryWithoutResults() {
-    }
-
     /**
      * This test verfies that if a bad view mode is passed in by the user,
      * the system search handles and catches any underlying exceptions

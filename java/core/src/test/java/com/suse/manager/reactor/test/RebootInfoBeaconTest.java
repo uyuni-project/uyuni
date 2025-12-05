@@ -125,6 +125,7 @@ public class RebootInfoBeaconTest extends RhnJmockBaseTestCase {
 
             @Override
             public void refreshPillar(MinionList minionList) {
+                //do nothing
             }
         };
     }

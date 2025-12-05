@@ -33,12 +33,6 @@ import java.util.Map;
 public class RepoLister extends BaseManager {
 
     private static final RepoLister INSTANCE = new RepoLister();
-    /**
-     * Default constructor
-     */
-    public RepoLister() {
-
-    }
 
     /**
      * Get the instance of the RepoLister

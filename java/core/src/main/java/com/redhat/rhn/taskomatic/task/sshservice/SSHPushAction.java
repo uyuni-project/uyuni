@@ -28,12 +28,6 @@ public class SSHPushAction {
     private String minionId;
 
     /**
-     * No arg constructor needed for instantiation.
-     */
-    public SSHPushAction() {
-    }
-
-    /**
      * @return actionType to get
      */
     public String getActionType() {

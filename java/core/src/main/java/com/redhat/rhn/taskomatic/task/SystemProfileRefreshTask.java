@@ -37,12 +37,6 @@ public class SystemProfileRefreshTask extends RhnJavaJob {
 
     private Queue<Action> actionsToSchedule = new LinkedList<>();
 
-    /**
-     * Default constructor
-     */
-    public SystemProfileRefreshTask() {
-    }
-
     @Override
     public String getConfigNamespace() {
         return "system_profile_refresh";

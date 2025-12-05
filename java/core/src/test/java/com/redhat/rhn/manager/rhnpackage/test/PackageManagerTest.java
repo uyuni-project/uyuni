@@ -49,7 +49,6 @@ import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
-import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.PackageComparison;
 import com.redhat.rhn.frontend.dto.PackageDto;
 import com.redhat.rhn.frontend.dto.PackageListItem;
@@ -392,15 +391,13 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
      * Add the up2date package to a system and a channel.  Version
      * should be specified such as "2.9.0"
      *
-     * @param userIn the user
      * @param s the system
      * @param version the version
      * @param c the channel
      * @return the updated or added package
      * @throws Exception something bad happened
      */
-    public static Package addUp2dateToSystemAndChannel(User userIn, Server s,
-            String version, Channel c) throws Exception {
+    public static Package addUp2dateToSystemAndChannel(Server s, String version, Channel c) throws Exception {
 
         Package p = null;
         PackageName pn = PackageFactory.lookupOrCreatePackageByName("up2date");

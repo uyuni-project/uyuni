@@ -41,12 +41,6 @@ public class ApplyStatesEventMessageAction implements MessageAction {
     private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
     private static final Logger LOG = LogManager.getLogger(ApplyStatesEventMessageAction.class);
 
-    /**
-     * Default constructor.
-     */
-    public ApplyStatesEventMessageAction() {
-    }
-
     @Override
     public void execute(EventMessage event) {
         ApplyStatesEventMessage applyStatesEvent = (ApplyStatesEventMessage) event;

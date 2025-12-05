@@ -62,9 +62,11 @@ public class XmlRpcLoggingInvocationProcessorTest extends RhnBaseTestCase {
         }
 
         public void testMethod1Arg(String arg1) {
+            //test method
         }
 
         public void testMethod2Arg(String arg1, String arg2) {
+            //test method
         }
     }
 

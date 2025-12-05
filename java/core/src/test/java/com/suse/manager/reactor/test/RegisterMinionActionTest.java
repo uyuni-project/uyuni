@@ -178,18 +178,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
     private ExpectationsFunction slesExpectations = (key) ->
             new Expectations() {{
                 allowing(saltServiceMock).getSystemInfoFull(MINION_ID);
-                will(returnValue(getSystemInfo(MINION_ID, null, key)));
-                allowing(saltServiceMock).removeSaltSSHKnownHost(with(any(String.class)));
-                will(returnValue(Optional.of(new MgrUtilRunner.RemoveKnowHostResult("removed", ""))));
-            }};
-
-    private ExpectationsFunction slesExpectationsNoStartupgrains = (key) ->
-            new Expectations() {{
-                allowing(saltServiceMock)
-                        .getGrains(with(any(String.class)), with(any(TypeToken.class)), with(any(String[].class)));
-                will(returnValue(Optional.of(DEFAULT_MINION_START_UP_GRAINS)));
-                allowing(saltServiceMock).getSystemInfoFull(MINION_ID);
-                will(returnValue(getSystemInfo(MINION_ID, null, key)));
+                will(returnValue(getSystemInfo(null, key)));
                 allowing(saltServiceMock).removeSaltSSHKnownHost(with(any(String.class)));
                 will(returnValue(Optional.of(new MgrUtilRunner.RemoveKnowHostResult("removed", ""))));
             }};
@@ -206,7 +195,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                         .getGrains(with(any(String.class)), with(any(TypeToken.class)), with(any(String[].class)));
                 will(returnValue(Optional.of(DEFAULT_MINION_START_UP_GRAINS)));
                 allowing(saltServiceMock).getSystemInfoFull(MINION_ID);
-                will(returnValue(getSystemInfo(MINION_ID, null, key)));
+                will(returnValue(getSystemInfo(null, key)));
                 allowing(saltServiceMock).getProducts(with(any(String.class)));
                 will(returnValue(Optional.empty()));
             }};
@@ -253,9 +242,9 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
             packageStates.ifPresent(states -> {
                 assertEquals(1, states.size());
                 states.forEach(state -> {
-                    assertEquals(state.getName().getName(), "vim");
-                    assertEquals(state.getPackageState(), PackageStates.INSTALLED);
-                    assertEquals(state.getVersionConstraint(), VersionConstraints.ANY);
+                    assertEquals("vim", state.getName().getName());
+                    assertEquals(PackageStates.INSTALLED, state.getPackageState());
+                    assertEquals(VersionConstraints.ANY, state.getVersionConstraint());
                 });
             });
             assertEquals(keyObj.getBaseChannel(), minion.getBaseChannel());
@@ -407,7 +396,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
             List<ServerHistoryEvent> history = new ArrayList<>();
             history.addAll(minion.getHistory());
             history.sort(Comparator.comparing(ServerHistoryEvent::getCreated));
-            assertEquals(history.get(history.size() - 1).getSummary(), "Server reactivated as Salt minion");
+            assertEquals("Server reactivated as Salt minion", history.get(history.size() - 1).getSummary());
             assertNull(minion.getLock());
         }, DEFAULT_CONTACT_METHOD);
     }
@@ -548,7 +537,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         try {
             executeTest((key) -> new Expectations() {{
                 allowing(saltServiceMock).getSystemInfoFull(MINION_ID);
-                will(returnValue(getSystemInfo(MINION_ID, null, key)));
+                will(returnValue(getSystemInfo(null, key)));
                 allowing(saltServiceMock).removeSaltSSHKnownHost(with(any(String.class)));
                 will(returnValue(Optional.of(new MgrUtilRunner.RemoveKnowHostResult("removed", ""))));
                 allowing(saltServiceMock).deleteKey(server2.getMinionId());
@@ -578,7 +567,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         executeTest((key) -> new Expectations() {{
             allowing(saltServiceMock).updateSystemInfo(with(any(MinionList.class)));
             allowing(saltServiceMock).getSystemInfoFull(MINION_ID);
-            will(returnValue(getSystemInfo(MINION_ID, null, key)));
+            will(returnValue(getSystemInfo(null, key)));
             allowing(saltServiceMock)
                     .getGrains(with(any(String.class)), with(any(TypeToken.class)), with(any(String[].class)));
             will(returnValue(Optional.of(DEFAULT_MINION_START_UP_GRAINS)));
@@ -611,7 +600,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 .createMinionStartUpGrains();
         executeTest((key) -> new Expectations() {{
             allowing(saltServiceMock).getSystemInfoFull(MINION_ID);
-            will(returnValue(getSystemInfo(MINION_ID, null, key)));
+            will(returnValue(getSystemInfo(null, key)));
         }}, null, (minion, machineId, key) -> assertTrue(MinionServerFactory.findByMinionId(MINION_ID).isPresent()),
                 null, DEFAULT_CONTACT_METHOD, Optional.of(minionStartUpGrains));
     }
@@ -632,11 +621,11 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
             slesAssertions.accept(optMinion, machineId, key);
             MinionServer minion = optMinion.get();
             assertEquals(server.getId(), minion.getId());
-            assertEquals(minion.getContactMethod().getLabel(), DEFAULT_CONTACT_METHOD);
+            assertEquals(DEFAULT_CONTACT_METHOD, minion.getContactMethod().getLabel());
             List<ServerHistoryEvent> history = new ArrayList<>();
             history.addAll(minion.getHistory());
             history.sort(Comparator.comparing(ServerHistoryEvent::getCreated));
-            assertEquals(history.get(history.size() - 1).getSummary(), "Server reactivated as Salt minion");
+            assertEquals("Server reactivated as Salt minion", history.get(history.size() - 1).getSummary());
         }, SSH_PUSH_CONTACT_METHOD);
     }
 
@@ -705,7 +694,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                             .getGrains(with(any(String.class)), with(any(TypeToken.class)), with(any(String[].class)));
                     will(returnValue(Optional.of(minionStartUpGrains)));
                     allowing(saltServiceMock).getSystemInfoFull(MINION_ID);
-                    will(returnValue(getSystemInfo(MINION_ID, null, null, key)));
+                    will(returnValue(getSystemInfo(null, null)));
                     allowing(saltServiceMock).getProducts(with(any(String.class)));
                     will(returnValue(Optional.empty()));
                 }},
@@ -736,7 +725,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                             .getGrains(with(any(String.class)), with(any(TypeToken.class)), with(any(String[].class)));
                     will(returnValue(Optional.of(minionStartUpGrains)));
                     allowing(saltServiceMock).getSystemInfoFull(MINION_ID);
-                    will(returnValue(getSystemInfo(MINION_ID, null, null)));
+                    will(returnValue(getSystemInfo(null, null)));
                     List<ProductInfo> pil = new ArrayList<>();
                     ProductInfo pi = new ProductInfo(
                                 product.getName(),
@@ -768,7 +757,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         executeTest(
                 (key) -> new Expectations() {{
                     allowing(saltServiceMock).getSystemInfoFull(MINION_ID);
-                    will(returnValue(getSystemInfo(MINION_ID, null, null)));
+                    will(returnValue(getSystemInfo(null, null)));
                     List<ProductInfo> pil = new ArrayList<>();
                     ProductInfo pi = new ProductInfo(
                                 product.getName(),
@@ -806,7 +795,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         executeTest(
                 (key) -> new Expectations() {{
                     allowing(saltServiceMock).getSystemInfoFull(MINION_ID);
-                    will(returnValue(getSystemInfo(MINION_ID, null, "non-existent-key")));
+                    will(returnValue(getSystemInfo(null, "non-existent-key")));
                     List<ProductInfo> pil = new ArrayList<>();
                     ProductInfo pi = new ProductInfo(
                                 product.getName(),
@@ -856,7 +845,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         executeTest(
                 (key) -> new Expectations() {{
                     allowing(saltServiceMock).getSystemInfoFull(MINION_ID);
-                    will(returnValue(getSystemInfo(MINION_ID, null, "non-existent-key")));
+                    will(returnValue(getSystemInfo(null, "non-existent-key")));
                     List<ProductInfo> pil = new ArrayList<>();
                     ProductInfo pi = new ProductInfo(
                                 product.getName(),
@@ -917,7 +906,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                             .getGrains(with(any(String.class)), with(any(TypeToken.class)), with(any(String[].class)));
                     will(returnValue(Optional.of(minionStartUpGrains)));
                     allowing(saltServiceMock).getSystemInfoFull(MINION_ID);
-                    will(returnValue(getSystemInfo(MINION_ID, null, key)));
+                    will(returnValue(getSystemInfo(null, key)));
                 }},
                 (contactMethod) -> {
                     ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
@@ -976,7 +965,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
 
             {
                 allowing(saltServiceMock).getSystemInfoFull(MINION_ID);
-                will(returnValue(getSystemInfo(MINION_ID, null, key)));
+                will(returnValue(getSystemInfo(null, key)));
                 List<ProductInfo> pil = new ArrayList<>();
                 ProductInfo pi = new ProductInfo(product.getName(),
                         product.getArch().getLabel(), "descr", "eol", "epoch", "flavor",
@@ -1057,7 +1046,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
             executeTest(
                     (key) -> new Expectations() {{
                         allowing(saltServiceMock).getSystemInfoFull(MINION_ID);
-                        will(returnValue(getSystemInfo(MINION_ID, testCase.productName.toLowerCase(),
+                        will(returnValue(getSystemInfo(testCase.productName.toLowerCase(),
                                 baseChannel != null ? key : null)));
 
                         allowing(saltServiceMock).redhatProductInfo(MINION_ID);
@@ -1182,7 +1171,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     mods.put("manufacturer", "QEMU");
                     mods.put("productname", "Cash Desk 01");
                     mods.put("minion_id_prefix", "Branch001");
-                    will(returnValue(getSystemInfo(MINION_ID, null, "non-existent-key", null, mods)));
+                    will(returnValue(getSystemInfo(null, "non-existent-key", null, mods)));
                     allowing(saltServiceMock).callSync(
                             with(any(LocalCall.class)),
                             with(any(String.class)));
@@ -1219,7 +1208,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                         mods.put("manufacturer", "QEMU");
                         mods.put("productname", "CashDesk01");
                         mods.put("minion_id_prefix", "Branch001");
-                        will(returnValue(getSystemInfo(MINION_ID, null, "non-existent-key", null, mods)));
+                        will(returnValue(getSystemInfo(null, "non-existent-key", null, mods)));
                         allowing(saltServiceMock).callSync(
                                 with(any(LocalCall.class)),
                                 with(any(String.class)));
@@ -1260,7 +1249,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                         mods.put("manufacturer", "QEMU");
                         mods.put("productname", "CashDesk01");
                         mods.put("minion_id_prefix", "Branch001");
-                        will(returnValue(getSystemInfo(MINION_ID, null, "non-existent-key", null, mods)));
+                        will(returnValue(getSystemInfo(null, "non-existent-key", null, mods)));
                         // no call to state.apply saltboot
                     }},
                     (contactMethod) -> null, // no AK
@@ -1301,7 +1290,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     mods.put("manufacturer", "QEMU");
                     mods.put("productname", "CashDesk01");
                     mods.put("minion_id_prefix", "Branch001");
-                    will(returnValue(getSystemInfo(MINION_ID, null, "non-existent-key", null, mods)));
+                    will(returnValue(getSystemInfo(null, "non-existent-key", null, mods)));
                     allowing(saltServiceMock).callSync(
                             with(any(LocalCall.class)),
                             with(any(String.class)));
@@ -1349,7 +1338,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     Map<String, String> interfaces = new HashMap<>();
                     interfaces.put("eth1", "00:11:22:33:44:55");
                     mods.put("hwaddr_interfaces", interfaces);
-                    will(returnValue(getSystemInfo(MINION_ID, null, "non-existent-key", null, mods)));
+                    will(returnValue(getSystemInfo(null, "non-existent-key", null, mods)));
                     allowing(saltServiceMock).callSync(
                             with(any(LocalCall.class)),
                             with(any(String.class)));
@@ -1398,7 +1387,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                         mods.put("manufacturer", "QEMU");
                         mods.put("productname", "CashDesk01");
                         mods.put("minion_id_prefix", "Branch001");
-                        will(returnValue(getSystemInfo(MINION_ID, null, "non-existent-key", null, mods)));
+                        will(returnValue(getSystemInfo(null, "non-existent-key", null, mods)));
                         allowing(saltServiceMock).callSync(
                                 with(any(LocalCall.class)),
                                 with(any(String.class)));
@@ -1446,7 +1435,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                         mods.put("manufacturer", "QEMU");
                         mods.put("productname", "CashDesk01");
                         mods.put("minion_id_prefix", "Branch001");
-                        will(returnValue(getSystemInfo(MINION_ID, null, "non-existent-key", null, mods)));
+                        will(returnValue(getSystemInfo(null, "non-existent-key", null, mods)));
                         // no call to state.apply saltboot
                     }},
                     (contactMethod) -> null, // no AK
@@ -1497,7 +1486,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     mods.put("productname", "CashDesk01");
                     mods.put("minion_id_prefix", "Branch001");
                     mods.put("master", proxyFqdn);
-                    will(returnValue(getSystemInfo(MINION_ID, null, "non-existent-key", null, mods)));
+                    will(returnValue(getSystemInfo(null, "non-existent-key", null, mods)));
                     allowing(saltServiceMock).callSync(
                             with(any(LocalCall.class)),
                             with(any(String.class)));
@@ -1535,7 +1524,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     Map<String, String> interfaces = new HashMap<>();
                     interfaces.put("eth1", "00:11:22:33:44:55");
                     mods.put("hwaddr_interfaces", interfaces);
-                    will(returnValue(getSystemInfo(MINION_ID, null, "non-existent-key", null, mods)));
+                    will(returnValue(getSystemInfo(null, "non-existent-key", null, mods)));
                     allowing(saltServiceMock).callSync(
                             with(any(LocalCall.class)),
                             with(any(String.class)));
@@ -1585,7 +1574,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         executeTest((key) -> new Expectations() {
             {
                 allowing(saltServiceMock).getSystemInfoFull(MINION_ID);
-                will(returnValue(getSystemInfo(MINION_ID, null, key)));
+                will(returnValue(getSystemInfo(null, key)));
             }
         }, (contactMethod) -> {
             ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
@@ -1636,7 +1625,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         executeTest((key) -> new Expectations() {
             {
                 allowing(saltServiceMock).getSystemInfoFull(MINION_ID);
-                will(returnValue(getSystemInfo(MINION_ID, null, key)));
+                will(returnValue(getSystemInfo(null, key)));
             }
         }, (contactMethod) -> {
             ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
@@ -1683,7 +1672,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         executeTest((key) -> new Expectations() {
             {
                 allowing(saltServiceMock).getSystemInfoFull(MINION_ID);
-                will(returnValue(getSystemInfo(MINION_ID, null, key)));
+                will(returnValue(getSystemInfo(null, key)));
             }
         }, (contactMethod) -> null,
         (optMinion, machineId, key) -> {
@@ -1727,7 +1716,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                             with(any(String.class)), with(any(TypeToken.class)), with(any(String[].class)));
                     will(returnValue(Optional.of(minionStartUpGrains)));
                     allowing(saltServiceMock).getSystemInfoFull(MINION_ID);
-                    will(returnValue(getSystemInfo(MINION_ID, null, null, key)));
+                    will(returnValue(getSystemInfo(null, null)));
                 }},
                 (contactMethod) -> {
                     ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
@@ -1781,7 +1770,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                             with(any(String.class)), with(any(TypeToken.class)), with(any(String[].class)));
                     will(returnValue(Optional.of(minionStartUpGrains)));
                     allowing(saltServiceMock).getSystemInfoFull(MINION_ID);
-                    will(returnValue(getSystemInfo(MINION_ID, null, null, key)));
+                    will(returnValue(getSystemInfo(null, null)));
                 }},
                 (contactMethod) -> "1-re-already-used",
                 (optMinion, machineId, key) -> {
@@ -1818,7 +1807,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         executeTest(
                 (key) -> new Expectations() {{
                     allowing(saltServiceMock).getSystemInfoFull(MINION_ID);
-                    will(returnValue(getSystemInfo(MINION_ID, null, null, key)));
+                    will(returnValue(getSystemInfo(null, null)));
                 }},
                 (contactMethod) -> "1-re-already-used",
                 (optMinion, machineId, key) -> {
@@ -1846,7 +1835,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
             executeTest(
                     (key) -> new Expectations() {{
                         allowing(saltServiceMock).getSystemInfoFull(MINION_ID);
-                        will(returnValue(getSystemInfo(MINION_ID, "byos", key)));
+                        will(returnValue(getSystemInfo("byos", key)));
                         allowing(saltServiceMock).getInstanceFlavor(MINION_ID);
                         will(returnValue(SumaUtil.PublicCloudInstanceFlavor.BYOS));
                         List<ProductInfo> pil = new ArrayList<>();
@@ -1890,7 +1879,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
             executeTest(
                     (key) -> new Expectations() {{
                         allowing(saltServiceMock).getSystemInfoFull(MINION_ID);
-                        will(returnValue(getSystemInfo(MINION_ID, null, key)));
+                        will(returnValue(getSystemInfo(null, key)));
                         allowing(saltServiceMock).getInstanceFlavor(MINION_ID);
                         will(returnValue(SumaUtil.PublicCloudInstanceFlavor.UNKNOWN));
                         List<ProductInfo> pil = new ArrayList<>();
@@ -1932,7 +1921,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         executeTest(
                 (key) -> new Expectations() {{
                     allowing(saltServiceMock).getSystemInfoFull(MINION_ID);
-                    will(returnValue(getSystemInfo(MINION_ID, null, key)));
+                    will(returnValue(getSystemInfo(null, key)));
                     allowing(saltServiceMock).getInstanceFlavor(MINION_ID);
                     will(returnValue(SumaUtil.PublicCloudInstanceFlavor.UNKNOWN));
                     List<ProductInfo> pil = new ArrayList<>();
@@ -1975,7 +1964,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         executeTest(
                 (key) -> new Expectations() {{
                     allowing(saltServiceMock).getSystemInfoFull(MINION_ID);
-                    will(returnValue(getSystemInfo(MINION_ID, null, key)));
+                    will(returnValue(getSystemInfo(null, key)));
                     allowing(saltServiceMock).getInstanceFlavor(MINION_ID);
                     will(returnValue(SumaUtil.PublicCloudInstanceFlavor.BYOS));
                     List<ProductInfo> pil = new ArrayList<>();
@@ -2007,7 +1996,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         executeTest(
                 (key) -> new Expectations() {{
                     allowing(saltServiceMock).getSystemInfoFull(MINION_ID);
-                    will(returnValue(getSystemInfo(MINION_ID, "slespayg", key)));
+                    will(returnValue(getSystemInfo("slespayg", key)));
                     allowing(saltServiceMock).getInstanceFlavor(MINION_ID);
                     will(returnValue(SumaUtil.PublicCloudInstanceFlavor.PAYG));
                 }},
@@ -2039,15 +2028,14 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
     }
 
     @SuppressWarnings("unchecked")
-    private void setupStubs(SUSEProduct product)
-        throws ClassNotFoundException, IOException {
+    private void setupStubs(SUSEProduct product) throws IOException, ClassNotFoundException {
 
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
         ActionManager.setTaskomaticApi(taskomaticMock);
         MinionServerFactory.findByMachineId(MACHINE_ID).ifPresent(ServerFactory::delete);
         context().checking(new Expectations() { {
             allowing(saltServiceMock).getSystemInfoFull(MINION_ID);
-            will(returnValue(getSystemInfo(MINION_ID, null, "foo")));
+            will(returnValue(getSystemInfo(null, "foo")));
             List<ProductInfo> pil = new ArrayList<>();
             ProductInfo pi = new ProductInfo(
                         product.getName(),
@@ -2078,29 +2066,20 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
      */
     private static class RHELMinionTestCase {
 
-        private final String description;
         private final List<Map<String, String>> channelParameters;
         private final String productName;
-        private final String availableReleasePackages;
-        private final String releasePackage;
-        private final String packageInfo;
         private final String releaseFileContent;
         private final String resProvider;
         private final String sllProvider;
         private final String osVersion;
 
         RHELMinionTestCase(
-                String descriptionIn, List<Map<String, String>> channelParametersIn, String productNameIn,
-                String availableReleasePackagesIn, String releasePackageIn, String packageInfoIn,
+                List<Map<String, String>> channelParametersIn, String productNameIn,
                 String releaseFileContentIn, String resProviderIn, String sllProviderIn,
                 String osVersionIn
         ) {
-            this.description = descriptionIn;
             this.channelParameters = channelParametersIn;
             this.productName = productNameIn;
-            this.availableReleasePackages = availableReleasePackagesIn;
-            this.releasePackage = releasePackageIn;
-            this.packageInfo = packageInfoIn;
             this.releaseFileContent = releaseFileContentIn;
             this.resProvider = resProviderIn;
             this.sllProvider = sllProviderIn;
@@ -2118,18 +2097,12 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
     }
 
 
-    private Optional<SystemInfo> getSystemInfo(String minionId, String sufix, String akey)
+    private Optional<SystemInfo> getSystemInfo(String sufix, String akey)
             throws ClassNotFoundException, IOException {
-        return getSystemInfo(minionId, sufix, akey, null);
+        return getSystemInfo(sufix, akey, null, null);
     }
 
-
-    private Optional<SystemInfo> getSystemInfo(String minionId, String sufix, String akey, String mkey)
-            throws ClassNotFoundException, IOException {
-        return getSystemInfo(minionId, sufix, akey, null, null);
-    }
-
-    private Optional<SystemInfo> getSystemInfo(String minionId, String sufix, String akey, String mkey,
+    private Optional<SystemInfo> getSystemInfo(String sufix, String akey, String mkey,
             Map<String, Object> mods)
             throws ClassNotFoundException, IOException {
 

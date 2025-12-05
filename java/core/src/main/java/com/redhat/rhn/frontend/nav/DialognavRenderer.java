@@ -74,6 +74,7 @@ public class DialognavRenderer extends Renderable {
     /** {@inheritDoc} */
     @Override
     public void preNavNode(StringBuilder sb, int depth) {
+        //do nothing
     }
 
     /** {@inheritDoc} */

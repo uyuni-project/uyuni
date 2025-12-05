@@ -29,12 +29,6 @@ public class GathererModule {
     private Map<String, String> parameters;
 
     /**
-     * Default Constructor
-     */
-    public GathererModule() {
-    }
-
-    /**
      * @return the name
      */
     public String getName() {

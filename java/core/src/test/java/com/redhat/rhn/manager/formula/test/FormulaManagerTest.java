@@ -84,8 +84,6 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
     private FormulaManager manager;
     private Path metadataDir;
 
-    public FormulaManagerTest() { }
-
     @Override
     @BeforeEach
     public void setUp() throws Exception {

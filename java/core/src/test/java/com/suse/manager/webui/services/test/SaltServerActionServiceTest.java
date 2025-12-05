@@ -138,6 +138,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
 
             @Override
             public void refreshPillar(MinionList minionList) {
+                //do nothing
             }
         };
         minion = MinionServerFactoryTest.createTestMinionServer(user);

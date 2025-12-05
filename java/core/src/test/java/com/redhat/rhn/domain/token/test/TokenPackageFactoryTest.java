@@ -44,15 +44,15 @@ public class TokenPackageFactoryTest extends BaseTestCaseWithUser {
         ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
         int numPkgsBefore = key.getPackages().size();
 
-        TokenPackage pkg1 = TokenPackageTest.createTestPackage(user, key);
+        TokenPackage pkg1 = TokenPackageTest.createTestPackage(key);
         assertNotNull(pkg1);
         pkg1.getPackageName().setName("cName");
 
-        TokenPackage pkg2 = TokenPackageTest.createTestPackage(user, key);
+        TokenPackage pkg2 = TokenPackageTest.createTestPackage(key);
         assertNotNull(pkg2);
         pkg2.getPackageName().setName("bName");
 
-        TokenPackage pkg3 = TokenPackageTest.createTestPackage(user, key);
+        TokenPackage pkg3 = TokenPackageTest.createTestPackage(key);
         assertNotNull(pkg3);
         pkg3.getPackageName().setName("aName");
 
@@ -85,7 +85,7 @@ public class TokenPackageFactoryTest extends BaseTestCaseWithUser {
         ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
         int numPkgsBefore = key.getPackages().size();
 
-        TokenPackage pkg1 = TokenPackageTest.createTestPackage(user, key);
+        TokenPackage pkg1 = TokenPackageTest.createTestPackage(key);
         assertNotNull(pkg1);
 
         // since createTestPackage randomly creates package names, we'll create
@@ -145,7 +145,7 @@ public class TokenPackageFactoryTest extends BaseTestCaseWithUser {
 
         // setup
         ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
-        TokenPackage pkg = TokenPackageTest.createTestPackage(user, key);
+        TokenPackage pkg = TokenPackageTest.createTestPackage(key);
         assertNotNull(pkg);
 
         TestUtils.flushAndEvict(pkg);

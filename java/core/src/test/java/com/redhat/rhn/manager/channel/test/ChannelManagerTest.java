@@ -122,18 +122,6 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
     private static TaskomaticApi taskomaticApi;
 
     @Test
-    public void testAllDownloadsTree() {
-    }
-
-    @Test
-    public void testListDownloadCategories() {
-    }
-
-    @Test
-    public void testListDownloadImages() {
-    }
-
-    @Test
     public void testAddRemoveSubscribeRole() throws Exception {
         User admin = UserTestUtils.createUser(TestStatics.TEST_ADMIN_USER, user.getOrg().getId());
         Channel channel = ChannelFactoryTest.createTestChannel(admin);
@@ -375,10 +363,6 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testLatestPackages() {
-    }
-
-    @Test
     public void testListErrata() throws Exception {
         Channel c = ChannelFactoryTest.createTestChannel(user);
         Errata e = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
@@ -532,7 +516,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         Server s = ServerTestUtils.createTestSystem(user);
         String version = "5Server";
         String release = "5.0.0.9";
-        s = ServerTestUtils.addRedhatReleasePackageToServer(user, s, version, release);
+        s = ServerTestUtils.addRedhatReleasePackageToServer(s, version, release);
         String release2 = "5.2.0.4";
         String release3 = "5.3.0.3";
         // Create some base channels and corresponding entries in rhnReleaseChannelMap:

@@ -61,7 +61,7 @@ public class KickstartCleanupTest extends RhnBaseTestCase {
         KickstartSession ksession = createSession();
         ksession.setState(inProgressState);
         TestUtils.saveAndFlush(ksession);
-        backdateKickstartSession(session, ksession, 2);
+        backdateKickstartSession(ksession, 2);
         session.clear();
         ksession = session.getReference(KickstartSession.class, ksession.getId());
         KickstartCleanup j = new KickstartCleanup();
@@ -79,7 +79,7 @@ public class KickstartCleanupTest extends RhnBaseTestCase {
         KickstartSession ksession = createSession();
         ksession.setState(createdState);
         TestUtils.saveAndFlush(ksession);
-        backdateKickstartSession(session, ksession, 7);
+        backdateKickstartSession(ksession, 7);
         session.clear();
         ksession = session.getReference(KickstartSession.class, ksession.getId());
         KickstartCleanup j = new KickstartCleanup();
@@ -89,8 +89,7 @@ public class KickstartCleanupTest extends RhnBaseTestCase {
         assertEquals(ksession.getState().getId(), failedState.getId());
     }
 
-    private static void backdateKickstartSession(Session session,
-            KickstartSession ksession, int days) {
+    private static void backdateKickstartSession(KickstartSession ksession, int days) {
         HibernateFactory.getSession().doWork(connection -> {
             try (Statement statement = connection.createStatement()) {
                 statement.execute("UPDATE rhnKickstartSession " +

@@ -23,12 +23,6 @@ public class Release {
     private Map<String, PackageInfo> sources;
     private Map<String, Binary> allbinaries;
 
-    /**
-     * Default constructor
-     */
-    public Release() {
-    }
-
     public Map<String, PackageInfo> getBinaries() {
         return binaries;
     }

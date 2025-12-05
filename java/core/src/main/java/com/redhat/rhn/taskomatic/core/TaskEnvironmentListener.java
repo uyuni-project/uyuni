@@ -82,13 +82,14 @@ public class TaskEnvironmentListener implements TriggerListener {
      */
     @Override
     public void triggerMisfired(Trigger trigger) {
+        //do nothing
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void triggerComplete(Trigger trigger, JobExecutionContext ctx,
-            CompletedExecutionInstruction cei) {
+    public void triggerComplete(Trigger trigger, JobExecutionContext ctx, CompletedExecutionInstruction cei) {
+        //do nothing
     }
 }

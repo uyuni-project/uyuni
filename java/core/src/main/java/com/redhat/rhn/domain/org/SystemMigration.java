@@ -60,12 +60,6 @@ public class SystemMigration implements Serializable {
     private Date migrated;
 
     /**
-     * Constructor for SystemMigration
-     */
-    public SystemMigration() {
-    }
-
-    /**
      * Getter for server
      * @return the server that was migrated
      */

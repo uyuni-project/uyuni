@@ -61,6 +61,7 @@ public class RhnPostMockStrutsTestCase extends RhnMockStrutsTestCase {
         final FormFile ff = new FormFile() {
             @Override
             public void destroy() {
+                //do nothing
             }
 
             @Override
@@ -90,14 +91,17 @@ public class RhnPostMockStrutsTestCase extends RhnMockStrutsTestCase {
 
             @Override
             public void setContentType(String contentType) {
+                //do nothing
             }
 
             @Override
             public void setFileName(String fileName) {
+                //do nothing
             }
 
             @Override
             public void setFileSize(int fileSize) {
+                //do nothing
             }
         };
 

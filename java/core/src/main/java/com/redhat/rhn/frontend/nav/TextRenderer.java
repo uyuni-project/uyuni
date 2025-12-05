@@ -39,6 +39,7 @@ public class TextRenderer extends Renderable {
     /** {@inheritDoc} */
     @Override
     public void preNavLevel(StringBuilder sb, int depth) {
+        //do nothing
     }
 
     /** {@inheritDoc} */

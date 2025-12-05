@@ -117,9 +117,12 @@ public class MonitoringService {
             }
             if (process.exitValue() != 0) {
                 LOG.error("{} returned non zero exit code: {}", process.info().commandLine(), process.exitValue());
-                try (InputStream stderrIn = process.getErrorStream(); InputStream stdoutIn = process.getInputStream()) {
-                    LOG.error("stderr:\n {}", IOUtils.toString(stderrIn));
-                    LOG.error("stdout:\n{}", IOUtils.toString(stdoutIn));
+                if (LOG.isErrorEnabled()) {
+                    try (InputStream stderrIn = process.getErrorStream();
+                         InputStream stdoutIn = process.getInputStream()) {
+                        LOG.error("stderr:\n {}", new String(stderrIn.readAllBytes()));
+                        LOG.error("stdout:\n{}", new String(stdoutIn.readAllBytes()));
+                    }
                 }
                 return Optional.empty();
             }

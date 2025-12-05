@@ -44,11 +44,6 @@ public class SCCRepositoryBasicAuth extends SCCRepositoryAuth {
     private static final String MIRRCRED_QUERY = "credentials=mirrcred_";
 
     /**
-     * Default Constructor
-     */
-    public SCCRepositoryBasicAuth() { }
-
-    /**
      * @return the URL including authentication info
      */
     @Override

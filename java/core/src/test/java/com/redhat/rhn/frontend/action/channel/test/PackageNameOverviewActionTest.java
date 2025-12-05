@@ -39,10 +39,4 @@ public class PackageNameOverviewActionTest extends RhnMockStrutsTestCase {
         assertTrue(getActualForward().startsWith(
                 "/WEB-INF/pages/software/packages/packagenameoverview.jsp"));
     }
-
-    @Test
-    public void testSubscribedChannels() {
-
-    }
-
 }

@@ -47,11 +47,6 @@ public class SCCRepositoryCloudRmtAuth extends SCCRepositoryAuth {
     private static final String MIRRCRED_QUERY = "credentials=mirrcred_";
 
     /**
-     * Default Constructor
-     */
-    public SCCRepositoryCloudRmtAuth() { }
-
-    /**
      * @return the URL including authentication info
      */
     @Override

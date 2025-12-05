@@ -17,10 +17,12 @@ package com.redhat.rhn.manager.kickstart;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import java.io.Serializable;
+
 /**
  * IpAddressRange
  */
-public class IpAddressRange {
+public class IpAddressRange implements Serializable {
 
     private IpAddress min;
     private IpAddress max;

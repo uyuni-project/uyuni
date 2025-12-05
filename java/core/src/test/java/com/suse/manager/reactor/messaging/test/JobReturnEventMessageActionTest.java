@@ -1456,8 +1456,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 // assert initial revision number
                 imgInfo -> assertEquals(1, imgInfo.getRevisionNumber()));
 
-        doTestContainerImageInspect(server, imageName, imageVersion, profile, imgInfoBuild1,
-                digest1,
+        doTestContainerImageInspect(imageName, imgInfoBuild1, digest1,
                 imgInfo -> {
             // assertions after inspect
             // reload imgInfo to get the build history
@@ -1484,8 +1483,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         imgInfoBuild1 = TestUtils.reload(imgInfoBuild1);
         assertTrue(imgInfoBuild1.isObsolete());
 
-        doTestContainerImageInspect(server, imageName, imageVersion, profile, imgInfoBuild2,
-                digest2,
+        doTestContainerImageInspect(imageName, imgInfoBuild2, digest2,
                 imgInfo -> {
             // reload imgInfo to get the build history
             imgInfo = TestUtils.reload(imgInfo);
@@ -1522,8 +1520,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         ImageInfo imgInfoBuild1 = doTestContainerImageBuild(server, imageName, imageVersion1, profile,
                 // assert initial revision number
                 imgInfo -> assertEquals(1, imgInfo.getRevisionNumber()));
-        doTestContainerImageInspect(server, imageName, imageVersion1, profile, imgInfoBuild1,
-                digest,
+        doTestContainerImageInspect(imageName,  imgInfoBuild1, digest,
                 imgInfo -> {
             // assertions after inspect
             // reload imgInfo to get the build history
@@ -1548,8 +1545,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                     assertNotEquals(imgInfoBuild1.getId(), imgInfo.getId());
                 });
 
-        doTestContainerImageInspect(server, imageName, imageVersion2, profile, imgInfoBuild2,
-                digest,
+        doTestContainerImageInspect(imageName, imgInfoBuild2, digest,
                 imgInfo -> {
             // reload imgInfo to get the build history
             imgInfo = TestUtils.reload(imgInfo);
@@ -1591,9 +1587,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 });
     }
 
-    private void doTestContainerImageInspect(MinionServer server, String imageName, String imageVersion,
-                                             ImageProfile profile, ImageInfo imgInfo,
-                                             String digest,
+    private void doTestContainerImageInspect(String imageName, ImageInfo imgInfo, String digest,
                                              Consumer<ImageInfo> assertions) throws Exception {
         // schedule an inspect action
         Long actionId = ImageInfoFactory.scheduleInspect(imgInfo, new Date(), user);
@@ -2053,6 +2047,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         SaltService saltService = new SaltService() {
             @Override
             public void refreshPillar(MinionList minionList) {
+                //do nothing
             }
         };
         saltServerActionService.setSaltApi(saltService);

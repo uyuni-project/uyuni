@@ -20,10 +20,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import java.io.Serializable;
+
 /**
  * IpAddress
  */
-public class IpAddress {
+public class IpAddress implements Serializable {
 
     private long [] octets = new long[4];
     private long number;

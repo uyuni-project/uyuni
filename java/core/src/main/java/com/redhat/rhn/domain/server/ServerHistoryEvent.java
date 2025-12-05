@@ -60,14 +60,6 @@ public class ServerHistoryEvent extends BaseDomainHelper {
     private String details;
 
     /**
-     * Constructor for ServerHistoryEvent
-     */
-    public ServerHistoryEvent() {
-
-    }
-
-
-    /**
      * Getter for details
      * @return the details of the event
      */
