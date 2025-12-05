@@ -379,45 +379,17 @@ public class DailySummary extends RhnJavaJob {
             }
 
             if (am.getType().equals(ERRATA_UPDATE)) {
-                String advisoryKey = ERRATA_INDENTION + am.getAdvisory();
-
-                if (!errataActions.containsKey(advisoryKey)) {
-                    errataActions.put(advisoryKey, new HashMap<>());
-                    if (advisoryKey.length() + HEADER_SPACER > longestActionLength) {
-                        longestActionLength = advisoryKey.length() + HEADER_SPACER;
-                    }
-                }
-                Map<String, Integer> counts = errataActions.get(advisoryKey);
-                counts.put(am.getStatus(), am.getCount());
-
-                if (am.getAdvisory() != null &&
-                        !errataSynopsis.containsKey(am.getAdvisory())) {
-                    errataSynopsis.put(am.getAdvisory(), am.getSynopsis());
-                }
+                longestActionLength = handleErrataUpdate(longestActionLength, am, errataActions, errataSynopsis);
             }
             else {
-                if (!nonErrataActions.containsKey(am.getType())) {
-                    if (am.getType().equals("Product Migration")) {
-                        am.setType("Product Migration (Total)");
-                    }
-                    if (am.getType().equals("Apply states")) {
-                        am.setType("Apply states (total)");
-                    }
-                    nonErrataActions.put(am.getType(), new HashMap<>());
-                    if (am.getType().length() + HEADER_SPACER > longestActionLength) {
-                        longestActionLength = am.getType().length() + HEADER_SPACER;
-                    }
-                }
-                Map<String, Integer> counts = nonErrataActions.get(am.getType());
-                counts.put(am.getStatus(), am.getCount());
+                longestActionLength = handleOtherTypes(longestActionLength, am, nonErrataActions);
             }
-
         }
 
         hdr.append(StringUtils.repeat(" ", longestActionLength));
         for (String status : statusSet) {
-            hdr.append(status + StringUtils.repeat(" ", (longestStatusLength +
-                    ERRATA_SPACER) - status.length()));
+            hdr.append(status + StringUtils.repeat(" ",
+                    (longestStatusLength + ERRATA_SPACER) - status.length()));
         }
 
         if (!errataActions.isEmpty()) {
@@ -445,6 +417,47 @@ public class DailySummary extends RhnJavaJob {
             msg.append(legend);
         }
         return msg.toString();
+    }
+
+    private int handleErrataUpdate(int longestActionLength, ActionMessage am,
+                                   TreeMap<String, Map<String, Integer>> errataActions,
+                                   TreeMap<String, String> errataSynopsis) {
+        String advisoryKey = ERRATA_INDENTION + am.getAdvisory();
+
+        if (!errataActions.containsKey(advisoryKey)) {
+            if (advisoryKey.length() + HEADER_SPACER > longestActionLength) {
+                longestActionLength = advisoryKey.length() + HEADER_SPACER;
+            }
+            errataActions.put(advisoryKey, new HashMap<>());
+        }
+        Map<String, Integer> counts = errataActions.get(advisoryKey);
+        counts.put(am.getStatus(), am.getCount());
+
+        if (am.getAdvisory() != null && !errataSynopsis.containsKey(am.getAdvisory())) {
+            errataSynopsis.put(am.getAdvisory(), am.getSynopsis());
+        }
+
+        return longestActionLength;
+    }
+
+    private int handleOtherTypes(int longestActionLength, ActionMessage am,
+                                 TreeMap<String, Map<String, Integer>> nonErrataActions) {
+        if (!nonErrataActions.containsKey(am.getType())) {
+            if (am.getType().equals("Product Migration")) {
+                am.setType("Product Migration (Total)");
+            }
+            if (am.getType().equals("Apply states")) {
+                am.setType("Apply states (total)");
+            }
+            nonErrataActions.put(am.getType(), new HashMap<>());
+            if (am.getType().length() + HEADER_SPACER > longestActionLength) {
+                longestActionLength = am.getType().length() + HEADER_SPACER;
+            }
+        }
+        Map<String, Integer> counts = nonErrataActions.get(am.getType());
+        counts.put(am.getStatus(), am.getCount());
+
+        return longestActionLength;
     }
 
     private StringBuffer renderActionTree(int longestActionLength,
