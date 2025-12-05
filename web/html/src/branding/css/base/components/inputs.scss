@@ -12,7 +12,7 @@ div.form-control,
   color: $input-color;
   height: $input-height;
   max-width: 100%;
-  border: 1px solid $input-border-color !important;
+  border: 1px solid $input-border-color;
   border-radius: $border-radius;
   box-shadow: none !important;
   font-size: $font-size-base;
@@ -30,7 +30,6 @@ div.form-control,
   &[disabled],
   &[readonly],
   fieldset[disabled] & {
-    background-color: $gray-lighter;
     opacity: 1;
   }
 
@@ -55,6 +54,7 @@ div.form-control,
     pointer-events: auto;
     cursor: not-allowed;
     background: $input-disabled-bg;
+    // border-color: #4b4f4d;
 
     &:focus {
       border-color: $input-border-color !important;
@@ -104,11 +104,6 @@ div.form-control {
   &[class*="--menu-is-open"] {
     border-color: $eos-bc-blue-500 !important;
   }
-}
-
-input:-webkit-autofill {
-  background-color: red !important;
-  color: white !important;
 }
 
 .form-control {

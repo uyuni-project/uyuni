@@ -34,16 +34,16 @@ $eos-bc-dt-gray-700: #57595f;
 
 
 // Dark theme gray scale
-$eos-dt-gray-1000: #131413;   // #0A0D0D deep neutral black //#222323
-$eos-dt-gray-900:  #191d1d;   //  main bg (neutral + slight cool)
-$eos-dt-gray-800:  #1C2222;   // #1C2222 cards / panels //#1b1d1d
-// $eos-dt-gray-800:  #242B2B;   // hover surfaces
-$eos-dt-gray-700:  #2E3636;   // medium dark gray
-$eos-dt-gray-600:  #394242;   // subtle borders
-$eos-dt-gray-500:  #465050;   // inputs / elements
-$eos-dt-gray-400:  #586262;   // muted border
-$eos-dt-gray-300:  #748080;   // muted text
-$eos-dt-gray-200:  #909C9C;   // secondary text
+$eos-dt-gray-1000: #131413;   // #0A0D0D deep neutral black
+$eos-dt-gray-900:  #191d1d;   // main bg (neutral + slight cool)
+$eos-dt-gray-800:  #1C2222;   // cards / panels 1st / dropdwon hover
+$eos-dt-gray-850:  #242B2B;   // Dropedown bg
+$eos-dt-gray-700:  #2E3636;   // medium dark gray/ secondary panel bg
+$eos-dt-gray-600:  #394242;   // subtle tables, list-item borders
+$eos-dt-gray-500:  #465050;   
+$eos-dt-gray-400:  #586262;   // muted border / Panel, secondary Panel, nav-tabs border
+$eos-dt-gray-300:  #748080;   // muted text /
+$eos-dt-gray-200:  #909C9C;   // secondary text /
 // $eos-dt-gray-100:  #D5DADA;   // primary text
 
 // TODO: These names are wrong, they should probably be -900 and -1000
@@ -134,11 +134,6 @@ $input-height: 35px;
 :root {
   --input-selected: $eos-bc-green-500;
 }
-
-
-/* Modals */
-$modal-color: $white;
-$modal-backdrop-color: rgba($eos-bc-gray-1000, 50%);
 
 /* Other elements */
 $body-background: $white;

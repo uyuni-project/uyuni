@@ -70,7 +70,7 @@
 
 .btn-tertiary {
   background: none;
-  color: $eos-bc-pine-500;
+  color: $btn-tertiary-color;
   font-weight: bold;
   text-decoration: underline;
   text-underline-offset: .3rem;
@@ -80,7 +80,7 @@
   &:hover:not(:disabled):not(.disabled) {
     text-decoration: underline;
     text-underline-offset: .3rem;
-    color: $eos-bc-green-900;
+    color: $btn-tertiary-color-hover; //$eos-bc-green-900;
     border-color: transparent ;
   }
 
