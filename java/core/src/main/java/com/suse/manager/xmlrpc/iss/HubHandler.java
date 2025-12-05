@@ -542,7 +542,7 @@ public class HubHandler extends BaseHandler {
      * @return 1 on success, exception otherwise
      * @apidoc.doc Add peripheral channels to synchronize on a peripheral server
      * @apidoc.param #session_key()
-     * @apidoc.param #param_desc(" string ", " fqdn ", " The FQDN identifying the peripheral server ")
+     * @apidoc.param #param_desc("string", "fqdn", "The FQDN identifying the peripheral server")
      * @apidoc.param #prop_array_begin(" channelLabels ")
      * #prop_desc("string", "label", "The channel label")
      * #array_end()
@@ -611,7 +611,7 @@ public class HubHandler extends BaseHandler {
      * @return 1 on success, exception otherwise
      * @apidoc.doc Remove peripheral channels to synchronize on a peripheral server
      * @apidoc.param #session_key()
-     * @apidoc.param #param_desc(" string ", " fqdn ", " The FQDN identifying the peripheral server ")
+     * @apidoc.param #param_desc("string", "fqdn", "The FQDN identifying the peripheral server")
      * @apidoc.param #prop_array_begin(" channelLabels ")
      * #prop_desc("string", "label", "The channel label")
      * #array_end()
@@ -641,7 +641,7 @@ public class HubHandler extends BaseHandler {
      * @return a list of channel labels on success, exception otherwise
      * @apidoc.doc Lists current peripheral channel to synchronize on a peripheral server
      * @apidoc.param #session_key()
-     * @apidoc.param #param_desc(" string ", " fqdn ", " The FQDN identifying the peripheral server ")
+     * @apidoc.param #param_desc("string", "fqdn", "The FQDN identifying the peripheral server")
      * @apidoc.returntype #return_array_begin()
      * #prop_desc("string", "label", "Label of a peripheral channel to sync")
      * #array_end()
@@ -672,10 +672,7 @@ public class HubHandler extends BaseHandler {
      * @return 1 on success, exception otherwise
      * @apidoc.doc Synchronize peripheral channels on a peripheral server
      * @apidoc.param #session_key()
-     * @apidoc.param #param_desc(" string ", " fqdn ", " The FQDN identifying the peripheral server ")
-     * @apidoc.param #prop_array_begin(" channelLabels ")
-     * #prop_desc("string", "label", "The channel label")
-     * #array_end()
+     * @apidoc.param #param_desc("string", "fqdn", "The FQDN identifying the peripheral server")
      * @apidoc.returntype #return_int_success()
      */
     public int syncPeripheralChannels(User loggedInUser, String fqdn) {
@@ -702,7 +699,7 @@ public class HubHandler extends BaseHandler {
      *
      * @apidoc.doc Regenerate the username and the password for an existing peripheral.
      * @apidoc.param #session_key()
-     * @apidoc.param #param_desc(" string ", " fqdn ", " The FQDN identifying the peripheral server ")
+     * @apidoc.param #param_desc("string", "fqdn", "The FQDN identifying the peripheral server")
      * @apidoc.returntype #return_int_success()
      */
     public int regenerateSCCCredentials(User loggedInUser, String fqdn) {
