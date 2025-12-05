@@ -20,6 +20,7 @@ import static com.redhat.rhn.testing.ImageTestUtils.createImageStore;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -65,7 +66,7 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public final void testListImageProfileTypes() {
+    void testListImageProfileTypes() {
         List<String> types = handler.listImageProfileTypes(admin);
         assertEquals(2, types.size(), "Wrong number of image profile types found.");
         assertTrue(types.stream().anyMatch(ImageProfile.TYPE_DOCKERFILE::equals));
@@ -73,7 +74,7 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public final void testGetDetailsDockerfile() throws Exception {
+    void testGetDetailsDockerfile() throws Exception {
         ImageStore store = createImageStore("myregistry", admin);
         ActivationKey key = createActivationKey(admin);
         int result = handler.create(admin, "myprofile", ImageProfile.TYPE_DOCKERFILE,
@@ -98,7 +99,7 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public final void testGetDetailsKiwi() throws Exception {
+    void testGetDetailsKiwi() throws Exception {
         ImageStore store = createImageStore("mystore", admin, ImageStoreFactory.TYPE_OS_IMAGE);
         ActivationKey key = createActivationKey(admin);
         int result = handler.create(admin, "myprofile", ImageProfile.TYPE_KIWI,
@@ -116,7 +117,7 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public final void testListImageProfiles() throws Exception {
+    void testListImageProfiles() throws Exception {
         createImageStore("myregistry", admin, ImageStoreFactory.TYPE_REGISTRY);
         createImageStore("myosimagestore", admin, ImageStoreFactory.TYPE_OS_IMAGE);
 
@@ -148,7 +149,7 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public final void testCreateImageProfile() throws Exception {
+    void testCreateImageProfile() throws Exception {
         ImageStore store = createImageStore("myregistry", admin);
         int result = handler.create(admin, "newprofile", ImageProfile.TYPE_DOCKERFILE,
                 "myregistry", "/path/to/dockerfile", "");
@@ -177,183 +178,155 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public final void testCreateImageProfileFailed() throws Exception {
+    void testCreateImageProfileFailedPart1() throws Exception {
         ActivationKey key = createActivationKey(admin);
         createImageProfile("existing-profile", createImageStore("myregistry", admin), admin);
 
-        try {
-            handler.create(admin, "newprofile", "container", "mystore",
-                    "/path/to/dockerfile/", key.getKey());
-            fail("Invalid type provided.");
-        }
-        catch (InvalidParameterException e) {
-            assertEquals("Type does not exist.", e.getMessage());
-        }
+        String activationKey = key.getKey();
+        InvalidParameterException ex1 = assertThrows(InvalidParameterException.class,
+                () -> handler.create(admin, "newprofile", "container", "mystore",
+                        "/path/to/dockerfile/", activationKey),
+                "Invalid type provided.");
+        assertEquals("Type does not exist.", ex1.getMessage());
 
-        try {
-            ActivationKey tmp = createActivationKey(admin);
-            tmp.setBaseChannel(null);
-            handler.create(admin, "newprofile", "dockerfile", "mystore", "/path/to/dockerfile/", tmp.getKey());
-            fail("Activation Key with no base channel provided for Kiwi profile");
-        }
-        catch (InvalidParameterException e) {
-            assertEquals("Activation key does not have any base channel associated " +
-            "(do not use SUSE Multi-Linux Manager default).", e.getMessage());
-        }
+        ActivationKey tmp = createActivationKey(admin);
+        tmp.setBaseChannel(null);
+        String activationKey2 = tmp.getKey();
+        InvalidParameterException ex2 = assertThrows(InvalidParameterException.class,
+                () -> handler.create(admin, "newprofile", "dockerfile", "mystore",
+                        "/path/to/dockerfile/", activationKey2),
+                "Activation Key with no base channel provided for Kiwi profile");
+        assertEquals("Activation key does not have any base channel associated " +
+                "(do not use SUSE Multi-Linux Manager default).", ex2.getMessage());
 
-        try {
-            handler.create(admin, "newprofile", "dockerfile", "mystore",
-                    "/path/to/dockerfile/", key.getKey());
-            fail("Invalid store provided.");
-        }
-        catch (NoSuchImageStoreException ignore) {
-            //should be here
-        }
 
-        try {
-            handler.create(admin, "newprofile", "dockerfile", "myregistry",
-                    "/path/to/dockerfile/", "invalidkey");
-            fail("Invalid activation key provided.");
-        }
-        catch (InvalidParameterException e) {
-            assertEquals("Activation key does not exist.", e.getMessage());
-        }
+        String activationKey3 = key.getKey();
+        assertThrows(NoSuchImageStoreException.class,
+                () -> handler.create(admin, "newprofile", "dockerfile", "mystore",
+                        "/path/to/dockerfile/", activationKey3),
+                "Invalid store provided.");
+
+        InvalidParameterException ex3 = assertThrows(InvalidParameterException.class,
+                () -> handler.create(admin, "newprofile", "dockerfile", "myregistry",
+                        "/path/to/dockerfile/", "invalidkey"),
+                "Invalid activation key provided.");
+        assertEquals("Activation key does not exist.", ex3.getMessage());
+
 
         createImageStore("myosimagestore", admin, ImageStoreFactory.TYPE_OS_IMAGE);
 
-        try {
-            handler.create(admin, "newprofile", "kiwi", "myosimagestore", "/path/to/dockerfile/", "");
-            fail("No activation key provided for Kiwi profile.");
-        }
-        catch (InvalidParameterException e) {
-            assertEquals("Activation key cannot be empty for Kiwi profiles.", e.getMessage());
-        }
+        InvalidParameterException ex4 = assertThrows(InvalidParameterException.class,
+                () -> handler.create(admin, "newprofile", "kiwi", "myosimagestore",
+                        "/path/to/dockerfile/", ""),
+                "No activation key provided for Kiwi profile.");
+        assertEquals("Activation key cannot be empty for Kiwi profiles.", ex4.getMessage());
 
-        try {
-            ActivationKey tmp = createActivationKey(admin);
-            tmp.setBaseChannel(null);
-            handler.create(admin, "newprofile", "kiwi", "myosimagestore", "/path/to/kiwiconfig", tmp.getKey());
-            fail("Activation Key with no base channel provided for Kiwi profile");
-        }
-        catch (InvalidParameterException e) {
-            assertEquals("Activation key does not have any base channel associated " +
-            "(do not use SUSE Multi-Linux Manager default).", e.getMessage());
-        }
+        ActivationKey tmp5 = createActivationKey(admin);
+        tmp5.setBaseChannel(null);
+        String activationKey5 = tmp5.getKey();
+        InvalidParameterException ex5 = assertThrows(InvalidParameterException.class,
+                () -> handler.create(admin, "newprofile", "kiwi", "myosimagestore",
+                        "/path/to/kiwiconfig", activationKey5),
+                "Activation Key with no base channel provided for Kiwi profile");
+        assertEquals("Activation key does not have any base channel associated " +
+                "(do not use SUSE Multi-Linux Manager default).", ex5.getMessage());
 
-        try {
-            handler.create(admin, "newprofile", "dockerfile", "myosimagestore", "/path/to/dockerfile", key.getKey());
-            fail("os_image store provided for dockerfile profile.");
-        }
-        catch (InvalidParameterException e) {
-            assertEquals("Invalid store for profile type: 'dockerfile'", e.getMessage());
-        }
+        String activationKey6 = key.getKey();
+        InvalidParameterException ex6 = assertThrows(InvalidParameterException.class,
+                () -> handler.create(admin, "newprofile", "dockerfile", "myosimagestore",
+                        "/path/to/dockerfile", activationKey6),
+                "os_image store provided for dockerfile profile.");
+        assertEquals("Invalid store for profile type: 'dockerfile'", ex6.getMessage());
 
-        try {
-            handler.create(admin, "newprofile", "kiwi", "myregistry", "/path/to/kiwiconfig", key.getKey());
-            fail("registry store provided for kiwi profile.");
-        }
-        catch (InvalidParameterException e) {
-            assertEquals("Invalid store for profile type: 'kiwi'", e.getMessage());
-        }
-
-        try {
-            handler.create(admin, "newprofile", "invalidtype", "myosimagestore", "/path/to/dockerfile", key.getKey());
-            fail("Invalid profile type provided.");
-        }
-        catch (InvalidParameterException e) {
-            assertEquals("Type does not exist.", e.getMessage());
-        }
-
-        try {
-            handler.create(admin, "", ImageProfile.TYPE_DOCKERFILE, "myregistry",
-                    "/path/to/dockerfile/", key.getKey());
-            fail("No label provided.");
-        }
-        catch (InvalidParameterException e) {
-            assertEquals("Label cannot be empty.", e.getMessage());
-        }
-
-        try {
-            handler.create(admin, "existing-profile", ImageProfile.TYPE_DOCKERFILE, "myregistry",
-                    "/path/to/dockerfile/", key.getKey());
-            fail("Existing label provided.");
-        }
-        catch (InvalidParameterException e) {
-            assertEquals("Image already exists.", e.getMessage());
-        }
-
-        try {
-            handler.create(admin, "invalid:chars", ImageProfile.TYPE_DOCKERFILE, "myregistry",
-                    "/path/to/dockerfile/", key.getKey());
-            fail("Invalid label with ':' character provided.");
-        }
-        catch (InvalidParameterException e) {
-            assertEquals("Label cannot contain colons (:).", e.getMessage());
-        }
-
-        try {
-            handler.create(admin, "newprofile", "", "myregistry", "/path/to/dockerfile/",
-                    key.getKey());
-            fail("No type provided.");
-        }
-        catch (InvalidParameterException e) {
-            assertEquals("Type cannot be empty.", e.getMessage());
-        }
-
-        try {
-            handler.create(admin, "newprofile", ImageProfile.TYPE_DOCKERFILE, "",
-                    "/path/to/dockerfile/", key.getKey());
-            fail("No store label provided.");
-        }
-        catch (InvalidParameterException e) {
-            assertEquals("Store label cannot be empty.", e.getMessage());
-        }
-
-        try {
-            handler.create(admin, "newprofile", ImageProfile.TYPE_DOCKERFILE, "myregistry",
-                    "", key.getKey());
-            fail("No path provided.");
-        }
-        catch (InvalidParameterException e) {
-            assertEquals("Path cannot be empty.", e.getMessage());
-        }
+        String activationKey7 = key.getKey();
+        InvalidParameterException ex7 = assertThrows(InvalidParameterException.class,
+                () -> handler.create(admin, "newprofile", "kiwi", "myregistry",
+                        "/path/to/kiwiconfig", activationKey7),
+                "registry store provided for kiwi profile.");
+        assertEquals("Invalid store for profile type: 'kiwi'", ex7.getMessage());
     }
 
     @Test
-    public final void testDeleteProfile() {
+    void testCreateImageProfileFailedPart2() throws Exception {
+        ActivationKey key = createActivationKey(admin);
+        createImageProfile("existing-profile", createImageStore("myregistry", admin), admin);
+
+        String activationKey8 = key.getKey();
+        InvalidParameterException ex8 = assertThrows(InvalidParameterException.class,
+                () -> handler.create(admin, "newprofile", "invalidtype", "myosimagestore",
+                        "/path/to/dockerfile", activationKey8),
+                "Invalid profile type provided.");
+        assertEquals("Type does not exist.", ex8.getMessage());
+
+        String activationKey9 = key.getKey();
+        InvalidParameterException ex9 = assertThrows(InvalidParameterException.class,
+                () -> handler.create(admin, "", ImageProfile.TYPE_DOCKERFILE, "myregistry",
+                        "/path/to/dockerfile/", activationKey9),
+                "No label provided.");
+        assertEquals("Label cannot be empty.", ex9.getMessage());
+
+        String activationKey10 = key.getKey();
+        InvalidParameterException ex10 = assertThrows(InvalidParameterException.class,
+                () -> handler.create(admin, "existing-profile", ImageProfile.TYPE_DOCKERFILE,
+                        "myregistry", "/path/to/dockerfile/", activationKey10),
+                "Existing label provided.");
+        assertEquals("Image already exists.", ex10.getMessage());
+
+        String activationKey11 = key.getKey();
+        InvalidParameterException ex11 = assertThrows(InvalidParameterException.class,
+                () -> handler.create(admin, "invalid:chars", ImageProfile.TYPE_DOCKERFILE, "myregistry",
+                        "/path/to/dockerfile/", activationKey11),
+                "Invalid label with ':' character provided.");
+        assertEquals("Label cannot contain colons (:).", ex11.getMessage());
+
+        String activationKey12 = key.getKey();
+        InvalidParameterException ex12 = assertThrows(InvalidParameterException.class,
+                () -> handler.create(admin, "newprofile", "", "myregistry",
+                        "/path/to/dockerfile/", activationKey12),
+                "No type provided.");
+        assertEquals("Type cannot be empty.", ex12.getMessage());
+
+        String activationKey13 = key.getKey();
+        InvalidParameterException ex13 = assertThrows(InvalidParameterException.class,
+                () -> handler.create(admin, "newprofile", ImageProfile.TYPE_DOCKERFILE, "",
+                        "/path/to/dockerfile/", activationKey13),
+                "No store label provided.");
+        assertEquals("Store label cannot be empty.", ex13.getMessage());
+
+        String activationKey14 = key.getKey();
+        InvalidParameterException ex14 = assertThrows(InvalidParameterException.class,
+                () -> handler.create(admin, "newprofile", ImageProfile.TYPE_DOCKERFILE, "myregistry",
+                        "", activationKey14),
+                "No path provided.");
+        assertEquals("Path cannot be empty.", ex14.getMessage());
+    }
+
+    @Test
+    void testDeleteProfile() {
         createImageStore("myregistry", admin);
         int result = handler.create(admin, "myprofile", ImageProfile.TYPE_DOCKERFILE,
                 "myregistry", "/path/to/dockerfile", "");
         assertEquals(1, result);
 
-        try {
-            handler.delete(admin, "");
-            fail("No Label provided.");
-        }
-        catch (InvalidParameterException e) {
-            assertEquals("Label cannot be empty.", e.getMessage());
-        }
+        InvalidParameterException ex1 = assertThrows(InvalidParameterException.class,
+                () -> handler.delete(admin, ""),
+                "No Label provided.");
+        assertEquals("Label cannot be empty.", ex1.getMessage());
 
-        try {
-            handler.delete(admin, "invalidlabel");
-            fail("Invalid Label provided.");
-        }
-        catch (NoSuchImageProfileException ignore) {
-        }
+        assertThrows(NoSuchImageProfileException.class,
+                () -> handler.delete(admin, "invalidlabel"),
+                "Invalid Label provided.");
 
         result = handler.delete(admin, "myprofile");
 
         assertEquals(1, result);
-        try {
-            handler.getDetails(admin, "myprofile");
-            fail("Profile should have been deleted.");
-        }
-        catch (NoSuchImageProfileException ignore) {
-        }
+        assertThrows(NoSuchImageProfileException.class,
+                () -> handler.getDetails(admin, "myprofile"),
+                "Profile should have been deleted.");
     }
 
     @Test
-    public final void testSetDetails() throws Exception {
+    void testSetDetails() throws Exception {
         createImageStore("myregistry", admin);
         createImageStore("myosimagestore", admin, ImageStoreFactory.TYPE_OS_IMAGE);
 
@@ -372,79 +345,55 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
         Map<String, String> details = new HashMap<>();
 
         // Invalid attempts
-        try {
-            handler.setDetails(admin, "", details);
-            fail("No label provided.");
-        }
-        catch (InvalidParameterException e) {
-            assertEquals("Label cannot be empty.", e.getMessage());
-        }
+        InvalidParameterException ex1 = assertThrows(InvalidParameterException.class,
+                () -> handler.setDetails(admin, "", details),
+                "No label provided.");
+        assertEquals("Label cannot be empty.", ex1.getMessage());
 
-        try {
-            handler.setDetails(admin, "invalidlabel", details);
-            fail("Invalid label provided.");
-        }
-        catch (NoSuchImageProfileException ignore) {
-        }
+        assertThrows(NoSuchImageProfileException.class,
+                () -> handler.setDetails(admin, "invalidlabel", details),
+                "Invalid label provided.");
 
-        try {
-            details.clear();
-            details.put("storeLabel", "invalidstore");
-            handler.setDetails(admin, "mydockerfileprofile", details);
-            fail("Invalid store label provided.");
-        }
-        catch (NoSuchImageStoreException ignore) {
-        }
+        details.clear();
+        details.put("storeLabel", "invalidstore");
+        assertThrows(NoSuchImageStoreException.class,
+                () -> handler.setDetails(admin, "mydockerfileprofile", details),
+                "Invalid store label provided.");
 
-        try {
-            details.clear();
-            details.put("storeLabel", "");
-            handler.setDetails(admin, "mydockerfileprofile", details);
-            fail("No store label provided.");
-        }
-        catch (InvalidParameterException e) {
-            assertEquals("Store label cannot be empty.", e.getMessage());
-        }
+        details.clear();
+        details.put("storeLabel", "");
+        InvalidParameterException ex2 = assertThrows(InvalidParameterException.class,
+                () -> handler.setDetails(admin, "mydockerfileprofile", details),
+                "No store label provided.");
+        assertEquals("Store label cannot be empty.", ex2.getMessage());
 
-        try {
-            details.clear();
-            details.put("storeLabel", "newosimagestore");
-            handler.setDetails(admin, "mydockerfileprofile", details);
-            fail("Store label of invalid type provided.");
-        }
-        catch (InvalidParameterException e) {
-            assertEquals("Invalid store for profile type: 'dockerfile'", e.getMessage());
-        }
+        details.clear();
+        details.put("storeLabel", "newosimagestore");
+        InvalidParameterException ex3 = assertThrows(InvalidParameterException.class,
+                () -> handler.setDetails(admin, "mydockerfileprofile", details),
+                "Store label of invalid type provided.");
+        assertEquals("Invalid store for profile type: 'dockerfile'", ex3.getMessage());
 
-        try {
-            details.clear();
-            details.put("path", "");
-            handler.setDetails(admin, "mydockerfileprofile", details);
-            fail("No path provided.");
-        }
-        catch (InvalidParameterException e) {
-            assertEquals("Path cannot be empty.", e.getMessage());
-        }
+        details.clear();
+        details.put("path", "");
+        InvalidParameterException ex4 = assertThrows(InvalidParameterException.class,
+                () -> handler.setDetails(admin, "mydockerfileprofile", details),
+                "No path provided.");
+        assertEquals("Path cannot be empty.", ex4.getMessage());
 
-        try {
-            details.clear();
-            details.put("activationKey", "invalidkey");
-            handler.setDetails(admin, "mydockerfileprofile", details);
-            fail("Invalid activation key provided.");
-        }
-        catch (InvalidParameterException e) {
-            assertEquals("Activation key does not exist.", e.getMessage());
-        }
+        details.clear();
+        details.put("activationKey", "invalidkey");
+        InvalidParameterException ex5 = assertThrows(InvalidParameterException.class,
+                () -> handler.setDetails(admin, "mydockerfileprofile", details),
+                "Invalid activation key provided.");
+        assertEquals("Activation key does not exist.", ex5.getMessage());
 
-        try {
-            details.clear();
-            details.put("activationKey", "");
-            handler.setDetails(admin, "mykiwiprofile", details);
-            fail("Empty activation key provided for Kiwi profile.");
-        }
-        catch (InvalidParameterException e) {
-            assertEquals("Activation key cannot be empty for Kiwi profiles.", e.getMessage());
-        }
+        details.clear();
+        details.put("activationKey", "");
+        InvalidParameterException ex6 = assertThrows(InvalidParameterException.class,
+                () -> handler.setDetails(admin, "mykiwiprofile", details),
+                "Empty activation key provided for Kiwi profile.");
+        assertEquals("Activation key cannot be empty for Kiwi profiles.", ex6.getMessage());
 
         details.clear();
         details.put("storeLabel", "newstore");
@@ -470,7 +419,7 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public final void testGetCustomValues() {
+    void testGetCustomValues() {
         createImageStore("myregistry", admin);
         int result = handler.create(admin, "myprofile", ImageProfile.TYPE_DOCKERFILE,
                 "myregistry", "/path/to/dockerfile", "");
@@ -487,27 +436,21 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
         result = handler.setCustomValues(admin, "myprofile", values);
         assertEquals(1, result);
 
-        try {
-            handler.getCustomValues(admin, "");
-            fail("No Label provided.");
-        }
-        catch (InvalidParameterException e) {
-            assertEquals("Label cannot be empty.", e.getMessage());
-        }
+        InvalidParameterException ex1 = assertThrows(InvalidParameterException.class,
+                () -> handler.getCustomValues(admin, ""),
+                "No Label provided.");
+        assertEquals("Label cannot be empty.", ex1.getMessage());
 
-        try {
-            handler.getCustomValues(admin, "invalidlabel");
-            fail("Invalid Label provided.");
-        }
-        catch (NoSuchImageProfileException ignore) {
-        }
+        assertThrows(NoSuchImageProfileException.class,
+                () -> handler.getCustomValues(admin, "invalidlabel"),
+                "Invalid Label provided.");
 
         Map<String, String> results = handler.getCustomValues(admin, "myprofile");
         assertEquals(values, results);
     }
 
     @Test
-    public final void testSetCustomDataValues() throws Exception {
+    void testSetCustomDataValues() throws Exception {
         createImageStore("myregistry", admin);
         int result = handler.create(admin, "myprofile", ImageProfile.TYPE_DOCKERFILE,
                 "myregistry", "/path/to/dockerfile", "");
@@ -528,29 +471,20 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
         Map<String, String> values = new HashMap<>();
 
         values.put(orgKey1.getLabel(), "newvalue");
-        try {
-            handler.setCustomValues(admin, "", values);
-            fail("No Label provided.");
-        }
-        catch (InvalidParameterException e) {
-            assertEquals("Label cannot be empty.", e.getMessage());
-        }
+        InvalidParameterException ex1 = assertThrows(InvalidParameterException.class,
+                () -> handler.setCustomValues(admin, "", values),
+                "No Label provided.");
+        assertEquals("Label cannot be empty.", ex1.getMessage());
 
-        try {
-            handler.setCustomValues(admin, "invalidlabel", values);
-            fail("Invalid Label provided.");
-        }
-        catch (NoSuchImageProfileException ignore) {
-        }
+        assertThrows(NoSuchImageProfileException.class,
+                () -> handler.setCustomValues(admin, "invalidlabel", values),
+                "Invalid Label provided.");
 
         values.put("invalidkey", "newvalue");
-        try {
-            handler.setCustomValues(admin, "myprofile", values);
-            fail("Invalid key provided.");
-        }
-        catch (InvalidParameterException e) {
-            assertEquals("The key 'invalidkey' doesn't exist.", e.getMessage());
-        }
+        InvalidParameterException ex2 = assertThrows(InvalidParameterException.class,
+                () -> handler.setCustomValues(admin, "myprofile", values),
+                "Invalid key provided.");
+        assertEquals("The key 'invalidkey' doesn't exist.", ex2.getMessage());
 
         // Add values
         values.clear();
@@ -563,10 +497,10 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
         assertEquals(2, profile.getCustomDataValues().size());
         profile.getCustomDataValues().forEach(cdv -> {
             if (cdv.getKey().equals(orgKey1)) {
-                assertEquals(cdv.getValue(), "newvalue1");
+                assertEquals("newvalue1", cdv.getValue());
             }
             else if (cdv.getKey().equals(orgKey2)) {
-                assertEquals(cdv.getValue(), "newvalue2");
+                assertEquals("newvalue2", cdv.getValue());
             }
             else {
                 fail("Invalid key in profile.");
@@ -587,11 +521,11 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
         assertEquals(2, updatedProfile.getCustomDataValues().size());
         updatedProfile.getCustomDataValues().forEach(cdv -> {
             if (cdv.getKey().equals(orgKey1)) {
-                assertEquals(cdv.getValue(), "newvalue3");
+                assertEquals("newvalue3", cdv.getValue());
                 assertEquals(cdv.getLastModifier(), anotherAdmin);
             }
             else if (cdv.getKey().equals(orgKey2)) {
-                assertEquals(cdv.getValue(), "newvalue2");
+                assertEquals("newvalue2", cdv.getValue());
                 assertEquals(cdv.getLastModifier(), admin);
             }
             else {
@@ -603,7 +537,7 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public final void testDeleteCustomValues() {
+    void testDeleteCustomValues() {
         createImageStore("myregistry", admin);
         int result = handler.create(admin, "myprofile", ImageProfile.TYPE_DOCKERFILE,
                 "myregistry", "/path/to/dockerfile", "");
@@ -627,29 +561,20 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
 
         List<String> keysToDelete = new ArrayList<>();
         keysToDelete.add(orgKey1.getLabel());
-        try {
-            handler.deleteCustomValues(admin, "", keysToDelete);
-            fail("No Label provided.");
-        }
-        catch (InvalidParameterException e) {
-            assertEquals("Label cannot be empty.", e.getMessage());
-        }
+        InvalidParameterException ex1 = assertThrows(InvalidParameterException.class,
+                () -> handler.deleteCustomValues(admin, "", keysToDelete),
+                "No Label provided.");
+        assertEquals("Label cannot be empty.", ex1.getMessage());
 
-        try {
-            handler.deleteCustomValues(admin, "invalidlabel", keysToDelete);
-            fail("Invalid Label provided.");
-        }
-        catch (NoSuchImageProfileException ignore) {
-        }
+        assertThrows(NoSuchImageProfileException.class,
+                () -> handler.deleteCustomValues(admin, "invalidlabel", keysToDelete),
+                "Invalid Label provided.");
 
         keysToDelete.add("invalidkey");
-        try {
-            handler.deleteCustomValues(admin, "myprofile", keysToDelete);
-            fail("Invalid key provided.");
-        }
-        catch (InvalidParameterException e) {
-            assertEquals("The key 'invalidkey' doesn't exist.", e.getMessage());
-        }
+        InvalidParameterException ex2 = assertThrows(InvalidParameterException.class,
+                () -> handler.deleteCustomValues(admin, "myprofile", keysToDelete),
+                "Invalid key provided.");
+        assertEquals("The key 'invalidkey' doesn't exist.", ex2.getMessage());
 
         keysToDelete.clear();
         keysToDelete.add(orgKey1.getLabel());

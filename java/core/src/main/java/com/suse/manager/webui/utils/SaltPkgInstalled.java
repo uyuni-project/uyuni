@@ -127,11 +127,7 @@ public class SaltPkgInstalled extends AbstractSaltRequisites implements SaltStat
                     version.append(pkg.getOperator());
                 }
                 version.append(pkg.getVersion());
-                pkgsList.add(new HashMap<String, Object>() {
-                    {
-                        put(pkg.getName() + "." + pkg.getArch(), version.toString());
-                    }
-                });
+                pkgsList.add(Map.of(pkg.getName() + "." + pkg.getArch(), version.toString()));
             }
             else {
                 pkgsList.add(pkg.getName());

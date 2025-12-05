@@ -203,9 +203,13 @@ public class PackageActionDetails extends BaseDomainHelper {
      */
     @Override
     public int hashCode() {
-        int result = 37 * (getParentAction() == null ? 0 :
-                          (getParentAction().getId() == null ? 0 :
-                           getParentAction().getId().intValue()));
+        int result = 0;
+        if (getParentAction() != null) {
+            if (getParentAction().getId() != null) {
+                result = 37 * getParentAction().getId().intValue();
+            }
+        }
+
         result += 37 * (packageId == null ? 0 : packageId.intValue());
         result += 37 * (parameter == null ? 0 : parameter.hashCode());
         result += 37 * (packageName == null ? 0 : packageName.hashCode());

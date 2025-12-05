@@ -110,11 +110,7 @@ public class SaltPkgRemoved extends AbstractSaltRequisites implements SaltState 
                     version.append(pkg.getOperator());
                 }
                 version.append(pkg.getVersion());
-                pkgsList.add(new HashMap<String, Object>() {
-                    {
-                        put(pkg.getName(), version.toString());
-                    }
-                });
+                pkgsList.add(Map.of(pkg.getName(), version.toString()));
             }
             else {
                 pkgsList.add(pkg.getName());

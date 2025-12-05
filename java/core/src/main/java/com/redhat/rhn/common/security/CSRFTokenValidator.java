@@ -85,7 +85,14 @@ public final class CSRFTokenValidator {
 
         String header = request.getHeader("X-CSRF-Token");
         String parameter = request.getParameter(tokenKey);
-        String token = parameter != null ? parameter : (header != null ? header : null);
+
+        String token = null;
+        if (parameter != null) {
+            token = parameter;
+        }
+        else if (header != null) {
+            token = header;
+        }
 
         if (token == null) {
             throw new CSRFTokenException("Request does not contain a CSRF security token");

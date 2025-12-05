@@ -39,7 +39,6 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.DynaActionForm;
 import org.cobbler.XmlRpcException;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -118,12 +117,8 @@ public class PowerManagementConfigurationAction extends RhnAction implements Lis
     public List<SystemOverview> getResult(RequestContext context) {
         User user = context.getCurrentUser();
         return SystemManager.entitledInSet(user, RhnSetDecl.SYSTEMS.getLabel(),
-                new LinkedList<>() {
-                    {
-                        add(EntitlementManager.BOOTSTRAP_ENTITLED);
-                        add(EntitlementManager.ENTERPRISE_ENTITLED);
-                        add(EntitlementManager.SALT_ENTITLED);
-                    }
-                });
+                List.of(EntitlementManager.BOOTSTRAP_ENTITLED,
+                        EntitlementManager.ENTERPRISE_ENTITLED,
+                        EntitlementManager.SALT_ENTITLED));
     }
 }

@@ -144,8 +144,15 @@ public class SupportDataAction extends Action {
                             action.getId());
                     var bundle = actionPath.resolve("bundle.tar");
                     var dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd_hhmm").withZone(ZoneOffset.UTC);
-                    var prefix = minionServer.isProxy() ? "PXY" :
-                            minionServer.isMgrServer() ? "SRV" : "MIN";
+
+                    var prefix = "MIN";
+                    if (minionServer.isProxy()) {
+                        prefix = "PXY";
+                    }
+                    else if (minionServer.isMgrServer()) {
+                        prefix = "SRV";
+                    }
+
                     var shortHostname = minionServer.getHostname().split("\\.")[0];
                     var uploadName = "SR%s_%s_%s_%s.tar".formatted(caseNumber, prefix, shortHostname,
                             dateTimeFormatter.format(Instant.now()));

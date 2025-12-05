@@ -32,7 +32,6 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.DynaActionForm;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -87,10 +86,6 @@ public class TagSystemsAction extends RhnAction implements Listable<SystemOvervi
     public List<SystemOverview> getResult(RequestContext context) {
         User user = context.getCurrentUser();
         return SystemManager.entitledInSet(user, RhnSetDecl.SYSTEMS.getLabel(),
-                new LinkedList<>() {
-                    {
-                        add(EntitlementManager.ENTERPRISE_ENTITLED);
-                    }
-                });
+                List.of(EntitlementManager.ENTERPRISE_ENTITLED));
     }
 }

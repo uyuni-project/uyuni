@@ -34,6 +34,7 @@ import org.apache.struts.action.DynaActionForm;
 import org.apache.struts.util.LabelValueBean;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -219,9 +220,7 @@ public class KickstartScriptOrderAction extends RhnLookupDispatchAction {
         String rankedValues = (String) form.get(preOrPost);
         if (StringUtils.isNotBlank(rankedValues)) {
             String[] values = rankedValues.split(",");
-            for (String value : values) {
-                scripts.add(value);
-            }
+            scripts = Arrays.asList(values);
         }
         return scripts;
     }

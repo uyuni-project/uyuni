@@ -20,6 +20,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -189,20 +190,13 @@ public class NavTreeIndex {
      * @return String the URL computed
      */
     public String computeActiveNodes(String url, String lastActive) {
-        String[] prefixes = splitUrlPrefixes(url);
-
+        List<String> prefixes = new ArrayList<>(Arrays.asList(splitUrlPrefixes(url)));
         // If we have a lastActive URL we
         // will add it to the end of the list of URLs to
         // use it as a last resort.
         if (lastActive != null) {
-            String[] urls = new String[prefixes.length + 1];
-
             // Add the lastActive to the end
-            for (int i = 0; i < prefixes.length; i++) {
-                urls[i] = prefixes[i];
-            }
-            urls[prefixes.length] = lastActive;
-            prefixes = urls;
+            prefixes.add(lastActive);
         }
 
         return computeActiveNodes(prefixes);
@@ -213,7 +207,7 @@ public class NavTreeIndex {
      * @param urls list of URLs, in order of preference, to match
      * @return String the URL computed
      */
-    private String computeActiveNodes(String[] urls) {
+    private String computeActiveNodes(List<String> urls) {
         bestNode = findBestNode(urls);
         if (bestNode == null) {
             // can't find an best node. assume topmost leftmost node is best
@@ -235,7 +229,7 @@ public class NavTreeIndex {
         return bestNode.getPrimaryURL();
     }
 
-    private NavNode findBestNode(String[] urls) {
+    private NavNode findBestNode(List<String> urls) {
 
         for (String urlIn : urls) {
 

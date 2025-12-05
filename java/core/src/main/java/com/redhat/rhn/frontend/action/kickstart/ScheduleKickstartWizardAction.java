@@ -669,9 +669,7 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
             cmd.setBondOptions(form.getString(BOND_OPTIONS));
             String[] slaves = (String[]) form.get(BOND_SLAVE_INTERFACES);
             List<String> tmp = new ArrayList<>();
-            for (String slave : slaves) {
-                tmp.add(slave);
-            }
+            Collections.addAll(tmp, slaves);
             cmd.setBondSlaveInterfaces(tmp);
             if (STATIC_BOND_VALUE.equals(form.getString(BOND_STATIC))) {
                 cmd.setBondDhcp(false);

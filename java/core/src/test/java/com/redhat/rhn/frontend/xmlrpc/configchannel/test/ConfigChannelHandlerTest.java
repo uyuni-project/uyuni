@@ -14,9 +14,12 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.configchannel.test;
 
+import static org.apache.commons.text.CharacterPredicates.DIGITS;
+import static org.apache.commons.text.CharacterPredicates.LETTERS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -56,7 +59,7 @@ import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.ServerGroupTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
-import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.text.RandomStringGenerator;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -86,7 +89,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
     };
 
     @Test
-    public void testCreate() {
+    void testCreate() {
         try {
             handler.invoke("create", List.of(regular, LABEL, NAME, DESCRIPTION));
             String msg = "Needs to be a config admin.. perm error not detected.";
@@ -113,7 +116,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testCreateStateChannel() {
+    void testCreateStateChannel() {
 
         ConfigChannel cc = handler.create(admin, LABEL, NAME, DESCRIPTION, "state");
         assertEquals(LABEL, cc.getLabel());
@@ -126,7 +129,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testUpdate() {
+    void testUpdate() {
         handler.create(admin, LABEL, NAME, DESCRIPTION);
         String newName = NAME + TestUtils.randomString();
         String desc = DESCRIPTION + TestUtils.randomString();
@@ -144,7 +147,10 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
         assertEquals(desc, cc.getDescription());
         assertEquals(admin.getOrg(), cc.getOrg());
         try {
-            String name = RandomStringUtils.randomAlphanumeric(
+            RandomStringGenerator.Builder builder = new RandomStringGenerator.Builder()
+                    .withinRange('0', 'z')
+                    .filteredBy(LETTERS, DIGITS);
+            String name = builder.build().generate(
                     ConfigChannelCreationHelper.MAX_NAME_LENGTH + 1);
             handler.update(admin, LABEL, name, DESCRIPTION);
             String msg = "Max length reached for name- not detected :(";
@@ -157,7 +163,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testListGlobal() throws Exception {
+    void testListGlobal() {
         ConfigChannel cc = ConfigTestUtils.createConfigChannel(admin.getOrg());
         ConfigTestUtils.giveUserChanAccess(regular, cc);
         List<ConfigChannelDto> list = handler.listGlobals(regular);
@@ -165,7 +171,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testLookupGlobal() throws Exception {
+    void testLookupGlobal() {
         List<String> channelLabels = new LinkedList<>();
         List<ConfigChannel> channels = new LinkedList<>();
 
@@ -182,7 +188,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testGetDetailsByLabel() throws Exception {
+    void testGetDetailsByLabel() {
         ConfigChannel cc = ConfigTestUtils.createConfigChannel(admin.getOrg());
 
         ConfigTestUtils.giveUserChanAccess(regular, cc);
@@ -193,7 +199,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testGetDetailsById() throws Exception {
+    void testGetDetailsById() {
         ConfigChannel cc = ConfigTestUtils.createConfigChannel(admin.getOrg());
 
         ConfigTestUtils.giveUserChanAccess(regular, cc);
@@ -204,7 +210,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testDelete() {
+    void testDelete() {
         ConfigChannel cc = handler.create(admin, LABEL, NAME, DESCRIPTION);
         List<String> labels = new LinkedList<>();
         labels.add(cc.getLabel());
@@ -221,7 +227,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
      }
 
     @Test
-    public void testUpdateInitSls() {
+    void testUpdateInitSls() {
 
         ConfigChannel cc = handler.create(admin, LABEL, NAME, DESCRIPTION, "state");
         assertEquals(LABEL, cc.getLabel());
@@ -241,7 +247,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testSyncSaltFiles() {
+    void testSyncSaltFiles() {
 
         // Remove all channels
         var deleted = removeAllGlobals();
@@ -271,7 +277,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testSyncSaltFilesNoChannels() {
+    void testSyncSaltFilesNoChannels() {
 
         // Remove all channels.
         var deleted = removeAllGlobals();
@@ -333,7 +339,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
         assertEquals(path, rev.getConfigFile().getConfigFileName().getPath());
         assertEquals(group, rev.getConfigInfo().getGroupname());
         assertEquals(owner, rev.getConfigInfo().getUsername());
-        assertEquals(perms, String.valueOf(rev.getConfigInfo().getFilemode()));
+        assertEquals(perms, java.lang.String.valueOf(rev.getConfigInfo().getFilemode()));
         assertEquals(selinuxCtx, rev.getConfigInfo().getSelinuxCtx());
         if (isDir) {
             assertEquals(ConfigFileType.dir(), rev.getConfigFileType());
@@ -383,7 +389,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testAddPath() {
+    void testAddPath() {
         ConfigChannel cc = handler.create(admin, LABEL, NAME, DESCRIPTION);
 
         String path = "/tmp/foo/path" + TestUtils.randomString();
@@ -430,7 +436,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testAddPathStateChannel() {
+    void testAddPathStateChannel() {
         ConfigChannel cc = handler.create(admin, LABEL, NAME, DESCRIPTION, "state");
 
         String path = "/tmp/foo/path" + TestUtils.randomString();
@@ -443,62 +449,57 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
                 false, cc, "unconfined_u:object_r:tmp_t");
 
         //Path cannot end with "/"
-        try {
-            createRevision(path + TestUtils.randomString() + "/" , contents,
-                    "group" + TestUtils.randomString(),
-                    "owner" + TestUtils.randomString(),
-                    "744",
-                    false, cc, "unconfined_u:object_r:tmp_t");
-            fail("Validation error on the path.");
-        }
-        catch (ConfigFileErrorException e) {
-            // Can;t change.. Won't allow...
-            assertRevNotChanged(rev, cc);
-        }
+        String revPath = path + TestUtils.randomString() + "/";
+        String revGroup = "group" + TestUtils.randomString();
+        String revOwner = "owner" + TestUtils.randomString();
+
+        assertThrows(ConfigFileErrorException.class,
+                () -> createRevision(revPath, contents,
+                        revGroup,
+                        revOwner,
+                        "744",
+                        false, cc, "unconfined_u:object_r:tmp_t"), "Validation error on the path.");
+        // Can;t change.. Won't allow...
+        assertRevNotChanged(rev, cc);
+
         //Directories are not allowed for state channel
-        try {
-            createRevision(path + TestUtils.randomString(), "",
-                    "group" + TestUtils.randomString(),
-                    "owner" + TestUtils.randomString(),
-                    "744",
-                    true, cc, "unconfined_u:object_r:tmp_t");
-            fail("InvalidOperationException exception not raised, **Directories/Symlinks are not " +
-                    "supported in state channel.**");
+        String revPath2 = path + TestUtils.randomString();
+        String revGroup2 = "group" + TestUtils.randomString();
+        String revOwner2 = "owner" + TestUtils.randomString();
 
-        }
-        catch (InvalidOperationException e) {
-            //should be here
-        }
+        assertThrows(InvalidOperationException.class,
+                () -> createRevision(revPath2, "",
+                        revGroup2,
+                        revOwner2,
+                        "744",
+                        true, cc, "unconfined_u:object_r:tmp_t"),
+                "InvalidOperationException exception not raised, " +
+                        "**Directories/Symlinks are not supported in state channel.**");
+
         //Symlinks are not allowed for state channel
-        try {
-            createSymlinkRevision(path + TestUtils.randomString(),
-                    path + TestUtils.randomString(), cc, "root:root");
-            fail("InvalidOperationException exception not raised, **Directories/Symlinks are " +
-                    "not supported in state channel.**");
+        String symlinkPath = path + TestUtils.randomString();
+        String symlinkTargetPath = path + TestUtils.randomString();
+        assertThrows(InvalidOperationException.class,
+                () -> createSymlinkRevision(symlinkPath, symlinkTargetPath, cc, "root:root"),
+                "InvalidOperationException exception not raised, **Directories/Symlinks are " +
+                        "not supported in state channel.**");
 
-        }
-        catch (InvalidOperationException e) {
-
-        }
         //init.sls should not be possible to update through createOrUpdatePath methods.
-        path = "/init.sls";
-        try {
-            createRevision(path, "",
-                    "group" + TestUtils.randomString(),
-                    "owner" + TestUtils.randomString(),
-                    "744",
-                    false, cc, "unconfined_u:object_r:tmp_t");
-            fail("Exception should be thrown, for init.sls file updateInitSls method should be used");
-        }
-        catch (InvalidParameterException e) {
+        String revPath3 = "/init.sls";
+        String revGroup3 = "group" + TestUtils.randomString();
+        String revOwner3 = "owner" + TestUtils.randomString();
 
-        }
-
-
+        assertThrows(InvalidParameterException.class,
+                () -> createRevision(revPath3, "",
+                        revGroup3,
+                        revOwner3,
+                        "744",
+                        false, cc, "unconfined_u:object_r:tmp_t"),
+                "Exception should be thrown, for init.sls file updateInitSls method should be used");
     }
 
     @Test
-    public void testListFiles() {
+    void testListFiles() {
         ConfigChannel cc = handler.create(admin, LABEL, NAME, DESCRIPTION);
 
         List<String> paths = new LinkedList<>();
@@ -539,7 +540,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testRemovePaths() {
+    void testRemovePaths() {
         ConfigChannel cc = handler.create(admin, LABEL, NAME, DESCRIPTION);
         List<String> paths = new LinkedList<>();
         Map<String, ConfigRevision> revisions = new HashMap<>();
@@ -552,7 +553,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testScheduleFileComparisons() {
+    void testScheduleFileComparisons() {
         ActionManager.setTaskomaticApi(TASKOMATIC_API);
 
         Server server = ServerFactoryTest.createTestServer(admin, true);
@@ -589,19 +590,19 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testChannelExists() {
+    void testChannelExists() {
         handler.create(admin, LABEL, NAME, DESCRIPTION);
 
         int validChannel = handler.channelExists(admin, LABEL);
         int invalidChannel = handler.channelExists(admin, "dummy");
 
-        assertEquals(validChannel, 1);
-        assertEquals(invalidChannel, 0);
+        assertEquals(1, validChannel);
+        assertEquals(0, invalidChannel);
     }
 
 
     @Test
-    public void testDeployAllSystems()  throws Exception {
+    void testDeployAllSystems() {
         ActionManager.setTaskomaticApi(TASKOMATIC_API);
         // Create  global config channels
         List<ConfigChannel> gccList = new ArrayList<>();
@@ -686,7 +687,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testListAssignedGroups() {
+    void testListAssignedGroups() {
         String ccLabel1 = "CC-LABEL-1-" + TestUtils.randomString();
         String ccLabel2 = "CC-LABEL-2-" + TestUtils.randomString();
 
