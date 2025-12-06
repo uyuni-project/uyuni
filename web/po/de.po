@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-12-05 09:23+0100\n"
-"PO-Revision-Date: 2025-10-12 22:59+0000\n"
+"PO-Revision-Date: 2025-12-06 15:04+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/web/de/>\n"
 "Language: de\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.13.3\n"
+"X-Generator: Weblate 5.14.3\n"
 
 #: ../html/javascript/spacewalk-essentials.js:409
 msgid "remaining"
@@ -6377,30 +6377,28 @@ msgid "Formula"
 msgstr ""
 
 #: ../html/src/manager/salt/formula-catalog/org-formula-details.tsx:73
-#, fuzzy
-#| msgid "Name"
 msgid "Name:"
-msgstr "Name"
+msgstr "Name:"
 
 #: ../html/src/manager/salt/keys/key-management.tsx:36
 msgid "Accept"
-msgstr ""
+msgstr "Annehmen"
 
 #: ../html/src/manager/salt/keys/key-management.tsx:45
 msgid "Reject"
-msgstr ""
+msgstr "Ablehnen"
 
 #: ../html/src/manager/salt/keys/key-management.tsx:70
 msgid "accepted"
-msgstr ""
+msgstr "angenommen"
 
 #: ../html/src/manager/salt/keys/key-management.tsx:78
 msgid "rejected"
-msgstr ""
+msgstr "abgelehnt"
 
 #: ../html/src/manager/salt/keys/key-management.tsx:82
 msgid "denied"
-msgstr ""
+msgstr "verweigert"
 
 #: ../html/src/manager/salt/keys/key-management.tsx:148
 msgid "Keys"
@@ -6408,11 +6406,11 @@ msgstr ""
 
 #: ../html/src/manager/salt/keys/key-management.tsx:154
 msgid "Search by name or fingerprint"
-msgstr ""
+msgstr "Nach Name oder Fingerabdruck suchen"
 
 #: ../html/src/manager/salt/keys/key-management.tsx:177
 msgid "Fingerprint"
-msgstr ""
+msgstr "Fingerabdruck"
 
 #: ../html/src/manager/shared/menu/menu.tsx:224
 msgid "Clear Menu"
@@ -6420,7 +6418,7 @@ msgstr ""
 
 #: ../html/src/manager/shared/menu/menu.tsx:227
 msgid "Filter menu"
-msgstr ""
+msgstr "Menü filtern"
 
 #: ../html/src/manager/shared/menu/menu.tsx:262
 msgid "Uyuni"
