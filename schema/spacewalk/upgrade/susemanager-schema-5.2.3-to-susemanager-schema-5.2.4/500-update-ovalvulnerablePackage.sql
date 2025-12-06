@@ -75,5 +75,7 @@ CREATE TABLE suseOVALVulnerablePackage
 
 CREATE INDEX IF NOT EXISTS suse_oval_vulnerable_pkg_plat_vuln_id_idx
 ON suseOVALVulnerablePackage(plat_vuln_id);
+CREATE INDEX IF NOT EXISTS suse_oval_vulnerable_pkg_name_idx
+ON suseOVALVulnerablePackage(name);
 CREATE INDEX IF NOT EXISTS suse_oval_vulnerable_pkg_plat_vuln_id_name_idx
 ON suseOVALVulnerablePackage(plat_vuln_id, name);

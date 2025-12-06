@@ -117,15 +117,15 @@ public class OVALCachingFactory extends HibernateFactory {
      * Lookup the list of vulnerable packages by the pair of cpe and cve
      *
      * @param cve the cve
-     * @param productCpe the product cpe
+     * @param serverId the id of the server
      * @return the list of vulnerable packages
      * */
-    public static List<VulnerablePackage> getVulnerablePackagesByProductAndCve(String productCpe, String cve) {
+    public static List<VulnerablePackage> getVulnerablePackagesByProductAndCve(Long serverId, String cve) {
         SelectMode mode = ModeFactory.getMode("oval_queries", "get_vulnerable_packages");
 
         Map<String, Object> params = new HashMap<>();
         params.put("cve_name", cve);
-        params.put("product_cpe", productCpe);
+        params.put("server_id", serverId);
 
         DataResult<Row> result = mode.execute(params);
 
@@ -142,6 +142,7 @@ public class OVALCachingFactory extends HibernateFactory {
                             ))
                             .orElse(null)
             );
+            vulnerablePackage.setAffected((Boolean) row.get("affected"));
             return vulnerablePackage;
         }).collect(Collectors.toList());
     }

@@ -6,21 +6,33 @@
     </callable-mode>
 
     <mode name="get_vulnerable_packages">
-        <query params="cve_name, product_cpe">
-            SELECT vulnerablePkg.name AS package_name,
-                   (vulnerablePkg.fix_version).epoch AS fix_epoch,
-                   (vulnerablePkg.fix_version).version AS fix_version,
-                   (vulnerablePkg.fix_version).release AS fix_release,
-                   (vulnerablePkg.fix_version).type AS fix_type
-            FROM suseovalplatform platform
+        <query params="cve_name, server_id">
+            SELECT cve.name,
+                vulnerablePkg.name AS package_name,
+                (vulnerablePkg.fix_version).epoch AS fix_epoch,
+                (vulnerablePkg.fix_version).version AS fix_version,
+                (vulnerablePkg.fix_version).release AS fix_release,
+                (vulnerablePkg.fix_version).type AS fix_type,
+                vulnerablePkg.fix_version IS NULL
+                  OR vulnerablePkg.fix_version > pe.evr AS affected
+            FROM rhnCVE cve
             JOIN suseovalplatformvulnerable platVulnerable
+              ON platVulnerable.cve_id = cve.id
+                AND cve.name = :cve_name
+            JOIN suseovalplatform platform
               ON platform.id = platVulnerable.platform_id
+            JOIN rhnServer s
+              ON s.cpe = platform.cpe
+                AND s.id = :server_id
             JOIN suseovalvulnerablepackage vulnerablePkg
               ON vulnerablePkg.plat_vuln_id = platVulnerable.id
-            JOIN rhnCVE cve
-              ON cve.id = platVulnerable.cve_id
-            WHERE cve.name = :cve_name
-              AND platform.cpe = :product_cpe;
+            JOIN rhnPackageName pn
+              ON pn.name = vulnerablePkg.name
+            JOIN rhnServerPackage sp
+              ON sp.server_id = s.id
+                AND sp.name_id = pn.id
+            JOIN rhnPackageEVR pe
+              ON pe.id = sp.evr_id;
         </query>
     </mode>
 
