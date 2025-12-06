@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-12-05 09:23+0100\n"
-"PO-Revision-Date: 2025-11-21 19:04+0000\n"
+"PO-Revision-Date: 2025-12-06 15:04+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -6463,17 +6463,15 @@ msgstr "Podrobnosti o chybách"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:51
 msgid "Standard Output:"
-msgstr ""
+msgstr "Štandardný výstup:"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:67
 msgid "Standard Error:"
-msgstr ""
+msgstr "Štandardná chyba:"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:83
-#, fuzzy
-#| msgid "Result Type:"
 msgid "Result:"
-msgstr "Typ výsledku:"
+msgstr "Výsledok:"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:340
 msgid "Request interrupted or invalid response received from the server. Please check if your minion was bootstrapped correctly."
