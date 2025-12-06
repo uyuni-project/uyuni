@@ -19,11 +19,9 @@ package com.redhat.rhn.manager.audit;
 import static com.redhat.rhn.manager.audit.CVEAuditManager.SUCCESSOR_PRODUCT_RANK_BOUNDARY;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.manager.rhnpackage.PackageManager;
 
 import com.suse.oval.OVALCachingFactory;
 import com.suse.oval.OVALCleaner;
@@ -191,18 +189,10 @@ public class CVEAuditManagerOVAL {
         CVEAuditSystemBuilder cveAuditServerBuilder = new CVEAuditSystemBuilder(clientServer.getId());
         cveAuditServerBuilder.setSystemName(clientServer.getName());
 
-        List<ShallowSystemPackage> allInstalledPackages =
-                PackageManager.shallowSystemPackageList(clientServer.getId());
+        List<VulnerablePackage> clientProductVulnerablePackages =
+                OVALCachingFactory.getVulnerablePackagesByProductAndCve(clientServer.getId(), cveIdentifier);
 
-        LOG.debug("Vulnerable packages before filtering: {}",
-                OVALCachingFactory.getVulnerablePackagesByProductAndCve(clientServer.getCpe(), cveIdentifier));
-
-        Set<VulnerablePackage> clientProductVulnerablePackages =
-                OVALCachingFactory.getVulnerablePackagesByProductAndCve(clientServer.getCpe(), cveIdentifier).stream()
-                        .filter(pkg -> isPackageInstalled(pkg, allInstalledPackages))
-                        .collect(Collectors.toSet());
-
-        LOG.debug("Vulnerable packages after filtering: {}", clientProductVulnerablePackages);
+        LOG.debug("Client vulnerable packages: {}", clientProductVulnerablePackages);
 
         if (clientProductVulnerablePackages.isEmpty()) {
             cveAuditServerBuilder.setPatchStatus(PatchStatus.NOT_AFFECTED);
@@ -224,13 +214,8 @@ public class CVEAuditManagerOVAL {
             cveAuditServerBuilder.setPatchStatus(PatchStatus.AFFECTED_PATCH_UNAVAILABLE);
         }
         else {
-            boolean allPackagesPatched = patchedVulnerablePackages.stream().allMatch(patchedPackage ->
-                    getInstalledPackageVersions(patchedPackage, allInstalledPackages)
-                            .stream().allMatch(installedPackage -> {
-                                PackageEvr fixVersion = patchedPackage.getFixVersion().orElse(null);
-                                return installedPackage.getPackageEVR()
-                                        .compareTo(fixVersion) >= 0;
-                            }));
+            boolean allPackagesPatched =
+                    clientProductVulnerablePackages.stream().noneMatch(VulnerablePackage::getAffected);
 
             if (allPackagesPatched) {
                 cveAuditServerBuilder.setPatchStatus(PatchStatus.PATCHED);

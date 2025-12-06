@@ -22,6 +22,7 @@ import java.util.Optional;
 public class VulnerablePackage {
     private String name;
     private PackageEvr fixVersion;
+    private Boolean affected;
 
     public String getName() {
         return name;
@@ -45,6 +46,14 @@ public class VulnerablePackage {
 
     public void setFixVersion(PackageEvr fixedVersionIn) {
         this.fixVersion = fixedVersionIn;
+    }
+
+    public Boolean getAffected() {
+        return affected;
+    }
+
+    public void setAffected(Boolean affectedIn) {
+        affected = affectedIn;
     }
 
     @Override
