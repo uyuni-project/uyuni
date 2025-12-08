@@ -54,10 +54,15 @@ div.form-control,
     pointer-events: auto;
     cursor: not-allowed;
     background: $input-disabled-bg;
-    // border-color: #4b4f4d;
 
     &:focus {
       border-color: $input-border-color !important;
+    }
+
+    &:focus:-webkit-autofill,
+    &:-webkit-autofill {
+      -webkit-box-shadow: 0 0 0 1000px $input-autofill-bg inset !important;
+      -webkit-text-fill-color: $input-color !important;
     }
   }
 
@@ -103,14 +108,6 @@ div.form-control {
   &[class*="--is-focused"],
   &[class*="--menu-is-open"] {
     border-color: $eos-bc-blue-500 !important;
-  }
-}
-
-.form-control {
-  &:focus:-webkit-autofill,
-  &:-webkit-autofill {
-    -webkit-box-shadow: 0 0 0 1000px $input-autofill-bg inset !important;
-    -webkit-text-fill-color: $input-color !important;
   }
 }
 

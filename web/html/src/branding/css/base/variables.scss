@@ -44,7 +44,7 @@ $eos-dt-gray-500:  #465050;
 $eos-dt-gray-400:  #586262;   // muted border / Panel, secondary Panel, nav-tabs border
 $eos-dt-gray-300:  #748080;   // muted text /
 $eos-dt-gray-200:  #909C9C;   // secondary text /
-// $eos-dt-gray-100:  #D5DADA;   // primary text
+$eos-dt-gray-100:  #D5DADA;   
 
 // TODO: These names are wrong, they should probably be -900 and -1000
 $eos-bc-dt-gray-100: #2b2e38;
@@ -55,6 +55,7 @@ $uyuni-blue-900: #0d2c40;
 $uyuni-blue-100: #314c5d;
 $uyuni-gray-100: #dcddde;
 $uyuni-gray-300: #cccccc;
+
 
 /* Tags colours for Bootstrap */
 $green-dark: $eos-bc-green-900;
@@ -78,7 +79,6 @@ $white: $eos-bc-white;
 $blue: $eos-bc-cerulean-900;
 $blue-light: $eos-bc-cerulean-500;
 $violet: #841781;
-// $black: $eos-bc-gray-1000;
 
 /* Basic text */
 $enable-rfs: false;

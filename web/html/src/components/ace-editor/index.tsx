@@ -1,7 +1,9 @@
+import "ace-builds/src-noconflict/theme-monokai";
+
 import { useEffect, useRef } from "react";
 
 import type { Ace } from "ace-builds";
-import "ace-builds/src-noconflict/theme-monokai";
+
 import { useId } from "utils/hooks";
 
 declare global {
@@ -13,7 +15,7 @@ declare global {
   }
 }
 
- const isDark = document.body.classList.contains("theme-suse-dark");
+const isDark = document.body.classList.contains("theme-suse-dark");
 
 type Props = {
   mode?: string;
