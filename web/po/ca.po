@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-12-05 09:23+0100\n"
-"PO-Revision-Date: 2025-11-21 15:04+0000\n"
+"PO-Revision-Date: 2025-12-08 22:04+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/web/ca/>\n"
 "Language: ca\n"
@@ -6264,10 +6264,8 @@ msgid "Formula"
 msgstr "Formulari"
 
 #: ../html/src/manager/salt/formula-catalog/org-formula-details.tsx:73
-#, fuzzy
-#| msgid "Name"
 msgid "Name:"
-msgstr "Nom"
+msgstr "Nom:"
 
 #: ../html/src/manager/salt/keys/key-management.tsx:36
 msgid "Accept"
@@ -6465,17 +6463,15 @@ msgstr "Detalls de l'error"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:51
 msgid "Standard Output:"
-msgstr ""
+msgstr "Sortida estàndard:"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:67
 msgid "Standard Error:"
-msgstr ""
+msgstr "Error estàndard:"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:83
-#, fuzzy
-#| msgid "Result Type:"
 msgid "Result:"
-msgstr "Tipus de resultat:"
+msgstr "Resultat:"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:340
 msgid "Request interrupted or invalid response received from the server. Please check if your minion was bootstrapped correctly."
