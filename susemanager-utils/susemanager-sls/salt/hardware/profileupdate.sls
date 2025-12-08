@@ -154,7 +154,7 @@ dns_fqdns:
       - mgrcompat: sync_states
 {%- endif %}
     - onlyif:
-        /usr/bin/which host || /usr/bin/which nslookup
+        which host || which nslookup
 {% endif%}
 {% if 'network.fqdns' in salt %}
 fqdns:
@@ -183,7 +183,7 @@ sap_workloads:
 
 uname:
   cmd.run:
-    - name: /usr/bin/uname -r -v
+    - name: uname -r -v
 
 container_runtime:
   mgrcompat.module_run:
