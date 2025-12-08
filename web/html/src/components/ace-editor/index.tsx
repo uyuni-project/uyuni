@@ -1,7 +1,9 @@
+import "ace-builds/src-noconflict/theme-monokai";
+
 import { useEffect, useRef } from "react";
 
 import type { Ace } from "ace-builds";
-import "ace-builds/src-noconflict/theme-monokai";
+
 import { useId } from "utils/hooks";
 
 declare global {
