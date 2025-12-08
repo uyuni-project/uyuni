@@ -12009,7 +12009,7 @@ Per a esmenar aquesta situació, afegiu credencials SCC lt;a href""/rhn/admin/se
       </trans-unit>
       <trans-unit id="notification.proxybackupfailed" xml:space="preserve">
         <source>Failed to process proxy backup event</source>
-        <target state="translated">No s'ha pogut processar l'esdeveniment de còpia de seguretat del servidor intermediari</target>
+        <target state="translated">No s'ha pogut processar l'esdeveniment de còpia de seguretat de l'intermediari</target>
       </trans-unit>
       <trans-unit id="notification.proxybackupnominion" xml:space="preserve">
         <source>No system with {0} name</source>
@@ -12017,7 +12017,7 @@ Per a esmenar aquesta situació, afegiu credencials SCC lt;a href""/rhn/admin/se
       </trans-unit>
       <trans-unit id="notification.pxeeventfailed" xml:space="preserve">
         <source>Processing of a PXE event for the minion {0} failed</source>
-        <target state="translated">El processament d'un esdeveniment de PXE per al mínion {0} ha fallat.</target>
+        <target state="translated">El processament d'un esdeveniment de PXE per al mínion {0} ha fallat</target>
       </trans-unit>
       <trans-unit id="event.proxymigrationstarted" xml:space="preserve">
         <source>Proxy migration: started</source>
@@ -12041,11 +12041,11 @@ Per a esmenar aquesta situació, afegiu credencials SCC lt;a href""/rhn/admin/se
       </trans-unit>
       <trans-unit id="event.proxymigrationcreated" xml:space="preserve">
         <source>Proxy migration: new configuration created</source>
-        <target state="translated">Migració d'intermediari: nova configuració creada</target>
+        <target state="translated">Migració d'intermediari: configuració nova creada</target>
       </trans-unit>
       <trans-unit id="event.proxymigrationcreateddetails" xml:space="preserve">
         <source>Reinstallation of the proxy will now autoconfigure it on the first boot</source>
-        <target state="translated">La reinstal·lació de l'intermediari ara el configurarà automàticament durant la primera arrencada</target>
+        <target state="translated">La reinstal·lació de l'intermediari ara el configurarà automàticament durant la primera arrencada.</target>
       </trans-unit>
       <trans-unit id="event.rbsmigrationstarted" xml:space="preserve">
         <source>Retail Branch Server migration: started</source>
@@ -12053,7 +12053,7 @@ Per a esmenar aquesta situació, afegiu credencials SCC lt;a href""/rhn/admin/se
       </trans-unit>
       <trans-unit id="event.rbsmigrationstarteddetails" xml:space="preserve">
         <source>Proxy detected as a Retail Branch Server, migration started</source>
-        <target state="translated">L'intermediari s'ha detectat com a servidor minorista. La migració ha començat</target>
+        <target state="translated">L'intermediari s'ha detectat com a servidor minorista. La migració ha començat.</target>
       </trans-unit>
       <trans-unit id="event.rbsmigrationfinishedok" xml:space="preserve">
         <source>Retail Branch Server migration: finished successfully</source>
@@ -12065,7 +12065,7 @@ Per a esmenar aquesta situació, afegiu credencials SCC lt;a href""/rhn/admin/se
       </trans-unit>
       <trans-unit id="event.rbsmigrationfinisheddetails" xml:space="preserve">
         <source>Proxy was detected to be a Retail Branch Server, branch migration was performed.<ul>{0}</ul></source>
-        <target state="translated">S'ha detectat que l'intermediari és un servidor minorista. S'ha fet la migració de la branca.<ul>{0}</ul></target>
+        <target state="translated">S'ha detectat que l'intermediari és un servidor minorista. Se n'ha fet la migració.<ul>{0}</ul></target>
       </trans-unit>
       <trans-unit id="event.rbsmigrationfailed" xml:space="preserve">
         <source>Retail Branch Server migration: failed</source>
@@ -12093,7 +12093,7 @@ Per a esmenar aquesta situació, afegiu credencials SCC lt;a href""/rhn/admin/se
       </trans-unit>
       <trans-unit id="event.pxemigrationduplicate" xml:space="preserve">
         <source>Multiple minions found with the same MAC address {0}. Cannot choose one, ignoring</source>
-        <target state="translated">S'han trobat diversos mínions amb la mateixa adreça MAC {0}. No se'n pot triar un, s'ignora</target>
+        <target state="translated">S'han trobat diversos mínions amb la mateixa adreça MAC {0}. No se'n pot triar un, s'ignora.</target>
       </trans-unit>
       <trans-unit id="event.pxemigrationnogroup" xml:space="preserve">
         <source>Not processing minion '{0}' as it is not part of a branch group.</source>
@@ -12105,7 +12105,7 @@ Per a esmenar aquesta situació, afegiu credencials SCC lt;a href""/rhn/admin/se
       </trans-unit>
       <trans-unit id="event.pxemigrationsaltboot" xml:space="preserve">
         <source>Failed to create Saltboot system: {0}</source>
-        <target state="translated">No s'ha pogut crear el sistema de Saltboot: {0}</target>
+        <target state="translated">No s'ha pogut crear el sistema Saltboot: {0}</target>
       </trans-unit>
       <trans-unit id="rbsmigration.lostfounddescription" xml:space="preserve">
         <source>Collection of systems not registered, but present in branch {0} pxe entries.</source>
