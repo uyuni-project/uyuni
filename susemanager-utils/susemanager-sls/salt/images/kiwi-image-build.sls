@@ -206,3 +206,4 @@ mgr_buildimage_kiwi_collect_logs:
     - path: {{ root_dir }}/build.log
     - upload_path: /image-{{ build_id }}.log
     - order: last
+

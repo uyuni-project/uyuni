@@ -3,24 +3,24 @@
 
 mgr_remove_release_package:
   cmd.run:
-    - name: "/usr/bin/rpm -e --nodeps sles-release"
+    - name: "rpm -e --nodeps sles-release"
 
 mgr_remove_flavor_package_dvd:
   cmd.run:
-    - name: "/usr/bin/rpm -e --nodeps sles-release-DVD"
-    - onlyif: /usr/bin/rpm -q sles-release-DVD
+    - name: "rpm -e --nodeps sles-release-DVD"
+    - onlyif: rpm -q sles-release-DVD
 
 mgr_remove_flavor_package_pool:
   cmd.run:
-    - name: "/usr/bin/rpm -e --nodeps sles-release-POOL"
-    - onlyif: /usr/bin/rpm -q sles-release-POOL
+    - name: "rpm -e --nodeps sles-release-POOL"
+    - onlyif: rpm -q sles-release-POOL
 
 {% set default_modules = ['SLES_SAP', 'sle-module-basesystem', 'sle-module-desktop-applications', 'sle-module-server-applications', 'sle-ha', 'sle-module-sap-applications'] %}
 
 {% for module in default_modules %}
 mgr_install_product_{{ module }}:
   cmd.run:
-    - name: /usr/bin/zypper --no-refresh --non-interactive install --no-recommends --auto-agree-with-product-licenses -t product {{ module }}
+    - name: zypper --no-refresh --non-interactive install --no-recommends --auto-agree-with-product-licenses -t product {{ module }}
     - require:
       - cmd: mgr_remove_release_package
       - cmd: mgr_remove_flavor_package_dvd

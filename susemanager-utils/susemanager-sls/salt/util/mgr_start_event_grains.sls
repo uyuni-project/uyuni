@@ -8,4 +8,4 @@ mgr_start_event_grains:
     - name: {{ susemanager_minion_config }}
     - text: |
         start_event_grains: [machine_id, saltboot_initrd, susemanager]
-    - unless: /usr/bin/grep 'start_event_grains:' {{ susemanager_minion_config }}
+    - unless: grep 'start_event_grains:' {{ susemanager_minion_config }}

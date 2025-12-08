@@ -141,8 +141,8 @@ jmx_exporter_taskomatic_service_cleanup:
 
 mgr_enable_prometheus_self_monitoring:
   cmd.run:
-    - name:  /usr/bin/grep -q '^prometheus_monitoring_enabled.*=.*' /etc/rhn/rhn.conf && /usr/bin/sed -i 's/^prometheus_monitoring_enabled.*/prometheus_monitoring_enabled = 1/' /etc/rhn/rhn.conf || /usr/bin/echo 'prometheus_monitoring_enabled = 1' >> /etc/rhn/rhn.conf
+    - name: grep -q '^prometheus_monitoring_enabled.*=.*' /etc/rhn/rhn.conf && sed -i 's/^prometheus_monitoring_enabled.*/prometheus_monitoring_enabled = 1/' /etc/rhn/rhn.conf || echo 'prometheus_monitoring_enabled = 1' >> /etc/rhn/rhn.conf
 
 mgr_is_prometheus_self_monitoring_enabled:
   cmd.run:
-    - name: /usr/bin/grep -qF 'prometheus_monitoring_enabled = 1' /etc/rhn/rhn.conf
+    - name: grep -qF 'prometheus_monitoring_enabled = 1' /etc/rhn/rhn.conf

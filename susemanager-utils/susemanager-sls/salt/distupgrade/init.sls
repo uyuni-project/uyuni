@@ -37,12 +37,12 @@ spmigration:
 
 spmigration:
   cmd.run:
-    - name: /usr/bin/cat {{ logname }}
-    - onlyif: /usr/bin/test -f /usr/bin/cat {{ logname }}
+    - name: cat {{ logname }}
+    - onlyif: /usr/bin/test -f cat {{ logname }}
 
 spmigration_liberated:
   cmd.run:
-    - name: /usr/bin/cat /etc/sysconfig/liberated
+    - name: cat /etc/sysconfig/liberated
     - require:
       - file: create_liberation_file
 

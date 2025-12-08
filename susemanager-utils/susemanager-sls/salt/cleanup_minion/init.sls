@@ -60,7 +60,7 @@ mgr_remove_salt_master_key:
 {%- if salt['pillar.get']('contact_method') not in ['ssh-push', 'ssh-push-tunnel'] %}
 mgr_disable_salt:
   cmd.run:
-    - name: /usr/bin/systemctl disable {{ salt_minion_name }}
+    - name: systemctl disable {{ salt_minion_name }}
     - require:
       - file: mgr_remove_salt_config
 
@@ -68,7 +68,7 @@ mgr_disable_salt:
 mgr_stop_salt:
   cmd.run:
     - bg: True
-    - name: /usr/bin/sleep 9 && /usr/bin/systemctl stop {{ salt_minion_name }}
+    - name: sleep 9 && systemctl stop {{ salt_minion_name }}
     - order: last
     - require:
       - file: mgr_remove_salt_config
