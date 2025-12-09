@@ -17,31 +17,26 @@ package com.redhat.rhn.domain.server;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 
-import com.suse.utils.Json;
+import io.hypersistence.utils.hibernate.type.json.JsonType;
 
-import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
+import org.hibernate.annotations.Type;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.lang.reflect.Type;
-import java.util.Collections;
 import java.util.Map;
-
-import io.hypersistence.utils.hibernate.type.json.JsonBinaryType;
+import java.util.TreeMap;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 /**
  * CPU
@@ -52,8 +47,8 @@ public class CPU extends BaseDomainHelper {
     private static final Logger LOG = LogManager.getLogger(CPU.class);
 
     @Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_CPU_ID_SEQ")
-	@SequenceGenerator(name = "RHN_CPU_ID_SEQ", sequenceName = "RHN_CPU_ID_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_CPU_ID_SEQ")
+    @SequenceGenerator(name = "RHN_CPU_ID_SEQ", sequenceName = "RHN_CPU_ID_SEQ", allocationSize = 1)
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "server_id")
@@ -97,12 +92,14 @@ public class CPU extends BaseDomainHelper {
     private CPUArch arch;
 
     /**
-     * This field stores CPU architecture-specific information. Although the corresponding database field is of type
-     * JSONB, it is mapped here as a String due to limitations in XML mapping for JSON types.
+     * This field stores CPU architecture-specific information. Although the
+     * corresponding database field is of type
+     * JSONB, it is mapped here as a String due to limitations in XML mapping for
+     * JSON types.
      */
-    @Column(name = "arch_specs")
-    @org.hibernate.annotations.Type(JsonBinaryType.class)
-    private String archSpecs;
+    @Type(JsonType.class)
+    @Column(name = "arch_specs", columnDefinition = "jsonb")
+    private Map<String, Object> archSpecs = new TreeMap<>();
 
     /**
      * @return Returns the acpiVersion.
@@ -327,6 +324,7 @@ public class CPU extends BaseDomainHelper {
     public void setNrThread(Long nrThreadIn) {
         nrThread = nrThreadIn;
     }
+
     /**
      * @return Returns the server.
      */
@@ -385,42 +383,25 @@ public class CPU extends BaseDomainHelper {
 
     /**
      * provides the cpuarch name, which is really the only usefull info for the
-     *  cpu arch object
+     * cpu arch object
+     * 
      * @return the arch that the cpu is.
      */
-    public String  getArchName() {
+    public String getArchName() {
         return arch.getName();
     }
 
     /**
      * @return Returns the archSpecs.
      */
-    public String getArchSpecs() {
+    public Map<String, Object> getArchSpecs() {
         return archSpecs;
-    }
-
-    /**
-     * @return Returns the archSpecs as a Map.
-     */
-    @Transient
-    public Map<String, Object> getArchSpecsMap() {
-        if (archSpecs == null || archSpecs.isBlank()) {
-            return Collections.emptyMap();
-        }
-        try {
-            Type type = new TypeToken<Map<String, Object>>() { }.getType();
-            return Json.GSON.fromJson(archSpecs, type);
-        }
-        catch (JsonSyntaxException e) {
-            LOG.warn("Failed to parse arch specs JSON, ignoring. Error: {}. Raw JSON: {}", e.getMessage(), archSpecs);
-            return Collections.emptyMap();
-        }
     }
 
     /**
      * @param archSpecsIn The archSpecs to set.
      */
-    public void setArchSpecs(String archSpecsIn) {
+    public void setArchSpecs(Map<String, Object> archSpecsIn) {
         this.archSpecs = archSpecsIn;
     }
 
