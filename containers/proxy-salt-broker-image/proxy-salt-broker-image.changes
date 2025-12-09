@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Dec 09 13:39:12 CET 2025 - michael.calmer@suse.com
+
+- version 5.2.3
+  * Remove libzypp and container-suseconnect from image
+
+-------------------------------------------------------------------
 Thu Nov 27 11:09:34 CET 2025 - michael.calmer@suse.com
 
 - version 5.2.2
