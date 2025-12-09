@@ -27,6 +27,7 @@ import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
+import com.redhat.rhn.domain.channel.ChannelTestUtility;
 import com.redhat.rhn.domain.channel.ContentSource;
 import com.redhat.rhn.domain.channel.ContentSourceType;
 import com.redhat.rhn.domain.channel.Modules;
@@ -63,7 +64,7 @@ public class ChannelTest extends BaseTestCaseWithUser {
     public void testRemovePackage() throws Exception {
         Channel c = ChannelFactoryTest.createTestChannel(user);
         Package p = PackageTest.createTestPackage(user.getOrg());
-        c.addPackage(p);
+        ChannelTestUtility.testAddPackage(c, p);
         ChannelFactory.save(c);
         c.removePackage(p, user);
         assertEquals(0, c.getPackageCount());
@@ -195,7 +196,7 @@ public class ChannelTest extends BaseTestCaseWithUser {
         assertEquals("noarch", p.getPackageArch().getLabel());
 
         try {
-            c.addPackage(p);
+            ChannelTestUtility.testAddPackage(c, p);
         }
         catch (Exception e) {
             fail("noarch should be acceptible in an x86_64 channel");
@@ -206,7 +207,7 @@ public class ChannelTest extends BaseTestCaseWithUser {
             PackageArch pa = PackageFactory.lookupPackageArchByLabel("aarch64");
             assertNotNull(pa);
             p.setPackageArch(pa);
-            c.addPackage(p);
+            ChannelTestUtility.testAddPackage(c, p);
             fail("aarch64 is not acceptible in an x86_64 channel");
         }
         catch (Exception e) {

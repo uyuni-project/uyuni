@@ -25,7 +25,6 @@ import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.channel.ChannelManager;
-import com.redhat.rhn.manager.system.IncompatibleArchException;
 import com.redhat.rhn.manager.system.SystemManager;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -664,21 +663,6 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
      */
     public Set<ContentSource> getSources() {
         return sources;
-    }
-
-
-    /**
-     * Adds a single package to the channel
-     * @param packageIn The package to add
-     * @deprecated Do not use this method.
-     */
-    @Deprecated
-    public void addPackage(Package packageIn) {
-        if (!getChannelArch().isCompatible(packageIn.getPackageArch())) {
-            throw new IncompatibleArchException(packageIn.getPackageArch(),
-                    getChannelArch());
-        }
-        packages.add(packageIn);
     }
 
     /**

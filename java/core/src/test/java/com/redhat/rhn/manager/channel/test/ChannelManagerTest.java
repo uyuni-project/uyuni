@@ -30,6 +30,7 @@ import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.channel.ChannelTestUtility;
 import com.redhat.rhn.domain.channel.ChannelVersion;
 import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.channel.DistChannelMap;
@@ -979,10 +980,10 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         Package errataP = PackageTest.createTestPackage(user.getOrg());
 
 
-        c.addPackage(bothP);
+        ChannelTestUtility.testAddPackage(c, bothP);
         e.addPackage(bothP);
 
-        c.addPackage(channelP);
+        ChannelTestUtility.testAddPackage(c, channelP);
         e.addPackage(errataP);
 
         c.addErrata(e);
@@ -1021,7 +1022,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
         Package testPackage = PackageTest.createTestPackage(user.getOrg());
         oe.addPackage(testPackage);
-        ochan.addPackage(testPackage);
+        ChannelTestUtility.testAddPackage(ochan, testPackage);
 
         List<ErrataOverview> result = ChannelManager.listErrataNeedingResync(cchan, user);
         assertEquals(1, result.size());
@@ -1080,7 +1081,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
         Package testPackage = PackageTest.createTestPackage(user.getOrg());
         oe.addPackage(testPackage);
-        ochan.addPackage(testPackage);
+        ChannelTestUtility.testAddPackage(ochan, testPackage);
 
         RhnSet set = RhnSetDecl.ERRATA_TO_SYNC.get(user);
         set.clear();
