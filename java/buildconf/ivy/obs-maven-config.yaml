@@ -250,8 +250,7 @@ artifacts:
     # How comes that package is not noarch?
     arch: x86_64
     repository: Uyuni_Other
-  - artifact: simple-xml
-    package: simplexml
+  - artifact: simplexml
     jar: simplexml\.jar
     repository: Uyuni_Other
   - artifact: sitemesh
