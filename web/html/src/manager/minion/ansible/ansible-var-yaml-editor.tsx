@@ -10,12 +10,11 @@ import { Button, DropdownButton } from "components/buttons";
 import { Field, MultiField } from "components/formik/field";
 import { Form } from "components/formik/Form";
 import { Panel } from "components/panels/Panel";
-import { MessagesContainer } from "components/toastr/toastr";
+import { MessagesContainer, showErrorToastr } from "components/toastr/toastr";
 
 import styles from "./Ansible.module.scss";
 import BooleanEditor from "./variables/boolean-editor";
 import DictionaryEditor from "./variables/dictionary-editor";
-import ExtraVariable from "./variables/extra-var";
 import ListEditor from "./variables/list-editor";
 import StringEditor from "./variables/string-editor";
 
@@ -30,11 +29,10 @@ const variablesList = ["List", "Dictionary", "String", "Boolean"];
 
 type Props = {
   data: Record<string, any>;
-  onExtraVarChange: (extravalues: string) => void;
 };
 
 const AnsibleVarYamlEditor = forwardRef((props: Props, ref) => {
-  const { data, onExtraVarChange } = props;
+  const { data } = props;
   const [visibleInputPath, setVisibleInputPath] = useState(null);
   const [varType, setVarType] = useState(null);
   const [expandAllClicked, setExpandAllClicked] = useState(false);
@@ -49,15 +47,20 @@ const AnsibleVarYamlEditor = forwardRef((props: Props, ref) => {
       if (yamlEditor) {
         try {
           const parsed = yaml.load(yamlEditorContent);
-          if (typeof parsed === "object" && parsed !== null) return parsed;
-          showErrorToastr("Invalid YAML: root must be an object", {
+          if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
+            showErrorToastr("Invalid YAML: root must be an object", {
+              autoHide: false,
+              containerId: "yamlEditorError",
+            });
+            return null;
+          }
+          return parsed;
+        } catch (e: any) {
+          showErrorToastr(`Invalid YAML: ${e.message}`, {
             autoHide: false,
             containerId: "yamlEditorError",
           });
-          return {};
-        } catch (e) {
-          showErrorToastr("Invalid YAML", { autoHide: false, containerId: "yamlEditorError" });
-          return {};
+          return null;
         }
       } else {
         return formRef.current?.values;
@@ -168,17 +171,14 @@ const AnsibleVarYamlEditor = forwardRef((props: Props, ref) => {
                 <label>{k}</label>
               </div>
               <div className="col-md-8">
-                <Field
-                  name={`${name}.${k}`}
-                  children={
-                    <Button
-                      className="btn-default btn-sm"
-                      handler={() => removeItem(`${name}.${k}`)}
-                      title={t("Remove item")}
-                      icon="fa-minus"
-                    />
-                  }
-                />
+                <Field name={`${name}.${k}`}>
+                  <Button
+                    className="btn-default btn-sm"
+                    handler={() => removeItem(`${name}.${k}`)}
+                    title={t("Remove item")}
+                    icon="fa-minus"
+                  />
+                </Field>
               </div>
             </div>
           ))}
@@ -270,8 +270,11 @@ const AnsibleVarYamlEditor = forwardRef((props: Props, ref) => {
                       const parsed = yaml.load(yamlEditorContent);
                       setVarsData(parsed);
                       setYamlEditor(false);
-                    } catch (e) {
-                      showErrorToastr(`Invalid YAML: Line ${e.mark.snippet}`, { autoHide: false, containerId: "yamlEditorError" });
+                    } catch (e: any) {
+                      showErrorToastr(`Invalid YAML: Line ${e.mark.snippet}`, {
+                        autoHide: false,
+                        containerId: "yamlEditorError",
+                      });
                     }
                   }}
                 />
@@ -336,10 +339,6 @@ const AnsibleVarYamlEditor = forwardRef((props: Props, ref) => {
                       </Panel>
                     );
                   })}
-                  <div>
-                    <MessagesContainer containerId="extra-var" />
-                    <ExtraVariable setExtraVars={onExtraVarChange} />
-                  </div>
                 </div>
                 <div className={`${styles.yamlPreview} col-md-4`}>
                   <YamlPreview values={values} />

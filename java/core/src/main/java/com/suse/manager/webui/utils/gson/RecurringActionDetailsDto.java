@@ -218,5 +218,7 @@ public class RecurringActionDetailsDto {
      *
      * @param extraVarsIn the extra vars
      */
-    public void setExtraVars(String extraVarsIn) { extraVars = extraVarsIn; }
+    public void setExtraVars(String extraVarsIn) {
+        extraVars = extraVarsIn;
+    }
 }

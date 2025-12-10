@@ -40,9 +40,8 @@ const DictionaryEditor = (props: FieldInputProps<PlainObject> & { edit?: boolean
     entries.forEach(({ key, value }) => {
       if (!key) return;
 
-      if (!edit && existingKeys.includes(dictionaryName)) {
-        hasDuplicate = true;
-      } else if (edit && existingKeys.includes(key)) {
+      const duplicateKey = edit ? key : dictionaryName;
+      if (existingKeys.includes(duplicateKey)) {
         hasDuplicate = true;
       }
       newDict[key] = value;

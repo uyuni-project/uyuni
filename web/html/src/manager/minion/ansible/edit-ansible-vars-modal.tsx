@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, Fragment } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 
 import yaml from "js-yaml";
 
@@ -23,12 +23,10 @@ type Props = {
   collapsible?: boolean;
   icon?: string;
   customIconClass?: string;
-  updatePlaybookContent?: () => void;
+  updatePlaybookContent?: (savedVars: string) => void;
 };
 
 const EditAnsibleVarsModal = (props: Props) => {
-  // State to store updated YAML and extra added variables
-  const [extraVars, setExtraVars] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
   const [editorData, setEditorData] = useState<any>(null);
 
@@ -39,9 +37,8 @@ const EditAnsibleVarsModal = (props: Props) => {
       try {
         const data = yaml.load(props.renderContent);
         setEditorData(data?.[0]?.vars || {});
-        setExtraVars(null);
       } catch (e) {
-        showErrorToastr("Invalid playbook YAML", { containerId: "extra-var" });
+        showErrorToastr("Invalid playbook YAML");
       }
     }
   }, [open, props.renderContent]);
@@ -49,21 +46,8 @@ const EditAnsibleVarsModal = (props: Props) => {
   const onSave = () => {
     try {
       const savedVars = editorRef.current?.getValues?.();
-      if (!savedVars) {
-        return;
-      }
-      if (extraVars) {
-        const parsedExtraVars = yaml.load(extraVars);
-        if (typeof parsedExtraVars !== "object" || parsedExtraVars === null) {
-          showErrorToastr("Additonal Variables must be a valid YAML object.", {
-            autoHide: false,
-            containerId: "extra-var",
-          });
-          setOpen(true);
-          return;
-        }
-      }
-      props.updatePlaybookContent?.(savedVars, extraVars);
+      if (!savedVars) return;
+      props.updatePlaybookContent?.(savedVars);
       setOpen(false);
     } catch (error) {
       if (error instanceof Error) {
@@ -90,9 +74,7 @@ const EditAnsibleVarsModal = (props: Props) => {
         isOpen={open}
         title="Edit Variables"
         className={`modal-lg ${styles.ansibleModal} ${props.className}`}
-        content={
-          editorData && <AnsibleVarYamlEditor ref={editorRef} data={editorData} onExtraVarChange={setExtraVars} />
-        }
+        content={editorData && <AnsibleVarYamlEditor ref={editorRef} data={editorData} />}
         onClose={() => setOpen(false)}
         footer={
           <Fragment>

@@ -84,7 +84,9 @@ public class AnsiblePlaybookExecutionJson {
      *
      * @return extraVars
      */
-    public String getExtraVars() { return extraVars; }
+    public String getExtraVars() {
+        return extraVars;
+    }
 
     /**
      * Gets the earliest.

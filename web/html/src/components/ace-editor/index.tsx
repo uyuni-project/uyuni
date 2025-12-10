@@ -29,6 +29,7 @@ const AceEditor = ({ minLines = 20, maxLines = 40, readOnly = false, content = "
   const nodeRef = useRef<HTMLDivElement>(null);
   const editorRef = useRef<Ace.Editor>();
   const ignoreNextUpdate = useRef(false);
+  const safeContent = typeof content === "string" ? content : "";
 
   useEffect(() => {
     try {
@@ -40,7 +41,7 @@ const AceEditor = ({ minLines = 20, maxLines = 40, readOnly = false, content = "
         const editor = window.ace.edit(node);
         editor.setTheme("ace/theme/xcode");
         editor.setShowPrintMargin(false);
-        editor.getSession().setValue(content || "");
+        editor.getSession().setValue(safeContent);
         editor.on("change", () => {
           ignoreNextUpdate.current = true;
           onChange?.(editor.getSession().getValue());
@@ -58,15 +59,15 @@ const AceEditor = ({ minLines = 20, maxLines = 40, readOnly = false, content = "
   useEffect(() => {
     const editor = editorRef.current;
     if (!editor) return;
-    
+
     if (ignoreNextUpdate.current) {
       ignoreNextUpdate.current = false;
       return;
     }
     const currentValue = editor.getSession().getValue();
 
-    if (currentValue !== content) {
-      editor.setValue(content || "", -1);
+    if (currentValue !== safeContent) {
+      editor.setValue(safeContent, -1);
     }
   }, [content]);
 

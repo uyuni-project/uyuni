@@ -73,7 +73,7 @@ export default function SchedulePlaybook({
         .then((res) => {
           setPlaybookContent(res);
           if (isRecurring && playbook.fullPath === recurringDetails.fullPath && recurringDetails.variables) {
-            mergePlaybookContent(res, "", recurringDetails.variables);
+            mergePlaybookContent(res, recurringDetails.variables);
           }
         })
         .catch((res) => setMessages(res.messages?.flatMap(MsgUtils.error) || Network.responseErrorMessage(res)));
@@ -98,23 +98,14 @@ export default function SchedulePlaybook({
       .catch((res) => setMessages(res.messages?.flatMap(MsgUtils.error) || Network.responseErrorMessage(res)));
   };
 
-  const updatePlaybookContent = (updatedVariables, extraVars) => {
-    mergePlaybookContent(playbookContent, updatedVariables, extraVars);
+  const updatePlaybookContent = (updatedVariables) => {
+    mergePlaybookContent(playbookContent, updatedVariables);
   };
 
-  const mergePlaybookContent = (playbookContent, updatedVariables, extraVars) => {
-    let mergedVars = { ...updatedVariables };
-
-    const extraVarsObject = yaml.load(extraVars);
-
-    if (typeof extraVarsObject === "object" && extraVarsObject !== null) {
-      mergedVars = { ...updatedVariables, ...extraVarsObject };
-    } else {
-      mergedVars = { ...updatedVariables };
-    }
+  const mergePlaybookContent = (playbookContent, updatedVariables) => {
     const parsed = yaml.load(playbookContent);
     if (Array.isArray(parsed)) {
-      parsed[0].vars = mergedVars;
+      parsed[0].vars = updatedVariables;
 
       const updatedYaml = `---\n${yaml.dump(parsed, {
         quotingType: '"',
@@ -122,7 +113,7 @@ export default function SchedulePlaybook({
       })}`;
 
       setPlaybookContent(updatedYaml);
-      setVariables(JSON.stringify(mergedVars));
+      setVariables(JSON.stringify(updatedVariables));
     }
   };
 
