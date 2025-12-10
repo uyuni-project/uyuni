@@ -49,6 +49,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -152,37 +153,11 @@ public class SystemHardwareAction extends RhnAction {
 
         setRequestAttributesNic(request, server);
 
-        List<Map<String, String>> miscDevices = new ArrayList<>();
-        List<Map<String, String>> videoDevices = new ArrayList<>();
-        List<Map<String, String>> audioDevices = new ArrayList<>();
-        List<Map<String, String>> captureDevices = new ArrayList<>();
-        List<Map<String, String>> usbDevices = new ArrayList<>();
-
-        for (Device d : server.getDevices()) {
-            Map<String, String> device = getDeviceAttribtes(d);
-
-            switch (d.getDeviceClass()) {
-                case "HD":
-                    continue;
-                case "VIDEO":
-                    videoDevices.add(device);
-                    break;
-                case "USB":
-                    usbDevices.add(device);
-                    break;
-                case "AUDIO":
-                    audioDevices.add(device);
-                    break;
-                case "CAPTURE":
-                    captureDevices.add(device);
-                    break;
-                default:
-                    if (!d.getBus().equals("MISC")) {
-                        miscDevices.add(device);
-                    }
-                    break;
-            }
-        }
+        Map<String, List<Map<String, String>>> categorizedDevicesMap = server.getDevices()
+                .stream()
+                .collect(Collectors.groupingBy(
+                        SystemHardwareAction::classify,
+                        Collectors.mapping(SystemHardwareAction::getDeviceAttributes, Collectors.toList())));
 
         List<Map<String, String>> storageDevices = new ArrayList<>();
         for (Device hd : ServerFactory.lookupStorageDevicesByServer(server)) {
@@ -194,13 +169,32 @@ public class SystemHardwareAction extends RhnAction {
         }
 
         request.setAttribute("storageDevices", storageDevices);
-        request.setAttribute("videoDevices", videoDevices);
-        request.setAttribute("audioDevices", audioDevices);
-        request.setAttribute("miscDevices", miscDevices);
-        request.setAttribute("usbDevices", usbDevices);
-        request.setAttribute("captureDevices", captureDevices);
+        request.setAttribute("videoDevices", categorizedDevicesMap.getOrDefault("VIDEO", List.of()));
+        request.setAttribute("audioDevices", categorizedDevicesMap.getOrDefault("AUDIO", List.of()));
+        request.setAttribute("miscDevices", categorizedDevicesMap.getOrDefault("MISC", List.of()));
+        request.setAttribute("usbDevices", categorizedDevicesMap.getOrDefault("USB", List.of()));
+        request.setAttribute("captureDevices", categorizedDevicesMap.getOrDefault("CAPTURE", List.of()));
 
         request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI());
+    }
+
+    private static String classify(Device d) {
+        switch (d.getDeviceClass()) {
+            case "HD":
+                break;
+            case "VIDEO":
+            case "USB":
+            case "AUDIO":
+            case "CAPTURE":
+                return d.getDeviceClass();
+            default:
+                if (!d.getBus().equals("MISC")) {
+                    return "MISC";
+                }
+                break;
+        }
+
+        return "UNCLASSIFIED";
     }
 
     private void setRequestAttributesCpu(HttpServletRequest request, CPU cpu, Server server) {
@@ -293,7 +287,7 @@ public class SystemHardwareAction extends RhnAction {
         request.setAttribute("noip_network_interfaces", nicList4);
     }
 
-    private Map<String, String> getDeviceAttribtes(Device d) {
+    private static Map<String, String> getDeviceAttributes(Device d) {
         Map<String, String> device = new HashMap<>();
         String desc = null;
         String vendor = null;
