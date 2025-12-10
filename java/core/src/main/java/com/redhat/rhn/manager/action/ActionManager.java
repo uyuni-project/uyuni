@@ -1109,9 +1109,7 @@ public class ActionManager extends BaseManager {
     }
 
     private static void handleKeyThisOnly(Map<String, Object> params, PackageMetadata pm, WriteMode m) {
-        if (log.isDebugEnabled()) {
-            log.debug("compare returned [KEY_THIS_ONLY]; " + "deleting package from system");
-        }
+        log.debug("compare returned [KEY_THIS_ONLY]; deleting package from system");
 
         params.put("operation", ActionFactory.TXN_OPERATION_DELETE);
         params.put("n", pm.getName());
