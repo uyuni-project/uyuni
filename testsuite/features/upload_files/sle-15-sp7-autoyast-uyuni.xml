@@ -3,23 +3,30 @@
     <add_on_products config:type="list">
       <listentry>
         <ask_on_error config:type="boolean">true</ask_on_error>
-        <media_url>http://$redhat_management_server/ks/dist/child/sle-product-sles15-sp4-updates-x86_64/$distrotree</media_url>
+        <media_url>http://$redhat_management_server/ks/dist/child/sle-product-sles15-sp7-updates-x86_64/$distrotree</media_url>
         <name>sle-product-sles15-updates-x86_64</name>
         <product>SLES15</product>
         <product_dir>/</product_dir>
       </listentry>
       <listentry>
         <ask_on_error config:type="boolean">true</ask_on_error>
-        <media_url>http://$redhat_management_server/ks/dist/child/sle-module-basesystem15-sp4-pool-x86_64/$distrotree</media_url>
+        <media_url>http://$redhat_management_server/ks/dist/child/sle-module-basesystem15-sp7-pool-x86_64/$distrotree</media_url>
         <name>basesystem pool</name>
         <product>Basesystem Module</product>
         <product_dir>/</product_dir>
       </listentry>
       <listentry>
         <ask_on_error config:type="boolean">true</ask_on_error>
-        <media_url>http://$redhat_management_server/ks/dist/child/sle-module-basesystem15-sp4-updates-x86_64/$distrotree</media_url>
+        <media_url>http://$redhat_management_server/ks/dist/child/sle-module-basesystem15-sp7-updates-x86_64/$distrotree</media_url>
         <name>basesystem updates</name>
         <product>Basesystem Module</product>
+        <product_dir>/</product_dir>
+      </listentry>
+      <listentry>
+        <ask_on_error config:type="boolean">true</ask_on_error>
+        <media_url>http://$redhat_management_server/ks/dist/child/sles15-sp7-devel-uyuni-client-x86_64/$distrotree</media_url>
+        <name>client-tools-pool</name>
+        <product>Client Tools</product>
         <product_dir>/</product_dir>
       </listentry>
     </add_on_products>
@@ -52,11 +59,23 @@ $SNIPPET('spacewalk/sles_no_signature_checks')
       <hostname>test-vm2</hostname>
     </dns>
   </networking>
+  <firewall>
+    <enable_firewall config:type="boolean">true</enable_firewall>
+    <start_firewall config:type="boolean">true</start_firewall>
+    <zones config:type="list">
+      <zone>
+        <name>public</name>
+        <services config:type="list">
+          <service>ssh</service>
+        </services>
+      </zone>
+    </zones>
+  </firewall>
   <software>
     <install_recommended config:type="boolean">true</install_recommended>
     <instsource/>
     <packages config:type="list">
-      <package>salt-minion</package>
+      <package>venv-salt-minion</package>
       <package>openssh-server</package>
     </packages>
     <patterns config:type="list">

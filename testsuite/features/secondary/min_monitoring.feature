@@ -6,7 +6,7 @@
 @sle_minion
 @scope_monitoring
 @skip_if_github_validation
-Feature: Monitor SUMA environment with Prometheus on a SLE Salt minion
+Feature: Monitor MLM environment with Prometheus on a SLE Salt minion
   In order to monitor Uyuni server
   As an authorized user
   I want to enable Prometheus exporters
