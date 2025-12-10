@@ -1285,8 +1285,8 @@ public class HubManager {
             channel.getChannelArch().getName(),
             Optional.ofNullable(channel.getOrg()).map(ChannelOrg::new).orElse(null),
             selectedChannelOrg,
-            Optional.ofNullable(channel.getParentChannel()).map(Channel::getLabel).orElse(null),
-            Optional.ofNullable(originalChannel).map(Channel::getLabel).orElse(null),
+            Optional.ofNullable(channel.getParentChannel()).map(Channel::getId).orElse(null),
+            Optional.ofNullable(originalChannel).map(Channel::getId).orElse(null),
             children,
             clones,
             syncedChannelToIssChannelMap.containsKey(channel.getId())

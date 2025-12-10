@@ -34,18 +34,18 @@ const HierarchicalChannelsTable: FC<ChannelTableProps> = ({
     // Build lookup map by channel label
     const channelMap: Record<string, number> = {};
     channels.forEach((channel, index) => {
-      channelMap[channel.channelLabel] = index;
+      channelMap[channel.label] = index;
     });
     // Create copy with added hierarchical properties
     return channels.map((channel) => {
       const parentId =
-        channel.parentChannelLabel && channelMap[channel.parentChannelLabel] !== undefined
-          ? channels[channelMap[channel.parentChannelLabel]].channelId
+        channel.parentId && channelMap[channel.parentId] !== undefined
+          ? channels[channelMap[channel.parentId]].id
           : null;
       // Create a hierarchical row that satisfies both Channel and HierarchicalRow types
       return {
         ...channel,
-        id: channel.channelId,
+        id: channel.id,
         parentId,
       };
     });
@@ -54,7 +54,7 @@ const HierarchicalChannelsTable: FC<ChannelTableProps> = ({
   const filteredData = useMemo(() => {
     return hierarchicalData.filter((channel) => {
       // Apply architecture filter
-      if (selectedArchs.length > 0 && !selectedArchs.includes(channel.channelArch)) {
+      if (selectedArchs.length > 0 && !selectedArchs.includes(channel.architecture)) {
         return false;
       }
 
@@ -84,7 +84,7 @@ const HierarchicalChannelsTable: FC<ChannelTableProps> = ({
 
   const renderSyncCell = useCallback(
     (row: ChannelWithHierarchy) => {
-      const channelId = row.channelId;
+      const channelId = row.id;
       // Directly use the pre-calculated checkbox state
       const isChecked = row.isChecked;
 
@@ -95,7 +95,7 @@ const HierarchicalChannelsTable: FC<ChannelTableProps> = ({
             checked={isChecked}
             onChange={() => {
               // If the current row allows choosing an organization, update the selected organization
-              if (row.channelOrg !== null && !row.strictOrg) {
+              if (row.hubOrg !== null && !row.strictOrg) {
                 onOrgSelect?.(channelId, !isChecked ? availableOrgs[0] : undefined);
               }
 
@@ -109,23 +109,23 @@ const HierarchicalChannelsTable: FC<ChannelTableProps> = ({
   );
 
   const renderChannelNameCell = useCallback((row: ChannelWithHierarchy) => {
-    return row.channelName;
+    return row.name;
   }, []);
 
   const renderArchCell = useCallback((row: ChannelWithHierarchy) => {
-    return row.channelArch;
+    return row.architecture;
   }, []);
 
   const renderSyncOrgCell = useCallback(
     (row: ChannelWithHierarchy) => {
-      if (row.channelOrg === null) {
+      if (row.hubOrg === null) {
         // Vendor channels can't sync orgs
         return <span>Vendor</span>;
       }
 
-      if (row.strictOrg && row.selectedPeripheralOrg !== null) {
+      if (row.strictOrg && row.peripheralOrg !== null) {
         // Only 1 option, no choice
-        return <span>{row.selectedPeripheralOrg.orgName}</span>;
+        return <span>{row.peripheralOrg.orgName}</span>;
       }
 
       if (!row.isChecked) {
@@ -137,15 +137,15 @@ const HierarchicalChannelsTable: FC<ChannelTableProps> = ({
         <Form>
           <DEPRECATED_Select
             className="mb-0"
-            name={`org-select-${row.channelId}`}
+            name={`org-select-${row.id}`}
             placeholder={t("Select Organization")}
             options={availableOrgs}
             getOptionValue={(org: Org) => org.orgId.toString()}
             getOptionLabel={(org: Org) => org.orgName}
-            defaultValue={row.selectedPeripheralOrg?.orgId.toString()}
+            defaultValue={row.peripheralOrg?.orgId.toString()}
             onChange={(_: string | undefined, orgId: string) => {
               onOrgSelect?.(
-                row.channelId,
+                row.id,
                 availableOrgs.find((org) => org.orgId === Number(orgId))
               );
             }}
@@ -158,7 +158,7 @@ const HierarchicalChannelsTable: FC<ChannelTableProps> = ({
 
   const getDistinctArchsFromData = useCallback((channels: FlatChannel[]) => {
     const archSet = new Set<string>();
-    channels.forEach((channel) => archSet.add(channel.channelArch));
+    channels.forEach((channel) => archSet.add(channel.architecture));
     return Array.from(archSet).map((arch) => ({ value: arch, label: arch }));
   }, []);
 
@@ -182,7 +182,7 @@ const HierarchicalChannelsTable: FC<ChannelTableProps> = ({
 
   const filterByChannelName = useCallback((datum: ChannelWithHierarchy, criteria: string | undefined) => {
     if (criteria) {
-      return datum.channelName.includes(criteria);
+      return datum.name.includes(criteria);
     }
 
     return true;
@@ -205,9 +205,9 @@ const HierarchicalChannelsTable: FC<ChannelTableProps> = ({
       additionalFilters={[archFilter]}
     >
       <Column headerClass="text-center" columnKey="synced" header={t("Sync")} cell={renderSyncCell} width="60px" />
-      <Column columnClass="col" columnKey="channelName" header={t("Channel Name")} cell={renderChannelNameCell} />
-      <Column columnClass="col col-md-2" columnKey="channelArch" header={t("Architecture")} cell={renderArchCell} />
-      <Column columnClass="col col-md-3" columnKey="channelOrg" header={t("Sync Org")} cell={renderSyncOrgCell} />
+      <Column columnClass="col" columnKey="name" header={t("Channel Name")} cell={renderChannelNameCell} />
+      <Column columnClass="col col-md-2" columnKey="architecture" header={t("Architecture")} cell={renderArchCell} />
+      <Column columnClass="col col-md-3" columnKey="organization" header={t("Sync Org")} cell={renderSyncOrgCell} />
     </DEPRECATED_HierarchicalTable>
   );
 };
