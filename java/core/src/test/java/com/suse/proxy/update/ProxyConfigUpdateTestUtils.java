@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.suse.proxy.test;
+package com.suse.proxy.update;
 
 import static com.redhat.rhn.common.ExceptionMessage.NOT_INSTANTIABLE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -25,7 +25,6 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 
 import com.suse.proxy.ProxyContainerImagesEnum;
-import com.suse.proxy.update.ProxyConfigUpdateContext;
 
 import org.jmock.Expectations;
 import org.jmock.api.Invocation;
@@ -113,8 +112,7 @@ public class ProxyConfigUpdateTestUtils {
             User user
     ) {
         // Create a real context with standard initialization
-        ProxyConfigUpdateContext proxyConfigUpdateContext =
-                new ProxyConfigUpdateContext(null, null, user, null);
+        ProxyConfigUpdateContext proxyConfigUpdateContext = new ProxyConfigUpdateContext(null, null, user);
         proxyConfigUpdateContext.setProxyMinion(minionServer);
 
         // Create a mock context

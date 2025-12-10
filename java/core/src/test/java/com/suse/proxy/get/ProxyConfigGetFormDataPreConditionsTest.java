@@ -9,15 +9,15 @@
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  */
 
-package com.suse.proxy.get.formdata.test;
+package com.suse.proxy.get;
 
+import static com.suse.proxy.ProxyConfigTestUtils.SERVER_ID;
+import static com.suse.proxy.ProxyConfigTestUtils.assertErrors;
+import static com.suse.proxy.ProxyConfigTestUtils.assertNoErrors;
+import static com.suse.proxy.ProxyConfigTestUtils.setConfigDefaultsInstance;
 import static com.suse.proxy.ProxyConfigUtils.MGRPXY;
 import static com.suse.proxy.ProxyConfigUtils.isMgrpxyAvailable;
 import static com.suse.proxy.ProxyConfigUtils.isMgrpxyInstalled;
-import static com.suse.proxy.get.formdata.test.ProxyConfigGetFormTestUtils.SERVER_ID;
-import static com.suse.proxy.get.formdata.test.ProxyConfigGetFormTestUtils.assertErrors;
-import static com.suse.proxy.get.formdata.test.ProxyConfigGetFormTestUtils.assertNoErrors;
-import static com.suse.proxy.get.formdata.test.ProxyConfigGetFormTestUtils.setConfigDefaultsInstance;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -44,15 +44,19 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.test.TestSaltApi;
+import com.suse.proxy.ProxyConfigTestUtils;
 import com.suse.proxy.get.formdata.ProxyConfigGetFormDataContext;
 import com.suse.proxy.get.formdata.ProxyConfigGetFormDataPreConditions;
 
 import org.jmock.Expectations;
+import org.jmock.api.Invocation;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
+import org.jmock.lib.action.CustomAction;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -101,8 +105,7 @@ public class ProxyConfigGetFormDataPreConditionsTest extends RhnJmockBaseTestCas
      */
     @Test
     public void testFailureWithNullServer() {
-        ProxyConfigGetFormDataContext getFormDataContext =
-                new ProxyConfigGetFormDataContext(null, null,  null, null);
+        ProxyConfigGetFormDataContext getFormDataContext = new ProxyConfigGetFormDataContext(null, null,  null);
 
         preConditions.handle(getFormDataContext);
         assertErrors(getFormDataContext.getErrorReport(), SERVER_NOT_FOUND);
@@ -135,7 +138,7 @@ public class ProxyConfigGetFormDataPreConditionsTest extends RhnJmockBaseTestCas
      */
     @Test
     public void testSuccessWhenHasEntitlement() {
-        ProxyConfigGetFormTestUtils.mockConfigDefaults(context, true);
+        ProxyConfigTestUtils.mockConfigDefaults(context, true);
 
         context().checking(new Expectations() {{
             oneOf(mockServer).isMgrServer();
@@ -159,10 +162,11 @@ public class ProxyConfigGetFormDataPreConditionsTest extends RhnJmockBaseTestCas
      */
     @Test
     public void testSuccessWhenCanEntitleServer() {
-        ProxyConfigGetFormTestUtils.mockConfigDefaults(context, true);
+        ProxyConfigTestUtils.mockConfigDefaults(context, true);
 
+        // create the mock system entitlement manager
         SystemEntitlementManager mockSystemEntitlementManager = mock(SystemEntitlementManager.class);
-        context().checking(new Expectations() {{
+        context.checking(new Expectations() {{
             oneOf(mockServer).isMgrServer();
             will(returnValue(false));
             oneOf(mockServer).hasProxyEntitlement();
@@ -173,10 +177,26 @@ public class ProxyConfigGetFormDataPreConditionsTest extends RhnJmockBaseTestCas
             will(returnValue(true));
         }});
 
-        ProxyConfigGetFormDataContext getFormDataContext =
-                new ProxyConfigGetFormDataContext(user, mockServer, null, mockSystemEntitlementManager);
+        // create the mock context just so {@link ProxyConfigGetFormDataContext#getSystemEntitlementManager()}
+        // returns the mockSystemEntitlementManager
+        ProxyConfigGetFormDataContext mockGetFormDataContext = mock(ProxyConfigGetFormDataContext.class);
+        ProxyConfigGetFormDataContext getFormDataContext = new ProxyConfigGetFormDataContext(user, mockServer, null);
 
-        preConditions.handle(getFormDataContext);
+        context.checking(new Expectations() {{
+            allowing(mockGetFormDataContext).getSystemEntitlementManager();
+            will(returnValue(mockSystemEntitlementManager));
+
+            allowing(mockGetFormDataContext);
+            will(new CustomAction("delegate to real object") {
+                public Object invoke(Invocation invocation) throws Throwable {
+                    Method m = invocation.getInvokedMethod();
+                    return m.invoke(getFormDataContext, invocation.getParametersAsArray());
+                }
+            });
+        }});
+
+
+        preConditions.handle(mockGetFormDataContext);
         assertNoErrors(getFormDataContext.getErrorReport());
     }
 
@@ -189,7 +209,7 @@ public class ProxyConfigGetFormDataPreConditionsTest extends RhnJmockBaseTestCas
      */
     @Test
     public void testFailureWhenCannotEntitleServerAndNoSubscribableChannelsFound() throws Exception {
-        ProxyConfigGetFormTestUtils.mockConfigDefaults(context, false);
+        ProxyConfigTestUtils.mockConfigDefaults(context, false);
 
         context().checking(new Expectations() {{
             oneOf(mockServer).isMgrServer();
@@ -221,7 +241,7 @@ public class ProxyConfigGetFormDataPreConditionsTest extends RhnJmockBaseTestCas
      */
     @Test
     public void testSuccessWhenMgrpxyIsInstalled() throws Exception {
-        ProxyConfigGetFormTestUtils.mockConfigDefaults(context, false);
+        ProxyConfigTestUtils.mockConfigDefaults(context, false);
 
         // setup installed package
         Server server = ServerTestUtils.createTestSystem(user);
@@ -249,7 +269,7 @@ public class ProxyConfigGetFormDataPreConditionsTest extends RhnJmockBaseTestCas
      */
     @Test
     public void testSuccessWhenMgrpxyIsAvailable() throws Exception {
-        ProxyConfigGetFormTestUtils.mockConfigDefaults(context, false);
+        ProxyConfigTestUtils.mockConfigDefaults(context, false);
 
         // setup installed package
         Server server = ServerTestUtils.createTestSystem(user);
@@ -281,7 +301,7 @@ public class ProxyConfigGetFormDataPreConditionsTest extends RhnJmockBaseTestCas
      */
     @Test
     public void testSuccessWhenSubscribableChannelsFound() throws Exception {
-        ProxyConfigGetFormTestUtils.mockConfigDefaults(context, false);
+        ProxyConfigTestUtils.mockConfigDefaults(context, false);
 
         // setup installed package
         Server server = ServerTestUtils.createTestSystem(user);
@@ -314,7 +334,7 @@ public class ProxyConfigGetFormDataPreConditionsTest extends RhnJmockBaseTestCas
      */
     @Test
     public void testFailureWhenNoSubscribableChannelsFound() throws Exception {
-        ProxyConfigGetFormTestUtils.mockConfigDefaults(context, false);
+        ProxyConfigTestUtils.mockConfigDefaults(context, false);
 
         // setup installed package
         Server server = ServerTestUtils.createTestSystem(user);
@@ -327,8 +347,7 @@ public class ProxyConfigGetFormDataPreConditionsTest extends RhnJmockBaseTestCas
         assertFalse(isMgrpxyAvailable(server));
 
         //
-        ProxyConfigGetFormDataContext getFormDataContext =
-                new ProxyConfigGetFormDataContext(user, server,  null, systemEntitlementManager);
+        ProxyConfigGetFormDataContext getFormDataContext = new ProxyConfigGetFormDataContext(user, server,  null);
 
         preConditions.handle(getFormDataContext);
         assertNull(getFormDataContext.getSubscribableChannels());
@@ -364,6 +383,6 @@ public class ProxyConfigGetFormDataPreConditionsTest extends RhnJmockBaseTestCas
      * @return the created context
      */
     private ProxyConfigGetFormDataContext createContext(Server server) {
-        return new ProxyConfigGetFormDataContext(user, server, null, systemEntitlementManager);
+        return new ProxyConfigGetFormDataContext(user, server, null);
     }
 }

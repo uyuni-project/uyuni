@@ -13,22 +13,22 @@
  * in this software or its documentation.
  */
 
-package com.suse.proxy.test;
+package com.suse.proxy.update;
 
-import static com.suse.proxy.test.ProxyConfigUpdateTestUtils.DUMMY_ADMIN_MAIL;
-import static com.suse.proxy.test.ProxyConfigUpdateTestUtils.DUMMY_INTERMEDIATE_CA_1;
-import static com.suse.proxy.test.ProxyConfigUpdateTestUtils.DUMMY_INTERMEDIATE_CA_2;
-import static com.suse.proxy.test.ProxyConfigUpdateTestUtils.DUMMY_MAX_CACHE;
-import static com.suse.proxy.test.ProxyConfigUpdateTestUtils.DUMMY_PARENT_FQDN;
-import static com.suse.proxy.test.ProxyConfigUpdateTestUtils.DUMMY_PROXY_CERT;
-import static com.suse.proxy.test.ProxyConfigUpdateTestUtils.DUMMY_PROXY_FQDN;
-import static com.suse.proxy.test.ProxyConfigUpdateTestUtils.DUMMY_PROXY_KEY;
-import static com.suse.proxy.test.ProxyConfigUpdateTestUtils.DUMMY_PROXY_PORT;
-import static com.suse.proxy.test.ProxyConfigUpdateTestUtils.DUMMY_ROOT_CA;
-import static com.suse.proxy.test.ProxyConfigUpdateTestUtils.DUMMY_SSH_KEY;
-import static com.suse.proxy.test.ProxyConfigUpdateTestUtils.DUMMY_SSH_PARENT;
-import static com.suse.proxy.test.ProxyConfigUpdateTestUtils.DUMMY_SSH_PUB;
-import static com.suse.proxy.test.ProxyConfigUpdateTestUtils.assertExpectedErrors;
+import static com.suse.proxy.update.ProxyConfigUpdateTestUtils.DUMMY_ADMIN_MAIL;
+import static com.suse.proxy.update.ProxyConfigUpdateTestUtils.DUMMY_INTERMEDIATE_CA_1;
+import static com.suse.proxy.update.ProxyConfigUpdateTestUtils.DUMMY_INTERMEDIATE_CA_2;
+import static com.suse.proxy.update.ProxyConfigUpdateTestUtils.DUMMY_MAX_CACHE;
+import static com.suse.proxy.update.ProxyConfigUpdateTestUtils.DUMMY_PARENT_FQDN;
+import static com.suse.proxy.update.ProxyConfigUpdateTestUtils.DUMMY_PROXY_CERT;
+import static com.suse.proxy.update.ProxyConfigUpdateTestUtils.DUMMY_PROXY_FQDN;
+import static com.suse.proxy.update.ProxyConfigUpdateTestUtils.DUMMY_PROXY_KEY;
+import static com.suse.proxy.update.ProxyConfigUpdateTestUtils.DUMMY_PROXY_PORT;
+import static com.suse.proxy.update.ProxyConfigUpdateTestUtils.DUMMY_ROOT_CA;
+import static com.suse.proxy.update.ProxyConfigUpdateTestUtils.DUMMY_SSH_KEY;
+import static com.suse.proxy.update.ProxyConfigUpdateTestUtils.DUMMY_SSH_PARENT;
+import static com.suse.proxy.update.ProxyConfigUpdateTestUtils.DUMMY_SSH_PUB;
+import static com.suse.proxy.update.ProxyConfigUpdateTestUtils.assertExpectedErrors;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -50,9 +50,6 @@ import com.suse.manager.ssl.SSLCertPair;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.utils.gson.ProxyConfigUpdateJson;
-import com.suse.proxy.update.ProxyConfigUpdateContext;
-import com.suse.proxy.update.ProxyConfigUpdateFileAcquisitor;
-import com.suse.proxy.update.ProxyConfigUpdateValidation;
 
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;

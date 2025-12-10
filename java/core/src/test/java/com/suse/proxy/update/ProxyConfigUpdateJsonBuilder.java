@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.suse.proxy.test;
+package com.suse.proxy.update;
 
 import static com.suse.proxy.ProxyConfigUtils.EMAIL_FIELD;
 import static com.suse.proxy.ProxyConfigUtils.INTERMEDIATE_CAS_FIELD;
