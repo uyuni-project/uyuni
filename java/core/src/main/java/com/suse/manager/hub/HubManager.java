@@ -1243,8 +1243,9 @@ public class HubManager {
         Map<Long, IssPeripheralChannels> syncedChannelToIssChannelMap = issPeripheral.getPeripheralChannels().stream()
             .collect(Collectors.toMap(pc -> pc.getChannel().getId(), pc -> pc));
 
-        List<ChannelSyncDetail> channelDetails = ChannelFactory.listAllBaseChannels().stream()
+        List<ChannelSyncDetail> channelDetails = ChannelFactory.listSubscribableBaseChannels(user).stream()
             .map(channel -> buildChannelSyncDetail(channel, user, syncedChannelToIssChannelMap, peripheralOrgs))
+            .sorted(Comparator.comparing(ChannelSyncDetail::label))
             .toList();
 
         // Mandatory map, in Javascript compatible format
@@ -1265,14 +1266,16 @@ public class HubManager {
     private ChannelSyncDetail buildChannelSyncDetail(Channel channel, User user,
                                                      Map<Long, IssPeripheralChannels> syncedChannelToIssChannelMap,
                                                      List<OrgInfoJson> peripheralOrgs) {
-        List<ChannelSyncDetail> children = ChannelFactory.listAllChildrenForChannel(channel).stream()
+        List<ChannelSyncDetail> children = ChannelFactory.getAccessibleChildChannels(channel, user).stream()
             .map(child -> buildChannelSyncDetail(child, user, syncedChannelToIssChannelMap, peripheralOrgs))
+            .sorted(Comparator.comparing(ChannelSyncDetail::label))
             .toList();
 
         List<ChannelSyncDetail> clones = Optional.ofNullable(channel.getClonedChannels()).stream()
-                .flatMap(Collection::stream)
-                .map(clone -> buildChannelSyncDetail(clone, user, syncedChannelToIssChannelMap, peripheralOrgs))
-                .toList();
+            .flatMap(Collection::stream)
+            .map(clone -> buildChannelSyncDetail(clone, user, syncedChannelToIssChannelMap, peripheralOrgs))
+            .sorted(Comparator.comparing(ChannelSyncDetail::label))
+            .toList();
 
         Channel originalChannel = ChannelFactory.lookupOriginalChannel(channel);
 

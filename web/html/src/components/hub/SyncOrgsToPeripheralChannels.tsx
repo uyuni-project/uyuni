@@ -13,6 +13,7 @@ import Network from "utils/network";
 
 import { ChannelSelectorTable } from "./ChannelSelectorTable";
 import { Channel, ChannelSyncProps, Org } from "./types";
+import { ChannelSorter } from "./utils";
 
 type SyncPeripheralsProps = {
   peripheralId: number;
@@ -223,7 +224,7 @@ export class SyncOrgsToPeripheralChannel extends Component<SyncPeripheralsProps,
         {channelsToAdd.length > 0 ? (
           <>
             <Table
-              data={channelsToAdd}
+              data={channelsToAdd.sort(ChannelSorter.byChannelLabel)}
               identifier={(row: Channel) => row.id}
               selectable={false}
               initialSortColumnKey="channelName"
@@ -259,7 +260,7 @@ export class SyncOrgsToPeripheralChannel extends Component<SyncPeripheralsProps,
         <h4 className="mt-4">{t("Channels to Remove")}</h4>
         {channelsToRemove.length > 0 ? (
           <Table
-            data={channelsToRemove}
+            data={channelsToRemove.sort(ChannelSorter.byChannelLabel)}
             identifier={(row: Channel) => row.id}
             selectable={false}
             initialSortColumnKey="name"

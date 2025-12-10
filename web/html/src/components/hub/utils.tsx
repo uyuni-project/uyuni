@@ -36,6 +36,15 @@ export const ChannelFilter = {
 };
 
 /**
+ * Custom sorters for the ChannelSelectorTable
+ */
+export const ChannelSorter = {
+  byChannelLabel(a: Channel, b: Channel): number {
+    return a.label.localeCompare(b.label);
+  },
+};
+
+/**
  * Custom {@link SelectionProvider} for customizing the selection behaviour for ChannelSelectorTable:
  * - on selecting, the node, it's parent and all the mandatory children are selected
  * - on deselecting, only the children are deselected
