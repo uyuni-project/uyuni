@@ -144,43 +144,48 @@ public class ErrataFactory extends HibernateFactory {
                 }
             }
             if (retval.isEmpty()) {
-                tryLookupByPrefixRHA(identifier, org, retval);
+                retval.addAll(tryLookupByPrefixRHA(identifier, org));
             }
             if (retval.isEmpty()) {
-                tryLookupByPrefixCveCan(identifier, retval);
+                retval.addAll(tryLookupByPrefixCveCan(identifier));
             }
         }
         return retval;
     }
 
-    private static void tryLookupByPrefixRHA(String identifier, Org org, List<Errata> retval) {
+    private static List<Errata> tryLookupByPrefixRHA(String identifier, Org org) {
         String prefix = identifier.substring(0, 4);
-        if (prefix.matches("RH.A")) {
-            StringTokenizer strtok = new StringTokenizer(identifier, "-");
-            StringBuilder buf = new StringBuilder();
-            boolean foundFirst = false;
-            while (strtok.hasMoreTokens()) {
-                buf.append(strtok.nextToken());
-                if (!foundFirst) {
-                    buf.append("-");
-                    foundFirst = true;
-                }
-                else {
-                    if (strtok.hasMoreTokens()) {
-                        buf.append(":");
-                    }
-                }
-            }
-            identifier = buf.toString();
-            List<Errata> erratas = ErrataFactory.lookupByAdvisoryId(identifier, org);
 
-            if (erratas != null && !erratas.isEmpty()) {
-                retval.addAll(erratas);
+        if (!prefix.matches("RH.A")) {
+            return List.of();
+        }
+
+        StringTokenizer strtok = new StringTokenizer(identifier, "-");
+        StringBuilder buf = new StringBuilder();
+        boolean foundFirst = false;
+        while (strtok.hasMoreTokens()) {
+            buf.append(strtok.nextToken());
+            if (!foundFirst) {
+                buf.append("-");
+                foundFirst = true;
+            }
+            else {
+                if (strtok.hasMoreTokens()) {
+                    buf.append(":");
+                }
             }
         }
+        identifier = buf.toString();
+        List<Errata> erratas = ErrataFactory.lookupByAdvisoryId(identifier, org);
+
+        if (erratas != null && !erratas.isEmpty()) {
+            return erratas;
+        }
+
+        return List.of();
     }
 
-    private static void tryLookupByPrefixCveCan(String identifier, List<Errata> retval) {
+    private static List<Errata> tryLookupByPrefixCveCan(String identifier) {
         String prefix = identifier.substring(0, 3);
         if ((prefix.equals("CVE") || prefix.equals("CAN")) &&
                 identifier.length() > 7 && identifier.indexOf('-') == -1) {
@@ -188,8 +193,7 @@ public class ErrataFactory extends HibernateFactory {
                     identifier.substring(3, 7) + "-" +
                     identifier.substring(7);
         }
-        List<Errata> erratas = ErrataFactory.lookupByCVE(identifier);
-        retval.addAll(erratas);
+        return ErrataFactory.lookupByCVE(identifier);
     }
 
     /**
