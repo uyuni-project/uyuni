@@ -25,6 +25,7 @@ $PODMAN_CMD run -d --security-opt seccomp=unconfined --network network -v /tmp/t
 cat <<EOF | $PODMAN_CMD exec -i controller bash --login -c 'cat > /etc/profile.local'
 # Generated /etc/profile.local for testsuite environment
 export SCC_CREDENTIALS="test|test"
+export BUILD_HOST=buildhost
 export AUTH_REGISTRY=${AUTH_REGISTRY}
 export AUTH_REGISTRY_CREDENTIALS="${AUTH_REGISTRY_CREDENTIALS}"
 export NO_AUTH_REGISTRY=${NO_AUTH_REGISTRY}
