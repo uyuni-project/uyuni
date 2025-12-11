@@ -46,7 +46,6 @@
 %define java_version    1:%{java_version}
 %endif
 
-%define ehcache         ( mvn(net.sf.ehcache:ehcache-core) >= 2.10.1 or ehcache-core >= 2.10.1 or ehcache >= 2.10.1)
 %define apache_commons_digester    (apache-commons-digester or jakarta-commons-digester)
 %define apache_commons_discovery   (apache-commons-discovery or jakarta-commons-discovery)
 %define apache_commons_validator   (apache-commons-validator or jakarta-commons-validator)
@@ -77,7 +76,7 @@ BuildRequires:  %{apache_commons_discovery}
 BuildRequires:  apache-commons-fileupload2-core
 BuildRequires:  apache-commons-fileupload2-jakarta-servlet6
 BuildRequires:  %{apache_commons_validator}
-BuildRequires:  %{ehcache}
+BuildRequires:  jcache
 BuildRequires:  ant
 BuildRequires:  ant-apache-regexp
 BuildRequires:  ant-contrib
@@ -171,7 +170,7 @@ Requires:       %{apache_commons_digester}
 Requires:       %{apache_commons_discovery}
 Requires:       apache-commons-fileupload2-core
 Requires:       apache-commons-fileupload2-jakarta-servlet6
-Requires:       %{ehcache}
+Requires:       jcache
 Requires:       apache-commons-beanutils
 Requires:       apache-commons-cli
 Requires:       apache-commons-codec
@@ -359,7 +358,7 @@ BuildRequires:  systemd-rpm-macros
 %{?systemd_requires}
 %endif
 
-Requires:       %{ehcache}
+Requires:       jcache
 Requires:       apache-commons-cli
 Requires:       apache-commons-codec
 Requires:       apache-commons-lang3
@@ -573,7 +572,7 @@ install -m 644 build/webapp/rhnjava/WEB-INF/lib/rhn-test.jar %{buildroot}%{_data
 cp -a build/classes/com/redhat/rhn/common/conf/test/conf %{buildroot}%{_datadir}/rhn/unit-tests/
 %endif
 install -m 644 conf/log4j2.xml.taskomatic %{buildroot}%{_datadir}/rhn/classes/log4j2.xml
-install -m 644 core/src/main/resources/ehcache.xml %{buildroot}%{_datadir}/rhn/classes/ehcache.xml
+#install -m 644 core/src/main/resources/jcache.xml %{buildroot}%{_datadir}/rhn/classes/jcache.xml
 
 install -d -m 755 %{buildroot}%{spacewalksnippetsdir}
 install -m 644 conf/cobbler/snippets/default_motd  %{buildroot}%{spacewalksnippetsdir}/default_motd
@@ -791,7 +790,7 @@ fi
 %dir %{_datadir}/rhn/lib
 %dir %{_datadir}/rhn/classes
 %{_datadir}/rhn/classes/log4j2.xml
-%{_datadir}/rhn/classes/ehcache.xml
+#%{_datadir}/rhn/classes/jcache.xml
 %{_datadir}/rhn/lib/rhn.jar
 
 %files postgresql -f .mfiles-postgresql
