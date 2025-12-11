@@ -105,7 +105,17 @@ export default function SchedulePlaybook({
   const mergePlaybookContent = (playbookContent, updatedVariables) => {
     const parsed = yaml.load(playbookContent);
     if (Array.isArray(parsed)) {
-      parsed[0].vars = updatedVariables;
+      let varsObj = updatedVariables;
+      if (typeof updatedVariables === "string") {
+        try {
+          varsObj = JSON.parse(updatedVariables);
+          if (varsObj.vars) varsObj = varsObj.vars;
+        } catch (err: any) {
+          setMessages(MsgUtils.error(`Failed to parse updatedVariables: ${err.message || err}`));
+          varsObj = {};
+        }
+      }
+      parsed[0].vars = varsObj;
 
       const updatedYaml = `---\n${yaml.dump(parsed, {
         quotingType: '"',

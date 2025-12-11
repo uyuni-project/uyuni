@@ -38,11 +38,25 @@ class RecurringPlaybookPicker extends Component<PropsType, StateType> {
   }
 
   loadVariables = () => {
-    const variables = `{"vars":${this.props.variables}}`;
-    return yaml.dump(yaml.load(variables), {
-      quotingType: '"',
-      forceQuotes: true,
-    });
+    if (!this.props.variables) return "";
+
+    let varsObj;
+    if (typeof this.props.variables === "string") {
+      try {
+        varsObj = JSON.parse(this.props.variables);
+      } catch {
+        varsObj = {};
+      }
+    } else {
+      varsObj = this.props.variables;
+    }
+    return yaml.dump(
+      { vars: varsObj },
+      {
+        quotingType: '"',
+        forceQuotes: true,
+      }
+    );
   };
 
   onEditPlaybook = () => {
@@ -81,7 +95,7 @@ class RecurringPlaybookPicker extends Component<PropsType, StateType> {
       </div>
     ) : (
       <div>
-        <SectionToolbar>
+        <SectionToolbar top="50">
           <div className="action-button-wrapper">{button}</div>
         </SectionToolbar>
         <BootstrapPanel title={t("Playbook details")}>
