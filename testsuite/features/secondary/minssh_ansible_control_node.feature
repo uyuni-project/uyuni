@@ -1,7 +1,6 @@
 # Copyright (c) 2021-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-@flaky
 @scope_ansible
 @scope_salt_ssh
 @ssh_minion
@@ -25,7 +24,6 @@ Feature: Operate an Ansible control node in SSH minion
     And I follow "scheduled"
     And I wait until I see "1 system successfully completed this action" text, refreshing the page
 
-# TODO: Check why tools_update_repo is not available on the openSUSE minion
 @skip_if_github_validation
 @uyuni
   Scenario: Pre-requisite: Enable OS pool repository
