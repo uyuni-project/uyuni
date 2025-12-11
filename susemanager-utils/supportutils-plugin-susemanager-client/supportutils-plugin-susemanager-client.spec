@@ -31,6 +31,9 @@ Requires:       supportutils
 Supplements:    packageand(salt-minion:supportutils)
 Supplements:    packageand(spacewalk-check:supportutils)
 BuildArch:      noarch
+%if ! 0%{?suse_version}
+ExclusiveArch:  do_not_build
+%endif
 
 %description
 Extends supportconfig functionality to include system information for
