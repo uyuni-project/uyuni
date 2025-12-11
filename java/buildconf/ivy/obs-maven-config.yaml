@@ -14,6 +14,10 @@ repositories:
     project: systemsmanagement:Uyuni:Master:jakarta
     repository: openSUSE_Leap_15.6
 artifacts:
+  - artifact: asm
+    package: objectweb-asm
+    jar: asm-all
+    repository: Leap_sle
   - artifact: antlr
     package: antlr-java
     repository: Leap
