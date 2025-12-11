@@ -105,9 +105,6 @@
         <dependency org="suse" name="javax.activation" rev="1.2.0" />
         <dependency org="suse" name="jaxb-runtime" rev="2.3.1" />
         <dependency org="suse" name="jaxb-impl" rev="2.3.1" />
-        <dependency org="suse" name="txw2" rev="2.3.1" />
-        <dependency org="suse" name="istack-commons-runtime" rev="3.0.7" />
-        <dependency org="suse" name="stax-ex" rev="1.8" />
 
         <!-- Tomcat jars -->
         <dependency org="suse" name="tomcat-el-api" rev="[9.0.75,10.0.0[" />
