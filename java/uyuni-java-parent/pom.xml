@@ -29,8 +29,8 @@
     <modules>
         <module>../uyuni-java-common</module>
         <module>../coco-attestation</module>
-        <module>../../branding</module>
-        <module>../../java</module>
+        <module>../branding</module>
+        <module>../spacewalk-java</module>
     </modules>
 
     <!-- Global dependencies based on the package version in OBS -->
@@ -139,9 +139,9 @@
                         <includeResources>false</includeResources>
                         <includeTestSourceDirectory>true</includeTestSourceDirectory>
                         <includeTestResources>false</includeTestResources>
-                        <headerLocation>../../java/buildconf/LICENSE.txt</headerLocation>
-                        <configLocation>../../java/buildconf/checkstyle.xml</configLocation>
-                        <suppressionsLocation>../../java/buildconf/checkstyle-suppressions.xml</suppressionsLocation>
+                        <headerLocation>../spacewalk-java/buildconf/LICENSE.txt</headerLocation>
+                        <configLocation>../spacewalk-java/buildconf/checkstyle.xml</configLocation>
+                        <suppressionsLocation>../spacewalk-java/buildconf/checkstyle-suppressions.xml</suppressionsLocation>
                         <propertyExpansion>
                             javadoc.method.scope=public
                             javadoc.var.scope=package
