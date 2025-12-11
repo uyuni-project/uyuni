@@ -6,6 +6,7 @@ DROP TABLE IF EXISTS rhnVisibleObjects;
 -- To make migration robust, let's drop existing table and create new one
 -- This will efectivelly logout everyone
 DROP TABLE IF EXISTS PXTSessions;
+DROP SEQUENCE IF EXISTS pxt_id_seq;
 
 CREATE UNLOGGED TABLE PXTSessions
 (
