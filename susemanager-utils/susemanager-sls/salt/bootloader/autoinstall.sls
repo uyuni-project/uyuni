@@ -1,3 +1,5 @@
+{% import 'util/lib.sls' as utils %}
+
 {% if pillar['kernel'] and pillar['initrd'] %}
 mgr_copy_kernel:
   file.managed:
@@ -11,10 +13,10 @@ mgr_copy_initrd:
 
 {% set loader_type = salt['cmd.run']('if [ -f /etc/sysconfig/bootloader ]; then source /etc/sysconfig/bootloader 2> /dev/null; fi;
 if [ -z "${LOADER_TYPE}" ]; then
-if [ $(/usr/bin/which grubonce 2> /dev/null) ] && [ !$(/usr/bin/which grub2-mkconfig 2> /dev/null) ]; then LOADER_TYPE="grub";
-elif [ $(/usr/bin/which elilo 2> /dev/null) ] && [ !$(/usr/bin/which grub2-mkconfig 2> /dev/null) ]; then LOADER_TYPE="elilo";
+if [ $(' ~ utils.find_binary('which') ~ ' grubonce 2> /dev/null) ] && [ !$(' ~ utils.find_binary('which') ~ ' grub2-mkconfig 2> /dev/null) ]; then LOADER_TYPE="grub";
+elif [ $(' ~ utils.find_binary('which') ~ ' elilo 2> /dev/null) ] && [ !$(' ~ utils.find_binary('which') ~ ' grub2-mkconfig 2> /dev/null) ]; then LOADER_TYPE="elilo";
 fi;
-fi; /usr/bin/echo "${LOADER_TYPE}"', python_shell=True) %}
+fi; ' ~ utils.find_binary('echo') ~ ' "${LOADER_TYPE}"', python_shell=True) %}
 {% if loader_type == 'grub' %}
 mgr_create_grub_entry:
   file.append:
@@ -27,7 +29,7 @@ mgr_create_grub_entry:
 
 mgr_grub_boot_once:
   cmd.run:
-    - name: /usr/sbin/grubonce "{{ pillar.get('uyuni-reinstall-name') }}"
+    - name: "{{ utils.find_binary('grubonce') }} {{ pillar.get('uyuni-reinstall-name') }}"
     - onchanges:
       - file: mgr_create_grub_entry
 {% elif loader_type == 'elilo' %}
@@ -50,7 +52,7 @@ mgr_set_default_boot:
 
 mgr_elilo_copy_config:
   cmd.run:
-    - name: /sbin/elilo
+    - name: {{ utils.find_binary('elilo') }}
     - onchanges:
       - file: mgr_create_elilo_entry
       - file: mgr_set_default_boot
@@ -72,7 +74,7 @@ mgr_set_default_boot:
 
 mgr_generate_grubconf:
   cmd.run:
-    - name: /usr/sbin/grub2-mkconfig -o /boot/grub2/grub.cfg
+    - name: {{ utils.find_binary('grub2-mkconfig') }} -o /boot/grub2/grub.cfg
     - onchanges:
       - file: mgr_copy_kernel
       - file: mgr_copy_initrd
@@ -82,7 +84,7 @@ mgr_generate_grubconf:
 
 mgr_autoinstall_start:
   cmd.run:
-    - name: /usr/sbin/shutdown -r +1
+    - name: {{ utils.find_binary('shutdown') }} -r +1
     - require:
 {% if loader_type == 'grub' %}
       - cmd: mgr_grub_boot_once
