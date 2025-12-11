@@ -24003,6 +24003,9 @@ given channel.</source>
       <trans-unit id="task.status.reboot-action-cleanup" xml:space="preserve">
         <source>Failed reboots cleanup</source>
       </trans-unit>
+      <trans-unit id="task.status.root-ca-cert-update" xml:space="preserve">
+        <source>CA Certificates Update</source>
+      </trans-unit>
       <trans-unit id="task.status.auto-errata" xml:space="preserve">
         <source>Auto Patch Updates</source>
       </trans-unit>
