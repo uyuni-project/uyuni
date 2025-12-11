@@ -1,3 +1,5 @@
+import "ace-builds/src-noconflict/theme-monokai";
+
 import { useEffect, useRef } from "react";
 
 import type { Ace } from "ace-builds";
@@ -12,6 +14,8 @@ declare global {
     };
   }
 }
+
+const isDark = document.body.classList.contains("theme-suse-dark");
 
 type Props = {
   mode?: string;
@@ -40,6 +44,12 @@ const AceEditor = ({ minLines = 20, maxLines = 40, readOnly = false, ...props }:
         const editor = window.ace.edit(node);
         editor.setTheme("ace/theme/xcode");
         editor.setShowPrintMargin(false);
+        // Set dark theme
+        if (isDark) {
+          editor.setTheme("ace/theme/monokai");
+        } else {
+          editor.setTheme("ace/theme/xcode");
+        }
         editor.on("change", () => props.onChange?.(editor.getSession().getValue()));
         editorRef.current = editor;
       }

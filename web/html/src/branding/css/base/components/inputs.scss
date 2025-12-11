@@ -9,27 +9,27 @@ div.form-control,
 .form-control,
 .form-control--react-select > div:first-of-type {
   --bs-border-width: 1px;
-  color: $eos-bc-gray-1000;
+  color: $input-color;
   height: $input-height;
   max-width: 100%;
-  border: 1px solid $input-border-color !important;
+  border: 1px solid $input-border-color;
   border-radius: $border-radius;
   box-shadow: none !important;
   font-size: $font-size-base;
   line-height: 1em !important;
   appearance: auto !important;
 
+
   &,
   &:focus,
   &:active {
-    color: $eos-bc-gray-1000;
-    background: #fff;
+    color: $input-color;
+    background: $input-active-bg;
   }
 
   &[disabled],
   &[readonly],
   fieldset[disabled] & {
-    background-color: $gray-lighter;
     opacity: 1;
   }
 
@@ -53,15 +53,21 @@ div.form-control,
     color: $eos-bc-gray-700;
     pointer-events: auto;
     cursor: not-allowed;
-    background: $gray-lighter;
+    background: $input-disabled-bg;
 
     &:focus {
       border-color: $input-border-color !important;
     }
+
+    &:focus:-webkit-autofill,
+    &:-webkit-autofill {
+      -webkit-box-shadow: 0 0 0 1000px $input-autofill-bg inset !important;
+      -webkit-text-fill-color: $input-color !important;
+    }
   }
 
   &:read-only {
-    color: $eos-bc-gray-700;
+    color: $input-readonly-color;
     pointer-events: auto;
     cursor: default;
 
@@ -83,11 +89,11 @@ div.form-control,
 }
 
 div.form-control {
-  background: $gray-lighter;
+  background: $input-readonly-bg;
 
   &:focus,
   &:active {
-    background: $gray-lighter;
+    background: $input-readonly-bg;
   }
 }
 
@@ -102,6 +108,38 @@ div.form-control {
   &[class*="--is-focused"],
   &[class*="--menu-is-open"] {
     border-color: $eos-bc-blue-500 !important;
+  }
+}
+
+// react-select control dropdown memu
+[class*="__menu"],
+[class*="__option"] {
+  color: $select-dropdown-color;
+  background: $select-dropdown-bg;
+}
+
+[class*="__option--is-focused"],
+[class*="__option--is-focused"]:active {
+  background: $select-dropdown-focused-bg;
+}
+
+[class*="__option--is-selected"] {
+  color: $select-dropdown-selected-color;
+  background: $select-dropdown-selected-bg;
+}
+
+.css-1uccc91-singleValue {
+  color: $select-dropdown-color;
+}
+
+.form-control--react-select {
+  .child__control {
+    &:hover,
+    &--is-focused,
+    &--menu-is-open {
+      border-color: $eos-bc-blue-500 !important;
+      box-shadow: 0 0 0 1px $eos-bc-blue-500 !important;
+    }
   }
 }
 
@@ -140,7 +178,13 @@ select[size] {
 }
 
 .input-group-addon {
-  color: $eos-bc-gray-900;
-  background: $gray-lighter;
+  color: $input-group-addon-color;
+  background: $input-group-addon-bg;
   font-size: 1em;
 }
+
+.ace-xcode .ace_gutter {
+  background: $ace-gutter-bg;
+  color: #8F908A;
+}
+

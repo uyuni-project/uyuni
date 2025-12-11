@@ -49,7 +49,7 @@
 }
 
 :global(.formula-content p) {
-    color: #8e8e90;
+    color: $body-color;
 }
 
 :global(input:invalid) {
