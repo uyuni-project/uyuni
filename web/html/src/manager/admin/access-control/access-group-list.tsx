@@ -1,4 +1,3 @@
-import * as React from "react";
 import { useEffect, useState } from "react";
 
 import { Button, LinkButton } from "components/buttons";
@@ -22,7 +21,7 @@ type AccessGroupListItem = {
   numPermissions: number;
 };
 
-const AccessGroupList = (props) => {
+const AccessGroupList = () => {
   const [accessGroups, setAccessGroups] = useState<AccessGroupListItem[]>([]);
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [toDelete, setToDelete] = useState<AccessGroupListItem>();
@@ -56,7 +55,7 @@ const AccessGroupList = (props) => {
 
   const onDelete = (item) => {
     return Network.del("/rhn/manager/api/admin/access-control/access-group/delete/" + item.id)
-      .then((_) => {
+      .then(() => {
         setMessages(MessagesUtils.info("Access Group '" + item.name + "' has been deleted."));
         setAccessGroups(accessGroups.filter((g) => g.id !== item.id));
       })

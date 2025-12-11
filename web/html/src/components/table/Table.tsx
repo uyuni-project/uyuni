@@ -7,13 +7,12 @@ import {
   cloneElement,
   forwardRef,
   Fragment,
+  useEffect,
   useImperativeHandle,
   useRef,
 } from "react";
 
 import { Button } from "components/buttons";
-
-import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
 import { Column } from "./Column";
 import { SearchField } from "./SearchField";
@@ -38,6 +37,9 @@ type TableProps = {
    * See: utils/data-providers/paged-data-endpoint.js for async usage
    */
   data: any[] | string;
+
+  /** Extracting the unique key of the row from the data object while filtering */
+  controlledExpandedKeys?: Set<any>;
 
   /** Function extracting the unique key of the row from the data object */
   identifier: (row: any) => any;
@@ -81,6 +83,13 @@ type TableProps = {
   /** Allow expanding table rows to reveal data held in the field `children` */
   expandable?: boolean;
 
+  /** Enables expandable rows */
+  expandableOpen?: boolean;
+
+  /** Automatically expands all expandable rows when data is loaded. 
+  Useful for cases like search results where all matching rows should be visible by default.*/
+  onDataLoaded?: (currItems: any[], info: TableLoadInfo) => void;
+
   /** The message which is shown when there are no rows to display */
   emptyText?: string;
 
@@ -111,8 +120,7 @@ type TableProps = {
   stickyHeader?: boolean;
 
   /** Add class to table */
-  tableClass?: string
-  
+  tableClass?: string;
 };
 
 function isColumn(input: any): input is ReactElement<ComponentProps<typeof Column>> {
@@ -130,16 +138,36 @@ export const Table = forwardRef<TableRef, TableProps>((props, ref) => {
 
   const expanded = useExpanded();
 
+  useEffect(() => {
+    if (props.controlledExpandedKeys) {
+      expanded.set(Array.from(props.controlledExpandedKeys));
+    }
+  }, [props.controlledExpandedKeys]);
+
   useImperativeHandle(ref, () => ({
     refresh: () => {
       dataHandlerRef.current?.getData();
     },
+    clearExpanded: () => {
+      expanded.clear();
+    },
   }));
 
+  const handleDataLoaded = (currItems: any[], info: TableLoadInfo) => {
+    // Auto-expand here
+    if (props.expandable && props.expandableOpen) {
+      const allKeys = currItems.map((item) => props.identifier(item));
+      expanded.set(allKeys);
+    }
+
+    // Forward to parent if they provided a callback
+    props.onDataLoaded?.(currItems, info);
+  };
+
   return (
-    <TableDataHandler ref={dataHandlerRef} columns={columns} {...allProps}>
+    <TableDataHandler ref={dataHandlerRef} columns={columns} {...allProps} onDataLoaded={handleDataLoaded}>
       {({ currItems, headers, handleSelect, selectedItems, criteria, headerHeight }) => {
-        const selectableValue = props.selectable == null ? false : props.selectable;
+        const selectableValue = props.selectable === null ? false : props.selectable;
 
         const renderRow = (item: ArrayElement<typeof currItems>, index: number, nestingLevel: number) => {
           const cells: ReactNode[] = Children.toArray(props.children)
@@ -243,11 +271,12 @@ export const Table = forwardRef<TableRef, TableProps>((props, ref) => {
         };
 
         const rows = currItems.map((item, index) => renderRow(item, index, 0));
-
         return (
           <table className={`table vertical-middle ${props.tableClass || ""}`}>
-            <thead className={props.stickyHeader ? "position-sticky" : "" }
-              style={props.stickyHeader ? { top: headerHeight } : null}>
+            <thead
+              className={props.stickyHeader ? "position-sticky" : ""}
+              style={props.stickyHeader ? { top: headerHeight } : null}
+            >
               <tr>{headers}</tr>
             </thead>
             <tbody>{rows}</tbody>

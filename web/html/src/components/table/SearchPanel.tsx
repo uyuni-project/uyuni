@@ -1,4 +1,4 @@
-import { type ReactNode, Children } from "react";
+import { Children } from "react";
 
 import { cloneReactElement } from "components/utils";
 
@@ -21,7 +21,7 @@ type SearchPanelProps = {
   children?: React.ReactNode;
 
   /** Align search fields inline */
-  searchPanelInline?: boolean
+  searchPanelInline?: boolean;
 };
 
 /** Panel containing the search fields for a table */
