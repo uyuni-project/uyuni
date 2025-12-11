@@ -350,7 +350,7 @@
         "description": "SLE-Product-SLES15-SP7-Pool for sle-15-x86_64",
         "distro_target": "sle-15-x86_64",
         "enabled": true,
-        "id": 8000,
+        "id": 7058,
         "installer_updates": false,
         "name": "SLE-Product-SLES15-SP7-Pool",
         "url": "https://updates.suse.com/SUSE/Products/SLE-Product-SLES/15-SP7/x86_64/product/"
@@ -363,7 +363,7 @@
         "description": "SLE-Product-SLES15-SP7-Updates for sle-15-x86_64",
         "distro_target": "sle-15-x86_64",
         "enabled": true,
-        "id": 8001,
+        "id": 7055,
         "installer_updates": false,
         "name": "SLE-Product-SLES15-SP7-Updates",
         "url": "https://updates.suse.com/SUSE/Updates/SLE-Product-SLES/15-SP7/x86_64/update/"
@@ -376,7 +376,7 @@
         "description": "SLE15-SP7-Installer-Updates for sle-15-x86_64",
         "distro_target": "sle-15-x86_64",
         "enabled": false,
-        "id": 8012,
+        "id": 7057,
         "installer_updates": true,
         "name": "SLE15-SP7-Installer-Updates",
         "url": "https://installer-updates.suse.com/SUSE/Updates/SLE-INSTALLER/15-SP7/x86_64/update/"
@@ -389,7 +389,7 @@
         "description": "SLE-Module-Basesystem15-SP7-Pool for sle-15-x86_64",
         "distro_target": "sle-15-x86_64",
         "enabled": true,
-        "id": 8002,
+        "id": 7094,
         "installer_updates": false,
         "name": "SLE-Module-Basesystem15-SP7-Pool",
         "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Basesystem/15-SP7/x86_64/product/"
@@ -402,7 +402,7 @@
         "description": "SLE-Module-Basesystem15-SP7-Updates for sle-15-x86_64",
         "distro_target": "sle-15-x86_64",
         "enabled": true,
-        "id": 8003,
+        "id": 7092,
         "installer_updates": false,
         "name": "SLE-Module-Basesystem15-SP7-Updates",
         "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Basesystem/15-SP7/x86_64/update/"
@@ -415,7 +415,7 @@
         "description": "SLE-Module-Desktop-Applications15-SP7-Pool for sle-15-x86_64",
         "distro_target": "sle-15-x86_64",
         "enabled": true,
-        "id": 8004,
+        "id": 7119,
         "installer_updates": false,
         "name": "SLE-Module-Desktop-Applications15-SP7-Pool",
         "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Desktop-Applications/15-SP7/x86_64/product/"
@@ -428,7 +428,7 @@
         "description": "SLE-Module-Desktop-Applications15-SP7-Updates for sle-15-x86_64",
         "distro_target": "sle-15-x86_64",
         "enabled": true,
-        "id": 8005,
+        "id": 7134,
         "installer_updates": false,
         "name": "SLE-Module-Desktop-Applications15-SP7-Updates",
         "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Desktop-Applications/15-SP7/x86_64/update/"
@@ -441,7 +441,7 @@
         "description": "SLE-Module-DevTools15-SP7-Pool for sle-15-x86_64",
         "distro_target": "sle-15-x86_64",
         "enabled": true,
-        "id": 8006,
+        "id": 7244,
         "installer_updates": false,
         "name": "SLE-Module-DevTools15-SP7-Pool",
         "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Development-Tools/15-SP7/x86_64/product/"
@@ -454,7 +454,7 @@
         "description": "SLE-Module-DevTools15-SP7-Updates for sle-15-x86_64",
         "distro_target": "sle-15-x86_64",
         "enabled": true,
-        "id": 8007,
+        "id": 7257,
         "installer_updates": false,
         "name": "SLE-Module-DevTools15-SP7-Updates",
         "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Development-Tools/15-SP7/x86_64/update/"
@@ -467,7 +467,7 @@
         "description": "SLE-Module-Server-Applications15-SP7-Pool for sle-15-x86_64",
         "distro_target": "sle-15-x86_64",
         "enabled": true,
-        "id": 8008,
+        "id": 7114,
         "installer_updates": false,
         "name": "SLE-Module-Server-Applications15-SP7-Pool",
         "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Server-Applications/15-SP7/x86_64/product/"
@@ -480,7 +480,7 @@
         "description": "SLE-Module-Server-Applications15-SP7-Updates for sle-15-x86_64",
         "distro_target": "sle-15-x86_64",
         "enabled": true,
-        "id": 8009,
+        "id": 7112,
         "installer_updates": false,
         "name": "SLE-Module-Server-Applications15-SP7-Updates",
         "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Server-Applications/15-SP7/x86_64/update/"
@@ -493,7 +493,7 @@
         "description": "SLE-Module-Containers15-SP7-Pool for sle-15-x86_64",
         "distro_target": "sle-15-x86_64",
         "enabled": true,
-        "id": 8010,
+        "id": 7239,
         "installer_updates": false,
         "name": "SLE-Module-Containers15-SP7-Pool",
         "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Containers/15-SP7/x86_64/product/"
@@ -506,7 +506,7 @@
         "description": "SLE-Module-Containers15-SP7-Updates for sle-15-x86_64",
         "distro_target": "sle-15-x86_64",
         "enabled": true,
-        "id": 8011,
+        "id": 7237,
         "installer_updates": false,
         "name": "SLE-Module-Containers15-SP7-Updates",
         "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Containers/15-SP7/x86_64/update/"
