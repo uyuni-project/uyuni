@@ -88,9 +88,9 @@ artifacts:
     repository: Leap
   - artifact: dom4j
     repository: Leap_sle
-  - artifact: ehcache-core
-    package: ehcache
-    repository: Uyuni_Other
+  - artifact: jcache
+    package: jcache
+    repository: Uyuni_Jakarta
   - artifact: geronimo-jta_1.1_spec
     package: geronimo-jta-1_1-api
     repository: Leap
