@@ -77,8 +77,7 @@
     <available file="${java.lib.dir}/apache-commons-jexl/commons-jexl.jar"/>
   </condition>
 
-  <available file="${java.lib.dir}/ehcache.jar" type="file" property="ehcache" value="ehcache" />
-  <available file="${java.lib.dir}/ehcache-core.jar" type="file" property="ehcache" value="ehcache-core" />
+  <available file="${java.lib.dir}/jcache.jar" type="file" property="jcache" value="jcache" />
 
   <condition property="jaf" value="glassfish-activation" else="jaf">
     <available file="${java.lib.dir}/glassfish-activation.jar"/>
@@ -122,7 +121,7 @@
   <available file="${java.lib.dir}/jakarta-persistence-api/jakarta.persistence-api.jar" type="file"
 	  property="jpa" value="jakarta-persistence-api/jakarta.persistence-api"/>
 
-  <property name="hibernatedeps" value="${hibernatefiles} ${hibernate-models} slf4j/api ${jpa} ${byte-buddy} ${byte-buddy-dep} jboss-logging javassist log4j/log4j-slf4j-impl ${ehcache} classmate/classmate statistics hypersistence-utils/hypersistence-utils-hibernate-71 jackson-databind jackson-core jackson-annotations"/>
+  <property name="hibernatedeps" value="${hibernatefiles} ${hibernate-models} slf4j/api ${jpa} ${byte-buddy} ${byte-buddy-dep} jboss-logging javassist log4j/log4j-slf4j-impl ${jcache} classmate/classmate statistics hypersistence-utils/hypersistence-utils-hibernate-71 jackson-databind jackson-core jackson-annotations"/>
 
   <property name="c3p0" value="c3p0"/>
   <available file="${java.lib.dir}/mchange-commons/mchange-commons-java.jar" type="file" property="c3p0" value="${c3p0} mchange-commons/mchange-commons-java"/>
@@ -222,7 +221,7 @@
              taglibs-standard-impl taglibs-standard-jstlel taglibs-standard-spec
              postgresql-jdbc ongres-scram/client ongres-scram/common ${stringprep-jars}
              snakeyaml simpleframework/simplexml ${suse-common-jars} ${suse-runtime-jars}
-	     xalan-j2 xalan-j2-serializer xerces-j2 simple-core ${ehcache}" />
+	     xalan-j2 xalan-j2-serializer xerces-j2 simple-core ${jcache}" />
 
   <property name="taskomatic.jar.dependencies"
       value="${dist.jar.dependencies} jsch" />
