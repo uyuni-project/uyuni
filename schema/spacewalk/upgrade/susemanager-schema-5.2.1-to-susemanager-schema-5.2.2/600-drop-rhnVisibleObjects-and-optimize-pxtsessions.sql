@@ -24,4 +24,6 @@ CREATE INDEX PXTSessions_user
 CREATE INDEX PXTSessions_expires
     ON PXTSessions (expires);
 
+DROP FUNCTION IF EXISTS create_pxt_session;
+
 COMMIT;
