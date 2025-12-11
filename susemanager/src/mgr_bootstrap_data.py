@@ -177,6 +177,7 @@ PKGLISTDEBIAN13 = [
     "pinentry-curses",
     "readline-common",
     # end of gnupg dependencies
+    "logrotate",
     "venv-salt-minion",
 ]
 
