@@ -1,9 +1,5 @@
-import * as React from "react";
-import { useEffect, useState, useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 
-import { Button } from "components/buttons";
-import { Form } from "components/formik";
-import { Field } from "components/formik/field";
 import { Column } from "components/table/Column";
 import { Table } from "components/table/Table";
 
@@ -12,27 +8,23 @@ import Network from "utils/network";
 
 type Props = {
   state: any;
-  onChange: Function;
+  onChange: () => void;
   errors: any;
 };
 
 const AccessGroupReview = (props: Props) => {
-  // List data
-  const [listData, setListData] = useState<{ items: User[] }>({ items: [] });
   const [namespaces, setNamespaces] = useState([]);
 
-  console.log("namespaces", namespaces);
-  
   const isItemDisabled = useCallback((item, type) => {
-      const requiredAccessMode = type === "view" ? "R" : "W";
-  
-      if (!item.children || item.children.length === 0) {
-        return !item.accessMode.includes(requiredAccessMode);
-      }
-  
-      return item.children.every((child) => isItemDisabled(child, type));
-    }, []);
-   const loadNamespaces = () => {
+    const requiredAccessMode = type === "view" ? "R" : "W";
+
+    if (!item.children || item.children.length === 0) {
+      return !item.accessMode.includes(requiredAccessMode);
+    }
+
+    return item.children.every((child) => isItemDisabled(child, type));
+  }, []);
+  const loadNamespaces = () => {
     let endpoint = "/rhn/manager/api/admin/access-control/access-group/list_namespaces";
 
     const hasCopy = props.state.accessGroups && props.state.accessGroups.length > 0;
@@ -46,30 +38,28 @@ const AccessGroupReview = (props: Props) => {
     });
   };
 
-   useEffect(() => {
+  useEffect(() => {
     loadNamespaces();
   }, []);
 
   const getSelectedNamespace = (items, selectedModes = ["view", "modify"]) => {
-  return items
-    .map((item) => {
-      const children = item.children
-        ? getSelectedNamespace(item.children, selectedModes)
-        : [];
+    return items
+      .map((item) => {
+        const children = item.children ? getSelectedNamespace(item.children, selectedModes) : [];
 
-      const itemPermissions = props.state.permissions[item.namespace];
-      const isSelected = selectedModes.some((mode) => itemPermissions?.[mode]);
-      const hasSelectedChildren = children.length > 0;
+        const itemPermissions = props.state.permissions[item.namespace];
+        const isSelected = selectedModes.some((mode) => itemPermissions?.[mode]);
+        const hasSelectedChildren = children.length > 0;
 
-      if (isSelected || hasSelectedChildren) {
-        return { ...item, children };
-      }
-      return null;
-    })
-    .filter(Boolean);
-};
+        if (isSelected || hasSelectedChildren) {
+          return { ...item, children };
+        }
+        return null;
+      })
+      .filter(Boolean);
+  };
 
- const getCheckState = useCallback(
+  const getCheckState = useCallback(
     (item, type) => {
       if (item.children && item.children.length > 0) {
         const enabledChildren = item.children.filter((child) => !isItemDisabled(child, type));
@@ -89,74 +79,87 @@ const AccessGroupReview = (props: Props) => {
     [props.state.permissions, isItemDisabled]
   );
 
- const selectedPermissionsTree = getSelectedNamespace(namespaces);
+  const selectedPermissionsTree = getSelectedNamespace(namespaces);
 
-  // DEBUG
-  console.log("selectedPermissionsTree", selectedPermissionsTree);
   return (
     <div>
       {!props.state.id ? (
         <>
-          <div className="d-flex">
-            <div className="me-5">
+          <div className="row">
+            <div className="col-md-6">
               <strong className="me-1">Name:</strong>
               {props.state.name}
             </div>
-            <div className="me-5">
+            <div className="col-md-6">
               <strong className="me-1">Description:</strong>
               {props.state.description}
             </div>
-            <div>
-              <strong className="me-1">Organization:</strong>
+          </div>
+          <div className="row mt-3">
+            <div className="col-md-12">
+              <strong>Organization:</strong>
               {props.state.orgName}
             </div>
           </div>
-          <hr></hr>{" "}
+          <hr></hr>
         </>
-      ) : null }
-
-        <Table
+      ) : null}
+      <h4>Users</h4>
+      <Table
+        data={props.state.users}
+        identifier={(item) => item.id}
+        initialSortColumnKey="name"
+        hideHeaderFooter="both"
+        emptyText={t("No Users selected.")}
+      >
+        <Column columnKey="login" comparator={Utils.sortByText} header={t("Username")} cell={(item) => item.login} />
+        <Column columnKey="email" comparator={Utils.sortByText} header={t("Email")} cell={(item) => item.email} />
+        <Column columnKey="name" comparator={Utils.sortByText} header={t("Real Name")} cell={(item) => item.name} />
+      </Table>
+      <h4>Permissions</h4>
+      <Table
         data={selectedPermissionsTree}
         identifier={(item) => item.namespace}
         expandable
+        expandableOpen={true}
         emptyText={t("No permissions selected.")}
+        hideHeaderFooter="both"
       >
-        <Column
-          columnKey="name"
-          header={t("Name")}
-          cell={(row) => row.name}
-        />
-        <Column
-          columnKey="description"
-          header={t("Description")}
-          cell={(row) => row.description}
-        />
+        <Column columnKey="name" header={t("Name")} cell={(row) => row.name} />
+        <Column columnKey="description" header={t("Description")} cell={(row) => row.description} />
         <Column
           columnKey="view"
           header={t("View")}
           cell={(item) => {
+            if (item.children && item.children.length > 0) {
+              return null;
+            }
+            if (isItemDisabled(item, "view")) {
+              return <span>-</span>;
+            }
             const state = getCheckState(item, "view");
-            return (
-              <>{isItemDisabled(item, "view") ? <span>-</span> : <span>check</span>}</>
-            );
+            return state === "checked" ? <i className="fa fa-check"></i> : <span>X</span>;
           }}
           width="10%"
         />
-                <Column
-                  columnKey="modify"
-                  header={t("Modify")}
-                  cell={(item) => {
-                    const state = getCheckState(item, "modify");
-                    return (
-                     <>{isItemDisabled(item, "modify") ? <span>-</span> : <span>check</span>}</>
-                    );
-                  }}
-                  width="10%"
-                />
+        <Column
+          columnKey="modify"
+          header={t("Modify")}
+          cell={(item) => {
+            if (item.children && item.children.length > 0) {
+              return null;
+            }
+            if (isItemDisabled(item, "modify")) {
+              return <span>-</span>;
+            }
+            const state = getCheckState(item, "modify");
+            return state === "checked" ? <i className="fa fa-check"></i> : <span>X</span>;
+          }}
+          width="10%"
+        />
       </Table>
-
     </div>
-  )
+  );
 };
 
 export default AccessGroupReview;

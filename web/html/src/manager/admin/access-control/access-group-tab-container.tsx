@@ -1,4 +1,3 @@
-import * as React from "react";
 import { useState } from "react";
 
 import { Button, LinkButton } from "components/buttons";
@@ -13,7 +12,7 @@ type Tab = {
 
 type AccessGroupTabContainerProps = {
   tabs: Tab[];
-  onUpdate?: Function;
+  onUpdate?: () => void;
   onCancelRedirectTo?: string;
 };
 

@@ -1,11 +1,9 @@
-import * as React from "react";
-
 import { Form, Text } from "./input";
 import { StepsProgressBar } from "./steps-progress-bar";
 
 export default () => {
   const detailsForm = [
-    <Form divClass="col-md-12" formDirection="form-horizontal">
+    <Form divClass="col-md-12" key="detailsForm" formDirection="form-horizontal">
       <Text
         name="name"
         label={t("Name")}

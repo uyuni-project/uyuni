@@ -1,4 +1,3 @@
-import * as React from "react";
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
 
 import { FormikProps } from "formik";
@@ -17,7 +16,7 @@ export type AccessGroupDetailsHandle = {
 
 type Props = {
   state: AccessGroupState;
-  onChange: Function;
+  onChange: () => void;
   errors: any;
 };
 
@@ -107,7 +106,7 @@ const AccessGroupDetails = forwardRef<AccessGroupDetailsHandle, Props>((props, r
         // onChange={(model) => {
         //   props.onChange(model);
         // }}
-        onSubmit={() => { }}
+        onSubmit={() => {}}
         validate={handleFormChange}
       >
         <div className="row">

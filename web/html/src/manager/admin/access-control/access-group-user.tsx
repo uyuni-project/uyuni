@@ -1,4 +1,3 @@
-import * as React from "react";
 import { useEffect, useState } from "react";
 
 import { Button } from "components/buttons";
@@ -13,7 +12,7 @@ import Network from "utils/network";
 
 type Props = {
   state: any;
-  onChange: Function;
+  onChange: () => void;
   errors: any;
 };
 
@@ -86,21 +85,23 @@ const AccessGroupUsers = (props: Props) => {
       <MessagesContainer />
       {!props.state.id ? (
         <>
-          <div className="d-flex">
-            <div className="me-5">
+          <div className="row">
+            <div className="col-md-6">
               <strong className="me-1">Name:</strong>
               {props.state.name}
             </div>
-            <div className="me-5">
+            <div className="col-md-6">
               <strong className="me-1">Description:</strong>
               {props.state.description}
             </div>
-            <div>
-              <strong className="me-1">Organization:</strong>
+          </div>
+          <div className="row mt-3">
+            <div className="col-md-12">
+              <strong>Organization:</strong>
               {props.state.orgName}
             </div>
           </div>
-          <hr></hr>{" "}
+          <hr></hr>
         </>
       ) : null}
       <Form
@@ -108,7 +109,7 @@ const AccessGroupUsers = (props: Props) => {
         // TODO: Use onChange instead of validate to update access group details
         // onChange={updateUserList}
         validate={updateUserList}
-        onSubmit={() => { }}
+        onSubmit={() => {}}
         divClass="col-md-12"
         formDirection="form-horizontal"
       >

@@ -1,19 +1,19 @@
-import * as React from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { AccessGroupState } from "manager/admin/access-control/access-group";
 
+import { DEPRECATED_Check, Form } from "components/input";
 import { Column } from "components/table/Column";
-import { Table } from "components/table/Table";
 import { SearchField } from "components/table/SearchField";
+import { Table } from "components/table/Table";
 import { MessagesContainer, showErrorToastr } from "components/toastr";
-import { getValue } from "utils/data";
-import Network from "utils/network";
-import { DEPRECATED_Check, Form, } from "components/input";
 import { Toggler } from "components/toggler";
+import styles from "./AccessGroup.module.scss";
+
+import Network from "utils/network";
 type Props = {
   state: AccessGroupState;
-  onChange: Function;
+  onChange: () => void;
   errors: any;
 };
 
@@ -25,6 +25,7 @@ const AccessGroupPermissions = (props: Props) => {
   const [showOnlySelected, setShowOnlySelected] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [searchValue, setSearchValue] = useState("");
+  const [expandedKeys, setExpandedKeys] = useState<Set<string>>(new Set());
 
   const isItemDisabled = useCallback((item, type) => {
     const requiredAccessMode = type === "view" ? "R" : "W";
@@ -100,14 +101,14 @@ const AccessGroupPermissions = (props: Props) => {
     let endpoint = "/rhn/manager/api/admin/access-control/access-group/list_namespaces";
     const hasCopy = props.state.accessGroups && props.state.accessGroups.length > 0;
     const hasFilter = filter && filter.trim().length > 0;
-    if (hasCopy) {
+
+    if (hasCopy && hasFilter) {
+      endpoint += `?copyFrom=${props.state.accessGroups.join(",")}&filter=${filter}`;
+    } else if (hasCopy) {
       endpoint += `?copyFrom=${props.state.accessGroups.join(",")}`;
     }
-    else if (hasFilter) {
+    if (hasFilter && !hasCopy) {
       endpoint += `?filter=${filter}`;
-    }
-    else if (hasCopy && hasFilter) {
-      endpoint += `?copyFrom=${props.state.accessGroups.join(",")}&filter=${filter}`;
     }
     Network.get(endpoint)
       .then((response) => {
@@ -116,16 +117,37 @@ const AccessGroupPermissions = (props: Props) => {
 
         if (hasCopy && response["toCopy"]) {
           const itemsToCopy = response["toCopy"];
+          const changes = {};
+
+          if (props.state.permissions) {
+            Object.keys(props.state.permissions).forEach((key) => {
+              changes[key] = undefined;
+            });
+          }
+
           if (itemsToCopy.length > 0) {
-            const initialChanges = {};
             itemsToCopy.forEach((item) => {
-              initialChanges[item.namespace] = {
+              changes[item.namespace] = {
                 ...item,
                 view: item.accessMode.includes("R"),
                 modify: item.accessMode.includes("W"),
               };
             });
-            props.onChange(initialChanges);
+          }
+
+          props.onChange(changes);
+        }
+
+        if (!hasCopy && !props.state.id && !filter) {
+          const currentPermissions = props.state.permissions || {};
+          const keysToClear = Object.keys(currentPermissions);
+
+          if (keysToClear.length > 0) {
+            const clearChanges = {};
+            keysToClear.forEach((namespaceKey) => {
+              clearChanges[namespaceKey] = undefined;
+            });
+            props.onChange(clearChanges);
           }
         }
         setIsLoading(false);
@@ -134,14 +156,12 @@ const AccessGroupPermissions = (props: Props) => {
         setIsLoading(false);
         showErrorToastr(t("An unexpected error occurred while fetching namespaces."));
       });
-  }
+  };
 
   useEffect(() => {
-    if (!isLoading) {
-      setIsLoading(true);
-      getNamespaces(searchValue);
-    }
-  }, [searchValue]);
+    setIsLoading(true);
+    getNamespaces("");
+  }, []);
 
   useEffect(() => {
     namespaces.forEach((item) => {
@@ -158,13 +178,13 @@ const AccessGroupPermissions = (props: Props) => {
       updateRefsRecursively(item);
     });
   }, [namespaces, props.state.permissions, getCheckState]);
-  
+
   const setNamespacesCheck = (model) => {
     setApiNamespace(!!model.apiNamespace);
     setWebNamespace(!!model.webNamespace);
   };
 
-  const filteredNamespaces = namespaces.filter((item) => {
+  const filteredNamespaces = (namespaces || []).filter((item) => {
     if (apiNamespace && webNamespace) {
       return true;
     }
@@ -180,22 +200,14 @@ const AccessGroupPermissions = (props: Props) => {
   const namespacesFilter = (
     <div className="d-flex">
       <div className="ms-4">
-        <Form model={{ apiNamespace, webNamespace  }} onChange={setNamespacesCheck}>
+        <Form model={{ apiNamespace, webNamespace }} onChange={setNamespacesCheck}>
           <div className="d-flex">
             <span className="control-label me-3">Filter by:</span>
             <span className="me-4">
-              <DEPRECATED_Check
-                label={t("API")}
-                name="apiNamespace"
-                key="apiNamespace"
-              />
+              <DEPRECATED_Check label={t("API")} name="apiNamespace" key="apiNamespace" />
             </span>
             <span>
-              <DEPRECATED_Check
-                label={t("Web")}
-                name="webNamespace"
-                key="webNamespace"
-              />
+              <DEPRECATED_Check label={t("Web")} name="webNamespace" key="webNamespace" />
             </span>
           </div>
         </Form>
@@ -203,51 +215,68 @@ const AccessGroupPermissions = (props: Props) => {
     </div>
   );
 
- const getSelectedNamespace = (item, selectedModes = ["view", "modify"]) => {
-  return item
-    .map((item) => {
-      const children = item.children ? getSelectedNamespace(item.children, selectedModes) : [];
-      
-      const itemPermissions = props.state.permissions[item.namespace];
-      const isSelected = selectedModes.some((mode) => itemPermissions?.[mode]);
-      const hasSelectedChildren = children.length > 0;
+  const getSelectedNamespace = (items = [], selectedModes = ["view", "modify"]) => {
+    return items
+      .map((item) => {
+        const children = item.children ? getSelectedNamespace(item.children, selectedModes) : [];
 
-      if (isSelected || hasSelectedChildren) {
-        return { ...item, children };
-      }
-      return null;
-    })
-    .filter(Boolean);
+        const itemPermissions = props.state.permissions?.[item.namespace] || {};
+        const isSelected = selectedModes.some((mode) => itemPermissions?.[mode]);
+        const hasSelectedChildren = children.length > 0;
+
+        if (isSelected || hasSelectedChildren) {
+          return { ...item, children };
+        }
+        return null;
+      })
+      .filter(Boolean);
+  };
+
+  const handleShowOnlySelectedToggle = () => {
+    setShowOnlySelected(!showOnlySelected);
+    setSearchValue(""); // clear search when toggling
   };
 
   const selectedToggle = (
-    <Toggler
-      value={showOnlySelected}
-      handler={() => setShowOnlySelected(!showOnlySelected)}
-      text={t("Show only selected")}
-    />
+    <Toggler value={showOnlySelected} handler={handleShowOnlySelectedToggle} text={t("Show only selected")} />
   );
 
-  const finalData = showOnlySelected
-    ? getSelectedNamespace(filteredNamespaces)
-    : filteredNamespaces;
+  const finalData = showOnlySelected ? getSelectedNamespace(filteredNamespaces) : filteredNamespaces || [];
+
+  useEffect(() => {
+    const keys = new Set<string>();
+    const traverse = (items: any[], parentMatched = false) => {
+      items.forEach((item) => {
+        const key = `${item.namespace}-${item.isAPI ? "api" : "ui"}`;
+        const matchesSearch = searchValue && item.name.toLowerCase().includes(searchValue.toLowerCase());
+        if (matchesSearch || parentMatched) keys.add(key);
+        if (item.children) traverse(item.children, matchesSearch || parentMatched);
+      });
+    };
+    traverse(finalData);
+    setExpandedKeys(keys);
+  }, [searchValue]);
+
+  const searchedData = finalData.filter((item) => item.name.toLowerCase().includes(searchValue.toLowerCase()));
 
   return (
     <div>
       <MessagesContainer />
       {!props.state.id ? (
         <>
-          <div className="d-flex">
-            <div className="me-5">
-              <strong className="me-1">{t("Name:")}</strong>
+          <div className="row">
+            <div className="col-md-6">
+              <strong className="me-1">Name:</strong>
               {props.state.name}
             </div>
-            <div className="me-5">
-              <strong className="me-1">{t("Description:")}</strong>
+            <div className="col-md-6">
+              <strong className="me-1">Description:</strong>
               {props.state.description}
             </div>
-            <div>
-              <strong className="me-1">{t("Organization:")}</strong>
+          </div>
+          <div className="row mt-3">
+            <div className="col-md-12">
+              <strong>Organization:</strong>
               {props.state.orgName}
             </div>
           </div>
@@ -255,11 +284,18 @@ const AccessGroupPermissions = (props: Props) => {
         </>
       ) : null}
       <p>{t("Review and modify the permissions for this custom group as needed.")}</p>
+      {isLoading && (
+        <div className="mb-2">
+          <i className="fa fa-spinner fa-spin" />
+          {t("Loading permissions…")}
+        </div>
+      )}
       <Table
-        data={finalData}
+        data={searchedData}
         onSearch={setSearchValue}
         identifier={(item) => `${item.namespace}-${item.isAPI ? "api" : "ui"}`}
         expandable
+        controlledExpandedKeys={expandedKeys}
         stickyHeader
         searchPanelInline
         searchField={<SearchField placeholder={t("Filter by name")} />}
@@ -276,7 +312,7 @@ const AccessGroupPermissions = (props: Props) => {
             }
             return (
               <b>
-                {row.name} {row.isAPI ? "[API]" : ""}
+                {row.name} {row.isAPI ? <i className={`fa fa-plug ${styles.apiIcon}`} data-bs-toggle="tooltip" title={t("API")} /> : ""}
               </b>
             );
           }}

@@ -1,4 +1,3 @@
-import * as React from "react";
 import { useRef, useState } from "react";
 
 import AccessGroupTabContainer from "manager/admin/access-control/access-group-tab-container";
@@ -12,8 +11,8 @@ import Network from "utils/network";
 
 import AccessGroupDetails, { AccessGroupDetailsHandle } from "./access-group-details";
 import AccessGroupPermissions from "./access-group-permissions";
-import AccessGroupUsers from "./access-group-user";
 import AccessGroupReview from "./access-group-review";
+import AccessGroupUsers from "./access-group-user";
 
 type Permission = {
   id: number;
@@ -157,7 +156,7 @@ const AccessGroup = (props: AccessGroupProps) => {
     };
 
     Network.post("/rhn/manager/api/admin/access-control/access-group/save", payload)
-      .then((_) => {
+      .then(() => {
         setMessages(MessagesUtils.info(t("Access Group successfully created.")));
         window.pageRenderers?.spaengine?.navigate?.(LIST_PAGE_URL);
       })
@@ -190,13 +189,7 @@ const AccessGroup = (props: AccessGroupProps) => {
     },
     {
       title: t("Users"),
-      content: (
-        <AccessGroupUsers
-          state={accessGroupState}
-          onChange={handleUsers}
-          errors={accessGroupState.errors} 
-        />
-      ),
+      content: <AccessGroupUsers state={accessGroupState} onChange={handleUsers} errors={accessGroupState.errors} />,
       validate: null,
     },
     {

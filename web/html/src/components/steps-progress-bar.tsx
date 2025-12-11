@@ -1,4 +1,3 @@
-import * as React from "react";
 import { useState } from "react";
 
 import { Button, LinkButton } from "./buttons";
@@ -12,7 +11,7 @@ type Step = {
 type StepsProgressBarProps = {
   /** steps title and contents */
   steps: Step[];
-  onCreate?: Function;
+  onCreate?: () => void;
   onCancel?: string;
 };
 

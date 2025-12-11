@@ -1,4 +1,4 @@
-import { type ReactComponentElement, type ReactElement, type ReactNode, Children, Component, createRef, } from "react";
+import { type ReactComponentElement, type ReactElement, type ReactNode, Children, Component, createRef } from "react";
 
 import _isEqual from "lodash/isEqual";
 
@@ -115,7 +115,7 @@ type Props = {
   stickyHeader?: boolean;
 
   /** Align search fields inline */
-  searchPanelInline?: boolean
+  searchPanelInline?: boolean;
 };
 
 type State = {
@@ -212,6 +212,9 @@ export class TableDataHandler extends Component<Props, State> {
     this.setState({ data: items, totalItems: total }, () => {
       if (!DEPRECATED_unsafeEquals(selectedIds, null)) {
         this.props.onSelect?.(selectedIds);
+      }
+      if (this.props.onDataLoaded) {
+        this.props.onDataLoaded(items);
       }
       const lastPage = this.getLastPage();
       if (this.state.currentPage > lastPage) {
@@ -427,11 +430,11 @@ export class TableDataHandler extends Component<Props, State> {
     const hideHeader = this.props.hideHeaderFooter === "header" || this.props.hideHeaderFooter === "both";
     const hideFooter = this.props.hideHeaderFooter === "footer" || this.props.hideHeaderFooter === "both";
     return (
-      <div className={`spacewalk-list ${this.props.stickyHeader ? "overflow-visible" : ""}`}>
+      <div className={`spacewalk-list ${stickyHeader ? "overflow-visible" : ""}`}>
         <div className="panel panel-default">
           {!hideHeader && !isTableHeaderEmpty ? (
             <>
-              <div ref={this.panelHeaderRef} className={` panel-heading ${this.props.stickyHeader ? "sticky-panel-heading" : ""}`}>
+              <div ref={this.panelHeaderRef} className={` panel-heading ${stickyHeader ? "sticky-panel-heading" : ""}`}>
                 <div className="spacewalk-list-head-addons align-items-center">
                   <SearchPanel
                     criteria={this.state.criteria}
@@ -469,7 +472,7 @@ export class TableDataHandler extends Component<Props, State> {
             </div>
           ) : (
             <div>
-              <div className={`table-responsive ${this.props.stickyHeader ? "overflow-visible" : ""}`}>
+              <div className={`table-responsive ${stickyHeader ? "overflow-visible" : ""}`}>
                 {this.props.children({
                   currItems,
                   headers,
