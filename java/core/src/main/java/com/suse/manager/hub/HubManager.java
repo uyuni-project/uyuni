@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.iss.IssMaster;
 import com.redhat.rhn.domain.iss.IssSlave;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
+import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.server.MgrServerInfo;
@@ -71,6 +72,7 @@ import com.suse.manager.webui.utils.token.TokenParsingException;
 import com.suse.scc.SCCTaskManager;
 import com.suse.scc.proxy.SCCProxyFactory;
 import com.suse.utils.CertificateUtils;
+import com.suse.utils.Maps;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -1241,24 +1243,39 @@ public class HubManager {
         Map<Long, IssPeripheralChannels> syncedChannelToIssChannelMap = issPeripheral.getPeripheralChannels().stream()
             .collect(Collectors.toMap(pc -> pc.getChannel().getId(), pc -> pc));
 
-        List<ChannelSyncDetail> channelDetails = ChannelFactory.listAllBaseChannels().stream()
+        List<ChannelSyncDetail> channelDetails = ChannelFactory.listSubscribableBaseChannels(user).stream()
             .map(channel -> buildChannelSyncDetail(channel, user, syncedChannelToIssChannelMap, peripheralOrgs))
+            .sorted(Comparator.comparing(ChannelSyncDetail::label))
             .toList();
 
-        return new ChannelSyncModel(peripheralOrgs, channelDetails);
+        // Mandatory map, in Javascript compatible format
+        Map<Long, List<Long>>  mandatoryMap = channelDetails.stream()
+            .flatMap(channel -> Stream.concat(Stream.of(channel), channel.children().stream()))
+            .collect(Collectors.toMap(
+                ChannelSyncDetail::id, HubManager::getMandatoryChannelsFor
+            ));
+
+        return new ChannelSyncModel(
+            peripheralOrgs,
+            channelDetails,
+            Maps.mapToEntryList(mandatoryMap),
+            Maps.mapToEntryList(Maps.invertMultimap(mandatoryMap))
+        );
     }
 
     private ChannelSyncDetail buildChannelSyncDetail(Channel channel, User user,
                                                      Map<Long, IssPeripheralChannels> syncedChannelToIssChannelMap,
                                                      List<OrgInfoJson> peripheralOrgs) {
-        List<ChannelSyncDetail> children = ChannelFactory.listAllChildrenForChannel(channel).stream()
+        List<ChannelSyncDetail> children = ChannelFactory.getAccessibleChildChannels(channel, user).stream()
             .map(child -> buildChannelSyncDetail(child, user, syncedChannelToIssChannelMap, peripheralOrgs))
+            .sorted(Comparator.comparing(ChannelSyncDetail::label))
             .toList();
 
         List<ChannelSyncDetail> clones = Optional.ofNullable(channel.getClonedChannels()).stream()
-                .flatMap(Collection::stream)
-                .map(clone -> buildChannelSyncDetail(clone, user, syncedChannelToIssChannelMap, peripheralOrgs))
-                .toList();
+            .flatMap(Collection::stream)
+            .map(clone -> buildChannelSyncDetail(clone, user, syncedChannelToIssChannelMap, peripheralOrgs))
+            .sorted(Comparator.comparing(ChannelSyncDetail::label))
+            .toList();
 
         Channel originalChannel = ChannelFactory.lookupOriginalChannel(channel);
 
@@ -1285,10 +1302,11 @@ public class HubManager {
             channel.getChannelArch().getName(),
             Optional.ofNullable(channel.getOrg()).map(ChannelOrg::new).orElse(null),
             selectedChannelOrg,
-            Optional.ofNullable(channel.getParentChannel()).map(Channel::getLabel).orElse(null),
-            Optional.ofNullable(originalChannel).map(Channel::getLabel).orElse(null),
+            Optional.ofNullable(channel.getParentChannel()).map(Channel::getId).orElse(null),
+            Optional.ofNullable(originalChannel).map(Channel::getId).orElse(null),
             children,
             clones,
+            selectedChannelOrg != null,
             syncedChannelToIssChannelMap.containsKey(channel.getId())
         );
     }
@@ -1747,5 +1765,17 @@ public class HubManager {
 
         // Remove the master
         IssFactory.delete(master);
+    }
+
+    private static List<Long> getMandatoryChannelsFor(ChannelSyncDetail channel) {
+        Stream<Long> mandatoryChannelIds = SUSEProductFactory.findSyncedMandatoryChannels(channel.label())
+            .map(Channel::getId);
+
+        Stream<Long> parentIdStream = Optional.ofNullable(channel.parentId()).stream();
+
+        // Ensure the parent is always marked as mandatory even for custom channels
+        return Stream.concat(parentIdStream, mandatoryChannelIds)
+            .distinct()
+            .toList();
     }
 }

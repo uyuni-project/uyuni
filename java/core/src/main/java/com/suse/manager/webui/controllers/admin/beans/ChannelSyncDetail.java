@@ -13,16 +13,17 @@ package com.suse.manager.webui.controllers.admin.beans;
 import java.util.List;
 
 public record ChannelSyncDetail(
-    Long channelId,
-    String channelName,
-    String channelLabel,
-    String channelArch,
-    ChannelOrg channelOrg,
-    ChannelOrg selectedPeripheralOrg,
-    String parentChannelLabel,
-    String originalChannelLabel,
+    long id,
+    String name,
+    String label,
+    String architecture,
+    ChannelOrg hubOrg,
+    ChannelOrg peripheralOrg,
+    Long parentId,
+    Long originalChannelId,
     List<ChannelSyncDetail> children,
     List<ChannelSyncDetail> clones,
+    boolean strictOrg,
     boolean synced
 ) { }
 
