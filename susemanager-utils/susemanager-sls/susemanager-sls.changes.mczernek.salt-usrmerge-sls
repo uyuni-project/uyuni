@@ -1,0 +1,3 @@
+- Revert using absolute paths in sls, because
+  we cannot assume usrmerge is installed on
+  older Debian/Ubuntu clients (bsc#1253780)

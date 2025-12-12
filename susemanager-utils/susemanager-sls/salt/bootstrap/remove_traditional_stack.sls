@@ -42,7 +42,7 @@ remove_traditional_stack:
 {%- if grains['os_family'] == 'Suse' %}
       - suseRegisterInfo
 {%- endif %}
-    - unless: /usr/bin/rpm -q spacewalk-proxy-common || /usr/bin/rpm -q spacewalk-common
+    - unless: rpm -q spacewalk-proxy-common || rpm -q spacewalk-common
 
 # only removing apt-transport-spacewalk above
 # causes apt-get update to 'freeze' if this
