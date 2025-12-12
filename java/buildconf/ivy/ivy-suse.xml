@@ -104,7 +104,7 @@
         <dependency org="suse" name="jaxb-api" rev="2.4.0" />
         <dependency org="suse" name="javax.activation" rev="1.2.0" />
         <dependency org="suse" name="jaxb-runtime" rev="2.3.1" />
-        <dependency org="suse" name="jaxb-impl" rev="2.3.1" />
+         <dependency org="suse" name="istack-commons-runtime" rev="3.0.7" />
 
         <!-- Tomcat jars -->
         <dependency org="suse" name="tomcat-el-api" rev="[9.0.75,10.0.0[" />
