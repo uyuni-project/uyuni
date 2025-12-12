@@ -127,7 +127,7 @@ public class TokenParser extends SecretHolder {
             return new Token(serializedForm, jwtConsumerBuilder.build().processToClaims(serializedForm));
         }
         catch (InvalidJwtException ex) {
-            throw new TokenParsingException("Unable to parse token claims", ex);
+            throw new TokenParsingException("Unable to parse token claims: " + ex.getMessage(), ex);
         }
     }
 
