@@ -51,13 +51,26 @@ public class CobblerPowerCommand extends CobblerCommand {
     /**
      * Possible power management operations.
      */
+    /**
+     * Possible power management operations.
+     */
     public enum Operation {
         /** Turn on. */
-        POWER_ON,
+        POWER_ON("kickstart.powermanagement.powered_on"),
         /** Turn off. */
-        POWER_OFF,
+        POWER_OFF("kickstart.powermanagement.powered_off"),
         /** Reboot. */
-        REBOOT
+        REBOOT("kickstart.powermanagement.rebooted");
+
+        private final String messageKey;
+
+        Operation(String messageKeyIn) {
+            this.messageKey = messageKeyIn;
+        }
+
+        public String getMessageKey() {
+            return messageKey;
+        }
     }
 
     /**
