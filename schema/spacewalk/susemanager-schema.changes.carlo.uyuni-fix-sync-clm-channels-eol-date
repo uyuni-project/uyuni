@@ -1,0 +1,1 @@
+Fix channel end of life date incorrectly set to 0 instead of null
