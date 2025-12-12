@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+import yaml from "js-yaml";
+
 import { AceEditor } from "components/ace-editor";
 import { ActionChain, ActionSchedule } from "components/action-schedule";
 import { AsyncButton, Button } from "components/buttons";
@@ -15,10 +17,13 @@ import { localizedMoment } from "utils";
 import Network, { JsonResult } from "utils/network";
 
 import { PlaybookDetails } from "./accordion-path-content";
+import styles from "./Ansible.module.scss";
 import { AnsiblePath } from "./ansible-path-type";
+import EditAnsibleVarsModal from "./edit-ansible-vars-modal";
 
 type SchedulePlaybookProps = {
   playbook: PlaybookDetails;
+  recurringDetails?: any;
   isRecurring?: boolean;
   onBack: () => void;
   onSelectPlaybook?: (playbook: any) => void;
@@ -28,7 +33,13 @@ type PlaybookArgs = {
   flushCache: boolean;
 };
 
-export default function SchedulePlaybook({ playbook, onBack, onSelectPlaybook, isRecurring }: SchedulePlaybookProps) {
+export default function SchedulePlaybook({
+  playbook,
+  onBack,
+  onSelectPlaybook,
+  isRecurring,
+  recurringDetails,
+}: SchedulePlaybookProps) {
   const [loading, setLoading] = useState(true);
   const [playbookContent, setPlaybookContent] = useState("");
   const [isTestMode, setIsTestMode] = useState(false);
@@ -36,9 +47,9 @@ export default function SchedulePlaybook({ playbook, onBack, onSelectPlaybook, i
   const [inventoryPath, setInventoryPath] = useState<ComboboxItem | null>(null);
   const [inventories, setInventories] = useState<string[]>([]);
   const [playbookArgs, setPlaybookArgs] = useState<PlaybookArgs>({ flushCache: false });
+  const [variables, setVariables] = useState<string>("");
   const [actionChain, setActionChain] = useState<ActionChain | null>(null);
   const [datetime, setDatetime] = useState(localizedMoment());
-
   const defaultInventory = "-";
 
   useEffect(() => {
@@ -59,7 +70,12 @@ export default function SchedulePlaybook({ playbook, onBack, onSelectPlaybook, i
         playbookRelPathStr: playbook.name,
       })
         .then((res: JsonResult<string>) => (res.success ? res.data : Promise.reject(res)))
-        .then(setPlaybookContent)
+        .then((res) => {
+          setPlaybookContent(res);
+          if (isRecurring && playbook.fullPath === recurringDetails.fullPath && recurringDetails.variables) {
+            mergePlaybookContent(res, recurringDetails.variables);
+          }
+        })
         .catch((res) => setMessages(res.messages?.flatMap(MsgUtils.error) || Network.responseErrorMessage(res)));
     };
 
@@ -73,6 +89,7 @@ export default function SchedulePlaybook({ playbook, onBack, onSelectPlaybook, i
       controlNodeId: playbook.path.minionServerId,
       testMode: isTestMode,
       flushCache: playbookArgs.flushCache,
+      extraVars: variables,
       actionChainLabel: actionChain?.text || null,
       earliest: datetime,
     })
@@ -81,11 +98,41 @@ export default function SchedulePlaybook({ playbook, onBack, onSelectPlaybook, i
       .catch((res) => setMessages(res.messages?.flatMap(MsgUtils.error) || Network.responseErrorMessage(res)));
   };
 
+  const updatePlaybookContent = (updatedVariables) => {
+    mergePlaybookContent(playbookContent, updatedVariables);
+  };
+
+  const mergePlaybookContent = (playbookContent, updatedVariables) => {
+    const parsed = yaml.load(playbookContent);
+    if (Array.isArray(parsed)) {
+      let varsObj = updatedVariables;
+      if (typeof updatedVariables === "string") {
+        try {
+          varsObj = JSON.parse(updatedVariables);
+          if (varsObj.vars) varsObj = varsObj.vars;
+        } catch (err: any) {
+          setMessages(MsgUtils.error(`Failed to parse updatedVariables: ${err.message || err}`));
+          varsObj = {};
+        }
+      }
+      parsed[0].vars = varsObj;
+
+      const updatedYaml = `---\n${yaml.dump(parsed, {
+        quotingType: '"',
+        forceQuotes: true,
+      })}`;
+
+      setPlaybookContent(updatedYaml);
+      setVariables(JSON.stringify(updatedVariables));
+    }
+  };
+
   const selectPlaybook = () => {
     return onSelectPlaybook?.({
       playbookPath: playbook.fullPath,
       inventoryPath: inventoryPath?.text === defaultInventory ? null : inventoryPath?.text,
       flushCache: playbookArgs.flushCache,
+      extraVars: variables,
     });
   };
 
@@ -115,16 +162,15 @@ export default function SchedulePlaybook({ playbook, onBack, onSelectPlaybook, i
   const buttonsRecurring = [
     <div key="rec-btns" className="btn-group pull-right">
       <Button
-        icon="fa-angle-left"
         className="btn-default"
-        text={t("Back")}
-        title={t("Back to playbook list")}
+        text={t("Change Playbook")}
+        title={t("Choose a different Playbook")}
         handler={onBack}
       />
       <Button
         className="btn-primary"
-        text={t("Select")}
-        title={t("Select the current Playbook")}
+        text={t("Save")}
+        title={t("Save the current Playbook")}
         handler={selectPlaybook}
       />
     </div>,
@@ -185,8 +231,27 @@ export default function SchedulePlaybook({ playbook, onBack, onSelectPlaybook, i
         </div>
 
         <div>
-          <h3>{t("Playbook Content")}</h3>
-          <AceEditor className="form-control" id="playbook-content" readOnly mode="yaml" content={playbookContent} />
+          <div className="d-flex justify-content-between">
+            <h3>{t("Playbook Content")}</h3>
+            <div className="py-4">
+              <EditAnsibleVarsModal
+                id="anisble-var"
+                className={styles.anisbleVar}
+                renderContent={playbookContent}
+                updatePlaybookContent={updatePlaybookContent}
+              />
+            </div>
+          </div>
+          <AceEditor
+            key={playbookContent}
+            className="form-control"
+            id="playbook-content"
+            minLines={20}
+            maxLines={40}
+            readOnly={true}
+            mode="yaml"
+            content={playbookContent}
+          />
         </div>
       </InnerPanel>
     </>
