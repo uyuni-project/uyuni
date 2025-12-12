@@ -1,0 +1,108 @@
+# Root issuer generating self-signed certificates
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: uyuni-issuer
+  namespace: uyuni
+  labels:
+    app.kubernetes.io/part-of: uyuni
+spec:
+  selfSigned: {}
+---
+# Certificate definition for the CA.
+# The self-signed issuer will create the uyuni-ca matching it
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: uyuni-ca
+  namespace: uyuni 
+  labels:
+    app.kubernetes.io/part-of: uyuni
+spec:
+  isCA: true
+  subject:
+    countries: ["DE"]
+    provinces: ["Bayern"]
+    localities: ["Nurnberg"]
+    organizations: ["SUSE"]
+    organizationalUnits: ["SUSE"]
+  emailAddresses: 
+    - admin@dev2-srv.mgr.lab
+  commonName: dev2-srv.mgr.lab
+  dnsNames:
+    - dev2-srv.mgr.lab 
+  secretName: uyuni-ca 
+  privateKey:
+    algorithm: ECDSA
+    size: 256
+  issuerRef:
+    name: uyuni-issuer
+    kind: Issuer
+    group: cert-manager.io
+---
+# Issuer generating certificates using the uyuni-ca secret
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: uyuni-ca-issuer 
+  namespace: uyuni 
+  labels:
+    app.kubernetes.io/part-of: uyuni
+spec:
+  ca:
+    secretName: uyuni-ca
+---
+# Certificate for apache, using the CA issuer
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: uyuni-cert
+  namespace: uyuni
+  labels:
+    app.kubernetes.io/part-of: uyuni
+spec:
+  secretName: uyuni-cert
+  secretTemplate:
+    labels:
+      app.kubernetes.io/part-of: uyuni
+  isCA: false
+  usages:
+  - server auth
+  dnsNames:
+    - dev2-srv.mgr.lab
+  issuerRef:
+    name: uyuni-ca-issuer
+    kind: Issuer
+    group: cert-manager.io
+---
+# Certificate for the DB, using the CA issuer
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: db-cert
+  namespace: uyuni
+  labels:
+    app.kubernetes.io/part-of: uyuni
+spec:
+  secretName: db-cert
+  secretTemplate:
+    labels:
+      app.kubernetes.io/part-of: uyuni
+  isCA: false
+  privateKey:
+    algorithm: RSA
+    encoding: PKCS1
+    size: 2048
+  usages:
+  - server auth
+  dnsNames:
+    - db
+    - reportdb
+    - dev2-srv.mgr.lab
+  issuerRef:
+    name: uyuni-ca-issuer
+    kind: Issuer
+    group: cert-manager.io
+---
+
+

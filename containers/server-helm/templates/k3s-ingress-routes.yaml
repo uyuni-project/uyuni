@@ -1,9 +1,11 @@
-{{- if eq .Values.ingress "traefik" }}
+{{- if eq ((.Values.ingress).type) "traefik" }}
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
   name: uyuni-https-redirect
   namespace: "{{ .Release.Namespace }}"
+  labels:
+    app.kubernetes.io/part-of: uyuni
 spec:
   redirectScheme:
     scheme: https
@@ -12,100 +14,131 @@ spec:
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRouteTCP
 metadata:
-  name: postgresql-router
+  name: reportdb-pgsql-route
   namespace: "{{ .Release.Namespace }}"
+  labels:
+    app.kubernetes.io/part-of: uyuni
 spec:
   entryPoints:
-    - postgres
+    - reportdb-pgsql
   routes:
     - match: HostSNI(`*`)
       services:
-      - name: uyuni-tcp
+      - name: reportdb 
         port: 5432
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRouteTCP
 metadata:
-  name: salt-publish-router
+  name: salt-publish-route
   namespace: "{{ .Release.Namespace }}"
+  labels:
+    app.kubernetes.io/part-of: uyuni
 spec:
   entryPoints:
     - salt-publish
   routes:
     - match: HostSNI(`*`)
       services:
-      - name: uyuni-tcp
+      - name: salt
         port: 4505
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRouteTCP
 metadata:
-  name: salt-request-router
+  name: salt-request-route
   namespace: "{{ .Release.Namespace }}"
+  labels:
+    app.kubernetes.io/part-of: uyuni
 spec:
   entryPoints:
     - salt-request
   routes:
     - match: HostSNI(`*`)
       services:
-      - name: uyuni-tcp
+      - name: salt 
         port: 4506
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRouteTCP
 metadata:
-  name: cobbler-router
+  name: cobbler-route
   namespace: "{{ .Release.Namespace }}"
+  labels:
+    app.kubernetes.io/part-of: uyuni
 spec:
   entryPoints:
     - cobbler
   routes:
     - match: HostSNI(`*`)
       services:
-      - name: uyuni-tcp
+      - name: cobbler
         port: 25151
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRouteTCP
+metadata:
+  annotations: {}
+  labels:
+    app.kubernetes.io/part-of: uyuni
+  name: web-http-route
+  namespace: "{{ .Release.Namespace }}"
+spec:
+  entryPoints:
+    - web-http
+  routes:
+    - match: HostSNI(`*`)
+      services:
+        - name: web
+          port: 80
 {{- if .Values.enableMonitoring | default true }}
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRouteTCP
 metadata:
-  name: postgresql-exporter-router
+  name: db-xport-route
   namespace: "{{ .Release.Namespace }}"
+  labels:
+    app.kubernetes.io/part-of: uyuni
 spec:
   entryPoints:
-    - psql-mtrx
+    - db-xport
   routes:
     - match: HostSNI(`*`)
       services:
-      - name: uyuni-tcp
+      - name: db 
         port: 9187
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRouteTCP
 metadata:
-  name: tasko-jmx-exporter-router
+  name: tasko-jmx-route
   namespace: "{{ .Release.Namespace }}"
+  labels:
+    app.kubernetes.io/part-of: uyuni
 spec:
   entryPoints:
-    - tasko-jmx-mtrx
+    - tasko-jmx
   routes:
     - match: HostSNI(`*`)
       services:
-      - name: uyuni-tcp
+      - name: taskomatic 
         port: 5556
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRouteTCP
 metadata:
-  name: tomcat-jmx-exporter-router
+  name: tomcat-jmx-route
   namespace: "{{ .Release.Namespace }}"
+  labels:
+    app.kubernetes.io/part-of: uyuni
 spec:
   entryPoints:
-    - tomcat-jmx-mtrx
+    - tomcat-jmx
   routes:
     - match: HostSNI(`*`)
       services:
-      - name: uyuni-tcp
+      - name: tomcat 
         port: 5557
 {{- end }}
 {{- if .Values.exposeJavaDebug }}
@@ -113,56 +146,64 @@ spec:
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRouteTCP
 metadata:
-  name: tomcat-debug-router
+  name: tomcat-debug-route
   namespace: "{{ .Release.Namespace }}"
+  labels:
+    app.kubernetes.io/part-of: uyuni
 spec:
   entryPoints:
     - tomcat-debug
   routes:
     - match: HostSNI(`*`)
       services:
-      - name: uyuni-tcp
+      - name: tomcat 
         port: 8003
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRouteTCP
 metadata:
-  name: search-debug-router
+  name: search-debug-route
   namespace: "{{ .Release.Namespace }}"
+  labels:
+    app.kubernetes.io/part-of: uyuni
 spec:
   entryPoints:
     - search-debug
   routes:
     - match: HostSNI(`*`)
       services:
-      - name: uyuni-tcp
+      - name: search
         port: 8002
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRouteTCP
 metadata:
-  name: tasko-debug-router
+  name: tasko-debug-route
   namespace: "{{ .Release.Namespace }}"
+  labels:
+    app.kubernetes.io/part-of: uyuni
 spec:
   entryPoints:
     - tasko-debug
   routes:
     - match: HostSNI(`*`)
       services:
-      - name: uyuni-tcp
+      - name: taskomatic 
         port: 8001
 {{- end }}
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRouteUDP
 metadata:
-  name: tftp-router
+  name: tftp-route
   namespace: "{{ .Release.Namespace }}"
+  labels:
+    app.kubernetes.io/part-of: uyuni
 spec:
   entryPoints:
     - tftp
   routes:
     - services:
-      - name: uyuni-udp
+      - name: tftp 
         port: 69
 {{- end }}
