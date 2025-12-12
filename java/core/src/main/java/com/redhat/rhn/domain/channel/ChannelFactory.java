@@ -2533,7 +2533,9 @@ public class ChannelFactory extends HibernateFactory {
         setValueIfNotNull(channel, modifyChannelInfo.getGpgKeyUrl(), Channel::setGPGKeyUrl);
         setValueIfNotNull(channel, modifyChannelInfo.getGpgKeyId(), Channel::setGPGKeyId);
         setValueIfNotNull(channel, modifyChannelInfo.getGpgKeyFp(), Channel::setGPGKeyFp);
-        setValueIfNotNull(channel, modifyChannelInfo.getEndOfLifeDate(), Channel::setEndOfLife);
+
+        //end of life can be null, meaning there is no end of life
+        channel.setEndOfLife(modifyChannelInfo.getEndOfLifeDate());
 
         if ((null != modifyChannelInfo.getChannelProductProduct()) &&
                 (null != modifyChannelInfo.getChannelProductVersion())) {
