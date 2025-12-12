@@ -1,6 +1,6 @@
 import type { FC, ReactElement } from "react";
 
-import { BaseChannelType, ChildChannelType } from "core/channels/type/channels.type";
+import { ChildChannelType } from "core/channels/type/channels.type";
 
 import { ChannelAnchorLink } from "components/links";
 import { Highlight } from "components/table/Highlight";
@@ -18,7 +18,7 @@ type Props = {
   /** The channel processor used to retrieve the information about the channels */
   channelProcessor: Readonly<ChannelProcessor>;
   /** Callback to invoke when a channel is selected/deselected */
-  onToggleChannelSelect: (channel: BaseChannelType | ChildChannelType, toState?: boolean) => void;
+  onToggleChannelSelect: (channelId: number, toState?: boolean) => void;
 };
 
 function getTooltip(channelDependencies: ChannelDependencyData): string {
@@ -38,7 +38,7 @@ function getTooltip(channelDependencies: ChannelDependencyData): string {
 }
 
 const ChildChannel: FC<Props> = ({ search = "", ...props }: Props): ReactElement => {
-  const { id, name, recommended, parent } = props.channel;
+  const { id, name, recommended, parentId } = props.channel;
   const identifier = "child_" + id;
 
   const tooltip = getTooltip(props.channelProcessor.getDependencyData(id));
@@ -48,6 +48,7 @@ const ChildChannel: FC<Props> = ({ search = "", ...props }: Props): ReactElement
   const selectedBaseChannel = selectedBaseChannelId
     ? props.channelProcessor.getChannelById(selectedBaseChannelId)
     : undefined;
+  const parent = props.channelProcessor.getChannelById(parentId);
   const isRequiredBySelectedBaseChannel = Boolean(selectedBaseChannel && requiredBy?.has(selectedBaseChannel));
   const isReqiredByBase = requiredBy?.has(parent);
 
@@ -60,7 +61,7 @@ const ChildChannel: FC<Props> = ({ search = "", ...props }: Props): ReactElement
         name="childChannels"
         readOnly
         checked={props.isSelected}
-        onClick={() => props.onToggleChannelSelect(props.channel)}
+        onClick={() => props.onToggleChannelSelect(id)}
         disabled={isRequiredBySelectedBaseChannel}
       />
       <label className={`${styles.collapsible} ${styles.child_name}`} title={tooltip || undefined} htmlFor={identifier}>
