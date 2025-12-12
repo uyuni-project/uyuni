@@ -49,6 +49,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -120,13 +121,11 @@ public class SystemHardwareAction extends RhnAction {
                 mapping.findForward(fwd), params);
     }
 
-    private void setupForm(HttpServletRequest request, CPU cpu, Server server,
-            DynaActionForm daForm) {
+    private void setupForm(HttpServletRequest request, CPU cpu, Server server, DynaActionForm daForm) {
 
         if (server.findPrimaryNetworkInterface() != null) {
             daForm.set("primaryInterface", server.findPrimaryNetworkInterface().getName());
-            request.setAttribute("primaryInterface",
-                    server.findPrimaryNetworkInterface().getName());
+            request.setAttribute("primaryInterface", server.findPrimaryNetworkInterface().getName());
         }
         if (server.getActiveNetworkInterfaces() != null) {
             request.setAttribute("networkInterfaces", getNetworkInterfaces(server));
@@ -137,6 +136,68 @@ public class SystemHardwareAction extends RhnAction {
             request.setAttribute("primaryFQDN", fqdn.getName());
         }
         request.setAttribute("system", server);
+
+        setRequestAttributesCpu(request, cpu, server);
+
+        request.setAttribute("system_ram", server.getRam());
+        request.setAttribute("system_swap", server.getSwap());
+        request.setAttribute("machine_id", server.getMachineId());
+
+        setRequestAttributesDmi(request, server);
+
+        request.setAttribute("network_hostname", server.getDecodedHostname());
+        request.setAttribute("network_ip_addr", server.getIpAddress());
+        request.setAttribute("network_ip6_addr", server.getIp6Address());
+        request.setAttribute("network_cnames", server.getDecodedCnames());
+        request.setAttribute("fqdns", server.getFqdns());
+
+        setRequestAttributesNic(request, server);
+
+        Map<String, List<Map<String, String>>> categorizedDevicesMap = server.getDevices()
+                .stream()
+                .collect(Collectors.groupingBy(
+                        SystemHardwareAction::classify,
+                        Collectors.mapping(SystemHardwareAction::getDeviceAttributes, Collectors.toList())));
+
+        List<Map<String, String>> storageDevices = new ArrayList<>();
+        for (Device hd : ServerFactory.lookupStorageDevicesByServer(server)) {
+            Map<String, String> device = new HashMap<>();
+            device.put("description", hd.getDescription());
+            device.put("device", hd.getDevice());
+            device.put("bus", hd.getBus());
+            storageDevices.add(device);
+        }
+
+        request.setAttribute("storageDevices", storageDevices);
+        request.setAttribute("videoDevices", categorizedDevicesMap.getOrDefault("VIDEO", List.of()));
+        request.setAttribute("audioDevices", categorizedDevicesMap.getOrDefault("AUDIO", List.of()));
+        request.setAttribute("miscDevices", categorizedDevicesMap.getOrDefault("MISC", List.of()));
+        request.setAttribute("usbDevices", categorizedDevicesMap.getOrDefault("USB", List.of()));
+        request.setAttribute("captureDevices", categorizedDevicesMap.getOrDefault("CAPTURE", List.of()));
+
+        request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI());
+    }
+
+    private static String classify(Device d) {
+        switch (d.getDeviceClass()) {
+            case "HD":
+                break;
+            case "VIDEO":
+            case "USB":
+            case "AUDIO":
+            case "CAPTURE":
+                return d.getDeviceClass();
+            default:
+                if (!d.getBus().equals("MISC")) {
+                    return "MISC";
+                }
+                break;
+        }
+
+        return "UNCLASSIFIED";
+    }
+
+    private void setRequestAttributesCpu(HttpServletRequest request, CPU cpu, Server server) {
         if (cpu != null) {
             request.setAttribute("cpu_model", cpu.getModel());
             request.setAttribute("cpu_count", cpu.getNrCPU());
@@ -150,12 +211,9 @@ public class SystemHardwareAction extends RhnAction {
             request.setAttribute("cpu_cores", cpu.getNrCore());
             request.setAttribute("cpu_threads", cpu.getNrThread());
         }
+    }
 
-
-        request.setAttribute("system_ram", server.getRam());
-        request.setAttribute("system_swap", server.getSwap());
-        request.setAttribute("machine_id", server.getMachineId());
-
+    private void setRequestAttributesDmi(HttpServletRequest request, Server server) {
         StringBuilder dmiBios = new StringBuilder();
         if (server.getDmi() != null) {
 
@@ -178,13 +236,9 @@ public class SystemHardwareAction extends RhnAction {
             request.setAttribute("dmi_asset_tag", server.getDmi().getAsset());
             request.setAttribute("dmi_board", server.getDmi().getBoard());
         }
+    }
 
-        request.setAttribute("network_hostname", server.getDecodedHostname());
-        request.setAttribute("network_ip_addr", server.getIpAddress());
-        request.setAttribute("network_ip6_addr", server.getIp6Address());
-        request.setAttribute("network_cnames", server.getDecodedCnames());
-        request.setAttribute("fqdns", server.getFqdns());
-
+    private void setRequestAttributesNic(HttpServletRequest request, Server server) {
         List<String> nicList = new ArrayList<>();
         for (NetworkInterface n : server.getNetworkInterfaces()) {
             nicList.add(n.getName());
@@ -231,78 +285,35 @@ public class SystemHardwareAction extends RhnAction {
         request.setAttribute("network_interfaces", nicList2);
         request.setAttribute("ipv6_network_interfaces", nicList3);
         request.setAttribute("noip_network_interfaces", nicList4);
+    }
 
-        List<Map<String, String>> miscDevices = new ArrayList<>();
-        List<Map<String, String>> videoDevices = new ArrayList<>();
-        List<Map<String, String>> audioDevices = new ArrayList<>();
-        List<Map<String, String>> captureDevices = new ArrayList<>();
-        List<Map<String, String>> usbDevices = new ArrayList<>();
+    private static Map<String, String> getDeviceAttributes(Device d) {
+        Map<String, String> device = new HashMap<>();
+        String desc = null;
+        String vendor = null;
 
-        for (Device d : server.getDevices()) {
-            Map<String, String> device = new HashMap<>();
-            String desc = null;
-            String vendor = null;
-
-            if (d.getDescription() != null) {
-                StringTokenizer st = new StringTokenizer(d.getDescription(), "|");
-                vendor = st.nextToken();
-                if (st.hasMoreTokens()) {
-                    desc = st.nextToken();
-                }
-            }
-
-            if (desc != null) {
-                device.put("description", desc);
-                device.put("vendor", vendor);
-            }
-            else {
-                device.put("description", d.getDescription());
-            }
-            device.put("bus", d.getBus());
-            device.put("detached", d.getDetached().toString());
-            device.put("device", d.getDevice());
-            device.put("driver", d.getDriver());
-            device.put("pcitype", d.getPcitype().toString());
-            switch (d.getDeviceClass()) {
-                case "HD":
-                    continue;
-                case "VIDEO":
-                    videoDevices.add(device);
-                    break;
-                case "USB":
-                    usbDevices.add(device);
-                    break;
-                case "AUDIO":
-                    audioDevices.add(device);
-                    break;
-                case "CAPTURE":
-                    captureDevices.add(device);
-                    break;
-                default:
-                    if (!d.getBus().equals("MISC")) {
-                        miscDevices.add(device);
-                    }
-                    break;
+        if (d.getDescription() != null) {
+            StringTokenizer st = new StringTokenizer(d.getDescription(), "|");
+            vendor = st.nextToken();
+            if (st.hasMoreTokens()) {
+                desc = st.nextToken();
             }
         }
 
-        List<Map<String, String>> storageDevices = new ArrayList<>();
-        for (Device hd : ServerFactory.lookupStorageDevicesByServer(server)) {
-            Map<String, String> device = new HashMap<>();
-            device.put("description", hd.getDescription());
-            device.put("device", hd.getDevice());
-            device.put("bus", hd.getBus());
-            storageDevices.add(device);
+        if (desc != null) {
+            device.put("description", desc);
+            device.put("vendor", vendor);
         }
+        else {
+            device.put("description", d.getDescription());
+        }
+        device.put("bus", d.getBus());
+        device.put("detached", d.getDetached().toString());
+        device.put("device", d.getDevice());
+        device.put("driver", d.getDriver());
+        device.put("pcitype", d.getPcitype().toString());
 
-        request.setAttribute("storageDevices", storageDevices);
-        request.setAttribute("videoDevices", videoDevices);
-        request.setAttribute("audioDevices", audioDevices);
-        request.setAttribute("miscDevices", miscDevices);
-        request.setAttribute("usbDevices", usbDevices);
-        request.setAttribute("captureDevices", captureDevices);
-
-        request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI());
+        return device;
     }
 
     private List<Map<String, String>> getNetworkInterfaces(Server s) {
