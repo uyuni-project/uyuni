@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2009--2014 Red Hat, Inc.
+ * Copyright (c) 2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -14,7 +15,6 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.test;
 
-import static com.suse.manager.webui.services.SaltConstants.SALT_CONFIG_STATES_DIR;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -29,13 +29,8 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestStatics;
 import com.redhat.rhn.testing.UserTestUtils;
 
-import com.suse.manager.webui.services.SaltStateGeneratorService;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 public class BaseHandlerTestCase extends RhnBaseTestCase {
     /*
@@ -50,7 +45,6 @@ public class BaseHandlerTestCase extends RhnBaseTestCase {
     protected String adminKey;
     protected String regularKey;
     protected String satAdminKey;
-    protected Path tmpSaltRoot;
     private boolean committed;
 
     @Override
@@ -85,11 +79,6 @@ public class BaseHandlerTestCase extends RhnBaseTestCase {
 
         // Setup configuration for kickstart tests (mock cobbler etc.)
         KickstartDataTest.setupTestConfiguration(admin);
-
-        tmpSaltRoot = Files.createTempDirectory("salt");
-        SaltStateGeneratorService.INSTANCE.setSkipSetOwner(true);
-        SaltStateGeneratorService.INSTANCE.setSuseManagerStatesFilesRoot(tmpSaltRoot.toAbsolutePath());
-        Files.createDirectory(tmpSaltRoot.resolve(SALT_CONFIG_STATES_DIR));
     }
 
     @AfterEach

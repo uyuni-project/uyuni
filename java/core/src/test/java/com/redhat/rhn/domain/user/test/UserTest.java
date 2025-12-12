@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2009--2015 Red Hat, Inc.
+ * Copyright (c) 2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -45,13 +46,14 @@ import java.util.Set;
  */
 public class UserTest extends RhnBaseTestCase {
 
-
     /**
      * {@inheritDoc}
      */
     @Override
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws Exception {
+        super.setUp();
+
         TestUtils.disableLocalizationLogging();
     }
 

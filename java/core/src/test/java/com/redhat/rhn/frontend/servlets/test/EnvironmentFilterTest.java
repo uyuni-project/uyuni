@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2009--2013 Red Hat, Inc.
+ * Copyright (c) 2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -28,18 +29,14 @@ import org.jmock.Expectations;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-
 /**
  * EnvironmentFilterTest
  */
-public class EnvironmentFilterTest extends BaseFilterTst {
+public class EnvironmentFilterTest extends BaseFilterTest {
 
     @Override
     @BeforeEach
-    public void setUp() throws ServletException, IOException {
+    public void setUp() throws Exception {
         super.setUp();
         this.request.setRequestURL("https://rhn.webdev.redhat.com/rhn/manager/login");
 
