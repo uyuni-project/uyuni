@@ -22,7 +22,7 @@ import com.redhat.rhn.manager.common.BaseFileListEditCommand;
 
 import org.apache.struts.action.DynaActionForm;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * AbstractPreservationListEditAction - stuts action for editing/creating

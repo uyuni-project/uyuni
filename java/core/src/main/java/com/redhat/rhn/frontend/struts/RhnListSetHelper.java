@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.frontend.struts;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 
 /**

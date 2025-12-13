@@ -22,13 +22,13 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.Immutable;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 
 /**
  * TemplateCategory
@@ -40,8 +40,8 @@ import javax.persistence.Table;
 public class TemplateCategory extends BaseDomainHelper {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_TEMPLATE_CAT_ID_SEQ")
-    @SequenceGenerator(name = "RHN_TEMPLATE_CAT_ID_SEQ", sequenceName = "RHN_TEMPLATE_CAT_ID_SEQ", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_TEMPLATE_CAT_ID_SEQ")
+	@SequenceGenerator(name = "RHN_TEMPLATE_CAT_ID_SEQ", sequenceName = "RHN_TEMPLATE_CAT_ID_SEQ", allocationSize = 1)
     private Long id;
 
     @Column
