@@ -20,29 +20,22 @@ jobs:
     container: registry.opensuse.org/systemsmanagement/uyuni/master/docker/containers_tw/uyuni-master-python:latest
 
     steps:
-    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 #v4.2.2
+    - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 #v5.0.0
 
     - id: files
       uses: Ana06/get-changed-files@25f79e676e7ea1868813e21465014798211fad8c #v2.3.0
       with:
-        filter: '*.py'
+        # Remember to keep the filter aligned with CODEOWNERS
+        filter:  |
+          *.py
+          !mgr_bootstrap_data.py
+          !testsuite/**
     
-    - id: filter-files
-      run: |
-        echo added_modified_renamed="$( echo '${{ steps.files.outputs.added_modified_renamed }}' | tr ' ' '\n' | grep -E '^(python|spacewalk|susemanager|containers)/' | tr '\n' ' ')" >> $GITHUB_ENV
-
     - name: Run black on files
-      run: |
-        if [[ -z "$added_modified_renamed" ]]; then
-            echo "no files to check, OK"
-        else
-            black --check --diff -t py36 $added_modified_renamed
-        fi
+      if: ${{ steps.files.outputs.added_modified_renamed }}
+      run: black --check --diff -t py36 ${{ steps.files.outputs.added_modified_renamed }}
 
     - name: Run pylint on files
-      run: |
-        if [[ -z "$added_modified_renamed" ]]; then
-            echo "no files to check, OK"
-        else
-            pylint --rcfile=/root/.pylintrc $added_modified_renamed
-        fi
+      if: ${{ steps.files.outputs.added_modified_renamed }}
+      run: pylint --rcfile=/root/.pylintrc ${{ steps.files.outputs.added_modified_renamed }}
+

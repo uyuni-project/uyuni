@@ -1,5 +1,6 @@
-import * as React from "react";
-import { useState } from "react";
+import { type ReactNode, Component, useState } from "react";
+
+import { DEPRECATED_onClick } from "components/utils";
 
 import HighstateSummary from "./highstate-summary";
 
@@ -19,9 +20,9 @@ function MinionHighstate({ minion }: { minion: { id: number; name: string } }) {
     <div className="panel panel-default" style={{ marginBottom: 10 }}>
       <div
         className="panel-heading"
-        onClick={() => {
+        {...DEPRECATED_onClick(() => {
           setShow(!show);
-        }}
+        })}
         style={{ cursor: "pointer" }}
       >
         <div className="row">
@@ -48,7 +49,7 @@ type DisplayHighstateState = {
   minions?: any;
 };
 
-class DisplayHighstate extends React.Component<DisplayHighstateProps, DisplayHighstateState> {
+class DisplayHighstate extends Component<DisplayHighstateProps, DisplayHighstateState> {
   constructor(props: DisplayHighstateProps) {
     super(props);
 
@@ -58,7 +59,7 @@ class DisplayHighstate extends React.Component<DisplayHighstateProps, DisplayHig
   }
 
   renderMinions = () => {
-    const minionList: React.ReactNode[] = [];
+    const minionList: ReactNode[] = [];
     for (const minion of this.state.minions) {
       minionList.push(<MinionHighstate minion={minion} />);
     }

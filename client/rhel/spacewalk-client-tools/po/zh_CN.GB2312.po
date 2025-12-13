@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-11 13:25+0200\n"
+"POT-Creation-Date: 2025-10-03 11:04+0200\n"
 "PO-Revision-Date: 2012-11-21 07:36+0000\n"
 "Last-Translator: adelton <jpx-tx@adelton.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,54 +18,56 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../src/up2date_client/config.py:162
+#. pylint: disable-next=consider-using-f-string
+#: ../src/up2date_client/config.py:166
 #, python-format
 msgid "%s was not found"
 msgstr ""
 
-#: ../src/up2date_client/rpcServer.py:55
+#: ../src/up2date_client/rpcServer.py:70
 msgid "Error: Server Unavailable. Please try later."
 msgstr ""
 
-#: ../src/up2date_client/rpcServer.py:181
+#. pylint: disable-next=consider-using-f-string
+#: ../src/up2date_client/rpcServer.py:221
 msgid "ERROR: can not find server CA file"
 msgstr ""
 
-#: ../src/up2date_client/up2dateErrors.py:47
-#: ../src/up2date_client/up2dateErrors.py:80
+#: ../src/up2date_client/up2dateErrors.py:62
+#: ../src/up2date_client/up2dateErrors.py:101
 #, python-format
 msgid "class %s has no attribute '%s'"
 msgstr ""
 
-#: ../src/up2date_client/up2dateErrors.py:107
+#: ../src/up2date_client/up2dateErrors.py:135
 msgid "RPM error.  The message was:\n"
 msgstr "RPM 错误。错误讯息是：\n"
 
-#: ../src/up2date_client/up2dateErrors.py:114
+#: ../src/up2date_client/up2dateErrors.py:145
 msgid "Password error. The message was:\n"
 msgstr "口令错误。错误讯息是：\n"
 
-#: ../src/up2date_client/up2dateErrors.py:118
+#: ../src/up2date_client/up2dateErrors.py:151
 msgid "RPM dependency error. The message was:\n"
 msgstr "RPM 依赖关系错误。错误讯息是：\n"
 
-#: ../src/up2date_client/up2dateErrors.py:128
+#: ../src/up2date_client/up2dateErrors.py:163
 msgid "Error communicating with server. The message was:\n"
 msgstr "在与服务器联络时出错。错误讯息是：\n"
 
-#: ../src/up2date_client/up2dateErrors.py:135
+#: ../src/up2date_client/up2dateErrors.py:172
 msgid "File Not Found: \n"
 msgstr "没有找到文件：\n"
 
-#: ../src/up2date_client/up2dateErrors.py:142
+#: ../src/up2date_client/up2dateErrors.py:180
 msgid "Delay error from server.  The message was:\n"
 msgstr "来自服务器的延迟错误。  错误讯息是：\n"
 
-#: ../src/up2date_client/up2dateErrors.py:178
+#: ../src/up2date_client/up2dateErrors.py:229
 msgid "Error validating data at server:\n"
 msgstr ""
 
-#: ../src/up2date_client/up2dateErrors.py:191
+#: ../src/up2date_client/up2dateErrors.py:246
 #, fuzzy
 msgid ""
 "\n"
@@ -73,35 +75,30 @@ msgid ""
 "    "
 msgstr "Red Hat 网络配置"
 
-#: ../src/up2date_client/up2dateErrors.py:197
+#: ../src/up2date_client/up2dateErrors.py:255
 msgid "The installation number is invalid"
 msgstr "你必须作为根用户运行更新代理。"
 
-#: ../src/up2date_client/up2dateErrors.py:200
+#: ../src/up2date_client/up2dateErrors.py:259
 msgid "Error parsing the oemInfo file at field:\n"
 msgstr ""
 
-#: ../src/up2date_client/up2dateErrors.py:227
+#: ../src/up2date_client/up2dateErrors.py:294
 msgid "Network error: "
 msgstr ""
 
-#: ../src/up2date_client/up2dateErrors.py:295
+#: ../src/up2date_client/up2dateErrors.py:385
 msgid ""
 "\n"
-"    Your organization does not have enough Management entitlements to "
-"register this\n"
+"    Your organization does not have enough Management entitlements to register this\n"
 "    system. Please notify your organization administrator of this error.\n"
-"    You should be able to register this system after your organization frees "
-"existing\n"
-"    or purchases additional entitlements. Additional entitlements may be "
-"purchased by your\n"
+"    You should be able to register this system after your organization frees existing\n"
+"    or purchases additional entitlements. Additional entitlements may be purchased by your\n"
 "    organization administrator in the SUSE Customer Center.\n"
 "\n"
 "    A common cause of this error code is due to having mistakenly setup an\n"
-"    Activation Key which is set as the universal default.  If an activation "
-"key is set\n"
-"    on the account as a universal default, you can disable this key and "
-"retry to avoid\n"
+"    Activation Key which is set as the universal default.  If an activation key is set\n"
+"    on the account as a universal default, you can disable this key and retry to avoid\n"
 "    requiring a Management entitlement."
 msgstr ""
 
@@ -222,9 +219,7 @@ msgstr ""
 #~ msgstr "描述"
 
 #, fuzzy, python-format, python-brace-format
-#~ msgid ""
-#~ "The installation number %s was activated during this system's initial "
-#~ "connection to {PRODUCT_NAME}."
+#~ msgid "The installation number %s was activated during this system's initial connection to {PRODUCT_NAME}."
 #~ msgstr "Red Hat 网络配置"
 
 #~ msgid "Software Channel Subscriptions:"
@@ -324,9 +319,7 @@ msgstr ""
 #~ msgid "There was an error while logging in."
 #~ msgstr "显示程序版本信息"
 
-#~ msgid ""
-#~ "There was an error communicating with the registration server.  The "
-#~ "message was:\n"
+#~ msgid "There was an error communicating with the registration server.  The message was:\n"
 #~ msgstr "在与服务器联络时出现了一个致命错误。  错误讯息是：\n"
 
 #~ msgid "There was an error while assembling information for the profile."
@@ -377,8 +370,7 @@ msgstr ""
 #~ msgid "Arch"
 #~ msgstr "体系"
 
-#~ msgid ""
-#~ "Building a list of RPM packages installed on your system.  Please wait."
+#~ msgid "Building a list of RPM packages installed on your system.  Please wait."
 #~ msgstr ""
 #~ "Red Hat 更新代理正在建立一个在你的系统上\n"
 #~ "安装的更新了的 RPM 软件包列表。  请稍候。"
@@ -528,8 +520,7 @@ msgstr ""
 #~ msgstr "Red Hat 网络配置"
 
 #~ msgid ""
-#~ "Please enter your login information for Red Hat Network (http://rhn."
-#~ "redhat.com/):\n"
+#~ "Please enter your login information for Red Hat Network (http://rhn.redhat.com/):\n"
 #~ "\n"
 #~ msgstr "https://rhn.redhat.com\n"
 
@@ -586,8 +577,7 @@ msgstr ""
 #~ msgstr "更新软件包档案……"
 
 #, fuzzy
-#~ msgid ""
-#~ "I have an <b>_SSL certificate</b> to communicate with Red Hat Network:"
+#~ msgid "I have an <b>_SSL certificate</b> to communicate with Red Hat Network:"
 #~ msgstr "在与服务器联络时出现了一个致命错误。  错误讯息是："
 
 #, fuzzy
@@ -618,9 +608,7 @@ msgstr ""
 #~ msgid "Enter Your Account Information"
 #~ msgstr "顾问信息"
 
-#~ msgid ""
-#~ "Please enter your account information for <b>Red Hat Network</b> (http://"
-#~ "rhn.redhat.com/)"
+#~ msgid "Please enter your account information for <b>Red Hat Network</b> (http://rhn.redhat.com/)"
 #~ msgstr "https://rhn.redhat.com"
 
 #~ msgid "_Take me back to the registration"
@@ -653,13 +641,10 @@ msgstr ""
 #~ msgid "GPG is not installed properly."
 #~ msgstr "GPG 没有被正确安装。"
 
-#~ msgid ""
-#~ "GPG keyring does not include the Red Hat, Inc. public package-signing key"
+#~ msgid "GPG keyring does not include the Red Hat, Inc. public package-signing key"
 #~ msgstr "GPG 钥匙圈不包括 Red Hat, Inc. 公共软件包签名钥匙"
 
-#~ msgid ""
-#~ "The package %s failed its gpg signature verification. This means the "
-#~ "package is corrupt."
+#~ msgid "The package %s failed its gpg signature verification. This means the package is corrupt."
 #~ msgstr "软件包 %s 的 GPG 签名校验失败。这意味着这个软件包被损坏。"
 
 #~ msgid "Package %s does not have a GPG signature.\n"
@@ -1004,10 +989,7 @@ msgstr ""
 #~ msgid "SSL Warning"
 #~ msgstr "正在准备……"
 
-#~ msgid ""
-#~ "Your system libraries do not support SSL (secure) connections.  Any data "
-#~ "that you send or receive from Red Hat Network will be transmitted in the "
-#~ "clear. Continue anyway?"
+#~ msgid "Your system libraries do not support SSL (secure) connections.  Any data that you send or receive from Red Hat Network will be transmitted in the clear. Continue anyway?"
 #~ msgstr ""
 #~ "你的系统库不支持 SSL（安全）连接。  你发送的或是\n"
 #~ "从 redhat.com 收到的数据将不会被加密传输。\n"
@@ -1036,9 +1018,7 @@ msgstr ""
 #~ msgid "Retrieved."
 #~ msgstr "正在检索："
 
-#~ msgid ""
-#~ "The following packages were added to your selection to satisfy "
-#~ "dependencies:"
+#~ msgid "The following packages were added to your selection to satisfy dependencies:"
 #~ msgstr "下列软件包已被添加到你的选择中以便满足依赖关系："
 
 #~ msgid ""
@@ -1052,8 +1032,7 @@ msgstr ""
 
 #~ msgid ""
 #~ "\n"
-#~ "Name                          Version        Rel             "
-#~ "Channel     \n"
+#~ "Name                          Version        Rel             Channel     \n"
 #~ "----------------------------------------------------------------------"
 #~ msgstr ""
 #~ "\n"
@@ -1072,8 +1051,7 @@ msgstr ""
 #~ "名称                                    版本        发现版本     \n"
 #~ "----------------------------------------------------------"
 
-#~ msgid ""
-#~ "The following Packages were marked to be skipped by your configuration:"
+#~ msgid "The following Packages were marked to be skipped by your configuration:"
 #~ msgstr "下列软件包被你的配置标记为要跳过："
 
 #~ msgid ""
@@ -1103,9 +1081,7 @@ msgstr ""
 #~ "名称                                    版本        发行原因\n"
 #~ "-------------------------------------------------------------------------------"
 
-#~ msgid ""
-#~ "The following packages were not installed because they are obsoleted by "
-#~ "installed packages:"
+#~ msgid "The following packages were not installed because they are obsoleted by installed packages:"
 #~ msgstr "下列软件包被你的配置标记为要跳过："
 
 #~ msgid ""
@@ -1117,9 +1093,7 @@ msgstr ""
 #~ "名称                                    版本        发行原因\n"
 #~ "-------------------------------------------------------------------------------"
 
-#~ msgid ""
-#~ "The following packages are not installed but available from Red Hat "
-#~ "Network:"
+#~ msgid "The following packages are not installed but available from Red Hat Network:"
 #~ msgstr "下列软件包被你的配置标记为要跳过："
 
 #~ msgid ""
@@ -1148,10 +1122,8 @@ msgstr ""
 
 #~ msgid ""
 #~ "\n"
-#~ "    To solve all dependencies for the RPMs you have selected, The "
-#~ "following\n"
-#~ "    packages you have marked to exclude would have to be added to the "
-#~ "set:\n"
+#~ "    To solve all dependencies for the RPMs you have selected, The following\n"
+#~ "    packages you have marked to exclude would have to be added to the set:\n"
 #~ "    "
 #~ msgstr ""
 #~ "\n"
@@ -1178,9 +1150,7 @@ msgstr ""
 #~ msgid "Could not satisfy conflict dependencies."
 #~ msgstr "无法满足冲突的依赖关系。"
 
-#~ msgid ""
-#~ "The following packages were added to your selection to satisfy "
-#~ "dependencies:\n"
+#~ msgid "The following packages were added to your selection to satisfy dependencies:\n"
 #~ msgstr "下列软件包已被添加到你的选择中以便满足依赖关系："
 
 #~ msgid "Package                                Required by\n"
@@ -1207,12 +1177,8 @@ msgstr ""
 #~ "不可解决的连锁依赖关系：\n"
 #~ "%s"
 
-#~ msgid ""
-#~ "elilo options that are not supported by up2date are used in the default "
-#~ "elilo.conf. This file will not be modified. The options include:\n"
-#~ msgstr ""
-#~ "不被 up2date 支持的 elilo 选项在默认的 elilo.conf 被使用。这个文件将不会被"
-#~ "修改。 选项包括：\n"
+#~ msgid "elilo options that are not supported by up2date are used in the default elilo.conf. This file will not be modified. The options include:\n"
+#~ msgstr "不被 up2date 支持的 elilo 选项在默认的 elilo.conf 被使用。这个文件将不会被修改。 选项包括：\n"
 
 #~ msgid "Unable to run grubby correctly: the message was:\n"
 #~ msgstr "无法正确运行 grubby：错误讯息是：\n"
@@ -1222,18 +1188,11 @@ msgstr ""
 
 #~ msgid ""
 #~ "This software is distributed under the GPL\n"
-#~ "Please Report bugs to Red Hat's Bug Tracking System: http://bugzilla."
-#~ "redhat.com/bugzilla/"
-#~ msgstr ""
-#~ "该软件是在 GPL 的条款下发行的。请想 Red Hat 错误跟踪系统报告错误： http://"
-#~ "bugzilla.redhat.com/bugzilla/"
+#~ "Please Report bugs to Red Hat's Bug Tracking System: http://bugzilla.redhat.com/bugzilla/"
+#~ msgstr "该软件是在 GPL 的条款下发行的。请想 Red Hat 错误跟踪系统报告错误： http://bugzilla.redhat.com/bugzilla/"
 
-#~ msgid ""
-#~ "This software is distributed under the GPL.  Please Report bugs to Red "
-#~ "Hat's Bug Tracking System: http://bugzilla.redhat.com/bugzilla/"
-#~ msgstr ""
-#~ "该软件是在 GPL 的条款下发行的。请想 Red Hat 错误跟踪系统报告错误： http://"
-#~ "bugzilla.redhat.com/bugzilla/"
+#~ msgid "This software is distributed under the GPL.  Please Report bugs to Red Hat's Bug Tracking System: http://bugzilla.redhat.com/bugzilla/"
+#~ msgstr "该软件是在 GPL 的条款下发行的。请想 Red Hat 错误跟踪系统报告错误： http://bugzilla.redhat.com/bugzilla/"
 
 #~ msgid "Version"
 #~ msgstr "版本"
@@ -1265,9 +1224,7 @@ msgstr ""
 #~ msgid "Up2date - Hardware Profile"
 #~ msgstr "更新软件包档案……"
 
-#~ msgid ""
-#~ "The Registration Wizard is building a list of RPM packages installed on "
-#~ "your system.  Please wait."
+#~ msgid "The Registration Wizard is building a list of RPM packages installed on your system.  Please wait."
 #~ msgstr ""
 #~ "Red Hat 更新代理正在建立一个在你的系统上\n"
 #~ "安装的更新了的 RPM 软件包列表。  请稍候。"
@@ -1285,8 +1242,7 @@ msgstr ""
 #~ msgid "There was a fatal RPM error.  The message was:\n"
 #~ msgstr "出现了一个致命的 RPM 错误。  错误讯息是：\n"
 
-#~ msgid ""
-#~ "There was a fatal error communicating with the server.  The message was:\n"
+#~ msgid "There was a fatal error communicating with the server.  The message was:\n"
 #~ msgstr "在与服务器联络时出现了一个致命错误。  错误讯息是：\n"
 
 #~ msgid ""
@@ -1450,12 +1406,8 @@ msgstr ""
 #~ msgid "Error reading lilo.conf: The messages was:\n"
 #~ msgstr "读取 lilo.conf 出错：错误讯息是：\n"
 
-#~ msgid ""
-#~ "lilo options that are not supported by up2date are used in the default "
-#~ "lilo.conf. This file will not be modified. The options include:\n"
-#~ msgstr ""
-#~ "不被 up2date 支持的 lilo 选项在默认的 lilo.conf 被使用。这个文件将不会被修"
-#~ "改。选项包括：\n"
+#~ msgid "lilo options that are not supported by up2date are used in the default lilo.conf. This file will not be modified. The options include:\n"
+#~ msgstr "不被 up2date 支持的 lilo 选项在默认的 lilo.conf 被使用。这个文件将不会被修改。选项包括：\n"
 
 #~ msgid "Pkg name/pattern"
 #~ msgstr "软件包名称/ 图案"
@@ -1518,8 +1470,7 @@ msgstr ""
 #~ "软件包 %s 没有有效的 GPG 签名。\n"
 #~ "它被篡改了或被损坏了。继续吗？"
 
-#~ msgid ""
-#~ "The package %s is signed with a untrusted GPG signature.  Aborting..."
+#~ msgid "The package %s is signed with a untrusted GPG signature.  Aborting..."
 #~ msgstr "软件包 %s 没有 GPG 签名。  继续吗？"
 
 #~ msgid "The package %s is signed, but with an unknown GPG key. Aborting..."
@@ -1545,8 +1496,7 @@ msgstr ""
 
 #~ msgid ""
 #~ "Your GPG keyring does not contain the Red Hat, Inc. public key.\n"
-#~ "Without it, you will be unable to verify that packages Update Agent "
-#~ "downloads\n"
+#~ "Without it, you will be unable to verify that packages Update Agent downloads\n"
 #~ "are securely signed by Red Hat.\n"
 #~ "\n"
 #~ "Your Update Agent options specify that you want to use GPG."
@@ -1563,8 +1513,7 @@ msgstr ""
 
 #~ msgid ""
 #~ "Your GPG keyring does not contain the Red Hat, Inc. public key.\n"
-#~ "Without it, you will be unable to verify that packages Update Agent "
-#~ "downloads\n"
+#~ "Without it, you will be unable to verify that packages Update Agent downloads\n"
 #~ "are securely signed by Red Hat.\n"
 #~ "\n"
 #~ "Your Update Agent options specify that you want to use GPG.\n"
@@ -1645,9 +1594,7 @@ msgstr ""
 #~ msgid "do not use GPG to check package signatures"
 #~ msgstr "不要使用 GPG 来检查软件包签名"
 
-#~ msgid ""
-#~ "up2date hardware profile associated with this System Profile on Red Hat "
-#~ "Network"
+#~ msgid "up2date hardware profile associated with this System Profile on Red Hat Network"
 #~ msgstr "更新与 Red Hat 网络上的这个系统档案相关联的软件包"
 
 #~ msgid "List all packages available for download"
@@ -1659,9 +1606,7 @@ msgstr ""
 #~ msgid "List all the install components available to install"
 #~ msgstr "列举所有可下载的软件包"
 
-#~ msgid ""
-#~ "finds, downloads, and installs the packages needed to solve the list of "
-#~ "dependencies"
+#~ msgid "finds, downloads, and installs the packages needed to solve the list of dependencies"
 #~ msgstr "搜寻、下载、并安装所需的软件包来解决这些依赖关系"
 
 #~ msgid "where to store temporary files / RPMs"
@@ -1676,8 +1621,7 @@ msgstr ""
 #~ msgid "Show the channel names along with the package name where approriate"
 #~ msgstr "与软件包名称一起在恰当的地方显示频道名称"
 
-#~ msgid ""
-#~ "Show the packages which solve the comma separated list of dependencies"
+#~ msgid "Show the packages which solve the comma separated list of dependencies"
 #~ msgstr "显示了解决用一列逗号分隔的依赖关系的软件包"
 
 #~ msgid "Specify which channels to use by channel label"
@@ -1692,9 +1636,7 @@ msgstr ""
 #~ msgid "Fetch the package specified without resolving dependencies"
 #~ msgstr "正在测试软件包集/正在解决 RPM 相互依赖关系"
 
-#~ msgid ""
-#~ "Fetch the source package for the specified package without resolving "
-#~ "dependencies"
+#~ msgid "Fetch the source package for the specified package without resolving dependencies"
 #~ msgstr "正在测试软件包集/正在解决 RPM 相互依赖关系"
 
 #~ msgid ""
@@ -1717,8 +1659,7 @@ msgstr ""
 #~ msgid "No packages were found that satisfy those dependencies."
 #~ msgstr "没有发现能满足这些依赖关系的软件包。"
 
-#~ msgid ""
-#~ "There was a fatal error communicating with the server. The message was:\n"
+#~ msgid "There was a fatal error communicating with the server. The message was:\n"
 #~ msgstr "在与服务器联络时出现了一个致命错误。  错误讯息是：\n"
 
 #~ msgid "There was a package dependency problem. The message was:\n"
@@ -1730,9 +1671,7 @@ msgstr ""
 #~ msgid "No interactive mode available"
 #~ msgstr "没有可用的互动模式"
 
-#~ msgid ""
-#~ "Please specify either -l, -u, --nox, or package names as command line "
-#~ "arguments."
+#~ msgid "Please specify either -l, -u, --nox, or package names as command line arguments."
 #~ msgstr "请把 -l, -u, --nox,或者软件包名指定为命令行参数。"
 
 #~ msgid "Unable to open gui. Try specifying \"--nox\" as an option"
@@ -1786,26 +1725,17 @@ msgstr ""
 #~ msgid "Do not install packages after retrieval"
 #~ msgstr "检索后不安装软件包"
 
-#~ msgid ""
-#~ "Do not upgrade packages when local configuration file has been modified"
+#~ msgid "Do not upgrade packages when local configuration file has been modified"
 #~ msgstr "当本地配置文件被修改后不升级软件包"
 
 #~ msgid "Enter a path where you want downloaded packages to be stored."
 #~ msgstr "输入一个你想贮存下载的软件包的路径。"
 
-#~ msgid ""
-#~ "Enter the name of a file which you want to skip when determining which "
-#~ "packages you can choose from.  Wildcards are acceptable, i.e. \"/boot/*\"."
-#~ msgstr ""
-#~ "在决定你可以从哪些软件包中选择时，输入你想跳过的文件名。 允许使用通配符，"
-#~ "如“/boot/*”。"
+#~ msgid "Enter the name of a file which you want to skip when determining which packages you can choose from.  Wildcards are acceptable, i.e. \"/boot/*\"."
+#~ msgstr "在决定你可以从哪些软件包中选择时，输入你想跳过的文件名。 允许使用通配符，如“/boot/*”。"
 
-#~ msgid ""
-#~ "Enter the name of a package which you want to skip when determining which "
-#~ "packages you can choose from.  Wildcards are acceptable, i.e. \"kernel*\"."
-#~ msgstr ""
-#~ "在决定你可以从哪些软件包中选择时，输入你想跳过的软件包名。允许使用通配符，"
-#~ "如“kernel*”。"
+#~ msgid "Enter the name of a package which you want to skip when determining which packages you can choose from.  Wildcards are acceptable, i.e. \"kernel*\"."
+#~ msgstr "在决定你可以从哪些软件包中选择时，输入你想跳过的软件包名。允许使用通配符，如“kernel*”。"
 
 #~ msgid "File Names to Skip"
 #~ msgstr "要跳过的文件名"
@@ -1820,12 +1750,8 @@ msgstr ""
 #~ "如果你需要一个 HTTP 代理，在此处输入它，格式为：主机：端口\n"
 #~ "如：squid.mysite.org:3128"
 
-#~ msgid ""
-#~ "If you need to override the automatically determined version of Red Hat "
-#~ "Linux, enter a version here, or choose from the predefined versions."
-#~ msgstr ""
-#~ "如果你需要取代被自动判定的 Red Hat Linux 版本，在此处输入版本， 或从事前定"
-#~ "义的版本中选择。"
+#~ msgid "If you need to override the automatically determined version of Red Hat Linux, enter a version here, or choose from the predefined versions."
+#~ msgstr "如果你需要取代被自动判定的 Red Hat Linux 版本，在此处输入版本， 或从事前定义的版本中选择。"
 
 #~ msgid "Network Settings"
 #~ msgstr "网络设置"
@@ -1866,8 +1792,7 @@ msgstr ""
 #~ msgid ""
 #~ "According to your preferences you have chosen not to automatically \n"
 #~ "update the above packages.  If you would like to override your settings\n"
-#~ "and include one of the above packages in the list of packages to "
-#~ "retrieve,\n"
+#~ "and include one of the above packages in the list of packages to retrieve,\n"
 #~ "select its checkbox."
 #~ msgstr ""
 #~ "根据你的偏爱选择，你已选择了要不自动更新以上软件包。\n"
@@ -1971,9 +1896,7 @@ msgstr ""
 #~ msgid "Welcome to Red Hat Update Agent"
 #~ msgstr "欢迎使用 Red Hat 更新代理"
 
-#~ msgid ""
-#~ "You may press \"Back\" to modify your package selections, or \"Forward\" "
-#~ "to continue."
+#~ msgid "You may press \"Back\" to modify your package selections, or \"Forward\" to continue."
 #~ msgstr "你可以按“上一步”来修改你的软件包选择，或者“下一步”来继续。"
 
 #~ msgid "* First name:"

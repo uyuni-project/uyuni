@@ -1,4 +1,26 @@
 -------------------------------------------------------------------
+Thu Nov 27 11:10:40 CET 2025 - michael.calmer@suse.com
+
+- version 5.2.2-0
+  * Fix and add license files for susemanager and subpackages
+  * Relicense mgr-salt-ssh under Apache-2.0 and move it
+    to a separated package named susemanager-tools-salt
+
+-------------------------------------------------------------------
+Mon Oct 27 15:33:23 CET 2025 - rosuna@suse.com
+
+- version 5.2.1-0
+  * Add logrotate to Ubuntu bootstrap repositories
+  * Allow existing pylint failures
+  * Reformat Python code with black
+  * Added missing bootrap repository definition for OES 24.4
+    (bsc#1241013)
+  * Use absolute paths when invoking external commands
+  * Configure default official update server domain
+  * Fix syntax error in changelog
+  * Add bootstrap repo data for openSUSE Leap Micro 6.2
+
+-------------------------------------------------------------------
 Tue Jun 17 17:04:48 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.11-0
@@ -1821,7 +1843,7 @@ Mon Feb  6 17:40:11 CET 2012 - ug@suse.de
 - added cracklib check to DB password dialog (bnc#744983)
 
 -------------------------------------------------------------------
-Tue Jan 31 16:40:59 CET 2012 . mantel@suse.de
+Tue Jan 31 16:40:59 CET 2012 - mantel@suse.de
 
 - fix spelling in
   /etc/sysconfig/SuSEfirewall2.d/services/suse-manager-server

@@ -1,10 +1,9 @@
-import * as React from "react";
+import { type ReactNode, Component } from "react";
 
 import { AsyncButton, Button } from "components/buttons";
 import { Dialog } from "components/dialog/LegacyDialog";
 import { showDialog } from "components/dialog/util";
-import { Messages } from "components/messages/messages";
-import { Utils as MessagesUtils } from "components/messages/messages";
+import { Messages, Utils as MessagesUtils } from "components/messages/messages";
 
 import Network from "utils/network";
 
@@ -16,7 +15,7 @@ const messageMap = {
 type Props = {
   serverId: string;
   buttonClass?: string;
-  buttonText?: React.ReactNode;
+  buttonText?: ReactNode;
   onDeleteSuccess?: (...args: any[]) => any;
 };
 
@@ -25,7 +24,7 @@ type State = {
   cleanupErr: boolean;
 };
 
-class DeleteSystem extends React.Component<Props, State> {
+class DeleteSystem extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -34,7 +33,7 @@ class DeleteSystem extends React.Component<Props, State> {
     };
   }
 
-  handleDelete = (cleanupErr: Boolean) => {
+  handleDelete = (cleanupErr: boolean) => {
     return Network.post(`/rhn/manager/api/systems/${this.props.serverId}/delete`, { nocleanup: cleanupErr })
       .then((data) => {
         if (data.success && this.props.onDeleteSuccess) {

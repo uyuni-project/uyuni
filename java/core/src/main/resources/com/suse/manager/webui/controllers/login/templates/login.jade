@@ -1,0 +1,61 @@
+doctype html
+html(lang=window.preferredLocale.replace("_", "-"))
+    head
+        // enclosing head tags in layout_c.jsp
+        meta(http-equiv='X-UA-Compatible', content='IE=edge')
+        meta(http-equiv='content-type', content='text/html;charset=UTF-8')
+        title
+            | #{title}
+        link(rel='shortcut icon', href='/img/favicon.ico')
+        meta(name='viewport', content='width=device-width, initial-scale=1.0')
+        // import default fonts/icons styles
+        link(rel='stylesheet', href='/fonts/font-awesome/css/font-awesome.css?cb=#{webBuildtimestamp}')
+        // import custom fonts/icons styles
+        link(rel='stylesheet', href='/fonts/font-spacewalk/css/spacewalk-font.css?cb=#{webBuildtimestamp}')
+        // import styles
+        link(rel='stylesheet', href='/css/updated-#{webTheme}.css?cb=#{webBuildtimestamp}')
+        script(type='text/javascript').
+            window.preferredLocale = "#{preferredLocale}";
+            window.docsLocale = "#{docsLocale}";
+            window.isUyuni = #{isUyuni};
+        script(src='/javascript/legacy/jquery.min.js?cb=#{webBuildtimestamp}')
+        script(src='/javascript/manager/main.js?cb=#{webBuildtimestamp}')
+        noscript
+            .alert.alert-danger
+                | Some features require JavaScript in order to work properly. Make sure you enable JavaScript in your browser.
+
+        include /templates/common.jade
+
+        body(class="theme-#{webTheme} new-theme login-page")
+            #login
+
+        +csrfToken
+        script(type='text/javascript').
+            const csrfToken = "#{csrf_token}";
+
+        div#init_data_url_bounce(style="display: none")
+            | #{url_bounce}
+        div#init_data_request_method(style="display: none")
+            | #{request_method}
+
+        script(type='text/javascript').
+            spaImportReactPage('login/login')
+                .then(function (module) {
+                    module.renderer(
+                      'login',
+                      {
+                          theme: '!{webTheme}',
+                          urlBounce: document.getElementById('init_data_url_bounce').textContent,
+                          validationErrors: JSON.parse('!{validationErrors}'),
+                          schemaUpgradeRequired: JSON.parse('!{schemaUpgradeRequired}'),
+                          webVersion: '!{webVersion}',
+                          customHeader: '!{customHeader}',
+                          customFooter: '!{customFooter}',
+                          legalNote: '!{legalNote}',
+                          loginLength: '!{loginLength}',
+                          passwordLength: '!{passwordLength}',
+                          diskspaceSeverity: '#{diskspaceSeverity}',
+                          sccForwardWarning: JSON.parse('#{sccForwardWarning}'),
+                      }
+                    )
+                });

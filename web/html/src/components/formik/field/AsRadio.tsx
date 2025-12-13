@@ -4,7 +4,7 @@ import styles from "./AsRadio.module.scss";
 
 type Props = React.InputHTMLAttributes<HTMLInputElement> & {
   /** Items to display in an array of objects with label and value properties. */
-  items: Array<{ label: React.ReactNode; value: string }>;
+  items: { label: React.ReactNode; value: string }[];
 
   /** Show the choices in a line or not */
   inline?: boolean;

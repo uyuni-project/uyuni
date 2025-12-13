@@ -1,5 +1,4 @@
-import * as React from "react";
-
+import type { ReactNode, ReactNodeArray } from "react";
 import { cssTransition, toast, ToastContainer } from "react-toastify";
 
 type OptionalParams = {
@@ -18,9 +17,9 @@ const FadeTransition = cssTransition({
   collapseDuration: 0,
 });
 
-function show(message: React.ReactNode, notify: (arg0: React.ReactNode) => void) {
+function show(message: ReactNode, notify: (arg0: ReactNode) => void) {
   if (Array.isArray(message)) {
-    const combinedMessages = message.reduce((acc: React.ReactNodeArray, val) => acc.concat(val), []);
+    const combinedMessages = message.reduce((acc: ReactNodeArray, val) => acc.concat(val), []);
     for (const msg of combinedMessages) {
       notify(msg);
     }
@@ -35,7 +34,7 @@ function parseAutoHide(input: boolean) {
   return input === true ? undefined : false;
 }
 
-export function showSuccessToastr(message: React.ReactNode, optionalParams: OptionalParams = { autoHide: true }) {
+export function showSuccessToastr(message: ReactNode, optionalParams: OptionalParams = { autoHide: true }) {
   const notify = (msg) =>
     toast.success(msg, {
       autoClose: parseAutoHide(optionalParams.autoHide),
@@ -44,7 +43,7 @@ export function showSuccessToastr(message: React.ReactNode, optionalParams: Opti
   show(message, notify);
 }
 
-export function showWarningToastr(message: React.ReactNode, optionalParams: OptionalParams = { autoHide: true }) {
+export function showWarningToastr(message: ReactNode, optionalParams: OptionalParams = { autoHide: true }) {
   const notify = (msg) =>
     toast.warning(msg, {
       autoClose: parseAutoHide(optionalParams.autoHide),
@@ -53,7 +52,7 @@ export function showWarningToastr(message: React.ReactNode, optionalParams: Opti
   show(message, notify);
 }
 
-export function showErrorToastr(message: React.ReactNode | Error, optionalParams: OptionalParams = { autoHide: true }) {
+export function showErrorToastr(message: ReactNode | Error, optionalParams: OptionalParams = { autoHide: true }) {
   const notify = (msg) => {
     toast.error(msg, {
       autoClose: parseAutoHide(optionalParams.autoHide),
@@ -69,7 +68,7 @@ export function showErrorToastr(message: React.ReactNode | Error, optionalParams
   }
 }
 
-export function showInfoToastr(message: React.ReactNode, optionalParams: OptionalParams = { autoHide: true }) {
+export function showInfoToastr(message: ReactNode, optionalParams: OptionalParams = { autoHide: true }) {
   const notify = (msg) =>
     toast.info(msg, {
       autoClose: parseAutoHide(optionalParams.autoHide),

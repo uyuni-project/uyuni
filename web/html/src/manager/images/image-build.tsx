@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 
@@ -9,15 +9,14 @@ import { Form } from "components/input/form/Form";
 import { FormGroup } from "components/input/FormGroup";
 import { Text } from "components/input/text/Text";
 import { ActionChainLink, ActionLink } from "components/links";
-import { Messages } from "components/messages/messages";
-import { Utils as MessagesUtils } from "components/messages/messages";
+import { Messages, Utils as MessagesUtils } from "components/messages/messages";
 import { TopPanel } from "components/panels/TopPanel";
 
 import { localizedMoment } from "utils";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network from "utils/network";
 
-// See java/code/src/com/suse/manager/webui/templates/content_management/build.jade
+// See java/core/src/main/resources/com/suse/manager/webui/templates/content_management/build.jade
 declare global {
   interface Window {
     profileId?: number;
@@ -42,7 +41,7 @@ const messageMap = {
   ),
 };
 
-type Props = {};
+type Props = Record<never, never>;
 
 type State = {
   model: {
@@ -60,7 +59,7 @@ type State = {
   isInvalid?: boolean;
 };
 
-class BuildImage extends React.Component<Props, State> {
+class BuildImage extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -94,7 +93,7 @@ class BuildImage extends React.Component<Props, State> {
 
     Network.get("/rhn/manager/api/cm/imageprofiles/" + profileId).then((res) => {
       if (res.success) {
-        var data = res.data;
+        const data = res.data;
 
         // Prevent out-of-order async results
         if (!DEPRECATED_unsafeEquals(data.profileId, this.state.model.profileId)) return false;
@@ -125,9 +124,11 @@ class BuildImage extends React.Component<Props, State> {
       });
 
       if (window.hostId) {
-        const model = this.state.model;
-        model.buildHostId = window.hostId;
-        this.setState({ model: model });
+        this.setState((prevState) => {
+          const model = prevState.model;
+          model.buildHostId = window.hostId;
+          return { model: model };
+        });
       }
     });
   }
@@ -137,14 +138,16 @@ class BuildImage extends React.Component<Props, State> {
   };
 
   changeProfile(id) {
-    const model = Object.assign({}, this.state.model);
-    model.profileId = id;
-    this.setState({ model: model });
+    this.setState((prevState) => {
+      const model = Object.assign({}, prevState.model);
+      model.profileId = id;
+      return { model: model };
+    });
 
     if (id) {
       this.getProfileDetails(id);
     } else {
-      this.setState({ profile: { label: "" } });
+      this.setState(() => ({ profile: { label: "" } }));
     }
   }
 
@@ -176,45 +179,50 @@ class BuildImage extends React.Component<Props, State> {
   };
 
   onDateTimeChanged = (value: moment.Moment) => {
-    const model: State["model"] = Object.assign({}, this.state.model, {
-      earliest: value,
-      actionChain: null,
-    });
-    this.setState({
-      actionChain: null,
-      model,
+    this.setState((prevState) => {
+      const model: State["model"] = Object.assign({}, prevState.model, {
+        earliest: value,
+        actionChain: null,
+      });
+      return {
+        actionChain: null,
+        model,
+      };
     });
   };
 
   onActionChainChanged = (actionChain: ActionChain | null) => {
-    const model: State["model"] = Object.assign({}, this.state.model, {
-      actionChain: actionChain?.text,
-    });
-    this.setState({
-      actionChain,
-      model,
+    this.setState((prevState) => {
+      const model: State["model"] = Object.assign({}, prevState.model, {
+        actionChain: actionChain?.text,
+      });
+      return {
+        actionChain,
+        model,
+      };
     });
   };
 
   onBuild = (model) => {
     Network.post("/rhn/manager/api/cm/build/" + this.state.model.profileId, model).then((data) => {
       if (data.success) {
-        const msg = MessagesUtils.info(
-          this.state.model.actionChain ? (
-            <span>
-              {t("Action has been successfully added to the Action Chain ")}
-              <ActionChainLink id={data.data}>{this.state.model.actionChain}</ActionChainLink>.
-            </span>
-          ) : (
-            <span>
-              {t("Building the image has been ")}
-              <ActionLink id={data.data}>{t("scheduled")}.</ActionLink>
-            </span>
-          )
-        );
-
-        this.setState({
-          messages: msg,
+        this.setState((prevState) => {
+          const msg = MessagesUtils.info(
+            prevState.model.actionChain ? (
+              <span>
+                {t("Action has been successfully added to the Action Chain ")}
+                <ActionChainLink id={data.data}>{prevState.model.actionChain}</ActionChainLink>.
+              </span>
+            ) : (
+              <span>
+                {t("Building the image has been ")}
+                <ActionLink id={data.data}>{t("scheduled")}.</ActionLink>
+              </span>
+            )
+          );
+          return {
+            messages: msg,
+          };
         });
         window.location.href = "/rhn/manager/cm/images";
       } else {
@@ -232,13 +240,30 @@ class BuildImage extends React.Component<Props, State> {
   };
 
   renderProfileSummary() {
-    var p = this.state.profile;
-    var pselected = p.label ? true : false;
+    const p = this.state.profile;
+    const pselected = p.label ? true : false;
     return (
       <div className="col-md-5">
         <div className="panel panel-default">
-          <div className="panel-heading">
-            <h4>{t("Profile Summary")}</h4>
+          <div className="panel-heading d-flex">
+            <div className="col-md-8">
+              <h4>{t("Profile Summary")}</h4>
+            </div>
+            <div className="col-md-4">
+              {pselected && (
+                <LinkButton
+                  icon="fa-edit"
+                  title={t("Edit Profile Summary")}
+                  href={
+                    "/rhn/manager/cm/imageprofiles/edit/" +
+                    this.state.model.profileId +
+                    "?url_bounce=" +
+                    this.getBounceUrl()
+                  }
+                  className="btn-tertiary pull-right"
+                />
+              )}
+            </div>
           </div>
           <div className="panel-body">
             <div className="table-responsive">
@@ -318,19 +343,6 @@ class BuildImage extends React.Component<Props, State> {
                 )}
               </table>
             </div>
-            {pselected && (
-              <LinkButton
-                icon="fa-edit"
-                href={
-                  "/rhn/manager/cm/imageprofiles/edit/" +
-                  this.state.model.profileId +
-                  "?url_bounce=" +
-                  this.getBounceUrl()
-                }
-                className="btn-xs btn-default pull-right"
-                text="Edit"
-              />
-            )}
           </div>
         </div>
       </div>

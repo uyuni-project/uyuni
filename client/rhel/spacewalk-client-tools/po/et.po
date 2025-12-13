@@ -11,11 +11,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-11 13:25+0200\n"
+"POT-Creation-Date: 2025-10-03 11:04+0200\n"
 "PO-Revision-Date: 2018-03-16 11:00+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
-"Language-Team: Estonian (http://www.transifex.com/projects/p/spacewalk/"
-"language/et/)\n"
+"Language-Team: Estonian (http://www.transifex.com/projects/p/spacewalk/language/et/)\n"
 "Language: et\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -23,97 +22,92 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Zanata 4.6.2\n"
 
-#: ../src/up2date_client/config.py:162
+#. pylint: disable-next=consider-using-f-string
+#: ../src/up2date_client/config.py:166
 #, python-format
 msgid "%s was not found"
 msgstr "%s-i ei leitud"
 
-#: ../src/up2date_client/rpcServer.py:55
+#: ../src/up2date_client/rpcServer.py:70
 msgid "Error: Server Unavailable. Please try later."
 msgstr ""
 
-#: ../src/up2date_client/rpcServer.py:181
+#. pylint: disable-next=consider-using-f-string
+#: ../src/up2date_client/rpcServer.py:221
 #, fuzzy
 msgid "ERROR: can not find server CA file"
 msgstr "Viga: RHNS CA faili pole võimalik leida:"
 
-#: ../src/up2date_client/up2dateErrors.py:47
-#: ../src/up2date_client/up2dateErrors.py:80
+#: ../src/up2date_client/up2dateErrors.py:62
+#: ../src/up2date_client/up2dateErrors.py:101
 #, python-format
 msgid "class %s has no attribute '%s'"
 msgstr ""
 
-#: ../src/up2date_client/up2dateErrors.py:107
+#: ../src/up2date_client/up2dateErrors.py:135
 msgid "RPM error.  The message was:\n"
 msgstr "RPM-i viga. Teade oli järgmine:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:114
+#: ../src/up2date_client/up2dateErrors.py:145
 msgid "Password error. The message was:\n"
 msgstr "Parooli viga. Teade oli järgmine:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:118
+#: ../src/up2date_client/up2dateErrors.py:151
 msgid "RPM dependency error. The message was:\n"
 msgstr "RPM-i sõltuvuse viga. Teade oli järgmine:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:128
+#: ../src/up2date_client/up2dateErrors.py:163
 msgid "Error communicating with server. The message was:\n"
 msgstr "Viga serveriga suhtlemisel. Teade oli järgmine:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:135
+#: ../src/up2date_client/up2dateErrors.py:172
 msgid "File Not Found: \n"
 msgstr "Faili ei leitud:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:142
+#: ../src/up2date_client/up2dateErrors.py:180
 msgid "Delay error from server.  The message was:\n"
 msgstr "Hilinenud viga serverist. Teade oli järgmine:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:178
+#: ../src/up2date_client/up2dateErrors.py:229
 msgid "Error validating data at server:\n"
 msgstr "Viga andmete õigsuse kontrollil serveris:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:191
+#: ../src/up2date_client/up2dateErrors.py:246
 msgid ""
 "\n"
 "Red Hat Network Classic is not supported.\n"
 "    "
 msgstr ""
 
-#: ../src/up2date_client/up2dateErrors.py:197
+#: ../src/up2date_client/up2dateErrors.py:255
 msgid "The installation number is invalid"
 msgstr "Tellimuse number on vigane"
 
-#: ../src/up2date_client/up2dateErrors.py:200
+#: ../src/up2date_client/up2dateErrors.py:259
 msgid "Error parsing the oemInfo file at field:\n"
 msgstr "Faili oemInfo analüüsimisel leiti viga väljalt:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:227
+#: ../src/up2date_client/up2dateErrors.py:294
 msgid "Network error: "
 msgstr ""
 
-#: ../src/up2date_client/up2dateErrors.py:295
+#: ../src/up2date_client/up2dateErrors.py:385
 msgid ""
 "\n"
-"    Your organization does not have enough Management entitlements to "
-"register this\n"
+"    Your organization does not have enough Management entitlements to register this\n"
 "    system. Please notify your organization administrator of this error.\n"
-"    You should be able to register this system after your organization frees "
-"existing\n"
-"    or purchases additional entitlements. Additional entitlements may be "
-"purchased by your\n"
+"    You should be able to register this system after your organization frees existing\n"
+"    or purchases additional entitlements. Additional entitlements may be purchased by your\n"
 "    organization administrator in the SUSE Customer Center.\n"
 "\n"
 "    A common cause of this error code is due to having mistakenly setup an\n"
-"    Activation Key which is set as the universal default.  If an activation "
-"key is set\n"
-"    on the account as a universal default, you can disable this key and "
-"retry to avoid\n"
+"    Activation Key which is set as the universal default.  If an activation key is set\n"
+"    on the account as a universal default, you can disable this key and retry to avoid\n"
 "    requiring a Management entitlement."
 msgstr ""
 
 #, python-format
-#~ msgid ""
-#~ "This client requires the server to support %s, which the current server "
-#~ "does not support"
+#~ msgid "This client requires the server to support %s, which the current server does not support"
 #~ msgstr "Kliendil on vaja, et server toetaks %s, mida antud server ei tee"
 
 #~ msgid "Getting list of packages installed on the system"
@@ -146,8 +140,7 @@ msgstr ""
 #~ msgid "Error reading machine info:"
 #~ msgstr "Viga protsessori informatsiooni lugemisel:"
 
-#~ msgid ""
-#~ "This system may not be updated until it is associated with a channel."
+#~ msgid "This system may not be updated until it is associated with a channel."
 #~ msgstr "Kuni ühenduskanali määramiseni seda süsteemi ei uuendata."
 
 #, fuzzy
@@ -182,12 +175,8 @@ msgstr ""
 #~ msgid "There was an SSL error: %s\n"
 #~ msgstr "Juhtus SSL probleem: %s\n"
 
-#~ msgid ""
-#~ "A common cause of this error is the system time being incorrect. Verify "
-#~ "that the time on this system is correct.\n"
-#~ msgstr ""
-#~ "Tavaliselt juhtub see kui süsteemi aeg ei ole õige. Kontrolli süsteemi "
-#~ "aega.\n"
+#~ msgid "A common cause of this error is the system time being incorrect. Verify that the time on this system is correct.\n"
+#~ msgstr "Tavaliselt juhtub see kui süsteemi aeg ei ole õige. Kontrolli süsteemi aega.\n"
 
 #, python-format
 #~ msgid "There was a SSL crypto error: %s\n"
@@ -247,21 +236,11 @@ msgstr ""
 #~ msgstr "Oma süsteemi ühendamine "
 
 #, fuzzy, python-brace-format
-#~ msgid ""
-#~ "A Profile Name is a descriptive name that you choose to identify this "
-#~ "System Profile on the {PRODUCT_NAME} web pages. Optionally, include a "
-#~ "computer serial or identification number."
-#~ msgstr ""
-#~ "Profiilinimi on kirjeldav nimi eraldamaks seda süsteemi profiili Red Hat "
-#~ "Network veebilehel. Valikuliselt hõlmab arvuti jada või "
-#~ "identifitseerimise numbrit."
+#~ msgid "A Profile Name is a descriptive name that you choose to identify this System Profile on the {PRODUCT_NAME} web pages. Optionally, include a computer serial or identification number."
+#~ msgstr "Profiilinimi on kirjeldav nimi eraldamaks seda süsteemi profiili Red Hat Network veebilehel. Valikuliselt hõlmab arvuti jada või identifitseerimise numbrit."
 
-#~ msgid ""
-#~ "Additional hardware information including PCI devices, disk sizes and "
-#~ "mount points will be included in the profile."
-#~ msgstr ""
-#~ "Täiendav riistvara info, ka PCI seadmed, ketta suurus ning "
-#~ "ühendusepunktid, on kaasaarvatud profiili."
+#~ msgid "Additional hardware information including PCI devices, disk sizes and mount points will be included in the profile."
+#~ msgstr "Täiendav riistvara info, ka PCI seadmed, ketta suurus ning ühendusepunktid, on kaasaarvatud profiili."
 
 #~ msgid "Include the following information about hardware and network:"
 #~ msgstr "Sisaldab järgnevat infot riistvarast ja võrgust:"
@@ -269,12 +248,8 @@ msgstr ""
 #~ msgid "Create Profile - Packages"
 #~ msgstr "Oma süsteemi ühendamine "
 
-#~ msgid ""
-#~ "RPM information is important to determine what updated software packages "
-#~ "are relevant to this system."
-#~ msgstr ""
-#~ "RPM info in vajalik määramaks millised uuendatud tarkvara paketid on "
-#~ "süsteemile kohased."
+#~ msgid "RPM information is important to determine what updated software packages are relevant to this system."
+#~ msgstr "RPM info in vajalik määramaks millised uuendatud tarkvara paketid on süsteemile kohased."
 
 #~ msgid "Include RPM packages installed on this system in my System Profile"
 #~ msgstr "Kaasa süsteemi profiili ka installeeritud RPM paketid"
@@ -289,9 +264,7 @@ msgstr ""
 #~ msgstr "E-posti aadress:"
 
 #~ msgid "System Already Registered"
-#~ msgstr ""
-#~ "    --force                    - registreeritakse süsteem isegi siis, kui "
-#~ "see on juba registreeritud"
+#~ msgstr "    --force                    - registreeritakse süsteem isegi siis, kui see on juba registreeritud"
 
 #~ msgid "It appears this system has already been set up for software updates:"
 #~ msgstr "Up2date taaskäivitamine"
@@ -304,8 +277,7 @@ msgstr ""
 #~ msgstr "Kirjeldus"
 
 #, fuzzy
-#~ msgid ""
-#~ "Subscriptions have been activated for the following products/services:"
+#~ msgid "Subscriptions have been activated for the following products/services:"
 #~ msgstr "Tellimuse number on vigane"
 
 #~ msgid "Software Channel Subscriptions:"
@@ -348,8 +320,7 @@ msgstr ""
 #~ msgstr "Server näitas kätte vea:\n"
 
 #~ msgid "There was an error communicating with the registration server:\n"
-#~ msgstr ""
-#~ "Registreerimisserveriga ühendamisel juhtus viga. Teade oli järgmine:\n"
+#~ msgstr "Registreerimisserveriga ühendamisel juhtus viga. Teade oli järgmine:\n"
 
 #~ msgid "Profile name:"
 #~ msgstr "Profiili nimi:"
@@ -404,12 +375,8 @@ msgstr ""
 #~ msgid "Finish"
 #~ msgstr "Valmis"
 
-#~ msgid ""
-#~ "  <Tab>/<Alt-Tab> between elements  |  <Space> selects  |  <F12> next "
-#~ "screen"
-#~ msgstr ""
-#~ "  <Tab>/<Alt-Tab> elementide vahel  |  <Tühik> valikud  |  <F12> järgmine "
-#~ "kuva"
+#~ msgid "  <Tab>/<Alt-Tab> between elements  |  <Space> selects  |  <F12> next screen"
+#~ msgstr "  <Tab>/<Alt-Tab> elementide vahel  |  <Tühik> valikud  |  <F12> järgmine kuva"
 
 #, fuzzy, python-brace-format
 #~ msgid "You must run the {PRODUCT_NAME} registration program as root."
@@ -419,47 +386,31 @@ msgstr ""
 #~ msgstr "Määra serveri url"
 
 #~ msgid "Specify a file to use as the ssl CA cert"
-#~ msgstr ""
-#~ "    --sslCACert=<rada>         - määratakse fail, mida kasutatakse kui "
-#~ "ssl CA sertifikaati"
+#~ msgstr "    --sslCACert=<rada>         - määratakse fail, mida kasutatakse kui ssl CA sertifikaati"
 
 #~ msgid "Specify an activation key"
 #~ msgstr "Määrata kasutamiseks http puhver"
 
 #~ msgid "[Deprecated] Read contact info from stdin"
-#~ msgstr ""
-#~ "    --contactinfo              - loetakse kontakt info standard sisendist"
+#~ msgstr "    --contactinfo              - loetakse kontakt info standard sisendist"
 
 #~ msgid "Do not probe or upload any hardware info"
-#~ msgstr ""
-#~ "    --nohardware               - ei uurita või laeta üles mingit infot "
-#~ "riistvarast "
+#~ msgstr "    --nohardware               - ei uurita või laeta üles mingit infot riistvarast "
 
 #~ msgid "Do not profile or upload any package info"
-#~ msgstr ""
-#~ "    --nopackages               - ei esitata ega laeta üles mingit infot "
-#~ "pakettidest "
+#~ msgstr "    --nopackages               - ei esitata ega laeta üles mingit infot pakettidest "
 
 #~ msgid "Register the system even if it is already registered"
-#~ msgstr ""
-#~ "    --force                    - registreeritakse süsteem isegi siis, kui "
-#~ "see on juba registreeritud"
+#~ msgstr "    --force                    - registreeritakse süsteem isegi siis, kui see on juba registreeritud"
 
 #~ msgid "A username and password are required to register a system."
-#~ msgstr ""
-#~ "Süsteemi registreerimiseks on vajalikud kasutajanimi, parool ja eposti "
-#~ "aadress."
+#~ msgstr "Süsteemi registreerimiseks on vajalikud kasutajanimi, parool ja eposti aadress."
 
 #~ msgid "This system is already registered. Use --force to override"
-#~ msgstr ""
-#~ "Süsteem on juba registreeritud. Ülekirjutamiseks kasutatakse --force "
+#~ msgstr "Süsteem on juba registreeritud. Ülekirjutamiseks kasutatakse --force "
 
-#~ msgid ""
-#~ "A profilename was not specified, and hostname and IP address could not be "
-#~ "determined to use as a profilename, please specify one."
-#~ msgstr ""
-#~ "Profiilinimi on määramata ning arvuti nime ja IP aadressi ei ole võimalik "
-#~ "kasutada profiilinimena, palun määra see nimi."
+#~ msgid "A profilename was not specified, and hostname and IP address could not be determined to use as a profilename, please specify one."
+#~ msgstr "Profiilinimi on määramata ning arvuti nime ja IP aadressi ei ole võimalik kasutada profiilinimena, palun määra see nimi."
 
 #, fuzzy
 #~ msgid "Software updates setup unsuccessful"
@@ -496,8 +447,7 @@ msgstr ""
 
 #, fuzzy
 #~ msgid "There was an error communicating with Spacewalk server."
-#~ msgstr ""
-#~ "Registreerimisserveriga ühendamisel juhtus viga. Teade oli järgmine:\n"
+#~ msgstr "Registreerimisserveriga ühendamisel juhtus viga. Teade oli järgmine:\n"
 
 #~ msgid "You must enter a login."
 #~ msgstr "Vajalik on sisestada oma perekonnanimi."
@@ -508,11 +458,8 @@ msgstr ""
 #~ msgid "There was an error while logging in."
 #~ msgstr "Süsteemi registeerimisel esines probleem."
 
-#~ msgid ""
-#~ "There was an error communicating with the registration server.  The "
-#~ "message was:\n"
-#~ msgstr ""
-#~ "Registreerimisserveriga ühendamisel juhtus viga. Teade oli järgmine:\n"
+#~ msgid "There was an error communicating with the registration server.  The message was:\n"
+#~ msgstr "Registreerimisserveriga ühendamisel juhtus viga. Teade oli järgmine:\n"
 
 #~ msgid "There was an error while assembling information for the profile."
 #~ msgstr "Paketi installeerimisel juhtus saatuslik viga:"
@@ -533,9 +480,7 @@ msgstr ""
 #~ msgstr "Süsteemi registreerimise probleem."
 
 #, python-format
-#~ msgid ""
-#~ "The installation number [ %s ] provided is not a valid installation "
-#~ "number. Please go back to the previous screen and fix it."
+#~ msgid "The installation number [ %s ] provided is not a valid installation number. Please go back to the previous screen and fix it."
 #~ msgstr "Tellimuse number [ %s ], mis sisestati, ei ole kehtiv."
 
 #~ msgid "There was a problem registering this system."
@@ -571,10 +516,8 @@ msgstr ""
 #~ msgid "Arch"
 #~ msgstr "Arch"
 
-#~ msgid ""
-#~ "Building a list of RPM packages installed on your system.  Please wait."
-#~ msgstr ""
-#~ "Koostatakse loendit RPM-idest, mis on installeeritud süsteemi. Palun oota."
+#~ msgid "Building a list of RPM packages installed on your system.  Please wait."
+#~ msgstr "Koostatakse loendit RPM-idest, mis on installeeritud süsteemi. Palun oota."
 
 #~ msgid ""
 #~ "There was an error loading your configuration.  Make sure that\n"
@@ -591,12 +534,8 @@ msgstr ""
 #~ "Seadistuse salvestamisel esines viga. Kontrolli, et %s kuulub\n"
 #~ "sulle."
 
-#~ msgid ""
-#~ "You need to register this system by running `rhn_register` before using "
-#~ "this option"
-#~ msgstr ""
-#~ "Süsteem on enne antud valiku kasutamist vajalik registreerida käivitades "
-#~ "`up2date --register`"
+#~ msgid "You need to register this system by running `rhn_register` before using this option"
+#~ msgstr "Süsteem on enne antud valiku kasutamist vajalik registreerida käivitades `up2date --register`"
 
 #~ msgid "Updating package profile..."
 #~ msgstr "Uuendatakse pakettide kirjeldusi..."

@@ -5,12 +5,8 @@ import { MessageType } from "components/messages/messages";
 import Network, { JsonResult } from "utils/network";
 
 type ExportersResultType = {
-  exporters: {
-    [key: string]: boolean;
-  };
-  messages: {
-    [key: string]: string;
-  };
+  exporters: Record<string, boolean>;
+  messages: Record<string, string>;
 };
 
 function isRestartNeeded(data: ExportersResultType) {
@@ -19,27 +15,17 @@ function isRestartNeeded(data: ExportersResultType) {
 
 const useMonitoringApi = () => {
   const [action, setAction] = useState<null | "checking" | "enabling" | "disabling">(null);
-  const [exportersStatus, setExportersStatus] = useState<
-    | {
-        [key: string]: boolean;
-      }
-    | null
-    | undefined
-  >(null);
-  const [exportersMessages, setExportersMessages] = useState<{
-    [key: string]: string;
-  }>({});
+  const [exportersStatus, setExportersStatus] = useState<Record<string, boolean> | null | undefined>(null);
+  const [exportersMessages, setExportersMessages] = useState<Record<string, string>>({});
   const [restartNeeded, setRestartNeeded] = useState<boolean>(false);
-  const [messages, setMessages] = useState<Array<MessageType>>([]);
+  const [messages, setMessages] = useState<MessageType[]>([]);
 
-  const handleResponseError = (jqXHR: JQueryXHR, arg: string = ""): any => {
+  const handleResponseError = (jqXHR: JQueryXHR): any => {
     const msg = Network.responseErrorMessage(jqXHR);
     setMessages(msg);
   };
 
-  const fetchStatus = (): Promise<{
-    [key: string]: boolean;
-  }> => {
+  const fetchStatus = (): Promise<Record<string, boolean>> => {
     setAction("checking");
     return Network.get("/rhn/manager/api/admin/config/monitoring")
       .then((data: JsonResult<ExportersResultType>) => {

@@ -1,8 +1,9 @@
-import * as React from "react";
+import { Component } from "react";
 
 import { Button } from "components/buttons";
 import { Messages, MessageType } from "components/messages/messages";
 
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network from "utils/network";
 
 import styles from "./products-scc-dialog.module.scss";
@@ -55,11 +56,13 @@ type Props = {
   updateSccSyncRunning: (isRunning: boolean) => void;
 };
 
-class SCCDialog extends React.Component<Props> {
-  state = {
-    steps: _SCC_REFRESH_STEPS,
-    errors: [] as MessageType[],
-  };
+class SCCDialogState {
+  steps = _SCC_REFRESH_STEPS;
+  errors: MessageType[] = [];
+}
+
+class SCCDialog extends Component<Props, SCCDialogState> {
+  state = new SCCDialogState();
 
   UNSAFE_componentWillMount() {
     if (
@@ -80,7 +83,7 @@ class SCCDialog extends React.Component<Props> {
   // there is at least one step with a valid 'success' flag value
   // or the sync is running
   hasRun = () => {
-    return this.state.steps.some((s) => s.success != null) || this.isSyncRunning();
+    return this.state.steps.some((s) => !DEPRECATED_unsafeEquals(s.success, null)) || this.isSyncRunning();
   };
 
   startSync = () => {
@@ -101,14 +104,12 @@ class SCCDialog extends React.Component<Props> {
   };
 
   runSccRefreshStep = (stepList, i) => {
-    var currentObject = this;
-
     // if i-step exists
     if (stepList.length >= i + 1) {
       // run the i-step
-      var currentStep = stepList[i];
+      const currentStep = stepList[i];
       currentStep.inProgress = true;
-      currentObject.setState({
+      this.setState({
         steps: stepList,
       });
 
@@ -117,31 +118,33 @@ class SCCDialog extends React.Component<Props> {
           // set the result for the i-step
           currentStep.success = data;
           currentStep.inProgress = false;
-          currentObject.setState({
+          this.setState({
             steps: stepList,
           });
 
           // recoursive recall to run the next step
-          currentObject.runSccRefreshStep(stepList, i + 1);
+          this.runSccRefreshStep(stepList, i + 1);
         })
         .catch(this.handleResponseError);
     } else {
-      currentObject.finishSync();
+      this.finishSync();
     }
   };
 
   handleResponseError = (jqXHR: JQueryXHR, arg = {}) => {
     this.finishSync();
-    const stepList = this.state.steps;
-    const currentStep = stepList.find((s) => s.inProgress);
-    if (currentStep) {
-      currentStep.inProgress = false;
-      currentStep.success = false;
-    }
-    const msg = Network.responseErrorMessage(jqXHR, (status, msg) =>
-      messageMap[msg] ? t(messageMap[msg], arg) : null
-    );
-    this.setState({ steps: stepList, errors: this.state.errors.concat(msg) });
+    this.setState((prevState) => {
+      const stepList = prevState.steps;
+      const currentStep = stepList.find((s) => s.inProgress);
+      if (currentStep) {
+        currentStep.inProgress = false;
+        currentStep.success = false;
+      }
+      const msg = Network.responseErrorMessage(jqXHR, (status, msg) =>
+        messageMap[msg] ? t(messageMap[msg], arg) : null
+      );
+      return { steps: stepList, errors: prevState.errors.concat(msg) };
+    });
   };
 
   render() {
@@ -157,13 +160,13 @@ class SCCDialog extends React.Component<Props> {
                 <li key={s.id}>
                   <i
                     className={
-                      s.success != null
+                      !DEPRECATED_unsafeEquals(s.success, null)
                         ? s.success
                           ? "fa fa-check text-success"
                           : "fa fa-exclamation-triangle text-warning"
                         : s.inProgress
-                        ? "fa fa-spinner fa-spin"
-                        : "fa fa-circle-o text-muted"
+                          ? "fa fa-spinner fa-spin"
+                          : "fa fa-circle-o text-muted"
                     }
                   />
                   <span>{s.label}</span>

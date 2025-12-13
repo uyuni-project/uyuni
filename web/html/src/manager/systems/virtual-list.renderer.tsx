@@ -1,5 +1,3 @@
-import * as React from "react";
-
 import _unescape from "lodash/unescape";
 
 import SpaRenderer from "core/spa/spa-renderer";

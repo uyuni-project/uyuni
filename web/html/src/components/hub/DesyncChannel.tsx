@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type ReactNode, Component } from "react";
 
 import { Button } from "components/buttons";
 import { DangerDialog } from "components/dialog/DangerDialog";
@@ -21,13 +21,13 @@ type State = {
   confirmDesync: boolean;
 };
 
-export class DesyncChannel extends React.Component<Props, State> {
+export class DesyncChannel extends Component<Props, State> {
   public constructor(props: Props) {
     super(props);
     this.state = { confirmDesync: false };
   }
 
-  public render(): React.ReactNode {
+  public render(): ReactNode {
     return (
       <>
         <Button
@@ -60,7 +60,7 @@ export class DesyncChannel extends React.Component<Props, State> {
 
     Network.del(resource, [this.props.label])
       .then(
-        (_response) => {
+        () => {
           showInfoToastr(t("The channels have been successfully desynced."));
           this.props.onDesync?.();
         },

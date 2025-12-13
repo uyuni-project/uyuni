@@ -38,13 +38,14 @@
 %{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 
 Name:           spacewalk-setup
-Version:        5.2.0
+Version:        5.2.3
 Release:        0
 Summary:        Initial setup tools for %{productprettyname}
 License:        GPL-2.0-only
 # FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/System
 URL:            https://github.com/uyuni-project/uyuni
+#!CreateArchive: %{name}
 Source0:        %{name}-%{version}.tar.gz
 BuildArch:      noarch
 %if 0%{?fedora}
@@ -70,11 +71,9 @@ Requires:       perl
 %endif
 Requires:       perl-Params-Validate
 Requires:       spacewalk-schema
-Requires:       perl(Term::Completion::Path)
 %if 0%{?suse_version}
 Requires:       curl
 Requires:       patch
-Requires:       perl-Frontier-RPC
 Requires:       perl-XML-LibXML
 Requires:       perl-XML-SAX
 Requires:       perl-libwww-perl

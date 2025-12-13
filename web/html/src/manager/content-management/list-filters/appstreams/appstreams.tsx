@@ -1,6 +1,6 @@
-import * as React from "react";
 import { useState } from "react";
 
+import { Button } from "components/buttons";
 import { showErrorToastr } from "components/toastr/toastr";
 
 import Network from "utils/network";
@@ -10,16 +10,16 @@ import TextInput from "./text-input";
 
 export default function AppStreams({ matcher }) {
   const [channels, setChannels] = useState<{ id: string; name: string }[]>([]);
-  const [isBrowse, setBrowse] = useState(false);
-  const [isLoading, setLoading] = useState(false);
+  const [isBrowse, setIsBrowse] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const enableBrowse = () => {
-    setLoading(true);
+    setIsLoading(true);
     Network.get("/rhn/manager/api/channels/modular")
       .then((channels) => {
         setChannels(channels.data);
-        setLoading(false);
-        setBrowse(true);
+        setIsLoading(false);
+        setIsBrowse(true);
       })
       .catch((xhr) => showErrorToastr(Network.responseErrorMessage(xhr).map((msg) => msg.text)));
   };
@@ -31,10 +31,12 @@ export default function AppStreams({ matcher }) {
       <>
         <div className="form-group">
           <div className="col-md-offset-3 offset-md-3 col-md-6">
-            <button className="btn-link" onClick={enableBrowse}>
-              {isLoading ? <i className="fa fa-refresh fa-spin fa-fw" /> : <i className="fa fa-search fa-fw" />}
-              Browse available modules
-            </button>
+            <Button
+              className="btn-tertiary"
+              handler={enableBrowse}
+              icon={isLoading ? "fa-refresh fa-spin fa-fw" : "fa-search fa-fw"}
+              text={t("Browse available modules")}
+            />
           </div>
         </div>
         <TextInput />

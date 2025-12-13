@@ -1,6 +1,3 @@
-import { hot } from "react-hot-loader/root";
-
-import * as React from "react";
 import { useEffect, useState } from "react";
 
 import useLifecyclePaygActionsApi from "manager/admin/payg-shared/api/payg-actions-api";
@@ -136,4 +133,4 @@ const Payg = (props: Props) => {
   );
 };
 
-export default hot(withPageWrapper<Props>(Payg));
+export default withPageWrapper<Props>(Payg);

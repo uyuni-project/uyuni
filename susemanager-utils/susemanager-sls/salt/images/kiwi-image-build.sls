@@ -85,7 +85,7 @@ mgr_eib:
 {%- set bootstrap_packages = ['findutils', 'rhn-org-trusted-ssl-cert-osimage'] %}
 
 {%- macro kiwi_params() -%}
-  --ignore-repos-used-for-build --add-repo file:{{ common_repo }},rpm-dir,common_repo,90,false,false
+  --ignore-repos-used-for-build --add-repo file:{{ common_repo }},rpm-md,common_repo,90,false,false
 {% for pkg in bootstrap_packages -%}
   --add-bootstrap-package {{ pkg }}
 {% endfor -%}
@@ -126,7 +126,7 @@ mgr_buildimage_kiwi_bundle:
 
 # i586 build on x86_64 host must be called with linux32
 # let's consider the build i586 if there is no x86_64 repo specified
-{%- set kiwi = '/usr/bin/linux32 /usr/bin/kiwi' if (pillar.get('kiwi_repositories')|join(' ')).find('x86_64') == -1 and grains.get('osarch') == 'x86_64' else '/usr/bin/kiwi' %}
+{%- set kiwi = '/usr/bin/linux32 /usr/sbin/kiwi' if (pillar.get('kiwi_repositories')|join(' ')).find('x86_64') == -1 and grains.get('osarch') == 'x86_64' else '/usr/sbin/kiwi' %}
 
 # in SLES11 Kiwi the --add-repotype is required
 {%- macro kiwi_params() -%}

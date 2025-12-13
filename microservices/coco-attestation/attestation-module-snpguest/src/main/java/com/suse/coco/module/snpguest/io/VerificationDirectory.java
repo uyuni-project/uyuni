@@ -34,6 +34,11 @@ public class VerificationDirectory implements AutoCloseable {
      */
     public static final String VCEK_FILE = "vcek.der";
 
+    /**
+     * The VLEK file name
+     */
+    public static final String VLEK_FILE = "vlek.pem";
+
     private final Path path;
 
     VerificationDirectory(Path pathIn) {
@@ -62,6 +67,14 @@ public class VerificationDirectory implements AutoCloseable {
      */
     public boolean isVCEKAvailable() {
         return Files.exists(getCertsPath().resolve(VCEK_FILE));
+    }
+
+    /**
+     * Check if the VLEK file exists
+     * @return true if the file {@link #VLEK_FILE} exists.
+     */
+    public boolean isVLEKAvailable() {
+        return Files.exists(getCertsPath().resolve(VLEK_FILE));
     }
 
     /**

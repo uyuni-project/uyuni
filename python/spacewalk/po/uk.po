@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-25 09:41+0200\n"
+"POT-Creation-Date: 2025-08-22 09:58+0200\n"
 "PO-Revision-Date: 2018-03-16 12:50+0000\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
@@ -21,8 +21,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Zanata 4.6.2\n"
 
 #: ../server/apacheAuth.py:72
@@ -39,13 +38,13 @@ msgstr "Надісланий ​​підпис проксі %s не збіга�
 msgid "declined proxy authentication"
 msgstr "у розпізнаванні на проксі-сервері відмовлено"
 
-#: ../server/apacheRequest.py:67
+#: ../server/apacheRequest.py:68
 #, python-format
 msgid "Invalid request received (%s)."
 msgstr "Отримано неприпустимий запит (%s)."
 
 #. Send the message as a fault.
-#: ../server/apacheRequest.py:126
+#: ../server/apacheRequest.py:130
 #, python-format
 msgid ""
 "IMPORTANT MESSAGE FOLLOWS:\n"
@@ -54,7 +53,7 @@ msgstr ""
 "ДАЛІ ВКАЗАНО ВАЖЛИВЕ ПОВІДОМЛЕННЯ:\n"
 "%s"
 
-#: ../server/apacheRequest.py:156
+#: ../server/apacheRequest.py:160
 #, python-format
 msgid ""
 "While running '%s': caught\n"
@@ -64,7 +63,7 @@ msgstr ""
 "%s : %s\n"
 
 #. pylint: disable-next=consider-using-f-string
-#: ../server/apacheRequest.py:671
+#: ../server/apacheRequest.py:675
 #, python-format
 msgid "Invalid URI %s"
 msgstr "Некоректна адреса %s"
@@ -78,13 +77,11 @@ msgid ""
 msgstr ""
 "\n"
 "                   На цьому сервері вимкнено обліковий запис %s.\n"
-"                   Щоб дізнатися більше, будь ласка, зверніться до "
-"адміністратора вашої організації."
+"                   Щоб дізнатися більше, будь ласка, зверніться до адміністратора вашої організації."
 
 #: ../server/handlers/xmlrpc/proxy.py:71
 #, fuzzy, python-format
-msgid ""
-"SUSE Multi-Linux Manager Proxy service not enabled for server profile: \"%s\""
+msgid "SUSE Multi-Linux Manager Proxy service not enabled for server profile: \"%s\""
 msgstr "Проксі-сервіс Spacewalk не включений для профілю сервера: «%s»"
 
 #: ../server/handlers/xmlrpc/proxy.py:94
@@ -97,9 +94,7 @@ msgstr "Цього ідентифікатора сервера більше не
 
 #: ../server/importlib/userAuth.py:109
 msgid "You are not authorized to manage packages in the null org"
-msgstr ""
-"У вас немає уповноважень на керування пакунками у організації із порожньою "
-"назвою"
+msgstr "У вас немає уповноважень на керування пакунками у організації із порожньою назвою"
 
 #: ../server/importlib/userAuth.py:115
 #, python-format
@@ -114,8 +109,7 @@ msgstr "Ви не маєте права виконувати завдання з
 
 #: ../server/importlib/userAuth.py:159
 #, python-format
-msgid ""
-"You are not allowed to manage channel %s, or that channel does not exist"
+msgid "You are not allowed to manage channel %s, or that channel does not exist"
 msgstr "У вас немає права керувати каналом %s або цього каналу не існує"
 
 #: ../server/importlib/userAuth.py:229
@@ -127,19 +121,14 @@ msgid ""
 msgstr ""
 "\n"
 "                   На цьому сервері вимкнено обліковий запис %s.\n"
-"                   Щоб дізнатися більше, будь ласка, зверніться до "
-"адміністратора вашої організації."
+"                   Щоб дізнатися більше, будь ласка, зверніться до адміністратора вашої організації."
 
-#: ../server/rhnChannel.py:2217
+#: ../server/rhnChannel.py:2216
 #, python-format
-msgid ""
-"Your account does not have access to any channels matching "
-"(release='%(release)s', arch='%(arch)s')%(www_activation)s"
-msgstr ""
-"Ваш обліковий запис не має доступу до жодного із відповідних каналів "
-"(випуск=«%(release)s», архітектура=«%(arch)s»)%(www_activation)s"
+msgid "Your account does not have access to any channels matching (release='%(release)s', arch='%(arch)s')%(www_activation)s"
+msgstr "Ваш обліковий запис не має доступу до жодного із відповідних каналів (випуск=«%(release)s», архітектура=«%(arch)s»)%(www_activation)s"
 
-#: ../server/rhnChannel.py:2236
+#: ../server/rhnChannel.py:2235
 #, python-format
 msgid "Insufficient subscription permissions for release (%s, %s"
 msgstr "Недостатні права передплати на випуск (%s, %s"
@@ -148,11 +137,11 @@ msgstr "Недостатні права передплати на випуск (
 #.
 #. bretm 02/07/2007 -- when we have better old-client documentation, probably
 #. will be safe to get rid of all this crap
-#: ../server/rhnChannel.py:2550 ../server/rhnChannel.py:2569
+#: ../server/rhnChannel.py:2549 ../server/rhnChannel.py:2568
 msgid "System Registered but Inactive"
 msgstr "Систему зареєстровано, але не активовано"
 
-#: ../server/rhnChannel.py:2552
+#: ../server/rhnChannel.py:2551
 #, python-format
 msgid ""
 "\n"
@@ -165,10 +154,9 @@ msgstr ""
 "Некоректна комбінація архітектури і випуску операційної системи (%s, %s).\n"
 "Вашу систему зареєстровано, але вона не отримуватиме оновлень, оскільки\n"
 "її не вдалося підписати на базовий канал.\n"
-"Будь ласка, зв’яжіться із адміністратором вашої організації, щоб отримати "
-"допомогу.\n"
+"Будь ласка, зв’яжіться із адміністратором вашої організації, щоб отримати допомогу.\n"
 
-#: ../server/rhnChannel.py:2561
+#: ../server/rhnChannel.py:2560
 #, python-format
 msgid ""
 "\n"
@@ -179,35 +167,29 @@ msgid ""
 msgstr ""
 "\n"
 "  Цю систему успішно зареєстровано, але її ще не допущено до\n"
-"  обслуговування. Щоб допустити цю систему до обслуговування, увійдіть до "
-"системи на цьому сайті:\n"
+"  обслуговування. Щоб допустити цю систему до обслуговування, увійдіть до системи на цьому сайті:\n"
 "\n"
 "  %(entitlement_url)s\n"
 
-#: ../server/rhnChannel.py:2571
+#: ../server/rhnChannel.py:2570
 #, python-format
 msgid ""
 "\n"
 "  This system has been successfully registered, but no service entitlements\n"
-"  were available.  To entitle this system to service, login to the web site "
-"at:\n"
+"  were available.  To entitle this system to service, login to the web site at:\n"
 "\n"
 "  %(entitlement_url)s\n"
 msgstr ""
 "\n"
-"  Цю систему успішно зареєстровано, але не виявлено допусків до "
-"обслуговування.\n"
-"  Щоб допустити цю систему до обслуговування, увійдіть до системи на цьому "
-"сайті:\n"
+"  Цю систему успішно зареєстровано, але не виявлено допусків до обслуговування.\n"
+"  Щоб допустити цю систему до обслуговування, увійдіть до системи на цьому сайті:\n"
 "\n"
 "  %(entitlement_url)s\n"
 
 #. Invalid server certificate.
 #: ../server/rhnHandler.py:62
 msgid "Please run rhn_register as root on this client"
-msgstr ""
-"Будь ласка, запустіть для цієї клієнтської системи rhn_register від імені "
-"адміністратора (root)"
+msgstr "Будь ласка, запустіть для цієї клієнтської системи rhn_register від імені адміністратора (root)"
 
 #: ../server/rhnHandler.py:76
 #, python-format
@@ -249,12 +231,8 @@ msgid "Maximum usage count of %s reached"
 msgstr "Перевищено максимальну кількість використано %s"
 
 #: ../server/rhnServer/server_token.py:869
-msgid ""
-"Stacking of re-registration tokens with different base entitlements is not "
-"supported"
-msgstr ""
-"Підтримки стосування повторних реєстраційних ключів із різними базовими "
-"прив’язками не передбачено"
+msgid "Stacking of re-registration tokens with different base entitlements is not supported"
+msgstr "Підтримки стосування повторних реєстраційних ключів із різними базовими прив’язками не передбачено"
 
 #: ../server/rhnServer/server_token.py:946
 #, python-format
@@ -308,9 +286,7 @@ msgstr "ім'я користувача = «%s», неприпустимий си
 #: ../server/rhnUser.py:614
 #, python-format
 msgid "Please limit your e-mail address to %s chars"
-msgstr ""
-"Будь ласка, вкажіть адресу електронної пошти, що не перевищує %s символів у "
-"довжину"
+msgstr "Будь ласка, вкажіть адресу електронної пошти, що не перевищує %s символів у довжину"
 
 #: ../server/rhnUser.py:704
 #, python-format
@@ -396,9 +372,7 @@ msgstr "Файл не знайдено."
 
 #: ../common/rhnException.py:69
 msgid "Architecture and OS version combination is not supported."
-msgstr ""
-"Підтримки такої комбінації архітектури і версії операційної системи не "
-"передбачено."
+msgstr "Підтримки такої комбінації архітектури і версії операційної системи не передбачено."
 
 #: ../common/rhnException.py:70
 msgid "Could not retrieve system data from database."
@@ -429,22 +403,17 @@ msgid ""
 "     Please re-register this system by running mgr_register as root.\n"
 "     Please visit https://%(hostname)s/rhn/systems/SystemEntitlements.do\n"
 "     or login at https://%(hostname)s, and from the \"Overview\" tab,\n"
-"     select \"Subscription Management\" to enable the service for this "
-"system.\n"
+"     select \"Subscription Management\" to enable the service for this system.\n"
 "     "
 msgstr ""
 "\n"
 "     Функціональні можливості анонімного сервера більше не доступні.\n"
 "\n"
-"     Будь ласка, повторно зареєструйте цю систему за допомогою команди "
-"rhn_register,\n"
+"     Будь ласка, повторно зареєструйте цю систему за допомогою команди rhn_register,\n"
 "     відданої від імені користувача root.\n"
-"     Будь ласка, відвідайте https://%(hostname)s/rhn/systems/"
-"SystemEntitlements.do\n"
-"     або увійдіть до системи на сторінці https://%(hostname)s, а потім на "
-"вкладці «Огляд» («Overview»),\n"
-"     виберіть «Керування передплатами» («Subscription Management»), щоб "
-"увімкнути службу для цієї системи.\n"
+"     Будь ласка, відвідайте https://%(hostname)s/rhn/systems/SystemEntitlements.do\n"
+"     або увійдіть до системи на сторінці https://%(hostname)s, а потім на вкладці «Огляд» («Overview»),\n"
+"     виберіть «Керування передплатами» («Subscription Management»), щоб увімкнути службу для цієї системи.\n"
 "     "
 
 #: ../common/rhnException.py:85
@@ -459,22 +428,17 @@ msgstr "Некоректне значення для запису."
 #, fuzzy, python-format
 msgid ""
 "\n"
-"     This system does not have a valid entitlement for SUSE Multi-Linux "
-"Manager.\n"
+"     This system does not have a valid entitlement for SUSE Multi-Linux Manager.\n"
 "     Please visit https://%(hostname)s/rhn/systems/SystemEntitlements.do\n"
 "     or login at https://%(hostname)s, and from the \"Overview\" tab,\n"
-"     select \"Subscription Management\" to enable the service for this "
-"system.\n"
+"     select \"Subscription Management\" to enable the service for this system.\n"
 "     "
 msgstr ""
 "\n"
 "     Ця система не має коректної реєстрації у Red Hat Satellite.\n"
-"     Будь ласка, відвідайте https://%(hostname)s/rhn/systems/"
-"SystemEntitlements.do\n"
-"     або увійдіть до системи на сторінці https://%(hostname)s, а потім на "
-"вкладці «Огляд» («Overview»),\n"
-"     виберіть «Керування передплатами» («Subscription Management»), щоб "
-"увімкнути службу для цієї системи.\n"
+"     Будь ласка, відвідайте https://%(hostname)s/rhn/systems/SystemEntitlements.do\n"
+"     або увійдіть до системи на сторінці https://%(hostname)s, а потім на вкладці «Огляд» («Overview»),\n"
+"     виберіть «Керування передплатами» («Subscription Management»), щоб увімкнути службу для цієї системи.\n"
 "     \n"
 "     "
 
@@ -524,10 +488,8 @@ msgid ""
 "     User group membership limits exceeded.\n"
 "\n"
 "     The current settings for your account do not allow you to add another\n"
-"     user account. Please check with the organization administrator for "
-"your\n"
-"     account if the maximum number of users allowed to subscribe to server "
-"needs\n"
+"     user account. Please check with the organization administrator for your\n"
+"     account if the maximum number of users allowed to subscribe to server needs\n"
 "     to be changed.\n"
 "     "
 msgstr ""
@@ -535,8 +497,7 @@ msgstr ""
 "     Перевищено обмеження на участь у групі.\n"
 "\n"
 "     Поточні параметри для вашого облікового запису не дозволяють\n"
-"     додавання ще одного облікового запису користувача. Будь ласка, "
-"перевірте\n"
+"     додавання ще одного облікового запису користувача. Будь ласка, перевірте\n"
 "     разом із адміністратором вашого облікового запису у вашій установі,\n"
 "     чи слід змінювати дозволену максимальну кількість користувачів,\n"
 "     які можуть передплачувати послуги сервера.\n"
@@ -548,10 +509,8 @@ msgid ""
 "     System group membership limits exceeded.\n"
 "\n"
 "     The current settings for your account do not allow you to add another\n"
-"     system profile. Please check with the organization administrator for "
-"your\n"
-"     account for modifying the maximum number of system profiles that can "
-"be\n"
+"     system profile. Please check with the organization administrator for your\n"
+"     account for modifying the maximum number of system profiles that can be\n"
 "     subscribed to your account.\n"
 "     "
 msgstr ""
@@ -559,12 +518,9 @@ msgstr ""
 "     Перевищено обмеження на участь систем у групі.\n"
 "\n"
 "     Поточні параметри вашого облікового запису забороняють додавання\n"
-"     ще одного профілю системи. Будь ласка, перевірте разом із "
-"адміністратором\n"
-"     вашого облікового запису в установі, чи слід змінити максимальну "
-"кількість\n"
-"     профілів систем, які можуть працювати у межах передплати вашого "
-"облікового запису.\n"
+"     ще одного профілю системи. Будь ласка, перевірте разом із адміністратором\n"
+"     вашого облікового запису в установі, чи слід змінити максимальну кількість\n"
+"     профілів систем, які можуть працювати у межах передплати вашого облікового запису.\n"
 "     "
 
 #: ../common/rhnException.py:129
@@ -588,10 +544,8 @@ msgstr "Некоректний заголовок RPM"
 #: ../common/rhnException.py:138
 msgid ""
 "\n"
-"    This system is already registered as a Salt Minion. If you want to "
-"register it as a traditional client\n"
-"    please delete it first via the web UI or API and then register it using "
-"the traditional tools.\n"
+"    This system is already registered as a Salt Minion. If you want to register it as a traditional client\n"
+"    please delete it first via the web UI or API and then register it using the traditional tools.\n"
 "    "
 msgstr ""
 
@@ -613,8 +567,7 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"     Спроба вивантаження пакунка зазнала невдачі через порушення умов "
-"однозначності.\n"
+"     Спроба вивантаження пакунка зазнала невдачі через порушення умов однозначності.\n"
 "     Переконайтеся, що у пакунка немає подвійних залежностей і що\n"
 "     пакунок вже не зберігається на сервері.\n"
 "     "
@@ -624,14 +577,12 @@ msgstr ""
 msgid ""
 "\n"
 "     The --force mgrpush option is disabled on this server.\n"
-"     Please contact your SUSE Multi-Linux Manager administrator for more "
-"help.\n"
+"     Please contact your SUSE Multi-Linux Manager administrator for more help.\n"
 "     "
 msgstr ""
 "\n"
 "     На цьому сервері вимкнено можливість використання --force rhnpush. \n"
-"     Будь ласка, зв’яжіться із вашим адміністратором Satellite, щоб отримати "
-"додаткові відомості.\n"
+"     Будь ласка, зв’яжіться із вашим адміністратором Satellite, щоб отримати додаткові відомості.\n"
 "     "
 
 #: ../common/rhnException.py:161
@@ -648,8 +599,7 @@ msgstr ""
 
 #: ../common/rhnException.py:166
 msgid "Too many systems registered using this registration token"
-msgstr ""
-"За допомогою цього реєстраційного ключа зареєстровано надто багато систем"
+msgstr "За допомогою цього реєстраційного ключа зареєстровано надто багато систем"
 
 #: ../common/rhnException.py:167
 msgid "Token contains invalid, obsoleted or insufficient settings"
@@ -745,9 +695,7 @@ msgstr "Перевищення максимальної довжини паро�
 
 #: ../common/rhnException.py:202
 msgid "This user has read only API access. Action denied."
-msgstr ""
-"У цього користувача є доступ лише до читання за допомогою API. Дію "
-"заборонено."
+msgstr "У цього користувача є доступ лише до читання за допомогою API. Дію заборонено."
 
 #: ../common/rhnException.py:203
 msgid "System Name cannot be less than 1 character"
@@ -769,14 +717,12 @@ msgstr "Не вдалося увійти до системи проксі-сер
 #, fuzzy
 msgid ""
 "\n"
-"     SUSE Multi-Linux Manager Proxy system ID does not match a Spacewalk "
-"Proxy Server\n"
+"     SUSE Multi-Linux Manager Proxy system ID does not match a Spacewalk Proxy Server\n"
 "     in the database.\n"
 "     "
 msgstr ""
 "\n"
-"     Ідентифікатор системи проксі Spacewalk не відповідає запису проксі-"
-"сервера Spacewalk\n"
+"     Ідентифікатор системи проксі Spacewalk не відповідає запису проксі-сервера Spacewalk\n"
 "     у базі даних.\n"
 "     "
 
@@ -800,21 +746,18 @@ msgid ""
 msgstr ""
 "\n"
 "     Створення записів користувачів за допомогою rhn_register заборонено;\n"
-"     будь ласка, зв’яжіться із вашим системним адміністратором для створення "
-"вашого облікового запису.\n"
+"     будь ласка, зв’яжіться із вашим системним адміністратором для створення вашого облікового запису.\n"
 "     "
 
 #: ../common/rhnException.py:226
 #, fuzzy
 msgid ""
 "\n"
-"     This SUSE Multi-Linux Manager server is not allowed to use Inter Server "
-"Sync on this server\n"
+"     This SUSE Multi-Linux Manager server is not allowed to use Inter Server Sync on this server\n"
 "     "
 msgstr ""
 "\n"
-"     Цьому серверу satellite заборонено використання синхронізації Inter "
-"Satellite на цьому satellite\n"
+"     Цьому серверу satellite заборонено використання синхронізації Inter Satellite на цьому satellite\n"
 "     "
 
 #: ../common/rhnException.py:231
@@ -953,15 +896,11 @@ msgstr "Передавання файла результатів SCAP є нек�
 
 #: ../common/rhnException.py:268
 msgid "Error composing directory path for detailed SCAP results"
-msgstr ""
-"Помилка під час спроби утворення шляху до каталогу для докладних результатів "
-"SCAP"
+msgstr "Помилка під час спроби утворення шляху до каталогу для докладних результатів SCAP"
 
 #: ../common/rhnException.py:269
 msgid "Error composing file path for detailed SCAP results"
-msgstr ""
-"Помилка під час спроби утворення шляху до файла для докладних результатів "
-"SCAP"
+msgstr "Помилка під час спроби утворення шляху до файла для докладних результатів SCAP"
 
 #: ../common/rhnException.py:270
 msgid "Invalid content encoding"
@@ -979,12 +918,9 @@ msgid ""
 msgstr ""
 "\n"
 "     Під час спроби обробити ваш запит сталася помилка. Якщо цю\n"
-"     проблему не вдасться вирішити, будь ласка, створіть звіт щодо вади на "
-"bugzilla.redhat.com.\n"
-"     Якщо ви вирішите створити такий звіт щодо вади, будь ласка, не забудьте "
-"вказати у ньому\n"
-"     подробиці щодо того, що саме ви робили, коли сталася помилка, а також "
-"спосіб, у який\n"
+"     проблему не вдасться вирішити, будь ласка, створіть звіт щодо вади на bugzilla.redhat.com.\n"
+"     Якщо ви вирішите створити такий звіт щодо вади, будь ласка, не забудьте вказати у ньому\n"
+"     подробиці щодо того, що саме ви робили, коли сталася помилка, а також спосіб, у який\n"
 "     цю проблему можна відтворити.\n"
 
 #: ../common/rhnException.py:368
@@ -1059,8 +995,7 @@ msgstr ""
 msgid ""
 "\n"
 "ERROR: There was a problem communicating with the ISS Master.\n"
-"       Depending on the specific error details, please review your "
-"configuration,\n"
+"       Depending on the specific error details, please review your configuration,\n"
 "       basic network connectivity, and/or name resolution, and try again.\n"
 "       Error message: %s\n"
 msgstr ""
@@ -1070,8 +1005,7 @@ msgstr ""
 msgid ""
 "\n"
 "ERROR: a child-channel cannot be synced without its parent being synced as\n"
-"       well. A parent needs to be either (a) previously synced or (b) "
-"synced\n"
+"       well. A parent needs to be either (a) previously synced or (b) synced\n"
 "       in tandem with the desired child-channel. Missing parents for this\n"
 "       transaction:\n"
 "       %s\n"
@@ -1300,13 +1234,11 @@ msgstr ""
 
 #~ msgid ""
 #~ "\n"
-#~ "If you have a registration number, please register with it first at "
-#~ "http://www.redhat.com/apps/activate/ and then try again.\n"
+#~ "If you have a registration number, please register with it first at http://www.redhat.com/apps/activate/ and then try again.\n"
 #~ "\n"
 #~ msgstr ""
 #~ "\n"
-#~ "Якщо у вас є реєстраційний номер, будь ласка, спершу зареєструйте його на "
-#~ "http://www.redhat.com/apps/activate/, а потім повторіть спробу.\n"
+#~ "Якщо у вас є реєстраційний номер, будь ласка, спершу зареєструйте його на http://www.redhat.com/apps/activate/, а потім повторіть спробу.\n"
 #~ "\n"
 
 #~ msgid ""
@@ -1321,8 +1253,7 @@ msgstr ""
 #~ "...to activate your product."
 #~ msgstr ""
 #~ "\n"
-#~ "Некоректна комбінація архітектури і випуску операційної системи (%s, "
-#~ "%s).\n"
+#~ "Некоректна комбінація архітектури і випуску операційної системи (%s, %s).\n"
 #~ "Вашу систему зареєстровано, але вона не отримуватиме оновлень, оскільки\n"
 #~ "її не підписано на канал. Якщо ви ще не активували ваш продукт\n"
 #~ "для обслуговування, будь ласка, відвідайте наш сайт за адресою:\n"

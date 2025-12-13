@@ -46,21 +46,14 @@ export interface Parent {
   disabled: boolean;
 }
 
-export interface ProxyConfigProps {
+export type ProxyConfigProps = {
   serverId: string;
-  isUyuni: boolean;
   parents: Parent[];
   currentConfig: ProxyConfigModel;
-  initFailMessage?: string;
-}
-
-export type TagOptions = {
-  registryBaseURL?: string[];
-  registryHttpdURL?: string[];
-  registrySaltbrokerURL?: string[];
-  registrySquidURL?: string[];
-  registrySshURL?: string[];
-  registryTftpdURL?: string[];
+  validationErrors?: string[];
+  registryUrlExample?: string;
+  registryTagExample?: string;
+  hasCertificates?: boolean;
 };
 
 export const RegistryBaseURL = "registryBaseURL";

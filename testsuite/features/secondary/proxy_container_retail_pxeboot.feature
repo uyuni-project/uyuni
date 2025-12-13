@@ -140,7 +140,7 @@ Feature: PXE boot a Retail terminal behind a containerized proxy
     And I wait until event "Apply states [saltboot]" is completed
     And I follow "Software" in the content area
     And I follow "Software Channels" in the content area
-    And I wait until radio button "SLE-Product-SLES15-SP4-Pool for x86_64" is checked, refreshing the page
+    And I wait until radio button "SLE-Product-SLES15-SP7-Pool for x86_64" is checked, refreshing the page
     And I wait until event "Package List Refresh" is completed
     Then "pxeboot_minion" should have been reformatted
 
@@ -158,7 +158,7 @@ Feature: PXE boot a Retail terminal behind a containerized proxy
     And I enter "virgo" as the filtered package name
     And I click on the filter button
     And I check "virgo-dummy-2.0-1.1" in the list
-    And I click on "Install Selected Packages"
+    And I click on "Install Packages"
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled" text
     When I wait until event "Package Install/Upgrade scheduled by admin" is completed

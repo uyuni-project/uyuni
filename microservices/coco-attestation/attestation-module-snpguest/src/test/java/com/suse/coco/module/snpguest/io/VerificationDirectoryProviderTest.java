@@ -16,8 +16,10 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 
+import com.suse.coco.module.snpguest.TestHelper;
 import com.suse.coco.module.snpguest.model.AttestationReport;
 import com.suse.coco.module.snpguest.model.EpycGeneration;
 
@@ -26,6 +28,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -71,15 +75,21 @@ class VerificationDirectoryProviderTest {
         }
     }
 
-    @Test
-    @DisplayName("Verification directory is created by the provider and destroyed on resource closure")
-    void canCreateAndDestroyVerificationDirectory() throws IOException {
+    @ParameterizedTest(name = TestHelper.CPU_USING_VLEK_NAME)
+    @MethodSource("com.suse.coco.module.snpguest.TestHelper#listCpuAndUsingVlek")
+    @DisplayName("Verification directory is created by the provider and destroyed on resource closure" +
+            " for each cpu generation")
+    void canCreateAndDestroyVerificationDirectory(EpycGeneration cpuGeneration, boolean usingVlek) throws IOException {
         Path verificationDirectory;
 
         when(attestationReport.getCpuGeneration())
-            .thenReturn(EpycGeneration.GENOA);
+            .thenReturn(cpuGeneration);
         when(attestationReport.getReport())
             .thenReturn("This is a dummy report for unit test".getBytes(StandardCharsets.UTF_8));
+        when(attestationReport.isUsingVlekAttestation())
+                .thenReturn(usingVlek);
+        lenient().when(attestationReport.getVlekCertificate())
+                .thenReturn(usingVlek ? "This is a dummy VLEK certificaate" : null);
 
         try (VerificationDirectory directory = directoryProvider.createDirectoryFor(5L, attestationReport)) {
             verificationDirectory = directory.getBasePath();
@@ -100,9 +110,19 @@ class VerificationDirectoryProviderTest {
             Path askCert = directory.getCertsPath().resolve("ask.pem");
             assertTrue(Files.exists(askCert));
 
+            Path asvkCert = directory.getCertsPath().resolve("asvk.pem");
+            assertTrue(Files.exists(asvkCert));
+
+            Path vlekCert = directory.getCertsPath().resolve("vlek.pem");
+            assertEquals(usingVlek, Files.exists(vlekCert));
+
             // Check they contain the correct value
-            assertEquals("Genoa ROOT fake certificate", Files.readString(arkCert).strip());
-            assertEquals("Genoa INTERMEDIATE fake certificate", Files.readString(askCert).strip());
+            String cpuName = cpuGeneration.name().toLowerCase();
+            cpuName = cpuName.substring(0, 1).toUpperCase() + cpuName.substring(1);
+            assertEquals("%s ROOT fake certificate".formatted(cpuName), Files.readString(arkCert).strip());
+            assertEquals("%s INTERMEDIATE fake certificate".formatted(cpuName), Files.readString(askCert).strip());
+            assertEquals("%s INTERMEDIATE VLEK fake certificate".formatted(cpuName),
+                    Files.readString(asvkCert).strip());
 
             // Verify the report is present
             assertTrue(Files.isReadable(directory.getReportPath()));
@@ -132,7 +152,8 @@ class VerificationDirectoryProviderTest {
         // Check the exception is the expected one
         assertEquals("Cannot find certificate for cpu generation UNKNOWN", ex.getMessage());
         // Check no files have been created
-        assertEquals(totalFiles, countTotalFileInFolder(destPath), "Some files have been created and left behind");
+        assertEquals(totalFiles, countTotalFileInFolder(destPath),
+                "Some files have been created and left behind");
     }
 
     private long countTotalFileInFolder(Path path) throws IOException {

@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type ReactNode, Component, createContext, createRef, Fragment } from "react";
 
 import { default as Jexl } from "jexl";
 
@@ -8,6 +8,7 @@ import { SectionState } from "components/FormulaForm";
 import HelpIcon from "components/utils/HelpIcon";
 
 import { Formulas, Utils } from "utils/functions";
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
 import EditGroup from "./EditGroup";
 import Group from "./Group";
@@ -55,7 +56,7 @@ type Context = {
   searchCriteria: string | null | undefined;
 };
 
-export const FormulaFormContext = React.createContext<Context>({
+export const FormulaFormContext = createContext<Context>({
   scope: null,
   layout: {},
   values: {},
@@ -90,7 +91,7 @@ export function generateFormulaComponentForId(
 ) {
   wrapper = get(wrapper, defaultWrapper);
 
-  var isDisabled =
+  const isDisabled =
     (formulaForm.props.scope !== element.$scope && element.$scope !== "system") ||
     ("$disabled" in element && evalExpression(id, element.$disabled, formulaForm)) ||
     (!("$disabled" in element) && disabled);
@@ -151,19 +152,6 @@ export function generateFormulaComponentForId(
           disabled={isDisabled}
           value={value}
         />
-        <span className="input-group-btn">
-          <button
-            className="btn btn-default"
-            title={t("Reset")}
-            onClick={function (event) {
-              event.preventDefault();
-              Loggerhead.warn("Reseting color picker is not implemented!");
-              /* TODO: reset Value */
-            }}
-          >
-            <i className="fa fa-undo no-margin" />
-          </button>
-        </span>
       </div>,
       element.$help
     );
@@ -308,14 +296,14 @@ function buildValuePath<ValueType>(id: string, formValues) {
   const tokens = id.split("#");
   let value = formValues;
 
-  interface ValuePath<T = unknown> {
+  type ValuePath<T = unknown> = {
     parent: ValuePath<T> | null;
     value: T;
-  }
+  };
 
   let prevPath: ValuePath<ValueType> | null = null;
   let path: ValuePath<ValueType> | null = null;
-  for (let i in tokens) {
+  for (const i in tokens) {
     if (value[tokens[i]] === undefined) {
       return null;
     }
@@ -340,7 +328,7 @@ function getConditionId(element_id, path) {
   path = path.trim();
   if (path.startsWith(".")) {
     let relpath = path;
-    let base = element_id.split("#");
+    const base = element_id.split("#");
     while (relpath.startsWith(".")) {
       relpath = relpath.substring(1); // remove first dot
       base.pop(); // remove last element
@@ -383,7 +371,7 @@ export function isFiltered(criteria) {
 function isVisibleByCriteria(element: any, criteria: string) {
   let visibilityForcedByChildren = false;
   // check if all children are not visible by criteria so we can hide the parent (this element) as well
-  for (var child_name in element) {
+  for (const child_name in element) {
     // We want to apply the search and filter only on top of nested components the child elements that start
     // with '$' are normal labels or other values so we skip them.
     if (child_name.startsWith("$")) continue;
@@ -393,7 +381,7 @@ function isVisibleByCriteria(element: any, criteria: string) {
 
   // return conditions result whether the element can be hided or not
   return (
-    criteria == null ||
+    DEPRECATED_unsafeEquals(criteria, null) ||
     criteria === "" ||
     element.$name.toLowerCase().includes(criteria.toLowerCase()) ||
     visibilityForcedByChildren
@@ -401,8 +389,8 @@ function isVisibleByCriteria(element: any, criteria: string) {
 }
 
 function generateChildrenFormItems(element, value, formulaForm, id, disabled = false) {
-  var child_items: React.ReactNode[] = [];
-  for (var child_name in element) {
+  const child_items: ReactNode[] = [];
+  for (const child_name in element) {
     if (child_name.startsWith("$")) continue;
     child_items.push(
       generateFormulaComponent(element[child_name], value[child_name], formulaForm, id, undefined, disabled)
@@ -412,8 +400,8 @@ function generateChildrenFormItems(element, value, formulaForm, id, disabled = f
 }
 
 function generateSelectList(data) {
-  var options: React.ReactNode[] = [];
-  for (var key in data)
+  const options: ReactNode[] = [];
+  for (const key in data)
     options.push(
       <option key={key} value={data[key]}>
         {data[key]}
@@ -426,14 +414,14 @@ function defaultWrapper(elementName, required, element, help = null) {
   return wrapFormGroupWithLabel(
     elementName,
     required,
-    <React.Fragment>
+    <Fragment>
       <div className="col-lg-6">{element}</div>
       <HelpIcon text={help} />
-    </React.Fragment>
+    </Fragment>
   );
 }
 
-function wrapFormGroupWithLabel(element_name: string, required?: boolean, innerHTML?: React.ReactNode) {
+function wrapFormGroupWithLabel(element_name: string, required?: boolean, innerHTML?: ReactNode) {
   return (
     <div className="form-group" key={element_name}>
       {wrapLabel(element_name, required)}
@@ -442,7 +430,7 @@ function wrapFormGroupWithLabel(element_name: string, required?: boolean, innerH
   );
 }
 
-function wrapLabel(text: React.ReactNode, required?: boolean, label_for?: string) {
+function wrapLabel(text: ReactNode, required?: boolean, label_for?: string) {
   return (
     <label htmlFor={label_for} className="col-lg-3 control-label">
       {text}
@@ -452,9 +440,9 @@ function wrapLabel(text: React.ReactNode, required?: boolean, label_for?: string
 }
 
 function getValueById(values, id) {
-  let parents = id.split("#");
+  const parents = id.split("#");
   let value = values;
-  for (let i in parents) {
+  for (const i in parents) {
     if (value[parents[i]] === undefined) {
       return null;
     }
@@ -499,8 +487,8 @@ type UnwrappedFormulaFormRendererProps = {
 // layout
 // values
 // onValuesChanged
-class UnwrappedFormulaFormRenderer extends React.Component<UnwrappedFormulaFormRendererProps> {
-  submitButton = React.createRef<HTMLInputElement>();
+class UnwrappedFormulaFormRenderer extends Component<UnwrappedFormulaFormRendererProps> {
+  submitButton = createRef<HTMLInputElement>();
 
   handleChange = (event) => {
     let id, value;
@@ -545,7 +533,7 @@ class UnwrappedFormulaFormRenderer extends React.Component<UnwrappedFormulaFormR
       return null;
     }
 
-    let form: React.ReactNode[] = [];
+    const form: ReactNode[] = [];
     for (const key in layout) {
       form.push(generateFormulaComponent(layout[key], values[key], this));
     }
@@ -569,13 +557,13 @@ class UnwrappedFormulaFormRenderer extends React.Component<UnwrappedFormulaFormR
  * Remove $meta attrs and add $ifEmpty values if needed.
  */
 function getValuesClean(values, layout) {
-  let result: any = {};
-  for (let key in values) {
+  const result: any = {};
+  for (const key in values) {
     if (key.startsWith("$meta")) {
       continue;
     }
     let value = values[key];
-    let element = layout[key];
+    const element = layout[key];
     if (element.$type === "group" || element.$type === "namespace") {
       value = getValuesClean(value, element);
       if (!jQuery.isEmptyObject(value)) result[key] = value;
@@ -593,7 +581,7 @@ function getValuesClean(values, layout) {
 function cleanMeta(value) {
   let result: any = {};
   if (value instanceof Object && !Array.isArray(value)) {
-    for (let key in value) {
+    for (const key in value) {
       if (key.startsWith("$meta")) {
         continue;
       }
@@ -606,7 +594,11 @@ function cleanMeta(value) {
 }
 
 function checkIfEmptyValueAttrExists(value, element, formulaValues) {
-  if ((value == null || value.length === 0) && !element.$optional && (element.$ifEmpty || element.$ifEmpty === null)) {
+  if (
+    (DEPRECATED_unsafeEquals(value, null) || value.length === 0) &&
+    !element.$optional &&
+    (element.$ifEmpty || element.$ifEmpty === null)
+  ) {
     value = element.$ifEmpty;
     formulaValues[element.$id] = value;
   }
@@ -683,7 +675,7 @@ type FormulaFormContextProviderState = {
 // groupData
 // scope
 // searchCriteria
-export class FormulaFormContextProvider extends React.Component<
+export class FormulaFormContextProvider extends Component<
   FormulaFormContextProviderProps,
   FormulaFormContextProviderState
 > {
@@ -726,8 +718,8 @@ export class FormulaFormContextProvider extends React.Component<
 
   onFormulaChange = (id, value) => {
     let values = this.state.formulaValues;
-    let parents = id.split("#");
-    for (var i in parents.slice(0, -1)) {
+    const parents = id.split("#");
+    for (const i in parents.slice(0, -1)) {
       if (values[parents[i]] === undefined) values[parents[i]] = {};
       values = values[parents[i]];
     }
@@ -758,7 +750,7 @@ export class FormulaFormContextProvider extends React.Component<
 
   walkValueTree = (value, formulaForm, formulaValues, validationFunc) => {
     if (value instanceof Object) {
-      for (let key in value) {
+      for (const key in value) {
         if (!key.startsWith("$meta$")) {
           if ("$meta$" + key in value) {
             const meta = value["$meta$" + key];
@@ -775,12 +767,12 @@ export class FormulaFormContextProvider extends React.Component<
   };
 
   getEmptyValues = () => {
-    let requiredErrors: any[] = [];
+    const requiredErrors: any[] = [];
     this.walkValueTree(
       this.state.formulaValues,
       this,
       this.state.formulaValues,
-      (parentVal, key, meta, formulaForm, formulaValues) => {
+      (parentVal, key, meta, formulaForm) => {
         const val = parentVal[key];
         if (meta["visibleIf"]) {
           const visibleIf = checkVisibilityCondition(meta["id"], meta["visibleIf"], formulaForm);
@@ -796,9 +788,7 @@ export class FormulaFormContextProvider extends React.Component<
         if (meta["required"]) {
           const required = evalExpression(meta["id"], meta["required"] + "", formulaForm);
           if (required) {
-            if (Array.isArray(val) && val.some((v) => !v)) {
-              requiredErrors.push(meta["name"]);
-            } else if (!val) {
+            if ((Array.isArray(val) && val.some((v) => !v)) || !val) {
               requiredErrors.push(meta["name"]);
             }
           }
@@ -811,34 +801,27 @@ export class FormulaFormContextProvider extends React.Component<
 
   checkFieldsFormat = () => {
     const errors: any[] = [];
-    this.walkValueTree(
-      this.state.formulaValues,
-      this,
-      this.state.formulaValues,
-      (parentVal, key, meta, formulaForm, formulaValues) => {
-        const value = parentVal[key];
-        if (meta["match"]) {
-          try {
-            let regex = meta["match"].startsWith("^") ? meta["match"] : "^" + meta["match"];
-            regex = regex.endsWith("$") ? regex : regex + "$";
-            const re = new RegExp(regex, "u");
-            if (Array.isArray(value)) {
-              // match each value
-              if (!value.every((v) => re.test(v))) {
-                errors.push(meta["name"]);
-              }
-            } else {
-              if (!re.test(value)) {
-                errors.push(meta["name"]);
-              }
+    this.walkValueTree(this.state.formulaValues, this, this.state.formulaValues, (parentVal, key, meta) => {
+      const value = parentVal[key];
+      if (meta["match"]) {
+        try {
+          let regex = meta["match"].startsWith("^") ? meta["match"] : "^" + meta["match"];
+          regex = regex.endsWith("$") ? regex : regex + "$";
+          const re = new RegExp(regex, "u");
+          if (Array.isArray(value)) {
+            // match each value
+            if (!value.every((v) => re.test(v))) {
+              errors.push(meta["name"]);
             }
-          } catch (err) {
-            Loggerhead.error("Error matching regex: '" + meta["match"] + "':" + err);
+          } else if (!re.test(value)) {
+            errors.push(meta["name"]);
           }
+        } catch (err) {
+          Loggerhead.error("Error matching regex: '" + meta["match"] + "':" + err);
         }
-        return true;
       }
-    );
+      return true;
+    });
     return errors;
   };
 
@@ -873,7 +856,7 @@ export class FormulaFormContextProvider extends React.Component<
    */
   preprocessLayout = (layout: ElementDefinition, scope = "system") => {
     Object.entries(layout)
-      .filter(([name, element]) => !name.startsWith("$") || name === "$key")
+      .filter(([name]) => !name.startsWith("$") || name === "$key")
       .forEach(([name, element]) => {
         this.adjustElementBasicAttrs([name, element], scope);
 
@@ -896,7 +879,7 @@ export class FormulaFormContextProvider extends React.Component<
    */
   preprocessData = (layout: ElementDefinition, data: any) => {
     Object.entries(layout)
-      .filter(([name, element]) => !(data[name] === undefined || (name.startsWith("$") && name !== "$key")))
+      .filter(([name]) => !(data[name] === undefined || (name.startsWith("$") && name !== "$key")))
       .forEach(([name, element]) => {
         const editGroupSubType = getEditGroupSubtype(element);
         // other edit-group as-a-dictionary needs to be converted to an array
@@ -911,7 +894,7 @@ export class FormulaFormContextProvider extends React.Component<
           data[name] = Object.entries(data[name] || {});
         } // the last form of a recursive edit-group needs to be processed recursively
         else if (editGroupSubType === EditGroupSubtype.LIST_OF_DICTIONARIES) {
-          Object.entries(data[name] || {}).forEach(([name, value]) => this.preprocessData(element.$prototype, value));
+          Object.entries(data[name] || {}).forEach(([_, value]) => this.preprocessData(element.$prototype, value));
         } // group elements also must be processed as they can contain edit-groups
         else if (!isPrimitiveElement(element)) {
           this.preprocessData(element, data[name]);
@@ -933,7 +916,6 @@ export class FormulaFormContextProvider extends React.Component<
     }
 
     if (element.$itemName === undefined) {
-      // eslint-disable-next-line no-template-curly-in-string
       element.$itemName = "Item ${i}";
     }
 
@@ -944,7 +926,7 @@ export class FormulaFormContextProvider extends React.Component<
       editGroupSubType === EditGroupSubtype.DICTIONARY_OF_DICTIONARIES ||
       editGroupSubType === EditGroupSubtype.LIST_OF_DICTIONARIES
     ) {
-      element.$newItemValue = this.generateValues(element.$prototype, {}, {}, element);
+      element.$newItemValue = this.generateValues(element.$prototype, {}, {});
     } else if (editGroupSubType === EditGroupSubtype.PRIMITIVE_DICTIONARY) {
       element.$newItemValue = [
         this.defaultValue(element.$prototype.$key.$type, element.$prototype.$key.$default),
@@ -1058,14 +1040,14 @@ export class FormulaFormContextProvider extends React.Component<
    * object that follows the structure of the layout and has values populated
    * based on the system data, group data and layout default.
    */
-  generateValues = (layout, group_data, system_data, UNUSED_ARG?: any) => {
+  generateValues = (layout, group_data, system_data) => {
     const generateValuesInternal = (layout, group_data, system_data, prototypeParentId?: any, elementIndex?: any) => {
-      let result: any = {};
-      for (let key in layout) {
+      const result: any = {};
+      for (const key in layout) {
         if (key.startsWith("$") && key !== "$key") continue;
 
         let value: any = null;
-        let element = layout[key];
+        const element = layout[key];
         let elementId;
         if (prototypeParentId && typeof elementIndex !== "undefined" && elementIndex !== null) {
           elementId = prototypeParentId + "#" + elementIndex + "#" + element.$id;

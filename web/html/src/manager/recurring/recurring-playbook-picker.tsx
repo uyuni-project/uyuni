@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import { AnsiblePathContent } from "manager/minion/ansible/ansible-path-content";
 
@@ -18,7 +18,7 @@ type StateType = {
   editPlaybook: boolean;
 };
 
-class RecurringPlaybookPicker extends React.Component<PropsType, StateType> {
+class RecurringPlaybookPicker extends Component<PropsType, StateType> {
   constructor(props) {
     super(props);
 
@@ -47,7 +47,7 @@ class RecurringPlaybookPicker extends React.Component<PropsType, StateType> {
   };
 
   render() {
-    let button = (
+    const button = (
       <Button
         id="change-btn"
         className="btn-default"

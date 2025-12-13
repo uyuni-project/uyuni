@@ -12,9 +12,14 @@ import json
 
 log = logging.getLogger(__name__)
 
+# __salt__ variable is populated with Salt Lazy Loader.
+# Define it for testing purposes and to avoid pylint warnings.
+__salt__ = {}
+
 # Kiwi version is always in format "MAJOR.MINOR.RELEASE" with numeric values
 # Source https://osinside.github.io/kiwi/image_description/elements.html#preferences-version
-KIWI_VERSION_REGEX = r"\d+\.\d+\.\d+"
+# Enhanced by allowing also MAJOR.MINOR version, particularly for SL-Micro images
+KIWI_VERSION_REGEX = r"\d+\.\d+(\.\d+)?"
 # Taken from Kiwi sources https://github.com/OSInside/kiwi/blob/eb2b1a84bf7/kiwi/schema/kiwi.rng#L81
 KIWI_ARCH_REGEX = r"(x86_64|i586|i686|ix86|aarch64|arm64|armv5el|armv5tel|armv6hl|armv6l|armv7hl|armv7l|ppc|ppc64|ppc64le|s390|s390x|riscv64)"
 # Taken from Kiwi sources https://github.com/OSInside/kiwi/blob/eb2b1a84bf7/kiwi/schema/kiwi.rng#L26
@@ -24,11 +29,9 @@ KIWI_NAME_REGEX = r"[a-zA-Z0-9_\-\.]+"
 def parse_profile(chroot):
     ret = {}
     path = os.path.join(chroot, "image", ".profile")
-    # pylint: disable-next=undefined-variable
     if __salt__["file.file_exists"](path):
-        # pylint: disable-next=undefined-variable
         profile = __salt__["cp.get_file_str"](path)
-        pattern = re.compile(r"^(?P<name>.*?)='(?P<val>.*)'")
+        pattern = re.compile(r"^(?P<name>[^=]+?)='(?P<val>.*)'")
         for line in profile.splitlines():
             match = pattern.match(line)
             if match:
@@ -39,9 +42,7 @@ def parse_profile(chroot):
 def parse_buildinfo(dest):
     ret = {}
     path = os.path.join(dest, "kiwi.buildinfo")
-    # pylint: disable-next=undefined-variable
     if __salt__["file.file_exists"](path):
-        # pylint: disable-next=undefined-variable
         profile = __salt__["cp.get_file_str"](path)
         pattern_group = re.compile(r"^\[(?P<name>.*)\]")
         pattern_val = re.compile(r"^(?P<name>.*?)=(?P<val>.*)")
@@ -62,7 +63,6 @@ def parse_buildinfo(dest):
 # fallback for SLES11 Kiwi and for Kiwi NG that does not create the buildinfo file
 def guess_buildinfo(dest):
     ret = {"main": {}}
-    # pylint: disable-next=undefined-variable
     files = __salt__["file.readdir"](dest)
 
     pattern_basename = re.compile(r"^(?P<basename>.*)\.packages$")
@@ -111,7 +111,6 @@ with open(sys.argv[1], 'rb') as f:
 def parse_kiwi_result(dest):
     path = os.path.join(dest, "kiwi.result")
     ret = {}
-    # pylint: disable-next=undefined-variable
     if __salt__["file.file_exists"](path):
         # pickle depends on availability of python kiwi modules
         # which are not under our control so there is certain risk of failure
@@ -120,12 +119,14 @@ def parse_kiwi_result(dest):
         #
         # return empty dict on failure
         # the caller should handle all values as optional
-        # pylint: disable-next=undefined-variable
-        result = __salt__["cmd.exec_code_all"](
-            "/usr/bin/python3", _kiwi_result_script, args=[path]
-        )
-        if result["retcode"] == 0:
-            ret = json.loads(result["stdout"])
+        for python in ["/usr/bin/python3.11", "/usr/bin/python3"]:
+            if __salt__["file.file_exists"](python):
+                result = __salt__["cmd.exec_code_all"](
+                    python, _kiwi_result_script, args=[path]
+                )
+                if result["retcode"] == 0:
+                    ret = json.loads(result["stdout"])
+                    break
         # else return empty dict
 
     return ret
@@ -133,18 +134,14 @@ def parse_kiwi_result(dest):
 
 def parse_packages(path):
     ret = []
-    # pylint: disable-next=undefined-variable
     if __salt__["file.file_exists"](path):
-        # pylint: disable-next=undefined-variable
         packages = __salt__["cp.get_file_str"](path)
-        pattern = re.compile(
-            r"^(?P<name>.*?)\|(?P<epoch>.*?)\|(?P<version>.*?)\|(?P<release>.*?)\|(?P<arch>.*?)\|(?P<disturl>.*?)(\|(?P<license>.*))?$"
-        )
+        fields = ["name", "epoch", "version", "release", "arch", "disturl", "license"]
         for line in packages.splitlines():
-            match = pattern.match(line)
-            if match:
+            line_data = line.split("|")
+            if len(line_data) == len(fields):
                 # translate '(none)' values to ''
-                d = match.groupdict()
+                d = dict(zip(fields, line_data))
                 for k in list(d.keys()):
                     if d[k] == "(none)":
                         d[k] = ""
@@ -159,38 +156,50 @@ def parse_packages(path):
 
 def get_md5(path):
     res = {}
-    # pylint: disable-next=undefined-variable
     if not __salt__["file.file_exists"](path):
         return res
 
-    # pylint: disable-next=undefined-variable
     res["hash"] = "md5:" + __salt__["file.get_hash"](path, form="md5")
-    # pylint: disable-next=undefined-variable
     res["size"] = __salt__["file.stats"](path).get("size")
     return res
 
 
-def parse_kiwi_md5(path, compressed=False):
+def get_decompressed_md5(path, decompress_cmd):
     res = {}
-
     # pylint: disable-next=undefined-variable
     if not __salt__["file.file_exists"](path):
         return res
 
+    cmd = decompress_cmd + " '" + path + "' | md5sum"
     # pylint: disable-next=undefined-variable
-    md5_str = __salt__["cp.get_file_str"](path)
-    if md5_str is not None:
+    shell_result = __salt__["cmd.run_all"](cmd, python_shell=True)
+
+    if shell_result["retcode"] == 0:
+        hash_val = shell_result["stdout"].split()[0].strip()
+        res["hash"] = "md5:" + hash_val
+
+    return res
+
+
+def parse_kiwi_hash(path, compressed=False, hash_type="md5"):
+    res = {}
+
+    if not __salt__["file.file_exists"](path):
+        return res
+
+    hash_str = __salt__["cp.get_file_str"](path)
+    if hash_str is not None:
         if compressed:
             pattern = re.compile(
-                r"^(?P<md5>[0-9a-f]+)\s+(?P<size1>[0-9]+)\s+(?P<size2>[0-9]+)\s+(?P<csize1>[0-9]+)\s+(?P<csize2>[0-9]+)\s*$"
+                r"^(?P<hash>[0-9a-f]+)\s+(?P<size1>[0-9]+)\s+(?P<size2>[0-9]+)\s+(?P<csize1>[0-9]+)\s+(?P<csize2>[0-9]+)\s*$"
             )
         else:
             pattern = re.compile(
-                r"^(?P<md5>[0-9a-f]+)\s+(?P<size1>[0-9]+)\s+(?P<size2>[0-9]+)\s*$"
+                r"^(?P<hash>[0-9a-f]+)\s+(?P<size1>[0-9]+)\s+(?P<size2>[0-9]+)\s*$"
             )
-        match = pattern.match(md5_str)
+        match = pattern.match(hash_str)
         if match:
-            res["hash"] = "md5:" + match.group("md5")
+            res["hash"] = hash_type + ":" + match.group("hash")
             res["size"] = int(match.group("size1")) * int(match.group("size2"))
             if compressed:
                 res["compressed_size"] = int(match.group("csize1")) * int(
@@ -206,6 +215,14 @@ _compression_types = {
     "": None,
 }
 
+
+_decompress_cmd = {
+    "gzip": "gzip -dc",
+    "bzip": "bzip2 -dc",
+    "xz": "xz -dc",
+}
+
+
 # suffixes for pxe/kis image type
 _pxe_image_types = [
     ".gz",
@@ -214,25 +231,42 @@ _pxe_image_types = [
     "",
 ]
 
-# suffixes of files we consider as image result
-_known_image_types = [
-    ".gz",
-    ".bz",
-    ".xz",
-    ".tar.xz",
-    ".install.iso",
-    ".iso",
-    ".qcow2",
-    ".ova",
-    ".vmdk",
-    ".vmx",
-    ".vhd",
-    ".vhdx",
-    ".vdi",
-    ".raw",
-    ".squashfs",
-    "",
-]
+
+def _known_image_types():
+    formats = _disk_format_types()
+    formats.extend(_compressed_format_types())
+    formats.extend(_iso_format_types())
+    formats.extend(_raw_format_types())
+    return formats
+
+
+# from https://github.com/OSInside/kiwi/blob/main/kiwi/defaults.py#L1501
+def _disk_format_types():
+    return [
+        ".gce",
+        ".qcow2",
+        ".vmdk",
+        ".ova",
+        ".vmx",
+        ".vhd",
+        ".vhdx",
+        ".vhdfixed",
+        ".vdi",
+        ".vagrant.libvirt.box",
+        ".vagrant.virtualbox.box",
+    ]
+
+
+def _compressed_format_types():
+    return [".gz", ".bz", ".xz", ".tar.xz"]
+
+
+def _iso_format_types():
+    return [".install.iso", ".iso"]
+
+
+def _raw_format_types():
+    return [".raw", ".squashfs"]
 
 
 def image_details(dest, bundle_dest=None):
@@ -266,13 +300,12 @@ def image_details(dest, bundle_dest=None):
     filename = None
     filepath = None
     compression = None
-    image_types = _known_image_types
-    if image_type == "pxe":
+    image_types = _known_image_types()
+    if image_type == "pxe" or image_type == "kis":
         image_types = _pxe_image_types
 
     for c in image_types:
         path = os.path.join(dest, basename + c)
-        # pylint: disable-next=undefined-variable
         if __salt__["file.file_exists"](path):
             filename = basename + c
             filepath = path
@@ -293,7 +326,6 @@ def image_details(dest, bundle_dest=None):
         res["image"].update(
             {
                 "compression": compression,
-                # pylint: disable-next=undefined-variable
                 "compressed_hash": __salt__["hashutil.digest_file"](
                     filepath, checksum="md5"
                 ),
@@ -301,8 +333,23 @@ def image_details(dest, bundle_dest=None):
         )
 
     res["image"].update(
-        parse_kiwi_md5(os.path.join(dest, basename + ".md5"), compression is not None)
+        parse_kiwi_hash(
+            os.path.join(dest, basename + ".sha256"), compression is not None, "sha256"
+        )
     )
+    res["image"].update(
+        parse_kiwi_hash(
+            os.path.join(dest, basename + ".md5"), compression is not None, "md5"
+        )
+    )
+
+    # remove this when saltboot supports sha256:
+    if "hash" not in res["image"] or not res["image"]["hash"].startswith("md5:"):
+        if compression:
+            decompress_cmd = _decompress_cmd[compression]
+            res["image"].update(get_decompressed_md5(filepath, decompress_cmd))
+        else:
+            res["image"].update(get_md5(filepath))
 
     if bundle_dest is not None:
         res["bundles"] = inspect_bundles(bundle_dest, basename)
@@ -326,7 +373,6 @@ def inspect_image(dest, build_id, bundle_dest=None):
 
     for fstype in ["ext2", "ext3", "ext4", "btrfs", "xfs"]:
         path = os.path.join(dest, basename + "." + fstype)
-        # pylint: disable-next=undefined-variable
         if __salt__["file.file_exists"](path) or __salt__["file.is_link"](path):
             res["image"]["fstype"] = fstype
             break
@@ -345,7 +391,6 @@ def inspect_boot_image(dest):
     Only valid for PXE/KIS image type.
     """
     res = None
-    # pylint: disable-next=undefined-variable
     files = __salt__["file.readdir"](dest)
 
     pattern = re.compile(
@@ -407,7 +452,6 @@ def inspect_boot_image(dest):
         else:
             file = basename + c
         filepath = os.path.join(dest, file)
-        # pylint: disable-next=undefined-variable
         if __salt__["file.file_exists"](filepath):
             res["initrd"]["filename"] = file
             res["initrd"]["filepath"] = filepath
@@ -415,14 +459,13 @@ def inspect_boot_image(dest):
                 res["initrd"].update(get_md5(filepath))
             else:
                 res["initrd"].update(
-                    parse_kiwi_md5(os.path.join(dest, basename + ".md5"))
+                    parse_kiwi_hash(os.path.join(dest, basename + ".md5"))
                 )
             break
 
     if res["kiwi_ng"]:
         file = basename + "-" + res["kernel"]["version"] + ".kernel"
         filepath = os.path.join(dest, file)
-        # pylint: disable-next=undefined-variable
         if __salt__["file.file_exists"](filepath):
             res["kernel"]["filename"] = file
             res["kernel"]["filepath"] = filepath
@@ -430,11 +473,10 @@ def inspect_boot_image(dest):
     else:
         file = basename + ".kernel." + res["kernel"]["version"]
         filepath = os.path.join(dest, file)
-        # pylint: disable-next=undefined-variable
         if __salt__["file.file_exists"](filepath):
             res["kernel"]["filename"] = file
             res["kernel"]["filepath"] = filepath
-            res["kernel"].update(parse_kiwi_md5(filepath + ".md5"))
+            res["kernel"].update(parse_kiwi_hash(filepath + ".md5"))
 
     return res
 
@@ -447,7 +489,6 @@ def inspect_bundles(dest, basename):
     Not used by default, not compatible with containerized saltboot workflow.
     """
     res = []
-    # pylint: disable-next=undefined-variable
     files = __salt__["file.readdir"](dest)
 
     pattern = re.compile(
@@ -460,14 +501,13 @@ def inspect_bundles(dest, basename):
         if match:
             res1 = match.groupdict()
             sha256_file = f
-            # pylint: disable-next=undefined-variable
             sha256_str = __salt__["cp.get_file_str"](os.path.join(dest, sha256_file))
-            pattern2 = re.compile(r"^(?P<hash>[0-9a-f]+)\s+(?P<filename>.*)\s*$")
+            pattern2 = re.compile(r"^(?P<hash>[0-9a-f]+)\s+(?P<filename>\S.*)$")
             match = pattern2.match(sha256_str)
             if match:
                 d = match.groupdict()
-                # pylint: disable-next=consider-using-f-string
-                d["hash"] = "sha256:{0}".format(d["hash"])
+                d["filename"] = d["filename"].strip()
+                d["hash"] = f'sha256:{d["hash"]}'
                 res1.update(d)
                 res1["filepath"] = os.path.join(dest, res1["filename"])
             else:
@@ -475,8 +515,7 @@ def inspect_bundles(dest, basename):
                 pattern2 = re.compile(r"^(?P<hash>[0-9a-f]+)$")
                 match = pattern2.match(sha256_str)
                 if match:
-                    # pylint: disable-next=consider-using-f-string
-                    res1["hash"] = "sha256:{0}".format(match.groupdict()["hash"])
+                    res1["hash"] = f'sha256:{match.groupdict()["hash"]}'
                     res1["filename"] = sha256_file[0 : -len(".sha256")]
                     res1["filepath"] = os.path.join(dest, res1["filename"])
             res.append(res1)
@@ -512,9 +551,9 @@ def build_info(dest, build_id, bundle_dest=None):
 
     image_filepath = None
     image_filename = None
-    image_types = _known_image_types
+    image_types = _known_image_types()
 
-    if image_type == "pxe":
+    if image_type == "pxe" or image_type == "kis":
         r = inspect_boot_image(dest)
         res["boot_image"] = {
             "initrd": {
@@ -533,7 +572,6 @@ def build_info(dest, build_id, bundle_dest=None):
     for c in image_types:
         test_name = basename + c
         filepath = os.path.join(dest, test_name)
-        # pylint: disable-next=undefined-variable
         if __salt__["file.file_exists"](filepath):
             image_filename = test_name
             image_filepath = filepath

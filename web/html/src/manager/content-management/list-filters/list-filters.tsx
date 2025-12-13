@@ -1,6 +1,3 @@
-import { hot } from "react-hot-loader/root";
-
-import * as React from "react";
 import { useEffect, useState } from "react";
 
 import { isOrgAdmin } from "core/auth/auth.utils";
@@ -24,7 +21,7 @@ import { mapFilterFormToRequest, mapResponseToFilterForm } from "./filter.utils"
 import FilterEdit from "./filter-edit";
 
 type Props = {
-  filters: Array<FilterServerType>;
+  filters: FilterServerType[];
   flashMessage: string;
 };
 
@@ -125,7 +122,7 @@ const ListFilters = (props: Props) => {
           id="create-filter-button"
           initialFilterForm={initialFilterForm}
           icon="fa-plus"
-          buttonText="Create Filter"
+          buttonText={t("Create Filter")}
           className="btn-primary"
           openFilterId={openFilterId}
           projectLabel={projectLabel}
@@ -135,16 +132,17 @@ const ListFilters = (props: Props) => {
     </div>
   );
 
-  const unusedFilter = <Button className="btn-default" handler={onSelectUnused} text={t("Select unused")}></Button>;
-
-  const deleteSelected = (
-    <Button
-      className="btn btn-danger"
-      disabled={!selectedIdentifiers.length}
-      handler={deleteSelectedRows}
-      text={t("Delete selected")}
-    />
-  );
+  const actionButtons = [
+    <div key="filter-action-buttons" className="btn-group">
+      <Button className="btn-default" handler={onSelectUnused} text={t("Select unused")}></Button>
+      <Button
+        className="btn btn-danger"
+        disabled={!selectedIdentifiers.length}
+        handler={deleteSelectedRows}
+        text={t("Delete")}
+      />
+    </div>,
+  ];
 
   return (
     <TopPanel
@@ -163,7 +161,7 @@ const ListFilters = (props: Props) => {
         selectedItems={selectedIdentifiers}
         deletable={isDeletable}
         onDelete={deleteRow}
-        additionalFilters={[unusedFilter, deleteSelected]}
+        titleButtons={actionButtons}
       >
         <Column
           columnKey="filter_name"
@@ -197,15 +195,16 @@ const ListFilters = (props: Props) => {
         />
         <Column
           columnKey="action-buttons"
-          header={t("")}
+          header={t("Actions")}
+          width="30px"
           cell={(row) =>
             hasEditingPermissions && (
               <FilterEdit
                 id={`edit-filter-button-${row.id}`}
                 initialFilterForm={row}
-                icon="fa-edit"
-                buttonText="Edit Filter"
-                className="btn-link"
+                icon="fa-pencil"
+                buttonTitle={t("Edit Filter")}
+                className="btn-default btn-sm"
                 onChange={(responseFilters) => setDisplayedFilters(mapResponseToFilterForm(responseFilters))}
                 openFilterId={openFilterId}
                 projectLabel={projectLabel}
@@ -219,4 +218,4 @@ const ListFilters = (props: Props) => {
   );
 };
 
-export default hot(withPageWrapper<Props>(ListFilters));
+export default withPageWrapper<Props>(ListFilters);

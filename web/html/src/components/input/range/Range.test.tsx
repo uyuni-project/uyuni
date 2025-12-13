@@ -1,5 +1,6 @@
-import * as React from "react";
+import { Children } from "react";
 
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import { clear, render, screen, type, waitForElementToBeRemoved } from "utils/test-utils";
 
 import { Form } from "../form/Form";
@@ -18,7 +19,7 @@ describe("Range", () => {
   function renderWithForm(content) {
     return render(
       <Form model={model} onChange={onChange}>
-        {React.Children.toArray(content)}
+        {Children.toArray(content)}
       </Form>
     );
   }
@@ -70,7 +71,7 @@ describe("Range", () => {
         label="Port range"
         invalidHint={t("Both values need to be positive integers")}
         validators={[
-          (value) => Object.values(value).every((item) => item != null),
+          (value) => Object.values(value).every((item) => !DEPRECATED_unsafeEquals(item, null)),
           (value) => Object.values(value).every((item) => typeof item === "string" && item.match(/^[0-9]+$/)),
           ({ port_start, port_end }) => parseInt(port_start, 10) <= parseInt(port_end, 10),
         ]}

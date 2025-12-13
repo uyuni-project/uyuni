@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type ReactNode, Component } from "react";
 
 import CoCoSettingsForm from "components/coco-attestation/CoCoSettingsForm";
 import { Settings } from "components/coco-attestation/Utils";
@@ -21,7 +21,7 @@ type State = {
   loading: boolean;
 };
 
-class CoCoSettings extends React.Component<Props, State> {
+class CoCoSettings extends Component<Props, State> {
   public static readonly defaultProps: Partial<Props> = {
     showOnScheduleOption: true,
   };
@@ -53,7 +53,7 @@ class CoCoSettings extends React.Component<Props, State> {
     );
   }
 
-  render(): React.ReactNode {
+  render(): ReactNode {
     if (this.state.loading) {
       return (
         <div className="panel panel-default">

@@ -1,13 +1,14 @@
 // Note: to use this component you have to make sure the current user roles are injected with withRolesTemplate
 // and jade mixin userRoles
-import * as React from "react";
+import { type ReactNode, createContext } from "react";
+export type rolesType = string[];
+declare global {
+  var global_userRoles: rolesType | undefined;
+}
 
-export type rolesType = Array<string>;
-declare var global_userRoles: rolesType | undefined;
+const RolesContext = createContext<rolesType>([]);
 
-const RolesContext = React.createContext<rolesType>([]);
-
-const RolesProvider = ({ children }: { children: React.ReactNode }) => (
+const RolesProvider = ({ children }: { children: ReactNode }) => (
   <RolesContext.Provider value={typeof global_userRoles !== "undefined" ? global_userRoles : []}>
     {children}
   </RolesContext.Provider>

@@ -1,13 +1,12 @@
 import SpaRenderer from "core/spa/spa-renderer";
 
-import { SystemData } from "components/target-systems";
-
 import CoCoSSMSettings from "./ssm-settings";
+import { CoCoSystemData } from "./types";
 
-// See java/code/src/com/suse/manager/webui/templates/ssm/coco-ssm-settings.jade
+// See java/core/src/main/resources/com/suse/manager/webui/templates/ssm/coco-ssm-settings.jade
 declare global {
   interface Window {
-    systemSupport?: SystemData[];
+    systemSupport?: CoCoSystemData[];
     availableEnvironmentTypes?: any;
   }
 }

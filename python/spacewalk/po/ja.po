@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-25 09:41+0200\n"
+"POT-Creation-Date: 2025-08-22 09:58+0200\n"
 "PO-Revision-Date: 2025-06-16 14:59+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/backend/ja/>\n"
@@ -40,13 +40,13 @@ msgstr "送信されたプロキシ署名 %s がこちら側の %s と一致し�
 msgid "declined proxy authentication"
 msgstr "プロキシ認証が拒否されました"
 
-#: ../server/apacheRequest.py:67
+#: ../server/apacheRequest.py:68
 #, python-format
 msgid "Invalid request received (%s)."
 msgstr "無効な要求を受け取りました (%s)。"
 
 #. Send the message as a fault.
-#: ../server/apacheRequest.py:126
+#: ../server/apacheRequest.py:130
 #, python-format
 msgid ""
 "IMPORTANT MESSAGE FOLLOWS:\n"
@@ -55,7 +55,7 @@ msgstr ""
 "重要なメッセージです:\n"
 "%s"
 
-#: ../server/apacheRequest.py:156
+#: ../server/apacheRequest.py:160
 #, python-format
 msgid ""
 "While running '%s': caught\n"
@@ -65,7 +65,7 @@ msgstr ""
 "%s : %s\n"
 
 #. pylint: disable-next=consider-using-f-string
-#: ../server/apacheRequest.py:671
+#: ../server/apacheRequest.py:675
 #, python-format
 msgid "Invalid URI %s"
 msgstr "無効な URI %s"
@@ -78,14 +78,12 @@ msgid ""
 "                   Please contact your Org administrator for more help."
 msgstr ""
 "\n"
-"                   %s アカウントは本サーバー上では非アクティブになっていま"
-"す。\n"
+"                   %s アカウントは本サーバー上では非アクティブになっています。\n"
 "                   組織の管理者にお問い合わせください。"
 
 #: ../server/handlers/xmlrpc/proxy.py:71
 #, python-format
-msgid ""
-"SUSE Multi-Linux Manager Proxy service not enabled for server profile: \"%s\""
+msgid "SUSE Multi-Linux Manager Proxy service not enabled for server profile: \"%s\""
 msgstr "サーバプロファイルに対して SUSE Multi-Linux サービスが有効化されていません: \"%s\""
 
 #: ../server/handlers/xmlrpc/proxy.py:94
@@ -113,11 +111,8 @@ msgstr "管理に関する作業を行う許可がありません"
 
 #: ../server/importlib/userAuth.py:159
 #, python-format
-msgid ""
-"You are not allowed to manage channel %s, or that channel does not exist"
-msgstr ""
-"チャンネル %s の管理は許可されていないか、 またはこのチャンネルは存在していま"
-"せん"
+msgid "You are not allowed to manage channel %s, or that channel does not exist"
+msgstr "チャンネル %s の管理は許可されていないか、 またはこのチャンネルは存在していません"
 
 #: ../server/importlib/userAuth.py:229
 #, python-format
@@ -130,16 +125,12 @@ msgstr ""
 "               %s アカウントは本サーバー上では無効化されています。\n"
 "                   詳しくは組織の管理者にお問い合わせください。"
 
-#: ../server/rhnChannel.py:2217
+#: ../server/rhnChannel.py:2216
 #, python-format
-msgid ""
-"Your account does not have access to any channels matching "
-"(release='%(release)s', arch='%(arch)s')%(www_activation)s"
-msgstr ""
-"ご使用のアカウントには (release='%(release)s', arch='%(arch)s')"
-"%(www_activation)s に一致するチャンネルのいずれにもアクセスがありません"
+msgid "Your account does not have access to any channels matching (release='%(release)s', arch='%(arch)s')%(www_activation)s"
+msgstr "ご使用のアカウントには (release='%(release)s', arch='%(arch)s')%(www_activation)s に一致するチャンネルのいずれにもアクセスがありません"
 
-#: ../server/rhnChannel.py:2236
+#: ../server/rhnChannel.py:2235
 #, python-format
 msgid "Insufficient subscription permissions for release (%s, %s"
 msgstr "リリース (%s, %s にはサブスクリプション許可が不足しています"
@@ -148,11 +139,11 @@ msgstr "リリース (%s, %s にはサブスクリプション許可が不足し
 #.
 #. bretm 02/07/2007 -- when we have better old-client documentation, probably
 #. will be safe to get rid of all this crap
-#: ../server/rhnChannel.py:2550 ../server/rhnChannel.py:2569
+#: ../server/rhnChannel.py:2549 ../server/rhnChannel.py:2568
 msgid "System Registered but Inactive"
 msgstr "システムは登録されていますが非アクティブになっています"
 
-#: ../server/rhnChannel.py:2552
+#: ../server/rhnChannel.py:2551
 #, python-format
 msgid ""
 "\n"
@@ -163,13 +154,11 @@ msgid ""
 msgstr ""
 "\n"
 "アーキテクチャとオペレーティングシステムのリリースの組み合わせ (%s、 %s)\n"
-"が無効です。 システムは登録されていますが、 ベースチャンネルにサブスクライ"
-"ブ\n"
-"させることができなかったため更新は行われません。 詳細については組織の管理者"
-"に\n"
+"が無効です。 システムは登録されていますが、 ベースチャンネルにサブスクライブ\n"
+"させることができなかったため更新は行われません。 詳細については組織の管理者に\n"
 "お問い合わせください。\n"
 
-#: ../server/rhnChannel.py:2561
+#: ../server/rhnChannel.py:2560
 #, python-format
 msgid ""
 "\n"
@@ -179,36 +168,30 @@ msgid ""
 "  %(entitlement_url)s\n"
 msgstr ""
 "\n"
-"  このシステムは正常に登録されていますが、 サービスへのエンタイトルメントがま"
-"だ付与されていません。\n"
-"  システムにサービスへのエンタイトルメントを付与するには次の Web サイトにログ"
-"インしてください。\n"
+"  このシステムは正常に登録されていますが、 サービスへのエンタイトルメントがまだ付与されていません。\n"
+"  システムにサービスへのエンタイトルメントを付与するには次の Web サイトにログインしてください。\n"
 "\n"
 "  %(entitlement_url)s\n"
 
-#: ../server/rhnChannel.py:2571
+#: ../server/rhnChannel.py:2570
 #, python-format
 msgid ""
 "\n"
 "  This system has been successfully registered, but no service entitlements\n"
-"  were available.  To entitle this system to service, login to the web site "
-"at:\n"
+"  were available.  To entitle this system to service, login to the web site at:\n"
 "\n"
 "  %(entitlement_url)s\n"
 msgstr ""
 "\n"
-"  このシステムは正常に登録されていますが、 利用できるサービスエンタイトルメン"
-"トがありませんでした。\n"
-"  システムにサービスへのエンタイトルメントを付与するには次の Web サイトにログ"
-"インしてください。\n"
+"  このシステムは正常に登録されていますが、 利用できるサービスエンタイトルメントがありませんでした。\n"
+"  システムにサービスへのエンタイトルメントを付与するには次の Web サイトにログインしてください。\n"
 "\n"
 "  %(entitlement_url)s\n"
 
 #. Invalid server certificate.
 #: ../server/rhnHandler.py:62
 msgid "Please run rhn_register as root on this client"
-msgstr ""
-"このクライアント上で root ユーザーになり、 rhn_register を実行してください"
+msgstr "このクライアント上で root ユーザーになり、 rhn_register を実行してください"
 
 #: ../server/rhnHandler.py:76
 #, python-format
@@ -250,12 +233,8 @@ msgid "Maximum usage count of %s reached"
 msgstr "最大使用数 %s に達しました"
 
 #: ../server/rhnServer/server_token.py:869
-msgid ""
-"Stacking of re-registration tokens with different base entitlements is not "
-"supported"
-msgstr ""
-"異なるベースエンタイトルメントでの再登録トークンの積み重ねには対応していませ"
-"ん"
+msgid "Stacking of re-registration tokens with different base entitlements is not supported"
+msgstr "異なるベースエンタイトルメントでの再登録トークンの積み重ねには対応していません"
 
 #: ../server/rhnServer/server_token.py:946
 #, python-format
@@ -395,9 +374,7 @@ msgstr "ファイルが見つかりません。"
 
 #: ../common/rhnException.py:69
 msgid "Architecture and OS version combination is not supported."
-msgstr ""
-"アーキテクチャとオペレーティングシステムのバージョンの組み合わせは対応してい"
-"ません。"
+msgstr "アーキテクチャとオペレーティングシステムのバージョンの組み合わせは対応していません。"
 
 #: ../common/rhnException.py:70
 msgid "Could not retrieve system data from database."
@@ -428,8 +405,7 @@ msgid ""
 "     Please re-register this system by running mgr_register as root.\n"
 "     Please visit https://%(hostname)s/rhn/systems/SystemEntitlements.do\n"
 "     or login at https://%(hostname)s, and from the \"Overview\" tab,\n"
-"     select \"Subscription Management\" to enable the service for this "
-"system.\n"
+"     select \"Subscription Management\" to enable the service for this system.\n"
 "     "
 msgstr ""
 "\n"
@@ -454,12 +430,10 @@ msgstr "エントリには無効な値です。"
 #, python-format
 msgid ""
 "\n"
-"     This system does not have a valid entitlement for SUSE Multi-Linux "
-"Manager.\n"
+"     This system does not have a valid entitlement for SUSE Multi-Linux Manager.\n"
 "     Please visit https://%(hostname)s/rhn/systems/SystemEntitlements.do\n"
 "     or login at https://%(hostname)s, and from the \"Overview\" tab,\n"
-"     select \"Subscription Management\" to enable the service for this "
-"system.\n"
+"     select \"Subscription Management\" to enable the service for this system.\n"
 "     "
 msgstr ""
 "\n"
@@ -516,20 +490,16 @@ msgid ""
 "     User group membership limits exceeded.\n"
 "\n"
 "     The current settings for your account do not allow you to add another\n"
-"     user account. Please check with the organization administrator for "
-"your\n"
-"     account if the maximum number of users allowed to subscribe to server "
-"needs\n"
+"     user account. Please check with the organization administrator for your\n"
+"     account if the maximum number of users allowed to subscribe to server needs\n"
 "     to be changed.\n"
 "     "
 msgstr ""
 "\n"
 "     ユーザーグループのメンバーシップの上限を超えています。\n"
 "\n"
-"     お使いのアカウントの現在の設定では、これ以上のユーザーアカウントの追加は"
-"できません。\n"
-"     サーバに対してサブスクリプションを設定できる最大ユーザー数を変更する必要"
-"がある場合は、\n"
+"     お使いのアカウントの現在の設定では、これ以上のユーザーアカウントの追加はできません。\n"
+"     サーバに対してサブスクリプションを設定できる最大ユーザー数を変更する必要がある場合は、\n"
 "     組織の管理者にご確認ください。\n"
 "     "
 
@@ -539,20 +509,16 @@ msgid ""
 "     System group membership limits exceeded.\n"
 "\n"
 "     The current settings for your account do not allow you to add another\n"
-"     system profile. Please check with the organization administrator for "
-"your\n"
-"     account for modifying the maximum number of system profiles that can "
-"be\n"
+"     system profile. Please check with the organization administrator for your\n"
+"     account for modifying the maximum number of system profiles that can be\n"
 "     subscribed to your account.\n"
 "     "
 msgstr ""
 "\n"
 "     システムグループのメンバーシップの上限を超えています。\n"
 "\n"
-"     お使いのアカウントの現在の設定では、これ以上のシステムプロファイルの追加"
-"はできません。\n"
-"     お使いのアカウントでサブスクリプションを設定できるシステムプロファイル数"
-"の最大値を\n"
+"     お使いのアカウントの現在の設定では、これ以上のシステムプロファイルの追加はできません。\n"
+"     お使いのアカウントでサブスクリプションを設定できるシステムプロファイル数の最大値を\n"
 "     変更する必要がある場合は、組織の管理者にご確認ください。\n"
 "     "
 
@@ -577,17 +543,13 @@ msgstr "無効な RPM ヘッダーです"
 #: ../common/rhnException.py:138
 msgid ""
 "\n"
-"    This system is already registered as a Salt Minion. If you want to "
-"register it as a traditional client\n"
-"    please delete it first via the web UI or API and then register it using "
-"the traditional tools.\n"
+"    This system is already registered as a Salt Minion. If you want to register it as a traditional client\n"
+"    please delete it first via the web UI or API and then register it using the traditional tools.\n"
 "    "
 msgstr ""
 "\n"
-"    このシステムは既に Salt Minion として登録されています。従来型のクライアン"
-"トとして登録したい場合は、\n"
-"    Web UI や API でいったん削除を行なったあと、再度従来のツールで登録を行"
-"なってください。\n"
+"    このシステムは既に Salt Minion として登録されています。従来型のクライアントとして登録したい場合は、\n"
+"    Web UI や API でいったん削除を行なったあと、再度従来のツールで登録を行なってください。\n"
 "    "
 
 #. For the uploading tools
@@ -597,8 +559,7 @@ msgstr "サーバーに無効な情報がアップロードされました"
 
 #: ../common/rhnException.py:145
 msgid "Error uploading network interfaces configuration."
-msgstr ""
-"ネットワークインターフェースの設定をアップロード中にエラーが発生しました。"
+msgstr "ネットワークインターフェースの設定をアップロード中にエラーが発生しました。"
 
 #: ../common/rhnException.py:147
 msgid ""
@@ -618,8 +579,7 @@ msgstr ""
 msgid ""
 "\n"
 "     The --force mgrpush option is disabled on this server.\n"
-"     Please contact your SUSE Multi-Linux Manager administrator for more "
-"help.\n"
+"     Please contact your SUSE Multi-Linux Manager administrator for more help.\n"
 "     "
 msgstr ""
 "\n"
@@ -645,8 +605,7 @@ msgstr "この登録トークンを使用して登録されたシステムが多
 
 #: ../common/rhnException.py:167
 msgid "Token contains invalid, obsoleted or insufficient settings"
-msgstr ""
-"無効な設定、 またはサポートされていないか不適切な設定を含むトークンです"
+msgstr "無効な設定、 またはサポートされていないか不適切な設定を含むトークンです"
 
 #: ../common/rhnException.py:168
 msgid "Conflicting activation tokens"
@@ -737,9 +696,7 @@ msgstr "パスワードの最大長を超えています"
 
 #: ../common/rhnException.py:202
 msgid "This user has read only API access. Action denied."
-msgstr ""
-"このユーザに対しては読み込み専用の API アクセスのみが提供されています。アク"
-"ションが拒否されました。"
+msgstr "このユーザに対しては読み込み専用の API アクセスのみが提供されています。アクションが拒否されました。"
 
 #: ../common/rhnException.py:203
 msgid "System Name cannot be less than 1 character"
@@ -758,8 +715,7 @@ msgstr "SUSE Multi-Linux Manager Proxy によるログインができません�
 #: ../common/rhnException.py:210
 msgid ""
 "\n"
-"     SUSE Multi-Linux Manager Proxy system ID does not match a Spacewalk "
-"Proxy Server\n"
+"     SUSE Multi-Linux Manager Proxy system ID does not match a Spacewalk Proxy Server\n"
 "     in the database.\n"
 "     "
 msgstr ""
@@ -791,8 +747,7 @@ msgstr ""
 #: ../common/rhnException.py:226
 msgid ""
 "\n"
-"     This SUSE Multi-Linux Manager server is not allowed to use Inter Server "
-"Sync on this server\n"
+"     This SUSE Multi-Linux Manager server is not allowed to use Inter Server Sync on this server\n"
 "     "
 msgstr ""
 "\n"
@@ -956,8 +911,7 @@ msgstr ""
 "\n"
 "     要求の処理中にエラーが発生しました。 問題が解決しない場合は、\n"
 "     scc.suse.com にてバグ報告を提出してください。\n"
-"     バグ報告を行なう場合は、 エラーが起きたときに何を行なおうとしていたの"
-"か、\n"
+"     バグ報告を行なう場合は、 エラーが起きたときに何を行なおうとしていたのか、\n"
 "     また問題を再現する場合の手順などを詳しく記入していただけるよう\n"
 "     お願いします。\n"
 
@@ -1044,15 +998,13 @@ msgstr ""
 msgid ""
 "\n"
 "ERROR: There was a problem communicating with the ISS Master.\n"
-"       Depending on the specific error details, please review your "
-"configuration,\n"
+"       Depending on the specific error details, please review your configuration,\n"
 "       basic network connectivity, and/or name resolution, and try again.\n"
 "       Error message: %s\n"
 msgstr ""
 "\n"
 "エラー: ISS Master と通信する際に問題がありました。\n"
-"       エラーの詳細にもよりますが、設定やネットワークの接続、名前解決などが正"
-"しく動作\n"
+"       エラーの詳細にもよりますが、設定やネットワークの接続、名前解決などが正しく動作\n"
 "       することをご確認のうえ、やり直してください。\n"
 "       エラーメッセージ: %s\n"
 
@@ -1061,17 +1013,14 @@ msgstr ""
 msgid ""
 "\n"
 "ERROR: a child-channel cannot be synced without its parent being synced as\n"
-"       well. A parent needs to be either (a) previously synced or (b) "
-"synced\n"
+"       well. A parent needs to be either (a) previously synced or (b) synced\n"
 "       in tandem with the desired child-channel. Missing parents for this\n"
 "       transaction:\n"
 "       %s\n"
 msgstr ""
 "\n"
-"エラー: 子チャンネルを同期するにあたっては、親チャンネルも同期する必要があり"
-"ます。\n"
-"       親チャンネルは以前に同期されているか、もしくは子チャンネルと並行して同"
-"期させる\n"
+"エラー: 子チャンネルを同期するにあたっては、親チャンネルも同期する必要があります。\n"
+"       親チャンネルは以前に同期されているか、もしくは子チャンネルと並行して同期させる\n"
 "       必要があります。このトランザクションに対する親が見つかりません:\n"
 "       %s\n"
 
@@ -1246,18 +1195,12 @@ msgstr "+++ 電子メールの要求がありましたが、送信すべき内�
 #~ msgid "seconds"
 #~ msgstr "秒"
 
-#~ msgid ""
-#~ "ERROR: The dump is missing package data, use --no-rpms to skip this step "
-#~ "or fix the content to include package data."
-#~ msgstr ""
-#~ "エラー: ダンプにはパッケージデータがありません。 --no-rpms を指定してこの"
-#~ "ステップを飛ばすか、パッケージデータが含まれるように内容を修正してくださ"
-#~ "い。"
+#~ msgid "ERROR: The dump is missing package data, use --no-rpms to skip this step or fix the content to include package data."
+#~ msgstr "エラー: ダンプにはパッケージデータがありません。 --no-rpms を指定してこのステップを飛ばすか、パッケージデータが含まれるように内容を修正してください。"
 
 #, fuzzy
 #~| msgid "The SUSE Manager master does not support syncing orgs data."
-#~ msgid ""
-#~ "The SUSE Multi-Linux Manager master does not support syncing orgs data."
+#~ msgid "The SUSE Multi-Linux Manager master does not support syncing orgs data."
 #~ msgstr "SUSE Manager マスターは組織データの同期をサポートしていません。"
 
 #~ msgid "Skipping..."
@@ -1276,17 +1219,11 @@ msgstr "+++ 電子メールの要求がありましたが、送信すべき内�
 
 #, python-brace-format
 #~ msgid ""
-#~ "ERROR: Live content synchronizing with RHN Classic Hosted is no longer "
-#~ "supported.\n"
-#~ "Please use the cdn-sync command instead unless you are attempting to sync "
-#~ "from another {PRODUCT_NAME} via Inter-Server-Sync (ISS), or from local "
-#~ "content on disk via Channel Dump ISOs."
+#~ "ERROR: Live content synchronizing with RHN Classic Hosted is no longer supported.\n"
+#~ "Please use the cdn-sync command instead unless you are attempting to sync from another {PRODUCT_NAME} via Inter-Server-Sync (ISS), or from local content on disk via Channel Dump ISOs."
 #~ msgstr ""
-#~ "エラー: RHN Classic Hosted を利用したライブコンテンツの同期は、もはやサ"
-#~ "ポートされていません。\n"
-#~ "サーバ間同期 (ISS) を介して他の {PRODUCT_NAME} から同期を行なっている場合"
-#~ "や、チャンネルダンプ ISO を利用してディスク内のローカルコンテンツから同期"
-#~ "を行なっている場合を除き、代わりに cdn-sync コマンドを使用してください。"
+#~ "エラー: RHN Classic Hosted を利用したライブコンテンツの同期は、もはやサポートされていません。\n"
+#~ "サーバ間同期 (ISS) を介して他の {PRODUCT_NAME} から同期を行なっている場合や、チャンネルダンプ ISO を利用してディスク内のローカルコンテンツから同期を行なっている場合を除き、代わりに cdn-sync コマンドを使用してください。"
 
 #, python-format
 #~ msgid "   url: %s"
@@ -1323,12 +1260,8 @@ msgstr "+++ 電子メールの要求がありましたが、送信すべき内�
 #~ msgstr "エラー: 例外 (処理時) が発生しました: "
 
 #, python-format
-#~ msgid ""
-#~ "   Encountered some errors with %s data (see logs (%s) for more "
-#~ "information)"
-#~ msgstr ""
-#~ "   %s データでいくつかのエラーに遭遇しました (詳しくはログ (%s) をお読みく"
-#~ "ださい)"
+#~ msgid "   Encountered some errors with %s data (see logs (%s) for more information)"
+#~ msgstr "   %s データでいくつかのエラーに遭遇しました (詳しくはログ (%s) をお読みください)"
 
 #, python-format
 #~ msgid "   Encountered some errors with %s data:"
@@ -1431,9 +1364,7 @@ msgstr "+++ 電子メールの要求がありましたが、送信すべき内�
 
 #, python-format
 #~ msgid "Diffing package metadata (what's missing locally?): %s"
-#~ msgstr ""
-#~ "パッケージのメタデータの差分を抽出しています (ローカル側に何が無いのかを調"
-#~ "べています): %s"
+#~ msgstr "パッケージのメタデータの差分を抽出しています (ローカル側に何が無いのかを調べています): %s"
 
 #~ msgid "Diffing:    "
 #~ msgstr "差分を抽出しています:    "
@@ -1466,9 +1397,7 @@ msgstr "+++ 電子メールの要求がありましたが、送信すべき内�
 
 #, python-format
 #~ msgid "Diffing source package metadata (what's missing locally?): %s"
-#~ msgstr ""
-#~ "ソースパッケージのメタデータの差分を抽出しています (ローカル側に何が無いの"
-#~ "かを調べています): %s"
+#~ msgstr "ソースパッケージのメタデータの差分を抽出しています (ローカル側に何が無いのかを調べています): %s"
 
 #~ msgid "Downloading source package metadata"
 #~ msgstr "ソースパッケージのメタデータをダウンロードしています"
@@ -1495,8 +1424,7 @@ msgstr "+++ 電子メールの要求がありましたが、送信すべき内�
 #~ msgstr "パッチデータをダウンロードしています"
 
 #~ msgid "Forcing download of all patch data for requested channels."
-#~ msgstr ""
-#~ "要求したチャンネルに対する全てのパッチデータを強制ダウンロードしています。"
+#~ msgstr "要求したチャンネルに対する全てのパッチデータを強制ダウンロードしています。"
 
 #~ msgid "Downloading patch data complete"
 #~ msgstr "パッチデータのダウンロードが完了しました"
@@ -1516,12 +1444,8 @@ msgstr "+++ 電子メールの要求がありましたが、送信すべき内�
 #~ msgid "Importing:  "
 #~ msgstr "取り込んでいます:  "
 
-#~ msgid ""
-#~ "Package Not Found in Cache, Clear the Cache "
-#~ "to                                  Regenerate it."
-#~ msgstr ""
-#~ "キャッシュ内にはパッケージが見つかりません。キャッシュを再生成するにはクリ"
-#~ "アしてください。"
+#~ msgid "Package Not Found in Cache, Clear the Cache to                                  Regenerate it."
+#~ msgstr "キャッシュ内にはパッケージが見つかりません。キャッシュを再生成するにはクリアしてください。"
 
 #~ msgid "Importing channel patches"
 #~ msgstr "チャンネルパッチを取り込んでいます"
@@ -1546,12 +1470,8 @@ msgstr "+++ 電子メールの要求がありましたが、送信すべき内�
 #~ msgstr "コマンドライン: %s"
 
 #, python-format
-#~ msgid ""
-#~ "DEBUG ONLY: max. batch-size for XML/database-import processing (1..%s)."
-#~ "\"man mgr-inter-sync\" for more information."
-#~ msgstr ""
-#~ "デバッグのみ: XML／データベース取り込み処理に対する最大バッチサイズ "
-#~ "(1..%s) 。詳しくは \"man mgr-inter-sync\" をお読みください。"
+#~ msgid "DEBUG ONLY: max. batch-size for XML/database-import processing (1..%s).\"man mgr-inter-sync\" for more information."
+#~ msgstr "デバッグのみ: XML／データベース取り込み処理に対する最大バッチサイズ (1..%s) 。詳しくは \"man mgr-inter-sync\" をお読みください。"
 
 #~ msgid "alternative SSL CA Cert (fullpath to cert file)"
 #~ msgstr "代替 SSL CA 証明書 (証明書ファイルに対するフルパス)"
@@ -1559,24 +1479,15 @@ msgstr "+++ 電子メールの要求がありましたが、送信すべき内�
 #~ msgid "process data for this channel only"
 #~ msgstr "このチャンネルに対してのみデータを処理"
 
-#~ msgid ""
-#~ "disk dump will be considered to be a full export; see \"man mgr-inter-"
-#~ "sync\" for more information."
-#~ msgstr ""
-#~ "ディスクダンプは完全エクスポートと考えられます。詳しくは \"man mgr-inter-"
-#~ "sync\" をお読みください。"
+#~ msgid "disk dump will be considered to be a full export; see \"man mgr-inter-sync\" for more information."
+#~ msgstr "ディスクダンプは完全エクスポートと考えられます。詳しくは \"man mgr-inter-sync\" をお読みください。"
 
 #~ msgid "existing custom channels will also be synced (unless -c is used)"
-#~ msgstr ""
-#~ "既存の独自チャンネルについても同期が行なわれます (-c を指定しない限り)"
+#~ msgstr "既存の独自チャンネルについても同期が行なわれます (-c を指定しない限り)"
 
 #, python-format
-#~ msgid ""
-#~ "override debug level set in /etc/rhn/rhn.conf (which is currently set at "
-#~ "%s)."
-#~ msgstr ""
-#~ "/etc/rhn/rhn.conf 内で設定されているデバッグレベルを上書き (現在 %s に設定"
-#~ "されています) 。"
+#~ msgid "override debug level set in /etc/rhn/rhn.conf (which is currently set at %s)."
+#~ msgstr "/etc/rhn/rhn.conf 内で設定されているデバッグレベルを上書き (現在 %s に設定されています) 。"
 
 #, python-format
 #~ msgid "requested version of XML dump (default: %s)"
@@ -1639,9 +1550,7 @@ msgstr "+++ 電子メールの要求がありましたが、送信すべき内�
 #~ msgstr "このステップまで同期 (詳しくは man mgr-inter-sync を参照)"
 
 #~ msgid "write complete data to tempfile before streaming to remainder of app"
-#~ msgstr ""
-#~ "アプリの残り部分にストリーミングする前にテンポラリファイルに完全なデータを"
-#~ "書き込む"
+#~ msgstr "アプリの残り部分にストリーミングする前にテンポラリファイルに完全なデータを書き込む"
 
 #~ msgid "DEBUG ONLY: alternative path to digital system id"
 #~ msgstr "デバッグのみ: デジタルシステム ID への代替パス"
@@ -1652,20 +1561,12 @@ msgstr "+++ 電子メールの要求がありましたが、送信すべき内�
 #~ msgid "do not remove rpms when importing from local dump"
 #~ msgstr "ローカルダンプからの取り込み時に rpm を削除しない"
 
-#~ msgid ""
-#~ "the fully qualified domain name of the master Satellite. Valid with --"
-#~ "mount-point only. Required if you want to import org data and channel "
-#~ "permissions."
-#~ msgstr ""
-#~ "マスター Satellite の完全修飾ドメイン名です。 --mount-point と併用した場合"
-#~ "にのみ有効です。組織データとチャンネル許可を取り込みたい場合には必要です。"
+#~ msgid "the fully qualified domain name of the master Satellite. Valid with --mount-point only. Required if you want to import org data and channel permissions."
+#~ msgstr "マスター Satellite の完全修飾ドメイン名です。 --mount-point と併用した場合にのみ有効です。組織データとチャンネル許可を取り込みたい場合には必要です。"
 
 #, python-format
-#~ msgid ""
-#~ "ERROR: these arguments make no sense in this context (try --help): %s"
-#~ msgstr ""
-#~ "エラー: これらのパラメータは、この状況下では意味がありません (詳しくは --"
-#~ "help を参照): %s"
+#~ msgid "ERROR: these arguments make no sense in this context (try --help): %s"
+#~ msgstr "エラー: これらのパラメータは、この状況下では意味がありません (詳しくは --help を参照): %s"
 
 #, python-format
 #~ msgid "ERROR: Can't connect to the database: %s"
@@ -1693,37 +1594,22 @@ msgstr "+++ 電子メールの要求がありましたが、送信すべき内�
 #~ msgid "  4+ - excessive logging/messaging."
 #~ msgstr "  4+ - 非常に多くのログ／メッセージ。"
 
-#~ msgid ""
-#~ "ERROR: The --master option is only valid with the --mount-point option"
-#~ msgstr ""
-#~ "エラー: --master オプションは --mount-point オプションと併用した場合にのみ"
-#~ "有効です"
+#~ msgid "ERROR: The --master option is only valid with the --mount-point option"
+#~ msgstr "エラー: --master オプションは --mount-point オプションと併用した場合にのみ有効です"
 
 #, python-format
 #~ msgid "ERROR: Unable to lookup Org Id %s"
 #~ msgstr "エラー: 組織 ID %s を参照できません"
 
-#~ msgid ""
-#~ "WARNING: --list-channels option overrides any --step option. --step "
-#~ "ignored."
-#~ msgstr ""
-#~ "警告: --list-channels オプションは --step オプションを上書きしてしまいま"
-#~ "す。 --step 側が無視されます。"
+#~ msgid "WARNING: --list-channels option overrides any --step option. --step ignored."
+#~ msgstr "警告: --list-channels オプションは --step オプションを上書きしてしまいます。 --step 側が無視されます。"
 
 #, python-format
-#~ msgid ""
-#~ "ERROR: '%s' is not a valid step. See 'man mgr-inter-sync' for more detail."
-#~ msgstr ""
-#~ "エラー: '%s' のステップが正しくありません。詳しくは 'man mgr-inter-sync' "
-#~ "をお読みください。"
+#~ msgid "ERROR: '%s' is not a valid step. See 'man mgr-inter-sync' for more detail."
+#~ msgstr "エラー: '%s' のステップが正しくありません。詳しくは 'man mgr-inter-sync' をお読みください。"
 
-#~ msgid ""
-#~ "ERROR: No channels currently imported; try mgr-inter-sync --list-"
-#~ "channels; then mgr-inter-sync -c chn0 -c chn1..."
-#~ msgstr ""
-#~ "エラー: 現時点では何もチャンネルを取り込んでいません。 mgr-inter-sync --"
-#~ "list-channels を実行したあと mgr-inter-sync -c chn0 -c chn1... のように実"
-#~ "行してください。"
+#~ msgid "ERROR: No channels currently imported; try mgr-inter-sync --list-channels; then mgr-inter-sync -c chn0 -c chn1..."
+#~ msgstr "エラー: 現時点では何もチャンネルを取り込んでいません。 mgr-inter-sync --list-channels を実行したあと mgr-inter-sync -c chn0 -c chn1... のように実行してください。"
 
 #~ msgid "ERROR: --batch-size must have a value within the range: 1..50"
 #~ msgstr "エラー: --batch-size の値は 1..50 までの値でなければなりません"
@@ -1736,16 +1622,13 @@ msgstr "+++ 電子メールの要求がありましたが、送信すべき内�
 #~ msgstr "エラーコード: 返された値の意味は下記のとおりです:"
 
 #~ msgid " -1  - Could not lock file or KeyboardInterrupt or SystemExit"
-#~ msgstr ""
-#~ " -1  - ファイルをロックできなかったか、キーボード割り込みやシステムの終了"
-#~ "が発生しています"
+#~ msgstr " -1  - ファイルをロックできなかったか、キーボード割り込みやシステムの終了が発生しています"
 
 #~ msgid "  0  - User interrupted or intentional exit"
 #~ msgstr "  0  - ユーザ側での割り込みか終了指示が行なわれました"
 
 #~ msgid "  1  - attempting to run more than one instance of mgr-inter-sync."
-#~ msgstr ""
-#~ "  1  - mgr-inter-sync のインスタンスを複数個実行しようとしています。"
+#~ msgstr "  1  - mgr-inter-sync のインスタンスを複数個実行しようとしています。"
 
 #~ msgid "  2  - Unable to find synchronization tools."
 #~ msgstr "  2  - 同期ツールが見つかりませんでした。"
@@ -1781,8 +1664,7 @@ msgstr "+++ 電子メールの要求がありましたが、送信すべき内�
 #~ msgstr "  12 - チャンネルが存在していません"
 
 #~ msgid "  13 - SQL error during importing package metadata"
-#~ msgstr ""
-#~ "  13 - パッケージのメタデータを処理する際に SQL エラーが発生しました"
+#~ msgstr "  13 - パッケージのメタデータを処理する際に SQL エラーが発生しました"
 
 #~ msgid "  14 - SQL error during linking channel packages"
 #~ msgstr "  14 - チャンネルパッケージのリンク時に SQL エラーが発生しました"
@@ -1794,15 +1676,9 @@ msgstr "+++ 電子メールの要求がありましたが、送信すべき内�
 #~ msgstr "  16 - 設定ファイル内で server.mount_point が設定されていません"
 
 #, fuzzy
-#~| msgid ""
-#~| "  17 - SQL error during retrieving the channels already imported in the "
-#~| "SUSE Manager database"
-#~ msgid ""
-#~ "  17 - SQL error during retrieving the channels already imported in the "
-#~ "SUSE Multi-Linux Manager database"
-#~ msgstr ""
-#~ "  17 - SUSE Manager データベース内に既に取り込まれているチャンネルを取得す"
-#~ "る際に、 SQL エラーが発生しました"
+#~| msgid "  17 - SQL error during retrieving the channels already imported in the SUSE Manager database"
+#~ msgid "  17 - SQL error during retrieving the channels already imported in the SUSE Multi-Linux Manager database"
+#~ msgstr "  17 - SUSE Manager データベース内に既に取り込まれているチャンネルを取得する際に、 SQL エラーが発生しました"
 
 #~ msgid "  18 - Wrong db connection string in rhn.conf"
 #~ msgstr "  18 - rhn.conf 内の DB 接続文字列が正しくありません"
@@ -1832,9 +1708,7 @@ msgstr "+++ 電子メールの要求がありましたが、送信すべき内�
 #~ msgstr "  27 - そのような組織はありません"
 
 #~ msgid "  28 - error: --master is only valid with --mount-point"
-#~ msgstr ""
-#~ "  28 - エラー: --master は --mount-point とともに指定した場合にのみ有効で"
-#~ "す"
+#~ msgstr "  28 - エラー: --master は --mount-point とともに指定した場合にのみ有効です"
 
 #, python-format
 #~ msgid "ERROR: unknown dump version, try one of %s"
@@ -1872,12 +1746,8 @@ msgstr "+++ 電子メールの要求がありましたが、送信すべき内�
 #~ msgid "Invalid system release version requested"
 #~ msgstr "無効なシステムリリースバージョンを要求しています"
 
-#~ msgid ""
-#~ "Unable to find a valid network interface, both ipaddr and ip6addr not "
-#~ "found."
-#~ msgstr ""
-#~ "適切なネットワークインターフェイスが見つかりませんでした。 ipaddr と "
-#~ "ip6addr の両方が見つかりません。"
+#~ msgid "Unable to find a valid network interface, both ipaddr and ip6addr not found."
+#~ msgstr "適切なネットワークインターフェイスが見つかりませんでした。 ipaddr と ip6addr の両方が見つかりません。"
 
 #, python-brace-format
 #~ msgid "{PRODUCT_NAME} Welcome Message"
@@ -1943,13 +1813,11 @@ msgstr "+++ 電子メールの要求がありましたが、送信すべき内�
 
 #~ msgid ""
 #~ "\n"
-#~ "If you have a registration number, please register with it first at "
-#~ "http://www.redhat.com/apps/activate/ and then try again.\n"
+#~ "If you have a registration number, please register with it first at http://www.redhat.com/apps/activate/ and then try again.\n"
 #~ "\n"
 #~ msgstr ""
 #~ "\n"
-#~ "登録番号をお持ちの場合は、 まずその番号を http://www.redhat.com/apps/"
-#~ "activate/ にて登録してからやり直してください。\n"
+#~ "登録番号をお持ちの場合は、 まずその番号を http://www.redhat.com/apps/activate/ にて登録してからやり直してください。\n"
 #~ "\n"
 
 #~ msgid ""
@@ -1965,8 +1833,7 @@ msgstr "+++ 電子メールの要求がありましたが、送信すべき内�
 #~ msgstr ""
 #~ "\n"
 #~ "アーキテクチャとオペレーティングシステムのリリースの組み合わせ (%s、 %s)\n"
-#~ "が正しくありません。システムは登録されていますが、チャンネルのサブスクリプ"
-#~ "ション\n"
+#~ "が正しくありません。システムは登録されていますが、チャンネルのサブスクリプション\n"
 #~ "が行なわれていないため更新は行われません。 製品のアクティベーションが\n"
 #~ "未実施の場合は、下記の Web サイトにアクセスしてアクティベーションを\n"
 #~ "行なってください:\n"
@@ -1976,22 +1843,16 @@ msgstr "+++ 電子メールの要求がありましたが、送信すべき内�
 #~ msgid ""
 #~ "\n"
 #~ "ERROR: There was a problem communicating with the ISS Master.\n"
-#~ "       If the master satellite is older than v5.3, it does not have ISS "
-#~ "capability.\n"
-#~ "       Otherwise, depending on the specific error details, please review "
-#~ "your\n"
-#~ "       configuration, basic network connectivity, and/or name resolution, "
-#~ "and try again.\n"
+#~ "       If the master satellite is older than v5.3, it does not have ISS capability.\n"
+#~ "       Otherwise, depending on the specific error details, please review your\n"
+#~ "       configuration, basic network connectivity, and/or name resolution, and try again.\n"
 #~ "       Error message: %s\n"
 #~ msgstr ""
 #~ "\n"
 #~ "エラー: ISS Master との通信する際にエラーがありました。\n"
-#~ "       マスター Satellite がバージョン 5.3 よりも古い場合、 ISS の機能は提"
-#~ "供されていません。\n"
-#~ "       マスター Satellite がバージョン 5.3 もしくはそれ以降の場合は、エ"
-#~ "ラーの詳細にもよりますが、\n"
-#~ "       設定やネットワークの接続、名前解決などが正しく動作することをご確認"
-#~ "のうえ、やり直してください。\n"
+#~ "       マスター Satellite がバージョン 5.3 よりも古い場合、 ISS の機能は提供されていません。\n"
+#~ "       マスター Satellite がバージョン 5.3 もしくはそれ以降の場合は、エラーの詳細にもよりますが、\n"
+#~ "       設定やネットワークの接続、名前解決などが正しく動作することをご確認のうえ、やり直してください。\n"
 #~ "       エラーメッセージ: %s\n"
 
 #~ msgid "Red Hat Satellite Welcome Message"

@@ -1,4 +1,22 @@
 -------------------------------------------------------------------
+Thu Nov 27 11:14:17 CET 2025 - michael.calmer@suse.com
+
+- version 5.2.2-0
+  * Fix the bootstrap script to distinguish SLES 16.0 and
+    SL Micro 6.2
+
+-------------------------------------------------------------------
+Mon Oct 27 15:21:25 CET 2025 - rosuna@suse.com
+
+- version 5.2.1-0
+  * Add flag to bootstrap script ot generate machine_id for Uyuni
+  * Allow existing pylint failures
+  * Reformat Python code with black
+  * Correct PROFILE_NAME variable definition in bootstrap script
+    (bsc#1246035)
+  * Fix syntax error in changelog
+
+-------------------------------------------------------------------
 Tue Jun 17 19:29:05 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.6-0

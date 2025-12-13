@@ -1,0 +1,18 @@
+include ../common.jade
+#systems-all-list
+
+script(type='text/javascript').
+    window.csrfToken = "#{csrf_token}";
+
+script(type='text/javascript').
+    spaImportReactPage('systems/list/all')
+        .then(function(module) {
+            module.renderer(
+                'systems-all-list', '#{docsLocale}',
+                {
+                    isAdmin: #{is_admin},
+                    queryColumn: "#{queryColumn}",
+                    query: "#{query}"
+                }
+            )
+        });

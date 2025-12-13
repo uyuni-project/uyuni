@@ -4,7 +4,6 @@ All the routes exported on the files '<*folder_name*>/index.ts' will be automati
 Check the file content-management/index.js for an example
 */
 import "./polyfills";
-import "react-hot-loader";
 import "core/spa/spa-engine";
 import "core/log";
 import "core/debugUtils";
@@ -12,6 +11,7 @@ import "./legacy";
 
 import SpaRenderer from "core/spa/spa-renderer";
 
+import { initializeTooltips } from "../components/tooltips";
 import Admin from "./admin";
 import Appstreams from "./appstreams";
 import Audit from "./audit";
@@ -70,6 +70,7 @@ window.spaImportReactPage = function spaImportReactPage(pageName) {
       `Found no page with name "${pageName}", did you add the renderer to \`pages\` in \`web/html/src/manager/index.ts\`?`
     );
   }
+  initializeTooltips();
 
   return pages[pageName]();
 };

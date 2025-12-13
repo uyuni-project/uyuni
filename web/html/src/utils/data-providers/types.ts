@@ -1,5 +1,5 @@
 export type PagedData = {
-  items: Array<any>;
+  items: any[];
   total: number;
 };
 

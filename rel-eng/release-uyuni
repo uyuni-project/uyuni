@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+# pylint: disable=missing-module-docstring,invalid-name
 import argparse
 import configparser
 import os
@@ -16,8 +17,8 @@ MASTER_PRJ_KIT = BASE_PRJ + ":Master:Kit"
 URL_PRJ = "https://www.uyuni-project.org/"
 
 
-def obs_urlopen(args, path, method='GET', data=None):
-    """ Make a request to OBS API """
+def obs_urlopen(args, path, method="GET", data=None):
+    """Make a request to OBS API"""
     url = args.obsurl + path
     user = args.user
     password = args.password
@@ -34,19 +35,20 @@ def obs_urlopen(args, path, method='GET', data=None):
         req = urllib.request.Request(url=url, data=data, method=method)
     else:
         req = urllib.request.Request(url)
-    if method == 'PUT':
-        req.add_header('Content-Type', 'application/octet-stream')
+    if method == "PUT":
+        req.add_header("Content-Type", "application/octet-stream")
     resource = urllib.request.urlopen(req)
     charset = resource.headers.get_content_charset()
     if charset is None:
-        charset = 'utf-8'
+        charset = "utf-8"
     return resource.read().decode(charset)
 
 
 def copy_prjconf(args, prj):
-    """ Copy prjconfig between projects """
-    oprj = prj['origin']
-    dprj = prj['name']
+    """Copy prjconfig between projects"""
+    oprj = prj["origin"]
+    dprj = prj["name"]
+    # pylint: disable-next=consider-using-f-string
     print("Reading prjconf from %s..." % oprj)
     prjconfig = obs_urlopen(args, "/source/" + oprj + "/_config")
     # We need this as a project returns 404 while it's being
@@ -54,35 +56,38 @@ def copy_prjconf(args, prj):
     code = None
     while code is None:
         try:
-            ret = obs_urlopen(args, "/source/" + dprj +
-                              "/_config", 'PUT', prjconfig)
-            code = ET.fromstring(ret).attrib['code']
+            ret = obs_urlopen(args, "/source/" + dprj + "/_config", "PUT", prjconfig)
+            code = ET.fromstring(ret).attrib["code"]
         except urllib.error.HTTPError as err:
             if err.code == 404:
-                print("Got HTTP %s: waiting for the project to be created..." % err.code)
+                print(
+                    # pylint: disable-next=consider-using-f-string
+                    "Got HTTP %s: waiting for the project to be created..." % err.code
+                )
                 time.sleep(10)
                 continue
             else:
                 raise
+        # pylint: disable-next=try-except-raise
         except:
             raise
 
 
 def clean_packages(args, oprj, dprj, keep_removed):
-    """ Clean packages present at destionation project, but not at origin project """
+    """Clean packages present at destionation project, but not at origin project"""
     opackages = []
     dpackages = []
     rpackages = []
     for package in ET.fromstring(obs_urlopen(args, "/source/" + oprj)):
-        opackages.append(package.attrib['name'])
+        opackages.append(package.attrib["name"])
     for package in ET.fromstring(obs_urlopen(args, "/source/" + dprj)):
-        dpackages.append(package.attrib['name'])
+        dpackages.append(package.attrib["name"])
     for dpackage in dpackages:
         if not dpackage in opackages:
             rpackages.append(dpackage)
     if rpackages:
-        print("The following packages from %s are not present at %s" %
-              (dprj, oprj))
+        # pylint: disable-next=consider-using-f-string
+        print("The following packages from %s are not present at %s" % (dprj, oprj))
         for package in rpackages:
             print("- " + package)
         if keep_removed:
@@ -90,84 +95,95 @@ def clean_packages(args, oprj, dprj, keep_removed):
             return
         print("As --keep_removed is not present, the packages will be removed")
         for package in rpackages:
-            data = {'comment': 'Package removed for %s submission' % args.uyuniver}
-            obs_urlopen(args, "/source/" + dprj +
-                        '/' + package, 'DELETE', data)
+            # pylint: disable-next=consider-using-f-string
+            data = {"comment": "Package removed for %s submission" % args.uyuniver}
+            obs_urlopen(args, "/source/" + dprj + "/" + package, "DELETE", data)
 
 
 def create_meta_repo(args, meta, name, projects, own=False, release_target=None):
-    """ Create a repository into meta for a project """
-    repo = ET.SubElement(meta, 'repository', name=name)
+    """Create a repository into meta for a project"""
+    repo = ET.SubElement(meta, "repository", name=name)
     if release_target is not None:
-        ET.SubElement(repo, 'releasetarget', project=release_target,
-                      repository=name, trigger='manual')
+        ET.SubElement(
+            repo,
+            "releasetarget",
+            project=release_target,
+            repository=name,
+            trigger="manual",
+        )
     for project, repository in projects.items():
-        if meta.get('name') == project and not own:
+        if meta.get("name") == project and not own:
             continue
-        ET.SubElement(repo, 'path', project=project, repository=repository)
+        ET.SubElement(repo, "path", project=project, repository=repository)
     for arch in args.archs:
-        ET.SubElement(repo, 'arch').text = arch
+        ET.SubElement(repo, "arch").text = arch
 
 
 def add_meta(args, prj):
-    """ Add meta to a project """
-    dprj = prj['name']
-    vprj = prj['versioned']
-    release_target = prj['release_target']
-    meta = ET.Element('project', name=dprj)
-    title = 'Uyuni release ' + args.uyuniver
+    """Add meta to a project"""
+    dprj = prj["name"]
+    vprj = prj["versioned"]
+    release_target = prj["release_target"]
+    meta = ET.Element("project", name=dprj)
+    title = "Uyuni release " + args.uyuniver
     # This is a snapshot project
     if vprj:
-        title += ' (Snapshot)'
+        title += " (Snapshot)"
     else:
-        title += ' (Latest stable version available)'
-    ET.SubElement(meta, 'title').text = title
-    ET.SubElement(meta, 'description')
-    ET.SubElement(meta, 'url').text = URL_PRJ
-    ET.SubElement(meta, 'person', userid=args.user, role='maintainer')
-    projects = {dprj: "openSUSE_Leap_" + args.leapver,
-                "openSUSE:Leap:%s:Update" % args.leapver: 'standard'}
-    create_meta_repo(args, meta, "openSUSE_Leap_" +
-                     args.leapver, projects, False, release_target)
+        title += " (Latest stable version available)"
+    ET.SubElement(meta, "title").text = title
+    ET.SubElement(meta, "description")
+    ET.SubElement(meta, "url").text = URL_PRJ
+    ET.SubElement(meta, "person", userid=args.user, role="maintainer")
+    projects = {
+        dprj: "openSUSE_Leap_" + args.leapver,
+        # pylint: disable-next=consider-using-f-string
+        "openSUSE:Leap:%s:Update" % args.leapver: "standard",
+    }
+    create_meta_repo(
+        args, meta, "openSUSE_Leap_" + args.leapver, projects, False, release_target
+    )
     create_meta_repo(args, meta, "images", projects, True, release_target)
     meta = ET.tostring(meta).decode()
     print("Configuring meta for the project...")
-    obs_urlopen(args, "/source/" + dprj + '/_meta', 'PUT', meta)
+    obs_urlopen(args, "/source/" + dprj + "/_meta", "PUT", meta)
 
 
 def disable_build(args, prj):
-    """ Disable builds for a project """
-    meta = ET.fromstring(obs_urlopen(
-        args, "/source/" + prj['name'] + "/_meta"))
+    """Disable builds for a project"""
+    meta = ET.fromstring(obs_urlopen(args, "/source/" + prj["name"] + "/_meta"))
     # Release projects always have build disabled
-    build = ET.SubElement(meta, 'build')
-    ET.SubElement(build, 'disable')
+    build = ET.SubElement(meta, "build")
+    ET.SubElement(build, "disable")
     meta = ET.tostring(meta).decode()
     print("Disabling builds for the project...")
-    obs_urlopen(args, "/source/" + prj['name'] + '/_meta', 'PUT', meta)
+    obs_urlopen(args, "/source/" + prj["name"] + "/_meta", "PUT", meta)
 
 
 def release_project(args, prj):
-    """ Release packages to a project from an origin """
-    data = {'cmd': 'release', 'nodelay': 1}
-    print("Releasing packages from %s to %s..." % (prj['origin'], prj['name']))
+    """Release packages to a project from an origin"""
+    data = {"cmd": "release", "nodelay": 1}
+    # pylint: disable-next=consider-using-f-string
+    print("Releasing packages from %s to %s..." % (prj["origin"], prj["name"]))
     try:
-        obs_urlopen(args, "/source/" + prj['origin'], 'POST', data)
+        obs_urlopen(args, "/source/" + prj["origin"], "POST", data)
     except (urllib.request.URLError, socket.timeout) as error:
+        # pylint: disable-next=consider-using-f-string
         print("Error releasing: %s" % error)
 
 
 def lock_project(args, prj):
-    """ Lock a project """
-    data = {'cmd': 'lock'}
+    """Lock a project"""
+    data = {"cmd": "lock"}
+    # pylint: disable-next=consider-using-f-string
     print("Locking project %s..." % prj)
-    obs_urlopen(args, "/source/" + prj, 'POST', data)
+    obs_urlopen(args, "/source/" + prj, "POST", data)
 
 
 def project_exists(args, prj):
-    """ Check if a project exists """
+    """Check if a project exists"""
     try:
-        obs_urlopen(args, "/source/" + prj + '/_meta')
+        obs_urlopen(args, "/source/" + prj + "/_meta")
         return True
     # Wait until project is created
     except urllib.error.HTTPError as err:
@@ -178,17 +194,18 @@ def project_exists(args, prj):
 
 
 def remove_project(args, prj, force=False):
-    """ Remove a project """
+    """Remove a project"""
     if force:
-        data = {'force': 1}
+        data = {"force": 1}
     else:
-        data = {'force': 1}
+        data = {"force": 1}
+    # pylint: disable-next=consider-using-f-string
     print("Removing %s..." % prj)
-    obs_urlopen(args, "/source/" + prj, 'DELETE', data)
+    obs_urlopen(args, "/source/" + prj, "DELETE", data)
 
 
 def project_is_locked(args, prj):
-    """ Check if a project exists """
+    """Check if a project exists"""
     try:
         tree = ET.fromstring(obs_urlopen(args, "/build/" + prj + "/_result"))
     except urllib.error.HTTPError as err:
@@ -202,84 +219,158 @@ def project_is_locked(args, prj):
 
 
 def parse_arguments():
-    """ Parse arguments from command line """
+    """Parse arguments from command line"""
     parser = argparse.ArgumentParser(
-        description="Release a new Uyuni version to %s and a new directory %s:Snapshots:X:Y.Z" % (MASTER_PRJ, BASE_PRJ))
-    parser.add_argument("-U", "--user", action="store", dest="user",
-                        help="OBS Username or read from ~/.oscrc")
-    parser.add_argument("-P", "--password", action="store", dest="password",
-                        help="OBS Password or read from ~/.oscrc")
-    parser.add_argument("-u", "--uyuni-version", action="store", dest="uyuniver",
-                        help="The Uyunu major version to be released (e.g. 4.0.0)")
-    parser.add_argument("-l", "--leap-version", action="store", dest="leapver",
-                        help="The Leap version for the base system (Default: 42.3)",
-                        default="42.3")
-    parser.add_argument("-O", "--obs-url", action="store", dest="obsurl",
-                        default="https://api.opensuse.org",
-                        help="OBS URL (Default: https://api.opensuse.org")
-    parser.add_argument("-a", "--archs", action="store", dest="archs",
-                        help="Comma separated list of architectures (x86_64 by default)",
-                        default="x86_64")
-    parser.add_argument("--force", action="store_true", dest="force",
-                        help="If present, removes the version project, and recreates it again",
-                        default=False)
-    parser.add_argument("--keep-removed", action="store_true", dest="keep_removed",
-                        help="If present, keeps the packages removed from %s and %s"
-                        % (MASTER_PRJ, MASTER_PRJ_OTHER), default=False)
-    parser.add_argument("--copy-all", action="store_true", dest="copy_all",
-                        help="If present, copy all packages to the %s, regardless of whatever are differences or not" % STABLE_PRJ,
-                        default=False)
+        # pylint: disable-next=consider-using-f-string
+        description="Release a new Uyuni version to %s and a new directory %s:Snapshots:X:Y.Z"
+        % (MASTER_PRJ, BASE_PRJ)
+    )
+    parser.add_argument(
+        "-U",
+        "--user",
+        action="store",
+        dest="user",
+        help="OBS Username or read from ~/.oscrc",
+    )
+    parser.add_argument(
+        "-P",
+        "--password",
+        action="store",
+        dest="password",
+        help="OBS Password or read from ~/.oscrc",
+    )
+    parser.add_argument(
+        "-u",
+        "--uyuni-version",
+        action="store",
+        dest="uyuniver",
+        help="The Uyunu major version to be released (e.g. 4.0.0)",
+    )
+    parser.add_argument(
+        "-l",
+        "--leap-version",
+        action="store",
+        dest="leapver",
+        help="The Leap version for the base system (Default: 42.3)",
+        default="42.3",
+    )
+    parser.add_argument(
+        "-O",
+        "--obs-url",
+        action="store",
+        dest="obsurl",
+        default="https://api.opensuse.org",
+        help="OBS URL (Default: https://api.opensuse.org",
+    )
+    parser.add_argument(
+        "-a",
+        "--archs",
+        action="store",
+        dest="archs",
+        help="Comma separated list of architectures (x86_64 by default)",
+        default="x86_64",
+    )
+    parser.add_argument(
+        "--force",
+        action="store_true",
+        dest="force",
+        help="If present, removes the version project, and recreates it again",
+        default=False,
+    )
+    parser.add_argument(
+        "--keep-removed",
+        action="store_true",
+        dest="keep_removed",
+        # pylint: disable-next=consider-using-f-string
+        help="If present, keeps the packages removed from %s and %s"
+        % (MASTER_PRJ, MASTER_PRJ_OTHER),
+        default=False,
+    )
+    parser.add_argument(
+        "--copy-all",
+        action="store_true",
+        dest="copy_all",
+        # pylint: disable-next=consider-using-f-string
+        help="If present, copy all packages to the %s, regardless of whatever are differences or not"
+        % STABLE_PRJ,
+        default=False,
+    )
     args = parser.parse_args()
     if not args.uyuniver:
-        raise RuntimeError('The new Uyuni version is mandatory')
+        raise RuntimeError("The new Uyuni version is mandatory")
     if not args.user or not args.password:
         try:
-            creds_path = "%s/.oscrc" % os.path.expanduser('~')
+            # pylint: disable-next=consider-using-f-string
+            creds_path = "%s/.oscrc" % os.path.expanduser("~")
             creds = configparser.ConfigParser()
             creds.read(creds_path)
-            args.user = creds.get(args.obsurl, 'user')
-            args.password = creds.get(args.obsurl, 'pass')
+            args.user = creds.get(args.obsurl, "user")
+            args.password = creds.get(args.obsurl, "pass")
         except Exception:
+            # pylint: disable-next=raise-missing-from
             raise RuntimeError(
-                'Could not find credentials for %s at %s' % (args.obsurl, creds_path))
-    args.archs = args.archs.split(',')
+                # pylint: disable-next=consider-using-f-string
+                "Could not find credentials for %s at %s" % (args.obsurl, creds_path)
+            )
+    args.archs = args.archs.split(",")
     return args
 
 
 def main():
-    """ Main function """
+    """Main function"""
     args = parse_arguments()
-    vprj = BASE_PRJ + ':Snapshots:' + args.uyuniver
+    vprj = BASE_PRJ + ":Snapshots:" + args.uyuniver
     # Versioned project must always be the first in creation, as we need to declare it
     # as release_target for STABLE_PRJ at meta, but then it will be the last in promotion
     prjs_publish = [
-        {'name': vprj, 'copy_all': True, 'versioned': True, 'origin': STABLE_PRJ,
-         'release_target': None, 'prj_config': STABLE_PRJ},
-        {'name': STABLE_PRJ, 'copy_all': args.copy_all, 'versioned': False,
-         'origin': MASTER_PRJ, 'release_target': vprj, 'prj_config': None}
+        {
+            "name": vprj,
+            "copy_all": True,
+            "versioned": True,
+            "origin": STABLE_PRJ,
+            "release_target": None,
+            "prj_config": STABLE_PRJ,
+        },
+        {
+            "name": STABLE_PRJ,
+            "copy_all": args.copy_all,
+            "versioned": False,
+            "origin": MASTER_PRJ,
+            "release_target": vprj,
+            "prj_config": None,
+        },
     ]
     for prj in prjs_publish:
-        if project_is_locked(args, prj['name']):
+        if project_is_locked(args, prj["name"]):
             raise RuntimeError(
-                "Project %s is locked, unlock it first with 'osc unlock %s', and then wait until all packages are unlocked" % (prj['name'], prj['name']))
+                # pylint: disable-next=consider-using-f-string
+                "Project %s is locked, unlock it first with 'osc unlock %s', and then wait until all packages are unlocked"
+                % (prj["name"], prj["name"])
+            )
 
     if project_exists(args, vprj):
         if not args.force:
             raise RuntimeError(
-                'Project %s already exists and --force is not enabled' % vprj)
+                # pylint: disable-next=consider-using-f-string
+                "Project %s already exists and --force is not enabled" % vprj
+            )
         else:
-            print('WARNING! Project %s will be removed and recreated!' % vprj)
+            # pylint: disable-next=consider-using-f-string
+            print("WARNING! Project %s will be removed and recreated!" % vprj)
             remove_project(args, vprj, force=True)
     # Evaluate and clean removed packages for Stable repository, if required
     clean_packages(args, MASTER_PRJ, STABLE_PRJ, args.keep_removed)
     for prj in prjs_publish:
         print(
-            "########################## Configuring %s... ##########################" % prj['name'])
+            # pylint: disable-next=consider-using-f-string
+            "########################## Configuring %s... ##########################"
+            % prj["name"]
+        )
         add_meta(args, prj)
         # Despite disabling build is done at meta, it cannot be done during
         # creaton, so it's done as separate step
         disable_build(args, prj)
-        if prj['prj_config'] is not None:
+        if prj["prj_config"] is not None:
             copy_prjconf(args, prj)
     print("########################## Releasing projects... ##########################")
     for prj in reversed(prjs_publish):
@@ -292,7 +383,9 @@ if __name__ == "__main__":
     try:
         main()
     except RuntimeError as err:
+        # pylint: disable-next=consider-using-f-string
         print("ERROR: %s" % err)
     except Exception as err:
+        # pylint: disable-next=consider-using-f-string
         print("ERROR: %s" % err)
         raise

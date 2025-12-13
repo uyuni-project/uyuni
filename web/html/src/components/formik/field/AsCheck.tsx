@@ -1,14 +1,24 @@
+import { useField } from "formik";
+
+import { Check, CheckProps } from "components/input";
+
 import styles from "./AsCheck.module.scss";
 
-export const AsCheck = (props: React.InputHTMLAttributes<HTMLInputElement>) => {
-  // Formik uses the `value` field, native inputs use `checked`
-  const { value, className, ...rest } = props;
-  const checked = props.checked ?? !!value;
+type Props = CheckProps & {
+  name: string;
+};
+
+export const AsCheck = (props: Props) => {
+  const [field, _, helper] = useField(props.name);
+
   return (
     <div className={styles.container}>
-      <label className={styles.item} key={`${props.name}_${value}`}>
-        <input {...rest} className="form-check-input" checked={checked} type="checkbox" />
-      </label>
+      <Check
+        {...props}
+        checked={field.value}
+        // Formik expects `onChange` to fire an event that's the same shape as a browser native change event, so we can't pass `onChange` through directly
+        onChange={(newValue) => helper.setValue(newValue)}
+      />
     </div>
   );
 };

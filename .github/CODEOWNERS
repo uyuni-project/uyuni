@@ -54,13 +54,15 @@ web/setup.sh @uyuni-project/frontend
 branding/ @uyuni-project/frontend
 *.jsp @uyuni-project/frontend
 *.jspf @uyuni-project/frontend
-.github/workflows/automatic-frontend-lint-fix-pr.yml @uyuni-project/frontend
+.github/workflows/frontend-build.yml @uyuni-project/frontend
 .github/workflows/frontend-dependency-audit.yml @uyuni-project/frontend
+.github/workflows/frontend-lint-fix-pr.yml @uyuni-project/frontend
 .github/workflows/frontend-lint.yml @uyuni-project/frontend
-.github/workflows/javascript-build.yml @uyuni-project/frontend
-.github/workflows/javascript-unit-tests.yml @uyuni-project/frontend
-.github/workflows/typescript-compilation.yml @uyuni-project/frontend
-.yarnrc @uyuni-project/frontend
+.github/workflows/frontend-typescript-compilation.yml @uyuni-project/frontend
+.github/workflows/frontend-unit-tests.yml @uyuni-project/frontend
+.npmrc @uyuni-project/frontend
+package.json @uyuni-project/frontend
+package-lock.json @uyuni-project/frontend
 
 # QE
 testsuite/ @uyuni-project/qe
@@ -87,40 +89,40 @@ java/*.changes*
 # Individual Java packages
 
 # XMLRPC API
-java/code/src/com/redhat/rhn/frontend/xmlrpc/ @uyuni-project/naica
+java/core/src/main/java/com/redhat/rhn/frontend/xmlrpc/ @uyuni-project/naica
 
 # HTTP API
-java/code/src/com/suse/manager/api/ @uyuni-project/naica
+java/core/src/main/java/com/suse/manager/api/ @uyuni-project/naica
 
 # Content Lifecycle Management
-java/code/src/com/redhat/rhn/manager/contentmgmt/ @uyuni-project/naica
-java/code/src/com/suse/manager/webui/controllers/contentmanagement/ @uyuni-project/naica
-java/code/src/com/redhat/rhn/domain/contentmgmt/ @uyuni-project/naica
+java/core/src/main/java/redhat/rhn/manager/contentmgmt/ @uyuni-project/naica
+java/core/src/main/java/com/suse/manager/webui/controllers/contentmanagement/ @uyuni-project/naica
+java/core/src/main/java/com/redhat/rhn/domain/contentmgmt/ @uyuni-project/naica
 
 # Maintenance Windows
-java/code/src/com/suse/manager/model/maintenance/ @uyuni-project/naica
-java/code/src/com/suse/manager/webui/controllers/maintenance/ @uyuni-project/naica
-java/code/src/com/suse/manager/maintenance/ @uyuni-project/naica
-java/code/src/com/suse/manager/webui/utils/gson/MaintenanceWindowDataJson.java @uyuni-project/naica
+java/core/src/main/java/com/suse/manager/model/maintenance/ @uyuni-project/naica
+java/core/src/main/java/com/suse/manager/webui/controllers/maintenance/ @uyuni-project/naica
+java/core/src/main/java/com/suse/manager/maintenance/ @uyuni-project/naica
+java/core/src/main/java/com/suse/manager/webui/utils/gson/MaintenanceWindowDataJson.java @uyuni-project/naica
 
 # Minion Bootstrapping
-java/code/src/com/suse/manager/webui/controllers/bootstrap/ @uyuni-project/naica
-java/code/src/com/suse/manager/webui/utils/gson/BootstrapHostsJson.java @uyuni-project/naica
-java/code/src/com/suse/manager/webui/utils/gson/BootstrapParameters.java @uyuni-project/naica
+java/core/src/main/java/com/suse/manager/webui/controllers/bootstrap/ @uyuni-project/naica
+java/core/src/main/java/com/suse/manager/webui/utils/gson/BootstrapHostsJson.java @uyuni-project/naica
+java/core/src/main/java/com/suse/manager/webui/utils/gson/BootstrapParameters.java @uyuni-project/naica
 
 # Notification Messages
-java/code/src/com/redhat/rhn/domain/notification/ @uyuni-project/naica
-java/code/src/com/suse/manager/webui/controllers/NotificationMessageController.java @uyuni-project/naica
-java/code/src/com/suse/manager/webui/utils/gson/NotificationMessageJson.java @uyuni-project/naica
+java/core/src/main/java/com/redhat/rhn/domain/notification/ @uyuni-project/naica
+java/core/src/main/java/com/suse/manager/webui/controllers/NotificationMessageController.java @uyuni-project/naica
+java/core/src/main/java/com/suse/manager/webui/utils/gson/NotificationMessageJson.java @uyuni-project/naica
 
 # Websockets
-java/code/src/com/suse/manager/webui/websocket/ @uyuni-project/naica
+java/core/src/main/java/com/suse/manager/webui/websocket/ @uyuni-project/naica
 
 # RBAC
-java/code/src/com/redhat/rhn/manager/access/ @uyuni-project/naica
-java/code/src/com/redhat/rhn/domain/access/ @uyuni-project/naica
-java/code/src/com/redhat/rhn/frontend/xmlrpc/access/ @uyuni-project/naica
-java/code/src/com/redhat/rhn/frontend/servlets/AuthorizationFilter.java @uyuni-project/naica
+java/core/src/main/java/com/redhat/rhn/manager/access/ @uyuni-project/naica
+java/core/src/main/java/com/redhat/rhn/domain/access/ @uyuni-project/naica
+java/core/src/main/java/com/redhat/rhn/frontend/xmlrpc/access/ @uyuni-project/naica
+java/core/src/main/java/com/redhat/rhn/frontend/servlets/AuthorizationFilter.java @uyuni-project/naica
 schema/spacewalk/common/data/accessGroup.sql @uyuni-project/naica
 schema/spacewalk/common/data/accessGroupNamespace.sql @uyuni-project/naica
 schema/spacewalk/common/data/endpoint.sql @uyuni-project/naica

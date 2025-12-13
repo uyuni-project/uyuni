@@ -1,10 +1,8 @@
 import { SubmitButton } from "components/buttons";
+import { Field, Form, MultiField, OnSubmit } from "components/formik";
 
 import { localizedMoment } from "utils/datetime";
 import { Utils } from "utils/functions";
-
-import { Field, MultiField } from "./field";
-import { Form, OnSubmit } from "./Form";
 
 export default () => {
   const initialValues = {
@@ -26,60 +24,58 @@ export default () => {
   };
 
   return (
-    <>
-      <Form initialValues={initialValues} onSubmit={onSubmit} labelClass="col-md-3" divClass="col-md-6">
-        {({ isSubmitting }) => (
-          <>
-            <Field
-              name="field"
-              label={t("Field")}
-              required
-              validate={(value) => (value.length < 2 ? t("Minimum 2 characters") : "")}
-            />
+    <Form initialValues={initialValues} onSubmit={onSubmit} labelClass="col-md-3" divClass="col-md-6">
+      {({ isSubmitting }) => (
+        <>
+          <Field
+            name="field"
+            label={t("Field")}
+            required
+            validate={(value) => (value.length < 2 ? t("Minimum 2 characters") : "")}
+          />
 
-            <Field name="checkbox" label={t("Checkbox")} as={Field.Check} />
+          <Field name="checkbox" label={t("Checkbox")} as={Field.Check} />
 
-            <Field name="password" label={t("Password")} as={Field.Password} />
+          <Field name="password" label={t("Password")} as={Field.Password} />
 
-            <Field name="datetime" label={t("Datetime")} as={Field.DateTimePicker} />
+          <Field name="datetime" label={t("Datetime")} as={Field.DateTimePicker} />
 
-            <MultiField name="multiple" label={t("Multiple values")} defaultNewItemValue="" />
+          <MultiField name="multiple" label={t("Multiple values")} defaultNewItemValue="" />
 
-            <Field name="longText" label={t("Long text")} as={Field.TextArea} rows={10} />
+          <Field name="longText" label={t("Long text")} as={Field.TextArea} rows={10} />
 
-            <Field name="range" label={t("Range")} as={Field.Range} />
+          <Field name="range" label={t("Range")} as={Field.Range} />
 
-            <Field
-              name="radio"
-              label={t("Radio")}
-              items={[
-                { label: t("One"), value: "one" },
-                { label: t("Two"), value: "two" },
-                { label: t("Three"), value: "three" },
-              ]}
-              as={Field.Radio}
-            />
+          <Field
+            name="radio"
+            label={t("Radio")}
+            items={[
+              { label: t("One"), value: "one" },
+              { label: t("Two"), value: "two" },
+              { label: t("Three"), value: "three" },
+            ]}
+            as={Field.Radio}
+          />
 
-            <Field
-              name="select"
-              label={t("Select")}
-              options={[
-                {
-                  label: t("Foo"),
-                  value: "foo",
-                },
-                {
-                  label: t("Bar"),
-                  value: "bar",
-                },
-              ]}
-              as={Field.Select}
-            />
+          <Field
+            name="select"
+            label={t("Select")}
+            options={[
+              {
+                label: t("Foo"),
+                value: "foo",
+              },
+              {
+                label: t("Bar"),
+                value: "bar",
+              },
+            ]}
+            as={Field.Select}
+          />
 
-            <SubmitButton className="btn-primary" text={t("Submit")} disabled={isSubmitting} />
-          </>
-        )}
-      </Form>
-    </>
+          <SubmitButton className="btn-primary" text={t("Submit")} disabled={isSubmitting} />
+        </>
+      )}
+    </Form>
   );
 };

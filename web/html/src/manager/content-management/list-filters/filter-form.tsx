@@ -1,6 +1,6 @@
-import * as React from "react";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 
+import { Button } from "components/buttons";
 import { DateTime, DEPRECATED_Select, Form, Radio, Text } from "components/input";
 
 import { localizedMoment } from "utils";
@@ -67,7 +67,7 @@ const FilterForm = (props: Props) => {
         props.onChange(model);
       }}
     >
-      <React.Fragment>
+      <Fragment>
         {props.editing && (
           <div className="alert alert-info" style={{ marginTop: "0px" }}>
             {t("Bear in mind that all the associated projects need to be rebuilt after a filter update")}
@@ -100,20 +100,26 @@ const FilterForm = (props: Props) => {
           <div className="row form-group">
             <div className="col-md-6 col-md-offset-3 offset-md-3">
               {filterBy === FilterBy.Type ? (
-                <button className="btn-link" onClick={() => setFilterBy(FilterBy.Template)}>
-                  <i className="fa fa-file-text-o" role="presentation" /> {t("Use a template")}
-                </button>
+                <Button
+                  className="btn-tertiary"
+                  handler={() => setFilterBy(FilterBy.Template)}
+                  icon="fa-file-text-o"
+                  text={t("Use a template")}
+                />
               ) : (
-                <button className="btn-link" onClick={() => setFilterBy(FilterBy.Type)}>
-                  <i className="fa fa-filter" role="presentation" /> {t("Use a manual filter")}
-                </button>
+                <Button
+                  className="btn-tertiary"
+                  handler={() => setFilterBy(FilterBy.Type)}
+                  icon="fa-filter"
+                  text={t("Use a manual filter")}
+                />
               )}
             </div>
           </div>
         ) : null}
 
         {filterBy === FilterBy.Type ? (
-          <React.Fragment>
+          <Fragment>
             <DEPRECATED_Select
               name="type"
               label={t("Filter Type")}
@@ -269,11 +275,7 @@ const FilterForm = (props: Props) => {
               />
             )}
 
-            {clmFilterOptions.STREAM.key === filterType && (
-              <>
-                <AppStreamsForm matcher={filter.matcher} />
-              </>
-            )}
+            {clmFilterOptions.STREAM.key === filterType && <AppStreamsForm matcher={filter.matcher} />}
 
             {clmFilterOptions.PTF_NUMBER.key === filterType && (
               <Text
@@ -308,11 +310,11 @@ const FilterForm = (props: Props) => {
                 divClass="col-md-8"
               />
             )}
-          </React.Fragment>
+          </Fragment>
         ) : null}
 
         {filterBy === FilterBy.Template ? <TemplatesForm {...props} /> : null}
-      </React.Fragment>
+      </Fragment>
     </Form>
   );
 };

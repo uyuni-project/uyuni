@@ -158,4 +158,7 @@ VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'custom-gpg-key-import', 'com
 INSERT INTO rhnTaskoTask (id, name, class)
 VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'errata-advisory-map-sync', 'com.redhat.rhn.taskomatic.task.ErrataAdvisoryMapSync');
 
+INSERT INTO rhnTaskoTask (id, name, class)
+VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'clm-channel-diff', 'com.redhat.rhn.taskomatic.task.ClmChannelDiff');
+
 commit;

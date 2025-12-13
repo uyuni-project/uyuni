@@ -19,7 +19,6 @@
 
 
 class Channel:
-
     """A pure data object representing an RHN Channel."""
 
     def __init__(self, channel_id):
@@ -38,7 +37,6 @@ class Channel:
 
 
 class Package:
-
     """A pure data object representing an RHN Package."""
 
     def __init__(self, package_id):
@@ -82,7 +80,6 @@ class Package:
 
 
 class Erratum:
-
     """An object representing a single update to a channel."""
 
     def __init__(self, erratum_id):

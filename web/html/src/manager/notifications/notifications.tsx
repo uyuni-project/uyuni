@@ -1,8 +1,10 @@
-import * as React from "react";
+import { Component } from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 
-type Props = {};
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
+
+type Props = Record<never, never>;
 
 type State = {
   unreadMessagesLength: any;
@@ -13,15 +15,15 @@ type State = {
   pageUnloading?: boolean;
 };
 
-class Notifications extends React.Component<Props, State> {
+class Notifications extends Component<Props, State> {
   state: State = {
     unreadMessagesLength: null,
     websocket: null,
     classStyle: "",
   };
 
-  onBeforeUnload = (e) => {
-    if (this.state.websocket != null) {
+  onBeforeUnload = () => {
+    if (!DEPRECATED_unsafeEquals(this.state.websocket, null)) {
       this.state.websocket.close();
     }
     this.setState({
@@ -30,25 +32,27 @@ class Notifications extends React.Component<Props, State> {
   };
 
   componentDidMount() {
-    var port = window.location.port;
-    var url = "wss://" + window.location.hostname + (port ? ":" + port : "") + "/rhn/websocket/notifications";
-    var ws = new WebSocket(url);
+    const port = window.location.port;
+    const url = "wss://" + window.location.hostname + (port ? ":" + port : "") + "/rhn/websocket/notifications";
+    const ws = new WebSocket(url);
     ws.onopen = () => {
       ws.send('["user-notifications"]');
     };
-    ws.onclose = (e) => {
-      var errs = this.state.errors ? this.state.errors : [];
-      if (!this.state.pageUnloading && !this.state.websocketErr) {
-        errs.push(t("Websocket connection closed. Refresh the page to try again."));
-      }
-      this.setState({
-        errors: errs,
-        websocket: null,
+    ws.onclose = () => {
+      this.setState((prevState) => {
+        const errs = prevState.errors ? prevState.errors : [];
+        if (!prevState.pageUnloading && !prevState.websocketErr) {
+          errs.push(t("Websocket connection closed. Refresh the page to try again."));
+        }
+        return {
+          errors: errs,
+          websocket: null,
+        };
       });
     };
     ws.onerror = (e) => {
       Loggerhead.error("Websocket error: " + JSON.stringify(e));
-      if (this.state.websocket != null) {
+      if (!DEPRECATED_unsafeEquals(this.state.websocket, null)) {
         this.state.websocket.close();
       }
       this.setState({
@@ -84,8 +88,8 @@ class Notifications extends React.Component<Props, State> {
   render() {
     return (
       <a className="js-spa" href="/rhn/manager/notification-messages">
-        <i className={this.state.websocket == null ? "fa fa-bell-slash" : "fa fa-bell"}></i>
-        {this.state.websocket != null && this.state.unreadMessagesLength > 0 ? (
+        <i className={DEPRECATED_unsafeEquals(this.state.websocket, null) ? "fa fa-bell-slash" : "fa fa-bell"}></i>
+        {!DEPRECATED_unsafeEquals(this.state.websocket, null) && this.state.unreadMessagesLength > 0 ? (
           <div id="notification-counter" className={this.state.classStyle}>
             {this.state.unreadMessagesLength}
           </div>

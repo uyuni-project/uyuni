@@ -9,11 +9,26 @@ require 'timeout'
 
 When(/^I enter "([^"]*)" relative to profiles as "([^"]*)"$/) do |path, field|
   git_profiles = ENV.fetch('GITPROFILES', nil)
-  step %(I enter "#{git_profiles}/#{path}" as "#{field}")
+  log "GITPROFILES: #{git_profiles}"
+  system_name = get_system_name('server')
+  case system_name
+  when /\.mgr\.suse\.de$/
+    domain_folder = 'internal_nue'
+  when /\.mgr\.slc1\.suse\.org$/
+    domain_folder = 'internal_slc1'
+  when /sumaci\.aws$/, /\.compute\.internal$/
+    domain_folder = 'cloud_aws'
+  else
+    puts "Warning: Unknown domain pattern for system_name: #{system_name}. Using root path."
+    domain_folder = ''
+  end
+  full_path = File.join(git_profiles, 'docker_profiles', domain_folder, path)
+  step %(I enter "#{full_path}" as "#{field}")
 end
 
 When(/^I enter URI, username and password for registry$/) do
   auth_registry_username, auth_registry_password = ENV['AUTH_REGISTRY_CREDENTIALS'].split('|')
+  log "AUTH_REGISTRY_CREDENTIALS: #{auth_registry_username}|#{auth_registry_password}"
   steps %(
     When I enter "#{$auth_registry}" as "uri"
     And I enter "#{auth_registry_username}" as "username"
@@ -125,7 +140,7 @@ Then(/^the list of packages of image "([^"]*)" with version "([^"]*)" is not emp
 
   image_details = $api_test.image.get_details(image_id)
   log "Image Details: #{image_details}"
-  raise ScriptError, 'the list of image packages is empty' if (image_details['installedPackages']).zero?
+  raise ScriptError, 'the list of image packages is empty' if image_details['installedPackages'].zero?
 end
 
 Then(/^the image "([^"]*)" with version "([^"]*)" doesn't exist via API calls$/) do |image_non_exist, version|

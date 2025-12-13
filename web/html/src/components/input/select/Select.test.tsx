@@ -1,4 +1,3 @@
-import * as React from "react";
 import { useState } from "react";
 
 import { SubmitButton } from "components/buttons";
@@ -134,7 +133,7 @@ describe("Select", () => {
   });
 
   test("async values are fetched", async () => {
-    let loadOptions = () => {
+    const loadOptions = () => {
       return new Promise((resolve) => {
         window.setTimeout(() => {
           resolve([
@@ -161,7 +160,7 @@ describe("Select", () => {
   test("default value option is used", async () => {
     const onLoadOptions = jest.fn();
     let resolveLoadOptions;
-    let loadOptions = () => {
+    const loadOptions = () => {
       onLoadOptions();
       return new Promise((r) => (resolveLoadOptions = r));
     };

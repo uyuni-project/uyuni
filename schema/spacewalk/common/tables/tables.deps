@@ -225,6 +225,7 @@ suseContentProjectHistoryEntry     :: suseContentProject web_contact
 suseContentFilter                  :: web_customer
 suseContentFilterProject           :: suseContentProject suseContentFilter
 suseContentEnvironment             :: suseContentProject
+suseContentEnvironmentDiff         :: suseContentProject suseContentEnvironment rhnChannel
 suseContentEnvironmentTarget       :: suseContentEnvironment rhnChannel
 suseCredentials                    :: web_contact susePaygSshData
 suseCloudRmtHost                   :: susePaygSshData

@@ -1,11 +1,10 @@
-import * as React from "react";
 import { useEffect, useState } from "react";
 
 import { AceEditor } from "components/ace-editor";
 import { ActionChain, ActionSchedule } from "components/action-schedule";
 import { AsyncButton, Button } from "components/buttons";
 import { Combobox, ComboboxItem } from "components/combobox";
-import { Check, Form } from "components/input";
+import { DEPRECATED_Check, Form } from "components/input";
 import { ActionChainLink, ActionLink } from "components/links";
 import { Messages, MessageType, Utils as MsgUtils } from "components/messages/messages";
 import { InnerPanel } from "components/panels/InnerPanel";
@@ -18,21 +17,21 @@ import Network, { JsonResult } from "utils/network";
 import { PlaybookDetails } from "./accordion-path-content";
 import { AnsiblePath } from "./ansible-path-type";
 
-interface SchedulePlaybookProps {
+type SchedulePlaybookProps = {
   playbook: PlaybookDetails;
   isRecurring?: boolean;
   onBack: () => void;
   onSelectPlaybook?: (playbook: any) => void;
-}
+};
 
-interface PlaybookArgs {
-  flushCache: Boolean;
-}
+type PlaybookArgs = {
+  flushCache: boolean;
+};
 
 export default function SchedulePlaybook({ playbook, onBack, onSelectPlaybook, isRecurring }: SchedulePlaybookProps) {
   const [loading, setLoading] = useState(true);
   const [playbookContent, setPlaybookContent] = useState("");
-  const [isTestMode, setTestMode] = useState(false);
+  const [isTestMode, setIsTestMode] = useState(false);
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [inventoryPath, setInventoryPath] = useState<ComboboxItem | null>(null);
   const [inventories, setInventories] = useState<string[]>([]);
@@ -95,8 +94,8 @@ export default function SchedulePlaybook({ playbook, onBack, onSelectPlaybook, i
   const inventoryOpts: ComboboxItem[] = inventories.map((inv, i) => ({ id: i, text: inv }));
 
   const buttons = [
-    <div className="btn-group pull-right">
-      <Toggler text={t("Test mode")} value={isTestMode} className="btn" handler={() => setTestMode(!isTestMode)} />
+    <div className="btn-group pull-right" key="buttons-right">
+      <Toggler text={t("Test mode")} value={isTestMode} className="btn" handler={() => setIsTestMode(!isTestMode)} />
       <Button
         icon="fa-angle-left"
         className="btn-default"
@@ -175,7 +174,7 @@ export default function SchedulePlaybook({ playbook, onBack, onSelectPlaybook, i
                   />
                 </div>
               </div>
-              <Check
+              <DEPRECATED_Check
                 name="flushCache"
                 label={t("Flush Ansible fact cache")}
                 title={t("Clear the fact cache for every host in inventory")}
@@ -187,15 +186,7 @@ export default function SchedulePlaybook({ playbook, onBack, onSelectPlaybook, i
 
         <div>
           <h3>{t("Playbook Content")}</h3>
-          <AceEditor
-            className="form-control"
-            id="playbook-content"
-            minLines={20}
-            maxLines={40}
-            readOnly={true}
-            mode="yaml"
-            content={playbookContent}
-          />
+          <AceEditor className="form-control" id="playbook-content" readOnly mode="yaml" content={playbookContent} />
         </div>
       </InnerPanel>
     </>

@@ -68,3 +68,4 @@ services:
 
 squid_tuning: ""
 apache_tuning: ""
+ssh_tuning: ""

@@ -1,8 +1,6 @@
-import * as React from "react";
 import { useState } from "react";
 
-import { AsyncButton } from "components/buttons";
-import { SubmitButton } from "components/buttons";
+import { AsyncButton, SubmitButton } from "components/buttons";
 import { Form } from "components/input/form/Form";
 import { FormMultiInput } from "components/input/form-multi-input/FormMultiInput";
 import { unflattenModel } from "components/input/form-utils";
@@ -12,6 +10,7 @@ import { Panel } from "components/panels/Panel";
 import { TopPanel } from "components/panels/TopPanel";
 import Validation from "components/validation";
 
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network from "utils/network";
 
 import { ContainerConfigMessages } from "./container-config-messages";
@@ -64,13 +63,13 @@ export function ProxyConfig() {
 
     const fileReaders = Object.keys(model)
       .filter((key) => {
-        const matcher = key.match(/^([a-zA-Z0-9]*[A-zA-Z])[0-9]+$/);
+        const matcher = key.match(/^([a-zA-Z0-9]*[a-zA-Z])[0-9]+$/);
         const fieldName = matcher ? matcher[1] : key;
         return fileFields[fieldName] === model.sslMode;
       })
       .map((fieldName) => {
         const field = document.getElementById(fieldName);
-        if (field !== null && field instanceof HTMLInputElement && field.files != null) {
+        if (field !== null && field instanceof HTMLInputElement && !DEPRECATED_unsafeEquals(field.files, null)) {
           const file = field.files[0];
           return new Promise((resolve) => {
             const reader = new FileReader();
@@ -131,7 +130,7 @@ export function ProxyConfig() {
                 {JSON.parse(xhr.responseText)
                   .split("\n")
                   .map((line: string) => (
-                    <p>{line}</p>
+                    <p key={line}>{line}</p>
                   ))}
               </>,
             ]);
@@ -382,14 +381,8 @@ export function ProxyConfig() {
         )}
 
         <div className="col-md-offset-3 offset-md-3 col-md-6">
-          <SubmitButton id="submit-btn" className="btn-primary" text={t("Generate")} disabled={!isValidated} />
-          <AsyncButton
-            id="clear-btn"
-            defaultType="btn-default pull-right"
-            icon="fa-eraser"
-            text={t("Clear fields")}
-            action={clearFields}
-          />
+          <SubmitButton id="submit-btn" className="btn-primary me-3" text={t("Generate")} disabled={!isValidated} />
+          <AsyncButton id="clear-btn" defaultType="btn-default" text={t("Clear fields")} action={clearFields} />
         </div>
       </Form>
     </TopPanel>

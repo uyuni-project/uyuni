@@ -6,3 +6,10 @@ output_*
 failed.txt
 Gemfile.lock
 screenshots/
+
+# Predictive Test Selection Outputs
+**/predictive-test-selection/CSVs
+**/predictive-test-selection/logs
+**/predictive-test-selection/artifacts
+**/predictive-test-selection/PR*
+**/predictive-test-selection/visualizations

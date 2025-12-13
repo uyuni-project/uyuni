@@ -66,7 +66,7 @@ Feature: OpenSCAP audit of Debian-like Salt minion
     And I follow "OpenSCAP" in the content area
     And I follow "List Scans" in the content area
     And I click on "Select All"
-    And I click on "Remove Selected Scans"
+    And I click on "Remove"
     And I click on "Confirm"
     Then I should see a " SCAP Scan(s) deleted. 0 SCAP Scan(s) retained" text
 

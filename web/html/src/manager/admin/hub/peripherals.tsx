@@ -1,6 +1,4 @@
-import { hot } from "react-hot-loader/root";
-
-import * as React from "react";
+import { useEffect } from "react";
 
 import { Button, DropdownButton, LinkButton } from "components/buttons";
 import withPageWrapper from "components/general/with-page-wrapper";
@@ -13,7 +11,7 @@ type Props = {
 };
 
 const IssPeripheral = (props: Props) => {
-  React.useEffect(() => {
+  useEffect(() => {
     if (props.flashMessage !== undefined && props.flashMessage.length > 0) {
       showSuccessToastr(props.flashMessage);
     }
@@ -31,7 +29,7 @@ const IssPeripheral = (props: Props) => {
             <Button
               id="addPeripheral"
               icon="fa-plus"
-              className="btn-default"
+              className="btn-primary"
               text={t("Add Peripheral")}
               handler={() => window.pageRenderers?.spaengine?.navigate?.(`/rhn/manager/admin/hub/peripherals/register`)}
             />
@@ -44,7 +42,7 @@ const IssPeripheral = (props: Props) => {
                 <LinkButton
                   id="issue-btn-link"
                   key="issue"
-                  className="btn-link"
+                  className="dropdown-item"
                   text={t("Migrate ISS v1...")}
                   handler={() =>
                     window.pageRenderers?.spaengine?.navigate?.(`/rhn/manager/admin/hub/peripherals/migrate-from-v1`)
@@ -53,7 +51,7 @@ const IssPeripheral = (props: Props) => {
                 <LinkButton
                   id="store-btn-link"
                   key="store"
-                  className="btn-link"
+                  className="dropdown-item"
                   text={t("Migrate ISS v2...")}
                   handler={() =>
                     window.pageRenderers?.spaengine?.navigate?.(`/rhn/manager/admin/hub/peripherals/migrate-from-v2`)
@@ -70,4 +68,4 @@ const IssPeripheral = (props: Props) => {
   );
 };
 
-export default hot(withPageWrapper(IssPeripheral));
+export default withPageWrapper(IssPeripheral);

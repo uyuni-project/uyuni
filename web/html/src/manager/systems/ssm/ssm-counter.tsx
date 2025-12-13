@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState } from "react";
 
 import { Button } from "components/buttons";
 
@@ -11,8 +11,8 @@ type Props = {
 };
 
 export function SsmCounter(props: Props) {
-  const [count, setCount] = React.useState(props.count);
-  const [errors, setErrors] = React.useState([]);
+  const [count, setCount] = useState(props.count ?? 0);
+  const [errors, setErrors] = useState([]);
   useWebSocket(errors, setErrors, "ssm-count", (value: number) => {
     setCount(value);
   });
@@ -32,10 +32,13 @@ export function SsmCounter(props: Props) {
           </span>
         </div>
       </a>
-      <Button id="clear-ssm" title={t("Clear selected system set")} handler={ssm_clear} icon="fa-eraser" />
+      <Button
+        id="clear-ssm"
+        tooltipPlacement="bottom"
+        title={t("Clear selected system set")}
+        handler={ssm_clear}
+        icon="fa-eraser"
+      />
     </>
   );
 }
-SsmCounter.defaultProps = {
-  count: 0,
-};

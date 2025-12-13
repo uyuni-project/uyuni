@@ -25,7 +25,7 @@
 %global __python /usr/bin/python3
 %endif
 
-%if !(0%{?rhel} >= 8 || 0%{?sle_version} >= 150000 )
+%if !(0%{?rhel} >= 8 || 0%{?suse_version} >= 1500 )
 %global build_py2   1
 %endif
 
@@ -67,11 +67,12 @@
 %bcond_with    test
 
 Name:           spacewalk-client-tools
-Version:        5.2.0
+Version:        5.2.2
 Release:        0
 Summary:        Support programs and libraries for %{productprettyname}
 License:        GPL-2.0-only
 URL:            https://github.com/uyuni-project/uyuni
+#!CreateArchive: %{name}
 Source0:        %{name}-%{version}.tar.gz
 Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-0/client/rhel/%{name}/%{name}-rpmlintrc
 %if "%{_vendor}" == "debbuild"

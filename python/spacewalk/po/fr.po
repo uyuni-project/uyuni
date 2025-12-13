@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-25 09:41+0200\n"
+"POT-Creation-Date: 2025-08-22 09:58+0200\n"
 "PO-Revision-Date: 2018-03-16 10:54+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: French <trans-fr@lists.fedoraproject.org>\n"
@@ -43,13 +43,13 @@ msgstr "La signature de proxy envoyée %s ne correspond pas à la nôtre : %s."
 msgid "declined proxy authentication"
 msgstr "authentification proxy rejetée"
 
-#: ../server/apacheRequest.py:67
+#: ../server/apacheRequest.py:68
 #, python-format
 msgid "Invalid request received (%s)."
 msgstr "Réception de requête invalide (%s)"
 
 #. Send the message as a fault.
-#: ../server/apacheRequest.py:126
+#: ../server/apacheRequest.py:130
 #, python-format
 msgid ""
 "IMPORTANT MESSAGE FOLLOWS:\n"
@@ -58,7 +58,7 @@ msgstr ""
 "UN MESSAGE IMPORTANT SUIT :\n"
 "%s"
 
-#: ../server/apacheRequest.py:156
+#: ../server/apacheRequest.py:160
 #, python-format
 msgid ""
 "While running '%s': caught\n"
@@ -68,7 +68,7 @@ msgstr ""
 "%s : %s\n"
 
 #. pylint: disable-next=consider-using-f-string
-#: ../server/apacheRequest.py:671
+#: ../server/apacheRequest.py:675
 #, python-format
 msgid "Invalid URI %s"
 msgstr "URI invalide %s"
@@ -82,13 +82,11 @@ msgid ""
 msgstr ""
 "\n"
 "                   Le compte %s a été désactivé sur ce serveur.\n"
-"                   Veuillez contacter votre administrateur d'organisation "
-"pour plus d'assistance."
+"                   Veuillez contacter votre administrateur d'organisation pour plus d'assistance."
 
 #: ../server/handlers/xmlrpc/proxy.py:71
 #, fuzzy, python-format
-msgid ""
-"SUSE Multi-Linux Manager Proxy service not enabled for server profile: \"%s\""
+msgid "SUSE Multi-Linux Manager Proxy service not enabled for server profile: \"%s\""
 msgstr "Service RHN Proxy non activé pour le profil de serveur : \"%s\""
 
 #: ../server/handlers/xmlrpc/proxy.py:94
@@ -101,14 +99,12 @@ msgstr "Cet identifiant de serveur n'existe plus"
 
 #: ../server/importlib/userAuth.py:109
 msgid "You are not authorized to manage packages in the null org"
-msgstr ""
-"Vous n'êtes pas autorisé à administrer les paquets de l'organisation null"
+msgstr "Vous n'êtes pas autorisé à administrer les paquets de l'organisation null"
 
 #: ../server/importlib/userAuth.py:115
 #, python-format
 msgid "You are not allowed to manage packages in the %s org"
-msgstr ""
-"Vous n'êtes pas autorisé à administrer les paquets de l'organisation %s"
+msgstr "Vous n'êtes pas autorisé à administrer les paquets de l'organisation %s"
 
 #. ok, you're a regular user who doesn't manage any channels.
 #. take a hike.
@@ -118,10 +114,8 @@ msgstr "Vous n'êtes pas autorisé à réaliser des tâches d'administration"
 
 #: ../server/importlib/userAuth.py:159
 #, python-format
-msgid ""
-"You are not allowed to manage channel %s, or that channel does not exist"
-msgstr ""
-"Vous n'êtes pas autorisé à administrer le canal %s, ou ce canal n'existe pas"
+msgid "You are not allowed to manage channel %s, or that channel does not exist"
+msgstr "Vous n'êtes pas autorisé à administrer le canal %s, ou ce canal n'existe pas"
 
 #: ../server/importlib/userAuth.py:229
 #, fuzzy, python-format
@@ -132,19 +126,14 @@ msgid ""
 msgstr ""
 "\n"
 "                   Le compte %s a été désactivé sur ce serveur.\n"
-"                   Veuillez contacter votre administrateur d'organisation "
-"pour plus d'assistance."
+"                   Veuillez contacter votre administrateur d'organisation pour plus d'assistance."
 
-#: ../server/rhnChannel.py:2217
+#: ../server/rhnChannel.py:2216
 #, python-format
-msgid ""
-"Your account does not have access to any channels matching "
-"(release='%(release)s', arch='%(arch)s')%(www_activation)s"
-msgstr ""
-"Votre compte n'a pas accès à aucun canal correspondant à "
-"(release='%(release)s', arch='%(arch)s')%(www_activation)s"
+msgid "Your account does not have access to any channels matching (release='%(release)s', arch='%(arch)s')%(www_activation)s"
+msgstr "Votre compte n'a pas accès à aucun canal correspondant à (release='%(release)s', arch='%(arch)s')%(www_activation)s"
 
-#: ../server/rhnChannel.py:2236
+#: ../server/rhnChannel.py:2235
 #, python-format
 msgid "Insufficient subscription permissions for release (%s, %s"
 msgstr "Permissions de souscriptions insuffisantes pour la version (%s, %s"
@@ -153,11 +142,11 @@ msgstr "Permissions de souscriptions insuffisantes pour la version (%s, %s"
 #.
 #. bretm 02/07/2007 -- when we have better old-client documentation, probably
 #. will be safe to get rid of all this crap
-#: ../server/rhnChannel.py:2550 ../server/rhnChannel.py:2569
+#: ../server/rhnChannel.py:2549 ../server/rhnChannel.py:2568
 msgid "System Registered but Inactive"
 msgstr "Système Enregistré mais Inactif"
 
-#: ../server/rhnChannel.py:2552
+#: ../server/rhnChannel.py:2551
 #, python-format
 msgid ""
 "\n"
@@ -172,7 +161,7 @@ msgstr ""
 "mises à jour car il n'est pas abonné à un canal de base.\n"
 "Contacter l'administrateur de votre organisation pour une assistance.\n"
 
-#: ../server/rhnChannel.py:2561
+#: ../server/rhnChannel.py:2560
 #, python-format
 msgid ""
 "\n"
@@ -188,20 +177,18 @@ msgstr ""
 "\n"
 "  %(entitlement_url)s\n"
 
-#: ../server/rhnChannel.py:2571
+#: ../server/rhnChannel.py:2570
 #, python-format
 msgid ""
 "\n"
 "  This system has been successfully registered, but no service entitlements\n"
-"  were available.  To entitle this system to service, login to the web site "
-"at:\n"
+"  were available.  To entitle this system to service, login to the web site at:\n"
 "\n"
 "  %(entitlement_url)s\n"
 msgstr ""
 "\n"
 "  Ce système a été inscrit avec succès, mais aucun droit d'accès au service\n"
-"  n'est disponible. Pour attribuer à ce système un droit d'accès au "
-"service,\n"
+"  n'est disponible. Pour attribuer à ce système un droit d'accès au service,\n"
 "  se connecter au site web à l'adresse suivante :\n"
 "\n"
 "  %(entitlement_url)s\n"
@@ -251,12 +238,8 @@ msgid "Maximum usage count of %s reached"
 msgstr "Limite d'utilisation maximale de %s atteinte"
 
 #: ../server/rhnServer/server_token.py:869
-msgid ""
-"Stacking of re-registration tokens with different base entitlements is not "
-"supported"
-msgstr ""
-"L'empilement de jetons de réenregistrement avec des droits de base "
-"différents n'est pas supporté"
+msgid "Stacking of re-registration tokens with different base entitlements is not supported"
+msgstr "L'empilement de jetons de réenregistrement avec des droits de base différents n'est pas supporté"
 
 #: ../server/rhnServer/server_token.py:946
 #, python-format
@@ -427,21 +410,17 @@ msgid ""
 "     Please re-register this system by running mgr_register as root.\n"
 "     Please visit https://%(hostname)s/rhn/systems/SystemEntitlements.do\n"
 "     or login at https://%(hostname)s, and from the \"Overview\" tab,\n"
-"     select \"Subscription Management\" to enable the service for this "
-"system.\n"
+"     select \"Subscription Management\" to enable the service for this system.\n"
 "     "
 msgstr ""
 "\n"
 "     La fonctionnalité serveur anonyme n'est plus disponible.\n"
 "\n"
 "     Veuillez réinscrire ce système en utilisant rhn_register\n"
-"     (ou up2date --register sur Red Hat Enterprise Linux 3+) en tant que "
-"root.\n"
-"     Veuillez consulter https://%(hostname)s/rhn/systems/"
-"SystemEntitlements.do\n"
+"     (ou up2date --register sur Red Hat Enterprise Linux 3+) en tant que root.\n"
+"     Veuillez consulter https://%(hostname)s/rhn/systems/SystemEntitlements.do\n"
 "     ou vous connecter sur https://%(hostname)s, et depuis l'onglet Aperçu,\n"
-"     sélectionner « Gestion des Abonnements » pour activer le service RHN "
-"sur\n"
+"     sélectionner « Gestion des Abonnements » pour activer le service RHN sur\n"
 "     ce système.\n"
 "     "
 
@@ -457,21 +436,17 @@ msgstr "Valeur invalide pour l'entrée."
 #, fuzzy, python-format
 msgid ""
 "\n"
-"     This system does not have a valid entitlement for SUSE Multi-Linux "
-"Manager.\n"
+"     This system does not have a valid entitlement for SUSE Multi-Linux Manager.\n"
 "     Please visit https://%(hostname)s/rhn/systems/SystemEntitlements.do\n"
 "     or login at https://%(hostname)s, and from the \"Overview\" tab,\n"
-"     select \"Subscription Management\" to enable the service for this "
-"system.\n"
+"     select \"Subscription Management\" to enable the service for this system.\n"
 "     "
 msgstr ""
 "\n"
 "     Ce système n'a pas de droit valide pour accéder à Red Hat Network.\n"
-"     Veuillez consulter https://%(hostname)s/rhn/systems/"
-"SystemEntitlements.do\n"
+"     Veuillez consulter https://%(hostname)s/rhn/systems/SystemEntitlements.do\n"
 "     ou vous connecter sur https://%(hostname)s, et depuis l'onglet Aperçu,\n"
-"     sélectionner « Gestion des Abonnements » pour activer le service RHN "
-"sur\n"
+"     sélectionner « Gestion des Abonnements » pour activer le service RHN sur\n"
 "     ce système.\n"
 "     "
 
@@ -497,9 +472,7 @@ msgstr "Action invalide"
 
 #: ../common/rhnException.py:101
 msgid "You are not allowed to perform administrative tasks on this system."
-msgstr ""
-"Vous n'êtes pas autorisé à réaliser les tâches d'administration sur ce "
-"système."
+msgstr "Vous n'êtes pas autorisé à réaliser les tâches d'administration sur ce système."
 
 #: ../common/rhnException.py:104
 msgid "The system is already subscribed to the specified channel."
@@ -524,10 +497,8 @@ msgid ""
 "     User group membership limits exceeded.\n"
 "\n"
 "     The current settings for your account do not allow you to add another\n"
-"     user account. Please check with the organization administrator for "
-"your\n"
-"     account if the maximum number of users allowed to subscribe to server "
-"needs\n"
+"     user account. Please check with the organization administrator for your\n"
+"     account if the maximum number of users allowed to subscribe to server needs\n"
 "     to be changed.\n"
 "     "
 msgstr ""
@@ -535,10 +506,8 @@ msgstr ""
 "     Dépassement de la limite d'adhésion à des groupes d'utilisateur.\n"
 "\n"
 "     Les réglages actuels de votre compte ne vous autorisent pas à créer\n"
-"     un compte utilisateur. Veuillez vérifier avec l'administrateur de "
-"votre\n"
-"     organisation de votre compte si le nombre maximal d'utilisateurs "
-"autorisés\n"
+"     un compte utilisateur. Veuillez vérifier avec l'administrateur de votre\n"
+"     organisation de votre compte si le nombre maximal d'utilisateurs autorisés\n"
 "     à se connecter à RHN doit être modifié.\n"
 "     "
 
@@ -549,10 +518,8 @@ msgid ""
 "     System group membership limits exceeded.\n"
 "\n"
 "     The current settings for your account do not allow you to add another\n"
-"     system profile. Please check with the organization administrator for "
-"your\n"
-"     account for modifying the maximum number of system profiles that can "
-"be\n"
+"     system profile. Please check with the organization administrator for your\n"
+"     account for modifying the maximum number of system profiles that can be\n"
 "     subscribed to your account.\n"
 "     "
 msgstr ""
@@ -577,8 +544,7 @@ msgstr ""
 "\n"
 "     Architecture invalide.\n"
 "\n"
-"     L'architecture de ce paquet n'est pas prise en charge par Red Hat "
-"Network\n"
+"     L'architecture de ce paquet n'est pas prise en charge par Red Hat Network\n"
 "     "
 
 #: ../common/rhnException.py:136
@@ -588,10 +554,8 @@ msgstr "En-tête RPM invalide"
 #: ../common/rhnException.py:138
 msgid ""
 "\n"
-"    This system is already registered as a Salt Minion. If you want to "
-"register it as a traditional client\n"
-"    please delete it first via the web UI or API and then register it using "
-"the traditional tools.\n"
+"    This system is already registered as a Salt Minion. If you want to register it as a traditional client\n"
+"    please delete it first via the web UI or API and then register it using the traditional tools.\n"
 "    "
 msgstr ""
 
@@ -623,8 +587,7 @@ msgstr ""
 msgid ""
 "\n"
 "     The --force mgrpush option is disabled on this server.\n"
-"     Please contact your SUSE Multi-Linux Manager administrator for more "
-"help.\n"
+"     Please contact your SUSE Multi-Linux Manager administrator for more help.\n"
 "     "
 msgstr ""
 "\n"
@@ -651,8 +614,7 @@ msgstr "Trop de systèmes enregistrés avec ce jeton d'enregistrement."
 
 #: ../common/rhnException.py:167
 msgid "Token contains invalid, obsoleted or insufficient settings"
-msgstr ""
-"Le jeton contient des configurations invalides, obsolètes ou insuffisantes."
+msgstr "Le jeton contient des configurations invalides, obsolètes ou insuffisantes."
 
 #: ../common/rhnException.py:168
 msgid "Conflicting activation tokens"
@@ -690,8 +652,7 @@ msgstr ""
 #. 80-90: server group errors
 #: ../common/rhnException.py:185
 msgid "There was an error while trying to join the system to its groups"
-msgstr ""
-"Une erreur est survenue en essayant de faire adhérer le système à ses groupes"
+msgstr "Une erreur est survenue en essayant de faire adhérer le système à ses groupes"
 
 #. 90-100: entitlement errors
 #: ../common/rhnException.py:187
@@ -763,8 +724,7 @@ msgstr "Le Proxy RHN est incapable de se connecter."
 #: ../common/rhnException.py:210
 msgid ""
 "\n"
-"     SUSE Multi-Linux Manager Proxy system ID does not match a Spacewalk "
-"Proxy Server\n"
+"     SUSE Multi-Linux Manager Proxy system ID does not match a Spacewalk Proxy Server\n"
 "     in the database.\n"
 "     "
 msgstr ""
@@ -790,8 +750,7 @@ msgstr ""
 "\n"
 "     La création d'un utilisateur sur RHN Satellite n'est pas autorisée\n"
 "     via rhn_register (ou up2date --register sur Red Hat\n"
-"     Enterprise Linux 3 ou plus) ; veuillez contacter votre      "
-"administrateur système afin qu'il puisse créer votre\n"
+"     Enterprise Linux 3 ou plus) ; veuillez contacter votre      administrateur système afin qu'il puisse créer votre\n"
 "     compte utilisateur.\n"
 "     "
 
@@ -799,13 +758,11 @@ msgstr ""
 #, fuzzy
 msgid ""
 "\n"
-"     This SUSE Multi-Linux Manager server is not allowed to use Inter Server "
-"Sync on this server\n"
+"     This SUSE Multi-Linux Manager server is not allowed to use Inter Server Sync on this server\n"
 "     "
 msgstr ""
 "\n"
-"     Ce serveur satellite n'est pas autorisé à utiliser la synchronisation "
-"inter-satellite\n"
+"     Ce serveur satellite n'est pas autorisé à utiliser la synchronisation inter-satellite\n"
 "     "
 
 #: ../common/rhnException.py:231
@@ -969,8 +926,7 @@ msgstr ""
 "     Une erreur est survenue pendant le traitement de votre demande. Si\n"
 "     le problème persiste, merci de créer un rapport d'anomalie sur\n"
 "     bugzilla.redhat.com. Si vous choisissez de soumettre ce rapport\n"
-"     d'anomalie, assurez-vous d'y adjoindre les détails de ce que vous "
-"étiez\n"
+"     d'anomalie, assurez-vous d'y adjoindre les détails de ce que vous étiez\n"
 "     en train de faire lorsque l'erreur est survenue, ainsi que les détails\n"
 "     sur la façon de reproduire le problème.\n"
 
@@ -1046,8 +1002,7 @@ msgstr ""
 msgid ""
 "\n"
 "ERROR: There was a problem communicating with the ISS Master.\n"
-"       Depending on the specific error details, please review your "
-"configuration,\n"
+"       Depending on the specific error details, please review your configuration,\n"
 "       basic network connectivity, and/or name resolution, and try again.\n"
 "       Error message: %s\n"
 msgstr ""
@@ -1057,8 +1012,7 @@ msgstr ""
 msgid ""
 "\n"
 "ERROR: a child-channel cannot be synced without its parent being synced as\n"
-"       well. A parent needs to be either (a) previously synced or (b) "
-"synced\n"
+"       well. A parent needs to be either (a) previously synced or (b) synced\n"
 "       in tandem with the desired child-channel. Missing parents for this\n"
 "       transaction:\n"
 "       %s\n"
@@ -1274,13 +1228,11 @@ msgstr ""
 
 #~ msgid ""
 #~ "\n"
-#~ "If you have a registration number, please register with it first at "
-#~ "http://www.redhat.com/apps/activate/ and then try again.\n"
+#~ "If you have a registration number, please register with it first at http://www.redhat.com/apps/activate/ and then try again.\n"
 #~ "\n"
 #~ msgstr ""
 #~ "\n"
-#~ "Si vous avez un numéro d'installation, veuillez d'abord l'enregistrer à "
-#~ "http://www.redhat.com/apps/activate/ puis de réessayer.\n"
+#~ "Si vous avez un numéro d'installation, veuillez d'abord l'enregistrer à http://www.redhat.com/apps/activate/ puis de réessayer.\n"
 #~ "\n"
 
 #, fuzzy
@@ -1299,8 +1251,7 @@ msgstr ""
 #~ "Combinaison d'architecture et de version de l'OS (%s, %s) invalide.\n"
 #~ "Votre système a été enregistré, mais ne recevra pas de\n"
 #~ "mises à jour car il n'est pas abonné à un canal de base. Si vous n'avez\n"
-#~ "pas encore activé votre produit pour le service, veuillez visiter notre "
-#~ "site web à :\n"
+#~ "pas encore activé votre produit pour le service, veuillez visiter notre site web à :\n"
 #~ "  \n"
 #~ "     http://www.redhat.com/apps/activate/\n"
 #~ "\n"

@@ -20,16 +20,16 @@
 %define __python %{_bindir}/python2
 
 %if 0%{?fedora} || 0%{?suse_version} >= 1500 || 0%{?rhel} >= 8
+%if (0%{?suse_version} && 0%{?suse_version} < 1600 )
 %{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
+%endif
 %global python3root %{python3_sitelib}/uyuni
 %global build_py3 1
 %endif
 
-%if ( 0%{?rhel} && 0%{?rhel} < 8 ) || 0%{?suse_version}
+%if ( 0%{?rhel} && 0%{?rhel} < 8 ) || ( 0%{?suse_version} && 0%{?suse_version} < 1600 )
 %global build_py2   1
 %endif
-
-%define pythonX %{?build_py3:python3}%{!?build_py3:python}
 
 %if 0%{?suse_version} >= 1500
 %global python_prefix python3
@@ -41,16 +41,19 @@
 %endif
 %endif
 
+%if ! ( 0%{?suse_version} >= 1600 )
 %{!?python2_sitelib: %global python2_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
 %global python2root %{python2_sitelib}/uyuni
+%endif
 
 Name:           uyuni-common-libs
-Version:        5.2.0
+Version:        5.2.1
 Release:        0
 Summary:        Uyuni server and client libs
 License:        GPL-2.0-only
 Group:          Development/Languages/Python
 URL:            https://github.com/uyuni-project/uyuni
+#!CreateArchive: %{name}
 Source0:        %{name}-%{version}.tar.gz
 BuildRequires:  fdupes
 BuildRequires:  make
@@ -105,18 +108,26 @@ Python 3 libraries required by both Uyuni server and client tools.
 %setup -q
 
 %build
-%make_build -f Makefile.common-libs all PYTHON_BIN=%{pythonX}
+%if 0%{?build_py3}
+%make_build -f Makefile.common-libs all PYTHON_BIN=python3 SPACEWALK_ROOT=%{python3root}
+%endif
+
+%if 0%{?build_py2}
+%make_build -f Makefile.common-libs all PYTHON_BIN=python SPACEWALK_ROOT=%{python2root}
+%endif
 
 %install
-make -f Makefile.common-libs install PREFIX=%{buildroot} \
-    MANDIR=%{_mandir} PYTHON_BIN=%{pythonX}
 
 %if 0%{?build_py3}
+make -f Makefile.common-libs install PREFIX=%{buildroot} \
+    MANDIR=%{_mandir} PYTHON_BIN=python3 SPACEWALK_ROOT=%{python3root}
+install -d %{buildroot}%{python3root}/common
+%endif
+
+%if 0%{?build_py2}
+make -f Makefile.common-libs install PREFIX=%{buildroot} \
+    MANDIR=%{_mandir} PYTHON_BIN=python SPACEWALK_ROOT=%{python2root}
 install -d %{buildroot}%{python2root}/common
-cp %{buildroot}%{python3root}/__init__.py \
-    %{buildroot}%{python2root}/
-cp %{buildroot}%{python3root}/common/*.py \
-    %{buildroot}%{python2root}/common
 %endif
 
 %if 0%{?suse_version}

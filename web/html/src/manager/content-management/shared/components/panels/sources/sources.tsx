@@ -1,4 +1,3 @@
-import * as React from "react";
 import { useMemo } from "react";
 
 import { isOrgAdmin } from "core/auth/auth.utils";
@@ -18,9 +17,9 @@ import styles from "./sources.module.scss";
 
 type SourcesProps = {
   projectId: string;
-  softwareSources: Array<ProjectSoftwareSourceType>;
-  onChange: Function;
-  messages?: Array<ProjectMessageType>;
+  softwareSources: ProjectSoftwareSourceType[];
+  onChange: (...args: any[]) => any;
+  messages?: ProjectMessageType[];
 };
 
 const ModalSourceCreationContent = ({ isLoading, softwareSources, onChange }) => {
@@ -65,9 +64,7 @@ const renderSourceEntry = (source) => {
 
   if (source.state === statesEnum.enum.ATTACHED.key) {
     return (
-      // TODO: If you touch this code, please make sure the `href` property here is obsolete and remove it
-      // @ts-expect-error
-      <div className={`text-success ${styles.attached}`} href="#">
+      <div className={`text-success ${styles.attached}`}>
         <i className="fa fa-plus" />
         <b>{source.name}</b>
         &nbsp;
@@ -146,24 +143,22 @@ const Sources = (props: SourcesProps) => {
           {messages.messages}
           {props.softwareSources.length > 0 && (
             <Panel headingLevel="h4" title={t("Software Channels")}>
-              <div className="col-12 col-xs-12">
-                <React.Fragment>
-                  <dl className="row">
-                    <dt className="col-2 col-xs-2">Base Channel:</dt>
-                    <dd className="col-10 col-xs-10">{renderSourceEntry(props.softwareSources[0])}</dd>
-                  </dl>
+              <div className="col-12">
+                <dl className="row">
+                  <dt className="col-2">Base Channel:</dt>
+                  <dd className="col-10">{renderSourceEntry(props.softwareSources[0])}</dd>
+                </dl>
 
-                  <dl className="row">
-                    <dt className="col-2 col-xs-2">Child Channels:</dt>
-                    <dd className="col-6 col-xs-6">
-                      <ul className="list-unstyled">
-                        {props.softwareSources.slice(1, props.softwareSources.length).map((source) => (
-                          <li key={`softwareSources_entry_${source.channelId}`}>{renderSourceEntry(source)}</li>
-                        ))}
-                      </ul>
-                    </dd>
-                  </dl>
-                </React.Fragment>
+                <dl className="row">
+                  <dt className="col-2">Child Channels:</dt>
+                  <dd className="col-6">
+                    <ul className="list-unstyled">
+                      {props.softwareSources.slice(1, props.softwareSources.length).map((source) => (
+                        <li key={`softwareSources_entry_${source.channelId}`}>{renderSourceEntry(source)}</li>
+                      ))}
+                    </ul>
+                  </dd>
+                </dl>
               </div>
             </Panel>
           )}

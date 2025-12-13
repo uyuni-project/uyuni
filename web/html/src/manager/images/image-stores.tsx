@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 
@@ -15,7 +15,7 @@ import { Utils } from "utils/functions";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network from "utils/network";
 
-// See java/code/src/com/suse/manager/webui/templates/content_management/list-stores.jade
+// See java/core/src/main/resources/com/suse/manager/webui/templates/content_management/list-stores.jade
 declare global {
   interface Window {
     isAdmin?: any;
@@ -33,7 +33,7 @@ const typeMap = {
   os_image: "OS Image",
 };
 
-type Props = {};
+type Props = Record<never, never>;
 
 type State = {
   messages: any;
@@ -42,7 +42,7 @@ type State = {
   selected?: any;
 };
 
-class ImageStores extends React.Component<Props, State> {
+class ImageStores extends Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -93,7 +93,7 @@ class ImageStores extends React.Component<Props, State> {
   deleteStores = (idList) => {
     return Network.post("/rhn/manager/api/cm/imagestores/delete", idList).then((data) => {
       if (data.success) {
-        this.setState({
+        this.setState((prevState) => ({
           messages: (
             <Messages
               items={[
@@ -104,9 +104,9 @@ class ImageStores extends React.Component<Props, State> {
               ]}
             />
           ),
-          imagestores: this.state.imagestores.filter((store) => !idList.includes(store.id)),
-          selectedItems: this.state.selectedItems.filter((item) => !idList.includes(item)),
-        });
+          imagestores: prevState.imagestores.filter((store) => !idList.includes(store.id)),
+          selectedItems: prevState.selectedItems.filter((item) => !idList.includes(item)),
+        }));
       } else {
         this.setState({
           messages: (
@@ -134,7 +134,7 @@ class ImageStores extends React.Component<Props, State> {
             icon="fa-trash"
             className="btn-default"
             text={t("Delete")}
-            title={t("Delete selected")}
+            title={t("Delete Store Profile")}
             target="delete-selected-modal"
           />
         )}
@@ -144,8 +144,8 @@ class ImageStores extends React.Component<Props, State> {
             id="create"
             icon="fa-plus"
             className="btn-primary"
-            title={t("Create")}
-            text={t("Create")}
+            title={t("Create Store Profile")}
+            text={t("Create Store Profile")}
             href="/rhn/manager/cm/imagestores/create"
           />
         )}
@@ -186,6 +186,7 @@ class ImageStores extends React.Component<Props, State> {
             />
             {window.isAdmin && (
               <Column
+                columnKey="actions"
                 width="15%"
                 columnClass="text-right"
                 headerClass="text-right"

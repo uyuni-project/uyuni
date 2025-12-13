@@ -1,0 +1,226 @@
+/*
+ * Copyright (c) 2014--2025 SUSE LLC
+ *
+ * This software is licensed to you under the GNU General Public License,
+ * version 2 (GPLv2). There is NO WARRANTY for this software, express or
+ * implied, including the implied warranties of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+ * along with this software; if not, see
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ */
+package com.redhat.rhn.domain.action;
+
+import com.redhat.rhn.domain.BaseDomainHelper;
+import com.redhat.rhn.domain.server.Server;
+
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+/**
+ * POJO for a rhnActionChainEntry row.
+ * @author Silvio Moioli {@literal <smoioli@suse.de>}
+ */
+@Entity
+@Table(name = "rhnActionChainEntry")
+public class ActionChainEntry extends BaseDomainHelper {
+
+    /** The id, which is also the associated Action id. */
+    @Id
+    @Column(name = "action_id")
+    private Long id;
+
+    /** The action. */
+    @OneToOne
+    @JoinColumn(name = "action_id")
+    @MapsId
+    private Action action;
+
+    /** The action chain. */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "actionchain_id", nullable = false)
+    private ActionChain actionChain;
+
+    /** The server. */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "server_id", nullable = false)
+    private Server server;
+
+    /** The sort order. */
+    @Column(name = "sort_order")
+    private Integer sortOrder;
+
+    /**
+     * Gets the id.
+     *
+     * @return the id
+     */
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     * Sets the id.
+     *
+     * @param idIn the new id
+     */
+    public void setId(Long idIn) {
+        id = idIn;
+    }
+
+    /**
+    /**
+     * Gets the action.
+     *
+     * @return the action
+     */
+    public Action getAction() {
+        return action;
+    }
+
+    /**
+     * Sets the action.
+     *
+     * @param actionIn the new action
+     */
+    public void setAction(Action actionIn) {
+        action = actionIn;
+    }
+
+    /**
+     * Gets the action id.
+     *
+     * @return the action id or null
+     */
+    public Long getActionId() {
+        if (getAction() != null) {
+            return getAction().getId();
+        }
+        return null;
+    }
+
+    /**
+     * Gets the action chain.
+     *
+     * @return the action chain
+     */
+    public ActionChain getActionChain() {
+        return actionChain;
+    }
+
+    /**
+     * Sets the action chain.
+     *
+     * @param actionChainIn the new action chain
+     */
+    public void setActionChain(ActionChain actionChainIn) {
+        actionChain = actionChainIn;
+    }
+
+    /**
+     * Gets the action chain id.
+     * @return the action chain id or null
+     */
+    public Long getActionChainId() {
+        if (getActionChain() != null) {
+            return getActionChain().getId();
+        }
+        return null;
+    }
+
+    /**
+     * Gets the server.
+     *
+     * @return the server
+     */
+    public Server getServer() {
+        return server;
+    }
+
+    /**
+     * Sets the server.
+     *
+     * @param serverIn the new server
+     */
+    public void setServer(Server serverIn) {
+        server = serverIn;
+    }
+
+    /**
+     * Gets the server id.
+     * @return the server id
+     */
+    public Long getServerId() {
+        if (getServer() != null) {
+            return getServer().getId();
+        }
+        return null;
+    }
+
+    /**
+     * Gets the sort order.
+     *
+     * @return the sort order
+     */
+    public Integer getSortOrder() {
+        return sortOrder;
+    }
+
+    /**
+     * Sets the sort order.
+     *
+     * @param sortOrderIn the new sort order
+     */
+    public void setSortOrder(Integer sortOrderIn) {
+        sortOrder = sortOrderIn;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(final Object other) {
+        if (!(other instanceof ActionChainEntry otherActionChainEntry)) {
+            return false;
+        }
+        return new EqualsBuilder()
+            .append(getActionId(), otherActionChainEntry.getActionId())
+            .append(getActionChainId(), otherActionChainEntry.getActionChainId())
+            .append(getServerId(), otherActionChainEntry.getServerId())
+            .append(getSortOrder(), otherActionChainEntry.getSortOrder()).isEquals();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+            .append(getActionId())
+            .append(getActionChainId())
+            .append(getServerId())
+            .append(getSortOrder())
+            .toHashCode();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+        .append("id", getId())
+        .append("sortOrder", getSortOrder())
+        .toString();
+    }
+}

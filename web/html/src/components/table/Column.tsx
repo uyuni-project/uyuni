@@ -1,22 +1,19 @@
-import * as React from "react";
+import type { ReactNode } from "react";
 
 import { Comparator } from "utils/data-providers";
 
-type ColumnProps = {
+export type ColumnProps = {
   /** key differenciating a column from its sibblings */
-  key?: string;
+  columnKey: string;
 
   /** Content of the cell or function to compute it from the row data */
-  cell: React.ReactNode | ((data: any, criteria?: string) => React.ReactNode);
+  cell?: ReactNode | ((data: any, criteria?: string, nestingLevel?: number) => ReactNode);
 
-  /** Title of the row */
-  header?: React.ReactNode;
+  /** Title of the row, prefer `string` where possible for consistency */
+  header?: string | ReactNode;
 
   /** CSS value for the column width */
   width?: string;
-
-  /** key used to identify the column */
-  columnKey?: string;
 
   /** Row comparison function. See sortBy functions in utils/functions.js */
   comparator?: Comparator;
@@ -40,25 +37,35 @@ type ColumnProps = {
 
   /** search criteria value */
   criteria?: string;
+
+  /** On click for columns that behave as raw buttons */
+  onClick?: (data?: any) => void;
+
+  /** Disable `onClick` */
+  disabled?: boolean;
+
+  nestingLevel?: number;
 };
 
-/** Represents a column in the table.
+/**
+ * Represents a column in the table.
  * This component is also used internally to reprent each cell
  */
 export function Column(props: ColumnProps) {
-  let content: React.ReactNode = null;
+  let content: ReactNode = null;
   if (typeof props.cell === "function") {
-    content = props.cell(props.data, props.criteria);
+    content = props.cell(props.data, props.criteria, props.nestingLevel);
   } else {
     content = props.cell;
   }
-  return <td className={props.columnClass}>{content}</td>;
+  return (
+    <td
+      className={props.columnClass}
+      key={props.columnKey}
+      role={props.onClick ? "button" : undefined}
+      onClick={props.onClick && !props.disabled ? () => props.onClick?.(props.data) : undefined}
+    >
+      {content}
+    </td>
+  );
 }
-Column.defaultProps = {
-  header: undefined,
-  comparator: undefined,
-  sortable: false,
-  columnClass: undefined,
-  data: undefined,
-  criteria: undefined,
-};

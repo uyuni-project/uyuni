@@ -66,7 +66,6 @@ from __future__ import absolute_import, print_function, unicode_literals
 import logging
 import time
 import fnmatch
-import hashlib
 
 try:
     import psycopg2
@@ -143,21 +142,15 @@ class Responder:
                     fnmatch.fnmatch(tag, "suse/manager/image_synced"),
                     fnmatch.fnmatch(tag, "suse/manager/pxe_update"),
                     fnmatch.fnmatch(tag, "suse/systemid/generate"),
+                    fnmatch.fnmatch(tag, "suse/proxy/backup_finished"),
                 ]
             )
             and not self._is_salt_mine_event(tag, data)
             and not self._is_presence_ping(tag, data)
         ):
-            queue = 0
-            if "id" in data:
-                hash_sum = hashlib.sha256(
-                    data.get("id").encode(self.connection.encoding)
-                ).hexdigest()[0:8]
-                queue = (
-                    int(hash_sum, 16) % self.config["events"]["thread_pool_size"] + 1
-                )
-            log.debug("%s: Adding event to queue %d -> %s", __name__, queue, tag)
             try:
+                queue = self._get_queue(data.get("id"))
+                log.debug("%s: Adding event to queue %d -> %s", __name__, queue, tag)
                 self.cursor.execute(
                     "INSERT INTO suseSaltEvent (minion_id, data, queue) VALUES (%s, %s, %s);",
                     (data.get("id"), json.dumps({"tag": tag, "data": data}), queue),
@@ -177,6 +170,29 @@ class Responder:
                 log.debug("%s: %s", __name__, self.cursor.query)
         else:
             log.debug("%s: Discarding event -> %s", __name__, tag)
+
+    def _get_queue(self, minion_id):
+        if minion_id:
+            self.cursor.execute(
+                """
+                  SELECT COALESCE (
+                      (SELECT MAX(queue)
+                       FROM   suseSaltEvent
+                       WHERE  minion_id = %s),
+                      (SELECT X.queue
+                       FROM   (SELECT   Q.queue,
+                                        (SELECT COUNT(*) FROM suseSaltEvent sa where Q.queue = sa.queue) as count
+                               FROM     (SELECT generate_series(1, %s) queue) Q
+                               ORDER BY count, Q.queue
+                               LIMIT 1) X
+                      )
+                  ) queue;""",
+                (minion_id, int(self.config["events"]["thread_pool_size"])),
+            )
+            row = self.cursor.fetchone()
+            if row is not None:
+                return int(row[0])
+        return 0
 
     def trace_log(self):
         log.trace("%s: queues sizes -> %s", __name__, self.counters)

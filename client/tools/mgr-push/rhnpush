@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# pylint: disable=missing-module-docstring
 #
 # Wrapper for rhnpush_main.py
 #
@@ -12,7 +13,7 @@ except ImportError:
     sys.stderr.write(str(e) + "\n")
     sys.exit(1)
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     try:
         sys.exit(rhnpush_main.main() or 0)
     except KeyboardInterrupt:
@@ -26,5 +27,6 @@ if __name__ == '__main__':
     # pylint: disable=W0703
     except Exception:
         e = sys.exc_info()[1]
+        # pylint: disable-next=consider-using-f-string
         sys.stderr.write("\nERROR: unhandled exception occurred: (%s).\n" % e)
         sys.exit(-1)

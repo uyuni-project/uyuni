@@ -1,6 +1,4 @@
-import { hot } from "react-hot-loader/root";
-
-import * as React from "react";
+import { Fragment } from "react";
 
 import { isUyuni } from "core/user-preferences";
 
@@ -15,10 +13,10 @@ const products = {
   suma: {
     productName: "SUSE Multi-Linux Manager",
     headerTitle: (
-      <React.Fragment>
+      <Fragment>
         <span>SUSE</span>
         <i className="fa fa-registered" /> <span>Multi-Linux Manager</span>
-      </React.Fragment>
+      </Fragment>
     ),
     bodyTitle: (
       <span>
@@ -42,7 +40,7 @@ const products = {
 type Props = {
   theme: Theme;
   bounce: string;
-  validationErrors: Array<string>;
+  validationErrors: string[];
   schemaUpgradeRequired: boolean;
   webVersion: string;
   customHeader: string;
@@ -55,7 +53,7 @@ type Props = {
 };
 
 export type ThemeProps = Props & {
-  product: typeof products[keyof typeof products];
+  product: (typeof products)[keyof typeof products];
 };
 
 const Login = (props: Props) => {
@@ -66,4 +64,4 @@ const Login = (props: Props) => {
   return <SusemanagerThemeLogin {...props} product={product} />;
 };
 
-export default hot(withPageWrapper<Props>(Login));
+export default withPageWrapper<Props>(Login);

@@ -1,0 +1,10 @@
+include ../common.jade
+
+#notifications-list
+
+script(type='text/javascript').
+    window.csrfToken = "#{csrf_token}";
+
+script(type='text/javascript').
+    spaImportReactPage('notifications/notifications-list')
+        .then(function(module) { module.renderer('notifications-list', !{notificationTypes}) });

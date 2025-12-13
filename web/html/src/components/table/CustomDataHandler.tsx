@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type ReactComponentElement, type ReactNode, Children } from "react";
 
 import { cloneReactElement } from "components/utils";
 
@@ -7,28 +7,28 @@ import { TableDataHandler } from "./TableDataHandler";
 
 type Props = {
   /** any type of data in an array, where each element is a row data */
-  data: Array<any>;
+  data: any[];
 
   /** Function extracting the unique key of the row from the data object */
   identifier: (row: any) => any;
 
   /** a function that return a css class for each row */
-  cssClassFunction?: Function;
+  cssClassFunction?: (...args: any[]) => any;
 
   /** the React Object that contains the filter search field */
-  searchField?: React.ReactComponentElement<typeof SearchField>;
+  searchField?: ReactComponentElement<typeof SearchField>;
 
   /** the initial number of how many row-per-page to show */
   initialItemsPerPage?: number;
 
   /** enables item selection */
-  selectable: boolean;
+  selectable?: boolean;
 
   /** the handler to call when the table selection is updated. If not provided, the select boxes won't be rendered */
-  onSelect?: (items: Array<any>) => void;
+  onSelect?: (items: any[]) => void;
 
   /** the identifiers for selected items */
-  selectedItems?: Array<any>;
+  selectedItems?: any[];
 
   /** The message which is shown when there are no rows to display */
   emptyText?: string;
@@ -40,22 +40,19 @@ type Props = {
   loadingText?: string;
 
   /** Children node in the table */
-  children: React.ReactNode;
+  children: ReactNode;
 
   /** Other filter fields */
-  additionalFilters?: Array<React.ReactNode>;
+  additionalFilters?: ReactNode[];
 };
 
 export function CustomDataHandler(props: Props) {
-  const { selectable, ...allProps } = props;
+  const { selectable = false, ...allProps } = props;
   return (
     <TableDataHandler {...allProps} selectable={() => selectable}>
-      {({ currItems, headers, handleSelect, selectable, selectedItems, criteria }) =>
-        React.Children.toArray(props.children).map((child) => cloneReactElement(child, { data: currItems, criteria }))
+      {({ currItems, criteria }) =>
+        Children.toArray(props.children).map((child) => cloneReactElement(child, { data: currItems, criteria }))
       }
     </TableDataHandler>
   );
 }
-CustomDataHandler.defaultProps = {
-  selectable: false,
-};

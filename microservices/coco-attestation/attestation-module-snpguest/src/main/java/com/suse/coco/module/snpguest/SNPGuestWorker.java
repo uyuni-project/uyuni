@@ -13,8 +13,9 @@ package com.suse.coco.module.snpguest;
 
 import com.suse.coco.model.AttestationResult;
 import com.suse.coco.module.AttestationWorker;
+import com.suse.coco.module.snpguest.execution.AbstractSNPGuestWrapper;
 import com.suse.coco.module.snpguest.execution.ProcessOutput;
-import com.suse.coco.module.snpguest.execution.SNPGuestWrapper;
+import com.suse.coco.module.snpguest.execution.SNPGuestWrapperFactory;
 import com.suse.coco.module.snpguest.io.VerificationDirectoryProvider;
 import com.suse.coco.module.snpguest.model.AttestationReport;
 import com.suse.coco.module.snpguest.model.EpycGeneration;
@@ -38,7 +39,7 @@ public class SNPGuestWorker implements AttestationWorker {
 
     private final VerificationDirectoryProvider directoryProvider;
 
-    private final SNPGuestWrapper snpGuest;
+    private final AbstractSNPGuestWrapper snpGuest;
 
     private final ByteSequenceFinder sequenceFinder;
 
@@ -48,19 +49,20 @@ public class SNPGuestWorker implements AttestationWorker {
      * Default constructor.
      */
     public SNPGuestWorker() {
-        this(new VerificationDirectoryProvider(), new SNPGuestWrapper(), new ByteSequenceFinder());
+        this(new VerificationDirectoryProvider(), SNPGuestWrapperFactory.createSNPGuestWrapper(),
+                new ByteSequenceFinder());
     }
 
     /**
      * Constructor with explicit dependencies, for unit test only.
      * @param directoryProviderIn the verification directory provider
-     * @param snpGuestWrapperIn the snpguest executor
+     * @param abstractSnpGuestWrapperIn the snpguest executor
      * @param sequenceFinderIn the byte sequence finder
      */
-    SNPGuestWorker(VerificationDirectoryProvider directoryProviderIn, SNPGuestWrapper snpGuestWrapperIn,
+    SNPGuestWorker(VerificationDirectoryProvider directoryProviderIn, AbstractSNPGuestWrapper abstractSnpGuestWrapperIn,
                    ByteSequenceFinder sequenceFinderIn) {
         this.directoryProvider = directoryProviderIn;
-        this.snpGuest = snpGuestWrapperIn;
+        this.snpGuest = abstractSnpGuestWrapperIn;
         this.sequenceFinder = sequenceFinderIn;
         this.outputBuilder = new StringBuilder();
     }
@@ -109,15 +111,27 @@ public class SNPGuestWorker implements AttestationWorker {
                 // Reference to the paths snpguest needs to work with
                 Path certsPath = workingDir.getCertsPath();
                 Path reportPath = workingDir.getReportPath();
+                ProcessOutput processOutput;
 
-                // Download the VCEK for this cpu model
-                ProcessOutput processOutput = snpGuest.fetchVCEK(report.getCpuGeneration(), certsPath, reportPath);
-                if (processOutput.getExitCode() != 0 || !workingDir.isVCEKAvailable()) {
-                    appendError("Unable to retrieve VCEK file", processOutput);
-                    return false;
+                if (report.isUsingVlekAttestation()) {
+                    if (!workingDir.isVLEKAvailable()) {
+                        appendError("Unable to retrieve VLEK certification file");
+                        return false;
+                    }
+                    else {
+                        appendSuccess("VLEK certification retrieved successfully");
+                    }
                 }
                 else {
-                    appendSuccess("VCEK fetched successfully", processOutput);
+                    // Download the VCEK for this cpu model
+                    processOutput = snpGuest.fetchVCEK(report.getCpuGeneration(), certsPath, reportPath);
+                    if (processOutput.getExitCode() != 0 || !workingDir.isVCEKAvailable()) {
+                        appendError("Unable to retrieve VCEK file", processOutput);
+                        return false;
+                    }
+                    else {
+                        appendSuccess("VCEK fetched successfully", processOutput);
+                    }
                 }
 
                 // Verify the certificates
@@ -131,7 +145,7 @@ public class SNPGuestWorker implements AttestationWorker {
                 }
 
                 // Verify the actual attestation report
-                processOutput = snpGuest.verifyAttestation(certsPath, reportPath);
+                processOutput = snpGuest.verifyAttestation(report.getCpuGeneration(), certsPath, reportPath);
                 if (processOutput.getExitCode() != 0) {
                     appendError("Unable to verify the attestation report", processOutput);
                     return false;

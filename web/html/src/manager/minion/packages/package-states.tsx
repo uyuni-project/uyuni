@@ -1,7 +1,4 @@
-import { hot } from "react-hot-loader/root";
-
-import * as React from "react";
-import { useEffect, useRef, useState } from "react";
+import { type ReactNode, useEffect, useRef, useState } from "react";
 
 import { useImmer } from "use-immer";
 
@@ -16,13 +13,15 @@ import { ChangesMapObject, OptionalValue, Package, PackagesObject } from "./pack
 import * as packageHelpers from "./package-utils";
 import usePackageStatesApi from "./use-package-states.api";
 
-type PropsType = { serverId: string };
+type PropsType = {
+  serverId: string;
+};
 type ViewType = "search" | "system" | "changes";
 
 const PackageStates = ({ serverId }: PropsType) => {
   const [filter, setFilter] = useState<string>("");
   const [view, setView] = useState<ViewType | "">("system");
-  const [tableRows, setTableRows] = useState<Array<PackagesObject>>([]);
+  const [tableRows, setTableRows] = useState<PackagesObject[]>([]);
   const [changed, setChanged] = useImmer<ChangesMapObject>({});
   const searchRef = useRef<AsyncButton | null>(null);
 
@@ -154,7 +153,7 @@ const PackageStates = ({ serverId }: PropsType) => {
   };
 
   const generateTableData = (): void => {
-    let rows: Array<PackagesObject> = [];
+    const rows: PackagesObject[] = [];
     if (view === "system") {
       for (const state of packageStates) {
         const key = packageHelpers.packageStateKey(state);
@@ -181,7 +180,7 @@ const PackageStates = ({ serverId }: PropsType) => {
       }
     } else if (view === "changes") {
       for (const state in changed) {
-        if (changed.hasOwnProperty(state)) {
+        if (state in changed) {
           rows.push(changed[state]);
         }
       }
@@ -254,7 +253,7 @@ const PackageStates = ({ serverId }: PropsType) => {
   };
 
   const tableBody = () => {
-    const elements: React.ReactNode[] = [];
+    const elements: ReactNode[] = [];
     for (const row of tableRows) {
       const currentState = row.value !== undefined ? row.value : row.original;
 
@@ -283,8 +282,8 @@ const PackageStates = ({ serverId }: PropsType) => {
   };
 
   const renderState = (row, currentState) => {
-    let versionConstraintSelect: React.ReactNode = null;
-    let undoButton: React.ReactNode = null;
+    let versionConstraintSelect: ReactNode = null;
+    let undoButton: ReactNode = null;
 
     if (currentState.packageStateId === packageHelpers.INSTALLED) {
       versionConstraintSelect = (
@@ -337,7 +336,7 @@ const PackageStates = ({ serverId }: PropsType) => {
         {headerTabs()}
         {view === "search" ? renderSearchBar() : null}
         <div className="row">
-          <table className="table table-striped">
+          <table className="table">
             <thead>
               <tr>
                 <th>{t("Package Name")}</th>
@@ -352,4 +351,4 @@ const PackageStates = ({ serverId }: PropsType) => {
   );
 };
 
-export default hot(withPageWrapper<PropsType>(PackageStates));
+export default withPageWrapper<PropsType>(PackageStates);

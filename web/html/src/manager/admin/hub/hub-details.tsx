@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type ReactNode, Component } from "react";
 
 import { Button } from "components/buttons";
 import { DangerDialog } from "components/dialog/DangerDialog";
@@ -17,7 +17,7 @@ type State = {
   confirmSyncBunch: boolean;
 };
 
-export class HubDetails extends React.Component<Props, State> {
+export class HubDetails extends Component<Props, State> {
   public constructor(props: Props) {
     super(props);
 
@@ -27,7 +27,7 @@ export class HubDetails extends React.Component<Props, State> {
     };
   }
 
-  private renderSyncBunch(): React.ReactNode {
+  private renderSyncBunch(): ReactNode {
     return (
       <>
         <Button
@@ -51,7 +51,7 @@ export class HubDetails extends React.Component<Props, State> {
     );
   }
 
-  public render(): React.ReactNode {
+  public render(): ReactNode {
     return (
       <TopPanel
         title={t("Hub Details")}
@@ -101,10 +101,10 @@ export class HubDetails extends React.Component<Props, State> {
   }
 
   private onConfirmSyncBunch(): void {
-    const resource = `/manager/api/admin/hub/sync-bunch`;
+    const resource = `/rhn/manager/api/admin/hub/sync-bunch`;
     Network.post(resource)
       .then(
-        (_response) => {
+        () => {
           showInfoToastr(t("Successfully scheduled a channels synchronization."));
         },
         (xhr) => Network.showResponseErrorToastr(xhr)

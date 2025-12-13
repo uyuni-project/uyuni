@@ -1,3 +1,0 @@
-- Fix exception handling for rest like API to not strictly
-  require Fault Exceptions to return a json error object
-  (bsc#1246452)

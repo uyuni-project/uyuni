@@ -49,7 +49,6 @@
 %define ehcache         ( mvn(net.sf.ehcache:ehcache-core) >= 2.10.1 or ehcache-core >= 2.10.1 or ehcache >= 2.10.1)
 %define apache_commons_digester    (apache-commons-digester or jakarta-commons-digester)
 %define apache_commons_discovery   (apache-commons-discovery or jakarta-commons-discovery)
-%define apache_commons_fileupload  (apache-commons-fileupload or jakarta-commons-fileupload)
 %define apache_commons_validator   (apache-commons-validator or jakarta-commons-validator)
 %define apache_commons_compress    (apache-commons-compress or jakarta-commons-compress)
 
@@ -60,13 +59,14 @@
 %endif
 
 Name:           spacewalk-java
-Version:        5.2.0
+Version:        5.2.6
 Release:        0
 Summary:        Java web application files for %{productprettyname}
 License:        GPL-2.0-only
 # FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
 URL:            https://github.com/uyuni-project/uyuni
+#!CreateArchive: %{name}
 Source0:        %{name}-%{version}.tar.gz
 Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-0/java/%{name}-rpmlintrc
 BuildArch:      noarch
@@ -74,7 +74,8 @@ ExcludeArch:    ia64
 
 BuildRequires:  %{apache_commons_compress}
 BuildRequires:  %{apache_commons_discovery}
-BuildRequires:  %{apache_commons_fileupload}
+BuildRequires:  apache-commons-fileupload2-core
+BuildRequires:  apache-commons-fileupload2-javax
 BuildRequires:  %{apache_commons_validator}
 BuildRequires:  %{ehcache}
 BuildRequires:  ant
@@ -135,7 +136,7 @@ BuildRequires:  quartz
 BuildRequires:  redstone-xmlrpc
 BuildRequires:  salt-netapi-client >= 0.21
 BuildRequires:  simple-core
-BuildRequires:  simple-xml
+BuildRequires:  simplexml
 BuildRequires:  sitemesh
 BuildRequires:  snakeyaml >= 1.33
 BuildRequires:  spark-core
@@ -154,6 +155,7 @@ BuildRequires:  mvn(org.apache.velocity:velocity-engine-core) >= 2.2
 BuildRequires:  mvn(org.hibernate:hibernate-c3p0)
 BuildRequires:  mvn(org.hibernate:hibernate-core)
 BuildRequires:  mvn(org.hibernate:hibernate-ehcache)
+BuildRequires:  servletapi5
 %if 0%{?suse_version}
 BuildRequires:  ant-nodeps
 BuildRequires:  libxml2-tools
@@ -165,7 +167,8 @@ BuildRequires:  libxml2-devel
 Requires:       %{apache_commons_compress}
 Requires:       %{apache_commons_digester}
 Requires:       %{apache_commons_discovery}
-Requires:       %{apache_commons_fileupload}
+Requires:       apache-commons-fileupload2-core
+Requires:       apache-commons-fileupload2-javax
 Requires:       %{ehcache}
 Requires:       apache-commons-beanutils
 Requires:       apache-commons-cli
@@ -216,8 +219,9 @@ Requires:       pgjdbc-ng
 Requires:       prometheus-client-java
 Requires:       redstone-xmlrpc
 Requires:       salt-netapi-client >= 0.21
+BuildRequires:  servletapi5
 Requires:       simple-core
-Requires:       simple-xml
+Requires:       simplexml
 Requires:       sitemesh
 Requires:       snakeyaml >= 1.33
 Requires:       spacewalk-branding
@@ -250,6 +254,7 @@ Requires:       tomcat-native
 Requires(pre):  salt
 Requires(pre):  tomcat >= 7
 Requires(pre):  uyuni-base-server
+Requires:       uyuni-cobbler-helper
 
 %if 0%{?rhel}
 Recommends:     rng-tools
@@ -380,7 +385,6 @@ Requires:       spacewalk-java-config
 Requires:       spacewalk-java-jdbc
 Requires:       spacewalk-java-lib = %{version}
 Requires:       statistics
-Requires:       susemanager-frontend-libs >= 2.1.5
 Requires:       tomcat-taglibs-standard
 Requires:       xalan-j2 >= 2.6.0
 Requires:       xerces-j2
@@ -571,7 +575,7 @@ install -m 644 build/webapp/rhnjava/WEB-INF/lib/rhn-test.jar %{buildroot}%{_data
 cp -a build/classes/com/redhat/rhn/common/conf/test/conf %{buildroot}%{_datadir}/rhn/unit-tests/
 %endif
 install -m 644 conf/log4j2.xml.taskomatic %{buildroot}%{_datadir}/rhn/classes/log4j2.xml
-install -m 644 code/src/ehcache.xml %{buildroot}%{_datadir}/rhn/classes/ehcache.xml
+install -m 644 core/src/main/resources/ehcache.xml %{buildroot}%{_datadir}/rhn/classes/ehcache.xml
 
 install -d -m 755 %{buildroot}%{spacewalksnippetsdir}
 install -m 644 conf/cobbler/snippets/default_motd  %{buildroot}%{spacewalksnippetsdir}/default_motd
@@ -582,6 +586,8 @@ install -m 644 conf/cobbler/snippets/redhat_register_using_salt    %{buildroot}%
 install -m 644 conf/cobbler/snippets/minion_script    %{buildroot}%{spacewalksnippetsdir}/minion_script
 install -m 644 conf/cobbler/snippets/sles_no_signature_checks %{buildroot}%{spacewalksnippetsdir}/sles_no_signature_checks
 install -m 644 conf/cobbler/snippets/wait_for_networkmanager_script %{buildroot}%{spacewalksnippetsdir}/wait_for_networkmanager_script
+install -m 644 conf/cobbler/snippets/autoyast_channels %{buildroot}%{spacewalksnippetsdir}/autoyast_channels
+install -m 644 conf/cobbler/snippets/root_ca %{buildroot}%{spacewalksnippetsdir}/root_ca
 
 # special links for rhn-search
 RHN_SEARCH_BUILD_DIR=%{_datadir}/rhn/search/lib
@@ -748,6 +754,8 @@ fi
 %config %{spacewalksnippetsdir}/minion_script
 %config %{spacewalksnippetsdir}/sles_no_signature_checks
 %config %{spacewalksnippetsdir}/wait_for_networkmanager_script
+%config %{spacewalksnippetsdir}/autoyast_channels
+%config %{spacewalksnippetsdir}/root_ca
 %if 0%{?suse_version}
 %config(noreplace) %{serverdir}/tomcat/webapps/rhn/META-INF/context.xml
 %else

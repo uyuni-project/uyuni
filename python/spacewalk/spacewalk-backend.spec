@@ -49,12 +49,13 @@
 %endif
 
 Name:           spacewalk-backend
-Version:        5.2.0
+Version:        5.2.3
 Release:        0
 Summary:        Common programs needed to be installed on the %{productprettyname} servers/proxies
 License:        GPL-2.0-only
 Group:          System/Management
 URL:            https://github.com/uyuni-project/uyuni
+#!CreateArchive: %{name}
 Source0:        %{name}-%{version}.tar.gz
 %if !0%{?suse_version} || 0%{?suse_version} >= 1120
 BuildArch:      noarch
@@ -120,6 +121,7 @@ Requires:       %{name}-sql = %{version}-%{release}
 Requires:       spacewalk-config
 Requires:       (apache2-mod_wsgi or python3-mod_wsgi)
 Requires:       (python3-pam or python3-python-pam)
+Requires:       python3-defusedxml
 
 # cobbler-web is known to break our configuration
 Conflicts:      cobbler-web
@@ -181,7 +183,6 @@ BuildRequires:  systemd-rpm-macros
 Requires:       python3-spacewalk-client-tools
 Requires:       python3-solv
 Requires:       python3-urlgrabber >= 4
-Requires:       python3-looseversion
 Requires:       spacewalk-admin >= 0.1.1-0
 Requires:       spacewalk-certs-tools
 Requires:       susemanager-tools

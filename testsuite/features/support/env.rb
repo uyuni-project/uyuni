@@ -46,8 +46,8 @@ $context = {}
 # Other global variables
 $pxeboot_mac = ENV.fetch('PXEBOOT_MAC', nil)
 $pxeboot_image = ENV.fetch('PXEBOOT_IMAGE', nil) || 'sles15sp3o'
-$sle12sp5_terminal_mac = ENV.fetch('SLE12SP5_TERMINAL_MAC', nil)
-$sle15sp4_terminal_mac = ENV.fetch('SLE15SP4_TERMINAL_MAC', nil)
+$sle15sp6_terminal_mac = ENV.fetch('SLE15SP6_TERMINAL_MAC', nil)
+$sle15sp7_terminal_mac = ENV.fetch('SLE15SP7_TERMINAL_MAC', nil)
 $private_net = ENV.fetch('PRIVATENET', nil) if ENV['PRIVATENET']
 $mirror = ENV.fetch('MIRROR', nil)
 $server_http_proxy = ENV.fetch('SERVER_HTTP_PROXY', nil) if ENV['SERVER_HTTP_PROXY']
@@ -59,6 +59,7 @@ $current_user = 'admin'
 $current_password = 'admin'
 $chromium_dev_tools = ENV.fetch('REMOTE_DEBUG', false)
 $chromium_dev_port = 9222 + ENV['TEST_ENV_NUMBER'].to_i
+$use_salt_bundle = ENV.fetch('USE_SALT_BUNDLE', true)
 
 # maximal wait before giving up
 # the tests return much before that delay in case of success
@@ -571,24 +572,24 @@ Before('@slmicro61_ssh_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['slmicro61_ssh_minion']
 end
 
-Before('@sle12sp5_buildhost') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle12sp5_buildhost']
+Before('@sle15sp6_buildhost') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp6_buildhost']
 end
 
-Before('@sle12sp5_terminal') do
-  skip_this_scenario unless $sle12sp5_terminal_mac
-end
-
-Before('@sle15sp4_buildhost') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp4_buildhost']
+Before('@sle15sp7_buildhost') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp7_buildhost']
 end
 
 Before('@monitoring_server') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['monitoring_server']
 end
 
-Before('@sle15sp4_terminal') do
-  skip_this_scenario unless $sle15sp4_terminal_mac
+Before('@sle15sp6_terminal') do
+  skip_this_scenario unless $sle15sp6_terminal_mac
+end
+
+Before('@sle15sp7_terminal') do
+  skip_this_scenario unless $sle15sp6_terminal_mac
 end
 
 Before('@suse_minion') do |scenario|
@@ -597,13 +598,12 @@ Before('@suse_minion') do |scenario|
   skip_this_scenario unless (filename.include? 'sle') || (filename.include? 'suse')
 end
 
-Before('@sle_micro_minion') do |scenario|
-  skip_this_scenario unless scenario.location.file.include? 'slemicro'
+Before('@transactional_minion') do |scenario|
+  skip_this_scenario unless (scenario.location.file.include? 'slemicro') || (scenario.location.file.include? 'slmicro')
 end
 
-Before('@skip_for_debianlike') do |scenario|
-  filename = scenario.location.file
-  skip_this_scenario if (filename.include? 'ubuntu') || (filename.include? 'debian')
+Before('@skip_for_debian') do |scenario|
+  skip_this_scenario if scenario.location.file.include? 'debian'
 end
 
 Before('@skip_for_rocky9') do |scenario|
@@ -618,18 +618,8 @@ Before('@skip_for_minion') do |scenario|
   skip_this_scenario if scenario.location.file.include? 'minion'
 end
 
-Before('@skip_for_sle_micro') do |scenario|
-  skip_this_scenario if scenario.location.file.include? 'slemicro'
-end
-
-Before('@skip_for_sle_micro_ssh_minion') do |scenario|
-  sle_micro_ssh_nodes = %w[slemicro51_ssh_minion slemicro52_ssh_minion slemicro53_ssh_minion slemicro54_ssh_minion slemicro55_ssh_minion slmicro60_ssh_minion slmicro61_ssh_minion]
-  current_feature_node = scenario.location.file.split(%r{(_smoke_tests.feature|/)})[-2]
-  skip_this_scenario if sle_micro_ssh_nodes.include? current_feature_node
-end
-
-Before('@skip_for_sl_micro') do |scenario|
-  skip_this_scenario if scenario.location.file.include? 'slmicro'
+Before('@skip_for_transactional_minion') do |scenario|
+  skip_this_scenario if scenario.location.file.include?('slemicro') || scenario.location.file.include?('slmicro')
 end
 
 # do some tests only if we have SCC credentials
@@ -659,12 +649,12 @@ end
 
 # do some tests only if we are using salt bundle
 Before('@salt_bundle') do
-  skip_this_scenario unless use_salt_bundle
+  skip_this_scenario unless $use_salt_bundle
 end
 
 # do some tests only if we are using salt bundle
 Before('@skip_if_salt_bundle') do
-  skip_this_scenario if use_salt_bundle
+  skip_this_scenario if $use_salt_bundle
 end
 
 # do test only if HTTP proxy for Uyuni is defined
@@ -742,13 +732,13 @@ end
 # have more infos about the errors
 def print_server_logs
   $stdout.puts '=> /var/log/rhn/rhn_web_ui.log'
-  out, _code = get_target('server').run('tail -n20 /var/log/rhn/rhn_web_ui.log | awk -v limit="$(date --date="5 minutes ago" "+%Y-%m-%d %H:%M:%S")" " $0 > limit"')
+  out, _code = get_target('server').run('tail -n20 /var/log/rhn/rhn_web_ui.log | awk -v limit="$(date --date="5 minutes ago" "+%Y-%m-%d %H:%M:%S")" \'substr($0, 1, 19) > limit\'')
   out.each_line do |line|
     $stdout.puts line.to_s
   end
   $stdout.puts
   $stdout.puts '=> /var/log/rhn/rhn_web_api.log'
-  out, _code = get_target('server').run('tail -n20 /var/log/rhn/rhn_web_api.log | awk -v limit="$(date --date="5 minutes ago" "+%Y-%m-%d %H:%M:%S")" " $0 > limit"')
+  out, _code = get_target('server').run('tail -n20 /var/log/rhn/rhn_web_api.log | awk -v limit="$(date --date="5 minutes ago" "+%Y-%m-%d %H:%M:%S")" \'substr($0, 2, 19) > limit\'')
   out.each_line do |line|
     $stdout.puts line.to_s
   end

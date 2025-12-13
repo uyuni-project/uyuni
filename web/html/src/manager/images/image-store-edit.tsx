@@ -1,10 +1,10 @@
-import * as React from "react";
+import { Component } from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 
 import { Button, SubmitButton } from "components/buttons";
 import { DEPRECATED_Select } from "components/input";
-import { Check } from "components/input/check/Check";
+import { DEPRECATED_Check } from "components/input/check/DEPRECATED_Check";
 import { Form } from "components/input/form/Form";
 import { Password } from "components/input/password/Password";
 import { Text } from "components/input/text/Text";
@@ -14,7 +14,7 @@ import { TopPanel } from "components/panels/TopPanel";
 import { Utils } from "utils/functions";
 import Network from "utils/network";
 
-// See java/code/src/com/suse/manager/webui/templates/content_management/edit-store.jade
+// See java/core/src/main/resources/com/suse/manager/webui/templates/content_management/edit-store.jade
 declare global {
   interface Window {
     storeId?: any;
@@ -30,7 +30,7 @@ const messageMap = {
   // Nothing for now
 };
 
-type Props = {};
+type Props = Record<never, never>;
 
 type State = {
   storeTypes: string[];
@@ -40,7 +40,7 @@ type State = {
   isInvalid?: boolean;
 };
 
-class CreateImageStore extends React.Component<Props, State> {
+class CreateImageStore extends Component<Props, State> {
   defaultModel: any;
 
   constructor(props: Props) {
@@ -68,7 +68,7 @@ class CreateImageStore extends React.Component<Props, State> {
   setValues = (id) => {
     Network.get("/rhn/manager/api/cm/imagestores/" + id).then((res) => {
       if (res.success) {
-        var data = res.data;
+        const data = res.data;
         this.setState({
           model: data,
           initLabel: data.label,
@@ -159,7 +159,7 @@ class CreateImageStore extends React.Component<Props, State> {
     switch (type) {
       case "registry":
         return [
-          <Check
+          <DEPRECATED_Check
             key="useCredentials"
             name="useCredentials"
             label={t("Use credentials")}
@@ -193,12 +193,11 @@ class CreateImageStore extends React.Component<Props, State> {
   }
 
   renderButtons() {
-    var buttons = [
+    const buttons = [
       <Button
         key="clear-btn"
         id="clear-btn"
-        className="btn-default pull-right"
-        icon="fa-eraser"
+        className="btn-default"
         text={t("Clear fields")}
         handler={this.clearFields}
       />,
@@ -209,8 +208,7 @@ class CreateImageStore extends React.Component<Props, State> {
         <SubmitButton
           key="update-btn"
           id="update-btn"
-          className="btn-primary"
-          icon="fa-edit"
+          className="btn-primary me-4"
           text={t("Update")}
           disabled={this.state.isInvalid}
         />
@@ -220,8 +218,7 @@ class CreateImageStore extends React.Component<Props, State> {
         <SubmitButton
           key="create-btn"
           id="create-btn"
-          className="btn-primary"
-          icon="fa-plus"
+          className="btn-primary me-4"
           text={t("Create")}
           disabled={this.state.isInvalid}
         />

@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type RefObject, Component, createRef } from "react";
 
 import { pageSize } from "core/user-preferences";
 
@@ -34,11 +34,11 @@ type State = {
   schedules: any[];
 };
 
-class RecurringActionsList extends React.Component<Props, State> {
-  tableRef: React.RefObject<any>;
+class RecurringActionsList extends Component<Props, State> {
+  tableRef: RefObject<any>;
   constructor(props) {
     super(props);
-    this.tableRef = React.createRef();
+    this.tableRef = createRef();
     this.state = {
       schedules: [],
       itemsToDelete: [],
@@ -67,7 +67,7 @@ class RecurringActionsList extends React.Component<Props, State> {
 
   deleteSchedule = (item, tableRef) => {
     return Network.del("/rhn/manager/api/recurringactions/" + item.recurringActionId + "/delete")
-      .then((_) => {
+      .then(() => {
         this.props.onSetMessages(MessagesUtils.info("Schedule '" + item.scheduleName + "' has been deleted."));
         this.getRecurringScheduleList();
         if (tableRef) {
@@ -80,7 +80,7 @@ class RecurringActionsList extends React.Component<Props, State> {
   toggleActive = (schedule) => {
     Object.assign(schedule, { active: !schedule.active });
     return Network.post("/rhn/manager/api/recurringactions/save", schedule)
-      .then((_) => {
+      .then(() => {
         this.props.onSetMessages(MessagesUtils.info(t("Schedule successfully updated.")));
       })
       .catch(this.props.onError);
@@ -96,12 +96,13 @@ class RecurringActionsList extends React.Component<Props, State> {
     const { isFilteredList } = this.props;
     const disableCreate = !isFilteredList;
     const emptyListText = `No schedules created.${disableCreate ? "" : " Use Create to add a schedule."}`;
+
     const buttons = [
-      <div className="btn-group pull-right">
+      <div className="btn-group pull-right" key="buttons-right">
         <Button
           className="btn-primary"
           icon="fa-plus"
-          text={t("Create")}
+          text={t("Create Recurring Action")}
           title="Schedule a new Recurring Action"
           handler={() => this.props.onActionChanged("create")}
         />
@@ -137,11 +138,11 @@ class RecurringActionsList extends React.Component<Props, State> {
           selectable={false}
           data={isFilteredList ? this.state.schedules : "/rhn/manager/api/recurringactions"}
           identifier={(action) => action.recurringActionId}
-          /* Using 0 to hide table header/footer */
           initialItemsPerPage={disableCreate ? pageSize : 0}
           emptyText={t(emptyListText)}
           searchField={<RecurringActionsSearch />}
           ref={this.tableRef}
+          hideHeaderFooter="header"
         >
           <Column
             columnKey="active"
@@ -156,8 +157,6 @@ class RecurringActionsList extends React.Component<Props, State> {
             )}
           />
           <Column
-            columnClass="text-center"
-            headerClass="text-center"
             columnKey={isFilteredList ? "scheduleName" : "schedule_name"}
             comparator={Utils.sortByText}
             header={t("Schedule Name")}
@@ -195,8 +194,9 @@ class RecurringActionsList extends React.Component<Props, State> {
             cell={(row) => row.actionTypeDescription}
           />
           <Column
-            columnClass="text-right"
-            headerClass="text-right"
+            columnKey="Actions"
+            columnClass="text-center"
+            headerClass="text-center"
             header={t("Actions")}
             cell={(row) => (
               <div className="btn-group">

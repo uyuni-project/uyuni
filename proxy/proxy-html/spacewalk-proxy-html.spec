@@ -24,13 +24,14 @@
 %endif
 
 Name:           spacewalk-proxy-html
-Version:        5.2.0
+Version:        5.2.1
 Release:        0
 Summary:        The HTML component for Spacewalk Proxy
 License:        GPL-2.0-only
 # FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
 URL:            https://github.com/uyuni-project/uyuni
+#!CreateArchive: %{name}
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 Requires:       httpd
 Obsoletes:      rhns-proxy-html < 5.3.0

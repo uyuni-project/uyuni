@@ -30,29 +30,24 @@ Feature: Synchronize product channels
 
 @scc_credentials
 @susemanager
-  Scenario: Reposync of SLES 15 SP4 channels has finished
-    When I wait until the channel "sle-module-basesystem15-sp4-updates-x86_64" has been synced
-    And I wait until the channel "sle-module-server-applications15-sp4-updates-x86_64" has been synced
-    And I wait until the channel "sle-module-desktop-applications15-sp4-updates-x86_64" has been synced
-    And I wait until the channel "sle-module-devtools15-sp4-updates-x86_64" has been synced
-    And I wait until the channel "sle-module-containers15-sp4-pool-x86_64" has been synced
+  Scenario: Reposync of SLES 15 SP7 channels has finished
+    When I wait until the channel "sle-module-basesystem15-sp7-updates-x86_64" has been synced
+    And I wait until the channel "sle-module-server-applications15-sp7-updates-x86_64" has been synced
+    And I wait until the channel "sle-module-desktop-applications15-sp7-updates-x86_64" has been synced
+    And I wait until the channel "sle-module-devtools15-sp7-updates-x86_64" has been synced
+    And I wait until the channel "sle-module-containers15-sp7-pool-x86_64" has been synced
 
 @uyuni
-  Scenario: Reposync of openSUSE Leap 15.6 channels has finished
-    When I wait until the channel "opensuse_leap15_6-x86_64" has been synced
-    And I wait until the channel "opensuse_leap15_6-non-oss-x86_64" has been synced
-    And I wait until the channel "opensuse_leap15_6-non-oss-updates-x86_64" has been synced
-    And I wait until the channel "opensuse_leap15_6-updates-x86_64" has been synced
-    And I wait until the channel "opensuse_leap15_6-backports-updates-x86_64" has been synced
-    And I wait until the channel "opensuse_leap15_6-sle-updates-x86_64" has been synced
-    And I wait until the channel "opensuse_leap15_6-uyuni-client-devel-x86_64" has been synced
-    And I wait until the channel "uyuni-proxy-devel-leap-x86_64" has been synced
+  Scenario: Reposync of openSUSE Tumbleweed channels has finished
+    When I wait until the channel "opensuse_tumbleweed-x86_64" has been synced
+    And I wait until the channel "opensuse_tumbleweed-uyuni-client-devel-x86_64" has been synced
+    And I wait until the channel "uyuni-proxy-devel-tumbleweed-x86_64" has been synced
 
 @scc_credentials
 @susemanager
   Scenario: Reposync of client tools has finished
-    When I wait until the channel "sle-manager-tools15-pool-x86_64-sp4" has been synced
-    And I wait until the channel "sle-manager-tools15-updates-x86_64-sp4" has been synced
+    When I wait until the channel "sle-manager-tools15-pool-x86_64-sp7" has been synced
+    And I wait until the channel "sle-manager-tools15-updates-x86_64-sp7" has been synced
     And I wait until the channel "res8-manager-tools-updates-x86_64-rocky" has been synced
     And I wait until the channel "res8-manager-tools-pool-x86_64-rocky" has been synced
     And I wait until the channel "ubuntu-2404-suse-manager-tools-amd64" has been synced
@@ -61,11 +56,11 @@ Feature: Synchronize product channels
 @scc_credentials
 @susemanager
   Scenario: Reposync of beta client tools has finished
-    When I wait until the channel "sle-manager-tools15-beta-pool-x86_64-sp4" has been synced
-    And I wait until the channel "sle-manager-tools15-beta-updates-x86_64-sp4" has been synced
+    When I wait until the channel "sle-manager-tools15-beta-pool-x86_64-sp7" has been synced
+    And I wait until the channel "sle-manager-tools15-beta-updates-x86_64-sp7" has been synced
 
 @uyuni
   Scenario: Reposync of Uyuni client tools has finished
-    When I wait until the channel "opensuse_leap15_6-uyuni-client-x86_64" has been synced
+    When I wait until the channel "opensuse_tumbleweed-uyuni-client-devel-x86_64" has been synced
     And I wait until the channel "rockylinux8-uyuni-client-x86_64" has been synced
     And I wait until the channel "ubuntu-2404-amd64-uyuni-client" has been synced

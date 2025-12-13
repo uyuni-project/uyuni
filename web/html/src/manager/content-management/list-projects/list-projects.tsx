@@ -1,6 +1,3 @@
-import { hot } from "react-hot-loader/root";
-
-import * as React from "react";
 import { useEffect } from "react";
 
 import _truncate from "lodash/truncate";
@@ -22,17 +19,17 @@ import { Utils } from "utils/functions";
 
 type ContentProjectOverviewType = {
   properties: {
-    label: String;
-    name: String;
-    description: String;
+    label: string;
+    name: string;
+    description: string;
     lastBuildDate: moment.Moment;
   };
-  environments: Array<String>;
-  needRebuild: Boolean;
+  environments: string[];
+  needRebuild: boolean;
 };
 
 type Props = {
-  projects: Array<ContentProjectOverviewType>;
+  projects: ContentProjectOverviewType[];
   flashMessage?: ServerMessageType;
 };
 
@@ -126,4 +123,4 @@ const ListProjects = (props: Props) => {
   );
 };
 
-export default hot(withPageWrapper(ListProjects));
+export default withPageWrapper(ListProjects);

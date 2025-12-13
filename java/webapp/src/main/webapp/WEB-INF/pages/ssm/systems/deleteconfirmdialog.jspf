@@ -1,0 +1,52 @@
+<%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
+<%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
+<c:choose>
+    <c:when test="${saltMinionsPresent}">
+        <div class="modal text-left" role="dialog" aria-labelledby="addPinPopUpLabel" id="confirmDeleteDialog">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="fa fa-close"></i></span>
+                  </button>
+                  <h4 class="modal-title"><bean:message key="ssm.delete.systems.header" /></h4>
+                </div>
+                <div class="modal-body">
+                    <p><bean:message key="ssm.delete.systems.salt.cleanup"/></p>
+                    <p><bean:message key="ssm.delete.systems.salt.cleanup.type"/>
+                    <select id="saltCleanup" name="saltCleanup" class="form-control">
+                        <option value="FORCE_DELETE" selected><bean:message key="ssm.delete.systems.salt.cleanup.force_delete"/></option>
+                        <option value="NO_CLEANUP"><bean:message key="ssm.delete.systems.salt.cleanup.no_cleanup"/></option>
+                        <option value="FAIL_ON_CLEANUP_ERR"><bean:message key="ssm.delete.systems.salt.cleanup.skip_on_err"/></option>
+                    </select>
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button id="btn-dispatch-dialog" class="btn btn-danger" type="submit" name="dispatch"
+                        value="${rhn:localize('ssm.delete.systems.confirmbutton')}">
+                        ${rhn:localize('ssm.delete.systems.confirmbutton')}
+                    </button>
+                    <button id="btn-cancel-dialog" class="btn btn-default" type="button" onclick="jQuery('#confirmDeleteDialog').modal('hide')">
+                        <bean:message key="ssm.delete.systems.cancel"/>
+                    </button>
+                </div>
+              </div>
+            </div>
+        </div>
+
+        <div class="spacewalk-section-toolbar">
+            <div class="action-button-wrapper">
+                <button class="btn btn-danger" type="button" data-bs-toggle="modal"
+                        data-bs-target="#confirmDeleteDialog">${rhn:localize('ssm.delete.systems.confirmbutton')}</button>
+            </div>
+        </div>
+    </c:when>
+    <c:otherwise>
+        <input type="hidden" name="saltCleanup" value="FORCE_DELETE"/>
+        <html:submit styleClass="btn btn-danger" property="dispatch">
+            <bean:message key="ssm.delete.systems.confirmbutton"/>
+        </html:submit>
+    </c:otherwise>
+</c:choose>

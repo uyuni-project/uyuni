@@ -1,11 +1,26 @@
-import * as React from "react";
-import { forwardRef, useImperativeHandle } from "react";
+import {
+  type ComponentProps,
+  type ReactComponentElement,
+  type ReactElement,
+  type ReactNode,
+  Children,
+  cloneElement,
+  forwardRef,
+  Fragment,
+  useImperativeHandle,
+  useRef,
+} from "react";
 
 import { Button } from "components/buttons";
+
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
 import { Column } from "./Column";
 import { SearchField } from "./SearchField";
 import { TableDataHandler } from "./TableDataHandler";
+import { useExpanded } from "./useExpanded";
+
+type ArrayElement<A> = A extends readonly (infer T)[] ? T : never;
 
 type TableProps = {
   /**
@@ -22,7 +37,7 @@ type TableProps = {
    *
    * See: utils/data-providers/paged-data-endpoint.js for async usage
    */
-  data: Array<any> | string;
+  data: any[] | string;
 
   /** Function extracting the unique key of the row from the data object */
   identifier: (row: any) => any;
@@ -34,28 +49,37 @@ type TableProps = {
   initialSortDirection?: number;
 
   /** a function that return a css class for each row */
-  cssClassFunction?: Function;
+  cssClassFunction?: (...args: any[]) => any;
+
+  /** Callback for search input, setting `onSearch` sets `searchField` to a simple search input if none is provided */
+  onSearch?: (criteria: string) => void;
 
   /** the React Object that contains the filter search field */
-  searchField?: React.ReactComponentElement<typeof SearchField>;
+  searchField?: ReactComponentElement<typeof SearchField>;
 
   /** the initial number of how many row-per-page to show */
   initialItemsPerPage?: number;
+
+  /** Hide header and footer */
+  hideHeaderFooter?: "header" | "footer" | "both";
 
   /** enables item selection. */
   selectable?: boolean | ((row: any) => boolean);
 
   /** the handler to call when the table selection is updated. If not provided, the select boxes won't be rendered */
-  onSelect?: (items: Array<any>) => void;
+  onSelect?: (items: any[]) => void;
 
   /** the identifiers for selected items */
-  selectedItems?: Array<any>;
+  selectedItems?: any[];
 
   /** Allow items to be deleted or allow rows to be deleted on a case-by-case basis */
   deletable?: boolean | ((row: any) => boolean);
 
   /** The handler to call when an item is deleted. */
   onDelete?: (row: any) => void;
+
+  /** Allow expanding table rows to reveal data held in the field `children` */
+  expandable?: boolean;
 
   /** The message which is shown when there are no rows to display */
   emptyText?: string;
@@ -66,11 +90,13 @@ type TableProps = {
   /** The message which is shown when the data is loading */
   loadingText?: string;
 
+  onLoad?: () => void;
+
   /** Children node in the table */
-  children: React.ReactNode;
+  children: ReactNode;
 
   /** Other filter fields */
-  additionalFilters?: Array<React.ReactNode>;
+  additionalFilters?: ReactNode[];
 
   /** Default search field */
   defaultSearchField?: string;
@@ -79,10 +105,10 @@ type TableProps = {
   initialSearch?: string;
 
   /** Title buttons to add next to the items per page selection */
-  titleButtons?: Array<React.ReactNode>;
+  titleButtons?: ReactNode[];
 };
 
-function isColumn(input: any): input is React.ReactElement<React.ComponentProps<typeof Column>> {
+function isColumn(input: any): input is ReactElement<ComponentProps<typeof Column>> {
   return input?.type === Column || input?.type?.displayName === "Column";
 }
 
@@ -92,10 +118,10 @@ export type TableRef = {
 
 export const Table = forwardRef<TableRef, TableProps>((props, ref) => {
   const { ...allProps } = props;
-  const columns = React.Children.toArray(props.children)
-    .filter(isColumn)
-    .map((child) => React.cloneElement(child));
-  const dataHandlerRef = React.useRef<TableDataHandler>(null);
+  const columns = Children.toArray(props.children).filter(isColumn);
+  const dataHandlerRef = useRef<TableDataHandler>(null);
+
+  const expanded = useExpanded();
 
   useImperativeHandle(ref, () => ({
     refresh: () => {
@@ -105,76 +131,114 @@ export const Table = forwardRef<TableRef, TableProps>((props, ref) => {
 
   return (
     <TableDataHandler ref={dataHandlerRef} columns={columns} {...allProps}>
-      {({ currItems, headers, handleSelect, selectable, selectedItems, deletable, criteria }) => {
-        const selectableValue = selectable == null ? false : selectable;
-        const rows = currItems.map((datum, index) => {
-          const cells: React.ReactNode[] = React.Children.toArray(props.children)
+      {({ currItems, headers, handleSelect, selectedItems, criteria }) => {
+        const selectableValue = DEPRECATED_unsafeEquals(props.selectable, null) ? false : props.selectable;
+
+        const renderRow = (item: ArrayElement<typeof currItems>, index: number, nestingLevel: number) => {
+          const cells: ReactNode[] = Children.toArray(props.children)
             .filter(isColumn)
-            .map((column) => React.cloneElement(column, { data: datum, criteria: criteria }));
+            .map((column, index) =>
+              cloneElement(column, {
+                key: column.props.columnKey,
+                data: item,
+                criteria: criteria,
+                columnClass: `${index === 0 ? `nesting-${nestingLevel}` : ""} ${column.props.columnClass ?? ""}`,
+                nestingLevel,
+              })
+            );
 
           const isSelectable = typeof selectableValue === "boolean" ? () => selectableValue : selectableValue;
-          if (selectableValue && isSelectable(datum)) {
+          if (selectableValue && isSelectable(item)) {
             const checkbox = (
               <Column
                 key="check"
+                columnKey="check"
                 cell={
                   <input
                     type="checkbox"
-                    checked={selectedItems.includes(props.identifier(datum))}
-                    onChange={(e) => handleSelect(props.identifier(datum), e.target.checked)}
+                    checked={selectedItems.includes(props.identifier(item))}
+                    onChange={(e) => handleSelect(props.identifier(item), e.target.checked)}
                   />
                 }
               />
             );
             cells.unshift(checkbox);
-          } else if (selectableValue && !isSelectable(datum)) {
-            const checkbox = <Column key="check" cell={<input type="checkbox" disabled checked={false} />} />;
+          } else if (selectableValue && !isSelectable(item)) {
+            const checkbox = <Column columnKey="check" cell={<input type="checkbox" disabled checked={false} />} />;
             cells.unshift(checkbox);
           }
 
-          if (deletable) {
+          if (props.expandable) {
+            const toggle = (
+              <Column
+                key="expandable"
+                columnKey="expandable"
+                onClick={() => expanded.toggle(props.identifier(item))}
+                cell={() => {
+                  const hasChildren = "children" in item && item.children.length > 0;
+                  const isExpanded = expanded.has(props.identifier(item));
+                  return (
+                    <i
+                      className={`expand-icon fa ${isExpanded ? "fa-chevron-down" : "fa-chevron-right"} ${
+                        hasChildren ? "visible" : "invisible"
+                      }`}
+                    />
+                  );
+                }}
+              />
+            );
+            cells.unshift(toggle);
+          }
+
+          if (props.deletable) {
             const deleteButton = (
               <Button
                 className="btn-default btn-sm"
                 title={t("Delete")}
                 icon="fa-trash"
                 handler={() => {
-                  props.onDelete?.(datum);
+                  props.onDelete?.(item);
                 }}
               />
             );
             const column = (
               <Column
                 key="delete"
+                columnKey="delete"
                 cell={(row) => {
-                  if (typeof deletable === "function") {
-                    return deletable(row) ? deleteButton : null;
+                  if (typeof props.deletable === "function") {
+                    return props.deletable(row) ? deleteButton : null;
                   }
                   return deleteButton;
                 }}
-                data={datum}
+                data={item}
                 criteria={criteria}
               />
             );
             cells.push(column);
           }
 
-          const rowClass = props.cssClassFunction ? props.cssClassFunction(datum, index) : "";
-          const evenOddClass = index % 2 === 0 ? "list-row-odd" : "list-row-even";
-          let key = props.identifier(datum);
+          const rowClass = props.cssClassFunction ? props.cssClassFunction(item, index) : "";
+          let key = props.identifier(item);
           if (typeof key === "undefined") {
             Loggerhead.error(`Could not identify table row with identifier: ${props.identifier}`);
             key = index;
           }
           return (
-            <tr className={rowClass + " " + evenOddClass} key={key}>
-              {cells}
-            </tr>
+            <Fragment key={key}>
+              <tr className={rowClass}>{cells}</tr>
+              {props.expandable &&
+                "children" in item &&
+                expanded.has(props.identifier(item)) &&
+                item.children.map((childItem, childIndex) => renderRow(childItem, childIndex, nestingLevel + 1))}
+            </Fragment>
           );
-        });
+        };
+
+        const rows = currItems.map((item, index) => renderRow(item, index, 0));
 
         return (
-          <table className="table table-striped vertical-middle">
+          <table className="table vertical-middle">
             <thead>
               <tr>{headers}</tr>
             </thead>

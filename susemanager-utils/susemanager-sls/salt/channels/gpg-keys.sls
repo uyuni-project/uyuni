@@ -37,6 +37,31 @@ mgr_deploy_suse_addon_key:
     - makedirs: True
     - mode: 644
 
+{%- if salt['cp.list_master'](prefix='gpg/suse16-gpg-pubkey-09d9ea69.key') and grains['os_family'] == 'Suse' %}
+mgr_deploy_suse16_gpg_key:
+  file.managed:
+    - name: /etc/pki/rpm-gpg/suse16-gpg-pubkey-09d9ea69.key
+    - source: salt://gpg/suse16-gpg-pubkey-09d9ea69.key
+    - makedirs: True
+    - mode: 644
+{%- endif %}
+
+{%- if grains['os_family'] == 'Suse' and grains.get('osarch').startswith('ppc') %}
+mgr_deploy_ibm_gpg_toolchain_key:
+  file.managed:
+    - name: /etc/pki/rpm-gpg/ibm-gpg-pubkey-6976a827.key
+    - source: salt://gpg/ibm-gpg-pubkey-6976a827.key
+    - makedirs: True
+    - mode: 644
+
+mgr_deploy_ibm_gpg_power_key:
+  file.managed:
+    - name: /etc/pki/rpm-gpg/ibm-gpg-pubkey-3e6e42be.key
+    - source: salt://gpg/ibm-gpg-pubkey-3e6e42be.key
+    - makedirs: True
+    - mode: 644
+{%- endif %}
+
 {%- if grains['os_family'] == 'RedHat' %}
 {# deploy all keys to the clients. If they get imported dependes on the used channels #}
 

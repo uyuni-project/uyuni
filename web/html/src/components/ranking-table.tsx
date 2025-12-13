@@ -1,10 +1,10 @@
-import * as React from "react";
+import { Component } from "react";
 
 import _cloneDeep from "lodash/cloneDeep";
 
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
-type Instance = JQuery & {};
+type Instance = JQuery;
 type Sortable = <T>(arg0: T, options?: any) => T extends string ? string[] : Instance;
 
 declare global {
@@ -27,7 +27,7 @@ function channelIcon(channel) {
     iconTitle = t("Normal Configuration Channel");
   }
 
-  return <i className={iconClass} title={iconTitle} style={iconStyle} />;
+  return <i data-bs-toggle="tooltip" className={iconClass} title={iconTitle} style={iconStyle} />;
 }
 
 type RankingTableProps = {
@@ -40,7 +40,7 @@ type RankingTableState = {
   items: any[];
 };
 
-class RankingTable extends React.Component<RankingTableProps, RankingTableState> {
+class RankingTable extends Component<RankingTableProps, RankingTableState> {
   defaultEmptyMsg = t("There are no entries to show.");
   node: Element | null = null;
 
@@ -86,7 +86,7 @@ class RankingTable extends React.Component<RankingTableProps, RankingTableState>
 
     jQuery(this.node).sortable({
       update: this.handleUpdate.bind(this),
-      items: "a",
+      items: ".list-group-item",
     });
 
     this.handleUpdate();
@@ -97,20 +97,19 @@ class RankingTable extends React.Component<RankingTableProps, RankingTableState>
       DEPRECATED_unsafeEquals(a.position, undefined)
         ? 1
         : DEPRECATED_unsafeEquals(b.position, undefined)
-        ? -1
-        : a.position - b.position
+          ? -1
+          : a.position - b.position
     );
 
     return sortedItems.map((i) => {
       // TODO: Provide a callback as prop for optional mapping and generify this default implementation
       const icon = channelIcon(i);
       return (
-        // eslint-disable-next-line jsx-a11y/anchor-is-valid
-        <a href="#" className="list-group-item" key={i.label} data-id={i.label}>
+        <div className="list-group-item" key={i.label} data-id={i.label}>
           <i className="fa fa-sort" />
           {icon}
           {i.name} ({i.label})
-        </a>
+        </div>
       );
     });
   }

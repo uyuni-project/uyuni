@@ -1,5 +1,3 @@
-import * as React from "react";
-
 import { DangerDialog } from "./LegacyDangerDialog";
 import { DialogProps } from "./LegacyDialog";
 
@@ -27,7 +25,6 @@ export function DeleteDialog(props: DeleteDialogProps) {
       onConfirm={props.onConfirm}
       onConfirmAsync={props.onConfirmAsync}
       submitText={t("Delete")}
-      submitIcon="fa-trash"
     />
   );
 }

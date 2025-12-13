@@ -1,5 +1,5 @@
 {
-  "typescript.tsdk": "${workspaceFolder}/web/html/src/node_modules/typescript/lib",
+  "typescript.tsdk": "${workspaceFolder}/web/node_modules/typescript/lib",
   "[javascript][javascriptreact][typescript][typescriptreact][json][jsonc][css][less][scss][html]": {
     "editor.tabSize": 2,
     "files.insertFinalNewline": true,
@@ -25,7 +25,24 @@
       "-Dlog4j2.configurationFile=${workspaceFolder}/java/buildconf/test/log4j2.properties"
     ]
   },
+  "java.project.referencedLibraries": [
+    "java/lib/*.jar", "java/buildconf/ivy/repository/suse/*jar"
+  ],
+  "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+  "editor.formatOnSave": true,
+  "ant.home": "/usr/share/ant",
+  "ant.executable": "/usr/bin/ant",
+  "ant.buildFilenames": "java/manager-build.xml",
   "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx8G -Xms2G -Xlog:disable",
+
+  "java.configuration.runtimes": [
+    {
+      "name": "JavaSE-17",
+      "path": "/usr/lib64/jvm/java-17-openjdk",
+      "default": true
+    },
+  ],
+
   "java.checkstyle.configuration": "${workspaceFolder}/java/buildconf/checkstyle.xml",
   "java.checkstyle.properties": {
     "checkstyle.cache.file": "${workspaceFolder}/java/build/checkstyle.cache.src",
@@ -35,5 +52,10 @@
     "javadoc.method.scope": "public",
     "javadoc.type.scope": "package",
     "javadoc.var.scope": "package"
-  }
+  },
+  
+	"vscode-postgres.virtualFolders": [
+    "functions"
+  ],
+  "prettier.configPath": "web/.prettierrc"
 }

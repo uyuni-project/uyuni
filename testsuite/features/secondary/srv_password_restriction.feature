@@ -45,7 +45,7 @@ Feature: Password Policy Management
     And I should see a "Password Policy Changed" text
 
   Scenario Outline: Reject invalid passwords based on policy enforcement
-    When I attempt to create a user with username "password_policy_user" and password "<password>"
+    When I create a user with name "password_policy_user" and password "<password>" with roles "config_admin,system_group_admin,activation_key_admin,image_admin"
     Then the user creation should fail with error containing "<error_message>"
 
     Examples:
@@ -61,7 +61,7 @@ Feature: Password Policy Management
       | aBcdef$123456 | Passwords cannot be more than 12 characters                                                |
 
   Scenario: Accept valid password complying with policy
-    When I attempt to create a user with username "password_policy_user" and password "aB$123"
+    When I create a user with name "password_policy_user" and password "aB$123" with roles "config_admin,system_group_admin,activation_key_admin,image_admin"
     Then the user creation should succeed
 
   Scenario: Reset password policy to default settings

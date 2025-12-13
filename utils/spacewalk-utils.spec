@@ -20,12 +20,13 @@
 %{!?productprettyname: %global productprettyname Uyuni}
 
 Name:           spacewalk-utils
-Version:        5.2.0
+Version:        5.2.2
 Release:        0
 Summary:        Utilities that may be run against a %{productprettyname} server
 License:        GPL-2.0-only AND GPL-3.0-or-later
 Group:          Productivity/Other
 URL:            https://github.com/uyuni-project/uyuni
+#!CreateArchive: %{name}
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 BuildRequires:  docbook-utils
 BuildRequires:  fdupes

@@ -29,19 +29,20 @@
 %global default_py3 1
 %endif
 
-%if !( 0%{?rhel} >= 8 || 0%{?sle_version} >= 150000 )
+%if !( 0%{?rhel} >= 8 || 0%{?suse_version} >= 1500 )
 %global build_py2   1
 %endif
 
 %define pythonX %{?default_py3: python3}%{!?default_py3: python2}
 Name:           mgr-push
-Version:        5.2.0
+Version:        5.2.1
 Release:        0
 Summary:        Package uploader for %{productprettyname}
 License:        GPL-2.0-only
 # FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/System
 URL:            https://github.com/uyuni-project/uyuni
+#!CreateArchive: %{name}
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}-0.tar.gz
 Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-0/client/tools/mgr-push/%{name}-rpmlintrc
 BuildRequires:  docbook-utils

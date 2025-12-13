@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Fragment } from "react";
 
 import { isOrgAdmin } from "core/auth/auth.utils";
 import useRoles from "core/auth/use-roles";
@@ -19,9 +19,9 @@ type Props = {
   projectId: string;
   properties: ProjectPropertiesType;
   showDraftVersion: boolean;
-  onChange: Function;
+  onChange: (...args: any[]) => any;
   currentHistoryEntry?: ProjectHistoryEntry;
-  messages?: Array<ProjectMessageType>;
+  messages?: ProjectMessageType[];
 };
 
 const PropertiesEdit = (props: Props) => {
@@ -39,7 +39,7 @@ const PropertiesEdit = (props: Props) => {
 
   const messages = getRenderedMessages(props.messages || []);
 
-  let propertiesToShow = produce(props.properties, (draftProperties) => {
+  const propertiesToShow = produce(props.properties, (draftProperties) => {
     if (props.showDraftVersion) {
       draftProperties.historyEntries.unshift(defaultDraftHistory);
     }
@@ -75,12 +75,12 @@ const PropertiesEdit = (props: Props) => {
       }}
       onCancel={() => cancelAction()}
       renderContent={() => (
-        <React.Fragment>
+        <Fragment>
           {messages.messages}
           <PropertiesView properties={propertiesToShow} />
-        </React.Fragment>
+        </Fragment>
       )}
-      renderCreationContent={({ open, item, setItem, errors }) => {
+      renderCreationContent={({ item, setItem, errors }) => {
         if (isLoading) {
           return <Loading text={t("Editing properties..")} />;
         }

@@ -13,46 +13,61 @@ build_number = ENV.fetch('BUILD_NUMBER', nil)
 result_folder = build_number.nil? ? 'results' : "results/#{build_number}"
 
 namespace :cucumber do
+  # Define the timestamp before the loop starts.
+  timestamp = Time.now.strftime('%Y%m%d%H%M%S')
+  node_name = ENV.fetch('NODE', nil)
+  node_result_extension = node_name.nil? ? '' : "_#{node_name}"
   # Create results folder
   sh "mkdir -p #{result_folder}", verbose: false
   Dir.glob(File.join(Dir.pwd, 'run_sets', '**', '*.yml')).each do |entry|
-    Cucumber::Rake::Task.new(File.basename(entry, '.yml').to_sym) do |t|
-      features = YAML.safe_load(File.read(entry))
-      fail "Skipping rake task for #{entry}, the YAML file is empty." if features.nil? || features.empty? # rubocop:disable Style/SignalException
-
-      filename = File.basename(entry, '.yml').to_sym
-      timestamp = Time.now.strftime('%Y%m%d%H%M%S')
-      node_name = ENV.fetch('NODE', nil)
-      node_result_extension = node_name.nil? ? '' : "_#{node_name}"
-      json_results = "-f json -o #{result_folder}/output#{node_result_extension}_#{timestamp}-#{filename}.json"
-      html_results = "-f html -o #{result_folder}/output#{node_result_extension}_#{timestamp}-#{filename}.html"
-      profiles = ENV.fetch('PROFILE', nil)
+    features = YAML.safe_load(File.read(entry))
+    fail "Skipping rake task for #{entry}, the YAML file is empty." if features.nil? || features.empty?
+    filename = File.basename(entry, '.yml').to_sym
+    task_name = "cucumber:#{filename}"
+    html_results = "#{result_folder}/output#{node_result_extension}_#{timestamp}-#{filename}.html"
+    # Declare file export path to match the html report
+    path_export_file = "#{result_folder}/#{filename}_html_path.txt"
+    html_option = "-f html -o #{html_results}"
+    # Define the Cucumber Task
+    Cucumber::Rake::Task.new(filename) do |t|
       # Our profiles include a --tags keyword in all of them, if we have multiple profiles in the list
       # it will act as an intersection of tags, not as an union of them.
+      profiles = ENV.fetch('PROFILE', nil)
       include_profiles = profiles.nil? ? '--profile default' : "--profile #{profiles.gsub(',', ' --profile ')}"
-      tags = ENV.fetch('TAGS', nil)
       # We provide the list of tags including the '@', so if necessary we can provide a negative tag '~@' on this list.
       # We generate the tags list as an union of tags (using 'or' between them),
       # not as an intersection of them (using 'and')
+      tags = ENV.fetch('TAGS', nil)
       include_tags = tags.nil? ? [] : ['--tags', tags]
-      cucumber_opts = %W[#{include_profiles} #{html_results} #{json_results} #{junit_results}] + %w[-f pretty -r features] + include_tags
-      # Publish the results in reports.cucumber.io if the environment variable PUBLISH_CUCUMBER_REPORT is set
+      json_results = "-f json -o #{result_folder}/output#{node_result_extension}_#{timestamp}-#{filename}.json"
+      cucumber_opts = %W[#{include_profiles} #{html_option} #{json_results} #{junit_results}] + %w[-f pretty -r features] + include_tags
       cucumber_opts << ' --publish' if ENV['PUBLISH_CUCUMBER_REPORT'] == 'true'
-      # Immediately fail a feature if a scenario on it fails
       cucumber_opts << ' --fail-fast' if filename.to_s.include?('core') || filename.to_s.include?('build_validation_init')
+      # Cucumber is now configured to use the consistent path/timestamp
       t.cucumber_opts = cucumber_opts + features unless features.nil?
+    end
+    # This block executes when the task runs and uses the exact same `html_results` path.
+    # This file is used to expose the cucumber html report in Jenkins
+    Rake::Task[task_name].enhance do
+      # Write the final HTML path (without the option flag) to the file
+      # This uses the CONSISTENT, PRE-CALCULATED 'html_results' variable
+      sh "echo '#{html_results}' > #{path_export_file}", verbose: false
     end
   end
 end
 
 namespace :parallel do
+  junit_results = '-f junit -o results_junit'
+  build_number = ENV.fetch('BUILD_NUMBER', nil)
+  result_folder = build_number.nil? ? 'results' : "results/#{build_number}"
+  sh "mkdir -p #{result_folder}", verbose: false
   Dir.glob(File.join(Dir.pwd, 'run_sets', '*.yml')).each do |entry|
     run_set = File.basename(entry, '.yml').to_sym
     desc "Run Cucumber #{run_set} features in parallel"
     task run_set.to_s do
       timestamp = Time.now.strftime('%Y%m%d%H%M%S')
-      json_results = "-f json -o output_#{timestamp}-#{run_set}-$TEST_ENV_NUMBER.json"
-      html_results = "-f html -o output_#{timestamp}-#{run_set}-$TEST_ENV_NUMBER.html"
+      json_results = "-f json -o #{result_folder}/output_#{timestamp}-#{run_set}-$TEST_ENV_NUMBER.json"
+      html_results = "-f html -o #{result_folder}/output_#{timestamp}-#{run_set}-$TEST_ENV_NUMBER.html"
       features = YAML.safe_load(File.read(File.join(Dir.pwd, 'run_sets', "#{run_set}.yml"))).join(' ')
       profiles = ENV.fetch('PROFILE', nil)
       include_profiles = profiles.nil? ? '--profile default' : "--profile #{profiles.gsub(',', ' --profile ')}"
@@ -220,7 +235,7 @@ namespace :utils do
     sh 'rm -rf ./cucumber_report && mkdir cucumber_report', verbose: false
     sh "timeout 180 bash -c -- \"while find #{result_folder}/output*.json -type f -size 0 | grep json; do sleep 10;done\" ; exit 0", verbose: false
     sh 'find . -size 0 -delete', verbose: false
-    sh "node index.js #{result_folder} &> cucumber_reporter.log", verbose: false
+    sh "node index.cjs #{result_folder} &> cucumber_reporter.log", verbose: false
     sh "cp cucumber_report/cucumber_report.html #{result_folder}"
   end
 

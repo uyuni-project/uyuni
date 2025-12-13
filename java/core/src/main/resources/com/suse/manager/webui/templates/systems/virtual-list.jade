@@ -1,0 +1,18 @@
+include ../common.jade
+#systems-virtual-list
+
+script(type='text/javascript').
+    window.csrfToken = "#{csrf_token}";
+
+script(type='text/javascript').
+    spaImportReactPage('systems/list/virtual')
+        .then(function(module) {
+            module.renderer(
+                'systems-virtual-list', '#{docsLocale}',
+                {
+                    isAdmin: #{is_admin},
+                    queryColumn: "#{queryColumn}",
+                    query: "#{query}"
+                }
+            )
+        });

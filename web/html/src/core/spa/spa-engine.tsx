@@ -1,14 +1,12 @@
 import "senna/build/senna.css";
 import "./spa-engine.css";
 
-import * as React from "react";
-
 import App, { HtmlScreen } from "senna";
 
 import SpaRenderer from "core/spa/spa-renderer";
 
+import { Button } from "components/buttons";
 import { showErrorToastr } from "components/toastr";
-
 function isLoginPage(pathName) {
   const allLoginPossiblePaths = ["/", "/rhn/manager/login"];
   return allLoginPossiblePaths.some((loginPath) => loginPath === pathName);
@@ -18,8 +16,8 @@ window.pageRenderers = window.pageRenderers || {};
 window.pageRenderers.spaengine = window.pageRenderers.spaengine || {};
 
 // Navigation hook for standalone renderers to detect navigation
-const onSpaEndNavigationCallbacks: Function[] = [];
-window.pageRenderers.spaengine.onSpaEndNavigation = function onSpaEndNavigation(callback: Function) {
+const onSpaEndNavigationCallbacks: ((...args: any[]) => any)[] = [];
+window.pageRenderers.spaengine.onSpaEndNavigation = function onSpaEndNavigation(callback: (...args: any[]) => any) {
   if (onSpaEndNavigationCallbacks.indexOf(callback) === -1) {
     onSpaEndNavigationCallbacks.push(callback);
   }
@@ -32,13 +30,13 @@ window.pageRenderers.spaengine.init = function init(timeout?: number) {
   // We need this until the login page refactor using a different layout template is completed
   if (!isLoginPage(window.location.pathname)) {
     const appInstance = new App();
-    // appInstance.setLinkSelector("a.js-spa");
     appInstance.setFormSelector("form.js-spa");
 
     appInstance.addSurfaces(["left-menu-data", "ssm-box", "page-body"]);
     appInstance.addRoutes([
       {
         path: /.*/,
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         handler: function (route, a, b) {
           const screen = new HtmlScreen();
 
@@ -47,7 +45,7 @@ window.pageRenderers.spaengine.init = function init(timeout?: number) {
           //workaround for posts until https://github.com/liferay/senna.js/pull/311/files is merged
           screen.setHttpHeaders({
             ...screen.getHttpHeaders(),
-            ...{ "Content-type": "application/x-www-form-urlencoded" },
+            "Content-type": "application/x-www-form-urlencoded",
           });
           screen.getFormData = function (form, submitedButton) {
             let body = jQuery(form).serialize();
@@ -78,7 +76,7 @@ window.pageRenderers.spaengine.init = function init(timeout?: number) {
       jQuery(".modal-backdrop").addClass("removeWhenNavigationEnds");
       jQuery("body").removeClass("modal-open");
 
-      let urlParser = document.createElement("a");
+      const urlParser = document.createElement("a");
       urlParser.href = navigation.path;
       if (isLoginPage(urlParser.pathname)) {
         window.location = navigation.path;
@@ -101,15 +99,16 @@ window.pageRenderers.spaengine.init = function init(timeout?: number) {
           const message = (
             <>
               Request has timed out, please
-              <button className="btn-link" onClick={() => (window.location = navigation.path)}>
-                reload the page
-              </button>
+              <Button
+                className="btn-tertiary"
+                text="reload the page"
+                handler={() => (window.location = navigation.path)}
+              />
             </>
           );
           showErrorToastr(message, { autoHide: false, containerId: "global" });
         }
       }
-
       Loggerhead.info("Loading `" + window.location + "`");
       SpaRenderer.onSpaEndNavigation();
       onDocumentReadyInitOldJS();

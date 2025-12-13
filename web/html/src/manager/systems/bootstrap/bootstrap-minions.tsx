@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 import { productName } from "core/user-preferences";
@@ -11,7 +11,7 @@ import { TopPanel } from "components/panels/TopPanel";
 
 import Network from "utils/network";
 
-// See java/code/src/com/suse/manager/webui/templates/minion/bootstrap.jade
+// See java/core/src/main/resources/com/suse/manager/webui/templates/minion/bootstrap.jade
 declare global {
   interface Window {
     availableActivationKeys?: any;
@@ -31,7 +31,7 @@ type ErrorDetailsDialogProps = {
   onDialogClose: () => void;
 };
 
-class ErrorDetailsDialog extends React.Component<ErrorDetailsDialogProps> {
+class ErrorDetailsDialog extends Component<ErrorDetailsDialogProps> {
   render() {
     let content, title, buttons;
 
@@ -47,7 +47,9 @@ class ErrorDetailsDialog extends React.Component<ErrorDetailsDialogProps> {
           <p>{this.props.error.message}</p>
           {this.props.error.standardOutput && (
             <div className="form-group">
-              <label className="control-label">Standard Output:</label>
+              <label className="control-label" htmlFor="stdout">
+                {t("Standard Output:")}
+              </label>
               <textarea
                 readOnly
                 disabled
@@ -55,12 +57,15 @@ class ErrorDetailsDialog extends React.Component<ErrorDetailsDialogProps> {
                 data-testid="stdout"
                 value={this.props.error.standardOutput}
                 rows={5}
+                id="stdout"
               />
             </div>
           )}
           {this.props.error.standardError && (
             <div className="form-group">
-              <label className="control-label">Standard Error:</label>
+              <label className="control-label" htmlFor="stderr">
+                {t("Standard Error:")}
+              </label>
               <textarea
                 readOnly
                 disabled
@@ -68,12 +73,15 @@ class ErrorDetailsDialog extends React.Component<ErrorDetailsDialogProps> {
                 data-testid="stderr"
                 value={this.props.error.standardError}
                 rows={5}
+                id="stderr"
               />
             </div>
           )}
           {this.props.error.result && (
             <div className="form-group">
-              <label className="control-label">Result:</label>
+              <label className="control-label" htmlFor="result">
+                {t("Result:")}
+              </label>
               <textarea
                 readOnly
                 disabled
@@ -81,6 +89,7 @@ class ErrorDetailsDialog extends React.Component<ErrorDetailsDialogProps> {
                 data-testid="result"
                 value={this.props.error.result}
                 rows={5}
+                id="result"
               />
             </div>
           )}
@@ -103,6 +112,8 @@ class ErrorDetailsDialog extends React.Component<ErrorDetailsDialogProps> {
     return (
       <Dialog
         id="show-error-details"
+        // TODO: If you touch this file, please resolve this linter error
+        // eslint-disable-next-line eqeqeq, no-eq-null
         isOpen={this.props.error != null}
         title={title}
         className="modal-xs"
@@ -148,7 +159,7 @@ type State = {
   errorDetails: ErrorDetails | null;
 };
 
-class BootstrapMinions extends React.Component<Props, State> {
+class BootstrapMinions extends Component<Props, State> {
   initState: State;
 
   constructor(props: Props) {
@@ -254,9 +265,9 @@ class BootstrapMinions extends React.Component<Props, State> {
   };
 
   proxyChanged = (event) => {
-    var proxyId = parseInt(event.target.value, 10);
-    var proxy = this.props.proxies.find((p) => p.id === proxyId);
-    var showWarn = proxy && proxy.hostname.indexOf(".") < 0;
+    const proxyId = parseInt(event.target.value, 10);
+    const proxy = this.props.proxies.find((p) => p.id === proxyId);
+    const showWarn = proxy && proxy.hostname.indexOf(".") < 0;
     this.setState({
       proxy: event.target.value,
       showProxyHostnameWarn: showWarn,
@@ -277,7 +288,7 @@ class BootstrapMinions extends React.Component<Props, State> {
 
   onBootstrap = () => {
     this.setState({ errors: [], loading: true });
-    var formData: any = {};
+    const formData: any = {};
     formData["host"] = this.state.host.trim();
     formData["port"] = this.state.port.trim() === "" ? undefined : this.state.port.trim();
     formData["user"] = this.state.user.trim() === "" ? undefined : this.state.user.trim();
@@ -323,7 +334,7 @@ class BootstrapMinions extends React.Component<Props, State> {
             loading: false,
           });
         } catch (err) {
-          var errMessage =
+          const errMessage =
             xhr.status === 0
               ? t(
                   "Request interrupted or invalid response received from the server. Please check if your minion was bootstrapped correctly."
@@ -349,7 +360,7 @@ class BootstrapMinions extends React.Component<Props, State> {
   };
 
   render() {
-    var alertMessages: MessageType[] = [];
+    let alertMessages: MessageType[] = [];
     if (this.state.success) {
       alertMessages = MessagesUtils.success(
         <p>
@@ -391,19 +402,19 @@ class BootstrapMinions extends React.Component<Props, State> {
       alertMessages = MessagesUtils.info(t("Loading SSH Private Key.."));
     }
 
-    var buttons = [
+    const buttons = [
       <AsyncButton
         id="bootstrap-btn"
-        defaultType="btn-primary"
-        icon="fa-plus"
+        key="bootstrap-btn"
+        defaultType="btn-primary me-4"
         text={t("Bootstrap")}
         disabled={this.state.privKeyLoading}
         action={this.onBootstrap}
       />,
       <AsyncButton
         id="clear-btn"
-        defaultType="btn-default pull-right"
-        icon="fa-eraser"
+        key="clear-btn"
+        defaultType="btn-default"
         text={t("Clear fields")}
         action={this.clearFields}
       />,
@@ -676,7 +687,7 @@ class BootstrapMinions extends React.Component<Props, State> {
   componentDidMount() {
     window.addEventListener("beforeunload", (e) => {
       if (this.state.loading) {
-        var confirmationMessage = t("Are you sure you want to close this page while bootstrapping is in progress ?");
+        const confirmationMessage = t("Are you sure you want to close this page while bootstrapping is in progress ?");
         (e || window.event).returnValue = confirmationMessage;
         return confirmationMessage;
       }

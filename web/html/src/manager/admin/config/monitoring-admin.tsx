@@ -1,7 +1,4 @@
-import { hot } from "react-hot-loader/root";
-
-import * as React from "react";
-import { useEffect } from "react";
+import { Fragment, useEffect } from "react";
 
 import { docsLocale, isUyuni, productName } from "core/user-preferences";
 
@@ -104,26 +101,19 @@ const ExporterItem = (props: { name: string; status: boolean; message: string | 
   );
 };
 
-const ExportersList = (props: {
-  exporters: {
-    [key: string]: boolean;
-  };
-  messages: {
-    [key: string]: string;
-  };
-}) => {
+const ExportersList = (props: { exporters: Record<string, boolean>; messages: Record<string, string> }) => {
   const keys = Object.keys(props.exporters).sort();
 
   return (
     <ul style={{ listStyle: "none", paddingLeft: "0px" }}>
       {keys.map((key) => (
-        <ExporterItem name={key} status={props.exporters[key]} message={props.messages[key]} />
+        <ExporterItem name={key} status={props.exporters[key]} message={props.messages[key]} key={key} />
       ))}
     </ul>
   );
 };
 
-const ListPlaceholderItem = (props) => {
+const ListPlaceholderItem = () => {
   return (
     <li className={styles.placeholder_item}>
       <Icon type="item-disabled" className="fa-1-5x" />
@@ -132,11 +122,11 @@ const ListPlaceholderItem = (props) => {
   );
 };
 
-const ListPlaceholder = (props) => {
+const ListPlaceholder = () => {
   return (
     <ul className={styles.placeholder}>
-      {Object.keys(exporterMap).map((e) => (
-        <ListPlaceholderItem />
+      {Object.keys(exporterMap).map((_, index) => (
+        <ListPlaceholderItem key={`placeholder-${index}`} />
       ))}
     </ul>
   );
@@ -173,11 +163,7 @@ const HelpPanel = () => {
   );
 };
 
-const ExportersMessages = (props: {
-  messages: {
-    [key: string]: string;
-  };
-}) => {
+const ExportersMessages = (props: { messages: Record<string, string> }) => {
   if (props.messages) {
     const keys = Object.keys(props.messages).sort();
 
@@ -241,7 +227,7 @@ const MonitoringAdmin = () => {
     switch (action) {
       case "checking":
         buttons = (
-          <React.Fragment>
+          <Fragment>
             <Button
               id="enable-monitoring-btn"
               disabled={true}
@@ -256,12 +242,12 @@ const MonitoringAdmin = () => {
               icon="fa-stop"
               text={t("Disable")}
             />
-          </React.Fragment>
+          </Fragment>
         );
         break;
       case "enabling":
         buttons = (
-          <React.Fragment>
+          <Fragment>
             <Button
               id="enable-monitoring-btn"
               disabled={true}
@@ -276,12 +262,12 @@ const MonitoringAdmin = () => {
               icon="fa-pause"
               text={t("Disable")}
             />
-          </React.Fragment>
+          </Fragment>
         );
         break;
       case "disabling":
         buttons = (
-          <React.Fragment>
+          <Fragment>
             <Button
               id="enable-monitoring-btn"
               disabled={true}
@@ -296,7 +282,7 @@ const MonitoringAdmin = () => {
               icon="fa-circle-o-notch fa-spin"
               text={t("Disable")}
             />
-          </React.Fragment>
+          </Fragment>
         );
         break;
       default:
@@ -304,7 +290,7 @@ const MonitoringAdmin = () => {
     }
   } else {
     buttons = (
-      <React.Fragment>
+      <Fragment>
         <AsyncButton
           id="enable-monitoring-btn"
           defaultType="btn-default"
@@ -320,7 +306,7 @@ const MonitoringAdmin = () => {
           text={t("Disable")}
           action={() => changeMonitoringStatus(false)}
         />
-      </React.Fragment>
+      </Fragment>
     );
   }
 
@@ -415,4 +401,4 @@ const MonitoringAdmin = () => {
   );
 };
 
-export default hot(withPageWrapper(MonitoringAdmin));
+export default withPageWrapper(MonitoringAdmin);

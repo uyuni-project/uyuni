@@ -11,7 +11,7 @@ export type ChannelTypePartial = {
 
 export type MandatoryChannel = ChannelTypePartial & {
   compatibleChannelPreviousSelection?: number;
-  children: Array<number>;
+  children: number[];
 };
 
 export type BaseChannelType = ChannelTypePartial & {
@@ -30,6 +30,12 @@ export type ChannelTreeType = {
   children: ChildChannelType[];
 };
 
-export function isBaseChannel(input: BaseChannelType | ChildChannelType): input is BaseChannelType {
+export type ChannelType = BaseChannelType | ChildChannelType;
+
+export function isBaseChannel(input: ChannelType): input is BaseChannelType {
   return Boolean(input && Object.prototype.hasOwnProperty.call(input, "recommendedChildren"));
+}
+
+export function isChildChannel(input: ChannelType): input is ChildChannelType {
+  return Boolean(input && Object.prototype.hasOwnProperty.call(input, "parent"));
 }

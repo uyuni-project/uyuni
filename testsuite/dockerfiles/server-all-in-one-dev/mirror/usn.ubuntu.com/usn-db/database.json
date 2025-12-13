@@ -1,0 +1,340 @@
+{
+  "6789-1": {
+    "action": "This is a test update for andromeda-dummy. It fixes nothing, but you need to reboot. Only for testing SUSE Manager.",
+    "cves": [],
+    "description": "Test update for andromeda-dummy",
+    "id": "6789-1",
+    "isummary": "Some update for andromeda-dummy.",
+    "releases": {
+      "noble": {
+        "allbinaries": {
+          "andromeda-dummy": {
+            "pocket": "updates",
+            "source": "andromeda-dummy",
+            "version": "2.0"
+          }
+        },
+        "binaries": {
+          "andromeda-dummy": {
+            "pocket": "updates",
+            "version": "2.0"
+          }
+        },
+        "archs": {
+          "all": {
+            "urls": {
+              "https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Test-Packages:/Updates/deb/all/andromeda-dummy_2.0_all.deb": {
+                "md5": "aa13590b6c5f005acd19323c2bbb784c",
+                "size": 2096
+              }
+            }
+	  },
+          "source": {
+            "urls": {
+              "http://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Test-Packages:/Updates/deb/andromeda-dummy_2.0.dsc": {
+                "md5": "2d45577a63e4d5fa27460175494c58d8",
+                "size": 575
+              },
+              "http://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Test-Packages:/Updates/deb/andromeda-dummy_2.0.tar.xz": {
+                "md5": "d03d13438c193eb19167f81fdefb74d5",
+                "size": 2108
+              }
+            }
+          }
+        },
+        "sources": {
+          "andromeda-dummy": {
+            "description": "Andromeda package",
+            "version": "2.0"
+          }
+        }
+      }
+    },
+    "summary": "andromeda-dummy update",
+    "timestamp": 1761044281.009452,
+    "title": "Andromeda-dummy update"
+  },
+  "7890-1": {
+    "action": "This is a test update for hoag-dummy. It fixes nothing. Only for testing SUSE Manager.",
+    "cves": [
+      "CVE-1999-9979"
+    ],
+    "description": "Security update for hoag-dummy. Resolves bnc#704608.",
+    "id": "7890-1",
+    "isummary": "Fixed insecure things in hoag-dummy.",
+    "releases": {
+      "noble": {
+        "allbinaries": {
+          "hoag-dummy": {
+            "pocket": "security",
+            "source": "hoag-dummy",
+            "version": "1.1"
+          }
+        },
+        "binaries": {
+          "hoag-dummy": {
+            "pocket": "security",
+            "version": "1.1"
+          }
+        },
+        "archs": {
+          "all": {
+            "urls": {
+              "https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Test-Packages:/Updates/deb/all/hoag-dummy_1.1_all.deb": {
+                "md5": "701d13ba61507138dff7b69fe73c2b05",
+                "size": 2168
+              }
+            }
+          },
+          "source": {
+            "urls": {
+              "http://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Test-Packages:/Updates/deb/hoag-dummy_1.1.dsc": {
+                "md5": "02b1c37cc5d1a0f7e9fadc2617b2c830",
+                "size": 556
+              },
+              "http://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Test-Packages:/Updates/deb/hoag-dummy_1.1.tar.xz": {
+                "md5": "6f1f956cb08337da17836659dc0a8d33",
+                "size": 7192
+              }
+            }
+          }
+        },
+        "sources": {
+          "hoag-dummy": {
+            "description": "Hoag package",
+            "version": "1.1"
+          }
+        }
+      }
+    },
+    "summary": "hoag-dummy vulnerability",
+    "timestamp": 1760957147.383763,
+    "title": "Hoag-dummy vulnerability"
+  },
+  "2345-1": {
+    "action": "This is a test update for milkyway-dummy. It fixes nothing. Only for testing SUSE Manager.",
+    "cves": [
+      "CVE-1999-9999"
+    ],
+    "description": "Security update for milkyway-dummy. Resolves bnc#704608.",
+    "id": "2345-1",
+    "isummary": "Fixed insecure tmp file handling in milkyway-dummy.",
+    "releases": {
+      "noble": {
+        "allbinaries": {
+          "milkyway-dummy": {
+            "pocket": "security",
+            "source": "milkyway-dummy",
+            "version": "2.0"
+          }
+        },
+        "binaries": {
+          "milkyway-dummy": {
+            "pocket": "security",
+            "version": "2.0"
+          }
+        },
+        "archs": {
+          "all": {
+            "urls": {
+              "https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Test-Packages:/Updates/deb/all/milkyway-dummy_2.0_all.deb": {
+                "md5": "8a00a465ced20dcd32c8e507aec20587",
+                "size": 2160
+              }
+	    }
+	  },
+          "source": {
+            "urls": {
+              "http://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Test-Packages:/Updates/deb/milkyway-dummy_2.0.dsc": {
+                "md5": "2d45577a63e4d5fa27460175494c58d8",
+                "size": 569
+              },
+              "http://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Test-Packages:/Updates/deb/milkyway-dummy_2.0.tar.xz": {
+                "md5": "d03d13438c193eb19167f81fdefb74d5",
+                "size": 7176
+              }
+            }
+          }
+        },
+        "sources": {
+          "milkyway-dummy": {
+            "description": "Milkyway dummy package",
+            "version": "2.0"
+          }
+        }
+      }
+    },
+    "summary": "milkyway-dummy vulnerability",
+    "timestamp": 1760957147.383763,
+    "title": "Milkyway-dummy vulnerability"
+  },
+  "7891-1": {
+    "action": "This is a test update for orion-dummy. It fixes nothing. Only for testing SUSE Manager.",
+    "cves": [],
+    "description": "Test update for orion-dummy. Resolves bnc#704699",
+    "id": "7891-1",
+    "isummary": "Some update for orion-dummy.",
+    "releases": {
+      "noble": {
+        "allbinaries": {
+          "orion-dummy": {
+            "pocket": "updates",
+            "source": "orion-dummy",
+            "version": "1.1"
+          }
+        },
+        "binaries": {
+          "orion-dummy": {
+            "pocket": "updates",
+            "version": "1.1"
+          }
+        },
+        "archs": {
+          "all": {
+            "urls": {
+              "https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Test-Packages:/Updates/deb/all/orion-dummy_1.1_all.deb": {
+                "md5": "cc218e10319e928b0e2dae8483a542a9",
+                "size": 2192
+              }
+	    }
+	  },
+          "source": {
+            "urls": {
+              "http://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Test-Packages:/Updates/deb/orion-dummy_1.1.dsc": {
+                "md5": "ee8ddd54e0dd208874de920afd477c4b",
+                "size": 551
+              },
+              "http://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Test-Packages:/Updates/deb/orion-dummy_1.1.tar.xz": {
+                "md5": "f3f01dc012461caa9d6dd5244c0a5b0f",
+                "size": 2152
+              }
+            }
+          }
+        },
+        "sources": {
+          "orion-dummy": {
+            "description": "Orion dummy package",
+            "version": "1.1"
+          }
+        }
+      }
+    },
+    "summary": "orion-dummy update",
+    "timestamp": 1761059591.401644,
+    "title": "Orion-dummy update"
+  },
+  "7891-2": {
+    "action": "This is a test update for perseus-dummy. It fixes nothing. Only for testing SUSE Manager.",
+    "cves": [
+      "CVE-1999-99781"
+    ],
+    "description": "Security update for perseus-dummy.",
+    "id": "7891-2",
+    "isummary": "Fixed insecure things in perseus-dummy.",
+    "releases": {
+      "noble": {
+        "allbinaries": {
+          "perseus-dummy": {
+            "pocket": "security",
+            "source": "perseus-dummy",
+            "version": "1.1"
+          }
+        },
+        "binaries": {
+          "perseus-dummy": {
+            "pocket": "security",
+            "version": "1.1"
+          }
+        },
+        "archs": {
+          "all": {
+            "urls": {
+              "https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Test-Packages:/Updates/deb/all/perseus-dummy_1.1_all.deb": {
+                "md5": "0ea6290a9b5858851e6986d8e4097689",
+                "size": 2168
+              }
+            }
+	  },
+          "source": {
+            "urls": {
+              "http://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Test-Packages:/Updates/deb/perseus-dummy_1.1.dsc": {
+                "md5": "372d13be0fafa16fa02a70daef36b4cb",
+                "size": 563
+              },
+              "http://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Test-Packages:/Updates/deb/perseus-dummy_1.1.tar.xz": {
+                "md5": "537147ea176ca304529314321b4ff8f4",
+                "size": 7164
+              }
+            }
+          }
+        },
+        "sources": {
+          "perseus-dummy": {
+            "description": "Perseus package",
+            "version": "1.1"
+          }
+        }
+      }
+    },
+    "summary": "perseus-dummy vulnerability",
+    "timestamp": 1761061929.377092,
+    "title": "Perseus-dummy vulnerability"
+  },
+  "3456-1": {
+    "action": "This is a test update for virgo-dummy. It fixes nothing. Only for testing SUSE Manager.",
+    "cves": [
+      "CVE-1999-9998"
+    ],
+    "description": "Security update for virgo-dummy.",
+    "id": "3456-1",
+    "isummary": "Fixed insecure something in virgo-dummy.",
+    "releases": {
+      "noble": {
+        "allbinaries": {
+          "virgo-dummy": {
+            "pocket": "security",
+            "source": "virgo-dummy",
+            "version": "2.0"
+          }
+        },
+        "binaries": {
+          "virgo-dummy": {
+            "pocket": "security",
+            "version": "2.0"
+          }
+        },
+        "archs": {
+          "all": {
+            "urls": {
+              "https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Test-Packages:/Updates/deb/all/virgo-dummy_2.0_all.deb": {
+                "md5": "cc9ad4aef240dd05b18ecd93dec0980d",
+                "size": 2124
+              }
+            }
+	  },
+          "source": {
+            "urls": {
+              "http://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Test-Packages:/Updates/deb/virgo-dummy_2.0.dsc": {
+                "md5": "e6ce0ed52a0fa842d16b1ffb2b312b39",
+                "size": 551
+              },
+              "http://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Test-Packages:/Updates/deb/virgo-dummy_2.0.tar.xz": {
+                "md5": "25b6e1ab5706eb0c7e2e8421a3d2c1ad",
+                "size": 7140
+              }
+            }
+          }
+        },
+        "sources": {
+          "virgo-dummy": {
+            "description": "Virgo package",
+            "version": "2.0"
+          }
+        }
+      }
+    },
+    "summary": "virgo-dummy vulnerability",
+    "timestamp": 1761043671.205689,
+    "title": "Virgo-dummy vulnerability"
+  }
+}

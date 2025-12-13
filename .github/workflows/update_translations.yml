@@ -9,16 +9,16 @@ on:
       - 'backend/po/*.po'
       - 'susemanager/po/*.po'
       - 'spacecmd/po/*.po'
-      - 'java/code/src/com/redhat/rhn/frontend/strings/database/StringResource_*.xml'
-      - '!java/code/src/com/redhat/rhn/frontend/strings/database/StringResource_en_US.xml'
-      - 'java/code/src/com/redhat/rhn/frontend/strings/java/StringResource_*.xml'
-      - '!java/code/src/com/redhat/rhn/frontend/strings/java/StringResource_en_US.xml'
-      - 'java/code/src/com/redhat/rhn/frontend/strings/jsp/StringResource_*.xml'
-      - '!java/code/src/com/redhat/rhn/frontend/strings/jsp/StringResource_en_US.xml'
-      - 'java/code/src/com/redhat/rhn/frontend/strings/nav/StringResource_*.xml'
-      - '!java/code/src/com/redhat/rhn/frontend/strings/nav/StringResource_en_US.xml'
-      - 'java/code/src/com/redhat/rhn/frontend/strings/template/StringResource_*.xml'
-      - '!java/code/src/com/redhat/rhn/frontend/strings/template/StringResource_en_US.xml'
+      - 'java/core/src/main/resources/com/redhat/rhn/frontend/strings/database/StringResource_*.xml'
+      - '!java/src/main/resources/com/redhat/rhn/frontend/strings/database/StringResource_en_US.xml'
+      - 'java/src/main/resources/com/redhat/rhn/frontend/strings/java/StringResource_*.xml'
+      - '!java/src/main/resources/com/redhat/rhn/frontend/strings/java/StringResource_en_US.xml'
+      - 'java/src/main/resources/com/redhat/rhn/frontend/strings/jsp/StringResource_*.xml'
+      - '!java/src/main/resources/com/redhat/rhn/frontend/strings/jsp/StringResource_en_US.xml'
+      - 'java/src/main/resources/com/redhat/rhn/frontend/strings/nav/StringResource_*.xml'
+      - '!java/src/main/resources/com/redhat/rhn/frontend/strings/nav/StringResource_en_US.xml'
+      - 'java/src/main/resources/com/redhat/rhn/frontend/strings/template/StringResource_*.xml'
+      - '!java/src/main/resources/com/redhat/rhn/frontend/strings/template/StringResource_en_US.xml'
       - 'client/rhel/yum-rhn-plugin/po/*.po'
       - 'client/rhel/mgr-daemon/po/*.po'
       - 'client/rhel/spacewalk-client-tools/po/*.po'
@@ -35,7 +35,7 @@ jobs:
          access_token: ${{ github.token }}
 
    - name: Checkout repo
-     uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 #v4.2.2
+     uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 #v5.0.0
      with:
        token: ${{ secrets.GH_TOKEN_GALAXY_CI }}
 

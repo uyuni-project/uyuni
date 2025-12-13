@@ -50,10 +50,10 @@ Feature: Register a Salt minion with a bootstrap script
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    And I check radio button "SLE-Product-SLES15-SP4-Pool for x86_64"
+    And I check radio button "SLE-Product-SLES15-SP7-Pool for x86_64"
     And I wait until I do not see "Loading..." text
     And I include the recommended child channels
-    And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
+    And I check "SLE-Module-DevTools15-SP7-Pool for x86_64"
     And I check "Fake-RPM-SUSE-Channel"
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
@@ -67,9 +67,9 @@ Feature: Register a Salt minion with a bootstrap script
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    And I check radio button "openSUSE Leap 15.6 (x86_64)"
+    And I check radio button "openSUSE Tumbleweed (x86_64)"
     And I wait until I do not see "Loading..." text
-    And I check "Uyuni Client Tools for openSUSE Leap 15.6 (x86_64) (Development)"
+    And I check "Uyuni Client Tools for openSUSE Tumbleweed (x86_64) (Development)"
     And I check "Fake-RPM-SUSE-Channel"
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
@@ -84,7 +84,7 @@ Feature: Register a Salt minion with a bootstrap script
    And I enter "orion-dummy" as the filtered package name
    And I click on the filter button
    And I check row with "orion-dummy" and arch of "sle_minion"
-   And I click on "Install Selected Packages"
+   And I click on "Install Packages"
    And I click on "Confirm"
    Then I should see a "1 package install has been scheduled for" text
    When I wait until event "Package Install/Upgrade scheduled" is completed

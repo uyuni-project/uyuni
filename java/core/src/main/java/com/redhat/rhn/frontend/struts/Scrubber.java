@@ -1,0 +1,140 @@
+/*
+ * Copyright (c) 2010--2012 Red Hat, Inc.
+ *
+ * This software is licensed to you under the GNU General Public License,
+ * version 2 (GPLv2). There is NO WARRANTY for this software, express or
+ * implied, including the implied warranties of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+ * along with this software; if not, see
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * Red Hat trademarks are not licensed under GPLv2. No permission is
+ * granted to use or replicate Red Hat trademarks that are incorporated
+ * in this software or its documentation.
+ */
+package com.redhat.rhn.frontend.struts;
+
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+
+/**
+ * Scrubber
+ */
+public class Scrubber {
+    private static final String[] PROHIBITED_INPUT = {"<", ">", "\\(", "\\)", "\\{", "\\}"};
+    private final String [] prohibitedInput;
+
+    private Scrubber(String [] input) {
+        prohibitedInput = input;
+    }
+
+    /**
+     * @return an instance of scrubber
+     */
+    private static Scrubber getInstance(String [] input) {
+        return new Scrubber(input);
+    }
+
+    /**
+     * If this scrubber can actually scrub the given value
+     * @param value  value to be checked
+     * @return true if this scrubber can actually scrub
+     */
+    public static boolean canScrub(Object value) {
+        boolean retval = false;
+        if (value != null &&
+                (value instanceof String ||
+                 value instanceof Collection ||
+                 value.getClass().isArray())) {
+            retval = true;
+        }
+        return retval;
+    }
+
+    /**
+     * Given an input String/Map/List/Array
+     * this method will scrub the input
+     *  and return the scrubber output
+     * @param value the value to be scrubbed
+     * @return the scrubbed value
+     */
+    public static Object scrub(Object value) {
+        return getInstance(PROHIBITED_INPUT).doScrub(value);
+    }
+
+
+    /**
+     * Given an input String/Map/List/Array
+     * this method will scrub the input
+     *  and return the scrubber output
+     * @param value the value to be scrubbed
+     * @param prohibitedInput the list of prohbited inputs to be scrubbed
+     * @return the scrubbed value
+     */
+    public static Object scrub(Object value, String ... prohibitedInput) {
+        return getInstance(prohibitedInput).doScrub(value);
+    }
+    private Object doScrub(Object value) {
+        if (!canScrub(value)) {
+            return value;
+        }
+        if (value == null) {
+            return null;
+        }
+
+        if (value instanceof String str) {
+            return scrubString(str);
+        }
+        else if (value instanceof Map map) {
+            return scrubMap(map);
+        }
+        else if (value instanceof List lst) {
+            return scrubList(lst);
+        }
+        else if (value.getClass().isArray()) {
+            return scrubArray((Object[]) value);
+        }
+        else {
+            return value;
+        }
+    }
+
+    private Object scrubList(List value) {
+        List retval = new LinkedList<>();
+        for (Object oIn : value) {
+            retval.add(scrub(oIn));
+        }
+        return retval;
+    }
+
+    private Object scrubMap(Map value) {
+        if (value == null || value.isEmpty()) {
+            return value;
+        }
+        for (Object k : value.keySet()) {
+            Object v = scrub(value.get(k));
+            value.put(k, v);
+        }
+        return value;
+    }
+
+    private Object scrubArray(Object[] value) {
+        if (value.length > 0) {
+            for (int x = 0; x < value.length; x++) {
+                value[x] = scrub(value[x]);
+            }
+        }
+        return value;
+    }
+
+    private Object scrubString(String value) {
+        value = value.trim();
+        for (String sIn : prohibitedInput) {
+            value = value.replaceAll(sIn, "");
+        }
+        return value;
+    }
+}

@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState } from "react";
 
 import { IconTag } from "components/icontag";
 import * as Systems from "components/systems";
@@ -6,11 +6,12 @@ import { Column } from "components/table/Column";
 import { Table } from "components/table/Table";
 
 import { Utils } from "utils/functions";
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network from "utils/network";
 
 import { VirtualSystemsListFilter } from "./list-filter";
 
-// See java/code/src/com/suse/manager/webui/templates/systems/virtual-list.jade
+// See java/core/src/main/resources/com/suse/manager/webui/templates/systems/virtual-list.jade
 type Props = {
   /** Locale of the help links */
   docsLocale: string;
@@ -20,9 +21,9 @@ type Props = {
 };
 
 export function VirtualSystems(props: Props) {
-  const [selectedSystems, setSelectedSystems] = React.useState<String[]>([]);
+  const [selectedSystems, setSelectedSystems] = useState<string[]>([]);
 
-  const handleSelectedSystems = (items: String[]) => {
+  const handleSelectedSystems = (items: string[]) => {
     const removed = selectedSystems.filter((item) => !items.includes(item)).map((item) => [item, false]);
     const added = items.filter((item) => !selectedSystems.includes(item)).map((item) => [item, true]);
     const data = Object.assign({}, Object.fromEntries(added), Object.fromEntries(removed));
@@ -33,7 +34,7 @@ export function VirtualSystems(props: Props) {
 
   return (
     <>
-      <h1>
+      <h1 className="mb-5">
         <IconTag type="header-system" />
         {t("Virtual Systems")}
         <a
@@ -44,18 +45,29 @@ export function VirtualSystems(props: Props) {
           <IconTag type="header-help" />
         </a>
       </h1>
-
       <Table
         data="/rhn/manager/api/systems/list/virtual"
         identifier={(item) => item.virtualSystemId || item.uuid}
         initialSortColumnKey="host_server_name"
-        selectable={(item) => item.hasOwnProperty("virtualSystemId")}
+        selectable={(item) => "virtualSystemId" in item}
         selectedItems={selectedSystems}
         onSelect={handleSelectedSystems}
         searchField={<VirtualSystemsListFilter />}
         defaultSearchField={props.queryColumn || "host_server_name"}
         initialSearch={props.query}
         emptyText={t("No Virtual Systems.")}
+        titleButtons={[
+          <a
+            key="download-csv"
+            href="/rhn/manager/systems/csv/virtualSystems"
+            title="Download CSV"
+            className="btn btn-default"
+            data-senna-off="true"
+          >
+            <IconTag type="item-download-csv" />
+            {t("Download CSV")}
+          </a>,
+        ]}
       >
         <Column
           columnKey="hostServerName"
@@ -70,7 +82,7 @@ export function VirtualSystems(props: Props) {
           comparator={Utils.sortByText}
           header={t("Virtual System")}
           cell={(item) => {
-            if (item.systemId != null) {
+            if (!DEPRECATED_unsafeEquals(item.systemId, null)) {
               return <a href={`/rhn/systems/details/Overview.do?sid=${item.systemId}`}>{item.name}</a>;
             }
             return item.name;
@@ -87,7 +99,7 @@ export function VirtualSystems(props: Props) {
           comparator={Utils.sortByText}
           header={t("Updates")}
           cell={(item) => {
-            if (item.statusType == null) {
+            if (DEPRECATED_unsafeEquals(item.statusType, null)) {
               return "";
             }
             return Systems.statusDisplay(item, props.isAdmin);
@@ -98,20 +110,13 @@ export function VirtualSystems(props: Props) {
           comparator={Utils.sortByText}
           header={t("Base Software Channel")}
           cell={(item) => {
-            if (item.channelId != null) {
+            if (!DEPRECATED_unsafeEquals(item.channelId, null)) {
               return <a href={`/rhn/channels/ChannelDetail.do?cid=${item.channelId}`}>{item.channelLabels}</a>;
             }
             return item.channelLabels;
           }}
         />
       </Table>
-
-      <div className="spacewalk-csv-download">
-        <a href="/rhn/manager/systems/csv/virtualSystems" className="btn btn-default" data-senna-off="true">
-          <IconTag type="item-download-csv" />
-          Download CSV
-        </a>
-      </div>
     </>
   );
 }

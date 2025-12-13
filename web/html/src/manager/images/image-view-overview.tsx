@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type ReactNode, Component } from "react";
 
 import { productName } from "core/user-preferences";
 
@@ -14,7 +14,7 @@ import { PopUp } from "components/popup";
 
 import { localizedMoment } from "utils";
 
-// See java/code/src/com/suse/manager/webui/templates/content_management/view.jade
+// See java/core/src/main/resources/com/suse/manager/webui/templates/content_management/view.jade
 declare global {
   interface Window {
     imageId?: any;
@@ -30,18 +30,22 @@ const typeMap = {
   kiwi: "OS Image",
 };
 
-function StatusIcon(props) {
+type StatusIconProps = {
+  name: string;
+  data: {
+    buildServer: any;
+  };
+  action?: {
+    status: number;
+    id: any;
+  };
+};
+
+function StatusIcon(props: StatusIconProps) {
   const data = props.data;
   const action = props.action;
 
-  if (!action) {
-    return (
-      <span>
-        <i className="fa fa-question-circle fa-1-5x" title={t("No information")} />
-        {t("No information")}
-      </span>
-    );
-  } else if (action.status === 0) {
+  if (action?.status === 0) {
     return (
       <span>
         <i className="fa fa-clock-o fa-1-5x" title={t("Queued")} />
@@ -53,7 +57,7 @@ function StatusIcon(props) {
         </a>
       </span>
     );
-  } else if (action.status === 1) {
+  } else if (action?.status === 1) {
     return (
       <span>
         <i className="fa fa-exchange fa-1-5x text-info" title={t("In progress")} />
@@ -65,7 +69,7 @@ function StatusIcon(props) {
         </a>
       </span>
     );
-  } else if (action.status === 2) {
+  } else if (action?.status === 2) {
     return (
       <span>
         <i className="fa fa-check-circle fa-1-5x text-success" title={t("Successful")} />
@@ -77,7 +81,7 @@ function StatusIcon(props) {
         </a>
       </span>
     );
-  } else if (action.status === 3) {
+  } else if (action?.status === 3) {
     return (
       <span>
         <i className="fa fa-times-circle-o fa-1-5x text-danger" title={t("Failed")} />
@@ -100,7 +104,7 @@ function StatusIcon(props) {
 }
 
 function BuildStatus(props) {
-  let status: React.ReactNode;
+  let status: ReactNode;
   if (props.data.external) {
     status = (
       <span>
@@ -162,7 +166,7 @@ type ImageInfoState = {
   instancePopupContent: any;
 };
 
-class ImageInfo extends React.Component<ImageInfoProps, ImageInfoState> {
+class ImageInfo extends Component<ImageInfoProps, ImageInfoState> {
   constructor(props) {
     super(props);
     this.state = {
@@ -322,8 +326,7 @@ class ImageInfo extends React.Component<ImageInfoProps, ImageInfoState> {
                           "?url_bounce=" +
                           encodeURIComponent("/rhn/manager/cm/images#/overview/" + data.id)
                         }
-                        className="btn-xs btn-default pull-right"
-                        text={t("Edit")}
+                        className="btn-tertiary pull-right"
                         title={t("Edit profile")}
                       />
                     )}
@@ -347,8 +350,7 @@ class ImageInfo extends React.Component<ImageInfoProps, ImageInfoState> {
                         "?url_bounce=" +
                         encodeURIComponent("/rhn/manager/cm/images#/overview/" + data.id)
                       }
-                      className="btn-xs btn-default pull-right"
-                      text={t("Edit")}
+                      className="btn-tertiary pull-right"
                       title={t("Edit store")}
                     />
                   )}
@@ -363,7 +365,7 @@ class ImageInfo extends React.Component<ImageInfoProps, ImageInfoState> {
                 <td>
                   <ul>
                     {data.imageFiles.map((f) => (
-                      <li>
+                      <li key={f.url}>
                         <a href={f.url} target="_blank" rel="noopener noreferrer">
                           {f.name}
                         </a>
@@ -438,7 +440,7 @@ class ImageInfo extends React.Component<ImageInfoProps, ImageInfoState> {
                 <td>
                   <ul>
                     {data.deltaSourceFor.map((d) => (
-                      <li>{d.name}</li>
+                      <li key={d.name}>{d.name}</li>
                     ))}
                   </ul>
                 </td>
@@ -452,7 +454,7 @@ class ImageInfo extends React.Component<ImageInfoProps, ImageInfoState> {
                 <td>
                   <ul>
                     {data.deltaTargetFor.map((d) => (
-                      <li>{d.name}</li>
+                      <li key={d.name}>{d.name}</li>
                     ))}
                   </ul>
                 </td>
@@ -476,7 +478,7 @@ type ImageCustomInfoProps = {
   data: any;
 };
 
-class ImageCustomInfo extends React.Component<ImageCustomInfoProps> {
+class ImageCustomInfo extends Component<ImageCustomInfoProps> {
   render() {
     const data = this.props.data.customData;
     return (
@@ -505,7 +507,7 @@ type ImageViewOverviewProps = {
   onDelete?: (...args: any[]) => any;
 };
 
-class ImageViewOverview extends React.Component<ImageViewOverviewProps> {
+class ImageViewOverview extends Component<ImageViewOverviewProps> {
   renderStatus(row) {
     let status;
 
@@ -703,7 +705,7 @@ type BuildDialogState = {
   };
 };
 
-class BuildDialog extends React.Component<BuildDialogProps, BuildDialogState> {
+class BuildDialog extends Component<BuildDialogProps, BuildDialogState> {
   constructor(props) {
     super(props);
     this.state = {
@@ -723,10 +725,17 @@ class BuildDialog extends React.Component<BuildDialogProps, BuildDialogState> {
     const buttons = (
       <div>
         <Button
+          className="btn-default"
+          text={t("Cancel")}
+          title={t("Cancel")}
+          handler={() => {
+            jQuery("#build-modal").modal("hide");
+          }}
+        />
+        <Button
           className="btn-primary"
           text={t("Build")}
           title={t("Schedule build")}
-          icon="fa-cogs"
           handler={() => {
             if (this.props.onBuild)
               this.props.onBuild(
@@ -735,15 +744,6 @@ class BuildDialog extends React.Component<BuildDialogProps, BuildDialogState> {
                 this.props.data.buildServer.id,
                 this.state.model.earliest
               );
-            jQuery("#build-modal").modal("hide");
-          }}
-        />
-        <Button
-          className="btn-default"
-          text={t("Cancel")}
-          title={t("Cancel")}
-          icon="fa-close"
-          handler={() => {
             jQuery("#build-modal").modal("hide");
           }}
         />
@@ -782,7 +782,7 @@ type InspectDialogState = {
   };
 };
 
-class InspectDialog extends React.Component<InspectDialogProps, InspectDialogState> {
+class InspectDialog extends Component<InspectDialogProps, InspectDialogState> {
   constructor(props) {
     super(props);
     this.state = {
@@ -802,21 +802,19 @@ class InspectDialog extends React.Component<InspectDialogProps, InspectDialogSta
     const buttons = (
       <div>
         <Button
-          className="btn-primary"
-          text={t("Inspect")}
-          title={t("Schedule inspect")}
-          icon="fa-search"
+          className="btn-default"
+          text={t("Cancel")}
+          title={t("Cancel")}
           handler={() => {
-            if (this.props.onInspect) this.props.onInspect(this.props.data.id, this.state.model.earliest);
             jQuery("#inspect-modal").modal("hide");
           }}
         />
         <Button
-          className="btn-default"
-          text={t("Cancel")}
-          title={t("Cancel")}
-          icon="fa-close"
+          className="btn-primary"
+          text={t("Inspect")}
+          title={t("Schedule inspect")}
           handler={() => {
+            if (this.props.onInspect) this.props.onInspect(this.props.data.id, this.state.model.earliest);
             jQuery("#inspect-modal").modal("hide");
           }}
         />

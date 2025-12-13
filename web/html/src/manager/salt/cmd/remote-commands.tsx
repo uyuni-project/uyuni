@@ -1,21 +1,22 @@
-import * as React from "react";
+import { type ReactNode, Component } from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 
 import { Button } from "components/buttons";
 import { TopPanel } from "components/panels/TopPanel";
+import { DEPRECATED_onClick } from "components/utils";
 
 type MinionResultViewProps = {
   id?: any;
   result?: any;
-  label?: React.ReactNode;
+  label?: ReactNode;
 };
 
 type MinionResultViewState = {
   open: boolean;
 };
 
-class MinionResultView extends React.Component<MinionResultViewProps, MinionResultViewState> {
+class MinionResultView extends Component<MinionResultViewProps, MinionResultViewState> {
   constructor(props) {
     super(props);
     this.state = {
@@ -30,7 +31,7 @@ class MinionResultView extends React.Component<MinionResultViewProps, MinionResu
       this.props.result !== "matched" &&
       this.props.result !== "error"
     ) {
-      this.setState({ open: !this.state.open });
+      this.setState((prevState) => ({ open: !prevState.open }));
     }
   };
 
@@ -44,7 +45,7 @@ class MinionResultView extends React.Component<MinionResultViewProps, MinionResu
         <div
           id={id}
           className="panel-heading"
-          onClick={this.onClick}
+          {...DEPRECATED_onClick(this.onClick)}
           style={props.result ? { cursor: "pointer" } : { cursor: "default" }}
         >
           <span>{props.label ? props.label : id}</span>
@@ -114,7 +115,7 @@ function isTimedOutDone(minionsMap: Map<any, any>, waitForSSH, timedOutSSH) {
   return noMinionsPending && anyTimedOutMinion;
 }
 
-type RemoteCommandProps = {};
+type RemoteCommandProps = Record<string, never>;
 
 type RemoteCommandState = {
   command: string;
@@ -134,7 +135,7 @@ type RemoteCommandState = {
   pageUnloading?: boolean;
 };
 
-class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandState> {
+class RemoteCommand extends Component<RemoteCommandProps, RemoteCommandState> {
   constructor(props) {
     super(props);
     this.state = {
@@ -152,7 +153,7 @@ class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandSta
   }
 
   render() {
-    var msgs: React.ReactNode[] = [];
+    const msgs: ReactNode[] = [];
     const style = {
       paddingBottom: "0px",
     };
@@ -167,7 +168,7 @@ class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandSta
       });
     }
 
-    var button;
+    let button;
     if (this.state.executing.state() === "pending") {
       button = (
         <Button
@@ -198,6 +199,7 @@ class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandSta
           handler={this.onPreview}
           icon="fa-search"
           title={t("Check which minions match the target expression")}
+          key="preview"
         />,
         <Button
           id="run"
@@ -206,6 +208,7 @@ class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandSta
           handler={this.onRun}
           icon="fa-play"
           title={t("Run the command on the target minions")}
+          key="run"
         />,
       ];
     }
@@ -316,16 +319,17 @@ class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandSta
     );
   };
 
-  onBeforeUnload = (event) => {
+  onBeforeUnload = () => {
     this.setState({
       pageUnloading: true,
     });
   };
 
   componentDidMount() {
-    var port = window.location.port;
-    var url = "wss://" + window.location.hostname + (port ? ":" + port : "") + "/rhn/websocket/minion/remote-commands";
-    var ws = new WebSocket(url);
+    const port = window.location.port;
+    const url =
+      "wss://" + window.location.hostname + (port ? ":" + port : "") + "/rhn/websocket/minion/remote-commands";
+    const ws = new WebSocket(url);
     ws.onopen = () => {
       this.setState({
         previewed: jQuery.Deferred(),
@@ -333,40 +337,42 @@ class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandSta
         executing: jQuery.Deferred().resolve(),
       });
     };
-    ws.onclose = (e) => {
-      var errs = this.state.errors ? this.state.errors : [];
-      if (!this.state.pageUnloading && !this.state.websocketErr) {
-        errs.push(t("Websocket connection closed. Refresh the page to try again."));
-      }
-      if (this.state.ran) {
-        this.state.ran.resolve();
-      }
-      if (this.state.previewed) {
-        this.state.previewed.resolve();
-      }
-      if (this.state.executing) {
-        this.state.executing.resolve();
-      }
-      this.setState({
-        errors: errs,
-        previewed: jQuery.Deferred(),
-        ran: jQuery.Deferred(),
+    ws.onclose = () => {
+      this.setState((prevState) => {
+        const errs = prevState.errors ? prevState.errors : [];
+        if (!prevState.pageUnloading && !prevState.websocketErr) {
+          errs.push(t("Websocket connection closed. Refresh the page to try again."));
+        }
+        if (prevState.ran) {
+          prevState.ran.resolve();
+        }
+        if (prevState.previewed) {
+          prevState.previewed.resolve();
+        }
+        if (prevState.executing) {
+          prevState.executing.resolve();
+        }
+        return {
+          errors: errs,
+          previewed: jQuery.Deferred(),
+          ran: jQuery.Deferred(),
+        };
       });
     };
     ws.onerror = (e) => {
-      Loggerhead.error("Websocket error: " + e);
+      Loggerhead.error("Websocket error: ", e);
       this.setState({
         errors: [t("Error connecting to server. Refresh the page to try again.")],
         websocketErr: true,
       });
     };
     ws.onmessage = (e) => {
-      var event = JSON.parse(e.data);
-      var minionsMap: Map<any, any> | undefined;
-      var previewed;
-      var ran;
+      const event = JSON.parse(e.data);
+      let minionsMap: Map<any, any> | undefined;
+      let previewed;
+      let ran;
       switch (event.type) {
-        case "asyncJobStart":
+        case "asyncJobStart": {
           this.setState({
             executing: jQuery.Deferred(),
             errors: [],
@@ -380,23 +386,27 @@ class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandSta
             },
           });
           break;
-        case "match":
-          minionsMap = this.state.result.minions;
-          minionsMap.set(event.minion, { type: "matched", value: null });
+        }
+        case "match": {
+          this.setState((prevState) => {
+            minionsMap = prevState.result.minions;
+            minionsMap.set(event.minion, { type: "matched", value: null });
 
-          if (isPreviewDone(minionsMap, this.state.result.waitForSSH)) {
-            this.state.previewed.resolve();
-            this.state.executing.resolve();
-          }
+            if (isPreviewDone(minionsMap, prevState.result.waitForSSH)) {
+              prevState.previewed.resolve();
+              prevState.executing.resolve();
+            }
 
-          this.setState({
-            result: {
-              minions: minionsMap,
-              waitForSSH: this.state.result.waitForSSH,
-            },
+            return {
+              result: {
+                minions: minionsMap,
+                waitForSSH: prevState.result.waitForSSH,
+              },
+            };
           });
           break;
-        case "matchSSH":
+        }
+        case "matchSSH": {
           minionsMap = event.minions.reduce(
             (map, minionId) => map.set(minionId, { type: "matched", value: null }),
             this.state.result.minions
@@ -414,7 +424,8 @@ class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandSta
             },
           });
           break;
-        case "runResult":
+        }
+        case "runResult": {
           minionsMap = this.state.result.minions;
           minionsMap.set(event.minion, { type: "result", value: event.out });
 
@@ -429,50 +440,54 @@ class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandSta
             },
           });
           break;
-        case "timedOut":
-          minionsMap = this.state.result.minions;
-          var waitForSSH = this.state.result.waitForSSH;
-          var timedOutSSH = this.state.result.timedOutSSH;
-          var timedOutDone;
+        }
+        case "timedOut": {
+          this.setState((prevState) => {
+            minionsMap = prevState.result.minions;
+            let waitForSSH = prevState.result.waitForSSH;
+            let timedOutSSH = prevState.result.timedOutSSH;
+            let timedOutDone;
 
-          if (event.minion) {
-            minionsMap.set(event.minion, { type: "timedOut", value: null });
-            timedOutDone = isTimedOutDone(minionsMap, waitForSSH, this.state.result.timedOutSSH);
-          } else if (event.timedOutSSH) {
-            timedOutDone = isTimedOutDone(minionsMap, waitForSSH, true);
-            waitForSSH = false;
-            timedOutSSH = true;
-          } else {
-            timedOutDone = true;
-          }
-
-          previewed = this.state.previewed;
-          ran = this.state.ran;
-
-          if (timedOutDone) {
-            if (previewed.state() === "pending") {
-              previewed.resolve();
-              ran = jQuery.Deferred();
-            } else if (ran.state() === "pending") {
-              previewed.resolve();
-              ran.resolve();
+            if (event.minion) {
+              minionsMap.set(event.minion, { type: "timedOut", value: null });
+              timedOutDone = isTimedOutDone(minionsMap, waitForSSH, prevState.result.timedOutSSH);
+            } else if (event.timedOutSSH) {
+              timedOutDone = isTimedOutDone(minionsMap, waitForSSH, true);
+              waitForSSH = false;
+              timedOutSSH = true;
+            } else {
+              timedOutDone = true;
             }
-          }
 
-          this.setState({
-            warnings: timedOutDone ? [t("Not all minions responded on time.")] : [],
-            previewed: previewed,
-            ran: ran,
-            executing: timedOutDone ? this.state.executing.resolve() : this.state.executing,
-            result: {
-              minions: minionsMap,
-              waitForSSH: waitForSSH,
-              timedOutSSH: timedOutSSH,
-            },
+            previewed = prevState.previewed;
+            ran = prevState.ran;
+
+            if (timedOutDone) {
+              if (previewed.state() === "pending") {
+                previewed.resolve();
+                ran = jQuery.Deferred();
+              } else if (ran.state() === "pending") {
+                previewed.resolve();
+                ran.resolve();
+              }
+            }
+
+            return {
+              warnings: timedOutDone ? [t("Not all minions responded on time.")] : [],
+              previewed: previewed,
+              ran: ran,
+              executing: timedOutDone ? prevState.executing.resolve() : prevState.executing,
+              result: {
+                minions: minionsMap,
+                waitForSSH: waitForSSH,
+                timedOutSSH: timedOutSSH,
+              },
+            };
           });
           break;
-        case "error":
-          var globalErr: any[] = [];
+        }
+        case "error": {
+          let globalErr: any[] = [];
 
           if (event.minion) {
             minionsMap = this.state.result.minions;
@@ -516,6 +531,7 @@ class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandSta
           }
 
           break;
+        }
       }
     };
 
@@ -545,8 +561,8 @@ class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandSta
   };
 
   commandResult = (result) => {
-    const elements: React.ReactNode[] = [];
-    for (var kv of result.minions) {
+    const elements: ReactNode[] = [];
+    for (const kv of result.minions) {
       const id = kv[0];
       const value = kv[1];
       elements.push(<MinionResultView key={id} id={id} result={value} />);

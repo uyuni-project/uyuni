@@ -1,8 +1,10 @@
 // This binds the global translation logic
 import "core/intl";
 
-import * as React from "react";
+import { cloneElement } from "react";
 import ReactDOM from "react-dom";
+
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
 window.pageRenderers = window.pageRenderers || {};
 window.pageRenderers.spa = window.pageRenderers.spa || {};
@@ -25,19 +27,19 @@ function hasReactApp() {
 }
 
 function renderGlobalReact(element: JSX.Element, container: Element | null | undefined) {
-  if (container == null) {
+  if (DEPRECATED_unsafeEquals(container, null)) {
     throw new Error("The DOM element is not present.");
   }
 
   function registerGlobalRender(instance) {
     window.pageRenderers?.spa?.globalRenderersToUpdate?.push(instance);
   }
-  const elementWithRef = React.cloneElement(element, { ref: registerGlobalRender });
+  const elementWithRef = cloneElement(element, { ref: registerGlobalRender });
   ReactDOM.render(elementWithRef, container);
 }
 
 function renderNavigationReact(element: JSX.Element, container: Element | null | undefined) {
-  if (container == null) {
+  if (DEPRECATED_unsafeEquals(container, null)) {
     throw new Error("The DOM element is not present.");
   }
 

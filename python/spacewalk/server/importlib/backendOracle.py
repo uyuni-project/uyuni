@@ -416,7 +416,6 @@ class OracleBackend(Backend):
                 "gpg_key_id": DBstring(14),
                 "gpg_key_fp": DBstring(50),
                 "end_of_life": DBdateTime(),
-                "receiving_updates": DBstring(1),
                 "last_modified": DBdateTime(),
                 "channel_product_id": DBint(),
                 "checksum_type_id": DBint(),

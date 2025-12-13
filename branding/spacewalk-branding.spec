@@ -25,20 +25,23 @@
 %global tomcat_path %{wwwroot}/tomcat
 %global wwwdocroot %{wwwroot}/htdocs
 Name:           spacewalk-branding
-Version:        5.2.0
+Version:        5.2.2
 Release:        0
 Summary:        %{productprettyname} branding data
 License:        GPL-2.0-only AND OFL-1.1
 # FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
 URL:            https://github.com/uyuni-project/uyuni
+#!CreateArchive: %{name}
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
-BuildRequires:  java-devel >= 11
+BuildRequires:  java-devel >= 17
+BuildRequires:  javapackages-tools
+BuildRequires:  maven-local
+BuildRequires:  uyuni-java-parent
 Requires:       httpd
 Requires:       susemanager-advanced-topics_en-pdf
 Requires:       susemanager-best-practices_en-pdf
 Requires:       susemanager-docs_en
-Requires:       susemanager-frontend-libs
 Requires:       susemanager-getting-started_en-pdf
 Requires:       susemanager-reference_en-pdf
 Requires(pre):  tomcat
@@ -64,10 +67,7 @@ CSS files.
 %setup -q
 
 %build
-
-javac java/code/src/com/redhat/rhn/branding/strings/StringPackage.java
-rm -f java/code/src/com/redhat/rhn/branding/strings/StringPackage.java
-jar -cf java-branding.jar -C java/code/src com
+%{mvn_build} -f
 
 %install
 install -d -m 755 %{buildroot}%{wwwdocroot}
@@ -76,10 +76,17 @@ install -d -m 755 %{buildroot}%{_datadir}/spacewalk/web
 install -d -m 755 %{buildroot}%{_datadir}/rhn/lib/
 install -d -m 755 %{buildroot}%{tomcat_path}/webapps/rhn/WEB-INF/lib/
 install -d -m 755 %{buildroot}/%{_sysconfdir}/rhn
-cp -pR java-branding.jar %{buildroot}%{_datadir}/rhn/lib/
-ln -s %{_datadir}/rhn/lib/java-branding.jar %{buildroot}%{tomcat_path}/webapps/rhn/WEB-INF/lib/java-branding.jar
+mkdir -p %{buildroot}%{_javadir}
+cp -a target/java-branding.jar %{buildroot}%{_javadir}/%{name}-%{version}.jar
+mkdir -p %{buildroot}%{_mavenpomdir}
+cp pom.xml %{buildroot}%{_mavenpomdir}/%{name}.pom
+%add_maven_depmap %{name}.pom %{name}-%{version}.jar
 
-%files
+ln -s %{_javadir}/%{name}-%{version}.jar %{buildroot}%{_datadir}/rhn/lib/java-branding.jar
+ln -s %{_javadir}/%{name}-%{version}.jar %{buildroot}%{tomcat_path}/webapps/rhn/WEB-INF/lib/java-branding.jar
+
+%files -f .mfiles
+%{_javadir}/%{name}-%{version}.jar
 %{_datadir}/spacewalk/
 %{_datadir}/rhn/lib/java-branding.jar
 %{tomcat_path}/webapps/rhn/WEB-INF/lib/java-branding.jar

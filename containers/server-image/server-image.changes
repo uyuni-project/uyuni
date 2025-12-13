@@ -1,4 +1,34 @@
 -------------------------------------------------------------------
+Tue Dec 09 13:51:56 CET 2025 - michael.calmer@suse.com
+
+- version 5.2.4
+  * Add "susemanager-tools", "susemanager" and
+    "susemanager-tools-salt" packages to server-image
+  * Remove container-suseconnect from image
+
+-------------------------------------------------------------------
+Thu Nov 27 10:50:46 CET 2025 - michael.calmer@suse.com
+
+- version 5.2.3
+  * Use BCI init image as base
+
+-------------------------------------------------------------------
+Wed Oct 29 14:12:05 CET 2025 - marina.latini@suse.com
+
+- version 5.2.2
+  * Remove unused susemanager-tftpsync package
+
+-------------------------------------------------------------------
+Tue Oct 28 10:21:35 CET 2025 - rosuna@suse.com
+
+- version 5.2.1
+  * Ignore http proxy for localhost in healthcheck (bsc#1249155)
+  * Add zchunk to server image (bsc#1247687)
+  * Install python-ldap into the server-image (bsc#1245702)
+  * Move jmx configuration to a persisted folder
+    (bsc#1244219)
+
+-------------------------------------------------------------------
 Tue Jun 17 19:47:16 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.7

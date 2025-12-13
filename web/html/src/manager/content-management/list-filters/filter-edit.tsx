@@ -1,5 +1,4 @@
-import * as React from "react";
-import { useEffect, useState } from "react";
+import { type ComponentProps, Fragment, useEffect, useState } from "react";
 
 import { Button } from "components/buttons";
 import { closeDialog, Dialog } from "components/dialog/LegacyDialog";
@@ -13,7 +12,7 @@ import { FilterFormType } from "../shared/type/filter.type";
 import { mapFilterFormToRequest } from "./filter.utils";
 import FilterForm from "./filter-form";
 
-type FilterEditModalContentProps = React.ComponentProps<typeof FilterForm> & {
+type FilterEditModalContentProps = ComponentProps<typeof FilterForm> & {
   open: boolean;
   isLoading: boolean;
 };
@@ -49,10 +48,11 @@ const FilterEditModalContent = ({
 type FilterEditProps = {
   id: string;
   initialFilterForm: Partial<FilterFormType>;
-  icon: string;
-  buttonText: string;
+  icon?: string;
+  buttonText?: string;
+  buttonTitle?: string;
   className?: string;
-  onChange: Function;
+  onChange: (...args: any[]) => any;
   openFilterId?: number;
   projectLabel?: string;
   editing?: boolean;
@@ -64,7 +64,7 @@ const redirectToProject = (projectLabel: string) => {
 
 const FilterEdit = (props: FilterEditProps) => {
   const [open, setOpen] = useState(false);
-  const [item, setFormData] = useState(props.initialFilterForm);
+  const [item, setItem] = useState(props.initialFilterForm);
   const [errors, setErrors] = useState({});
   const [formValidInClient, setFormValidInClient] = useState(true);
   const { onAction, cancelAction, isLoading } = useLifecycleActionsApi({ resource: "filters" });
@@ -78,7 +78,7 @@ const FilterEdit = (props: FilterEditProps) => {
     if (openWithInitial || openCreateWithParams) {
       showDialog(modalNameId);
       setOpen(true);
-      setFormData(props.initialFilterForm);
+      setItem(props.initialFilterForm);
     }
   }, []);
 
@@ -122,20 +122,19 @@ const FilterEdit = (props: FilterEditProps) => {
   const modalTitle = props.editing ? t("Filter Details") : t("Create a new filter");
 
   return (
-    <React.Fragment>
+    <Fragment>
       <ModalButton
         id={`${props.id}-modal-link`}
         icon={props.icon}
         text={props.buttonText}
-        title={props.buttonText}
+        title={props.buttonTitle}
         target={modalNameId}
         className={props.className}
         onClick={() => {
           setOpen(true);
-          setFormData(props.initialFilterForm);
+          setItem(props.initialFilterForm);
         }}
       />
-
       <Dialog
         id={modalNameId}
         title={modalTitle}
@@ -147,7 +146,7 @@ const FilterEdit = (props: FilterEditProps) => {
             filter={item}
             errors={errors}
             open={open}
-            onChange={setFormData}
+            onChange={setItem}
             onClientValidate={setFormValidInClient}
             isLoading={isLoading}
             editing={props.editing}
@@ -155,54 +154,52 @@ const FilterEdit = (props: FilterEditProps) => {
         }
         onClosePopUp={() => setOpen(false)}
         buttons={
-          <React.Fragment>
-            <div className="w-100">
-              {props.editing && (
-                <Button
-                  id={`${props.id}-modal-delete-button`}
-                  className="btn-danger"
-                  text={t("Delete")}
-                  disabled={isLoading}
-                  handler={() => {
-                    onAction(mapFilterFormToRequest(item, props.projectLabel), "delete", itemId)
-                      .then((updatedListOfFilters) => {
-                        closeDialog(modalNameId);
-                        showSuccessToastr(t("Filter deleted successfully"));
-                        props.onChange(updatedListOfFilters);
-                      })
-                      .catch((error) => {
-                        showErrorToastr(error.messages, { autoHide: false });
-                      });
-                  }}
-                />
-              )}
-              <div className="pull-right btn-group">
-                <Button
-                  id={`${props.id}-modal-cancel-button`}
-                  className="btn-default"
-                  text={t("Cancel")}
-                  handler={() => {
-                    cancelAction();
-                    if (props.projectLabel) {
-                      redirectToProject(props.projectLabel);
-                    } else {
+          <div className="w-100">
+            {props.editing && (
+              <Button
+                id={`${props.id}-modal-delete-button`}
+                className="btn-danger pull-left"
+                text={t("Delete")}
+                disabled={isLoading}
+                handler={() => {
+                  onAction(mapFilterFormToRequest(item, props.projectLabel), "delete", itemId)
+                    .then((updatedListOfFilters) => {
                       closeDialog(modalNameId);
-                    }
-                  }}
-                />
-                <Button
-                  id={`${props.id}-modal-save-button`}
-                  className="btn-primary"
-                  text={t("Save")}
-                  disabled={isLoading}
-                  handler={onSave}
-                />
-              </div>
+                      showSuccessToastr(t("Filter deleted successfully"));
+                      props.onChange(updatedListOfFilters);
+                    })
+                    .catch((error) => {
+                      showErrorToastr(error.messages, { autoHide: false });
+                    });
+                }}
+              />
+            )}
+            <div className="pull-right btn-group">
+              <Button
+                id={`${props.id}-modal-cancel-button`}
+                className="btn-default"
+                text={t("Cancel")}
+                handler={() => {
+                  cancelAction();
+                  if (props.projectLabel) {
+                    redirectToProject(props.projectLabel);
+                  } else {
+                    closeDialog(modalNameId);
+                  }
+                }}
+              />
+              <Button
+                id={`${props.id}-modal-save-button`}
+                className="btn-primary"
+                text={t("Save")}
+                disabled={isLoading}
+                handler={onSave}
+              />
             </div>
-          </React.Fragment>
+          </div>
         }
       />
-    </React.Fragment>
+    </Fragment>
   );
 };
 

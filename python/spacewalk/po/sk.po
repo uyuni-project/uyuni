@@ -8,11 +8,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-25 09:41+0200\n"
+"POT-Creation-Date: 2025-08-22 09:58+0200\n"
 "PO-Revision-Date: 2025-03-28 15:56+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
-"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/backend/sk/"
-">\n"
+"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/backend/sk/>\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -34,13 +33,13 @@ msgstr "Zaslaný podpis proxy %s nezodpovedá nášmu %s."
 msgid "declined proxy authentication"
 msgstr "zamietnuté overenie proxy"
 
-#: ../server/apacheRequest.py:67
+#: ../server/apacheRequest.py:68
 #, python-format
 msgid "Invalid request received (%s)."
 msgstr "Prijatá neplatná požiadavka (%s)."
 
 #. Send the message as a fault.
-#: ../server/apacheRequest.py:126
+#: ../server/apacheRequest.py:130
 #, python-format
 msgid ""
 "IMPORTANT MESSAGE FOLLOWS:\n"
@@ -49,7 +48,7 @@ msgstr ""
 "DÔLEŽITÁ SPRÁVA NASLEDUJE:\n"
 "%s"
 
-#: ../server/apacheRequest.py:156
+#: ../server/apacheRequest.py:160
 #, python-format
 msgid ""
 "While running '%s': caught\n"
@@ -59,7 +58,7 @@ msgstr ""
 "%s : %s\n"
 
 #. pylint: disable-next=consider-using-f-string
-#: ../server/apacheRequest.py:671
+#: ../server/apacheRequest.py:675
 #, python-format
 msgid "Invalid URI %s"
 msgstr "Neplatné URI %s"
@@ -73,16 +72,12 @@ msgid ""
 msgstr ""
 "\n"
 "                   Na tomto serveri bol účet %s deaktivovaný.\n"
-"                   Pre ďalšiu pomoc kontaktujte administrátora svojej "
-"organizácie."
+"                   Pre ďalšiu pomoc kontaktujte administrátora svojej organizácie."
 
 #: ../server/handlers/xmlrpc/proxy.py:71
 #, python-format
-msgid ""
-"SUSE Multi-Linux Manager Proxy service not enabled for server profile: \"%s\""
-msgstr ""
-"Služba SUSE Multi-Linux Manager Proxy nie je povolená pre profil servera: "
-"\"%s\""
+msgid "SUSE Multi-Linux Manager Proxy service not enabled for server profile: \"%s\""
+msgstr "Služba SUSE Multi-Linux Manager Proxy nie je povolená pre profil servera: \"%s\""
 
 #: ../server/handlers/xmlrpc/proxy.py:94
 msgid "Invalid session key"
@@ -109,8 +104,7 @@ msgstr "Nemáte oprávnenie vykonávať administratívne úlohy"
 
 #: ../server/importlib/userAuth.py:159
 #, python-format
-msgid ""
-"You are not allowed to manage channel %s, or that channel does not exist"
+msgid "You are not allowed to manage channel %s, or that channel does not exist"
 msgstr "Nemáte oprávnenie spravovať kanál %s, alebo tento kanál neexistuje"
 
 #: ../server/importlib/userAuth.py:229
@@ -122,19 +116,14 @@ msgid ""
 msgstr ""
 "\n"
 "               Na tomto serveri bol účet %s deaktivovaný.\n"
-"               Pre ďalšiu pomoc kontaktujte administrátora svojej "
-"organizácie."
+"               Pre ďalšiu pomoc kontaktujte administrátora svojej organizácie."
 
-#: ../server/rhnChannel.py:2217
+#: ../server/rhnChannel.py:2216
 #, python-format
-msgid ""
-"Your account does not have access to any channels matching "
-"(release='%(release)s', arch='%(arch)s')%(www_activation)s"
-msgstr ""
-"Váš účet nemá prístup k žiadnym kanálom, ktoré zodpovedajú "
-"(vydanie='%(release)s', arch='%(arch)s')%(www_activation)s"
+msgid "Your account does not have access to any channels matching (release='%(release)s', arch='%(arch)s')%(www_activation)s"
+msgstr "Váš účet nemá prístup k žiadnym kanálom, ktoré zodpovedajú (vydanie='%(release)s', arch='%(arch)s')%(www_activation)s"
 
-#: ../server/rhnChannel.py:2236
+#: ../server/rhnChannel.py:2235
 #, python-format
 msgid "Insufficient subscription permissions for release (%s, %s"
 msgstr "Nedostatočné práva predplatného na vydanie (%s, %s"
@@ -143,11 +132,11 @@ msgstr "Nedostatočné práva predplatného na vydanie (%s, %s"
 #.
 #. bretm 02/07/2007 -- when we have better old-client documentation, probably
 #. will be safe to get rid of all this crap
-#: ../server/rhnChannel.py:2550 ../server/rhnChannel.py:2569
+#: ../server/rhnChannel.py:2549 ../server/rhnChannel.py:2568
 msgid "System Registered but Inactive"
 msgstr "Systém je registrovaný, ale neaktívny"
 
-#: ../server/rhnChannel.py:2552
+#: ../server/rhnChannel.py:2551
 #, python-format
 msgid ""
 "\n"
@@ -162,7 +151,7 @@ msgstr ""
 "pretože sa nemohol prihlásiť k základnému kanálu.\n"
 "Požiadajte o pomoc administrátora svojej organizácie.\n"
 
-#: ../server/rhnChannel.py:2561
+#: ../server/rhnChannel.py:2560
 #, python-format
 msgid ""
 "\n"
@@ -172,27 +161,23 @@ msgid ""
 "  %(entitlement_url)s\n"
 msgstr ""
 "\n"
-"  Tento systém bol úspešne zaregistrovaný, ale zatiaľ nie je oprávnený na "
-"službu.\n"
+"  Tento systém bol úspešne zaregistrovaný, ale zatiaľ nie je oprávnený na službu.\n"
 "  Na oprávnenie tohto systému na servis sa prihláste na webovej stránke:\n"
 "\n"
 "  %(entitlement_url)s\n"
 
-#: ../server/rhnChannel.py:2571
+#: ../server/rhnChannel.py:2570
 #, python-format
 msgid ""
 "\n"
 "  This system has been successfully registered, but no service entitlements\n"
-"  were available.  To entitle this system to service, login to the web site "
-"at:\n"
+"  were available.  To entitle this system to service, login to the web site at:\n"
 "\n"
 "  %(entitlement_url)s\n"
 msgstr ""
 "\n"
-"  Tento systém bol úspešne zaregistrovaný, ale neboli k dispozícii žiadne "
-"oprávnenia\n"
-"  na službu.  Na oprávnenie tohto systému na servis sa prihláste na webovej "
-"stránke:\n"
+"  Tento systém bol úspešne zaregistrovaný, ale neboli k dispozícii žiadne oprávnenia\n"
+"  na službu.  Na oprávnenie tohto systému na servis sa prihláste na webovej stránke:\n"
 "\n"
 "  %(entitlement_url)s\n"
 
@@ -241,12 +226,8 @@ msgid "Maximum usage count of %s reached"
 msgstr "Dosiahol sa maximálny počet použití %s"
 
 #: ../server/rhnServer/server_token.py:869
-msgid ""
-"Stacking of re-registration tokens with different base entitlements is not "
-"supported"
-msgstr ""
-"Skladanie tokenov opätovnej registrácie s rôznymi základnými oprávneniami "
-"nie je podporované"
+msgid "Stacking of re-registration tokens with different base entitlements is not supported"
+msgstr "Skladanie tokenov opätovnej registrácie s rôznymi základnými oprávneniami nie je podporované"
 
 #: ../server/rhnServer/server_token.py:946
 #, python-format
@@ -417,18 +398,15 @@ msgid ""
 "     Please re-register this system by running mgr_register as root.\n"
 "     Please visit https://%(hostname)s/rhn/systems/SystemEntitlements.do\n"
 "     or login at https://%(hostname)s, and from the \"Overview\" tab,\n"
-"     select \"Subscription Management\" to enable the service for this "
-"system.\n"
+"     select \"Subscription Management\" to enable the service for this system.\n"
 "     "
 msgstr ""
 "\n"
 "     Funkcia anonymného servera už nie je k dispozícii.\n"
 "\n"
 "     Znova zaregistrujte tento systém spustením mgr_register ako root.\n"
-"     Prosím navštívte https://%(hostname)s/rhn/systems/"
-"SystemEntitlements.do\n"
-"     alebo sa prihláste na https://%(hostname)s a z karty \"Prehľad\" "
-"vyberte\n"
+"     Prosím navštívte https://%(hostname)s/rhn/systems/SystemEntitlements.do\n"
+"     alebo sa prihláste na https://%(hostname)s a z karty \"Prehľad\" vyberte\n"
 "     \"Správa predplatného\" na aktiváciu služby pre tento systém.\n"
 "     "
 
@@ -444,20 +422,16 @@ msgstr "Neplatná hodnota pre položku."
 #, python-format
 msgid ""
 "\n"
-"     This system does not have a valid entitlement for SUSE Multi-Linux "
-"Manager.\n"
+"     This system does not have a valid entitlement for SUSE Multi-Linux Manager.\n"
 "     Please visit https://%(hostname)s/rhn/systems/SystemEntitlements.do\n"
 "     or login at https://%(hostname)s, and from the \"Overview\" tab,\n"
-"     select \"Subscription Management\" to enable the service for this "
-"system.\n"
+"     select \"Subscription Management\" to enable the service for this system.\n"
 "     "
 msgstr ""
 "\n"
 "     Tento systém nemá platné oprávnenie pre SUSE Multi-Linux Manager.\n"
-"     Prosím navštívte https://%(hostname)s/rhn/systems/"
-"SystemEntitlements.do\n"
-"     alebo sa prihláste na https://%(hostname)s a z karty \"Prehľad\" "
-"vyberte\n"
+"     Prosím navštívte https://%(hostname)s/rhn/systems/SystemEntitlements.do\n"
+"     alebo sa prihláste na https://%(hostname)s a z karty \"Prehľad\" vyberte\n"
 "     \"Správa predplatného\"vna aktiváciu služby pre tento systém.\n"
 "     "
 
@@ -507,22 +481,17 @@ msgid ""
 "     User group membership limits exceeded.\n"
 "\n"
 "     The current settings for your account do not allow you to add another\n"
-"     user account. Please check with the organization administrator for "
-"your\n"
-"     account if the maximum number of users allowed to subscribe to server "
-"needs\n"
+"     user account. Please check with the organization administrator for your\n"
+"     account if the maximum number of users allowed to subscribe to server needs\n"
 "     to be changed.\n"
 "     "
 msgstr ""
 "\n"
 "     Limity členstva v používateľských skupinách boli prekročené.\n"
 "\n"
-"     Aktuálne nastavenia vášho účtu vám neumožňujú pridať ďalší "
-"používateľský\n"
-"     účet. Prosím, overte si u administrátora organizácie pre váš účet, či "
-"sa\n"
-"     musí zmeniť maximálny počet používateľov, ktorí sa môžu prihlásiť k "
-"serveru.\n"
+"     Aktuálne nastavenia vášho účtu vám neumožňujú pridať ďalší používateľský\n"
+"     účet. Prosím, overte si u administrátora organizácie pre váš účet, či sa\n"
+"     musí zmeniť maximálny počet používateľov, ktorí sa môžu prihlásiť k serveru.\n"
 "     k serveru.\n"
 "     "
 
@@ -532,10 +501,8 @@ msgid ""
 "     System group membership limits exceeded.\n"
 "\n"
 "     The current settings for your account do not allow you to add another\n"
-"     system profile. Please check with the organization administrator for "
-"your\n"
-"     account for modifying the maximum number of system profiles that can "
-"be\n"
+"     system profile. Please check with the organization administrator for your\n"
+"     account for modifying the maximum number of system profiles that can be\n"
 "     subscribed to your account.\n"
 "     "
 msgstr ""
@@ -544,8 +511,7 @@ msgstr ""
 "\n"
 "     Aktuálne nastavenia vášho účtu vám neumožňujú pridať ďalší systémový\n"
 "     profil. Prosím, obráťte sa na administrátora organizácie pre váš účet,\n"
-"     ak chcete upraviť maximálny počet systémových profilov, ktoré je môžu "
-"byť\n"
+"     ak chcete upraviť maximálny počet systémových profilov, ktoré je môžu byť\n"
 "     prihlásené k vášmu účtu.\n"
 "     "
 
@@ -570,17 +536,13 @@ msgstr "Neplatná hlavička RPM"
 #: ../common/rhnException.py:138
 msgid ""
 "\n"
-"    This system is already registered as a Salt Minion. If you want to "
-"register it as a traditional client\n"
-"    please delete it first via the web UI or API and then register it using "
-"the traditional tools.\n"
+"    This system is already registered as a Salt Minion. If you want to register it as a traditional client\n"
+"    please delete it first via the web UI or API and then register it using the traditional tools.\n"
 "    "
 msgstr ""
 "\n"
-"    Tento systém je už zaregistrovaný ako Salt Minion. Ak ho chcete "
-"zaregistrovať ako tradičného klienta,\n"
-"    najskôr ho vymažte cez webové UI alebo API a potom ho zaregistrujte "
-"pomocou tradičných nástrojov.\n"
+"    Tento systém je už zaregistrovaný ako Salt Minion. Ak ho chcete zaregistrovať ako tradičného klienta,\n"
+"    najskôr ho vymažte cez webové UI alebo API a potom ho zaregistrujte pomocou tradičných nástrojov.\n"
 "    "
 
 #. For the uploading tools
@@ -610,14 +572,12 @@ msgstr ""
 msgid ""
 "\n"
 "     The --force mgrpush option is disabled on this server.\n"
-"     Please contact your SUSE Multi-Linux Manager administrator for more "
-"help.\n"
+"     Please contact your SUSE Multi-Linux Manager administrator for more help.\n"
 "     "
 msgstr ""
 "\n"
 "     Na tomto serveri je zakázaná voľba --force mgrpush.\n"
-"     Pre ďalšiu pomoc kontaktujte svojho administrátora SUSE Multi-Linux "
-"Manager.\n"
+"     Pre ďalšiu pomoc kontaktujte svojho administrátora SUSE Multi-Linux Manager.\n"
 "     "
 
 #: ../common/rhnException.py:161
@@ -634,8 +594,7 @@ msgstr ""
 
 #: ../common/rhnException.py:166
 msgid "Too many systems registered using this registration token"
-msgstr ""
-"Pomocou tohto registračného tokenu bolo zaregistrovaných príliš veľa systémov"
+msgstr "Pomocou tohto registračného tokenu bolo zaregistrovaných príliš veľa systémov"
 
 #: ../common/rhnException.py:167
 msgid "Token contains invalid, obsoleted or insufficient settings"
@@ -675,8 +634,7 @@ msgstr "Nemôžete sa odhlásiť zo základného kanála."
 
 #: ../common/rhnException.py:183
 msgid "SUSE Multi-Linux Manager or Proxy channel can not be subscribed."
-msgstr ""
-"Nie je možné prihlásiť sa k SUSE Multi-Linux Manager alebo Proxy kanálu."
+msgstr "Nie je možné prihlásiť sa k SUSE Multi-Linux Manager alebo Proxy kanálu."
 
 #. 80-90: server group errors
 #: ../common/rhnException.py:185
@@ -750,14 +708,12 @@ msgstr "SUSE Multi-Linux Manager Proxy sa nemôže prihlásiť."
 #: ../common/rhnException.py:210
 msgid ""
 "\n"
-"     SUSE Multi-Linux Manager Proxy system ID does not match a Spacewalk "
-"Proxy Server\n"
+"     SUSE Multi-Linux Manager Proxy system ID does not match a Spacewalk Proxy Server\n"
 "     in the database.\n"
 "     "
 msgstr ""
 "\n"
-"     ID systému SUSE Multi-Linux Manager Proxy nezodpovedá Spacewalk Proxy "
-"Server\n"
+"     ID systému SUSE Multi-Linux Manager Proxy nezodpovedá Spacewalk Proxy Server\n"
 "     v databáze.\n"
 "     "
 
@@ -784,13 +740,11 @@ msgstr ""
 #: ../common/rhnException.py:226
 msgid ""
 "\n"
-"     This SUSE Multi-Linux Manager server is not allowed to use Inter Server "
-"Sync on this server\n"
+"     This SUSE Multi-Linux Manager server is not allowed to use Inter Server Sync on this server\n"
 "     "
 msgstr ""
 "\n"
-"     Tento server SUSE Multi-Linux Manager nemá povolenie na tomto serveri "
-"používať Inter Server Sync\n"
+"     Tento server SUSE Multi-Linux Manager nemá povolenie na tomto serveri používať Inter Server Sync\n"
 "     "
 
 #: ../common/rhnException.py:231
@@ -800,8 +754,7 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"     Inter Server Sync je zakázaný na tomto SUSE Multi-Linux Manager "
-"Server.\n"
+"     Inter Server Sync je zakázaný na tomto SUSE Multi-Linux Manager Server.\n"
 "     "
 
 #. 3000-3999: XML dumper errors:
@@ -1039,17 +992,14 @@ msgstr ""
 msgid ""
 "\n"
 "ERROR: There was a problem communicating with the ISS Master.\n"
-"       Depending on the specific error details, please review your "
-"configuration,\n"
+"       Depending on the specific error details, please review your configuration,\n"
 "       basic network connectivity, and/or name resolution, and try again.\n"
 "       Error message: %s\n"
 msgstr ""
 "\n"
 "CHYBA: Pri komunikácii s ISS Master sa vyskytol problém.\n"
-"       V závislosti od konkrétnych podrobností o chybe skontrolujte svoju "
-"konfiguráciu,\n"
-"       základné sieťové pripojenie a/alebo rozlíšenie názvov a skúste "
-"znova.\n"
+"       V závislosti od konkrétnych podrobností o chybe skontrolujte svoju konfiguráciu,\n"
+"       základné sieťové pripojenie a/alebo rozlíšenie názvov a skúste znova.\n"
 "       Chybová správa: %s\n"
 
 #: ../satellite_tools/messages.py:61
@@ -1057,16 +1007,14 @@ msgstr ""
 msgid ""
 "\n"
 "ERROR: a child-channel cannot be synced without its parent being synced as\n"
-"       well. A parent needs to be either (a) previously synced or (b) "
-"synced\n"
+"       well. A parent needs to be either (a) previously synced or (b) synced\n"
 "       in tandem with the desired child-channel. Missing parents for this\n"
 "       transaction:\n"
 "       %s\n"
 msgstr ""
 "\n"
 "CHYBA: kanál potomka nie je možné synchronizovať bez synchronizácie jeho\n"
-"       rodiča. Rodič musí byť buď (a) predtým synchronizovaný alebo (b) "
-"synchronizovaný\n"
+"       rodiča. Rodič musí byť buď (a) predtým synchronizovaný alebo (b) synchronizovaný\n"
 "       spolu s požadovaným kanálom potomka. Chýbajúci rodičia pre túto\n"
 "       transakciu:\n"
 "       %s\n"
@@ -1242,26 +1190,18 @@ msgstr "+++ požadovaný e-mail, ale nie je čo +++"
 #~ msgid "seconds"
 #~ msgstr "sekundy"
 
-#~ msgid ""
-#~ "ERROR: The dump is missing package data, use --no-rpms to skip this step "
-#~ "or fix the content to include package data."
-#~ msgstr ""
-#~ "CHYBA: Na výpise chýbajú dáta balíkov, použite --no-rpms na preskočenie "
-#~ "tohto kroku alebo opravte obsah tak, aby obsahoval dáta balíkov."
+#~ msgid "ERROR: The dump is missing package data, use --no-rpms to skip this step or fix the content to include package data."
+#~ msgstr "CHYBA: Na výpise chýbajú dáta balíkov, použite --no-rpms na preskočenie tohto kroku alebo opravte obsah tak, aby obsahoval dáta balíkov."
 
-#~ msgid ""
-#~ "The SUSE Multi-Linux Manager master does not support syncing orgs data."
-#~ msgstr ""
-#~ "SUSE Multi-Linux Manager master nepodporuje synchronizáciu údajov "
-#~ "organizácií."
+#~ msgid "The SUSE Multi-Linux Manager master does not support syncing orgs data."
+#~ msgstr "SUSE Multi-Linux Manager master nepodporuje synchronizáciu údajov organizácií."
 
 #~ msgid "Skipping..."
 #~ msgstr "Preskakovanie..."
 
 #, python-format
 #~ msgid "SUSE Multi-Linux Manager Inter Server sync. report from %s"
-#~ msgstr ""
-#~ "Správa synchronizácie pre SUSE Multi-Linux Manager Inter Server od %s"
+#~ msgstr "Správa synchronizácie pre SUSE Multi-Linux Manager Inter Server od %s"
 
 #~ msgid " - file-system synchronization"
 #~ msgstr " - synchronizácia súborového systému"
@@ -1271,17 +1211,11 @@ msgstr "+++ požadovaný e-mail, ale nie je čo +++"
 
 #, python-brace-format
 #~ msgid ""
-#~ "ERROR: Live content synchronizing with RHN Classic Hosted is no longer "
-#~ "supported.\n"
-#~ "Please use the cdn-sync command instead unless you are attempting to sync "
-#~ "from another {PRODUCT_NAME} via Inter-Server-Sync (ISS), or from local "
-#~ "content on disk via Channel Dump ISOs."
+#~ "ERROR: Live content synchronizing with RHN Classic Hosted is no longer supported.\n"
+#~ "Please use the cdn-sync command instead unless you are attempting to sync from another {PRODUCT_NAME} via Inter-Server-Sync (ISS), or from local content on disk via Channel Dump ISOs."
 #~ msgstr ""
-#~ "CHYBA: Synchronizácia živého obsahu so serverom RHN Classic Hosted už nie "
-#~ "je podporovaná.\n"
-#~ "Namiesto toho použite príkaz cdn-sync, pokiaľ sa nepokúšate "
-#~ "synchronizovať s ďalším {PRODUCT_NAME} cez Inter-Satelite-Sync (ISS) "
-#~ "alebo s lokálnym obsahom na disku cez Channel Dump ISO."
+#~ "CHYBA: Synchronizácia živého obsahu so serverom RHN Classic Hosted už nie je podporovaná.\n"
+#~ "Namiesto toho použite príkaz cdn-sync, pokiaľ sa nepokúšate synchronizovať s ďalším {PRODUCT_NAME} cez Inter-Satelite-Sync (ISS) alebo s lokálnym obsahom na disku cez Channel Dump ISO."
 
 #, python-format
 #~ msgid "   url: %s"
@@ -1292,8 +1226,7 @@ msgstr "+++ požadovaný e-mail, ale nie je čo +++"
 #~ msgstr "   ladiaca/výstupná úroveň: %s"
 
 #~ msgid "ERROR: this server must be registered with SUSE Multi-Linux Manager."
-#~ msgstr ""
-#~ "CHYBA: tento server musí byť zaregistrovaný v SUSE Multi-Linux Manager."
+#~ msgstr "CHYBA: tento server musí byť zaregistrovaný v SUSE Multi-Linux Manager."
 
 #, python-format
 #~ msgid "Retrieving / parsing %s data"
@@ -1317,12 +1250,8 @@ msgstr "+++ požadovaný e-mail, ale nie je čo +++"
 #~ msgstr "CHYBA: vyskytla sa výnimka (počas analýzy): "
 
 #, python-format
-#~ msgid ""
-#~ "   Encountered some errors with %s data (see logs (%s) for more "
-#~ "information)"
-#~ msgstr ""
-#~ "   Vyskytli sa nejaké chyby s dátami %s (ďalšie informácie nájdete v "
-#~ "záznamoch (%s))"
+#~ msgid "   Encountered some errors with %s data (see logs (%s) for more information)"
+#~ msgstr "   Vyskytli sa nejaké chyby s dátami %s (ďalšie informácie nájdete v záznamoch (%s))"
 
 #, python-format
 #~ msgid "   Encountered some errors with %s data:"
@@ -1505,12 +1434,8 @@ msgstr "+++ požadovaný e-mail, ale nie je čo +++"
 #~ msgid "Importing:  "
 #~ msgstr "Importovanie:  "
 
-#~ msgid ""
-#~ "Package Not Found in Cache, Clear the Cache "
-#~ "to                                  Regenerate it."
-#~ msgstr ""
-#~ "Balík sa nenašiel vo vyrovnávacej pamäti, vyčistite vyrovnávaciu pamäť "
-#~ "do                                  Obnovte ju."
+#~ msgid "Package Not Found in Cache, Clear the Cache to                                  Regenerate it."
+#~ msgstr "Balík sa nenašiel vo vyrovnávacej pamäti, vyčistite vyrovnávaciu pamäť do                                  Obnovte ju."
 
 #~ msgid "Importing channel patches"
 #~ msgstr "Importovanie opráv kanálov"
@@ -1520,8 +1445,7 @@ msgstr "+++ požadovaný e-mail, ale nie je čo +++"
 #~ msgstr "Importovanie %s opráv pre kanál %s."
 
 #~ msgid "ERROR: server.mount_point not set in the configuration file"
-#~ msgstr ""
-#~ "CHYBA: server.bod_pripojenia nie je nastavený v konfiguračnom súbore"
+#~ msgstr "CHYBA: server.bod_pripojenia nie je nastavený v konfiguračnom súbore"
 
 #, python-format
 #~ msgid "ERROR: server.mount_point %s do not exist"
@@ -1536,39 +1460,24 @@ msgstr "+++ požadovaný e-mail, ale nie je čo +++"
 #~ msgstr "Príkazový riadok: %s"
 
 #, python-format
-#~ msgid ""
-#~ "DEBUG ONLY: max. batch-size for XML/database-import processing (1..%s)."
-#~ "\"man mgr-inter-sync\" for more information."
-#~ msgstr ""
-#~ "IBA LADIŤ: max. veľkosť-dávky pre spracovanie XML/database-import "
-#~ "(1..%s). Viac informácií v \"man mgr-inter-sync\"."
+#~ msgid "DEBUG ONLY: max. batch-size for XML/database-import processing (1..%s).\"man mgr-inter-sync\" for more information."
+#~ msgstr "IBA LADIŤ: max. veľkosť-dávky pre spracovanie XML/database-import (1..%s). Viac informácií v \"man mgr-inter-sync\"."
 
 #~ msgid "alternative SSL CA Cert (fullpath to cert file)"
-#~ msgstr ""
-#~ "alternatívny SSL CA certifikát (úplná cesta k certifikačnému súboru)"
+#~ msgstr "alternatívny SSL CA certifikát (úplná cesta k certifikačnému súboru)"
 
 #~ msgid "process data for this channel only"
 #~ msgstr "spracovať dáta iba pre tento kanál"
 
-#~ msgid ""
-#~ "disk dump will be considered to be a full export; see \"man mgr-inter-"
-#~ "sync\" for more information."
-#~ msgstr ""
-#~ "výpis disku sa bude považovať za úplný export; ďalšie informácie nájdete "
-#~ "v \"man mgr-inter-sync\"."
+#~ msgid "disk dump will be considered to be a full export; see \"man mgr-inter-sync\" for more information."
+#~ msgstr "výpis disku sa bude považovať za úplný export; ďalšie informácie nájdete v \"man mgr-inter-sync\"."
 
 #~ msgid "existing custom channels will also be synced (unless -c is used)"
-#~ msgstr ""
-#~ "existujúce vlastné kanály budú tiež synchronizované (pokiaľ sa nepoužije "
-#~ "-c)"
+#~ msgstr "existujúce vlastné kanály budú tiež synchronizované (pokiaľ sa nepoužije -c)"
 
 #, python-format
-#~ msgid ""
-#~ "override debug level set in /etc/rhn/rhn.conf (which is currently set at "
-#~ "%s)."
-#~ msgstr ""
-#~ "prepísať nastavenie úrovne ladenia v /etc/rhn/rhn.conf (ktoré je "
-#~ "momentálne nastavené na %s)."
+#~ msgid "override debug level set in /etc/rhn/rhn.conf (which is currently set at %s)."
+#~ msgstr "prepísať nastavenie úrovne ladenia v /etc/rhn/rhn.conf (ktoré je momentálne nastavené na %s)."
 
 #, python-format
 #~ msgid "requested version of XML dump (default: %s)"
@@ -1593,8 +1502,7 @@ msgstr "+++ požadovaný e-mail, ale nie je čo +++"
 #~ msgstr "heslo alternatívneho http proxy"
 
 #~ msgid "parent SUSE Multi-Linux Manager to import content from"
-#~ msgstr ""
-#~ "rodičovský SUSE Multi-Linux Manager, z ktorého sa má importovať obsah"
+#~ msgstr "rodičovský SUSE Multi-Linux Manager, z ktorého sa má importovať obsah"
 
 #~ msgid "list all available channels and exit"
 #~ msgstr "vypísať zoznam všetkých dostupných kanálov a ukončiť"
@@ -1618,9 +1526,7 @@ msgstr "+++ požadovaný e-mail, ale nie je čo +++"
 #~ msgstr "nesťahovať ani nespracovávať žiadne RPM"
 
 #~ msgid "org to which the sync imports data. defaults to the admin account"
-#~ msgstr ""
-#~ "organizácia, do ktorej synchronizácia importuje dáta. predvolené "
-#~ "nastavenia pre účet administrátora"
+#~ msgstr "organizácia, do ktorej synchronizácia importuje dáta. predvolené nastavenia pre účet administrátora"
 
 #~ msgid "print the configuration and exit"
 #~ msgstr "vytlačiť konfiguráciu a ukončiť"
@@ -1629,39 +1535,26 @@ msgstr "+++ požadovaný e-mail, ale nie je čo +++"
 #~ msgstr "alternatívny server, s ktorým sa možno spojiť (názov hostiteľa)"
 
 #~ msgid "synchronize to this step (man mgr-inter-sync for more info)"
-#~ msgstr ""
-#~ "synchronizovať s týmto krokom (viac informácií v man mgr-inter-sync)"
+#~ msgstr "synchronizovať s týmto krokom (viac informácií v man mgr-inter-sync)"
 
 #~ msgid "write complete data to tempfile before streaming to remainder of app"
-#~ msgstr ""
-#~ "zapísať kompletné dáta do dočasného súboru pred streamovaním do zvyšku "
-#~ "aplikácie"
+#~ msgstr "zapísať kompletné dáta do dočasného súboru pred streamovaním do zvyšku aplikácie"
 
 #~ msgid "DEBUG ONLY: alternative path to digital system id"
 #~ msgstr "IBA LADIŤ: alternatívna cesta k digitálnemu systémovému id"
 
 #~ msgid "alternative email address(es) for sync output (--email option)"
-#~ msgstr ""
-#~ "alternatívne emailové adresa(y) pre synchronizovaný výstup (voľba --email)"
+#~ msgstr "alternatívne emailové adresa(y) pre synchronizovaný výstup (voľba --email)"
 
 #~ msgid "do not remove rpms when importing from local dump"
 #~ msgstr "neodstraňovať rpm pri importe z lokálneho výpisu"
 
-#~ msgid ""
-#~ "the fully qualified domain name of the master Satellite. Valid with --"
-#~ "mount-point only. Required if you want to import org data and channel "
-#~ "permissions."
-#~ msgstr ""
-#~ "plne kvalifikovaný názov domény hlavného Satellite. Platné iba s --mount-"
-#~ "point. Vyžaduje sa, ak chcete importovať dáta organizácie a oprávnenia "
-#~ "kanálov."
+#~ msgid "the fully qualified domain name of the master Satellite. Valid with --mount-point only. Required if you want to import org data and channel permissions."
+#~ msgstr "plne kvalifikovaný názov domény hlavného Satellite. Platné iba s --mount-point. Vyžaduje sa, ak chcete importovať dáta organizácie a oprávnenia kanálov."
 
 #, python-format
-#~ msgid ""
-#~ "ERROR: these arguments make no sense in this context (try --help): %s"
-#~ msgstr ""
-#~ "CHYBA: tieto argumenty nedávajú v tejto súvislosti žiadny zmysel (skúste "
-#~ "--help): %s"
+#~ msgid "ERROR: these arguments make no sense in this context (try --help): %s"
+#~ msgstr "CHYBA: tieto argumenty nedávajú v tejto súvislosti žiadny zmysel (skúste --help): %s"
 
 #, python-format
 #~ msgid "ERROR: Can't connect to the database: %s"
@@ -1689,34 +1582,22 @@ msgstr "+++ požadovaný e-mail, ale nie je čo +++"
 #~ msgid "  4+ - excessive logging/messaging."
 #~ msgstr "  4+ - nadmerné zaznamenávanie/odosielanie správ."
 
-#~ msgid ""
-#~ "ERROR: The --master option is only valid with the --mount-point option"
+#~ msgid "ERROR: The --master option is only valid with the --mount-point option"
 #~ msgstr "CHYBA: Voľba --master je platná iba s voľbou --mount-point"
 
 #, python-format
 #~ msgid "ERROR: Unable to lookup Org Id %s"
 #~ msgstr "CHYBA: Nepodarilo sa nájsť Org Id %s"
 
-#~ msgid ""
-#~ "WARNING: --list-channels option overrides any --step option. --step "
-#~ "ignored."
-#~ msgstr ""
-#~ "UPOZORNENIE: Voľba --list-channels prepíše akúkoľvek voľbu --step. Voľba "
-#~ "--step je ignorovaná."
+#~ msgid "WARNING: --list-channels option overrides any --step option. --step ignored."
+#~ msgstr "UPOZORNENIE: Voľba --list-channels prepíše akúkoľvek voľbu --step. Voľba --step je ignorovaná."
 
 #, python-format
-#~ msgid ""
-#~ "ERROR: '%s' is not a valid step. See 'man mgr-inter-sync' for more detail."
-#~ msgstr ""
-#~ "CHYBA: '%s' nie je platný krok. Ďalšie informácie nájdete v 'man mgr-"
-#~ "inter-sync'."
+#~ msgid "ERROR: '%s' is not a valid step. See 'man mgr-inter-sync' for more detail."
+#~ msgstr "CHYBA: '%s' nie je platný krok. Ďalšie informácie nájdete v 'man mgr-inter-sync'."
 
-#~ msgid ""
-#~ "ERROR: No channels currently imported; try mgr-inter-sync --list-"
-#~ "channels; then mgr-inter-sync -c chn0 -c chn1..."
-#~ msgstr ""
-#~ "CHYBA: Momentálne nie sú importované žiadne kanály; skúste mgr-inter-sync "
-#~ "--list-channels; potom mgr-inter-sync -c chn0 -c chn1..."
+#~ msgid "ERROR: No channels currently imported; try mgr-inter-sync --list-channels; then mgr-inter-sync -c chn0 -c chn1..."
+#~ msgstr "CHYBA: Momentálne nie sú importované žiadne kanály; skúste mgr-inter-sync --list-channels; potom mgr-inter-sync -c chn0 -c chn1..."
 
 #~ msgid "ERROR: --batch-size must have a value within the range: 1..50"
 #~ msgstr "CHYBA: --batch-size musí mať hodnotu v rozsahu: 1..50"
@@ -1729,9 +1610,7 @@ msgstr "+++ požadovaný e-mail, ale nie je čo +++"
 #~ msgstr "Chybové kódy: Vrátené kódy znamenajú:"
 
 #~ msgid " -1  - Could not lock file or KeyboardInterrupt or SystemExit"
-#~ msgstr ""
-#~ " -1  - Nepodarilo sa zamknúť súbor alebo PrerušenieKlávesnice alebo "
-#~ "UkončenieSystém"
+#~ msgstr " -1  - Nepodarilo sa zamknúť súbor alebo PrerušenieKlávesnice alebo UkončenieSystém"
 
 #~ msgid "  0  - User interrupted or intentional exit"
 #~ msgstr "  0  - Používateľ prerušil alebo úmyselne ukončil"
@@ -1782,15 +1661,10 @@ msgstr "+++ požadovaný e-mail, ale nie je čo +++"
 #~ msgstr "  15 - chyba SQL počas spracovania xml"
 
 #~ msgid "  16 - server.mount_point not set in the configuration file"
-#~ msgstr ""
-#~ "  16 - server.bod_pripojenia nie je nastavené v konfiguračnom súbore"
+#~ msgstr "  16 - server.bod_pripojenia nie je nastavené v konfiguračnom súbore"
 
-#~ msgid ""
-#~ "  17 - SQL error during retrieving the channels already imported in the "
-#~ "SUSE Multi-Linux Manager database"
-#~ msgstr ""
-#~ "  17 - chyba SQL počas získavania kanálov už importovaných v databáze "
-#~ "SUSE Multi-Linux Manager"
+#~ msgid "  17 - SQL error during retrieving the channels already imported in the SUSE Multi-Linux Manager database"
+#~ msgstr "  17 - chyba SQL počas získavania kanálov už importovaných v databáze SUSE Multi-Linux Manager"
 
 #~ msgid "  18 - Wrong db connection string in rhn.conf"
 #~ msgstr "  18 - Nesprávny reťazec pripojenia db v rhn.conf"
@@ -1858,11 +1732,8 @@ msgstr "+++ požadovaný e-mail, ale nie je čo +++"
 #~ msgid "Invalid system release version requested"
 #~ msgstr "Požaduje sa neplatná verzia vydania systému"
 
-#~ msgid ""
-#~ "Unable to find a valid network interface, both ipaddr and ip6addr not "
-#~ "found."
-#~ msgstr ""
-#~ "Nepodarilo sa nájsť platné sieťové rozhranie, ipaddr a ip6addr sa nenašli."
+#~ msgid "Unable to find a valid network interface, both ipaddr and ip6addr not found."
+#~ msgstr "Nepodarilo sa nájsť platné sieťové rozhranie, ipaddr a ip6addr sa nenašli."
 
 #, python-brace-format
 #~ msgid "{PRODUCT_NAME} Welcome Message"
@@ -1928,13 +1799,11 @@ msgstr "+++ požadovaný e-mail, ale nie je čo +++"
 
 #~ msgid ""
 #~ "\n"
-#~ "If you have a registration number, please register with it first at "
-#~ "http://www.redhat.com/apps/activate/ and then try again.\n"
+#~ "If you have a registration number, please register with it first at http://www.redhat.com/apps/activate/ and then try again.\n"
 #~ "\n"
 #~ msgstr ""
 #~ "\n"
-#~ "Ak máte registračné číslo, zaregistrujte sa s ním najskôr na http://"
-#~ "www.redhat.com/apps/activate/ a potom skúste znova.\n"
+#~ "Ak máte registračné číslo, zaregistrujte sa s ním najskôr na http://www.redhat.com/apps/activate/ a potom skúste znova.\n"
 #~ "\n"
 
 #~ msgid ""
@@ -1961,21 +1830,16 @@ msgstr "+++ požadovaný e-mail, ale nie je čo +++"
 #~ msgid ""
 #~ "\n"
 #~ "ERROR: There was a problem communicating with the ISS Master.\n"
-#~ "       If the master satellite is older than v5.3, it does not have ISS "
-#~ "capability.\n"
-#~ "       Otherwise, depending on the specific error details, please review "
-#~ "your\n"
-#~ "       configuration, basic network connectivity, and/or name resolution, "
-#~ "and try again.\n"
+#~ "       If the master satellite is older than v5.3, it does not have ISS capability.\n"
+#~ "       Otherwise, depending on the specific error details, please review your\n"
+#~ "       configuration, basic network connectivity, and/or name resolution, and try again.\n"
 #~ "       Error message: %s\n"
 #~ msgstr ""
 #~ "\n"
 #~ "CHYBA: Pri komunikácii s ISS Master sa vyskytol problém.\n"
 #~ "       Ak je hlavný satellite starší ako v5.3, nemá schopnosť ISS.\n"
-#~ "       Inak v závislosti od konkrétnych podrobností o chybe skontrolujte "
-#~ "svoju\n"
-#~ "       konfiguráciu, základné sieťové pripojenie a/alebo rozlíšenie "
-#~ "názvov a skúste znova.\n"
+#~ "       Inak v závislosti od konkrétnych podrobností o chybe skontrolujte svoju\n"
+#~ "       konfiguráciu, základné sieťové pripojenie a/alebo rozlíšenie názvov a skúste znova.\n"
 #~ "       Chybová správa: %s\n"
 
 #~ msgid "Red Hat Satellite Welcome Message"

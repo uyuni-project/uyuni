@@ -1,5 +1,4 @@
-import * as React from "react";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 
 import { docsLocale, productName } from "core/user-preferences";
 
@@ -22,7 +21,7 @@ const UyuniThemeLogin = (props: ThemeProps) => {
   const { product } = props;
 
   return (
-    <React.Fragment>
+    <Fragment>
       <header className="navbar-pf navbar" role="presentation" />
       <div className="spacewalk-main-column-layout">
         <section className={styles.contentArea}>
@@ -99,11 +98,7 @@ const UyuniThemeLogin = (props: ThemeProps) => {
                   disabled={isLoading}
                 />
               </form>
-              {props.legalNote ? (
-                <>
-                  <p className="gray-text small-text">{props.legalNote}</p>
-                </>
-              ) : null}
+              {props.legalNote ? <p className="gray-text small-text">{props.legalNote}</p> : null}
             </div>
           </div>
         </section>
@@ -129,7 +124,7 @@ const UyuniThemeLogin = (props: ThemeProps) => {
           </div>
         </div>
       </div>
-    </React.Fragment>
+    </Fragment>
   );
 };
 

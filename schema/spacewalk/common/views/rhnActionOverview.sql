@@ -25,10 +25,6 @@ rhnActionOverview
     	scheduler,
 	scheduler_login,
 	earliest_action,
-	total_count,
-	successful_count,
-	failed_count,
-	in_progress_count,
 	archived
 )
 AS
@@ -40,10 +36,6 @@ SELECT    A.org_id,
 	  A.scheduler,
 	  U.login,
 	  A.earliest_action,
-	  (SELECT COUNT(*) FROM rhnServerAction WHERE action_id = A.id),
-	  (SELECT COUNT(*) FROM rhnServerAction WHERE action_id = A.id AND status = 2), -- XXX: don''t hard code status here :)
-	  (SELECT COUNT(*) FROM rhnServerAction WHERE action_id = A.id AND status = 3),
-	  (SELECT COUNT(*) FROM rhnServerAction WHERE action_id = A.id AND status NOT IN (2, 3)),
 	  A.archived
 FROM
 	  rhnActionType AT,

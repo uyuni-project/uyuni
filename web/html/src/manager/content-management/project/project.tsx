@@ -1,8 +1,5 @@
 import "./project.css";
 
-import { hot } from "react-hot-loader/root";
-
-import * as React from "react";
 import { useEffect, useState } from "react";
 
 import _groupBy from "lodash/groupBy";
@@ -188,4 +185,4 @@ const Project = (props: Props) => {
   );
 };
 
-export default hot(withPageWrapper<Props>(Project));
+export default withPageWrapper<Props>(Project);

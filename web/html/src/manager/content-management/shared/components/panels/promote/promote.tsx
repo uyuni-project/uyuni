@@ -1,5 +1,4 @@
-import * as React from "react";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 
 import { isOrgAdmin } from "core/auth/auth.utils";
 import useRoles from "core/auth/use-roles";
@@ -22,8 +21,8 @@ type Props = {
   environmentTarget: ProjectEnvironmentType;
   environmentNextTarget: ProjectEnvironmentType;
   versionToPromote: number;
-  historyEntries: Array<ProjectHistoryEntry>;
-  onChange: Function;
+  historyEntries: ProjectHistoryEntry[];
+  onChange: (...args: any[]) => any;
 };
 
 const Promote = (props: Props) => {
@@ -75,25 +74,24 @@ const Promote = (props: Props) => {
           isLoading ? (
             <Loading text={t("Promoting project..")} />
           ) : (
-            <React.Fragment>
+            <Fragment>
               <dl className="row">
-                <dt className="col-4 col-xs-4">{t("Version")}:</dt>
-                <dd className="col-8 col-xs-8">
+                <dt className="col-4">{t("Version")}:</dt>
+                <dd className="col-8">
                   <BuildVersion
                     id={`${props.environmentPromote.version}_promote_${props.environmentTarget.id}`}
                     text={
                       getVersionMessageByNumber(props.environmentPromote.version, props.historyEntries) ||
                       t("not built")
                     }
-                    collapsed={true}
                   />
                 </dd>
               </dl>
               <dl className="row">
-                <dt className="col-4 col-xs-4">{t("Target environment")}:</dt>
-                <dd className="col-8 col-xs-8">{props.environmentTarget.name}</dd>
+                <dt className="col-4">{t("Target environment")}:</dt>
+                <dd className="col-8">{props.environmentTarget.name}</dd>
               </dl>
-            </React.Fragment>
+            </Fragment>
           )
         }
         title={t("Promote version {version} into {environmentName}", {
@@ -106,15 +104,13 @@ const Promote = (props: Props) => {
               <Button
                 className="btn-default"
                 text={t("Cancel")}
-                title={t("Cancel")}
                 handler={() => {
                   closeDialog(modalNameId);
                 }}
               />
               <Button
                 className="btn-primary"
-                text={t("Promote")}
-                title={t("Promote environment")}
+                text={t("Promote environment")}
                 handler={() => {
                   onAction(
                     {

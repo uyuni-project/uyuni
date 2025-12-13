@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import { Button, SubmitButton } from "components/buttons";
 import { DEPRECATED_Select } from "components/input";
@@ -26,7 +26,7 @@ type State = {
   isInvalid?: boolean;
 };
 
-class VirtualHostManagerEdit extends React.Component<Props, State> {
+class VirtualHostManagerEdit extends Component<Props, State> {
   form?: HTMLFormElement;
 
   constructor(props) {
@@ -59,7 +59,7 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
   };
 
   setValues(item) {
-    var m: any = {};
+    const m: any = {};
     m["id"] = item.id;
     m["label"] = item.label;
     m["gathererModule"] = item.gathererModule;
@@ -79,9 +79,9 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
   setKubeconfigContexts = (id) => {
     Network.get("/rhn/manager/api/vhms/kubeconfig/" + id + "/contexts")
       .then((data) => {
-        this.setState({
-          model: Object.assign(this.state.model, { contexts: data.data }),
-        });
+        this.setState((prevState) => ({
+          model: Object.assign(prevState.model, { contexts: data.data }),
+        }));
       })
       .catch(this.handleResponseError);
   };
@@ -90,7 +90,7 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
     return this.props.item ? true : false;
   }
 
-  onUpdate = (model) => {
+  onUpdate = () => {
     if (!this.isEdit()) {
       return false;
     }
@@ -111,13 +111,13 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
     }
 
     return request
-      .then((data) => {
+      .then(() => {
         Utils.urlBounce("/rhn/manager/vhms");
       })
       .catch(this.handleResponseError);
   };
 
-  onCreate = (model) => {
+  onCreate = () => {
     if (this.isEdit()) {
       return false;
     }
@@ -138,7 +138,7 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
     }
 
     return request
-      .then((data) => {
+      .then(() => {
         Utils.urlBounce("/rhn/manager/vhms");
       })
       .catch(this.handleResponseError);
@@ -152,9 +152,9 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
 
   onValidate = (isValid) => {
     if (this.props.type.toLowerCase() === "kubernetes" && !this.isEdit()) {
-      this.setState({
-        isInvalid: !isValid || !this.state.validKubeconfig,
-      });
+      this.setState((prevState) => ({
+        isInvalid: !isValid || !prevState.validKubeconfig,
+      }));
     } else {
       this.setState({
         isInvalid: !isValid,
@@ -169,8 +169,16 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
   };
 
   renderButtons() {
-    var buttons = [
-      <div className="btn-group pull-right">
+    const buttons = [
+      <Button
+        id="clear-btn"
+        key="clear-btn"
+        className="btn-default"
+        icon="fa-eraser"
+        text={t("Clear fields")}
+        handler={this.clearFields}
+      />,
+      <div className="pull-right" key="back">
         <Button
           id="back"
           className="btn-default"
@@ -179,20 +187,14 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
           title={t("Back")}
           handler={this.props.onCancel}
         />
-        <Button
-          id="clear-btn"
-          className="btn-default"
-          icon="fa-eraser"
-          text={t("Clear fields")}
-          handler={this.clearFields}
-        />
       </div>,
     ];
     if (this.isEdit()) {
       buttons.unshift(
         <SubmitButton
           id="update-btn"
-          className="btn-primary"
+          key="update-btn"
+          className="btn-primary me-4"
           icon="fa-edit"
           text={t("Update")}
           disabled={this.state.isInvalid}
@@ -202,7 +204,8 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
       buttons.unshift(
         <SubmitButton
           id="create-btn"
-          className="btn-primary"
+          key="create-btn"
+          className="btn-primary me-4"
           icon="fa-plus"
           text={t("Create")}
           disabled={this.state.isInvalid}
@@ -213,8 +216,8 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
     return buttons;
   }
 
-  paramField(name, defaultValue) {
-    let required = this.isEdit() ? name !== "password" && name !== "username" : true;
+  paramField(name) {
+    const required = this.isEdit() ? name !== "password" && name !== "username" : true;
     if (name.toLowerCase() === "password") {
       return (
         <Password
@@ -254,7 +257,7 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
     if (!this.state.vhmParams) {
       return null;
     }
-    var fields = Object.keys(this.state.vhmParams).map((param) => this.paramField(param, this.state.vhmParams[param]));
+    const fields = Object.keys(this.state.vhmParams).map((param) => this.paramField(param));
 
     fields.unshift(<Text name="label" label={t("Label")} required labelClass="col-md-3" divClass="col-md-6" />);
 
@@ -265,8 +268,8 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
   };
 
   handleKubeconfigUpload = (event) => {
-    let kubeconfig = event.target.files[0];
-    let formData = new FormData();
+    const kubeconfig = event.target.files[0];
+    const formData = new FormData();
     formData.append("kubeconfig", kubeconfig);
     Network.post("/rhn/manager/api/vhms/kubeconfig/validate", formData, "multipart/form-data", false)
       .then((res) => {
@@ -276,14 +279,14 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
           data.currentContext = "<default>";
         }
         if (data.contexts) {
-          this.setState({
+          this.setState((prevState) => ({
             messages: null,
             validKubeconfig: true,
-            model: Object.assign(this.state.model, {
+            model: Object.assign(prevState.model, {
               contexts: data.contexts,
               module_context: data.currentContext,
             }),
-          });
+          }));
         }
       })
       .catch((jqXHR) => {
@@ -295,7 +298,7 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
   };
 
   renderKubernetesForm = () => {
-    var contextSelect;
+    let contextSelect;
     if (this.state.model.contexts) {
       contextSelect = (
         <DEPRECATED_Select
@@ -342,7 +345,7 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
         model={this.state.model}
         className="virtualhostmanager-form"
         onChange={this.onFormChange}
-        onSubmit={(e) => (this.isEdit() ? this.onUpdate(e) : this.onCreate(e))}
+        onSubmit={() => (this.isEdit() ? this.onUpdate() : this.onCreate())}
         onValidate={this.onValidate}
         formRef={this.bindForm}
       >

@@ -1,7 +1,7 @@
-import * as React from "react";
-
 import { DEPRECATED_Select } from "components/input";
 import { Form } from "components/input/form/Form";
+
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
 type SearchFieldOption = {
   label: string;
@@ -32,7 +32,7 @@ type SearchFieldProps = {
   onSearchField?: (field: string) => void;
 
   /** filtering function */
-  // This is manually used in TableDataHandler as an argument to SimpleDataProvider
+  // This is manually used in TableDataHandler as an argument to filter rows locally in SimpleDataProvider
   filter?: (datum: any, criteria?: string) => boolean;
 
   /** input field name */
@@ -42,12 +42,12 @@ type SearchFieldProps = {
 /** Text input search field */
 export function SearchField(props: SearchFieldProps) {
   // Dummy model and onChange to reuse the Select component as it requires a Form
-  let model = {};
+  const model = {};
   const onChange = () => {};
 
   return (
     <Form model={model} onChange={onChange} title={t("Filter")}>
-      {props.options != null && (
+      {!DEPRECATED_unsafeEquals(props.options, null) && (
         <DEPRECATED_Select
           name="filter"
           placeholder={t("Select a filter")}
@@ -63,7 +63,7 @@ export function SearchField(props: SearchFieldProps) {
           className="form-control table-input-search"
           data-testid="default-table-search"
           value={props.criteria || ""}
-          placeholder={props.placeholder}
+          placeholder={props.placeholder ?? t("Search")}
           type="text"
           onChange={(e) => props.onSearch?.(e.target.value)}
           name={props.name}

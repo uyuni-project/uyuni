@@ -1,0 +1,117 @@
+<%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn"%>
+<!--  Channel-overview-tasks -->
+<!--  Divide into three sections, Deploy, Compare, and Add/Create -->
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4><bean:message key="channelOverview.jsp.actions" /></h4>
+    </div>
+    <ul class="list-group">
+        <%-- This is here so that we can display a message if none of the following tables get shown --%>
+        <c:set var="tableshown" scope="request" value="false" />
+
+        <rhn:require acl="config_channel_type(state)" mixins="com.redhat.rhn.common.security.acl.ConfigAclHandler">
+            <c:set var="tableshown" scope="request" value="true" />
+            <li class="list-group-item">
+                <strong>
+                    <bean:message key="channelOverview.jsp.tasks.initsls" />
+                </strong>
+            </li>
+            <li class="list-group-item">
+                <a href="/rhn/configuration/file/FileDetails.do?cfid=${initsls.id}">
+                    <rhn:icon type="system-state"/>
+                    <bean:message key="channelOverview.jsp.tasks.viewinitsls" />
+                </a>
+            </li>
+        </rhn:require>
+
+        <rhn:require acl="not config_channel_type(server_import); config_channel_has_files(); config_channel_has_systems(); not config_channel_type(state)"
+                     mixins="com.redhat.rhn.common.security.acl.ConfigAclHandler">
+            <c:set var="tableshown" scope="request" value="true" />
+
+            <li class="list-group-item">
+                <strong>
+                    <bean:message key="channelOverview.jsp.tasks.deploy" />
+                </strong>
+            </li>
+            <li class="list-group-item">
+                <a href="/rhn/configuration/channel/ChannelDeployTasks.do?ccid=${ccid}&amp;mode=all2all">
+                    <bean:message key="channelOverview.jsp.tasks.deployAll2All" />
+                </a>
+            </li>
+            <li class="list-group-item">
+                <a href="/rhn/configuration/channel/ChannelDeployTasks.do?ccid=${ccid}&amp;mode=sel2all">
+                    <bean:message key="channelOverview.jsp.tasks.deploySel2All" />
+                </a>
+            </li>
+            <li class="list-group-item">
+                <a href="/rhn/configuration/channel/ChannelDeployTasks.do?ccid=${ccid}&amp;mode=all2sel">
+                    <bean:message key="channelOverview.jsp.tasks.deployAll2Sel" />
+                </a>
+            </li>
+            <li class="list-group-item">
+                <a href="/rhn/configuration/channel/ChannelDeployTasks.do?ccid=${ccid}&amp;mode=sel2sel">
+                    <bean:message key="channelOverview.jsp.tasks.deploySel2Sel" />
+                </a>
+            </li>
+
+        </rhn:require>
+
+        <rhn:require acl="config_channel_has_files(); config_channel_has_systems(); not config_channel_type(state)"
+                     mixins="com.redhat.rhn.common.security.acl.ConfigAclHandler">
+            <c:set var="tableshown" scope="request" value="true" />
+            <!-- Compare Files table -->
+            <div class="list-group-item">
+                <strong>
+                    <bean:message key="channelOverview.jsp.tasks.compare" />
+                </strong>
+            </div>
+            <li class="list-group-item">
+                <a href="/rhn/configuration/channel/ChannelDeployTasks.do?ccid=${ccid}&amp;mode=compare">
+                    <bean:message key="channelOverview.jsp.tasks.compareAll" />
+                </a>
+            </li>
+        </rhn:require>
+
+        <rhn:require acl="config_channel_editable()" mixins="com.redhat.rhn.common.security.acl.ConfigAclHandler">
+            <c:set var="tableshown" scope="request" value="true" />
+            <!-- Add/Create Files table -->
+            <div class="list-group-item">
+                <strong>
+                    <bean:message key="channelOverview.jsp.tasks.modify" />
+                </strong>
+            </div>
+            <li class="list-group-item">
+                <a href="/rhn/configuration/ChannelCreateFiles.do?ccid=${ccid}">
+                    <rhn:icon type="item-add"/>
+                    <c:choose>
+                        <c:when test="${type == 'state'}">
+                            <bean:message key="channelOverview.jsp.tasks.modifyCreate.state" />
+                        </c:when>
+                        <c:otherwise>
+                            <bean:message key="channelOverview.jsp.tasks.modifyCreate" />
+                        </c:otherwise>
+                    </c:choose>
+                </a>
+            </li>
+            <li class="list-group-item">
+                <a href="/rhn/configuration/ChannelUploadFiles.do?ccid=${ccid}">
+                    <rhn:icon type="item-upload"/>
+                    <bean:message key="channelOverview.jsp.tasks.modifyUpload" />
+                </a>
+            </li>
+            <li class="list-group-item">
+                <a href="/rhn/configuration/ChannelImportFiles.do?ccid=${ccid}">
+                    <rhn:icon type="item-import"/>
+                    <bean:message key="channelOverview.jsp.tasks.modifyImport" />
+                </a>
+            </li>
+        </rhn:require>
+
+        <%-- If none of the tables got shown, show a message --%>
+        <c:if test="${not tableshown}">
+            <li class="list-group-item">
+                <bean:message key="channelOverview.jsp.tasks.noTasks" />
+            </li>
+        </c:if>
+    </ul>
+</div>

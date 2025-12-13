@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type ReactNode, Component, useEffect, useState } from "react";
 
 import _partition from "lodash/partition";
 
@@ -10,12 +10,12 @@ import { DangerDialog } from "components/dialog/DangerDialog";
 import { Dialog } from "components/dialog/Dialog";
 import { DEPRECATED_Select, Form } from "components/input";
 import { ChannelLink } from "components/links";
-import { Messages, MessageType } from "components/messages/messages";
-import { Utils as MessagesUtils } from "components/messages/messages";
+import { Messages, MessageType, Utils as MessagesUtils } from "components/messages/messages";
 import { SectionToolbar } from "components/section-toolbar/section-toolbar";
 import { CustomDataHandler } from "components/table/CustomDataHandler";
 import { SearchField } from "components/table/SearchField";
 import { Toggler } from "components/toggler";
+import { DEPRECATED_onClick } from "components/utils";
 
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network from "utils/network";
@@ -72,25 +72,29 @@ function reloadData() {
   return Network.get("/rhn/manager/api/admin/products");
 }
 
+type ProductsPageWrapperProps = Record<never, never>;
+
+class ProductsPageWrapperState {
+  issMaster = window.issMaster_flag_from_backend;
+  refreshNeeded = window.refreshNeeded_flag_from_backend;
+  refreshRunning = window.refreshRunning_flag_from_backend || window.scc_refresh_file_locked_status;
+  noToolsChannelSubscription = window.noToolsChannelSubscription_flag_from_backend;
+  serverData: any[] = [];
+  errors: MessageType[] = [];
+  loading = true;
+  selectedItems: any[] = [];
+  sccSyncRunning = false;
+  addingProducts = false;
+  scheduledItems: any[] = [];
+  scheduleResyncItems: any[] = [];
+}
+
 /**
  * Generate the page wrapper, tabs, scc-popup,
  * and everything around the product list except the list
  */
-class ProductsPageWrapper extends React.Component {
-  state = {
-    issMaster: window.issMaster_flag_from_backend,
-    refreshNeeded: window.refreshNeeded_flag_from_backend,
-    refreshRunning: window.refreshRunning_flag_from_backend || window.scc_refresh_file_locked_status,
-    noToolsChannelSubscription: window.noToolsChannelSubscription_flag_from_backend,
-    serverData: [] as any[],
-    errors: [] as MessageType[],
-    loading: true,
-    selectedItems: [] as any[],
-    sccSyncRunning: false,
-    addingProducts: false,
-    scheduledItems: [] as any[],
-    scheduleResyncItems: [] as any[],
-  };
+class ProductsPageWrapper extends Component<ProductsPageWrapperProps, ProductsPageWrapperState> {
+  state = new ProductsPageWrapperState();
 
   UNSAFE_componentWillMount() {
     if (!this.state.refreshRunning) {
@@ -109,11 +113,10 @@ class ProductsPageWrapper extends React.Component {
 
   refreshServerData = () => {
     this.setState({ loading: true });
-    const currentObject = this;
 
     loadMetadata()
       .then((metadata) => {
-        currentObject.setState({
+        this.setState({
           issMaster: metadata.issMaster,
           refreshNeeded: metadata.refreshNeeded,
           refreshRunning: metadata.refreshRunning || metadata.refreshFileLocked,
@@ -121,12 +124,12 @@ class ProductsPageWrapper extends React.Component {
         });
 
         if (
-          currentObject.state.noToolsChannelSubscription &&
-          currentObject.state.issMaster &&
-          !currentObject.state.refreshNeeded &&
-          !currentObject.state.refreshRunning
+          this.state.noToolsChannelSubscription &&
+          this.state.issMaster &&
+          !this.state.refreshNeeded &&
+          !this.state.refreshRunning
         ) {
-          currentObject.setState({
+          this.setState({
             errors: MessagesUtils.warning(
               t(
                 "No SUSE Multi-Linux Manager Server Subscription available. Products requiring Client Tools Channel will not be shown."
@@ -139,7 +142,7 @@ class ProductsPageWrapper extends React.Component {
 
     reloadData()
       .then((data) => {
-        currentObject.setState({
+        this.setState({
           serverData: data[_DATA_ROOT_ID],
           loading: false,
           selectedItems: [],
@@ -151,17 +154,21 @@ class ProductsPageWrapper extends React.Component {
   };
 
   handleSelectedItems = (items) => {
-    let arr = this.state.selectedItems;
-    // add all items those are not yet in the existsing set
-    arr = arr.concat(items.filter((i) => !arr.map((a) => a.identifier).includes(i.identifier)));
-    this.setState({ selectedItems: arr });
+    this.setState((prevState) => {
+      let arr = prevState.selectedItems;
+      // add all items those are not yet in the existsing set
+      arr = arr.concat(items.filter((i) => !arr.map((a) => a.identifier).includes(i.identifier)));
+      return { selectedItems: arr };
+    });
   };
 
   handleUnselectedItems = (items) => {
-    let arr = this.state.selectedItems;
-    // keep all items in the existsing set those are not in the unselected items
-    arr = arr.filter((a) => !items.map((i) => i.identifier).includes(a.identifier));
-    this.setState({ selectedItems: arr });
+    this.setState((prevState) => {
+      let arr = prevState.selectedItems;
+      // keep all items in the existsing set those are not in the unselected items
+      arr = arr.filter((a) => !items.map((i) => i.identifier).includes(a.identifier));
+      return { selectedItems: arr };
+    });
   };
 
   clearSelection = () => {
@@ -182,15 +189,16 @@ class ProductsPageWrapper extends React.Component {
   };
 
   submit = () => {
-    const currentObject = this;
-    currentObject.setState({ addingProducts: true, errors: [] });
+    this.setState({ addingProducts: true, errors: [] });
     Network.post(
       "/rhn/manager/admin/setup/products",
-      currentObject.state.selectedItems.map((i) => i.identifier)
+      this.state.selectedItems.map((i) => i.identifier)
     )
       .then((data) => {
         // returned data format is { productId : "error" }. If the value is null or missing the operation succeeded
-        let failedProducts = currentObject.state.selectedItems.filter((i) => data[i.identifier] != null);
+        const failedProducts = this.state.selectedItems.filter(
+          (i) => !DEPRECATED_unsafeEquals(data[i.identifier], null)
+        );
         let resultMessages: MessageType[] | null = null;
         if (failedProducts.length === 0) {
           resultMessages = MessagesUtils.success("Selected channels/products were scheduled successfully for syncing.");
@@ -205,38 +213,40 @@ class ProductsPageWrapper extends React.Component {
             t("The following product installations failed. Please check log files.")
           );
         }
-        currentObject.setState({
+        this.setState({
           errors: resultMessages,
           selectedItems: [],
           addingProducts: false,
         });
         this.refreshServerData();
       })
-      .catch(currentObject.handleResponseError);
+      .catch(this.handleResponseError);
   };
 
   resyncProduct = (id, name) => {
-    const currentObject = this;
-    currentObject.state.scheduledItems.concat([id]);
-    var scheduleResyncItemsNew = currentObject.state.scheduleResyncItems.concat([id]);
-    currentObject.setState({ scheduleResyncItems: scheduleResyncItemsNew });
-    Network.post("/rhn/manager/admin/setup/products", [id])
-      .then((data) => {
-        // if the id is not present in the response or it is null, the operation went fine.
-        if (data[id] == null) {
-          currentObject.setState({
-            errors: MessagesUtils.success("The product '" + name + "' sync has been scheduled successfully"),
-            scheduleResyncItems: scheduleResyncItemsNew.filter((i) => !DEPRECATED_unsafeEquals(i, id)),
-            scheduledItems: currentObject.state.scheduledItems.concat([id]),
-          });
-        } else {
-          currentObject.setState({
-            errors: MessagesUtils.warning("The product '" + name + "' sync was not scheduled correctly: " + data[id]),
-            scheduleResyncItems: scheduleResyncItemsNew.filter((i) => !DEPRECATED_unsafeEquals(i, id)),
-          });
-        }
-      })
-      .catch(currentObject.handleResponseError);
+    this.setState((prevState) => {
+      const scheduleResyncItemsNew = prevState.scheduleResyncItems.concat([id]);
+
+      Network.post("/rhn/manager/admin/setup/products", [id])
+        .then((data) => {
+          // if the id is not present in the response or it is null, the operation went fine.
+          if (DEPRECATED_unsafeEquals(data[id], null)) {
+            this.setState((innerPrevState) => ({
+              errors: MessagesUtils.success("The product '" + name + "' sync has been scheduled successfully"),
+              scheduleResyncItems: scheduleResyncItemsNew.filter((i) => !DEPRECATED_unsafeEquals(i, id)),
+              scheduledItems: innerPrevState.scheduledItems.concat([id]),
+            }));
+          } else {
+            this.setState({
+              errors: MessagesUtils.warning("The product '" + name + "' sync was not scheduled correctly: " + data[id]),
+              scheduleResyncItems: scheduleResyncItemsNew.filter((i) => !DEPRECATED_unsafeEquals(i, id)),
+            });
+          }
+        })
+        .catch(this.handleResponseError);
+
+      return { scheduleResyncItems: scheduleResyncItemsNew };
+    });
   };
 
   addOptionalChannels = (product, channels) => {
@@ -244,7 +254,7 @@ class ProductsPageWrapper extends React.Component {
     Network.post("/rhn/manager/admin/setup/channels/optional", channels)
       .then((data) => {
         // returned data format is { channel : "error" }. If the value is null or missing the operation succeeded
-        let failedChannels = channels.filter((c) => data[c] != null);
+        const failedChannels = channels.filter((c) => !DEPRECATED_unsafeEquals(data[c], null));
         let resultMessages: MessageType[] | null = null;
         if (failedChannels.length === 0) {
           resultMessages = MessagesUtils.success(t("Selected channels were scheduled successfully for syncing."));
@@ -270,10 +280,12 @@ class ProductsPageWrapper extends React.Component {
   };
 
   handleResponseError = (jqXHR: JQueryXHR, arg = {}) => {
-    const msg = Network.responseErrorMessage(jqXHR, (status, msg) =>
-      messageMap[msg] ? t(messageMap[msg], arg) : null
-    );
-    this.setState({ errors: this.state.errors.concat(msg) });
+    this.setState((prevState) => {
+      const msg = Network.responseErrorMessage(jqXHR, (status, msg) =>
+        messageMap[msg] ? t(messageMap[msg], arg) : null
+      );
+      return { errors: prevState.errors.concat(msg) };
+    });
   };
 
   render() {
@@ -288,8 +300,8 @@ class ProductsPageWrapper extends React.Component {
       const submitButtonTitle = this.state.sccSyncRunning
         ? t("The product catalog is still refreshing, please wait.")
         : this.state.selectedItems.length === 0
-        ? t("Select some product first.")
-        : undefined;
+          ? t("Select some product first.")
+          : undefined;
       const addProductButton =
         this.state.sccSyncRunning || this.state.selectedItems.length === 0 || this.state.addingProducts ? (
           <Button
@@ -415,15 +427,17 @@ type ProductsProps = {
   handleUnselectedItems: (...args: any[]) => any;
 };
 
+class ProductsState {
+  popupItem: null | unknown = null;
+  archCriteria: any[] = [];
+  visibleSubList: any[] = [];
+}
+
 /**
  * Show the products data
  */
-class Products extends React.Component<ProductsProps> {
-  state = {
-    popupItem: null,
-    archCriteria: [] as any[],
-    visibleSubList: [] as any[],
-  };
+class Products extends Component<ProductsProps, ProductsState> {
+  state = new ProductsState();
 
   getDistinctArchsFromData = (data: any[] = []) => {
     return Array.from(new Set(data.map((item) => item.arch)))
@@ -468,13 +482,15 @@ class Products extends React.Component<ProductsProps> {
   };
 
   handleVisibleSublist = (id) => {
-    let arr = this.state.visibleSubList;
-    if (arr.includes(id)) {
-      arr = arr.filter((i) => i !== id);
-    } else {
-      arr = arr.concat([id]);
-    }
-    this.setState({ visibleSubList: arr });
+    this.setState((prevState) => {
+      let arr = prevState.visibleSubList;
+      if (arr.includes(id)) {
+        arr = arr.filter((i) => i !== id);
+      } else {
+        arr = arr.concat([id]);
+      }
+      return { visibleSubList: arr };
+    });
   };
 
   render() {
@@ -553,7 +569,7 @@ type CheckListProps = {
 /**
  * Generate a custom list of elements for the products data
  */
-class CheckList extends React.Component<CheckListProps> {
+class CheckList extends Component<CheckListProps> {
   isRootLevel = (level) => {
     return DEPRECATED_unsafeEquals(level, 1);
   };
@@ -638,14 +654,16 @@ type CheckListItemProps = {
   handleUnselectedItems: (...args: any[]) => any;
 };
 
+class CheckListItemState {
+  withRecommended = true;
+}
+
 /**
  * A component to generate a list item which contains
  * all information for a single product
  */
-class CheckListItem extends React.Component<CheckListItemProps> {
-  state = {
-    withRecommended: true,
-  };
+class CheckListItem extends Component<CheckListItemProps, CheckListItemState> {
+  state = new CheckListItemState();
 
   UNSAFE_componentWillReceiveProps(nextProps) {
     if (this.isSelected(nextProps.item, nextProps.bypassProps.selectedItems)) {
@@ -673,7 +691,7 @@ class CheckListItem extends React.Component<CheckListItemProps> {
     const currentItem = this.props.item;
 
     // add base product first (the server fails if it tries to add extentions first)
-    var arr = [this.props.item];
+    let arr = [this.props.item];
 
     // this item was selected but it is going to be removed from the selected set,
     // so all children are going to be removed as well
@@ -698,7 +716,7 @@ class CheckListItem extends React.Component<CheckListItemProps> {
   };
 
   getChildrenTree = (item) => {
-    var arr = this.getNestedData(item);
+    const arr = this.getNestedData(item);
     let nestedArr = [];
     arr.forEach((child) => {
       nestedArr = nestedArr.concat(this.getChildrenTree(child));
@@ -719,19 +737,23 @@ class CheckListItem extends React.Component<CheckListItemProps> {
   };
 
   handleWithRecommended = () => {
-    const withRecommendedNow = !this.state.withRecommended;
-    this.setState({ withRecommended: withRecommendedNow });
-    // only if this item is already selected
-    if (this.isSelected(this.props.item, this.props.bypassProps.selectedItems)) {
-      const arr = this.getRecommendedChildrenTree(this.props.item);
-      // if the recommended flag is now enabled, select all recommended children
-      if (withRecommendedNow) {
-        this.props.handleSelectedItems(arr);
-      } // else unselected them all
-      else {
-        this.props.handleUnselectedItems(arr);
+    this.setState((prevState) => {
+      const withRecommendedNow = !prevState.withRecommended;
+
+      // only if this item is already selected
+      if (this.isSelected(this.props.item, this.props.bypassProps.selectedItems)) {
+        const arr = this.getRecommendedChildrenTree(this.props.item);
+        // if the recommended flag is now enabled, select all recommended children
+        if (withRecommendedNow) {
+          this.props.handleSelectedItems(arr);
+        } // else unselected them all
+        else {
+          this.props.handleUnselectedItems(arr);
+        }
       }
-    }
+
+      return { withRecommended: withRecommendedNow };
+    });
   };
 
   // check if all recommended children are in the selection set,
@@ -758,7 +780,11 @@ class CheckListItem extends React.Component<CheckListItemProps> {
   };
 
   getNestedData = (item) => {
-    if (item && this.props.bypassProps.nestedKey && item[this.props.bypassProps.nestedKey] != null) {
+    if (
+      item &&
+      this.props.bypassProps.nestedKey &&
+      !DEPRECATED_unsafeEquals(item[this.props.bypassProps.nestedKey], null)
+    ) {
       return item[this.props.bypassProps.nestedKey];
     }
     return [];
@@ -800,7 +826,7 @@ class CheckListItem extends React.Component<CheckListItemProps> {
     const currentItem = this.props.item;
 
     /** generate item selector content **/
-    let selectorContent: React.ReactNode = null;
+    let selectorContent: ReactNode = null;
     if (this.props.bypassProps.isSelectable && currentItem.status === _PRODUCT_STATUS.available) {
       selectorContent = (
         <input
@@ -837,7 +863,7 @@ class CheckListItem extends React.Component<CheckListItemProps> {
       showNestedDataIconContent = (
         <i
           className={"fa " + openSubListIconClass + " fa-1-5x pointer product-hover"}
-          onClick={() => this.props.bypassProps.handleVisibleSublist(currentItem.identifier)}
+          {...DEPRECATED_onClick(() => this.props.bypassProps.handleVisibleSublist(currentItem.identifier))}
         />
       );
     }
@@ -849,8 +875,11 @@ class CheckListItem extends React.Component<CheckListItemProps> {
       handleDescriptionClick = () => this.props.bypassProps.handleVisibleSublist(currentItem.identifier);
       hoverableDescriptionClass = "product-hover pointer";
     }
-    let productDescriptionContent = (
-      <span className={"product-description " + hoverableDescriptionClass} onClick={handleDescriptionClick}>
+    const productDescriptionContent = (
+      <span
+        className={"product-description " + hoverableDescriptionClass}
+        {...DEPRECATED_onClick(handleDescriptionClick)}
+      >
         {currentItem.label}&nbsp;
         {currentItem.recommended ? (
           <span className="recommended-tag" title={"This extension is recommended"}>
@@ -876,13 +905,13 @@ class CheckListItem extends React.Component<CheckListItemProps> {
     /** generate channel sync status **/
     let channelSyncContent;
     if (this.isInstalled()) {
-      let currentProductChannels = currentItem.channels.filter((c) => c.status !== _CHANNEL_STATUS.notSynced);
+      const currentProductChannels = currentItem.channels.filter((c) => c.status !== _CHANNEL_STATUS.notSynced);
       channelSyncContent = this.channelsStatusSync(currentProductChannels, true);
     }
 
     let childProductChannelSyncContent;
     if (this.isInstalled()) {
-      let childProductChannels: any[] = [];
+      const childProductChannels: any[] = [];
 
       // add all channels of the subtree
       this.getChildrenTree(currentItem)
@@ -977,7 +1006,7 @@ class CheckListItem extends React.Component<CheckListItemProps> {
             {channelSyncContent}
             {childProductChannelSyncContent}
             <button
-              className="btn-link showChannels"
+              className="btn btn-tertiary showChannels"
               onClick={() => this.props.bypassProps.showChannelsfor(currentItem)}
               title={t("Show product's channels")}
             >
@@ -1017,13 +1046,13 @@ class CheckListItem extends React.Component<CheckListItemProps> {
 }
 
 const ChannelsPopUp = (props) => {
-  const [checked, setChecked] = React.useState<boolean[]>([]);
-  const [installed, setInstalled] = React.useState<boolean>(props.item.status === _PRODUCT_STATUS.installed);
+  const [checked, setChecked] = useState<boolean[]>([]);
+  const [installed, setInstalled] = useState<boolean>(props.item.status === _PRODUCT_STATUS.installed);
 
   const sorted = props.item.channels.sort((a, b) => a.label.toLowerCase().localeCompare(b.label.toLowerCase()));
   const [mandatoryChannels, optionalChannels] = _partition(sorted, (c) => !c.optional);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setInstalled(props.item.status === _PRODUCT_STATUS.installed);
     setChecked(optionalChannels.map((i) => i.status === _CHANNEL_STATUS.synced));
   }, [props.item]);
@@ -1044,11 +1073,12 @@ const ChannelsPopUp = (props) => {
     const channels = optionalChannels
       .filter((item, index) => checked[index])
       .filter((c) => c.status === _CHANNEL_STATUS.notSynced || c.status === _CHANNEL_STATUS.failed);
-    channels.length !== 0 &&
+    if (channels.length !== 0) {
       props.addOptionalChannels(
         props.item.label,
         channels.map((c) => c.label)
       );
+    }
   };
 
   const titlePopup = t("Product Channels - ") + props.item.label;
@@ -1079,7 +1109,6 @@ const ChannelsPopUp = (props) => {
       onClose={() => props.onClose()}
       content={contentPopup}
       submitText={t("Confirm")}
-      submitIcon="fa-check"
       btnClass="btn-primary"
       onConfirm={showConfirm() ? () => addOptionalChannels() : undefined}
     />
@@ -1095,7 +1124,7 @@ const ChannelsPopUp = (props) => {
 };
 
 const decodeChannelStatus = (status) => {
-  let decoded: React.ReactNode = "";
+  let decoded: ReactNode = "";
   switch (status) {
     case _CHANNEL_STATUS.notSynced:
       decoded = <span className="text-muted">{t("not synced")}</span>;

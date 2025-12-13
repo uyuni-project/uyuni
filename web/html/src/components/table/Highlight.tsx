@@ -1,4 +1,4 @@
-import * as React from "react";
+import type { ReactNode } from "react";
 
 type HighlightProps = {
   /** text to display */
@@ -15,11 +15,11 @@ type HighlightProps = {
 };
 
 /** Search and highlight part of a text */
-export function Highlight(props: HighlightProps) {
-  let text = props.text;
-  let high = props.highlight;
+export function Highlight({ enabled = false, ...props }: HighlightProps) {
+  const text = props.text;
+  const high = props.highlight;
 
-  if (!props.enabled || !high) {
+  if (!enabled || !high) {
     return (
       <span key="hl" className={props.className}>
         {text}
@@ -27,7 +27,7 @@ export function Highlight(props: HighlightProps) {
     );
   }
 
-  let pos = text.toLocaleLowerCase().indexOf(high.toLocaleLowerCase());
+  const pos = text.toLocaleLowerCase().indexOf(high.toLocaleLowerCase());
   if (pos < 0) {
     return (
       <span key="hl" className={props.className}>
@@ -36,9 +36,9 @@ export function Highlight(props: HighlightProps) {
     );
   }
 
-  let chunk1: React.ReactNode = text.substring(0, pos);
-  let chunk2: React.ReactNode = text.substring(pos, pos + high.length);
-  let chunk3: React.ReactNode = text.substring(pos + high.length, text.length);
+  let chunk1: ReactNode = text.substring(0, pos);
+  let chunk2: ReactNode = text.substring(pos, pos + high.length);
+  let chunk3: ReactNode = text.substring(pos + high.length, text.length);
 
   chunk1 = chunk1 ? <span key="m1">{chunk1}</span> : null;
   chunk2 = chunk2 ? (
@@ -56,6 +56,3 @@ export function Highlight(props: HighlightProps) {
     </span>
   );
 }
-Highlight.defaultProps = {
-  enabled: false,
-};

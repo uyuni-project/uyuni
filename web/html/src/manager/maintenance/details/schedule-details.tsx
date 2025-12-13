@@ -1,4 +1,3 @@
-import * as React from "react";
 import { useEffect, useState } from "react";
 
 import { WebCalendar } from "manager/maintenance/calendar/web-calendar";
@@ -8,8 +7,7 @@ import { DeleteDialog } from "components/dialog/DeleteDialog";
 import { ModalButton } from "components/dialog/ModalButton";
 import { IconTag } from "components/icontag";
 import { SystemLink } from "components/links";
-import { Utils as MessagesUtils } from "components/messages/messages";
-import { MessageType } from "components/messages/messages";
+import { MessageType, Utils as MessagesUtils } from "components/messages/messages";
 import { BootstrapPanel } from "components/panels/BootstrapPanel";
 import { TabLabel } from "components/tab-container";
 import { Column } from "components/table/Column";
@@ -24,7 +22,7 @@ import CancelActionsDialog from "../shared/cancel-actions-dialog";
 type MaintenanceScheduleDetailsProps = {
   id: number;
   name: string; // Name of the maintenance schedule
-  eventNames: Array<string>;
+  eventNames: string[];
   type: "SINGLE" | "MULTI";
   calendarName: string | undefined;
   onDelete: (item: { name: string }) => Promise<any>;
@@ -82,7 +80,7 @@ const MaintenanceScheduleDetails = (props: MaintenanceScheduleDetailsProps) => {
 type OverviewProps = {
   id: number;
   name: string; // Name of the maintenance schedule
-  eventNames: Array<string>;
+  eventNames: string[];
   calendarName: string | undefined;
   type: "SINGLE" | "MULTI";
   onMessage: (messages: MessageType[]) => void;
@@ -100,7 +98,7 @@ const MaintenanceScheduleOverview = (props: OverviewProps) => {
   return (
     <div>
       <BootstrapPanel title={t("Schedule Details")}>
-        <Table data={tableData} identifier={(row) => tableData.indexOf(row)} initialItemsPerPage={0}>
+        <Table data={tableData} identifier={(row) => tableData.indexOf(row)} hideHeaderFooter="both">
           <Column columnKey="left" cell={(row) => row.left} />
           <Column columnKey="right" cell={(row) => row.right} />
         </Table>
@@ -135,7 +133,7 @@ type SystemPickerProps = {
 const SystemPicker = (props: SystemPickerProps) => {
   const [hasChanges, setHasChanges] = useState(false);
   const [selectedSystems, setSelectedSystems] = useState([]);
-  const [isCancelActions, setCancelActions] = useState(false);
+  const [isCancelActions, setIsCancelActions] = useState(false);
 
   useEffect(() => {
     Network.get(`/rhn/manager/api/maintenance/schedule/${props.scheduleId}/systems`)
@@ -176,8 +174,9 @@ const SystemPicker = (props: SystemPickerProps) => {
             <Toggler
               text={t("Cancel affected actions")}
               className="btn"
-              handler={() => setCancelActions(!isCancelActions)}
+              handler={() => setIsCancelActions(!isCancelActions)}
               value={isCancelActions}
+              key="cancel-actions"
             />,
             isCancelActions && selectedSystems.length > 0 ? (
               <ModalButton
@@ -185,6 +184,7 @@ const SystemPicker = (props: SystemPickerProps) => {
                 text={t("Save Changes")}
                 className="btn-primary"
                 disabled={!hasChanges}
+                key="save-changes-modal"
               />
             ) : (
               <AsyncButton
@@ -192,6 +192,7 @@ const SystemPicker = (props: SystemPickerProps) => {
                 defaultType="btn-primary"
                 text={t("Save Changes")}
                 disabled={!hasChanges}
+                key="save-changes-async"
               />
             ),
           ]}

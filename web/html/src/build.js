@@ -1,15 +1,22 @@
-/* eslint-disable no-console */
-const shell = require("shelljs");
-const path = require("path");
-const v8 = require("v8");
-const webpack = require("webpack");
-const yargs = require("yargs/yargs");
-const { hideBin } = require("yargs/helpers");
+import child_process from "node:child_process";
+import path, { dirname } from "node:path";
+import { fileURLToPath } from "node:url";
+import util from "node:util";
+import v8 from "v8";
+import rawWebpack from "webpack";
+import { hideBin } from "yargs/helpers";
+import yargs from "yargs/yargs";
 
-const { fillSpecFile } = require("./build/fill-spec-file");
-const config = require("./build/webpack.config");
-const checkPackage = require("./build/check-package");
-const { aggregateLicenses } = require("./build/licenses");
+import checkPackage from "./build/check-package.js";
+import { fillSpecFile } from "./build/fill-spec-file.js";
+import { aggregateLicenses } from "./build/licenses/index.js";
+import config from "./build/webpack/config.js";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const exec = util.promisify(child_process.exec);
+const webpack = util.promisify(rawWebpack);
 
 const opts = yargs(hideBin(process.argv))
   .version(false)
@@ -63,74 +70,73 @@ if (opts.verbose) {
       await aggregateLicenses(opts);
     }
 
-    webpack(config(process.env, opts), (err, stats) => {
-      if (opts.verbose) {
-        console.log("webpack output:");
-        console.log(stats?.toString());
-      }
+    const stats = await webpack(config(process.env, opts));
+    if (opts.verbose) {
+      console.log("webpack output:");
+      console.log(stats?.toString());
+    }
 
-      // See https://webpack.js.org/api/node/#error-handling
-      if (err) {
-        console.error("Webpack error");
-        console.error(err.stack || err);
-        if (err.message.toLowerCase().match(/\bmemory\b/)) {
-          // See https://stackoverflow.com/a/38049633/1470607
-          console.error("Process memory usage:");
-          console.error(process.memoryUsage());
-          console.error("V8 heap statistics:");
-          console.error(v8.getHeapStatistics());
-        }
-        process.exitCode = err.code || 1;
-        return;
-      }
+    if (stats.hasErrors()) {
+      console.error("Build error");
+      console.error(stats.toJson().errors);
+      process.exitCode = stats.code || 1;
+      return;
+    }
 
-      if (stats.hasErrors()) {
-        console.error("Build error");
-        console.error(stats.toJson().errors);
-        process.exitCode = stats.code || 1;
-        return;
-      }
+    const editedLicenseFilesByBuild = [
+      "web/spacewalk-web.spec",
+      "web/html/src/vendors/npm.licenses.structured.js",
+      "web/html/src/vendors/npm.licenses.txt",
+    ];
 
-      const editedLicenseFilesByBuild = [
-        "web/spacewalk-web.spec",
-        "web/html/src/vendors/npm.licenses.structured.js",
-        "web/html/src/vendors/npm.licenses.txt",
-      ];
+    await fillSpecFile();
 
-      fillSpecFile().then(() => {
-        if (opts.checkSpec) {
-          const rootDir = path.resolve(__dirname, "../../../");
-          const { code: gitCheckCode, stdout } = shell.exec("git ls-files -m", {
-            cwd: rootDir,
-          });
-
-          if (opts.verbose) {
-            console.log(stdout);
-          }
-
-          if (gitCheckCode !== 0) {
-            process.exitCode = gitCheckCode;
-            return;
-          }
-
-          const uncommittedFiles = editedLicenseFilesByBuild.filter((fileName) => stdout.includes(fileName));
-
-          if (uncommittedFiles.length) {
-            console.error(`
-                    It seems changes to license and/or spec files haven't been committed.
-                    Please run "yarn build" again and commit the following files: ${uncommittedFiles.join(", ")}`);
-            if (opts.force) {
-              console.error(`WARN: Ignoring uncommitted spec changes because build was called with --force`);
-            } else {
-              process.exitCode = 1;
-              return;
-            }
-          }
-        }
+    if (opts.checkSpec) {
+      const rootDir = path.resolve(__dirname, "../../../");
+      const { code: gitCheckCode, stdout } = await exec("git ls-files -m", {
+        cwd: rootDir,
       });
-    });
+
+      if (opts.verbose) {
+        console.log(stdout);
+      }
+
+      if (gitCheckCode !== 0) {
+        process.exitCode = gitCheckCode;
+        return;
+      }
+
+      const uncommittedFiles = editedLicenseFilesByBuild.filter((fileName) => stdout.includes(fileName));
+
+      if (uncommittedFiles.length) {
+        const { stdout: diffOut } = await exec(`git diff -- ${editedLicenseFilesByBuild.join(" ")}`, {
+          cwd: rootDir,
+        });
+        console.log(diffOut);
+
+        console.error(`
+                It seems changes to license and/or spec files haven't been committed.
+                Please run "npm run build" again and commit the following files: ${uncommittedFiles.join(", ")}`);
+
+        if (opts.force) {
+          console.error(`WARN: Ignoring uncommitted spec changes because build was called with --force`);
+        } else {
+          process.exitCode = 1;
+          return;
+        }
+      }
+    }
   } catch (error) {
-    console.error(error);
+    console.error(error.stack || error);
+
+    // See https://webpack.js.org/api/node/#error-handling
+    if (error?.message?.toLowerCase().match(/\bmemory\b/)) {
+      // See https://stackoverflow.com/a/38049633/1470607
+      console.error("Process memory usage:");
+      console.error(process.memoryUsage());
+      console.error("V8 heap statistics:");
+      console.error(v8.getHeapStatistics());
+    }
     process.exitCode = 1;
   }
 })();

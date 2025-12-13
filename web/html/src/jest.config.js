@@ -1,6 +1,6 @@
-const { defaults } = require("jest-config");
+import { defaults } from "jest-config";
 
-module.exports = {
+export default {
   // See https://kulshekhar.github.io/ts-jest/docs/presets#the-presets
   // Using Babel allows us to keep current Flow stuff at least somewhat working
   preset: "ts-jest/presets/js-with-babel",

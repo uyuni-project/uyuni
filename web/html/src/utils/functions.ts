@@ -1,3 +1,4 @@
+import { DEPRECATED_unsafeEquals } from "./legacy";
 import { getUrlParam, urlBounce } from "./url";
 
 // This as opposed to a regular type definition lets Typescript know we're dealing with a real promise-like in async contexts
@@ -40,9 +41,11 @@ function sortById(aRaw: any, bRaw: any): number {
 }
 
 function sortByText(aRaw: any, bRaw: any, columnKey: string, sortDirection: number): number {
-  var a = aRaw[columnKey];
-  var b = bRaw[columnKey];
-  var result = (a == null ? "" : a).toLowerCase().localeCompare((b == null ? "" : b).toLowerCase());
+  const a = aRaw[columnKey];
+  const b = bRaw[columnKey];
+  const result = (DEPRECATED_unsafeEquals(a, null) ? "" : a)
+    .toLowerCase()
+    .localeCompare((DEPRECATED_unsafeEquals(b, null) ? "" : b).toLowerCase());
   return (result || sortById(aRaw, bRaw)) * sortDirection;
 }
 
@@ -86,18 +89,18 @@ function sortByDate(aRaw: any, bRaw: any, columnKey: string, sortDirection: numb
     aRaw[columnKey] === null
       ? null
       : aRaw[columnKey] instanceof Date
-      ? aRaw[columnKey]
-      : // eslint-disable-next-line local-rules/no-raw-date
-        new Date(aRaw[columnKey].replace(unparsableDateRegex, "$1"));
+        ? aRaw[columnKey]
+        : // eslint-disable-next-line local-rules/no-raw-date
+          new Date(aRaw[columnKey].replace(unparsableDateRegex, "$1"));
   const bDate =
     bRaw[columnKey] === null
       ? null
       : bRaw[columnKey] instanceof Date
-      ? bRaw[columnKey]
-      : // eslint-disable-next-line local-rules/no-raw-date
-        new Date(bRaw[columnKey].replace(unparsableDateRegex, "$1"));
+        ? bRaw[columnKey]
+        : // eslint-disable-next-line local-rules/no-raw-date
+          new Date(bRaw[columnKey].replace(unparsableDateRegex, "$1"));
 
-  // @ts-ignore
+  // @ts-expect-error This is grandfathered in
   const result = aDate > bDate ? 1 : aDate < bDate ? -1 : 0;
   return result * sortDirection;
 }

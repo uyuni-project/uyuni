@@ -145,20 +145,6 @@ Then(/^the uptime for "([^"]*)" should be correct$/) do |host|
   raise ScriptError, "Expected uptime message to be one of #{valid_uptime_messages} - found '#{ui_uptime_text}'" unless check
 end
 
-Then(/^I should see several text fields$/) do
-  steps 'Then I should see a "UUID" text
-    And I should see a "Virtualization" text
-    And I should see a "Installed Products" text
-    And I should see a "Checked In" text
-    And I should see a "Registered" text
-    And I should see a "Contact Method" text
-    And I should see a "Auto Patch Update" text
-    And I should see a "Maintenance Schedule" text
-    And I should see a "Description" text
-    And I should see a "Location" text
-  '
-end
-
 # events
 
 When(/^I wait until event "([^"]*)" is completed$/) do |event|
@@ -200,6 +186,14 @@ When(/^I wait until I see the event "([^"]*)" completed during last minute, refr
     end
     refresh_page
   end
+end
+
+When(/^I wait up to (\d+) minutes to see "([^"]*)" in the last lines of "([^"]*)" on "([^"]*)"$/) do |waiting_time, text, file, host|
+  node = get_target(host)
+  timeout_seconds = waiting_time.to_i * 60
+  # The grep command returns 0 (success) only if the text is found.
+  # node.run_until_ok waits until the command returns an exit code of 0.
+  node.run_until_ok("tail -n 10 #{file} | grep -E '#{text}'", timeout: timeout_seconds)
 end
 
 When(/^I follow the event "([^"]*)" completed during last minute$/) do |event|
@@ -307,191 +301,6 @@ When(/^I refresh the metadata for "([^"]*)"$/) do |host|
   else
     raise ScriptError, "The host #{host} has not yet a implementation for that step"
   end
-end
-
-# WORKAROUND for https://github.com/SUSE/spacewalk/issues/20318
-When(/^I install the needed packages for highstate in build host$/) do
-  packages = 'bea-stax
-  bea-stax-api
-  btrfsmaintenance
-  btrfsprogs
-  btrfsprogs-udev-rules
-  catatonit
-  checkmedia
-  containerd
-  cryptsetup
-  cryptsetup-lang
-  dbus-1-x11
-  device-mapper
-  docker
-  dpkg
-  fontconfig
-  git-core
-  git-gui
-  gitk
-  grub2-snapper-plugin
-  iptables
-  java-17-openjdk-headless
-  javapackages-filesystem
-  javapackages-tools
-  jing
-  kernel-default
-  kernel-firmware-all
-  kernel-firmware-amdgpu
-  kernel-firmware-ath10k
-  kernel-firmware-ath11k
-  kernel-firmware-atheros
-  kernel-firmware-bluetooth
-  kernel-firmware-bnx2
-  kernel-firmware-brcm
-  kernel-firmware-chelsio
-  kernel-firmware-dpaa2
-  kernel-firmware-i915
-  kernel-firmware-intel
-  kernel-firmware-iwlwifi
-  kernel-firmware-liquidio
-  kernel-firmware-marvell
-  kernel-firmware-media
-  kernel-firmware-mediatek
-  kernel-firmware-mellanox
-  kernel-firmware-mwifiex
-  kernel-firmware-network
-  kernel-firmware-nfp
-  kernel-firmware-nvidia
-  kernel-firmware-platform
-  kernel-firmware-prestera
-  kernel-firmware-qcom
-  kernel-firmware-qlogic
-  kernel-firmware-radeon
-  kernel-firmware-realtek
-  kernel-firmware-serial
-  kernel-firmware-sound
-  kernel-firmware-ti
-  kernel-firmware-ueagle
-  kernel-firmware-usb-network
-  kiwi-boot-descriptions
-  kiwi-man-pages
-  kiwi-systemdeps
-  kiwi-systemdeps-bootloaders
-  kiwi-systemdeps-containers
-  kiwi-systemdeps-core
-  kiwi-systemdeps-disk-images
-  kiwi-systemdeps-filesystems
-  kiwi-systemdeps-image-validation
-  kiwi-systemdeps-iso-media
-  kiwi-tools
-  kpartx
-  libaio1
-  libasound2
-  libbtrfs0
-  libburn4
-  libcontainers-common
-  libdevmapper-event1_03
-  libefa1
-  libfmt8
-  libfontconfig1
-  libfreebl3
-  libfreebl3-hmac
-  libibverbs
-  libibverbs1
-  libip6tc2
-  libisoburn1
-  libisofs6
-  libjpeg8
-  libjte1
-  liblcms2-2
-  liblmdb-0_9_17
-  liblttng-ust0
-  liblvm2cmd2_03
-  liblzo2-2
-  libmd0
-  libmediacheck6
-  libmlx4-1
-  libmlx5-1
-  libmpath0
-  libnetfilter_conntrack3
-  libnfnetlink0
-  libnftnl11
-  libnuma1
-  libpcsclite1
-  libpwquality1
-  libpwquality-lang
-  librados2
-  librbd1
-  librdmacm1
-  libreiserfscore0
-  libsgutils2-1_47-2
-  libsha1detectcoll1
-  libsnapper5
-  libsoftokn3
-  libsoftokn3-hmac
-  liburcu6
-  libX11-6
-  libX11-data
-  libXau6
-  libxcb1
-  libXext6
-  libXft2
-  libxkbcommon0
-  libxml2-tools
-  libXmuu1
-  libXrender1
-  libxslt1
-  libXss1
-  lvm2
-  make
-  make-lang
-  mdadm
-  mozilla-nspr
-  mozilla-nss
-  mozilla-nss-certs
-  mtools
-  multipath-tools
-  openssl
-  patch
-  pcsc-lite
-  perl-TimeDate
-  postfix
-  python3-cssselect
-  python3-docopt
-  python3-kiwi
-  python3-lxml
-  python3-simplejson
-  python3-solv
-  python3-xattr
-  qemu-block-curl
-  qemu-block-rbd
-  qemu-tools
-  rdma-core
-  rdma-ndd
-  relaxngDatatype
-  rollback-helper
-  runc
-  saxon9
-  saxon9-scripts
-  screen
-  sg3_utils
-  skopeo
-  snapper
-  snapper-zypp-plugin
-  sqlite3-tcl
-  squashfs
-  syslinux
-  tcl
-  thin-provisioning-tools
-  timezone-java
-  tk
-  umoci
-  xalan-j2
-  xerces-j2
-  xhost
-  xkeyboard-config
-  xkeyboard-config-lang
-  xml-commons-apis
-  xml-commons-resolver
-  xorriso
-  xtables-plugins'
-  get_target('build_host').run("zypper --non-interactive in #{packages}", timeout: 600)
 end
 
 # metadata steps

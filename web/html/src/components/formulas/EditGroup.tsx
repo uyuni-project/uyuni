@@ -1,11 +1,12 @@
 import "./formula-form.css";
 
-import * as React from "react";
+import { Component, Fragment } from "react";
 
 import { productName } from "core/user-preferences";
 
 import { SectionState } from "components/FormulaForm";
 import { Highlight } from "components/table/Highlight";
+import { DEPRECATED_onClick } from "components/utils";
 import HelpIcon from "components/utils/HelpIcon";
 
 import { Formulas, Utils } from "utils/functions";
@@ -44,7 +45,7 @@ type EditGroupState = {
  * Base class for edit-group.
  * Based on the edit-group data, the corresponing shape of component is used.
  */
-class EditGroup extends React.Component<EditGroupProps, EditGroupState> {
+class EditGroup extends Component<EditGroupProps, EditGroupState> {
   constructor(props: EditGroupProps) {
     super(props);
     this.state = {
@@ -69,12 +70,12 @@ class EditGroup extends React.Component<EditGroupProps, EditGroupState> {
     );
   };
 
-  handleAddItem = (event) => {
+  handleAddItem = () => {
     if (this.props.element.$maxItems! <= this.props.value.length || this.isDisabled()) return;
 
     this.props.setSectionsExpanded(SectionState.Mixed);
-    let newValueProps = this.props.value;
-    let newValue = deepCopy(this.props.element.$newItemValue);
+    const newValueProps = this.props.value;
+    const newValue = deepCopy(this.props.element.$newItemValue);
 
     newValueProps.push(newValue);
 
@@ -94,7 +95,7 @@ class EditGroup extends React.Component<EditGroupProps, EditGroupState> {
     });
   };
 
-  isVisible = (index?: number) => {
+  isVisible = () => {
     return this.state.visible;
   };
 
@@ -135,17 +136,18 @@ class EditGroup extends React.Component<EditGroupProps, EditGroupState> {
           <i
             className="fa fa-plus"
             id={this.props.id + "#add_item"}
+            data-bs-toggle="tooltip"
             title={
               this.props.element.$maxItems! <= this.props.value.length ? "Max number of items reached" : "Add Item"
             }
-            onClick={this.handleAddItem}
             /* @ts-expect-error: The property `disabled` doesn't exist on the `<i>` tag, but this was here historically */
             disabled={this.props.element.$maxItems! <= this.props.value.length || this.props.disabled}
+            {...DEPRECATED_onClick(this.handleAddItem)}
           ></i>
         </div>
         <div>
           {this.state.visible ? (
-            <React.Fragment>
+            <Fragment>
               {"$help" in this.props.element ? <p>{this.props.element.$help}</p> : null}
               <Component
                 handleRemoveItem={this.handleRemoveItem}
@@ -158,7 +160,7 @@ class EditGroup extends React.Component<EditGroupProps, EditGroupState> {
                 setSectionsExpanded={this.props.setSectionsExpanded}
                 formulaForm={this.props.formulaForm}
               />
-            </React.Fragment>
+            </Fragment>
           ) : null}
         </div>
       </div>
@@ -179,10 +181,11 @@ type EditPrimitiveGroupProps = {
  * Used for rendering edit-groups in the form of "list of primitive types",
  * to be rendered as a list of simple form elements in the UI.
  */
-class EditPrimitiveGroup extends React.Component<EditPrimitiveGroupProps> {
+class EditPrimitiveGroup extends Component<EditPrimitiveGroupProps> {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   simpleWrapper = (name, required, element, help = null) => {
     return (
-      <React.Fragment>
+      <Fragment>
         <div className="col-lg-3">{element}</div>
         {required ? (
           <span className="required-form-field" style={{ float: "left", paddingRight: "10px" }}>
@@ -190,17 +193,17 @@ class EditPrimitiveGroup extends React.Component<EditPrimitiveGroupProps> {
           </span>
         ) : null}
         <HelpIcon text={this.props.element["$help"]} />
-      </React.Fragment>
+      </Fragment>
     );
   };
 
   render() {
-    let elements: React.ReactNode[] = [];
-    for (let i in this.props.value) {
+    const elements: React.ReactNode[] = [];
+    for (const i in this.props.value) {
       if (i === "$meta") {
         continue;
       }
-      let id = this.props.id + "#" + i;
+      const id = this.props.id + "#" + i;
       elements.push(
         <div className="form-group" id={id} key={id}>
           {generateFormulaComponentForId(
@@ -236,7 +239,7 @@ type EditPrimitiveDictionaryGroupProps = {
  * Used for rendering edit-groups in the form of "dictionary of primitive types",
  * to be rendered as a list of [key, value] in the UI.
  */
-class EditPrimitiveDictionaryGroup extends React.Component<EditPrimitiveDictionaryGroupProps> {
+class EditPrimitiveDictionaryGroup extends Component<EditPrimitiveDictionaryGroupProps> {
   pairElementWrapper(elementName) {
     return (name, required, element) => (
       <div key={elementName}>
@@ -250,13 +253,13 @@ class EditPrimitiveDictionaryGroup extends React.Component<EditPrimitiveDictiona
   }
 
   render() {
-    let elements: React.ReactNode[] = [];
+    const elements: React.ReactNode[] = [];
 
-    for (let i in this.props.value) {
+    for (const i in this.props.value) {
       if (i === "$meta") {
         continue;
       }
-      let id = this.props.id + "#" + i;
+      const id = this.props.id + "#" + i;
       elements.push(
         <div className="form-group" id={id} key={id}>
           {generateFormulaComponentForId(
@@ -293,7 +296,7 @@ type RemoveButtonProps = {
   handleRemoveItem: (...args: any[]) => any;
 };
 
-class RemoveButton extends React.Component<RemoveButtonProps> {
+class RemoveButton extends Component<RemoveButtonProps> {
   render() {
     return (
       <button
@@ -328,7 +331,7 @@ type EditDictionaryGroupState = {
  * Used for rendering edit-groups that are backed up list of dictionaries
  * to be rendered as a list of key-value groups in the UI.
  */
-class EditDictionaryGroup extends React.Component<EditDictionaryGroupProps, EditDictionaryGroupState> {
+class EditDictionaryGroup extends Component<EditDictionaryGroupProps, EditDictionaryGroupState> {
   constructor(props) {
     super(props);
     this.state = {
@@ -382,22 +385,22 @@ class EditDictionaryGroup extends React.Component<EditDictionaryGroupProps, Edit
 
   setAllVisible(visible) {
     const { visibility } = this.state;
-    for (let i in this.props.value) {
+    for (const i in this.props.value) {
       visibility.set(i, visible);
       this.setState({ visibility });
     }
   }
 
   render() {
-    let elements: React.ReactNode[] = [];
-    for (let i in this.props.value) {
+    const elements: React.ReactNode[] = [];
+    for (const i in this.props.value) {
       if (i === "$meta") {
         continue;
       }
-      let id = this.props.id + "#" + i;
+      const id = this.props.id + "#" + i;
 
-      let item_elements: React.ReactNode[] = [];
-      for (var element_name in this.props.element.$prototype) {
+      const item_elements: React.ReactNode[] = [];
+      for (const element_name in this.props.element.$prototype) {
         if (element_name.startsWith("$") && element_name !== "$key") continue;
         item_elements.push(
           generateFormulaComponent(
@@ -423,12 +426,12 @@ class EditDictionaryGroup extends React.Component<EditDictionaryGroupProps, Edit
             </SectionToggle>
             <i
               className="fa fa-minus"
-              onClick={() => this.props.handleRemoveItem(i)}
               title={
                 this.props.element.$minItems! >= this.props.value.length ? "Min number of items reached" : "Remove item"
               }
               /* @ts-expect-error: The property `disabled` doesn't exist on the `<i>` tag, but this was here historically */
               disabled={this.props.element.$minItems! >= this.props.value.length || this.props.isDisabled}
+              {...DEPRECATED_onClick(() => this.props.handleRemoveItem(i))}
             />
           </div>
           <div>{this.state.visibility.get(i) !== false ? item_elements : null}</div>

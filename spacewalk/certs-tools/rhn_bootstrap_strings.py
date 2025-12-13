@@ -119,13 +119,18 @@ USING_GPG={using_gpg}
 
 REGISTER_THIS_BOX=1
 
+# Flag to generate a custom machine_id to be used in the context of uyuni server.
+# This will ignore the existing machine_id and generate a grain based machine_id
+# using uuidgen.
+GENERATE_OWN_MACHINEID=0
+
 # Set if you want to specify profilename for client systems.
 # NOTE: Make sure it's set correctly if any external command is used.
 #
-# ex. PROFILENAME="foo.example.com"  # For specific client system
-#     PROFILENAME=`hostname -s`      # Short hostname
-#     PROFILENAME=`hostname -f`      # FQDN
-PROFILENAME=""   # Empty by default to let it be set automatically.
+# ex. PROFILE_NAME="foo.example.com"  # For specific client system
+#     PROFILE_NAME=`hostname -s`      # Short hostname
+#     PROFILE_NAME=`hostname -f`      # FQDN
+PROFILE_NAME=""   # Empty by default to let it be set automatically.
 
 # SUSE Multi-Linux Manager Specific settings:
 #
@@ -561,6 +566,12 @@ elif [ "$INSTALLER" == zypper ]; then
             grep -q 'Micro' /etc/os-release && BASE="${{BASE}}micro"
             VERSION="$(grep '^\(VERSION_ID\)' /etc/os-release | sed -n 's/.*"\([[:digit:]]\+\).*/\\1/p')"
             PATCHLEVEL="$(grep '^\(VERSION_ID\)' /etc/os-release | sed -n 's/.*\.\([[:digit:]]*\).*/\\1/p')"
+            # With SLES 16.0 / SL Micro 6.2, the VERSION_ID is common, we need to rely on the SUSE_SUPPORT_PRODUCT_VERSION
+            if grep '^SUSE_SUPPORT_PRODUCT_VERSION=' /etc/os-release; then
+                VERSION="$(grep '^\(SUSE_SUPPORT_PRODUCT_VERSION\)' /etc/os-release | sed -n 's/.*"\([[:digit:]]\+\).*/\1/p')"
+                PATCHLEVEL="$(grep '^\(SUSE_SUPPORT_PRODUCT_VERSION\)' /etc/os-release | sed -n 's/.*\.\([[:digit:]]*\).*/\1/p')"
+                grep -q 'Micro' /etc/os-release && BASE="slmicro"
+            fi
             # openSUSE MicroOS
             grep -q 'MicroOS' /etc/os-release && BASE='opensusemicroos' && VERSION='latest'
             # openSUSE Tumbleweed
@@ -1002,6 +1013,15 @@ system-environment:
       _:
         SALT_RUNNING: 1
 EOF
+
+if [ $GENERATE_OWN_MACHINEID -eq 1 ]; then
+    echo "* generating machine ID file"
+    NEW_MACHINID=$(uuidgen | sed 's/-//g')
+    cat <<EOF >> "${{MINION_CONFIG_DIR}}/machine_id.conf"
+grains:
+    machine_id: $NEW_MACHINID
+EOF
+fi
 
 if [ -n "$SNAPSHOT_ID" ]; then
     cat <<EOF >> "${{MINION_CONFIG_DIR}}/transactional_update.conf"

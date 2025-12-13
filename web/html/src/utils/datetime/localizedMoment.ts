@@ -71,12 +71,14 @@ function validateOrGuessTimeZone(input: string | undefined, errorLabel: "Server"
 const config = {
   _serverTimeZone: undefined as string | undefined,
   get serverTimeZone(): string {
-    return (this._serverTimeZone ??= validateOrGuessTimeZone(window.serverTimeZone, "Server"));
+    this._serverTimeZone ??= validateOrGuessTimeZone(window.serverTimeZone, "Server");
+    return this._serverTimeZone;
   },
 
   _userTimeZone: undefined as string | undefined,
   get userTimeZone(): string {
-    return (this._userTimeZone ??= validateOrGuessTimeZone(window.userTimeZone, "User"));
+    this._userTimeZone ??= validateOrGuessTimeZone(window.userTimeZone, "User");
+    return this._userTimeZone;
   },
 
   // We currently don't support configuring these, but keep them in the config in case we ever do.
@@ -179,22 +181,24 @@ let userTimeZoneAbbr: undefined | string = undefined;
 Object.defineProperties(moment, {
   serverTimeZone: {
     get() {
-      return config.serverTimeZone as typeof moment["serverTimeZone"];
+      return config.serverTimeZone as (typeof moment)["serverTimeZone"];
     },
   },
   serverTimeZoneAbbr: {
     get() {
-      return (serverTimeZoneAbbr ??= moment().tz(config.serverTimeZone).format("z"));
+      serverTimeZoneAbbr ??= moment().tz(config.serverTimeZone).format("z");
+      return serverTimeZoneAbbr;
     },
   },
   userTimeZone: {
     get() {
-      return config.userTimeZone as typeof moment["serverTimeZone"];
+      return config.userTimeZone as (typeof moment)["serverTimeZone"];
     },
   },
   userTimeZoneAbbr: {
     get() {
-      return (userTimeZoneAbbr ??= moment().tz(config.userTimeZone).format("z"));
+      userTimeZoneAbbr ??= moment().tz(config.userTimeZone).format("z");
+      return userTimeZoneAbbr;
     },
   },
 });

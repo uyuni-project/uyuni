@@ -1,7 +1,7 @@
 #
 # spec file for package uyuni-coco-attestation
 #
-# Copyright (c) 2025 SUSE LLC
+# Copyright (c) 2025 SUSE LLC and contributors
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -20,19 +20,20 @@
 %{!?productprettyname: %global productprettyname Uyuni}
 
 Name:           uyuni-coco-attestation
-Version:        5.2.0
+Version:        5.2.2
 Release:        0
 Summary:        %{productprettyname} utility for Confidential Computing Attestation
 License:        GPL-2.0-only
 Group:          System/Daemons
 URL:            https://www.uyuni-project.org
+#!CreateArchive: %{name}
 Source0:        %{name}-%{version}.tar.gz
 BuildRequires:  fdupes
 BuildRequires:  java-devel >= 17
 BuildRequires:  maven-local
 BuildRequires:  mvn(com.mchange:c3p0)
 BuildRequires:  mvn(com.mchange:mchange-commons-java)
-BuildRequires:  mvn(org.apache.commons:commons-ognl)
+BuildRequires:  mvn(ognl:ognl)
 BuildRequires:  mvn(org.apache.logging.log4j:log4j-api)
 BuildRequires:  mvn(org.apache.logging.log4j:log4j-core)
 BuildRequires:  mvn(org.javassist:javassist)
@@ -110,7 +111,7 @@ install -p -m 644 attestation-core/src/package/daemon.conf %{buildroot}%{_datadi
 install -p -m 644 attestation-core/src/package/log4j2.xml %{buildroot}%{_datadir}/coco-attestation/classes
 
 # Create links for the jars
-build-jar-repository -s -p %{buildroot}%{_datadir}/coco-attestation/lib uyuni-java-common/uyuni-common log4j/log4j-api log4j/log4j-core ongres-scram ongres-stringprep postgresql-jdbc apache-commons-ognl javassist mybatis mchange-commons c3p0
+build-jar-repository -s -p %{buildroot}%{_datadir}/coco-attestation/lib uyuni-java-common/uyuni-common log4j/log4j-api log4j/log4j-core ongres-scram ongres-stringprep postgresql-jdbc ognl/ognl javassist mybatis mchange-commons c3p0
 
 # Link all the attestation jars built and installed by maven
 ln -s -f -r %{buildroot}%{_javadir}/uyuni-coco-attestation/*.jar %{buildroot}%{_datadir}/coco-attestation/lib

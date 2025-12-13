@@ -1,13 +1,12 @@
-import * as React from "react";
+import { Component } from "react";
 
+import { Combobox, ComboboxItem } from "components/combobox";
 import { DateTimePicker } from "components/datetime";
 import { Form } from "components/input/form/Form";
 import { Text } from "components/input/text/Text";
 
 import { localizedMoment } from "utils";
 
-import { Combobox } from "../combobox";
-import { ComboboxItem } from "../combobox";
 import styles from "./recurring-event-picker.module.scss";
 
 export type RecurringType = "hourly" | "daily" | "weekly" | "monthly" | "cron";
@@ -22,7 +21,6 @@ export type CronTimes = {
 type PickerMode = "Panel" | "Inline";
 
 type RecurringEventPickerProps = {
-  timezone: string;
   mode?: PickerMode;
   hideScheduleName?: boolean;
   scheduleName: string;
@@ -46,13 +44,13 @@ type RecurringEventPickerState = {
   cronTimes: CronTimes;
 };
 
-class RecurringEventPicker extends React.Component<RecurringEventPickerProps, RecurringEventPickerState> {
+class RecurringEventPicker extends Component<RecurringEventPickerProps, RecurringEventPickerState> {
   public static readonly defaultProps: Partial<RecurringEventPickerProps> = {
     mode: "Panel",
     hideScheduleName: false,
   };
 
-  minutes = Array.from(Array(60).keys()).map((id) => ({ id: Number(id), text: id.toString() }));
+  minutes = Array.from(new Array(60).keys()).map((id) => ({ id: Number(id), text: id.toString() }));
 
   weekDays = [
     { id: Number(1), text: t("Sunday") },
@@ -64,7 +62,7 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
     { id: Number(7), text: t("Saturday") },
   ];
 
-  monthDays = Array.from(Array(31).keys()).map((id) => ({ id: Number(id + 1), text: (id + 1).toString() }));
+  monthDays = Array.from(new Array(31).keys()).map((id) => ({ id: Number(id + 1), text: (id + 1).toString() }));
 
   constructor(props: RecurringEventPickerProps) {
     super(props);
@@ -80,7 +78,11 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
       monthDay: this.monthDays[0],
     };
 
-    this.props.cronTimes ? this.setInitialTimeAndDays(this.state.time) : this.initialize();
+    if (this.props.cronTimes) {
+      this.setInitialTimeAndDays(this.state.time);
+    } else {
+      this.initialize();
+    }
   }
 
   /**
@@ -160,9 +162,7 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
   };
 
   onMinutesChanged = (selectedItem: ComboboxItem) => {
-    let newMinutes: ComboboxItem;
-
-    newMinutes = {
+    const newMinutes: ComboboxItem = {
       id: selectedItem.id,
       text: selectedItem.text,
     };
@@ -221,9 +221,7 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
   };
 
   onWeekDayChanged = (selectedItem: ComboboxItem) => {
-    let newWeekDay: ComboboxItem;
-
-    newWeekDay = {
+    const newWeekDay: ComboboxItem = {
       id: selectedItem.id,
       text: selectedItem.text,
     };
@@ -272,9 +270,7 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
   };
 
   onMonthDayChanged = (selectedItem: ComboboxItem) => {
-    let newMonthDay: ComboboxItem;
-
-    newMonthDay = {
+    const newMonthDay: ComboboxItem = {
       id: selectedItem.id,
       text: selectedItem.text,
     };

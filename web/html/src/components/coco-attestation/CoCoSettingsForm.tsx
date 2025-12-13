@@ -1,9 +1,8 @@
-import * as React from "react";
+import { type ReactNode, Component } from "react";
 
 import { AsyncButton, Button } from "../buttons";
 import { BootstrapPanel } from "../panels/BootstrapPanel";
 import { RecurringEventPicker } from "../picker/recurring-event-picker";
-import { SectionToolbar } from "../section-toolbar/section-toolbar";
 import { Toggler } from "../toggler";
 import { Settings } from "./Utils";
 
@@ -16,7 +15,7 @@ type Props = {
 
 type State = Settings;
 
-class CoCoSettingsForm extends React.Component<Props, State> {
+class CoCoSettingsForm extends Component<Props, State> {
   public static readonly defaultProps: Partial<Props> = {
     showOnScheduleOption: true,
   };
@@ -69,28 +68,9 @@ class CoCoSettingsForm extends React.Component<Props, State> {
     });
   };
 
-  render(): React.ReactNode {
+  render(): ReactNode {
     return (
       <>
-        <SectionToolbar>
-          <div className="action-button-wrapper">
-            <span className="btn-group pull-right">
-              <AsyncButton
-                id="save-btn"
-                icon="fa-floppy-o"
-                action={() => this.props.saveHandler(this.state as Settings)}
-                text={t("Save")}
-              />
-              <Button
-                id="reset-btn"
-                icon="fa-undo"
-                text={t("Reset Changes")}
-                className="btn btn-default"
-                handler={this.onResetChanges}
-              />
-            </span>
-          </div>
-        </SectionToolbar>
         <BootstrapPanel>
           <div className="form-horizontal">
             <div className="form-group">
@@ -153,7 +133,6 @@ class CoCoSettingsForm extends React.Component<Props, State> {
             <RecurringEventPicker
               mode="Inline"
               hideScheduleName
-              timezone={window.timezone}
               scheduleName={this.state.scheduleName}
               type={this.state.scheduleType}
               cron={this.state.scheduleCron}
@@ -165,6 +144,24 @@ class CoCoSettingsForm extends React.Component<Props, State> {
             />
           </BootstrapPanel>
         )}
+        <div className="row">
+          <div className="col-md-offset-3 offset-md-3 col-md-6">
+            <AsyncButton
+              id="save-btn"
+              icon="fa-floppy-o"
+              action={() => this.props.saveHandler(this.state as Settings)}
+              text={t("Save")}
+              className="btn-primary me-2"
+            />
+            <Button
+              id="reset-btn"
+              icon="fa-undo"
+              text={t("Reset Changes")}
+              className="btn-default"
+              handler={this.onResetChanges}
+            />
+          </div>
+        </div>
       </>
     );
   }

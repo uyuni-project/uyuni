@@ -16,6 +16,7 @@ Feature: Maintenance windows
 
   Scenario: Create a single calendar
     When I follow the left menu "Schedule > Maintenance Windows > Calendars"
+    And I wait for "1" second
     Then I should see a "No calendars created" text
     When I click on "Create" in element "maintenance-windows"
     Then I should see a "Calendar Name" text
@@ -26,6 +27,7 @@ Feature: Maintenance windows
 
   Scenario: Create a multi calendar
     When I follow the left menu "Schedule > Maintenance Windows > Calendars"
+    And I wait for "1" second
     Then I should see a "Items 1 - 1 of 1" text
     When I click on "Create" in element "maintenance-windows"
     Then I should see a "Calendar Name" text
@@ -36,6 +38,7 @@ Feature: Maintenance windows
 
   Scenario: Create a single schedule
     When I follow the left menu "Schedule > Maintenance Windows > Schedules"
+    And I wait for "1" second
     Then I should see a "No schedules created" text
     When I click on "Create" in element "maintenance-windows"
     Then I should see a "Schedule Name" text
@@ -48,6 +51,7 @@ Feature: Maintenance windows
 
   Scenario: Create a multi schedule
     When I follow the left menu "Schedule > Maintenance Windows > Schedules"
+    And I wait for "1" second
     Then I should see a "Items 1 - 1 of 1" text
     When I click on "Create" in element "maintenance-windows"
     Then I should see a "Schedule Name" text
@@ -60,6 +64,7 @@ Feature: Maintenance windows
 
   Scenario: Create another multi schedule
     When I follow the left menu "Schedule > Maintenance Windows > Schedules"
+    And I wait for "1" second
     Then I should see a "Items 1 - 2 of 2" text
     When I click on "Create"
     And I enter "Core Server Window" as "name"
@@ -94,10 +99,10 @@ Feature: Maintenance windows
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    Then radio button "SLE-Product-SLES15-SP4-Pool for x86_64" should be checked
+    Then radio button "SLE-Product-SLES15-SP7-Pool for x86_64" should be checked
     When I wait until I do not see "Loading..." text
-    Then I should see "SLE15-SP4-Installer-Updates for x86_64" as unchecked
-    When I check "SLE15-SP4-Installer-Updates for x86_64"
+    Then I should see "SLE15-SP7-Installer-Updates for x86_64" as unchecked
+    When I check "SLE15-SP7-Installer-Updates for x86_64"
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
     When I pick "17:30" as time
@@ -116,7 +121,7 @@ Feature: Maintenance windows
     And I enter "virgo-dummy" as the filtered package name
     And I click on the filter button
     And I check "virgo-dummy" in the list
-    And I click on "Install Selected Packages"
+    And I click on "Install Packages"
     And I select the next maintenance window
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled for" text

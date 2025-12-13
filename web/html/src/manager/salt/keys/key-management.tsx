@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 
@@ -89,7 +89,7 @@ function labelFor(state) {
   return <span className={"label label-" + mapping.label}>{mapping.uiName}</span>;
 }
 
-type Props = {};
+type Props = Record<never, never>;
 
 type State = {
   keys: any[];
@@ -97,7 +97,7 @@ type State = {
   loading: boolean;
 };
 
-class KeyManagement extends React.Component<Props, State> {
+class KeyManagement extends Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -189,6 +189,7 @@ class KeyManagement extends React.Component<Props, State> {
               cell={(row) => labelFor(row.state)}
             />
             <Column
+              columnKey="actions"
               width="15%"
               columnClass="text-right"
               headerClass="text-right"

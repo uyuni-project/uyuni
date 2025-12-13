@@ -1,4 +1,5 @@
 #!/usr/bin/env -S bash -euo pipefail
+# -*- sh-indentation: 2 -*-
 
 # Check pre-requisites
 if ! command -v git &>/dev/null ; then
@@ -48,11 +49,11 @@ function ensure_latest_container_image() {
 }
 
 function execute_black() {
-  $ENGINE run --rm -v ${GITROOT}:${MOUNT} ${IMAGE}:${TAG} black -t py36 "$@"
+  $ENGINE run --rm -v ${GITROOT}:${MOUNT}:z ${IMAGE}:${TAG} black -t py36 "$@"
 }
 
 function execute_lint() {
-  $ENGINE run --rm -v ${GITROOT}:${MOUNT} ${IMAGE}:${TAG} pylint --rcfile /root/.pylintrc "$@"
+  $ENGINE run --rm -v ${GITROOT}:${MOUNT}:z ${IMAGE}:${TAG} pylint --rcfile /root/.pylintrc "$@"
 }
 
 function get_all_py_files() {

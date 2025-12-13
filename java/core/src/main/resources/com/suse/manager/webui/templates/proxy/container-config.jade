@@ -1,0 +1,12 @@
+#container-config
+
+script(type='text/javascript').
+    window.csrfToken = "#{csrf_token}";
+
+script(type='text/javascript').
+    spaImportReactPage('proxy/container-config')
+        .then(function(module) {
+            module.renderer(
+                'container-config'
+            )
+        });

@@ -15,6 +15,4 @@ export type PackagesObject = {
   value?: Package;
 };
 
-export type ChangesMapObject = {
-  [key: string]: PackagesObject;
-};
+export type ChangesMapObject = Record<string, PackagesObject>;

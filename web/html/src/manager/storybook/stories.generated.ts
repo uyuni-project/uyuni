@@ -7,6 +7,18 @@
 /* eslint-disable */
 
 // @ts-ignore
+import components_ace_editor_index_example_tsx_component from "components/ace-editor/index.example.tsx";
+import components_ace_editor_index_example_tsx_raw from "components/ace-editor/index.example.tsx?raw";
+
+export const components_ace_editor_index_example_tsx = {
+  path: "components/ace-editor/index.example.tsx",
+  title: "index.example.tsx",
+  groupName: "ace-editor",
+  component: components_ace_editor_index_example_tsx_component,
+  raw: components_ace_editor_index_example_tsx_raw,
+};
+
+// @ts-ignore
 import components_action_ActionStatus_example_tsx_component from "components/action/ActionStatus.example.tsx";
 import components_action_ActionStatus_example_tsx_raw from "components/action/ActionStatus.example.tsx?raw";
 
@@ -19,15 +31,15 @@ export const components_action_ActionStatus_example_tsx = {
 };
 
 // @ts-ignore
-import components_buttons_example_tsx_component from "components/buttons.example.tsx";
-import components_buttons_example_tsx_raw from "components/buttons.example.tsx?raw";
+import components_buttons_index_example_tsx_component from "components/buttons/index.example.tsx";
+import components_buttons_index_example_tsx_raw from "components/buttons/index.example.tsx?raw";
 
-export const components_buttons_example_tsx = {
-  path: "components/buttons.example.tsx",
-  title: "buttons.example.tsx",
-  groupName: "components",
-  component: components_buttons_example_tsx_component,
-  raw: components_buttons_example_tsx_raw,
+export const components_buttons_index_example_tsx = {
+  path: "components/buttons/index.example.tsx",
+  title: "index.example.tsx",
+  groupName: "buttons",
+  component: components_buttons_index_example_tsx_component,
+  raw: components_buttons_index_example_tsx_raw,
 };
 
 // @ts-ignore
@@ -91,15 +103,51 @@ export const components_formik_Form_example_tsx = {
 };
 
 // @ts-ignore
-import components_input_check_Check_example_tsx_component from "components/input/check/Check.example.tsx";
-import components_input_check_Check_example_tsx_raw from "components/input/check/Check.example.tsx?raw";
+import components_input_check_DEPRECATED_Check_example_tsx_component from "components/input/check/DEPRECATED_Check.example.tsx";
+import components_input_check_DEPRECATED_Check_example_tsx_raw from "components/input/check/DEPRECATED_Check.example.tsx?raw";
 
-export const components_input_check_Check_example_tsx = {
-  path: "components/input/check/Check.example.tsx",
-  title: "Check.example.tsx",
+export const components_input_check_DEPRECATED_Check_example_tsx = {
+  path: "components/input/check/DEPRECATED_Check.example.tsx",
+  title: "DEPRECATED_Check.example.tsx",
   groupName: "check",
-  component: components_input_check_Check_example_tsx_component,
-  raw: components_input_check_Check_example_tsx_raw,
+  component: components_input_check_DEPRECATED_Check_example_tsx_component,
+  raw: components_input_check_DEPRECATED_Check_example_tsx_raw,
+};
+
+// @ts-ignore
+import components_input_check_form_example_tsx_component from "components/input/check/form.example.tsx";
+import components_input_check_form_example_tsx_raw from "components/input/check/form.example.tsx?raw";
+
+export const components_input_check_form_example_tsx = {
+  path: "components/input/check/form.example.tsx",
+  title: "form.example.tsx",
+  groupName: "check",
+  component: components_input_check_form_example_tsx_component,
+  raw: components_input_check_form_example_tsx_raw,
+};
+
+// @ts-ignore
+import components_input_check_indeterminate_example_tsx_component from "components/input/check/indeterminate.example.tsx";
+import components_input_check_indeterminate_example_tsx_raw from "components/input/check/indeterminate.example.tsx?raw";
+
+export const components_input_check_indeterminate_example_tsx = {
+  path: "components/input/check/indeterminate.example.tsx",
+  title: "indeterminate.example.tsx",
+  groupName: "check",
+  component: components_input_check_indeterminate_example_tsx_component,
+  raw: components_input_check_indeterminate_example_tsx_raw,
+};
+
+// @ts-ignore
+import components_input_check_standalone_example_tsx_component from "components/input/check/standalone.example.tsx";
+import components_input_check_standalone_example_tsx_raw from "components/input/check/standalone.example.tsx?raw";
+
+export const components_input_check_standalone_example_tsx = {
+  path: "components/input/check/standalone.example.tsx",
+  title: "standalone.example.tsx",
+  groupName: "check",
+  component: components_input_check_standalone_example_tsx_component,
+  raw: components_input_check_standalone_example_tsx_raw,
 };
 
 // @ts-ignore
@@ -340,6 +388,30 @@ export const components_panels_TopPanel_example_tsx = {
   groupName: "panels",
   component: components_panels_TopPanel_example_tsx_component,
   raw: components_panels_TopPanel_example_tsx_raw,
+};
+
+// @ts-ignore
+import components_table_nested_data_example_tsx_component from "components/table/nested-data.example.tsx";
+import components_table_nested_data_example_tsx_raw from "components/table/nested-data.example.tsx?raw";
+
+export const components_table_nested_data_example_tsx = {
+  path: "components/table/nested-data.example.tsx",
+  title: "nested-data.example.tsx",
+  groupName: "table",
+  component: components_table_nested_data_example_tsx_component,
+  raw: components_table_nested_data_example_tsx_raw,
+};
+
+// @ts-ignore
+import components_table_search_example_tsx_component from "components/table/search.example.tsx";
+import components_table_search_example_tsx_raw from "components/table/search.example.tsx?raw";
+
+export const components_table_search_example_tsx = {
+  path: "components/table/search.example.tsx",
+  title: "search.example.tsx",
+  groupName: "table",
+  component: components_table_search_example_tsx_component,
+  raw: components_table_search_example_tsx_raw,
 };
 
 // @ts-ignore

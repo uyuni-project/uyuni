@@ -1,9 +1,8 @@
-import * as React from "react";
 import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 
 import { Button } from "components/buttons";
 import { Combobox } from "components/combobox";
-import { Check } from "components/input/check/Check";
+import { DEPRECATED_Check } from "components/input/check/DEPRECATED_Check";
 import { Form } from "components/input/form/Form";
 import { Radio } from "components/input/radio/Radio";
 import { Text } from "components/input/text/Text";
@@ -16,7 +15,7 @@ type ScheduleEditProps = {
     type: "SINGLE" | "MULTI";
     calendarName: string;
   };
-  calendarNames?: Array<Record<string, any>>;
+  calendarNames?: Record<string, any>[];
   onEdit: (...args: any[]) => any;
 };
 
@@ -55,9 +54,10 @@ const MaintenanceScheduleEdit = forwardRef((props: ScheduleEditProps, ref) => {
   }, [props.schedule]);
 
   const onFormChanged = (newModel) => {
-    /* strategy gets initialized as empty string, but we want the initial value to be false.
-     * Is equivalent to: if strategy is "" then set it to false */
-    newModel.strategy === "" && (newModel.strategy = false);
+    /* strategy gets initialized as empty string, but we want the initial value to be false. */
+    if (newModel.strategy === "") {
+      newModel.strategy = false;
+    }
     setModel({
       name: newModel.name,
       type: newModel.type,
@@ -111,7 +111,7 @@ const MaintenanceScheduleEdit = forwardRef((props: ScheduleEditProps, ref) => {
         ]}
       />
       {props.isEdit && (
-        <Check
+        <DEPRECATED_Check
           name="strategy"
           label={<b>{t("Cancel affected actions")}</b>}
           divClass="col-md-6 col-md-offset-3 offset-md-3"

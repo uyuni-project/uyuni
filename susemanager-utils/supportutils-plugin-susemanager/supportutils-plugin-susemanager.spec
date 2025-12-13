@@ -18,11 +18,12 @@
 # The productprettyname macros is controlled in the prjconf. If not defined, we fallback here
 %{!?productprettyname: %global productprettyname Uyuni}
 Name:           supportutils-plugin-susemanager
-Version:        5.2.0
+Version:        5.2.1
 Release:        0
 Summary:        Supportconfig Plugin for %{productprettyname}
 License:        GPL-2.0-only
 Group:          Documentation/SUSE
+#!CreateArchive: %{name}
 Source:         %{name}-%{version}.tar.gz
 URL:            https://github.com/uyuni-project/uyuni
 Requires:       supportutils

@@ -1,10 +1,9 @@
-import * as React from "react";
 import { useState } from "react";
 
 import { Button } from "components/buttons";
 import { DeleteDialog } from "components/dialog/DeleteDialog";
 import { ModalButton } from "components/dialog/ModalButton";
-import { Check } from "components/input/check/Check";
+import { DEPRECATED_Check } from "components/input/check/DEPRECATED_Check";
 import { Form } from "components/input/form/Form";
 import { Column } from "components/table/Column";
 import { Table } from "components/table/Table";
@@ -13,7 +12,7 @@ type CalendarListProps = {
   data: {
     id: number;
     name: string;
-    scheduleNames: Array<Map<string, string>>;
+    scheduleNames: Map<string, string>[];
   }[];
   onSelect: (...args: any[]) => any;
   onEdit: (...args: any[]) => any;
@@ -25,9 +24,10 @@ const MaintenanceCalendarList = (props: CalendarListProps) => {
   const [strategy, setStrategy] = useState(false);
 
   const setCheck = (model) => {
-    /* strategy gets initialized as empty string, but we want the initial value to be false.
-     * Is equivalent to: if strategy is "" then set it to false */
-    model.strategy === "" && (model.strategy = false);
+    /* strategy gets initialized as empty string, but we want the initial value to be false. */
+    if (model.strategy === "") {
+      model.strategy = false;
+    }
     setStrategy(model.strategy);
   };
 
@@ -52,13 +52,18 @@ const MaintenanceCalendarList = (props: CalendarListProps) => {
           header={t("Used by Schedule")}
           cell={(row) =>
             row.scheduleNames.map((name) => (
-              <a className="link-tag" href={"/rhn/manager/schedule/maintenance/schedules#/details/" + name.id}>
+              <a
+                className="link-tag"
+                href={"/rhn/manager/schedule/maintenance/schedules#/details/" + name.id}
+                key={`link-${name.name}`}
+              >
                 {name.name}
               </a>
             ))
           }
         />
         <Column
+          columnKey="actions"
           columnClass="text-right"
           headerClass="text-right"
           header={t("Actions")}
@@ -101,7 +106,7 @@ const MaintenanceCalendarList = (props: CalendarListProps) => {
           <Form model={{ strategy: strategy }} onChange={setCheck}>
             <div>{t("Are you sure you want to delete the selected item?")}</div>
             <div>{t("This will unassign all schedules from this calendar.")}</div>
-            <Check name="strategy" label={<b>{t("Cancel affected actions?")}</b>} divClass="col-md-6" />
+            <DEPRECATED_Check name="strategy" label={<b>{t("Cancel affected actions?")}</b>} divClass="col-md-6" />
           </Form>
         }
         onConfirm={() => props.onDelete(addStrategy())}

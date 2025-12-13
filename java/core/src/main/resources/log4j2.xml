@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Configuration status="warn" name="UyuniConfig">
+    <Appenders>
+        <RollingFile name="rootAppender" fileName="/var/log/rhn/rhn_web_ui.log"
+		filePattern="/var/log/rhn/rhn_web_ui-%i.log"
+		filePermissions="rw-------">
+            <PatternLayout pattern="%d [%t] %-5p %c - %m%n" />
+            <SizeBasedTriggeringPolicy size="10MB" />
+            <DefaultRolloverStrategy max="5" />
+        </RollingFile>
+        <RollingFile name="apiLogFileAppender" fileName="/var/log/rhn/rhn_web_api.log"
+		filePattern="/var/log/rhn/rhn_web_api-%i.log"
+		filePermissions="rw-------">
+            <PatternLayout pattern="[%d] %-5p - %m%n" />
+            <SizeBasedTriggeringPolicy size="10MB" />
+            <DefaultRolloverStrategy max="5" />
+        </RollingFile>
+        <RollingFile name="frontendLogControllerAppender" fileName="/var/log/rhn/rhn_web_frontend.log"
+		filePattern="/var/log/rhn/rhn_web_frontend-%i.log"
+		filePermissions="rw-------">
+            <PatternLayout pattern="%d [%t] %-5p %c - %m%n" />
+            <SizeBasedTriggeringPolicy size="10MB" />
+            <DefaultRolloverStrategy max="30" />
+        </RollingFile>
+        <RollingFile name="remoteCommandsAppender" fileName="/var/log/rhn/rhn_salt_remote_commands.log"
+		filePattern="/var/log/rhn/rhn_salt_remote_commands-%i.log"
+		filePermissions="rw-------">
+            <PatternLayout pattern="%d [%t] %-5p %c - %m%n" />
+            <SizeBasedTriggeringPolicy size="10MB" />
+            <DefaultRolloverStrategy max="30" />
+        </RollingFile>
+        <!-- Uncomment for hibernate logging -->
+        <!--
+        <File name="hibernateAppender" fileName="/var/log/rhn/rhn_web_hibernate.log">
+            <PatternLayout pattern="[%d] %-5p - %m%n" />
+        </File>
+        -->
+        <FailOver name="xmlRpcFailOverAppender" primary="apiLogFileAppender">
+            <FailOvers>
+                <AppenderRef ref="rootAppender" />
+            </FailOvers>
+        </FailOver>
+    </Appenders>
+    <Loggers>
+        <!-- Turn this up to DEBUG to get detailed logging info -->
+        <Logger name="com.redhat.rhn.taskomatic.SchedulerKernel" level="info" />
+
+        <!-- HTTP debugging -->
+        <!--
+        <Logger name="org.apache.http" level="debug" />
+        <Logger name="org.apache.http.wire" level="error" />
+        -->
+
+        <!-- General debug for everything. Very noisy -->
+        <!--
+        <Logger name="com.redhat.rhn" level="debug" />
+        <Logger name="com.suse" level="debug" />
+        -->
+
+        <!-- Logging for login-attempts -->
+        <Logger name="com.suse.manager.webui.controllers.login.LoginController" level="info" />
+        <Logger name="com.redhat.rhn.frontend.action.LogoutAction" level="info" />
+        <Logger name="com.redhat.rhn.manager.content.ContentSyncManager" level="info" />
+        <Logger name="com.redhat.rhn.manager.rhnpackage.PackageManager" level="info" />
+        <Logger name="com.redhat.rhn.manager.content.MgrSyncUtils" level="warn" /> <!-- change to info for getting mirror path info -->
+        <Logger name="com.suse.manager.webui.controllers.DownloadController" level="info" />
+
+        <!-- these are here to avoid spewing the logs when DEBUG is
+             turned on.  There are times DEBUG is useful to have without
+             seeing all of the acl and l10n stuff. -->
+        <Logger name="com.redhat.rhn.common.localization.LocalizationService" level="warn" />
+        <Logger name="com.redhat.rhn.common.security.acl" level="warn" />
+
+        <!-- XML-RPC logging -->
+        <Logger name="com.redhat.rhn.frontend.xmlrpc.XmlRpcLoggingInvocationProcessor" level="info" additivity="false">
+            <AppenderRef ref="xmlRpcFailOverAppender" />
+        </Logger>
+
+        <Logger name="com.suse.manager.api.LoggingInvocationProcessor" level="info" additivity="false">
+            <AppenderRef ref="apiLogFileAppender" />
+        </Logger>
+
+        <!-- Frontend logs -->
+        <Logger name="com.suse.manager.webui.controllers.FrontendLogController" level="trace" additivity="false">
+            <AppenderRef ref="frontendLogControllerAppender" />
+        </Logger>
+
+        <!-- Salt remote commands logs -->
+        <Logger name="com.suse.manager.webui.websocket.RemoteMinionCommands" level="info" additivity="false">
+            <AppenderRef ref="remoteCommandsAppender" />
+        </Logger>
+
+        <!-- Hibernate logging -->
+        <!--
+        <Logger name="org.hibernate" level="debug" additivity="false">
+            <AppenderRef ref="hibernateAppender" />
+        </Logger>
+
+        <Logger name="org.hibernate.type" level="trace" />
+        -->
+
+        <!-- log SQL statements -->
+        <!--
+        <Logger name="org.hibernate.SQL" level="debug" />
+        -->
+
+        <!--
+        <Logger name="net.rkbloom.logdriver" level="debug" additivity="false">
+            <AppenderRef ref="hibernateAppender" />
+        </Logger>
+        -->
+
+        <!-- Ignore deprecation not yet addressed to reduce log noise -->
+        <Logger name="org.hibernate.orm.deprecation" level="warn">
+            <Filters>
+                <!-- Disable outer-join attribute on <many-to-many> has been deprecated -->
+                <RegexFilter regex="HHH90000009: .*" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <!-- Disable org.hibernate.Criteria API deprecation message -->
+                <RegexFilter regex="HHH90000022: .*" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <!-- Disable ehcache 2 deprecation message -->
+                <RegexFilter regex="HHH020100: .*" onMatch="DENY" onMismatch="NEUTRAL"/>
+            </Filters>
+        </Logger>
+
+        <Logger name="org.hibernate.cfg.AnnotationBinder" level="warn">
+            <Filters>
+                <!-- Current hibernate behaviour of to apply the @DiscriminatorColumn is what we want -->
+                <RegexFilter regex="HHH000457: .*" onMatch="DENY" onMismatch="NEUTRAL"/>
+            </Filters>
+        </Logger>
+
+        <!-- this silences ehcache on Fedoras complaining about using default values -->
+        <Logger name="org.hibernate.cache.ehcache.AbstractEhcacheRegionFactory" level="error" />
+
+        <Root level="warn"><AppenderRef ref="rootAppender" /></Root>
+    </Loggers>
+</Configuration>

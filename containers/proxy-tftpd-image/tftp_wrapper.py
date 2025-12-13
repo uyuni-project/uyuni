@@ -190,7 +190,11 @@ class HttpResponseDataFilteredGrub(HttpResponseDataFiltered):
                     ):
                         have_entry = True
                         saltboot_content += entry
-                        saltboot_content += f"set default={entry_name}\n"
+                        saltboot_content += (
+                            'if [ -z "${default}" -o "${default}" == "local" ]; then\n  set default='
+                            + entry_name
+                            + "\nfi\n"
+                        )
                     else:
                         filtered_entry = re.sub(
                             r"\b" + re.escape(self._server_fqdn) + r"\b",

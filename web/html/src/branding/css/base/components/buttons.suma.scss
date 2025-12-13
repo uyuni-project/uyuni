@@ -1,10 +1,7 @@
-.btn,
-.btn-default,
-.btn-primary,
-.btn-danger {
+.btn {
   color: inherit;
   font-weight: 600;
-  padding: 8px 16px;
+  padding: 6px 14px;
   position: relative;
   border-style: solid;
   border-width: 2px;
@@ -12,18 +9,16 @@
   transition: none;
   text-decoration: none;
   box-shadow: none;
+  min-height: $input-height;
 
   &:hover {
     text-decoration: none;
   }
 
   &.btn-sm {
-    padding: 6px 14px;
+    padding: 4px 10px;
     font-size: 12px;
-  }
-
-  .input-group-btn & {
-    padding: 5px 10px;
+    min-height: 30px;
   }
 
   &,
@@ -35,9 +30,13 @@
     box-shadow: none;
   }
 
+   &:focus {
+    border-color: $eos-bc-blue-500;
+  }
+
   // Branding hover effect
-  &:not(:disabled):not(.disabled):not(.text-muted):hover::before {
-    // background: #686565;
+  // It has to be ::after Pseudo-element. ::before is used to set icons in pagination button.
+  &:not(:disabled):not(.disabled):not(.text-muted):hover::after {
     border: 2px solid transparent;
     bottom: -2px;
     box-sizing: content-box;
@@ -69,12 +68,40 @@
   }
 }
 
+.btn-tertiary {
+  background: none;
+  color: $eos-bc-pine-500;
+  font-weight: bold;
+  text-decoration: underline;
+  text-underline-offset: .3rem;
+  gap: 0.3em;
+ 
+  &:active,
+  &:hover:not(:disabled):not(.disabled) {
+    text-decoration: underline;
+    text-underline-offset: .3rem;
+    color: $eos-bc-green-900;
+    border-color: transparent ;
+  }
+
+  &.disabled,
+  &:disabled {
+    &,
+    &:active {
+      pointer-events: auto;
+      cursor: not-allowed;
+      border-color: transparent;
+      text-decoration: underline;
+      text-underline-offset: .3rem;
+    }
+  }
+}
+
 // TODO: Add :active and :focus states for green etc
 // NB! Here and below, these are not nested because they're not used consistently along with .btn
 .btn-default {
   &,
   &:active,
-  &:focus,
   &:disabled,
   &.disabled {
     &,
@@ -83,7 +110,7 @@
       border-color: $eos-bc-pine-500;
       color: $eos-bc-pine-500;
 
-      &:not(:disabled):not(.disabled):not(.text-muted):hover::before {
+      &:not(:disabled):not(.disabled):not(.text-muted):hover::after {
         background: $eos-bc-pine-500;
       }
     }
@@ -93,7 +120,6 @@
 .btn-default-inverse {
   &,
   &:active,
-  &:focus,
   &:disabled,
   &.disabled {
     &,
@@ -102,10 +128,14 @@
       border-color: $eos-bc-white;
       color: $eos-bc-white;
 
-      &:not(:disabled):not(.disabled):not(.text-muted):hover::before {
+      &:not(:disabled):not(.disabled):not(.text-muted):hover::after {
         background: $eos-bc-white;
       }
     }
+  }
+
+  &:focus {
+    border-color: $eos-bc-blue-500;
   }
 }
 
@@ -114,17 +144,22 @@
   &:active,
   &:focus,
   &:disabled,
-  &.disabled {
+  &.disabled,
+  &.btn.show {
     &,
     &:hover {
       background: $eos-bc-persimmon-500;
       border-color: $eos-bc-persimmon-500;
       color: $eos-bc-gray-1000;
 
-      &:not(:disabled):not(.disabled):not(.text-muted):hover::before {
+      &:not(:disabled):not(.disabled):not(.text-muted):hover::after {
         background: $eos-bc-gray-900;
       }
     }
+  }
+
+  &:focus {
+    border-color: $eos-bc-blue-500;
   }
 }
 
@@ -146,10 +181,14 @@
         border-color: $eos-bc-red-900;
       }
 
-      &:not(:disabled):not(.disabled):not(.text-muted):hover::before {
+      &:not(:disabled):not(.disabled):not(.text-muted):hover::after {
         background: $eos-bc-gray-900;
       }
     }
+  }
+
+  &:focus {
+    border-color: $eos-bc-blue-500;
   }
 }
 
@@ -159,7 +198,7 @@
   height: $input-height;
   z-index: 100;
 
-  &:not(:disabled):not(.disabled):not(.text-muted):hover::before {
+  &:not(:disabled):not(.disabled):not(.text-muted):hover::after {
     border-width: 1px;
     bottom: -1px;
     left: -1px;
@@ -175,13 +214,12 @@
 }
 
 .panel-heading,
-th {
-  .btn,
-  .btn-link,
-  a {
-    border: none;
-    padding: 0;
-    font-weight: 600 !important;
-    color: $eos-bc-gray-1000 !important;
-  }
+.panel-heading a:not(.btn):not(.btn-tertiary),
+th > a,
+th .orderBy {
+  border: none;
+  padding: 0;
+  font-weight: 600 !important;
+  color: $eos-bc-gray-1000 !important;
+  background-color: transparent;
 }

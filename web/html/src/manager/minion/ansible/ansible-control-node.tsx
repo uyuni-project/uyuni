@@ -1,9 +1,10 @@
-import * as React from "react";
+import { Component } from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 
 import { Messages, Utils } from "components/messages/messages";
 import { Panel } from "components/panels/Panel";
+import { DEPRECATED_onClick } from "components/utils";
 import { Loading } from "components/utils/loading/Loading";
 
 import Network from "utils/network";
@@ -28,7 +29,7 @@ type StateType = {
   loading: boolean;
 };
 
-export class AnsibleControlNode extends React.Component<PropsType, StateType> {
+export class AnsibleControlNode extends Component<PropsType, StateType> {
   constructor(props) {
     super(props);
 
@@ -73,9 +74,11 @@ export class AnsibleControlNode extends React.Component<PropsType, StateType> {
     Network.post("/rhn/manager/api/systems/details/ansible/paths/delete", path.id?.toString()).then((blob) => {
       if (blob.success) {
         if (path.type === "playbook") {
-          this.setState({ playbooksPaths: this.state.playbooksPaths.filter((p) => p.id !== path.id) });
+          this.setState((prevState) => ({ playbooksPaths: prevState.playbooksPaths.filter((p) => p.id !== path.id) }));
         } else {
-          this.setState({ inventoriesPaths: this.state.inventoriesPaths.filter((p) => p.id !== path.id) });
+          this.setState((prevState) => ({
+            inventoriesPaths: prevState.inventoriesPaths.filter((p) => p.id !== path.id),
+          }));
         }
       } else {
         this.setState({ errors: blob.errors.path });
@@ -109,15 +112,15 @@ export class AnsibleControlNode extends React.Component<PropsType, StateType> {
           path: editPath.path,
         });
         if (type === "playbook") {
-          this.setState({
-            playbooksPaths: this.state.playbooksPaths.filter((p) => p.id !== editPath?.id).concat(newPath),
+          this.setState((prevState) => ({
+            playbooksPaths: prevState.playbooksPaths.filter((p) => p.id !== editPath?.id).concat(newPath),
             editPlaybookPath: {},
-          });
+          }));
         } else {
-          this.setState({
-            inventoriesPaths: this.state.inventoriesPaths.filter((p) => p.id !== editPath?.id).concat(newPath),
+          this.setState((prevState) => ({
+            inventoriesPaths: prevState.inventoriesPaths.filter((p) => p.id !== editPath?.id).concat(newPath),
             editInventoryPath: {},
-          });
+          }));
         }
       } else {
         this.setState({ errors: blob.errors.path });
@@ -140,9 +143,15 @@ export class AnsibleControlNode extends React.Component<PropsType, StateType> {
           path: newPath,
         };
         if (type === "playbook") {
-          this.setState({ playbooksPaths: this.state.playbooksPaths.concat(newAnsiblePath), newPlaybookPath: "" });
+          this.setState((prevState) => ({
+            playbooksPaths: prevState.playbooksPaths.concat(newAnsiblePath),
+            newPlaybookPath: "",
+          }));
         } else {
-          this.setState({ inventoriesPaths: this.state.inventoriesPaths.concat(newAnsiblePath), newInventoryPath: "" });
+          this.setState((prevState) => ({
+            inventoriesPaths: prevState.inventoriesPaths.concat(newAnsiblePath),
+            newInventoryPath: "",
+          }));
         }
       } else {
         this.setState({ errors: blob.errors.path });
@@ -177,9 +186,9 @@ export class AnsibleControlNode extends React.Component<PropsType, StateType> {
                     />
                   ) : (
                     <div className="d-block" key={p.id}>
-                      <pre className="pointer" onClick={() => this.setState({ editPlaybookPath: p })}>
+                      <pre className="pointer" {...DEPRECATED_onClick(() => this.setState({ editPlaybookPath: p }))}>
                         {p.path}
-                        <i className="fa fa-edit pull-right" />
+                        <i className="fa fa-edit pull-right" data-bs-toggle="tooltip" title="Edit" />
                       </pre>
                     </div>
                   )
@@ -210,9 +219,9 @@ export class AnsibleControlNode extends React.Component<PropsType, StateType> {
                     />
                   ) : (
                     <div className="d-block" key={p.id}>
-                      <pre className="pointer" onClick={() => this.setState({ editInventoryPath: p })}>
+                      <pre className="pointer" {...DEPRECATED_onClick(() => this.setState({ editInventoryPath: p }))}>
                         {p.path}
-                        <i className="fa fa-edit pull-right" />
+                        <i className="fa fa-edit pull-right" data-bs-toggle="tooltip" title="Edit" />
                       </pre>
                     </div>
                   )

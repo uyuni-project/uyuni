@@ -24,12 +24,13 @@
   %define _fillupdir %{_localstatedir}/adm/fillup-templates
 %endif
 Name:           uyuni-payg-timer
-Version:        5.2.0
+Version:        5.2.1
 Release:        0
 Summary:        %{productprettyname} PAYG Timer Package
 License:        GPL-2.0-only
 Group:          System/Fhs
 URL:            https://github.com/uyuni-project/uyuni
+#!CreateArchive: %{name}
 Source0:        %{name}-%{version}.tar.gz
 Source1:        uyuni-payg-timer-rpmlintrc
 BuildRequires:  systemd-rpm-macros

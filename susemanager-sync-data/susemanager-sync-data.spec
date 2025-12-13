@@ -18,12 +18,13 @@
 # The productprettyname macros is controlled in the prjconf. If not defined, we fallback here
 %{!?productprettyname: %global productprettyname Uyuni}
 Name:           susemanager-sync-data
-Version:        5.2.0
+Version:        5.2.1
 Release:        0
 Summary:        %{productprettyname} specific scripts
 License:        GPL-2.0-only
 Group:          Productivity/Other
 URL:            https://github.com/uyuni-project/uyuni
+#!CreateArchive: %{name}
 Source0:        %{name}-%{version}.tar.gz
 Requires:       spacewalk-java-lib >= 2.5.59.7
 BuildArch:      noarch

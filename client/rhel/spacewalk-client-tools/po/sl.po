@@ -13,112 +13,103 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-11 13:25+0200\n"
+"POT-Creation-Date: 2025-10-03 11:04+0200\n"
 "PO-Revision-Date: 2018-03-16 11:04+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
-"Language-Team: Slovenian (http://www.transifex.com/projects/p/spacewalk/"
-"language/sl/)\n"
+"Language-Team: Slovenian (http://www.transifex.com/projects/p/spacewalk/language/sl/)\n"
 "Language: sl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || "
-"n%100==4 ? 2 : 3);\n"
+"Plural-Forms: nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3);\n"
 "X-Generator: Zanata 4.6.2\n"
 
-#: ../src/up2date_client/config.py:162
+#. pylint: disable-next=consider-using-f-string
+#: ../src/up2date_client/config.py:166
 #, python-format
 msgid "%s was not found"
 msgstr ""
 
-#: ../src/up2date_client/rpcServer.py:55
+#: ../src/up2date_client/rpcServer.py:70
 msgid "Error: Server Unavailable. Please try later."
 msgstr ""
 
-#: ../src/up2date_client/rpcServer.py:181
+#. pylint: disable-next=consider-using-f-string
+#: ../src/up2date_client/rpcServer.py:221
 msgid "ERROR: can not find server CA file"
 msgstr ""
 
-#: ../src/up2date_client/up2dateErrors.py:47
-#: ../src/up2date_client/up2dateErrors.py:80
+#: ../src/up2date_client/up2dateErrors.py:62
+#: ../src/up2date_client/up2dateErrors.py:101
 #, python-format
 msgid "class %s has no attribute '%s'"
 msgstr ""
 
-#: ../src/up2date_client/up2dateErrors.py:107
+#: ../src/up2date_client/up2dateErrors.py:135
 msgid "RPM error.  The message was:\n"
 msgstr "Napaka RPM. Poročilo napake:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:114
+#: ../src/up2date_client/up2dateErrors.py:145
 msgid "Password error. The message was:\n"
 msgstr "Napaka z geslom. Poročilo napake:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:118
+#: ../src/up2date_client/up2dateErrors.py:151
 msgid "RPM dependency error. The message was:\n"
 msgstr "Napaka v odvisnosti RPM. Poročilo napake:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:128
+#: ../src/up2date_client/up2dateErrors.py:163
 msgid "Error communicating with server. The message was:\n"
 msgstr "Napak pri komunikaciji s strežnikom. Poročilo napake:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:135
+#: ../src/up2date_client/up2dateErrors.py:172
 msgid "File Not Found: \n"
 msgstr "Datoteka ni bila najdena: \n"
 
-#: ../src/up2date_client/up2dateErrors.py:142
+#: ../src/up2date_client/up2dateErrors.py:180
 msgid "Delay error from server.  The message was:\n"
 msgstr "Zakasnitvena napaka s strežnika. Poročilo napake:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:178
+#: ../src/up2date_client/up2dateErrors.py:229
 msgid "Error validating data at server:\n"
 msgstr "Napaka pri preverjanju podatkov na strežniku:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:191
+#: ../src/up2date_client/up2dateErrors.py:246
 msgid ""
 "\n"
 "Red Hat Network Classic is not supported.\n"
 "    "
 msgstr ""
 
-#: ../src/up2date_client/up2dateErrors.py:197
+#: ../src/up2date_client/up2dateErrors.py:255
 msgid "The installation number is invalid"
 msgstr "    --activationkey=<vrednost> - določi ključ za aktiviranje"
 
-#: ../src/up2date_client/up2dateErrors.py:200
+#: ../src/up2date_client/up2dateErrors.py:259
 msgid "Error parsing the oemInfo file at field:\n"
 msgstr "Napak pri tolmačenju datoteke oemInfo pri polju:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:227
+#: ../src/up2date_client/up2dateErrors.py:294
 msgid "Network error: "
 msgstr ""
 
-#: ../src/up2date_client/up2dateErrors.py:295
+#: ../src/up2date_client/up2dateErrors.py:385
 msgid ""
 "\n"
-"    Your organization does not have enough Management entitlements to "
-"register this\n"
+"    Your organization does not have enough Management entitlements to register this\n"
 "    system. Please notify your organization administrator of this error.\n"
-"    You should be able to register this system after your organization frees "
-"existing\n"
-"    or purchases additional entitlements. Additional entitlements may be "
-"purchased by your\n"
+"    You should be able to register this system after your organization frees existing\n"
+"    or purchases additional entitlements. Additional entitlements may be purchased by your\n"
 "    organization administrator in the SUSE Customer Center.\n"
 "\n"
 "    A common cause of this error code is due to having mistakenly setup an\n"
-"    Activation Key which is set as the universal default.  If an activation "
-"key is set\n"
-"    on the account as a universal default, you can disable this key and "
-"retry to avoid\n"
+"    Activation Key which is set as the universal default.  If an activation key is set\n"
+"    on the account as a universal default, you can disable this key and retry to avoid\n"
 "    requiring a Management entitlement."
 msgstr ""
 
 #, python-format
-#~ msgid ""
-#~ "This client requires the server to support %s, which the current server "
-#~ "does not support"
-#~ msgstr ""
-#~ "Ta odjemalec zahteva, da strežnik podpira %s, kar pa trenutni strežnik ne "
-#~ "zna"
+#~ msgid "This client requires the server to support %s, which the current server does not support"
+#~ msgstr "Ta odjemalec zahteva, da strežnik podpira %s, kar pa trenutni strežnik ne zna"
 
 #~ msgid "Getting list of packages installed on the system"
 #~ msgstr "Gradim seznam v sistemu nameščenih paketov"
@@ -150,8 +141,7 @@ msgstr ""
 #~ msgid "Error reading machine info:"
 #~ msgstr "Težava pri registraciji osebnih podatkov:"
 
-#~ msgid ""
-#~ "This system may not be updated until it is associated with a channel."
+#~ msgid "This system may not be updated until it is associated with a channel."
 #~ msgstr "Sistema ni moč posodoboti dokler ni vezan na kanal."
 
 #, fuzzy
@@ -186,12 +176,8 @@ msgstr ""
 #~ msgid "There was an SSL error: %s\n"
 #~ msgstr "Prišlo je do napake SSL: %s\n"
 
-#~ msgid ""
-#~ "A common cause of this error is the system time being incorrect. Verify "
-#~ "that the time on this system is correct.\n"
-#~ msgstr ""
-#~ "Pogosti vzrok za to napako je nepravilni čas sistema. Preverite njegovo "
-#~ "pravilnost.\n"
+#~ msgid "A common cause of this error is the system time being incorrect. Verify that the time on this system is correct.\n"
+#~ msgstr "Pogosti vzrok za to napako je nepravilni čas sistema. Preverite njegovo pravilnost.\n"
 
 #, python-format
 #~ msgid "There was a SSL crypto error: %s\n"
@@ -253,21 +239,11 @@ msgstr ""
 #~ msgstr "Up2date - Profil strojne opreme"
 
 #, fuzzy, python-brace-format
-#~ msgid ""
-#~ "A Profile Name is a descriptive name that you choose to identify this "
-#~ "System Profile on the {PRODUCT_NAME} web pages. Optionally, include a "
-#~ "computer serial or identification number."
-#~ msgstr ""
-#~ "Ime profile je opisno ime, ki ga določite in s katerim boste prepoznali "
-#~ "ta sistem na strani Red Hat Network. Po želji lahko vključite serijsko "
-#~ "številko računalnika ali njegovo prepoznavno številko."
+#~ msgid "A Profile Name is a descriptive name that you choose to identify this System Profile on the {PRODUCT_NAME} web pages. Optionally, include a computer serial or identification number."
+#~ msgstr "Ime profile je opisno ime, ki ga določite in s katerim boste prepoznali ta sistem na strani Red Hat Network. Po želji lahko vključite serijsko številko računalnika ali njegovo prepoznavno številko."
 
-#~ msgid ""
-#~ "Additional hardware information including PCI devices, disk sizes and "
-#~ "mount points will be included in the profile."
-#~ msgstr ""
-#~ "Dodatni podatki o strojni opremi, vključno z napravami PCI, velikostmi "
-#~ "diskov in točkami priklopa bodo vključeni v profil."
+#~ msgid "Additional hardware information including PCI devices, disk sizes and mount points will be included in the profile."
+#~ msgstr "Dodatni podatki o strojni opremi, vključno z napravami PCI, velikostmi diskov in točkami priklopa bodo vključeni v profil."
 
 #~ msgid "Include the following information about hardware and network:"
 #~ msgstr "Dodaj sledeče podatke o strojni opremi in omrežju:"
@@ -275,12 +251,8 @@ msgstr ""
 #~ msgid "Create Profile - Packages"
 #~ msgstr "Up2date - Profil strojne opreme"
 
-#~ msgid ""
-#~ "RPM information is important to determine what updated software packages "
-#~ "are relevant to this system."
-#~ msgstr ""
-#~ "Podatki RPM so pomembni pri določanju kateri paketi so zanimivi za ta "
-#~ "sistem."
+#~ msgid "RPM information is important to determine what updated software packages are relevant to this system."
+#~ msgstr "Podatki RPM so pomembni pri določanju kateri paketi so zanimivi za ta sistem."
 
 #~ msgid "Include RPM packages installed on this system in my System Profile"
 #~ msgstr "Vključi podatek o nameščenih paketih RPM v profil sistema"
@@ -295,9 +267,7 @@ msgstr ""
 #~ msgstr "Naslov e-mail:"
 
 #~ msgid "System Already Registered"
-#~ msgstr ""
-#~ "    --force                    - registriraj sistem, čeprav naj bi bil že "
-#~ "registriran"
+#~ msgstr "    --force                    - registriraj sistem, čeprav naj bi bil že registriran"
 
 #~ msgid "It appears this system has already been set up for software updates:"
 #~ msgstr "Restavriram up2date"
@@ -310,8 +280,7 @@ msgstr ""
 #~ msgstr "Opis"
 
 #, fuzzy
-#~ msgid ""
-#~ "Subscriptions have been activated for the following products/services:"
+#~ msgid "Subscriptions have been activated for the following products/services:"
 #~ msgstr "    --activationkey=<vrednost> - določi ključ za aktiviranje"
 
 #~ msgid "Software Channel Subscriptions:"
@@ -409,12 +378,8 @@ msgstr ""
 #~ msgid "Finish"
 #~ msgstr "Končaj"
 
-#~ msgid ""
-#~ "  <Tab>/<Alt-Tab> between elements  |  <Space> selects  |  <F12> next "
-#~ "screen"
-#~ msgstr ""
-#~ "  <Tab>/<Alt-Tab> med elementi   |  <Presl.> izbere   |  <F12> nasl. "
-#~ "zaslon"
+#~ msgid "  <Tab>/<Alt-Tab> between elements  |  <Space> selects  |  <F12> next screen"
+#~ msgstr "  <Tab>/<Alt-Tab> med elementi   |  <Presl.> izbere   |  <F12> nasl. zaslon"
 
 #, fuzzy, python-brace-format
 #~ msgid "You must run the {PRODUCT_NAME} registration program as root."
@@ -424,8 +389,7 @@ msgstr ""
 #~ msgstr "Določite kateri url strežnika bo uporabljen"
 
 #~ msgid "Specify a file to use as the ssl CA cert"
-#~ msgstr ""
-#~ "    --sslCACert=<pot>          - določa datoteko z ssl certifikatom CA"
+#~ msgstr "    --sslCACert=<pot>          - določa datoteko z ssl certifikatom CA"
 
 #~ msgid "Specify an activation key"
 #~ msgstr "Določi spletni posrednik"
@@ -434,34 +398,22 @@ msgstr ""
 #~ msgstr "    --contactinfo              - preberi kontaktne podatke iz vhoda"
 
 #~ msgid "Do not probe or upload any hardware info"
-#~ msgstr ""
-#~ "    --nohardware               - ne zaznavaj in pošiljaj podatkov o "
-#~ "strojni opremi"
+#~ msgstr "    --nohardware               - ne zaznavaj in pošiljaj podatkov o strojni opremi"
 
 #~ msgid "Do not profile or upload any package info"
-#~ msgstr ""
-#~ "    --nopackages               - ne ustvari profila in ne pošlji podatkov "
-#~ "o paketih"
+#~ msgstr "    --nopackages               - ne ustvari profila in ne pošlji podatkov o paketih"
 
 #~ msgid "Register the system even if it is already registered"
-#~ msgstr ""
-#~ "    --force                    - registriraj sistem, čeprav naj bi bil že "
-#~ "registriran"
+#~ msgstr "    --force                    - registriraj sistem, čeprav naj bi bil že registriran"
 
 #~ msgid "A username and password are required to register a system."
-#~ msgstr ""
-#~ "Za registracijo sistem so potreni uporabniško ime, geslo in e-poštni "
-#~ "naslov."
+#~ msgstr "Za registracijo sistem so potreni uporabniško ime, geslo in e-poštni naslov."
 
 #~ msgid "This system is already registered. Use --force to override"
 #~ msgstr "Sistem je že registriran. Uporabi --force za prisilo"
 
-#~ msgid ""
-#~ "A profilename was not specified, and hostname and IP address could not be "
-#~ "determined to use as a profilename, please specify one."
-#~ msgstr ""
-#~ "Ime profile ni bilo določeno, ime računalnika ali naslov IP pa ni bilo "
-#~ "moč ugotoviti. Vpišite nekaj za ime profila."
+#~ msgid "A profilename was not specified, and hostname and IP address could not be determined to use as a profilename, please specify one."
+#~ msgstr "Ime profile ni bilo določeno, ime računalnika ali naslov IP pa ni bilo moč ugotoviti. Vpišite nekaj za ime profila."
 
 #, fuzzy
 #~ msgid "Software updates setup unsuccessful"
@@ -509,9 +461,7 @@ msgstr ""
 #~ msgid "There was an error while logging in."
 #~ msgstr "Težava pri registraciji sistema."
 
-#~ msgid ""
-#~ "There was an error communicating with the registration server.  The "
-#~ "message was:\n"
+#~ msgid "There was an error communicating with the registration server.  The message was:\n"
 #~ msgstr "Napaka pri komunikaciji s strežnikom. Poročilo napake:\n"
 
 #~ msgid "There was an error while assembling information for the profile."
@@ -565,11 +515,8 @@ msgstr ""
 #~ msgid "Arch"
 #~ msgstr "Arhi"
 
-#~ msgid ""
-#~ "Building a list of RPM packages installed on your system.  Please wait."
-#~ msgstr ""
-#~ "Čarovnik za registracijo gradi seznam v sistemu namščenih paketov RPM. "
-#~ "Prosim počakajte."
+#~ msgid "Building a list of RPM packages installed on your system.  Please wait."
+#~ msgstr "Čarovnik za registracijo gradi seznam v sistemu namščenih paketov RPM. Prosim počakajte."
 
 #~ msgid ""
 #~ "There was an error loading your configuration.  Make sure that\n"
@@ -586,12 +533,8 @@ msgstr ""
 #~ "Napaka pri shranjevanju nastavitev. Prepičajte se, da imate\n"
 #~ "%s v lasti."
 
-#~ msgid ""
-#~ "You need to register this system by running `rhn_register` before using "
-#~ "this option"
-#~ msgstr ""
-#~ "Registrirati morate sistem tako, da poženete `up2date --register` predno "
-#~ "lahko uporabite to zmožnost."
+#~ msgid "You need to register this system by running `rhn_register` before using this option"
+#~ msgstr "Registrirati morate sistem tako, da poženete `up2date --register` predno lahko uporabite to zmožnost."
 
 #~ msgid "Updating package profile..."
 #~ msgstr "Posodabljam profil paketov..."

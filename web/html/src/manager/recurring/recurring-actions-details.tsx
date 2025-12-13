@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import _sortBy from "lodash/sortBy";
 
@@ -12,6 +12,7 @@ import { Column } from "components/table/Column";
 import { Table } from "components/table/Table";
 
 import { localizedMoment } from "utils";
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network from "utils/network";
 
 import { DisplayHighstate } from "../state/display-highstate";
@@ -56,7 +57,7 @@ type RecurringActionsDetailsState = {
   details: any;
 };
 
-class RecurringActionsDetails extends React.Component<RecurringActionsDetailsProps, RecurringActionsDetailsState> {
+class RecurringActionsDetails extends Component<RecurringActionsDetailsProps, RecurringActionsDetailsState> {
   weekDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
   constructor(props: RecurringActionsDetailsProps) {
@@ -81,7 +82,7 @@ class RecurringActionsDetails extends React.Component<RecurringActionsDetailsPro
 
   deleteSchedule = (item) => {
     return Network.del("/rhn/manager/api/recurringactions/" + item.recurringActionId + "/delete")
-      .then((_) => {
+      .then(() => {
         this.props.onSetMessages(MessagesUtils.info("Schedule '" + item.scheduleName + "' has been deleted."));
         this.props.onCancel("back");
       })
@@ -122,10 +123,10 @@ class RecurringActionsDetails extends React.Component<RecurringActionsDetailsPro
                     (details.cronTimes.dayOfMonth === "1"
                       ? "st "
                       : details.cronTimes.dayOfMonth === "2"
-                      ? "nd "
-                      : details.cronTimes.dayOfMonth === "3"
-                      ? "rd "
-                      : "th ")
+                        ? "nd "
+                        : details.cronTimes.dayOfMonth === "3"
+                          ? "rd "
+                          : "th ")
                 }
               </b>
               {"of the month at "}
@@ -146,7 +147,7 @@ class RecurringActionsDetails extends React.Component<RecurringActionsDetailsPro
 
   showScheduleDetails(data) {
     const { details } = this.state;
-    if (details == null) {
+    if (DEPRECATED_unsafeEquals(details, null)) {
       return false;
     }
     details.cronTimes.hour = details.cronTimes.hour.padStart(2, "0");
@@ -228,7 +229,7 @@ class RecurringActionsDetails extends React.Component<RecurringActionsDetailsPro
 
   render() {
     const buttons = [
-      <div className="btn-group pull-right">
+      <div className="btn-group pull-right" key="buttons-right">
         <Button
           text={t("Back")}
           icon="fa-chevron-left"
@@ -275,7 +276,7 @@ class RecurringActionsDetails extends React.Component<RecurringActionsDetailsPro
               identifier={(item) => item.position}
               selectable={false}
               data={_sortBy(this.state.details.states, "position")}
-              initialItemsPerPage={0}
+              hideHeaderFooter="both"
             >
               <Column header={t("Order")} columnKey="position" cell={(row) => row.position} />
               <Column

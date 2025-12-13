@@ -1,0 +1,95 @@
+<rl:listset name="groupSet" legend="errata">
+    <rhn:csrf />
+    <div class="spacewalk-section-toolbar">
+        <div class="action-button-wrapper">
+            <rl:csv
+                name="errataList"
+                exportColumns="errataAdvisoryType,advisoryName,advisorySynopsis,affectedSystemCount,updateDate"
+                header="${system.name}"/>
+        </div>
+    </div>
+    <rl:list emptykey="${emptyListKey}">
+
+        <rl:decorator name="PageSizeDecorator"/>
+        <rl:decorator name="ElaborationDecorator"/>
+
+        <rl:column headerkey="erratalist.jsp.type" styleclass="text-align: left;">
+            <c:if test="${current.securityAdvisory}">
+                <c:choose>
+                    <c:when test="${current.severityid=='0'}">
+                        <rhn:icon type="errata-security-critical"
+                                  title="erratalist.jsp.securityadvisory" />
+                    </c:when>
+                    <c:when test="${current.severityid=='1'}">
+                        <rhn:icon type="errata-security-important"
+                                  title="erratalist.jsp.securityadvisory" />
+                    </c:when>
+                    <c:when test="${current.severityid=='2'}">
+                        <rhn:icon type="errata-security-moderate"
+                                  title="erratalist.jsp.securityadvisory" />
+                    </c:when>
+                    <c:when test="${current.severityid=='3'}">
+                        <rhn:icon type="errata-security-low"
+                                  title="erratalist.jsp.securityadvisory" />
+                    </c:when>
+                    <c:otherwise>
+                        <rhn:icon type="errata-security"
+                                  title="erratalist.jsp.securityadvisory" />
+                    </c:otherwise>
+                </c:choose>
+            </c:if>
+            <c:if test="${current.bugFix}">
+                <rhn:icon type="errata-bugfix" title="erratalist.jsp.bugadvisory" />
+            </c:if>
+            <c:if test="${current.productEnhancement}">
+                <rhn:icon type="errata-enhance" title="erratalist.jsp.productenhancementadvisory" />
+            </c:if>
+            <c:if test="${current.rebootSuggested}">
+                <rhn:icon type="errata-reboot" title="errata-legend.jsp.reboot" />
+            </c:if>
+            <c:if test="${current.restartSuggested}">
+                <rhn:icon type="errata-restart" title="errata.jsp.restart-tooltip" />
+            </c:if>
+            <c:if test="${current.advisoryStatus.metadataValue == 'retracted'}">
+                <rhn:icon type="errata-retracted" title="errata.jsp.retracted-tooltip" />
+            </c:if>
+        </rl:column>
+        <rl:column headerkey="erratalist.jsp.advisory"
+                   sortable="true"
+                   sortattr="advisoryName"
+                   defaultsort="asc">
+            <a href="/rhn/errata/details/Details.do?eid=${current.id}">${current.advisoryName}</a>
+        </rl:column>
+        <rl:column headerkey="erratalist.jsp.synopsis"
+                   sortable="true"
+                   sortattr="advisorySynopsis"
+                   filterattr="advisorySynopsis">
+            ${current.advisorySynopsis}
+        </rl:column>
+        <rl:column headerkey="erratalist.jsp.systems"
+                   sortable="true"
+                   sortattr="systems"
+                   styleclass="text-align: center;">
+            <a href="/rhn/errata/details/SystemsAffected.do?eid=${current.id}">${current.affectedSystemCount}</a>
+        </rl:column>
+        <rl:column headerkey="erratalist.jsp.updated"
+                   sortable="true"
+                   sortattr="updateDateObj"
+                   styleclass="text-align: center;">
+            ${current.updateDate}
+        </rl:column>
+
+        <c:if test="${displayCves}">
+
+            <rl:column headerkey="details.jsp.cves">
+                <c:forEach items="${current.cves}" var="cve">
+                    <a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=${cve}">
+                        <c:out value="${cve}"/> <br />
+                    </a>
+              </c:forEach>
+            </rl:column>
+
+        </c:if>
+
+    </rl:list>
+</rl:listset>

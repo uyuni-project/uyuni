@@ -1,0 +1,6 @@
+[sles15sp7]
+name=sles15sp7
+enabled=1
+autorefresh=0
+baseurl=http://ip-172-16-1-175.eu-central-1.compute.internal/SUSE/Products/SLE-Module-Basesystem/15-SP7/x86_64/product/
+type=rpm-md

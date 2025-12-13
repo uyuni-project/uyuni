@@ -1,5 +1,6 @@
 --
 -- Copyright (c) 2012, Novell Inc.
+-- Copyright (c) 2025 SUSE LLC
 --
 -- This software is licensed to you under the GNU General Public License,
 -- version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -17,8 +18,12 @@ CREATE TABLE rhnActionDup
                             ,
     action_id           NUMERIC NOT NULL
                             CONSTRAINT rhn_actiondup_aid_fk
-                            REFERENCES rhnAction (id)
-                            ON DELETE CASCADE,
+                                REFERENCES rhnAction (id)
+                                ON DELETE CASCADE,
+    server_id           NUMERIC NOT NULL
+                            CONSTRAINT rhn_actiondup_sid_fk
+                                REFERENCES rhnServer (id)
+                                ON DELETE CASCADE,
     dry_run             CHAR(1)
                             DEFAULT ('N') NOT NULL
                             CONSTRAINT rhn_actiondup_dr_ck
@@ -40,8 +45,12 @@ CREATE TABLE rhnActionDup
 
 ;
 
-CREATE UNIQUE INDEX rhn_actiondup_aid_uq
+CREATE INDEX rhn_actiondup_aid_idx
 ON rhnActionDup (action_id)
+;
+
+CREATE INDEX rhn_actiondup_sid_idx
+ON rhnActionDup (server_id)
 ;
 
 CREATE SEQUENCE rhn_actiondup_id_seq;

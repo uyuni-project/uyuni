@@ -1,0 +1,28 @@
+.spacewalk-toolbar-h1
+  .spacewalk-toolbar
+    a.btn.btn-danger(href="/rhn/groups/Delete.do?sgid=#{groupId}")
+        i.fa.fa-trash-o(title='Delete Group')
+        | #{l.t("Delete")}
+    a.btn.btn-default(href="/rhn/systems/WorkWithGroup.do?sgid=#{groupId}")
+        i.fa.spacewalk-icon-system-groups(title='Work With Group')
+        | #{l.t("Work With Group")}
+
+  h1
+    i.fa.spacewalk-icon-system-groups
+    | #{" " + groupName + " "}
+
+!{tabs}
+#highstate
+
+script(type='text/javascript').
+    window.csrfToken = "#{csrf_token}";
+    window.minions = !{minions};
+    window.entityType = "#{entityType}";
+    window.groupName = "#{groupName}";
+    window.timezone = "#{h.renderTimezone()}";
+    window.localTime = "#{h.renderLocalTime()}";
+    window.actionChains = !{actionChains};
+
+script(type='text/javascript').
+    spaImportReactPage('state/highstate')
+        .then(function(module) { module.renderer('highstate') });

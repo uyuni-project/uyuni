@@ -21,7 +21,7 @@ from uyuni.common.usix import ListType
 
 from spacewalk.common import rhnFlags
 from spacewalk.common.rhnLog import log_debug, log_error
-from spacewalk.common.rhnConfig import CFG
+from spacewalk.common.rhnConfig import cfg_component
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.common.rhnTranslate import _
 from spacewalk.server import rhnSQL
@@ -116,8 +116,8 @@ def check_package_file(rel_path, logpkg, raisepkg):
     if rel_path is None:
         log_error("Package path null for package id", logpkg)
         raise rhnFault(17, _("Invalid RPM package %s requested") % raisepkg)
-    # pylint: disable-next=consider-using-f-string
-    filePath = "%s/%s" % (CFG.MOUNT_POINT, rel_path)
+    with cfg_component("server.satellite") as CFG:
+        filePath = f"{CFG.MOUNT_POINT}/{rel_path}"
     if not os.access(filePath, os.R_OK):
         # Package not found on the filesystem
         log_error("Package not found", filePath)
@@ -133,7 +133,8 @@ def unlink_package_file(path):
         # pylint: disable-next=consider-using-f-string
         log_debug(1, "Error unlinking %s;" % path)
     dirname = os.path.dirname(path)
-    base_dirs = (CFG.MOUNT_POINT + "/" + CFG.PREPENDED_DIR, CFG.MOUNT_POINT)
+    with cfg_component("server.satellite") as CFG:
+        base_dirs = (CFG.MOUNT_POINT + "/" + CFG.PREPENDED_DIR, CFG.MOUNT_POINT)
     while dirname not in base_dirs:
         try:
             os.rmdir(dirname)

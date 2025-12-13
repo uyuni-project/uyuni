@@ -22,13 +22,14 @@
 %endif
 
 Name:           spacewalk-ssl-cert-check
-Version:        5.2.0
+Version:        5.2.1
 Release:        0
 Summary:        Check ssl certs for impending expiration
 License:        GPL-2.0-only
 # FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/System
 URL:            https://github.com/uyuni-project/uyuni
+#!CreateArchive: %{name}
 Source0:        %{name}-%{version}.tar.gz
 Source1:        %{name}-rpmlintrc
 BuildArch:      noarch

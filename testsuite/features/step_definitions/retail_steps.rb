@@ -1,5 +1,7 @@
-# Copyright 2021-2023 SUSE LLC
+# Copyright 2021-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
+
+require 'net/http'
 
 ### This file contains the definitions for all steps concerning the different
 ### kinds of minions as well as PXE boot and Retail.
@@ -27,7 +29,7 @@ end
 
 When(/^I start tftp on the proxy$/) do
   case product
-  # TODO: Should we handle this in Sumaform?
+    # TODO: Should we handle this in Sumaform?
   when 'Uyuni'
     step 'I enable repositories before installing branch server'
     cmd = 'zypper --non-interactive --ignore-unknown remove atftp && ' \
@@ -39,55 +41,6 @@ When(/^I start tftp on the proxy$/) do
   else
     cmd = 'systemctl enable tftp.service && systemctl start tftp.service'
     get_target('proxy').run(cmd)
-  end
-end
-
-When(/^I set up the private network on the terminals$/) do
-  proxy = net_prefix + PRIVATE_ADDRESSES['proxy']
-  # /etc/sysconfig/network/ifcfg-eth1 and /etc/resolv.conf
-  nodes = [get_target('sle_minion')]
-  conf = "STARTMODE='auto'\\nBOOTPROTO='dhcp'"
-  file = '/etc/sysconfig/network/ifcfg-eth1'
-  script2 = "-e '/^#/d' -e 's/^search /search example.org /' -e '$anameserver #{proxy}' -e '/^nameserver /d'"
-  file2 = '/etc/resolv.conf'
-  nodes.each do |node|
-    next if node.nil?
-
-    node.run("echo -e \"#{conf}\" > #{file} && sed -i #{script2} #{file2} && ifup eth1")
-  end
-  # /etc/sysconfig/network-scripts/ifcfg-eth1 and /etc/sysconfig/network
-  nodes = [get_target('rhlike_minion')]
-  file = '/etc/sysconfig/network-scripts/ifcfg-eth1'
-  conf2 = 'GATEWAYDEV=eth0'
-  file2 = '/etc/sysconfig/network'
-  nodes.each do |node|
-    next if node.nil?
-
-    domain, _code = node.run('grep \'^search\' /etc/resolv.conf | sed \'s/^search//\'')
-    conf = "DOMAIN='#{domain.strip}'\\nDEVICE='eth1'\\nSTARTMODE='auto'\\nBOOTPROTO='dhcp'\\nDNS1='#{proxy}'"
-    service =
-      if node.os_family.match?(/^rocky/)
-        'NetworkManager'
-      else
-        'network'
-      end
-    node.run("echo -e \"#{conf}\" > #{file} && echo -e \"#{conf2}\" > #{file2} && systemctl restart #{service}")
-  end
-  # /etc/netplan/01-netcfg.yaml
-  nodes = [get_target('deblike_minion')]
-  source = "#{File.dirname(__FILE__)}/../upload_files/01-netcfg.yaml"
-  dest = '/etc/netplan/01-netcfg.yaml'
-  nodes.each do |node|
-    next if node.nil?
-
-    success = file_inject(node, source, dest)
-    raise ScriptError, 'File injection failed' unless success
-
-    node.run('netplan apply')
-  end
-  # PXE boot minion
-  if $pxeboot_mac
-    step 'I restart the network on the PXE boot minion'
   end
 end
 
@@ -109,15 +62,15 @@ end
 
 When(/^I connect the second interface of the proxy to the private network$/) do
   node = get_target('proxy')
-  _result, return_code = node.run('which nmcli')
+  _result, return_code = node.run('which nmcli', check_errors: false)
   if return_code.zero?
-    # Network manager: we give eth1 precedence over eth0
+    # Network manager: we give second interface precedence over first interface
     #                  otherwise the name server we get from DHCP is lost at the end of the list
     #                  (the name servers list in resolv.conf is limited to 3 entries)
     cmd = 'nmcli connection modify "Wired connection 1" ipv4.dns-priority 20 && ' \
-          'nmcli device modify eth0 ipv4.dns-priority 20 && ' \
+          "nmcli device modify #{node.public_interface} ipv4.dns-priority 20 && " \
           'nmcli connection modify "Wired connection 2" ipv4.dns-priority 10 && ' \
-          'nmcli device modify eth1 ipv4.dns-priority 10'
+          "nmcli device modify #{node.private_interface} ipv4.dns-priority 10"
   else
     # Wicked: is there a way to give eth1 precedence?
     #         we use a static setting for the name server instead
@@ -163,52 +116,14 @@ Then(/^name resolution should work on private network$/) do
   end
 end
 
-When(/^I restart the network on the PXE boot minion$/) do
-  # We have no IPv4 address on that machine yet,
-  # so the only way to contact it is via IPv6 link-local.
-  # We convert MAC address to IPv6 link-local address:
-  mac = $pxeboot_mac.tr(':', '')
-  hex = (("#{mac[0..5]}fffe#{mac[6..11]}").to_i(16) ^ 0x0200000000000000).to_s(16)
-  ipv6 = "fe80::#{hex[0..3]}:#{hex[4..7]}:#{hex[8..11]}:#{hex[12..15]}%eth1"
-  file = 'restart-network-pxeboot.exp'
-  source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
-  dest = "/tmp/#{file}"
-  success = file_inject(get_target('proxy'), source, dest)
-  raise ScriptError, 'File injection failed' unless success
-
-  # We have no direct access to the PXE boot minion
-  # so we run the command from the proxy
-  get_target('proxy').run("expect -f /tmp/#{file} #{ipv6}")
-end
-
 When(/^I reboot the (Retail|Cobbler) terminal "([^"]*)"$/) do |context, host|
-  # we might have no or any IPv4 address on that machine
-  # convert MAC address to IPv6 link-local address
-  case host
-  when 'pxeboot_minion'
-    mac = $pxeboot_mac
-  when 'sle12sp5_terminal'
-    mac = $sle12sp5_terminal_mac
-  when 'sle15sp4_terminal'
-    mac = $sle15sp4_terminal_mac
-  end
-  mac = mac.tr(':', '')
-  hex = (("#{mac[0..5]}fffe#{mac[6..11]}").to_i(16) ^ 0x0200000000000000).to_s(16)
-  ipv6 = "fe80::#{hex[0..3]}:#{hex[4..7]}:#{hex[8..11]}:#{hex[12..15]}%eth1"
-  log "Rebooting #{ipv6}..."
-  file = 'reboot-pxeboot.exp'
-  source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
-  dest = "/tmp/#{file}"
-  success = file_inject(get_target('proxy'), source, dest)
-  raise ScriptError, 'File injection failed' unless success
-
-  get_target('proxy').run("expect -f /tmp/#{file} #{ipv6} #{context}")
+  execute_expect_command_proxy(host, 'reboot-pxeboot.exp', context)
 end
 
 When(/^I create the bootstrap script for "([^"]+)" hostname and "([^"]*)" activation key on "([^"]*)"$/) do |hostname, key, host|
   node = get_target(host)
   # WORKAROUND: Revert once pxeboot autoinstallation contains venv-salt-minion
-  # force_bundle = use_salt_bundle ? '--force-bundle' : ''
+  # force_bundle = $use_salt_bundle ? '--force-bundle' : ''
   # get_target(host).run("mgr-bootstrap #{force_bundle}")
   node.run("mgr-bootstrap --hostname=#{hostname} --activation-keys=#{key}")
 
@@ -218,14 +133,7 @@ When(/^I create the bootstrap script for "([^"]+)" hostname and "([^"]*)" activa
 end
 
 When(/^I bootstrap pxeboot minion via bootstrap script on the proxy$/) do
-  file = 'bootstrap-pxeboot.exp'
-  source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
-  dest = "/tmp/#{file}"
-  success = file_inject(get_target('proxy'), source, dest)
-  raise ScriptError, 'File injection failed' unless success
-
-  ipv4 = net_prefix + PRIVATE_ADDRESSES['pxeboot_minion']
-  get_target('proxy').run("expect -f /tmp/#{file} #{ipv4}", verbose: true)
+  execute_expect_command_proxy('pxeboot_minion', 'bootstrap-pxeboot.exp', 'Retail')
 end
 
 When(/^I accept key of pxeboot minion in the Salt master$/) do
@@ -245,14 +153,7 @@ When(/^I install the GPG key of the test packages repository on the PXE boot min
 end
 
 When(/^I wait until Salt client is inactive on the PXE boot minion$/) do
-  file = 'wait-end-of-cleanup-pxeboot.exp'
-  source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
-  dest = "/tmp/#{file}"
-  success = file_inject(get_target('proxy'), source, dest)
-  raise ScriptError, 'File injection failed' unless success
-
-  ipv4 = net_prefix + PRIVATE_ADDRESSES['pxeboot_minion']
-  get_target('proxy').run("expect -f /tmp/#{file} #{ipv4}")
+  execute_expect_command_proxy('pxeboot_minion', 'wait-end-of-cleanup-pxeboot.exp', 'Cleaning')
 end
 
 When(/^I prepare the retail configuration file on server$/) do
@@ -298,22 +199,6 @@ Then(/^I should not see any terminals imported from the configuration file$/) do
     next if (terminal.include? 'minion') || (terminal.include? 'client')
 
     step %(I should not see a "#{terminal}" text)
-  end
-end
-
-When(/^I delete all the imported terminals$/) do
-  terminals = read_terminals_from_yaml
-  terminals.each do |terminal|
-    next if (terminal.include? 'minion') || (terminal.include? 'client')
-
-    log "Deleting terminal with name: #{terminal}"
-    steps %(
-      When I follow "#{terminal}" terminal
-      And I follow "Delete System"
-      And I should see a "Confirm System Profile Deletion" text
-      And I click on "Delete Profile"
-      Then I should see a "has been deleted" text
-    )
   end
 end
 
@@ -419,12 +304,12 @@ end
 When(/^I enter the MAC address of "([^"]*)" in (.*) field$/) do |host, field|
   if host == 'pxeboot_minion'
     mac = $pxeboot_mac
-  elsif host == 'sle12sp5_terminal'
-    mac = $sle12sp5_terminal_mac
-    mac = 'EE:EE:EE:00:00:05' if mac.nil?
-  elsif host == 'sle15sp4_terminal'
-    mac = $sle15sp4_terminal_mac
+  elsif host == 'sle15sp6_terminal'
+    mac = $sle15sp6_terminal_mac
     mac = 'EE:EE:EE:00:00:06' if mac.nil?
+  elsif host == 'sle15sp7_terminal'
+    mac = $sle15sp7_terminal_mac
+    mac = 'EE:EE:EE:00:00:07' if mac.nil?
   elsif (host.include? 'deblike') || (host.include? 'debian12') || (host.include? 'ubuntu')
     node = get_target(host)
     output, _code = node.run('ip link show dev ens4')
@@ -526,14 +411,40 @@ When(/^I wait until the image inspection for "([^"]*)" is completed$/) do |host|
   step %(I wait at most 300 seconds until event "Image Inspect 1//#{name}:#{version}" is completed)
 end
 
-When(/^I am on the image store of the Kiwi image for organization "([^"]*)"$/) do |org|
-  # There is no navigation step to access this URL, so we must use a visit call (https://github.com/SUSE/spacewalk/issues/15256)
-  visit("https://#{get_target('server').full_hostname}/os-images/#{org}/")
+Then(/^I should see the image for "([^"]*)" is built$/) do |host|
+  name = compute_kiwi_profile_name(host)
+
+  begin
+    tr = find('tr', text: name)
+    tr.find('i[title="Built"]')
+  rescue Capybara::ElementNotFound
+    raise ScriptError, "Image #{name} is not present or not marked as built"
+  end
 end
 
-Then(/^I should see the name of the image for "([^"]*)"$/) do |host|
+Then(/^I open the details page of the image for "([^"]*)"$/) do |host|
   name = compute_kiwi_profile_name(host)
-  step %(I should see a "#{name}" text)
+
+  begin
+    tr = find('tr', text: name)
+    tr.find('button[aria-label="Details"]').click
+  rescue Capybara::ElementNotFound
+    raise ScriptError, "Can not open details page for image #{name}"
+  end
+end
+
+Then(/^I should see a link to download the image for "([^"]*)"$/) do |host|
+  name = compute_kiwi_profile_name(host)
+  # Find the <a> whose href contains the image name and ends with .xz
+  link = find("a[href*='#{name}'][href$='.xz']")
+  img_url = link[:href]
+  uri = URI.parse(img_url)
+  # We use the HEAD method to verify the image is available, as it can be quite big for a GET
+  Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http|
+    response = http.head(uri.request_uri)
+
+    raise ScriptError, "Failed HEAD request for image #{name}" unless response.is_a?(Net::HTTPSuccess)
+  end
 end
 
 Then(/^the image for "([^"]*)" should exist on the branch server$/) do |host|

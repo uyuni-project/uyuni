@@ -1,5 +1,3 @@
-import * as React from "react";
-
 import styles from "./channels-selection.module.scss";
 
 const EmptyChild = () => {

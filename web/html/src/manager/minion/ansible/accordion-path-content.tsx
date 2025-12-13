@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import { AceEditor } from "components/ace-editor";
 import { Button } from "components/buttons";
@@ -35,25 +35,25 @@ function isPlaybook(path: AnsiblePath) {
   return path.type === "playbook";
 }
 
-export interface PlaybookDetails {
+export type PlaybookDetails = {
   path: AnsiblePath;
   fullPath: string;
   customInventory?: string;
   name: string;
-}
+};
 
-interface Server {
+type Server = {
   id: number;
   name: string;
-}
+};
 
-interface InventoryDetails {
-  dump: String;
+type InventoryDetails = {
+  dump: string;
   knownSystems: Server[];
-  unknownSystems: String[];
-}
+  unknownSystems: string[];
+};
 
-class AccordionPathContent extends React.Component<PropsType, StateType> {
+class AccordionPathContent extends Component<PropsType, StateType> {
   constructor(props) {
     super(props);
 
@@ -99,7 +99,7 @@ class AccordionPathContent extends React.Component<PropsType, StateType> {
   }
 
   digestPlaybookPathContent(blob: any) {
-    const content: Map<string, {}> = blob[this.props.path.path];
+    const content: Map<string, object> = blob[this.props.path.path];
     const playbookNameList: string[] = Object.keys(content);
 
     const playbookDetailsList: PlaybookDetails[] = [];
@@ -124,26 +124,26 @@ class AccordionPathContent extends React.Component<PropsType, StateType> {
     }
 
     return content.map((p, i) => (
-      <div key={p.toString() + "_" + i.toString()}>
+      <div key={p.fullPath}>
         {i === 0 ? <br /> : null}
         <dl className="row">
-          <dt className="col-2 col-xs-2">{t("Playbook File Name")}:</dt>
-          <dd className="col-8 col-xs-8">
+          <dt className="col-2">{t("Playbook File Name")}:</dt>
+          <dd className="col-8">
             <Button
               icon="fa-file-text-o"
               text={p.name}
               handler={() => this.props.onSelectPlaybook(p)}
-              className="btn-link btn-sm"
+              className="btn-tertiary"
             />
           </dd>
         </dl>
         <dl className="row">
-          <dt className="col-2 col-xs-2">{t("Full Path")}:</dt>
-          <dd className="col-8 col-xs-8">{p.fullPath}</dd>
+          <dt className="col-2">{t("Full Path")}:</dt>
+          <dd className="col-8">{p.fullPath}</dd>
         </dl>
         <dl className="row">
-          <dt className="col-2 col-xs-2">{t("Custom Inventory")}:</dt>
-          <dd className="col-8 col-xs-8">{p.customInventory}</dd>
+          <dt className="col-2">{t("Custom Inventory")}:</dt>
+          <dd className="col-8">{p.customInventory}</dd>
         </dl>
         {i < content.length - 1 ? <hr /> : null}
       </div>
@@ -163,8 +163,8 @@ class AccordionPathContent extends React.Component<PropsType, StateType> {
       <div>
         <br />
         <dl className="row">
-          <dt className="col-2 col-xs-2">{t("Registered Systems")}:</dt>
-          <dd className="col-8 col-xs-8">
+          <dt className="col-2">{t("Registered Systems")}:</dt>
+          <dd className="col-8">
             <ul>
               {content?.knownSystems.map((s) => (
                 <li key={s.id + "_" + s.name}>
@@ -175,8 +175,8 @@ class AccordionPathContent extends React.Component<PropsType, StateType> {
           </dd>
         </dl>
         <dl className="row">
-          <dt className="col-2 col-xs-2">{t("Unknown Hostnames")}:</dt>
-          <dd className="col-8 col-xs-8">
+          <dt className="col-2">{t("Unknown Hostnames")}:</dt>
+          <dd className="col-8">
             <ul>
               {content?.unknownSystems.map((s) => (
                 <li key={s + "_hostname"}>
@@ -195,15 +195,7 @@ class AccordionPathContent extends React.Component<PropsType, StateType> {
             </ul>
           </dd>
         </dl>
-        <AceEditor
-          className="form-control"
-          id="content-state"
-          minLines={20}
-          maxLines={40}
-          readOnly={true}
-          mode="yaml"
-          content={content?.dump}
-        ></AceEditor>
+        <AceEditor className="form-control" id="content-state" readOnly mode="yaml" content={content?.dump} />
       </div>
     );
   }
@@ -228,10 +220,10 @@ class AccordionPathContent extends React.Component<PropsType, StateType> {
               {this.state.errors.length > 0
                 ? errors
                 : this.isPlaybookContent(this.state.content)
-                ? this.renderPlaybookPathContent(this.state.content)
-                : this.isInventoryContent(this.state.content)
-                ? this.renderInventoryPathContent(this.state.content)
-                : null}
+                  ? this.renderPlaybookPathContent(this.state.content)
+                  : this.isInventoryContent(this.state.content)
+                    ? this.renderInventoryPathContent(this.state.content)
+                    : null}
             </>
           ) : null}
         </div>

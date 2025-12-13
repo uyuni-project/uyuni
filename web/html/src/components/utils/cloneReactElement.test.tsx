@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type ReactNode, Children } from "react";
 
 import { render, screen } from "utils/test-utils";
 
@@ -6,14 +6,12 @@ import { cloneReactElement } from "./cloneReactElement";
 
 describe("cloneReactElement", () => {
   type Props<T> = T & {
-    children?: React.ReactNode;
+    children?: ReactNode;
   };
   function Wrapper<T>(props: Props<T>) {
     const { children, ...rest } = props;
     return (
-      <div data-testid="wrapper">
-        {React.Children.toArray(props.children).map((child) => cloneReactElement(child, rest))}
-      </div>
+      <div data-testid="wrapper">{Children.toArray(props.children).map((child) => cloneReactElement(child, rest))}</div>
     );
   }
 
@@ -40,7 +38,10 @@ describe("cloneReactElement", () => {
   });
 
   test("passes custom props through to React components", () => {
-    type ChildProps = { foo?: string; bar?: number };
+    type ChildProps = {
+      foo?: string;
+      bar?: number;
+    };
     const Child = (props: ChildProps) => (
       <>
         foo value: {props.foo}, bar value: {props.bar}
@@ -51,6 +52,6 @@ describe("cloneReactElement", () => {
         {<Child />}
       </Wrapper>
     );
-    expect(screen.getByText("foo value: foo, bar value: 42"));
+    expect(screen.getByText("foo value: foo, bar value: 42")).not.toBeNull();
   });
 });

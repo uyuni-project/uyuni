@@ -227,7 +227,6 @@ nav.navbar-pf {
     margin-right: 5px;
   }
   .navbar-controls {
-    // TODO: Check
     @extend .navbar-right;
     font-size: 1em;
     display: inline-block;
@@ -546,15 +545,6 @@ nav.navbar-pf {
   margin-left: 8px !important;
 }
 
-.spacewalk-list {
-  .spacewalk-list-head-addons {
-    .spacewalk-list-head-addons-extra {
-      float: right;
-      width: auto;
-    }
-  }
-}
-
 //Table's filters
 .filter-input {
   padding: 0.7em;
@@ -566,16 +556,12 @@ nav.navbar-pf {
   }
 }
 .display-number {
-  // TODO: Fix
-  //  @extend .input-sm;
   display: inline-block;
   width: 5.2em;
   border: 1px solid #dddddd;
   background-color: $eos-bc-gray-100;
 }
 .view-systems-registered {
-  // TODO: Fix
-  //  @extend .input-sm;
   width: 10em;
   display: inline-block;
   border: 1px solid #dddddd;
@@ -587,10 +573,6 @@ nav.navbar-pf {
   color: $icon-legend-text;
   padding: 0.5em 1em;
   border-radius: 0px 0px 4px 4px;
-  // TODO: Fix
-  //  @extend .hidden-sm;
-  // TODO: Fix
-  //  @extend .hidden-xs;
   li {
     list-style: none;
     margin: 0.5em 0;
@@ -652,7 +634,6 @@ h1 .fa-stack {
 .spacewalk-toolbar-h1 {
   margin-bottom: 1.5em;
   .spacewalk-toolbar {
-    // TODO: Check
     @extend .pull-right;
     padding: 0.5em 1em;
     a {
@@ -755,15 +736,18 @@ i[class~="fa-right"] {
   .spacewalk-list-footer-addons {
     @include make-row;
     .spacewalk-list-footer-addons-extra {
-      // TODO: Check
       @extend .pull-left;
       @extend .text-left;
+    }
+
+    .spacewalk-list-reflinks {
+      display: flex;
+      justify-content: space-between
     }
   }
 }
 
 .spacewalk-csv-download {
-  // TODO: Check
   @extend .pull-right;
 }
 
@@ -793,7 +777,6 @@ $jumbotron-padding: 30px;
     line-height: 1.4;
   }
 
-// min-width: $screen-tablet
   @include media-breakpoint-up(md) {
     padding-top: ($jumbotron-padding * 1);
     padding-bottom: ($jumbotron-padding * 1);
@@ -1028,7 +1011,6 @@ a time:hover {
     button,
     input,
     .btn {
-      // TODO: Check
       @extend .spacewalk-section-toolbar-button;
     }
   }
@@ -1038,7 +1020,6 @@ a time:hover {
     button,
     input,
     .btn {
-      // TODO: Check
       @extend .spacewalk-section-toolbar-button;
     }
   }
@@ -1169,13 +1150,11 @@ i.fa.pointer {
 }
 
 .recommended-tag-base {
-  // TODO: Check
   @extend .tag-base;
   background-color: $yellow;
 }
 
 .mandatory-tag-base {
-  // TODO: Check
   @extend .tag-base;
   background-color: $red;
   color: white;
@@ -1189,7 +1168,8 @@ i.fa.pointer {
   display: inline-block;
 }
 
-input:disabled + label {
+input:disabled+label,
+label:has(input:disabled) {
   cursor: not-allowed;
   color: $gray;
 }
@@ -1200,11 +1180,6 @@ select.small-select {
   padding: 0 0.5em;
   width: auto;
   text-align: center;
-}
-
-.react-hot-loader-error-overlay {
-  position: fixed;
-  z-index: 1000;
 }
 
 /*Colapsed pannels*/
@@ -1269,9 +1244,7 @@ select.small-select {
 // Make FullCalendar buttons use our buttons style
 .fc button.fc-button,
 .fc button.fc-button-primary {
-  // TODO: Check
   @extend .btn;
-  // TODO: Check
   @extend .btn-default;
 }
 
@@ -1297,12 +1270,6 @@ tr.changed > td {
   font-size: 12px;
   border-radius: 10px;
   background: $badge-bg;
-}
-
-// We can reenable these after the theme migration is complete
-#scroll-top,
-#legend-box-wrapper {
-  display: none !important;
 }
 
 .proxy-brand {

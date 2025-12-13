@@ -1,20 +1,21 @@
-import * as React from "react";
+import { type ReactNode, Component } from "react";
 
 import { ActionChain, ActionSchedule } from "components/action-schedule";
 import { AsyncButton } from "components/buttons";
 import { ActionChainLink, ActionLink } from "components/links";
 import { Messages, MessageType, Utils as MessagesUtils } from "components/messages/messages";
 import { TopPanel } from "components/panels/TopPanel";
-import { SectionToolbar } from "components/section-toolbar/section-toolbar";
 import { Column } from "components/table/Column";
-import { SystemData, TargetSystems } from "components/target-systems";
+import { TargetSystems } from "components/target-systems";
 
 import { LocalizedMoment, localizedMoment } from "utils/datetime";
 import Network from "utils/network";
 
+import { CoCoSystemData } from "./types";
+
 type Props = {
-  systemSupport: Array<SystemData>;
-  actionChains: Array<ActionChain>;
+  systemSupport: CoCoSystemData[];
+  actionChains: ActionChain[];
 };
 
 type State = {
@@ -23,7 +24,7 @@ type State = {
   actionChain?: ActionChain;
 };
 
-class CoCoSSMSchedule extends React.Component<Props, State> {
+class CoCoSSMSchedule extends Component<Props, State> {
   public constructor(props) {
     super(props);
 
@@ -39,6 +40,14 @@ class CoCoSSMSchedule extends React.Component<Props, State> {
 
   onDateTimeChanged = (date) => {
     this.setState({ earliest: date });
+  };
+
+  getLink = (isChain, data, text) => {
+    if (isChain) {
+      return <ActionChainLink id={data}>{text}</ActionChainLink>;
+    }
+
+    return <ActionLink id={data}>{text}</ActionLink>;
   };
 
   onSchedule = () => {
@@ -57,13 +66,13 @@ class CoCoSSMSchedule extends React.Component<Props, State> {
             <span>
               {t('Action has been successfully added to the action chain <link>"{name}"</link>.', {
                 name: request.actionChain,
-                link: (str) => <ActionChainLink id={data}>{str}</ActionChainLink>,
+                link: (str) => this.getLink(request.actionChain, data, str),
               })}
             </span>
           ) : (
             <span>
               {t("The action has been <link>scheduled</link>.", {
-                link: (str) => <ActionLink id={data}>{str}</ActionLink>,
+                link: (str) => this.getLink(request.actionChain, data, str),
               })}
             </span>
           )
@@ -71,7 +80,7 @@ class CoCoSSMSchedule extends React.Component<Props, State> {
 
         this.setState({ messages: msg });
       })
-      .catch((err) => {
+      .catch(() => {
         this.setState({
           messages: MessagesUtils.error(
             t("Unable to schedule action. Please check the server logs for detailed information.")
@@ -80,23 +89,11 @@ class CoCoSSMSchedule extends React.Component<Props, State> {
       });
   };
 
-  render(): React.ReactNode {
+  render(): ReactNode {
     return (
       <>
         <TopPanel title="Confidential Computing Schedule">
           <Messages items={this.state.messages} />
-          <SectionToolbar>
-            <div className="action-button-wrapper">
-              <div className="btn-group pull-right">
-                <AsyncButton
-                  className="btn-default"
-                  defaultType="btn-danger"
-                  text={t("Schedule")}
-                  action={this.onSchedule}
-                />
-              </div>
-            </div>
-          </SectionToolbar>
           <ActionSchedule
             earliest={this.state.earliest}
             actionChains={this.props.actionChains}
@@ -105,14 +102,18 @@ class CoCoSSMSchedule extends React.Component<Props, State> {
             systemIds={this.props.systemSupport.filter((system) => system.cocoSupport).map((system) => system.id)}
             actionType="coco.attestation"
           />
+
+          <div className="row">
+            <div className="col-md-offset-3 offset-md-3 col-md-6">
+              <AsyncButton className="btn-primary" text={t("Schedule")} action={this.onSchedule} />
+            </div>
+          </div>
         </TopPanel>
         <TargetSystems systemsData={this.props.systemSupport}>
           <Column
-            columnClass="text-center"
-            headerClass="text-center"
             columnKey="cocoSupport"
             header={t("Confidential Computing Capability")}
-            cell={(system: SystemData) => (system.cocoSupport ? t("Yes") : t("No"))}
+            cell={(system: CoCoSystemData) => (system.cocoSupport ? t("Yes") : t("No"))}
           />
         </TargetSystems>
       </>

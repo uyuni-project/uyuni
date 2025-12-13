@@ -1,0 +1,363 @@
+/*
+ * Copyright (c) 2025 SUSE LLC
+ * Copyright (c) 2009--2010 Red Hat, Inc.
+ *
+ * This software is licensed to you under the GNU General Public License,
+ * version 2 (GPLv2). There is NO WARRANTY for this software, express or
+ * implied, including the implied warranties of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+ * along with this software; if not, see
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * Red Hat trademarks are not licensed under GPLv2. No permission is
+ * granted to use or replicate Red Hat trademarks that are incorporated
+ * in this software or its documentation.
+ */
+package com.redhat.rhn.domain.server;
+
+import com.redhat.rhn.domain.BaseDomainHelper;
+
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
+import java.io.Serial;
+import java.io.Serializable;
+
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
+/**
+ * Dmi
+ */
+@Entity
+@Table(name = "rhnServerDmi")
+public class Dmi extends BaseDomainHelper {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "dmi_seq")
+    @SequenceGenerator(name = "dmi_seq", sequenceName = "rhn_ram_id_seq", allocationSize = 1)
+                    // using wrong sequence since spacewalk times
+    private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "server_id")
+    private Server server;
+
+    @Column
+    private String vendor;
+
+    @Column
+    private String system;
+
+    @Column
+    private String product;
+
+    @Embedded
+    private Bios bios;
+
+    @Column
+    private String asset;
+
+    @Column
+    private String board;
+
+    /**
+     *
+     */
+    public Dmi() {
+        super();
+    }
+
+    /**
+     * @return Returns the asset.
+     */
+    public String getAsset() {
+        return asset;
+    }
+
+    /**
+     * @param assetIn The asset to set.
+     */
+    public void setAsset(String assetIn) {
+        asset = assetIn;
+    }
+
+    /**
+     * @return Returns the bios.
+     */
+    public Bios getBios() {
+        return bios;
+    }
+
+    /**
+     * Sets the bios.
+     * @param biosVendor BIOS vendor
+     * @param version BIOS version
+     * @param release BIOS release
+     */
+    public void setBios(String biosVendor, String version, String release) {
+        bios = new Bios(biosVendor, version, release);
+    }
+
+    /**
+     * @param biosIn The bios to set.
+     */
+    private void setBios(Bios biosIn) {
+        bios = biosIn;
+    }
+
+    /**
+     * @return Returns the board.
+     */
+    public String getBoard() {
+        return board;
+    }
+
+    /**
+     * @param boardIn The board to set.
+     */
+    public void setBoard(String boardIn) {
+        board = boardIn;
+    }
+
+    /**
+     * @return Returns the id.
+     */
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     * @param idIn The id to set.
+     */
+    protected void setId(Long idIn) {
+        id = idIn;
+    }
+
+    /**
+     * @return Returns the product.
+     */
+    public String getProduct() {
+        return product;
+    }
+
+    /**
+     * @param productIn The product to set.
+     */
+    public void setProduct(String productIn) {
+        product = productIn;
+    }
+
+    /**
+     * @return Returns the server.
+     */
+    public Server getServer() {
+        return server;
+    }
+
+    /**
+     * @param serverIn The server to set.
+     */
+    public void setServer(Server serverIn) {
+        server = serverIn;
+    }
+
+    /**
+     * @return Returns the system.
+     */
+    public String getSystem() {
+        return system;
+    }
+
+    /**
+     * @param systemIn The system to set.
+     */
+    public void setSystem(String systemIn) {
+        system = systemIn;
+    }
+
+    /**
+     * @return Returns the vendor.
+     */
+    public String getVendor() {
+        return vendor;
+    }
+
+    /**
+     * @param vendorIn The vendor to set.
+     */
+    public void setVendor(String vendorIn) {
+        vendor = vendorIn;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(final Object other) {
+        if (!(other instanceof Dmi castOther)) {
+            return false;
+        }
+        return new EqualsBuilder().append(id, castOther.id)
+                                  .append(vendor, castOther.vendor)
+                                  .append(system, castOther.system)
+                                  .append(product, castOther.product)
+                                  .append(asset, castOther.asset)
+                                  .append(board, castOther.board)
+                                  .append(bios, castOther.bios)
+                                  .append(server, castOther.server)
+                                  .isEquals();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(id)
+                                    .append(vendor)
+                                    .append(system)
+                                    .append(product)
+                                    .append(asset)
+                                    .append(board)
+                                    .append(bios)
+                                    .append(server)
+                                    .toHashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "Dmi{" +
+                "id=" + id +
+                ", server=" + server +
+                ", vendor='" + vendor + '\'' +
+                ", system='" + system + '\'' +
+                ", bios='" + getBios() +
+                '}';
+    }
+
+    /**
+     * Bios class
+     */
+    @Embeddable
+    public static class Bios implements Serializable {
+
+        @Serial
+        private static final long serialVersionUID = -7633424071837169094L;
+
+        @Column(name = "bios_vendor")
+        private String vendor;
+
+        @Column(name = "bios_version")
+        private String version;
+
+        @Column(name = "bios_release")
+        private String release;
+
+        /**
+         * default constructor
+         */
+        public Bios() {
+            this("", "", "");
+        }
+
+        /**
+         * Constructs a BIOS object with vendor, version, and release.
+         * @param vendorIn BIOS vendor
+         * @param versionIn BIOS version
+         * @param releaseIn BIOS release
+         */
+        public Bios(String vendorIn, String versionIn, String releaseIn) {
+            vendor = vendorIn;
+            version = versionIn;
+            release = releaseIn;
+        }
+
+        /**
+         * @return Returns the release.
+         */
+        public String getRelease() {
+            return release;
+        }
+
+        /**
+         * @param releaseIn The release to set.
+         */
+        public void setRelease(String releaseIn) {
+            release = releaseIn;
+        }
+
+        /**
+         * @return Returns the vendor.
+         */
+        public String getVendor() {
+            return vendor;
+        }
+
+        /**
+         * @param vendorIn The vendor to set.
+         */
+        public void setVendor(String vendorIn) {
+            vendor = vendorIn;
+        }
+
+        /**
+         * @return Returns the version.
+         */
+        public String getVersion() {
+            return version;
+        }
+
+        /**
+         * @param versionIn The version to set.
+         */
+        public void setVersion(String versionIn) {
+            version = versionIn;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean equals(final Object other) {
+            if (!(other instanceof Bios castOther)) {
+                return false;
+            }
+            return new EqualsBuilder().append(vendor, castOther.vendor)
+                                      .append(version, castOther.version)
+                                      .append(release, castOther.release)
+                                      .isEquals();
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public int hashCode() {
+            return new HashCodeBuilder().append(vendor)
+                                        .append(version)
+                                        .append(release)
+                                        .toHashCode();
+        }
+
+        @Override
+        public String toString() {
+            return "Bios{" +
+                    "vendor='" + vendor + '\'' +
+                    ", version='" + version + '\'' +
+                    ", release='" + release + '\'' +
+                    '}';
+        }
+    }
+}

@@ -28,7 +28,7 @@ class HttpClient
   def prepare_call(name, params)
     short_name = name.split('.')[-1]
     call_type =
-      if short_name.start_with?('list', 'get', 'is', 'find') || name.start_with?('system.search.', 'packages.search.') || ['auth.logout', 'errata.applicableToChannels'].include?(name)
+      if short_name.start_with?('list', 'get', 'is', 'find') || name.start_with?('system.search.', 'packages.search.') || %w[auth.logout errata.applicableToChannels].include?(name)
 
         'GET'
       else

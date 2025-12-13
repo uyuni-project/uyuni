@@ -13,17 +13,13 @@ SGMLS   = $(wildcard *.sgml)
 MANS    = $(patsubst %.sgml,%.8,$(SGMLS))
 MANDIR  ?= /usr/share/man
 
-CODE_DIRS = broker redirect pm wsgi
+CODE_DIRS = broker redirect wsgi
 CONF_DIRS = httpd-conf rhn-conf logrotate
-PACKAGES_DIR        = $(PREFIX)/var/up2date/packages
-PACKAGES_LIST_DIR   = $(PREFIX)/var/up2date/list
 
 FILES	= __init__ apacheHandler apacheServer responseContext \
         rhnAuthCacheClient rhnAuthProtocol rhnConstants \
         rhnProxyAuth rhnShared
 TAR_EXCLUDE = install
-
-SERVICE_SCRIPTS = rhn-proxy
 
 # We look for config files in "well known" locations (rhn-conf,
 # httpd-conf, logrotate)
@@ -40,11 +36,6 @@ all :: all-code all-conf
 
 # now include some Macros
 include $(TOP)/Makefile.defs
-
-# install service scripts
-all :: $(SERVICE_SCRIPTS)
-install :: $(SERVICE_SCRIPTS) $(PREFIX)/$(INITDIR)
-	$(INSTALL_BIN) $(SERVICE_SCRIPTS) $(PREFIX)/usr/sbin
 
 ifneq ($(DOCBOOK),)
 # install man pages

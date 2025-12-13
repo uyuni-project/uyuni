@@ -65,9 +65,9 @@ export function mapFilterFormToRequest(filterForm: Partial<FilterFormType>, proj
   return requestForm;
 }
 
-export function mapResponseToFilterForm(filtersResponse: Array<FilterServerType> = []): Array<FilterFormType> {
+export function mapResponseToFilterForm(filtersResponse: FilterServerType[] = []): FilterFormType[] {
   return filtersResponse.map((filterResponse) => {
-    let filterForm: any = {};
+    const filterForm: any = {};
     filterForm.id = filterResponse.id;
     filterForm.filter_name = filterResponse.name;
     filterForm.rule = filterResponse.rule;
@@ -77,7 +77,7 @@ export function mapResponseToFilterForm(filtersResponse: Array<FilterServerType>
     const selectedFilterOption = findClmFilterByKey(filterResponse.criteriaKey);
     // If we can find a filter option using the CriteriaKey we assume the default behavior
     if (selectedFilterOption) {
-      filterForm.type = selectedFilterOption && selectedFilterOption.key;
+      filterForm.type = selectedFilterOption.key;
       filterForm[selectedFilterOption.key] = filterResponse.criteriaValue;
     } else {
       Loggerhead.error(`${filterResponse.name}: We couldn't find a matching filter for ${filterResponse.criteriaKey}`);

@@ -1,0 +1,176 @@
+Format: 3.0 (native)
+Package: andromeda-dummy
+Binary: andromeda-dummy
+Architecture: all
+Version: 2.0
+Maintainer: Matei Albu <malbu@suse.de>
+Homepage: https://www.uyuni-project.org/
+Standards-Version: 4.1.2
+Build-Depends: debhelper (>= 10)
+Package-List:
+ andromeda-dummy deb misc optional arch=all
+Directory: .
+Checksums-Sha1:
+ 7f24183a8518b5a7c79c5751fb1536e17efbbf49 575 andromeda-dummy_2.0.dsc
+ dbf24f528fb719e6c82f3d89d1b0fd3c906dfeea 2108 andromeda-dummy_2.0.tar.xz
+Checksums-Sha256:
+ 1795266a40e4b8ecea695dbd7cc8125cd9a59330fa8ce9058455e54290ba4071 575 andromeda-dummy_2.0.dsc
+ 3780839baed2cd94fd7baa969fd8de698f686a16d166f51a5da60a4b2057c591 2108 andromeda-dummy_2.0.tar.xz
+Files:
+ 0489bfa365a7eb9424f76b2d4297f282 575 andromeda-dummy_2.0.dsc
+ c1fba9bf98629cc9de296028e8d6bc89 2108 andromeda-dummy_2.0.tar.xz
+
+Format: 3.0 (native)
+Package: blackhole-dummy
+Binary: blackhole-dummy
+Architecture: all
+Version: 1.0
+Maintainer: Matei Albu <malbu@suse.de>
+Homepage: https://www.uyuni-project.org/
+Standards-Version: 4.1.2
+Build-Depends: debhelper (>= 10)
+Package-List:
+ blackhole-dummy deb miscx optional arch=all
+Directory: .
+Checksums-Sha1:
+ 847c4526dd8cc0572c5e8663ad2550284762edb0 576 blackhole-dummy_1.0.dsc
+ 1638b0737f0de546c8a6b74cafd0b0f94de15295 2104 blackhole-dummy_1.0.tar.xz
+Checksums-Sha256:
+ 36d26ee76ea30c2c4f79edfa3a7ef56866046ff847351412a25aac4f5101f8e9 576 blackhole-dummy_1.0.dsc
+ c20a5d24f3a258278a19f626af820e22d8d74245cdcc4d4627899986890a4188 2104 blackhole-dummy_1.0.tar.xz
+Files:
+ 0959efc9aae6231c16a64f9c9fb3be29 576 blackhole-dummy_1.0.dsc
+ 6df90c81bc140e0359e4ac6b27509fe9 2104 blackhole-dummy_1.0.tar.xz
+
+Format: 3.0 (native)
+Package: hoag-dummy
+Binary: hoag-dummy
+Architecture: all
+Version: 1.1
+Maintainer: Matei Albu <malbu@suse.de>
+Homepage: <insert the upstream URL, if relevant>
+Standards-Version: 4.1.2
+Build-Depends: debhelper (>= 10)
+Package-List:
+ hoag-dummy deb unknown optional arch=all
+Directory: .
+Checksums-Sha1:
+ a9c6cdc4dc4ce45e76cfc820ba1f290c4169533f 556 hoag-dummy_1.1.dsc
+ e178eacfa261b5d0539cc519b5ab70110a71cdb0 7192 hoag-dummy_1.1.tar.xz
+Checksums-Sha256:
+ 7753896afa88343441eb93e7fa24606f94f3cd603c28361dd00f8bcc24dc1f18 556 hoag-dummy_1.1.dsc
+ 923d8389fac21753e6c01b33ac12fdc045a2873d0f6a206a52f1d2a23b99b156 7192 hoag-dummy_1.1.tar.xz
+Files:
+ 02b1c37cc5d1a0f7e9fadc2617b2c830 556 hoag-dummy_1.1.dsc
+ 6f1f956cb08337da17836659dc0a8d33 7192 hoag-dummy_1.1.tar.xz
+
+Format: 3.0 (native)
+Package: milkyway-dummy
+Binary: milkyway-dummy
+Architecture: all
+Version: 2.0
+Maintainer: Matei Albu <malbu@suse.de>
+Homepage: https://www.uyuni-project.org/
+Standards-Version: 4.1.2
+Build-Depends: debhelper (>= 10)
+Package-List:
+ milkyway-dummy deb misc optional arch=all
+Directory: .
+Checksums-Sha1:
+ 1b02c6fd18b08d6ba9202e6426b7682709efaf39 569 milkyway-dummy_2.0.dsc
+ 8a2e53524005e138fdf82edc1e795f17538a4499 7176 milkyway-dummy_2.0.tar.xz
+Checksums-Sha256:
+ bd2d6e32a9602c004188d40a7394c17d004c7f36f8d530730ba0e25673046ebf 569 milkyway-dummy_2.0.dsc
+ 7e6e6a471ff5f100786bcd5601807587a65aea88c8640a9e53cdce5c0da5f6fc 7176 milkyway-dummy_2.0.tar.xz
+Files:
+ 2d45577a63e4d5fa27460175494c58d8 569 milkyway-dummy_2.0.dsc
+ d03d13438c193eb19167f81fdefb74d5 7176 milkyway-dummy_2.0.tar.xz
+
+Format: 3.0 (native)
+Package: orion-dummy
+Binary: orion-dummy
+Architecture: all
+Version: 1.1
+Maintainer: Matei Albu <malbu@suse.de>
+Homepage: https://www.uyuni-project.org/
+Standards-Version: 4.1.2
+Build-Depends: debhelper (>= 10)
+Package-List:
+ orion-dummy deb misc optional arch=all
+Directory: .
+Checksums-Sha1:
+ 57b112dca7fd7497d14eb625dd89b681075337f9 551 orion-dummy_1.1.dsc
+ 3ae5e728ad9354df3ce4a13fcfbe9b2dd1178b29 2152 orion-dummy_1.1.tar.xz
+Checksums-Sha256:
+ 358fc9105976ecb642b06efa3f5c733f8b562fe86b808c51b0aaea688fddbbb2 551 orion-dummy_1.1.dsc
+ a5d017917e6503fee6832c3e1a8dd32568b1883217142e09627d3eb74dc759da 2152 orion-dummy_1.1.tar.xz
+Files:
+ ee8ddd54e0dd208874de920afd477c4b 551 orion-dummy_1.1.dsc
+ f3f01dc012461caa9d6dd5244c0a5b0f 2152 orion-dummy_1.1.tar.xz
+
+Format: 3.0 (native)
+Package: perseus-dummy
+Binary: perseus-dummy
+Architecture: all
+Version: 1.1
+Maintainer: Matei Albu <malbu@suse.de>
+Homepage: https://www.uyuni-project.org/
+Standards-Version: 4.1.2
+Build-Depends: debhelper (>= 10)
+Package-List:
+ perseus-dummy deb misc optional arch=all
+Directory: .
+Checksums-Sha1:
+ 822c71dcef42dd28cbbc5f0f2091162cd595fda9 563 perseus-dummy_1.1.dsc
+ 8eb5590a857217912e02c696d3049d88745efc85 7164 perseus-dummy_1.1.tar.xz
+Checksums-Sha256:
+ 628ab9ca9ed6e753db3cb8b7599c32fdf03049b17fcf8030a8e15e6f329d3ab0 563 perseus-dummy_1.1.dsc
+ 11a31bf74d3edf4b8402b820451f29498725338d8ba4565a30808661b7abd2b1 7164 perseus-dummy_1.1.tar.xz
+Files:
+ 372d13be0fafa16fa02a70daef36b4cb 563 perseus-dummy_1.1.dsc
+ 537147ea176ca304529314321b4ff8f4 7164 perseus-dummy_1.1.tar.xz
+
+Format: 3.0 (native)
+Package: publishkey-helper
+Binary: publishkey-helper
+Architecture: all
+Version: 1.0
+Maintainer: Eric Bischoff <ebischoff@suse.com>
+Homepage: https://www.uyuni-project.org/
+Standards-Version: 4.6.1.1
+Build-Depends: debhelper (>= 10)
+Package-List:
+ publishkey-helper deb misc optional arch=all
+Directory: .
+Checksums-Sha1:
+ 6086c92f46faa0c25ce3d702eac541ddd0b61fe2 597 publishkey-helper_1.0.dsc
+ 1c7871dab4377702cb8b4adeaf9bd370ac2fcb36 2076 publishkey-helper_1.0.tar.xz
+Checksums-Sha256:
+ 1c6180144c17bf51ec709b152c0fc0fa4fab8573d132601ee11ed6fc890ad40e 597 publishkey-helper_1.0.dsc
+ da2451d79774fd3ba997d5e3c7692b5a5ec0da838e294f1baf866adcc5942a04 2076 publishkey-helper_1.0.tar.xz
+Files:
+ c97680f64d4e4a611d593cc363582077 597 publishkey-helper_1.0.dsc
+ e33445d5eaa8340d0ff3e0b0edadb68d 2076 publishkey-helper_1.0.tar.xz
+
+Format: 3.0 (native)
+Package: virgo-dummy
+Binary: virgo-dummy
+Architecture: all
+Version: 2.0
+Maintainer: Matei Albu <malbu@suse.de>
+Homepage: https://www.uyuni-project.org/
+Standards-Version: 4.1.2
+Build-Depends: debhelper (>= 10)
+Package-List:
+ virgo-dummy deb misc optional arch=all
+Directory: .
+Checksums-Sha1:
+ 755729ded9b20dd2165cb98974c40374f77d0d37 551 virgo-dummy_2.0.dsc
+ 11c2fcd4c0deed37cafa6386e4a608ed82a26c0d 7140 virgo-dummy_2.0.tar.xz
+Checksums-Sha256:
+ 362220219e82281f0155d2b08f6c89b5c220328c2335200367f5e1dc412c5944 551 virgo-dummy_2.0.dsc
+ 9e54f7b43a55a93dbc975cd2f9666eda4fdd2111b5aabd0d3ccc7d99f22edabc 7140 virgo-dummy_2.0.tar.xz
+Files:
+ e6ce0ed52a0fa842d16b1ffb2b312b39 551 virgo-dummy_2.0.dsc
+ 25b6e1ab5706eb0c7e2e8421a3d2c1ad 7140 virgo-dummy_2.0.tar.xz
+

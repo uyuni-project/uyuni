@@ -144,9 +144,11 @@ def test_using_context_in__get_cursor():
             "port": 1234,
         }
     }
-    with patch.object(suma_minion, "__opts__", {"id": "foobar_master", **test_opts}), patch(
-        "suma_minion.psycopg2.connect", pg_connect_mock
-    ), patch.dict(suma_minion.__context__, {}):
+    with patch.object(
+        suma_minion, "__opts__", {"id": "foobar_master", **test_opts}
+    ), patch("suma_minion.psycopg2.connect", pg_connect_mock), patch.dict(
+        suma_minion.__context__, {}
+    ):
         # Check if it creates new connection if it's not in the context
         # pylint: disable-next=protected-access
         suma_minion._get_cursor(cursor_callback)
@@ -172,6 +174,7 @@ def test_using_context_in__get_cursor():
             "dbname": "test_db",
             "port": 1234,
         }
+        # pylint: disable-next=unnecessary-negation
         assert not "suma_minion_cnx" in suma_minion.__context__
 
     pg_connect_mock.reset_mock()

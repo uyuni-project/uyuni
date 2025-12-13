@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import { pageSize } from "core/user-preferences";
 
@@ -18,7 +18,7 @@ type Props = {
   onReportDetails: (report: AttestationReport) => void;
 };
 
-class CoCoAttestationTable extends React.Component<Props> {
+class CoCoAttestationTable extends Component<Props> {
   public static readonly defaultProps: Partial<Props> = {
     showSystem: true,
   };
@@ -48,7 +48,7 @@ class CoCoAttestationTable extends React.Component<Props> {
                 header={t("Attestation")}
                 cell={(row) => (
                   <Button
-                    className="btn btn-link"
+                    className="btn-tertiary"
                     handler={() => this.props.onReportDetails(row)}
                     text={t("Attestation #{identifier} run on {date} at {time}", {
                       identifier: row.id,
@@ -105,6 +105,7 @@ class CoCoAttestationTable extends React.Component<Props> {
                 cell={(row) => renderTime(row.attestationTime)}
               />
               <Column
+                columnKey="actions"
                 columnClass="text-right"
                 headerClass="text-right"
                 header={t("Actions")}

@@ -30,26 +30,27 @@ export default () => {
             setModel(newModel);
           }}
           onRemove={(index) => {
-            const newModel = Object.entries(model).reduce((res, entry) => {
-              const property = !entry[0].startsWith(`user${index}_`) ? { [entry[0]]: entry[1] } : undefined;
-              return Object.assign(res, property);
-            }, {} as typeof model);
+            const newModel = Object.entries(model).reduce(
+              (res, entry) => {
+                const property = !entry[0].startsWith(`user${index}_`) ? { [entry[0]]: entry[1] } : undefined;
+                return Object.assign(res, property);
+              },
+              {} as typeof model
+            );
             setModel(newModel);
           }}
           disabled={false}
         >
           {(index) => (
-            <>
-              <Text
-                name={`user${index}_login`}
-                label={t("Login")}
-                required
-                invalidHint={t("Minimum 2 characters")}
-                labelClass="col-md-3"
-                divClass="col-md-6"
-                validators={[(value) => value.length > 2]}
-              />
-            </>
+            <Text
+              name={`user${index}_login`}
+              label={t("Login")}
+              required
+              invalidHint={t("Minimum 2 characters")}
+              labelClass="col-md-3"
+              divClass="col-md-6"
+              validators={[(value) => value.length > 2]}
+            />
           )}
         </FormMultiInput>
         <SubmitButton className="btn-primary" text={t("Submit")} />

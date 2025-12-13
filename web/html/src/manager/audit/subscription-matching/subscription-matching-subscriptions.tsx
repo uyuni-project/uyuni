@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type ReactNode, Component } from "react";
 
 import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
@@ -8,16 +8,15 @@ import { localizedMoment } from "utils";
 import { Utils } from "utils/functions";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
-import { CsvLink, humanReadablePolicy, ToolTip } from "./subscription-matching-util";
-import { WarningIcon } from "./subscription-matching-util";
+import { CsvLink, humanReadablePolicy, ToolTip, WarningIcon } from "./subscription-matching-util";
 
 type SubscriptionsProps = {
   subscriptions: any[];
 };
 
-class Subscriptions extends React.Component<SubscriptionsProps> {
+class Subscriptions extends Component<SubscriptionsProps> {
   sortByPolicy = (aRaw, bRaw, columnKey, sortDirection) => {
-    var result = 0;
+    let result = 0;
     const aValue = humanReadablePolicy(aRaw[columnKey]);
     const bValue = humanReadablePolicy(bRaw[columnKey]);
     result = aValue.toLowerCase().localeCompare(bValue.toLowerCase());
@@ -25,7 +24,7 @@ class Subscriptions extends React.Component<SubscriptionsProps> {
   };
 
   sortByQuantity = (aRaw, bRaw, columnKey, sortDirection) => {
-    var result = 0;
+    let result = 0;
     const aMatched = aRaw["matchedQuantity"];
     const aTotal = aRaw["totalQuantity"];
     const bMatched = bRaw["matchedQuantity"];
@@ -48,10 +47,15 @@ class Subscriptions extends React.Component<SubscriptionsProps> {
   };
 
   render() {
-    let body: React.ReactNode = null;
+    let body: ReactNode = null;
     if (Object.keys(this.props.subscriptions).length > 0) {
       body = (
         <div>
+          <div className="spacewalk-section-toolbar">
+            <div className="action-button-wrapper">
+              <CsvLink name="subscription_report.csv" />
+            </div>
+          </div>
           <Table
             data={this.buildRows(this.props.subscriptions)}
             identifier={(row) => row.id}
@@ -114,7 +118,6 @@ class Subscriptions extends React.Component<SubscriptionsProps> {
               }}
             />
           </Table>
-          <CsvLink name="subscription_report.csv" />
         </div>
       );
     } else {

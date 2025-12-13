@@ -87,7 +87,14 @@ When(/^I wait at most (\d+) seconds until the event is completed, refreshing the
 
   repeat_until_timeout(timeout: timeout.to_i, message: 'Event not yet completed') do
     break if has_content?('This action\'s status is: Completed.', wait: 3)
-    raise SystemCallError, 'Event failed' if has_content?('This action\'s status is: Failed.', wait: 3)
+
+    if has_content?('This action\'s status is: Failed.', wait: 3)
+      details = all(:xpath, '//li[.//strong[text()=\'Details:\']]//pre', visible: true)
+      details_array = details.map(&:text)
+      combined_details = details_array.join("\n")
+      log "Event Details:\n#{combined_details}"
+      raise SystemCallError, 'Event failed'
+    end
 
     current = Time.now
     if current - last > 150
@@ -172,13 +179,19 @@ When(/^I (check|uncheck) "([^"]*)" by label$/) do |action, label|
   end
 end
 
+When(/^I select the channel "([^"]*)"$/) do |channel|
+  checkbox = find(:xpath, "//a[text()='#{channel}']/preceding-sibling::input[@type='checkbox']").check
+  checkbox.check
+  raise ScriptError, "Checkbox #{label} not checked." unless checkbox.checked?
+end
+
 When(/^I select "([^"]*)" from "([^"]*)"$/) do |option, field|
   if has_select?(field, with_options: [option], wait: 1)
     select(option, from: field)
   else
     # Custom React selector
     xpath_field = "//*[contains(@class, 'data-testid-#{field}-child__control')]"
-    xpath_option = ".//*[contains(@class, 'data-testid-#{field}-child__option') and contains(text(), '#{option}')]"
+    xpath_option = ".//*[contains(@class, 'data-testid-#{field}-child__option') and contains(., '#{option}')]"
     find(:xpath, xpath_field).click
     find(:xpath, xpath_option, match: :first).click
   end
@@ -190,8 +203,15 @@ When(/^I select the parent channel for the "([^"]*)" from "([^"]*)"$/) do |clien
 end
 
 When(/^I select "([^"]*)" from drop-down in table line with "([^"]*)"$/) do |value, line|
-  select = find(:xpath, ".//div[@class='table-responsive']/table/tbody/tr[contains(td/a,'#{line}')]//select")
+  select = find(:xpath, ".//div[@class='table-responsive']/table/tbody/tr[contains(td,'#{line}')]//select")
   select(value, from: select[:id])
+end
+
+# Choose a radio button by its visible label text.
+# The 'choose' method automatically finds the associated input element by matching the text of a label tag to the radio button's ID/Name.
+When(/^I choose "([^"]*)" radio button$/) do |label_text|
+  choose(label_text)
+  raise ScriptError, "Radio button '#{label_text}' not checked." unless has_checked_field?(label_text)
 end
 
 When(/^I choose radio button "([^"]*)" for child channel "([^"]*)"$/) do |radio, channel|
@@ -556,6 +576,9 @@ end
 # login, logout steps
 
 Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |user, passwd|
+  # Save the user and password in global variables to be used by the API calls
+  $current_user = user
+  $current_password = passwd
   begin
     page.reset!
   rescue NoMethodError => e
@@ -567,7 +590,7 @@ Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |user, passwd
   ensure
     visit Capybara.app_host
   end
-  next if all(:xpath, "//header//span[text()='#{user}']", wait: 0).any?
+  next if all(:xpath, "//header//span[text()='#{$current_user}']", wait: 0).any?
 
   begin
     find(:xpath, '//header//i[@class=\'fa fa-sign-out\']').click
@@ -577,13 +600,11 @@ Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |user, passwd
 
   raise ScriptError, 'Login page is not correctly loaded' unless has_field?('username')
 
-  fill_in('username', with: user)
-  fill_in('password', with: passwd)
+  fill_in('username', with: $current_user)
+  fill_in('password', with: $current_password)
   click_button_and_wait('Sign In', match: :first)
 
   step 'I should be logged in'
-  $current_user = user
-  $current_password = passwd
 end
 
 Given(/^I am authorized$/) do
@@ -1293,23 +1314,23 @@ end
 ## Password Policy navigation steps
 ###################################
 
-And(/^I set the minimum password length to "([^"]*)"$/) do |min_length|
+When(/^I set the minimum password length to "([^"]*)"$/) do |min_length|
   fill_in 'minLength', with: min_length
 end
 
-And(/^I set the maximum password length to "([^"]*)"$/) do |max_length|
+When(/^I set the maximum password length to "([^"]*)"$/) do |max_length|
   fill_in 'maxLength', with: max_length
 end
 
-And(/^I set the special characters list to "([^"]*)"$/) do |characters_list|
+When(/^I set the special characters list to "([^"]*)"$/) do |characters_list|
   fill_in 'specialChars', with: characters_list
 end
 
-And(/^I set the maximum allowed occurrence of any character to "([^"]*)"$/) do |max_occurence|
+When(/^I set the maximum allowed occurrence of any character to "([^"]*)"$/) do |max_occurence|
   fill_in 'maxCharacterOccurrence', with: max_occurence
 end
 
-And(/^I (enable|disable) the following restrictions:$/) do |action, table|
+When(/^I (enable|disable) the following restrictions:$/) do |action, table|
   restriction_map = {
     'Require Digits' => 'digitFlag',
     'Require Lowercase Characters' => 'lowerCharFlag',

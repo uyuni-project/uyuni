@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# pylint: disable=missing-module-docstring
 
 import logging
 import argparse
@@ -39,11 +40,14 @@ class RegexRules:
         trackers = {}
         if tracker_filename:
             try:
+                # pylint: disable-next=logging-fstring-interpolation
                 logging.info(f"Parsing tracker file: {tracker_filename}")
                 tree = ET.parse(tracker_filename)
             except FileNotFoundError as e:
+                # pylint: disable-next=raise-missing-from,broad-exception-raised
                 raise Exception(f"{e.strerror}: '{e.filename}'")
             except ET.ParseError as e:
+                # pylint: disable-next=raise-missing-from,broad-exception-raised
                 raise Exception(f"Error parsing '{tracker_filename}': {e.msg}")
 
             for tracker in tree.getroot():
@@ -53,9 +57,13 @@ class RegexRules:
                     name = tracker.find("name").text
                     regex = tracker.find("regex").text
                 except AttributeError:
-                    raise Exception(f"Error parsing '{tracker_filename}': not a tracker XML file")
+                    # pylint: disable-next=raise-missing-from,broad-exception-raised
+                    raise Exception(
+                        f"Error parsing '{tracker_filename}': not a tracker XML file"
+                    )
                 trackers[name] = regex
 
+            # pylint: disable-next=logging-fstring-interpolation
             logging.info(f"Found {len(trackers.keys())} tracker definition(s)")
 
         self.trackers = trackers
@@ -143,10 +151,13 @@ class Issue:
         if os.getenv("GITHUB_ACTION"):
             msg = "::error" if self.severe else "::warning"
             if self.file:
+                # pylint: disable-next=consider-using-f-string
                 msg += " file={}".format(self.file)
                 if self.line:
+                    # pylint: disable-next=consider-using-f-string
                     msg += ",line={}".format(self.line)
                     if self.end_line:
+                        # pylint: disable-next=consider-using-f-string
                         msg += ",endLine={}".format(self.end_line)
 
             return msg + "::"
@@ -212,6 +223,7 @@ class ChangelogValidator:
         regex_rules: RegexRules,
     ):
         if pr_number and not os.getenv("GH_TOKEN"):
+            # pylint: disable-next=broad-exception-raised
             raise Exception(
                 "GitHub API key not set. Please set it in 'GH_TOKEN' environment variable."
             )
@@ -237,21 +249,27 @@ class ChangelogValidator:
 
         uri = os.getenv("BUGZILLA_URI", DEFAULT_BUGZILLA_URI)
         try:
+            # pylint: disable-next=logging-fstring-interpolation
             logging.info(f"Initializing Bugzilla API at '{uri}'")
             bzapi = bugzilla.Bugzilla(uri, api_key=api_key)
+        # pylint: disable-next=unused-variable
         except requests.exceptions.ConnectionError as e:
+            # pylint: disable-next=raise-missing-from
             raise ConnectionError(f"Cannot connect to the Bugzilla API at '{uri}'")
 
         try:
             assert bzapi.logged_in, f"Cannot log into the Bugzilla API at '{uri}'"
         except xmlrpc.client.Fault as f:
+            # pylint: disable-next=raise-missing-from,broad-exception-raised
             raise Exception(
                 f"Cannot log in to the Bugzilla API at '{uri}': {f.faultString}"
             )
 
         return bzapi
 
-    def get_modified_files_for_pkg(self, pkg_path: str, pkg_name: str, files: list[str]) -> dict[str, list[str]]:
+    def get_modified_files_for_pkg(
+        self, pkg_path: str, pkg_name: str, files: list[str]
+    ) -> dict[str, list[str]]:
         """Return a dictionary of modified files in a package
 
         The files lists are split into 2 different groups in the dictionary:
@@ -273,10 +291,20 @@ class ChangelogValidator:
                     pkg_files.append(f)
 
         if logging.getLogger().isEnabledFor(logging.DEBUG):
+            # pylint: disable-next=use-implicit-booleaness-not-len
             if len(pkg_files):
-                logging.debug(f"Found {len(pkg_files)} file(s) in package {pkg_name}:\n  " + "\n  ".join(pkg_files))
+                # pylint: disable-next=logging-not-lazy
+                logging.debug(
+                    f"Found {len(pkg_files)} file(s) in package {pkg_name}:\n  "
+                    + "\n  ".join(pkg_files)
+                )
+            # pylint: disable-next=use-implicit-booleaness-not-len
             if len(pkg_chlogs):
-                logging.debug(f"Found {len(pkg_chlogs)} changelog(s) in package {pkg_name}:\n  " + "\n  ".join(pkg_chlogs))
+                # pylint: disable-next=logging-not-lazy
+                logging.debug(
+                    f"Found {len(pkg_chlogs)} changelog(s) in package {pkg_name}:\n  "
+                    + "\n  ".join(pkg_chlogs)
+                )
 
         return {"files": pkg_files, "changes": pkg_chlogs}
 
@@ -302,8 +330,10 @@ class ChangelogValidator:
 
         try:
             pkg_names = os.listdir(packages_dir)
+            # pylint: disable-next=logging-fstring-interpolation
             logging.debug(f"Found {len(pkg_names)} package(s) in 'rel-eng/packages'")
         except FileNotFoundError:
+            # pylint: disable-next=raise-missing-from,broad-exception-raised
             raise Exception(
                 "Not an Uyuni repository. Consider using '--uyuni-dir' option."
             )
@@ -320,6 +350,7 @@ class ChangelogValidator:
                 .rstrip()
                 .split(maxsplit=1)[1]
             )
+            # pylint: disable-next=logging-fstring-interpolation
             logging.debug(f"Indexing package {pkg_name} in path {pkg_path}")
 
             # Get the list of modified files and changelog files for the package
@@ -354,7 +385,9 @@ class ChangelogValidator:
 
         return trackers
 
-    def get_pr_trackers(self, git_repo: str, pr_number: int) -> dict[str, list[tuple[str, str]]]:
+    def get_pr_trackers(
+        self, git_repo: str, pr_number: int
+    ) -> dict[str, list[tuple[str, str]]]:
         """Get all the trackers mentioned in a PR
 
         The trackers are extracted from the PR title and the commit messages.
@@ -363,37 +396,67 @@ class ChangelogValidator:
         assert pr_number
         assert git_repo
 
+        # pylint: disable-next=logging-fstring-interpolation
         logging.info(f"Requesting information for PR#{pr_number} at '{git_repo}'")
 
-        pr_path = f'repos/{git_repo}/pulls/{pr_number}'
-        stream = os.popen(f'gh api {pr_path} -q ".title" && gh api {pr_path}/commits -q ".[].commit.message | select(length > 0)"')
+        pr_path = f"repos/{git_repo}/pulls/{pr_number}"
+        stream = os.popen(
+            f'gh api {pr_path} -q ".title" && gh api {pr_path}/commits -q ".[].commit.message | select(length > 0)"'
+        )
         title_and_commits = stream.read()
         if stream.close():
-            raise Exception("An error occurred when getting the PR information from the GitHub API.")
+            # pylint: disable-next=broad-exception-raised
+            raise Exception(
+                "An error occurred when getting the PR information from the GitHub API."
+            )
 
-        logging.debug(f"Retrieved title and commit messages for PR#{pr_number}:\n{title_and_commits}")
+        # pylint: disable-next=logging-fstring-interpolation
+        logging.debug(
+            f"Retrieved title and commit messages for PR#{pr_number}:\n{title_and_commits}"
+        )
         return self.extract_trackers(title_and_commits)
 
-    def validate_chlog_entry(self, entry: Entry, entries_in_file: list[Entry]) -> list[Issue]:
+    def validate_chlog_entry(
+        self, entry: Entry, entries_in_file: list[Entry]
+    ) -> list[Issue]:
         """Validate a single changelog entry"""
 
         issues = []
         # Test capitalization
-        if re.match(self.regex.WRONG_CAP_START, entry.entry) or re.search(self.regex.WRONG_CAP_AFTER, entry.entry):
-            issues.append(Issue(IssueType.WRONG_CAP, entry.file, entry.line, entry.end_line))
+        if re.match(self.regex.WRONG_CAP_START, entry.entry) or re.search(
+            self.regex.WRONG_CAP_AFTER, entry.entry
+        ):
+            issues.append(
+                Issue(IssueType.WRONG_CAP, entry.file, entry.line, entry.end_line)
+            )
 
         # Test spacing (ignored in version strings)
         # Test to check if a match overlaps with a version string
-        overlaps = lambda ver_str, match: ver_str.start() <= match.start() and ver_str.end() >= match.end()
+        overlaps = (
+            # pylint: disable-next=unnecessary-lambda-assignment
+            lambda ver_str, match: ver_str.start() <= match.start()
+            and ver_str.end() >= match.end()
+        )
         for match in re.finditer(self.regex.WRONG_SPACING, entry.entry):
             # Ignore if part of a version string
-            if not any(overlaps(ver_str, match) for ver_str in re.finditer(self.regex.VERSION_REGEX, entry.entry[:match.end()])):
-                issues.append(Issue(IssueType.WRONG_SPACING, entry.file, entry.line, entry.end_line))
+            if not any(
+                overlaps(ver_str, match)
+                for ver_str in re.finditer(
+                    self.regex.VERSION_REGEX, entry.entry[: match.end()]
+                )
+            ):
+                issues.append(
+                    Issue(
+                        IssueType.WRONG_SPACING, entry.file, entry.line, entry.end_line
+                    )
+                )
                 break
 
         # Test duplication
         if any(e.entry == entry.entry for e in entries_in_file):
-            issues.append(Issue(IssueType.DUPLICATE_ENTRY, entry.file, entry.line, entry.end_line))
+            issues.append(
+                Issue(IssueType.DUPLICATE_ENTRY, entry.file, entry.line, entry.end_line)
+            )
 
         return issues
 
@@ -417,16 +480,20 @@ class ChangelogValidator:
     def validate_chlog_file(self, file: str) -> tuple[list[Issue], list[Entry]]:
         """Validate a single changelog file"""
 
+        # pylint: disable-next=logging-fstring-interpolation
         logging.debug(f"Validating changelog file: {file}")
         file_path = os.path.join(self.uyuni_root, file)
 
         if os.path.getsize(file_path) == 0:
             return ([Issue(IssueType.EMPTY_CHLOG, file)], [])
 
+        # pylint: disable-next=unspecified-encoding
         f = open(file_path, "r")
         issues = []
         entries = []
-        entry_buf: list[str] = [] # List to buffer the lines in a single changelog entry
+        entry_buf: list[str] = (
+            []
+        )  # List to buffer the lines in a single changelog entry
 
         for line_no, line in enumerate(f, start=1):
             if not line.endswith("\n"):
@@ -480,6 +547,7 @@ class ChangelogValidator:
         # EOF
         if entry_buf:
             # Validate and append the last entry
+            # pylint: disable-next=undefined-loop-variable
             entry = self.get_entry_obj(entry_buf, file, line_no + 1)
             issues.extend(self.validate_chlog_entry(entry, entries))
             entries.append(entry)
@@ -492,9 +560,11 @@ class ChangelogValidator:
         issues = []
         # 'bnc' is the name of the tracker as defined in the trackers file
         if "bnc" in entry.trackers:
+            # pylint: disable-next=unused-variable
             for tracker, bug_id in entry.trackers["bnc"]:
                 try:
                     bug = self.bzapi.getbug(bug_id)
+                    # pylint: disable-next=logging-fstring-interpolation
                     logging.debug(f"Bug #{bug_id} belongs to product '{bug.product}'")
 
                     if not bug.product.startswith("SUSE Manager"):
@@ -589,6 +659,7 @@ class ChangelogValidator:
                 # changelog entry are also mentioned in the PR
                 if pr_validation:
                     for t in trackers:
+                        # pylint: disable-next=possibly-used-before-assignment
                         if kind not in pr_trackers or t not in pr_trackers[kind]:
                             # Tracker not mentioned in the PR
                             issues.append(
@@ -650,10 +721,7 @@ def parse_args():
     )
 
     parser.add_argument(
-        "-v",
-        "--verbose",
-        action="store_true",
-        help="enable verbose output"
+        "-v", "--verbose", action="store_true", help="enable verbose output"
     )
 
     parser.add_argument(
@@ -726,14 +794,18 @@ def main():
 
     try:
         logging.debug("Initializing the validator")
+        # pylint: disable-next=invalid-name
         regexRules = RegexRules(args.tracker_file)
         validator = ChangelogValidator(
             args.uyuni_dir, args.git_repo, args.pr_number, args.line_length, regexRules
         )
 
+        # pylint: disable-next=logging-fstring-interpolation
         logging.debug(f"Validating {len(args.files)} file(s)")
         issues = validator.validate(args.files)
+        # pylint: disable-next=logging-fstring-interpolation
         logging.debug(f"Validation finished with {len(issues)} issue(s)")
+    # pylint: disable-next=broad-exception-caught
     except Exception as e:
         print(e, file=sys.stderr)
         return 2
@@ -744,15 +816,25 @@ def main():
         logging.info("Changelog test passed")
         return 0
 
-    logging.info("Changelog test {} with {} issue(s):".format("failed" if is_fail else "passed", len(issues)))
+    logging.info(
+        # pylint: disable-next=logging-format-interpolation,consider-using-f-string
+        "Changelog test {} with {} issue(s):".format(
+            "failed" if is_fail else "passed", len(issues)
+        )
+    )
     if not is_gh_action:
         print("-" * 60)
-    for i in issues: print(i)
+    for i in issues:
+        print(i)
 
     if is_fail:
         print()
-        print("{}See https://github.com/uyuni-project/uyuni/wiki/Contributing for a guide to writing changelogs."
-          .format("::notice::" if is_gh_action else ""))
+        print(
+            # pylint: disable-next=consider-using-f-string
+            "{}See https://github.com/uyuni-project/uyuni/wiki/Contributing for a guide to writing changelogs.".format(
+                "::notice::" if is_gh_action else ""
+            )
+        )
         return 1
 
     return 0

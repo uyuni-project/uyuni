@@ -43,11 +43,12 @@
 %endif
 
 Name:           spacecmd
-Version:        5.2.0
+Version:        5.2.4
 Release:        0
 Summary:        Command-line interface to %{productprettyname} servers
 License:        GPL-3.0-or-later
 URL:            https://github.com/uyuni-project/uyuni
+#!CreateArchive: %{name}
 Source:         https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 %if "%{_vendor}" == "debbuild"
 Packager:       Uyuni packagers <devel@lists.uyuni-project.org>

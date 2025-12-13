@@ -1,22 +1,23 @@
-import * as React from "react";
+import { type ChangeEvent, Component } from "react";
 
 import { RequiredChannelsResultType } from "core/channels/api/use-mandatory-channels-api";
 
 import { ChannelAnchorLink } from "components/links";
 import { Toggler } from "components/toggler";
+import { DEPRECATED_onClick } from "components/utils";
 import { Loading } from "components/utils/loading/Loading";
 
 import { Channel } from "./activation-key-channels-api";
 
 type ChildChannelsProps = {
-  channels: Array<Channel>;
+  channels: Channel[];
   base: any;
   showBase: boolean;
-  selectedChannelsIds: Array<number>;
-  selectChannels: Function;
+  selectedChannelsIds: number[];
+  selectChannels: (...args: any[]) => any;
   isDependencyDataLoaded: boolean;
   requiredChannelsResult: RequiredChannelsResultType;
-  fetchMandatoryChannelsByChannelIds: Function;
+  fetchMandatoryChannelsByChannelIds: (...args: any[]) => any;
   collapsed: boolean;
 };
 
@@ -24,7 +25,7 @@ type ChildChannelsState = {
   collapsed: boolean;
 };
 
-class ChildChannels extends React.Component<ChildChannelsProps, ChildChannelsState> {
+class ChildChannels extends Component<ChildChannelsProps, ChildChannelsState> {
   constructor(props: ChildChannelsProps) {
     super(props);
 
@@ -37,10 +38,10 @@ class ChildChannels extends React.Component<ChildChannelsProps, ChildChannelsSta
     this.props.fetchMandatoryChannelsByChannelIds({ base: this.props.base, channels: this.props.channels });
   };
 
-  handleChannelChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  handleChannelChange = (event: ChangeEvent<HTMLInputElement>) => {
     const channelId = parseInt(event.target.value, 10);
     const selectedFlag = event.target.checked;
-    const channelIds: Array<number> = this.selectChannelWithDependencies(channelId, selectedFlag);
+    const channelIds: number[] = this.selectChannelWithDependencies(channelId, selectedFlag);
 
     this.props.selectChannels(channelIds, selectedFlag);
   };
@@ -75,7 +76,7 @@ class ChildChannels extends React.Component<ChildChannelsProps, ChildChannelsSta
   };
 
   toggleChannelVisibility = () => {
-    this.setState({ collapsed: !this.state.collapsed });
+    this.setState((prevState) => ({ collapsed: !prevState.collapsed }));
   };
 
   areRecommendedChildrenSelected = (): boolean => {
@@ -133,10 +134,9 @@ class ChildChannels extends React.Component<ChildChannelsProps, ChildChannelsSta
               </label>
               &nbsp;
               {toolTip ? (
-                // eslint-disable-next-line jsx-a11y/anchor-is-valid
-                <a href="#">
+                <span>
                   <i className="fa fa-info-circle spacewalk-help-link" title={toolTip}></i>
-                </a>
+                </span>
               ) : null}
               &nbsp;
               {c.recommended ? (
@@ -160,7 +160,7 @@ class ChildChannels extends React.Component<ChildChannelsProps, ChildChannelsSta
   render() {
     return (
       <div className="child-channels-block">
-        <h4 className="pointer" onClick={() => this.toggleChannelVisibility()}>
+        <h4 className="pointer" {...DEPRECATED_onClick(() => this.toggleChannelVisibility())}>
           <i className={"fa " + (this.state.collapsed ? "fa-angle-right" : "fa-angle-down")} />
           {this.props.base.name}
         </h4>

@@ -1,0 +1,186 @@
+/*
+ * Copyright (c) 2009--2011 Red Hat, Inc.
+ *
+ * This software is licensed to you under the GNU General Public License,
+ * version 2 (GPLv2). There is NO WARRANTY for this software, express or
+ * implied, including the implied warranties of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+ * along with this software; if not, see
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * Red Hat trademarks are not licensed under GPLv2. No permission is
+ * granted to use or replicate Red Hat trademarks that are incorporated
+ * in this software or its documentation.
+ */
+package com.redhat.rhn.frontend.dto;
+
+import java.io.Serializable;
+
+/**
+ * ChildChannelDTO
+ */
+public class ChildChannelDto implements Serializable {
+
+    private Long id;
+    private Long parentId;
+    private String name;
+    private String label;
+    private boolean subscribed;
+    private boolean isSubscribable;
+    private Long systemCount;
+    private boolean mandatory;
+
+    /**
+     * Constructor
+     */
+    public ChildChannelDto() {
+        super();
+    }
+
+    /**
+     * Constructor
+     * @param idIn id
+     * @param nameIn name
+     * @param subscribedIn sub
+     * @param isSubscriableIn if subscriable or not
+     */
+    public ChildChannelDto(Long idIn, String nameIn,
+            boolean subscribedIn, boolean isSubscriableIn) {
+        this.id = idIn;
+        this.name = nameIn;
+        this.subscribed = subscribedIn;
+        this.isSubscribable = isSubscriableIn;
+    }
+
+    /**
+     * @return Returns the id.
+     */
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     * Set the id.
+     * @param idIn id to set.
+     */
+    public void setId(Long idIn) {
+        this.id = idIn;
+    }
+
+    /**
+     *
+     * @return parent ID.
+     */
+    public Long getParentId() {
+        return parentId;
+    }
+
+
+    /**
+     * Set the parentId.
+     * @param inId to set.
+     */
+    public void setParentId(Long inId) {
+        parentId = inId;
+    }
+
+    /**
+     * @return Returns the name.
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @param nameIn The name to set.
+     */
+    public void setName(String nameIn) {
+        this.name = nameIn;
+    }
+
+
+    /**
+     * @return Returns the subscribed.
+     */
+    public boolean getSubscribed() {
+        return subscribed;
+    }
+
+
+    /**
+     * @param subscribedIn The subscribed to set.
+     */
+    public void setSubscribed(boolean subscribedIn) {
+        this.subscribed = subscribedIn;
+    }
+
+
+    /**
+     * @return Returns the isSubscribable.
+     */
+    public boolean getSubscribable() {
+        return isSubscribable;
+    }
+
+
+    /**
+     * @param isSubscribableIn The isSubscribable to set.
+     */
+    public void setSubscribable(Long isSubscribableIn) {
+        this.isSubscribable = !Long.valueOf(0).equals(isSubscribableIn);
+    }
+
+    /**
+     * @return Returns the isSubscribable.
+     */
+    public boolean isSubscribable() {
+        return isSubscribable;
+    }
+
+    /**
+     *
+     * @return label
+     */
+    public String getLabel() {
+        return label;
+    }
+
+    /**
+     * Set the label
+     * @param labelIn to set.
+     */
+    public void setLabel(String labelIn) {
+        this.label = labelIn;
+    }
+
+    /**
+     * Get the system count.
+     * @return system count.
+     */
+    public Long getSystemCount() {
+        return systemCount;
+    }
+
+
+    /**
+     * Set the system count.
+     * @param systemCountIn to set.
+     */
+    public void setSystemCount(Long systemCountIn) {
+        this.systemCount = systemCountIn;
+    }
+
+    /**
+     * @return true if this is a mandatory channel
+     */
+    public boolean getMandatory() {
+        return mandatory;
+    }
+
+    /**
+     * @param mandatoryIn the mandatory to set
+     */
+    public void setMandatory(boolean mandatoryIn) {
+        this.mandatory = mandatoryIn;
+    }
+}

@@ -1,5 +1,3 @@
-import * as React from "react";
-
 import SpaRenderer from "core/spa/spa-renderer";
 
 import { MessagesContainer } from "components/toastr";
@@ -7,7 +5,7 @@ import { MessagesContainer } from "components/toastr";
 import { PackageList } from "./list";
 
 type RendererProps = {
-  selected: Array<string>;
+  selected: string[];
   selectedChannel: string | null;
 };
 

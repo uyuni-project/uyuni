@@ -30,8 +30,7 @@ Feature: Manage a group of systems and the Systems Set Manager
     When I wait until I see "andromeda-dummy" text, refreshing the page
     Then I should see a "andromeda-dummy-6789" link
     When I enter "virgo-dummy" as the filtered synopsis
-    And I click on the filter button
-    And I wait until I see "virgo-dummy" text
+    And I click on the filter button until page does contain "virgo-dummy-3456" text
     Then I should see a "virgo-dummy-3456" link
 
   Scenario: Fail to create a group with only its name
@@ -75,8 +74,7 @@ Feature: Manage a group of systems and the Systems Set Manager
     And I follow "new-systems-group"
     And I follow first "Patches"
     When I enter "virgo-dummy" as the filtered synopsis
-    And I click on the filter button
-    When I wait until I see "virgo-dummy-3456" text, refreshing the page
+    And I click on the filter button until page does contain "virgo-dummy-3456" text
     Then I should see a "virgo-dummy-3456" link
     When I follow "virgo-dummy-3456"
     And I follow first "Affected Systems"
@@ -84,6 +82,8 @@ Feature: Manage a group of systems and the Systems Set Manager
     And I click on "Apply Patches"
     And I click on "Confirm"
     Then I should see a "Patch virgo-dummy-3456 has been scheduled for 1 system" text
+    And I am on the Systems overview page of this "sle_minion"
+    And I wait until event "Patch Update: virgo-dummy-3456 - Test update for virgo-dummy scheduled by admin" is completed
 
   Scenario: Apply a patch to systems in the SSM
     When I follow the left menu "Systems > System Set Manager > Overview"
@@ -98,17 +98,19 @@ Feature: Manage a group of systems and the Systems Set Manager
     And I click on "Apply Patches"
     And I click on "Confirm"
     Then I should see a "Patch andromeda-dummy-6789 has been scheduled for 1 system" text
+    And I am on the Systems overview page of this "sle_minion"
+    And I wait until event "Patch Update: andromeda-dummy-6789 - Test update for andromeda-dummy scheduled by admin" is completed
 
 @skip_if_github_validation
   Scenario: Delete a package from systems in the SSM
     When I follow the left menu "Systems > System Set Manager > Overview"
     And I follow "Packages"
     And I follow "Remove"
-    And I wait until I see "andromeda-dummy-2.0-1.1" text, refreshing the page
+    And I wait until I see "Package Removal" text, refreshing the page
     And I enter "virgo-dummy" as the filtered package name
-    And I click on the filter button
+    And I click on the filter button until page does contain "virgo-dummy-2.0-1.1" text
     And I check "virgo-dummy-2.0-1.1" in the list
-    And I click on "Remove Selected Packages"
+    And I click on "Remove Packages"
     And I click on "Confirm"
     Then I should see a "Package removals are being scheduled, it may take several minutes for this to complete." text
 
@@ -117,13 +119,14 @@ Feature: Manage a group of systems and the Systems Set Manager
     When I follow the left menu "Systems > System Set Manager > Overview"
     And I follow "Packages"
     And I follow "Install"
+    And I wait until I see "Fake-RPM-SUSE-Channel" text, refreshing the page
     Then I should see a "Fake-RPM-SUSE-Channel" text
     When I follow "Fake-RPM-SUSE-Channel"
     Then I should see a "virgo-dummy-2.0-1.1" text
     And I enter "virgo-dummy" as the filtered package name
-    And I click on the filter button
+    And I click on the filter button until page does contain "virgo-dummy-2.0-1.1" text
     When I check "virgo-dummy-2.0-1.1" in the list
-    And I click on "Install Selected Packages"
+    And I click on "Install Packages"
     And I click on "Confirm"
     Then I should see a "Package installations are being scheduled, it may take several minutes for this to complete." text
 
@@ -178,7 +181,7 @@ Feature: Manage a group of systems and the Systems Set Manager
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Groups"
     And I check "new-systems-group" in the list
-    And I click on "Leave Selected Groups"
+    And I click on "Leave Groups"
     Then I should see a "1 system groups removed." text
 
   # Red Hat-like minion is intentionally not removed from group

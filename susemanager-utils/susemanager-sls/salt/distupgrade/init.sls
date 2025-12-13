@@ -38,8 +38,13 @@ spmigration:
 spmigration:
   cmd.run:
     - name: /usr/bin/cat {{ logname }}
+    - onlyif: /usr/bin/test -f /usr/bin/cat {{ logname }}
+
+spmigration_liberated:
+  cmd.run:
+    - name: /usr/bin/cat /etc/sysconfig/liberated
     - require:
-      - cmd: re_install_from_SLL
+      - file: create_liberation_file
 
 {% endif %}
 {% endif %}

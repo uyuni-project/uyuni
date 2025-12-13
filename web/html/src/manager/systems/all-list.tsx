@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState } from "react";
 
 import { LinkButton } from "components/buttons";
 import { IconTag } from "components/icontag";
@@ -19,8 +19,25 @@ type Props = {
   query?: string;
 };
 
+const DownloadCSVButton = ({ search }) => {
+  let url = "/rhn/manager/systems/csv/all";
+  if (search?.field && search?.criteria) {
+    const searchParams = new URLSearchParams({
+      qc: search.field,
+      q: search.criteria,
+    });
+    url += `?${searchParams.toString()}`;
+  }
+  return (
+    <a role="button" title="Download CSV" href={url} className="btn btn-default" data-senna-off="true">
+      <IconTag type="item-download-csv" />
+      {t("Download CSV")}
+    </a>
+  );
+};
+
 export function AllSystems(props: Props) {
-  const [selectedSystems, setSelectedSystems] = React.useState<string[]>([]);
+  const [selectedSystems, setSelectedSystems] = useState<string[]>([]);
 
   const handleSelectedSystems = (items: string[]) => {
     const removed = selectedSystems.filter((item) => !items.includes(item)).map((item) => [item, false]);
@@ -33,7 +50,7 @@ export function AllSystems(props: Props) {
 
   return (
     <>
-      <h1>
+      <h1 className="mb-5">
         <IconTag type="header-system" />
         {t(" Systems ")}
         <a
@@ -49,7 +66,6 @@ export function AllSystems(props: Props) {
             id="addsystem"
             icon="fa-plus"
             className="btn btn-primary"
-            title={t("Add a system")}
             text={t("Add system")}
             href="/rhn/manager/systems/bootstrap"
           />
@@ -59,13 +75,14 @@ export function AllSystems(props: Props) {
         data="/rhn/manager/api/systems/list/all"
         identifier={(item) => item.id}
         initialSortColumnKey="server_name"
-        selectable={(item) => item.hasOwnProperty("id")}
+        selectable={(item) => "id" in item}
         selectedItems={selectedSystems}
         onSelect={handleSelectedSystems}
         searchField={<SystemsListFilter />}
         defaultSearchField={props.queryColumn || "server_name"}
         initialSearch={props.query}
         emptyText={t("No Systems.")}
+        titleButtons={[<DownloadCSVButton key="download-csv-button" search={{}} />]}
       >
         <Column
           columnKey="server_name"
@@ -78,7 +95,7 @@ export function AllSystems(props: Props) {
           comparator={Utils.sortByText}
           header={t("Updates")}
           cell={(item) => {
-            if (item.statusType == null) {
+            if (!item.statusType) {
               return "";
             }
             return Systems.statusDisplay(item, props.isAdmin);
@@ -89,7 +106,7 @@ export function AllSystems(props: Props) {
           comparator={Utils.sortByText}
           header={t("Patches")}
           cell={(item) => {
-            let totalErrataCount = item.securityErrata + item.bugErrata + item.enhancementErrata;
+            const totalErrataCount = item.securityErrata + item.bugErrata + item.enhancementErrata;
             if (totalErrataCount !== 0) {
               return <a href={`/rhn/systems/details/ErrataList.do?sid=${item.id}`}>{totalErrataCount}</a>;
             }
@@ -141,11 +158,17 @@ export function AllSystems(props: Props) {
           }}
         />
         <Column
+          columnKey="last_checkin"
+          comparator={Utils.sortByText}
+          header={t("Last Checked In")}
+          cell={(item) => item.lastCheckin}
+        />
+        <Column
           columnKey="channel_labels"
           comparator={Utils.sortByText}
           header={t("Base Channel")}
           cell={(item) => {
-            if (item.channelId != null) {
+            if (item.channelId) {
               return <a href={`/rhn/channels/ChannelDetail.do?cid=${item.channelId}`}>{item.channelLabels}</a>;
             }
             return item.channelLabels;
@@ -158,13 +181,6 @@ export function AllSystems(props: Props) {
           cell={(item) => item.entitlementLevel}
         />
       </Table>
-
-      <div className="spacewalk-csv-download">
-        <a role="button" href="/rhn/manager/systems/csv/all" className="btn btn-default" data-senna-off="true">
-          <IconTag type="item-download-csv" />
-          Download CSV
-        </a>
-      </div>
     </>
   );
 }

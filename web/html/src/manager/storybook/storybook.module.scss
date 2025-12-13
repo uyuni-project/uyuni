@@ -1,7 +1,6 @@
 :global(.old-theme),
 :global(.new-theme) {
   .header {
-    // position: sticky;
     top: 8px;
     padding-bottom: 8px;
     background: #fff;
@@ -13,12 +12,12 @@
     gap: 16px;
 
     > div {
-      flex: 1 0 auto;
+      flex: 1 1 auto;
     }
 
     > pre {
-      flex: 1 1 auto;
       overflow: auto;
+      min-width: 50%;
       max-width: 50%;
 
       code {

@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import { Column } from "components/table/Column";
 import { Table } from "components/table/Table";
@@ -23,12 +23,12 @@ const systemName = (systems, messageData) => {
   return systems[messageData["id"]].name;
 };
 
-class Messages extends React.Component<Props> {
+class Messages extends Component<Props> {
   buildRows = (rawMessages, systems, subscriptions) => {
     return rawMessages.map(function (rawMessage, index) {
       const data = rawMessage["data"];
-      var message: string;
-      var additionalInformation: any;
+      let message: string;
+      let additionalInformation: any;
       switch (rawMessage["type"]) {
         case "unknown_part_number":
           message = t("Unsupported part number detected");
@@ -87,11 +87,16 @@ class Messages extends React.Component<Props> {
   };
 
   render() {
-    var body;
+    let body;
     if (this.props.messages.length > 0) {
       body = (
         <div>
           <p>{t("Please review warning and information messages below.")}</p>
+          <div className="spacewalk-section-toolbar">
+            <div className="action-button-wrapper">
+              <CsvLink name="message_report.csv" />
+            </div>
+          </div>
           <Table
             data={this.buildRows(this.props.messages, this.props.systems, this.props.subscriptions)}
             identifier={(row) => row.id}
@@ -110,8 +115,6 @@ class Messages extends React.Component<Props> {
               cell={(row) => row.info}
             />
           </Table>
-
-          <CsvLink name="message_report.csv" />
         </div>
       );
     } else {

@@ -1,4 +1,23 @@
 -------------------------------------------------------------------
+Tue Dec 09 13:40:42 CET 2025 - michael.calmer@suse.com
+
+- version 5.2.3
+  * Remove libzypp and container-suseconnect from image
+
+-------------------------------------------------------------------
+Thu Nov 27 10:48:26 CET 2025 - michael.calmer@suse.com
+
+- version 5.2.2
+  * Use BCI base image as base
+  * Clean up the image
+
+-------------------------------------------------------------------
+Tue Oct 28 10:22:39 CET 2025 - rosuna@suse.com
+
+- version 5.2.1
+  * Bump version to 5.2.0
+
+-------------------------------------------------------------------
 Tue Jun 17 19:48:03 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.7

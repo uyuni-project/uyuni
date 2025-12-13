@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Fragment } from "react";
 
 import { isOrgAdmin } from "core/auth/auth.utils";
 import useRoles from "core/auth/use-roles";
@@ -17,9 +17,9 @@ import FiltersProjectSelection from "./filters-project-selection";
 
 type FiltersProps = {
   projectId: string;
-  selectedFilters: Array<ProjectFilterServerType>;
-  onChange: Function;
-  messages?: Array<ProjectMessageType>;
+  selectedFilters: ProjectFilterServerType[];
+  onChange: (...args: any[]) => any;
+  messages?: ProjectMessageType[];
 };
 
 const renderFilterEntry = (filter, projectId, symbol, last) => {
@@ -30,7 +30,7 @@ const renderFilterEntry = (filter, projectId, symbol, last) => {
         id={`edit-filter-${filter.id}`}
         icon="fa-edit"
         title={t("Edit Filter {name}", { name: filter.name })}
-        className="pull-right js-spa"
+        className="btn-tertiary pull-right js-spa"
         href={`/rhn/manager/contentmanagement/filters?openFilterId=${filter.id}&projectLabel=${projectId}`}
       />
     </div>
@@ -53,7 +53,7 @@ const renderFilterEntry = (filter, projectId, symbol, last) => {
   }
 
   return (
-    <React.Fragment key={`filter_list_item_${filter.id}`}>
+    <Fragment key={`filter_list_item_${filter.id}`}>
       <li className={`list-group-item ${styles.wrapper} ${filterClassName}`}>
         {filterIconName && <i className={`fa ${filterIconName}`}></i>}
         {descr}
@@ -64,7 +64,7 @@ const renderFilterEntry = (filter, projectId, symbol, last) => {
           {symbol}
         </div>
       )}
-    </React.Fragment>
+    </Fragment>
   );
 };
 

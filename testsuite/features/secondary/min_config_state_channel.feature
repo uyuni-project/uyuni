@@ -61,7 +61,7 @@ Feature: Configuration state channels
     When I follow the left menu "Configuration > Channels"
     And I follow "My State Channel"
     And I follow "View/Edit 'init.sls' File"
-    When I follow "Delete This File Revision"
+    When I follow "Delete"
     And I click on "Delete Configuration Revision"
     Then I should see a "Cannot delete the only revision for the init.sls file" text
     And I should see a "Revision 1 of /init.sls from channel My State Channel" text
@@ -126,8 +126,8 @@ Feature: Configuration state channels
     And I check "statechannel2-cbox"
     And I click on "Save Changes"
     And I wait until I see "Edit Channel Ranks" text
-    Then I should see a "My State Channel (statechannel)" link
-    And I should see a "My State Channel (statechannel2)" link
+    Then I should see a "My State Channel (statechannel)" text
+    And I should see a "My State Channel (statechannel2)" text
     When I click on "Confirm"
     Then I should see a "State assignments have been saved." text
 
@@ -150,9 +150,9 @@ Feature: Configuration state channels
     When I check "statechannel3-cbox"
     And I click on "Save Changes"
     And I wait until I see "Edit Channel Ranks" text
-    And I should see a "My State Channel (statechannel)" link
-    And I should see a "My State Channel (statechannel2)" link
-    And I should see a "statechannel3 (statechannel3)" link
+    And I should see a "My State Channel (statechannel)" text
+    And I should see a "My State Channel (statechannel2)" text
+    And I should see a "statechannel3 (statechannel3)" text
     When I click on "Confirm"
     Then I should see a "State assignments have been saved." text
 

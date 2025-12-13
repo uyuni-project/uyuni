@@ -1,11 +1,10 @@
-import * as React from "react";
+import { type ReactNode, Component } from "react";
 
 import { AsyncButton, LinkButton } from "components/buttons";
 import { Dialog } from "components/dialog/Dialog";
 import { DEPRECATED_Select, Form } from "components/input";
 import { Messages as MessageContainer, MessageType, Utils as MessagesUtils } from "components/messages/messages";
 import { TopPanel } from "components/panels/TopPanel";
-import { SectionToolbar } from "components/section-toolbar/section-toolbar";
 import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
 import { Table } from "components/table/Table";
@@ -27,20 +26,20 @@ enum DataType {
 }
 
 type Props = {
-  notificationTypes: Array<NotificationType>;
+  notificationTypes: NotificationType[];
 };
 
 type State = {
-  serverData: Array<Notification> | undefined;
+  serverData: Notification[] | undefined;
   dataType: DataType;
   loading: boolean;
-  messages: Array<MessageType>;
-  selectedItems: Array<number>;
+  messages: MessageType[];
+  selectedItems: number[];
   popupItem: Notification | undefined;
-  typeCriteria: Array<string>;
+  typeCriteria: string[];
 };
 
-export class NotificationList extends React.Component<Props, State> {
+export class NotificationList extends Component<Props, State> {
   private readonly typeMap: Map<string, string>;
 
   public constructor(props: Props) {
@@ -73,7 +72,7 @@ export class NotificationList extends React.Component<Props, State> {
     }
   }
 
-  public render(): React.ReactNode {
+  public render(): ReactNode {
     return (
       <TopPanel title={t("Notification Messages")} icon="fa-envelope">
         <MessageContainer items={this.state.messages} />
@@ -83,7 +82,6 @@ export class NotificationList extends React.Component<Props, State> {
             <p>{t("The server has collected the following notification messages.")}</p>
 
             {this.renderTabs()}
-            {this.renderToolbar()}
 
             <Table
               data={this.filterDataByType(this.state.serverData)}
@@ -101,6 +99,33 @@ export class NotificationList extends React.Component<Props, State> {
                 />
               }
               additionalFilters={this.renderFilters()}
+              titleButtons={[
+                <div className="btn-group" key="notification-msg-btn">
+                  <AsyncButton
+                    key="refresh"
+                    id="reload"
+                    icon="fa-refresh"
+                    text={t("Refresh")}
+                    action={() => this.refreshServerData()}
+                  />
+                  <AsyncButton
+                    key="delete-messages"
+                    id="delete-selected-messages"
+                    icon="fa-trash"
+                    text={t("Delete")}
+                    action={() => this.deleteNotifications(this.state.selectedItems)}
+                    disabled={this.state.selectedItems.length === 0}
+                  />
+                  <AsyncButton
+                    key="mark-as-read"
+                    id="mark-as-read"
+                    icon="fa-check-circle"
+                    text={t("Mark as Read")}
+                    action={() => this.updateReadStatus(this.state.selectedItems, true)}
+                    disabled={this.state.selectedItems.length === 0}
+                  />
+                </div>,
+              ]}
             >
               <Column
                 columnKey="severity"
@@ -149,7 +174,7 @@ export class NotificationList extends React.Component<Props, State> {
     );
   }
 
-  private renderFilters(): Array<React.ReactNode> {
+  private renderFilters(): ReactNode[] {
     return [
       <div key="typeFilter" className="multiple-select-wrapper table-input-search">
         {/* TODO: Remove this <Form> wrapper once https://github.com/SUSE/spacewalk/issues/14250 is implemented */}
@@ -168,7 +193,7 @@ export class NotificationList extends React.Component<Props, State> {
     ];
   }
 
-  private renderTabs(): React.ReactNode {
+  private renderTabs(): ReactNode {
     return (
       <div className="spacewalk-content-nav">
         <ul className="nav nav-tabs">
@@ -187,35 +212,7 @@ export class NotificationList extends React.Component<Props, State> {
     );
   }
 
-  private renderToolbar(): React.ReactNode {
-    return (
-      <SectionToolbar>
-        <div className="action-button-wrapper">
-          <div className="btn-group">
-            <AsyncButton id="reload" icon="fa-refresh" text={t("Refresh")} action={() => this.refreshServerData()} />
-            <AsyncButton
-              id="delete-selected-messages"
-              icon="fa-trash"
-              title={t("Delete selected messages")}
-              text={t("Delete selected messages")}
-              action={() => this.deleteNotifications(this.state.selectedItems)}
-              disabled={this.state.selectedItems.length === 0}
-            />
-            <AsyncButton
-              id="mark-as-read"
-              icon="fa-check-circle"
-              title={t("Mark selected as read")}
-              text={t("Mark selected as read")}
-              action={() => this.updateReadStatus(this.state.selectedItems, true)}
-              disabled={this.state.selectedItems.length === 0}
-            />
-          </div>
-        </div>
-      </SectionToolbar>
-    );
-  }
-
-  private renderSummary(data: Notification): React.ReactNode {
+  private renderSummary(data: Notification): ReactNode {
     return (
       <span className="align-middle" style={{ whiteSpace: "pre" }}>
         {stringToReact(data.summary)}
@@ -230,7 +227,7 @@ export class NotificationList extends React.Component<Props, State> {
     );
   }
 
-  private renderReaction(data: Notification): React.ReactNode {
+  private renderReaction(data: Notification): ReactNode {
     if (!data.actionable) {
       return <></>;
     }
@@ -245,7 +242,7 @@ export class NotificationList extends React.Component<Props, State> {
     );
   }
 
-  private renderItemActions(row: Notification): React.ReactNode {
+  private renderItemActions(row: Notification): ReactNode {
     return (
       <div className="btn-group">
         <AsyncButton
@@ -265,10 +262,11 @@ export class NotificationList extends React.Component<Props, State> {
   }
 
   private async refreshServerData(): Promise<void> {
+    const dataType = this.state.dataType;
     this.setState({ loading: true });
 
     try {
-      const response = await Network.get(`/rhn/manager/notification-messages/${this.state.dataType}`);
+      const response = await Network.get(`/rhn/manager/notification-messages/${dataType}`);
 
       this.setState({
         serverData: response.data,
@@ -282,7 +280,7 @@ export class NotificationList extends React.Component<Props, State> {
   }
 
   // Filter the notifications with the current type filter
-  private filterDataByType(data: Array<Notification>): Array<Notification> {
+  private filterDataByType(data: Notification[]): Notification[] {
     if (this.state.typeCriteria.length === 0) {
       return data;
     }
@@ -291,11 +289,11 @@ export class NotificationList extends React.Component<Props, State> {
   }
 
   // Set the notification read status to the specified value
-  private async updateReadStatus(messageIds: Array<number>, flagAsRead: boolean): Promise<void> {
+  private async updateReadStatus(messageIds: number[], flagAsRead: boolean): Promise<void> {
     try {
       await Network.post("/rhn/manager/notification-messages/update-messages-status", { messageIds, flagAsRead });
 
-      this.setState((prevState, _props) => ({
+      this.setState((prevState) => ({
         // serverData = prev serverData without those are changed + those changed with the changes
         serverData: prevState.serverData
           ?.filter((m) => !messageIds.includes(m.id))
@@ -313,11 +311,11 @@ export class NotificationList extends React.Component<Props, State> {
     }
   }
 
-  private async deleteNotifications(messageIds: Array<number>): Promise<void> {
+  private async deleteNotifications(messageIds: number[]): Promise<void> {
     try {
       await Network.post("/rhn/manager/notification-messages/delete", messageIds);
 
-      this.setState((prevState, _props) => ({
+      this.setState((prevState) => ({
         serverData: prevState.serverData?.filter((m) => !messageIds.includes(m.id)),
         selectedItems: prevState.selectedItems.filter((m) => !messageIds.includes(m)),
         messages: MessagesUtils.success(
@@ -331,7 +329,7 @@ export class NotificationList extends React.Component<Props, State> {
     }
   }
 
-  private decodeIconBySeverity(severity: Severity): React.ReactNode {
+  private decodeIconBySeverity(severity: Severity): ReactNode {
     switch (severity) {
       case Severity.Info:
         return (

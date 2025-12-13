@@ -1,5 +1,3 @@
-import * as React from "react";
-
 import { AsyncButton } from "components/buttons";
 
 type TopPanelButtonsProps = {
@@ -8,13 +6,12 @@ type TopPanelButtonsProps = {
 
 const TopPanelButtons = (props: TopPanelButtonsProps) => {
   return (
-    <div className="pull-right btn-group">
+    <div className="btn-group">
       <AsyncButton
         id="savebutton"
         className="btn-primary"
         title={t("Create project")}
         text={t("Create")}
-        icon="fa-plus"
         action={props.onCreate}
       />
     </div>

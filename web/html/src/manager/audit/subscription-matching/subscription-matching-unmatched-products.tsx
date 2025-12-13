@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import { ModalButton } from "components/dialog/ModalButton";
 import { PopUp } from "components/popup";
@@ -16,7 +16,7 @@ type UnmatchedProductsProps = {
   products: any[];
 };
 
-class UnmatchedProducts extends React.Component<UnmatchedProductsProps> {
+class UnmatchedProducts extends Component<UnmatchedProductsProps> {
   state = {
     selectedProductId: null,
   };
@@ -35,7 +35,7 @@ class UnmatchedProducts extends React.Component<UnmatchedProductsProps> {
   };
 
   sortBySystemCount = (a, b, columnKey, sortDirection) => {
-    var result = a[columnKey] - b[columnKey];
+    const result = a[columnKey] - b[columnKey];
     return (result || Utils.sortById(a, b)) * sortDirection;
   };
 
@@ -48,11 +48,16 @@ class UnmatchedProducts extends React.Component<UnmatchedProductsProps> {
   };
 
   render() {
-    var body;
+    let body;
     if (this.props.unmatchedProductIds.length > 0) {
       body = (
         <div>
-          <Table data={this.buildData(this.props)} identifier={(row) => row.id} initialSortColumnKey="productName">
+          <Table
+            data={this.buildData(this.props)}
+            identifier={(row) => row.id}
+            initialSortColumnKey="productName"
+            titleButtons={[<CsvLink key="unmatched_product_report" name="unmatched_product_report.csv" />]}
+          >
             <Column
               columnKey="productName"
               comparator={Utils.sortByText}
@@ -66,6 +71,7 @@ class UnmatchedProducts extends React.Component<UnmatchedProductsProps> {
               cell={(row) => row.systemCount}
             />
             <Column
+              columnKey="showList"
               cell={(row) => (
                 <ModalButton
                   className="btn-default btn-cell"
@@ -77,9 +83,6 @@ class UnmatchedProducts extends React.Component<UnmatchedProductsProps> {
               )}
             />
           </Table>
-
-          <CsvLink name="unmatched_product_report.csv" />
-
           <UnmatchedSystemPopUp
             systems={this.props.systems}
             products={this.props.products}
@@ -108,7 +111,7 @@ type UnmatchedSystemPopUpProps = {
   onClosePopUp?: (...args: any[]) => any;
 };
 
-class UnmatchedSystemPopUp extends React.Component<UnmatchedSystemPopUpProps> {
+class UnmatchedSystemPopUp extends Component<UnmatchedSystemPopUpProps> {
   buildTableData = (props) => {
     if (!props.selectedProductId) {
       return [];

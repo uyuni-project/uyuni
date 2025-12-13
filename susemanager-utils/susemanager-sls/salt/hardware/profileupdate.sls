@@ -195,6 +195,16 @@ container_runtime:
       - mgrcompat: sync_modules
 {%- endif %}
 
+proxy_info:
+  mgrcompat.module_run:
+    - name: proxy.info
+    - require:
+{%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
+      - saltutil: sync_modules
+{%- else %}
+      - mgrcompat: sync_modules
+{%- endif %}
+
 include:
   - util.syncstates
   - util.syncmodules

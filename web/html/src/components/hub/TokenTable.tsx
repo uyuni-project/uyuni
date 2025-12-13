@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type ReactNode, type RefObject, Component, createRef } from "react";
 
 import { pageSize } from "core/user-preferences";
 
@@ -25,13 +25,13 @@ type State = {
   confirmDeleteDialog: boolean;
 };
 
-export class TokenTable extends React.Component<Props, State> {
-  private tableRef: React.RefObject<TableRef>;
+export class TokenTable extends Component<Props, State> {
+  private tableRef: RefObject<TableRef>;
 
   public constructor(props: Props) {
     super(props);
 
-    this.tableRef = React.createRef();
+    this.tableRef = createRef();
     this.state = {
       selectedRow: undefined,
       confirmValidityDialog: false,
@@ -43,7 +43,7 @@ export class TokenTable extends React.Component<Props, State> {
     this.tableRef.current?.refresh();
   }
 
-  public render(): React.ReactNode {
+  public render(): ReactNode {
     return (
       <Table
         ref={this.tableRef}
@@ -98,8 +98,9 @@ export class TokenTable extends React.Component<Props, State> {
         />
         {(this.props.allowDeletion || this.props.allowToggleValidity) && (
           <Column
-            columnClass="text-right"
-            headerClass="text-right"
+            columnKey="actions"
+            columnClass="text-center"
+            headerClass="text-center"
             header={t("Actions")}
             cell={(row: AccessToken) => this.renderActions(row)}
           />
@@ -108,13 +109,13 @@ export class TokenTable extends React.Component<Props, State> {
     );
   }
 
-  private renderExpiration(expirationTime: Date | null): React.ReactNode {
+  private renderExpiration(expirationTime: Date | null): ReactNode {
     if (expirationTime === null) {
       return t("No, never expires");
     }
 
     const isExpired = localizedMoment(expirationTime).isBefore(localizedMoment());
-    const param = { expiration: (_str) => this.renderDate(expirationTime) };
+    const param = { expiration: () => this.renderDate(expirationTime) };
 
     return (
       <span className={isExpired ? "text-danger" : ""}>
@@ -123,7 +124,7 @@ export class TokenTable extends React.Component<Props, State> {
     );
   }
 
-  private renderDate(date: Date): React.ReactNode {
+  private renderDate(date: Date): ReactNode {
     return <FromNow value={date} />;
   }
 
@@ -164,29 +165,27 @@ export class TokenTable extends React.Component<Props, State> {
           </>
         )}
         {this.props.allowDeletion && (
-          <>
-            <Button
-              disabled={row.hubId !== null || row.peripheralId !== null}
-              title={this.getDeleteTitle(row)}
-              className="btn-default"
-              icon="fa-trash"
-              handler={() => this.setState({ confirmDeleteDialog: true, selectedRow: row })}
-            >
-              {t("Delete")}
-              {this.state.selectedRow && (
-                <DangerDialog
-                  id="confirm-deletion-modal"
-                  isOpen={this.state.confirmDeleteDialog}
-                  title={t("Confirm access token deletion")}
-                  content={<div>{t("Are you sure you want to delete this token. It is currently not used.")}</div>}
-                  onConfirm={() => this.state.selectedRow && this.onDelete(this.state.selectedRow)}
-                  onClose={() => this.setState({ confirmDeleteDialog: false, selectedRow: undefined })}
-                  submitText={t("Delete")}
-                  submitIcon="fa-trash"
-                />
-              )}
-            </Button>
-          </>
+          <Button
+            disabled={row.hubId !== null || row.peripheralId !== null}
+            title={this.getDeleteTitle(row)}
+            className="btn-default"
+            icon="fa-trash"
+            handler={() => this.setState({ confirmDeleteDialog: true, selectedRow: row })}
+          >
+            {t("Delete")}
+            {this.state.selectedRow && (
+              <DangerDialog
+                id="confirm-deletion-modal"
+                isOpen={this.state.confirmDeleteDialog}
+                title={t("Confirm access token deletion")}
+                content={<div>{t("Are you sure you want to delete this token. It is currently not used.")}</div>}
+                onConfirm={() => this.state.selectedRow && this.onDelete(this.state.selectedRow)}
+                onClose={() => this.setState({ confirmDeleteDialog: false, selectedRow: undefined })}
+                submitText={t("Delete")}
+                submitIcon="fa-trash"
+              />
+            )}
+          </Button>
         )}
       </div>
     );
@@ -195,7 +194,7 @@ export class TokenTable extends React.Component<Props, State> {
   private onDelete(row: AccessToken): void {
     Network.del(`/rhn/manager/api/admin/hub/access-tokens/${row.id}`)
       .catch((xhr) => Network.showResponseErrorToastr(xhr))
-      .then((response) => {
+      .then(() => {
         this.refresh();
         showInfoToastr("Access token successfully deleted");
       });
@@ -229,7 +228,7 @@ export class TokenTable extends React.Component<Props, State> {
   }
 
   private getValidityConfirmationMessage(row: AccessToken): string {
-    const messageGeneratorMap: { [key: string]: (params: object) => string } = {
+    const messageGeneratorMap: Record<string, (params: object) => string> = {
       "issued-valid-hub": (params) =>
         // token issued for another server currently valid and linked to a hub
         t("Invalidating this access token will prevent the hub {fqdn} from accesssing.", params),

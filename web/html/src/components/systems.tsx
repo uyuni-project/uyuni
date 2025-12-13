@@ -1,4 +1,4 @@
-import * as React from "react";
+import type { ReactNode } from "react";
 
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
@@ -9,7 +9,7 @@ export type SystemOverview = {
   serverName: string;
   isVirtualGuest: boolean;
   isVirtualHost: boolean;
-  entitlement: string[];
+  entitlement?: string[];
   proxy: boolean;
   mgrServer: boolean;
 };
@@ -19,7 +19,7 @@ export function iconAndName(system: SystemOverview) {
     {
       iconType: "system-bare-metal",
       iconTitle: t("Unprovisioned System"),
-      condition: (sys: SystemOverview) => sys.entitlement.includes("bootstrap_entitled"),
+      condition: (sys: SystemOverview) => sys.entitlement?.includes("bootstrap_entitled"),
     },
     {
       iconType: "system-virt-guest",
@@ -39,14 +39,14 @@ export function iconAndName(system: SystemOverview) {
   ];
   const systemIcon = iconMapping
     .filter((item) => item.condition(system))
-    .map((item) => <IconTag type={item.iconType} title={item.iconTitle} />)[0];
+    .map((item) => <IconTag type={item.iconType} title={item.iconTitle} key={item.iconTitle || item.iconType} />)[0];
 
   const proxyIcon = system.proxy ? <IconTag type="header-proxy" title={t("Proxy")} /> : "";
   const mgrServerIcon = system.mgrServer ? <IconTag type="header-mgr-server" title={t("Peripheral Server")} /> : "";
 
   const content = [systemIcon, proxyIcon, mgrServerIcon, system.serverName];
 
-  if (system.id != null) {
+  if (!DEPRECATED_unsafeEquals(system.id, null)) {
     return (
       <a href={`/rhn/systems/details/Overview.do?sid=${system.id}`} className="js-spa">
         {content}
@@ -110,7 +110,7 @@ function statusDisplay(system: any, isAdmin: boolean) {
 
   const { iconType, iconTitle, url } = systems[type];
 
-  var locked: React.ReactNode = "";
+  let locked: ReactNode = "";
   if (DEPRECATED_unsafeEquals(system["locked"], 1)) {
     locked = <IconTag type="system-locked" title={t("System Locked")} />;
   }

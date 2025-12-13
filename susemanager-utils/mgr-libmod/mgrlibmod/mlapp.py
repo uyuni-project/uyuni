@@ -1,6 +1,7 @@
 """
 CLI app
 """
+
 # pylint: disable-next=unused-import
 from mgrlibmod import mllib, mltypes, mlerrcode
 from typing import List

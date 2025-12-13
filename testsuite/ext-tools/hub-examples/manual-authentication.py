@@ -1,12 +1,22 @@
 #!/usr/bin/python3
+
+# Copyright (c) 2025 SUSE LLC
+#
+# This software is licensed to you under the GNU General Public License,
+# version 2 (GPLv2). There is NO WARRANTY for this software, express or
+# implied, including the implied warranties of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+# along with this software; if not, see
+# http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+
 import xmlrpc.client
 import argparse
 
 # Parsing arguments
 parser = argparse.ArgumentParser()
-parser.add_argument('hub_fqdn', type=str, help='The Hub FQDN')
-parser.add_argument('user', type=str, help='The username for the Hub')
-parser.add_argument('password', type=str, help='The password for the Hub')
+parser.add_argument("hub_fqdn", type=str, help="The Hub FQDN")
+parser.add_argument("user", type=str, help="The username for the Hub")
+parser.add_argument("password", type=str, help="The password for the Hub")
 args = parser.parse_args()
 
 api = f"http://{args.hub_fqdn}:2830/hub/rpc/api"
@@ -35,10 +45,14 @@ successfulResponses = systemsPerServer["Successful"]
 failedResponses = systemsPerServer["Failed"]
 
 if successfulResponses["Responses"]:
-  print(f"Systems responding successfully through a multicast api call:\n{successfulResponses}\n")
+    print(
+        f"Systems responding successfully through a multicast api call:\n{successfulResponses}\n"
+    )
 
 if failedResponses["Responses"]:
-  print(f"Systems failing to reply through a multicast api call:\n{failedResponses}\n")
+    print(
+        f"Systems failing to reply through a multicast api call:\n{failedResponses}\n"
+    )
 
 # Log out
 client.hub.logout(hubSessionKey)

@@ -132,6 +132,7 @@ def create_fake_migration_path(schema_path, new_version, pr_file=None, version=N
     """Create a fake migration path with the next version after the last, adding
     all SQL files from a PR or since the version where all scripts started to be
     idempotent"""
+    files = []
     if pr_file:
         print("Creating migration path with the scripts from the PR")
         files = get_all_files_from_pr(pr_file, schema_path)
@@ -149,6 +150,7 @@ def create_fake_migration_path(schema_path, new_version, pr_file=None, version=N
     print("Creating: " + fake_path)
     os.mkdir(fake_path)
     num = 0
+    # pylint: disable-next=possibly-used-before-assignment
     for migration_file in files:
         pcom = migration_file.split("/")
         f = pcom.pop()
@@ -227,6 +229,11 @@ def dump_database(dump_name, excluded_tables=None):
     else:
         # pylint: disable-next=consider-using-f-string
         raise RuntimeError("Could not dump %s!" % db_name)
+    cleanup_cmd = f"/usr/bin/sed -i 's/^\(\\\\u\?n\?restrict \).*$/\\1/g' {dump_name}"
+    if run_command(cleanup_cmd):
+        print(f"Cleaned unrestrict/restrict tokens from {dump_name} ")
+    else:
+        raise RuntimeError(f"Could not cleanup {dump_name}")
 
 
 def run_upgrade(upgrade_script, new_version):
@@ -284,7 +291,7 @@ def diff_dumps(initial_dump, migrated_dump):
                 if line.endswith("FROM stdin;"):
                     in_table = True
             else:
-                if line == "\.":
+                if line == "\\.":
                     res += sorted(table)
                     res.append(line)
                     in_table = False

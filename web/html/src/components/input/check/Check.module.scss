@@ -1,0 +1,16 @@
+@import "branding/css/variables.scss";
+
+:global(.old-theme),
+:global(.new-theme) {
+  .check {
+    display: inline-flex;
+    vertical-align: -2px;
+    gap: 6px;
+    white-space: nowrap;
+    align-items: center;
+
+    input {
+      --bs-border-width: 1px;
+    }
+  }
+}

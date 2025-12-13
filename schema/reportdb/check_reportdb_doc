@@ -1,26 +1,33 @@
 #!/usr/bin/python3
+# pylint: disable=missing-module-docstring
 
-#TODO CHECK FOR VIEWS
+# TODO CHECK FOR VIEWS
 import sys
 import os
+# pylint: disable-next=unused-import
 import json
+
 
 def dict_equal(a, b):
     type_a = type(a)
     type_b = type(b)
 
     if type_a != type_b:
+        # pylint: disable-next=consider-using-f-string
         sys.stderr.write("Type_a '{}' != Type_b '{}'\n".format(type_a, type_b))
         return False
 
     if isinstance(a, dict):
         if len(a) != len(b):
             sys.stderr.write("dicts have different number of values\n")
+            # pylint: disable-next=consider-using-f-string
             sys.stderr.write("{}\n".format(a))
+            # pylint: disable-next=consider-using-f-string
             sys.stderr.write("{}\n".format(b))
             return False
         for key in a:
             if key not in b:
+                # pylint: disable-next=consider-using-f-string
                 sys.stderr.write("Key '{}' exists in a, but not in b\n".format(key))
                 return False
             if not dict_equal(a[key], b[key]):
@@ -30,7 +37,9 @@ def dict_equal(a, b):
     elif isinstance(a, list):
         if len(a) != len(b):
             sys.stderr.write("lists have a different number of values\n")
+            # pylint: disable-next=consider-using-f-string
             sys.stderr.write("{}\n".format(a))
+            # pylint: disable-next=consider-using-f-string
             sys.stderr.write("{}\n".format(b))
             return False
         while len(a):
@@ -45,15 +54,17 @@ def dict_equal(a, b):
     else:
         return a == b
 
+
 def dict_indexof(x, a):
     for i in range(len(a)):
         if dict_equal(x, a[i]):
             return i
     return -1
 
-DB_DIR = 'postgres'
-MAIN_SQL_PATH = DB_DIR + '/main.sql'
-DOCUMENTATION_SQL_PATH = DB_DIR + '/documentation.sql'
+
+DB_DIR = "postgres"
+MAIN_SQL_PATH = DB_DIR + "/main.sql"
+DOCUMENTATION_SQL_PATH = DB_DIR + "/documentation.sql"
 tables = {}
 
 if not os.path.exists(MAIN_SQL_PATH):
@@ -65,111 +76,146 @@ if not os.path.exists(DOCUMENTATION_SQL_PATH):
 
 columns = []
 val = []
-column = ''
-currentTableKey = ''
+column = ""
+# pylint: disable-next=invalid-name
+currentTableKey = ""
 tablesFromDoc = {}
 
-#read main.sql and create a dict with table name has key and columns has value
+# read main.sql and create a dict with table name has key and columns has value
+# pylint: disable-next=unspecified-encoding
 f = open(MAIN_SQL_PATH)
 for line in f.readlines():
     line = line.strip()
-    if not line or line.startswith('--'): continue
-    vals = list(filter(None, line.replace("\t", " ").split(' ')))
-    if line.startswith('CREATE TABLE'):
+    if not line or line.startswith("--"):
+        continue
+    vals = list(filter(None, line.replace("\t", " ").split(" ")))
+    if line.startswith("CREATE TABLE"):
         currentTableKey = vals[2]
         tables[currentTableKey] = []
         continue
-    if line == '(' : continue
-    if line.startswith(');') or line.startswith('ALTER TABLE') or line.startswith("-- Source"):
+    if line == "(":
+        continue
+    if (
+        line.startswith(");")
+        or line.startswith("ALTER TABLE")
+        or line.startswith("-- Source")
+    ):
         if currentTableKey:
             tables[currentTableKey] = columns
-            currentTableKey = ''
+            # pylint: disable-next=invalid-name
+            currentTableKey = ""
             columns = []
             continue
-    if currentTableKey: 
+    if currentTableKey:
         column = vals[0]
         columns.append(column)
         continue
 
 columns = []
 val = []
-column = ''
-currentTableKey = ''
-currentViewKey = ''
+column = ""
+# pylint: disable-next=invalid-name
+currentTableKey = ""
+# pylint: disable-next=invalid-name
+currentViewKey = ""
 tablesFromDoc = {}
-viewFromDoc = {} #TODO NOT EVALUATED BUT FILLED PROPERLY
+viewFromDoc = {}  # TODO NOT EVALUATED BUT FILLED PROPERLY
 dropTables = []
+# pylint: disable-next=invalid-name
 commentColumn = False
+# pylint: disable-next=invalid-name
 commentTable = False
+# pylint: disable-next=invalid-name
 commentIs = False
 
-#read documentation.sql and create a dict with table name has key and columns has value
-#we also check if documentation.sql is formatted properly
+# read documentation.sql and create a dict with table name has key and columns has value
+# we also check if documentation.sql is formatted properly
+# pylint: disable-next=unspecified-encoding
 f = open(DOCUMENTATION_SQL_PATH)
 for line in f.readlines():
     line = line.strip()
-    vals = list(filter(None, line.replace("\t", " ").split(' ')))
+    vals = list(filter(None, line.replace("\t", " ").split(" ")))
     if not line:
         continue
-    if line.startswith('COMMENT ON TABLE '):
+    if line.startswith("COMMENT ON TABLE "):
         if commentTable or commentColumn:
             sys.stderr.write(("Line: " + line + ", should be preceded by a IS line\n"))
             sys.exit(1)
         currentTableKey = vals[3]
         tablesFromDoc[currentTableKey] = []
+        # pylint: disable-next=invalid-name
         commentTable = True
-        commentColumn = False  
+        # pylint: disable-next=invalid-name
+        commentColumn = False
+        # pylint: disable-next=invalid-name
         commentIs = False
-    if line.startswith('COMMENT ON VIEW '):
+    if line.startswith("COMMENT ON VIEW "):
         if not commentIs:
             sys.stderr.write(("Line: " + line + ", should be preceded by a IS line\n"))
             sys.exit(1)
         currentViewKey = vals[3]
         viewFromDoc[currentViewKey] = []
+        # pylint: disable-next=invalid-name
         commentColumn = True
-        commentTable = False 
+        # pylint: disable-next=invalid-name
+        commentTable = False
+        # pylint: disable-next=invalid-name
         commentIs = False
-    if line.startswith('COMMENT ON COLUMN '):
+    if line.startswith("COMMENT ON COLUMN "):
         if not commentIs:
             sys.stderr.write(("Line: " + line + ", should be preceded by a IS line\n"))
             sys.exit(1)
-        currentKey = ''
+        # pylint: disable-next=invalid-name
+        currentKey = ""
         if currentTableKey:
             currentKey = currentTableKey
         if currentViewKey:
             currentKey = currentViewKey
         column = vals[3]
-        column = column.replace(currentKey + ".","")
+        column = column.replace(currentKey + ".", "")
         columns.append(column)
+        # pylint: disable-next=invalid-name
         commentColumn = True
+        # pylint: disable-next=invalid-name
         commentTable = False
+        # pylint: disable-next=invalid-name
         commentIs = False
-    if line.startswith('IS '):
+    if line.startswith("IS "):
         if not commentColumn and not commentTable:
-            sys.stderr.write(("Line: " + line + ", should be preceded by a COMMENT line\n"))
+            sys.stderr.write(
+                ("Line: " + line + ", should be preceded by a COMMENT line\n")
+            )
             sys.exit(1)
+        # pylint: disable-next=invalid-name
         commentColumn = False
+        # pylint: disable-next=invalid-name
         commentTable = False
+        # pylint: disable-next=invalid-name
         commentIs = True
-    if line.startswith(');') or line.startswith('ALTER TABLE') or line.startswith("-- Source"):
+    if (
+        line.startswith(");")
+        or line.startswith("ALTER TABLE")
+        or line.startswith("-- Source")
+    ):
         if currentTableKey:
             tablesFromDoc[currentTableKey] = columns
-            currentTableKey = ''
+            # pylint: disable-next=invalid-name
+            currentTableKey = ""
             columns = []
         if currentViewKey:
             viewFromDoc[currentViewKey] = columns
-            currentViewKey = ''
+            # pylint: disable-next=invalid-name
+            currentViewKey = ""
             columns = []
 
-    if line.startswith('DROP TABLE IF EXIST') :
-        dropTable=vals[4].replace(";","")
-        dropTables.append(dropTable);
+    if line.startswith("DROP TABLE IF EXIST"):
+        dropTable = vals[4].replace(";", "")
+        dropTables.append(dropTable)
 
 for dropTable in dropTables:
     if dropTable in tables:
         tables.pop(dropTable)
 
-if not dict_equal(tables, tablesFromDoc) :
+if not dict_equal(tables, tablesFromDoc):
     sys.stderr.write("Schema and doc are different. Please check your changes\n")
     sys.exit(1)
-

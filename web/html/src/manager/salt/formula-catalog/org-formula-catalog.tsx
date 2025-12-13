@@ -1,6 +1,4 @@
-import { hot } from "react-hot-loader/root";
-
-import * as React from "react";
+import { Component } from "react";
 
 import withPageWrapper from "components/general/with-page-wrapper";
 import { Messages, MessageType, ServerMessageType } from "components/messages/messages";
@@ -21,7 +19,7 @@ type State = {
   messages: any[];
 };
 
-class FormulaCatalog extends React.Component<Props, State> {
+class FormulaCatalog extends Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -48,12 +46,12 @@ class FormulaCatalog extends React.Component<Props, State> {
     return rowData;
   };
 
-  searchData = (row: string = "", criteria?: string) => {
+  searchData = (row = "", criteria?: string) => {
     return !criteria || row.toLowerCase().includes(criteria.toLowerCase());
   };
 
   render() {
-    var items: MessageType[] = [
+    let items: MessageType[] = [
       {
         severity: "info",
         text: (
@@ -63,7 +61,7 @@ class FormulaCatalog extends React.Component<Props, State> {
               {
                 link: (str) => (
                   <a
-                    href="https://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html"
+                    href="https://docs.saltproject.io/en/latest/topics/development/conventions/formulas.html"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -117,4 +115,4 @@ class FormulaCatalog extends React.Component<Props, State> {
   }
 }
 
-export default hot(withPageWrapper(FormulaCatalog));
+export default withPageWrapper(FormulaCatalog);

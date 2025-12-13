@@ -1,13 +1,14 @@
-import * as React from "react";
+import type { ReactNode } from "react";
+
+import { Button } from "components/buttons";
 
 import { showDialog } from "./util";
-
 type Props = {
   target: string;
   id?: string;
   className?: string;
   title?: string;
-  text?: React.ReactNode;
+  text?: ReactNode;
   icon?: string;
   disabled?: boolean;
   item?: any;
@@ -19,21 +20,17 @@ type Props = {
  * Link to launch a modal dialog
  */
 export function ModalLink(props: Props) {
-  const margin = props.text ? "" : " no-margin";
-  var icon = props.icon && <i className={"fa " + props.icon + margin} />;
-
   return (
-    <button
+    <Button
       id={props.id}
       title={props.title}
-      className={"btn-link " + (props.className || "")}
-      onClick={() => {
+      className={"btn-tertiary " + (props.className || "")}
+      icon={props.icon}
+      text={props.text}
+      handler={() => {
         if (props.onClick) props.onClick(props.item);
         showDialog(props.target);
       }}
-    >
-      {icon}
-      {props.text}
-    </button>
+    />
   );
 }

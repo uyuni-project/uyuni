@@ -1,4 +1,4 @@
-# Copyright 2015-2024 SUSE LLC
+# Copyright 2015-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 ### This file contains all step definitions concerning Salt and bootstrapping
@@ -32,7 +32,7 @@ end
 
 When(/^I stop salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
-  pkgname = use_salt_bundle ? 'venv-salt-minion' : 'salt-minion'
+  pkgname = $use_salt_bundle ? 'venv-salt-minion' : 'salt-minion'
   os_version = node.os_version
   os_family = node.os_family
   if os_family.match?(/^sles/) && os_version.match?(/^11/)
@@ -44,7 +44,7 @@ end
 
 When(/^I start salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
-  pkgname = use_salt_bundle ? 'venv-salt-minion' : 'salt-minion'
+  pkgname = $use_salt_bundle ? 'venv-salt-minion' : 'salt-minion'
   os_version = node.os_version
   os_family = node.os_family
   if os_family.match?(/^sles/) && os_version.match?(/^11/)
@@ -56,7 +56,7 @@ end
 
 When(/^I restart salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
-  pkgname = use_salt_bundle ? 'venv-salt-minion' : 'salt-minion'
+  pkgname = $use_salt_bundle ? 'venv-salt-minion' : 'salt-minion'
   os_version = node.os_version
   os_family = node.os_family
   if os_family.match?(/^sles/) && os_version.match?(/^11/)
@@ -68,7 +68,7 @@ end
 
 When(/^I refresh salt-minion grains on "(.*?)"$/) do |minion|
   node = get_target(minion)
-  salt_call = use_salt_bundle ? 'venv-salt-call' : 'salt-call'
+  salt_call = $use_salt_bundle ? 'venv-salt-call' : 'salt-call'
   node.run("#{salt_call} saltutil.refresh_grains")
 end
 
@@ -103,7 +103,7 @@ When(/^I wait at most (\d+) seconds until Salt master sees "([^"]*)" as "([^"]*)
 end
 
 When(/^I wait until Salt client is inactive on "([^"]*)"$/) do |minion|
-  salt_minion = use_salt_bundle ? 'venv-salt-minion' : 'salt-minion'
+  salt_minion = $use_salt_bundle ? 'venv-salt-minion' : 'salt-minion'
   step %(I wait until "#{salt_minion}" service is inactive on "#{minion}")
 end
 
@@ -114,7 +114,7 @@ end
 
 When(/^I wait until no Salt job is running on "([^"]*)"$/) do |minion|
   target = get_target(minion)
-  salt_call = use_salt_bundle ? 'venv-salt-call' : 'salt-call'
+  salt_call = $use_salt_bundle ? 'venv-salt-call' : 'salt-call'
   repeat_until_timeout(timeout: 600, message: "A Salt job is still running on #{minion}") do
     output, _code = target.run("#{salt_call} -lquiet saltutil.running", verbose: true)
     break if output == "local:\n"
@@ -149,7 +149,7 @@ end
 Then(/^it should contain the OS of "([^"]*)"$/) do |host|
   node = get_target(host)
   os_family = node.os_family
-  family = os_family.match?(/^opensuse/) ? 'Leap' : 'SLES'
+  family = os_family.match?(/^opensuse/) ? '(Leap|Tumbleweed)' : 'SLES'
   assert_match(/#{family}/, $output)
 end
 
@@ -268,13 +268,13 @@ end
 
 When(/^I remove "([^"]*)" from salt cache on "([^"]*)"$/) do |filename, host|
   node = get_target(host)
-  salt_cache = use_salt_bundle ? '/var/cache/venv-salt-minion/' : '/var/cache/salt/'
+  salt_cache = $use_salt_bundle ? '/var/cache/venv-salt-minion/' : '/var/cache/salt/'
   file_delete(node, "#{salt_cache}#{filename}")
 end
 
 When(/^I remove "([^"]*)" from salt minion config directory on "([^"]*)"$/) do |filename, host|
   node = get_target(host)
-  salt_config = use_salt_bundle ? '/etc/venv-salt-minion/minion.d/' : '/etc/salt/minion.d/'
+  salt_config = $use_salt_bundle ? '/etc/venv-salt-minion/minion.d/' : '/etc/salt/minion.d/'
   file_delete(node, "#{salt_config}#{filename}")
 end
 
@@ -292,35 +292,35 @@ start_event_grains:
 end
 
 When(/^I store "([^"]*)" into file "([^"]*)" in salt minion config directory on "([^"]*)"$/) do |content, filename, host|
-  salt_config = use_salt_bundle ? '/etc/venv-salt-minion/minion.d/' : '/etc/salt/minion.d/'
+  salt_config = $use_salt_bundle ? '/etc/venv-salt-minion/minion.d/' : '/etc/salt/minion.d/'
   step %(I store "#{content}" into file "#{salt_config}#{filename}" on "#{host}")
 end
 
 When(/^I ([^ ]*) the "([^"]*)" formula$/) do |action, formula|
   # Complicated code because the checkbox is not a <input type=checkbox> but an <i>
-  xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if action == 'check'
-  xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if action == 'uncheck'
+  xpath_query = "//button[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if action == 'check'
+  xpath_query = "//button[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if action == 'uncheck'
   # DOM refreshes content of chooseFormulas element by accessing it. Then conditions are evaluated properly.
   find('#chooseFormulas')['innerHTML']
   if has_xpath?(xpath_query, wait: 2)
     raise ScriptError, "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query, wait: 2).click
   else
-    xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if action == 'check'
-    xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if action == 'uncheck'
+    xpath_query = "//button[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if action == 'check'
+    xpath_query = "//button[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if action == 'uncheck'
     raise ScriptError, "xpath: #{xpath_query} not found" unless has_xpath?(xpath_query, wait: 2)
   end
 end
 
 Then(/^the "([^"]*)" formula should be ([^ ]*)$/) do |formula, state|
   # Complicated code because the checkbox is not a <input type=checkbox> but an <i>
-  xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if state == 'checked'
-  xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if state == 'unchecked'
+  xpath_query = "//button[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if state == 'checked'
+  xpath_query = "//button[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if state == 'unchecked'
   # DOM refreshes content of chooseFormulas element by accessing it. Then conditions are evaluated properly.
   find('#chooseFormulas')['innerHTML']
   raise ScriptError, "Checkbox is not #{state}" if has_xpath?(xpath_query)
 
-  xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if state == 'checked'
-  xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if state == 'unchecked'
+  xpath_query = "//button[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if state == 'checked'
+  xpath_query = "//button[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if state == 'unchecked'
   assert has_xpath?(xpath_query), 'Checkbox could not be found'
 end
 
@@ -366,7 +366,7 @@ end
 
 When(/^I wait until there is no Salt job calling the module "([^"]*)" on "([^"]*)"$/) do |salt_module, minion|
   target = get_target(minion)
-  salt_call = use_salt_bundle ? 'venv-salt-call' : 'salt-call'
+  salt_call = $use_salt_bundle ? 'venv-salt-call' : 'salt-call'
   target.run_until_fail("#{salt_call} -lquiet saltutil.running | grep #{salt_module}", timeout: 600)
 end
 
@@ -439,19 +439,19 @@ end
 # Perform actions
 When(/^I reject "([^"]*)" from the Pending section$/) do |host|
   system_name = get_system_name(host)
-  xpath_query = "//tr[td[contains(.,'#{system_name}')]]//button[@title = 'Reject']"
+  xpath_query = "//tr[td[contains(.,'#{system_name}')]]//button[@aria-label = 'Reject']"
   raise ScriptError, "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query).click
 end
 
 When(/^I delete "([^"]*)" from the Rejected section$/) do |host|
   system_name = get_system_name(host)
-  xpath_query = "//tr[td[contains(.,'#{system_name}')]]//button[@title = 'Delete']"
+  xpath_query = "//tr[td[contains(.,'#{system_name}')]]//button[@aria-label = 'Delete']"
   raise ScriptError, "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query).click
 end
 
 When(/^I see "([^"]*)" fingerprint$/) do |host|
   node = get_target(host)
-  salt_call = use_salt_bundle ? 'venv-salt-call' : 'salt-call'
+  salt_call = $use_salt_bundle ? 'venv-salt-call' : 'salt-call'
   output, _code = node.run("#{salt_call} --local key.finger")
   fing = output.split("\n")[1].strip!
   raise ScriptError, "Text: #{fing} not found" unless check_text_and_catch_request_timeout_popup?(fing)
@@ -459,7 +459,7 @@ end
 
 When(/^I accept "([^"]*)" key$/) do |host|
   system_name = get_system_name(host)
-  xpath_query = "//tr[td[contains(.,'#{system_name}')]]//button[@title = 'Accept']"
+  xpath_query = "//tr[td[contains(.,'#{system_name}')]]//button[@aria-label = 'Accept']"
   raise ScriptError, "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query).click
 end
 
@@ -529,7 +529,7 @@ end
 # salt-ssh steps
 When(/^I install Salt packages from "(.*?)"$/) do |host|
   target = get_target(host)
-  pkgs = use_salt_bundle ? 'venv-salt-minion' : 'salt salt-minion'
+  pkgs = $use_salt_bundle ? 'venv-salt-minion' : 'salt salt-minion'
   if suse_host?(host)
     target.run("test -e /usr/bin/zypper && zypper --non-interactive install -y #{pkgs}", check_errors: false)
   elsif transactional_system?(host)
@@ -560,35 +560,28 @@ end
 When(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |host|
   node = get_target(host)
 
-  # Define config directory based on bundle usage
-  config_dir = use_salt_bundle ? '/etc/venv-salt-minion' : '/etc/salt'
+  # Define config directory
+  salt_bundle_config_dir = '/etc/venv-salt-minion'
+  salt_classic_config_dir = '/etc/salt'
 
-  # Define cleanup paths based on bundle usage
-  cleanup_paths =
-    if use_salt_bundle
-      '/var/cache/venv-salt-minion /run/venv-salt-minion /var/venv-salt-minion.log /var/tmp/.root*'
-    else
-      '/var/cache/salt/minion /var/run/salt /run/salt /var/log/salt /var/tmp/.root*'
-    end
+  # Define cleanup paths
+  salt_bundle_cleanup_paths = '/var/cache/venv-salt-minion /run/venv-salt-minion /var/venv-salt-minion.log /var/tmp/.root*'
+  salt_classic_cleanup_paths = '/var/cache/salt/minion /var/run/salt /run/salt /var/log/salt /var/tmp/.root*'
 
-  # Selective file cleanup within the configuration directory
-  node.run("rm -f #{config_dir}/grains #{config_dir}/minion_id", check_errors: false)
-  node.run("find #{config_dir}/minion.d/ -type f ! -name '00-venv.conf' -delete", check_errors: false)
-  node.run("rm -f #{config_dir}/pki/minion/*", check_errors: false)
+  # File cleanup within the configuration directory
+  node.run("rm -f #{salt_bundle_config_dir}/grains #{salt_bundle_config_dir}/minion_id", check_errors: false)
+  node.run("find #{salt_bundle_config_dir}/minion.d/ -type f ! -name '00-venv.conf' -delete", check_errors: false)
+  node.run("rm -f #{salt_bundle_config_dir}/pki/minion/*", check_errors: false)
+
+  node.run("rm -f #{salt_classic_config_dir}/grains #{salt_classic_config_dir}/minion_id", check_errors: false)
+  node.run("find #{salt_classic_config_dir}/minion.d/ -type f ! -name '00-venv.conf' -delete", check_errors: false)
+  node.run("rm -f #{salt_classic_config_dir}/pki/minion/*", check_errors: false)
 
   # Additional cleanup for cached and runtime files
-  node.run("rm -Rf /root/salt #{cleanup_paths}", check_errors: false)
+  node.run("rm -Rf /root/salt #{salt_bundle_cleanup_paths} #{salt_classic_cleanup_paths}", check_errors: false)
 
   # Package removal using the existing step
-  package_list = use_salt_bundle ? 'venv-salt-minion' : 'salt salt-minion'
-  step %(I remove package "#{package_list}" from this "#{host}" without error control)
-
-  # Conditional additional package removal
-  if transactional_system?(host) && use_salt_bundle
-    # Check if salt-minion is installed, remove if present from sumaform
-    _result, code = node.run('rpm -q salt-minion', check_errors: false)
-    step %(I remove package "salt-minion" from this "#{host}" without error control) if code.zero?
-  end
+  step %(I remove packages "venv-salt-minion salt salt-minion" from this "#{host}" without error control)
 
   # Disable repositories
   step %(I disable the repositories "tools_update_repo tools_pool_repo" on this "#{host}" without error control)

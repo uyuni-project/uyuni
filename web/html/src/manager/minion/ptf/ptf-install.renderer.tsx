@@ -1,12 +1,10 @@
-import * as React from "react";
-
 import SpaRenderer from "core/spa/spa-renderer";
 
 import { PackageListActionScheduler } from "components/package/PackageListActionScheduler";
 
 import { PTF_COLUMN_ARCH, PTF_COLUMN_SUMMARY } from "./ptf-column-definition";
 
-// See java/code/src/com/suse/manager/webui/templates/minion/ptf-install.jade
+// See java/core/src/main/resources/com/suse/manager/webui/templates/minion/ptf-install.jade
 declare global {
   interface Window {
     serverId?: any;

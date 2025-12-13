@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import { Messages, MessageType, Utils as MessagesUtils } from "components/messages/messages";
 import { TopPanel } from "components/panels/TopPanel";
@@ -19,7 +19,7 @@ type Props = {
   serverId?: number;
 
   /** The action chains */
-  actionChains?: Array<ActionChain>;
+  actionChains?: ActionChain[];
 };
 
 type State = {
@@ -32,7 +32,7 @@ type State = {
   activeTab?: string;
 };
 
-class CoCoScansList extends React.Component<Props, State> {
+class CoCoScansList extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
@@ -84,7 +84,7 @@ class CoCoScansList extends React.Component<Props, State> {
           messages: msg,
         });
       })
-      .catch((err) => {
+      .catch(() => {
         this.setState({
           messages: MessagesUtils.error(
             t("Unable to schedule action. Please check the server logs for detailed information.")

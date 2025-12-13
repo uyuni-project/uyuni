@@ -1,8 +1,7 @@
 # SPDX-License-Identifier: MIT
 #!BuildTag: uyuni/server:latest
 
-ARG INIT_IMAGE=uyuni/init:latest
-FROM $INIT_IMAGE
+FROM registry.suse.com/bci/bci-init:15.7
 
 ARG PRODUCT_PATTERN_PREFIX="patterns-uyuni"
 
@@ -13,6 +12,19 @@ ARG USEPYTHON="python3"
 # Extra packages can be added via project configuration
 ARG EXTRAPACKAGES
 
+# Create stable static UID and GID for salt, tomcat, apache (wwwrun)...
+RUN groupadd -r --gid 10550 susemanager && \
+  groupadd -r --gid 10551 tomcat && \
+  groupadd -r --gid 10552 www && \
+  groupadd -r --gid 10553 wwwrun && \
+  groupadd -r --gid 10554 salt && \
+  groupadd -r --gid 10555 tftp
+
+RUN useradd -r -s /usr/sbin/nologin -G susemanager,www -g tomcat -d /usr/share/tomcat --uid 10551 tomcat && \
+  useradd -r -s /usr/sbin/nologin -G susemanager,www -g wwwrun -d /var/lib/wwwrun --uid 10552 wwwrun && \
+  useradd -r -s /usr/sbin/nologin -G susemanager -g salt -d /var/lib/salt --uid 10554 salt && \
+  useradd -r -s /usr/sbin/nologin -g tftp -d /srv/tftpboot --uid 10555 tftp
+
 # Main packages
 RUN echo "rpm.install.excludedocs = yes" >>/etc/zypp/zypp.conf && \
     zypper ref && zypper --non-interactive up && \
@@ -20,64 +32,68 @@ RUN echo "rpm.install.excludedocs = yes" >>/etc/zypp/zypp.conf && \
         ${EXTRAPACKAGES} \
         ${PRODUCT_PATTERN_PREFIX}_server \
         ${PRODUCT_PATTERN_PREFIX}_retail \
-        spacewalk-backend-sql-postgresql \
-        spacewalk-java-postgresql \
-        postgresql16 \
+        ${USEPYTHON}-pygit2 \
+        ${USEPYTHON}-ldap \
         billing-data-service \
-        grub2-x86_64-efi \
+        drbd-formula \
+        ed \
+        golang-github-QubitProducts-exporter_exporter \
+        golang-github-prometheus-node_exporter \
+        grafana-formula \
         grub2-arm64-efi \
         grub2-powerpc-ieee1275 \
-        ed \
-        susemanager-tftpsync \
-        golang-github-prometheus-node_exporter \
-        prometheus-postgres_exporter \
-        golang-github-QubitProducts-exporter_exporter \
-        prometheus-jmx_exporter \
-        prometheus-jmx_exporter-tomcat \
-        spacecmd \
-        grafana-formula \
+        grub2-x86_64-efi \
+        habootstrap-formula \
+        inter-server-sync \
+        ipmitool \
+        javamail \
         locale-formula \
+        postgresql16 \
         prometheus-exporters-formula \
         prometheus-formula \
+        prometheus-jmx_exporter \
+        prometheus-jmx_exporter-tomcat \
+        prometheus-postgres_exporter \
         registry-formula \
-        virtualization-formulas \
-        uyuni-config-formula \
-        saphanabootstrap-formula \
-        sapnwbootstrap-formula \
-        drbd-formula \
-        habootstrap-formula \
         saline-formula \
         salt-shaptools \
-        inter-server-sync \
-        golang-github-prometheus-node_exporter \
-        prometheus-postgres_exporter \
-        golang-github-QubitProducts-exporter_exporter \
-        prometheus-jmx_exporter \
+        saphanabootstrap-formula \
+        sapnwbootstrap-formula \
         spacecmd \
-        javamail \
-        virtual-host-gatherer-libcloud \
+        spacewalk-backend-sql-postgresql \
+        spacewalk-java-postgresql \
+        sssd \
+        sssd-ad \
+        sssd-dbus \
+        sssd-ipa \
+        susemanager \
+        susemanager-tools \
+        susemanager-tools-salt \
+        sssd-krb5 \
+        sssd-ldap \
+        sssd-tools \
+        uyuni-config-formula \
+        vim \
         virtual-host-gatherer-Libvirt \
         virtual-host-gatherer-Nutanix \
         virtual-host-gatherer-VMware \
-        vim \
-        ${USEPYTHON}-pygit2 \
-        ipmitool \
-        sssd \
-        sssd-dbus \
-        sssd-ldap \
-        sssd-ad \
-        sssd-ipa \
-        sssd-krb5 \
-        sssd-tools && \
+        virtual-host-gatherer-libcloud \
+        virtualization-formulas \
+        zchunk && \
+    zypper --non-interactive clean --all && \
+    rpm -e container-suseconnect && \
     systemctl enable prometheus-node_exporter && \
     systemctl enable sssd && \
     rm /etc/krb5.conf.d/crypto-policies && \
     ln -s /etc/crypto-policies/back-ends/krb5.config /etc/krb5.conf.d/crypto-policies && \
     mv "/etc/krb5.conf.d" "/etc/rhn/krb5.conf.d" && \
-    ln -s "/etc/rhn/krb5.conf.d" "/etc/krb5.conf.d"
-
-RUN set -euo pipefail; zypper -n rr -a; \
-    rm -rf /var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
+    ln -s "/etc/rhn/krb5.conf.d" "/etc/krb5.conf.d" && \
+    mkdir -p /etc/systemd/system.conf.d/ && \
+    printf "[Manager]\nLogColor=no" >/etc/systemd/system.conf.d/01-nocolor.conf && \
+# The RemoveIPC was needed for postgresql, not sure if it is safe to remove now that it's in its own container
+    mkdir -p /etc/systemd/logind.conf.d/ && \
+    printf "[Login]\nRemoveIPC=no" >/etc/systemd/logind.conf.d/disable-removeipc.conf && \
+    rm -rf /var/log/{alternatives.log,lastlog,tallylog,suseconnect.log,zypper.log,zypp/history,YaST2}
 
 ADD --chown=root:root root.tar.gz /
 
@@ -108,7 +124,7 @@ LABEL org.opencontainers.image.description="All-in-one ${PRODUCT} server image"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
-LABEL org.opencontainers.image.version=5.2.0
+LABEL org.opencontainers.image.version=5.2.4
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.reference="${REFERENCE_PREFIX}/server:${PRODUCT_VERSION}.%RELEASE%"
 # endlabelprefix
