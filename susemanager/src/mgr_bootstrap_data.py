@@ -1509,4 +1509,9 @@ DATA = {
         "DEST": DOCUMENT_ROOT + "/pub/repositories/raspbian/12/bootstrap/",
         "TYPE": "deb",
     },
+    "zorinos-17-amd64": {
+        "PKGLIST": PKGLISTUBUNTU2204,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/zorinos/17/bootstrap/",
+        "TYPE": "deb",
+    },
 }
