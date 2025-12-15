@@ -223,7 +223,8 @@ public class ImageOverview {
     /**
      * @return the custom data values
      */
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "imageInfo")
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "image_info_id", insertable = false, updatable = false)
     public Set<ImageInfoCustomDataValue> getCustomDataValues() {
         return customDataValues;
     }
@@ -234,9 +235,9 @@ public class ImageOverview {
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "suseImageInfoChannel",
         joinColumns = {
-            @JoinColumn(name = "image_info_id", nullable = false, updatable = false)},
+            @JoinColumn(name = "image_info_id", nullable = false, insertable = false, updatable = false)},
         inverseJoinColumns = {
-            @JoinColumn(name = "channel_id", nullable = false, updatable = false)}
+            @JoinColumn(name = "channel_id", nullable = false, insertable = false, updatable = false)}
     )
     public Set<Channel> getChannels() {
         return channels;
@@ -248,9 +249,9 @@ public class ImageOverview {
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "suseImageInfoInstalledProduct",
         joinColumns = {
-            @JoinColumn(name = "image_info_id", nullable = false, updatable = false)},
+            @JoinColumn(name = "image_info_id", nullable = false, insertable = false, updatable = false)},
         inverseJoinColumns = {
-            @JoinColumn(name = "installed_product_id", nullable = false, updatable = false)
+            @JoinColumn(name = "installed_product_id", nullable = false, insertable = false, updatable = false)
     })
     public Set<InstalledProduct> getInstalledProducts() {
         return installedProducts;
@@ -259,7 +260,8 @@ public class ImageOverview {
     /**
      * @return the packages
      */
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "imageInfo")
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "image_info_id", insertable = false, updatable = false)
     public Set<ImagePackage> getPackages() {
         return packages;
     }
@@ -279,7 +281,8 @@ public class ImageOverview {
     /**
      * @return the files
      */
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "imageInfo")
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "image_info_id", insertable = false, updatable = false)
     public Set<ImageFile> getImageFiles() {
         return imageFiles;
     }
