@@ -91,8 +91,8 @@ BuildRequires:  apache-commons-lang3 >= 3.4
 BuildRequires:  apache-commons-text
 BuildRequires:  apache-commons-logging
 BuildRequires:  bcel
-BuildRequires:  mvn(net.bytebuddy:byte-buddy) >= 1.14
-BuildRequires:  mvn(net.bytebuddy:byte-buddy-dep) >= 1.14
+BuildRequires:  mvn(net.bytebuddy:byte-buddy) >= 1.18.1
+BuildRequires:  mvn(net.bytebuddy:byte-buddy-dep) >= 1.18.1
 BuildRequires:  c3p0 >= 0.9.1
 BuildRequires:  cglib
 BuildRequires:  classmate
@@ -128,7 +128,7 @@ BuildRequires:  log4j
 BuildRequires:  log4j-jcl
 BuildRequires:  log4j-slf4j
 BuildRequires:  netty
-BuildRequires:  objectweb-asm >= 9.2
+BuildRequires:  objectweb-asm >= 9.9
 BuildRequires:  perl
 BuildRequires:  pgjdbc-ng
 BuildRequires:  postgresql-jdbc
@@ -181,8 +181,8 @@ Requires:       apache-commons-lang3
 Requires:       apache-commons-text
 Requires:       apache-commons-logging
 Requires:       bcel
-Requires:       mvn(net.bytebuddy:byte-buddy) >= 1.14
-Requires:       mvn(net.bytebuddy:byte-buddy-dep) >= 1.14
+Requires:       mvn(net.bytebuddy:byte-buddy) >= 1.18.1
+Requires:       mvn(net.bytebuddy:byte-buddy-dep) >= 1.18.1
 Requires:       c3p0 >= 0.9.1
 Requires:       cglib
 Requires:       classmate
@@ -216,7 +216,7 @@ Requires:       log4j-jcl
 Requires:       log4j-slf4j
 Requires:       mgr-libmod
 Requires:       netty
-Requires:       objectweb-asm >= 9.2
+Requires:       objectweb-asm >= 9.9
 Requires:       pgjdbc-ng
 Requires:       prometheus-client-java
 Requires:       redstone-xmlrpc
@@ -365,8 +365,8 @@ Requires:       apache-commons-lang3
 Requires:       apache-commons-text
 Requires:       apache-commons-logging
 Requires:       bcel
-Requires:       mvn(net.bytebuddy:byte-buddy) >= 1.14
-Requires:       mvn(net.bytebuddy:byte-buddy-dep) >= 1.14
+Requires:       mvn(net.bytebuddy:byte-buddy) >= 1.18.1
+Requires:       mvn(net.bytebuddy:byte-buddy-dep) >= 1.18.1
 Requires:       c3p0 >= 0.9.1
 Requires:       cglib
 Requires:       classmate
