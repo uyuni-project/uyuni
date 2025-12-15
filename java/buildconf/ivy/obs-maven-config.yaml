@@ -21,6 +21,9 @@ artifacts:
   - artifact: antlr
     package: antlr-java
     repository: Leap
+  - artifact: antlr4-runtime
+    package: antlr4-java
+    repository: Uyuni_Jakarta
   - artifact: bcel
     repository: Leap_sle
   - artifact: byte-buddy
