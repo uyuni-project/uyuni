@@ -17,7 +17,7 @@ artifacts:
   - artifact: asm
     package: objectweb-asm
     jar: asm-all
-    repository: Leap_sle
+    repository: Uyuni_Jakarta
   - artifact: antlr
     package: antlr-java
     repository: Leap
@@ -28,11 +28,11 @@ artifacts:
     repository: Leap_sle
   - artifact: byte-buddy
     package: byte-buddy
-    repository: Leap_sle
+    repository: Uyuni_Jakarta
     jar: byte-buddy\.jar
   - artifact: byte-buddy-dep
     package: byte-buddy
-    repository: Leap_sle
+    repository: Uyuni_Jakarta
     jar: byte-buddy-dep\.jar
   - artifact: c3p0
     repository: Leap
