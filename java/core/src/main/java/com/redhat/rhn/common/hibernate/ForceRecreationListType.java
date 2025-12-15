@@ -73,7 +73,7 @@ public class ForceRecreationListType implements UserCollectionType {
      */
     @Override
     public CollectionClassification getClassification() {
-        return null;
+        return CollectionClassification.LIST;
     }
 
     /**
@@ -81,7 +81,7 @@ public class ForceRecreationListType implements UserCollectionType {
      */
     @Override
     public Class<?> getCollectionClass() {
-        return null;
+        return List.class;
     }
 
     /**
