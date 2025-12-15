@@ -34,8 +34,8 @@
         </dependency>
 
         <dependency>
-            <groupId>antlr</groupId>
-            <artifactId>antlr</artifactId>
+            <groupId>org.antlr</groupId>
+            <artifactId>antlr4-runtime</artifactId>
         </dependency>
         <dependency>
             <groupId>org.ow2.asm</groupId>
