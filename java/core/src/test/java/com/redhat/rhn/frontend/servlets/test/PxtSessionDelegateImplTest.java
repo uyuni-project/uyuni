@@ -69,8 +69,9 @@ public class PxtSessionDelegateImplTest extends MockObjectTestCase {
             createPxtSessionCallback = callback;
         }
 
-        public WebSession createPxtSession() {
-            return (WebSession)createPxtSessionCallback.transform(null);
+        @Override
+        protected WebSession createPxtSession(Long uid) {
+            return (WebSession)createPxtSessionCallback.transform(uid);
         }
 
         @Override

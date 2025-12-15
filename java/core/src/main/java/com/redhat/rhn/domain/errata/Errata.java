@@ -77,7 +77,7 @@ public class Errata extends BaseDomainHelper {
                 name = "rhnErrataPackage",
                 joinColumns = @JoinColumn(name = "errata_id"),
                 inverseJoinColumns = @JoinColumn(name = "package_id"))
-    @OrderColumn(name = "package_id")
+    @OrderBy("id ASC")
     private Set<Package> packages;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
