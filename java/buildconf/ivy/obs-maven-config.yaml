@@ -32,7 +32,7 @@ artifacts:
     jar: byte-buddy\.jar
   - artifact: byte-buddy-dep
     package: byte-buddy
-    repository: Leap_sle
+    repository: Uyuni_Jakarta
     jar: byte-buddy-dep\.jar
   - artifact: c3p0
     repository: Leap
