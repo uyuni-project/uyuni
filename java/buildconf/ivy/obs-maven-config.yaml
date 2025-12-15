@@ -28,7 +28,7 @@ artifacts:
     repository: Leap_sle
   - artifact: byte-buddy
     package: byte-buddy
-    repository: Leap_sle
+    repository: Uyuni_Jakarta
     jar: byte-buddy\.jar
   - artifact: byte-buddy-dep
     package: byte-buddy
