@@ -81,7 +81,7 @@ BuildRequires:  ant
 BuildRequires:  ant-apache-regexp
 BuildRequires:  ant-contrib
 BuildRequires:  ant-junit
-BuildRequires:  antlr >= 2.7.6
+BuildRequires:  antlr4 >= 4.13.0
 BuildRequires:  apache-commons-cli
 BuildRequires:  apache-commons-codec
 BuildRequires:  apache-commons-collections
