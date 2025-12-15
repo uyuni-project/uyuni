@@ -16,7 +16,7 @@ repositories:
 artifacts:
   - artifact: asm
     package: objectweb-asm
-    jar: asm-ll
+    jar: asm-all
     repository: Uyuni_Jakarta
   - artifact: antlr
     package: antlr-java
