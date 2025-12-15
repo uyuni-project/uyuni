@@ -46,10 +46,10 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
     And I enter "Minion testing" as "description"
     And I enter "MINION-TEST" as "key"
     And I enter "20" as "usageLimit"
-    And I select "SLE-Product-SLES15-SP4-Pool for x86_64" from "selectedBaseChannel"
+    And I select "SLE-Product-SLES15-SP7-Pool for x86_64" from "selectedBaseChannel"
     And I wait for child channels to appear
     And I include the recommended child channels
-    And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
+    And I check "SLE-Module-DevTools15-SP7-Pool for x86_64"
     And I check "Fake-RPM-SUSE-Channel"
     And I click on "Create Activation Key"
     And I follow "Configuration" in the content area
@@ -112,7 +112,7 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
 @susemanager
   Scenario: Verify that minion bootstrapped with base channel
     Given I am on the Systems page
-    Then I should see a "SLE-Product-SLES15-SP4-Pool for x86_64" text
+    Then I should see a "SLE-Product-SLES15-SP7-Pool for x86_64" text
 
 @uyuni
   Scenario: Verify that minion bootstrapped with base channel

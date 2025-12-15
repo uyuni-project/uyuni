@@ -46,9 +46,9 @@ Feature: Task Engine Status
     When I follow the left menu "Admin > Task Engine Status > Runtime Status"
     And I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "Loading" text
-    And I enter "SUSE Linux Enterprise Server 15 SP4 x86_64" as "product-description-filter"
-    And I wait until I see "SUSE Linux Enterprise Server 15 SP4 x86_64" text
-    Then I should see the "SUSE Linux Enterprise Server 15 SP4 x86_64" selected
+    And I enter "SUSE Linux Enterprise Server 15 SP7 x86_64" as "product-description-filter"
+    And I wait until I see "SUSE Linux Enterprise Server 15 SP7 x86_64" text
+    Then I should see the "SUSE Linux Enterprise Server 15 SP7 x86_64" selected
     When I click on "Schedule channels product resync"
     And I follow the left menu "Admin > Task Engine Status > Runtime Status"
     And I wait until I see "repo-sync" text

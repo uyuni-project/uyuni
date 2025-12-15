@@ -6,7 +6,7 @@ match_max 100000
 expect "*?assword:*"
 send -- "linux\r"
 expect "#"
-send -- "while test `systemctl is-active salt-minion` == 'active'; do sleep 1; done\r"
+send -- "while test `systemctl is-active venv-salt-minion` == 'active'; do sleep 1; done\r"
 expect "#"
 send -- "exit\r"
 puts "\r"

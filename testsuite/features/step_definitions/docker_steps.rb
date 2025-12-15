@@ -10,7 +10,20 @@ require 'timeout'
 When(/^I enter "([^"]*)" relative to profiles as "([^"]*)"$/) do |path, field|
   git_profiles = ENV.fetch('GITPROFILES', nil)
   log "GITPROFILES: #{git_profiles}"
-  step %(I enter "#{git_profiles}/#{path}" as "#{field}")
+  system_name = get_system_name('server')
+  case system_name
+  when /\.mgr\.suse\.de$/
+    domain_folder = 'internal_nue'
+  when /\.mgr\.slc1\.suse\.org$/
+    domain_folder = 'internal_slc1'
+  when /sumaci\.aws$/, /\.compute\.internal$/
+    domain_folder = 'cloud_aws'
+  else
+    puts "Warning: Unknown domain pattern for system_name: #{system_name}. Using root path."
+    domain_folder = ''
+  end
+  full_path = File.join(git_profiles, 'docker_profiles', domain_folder, path)
+  step %(I enter "#{full_path}" as "#{field}")
 end
 
 When(/^I enter URI, username and password for registry$/) do

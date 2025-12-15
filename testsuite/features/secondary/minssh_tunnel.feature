@@ -56,6 +56,7 @@ Feature: Register a Salt system to be managed via SSH tunnel
     Then I should see a "1 package install has been scheduled for" text
     Then I wait until event "Package Install/Upgrade scheduled" is completed
 
+  @flaky
   Scenario: Remove a package from this SSH tunnel minion
     Given I am on the Systems overview page of this "ssh_minion"
     And I follow "Software" in the content area

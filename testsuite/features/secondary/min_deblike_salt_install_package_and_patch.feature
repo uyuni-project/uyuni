@@ -37,6 +37,18 @@ Feature: Install and upgrade package on the Debian-like minion via Salt through 
     Then I should see a "1 patch update has been scheduled for" text
     And I wait for "virgo-dummy-2.0" to be installed on "deblike_minion"
 
+  @susemanager
+  Scenario: Install a package on the Debian-like minion
+    When I follow "Software" in the content area
+    And I follow "Install"
+    And I check "andromeda-dummy-2.0" in the list
+    And I click on "Install Selected Packages"
+    And I click on "Confirm"
+    And I should see a "1 package install has been scheduled for" text
+    When I wait until event "Package Install/Upgrade scheduled" is completed
+    Then Deb package "andromeda-dummy" with version "2.0" should be installed on "deblike_minion"
+
+  @uyuni
   Scenario: Install a package on the Debian-like minion
     When I follow "Software" in the content area
     And I follow "Install"

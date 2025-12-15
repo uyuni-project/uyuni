@@ -8,6 +8,38 @@ require 'socket'
 
 # system namespace
 
+When(/^I delete all the imported terminals$/) do
+  terminals = read_terminals_from_yaml
+  short_names_to_process =
+    terminals.reject do |terminal_name|
+      terminal_name.include?('minion') || terminal_name.include?('client')
+    end
+  log "Terminals identified for deletion (short names): #{short_names_to_process.join(', ')}"
+  current_systems = $api_test.system.list_systems
+  full_names_to_delete = []
+  short_names_to_process.each do |short_name|
+    match =
+      current_systems.find do |s|
+        s['name'].split('.').include?(short_name)
+      end
+    if match
+      full_names_to_delete << match['name']
+    else
+      log "Warning: Could not find a registered system matching short name '#{short_name}'"
+    end
+  end
+  if full_names_to_delete.any?
+    $api_test.system.delete_systems_by_name(full_names_to_delete)
+  else
+    log 'No matching systems found to delete.'
+  end
+end
+
+When(/^I delete "([^"]*)" system using the api$/) do |host|
+  system_name = get_system_name(host)
+  $api_test.system.delete_systems_by_name([system_name])
+end
+
 Given(/^I want to operate on this "([^"]*)"$/) do |host|
   system_name = get_system_name(host)
   first_match = $api_test.system.search_by_name(system_name).first
@@ -668,7 +700,7 @@ When(/^I create "([^"]*)" kickstart tree via the API$/) do |distro_name|
   when 'fedora_kickstart_distro_api'
     $api_test.kickstart.tree.create_distro(distro_name, '/var/autoinstall/Fedora_12_i386/', 'fake-base-channel-rh-like', 'fedora18')
   when 'testdistro'
-    $api_test.kickstart.tree.create_distro(distro_name, '/var/autoinstall/SLES15-SP4-x86_64/DVD1/', 'sle-product-sles15-sp4-pool-x86_64', 'sles15generic')
+    $api_test.kickstart.tree.create_distro(distro_name, '/var/autoinstall/SLES15-SP7-x86_64/DVD1/', 'sle-product-sles15-sp7-pool-x86_64', 'sles15generic')
   else
     # Raise an error for unrecognized value
     raise ArgumentError, "Unrecognized value: #{distro_name}"

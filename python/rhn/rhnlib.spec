@@ -40,7 +40,7 @@
 %endif
 
 Name:           rhnlib
-Version:        5.2.1
+Version:        5.2.2
 Release:        0
 Summary:        Python libraries for the Spacewalk project
 License:        GPL-2.0-only

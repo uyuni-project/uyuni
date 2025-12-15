@@ -125,17 +125,8 @@ Feature: PXE boot a Retail terminal behind a containerized proxy
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
 
-# Workaround to ssh the pxeboot minions through different interfaces for each product,
-#  maybe in the future we can rename the interfaces directly in sumaform
-@uyuni
   Scenario: PXE boot the PXE boot minion
-    When I reboot the Retail terminal "pxeboot_minion" through the interface "ens4"
-    And I wait at most 180 seconds until Salt master sees "pxeboot_minion" as "unaccepted"
-    And I accept "pxeboot_minion" key in the Salt master
-
-@susemanager
-  Scenario: PXE boot the PXE boot minion
-    When I reboot the Retail terminal "pxeboot_minion" through the interface "eth1"
+    When I reboot the Retail terminal "pxeboot_minion"
     And I wait at most 180 seconds until Salt master sees "pxeboot_minion" as "unaccepted"
     And I accept "pxeboot_minion" key in the Salt master
 
@@ -149,7 +140,7 @@ Feature: PXE boot a Retail terminal behind a containerized proxy
     And I wait until event "Apply states [saltboot]" is completed
     And I follow "Software" in the content area
     And I follow "Software Channels" in the content area
-    And I wait until radio button "SLE-Product-SLES15-SP4-Pool for x86_64" is checked, refreshing the page
+    And I wait until radio button "SLE-Product-SLES15-SP7-Pool for x86_64" is checked, refreshing the page
     And I wait until event "Package List Refresh" is completed
     Then "pxeboot_minion" should have been reformatted
 

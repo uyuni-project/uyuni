@@ -7,7 +7,7 @@
 @scope_monitoring
 @scope_res
 @rhlike_minion
-Feature: Monitor SUMA environment with Prometheus on a Red Hat-like Salt minion
+Feature: Monitor MLM environment with Prometheus on a Red Hat-like Salt minion
   In order to monitor Uyuni server
   As an authorized user
   I want to enable Prometheus exporters

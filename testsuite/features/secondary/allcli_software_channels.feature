@@ -19,7 +19,7 @@ Feature: Channel subscription via SSM
     And I follow "channel memberships" in the content area
     Then I should see a "Base Channel" text
     And I should see a "Next" text
-    When I select "Fake-Base-Channel-SUSE-like" from drop-down in table line with "SLE-Product-SLES15-SP4-Pool for x86_64"
+    When I select "Fake-Base-Channel-SUSE-like" from drop-down in table line with "SLE-Product-SLES15-SP7-Pool for x86_64"
     And I click on "Next"
     Then I should see a "Child Channels" text
     And I should see a "Fake-Base-Channel-SUSE-like" text
@@ -67,9 +67,9 @@ Feature: Channel subscription via SSM
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    Then radio button "SLE-Product-SLES15-SP4-Pool for x86_64" should be checked
+    Then radio button "SLE-Product-SLES15-SP7-Pool for x86_64" should be checked
     And I wait until I do not see "Loading..." text
-    And I should see "SLE15-SP4-Installer-Updates for x86_64" as unchecked
+    And I should see "SLE15-SP7-Installer-Updates for x86_64" as unchecked
 
 @sle_minion
 @uyuni
@@ -86,8 +86,8 @@ Feature: Channel subscription via SSM
 @susemanager
   Scenario: Check via API old channels are still the same on SLES minion before channel change completes
     When I refresh the metadata for "sle_minion"
-    Then channel "SLE-Product-SLES15-SP4-Pool for x86_64" should be enabled on "sle_minion"
-    And channel "SLE15-SP4-Installer-Updates for x86_64" should be disabled on "sle_minion"
+    Then channel "SLE-Product-SLES15-SP7-Pool for x86_64" should be enabled on "sle_minion"
+    And channel "SLE15-SP7-Installer-Updates for x86_64" should be disabled on "sle_minion"
 
 @sle_minion
 @uyuni
@@ -198,17 +198,17 @@ Feature: Channel subscription via SSM
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    And I check radio button "SLE-Product-SLES15-SP4-Pool for x86_64"
+    And I check radio button "SLE-Product-SLES15-SP7-Pool for x86_64"
     And I wait until I do not see "Loading..." text
     And I include the recommended child channels
-    And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
-    And I check "SLE-Module-Containers15-SP4-Pool for x86_64"
+    And I check "SLE-Module-DevTools15-SP7-Pool for x86_64"
+    And I check "SLE-Module-Containers15-SP7-Pool for x86_64"
     And I check "Fake-RPM-SUSE-Channel"
     And I wait until I do not see "Loading..." text
-    And I wait until I see "SLE15-SP4-Installer-Updates for x86_64" text
+    And I wait until I see "SLE15-SP7-Installer-Updates for x86_64" text
     And I wait until I do not see "Loading..." text
     And I include the recommended child channels
-    And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
+    And I check "SLE-Module-DevTools15-SP7-Pool for x86_64"
     And I check "Fake-RPM-SUSE-Channel"
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
@@ -216,7 +216,7 @@ Feature: Channel subscription via SSM
     Then I should see a "Changing the channels has been scheduled." text
     When I follow "scheduled" in the content area
     And I wait until I see "1 system successfully completed this action." text, refreshing the page
-    Then channel "SLE15-SP4-Installer-Updates for x86_64" should be disabled on "sle_minion"
+    Then channel "SLE15-SP7-Installer-Updates for x86_64" should be disabled on "sle_minion"
 
 @sle_minion
 @uyuni

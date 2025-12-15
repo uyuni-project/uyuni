@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Dec 09 13:46:36 CET 2025 - michael.calmer@suse.com
+
+- version 5.2.3-0
+  * Use native method to check if valid IPv4 or IPv6 was specified
+
+-------------------------------------------------------------------
 Thu Nov 27 11:15:47 CET 2025 - michael.calmer@suse.com
 
 - version 5.2.2-0
