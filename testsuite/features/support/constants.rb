@@ -1411,6 +1411,15 @@ CLIENT_TOOLS_DEPENDENCIES_BY_BASE_CHANNEL = {
     golang-github-lusitaniae-apache_exporter
     prometheus-postgres_exporter
     golang-github-QubitProducts-exporter_exporter
+    system-user-prometheus
+    ansible
+    python313-packaging
+    ansible
+    python313-rpm
+    ansible-core
+    libgomp1
+    python313-resolvelib
+    librpmbuild10
   ]
 }.freeze
 
