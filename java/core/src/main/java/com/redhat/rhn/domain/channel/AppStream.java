@@ -60,9 +60,9 @@ public class AppStream {
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "suseAppstreamPackage",
             joinColumns = {
-                    @JoinColumn(name = "module_id", nullable = false, updatable = false)},
+                    @JoinColumn(name = "module_id", nullable = false, insertable = false, updatable = false)},
             inverseJoinColumns = {
-                    @JoinColumn(name = "package_id", nullable = false, updatable = false)}
+                    @JoinColumn(name = "package_id", nullable = false, insertable = false, updatable = false)}
     )
     private Set<Package> artifacts;
 
