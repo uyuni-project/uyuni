@@ -16,8 +16,8 @@ repositories:
 artifacts:
   - artifact: asm
     package: objectweb-asm
-    jar: asm-all
-    repository: Leap_sle
+    jar: asm-ll
+    repository: Uyuni_Jakarta
   - artifact: antlr
     package: antlr-java
     repository: Leap
