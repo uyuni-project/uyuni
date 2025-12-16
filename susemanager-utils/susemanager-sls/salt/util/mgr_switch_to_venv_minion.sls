@@ -79,11 +79,10 @@ mgr_purge_non_venv_salt_packages:
       - salt-common
       - salt-minion
       - python2-salt
-      {%- if grains['os_family'] == "Suse" and grains['osrelease'] == '15.7' %}
-      - python311-salt
-      {%- else %}
       - python3-salt
-      {%- endif %}
+      - python311-salt
+      - python312-salt
+      - python313-salt
     - require:
       - service: mgr_disable_salt_minion
 {%- endif %}
