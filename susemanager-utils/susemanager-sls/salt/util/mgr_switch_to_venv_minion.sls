@@ -1,19 +1,14 @@
-{%- set susemanager_conf='/etc/salt/minion.d/susemanager.conf' %}
-{%- set venv_susemanager_conf='/etc/venv-salt-minion/minion.d/susemanager.conf' %}
-{%- set managed_minion=salt['file.file_exists'](susemanager_conf) and
-                       not salt['file.replace'](susemanager_conf, '^master: .*', 'master: ' + pillar['mgr_server'],
-                                                dry_run=True, show_changes=False, ignore_if_missing=True) %}
-{%- set venv_managed_minion=salt['file.file_exists'](venv_susemanager_conf) and
-                            not salt['file.replace'](venv_susemanager_conf, '^master: .*', 'master: ' + pillar['mgr_server'],
-                                                     dry_run=True, show_changes=False, ignore_if_missing=True) %}
-{%- if managed_minion or venv_managed_minion %}
+{%- set venv_is_running = '/venv-salt-minion/' in grains.get('pythonexecutable', '') %}
+{%- set mgr_active_master = salt['config.get']('master', '') %}
+{%- if venv_is_running %}
+mgr_venv_salt_minion_switch_not_required:
+  test.succeed_without_changes:
+    - comment: Switching to venv-salt-minion is not required as it is already running
+{%- else %}
 {%- set pkgs_installed = salt['pkg.list_pkgs']() %}
 {%- set venv_minion_installed = 'venv-salt-minion' in pkgs_installed %}
 {%- set venv_minion_available = venv_minion_installed or 'venv-salt-minion' in salt['pkg.list_repo_pkgs']() %}
 {%- if venv_minion_available %}
-include:
-  - services.salt-minion
- 
 mgr_venv_salt_minion_pkg:
   pkg.installed:
     - name: venv-salt-minion
@@ -24,6 +19,8 @@ mgr_copy_salt_minion_id:
   file.copy:
     - name: /etc/venv-salt-minion/minion_id
     - source: /etc/salt/minion_id
+    - force: True
+    - preserve: True
     - require:
       - pkg: mgr_venv_salt_minion_pkg
     - onlyif:
@@ -34,13 +31,13 @@ mgr_copy_salt_minion_configs:
     - name: /usr/bin/cp -r /etc/salt/minion.d /etc/venv-salt-minion/
     - require:
       - pkg: mgr_venv_salt_minion_pkg
-    - onlyif:
-      - ([ {{ venv_managed_minion }} = "False" ])
 
 mgr_copy_salt_minion_grains:
   file.copy:
     - name: /etc/venv-salt-minion/grains
     - source: /etc/salt/grains
+    - force: True
+    - preserve: True
     - require:
       - pkg: mgr_venv_salt_minion_pkg
     - onlyif:
@@ -59,7 +56,10 @@ mgr_enable_venv_salt_minion:
     - name: venv-salt-minion
     - enable: True
     - require:
+      - pkg: mgr_venv_salt_minion_pkg
+      - cmd: mgr_copy_salt_minion_configs
       - cmd: mgr_copy_salt_minion_keys
+      - file: mgr_copy_salt_minion_grains
 
 mgr_disable_salt_minion:
   service.dead:
@@ -67,7 +67,6 @@ mgr_disable_salt_minion:
     - enable: False
     - require:
       - service: mgr_enable_venv_salt_minion
-      - sls: services.salt-minion
 
 {%- if salt['pillar.get']('mgr_purge_non_venv_salt') %}
 mgr_purge_non_venv_salt_packages:
@@ -107,8 +106,4 @@ mgr_venv_salt_minion_unavailable:
   test.fail_without_changes:
     - comment: venv-salt-minion package is not available
 {%- endif %}
-{%- else %}
-mgr_salt_minion_of_another_master:
-  test.fail_without_changes:
-    - comment: The salt-minion is managed by another master
 {%- endif %}
