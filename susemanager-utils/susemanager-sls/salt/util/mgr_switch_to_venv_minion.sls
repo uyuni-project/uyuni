@@ -48,13 +48,11 @@ mgr_copy_salt_minion_grains:
 
 mgr_copy_salt_minion_keys:
   cmd.run:
-    - name: /usr/bin/cp -r /etc/salt/pki/minion/minion* /etc/venv-salt-minion/pki/minion/
+    - name: /usr/bin/rm -f /etc/venv-salt-minion/pki/minion/minion*; /usr/bin/cp -r /etc/salt/pki/minion/minion* /etc/venv-salt-minion/pki/minion/
     - require:
       - cmd: mgr_copy_salt_minion_configs
     - onlyif:
-      - /usr/bin/test -f /etc/salt/pki/minion/minion_master.pub
-    - unless:
-      - /usr/bin/test -f /etc/venv-salt-minion/pki/minion/minion_master.pub
+      - /usr/bin/test -f /etc/salt/pki/minion/minion.pem
 
 mgr_enable_venv_salt_minion:
   service.running:
