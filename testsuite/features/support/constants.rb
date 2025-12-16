@@ -828,6 +828,7 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sle-module-desktop-applications15-sp5-pool-x86_64
         sle-module-devtools15-sp5-pool-x86_64
         sle-module-devtools15-sp5-updates-x86_64
+        sle-product-sles15-sp5-ltss-updates-x86_64
       ],
     'sles15-sp6' => # CHECKED
       %w[
@@ -845,6 +846,7 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sle-module-devtools15-sp6-pool-x86_64
         sle-module-systems-management-15-sp6-pool-x86_64-sled
         sle-module-systems-management-15-sp6-updates-x86_64-sled
+        sle-product-sles15-sp6-ltss-updates-x86_64
       ],
     'sles15-sp7' =>
       %w[
@@ -1191,6 +1193,7 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sle-module-python3-15-sp5-updates-x86_64
         sle-module-server-applications15-sp5-pool-x86_64
         sle-module-server-applications15-sp5-updates-x86_64
+        sle-product-sles15-sp5-ltss-updates-x86_64
         sles15-sp5-devel-uyuni-client-x86_64
       ],
     'sles15-sp6' => # CHECKED
@@ -1207,6 +1210,7 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sle-module-python3-15-sp6-updates-x86_64
         sle-module-server-applications15-sp6-pool-x86_64
         sle-module-server-applications15-sp6-updates-x86_64
+        sle-product-sles15-sp6-ltss-updates-x86_64
         sles15-sp6-devel-uyuni-client-x86_64
       ],
     'sles15-sp7' =>
@@ -1742,6 +1746,7 @@ EMPTY_CHANNELS = %w[
   suse-multi-linux-manager-retail-branch-server-sle-5.1-updates-x86_64-sp7
   suse-multi-linux-manager-retail-branch-server-sle-5.2-updates-x86_64-sp7
   managertools-sle15-updates-x86_64-sp7
+  sle-product-sles15-sp6-ltss-updates-x86_64
   suse-manager-proxy-5.0-updates-x86_64
   suse-manager-retail-branch-server-5.0-updates-x86_64
   sle-module-suse-manager-retail-branch-server-4.3-updates-x86_64
