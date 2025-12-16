@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.xmlrpc.system.search;
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.frontend.action.systems.SystemSearchHelper;
+import com.redhat.rhn.frontend.action.systems.SystemSearchHelperType;
 import com.redhat.rhn.frontend.dto.SystemSearchResult;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.SearchServerCommException;
@@ -97,7 +98,7 @@ public class SystemSearchHandler extends BaseHandler {
      */
     @ReadOnly
     public List<SystemSearchResult> ip(String sessionKey, String searchTerm) throws FaultException {
-        return performSearch(sessionKey, searchTerm, SystemSearchHelper.IP);
+        return performSearch(sessionKey, searchTerm, SystemSearchHelperType.IP.getLabel());
     }
 
     /**
@@ -117,7 +118,7 @@ public class SystemSearchHandler extends BaseHandler {
      */
     @ReadOnly
     public List<SystemSearchResult> hostname(String sessionKey, String searchTerm) throws FaultException {
-        return performSearch(sessionKey, searchTerm, SystemSearchHelper.HOSTNAME);
+        return performSearch(sessionKey, searchTerm, SystemSearchHelperType.HOSTNAME.getLabel());
     }
 
     /**
@@ -137,7 +138,7 @@ public class SystemSearchHandler extends BaseHandler {
      */
     @ReadOnly
     public List<SystemSearchResult> deviceVendorId(String sessionKey, String searchTerm) throws FaultException {
-        return performSearch(sessionKey, searchTerm, SystemSearchHelper.HW_VENDOR_ID);
+        return performSearch(sessionKey, searchTerm, SystemSearchHelperType.HW_VENDOR_ID.getLabel());
     }
 
     /**
@@ -157,7 +158,7 @@ public class SystemSearchHandler extends BaseHandler {
      */
     @ReadOnly
     public List<SystemSearchResult> deviceId(String sessionKey, String searchTerm) throws FaultException {
-        return performSearch(sessionKey, searchTerm, SystemSearchHelper.HW_DEVICE_ID);
+        return performSearch(sessionKey, searchTerm, SystemSearchHelperType.HW_DEVICE_ID.getLabel());
     }
 
     /**
@@ -177,7 +178,7 @@ public class SystemSearchHandler extends BaseHandler {
      */
     @ReadOnly
     public List<SystemSearchResult> deviceDriver(String sessionKey, String searchTerm) throws FaultException {
-        return performSearch(sessionKey, searchTerm, SystemSearchHelper.HW_DRIVER);
+        return performSearch(sessionKey, searchTerm, SystemSearchHelperType.HW_DRIVER.getLabel());
     }
 
     /**
@@ -197,7 +198,7 @@ public class SystemSearchHandler extends BaseHandler {
      */
     @ReadOnly
     public List<SystemSearchResult> deviceDescription(String sessionKey, String searchTerm) throws FaultException {
-        return performSearch(sessionKey, searchTerm, SystemSearchHelper.HW_DESCRIPTION);
+        return performSearch(sessionKey, searchTerm, SystemSearchHelperType.HW_DESCRIPTION.getLabel());
     }
 
     /**
@@ -217,7 +218,7 @@ public class SystemSearchHandler extends BaseHandler {
      */
     @ReadOnly
     public List<SystemSearchResult> nameAndDescription(String sessionKey, String searchTerm) throws FaultException {
-        return performSearch(sessionKey, searchTerm, SystemSearchHelper.NAME_AND_DESCRIPTION);
+        return performSearch(sessionKey, searchTerm, SystemSearchHelperType.NAME_AND_DESCRIPTION.getLabel());
     }
 
     /**
@@ -237,6 +238,6 @@ public class SystemSearchHandler extends BaseHandler {
      */
     @ReadOnly
     public List<SystemSearchResult> uuid(String sessionKey, String searchTerm) throws FaultException {
-        return performSearch(sessionKey, searchTerm, SystemSearchHelper.UUID);
+        return performSearch(sessionKey, searchTerm, SystemSearchHelperType.UUID.getLabel());
     }
 }
