@@ -25,7 +25,6 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserAndSer
 import static spark.Spark.get;
 import static spark.Spark.post;
 
-import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.RhnRuntimeException;
 import com.redhat.rhn.common.UyuniGeneralException;
 import com.redhat.rhn.domain.server.Server;
@@ -126,9 +125,7 @@ public class ProxyConfigurationController {
      * @return the ModelAndView object to render the page
      */
     public ModelAndView getProxyConfiguration(Request request, Response response, User user, Server server) {
-        return new ModelAndView(
-                proxyConfigGetFacade.getFormData(user, server, GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER),
-                "templates/minion/proxy-config.jade");
+        return new ModelAndView(proxyConfigGetFacade.getFormData(user, server), "templates/minion/proxy-config.jade");
     }
 
     /**

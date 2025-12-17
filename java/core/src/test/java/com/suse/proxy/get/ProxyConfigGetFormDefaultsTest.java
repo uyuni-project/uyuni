@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.suse.proxy.test;
+package com.suse.proxy.get;
 
 import static com.suse.proxy.ProxyConfigUtils.REGISTRY_BASE_TAG;
 import static com.suse.proxy.ProxyConfigUtils.REGISTRY_BASE_URL;
@@ -27,13 +27,13 @@ import static com.suse.proxy.get.formdata.ProxyConfigGetFormDefaults.MLM_REGISTR
 import static com.suse.proxy.get.formdata.ProxyConfigGetFormDefaults.UYUNI_REGISTRY_URL_EXAMPLE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
+import com.suse.proxy.ProxyConfigTestUtils;
 import com.suse.proxy.get.formdata.ProxyConfigGetFormDataContext;
 import com.suse.proxy.get.formdata.ProxyConfigGetFormDefaults;
 
@@ -47,7 +47,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import java.lang.reflect.Field;
 import java.util.Map;
 
 /**
@@ -78,7 +77,7 @@ public class ProxyConfigGetFormDefaultsTest extends BaseTestCaseWithUser {
     @Override
     @AfterEach
     public void tearDown() throws NoSuchFieldException, IllegalAccessException {
-        setConfigDefaultsInstance(configDefaults);
+        ProxyConfigTestUtils.setConfigDefaultsInstance(configDefaults);
     }
 
     /**
@@ -96,11 +95,11 @@ public class ProxyConfigGetFormDefaultsTest extends BaseTestCaseWithUser {
             will(returnValue("2025.10"));
         }});
 
-        setConfigDefaultsInstance(mockConfigDefaults);
+        ProxyConfigTestUtils.setConfigDefaultsInstance(mockConfigDefaults);
 
         //
         ProxyConfigGetFormDataContext proxyConfigGetFormDataContext = new ProxyConfigGetFormDataContext(user,
-                testMinionServer, null, GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER);
+                testMinionServer, null);
 
         //
         new ProxyConfigGetFormDefaults().handle(proxyConfigGetFormDataContext);
@@ -133,12 +132,12 @@ public class ProxyConfigGetFormDefaultsTest extends BaseTestCaseWithUser {
             will(returnValue(expectedRegistryBaseTag));
         }});
 
-        setConfigDefaultsInstance(mockConfigDefaults);
+        ProxyConfigTestUtils.setConfigDefaultsInstance(mockConfigDefaults);
 
 
         //
         ProxyConfigGetFormDataContext proxyConfigGetFormDataContext = new ProxyConfigGetFormDataContext(user,
-                testMinionServer, null, GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER);
+                testMinionServer, null);
 
         //
         new ProxyConfigGetFormDefaults().handle(proxyConfigGetFormDataContext);
@@ -153,17 +152,4 @@ public class ProxyConfigGetFormDefaultsTest extends BaseTestCaseWithUser {
 
     }
 
-    /**
-     * Overrides the ConfigDefaults instance
-     * @param configDefaultsIn the ConfigDefaults instance
-     * @throws NoSuchFieldException if a field with the specified name is not found.
-     * @throws IllegalAccessException if the field is not accessible.
-     */
-    @SuppressWarnings("java:S3011")
-    private static void setConfigDefaultsInstance(ConfigDefaults configDefaultsIn)
-            throws NoSuchFieldException, IllegalAccessException {
-        Field field = ConfigDefaults.class.getDeclaredField("instance");
-        field.setAccessible(true);
-        field.set(null, configDefaultsIn);
-    }
 }

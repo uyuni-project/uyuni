@@ -18,7 +18,6 @@ import static java.util.Arrays.asList;
 
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 
 import com.suse.proxy.ProxyConfigUtils;
 import com.suse.proxy.get.formdata.ProxyConfigGetFormDataAcquisitor;
@@ -75,17 +74,12 @@ public class ProxyConfigGetFacadeImpl implements ProxyConfigGetFacade {
      *
      * @param user                       the user
      * @param server                     the server
-     * @param systemEntitlementManager   the systemEntitlementManager
      * @return the form data
      */
     @Override
-    public Map<String, Object> getFormData(
-            User user,
-            Server server,
-            SystemEntitlementManager systemEntitlementManager
-    ) {
+    public Map<String, Object> getFormData(User user, Server server) {
         ProxyConfigGetFormDataContext context =
-                new ProxyConfigGetFormDataContext(user, server, this.getProxyConfig(server), systemEntitlementManager);
+                new ProxyConfigGetFormDataContext(user, server, this.getProxyConfig(server));
 
         for (ProxyConfigGetFormDataContextHandler handler : getFormDataContextHandlerChain) {
             handler.handle(context);

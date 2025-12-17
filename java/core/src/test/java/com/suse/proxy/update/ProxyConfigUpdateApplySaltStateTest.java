@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.suse.proxy.test;
+package com.suse.proxy.update;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -26,9 +26,6 @@ import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
-
-import com.suse.proxy.update.ProxyConfigUpdateApplySaltState;
-import com.suse.proxy.update.ProxyConfigUpdateContext;
 
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
