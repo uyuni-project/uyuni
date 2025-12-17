@@ -1,11 +1,15 @@
 {%- set venv_is_running = '/venv-salt-minion/' in grains.get('pythonexecutable', '') %}
 {%- if venv_is_running %}
-{%- if not (salt['pillar.get']('mgr_purge_non_venv_salt') or salt['pillar.get']('mgr_purge_non_venv_salt_files') or salt['pillar.get']('mgr_purge_non_venv_salt_force')) %}
 
+{%- if 'mgr_schedule_salt_minion_purge' in salt['schedule.list']() %}
+mgr_schedule_salt_minion_purge:
+  schedule.absent
+{%- endif %}
+
+{%- if not (salt['pillar.get']('mgr_purge_non_venv_salt') or salt['pillar.get']('mgr_purge_non_venv_salt_files') or salt['pillar.get']('mgr_purge_non_venv_salt_force')) %}
 mgr_venv_salt_minion_switch_not_required:
   test.succeed_without_changes:
     - comment: Switching to venv-salt-minion is not required as it is already running
-
 {%- endif %}
 
 {%- if salt['pillar.get']('mgr_purge_non_venv_salt') or salt['pillar.get']('mgr_purge_non_venv_salt_force') %}
@@ -110,11 +114,22 @@ mgr_disable_salt_minion:
 mgr_schedule_salt_minion_stop:
   cmd.run:
     - name: |
-        venv-salt-call --local schedule.add mgr_schedule_salt_minion_stop_delete \
+        venv-salt-call --local schedule.add mgr_schedule_salt_minion_stop \
         seconds=5 persist=False maxrunning=1 function='state.high' \
-        job_args='[{"mgr_schedule_salt_minion_disabled": {"service": ["dead", {"name": "salt-minion"}, {"enable": False}]}, "mgr_schedule_salt_minion_stop_delete": {"schedule": ["absent"]}}]'
+        job_args='[{"mgr_schedule_salt_minion_disabled": {"service": ["dead", {"name": "salt-minion"}, {"enable": False}]}, "mgr_schedule_salt_minion_stop": {"schedule": ["absent"]}}]'
+
+{%- if salt['pillar.get']('mgr_purge_non_venv_salt') or salt['pillar.get']('mgr_purge_non_venv_salt_files') or salt['pillar.get']('mgr_purge_non_venv_salt_force') %}
+mgr_schedule_salt_minion_purge:
+  cmd.run:
+    - name: |
+        venv-salt-call --local schedule.add mgr_schedule_salt_minion_purge \
+        seconds=10 persist=False maxrunning=1 function='state.apply' \
+        job_args='["util.mgr_switch_to_venv_minion"]' \
+        job_kwargs='{"pillar": {"mgr_purge_non_venv_salt": {{ salt["pillar.get"]("mgr_purge_non_venv_salt", false) }}, "mgr_purge_non_venv_salt_files": {{ salt["pillar.get"]("mgr_purge_non_venv_salt_files", false) }}, "mgr_purge_non_venv_salt_force": {{ salt["pillar.get"]("mgr_purge_non_venv_salt_force", false) }} }}'
+{%- endif %}
 
 {%- else %}
+
 mgr_venv_salt_minion_unavailable:
   test.fail_without_changes:
     - comment: venv-salt-minion package is not available
