@@ -1,9 +1,49 @@
 {%- set venv_is_running = '/venv-salt-minion/' in grains.get('pythonexecutable', '') %}
-{%- set mgr_active_master = salt['config.get']('master', '') %}
 {%- if venv_is_running %}
+{%- if not (salt['pillar.get']('mgr_purge_non_venv_salt') or salt['pillar.get']('mgr_purge_non_venv_salt_files') or salt['pillar.get']('mgr_purge_non_venv_salt_force')) %}
+
 mgr_venv_salt_minion_switch_not_required:
   test.succeed_without_changes:
     - comment: Switching to venv-salt-minion is not required as it is already running
+
+{%- endif %}
+
+{%- if salt['pillar.get']('mgr_purge_non_venv_salt') or salt['pillar.get']('mgr_purge_non_venv_salt_force') %}
+{%- set pkgs_installed = salt['pkg.list_pkgs']() %}
+{%- if 'salt-master' in pkgs_installed and not salt['pillar.get']('mgr_purge_non_venv_salt_force') %}
+mgr_salt_master_installed_warning:
+  test.fail_without_changes:
+    - comment: salt-master is installed, if you really want to enforce salt packages deletion, use `mgr_purge_non_venv_salt_force` pillar
+{%- else %}
+mgr_purge_non_venv_salt_packages:
+  pkg.purged:
+    - pkgs:
+      - salt
+      - salt-common
+      - salt-minion
+      - python2-salt
+      - python3-salt
+      - python311-salt
+      - python312-salt
+      - python313-salt
+{%- endif %}
+{%- endif %}
+
+{%- if salt['pillar.get']('mgr_purge_non_venv_salt_files') %}
+mgr_purge_non_venv_salt_pki_dir:
+  cmd.run:
+    - name: /usr/bin/rm -rf /etc/salt/minion* /etc/salt/pki/minion
+    - onlyif:
+      - /usr/bin/test -d /etc/salt/pki/minion
+
+mgr_purge_non_venv_salt_conf_dir:
+  file.absent:
+    - name: /etc/salt
+    - unless:
+      - /usr/bin/find /etc/salt -type f -print -quit | /usr/bin/grep -q .
+    - require:
+      - cmd: mgr_purge_non_venv_salt_pki_dir
+{%- endif %}
 {%- else %}
 {%- set pkgs_installed = salt['pkg.list_pkgs']() %}
 {%- set venv_minion_installed = 'venv-salt-minion' in pkgs_installed %}
@@ -74,39 +114,6 @@ mgr_schedule_salt_minion_stop:
         seconds=5 persist=False maxrunning=1 function='state.high' \
         job_args='[{"mgr_schedule_salt_minion_disabled": {"service": ["dead", {"name": "salt-minion"}, {"enable": False}]}, "mgr_schedule_salt_minion_stop_delete": {"schedule": ["absent"]}}]'
 
-{%- if salt['pillar.get']('mgr_purge_non_venv_salt') %}
-mgr_purge_non_venv_salt_packages:
-  pkg.purged:
-    - pkgs:
-      - salt
-      - salt-common
-      - salt-minion
-      - python2-salt
-      - python3-salt
-      - python311-salt
-      - python312-salt
-      - python313-salt
-    - require:
-      - service: mgr_disable_salt_minion
-{%- endif %}
-
-{%- if salt['pillar.get']('mgr_purge_non_venv_salt_files') %}
-mgr_purge_non_venv_salt_pki_dir:
-  cmd.run:
-    - name: /usr/bin/rm -rf /etc/salt/minion* /etc/salt/pki/minion
-    - onlyif:
-      - /usr/bin/test -d /etc/salt/pki/minion
-    - require:
-      - service: mgr_disable_salt_minion
-
-mgr_purge_non_venv_salt_conf_dir:
-  file.absent:
-    - name: /etc/salt
-    - unless:
-      - /usr/bin/find /etc/salt -type f -print -quit | /usr/bin/grep -q .
-    - require:
-      - cmd: mgr_purge_non_venv_salt_pki_dir
-{%- endif %}
 {%- else %}
 mgr_venv_salt_minion_unavailable:
   test.fail_without_changes:
