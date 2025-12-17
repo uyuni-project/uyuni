@@ -17,12 +17,12 @@
 package com.redhat.rhn.domain.test;
 
 
-import java.util.Date;
+import com.redhat.rhn.domain.BaseDomainHelper;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
@@ -32,91 +32,73 @@ import jakarta.persistence.Transient;
  */
 @Entity
 @Table(name = "PERSIST_TEST")
-public class TestImpl implements TestInterface {
+public class TestEntity extends BaseDomainHelper implements TestInterface {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PERSIST_SEQUENCE")
+    @SequenceGenerator(name = "PERSIST_SEQUENCE", sequenceName = "PERSIST_SEQUENCE", allocationSize = 1)
+    private Long id;
 
     @Column(name = "test_column")
     private String testColumn;
+
     @Column
     private String foobar;
+
     @Column
     private String hidden;
-    @Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PERSIST_SEQUENCE")
-	@SequenceGenerator(name = "PERSIST_SEQUENCE", sequenceName = "PERSIST_SEQUENCE", allocationSize = 1)
-    private Long id;
+
     @Column
     private Integer pin;
-    @Column(updatable = false, insertable = false)
-    private Date created;
 
     @Transient
     private String noColumnField;
 
-    @Override
-    public void setId(Long i) {
-        id = i;
-    }
-
-    @Override
     public Long getId() {
         return id;
     }
 
-    @Override
-    public void setPin(Integer i) {
-        pin = i;
+    public void setId(Long idIn) {
+        id = idIn;
     }
 
-    @Override
-    public Integer getPin() {
-        return pin;
+    public String getTestColumn() {
+        return testColumn;
     }
 
-    @Override
-    public void setFoobar(String foo) {
-        foobar = foo;
+    public void setTestColumn(String testColumnIn) {
+        testColumn = testColumnIn;
     }
 
-    @Override
     public String getFoobar() {
         return foobar;
     }
 
-    public void setHidden(String hideIn) {
-        hidden = hideIn;
+    public void setFoobar(String foobarIn) {
+        foobar = foobarIn;
     }
 
     public String getHidden() {
         return hidden;
     }
 
-    @Override
-    public void setTestColumn(String foo) {
-        testColumn = foo;
+    public void setHidden(String hiddenIn) {
+        hidden = hiddenIn;
     }
 
-    @Override
-    public String getTestColumn() {
-        return testColumn;
+    public Integer getPin() {
+        return pin;
     }
 
-    @Override
-    public void setNoColumnField(String foo) {
-        this.noColumnField = foo;
+    public void setPin(Integer pinIn) {
+        pin = pinIn;
     }
 
-    @Override
     public String getNoColumnField() {
-        return this.noColumnField;
+        return noColumnField;
     }
 
-    @Override
-    public void setCreated(Date d) {
-        created = d;
-    }
-
-    @Override
-    public Date getCreated() {
-        return created;
+    public void setNoColumnField(String noColumnFieldIn) {
+        noColumnField = noColumnFieldIn;
     }
 }
