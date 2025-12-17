@@ -62,11 +62,17 @@ mgr_enable_venv_salt_minion:
       - file: mgr_copy_salt_minion_grains
 
 mgr_disable_salt_minion:
-  service.dead:
+  service.disabled:
     - name: salt-minion
-    - enable: False
     - require:
       - service: mgr_enable_venv_salt_minion
+
+mgr_schedule_salt_minion_stop:
+  cmd.run:
+    - name: |
+        venv-salt-call --local schedule.add mgr_schedule_salt_minion_stop_delete \
+        seconds=5 persist=False maxrunning=1 function='state.high' \
+        job_args='[{"mgr_schedule_salt_minion_disabled": {"service": ["dead", {"name": "salt-minion"}, {"enable": False}]}, "mgr_schedule_salt_minion_stop_delete": {"schedule": ["absent"]}}]'
 
 {%- if salt['pillar.get']('mgr_purge_non_venv_salt') %}
 mgr_purge_non_venv_salt_packages:
