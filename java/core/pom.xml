@@ -46,10 +46,6 @@
             <artifactId>bcel</artifactId>
         </dependency>
         <dependency>
-            <groupId>net.bytebuddy</groupId>
-            <artifactId>byte-buddy-dep</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.mchange</groupId>
             <artifactId>c3p0</artifactId>
         </dependency>
@@ -549,6 +545,18 @@
         <dependency>
             <groupId>org.jmock</groupId>
             <artifactId>jmock-imposters</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>net.bytebuddy</groupId>
+                    <artifactId>byte-buddy</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>net.bytebuddy</groupId>
+            <artifactId>byte-buddy</artifactId>
+            <version>1.17.6</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.objenesis</groupId>
