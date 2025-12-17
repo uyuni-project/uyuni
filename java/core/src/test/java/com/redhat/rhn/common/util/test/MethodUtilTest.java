@@ -100,7 +100,7 @@ public class MethodUtilTest extends RhnBaseTestCase {
         }
         catch (MethodNotFoundException e) {
             String expected = "Could not find method called: nonStaticMethod " +
-                    "in class: com.redhat.rhn.common.util.test.MethodUtilTest " +
+                    "in class: %s ".formatted(this.getClass().getName()) +
                     "with params: [type: java.lang.Integer, value: 1, type: " +
                     "java.lang.Integer, value: 2, type: java.lang.Integer, value: 3]";
 
