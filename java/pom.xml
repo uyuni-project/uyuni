@@ -166,14 +166,8 @@
             </dependency>
             <dependency>
                 <groupId>net.bytebuddy</groupId>
-                <artifactId>byte-buddy-dep</artifactId>
+                <artifactId>byte-buddy</artifactId>
                 <version>1.18.1</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.ow2.asm</groupId>
-                        <artifactId>asm-commons</artifactId>
-                    </exclusion>
-                </exclusions>
             </dependency>
             <!-- c3p0 inherited from uyuni-java-parent -->
             <dependency>
@@ -340,11 +334,6 @@
                         <!-- We are using com.sun.activation:javax.activation:1.2.0 -->
                         <groupId>javax.activation</groupId>
                         <artifactId>javax.activation-api</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <!-- We provide byte-buddy separately -->
-                        <groupId>net.bytebuddy</groupId>
-                        <artifactId>byte-buddy</artifactId>
                     </exclusion>
                     <!-- We do not provide this at runtime -->
                     <exclusion>
