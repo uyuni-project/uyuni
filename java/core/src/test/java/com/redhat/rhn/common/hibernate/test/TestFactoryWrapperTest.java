@@ -14,15 +14,19 @@
  */
 package com.redhat.rhn.common.hibernate.test;
 
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.HibernateHelper;
+import com.redhat.rhn.common.hibernate.HibernateRuntimeException;
+import com.redhat.rhn.domain.test.TestEntity;
 import com.redhat.rhn.domain.test.TestFactory;
 import com.redhat.rhn.domain.test.TestInterface;
 import com.redhat.rhn.testing.RhnBaseTestCase;
@@ -55,40 +59,25 @@ public class TestFactoryWrapperTest extends RhnBaseTestCase {
         assertNull(obj);
     }
 
-    // This is a trivial test, but it proves that we can create a simple
-    // SQL query automatically from the table definition.
     @Test
     public void testLookup() {
         TestInterface obj = TestFactory.lookupByFoobar("Blarg");
         assertEquals("Blarg", obj.getFoobar());
-        // 1 is a magic number, this is basically checking that the id is set
-        // correctly.  We know this will be 1, because we create the sequence
-        // to start at 0, and Blarg is the first value inserted.
+        assertNull(obj.getPin());
         assertEquals(1, (long) obj.getId());
     }
 
     @Test
-     public void testNullIntoPrimitive() {
-         TestInterface obj = TestFactory.lookupByFoobar("Blarg");
-         assertEquals("Blarg", obj.getFoobar());
-         assertNull(obj.getPin());
-         // 1 is a magic number, this is basically checking that the id is set
-         // correctly.  We know this will be 1, because we create the sequence
-         // to start at 0, and Blarg is the first value inserted.
-        assertEquals(1, (long) obj.getId());
-     }
+    public void testInsert() {
+        final String testInsert = "testInsert";
+        assertNull(TestFactory.lookupByFoobar(testInsert));
 
-    @Test
-    public void testNewInsert() {
-        TestInterface obj = TestFactory.createTest();
-        obj.setFoobar("testNewInsert");
-        TestFactory.save(obj);
-        assertTrue(obj.getId() != 0L);
-        TestFactory.lookupByFoobar("testNewInsert");
-        assertEquals("testNewInsert", obj.getFoobar());
-        assertTrue(obj.getId() != 0);
+        //
+        TestInterface record = TestFactory.createTest();
+        record.setFoobar(testInsert);
+        TestFactory.save(record);
+        assertTrue(record.getId() != 0L);
     }
-
 
     @Test
     public void testUpdate() {
@@ -150,6 +139,13 @@ public class TestFactoryWrapperTest extends RhnBaseTestCase {
             HibernateFactory.commitTransaction();
             HibernateFactory.closeSession();
         }
+    }
+
+    @Test
+    public void testHandleNonUniqueResultException() {
+        assertThrows(HibernateRuntimeException.class, () -> {
+            TestFactory.lookupByFoobar("duplicate");
+        });
 
     }
 
@@ -159,28 +155,22 @@ public class TestFactoryWrapperTest extends RhnBaseTestCase {
             Statement statement = null;
             try {
                 statement = connection.createStatement();
-                statement.executeQuery("select 1 from persist_test");
-            }
-            catch (SQLException e) {
-                // let's clean up anything that MAY have been left
-                // over
-                forceQuery(connection, "drop table persist_test");
-                forceQuery(connection, "drop sequence persist_sequence");
-
-                // Couldn't select 1, so the table didn't exist, create it
-                connection.rollback();
+                
+                // Always clean up and recreate to ensure schema is current
+                forceQuery(connection, "drop table if exists persist_test cascade");
+                forceQuery(connection, "drop sequence if exists persist_sequence");
+                
                 statement.execute("create sequence persist_sequence");
-                statement.execute("create table persist_test " +
-                        "( " +
-                        "  foobar VarChar(32)," +
-                        "  test_column VarChar(5)," +
-                        "  pin    numeric, " +
-                        "  hidden VarChar(32), " +
-                        "  id     numeric" +
-                        "         constraint persist_test_pk primary key," +
-                        "  created timestamp with time zone" +
-                        ")"
-                        );
+                statement.execute("""
+                        create table persist_test(
+                                foobar VarChar(32),
+                                test_column VarChar(5),
+                                pin    numeric,
+                                hidden VarChar(32),
+                                id     numeric constraint persist_test_pk primary key,
+                                created timestamp with time zone,
+                                modified timestamp with time zone
+                                )""");
                 statement.execute("insert into persist_test (foobar, id) " +
                         "values ('Blarg', nextval('persist_sequence'))");
                 statement.execute("insert into persist_test (foobar, id) " +
