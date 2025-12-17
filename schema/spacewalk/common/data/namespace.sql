@@ -8,7 +8,12 @@
 -- along with this software; if not, see
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
-
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('admin.access', 'R', 'List and detail custom access groups.')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('admin.access', 'W', 'Create, modify and delete custom access groups.')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('admin.hub', 'R', 'Browse Hub Online Synchronization pages')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
