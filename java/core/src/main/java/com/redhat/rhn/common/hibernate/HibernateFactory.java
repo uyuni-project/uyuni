@@ -28,6 +28,7 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.MappingException;
+import org.hibernate.NonUniqueResultException;
 import org.hibernate.Session;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
@@ -72,9 +73,6 @@ public abstract class HibernateFactory {
     public static final int LIST_BATCH_MAX_SIZE = 1000;
 
     public static final String ROLLBACK_MSG = "Error during transaction. Rolling back";
-
-    protected HibernateFactory() {
-    }
 
     /**
      * Set a new conntionManager instance
@@ -168,9 +166,13 @@ public abstract class HibernateFactory {
                     .setCacheable(cacheable)
                     .uniqueResult();
         }
-        catch (HibernateException he) {
+        catch (NonUniqueResultException e){
+            throw new HibernateRuntimeException("lookupObjectByParam with param [%s]=[%s] on class [%s] expected only one result"
+                    .formatted(paramName, paramValue.toString(), objClass.getSimpleName()), e);
+        }
+        catch (HibernateException | IllegalArgumentException e) {
             throw new HibernateRuntimeException("lookupObjectByParam failed with param [%s]=[%s] on class [%s]"
-                    .formatted(paramName, paramValue.toString(), objClass.getSimpleName()), he);
+                    .formatted(paramName, paramValue.toString(), objClass.getSimpleName()), e);
         }
     }
 
@@ -317,30 +319,13 @@ public abstract class HibernateFactory {
         bindParameters(query, qryParams);
         return query.list();
     }
-
-    /**
-     * Saves the given object to the database using Hibernate.
-     * @param toSave Object to be persisted.
-     * @param saveOrUpdate true if saveOrUpdate should be called, false if
-     * save() is to be called directly.
-     */
-    protected void saveObject(Object toSave, boolean saveOrUpdate) {
-        Session session = null;
-        session = HibernateFactory.getSession();
-        if (saveOrUpdate) {
-            session.merge(toSave);
-        }
-        else {
-            session.persist(toSave);
-        }
-    }
-
+    
     /**
      * Saves the given object to the database using Hibernate.
      * @param toSave Object to be persisted.
      */
     protected void saveObject(Object toSave) {
-        saveObject(toSave, true);
+        HibernateFactory.getSession().persist(toSave);
     }
 
     /**
