@@ -576,9 +576,6 @@
                     <skipTests>${skipTests}</skipTests>
                     <argLine>--add-opens java.base/java.lang=ALL-UNNAMED -ea
                         -Drhn.config.dir=${basedir}/../buildconf/test/ -Dlog4j.threshold=debug</argLine>
-                    <includes>
-                        <include>**/test/*Test.class</include>
-                    </includes>
                     <excludes>
                         <!-- Add here entries for tests you want to exclude -->
                     </excludes>
