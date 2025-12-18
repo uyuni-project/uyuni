@@ -98,6 +98,7 @@ const AccessGroupPermissions = (props: Props) => {
   };
 
   const getNamespaces = (filter: string) => {
+    console.log("call")
     let endpoint = "/rhn/manager/api/admin/access-control/access-group/list_namespaces";
     const hasCopy = props.state.accessGroups && props.state.accessGroups.length > 0;
     const hasFilter = filter && filter.trim().length > 0;
@@ -160,8 +161,8 @@ const AccessGroupPermissions = (props: Props) => {
 
   useEffect(() => {
     setIsLoading(true);
-    getNamespaces("");
-  }, []);
+    getNamespaces(searchValue);
+  }, [searchValue]);
 
   useEffect(() => {
     namespaces.forEach((item) => {
@@ -242,22 +243,26 @@ const AccessGroupPermissions = (props: Props) => {
   );
 
   const finalData = showOnlySelected ? getSelectedNamespace(filteredNamespaces) : filteredNamespaces || [];
-
+  
   useEffect(() => {
+    if (!searchValue || searchValue.trim().length === 0) {
+      setExpandedKeys(new Set());
+    return;
+  }
     const keys = new Set<string>();
-    const traverse = (items: any[], parentMatched = false) => {
+    const traverse = (items: any[]) => {
+      if (!Array.isArray(items)) return;
+
       items.forEach((item) => {
-        const key = `${item.namespace}-${item.isAPI ? "api" : "ui"}`;
-        const matchesSearch = searchValue && item.name.toLowerCase().includes(searchValue.toLowerCase());
-        if (matchesSearch || parentMatched) keys.add(key);
-        if (item.children) traverse(item.children, matchesSearch || parentMatched);
+        keys.add(`${item.namespace}-${item.isAPI ? "api" : "ui"}`);
+        if (item.children) {
+          traverse(item.children);
+        }
       });
     };
     traverse(finalData);
     setExpandedKeys(keys);
   }, [searchValue]);
-
-  const searchedData = finalData.filter((item) => item.name.toLowerCase().includes(searchValue.toLowerCase()));
 
   return (
     <div>
@@ -284,14 +289,8 @@ const AccessGroupPermissions = (props: Props) => {
         </>
       ) : null}
       <p>{t("Review and modify the permissions for this custom group as needed.")}</p>
-      {isLoading && (
-        <div className="mb-2">
-          <i className="fa fa-spinner fa-spin" />
-          {t("Loading permissions…")}
-        </div>
-      )}
       <Table
-        data={searchedData}
+        data={finalData}
         onSearch={setSearchValue}
         identifier={(item) => `${item.namespace}-${item.isAPI ? "api" : "ui"}`}
         expandable
