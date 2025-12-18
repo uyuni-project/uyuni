@@ -411,7 +411,7 @@ When(/^I wait until the image inspection for "([^"]*)" is completed$/) do |host|
   step %(I wait at most 300 seconds until event "Image Inspect 1//#{name}:#{version}" is completed)
 end
 
-Then(/^I should see the image for "([^"]*)" is built$/) do |host|
+When(/^I should see the image for "([^"]*)" is built$/) do |host|
   name = compute_kiwi_profile_name(host)
 
   begin
@@ -422,7 +422,7 @@ Then(/^I should see the image for "([^"]*)" is built$/) do |host|
   end
 end
 
-Then(/^I open the details page of the image for "([^"]*)"$/) do |host|
+When(/^I open the details page of the image for "([^"]*)"$/) do |host|
   name = compute_kiwi_profile_name(host)
 
   begin
@@ -433,7 +433,7 @@ Then(/^I open the details page of the image for "([^"]*)"$/) do |host|
   end
 end
 
-Then(/^I should see a link to download the image for "([^"]*)"$/) do |host|
+When(/^I should see a link to download the image for "([^"]*)"$/) do |host|
   name = compute_kiwi_profile_name(host)
   # Find the <a> whose href contains the image name and ends with .xz
   link = find("a[href*='#{name}'][href$='.xz']")
