@@ -1,0 +1,1026 @@
+From eefc424aef796f190f97f223d9a23b99c1102782 Mon Sep 17 00:00:00 2001
+From: Carlo Della Giusta <carlo.dellagiusta@suse.com>
+Date: Thu, 18 Dec 2025 07:52:49 +0100
+Subject: [PATCH] fixed test resource directories in test code (post)
+
+---
+ .../domain/product/test/SUSEProductTestUtils.java  |  2 +-
+ .../test/AdminMonitoringHandlerTest.java           |  6 +-
+ .../audit/test/CVEAuditManagerOVALTest.java        | 26 ++++----
+ .../rhn/manager/audit/test/ScapManagerTest.java    | 16 ++---
+ .../manager/channel/test/ChannelManagerTest.java   |  2 +-
+ .../test/ContentSyncManagerNonRegressionTest.java  |  2 +-
+ .../content/test/ContentSyncManagerPaygTest.java   |  2 +-
+ .../content/test/ContentSyncManagerTest.java       | 64 +++++++++----------
+ .../task/payg/test/PaygUpdateAuthTaskTest.java     |  4 +-
+ .../test/ErrataAdvisoryMapManagerTest.java         |  2 +-
+ .../manager/maintenance/test/IcalUtilsTest.java    |  2 +-
+ ...test/MaintenanceManagerScheduleActionsTest.java |  2 +-
+ .../maintenance/test/MaintenanceManagerTest.java   |  4 +-
+ .../manager/matcher/test/MatcherJsonIOTest.java    |  4 +-
+ .../reactor/test/RegisterMinionActionTest.java     |  2 +-
+ .../test/BatchStartedEventMessageActionTest.java   |  2 +-
+ .../test/ImageDeployedEventMessageActionTest.java  |  2 +-
+ .../test/JobReturnEventMessageActionTest.java      | 18 +++---
+ .../messaging/test/MinionActionCleanupTest.java    |  6 +-
+ .../reactor/messaging/test/SaltTestUtils.java      |  4 +-
+ .../manager/reactor/utils/test/RhelUtilsTest.java  |  2 +-
+ .../com/suse/manager/utils/test/SaltUtilsTest.java |  4 +-
+ .../controllers/test/DownloadControllerTest.java   |  2 +-
+ .../controllers/test/ProxyControllerTest.java      |  2 +-
+ .../controllers/test/SaltbootControllerTest.java   |  2 +-
+ .../services/test/SaltServerActionServiceTest.java |  2 +-
+ .../services/impl/test/MonitoringServiceTest.java  | 12 ++--
+ .../webui/services/impl/test/SaltServiceTest.java  |  4 +-
+ .../maintenance/test/MaintenanceHandlerTest.java   |  2 +-
+ .../test/java/com/suse/scc/test/SCCClientTest.java |  2 +-
+ 30 files changed, 103 insertions(+), 103 deletions(-)
+
+diff --git a/java/core/src/test/java/com/redhat/rhn/domain/product/test/SUSEProductTestUtils.java b/java/core/src/test/java/com/redhat/rhn/domain/product/test/SUSEProductTestUtils.java
+index 43c8018bc73..3ee54e40039 100644
+--- a/java/core/src/test/java/com/redhat/rhn/domain/product/test/SUSEProductTestUtils.java
++++ b/java/core/src/test/java/com/redhat/rhn/domain/product/test/SUSEProductTestUtils.java
+@@ -527,7 +527,7 @@ public class SUSEProductTestUtils extends HibernateFactory {
+                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
+                 .create();
+         if (testDataPath == null) {
+-            testDataPath = "/com/redhat/rhn/manager/content/test/";
++            testDataPath = "/com/redhat/rhn/manager/content/";
+         }
+         else if (!testDataPath.endsWith("/")) {
+             testDataPath = testDataPath + "/";
+diff --git a/java/core/src/test/java/com/redhat/rhn/frontend/xmlrpc/admin/monitoring/test/AdminMonitoringHandlerTest.java b/java/core/src/test/java/com/redhat/rhn/frontend/xmlrpc/admin/monitoring/test/AdminMonitoringHandlerTest.java
+index 9b61975f721..7b8250ac1de 100644
+--- a/java/core/src/test/java/com/redhat/rhn/frontend/xmlrpc/admin/monitoring/test/AdminMonitoringHandlerTest.java
++++ b/java/core/src/test/java/com/redhat/rhn/frontend/xmlrpc/admin/monitoring/test/AdminMonitoringHandlerTest.java
+@@ -35,7 +35,7 @@ public class AdminMonitoringHandlerTest extends BaseHandlerTestCase {
+     @Test
+     public void testGetStatus() {
+         String monitoringRestartFile =
+-                "/com/suse/manager/webui/services/impl/test/monitoring/status_self_monitoring_restart.json";
++                "/com/suse/manager/webui/services/impl/monitoring/status_self_monitoring_restart.json";
+         BiFunction<String, Optional<String>, Optional<InputStream>> execCtl =
+                 (String cmd, Optional<String> pillar) -> Optional.of(
+                         this.getClass().getResourceAsStream(monitoringRestartFile));
+@@ -59,7 +59,7 @@ public class AdminMonitoringHandlerTest extends BaseHandlerTestCase {
+     public void testEnable() {
+         BiFunction<String, Optional<String>, Optional<InputStream>> execCtl =
+                 (String cmd, Optional<String> pillar) -> Optional.of(this.getClass()
+-                        .getResourceAsStream("/com/suse/manager/webui/services/impl/test/monitoring/enable.json"));
++                        .getResourceAsStream("/com/suse/manager/webui/services/impl/monitoring/enable.json"));
+ 
+         MonitoringService.setExecCtlFunction(execCtl);
+         MonitoringService.setTomcatJmxStatusSupplier(() -> true);
+@@ -80,7 +80,7 @@ public class AdminMonitoringHandlerTest extends BaseHandlerTestCase {
+     public void testDisable() {
+         BiFunction<String, Optional<String>, Optional<InputStream>> execCtl =
+                 (String cmd, Optional<String> pillar) -> Optional.of(this.getClass()
+-                        .getResourceAsStream("/com/suse/manager/webui/services/impl/test/monitoring/disable.json"));
++                        .getResourceAsStream("/com/suse/manager/webui/services/impl/monitoring/disable.json"));
+ 
+         MonitoringService.setExecCtlFunction(execCtl);
+         MonitoringService.setTomcatJmxStatusSupplier(() -> true);
+diff --git a/java/core/src/test/java/com/redhat/rhn/manager/audit/test/CVEAuditManagerOVALTest.java b/java/core/src/test/java/com/redhat/rhn/manager/audit/test/CVEAuditManagerOVALTest.java
+index f5f910f5bed..b7eda737106 100644
+--- a/java/core/src/test/java/com/redhat/rhn/manager/audit/test/CVEAuditManagerOVALTest.java
++++ b/java/core/src/test/java/com/redhat/rhn/manager/audit/test/CVEAuditManagerOVALTest.java
+@@ -62,7 +62,7 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
+     @Test
+     void testDoAuditSystemNotAffected() throws Exception {
+         OvalRootType ovalRoot = ovalParser.parse(TestUtils
+-                .findTestData("/com/redhat/rhn/manager/audit/test/oval/oval-def-1.xml"));
++                .findTestData("/com/redhat/rhn/manager/audit/oval/oval-def-1.xml"));
+ 
+         Cve cve = createTestCve("CVE-2022-2991");
+ 
+@@ -97,7 +97,7 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
+     @Test
+     void testDoAuditSystemNotAffectedWhenOSIsAffected() throws Exception {
+         OvalRootType ovalRoot = ovalParser.parse(TestUtils
+-                .findTestData("/com/redhat/rhn/manager/audit/test/oval/oval-def-1.xml"));
++                .findTestData("/com/redhat/rhn/manager/audit/oval/oval-def-1.xml"));
+ 
+         Cve cve = createTestCve("CVE-2022-2991");
+ 
+@@ -126,7 +126,7 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
+     @Test
+     void testDoAuditSystemPatched() throws Exception {
+         OvalRootType ovalRoot = ovalParser.parse(TestUtils
+-                .findTestData("/com/redhat/rhn/manager/audit/test/oval/oval-def-1.xml"));
++                .findTestData("/com/redhat/rhn/manager/audit/oval/oval-def-1.xml"));
+ 
+         Cve cve = createTestCve("CVE-2022-2991");
+ 
+@@ -160,7 +160,7 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
+     @Test
+     void testDoAuditSystemAffectedFullPatchAvailable() throws Exception {
+         OvalRootType ovalRoot = ovalParser.parse(TestUtils
+-                .findTestData("/com/redhat/rhn/manager/audit/test/oval/oval-def-1.xml"));
++                .findTestData("/com/redhat/rhn/manager/audit/oval/oval-def-1.xml"));
+ 
+         Cve cve = createTestCve("CVE-2022-2991");
+ 
+@@ -199,7 +199,7 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
+     @Test
+     void testDoAuditSystemAffectedPatchUnavailable() throws Exception {
+         OvalRootType ovalRoot = ovalParser.parse(TestUtils
+-                .findTestData("/com/redhat/rhn/manager/audit/test/oval/oval-def-2.xml"));
++                .findTestData("/com/redhat/rhn/manager/audit/oval/oval-def-2.xml"));
+ 
+         Cve cve = createTestCve("CVE-2008-2934");
+ 
+@@ -233,7 +233,7 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
+     @Test
+     void testDoAuditSystemAffectedPartialPatchAvailable() throws Exception {
+         OvalRootType ovalRoot = ovalParser.parse(TestUtils
+-                .findTestData("/com/redhat/rhn/manager/audit/test/oval/oval-def-3.xml"));
++                .findTestData("/com/redhat/rhn/manager/audit/oval/oval-def-3.xml"));
+ 
+         Cve cve = createTestCve("CVE-2008-2934");
+ 
+@@ -276,7 +276,7 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
+     @Test
+     void testDoAuditSystemAffectedPartialPatchAvailableFalsePositive() throws Exception {
+         OvalRootType ovalRoot = ovalParser.parse(TestUtils
+-                .findTestData("/com/redhat/rhn/manager/audit/test/oval/oval-def-3.xml"));
++                .findTestData("/com/redhat/rhn/manager/audit/oval/oval-def-3.xml"));
+ 
+         Cve cve = createTestCve("CVE-2008-2934");
+ 
+@@ -318,7 +318,7 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
+     @Test
+     void testDoAuditSystemAffectedPatchInapplicable() throws Exception {
+         OvalRootType ovalRoot = ovalParser.parse(TestUtils
+-                .findTestData("/com/redhat/rhn/manager/audit/test/oval/oval-def-1.xml"));
++                .findTestData("/com/redhat/rhn/manager/audit/oval/oval-def-1.xml"));
+ 
+         Cve cve = createTestCve("CVE-2022-2991");
+ 
+@@ -365,7 +365,7 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
+     @Test
+     void testDoAuditSystemAffectedPatchInapplicableSuccessorProduct() throws Exception {
+         OvalRootType ovalRoot = ovalParser.parse(TestUtils
+-                .findTestData("/com/redhat/rhn/manager/audit/test/oval/oval-def-1.xml"));
++                .findTestData("/com/redhat/rhn/manager/audit/oval/oval-def-1.xml"));
+ 
+         Cve cve = createTestCve("CVE-2022-2991");
+ 
+@@ -421,7 +421,7 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
+     @Test
+     public void testDoAuditSystemPatchedWithIrrelevantErrata() throws Exception {
+         OvalRootType ovalRoot = ovalParser.parse(TestUtils
+-                .findTestData("/com/redhat/rhn/manager/audit/test/oval/oval-def-1.xml"));
++                .findTestData("/com/redhat/rhn/manager/audit/oval/oval-def-1.xml"));
+ 
+         Cve cve = createTestCve("CVE-2022-2991");
+ 
+@@ -457,7 +457,7 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
+     @Test
+     void testDoAuditSystemAffectedPatchUnavailableInUyuni() throws Exception {
+         OvalRootType ovalRoot = ovalParser.parse(TestUtils
+-                .findTestData("/com/redhat/rhn/manager/audit/test/oval/oval-def-1.xml"));
++                .findTestData("/com/redhat/rhn/manager/audit/oval/oval-def-1.xml"));
+ 
+         Cve cve = createTestCve("CVE-2022-2991");
+ 
+@@ -506,7 +506,7 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
+         User user = createTestUser();
+ 
+         OvalRootType ovalRoot = ovalParser.parse(TestUtils
+-                .findTestData("/com/redhat/rhn/manager/audit/test/oval/oval-def-1.xml"));
++                .findTestData("/com/redhat/rhn/manager/audit/oval/oval-def-1.xml"));
+ 
+         Cve knownCve = createTestCve("CVE-2022-2991");
+ 
+@@ -519,7 +519,7 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
+     @Test
+     public void testListSystemsByPatchStatusAffectedPatchInapplicable() throws Exception {
+         OvalRootType ovalRoot = ovalParser.parse(TestUtils
+-                .findTestData("/com/redhat/rhn/manager/audit/test/oval/oval-def-1.xml"));
++                .findTestData("/com/redhat/rhn/manager/audit/oval/oval-def-1.xml"));
+ 
+         Cve cve = createTestCve("CVE-2022-2991");
+ 
+diff --git a/java/core/src/test/java/com/redhat/rhn/manager/audit/test/ScapManagerTest.java b/java/core/src/test/java/com/redhat/rhn/manager/audit/test/ScapManagerTest.java
+index f8370a396ca..ac010724636 100644
+--- a/java/core/src/test/java/com/redhat/rhn/manager/audit/test/ScapManagerTest.java
++++ b/java/core/src/test/java/com/redhat/rhn/manager/audit/test/ScapManagerTest.java
+@@ -77,10 +77,10 @@ public class ScapManagerTest extends JMockBaseTestCaseWithUser {
+                 minion, "/usr/share/openscap/scap-yast2sec-xccdf.xml", "--profile Default", new Date());
+ 
+         File resumeXsl = new File(TestUtils.findTestData(
+-                "/com/redhat/rhn/manager/audit/test/openscap/minionsles12sp1.test.local/xccdf-resume.xslt.in")
++                "/com/redhat/rhn/manager/audit/openscap/minionsles12sp1.test.local/xccdf-resume.xslt.in")
+                 .getPath());
+         InputStream resultsIn = TestUtils.findTestData(
+-                "/com/redhat/rhn/manager/audit/test/openscap/minionsles12sp1.test.local/results.xml")
++                "/com/redhat/rhn/manager/audit/openscap/minionsles12sp1.test.local/results.xml")
+                 .openStream();
+         XccdfTestResult result = ScapManager.xccdfEval(minion, action, 2, "", resultsIn, resumeXsl);
+ 
+@@ -108,9 +108,9 @@ public class ScapManagerTest extends JMockBaseTestCaseWithUser {
+                 "--profile suse_test --tailoring-file /root/tailoring.xml", new Date());
+ 
+         File resumeXsl = new File(TestUtils.findTestData(
+-                "/com/redhat/rhn/manager/audit/test/openscap/suma-ref42-min-sles15/xccdf-resume.xslt.in").getPath());
++                "/com/redhat/rhn/manager/audit/openscap/suma-ref42-min-sles15/xccdf-resume.xslt.in").getPath());
+         InputStream resultsIn = TestUtils.findTestData(
+-                "/com/redhat/rhn/manager/audit/test/openscap/suma-ref42-min-sles15/results.xml")
++                "/com/redhat/rhn/manager/audit/openscap/suma-ref42-min-sles15/results.xml")
+                 .openStream();
+         XccdfTestResult result = ScapManager.xccdfEval(minion, action, 2, "", resultsIn, resumeXsl);
+ 
+@@ -309,10 +309,10 @@ public class ScapManagerTest extends JMockBaseTestCaseWithUser {
+                 "--profile xccdf_org.ssgproject.content_profile_rht-ccp", new Date());
+ 
+         File resumeXsl = new File(TestUtils.findTestData(
+-                "/com/redhat/rhn/manager/audit/test/openscap/minionsles12sp1.test.local/xccdf-resume.xslt.in")
++                "/com/redhat/rhn/manager/audit/openscap/minionsles12sp1.test.local/xccdf-resume.xslt.in")
+                 .getPath());
+         InputStream resultsIn = TestUtils.findTestData(
+-                "/com/redhat/rhn/manager/audit/test/openscap/rhccp/results.xml")
++                "/com/redhat/rhn/manager/audit/openscap/rhccp/results.xml")
+                 .openStream();
+         XccdfTestResult result = ScapManager.xccdfEval(minion, action, 2, "", resultsIn, resumeXsl);
+ 
+@@ -366,10 +366,10 @@ public class ScapManagerTest extends JMockBaseTestCaseWithUser {
+                 minion, "/usr/share/openscap/scap-yast2sec-xccdf.xml", "--profile Default", new Date());
+ 
+         File resumeXsl = new File(TestUtils.findTestData(
+-                "/com/redhat/rhn/manager/audit/test/openscap/minionsles12sp1.test.local/xccdf-resume.xslt.in")
++                "/com/redhat/rhn/manager/audit/openscap/minionsles12sp1.test.local/xccdf-resume.xslt.in")
+                 .getPath());
+         InputStream resultsIn = TestUtils.findTestData(
+-                "/com/redhat/rhn/manager/audit/test/openscap/minionsles12sp1.test.local/results_malformed.xml")
++                "/com/redhat/rhn/manager/audit/openscap/minionsles12sp1.test.local/results_malformed.xml")
+                 .openStream();
+         try {
+             ScapManager.xccdfEval(minion, action, 2, "", resultsIn, resumeXsl);
+diff --git a/java/core/src/test/java/com/redhat/rhn/manager/channel/test/ChannelManagerTest.java b/java/core/src/test/java/com/redhat/rhn/manager/channel/test/ChannelManagerTest.java
+index dd64568b553..d04b85757f2 100644
+--- a/java/core/src/test/java/com/redhat/rhn/manager/channel/test/ChannelManagerTest.java
++++ b/java/core/src/test/java/com/redhat/rhn/manager/channel/test/ChannelManagerTest.java
+@@ -453,7 +453,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
+         // load official product data as test data into the DB
+         s.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
+         SUSEProductTestUtils.createVendorSUSEProductEnvironment(user,
+-                "/com/redhat/rhn/manager/content/test/data4", true);
++                "/com/redhat/rhn/manager/content/data4", true);
+         HibernateFactory.getSession().flush();
+         HibernateFactory.getSession().clear();
+ 
+diff --git a/java/core/src/test/java/com/redhat/rhn/manager/content/test/ContentSyncManagerNonRegressionTest.java b/java/core/src/test/java/com/redhat/rhn/manager/content/test/ContentSyncManagerNonRegressionTest.java
+index 4cac590324f..0ea0ddcb0cd 100644
+--- a/java/core/src/test/java/com/redhat/rhn/manager/content/test/ContentSyncManagerNonRegressionTest.java
++++ b/java/core/src/test/java/com/redhat/rhn/manager/content/test/ContentSyncManagerNonRegressionTest.java
+@@ -47,7 +47,7 @@ import java.util.stream.Stream;
+  * tool, mgr-ncc-sync.
+  */
+ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
+-    private static final String JARPATH = "/com/redhat/rhn/manager/content/test/";
++    private static final String JARPATH = "/com/redhat/rhn/manager/content/";
+ 
+     // manually compiled (eg. with LibreOffice)
+     private static final String EXPECTED_PRODUCTS_CSV = JARPATH + "expected_products.csv";
+diff --git a/java/core/src/test/java/com/redhat/rhn/manager/content/test/ContentSyncManagerPaygTest.java b/java/core/src/test/java/com/redhat/rhn/manager/content/test/ContentSyncManagerPaygTest.java
+index 763986f3e9c..0afef11af2b 100644
+--- a/java/core/src/test/java/com/redhat/rhn/manager/content/test/ContentSyncManagerPaygTest.java
++++ b/java/core/src/test/java/com/redhat/rhn/manager/content/test/ContentSyncManagerPaygTest.java
+@@ -72,7 +72,7 @@ import java.util.Set;
+ import java.util.stream.Collectors;
+ 
+ public class ContentSyncManagerPaygTest extends RhnBaseTestCase {
+-    private static final String JARPATH = "/com/redhat/rhn/manager/content/test/";
++    private static final String JARPATH = "/com/redhat/rhn/manager/content/";
+     private static final String PRODUCTS_UNSCOPED = JARPATH + "rmtclouddata/organizations_products_unscoped.json";
+     private static final String PRODUCT_TREE = JARPATH + "rmtclouddata/product_tree.json";
+     private static final String CHANNEL_FAMILY = JARPATH + "channel_families.json";
+diff --git a/java/core/src/test/java/com/redhat/rhn/manager/content/test/ContentSyncManagerTest.java b/java/core/src/test/java/com/redhat/rhn/manager/content/test/ContentSyncManagerTest.java
+index aaec2d07274..03b9f2613dd 100644
+--- a/java/core/src/test/java/com/redhat/rhn/manager/content/test/ContentSyncManagerTest.java
++++ b/java/core/src/test/java/com/redhat/rhn/manager/content/test/ContentSyncManagerTest.java
+@@ -127,7 +127,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
+     private static final Logger LOGGER = LogManager.getLogger(ContentSyncManagerTest.class);
+ 
+     // Files we read
+-    private static final String JARPATH = "/com/redhat/rhn/manager/content/test/";
++    private static final String JARPATH = "/com/redhat/rhn/manager/content/";
+ 
+     private static final String SUBSCRIPTIONS_JSON = "organizations_subscriptions.json";
+     private static final String ORDERS_JSON = "organizations_orders.json";
+@@ -266,7 +266,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
+                 }
+             }
+             SUSEProductTestUtils.createVendorSUSEProductEnvironment(
+-                    user, "/com/redhat/rhn/manager/content/test", false);
++                    user, "/com/redhat/rhn/manager/content", false);
+             HibernateFactory.getSession().flush();
+             HibernateFactory.getSession().clear();
+             subtempFile.delete();
+@@ -300,7 +300,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
+                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
+                 .create();
+         InputStreamReader inputStreamReader3 = new InputStreamReader(
+-                ContentSyncManager.class.getResourceAsStream("/com/redhat/rhn/manager/content/test/repositories.json"));
++                ContentSyncManager.class.getResourceAsStream("/com/redhat/rhn/manager/content/repositories.json"));
+         List<SCCRepositoryJson> repositories = gson.fromJson(
+                 inputStreamReader3, new TypeToken<List<SCCRepositoryJson>>() { }.getType());
+ 
+@@ -331,7 +331,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
+         CredentialsFactory.storeCredentials(credentials);
+ 
+         InputStreamReader inputStreamReader = new InputStreamReader(
+-                ContentSyncManager.class.getResourceAsStream("/com/redhat/rhn/manager/content/test/repositories.json"));
++                ContentSyncManager.class.getResourceAsStream("/com/redhat/rhn/manager/content/repositories.json"));
+         List<SCCRepositoryJson> repositories = gson.fromJson(inputStreamReader,
+                 new TypeToken<List<SCCRepositoryJson>>() { }.getType());
+ 
+@@ -374,7 +374,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
+     @Test
+     public void testReleaseStageOverride() throws Exception {
+         SUSEProductTestUtils.createVendorSUSEProductEnvironment(
+-                user, "/com/redhat/rhn/manager/content/test/smallBase", true);
++                user, "/com/redhat/rhn/manager/content/smallBase", true);
+         HibernateFactory.getSession().flush();
+         HibernateFactory.getSession().clear();
+         SUSEProduct product = SUSEProductFactory.lookupByProductId(1150);
+@@ -384,7 +384,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
+     @Test
+     public void testClonedVendorChannelMandadory() throws Exception {
+         SUSEProductTestUtils.createVendorSUSEProductEnvironment(
+-                user, "/com/redhat/rhn/manager/content/test/smallBase", true);
++                user, "/com/redhat/rhn/manager/content/smallBase", true);
+ 
+         SUSEProductTestUtils.addChannelsForProduct(SUSEProductFactory.lookupByProductId(1575));
+         SUSEProductTestUtils.addChannelsForProduct(SUSEProductFactory.lookupByProductId(1576));
+@@ -438,7 +438,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
+     @Test
+     public void testUpdateChannels() throws Exception {
+         SUSEProductTestUtils.createVendorSUSEProductEnvironment(
+-                user, "/com/redhat/rhn/manager/content/test/smallBase", true);
++                user, "/com/redhat/rhn/manager/content/smallBase", true);
+         HibernateFactory.getSession().flush();
+         HibernateFactory.getSession().clear();
+ 
+@@ -469,16 +469,16 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
+                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
+                 .create();
+         InputStreamReader inReaderProducts = new InputStreamReader(ContentSyncManager.class
+-                .getResourceAsStream("/com/redhat/rhn/manager/content/test/data1/productsUnscoped.json"));
++                .getResourceAsStream("/com/redhat/rhn/manager/content/data1/productsUnscoped.json"));
+         List<SCCProductJson> productsChanged = gson.fromJson(
+                 inReaderProducts, new TypeToken<List<SCCProductJson>>() { }.getType());
+         InputStreamReader inReaderTree = new InputStreamReader(ContentSyncManager.class
+-                .getResourceAsStream("/com/redhat/rhn/manager/content/test/data1/product_tree.json"));
++                .getResourceAsStream("/com/redhat/rhn/manager/content/data1/product_tree.json"));
+         List<ProductTreeEntry> staticTreeChanged = JsonParser.GSON.fromJson(
+                 inReaderTree, new TypeToken<List<ProductTreeEntry>>() { }.getType());
+ 
+         InputStreamReader inReaderAddRepos = new InputStreamReader(ContentSyncManager.class
+-                .getResourceAsStream("/com/redhat/rhn/manager/content/test/smallBase/additional_repositories.json"));
++                .getResourceAsStream("/com/redhat/rhn/manager/content/smallBase/additional_repositories.json"));
+         List<SCCRepositoryJson> additionalRepos = gson.fromJson(inReaderAddRepos,
+                 new TypeToken<List<SCCRepositoryJson>>() { }.getType());
+ 
+@@ -520,7 +520,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
+         testMinionServer = TestUtils.saveAndReload(testMinionServer);
+ 
+         SUSEProductTestUtils.createVendorSUSEProductEnvironment(
+-                user, "/com/redhat/rhn/manager/content/test/smallBase", true);
++                user, "/com/redhat/rhn/manager/content/smallBase", true);
+         HibernateFactory.getSession().flush();
+         HibernateFactory.getSession().clear();
+ 
+@@ -568,16 +568,16 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
+                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
+                 .create();
+         InputStreamReader inReaderProducts = new InputStreamReader(ContentSyncManager.class
+-                .getResourceAsStream("/com/redhat/rhn/manager/content/test/data1/productsUnscoped.json"));
++                .getResourceAsStream("/com/redhat/rhn/manager/content/data1/productsUnscoped.json"));
+         List<SCCProductJson> productsChanged = gson.fromJson(
+                 inReaderProducts, new TypeToken<List<SCCProductJson>>() { }.getType());
+         InputStreamReader inReaderTree = new InputStreamReader(ContentSyncManager.class
+-                .getResourceAsStream("/com/redhat/rhn/manager/content/test/data1/product_tree.json"));
++                .getResourceAsStream("/com/redhat/rhn/manager/content/data1/product_tree.json"));
+         List<ProductTreeEntry> staticTreeChanged = JsonParser.GSON.fromJson(
+                 inReaderTree, new TypeToken<List<ProductTreeEntry>>() { }.getType());
+ 
+         InputStreamReader inReaderAddRepos = new InputStreamReader(ContentSyncManager.class
+-                .getResourceAsStream("/com/redhat/rhn/manager/content/test/smallBase/additional_repositories.json"));
++                .getResourceAsStream("/com/redhat/rhn/manager/content/smallBase/additional_repositories.json"));
+         List<SCCRepositoryJson> additionalRepos = gson.fromJson(inReaderAddRepos,
+                 new TypeToken<List<SCCRepositoryJson>>() { }.getType());
+ 
+@@ -626,7 +626,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
+     @Test
+     public void testUpdateChannelsWithSimilarPath() throws Exception {
+         SUSEProductTestUtils.createVendorSUSEProductEnvironment(
+-                user, "/com/redhat/rhn/manager/content/test/smallBase", true);
++                user, "/com/redhat/rhn/manager/content/smallBase", true);
+         HibernateFactory.getSession().flush();
+         HibernateFactory.getSession().clear();
+ 
+@@ -655,20 +655,20 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
+                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
+                 .create();
+         InputStreamReader inReaderProducts = new InputStreamReader(ContentSyncManager.class
+-                .getResourceAsStream("/com/redhat/rhn/manager/content/test/data1/productsUnscoped.json"));
++                .getResourceAsStream("/com/redhat/rhn/manager/content/data1/productsUnscoped.json"));
+         List<SCCProductJson> productsChanged = gson.fromJson(
+                 inReaderProducts, new TypeToken<List<SCCProductJson>>() { }.getType());
+         InputStreamReader inReaderTree = new InputStreamReader(ContentSyncManager.class
+-                .getResourceAsStream("/com/redhat/rhn/manager/content/test/data1/product_tree.json"));
++                .getResourceAsStream("/com/redhat/rhn/manager/content/data1/product_tree.json"));
+         List<ProductTreeEntry> staticTreeChanged = JsonParser.GSON.fromJson(
+                 inReaderTree, new TypeToken<List<ProductTreeEntry>>() { }.getType());
+         InputStreamReader inReaderRepos = new InputStreamReader(ContentSyncManager.class
+-                .getResourceAsStream("/com/redhat/rhn/manager/content/test/data1/repositories.json"));
++                .getResourceAsStream("/com/redhat/rhn/manager/content/data1/repositories.json"));
+         List<SCCRepositoryJson> repositoriesChanged = gson.fromJson(
+                 inReaderRepos, new TypeToken<List<SCCRepositoryJson>>() { }.getType());
+ 
+         InputStreamReader inReaderAddRepos = new InputStreamReader(ContentSyncManager.class
+-                .getResourceAsStream("/com/redhat/rhn/manager/content/test/smallBase/additional_repositories.json"));
++                .getResourceAsStream("/com/redhat/rhn/manager/content/smallBase/additional_repositories.json"));
+         List<SCCRepositoryJson> additionalRepos = gson.fromJson(inReaderAddRepos,
+                 new TypeToken<List<SCCRepositoryJson>>() { }.getType());
+         repositoriesChanged.addAll(additionalRepos);
+@@ -712,7 +712,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
+      */
+     public void testUpdateChannelsWithPtfReposMainProducts() throws Exception {
+         SUSEProductTestUtils.createVendorSUSEProductEnvironment(user,
+-                "/com/redhat/rhn/manager/content/test/data2", true);
++                "/com/redhat/rhn/manager/content/data2", true);
+         HibernateFactory.getSession().flush();
+         HibernateFactory.getSession().clear();
+ 
+@@ -787,7 +787,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
+      */
+     public void testUpdateChannelsWithPtfReposAllModules() throws Exception {
+         SUSEProductTestUtils.createVendorSUSEProductEnvironment(user,
+-                "/com/redhat/rhn/manager/content/test/data3", true);
++                "/com/redhat/rhn/manager/content/data3", true);
+         HibernateFactory.getSession().flush();
+         HibernateFactory.getSession().clear();
+ 
+@@ -914,7 +914,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
+     @Test
+     public void testSwitchingBestAuthItem() throws Exception {
+         SUSEProductTestUtils.createVendorSUSEProductEnvironment(user,
+-                "/com/redhat/rhn/manager/content/test/smallBase", true);
++                "/com/redhat/rhn/manager/content/smallBase", true);
+         HibernateFactory.getSession().flush();
+         HibernateFactory.getSession().clear();
+ 
+@@ -949,7 +949,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
+                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
+                 .create();
+         InputStreamReader inReaderRepos = new InputStreamReader(ContentSyncManager.class
+-                .getResourceAsStream("/com/redhat/rhn/manager/content/test/data1/repositories.json"));
++                .getResourceAsStream("/com/redhat/rhn/manager/content/data1/repositories.json"));
+         List<SCCRepositoryJson> repositoriesChanged = gson.fromJson(
+                 inReaderRepos, new TypeToken<List<SCCRepositoryJson>>() { }.getType());
+ 
+@@ -1356,7 +1356,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
+     @Test
+     public void testGetAvailableChannels() throws Exception {
+         SUSEProductTestUtils.createVendorSUSEProductEnvironment(
+-                user, "/com/redhat/rhn/manager/content/test/smallBase", true);
++                user, "/com/redhat/rhn/manager/content/smallBase", true);
+         HibernateFactory.getSession().flush();
+         HibernateFactory.getSession().clear();
+ 
+@@ -1384,7 +1384,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
+      */
+     @Test
+     public void testNoDupInGetAvailableChannels() throws Exception {
+-        SUSEProductTestUtils.createVendorSUSEProductEnvironment(user, "/com/redhat/rhn/manager/content/test/", true);
++        SUSEProductTestUtils.createVendorSUSEProductEnvironment(user, "/com/redhat/rhn/manager/content/", true);
+         HibernateFactory.getSession().flush();
+         HibernateFactory.getSession().clear();
+ 
+@@ -1743,7 +1743,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
+     @Test
+     public void testListChannels() throws Exception {
+         SUSEProductTestUtils.createVendorSUSEProductEnvironment(
+-                user, "/com/redhat/rhn/manager/content/test/smallBase", true);
++                user, "/com/redhat/rhn/manager/content/smallBase", true);
+         HibernateFactory.getSession().flush();
+         HibernateFactory.getSession().clear();
+ 
+@@ -1792,7 +1792,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
+     @Test
+     public void testListProductsAvailability() throws Exception {
+         SUSEProductTestUtils.createVendorSUSEProductEnvironment(
+-                user, "/com/redhat/rhn/manager/content/test/smallBase", true);
++                user, "/com/redhat/rhn/manager/content/smallBase", true);
+         HibernateFactory.getSession().flush();
+         HibernateFactory.getSession().clear();
+ 
+@@ -1835,7 +1835,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
+     @Test
+     public void testIsRefreshNeeded() throws Exception {
+         SUSEProductTestUtils.createVendorSUSEProductEnvironment(
+-                user, "/com/redhat/rhn/manager/content/test/smallBase", true);
++                user, "/com/redhat/rhn/manager/content/smallBase", true);
+         Config.get().remove(ContentSyncManager.RESOURCE_PATH);
+         HibernateFactory.getSession().flush();
+         HibernateFactory.getSession().clear();
+@@ -1873,7 +1873,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
+     @Test
+     public void testIsRefreshNeededFromDir() throws Exception {
+         SUSEProductTestUtils.createVendorSUSEProductEnvironment(
+-                user, "/com/redhat/rhn/manager/content/test/smallBase", true, true);
++                user, "/com/redhat/rhn/manager/content/smallBase", true, true);
+         HibernateFactory.getSession().flush();
+         HibernateFactory.getSession().clear();
+ 
+@@ -1943,7 +1943,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
+     @Test
+     public void testUpdateChannelsWithPtfReposUbuntuWithTools() throws Exception {
+         SUSEProductTestUtils.createVendorSUSEProductEnvironment(user,
+-                "/com/redhat/rhn/manager/content/test/data3", true);
++                "/com/redhat/rhn/manager/content/data3", true);
+         HibernateFactory.getSession().flush();
+         HibernateFactory.getSession().clear();
+ 
+@@ -2003,7 +2003,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
+     @Test
+     public void testAddChannel() throws Exception {
+         SUSEProductTestUtils.createVendorSUSEProductEnvironment(
+-                user, "/com/redhat/rhn/manager/content/test/smallBase", true);
++                user, "/com/redhat/rhn/manager/content/smallBase", true);
+         HibernateFactory.getSession().flush();
+         HibernateFactory.getSession().clear();
+ 
+@@ -2212,7 +2212,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
+             // remove "fromdir" config
+             Config.get().remove(ContentSyncManager.RESOURCE_PATH);
+             SUSEProductTestUtils.createVendorSUSEProductEnvironment(
+-                    user, "/com/redhat/rhn/manager/content/test/smallBase", true);
++                    user, "/com/redhat/rhn/manager/content/smallBase", true);
+ 
+             clearSession();
+ 
+diff --git a/java/core/src/test/java/com/redhat/rhn/taskomatic/task/payg/test/PaygUpdateAuthTaskTest.java b/java/core/src/test/java/com/redhat/rhn/taskomatic/task/payg/test/PaygUpdateAuthTaskTest.java
+index 04614e8bea4..7e780e36106 100644
+--- a/java/core/src/test/java/com/redhat/rhn/taskomatic/task/payg/test/PaygUpdateAuthTaskTest.java
++++ b/java/core/src/test/java/com/redhat/rhn/taskomatic/task/payg/test/PaygUpdateAuthTaskTest.java
+@@ -79,8 +79,8 @@ public class PaygUpdateAuthTaskTest extends JMockBaseTestCaseWithUser {
+             .create();
+ 
+     private static final String PRODUCTS_UNSCOPED =
+-            "/com/redhat/rhn/manager/content/test/smallBase/productsUnscoped.json";
+-    private static final String PRODUCT_TREE = "/com/redhat/rhn/manager/content/test/smallBase/product_tree.json";
++            "/com/redhat/rhn/manager/content/smallBase/productsUnscoped.json";
++    private static final String PRODUCT_TREE = "/com/redhat/rhn/manager/content/smallBase/product_tree.json";
+ 
+     private PaygAuthDataExtractor paygAuthDataExtractorMock;
+ 
+diff --git a/java/core/src/test/java/com/suse/manager/errata/advisorymap/test/ErrataAdvisoryMapManagerTest.java b/java/core/src/test/java/com/suse/manager/errata/advisorymap/test/ErrataAdvisoryMapManagerTest.java
+index 2258635017a..e1d4d8bce77 100644
+--- a/java/core/src/test/java/com/suse/manager/errata/advisorymap/test/ErrataAdvisoryMapManagerTest.java
++++ b/java/core/src/test/java/com/suse/manager/errata/advisorymap/test/ErrataAdvisoryMapManagerTest.java
+@@ -23,7 +23,7 @@ import java.io.InputStream;
+ 
+ public class ErrataAdvisoryMapManagerTest extends RhnBaseTestCase {
+     private static final String TEST_ADVISORY_MAP_CSV_FILE_NAME =
+-            "/com/suse/manager/errata/advisorymap/test/advisory-map.csv";
++            "/com/suse/manager/errata/advisorymap/advisory-map.csv";
+     private static final long TEST_ADVISORY_MAP_RECORDS_NUM = 140938L;
+ 
+     private static final boolean PRINT_STD_OUTPUT = false;
+diff --git a/java/core/src/test/java/com/suse/manager/maintenance/test/IcalUtilsTest.java b/java/core/src/test/java/com/suse/manager/maintenance/test/IcalUtilsTest.java
+index 8a0e5dd5f72..5c97f96a1d7 100644
+--- a/java/core/src/test/java/com/suse/manager/maintenance/test/IcalUtilsTest.java
++++ b/java/core/src/test/java/com/suse/manager/maintenance/test/IcalUtilsTest.java
+@@ -44,7 +44,7 @@ public class IcalUtilsTest  {
+ 
+     private IcalUtils icalUtils = new IcalUtils();
+ 
+-    private static final String TESTDATAPATH = "/com/suse/manager/maintenance/test/testdata";
++    private static final String TESTDATAPATH = "/com/suse/manager/maintenance/testdata";
+     private static final String GOOGLE_ICS = "maintenance-windows-google-multizones.ics";
+     private Calendar multiZonesCal;
+ 
+diff --git a/java/core/src/test/java/com/suse/manager/maintenance/test/MaintenanceManagerScheduleActionsTest.java b/java/core/src/test/java/com/suse/manager/maintenance/test/MaintenanceManagerScheduleActionsTest.java
+index 869d56a09e6..9628d2b491a 100644
+--- a/java/core/src/test/java/com/suse/manager/maintenance/test/MaintenanceManagerScheduleActionsTest.java
++++ b/java/core/src/test/java/com/suse/manager/maintenance/test/MaintenanceManagerScheduleActionsTest.java
+@@ -62,7 +62,7 @@ public class MaintenanceManagerScheduleActionsTest extends JMockBaseTestCaseWith
+ 
+     private TaskomaticApi taskomaticMock;
+ 
+-    private static final String TESTDATAPATH = "/com/suse/manager/maintenance/test/testdata";
++    private static final String TESTDATAPATH = "/com/suse/manager/maintenance/testdata";
+     private static final String KDE_ICS = "maintenance-windows-kde.ics";
+ 
+     @Override
+diff --git a/java/core/src/test/java/com/suse/manager/maintenance/test/MaintenanceManagerTest.java b/java/core/src/test/java/com/suse/manager/maintenance/test/MaintenanceManagerTest.java
+index 5c22956b194..7ed86c77eae 100644
+--- a/java/core/src/test/java/com/suse/manager/maintenance/test/MaintenanceManagerTest.java
++++ b/java/core/src/test/java/com/suse/manager/maintenance/test/MaintenanceManagerTest.java
+@@ -78,7 +78,7 @@ import net.fortuna.ical4j.model.Calendar;
+ 
+ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
+ 
+-    private static final String TESTDATAPATH = "/com/suse/manager/maintenance/test/testdata";
++    private static final String TESTDATAPATH = "/com/suse/manager/maintenance/testdata";
+     private static final String KDE_ICS = "maintenance-windows-kde.ics";
+     private static final String KDE2_ICS = "maintenance-windows-kde-2.ics";
+     private static final String EXCHANGE_ICS = "maintenance-windows-exchange.ics";
+@@ -282,7 +282,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
+         user.addPermanentRole(ORG_ADMIN);
+         MaintenanceManager mm = new MaintenanceManager();
+         File ical = new File(TestUtils.findTestData(new File(
+-                "/com/suse/manager/maintenance/test/testdata/maintenance-windows-exchange.ics")
++                "/com/suse/manager/maintenance/testdata/maintenance-windows-exchange.ics")
+                 .getAbsolutePath()).getPath());
+         String calendarString = FileUtils.readStringFromFile(ical.getAbsolutePath());
+         MaintenanceCalendar mc = mm.createCalendar(user, "testcalendar", calendarString);
+diff --git a/java/core/src/test/java/com/suse/manager/matcher/test/MatcherJsonIOTest.java b/java/core/src/test/java/com/suse/manager/matcher/test/MatcherJsonIOTest.java
+index 5b26abdf539..da152f2980b 100644
+--- a/java/core/src/test/java/com/suse/manager/matcher/test/MatcherJsonIOTest.java
++++ b/java/core/src/test/java/com/suse/manager/matcher/test/MatcherJsonIOTest.java
+@@ -77,7 +77,7 @@ import java.util.Set;
+ import java.util.stream.Collectors;
+ 
+ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
+-    private static final String JARPATH = "/com/redhat/rhn/manager/content/test/sccdata/";
++    private static final String JARPATH = "/com/redhat/rhn/manager/content/sccdata/";
+     private static final String SUBSCRIPTIONS_JSON = "organizations_subscriptions.json";
+     private static final String ORDERS_JSON = "organizations_orders.json";
+ 
+@@ -578,7 +578,7 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
+ 
+     @Test
+     public void testLifecycleProductsInSubscriptions() throws Exception {
+-        withSetupContentSyncManager("/com/redhat/rhn/manager/content/test/sccdata_lifecycle_products", () -> {
++        withSetupContentSyncManager("/com/redhat/rhn/manager/content/sccdata_lifecycle_products", () -> {
+             List<SubscriptionJson> subscriptions = getMatcherJsonIO().getJsonSubscriptions();
+ 
+             assertEquals(4, subscriptions.size());
+diff --git a/java/core/src/test/java/com/suse/manager/reactor/test/RegisterMinionActionTest.java b/java/core/src/test/java/com/suse/manager/reactor/test/RegisterMinionActionTest.java
+index 586cac43a24..9933546beb2 100644
+--- a/java/core/src/test/java/com/suse/manager/reactor/test/RegisterMinionActionTest.java
++++ b/java/core/src/test/java/com/suse/manager/reactor/test/RegisterMinionActionTest.java
+@@ -2133,7 +2133,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
+ 
+     private static String readFile(String file) throws IOException, ClassNotFoundException {
+         return Files.lines(new File(TestUtils.findTestData(
+-                "/com/suse/manager/reactor/test/" + file).getPath()
++                "/com/suse/manager/reactor/" + file).getPath()
+         ).toPath()).collect(Collectors.joining("\n"));
+     }
+ }
+diff --git a/java/core/src/test/java/com/suse/manager/reactor/messaging/test/BatchStartedEventMessageActionTest.java b/java/core/src/test/java/com/suse/manager/reactor/messaging/test/BatchStartedEventMessageActionTest.java
+index eeb6487f767..a78901497cd 100644
+--- a/java/core/src/test/java/com/suse/manager/reactor/messaging/test/BatchStartedEventMessageActionTest.java
++++ b/java/core/src/test/java/com/suse/manager/reactor/messaging/test/BatchStartedEventMessageActionTest.java
+@@ -191,7 +191,7 @@ public class BatchStartedEventMessageActionTest extends BaseTestCaseWithUser {
+ 
+     private Event getEvent(String filename, long actionId, Map<String, String> placeholders) throws Exception {
+         Path path = new File(TestUtils.findTestData(
+-                "/com/suse/manager/reactor/messaging/test/" + filename).getPath()).toPath();
++                "/com/suse/manager/reactor/messaging/" + filename).getPath()).toPath();
+         String eventString = Files.lines(path)
+                 .collect(joining("\n"))
+                 .replaceAll("\"suma-action-id\": \\d+", "\"suma-action-id\": " + actionId);
+diff --git a/java/core/src/test/java/com/suse/manager/reactor/messaging/test/ImageDeployedEventMessageActionTest.java b/java/core/src/test/java/com/suse/manager/reactor/messaging/test/ImageDeployedEventMessageActionTest.java
+index adb7f97b90b..ccdcc7672f8 100644
+--- a/java/core/src/test/java/com/suse/manager/reactor/messaging/test/ImageDeployedEventMessageActionTest.java
++++ b/java/core/src/test/java/com/suse/manager/reactor/messaging/test/ImageDeployedEventMessageActionTest.java
+@@ -197,7 +197,7 @@ public class ImageDeployedEventMessageActionTest extends JMockBaseTestCaseWithUs
+ 
+     private Map<String, Object> getGrains() throws ClassNotFoundException, IOException {
+         String grainLines = Files.lines(new File(TestUtils.findTestData(
+-                "/com/suse/manager/reactor/test/dummy_grains.json").getPath()
++                "/com/suse/manager/reactor/dummy_grains.json").getPath()
+         ).toPath()).collect(Collectors.joining("\n"));
+         return new JsonParser<>(Grains.items(false).getReturnType()).parse(grainLines);
+     }
+diff --git a/java/core/src/test/java/com/suse/manager/reactor/messaging/test/JobReturnEventMessageActionTest.java b/java/core/src/test/java/com/suse/manager/reactor/messaging/test/JobReturnEventMessageActionTest.java
+index 4ace384e6d4..a536634d0ef 100644
+--- a/java/core/src/test/java/com/suse/manager/reactor/messaging/test/JobReturnEventMessageActionTest.java
++++ b/java/core/src/test/java/com/suse/manager/reactor/messaging/test/JobReturnEventMessageActionTest.java
+@@ -244,7 +244,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
+         assertEquals(0, minion.getPackages().size());
+ 
+         Map<String, Change<Xor<String, List<Pkg.Info>>>> install = Json.GSON.fromJson(new InputStreamReader(getClass()
+-                .getResourceAsStream("/com/suse/manager/reactor/messaging/test/pkg_install.new_format.json")),
++                .getResourceAsStream("/com/suse/manager/reactor/messaging/pkg_install.new_format.json")),
+                 new TypeToken<Map<String, Change<Xor<String, List<Pkg.Info>>>>>() { }.getType());
+         SaltUtils.applyChangesFromStateModule(install, minion);
+         assertEquals(1, minion.getPackages().size());
+@@ -257,7 +257,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
+ 
+ 
+         Map<String, Change<Xor<String, List<Pkg.Info>>>> update = Json.GSON.fromJson(new InputStreamReader(getClass()
+-                        .getResourceAsStream("/com/suse/manager/reactor/messaging/test/pkg_update.new_format.json")),
++                        .getResourceAsStream("/com/suse/manager/reactor/messaging/pkg_update.new_format.json")),
+                 new TypeToken<Map<String, Change<Xor<String, List<Pkg.Info>>>>>() { }.getType());
+ 
+         SaltUtils.applyChangesFromStateModule(update, minion);
+@@ -271,7 +271,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
+ 
+ 
+         Map<String, Change<Xor<String, List<Pkg.Info>>>> remove = Json.GSON.fromJson(new InputStreamReader(getClass()
+-                .getResourceAsStream("/com/suse/manager/reactor/messaging/test/pkg_remove.new_format.json")),
++                .getResourceAsStream("/com/suse/manager/reactor/messaging/pkg_remove.new_format.json")),
+                 new TypeToken<Map<String, Change<Xor<String, List<Pkg.Info>>>>>() { }.getType());
+ 
+ 
+@@ -284,7 +284,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
+         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+ 
+         Map<String, Change<Xor<String, List<Pkg.Info>>>> install = Json.GSON.fromJson(new InputStreamReader(getClass()
+-                        .getResourceAsStream("/com/suse/manager/reactor/messaging/test/pkg_install.duplicates.json")),
++                        .getResourceAsStream("/com/suse/manager/reactor/messaging/pkg_install.duplicates.json")),
+                 new TypeToken<Map<String, Change<Xor<String, List<Pkg.Info>>>>>() { }.getType());
+ 
+         SaltUtils.applyChangesFromStateModule(install, minion);
+@@ -304,7 +304,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
+         assertEquals(0, minion.getPackages().size());
+ 
+         Map<String, JsonElement> apply = Json.GSON.fromJson(new InputStreamReader(getClass()
+-                        .getResourceAsStream("/com/suse/manager/reactor/messaging/test/apply_pkg.new_format.json")),
++                        .getResourceAsStream("/com/suse/manager/reactor/messaging/apply_pkg.new_format.json")),
+                 new TypeToken<Map<String, JsonElement>>() { }.getType());
+         SaltUtils.applyChangesFromStateApply(apply, minion);
+ 
+@@ -1259,7 +1259,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
+      */
+     private Event getJobReturnEvent(String filename, long actionId, Map<String, String> placeholders) throws Exception {
+         Path path = new File(TestUtils.findTestData(
+-                "/com/suse/manager/reactor/messaging/test/" + filename).getPath()).toPath();
++                "/com/suse/manager/reactor/messaging/" + filename).getPath()).toPath();
+         String eventString = Files.lines(path)
+                 .collect(Collectors.joining("\n"))
+                 .replaceAll("\"suma-action-id\": \\d+", "\"suma-action-id\": " + actionId);
+@@ -1275,7 +1275,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
+ 
+     private JsonObject getJsonElement(String filename) throws Exception {
+         Path path = new File(TestUtils.findTestData(
+-                "/com/suse/manager/reactor/messaging/test/" + filename).getPath()).toPath();
++                "/com/suse/manager/reactor/messaging/" + filename).getPath()).toPath();
+         String jsonString = Files.lines(path)
+                 .collect(Collectors.joining("\n"));
+         return JsonParser.GSON.fromJson(jsonString, JsonObject.class);
+@@ -1394,9 +1394,9 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
+         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
+ 
+         File scapFile = new File(TestUtils.findTestDataInDir(
+-                "/com/redhat/rhn/manager/audit/test/openscap/minionsles12sp1.test.local/results.xml").getPath());
++                "/com/redhat/rhn/manager/audit/openscap/minionsles12sp1.test.local/results.xml").getPath());
+         String resumeXsl = new File(TestUtils.findTestData(
+-                "/com/redhat/rhn/manager/audit/test/openscap/minionsles12sp1.test.local/xccdf-resume.xslt.in")
++                "/com/redhat/rhn/manager/audit/openscap/minionsles12sp1.test.local/xccdf-resume.xslt.in")
+                     .getPath())
+                 .getPath();
+ 
+diff --git a/java/core/src/test/java/com/suse/manager/reactor/messaging/test/MinionActionCleanupTest.java b/java/core/src/test/java/com/suse/manager/reactor/messaging/test/MinionActionCleanupTest.java
+index 4bf8b6aee00..53138be98b4 100644
+--- a/java/core/src/test/java/com/suse/manager/reactor/messaging/test/MinionActionCleanupTest.java
++++ b/java/core/src/test/java/com/suse/manager/reactor/messaging/test/MinionActionCleanupTest.java
+@@ -120,7 +120,7 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
+ 
+     private Jobs.Info listJob(String filename, long actionId) throws Exception {
+         Path path = new File(TestUtils.findTestData(
+-                "/com/suse/manager/reactor/messaging/test/" + filename).getPath()).toPath();
++                "/com/suse/manager/reactor/messaging/" + filename).getPath()).toPath();
+         String eventString = Files.lines(path)
+                 .collect(Collectors.joining("\n"))
+                 .replaceAll("\"suma-action-id\": \\d+", "\"suma-action-id\": " + actionId);
+@@ -132,7 +132,7 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
+     private Jobs.Info listJob(String filename, String minion1Id, List<String> actions1,
+                               String minion2Id, List<String> actions2) throws Exception {
+         Path path = new File(TestUtils.findTestData(
+-                "/com/suse/manager/reactor/messaging/test/" + filename).getPath()).toPath();
++                "/com/suse/manager/reactor/messaging/" + filename).getPath()).toPath();
+         String eventString = Files.lines(path)
+                 .collect(Collectors.joining("\n"))
+                 .replaceAll("\\$minion_1", minion1Id)
+@@ -148,7 +148,7 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
+ 
+     private Map<String, Jobs.ListJobsEntry> jobsByMetadata(String filename, long actionId) throws Exception {
+         Path path = new File(TestUtils.findTestData(
+-                "/com/suse/manager/reactor/messaging/test/" + filename).getPath()).toPath();
++                "/com/suse/manager/reactor/messaging/" + filename).getPath()).toPath();
+         String eventString = Files.lines(path)
+                 .collect(Collectors.joining("\n"))
+                 .replaceAll("\"suma-action-id\": \\d+", "\"suma-action-id\": " + actionId);
+diff --git a/java/core/src/test/java/com/suse/manager/reactor/messaging/test/SaltTestUtils.java b/java/core/src/test/java/com/suse/manager/reactor/messaging/test/SaltTestUtils.java
+index 29251d2e580..b2dbeb56dc4 100644
+--- a/java/core/src/test/java/com/suse/manager/reactor/messaging/test/SaltTestUtils.java
++++ b/java/core/src/test/java/com/suse/manager/reactor/messaging/test/SaltTestUtils.java
+@@ -73,7 +73,7 @@ public class SaltTestUtils {
+      *               with(any(LocalCall.class)),
+      *               with(host.asMinionServer().get().getMinionId()));
+      *       will(returnValue(SaltTestUtils.getSaltResponse(
+-     *               "/com/suse/manager/reactor/messaging/test/some-result.json", placeholders,
++     *               "/com/suse/manager/reactor/messaging/some-result.json", placeholders,
+      *               new TypeToken<Map<String, JsonElement>>() { }.getType())));
+      *   }});
+      * }</pre>
+@@ -122,7 +122,7 @@ public class SaltTestUtils {
+      *                              with(any(Client.class)), with(any(Optional.class)), with(any(Map.class)),
+      *                              with(any(TypeToken.class)), with(any(AuthMethod.class)));
+      *       will(returnValue(SaltTestUtils.getCompletionStage(
+-     *                              "/com/suse/manager/webui/services/impl/test/service/ssh_keygen.json",
++     *                              "/com/suse/manager/webui/services/impl/service/ssh_keygen.json",
+      *                              new TypeToken<MgrUtilRunner.SshKeygenResult>() { }.getType())));
+      *   }});
+      * }</pre>
+diff --git a/java/core/src/test/java/com/suse/manager/reactor/utils/test/RhelUtilsTest.java b/java/core/src/test/java/com/suse/manager/reactor/utils/test/RhelUtilsTest.java
+index bee4ffe7888..8ccb7f74fd8 100644
+--- a/java/core/src/test/java/com/suse/manager/reactor/utils/test/RhelUtilsTest.java
++++ b/java/core/src/test/java/com/suse/manager/reactor/utils/test/RhelUtilsTest.java
+@@ -188,7 +188,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
+                                          Consumer<Optional<RhelUtils.RhelProduct>> response)
+             throws Exception {
+         SUSEProductTestUtils.createVendorSUSEProductEnvironment(
+-                user, "/com/suse/manager/reactor/utils/test/productdata", false, false);
++                user, "/com/suse/manager/reactor/utils/productdata", false, false);
+         Map<String, State.ApplyResult> map = new JsonParser<>(
+                 State.apply(Collections.emptyList()).getReturnType()).parse(
+                         TestUtils.readAll(TestUtils.findTestData(json)));
+diff --git a/java/core/src/test/java/com/suse/manager/utils/test/SaltUtilsTest.java b/java/core/src/test/java/com/suse/manager/utils/test/SaltUtilsTest.java
+index bc6b537d3b9..47044a54829 100644
+--- a/java/core/src/test/java/com/suse/manager/utils/test/SaltUtilsTest.java
++++ b/java/core/src/test/java/com/suse/manager/utils/test/SaltUtilsTest.java
+@@ -106,12 +106,12 @@ public class SaltUtilsTest extends BaseTestCaseWithUser {
+ 
+         Map<String, Change<Xor<String, List<Pkg.Info>>>> installLivePatch =
+                 Json.GSON.fromJson(new InputStreamReader(getClass().getResourceAsStream(
+-                                "/com/suse/manager/reactor/messaging/test/pkg_install.live_patch.json")),
++                                "/com/suse/manager/reactor/messaging/pkg_install.live_patch.json")),
+                         new TypeToken<Map<String, Change<Xor<String, List<Pkg.Info>>>>>() { }.getType());
+ 
+         Map<String, Change<Xor<String, List<Pkg.Info>>>> installOther =
+                 Json.GSON.fromJson(new InputStreamReader(getClass().getResourceAsStream(
+-                                "/com/suse/manager/reactor/messaging/test/pkg_install.new_format.json")),
++                                "/com/suse/manager/reactor/messaging/pkg_install.new_format.json")),
+                         new TypeToken<Map<String, Change<Xor<String, List<Pkg.Info>>>>>() { }.getType());
+ 
+         // Other packages mustn't trigger refresh
+diff --git a/java/core/src/test/java/com/suse/manager/webui/controllers/test/DownloadControllerTest.java b/java/core/src/test/java/com/suse/manager/webui/controllers/test/DownloadControllerTest.java
+index 9e44abb9eb5..98caa1c06bf 100644
+--- a/java/core/src/test/java/com/suse/manager/webui/controllers/test/DownloadControllerTest.java
++++ b/java/core/src/test/java/com/suse/manager/webui/controllers/test/DownloadControllerTest.java
+@@ -920,7 +920,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
+         minion.setInstalledProducts(Collections.emptySet());
+ 
+         SUSEProductTestUtils.createVendorSUSEProductEnvironment(user,
+-                "/com/redhat/rhn/manager/content/test/smallBase", true);
++                "/com/redhat/rhn/manager/content/smallBase", true);
+         HibernateFactory.getSession().flush();
+ 
+         // Test case - Token passed minion has no products
+diff --git a/java/core/src/test/java/com/suse/manager/webui/controllers/test/ProxyControllerTest.java b/java/core/src/test/java/com/suse/manager/webui/controllers/test/ProxyControllerTest.java
+index b38956f9806..2183aadd28d 100644
+--- a/java/core/src/test/java/com/suse/manager/webui/controllers/test/ProxyControllerTest.java
++++ b/java/core/src/test/java/com/suse/manager/webui/controllers/test/ProxyControllerTest.java
+@@ -40,7 +40,7 @@ import spark.Request;
+  */
+ public class ProxyControllerTest extends BaseControllerTestCase {
+ 
+-    private static final String TEST_DIR = "/com/suse/manager/webui/controllers/test/";
++    private static final String TEST_DIR = "/com/suse/manager/webui/controllers/";
+ 
+     private ProxyController proxyController;
+     private SystemManager systemManager;
+diff --git a/java/core/src/test/java/com/suse/manager/webui/controllers/test/SaltbootControllerTest.java b/java/core/src/test/java/com/suse/manager/webui/controllers/test/SaltbootControllerTest.java
+index 5dd5fd74ad7..9ff409817f9 100644
+--- a/java/core/src/test/java/com/suse/manager/webui/controllers/test/SaltbootControllerTest.java
++++ b/java/core/src/test/java/com/suse/manager/webui/controllers/test/SaltbootControllerTest.java
+@@ -41,7 +41,7 @@ import java.util.Map;
+ import spark.Request;
+ 
+ public class SaltbootControllerTest extends BaseControllerTestCase {
+-    private static final String TEST_DIR = "/com/suse/manager/webui/controllers/test/";
++    private static final String TEST_DIR = "/com/suse/manager/webui/controllers/";
+ 
+     @Override
+     @BeforeEach
+diff --git a/java/core/src/test/java/com/suse/manager/webui/services/test/SaltServerActionServiceTest.java b/java/core/src/test/java/com/suse/manager/webui/services/test/SaltServerActionServiceTest.java
+index c0f3595918f..4c5c4bcf704 100644
+--- a/java/core/src/test/java/com/suse/manager/webui/services/test/SaltServerActionServiceTest.java
++++ b/java/core/src/test/java/com/suse/manager/webui/services/test/SaltServerActionServiceTest.java
+@@ -612,7 +612,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
+ 
+     private Event getJobReturnEvent(String filename, long actionId, Map<String, String> placeholders) throws Exception {
+         Path path = new File(TestUtils.findTestData(
+-                "/com/suse/manager/reactor/messaging/test/" + filename).getPath()).toPath();
++                "/com/suse/manager/reactor/messaging/" + filename).getPath()).toPath();
+         String eventString = Files.lines(path)
+                 .collect(Collectors.joining("\n"))
+                 .replaceAll("\"suma-action-id\": \\d+", "\"suma-action-id\": " + actionId);
+diff --git a/java/core/src/test/java/com/suse/manager/webui/services/impl/test/MonitoringServiceTest.java b/java/core/src/test/java/com/suse/manager/webui/services/impl/test/MonitoringServiceTest.java
+index 76fef6ceb73..2511e4963ac 100644
+--- a/java/core/src/test/java/com/suse/manager/webui/services/impl/test/MonitoringServiceTest.java
++++ b/java/core/src/test/java/com/suse/manager/webui/services/impl/test/MonitoringServiceTest.java
+@@ -34,7 +34,7 @@ public class MonitoringServiceTest extends RhnJmockBaseTestCase {
+     public void testGetStatusWithTaskomaticEnableNeeded() {
+         BiFunction<String, Optional<String>, Optional<InputStream>> execCtl =
+                 (String cmd, Optional<String> pillar) -> Optional.of(this.getClass()
+-                        .getResourceAsStream("/com/suse/manager/webui/services/impl/test/monitoring/status.json"));
++                        .getResourceAsStream("/com/suse/manager/webui/services/impl/monitoring/status.json"));
+ 
+         MonitoringService.setExecCtlFunction(execCtl);
+         MonitoringService.setTomcatJmxStatusSupplier(() -> true);
+@@ -56,7 +56,7 @@ public class MonitoringServiceTest extends RhnJmockBaseTestCase {
+ 
+     @Test
+     public void testGetStatusWithSelfMonitoringRestartNeeded() {
+-        String jsonFile = "/com/suse/manager/webui/services/impl/test/monitoring/status_self_monitoring_restart.json";
++        String jsonFile = "/com/suse/manager/webui/services/impl/monitoring/status_self_monitoring_restart.json";
+         BiFunction<String, Optional<String>, Optional<InputStream>> execCtl =
+                 (String cmd, Optional<String> pillar) -> Optional.of(this.getClass()
+                         .getResourceAsStream(jsonFile));
+@@ -80,7 +80,7 @@ public class MonitoringServiceTest extends RhnJmockBaseTestCase {
+ 
+     @Test
+     public void testGetStatusWithTaskomaticRestartNeeded() {
+-        String jsonFile = "/com/suse/manager/webui/services/impl/test/monitoring/status_tasko_restart.json";
++        String jsonFile = "/com/suse/manager/webui/services/impl/monitoring/status_tasko_restart.json";
+         BiFunction<String, Optional<String>, Optional<InputStream>> execCtl =
+                 (String cmd, Optional<String> pillar) -> Optional.of(this.getClass()
+                         .getResourceAsStream(jsonFile));
+@@ -103,7 +103,7 @@ public class MonitoringServiceTest extends RhnJmockBaseTestCase {
+ 
+     @Test
+     public void testGetStatusNoMessage() {
+-        String jsonFile = "/com/suse/manager/webui/services/impl/test/monitoring/status_tasko_restart.json";
++        String jsonFile = "/com/suse/manager/webui/services/impl/monitoring/status_tasko_restart.json";
+         BiFunction<String, Optional<String>, Optional<InputStream>> execCtl =
+                 (String cmd, Optional<String> pillar) -> Optional.of(this.getClass()
+                         .getResourceAsStream(jsonFile));
+@@ -129,7 +129,7 @@ public class MonitoringServiceTest extends RhnJmockBaseTestCase {
+     public void testEnableWithTomcatRestartNeeded() {
+         BiFunction<String, Optional<String>, Optional<InputStream>> execCtl =
+                 (String cmd, Optional<String> pillar) -> Optional.of(this.getClass()
+-                        .getResourceAsStream("/com/suse/manager/webui/services/impl/test/monitoring/enable.json"));
++                        .getResourceAsStream("/com/suse/manager/webui/services/impl/monitoring/enable.json"));
+ 
+         MonitoringService.setExecCtlFunction(execCtl);
+         MonitoringService.setTomcatJmxStatusSupplier(() -> false);
+@@ -151,7 +151,7 @@ public class MonitoringServiceTest extends RhnJmockBaseTestCase {
+     public void testDisableWithTaskomaticRestartNeeded() {
+         BiFunction<String, Optional<String>, Optional<InputStream>> execCtl =
+                 (String cmd, Optional<String> pillar) -> Optional.of(this.getClass()
+-                        .getResourceAsStream("/com/suse/manager/webui/services/impl/test/monitoring/disable.json"));
++                        .getResourceAsStream("/com/suse/manager/webui/services/impl/monitoring/disable.json"));
+ 
+         MonitoringService.setExecCtlFunction(execCtl);
+         MonitoringService.setTomcatJmxStatusSupplier(() -> false);
+diff --git a/java/core/src/test/java/com/suse/manager/webui/services/impl/test/SaltServiceTest.java b/java/core/src/test/java/com/suse/manager/webui/services/impl/test/SaltServiceTest.java
+index 84f0a500d3f..527dd0b8165 100644
+--- a/java/core/src/test/java/com/suse/manager/webui/services/impl/test/SaltServiceTest.java
++++ b/java/core/src/test/java/com/suse/manager/webui/services/impl/test/SaltServiceTest.java
+@@ -128,7 +128,7 @@ public class SaltServiceTest extends JMockBaseTestCaseWithUser {
+                     with(any(Client.class)), with(any(Optional.class)), with(any(Map.class)),
+                     with(any(TypeToken.class)), with(any(AuthMethod.class)));
+             will(returnValue(SaltTestUtils.getCompletionStage(
+-                    "/com/suse/manager/webui/services/impl/test/service/ssh_keygen.json",
++                    "/com/suse/manager/webui/services/impl/service/ssh_keygen.json",
+                     new TypeToken<MgrUtilRunner.SshKeygenResult>() { }.getType())));
+         }});
+ 
+@@ -157,7 +157,7 @@ public class SaltServiceTest extends JMockBaseTestCaseWithUser {
+                     with(any(AuthMethod.class))
+             );
+             will(returnValue(SaltTestUtils.getCompletionStage(
+-                    "/com/suse/manager/webui/services/impl/test/service/ssh_cert_check.json",
++                    "/com/suse/manager/webui/services/impl/service/ssh_cert_check.json",
+                     new TypeToken<JsonParsingError>() {
+                     }.getType())));
+         }});
+diff --git a/java/core/src/test/java/com/suse/manager/xmlrpc/maintenance/test/MaintenanceHandlerTest.java b/java/core/src/test/java/com/suse/manager/xmlrpc/maintenance/test/MaintenanceHandlerTest.java
+index eebb639bfbc..f995c382327 100644
+--- a/java/core/src/test/java/com/suse/manager/xmlrpc/maintenance/test/MaintenanceHandlerTest.java
++++ b/java/core/src/test/java/com/suse/manager/xmlrpc/maintenance/test/MaintenanceHandlerTest.java
+@@ -52,7 +52,7 @@ public class MaintenanceHandlerTest extends BaseHandlerTestCase {
+     private MaintenanceHandler handler = new MaintenanceHandler();
+     private static final String EXCHANGE_MULTI1_ICS = "maintenance-windows-multi-exchange-1.ics";
+     private static final String EXCHANGE_MULTI2_ICS = "maintenance-windows-multi-exchange-2.ics";
+-    private static final String TESTDATAPATH = "/com/suse/manager/maintenance/test/testdata";
++    private static final String TESTDATAPATH = "/com/suse/manager/maintenance/testdata";
+ 
+     @Override
+     @BeforeEach
+diff --git a/java/core/src/test/java/com/suse/scc/test/SCCClientTest.java b/java/core/src/test/java/com/suse/scc/test/SCCClientTest.java
+index f3ed797e893..32a27f9598e 100644
+--- a/java/core/src/test/java/com/suse/scc/test/SCCClientTest.java
++++ b/java/core/src/test/java/com/suse/scc/test/SCCClientTest.java
+@@ -229,7 +229,7 @@ public class SCCClientTest  {
+     public void testListRepositoriesFromDirectory() throws Exception {
+         File tmpDir = this.createTempDir();
+         FileUtils.copyURLToFile(this.getClass().getResource(
+-                "/com/suse/scc/test/connect/organizations/repositories.json"),
++                "/com/suse/scc/connect/organizations/repositories.json"),
+                 new File(tmpDir.getAbsolutePath() + "/organizations_repositories.json"));
+         try {
+             SCCClient scc = new SCCFileClient(tmpDir.toPath());
+-- 
+2.52.0
+
