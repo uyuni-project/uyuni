@@ -35,6 +35,7 @@ Feature: PXE boot a SLES 15 SP6 retail terminal
     Then "sle15sp6_terminal" should have been reformatted
 
   Scenario: Check connection from SLES 15 SP6 retail terminal to branch server
+    Given I am authorized for the "Admin" section
     When I navigate to the Systems overview page of this "sle15sp6_terminal"
     And I follow "Details" in the content area
     And I follow "Connection" in the content area
