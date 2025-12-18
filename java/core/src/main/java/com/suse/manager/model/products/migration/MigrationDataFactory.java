@@ -171,13 +171,17 @@ public class MigrationDataFactory {
     public MigrationSystemData toSystemData(Server server, Optional<SUSEProduct> sourceProduct,
                                             List<SUSEProductSet> migrationTargets) {
 
-        var installedProductSet = server.getInstalledProductSet().orElse(new SUSEProductSet());
+        var migrationProduct = server.getInstalledProductSet()
+            .filter(set -> set.getBaseProduct() != null)
+            .map(this::toMigrationProduct)
+            .orElse(null);
+
         var eligibility = computeEligibilityOf(server, migrationTargets, sourceProduct);
 
         return new MigrationSystemData(
             server.getId(),
             server.getName(),
-            toMigrationProduct(installedProductSet),
+            migrationProduct,
             eligibility.eligible(),
             eligibility.reason(),
             eligibility.details()

@@ -64,6 +64,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.SortedMap;
@@ -937,13 +938,15 @@ public class DistUpgradeManager extends BaseManager {
 
         // If the list is a singleton, the result matches with its installed product set
         if (serverList.size() == 1) {
-            return serverList.get(0).getInstalledProductSet();
+            return serverList.get(0).getInstalledProductSet()
+                .filter(set -> set.getBaseProduct() != null);
         }
 
         // Compute the frequency map of every base product
         Map<SUSEProduct, Long> productSetFrequencyMap = serverList.stream()
             .flatMap(server -> server.getInstalledProductSet().stream())
             .map(SUSEProductSet::getBaseProduct)
+            .filter(Objects::nonNull)
             .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 
         // Extract the most common base product
