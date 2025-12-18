@@ -68,10 +68,18 @@ echo ========== restructure resources
 # post steps
 # ===============================================
 
-echo ========== apply post step patches
-git apply "$THIS_SCRIPTPATH/post_step_rearrange_wrong_order_imports.patch"
+echo ========== apply first post step patches
+git apply --reject "$THIS_SCRIPTPATH/first_post_step_rearrange_wrong_order_imports.patch"
 
 
 echo ========== print and remove rej files
 find . | grep ".rej"
 find . | grep ".rej" | xargs rm
+
+echo ========== apply second post step patches
+git apply --reject "$THIS_SCRIPTPATH/second_post_step_rearrange_wrong_order_imports.patch"
+
+echo ========== print and remove rej files
+find . | grep ".rej"
+find . | grep ".rej" | xargs rm
+
