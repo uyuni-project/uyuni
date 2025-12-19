@@ -185,35 +185,7 @@ public class KickstartBuilder {
             kc.setCreated(new Date());
             kc.setModified(new Date());
             if (cn.getArgs()) {
-                if (cn.getName().equals("rootpw")) {
-
-                    // RHN only stores encrypted passwords and assumes it should add the
-                    // --iscrypted option to rootpw when generating the final kickstart
-                    // file. When importing we need to check for this option, remove it
-                    // if it's there, and encrypt the password if it isn't.
-                    // The way this works is that the system can determine from the crypted
-                    // password what algorithm it was crypted with. It does not have to
-                    // match with the algo specified on the auth command. So it's safe
-                    // to encrypt using whatever algorithm we want without fear of being
-                    // incompatible with the rest of the kickstart file.
-                    String [] tokens = restOfLine.split(" ");
-                    if (tokens.length > 2 || tokens.length == 0) {
-                        throw new KickstartParsingException("Error parsing rootpw");
-                    }
-                    else if (tokens.length == 2) {
-                        // Looks like the --iscrypted option is present:
-                        if (!tokens[0].equals("--iscrypted")) {
-                            throw new KickstartParsingException("Error parsing rootpw");
-                        }
-                        restOfLine = tokens[1];
-                    }
-                    else {
-                        // No --iscrypted present, encrypt the password:
-                        restOfLine = "--iscrypted " + ksData.encryptPassword(tokens[0]);
-                    }
-                }
-
-                kc.setArguments(restOfLine);
+                setRootpwArguments(kc, cn, ksData, restOfLine);
             }
             commandOptions.add(kc);
 
@@ -221,6 +193,39 @@ public class KickstartBuilder {
         ksData.setPartitionData(partitionBuf.toString());
         ksData.getCommands().addAll(commandOptions);
         KickstartFactory.saveKickstartData(ksData);
+    }
+
+    private void setRootpwArguments(KickstartCommand kc, KickstartCommandName cn, KickstartData ksData,
+                                    String restOfLine) {
+        if (cn.getName().equals("rootpw")) {
+
+            // RHN only stores encrypted passwords and assumes it should add the
+            // --iscrypted option to rootpw when generating the final kickstart
+            // file. When importing we need to check for this option, remove it
+            // if it's there, and encrypt the password if it isn't.
+            // The way this works is that the system can determine from the crypted
+            // password what algorithm it was crypted with. It does not have to
+            // match with the algo specified on the auth command. So it's safe
+            // to encrypt using whatever algorithm we want without fear of being
+            // incompatible with the rest of the kickstart file.
+            String[] tokens = restOfLine.split(" ");
+            if (tokens.length > 2 || tokens.length == 0) {
+                throw new KickstartParsingException("Error parsing rootpw");
+            }
+            else if (tokens.length == 2) {
+                // Looks like the --iscrypted option is present:
+                if (!tokens[0].equals("--iscrypted")) {
+                    throw new KickstartParsingException("Error parsing rootpw");
+                }
+                restOfLine = tokens[1];
+            }
+            else {
+                // No --iscrypted present, encrypt the password:
+                restOfLine = "--iscrypted " + ksData.encryptPassword(tokens[0]);
+            }
+        }
+
+        kc.setArguments(restOfLine);
     }
 
     /**
