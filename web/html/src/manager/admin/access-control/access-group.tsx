@@ -163,6 +163,8 @@ const AccessGroup = (props: AccessGroupProps) => {
       .catch((error) => setMessages(Network.responseErrorMessage(error)));
   };
 
+  const isEditMode = !!props.accessGroup?.id;
+
   const steps = [
     {
       title: t("Details"),
@@ -192,12 +194,12 @@ const AccessGroup = (props: AccessGroupProps) => {
       content: <AccessGroupUsers state={accessGroupState} onChange={handleUsers} errors={accessGroupState.errors} />,
       validate: null,
     },
-    {
+     !isEditMode && {
       title: t("Review"),
       content: <AccessGroupReview state={accessGroupState} />,
       validate: null,
     },
-  ];
+  ].filter(Boolean);
   return (
     <>
       {props.accessGroup && props.accessGroup.id ? (

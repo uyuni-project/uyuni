@@ -72,7 +72,6 @@ const AccessGroupList = () => {
     } else {
       return (
         <div className="btn-group">
-          <Button className="btn-default btn-sm" icon="fa-user" />
           <LinkButton
             className="btn-default btn-sm"
             icon="fa-pencil"
