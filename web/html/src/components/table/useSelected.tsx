@@ -5,42 +5,75 @@ import { Check } from "components/input";
 import { Column, ColumnProps } from "./Column";
 import styles from "./useSelected.module.scss";
 
+type Node<T> = { children?: T[] };
+
+/**
+ * Defines what items will be selected when a item is checked
+ */
+export interface SelectionProvider<T extends Node<T>> {
+  select(item: T): T[];
+
+  unselect(item: T): T[];
+}
+
+/**
+ * A {@link SelectionProvider} that selects/unselects the item and all its children.
+ */
+export class ChildrenSelectionProvider<T extends Node<T>> {
+  public select(item: T): T[] {
+    const result: T[] = [];
+
+    result.push(item);
+    if (item.children) {
+      for (const child of item.children) {
+        result.push(...this.select(child));
+      }
+    }
+
+    return result;
+  }
+
+  public unselect(item: T): T[] {
+    const result: T[] = [];
+
+    result.push(item);
+    if (item.children) {
+      for (const child of item.children) {
+        result.push(...this.unselect(child));
+      }
+    }
+
+    return result;
+  }
+}
+
 /**
  * Create a selectable table column
  *
  * @param identifier A function to identify table rows, for example `row => row.id`
  * @param getAllIdentifiers Async request to get all available table rows, including children, in order to select all items across all pages
+ * @param initialSelection The initial selection state
+ * @param onSelectionChange optional
  */
-export const useSelected = <T extends { children?: T[] }, I>(
+export const useSelected = <T extends Node<T>, I>(
   identifier: (item: T) => I,
-  getAllIdentifiers?: () => Promise<I[]>
+  getAllIdentifiers: (() => Promise<I[]>) | undefined = undefined,
+  selectionProvider: SelectionProvider<T> = new ChildrenSelectionProvider<T>(),
+  initialSelection: I[] = [],
+  onSelectionChange: ((newItems: T[], selected: boolean) => void) | undefined = undefined
 ) => {
-  const [selected, setSelected] = useState(new Set<I>());
+  const [selected, setSelected] = useState(new Set<I>(initialSelection));
   // Fyi, we do NOT set `isAllSelected` even if you manually go and select everything on every page, we only set it from the async request
   const [isAllSelected, setIsAllSelected] = useState(false);
-
-  const selectRecursive = (item: T, targetSet: Set<I>) => {
-    targetSet.add(identifier(item));
-    if (item.children) {
-      for (const child of item.children) {
-        selectRecursive(child, targetSet);
-      }
-    }
-  };
-
-  const unselectRecursive = (item: T, targetSet: Set<I>) => {
-    targetSet.delete(identifier(item));
-    if (item.children) {
-      for (const child of item.children) {
-        unselectRecursive(child, targetSet);
-      }
-    }
-  };
 
   const select = (item: T) => {
     setSelected((prev) => {
       const newSelected = new Set(prev);
-      selectRecursive(item, newSelected);
+      const idsToAdd = selectionProvider.select(item);
+
+      idsToAdd.map(identifier).forEach((id) => newSelected.add(id));
+      onSelectionChange?.(idsToAdd, true);
+
       return newSelected;
     });
   };
@@ -49,7 +82,11 @@ export const useSelected = <T extends { children?: T[] }, I>(
     setIsAllSelected(false);
     setSelected((prev) => {
       const newSelected = new Set(prev);
-      unselectRecursive(item, newSelected);
+      const idsToRemove = selectionProvider.unselect(item);
+
+      idsToRemove.map(identifier).forEach((id) => newSelected.delete(id));
+      onSelectionChange?.(idsToRemove, false);
+
       return newSelected;
     });
   };
@@ -63,13 +100,14 @@ export const useSelected = <T extends { children?: T[] }, I>(
       return false;
     }
     const isSelected = selected.has(identifier(item));
+    if (isSelected) {
+      return false;
+    }
 
     let selectedChildren = 0;
-    let totalChildren = 0;
     const countChildren = (node: T) => {
       if (node.children) {
         for (const child of node.children) {
-          totalChildren++;
           if (selected.has(identifier(child))) {
             selectedChildren++;
           }
@@ -79,7 +117,7 @@ export const useSelected = <T extends { children?: T[] }, I>(
     };
     countChildren(item);
 
-    return isSelected ? selectedChildren !== totalChildren : selectedChildren > 0;
+    return selectedChildren > 0;
   };
 
   const toggle = (item: T) => {

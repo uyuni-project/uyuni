@@ -66,7 +66,7 @@ public class MapsTest {
         }
 
         @Test
-        void shouldReturnEmptyListWhenMapIsEmptu() {
+        void shouldReturnEmptyListWhenMapIsEmpty() {
             List<Object[]> result = Maps.mapToEntryList(Map.of());
 
             assertNotNull(result);
