@@ -65,9 +65,7 @@ public class NamespaceFactory extends HibernateFactory {
     public static List<Namespace> list(String filterParam) {
         return getSession()
                 .createNativeQuery("""
-                SELECT *
-                FROM access.namespace
-                WHERE :filter <% lower(namespace||description)
+                SELECT * FROM search_namespace(:filter)
                 """, Namespace.class)
                 .setParameter("filter", filterParam)
                 .getResultList();
