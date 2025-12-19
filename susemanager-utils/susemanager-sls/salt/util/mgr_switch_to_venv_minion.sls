@@ -111,6 +111,12 @@ mgr_disable_salt_minion:
     - require:
       - service: mgr_enable_venv_salt_minion
 
+mgr_remove_susemanagerconf:
+  file.absent:
+    - name: /etc/salt/minion.d/susemanager.conf
+    - require:
+      - service: mgr_disable_salt_minion
+
 mgr_schedule_salt_minion_stop:
   cmd.run:
     - name: |
