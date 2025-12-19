@@ -98,7 +98,6 @@ const AccessGroupPermissions = (props: Props) => {
   };
 
   const getNamespaces = (filter: string) => {
-    console.log("call")
     let endpoint = "/rhn/manager/api/admin/access-control/access-group/list_namespaces";
     const hasCopy = props.state.accessGroups && props.state.accessGroups.length > 0;
     const hasFilter = filter && filter.trim().length > 0;
@@ -113,6 +112,7 @@ const AccessGroupPermissions = (props: Props) => {
     }
     Network.get(endpoint)
       .then((response) => {
+        // console.log("DB response")
         const namespacesToSet = response["namespaces"] || [];
         setNamespaces(namespacesToSet);
 
@@ -135,19 +135,20 @@ const AccessGroupPermissions = (props: Props) => {
               };
             });
           }
-
           props.onChange(changes);
         }
+        const shouldClearPermissions = !hasCopy && !props.state.id && !hasFilter;
 
-        if (!hasCopy && !props.state.id && !filter) {
+        if (shouldClearPermissions) {
           const currentPermissions = props.state.permissions || {};
           const keysToClear = Object.keys(currentPermissions);
 
           if (keysToClear.length > 0) {
             const clearChanges = {};
-            keysToClear.forEach((namespaceKey) => {
-              clearChanges[namespaceKey] = undefined;
+            keysToClear.forEach((key) => {
+              clearChanges[key] = undefined;
             });
+
             props.onChange(clearChanges);
           }
         }
@@ -160,9 +161,12 @@ const AccessGroupPermissions = (props: Props) => {
   };
 
   useEffect(() => {
-    setIsLoading(true);
-    getNamespaces(searchValue);
+    if (!isLoading) {
+      setIsLoading(true);
+      getNamespaces(searchValue);
+    }
   }, [searchValue]);
+
 
   useEffect(() => {
     namespaces.forEach((item) => {
