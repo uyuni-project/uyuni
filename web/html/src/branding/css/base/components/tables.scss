@@ -28,8 +28,9 @@
 }
 
 thead tr {
-  background:$eos-bc-gray-100 !important;
-  color: $eos-bc-gray-900 !important;
+  background: $tb-thead-tr-bg !important;
+  color: $tb-orderBy-text !important;
+  
 
   .btn-link {
     padding: 0 !important;
@@ -63,12 +64,11 @@ tbody tr td .modal-link {
   padding: 5px 10px;
   font-size: 12px;
   line-height: 1.5;
-  border-radius: 3px;
   display: inline-block;
   width: fit-content;
-  border: none;
-  color: $eos-bc-gray-900;
-  background-color: $eos-bc-gray-100;
+  border: 1px solid $input-border-color;
+  color: $input-color;
+  background-color: $input-active-bg;
 }
 
 .selected-row-details {
@@ -101,13 +101,13 @@ tbody tr td .modal-link {
 
 .table-page-information {
   padding: 8px 15px;
-  border-right: 1px solid $eos-bc-gray-300;
+  border-right: 1px solid $tb-border-color;
   font-weight: 600;
   padding-right: 35px;
 
   > .small-select {
     background-color: transparent;
-    color: $eos-bc-gray-1000;
+    color: $body-color;
     font-weight: 600;
   }
 }

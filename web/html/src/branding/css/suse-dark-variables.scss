@@ -1,8 +1,91 @@
 @import "./suse-light-variables.scss";
 
-$aside-background: $eos-bc-pine-500;
+
+// This variable set controls the body color
+$body-background: $eos-dt-gray-1000;
+$body-color: $white;
+
+$link-color: $eos-bc-cerulean-500;
+$box-shadow: $eos-bc-gray-1000;
+$text-success-color: $eos-bc-green-500;
+
+//Side nav
+$aside-background: $eos-dt-gray-900;
 $aside-menu-text: $eos-bc-white;
 $aside-search-text-color: $eos-bc-white;
 $aside-footer-text: $eos-bc-white;
 $aside-footer-border: $eos-bc-dt-gray-700;
 $aside-search-border: $eos-bc-dt-gray-700;
+
+//Tabs
+$tabs-border-color: $eos-dt-gray-400;
+
+//HR gray
+$hr-border: $eos-bc-gray-700;
+
+//Panel gray
+$panel-gray-bg: $eos-dt-gray-800;
+$panel-border: $eos-dt-gray-400;
+$list-item-border: $eos-dt-gray-600;
+$list-item-hover-bg: $eos-dt-gray-700;
+
+
+//Panel white
+$panel-white-bg: $eos-dt-gray-700;
+$panel-white-border-color: $eos-dt-gray-400;
+
+// Table
+$tb-thead-tr-bg: $eos-dt-gray-900;
+$tb-orderBy-text: $eos-bc-white;
+$tb-border-color: $eos-dt-gray-600;
+$table-row-hover-bg: $eos-dt-gray-700; //$gray-light;
+
+//buttons
+$btn-default-color: $eos-bc-white;
+$btn-tertiary-color: $eos-bc-white;
+$btn-tertiary-color-hover: $eos-bc-green-500;
+
+// Form
+
+/* Input */
+$input-placeholder: $eos-bc-gray-700;
+$input-border-color: $eos-bc-gray-300;
+$input-active-bg: transparent;
+$input-color: $eos-bc-white;
+$input-autofill-bg: $eos-dt-gray-1000;
+$input-readonly-color: $eos-bc-gray-500;
+$input-readonly-bg: rgba($eos-dt-gray-700, 0.3);
+$input-group-addon-bg: $eos-dt-gray-700;
+$input-group-addon-color: $eos-bc-white;
+$input-disabled-bg: $eos-dt-gray-700;
+
+// Input AceEditor
+$ace-gutter-bg: $eos-dt-gray-600;
+
+/* Select Dropdown Menu */
+$select-dropdown-bg: $eos-dt-gray-600;
+$select-dropdown-color: $eos-bc-white;
+$select-dropdown-focused-bg: $eos-dt-gray-800;
+$select-dropdown-selected-bg: $eos-bc-blue-500;
+$select-dropdown-selected-color: $eos-bc-white;
+
+/* Dropdown Menu */
+$dropdown-bg: $eos-dt-gray-600;
+$dropdown-border: $eos-dt-gray-400;
+$dropdown-hover-bg: $eos-dt-gray-800;
+
+// Tooltip
+$tooltip-bg: $eos-bc-gray-100;
+$tooltip-color: $eos-dt-gray-1000;
+
+// Pre
+$pre-bg: $eos-dt-gray-900;
+$pre-border: $eos-dt-gray-600;
+
+// Code
+$code-bg: rgba($eos-dt-gray-400, 31%);
+
+// Modal
+$modal-backdrop-color: rgba($eos-bc-gray-1000, 70%);
+$modal-bg: $eos-dt-gray-700;
+$modal-border: $eos-dt-gray-400;

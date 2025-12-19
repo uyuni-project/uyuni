@@ -1,6 +1,82 @@
+// This variable set controls the body color
 $body-color: $eos-bc-gray-1000;
+$body-background: $white;
 $body-font: $suse;
-$link-color: $eos-bc-blue-500;
 
+$link-color: $eos-bc-blue-500;
+$box-shadow: $gray-light;
 $content-area-padding-side: 4em;
 $content-area-padding-bottom: 4em;
+$text-success-color: $eos-bc-green-900;
+
+//Tabs
+$tabs-border-color: $eos-bc-gray-100;
+
+// hr
+$hr-border: $eos-bc-gray-100;
+
+//Panel gray
+$panel-gray-bg: $eos-bc-gray-50;
+$panel-border: $eos-bc-gray-100;
+$list-item-border: $eos-bc-gray-100;
+$list-item-hover-bg: $eos-bc-gray-100;
+
+//Panel white
+$panel-white-bg: $eos-bc-white;
+$panel-white-border-color: $eos-bc-gray-100;
+
+// Table
+$tb-thead-tr-bg: $eos-bc-gray-100;
+$tb-orderBy-text: $eos-bc-gray-1000;
+$tb-border-color: $eos-bc-gray-100;
+$table-row-hover-bg: $gray-light;
+
+//buttons
+$btn-default-color: $eos-bc-pine-500;
+$btn-tertiary-color: $eos-bc-pine-500;
+$btn-tertiary-color-hover: $eos-bc-green-900;
+
+// Form
+
+/* Input */
+$input-placeholder: $gray;
+$input-border-color: $eos-bc-gray-700;
+$input-active-bg: $eos-bc-white;
+$input-color: $eos-bc-gray-1000;
+$input-autofill-bg: $eos-bc-white;
+$input-readonly-color: $eos-bc-gray-700;
+$input-readonly-bg: $gray-lighter;
+$input-group-addon-bg: $gray-lighter;
+$input-group-addon-color: $eos-bc-gray-900;
+$input-disabled-bg: $gray-lighter;
+
+// Input AceEditor
+$ace-gutter-bg: #e8e8e8;
+
+/* Select Dropdown Menu */
+$select-dropdown-bg: $eos-bc-white;
+$select-dropdown-color: $eos-bc-gray-1000;
+$select-dropdown-focused-bg: rgba($eos-bc-cerulean-100, 0.3);
+$select-dropdown-selected-bg: $eos-bc-blue-500;
+$select-dropdown-selected-color: $eos-bc-white;
+
+/* Dropdown Menu */
+$dropdown-bg: $eos-bc-white;
+$dropdown-border: rgba(0, 0, 0, 0.15);
+$dropdown-hover-bg: $eos-bc-gray-50;
+
+// Tooltip
+$tooltip-bg: $eos-bc-gray-1000;
+$tooltip-color: $eos-bc-white;
+
+// Pre
+$pre-bg: rgba($eos-bc-white, 0.5);
+$pre-border: $eos-bc-gray-100;
+
+// Code
+$code-bg: rgba($eos-bc-gray-100, 0.5);
+
+/* Modals */
+$modal-backdrop-color: rgba($eos-bc-gray-1000, 50%);
+$modal-bg: $eos-bc-white;
+$modal-border: $eos-bc-gray-100;

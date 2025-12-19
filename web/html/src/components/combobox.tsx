@@ -86,6 +86,7 @@ export class Combobox extends Component<ComboboxProps, ComboboxState> {
     const testAttributes = withCustomComponents(this.props["data-testid"], this.props.name);
     return (
       <Creatable
+        className="form-control--react-select"
         id={this.props.id}
         name={this.props.name}
         onFocus={this.props.onFocus}

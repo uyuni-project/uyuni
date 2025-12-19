@@ -2,7 +2,7 @@ $nav-tabs-offset: 30px;
 
 .nav-tabs {
   margin-bottom: 0.25rem;
-  border-bottom: 1px solid $eos-bc-gray-100;
+  border-bottom: 1px solid $tabs-border-color;
 
   &:nth-child(2) {
     margin-left: $nav-tabs-offset;
@@ -20,7 +20,7 @@ $nav-tabs-offset: 30px;
     margin-bottom: -1px;
 
     a {
-      color: $eos-bc-gray-1000;
+      color: $body-color;
   
       &:hover {
         border-color: $eos-bc-green-500;
@@ -30,7 +30,7 @@ $nav-tabs-offset: 30px;
       }
   
       &:active, &:focus {
-        color: $eos-bc-gray-1000;
+        color: $body-color;
         background: transparent;
       }
   
@@ -40,7 +40,7 @@ $nav-tabs-offset: 30px;
     &.active {
       a {
         &, &:hover, &:active, &:focus {
-          color: $eos-bc-gray-1000;
+          color: $body-color;
         }
       }
     }
