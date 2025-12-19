@@ -29,6 +29,7 @@ import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.channel.ChannelTestUtility;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.errata.AdvisoryStatus;
 import com.redhat.rhn.domain.errata.ClonedErrata;
@@ -113,7 +114,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         chanPack.setPackageName(errataPack.getPackageName());
         chanPack.setPackageEvr(evr);
 
-        channel.addPackage(chanPack);
+        ChannelTestUtility.testAddPackage(channel, chanPack);
         e.addPackage(errataPack);
 
         HibernateFactory.getSession().flush();

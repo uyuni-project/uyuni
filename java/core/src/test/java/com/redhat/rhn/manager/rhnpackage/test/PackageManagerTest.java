@@ -28,6 +28,7 @@ import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.channel.ChannelTestUtility;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
@@ -487,7 +488,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         Channel channel2 = ChannelFactoryTest.createTestChannel(user);
 
         Package pack = PackageTest.createTestPackage(null);
-        channel1.addPackage(pack);
+        ChannelTestUtility.testAddPackage(channel1, pack);
 
         List<PackageOverview> test = PackageManager.lookupPackageForChannelFromChannel(channel1.getId(),
                 channel2.getId());
@@ -495,7 +496,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         PackageOverview packOver = test.get(0);
         assertEquals(pack.getId(), packOver.getId());
 
-        channel2.addPackage(pack);
+        ChannelTestUtility.testAddPackage(channel2, pack);
         test = PackageManager.lookupPackageForChannelFromChannel(channel1.getId(),
                 channel2.getId());
         assertTrue(test.isEmpty());
@@ -512,7 +513,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         PackageOverview packOver = test.get(0);
         assertEquals(pack.getId(), packOver.getId());
 
-        channel1.addPackage(pack);
+        ChannelTestUtility.testAddPackage(channel1, pack);
         test = PackageManager.lookupCustomPackagesForChannel(
                 channel1.getId(), user.getOrg().getId());
 
@@ -529,7 +530,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         PackageOverview packOver = test.get(0);
         assertEquals(pack.getId(), packOver.getId());
 
-        channel1.addPackage(pack);
+        ChannelTestUtility.testAddPackage(channel1, pack);
         test = PackageManager.listOrphanPackages(user.getOrg().getId(), false);
 
         assertTrue(test.isEmpty());
@@ -634,7 +635,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
 
         Package p = PackageTest.createTestPackage(user.getOrg());
         Channel c = ChannelFactoryTest.createTestChannel(user);
-        c.addPackage(p);
+        ChannelTestUtility.testAddPackage(c, p);
         ChannelFactory.save(c);
 
         PackageManager.createRepoEntrys(c.getId());

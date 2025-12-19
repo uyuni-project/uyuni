@@ -44,6 +44,7 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelProduct;
+import com.redhat.rhn.domain.channel.ChannelTestUtility;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.errata.Cve;
 import com.redhat.rhn.domain.errata.Errata;
@@ -1587,7 +1588,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
 
         // Create clones of channel and errata
         Channel baseChannelClone = ChannelFactoryTest.createTestClonedChannel(baseChannelSLES12, user);
-        baseChannelClone.addPackage(kernelDefault);
+        ChannelTestUtility.testAddPackage(baseChannelClone, kernelDefault);
         TestUtils.saveAndFlush(baseChannelClone);
 
         Errata errataKgraftClone = createTestClonedErrata(user, kgraftErratum, cves, kgraftDefaultNew);
@@ -1658,7 +1659,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
 
         // Create clones of channel and errata
         Channel baseChannelClone = ChannelFactoryTest.createTestClonedChannel(baseChannelSLES12, user);
-        baseChannelClone.addPackage(kernelDefault);
+        ChannelTestUtility.testAddPackage(baseChannelClone, kernelDefault);
         TestUtils.saveAndFlush(baseChannelClone);
 
         Errata errataKgraftClone = createTestClonedErrata(user, kgraftErratum, cves, kgraftDefaultNew);
@@ -1732,7 +1733,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
 
         // Create clones of channel and errata
         Channel baseChannelClone = ChannelFactoryTest.createTestClonedChannel(baseChannelSLES15, user);
-        baseChannelClone.addPackage(kernelDefault);
+        ChannelTestUtility.testAddPackage(baseChannelClone, kernelDefault);
         TestUtils.saveAndFlush(baseChannelClone);
 
         Errata errataKgraftClone = createTestClonedErrata(user, livepatchErratum, cves, kgraftDefaultNew);
@@ -1802,11 +1803,11 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
 
         // Create clones of channel and errata
         Channel baseChannelClone = ChannelFactoryTest.createTestClonedChannel(baseChannelSLES12, user);
-        baseChannelClone.addPackage(kernelDefault);
+        ChannelTestUtility.testAddPackage(baseChannelClone, kernelDefault);
         TestUtils.saveAndFlush(baseChannelClone);
 
         Channel channelClone = ChannelFactoryTest.createTestClonedChannel(childChannelLP12, user);
-        channelClone.addPackage(kgraftDefault);
+        ChannelTestUtility.testAddPackage(channelClone, kgraftDefault);
         TestUtils.saveAndFlush(channelClone);
 
         // server: old kernel but new kgraft-patch installed from cloned channels

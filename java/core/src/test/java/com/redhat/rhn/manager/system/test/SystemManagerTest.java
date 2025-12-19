@@ -50,6 +50,7 @@ import com.redhat.rhn.domain.action.server.test.ServerActionTest;
 import com.redhat.rhn.domain.action.test.ActionFactoryTest;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
+import com.redhat.rhn.domain.channel.ChannelTestUtility;
 import com.redhat.rhn.domain.channel.ProductName;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.dto.SystemGroupID;
@@ -1060,7 +1061,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
                 pack.getPackageName().getId(), null,
                 pack.getPackageEvr().getId()));
 
-        server.getBaseChannel().addPackage(pack);
+        ChannelTestUtility.testAddPackage(server.getBaseChannel(), pack);
         TestUtils.saveAndFlush(pack);
         assertTrue(SystemManager.hasPackageAvailable(server,
                 pack.getPackageName().getId(), pack.getPackageArch().getId(),

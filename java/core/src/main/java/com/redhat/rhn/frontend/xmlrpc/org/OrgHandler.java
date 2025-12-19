@@ -401,53 +401,6 @@ public class OrgHandler extends BaseHandler {
      *   - One or more of the servers provides do not exist
      *   - The origination or destination organization does not exist
      *   - The user is not defined in the destination organization's trust
-     * @deprecated being replaced by org.transferSystems(User loggedInUser, Integer toOrgId,
-     * List(Integer) sids)
-     *
-     * @apidoc.doc Transfer systems from one organization to another.  If executed by
-     * a #product() administrator, the systems will be transferred from their current
-     * organization to the organization specified by the toOrgId.  If executed by
-     * an organization administrator, the systems must exist in the same organization
-     * as that administrator and the systems will be transferred to the organization
-     * specified by the toOrgId. In any scenario, the origination and destination
-     * organizations must be defined in a trust.
-     *
-     * Note: This method is deprecated and will be removed in a future API version. Please use
-     * transferSystems instead.
-     * @apidoc.param #session_key()
-     * @apidoc.param #param_desc("int", "toOrgId", "ID of the organization where the
-     * system(s) will be transferred to.")
-     * @apidoc.param #array_single("int", "sids")
-     * @apidoc.returntype
-     * #array_single("int", "serverIdTransferred")
-     */
-    @Deprecated
-    public Object[] migrateSystems(User loggedInUser, Integer toOrgId,
-                                   List<Integer> sids) throws FaultException {
-        return transferSystems(loggedInUser, toOrgId, sids);
-    }
-
-    /**
-     * Transfer systems from one organization to another.  If executed by
-     * a product administrator, the systems will be transferred from their current
-     * organization to the organization specified by the toOrgId.  If executed by
-     * an organization administrator, the systems must exist in the same organization
-     * as that administrator and the systems will be transferred to the organization
-     * specified by the toOrgId. In any scenario, the origination and destination
-     * organizations must be defined in a trust.
-     *
-     * @param loggedInUser The current user
-     * @param toOrgId destination organization ID.
-     * @param sids System IDs.
-     * @return list of systems transferred.
-     * @throws FaultException A FaultException is thrown if:
-     *   - The user performing the request is not an organization administrator
-     *   - The user performing the request is not a product administrator, but the
-     *     from org id is different than the user's org id.
-     *   - The from and to org id provided are the same.
-     *   - One or more of the servers provides do not exist
-     *   - The origination or destination organization does not exist
-     *   - The user is not defined in the destination organization's trust
      *
      * @apidoc.doc Transfer systems from one organization to another.  If executed by
      * a #product() administrator, the systems will be transferred from their current

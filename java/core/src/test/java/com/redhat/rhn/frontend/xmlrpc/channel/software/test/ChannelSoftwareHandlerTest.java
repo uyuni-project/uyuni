@@ -29,6 +29,7 @@ import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.channel.ChannelTestUtility;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.errata.AdvisoryStatus;
 import com.redhat.rhn.domain.errata.Errata;
@@ -746,7 +747,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         PackageTest.createTestPackage(admin.getOrg());
         Package nonOrphan = PackageTest.createTestPackage(admin.getOrg());
         Channel testChan = ChannelFactoryTest.createTestChannel(admin);
-        testChan.addPackage(nonOrphan);
+        ChannelTestUtility.testAddPackage(testChan, nonOrphan);
 
         Object[] secondList = handler.listPackagesWithoutChannel(admin);
 
@@ -758,7 +759,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         Channel original = ChannelFactoryTest.createTestChannel(admin, false);
         Package pack = PackageTest.createTestPackage(admin.getOrg());
         Errata errata = ErrataFactoryTest.createTestErrata(admin.getOrg().getId());
-        original.addPackage(pack);
+        ChannelTestUtility.testAddPackage(original, pack);
         original.addErrata(errata);
 
         String label = "test-clone-label";
@@ -789,7 +790,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         Package pack = PackageTest.createTestPackage(admin.getOrg());
         Errata errata = ErrataFactoryTest.createTestErrata(
                 admin.getOrg().getId());
-        original.addPackage(pack);
+        ChannelTestUtility.testAddPackage(original, pack);
         original.addErrata(errata);
 
         String label = "test-clone-label";
@@ -822,7 +823,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         Package pack = PackageTest.createTestPackage(admin.getOrg());
         Errata errata = ErrataFactoryTest.createTestErrata(
                 admin.getOrg().getId());
-        original.addPackage(pack);
+        ChannelTestUtility.testAddPackage(original, pack);
         original.addErrata(errata);
 
         String label = "test-clone-label-2";
@@ -856,9 +857,9 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         mergeFrom.setOrg(null);
         mergeTo.setOrg(admin.getOrg());
 
-        mergeFrom.addPackage(packOne);
-        mergeFrom.addPackage(packTwo);
-        mergeTo.addPackage(packOne);
+        ChannelTestUtility.testAddPackage(mergeFrom, packOne);
+        ChannelTestUtility.testAddPackage(mergeFrom, packTwo);
+        ChannelTestUtility.testAddPackage(mergeTo, packOne);
 
         mergeFrom = TestUtils.saveAndReload(mergeFrom);
         mergeTo = TestUtils.saveAndReload(mergeTo);
@@ -1018,7 +1019,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
     public void testListLatestPackages() throws Exception {
         Channel chan = ChannelFactoryTest.createTestChannel(admin);
         Package pack = PackageTest.createTestPackage(admin.getOrg());
-        chan.addPackage(pack);
+        ChannelTestUtility.testAddPackage(chan, pack);
 
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.YEAR, -5);

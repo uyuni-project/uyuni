@@ -22,6 +22,7 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.channel.ChannelTestUtility;
 import com.redhat.rhn.domain.channel.Modules;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.contentmgmt.modulemd.ConflictingStreamsException;
@@ -149,7 +150,7 @@ public class MockModulemdApi extends ModulemdApi {
                                 packageArch.getArchType().getPackageType()),
                                 packageArch
                         );
-                channel.addPackage(pkg);
+                ChannelTestUtility.testAddPackage(channel, pkg);
             }
         }
 
