@@ -23,6 +23,7 @@ type ChildrenArgsProps = {
   selectedItems: any[];
   criteria?: string;
   field?: string;
+  headerHeight?: number | null;
 };
 
 type Props = {
@@ -116,6 +117,8 @@ type Props = {
 
   /** Align search fields inline */
   searchPanelInline?: boolean;
+
+  onDataLoaded?: (items: any[], info?: { totalItems: number; currentPage: number }) => void;
 };
 
 type State = {
@@ -129,6 +132,7 @@ type State = {
   sortColumnKey: string | null;
   sortDirection: number;
   loading: boolean;
+  headerHeight: number | null;
 };
 
 export class TableDataHandler extends Component<Props, State> {
@@ -137,6 +141,7 @@ export class TableDataHandler extends Component<Props, State> {
     deletable: false,
     columns: [],
   };
+  panelHeaderRef: React.RefObject<HTMLDivElement>;
 
   constructor(props: Props) {
     super(props);
@@ -214,7 +219,10 @@ export class TableDataHandler extends Component<Props, State> {
         this.props.onSelect?.(selectedIds);
       }
       if (this.props.onDataLoaded) {
-        this.props.onDataLoaded(items);
+        this.props.onDataLoaded(items, {
+          totalItems: total,
+          currentPage: this.state.currentPage,
+        });
       }
       const lastPage = this.getLastPage();
       if (this.state.currentPage > lastPage) {

@@ -194,7 +194,7 @@ const AccessGroup = (props: AccessGroupProps) => {
       content: <AccessGroupUsers state={accessGroupState} onChange={handleUsers} errors={accessGroupState.errors} />,
       validate: null,
     },
-     !isEditMode && {
+    !isEditMode && {
       title: t("Review"),
       content: <AccessGroupReview state={accessGroupState} />,
       validate: null,
