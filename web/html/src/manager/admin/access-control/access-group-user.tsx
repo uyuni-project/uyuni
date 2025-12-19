@@ -12,7 +12,7 @@ import Network from "utils/network";
 
 type Props = {
   state: any;
-  onChange: () => void;
+  onChange: (user: User, action: "add" | "remove") => void;
   errors: any;
 };
 

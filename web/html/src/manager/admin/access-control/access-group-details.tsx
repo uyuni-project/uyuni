@@ -16,7 +16,7 @@ export type AccessGroupDetailsHandle = {
 
 type Props = {
   state: AccessGroupState;
-  onChange: () => void;
+  onChange: (...args: any[]) => void;
   errors: any;
 };
 

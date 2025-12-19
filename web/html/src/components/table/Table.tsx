@@ -21,6 +21,11 @@ import { useExpanded } from "./useExpanded";
 
 type ArrayElement<A> = A extends readonly (infer T)[] ? T : never;
 
+export type TableLoadInfo = {
+  totalItems: number;
+  currentPage: number;
+};
+
 type TableProps = {
   /**
    * Either an array of data items of any type where each element is a row data,
@@ -88,7 +93,7 @@ type TableProps = {
 
   /** Automatically expands all expandable rows when data is loaded. 
   Useful for cases like search results where all matching rows should be visible by default.*/
-  onDataLoaded?: (currItems: any[], info: TableLoadInfo) => void;
+  onDataLoaded?: (currItems: any[], info?: TableLoadInfo) => void;
 
   /** The message which is shown when there are no rows to display */
   emptyText?: string;
@@ -121,6 +126,9 @@ type TableProps = {
 
   /** Add class to table */
   tableClass?: string;
+
+  /** Align search fields inline */
+  searchPanelInline?: boolean;
 };
 
 function isColumn(input: any): input is ReactElement<ComponentProps<typeof Column>> {
@@ -153,8 +161,7 @@ export const Table = forwardRef<TableRef, TableProps>((props, ref) => {
     },
   }));
 
-  const handleDataLoaded = (currItems: any[], info: TableLoadInfo) => {
-    // Auto-expand here
+  const handleDataLoaded = (currItems: any[], info?: { totalItems: number; currentPage: number }) => {
     if (props.expandable && props.expandableOpen) {
       const allKeys = currItems.map((item) => props.identifier(item));
       expanded.set(allKeys);
@@ -182,7 +189,7 @@ export const Table = forwardRef<TableRef, TableProps>((props, ref) => {
               })
             );
 
-          const isSelectable = typeof selectableValue === "boolean" ? () => selectableValue : selectableValue;
+          const isSelectable = typeof selectableValue === "function" ? selectableValue : () => !!selectableValue;
           if (selectableValue && isSelectable(item)) {
             const checkbox = (
               <Column
@@ -275,7 +282,7 @@ export const Table = forwardRef<TableRef, TableProps>((props, ref) => {
           <table className={`table vertical-middle ${props.tableClass || ""}`}>
             <thead
               className={props.stickyHeader ? "position-sticky" : ""}
-              style={props.stickyHeader ? { top: headerHeight } : null}
+              style={props.stickyHeader && headerHeight ? { top: `${headerHeight}px` } : undefined}
             >
               <tr>{headers}</tr>
             </thead>

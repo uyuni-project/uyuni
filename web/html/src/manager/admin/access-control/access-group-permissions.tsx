@@ -8,17 +8,27 @@ import { SearchField } from "components/table/SearchField";
 import { Table } from "components/table/Table";
 import { MessagesContainer, showErrorToastr } from "components/toastr";
 import { Toggler } from "components/toggler";
-import styles from "./AccessGroup.module.scss";
 
 import Network from "utils/network";
+
+import styles from "./AccessGroup.module.scss";
 type Props = {
   state: AccessGroupState;
-  onChange: () => void;
+  onChange: (changes: Record<string, any | undefined>) => void;
   errors: any;
 };
 
+type NamespaceItem = {
+  namespace: string;
+  name: string;
+  description?: string;
+  isAPI: boolean;
+  children?: NamespaceItem[];
+  accessMode?: string[];
+};
+
 const AccessGroupPermissions = (props: Props) => {
-  const [namespaces, setNamespaces] = useState([]);
+  const [namespaces, setNamespaces] = useState<NamespaceItem[]>([]);
   const checkboxRefs = useRef({});
   const [apiNamespace, setApiNamespace] = useState(false);
   const [webNamespace, setWebNamespace] = useState(false);
@@ -167,7 +177,6 @@ const AccessGroupPermissions = (props: Props) => {
     }
   }, [searchValue]);
 
-
   useEffect(() => {
     namespaces.forEach((item) => {
       const updateRefsRecursively = (node) => {
@@ -220,7 +229,10 @@ const AccessGroupPermissions = (props: Props) => {
     </div>
   );
 
-  const getSelectedNamespace = (items = [], selectedModes = ["view", "modify"]) => {
+  const getSelectedNamespace = (
+    items: NamespaceItem[] = [],
+    selectedModes: ("view" | "modify")[] = ["view", "modify"]
+  ): NamespaceItem[] => {
     return items
       .map((item) => {
         const children = item.children ? getSelectedNamespace(item.children, selectedModes) : [];
@@ -230,11 +242,11 @@ const AccessGroupPermissions = (props: Props) => {
         const hasSelectedChildren = children.length > 0;
 
         if (isSelected || hasSelectedChildren) {
-          return { ...item, children };
+          return { ...item, ...(children.length ? { children } : {}) };
         }
         return null;
       })
-      .filter(Boolean);
+      .filter((x): x is NamespaceItem => x !== null);
   };
 
   const handleShowOnlySelectedToggle = () => {
@@ -246,13 +258,15 @@ const AccessGroupPermissions = (props: Props) => {
     <Toggler value={showOnlySelected} handler={handleShowOnlySelectedToggle} text={t("Show only selected")} />
   );
 
-  const finalData = showOnlySelected ? getSelectedNamespace(filteredNamespaces) : filteredNamespaces || [];
-  
+  const finalData: NamespaceItem[] = showOnlySelected
+    ? getSelectedNamespace(filteredNamespaces)
+    : filteredNamespaces || [];
+
   useEffect(() => {
     if (!searchValue || searchValue.trim().length === 0) {
       setExpandedKeys(new Set());
-    return;
-  }
+      return;
+    }
     const keys = new Set<string>();
     const traverse = (items: any[]) => {
       if (!Array.isArray(items)) return;
@@ -315,7 +329,12 @@ const AccessGroupPermissions = (props: Props) => {
             }
             return (
               <b>
-                {row.name} {row.isAPI ? <i className={`fa fa-plug ${styles.apiIcon}`} data-bs-toggle="tooltip" title={t("API")} /> : ""}
+                {row.name}
+                {row.isAPI ? (
+                  <i className={`fa fa-plug ${styles.apiIcon}`} data-bs-toggle="tooltip" title={t("API")} />
+                ) : (
+                  ""
+                )}
               </b>
             );
           }}

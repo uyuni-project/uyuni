@@ -8,8 +8,8 @@ import Network from "utils/network";
 
 type Props = {
   state: any;
-  onChange: () => void;
-  errors: any;
+  onChange?: () => void;
+  errors?: any;
 };
 
 const AccessGroupReview = (props: Props) => {
