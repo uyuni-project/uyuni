@@ -176,4 +176,74 @@ public class Token {
             .map(Instant::ofEpochSecond)
             .orElse(null);
     }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        String sep = ", ";
+
+        builder.append("Token {");
+        builder.append("value = [%s]".formatted(serializedForm)).append(sep);
+        builder.append("valueLen = [%d]".formatted(serializedForm.length())).append(sep);
+
+        try {
+            builder.append("jwtId = [%s]".formatted(getJwtId())).append(sep);
+            builder.append("jwtIdLen = [%d]".formatted(getJwtId().length())).append(sep);
+        }
+        catch (TokenParsingException ex) {
+            builder.append("jwtId = [%s]".formatted(ex.getMessage())).append(sep);
+        }
+
+        try {
+            builder.append("issuingTime = [%s]".formatted(getIssuingTime())).append(sep);
+        }
+        catch (TokenParsingException ex) {
+            builder.append("issuingTime = [%s]".formatted(ex.getMessage())).append(sep);
+        }
+
+        try {
+            builder.append("expirationTime = [%s]".formatted(getExpirationTime())).append(sep);
+        }
+        catch (TokenParsingException ex) {
+            builder.append("expirationTime = [%s]".formatted(ex.getMessage())).append(sep);
+        }
+
+        try {
+            builder.append("notBeforeTime = [%s]".formatted(getNotBeforeTime())).append(sep);
+        }
+        catch (TokenParsingException ex) {
+            builder.append("notBeforeTime = [%s]".formatted(ex.getMessage())).append(sep);
+        }
+
+        try {
+            builder.append("subject = [%s]".formatted(getSubject())).append(sep);
+        }
+        catch (TokenParsingException ex) {
+            builder.append("subject = [%s]".formatted(ex.getMessage())).append(sep);
+        }
+
+        try {
+            builder.append("name = [%s]".formatted(getClaim("name", String.class))).append(sep);
+        }
+        catch (TokenParsingException ex) {
+            builder.append("name = [%s]".formatted(ex.getMessage())).append(sep);
+        }
+        try {
+            builder.append("orgId = [%d]".formatted(getClaim("org", Long.class))).append(sep);
+        }
+        catch (TokenParsingException ex) {
+            builder.append("orgId = [none]");
+        }
+
+        try {
+            List<String> claimList = getListClaim("onlyChannels", String.class);
+            builder.append("onlyChannelsSize = [%d]".formatted(claimList.size())).append(sep);
+            builder.append("onlyChannels = [%s]".formatted(claimList)).append(sep);
+        }
+        catch (TokenParsingException ex) {
+            builder.append("onlyChannels = [%s]".formatted(ex.getMessage())).append(sep);
+        }
+
+        return builder.toString();
+    }
 }

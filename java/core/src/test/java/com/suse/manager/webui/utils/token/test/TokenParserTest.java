@@ -14,6 +14,7 @@ package com.suse.manager.webui.utils.token.test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.suse.manager.webui.utils.token.DefaultTokenBuilder;
 import com.suse.manager.webui.utils.token.Token;
@@ -59,5 +60,29 @@ public class TokenParserTest {
         assertEquals("TokenParserTest", parsedToken.getSubject());
         assertEquals("7f695bb2-5c8a-4b29-8239-daf5687e947f", parsedToken.getJwtId());
         assertEquals("John Doe", parsedToken.getClaim("name", String.class));
+    }
+
+    @Test
+    public void testParseTokenWithUnrelatedSecret() {
+        //the secret is NOT the one of the token
+        String customRandomSecretAES256 = "8f3a7b2c9d4e1f6a5b8c7d2e9f0a3b6c4d8e2f9a0b5c8d7e1f4a9b2c5d8e3f7a";
+        String customToken = """
+                eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJfR0U0TzJSbnozTHBxSEVESzFYeG93IiwiZXhwIjoxNzU5NDk5MTA4LCJpY\
+                XQiOjE3NTkzMTE5MDgsIm5iZiI6MTc1OTMxMTc4OCwib3JnIjowLCJvbmx5Q2hhbm5lbHMiOlsic2xlLW1vZHVsZS1\
+                jb250YWluZXJzMTItcG9vbC14ODZfNjQtc3A1Il19.CzCF6nd3-S4R2aEqP_3alBxvbsZbRF7MeOf5haHNy1k""";
+
+        TokenParser tokenParser = new TokenParser().withCustomSecret(customRandomSecretAES256);
+
+        try {
+            tokenParser.parse(customToken);
+            fail("this should have thrown an exception");
+        }
+        catch (TokenParsingException ex) {
+            int errorStringLen = ex.getMessage().replace("Unable to parse token claims", "").length();
+            assertTrue(errorStringLen > 10); //some meaningful message
+            // Error message is something like:
+            // Unable to parse token claims: JWT rejected due to invalid signature. \
+            // Additional details: [[9] Invalid JWS Signature: JsonWebSignature{"alg":"HS256"}->"...]
+        }
     }
 }
