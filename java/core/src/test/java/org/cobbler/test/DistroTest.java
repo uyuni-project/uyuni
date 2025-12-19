@@ -15,6 +15,8 @@
 
 package org.cobbler.test;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.cobbler.CobblerConnection;
 import org.cobbler.Distro;
 import org.junit.jupiter.api.AfterEach;
@@ -56,6 +58,16 @@ public class DistroTest {
     public void teardown() {
         testDistro = null;
         MockConnection.clear();
+    }
+
+    private void assertEqualsDistroDates(Date expected, Date actual) {
+        // CobblerObject dates are handled as Double and expressed in seconds since epoch
+        // while Date handles milliseconds since epoch.
+        // During the back-forth conversion, there could be some spare seconds appearing due to rounding
+        // hence Assertions.assertEquals(expected, actual) may fail
+
+        long maxDeltaSeconds = 60;
+        assertTrue(Math.abs(expected.getTime() - actual.getTime()) < (maxDeltaSeconds * 1000));
     }
 
     @Test
@@ -225,7 +237,7 @@ public class DistroTest {
         Date result = testDistro.getCreated();
 
         // Assert
-        Assertions.assertEquals(expectedResult, result);
+        assertEqualsDistroDates(expectedResult, result);
     }
 
     @Test
@@ -238,7 +250,7 @@ public class DistroTest {
         Date result = testDistro.getModified();
 
         // Assert
-        Assertions.assertEquals(expectedResult, result);
+        assertEqualsDistroDates(expectedResult, result);
     }
 
     @Test
