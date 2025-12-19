@@ -1086,68 +1086,14 @@ public class ActionManager extends BaseManager {
             Map<String, Object> params = new HashMap<>();
             params.put("delta_id", pd.getId());
             if (pm.getComparisonAsInt() == PackageMetadata.KEY_THIS_ONLY) {
-
-                if (log.isDebugEnabled()) {
-                    log.debug("compare returned [KEY_THIS_ONLY]; " + "deleting package from system");
-                }
-
-                params.put("operation", ActionFactory.TXN_OPERATION_DELETE);
-                params.put("n", pm.getName());
-                params.put("v", pm.getSystem().getVersion());
-                params.put("r", pm.getSystem().getRelease());
-                String epoch = pm.getSystem().getEpoch();
-                params.put("e", StringUtils.isEmpty(epoch) ? null : epoch);
-                params.put("a", pm.getSystem().getArch() != null ?
-                        pm.getSystem().getArch() : "");
-                m.executeUpdate(params);
+                handleKeyThisOnly(params, pm, m);
             }
             else if (pm.getComparisonAsInt() == PackageMetadata.KEY_OTHER_ONLY) {
-
-                if (log.isDebugEnabled()) {
-                    log.debug("compare returned [KEY_OTHER_ONLY]; installing package to system: {}-{}",
-                            pm.getName(), pm.getOtherEvr());
-                }
-
-                params.put("operation", ActionFactory.TXN_OPERATION_INSERT);
-                params.put("n", pm.getName());
-                params.put("v", pm.getOther().getVersion());
-                params.put("r", pm.getOther().getRelease());
-                String epoch = pm.getOther().getEpoch();
-                params.put("e", StringUtils.isEmpty(epoch) ? null : epoch);
-                params.put("a", pm.getOther().getArch() != null ?
-                        pm.getOther().getArch() : "");
-                m.executeUpdate(params);
-
+                handleKeyOtherOnly(params, pm, m);
             }
             else if (pm.getComparisonAsInt() == PackageMetadata.KEY_THIS_NEWER ||
                     pm.getComparisonAsInt() == PackageMetadata.KEY_OTHER_NEWER) {
-
-                if (log.isDebugEnabled()) {
-                    log.debug("compare returned [KEY_THIS_NEWER OR KEY_OTHER_NEWER]; deleting package [{}-{}] " +
-                                    "from system installing package [{}-{}] to system",
-                            pm.getName(), pm.getSystemEvr(), pm.getName(), pm.getOther().getEvr());
-                }
-
-                String epoch;
-                if (isPackageRemovable(pm.getName())) {
-                    params.put("operation", ActionFactory.TXN_OPERATION_DELETE);
-                    params.put("n", pm.getName());
-                    params.put("v", pm.getSystem().getVersion());
-                    params.put("r", pm.getSystem().getRelease());
-                    epoch = pm.getSystem().getEpoch();
-                    params.put("e", StringUtils.isEmpty(epoch) ? null : epoch);
-                    params.put("a", pm.getSystem().getArch() != null ? pm.getOther().getArch() : "");
-                    m.executeUpdate(params);
-                }
-
-                params.put("operation", ActionFactory.TXN_OPERATION_INSERT);
-                params.put("n", pm.getName());
-                params.put("v", pm.getOther().getVersion());
-                params.put("r", pm.getOther().getRelease());
-                epoch = pm.getOther().getEpoch();
-                params.put("e", StringUtils.isEmpty(epoch) ? null : epoch);
-                params.put("a", pm.getOther().getArch() != null ? pm.getOther().getArch() : "");
-                m.executeUpdate(params);
+                handleKeyThisOrOtherNewer(params, pm, m);
             }
         }
 
@@ -1160,6 +1106,66 @@ public class ActionManager extends BaseManager {
         m.executeUpdate(params);
 
         return (PackageAction) action;
+    }
+
+    private static void handleKeyThisOnly(Map<String, Object> params, PackageMetadata pm, WriteMode m) {
+        log.debug("compare returned [KEY_THIS_ONLY]; deleting package from system");
+
+        params.put("operation", ActionFactory.TXN_OPERATION_DELETE);
+        params.put("n", pm.getName());
+        params.put("v", pm.getSystem().getVersion());
+        params.put("r", pm.getSystem().getRelease());
+        String epoch = pm.getSystem().getEpoch();
+        params.put("e", StringUtils.isEmpty(epoch) ? null : epoch);
+        params.put("a", pm.getSystem().getArch() != null ? pm.getSystem().getArch() : "");
+        m.executeUpdate(params);
+    }
+
+    private static void handleKeyOtherOnly(Map<String, Object> params, PackageMetadata pm, WriteMode m) {
+
+        if (log.isDebugEnabled()) {
+            log.debug("compare returned [KEY_OTHER_ONLY]; installing package to system: {}-{}",
+                    pm.getName(), pm.getOtherEvr());
+        }
+
+        params.put("operation", ActionFactory.TXN_OPERATION_INSERT);
+        params.put("n", pm.getName());
+        params.put("v", pm.getOther().getVersion());
+        params.put("r", pm.getOther().getRelease());
+        String epoch = pm.getOther().getEpoch();
+        params.put("e", StringUtils.isEmpty(epoch) ? null : epoch);
+        params.put("a", pm.getOther().getArch() != null ? pm.getOther().getArch() : "");
+        m.executeUpdate(params);
+    }
+
+    private static void handleKeyThisOrOtherNewer(Map<String, Object> params, PackageMetadata pm, WriteMode m) {
+
+        if (log.isDebugEnabled()) {
+            log.debug("compare returned [KEY_THIS_NEWER OR KEY_OTHER_NEWER]; deleting package [{}-{}] " +
+                            "from system installing package [{}-{}] to system",
+                    pm.getName(), pm.getSystemEvr(), pm.getName(), pm.getOther().getEvr());
+        }
+
+        String epoch;
+        if (isPackageRemovable(pm.getName())) {
+            params.put("operation", ActionFactory.TXN_OPERATION_DELETE);
+            params.put("n", pm.getName());
+            params.put("v", pm.getSystem().getVersion());
+            params.put("r", pm.getSystem().getRelease());
+            epoch = pm.getSystem().getEpoch();
+            params.put("e", StringUtils.isEmpty(epoch) ? null : epoch);
+            params.put("a", pm.getSystem().getArch() != null ? pm.getOther().getArch() : "");
+            m.executeUpdate(params);
+        }
+
+        params.put("operation", ActionFactory.TXN_OPERATION_INSERT);
+        params.put("n", pm.getName());
+        params.put("v", pm.getOther().getVersion());
+        params.put("r", pm.getOther().getRelease());
+        epoch = pm.getOther().getEpoch();
+        params.put("e", StringUtils.isEmpty(epoch) ? null : epoch);
+        params.put("a", pm.getOther().getArch() != null ? pm.getOther().getArch() : "");
+        m.executeUpdate(params);
     }
 
     // Check if we want to delete the old package when installing  a
