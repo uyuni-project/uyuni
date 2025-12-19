@@ -335,72 +335,18 @@ public class HardwareMapper {
                 }
                 switch (subsys) {
                     case "block":
-                        if (StringUtils.isNotBlank(props.getValueAsString("ID_BUS"))) {
-                            device.setBus(props.getValueAsString("ID_BUS"));
-                        }
-                        // the sysname is the part after the last "/"
-                        // see libudev/libudev-device.c, udev_device_set_syspath(...)
-                        String name = StringUtils.substringAfterLast(devpath, "/");
-                        device.setDevice(name);
-
-                        if (props.getValueAsString("DEVTYPE").equals("partition")) {
-                            // do not report partitions, just whole disks
+                        if (!mapBlockDevices(props, devpath, device)) {
                             return;
                         }
-                        if (StringUtils.isNotBlank(props.getValueAsString("DM_NAME"))) {
-                            // LVM device
-                            return;
-                        }
-                        if (props.getValueAsString("MAJOR").equals("1")) {
-                            // ram device
-                            return;
-                        }
-                        if (props.getValueAsString("MAJOR").equals("7")) {
-                            // character devices for virtual console terminals
-                            return;
-                        }
-                        // This is interpreted as Physical. But what to do with it?
-                        // result_item['prop1'] = ''
-                        // This is interpreted as Logical. But what to do with it?
-                        // result_item['prop2'] = ''
                         break;
                     case "pci":
-                        String pciClass = props.getValueAsString("PCI_ID");
-                        if (StringUtils.isNotBlank(pciClass)) {
-                            String[] ids = pciClass.split(":");
-                            device.setProp1(ids.length > 0 ? ids[0] : null);
-                            device.setProp2(ids.length > 1 ? ids[1] : null);
-                        }
-                        String pciSubsys = props.getValueAsString("PCI_SUBSYS_ID");
-                        if (StringUtils.isNotBlank(pciSubsys)) {
-                            String[] ids = pciSubsys.split(":");
-                            device.setProp3(ids.length > 0 ? ids[0] : null);
-                            device.setProp4(ids.length > 1 ? ids[1] : null);
-                        }
+                        mapPciDevices(props, device);
                         break;
                     case "usb":
-                        String vendorId = props.getValueAsString("ID_VENDOR_ID");
-                        if (StringUtils.isNotBlank(vendorId)) {
-                            device.setProp1(vendorId);
-                        }
-                        String modelId = props.getValueAsString("ID_MODEL_ID");
-                        if (StringUtils.isNotBlank(modelId)) {
-                            device.setProp2(modelId);
-                        }
+                        mapUsbDevices(props, device);
                         break;
                     case "scsi":
-                        // skip scsi hosts and targets
-                        if (!props.getValueAsString("DEVTYPE").equals("scsi_device")) {
-                            return;
-                        }
-                        // check if this scsi device is already listed as a block device
-                        if (udevdb.stream().anyMatch(dev ->
-                                Objects.toString(dev.get(SYSFS_PATH), "").startsWith(devpath) &&
-                                        Optional.ofNullable(dev.get(ENTRIES))
-                                                .filter(Map.class::isInstance)
-                                                .map(Map.class::cast)
-                                                .filter(m -> "block".equals(m.get("SUBSYSTEM"))
-                                                ).isPresent())) {
+                        if (!mapScsiDevices(udevdb, devpath, props)) {
                             return;
                         }
                         break;
@@ -433,6 +379,82 @@ public class HardwareMapper {
                 server.getDevices().add(device);
             }
         });
+    }
+
+    private boolean mapBlockDevices(ValueMap props, String devpath, Device device) {
+        if (StringUtils.isNotBlank(props.getValueAsString("ID_BUS"))) {
+            device.setBus(props.getValueAsString("ID_BUS"));
+        }
+        // the sysname is the part after the last "/"
+        // see libudev/libudev-device.c, udev_device_set_syspath(...)
+        String name = StringUtils.substringAfterLast(devpath, "/");
+        device.setDevice(name);
+
+        if (props.getValueAsString("DEVTYPE").equals("partition")) {
+            // do not report partitions, just whole disks
+            return false;
+        }
+        if (StringUtils.isNotBlank(props.getValueAsString("DM_NAME"))) {
+            // LVM device
+            return false;
+        }
+        if (props.getValueAsString("MAJOR").equals("1")) {
+            // ram device
+            return false;
+        }
+        if (props.getValueAsString("MAJOR").equals("7")) {
+            // character devices for virtual console terminals
+            return false;
+        }
+        // This is interpreted as Physical. But what to do with it?
+        // result_item['prop1'] = ''
+        // This is interpreted as Logical. But what to do with it?
+        // result_item['prop2'] = ''
+        return true;
+    }
+
+    private void mapPciDevices(ValueMap props, Device device) {
+        String pciClass = props.getValueAsString("PCI_ID");
+        if (StringUtils.isNotBlank(pciClass)) {
+            String[] ids = pciClass.split(":");
+            device.setProp1(ids.length > 0 ? ids[0] : null);
+            device.setProp2(ids.length > 1 ? ids[1] : null);
+        }
+        String pciSubsys = props.getValueAsString("PCI_SUBSYS_ID");
+        if (StringUtils.isNotBlank(pciSubsys)) {
+            String[] ids = pciSubsys.split(":");
+            device.setProp3(ids.length > 0 ? ids[0] : null);
+            device.setProp4(ids.length > 1 ? ids[1] : null);
+        }
+    }
+
+    private void mapUsbDevices(ValueMap props, Device device) {
+        String vendorId = props.getValueAsString("ID_VENDOR_ID");
+        if (StringUtils.isNotBlank(vendorId)) {
+            device.setProp1(vendorId);
+        }
+        String modelId = props.getValueAsString("ID_MODEL_ID");
+        if (StringUtils.isNotBlank(modelId)) {
+            device.setProp2(modelId);
+        }
+    }
+
+    private boolean mapScsiDevices(List<Map<String, Object>> udevdb, String devpath, ValueMap props) {
+        // skip scsi hosts and targets
+        if (!props.getValueAsString("DEVTYPE").equals("scsi_device")) {
+            return false;
+        }
+        // check if this scsi device is already listed as a block device
+        if (udevdb.stream().anyMatch(dev ->
+                Objects.toString(dev.get(SYSFS_PATH), "").startsWith(devpath) &&
+                        Optional.ofNullable(dev.get(ENTRIES))
+                                .filter(Map.class::isInstance)
+                                .map(Map.class::cast)
+                                .filter(m -> "block".equals(m.get("SUBSYSTEM"))
+                                ).isPresent())) {
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -616,53 +638,7 @@ public class HardwareMapper {
             if (StringUtils.isNotBlank(virtUuid)) {
 
                 virtUuid = StringUtils.remove(virtUuid, '-');
-
-                String virtTypeLabel = virtTypeLowerCase;
-                switch (virtTypeLowerCase) {
-                    case "xen":
-                        if ("Xen PV DomU".equals(virtSubtype)) {
-                            virtTypeLabel = "para_virtualized";
-                        }
-                        else {
-                            virtTypeLabel = "fully_virtualized";
-                        }
-                        break;
-                    case "qemu":
-                    case "kvm":
-                        virtTypeLabel = "qemu";
-                        break;
-                    case "nitro":
-                        virtTypeLabel = "aws_nitro";
-                        break;
-                    default:
-                        LOG.info("Detected virtual instance type '{}' for minion '{}'",
-                                virtTypeLabel, server.getMinionId());
-                }
-                if (virtSubtype.startsWith("Amazon EC2")) {
-                    switch (virtTypeLowerCase) {
-                        case "xen":
-                            virtTypeLabel = "aws_xen";
-                            break;
-                        case "qemu":
-                        case "kvm":
-                        case "nitro":
-                            virtTypeLabel = "aws_nitro";
-                            break;
-                        default:
-                            virtTypeLabel = "aws";
-                    }
-                }
-                type = VirtualInstanceFactory.getInstance()
-                        .getVirtualInstanceType(virtTypeLabel);
-
-                if (type == null) { // fallback
-                    type = VirtualInstanceFactory.getInstance().getFullyVirtType();
-                    LOG.warn(
-                            "Can't find virtual instance type for string '{}'. " +
-                            "Defaulting to '{}' for minion '{}'",
-                            virtTypeLowerCase, type.getLabel(), server.getMinionId());
-                }
-
+                type = getVirtualInstanceType(virtTypeLowerCase, virtSubtype);
             }
         }
         else if (smbiosRecordsSystem.isPresent()) {
@@ -726,6 +702,54 @@ public class HardwareMapper {
                         virtualInstance -> updateVirtualInstance(vCPUs, memory, virtType, virtualInstance));
             }
         }
+    }
+
+    private VirtualInstanceType getVirtualInstanceType(String virtTypeLowerCase, String virtSubtype) {
+        String virtTypeLabel = virtTypeLowerCase;
+        switch (virtTypeLowerCase) {
+            case "xen":
+                if ("Xen PV DomU".equals(virtSubtype)) {
+                    virtTypeLabel = "para_virtualized";
+                }
+                else {
+                    virtTypeLabel = "fully_virtualized";
+                }
+                break;
+            case "qemu":
+            case "kvm":
+                virtTypeLabel = "qemu";
+                break;
+            case "nitro":
+                virtTypeLabel = "aws_nitro";
+                break;
+            default:
+                LOG.info("Detected virtual instance type '{}' for minion '{}'",
+                        virtTypeLabel, server.getMinionId());
+        }
+        if (virtSubtype.startsWith("Amazon EC2")) {
+            switch (virtTypeLowerCase) {
+                case "xen":
+                    virtTypeLabel = "aws_xen";
+                    break;
+                case "qemu":
+                case "kvm":
+                case "nitro":
+                    virtTypeLabel = "aws_nitro";
+                    break;
+                default:
+                    virtTypeLabel = "aws";
+            }
+        }
+
+        VirtualInstanceType type = VirtualInstanceFactory.getInstance().getVirtualInstanceType(virtTypeLabel);
+
+        if (type == null) { // fallback
+            type = VirtualInstanceFactory.getInstance().getFullyVirtType();
+            LOG.warn("Can't find virtual instance type for string '{}'. Defaulting to '{}' for minion '{}'",
+                    virtTypeLowerCase, type.getLabel(), server.getMinionId());
+        }
+
+        return type;
     }
 
     /**
@@ -1026,45 +1050,7 @@ public class HardwareMapper {
                 }
                 break;
             case "usb":
-                String vendorId = attrs.getValueAsString("ID_VENDOR_ID");
-                String product = attrs.getValueAsString("PRODUCT");
-                if (StringUtils.isNotBlank(vendorId)) {
-                    String usbDeviceDesc = attrs.getValueAsString("ID_MODEL_ID");
-
-                    if (StringUtils.isNotBlank(vendorFromDb) ||
-                            StringUtils.isNotBlank(modelFromDb)) {
-                        result = String.format("%s|%s", vendorFromDb, modelFromDb);
-                    }
-                    else {
-                        // TODO lookup in hwdata
-                        result = String.format("%s|%s", vendorId, usbDeviceDesc);
-                    }
-                }
-                else {
-                    String devtype = attrs.getValueAsString("DEVTYPE");
-                    if (devtype.equals("usb_interface")) {
-                        String driver = attrs.getValueAsString("DRIVER");
-                        if (driver.equals("usbhid")) {
-                            result = "USB HID Interface";
-                        }
-                        else if (driver.equals("hub")) {
-                            result = "USB Hub Interface";
-                        }
-                        else {
-                            result = "USB Interface";
-                        }
-                    }
-                    else if (devtype.equals("usb_device") && StringUtils.isNotBlank(product)) {
-                        String[] p = product.split("/");
-                        String usbVendorDesc = p.length > 0 ?
-                                String.format("%04x", Integer.parseInt(p[0], 16)) : "";
-                        String usbDeviceDesc = p.length > 1 ?
-                                String.format("%04x", Integer.parseInt(p[1], 16)) : "";
-
-                        // TODO lookup in hwdata
-                        result = String.format("%s|%s", usbVendorDesc, usbDeviceDesc);
-                    }
-                }
+                result = getDeviceDescUsb(attrs, vendorFromDb, modelFromDb);
                 break;
             case "block":
                 result = attrs.getValueAsString("ID_MODEL");
@@ -1075,6 +1061,51 @@ public class HardwareMapper {
         }
 
         return StringUtils.isNotBlank(result) ? result : null;
+    }
+
+    private String getDeviceDescUsb(ValueMap attrs, String vendorFromDb, String modelFromDb) {
+        String result = null;
+
+        String vendorId = attrs.getValueAsString("ID_VENDOR_ID");
+        String product = attrs.getValueAsString("PRODUCT");
+        if (StringUtils.isNotBlank(vendorId)) {
+            String usbDeviceDesc = attrs.getValueAsString("ID_MODEL_ID");
+
+            if (StringUtils.isNotBlank(vendorFromDb) ||
+                    StringUtils.isNotBlank(modelFromDb)) {
+                result = String.format("%s|%s", vendorFromDb, modelFromDb);
+            }
+            else {
+                // TODO lookup in hwdata
+                result = String.format("%s|%s", vendorId, usbDeviceDesc);
+            }
+        }
+        else {
+            String devtype = attrs.getValueAsString("DEVTYPE");
+            if (devtype.equals("usb_interface")) {
+                String driver = attrs.getValueAsString("DRIVER");
+                if (driver.equals("usbhid")) {
+                    result = "USB HID Interface";
+                }
+                else if (driver.equals("hub")) {
+                    result = "USB Hub Interface";
+                }
+                else {
+                    result = "USB Interface";
+                }
+            }
+            else if (devtype.equals("usb_device") && StringUtils.isNotBlank(product)) {
+                String[] p = product.split("/");
+                String usbVendorDesc = p.length > 0 ?
+                        String.format("%04x", Integer.parseInt(p[0], 16)) : "";
+                String usbDeviceDesc = p.length > 1 ?
+                        String.format("%04x", Integer.parseInt(p[1], 16)) : "";
+
+                // TODO lookup in hwdata
+                result = String.format("%s|%s", usbVendorDesc, usbDeviceDesc);
+            }
+        }
+        return result;
     }
 
     private String classifyClass(String minionId, Map<String, Object> device) {
@@ -1122,54 +1153,9 @@ public class HardwareMapper {
 
         // PCI devices
         if (StringUtils.isNotBlank(baseClass)) {
-            if (baseClass.equals(PciClassCodes.PCI_BASE_CLASS_DISPLAY.getCode())) {
-                return Device.CLASS_VIDEO;
-            }
-            else if (baseClass.equals(PciClassCodes.PCI_BASE_CLASS_SERIAL.getCode())) {
-                if (PciClassCodes.PCI_CLASS_SERIAL_USB.getCode().equals(subClass)) {
-                    return Device.CLASS_USB;
-                }
-                else if (PciClassCodes.PCI_CLASS_SERIAL_FIREWIRE.getCode()
-                        .equals(subClass)) {
-                    return Device.CLASS_FIREWIRE;
-                }
-            }
-            else if (baseClass.equals(PciClassCodes.PCI_BASE_CLASS_STORAGE.getCode())) {
-                if (PciClassCodes.PCI_CLASS_STORAGE_IDE.getCode().equals(subClass)) {
-                    return Device.CLASS_IDE;
-                }
-                if (PciClassCodes.PCI_CLASS_STORAGE_SCSI.getCode().equals(subClass)) {
-                    return Device.CLASS_SCSI;
-                }
-                if (PciClassCodes.PCI_CLASS_STORAGE_RAID.getCode().equals(subClass)) {
-                    return Device.CLASS_RAID;
-                }
-                if (PciClassCodes.PCI_CLASS_STORAGE_FLOPPY.getCode().equals(subClass)) {
-                    return Device.CLASS_FLOPPY;
-                }
-            }
-            else if (baseClass.equals(PciClassCodes.PCI_BASE_CLASS_COMMUNICATION
-                    .getCode()) && PciClassCodes.PCI_CLASS_COMMUNICATION_MODEM
-                    .getCode().equals(subClass)) {
-                return Device.CLASS_MODEM;
-            }
-            else if (baseClass.equals(PciClassCodes.PCI_BASE_CLASS_INPUT.getCode()) &&
-                    PciClassCodes.PCI_CLASS_INPUT_SCANNER.getCode().equals(subClass)) {
-                return Device.CLASS_SCANNER;
-            }
-            else if (baseClass.equals(PciClassCodes.PCI_BASE_CLASS_MULTIMEDIA.getCode())) {
-                if (PciClassCodes.PCI_CLASS_MULTIMEDIA_VIDEO.getCode().equals(subClass)) {
-                    return Device.CLASS_CAPTURE;
-                }
-                if (PciClassCodes.PCI_CLASS_MULTIMEDIA_AUDIO.getCode().equals(subClass)) {
-                    return Device.CLASS_AUDIO;
-                }
-            }
-            else if (baseClass.equals(PciClassCodes.PCI_BASE_CLASS_BRIDGE.getCode()) &&
-                    (PciClassCodes.PCI_CLASS_BRIDGE_PCMCIA.getCode().equals(subClass) ||
-                            PciClassCodes.PCI_CLASS_BRIDGE_CARDBUS.getCode()
-                                    .equals(subClass))) {
-                return Device.CLASS_SOCKET;
+            String classificationValue = classifyPciDevices(baseClass, subClass);
+            if (null != classificationValue) {
+                return classificationValue;
             }
         }
 
@@ -1187,20 +1173,9 @@ public class HardwareMapper {
         }
 
         if (subsys.equals("scsi")) {
-            if (attrs.getValueAsString("DEVTYPE").equals("scsi_device")) {
-                long devType = extraAttrs.getValueAsLong("SCSI_SYS_TYPE").orElse(-1L);
-                if (devType == 0 || devType == 14) {
-                    return Device.CLASS_HD;
-                }
-                else if (devType == 1) {
-                    return Device.CLASS_TAPE;
-                }
-                else if (devType == 5) {
-                    return Device.CLASS_CDROM;
-                }
-                else {
-                    return Device.CLASS_OTHER;
-                }
+            String classificationValue = classifyScsiDevices(attrs, extraAttrs);
+            if (null != classificationValue) {
+                return classificationValue;
             }
         }
 
@@ -1216,6 +1191,80 @@ public class HardwareMapper {
         // Catchall for specific devices, only do this after all the others
         if (subsys.equals("pci") || subsys.equals("usb")) {
             return Device.CLASS_OTHER;
+        }
+
+        return null;
+    }
+
+    private String classifyPciDevices(String baseClass, String subClass) {
+        if (baseClass.equals(PciClassCodes.PCI_BASE_CLASS_DISPLAY.getCode())) {
+            return Device.CLASS_VIDEO;
+        }
+        else if (baseClass.equals(PciClassCodes.PCI_BASE_CLASS_SERIAL.getCode())) {
+            if (PciClassCodes.PCI_CLASS_SERIAL_USB.getCode().equals(subClass)) {
+                return Device.CLASS_USB;
+            }
+            else if (PciClassCodes.PCI_CLASS_SERIAL_FIREWIRE.getCode()
+                    .equals(subClass)) {
+                return Device.CLASS_FIREWIRE;
+            }
+        }
+        else if (baseClass.equals(PciClassCodes.PCI_BASE_CLASS_STORAGE.getCode())) {
+            if (PciClassCodes.PCI_CLASS_STORAGE_IDE.getCode().equals(subClass)) {
+                return Device.CLASS_IDE;
+            }
+            if (PciClassCodes.PCI_CLASS_STORAGE_SCSI.getCode().equals(subClass)) {
+                return Device.CLASS_SCSI;
+            }
+            if (PciClassCodes.PCI_CLASS_STORAGE_RAID.getCode().equals(subClass)) {
+                return Device.CLASS_RAID;
+            }
+            if (PciClassCodes.PCI_CLASS_STORAGE_FLOPPY.getCode().equals(subClass)) {
+                return Device.CLASS_FLOPPY;
+            }
+        }
+        else if (baseClass.equals(PciClassCodes.PCI_BASE_CLASS_COMMUNICATION
+                .getCode()) && PciClassCodes.PCI_CLASS_COMMUNICATION_MODEM
+                .getCode().equals(subClass)) {
+            return Device.CLASS_MODEM;
+        }
+        else if (baseClass.equals(PciClassCodes.PCI_BASE_CLASS_INPUT.getCode()) &&
+                PciClassCodes.PCI_CLASS_INPUT_SCANNER.getCode().equals(subClass)) {
+            return Device.CLASS_SCANNER;
+        }
+        else if (baseClass.equals(PciClassCodes.PCI_BASE_CLASS_MULTIMEDIA.getCode())) {
+            if (PciClassCodes.PCI_CLASS_MULTIMEDIA_VIDEO.getCode().equals(subClass)) {
+                return Device.CLASS_CAPTURE;
+            }
+            if (PciClassCodes.PCI_CLASS_MULTIMEDIA_AUDIO.getCode().equals(subClass)) {
+                return Device.CLASS_AUDIO;
+            }
+        }
+        else if (baseClass.equals(PciClassCodes.PCI_BASE_CLASS_BRIDGE.getCode()) &&
+                (PciClassCodes.PCI_CLASS_BRIDGE_PCMCIA.getCode().equals(subClass) ||
+                        PciClassCodes.PCI_CLASS_BRIDGE_CARDBUS.getCode()
+                                .equals(subClass))) {
+            return Device.CLASS_SOCKET;
+        }
+
+        return null;
+    }
+
+    private String classifyScsiDevices(ValueMap attrs, ValueMap extraAttrs) {
+        if (attrs.getValueAsString("DEVTYPE").equals("scsi_device")) {
+            long devType = extraAttrs.getValueAsLong("SCSI_SYS_TYPE").orElse(-1L);
+            if (devType == 0 || devType == 14) {
+                return Device.CLASS_HD;
+            }
+            else if (devType == 1) {
+                return Device.CLASS_TAPE;
+            }
+            else if (devType == 5) {
+                return Device.CLASS_CDROM;
+            }
+            else {
+                return Device.CLASS_OTHER;
+            }
         }
 
         return null;
