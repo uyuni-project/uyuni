@@ -1,3 +1,4 @@
+--
 -- Copyright (c) 2025 SUSE LLC
 --
 -- This software is licensed to you under the GNU General Public License,
@@ -11,7 +12,6 @@
 -- granted to use or replicate Red Hat trademarks that are incorporated
 -- in this software or its documentation.
 --
-CREATE EXTENSION IF NOT EXISTS pg_trgm;
 
 CREATE OR REPLACE FUNCTION search_namespace(
     search_term text
@@ -92,17 +92,3 @@ END;
 $$
 LANGUAGE plpgsql
 STABLE;
-
-CREATE INDEX IF NOT EXISTS namespace_search_tsvector_idx
-ON access.namespace
-USING GIN (
-    to_tsvector('english', regexp_replace(namespace, '\.', ' ', 'g') || ' ' || coalesce(description, ''))
-);
-
-CREATE INDEX IF NOT EXISTS namespace_search_trgm_idx
-ON access.namespace
-USING GIN (lower(regexp_replace(namespace, '\.', ' ', 'g')) gin_trgm_ops);
-
-CREATE INDEX IF NOT EXISTS description_search_trgm_idx
-ON access.namespace
-USING GIN (lower(description) gin_trgm_ops);

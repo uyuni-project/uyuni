@@ -21,6 +21,16 @@ COMMENT ON TABLE access.namespace IS 'Namespace definitions to provide access to
 CREATE UNIQUE INDEX namespace_ns_mode_uq
 ON access.namespace(namespace, access_mode);
 
-CREATE INDEX namespace_trgm_idx
+CREATE INDEX namespace_search_tsvector_idx
 ON access.namespace
-USING gist (lower(namespace||description) gist_trgm_ops);
+USING GIN (
+    to_tsvector('english', regexp_replace(namespace, '\.', ' ', 'g') || ' ' || coalesce(description, ''))
+);
+
+CREATE INDEX namespace_search_trgm_idx
+ON access.namespace
+USING GIN (lower(regexp_replace(namespace, '\.', ' ', 'g')) gin_trgm_ops);
+
+CREATE INDEX description_search_trgm_idx
+ON access.namespace
+USING GIN (lower(description) gin_trgm_ops);
