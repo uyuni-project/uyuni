@@ -5,7 +5,7 @@ import xor from "lodash/xor";
 
 import { ProjectSoftwareSourceType } from "manager/content-management/shared/type";
 
-import { BaseChannelType, ChannelTreeType, ChildChannelType, isBaseChannel } from "core/channels/type/channels.type";
+import { ChannelTreeType, isBaseChannel } from "core/channels/type/channels.type";
 
 import { DEPRECATED_Select } from "components/input";
 import { DEPRECATED_onClick } from "components/utils";
@@ -71,11 +71,11 @@ const ChannelsSelection = (props: PropsType) => {
 
       // Select the new base along with any recommended children
       const channel = channelProcessor.getChannelById(channelId);
-      onToggleChannelSelect(channel, true);
+      onToggleChannelSelect(channel.id, true);
       if (isBaseChannel(channel)) {
-        onToggleChannelOpen(channel, true);
-        channel.recommendedChildren.forEach((child) => {
-          onToggleChannelSelect(child, true);
+        onToggleChannelOpen(channel.id, true);
+        channel.recommendedChildrenIds.forEach((childId) => {
+          onToggleChannelSelect(childId, true);
         });
       }
     });
@@ -103,18 +103,18 @@ const ChannelsSelection = (props: PropsType) => {
     []
   );
 
-  const onToggleChannelSelect = (channel: BaseChannelType | ChildChannelType, toState?: boolean) => {
+  const onToggleChannelSelect = (channelId: number, toState?: boolean) => {
     if (typeof toState === "undefined") {
-      toState = !selectedChannelIds.has(channel.id);
+      toState = !selectedChannelIds.has(channelId);
     }
     if (toState) {
-      selectedChannelIds.add(channel.id);
-      const requires = channelProcessor.getRequires(channel.id);
+      selectedChannelIds.add(channelId);
+      const requires = channelProcessor.getRequires(channelId);
       requires?.forEach((item) => selectedChannelIds.add(item.id));
       setSelectedChannelIds(new Set(selectedChannelIds));
     } else {
-      selectedChannelIds.delete(channel.id);
-      const requiredBy = channelProcessor.getRequiredBy(channel.id);
+      selectedChannelIds.delete(channelId);
+      const requiredBy = channelProcessor.getRequiredBy(channelId);
       requiredBy?.forEach((item) => selectedChannelIds.delete(item.id));
       setSelectedChannelIds(new Set(selectedChannelIds));
     }
@@ -124,14 +124,14 @@ const ChannelsSelection = (props: PropsType) => {
     props.onChange(selectedChannelLabels);
   };
 
-  const onToggleChannelOpen = (channel: BaseChannelType, toState?: boolean) => {
+  const onToggleChannelOpen = (channelId: number, toState?: boolean) => {
     if (typeof toState === "undefined") {
-      toState = !openRows.has(channel.id);
+      toState = !openRows.has(channelId);
     }
     if (toState) {
-      setOpenRows(new Set([...openRows, channel.id]));
+      setOpenRows(new Set([...openRows, channelId]));
     } else {
-      openRows.delete(channel.id);
+      openRows.delete(channelId);
       setOpenRows(new Set(openRows));
     }
   };
