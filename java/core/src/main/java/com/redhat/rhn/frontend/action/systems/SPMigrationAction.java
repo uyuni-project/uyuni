@@ -38,8 +38,10 @@ import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
 import com.redhat.rhn.manager.distupgrade.DistUpgradePaygException;
+import com.redhat.rhn.manager.distupgrade.NoInstalledProductException;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.maintenance.NotInMaintenanceModeException;
 
@@ -136,70 +138,19 @@ public class SPMigrationAction extends RhnAction {
             return actionMapping.findForward(populateRequestFromAction(request, ctx));
         }
 
+        // Init request parameters
+        SPMigrationActionParameterHolder parHolder = new SPMigrationActionParameterHolder();
+
         Optional<MinionServer> minion = MinionServerFactory.lookupById(server.getId());
-        // Check if this server is a minion
-        boolean isMinion = minion.isPresent();
-        logger.debug("is a minion system? {}", isMinion);
-        request.setAttribute(IS_MINION, isMinion);
 
-        // Check if this is a SUSE system (for minions only)
-        boolean isSUSEMinion = isMinion && minion.get().isOsFamilySuse();
-        logger.debug("is a SUSE minion? {}", isSUSEMinion);
-        request.setAttribute(IS_SUSE_MINION, isSUSEMinion);
-
-        // Check if this is a RedHat system (for minions only)
-        boolean isRedHatMinion = isMinion && minion.get().getOsFamily().equals("RedHat");
-        logger.debug("is a RedHat minion? {}", isRedHatMinion);
-        request.setAttribute(IS_REDHAT_MINION, isRedHatMinion);
-
-        // Check if the salt package on the minion is up to date (for minions only)
-        String saltPackage = "salt";
-        if (PackageFactory.lookupByNameAndServer("venv-salt-minion", server) != null) {
-            saltPackage = "venv-salt-minion";
-        }
-        boolean isSaltUpToDate = PackageManager.
-                getServerNeededUpdatePackageByName(server.getId(), saltPackage) == null;
-        logger.debug("salt package is up-to-date? {}", isSaltUpToDate);
-        request.setAttribute(IS_SALT_UP_TO_DATE, isSaltUpToDate);
-        request.setAttribute(SALT_PACKAGE, saltPackage);
-
-        // Check if this server supports distribution upgrades via capabilities
-        // (for traditional clients only)
-        boolean supported = isSUSEMinion || isRedHatMinion ||
-                DistUpgradeManager.isUpgradeSupported(server, ctx.getCurrentUser());
-        logger.debug("Upgrade supported for '{}'? {}", server.getName(), supported);
-        request.setAttribute(UPGRADE_SUPPORTED, supported);
-
-        // Check if zypp-plugin-spacewalk is installed (for traditional clients only)
-        boolean zyppPluginInstalled = PackageFactory.lookupByNameAndServer(
-                "zypp-plugin-spacewalk", server) != null;
-        logger.debug("zypp plugin installed? {}", zyppPluginInstalled);
-        request.setAttribute(ZYPP_INSTALLED, zyppPluginInstalled);
-
-        // Check if the newest update stack is installed (for traditional clients only)
-        boolean updateStackUpdateNeeded = ErrataManager.updateStackUpdateNeeded(
-                ctx.getCurrentUser(), server);
-        logger.debug("update stack update needed? {}", updateStackUpdateNeeded);
-        request.setAttribute(UPDATESTACK_UPDATE_NEEDED, updateStackUpdateNeeded);
-
+        setGeneralAttributes(request, ctx, server, minion, parHolder);
 
         // Check if there is already a migration in the schedule
         Action migration = null;
-        if (supported) {
+        if (parHolder.isTradCliUpgradesViaCapabilitySupported()) {
             migration = ActionFactory.isMigrationScheduledForServer(server.getId());
         }
         request.setAttribute(MIGRATION_SCHEDULED, migration);
-
-        // Init request parameters
-        Long targetBaseProduct = null;
-        Long[] targetAddonProducts = null;
-        Long targetBaseChannel = null;
-        Long[] targetChildChannels = null;
-        boolean dryRun = false;
-        boolean hasDryRun = true;
-        boolean goBack = false;
-        boolean targetProductSelectedEmpty = false;
-        boolean allowVendorChange = false;
 
         String targetProductSelected = request.getParameter(TARGET_PRODUCT_SELECTED);
 
@@ -207,190 +158,270 @@ public class SPMigrationAction extends RhnAction {
         String dispatch = request.getParameter(RequestContext.DISPATCH);
         if (dispatch != null) {
             actionStep = (String) form.get(ACTION_STEP);
-
-            // Get target product and channel IDs
-            targetBaseProduct = (Long) form.get(BASE_PRODUCT);
-            targetAddonProducts = (Long[]) form.get(ADDON_PRODUCTS);
-            targetBaseChannel = (Long) form.get(BASE_CHANNEL);
-            targetChildChannels = (Long[]) form.get(CHILD_CHANNELS);
-            allowVendorChange = BooleanUtils.isTrue((Boolean)form.get(ALLOW_VENDOR_CHANGE));
-
-            // Get additional flags
-            if (dispatch.equals(LocalizationService.getInstance().getMessage(DISPATCH_DRYRUN))) {
-                dryRun = true;
-            }
-
-            // flag to know if we are going back or forward in the setup wizard
-            goBack = dispatch.equals(LocalizationService.getInstance().getMessage(GO_BACK));
-
-            // flag to know if we should show the dry-run button or not
-            String bpProductClass = minion.map(m -> m.getInstalledProductSet()
-                    .map(i -> i.getBaseProduct().getChannelFamily().getLabel())
-                    .orElse("")).orElse("");
-
-            String tgtProductClass = Optional.ofNullable(targetBaseProduct)
-                    .map(SUSEProductFactory::getProductById)
-                    .map(s -> s.getChannelFamily().getLabel())
-                    .orElse("");
-
-            hasDryRun = !isRedHatMinion && bpProductClass.equals(tgtProductClass);
-            request.setAttribute(HAS_DRYRUN_CAPABLITY, hasDryRun);
-
+            handleWhenDispatching(request, form, dispatch,  minion,  parHolder);
         }
 
         // if submitting step 1 (TARGET) but no radio button
         // for target migration selected, return step 1 (TARGET)
         if (dispatch != null && actionStep.equals(TARGET) && targetProductSelected == null) {
-            targetProductSelectedEmpty = true;
+            parHolder.setTargetProductSelectedEmpty(true);
             dispatch = null;
         }
-        request.setAttribute("targetProductSelectedEmpty", targetProductSelectedEmpty);
+        request.setAttribute("targetProductSelectedEmpty", parHolder.isTargetProductSelectedEmpty());
 
         // Find the action forward
-        ActionForward forward = findForward(actionMapping, actionStep, dispatch, goBack);
+        ActionForward forward = findForward(actionMapping, actionStep, dispatch, parHolder.isGoBack());
 
         // Put data to the request
-        if (forward.getName().equals(TARGET) && supported && migration == null) {
-            // Find target products
-            Optional<SUSEProductSet> installedProducts = server.getInstalledProductSet();
-            if (installedProducts.isEmpty()) {
-                // Installed products are 'unknown'
-                logger.debug("Installed products are 'unknown'");
+        if (forward.getName().equals(TARGET) && parHolder.isTradCliUpgradesViaCapabilitySupported() &&
+                migration == null) {
+
+            boolean mustReturn = handleTargetForward(request, ctx, server);
+            if (mustReturn) {
                 return forward;
             }
-            installedProducts.ifPresent(pset -> {
-                logger.debug(pset.toString());
-                if (pset.getBaseProduct() == null) {
-                    logger.error("Server: {} has no base product installed. Check your servers installed products.",
-                            server.getId());
-                }
-            });
+        }
+        else if (forward.getName().equals(SETUP)) {
+            handleSetupForward(request, ctx, server);
+         }
+        else if (forward.getName().equals(CONFIRM)) {
+            setConfirmAttributes(request, ctx, server, form,
+                    parHolder.getTargetBaseProduct(), parHolder.getTargetAddonProducts(),
+                    parHolder.getTargetBaseChannel(), parHolder.getTargetChildChannels(),
+                    parHolder.isAllowVendorChange());
+        }
+        else if (forward.getName().equals(SCHEDULE)) {
+            return handleScheduleForward(actionMapping, request, ctx, server, form, forward, parHolder);
+        }
+
+        return forward;
+    }
+
+    private void setGeneralAttributes(HttpServletRequest request, RequestContext ctx, Server server,
+                                      Optional<MinionServer> minion, SPMigrationActionParameterHolder parHolder) {
+        // Check if this server is a minion
+        parHolder.setMinion(minion.isPresent());
+        logger.debug("is a minion system? {}", parHolder.isMinion());
+        request.setAttribute(IS_MINION, parHolder.isMinion());
+
+        // Check if this is a SUSE system (for minions only)
+        parHolder.setSuseMinion(minion.map(MinionServer::isOsFamilySuse).orElse(false));
+        logger.debug("is a SUSE minion? {}", parHolder.isSuseMinion());
+        request.setAttribute(IS_SUSE_MINION, parHolder.isSuseMinion());
+
+        // Check if this is a RedHat system (for minions only)
+        parHolder.setRedHatMinion(minion.map(m -> m.getOsFamily().equals("RedHat")).orElse(false));
+        logger.debug("is a RedHat minion? {}", parHolder.isRedHatMinion());
+        request.setAttribute(IS_REDHAT_MINION, parHolder.isRedHatMinion());
+
+        // Check if the salt package on the minion is up to date (for minions only)
+        parHolder.setSaltPackageOnMinion("salt");
+        if (PackageFactory.lookupByNameAndServer("venv-salt-minion", server) != null) {
+            parHolder.setSaltPackageOnMinion("venv-salt-minion");
+        }
+        parHolder.setSaltPackageUpToDateOnMinion(PackageManager.
+                getServerNeededUpdatePackageByName(server.getId(), parHolder.getSaltPackageOnMinion()) == null);
+        logger.debug("salt package is up-to-date? {}", parHolder.isSaltPackageUpToDateOnMinion());
+        request.setAttribute(IS_SALT_UP_TO_DATE, parHolder.isSaltPackageUpToDateOnMinion());
+        request.setAttribute(SALT_PACKAGE, parHolder.getSaltPackageOnMinion());
+
+        // Check if this server supports distribution upgrades via capabilities
+        // (for traditional clients only)
+        parHolder.setTradCliUpgradesViaCapabilitySupported(parHolder.isSuseMinion() || parHolder.isRedHatMinion() ||
+                DistUpgradeManager.isUpgradeSupported(server, ctx.getCurrentUser()));
+        logger.debug("Upgrade supported for '{}'? {}", server.getName(),
+                parHolder.isTradCliUpgradesViaCapabilitySupported());
+        request.setAttribute(UPGRADE_SUPPORTED, parHolder.isTradCliUpgradesViaCapabilitySupported());
+
+        // Check if zypp-plugin-spacewalk is installed (for traditional clients only)
+        parHolder.setTradCliZyppPluginInstalled(PackageFactory.
+                lookupByNameAndServer("zypp-plugin-spacewalk", server) != null);
+        logger.debug("zypp plugin installed? {}", parHolder.isTradCliZyppPluginInstalled());
+        request.setAttribute(ZYPP_INSTALLED, parHolder.isTradCliZyppPluginInstalled());
+
+        // Check if the newest update stack is installed (for traditional clients only)
+        parHolder.setTradCliUpdateStackUpdateNeeded(ErrataManager
+                .updateStackUpdateNeeded(ctx.getCurrentUser(), server));
+        logger.debug("update stack update needed? {}", parHolder.isTradCliUpdateStackUpdateNeeded());
+        request.setAttribute(UPDATESTACK_UPDATE_NEEDED, parHolder.isTradCliUpdateStackUpdateNeeded());
+    }
+
+    private void handleWhenDispatching(HttpServletRequest request, DynaActionForm form, String dispatch,
+                                       Optional<MinionServer> minion, SPMigrationActionParameterHolder parHolder) {
+        // Get target product and channel IDs
+        parHolder.setTargetBaseProduct((Long) form.get(BASE_PRODUCT));
+        parHolder.setTargetAddonProducts((Long[]) form.get(ADDON_PRODUCTS));
+        parHolder.setTargetBaseChannel((Long) form.get(BASE_CHANNEL));
+        parHolder.setTargetChildChannels((Long[]) form.get(CHILD_CHANNELS));
+        parHolder.setAllowVendorChange(BooleanUtils.isTrue((Boolean)form.get(ALLOW_VENDOR_CHANGE)));
+
+        // Get additional flags
+        if (dispatch.equals(LocalizationService.getInstance().getMessage(DISPATCH_DRYRUN))) {
+            parHolder.setDryRun(true);
+        }
+
+        // flag to know if we are going back or forward in the setup wizard
+        parHolder.setGoBack(dispatch.equals(LocalizationService.getInstance().getMessage(GO_BACK)));
+
+        // flag to know if we should show the dry-run button or not
+        String bpProductClass = minion.map(m -> m.getInstalledProductSet()
+                .map(i -> i.getBaseProduct().getChannelFamily().getLabel())
+                .orElse("")).orElse("");
+
+        String tgtProductClass = Optional.ofNullable(parHolder.getTargetBaseProduct())
+                .map(SUSEProductFactory::getProductById)
+                .map(s -> s.getChannelFamily().getLabel())
+                .orElse("");
+
+        parHolder.setHasDryRun(!parHolder.isRedHatMinion() && bpProductClass.equals(tgtProductClass));
+        request.setAttribute(HAS_DRYRUN_CAPABLITY, parHolder.isHasDryRun());
+    }
+
+    private boolean handleTargetForward(HttpServletRequest request, RequestContext ctx, Server server) {
+        // Find target products
+        Optional<SUSEProductSet> installedProducts = server.getInstalledProductSet();
+        if (installedProducts.isEmpty()) {
+            // Installed products are 'unknown'
+            logger.debug("Installed products are 'unknown'");
+            return true;
+        }
+        installedProducts.ifPresent(pset -> {
+            logger.debug(pset.toString());
+            if (pset.getBaseProduct() == null) {
+                logger.error("Server: {} has no base product installed. Check your servers installed products.",
+                        server.getId());
+            }
+        });
+        List<SUSEProductSet> migrationTargets = getMigrationTargets(
+                request,
+                installedProducts,
+                server.getServerArch().getCompatibleChannelArch(),
+                ctx.getCurrentUser()
+        );
+
+        if (migrationTargets.isEmpty()) {
+            // Latest SP is apparently installed
+            logger.debug("Latest SP is apparently installed");
+            request.setAttribute(LATEST_SP, true);
+            return true;
+        }
+        else if (!migrationTargets.isEmpty()) {
+            // At least one target available
+            logger.debug("Found at least one migration target");
+            request.setAttribute(TARGET_PRODUCTS, migrationTargets);
+        }
+
+        return false;
+    }
+
+    private void handleSetupForward(HttpServletRequest request, RequestContext ctx, Server server) {
+        // Find target products
+        String targetProductSelected = request.getParameter(TARGET_PRODUCT_SELECTED);
+
+        Optional<SUSEProductSet> installedProducts = server.getInstalledProductSet();
+        ChannelArch arch = server.getServerArch().getCompatibleChannelArch();
+        List<SUSEProductSet> migrationTargets = DistUpgradeManager.
+                getTargetProductSets(installedProducts,
+                        server.getServerArch().getCompatibleChannelArch(),
+                        ctx.getCurrentUser());
+
+        // Get and decode the target product selected to migrate
+        SUSEProductSet targetProducts = new SUSEProductSet();
+        for (SUSEProductSet target : migrationTargets) {
+            if (target.getSerializedProductIDs()
+                    .equals(targetProductSelected)) {
+                targetProducts = target;
+            }
+        }
+        request.setAttribute(TARGET_PRODUCTS, targetProducts);
+        setMissingSuccessorsInfo(request, installedProducts, List.of(targetProducts));
+
+        // Get the base channel
+        Channel suseBaseChannel = DistUpgradeManager.getProductBaseChannel(
+                targetProducts.getBaseProduct().getId(), arch, ctx.getCurrentUser());
+
+        // Determine mandatory channels
+        List<EssentialChannelDto> requiredChannels =
+                DistUpgradeManager.getRequiredChannels(
+                        targetProducts, suseBaseChannel.getId());
+
+        // Get available alternatives
+        SortedMap<ClonedChannel, List<Long>> alternatives = DistUpgradeManager.
+                getAlternatives(targetProducts, arch, ctx.getCurrentUser());
+
+        // Create new map, put original channels first
+        HashMap<Channel, List<ChildChannelDto>> channelMap =
+                new LinkedHashMap<>();
+        channelMap.put(suseBaseChannel, getChildChannels(
+                suseBaseChannel, ctx, server, extractIDs(requiredChannels)));
+
+        // Put cloned alternatives
+        for (Map.Entry<ClonedChannel, List<Long>> entry : alternatives.entrySet()) {
+            channelMap.put(entry.getKey(), getChildChannels(entry.getKey(), ctx, server, entry.getValue()));
+        }
+
+        // Put all channel data to the request
+        request.setAttribute(CHANNEL_MAP, channelMap);
+    }
+
+    private ActionForward handleScheduleForward(ActionMapping actionMapping, HttpServletRequest request,
+                                                RequestContext ctx, Server server, DynaActionForm form,
+                                                ActionForward forward, SPMigrationActionParameterHolder parHolder)
+            throws TaskomaticApiException, NoInstalledProductException {
+        // Create target product set from parameters
+        SUSEProductSet targetProductSet = createProductSet(parHolder.getTargetBaseProduct(),
+                parHolder.getTargetAddonProducts());
+
+        // Setup list of channels to subscribe to
+        List<Long> channelIDs = new ArrayList<>();
+        if (parHolder.getTargetChildChannels() != null) {
+            channelIDs.addAll(Arrays.asList(parHolder.getTargetChildChannels()));
+        }
+        channelIDs.add(parHolder.getTargetBaseChannel());
+
+        // Schedule the dist upgrade action
+        Date earliest = getStrutsDelegate().readScheduleDate(form, "date", DatePicker.YEAR_RANGE_POSITIVE);
+        try {
+            List<DistUpgradeAction> actions = DistUpgradeManager.scheduleDistUpgrade(ctx.getCurrentUser(),
+                    List.of(server), targetProductSet, channelIDs, parHolder.isDryRun(),
+                    parHolder.isAllowVendorChange(), GlobalInstanceHolder.PAYG_MANAGER.isPaygInstance(),
+                    earliest, null);
+
+            // Display a message to the user
+            String product = targetProductSet.getBaseProduct().getFriendlyName();
+            String msgKey = parHolder.isDryRun() ? MSG_SCHEDULED_DRYRUN : MSG_SCHEDULED_MIGRATION;
+            List<String> msgParams = List.of(server.getId().toString(), actions.get(0).getId().toString(), product);
+
+            getStrutsDelegate().saveMessage(msgKey, msgParams.toArray(String[]::new), request);
+            Map<String, Long> params = new HashMap<>();
+            params.put("sid", server.getId());
+            return getStrutsDelegate().forwardParams(forward, params);
+        }
+        catch (NotInMaintenanceModeException e) {
+            setConfirmAttributes(request, ctx, server, form, parHolder.getTargetBaseProduct(),
+                    parHolder.getTargetAddonProducts(), parHolder.getTargetBaseChannel(),
+                    parHolder.getTargetChildChannels(), parHolder.isAllowVendorChange());
+            request.setAttribute(NO_MAINTENANCE_WINDOW, true);
+            return actionMapping.findForward(CONFIRM);
+        }
+        catch (DistUpgradePaygException e) {
+            Optional<SUSEProductSet> installedProducts = server.getInstalledProductSet();
             List<SUSEProductSet> migrationTargets = getMigrationTargets(
                     request,
                     installedProducts,
                     server.getServerArch().getCompatibleChannelArch(),
                     ctx.getCurrentUser()
             );
+            request.setAttribute(TARGET_PRODUCTS, migrationTargets);
 
-            if (migrationTargets.isEmpty()) {
-                // Latest SP is apparently installed
-                logger.debug("Latest SP is apparently installed");
-                request.setAttribute(LATEST_SP, true);
-                return forward;
-            }
-            else if (!migrationTargets.isEmpty()) {
-                // At least one target available
-                logger.debug("Found at least one migration target");
-                request.setAttribute(TARGET_PRODUCTS, migrationTargets);
-            }
+            ActionErrors errors = new ActionErrors();
+            // We do not support migration with individual channels in UI. So we only
+            // need 1 error message as the second case can only happens in API
+            getStrutsDelegate().addError(errors, MSG_ERROR_PAYG_MIGRATION);
+            getStrutsDelegate().saveMessages(request, errors);
+
+            return actionMapping.findForward(TARGET);
         }
-        else if (forward.getName().equals(SETUP)) {
-            // Find target products
-            Optional<SUSEProductSet> installedProducts = server.getInstalledProductSet();
-            ChannelArch arch = server.getServerArch().getCompatibleChannelArch();
-            List<SUSEProductSet> migrationTargets = DistUpgradeManager.
-                    getTargetProductSets(installedProducts,
-                            server.getServerArch().getCompatibleChannelArch(),
-                            ctx.getCurrentUser());
-
-            // Get and decode the target product selected to migrate
-            SUSEProductSet targetProducts = new SUSEProductSet();
-            for (SUSEProductSet target : migrationTargets) {
-                if (target.getSerializedProductIDs()
-                        .equals(targetProductSelected)) {
-                    targetProducts = target;
-                }
-            }
-            request.setAttribute(TARGET_PRODUCTS, targetProducts);
-            setMissingSuccessorsInfo(request, installedProducts, List.of(targetProducts));
-
-            // Get the base channel
-            Channel suseBaseChannel = DistUpgradeManager.getProductBaseChannel(
-                    targetProducts.getBaseProduct().getId(), arch, ctx.getCurrentUser());
-
-            // Determine mandatory channels
-            List<EssentialChannelDto> requiredChannels =
-                    DistUpgradeManager.getRequiredChannels(
-                            targetProducts, suseBaseChannel.getId());
-
-            // Get available alternatives
-            SortedMap<ClonedChannel, List<Long>> alternatives = DistUpgradeManager.
-                    getAlternatives(targetProducts, arch, ctx.getCurrentUser());
-
-            // Create new map, put original channels first
-            HashMap<Channel, List<ChildChannelDto>> channelMap =
-                    new LinkedHashMap<>();
-            channelMap.put(suseBaseChannel, getChildChannels(
-                    suseBaseChannel, ctx, server, extractIDs(requiredChannels)));
-
-            // Put cloned alternatives
-            for (Map.Entry<ClonedChannel, List<Long>> entry : alternatives.entrySet()) {
-                channelMap.put(entry.getKey(), getChildChannels(entry.getKey(), ctx, server, entry.getValue()));
-            }
-
-            // Put all channel data to the request
-            request.setAttribute(CHANNEL_MAP, channelMap);
-        }
-        else if (forward.getName().equals(CONFIRM)) {
-            setConfirmAttributes(request, ctx, server, form, targetBaseProduct, targetAddonProducts,
-                    targetBaseChannel, targetChildChannels, allowVendorChange);
-        }
-        else if (forward.getName().equals(SCHEDULE)) {
-            // Create target product set from parameters
-            SUSEProductSet targetProductSet = createProductSet(targetBaseProduct, targetAddonProducts);
-
-            // Setup list of channels to subscribe to
-            List<Long> channelIDs = new ArrayList<>();
-            if (targetChildChannels != null) {
-                channelIDs.addAll(Arrays.asList(targetChildChannels));
-            }
-            channelIDs.add(targetBaseChannel);
-
-            // Schedule the dist upgrade action
-            Date earliest = getStrutsDelegate().readScheduleDate(form, "date",
-                    DatePicker.YEAR_RANGE_POSITIVE);
-            try {
-                List<DistUpgradeAction> actions = DistUpgradeManager.scheduleDistUpgrade(ctx.getCurrentUser(),
-                    List.of(server), targetProductSet, channelIDs, dryRun, allowVendorChange,
-                    GlobalInstanceHolder.PAYG_MANAGER.isPaygInstance(), earliest, null);
-
-                // Display a message to the user
-                String product = targetProductSet.getBaseProduct().getFriendlyName();
-                String msgKey = dryRun ? MSG_SCHEDULED_DRYRUN : MSG_SCHEDULED_MIGRATION;
-                List<String> msgParams = List.of(server.getId().toString(), actions.get(0).getId().toString(), product);
-
-                getStrutsDelegate().saveMessage(msgKey, msgParams.toArray(String[]::new), request);
-                Map<String, Long> params = new HashMap<>();
-                params.put("sid", server.getId());
-                return getStrutsDelegate().forwardParams(forward, params);
-            }
-            catch (NotInMaintenanceModeException e) {
-                setConfirmAttributes(request, ctx, server, form, targetBaseProduct, targetAddonProducts,
-                        targetBaseChannel, targetChildChannels, allowVendorChange);
-                request.setAttribute(NO_MAINTENANCE_WINDOW, true);
-                forward = actionMapping.findForward(CONFIRM);
-            }
-            catch (DistUpgradePaygException e) {
-                Optional<SUSEProductSet> installedProducts = server.getInstalledProductSet();
-                List<SUSEProductSet> migrationTargets = getMigrationTargets(
-                        request,
-                        installedProducts,
-                        server.getServerArch().getCompatibleChannelArch(),
-                        ctx.getCurrentUser()
-                );
-                request.setAttribute(TARGET_PRODUCTS, migrationTargets);
-
-                ActionErrors errors = new ActionErrors();
-                // We do not support migration with individual channels in UI. So we only
-                // need 1 error message as the second case can only happens in API
-                getStrutsDelegate().addError(errors, MSG_ERROR_PAYG_MIGRATION);
-                getStrutsDelegate().saveMessages(request, errors);
-
-                forward = actionMapping.findForward(TARGET);
-            }
-        }
-
-        return forward;
     }
 
     /**

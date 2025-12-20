@@ -59,50 +59,17 @@ public class SystemSearchAction extends BaseSearchAction implements Listable<Sys
 
     public static final String DATA_SET = "searchResults";
 
-    private static final String[] OPT_GROUPS_TITLES = {"systemsearch.jsp.details",
-        "systemsearch.jsp.activity",
-        "systemsearch.jsp.hardware",
-        "systemsearch.jsp.devices",
-        "systemsearch.jsp.dmiinfo",
-        "systemsearch.jsp.networkinfo",
-        "systemsearch.jsp.packages",
-        "systemsearch.jsp.location"};
-
-    private static final String[][] OPT_GROUPS = {
-                    /* details */
-                    { SystemSearchHelper.NAME_AND_DESCRIPTION, SystemSearchHelper.ID,
-                                    SystemSearchHelper.CUSTOM_INFO,
-                                    SystemSearchHelper.SNAPSHOT_TAG,
-                                    SystemSearchHelper.RUNNING_KERNEL,
-                                    SystemSearchHelper.UUID },
-                    /* activity group */
-                    { SystemSearchHelper.CHECKIN, SystemSearchHelper.REGISTERED },
-                    /* hardware group */
-                    { SystemSearchHelper.CPU_MODEL, SystemSearchHelper.CPU_MHZ_LT,
-                                    SystemSearchHelper.CPU_MHZ_GT,
-                                    SystemSearchHelper.NUM_CPUS_LT,
-                                    SystemSearchHelper.NUM_CPUS_GT,
-                                    SystemSearchHelper.RAM_LT, SystemSearchHelper.RAM_GT },
-                    /* device group */
-                    { SystemSearchHelper.HW_DESCRIPTION, SystemSearchHelper.HW_DRIVER,
-                                    SystemSearchHelper.HW_DEVICE_ID,
-                                    SystemSearchHelper.HW_VENDOR_ID },
-                    /* dmiinfo */
-                    { SystemSearchHelper.DMI_SYSTEM, SystemSearchHelper.DMI_BIOS,
-                                    SystemSearchHelper.DMI_ASSET },
-                    /* network info */
-                    { SystemSearchHelper.HOSTNAME, SystemSearchHelper.IP,
-                                    SystemSearchHelper.IP6 },
-                    /* packages */
-                    { SystemSearchHelper.INSTALLED_PACKAGES,
-                                    SystemSearchHelper.NEEDED_PACKAGES },
-                    /* location */
-                    { SystemSearchHelper.LOC_COUNTRY_CODE, SystemSearchHelper.LOC_STATE,
-                                    SystemSearchHelper.LOC_CITY,
-                                    SystemSearchHelper.LOC_ADDRESS,
-                                    SystemSearchHelper.LOC_BUILDING,
-                                    SystemSearchHelper.LOC_ROOM,
-                                    SystemSearchHelper.LOC_RACK } };
+    private static final Map<String, List<SystemSearchHelperType>> OPT_GROUPS_2 =
+     Map.of(
+             "systemsearch.jsp.details", SystemSearchHelperType.getDetailsGroup(),
+             "systemsearch.jsp.activity", SystemSearchHelperType.getActivityGroup(),
+             "systemsearch.jsp.hardware", SystemSearchHelperType.getHardwareGroup(),
+             "systemsearch.jsp.devices", SystemSearchHelperType.getDeviceGroup(),
+             "systemsearch.jsp.dmiinfo", SystemSearchHelperType.getDmiInfoGroup(),
+             "systemsearch.jsp.networkinfo", SystemSearchHelperType.getNetworkInfoGroup(),
+             "systemsearch.jsp.packages", SystemSearchHelperType.getPackagesGroup(),
+             "systemsearch.jsp.location", SystemSearchHelperType.getLocationGroup()
+     );
 
     private static final List<String> VALID_WHERE_STRINGS =
                     Arrays.asList(WHERE_ALL, WHERE_SSM);
@@ -152,21 +119,21 @@ public class SystemSearchAction extends BaseSearchAction implements Listable<Sys
          * uses this hashmap to setup a dropdown box
          */
         boolean matchingViewModeFound = false;
-        Map<String, List<Map<String, String>>> optGroupsMap =
-                new HashMap<>();
-        for (int j = 0; j < OPT_GROUPS_TITLES.length; ++j) {
+        Map<String, List<Map<String, String>>> optGroupsMap = new HashMap<>();
+
+        for (Map.Entry<String, List<SystemSearchHelperType>> group : OPT_GROUPS_2.entrySet()) {
             List<Map<String, String>> options = new ArrayList<>();
 
-            for (int k = 0; k < OPT_GROUPS[j].length; ++k) {
-                options.add(createDisplayMap(LocalizationService.getInstance()
-                                .getMessage(OPT_GROUPS[j][k]),
-                                OPT_GROUPS[j][k]));
-                if (OPT_GROUPS[j][k].equals(viewMode)) {
+            for (SystemSearchHelperType type : group.getValue()) {
+                options.add(createDisplayMap(LocalizationService.getInstance().getMessage(type.getLabel()),
+                        type.getLabel()));
+                if (type.equalsMode(viewMode)) {
                     matchingViewModeFound = true;
                 }
             }
-            optGroupsMap.put(OPT_GROUPS_TITLES[j], options);
+            optGroupsMap.put(group.getKey(), options);
         }
+
         if (viewMode != null && !matchingViewModeFound) {
             throw new BadParameterException("Bad viewMode passed in from form");
         }
@@ -184,15 +151,7 @@ public class SystemSearchAction extends BaseSearchAction implements Listable<Sys
         String searchString = form.getString(SEARCH_STR).trim();
 
         ActionErrors errs = new ActionErrors();
-        if (viewMode.equals(SystemSearchHelper.ID) ||
-            viewMode.equals(SystemSearchHelper.CPU_MHZ_LT) ||
-            viewMode.equals(SystemSearchHelper.CPU_MHZ_GT) ||
-            viewMode.equals(SystemSearchHelper.RAM_LT) ||
-            viewMode.equals(SystemSearchHelper.RAM_GT) ||
-            viewMode.equals(SystemSearchHelper.NUM_CPUS_LT) ||
-            viewMode.equals(SystemSearchHelper.NUM_CPUS_GT) ||
-            viewMode.equals(SystemSearchHelper.CHECKIN) ||
-            viewMode.equals(SystemSearchHelper.REGISTERED)) {
+        if (SystemSearchHelperType.isActionErrorMode(viewMode)) {
                  String regEx = "(\\d)*";
                  Pattern pattern = Pattern.compile(regEx);
                  Matcher matcher = pattern.matcher(searchString);
