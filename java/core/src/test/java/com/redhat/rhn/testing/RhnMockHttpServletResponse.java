@@ -45,7 +45,7 @@ public class RhnMockHttpServletResponse implements HttpServletResponse {
     private int status = SC_OK;
     private StringWriter stringWriter = new StringWriter();
     private PrintWriter writer = new PrintWriter(stringWriter);
-    private com.redhat.rhn.testing.MockServletOutputStream outputStream = new com.redhat.rhn.testing.MockServletOutputStream();
+    private MockServletOutputStream outputStream = new MockServletOutputStream();
 
     /** {@inheritDoc} */
     @Override
@@ -278,7 +278,7 @@ public class RhnMockHttpServletResponse implements HttpServletResponse {
         if (!committed) {
             stringWriter = new StringWriter();
             writer = new PrintWriter(stringWriter);
-            outputStream = new com.redhat.rhn.testing.MockServletOutputStream();
+            outputStream = new MockServletOutputStream();
         }
     }
 

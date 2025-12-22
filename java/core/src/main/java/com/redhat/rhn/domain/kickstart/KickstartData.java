@@ -142,8 +142,6 @@ public class KickstartData extends BaseDomainHelper {
     private String cobblerId;
 
     @Column(name = "partition_data")
-    @Lob
-    //@Type(type = "binary")
     private byte[] partitionData;
 
     @ManyToMany(fetch = FetchType.LAZY)
