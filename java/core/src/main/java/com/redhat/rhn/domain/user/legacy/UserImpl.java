@@ -158,7 +158,8 @@ public class UserImpl extends BaseDomainHelper implements User {
 
     @ManyToMany
     @JoinTable(
-            name = "access.userNamespace",
+            schema = "access",
+            name = "userNamespace",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "namespace_id")
     )
@@ -166,7 +167,8 @@ public class UserImpl extends BaseDomainHelper implements User {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-            name = "access.userAccessGroup",
+            schema = "access",
+            name = "userAccessGroup",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "group_id")
     )
