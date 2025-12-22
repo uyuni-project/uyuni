@@ -29,31 +29,35 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.Address;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.RhnJmockBaseTestCase;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import com.suse.pam.PamServiceFactory;
+import com.suse.pam.PamServiceWrapper;
+
+import org.apache.commons.lang3.ArrayUtils;
+import org.jmock.Expectations;
+import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.ByteArrayOutputStream;
 import java.util.Date;
 import java.util.Set;
 
 /** JUnit test case for the User
  *  class.
  */
-public class UserTest extends RhnBaseTestCase {
+public class UserTest extends RhnJmockBaseTestCase {
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
 
+        setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         TestUtils.disableLocalizationLogging();
     }
 
@@ -220,24 +224,42 @@ public class UserTest extends RhnBaseTestCase {
         assertEquals(5, roles.size());
     }
 
-    /**
-     * Check that PAM authentication does something. The main point of this
-     * test is to force a roundtrip through the JNI code for PAM; authentication
-     * will fail since most local systems won't have a testUser/password account.
-     * Writing a successful test for PAM is near impossible, since it requires
-     * a boatload of setup that needs root access
-     * @see #testAuthenticateTrue
-     */
     @Test
-    public void testPamAuthenticationFails() {
+    public void testPamAuthentication() {
+        String authService = "login";
+        Runtime runtime = mock(Runtime.class);
+        PamServiceFactory pamServiceFactory = mock(PamServiceFactory.class);
+        Process process = mock(Process.class);
+        ByteArrayOutputStream passwordOutputStream =  new ByteArrayOutputStream();
+
         String oldValue = Config.get().setString("web.pam_auth_service", "login");
+
         try {
             User usr = UserTestUtils.createUser(this);
+
+            context().checking(new Expectations() {{
+                try {
+                    allowing(pamServiceFactory).getInstance(authService);
+                    will(returnValue(new PamServiceWrapper(authService, runtime)));
+
+                    allowing(runtime).exec(ArrayUtils.toArray("/sbin/unix2_chkpwd", authService, usr.getLogin()));
+                    will(returnValue(process));
+
+                    allowing(process).getOutputStream();
+                    will(returnValue(passwordOutputStream));
+
+                    allowing(process).waitFor();
+                    will(returnValue(0));
+                }
+                catch (Exception ex) {
+                    throw new IllegalStateException("Unable to setup mocks for unit test");
+                }
+            }});
+
             usr.setUsePamAuthentication(true);
-            // This fails, though it succeeds in testAUthenticateTrue, giving
-            // us some confidence that a different auth mechanism was indeed
-            // being used
-            assertFalse(usr.authenticate("password"));
+            usr.setPamServiceFactory(pamServiceFactory);
+
+            assertTrue(usr.authenticate("password"));
         }
         finally {
             Config.get().setString("web.pam_auth_service", oldValue);
