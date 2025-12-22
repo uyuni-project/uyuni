@@ -58,8 +58,6 @@ ENV_VAR_BY_HOST = {
   'rocky8_ssh_minion' => 'ROCKY8_SSHMINION',
   'rocky9_minion' => 'ROCKY9_MINION',
   'rocky9_ssh_minion' => 'ROCKY9_SSHMINION',
-  'ubuntu2004_minion' => 'UBUNTU2004_MINION',
-  'ubuntu2004_ssh_minion' => 'UBUNTU2004_SSHMINION',
   'ubuntu2204_minion' => 'UBUNTU2204_MINION',
   'ubuntu2204_ssh_minion' => 'UBUNTU2204_SSHMINION',
   'ubuntu2404_minion' => 'UBUNTU2404_MINION',
@@ -204,8 +202,6 @@ PACKAGE_BY_CLIENT = {
   'rocky8_ssh_minion' => 'bison',
   'rocky9_minion' => 'autoconf',
   'rocky9_ssh_minion' => 'autoconf',
-  'ubuntu2004_minion' => 'bison',
-  'ubuntu2004_ssh_minion' => 'bison',
   'ubuntu2204_minion' => 'bison',
   'ubuntu2204_ssh_minion' => 'bison',
   'ubuntu2404_minion' => 'bison',
@@ -232,7 +228,7 @@ BASE_CHANNEL_BY_CLIENT = {
     'sle_minion' => 'SLE-Product-SLES15-SP7-Pool for x86_64',
     'ssh_minion' => 'SLE-Product-SLES15-SP7-Pool for x86_64',
     'rhlike_minion' => 'RHEL8-Pool for x86_64',
-    'deblike_minion' => 'ubuntu-2004-amd64-main for amd64',
+    'deblike_minion' => 'ubuntu-2404-amd64-main for amd64',
     'pxeboot_minion' => 'SLE-Product-SLES15-SP7-Pool for x86_64',
     'build_host' => 'SLE-Product-SLES15-SP7-Pool for x86_64',
     'sle12sp5_minion' => 'SLES12-SP5-Pool for x86_64',
@@ -284,8 +280,6 @@ BASE_CHANNEL_BY_CLIENT = {
     'rocky8_ssh_minion' => 'rockylinux-8 for x86_64',
     'rocky9_minion' => 'rockylinux-9 for x86_64',
     'rocky9_ssh_minion' => 'rockylinux-9 for x86_64',
-    'ubuntu2004_minion' => 'ubuntu-2004-amd64-main for amd64',
-    'ubuntu2004_ssh_minion' => 'ubuntu-2004-amd64-main for amd64',
     'ubuntu2204_minion' => 'ubuntu-2204-amd64-main for amd64',
     'ubuntu2204_ssh_minion' => 'ubuntu-2204-amd64-main for amd64',
     'ubuntu2404_minion' => 'ubuntu-2404-amd64-main for amd64',
@@ -305,7 +299,7 @@ BASE_CHANNEL_BY_CLIENT = {
     'sle_minion' => 'openSUSE Tumbleweed (x86_64)',
     'ssh_minion' => 'openSUSE Tumbleweed (x86_64)',
     'rhlike_minion' => 'RHEL8-Pool for x86_64',
-    'deblike_minion' => 'Ubuntu 20.04 LTS AMD64 Base for Uyuni',
+    'deblike_minion' => 'Ubuntu 24.04 LTS AMD64 Base for Uyuni',
     'pxeboot_minion' => 'SLE-Product-SLES15-SP7-Pool for x86_64',
     'build_host' => 'SLE-Product-SLES15-SP7-Pool for x86_64',
     'sle12sp5_minion' => 'SLES12-SP5-Pool for x86_64',
@@ -357,8 +351,6 @@ BASE_CHANNEL_BY_CLIENT = {
     'rocky8_ssh_minion' => 'Rocky Linux 8 (x86_64)',
     'rocky9_minion' => 'Rocky Linux 9 (x86_64)',
     'rocky9_ssh_minion' => 'Rocky Linux 9 (x86_64)',
-    'ubuntu2004_minion' => 'Ubuntu 20.04 LTS AMD64 Base for Uyuni',
-    'ubuntu2004_ssh_minion' => 'Ubuntu 20.04 LTS AMD64 Base for Uyuni',
     'ubuntu2204_minion' => 'Ubuntu 22.04 LTS AMD64 Base for Uyuni',
     'ubuntu2204_ssh_minion' => 'Ubuntu 22.04 LTS AMD64 Base for Uyuni',
     'ubuntu2404_minion' => 'Ubuntu 24.04 LTS AMD64 Base for Uyuni',
@@ -411,7 +403,6 @@ LABEL_BY_BASE_CHANNEL = {
     'oraclelinux9 for x86_64' => 'oraclelinux9-x86_64',
     'rockylinux-8 for x86_64' => 'rockylinux-8-x86_64',
     'rockylinux-9 for x86_64' => 'rockylinux-9-x86_64',
-    'ubuntu-2004-amd64-main for amd64' => 'ubuntu-2004-amd64-main-amd64',
     'ubuntu-2204-amd64-main for amd64' => 'ubuntu-2204-amd64-main-amd64',
     'ubuntu-2404-amd64-main for amd64' => 'ubuntu-2404-amd64-main-amd64',
     'debian-12-pool for amd64' => 'debian-12-pool-amd64',
@@ -444,7 +435,6 @@ LABEL_BY_BASE_CHANNEL = {
     'Oracle Linux 9 (x86_64)' => 'oraclelinux9-x86_64',
     'Rocky Linux 8 (x86_64)' => 'rockylinux8-x86_64',
     'Rocky Linux 9 (x86_64)' => 'rockylinux9-x86_64',
-    'Ubuntu 20.04 LTS AMD64 Base for Uyuni' => 'ubuntu-2004-pool-amd64-uyuni',
     'Ubuntu 22.04 LTS AMD64 Base for Uyuni' => 'ubuntu-2204-pool-amd64-uyuni',
     'Ubuntu 24.04 LTS AMD64 Base for Uyuni' => 'ubuntu-2404-pool-amd64-uyuni',
     'Debian 12 (bookworm) pool for amd64 for Uyuni' => 'debian-12-pool-amd64-uyuni',
@@ -483,7 +473,6 @@ CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
     'RHEL8-Pool for x86_64' => 'SLE-ES8-x86_64',
     'rockylinux-8 for x86_64' => 'rockylinux-8-x86_64',
     'rockylinux-9 for x86_64' => 'rockylinux-9-x86_64',
-    'ubuntu-2004-amd64-main for amd64' => 'ubuntu-20.04-amd64',
     'ubuntu-2204-amd64-main for amd64' => 'ubuntu-22.04-amd64',
     'ubuntu-2404-amd64-main for amd64' => 'ubuntu-24.04-amd64',
     'debian-12-pool for amd64' => 'debian12-amd64',
@@ -516,7 +505,6 @@ CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
     'Oracle Linux 9 (x86_64)' => 'oracle-9-x86_64-uyuni',
     'Rocky Linux 8 (x86_64)' => 'rockylinux8-x86_64-uyuni',
     'Rocky Linux 9 (x86_64)' => 'rockylinux9-x86_64-uyuni',
-    'Ubuntu 20.04 LTS AMD64 Base for Uyuni' => 'ubuntu-2004-amd64-uyuni',
     'Ubuntu 22.04 LTS AMD64 Base for Uyuni' => 'ubuntu-2204-amd64-uyuni',
     'Ubuntu 24.04 LTS AMD64 Base for Uyuni' => 'ubuntu-2404-amd64-uyuni',
     'Debian 12 (bookworm) pool for amd64 for Uyuni' => 'debian12-amd64-uyuni',
@@ -556,7 +544,6 @@ PARENT_CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
     'RHEL8-Pool for x86_64' => nil,
     'rockylinux-8 for x86_64' => nil,
     'rockylinux-9 for x86_64' => nil,
-    'ubuntu-2004-amd64-main for amd64' => nil,
     'ubuntu-2204-amd64-main for amd64' => nil,
     'ubuntu-2404-amd64-main for amd64' => nil,
     'debian-12-pool for amd64' => 'debian-12-pool-amd64',
@@ -588,7 +575,6 @@ PARENT_CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
     'Oracle Linux 9 (x86_64)' => nil,
     'Rocky Linux 8 (x86_64)' => nil,
     'Rocky Linux 9 (x86_64)' => nil,
-    'Ubuntu 20.04 LTS AMD64 Base for Uyuni' => nil,
     'Ubuntu 22.04 LTS AMD64 Base for Uyuni' => nil,
     'Ubuntu 24.04 LTS AMD64 Base for Uyuni' => nil,
     'Debian 12 (bookworm) pool for amd64 for Uyuni' => 'debian12-amd64-uyuni',
@@ -647,8 +633,6 @@ PKGARCH_BY_CLIENT = {
   'rocky8_ssh_minion' => 'x86_64',
   'rocky9_minion' => 'x86_64',
   'rocky9_ssh_minion' => 'x86_64',
-  'ubuntu2004_minion' => 'amd64',
-  'ubuntu2004_ssh_minion' => 'amd64',
   'ubuntu2204_minion' => 'amd64',
   'ubuntu2204_ssh_minion' => 'amd64',
   'ubuntu2404_minion' => 'amd64',
@@ -968,12 +952,6 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
       %w[
         sl-micro-6.1-pool-x86_64
         managertools-sl-micro-6.1-x86_64
-      ],
-    'ubuntu-2004' => # CHECKED
-      %w[
-        ubuntu-2004-amd64-main-amd64
-        ubuntu-2004-amd64-main-security-amd64
-        ubuntu-2004-amd64-main-updates-amd64
       ],
     'ubuntu-2204' =>
       %w[
@@ -1361,18 +1339,6 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         opensuse_tumbleweed-uyuni-client-x86_64
         opensuse_tumbleweed-uyuni-client-devel-x86_64
       ],
-    'ubuntu-2004' => # CHECKED
-      %w[
-        ubuntu-2004-pool-amd64-uyuni
-        ubuntu-2004-amd64-main-uyuni
-        ubuntu-2004-amd64-main-security-uyuni
-        ubuntu-2004-amd64-main-updates-uyuni
-        ubuntu-2004-amd64-universe-uyuni
-        ubuntu-2004-amd64-universe-backports-uyuni
-        ubuntu-2004-amd64-universe-security-uyuni
-        ubuntu-2004-amd64-universe-updates-uyuni
-        ubuntu-2004-amd64-uyuni-client-devel
-      ],
     'ubuntu-2204' => # CHECKED
       %w[
         ubuntu-2204-pool-amd64-uyuni
@@ -1708,18 +1674,6 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'suse-microos-5.2-pool-x86_64' => 60,
   'suse-microos-5.2-updates-x86_64' => 120,
   'test-child-channel-x86_64' => 360,
-  'ubuntu-2004-amd64-main-amd64' => 660,
-  'ubuntu-2004-amd64-main-security-amd64' => 3480,
-  'ubuntu-2004-amd64-main-security-uyuni' => 4200,
-  'ubuntu-2004-amd64-main-updates-amd64' => 5820,
-  'ubuntu-2004-amd64-main-updates-uyuni' => 600,
-  'ubuntu-2004-amd64-main-uyuni' => 660,
-  'ubuntu-2004-amd64-universe-backports-uyuni' => 60,
-  'ubuntu-2004-amd64-universe-security-uyuni' => 900,
-  'ubuntu-2004-amd64-universe-updates-uyuni' => 240,
-  'ubuntu-2004-amd64-universe-uyuni' => 19_560,
-  'ubuntu-2004-amd64-uyuni-client-devel' => 120,
-  'ubuntu-2004-pool-amd64-uyuni' => 60,
   'ubuntu-2204-amd64-main-amd64' => 780,
   'ubuntu-2204-amd64-main-security-amd64' => 4920,
   'ubuntu-2204-amd64-main-security-uyuni' => 2040,
