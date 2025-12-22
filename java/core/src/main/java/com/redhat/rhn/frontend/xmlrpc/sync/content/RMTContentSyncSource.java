@@ -58,7 +58,7 @@ public class RMTContentSyncSource implements ContentSyncSource {
     }
 
     @Override
-    public SCCClient getClient(String uuid, Path loggingDir) throws ContentSyncSourceException {
+    public SCCClient getClient(String uuid, Path loggingDir, boolean skipOwner) throws ContentSyncSourceException {
         try {
             URI uri = new URI(credentials.getUrl());
             URI url = new URI(uri.getScheme(), null, uri.getHost(), uri.getPort(), null, null, null);
@@ -73,7 +73,7 @@ public class RMTContentSyncSource implements ContentSyncSource {
                     .setUsername(credentials.getUsername())
                     .setUuid(uuid)
                     .setLoggingDir(loggingDir.toAbsolutePath().toString())
-                    .setSkipOwner(false)
+                    .setSkipOwner(skipOwner)
                     .setAdditionalHeaders(headers)
                     .createSCCConfig();
 
