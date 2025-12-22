@@ -682,26 +682,6 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until all synchronized channels for "rockylinux9" have finished
 
 @susemanager
-@ubuntu2004_minion
-  Scenario: Add Ubuntu 20.04
-    Given I am authorized for the "Admin" section
-    When I follow the left menu "Admin > Setup Wizard > Products"
-    And I wait until I do not see "currently running" text
-    And I wait until I do not see "Loading" text
-    And I enter "Ubuntu 20.04" as the filtered product description
-    And I select "Ubuntu 20.04" as a product
-    Then I should see the "Ubuntu 20.04" selected
-    When I click the Add Product button
-    And I wait until I see "Ubuntu 20.04" product has been added
-    And I wait until all synchronized channels for "ubuntu-2004" have finished
-
-@uyuni
-@ubuntu2004_minion
-  Scenario: Add Ubuntu 20.04
-    When I use spacewalk-common-channel to add all "ubuntu-2004" channels with arch "amd64-deb"
-    And I wait until all synchronized channels for "ubuntu-2004" have finished
-
-@susemanager
 @ubuntu2204_minion
   Scenario: Add Ubuntu 22.04
     Given I am authorized for the "Admin" section
