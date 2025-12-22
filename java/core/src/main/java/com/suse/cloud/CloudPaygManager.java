@@ -158,7 +158,7 @@ public class CloudPaygManager {
     protected boolean isSCCCredentials(SCCCredentials c) {
         try {
             SCCClient scc = new SCCContentSyncSource(c)
-                    .getClient(ContentSyncManager.getUUID(), Paths.get(SCCConfig.DEFAULT_LOGGING_DIR));
+                    .getClient(ContentSyncManager.getUUID(), Paths.get(SCCConfig.DEFAULT_LOGGING_DIR), false);
             scc.listOrders();
         }
         catch (SCCClientException | ContentSyncSourceException e) {

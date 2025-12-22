@@ -170,6 +170,7 @@ public class ContentSyncManager {
     private final List<String> toolsChannelFamilies;
 
     private final Path tmpLoggingDir;
+    private final boolean skipOwner; //True to skip owner setting in tests
 
     private FileLocks sccRefreshLock = FileLocks.SCC_REFRESH_LOCK;
 
@@ -185,8 +186,18 @@ public class ContentSyncManager {
      * @param paygMgrIn {@link CloudPaygManager} to use
      */
     public ContentSyncManager(Path tmpLogDir, CloudPaygManager paygMgrIn) {
+        this(Paths.get(SCCConfig.DEFAULT_LOGGING_DIR), false, GlobalInstanceHolder.PAYG_MANAGER);
+    }
+
+    /**
+     * @param tmpLogDir logdir for credential output
+     * @param skipOwnerIn True to skip owner setting in tests
+     * @param paygMgrIn {@link CloudPaygManager} to use
+     */
+    public ContentSyncManager(Path tmpLogDir, boolean skipOwnerIn, CloudPaygManager paygMgrIn) {
         cloudPaygManager = paygMgrIn;
         tmpLoggingDir = tmpLogDir;
+        skipOwner = skipOwnerIn;
         hubFactory = new HubFactory();
         Optional<IssHub> issHub = hubFactory.lookupIssHub();
         isPeripheral = issHub.isPresent();
@@ -2709,7 +2720,7 @@ public class ContentSyncManager {
      * @return {@link SCCWebClient}
      */
     protected SCCClient getSCCClient(ContentSyncSource source) throws SCCClientException, ContentSyncSourceException {
-        return source.getClient(getUUID(), tmpLoggingDir);
+        return source.getClient(getUUID(), tmpLoggingDir, skipOwner);
     }
 
     /**
