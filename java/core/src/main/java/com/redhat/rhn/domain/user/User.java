@@ -22,6 +22,8 @@ import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerGroup;
 
+import com.suse.pam.PamServiceFactory;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
@@ -95,6 +97,18 @@ public interface User extends Serializable {
      * @param usePamAuthenticationIn New value for usePamAuthentication
      */
     void setUsePamAuthentication(boolean usePamAuthenticationIn);
+
+    /**
+     * Gets the factory to create the {@link PamService}
+     * @return an instance of {@link PamServiceFactory}
+     */
+    PamServiceFactory getPamServiceFactory();
+
+    /**
+     * Sets the factory to create the {@link PamService}
+     * @param pamServiceFactoryIn an instance of {@link PamServiceFactory}
+     */
+    void setPamServiceFactory(PamServiceFactory pamServiceFactoryIn);
 
     /**
      * Gets the current value of showSystemGroupList
