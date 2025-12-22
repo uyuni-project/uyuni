@@ -37,6 +37,7 @@ class DefaultConnectionManager extends AbstractConnectionManager {
         hibProperties.put("hibernate.connection.url", ConfigDefaults.get().getJdbcConnectionString());
 //        hibProperties.put("hibernate.cache.ehcache.missing_cache_strategy", "create");
 //        hibProperties.put("hibernate.cache.use_second_level_cache", "false");
+//        hibProperties.put("hibernate.bytecode.use_reflection_optimizer", "false");
         return hibProperties;
     }
 

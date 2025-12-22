@@ -25,7 +25,7 @@
         <dependency org="suse" name="commons-collections" rev="3.2.2" />
         <dependency org="suse" name="commons-digester" rev="2.1" />
         <dependency org="suse" name="commons-discovery" rev="0.5" />
-        <dependency org="suse" name="apache-commons-fileupload2-core" rev="2.0.0~M4" />
+        <dependency org="suse" name="commons-fileupload2-core" rev="2.0.0~M4" />
         <dependency org="suse" name="apache-commons-fileupload2-jakarta-servlet6" rev="2.0.0~M4" />
         <dependency org="suse" name="commons-io" rev="2.18.0" />
         <dependency org="suse" name="commons-jexl" rev="2.1.1" />
@@ -133,10 +133,10 @@
         <dependency org="org.junit.jupiter" name="junit-jupiter" rev="5.8.2" />
         <dependency org="org.opentest4j" name="opentest4j" rev="1.2.0" transitive="false"/>
         <dependency org="org.apiguardian" name="apiguardian-api" rev="1.1.0" transitive="false"/>
-        <dependency org="org.jmock" name="jmock" rev="2.12.0" transitive="false"/>
-        <dependency org="org.jmock" name="jmock-junit5" rev="2.12.0" transitive="false"/>
-        <dependency org="org.jmock" name="jmock-imposters" rev="2.12.0" transitive="false"/>
-        <dependency org="org.objenesis" name="objenesis" rev="1.0" transitive="false"/>
+        <dependency org="org.jmock" name="jmock" rev="2.13.1" transitive="false"/>
+        <dependency org="org.jmock" name="jmock-junit5" rev="2.13.1" transitive="false"/>
+        <dependency org="org.jmock" name="jmock-imposters" rev="2.13.1" transitive="false"/>
+        <dependency org="org.objenesis" name="objenesis" rev="3.3" transitive="false"/>
         <dependency org="jakarta.websocket" name="jakarta.websocket-api" rev="2.2.0" />
         <dependency org="org.jacoco" name="org.jacoco.ant" rev="0.8.7" transitive="false">
            <artifact name="nodeps" type="jar" url="https://repo1.maven.org/maven2/org/jacoco/org.jacoco.ant/0.8.7/org.jacoco.ant-0.8.7-nodeps.jar"/>

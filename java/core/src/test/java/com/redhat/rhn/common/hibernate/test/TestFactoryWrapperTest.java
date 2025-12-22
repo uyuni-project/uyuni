@@ -80,8 +80,24 @@ public class TestFactoryWrapperTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testUpdate() {
+    public void testReload() {
+        final String testReload = "testReload";
+        assertNull(TestFactory.lookupByFoobar(testReload));
 
+        //
+        TestInterface record = TestFactory.createTest();
+        record.setFoobar(testReload);
+        TestFactory.save(record);
+        assertTrue(record.getId() != 0L);
+
+        flushAndEvict(record);
+        TestInterface recordReloaded = reload(record);
+        assertEquals(record.getId(), recordReloaded.getId());
+        assertTrue(record != recordReloaded );
+    }
+
+    @Test
+    public void testUpdate() {
         TestInterface obj = TestFactory.createTest();
         obj.setFoobar("update_Multi_test");
         obj.setPin(12345);
