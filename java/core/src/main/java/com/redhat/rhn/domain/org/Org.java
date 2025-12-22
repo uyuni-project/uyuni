@@ -115,10 +115,10 @@ public class Org extends BaseDomainHelper implements SaltConfigurable {
     private Set<UserGroupImpl> userGroups = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "org", orphanRemoval = true)
-    private Set<Channel> ownedChannels;
+    private Set<Channel> ownedChannels = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "org", orphanRemoval = true)
-    private Set<CustomDataKey> customDataKeys;
+    private Set<CustomDataKey> customDataKeys = new HashSet<>();
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(
@@ -126,7 +126,7 @@ public class Org extends BaseDomainHelper implements SaltConfigurable {
             joinColumns = @JoinColumn(name = "org_id"),
             inverseJoinColumns = @JoinColumn(name = "org_trust_id")
     )
-    private Set<Org> trustedOrgs;
+    private Set<Org> trustedOrgs = new HashSet<>();
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(
@@ -134,10 +134,10 @@ public class Org extends BaseDomainHelper implements SaltConfigurable {
             joinColumns = @JoinColumn(name = "org_id"),
             inverseJoinColumns = @JoinColumn(name = "slave_id")
     )
-    private Set<IssSlave> allowedToSlaves;
+    private Set<IssSlave> allowedToSlaves = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "org")
-    private Set<Pillar> pillars;
+    private Set<Pillar> pillars = new HashSet<>();
 
     @OneToOne(mappedBy = "org", cascade = CascadeType.ALL, optional = true, orphanRemoval = true)
     private RegTokenOrgDefault regTokenOrgDefault;
