@@ -61,6 +61,15 @@ public class MockServletOutputStream extends ServletOutputStream {
     }
 
     /**
+     * Flushes the output stream.
+     * @throws IOException
+     */
+    @Override
+    public void flush() throws IOException {
+        buffer.flush();
+    }
+
+    /**
      * Clears the current contents of the output stream.
      */
     public void setupClearContents() {
