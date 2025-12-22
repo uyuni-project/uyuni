@@ -60,7 +60,8 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
 
     @Override
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws Exception {
+        super.setUp();
         virtualInstanceDAO = new VirtualInstanceFactory();
         user = UserTestUtils.createUser(this);
         builder = new GuestBuilder(user);

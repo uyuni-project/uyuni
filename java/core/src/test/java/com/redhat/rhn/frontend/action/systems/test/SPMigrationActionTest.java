@@ -31,13 +31,16 @@ import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.RhnMockDynaActionForm;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
+import com.redhat.rhn.testing.SaltTestCaseUtils;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -46,7 +49,7 @@ import java.util.TimeZone;
 /**
  * Unit test for {@link SPMigrationAction}
  */
-public class SPMigrationActionTest {
+public class SPMigrationActionTest implements SaltTestCaseUtils {
 
     private Server server;
     private RhnMockHttpServletRequest request;
@@ -55,9 +58,11 @@ public class SPMigrationActionTest {
     private SUSEProduct addonProduct;
     private RhnMockDynaActionForm form;
     private Channel baseChannel;
+    protected Path tmpSaltRoot;
 
     @BeforeEach
     public void setUp() throws Exception {
+        tmpSaltRoot = setupSaltConfigurationForTests();
         Context.getCurrentContext().setTimezone(TimeZone.getDefault());
         request = TestUtils.getRequestWithSessionAndUser();
         requestContext = new RequestContext(request);
@@ -77,6 +82,11 @@ public class SPMigrationActionTest {
         form.set("baseChannel", baseChannel.getId());
 
         server.setInstalledProducts(Set.of(SUSEProductTestUtils.getInstalledProduct(baseProduct)));
+    }
+
+    @AfterEach
+    public void tearDown() throws Exception {
+        cleanupSaltConfiguration(tmpSaltRoot);
     }
 
     @Test
