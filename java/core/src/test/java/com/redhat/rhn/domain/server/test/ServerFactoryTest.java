@@ -796,37 +796,30 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
     // This may be busted , can comment out
     @Test
-    public void testCompatibleWithServer() throws Exception {
-        /*
-         * here we create a user as an org admin.
-         * then we create two (minimum) Servers owned by the user and
-         * which are enterprise_entitled.
-         * We add the test channel to each of the servers.  This allows
-         * us to test the compatibleWithServer method.
-         */
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        UserManager.storeUser(user);
+    public void testCompatibleWithServer()  {
+        Server serverA = createTestServer(user, true,
+                ServerConstants.getServerGroupTypeEnterpriseEntitled());
+        Server serverB = createTestServer(user, true,
+                ServerConstants.getServerGroupTypeEnterpriseEntitled());
 
-        Server srvr = createTestServer(user, true,
-                ServerFactory.lookupServerGroupTypeByLabel("enterprise_entitled"));
-
-        Server srvr1 = createTestServer(user, true,
-                ServerFactory.lookupServerGroupTypeByLabel("enterprise_entitled"));
         Channel channel = ChannelFactoryTest.createTestChannel(user);
-        srvr.addChannel(channel);
-        srvr1.addChannel(channel);
-        ServerFactory.save(srvr);
-        ServerFactory.save(srvr1);
-        flushAndEvict(srvr1);
-        srvr = reload(srvr);
-        // Ok let's finally test what we came here for.
-        List<Row> list = ServerFactory.compatibleWithServer(user, srvr);
+        serverA.addChannel(channel);
+        serverB.addChannel(channel);
+        ServerFactory.save(serverA);
+        ServerFactory.save(serverB);
+
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        // retrieve servers and verify that they are compatible
+        Server server = ServerFactory.lookupByIdAndOrg(serverA.getId(), user.getOrg());
+        List<Row> list = ServerFactory.compatibleWithServer(user, server);
         assertNotNull(list, "List is null");
         assertFalse(list.isEmpty(), "List is empty");
         boolean found = false;
         for (Row s : list) {
             assertNotNull(s, "List contains something other than Profiles");
-            if (srvr1.getName().equals(s.get("name"))) {
+            if (serverB.getName().equals(s.get("name"))) {
                 found = true;
             }
         }
@@ -835,64 +828,53 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testListAdministrators() {
-
-        //The org admin user
+        // The org admin user
         User admin = UserTestUtils.createUser(this);
         admin.addPermanentRole(RoleFactory.ORG_ADMIN);
 
-        //the non-orgadmin user who is a member of the group
-        User regular =   UserTestUtils.createUser("testUser2", admin.getOrg().getId());
-        regular.removePermanentRole(RoleFactory.ORG_ADMIN);
+        // Non-org admin user who is a member of the server group
+        User groupAdmin = UserTestUtils.createUser("testUser2", admin.getOrg().getId());
+        groupAdmin.removePermanentRole(RoleFactory.ORG_ADMIN);
 
-        //a user who shouldn't be able to admin the system
+        // User who shouldn't be able to admin the system
         User nonGroupAdminUser = UserTestUtils.createUser("testUser3", admin.getOrg().getId());
         nonGroupAdminUser.removePermanentRole(RoleFactory.ORG_ADMIN);
 
         ManagedServerGroup group = ServerGroupTestUtils.createManaged(admin);
 
-        //create server set and add it to the group
-        Server serverToSearch = ServerFactoryTest.createTestServer(admin, true);
-        Set servers = new HashSet<>();
-        servers.add(serverToSearch);
-        SERVER_GROUP_MANAGER.addServers(group, servers, admin);
+        // Create server and add it to the group
+        Server server = createTestServer(admin, true);
+        SERVER_GROUP_MANAGER.addServers(group, Set.of(server), admin);
         assertFalse(group.getServers().isEmpty());
-        //create admins set and add it to the grup
-        Set admins = new HashSet<>();
-        admins.add(regular);
-        SERVER_GROUP_MANAGER.associateAdmins(group, admins, admin);
-        assertTrue(SERVER_GROUP_MANAGER.canAccess(regular, group));
+        
+        // Associate group admin with the server group
+        SERVER_GROUP_MANAGER.associateAdmins(group, Set.of(groupAdmin), admin);
+        assertTrue(SERVER_GROUP_MANAGER.canAccess(groupAdmin, group));
+        
+        // Save setup state
+        Long serverId = server.getId();
+        String adminLogin = admin.getLogin();
+        String groupAdminLogin = groupAdmin.getLogin();
+        String nonGroupAdminLogin = nonGroupAdminUser.getLogin();
+        
         ServerGroupFactory.save(group);
-        reload(group);
         UserFactory.save(admin);
-        admin = reload(admin);
-        UserFactory.save(regular);
-        regular = reload(regular);
+        UserFactory.save(groupAdmin);
         UserFactory.save(nonGroupAdminUser);
-        nonGroupAdminUser = reload(nonGroupAdminUser);
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
 
-        List<User> users = ServerFactory.listAdministrators(serverToSearch);
-        System.out.println(users);
-        System.out.println("regular->" + regular);
-        System.out.println("Admins->" + admins);
-        boolean containsAdmin = false;
-        boolean containsRegular = false;
-        boolean containsNonGroupAdmin = false;  //we want this to be false to pass
+        //
+        Server reloadedServer = ServerFactory.lookupById(serverId);
+        List<String> administrators = ServerFactory.listAdministrators(reloadedServer).stream()
+                .map(User::getLogin)
+                .toList();
 
-        for (User user : users) {
-              if (user.getLogin().equals(admin.getLogin())) {
-                  containsAdmin = true;
-              }
-              if (user.getLogin().equals(regular.getLogin())) {
-                  containsRegular = true;
-              }
-              if (user.getLogin().equals(nonGroupAdminUser.getLogin())) {
-                  containsNonGroupAdmin = true;
-              }
-        }
-         assertTrue(containsAdmin);
-         assertTrue(containsRegular);
-         assertFalse(containsNonGroupAdmin);
-      }
+        assertTrue(administrators.contains(adminLogin), "Org admin should be in the admins list");
+        assertTrue(administrators.contains(groupAdminLogin), "Group admin should be in the admins list");
+        assertFalse(administrators.contains(nonGroupAdminLogin),
+                "Non-group admin user should NOT be in the admins list");
+    }
 
     @Test
     public void testGetServerHistory() throws Exception {
@@ -1381,31 +1363,33 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         assertEquals(proxy, proxyPaths.iterator().next().getId().getProxyServer());
         assertEquals("proxy1", proxyPaths.iterator().next().getHostname());
 
+        Long proxiedProxyId = proxiedProxy.getId();
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
-        HibernateFactory.getSession().refresh(proxiedProxy);
+        proxiedProxy = ServerFactory.lookupById(proxiedProxyId);
 
         Server minion = ServerTestUtils.createTestSystem();
         Set<ServerPath> serverPath1 = ServerFactory.createServerPaths(minion, proxiedProxy, "proxy2");
         minion.getServerPaths().addAll(serverPath1);
 
+        Long minionId = minion.getId();
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
-        HibernateFactory.getSession().refresh(minion);
+        minion = ServerFactory.lookupById(minionId);
 
         proxyPaths = minion.getServerPaths();
         assertEquals(2, proxyPaths.size());
 
         ServerPath first = minion.getFirstServerPath().get();
         assertEquals(Long.valueOf(0L), first.getPosition());
-        assertEquals(minion, first.getId().getServer());
-        assertEquals(proxiedProxy, first.getId().getProxyServer());
+        assertEquals(minion.getId(), first.getId().getServer().getId());
+        assertEquals(proxiedProxyId, first.getId().getProxyServer().getId());
         assertEquals("proxy2", first.getHostname());
 
         ServerPath second = serverPath1.stream().filter(p -> p.getPosition() == 1L).findFirst().get();
         assertEquals(Long.valueOf(1L), second.getPosition());
-        assertEquals(minion, second.getId().getServer());
-        assertEquals(proxy, second.getId().getProxyServer());
+        assertEquals(minion.getId(), second.getId().getServer().getId());
+        assertEquals(proxy.getId(), second.getId().getProxyServer().getId());
         assertEquals("proxy1", second.getHostname());
     }
 
