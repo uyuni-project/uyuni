@@ -44,8 +44,9 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.user.UserManager;
 
-import com.suse.pam.Pam;
 import com.suse.pam.PamReturnValue;
+import com.suse.pam.PamService;
+import com.suse.pam.PamServiceWrapper;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -467,7 +468,7 @@ public class UserImpl extends BaseDomainHelper implements User {
                 // based. Just set a new one with SHA256crypt
                 setPassword(CryptHelper.getRandomPasswordForPamAuth());
             }
-            Pam pam = new Pam(pamAuthService);
+            PamService pam = new PamServiceWrapper(pamAuthService);
             PamReturnValue ret = pam.authenticate(getLogin(), thePassword);
             result = PamReturnValue.PAM_SUCCESS.equals(ret);
             if (!result) {
