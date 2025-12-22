@@ -73,10 +73,6 @@ public class RecurringPlaybook extends RecurringActionType {
      * @return the extra vars
      */
     @Column(name = "extra_vars")
-    //@Type(type = "binary")
-    //@JdbcType(VarbinaryJdbcType.class)
-    //@JdbcTypeCode(Types.VARBINARY)
-    @Lob
     public byte[] getExtraVars() {
         return extraVars;
     }

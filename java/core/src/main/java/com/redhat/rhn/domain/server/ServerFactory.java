@@ -717,7 +717,7 @@ public class ServerFactory extends HibernateFactory {
         if (id == null || orgIn == null) {
             return null;
         }
-        return getSession().createQuery("FROM Server AS s WHERE s.id = :sid AND ORG_ID = :orgId", Server.class)
+        return getSession().createQuery("FROM Server AS s WHERE s.id = :sid AND org.id = :orgId", Server.class)
                 .setParameter("sid", id)
                 .setParameter("orgId", orgIn.getId())
                 .uniqueResult();

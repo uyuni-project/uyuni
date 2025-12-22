@@ -24,7 +24,7 @@ import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 
 import org.junit.jupiter.api.BeforeEach;
 
-import javax.servlet.FilterChain;
+import jakarta.servlet.FilterChain;
 
 /**
  * BaseFilterTest
