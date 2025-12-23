@@ -3143,6 +3143,53 @@ public class ChannelSoftwareHandler extends BaseHandler {
         }
     }
 
+    /**
+     * Returns whether the channel is synchronized automatically by taskomatic job
+     * @param loggedInUser The current user
+     * @param channelLabel The label for the channel in question
+     * @return whether the channel is synchronized automatically
+     *
+     * @apidoc.doc Returns whether is synchronized automatically
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "channelLabel", "label of the channel")
+     * @apidoc.returntype #param_desc("boolean", "result", "true if the channel is synchronized automatically")
+     */
+    @ReadOnly
+    public boolean isAutoSync(User loggedInUser, String channelLabel) {
+        return ChannelFactory.lookupByLabelAndUser(channelLabel, loggedInUser).isAutoSync();
+    }
+
+
+    /**
+     * Set whether the channel must be synchronized automatically by taskomatic job
+     * @param loggedInUser The current user
+     * @param channelLabel The label for the channel in question
+     * @param autoSync Boolean telling if the channel should be automatically synchronized
+     * @return The value set to the channel automatic synchronized option
+     *
+     * @apidoc.doc Returns whether is synchronized automatically
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "channelLabel", "label of the channel")
+     * @apidoc.param #param_desc("boolean", "autoSync", "Value to set on the channel automatic synchronization")
+     * @apidoc.returntype #param_desc("boolean", "result", "The value set to the channel automatic synchronized option")
+     */
+    public boolean setAutoSync(User loggedInUser, String channelLabel, boolean autoSync) {
+        Channel channel = lookupChannelByLabel(loggedInUser.getOrg(), channelLabel);
+
+        try {
+            if (!loggedInUser.hasRole(RoleFactory.SAT_ADMIN)) {
+                ChannelManager.verifyChannelAdmin(loggedInUser, channel.getId());
+            }
+        }
+        catch (InvalidChannelRoleException e) {
+            throw new PermissionCheckFailureException();
+        }
+
+        channel.setAutoSync(autoSync);
+        ChannelFactory.save(channel);
+        return autoSync;
+    }
+
     private ContentSource lookupContentSourceById(Long repoId, Org org) {
         ContentSource cs = ChannelFactory.lookupContentSource(repoId, org);
         if (cs == null) {
