@@ -1011,7 +1011,7 @@ public class KickstartFactory extends HibernateFactory {
                AND s.action IN (:actions_to_delete)
                AND NOT exists
                     (select 1 FROM KickstartSessionState ss
-                    WHERE ss.id = s.state AND ss.label IN ('failed', 'complete'))
+                    WHERE ss = s.state AND ss.label IN ('failed', 'complete'))
                """, KickstartSession.class);
         kickstartSessionQuery.setParameterList("actions_to_delete", actionsToDelete);
         int subStart = 0;
