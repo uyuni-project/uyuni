@@ -412,14 +412,6 @@ Before('@rocky9_ssh_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['rocky9_ssh_minion']
 end
 
-Before('@ubuntu2004_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['ubuntu2004_minion']
-end
-
-Before('@ubuntu2004_ssh_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['ubuntu2004_ssh_minion']
-end
-
 Before('@ubuntu2204_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['ubuntu2204_minion']
 end
