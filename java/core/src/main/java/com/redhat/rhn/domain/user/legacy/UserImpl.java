@@ -44,8 +44,10 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.user.UserManager;
 
-import com.suse.pam.Pam;
+import com.suse.pam.DefaultPamServiceFactory;
 import com.suse.pam.PamReturnValue;
+import com.suse.pam.PamService;
+import com.suse.pam.PamServiceFactory;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -173,6 +175,9 @@ public class UserImpl extends BaseDomainHelper implements User {
 
     @Transient
     private transient EnterpriseUser euser;
+
+    @Transient
+    private transient PamServiceFactory pamServiceFactory = new DefaultPamServiceFactory();
 
     /**
      * Gets the current value of id
@@ -467,7 +472,8 @@ public class UserImpl extends BaseDomainHelper implements User {
                 // based. Just set a new one with SHA256crypt
                 setPassword(CryptHelper.getRandomPasswordForPamAuth());
             }
-            Pam pam = new Pam(pamAuthService);
+
+            PamService pam = pamServiceFactory.getInstance(pamAuthService);
             PamReturnValue ret = pam.authenticate(getLogin(), thePassword);
             result = PamReturnValue.PAM_SUCCESS.equals(ret);
             if (!result) {
@@ -628,6 +634,18 @@ public class UserImpl extends BaseDomainHelper implements User {
     @Override
     public String getShowSystemGroupList() {
         return this.userInfo.getShowSystemGroupList();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PamServiceFactory getPamServiceFactory() {
+        return pamServiceFactory;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void setPamServiceFactory(PamServiceFactory pamServiceFactoryIn) {
+        this.pamServiceFactory = pamServiceFactoryIn;
     }
 
     /** {@inheritDoc} */
