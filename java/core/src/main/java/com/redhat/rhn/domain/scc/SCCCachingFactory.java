@@ -38,6 +38,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.type.StandardBasicTypes;
 
+import java.time.Instant;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
@@ -51,7 +52,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.persistence.Tuple;
+import jakarta.persistence.Tuple;
 
 /**
  * Factory class for populating and reading from SCC caching tables.
@@ -634,10 +635,10 @@ import javax.persistence.Tuple;
                         WHERE reg.scc_regerror_timestamp IS NULL AND reg.creds_id = :cred AND reg.scc_id IS NOT NULL
                         """)
                 .setParameter("cred", cred.getId(), StandardBasicTypes.LONG)
-                .list();
+                .getResultList();
 
         return rows.stream()
-                .map(r -> new SCCUpdateSystemItem(r[0].toString(), r[1].toString(), (Date) r[2]))
+                .map(r -> new SCCUpdateSystemItem(r[0].toString(), r[1].toString(), Date.from((Instant) r[2])))
                 .toList();
     }
 

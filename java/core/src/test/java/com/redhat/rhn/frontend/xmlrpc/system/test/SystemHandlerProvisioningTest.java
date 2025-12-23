@@ -73,7 +73,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 @ExtendWith(JUnit5Mockery.class)
 public class SystemHandlerProvisioningTest extends BaseHandlerTestCase {

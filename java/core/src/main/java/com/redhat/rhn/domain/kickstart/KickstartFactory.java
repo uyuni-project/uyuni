@@ -50,10 +50,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.persistence.Tuple;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import jakarta.persistence.Tuple;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 
 
 /**
@@ -184,7 +184,7 @@ public class KickstartFactory extends HibernateFactory {
      */
     public static KickstartData lookupKickstartDataByIdAndOrg(Org orgIn, Long ksid) {
         return HibernateFactory.getSession()
-                .createQuery("FROM KickstartData AS t WHERE t.id = :id AND t.org = :org_id", KickstartData.class)
+                .createQuery("FROM KickstartData AS t WHERE t.id = :id AND t.org.id = :org_id", KickstartData.class)
                 .setParameter("id", ksid, StandardBasicTypes.LONG)
                 .setParameter(ORG_ID, orgIn.getId(), StandardBasicTypes.LONG)
                 .uniqueResult();
@@ -197,7 +197,7 @@ public class KickstartFactory extends HibernateFactory {
      */
     public static KickstartData lookupKickstartDataByCobblerIdAndOrg(Org orgIn, String cobblerId) {
         return HibernateFactory.getSession()
-                .createQuery("FROM KickstartData AS t WHERE t.cobblerId = :id AND t.org = :org_id",
+                .createQuery("FROM KickstartData AS t WHERE t.cobblerId = :id AND t.org.id = :org_id",
                         KickstartData.class)
                 .setParameter("id", cobblerId)
                 .setParameter(ORG_ID, orgIn.getId(), StandardBasicTypes.LONG)
@@ -215,7 +215,7 @@ public class KickstartFactory extends HibernateFactory {
             throw new IllegalArgumentException("kickstartLabel cannot be null");
         }
         return HibernateFactory.getSession().
-                createQuery("FROM KickstartData AS t WHERE t.label = :label AND t.org = :org_id",
+                createQuery("FROM KickstartData AS t WHERE t.label = :label AND t.org.id = :org_id",
                         KickstartData.class)
                 .setParameter(LABEL, label)
                 .setParameter(ORG_ID, orgId, StandardBasicTypes.LONG)
@@ -234,7 +234,7 @@ public class KickstartFactory extends HibernateFactory {
             throw new IllegalArgumentException("kickstartLabel cannot be null");
         }
         return HibernateFactory.getSession().
-                createQuery("FROM KickstartData AS t WHERE LOWER(t.label) = LOWER(:label) AND t.org = :org_id",
+                createQuery("FROM KickstartData AS t WHERE LOWER(t.label) = LOWER(:label) AND t.org.id = :org_id",
                         KickstartData.class)
                 .setParameter(LABEL, label)
                 .setParameter(ORG_ID, orgId, StandardBasicTypes.LONG)
@@ -495,7 +495,7 @@ public class KickstartFactory extends HibernateFactory {
     public static List<CryptoKey> lookupCryptoKeys(Org org) {
         //look for Kickstart data by id
         Session session = HibernateFactory.getSession();
-        return session.createQuery("FROM CryptoKey AS c WHERE c.org = :org_id", CryptoKey.class)
+        return session.createQuery("FROM CryptoKey AS c WHERE c.org.id = :org_id", CryptoKey.class)
                 .setParameter(ORG_ID, org.getId(), StandardBasicTypes.LONG)
                 .list();
     }
@@ -524,7 +524,7 @@ public class KickstartFactory extends HibernateFactory {
     public static CryptoKey lookupCryptoKeyById(Long keyId, Org org) {
         //look for Kickstart data by id
         Session session = HibernateFactory.getSession();
-        return session.createQuery("FROM CryptoKey AS c WHERE c.id = :key_id AND c.org = :org_id",
+        return session.createQuery("FROM CryptoKey AS c WHERE c.id = :key_id AND c.org.id = :org_id",
                         CryptoKey.class)
                 .setParameter("key_id", keyId, StandardBasicTypes.LONG)
                 .setParameter(ORG_ID, org.getId(), StandardBasicTypes.LONG)
@@ -571,7 +571,7 @@ public class KickstartFactory extends HibernateFactory {
     public static KickstartableTree lookupKickstartTreeByLabel(String label, Org org) {
         Session session = HibernateFactory.getSession();
         KickstartableTree retval = (KickstartableTree)
-                session.createQuery("FROM KickstartableTree AS k WHERE k.label = :label AND k.org = :org_id")
+                session.createQuery("FROM KickstartableTree AS k WHERE k.label = :label AND k.org.id = :org_id")
                 .setParameter(LABEL, label, StandardBasicTypes.STRING)
                 .setParameter(ORG_ID, org.getId(), StandardBasicTypes.LONG)
                 .uniqueResult();
@@ -1011,7 +1011,7 @@ public class KickstartFactory extends HibernateFactory {
                AND s.action IN (:actions_to_delete)
                AND NOT exists
                     (select 1 FROM KickstartSessionState ss
-                    WHERE ss.id = s.state AND ss.label IN ('failed', 'complete'))
+                    WHERE ss = s.state AND ss.label IN ('failed', 'complete'))
                """, KickstartSession.class);
         kickstartSessionQuery.setParameterList("actions_to_delete", actionsToDelete);
         int subStart = 0;

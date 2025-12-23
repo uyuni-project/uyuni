@@ -97,6 +97,7 @@ public class RhnConfigurationFactory extends HibernateFactory {
      * @return the configuration
      */
     public RhnConfiguration getConfiguration(RhnConfiguration.KEYS keyIn) {
+        //return getSession().byId(RhnConfiguration.class).load(keyIn);
         return getSession().find(RhnConfiguration.class, keyIn);
     }
 
@@ -107,7 +108,7 @@ public class RhnConfigurationFactory extends HibernateFactory {
      */
     public void update(RhnConfiguration config) {
         Session session = getSession();
-        session.merge(config);
+        session.persist(config);
     }
 
     /**
@@ -129,7 +130,7 @@ public class RhnConfigurationFactory extends HibernateFactory {
         Session session = getSession();
         RhnConfiguration entity = getConfiguration(keyIn);
         entity.setValue(String.valueOf(value));
-        session.merge(entity);
+        session.persist(entity);
     }
 
     /**

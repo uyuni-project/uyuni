@@ -26,43 +26,25 @@ import java.util.List;
 
 public class TestFactory extends HibernateFactory {
 
-    private static Logger log = LogManager.getLogger(TestFactory.class);
-    private static TestFactory singleton = new TestFactory();
+    private static final Logger log = LogManager.getLogger(TestFactory.class);
+    private static final TestFactory singleton = new TestFactory();
 
-    private TestFactory() {
-        super();
-    }
-
-    /**
-     * Return the Implementation class used by the derived
-     * class's Factory
-     * @return the implementation class
-     */
-    protected Class getImplementationClass() {
-        return TestImpl.class;
-    }
-
-    /** Get the Logger for the derived class so log messages
-    *   show up on the correct class
-    */
     @Override
     protected Logger getLogger() {
         return log;
     }
 
     public static TestInterface createTest() {
-        return new TestImpl();
+        return new TestEntity();
     }
 
     public static TestInterface lookupByFoobar(String f) {
-        // Get PersonalInfo row
-        return singleton.lookupObjectByParam(TestImpl.class, "fooBar", f);
+        return singleton.lookupObjectByParam(TestEntity.class, "foobar", f);
     }
 
     public static List<TestInterface> lookupAll() {
         Session session = HibernateFactory.getSession();
-        return session.createQuery("FROM TestImpl", TestInterface.class)
-                .list();
+        return session.createQuery("FROM TestEntity", TestInterface.class).list();
     }
 
     public static void save(TestInterface t) {

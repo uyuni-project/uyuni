@@ -11,7 +11,7 @@
 package com.redhat.rhn.common.hibernate;
 
 
-import com.redhat.rhn.domain.test.TestImpl;
+import com.redhat.rhn.domain.test.TestEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +25,7 @@ public class TestConnectionManager extends DefaultConnectionManager {
     @Override
     protected List<Class<?>> getAnnotatedClasses() {
         List<Class<?>> classList = new ArrayList<>(AnnotationRegistry.getAnnotationClasses());
-        classList.add(TestImpl.class);
+        classList.add(TestEntity.class);
         return classList;
     }
 }

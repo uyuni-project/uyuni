@@ -16,8 +16,8 @@
 
 package com.redhat.rhn.domain.action;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
 
 /**
  * CertificateUpdateAction - Class representing TYPE_CLIENTCERT_UPDATE_CLIENT_CERT

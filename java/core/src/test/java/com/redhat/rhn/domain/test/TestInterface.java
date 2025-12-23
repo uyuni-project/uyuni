@@ -38,4 +38,7 @@ public interface TestInterface {
 
     void setCreated(Date d);
     Date getCreated();
+
+    void setModified(Date d);
+    Date getModified();
 }
