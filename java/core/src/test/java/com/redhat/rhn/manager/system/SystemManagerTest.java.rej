@@ -1,0 +1,18 @@
+diff a/java/core/src/test/java/com/redhat/rhn/manager/system/SystemManagerTest.java b/java/core/src/test/java/com/redhat/rhn/manager/system/SystemManagerTest.java	(rejected hunks)
+@@ -44,14 +44,14 @@ import com.redhat.rhn.common.validator.ValidatorResult;
+ import com.redhat.rhn.common.validator.ValidatorWarning;
+ import com.redhat.rhn.domain.action.Action;
+ import com.redhat.rhn.domain.action.ActionFactory;
++import com.redhat.rhn.domain.action.ActionFactoryTest;
+ import com.redhat.rhn.domain.action.ActionType;
+ import com.redhat.rhn.domain.action.server.ServerAction;
+ import com.redhat.rhn.domain.action.server.ServerActionTest;
+-import com.redhat.rhn.domain.action.ActionFactoryTest;
+ import com.redhat.rhn.domain.channel.Channel;
+ import com.redhat.rhn.domain.channel.ChannelArch;
+-import com.redhat.rhn.domain.channel.ProductName;
+ import com.redhat.rhn.domain.channel.ChannelFactoryTest;
++import com.redhat.rhn.domain.channel.ProductName;
+ import com.redhat.rhn.domain.dto.SystemGroupID;
+ import com.redhat.rhn.domain.dto.SystemGroupsDTO;
+ import com.redhat.rhn.domain.entitlement.Entitlement;

@@ -1,0 +1,11 @@
+diff a/java/core/src/test/java/com/suse/scc/SCCSystemRegistrationManagerTest.java b/java/core/src/test/java/com/suse/scc/SCCSystemRegistrationManagerTest.java	(rejected hunks)
+@@ -38,8 +38,8 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
+ import com.redhat.rhn.testing.ServerTestUtils;
+ 
+ import com.suse.manager.webui.services.SaltStateGeneratorService;
+-import com.suse.manager.webui.services.iface.SaltApi;
+ import com.suse.manager.webui.services.TestSaltApi;
++import com.suse.manager.webui.services.iface.SaltApi;
+ import com.suse.scc.client.SCCClient;
+ import com.suse.scc.client.SCCConfig;
+ import com.suse.scc.client.SCCConfigBuilder;

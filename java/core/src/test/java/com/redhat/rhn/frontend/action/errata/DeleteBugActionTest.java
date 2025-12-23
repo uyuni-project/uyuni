@@ -1,0 +1,81 @@
+/*
+ * Copyright (c) 2009--2014 Red Hat, Inc.
+ *
+ * This software is licensed to you under the GNU General Public License,
+ * version 2 (GPLv2). There is NO WARRANTY for this software, express or
+ * implied, including the implied warranties of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+ * along with this software; if not, see
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * Red Hat trademarks are not licensed under GPLv2. No permission is
+ * granted to use or replicate Red Hat trademarks that are incorporated
+ * in this software or its documentation.
+ */
+package com.redhat.rhn.frontend.action.errata;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import com.redhat.rhn.domain.errata.Bug;
+import com.redhat.rhn.domain.errata.Errata;
+import com.redhat.rhn.domain.errata.ErrataFactory;
+import com.redhat.rhn.domain.errata.ErrataFactoryTest;
+import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.struts.RequestContext;
+import com.redhat.rhn.frontend.struts.RhnHelper;
+import com.redhat.rhn.manager.errata.ErrataManager;
+import com.redhat.rhn.manager.errata.ErrataManagerTest;
+import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.RhnMockHttpServletRequest;
+import com.redhat.rhn.testing.RhnMockHttpServletResponse;
+import com.redhat.rhn.testing.TestUtils;
+
+import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.DynaActionForm;
+import org.junit.jupiter.api.Test;
+
+/**
+ * DeleteBugActionTest
+ */
+public class DeleteBugActionTest extends RhnBaseTestCase {
+
+    @Test
+    public void testDeleteBug() throws Exception {
+        DeleteBugAction action = new DeleteBugAction();
+
+        ActionMapping mapping = new ActionMapping();
+        ActionForward def = new ActionForward(RhnHelper.DEFAULT_FORWARD, "path", true);
+        mapping.addForwardConfig(def);
+
+        RhnMockHttpServletRequest request = TestUtils.getRequestWithSessionAndUser();
+        RhnMockHttpServletResponse response = new RhnMockHttpServletResponse();
+        DynaActionForm form = new DynaActionForm();
+
+        RequestContext requestContext = new RequestContext(request);
+
+        //Create a test errata with a bug
+        User user = requestContext.getCurrentUser();
+        Errata e = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        Long bugId = 42L;
+        String bugSummary = "This bug is tagged for destruction";
+        Bug bug = ErrataManagerTest.createTestBug(bugId, bugSummary);
+        e.addBug(bug);
+        ErrataFactory.save(e);
+        Long eid = e.getId();
+
+        assertEquals(1, e.getBugs().size());
+        //setup the request
+        request.addParameter("eid", eid.toString());
+        request.addParameter("bid", bugId.toString());
+
+        ActionForward result = action.execute(mapping, form, request, response);
+        assertEquals(result.getName(), RhnHelper.DEFAULT_FORWARD);
+
+        flushAndEvict(e); //get rid of e
+
+        Errata e2 = ErrataManager.lookupErrata(eid, user);
+        assertTrue(e2.getBugs().isEmpty()); //make sure bug was removed
+    }
+}

@@ -1,0 +1,11 @@
+diff a/java/core/src/test/java/com/redhat/rhn/taskomatic/task/ForwardRegistrationTaskTest.java b/java/core/src/test/java/com/redhat/rhn/taskomatic/task/ForwardRegistrationTaskTest.java	(rejected hunks)
+@@ -49,8 +49,8 @@ import com.suse.manager.model.hub.IssHub;
+ import com.suse.manager.model.hub.IssPeripheral;
+ import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
+ import com.suse.manager.webui.services.SaltStateGeneratorService;
+-import com.suse.manager.webui.services.iface.SaltApi;
+ import com.suse.manager.webui.services.TestSaltApi;
++import com.suse.manager.webui.services.iface.SaltApi;
+ import com.suse.scc.SCCEndpoints;
+ import com.suse.scc.SCCSystemRegistrationManager;
+ import com.suse.scc.SCCTaskManager;

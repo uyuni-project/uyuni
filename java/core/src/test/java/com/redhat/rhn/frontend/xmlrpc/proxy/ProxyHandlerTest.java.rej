@@ -1,0 +1,14 @@
+diff a/java/core/src/test/java/com/redhat/rhn/frontend/xmlrpc/proxy/ProxyHandlerTest.java b/java/core/src/test/java/com/redhat/rhn/frontend/xmlrpc/proxy/ProxyHandlerTest.java	(rejected hunks)
+@@ -51,10 +51,10 @@ import com.suse.manager.ssl.SSLCertPair;
+ import com.suse.manager.webui.controllers.bootstrap.RegularMinionBootstrapper;
+ import com.suse.manager.webui.controllers.bootstrap.SSHMinionBootstrapper;
+ import com.suse.manager.webui.services.SaltStateGeneratorService;
+-import com.suse.manager.webui.services.iface.SaltApi;
+-import com.suse.manager.webui.services.iface.SystemQuery;
+ import com.suse.manager.webui.services.TestSaltApi;
+ import com.suse.manager.webui.services.TestSystemQuery;
++import com.suse.manager.webui.services.iface.SaltApi;
++import com.suse.manager.webui.services.iface.SystemQuery;
+ import com.suse.manager.webui.utils.gson.ProxyConfigUpdateJson;
+ import com.suse.proxy.update.ProxyConfigUpdateFacade;
+ import com.suse.proxy.update.ProxyConfigUpdateFacadeImpl;

@@ -1,0 +1,15 @@
+diff a/java/core/src/test/java/com/redhat/rhn/manager/channel/ChannelManagerTest.java b/java/core/src/test/java/com/redhat/rhn/manager/channel/ChannelManagerTest.java	(rejected hunks)
+@@ -30,12 +30,12 @@ import com.redhat.rhn.domain.action.Action;
+ import com.redhat.rhn.domain.channel.AccessTokenFactory;
+ import com.redhat.rhn.domain.channel.Channel;
+ import com.redhat.rhn.domain.channel.ChannelFactory;
++import com.redhat.rhn.domain.channel.ChannelFactoryTest;
+ import com.redhat.rhn.domain.channel.ChannelVersion;
+ import com.redhat.rhn.domain.channel.ClonedChannel;
+ import com.redhat.rhn.domain.channel.DistChannelMap;
+ import com.redhat.rhn.domain.channel.ProductName;
+ import com.redhat.rhn.domain.channel.ReleaseChannelMap;
+-import com.redhat.rhn.domain.channel.ChannelFactoryTest;
+ import com.redhat.rhn.domain.errata.AdvisoryStatus;
+ import com.redhat.rhn.domain.errata.Errata;
+ import com.redhat.rhn.domain.errata.ErrataFactory;
