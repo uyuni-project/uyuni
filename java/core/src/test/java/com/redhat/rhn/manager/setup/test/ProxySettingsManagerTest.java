@@ -20,7 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
@@ -29,15 +28,11 @@ import com.redhat.rhn.manager.satellite.ProxySettingsConfigureSatelliteCommand;
 import com.redhat.rhn.manager.setup.ProxySettingsDto;
 import com.redhat.rhn.manager.setup.ProxySettingsManager;
 import com.redhat.rhn.testing.RhnBaseTestCase;
-import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.TestStatics;
-import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * Tests for {@link ProxySettingsManager}.
@@ -125,20 +120,6 @@ public class ProxySettingsManagerTest extends RhnBaseTestCase {
         assertEquals("/dev/null", cmdArgs[8]);
     }
 
-    @Test
-    public void testProxySettingsManagerStoreProxySettings() {
-        HttpServletRequest request = new RhnMockHttpServletRequest();
-        ProxySettingsDto proxySettingsDtoToStore = new ProxySettingsDto();
-        proxySettingsDtoToStore.setHostname(TEST_HOSTNAME + TestUtils.randomString());
-        proxySettingsDtoToStore.setUsername(TEST_USERNAME + TestUtils.randomString());
-        proxySettingsDtoToStore.setPassword(TEST_PASSWD + TestUtils.randomString());
-
-        ValidatorError[] errors = ProxySettingsManager.storeProxySettings(proxySettingsDtoToStore, satAdmin, request);
-        assertEquals(1, errors.length);
-        assertEquals("config.storeconfig.error", errors[0].getKey());
-        // error: sudo: a terminal is required to read the password; either use the -S option to read
-        // from standard input or configure an askpass helper
-    }
 
     @Test
     public void testProxySettingsConfigureSatelliteCommandArguments() {

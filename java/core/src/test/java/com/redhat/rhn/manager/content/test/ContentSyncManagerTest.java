@@ -1926,7 +1926,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         CloudPaygManager mgr = new TestCloudPaygManagerBuilder()
             .withPaygInstance()
             .build();
-        ContentSyncManager csm = new ContentSyncManager(null, mgr);
+        ContentSyncManager csm = new ContentSyncManager(null, true, mgr);
         CloudRMTCredentials rmtCreds = CredentialsFactory.createCloudRmtCredentials("RMTUSER", "secret",
             "http://example.com");
         PaygSshData sshData = PaygSshDataFactory.createPaygSshData();

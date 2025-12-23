@@ -92,6 +92,7 @@ public class UserManagerTest extends RhnBaseTestCase {
     @Override
     @BeforeEach
     public void setUp() throws Exception {
+        super.setUp();
         this.users = new HashSet<>();
         SaltApi saltApi = new TestSaltApi();
         systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltApi);

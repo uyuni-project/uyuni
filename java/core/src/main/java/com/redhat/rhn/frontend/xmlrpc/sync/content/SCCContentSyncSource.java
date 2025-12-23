@@ -57,7 +57,7 @@ public class SCCContentSyncSource implements ContentSyncSource {
     }
 
     @Override
-    public SCCClient getClient(String uuid, Path loggingDir) throws ContentSyncSourceException {
+    public SCCClient getClient(String uuid, Path loggingDir, boolean skipOwner) throws ContentSyncSourceException {
         try {
             URI url = new URI(Config.get().getString(ConfigDefaults.SCC_URL));
 
@@ -75,7 +75,7 @@ public class SCCContentSyncSource implements ContentSyncSource {
                         .setPassword(password)
                         .setUuid(uuid)
                         .setLoggingDir(loggingDir.toAbsolutePath().toString())
-                        .setSkipOwner(false)
+                        .setSkipOwner(skipOwner)
                         .createSCCConfig();
                 return new SCCWebClient(cfg);
             }
@@ -86,7 +86,7 @@ public class SCCContentSyncSource implements ContentSyncSource {
                     .setPassword(password)
                     .setUuid(uuid)
                     .setLoggingDir(loggingDir.toAbsolutePath().toString())
-                    .setSkipOwner(false)
+                    .setSkipOwner(skipOwner)
                     .createSCCConfig();
 
             return new SCCWebClient(config);
