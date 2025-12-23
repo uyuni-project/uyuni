@@ -33,7 +33,6 @@ import java.util.stream.Collectors;
 /**
  * Tests {@link com.suse.scc.registration.SCCSystemRegistration}.
  */
-@Disabled
 public class SCCSystemRegistrationCreateUpdateSystemsTest extends AbstractSCCSystemRegistrationTest {
 
     /**
