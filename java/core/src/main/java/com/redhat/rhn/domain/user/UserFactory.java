@@ -685,7 +685,7 @@ public  class UserFactory extends HibernateFactory {
     public List<User> findAllUsers(Optional<Org> inOrg) {
         return Opt.fold(inOrg,
             () -> getSession().createQuery("FROM UserImpl AS u", User.class).list(),
-            org -> getSession().createQuery("FROM UserImpl AS u WHERE org_id = :org_id", User.class)
+            org -> getSession().createQuery("FROM UserImpl AS u WHERE u.org.id = :org_id", User.class)
                     .setParameter("org_id", org.getId()).list()
         );
     }
