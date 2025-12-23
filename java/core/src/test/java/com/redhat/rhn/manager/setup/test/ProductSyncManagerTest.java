@@ -346,6 +346,9 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
             }
         }
 
+        // Ensure channels are persisted before proceeding with the lookups
+        ChannelFactory.getSession().flush();
+
         return p;
     }
 
