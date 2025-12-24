@@ -54,6 +54,8 @@ public class AlignSoftwareTargetAction implements MessageAction {
                 .lookupSwEnvironmentTargetById(targetId)
                 .orElseThrow(() -> new EntityNotExistsException(targetId));
         Channel targetChannel = target.getChannel();
+
+        @SuppressWarnings("java:S3740")
         List<ContentFilter> filters = msg.getFilters();
 
         try {
@@ -68,8 +70,17 @@ public class AlignSoftwareTargetAction implements MessageAction {
             target.setStatus(Status.GENERATING_REPODATA);
             LOG.info("Finished aligning {} in {}", msg, Duration.between(start, Instant.now()));
         }
-        catch (Throwable t) {
-            throw new AlignSoftwareTargetException(target, t);
+        catch (PermissionException e) {
+            LOG.debug("Unauthorized: {}", e.getMessage());
+            throw new AlignSoftwareTargetException(target, e);
+        }
+        catch (EntityNotExistsException e) {
+            LOG.debug("Software environment target not found: {}", e.getMessage());
+            throw new AlignSoftwareTargetException(target, e);
+        }
+        catch (RuntimeException e) {
+            LOG.error("Unexpected exception during alignment", e);
+            throw new AlignSoftwareTargetException(target, e);
         }
     }
 
