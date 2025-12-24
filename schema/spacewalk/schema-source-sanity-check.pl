@@ -74,7 +74,7 @@ sub check_file_content {
                 }
                 if (not $content =~ /^(--.*\n
                                         |\s*\n
-                                        |(create|alter|comment\s+on)\s+table\s+(?:\w+\.)?$name\b(?:[^;]|';')+;
+                                        |(create|alter|comment\s+on)\s+(unlogged\s+)?table\s+(?:\w+\.)?$name\b(?:[^;]|';')+;
                                         |create\s+(unique\s+)?index\s+\w+\s+on\s+(?:\w+\.)?$name[^;]+;
                                         |create\s+sequence[^;]+;
                                         |comment\s+on\s+column\s+$name\.[^;]+;

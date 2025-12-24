@@ -1,5 +1,6 @@
 --
 -- Copyright (c) 2008--2011 Red Hat, Inc.
+-- Copyright (c) 2025 SUSE LLC.
 --
 -- This software is licensed to you under the GNU General Public License,
 -- version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -13,36 +14,18 @@
 -- in this software or its documentation.
 --
 
-
-CREATE TABLE PXTSessions
+CREATE UNLOGGED TABLE PXTSessions
 (
-    id           NUMERIC,
+    id           BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     web_user_id  NUMERIC
                      CONSTRAINT pxtsessions_user
                          REFERENCES web_contact (id)
                          ON DELETE CASCADE,
-    expires      NUMERIC
-                     DEFAULT (0) NOT NULL,
-    value        VARCHAR(4000) NOT NULL
-)
-
-
-;
+    expires      NUMERIC DEFAULT (0) NOT NULL
+);
 
 CREATE INDEX PXTSessions_user
-    ON PXTSessions (web_user_id)
-    
-    ;
+    ON PXTSessions (web_user_id);
 
 CREATE INDEX PXTSessions_expires
-    ON PXTSessions (expires)
-    
-    ;
-
-CREATE SEQUENCE pxt_id_seq;
-
-ALTER TABLE PXTSessions
-    ADD CONSTRAINT pxt_sessions_pk PRIMARY KEY (id)
-    
-    ;
-
+    ON PXTSessions (expires);

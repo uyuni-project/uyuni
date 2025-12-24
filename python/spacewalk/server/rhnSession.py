@@ -46,7 +46,6 @@ class Session:
 
     def generate(self, duration=None, web_user_id=None):
         # Grabs a session ID
-        self.session_id = rhnSQL.Sequence("pxt_id_seq").next()
         self.duration = int(duration or CFG.SESSION_LIFETIME)
         self.web_user_id(web_user_id)
         return self
@@ -113,7 +112,7 @@ class Session:
 
         h = rhnSQL.prepare(
             """
-            select web_user_id, expires, value
+            select web_user_id, expires
               from pxtSessions
              where id = :session_id
         """
@@ -145,13 +144,15 @@ class Session:
 
         h = rhnSQL.prepare(
             """
-                insert into PXTSessions (id, web_user_id, expires, value)
-                values (:id, :web_user_id, :expires, :value)
+                insert into PXTSessions (web_user_id, expires)
+                values (:web_user_id, :expires)
+                returning id
         """
         )
-        h.execute(
-            id=self.session_id, web_user_id=self.uid, expires=expires, value="RHNAPP"
-        )
+        h.execute(web_user_id=self.uid, expires=expires)
+        result = h.fetchone()
+        if result is not None:
+            self.session_id = result[0]
         rhnSQL.commit()
         return self
 
