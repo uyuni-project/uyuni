@@ -98,7 +98,7 @@ public class PaygUpdateHostsTask extends RhnJavaJob {
                         bw.write(HOST_COMMENT_START + RETAIN_COMMENT);
                         for (CloudRmtHost host : hostToUpdate) {
                             // search for already existing RMT Host definition
-                            if (newLines.stream().anyMatch(l -> l.contains(host.getHost()))) {
+                            if (newLines.stream().anyMatch(l -> l.contains(host.getHost()) && !l.startsWith("#"))) {
                                 // registercloudguest has added already this hostname.
                                 // defining multiple IP addresses for the same name can result in problems.
                                 // We write out only commented entries here
