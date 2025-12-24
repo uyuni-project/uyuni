@@ -20,7 +20,7 @@
 restart:
   mgrcompat.module_run:
     - name: cmd.run_bg
-    - cmd: "/usr/bin/sleep 2; /usr/sbin/service {{ salt_service }} restart"
+    - cmd: "sleep 2; service {{ salt_service }} restart"
     - python_shell: true
 
 {% else -%}
