@@ -11,14 +11,25 @@
 
 package com.redhat.rhn.domain.access;
 
+import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.frontend.listview.PageControl;
+
+import com.suse.manager.utils.PagedSqlQueryBuilder;
+import com.suse.manager.webui.utils.gson.NamespaceJson;
 
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
+
+import javax.persistence.Tuple;
 
 /**
  * Factory class for RBAC's {@link Namespace} entities
@@ -44,6 +55,75 @@ public class NamespaceFactory extends HibernateFactory {
         return getSession()
                 .createQuery("SELECT n FROM Namespace n", Namespace.class)
                 .getResultList();
+    }
+
+    /**
+     * Lists namespaces defined in MLM filter by a search parameter.
+     * @param filterParam the search parameter to filter by
+     * @return the list of all namespaces
+     */
+    public static List<Namespace> list(String filterParam) {
+        return getSession()
+                .createNativeQuery("""
+                SELECT * FROM search_namespace(:filter)
+                """, Namespace.class)
+                .setParameter("filter", filterParam)
+                .getResultList();
+    }
+
+    /**
+     * Lists s paginated list of namespaces
+     * @param pc the page control
+     * @param parser the parser for filters when building query
+     * @return the list of access groups
+     */
+    public static DataResult<NamespaceJson> list(
+            PageControl pc, Function<Optional<PageControl>, PagedSqlQueryBuilder.FilterWithValue> parser) {
+        String from = "(select " +
+                "min(id) as id, " +
+                "namespace, " +
+                "min(description) as description, " +
+                "string_agg(access_mode, '') as access_mode " +
+                "from access.namespace " +
+                "group by namespace " +
+                ") ns";
+
+        return new PagedSqlQueryBuilder("ns.id")
+                .select("ns.*")
+                .from(from)
+                .where("true")
+                .run(new HashMap<>(), pc, parser, NamespaceJson.class);
+    }
+
+    /**
+     * List all namespaces assigned to an access group as json object
+     * @param groupId the access group id
+     * @return the list of namespaces
+     */
+    public static List<NamespaceJson> getAccessGroupNamespaces(Long groupId) {
+        return getSession().createNativeQuery("""
+                 SELECT *,
+                 CASE
+                   WHEN access_mode LIKE '%R%' THEN TRUE ELSE FALSE
+                 END AS view,
+                 CASE
+                   WHEN access_Mode LIKE '%W%' THEN TRUE ELSE FALSE
+                 END AS modify
+                 FROM (
+                   SELECT min(id) AS id,
+                   namespace,
+                   min(description) AS description,
+                   string_agg(access_mode, '') AS access_mode
+                   FROM access.namespace ns
+                   JOIN access.accessgroupnamespace agn ON ns.id = agn.namespace_id
+                   WHERE agn.group_id = :group_id
+                   GROUP BY namespace
+                 )
+                 """, Tuple.class)
+                .setParameter("group_id", groupId)
+                .stream().map(NamespaceJson::new)
+                .toList();
+
     }
 
     /**
@@ -74,6 +154,21 @@ public class NamespaceFactory extends HibernateFactory {
                         Namespace.class)
                 .setParameter("namespace", sanitizeNamespacePattern(namespace))
                 .setParameter("modes", modes)
+                .getResultList();
+    }
+
+    /**
+     * Lists namespaces matching given list of ids
+     * @param ids the list of ids to filter the namespaces by
+     * @return the list of namespaces matching the ids
+     */
+    public static List<Namespace> listByIds(List<Long> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return new ArrayList<>();
+        }
+        return getSession()
+                .createQuery("SELECT n FROM Namespace n WHERE n.id IN :ids", Namespace.class)
+                .setParameter("ids", ids)
                 .getResultList();
     }
 
