@@ -35,6 +35,7 @@ type AccessGroupType<P> = {
   permissions: P;
   users: User[];
   errors: any;
+  permissionsModified: boolean;
 };
 
 export type AccessGroupPropsType = AccessGroupType<Permission[]>;
@@ -55,6 +56,7 @@ const defaultAccessGroupState: AccessGroupState = {
   permissions: {},
   users: [],
   errors: {},
+  permissionsModified: false,
 };
 
 const parsePermissions = (accessGroupProps: AccessGroupPropsType): AccessGroupState => {
@@ -69,6 +71,7 @@ const parsePermissions = (accessGroupProps: AccessGroupPropsType): AccessGroupSt
   return {
     ...accessGroupProps,
     permissions: newPermissions,
+    permissionsModified: false,
   };
 };
 
@@ -91,18 +94,27 @@ const AccessGroup = (props: AccessGroupProps) => {
   };
 
   const handleFormChange = (newAccessGroupState) => {
-    setAccessGroupState((prevState) => ({
-      ...prevState,
-      name: newAccessGroupState.name,
-      description: newAccessGroupState.description,
-      orgId: newAccessGroupState.orgId,
-      orgName: newAccessGroupState.orgName,
-      users:
-        accessGroupState.orgId !== newAccessGroupState.orgId || accessGroupState.users.length === 0
-          ? []
-          : newAccessGroupState.users,
-      accessGroups: newAccessGroupState.accessGroups,
-    }));
+    setAccessGroupState((prevState) => {
+      const agChanged = prevState.accessGroups.join(",") !== newAccessGroupState.accessGroups.join(",");
+
+      return {
+        ...prevState,
+        name: newAccessGroupState.name,
+        description: newAccessGroupState.description,
+        orgId: newAccessGroupState.orgId,
+        orgName: newAccessGroupState.orgName,
+        users:
+          prevState.orgId !== newAccessGroupState.orgId || prevState.users.length === 0
+            ? []
+            : newAccessGroupState.users,
+        accessGroups: newAccessGroupState.accessGroups,
+
+        ...(agChanged && {
+          permissions: {},
+          permissionsModified: false,
+        }),
+      };
+    });
   };
 
   const handlePermissionsChange = (changes: Record<string, AccessGroupState["permissions"][0] | undefined>) => {
@@ -121,6 +133,7 @@ const AccessGroup = (props: AccessGroupProps) => {
       return {
         ...prevState,
         permissions: newPermissions,
+        permissionsModified: true,
       };
     });
   };

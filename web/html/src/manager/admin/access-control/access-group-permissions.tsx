@@ -1,17 +1,20 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+
+import debounce from "lodash/debounce";
 
 import { AccessGroupState } from "manager/admin/access-control/access-group";
 
+import { Button } from "components/buttons";
 import { DEPRECATED_Check, Form } from "components/input";
 import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
 import { Table } from "components/table/Table";
 import { MessagesContainer, showErrorToastr } from "components/toastr";
-import { Toggler } from "components/toggler";
 
 import Network from "utils/network";
 
 import styles from "./AccessGroup.module.scss";
+
 type Props = {
   state: AccessGroupState;
   onChange: (changes: Record<string, any | undefined>) => void;
@@ -36,6 +39,8 @@ const AccessGroupPermissions = (props: Props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [expandedKeys, setExpandedKeys] = useState<Set<string>>(new Set());
+  const [expandCollapseAll, setExpandCollapseAll] = useState(false);
+  const agAppliedRef = useRef(false);
 
   const isItemDisabled = useCallback((item, type) => {
     const requiredAccessMode = type === "view" ? "R" : "W";
@@ -122,46 +127,27 @@ const AccessGroupPermissions = (props: Props) => {
     }
     Network.get(endpoint)
       .then((response) => {
-        // console.log("DB response")
         const namespacesToSet = response["namespaces"] || [];
         setNamespaces(namespacesToSet);
 
-        if (hasCopy && response["toCopy"]) {
-          const itemsToCopy = response["toCopy"];
+        const shouldApplyAGPermissions =
+          hasCopy && response["toCopy"] && !props.state.permissionsModified && !agAppliedRef.current;
+
+        if (shouldApplyAGPermissions) {
           const changes = {};
 
-          if (props.state.permissions) {
-            Object.keys(props.state.permissions).forEach((key) => {
-              changes[key] = undefined;
-            });
-          }
+          response["toCopy"].forEach((item) => {
+            changes[item.namespace] = {
+              ...item,
+              view: item.accessMode.includes("R"),
+              modify: item.accessMode.includes("W"),
+            };
+          });
 
-          if (itemsToCopy.length > 0) {
-            itemsToCopy.forEach((item) => {
-              changes[item.namespace] = {
-                ...item,
-                view: item.accessMode.includes("R"),
-                modify: item.accessMode.includes("W"),
-              };
-            });
-          }
           props.onChange(changes);
+          agAppliedRef.current = true;
         }
-        const shouldClearPermissions = !hasCopy && !props.state.id && !hasFilter;
 
-        if (shouldClearPermissions) {
-          const currentPermissions = props.state.permissions || {};
-          const keysToClear = Object.keys(currentPermissions);
-
-          if (keysToClear.length > 0) {
-            const clearChanges = {};
-            keysToClear.forEach((key) => {
-              clearChanges[key] = undefined;
-            });
-
-            props.onChange(clearChanges);
-          }
-        }
         setIsLoading(false);
       })
       .catch(() => {
@@ -171,11 +157,19 @@ const AccessGroupPermissions = (props: Props) => {
   };
 
   useEffect(() => {
-    if (!isLoading) {
+    agAppliedRef.current = false;
+  }, [props.state.accessGroups]);
+
+  const debouncedGetNamespaces = useRef(
+    debounce((value: string) => {
       setIsLoading(true);
-      getNamespaces(searchValue);
-    }
-  }, [searchValue]);
+      getNamespaces(value);
+    }, 200)
+  ).current;
+
+  useEffect(() => {
+    debouncedGetNamespaces(searchValue);
+  }, [searchValue, debouncedGetNamespaces]);
 
   useEffect(() => {
     namespaces.forEach((item) => {
@@ -196,6 +190,7 @@ const AccessGroupPermissions = (props: Props) => {
   const setNamespacesCheck = (model) => {
     setApiNamespace(!!model.apiNamespace);
     setWebNamespace(!!model.webNamespace);
+    setShowOnlySelected(!!model.showOnlySelected);
   };
 
   const filteredNamespaces = (namespaces || []).filter((item) => {
@@ -214,14 +209,17 @@ const AccessGroupPermissions = (props: Props) => {
   const namespacesFilter = (
     <div className="d-flex">
       <div className="ms-4">
-        <Form model={{ apiNamespace, webNamespace }} onChange={setNamespacesCheck}>
+        <Form model={{ apiNamespace, webNamespace, showOnlySelected }} onChange={setNamespacesCheck}>
           <div className="d-flex">
             <span className="control-label me-3">Filter by:</span>
             <span className="me-4">
               <DEPRECATED_Check label={t("API")} name="apiNamespace" key="apiNamespace" />
             </span>
-            <span>
+            <span className="me-4">
               <DEPRECATED_Check label={t("Web")} name="webNamespace" key="webNamespace" />
+            </span>
+            <span>
+              <DEPRECATED_Check label={t("Only selected")} name="showOnlySelected" key="showOnlySelected" />
             </span>
           </div>
         </Form>
@@ -249,38 +247,69 @@ const AccessGroupPermissions = (props: Props) => {
       .filter((x): x is NamespaceItem => x !== null);
   };
 
-  const handleShowOnlySelectedToggle = () => {
-    setShowOnlySelected(!showOnlySelected);
-    setSearchValue(""); // clear search when toggling
-  };
-
-  const selectedToggle = (
-    <Toggler value={showOnlySelected} handler={handleShowOnlySelectedToggle} text={t("Show only selected")} />
-  );
-
-  const finalData: NamespaceItem[] = showOnlySelected
-    ? getSelectedNamespace(filteredNamespaces)
-    : filteredNamespaces || [];
-
-  useEffect(() => {
-    if (!searchValue || searchValue.trim().length === 0) {
-      setExpandedKeys(new Set());
-      return;
-    }
+  const collectExpandableKeys = useCallback((items: NamespaceItem[]) => {
     const keys = new Set<string>();
-    const traverse = (items: any[]) => {
-      if (!Array.isArray(items)) return;
 
-      items.forEach((item) => {
-        keys.add(`${item.namespace}-${item.isAPI ? "api" : "ui"}`);
-        if (item.children) {
-          traverse(item.children);
+    const collectExpandableNodes = (nodes: NamespaceItem[]) => {
+      nodes.forEach((item) => {
+        if (item.children && item.children.length > 0) {
+          keys.add(`${item.namespace}-${item.isAPI ? "api" : "ui"}`);
+          collectExpandableNodes(item.children);
         }
       });
     };
-    traverse(finalData);
-    setExpandedKeys(keys);
-  }, [searchValue]);
+
+    collectExpandableNodes(items);
+    return keys;
+  }, []);
+
+  const handleExpandCollapseAll = () => {
+    setExpandCollapseAll((prev) => {
+      if (!prev) {
+        const keys = collectExpandableKeys(finalData);
+        setExpandedKeys(keys);
+      } else {
+        setExpandedKeys(new Set());
+      }
+      return !prev;
+    });
+  };
+
+  const expandAllToggle = (
+    <Button
+      className="btn-default btn-sm"
+      handler={handleExpandCollapseAll}
+      text={!expandCollapseAll ? t("Expand All") : t("Collapse All")}
+    />
+  );
+
+  const finalData = useMemo<NamespaceItem[]>(() => {
+    return showOnlySelected ? getSelectedNamespace(filteredNamespaces) : filteredNamespaces || [];
+  }, [showOnlySelected, filteredNamespaces]);
+
+  //setExpandedKeys on search
+  useEffect(() => {
+    if (isLoading) return;
+
+    if (!searchValue.trim()) {
+      setExpandedKeys(new Set());
+      return;
+    }
+
+    const keys = new Set<string>();
+
+    const collectExpandableNodes = (items: NamespaceItem[]) => {
+      items.forEach((item) => {
+        keys.add(`${item.namespace}-${item.isAPI ? "api" : "ui"}`);
+        if (item.children) collectExpandableNodes(item.children);
+      });
+    };
+
+    collectExpandableNodes(finalData);
+    if (!isLoading) {
+      setExpandedKeys(keys);
+    }
+  }, [searchValue, isLoading]);
 
   return (
     <div>
@@ -317,7 +346,7 @@ const AccessGroupPermissions = (props: Props) => {
         searchPanelInline
         searchField={<SearchField placeholder={t("Filter by name")} />}
         additionalFilters={[namespacesFilter]}
-        titleButtons={[selectedToggle]}
+        titleButtons={[expandAllToggle]}
         tableClass="table-hover"
       >
         <Column

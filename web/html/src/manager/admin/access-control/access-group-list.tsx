@@ -75,11 +75,12 @@ const AccessGroupList = () => {
           <LinkButton
             className="btn-default btn-sm"
             icon="fa-pencil"
+            title="Edit Access Group"
             href={`/rhn/manager/admin/access-control/show-access-group/${item.id}`}
           />
           <ModalButton
             className="btn-default btn-sm"
-            title={t("Delete")}
+            title={t("Delete Access Group")}
             icon="fa-trash"
             target="delete-modal"
             item={item}

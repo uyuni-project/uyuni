@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
+import { Button } from "components/buttons";
 import { Column } from "components/table/Column";
 import { Table } from "components/table/Table";
 
@@ -14,6 +15,8 @@ type Props = {
 
 const AccessGroupReview = (props: Props) => {
   const [namespaces, setNamespaces] = useState([]);
+  const [expandCollapseAll, setExpandCollapseAll] = useState(true);
+  const [expandedKeys, setExpandedKeys] = useState<Set<string>>(new Set());
 
   const isItemDisabled = useCallback((item, type) => {
     const requiredAccessMode = type === "view" ? "R" : "W";
@@ -24,6 +27,7 @@ const AccessGroupReview = (props: Props) => {
 
     return item.children.every((child) => isItemDisabled(child, type));
   }, []);
+
   const loadNamespaces = () => {
     let endpoint = "/rhn/manager/api/admin/access-control/access-group/list_namespaces";
 
@@ -79,8 +83,51 @@ const AccessGroupReview = (props: Props) => {
     [props.state.permissions, isItemDisabled]
   );
 
-  const selectedPermissionsTree = getSelectedNamespace(namespaces);
+  const collectExpandableKeys = useCallback((items) => {
+    const keys = new Set<string>();
 
+    const collectExpandableNodes = (nodes) => {
+      nodes.forEach((item) => {
+        if (item.children && item.children.length > 0) {
+          keys.add(item.namespace);
+          collectExpandableNodes(item.children);
+        }
+      });
+    };
+
+    collectExpandableNodes(items);
+    return keys;
+  }, []);
+
+  const handleExpandCollapseAll = () => {
+    setExpandCollapseAll((prev) => {
+      if (!prev) {
+        const keys = collectExpandableKeys(selectedPermissionsTree);
+        setExpandedKeys(keys);
+      } else {
+        setExpandedKeys(new Set());
+      }
+      return !prev;
+    });
+  };
+
+  const selectedPermissionsTree = useMemo(() => {
+    return getSelectedNamespace(namespaces);
+  }, [namespaces, props.state.permissions]);
+
+  useEffect(() => {
+    if (selectedPermissionsTree.length > 0 && expandCollapseAll) {
+      setExpandedKeys(collectExpandableKeys(selectedPermissionsTree));
+    }
+  }, [selectedPermissionsTree, expandCollapseAll, collectExpandableKeys]);
+
+  const expandAllToggle = (
+    <Button
+      className="btn-default btn-sm"
+      handler={handleExpandCollapseAll}
+      text={!expandCollapseAll ? t("Expand All") : t("Collapse All")}
+    />
+  );
   return (
     <div>
       {!props.state.id ? (
@@ -121,9 +168,9 @@ const AccessGroupReview = (props: Props) => {
         data={selectedPermissionsTree}
         identifier={(item) => item.namespace}
         expandable
-        expandableOpen={true}
         emptyText={t("No permissions selected.")}
-        hideHeaderFooter="both"
+        titleButtons={[expandAllToggle]}
+        controlledExpandedKeys={expandedKeys}
       >
         <Column columnKey="name" header={t("Name")} cell={(row) => row.name} />
         <Column columnKey="description" header={t("Description")} cell={(row) => row.description} />
