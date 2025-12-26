@@ -82,7 +82,11 @@ mgr_generate_grubconf:
 
 mgr_autoinstall_start:
   cmd.run:
+{%- if grains['os_family'] == 'Suse' and grains['osmajorrelease'] <= 12 %}
+    - name: /sbin/shutdown -r +1
+{%- else %}
     - name: /usr/sbin/shutdown -r +1
+{%- endif %}
     - require:
 {% if loader_type == 'grub' %}
       - cmd: mgr_grub_boot_once
