@@ -1,5 +1,5 @@
 FROM opensuse/leap:15.6
-# Ruby 3 devel repos
+# Ruby devel repos
 RUN zypper -n ar -f --no-gpgcheck http://download.opensuse.org/repositories/devel:/languages:/ruby/15.6/ ruby_devel
 RUN zypper -n ar -f --no-gpgcheck http://download.opensuse.org/repositories/devel:/languages:/ruby:/extensions/15.6/ rubey_devel_extensions
 
@@ -9,8 +9,8 @@ RUN zypper ref -f && \
       gcc \
       make \
       wget \
-      ruby3.3 \
-      ruby3.3-devel \
+      ruby4.0 \
+      ruby4.0-devel \
       python-devel \
       autoconf \
       ca-certificates-mozilla \
@@ -40,20 +40,20 @@ COPY etc_pam.d_sshd /etc/pam.d/sshd
 CMD ssh-keygen -A && /usr/sbin/sshd -De
 
 ### Ruby 3 changes ###
-RUN export GEM_PATH="/usr/lib64/ruby/gems/3.3.0"
-RUN echo 'GEM_PATH="/usr/lib64/ruby/gems/3.3.0"' >> ./root/.bashrc
-RUN ln -sf /usr/bin/ruby.ruby3.3 /usr/bin/ruby
-RUN ln -sf /usr/bin/gem.ruby3.3 /usr/bin/gem
-RUN ln -sf /usr/bin/irb.ruby3.3 /usr/bin/irb
-RUN update-alternatives --set rake /usr/bin/rake.ruby.ruby3.3
-RUN update-alternatives --set bundle /usr/bin/bundle.ruby.ruby3.3
-RUN update-alternatives --set rdoc /usr/bin/rdoc.ruby.ruby3.3
-RUN update-alternatives --set ri /usr/bin/ri.ruby.ruby3.3
+RUN export GEM_PATH="/usr/lib64/ruby/gems/4.0.0"
+RUN echo 'GEM_PATH="/usr/lib64/ruby/gems/4.0.0"' >> ./root/.bashrc
+RUN ln -sf /usr/bin/ruby.ruby4.0 /usr/bin/ruby
+RUN ln -sf /usr/bin/gem.ruby4.0 /usr/bin/gem
+RUN ln -sf /usr/bin/irb.ruby4.0 /usr/bin/irb
+RUN update-alternatives --set rake /usr/bin/rake.ruby.ruby4.0
+RUN update-alternatives --set bundle /usr/bin/bundle.ruby.ruby4.0
+RUN update-alternatives --set rdoc /usr/bin/rdoc.ruby.ruby4.0
+RUN update-alternatives --set ri /usr/bin/ri.ruby.ruby4.0
 
 # debug
 RUN ruby -v
 RUN gem env
 
 # TODO: Adjust the URL/branch before merging!
-RUN curl https://raw.githubusercontent.com/uyuni-project/uyuni/master/testsuite/Gemfile -o Gemfile && bundle.ruby3.3 install --verbose && rm Gemfile
+RUN curl https://raw.githubusercontent.com/uyuni-project/uyuni/master/testsuite/Gemfile -o Gemfile && bundle.ruby4.0 install --verbose && rm Gemfile
 RUN gem list
