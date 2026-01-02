@@ -73,6 +73,7 @@ type State = {
   sectionsExpanded: SectionState;
   searchCriteria: string;
   loading: boolean;
+  saving: boolean;
 };
 
 class FormulaForm extends Component<Props, State> {
@@ -92,6 +93,7 @@ class FormulaForm extends Component<Props, State> {
       sectionsExpanded: SectionState.Collapsed,
       searchCriteria: "",
       loading: true,
+      saving: false,
     };
 
     window.addEventListener("beforeunload", (e) => {
@@ -152,7 +154,7 @@ class FormulaForm extends Component<Props, State> {
   };
 
   saveFormula = (data) => {
-    this.setState({ formulaChanged: false });
+    this.setState({ formulaChanged: false, saving: true });
     const scope = this.props.scope;
     let formType = scope.toUpperCase();
     if (formType === "SYSTEM") {
@@ -170,6 +172,7 @@ class FormulaForm extends Component<Props, State> {
       this.setState({
         messages: [],
         errors: messages,
+        saving: false,
       });
     } else {
       const formData = {
@@ -196,7 +199,7 @@ class FormulaForm extends Component<Props, State> {
             });
           }
         }.bind(this)
-      );
+      ).finally(() => this.setState({ saving: false }));
       window.scrollTo(0, 0);
     }
   };
@@ -323,10 +326,11 @@ class FormulaForm extends Component<Props, State> {
                         />
                         <Button
                           id="save-btn"
-                          icon="fa-floppy-o"
+                          icon={this.state.saving ? "fa-circle-o-notch fa-spin" : "fa-floppy-o"}
                           text="Save Formula"
                           className={"btn btn-primary"}
                           handler={() => this.saveFormula(validate?.())}
+                          disabled={this.state.saving}
                         />
                       </div>
                     )}
