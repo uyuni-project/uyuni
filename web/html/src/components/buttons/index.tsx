@@ -166,6 +166,8 @@ export class AsyncButton extends _ButtonBase<AsyncProps, AsyncState> {
 export type ButtonProps = BaseProps & {
   /** Callback function to execute on button click. */
   handler?: (...args: any[]) => any;
+  /** If true, show a spinner and disable the button. */
+  loading?: boolean;
 };
 
 /**
@@ -191,9 +193,13 @@ export class Button extends _ButtonBase<ButtonProps> {
         title={this.props.title}
         className={cssClasses}
         onClick={this.props.handler}
-        disabled={this.props.disabled}
+        disabled={this.props.disabled || this.props.loading}
       >
-        {this.renderIcon()}
+        {this.props.loading ? (
+          <i className={"fa fa-circle-o-notch fa-spin" + (text ? "" : " no-margin")}></i>
+        ) : (
+          this.renderIcon()
+        )}
         {text}
       </button>
     );
