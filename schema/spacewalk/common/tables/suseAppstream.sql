@@ -23,7 +23,7 @@ CREATE TABLE suseAppstream(
     stream          VARCHAR(128) NOT NULL,
     version         VARCHAR(128) NOT NULL,
     context         VARCHAR(128) NOT NULL,
-    arch            VARCHAR(16) NOT NULL,
+    arch            VARCHAR(64) NOT NULL,
     created         TIMESTAMPTZ DEFAULT (current_timestamp) NOT NULL,
     modified        TIMESTAMPTZ DEFAULT (current_timestamp) NOT NULL
 );

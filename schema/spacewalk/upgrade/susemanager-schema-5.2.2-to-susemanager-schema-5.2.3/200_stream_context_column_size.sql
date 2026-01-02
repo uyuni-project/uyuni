@@ -1,10 +1,33 @@
+-- drop the dependent views
 DROP VIEW IF EXISTS suseserverappstreamhiddenpackagesview;
+DROP VIEW IF EXISTS suseserverappstreampackageview;
 
+-- alter tables to increase field size
 ALTER TABLE suseappstream
+ALTER COLUMN arch TYPE varchar(64),
 ALTER COLUMN context TYPE varchar(128);
 
 ALTER TABLE suseserverappstream
+ALTER COLUMN arch TYPE varchar(64),
 ALTER COLUMN context TYPE varchar(128);
+
+-- recreate the dependent views
+CREATE OR REPLACE VIEW suseServerAppStreamPackageView AS
+SELECT
+    p.package_id,
+    c.id AS channel_id,
+    c.label AS channel_label,
+    s.server_id
+FROM suseAppstream m
+JOIN suseAppstreamPackage p ON p.module_id = m.id
+JOIN rhnchannel c ON m.channel_id = c.id
+JOIN rhnServerChannel sc ON c.id = sc.channel_id
+JOIN suseServerAppstream s
+    ON  m.name = s.name
+    AND s.server_id = sc.server_id
+    AND m.stream = s.stream
+    AND m.arch = s.arch;
+
 
 CREATE OR REPLACE VIEW suseServerAppStreamHiddenPackagesView AS
 

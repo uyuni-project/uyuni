@@ -22,7 +22,7 @@ CREATE TABLE suseServerAppstream(
     stream  VARCHAR(128) NOT NULL,
     version VARCHAR(128) NOT NULL,
     context VARCHAR(128) NOT NULL,
-    arch    VARCHAR(16) NOT NULL
+    arch    VARCHAR(64) NOT NULL
 );
 
 CREATE INDEX suse_srvappstream_name_stream_arch_idx
