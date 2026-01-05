@@ -860,7 +860,7 @@
       </trans-unit>
       <trans-unit id="Locale Preferences" xml:space="preserve">
         <source>Locale Preferences</source>
-        <target/>
+        <target state="translated">Локални настројки</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -874,21 +874,21 @@
       </trans-unit>
       <trans-unit id="Proxy Guide" xml:space="preserve">
         <source>Proxy Quick Start</source>
-        <target/>
+        <target state="translated">Брз почеток на прокси</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Proxy" xml:space="preserve">
         <source>Proxy</source>
-        <target/>
+        <target state="translated">прокси</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Peripheral Server" xml:space="preserve">
         <source>Peripheral Server</source>
-        <target/>
+        <target state="translated">Периферен сервер</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -11030,7 +11030,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="activation-key.java.nochannel" xml:space="preserve">
-          <source>No Base Channel selected.</source>
+        <source>No Base Channel selected.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
@@ -11344,651 +11344,651 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>An error occurred while updating the Confidential Computing configuration. Please check the server logs for detailed information.</source>
         <target state="new"/>
       </trans-unit>
-    <trans-unit id="internal_state.reboot" xml:space="preserve">
+      <trans-unit id="internal_state.reboot" xml:space="preserve">
         <source>Perform a reboot</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="internal_state.rebootifneeded" xml:space="preserve">
         <source>Perform a reboot, only if required</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="task.status.oval-data-sync" xml:space="preserve">
         <source>Sync OVAL Data</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="bunch.jsp.description.oval-data-sync-bunch" xml:space="preserve">
         <source>Generate OVAL data required to increase the accuracy of CVE audit queries</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="scc-data-forwarding.enabled" xml:space="preserve">
         <source>SCC Data Forwarding enabled successfully.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="scc-data-forwarding.not-changed" xml:space="preserve">
         <source>SCC Data Forwarding is already enabled.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.sccoptoutwarning.summary" xml:space="preserve">
         <source>Data is not being synchronized with SCC</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.sccoptoutwarning.detail" xml:space="preserve">
         <source>
           &lt;p&gt;Disabling data synchronizing with SCC will lead to reduced visibility of your managed clients between RMT, SMT, @@PRODUCT_NAME@@ and SCC-directly registered clients.
           By synchronizing data, you ensure a uniform view of all registered clients. &lt;a href="/rhn/manager/admin/enable-scc-data-forwarding"&gt;Click here to enable data forwarding&lt;/a&gt;.&lt;/p&gt;
           &lt;a href="https://suselinux.fra1.qualtrics.com/jfe/form/SV_0ooNnrY0rYuQScS" target="_blank"&gt;Help us improve our services by sharing your reason for opting out&lt;/a&gt;
         </source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="Password Policy" xml:space="preserve">
         <source>Password Policy</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="error.field_equal_or_less_than_zero" xml:space="preserve">
         <source>Field {0} can't be equal or less than zero.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
           <context context-type="paramnotes">Field Field Name can't be equal or less than zero.</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="error.illegal_min_max_fields" xml:space="preserve">
         <source>Field {0} can't be can't be greater or equal than field {1}.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
           <context context-type="paramnotes">Field One can't be can't be greater or equal than Field Two.</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="error.illegal_max_occurrences" xml:space="preserve">
         <source>Password maximum allowed character occurrences can't be less or equal than 0.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
           <context context-type="paramnotes">Passwords maximum allowed character occurrences can't be less or equal than 0.</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="error.spacesinpassword" xml:space="preserve">
         <source>Password contains tab or newline characters.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="error.consecutivecharactersinpassword" xml:space="preserve">
         <source>Password contains consecutive characters.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="error.nodigitspassword" xml:space="preserve">
         <source>Passwords must contain at least one digit.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="error.nouppercasepassword" xml:space="preserve">
         <source>Passwords must contain at least one upper case character.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="error.nolowercasepassword" xml:space="preserve">
         <source>Passwords must contain at least one lower case character.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="error.nospecialcharacterspassword" xml:space="preserve">
         <source>Passwords must contain at least one special character, allowed special characters are: {0}.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="error.occurrencecharacterspassword" xml:space="preserve">
         <source>Password characters occurrences exceeded maximum allowed {0}.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="api.iss.serverinvocationexception" xml:space="preserve">
         <source>Unable to invoke the remote server {0}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.tokenType.issued" xml:space="preserve">
         <source>Issued</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.tokenType.consumed" xml:space="preserve">
         <source>Consumed</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.register_peripheral_success" xml:space="preserve">
         <source>Server {0} has been successfully registered as peripheral</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.invalid_request" xml:space="preserve">
         <source>The request to perform the operation was rejected. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.invalid_root_ca" xml:space="preserve">
         <source>The provided certificate is not in valid PEM format.&lt;br/&gt;Please ensure the certificate is correctly encoded as a Base64-encoded ASCII file and enclosed within &lt;code&gt;-----BEGIN CERTIFICATE-----&lt;/code&gt; and &lt;code&gt;-----END CERTIFICATE-----&lt;/code&gt; tags.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.unexpected_error_root_ca" xml:space="preserve">
         <source>Unexpected error while processing the root certificate. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.unable_issue_token" xml:space="preserve">
         <source>Unable to issue a token for the remote server. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.unable_parse_token" xml:space="preserve">
         <source>The token received from the remote server is not valid. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.unable_establish_secure_connection" xml:space="preserve">
         <source>Unable to establish a secure connection with the remote server. Please ensure you are providing the correct root certificate.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.invalid_remote_response" xml:space="preserve">
         <source>Invalid response received from the remote server. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.error_connecting_remote" xml:space="preserve">
         <source>An error has occurred while attempting the registration with the remote server. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.unexpected_error" xml:space="preserve">
         <source>Registration of the remote server failed due to an unexpected error. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.invalid_token_id" xml:space="preserve">
         <source>The specified access token does not exist.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.invalid_token_state" xml:space="preserve">
         <source>The specified access token is in an invalid state.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.unable_delete_token" xml:space="preserve">
         <source>Unable to delete a token with the specified id</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.unable_to_issue_token" xml:space="preserve">
         <source>Unable to issue a new token for the specified server. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.unable_to_parse_token" xml:space="preserve">
         <source>Unable to parse the provided token. Please, ensure the token is correct and was generated for this server.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.unable_to_store_token" xml:space="preserve">
         <source>Unable to store the token. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.cannot_find_server" xml:space="preserve">
         <source>Cannot find a remote server with the specified id.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.unable_to_deregister" xml:space="preserve">
         <source>Unable to deregister: an unexpected error is occurred while contacting the remote server. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="toolbar.convert.proxy" xml:space="preserve">
         <source>Convert to Proxy</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Details Convert to Proxy</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="system.entitle.added.proxy_entitled" xml:space="preserve">
         <source>&lt;strong&gt;Proxy&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="ansible.inventory" xml:space="preserve">
         <source>Refresh Ansible inventories</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="recurring_action.empty_playbook_path" xml:space="preserve">
         <source>No Playbook selected</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.cannot_refresh_certificate" xml:space="preserve">
         <source>An error occurred while attempting to refresh the root certificate authorities. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.migration_success" xml:space="preserve">
         <source>The migration from ISSv{0} was completed successfully.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.unexpected_error_migrating" xml:space="preserve">
         <source>An expected error happened during the migration process: {0}. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.migration.no_slaves" xml:space="preserve">
         <source>This server does not have any ISSv1 slave</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.migration.slave_not_exit" xml:space="preserve">
         <source>Slave {0} does not exist</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.migration.no_migration_data" xml:space="preserve">
         <source>Slave {0} has no migration data and will not be migrated</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.migration.slave_disabled" xml:space="preserve">
         <source>Slave {0} is currently disabled and will not be migrated</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.migration.unable_to_migrate" xml:space="preserve">
         <source>Unable to migrate server {0}: {1}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.migration.fail_channel_config" xml:space="preserve">
         <source>Unable to configure channels for peripheral {0}: {1}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.migration.removal_slave" xml:space="preserve">
         <source>Unable remove ISSv1 data for slave {0}: {1}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.migration.removal_peripheral" xml:space="preserve">
         <source>Unable to remove partially migrated peripheral {0}: {1}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.invalid_id" xml:space="preserve">
         <source>The specified peripheral id is invalid.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="onboardingfailed" xml:space="preserve">
         <source>Onboarding failed</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="channelsyncfailed" xml:space="preserve">
         <source>Channel sync failed</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="channelsyncfinished" xml:space="preserve">
         <source>Channel sync finished</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="createbootstraprepofailed" xml:space="preserve">
         <source>Creating Bootstrap Repository failed</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="stateapplyfailed" xml:space="preserve">
         <source>State apply failed</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="paygauthenticationupdatefailed" xml:space="preserve">
         <source>PAYG refresh failed</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="endoflifeperiod" xml:space="preserve">
         <source>End of Life Period</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="subscriptionwarning" xml:space="preserve">
         <source>Subscription Warning</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="updateavailable" xml:space="preserve">
         <source>Updates are Available</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="paygnotcompliantwarning" xml:space="preserve">
         <source>PAYG instance is not compliant</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="sccoptoutwarning" xml:space="preserve">
         <source>SCC Data Sync Disabled</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hubregistrationchanged" xml:space="preserve">
         <source>Hub Registration Changed</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.not_found" xml:space="preserve">
         <source>Cannot retry: a notification with id '{0}' does not exist.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.type_not_actionable" xml:space="preserve">
         <source>Cannot retry: the notification type '{0}' is not actionable.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.channelsyncfailed.action.not_found" xml:space="preserve">
         <source>Failed to restart reposync. A channel with id {0} does not exist.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.channelsyncfailed.action.failed" xml:space="preserve">
         <source>Failed to restart reposync for the channel '{0}': {1}.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.channelsyncfailed.action.success" xml:space="preserve">
         <source>Reposync restarted for the channel '{0}'</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.onboardingfailed.action.success" xml:space="preserve">
         <source>Onboarding restarted for the minion with id '{0}'</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.hub.registered.summary" xml:space="preserve">
         <source>This server is now a peripheral of {0}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.hub.registered.details" xml:space="preserve">
         <source>&lt;p&gt;This server has been registered as a peripheral of hub {0} and will start to receive data from it.&lt;/p&gt; &lt;p&gt;Check the &lt;a href="/rhn/manager/admin/hub/hub-details"&gt;Hub details page&lt;/a&gt; for more information.&lt;/p&gt;</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.hub.hub_deregistered.summary" xml:space="preserve">
         <source>This server is no longer a peripheral of {0}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.hub.hub_deregistered.details" xml:space="preserve">
         <source>&lt;p&gt;The hub {0} has de-registered this server, which means it is no longer acting as its peripheral.&lt;/p&gt; &lt;p&gt;Review your configuration, as all the channels that were previously synced from the hub will no loger be updated.&lt;/p&gt;</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.hub.peripheral_deregistered.summary" xml:space="preserve">
         <source>Server {0} is no longer a peripheral.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.hub.peripheral_deregistered.details" xml:space="preserve">
         <source>&lt;p&gt;The peripheral {0} has de-registered from this hub, and it is no longer manageable as a peripheral..&lt;/p&gt; &lt;p&gt;Any existing synchronization configuration has been removed.&lt;/p&gt;</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.error_peripheral_not_registrable" xml:space="preserve">
         <source>The server {0} cannot be registered as a peripheral of this hub</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.sync_bunch_error" xml:space="preserve">
         <source>Error when triggering the channels sync.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="supportdata.get" xml:space="preserve">
         <source>Get and Upload Support data</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="message.scheduleactivated" xml:space="preserve">
         <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; activated.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="task.status.errata-advisory-map-sync" xml:space="preserve">
         <source>Update SUSE errata advisory map</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="bunch.jsp.description.errata-advisory-map-sync-bunch" xml:space="preserve">
         <source>Update SUSE errata advisory map to retrieve announcement ids and advisor URLs</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="supportdata.uploadGeoType.eu" xml:space="preserve">
         <source>EU</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="supportdata.uploadGeoType.us" xml:space="preserve">
         <source>US</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_bergamo.description" xml:space="preserve">
         <source>KVM on AMD Epyc Processor, fourth generation (bergamo)</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_bergamo.label" xml:space="preserve">
         <source>KVM on AMD Epyc - Bergamo</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_siena.description" xml:space="preserve">
         <source>KVM on AMD Epyc Processor, fourth generation (siena)</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_siena.label" xml:space="preserve">
         <source>KVM on AMD Epyc - Siena</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_turin.description" xml:space="preserve">
         <source>KVM on AMD Epyc Processor, fifth generation (turin)</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_turin.label" xml:space="preserve">
         <source>KVM on AMD Epyc - Turin</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="system.details.support.invalid_case_number" xml:space="preserve">
         <source>The case number {0} is not valid.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="system.details.support.invalid_region" xml:space="preserve">
         <source>The region {0] is not valid.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="system.details.support.unable_to_schedule" xml:space="preserve">
         <source>Unexpected error while scheduling the generation of the support data. Please check the server logs for detailed information.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="system.details.support.unable_to_upload" xml:space="preserve">
         <source>Unable to gather and upload the support data. Please check the server logs for detailed information.</source>
-      <target state="new"/>
-  </trans-unit>
-    <trans-unit id="Add address" xml:space="preserve">
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="Add address" xml:space="preserve">
         <source>Add address</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="Edit" xml:space="preserve">
         <source>Edit</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="reportdbupdatefailed" xml:space="preserve">
-          <source>Report Database Update Failed</source>
-      <target state="new"/>
-  </trans-unit>
+        <source>Report Database Update Failed</source>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.reportdbupdatefailed" xml:space="preserve">
         <source>The update of the reporting database has failed and the data is out of sync.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.reportdbupdatefailed.details.local" xml:space="preserve">
         <source>The following error was generated while trying to update the local reporting database:</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.reportdbupdatefailed.details.hub" xml:space="preserve">
         <source>The following error was generated while trying to fetch the data from the peripheral server {0}:</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="system.migration.noServersSelected" xml:space="preserve">
-          <source>Unable to identify the selected systems for the migration.</source>
-      <target state="new"/>
-  </trans-unit>
+        <source>Unable to identify the selected systems for the migration.</source>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="system.migration.noCommonProduct" xml:space="preserve">
-          <source>The selected systems do not have a common base product.</source>
-      <target state="new"/>
-  </trans-unit>
+        <source>The selected systems do not have a common base product.</source>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="product_migration.os_not_supported" xml:space="preserve">
         <source>Product Migrations are not supported for the OS of this system.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="product_migration.source_unknown" xml:space="preserve">
         <source>The base product of this system is unknown.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="product_migration.source_mismatch" xml:space="preserve">
         <source>The base product of this system does not match.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="product_migration.salt_needs_update" xml:space="preserve">
         <source>Salt installed on this system is out of date.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="product_migration.salt_needs_update.details" xml:space="preserve">
         <source>The installed &lt;pre&gt;{0}&lt;/pre&gt; package version on this system is out of date. Please update the package to the latest version before you start a Product migration.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="product_migration.addons_affected" xml:space="preserve">
         <source>Some installed addons are going to be affect, depending on chosen target.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="product_migration.single.addons_affected" xml:space="preserve">
         <source>Some installed addons are going to be affect.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="product_migration.addons_affected.missing_successors" xml:space="preserve">
         <source>&lt;p&gt;Depending on chosen target, some or all of these products will be removed because no successor could be found, so proceed with caution:&lt;/p&gt;{0}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="product_migration.single.addons_affected.missing_successors" xml:space="preserve">
         <source>&lt;p&gt;These products will be removed because no successor could be found, so proceed with caution:&lt;/p&gt;{0}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="product_migration.addons_affected.installed_addons" xml:space="preserve">
         <source>&lt;p&gt;Depending on chosen target, some or all of these products will be installed:&lt;/p&gt;{0}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="product_migration.single.addons_affected.installed_addons" xml:space="preserve">
         <source>&lt;p&gt;These products will be installed:&lt;/p&gt;{0}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="product_migration.addon_or_higher" xml:space="preserve">
         <source>{0} or higher</source>
-      <target state="new"/>
-  </trans-unit>
-    <trans-unit id="system.migration.noTarget" xml:space="preserve">
-          <source>Unable to identify a valid migration target for the selected systems.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="system.migration.noTarget" xml:space="preserve">
+        <source>Unable to identify a valid migration target for the selected systems.</source>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="virt.refresh_list" xml:space="preserve">
         <source>Virtualization List Refresh</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.proxybackupfailed" xml:space="preserve">
         <source>Failed to process proxy backup event</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.proxybackupnominion" xml:space="preserve">
         <source>No system with {0} name</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.pxeeventfailed" xml:space="preserve">
         <source>Processing of a PXE event for the minion {0} failed</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="event.proxymigrationstarted" xml:space="preserve">
         <source>Proxy migration: started</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="event.proxymigrationstarteddetails" xml:space="preserve">
         <source>Received event with client side data, starting data migration</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="event.proxymigrationfailed" xml:space="preserve">
         <source>Proxy migration: failed</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="event.proxymigrationfailedincomplete" xml:space="preserve">
         <source>Received incomplete backup data. Try retrying the migration.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="event.proxymigrationfailedparsing" xml:space="preserve">
         <source>Unable to parse uploaded data. See log file for details</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="event.proxymigrationcreated" xml:space="preserve">
         <source>Proxy migration: new configuration created</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="event.proxymigrationcreateddetails" xml:space="preserve">
         <source>Reinstallation of the proxy will now autoconfigure it on the first boot</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="event.rbsmigrationstarted" xml:space="preserve">
         <source>Retail Branch Server migration: started</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="event.rbsmigrationstarteddetails" xml:space="preserve">
         <source>Proxy detected as a Retail Branch Server, migration started</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="event.rbsmigrationfinishedok" xml:space="preserve">
         <source>Retail Branch Server migration: finished successfully</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="event.rbsmigrationfinishederror" xml:space="preserve">
         <source>Retail Branch Server migration: finished with errors</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="event.rbsmigrationfinisheddetails" xml:space="preserve">
         <source>Proxy was detected to be a Retail Branch Server, branch migration was performed.<ul>{0}</ul></source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="event.rbsmigrationfailed" xml:space="preserve">
         <source>Retail Branch Server migration: failed</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="event.rbsmigrationfaileddetails" xml:space="preserve">
         <source>Failed to migrate the branch server. See log files for details.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="event.proxymigrationfinished" xml:space="preserve">
         <source>Proxy migration: finished</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="event.proxymigrationfinisheddetails" xml:space="preserve">
         <source>All data were migrated. Proceed with reinstallation of the proxy host.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="event.pxemigrationnoentries" xml:space="preserve">
         <source>No PXE entries found in a backup configuration for branch {0}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="event.pxemigrationlost" xml:space="preserve">
         <source>Lost and found: system with HW address {0} in branch {1} was not found as registered system.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="event.pxemigrationduplicate" xml:space="preserve">
         <source>Multiple minions found with the same MAC address {0}. Cannot choose one, ignoring</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="event.pxemigrationnogroup" xml:space="preserve">
         <source>Not processing minion '{0}' as it is not part of a branch group.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="event.pxemigrationnoimage" xml:space="preserve">
         <source>Image not found: system '{0}' is using unknown image '{1}'. Using default boot image.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="event.pxemigrationsaltboot" xml:space="preserve">
         <source>Failed to create Saltboot system: {0}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="rbsmigration.lostfounddescription" xml:space="preserve">
         <source>Collection of systems not registered, but present in branch {0} pxe entries.</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="new"/>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
