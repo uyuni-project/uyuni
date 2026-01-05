@@ -42,7 +42,13 @@ import java.util.Optional;
 
 import jakarta.persistence.FlushModeType;
 
-
+/**
+ * This test class is NOT intended to test Hibernate itself.
+ * Its purpose is to validate that our assumptions and historical usage patterns of Hibernate
+ * (as implemented in our project utilities, factories, etc.) remain consistent with our expectations.
+ * In practice, will come handy for example when upgrading Hibernate to a new version, this class can help detect
+ * changes in behavior that could impact our code.
+ */
 public class HibernateTest extends RhnBaseTestCase {
     
     private static final Logger LOG = LogManager.getLogger(HibernateTest.class);
@@ -56,51 +62,63 @@ public class HibernateTest extends RhnBaseTestCase {
     @AfterEach
     public void tearDown() {
         try {
+            // Clean up all test data
+            Session session = HibernateFactory.getSession();
+            List<TestInterface> all = TestFactory.lookupAll();
+            if (!all.isEmpty()) {
+                for (TestInterface entity : all) {
+                    session.remove(entity);
+                }
+            }
+            
             if (HibernateFactory.inTransaction()) {
                 HibernateFactory.commitTransaction();
             }
         }
         catch (Exception e) {
-            LOG.warn("Error committing transaction in tearDown", e);
+            LOG.warn("Error in tearDown", e);
+            try {
+                HibernateFactory.rollbackTransaction();
+            }
+            catch (Exception ex) {
+                LOG.warn("Error rolling back in tearDown", ex);
+            }
         }
         finally {
             HibernateFactory.closeSession();
         }
     }
 
-//    /**
-//     * Creating a new entity
-//     * - Use factory method to instantiate
-//     * - Set required fields
-//     * - Call save/persist through factory
-//     * - Verify ID is assigned after commit
-//     */
-//    @Test
-//    public void testCreateNewEntity() {
-//        // Create new instance
-//        TestInterface newEntity = TestFactory.createTest();
-//        newEntity.setFoobar("testCreate");
-//        newEntity.setTestColumn("ABC");
-//        newEntity.setPin(12345);
-//
-//        // Persist the entity
-//        TestFactory.save(newEntity);
-//
-//        // Commit transaction to persist changes
-//        HibernateFactory.commitTransaction();
-//        HibernateFactory.closeSession();
-//
-//        // Verify persistence
-//        TestInterface retrieved = TestFactory.lookupByFoobar("testCreate");
-//        assertNotNull(retrieved);
-//        assertEquals("testCreate", retrieved.getFoobar());
-//        assertEquals("ABC", retrieved.getTestColumn());
-//        assertEquals(12345, retrieved.getPin().intValue());
-//        assertNotNull(retrieved.getId());
-//    }
+    /**
+     * Creating a new entity
+     * - Use factory method to instantiate
+     * - Set required fields
+     * - Call save/persist through factory
+     * - Verify ID is assigned after commit
+     */
+    @Test
+    public void testCreateNewEntity() {
+        // Create new instance
+        TestInterface newEntity = TestFactory.createTest();
+        newEntity.setFoobar("testCreate");
+        newEntity.setTestColumn("ABC");
+        newEntity.setPin(12345);
 
+        // Persist the entity
+        TestFactory.save(newEntity);
 
+        // Commit transaction to persist changes
+        HibernateFactory.commitTransaction();
+        HibernateFactory.closeSession();
 
+        // Verify persistence
+        TestInterface retrieved = TestFactory.lookupByFoobar("testCreate");
+        assertNotNull(retrieved);
+        assertEquals("testCreate", retrieved.getFoobar());
+        assertEquals("ABC", retrieved.getTestColumn());
+        assertEquals(12345, retrieved.getPin().intValue());
+        assertNotNull(retrieved.getId());
+    }
 
     /**
      * Batch creation with transaction management
@@ -210,8 +228,9 @@ public class HibernateTest extends RhnBaseTestCase {
 
     /**
      * Reloading an entity to refresh from database
-     * - Use reload() to get latest state from DB
-     * - Useful after external updates or to discard changes
+     * - Use reload() to flush pending changes, evict from cache, and re-read from DB
+     * - NOTE: reload() FLUSHES changes before reloading, so modified values are persisted
+     * - Useful to ensure entity is refreshed from DB after flush
      */
     @Test
     public void testReloadEntity() {
@@ -223,83 +242,90 @@ public class HibernateTest extends RhnBaseTestCase {
         HibernateFactory.commitTransaction();
         HibernateFactory.closeSession();
 
-        // Load and modify (but don't save - just modify in memory)
+        // Load and modify (but don't explicitly save)
         TestInterface loaded = TestFactory.lookupByFoobar("reloadTest");
         assertEquals(100, loaded.getPin().intValue());
         
-        // Modify in memory only
+        // Modify in memory
         loaded.setPin(200);
         assertEquals(200, loaded.getPin().intValue(), "In-memory value should be 200");
 
-        // Reload to get original state from DB (discarding in-memory changes)
+        // Reload flushes changes first, then evicts and re-reads from DB
+        // So it will persist the modified value (200) and reload it
         TestInterface reloaded = HibernateFactory.reload(loaded);
-        assertEquals(100, reloaded.getPin().intValue(), "Reload should get original DB value");
+        assertEquals(200, reloaded.getPin().intValue(), "Reload flushes changes, so modified value is persisted");
+        
+        // Verify it was actually persisted to DB
+        HibernateFactory.commitTransaction();
+        HibernateFactory.closeSession();
+        TestInterface fromDb = TestFactory.lookupByFoobar("reloadTest");
+        assertEquals(200, fromDb.getPin().intValue(), "Value should be persisted in DB");
     }
 
     // ========== UPDATE OPERATIONS ==========
 
-//    /**
-//     * Simple update pattern
-//     * - Load entity
-//     * - Modify fields
-//     * - Save through factory
-//     * - Commit transaction
-//     */
-//    @Test
-//    public void testUpdateEntity() {
-//        // Create initial entity
-//        TestInterface entity = TestFactory.createTest();
-//        entity.setFoobar("updateTest");
-//        entity.setPin(100);
-//        entity.setTestColumn("OLD");
-//        TestFactory.save(entity);
-//        HibernateFactory.commitTransaction();
-//        HibernateFactory.closeSession();
-//
-//        // Load and update
-//        TestInterface toUpdate = TestFactory.lookupByFoobar("updateTest");
-//        assertNotNull(toUpdate);
-//        toUpdate.setPin(200);
-//        toUpdate.setTestColumn("NEW");
-//        TestFactory.save(toUpdate);
-//        HibernateFactory.commitTransaction();
-//        HibernateFactory.closeSession();
-//
-//        // Verify update
-//        TestInterface updated = TestFactory.lookupByFoobar("updateTest");
-//        assertEquals(200, updated.getPin().intValue());
-//        assertEquals("NEW", updated.getTestColumn());
-//    }
+    /**
+     * Simple update pattern
+     * - Load entity
+     * - Modify fields
+     * - Save through factory
+     * - Commit transaction
+     */
+    @Test
+    public void testUpdateEntity() {
+        // Create initial entity
+        TestInterface entity = TestFactory.createTest();
+        entity.setFoobar("updateTest");
+        entity.setPin(100);
+        entity.setTestColumn("OLD");
+        TestFactory.save(entity);
+        HibernateFactory.commitTransaction();
+        HibernateFactory.closeSession();
 
-//    /**
-//     * Updating to null values
-//     * - Hibernate properly handles setting fields to null
-//     * - Important for clearing optional data
-//     */
-//    @Test
-//    public void testUpdateToNull() {
-//        // Create with values
-//        TestInterface entity = TestFactory.createTest();
-//        entity.setFoobar("nullTest");
-//        entity.setTestColumn("VALUE");
-//        entity.setPin(500);
-//        TestFactory.save(entity);
-//        HibernateFactory.commitTransaction();
-//        HibernateFactory.closeSession();
-//
-//        // Update to null
-//        TestInterface toUpdate = TestFactory.lookupByFoobar("nullTest");
-//        toUpdate.setTestColumn(null);
-//        toUpdate.setPin(null);
-//        TestFactory.save(toUpdate);
-//        HibernateFactory.commitTransaction();
-//        HibernateFactory.closeSession();
-//
-//        // Verify nulls
-//        TestInterface updated = TestFactory.lookupByFoobar("nullTest");
-//        assertNull(updated.getTestColumn());
-//        assertNull(updated.getPin());
-//    }
+        // Load and update
+        TestInterface toUpdate = TestFactory.lookupByFoobar("updateTest");
+        assertNotNull(toUpdate);
+        toUpdate.setPin(200);
+        toUpdate.setTestColumn("NEW");
+        TestFactory.save(toUpdate);
+        HibernateFactory.commitTransaction();
+        HibernateFactory.closeSession();
+
+        // Verify update
+        TestInterface updated = TestFactory.lookupByFoobar("updateTest");
+        assertEquals(200, updated.getPin().intValue());
+        assertEquals("NEW", updated.getTestColumn());
+    }
+
+    /**
+     * Updating to null values
+     * - Hibernate properly handles setting fields to null
+     * - Important for clearing optional data
+     */
+    @Test
+    public void testUpdateToNull() {
+        // Create with values
+        TestInterface entity = TestFactory.createTest();
+        entity.setFoobar("nullTest");
+        entity.setTestColumn("VALUE");
+        entity.setPin(500);
+        TestFactory.save(entity);
+        HibernateFactory.commitTransaction();
+        HibernateFactory.closeSession();
+
+        // Update to null
+        TestInterface toUpdate = TestFactory.lookupByFoobar("nullTest");
+        toUpdate.setTestColumn(null);
+        toUpdate.setPin(null);
+        TestFactory.save(toUpdate);
+        HibernateFactory.commitTransaction();
+        HibernateFactory.closeSession();
+
+        // Verify nulls
+        TestInterface updated = TestFactory.lookupByFoobar("nullTest");
+        assertNull(updated.getTestColumn());
+        assertNull(updated.getPin());
+    }
 
     /**
      * Batch updates with proper transaction boundaries
@@ -417,7 +443,6 @@ public class HibernateTest extends RhnBaseTestCase {
     @Test
     public void testTransactionStateCheck() {
         // New session starts a transaction automatically
-        Session session = HibernateFactory.getSession();
         assertTrue(HibernateFactory.inTransaction(), "Transaction should be active");
 
         HibernateFactory.commitTransaction();
@@ -452,6 +477,50 @@ public class HibernateTest extends RhnBaseTestCase {
 
         // Verify rollback - entity should not exist
         assertNull(TestFactory.lookupByFoobar("rollbackTest"));
+    }
+
+    /**
+     * Cancel in-memory changes by rolling back transaction
+     * - Create and save an entity with original values
+     * - Modify the entity but don't want to keep changes
+     * - Rollback transaction to discard changes
+     * - Verify database still has original values
+     */
+    @Test
+    public void testCancelChangesByRollback() {
+        // Create entity with original values
+        TestInterface entity = TestFactory.createTest();
+        entity.setFoobar("original");
+        entity.setPin(100);
+        entity.setTestColumn("ABC");
+        TestFactory.save(entity);
+        HibernateFactory.commitTransaction();
+        HibernateFactory.closeSession();
+
+        // Retrieve and verify original values
+        TestInterface retrieved = TestFactory.lookupByFoobar("original");
+        assertNotNull(retrieved);
+        assertEquals("original", retrieved.getFoobar());
+        assertEquals(100, retrieved.getPin().intValue());
+        assertEquals("ABC", retrieved.getTestColumn());
+
+        // Modify in memory (change your mind scenario)
+        retrieved.setPin(999);
+        retrieved.setTestColumn("XYZ");
+        
+        // Verify in-memory changes
+        assertEquals(999, retrieved.getPin().intValue());
+        assertEquals("XYZ", retrieved.getTestColumn());
+
+        // Rollback
+        HibernateFactory.rollbackTransaction();
+        HibernateFactory.closeSession();
+
+        // Verify database still has original values
+        TestInterface fromDb = TestFactory.lookupByFoobar("original");
+        assertNotNull(fromDb);
+        assertEquals(100, fromDb.getPin().intValue(), "Database should have original pin value");
+        assertEquals("ABC", fromDb.getTestColumn(), "Database should have original test column value");
     }
 
     /**
