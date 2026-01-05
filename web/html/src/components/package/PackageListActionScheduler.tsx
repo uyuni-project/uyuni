@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type ReactNode, Component } from "react";
 
 import { ActionChain, ActionSchedule } from "components/action-schedule";
 import { AsyncButton, Button } from "components/buttons";
@@ -28,7 +28,7 @@ type Props = {
   listSummary: string;
   listEmptyText: string;
   listActionLabel: string;
-  listColumns: React.ReactNode[];
+  listColumns: ReactNode[];
   confirmTitle: string;
 };
 
@@ -40,7 +40,7 @@ type State = {
   actionChain?: ActionChain;
 };
 
-export class PackageListActionScheduler extends React.Component<Props, State> {
+export class PackageListActionScheduler extends Component<Props, State> {
   constructor(props) {
     super(props);
 
@@ -77,31 +77,32 @@ export class PackageListActionScheduler extends React.Component<Props, State> {
     Network.post(this.props.scheduleActionAPI, requestBody)
       .then((data) => {
         // Notify the successful outcome
-        const msg = MessagesUtils.info(
-          this.state.actionChain ? (
-            <span>
-              {t('Action has been successfully added to the action chain <link>"{name}"</link>.', {
-                name: this.state.actionChain.text,
-                link: (str) => <ActionChainLink id={data}>{str}</ActionChainLink>,
-              })}
-            </span>
-          ) : (
-            <span>
-              {t("The action has been <link>scheduled</link>.", {
-                link: (str) => <ActionLink id={data}>{str}</ActionLink>,
-              })}
-            </span>
-          )
-        );
+        this.setState((prevState) => {
+          const msg = MessagesUtils.info(
+            prevState.actionChain ? (
+              <span>
+                {t('Action has been successfully added to the action chain <link>"{name}"</link>.', {
+                  name: prevState.actionChain.text,
+                  link: (str) => <ActionChainLink id={data}>{str}</ActionChainLink>,
+                })}
+              </span>
+            ) : (
+              <span>
+                {t("The action has been <link>scheduled</link>.", {
+                  link: (str) => <ActionLink id={data}>{str}</ActionLink>,
+                })}
+              </span>
+            )
+          );
+          return {
+            confirmAction: false,
+            messages: msg,
+          };
+        });
 
         // Clear the current selection
         Network.post(`/rhn/manager/api/sets/${this.props.selectionSet}/clear`).catch(() => {
           this.setState({ messages: MessagesUtils.warning(t("Unable to clear selection")) });
-        });
-
-        this.setState({
-          confirmAction: false,
-          messages: msg,
         });
       })
       .catch(() => {

@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type ReactNode, Component } from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 import { productName } from "core/user-preferences";
@@ -25,7 +25,7 @@ import { ImageViewPackages } from "./image-view-packages";
 import { ImageViewPatches } from "./image-view-patches";
 import { ImageViewRuntime } from "./image-view-runtime";
 
-// See java/code/src/com/suse/manager/webui/templates/content_management/view.jade
+// See java/core/src/main/resources/com/suse/manager/webui/templates/content_management/view.jade
 declare global {
   interface Window {
     imageId?: any;
@@ -76,7 +76,7 @@ type ImageViewState = {
   selectedCount?: any;
 };
 
-class ImageView extends React.Component<ImageViewProps, ImageViewState> {
+class ImageView extends Component<ImageViewProps, ImageViewState> {
   constructor(props) {
     super(props);
     this.state = {
@@ -95,27 +95,32 @@ class ImageView extends React.Component<ImageViewProps, ImageViewState> {
   }
 
   pushMessages(severity, messages) {
-    const add = this.state.messages;
+    this.setState((prevState) => {
+      const add = prevState.messages;
 
-    const getMsgObj = (msg) => {
-      if (typeof messageMap[msg] === "string") {
-        return { severity: severity, text: messageMap[msg] };
+      const getMsgObj = (msg) => {
+        if (typeof messageMap[msg] === "string") {
+          return { severity: severity, text: messageMap[msg] };
+        } else {
+          return { severity: severity, text: msg };
+        }
+      };
+
+      if (Array.isArray(messages)) {
+        add.concat(messages.map(getMsgObj));
       } else {
-        return { severity: severity, text: msg };
+        add.push(getMsgObj(messages));
       }
-    };
-
-    if (Array.isArray(messages)) {
-      add.concat(messages.map(getMsgObj));
-    } else {
-      add.push(getMsgObj(messages));
-    }
-
-    this.setState({ messages: add });
+      return { messages: add };
+    });
   }
 
   updateView(id, tab) {
-    id ? this.getImageInfoDetails(id, tab) : this.getImageInfoList();
+    if (id) {
+      this.getImageInfoDetails(id, tab);
+    } else {
+      this.getImageInfoList();
+    }
     this.clearMessages();
   }
 
@@ -155,7 +160,7 @@ class ImageView extends React.Component<ImageViewProps, ImageViewState> {
     const msg = Network.responseErrorMessage(jqXHR, (status, msg) =>
       messageMap[msg] ? t(messageMap[msg], { arg }) : null
     );
-    this.setState({ messages: this.state.messages.concat(msg) });
+    this.setState((prevState) => ({ messages: prevState.messages.concat(msg) }));
   }
 
   //Accumulate runtime data from individual clusters into 'toData'
@@ -303,11 +308,11 @@ class ImageView extends React.Component<ImageViewProps, ImageViewState> {
         // Waits for the 'Back' action if not in the list page
         const backAction = this.state.selected ? this.handleBackAction() : Promise.resolve();
         backAction.then(() =>
-          this.setState({
-            images: this.state.images.filter((img) => !idList.includes(img.id)),
-            selectedItems: this.state.selectedItems.filter((item) => !idList.includes(item)),
+          this.setState((prevState) => ({
+            images: prevState.images.filter((img) => !idList.includes(img.id)),
+            selectedItems: prevState.selectedItems.filter((item) => !idList.includes(item)),
             messages: MessagesUtils.info(t("Deleted successfully.")),
-          })
+          }))
         );
       })
       .catch(this.handleResponseError);
@@ -431,7 +436,7 @@ type ImageViewListState = {
   showObsolete: boolean;
 };
 
-class ImageViewList extends React.Component<ImageViewListProps, ImageViewListState> {
+class ImageViewList extends Component<ImageViewListProps, ImageViewListState> {
   constructor(props) {
     super(props);
     this.state = {
@@ -599,7 +604,7 @@ class ImageViewList extends React.Component<ImageViewListProps, ImageViewListSta
   };
 
   render() {
-    const runtimeColumns: React.ReactNode[] = [];
+    const runtimeColumns: ReactNode[] = [];
     if (this.props.runtimeInfoEnabled) {
       runtimeColumns.push(
         <Column columnKey="runtime" header={t("Runtime")} cell={(row) => this.renderRuntimeIcon(row)} />
@@ -767,7 +772,7 @@ type ImageViewDetailsProps = {
   onCancel: (...args: any[]) => any;
 };
 
-class ImageViewDetails extends React.Component<ImageViewDetailsProps> {
+class ImageViewDetails extends Component<ImageViewDetailsProps> {
   getHashUrls(tabs) {
     const id = this.props.data.id;
     return tabs.map((t) => "#/" + t + "/" + id);

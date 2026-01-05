@@ -12,31 +12,23 @@ Feature: Operate an Ansible control node in a normal minion
     When I deploy testing playbooks and inventory files to "sle_minion"
 
   @susemanager
-  Scenario: Pre-requisite: Subscribe SUSE minions to SLE-Module-Python3-15-SP4-Pool for x86_64
+  Scenario: Pre-requisite: Subscribe SUSE minions to SLE-Module-Python3-15-SP7-Pool for x86_64
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
-    And I check "SLE-Module-Python3-15-SP4-Pool for x86_64" by label
-    And I check "SLE-Product-SLES15-SP4-LTSS-Updates for x86_64" by label
+    And I check "SLE-Module-Python3-15-SP7-Pool for x86_64" by label
     And I click on "Next"
     And I click on "Confirm"
     And I wait until I see "Changing the channels has been scheduled." text
     And I follow "scheduled"
     And I wait until I see "1 system successfully completed this action" text, refreshing the page
 
-# TODO: Check why tools_update_repo is not available on the openSUSE minion
-@skip_if_github_validation
-@uyuni
-  Scenario: Pre-requisite: Enable OS pool repository
-    When I enable repository "os_pool_repo" on this "sle_minion"
-    And I refresh the metadata for "sle_minion"
-
   Scenario: Enable "Ansible control node" system type
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Properties" in the content area
     And I check "ansible_control_node"
     And I click on "Update Properties"
-    Then I should see a "Ansible Control Node type has been applied." text
+    Then I wait until I see "Ansible Control Node type has been applied." text
 
   Scenario: Apply highstate and check that Ansible is installed
     Given I am on the Systems overview page of this "sle_minion"
@@ -100,21 +92,20 @@ Feature: Operate an Ansible control node in a normal minion
     And I remove "/tmp/file.txt" from "sle_minion"
 
   @susemanager
-  Scenario: Cleanup: Unsubscribe SUSE minions from SLE-Module-Python3-15-SP4-Pool for x86_64
+  Scenario: Cleanup: Unsubscribe SUSE minions from SLE-Module-Python3-15-SP7-Pool for x86_64
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
-    And I uncheck "SLE-Module-Python3-15-SP4-Pool for x86_64" by label
-    And I uncheck "SLE-Product-SLES15-SP4-LTSS-Updates for x86_64" by label
+    And I uncheck "SLE-Module-Python3-15-SP7-Pool for x86_64" by label
     And I click on "Next"
     And I click on "Confirm"
     And I wait until I see "Changing the channels has been scheduled." text
     And I follow "scheduled"
     And I wait until I see "1 system successfully completed this action" text, refreshing the page
 
-@skip_if_github_validation
-@uyuni
-  Scenario: Cleanup: Disable OS pool repository
+  Scenario: Cleanup: Apply highstate to disable the minion as an "Ansible control node"
     Given I am on the Systems overview page of this "sle_minion"
-    When I disable repository "os_pool_repo" on this "sle_minion"
-    And I refresh the metadata for "sle_minion"
+    When I follow "States" in the content area
+    And I click on "Apply Highstate"
+    And I wait until event "Apply highstate scheduled" is completed
+

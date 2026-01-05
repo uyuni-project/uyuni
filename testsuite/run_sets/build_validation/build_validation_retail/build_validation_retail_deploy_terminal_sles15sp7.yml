@@ -1,0 +1,4 @@
+# This file describes the order of features in a Build Validation test suite run.
+
+## Build Kiwi images
+- features/build_validation/retail/sle15sp7_terminal_deploy.feature

@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Fragment } from "react";
 
 import { isOrgAdmin } from "core/auth/auth.utils";
 import useRoles from "core/auth/use-roles";
@@ -20,7 +20,7 @@ type Props = {
   projectId: string;
   environments: ProjectEnvironmentType[];
   historyEntries: ProjectHistoryEntry[];
-  onChange: Function;
+  onChange: (...args: any[]) => any;
   messages?: ProjectMessageType[];
 };
 
@@ -79,103 +79,101 @@ const EnvironmentLifecycle = (props: Props) => {
       }}
       renderContent={() => (
         <div className="min-height-panel">
-          <>
-            {messages.messages}
-            {props.environments.length === 0 && <h4>{t("No environments created")}</h4>}
-            {props.environments.map((environment, i) => (
-              <React.Fragment key={environment.label}>
-                <CreatorPanel
-                  id={`environment${environment.label}`}
-                  title={environment.name}
-                  icon="fa-pencil"
-                  creatingText="Edit"
-                  panelLevel="3"
-                  disableEditing={!hasEditingPermissions}
-                  disableOperations={isLoading}
-                  onSave={({ item, closeDialog, setErrors }) =>
-                    onAction(mapUpdateEnvironmentRequest(item, props.projectId), "update", props.projectId)
-                      .then((projectWithUpdatedEnvironment) => {
-                        props.onChange(projectWithUpdatedEnvironment);
-                        closeDialog();
-                        showSuccessToastr(t("Environment updated successfully"));
-                      })
-                      .catch((error) => {
-                        setErrors(error.errors);
-                        showErrorToastr(error.messages, { autoHide: false });
-                      })
-                  }
-                  onOpen={({ setItem }) => setItem(environment)}
-                  onCancel={() => cancelAction()}
-                  disableDelete={environment.hasProfiles}
-                  onDelete={({ item, closeDialog }) => {
-                    return onAction(item, "delete", props.projectId)
-                      .then((projectWithDeleteddEnvironment) => {
-                        closeDialog().then(() => {
-                          props.onChange(projectWithDeleteddEnvironment);
-                        });
-                        showSuccessToastr(t("Environment {name} deleted successfully", { name: environment.label }));
-                      })
-                      .catch((error) => {
-                        showErrorToastr(error.messages, { autoHide: false });
+          {messages.messages}
+          {props.environments.length === 0 && <h4>{t("No environments created")}</h4>}
+          {props.environments.map((environment, i) => (
+            <Fragment key={environment.label}>
+              <CreatorPanel
+                id={`environment${environment.label}`}
+                title={environment.name}
+                icon="fa-pencil"
+                creatingText="Edit"
+                panelLevel="3"
+                disableEditing={!hasEditingPermissions}
+                disableOperations={isLoading}
+                onSave={({ item, closeDialog, setErrors }) =>
+                  onAction(mapUpdateEnvironmentRequest(item, props.projectId), "update", props.projectId)
+                    .then((projectWithUpdatedEnvironment) => {
+                      props.onChange(projectWithUpdatedEnvironment);
+                      closeDialog();
+                      showSuccessToastr(t("Environment updated successfully"));
+                    })
+                    .catch((error) => {
+                      setErrors(error.errors);
+                      showErrorToastr(error.messages, { autoHide: false });
+                    })
+                }
+                onOpen={({ setItem }) => setItem(environment)}
+                onCancel={() => cancelAction()}
+                disableDelete={environment.hasProfiles}
+                onDelete={({ item, closeDialog }) => {
+                  return onAction(item, "delete", props.projectId)
+                    .then((projectWithDeleteddEnvironment) => {
+                      closeDialog().then(() => {
+                        props.onChange(projectWithDeleteddEnvironment);
                       });
-                  }}
-                  renderCreationContent={({ open, item, setItem, errors }) => {
-                    if (!open) {
-                      return null;
-                    }
+                      showSuccessToastr(t("Environment {name} deleted successfully", { name: environment.label }));
+                    })
+                    .catch((error) => {
+                      showErrorToastr(error.messages, { autoHide: false });
+                    });
+                }}
+                renderCreationContent={({ open, item, setItem, errors }) => {
+                  if (!open) {
+                    return null;
+                  }
 
-                    if (isLoading) {
-                      return <Loading text="Editing the environment.." />;
-                    }
+                  if (isLoading) {
+                    return <Loading text="Editing the environment.." />;
+                  }
 
-                    return (
-                      <>
-                        {item.hasProfiles && (
-                          <Messages
-                            items={MsgUtils.warning(
-                              <>
-                                {t(
-                                  "This environment cannot be deleted since it is being used in an <link>autoinstallation distribution</link>.",
-                                  {
-                                    link: (str) => (
-                                      <a target="_blank" href="/rhn/kickstart/ViewTrees.do">
-                                        {str}
-                                      </a>
-                                    ),
-                                  }
-                                )}
-                              </>
-                            )}
-                          />
-                        )}
-                        <EnvironmentForm
-                          environment={{ ...item }}
-                          errors={errors}
-                          environments={props.environments}
-                          onChange={(item) => setItem(item)}
-                          editing
+                  return (
+                    <>
+                      {item.hasProfiles && (
+                        <Messages
+                          items={MsgUtils.warning(
+                            <>
+                              {t(
+                                "This environment cannot be deleted since it is being used in an <link>autoinstallation distribution</link>.",
+                                {
+                                  link: (str) => (
+                                    <a target="_blank" href="/rhn/kickstart/ViewTrees.do">
+                                      {str}
+                                    </a>
+                                  ),
+                                }
+                              )}
+                            </>
+                          )}
                         />
-                      </>
-                    );
-                  }}
-                  renderContent={() => (
-                    <EnvironmentView environment={environment} historyEntries={props.historyEntries} />
-                  )}
-                />
-                {props.environments.length - 1 !== i && (
-                  <Promote
-                    projectId={props.projectId}
-                    environmentPromote={environment}
-                    environmentTarget={props.environments[i + 1]}
-                    environmentNextTarget={props.environments[i + 2]}
-                    historyEntries={props.historyEntries}
-                    versionToPromote={environment.version}
-                    onChange={props.onChange}
-                  />
+                      )}
+                      <EnvironmentForm
+                        environment={{ ...item }}
+                        errors={errors}
+                        environments={props.environments}
+                        onChange={(item) => setItem(item)}
+                        editing
+                      />
+                    </>
+                  );
+                }}
+                renderContent={() => (
+                  <EnvironmentView environment={environment} historyEntries={props.historyEntries} />
                 )}
-              </React.Fragment>
-            ))}
-          </>
+              />
+              {props.environments.length - 1 !== i && (
+                <Promote
+                  projectId={props.projectId}
+                  environmentPromote={environment}
+                  environmentTarget={props.environments[i + 1]}
+                  environmentNextTarget={props.environments[i + 2]}
+                  historyEntries={props.historyEntries}
+                  versionToPromote={environment.version}
+                  onChange={props.onChange}
+                />
+              )}
+            </Fragment>
+          ))}
         </div>
       )}
     />

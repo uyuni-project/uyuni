@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 
@@ -8,7 +8,7 @@ import { Loading } from "components/utils/loading/Loading";
 
 import Network from "utils/network";
 
-// See java/code/src/com/suse/manager/webui/templates/minion/ptf-overview.jade
+// See java/core/src/main/resources/com/suse/manager/webui/templates/minion/ptf-overview.jade
 declare global {
   interface Window {
     serverId?: any;
@@ -24,7 +24,7 @@ type State = {
   allowedActions: string[];
 };
 
-class PtfOverview extends React.Component<Props, State> {
+class PtfOverview extends Component<Props, State> {
   constructor(props) {
     super(props);
 

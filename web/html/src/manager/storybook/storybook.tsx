@@ -21,12 +21,12 @@ export const Storybook = () => {
 
   const activeTab = normalize(tab) || normalize(stories[0]?.title);
 
-  const [, _invalidate] = useState(0);
-  const invalidate = () => _invalidate((ii) => ii + 1);
+  const [_, set_] = useState(0);
+  const invalidate = () => set_((ii) => ii + 1);
 
-  const [showCode, _setShowCode] = useState(!!localStorage.getItem(STORAGE_KEY));
-  const setShowCode = (value: boolean) => {
-    _setShowCode(value);
+  const [showCode, setShowCode] = useState(!!localStorage.getItem(STORAGE_KEY));
+  const toggleShowCode = (value: boolean) => {
+    setShowCode(value);
     if (value) {
       localStorage.setItem(STORAGE_KEY, "true");
     } else {
@@ -62,7 +62,7 @@ export const Storybook = () => {
               invalidate();
             }}
           />
-          <Button text="toggle code" className="btn-default" handler={() => setShowCode(!showCode)} />
+          <Button text="toggle code" className="btn-default" handler={() => toggleShowCode(!showCode)} />
         </StoryRow>
       </div>
 

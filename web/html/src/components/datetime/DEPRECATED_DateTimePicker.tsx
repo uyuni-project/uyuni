@@ -1,4 +1,6 @@
-import * as React from "react";
+import { Component, PureComponent } from "react";
+
+import { DEPRECATED_onClick } from "components/utils";
 
 import { localizedMoment } from "utils";
 
@@ -54,7 +56,7 @@ type DatePickerProps = {
   onDateChanged: (year: number, month: number, date: number) => void;
 };
 
-class DatePicker extends React.PureComponent<DatePickerProps> {
+class DatePicker extends PureComponent<DatePickerProps> {
   _input: JQuery | null = null;
 
   componentDidMount() {
@@ -147,7 +149,7 @@ type TimePickerProps = {
   onTimeChanged: (hours: number, minutes: number, seconds: number) => void;
 };
 
-class TimePicker extends React.PureComponent<TimePickerProps> {
+class TimePicker extends PureComponent<TimePickerProps> {
   _input: JQuery | null = null;
 
   componentDidMount() {
@@ -252,7 +254,10 @@ type DateTimePickerState = {
   timeZone: typeof localizedMoment.userTimeZone | typeof localizedMoment.serverTimeZone;
 };
 
-export class DEPRECATED_DateTimePicker extends React.Component<DateTimePickerProps, DateTimePickerState> {
+/**
+ * @deprecated
+ */
+export class DEPRECATED_DateTimePicker extends Component<DateTimePickerProps, DateTimePickerState> {
   constructor(props: DateTimePickerProps) {
     super(props);
     this.state = {
@@ -277,15 +282,15 @@ export class DEPRECATED_DateTimePicker extends React.Component<DateTimePickerPro
   };
 
   toggleDatepicker = () => {
-    this.setState({
-      dateOpen: !this.state.dateOpen,
-    });
+    this.setState((prevState) => ({
+      dateOpen: !prevState.dateOpen,
+    }));
   };
 
   toggleTimepicker = () => {
-    this.setState({
-      timeOpen: !this.state.timeOpen,
-    });
+    this.setState((prevState) => ({
+      timeOpen: !prevState.timeOpen,
+    }));
   };
 
   onDateChanged = (year: number, month: number, day: number) => {
@@ -342,7 +347,7 @@ export class DEPRECATED_DateTimePicker extends React.Component<DateTimePickerPro
           <span
             className="input-group-addon input-group-text"
             data-picker-type="date"
-            onClick={this.toggleDatepicker}
+            {...DEPRECATED_onClick(this.toggleDatepicker)}
             key="calendar"
           >
             &nbsp;<i className="fa fa-calendar"></i>
@@ -362,7 +367,7 @@ export class DEPRECATED_DateTimePicker extends React.Component<DateTimePickerPro
           <span
             className="input-group-addon input-group-text"
             data-picker-type="time"
-            onClick={this.toggleTimepicker}
+            {...DEPRECATED_onClick(this.toggleDatepicker)}
             key="clock"
           >
             &nbsp;<i className="fa fa-clock-o"></i>

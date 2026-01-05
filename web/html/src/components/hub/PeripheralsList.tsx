@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type ReactNode, type RefObject, Component, createRef } from "react";
 
 import { LinkButton } from "components/buttons";
 import { DeregisterServer, IssRole, PeripheralListData } from "components/hub";
@@ -9,18 +9,18 @@ import { Table, TableRef } from "components/table/Table";
 
 import { Utils } from "utils/functions";
 
-type Props = {};
+type Props = Record<never, never>;
 
-export class PeripheralsList extends React.Component<Props> {
-  private tableRef: React.RefObject<TableRef>;
+export class PeripheralsList extends Component<Props> {
+  private tableRef: RefObject<TableRef>;
 
   public constructor(props: Props) {
     super(props);
 
-    this.tableRef = React.createRef();
+    this.tableRef = createRef();
   }
 
-  public render(): React.ReactNode {
+  public render(): ReactNode {
     const componentContent = (
       <Table
         ref={this.tableRef}
@@ -62,7 +62,7 @@ export class PeripheralsList extends React.Component<Props> {
     return componentContent;
   }
 
-  private renderFqdnLink(row: PeripheralListData): React.ReactNode {
+  private renderFqdnLink(row: PeripheralListData): ReactNode {
     return (
       <LinkButton
         className="btn-link"
@@ -73,13 +73,13 @@ export class PeripheralsList extends React.Component<Props> {
     );
   }
 
-  private renderDownloadRootCA(row: PeripheralListData): React.ReactNode {
+  private renderDownloadRootCA(row: PeripheralListData): ReactNode {
     return (
       <LargeTextAttachment value={row.rootCA} filename={row.fqdn + "_CA.pem"} editable={false} hideMessage={true} />
     );
   }
 
-  private renderDeregister(row: PeripheralListData): React.ReactNode {
+  private renderDeregister(row: PeripheralListData): ReactNode {
     return (
       <DeregisterServer
         id={row.id}

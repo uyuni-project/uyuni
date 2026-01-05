@@ -1,4 +1,3 @@
-import * as React from "react";
 import { useState } from "react";
 
 import { Button } from "components/buttons";
@@ -24,7 +23,7 @@ const MaintenanceWindowsDetails = (props: MaintenanceDetailsProps) => {
   const [type] = useState(props.type);
 
   const buttons = [
-    <div className="btn-group pull-right">
+    <div className="btn-group pull-right" key="buttons-right">
       <Button
         text={t("Back")}
         icon="fa-chevron-left"

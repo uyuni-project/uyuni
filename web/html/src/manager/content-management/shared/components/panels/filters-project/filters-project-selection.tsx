@@ -1,5 +1,4 @@
-import * as React from "react";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 
 import _xor from "lodash/xor";
 
@@ -13,7 +12,7 @@ import { ProjectFilterServerType } from "../../../type";
 type FiltersProps = {
   projectId: string;
   initialSelectedFiltersIds: number[];
-  onChange: Function;
+  onChange: (...args: any[]) => any;
   isUpdatingFilter: boolean;
 };
 
@@ -21,7 +20,7 @@ const FiltersProjectSelection = (props: FiltersProps) => {
   const { onAction: onActionAllFilters, isLoading: isLoadingAllFilters } = useLifecycleActionsApi({
     resource: "filters",
   });
-  const [allFilters, setAllFilters]: [ProjectFilterServerType[], Function] = useState([]);
+  const [allFilters, setAllFilters]: [ProjectFilterServerType[], (...args: any[]) => any] = useState([]);
   const [onGoingSelectedFilters, setOnGoingSelectedFilters] = useState(props.initialSelectedFiltersIds);
 
   useEffect(() => {
@@ -37,7 +36,7 @@ const FiltersProjectSelection = (props: FiltersProps) => {
   }
 
   return (
-    <React.Fragment>
+    <Fragment>
       <LinkButton
         id={`create-new-filter-link`}
         icon="fa-plus"
@@ -67,7 +66,7 @@ const FiltersProjectSelection = (props: FiltersProps) => {
             </label>
           </div>
         ))}
-    </React.Fragment>
+    </Fragment>
   );
 };
 

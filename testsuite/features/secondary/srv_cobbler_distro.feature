@@ -33,10 +33,11 @@ Feature: Cobbler and distribution autoinstallation
     When I follow the left menu "Systems > Autoinstallation > Distributions"
     And I follow "Create Distribution"
     And I enter "SLE-15-FAKE" as "label"
-    And I enter "/var/autoinstall/SLES15-SP4-x86_64/DVD1/" as "basepath"
-    And I select "SLE-Product-SLES15-SP4-Pool for x86_64" from "channelid"
+    And I enter "/var/autoinstall/SLES15-SP7-x86_64/DVD1/" as "basepath"
+    And I select "SLE-Product-SLES15-SP7-Pool for x86_64" from "channelid"
     And I select "SUSE Linux Enterprise 15" from "installtype"
     And I click on "Create Autoinstallable Distribution"
+    And I wait until I see "Autoinstallable Distribution Created" text
     Then I should see a "Autoinstallable Distributions" text
     And I should see a "SLE-15-FAKE" link
     When I follow "SLE-15-FAKE"

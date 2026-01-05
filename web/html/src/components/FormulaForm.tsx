@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import { Button } from "components/buttons";
 import { Messages, MessageType } from "components/messages/messages";
@@ -75,7 +75,7 @@ type State = {
   loading: boolean;
 };
 
-class FormulaForm extends React.Component<Props, State> {
+class FormulaForm extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
@@ -190,7 +190,7 @@ class FormulaForm extends React.Component<Props, State> {
             this.setState({
               errors: [JSON.parse(error.responseText)],
             });
-          } catch (e) {
+          } catch (_) {
             this.setState({
               errors: Network.errorMessageByStatus(error.status),
             });

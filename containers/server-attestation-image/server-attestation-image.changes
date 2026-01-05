@@ -1,4 +1,26 @@
 -------------------------------------------------------------------
+Tue Dec 09 13:49:49 CET 2025 - michael.calmer@suse.com
+
+- version 5.2.3
+  * Cleanup and simplify container building
+  * Remove libzypp and container-suseconnect from image
+
+-------------------------------------------------------------------
+Thu Nov 27 11:20:24 CET 2025 - michael.calmer@suse.com
+
+- version 5.2.2
+  * Image rebuilt to the newest version with updated dependencies
+    for SUSE Multi-Linux Manager 5.2.0 Alpha 1
+
+-------------------------------------------------------------------
+Tue Oct 28 10:20:25 CET 2025 - rosuna@suse.com
+
+- version 5.2.1
+  * CVE-2025-53192: Do not use apache-commons-ognl but its successor
+    ognl (bsc#1248252)
+  * Bump version to 5.2.0
+
+-------------------------------------------------------------------
 Tue Jun 17 19:44:50 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.7

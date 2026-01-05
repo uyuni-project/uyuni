@@ -1,4 +1,3 @@
-import * as React from "react";
 import { useEffect, useState } from "react";
 
 import useLifecyclePaygActionsApi from "manager/admin/payg-shared/api/payg-actions-api";

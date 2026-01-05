@@ -1,0 +1,614 @@
+/*
+ * Copyright (c) 2009--2018 Red Hat, Inc.
+ *
+ * This software is licensed to you under the GNU General Public License,
+ * version 2 (GPLv2). There is NO WARRANTY for this software, express or
+ * implied, including the implied warranties of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+ * along with this software; if not, see
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * Red Hat trademarks are not licensed under GPLv2. No permission is
+ * granted to use or replicate Red Hat trademarks that are incorporated
+ * in this software or its documentation.
+ */
+package com.redhat.rhn.frontend.dto;
+
+import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.domain.errata.AdvisoryStatus;
+import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+/**
+ * ErrataOverview
+ */
+public class ErrataOverview extends BaseDto {
+    private Long id;
+    private String advisory;
+    private String advisoryName;
+    private String advisoryType;
+    private AdvisoryStatus advisoryStatus;
+    private String advisorySynopsis;
+    private String errataFrom;
+    private String description;
+    private Long advisoryRel;
+    private Date updateDate;
+    private Date issueDate;
+    private Integer affectedSystemCount;
+    private String advisoryLastUpdated;
+    private List cves = new ArrayList<>();
+    private List<String> packageNames = new ArrayList<>();
+    private List<Long> pids = new ArrayList<>();
+    private List actionId;
+    private List status;
+    private Long associatedSystemId;
+    private Date lastModified;
+    private Long fromErrataId;
+    private String relationship;
+    private boolean rebootSuggested;
+    private boolean restartSuggested;
+    private Integer severityid;
+    private String severityLabel;
+    private String rights;
+
+    /**
+     * This method is only used for csv export..
+     * @return the internationalized errata advisory type string.
+     */
+    public String getErrataAdvisoryType() {
+        LocalizationService ls = LocalizationService.getInstance();
+        if (isSecurityAdvisory()) {
+            return ls.getMessage("erratalist.jsp.securityadvisory");
+        }
+        else if (isBugFix()) {
+            return ls.getMessage("erratalist.jsp.bugadvisory");
+        }
+        else if (isProductEnhancement()) {
+            return ls.getMessage("erratalist.jsp.productenhancementadvisory");
+        }
+        return "";
+    }
+    /**
+     * This method is only used for CSV export
+     * @return the i18ned errata status string.
+     */
+    public String getErrataStatus() {
+        LocalizationService ls = LocalizationService.getInstance();
+        if ("Queued".equals(getCurrentStatusAndActionId()[0])) {
+            return ls.getMessage("affectedsystems.jsp.pending");
+        }
+        if ("Failed".equals(getCurrentStatusAndActionId()[0])) {
+            return ls.getMessage("affectedsystems.jsp.failed");
+        }
+        if (getStatus() == null || getStatus().isEmpty()) {
+            return ls.getMessage("affectedsystems.jsp.none");
+        }
+        return "";
+    }
+
+    /**
+     * @return the associatedSystem
+     */
+    public Long getAssociatedSystem() {
+        return associatedSystemId;
+    }
+
+    /**
+     * @param systemId the associatedSystem to set
+     */
+    public void setAssociatedSystem(Long systemId) {
+        this.associatedSystemId = systemId;
+    }
+    /**
+     * @return Returns the actionId.
+     */
+    public List getActionId() {
+        return actionId;
+    }
+    /**
+     * @param actionIdIn The actionId to set.
+     */
+    public void setActionId(List actionIdIn) {
+        this.actionId = actionIdIn;
+    }
+    /**
+     * @return Returns the status.
+     */
+    public List getStatus() {
+        return status;
+    }
+    /**
+     * @param statusIn The status to set.
+     */
+    public void setStatus(List statusIn) {
+        this.status = statusIn;
+    }
+    /**
+     * Adds a name to packageNames list.
+     * @param name The name to add to packageNames.
+     */
+    public void addPackageName(String name) {
+        packageNames.add(name);
+    }
+    /**
+     * @return Returns the packageNames.
+     */
+    public List getPackageNames() {
+        return packageNames;
+    }
+    /**
+     * Adds a name to packageNames list.
+     * @param idIn The id to add.
+     */
+    public void addPackageId(long idIn) {
+        pids.add(idIn);
+    }
+    /**
+     * @return Returns the package ids.
+     */
+    public List<Long> getPackageIds() {
+        return pids;
+    }
+
+    /**
+     * @param p The packageNames to set.
+     */
+    public void setPackageNames(List p) {
+        this.packageNames = p;
+    }
+    /**
+     * @return Returns severity.
+     */
+    public Integer getSeverityid() {
+        return severityid;
+    }
+    /**
+     * @param sId The severity to set.
+     */
+    public void setSeverityid(Integer sId) {
+        this.severityid = sId;
+    }
+    /**
+     * @return Returns the cves.
+     */
+    public List getCves() {
+        return cves;
+    }
+    /**
+     * Adds a cve to cves list.
+     * @param cveIn The cve to add to cves list.
+     */
+    public void addCve(String cveIn) {
+        if (cveIn != null) {
+            cves.add(cveIn);
+        }
+    }
+    /**
+     * @param p The cves to set.
+     */
+    public void setCves(List p) {
+        this.cves = p;
+    }
+
+    /**
+     * @return Returns the advisoryLastUpdated.
+     */
+    public String getAdvisoryLastUpdated() {
+        return advisoryLastUpdated;
+    }
+
+    /**
+     * @param a The advisoryLastUpdated to set.
+     */
+    public void setAdvisoryLastUpdated(String a) {
+        this.advisoryLastUpdated = a;
+    }
+
+    /**
+     * @return Returns the advisory.
+     */
+    public String getAdvisory() {
+        return advisory;
+    }
+    /**
+     * @param advisoryIn The advisory to set.
+     */
+    public void setAdvisory(String advisoryIn) {
+        advisory = advisoryIn;
+    }
+    /**
+     * @return Returns the advisoryLastUpdated.
+     */
+    public String getUpdateDate() {
+        return LocalizationService.getInstance().formatShortDate(updateDate);
+    }
+    /**
+     * @return Returns the advisoryLastUpdated in ISO format (YYYY-MM-DD).
+     */
+    public String getUpdateDateIsoFormat() {
+        if (updateDate == null) {
+            return null;
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return sdf.format(updateDate);
+    }
+    /**
+     * @return Returns the advisoryLastUpdated.
+     */
+    public Date getUpdateDateObj() {
+        return updateDate;
+    }
+    /**
+     * @param advisoryLastUpdatedIn The advisoryLastUpdated to set.
+     */
+    public void setUpdateDate(Date advisoryLastUpdatedIn) {
+        updateDate = advisoryLastUpdatedIn;
+    }
+    /**
+     * @return Returns the issueDate.
+     */
+    public String getIssueDate() {
+        if (issueDate == null) {
+            return null;
+        }
+        return LocalizationService.getInstance().formatShortDate(issueDate);
+    }
+    /**
+     * @return Returns the issueDate in ISO format (YYYY-MM-DD).
+     */
+    public String getIssueDateIsoFormat() {
+        if (issueDate == null) {
+            return null;
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return sdf.format(issueDate);
+    }
+    /**
+     * @return Returns the advisoryLastUpdated.
+     */
+    public Date getIssueDateObj() {
+        return issueDate;
+    }
+    /**
+     * @param issueDateIn The issueDate to set.
+     */
+    public void setIssueDate(Date issueDateIn) {
+        issueDate = issueDateIn;
+    }
+    /**
+     * @param issueDateIn The issueDate to set. Supported formats: "yyyy-MM-dd HH:mm:ss" or "yyyy-MM-dd"
+     * @throws ParseException when issueDateIn can't be parsed
+     */
+    public void setIssueDate(String issueDateIn) throws ParseException {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            issueDate = sdf.parse(issueDateIn);
+        }
+        catch (ParseException ex) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            issueDate = sdf.parse(issueDateIn);
+        }
+    }
+    /**
+     * @return Returns the advisoryName.
+     */
+    public String getAdvisoryName() {
+        return advisoryName;
+    }
+    /**
+     * @param advisoryNameIn The advisoryName to set.
+     */
+    public void setAdvisoryName(String advisoryNameIn) {
+        advisoryName = advisoryNameIn;
+    }
+    /**
+     * @return Returns the advisorySynopsis.
+     */
+    public String getAdvisorySynopsis() {
+        return advisorySynopsis;
+    }
+    /**
+     * @param advisorySynopsisIn The advisorySynopsis to set.
+     */
+    public void setAdvisorySynopsis(String advisorySynopsisIn) {
+        advisorySynopsis = advisorySynopsisIn;
+    }
+    /**
+     * @return Returns the advisoryType.
+     */
+    public String getAdvisoryType() {
+        return advisoryType;
+    }
+    /**
+     * @param advisoryTypeIn The advisoryType to set.
+     */
+    public void setAdvisoryType(String advisoryTypeIn) {
+        advisoryType = advisoryTypeIn;
+    }
+    /**
+     * @return Returns the advisoryStatus.
+     */
+    public AdvisoryStatus getAdvisoryStatus() {
+        return advisoryStatus;
+    }
+    /**
+     * @param advisoryStatusIn The advisoryStatus to set.
+     */
+    public void setAdvisoryStatus(AdvisoryStatus advisoryStatusIn) {
+        this.advisoryStatus = advisoryStatusIn;
+    }
+    /**
+     * @param advisoryStatusIn The advisoryStatus to set.
+     */
+    public void setAdvisoryStatus(String advisoryStatusIn) {
+        this.advisoryStatus = AdvisoryStatus.fromMetadata(advisoryStatusIn)
+                .orElseThrow(() -> new InvalidParameterException("Invalid advisory status"));
+    }
+    /**
+     * @return Returns the affectedSystemCount.
+     */
+    public Integer getAffectedSystemCount() {
+        return affectedSystemCount;
+    }
+    /**
+     * @param affectedSystemCountIn The affectedSystemCount to set.
+     */
+    public void setAffectedSystemCount(Integer affectedSystemCountIn) {
+        affectedSystemCount = affectedSystemCountIn;
+    }
+    /**
+     * @return Returns the id.
+     */
+    @Override
+    public Long getId() {
+        return id;
+    }
+    /**
+     * @param idIn The id to set.
+     */
+    public void setId(Long idIn) {
+        id = idIn;
+    }
+
+    /**
+     * Returns id as a long
+     * @return id as a long
+     */
+    public long getIdAsLong() {
+        return id;
+    }
+
+    /**
+     * Returns true if the advisory is a Product Enhancement.
+     * @return true if the advisory is a Product Enhancement.
+     */
+    public boolean isProductEnhancement() {
+        return "Product Enhancement Advisory".equals(getAdvisoryType());
+    }
+
+    /**
+     * Returns true if the advisory is a Security Advisory.
+     * @return true if the advisory is a Security Advisory.
+     */
+    public boolean isSecurityAdvisory() {
+        return "Security Advisory".equals(getAdvisoryType());
+    }
+
+    /**
+     * Returns true if the advisory is a Bug Fix.
+     * @return true if the advisory is a Bug Fix.
+     */
+    public boolean isBugFix() {
+        return "Bug Fix Advisory".equals(getAdvisoryType());
+    }
+    /**
+     * Returns the most applicable status with its action id
+     * Completed supercedes Picked Up which supercedes Queued which supercedes Failed
+     * @return An array with the first index as status and second index as actionId
+     */
+    public Object[] getCurrentStatusAndActionId() {
+        Object[] results = new Object[2];
+        if (status == null) {
+            results[0] = null;
+            results[1] = null;
+        }
+        else if (status.contains("Completed")) {
+            results[0] = status.get(status.indexOf("Completed"));
+            results[1] = actionId.get(status.indexOf("Completed"));
+        }
+        else if (status.contains("Picked Up")) {
+            results[0] = status.get(status.indexOf("Picked Up"));
+            results[1] = actionId.get(status.indexOf("Picked Up"));
+        }
+        else if (status.contains("Queued")) {
+            results[0] = status.get(status.indexOf("Queued"));
+            results[1] = actionId.get(status.indexOf("Queued"));
+        }
+        else {
+            results[0] = status.get(status.indexOf("Failed"));
+            results[1] = actionId.get(status.indexOf("Failed"));
+        }
+        return results;
+    }
+
+    /**
+     * @return Returns the lastModified.
+     */
+    public Date getLastModifiedObject() {
+        return lastModified;
+    }
+
+    /**
+     * @return Returns the lastModified.
+     */
+    public String getLastModified() {
+        return LocalizationService.getInstance().formatDate(lastModified);
+    }
+
+
+    /**
+     * @param lastModifiedIn The lastModified to set.
+     */
+    public void setLastModified(Date lastModifiedIn) {
+        this.lastModified = lastModifiedIn;
+    }
+
+    /**
+     * @return Return the description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * @param descriptionIn the Description to set
+     */
+    public void setDescription(String descriptionIn) {
+        this.description = descriptionIn;
+    }
+
+    /**
+     * @return Returns the ErrataFrom.
+     */
+    public String getErrataFrom() {
+        return errataFrom;
+    }
+
+    /**
+     * @param errataFromIn the ErrataFrom to set
+     */
+    public void setErrataFrom(String errataFromIn) {
+        this.errataFrom = errataFromIn;
+    }
+
+    /**
+     * @return returns the AdvisoryRel
+     */
+    public Long getAdvisoryRel() {
+        return advisoryRel;
+    }
+
+    /**
+     * @param advisoryRelIn the AdvisoryRel to set
+     */
+    public void setAdvisoryRel(Long advisoryRelIn) {
+        this.advisoryRel = advisoryRelIn;
+    }
+
+    /**
+     * @return Returns the fromErrataId.
+     */
+    public Long getFromErrataId() {
+        return fromErrataId;
+    }
+
+    /**
+     * @param fromErrataIdIn The fromErrataId to set.
+     */
+    public void setFromErrataId(Long fromErrataIdIn) {
+        fromErrataId = fromErrataIdIn;
+    }
+
+    /**
+     * @return true if the erratum is a clone
+     */
+    public boolean isCloned() {
+        return fromErrataId != null;
+    }
+
+    /**
+     * @return Returns the relationship.
+     */
+    public String getRelationship() {
+        return relationship;
+    }
+
+    /**
+     * @param relationshipIn The relationship to set.
+     */
+    public void setRelationship(String relationshipIn) {
+        relationship = relationshipIn;
+    }
+
+    /**
+     * Gets if {@code reboot_suggested} flag is set.
+     *
+     * @return True if {@code reboot_suggested} flag is set.
+     */
+    public boolean isRebootSuggested() {
+        return rebootSuggested;
+    }
+
+    /**
+     * Sets {@code reboot_suggested} flag.
+     *
+     * @param rebootSuggestedIn {@code reboot_suggested} flag
+     */
+    public void setRebootSuggested(boolean rebootSuggestedIn) {
+        rebootSuggested = rebootSuggestedIn;
+    }
+
+    /**
+     * Gets if {@code restart_suggested} flag is set.
+     *
+     * @return True if {@code restart_suggested} flag is set.
+     */
+    public boolean isRestartSuggested() {
+        return restartSuggested;
+    }
+
+    /**
+     * Sets {@code restart_suggested} flag.
+     *
+     * @param restartSuggestedIn {@code restart_suggested} flag
+     */
+    public void setRestartSuggested(boolean restartSuggestedIn) {
+        this.restartSuggested = restartSuggestedIn;
+    }
+
+    /**
+     * @return the severityLabel
+     */
+    public String getSeverityLabel() {
+        return severityLabel;
+    }
+
+    /**
+     * @param severityLabelIn the severityLabel to set
+     */
+    public void setSeverityLabel(String severityLabelIn) {
+        this.severityLabel = severityLabelIn;
+    }
+
+    /**
+     * @return the errata severity as string.
+     */
+    public String getSeverity() {
+        return switch (getSeverityLabel()) {
+            case "errata.sev.label.critical" -> "Critical";
+            case "errata.sev.label.important" -> "Important";
+            case "errata.sev.label.moderate" -> "Moderate";
+            case "errata.sev.label.low" -> "Low";
+            default -> "Low";
+        };
+    }
+
+    /**
+     * @return the copyright information for this errata
+     */
+    public String getRights() {
+        return rights;
+    }
+
+    /**
+     * @param rightsIn the copyright information for this errata
+     */
+    public void setRights(String rightsIn) {
+        this.rights = rightsIn;
+    }
+}

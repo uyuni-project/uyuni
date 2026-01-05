@@ -1,5 +1,3 @@
-import * as React from "react";
-
 import { paygProperties } from "manager/admin/payg/payg";
 import useLifecyclePaygActionsApi from "manager/admin/payg-shared/api/payg-actions-api";
 import PaygSshDataForm from "manager/admin/payg-shared/sshData/payg-ssh-data-form";
@@ -14,7 +12,7 @@ type Props = {
   paygId: string;
   isInstance: boolean;
   labelPrefix: string;
-  onChange: Function;
+  onChange: (...args: any[]) => any;
   readOnly?: boolean;
 };
 

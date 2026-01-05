@@ -1,5 +1,3 @@
-import * as React from "react";
-
 import { PaygFullType } from "manager/admin/payg/payg";
 import useLifecyclePaygActionsApi from "manager/admin/payg-shared/api/payg-actions-api";
 import PaygInfoForm from "manager/admin/payg-shared/info/payg-info-form";
@@ -11,7 +9,7 @@ import { Loading } from "components/utils";
 
 type Props = {
   payg: PaygFullType;
-  onChange: Function;
+  onChange: (...args: any[]) => any;
   readOnly?: boolean;
 };
 
@@ -47,11 +45,7 @@ const PaygInfoEdit = (props: Props) => {
           setErrors(null);
         }}
         disableEditing={props.readOnly}
-        renderContent={() => (
-          <React.Fragment>
-            <PaygInfoView payg={props.payg} />
-          </React.Fragment>
-        )}
+        renderContent={() => <PaygInfoView payg={props.payg} />}
         renderCreationContent={({ item, setItem, errors }) => {
           if (isLoading) {
             return <Loading text={t("Editing properties..")} />;

@@ -20,7 +20,7 @@
 %{!?productprettyname: %global productprettyname Uyuni}
 
 Name:           spacewalk-utils
-Version:        5.2.0
+Version:        5.2.2
 Release:        0
 Summary:        Utilities that may be run against a %{productprettyname} server
 License:        GPL-2.0-only AND GPL-3.0-or-later

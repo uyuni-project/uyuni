@@ -1,4 +1,3 @@
-import * as React from "react";
 import { useState } from "react";
 
 import useLifecyclePaygActionsApi from "manager/admin/payg-shared/api/payg-actions-api";
@@ -77,4 +76,4 @@ const CreateProject = () => {
   );
 };
 
-export default withPageWrapper<{}>(CreateProject);
+export default withPageWrapper(CreateProject);

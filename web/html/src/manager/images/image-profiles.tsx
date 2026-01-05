@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 
@@ -15,7 +15,7 @@ import { Utils } from "utils/functions";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network from "utils/network";
 
-// See java/code/src/com/suse/manager/webui/templates/content_management/list-profiles.jade
+// See java/core/src/main/resources/com/suse/manager/webui/templates/content_management/list-profiles.jade
 declare global {
   interface Window {
     isAdmin?: any;
@@ -33,7 +33,7 @@ const messageMap = {
   delete_success_p: t("Image profiles have been deleted."),
 };
 
-type Props = {};
+type Props = Record<never, never>;
 
 type State = {
   messages: any;
@@ -42,7 +42,7 @@ type State = {
   selected?: any;
 };
 
-class ImageProfiles extends React.Component<Props, State> {
+class ImageProfiles extends Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -93,7 +93,7 @@ class ImageProfiles extends React.Component<Props, State> {
   deleteProfiles = (idList) => {
     return Network.post("/rhn/manager/api/cm/imageprofiles/delete", idList).then((data) => {
       if (data.success) {
-        this.setState({
+        this.setState((prevState) => ({
           messages: (
             <Messages
               items={[
@@ -104,9 +104,9 @@ class ImageProfiles extends React.Component<Props, State> {
               ]}
             />
           ),
-          imageprofiles: this.state.imageprofiles.filter((profile) => !idList.includes(profile.profileId)),
-          selectedItems: this.state.selectedItems.filter((item) => !idList.includes(item)),
-        });
+          imageprofiles: prevState.imageprofiles.filter((profile) => !idList.includes(profile.profileId)),
+          selectedItems: prevState.selectedItems.filter((item) => !idList.includes(item)),
+        }));
       } else {
         this.setState({
           messages: (

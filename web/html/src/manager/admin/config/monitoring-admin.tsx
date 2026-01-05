@@ -1,5 +1,4 @@
-import * as React from "react";
-import { useEffect } from "react";
+import { Fragment, useEffect } from "react";
 
 import { docsLocale, isUyuni, productName } from "core/user-preferences";
 
@@ -108,7 +107,7 @@ const ExportersList = (props: { exporters: Record<string, boolean>; messages: Re
   return (
     <ul style={{ listStyle: "none", paddingLeft: "0px" }}>
       {keys.map((key) => (
-        <ExporterItem name={key} status={props.exporters[key]} message={props.messages[key]} />
+        <ExporterItem name={key} status={props.exporters[key]} message={props.messages[key]} key={key} />
       ))}
     </ul>
   );
@@ -126,8 +125,8 @@ const ListPlaceholderItem = () => {
 const ListPlaceholder = () => {
   return (
     <ul className={styles.placeholder}>
-      {Object.keys(exporterMap).map(() => (
-        <ListPlaceholderItem />
+      {Object.keys(exporterMap).map((_, index) => (
+        <ListPlaceholderItem key={`placeholder-${index}`} />
       ))}
     </ul>
   );
@@ -228,7 +227,7 @@ const MonitoringAdmin = () => {
     switch (action) {
       case "checking":
         buttons = (
-          <React.Fragment>
+          <Fragment>
             <Button
               id="enable-monitoring-btn"
               disabled={true}
@@ -243,12 +242,12 @@ const MonitoringAdmin = () => {
               icon="fa-stop"
               text={t("Disable")}
             />
-          </React.Fragment>
+          </Fragment>
         );
         break;
       case "enabling":
         buttons = (
-          <React.Fragment>
+          <Fragment>
             <Button
               id="enable-monitoring-btn"
               disabled={true}
@@ -263,12 +262,12 @@ const MonitoringAdmin = () => {
               icon="fa-pause"
               text={t("Disable")}
             />
-          </React.Fragment>
+          </Fragment>
         );
         break;
       case "disabling":
         buttons = (
-          <React.Fragment>
+          <Fragment>
             <Button
               id="enable-monitoring-btn"
               disabled={true}
@@ -283,7 +282,7 @@ const MonitoringAdmin = () => {
               icon="fa-circle-o-notch fa-spin"
               text={t("Disable")}
             />
-          </React.Fragment>
+          </Fragment>
         );
         break;
       default:
@@ -291,7 +290,7 @@ const MonitoringAdmin = () => {
     }
   } else {
     buttons = (
-      <React.Fragment>
+      <Fragment>
         <AsyncButton
           id="enable-monitoring-btn"
           defaultType="btn-default"
@@ -307,7 +306,7 @@ const MonitoringAdmin = () => {
           text={t("Disable")}
           action={() => changeMonitoringStatus(false)}
         />
-      </React.Fragment>
+      </Fragment>
     );
   }
 

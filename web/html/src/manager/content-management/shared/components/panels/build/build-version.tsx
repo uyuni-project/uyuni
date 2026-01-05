@@ -1,5 +1,3 @@
-import * as React from "react";
-
 import styles from "./build-version.module.scss";
 
 type Props = {
@@ -26,11 +24,6 @@ const BuildVersion = ({ id, text }: Props) => {
       </dd>
     </div>
   );
-};
-
-BuildVersion.defaultProps = {
-  id: undefined,
-  text: undefined,
 };
 
 export default BuildVersion;

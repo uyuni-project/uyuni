@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type ReactNode, useEffect } from "react";
 
 import { PopUp } from "../popup";
 
@@ -25,9 +25,9 @@ export function closeDialog(modalId: string) {
 export type DialogProps = {
   id: string;
   className?: string;
-  title?: React.ReactNode;
-  content?: React.ReactNode;
-  buttons?: React.ReactNode;
+  title?: ReactNode;
+  content?: ReactNode;
+  buttons?: ReactNode;
   closableModal?: boolean;
   /** Whether to automatically focus the first input in the opened modal, true by default */
   autoFocus?: boolean;
@@ -37,7 +37,7 @@ export type DialogProps = {
 export function Dialog(props: DialogProps) {
   const { onClosePopUp, buttons, ...OtherProps } = props;
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (props.autoFocus === false) {
       return;
     }

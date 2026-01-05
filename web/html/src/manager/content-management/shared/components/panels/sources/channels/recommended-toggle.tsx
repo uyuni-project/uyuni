@@ -1,6 +1,4 @@
-import * as React from "react";
-
-import { BaseChannelType, ChildChannelType } from "core/channels/type/channels.type";
+import { BaseChannelType } from "core/channels/type/channels.type";
 
 import { Toggler } from "components/toggler";
 
@@ -9,20 +7,20 @@ import styles from "./channels-selection.module.scss";
 type Props = {
   base: BaseChannelType;
   selectedRows: Set<number>;
-  onToggleChannelSelect: (channel: BaseChannelType | ChildChannelType, toState?: boolean) => void;
+  onToggleChannelSelect: (channelId: number, toState?: boolean) => void;
 };
 
 const RecommendedToggle = (props: Props) => {
   const { base, selectedRows } = props;
-  const recommendedChildren = base.recommendedChildren;
-  const areAllRecommendedChildrenSelected = recommendedChildren.every((child) => selectedRows.has(child.id));
+  const recommendedChildrenIds = base.recommendedChildrenIds;
+  const areAllRecommendedChildrenSelected = recommendedChildrenIds.every((childId) => selectedRows.has(childId));
   return (
     <div className={styles.child_channel}>
       <Toggler
         value={areAllRecommendedChildrenSelected}
         handler={() => {
-          recommendedChildren.forEach((child) =>
-            props.onToggleChannelSelect(child, !areAllRecommendedChildrenSelected)
+          recommendedChildrenIds.forEach((childId) =>
+            props.onToggleChannelSelect(childId, !areAllRecommendedChildrenSelected)
           );
         }}
         text={t("include recommended")}

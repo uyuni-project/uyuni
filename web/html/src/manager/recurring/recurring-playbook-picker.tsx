@@ -1,7 +1,10 @@
-import * as React from "react";
+import { Component } from "react";
+
+import yaml from "js-yaml";
 
 import { AnsiblePathContent } from "manager/minion/ansible/ansible-path-content";
 
+import { AceEditor } from "components/ace-editor";
 import { Button } from "components/buttons";
 import { BootstrapPanel } from "components/panels";
 import { SectionToolbar } from "components/section-toolbar/section-toolbar";
@@ -11,6 +14,7 @@ type PropsType = {
   playbookPath: string;
   inventoryPath: string;
   flushCache: boolean;
+  variables?: string;
   onSelectPlaybook: (playbook: any) => void;
 };
 
@@ -18,7 +22,7 @@ type StateType = {
   editPlaybook: boolean;
 };
 
-class RecurringPlaybookPicker extends React.Component<PropsType, StateType> {
+class RecurringPlaybookPicker extends Component<PropsType, StateType> {
   constructor(props) {
     super(props);
 
@@ -32,6 +36,28 @@ class RecurringPlaybookPicker extends React.Component<PropsType, StateType> {
       this.setState({ editPlaybook: !this.props.playbookPath });
     }
   }
+
+  loadVariables = () => {
+    if (!this.props.variables) return "";
+
+    let varsObj;
+    if (typeof this.props.variables === "string") {
+      try {
+        varsObj = JSON.parse(this.props.variables);
+      } catch {
+        varsObj = {};
+      }
+    } else {
+      varsObj = this.props.variables;
+    }
+    return yaml.dump(
+      { vars: varsObj },
+      {
+        quotingType: '"',
+        forceQuotes: true,
+      }
+    );
+  };
 
   onEditPlaybook = () => {
     this.setState({
@@ -62,13 +88,14 @@ class RecurringPlaybookPicker extends React.Component<PropsType, StateType> {
         <AnsiblePathContent
           minionServerId={this.props.minionServerId}
           pathContentType="playbook"
+          recurringDetails={{ fullPath: this.props.playbookPath, variables: this.props.variables }}
           isRecurring={true}
           onSelectPlaybook={this.onSelectPlaybook}
         />
       </div>
     ) : (
       <div>
-        <SectionToolbar>
+        <SectionToolbar top="50">
           <div className="action-button-wrapper">{button}</div>
         </SectionToolbar>
         <BootstrapPanel title={t("Playbook details")}>
@@ -94,6 +121,20 @@ class RecurringPlaybookPicker extends React.Component<PropsType, StateType> {
               </tr>
             </tbody>
           </table>
+          {this.props.variables && (
+            <>
+              <h5>{t("Variables")}</h5>
+              <AceEditor
+                className="form-control"
+                id="variables-content"
+                minLines={20}
+                maxLines={40}
+                readOnly={true}
+                mode="yaml"
+                content={this.loadVariables()}
+              />
+            </>
+          )}
         </BootstrapPanel>
       </div>
     );

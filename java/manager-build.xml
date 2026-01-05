@@ -33,7 +33,8 @@
     <property name="tests.coverage.destfile" value="test-results/coverage/jacoco.exec"/>
     <property name="tests.configuration.path" value="${basedir}/buildconf/test"/>
 
-    <property name="branding.src.dir" value="${basedir}/../branding/java/code/src"/>
+    <property name="root.dir" value="${basedir}/.."/>
+    <property name="branding.dir" value="${basedir}/../branding"/>
     <property name="frontend.src.dir" value="${basedir}/../web/html/src"/>
     <property name="frontend.dist.dir" value="${basedir}/../web/html/src/dist"/>
 
@@ -189,11 +190,11 @@
         <javac destdir="${build.dir}/java-branding"
                includeantruntime="no"
                nowarn="true"
-	       release="17"
-               srcdir="${branding.src.dir}"/>
+               release="17"
+               srcdir="${branding.dir}/src/main/java"/>
 
         <copy toDir="${build.dir}/java-branding">
-            <fileset dir="${branding.src.dir}" excludes="**/*.java"/>
+            <fileset dir="${branding.dir}/src/main/resources" />
         </copy>
 
         <jar destfile="${lib.dir}/java-branding.jar" includes="">
@@ -214,23 +215,24 @@
                nowarn="${nowarn}"
                encoding="utf-8"
                fork="yes"
-	       release="17"
+               release="17"
                memoryMaximumSize="512m"
                includeAntRuntime="false"
                classpathref="libjars"
         >
             <src>
-                <path location="code/src"/>
-                <path location="code/internal/src"/>
+                <path location="core/src/main/java" />
+                <path location="core/src/test/java" />
+                <path location="doclets/src/main/java" />
             </src>
             <compilerarg line="-parameters"
                          description="Preserves method parameter names for HTTP API route discovery"/>
         </javac>
 
         <copy toDir="${build.dir}/classes">
-            <fileset dir="${src.dir}/src">
-                <exclude name="**/*.java"/>
-                <exclude name="**/package.html"/>
+            <fileset dir="core/src/main/resources" />
+            <fileset dir="core/src/test/resources">
+                <exclude name="log4j2-test.properties" />
             </fileset>
         </copy>
     </target>
@@ -240,13 +242,12 @@
             <fileset dir="${build.dir}/classes">
                 <!-- internal is not for publication; tlds go in META-INF;  html files go as javadoc -->
                 <exclude name="**/internal/**"/>
-                <exclude name="**/*.tld"/>
                 <exclude name="**/*.html"/>
             </fileset>
             <fileset dir="${build.dir}/classes">
                 <include name="**/StringResource_en_US.xml"/>
             </fileset>
-            <fileset dir="${src.dir}/webapp">
+            <fileset dir="webapp/src/main/webapp">
                 <include name="**/web.xml"/>
                 <include name="**/struts-config.xml"/>
             </fileset>
@@ -259,7 +260,7 @@
 
     <target name="webapp" depends="jar" description="Creates the Web application directory">
         <copy todir="${build.dir}/webapp">
-            <fileset dir="${src.dir}/webapp">
+            <fileset dir="webapp/src/main/webapp">
                 <exclude name="help/**"/>
             </fileset>
         </copy>
@@ -320,20 +321,20 @@
         <deploy-execute command="ln -sf /usr/share/rhn/lib/rhn.jar ${deploy.dir}/WEB-INF/lib"/>
     </target>
 
-    <target name="is-yarn-installed">
-        <exec failifexecutionfails="false" resultproperty="yarn.installed" executable="yarn">
+    <target name="is-npm-installed">
+        <exec failifexecutionfails="false" resultproperty="npm.installed" executable="npm">
             <arg line="--version"/>
         </exec>
     </target>
 
-    <target name="warn-if-yarn-not-installed" depends="is-yarn-installed" unless="yarn.installed">
-        <fail>yarn is not in the PATH. Please install yarn first.</fail>
+    <target name="warn-if-npm-not-installed" depends="is-npm-installed" unless="npm.installed">
+        <fail>npm is not in the PATH. Please install npm first.</fail>
     </target>
 
-    <target name="build-js" depends="warn-if-yarn-not-installed" description="Build js files">
-        <echo message="Calling yarn build --check-spec=false ..."/>
-        <exec failonerror="true" executable="yarn" dir="${frontend.src.dir}">
-            <arg line="build --check-spec=false"/>
+    <target name="build-js" depends="warn-if-npm-not-installed" description="Build js files">
+        <echo message="Calling npm --prefix web run build -- --check-spec=false ..."/>
+        <exec failonerror="true" executable="npm" dir="${root.dir}">
+            <arg line="--prefix web run build -- --check-spec=false"/>
         </exec>
     </target>
 
@@ -500,8 +501,8 @@
                 <path location="${build.dir}/classes"/>
                 <path refid="libjars"/>
             </classpath>
-            <fileset dir="code">
-                <include name="**/src/**/*.java"/>
+            <fileset dir="core">
+                <include name="src/**/*.java"/>
             </fileset>
             <property key="checkstyle.cache.file" file="${checkstyle.cache.src}"/>
             <property key="checkstyle.header.file" file="buildconf/LICENSE.txt"/>
@@ -527,7 +528,8 @@
                     </fileset>
                 </classfiles>
                 <sourcefiles encoding="UTF-8">
-                    <fileset dir="code/src"/>
+                    <fileset dir="core/src/main/java"/>
+                    <fileset dir="core/src/test/java"/>
                 </sourcefiles>
             </structure>
             <html destdir="${tests.coverage.results.dir}/html"/>
@@ -593,14 +595,14 @@
         <mkdir dir="${report.dir}/apidocs/${template.dir}/"/>
         <mkdir dir="${report.dir}/apidocs/${template.dir}/handlers/"/>
         <javadoc doclet="com.redhat.rhn.internal.doclet.${doclet.class}" docletpathref="javadocpath"
-                 classpathref="libjars" sourcepath="code/src"
-                 additionalparam="-debug -d ${apidoc.output} -templates buildconf/apidoc/${template.dir} -product '${product.name}' -apiversion '${java.apiversion}'">
-            <fileset dir="code">
-                <include name="**/src/com/redhat/rhn/frontend/xmlrpc/**/*Handler.java"/>
-                <include name="**/src/com/redhat/rhn/frontend/xmlrpc/serializer/*Serializer.java"/>
-                <include name="**/src/com/redhat/rhn/domain/config/xmlrpc/serializer/*Serializer.java"/>
-                <include name="**/src/com/suse/manager/xmlrpc/**/*Handler.java"/>
-                <include name="**/src/com/suse/manager/xmlrpc/serializer/*Serializer.java"/>
+                 classpathref="libjars" sourcepath="core/src/main/java"
+                 additionalparam="-debug -d ${apidoc.output} -templates webapp/src/apidoc/${template.dir} -product '${product.name}' -apiversion '${java.apiversion}'">
+            <fileset dir="core">
+                <include name="**/com/redhat/rhn/frontend/xmlrpc/**/*Handler.java" />
+                <include name="**/com/redhat/rhn/frontend/xmlrpc/serializer/*Serializer.java" />
+                <include name="**/com/redhat/rhn/domain/config/xmlrpc/serializer/*Serializer.java" />
+                <include name="**/com/suse/manager/xmlrpc/**/*Handler.java" />
+                <include name="**/com/suse/manager/xmlrpc/serializer/*Serializer.java" />
             </fileset>
             <excludepackage name="**/*"/>
         </javadoc>

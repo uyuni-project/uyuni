@@ -1,5 +1,4 @@
-import * as React from "react";
-import { useState } from "react";
+import { type FC, type ReactNode, useState } from "react";
 
 import { ChannelTreeType } from "core/channels/type/channels.type";
 
@@ -41,7 +40,7 @@ export type Props = {
   actionChains?: ActionChain[];
 };
 
-export const SSMProductMigration: React.FC<Props> = ({
+export const SSMProductMigration: FC<Props> = ({
   commonBaseProduct,
   migrationSource,
   migrationTargets,
@@ -101,29 +100,34 @@ export const SSMProductMigration: React.FC<Props> = ({
     }
   }
 
-  function renderBaseProduct(system: MigrationSystemData): React.ReactNode {
+  function renderBaseProduct(system: MigrationSystemData): ReactNode {
+    if (system.installedProduct === null) {
+      return <span>{t("Unknown base product")}</span>;
+    }
+
     const highlight =
       !commonBaseProduct && migrationSource !== null && system.installedProduct.id === migrationSource.id;
 
     return <span className={highlight ? "fw-bold" : ""}>{system.installedProduct.name}</span>;
   }
 
-  function renderProductDetails(system: MigrationSystemData): React.ReactNode {
+  function renderProductDetails(system: MigrationSystemData): ReactNode {
     return (
       <LinkButton
-        className="btn-link"
+        className={system.installedProduct !== null ? "btn-link" : "btn-link disabled"}
         icon="fa-1-5x fa-list"
         title={t("Show product details")}
         handler={() => setInstalledProductData(system)}
+        disabled={system.installedProduct === null}
       />
     );
   }
 
-  function renderEligible(system: MigrationSystemData): React.ReactNode {
+  function renderEligible(system: MigrationSystemData): ReactNode {
     return <span>{system.eligible ? t("Yes") : t("No")}</span>;
   }
 
-  function renderReason(system: MigrationSystemData): React.ReactNode {
+  function renderReason(system: MigrationSystemData): ReactNode {
     let title: string, className: string;
 
     if (system.eligible) {
@@ -149,7 +153,7 @@ export const SSMProductMigration: React.FC<Props> = ({
     );
   }
 
-  function renderTargetSystems(data: MigrationSystemData[]): React.ReactNode {
+  function renderTargetSystems(data: MigrationSystemData[]): ReactNode {
     if (migrationStep === MigrationStep.ScheduleConfirmation) {
       return <></>;
     }
@@ -209,7 +213,7 @@ export const SSMProductMigration: React.FC<Props> = ({
           content={stringToReact(statusDetailsData.details ?? "")}
         />
       )}
-      {installedProductData && (
+      {installedProductData && installedProductData.installedProduct !== null && (
         <Dialog
           id="migration-product-popup-dialog"
           isOpen={true}
@@ -249,6 +253,7 @@ export const SSMProductMigration: React.FC<Props> = ({
             migrationTarget={selectedTarget!}
             baseChannelTrees={channelSelectionData!.baseChannelTrees}
             mandatoryMap={channelSelectionData!.mandatoryMap}
+            reversedMandatoryMap={channelSelectionData!.reversedMandatoryMap}
             baseChannel={selectedChannelTree?.base}
             childChannels={selectedChannelTree?.children}
             allowVendorChange={allowVendorChange}

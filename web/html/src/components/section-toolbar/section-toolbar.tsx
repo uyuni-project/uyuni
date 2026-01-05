@@ -1,14 +1,17 @@
-import * as React from "react";
-import { useEffect } from "react";
-
+import { type ReactNode, useEffect } from "react";
 type Props = {
-  children: React.ReactNode;
+  children: ReactNode;
+  top?: string;
 };
 
-export const SectionToolbar = ({ children }: Props) => {
+export const SectionToolbar = ({ children, top }: Props) => {
   useEffect(() => {
     handleSst?.();
   }, []);
 
-  return <div className="spacewalk-section-toolbar">{children}</div>;
+  return (
+    <div className="spacewalk-section-toolbar" style={{ top: `${top}px` }}>
+      {children}
+    </div>
+  );
 };

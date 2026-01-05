@@ -60,6 +60,11 @@ suseSetupProduct
 baseSetRunlevel 3
 
 #======================================
+# Add missing gpg keys to rpm
+#--------------------------------------
+suseImportBuildKey
+
+#======================================
 # Enable DHCP on eth0
 #--------------------------------------
 cat >/etc/sysconfig/network/ifcfg-eth0 <<EOF

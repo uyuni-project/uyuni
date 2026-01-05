@@ -1,5 +1,3 @@
-import * as React from "react";
-
 import { Virtuoso } from "react-virtuoso";
 
 import styles from "./VirtualList.module.scss";

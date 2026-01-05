@@ -3,7 +3,7 @@ import SpaRenderer from "core/spa/spa-renderer";
 import CoCoSSMSchedule from "./ssm-schedule";
 import { CoCoSystemData } from "./types";
 
-// See java/code/src/com/suse/manager/webui/templates/ssm/coco-ssm-schedule.jade
+// See java/core/src/main/resources/com/suse/manager/webui/templates/ssm/coco-ssm-schedule.jade
 declare global {
   interface Window {
     systemSupport?: CoCoSystemData[];

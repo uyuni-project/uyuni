@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import { FromNow } from "components/datetime";
 import { Column } from "components/table/Column";
@@ -7,7 +7,7 @@ import { Table } from "components/table/Table";
 
 import { Utils } from "utils/functions";
 
-// See java/code/src/com/suse/manager/webui/templates/content_management/view.jade
+// See java/core/src/main/resources/com/suse/manager/webui/templates/content_management/view.jade
 declare global {
   interface Window {
     imageId?: any;
@@ -38,7 +38,7 @@ type ImageViewPatchesProps = {
   data: any;
 };
 
-class ImageViewPatches extends React.Component<ImageViewPatchesProps> {
+class ImageViewPatches extends Component<ImageViewPatchesProps> {
   searchData(row, criteria) {
     if (criteria) {
       return (

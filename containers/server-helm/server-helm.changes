@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Thu Nov 27 11:19:05 CET 2025 - michael.calmer@suse.com
+
+- version 5.2.2
+  * Chart rebuilt to the newest version with updated dependencies
+    for SUSE Multi-Linux Manager 5.2.0 Alpha 1
+
+-------------------------------------------------------------------
+Tue Oct 28 10:20:50 CET 2025 - rosuna@suse.com
+
+- version 5.2.1
+  * Bump version to 5.2.0
+
+-------------------------------------------------------------------
 Tue Jun 17 19:45:38 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.7

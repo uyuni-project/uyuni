@@ -133,9 +133,13 @@ def check_text_and_catch_request_timeout_popup?(text1, text2: nil, timeout: Capy
   start_time = Time.now
   repeat_until_timeout(message: "'#{text1}' still not visible", timeout: DEFAULT_TIMEOUT) do
     while Time.now - start_time <= timeout
-      return true if has_text?(text1, wait: 4)
-      return true if !text2.nil? && has_text?(text2, wait: 4)
-
+      begin
+        return true if has_text?(text1, wait: 4)
+        return true if !text2.nil? && has_text?(text2, wait: 4)
+      rescue Selenium::WebDriver::Error::UnknownError, Selenium::WebDriver::Error::StaleElementReferenceError => e
+        warn "Selenium::WebDriver::Error caught: #{e.message}"
+        next
+      end
       next unless has_text?('Request has timed out', wait: 0)
 
       log 'Request timeout found, performing reload'
@@ -268,7 +272,7 @@ end
 def slemicro_host?(name, runs_in_container: true)
   node = get_target(name)
   os_family = runs_in_container ? node.os_family : node.local_os_family
-  (name.include? 'slemicro') || (name.include? 'micro') || os_family.include?('sle-micro') || os_family.include?('suse-microos') || os_family.include?('sl-micro')
+  os_family.include?('sle-micro') || os_family.include?('suse-microos') || os_family.include?('sl-micro')
 end
 
 # Determines if the given host name is a openSUSE Leap Micro host.
@@ -371,6 +375,8 @@ def extract_logs_from_node(node, host)
     `mkdir logs` unless Dir.exist?('logs')
     success = file_extract(node, "/tmp/#{node.full_hostname}-logs.tar.xz", "logs/#{node.full_hostname}-logs.tar.xz")
     raise ScriptError, 'Download log archive failed' unless success
+  rescue Errno::ECONNRESET
+    $stdout.puts "⚠️ WARN: Skipping log extraction for node #{host} due to connection reset."
   rescue RuntimeError => e
     $stdout.puts e.message
   end
@@ -528,20 +534,20 @@ def get_system_name(host)
         word.match?(/example.Intel-Genuine-None-/) || word.match?(/example.pxeboot-/) || word.match?(/example.Intel/) || word.match?(/pxeboot-/)
       end
     system_name = 'pxeboot.example.org' if system_name.nil?
-  when 'sle12sp5_terminal'
+  when 'sle15sp6_terminal'
     output, _code = get_target('server').run('salt-key')
     system_name =
       output.split.find do |word|
-        word.match?(/example.sle12sp5terminal-/)
+        word.match?(/example.sle15sp6terminal-/)
       end
-    system_name = 'sle12sp5terminal.example.org' if system_name.nil?
-  when 'sle15sp4_terminal'
+    system_name = 'sle15sp6terminal.example.org' if system_name.nil?
+  when 'sle15sp7_terminal'
     output, _code = get_target('server').run('salt-key')
     system_name =
       output.split.find do |word|
-        word.match?(/example.sle15sp4terminal-/)
+        word.match?(/example.sle15sp7terminal-/)
       end
-    system_name = 'sle15sp4terminal.example.org' if system_name.nil?
+    system_name = 'sle15sp7terminal.example.org' if system_name.nil?
   else
     begin
       node = get_target(host)
@@ -590,71 +596,32 @@ def update_controller_ca
   certutil -d sql:/root/.pki/nssdb -A -t TC -n "susemanager" -i  /etc/pki/trust/anchors/#{server_name}.cert`
 end
 
-# This method checks if the synchronization for the given channel is completed
+# This method returns the timeout, in seconds, for syncing the given channel
 #
-# @param channel_name [String] the channel to check
-# @return [Boolean] true if the synchronization is completed, false otherwise
-def channel_sync_completed?(channel_name)
-  log_tmp_file = '/tmp/reposync.log'
-  get_target('server').extract('/var/log/rhn/reposync.log', log_tmp_file)
-  raise ScriptError, 'The file with repository synchronization logs doesn\'t exist or is empty' if !File.exist?(log_tmp_file) || File.empty?(log_tmp_file)
-
-  log_content = File.readlines(log_tmp_file)
-  channel_found = false
-  log_content.each do |line|
-    if line.include?('Channel: ') && line.include?(channel_name)
-      channel_found = true
-    elsif line.include?('Channel: ') && !line.include?(channel_name)
-      channel_found = false
-    elsif line.include?('Sync of channel completed.') && channel_found
-      return true if channel_is_synced?(channel_name)
-
-      log "WARN: Repository metadata for #{channel_name} seems not synchronized. Even if the reposync log says it is."
-      return false
-    end
+# @param channel [String] the channel to check
+# @return [Integer] number of seconds representing the timeout
+def channel_timeout(channel)
+  if channel.include?('custom_channel') || channel.include?('ptf')
+    $stdout.puts "#{channel} is a custom or PTF channel - timeout set to 10 minutes"
+    return 600
+  elsif TIMEOUT_BY_CHANNEL_NAME[channel].nil?
+    $stdout.puts "Unknown timeout for channel #{channel}, assuming one minute"
+    return 60
   end
 
-  false
+  timeout = TIMEOUT_BY_CHANNEL_NAME[channel]
+  timeout *= 2 if $code_coverage_mode
+  timeout
 end
 
-# Determines whether a channel is synchronized on the server.
+# This method checks if the channel with the given label has been fully synced
 #
-# @param channel [String] The name of the channel to check.
-# @return [Boolean] Returns true if the channel is synchronized, false otherwise.
-def channel_is_synced?(channel)
-  sync_status = false
-  # solv is the last file to be written when the server synchronizes a channel, therefore we wait until it exist
-  result, code = get_target('server').run("dumpsolv /var/cache/rhn/repodata/#{channel}/solv", verbose: false, check_errors: false)
-  if code.zero? && !result.include?('repo size: 0')
-    # We want to check if no .new files exists. On a re-sync, the old files stay, the new one have this suffix until it's ready.
-    _result, new_code = get_target('server').run("dumpsolv /var/cache/rhn/repodata/#{channel}/solv.new", verbose: false, check_errors: false)
-    log 'Channel synced, no .new files exist and number of solvables is bigger than 0' unless new_code.zero?
-    sync_status = !new_code.zero?
-  elsif result.include?('repo size: 0')
-    if EMPTY_CHANNELS.include?(channel)
-      sync_status = true
-    else
-      _result, code = get_target('server').run("zcat /var/cache/rhn/repodata/#{channel}/*primary.xml.gz | grep 'packages=\"0\"'", verbose: false, check_errors: false)
-      log "/var/cache/rhn/repodata/#{channel}/*primary.xml.gz contains 0 packages" if code.zero?
-      sync_status = false
-    end
-  else
-    # If the solv file doesn't exist, we check if we are under a Debian-like repository
-    command = "test -s /var/cache/rhn/repodata/#{channel}/Release && test -e /var/cache/rhn/repodata/#{channel}/Packages"
-    _result, new_code = get_target('server').run(command, verbose: false, check_errors: false)
-    log 'Debian-like channel synced, if Release and Packages files exist' if new_code.zero?
-    sync_status = new_code.zero?
-  end
-  if sync_status
-    begin
-      duration = channel_synchronization_duration(channel)
-      log "Channel #{channel} synchronized in #{duration} seconds"
-    rescue ScriptError => e
-      log "Error while checking synchronization duration: #{e.message}"
-      sync_status = false
-    end
-  end
-  sync_status
+# @param channel_label [String] the label of the channel to check
+# @return [Boolean] true if the synchronization is completed, false otherwise
+def channel_sync_completed?(channel_label)
+  channel_details = $api_test.channel.software.get_details(channel_label)
+  # 'C' for new created, 'S' for syncing and 'R' for ready
+  channel_details['sync_status'] == 'R'
 end
 
 # This function initializes the API client

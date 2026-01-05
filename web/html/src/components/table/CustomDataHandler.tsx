@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type ReactComponentElement, type ReactNode, Children } from "react";
 
 import { cloneReactElement } from "components/utils";
 
@@ -13,16 +13,16 @@ type Props = {
   identifier: (row: any) => any;
 
   /** a function that return a css class for each row */
-  cssClassFunction?: Function;
+  cssClassFunction?: (...args: any[]) => any;
 
   /** the React Object that contains the filter search field */
-  searchField?: React.ReactComponentElement<typeof SearchField>;
+  searchField?: ReactComponentElement<typeof SearchField>;
 
   /** the initial number of how many row-per-page to show */
   initialItemsPerPage?: number;
 
   /** enables item selection */
-  selectable: boolean;
+  selectable?: boolean;
 
   /** the handler to call when the table selection is updated. If not provided, the select boxes won't be rendered */
   onSelect?: (items: any[]) => void;
@@ -40,23 +40,19 @@ type Props = {
   loadingText?: string;
 
   /** Children node in the table */
-  children: React.ReactNode;
+  children: ReactNode;
 
   /** Other filter fields */
-  additionalFilters?: React.ReactNode[];
+  additionalFilters?: ReactNode[];
 };
 
 export function CustomDataHandler(props: Props) {
-  const { selectable, ...allProps } = props;
+  const { selectable = false, ...allProps } = props;
   return (
     <TableDataHandler {...allProps} selectable={() => selectable}>
       {({ currItems, criteria }) =>
-        React.Children.toArray(props.children).map((child) => cloneReactElement(child, { data: currItems, criteria }))
+        Children.toArray(props.children).map((child) => cloneReactElement(child, { data: currItems, criteria }))
       }
     </TableDataHandler>
   );
 }
-
-CustomDataHandler.defaultProps = {
-  selectable: false,
-};

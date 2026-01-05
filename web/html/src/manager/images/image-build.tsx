@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 
@@ -16,7 +16,7 @@ import { localizedMoment } from "utils";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network from "utils/network";
 
-// See java/code/src/com/suse/manager/webui/templates/content_management/build.jade
+// See java/core/src/main/resources/com/suse/manager/webui/templates/content_management/build.jade
 declare global {
   interface Window {
     profileId?: number;
@@ -41,7 +41,7 @@ const messageMap = {
   ),
 };
 
-type Props = {};
+type Props = Record<never, never>;
 
 type State = {
   model: {
@@ -59,7 +59,7 @@ type State = {
   isInvalid?: boolean;
 };
 
-class BuildImage extends React.Component<Props, State> {
+class BuildImage extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -124,9 +124,11 @@ class BuildImage extends React.Component<Props, State> {
       });
 
       if (window.hostId) {
-        const model = this.state.model;
-        model.buildHostId = window.hostId;
-        this.setState({ model: model });
+        this.setState((prevState) => {
+          const model = prevState.model;
+          model.buildHostId = window.hostId;
+          return { model: model };
+        });
       }
     });
   }
@@ -136,14 +138,16 @@ class BuildImage extends React.Component<Props, State> {
   };
 
   changeProfile(id) {
-    const model = Object.assign({}, this.state.model);
-    model.profileId = id;
-    this.setState({ model: model });
+    this.setState((prevState) => {
+      const model = Object.assign({}, prevState.model);
+      model.profileId = id;
+      return { model: model };
+    });
 
     if (id) {
       this.getProfileDetails(id);
     } else {
-      this.setState({ profile: { label: "" } });
+      this.setState(() => ({ profile: { label: "" } }));
     }
   }
 
@@ -175,45 +179,50 @@ class BuildImage extends React.Component<Props, State> {
   };
 
   onDateTimeChanged = (value: moment.Moment) => {
-    const model: State["model"] = Object.assign({}, this.state.model, {
-      earliest: value,
-      actionChain: null,
-    });
-    this.setState({
-      actionChain: null,
-      model,
+    this.setState((prevState) => {
+      const model: State["model"] = Object.assign({}, prevState.model, {
+        earliest: value,
+        actionChain: null,
+      });
+      return {
+        actionChain: null,
+        model,
+      };
     });
   };
 
   onActionChainChanged = (actionChain: ActionChain | null) => {
-    const model: State["model"] = Object.assign({}, this.state.model, {
-      actionChain: actionChain?.text,
-    });
-    this.setState({
-      actionChain,
-      model,
+    this.setState((prevState) => {
+      const model: State["model"] = Object.assign({}, prevState.model, {
+        actionChain: actionChain?.text,
+      });
+      return {
+        actionChain,
+        model,
+      };
     });
   };
 
   onBuild = (model) => {
     Network.post("/rhn/manager/api/cm/build/" + this.state.model.profileId, model).then((data) => {
       if (data.success) {
-        const msg = MessagesUtils.info(
-          this.state.model.actionChain ? (
-            <span>
-              {t("Action has been successfully added to the Action Chain ")}
-              <ActionChainLink id={data.data}>{this.state.model.actionChain}</ActionChainLink>.
-            </span>
-          ) : (
-            <span>
-              {t("Building the image has been ")}
-              <ActionLink id={data.data}>{t("scheduled")}.</ActionLink>
-            </span>
-          )
-        );
-
-        this.setState({
-          messages: msg,
+        this.setState((prevState) => {
+          const msg = MessagesUtils.info(
+            prevState.model.actionChain ? (
+              <span>
+                {t("Action has been successfully added to the Action Chain ")}
+                <ActionChainLink id={data.data}>{prevState.model.actionChain}</ActionChainLink>.
+              </span>
+            ) : (
+              <span>
+                {t("Building the image has been ")}
+                <ActionLink id={data.data}>{t("scheduled")}.</ActionLink>
+              </span>
+            )
+          );
+          return {
+            messages: msg,
+          };
         });
         window.location.href = "/rhn/manager/cm/images";
       } else {

@@ -1,5 +1,3 @@
-import * as React from "react";
-
 import { Form, Text } from "components/input";
 
 import { ProjectPropertiesType } from "../../../type";
@@ -7,7 +5,7 @@ import { ProjectPropertiesType } from "../../../type";
 type Props = {
   properties: ProjectPropertiesType;
   errors: any;
-  onChange: Function;
+  onChange: (...args: any[]) => any;
   editing?: boolean;
 };
 

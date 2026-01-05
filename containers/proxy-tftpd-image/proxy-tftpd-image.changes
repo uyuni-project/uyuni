@@ -1,4 +1,24 @@
 -------------------------------------------------------------------
+Tue Dec 09 13:40:15 CET 2025 - michael.calmer@suse.com
+
+- version 5.2.3
+  * Remove libzypp and container-suseconnect from image
+
+-------------------------------------------------------------------
+Thu Nov 27 11:03:37 CET 2025 - michael.calmer@suse.com
+
+- version 5.2.2
+  * Clean up the image
+
+-------------------------------------------------------------------
+Tue Oct 28 10:19:58 CET 2025 - rosuna@suse.com
+
+- version 5.2.1
+  * Use absolute paths when invoking external commands
+  * Do not block the main tftpd process (bsc#1244424)
+  * Fix selecting of default saltboot entry in grub
+
+-------------------------------------------------------------------
 Tue Jun 17 19:43:59 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.7

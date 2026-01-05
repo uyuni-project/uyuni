@@ -1,0 +1,302 @@
+/*
+ * Copyright (c) 2025 SUSE LLC
+ * Copyright (c) 2009--2012 Red Hat, Inc.
+ *
+ * This software is licensed to you under the GNU General Public License,
+ * version 2 (GPLv2). There is NO WARRANTY for this software, express or
+ * implied, including the implied warranties of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+ * along with this software; if not, see
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * Red Hat trademarks are not licensed under GPLv2. No permission is
+ * granted to use or replicate Red Hat trademarks that are incorporated
+ * in this software or its documentation.
+ */
+package com.redhat.rhn.common.hibernate;
+
+import static org.hibernate.resource.transaction.spi.TransactionStatus.COMMITTED;
+import static org.hibernate.resource.transaction.spi.TransactionStatus.ROLLED_BACK;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Properties;
+
+import io.prometheus.client.hibernate.HibernateStatisticsCollector;
+
+
+/**
+ * Manages the lifecycle of Hibernate SessionFactory and associated
+ * thread-scoped Hibernate sessions.
+ */
+abstract class AbstractConnectionManager implements ConnectionManager {
+
+    protected final Logger log;
+
+    protected SessionFactory sessionFactory;
+
+    private final List<Configurator> configurators;
+    private final ThreadLocal<SessionInfo> sessionInfoThreadLocal;
+    private String unitLabelValue;
+
+
+    /**
+     * Set up the connection manager.
+     *
+     */
+    protected AbstractConnectionManager() {
+        this.log = LogManager.getLogger(getClass());
+        this.configurators = new ArrayList<>();
+        this.sessionInfoThreadLocal = new ThreadLocal<>();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setComponentName(String componentName) {
+        this.unitLabelValue = componentName;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void addConfigurator(Configurator configurator) {
+        // Yes, this is a race condition, but it will only ever happen at
+        // startup, when we really shouldn't have multiple threads running,
+        // so it isn't a real race condition.
+        configurators.add(configurator);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isTransactionPending() {
+        final SessionInfo info = threadSessionInfo();
+        if (info == null) {
+            return false;
+        }
+
+        return info.getTransaction() != null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public synchronized void close() {
+        try {
+            if (sessionFactory != null) {
+                sessionFactory.close();
+            }
+        }
+        catch (HibernateException e) {
+            log.debug("Could not close the SessionFactory", e);
+        }
+        finally {
+            sessionFactory = null;
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isClosed() {
+        return sessionFactory == null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isInitialized() {
+        return sessionFactory != null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public synchronized void initialize() {
+        if (isInitialized()) {
+            return;
+        }
+
+        createSessionFactory();
+        if (unitLabelValue != null) {
+            new HibernateStatisticsCollector(sessionFactory, unitLabelValue).register();
+        }
+    }
+
+    /**
+     * Create a SessionFactory
+     */
+    protected void createSessionFactory() {
+        if (sessionFactory != null && !sessionFactory.isClosed()) {
+            return;
+        }
+
+        try {
+            final Configuration config = new Configuration();
+
+            /*
+             * Let's ask the RHN Config for all properties that begin with
+             * hibernate.*
+             */
+            log.info("Adding hibernate properties to hibernate Configuration");
+            config.addProperties(getConfigurationProperties());
+
+            // Invoke each configurator to add additional entries to Hibernate config
+            configurators.forEach(configurator -> configurator.addConfig(config));
+
+            // TODO: Fix auto-discovery (see commit: e92b062)
+            getAnnotatedClasses().forEach(config::addAnnotatedClass);
+
+            // add empty varchar interceptor to automatically convert empty to null
+            config.setInterceptor(new EmptyVarcharInterceptor(true));
+
+            sessionFactory = config.buildSessionFactory();
+        }
+        catch (HibernateException e) {
+            log.error("FATAL ERROR creating HibernateFactory", e);
+            throw e;
+        }
+    }
+
+    protected abstract List<Class<?>> getAnnotatedClasses();
+
+    protected abstract Properties getConfigurationProperties();
+
+    private SessionInfo threadSessionInfo() {
+        return sessionInfoThreadLocal.get();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void commitTransaction() throws HibernateException {
+        final SessionInfo info = threadSessionInfo();
+        if (info == null || info.getSession() == null) {
+            return;
+        }
+
+        final Transaction txn = info.getTransaction();
+        if (txn != null) {
+            txn.commit();
+            info.setTransaction(null);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void rollbackTransaction() throws HibernateException {
+        final SessionInfo info = threadSessionInfo();
+        if (info == null || info.getSession() == null) {
+            return;
+        }
+
+        final Transaction txn = info.getTransaction();
+        if (txn != null) {
+            txn.rollback();
+            info.setTransaction(null);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Session getSession() {
+        if (!isInitialized()) {
+            initialize();
+        }
+
+        SessionInfo info = threadSessionInfo();
+        if (info == null || info.getSession() == null) {
+            try {
+                if (log.isDebugEnabled()) {
+                    log.debug("YYY Opening Hibernate Session");
+                }
+                info = new SessionInfo(sessionFactory.openSession());
+                log.debug("YYY Opened Hibernate session {}", info.getSession());
+            }
+            catch (HibernateException e) {
+                throw new HibernateRuntimeException("couldn't open session", e);
+            }
+            sessionInfoThreadLocal.set(info);
+        }
+
+        // Automatically start a transaction
+        if (info.getTransaction() == null) {
+            info.setTransaction(info.getSession().beginTransaction());
+        }
+
+        return info.getSession();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Optional<Session> getSessionIfPresent() {
+        return Optional.ofNullable(threadSessionInfo()).map(SessionInfo::getSession);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void closeSession() {
+        SessionInfo info = threadSessionInfo();
+        if (info == null) {
+            return;
+        }
+
+        Session session = info.getSession();
+        Transaction txn = info.getTransaction();
+        if (txn != null && txn.getStatus().isNotOneOf(COMMITTED, ROLLED_BACK)) {
+            try {
+                txn.commit();
+            }
+            catch (RuntimeException commitException) {
+                log.warn("Unable to commit transaction", commitException);
+
+                try {
+                    txn.rollback();
+                }
+                catch (RuntimeException rollbackException) {
+                    log.warn("Unable to rollback transaction", rollbackException);
+                }
+            }
+        }
+
+        try {
+            if (session != null && session.isOpen()) {
+                if (log.isDebugEnabled()) {
+                    log.debug("YYY Closing Hibernate Session: {}", session);
+                }
+                session.close();
+            }
+        }
+        catch (RuntimeException e) {
+            throw new HibernateRuntimeException("couldn't close session", e);
+        }
+        finally {
+            sessionInfoThreadLocal.remove();
+        }
+    }
+}

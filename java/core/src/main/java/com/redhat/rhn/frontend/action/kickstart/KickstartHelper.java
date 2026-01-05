@@ -1,0 +1,487 @@
+/*
+ * Copyright (c) 2009--2014 Red Hat, Inc.
+ *
+ * This software is licensed to you under the GNU General Public License,
+ * version 2 (GPLv2). There is NO WARRANTY for this software, express or
+ * implied, including the implied warranties of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+ * along with this software; if not, see
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * Red Hat trademarks are not licensed under GPLv2. No permission is
+ * granted to use or replicate Red Hat trademarks that are incorporated
+ * in this software or its documentation.
+ */
+package com.redhat.rhn.frontend.action.kickstart;
+
+import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.common.security.SessionSwap;
+import com.redhat.rhn.common.util.StringUtil;
+import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.kickstart.KickstartData;
+import com.redhat.rhn.domain.kickstart.KickstartFactory;
+import com.redhat.rhn.domain.kickstart.RepoInfo;
+import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.org.OrgFactory;
+import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.channel.ChannelManager;
+import com.redhat.rhn.manager.kickstart.IpAddress;
+import com.redhat.rhn.manager.kickstart.KickstartFormatter;
+import com.redhat.rhn.manager.kickstart.KickstartManager;
+import com.redhat.rhn.manager.kickstart.KickstartSessionUpdateCommand;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.struts.action.ActionMessage;
+import org.apache.struts.action.ActionMessages;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpServletRequest;
+
+/**
+ * KickstartHelper - helper class for KS UI processing
+ */
+public class KickstartHelper {
+
+    private static Logger log = LogManager.getLogger(KickstartHelper.class);
+
+    private HttpServletRequest request;
+    private static final String VIEW_LABEL = "view_label";
+    private static final String LABEL = "label";
+    private static final String ORG_DEFAULT = "org_default";
+    private static final String IP_RANGE = "ip_range";
+    private static final String SESSION = "session";
+    private static final String SESSION_ID = "session_id";
+    private static final String ORG = "org";
+    private static final String HOST = "host";
+    private static final String ORG_ID = "org_id";
+    private static final String XFORWARD_HOST = "X-Forwarded-Host";
+    private static final String XFORWARD = "X-Forwarded-For";
+    private static final String XFORWARD_REGEX =
+        "(\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}.\\d{1,3})";
+    private static final String KSDATA = "ksdata";
+
+    public static final String XRHNPROXYAUTH = "X-RHN-Proxy-Auth";
+
+    /**
+     * Constructor
+     * @param reqIn associated with this helper.
+     */
+    public KickstartHelper(HttpServletRequest reqIn) {
+        this.request = reqIn;
+    }
+
+    /**
+     * Parse a ks url and return a Map of options
+     * Example:
+     *     "ks/org/3756992x3d9f6e2d5717e264c89b5ac18eb0c59e/label/kslabelfoo";
+     *
+     * NOTE: This method also updates the KickstartSession.state field
+     * to "configuration_accessed"
+     *
+     * @param url to parse
+     * @return Map of options.  Usually containing host, ksdata, label and org_id
+     */
+    public Map<String, Object> parseKickstartUrl(String url) {
+        Map<String, Object> retval = new HashMap<>();
+        KickstartData ksdata = null;
+        Map<String, String> options = new HashMap<>();
+        if (log.isDebugEnabled()) {
+            log.debug("url: {}", StringUtil.sanitizeLogInput(url));
+        }
+        List<String> rawopts = Arrays.asList(
+                StringUtils.split(url, '/'));
+
+        for (Iterator<String> iter = rawopts.iterator(); iter.hasNext();) {
+            String name = iter.next();
+            if (iter.hasNext()) {
+                String value = iter.next();
+                options.put(name, value);
+            }
+        }
+
+        if (log.isDebugEnabled()) {
+            log.debug("Options: {}",
+                    options.entrySet().stream().collect(Collectors.toMap(
+                            entry -> StringUtil.sanitizeLogInput(entry.getKey()),
+                            entry -> StringUtil.sanitizeLogInput(entry.getValue()))));
+        }
+
+        String remoteAddr = getClientIp();
+
+        // Process the org
+        if (options.containsKey(ORG)) {
+            String id = options.get(ORG);
+            retval.put(ORG_ID, id);
+        }
+        else {
+            retval.put(ORG_ID, OrgFactory.getSatelliteOrg().getId().toString());
+        }
+        String mode = ORG_DEFAULT; // go ahead and make this the default profile
+        // Process the session
+        // /kickstart/ks/session/2xb7d56e8958b0425e762cc74e8705d8e7
+        if (options.containsKey(SESSION)) {
+            // update session
+            String hashed = options.get(SESSION);
+            String[] ids = SessionSwap.extractData(hashed);
+            retval.put(SESSION_ID, ids[0]);
+            Long kssid = Long.valueOf(ids[0]);
+            log.debug("sessionid: {}", kssid);
+            KickstartSessionUpdateCommand cmd = new KickstartSessionUpdateCommand(kssid);
+            ksdata = cmd.getKsdata();
+            retval.put(SESSION, cmd.getKickstartSession());
+            cmd.setSessionState(KickstartFactory.SESSION_STATE_CONFIG_ACCESSED);
+            cmd.store();
+            mode = SESSION;
+        }
+
+        if (log.isDebugEnabled()) {
+            log.debug("org_id: {}", StringUtil.sanitizeLogInput((String) retval.get(ORG_ID)));
+        }
+
+        if (retval.get(ORG_ID) != null) {
+
+            // Process label
+            if (options.containsKey(LABEL)) {
+                retval.put(LABEL, options.get(LABEL));
+                mode = LABEL;
+            }
+            else if (options.containsKey(VIEW_LABEL)) {
+                retval.put(VIEW_LABEL, options.get(VIEW_LABEL));
+                retval.put(LABEL, options.get(VIEW_LABEL));
+                mode = LABEL;
+            }
+            else if (options.containsValue(IP_RANGE)) {
+                mode = IP_RANGE;
+            }
+
+
+            Org org = OrgFactory.lookupById(Long.valueOf((String) retval.get(ORG_ID)));
+            if (mode.equals(LABEL)) {
+                String label = (String) retval.get(LABEL);
+                ksdata = KickstartFactory.
+                    lookupKickstartDataByLabelAndOrgId(label, org.getId());
+            }
+            else if (mode.equals(IP_RANGE)) {
+                log.debug("Ip_range mode");
+                IpAddress clientIp = new IpAddress(remoteAddr);
+                ksdata = KickstartManager.getInstance().findProfileForIpAddress(
+                        clientIp, org);
+            }
+            else if (mode.equals(ORG_DEFAULT)) {
+                //process org_default
+                log.debug("Org_default mode.");
+                ksdata = getOrgDefaultProfile(org);
+            }
+
+
+            if (log.isDebugEnabled()) {
+                log.debug("options.containsKey(VIEW_LABEL): {}", options.containsKey(VIEW_LABEL));
+                log.debug("ksdata                         : {}", ksdata);
+            }
+        }
+        // Add the host.
+        retval.put(HOST, getKickstartHost());
+        // Add ksdata
+        retval.put(KSDATA, ksdata);
+
+
+        if (retval.isEmpty()) {
+            retval = null;
+        }
+        return retval;
+    }
+
+    /**
+     * Check to see if this request came through a proxy
+     * @return boolean if proxied or not.
+     */
+    public boolean isProxyRequest() {
+        return request.getHeader(XFORWARD) != null;
+    }
+
+    private String getClientIp() {
+        String remoteAddr = request.getRemoteAddr();
+        String proxyHeader = request.getHeader(XFORWARD);
+
+        // check if we are going through a proxy, grab real IP if so
+        if (proxyHeader != null) {
+            log.debug("proxy header in: {}", proxyHeader);
+            Matcher matcher =
+                Pattern.compile(XFORWARD_REGEX)
+                .matcher(proxyHeader);
+            if (matcher.lookingAt()) {
+                remoteAddr = matcher.group(1);
+                log.debug("origination ip from pchain: {}", remoteAddr);
+            }
+        }
+
+        return remoteAddr;
+    }
+
+
+    /**
+     * Check to see if this request came through a proxy
+     * @return String of hostname of first proxy in chain or null otherwise.
+     */
+    public String getForwardedHost() {
+        String host = null;
+        String forwardHosts = request.getHeader(XFORWARD_HOST);
+        if (forwardHosts != null) {
+            host = forwardHosts.split(",")[0];
+        }
+        return host;
+    }
+
+    /**
+     *
+     * @param orgIn Org Id
+     * @return Default Kickstart Data for Org
+     */
+    private KickstartData getOrgDefaultProfile(Org orgIn) {
+        return KickstartFactory.lookupOrgDefault(orgIn);
+    }
+
+    /**
+     * Get the kickstart host to use. Will use the host of the proxy if the header is
+     * present. If not the code then resorts to getting the cobbler hostname from our
+     * rhn.conf Config.
+     *
+     * @return String representing the Kickstart Host
+     */
+    public String getKickstartHost() {
+        log.debug("KickstartHelper.getKickstartHost()");
+
+        // Example proxy header:
+        // X-RHN-Proxy-Auth : 1006681409::1151513167.96:21600.0:VV/xF
+        // NEmCYOuHxEBAs7BEw==:fjs-0-08.rhndev.redhat.com,1006681408
+        // ::1151513034.3:21600.0:w2lm+XWSFJMVCGBK1dZXXQ==:fjs-0-11.
+        // rhndev.redhat.com,1006678487::1152567362.02:21600.0:t15l
+        // gsaTRKpX6AxkUFQ11A==:fjs-0-12.rhndev.redhat.com
+
+        String proxyHeader = request.getHeader(XRHNPROXYAUTH);
+
+        if (!StringUtils.isEmpty(proxyHeader)) {
+            String[] proxies = StringUtils.split(proxyHeader, ",");
+            String firstProxy = proxies[0];
+            // Now we have: 1006681409::1151513167.96:21600.0:VV/xF
+            // NEmCYOuHxEBAs7BEw==:fjs-0-08.rhndev.redhat.com
+            log.debug("first1: {}", firstProxy);
+            String[] chunks = StringUtils.split(firstProxy, ":");
+            firstProxy = chunks[chunks.length - 1];
+            log.debug("Kickstart host from proxy header: {}", firstProxy);
+            return firstProxy;
+        }
+        return ConfigDefaults.get().getJavaHostname();
+    }
+
+    /**
+     * @return String representing the kickstart protocol.
+     */
+    public String getKickstartProtocol() {
+
+        String protocol = null;
+        try {
+            URL url = new URL(request.getRequestURL().toString());
+            protocol = url.getProtocol();
+        }
+        catch (MalformedURLException e) {
+            throw new IllegalArgumentException(
+                "Bad argument when determining kickstart protocol.");
+        }
+
+        return protocol;
+    }
+
+    /**
+     * Get the protocol plus the host:
+     *
+     * http://host1.rhndev.redhat.com
+     *
+     * @return proto plus host url
+     */
+    public String getKickstartProtocolAndHost() {
+        String retval = getKickstartProtocol();
+
+
+        retval = retval + "://" + getKickstartHost();
+        return retval;
+    }
+
+
+    /**
+     * @param org The Org to generate the token for.
+     * @return A session-specific token for the given Org.
+     */
+    public String generateOrgToken(Org org) {
+        String orgStr = org.getId().toString();
+        return orgStr + "x" + SessionSwap.generateSwapKey(orgStr);
+    }
+
+    /**
+     * Verify that the kickstart channel is valid.
+     * Valid kickstart channels must have a set list of packages described
+     * by KickstartFormatter.UPDATE_PKG_NAMES and KickstartFormatter.FRESH_PKG_NAMES_RHEL34
+     *
+     * Also checks for auto-kickstart packages.
+     * @param ksdata kickstart data containing the kickstart channel.
+     * @param user The logged in user.
+     * @return Whether the kickstart channel is a valid one.
+     */
+    public boolean verifyKickstartChannel(KickstartData ksdata, User user) {
+        return verifyKickstartChannel(ksdata, user, true);
+    }
+
+    /**
+     * Verify that the kickstart channel is valid.
+     * Valid kickstart channels must have a set list of packages described
+     * by KickstartFormatter.UPDATE_PKG_NAMES and KickstartFormatter.FRESH_PKG_NAMES_RHEL34
+     *
+     * Non bare metal kickstarts also must have auto kickstart packages.
+     * @param ksdata kickstart data containing the kickstart channel.
+     * @param user The logged in user.
+     * @param checkAutoKickstart Whether or not to verify the existence of
+     *        auto-kickstart files. These are needed for many tasks, but are
+     *        not necessary for generating kickstart files.
+     * @return Whether the kickstart channel is a valid one.
+     */
+    public boolean verifyKickstartChannel(KickstartData ksdata, User user,
+            boolean checkAutoKickstart) {
+        if (ksdata.isRawData()) {
+            //well this is Rawdata I am going to assume
+            // its fine and dandy
+            // In the future if we instead decide
+            // that we need to do a channel
+            // check on  a rawdata this is the place to fix that
+            return true;
+        }
+        return (!checkAutoKickstart || hasKickstartPackage(ksdata, user)) && hasAppStream(ksdata);
+    }
+
+    private boolean hasAppStream(KickstartData ksdata) {
+        if (!ksdata.isRhel8()) {
+            return true;
+        }
+
+        // is AppStream "addon" enabled?
+        for (RepoInfo repo : ksdata.getRepoInfos()) {
+            if (repo.getName().equals("AppStream")) {
+                return true;
+            }
+        }
+
+        // does a child channel contain needed packages?
+        Channel channel = ksdata.getChannel();
+        // copy child channel set otherwise you'd modify it as an unwanted side effect
+        Set<Channel> channelsToCheck = new HashSet<>(ksdata.getChildChannels());
+        channelsToCheck.add(channel);
+        List<String> packagesToLook = KickstartFormatter.getFreshPkgNamesRhel8();
+        if (ksdata.isUserSelectedSaltInstallType()) {
+            packagesToLook =  KickstartFormatter.getFreshPkgNamesRhel8ForSalt();
+        }
+        for (String pkgName : packagesToLook) {
+            boolean found = false;
+            for (Channel current : channelsToCheck) {
+                Long pid = ChannelManager.getLatestPackageEqual(current.getId(), pkgName);
+                if (pid != null) {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean hasKickstartPackage(KickstartData ksdata, User user) {
+        //We expect this to be in the RHN Tools channel.
+        //Check in the channel and all of its children channels
+        Channel channel = ksdata.getChannel();
+        log.debug("Checking on auto-ks in channel : {}", channel.getId());
+        List<Channel> channelsToCheck =
+                ChannelManager.userAccessibleChildChannels(
+                user.getOrg().getId(), channel.getId());
+        channelsToCheck.add(channel);
+
+        for (Channel current : channelsToCheck) {
+            log.debug("Current.channel : {}", current.getId());
+            //Look for the auto-kickstart package.
+            List<Map<String, Object>> kspackages =
+                    ChannelManager.listLatestPackagesLike(
+                            current.getId(),
+                            ksdata.getKickstartPackageNames());
+            //found it, this channel is good.
+            if (!kspackages.isEmpty()) {
+                return true;
+            }
+            log.debug("package not found");
+        }
+        //We have checked every channel without luck.
+        return false;
+    }
+
+    /**
+     * Create a message to the user about having a kickstart channel that is missing
+     * required packages.
+     * @param ksdata The kickstart data that contains the kickstart channel.
+     * @return Messages to add to the request.
+     */
+    public ActionMessages createInvalidChannelMsg(KickstartData ksdata) {
+        ActionMessages msg = new ActionMessages();
+        Object[] args = new Object[] {createPackageNameList(ksdata)};
+        msg.add(ActionMessages.GLOBAL_MESSAGE,
+                new ActionMessage("kickstart.invalidchannel.message", args));
+        if (ksdata.getChannel().getOrg() == null) { //if not a custom channel
+            if (ksdata.isRhel8()) {
+                //RHEL 8 - tell them to sync AppStream
+                msg.add(ActionMessages.GLOBAL_MESSAGE,
+                        new ActionMessage("kickstart.invalidchannel.satmessage.appstream"));
+            }
+            else {
+                //Tell them that they should sync the RHN Tools channel.
+                msg.add(ActionMessages.GLOBAL_MESSAGE,
+                        new ActionMessage("kickstart.invalidchannel.satmessage"));
+            }
+        }
+        return msg;
+    }
+
+    private String createPackageNameList(KickstartData ksdata) {
+        //First create a list of all the packages needed
+        List<String> packages = new ArrayList<>();
+        if (ksdata.isRhel8()) {
+            if (ksdata.isUserSelectedSaltInstallType()) {
+                packages.addAll(KickstartFormatter.getFreshPkgNamesRhel8ForSalt());
+            }
+            else {
+                packages.addAll(KickstartFormatter.getFreshPkgNamesRhel8());
+            }
+        }
+        else {
+            packages.addAll(KickstartFormatter.getUpdatePkgNames());
+        }
+        String autoKickStartPackages = ksdata.getKickstartPackageNames().stream().map(String::trim)
+                .collect(Collectors.joining("|"));
+        packages.add(autoKickStartPackages);
+        //Now convert the list to a delimited string.
+        String delimiter = LocalizationService.getInstance().getMessage("list delimiter");
+        return StringUtils.join(packages.toArray(), delimiter);
+    }
+}

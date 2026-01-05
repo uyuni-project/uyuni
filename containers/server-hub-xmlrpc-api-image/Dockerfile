@@ -4,7 +4,10 @@
 ARG BASE=registry.suse.com/bci/bci-base:15.7
 FROM $BASE
 
-RUN zypper --gpg-auto-import-keys --non-interactive install hub-xmlrpc-api
+RUN zypper --gpg-auto-import-keys --non-interactive install hub-xmlrpc-api && \
+    zypper --non-interactive clean --all && \
+    rpm -e zypper libzypp container-suseconnect && \
+    rm -rf /var/log/{alternatives.log,lastlog,tallylog,suseconnect.log,zypper.log,zypp/history,YaST2}
 
 # LABELs
 ARG PRODUCT=Uyuni
@@ -20,7 +23,7 @@ LABEL org.opencontainers.image.description="${PRODUCT} Hub XML-RPC API image"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
-LABEL org.opencontainers.image.version=5.2.0
+LABEL org.opencontainers.image.version=5.2.3
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.reference="${REFERENCE_PREFIX}/server-hub-xmlrpc-api:${PRODUCT_VERSION}.%RELEASE%"
 # endlabelprefix

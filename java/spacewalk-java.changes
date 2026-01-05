@@ -1,4 +1,197 @@
 -------------------------------------------------------------------
+Tue Dec 09 13:45:08 CET 2025 - michael.calmer@suse.com
+
+- version 5.2.6-0
+  * Fix stacktrace after hardware refresh
+  * Fix: Broken URL in API docs (bsc#1244177)
+  * Fix a bug in apidoc of syncPeripheralChannels (bsc#1250906)
+
+-------------------------------------------------------------------
+Fri Nov 28 16:00:34 CET 2025 - michael.calmer@suse.com
+
+- version 5.2.5-0
+  * Update simple-xml dependency to version 2.7.1
+
+-------------------------------------------------------------------
+Thu Nov 27 10:36:44 CET 2025 - michael.calmer@suse.com
+
+- version 5.2.4-0
+  * Fix crash in ubuntu errata sync on deleted channel ids
+    (bsc#1250561)
+  * Add details on config channels and state order in UI
+    (bsc#1253285)
+  * Add product identification for openSUSE Leap 16.0 and
+    SUSE Linux Enterprise 16
+  * Ensure proxy extension channel is checked and installed
+    when converting to proxy (bsc#1249438)
+  * Fix missing ProxyInfo cleanup on entitlement removal
+    (bsc#1252950)
+  * Correctly handles http proxy empty passwords (bsc#1249502)
+  * Fix intermittently failing test in ForwardRegistrationTaskTest
+  * Upgrade to commons-fileupload2
+  * Bump apache-commons-logging version
+  * Remove unused apache-commons-el dependency
+  * Remove unused jetty dependencies
+  * Identify the state of a channel synchronized and show it in
+    Software Channel Details API
+  * Adapt oval file download to use configured proxy(bsc#1247822)
+  * Add proxy migration automation
+  * Fix execution of virtual instance refresh action (bsc#1253161)
+  * Fix http proxy verification (bsc#1253501)
+  * Fix dnf updateinfo showing wrong severity for
+    security updates (bsc#1252937)
+  * Only show subscription warning to authorized users (bsc#1253127)
+  * Move proxy initialization to run when proxy config is
+    applied (bsc#1252948)
+
+-------------------------------------------------------------------
+Tue Oct 28 15:31:20 CET 2025 - rosuna@suse.com
+
+- version 5.2.3-0
+  * CVE-2025-53883: Escape input strings in system search form
+    (bsc#1246439)
+
+-------------------------------------------------------------------
+Mon Oct 27 16:10:04 CET 2025 - rosuna@suse.com
+
+- version 5.2.2-0
+  * Update translation strings
+
+-------------------------------------------------------------------
+Mon Oct 27 15:23:32 CET 2025 - rosuna@suse.com
+
+- version 5.2.1-0
+  * Drop legacy dependencies (bsc#1247983)
+  * Update web UI dependencies
+  * Build no longer requires susemanager-frontend-libs (bsc#1247983)
+  * Enhance API documentation about errata cloning (bsc#1244519)
+  * Prevent a NPE when comparing package types
+  * Fix scheduling of channel sync
+  * Prevent printing user input in traceback logs and mails
+    (bsc#1239636)
+  * Fix release notes URL and use proxy aware downloader
+    (bsc#1247111)
+  * Added the possibility to deregister an unreachable ISS Hub
+    or Peripheral server
+  * Fix MLM admin status display in Users pages (bsc#1244321)
+  * Optimize schedule page queries for better performance
+    (bsc#1244641)
+  * Fix authentication for spaceapi search module (bsc#1250424)
+  * RBAC mappings for search box in top bar (bsc#1250514)
+  * Fix RBAC access of unauthorized XMLRPC methods (bsc#1251814)
+  * Before assigning groups to a server filter out groups from
+    incompatible organizations
+  * Fix SystemOverview DTO to use boolean for mgr_server and proxy
+    columns (bsc#1247407)
+  * Decouple Server and Proxy identification from its
+    software channels (bsc#1248113)
+  * Fix oval data Ubuntu affected process method.
+  * Fix parsing errors in organization credentials list (bsc#1246436)
+  * Optimize appstream cloning to prevent timeout during
+    channel clone (bsc#1247990)
+  * Fix systems list CSV download to include only
+    filtered data (bsc#1248409)
+  * Remove leftover Python 2 scripts
+  * Allow existing pylint failures
+  * Reformat Python code with black
+  * Fix Maintenance Window alignment in scheduling actions page.
+    (bsc#1245553)
+  * Fix tooltip text for Create button on Maintenance page.
+    (bsc#1241044)
+  * Updated input submit type to a button for improved consistency.
+  * Fix broken CVE links in CVE audit page.
+  * Show tick next to password when requirements
+    are met. (bsc#1230282)
+  * Enhancements to the product migration pages.
+  * Tooltips have been upgraded to styled Bootstrap tooltips for
+    a cleaner and more consistent user experience.
+  * Enhance buttons readability and consistency across the product.
+  * Implement hub registration data forwarding
+    from the peripherals towards the SCC
+  * Implements and tests the update last seen mechanism
+    when a hub is acting as an SCC proxy
+  * Adds provisionSystem API call without a proxy and with
+    kernel_options (bsc#1245528)
+  * Using corrected PROFILE_NAME variable definition in bootstrap
+    script (bsc#1246035)
+  * Fixes bug: Changing configuration channel ranking in
+    activation key results in internal server error (bsc#1249059)
+  * Fix mispaced documentation link (bsc#1250318)
+  * Support confidential computing VLEK attestation
+  * Ensure null safety when converting from proxy paths to host
+    names (bsc#1237536)
+  * Display correct advisory link by using an errata advisory map
+    (bsc#1243808)
+  * Fix action chain scheduled within SSM creates no link
+    for the new action chain (bsc#1243825)
+  * Fix ISSv3: Inconsistent behavior of the URLs linking
+    to peripherals (bsc#1244220)
+  * Removes leftover 'Bootstrap using Salt' checkbox in
+    bootstrap script web page (bsc#1244329)
+  * Fix bug: XMLRPC API endpoint updateRepoSsl resets
+    hasSignedMetadata repository property
+  * Update the systems cache table after converting a system to
+    proxy (bsc#1239158)
+  * Add snippet to set the SSL root CA (bsc#1194792)
+  * Set product tree tag to Beta
+  * Fix character encoding issue on organization credentials page
+    (bsc#1246436)
+  * Added a notification when syncing the reporting database fails
+  * Use absolute paths when invoking external commands
+  * Correct the organization count in the peripheral details
+  * Added support for product migration in SSM
+  * Added a page to generate and upload the support data for a system
+  * Move jmx configuration to a persisted folder
+    (bsc#1244219)
+  * Show Confidential Compute Attestation tab for salt ssh
+    managed clients
+  * Make the official update server domain configurable
+  * Succeed liberate product migration also when reinstall
+    packages is disabled (bsc#1248804)
+  * Delay highstate during bootstrap to run it after the initial
+    minimal state (bsc#1240565)
+  * Assign a Salt event not anymore to a fix queue but choose the
+    least used one by keeping all events from the same minion in
+    the same queue
+  * Add CLM environment differences to report DB (jsc#SUMA-301)
+  * Generate differences between CLM environments (jsc#SUMA-301)
+  * Adapt reportdb queries and add new data for newly added columns
+  * Populate new System Hardware report database table and
+    synchronize it to Hub (jsc#SUMA-316)
+  * Fix IllegalArgumentException for ImageInfo set build Server
+    where the Object was not a Minion Server (bsc#1241908)
+  * Fix API documentation for system config listFiles (bsc#1245027)
+  * Change standard exceptions in APIs into Fault Exceptions
+  * Change API version to 29
+  * Fix inconsistency in task schedule deactivation and
+    add activation capability (bsc#1225740)
+  * Get virtual instance info from physical hosts using salts
+    vm_info in the virt module
+  * Allow to disable supportdata upload feature
+  * Implement API to get and upload support data to SCC
+  * Update saltboot cobbler profile on image build
+  * Allow all SUSE OS based systems to become a build host
+  * Do not validate random password when using PAM
+    (bsc#1245398)
+  * Fix product migration not showing valid clones
+    as target for SL Micro (bsc#1247269)
+  * Fix SSM delete systems button freezing the UI (bsc#1247214)
+  * Remove the jsp table alphabet picker
+  * Rename 'Roles' to 'Administrative Roles'
+    in users UI (bsc#1243394)
+  * Drop deprecated java unit test methods
+  * Adjust defaults and validations for registries in proxy
+    configuration (bsc#1246660)
+  * Drop requirement for minion to be a transactional system
+    to convert it to a proxy (bsc#1246158)
+  * Fix supported OS for proxy conversion (bsc#1246634)
+  * Remove mockobjects package references
+  * Rework java test utils file UserTestUtils
+  * Optimize CLM by improving AppStream-related queries
+    (bsc#1235847)
+  * Send CPU architecture specific data to SCC (jsc#SUMA-406)
+
+-------------------------------------------------------------------
 Thu Jul 24 18:39:52 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.17-0

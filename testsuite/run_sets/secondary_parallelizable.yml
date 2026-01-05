@@ -10,6 +10,8 @@
 
 # Workaround for bug in search server, as mentioned here - https://github.com/SUSE/spacewalk/issues/22594
 # - features/secondary/srv_advanced_search.feature
+- features/secondary/srv_users.feature
+- features/secondary/srv_menu.feature
 - features/secondary/srv_check_sync_source_packages.feature
 - features/secondary/srv_change_password.feature
 - features/secondary/srv_clone_channel_npn.feature
@@ -39,6 +41,10 @@
 - features/secondary/srv_task_status_engine.feature
 - features/secondary/srv_errata_api.feature
 - features/secondary/srv_health_check_supportconfig.feature
+- features/secondary/srv_password_restriction.feature
+
+- features/secondary/buildhost_docker_build_image.feature
+- features/secondary/buildhost_docker_auth_registry.feature
 
 - features/secondary/allcli_overview_systems_details.feature
 - features/secondary/allcli_system_group.feature
@@ -52,7 +58,7 @@
 - features/secondary/minssh_ansible_control_node.feature
 - features/secondary/min_deblike_monitoring.feature
 - features/secondary/min_deblike_salt_install_with_staging.feature
-- features/secondary/min_deblike_salt_install_package.feature
+- features/secondary/min_deblike_salt_install_package_and_patch.feature
 - features/secondary/min_bootstrap_negative.feature
 - features/secondary/min_salt_formulas.feature
 - features/secondary/min_salt_formulas_advanced.feature

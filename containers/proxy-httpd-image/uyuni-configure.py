@@ -157,16 +157,11 @@ with open(config_path + "httpd.yaml", encoding="utf-8") as httpdSource:
         
         # Destination of all tracebacks, etc.
         traceback_mail = {config['email']}
-
-        # Tftp sync configuration
-        tftpsync.server_fqdn = {config['server']}
-        tftpsync.server_ip = {server_ipv4}
-        tftpsync.server_ip6 = {server_ipv6}
-        tftpsync.proxy_ip = {proxy_ipv4}
-        tftpsync.proxy_ip6 = {proxy_ipv6}
-        tftpsync.proxy_fqdn = {config['proxy_fqdn']}
-        tftpsync.tftpboot = /srv/tftpboot"""
+        """
         )
+
+        if "timeout" in config:
+            file.write(f"proxy.timeout = {config['timeout']}")
 
     with open(
         "/etc/apache2/conf.d/smlm-proxy-forwards.conf", "r+", encoding="utf-8"
@@ -176,27 +171,6 @@ with open(config_path + "httpd.yaml", encoding="utf-8") as httpdSource:
         smlm_conf.seek(0, 0)
         smlm_conf.write(file_content)
         smlm_conf.truncate()
-
-    with open(
-        "/etc/apache2/conf.d/susemanager-tftpsync-recv.conf", "w", encoding="utf-8"
-    ) as file:
-        require_ipv4 = ""
-        require_ipv6 = ""
-        if len(server_ipv4) > 0:
-            require_ipv4 = f"Require ip {server_ipv4}"
-        if len(server_ipv6) > 0:
-            require_ipv6 = f"Require ip {server_ipv6}"
-        file.write(
-            f"""<Directory "/srv/www/tftpsync">
-    <RequireAny>
-        {require_ipv4}
-        {require_ipv6}
-    </RequireAny>
-</Directory>
-
-WSGIScriptAlias /tftpsync/add /srv/www/tftpsync/add
-WSGIScriptAlias /tftpsync/delete /srv/www/tftpsync/delete"""
-        )
 
     with open("/etc/apache2/vhosts.d/ssl.conf", "w", encoding="utf-8") as file:
         file.write(

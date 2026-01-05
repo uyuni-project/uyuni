@@ -1,10 +1,10 @@
-import * as React from "react";
+import { Component } from "react";
 
 import _cloneDeep from "lodash/cloneDeep";
 
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
-type Instance = JQuery & {};
+type Instance = JQuery;
 type Sortable = <T>(arg0: T, options?: any) => T extends string ? string[] : Instance;
 
 declare global {
@@ -40,7 +40,7 @@ type RankingTableState = {
   items: any[];
 };
 
-class RankingTable extends React.Component<RankingTableProps, RankingTableState> {
+class RankingTable extends Component<RankingTableProps, RankingTableState> {
   defaultEmptyMsg = t("There are no entries to show.");
   node: Element | null = null;
 

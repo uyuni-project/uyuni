@@ -1,8 +1,6 @@
 import "senna/build/senna.css";
 import "./spa-engine.css";
 
-import * as React from "react";
-
 import App, { HtmlScreen } from "senna";
 
 import SpaRenderer from "core/spa/spa-renderer";
@@ -18,8 +16,8 @@ window.pageRenderers = window.pageRenderers || {};
 window.pageRenderers.spaengine = window.pageRenderers.spaengine || {};
 
 // Navigation hook for standalone renderers to detect navigation
-const onSpaEndNavigationCallbacks: Function[] = [];
-window.pageRenderers.spaengine.onSpaEndNavigation = function onSpaEndNavigation(callback: Function) {
+const onSpaEndNavigationCallbacks: ((...args: any[]) => any)[] = [];
+window.pageRenderers.spaengine.onSpaEndNavigation = function onSpaEndNavigation(callback: (...args: any[]) => any) {
   if (onSpaEndNavigationCallbacks.indexOf(callback) === -1) {
     onSpaEndNavigationCallbacks.push(callback);
   }
@@ -32,7 +30,6 @@ window.pageRenderers.spaengine.init = function init(timeout?: number) {
   // We need this until the login page refactor using a different layout template is completed
   if (!isLoginPage(window.location.pathname)) {
     const appInstance = new App();
-    // appInstance.setLinkSelector("a.js-spa");
     appInstance.setFormSelector("form.js-spa");
 
     appInstance.addSurfaces(["left-menu-data", "ssm-box", "page-body"]);
@@ -48,7 +45,7 @@ window.pageRenderers.spaengine.init = function init(timeout?: number) {
           //workaround for posts until https://github.com/liferay/senna.js/pull/311/files is merged
           screen.setHttpHeaders({
             ...screen.getHttpHeaders(),
-            ...{ "Content-type": "application/x-www-form-urlencoded" },
+            "Content-type": "application/x-www-form-urlencoded",
           });
           screen.getFormData = function (form, submitedButton) {
             let body = jQuery(form).serialize();

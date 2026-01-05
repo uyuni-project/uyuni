@@ -88,9 +88,15 @@ jobs:
           repository: ${{ github.event.pull_request.head.repo.full_name }}
           ref: ${{ github.event.pull_request.head.ref }}
 
-      - name: Cache jar files
+      - name: Use Node.js 22.x
+        uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 #v6.0.0
+        with:
+          node-version: 22.x
+
+      - name: Cache jar files (Java/Ivy Dependencies)
         if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
         uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 #v4.3.0
+        id: cache-ivy
         with:
           path: java/buildconf/ivy/repository/
           key: ${{ runner.os }}-build-cache-uyuni-jars-${{ hashFiles('**/java/buildconf/ivy/*.xml') }}
@@ -106,14 +112,30 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-build-cache-uyuni-obs-to-maven-
 
-      - name: Cache NodeJS modules
+      # See https://docs.github.com/en/actions/reference/workflows-and-actions/dependency-caching
+      - name: Use cached NPM dependencies
         if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
+        id: cache-node-modules
         uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 #v4.3.0
+        env:
+          cache-name: cache-node-modules
         with:
-          path: web/html/src/node_modules
-          key: ${{ runner.os }}-build-cache-uyuni-nodejs-${{ hashFiles('**/web/html/src/yarn.lock') }}
+          path: web/node_modules
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('web/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-build-cache-uyuni-nodejs-
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+
+      - name: Install NPM dependencies on Host (For Cache Save/Restore)
+        # Runs only if the cache misses, ensuring node_modules is created on the host for future caching
+        if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' && steps.cache-node-modules.outputs.cache-hit != 'true' }}
+        run: |
+          echo "Cache miss detected, installing node_modules on host to create the directory for future runs."
+          npm --prefix web ci --ignore-scripts --save=false --omit=dev
+
+      - name: List cache misses
+        if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' && steps.cache-node-modules.outputs.cache-hit != 'true' }}
+        continue-on-error: true
+        run: npm --prefix web list
 
       - name: Create temporary directories
         if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
@@ -157,6 +179,16 @@ jobs:
       - name: Start server container
         if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
         run: ./testsuite/podman_runner/08_start_server.sh
+
+      - name: Inject cached Ivy JARs into server container
+        if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' && steps.cache-ivy.outputs.cache-hit == 'true' }}
+        run: |
+          sudo podman exec server mkdir -p /root/.ivy2/cache/
+          sudo podman cp java/buildconf/ivy/repository/. server:/root/.ivy2/cache/
+
+      - name: Inject cached node_modules into server container
+        if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' && steps.cache-node-modules.outputs.cache-hit == 'true' }}
+        run: sudo podman cp web/node_modules server:/web/node_modules
 
       - name: Build server code
         if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
@@ -213,17 +245,17 @@ jobs:
       - name: Run acceptance tests
         if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
         run: ./testsuite/podman_runner/${{ inputs.tests }}
-      
+
       - name: Upload Cucumber JSON Reports
         if: ${{ always() && !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
-        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 #v4.6.1
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 #v5.0.0
         with:
           name: cucumber_json_reports_${{ inputs.server_id }}
           path: ./testsuite/results/**/*.json
           if-no-files-found: warn
           # Duration after which the artifact will expire in days.
           # The maximum is 90 days.
-          retention-days: 90 
+          retention-days: 90
           # Default compression level is '6', the same as GNU Gzip.
           # For more details: https://github.com/actions/upload-artifact?tab=readme-ov-file#altering-compressions-level-speed-v-size
           compression-level: 6
@@ -238,14 +270,14 @@ jobs:
 
       - name: Upload server log artifacts
         if: ${{ failure() && !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
-        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 #v4.6.1
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 #v5.0.0
         with:
           name: server_rhn_logs_${{ inputs.server_id }}
           path: /tmp/testing/server-logs/${{ inputs.server_id }}
 
       - name: Upload client log artifacts
         if: ${{ failure() && !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
-        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 #v4.6.1
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 #v5.0.0
         with:
           name: client_logs_${{ inputs.server_id }}
           path: ./testsuite/logs

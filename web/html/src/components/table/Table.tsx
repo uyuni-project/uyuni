@@ -1,5 +1,15 @@
-import * as React from "react";
-import { forwardRef, useImperativeHandle } from "react";
+import {
+  type ComponentProps,
+  type ReactComponentElement,
+  type ReactElement,
+  type ReactNode,
+  Children,
+  cloneElement,
+  forwardRef,
+  Fragment,
+  useImperativeHandle,
+  useRef,
+} from "react";
 
 import { Button } from "components/buttons";
 
@@ -39,13 +49,13 @@ type TableProps = {
   initialSortDirection?: number;
 
   /** a function that return a css class for each row */
-  cssClassFunction?: Function;
+  cssClassFunction?: (...args: any[]) => any;
 
   /** Callback for search input, setting `onSearch` sets `searchField` to a simple search input if none is provided */
   onSearch?: (criteria: string) => void;
 
   /** the React Object that contains the filter search field */
-  searchField?: React.ReactComponentElement<typeof SearchField>;
+  searchField?: ReactComponentElement<typeof SearchField>;
 
   /** the initial number of how many row-per-page to show */
   initialItemsPerPage?: number;
@@ -83,10 +93,10 @@ type TableProps = {
   onLoad?: () => void;
 
   /** Children node in the table */
-  children: React.ReactNode;
+  children: ReactNode;
 
   /** Other filter fields */
-  additionalFilters?: React.ReactNode[];
+  additionalFilters?: ReactNode[];
 
   /** Default search field */
   defaultSearchField?: string;
@@ -95,10 +105,10 @@ type TableProps = {
   initialSearch?: string;
 
   /** Title buttons to add next to the items per page selection */
-  titleButtons?: React.ReactNode[];
+  titleButtons?: ReactNode[];
 };
 
-function isColumn(input: any): input is React.ReactElement<React.ComponentProps<typeof Column>> {
+function isColumn(input: any): input is ReactElement<ComponentProps<typeof Column>> {
   return input?.type === Column || input?.type?.displayName === "Column";
 }
 
@@ -108,8 +118,8 @@ export type TableRef = {
 
 export const Table = forwardRef<TableRef, TableProps>((props, ref) => {
   const { ...allProps } = props;
-  const columns = React.Children.toArray(props.children).filter(isColumn);
-  const dataHandlerRef = React.useRef<TableDataHandler>(null);
+  const columns = Children.toArray(props.children).filter(isColumn);
+  const dataHandlerRef = useRef<TableDataHandler>(null);
 
   const expanded = useExpanded();
 
@@ -125,10 +135,10 @@ export const Table = forwardRef<TableRef, TableProps>((props, ref) => {
         const selectableValue = DEPRECATED_unsafeEquals(props.selectable, null) ? false : props.selectable;
 
         const renderRow = (item: ArrayElement<typeof currItems>, index: number, nestingLevel: number) => {
-          const cells: React.ReactNode[] = React.Children.toArray(props.children)
+          const cells: ReactNode[] = Children.toArray(props.children)
             .filter(isColumn)
             .map((column, index) =>
-              React.cloneElement(column, {
+              cloneElement(column, {
                 key: column.props.columnKey,
                 data: item,
                 criteria: criteria,
@@ -215,13 +225,13 @@ export const Table = forwardRef<TableRef, TableProps>((props, ref) => {
             key = index;
           }
           return (
-            <React.Fragment key={key}>
+            <Fragment key={key}>
               <tr className={rowClass}>{cells}</tr>
               {props.expandable &&
                 "children" in item &&
                 expanded.has(props.identifier(item)) &&
                 item.children.map((childItem, childIndex) => renderRow(childItem, childIndex, nestingLevel + 1))}
-            </React.Fragment>
+            </Fragment>
           );
         };
 

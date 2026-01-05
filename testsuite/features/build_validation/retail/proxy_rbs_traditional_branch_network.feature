@@ -1,4 +1,4 @@
-# Copyright (c) 2021-2024 SUSE LLC
+# Copyright (c) 2021-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @proxy
@@ -100,13 +100,13 @@ Feature: Prepare the branch server for PXE booting
     And I enter the local IP address of "broadcast" in broadcast address field
     And I press "Remove" in the routers section
     And I press "Add Item" in host reservations section
-    And I enter "sle12sp5terminal" in first reserved hostname field
-    And I enter the local IP address of "sle12sp5_terminal" in first reserved IP field
-    And I enter the MAC address of "sle12sp5_terminal" in first reserved MAC field
+    And I enter "sle15sp6terminal" in first reserved hostname field
+    And I enter the local IP address of "sle15sp6_terminal" in first reserved IP field
+    And I enter the MAC address of "sle15sp6_terminal" in first reserved MAC field
     And I press "Add Item" in host reservations section
-    And I enter "sle15sp4terminal" in second reserved hostname field
-    And I enter the local IP address of "sle15sp4_terminal" in second reserved IP field
-    And I enter the MAC address of "sle15sp4_terminal" in second reserved MAC field
+    And I enter "sle15sp7terminal" in second reserved hostname field
+    And I enter the local IP address of "sle15sp7_terminal" in second reserved IP field
+    And I enter the MAC address of "sle15sp7_terminal" in second reserved MAC field
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
 
@@ -132,11 +132,11 @@ Feature: Prepare the branch server for PXE booting
     And I enter the local IP address of "proxy" in first A address field of example.org zone
     And I press "Add Item" in A section of example.org zone
     # TODO: don't hardcode anymore the names in the private network once we have them in .bashrc
-    And I enter "sle12sp5terminal" in second A name field of example.org zone
-    And I enter the local IP address of "sle12sp5_terminal" in second A address field of example.org zone
+    And I enter "sle15sp6terminal" in second A name field of example.org zone
+    And I enter the local IP address of "sle15sp6_terminal" in second A address field of example.org zone
     And I press "Add Item" in A section of example.org zone
-    And I enter "sle15sp4terminal" in third A name field of example.org zone
-    And I enter the local IP address of "sle15sp4_terminal" in third A address field of example.org zone
+    And I enter "sle15sp7terminal" in third A name field of example.org zone
+    And I enter the local IP address of "sle15sp7_terminal" in third A address field of example.org zone
     And I press "Add Item" in NS section of example.org zone
     And I enter "proxy.example.org." in first NS field of example.org zone
     And I press "Add Item" in CNAME section of example.org zone

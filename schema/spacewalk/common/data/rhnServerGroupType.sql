@@ -112,7 +112,7 @@ commit;
 
 insert into rhnServerGroupType ( id, label, name, permanent, is_base)
    values ( sequence_nextval('rhn_servergroup_type_seq'),
-      'proxy_entitled', 'Proxy',
+      'proxy_entitled', 'Proxy Entitled Servers',
       'N', 'N'
    );
 

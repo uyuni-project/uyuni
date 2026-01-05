@@ -341,20 +341,6 @@ Feature: Sanity checks
     And "rocky9_ssh_minion" should communicate with the server using public interface
     And the clock from "rocky9_ssh_minion" should be exact
 
-@ubuntu2004_minion
-  Scenario: The Ubuntu 20.04 minion is healthy
-    Then "ubuntu2004_minion" should have a FQDN
-    And reverse resolution should work for "ubuntu2004_minion"
-    And "ubuntu2004_minion" should communicate with the server using public interface
-    And the clock from "ubuntu2004_minion" should be exact
-
-@ubuntu2004_ssh_minion
-  Scenario: The Ubuntu 20.04 Salt SSH minion is healthy
-    Then "ubuntu2004_ssh_minion" should have a FQDN
-    And reverse resolution should work for "ubuntu2004_ssh_minion"
-    And "ubuntu2004_ssh_minion" should communicate with the server using public interface
-    And the clock from "ubuntu2004_ssh_minion" should be exact
-
 @ubuntu2204_minion
   Scenario: The Ubuntu 22.04 minion is healthy
     Then "ubuntu2204_minion" should have a FQDN
@@ -425,19 +411,19 @@ Feature: Sanity checks
     And "sle15sp5s390_ssh_minion" should communicate with the server using public interface
     And the clock from "sle15sp5s390_ssh_minion" should be exact
 
-@sle12sp5_buildhost
-  Scenario: The SLES 12 SP5 build host is healthy
-    Then "sle12sp5_buildhost" should have a FQDN
-    And reverse resolution should work for "sle12sp5_buildhost"
-    And "sle12sp5_buildhost" should communicate with the server using public interface
-    And the clock from "sle12sp5_buildhost" should be exact
+@sle15sp6_buildhost
+  Scenario: The SLES 15 SP6 build host is healthy
+    Then "sle15sp6_buildhost" should have a FQDN
+    And reverse resolution should work for "sle15sp6_buildhost"
+    And "sle15sp6_buildhost" should communicate with the server using public interface
+    And the clock from "sle15sp6_buildhost" should be exact
 
-@sle15sp4_buildhost
-  Scenario: The SLES 15 SP4 build host is healthy
-    Then "sle15sp4_buildhost" should have a FQDN
-    And reverse resolution should work for "sle15sp4_buildhost"
-    And "sle15sp4_buildhost" should communicate with the server using public interface
-    And the clock from "sle15sp4_buildhost" should be exact
+@sle15sp7_buildhost
+Scenario: The SLES 15 SP7 build host is healthy
+  Then "sle15sp7_buildhost" should have a FQDN
+  And reverse resolution should work for "sle15sp7_buildhost"
+  And "sle15sp7_buildhost" should communicate with the server using public interface
+  And the clock from "sle15sp7_buildhost" should be exact
 
 @monitoring_server
   Scenario: The monitoring server is healthy

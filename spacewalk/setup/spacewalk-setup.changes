@@ -1,4 +1,27 @@
 -------------------------------------------------------------------
+Fri Nov 28 15:59:10 CET 2025 - michael.calmer@suse.com
+
+- version 5.2.3-0
+  * Drop unused dependency
+
+-------------------------------------------------------------------
+Thu Nov 27 11:13:10 CET 2025 - michael.calmer@suse.com
+
+- version 5.2.2-0
+  * Cleanup useless os-release use in httpd setup
+
+-------------------------------------------------------------------
+Mon Oct 27 15:29:54 CET 2025 - rosuna@suse.com
+
+- version 5.2.1-0
+  * Fix problem syncing custom modules to Salt Master (bsc#1251796)
+  * Allow existing pylint failures
+  * Reformat Python code with black
+  * Add uyuni-cobbler-helper to Cobbler's python module whitelist
+  * Fix syntax error in changelog
+  * Use a dedicated path for Cobbler settings (bsc#1244027)
+
+-------------------------------------------------------------------
 Fri Apr 11 17:08:28 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.5-0

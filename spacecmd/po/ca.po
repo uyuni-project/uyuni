@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-10 09:51+0200\n"
-"PO-Revision-Date: 2025-10-04 09:59+0000\n"
+"POT-Creation-Date: 2025-11-21 10:50+0100\n"
+"PO-Revision-Date: 2025-11-21 15:04+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/spacecmd/ca/>\n"
 "Language: ca\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.13.3\n"
+"X-Generator: Weblate 5.14.3\n"
 
 #: ../src/spacecmd/activationkey.py:53
 msgid "activationkey_addpackages: Add packages to an activation key"
@@ -4067,7 +4067,7 @@ msgid ""
 "options:\n"
 "  -o, --output Path where to create the generated configuration. Default: 'config.tar.gz'\n"
 "  -p, --ssh-port SSH port the proxy listens one. Default: 8022\n"
-"  --ca-crt path to the certificate of the CA to use to generate a new proxy certificate.\n"
+"  --ca-cert path to the certificate of the CA to use to generate a new proxy certificate.\n"
 "           Using /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT by default.\n"
 "  --ca-key path to the private key of the CA to use to generate a new proxy certificate.\n"
 "           Using /root/ssl-build/RHN-ORG-PRIVATE-SSL-KEY by default.\n"
@@ -4094,7 +4094,7 @@ msgstr ""
 "opcions:\n"
 "  -o, --output Path on crear la configuració generada. Per defecte: 'config.tar.gz'\n"
 "  -p, --ssh-port SSH port el servidor intermediari n'escolta un. Per defecte: 8022\n"
-"  --ca-crt camí al certificat de la CA a utilitzar per a generar un certificat intermediari nou.\n"
+"  --ca-cert camí al certificat de la CA a utilitzar per a generar un certificat intermediari nou.\n"
 "           Utilitzant /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT per defecte.\n"
 "  --ca-key camí a la clau privada de la CA a usar per a generar un certificat intermediari nou.\n"
 "           Utilitzant /root/ssl-build/RHN-ORG-PRIVATE-SSL-KEY de manera predeterminada.\n"
@@ -4411,7 +4411,7 @@ msgstr "ús: adreces d'informe [<SYSTEMS>]"
 #: ../src/spacecmd/system.py:3957 ../src/spacecmd/system.py:4280
 #: ../src/spacecmd/system.py:4443 ../src/spacecmd/system.py:4514
 #: ../src/spacecmd/system.py:4568 ../src/spacecmd/system.py:4638
-#: ../src/spacecmd/system.py:4705
+#: ../src/spacecmd/system.py:4705 ../src/spacecmd/system.py:5087
 msgid "No systems selected"
 msgstr "No s'ha seleccionat cap sistema"
 
@@ -7986,6 +7986,20 @@ msgstr "S'està arrencant «{}». Això pot trigar una estona."
 #: ../src/spacecmd/system.py:5047
 msgid "Initial phase successfully finished. Check event history for actions still running"
 msgstr "La fase inicial ha finalitzat amb èxit. Comprova l'historial d'esdeveniments per a les accions que encara s'estan executant"
+
+#: ../src/spacecmd/system.py:5059
+msgid "system_needrebootafterupdate: Shows whether a reboot would be needed if available patches were applied"
+msgstr "system_needrebootafterupdate: mostra si caldria reiniciar si s'apliquessin els pedaços disponibles"
+
+#. pylint: disable-next=consider-using-f-string
+#: ../src/spacecmd/system.py:5108
+msgid "System '{}' needs to be rebooted after update"
+msgstr "Cal reiniciar el sistema {} després de l'actualització"
+
+#. pylint: disable-next=consider-using-f-string
+#: ../src/spacecmd/system.py:5117
+msgid "No reboot needed for system '{}' after applying available updates"
+msgstr "No cal reiniciar el sistema {} després d'aplicar-hi les actualitzacions disponibles"
 
 #: ../src/spacecmd/user.py:53
 msgid "user_create: Create an user"

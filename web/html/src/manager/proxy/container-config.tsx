@@ -1,4 +1,3 @@
-import * as React from "react";
 import { useState } from "react";
 
 import { AsyncButton, SubmitButton } from "components/buttons";
@@ -64,7 +63,7 @@ export function ProxyConfig() {
 
     const fileReaders = Object.keys(model)
       .filter((key) => {
-        const matcher = key.match(/^([a-zA-Z0-9]*[A-zA-Z])[0-9]+$/);
+        const matcher = key.match(/^([a-zA-Z0-9]*[a-zA-Z])[0-9]+$/);
         const fieldName = matcher ? matcher[1] : key;
         return fileFields[fieldName] === model.sslMode;
       })
@@ -131,7 +130,7 @@ export function ProxyConfig() {
                 {JSON.parse(xhr.responseText)
                   .split("\n")
                   .map((line: string) => (
-                    <p>{line}</p>
+                    <p key={line}>{line}</p>
                   ))}
               </>,
             ]);

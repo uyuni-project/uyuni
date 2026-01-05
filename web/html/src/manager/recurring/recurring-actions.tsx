@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 
@@ -14,11 +14,11 @@ import { inferEntityParams } from "./recurring-actions-utils";
 
 /**
  * See:
- *  - java/code/src/com/suse/manager/webui/templates/groups/recurring-actions.jade
- *  - java/code/src/com/suse/manager/webui/templates/minion/recurring-actions.jade
- *  - java/code/src/com/suse/manager/webui/templates/org/recurring-actions.jade
- *  - java/code/src/com/suse/manager/webui/templates/schedule/recurring-actions.jade
- *  - java/code/src/com/suse/manager/webui/templates/yourorg/recurring-actions.jade
+ *  - java/core/src/main/resources/com/suse/manager/webui/templates/groups/recurring-actions.jade
+ *  - java/core/src/main/resources/com/suse/manager/webui/templates/minion/recurring-actions.jade
+ *  - java/core/src/main/resources/com/suse/manager/webui/templates/org/recurring-actions.jade
+ *  - java/core/src/main/resources/com/suse/manager/webui/templates/schedule/recurring-actions.jade
+ *  - java/core/src/main/resources/com/suse/manager/webui/templates/yourorg/recurring-actions.jade
  */
 declare global {
   interface Window {
@@ -46,7 +46,7 @@ function getHashAction() {
   return match ? match[1] : undefined;
 }
 
-type Props = {};
+type Props = Record<never, never>;
 
 type State = {
   messages: any[];
@@ -55,7 +55,7 @@ type State = {
   selected?: any;
 };
 
-class RecurringActions extends React.Component<Props, State> {
+class RecurringActions extends Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {

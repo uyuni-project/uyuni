@@ -113,6 +113,8 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I open the sub-list of the product "Desktop Applications Module 15 SP5 x86_64"
     And I select "Development Tools Module 15 SP5 x86_64" as a product
     Then I should see the "Development Tools Module 15 SP5 x86_64" selected
+    And I select "SUSE Linux Enterprise Server LTSS 15 SP5 x86_64" as a product
+    Then I should see the "SUSE Linux Enterprise Server LTSS 15 SP5 x86_64" selected
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "SUSE Linux Enterprise Server 15 SP5 x86_64" product has been added
@@ -148,6 +150,8 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I open the sub-list of the product "Desktop Applications Module 15 SP6 x86_64"
     And I select "Development Tools Module 15 SP6 x86_64" as a product
     Then I should see the "Development Tools Module 15 SP6 x86_64" selected
+    And I select "SUSE Linux Enterprise Server LTSS 15 SP6 x86_64 (ALPHA)" as a product
+    Then I should see the "SUSE Linux Enterprise Server LTSS 15 SP6 x86_64 (ALPHA)" selected
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "SUSE Linux Enterprise Server 15 SP6 x86_64" product has been added
@@ -443,12 +447,12 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
-    And I enter "openSUSE Leap 15.6 aarch64" as the filtered product description
-    And I select "openSUSE Leap 15.6 aarch64" as a product
-    Then I should see the "openSUSE Leap 15.6 aarch64" selected
+    And I enter "openSUSE Tumbleweed aarch64" as the filtered product description
+    And I select "openSUSE Tumbleweed aarch64" as a product
+    Then I should see the "openSUSE Tumbleweed aarch64" selected
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
-    And I wait until I see "openSUSE Leap 15.6 aarch64" product has been added
+    And I wait until I see "openSUSE Tumbleweed aarch64" product has been added
     And I wait until all synchronized channels for "leap15.6-aarch64" have finished
 
 @uyuni
@@ -678,26 +682,6 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until all synchronized channels for "rockylinux9" have finished
 
 @susemanager
-@ubuntu2004_minion
-  Scenario: Add Ubuntu 20.04
-    Given I am authorized for the "Admin" section
-    When I follow the left menu "Admin > Setup Wizard > Products"
-    And I wait until I do not see "currently running" text
-    And I wait until I do not see "Loading" text
-    And I enter "Ubuntu 20.04" as the filtered product description
-    And I select "Ubuntu 20.04" as a product
-    Then I should see the "Ubuntu 20.04" selected
-    When I click the Add Product button
-    And I wait until I see "Ubuntu 20.04" product has been added
-    And I wait until all synchronized channels for "ubuntu-2004" have finished
-
-@uyuni
-@ubuntu2004_minion
-  Scenario: Add Ubuntu 20.04
-    When I use spacewalk-common-channel to add all "ubuntu-2004" channels with arch "amd64-deb"
-    And I wait until all synchronized channels for "ubuntu-2004" have finished
-
-@susemanager
 @ubuntu2204_minion
   Scenario: Add Ubuntu 22.04
     Given I am authorized for the "Admin" section
@@ -759,8 +743,8 @@ Feature: Synchronize products in the products page of the Setup Wizard
 
 @uyuni
 @proxy
-  Scenario: Add Uyuni Leap 15.6 Proxy, including Uyuni Client Tools
-    When I use spacewalk-common-channel to add all "leap15.6" channels with arch "x86_64"
+  Scenario: Add Uyuni Proxy on Tumbleweed, including Uyuni Client Tools
+    When I use spacewalk-common-channel to add all "tumbleweed" channels with arch "x86_64"
     And I wait until all synchronized channels for "uyuni-proxy" have finished
 
 @susemanager
@@ -820,7 +804,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 
 @uyuni
 @proxy
-  Scenario: Add openSUSE Leap Micro 5.5 Proxy, including Uyuni Client Tools
+  Scenario: Add Uyuni Proxy for Tumbleweed, including Uyuni Client Tools
     When I use spacewalk-common-channel to add all "uyuni-proxy" channels with arch "x86_64"
     And I wait until all synchronized channels for "uyuni-proxy" have finished
 
@@ -874,8 +858,8 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP7 x86_64"
     And I open the sub-list of the product "Basesystem Module 15 SP7 x86_64"
     And I open the sub-list of the product "Containers Module 15 SP7 x86_64"
-    And I select "SUSE Multi-Linux Manager Retail Branch Server Extension for SLE 5.1 x86_64 " as a product
-    Then I should see the "SUSE Multi-Linux Manager Retail Branch Server Extension for SLE 5.1 x86_64 " selected
+    And I select "SUSE Multi-Linux Manager Retail Branch Server Extension for SLE 5.1 x86_64" as a product
+    Then I should see the "SUSE Multi-Linux Manager Retail Branch Server Extension for SLE 5.1 x86_64" selected
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until all synchronized channels for "suse-multi-linux-manager-retail-branch-server-51-sp7" have finished

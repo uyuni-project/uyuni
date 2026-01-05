@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import _isEqual from "lodash/isEqual";
 
@@ -36,7 +36,7 @@ type State = {
   details?: any;
 };
 
-class RecurringActionsEdit extends React.Component<Props, State> {
+class RecurringActionsEdit extends Component<Props, State> {
   constructor(props) {
     super(props);
 
@@ -197,14 +197,15 @@ class RecurringActionsEdit extends React.Component<Props, State> {
   };
 
   onSelectPlaybook = (playbook) => {
-    this.setState({
+    this.setState((prevState) => ({
       details: {
-        ...this.state.details,
+        ...prevState.details,
         playbookPath: playbook?.playbookPath,
         inventoryPath: playbook?.inventoryPath,
         flushCache: playbook?.flushCache,
+        extraVars: playbook?.extraVars,
       },
-    });
+    }));
   };
 
   toggleTestState = () => {
@@ -218,7 +219,7 @@ class RecurringActionsEdit extends React.Component<Props, State> {
       return false;
     }
     const buttons = [
-      <div className="btn-group pull-right">
+      <div className="btn-group pull-right" key="buttons-right">
         <Toggler
           text={t("Test mode")}
           value={this.state.details.test}
@@ -233,7 +234,7 @@ class RecurringActionsEdit extends React.Component<Props, State> {
       </div>,
     ];
     const buttonsLeft = [
-      <div className="btn-group pull-left">
+      <div className="btn-group pull-left" key="buttons-left">
         <Button
           id="back-btn"
           className="btn-default"
@@ -295,6 +296,7 @@ class RecurringActionsEdit extends React.Component<Props, State> {
             playbookPath={this.state.details.playbookPath}
             inventoryPath={this.state.details.inventoryPath}
             flushCache={this.state.details.flushCache}
+            variables={this.state.details.extraVars}
             onSelectPlaybook={this.onSelectPlaybook}
           />
         )}

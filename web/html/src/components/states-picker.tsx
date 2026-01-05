@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type ReactNode, Component } from "react";
 
 import _partition from "lodash/partition";
 import _sortBy from "lodash/sortBy";
@@ -49,7 +49,7 @@ type StatesPickerProps = {
   matchUrl: (filter?: string) => any;
   applyRequest?: (systems: any[]) => any;
   saveRequest: (channels: any[]) => any;
-  messages?: (messages: MessageType[] | any) => any;
+  messages?: (messages: MessageType[]) => any;
 };
 
 class StatesPickerState {
@@ -61,12 +61,16 @@ class StatesPickerState {
   };
   assigned: any[] = [];
   changed = new Map();
-  showSaltState?: any | null = undefined;
+  showSaltState?: {
+    id: string;
+    name: string;
+    content: ReactNode;
+  } = undefined;
   rank?: boolean = undefined;
   messages: MessageType[] = [];
 }
 
-class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState> {
+class StatesPicker extends Component<StatesPickerProps, StatesPickerState> {
   state = new StatesPickerState();
 
   constructor(props: StatesPickerProps) {
@@ -77,13 +81,13 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
   init = () => {
     Network.get(this.props.matchUrl()).then((data) => {
       data = this.getSortedList(data);
-      this.setState({
+      this.setState((prevState) => ({
         channels: data,
         search: {
-          filter: this.state.filter,
+          filter: prevState.filter,
           results: data,
         },
-      });
+      }));
     });
   };
 
@@ -152,19 +156,19 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
           this.props.type === "state"
             ? messages
             : messages.concat(MessagesUtils.info(t("State assignments have been saved.")));
-        this.setState({
+        this.setState((prevState) => ({
           changed: new Map(), // clear changed
           // Update the channels with the new data
           channels: _unionBy(
             data,
-            this.state.channels.map((c) => Object.assign(c, { assigned: false, position: undefined })),
+            prevState.channels.map((c) => Object.assign(c, { assigned: false, position: undefined })),
             "name"
           ),
           search: {
-            filter: this.state.search.filter,
+            filter: prevState.search.filter,
             results: this.getSortedList(newSearchResults),
           },
-        });
+        }));
         this.setMessages(messages);
         this.hideRanking();
       },
@@ -190,28 +194,30 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
     return Promise.resolve().then(() => {
       if (this.state.filter !== this.state.search.filter) {
         // Since we don't commit our changes to the backend in case of state type we perform a local search
-        this.props.type === "state"
-          ? this.stateTypeSearch()
-          : Network.get(this.props.matchUrl(this.state.filter)).then((data) => {
-              this.setState({
-                search: {
-                  filter: this.state.filter,
-                  results: this.getSortedList(data),
-                },
-              });
-              this.clearMessages();
-            });
+        if (this.props.type === "state") {
+          this.stateTypeSearch();
+        } else {
+          Network.get(this.props.matchUrl(this.state.filter)).then((data) => {
+            this.setState((prevState) => ({
+              search: {
+                filter: prevState.filter,
+                results: this.getSortedList(data),
+              },
+            }));
+            this.clearMessages();
+          });
+        }
       }
     });
   };
 
   stateTypeSearch = () => {
-    this.setState({
+    this.setState((prevState) => ({
       search: {
-        filter: this.state.filter,
-        results: this.state.channels.filter((c) => c.name.includes(this.state.filter)),
+        filter: prevState.filter,
+        results: prevState.channels.filter((c) => c.name.includes(prevState.filter)),
       },
-    });
+    }));
     this.clearMessages();
   };
 
@@ -225,9 +231,9 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
         value: Object.assign({}, original, { assigned: selected }),
       });
     }
-    this.setState({
-      changed: this.state.changed,
-    });
+    this.setState((prevState) => ({
+      changed: prevState.changed,
+    }));
   };
 
   handleSelectionChange = (original) => {
@@ -237,7 +243,7 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
   };
 
   tableBody = () => {
-    const elements: React.ReactNode[] = [];
+    const elements: ReactNode[] = [];
     let rows: any[] = [];
     rows = this.state.search.results.map((channel) => {
       const changed = this.state.changed.get(channelKey(channel));
@@ -334,7 +340,7 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
 
   onClosePopUp = () => {
     this.setState({
-      showSaltState: null,
+      showSaltState: undefined,
     });
   };
 
@@ -401,7 +407,7 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
     return (
       <span>
         {!this.props.messages && this.state.messages ? <Messages items={this.state.messages} /> : null}
-        <SectionToolbar>
+        <SectionToolbar top="50">
           <div className="action-button-wrapper">
             <div className="btn-group">{buttons}</div>
           </div>
@@ -436,8 +442,12 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
                 <h2>{this.props.type === "state" ? t("Edit State Ranks") : t("Edit Channel Ranks")}</h2>
                 <p>
                   {this.props.type === "state"
-                    ? t("Edit the ranking of the states by dragging them.")
-                    : t("Edit the ranking of the configuration channels by dragging them.")}
+                    ? t(
+                        "Edit the ranking of the states by dragging them. They are listed in order from highest to lowest rank. In other words, the bottom ones will be applied first."
+                      )
+                    : t(
+                        "Edit the ranking of the configuration channels by dragging them. They are listed in order from highest to lowest rank. Files from a particular channel will override files with the same filepath and name from channels below it. In other words, the bottom ones will be applied first."
+                      )}
                 </p>
                 <RankingTable
                   items={currentAssignment}
@@ -474,7 +484,7 @@ type ExecuteStatesProps = {
   applySaltState: (memberIds: any[]) => any;
 };
 
-class ExecuteStatesButton extends React.Component<ExecuteStatesProps> {
+class ExecuteStatesButton extends Component<ExecuteStatesProps> {
   state = {
     selected: [],
     showPopup: false,
@@ -482,7 +492,9 @@ class ExecuteStatesButton extends React.Component<ExecuteStatesProps> {
 
   showPopup = () => {
     if (inferEntityParams().includes("MINION")) {
-      window.minions && this.props.applySaltState(window.minions.map((m) => m.id));
+      if (window.minions) {
+        this.props.applySaltState(window.minions.map((m) => m.id));
+      }
     } else {
       this.setState({ showPopup: true });
     }
@@ -515,7 +527,8 @@ class ExecuteStatesButton extends React.Component<ExecuteStatesProps> {
         items={MessagesUtils.info(t("Select the systems to schedule for immediate state execution and confirm."))}
       />,
       <Table
-        selectable={(item) => item.hasOwnProperty("id")}
+        key="table"
+        selectable={(item) => Object.prototype.hasOwnProperty.call(item, "id")}
         onSelect={this.onSelect}
         selectedItems={this.state.selected}
         initialSortColumnKey={"name"}
@@ -568,7 +581,7 @@ class ExecuteStatesButton extends React.Component<ExecuteStatesProps> {
   }
 }
 
-class ExecuteStatesFilter extends React.Component {
+class ExecuteStatesFilter extends Component {
   render() {
     const filterOptions = [{ value: "name", label: t("System Name") }];
     return <TableFilter filterOptions={filterOptions} {...this.props} />;

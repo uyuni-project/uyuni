@@ -15,7 +15,7 @@ export type MigrationTarget = {
 };
 
 export type MigrationSystemData = {
-  installedProduct: MigrationProduct;
+  installedProduct: MigrationProduct | null;
   eligible: boolean;
   reason: string | null;
   details: string | null;
@@ -23,7 +23,8 @@ export type MigrationSystemData = {
 
 export type MigrationChannelsSelection = {
   baseChannelTrees: ChannelTreeType[];
-  mandatoryMap: Record<string, number[]>;
+  mandatoryMap: [number, number[]][];
+  reversedMandatoryMap: [number, number[]][];
   systemsData: MigrationSystemData[];
 };
 

@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type ReactNode, Component } from "react";
 
 import { Button } from "components/buttons";
 import { DeregisterServer, IssRole, PeripheralDetailData, ServerDetailsForm } from "components/hub";
@@ -9,12 +9,12 @@ export type Props = {
   peripheral: PeripheralDetailData;
 };
 
-export class PeripheralDetails extends React.Component<Props> {
+export class PeripheralDetails extends Component<Props> {
   public constructor(props: Props) {
     super(props);
   }
 
-  public render(): React.ReactNode {
+  public render(): ReactNode {
     return (
       <TopPanel
         title={t("{fqdn} - Peripheral Details", this.props.peripheral)}

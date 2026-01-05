@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Fragment } from "react";
 
 import { DEPRECATED_Select, Form, Text } from "components/input";
 
@@ -8,7 +8,7 @@ type Props = {
   environment: ProjectEnvironmentType;
   errors: any;
   environments: ProjectEnvironmentType[];
-  onChange: Function;
+  onChange: (...args: any[]) => any;
   editing?: boolean;
 };
 
@@ -20,7 +20,7 @@ const EnvironmentForm = (props: Props) => (
       props.onChange(model);
     }}
   >
-    <React.Fragment>
+    <Fragment>
       <div className="row">
         <Text
           required
@@ -58,7 +58,7 @@ const EnvironmentForm = (props: Props) => (
           />
         </div>
       )}
-    </React.Fragment>
+    </Fragment>
   </Form>
 );
 

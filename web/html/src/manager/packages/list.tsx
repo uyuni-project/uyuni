@@ -1,5 +1,4 @@
-import * as React from "react";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { AsyncButton } from "components/buttons";
 import { ActionConfirm } from "components/dialog/ActionConfirm";
@@ -24,13 +23,13 @@ type Props = {
 };
 
 export function PackageList(props: Props) {
-  const [open, setOpen] = React.useState(false);
-  const [selectedPackages, setSelectedPackages] = React.useState<string[]>(props.selected);
-  const [formModel, setFormModel] = React.useState<object>({ binary: "binary", channel: props.selectedChannel });
-  const [channels, setChannels] = React.useState([]);
+  const [open, setOpen] = useState(false);
+  const [selectedPackages, setSelectedPackages] = useState<string[]>(props.selected);
+  const [formModel, setFormModel] = useState<object>({ binary: "binary", channel: props.selectedChannel });
+  const [channels, setChannels] = useState([]);
   const tableRef = useRef<TableRef>(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     let ignore = false;
     Network.get("/rhn/manager/api/channels/owned")
       .then((resp) => {
@@ -139,7 +138,7 @@ export function PackageList(props: Props) {
           data={`/rhn/manager/api/packages/list/${formModel["binary"]}/${formModel["channel"]}`}
           identifier={(item) => item.id}
           initialSortColumnKey="nvrea"
-          selectable={(item) => item.hasOwnProperty("id")}
+          selectable={(item) => "id" in item}
           selectedItems={selectedPackages}
           onSelect={handleSelectedPackages}
           searchField={<SearchField placeholder={t("Filter by package name")} />}

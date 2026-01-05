@@ -1,5 +1,4 @@
-import * as React from "react";
-import { useState } from "react";
+import { type FC, useState } from "react";
 
 import moment from "moment";
 
@@ -26,7 +25,7 @@ export type Props = {
   actionChains?: ActionChain[];
 };
 
-export const SSMProductMigrationFromDryRun: React.FC<Props> = ({
+export const SSMProductMigrationFromDryRun: FC<Props> = ({
   targetProduct,
   selectedChannels,
   systemsData,
@@ -63,23 +62,21 @@ export const SSMProductMigrationFromDryRun: React.FC<Props> = ({
   }
 
   return (
-    <>
-      <TopPanel title={getCurrentTitle()} icon="fa spacewalk-icon-software-channels">
-        <MessagesContainer />
+    <TopPanel title={getCurrentTitle()} icon="fa spacewalk-icon-software-channels">
+      <MessagesContainer />
 
-        {outcomeMessage.length === 0 ? (
-          <MigrationConfirmScheduleForm
-            systemsData={systemsData}
-            actionChains={actionChains ?? []}
-            migrationTarget={targetProduct}
-            migrationChannels={selectedChannels}
-            allowVendorChange={allowVendorChange}
-            onConfirm={performMigration}
-          />
-        ) : (
-          <Messages items={outcomeMessage} />
-        )}
-      </TopPanel>
-    </>
+      {outcomeMessage.length === 0 ? (
+        <MigrationConfirmScheduleForm
+          systemsData={systemsData}
+          actionChains={actionChains ?? []}
+          migrationTarget={targetProduct}
+          migrationChannels={selectedChannels}
+          allowVendorChange={allowVendorChange}
+          onConfirm={performMigration}
+        />
+      ) : (
+        <Messages items={outcomeMessage} />
+      )}
+    </TopPanel>
   );
 };

@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 
@@ -14,7 +14,7 @@ import { TopPanel } from "components/panels/TopPanel";
 import { Utils } from "utils/functions";
 import Network from "utils/network";
 
-// See java/code/src/com/suse/manager/webui/templates/content_management/edit-store.jade
+// See java/core/src/main/resources/com/suse/manager/webui/templates/content_management/edit-store.jade
 declare global {
   interface Window {
     storeId?: any;
@@ -30,7 +30,7 @@ const messageMap = {
   // Nothing for now
 };
 
-type Props = {};
+type Props = Record<never, never>;
 
 type State = {
   storeTypes: string[];
@@ -40,7 +40,7 @@ type State = {
   isInvalid?: boolean;
 };
 
-class CreateImageStore extends React.Component<Props, State> {
+class CreateImageStore extends Component<Props, State> {
   defaultModel: any;
 
   constructor(props: Props) {

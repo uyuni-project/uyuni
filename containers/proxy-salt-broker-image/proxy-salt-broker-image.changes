@@ -1,4 +1,23 @@
 -------------------------------------------------------------------
+Tue Dec 09 13:39:12 CET 2025 - michael.calmer@suse.com
+
+- version 5.2.3
+  * Remove libzypp and container-suseconnect from image
+
+-------------------------------------------------------------------
+Thu Nov 27 11:09:34 CET 2025 - michael.calmer@suse.com
+
+- version 5.2.2
+  * Clean up the image
+
+-------------------------------------------------------------------
+Tue Oct 28 10:18:26 CET 2025 - rosuna@suse.com
+
+- version 5.2.1
+  * Allow existing pylint failures
+  * Bump version to 5.2.0
+
+-------------------------------------------------------------------
 Tue Jun 17 19:40:39 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.8

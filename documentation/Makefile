@@ -18,7 +18,7 @@ PYTHON_DIRS := ../proxy/proxy ../backend/ ../client/rhel/rhnlib/ ../client/rhel/
 # Java doc related
 JAVA_DOC_BIN := `which javadoc`
 JAVA_DOC_SRC_VERSION := 8
-JAVA_DOC_SRC_PATH := ../java/code/src/
+JAVA_DOC_SRC_PATH := ../java/core/src/main/java
 JAVA_DOC_SUBPKGS := "com"
 JAVA_DOC_DIR := javadoc
 JAVA_DOC_CLASSPATH := "../java/lib/*:../java/build/build-lib/*:/usr/share/java/*"

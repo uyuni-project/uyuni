@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Fragment } from "react";
 
 import { isUyuni } from "core/user-preferences";
 
@@ -13,10 +13,10 @@ const products = {
   suma: {
     productName: "SUSE Multi-Linux Manager",
     headerTitle: (
-      <React.Fragment>
+      <Fragment>
         <span>SUSE</span>
         <i className="fa fa-registered" /> <span>Multi-Linux Manager</span>
-      </React.Fragment>
+      </Fragment>
     ),
     bodyTitle: (
       <span>

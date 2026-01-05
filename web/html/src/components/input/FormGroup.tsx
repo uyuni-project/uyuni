@@ -1,10 +1,10 @@
-import * as React from "react";
+import type { ReactNode } from "react";
 
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
 type Props = {
   isError?: boolean;
-  children: React.ReactNode;
+  children: ReactNode;
 
   /** CSS class name to apply to the component */
   className?: string;

@@ -1,5 +1,5 @@
 {
-  "typescript.tsdk": "${workspaceFolder}/web/html/src/node_modules/typescript/lib",
+  "typescript.tsdk": "${workspaceFolder}/web/node_modules/typescript/lib",
   "[javascript][javascriptreact][typescript][typescriptreact][json][jsonc][css][less][scss][html]": {
     "editor.tabSize": 2,
     "files.insertFinalNewline": true,
@@ -21,15 +21,12 @@
   },
   "java.test.config": {
     "vmArgs": [
-      "-Drhn.config.dir=${workspaceFolder}/java/buildconf/test",
-      "-Dlog4j2.configurationFile=${workspaceFolder}/java/buildconf/test/log4j2.properties"
+      "-Drhn.config.dir=${workspaceFolder}/java/buildconf/test"
     ]
   },
   "java.project.referencedLibraries": [
     "java/lib/*.jar", "java/buildconf/ivy/repository/suse/*jar"
   ],
-  "java.project.outputPath": "java/code/out/",
-  "java.project.sourcePaths": ["java/code", "branding/java/code"],
   "editor.defaultFormatter": "dbaeumer.vscode-eslint",
   "editor.formatOnSave": true,
   "ant.home": "/usr/share/ant",
@@ -58,5 +55,9 @@
   
 	"vscode-postgres.virtualFolders": [
     "functions"
-  ]
+  ],
+  "prettier.configPath": "web/.prettierrc",
+  "[json]": {
+    "editor.defaultFormatter": "prettier.prettier-vscode"
+  }
 }

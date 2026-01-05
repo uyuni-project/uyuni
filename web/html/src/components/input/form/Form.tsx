@@ -1,25 +1,38 @@
-import * as React from "react";
+import { type ElementRef, type LegacyRef, type ReactNode, Component, createContext } from "react";
 
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
 import { InputBase } from "../InputBase";
 
-type InputBaseRef = React.ElementRef<typeof InputBase>;
+type InputBaseRef = ElementRef<typeof InputBase>;
 
-type Props = {
+// If a model is specified, you must listen to changes as well (bsc#1244430)
+type WithModel = {
   /** Object storing the data of the form.
    *  Each field name in the form needs to map to a property of this
    *  object. The value is the one displayed in the form */
-  model?: any;
+  model: any;
 
+  /** Function called when the model has been changed.
+   * Takes a new model as single parameter.
+   */
+  onChange: (model: any) => void;
+};
+
+type WithoutModel = {
+  model?: never;
+  onChange?: never;
+};
+
+type Props = (WithModel | WithoutModel) & {
   /** Object storing form field errors */
   errors?: object;
 
   /** Function to trigger when the Submit button is clicked */
-  onSubmit?: Function;
+  onSubmit?: (...args: any[]) => any;
 
   /** A reference to pass to the <form> element */
-  formRef?: React.LegacyRef<HTMLFormElement>;
+  formRef?: LegacyRef<HTMLFormElement>;
 
   /** CSS class of the form */
   className?: string;
@@ -31,12 +44,7 @@ type Props = {
   formDirection?: string;
 
   /** Children elements of the form. Usually includes fields and a submit button */
-  children?: React.ReactNode;
-
-  /** Function called when the model has been changed.
-   * Takes a new model as single parameter.
-   */
-  onChange?: (model: any) => void;
+  children?: ReactNode;
 
   /** Function called after having validated the form.
    * Takes a single parameter indicating whether the form is valid or not.
@@ -53,14 +61,14 @@ type FormContextType = {
   model: any;
   errors: any;
   setModelValue: (name: string, value: any) => any;
-  registerInput: Function;
-  unregisterInput: Function;
+  registerInput: (...args: any[]) => any;
+  unregisterInput: (...args: any[]) => any;
   validateForm: () => void;
 };
 
-export const FormContext = React.createContext<Partial<FormContextType>>({});
+export const FormContext = createContext<Partial<FormContextType>>({});
 
-export class Form extends React.Component<Props> {
+export class Form extends Component<Props> {
   static defaultProps = {
     model: {},
     onSubmit: undefined,

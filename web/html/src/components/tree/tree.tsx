@@ -1,7 +1,7 @@
-import * as React from "react";
-import { useState } from "react";
+import { type ChangeEvent, type ReactNode, useState } from "react";
 
 import { CustomDiv } from "components/custom-objects";
+import { DEPRECATED_onClick } from "components/utils";
 
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
@@ -18,8 +18,8 @@ export type TreeData = {
 
 export type Props = {
   data?: TreeData;
-  renderItem: (item: TreeItem, renderNameColumn: Function) => React.ReactNode;
-  header?: React.ReactNode;
+  renderItem: (item: TreeItem, renderNameColumn: (...args: any[]) => any) => ReactNode;
+  header?: ReactNode;
   initiallyExpanded?: string[];
   onItemSelectionChanged?: (item: TreeItem, checked: boolean) => void;
   initiallySelected?: string[];
@@ -45,7 +45,7 @@ export const Tree = (props: Props) => {
     return selected.indexOf(id) !== -1;
   }
 
-  function handleSelectionChange(changeEvent: React.ChangeEvent): void {
+  function handleSelectionChange(changeEvent: ChangeEvent): void {
     if (changeEvent.target instanceof HTMLInputElement) {
       const { value: id, checked } = changeEvent.target;
 
@@ -72,7 +72,10 @@ export const Tree = (props: Props) => {
     const renderNameColumn = (name: string) => {
       const className = children.length > 0 ? "product-hover pointer" : "";
       return (
-        <span className={`product-description ${className}`} onClick={() => handleVisibleSublist(item.id)}>
+        <span
+          className={`product-description ${className}`}
+          {...DEPRECATED_onClick(() => handleVisibleSublist(item.id))}
+        >
           {name}
         </span>
       );
@@ -96,7 +99,7 @@ export const Tree = (props: Props) => {
             {children.length > 0 && (
               <i
                 className={`fa ${openSubListIconClass} fa-1-5x pointer product-hover`}
-                onClick={() => handleVisibleSublist(item.id)}
+                {...DEPRECATED_onClick(() => handleVisibleSublist(item.id))}
               />
             )}
           </CustomDiv>

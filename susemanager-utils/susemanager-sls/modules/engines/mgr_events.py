@@ -104,6 +104,7 @@ class Responder:
             re.compile(r"salt\/batch\/([^\/]+)\/start"),
             re.compile(r"suse\/manager\/(image_deployed|image_synced|pxe_update)"),
             re.compile(r"suse\/systemid\/generate"),
+            re.compile(r"suse\/proxy\/backup_finished"),
         ]
         self._queue = []
         self.event_bus = event_bus

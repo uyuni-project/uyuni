@@ -9,13 +9,14 @@
 {% for alias, data in repos.items() %}
 {% if grains['os_family'] == 'Debian' %}
 {% for entry in data %}
-{% if (repos_disabled.match_str in entry['file'])|string == repos_disabled.matching|string and entry.get('enabled', True) %} 
+{% if (repos_disabled.match_str in entry['file'])|string == repos_disabled.matching|string and entry.get('enabled', True) %}
 disable_repo_{{ repos_disabled.count }}:
   mgrcompat.module_run:
     - name: pkg.mod_repo
     - repo: {{ "'" ~ entry.line ~ "'" }}
     - kwargs:
         disabled: True
+        refresh: False
 {% do repos_disabled.update({'count': repos_disabled.count + 1}) %}
 {% endif %}
 {% endfor %}
@@ -27,6 +28,7 @@ disable_repo_{{ alias }}:
     - repo: {{ alias }}
     - kwargs:
         enabled: False
+        refresh: False
     - require:
 {%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
       - saltutil: sync_states
@@ -37,3 +39,9 @@ disable_repo_{{ alias }}:
 {% endif %}
 {% endif %}
 {% endfor %}
+
+{% if repos_disabled.count > 0 %}
+refresh_db_after_disable:
+  mgrcompat.module_run:
+    - name: pkg.refresh_db
+{% endif %}

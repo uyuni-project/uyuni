@@ -40,6 +40,7 @@ Feature: Migrate a SLES 15 SP6 Salt minion to 15 SP7
     And I wait until I see "Target Products:" text, refreshing the page
     And I wait until I see "SUSE Linux Enterprise Server 15 SP7 x86_64" text
     And I click on "Select Channels"
+    When I select the channel "Custom Channel for sle15sp7_minion"
     And I check "allowVendorChange"
     And I click on "Schedule Migration"
     Then I should see a "Product Migration - Confirm" text

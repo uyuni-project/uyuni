@@ -4,6 +4,8 @@ import { forwardRef, useRef, useState } from "react";
 
 import ReactDatePicker from "react-datepicker";
 
+import { DEPRECATED_onClick } from "components/utils";
+
 import { localizedMoment, parseTimeString } from "utils";
 
 // Turn this on to view internal state under the picker in the UI
@@ -135,7 +137,7 @@ export const DateTimePicker = (props: Props) => {
               key="calendar"
               className="input-group-addon input-group-text"
               data-picker-type="date"
-              onClick={() => openDatePicker()}
+              {...DEPRECATED_onClick(() => openDatePicker())}
             >
               <i className="fa fa-calendar"></i>
             </span>
@@ -185,7 +187,7 @@ export const DateTimePicker = (props: Props) => {
               key="clock"
               className="input-group-addon input-group-text no-right-border"
               data-picker-type="time"
-              onClick={openTimePicker}
+              {...DEPRECATED_onClick(openTimePicker)}
             >
               <i className="fa fa-clock-o"></i>
             </span>

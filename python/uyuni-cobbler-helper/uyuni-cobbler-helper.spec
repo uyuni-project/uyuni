@@ -20,12 +20,13 @@
 
 %{?!python_module:%define python_module() python-%{**} python3-%{**}}
 Name:           uyuni-cobbler-helper
-Version:        5.2.0
+Version:        5.2.1
 Release:        0
 Summary:        Python helper functions for %{productprettyname} Cobbler snippets
 License:        Apache-2.0
 Group:          System/Management
 URL:            https://github.com/uyuni-project/uyuni
+#!CreateArchive: %{name}
 Source0:        %{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
@@ -52,6 +53,7 @@ This package provides utility functions to expose %{productprettyname} data to C
 
 
 %files %{python_files}
+%license LICENSE
 %{python_sitelib}/uyuni_cobbler_helper.py
 
 %changelog

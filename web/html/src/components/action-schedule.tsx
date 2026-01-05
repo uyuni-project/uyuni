@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import { DateTimePicker } from "components/datetime";
 import { Loading } from "components/utils/loading/Loading";
@@ -45,7 +45,7 @@ type ActionScheduleState = {
   actionType: string;
 };
 
-class ActionSchedule extends React.Component<ActionScheduleProps, ActionScheduleState> {
+class ActionSchedule extends Component<ActionScheduleProps, ActionScheduleState> {
   newActionChainOpt = { id: Number(0), text: t("new action chain") };
 
   constructor(props: ActionScheduleProps) {
@@ -115,7 +115,7 @@ class ActionSchedule extends React.Component<ActionScheduleProps, ActionSchedule
   };
 
   handleResponseError = (jqXHR) => {
-    Loggerhead.error(Network.responseErrorMessage(jqXHR).toString());
+    Loggerhead.error(Network.responseErrorMessage(jqXHR));
     this.setState({ loading: false });
   };
 

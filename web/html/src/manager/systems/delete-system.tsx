@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type ReactNode, Component } from "react";
 
 import { AsyncButton, Button } from "components/buttons";
 import { Dialog } from "components/dialog/LegacyDialog";
@@ -15,7 +15,7 @@ const messageMap = {
 type Props = {
   serverId: string;
   buttonClass?: string;
-  buttonText?: React.ReactNode;
+  buttonText?: ReactNode;
   onDeleteSuccess?: (...args: any[]) => any;
 };
 
@@ -24,7 +24,7 @@ type State = {
   cleanupErr: boolean;
 };
 
-class DeleteSystem extends React.Component<Props, State> {
+class DeleteSystem extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {

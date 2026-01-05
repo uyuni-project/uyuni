@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import { AsyncButton } from "components/buttons";
 import { ActionLink } from "components/links";
@@ -14,7 +14,7 @@ type ProxyType = {
   path: string[];
 };
 
-// See java/code/src/com/suse/manager/webui/templates/minion/proxy.jade
+// See java/core/src/main/resources/com/suse/manager/webui/templates/minion/proxy.jade
 declare global {
   interface Window {
     proxies?: any;
@@ -33,7 +33,7 @@ type State = {
   proxy: number;
 };
 
-class Proxy extends React.Component<Props, State> {
+class Proxy extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
@@ -100,6 +100,7 @@ class Proxy extends React.Component<Props, State> {
         text={t("Change Proxy")}
         action={this.onSet}
         disabled={!window.minions?.length}
+        key="change"
       />,
     ];
 

@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import { Button } from "components/buttons";
 import { DeleteDialog } from "components/dialog/DeleteDialog";
@@ -23,7 +23,7 @@ type State = {
   nodes?: any;
 };
 
-class VirtualHostManagerDetails extends React.Component<Props, State> {
+class VirtualHostManagerDetails extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -152,7 +152,7 @@ function ConfigParams(props) {
     .filter((key) => !key.includes("secret"))
     .map((key) => {
       return (
-        <tr>
+        <tr key={key}>
           <td>{Utils.capitalize(key)}:</td>
           <td>{data.config[key]}</td>
         </tr>

@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import Creatable from "react-select/creatable";
 
@@ -33,7 +33,7 @@ type ComboboxState = {
   focused: boolean;
 };
 
-export class Combobox extends React.Component<ComboboxProps, ComboboxState> {
+export class Combobox extends Component<ComboboxProps, ComboboxState> {
   onChange = (selectedOption: ReactSelectItem) => {
     if (selectedOption.id && selectedOption.value) {
       return this.props.onSelect({
@@ -42,7 +42,7 @@ export class Combobox extends React.Component<ComboboxProps, ComboboxState> {
       });
     }
 
-    const sanitizedLabel = selectedOption.label && selectedOption.label.replace(/[',]/g, "");
+    const sanitizedLabel = selectedOption.label?.replace(/[',]/g, "");
 
     // It means a new option was created
     return this.props.onSelect({
@@ -65,11 +65,11 @@ export class Combobox extends React.Component<ComboboxProps, ComboboxState> {
 
         return styles;
       },
-      menu: (styles: {}) => ({
+      menu: (styles: Record<string, any>) => ({
         ...styles,
         zIndex: 3,
       }),
-      menuPortal: (styles: {}) => ({
+      menuPortal: (styles: Record<string, any>) => ({
         ...styles,
         zIndex: 9999,
       }),

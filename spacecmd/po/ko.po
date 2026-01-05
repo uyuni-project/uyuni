@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-10 09:51+0200\n"
-"PO-Revision-Date: 2025-06-17 07:59+0000\n"
+"POT-Creation-Date: 2025-11-21 10:50+0100\n"
+"PO-Revision-Date: 2025-11-17 09:04+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/spacecmd/ko/>\n"
 "Language: ko\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.12.1\n"
+"X-Generator: Weblate 5.14.3\n"
 
 #: ../src/spacecmd/activationkey.py:53
 msgid "activationkey_addpackages: Add packages to an activation key"
@@ -4002,27 +4002,7 @@ msgid "proxy_container_config: create a proxy system and return its configuratio
 msgstr "proxy_container_config: 프록시 시스템을 생성하고 구성 파일을 반환합니다."
 
 #: ../src/spacecmd/proxy.py:46
-#, fuzzy, python-format
-#| msgid ""
-#| "usage: proxy_container_config [options] PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL ROOT_CA CRT KEY\n"
-#| "\n"
-#| "parameters:\n"
-#| "  PROXY_FQDN  the unique, DNS-resolvable FQDN of this proxy.\n"
-#| "  SERVER_FQDN the fully qualified domain name of the server to connect to proxy to.\n"
-#| "  MAX_CACHE   the maximum cache size in MB. 60% of the storage is a good value.\n"
-#| "  EMAIL       the email of the proxy administrator\n"
-#| "  CA          path to the root CA used to sign the proxy certificate in PEM format\n"
-#| "  CRT         path to the proxy certificate in PEM format\n"
-#| "  KEY         path to the proxy certificate private key in PEM format\n"
-#| "\n"
-#| "options:\n"
-#| "  -o, --output Path where to create the generated configuration. Default: 'config.tar.gz'\n"
-#| "  -p, --ssh-port SSH port the proxy listens one. Default: 8022\n"
-#| "  -i, --intermediate-ca  Path to an intermediate CA used to sign the proxy\n"
-#| "            certicate in PEM format. May be provided multiple times.\n"
-#| "\n"
-#| "examples:\n"
-#| "  proxy_container_config -o config.zip proxy.lab server.lab 1024 proxy@acme.org root_ca.crt proxy.crt proxy.key\n"
+#, python-format
 msgid ""
 "usage: proxy_container_config [options] PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL ROOT_CA CRT KEY\n"
 "\n"
@@ -4044,7 +4024,7 @@ msgid ""
 "examples:\n"
 "  proxy_container_config -o config.zip proxy.lab server.lab 1024 proxy@acme.org root_ca.crt proxy.crt proxy.key\n"
 msgstr ""
-"% o사용: proxy_container_config [options] PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL ROOT_CA CRT KEY\n"
+"사용법: proxy_container_config [options] PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL ROOT_CA CRT KEY\n"
 "\n"
 "파라미터:\n"
 "  PROXY_FQDN  이 프록시의 고유한 DNS 확인 가능 FQDN입니다.\n"
@@ -4109,7 +4089,7 @@ msgid ""
 "options:\n"
 "  -o, --output Path where to create the generated configuration. Default: 'config.tar.gz'\n"
 "  -p, --ssh-port SSH port the proxy listens one. Default: 8022\n"
-"  --ca-crt path to the certificate of the CA to use to generate a new proxy certificate.\n"
+"  --ca-cert path to the certificate of the CA to use to generate a new proxy certificate.\n"
 "           Using /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT by default.\n"
 "  --ca-key path to the private key of the CA to use to generate a new proxy certificate.\n"
 "           Using /root/ssl-build/RHN-ORG-PRIVATE-SSL-KEY by default.\n"
@@ -4128,7 +4108,7 @@ msgstr ""
 "사용법: proxy_container_config_generate_cert PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL\n"
 "\n"
 "파라미터:\n"
-"  PROXY_FQDN  생성할 프록시의 정규화된 도메인 이름입니다.\n"
+"  PROXY_FQDN  이 프록시의 고유한 DNS 확인 가능 FQDN입니다.\n"
 "  SERVER_FQDN 프록시에 연결할 서버의 정규화된 도메인 이름입니다.\n"
 "  MAX_CACHE   최대 캐시 크기(MB)입니다. 스토리지의 60%가 적합합니다.\n"
 "  EMAIL       프록시 관리자의 전자 메일입니다.\n"
@@ -4453,7 +4433,7 @@ msgstr "사용법: report_ipaddresses [<SYSTEMS>]"
 #: ../src/spacecmd/system.py:3957 ../src/spacecmd/system.py:4280
 #: ../src/spacecmd/system.py:4443 ../src/spacecmd/system.py:4514
 #: ../src/spacecmd/system.py:4568 ../src/spacecmd/system.py:4638
-#: ../src/spacecmd/system.py:4705
+#: ../src/spacecmd/system.py:4705 ../src/spacecmd/system.py:5087
 msgid "No systems selected"
 msgstr "시스템을 선택하지 않음"
 
@@ -8029,6 +8009,20 @@ msgstr "'{}'을(를) 부트스트랩하는 중입니다. 잠시 시간이 걸릴
 msgid "Initial phase successfully finished. Check event history for actions still running"
 msgstr "초기 단계가 완료되었습니다. 아직 실행 중인 작업에 대한 이벤트 기록을 확인하십시오."
 
+#: ../src/spacecmd/system.py:5059
+msgid "system_needrebootafterupdate: Shows whether a reboot would be needed if available patches were applied"
+msgstr ""
+
+#. pylint: disable-next=consider-using-f-string
+#: ../src/spacecmd/system.py:5108
+msgid "System '{}' needs to be rebooted after update"
+msgstr ""
+
+#. pylint: disable-next=consider-using-f-string
+#: ../src/spacecmd/system.py:5117
+msgid "No reboot needed for system '{}' after applying available updates"
+msgstr ""
+
 #: ../src/spacecmd/user.py:53
 msgid "user_create: Create an user"
 msgstr "user_create: 사용자 생성"
@@ -8382,7 +8376,7 @@ msgstr "{} 파라미터가 문자열 유형이 아니라 {}입니다."
 
 #: ../src/bin/spacecmd:54
 msgid "Welcome to spacecmd, a command-line interface to Spacewalk."
-msgstr ""
+msgstr "Spacewalk의 명령줄 인터페이스인 spacecmd에 오신 것을 환영합니다."
 
 #: ../src/bin/spacecmd:82
 msgid "Unhandled exception occurred while getting FQDN:"
@@ -8390,65 +8384,57 @@ msgstr "FQDN을 가져오는 중 처리되지 않은 예외 발생:"
 
 #: ../src/bin/spacecmd:110
 msgid "config file to use [default: ~/.spacecmd/config]"
-msgstr ""
+msgstr "[default: ~/.spacecmd/config]를 사용하기 위한 구성 파일"
 
 #: ../src/bin/spacecmd:113
-#, fuzzy
-#| msgid "logout: Disconnect from the server"
 msgid "use this username to connect to the server"
-msgstr "logout: 서버 연결 끊기"
+msgstr "이 사용자 이름을 사용하여 서버에 연결"
 
 #: ../src/bin/spacecmd:119
 msgid "use this password to connect to the server (insecure). Use config instead or spacecmd will ask."
-msgstr ""
+msgstr "이 비밀번호를 사용하여 서버에 연결합니다(안전하지 않음). 대신 config를 사용하거나 spacecmd가 질문합니다."
 
 #: ../src/bin/spacecmd:123
 msgid "connect to this server [default: local hostname]"
-msgstr ""
+msgstr "이 서버 [default: local hostname]에 연결"
 
 #: ../src/bin/spacecmd:126
 msgid "use HTTP instead of HTTPS"
-msgstr ""
+msgstr "HTTPS 대신 HTTP 사용"
 
 #: ../src/bin/spacecmd:129
-#, fuzzy
-#| msgid "history: List your command history"
 msgid "do not store command history"
-msgstr "history: 명령 내역 나열"
+msgstr "명령 내역을 저장하지 않음"
 
 #: ../src/bin/spacecmd:132
 msgid "answer yes for all questions"
-msgstr ""
+msgstr "모든 질문에 예로 답변"
 
 #: ../src/bin/spacecmd:135
 msgid "print only error messages"
-msgstr ""
+msgstr "오류 메시지만 인쇄"
 
 #: ../src/bin/spacecmd:142
 msgid "print debug messages (can be passed multiple times)"
-msgstr ""
+msgstr "디버그 메시지 인쇄(여러 번 전달 가능)"
 
 #: ../src/bin/spacecmd:192
-#, fuzzy, c-format
-#| msgid "source channel %s does not exist!"
+#, c-format
 msgid "Config file %s does not exist."
-msgstr "소스 채널 %s이(가) 없습니다!"
+msgstr "구성 파일 %s이(가) 없습니다."
 
 #: ../src/bin/spacecmd:210
-#, fuzzy, c-format
-#| msgid "Could not read %s"
+#, c-format
 msgid "Could not create %s"
-msgstr "%s을(를) 읽을 수 없음"
+msgstr "%s을(를) 생성할 수 없음"
 
 #: ../src/bin/spacecmd:251
 msgid "User Interrupt"
-msgstr ""
+msgstr "사용자 중단"
 
 #: ../src/bin/spacecmd:292
-#, fuzzy
-#| msgid "Could not find repo %s"
 msgid "Could not find session"
-msgstr "%s 저장소를 찾을 수 없음"
+msgstr "세션을 찾을 수 없음"
 
 #~ msgid "Could not retrieve the Kickstart file"
 #~ msgstr "킥스타트 파일을 가져올 수 없음"

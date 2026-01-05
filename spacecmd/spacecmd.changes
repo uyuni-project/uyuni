@@ -1,4 +1,41 @@
 -------------------------------------------------------------------
+Tue Dec 09 13:41:20 CET 2025 - michael.calmer@suse.com
+
+- version 5.2.4-0
+  * Convert cached IDs to int (bsc#1251995)
+
+-------------------------------------------------------------------
+Thu Nov 27 10:42:37 CET 2025 - michael.calmer@suse.com
+
+- version 5.2.3-0
+  * Fix typo in spacecmd help ca-cert flag (bsc#1253174)
+  * Add subcommand to check if reboot is needed
+    after applying all available patches
+
+-------------------------------------------------------------------
+Mon Oct 27 16:09:26 CET 2025 - rosuna@suse.com
+
+- version 5.2.2-0
+  * Update translation strings
+
+-------------------------------------------------------------------
+Mon Oct 27 15:12:12 CET 2025 - rosuna@suse.com
+
+- version 5.2.1-0
+  * Make caching code Py 2.7 compatible
+  * Use JSON instead of pickle for spacecmd cache (bsc#1227579)
+  * Python 2.7 cannot re-raise exceptions
+  * Fix methods in api namespace in spacecmd (bsc#1249532)
+  * Use "x not in y" instead of "not x in y"
+  * Replace regex functions with more efficient string functions
+  * Allow existing pylint failures
+  * Reformat Python code with black
+  * Make spacecmd to work with Python 3.12 and higher
+  * Call print statements properly in Python 3
+  * Do not break syntax for Python 2.7
+  * Fix the regular expression leading to exception in spacecmd
+
+-------------------------------------------------------------------
 Fri Jul 18 11:59:14 CEST 2025 - michael.calmer@suse.com
 
 - version 5.1.10-0

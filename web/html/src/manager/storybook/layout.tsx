@@ -1,29 +1,21 @@
-import React from "react";
+import type { ReactNode } from "react";
 
 import styles from "./layout.module.scss";
 
 type Props = {
-  children?: React.ReactNode;
+  children?: ReactNode;
 };
 
 export const StorySection = (props: Props) => {
-  return (
-    <>
-      <div className={styles.section}>{props.children}</div>
-    </>
-  );
+  return <div className={styles.section}>{props.children}</div>;
 };
 
 export const StripedStorySection = (props: Props) => {
-  return (
-    <>
-      <div className={`${styles.section} ${styles.striped}`}>{props.children}</div>
-    </>
-  );
+  return <div className={`${styles.section} ${styles.striped}`}>{props.children}</div>;
 };
 
 type RowProps = {
-  children?: React.ReactNode;
+  children?: ReactNode;
 };
 
 export const StoryRow = (props: RowProps) => {

@@ -1,4 +1,20 @@
 -------------------------------------------------------------------
+Thu Nov 27 11:16:21 CET 2025 - michael.calmer@suse.com
+
+- version 5.2.2-0
+  * Correctly handles http proxy empty passwords (bsc#1249502)
+
+-------------------------------------------------------------------
+Mon Oct 27 15:36:50 CET 2025 - rosuna@suse.com
+
+- version 5.2.1-0
+  * Fix spacewalk-hostname-rename with containers (bsc#1229825)
+  * Use absolute paths when invoking external commands
+  * Fix syntax error in changelog
+  * Ensure systems directory with correct permissions
+    in /var/spacewalk
+
+-------------------------------------------------------------------
 Tue Jun 17 19:32:00 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.5-0

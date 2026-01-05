@@ -1,0 +1,243 @@
+/*
+ * Copyright (c) 2009--2014 Red Hat, Inc.
+ * Copyright (c) 2025 SUSE LLC
+ *
+ * This software is licensed to you under the GNU General Public License,
+ * version 2 (GPLv2). There is NO WARRANTY for this software, express or
+ * implied, including the implied warranties of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+ * along with this software; if not, see
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * Red Hat trademarks are not licensed under GPLv2. No permission is
+ * granted to use or replicate Red Hat trademarks that are incorporated
+ * in this software or its documentation.
+ */
+package com.redhat.rhn.testing;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
+import com.redhat.rhn.domain.org.OrgFactory;
+import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.session.WebSession;
+import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.context.Context;
+import com.redhat.rhn.frontend.servlets.PxtCookieManager;
+import com.redhat.rhn.frontend.servlets.PxtSessionDelegate;
+import com.redhat.rhn.frontend.servlets.PxtSessionDelegateFactory;
+import com.redhat.rhn.frontend.struts.RequestContext;
+import com.redhat.rhn.frontend.struts.RhnAction;
+
+import org.apache.struts.action.DynaActionForm;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+
+import java.nio.file.Path;
+import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
+
+import javax.servlet.http.Cookie;
+
+import servletunit.HttpServletRequestSimulator;
+import servletunit.ServletContextSimulator;
+import servletunit.struts.MockStrutsTestCase;
+
+/**
+ * RhnMockStrutsTestCase - simple base class that adds a User to the test since all our
+ * Struts Actions use a User.
+ */
+public class RhnMockStrutsTestCase extends MockStrutsTestCase
+    implements HibernateTestCaseUtils, SaltTestCaseUtils {
+
+    protected Path tmpSaltRoot;
+    protected User user;
+    private boolean committed = false;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @BeforeEach
+    public void setUp() throws Exception {
+        super.setUp();
+
+        RequestContext requestContext = new RequestContext(request);
+        Context ctx = Context.getCurrentContext();
+        ctx.setLocale(Locale.getDefault());
+        ctx.setTimezone(TimeZone.getDefault());
+        PxtCookieManager pxtCookieManager = new PxtCookieManager();
+
+        request.setServerName("localhost");
+        request.setMethod(HttpServletRequestSimulator.GET);
+        user = UserTestUtils.createUser(TestStatics.TEST_USER, TestStatics.TEST_ORG);
+        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        addRequestParameter(RequestContext.USER_ID, user.getId().toString());
+        WebSession s = requestContext.getWebSession();
+        Cookie[] cookies = new Cookie[1];
+        cookies[0] = pxtCookieManager.createPxtCookie(s.getId(), request, 0);
+        request.setCookies(cookies);
+        request.setAttribute("session", s);
+        request.setRequestURI("http://localhost.redhat.com");
+        request.setRequestURL("http://localhost.redhat.com/");
+
+        PxtSessionDelegateFactory pxtDelegateFactory =
+            PxtSessionDelegateFactory.getInstance();
+
+        PxtSessionDelegate pxtDelegate = pxtDelegateFactory.newPxtSessionDelegate();
+
+        pxtDelegate.updateWebUserId(request, response, user.getId());
+        KickstartDataTest.setupTestConfiguration(user);
+
+        tmpSaltRoot = setupSaltConfigurationForTests();
+    }
+
+    /**
+     * Tears down the fixture, and closes the HibernateSession.
+     */
+    @Override
+    @AfterEach
+    public void tearDown() throws Exception {
+        super.tearDown();
+        TestCaseHelper.tearDownHelper();
+        if (committed) {
+            OrgFactory.deleteOrg(user.getOrg().getId(), user);
+            commitAndCloseSession();
+        }
+        committed = false;
+        user = null;
+
+        cleanupSaltConfiguration(tmpSaltRoot);
+    }
+
+
+    protected ServletContextSimulator getContext() {
+        return this.context;
+    }
+
+    /**
+     * Check the Form to make sure it contains a value
+     * @param name of parameter
+     * @param expectedValue expected
+     */
+    protected void verifyFormValue(String name, Object expectedValue) {
+        DynaActionForm form = (DynaActionForm) getActionForm();
+        Object formval = form.get(name);
+        if (expectedValue != null && formval != null) {
+            assertEquals(expectedValue, formval);
+        }
+    }
+
+    /**
+     * Util method to add an "ID" to be selected on a list page.
+     * Usefull for testing list selection code.
+     * @param id you want to add
+     */
+    protected void addSelectedItem(Long id) {
+        addRequestParameter("items_selected", id.toString());
+    }
+
+    /**
+     * Add a request param to simulate a button click on one
+     * of your dispatch actions.  See your processMethodKeys()
+     *
+     * @param key to the button.  See your Struts Action method: processMethodKeys()
+     */
+    protected void addDispatchCall(String key) {
+        addRequestParameter("dispatch",
+                LocalizationService.getInstance().getMessage(key));
+
+    }
+
+    /**
+     * Verify that the attribute "pageList" is setup properly:
+     *
+     * 1) not null
+     * 2) size greater than 0
+     * 3) first item in list is instance of classIn
+     * @param attribName name of list in Request attributes
+     * @param classIn to check first item against.
+     */
+    protected void verifyList(String attribName, Class classIn) {
+        List dr = (List) request.getAttribute(attribName);
+        Assertions.assertNotNull(dr, "Your list: " + attribName + " is null");
+        assertFalse(dr.isEmpty(), "Your list: " + attribName + " is empty");
+        Assertions.assertEquals(classIn, dr.iterator().next().getClass(),
+                "Your list: " + attribName + " is the wrong class");
+    }
+
+    /**
+     * Verify that the attribute "pageList" is setup properly:
+     *
+     * 1) not null
+     * 2) size greater than 0
+     * 3) first item in list is instance of classIn
+     * @param classIn to check first item against.
+     */
+    protected void verifyPageList(Class classIn) {
+        verifyList(RequestContext.PAGE_LIST, classIn);
+    }
+
+
+    /**
+     * Verify that the attribute "pageList" is setup properly:
+     *
+     * 1) not null
+     * 2) size greater than 0
+     * 3) first item in list is instance of classIn
+     * @param attribName name of list in Request attributes
+     * @param classIn to check first item against.
+     */
+    protected void verifyFormList(String attribName, Class classIn) {
+        DynaActionForm form = (DynaActionForm) getActionForm();
+        List dr = (List) form.get(attribName);
+        assertNotNull(dr);
+        assertFalse(dr.isEmpty());
+        assertEquals(classIn, dr.iterator().next().getClass());
+    }
+
+
+
+    /**
+     * Util to check to see that a message is in the response.  Like
+     * verifyActionMessages() but doesn't require a string array.
+     *
+     * @param key to the message.
+     */
+    protected void verifyActionMessage(String key) {
+        String[] messageNames = new String[1];
+        messageNames[0] = key;
+        verifyActionMessages(messageNames);
+    }
+
+    protected void addSubmitted() {
+        request.addParameter(RhnAction.SUBMITTED, Boolean.TRUE.toString());
+    }
+
+    protected void assertBadParamException() {
+        assertTrue(getActualForward().indexOf("errors/badparam.jsp") > 0);
+    }
+
+    protected void assertLookupException() {
+        assertTrue(getActualForward().indexOf("errors/lookup.jsp") > 0);
+    }
+
+    protected void assertPermissionException() {
+        assertTrue(getActualForward().indexOf("errors/Permission.do") > 0);
+    }
+
+    protected void assertException() {
+        assertTrue(getActualForward().indexOf("/errors") > 0);
+    }
+
+    // If we have to commit in mid-test, set up the next transaction correctly
+    protected void commitHappened() {
+        committed = true;
+    }
+}

@@ -49,7 +49,6 @@
 %define ehcache         ( mvn(net.sf.ehcache:ehcache-core) >= 2.10.1 or ehcache-core >= 2.10.1 or ehcache >= 2.10.1)
 %define apache_commons_digester    (apache-commons-digester or jakarta-commons-digester)
 %define apache_commons_discovery   (apache-commons-discovery or jakarta-commons-discovery)
-%define apache_commons_fileupload  (apache-commons-fileupload or jakarta-commons-fileupload)
 %define apache_commons_validator   (apache-commons-validator or jakarta-commons-validator)
 %define apache_commons_compress    (apache-commons-compress or jakarta-commons-compress)
 
@@ -60,7 +59,7 @@
 %endif
 
 Name:           spacewalk-java
-Version:        5.2.0
+Version:        5.2.6
 Release:        0
 Summary:        Java web application files for %{productprettyname}
 License:        GPL-2.0-only
@@ -75,7 +74,8 @@ ExcludeArch:    ia64
 
 BuildRequires:  %{apache_commons_compress}
 BuildRequires:  %{apache_commons_discovery}
-BuildRequires:  %{apache_commons_fileupload}
+BuildRequires:  apache-commons-fileupload2-core
+BuildRequires:  apache-commons-fileupload2-javax
 BuildRequires:  %{apache_commons_validator}
 BuildRequires:  %{ehcache}
 BuildRequires:  ant
@@ -136,7 +136,7 @@ BuildRequires:  quartz
 BuildRequires:  redstone-xmlrpc
 BuildRequires:  salt-netapi-client >= 0.21
 BuildRequires:  simple-core
-BuildRequires:  simple-xml
+BuildRequires:  simplexml
 BuildRequires:  sitemesh
 BuildRequires:  snakeyaml >= 1.33
 BuildRequires:  spark-core
@@ -155,6 +155,7 @@ BuildRequires:  mvn(org.apache.velocity:velocity-engine-core) >= 2.2
 BuildRequires:  mvn(org.hibernate:hibernate-c3p0)
 BuildRequires:  mvn(org.hibernate:hibernate-core)
 BuildRequires:  mvn(org.hibernate:hibernate-ehcache)
+BuildRequires:  servletapi5
 %if 0%{?suse_version}
 BuildRequires:  ant-nodeps
 BuildRequires:  libxml2-tools
@@ -166,7 +167,8 @@ BuildRequires:  libxml2-devel
 Requires:       %{apache_commons_compress}
 Requires:       %{apache_commons_digester}
 Requires:       %{apache_commons_discovery}
-Requires:       %{apache_commons_fileupload}
+Requires:       apache-commons-fileupload2-core
+Requires:       apache-commons-fileupload2-javax
 Requires:       %{ehcache}
 Requires:       apache-commons-beanutils
 Requires:       apache-commons-cli
@@ -217,8 +219,9 @@ Requires:       pgjdbc-ng
 Requires:       prometheus-client-java
 Requires:       redstone-xmlrpc
 Requires:       salt-netapi-client >= 0.21
+BuildRequires:  servletapi5
 Requires:       simple-core
-Requires:       simple-xml
+Requires:       simplexml
 Requires:       sitemesh
 Requires:       snakeyaml >= 1.33
 Requires:       spacewalk-branding
@@ -572,7 +575,7 @@ install -m 644 build/webapp/rhnjava/WEB-INF/lib/rhn-test.jar %{buildroot}%{_data
 cp -a build/classes/com/redhat/rhn/common/conf/test/conf %{buildroot}%{_datadir}/rhn/unit-tests/
 %endif
 install -m 644 conf/log4j2.xml.taskomatic %{buildroot}%{_datadir}/rhn/classes/log4j2.xml
-install -m 644 code/src/ehcache.xml %{buildroot}%{_datadir}/rhn/classes/ehcache.xml
+install -m 644 core/src/main/resources/ehcache.xml %{buildroot}%{_datadir}/rhn/classes/ehcache.xml
 
 install -d -m 755 %{buildroot}%{spacewalksnippetsdir}
 install -m 644 conf/cobbler/snippets/default_motd  %{buildroot}%{spacewalksnippetsdir}/default_motd

@@ -1,5 +1,4 @@
-import * as React from "react";
-import { useState } from "react";
+import { type ReactNode, useContext, useState } from "react";
 
 import { ControlledInput } from "../ControlledInput";
 import { FormContext } from "../form/Form";
@@ -8,7 +7,7 @@ import styles from "./Radio.module.scss";
 
 type RadioOption = {
   /** The label of this option */
-  label: React.ReactNode;
+  label: ReactNode;
   /** The value to set when this option is selected */
   value: string;
   /** Specific title of this option */
@@ -34,13 +33,13 @@ type Props = InputBaseProps & {
   name?: string;
 };
 
-export function Radio(props: Props) {
+export function Radio({ inline = false, openOption = false, required = false, disabled = false, ...props }: Props) {
   const [isPristine, setIsPristine] = useState(true);
 
   const { items, inputClass, ...propsToPass } = props;
-  const formContext = React.useContext(FormContext);
+  const formContext = useContext(FormContext);
   return (
-    <InputBase {...propsToPass}>
+    <InputBase required={required} disabled={disabled} {...propsToPass}>
       {({ setValue, onBlur }) => {
         const onChange = (name, value) => {
           setValue(name, value);
@@ -49,9 +48,9 @@ export function Radio(props: Props) {
 
         const fieldValue = formContext.model?.[props.name || ""] || props.defaultValue || "";
         const isOpenOption =
-          props.openOption && !props.items.some((item) => item.value === fieldValue) && (fieldValue || !isPristine);
+          openOption && !props.items.some((item) => item.value === fieldValue) && (fieldValue || !isPristine);
 
-        const radioClass = props.inline ? "radio-inline" : "radio";
+        const radioClass = inline ? "radio-inline" : "radio";
         return (
           <span className={styles.radio}>
             {props.items.map(({ label, value, title, disabled }) => (
@@ -71,7 +70,7 @@ export function Radio(props: Props) {
               </label>
             ))}
 
-            {props.openOption && (
+            {openOption && (
               <div className={`radio ${styles["open_option_wrapper"]}`}>
                 <label className={`radio-inline ${styles.open_option_wrapper_align_wrapper}`}>
                   <ControlledInput
@@ -99,19 +98,3 @@ export function Radio(props: Props) {
     </InputBase>
   );
 }
-
-Radio.defaultProps = {
-  inline: false,
-  openOption: false,
-  customRadioClass: undefined,
-  inputClass: undefined,
-  defaultValue: undefined,
-  label: undefined,
-  hint: undefined,
-  labelClass: undefined,
-  divClass: undefined,
-  required: false,
-  disabled: false,
-  invalidHint: undefined,
-  onChange: undefined,
-};

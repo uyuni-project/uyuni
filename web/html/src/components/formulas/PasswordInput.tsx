@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import { Utils } from "../../utils/functions";
 import { ElementDefinition } from "./FormulaComponentGenerator";
@@ -18,7 +18,7 @@ type State = {
   showPassword: boolean;
 };
 
-class PasswordInput extends React.Component<Props, State> {
+class PasswordInput extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
 

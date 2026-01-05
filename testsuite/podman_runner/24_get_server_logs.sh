@@ -1,6 +1,12 @@
 #!/bin/bash
 set -xe
 
+if [[ "$(uname)" == "Darwin" ]]; then
+  PODMAN_CMD="podman"
+else
+  PODMAN_CMD="sudo -i podman"
+fi
+
 if [ $# -ne 1 ];
 then
 	echo "Usage: ${0} server_id"
@@ -13,5 +19,5 @@ server_id=${1}
 rm -rfv /tmp/testing/server-logs/${server_id}
 mkdir -p /tmp/testing/server-logs/${server_id}
 sudo -i journalctl > /tmp/testing/server-logs/${server_id}/journalctl.log && chmod 644 /tmp/testing/server-logs/${server_id}/journalctl.log
-sudo -i podman exec server bash -c "supportconfig -R /tmp/server-logs/${server_id} && chmod 644 /tmp/server-logs/${server_id}/*.txz*"
+$PODMAN_CMD exec server bash -c "supportconfig -R /tmp/server-logs/${server_id} && chmod 644 /tmp/server-logs/${server_id}/*.txz*"
 

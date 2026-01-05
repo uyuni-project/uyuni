@@ -1,4 +1,4 @@
-import * as React from "react";
+import type { ReactNode } from "react";
 
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
@@ -39,7 +39,7 @@ export function iconAndName(system: SystemOverview) {
   ];
   const systemIcon = iconMapping
     .filter((item) => item.condition(system))
-    .map((item) => <IconTag type={item.iconType} title={item.iconTitle} />)[0];
+    .map((item) => <IconTag type={item.iconType} title={item.iconTitle} key={item.iconTitle || item.iconType} />)[0];
 
   const proxyIcon = system.proxy ? <IconTag type="header-proxy" title={t("Proxy")} /> : "";
   const mgrServerIcon = system.mgrServer ? <IconTag type="header-mgr-server" title={t("Peripheral Server")} /> : "";
@@ -110,7 +110,7 @@ function statusDisplay(system: any, isAdmin: boolean) {
 
   const { iconType, iconTitle, url } = systems[type];
 
-  let locked: React.ReactNode = "";
+  let locked: ReactNode = "";
   if (DEPRECATED_unsafeEquals(system["locked"], 1)) {
     locked = <IconTag type="system-locked" title={t("System Locked")} />;
   }

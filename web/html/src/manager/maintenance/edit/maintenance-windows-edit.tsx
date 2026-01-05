@@ -1,4 +1,3 @@
-import * as React from "react";
 import { useRef, useState } from "react";
 
 import { AsyncButton, Button } from "components/buttons";
@@ -31,7 +30,7 @@ const MaintenanceWindowsEdit = (props: MaintenanceEditProps) => {
   };
 
   const buttons = [
-    <div className="row">
+    <div className="row" key="update-row">
       <div className="col-md-offset-3 offset-md-3 col-md-6">
         <AsyncButton
           id={"editButton"}
@@ -45,7 +44,7 @@ const MaintenanceWindowsEdit = (props: MaintenanceEditProps) => {
   ];
 
   const buttonsLeft = [
-    <div className="btn-group pull-left">
+    <div className="btn-group pull-left" key="back-button">
       <Button
         id="back-btn"
         className="btn-default"

@@ -1,10 +1,10 @@
-import * as React from "react";
+import { Component } from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
-type Props = {};
+type Props = Record<never, never>;
 
 type State = {
   unreadMessagesLength: any;
@@ -15,7 +15,7 @@ type State = {
   pageUnloading?: boolean;
 };
 
-class Notifications extends React.Component<Props, State> {
+class Notifications extends Component<Props, State> {
   state: State = {
     unreadMessagesLength: null,
     websocket: null,
@@ -39,13 +39,15 @@ class Notifications extends React.Component<Props, State> {
       ws.send('["user-notifications"]');
     };
     ws.onclose = () => {
-      const errs = this.state.errors ? this.state.errors : [];
-      if (!this.state.pageUnloading && !this.state.websocketErr) {
-        errs.push(t("Websocket connection closed. Refresh the page to try again."));
-      }
-      this.setState({
-        errors: errs,
-        websocket: null,
+      this.setState((prevState) => {
+        const errs = prevState.errors ? prevState.errors : [];
+        if (!prevState.pageUnloading && !prevState.websocketErr) {
+          errs.push(t("Websocket connection closed. Refresh the page to try again."));
+        }
+        return {
+          errors: errs,
+          websocket: null,
+        };
       });
     };
     ws.onerror = (e) => {

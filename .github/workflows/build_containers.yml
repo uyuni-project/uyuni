@@ -5,6 +5,7 @@ on: workflow_dispatch
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
+  PLATFORMS: linux/amd64,linux/arm64
 
 jobs:
   build-and-push-server-all-in-one-dev-image:
@@ -16,6 +17,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 #v5.0.0
 
+      - name: Set up QEMU for multi-arch build
+        uses: docker/setup-qemu-action@v3.7.0
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3.11.1
+
       - name: Log in to the Container registry
         uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1 #v3.5.0
         with:
@@ -25,7 +32,7 @@ jobs:
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
-        uses: docker/metadata-action@c1e51972afc2121e065aed6d45c65596fe445f3f #v5.8.0
+        uses: docker/metadata-action@318604b99e75e41977312d83839a89be02ca4893 #v5.9.0
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/ci-test-server-all-in-one-dev
 
@@ -36,9 +43,10 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          platforms: ${{ env.PLATFORMS }}
           build-args: |
             BASE=registry.opensuse.org/uyuni/server
-            VERSION=2025.07
+            VERSION=2025.10
   build-and-push-ubuntu-minion-image:
     runs-on: ubuntu-latest
     permissions:
@@ -49,6 +57,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 #v5.0.0
 
+      - name: Set up QEMU for multi-arch build
+        uses: docker/setup-qemu-action@v3.7.0
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3.11.1
+
       - name: Log in to the Container registry
         uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1 #v3.5.0
         with:
@@ -58,7 +72,7 @@ jobs:
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
-        uses: docker/metadata-action@c1e51972afc2121e065aed6d45c65596fe445f3f #v5.8.0
+        uses: docker/metadata-action@318604b99e75e41977312d83839a89be02ca4893 #v5.9.0
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/ci-test-ubuntu-minion
 
@@ -69,6 +83,8 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          platforms: linux/amd64
+
   build-and-push-opensuse-minion-image:
     runs-on: ubuntu-latest
     permissions:
@@ -79,6 +95,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 #v5.0.0
 
+      - name: Set up QEMU for multi-arch build
+        uses: docker/setup-qemu-action@v3.7.0
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3.11.1
+
       - name: Log in to the Container registry
         uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1 #v3.5.0
         with:
@@ -88,7 +110,7 @@ jobs:
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
-        uses: docker/metadata-action@c1e51972afc2121e065aed6d45c65596fe445f3f #v5.8.0
+        uses: docker/metadata-action@318604b99e75e41977312d83839a89be02ca4893 #v5.9.0
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/ci-test-opensuse-minion
 
@@ -99,6 +121,8 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          platforms: ${{ env.PLATFORMS }}
+
   build-and-push-rocky-minion-image:
     runs-on: ubuntu-latest
     permissions:
@@ -109,6 +133,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 #v5.0.0
 
+      - name: Set up QEMU for multi-arch build
+        uses: docker/setup-qemu-action@v3.7.0
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3.11.1
+
       - name: Log in to the Container registry
         uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1 #v3.5.0
         with:
@@ -118,7 +148,7 @@ jobs:
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
-        uses: docker/metadata-action@c1e51972afc2121e065aed6d45c65596fe445f3f #v5.8.0
+        uses: docker/metadata-action@318604b99e75e41977312d83839a89be02ca4893 #v5.9.0
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/ci-test-rocky-minion
 
@@ -129,6 +159,8 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          platforms: ${{ env.PLATFORMS }}
+
   build-and-push-controller-image:
     runs-on: ubuntu-latest
     permissions:
@@ -139,6 +171,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 #v5.0.0
 
+      - name: Set up QEMU for multi-arch build
+        uses: docker/setup-qemu-action@v3.7.0
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3.11.1
+
       - name: Log in to the Container registry
         uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1 #v3.5.0
         with:
@@ -148,7 +186,7 @@ jobs:
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
-        uses: docker/metadata-action@c1e51972afc2121e065aed6d45c65596fe445f3f #v5.8.0
+        uses: docker/metadata-action@318604b99e75e41977312d83839a89be02ca4893 #v5.9.0
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/ci-test-controller-dev
 
@@ -159,68 +197,7 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-
-  build-and-push-registry-image:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 #v5.0.0
-
-      - name: Log in to the Container registry
-        uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1 #v3.5.0
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@c1e51972afc2121e065aed6d45c65596fe445f3f #v5.8.0
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/ci-container-registry
-
-      - name: Build and push Docker image
-        uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 #v6.18.0
-        with:
-          context: ./testsuite/dockerfiles/container-registry/
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-
-  build-and-push-registry-auth-image:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 #v5.0.0
-
-      - name: Log in to the Container registry
-        uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1 #v3.5.0
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@c1e51972afc2121e065aed6d45c65596fe445f3f #v5.8.0
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/ci-container-registry-auth
-
-      - name: Build and push Docker image
-        uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 #v6.18.0
-        with:
-          context: ./testsuite/dockerfiles/container-registry-auth/
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          platforms: ${{ env.PLATFORMS }}
 
   build-and-push-buildhost-image:
     runs-on: ubuntu-latest
@@ -232,36 +209,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 #v5.0.0
 
-      - name: Log in to the Container registry
-        uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1 #v3.5.0
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Set up QEMU for multi-arch build
+        uses: docker/setup-qemu-action@v3.7.0
 
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@c1e51972afc2121e065aed6d45c65596fe445f3f #v5.8.0
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/ci-buildhost
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3.11.1
 
-      - name: Build and push Docker image
-        uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 #v6.18.0
-        with:
-          context: ./testsuite/dockerfiles/buildhost/
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+      - name: Set up QEMU for multi-arch build
+        uses: docker/setup-qemu-action@v3.7.0
 
-  build-and-push-fakeipmi-image:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 #v5.0.0
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3.11.1
 
       - name: Log in to the Container registry
         uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1 #v3.5.0
@@ -272,7 +230,7 @@ jobs:
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
-        uses: docker/metadata-action@c1e51972afc2121e065aed6d45c65596fe445f3f #v5.8.0
+        uses: docker/metadata-action@318604b99e75e41977312d83839a89be02ca4893 #v5.9.0
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/ci-fakeipmi
 
@@ -283,6 +241,7 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          platforms: ${{ env.PLATFORMS }}
 
   build-and-push-postgresql-image:
     runs-on: ubuntu-latest
@@ -294,6 +253,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 #v5.0.0
 
+      - name: Set up QEMU for multi-arch build
+        uses: docker/setup-qemu-action@v3.7.0
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3.11.1
+
       - name: Log in to the Container registry
         uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1 #v3.5.0
         with:
@@ -303,7 +268,7 @@ jobs:
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
-        uses: docker/metadata-action@c1e51972afc2121e065aed6d45c65596fe445f3f #v5.8.0
+        uses: docker/metadata-action@318604b99e75e41977312d83839a89be02ca4893 #v5.9.0
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/ci-postgresql
 
@@ -314,6 +279,7 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          platforms: ${{ env.PLATFORMS }}
 
   build-and-push-opensuse-test-image:
     runs-on: ubuntu-latest
@@ -325,6 +291,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 #v5.0.0
 
+      - name: Set up QEMU for multi-arch build
+        uses: docker/setup-qemu-action@v3.7.0
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3.11.1
+
       - name: Log in to the Container registry
         uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1 #v3.5.0
         with:
@@ -334,7 +306,44 @@ jobs:
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
-        uses: docker/metadata-action@c1e51972afc2121e065aed6d45c65596fe445f3f #v5.8.0
+        uses: docker/metadata-action@318604b99e75e41977312d83839a89be02ca4893 #v5.9.0
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/opensuse/tumbleweed
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 #v6.18.0
+        with:
+          context: ./testsuite/dockerfiles/opensuse/tumbleweed
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          platforms: ${{ env.PLATFORMS }}
+
+  build-and-push-opensuse-pxeboot-image:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 #v5.0.0
+
+      - name: Set up QEMU for multi-arch build
+        uses: docker/setup-qemu-action@v3.7.0
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3.11.1
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1 #v3.5.0
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@318604b99e75e41977312d83839a89be02ca4893 #v5.9.0
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/opensuse/leap/15.6
 
@@ -345,6 +354,7 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          platforms: ${{ env.PLATFORMS }}
 
   build-and-push-uyuni-master-testsuite-image:
     runs-on: ubuntu-latest
@@ -356,6 +366,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 #v5.0.0
 
+      - name: Set up QEMU for multi-arch build
+        uses: docker/setup-qemu-action@v3.7.0
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3.11.1
+
       - name: Log in to the Container registry
         uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1 #v3.5.0
         with:
@@ -365,7 +381,7 @@ jobs:
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
-        uses: docker/metadata-action@c1e51972afc2121e065aed6d45c65596fe445f3f #v5.8.0
+        uses: docker/metadata-action@318604b99e75e41977312d83839a89be02ca4893 #v5.9.0
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/uyuni-master-testsuite
 
@@ -376,3 +392,4 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          platforms: ${{ env.PLATFORMS }}

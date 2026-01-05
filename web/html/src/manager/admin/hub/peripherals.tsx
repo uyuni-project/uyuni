@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useEffect } from "react";
 
 import { Button, DropdownButton, LinkButton } from "components/buttons";
 import withPageWrapper from "components/general/with-page-wrapper";
@@ -11,7 +11,7 @@ type Props = {
 };
 
 const IssPeripheral = (props: Props) => {
-  React.useEffect(() => {
+  useEffect(() => {
     if (props.flashMessage !== undefined && props.flashMessage.length > 0) {
       showSuccessToastr(props.flashMessage);
     }

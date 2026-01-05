@@ -1,16 +1,9 @@
-import * as React from "react";
-import { useMemo, useState } from "react";
+import { type FC, type ReactNode, useMemo, useState } from "react";
 
 import BaseChannel from "manager/content-management/shared/components/panels/sources/channels/base-channel";
 import { ChannelProcessor } from "manager/content-management/shared/components/panels/sources/channels/channel-processor";
 
-import {
-  BaseChannelType,
-  ChannelTreeType,
-  ChannelType,
-  ChildChannelType,
-  isChildChannel,
-} from "core/channels/type/channels.type";
+import { BaseChannelType, ChannelTreeType, ChildChannelType, isChildChannel } from "core/channels/type/channels.type";
 
 import { Button, SubmitButton } from "components/buttons";
 import { Form, FormGroup, Label, Select } from "components/input";
@@ -24,7 +17,8 @@ type Props = {
   migrationSource: MigrationProduct;
   migrationTarget: MigrationTarget;
   baseChannelTrees: ChannelTreeType[];
-  mandatoryMap: Record<string, number[]>;
+  mandatoryMap: [number, number[]][];
+  reversedMandatoryMap: [number, number[]][];
   baseChannel?: BaseChannelType;
   childChannels?: ChildChannelType[];
   allowVendorChange?: boolean;
@@ -32,11 +26,12 @@ type Props = {
   onBack: () => void;
 };
 
-export const MigrationChannelsSelectorForm: React.FC<Props> = ({
+export const MigrationChannelsSelectorForm: FC<Props> = ({
   migrationSource,
   migrationTarget,
   baseChannelTrees,
   mandatoryMap,
+  reversedMandatoryMap,
   baseChannel,
   childChannels,
   allowVendorChange,
@@ -45,7 +40,7 @@ export const MigrationChannelsSelectorForm: React.FC<Props> = ({
 }): JSX.Element => {
   // Compute and cache the data
   const { channelTrees, channelsMap, baseChannels, requiresMap, requiredByMap } = useMemo(() => {
-    return MigrationUtils.processChannelData(baseChannelTrees, mandatoryMap);
+    return MigrationUtils.processChannelData(baseChannelTrees, mandatoryMap, reversedMandatoryMap);
   }, [baseChannelTrees, mandatoryMap]);
 
   // Cache the processor
@@ -94,13 +89,14 @@ export const MigrationChannelsSelectorForm: React.FC<Props> = ({
     [selectedChildChannels]
   );
 
-  function onToggleChannelSelect(channel: ChannelType, toState?: boolean): void {
+  function onToggleChannelSelect(channelId: number, toState?: boolean): void {
+    const channel = channelProcessor.getChannelById(channelId);
     // Ignore any updates for base channels, the UI uses the dropdown to choose it
     if (!isChildChannel(channel)) {
       return;
     }
 
-    const updatedSet = new Set([...selectedChildChannels]);
+    const updatedSet = new Set(selectedChildChannels);
     const isAddition = toState ?? !updatedSet.has(channel);
 
     const updateAction = isAddition ? updatedSet.add.bind(updatedSet) : updatedSet.delete.bind(updatedSet);
@@ -108,9 +104,7 @@ export const MigrationChannelsSelectorForm: React.FC<Props> = ({
       ? channelProcessor.getRequires(channel.id)
       : channelProcessor.getRequiredBy(channel.id);
 
-    [channel, ...(relatedChannels ?? new Set())]
-      .filter((item) => isChildChannel(item))
-      .forEach((item) => updateAction(item));
+    [channel, ...(relatedChannels ?? [])].filter((item) => isChildChannel(item)).forEach((item) => updateAction(item));
 
     setSelectedChildChannels(updatedSet);
   }
@@ -134,7 +128,7 @@ export const MigrationChannelsSelectorForm: React.FC<Props> = ({
     onChannelSelection(channelTree, selectedAllowVendorChange);
   }
 
-  function renderChildren(): React.ReactNode {
+  function renderChildren(): ReactNode {
     if (selectedChannelTree === undefined) {
       return <></>;
     }

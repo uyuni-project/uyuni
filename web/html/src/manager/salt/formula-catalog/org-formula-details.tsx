@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type ReactNode, Component } from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 
@@ -6,20 +6,20 @@ import { TopPanel } from "components/panels/TopPanel";
 
 import Network from "utils/network";
 
-// See java/code/src/com/suse/manager/webui/templates/formula_catalog/formula.jade
+// See java/core/src/main/resources/com/suse/manager/webui/templates/formula_catalog/formula.jade
 declare global {
   interface Window {
     formulaName?: any;
   }
 }
 
-type Props = {};
+type Props = Record<never, never>;
 
 type State = {
   metadata: any;
 };
 
-class FormulaDetail extends React.Component<Props, State> {
+class FormulaDetail extends Component<Props, State> {
   constructor(props, context) {
     super(props, context);
     this.getServerData();
@@ -36,7 +36,7 @@ class FormulaDetail extends React.Component<Props, State> {
   };
 
   generateMetadata = () => {
-    const metadata: React.ReactNode[] = [];
+    const metadata: ReactNode[] = [];
     for (const item in this.state.metadata) {
       metadata.push(
         <div className="form-group" key={item}>
@@ -69,17 +69,11 @@ class FormulaDetail extends React.Component<Props, State> {
       <TopPanel title={"View Formula: " + window.formulaName} icon="spacewalk-icon-salt-add">
         <form className="form-horizontal">
           <div className="form-group">
-            <label className="col-md-3 control-label">Name:</label>
+            <label className="col-md-3 control-label" htmlFor="name">
+              {t("Name:")}
+            </label>
             <div className="col-md-6">
-              <input
-                className="form-control"
-                type="text"
-                name="name"
-                ref="formulaName"
-                value={window.formulaName}
-                readOnly
-                disabled
-              />
+              <input className="form-control" type="text" name="name" value={window.formulaName} readOnly disabled />
             </div>
           </div>
           {this.generateMetadata()}

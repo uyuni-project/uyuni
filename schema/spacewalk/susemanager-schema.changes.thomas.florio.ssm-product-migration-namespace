@@ -1,0 +1,2 @@
+- Move the SSM product migration endpoints to the correct
+  namespace (bsc#1254263)

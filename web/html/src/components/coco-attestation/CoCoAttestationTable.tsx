@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import { pageSize } from "core/user-preferences";
 
@@ -18,7 +18,7 @@ type Props = {
   onReportDetails: (report: AttestationReport) => void;
 };
 
-class CoCoAttestationTable extends React.Component<Props> {
+class CoCoAttestationTable extends Component<Props> {
   public static readonly defaultProps: Partial<Props> = {
     showSystem: true,
   };

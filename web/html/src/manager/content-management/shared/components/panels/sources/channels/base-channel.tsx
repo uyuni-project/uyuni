@@ -1,8 +1,9 @@
-import * as React from "react";
+import type { FC, ReactElement } from "react";
 
-import { BaseChannelType, ChannelTreeType, ChildChannelType } from "core/channels/type/channels.type";
+import { ChannelTreeType } from "core/channels/type/channels.type";
 
 import { Highlight } from "components/table/Highlight";
+import { DEPRECATED_onClick } from "components/utils";
 
 import { ChannelProcessor } from "./channel-processor";
 import styles from "./channels-selection.module.scss";
@@ -26,12 +27,19 @@ type Props = {
   /** The channel processor used to retrieve the information about the channels */
   channelProcessor: Readonly<ChannelProcessor>;
   /** Callback to invoke when a channel is selected/deselected */
-  onToggleChannelSelect: (channel: BaseChannelType | ChildChannelType, toState?: boolean) => void;
+  onToggleChannelSelect: (channelId: number, toState?: boolean) => void;
   /** callback to invoke when a channel is opened/collapsed */
-  onToggleChannelOpen?: (channel: BaseChannelType) => void;
+  onToggleChannelOpen?: (channelId: number) => void;
 };
 
-const BaseChannel: React.FC<Props> = (props: Props): React.ReactElement => {
+const BaseChannel: FC<Props> = ({
+  search = "",
+  showBase = true,
+  isOpen = true,
+  recommendedToggle = true,
+  onToggleChannelOpen = () => {},
+  ...props
+}: Props): ReactElement => {
   const { base, children } = props.channelTree;
   const { id, name } = base;
 
@@ -44,12 +52,12 @@ const BaseChannel: React.FC<Props> = (props: Props): React.ReactElement => {
     .reduce((total: number, id: number) => total + Number(props.selectedChannelIds.has(id)), 0);
   const totalSelectedCount = Number(isSelected) + selectedChildrenCount;
 
-  function renderBaseChannel(): React.ReactElement {
+  function renderBaseChannel(): ReactElement {
     return (
       <h4
         className={`${styles.base_channel} ${isSelectedBaseChannel ? styles.initial_selected : ""}`}
         title={isSelectedBaseChannel ? t("New base channel") : undefined}
-        onClick={() => props.onToggleChannelOpen?.(base)}
+        {...DEPRECATED_onClick(() => onToggleChannelOpen?.(id))}
       >
         <input
           type="checkbox"
@@ -62,30 +70,30 @@ const BaseChannel: React.FC<Props> = (props: Props): React.ReactElement => {
           onClick={(event) => {
             // Since this element is in another clickable element, don't propagate the event
             event.stopPropagation();
-            props.onToggleChannelSelect(base);
+            props.onToggleChannelSelect(id);
           }}
           disabled={isSelectedBaseChannel}
         />
-        <i className={`${styles.arrow} fa ${props.isOpen ? "fa-angle-down" : "fa-angle-right"}`} />
+        <i className={`${styles.arrow} fa ${isOpen ? "fa-angle-down" : "fa-angle-right"}`} />
         <Highlight
           className={styles.collapsible}
-          enabled={props.search !== undefined && props.search.length > 0}
+          enabled={search !== undefined && search.length > 0}
           text={name}
-          highlight={props.search}
+          highlight={search}
         />
         {totalSelectedCount > 0 && <b className={styles.count}>{`(${totalSelectedCount})`}</b>}
       </h4>
     );
   }
 
-  function renderChildren(): React.ReactElement {
+  function renderChildren(): ReactElement {
     if (props.channelTree.children.length === 0) {
       return <EmptyChild key={`empty_child_${id}`} />;
     }
 
     return (
       <>
-        {props.recommendedToggle && base.recommendedChildren.length > 0 && (
+        {recommendedToggle && base.recommendedChildrenIds.length > 0 && (
           <RecommendedToggle
             key={`recommended_toggle_${id}`}
             base={base}
@@ -97,7 +105,7 @@ const BaseChannel: React.FC<Props> = (props: Props): React.ReactElement => {
           <ChildChannel
             key={child.id}
             channel={child}
-            search={props.search}
+            search={search}
             isSelected={props.selectedChannelIds.has(child.id)}
             channelProcessor={props.channelProcessor}
             onToggleChannelSelect={props.onToggleChannelSelect}
@@ -109,18 +117,10 @@ const BaseChannel: React.FC<Props> = (props: Props): React.ReactElement => {
 
   return (
     <>
-      {props.showBase && renderBaseChannel()}
-      {(props.isOpen || !props.showBase) && renderChildren()}
+      {showBase && renderBaseChannel()}
+      {(isOpen || !showBase) && renderChildren()}
     </>
   );
-};
-
-BaseChannel.defaultProps = {
-  search: "",
-  showBase: true,
-  isOpen: true,
-  recommendedToggle: true,
-  onToggleChannelOpen: () => {},
 };
 
 export default BaseChannel;
