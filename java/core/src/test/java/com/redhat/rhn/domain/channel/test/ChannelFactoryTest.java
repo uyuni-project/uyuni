@@ -85,6 +85,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
             attempt.setLabel(label);
             attempt.setName(label);
             HibernateFactory.getSession().persist(attempt);
+            HibernateFactory.getSession().flush();
         }
         return attempt;
     }
@@ -97,6 +98,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         c.setProductName(pn);
 
         ChannelFactory.save(c);
+        HibernateFactory.getSession().flush();
         return c;
     }
 
@@ -126,6 +128,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         UserManager.addChannelPerm(user, c.getId(), "subscribe");
         UserManager.addChannelPerm(user, c.getId(), "manage");
         ChannelFactory.save(c);
+        HibernateFactory.getSession().flush();
         return c;
     }
 
