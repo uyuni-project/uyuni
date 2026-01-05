@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.security.acl.Access;
 import com.redhat.rhn.common.security.acl.Acl;
 import com.redhat.rhn.domain.access.AccessGroupFactory;
@@ -416,10 +417,6 @@ public class AccessTest extends BaseTestCaseWithUser {
         SystemManager.subscribeServerToChannel(user, serverNoSupport, normalChannel);
         SystemManager.subscribeServerToChannel(user, serverWithSupport, normalChannel);
         SystemManager.subscribeServerToChannel(user, serverWithSupportAndChannel, ptfChannel);
-
-        serverNoSupport = TestUtils.saveAndReload(serverNoSupport);
-        serverWithSupport = TestUtils.saveAndReload(serverWithSupport);
-        serverWithSupportAndChannel = TestUtils.saveAndReload(serverWithSupportAndChannel);
 
         Access access = new Access();
         Map<String, Object> context = new HashMap<>();

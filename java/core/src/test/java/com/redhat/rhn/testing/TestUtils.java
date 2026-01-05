@@ -582,7 +582,7 @@ public class TestUtils {
      */
     public static <T> T merge(T o) {
         Session session = HibernateFactory.getSession();
-        session.persist(o);
+        session.merge(o);
         session.flush();
         return reload(o);
     }
