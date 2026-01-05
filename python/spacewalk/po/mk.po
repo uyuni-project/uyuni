@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-08-22 09:58+0200\n"
-"PO-Revision-Date: 2024-05-09 07:43+0000\n"
-"Last-Translator: Kristijan Fremen Velkovski <me@krisfremen.com>\n"
+"PO-Revision-Date: 2026-01-05 07:04+0000\n"
+"Last-Translator: \"Kristijan \\\"Fremen\\\" Velkovski\" <me@krisfremen.com>\n"
 "Language-Team: Macedonian <https://l10n.opensuse.org/projects/uyuni/backend/mk/>\n"
 "Language: mk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n==1 || n%10==1 ? 0 : 1;\n"
-"X-Generator: Weblate 4.9.1\n"
+"X-Generator: Weblate 5.15.1\n"
 
 #: ../server/apacheAuth.py:72
 #, python-format
@@ -315,11 +315,11 @@ msgstr "Се чини дека ова не е важечко корисничк�
 
 #: ../common/rhnException.py:56
 msgid "Invalid username and password combination."
-msgstr ""
+msgstr "Неважечка комбинација на корисничко име и лозинка."
 
 #: ../common/rhnException.py:57
 msgid "This login is already taken, or the password is incorrect."
-msgstr ""
+msgstr "Ова најавување е веќе преземено или лозинката е неточна."
 
 #: ../common/rhnException.py:58
 msgid "Permission denied."
@@ -327,7 +327,7 @@ msgstr "Не е дозволено."
 
 #: ../common/rhnException.py:59
 msgid "Object not found."
-msgstr ""
+msgstr "Објектот не е пронајден."
 
 #: ../common/rhnException.py:60
 msgid "Invalid System Digital ID."
