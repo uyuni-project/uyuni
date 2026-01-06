@@ -3083,3 +3083,9 @@ INSERT INTO access.namespace (namespace, access_mode, description)
 INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.proxy.backup_configuration', 'W', 'Saves the configuration of a proxy to the server for later conversion')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.channel.software.setAutoSync', 'W', 'Change channel automatic synchronization flag.')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.channel.software.isAutoSync', 'R', 'Get channel automatic synchronization flag status.')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
