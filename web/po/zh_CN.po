@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-12-05 09:23+0100\n"
-"PO-Revision-Date: 2025-11-24 05:04+0000\n"
+"PO-Revision-Date: 2026-01-06 12:04+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/zh_CN/>\n"
 "Language: zh_CN\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.14.3\n"
+"X-Generator: Weblate 5.15.1\n"
 
 #: ../html/javascript/spacewalk-essentials.js:409
 msgid "remaining"
@@ -291,7 +291,7 @@ msgstr "认证日期"
 #: ../html/src/manager/images/image-view.tsx:795
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:53
 msgid "Overview"
-msgstr "概览"
+msgstr "概述"
 
 #: ../html/src/components/coco-attestation/CoCoResult.tsx:19
 msgid "Result Type:"
