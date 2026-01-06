@@ -15,6 +15,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
+import com.redhat.rhn.domain.audit.ScapContent;
 import com.redhat.rhn.domain.audit.ScapFactory;
 import com.redhat.rhn.domain.audit.TailoringFile;
 import com.redhat.rhn.domain.user.User;
@@ -22,6 +23,8 @@ import com.redhat.rhn.domain.user.User;
 import com.suse.manager.webui.controllers.utils.RequestUtil;
 import com.suse.manager.webui.utils.gson.ResultJson;
 import com.suse.utils.Json;
+
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.fileupload2.core.DiskFileItem;
 import org.apache.commons.fileupload2.core.FileUploadException;
@@ -40,6 +43,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -85,6 +91,18 @@ public class ScapAuditController {
         get("/manager/audit/scap/policy/create",
                 withUserPreferences(withCsrfToken(withUser(this::createScapPolicyView))), jade);
 
+        // SCAP Content routes
+        get("/manager/audit/scap/content",
+                withUserPreferences(withCsrfToken(withUser(this::listScapContentView))), jade);
+        get("/manager/audit/scap/content/create",
+                withUserPreferences(withCsrfToken(withUser(this::createScapContentView))), jade);
+        get("/manager/audit/scap/content/edit/:id",
+                withUserPreferences(withCsrfToken(withUser(this::updateScapContentView))), jade);
+
+        post("/manager/api/audit/scap/content/create", withUser(this::createScapContent));
+        post("/manager/api/audit/scap/content/update", withUser(this::updateScapContent));
+        post("/manager/api/audit/scap/content/delete", withUser(this::deleteScapContent));
+
     }
     /**
      * Processes a GET request to get a list of all Tailoring files
@@ -102,7 +120,7 @@ public class ScapAuditController {
         //data.put("tailoringFiles", Json.GSON.toJson(tailoringFiles.));
         data.put("tailoringFiles", collect);
         data.put("tailoringFilesName", Json.GSON.toJson(tailoringFiles.stream()
-          .map(s->s.getName()).collect(Collectors.toList())));
+          .map(TailoringFile::getName).collect(Collectors.toList())));
         return new ModelAndView(data, "templates/audit/list-tailoring-files.jade");
     }
 
@@ -136,6 +154,7 @@ public class ScapAuditController {
     }
 
     private static final String TAILORING_FILES_DIR = "/srv/susemanager/scap/tailoring-files/";
+    private static final String SCAP_CONTENT_DIR = "/srv/susemanager/scap/scap-content";
 
     /**
      * Create a new Tailoring file
@@ -157,8 +176,8 @@ public class ScapAuditController {
                     .orElseThrow(() ->
                             new IllegalArgumentException("Tailoring_file parameter missing"));
 
-            ensureDirectoryExists();
-            saveFileToDirectory(tailoringFileParam);
+            ensureDirectoryExists(TAILORING_FILES_DIR);
+            saveFileToDirectory(tailoringFileParam,TAILORING_FILES_DIR);
             TailoringFile tailoringFile = new TailoringFile(nameParam, tailoringFileParam.getName());
             tailoringFile.setOrg(user.getOrg());
             descriptionParam.ifPresent(tailoringFile::setDescription);
@@ -182,7 +201,7 @@ public class ScapAuditController {
 
         Optional<TailoringFile> tailoringFile =
                 ScapFactory.lookupTailoringFileByIdAndOrg(tailoringFileId, user.getOrg());
-        if (!tailoringFile.isPresent()) {
+        if (tailoringFile.isEmpty()) {
             res.redirect("/rhn/manager/audit/scap/tailoring-file/create");
         }
         Map<String, Object> data = new HashMap<>();
@@ -216,7 +235,7 @@ public class ScapAuditController {
             Optional<TailoringFile> existingFile =
                     ScapFactory.lookupTailoringFileByIdAndOrg(tailoringFileId, user.getOrg());
 
-            if (!existingFile.isPresent()) {
+            if (existingFile.isEmpty()) {
                 return notFound(response, "Tailoring file not found");
             }
             TailoringFile tailoringFile = existingFile.get();
@@ -226,7 +245,7 @@ public class ScapAuditController {
             // Check if a new file was uploaded
             Optional<DiskFileItem> tailoringFileParam = RequestUtil.findFileItem(items, "tailoring_file");
             if (tailoringFileParam.isPresent() && tailoringFileParam.get().getSize() > 0) {
-                ensureDirectoryExists();
+                ensureDirectoryExists(TAILORING_FILES_DIR);
 
                 // Delete old file if it exists
                 File oldFile = new File(TAILORING_FILES_DIR, tailoringFile.getFileName());
@@ -234,7 +253,7 @@ public class ScapAuditController {
                     oldFile.delete();
                 }
 
-                saveFileToDirectory(tailoringFileParam.get());
+                saveFileToDirectory(tailoringFileParam.get(), TAILORING_FILES_DIR);
                 tailoringFile.setFileName(tailoringFileParam.get().getName());
             }
 
@@ -278,15 +297,16 @@ public class ScapAuditController {
     //       for reuse across other controllers
 
     /**
-     * Ensures the tailoring files directory exists
+     * Ensures the provided directory exists
+     * @param directoryIn the directory to check
      * @throws IOException if directory creation fails
      */
-    private void ensureDirectoryExists() throws IOException {
-        File directory = new File(TAILORING_FILES_DIR);
+    private void ensureDirectoryExists(String directoryIn) throws IOException {
+        File directory = new File(directoryIn);
         if (!directory.exists()) {
-            LOG.info("Creating tailoring files directory: {}", TAILORING_FILES_DIR);
+            LOG.info("Creating the requested files directory: {}", directoryIn);
             if (!directory.mkdirs()) {
-                throw new IOException("Failed to create directory: " + TAILORING_FILES_DIR);
+                throw new IOException("Failed to create directory: " + directoryIn);
             }
         }
     }
@@ -294,10 +314,11 @@ public class ScapAuditController {
     /**
      * Saves a file to the tailoring files directory
      * @param fileItem the file to save
+     * @param directory the directory to save the file to
      * @throws IOException if file saving fails
      */
-    private void saveFileToDirectory(DiskFileItem fileItem) throws IOException {
-        File outputFile = new File(TAILORING_FILES_DIR, fileItem.getName());
+    private void saveFileToDirectory(DiskFileItem fileItem, String directory) throws IOException {
+        File outputFile = new File(directory, fileItem.getName());
         try (InputStream in = fileItem.getInputStream();
              FileOutputStream out = new FileOutputStream(outputFile)) {
             IOUtils.copy(in, out);
@@ -355,5 +376,165 @@ public class ScapAuditController {
         data.put("tailoringFiles", GSON.toJson(new Object[]{}));
         
         return new ModelAndView(data, "templates/audit/create-scap-policy.jade");
+    }
+
+    /**
+     * Returns a view to display list of SCAP content
+     *
+     * @param req the request object
+     * @param res the response object
+     * @param user the authorized user
+     * @return the model and view
+     */
+    public ModelAndView listScapContentView(Request req, Response res, User user) {
+        Map<String, Object> data = new HashMap<>();
+        List<ScapContent> scapContentList = ScapFactory.listScapContent(user.getOrg());
+        data.put("scapContent", GSON.toJson(scapContentList));
+        return new ModelAndView(data, "templates/audit/list-scap-content.jade");
+    }
+
+    /**
+     * Returns a view to display form to create SCAP content
+     *
+     * @param req the request object
+     * @param res the response object
+     * @param user the authorized user
+     * @return the model and view
+     */
+    public ModelAndView createScapContentView(Request req, Response res, User user) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("scapContentData", GSON.toJson(new HashMap<>()));
+        return new ModelAndView(data, "templates/audit/create-scap-content.jade");
+    }
+
+    /**
+     * Returns a view to display form to edit SCAP content
+     *
+     * @param req the request object
+     * @param res the response object
+     * @param user the authorized user
+     * @return the model and view
+     */
+    public ModelAndView updateScapContentView(Request req, Response res, User user) {
+        Map<String, Object> data = new HashMap<>();
+        Integer id = Integer.parseInt(req.params("id"));
+        Optional<ScapContent> scapContent = ScapFactory.lookupScapContentByIdAndOrg(id, user.getOrg());
+        
+        if (scapContent.isPresent()) {
+            Map<String, Object> contentData = new HashMap<>();
+            contentData.put("id", scapContent.get().getId());
+            contentData.put("name", scapContent.get().getName());
+            contentData.put("description", scapContent.get().getDescription());
+            contentData.put("fileName", scapContent.get().getFileName());
+            data.put("scapContentData", GSON.toJson(contentData));
+        } else {
+            data.put("scapContentData", GSON.toJson(new HashMap<>()));
+        }
+        
+        return new ModelAndView(data, "templates/audit/create-scap-content.jade");
+    }
+
+    /**
+     * Creates a new SCAP content
+     *
+     * @param req the request object
+     * @param res the response object
+     * @param user the authorized user
+     * @return the result as JSON
+     */
+    public String createScapContent(Request req, Response res, User user) {
+        return handleScapContentUpload(req, res, user, null);
+    }
+
+    /**
+     * Updates an existing SCAP content
+     *
+     * @param req the request object
+     * @param res the response object
+     * @param user the authorized user
+     * @return the result as JSON
+     */
+    public String updateScapContent(Request req, Response res, User user) {
+        try {
+            List<DiskFileItem> items = RequestUtil.parseMultipartRequest(req);
+            String idParam = RequestUtil.findStringParam(items, "id")
+              .orElseThrow(() ->
+                new IllegalArgumentException("ID parameter missing"));
+            Optional<ScapContent> scapContent = ScapFactory.lookupScapContentByIdAndOrg(Integer.parseInt(idParam), user.getOrg());
+
+            if (scapContent.isEmpty()) {
+                return result(res, ResultJson.error("SCAP content not found"));
+            }
+
+            return handleScapContentUpload(req, res, user, scapContent.get());
+        } catch (FileUploadException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Deletes SCAP content
+     *
+     * @param req the request object
+     * @param res the response object
+     * @param user the authorized user
+     * @return the result as JSON
+     */
+    public String deleteScapContent(Request req, Response res, User user) {
+        List<Integer> ids = GSON.fromJson(req.body(), new TypeToken<List<Integer>>() { }.getType());
+        List<ScapContent> scapContentList = ScapFactory.lookupScapContentByIds(
+                ids.stream().map(Long::valueOf).collect(Collectors.toList()), user.getOrg());
+        
+        scapContentList.forEach(content -> {
+            try {
+                Path filePath = Paths.get(SCAP_CONTENT_DIR, content.getFileName());
+                Files.deleteIfExists(filePath);
+            } catch (IOException e) {
+                LOG.error("Error deleting SCAP content file: {}", content.getFileName(), e);
+            }
+            ScapFactory.deleteScapContent(content);
+        });
+        
+        return result(res, ResultJson.success(scapContentList.size()));
+    }
+
+    /**
+     * Handles SCAP content file upload for create and update operations
+     *
+     * @param req the request object
+     * @param res the response object
+     * @param user the user
+     * @param existingContent existing SCAP content or null for create
+     * @return the result as JSON
+     */
+    private String handleScapContentUpload(Request req, Response res, User user, ScapContent existingContent) {
+        try {
+            List<DiskFileItem> items = RequestUtil.parseMultipartRequest(req);
+            String name = RequestUtil.findStringParam(items, "name")
+              .orElseThrow(() ->
+                new IllegalArgumentException("Name parameter missing"));
+            Optional<String> description = RequestUtil.findStringParam(items, "description");
+            DiskFileItem tailoringFileParam = RequestUtil.findFileItem(items, "scapFile")
+              .orElseThrow(() ->
+                new IllegalArgumentException("Tailoring_file parameter missing"));
+
+            ScapContent scapContent = existingContent != null ? existingContent : new ScapContent();
+            scapContent.setName(name.trim());
+            description.ifPresent(scapContent::setDescription);
+
+            if (existingContent == null) {
+                scapContent.setOrg(user.getOrg());
+            }
+            ensureDirectoryExists(SCAP_CONTENT_DIR);
+            saveFileToDirectory(tailoringFileParam, SCAP_CONTENT_DIR);
+            scapContent.setFileName(tailoringFileParam.getName());
+
+            ScapFactory.saveScapContent(scapContent);
+            return result(res, ResultJson.success());
+
+        } catch (Exception e) {
+            LOG.error("Error handling SCAP content upload", e);
+            return handleTailoringFileException(res, e, "creating");
+        }
     }
 }

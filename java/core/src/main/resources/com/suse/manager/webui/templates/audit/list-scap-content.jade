@@ -1,0 +1,11 @@
+include ../common.jade
+
+#scap-content-list
+
+script(type='text/javascript').
+    window.csrfToken = "#{csrf_token}";
+    window.scapContent = !{scapContent};
+
+script(type='text/javascript').
+    spaImportReactPage('audit/list-scap-content')
+        .then(function(module) { module.renderer('scap/list-scap-content') });

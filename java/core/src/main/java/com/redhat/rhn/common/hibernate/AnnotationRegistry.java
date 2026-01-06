@@ -100,6 +100,7 @@ import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.supportdata.SupportDataAction;
 import com.redhat.rhn.domain.action.supportdata.SupportDataActionDetails;
+import com.redhat.rhn.domain.audit.ScapContent;
 import com.redhat.rhn.domain.audit.TailoringFile;
 import com.redhat.rhn.domain.audit.XccdfBenchmark;
 import com.redhat.rhn.domain.audit.XccdfIdent;
@@ -779,6 +780,7 @@ public class AnnotationRegistry {
             WebSessionImpl.class,
             XccdfTestResult.class,
             WebEndpoint.class,
+            ScapContent.class,
             TailoringFile.class
     );
 

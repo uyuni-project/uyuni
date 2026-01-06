@@ -289,6 +289,71 @@ public class ScapFactory extends HibernateFactory {
         scapPolicy.setModified(new Date());
         singleton.saveObject(scapPolicy);
     }
+
+    /**
+     * List all SCAP content objects in the database
+     * @param org the organization
+     * @return Returns a list of SCAP content
+     */
+    public static List<ScapContent> listScapContent(Org org) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<ScapContent> criteria = builder.createQuery(ScapContent.class);
+        Root<ScapContent> root = criteria.from(ScapContent.class);
+        criteria.where(builder.equal(root.get("org"), org));
+        return getSession().createQuery(criteria).getResultList();
+    }
+
+    /**
+     * Lookup for a SCAP content object based on the id and organization
+     * @param id SCAP content ID
+     * @param org the organization
+     * @return optional of SCAP content object
+     */
+    public static Optional<ScapContent> lookupScapContentByIdAndOrg(Integer id, Org org) {
+        if (Objects.isNull(id)) {
+            return Optional.empty();
+        }
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<ScapContent> select = builder.createQuery(ScapContent.class);
+        Root<ScapContent> root = select.from(ScapContent.class);
+        select.where(builder.and(
+                builder.equal(root.get("id"), id),
+                builder.equal(root.get("org"), org)));
+        return getSession().createQuery(select).uniqueResultOptional();
+    }
+
+    /**
+     * Lookup for SCAP content by an id list and organization
+     * @param ids SCAP content id list
+     * @param org the organization
+     * @return Returns a list of SCAP content with the given ids if it exists inside the organization
+     */
+    public static List<ScapContent> lookupScapContentByIds(List<Long> ids, Org org) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<ScapContent> criteria = builder.createQuery(ScapContent.class);
+        Root<ScapContent> root = criteria.from(ScapContent.class);
+        criteria.where(builder.and(
+                root.get("id").in(ids),
+                builder.equal(root.get("org"), org)));
+        return getSession().createQuery(criteria).getResultList();
+    }
+
+    /**
+     * Deletes the SCAP content object from the database
+     * @param scapContent ScapContent object
+     */
+    public static void deleteScapContent(ScapContent scapContent) {
+        getSession().delete(scapContent);
+    }
+
+    /**
+     * Save the SCAP content object to the database
+     * @param scapContent object
+     */
+    public static void saveScapContent(ScapContent scapContent) {
+        scapContent.setModified(new Date());
+        singleton.saveObject(scapContent);
+    }
     /**
      * Get the Logger for the derived class so log messages
      * show up on the correct class.
