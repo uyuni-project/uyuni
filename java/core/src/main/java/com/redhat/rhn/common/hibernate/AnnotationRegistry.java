@@ -248,6 +248,7 @@ import com.redhat.rhn.domain.recurringactions.state.RecurringConfigChannel;
 import com.redhat.rhn.domain.recurringactions.state.RecurringInternalState;
 import com.redhat.rhn.domain.recurringactions.type.RecurringHighstate;
 import com.redhat.rhn.domain.recurringactions.type.RecurringPlaybook;
+import com.redhat.rhn.domain.recurringactions.type.RecurringScapPolicy;
 import com.redhat.rhn.domain.recurringactions.type.RecurringState;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
@@ -671,6 +672,7 @@ public class AnnotationRegistry {
             RecurringInternalState.class,
             RecurringPlaybook.class,
             RecurringState.class,
+            RecurringScapPolicy.class,
             RegistryCredentials.class,
             RegTokenOrgDefault.class,
             ReportDBCredentials.class,

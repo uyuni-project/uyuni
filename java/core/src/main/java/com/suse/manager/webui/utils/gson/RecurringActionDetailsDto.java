@@ -14,8 +14,6 @@
  */
 package com.suse.manager.webui.utils.gson;
 
-import com.suse.manager.webui.utils.ScapPolicyJson;
-
 import java.util.Date;
 import java.util.Map;
 import java.util.Set;

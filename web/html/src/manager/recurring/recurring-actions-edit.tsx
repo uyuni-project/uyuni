@@ -134,7 +134,7 @@ class RecurringActionsEdit extends Component<Props, State> {
   };
 
   getTypes = () => {
-    let types = ["Highstate", "Custom state"];
+    let types = ["Highstate", "Custom state", "Scap Policy"];
     if (window.isControlNode) {
       types = types.concat("Ansible Playbook");
     }

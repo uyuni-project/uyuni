@@ -39,6 +39,7 @@ export enum RecurringActionType {
   CUSTOMSTATE = "CUSTOMSTATE",
   HIGHSTATE = "HIGHSTATE",
   PLAYBOOK = "PLAYBOOK",
+  SCAPPOLICY = "SCAPPOLICY",
 }
 
 type RecurringActionsDetailsProps = {
