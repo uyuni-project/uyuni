@@ -79,6 +79,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I kill running spacewalk-repo-sync for "opensuse_tumbleweed-x86_64" channel
     And I use spacewalk-repo-sync to sync channel "opensuse_tumbleweed-x86_64" including only client tools dependencies
     And I use spacewalk-common-channel to add all "tumbleweed-client-tools-x86_64" channels with arch "x86_64"
+    When I wait until all synchronized channels for "tumbleweed" have finished
 
 @containerized_server
 @proxy
@@ -223,6 +224,11 @@ Feature: Synchronize products in the products page of the Setup Wizard
   Scenario: Installer update channels got enabled when products were added
     When I execute mgr-sync "list channels" with user "admin" and password "admin"
     And I should get "    [I] SLE15-SP7-Installer-Updates for x86_64 SUSE Linux Enterprise Server 15 SP7 x86_64 [sle15-sp7-installer-updates-x86_64]"
+
+@scc_credentials
+  Scenario: Verify all channels are solved
+    When I wait until all synchronized channels have solved their dependencies
+    Then all channels have been synced without errors
 
 @scc_credentials
 @skip_if_github_validation

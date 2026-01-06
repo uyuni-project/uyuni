@@ -852,6 +852,9 @@ Feature: Synchronize products in the products page of the Setup Wizard
 
 # There are no channels for Retail under Uyuni
 
+  Scenario: Verify all channels are solved
+    When I wait until all synchronized channels have solved their dependencies
+    Then all channels have been synced without errors
 
   Scenario: Detect product loading issues from the UI in Build Validation
     Given I am authorized for the "Admin" section
