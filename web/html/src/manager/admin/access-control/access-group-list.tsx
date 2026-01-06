@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { Button, LinkButton } from "components/buttons";
+import { LinkButton } from "components/buttons";
 import { DeleteDialog } from "components/dialog/DeleteDialog";
 import { ModalButton } from "components/dialog/ModalButton";
 import { Messages, MessageType, Utils as MessagesUtils } from "components/messages/messages";
@@ -63,32 +63,24 @@ const AccessGroupList = () => {
   };
 
   const actionButtons = (item: AccessGroupListItem) => {
-    if (item.orgName === "-") {
-      return (
-        <div className="btn-group">
-          <Button className="btn-default btn-sm" icon="fa-user" />
-        </div>
-      );
-    } else {
-      return (
-        <div className="btn-group">
-          <LinkButton
-            className="btn-default btn-sm"
-            icon="fa-pencil"
-            title="Edit Access Group"
-            href={`/rhn/manager/admin/access-control/show-access-group/${item.id}`}
-          />
-          <ModalButton
-            className="btn-default btn-sm"
-            title={t("Delete Access Group")}
-            icon="fa-trash"
-            target="delete-modal"
-            item={item}
-            onClick={(i) => setToDelete(i)}
-          />
-        </div>
-      );
-    }
+    return (
+      <div className="btn-group">
+        <LinkButton
+          className="btn-default btn-sm"
+          icon="fa-pencil"
+          title={t("Edit Access Group")}
+          href={`/rhn/manager/admin/access-control/show-access-group/${item.id}`}
+        />
+        <ModalButton
+          className="btn-default btn-sm"
+          title={t("Delete Access Group")}
+          icon="fa-trash"
+          target="delete-modal"
+          item={item}
+          onClick={(i) => setToDelete(i)}
+        />
+      </div>
+    );
   };
 
   return (
