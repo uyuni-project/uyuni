@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.Row;
+import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.kickstart.KickstartData;
@@ -46,6 +47,7 @@ import com.redhat.rhn.manager.kickstart.KickstartScheduleCommand;
 import com.redhat.rhn.manager.profile.test.ProfileManagerTest;
 import com.redhat.rhn.manager.rhnpackage.test.PackageManagerTest;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
@@ -225,6 +227,15 @@ public class ScheduleKickstartWizardTest extends RhnMockStrutsTestCase {
         addRequestParameter("date_minute", "0");
         addRequestParameter("date_am_pm", "1");
         addRequestParameter(RequestContext.COBBLER_ID, k.getCobblerId());
+
+        TaskomaticApi testApi = new TaskomaticApi() {
+            @Override
+            public void scheduleActionExecution(Action action) {
+                // do not call API in a test
+            }
+        };
+        KickstartScheduleCommand.setTaskomaticApi(testApi);
+
         actionPerform();
         verifyActionMessage("kickstart.schedule.success");
         assertEquals(getActualForward(),
