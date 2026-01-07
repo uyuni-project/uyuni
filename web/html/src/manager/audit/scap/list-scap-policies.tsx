@@ -152,6 +152,7 @@ class ScapPolicy extends React.Component<Props, State> {
               width="15%"
               header={t("Actions")}
               columnClass="text-center"
+              columnKey="actions"
               headerClass="text-center"
               cell={renderActionsColumn}
             />
@@ -164,7 +165,7 @@ class ScapPolicy extends React.Component<Props, State> {
           content={
             <span>
               {t("Are you sure you want to delete the Scap policy")}{" "}
-              <strong>{this.state.selected?.name || t("this file")}</strong>?
+              <strong>{this.state.selected?.policyName || t("this policy")}</strong>?
             </span>
           }
           item={this.state.selected}

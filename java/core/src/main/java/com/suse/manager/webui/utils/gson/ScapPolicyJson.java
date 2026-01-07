@@ -17,6 +17,9 @@ public class ScapPolicyJson {
     /** The policy Name */
     private String policyName;
 
+    /** The policy description */
+    private String description;
+
     /** The earliest execution date (serialized as a String) */
     private String earliest; // Changed to String for manual transformation
 
@@ -77,6 +80,15 @@ public class ScapPolicyJson {
     public void setPolicyName(String policyNameIn) {
         this.policyName = policyNameIn;
     }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String descriptionIn) {
+        this.description = descriptionIn;
+    }
+
     public Integer getId() {
         return id;
     }

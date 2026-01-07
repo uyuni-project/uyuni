@@ -38,6 +38,9 @@ public class ScapPolicy extends BaseDomainHelper {
     @Expose
     private String policyName;
 
+    // The description of the SCAP policy
+    private String description;
+
     // The name of the data stream associated with the SCAP policy
     @Expose
     private String dataStreamName;
@@ -109,6 +112,23 @@ public class ScapPolicy extends BaseDomainHelper {
      */
     public void setPolicyName(String policyName) {
         this.policyName = policyName;
+    }
+
+    /**
+     * Get the description of this SCAP policy.
+     * @return the description of the policy
+     */
+    @Column(name = "description")
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * Sets the description of the SCAP policy.
+     * @param description the description to set
+     */
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     /**

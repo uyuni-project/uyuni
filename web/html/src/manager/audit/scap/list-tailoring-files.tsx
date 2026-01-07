@@ -172,7 +172,7 @@ class TailoringFiles extends React.Component<Props, State> {
               width="45%"
               comparator={Utils.sortByText}
               header={t("Tailoring File Name")}
-              cell={(row) => row.fileName}
+              cell={(row) => row.displayfileName}
             />
             <Column
               key="actions"

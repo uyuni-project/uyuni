@@ -5,6 +5,7 @@ import { Form } from "components/input/form/Form";
 import { FormGroup } from "components/input/FormGroup";
 import { Label } from "components/input/Label";
 import { Text } from "components/input/text/Text";
+import { TextArea } from "components/input/text-area/TextArea";
 import { Select } from "components/input/select/Select";
 import { Messages } from "components/messages/messages";
 import { TopPanel } from "components/panels/TopPanel";
@@ -95,6 +96,9 @@ class ScapPolicy extends React.Component<Props, State> {
       if (this.state.isEditMode && this.state.model.id) {
         jsonPayload.id = this.state.model.id;
       }
+      
+      // Explicitly add checkbox value since unchecked checkboxes don't submit in FormData
+      jsonPayload.fetchRemoteResources = this.state.model.fetchRemoteResources || false;
       
       const endpoint = this.state.isEditMode 
         ? "/rhn/manager/api/audit/scap/policy/update"
@@ -201,6 +205,13 @@ class ScapPolicy extends React.Component<Props, State> {
             name="policyName"
             label={t("Name")}
             required={!isReadOnly}
+            labelClass="col-md-3"
+            divClass="col-md-6"
+            disabled={isReadOnly}
+          />
+          <TextArea
+            name="description"
+            label={t("Description")}
             labelClass="col-md-3"
             divClass="col-md-6"
             disabled={isReadOnly}

@@ -133,29 +133,15 @@ public class ScapAuditController {
     public ModelAndView listTailoringFilesView(Request req, Response res, User user) {
         Map<String, Object> data = new HashMap<>();
         List<TailoringFile> tailoringFiles = ScapFactory.listTailoringFiles(user.getOrg());
-        List<JsonObject> collect = tailoringFiles.stream().map(this::getJsonObject).collect(Collectors.toList());
+        List<JsonObject> collect = tailoringFiles.stream().map(this::convertToTailoringFileJson).collect(Collectors.toList());
 
         //data.put("tailoringFiles", Json.GSON.toJson(tailoringFiles.));
         data.put("tailoringFiles", collect);
         data.put("tailoringFilesName", Json.GSON.toJson(tailoringFiles.stream()
-          .map(TailoringFile::getName).collect(Collectors.toList())));
+          .map(TailoringFile::getDisplayFileName).collect(Collectors.toList())));
         return new ModelAndView(data, "templates/audit/list-tailoring-files.jade");
     }
 
-
-    /**
-     * Creates a JSON object for an {@link TailoringFile} instance
-     *
-     * @param file the TailoringFile instance
-     * @return the JSON object
-     */
-    private  JsonObject getJsonObject(TailoringFile file) {
-        JsonObject json = new JsonObject();
-        json.addProperty("name", file.getName());
-        json.addProperty("id", file.getId());
-        json.addProperty("fileName", file.getFileName());
-        return json;
-    }
 
 
     /**
@@ -192,11 +178,28 @@ public class ScapAuditController {
                             new IllegalArgumentException("Tailoring_file parameter missing"));
 
             ensureDirectoryExists(TAILORING_FILES_DIR);
-            saveFileToDirectory(tailoringFileParam,TAILORING_FILES_DIR);
-            TailoringFile tailoringFile = new TailoringFile(nameParam, tailoringFileParam.getName());
+            
+            // Step 1: Create database entry with original filename (temporary)
+            String originalFilename = tailoringFileParam.getName();
+            TailoringFile tailoringFile = new TailoringFile(nameParam, originalFilename);
             tailoringFile.setOrg(user.getOrg());
             descriptionParam.ifPresent(tailoringFile::setDescription);
             ScapFactory.saveTailoringFile(tailoringFile);
+            
+            // Step 2: Generate unique filename using org ID, name, and original filename
+            String uniqueFilename = generateUniqueFileName(
+                user.getOrg().getId(), 
+                nameParam, 
+                originalFilename
+            );
+            
+            // Step 3: Save file with unique filename
+            saveFileToDirectory(tailoringFileParam, TAILORING_FILES_DIR, uniqueFilename);
+            
+            // Step 4: Update database with unique filename
+            tailoringFile.setFileName(uniqueFilename);
+            ScapFactory.saveTailoringFile(tailoringFile);
+            
             return result(response, ResultJson.success());
         }
         catch (Exception e) {
@@ -223,7 +226,9 @@ public class ScapAuditController {
         data.put("name", tailoringFile.map(TailoringFile::getName).orElse(null));
         data.put("id", tailoringFileId);
         data.put("description", tailoringFile.map(TailoringFile::getDescription).orElse(null));
-        data.put("tailoringFileName", tailoringFile.map(TailoringFile::getFileName).orElse(null));
+        data.put("tailoringFileName", tailoringFile
+            .map(TailoringFile::getDisplayFileName)
+            .orElse(null));
         return new ModelAndView(data, "templates/audit/create-tailoring-file.jade");
     }
     /**
@@ -262,14 +267,23 @@ public class ScapAuditController {
             if (tailoringFileParam.isPresent() && tailoringFileParam.get().getSize() > 0) {
                 ensureDirectoryExists(TAILORING_FILES_DIR);
 
-                // Delete old file if it exists
+                // Delete old file if it exists (using the unique filename from DB)
                 File oldFile = new File(TAILORING_FILES_DIR, tailoringFile.getFileName());
                 if (oldFile.exists()) {
                     oldFile.delete();
                 }
 
-                saveFileToDirectory(tailoringFileParam.get(), TAILORING_FILES_DIR);
-                tailoringFile.setFileName(tailoringFileParam.get().getName());
+                // Generate unique filename for the new file using org ID, name, and original filename
+                String originalFilename = tailoringFileParam.get().getName();
+                String uniqueFilename = generateUniqueFileName(
+                    user.getOrg().getId(),
+                    nameParam,
+                    originalFilename
+                );
+                
+                // Save new file with unique filename
+                saveFileToDirectory(tailoringFileParam.get(), TAILORING_FILES_DIR, uniqueFilename);
+                tailoringFile.setFileName(uniqueFilename);
             }
 
             ScapFactory.saveTailoringFile(tailoringFile);
@@ -334,6 +348,21 @@ public class ScapAuditController {
      */
     private void saveFileToDirectory(DiskFileItem fileItem, String directory) throws IOException {
         File outputFile = new File(directory, fileItem.getName());
+        try (InputStream in = fileItem.getInputStream();
+             FileOutputStream out = new FileOutputStream(outputFile)) {
+            IOUtils.copy(in, out);
+        }
+    }
+    
+    /**
+     * Saves a file to the specified directory with a custom filename
+     * @param fileItem the file to save
+     * @param directory the directory to save the file to
+     * @param customFilename the custom filename to use
+     * @throws IOException if file saving fails
+     */
+    private void saveFileToDirectory(DiskFileItem fileItem, String directory, String customFilename) throws IOException {
+        File outputFile = new File(directory, customFilename);
         try (InputStream in = fileItem.getInputStream();
              FileOutputStream out = new FileOutputStream(outputFile)) {
             IOUtils.copy(in, out);
@@ -461,6 +490,11 @@ public class ScapAuditController {
         JsonObject policyData = new JsonObject();
         policyData.addProperty("id", policy.getId());
         policyData.addProperty("policyName", policy.getPolicyName());
+        
+        if (policy.getDescription() != null) {
+            policyData.addProperty("description", policy.getDescription());
+        }
+        
         policyData.addProperty("dataStreamName", policy.getDataStreamName());
         policyData.addProperty("xccdfProfileId", policy.getXccdfProfileId());
         
@@ -523,6 +557,11 @@ public class ScapAuditController {
         JsonObject policyData = new JsonObject();
         policyData.addProperty("id", policy.getId());
         policyData.addProperty("policyName", policy.getPolicyName());
+        
+        if (policy.getDescription() != null) {
+            policyData.addProperty("description", policy.getDescription());
+        }
+        
         policyData.addProperty("dataStreamName", policy.getDataStreamName());
         policyData.addProperty("xccdfProfileId", policy.getXccdfProfileId());
         
@@ -802,8 +841,30 @@ public class ScapAuditController {
         JsonObject json = new JsonObject();
         json.addProperty("name", file.getName());
         json.addProperty("id", file.getId());
+        // Display the original filename to users, not the unique internal filename
         json.addProperty("fileName", file.getFileName());
+        json.addProperty("displayfileName", file.getDisplayFileName());
         return json;
+    }
+    
+    /**
+     * Generates a unique filename using org ID, tailoring file name, and original filename
+     * Format: {orgId}_{sanitizedName}_{originalFilename}
+     * This approach is more portable for migration/replication scenarios than using database IDs
+     * 
+     * @param orgId the organization ID
+     * @param tailoringFileName the name of the tailoring file (user-provided)
+     * @param originalFilename the original filename
+     * @return the unique filename
+     */
+    private static String generateUniqueFileName(Long orgId, String tailoringFileName, String originalFilename) {
+        // Sanitize the tailoring file name to make it filesystem-safe
+        String sanitizedName = tailoringFileName
+            .replaceAll("[^a-zA-Z0-9-_]", "_")  // Replace non-alphanumeric chars with underscore
+            .replaceAll("_{2,}", "_")            // Replace multiple underscores with single
+            .toLowerCase();
+        
+        return orgId + "_" + sanitizedName + "_" + originalFilename;
     }
 
     /**
@@ -882,6 +943,11 @@ public class ScapAuditController {
                 policyJson.getXccdfProfileId().trim()
             );
             scapPolicy.setOrg(user.getOrg());
+            
+            // Set optional description
+            if (policyJson.getDescription() != null && !policyJson.getDescription().trim().isEmpty()) {
+                scapPolicy.setDescription(policyJson.getDescription().trim());
+            }
 
             // Set optional tailoring file
             if (policyJson.getTailoringFile() != null && !policyJson.getTailoringFile().isEmpty()) {
@@ -945,6 +1011,10 @@ public class ScapAuditController {
             // Update fields
             if (policyJson.getPolicyName() != null && !policyJson.getPolicyName().trim().isEmpty()) {
                 scapPolicy.setPolicyName(policyJson.getPolicyName().trim());
+            }
+
+            if (policyJson.getDescription() != null) {
+                scapPolicy.setDescription(policyJson.getDescription().trim().isEmpty() ? null : policyJson.getDescription().trim());
             }
 
             if (policyJson.getDataStreamName() != null && !policyJson.getDataStreamName().trim().isEmpty()) {
