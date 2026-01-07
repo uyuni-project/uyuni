@@ -276,15 +276,15 @@ public class AccessGroupController {
                 .stream().map(NamespaceJson::getId).collect(Collectors.toList())));
         // Permissions with RW need special treatment
         permissionsMap.get(false).forEach(p -> {
-            if (p.getView() && !p.getModify()) {
+            if (Boolean.TRUE.equals(p.getView()) && Boolean.FALSE.equals(p.getModify())) {
                 namespaces.addAll(NamespaceFactory.find(p.getNamespace(),
                         Set.of(Namespace.AccessMode.R)));
             }
-            else if (p.getModify() && !p.getView()) {
+            else if (Boolean.TRUE.equals(p.getModify()) && Boolean.FALSE.equals(p.getView())) {
                 namespaces.addAll(NamespaceFactory.find(p.getNamespace(),
                         Set.of(Namespace.AccessMode.W)));
             }
-            else if (p.getView() && p.getModify()) {
+            else if (Boolean.TRUE.equals(p.getView()) && Boolean.TRUE.equals(p.getModify())) {
                 namespaces.addAll(NamespaceFactory.find(p.getNamespace(),
                         Set.of(Namespace.AccessMode.R, Namespace.AccessMode.W)));
             }

@@ -115,6 +115,14 @@ public class NamespaceNodeJson implements Comparable<NamespaceNodeJson> {
     }
 
     /**
+     * Gets the description of this node.
+     * @return the description string
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
      * Gets the access mode of this node.
      * @return the access mode string
      */
@@ -130,6 +138,14 @@ public class NamespaceNodeJson implements Comparable<NamespaceNodeJson> {
         return children;
     }
 
+    /**
+     * Gets if the node is API.
+     * @return whether the node is API
+     */
+    public Boolean isAPI() {
+        return isAPI;
+    }
+
     @Override
     public int compareTo(NamespaceNodeJson other) {
         int nameCompare = this.name.compareToIgnoreCase(other.name);
@@ -137,5 +153,24 @@ public class NamespaceNodeJson implements Comparable<NamespaceNodeJson> {
             return nameCompare;
         }
         return this.namespace.compareTo(other.namespace);
+    }
+
+    @Override
+    public boolean equals(Object objectIn) {
+        if (this == objectIn) {
+            return true;
+        }
+        if (!(objectIn instanceof NamespaceNodeJson other)) {
+            return false;
+        }
+        return this.name.equalsIgnoreCase(other.name) &&
+                this.namespace.equals(other.namespace);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name.toLowerCase().hashCode();
+        result = 31 * result + namespace.hashCode();
+        return result;
     }
 }
