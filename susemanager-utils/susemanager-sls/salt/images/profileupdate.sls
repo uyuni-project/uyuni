@@ -32,7 +32,7 @@ mgr_container_remove:
     - args: [ "{{ container_name }}" ]
     - force: False
     - onlyif:
-      - /usr/bin/docker ps -a | /usr/bin/grep "{{ container_name }}" >/dev/null
+      - docker ps -a | grep "{{ container_name }}" >/dev/null
 
 mgr_image_remove:
   mgrcompat.module_run:
@@ -85,7 +85,7 @@ mgr_container_remove:
     - args: [ "{{ container_name }}" ]
     - force: False
     - onlyif:
-      - /usr/bin/docker ps -a | /usr/bin/grep "{{ container_name }}" >/dev/null
+      - docker ps -a | grep "{{ container_name }}" >/dev/null
 
 mgr_image_remove:
   mgrcompat.module_run:

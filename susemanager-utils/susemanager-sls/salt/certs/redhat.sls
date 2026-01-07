@@ -3,7 +3,7 @@ enable_ca_store:
   cmd.run:
     - name: /usr/bin/update-ca-trust enable
     - runas: root
-    - unless: "/usr/bin/update-ca-trust check | /usr/bin/grep \"PEM/JAVA Status: ENABLED\""
+    - unless: "/usr/bin/update-ca-trust check | grep \"PEM/JAVA Status: ENABLED\""
 {%- endif %}
 
 mgr_ca_cert:
