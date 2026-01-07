@@ -10,12 +10,12 @@ import { Utils as MessagesUtils } from "components/messages/messages";
 import { InnerPanel } from "components/panels/InnerPanel";
 import { RecurringEventPicker } from "components/picker/recurring-event-picker";
 import { StatesPicker } from "components/states-picker";
+import { PoliciesPicker } from "components/policies-picker";
 import { Toggler } from "components/toggler";
 
 import Network from "utils/network";
 
 import { DisplayHighstate } from "../state/display-highstate";
-import { PolicyPicker } from "manager/audit/scap/policy-picker";
 
 type Props = {
   schedule?: any;
@@ -98,7 +98,7 @@ class RecurringActionsEdit extends Component<Props, State> {
   matchUrl = (target?: string) => {
     const id = this.state.recurringActionId;
     if (target === "policy") {
-      return "/rhn/manager/api/recurringactions/policies?";
+      return "/rhn/manager/api/recurringactions/policies?" + (id ? "id=" + id : "");
     }
     return "/rhn/manager/api/recurringactions/states?" + (id ? "id=" + id : "") + (target ? "&target=" + target : "");
   };
@@ -134,7 +134,7 @@ class RecurringActionsEdit extends Component<Props, State> {
   };
 
   getTypes = () => {
-    let types = ["Highstate", "Custom state", "Scap Policy"];
+    let types = ["Highstate", "Custom state", "SCAP Policy"];
     if (window.isControlNode) {
       types = types.concat("Ansible Playbook");
     }
@@ -213,7 +213,7 @@ class RecurringActionsEdit extends Component<Props, State> {
   };
 
   onSavePolicies = (policies) => {
-    let { details } = this.state;
+    const { details } = this.state;
     details.policies = policies;
     this.setState({ details });
     return Promise.resolve(policies);
@@ -301,17 +301,15 @@ class RecurringActionsEdit extends Component<Props, State> {
             />
           </span>
         )}
-        {this.state.actionTypeDescription === "Scap Policy" && (
+        {this.state.actionTypeDescription === "SCAP Policy" && (
           <span>
             <h3>
-              {t("Scap Policies")}
+              {t("SCAP Policies")}
               &nbsp;
             </h3>
-            <PolicyPicker
-              type={"policy"}
+            <PoliciesPicker
               matchUrl={() => this.matchUrl("policy")}
               saveRequest={this.onSavePolicies}
-              applyRequest={this.onClickExecute}
             />
           </span>
         )}

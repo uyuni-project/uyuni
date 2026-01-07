@@ -1,0 +1,10 @@
+/* Schedule SCAP Scan Form Styles */
+
+.schedule-scap-scan-form .fetch-remote-checkbox {
+  margin-right: 8px;
+}
+
+.schedule-scap-scan-form .fetch-remote-help {
+  color: #425074;
+  font-size: 13px;
+}

@@ -13,7 +13,7 @@ CREATE TABLE suseRecurringScapPolicy
     rec_id            BIGINT PRIMARY KEY
                       REFERENCES suseRecurringAction(id) ON DELETE CASCADE,
     
-    test_mode         BOOLEAN NOT NULL DEFAULT FALSE,
+    test_mode         CHAR(1) NOT NULL DEFAULT 'N',
     
     scap_policy_id    BIGINT
                       REFERENCES suseScapPolicy(id) ON DELETE CASCADE

@@ -305,6 +305,33 @@ class RecurringActionsDetails extends Component<RecurringActionsDetailsProps, Re
             </Table>
           </div>
         )}
+        {!(this.props.data.actionType === RecurringActionType.SCAPPOLICY && this.state.details?.policies) ? null : (
+          <div className="row">
+            <h3>{t("SCAP Policy for {name}", { name: this.props.data.targetName })}</h3>
+            <Table
+              identifier={(item) => item.id}
+              selectable={false}
+              data={this.state.details.policies}
+              hideHeaderFooter="both"
+            >
+              <Column header={t("Policy Name")} columnKey="policyName" cell={(row) => row.policyName} />
+              <Column header={t("Data Stream")} columnKey="dataStreamName" cell={(row) => row.dataStreamName} />
+              <Column header={t("XCCDF Profile")} columnKey="xccdfProfileId" cell={(row) => row.xccdfProfileId} />
+              <Column
+                columnClass="text-center"
+                headerClass="text-center"
+                header={t("Description")}
+                columnKey="description"
+                cell={(row) => (
+                  <i
+                    className="fa fa-info-circle fa-1-5x text-primary"
+                    title={row.description || t("No description")}
+                  />
+                )}
+              />
+            </Table>
+          </div>
+        )}
         {!(this.props.data.actionType === RecurringActionType.PLAYBOOK && this.state.details)
           ? null
           : this.showPlaybookDetails()}

@@ -64,6 +64,7 @@ import com.suse.manager.webui.utils.gson.PagedDataResultJson;
 import com.suse.manager.webui.utils.gson.RecurringActionDetailsDto;
 import com.suse.manager.webui.utils.gson.RecurringActionScheduleJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
+import com.suse.manager.webui.utils.gson.ScapPolicyJson;
 import com.suse.manager.webui.utils.gson.SimpleMinionJson;
 import com.suse.manager.webui.utils.gson.StateConfigJson;
 
@@ -308,6 +309,23 @@ public class RecurringActionController {
             dto.setStates(StateConfigJson.listOrderedStates(
                     ((RecurringState) action.getRecurringActionType()).getStateConfig()));
         }
+        else if (RecurringActionType.ActionType.SCAPPOLICY.equals(action.getActionType())) {
+            dto.setTest(((RecurringScapPolicy) action.getRecurringActionType()).isTestMode());
+            ScapPolicy policy = ((RecurringScapPolicy) action.getRecurringActionType()).getScapPolicy();
+            if (policy != null) {
+                Set<ScapPolicyJson> policies = new HashSet<>();
+                ScapPolicyJson policyJson = new ScapPolicyJson();
+                policyJson.setId(policy.getId());
+                policyJson.setPolicyName(policy.getPolicyName());
+                policyJson.setDataStreamName(policy.getDataStreamName());
+                policyJson.setXccdfProfileId(policy.getXccdfProfileId());
+                if (policy.getDescription() != null) {
+                    policyJson.setDescription(policy.getDescription());
+                }
+                policies.add(policyJson);
+                dto.setPolicies(policies);
+            }
+        }
         else if (RecurringActionType.ActionType.PLAYBOOK.equals(action.getActionType())) {
             dto.setTest(((RecurringPlaybook) action.getRecurringActionType()).isTestMode());
             dto.setPlaybookPath(((RecurringPlaybook) action.getRecurringActionType()).getPlaybookPath());
@@ -327,8 +345,22 @@ public class RecurringActionController {
      * @return the result JSON object
      */
     public static String listScapPolicies(Request req, Response res, User user) {
-        Map<String, Object> data = new HashMap<>();
+        String idParam = req.queryParams("id");
         List<ScapPolicy> scapPolicies = ScapFactory.listScapPolicies(user.getOrg());
+        
+        // Get assigned policy if editing existing recurring action
+        Set<Integer> assignedPolicyIds = new HashSet<>();
+        if (idParam != null) {
+            Long id = Long.parseLong(idParam);
+            Optional<RecurringAction> action = RecurringActionManager.find(id);
+            if (action.isPresent() && action.get().getRecurringActionType() instanceof RecurringScapPolicy) {
+                ScapPolicy assignedPolicy = ((RecurringScapPolicy) action.get().getRecurringActionType()).getScapPolicy();
+                if (assignedPolicy != null) {
+                    assignedPolicyIds.add(assignedPolicy.getId());
+                }
+            }
+        }
+        
         List<JsonObject> scapPoliciesJson = scapPolicies.stream()
                 .map(policy -> {
                     JsonObject json = new JsonObject();
@@ -336,13 +368,29 @@ public class RecurringActionController {
                     json.addProperty("policyName", policy.getPolicyName());
                     json.addProperty("dataStreamName", policy.getDataStreamName());
                     json.addProperty("xccdfProfileId", policy.getXccdfProfileId());
-                    json.addProperty("tailoringFileName", policy.getTailoringFile().getName());
-                    json.addProperty("tailoringFileProfileId", policy.getTailoringProfileId());
+                    
+                    if (policy.getDescription() != null) {
+                        json.addProperty("description", policy.getDescription());
+                    }
+                    
+                    if (policy.getTailoringFile() != null) {
+                        json.addProperty("tailoringFileName", policy.getTailoringFile().getName());
+                    }
+                    
+                    if (policy.getTailoringProfileId() != null) {
+                        json.addProperty("tailoringFileProfileId", policy.getTailoringProfileId());
+                    }
+                    
+                    // Mark as assigned if this policy is used in the recurring action
+                    json.addProperty("assigned", assignedPolicyIds.contains(policy.getId()));
+                    if (assignedPolicyIds.contains(policy.getId())) {
+                        json.addProperty("position", 1);
+                    }
+                    
                     return json;
                 })
                 .collect(Collectors.toList());
-        //data.put("tailoringFiles", Json.GSON.toJson(tailoringFiles.));
-        data.put("scapPolicies", scapPoliciesJson);
+        
         return json(res, scapPoliciesJson, new TypeToken<>() { });
     }
 
@@ -512,12 +560,14 @@ public class RecurringActionController {
                 ((RecurringState) action.getRecurringActionType()).saveStateConfig(newConfig);
             }
         } else if (action.getRecurringActionType() instanceof RecurringScapPolicy recurringScapPolicy) {
-
-           /* details.getPolicies()
-                    .stream()
-                    .findFirst()
-                    .flatMap(policyJson -> ScapFactory.lookupScapPolicyByIdAndOrg(policyJson.getId(), user.getOrg()))
-                    .ifPresent(recurringScapPolicy::setScapPolicy);*/
+            recurringScapPolicy.setTestMode(details.isTest());
+            if (details.getPolicies() != null && !details.getPolicies().isEmpty()) {
+                details.getPolicies()
+                        .stream()
+                        .findFirst()
+                        .flatMap(policyJson -> ScapFactory.lookupScapPolicyByIdAndOrg(policyJson.getId(), action.getCreator().getOrg()))
+                        .ifPresent(recurringScapPolicy::setScapPolicy);
+            }
         }
         else if (action.getRecurringActionType() instanceof RecurringPlaybook playbookType) {
             setPlaybookDetails(playbookType, details);
