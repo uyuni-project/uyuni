@@ -65,7 +65,7 @@
                 </div>
             </li>
         </rhn:require>
-        <rhn:require acl="all_systems_in_set_have_feature(ftr_package_updates)">
+        <rhn:require acl="authorized_for(systems.software.appstreams); all_systems_in_set_have_feature(ftr_package_updates)">
             <li class="list-group-item">
                 <div class="row">
                     <div class="col-sm-2">
