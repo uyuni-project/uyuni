@@ -1,4 +1,4 @@
-import * as React from "react";
+import { FC, useState } from "react";
 
 import { AppStreamModule, ChannelAppStream } from "manager/appstreams/appstreams.type";
 import { AppStreamsChangesConfirm } from "manager/appstreams/changes-confirm-appstreams";
@@ -11,13 +11,13 @@ import { DISABLE, NO_CHANGE, SSMAppStreamsList } from "./ssm-appstreams-configur
 
 export type Props = { channelAppStreams: ChannelAppStream };
 
-export const SSMAppStreamsConfigure: React.FC<Props> = ({ channelAppStreams }: Props): JSX.Element => {
+export const SSMAppStreamsConfigure: FC<Props> = ({ channelAppStreams }: Props): JSX.Element => {
   const { appStreams } = channelAppStreams;
 
-  const [toEnable, setToEnable] = React.useState<string[]>([]);
-  const [toDisable, setToDisable] = React.useState<string[]>([]);
-  const [showConfirm, setShowConfirm] = React.useState<boolean>(false);
-  const [scheduledMsg, setScheduledMsg] = React.useState<MessageType[]>([]);
+  const [toEnable, setToEnable] = useState<string[]>([]);
+  const [toDisable, setToDisable] = useState<string[]>([]);
+  const [showConfirm, setShowConfirm] = useState<boolean>(false);
+  const [scheduledMsg, setScheduledMsg] = useState<MessageType[]>([]);
 
   const handleActionChange = (moduleKey: string, selectedValue: string) => {
     const allAppStreamsOfModule: AppStreamModule[] = appStreams[moduleKey];

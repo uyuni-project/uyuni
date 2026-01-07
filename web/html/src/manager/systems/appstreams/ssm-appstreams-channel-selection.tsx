@@ -1,4 +1,4 @@
-import * as React from "react";
+import { FC } from "react";
 
 import { SSMAppStreamChannel } from "manager/appstreams/appstreams.type";
 
@@ -9,7 +9,7 @@ type ChannelSelectionProps = {
   channels: SSMAppStreamChannel[];
 };
 
-export const AppStreamsChannelSelection: React.FC<ChannelSelectionProps> = ({ channels }) => {
+export const AppStreamsChannelSelection: FC<ChannelSelectionProps> = ({ channels }) => {
   return (
     <>
       {!channels || channels.length === 0 ? (
