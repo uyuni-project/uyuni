@@ -1180,6 +1180,13 @@ public class ContentManager {
         // align errata and the cache (rhnServerNeededCache)
         alignErrata(src, tgt, errataFilters, user);
 
+        // alignErrata() modifies the database directly, leaving the in-memory object with stale packages.
+        // We need to flush and manually prune these items from the list so the cache calculation
+        // reflects the actual reality of the channel.
+        HibernateFactory.getSession().flush();
+        List<Long> realIds = ChannelFactory.getPackageIds(tgt.getId());
+        tgt.getPackages().removeIf(p -> !realIds.contains(p.getId()));
+
         // align the package cache
         // this must be done after aligning errata since some packages may belong to a retracted erratum and we don't
         // want them in the cache. For this we need the errata to be up-to-date in target
