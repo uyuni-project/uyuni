@@ -21,8 +21,10 @@ import com.redhat.rhn.domain.user.User;
 
 import com.redhat.rhn.frontend.dto.XccdfRuleResultDto;
 import com.redhat.rhn.manager.audit.ScapManager;
+import com.redhat.rhn.manager.audit.scap.xml.BenchMark;
 import com.suse.manager.webui.controllers.utils.RequestUtil;
 import com.suse.manager.webui.utils.gson.ResultJson;
+import com.suse.manager.webui.utils.gson.ScapPolicyJson;
 import com.suse.utils.Json;
 
 import com.google.gson.reflect.TypeToken;
@@ -84,6 +86,15 @@ public class ScapAuditController {
                 withUserPreferences(withCsrfToken(withUser(this::listScapPoliciesView))), jade);
         get("/manager/audit/scap/policy/create",
                 withUserPreferences(withCsrfToken(withUser(this::createScapPolicyView))), jade);
+        get("/manager/audit/scap/policy/edit/:id",
+                withUserPreferences(withCsrfToken(withUser(this::editScapPolicyView))), jade);
+        get("/manager/audit/scap/policy/details/:id",
+                withUserPreferences(withCsrfToken(withUser(this::detailScapPolicyView))), jade);
+        get("/manager/api/audit/profiles/list/:type/:name", withUser(ScapAuditController::getProfileList));
+
+        post("/manager/api/audit/scap/policy/create", withUser(this::createScapPolicy));
+        post("/manager/api/audit/scap/policy/update", withUser(this::updateScapPolicy));
+        post("/manager/api/audit/scap/policy/delete", withUser(this::deleteScapPolicy));
 
         // SCAP Content routes
         get("/manager/audit/scap/content",
@@ -361,6 +372,38 @@ public class ScapAuditController {
      */
     public ModelAndView listScapPoliciesView(Request req, Response res, User user) {
         Map<String, Object> data = new HashMap<>();
+        
+        // Fetch all SCAP policies for the user's organization
+        List<ScapPolicy> scapPolicies = ScapFactory.listScapPolicies(user.getOrg());
+        
+        // Convert policies to JSON objects with all necessary fields
+        List<JsonObject> scapPoliciesJson = scapPolicies.stream()
+                .map(policy -> {
+                    JsonObject json = new JsonObject();
+                    json.addProperty("id", policy.getId());
+                    json.addProperty("policyName", policy.getPolicyName());
+                    json.addProperty("dataStreamName", policy.getDataStreamName());
+                    json.addProperty("xccdfProfileId", policy.getXccdfProfileId());
+                    
+                    // Add tailoring file information if present
+                    if (policy.getTailoringFile() != null) {
+                        json.addProperty("tailoringFileName", policy.getTailoringFile().getName());
+                    } else {
+                        json.addProperty("tailoringFileName", "");
+                    }
+                    
+                    // Add tailoring profile ID if present
+                    if (policy.getTailoringProfileId() != null) {
+                        json.addProperty("tailoringFileProfileId", policy.getTailoringProfileId());
+                    } else {
+                        json.addProperty("tailoringFileProfileId", "");
+                    }
+                    
+                    return json;
+                })
+                .collect(Collectors.toList());
+        
+        data.put("scapPolicies", scapPoliciesJson);
         return new ModelAndView(data, "templates/audit/list-scap-policies.jade");
     }
 
@@ -375,9 +418,144 @@ public class ScapAuditController {
     public ModelAndView createScapPolicyView(Request req, Response res, User user) {
         Map<String, Object> data = new HashMap<>();
         
-        // Add empty arrays to prevent JavaScript syntax errors in the template
-        data.put("scapDataStreams", GSON.toJson(new String[]{}));
-        data.put("tailoringFiles", GSON.toJson(new Object[]{}));
+        // Set default values for create mode
+        data.put("policyData", "null");
+        data.put("isEditMode", false);
+        data.put("isReadOnly", false);
+        
+        // Use shared method to get SCAP data streams
+        data.put("scapDataStreams", GSON.toJson(getScapDataStreams()));
+        
+        // Get tailoring files for the user's organization
+        List<TailoringFile> tailoringFiles = ScapFactory.listTailoringFiles(user.getOrg());
+        List<JsonObject> tailoringFilesJson = tailoringFiles.stream()
+                .map(this::convertToTailoringFileJson)
+                .collect(Collectors.toList());
+        data.put("tailoringFiles", tailoringFilesJson);
+        
+        return new ModelAndView(data, "templates/audit/create-scap-policy.jade");
+    }
+
+    /**
+     * Returns a view to display form to edit SCAP policy
+     *
+     * @param req the request object
+     * @param res the response object
+     * @param user the authorized user
+     * @return the model and view
+     */
+    public ModelAndView editScapPolicyView(Request req, Response res, User user) {
+        Map<String, Object> data = new HashMap<>();
+        Integer policyId = Integer.parseInt(req.params("id"));
+        
+        // Fetch the policy
+        Optional<ScapPolicy> policyOpt = ScapFactory.lookupScapPolicyByIdAndOrg(policyId, user.getOrg());
+        if (policyOpt.isEmpty()) {
+            res.redirect("/rhn/manager/audit/scap/policies");
+            return null;
+        }
+        
+        ScapPolicy policy = policyOpt.get();
+        
+        // Prepare policy data for the form
+        JsonObject policyData = new JsonObject();
+        policyData.addProperty("id", policy.getId());
+        policyData.addProperty("policyName", policy.getPolicyName());
+        policyData.addProperty("dataStreamName", policy.getDataStreamName());
+        policyData.addProperty("xccdfProfileId", policy.getXccdfProfileId());
+        
+        if (policy.getTailoringFile() != null) {
+            policyData.addProperty("tailoringFile", policy.getTailoringFile().getId());
+            policyData.addProperty("tailoringFileName", policy.getTailoringFile().getFileName());
+        }
+        
+        if (policy.getTailoringProfileId() != null) {
+            policyData.addProperty("tailoringProfileId", policy.getTailoringProfileId());
+        }
+        
+        if (policy.getAdvancedArgs() != null) {
+            policyData.addProperty("advancedArgs", policy.getAdvancedArgs());
+        }
+        
+        if (policy.getFetchRemoteResources() != null) {
+            policyData.addProperty("fetchRemoteResources", policy.getFetchRemoteResources());
+        }
+        
+        data.put("policyData", GSON.toJson(policyData));
+        data.put("isEditMode", true);
+        data.put("isReadOnly", false);
+        
+        // Use shared method to get SCAP data streams
+        data.put("scapDataStreams", GSON.toJson(getScapDataStreams()));
+        
+        // Get tailoring files for the user's organization
+        List<TailoringFile> tailoringFiles = ScapFactory.listTailoringFiles(user.getOrg());
+        List<JsonObject> tailoringFilesJson = tailoringFiles.stream()
+                .map(this::convertToTailoringFileJson)
+                .collect(Collectors.toList());
+        data.put("tailoringFiles", tailoringFilesJson);
+        
+        return new ModelAndView(data, "templates/audit/create-scap-policy.jade");
+    }
+
+    /**
+     * Returns a view to display SCAP policy details in readonly mode
+     *
+     * @param req the request object
+     * @param res the response object
+     * @param user the authorized user
+     * @return the model and view
+     */
+    public ModelAndView detailScapPolicyView(Request req, Response res, User user) {
+        Map<String, Object> data = new HashMap<>();
+        Integer policyId = Integer.parseInt(req.params("id"));
+        
+        // Fetch the policy
+        Optional<ScapPolicy> policyOpt = ScapFactory.lookupScapPolicyByIdAndOrg(policyId, user.getOrg());
+        if (policyOpt.isEmpty()) {
+            res.redirect("/rhn/manager/audit/scap/policies");
+            return null;
+        }
+        
+        ScapPolicy policy = policyOpt.get();
+        
+        // Prepare policy data for readonly view
+        JsonObject policyData = new JsonObject();
+        policyData.addProperty("id", policy.getId());
+        policyData.addProperty("policyName", policy.getPolicyName());
+        policyData.addProperty("dataStreamName", policy.getDataStreamName());
+        policyData.addProperty("xccdfProfileId", policy.getXccdfProfileId());
+        
+        if (policy.getTailoringFile() != null) {
+            policyData.addProperty("tailoringFile", policy.getTailoringFile().getId());
+            policyData.addProperty("tailoringFileName", policy.getTailoringFile().getFileName());
+        }
+        
+        if (policy.getTailoringProfileId() != null) {
+            policyData.addProperty("tailoringProfileId", policy.getTailoringProfileId());
+        }
+        
+        if (policy.getAdvancedArgs() != null) {
+            policyData.addProperty("advancedArgs", policy.getAdvancedArgs());
+        }
+        
+        if (policy.getFetchRemoteResources() != null) {
+            policyData.addProperty("fetchRemoteResources", policy.getFetchRemoteResources());
+        }
+        
+        data.put("policyData", GSON.toJson(policyData));
+        data.put("isEditMode", false);
+        data.put("isReadOnly", true);
+        
+        // Use shared method to get SCAP data streams
+        data.put("scapDataStreams", GSON.toJson(getScapDataStreams()));
+        
+        // Get tailoring files for the user's organization
+        List<TailoringFile> tailoringFiles = ScapFactory.listTailoringFiles(user.getOrg());
+        List<JsonObject> tailoringFilesJson = tailoringFiles.stream()
+                .map(this::convertToTailoringFileJson)
+                .collect(Collectors.toList());
+        data.put("tailoringFiles", tailoringFilesJson);
         
         return new ModelAndView(data, "templates/audit/create-scap-policy.jade");
     }
@@ -554,25 +732,14 @@ public class ScapAuditController {
     private ModelAndView scheduleAuditScanView(Request request, Response response, User user, Server server) {
         List<String> imageTypesDataFromTheServer = new ArrayList<>();
         imageTypesDataFromTheServer.add("dockerfile");
-        File scapContentDir = new File(SCAP_CONTENT_STANDARD_DIR);
-        List<String> collect1 = Arrays.stream(scapContentDir.listFiles((dir, name) -> name.endsWith("-ds.xml")))
-          .map(s -> s.getName().toUpperCase().split("-DS.XML")[0]).collect(Collectors.toList());
-        List<String> collect2 = Arrays.stream(scapContentDir.listFiles((dir, name) -> name.endsWith("-xccdf.xml")))
-          .map(s -> s.getName()).collect(Collectors.toList());
-        /*List<File> files1 = Optional.ofNullable(scapContentDir1.listFiles())
-                .map(Arrays::asList)
-                .orElseGet(() -> {
-                    LOG.error("Unable to read formulas from folder '{}'. Check if it exists and have the " +
-                            "correct permissions (755).", scapContentDir.getAbsolutePath());
-                    return Collections.EMPTY_LIST;
-                });*/
 
         Map<String, Object> data = new HashMap<>();
         data.put("activationKeys", new HashMap<>());
         data.put("customDataKeys",new HashMap<>());
         data.put("imageTypesDataFromTheServer", Json.GSON.toJson(imageTypesDataFromTheServer));
-
-        data.put("scapDataStreams", Json.GSON.toJson(collect2));
+        
+        // Use shared method to get SCAP data streams
+        data.put("scapDataStreams", Json.GSON.toJson(getScapDataStreams()));
         List<TailoringFile> tailoringFiles = ScapFactory.listTailoringFiles(user.getOrg());
         List<JsonObject> collect = tailoringFiles.stream().map(this::convertToTailoringFileJson).collect(Collectors.toList());
         data.put("tailoringFiles", collect);
@@ -637,5 +804,217 @@ public class ScapAuditController {
         json.addProperty("id", file.getId());
         json.addProperty("fileName", file.getFileName());
         return json;
+    }
+
+    /**
+     * Reads SCAP content files from the standard directory
+     * @return List of SCAP XCCDF file names
+     */
+    private List<String> getScapDataStreams() {
+        File scapContentDir = new File(SCAP_CONTENT_STANDARD_DIR);
+        if (!scapContentDir.exists() || !scapContentDir.isDirectory()) {
+            LOG.warn("SCAP content directory does not exist: {}", SCAP_CONTENT_STANDARD_DIR);
+            return Collections.emptyList();
+        }
+        
+        File[] xccdfFiles = scapContentDir.listFiles((dir, name) -> name.endsWith("-xccdf.xml"));
+        if (xccdfFiles == null) {
+            return Collections.emptyList();
+        }
+        
+        return Arrays.stream(xccdfFiles)
+                .map(File::getName)
+                .sorted()
+                .collect(Collectors.toList());
+    }
+    /**
+     * Processes a GET request to get a list of all image store objects of a specific type
+     *
+     * @param req  the request object
+     * @param res  the response object
+     * @param user the authorized user
+     * @return the result JSON object
+     */
+    public static Object getProfileList(Request req, Response res, User user) {
+        String location = SCAP_CONTENT_STANDARD_DIR;
+        String contentType = req.params("type");
+        String contentName = req.params("name");
+        if (contentType.equalsIgnoreCase("tailoringFile")) {
+            location = TAILORING_FILES_DIR;
+        }
+        Path dataStream = Paths.get(location).resolve(contentName);
+        try {
+            BenchMark result = ScapManager.getProfileList(dataStream.toFile());
+            return json(res, result.getProfiles());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Creates a new SCAP policy
+     *
+     * @param req the request object
+     * @param res the response object
+     * @param user the authorized user
+     * @return the result as JSON
+     */
+    public String createScapPolicy(Request req, Response res, User user) {
+        try {
+            // Parse JSON request body
+            ScapPolicyJson policyJson = GSON.fromJson(req.body(), ScapPolicyJson.class);
+
+            // Validate required fields
+            if (policyJson.getPolicyName() == null || policyJson.getPolicyName().trim().isEmpty()) {
+                return json(res, ResultJson.error("Policy name is required"));
+            }
+            if (policyJson.getDataStreamName() == null || policyJson.getDataStreamName().trim().isEmpty()) {
+                return json(res, ResultJson.error("Data stream name is required"));
+            }
+            if (policyJson.getXccdfProfileId() == null || policyJson.getXccdfProfileId().trim().isEmpty()) {
+                return json(res, ResultJson.error("XCCDF profile ID is required"));
+            }
+
+            // Create new SCAP policy
+            ScapPolicy scapPolicy = new ScapPolicy(
+                policyJson.getPolicyName().trim(),
+                policyJson.getDataStreamName().trim(),
+                policyJson.getXccdfProfileId().trim()
+            );
+            scapPolicy.setOrg(user.getOrg());
+
+            // Set optional tailoring file
+            if (policyJson.getTailoringFile() != null && !policyJson.getTailoringFile().isEmpty()) {
+                Integer tailoringId = Integer.parseInt(policyJson.getTailoringFile());
+                Optional<TailoringFile> tailoringFile = ScapFactory.lookupTailoringFileByIdAndOrg(tailoringId, user.getOrg());
+                tailoringFile.ifPresent(scapPolicy::setTailoringFile);
+            }
+
+            // Set optional tailoring profile
+            if (policyJson.getTailoringProfileId() != null && !policyJson.getTailoringProfileId().isEmpty()) {
+                scapPolicy.setTailoringProfileId(policyJson.getTailoringProfileId());
+            }
+
+            // Set advanced arguments
+            if (policyJson.getAdvancedArgs() != null && !policyJson.getAdvancedArgs().trim().isEmpty()) {
+                scapPolicy.setAdvancedArgs(policyJson.getAdvancedArgs().trim());
+            }
+
+            // Set fetch remote resources flag
+            if (policyJson.getFetchRemoteResources() != null) {
+                scapPolicy.setFetchRemoteResources(policyJson.getFetchRemoteResources());
+            }
+
+            // Save to database
+            ScapFactory.saveScapPolicy(scapPolicy);
+
+            return json(res, ResultJson.success(scapPolicy.getId()));
+        }
+        catch (Exception e) {
+            LOG.error("Error creating SCAP policy", e);
+            return json(res, ResultJson.error(e.getMessage()));
+        }
+    }
+
+    /**
+     * Updates an existing SCAP policy
+     *
+     * @param req the request object
+     * @param res the response object
+     * @param user the authorized user
+     * @return the result as JSON
+     */
+    public String updateScapPolicy(Request req, Response res, User user) {
+        try {
+            // Parse JSON request body
+            ScapPolicyJson policyJson = GSON.fromJson(req.body(), ScapPolicyJson.class);
+
+            // Validate policy ID
+            if (policyJson.getId() == null) {
+                return json(res, ResultJson.error("Policy ID is required"));
+            }
+
+            Optional<ScapPolicy> scapPolicyOpt = ScapFactory.lookupScapPolicyByIdAndOrg(policyJson.getId(), user.getOrg());
+
+            if (!scapPolicyOpt.isPresent()) {
+                return json(res, ResultJson.error("SCAP policy not found"));
+            }
+
+            ScapPolicy scapPolicy = scapPolicyOpt.get();
+
+            // Update fields
+            if (policyJson.getPolicyName() != null && !policyJson.getPolicyName().trim().isEmpty()) {
+                scapPolicy.setPolicyName(policyJson.getPolicyName().trim());
+            }
+
+            if (policyJson.getDataStreamName() != null && !policyJson.getDataStreamName().trim().isEmpty()) {
+                scapPolicy.setDataStreamName(policyJson.getDataStreamName().trim());
+            }
+
+            if (policyJson.getXccdfProfileId() != null && !policyJson.getXccdfProfileId().trim().isEmpty()) {
+                scapPolicy.setXccdfProfileId(policyJson.getXccdfProfileId().trim());
+            }
+
+            if (policyJson.getTailoringFile() != null && !policyJson.getTailoringFile().isEmpty()) {
+                Integer tailoringId = Integer.parseInt(policyJson.getTailoringFile());
+                Optional<TailoringFile> tailoringFile = ScapFactory.lookupTailoringFileByIdAndOrg(tailoringId, user.getOrg());
+                tailoringFile.ifPresent(scapPolicy::setTailoringFile);
+            } else {
+                scapPolicy.setTailoringFile(null);
+            }
+
+            if (policyJson.getTailoringProfileId() != null) {
+                scapPolicy.setTailoringProfileId(policyJson.getTailoringProfileId().isEmpty() ? null : policyJson.getTailoringProfileId());
+            }
+
+            if (policyJson.getAdvancedArgs() != null) {
+                scapPolicy.setAdvancedArgs(policyJson.getAdvancedArgs().trim().isEmpty() ? null : policyJson.getAdvancedArgs().trim());
+            }
+
+            if (policyJson.getFetchRemoteResources() != null) {
+                scapPolicy.setFetchRemoteResources(policyJson.getFetchRemoteResources());
+            }
+
+            // Save to database
+            ScapFactory.saveScapPolicy(scapPolicy);
+
+            return json(res, ResultJson.success(scapPolicy.getId()));
+        }
+        catch (Exception e) {
+            LOG.error("Error updating SCAP policy", e);
+            return json(res, ResultJson.error(e.getMessage()));
+        }
+    }
+
+    /**
+     * Deletes SCAP policies
+     *
+     * @param req the request object
+     * @param res the response object
+     * @param user the authorized user
+     * @return the result as JSON
+     */
+    public String deleteScapPolicy(Request req, Response res, User user) {
+        try {
+            // Parse array of policy IDs from request body
+            Integer[] policyIds = GSON.fromJson(req.body(), Integer[].class);
+            List<Integer> ids = Arrays.asList(policyIds);
+            
+            // Lookup policies by IDs
+            List<ScapPolicy> scapPolicies = ScapFactory.lookupScapPoliciesByIds(ids, user.getOrg());
+
+            if (scapPolicies.size() < ids.size()) {
+                return json(res, ResultJson.error("One or more SCAP policies not found"));
+            }
+
+            // Delete all policies
+            scapPolicies.forEach(ScapFactory::deleteScapPolicy);
+
+            return json(res, ResultJson.success(scapPolicies.size()));
+        }
+        catch (Exception e) {
+            LOG.error("Error deleting SCAP policies", e);
+            return json(res, ResultJson.error(e.getMessage()));
+        }
     }
 }

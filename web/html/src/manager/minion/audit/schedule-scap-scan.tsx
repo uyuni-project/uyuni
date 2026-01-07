@@ -348,12 +348,24 @@ class ScheduelAuditScan extends React.Component<PropsType, StateType> {
             </FormGroup>
 
             <FormGroup>
+              <Label name={t("Advanced Arguments")} className="col-md-3" />
+              <div className="col-md-6">
+                <Text
+                  name="advancedArgs"
+                  placeholder={t("e.g: --skip-valid --thin-results")}
+                  title={t("Additional command-line arguments for oscap")}
+                />
+              </div>
+            </FormGroup>
+
+            <FormGroup>
               <Label name={t("Fetch Remote Content")} className="col-md-3" />
               <div className="col-md-6">
                 <div className="checkbox">
                   <label>
                     <input
                       type="checkbox"
+                      name="fetchRemoteResources"
                       className="fetch-remote-checkbox"
                       onChange={this.handleTokenChange}
                     />

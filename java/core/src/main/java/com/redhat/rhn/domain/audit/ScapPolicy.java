@@ -51,6 +51,12 @@ public class ScapPolicy extends BaseDomainHelper {
     // The profile ID used for tailoring the SCAP policy
     private String tailoringProfileId;
 
+    // Advanced arguments for oscap command (e.g., --remediate, --skip-valid, --thin-results)
+    private String advancedArgs;
+
+    // Flag to indicate whether to fetch remote resources during SCAP scan
+    private Boolean fetchRemoteResources = false;
+
     // The organization (Org) to which this policy belongs
     private Org org;
 
@@ -173,6 +179,40 @@ public class ScapPolicy extends BaseDomainHelper {
      */
     public void setTailoringProfileId(String tailoringProfileId) {
         this.tailoringProfileId = tailoringProfileId;
+    }
+
+    /**
+     * Get the advanced arguments for oscap command.
+     * @return the advanced arguments
+     */
+    @Column(name = "advanced_args")
+    public String getAdvancedArgs() {
+        return advancedArgs;
+    }
+
+    /**
+     * Set the advanced arguments for oscap command.
+     * @param advancedArgsIn the advanced arguments to set
+     */
+    public void setAdvancedArgs(String advancedArgsIn) {
+        this.advancedArgs = advancedArgsIn;
+    }
+
+    /**
+     * Get whether to fetch remote resources during SCAP scan.
+     * @return true if remote resources should be fetched, false otherwise
+     */
+    @Column(name = "fetch_remote_resources")
+    public Boolean getFetchRemoteResources() {
+        return fetchRemoteResources;
+    }
+
+    /**
+     * Set whether to fetch remote resources during SCAP scan.
+     * @param fetchRemoteResourcesIn true to fetch remote resources, false otherwise
+     */
+    public void setFetchRemoteResources(Boolean fetchRemoteResourcesIn) {
+        this.fetchRemoteResources = fetchRemoteResourcesIn;
     }
 
     /**

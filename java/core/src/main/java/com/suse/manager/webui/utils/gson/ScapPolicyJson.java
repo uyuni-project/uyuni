@@ -32,6 +32,12 @@ public class ScapPolicyJson {
     /** The profile ID from the selected tailoring file */
     private String tailoringProfileId;
 
+    /** Advanced arguments for oscap command */
+    private String advancedArgs;
+
+    /** Whether to fetch remote resources during SCAP scan */
+    private Boolean fetchRemoteResources;
+
     public String getDataStreamName() {
         return dataStreamName;
     }
@@ -91,6 +97,22 @@ public class ScapPolicyJson {
      */
     public void setEarliest(LocalDateTime earliest) {
         this.earliest = earliest != null ? earliest.format(FORMATTER) : null;
+    }
+
+    public String getAdvancedArgs() {
+        return advancedArgs;
+    }
+
+    public void setAdvancedArgs(String advancedArgsIn) {
+        this.advancedArgs = advancedArgsIn;
+    }
+
+    public Boolean getFetchRemoteResources() {
+        return fetchRemoteResources;
+    }
+
+    public void setFetchRemoteResources(Boolean fetchRemoteResourcesIn) {
+        this.fetchRemoteResources = fetchRemoteResourcesIn;
     }
 
     @Override

@@ -1,6 +1,6 @@
 import * as React from "react";
 import SpaRenderer from "core/spa/spa-renderer";
-import { SubmitButton } from "components/buttons";
+import { SubmitButton, LinkButton } from "components/buttons";
 import { Form } from "components/input/form/Form";
 import { FormGroup } from "components/input/FormGroup";
 import { Label } from "components/input/Label";
@@ -24,8 +24,10 @@ type State = {
   tailoringFiles: any;
   earliest: any;
   tailoringFileProfiles: any;
-  xccdfProfiles: [],
-  selectedTailoringFile: string
+  xccdfProfiles: [];
+  selectedTailoringFile: string;
+  isEditMode: boolean;
+  isReadOnly: boolean;
 };
 
 class ScapPolicy extends React.Component<Props, State> {
@@ -33,14 +35,22 @@ class ScapPolicy extends React.Component<Props, State> {
 
   constructor(props) {
     super(props);
+    // policyData is already a JavaScript object from the template, not a JSON string
+    const policyData = window.policyData || null;
+    const isEditMode = window.isEditMode || false;
+    const isReadOnly = window.isReadOnly || false;
+    
     this.state = {
-      model: {},
+      model: policyData || {},
       isInvalid: true,
       messages: [],
       errors: [],
+      isEditMode,
+      isReadOnly,
       tailoringFiles: (window.tailoringFiles || []).map((file: any) => ({
-        value: file.fileName,
+        value: file.id,
         label: file.name,
+        fileName: file.fileName, // Keep fileName for API calls
       })),
       dataStreams: (window.scapDataStreams || []).sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase())).map((stream: string) => ({
         value: stream,
@@ -49,15 +59,48 @@ class ScapPolicy extends React.Component<Props, State> {
       tailoringFileProfiles: [],
       earliest: localizedMoment(),
       xccdfProfiles: [],
+      selectedTailoringFile: "",
     };
 
   }
 
-  onCreate = async () => {
+  componentDidMount() {
+    // In edit/detail mode, load the profiles for the selected data stream and tailoring file
+    if (this.state.isEditMode || this.state.isReadOnly) {
+      const { model } = this.state;
+      
+      // Load XCCDF profiles if dataStreamName is set
+      if (model.dataStreamName) {
+        this.fetchProfiles("dataStream", model.dataStreamName).then(() => {
+          // Force a re-render after profiles are loaded to ensure Select shows the value
+          this.forceUpdate();
+        });
+      }
+      
+      // Load tailoring profiles if tailoringFile is set
+      if (model.tailoringFile && model.tailoringFileName) {
+        this.fetchProfiles("tailoringFile", model.tailoringFileName).then(() => {
+          this.forceUpdate();
+        });
+      }
+    }
+  }
+
+  onSubmit = async () => {
     try {
       const formData = new FormData(this.form);
       const jsonPayload = Object.fromEntries(formData.entries());
-      const response = await Network.post("/rhn/manager/api/audit/scap/policy/create", jsonPayload);
+      
+      // Add policy ID for update
+      if (this.state.isEditMode && this.state.model.id) {
+        jsonPayload.id = this.state.model.id;
+      }
+      
+      const endpoint = this.state.isEditMode 
+        ? "/rhn/manager/api/audit/scap/policy/update"
+        : "/rhn/manager/api/audit/scap/policy/create";
+      
+      const response = await Network.post(endpoint, jsonPayload);
 
       if (response.success) {
         window.location.href = "/rhn/manager/audit/scap/policies";
@@ -67,7 +110,7 @@ class ScapPolicy extends React.Component<Props, State> {
     } catch (error) {
       console.log(error);
       this.setState({
-        messages: [{ severity: "error", text: "Unexpected error during upload." }],
+        messages: [{ severity: "error", text: "Unexpected error." }],
       });
     }
   };
@@ -87,9 +130,7 @@ class ScapPolicy extends React.Component<Props, State> {
         this.setState({ xccdfProfiles: data || [] });
       }
     } catch (error) {
-      this.setState({
-        messages: [{ severity: "error", text: "Error fetching profiles." }],
-      });
+      console.log(error);
     }
   };
   handleDataStreamChange = (name, value) => {
@@ -97,15 +138,30 @@ class ScapPolicy extends React.Component<Props, State> {
     console.log(value)
 
   };
-  renderButtons = () => (
-    <SubmitButton
-      key="upload-btn"
-      id="upload-btn"
-      className="btn-success"
-      icon="fa-plus"
-      text={t("Create")}
-    />
-  );
+  renderButtons = () => {
+    if (this.state.isReadOnly) {
+      return (
+        <LinkButton
+          key="back-btn"
+          id="back-btn"
+          className="btn-default"
+          icon="fa-arrow-left"
+          text={t("Back to List")}
+          href="/rhn/manager/audit/scap/policies"
+        />
+      );
+    }
+    
+    return (
+      <SubmitButton
+        key="submit-btn"
+        id="submit-btn"
+        className="btn-success"
+        icon={this.state.isEditMode ? "fa-save" : "fa-plus"}
+        text={this.state.isEditMode ? t("Update") : t("Create")}
+      />
+    );
+  };
   renderSelect = (name: string, label: string, options, onChange, isRequired = false) => (
     <Select
       name={name}
@@ -119,30 +175,35 @@ class ScapPolicy extends React.Component<Props, State> {
     />
   );
   renderMessages = () => {
-    const { messages } = this.state;
-    return messages.length > 0 && <Messages items={messages} />;
+    const messages = this.state.messages;
+    if (!messages || messages.length === 0) {
+      return null;
+    }
+    return <Messages items={messages} />;
   };
 
   render() {
 
 
-    const { model, dataStreams, tailoringFiles, tailoringFileProfiles, xccdfProfiles } = this.state;
+    const { model, dataStreams, tailoringFiles, tailoringFileProfiles, xccdfProfiles, isReadOnly } = this.state;
+    const title = isReadOnly ? t("Policy Details") : (this.state.isEditMode ? t("Edit Compliance Policy") : t("Create Compliance Policy"));
 
     return (
-      <TopPanel title={t("Create Compliance Policy")} icon="spacewalk-icon-manage-configuration-files">
+      <TopPanel title={title} icon="spacewalk-icon-manage-configuration-files">
         {this.renderMessages()}
         <Form
           model={this.state.model}
           className="scap-policy-form"
-          onSubmit={this.onCreate}
+          onSubmit={isReadOnly ? (e) => e.preventDefault() : this.onSubmit}
           formRef={this.bindForm}
         >
           <Text
             name="policyName"
             label={t("Name")}
-            required
+            required={!isReadOnly}
             labelClass="col-md-3"
             divClass="col-md-6"
+            disabled={isReadOnly}
           />
           <FormGroup>
             <Label name={t("SCAP Content")} className="col-md-3" required />
@@ -151,7 +212,12 @@ class ScapPolicy extends React.Component<Props, State> {
                 name="dataStreamName"
                 isClearable
                 options={dataStreams}
-                onChange={(value) => this.fetchProfiles("dataStream", value as string)}
+                value={model.dataStreamName}
+                onChange={(value) => {
+                  this.setState({ model: { ...model, dataStreamName: value as string } });
+                  this.fetchProfiles("dataStream", value as string);
+                }}
+                disabled={isReadOnly}
               />
             </div>
           </FormGroup>
@@ -162,6 +228,11 @@ class ScapPolicy extends React.Component<Props, State> {
                 name="xccdfProfileId"
                 isClearable
                 options={xccdfProfiles.map((type) => ({ value: type.id, label: type.title }))}
+                value={model.xccdfProfileId}
+                onChange={(value) => {
+                  this.setState({ model: { ...model, xccdfProfileId: value as string } });
+                }}
+                disabled={isReadOnly}
               />
             </div>
           </FormGroup>
@@ -172,7 +243,23 @@ class ScapPolicy extends React.Component<Props, State> {
                 name="tailoringFile"
                 isClearable
                 options={tailoringFiles}
-                onChange={(value) => this.fetchProfiles("tailoringFile", value as string)}
+                value={model.tailoringFile}
+                onChange={(value) => {
+                  // Find the selected tailoring file to get its fileName
+                  const selectedFile = tailoringFiles.find((f: any) => f.value === value);
+                  const fileName = selectedFile?.fileName || "";
+                  this.setState({ 
+                    model: { 
+                      ...model, 
+                      tailoringFile: value as string,
+                      tailoringFileName: fileName
+                    } 
+                  });
+                  if (fileName) {
+                    this.fetchProfiles("tailoringFile", fileName);
+                  }
+                }}
+                disabled={isReadOnly}
               />
             </div>
           </FormGroup>
@@ -183,8 +270,51 @@ class ScapPolicy extends React.Component<Props, State> {
                 name="tailoringProfileId"
                 isClearable
                 options={tailoringFileProfiles.map((type) => ({ value: type.id, label: type.title }))}
+                value={model.tailoringProfileId}
+                onChange={(value) => {
+                  this.setState({ model: { ...model, tailoringProfileId: value as string } });
+                }}
+                disabled={isReadOnly}
               />
             </div>
+          </FormGroup>
+
+          <FormGroup>
+            <Label name={t("Advanced Arguments")} className="col-md-3" />
+            <div className="col-md-6">
+              <Text
+                name="advancedArgs"
+                placeholder={t("e.g: --skip-valid --thin-results")}
+                title={t("Additional command-line arguments for oscap")}
+                disabled={isReadOnly}
+              />
+            </div>
+          </FormGroup>
+
+          <FormGroup>
+              <Label name={t("Fetch Remote Resources")} className="col-md-3" />
+              <div className="col-md-6">
+                <div className="checkbox">
+                  <label>
+                    <input
+                      type="checkbox"
+                      name="fetchRemoteResources"
+                      className="fetch-remote-checkbox"
+                      value="true"
+                      checked={model.fetchRemoteResources || false}
+                      disabled={isReadOnly}
+                      onChange={(e) => {
+                        this.setState({
+                          model: { ...model, fetchRemoteResources: e.target.checked }
+                        });
+                      }}
+                    />
+                    <span className="fetch-remote-help">
+                      {t("This requires a lot of memory, make sure this minion has enough memory available!")}
+                    </span>
+                  </label>
+                </div>
+              </div>
           </FormGroup>
           <hr />
           <div className="form-group">

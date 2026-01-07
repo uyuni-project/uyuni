@@ -10,14 +10,11 @@
 --
 CREATE TABLE suseRecurringScapPolicy
 (
-  rec_id            NUMERIC NOT NULL PRIMARY KEY,
-  test_mode         CHAR(1) NOT NULL DEFAULT 'N',
-  
-  scap_policy_id    INTEGER,
-  
-  -- Foreign Key references suseRecurringAction
-  FOREIGN KEY (rec_id) REFERENCES suseRecurringAction(id) ON DELETE CASCADE,
-  
-  -- Foreign Key references suseScapPolicy
-  FOREIGN KEY (scap_policy_id) REFERENCES suseScapPolicy(id) ON DELETE CASCADE
+    rec_id            BIGINT PRIMARY KEY
+                      REFERENCES suseRecurringAction(id) ON DELETE CASCADE,
+    
+    test_mode         BOOLEAN NOT NULL DEFAULT FALSE,
+    
+    scap_policy_id    BIGINT
+                      REFERENCES suseScapPolicy(id) ON DELETE CASCADE
 );

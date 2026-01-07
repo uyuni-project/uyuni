@@ -97,7 +97,13 @@ class ScapPolicy extends React.Component<Props, State> {
           className="btn-default btn-sm"
           title={t("Details")}
           icon="fa-list"
-          href={`/rhn/manager/api/audit/scap/policy/details/${row.id}`}
+          href={`/rhn/manager/audit/scap/policy/details/${row.id}`}
+        />
+        <LinkButton
+          className="btn-default btn-sm"
+          title={t("Edit")}
+          icon="fa-edit"
+          href={`/rhn/manager/audit/scap/policy/edit/${row.id}`}
         />
         <ModalButton
           className="btn-default btn-sm"
@@ -128,49 +134,22 @@ class ScapPolicy extends React.Component<Props, State> {
           >
             <Column
               columnKey="name"
-              columnClass="text-center"
-              headerClass="text-center"
+              columnClass="text-left"
+              headerClass="text-left"
               comparator={Utils.sortByText}
               header={t("Name")}
               cell={(row) => row.policyName}
             />
             <Column
               columnKey="content"
-              columnClass="text-center"
-              headerClass="text-center"
-              width="10%"
+              columnClass="text-left"
+              headerClass="text-left"
               comparator={Utils.sortByText}
               header={t("Content")}
               cell={(row) => row.dataStreamName}
             />
             <Column
-              columnKey="profile"
-              columnClass="text-center"
-              headerClass="text-center"
-              comparator={Utils.sortByText}
-              header={t("Profile")}
-              cell={(row) => row.xccdfProfileId}
-            />
-            <Column
-              columnKey="tailoringFile"
-              columnClass="text-center"
-              headerClass="text-center"
-              comparator={Utils.sortByText}
-              header={t("Tailoring File")}
-              width="10%"
-              cell={(row) => row.tailoringFileName}
-            />
-            <Column
-              columnKey="tailoringFileProfileId"
-              columnClass="text-center"
-              headerClass="text-center"
-              width="10%"
-              comparator={Utils.sortByText}
-              header={t("Tailoring File Profile ")}
-              cell={(row) => row.tailoringFileProfileId}
-            />
-            <Column
-              width="10%"
+              width="15%"
               header={t("Actions")}
               columnClass="text-center"
               headerClass="text-center"
