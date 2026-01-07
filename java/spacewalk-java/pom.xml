@@ -16,7 +16,7 @@
         <groupId>org.uyuni-project</groupId>
         <artifactId>uyuni-java-parent</artifactId>
         <version>5.2.2</version>
-        <relativePath>../microservices/uyuni-java-parent</relativePath>
+        <relativePath>../uyuni-java-parent</relativePath>
     </parent>
 
     <artifactId>spacewalk-java</artifactId>
