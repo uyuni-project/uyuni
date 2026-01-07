@@ -35,6 +35,7 @@ import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import javax.servlet.http.HttpServletRequest;
@@ -126,6 +127,7 @@ public class ProxySettingsManagerTest extends RhnBaseTestCase {
     }
 
     @Test
+    @Disabled("Doesn't test anything useful and takes 5 minutes when running tests outside of a container")
     public void testProxySettingsManagerStoreProxySettings() {
         HttpServletRequest request = new RhnMockHttpServletRequest();
         ProxySettingsDto proxySettingsDtoToStore = new ProxySettingsDto();
