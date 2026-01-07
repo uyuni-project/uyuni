@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-08-22 09:58+0200\n"
-"PO-Revision-Date: 2026-01-05 07:04+0000\n"
+"PO-Revision-Date: 2026-01-07 08:04+0000\n"
 "Last-Translator: \"Kristijan \\\"Fremen\\\" Velkovski\" <me@krisfremen.com>\n"
 "Language-Team: Macedonian <https://l10n.opensuse.org/projects/uyuni/backend/mk/>\n"
 "Language: mk\n"
@@ -331,27 +331,27 @@ msgstr "Објектот не е пронајден."
 
 #: ../common/rhnException.py:60
 msgid "Invalid System Digital ID."
-msgstr ""
+msgstr "Неважечки системски дигитален идентификатор."
 
 #: ../common/rhnException.py:61
 msgid "Invalid System Credentials."
-msgstr ""
+msgstr "Неважечки системски акредитиви."
 
 #: ../common/rhnException.py:62
 msgid "Could not retrieve user data from database."
-msgstr ""
+msgstr "Не можеже да се преземат корисничките податоци од базата на податоци."
 
 #: ../common/rhnException.py:63
 msgid "Valid username required."
-msgstr ""
+msgstr "Потребно е важечко корисничко име."
 
 #: ../common/rhnException.py:64
 msgid "Valid password required."
-msgstr ""
+msgstr "Потребна е важечка лозинка."
 
 #: ../common/rhnException.py:65
 msgid "Minimum username length violation."
-msgstr ""
+msgstr "Прекршување на минималната должина на корисничкото име."
 
 #: ../common/rhnException.py:66
 msgid "Minimum password length violation."
