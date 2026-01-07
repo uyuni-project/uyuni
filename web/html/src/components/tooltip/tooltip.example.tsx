@@ -14,6 +14,10 @@ export default () => {
           and usability.
         </li>
         <li>Provide more context or explanation for specific element to help users make informed choices.</li>
+        <li>
+          UI elements whose visible labels already clearly convey their purpose generally do not require additional
+          tooltips.
+        </li>
       </ul>
       <h3>Usage</h3>
       <p>
