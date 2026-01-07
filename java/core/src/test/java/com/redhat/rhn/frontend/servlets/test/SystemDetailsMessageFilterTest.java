@@ -23,23 +23,34 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.servlets.SystemDetailsMessageFilter;
 import com.redhat.rhn.testing.MockObjectTestCase;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
+import com.redhat.rhn.testing.SaltTestCaseUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Iterator;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class SystemDetailsMessageFilterTest extends MockObjectTestCase {
+public class SystemDetailsMessageFilterTest extends MockObjectTestCase implements SaltTestCaseUtils {
+    protected Path tmpSaltRoot;
     private User user;
 
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws IOException {
+        tmpSaltRoot = setupSaltConfigurationForTests();
         user = UserTestUtils.createUser(this);
+    }
+
+    @AfterEach
+    public void tearDown() throws Exception {
+        cleanupSaltConfiguration(tmpSaltRoot);
     }
 
     @Test
