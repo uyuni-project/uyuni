@@ -3614,21 +3614,21 @@
       </trans-unit>
       <trans-unit id="error.unsupported_db_max" xml:space="preserve">
         <source>Running postgresql {0} is not supported. Maximal allowed version is {1}.</source>
-        <target/>
+        <target state="translated">Извршувањето на postgresql {0} не е поддржано. Максималната дозволена верзија е {1}.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/Login.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="error.unsupported_db_migrate" xml:space="preserve">
         <source>Running postgresql {0} on {1} is not supported. Please migrate to postgresql {2}.</source>
-        <target/>
+        <target state="translated">Извршувањето на postgresql {0} на {1} не е поддржано. Ве молиме мигрирајте на postgresql {2}.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/Login.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="error.unfinished_schema_upgrade" xml:space="preserve">
         <source>Database schema upgrade in progress!</source>
-        <target/>
+        <target state="translated">Надградбата на шемата на базата на податоци е во тек!</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/Login.do</context>
         </context-group>
