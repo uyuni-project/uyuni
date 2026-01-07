@@ -24,7 +24,7 @@
         </rhn-tab>
     </rhn-tab>
 
-    <rhn-tab name="AppStreams" acl="all_systems_in_set_have_feature(ftr_package_updates)">
+    <rhn-tab name="AppStreams" acl="authorized_for(systems.software.appstreams); all_systems_in_set_have_feature(ftr_package_updates)">
         <rhn-tab-url>/rhn/manager/systems/ssm/appstreams</rhn-tab-url>
     </rhn-tab>
 
