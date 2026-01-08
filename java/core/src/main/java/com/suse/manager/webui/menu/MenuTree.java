@@ -173,7 +173,7 @@ public class MenuTree {
                         .addChild(new MenuItem("Extra Packages")
                                 .withPrimaryUrl("/rhn/manager/systems/list/all?qc=extra_pkg_count&q=>0"))
                         .addChild(new MenuItem("Ungrouped")
-                                .withPrimaryUrl("/rhn/manager/systems/list/all?qc=group_count&q=0")
+                                .withPrimaryUrl("/rhn/manager/systems/list/all?qc=group_count&q=<1")
                                 .withVisibility(adminRoles.get("org")))
                         .addChild(new MenuItem("Inactive")
                                 .withPrimaryUrl("/rhn/manager/systems/list/all?qc=status_type&q=awol"))
