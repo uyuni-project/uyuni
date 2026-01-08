@@ -10,7 +10,7 @@ require 'net/http'
 # @param file [String] The path of the file to check.
 # @return [Boolean] Returns true if the file exists, false otherwise.
 def file_exists?(node, file)
-  node.file_exists(file)
+  node.file_exists?(file)
 end
 
 # Deletes a file on the specified node.
@@ -28,7 +28,7 @@ end
 # @param file [String] The path of the folder to check.
 # @return [Boolean] Returns true if the folder exists, false otherwise.
 def folder_exists?(node, file)
-  node.folder_exists(file)
+  node.folder_exists?(file)
 end
 
 # Deletes a folder on the specified node.
@@ -156,7 +156,8 @@ end
 # @param original_file_name [String] The name of the original file.
 # @param file_path [String] The path to the file to validate.
 # @param checksum_path [String] The path to the checksum file.
-def validate_checksum_with_file(original_file_name, file_path, checksum_path)
+# @return [Boolean] Returns true if the file's checksum matches the checksum in the checksum file, false otherwise.
+def checksum_with_file_valid?(original_file_name, file_path, checksum_path)
   # search the checksum file for what should be the only non-comment line containing the original file name
   cmd = "grep -v '^#' #{checksum_path} | grep '#{original_file_name}'"
   checksum_line, _code = get_target('server').run(cmd, runs_in_container: false)
@@ -168,7 +169,7 @@ def validate_checksum_with_file(original_file_name, file_path, checksum_path)
   raise "SHA256 checksum not found in entry: #{checksum_line}" unless checksum_match
 
   expected_checksum = checksum_match[1]
-  validate_checksum(file_path, expected_checksum)
+  checksum_valid?(file_path, expected_checksum)
 end
 
 # Computes the SHA256 checksum of the file at the given path and returns a boolean representing whether it
@@ -177,7 +178,7 @@ end
 # @param file_path [String] The path to the file.
 # @param expected_checksum [String] The expected checksum value.
 # @return [Boolean] Returns true if the file's checksum matches the expected checksum, false otherwise.
-def validate_checksum(file_path, expected_checksum)
+def checksum_valid?(file_path, expected_checksum)
   cmd = "sha256sum -b #{file_path} | awk '{print $1}'"
   file_checksum, _code = get_target('server').run(cmd, runs_in_container: false)
   file_checksum.strip == expected_checksum

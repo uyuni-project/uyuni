@@ -230,11 +230,11 @@ Then(/^something should get listed with a call of listSoftwareChannels$/) do
 end
 
 Then(/^"([^"]*)" should get listed with a call of listSoftwareChannels$/) do |label|
-  assert($api_test.channel.verify_channel(label))
+  assert($api_test.channel.channel_verified?(label))
 end
 
 Then(/^"([^"]*)" should not get listed with a call of listSoftwareChannels$/) do |label|
-  assert_equal(false, $api_test.channel.verify_channel(label))
+  assert_equal(false, $api_test.channel.channel_verified?(label))
 end
 
 Then(/^"([^"]*)" should be the parent channel of "([^"]*)"$/) do |parent, child|
@@ -301,7 +301,7 @@ When(/^I create an activation key with id "([^"]*)", description "([^"]*)"(?:, b
   raise ScriptError, 'Key creation failed' if activation_key.nil?
   raise ScriptError, 'Bad key name' unless activation_key == "1-#{id}"
 
-  success = $api_test.activationkey.set_details(
+  success = $api_test.activationkey.details_set?(
     activation_key,
     description,
     base_channel_label,
@@ -318,16 +318,16 @@ When(/^I set the entitlements of the activation key "([^"]*)" to "([^"]*)"$/) do
 end
 
 Then(/^I should get the new activation key "([^"]*)"$/) do |activation_key|
-  raise ScriptError unless $api_test.activationkey.verify(activation_key)
+  raise ScriptError unless $api_test.activationkey.verified?(activation_key)
 end
 
 When(/^I delete the activation key "([^"]*)"$/) do |activation_key|
   raise ScriptError unless $api_test.activationkey.delete(activation_key)
-  raise ScriptError if $api_test.activationkey.verify(activation_key)
+  raise ScriptError if $api_test.activationkey.verified?(activation_key)
 end
 
 When(/^I set the description of the activation key "([^"]*)" to "([^"]*)"$/) do |activation_key, description|
-  raise RuntimeError unless $api_test.activationkey.set_details(activation_key, description, '', 10, 'default')
+  raise RuntimeError unless $api_test.activationkey.details_set?(activation_key, description, '', 10, 'default')
 end
 
 Then(/^I get the description "([^"]*)" for the activation key "([^"]*)"$/) do |description, activation_key|
@@ -352,7 +352,7 @@ When(/^I create an activation key including custom channels for "([^"]*)" via AP
   $stdout.puts "Activation key #{key} created" unless key.nil?
 
   is_ssh_minion = client.include? 'ssh_minion'
-  $api_test.activationkey.set_details(key, description, base_channel_label, 100, is_ssh_minion ? 'ssh-push' : 'default')
+  $api_test.activationkey.details_set?(key, description, base_channel_label, 100, is_ssh_minion ? 'ssh-push' : 'default')
   entitlements = client.include?('buildhost') ? ['osimage_build_host'] : ''
   $api_test.activationkey.set_entitlement(key, entitlements) unless entitlements.empty?
 
@@ -680,7 +680,7 @@ When(/^I call system\.list_empty_system_profiles\(\)$/) do
 end
 
 Then(/^"([^"]*)" should be present in the result$/) do |profile_name|
-  assert($output.select { |p| p['name'] == profile_name }.count == 1)
+  assert($output.one? { |p| p['name'] == profile_name })
 end
 
 When(/^I create and modify the kickstart system "([^"]*)" with kickstart label "([^"]*)" and hostname "([^"]*)" via XML-RPC$/) do |name, kslabel, hostname, values|

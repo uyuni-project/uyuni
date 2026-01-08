@@ -33,7 +33,7 @@ When(/^I mount as "([^"]+)" the ISO from "([^"]+)" in the server, validating its
   original_iso_name = url.split('/').last
   checksum_path = get_checksum_path(iso_dir, original_iso_name, url)
 
-  raise 'SHA256 checksum validation failed' unless validate_checksum_with_file(original_iso_name, iso_path, checksum_path)
+  raise 'SHA256 checksum validation failed' unless checksum_with_file_valid?(original_iso_name, iso_path, checksum_path)
 
   if $is_containerized_server
     mount_point = '/srv/www/distributions'
