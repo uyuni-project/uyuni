@@ -17,5 +17,5 @@ Feature: Prepare server for using Docker
     And I enter "galaxy-registry" as "label"
     And I enter the URI of the registry as "uri"
     And I click on "create-btn"
-    Then I wait until table row contains a "galaxy-registry" text
+    Then I wait until I see "galaxy-registry" text
     And I should see a "Items 1 - 1 of 1" text
