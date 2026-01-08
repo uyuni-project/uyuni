@@ -65,6 +65,19 @@
                 </div>
             </li>
         </rhn:require>
+        <rhn:require acl="authorized_for(systems.software.appstreams); all_systems_in_set_have_feature(ftr_package_updates)">
+            <li class="list-group-item">
+                <div class="row">
+                    <div class="col-sm-2">
+                      <rhn:icon type="system-state" title="ssm.overview.appstreams" />
+                        <bean:message key="ssm.overview.appstreams"/>
+                    </div>
+                    <div class="col-sm-10">
+                        <bean:message key="ssm.overview.appstreams.manage"/>
+                    </div>
+                </div>
+            </li>
+        </rhn:require>
         <rhn:require acl="authorized_for(systems.software.migration); all_systems_in_set_have_feature(ftr_package_updates)">
             <li class="list-group-item">
                 <div class="row">
