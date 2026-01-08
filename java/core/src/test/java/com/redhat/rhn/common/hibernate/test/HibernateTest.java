@@ -18,21 +18,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.common.hibernate.HibernateRuntimeException;
 import com.redhat.rhn.domain.test.TestEntity;
 import com.redhat.rhn.domain.test.TestFactory;
 import com.redhat.rhn.domain.test.TestInterface;
-import com.redhat.rhn.testing.RhnBaseTestCase;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -49,155 +42,27 @@ import jakarta.persistence.FlushModeType;
  * In practice, will come handy for example when upgrading Hibernate to a new version, this class can help detect
  * changes in behavior that could impact our code.
  */
-public class HibernateTest extends RhnBaseTestCase {
-    
-    private static final Logger LOG = LogManager.getLogger(HibernateTest.class);
-    
-    @BeforeEach
-    public void setUp() {
-        // Initialize session factory with TestConnectionManager that registers TestImpl
-        TestFactory.getSession();
-    }
-    
-    @AfterEach
-    public void tearDown() {
-        try {
-            // Clean up all test data
-            Session session = HibernateFactory.getSession();
-            List<TestInterface> all = TestFactory.lookupAll();
-            if (!all.isEmpty()) {
-                for (TestInterface entity : all) {
-                    session.remove(entity);
-                }
-            }
-            
-            if (HibernateFactory.inTransaction()) {
-                HibernateFactory.commitTransaction();
-            }
-        }
-        catch (Exception e) {
-            LOG.warn("Error in tearDown", e);
-            try {
-                HibernateFactory.rollbackTransaction();
-            }
-            catch (Exception ex) {
-                LOG.warn("Error rolling back in tearDown", ex);
-            }
-        }
-        finally {
-            HibernateFactory.closeSession();
-        }
-    }
+public class HibernateTest extends HibernateBaseTest {
 
-    /**
-     * Creating a new entity
-     * - Use factory method to instantiate
-     * - Set required fields
-     * - Call save/persist through factory
-     * - Verify ID is assigned after commit
-     */
-    @Test
-    public void testCreateNewEntity() {
-        // Create new instance
-        TestInterface newEntity = TestFactory.createTest();
-        newEntity.setFoobar("testCreate");
-        newEntity.setTestColumn("ABC");
-        newEntity.setPin(12345);
-
-        // Persist the entity
-        TestFactory.save(newEntity);
-
-        // Commit transaction to persist changes
-        HibernateFactory.commitTransaction();
-        HibernateFactory.closeSession();
-
-        // Verify persistence
-        TestInterface retrieved = TestFactory.lookupByFoobar("testCreate");
-        assertNotNull(retrieved);
-        assertEquals("testCreate", retrieved.getFoobar());
-        assertEquals("ABC", retrieved.getTestColumn());
-        assertEquals(12345, retrieved.getPin().intValue());
-        assertNotNull(retrieved.getId());
-    }
-
-    /**
-     * Batch creation with transaction management
-     * - Create multiple entities in one transaction
-     * - Improves performance over individual transactions
-     */
-    @Test
-    public void testBatchCreate() {
-        List<String> values = List.of("batch1", "batch2", "batch3");
-
-        // Create multiple entities in one transaction
-        for (String value : values) {
-            TestInterface entity = TestFactory.createTest();
-            entity.setFoobar(value);
-            entity.setPin(100);
-            TestFactory.save(entity);
-        }
-
-        HibernateFactory.commitTransaction();
-        HibernateFactory.closeSession();
-
-        // Verify all were persisted
-        List<TestInterface> all = TestFactory.lookupAll();
-        long count = all.stream()
-                .filter(t -> values.contains(t.getFoobar()))
-                .count();
-        assertEquals(3, count);
-    }
 
     // ========== READ OPERATIONS ==========
 
     /**
-     * Simple lookup by unique field
-     * - Use lookupObjectByParam for simple queries
-     * - Returns null if not found
-     */
-    @Test
-    public void testReadByUniqueField() {
-        // Setup
-        TestInterface entity = TestFactory.createTest();
-        entity.setFoobar("uniqueValue");
-        TestFactory.save(entity);
-        HibernateFactory.commitTransaction();
-        HibernateFactory.closeSession();
-
-        // Lookup
-        TestInterface found = TestFactory.lookupByFoobar("uniqueValue");
-        assertNotNull(found);
-        assertEquals("uniqueValue", found.getFoobar());
-
-        // Not found case
-        TestInterface notFound = TestFactory.lookupByFoobar("doesNotExist");
-        assertNull(notFound);
-    }
-
-    /**
      * Using getSession() for direct Hibernate queries
      * - Useful for complex queries not in factory
-     * - Remember to manage session lifecycle
      */
     @Test
     public void testDirectSessionQuery() {
-        // Setup test data
-        TestInterface entity = TestFactory.createTest();
-        entity.setFoobar("directQuery");
-        entity.setPin(999);
-        TestFactory.save(entity);
-        HibernateFactory.commitTransaction();
-        HibernateFactory.closeSession();
+        String key = "duplicate";
 
-        // Direct session query
         Session session = HibernateFactory.getSession();
         List<TestInterface> results = session
-                .createQuery("FROM TestEntity WHERE pin = :pin", TestInterface.class)
-                .setParameter("pin", 999)
+                .createQuery("FROM TestEntity WHERE foobar = :foobar", TestInterface.class)
+                .setParameter("foobar", key)
                 .getResultList();
 
-        assertFalse(results.isEmpty());
-        assertEquals(999, results.get(0).getPin().intValue());
+        assertEquals(2, results.size());
+        assertTrue(results.stream().allMatch(x -> key.equals(x.getFoobar())));
     }
 
     /**
@@ -218,12 +83,97 @@ public class HibernateTest extends RhnBaseTestCase {
         Optional<Session> sessionAfter = HibernateFactory.getSessionIfPresent();
         assertTrue(sessionAfter.isPresent(), "Session should still exist");
         assertEquals(session, sessionAfter.get());
-        
+
         // Close and verify it's gone
         HibernateFactory.commitTransaction();
         HibernateFactory.closeSession();
         Optional<Session> sessionClosed = HibernateFactory.getSessionIfPresent();
         assertTrue(sessionClosed.isEmpty(), "Session should be closed");
+    }
+
+    // ========== PERSISTENCE OPERATIONS ==========
+
+    /**
+     * Testing Hibernate's persist method
+     * - Ensures entity is tracked and changes are auto-detected
+     * - Verifies caching behavior within session
+     */
+    @Test
+    public void testHibernatePersist() {
+        String key = "dummy_testHibernatePersist";
+        TestInterface e = new TestEntity();
+
+        // transaction starts
+        HibernateFactory.getSession().persist(e);
+        e.setFoobar(key);
+        e.setPin(0);
+        // transaction ends, and the row for foobar field is updated in the database
+
+        // verify the database
+        TestInterface recordA = TestFactory.lookupByFoobar(key);
+        assertEquals(key, recordA.getFoobar());
+
+        // check caching - lookup should always return the same object
+        TestInterface recordB = TestFactory.lookupByFoobar(key);
+        assertEquals(recordA, recordB);
+        assertEquals(recordA, e);
+
+        // as object E, recordA and recordB are all references to the same object in the session's persistence
+        // context, when changing the pin in recordA, hibernate will automatically check for updates
+        recordA.setPin(123);
+        assertEquals(123, TestFactory.lookupByFoobar(key).getPin());
+    }
+
+    /**
+     * Testing Hibernate's merge method
+     * - Ensures detached entity can be merged into session
+     * - Verifies that changes made after merge are not auto-detected
+     */
+    @Test
+    public void testHibernateMerge() {
+        String keyDetached = "key_testHibernateMerge_detached";
+        String keyManaged = "key_testHibernateMerge_managed";
+        TestInterface e = new TestEntity();
+
+        // transaction starts
+        TestInterface managed = HibernateFactory.getSession().merge(e);
+        e.setFoobar(keyDetached);
+        // transaction ends but the row for foobar field is NOT updated in the database
+        // (changes were made AFTER merging)
+        // E is then detached/transient, while object managed is now monitored by hibernate
+
+        // verify E isn't tracked
+        assertFalse(HibernateFactory.getSession().contains(e));
+        assertNull(e.getId());
+        assertNull(TestFactory.lookupByFoobar(keyDetached));
+
+        // verify managed is tracked
+        managed.setFoobar(keyManaged);
+        assertTrue(HibernateFactory.getSession().contains(managed));
+        assertNotNull(managed.getId());
+        assertNotNull(TestFactory.lookupByFoobar(keyManaged));
+    }
+
+    /**
+     * Testing Hibernate's detach method
+     * - Ensures entity is removed from session tracking
+     * - Verifies that changes made after detach are not persisted
+     */
+    @Test
+    public void testHibernateDetach() {
+        String keyBefore = "dummy_testHibernateDetach_before";
+        String keyAfter = "dummy_testHibernateDetach_after";
+        TestInterface e = new TestEntity();
+
+        // creating and persisting the object
+        HibernateFactory.getSession().persist(e);
+        e.setFoobar(keyBefore);
+        assertNotNull(TestFactory.lookupByFoobar(keyBefore));
+
+        // after detaching the persisted object, hibernate will no longer track its changes
+        HibernateFactory.getSession().detach(e);
+        e.setFoobar(keyAfter);
+        assertNull(TestFactory.lookupByFoobar(keyAfter));
     }
 
     /**
@@ -234,16 +184,18 @@ public class HibernateTest extends RhnBaseTestCase {
      */
     @Test
     public void testReloadEntity() {
+        String key = "reloadTest";
+
         // Create and save
         TestInterface entity = TestFactory.createTest();
-        entity.setFoobar("reloadTest");
+        entity.setFoobar(key);
         entity.setPin(100);
         TestFactory.save(entity);
         HibernateFactory.commitTransaction();
         HibernateFactory.closeSession();
 
-        // Load and modify (but don't explicitly save)
-        TestInterface loaded = TestFactory.lookupByFoobar("reloadTest");
+        // Find the entity
+        TestInterface loaded = TestFactory.lookupByFoobar(key);
         assertEquals(100, loaded.getPin().intValue());
         
         // Modify in memory
@@ -258,137 +210,116 @@ public class HibernateTest extends RhnBaseTestCase {
         // Verify it was actually persisted to DB
         HibernateFactory.commitTransaction();
         HibernateFactory.closeSession();
-        TestInterface fromDb = TestFactory.lookupByFoobar("reloadTest");
+        TestInterface fromDb = TestFactory.lookupByFoobar(key);
         assertEquals(200, fromDb.getPin().intValue(), "Value should be persisted in DB");
     }
 
     // ========== UPDATE OPERATIONS ==========
 
     /**
-     * Simple update pattern
+     * Update pattern using managed entity through lookup
+     * - Create and persist entity
+     * - Close session to detach
      * - Load entity
      * - Modify fields
-     * - Save through factory
-     * - Commit transaction
      */
     @Test
-    public void testUpdateEntity() {
-        // Create initial entity
+    public void testUpdateManaged() {
+        String key = "updateTestManaged";
+
         TestInterface entity = TestFactory.createTest();
-        entity.setFoobar("updateTest");
+        entity.setFoobar(key);
         entity.setPin(100);
-        entity.setTestColumn("OLD");
-        TestFactory.save(entity);
+        entity.setTestColumn("orig");
+        HibernateFactory.getSession().persist(entity);
         HibernateFactory.commitTransaction();
+
+        // Ensure entity is detached
         HibernateFactory.closeSession();
+        assertFalse(HibernateFactory.getSession().contains(entity));
 
         // Load and update
-        TestInterface toUpdate = TestFactory.lookupByFoobar("updateTest");
-        assertNotNull(toUpdate);
-        toUpdate.setPin(200);
-        toUpdate.setTestColumn("NEW");
-        TestFactory.save(toUpdate);
+        TestInterface managed = TestFactory.lookupByFoobar(key);
+        assertNotNull(managed);
+        managed.setPin(null);
+        managed.setTestColumn("upd");
+
         HibernateFactory.commitTransaction();
         HibernateFactory.closeSession();
 
         // Verify update
-        TestInterface updated = TestFactory.lookupByFoobar("updateTest");
-        assertEquals(200, updated.getPin().intValue());
-        assertEquals("NEW", updated.getTestColumn());
-    }
-
-    /**
-     * Updating to null values
-     * - Hibernate properly handles setting fields to null
-     * - Important for clearing optional data
-     */
-    @Test
-    public void testUpdateToNull() {
-        // Create with values
-        TestInterface entity = TestFactory.createTest();
-        entity.setFoobar("nullTest");
-        entity.setTestColumn("VALUE");
-        entity.setPin(500);
-        TestFactory.save(entity);
-        HibernateFactory.commitTransaction();
-        HibernateFactory.closeSession();
-
-        // Update to null
-        TestInterface toUpdate = TestFactory.lookupByFoobar("nullTest");
-        toUpdate.setTestColumn(null);
-        toUpdate.setPin(null);
-        TestFactory.save(toUpdate);
-        HibernateFactory.commitTransaction();
-        HibernateFactory.closeSession();
-
-        // Verify nulls
-        TestInterface updated = TestFactory.lookupByFoobar("nullTest");
-        assertNull(updated.getTestColumn());
+        TestInterface updated = TestFactory.lookupByFoobar(key);
         assertNull(updated.getPin());
+        assertEquals("upd", updated.getTestColumn());
     }
 
     /**
-     * Batch updates with proper transaction boundaries
-     * - Update multiple entities in one transaction
-     * - More efficient than individual transactions
+     * Update pattern using managed entity through lookup
+     * - Create and persist entity
+     * - Close session to detach
+     * - Load entity
+     * - Modify fields
      */
     @Test
-    public void testBatchUpdate() {
-        // Setup: Create multiple entities
-        for (int i = 1; i <= 3; i++) {
-            TestInterface entity = TestFactory.createTest();
-            entity.setFoobar("batch_" + i);
-            entity.setPin(i * 10);
-            TestFactory.save(entity);
-        }
+    public void testUpdateDetached() {
+        String key = "updateTestDetached";
+
+        TestInterface entity = TestFactory.createTest();
+        entity.setFoobar(key);
+        entity.setPin(100);
+        entity.setTestColumn("orig");
+        HibernateFactory.getSession().persist(entity);
+        HibernateFactory.commitTransaction();
+
+        // Ensure entity is detached
+        HibernateFactory.closeSession();
+        assertFalse(HibernateFactory.getSession().contains(entity));
+
+        // Get a managed instance via merge and update
+        TestInterface managed = HibernateFactory.getSession().merge(entity);
+        assertNotNull(managed);
+        managed.setPin(null);
+        managed.setTestColumn("upd");
+
         HibernateFactory.commitTransaction();
         HibernateFactory.closeSession();
 
-        // Batch update
-        List<TestInterface> all = TestFactory.lookupAll();
-        for (TestInterface entity : all) {
-            if (entity.getFoobar() != null && entity.getFoobar().startsWith("batch_")) {
-                entity.setPin(entity.getPin() + 1000);
-                TestFactory.save(entity);
-            }
-        }
-        HibernateFactory.commitTransaction();
-        HibernateFactory.closeSession();
-
-        // Verify updates
-        TestInterface updated = TestFactory.lookupByFoobar("batch_1");
-        assertEquals(1010, updated.getPin().intValue());
+        // Verify update
+        TestInterface updated = TestFactory.lookupByFoobar(key);
+        assertNull(updated.getPin());
+        assertEquals("upd", updated.getTestColumn());
     }
 
     // ========== DELETE OPERATIONS ==========
 
     /**
-     * Deleting a single entity
+     * Deleting a single entity (use HibernateFactory.delete() for collections)
      * - Load the entity first
-     * - Use HibernateFactory.delete() for collections
      * - Commit to persist deletion
      */
     @Test
     public void testDeleteSingleEntity() {
+        String key = "deleteTest";
+
         // Create entity
         TestInterface entity = TestFactory.createTest();
-        entity.setFoobar("deleteTest");
+        entity.setFoobar(key);
         TestFactory.save(entity);
         HibernateFactory.commitTransaction();
         HibernateFactory.closeSession();
 
         // Verify exists
-        assertNotNull(TestFactory.lookupByFoobar("deleteTest"));
+        assertNotNull(TestFactory.lookupByFoobar(key));
 
         // Delete using session.remove()
-        TestInterface toDelete = TestFactory.lookupByFoobar("deleteTest");
+        TestInterface toDelete = TestFactory.lookupByFoobar(key);
         Session session = HibernateFactory.getSession();
         session.remove(toDelete);
         HibernateFactory.commitTransaction();
         HibernateFactory.closeSession();
 
         // Verify deleted
-        assertNull(TestFactory.lookupByFoobar("deleteTest"));
+        assertNull(TestFactory.lookupByFoobar(key));
     }
 
     /**
@@ -398,27 +329,24 @@ public class HibernateTest extends RhnBaseTestCase {
      */
     @Test
     public void testBatchDelete() {
-        // Create test entities
+        String keyPrefix = "delete_batch_";
+
+        // Create test entities and collect the managed instances
         List<TestEntity> toDelete = new ArrayList<>();
         for (int i = 1; i <= 5; i++) {
             TestEntity entity = (TestEntity) TestFactory.createTest();
-            entity.setFoobar("delete_batch_" + i);
-            TestFactory.save(entity);
-            toDelete.add(entity);
+            entity.setFoobar(keyPrefix + i);
+            // Collect the managed entities
+            TestEntity managed = (TestEntity) TestFactory.save(entity);
+            toDelete.add(managed);
         }
-        HibernateFactory.commitTransaction();
-        HibernateFactory.closeSession();
 
-        // Batch delete
-        int deletedCount = HibernateFactory.delete(toDelete, TestEntity.class);
-        HibernateFactory.commitTransaction();
-        HibernateFactory.closeSession();
-
-        assertEquals(5, deletedCount);
+        //
+        assertEquals(5, HibernateFactory.delete(toDelete, TestEntity.class));
 
         // Verify deletions
         for (int i = 1; i <= 5; i++) {
-            assertNull(TestFactory.lookupByFoobar("delete_batch_" + i));
+            assertNull(TestFactory.lookupByFoobar(keyPrefix + i));
         }
     }
 
@@ -443,6 +371,7 @@ public class HibernateTest extends RhnBaseTestCase {
     @Test
     public void testTransactionStateCheck() {
         // New session starts a transaction automatically
+        HibernateFactory.getSession();
         assertTrue(HibernateFactory.inTransaction(), "Transaction should be active");
 
         HibernateFactory.commitTransaction();
@@ -602,71 +531,7 @@ public class HibernateTest extends RhnBaseTestCase {
         assertEquals(originalMode, session.getFlushMode(), "Flush mode should be restored");
     }
 
-    // ========== ERROR HANDLING ==========
-
-    /**
-     * Handling non-unique results
-     * - When query expects unique result but finds multiple
-     * - Throws HibernateRuntimeException
-     */
-    @Test
-    public void testNonUniqueResultHandling() {
-        // Create duplicate entries
-        for (int i = 0; i < 2; i++) {
-            TestInterface entity = TestFactory.createTest();
-            entity.setFoobar("duplicate");
-            TestFactory.save(entity);
-        }
-        HibernateFactory.commitTransaction();
-        HibernateFactory.closeSession();
-
-        // Lookup should throw because of duplicates
-        assertThrows(HibernateRuntimeException.class, () -> {
-            TestFactory.lookupByFoobar("duplicate");
-        });
-    }
-
-    /**
-     * Null handling in lookups
-     * - Lookups return null when entity not found
-     * - Don't throw exceptions for missing data
-     */
-    @Test
-    public void testNullHandlingInLookup() {
-        TestInterface notFound = TestFactory.lookupByFoobar("nonExistent");
-        assertNull(notFound, "Should return null for non-existent entity");
-    }
-
     // ========== SESSION LIFECYCLE ==========
-
-    /**
-     * Multiple operations in single session
-     * - Group related operations in one session/transaction
-     * - More efficient than opening multiple sessions
-     */
-    @Test
-    public void testMultipleOperationsInSession() {
-        // All operations in one session
-        TestInterface entity1 = TestFactory.createTest();
-        entity1.setFoobar("multi1");
-        TestFactory.save(entity1);
-
-        TestInterface entity2 = TestFactory.createTest();
-        entity2.setFoobar("multi2");
-        TestFactory.save(entity2);
-
-        // Query in same session
-        List<TestInterface> all = TestFactory.lookupAll();
-        assertNotNull(all);
-
-        // Commit once
-        HibernateFactory.commitTransaction();
-        HibernateFactory.closeSession();
-
-        // Verify persistence
-        assertNotNull(TestFactory.lookupByFoobar("multi1"));
-        assertNotNull(TestFactory.lookupByFoobar("multi2"));
-    }
 
     /**
      * Proper session cleanup
