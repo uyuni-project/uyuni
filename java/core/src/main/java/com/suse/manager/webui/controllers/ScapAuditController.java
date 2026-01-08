@@ -91,6 +91,7 @@ public class ScapAuditController {
         get("/manager/audit/scap/policy/details/:id",
                 withUserPreferences(withCsrfToken(withUser(this::detailScapPolicyView))), jade);
         get("/manager/api/audit/profiles/list/:type/:name", withUser(ScapAuditController::getProfileList));
+        get("/manager/api/audit/scap/policy/view/:id", asJson(withUser(this::getScapPolicyDetails)));
 
         post("/manager/api/audit/scap/policy/create", withUser(this::createScapPolicy));
         post("/manager/api/audit/scap/policy/update", withUser(this::updateScapPolicy));
@@ -487,32 +488,19 @@ public class ScapAuditController {
         ScapPolicy policy = policyOpt.get();
         
         // Prepare policy data for the form
-        JsonObject policyData = new JsonObject();
-        policyData.addProperty("id", policy.getId());
-        policyData.addProperty("policyName", policy.getPolicyName());
-        
-        if (policy.getDescription() != null) {
-            policyData.addProperty("description", policy.getDescription());
-        }
-        
-        policyData.addProperty("dataStreamName", policy.getDataStreamName());
-        policyData.addProperty("xccdfProfileId", policy.getXccdfProfileId());
+        Map<String, Object> policyData = new HashMap<>();
+        policyData.put("id", policy.getId());
+        policyData.put("policyName", policy.getPolicyName());
+        policyData.put("description", policy.getDescription());
+        policyData.put("dataStreamName", policy.getDataStreamName());
+        policyData.put("xccdfProfileId", policy.getXccdfProfileId());
+        policyData.put("tailoringProfileId", policy.getTailoringProfileId());
+        policyData.put("advancedArgs", policy.getAdvancedArgs());
+        policyData.put("fetchRemoteResources", policy.getFetchRemoteResources());
         
         if (policy.getTailoringFile() != null) {
-            policyData.addProperty("tailoringFile", policy.getTailoringFile().getId());
-            policyData.addProperty("tailoringFileName", policy.getTailoringFile().getFileName());
-        }
-        
-        if (policy.getTailoringProfileId() != null) {
-            policyData.addProperty("tailoringProfileId", policy.getTailoringProfileId());
-        }
-        
-        if (policy.getAdvancedArgs() != null) {
-            policyData.addProperty("advancedArgs", policy.getAdvancedArgs());
-        }
-        
-        if (policy.getFetchRemoteResources() != null) {
-            policyData.addProperty("fetchRemoteResources", policy.getFetchRemoteResources());
+            policyData.put("tailoringFile", policy.getTailoringFile().getId());
+            policyData.put("tailoringFileName", policy.getTailoringFile().getFileName());
         }
         
         data.put("policyData", GSON.toJson(policyData));
@@ -554,32 +542,19 @@ public class ScapAuditController {
         ScapPolicy policy = policyOpt.get();
         
         // Prepare policy data for readonly view
-        JsonObject policyData = new JsonObject();
-        policyData.addProperty("id", policy.getId());
-        policyData.addProperty("policyName", policy.getPolicyName());
-        
-        if (policy.getDescription() != null) {
-            policyData.addProperty("description", policy.getDescription());
-        }
-        
-        policyData.addProperty("dataStreamName", policy.getDataStreamName());
-        policyData.addProperty("xccdfProfileId", policy.getXccdfProfileId());
+        Map<String, Object> policyData = new HashMap<>();
+        policyData.put("id", policy.getId());
+        policyData.put("policyName", policy.getPolicyName());
+        policyData.put("description", policy.getDescription());
+        policyData.put("dataStreamName", policy.getDataStreamName());
+        policyData.put("xccdfProfileId", policy.getXccdfProfileId());
+        policyData.put("tailoringProfileId", policy.getTailoringProfileId());
+        policyData.put("advancedArgs", policy.getAdvancedArgs());
+        policyData.put("fetchRemoteResources", policy.getFetchRemoteResources());
         
         if (policy.getTailoringFile() != null) {
-            policyData.addProperty("tailoringFile", policy.getTailoringFile().getId());
-            policyData.addProperty("tailoringFileName", policy.getTailoringFile().getFileName());
-        }
-        
-        if (policy.getTailoringProfileId() != null) {
-            policyData.addProperty("tailoringProfileId", policy.getTailoringProfileId());
-        }
-        
-        if (policy.getAdvancedArgs() != null) {
-            policyData.addProperty("advancedArgs", policy.getAdvancedArgs());
-        }
-        
-        if (policy.getFetchRemoteResources() != null) {
-            policyData.addProperty("fetchRemoteResources", policy.getFetchRemoteResources());
+            policyData.put("tailoringFile", policy.getTailoringFile().getId());
+            policyData.put("tailoringFileName", policy.getTailoringFile().getFileName());
         }
         
         data.put("policyData", GSON.toJson(policyData));
@@ -597,6 +572,42 @@ public class ScapAuditController {
         data.put("tailoringFiles", tailoringFilesJson);
         
         return new ModelAndView(data, "templates/audit/create-scap-policy.jade");
+    }
+    
+    /**
+     * API endpoint to get SCAP policy details as JSON
+     * @param req the request
+     * @param res the response
+     * @param user the user
+     * @return JSON string with policy details
+     */
+    public String getScapPolicyDetails(Request req, Response res, User user) {
+        Integer policyId = Integer.parseInt(req.params("id"));
+        
+        Optional<ScapPolicy> policyOpt = ScapFactory.lookupScapPolicyByIdAndOrg(policyId, user.getOrg());
+        if (policyOpt.isEmpty()) {
+            return notFound(res, "Policy not found");
+        }
+        
+        ScapPolicy policy = policyOpt.get();
+        
+        // Create a simple DTO with only the fields we need
+        Map<String, Object> policyData = new HashMap<>();
+        policyData.put("id", policy.getId());
+        policyData.put("policyName", policy.getPolicyName());
+        policyData.put("description", policy.getDescription());
+        policyData.put("dataStreamName", policy.getDataStreamName());
+        policyData.put("xccdfProfileId", policy.getXccdfProfileId());
+        policyData.put("tailoringProfileId", policy.getTailoringProfileId());
+        policyData.put("advancedArgs", policy.getAdvancedArgs());
+        policyData.put("fetchRemoteResources", policy.getFetchRemoteResources());
+        
+        if (policy.getTailoringFile() != null) {
+            policyData.put("tailoringFile", policy.getTailoringFile().getFileName());
+            policyData.put("tailoringFileName", policy.getTailoringFile().getName());
+        }
+        
+        return json(res, policyData);
     }
 
     /**

@@ -295,7 +295,7 @@ class ScapPolicy extends React.Component<Props, State> {
             <div className="col-md-6">
               <Text
                 name="advancedArgs"
-                placeholder={t("e.g: --skip-valid --thin-results")}
+                placeholder={isReadOnly ? "" : t("e.g: --skip-valid --thin-results")}
                 title={t("Additional command-line arguments for oscap")}
                 disabled={isReadOnly}
               />
