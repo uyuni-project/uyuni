@@ -16,6 +16,7 @@
 package com.redhat.rhn.domain.test;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  */
@@ -41,4 +42,10 @@ public interface TestInterface {
 
     void setModified(Date d);
     Date getModified();
+
+    void setChildren(List<TestEntity> children);
+    List<TestEntity> getChildren();
+
+    void setParent(TestEntity parent);
+    TestEntity getParent();
 }

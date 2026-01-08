@@ -47,8 +47,8 @@ public class TestFactory extends HibernateFactory {
         return session.createQuery("FROM TestEntity", TestInterface.class).list();
     }
 
-    public static void save(TestInterface t) {
-        singleton.saveObject(t);
+    public static TestInterface save(TestInterface t) {
+        return singleton.saveObject(t);
     }
 
     public static Session getSession() {
