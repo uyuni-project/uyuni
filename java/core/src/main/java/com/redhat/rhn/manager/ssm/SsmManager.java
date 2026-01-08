@@ -47,7 +47,6 @@ import com.suse.manager.webui.utils.gson.SsmBaseChannelChangesDto;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.type.LongType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -363,7 +362,7 @@ public class SsmManager {
     @SuppressWarnings("unchecked")
     public static Set<Long> listSsmServerIdsInChannel(User user, Long channelId) {
         var query = HibernateFactory.getSession().createNativeQuery(LIST_SSM_SERVERS_IN_CHANNEL_SQL);
-        query.addScalar("server_id", LongType.INSTANCE);
+        query.addScalar("server_id", Long.class);
         query.setParameter("user_id", user.getId())
             .setParameter("set_label", RhnSetDecl.SYSTEMS.getLabel())
             .setParameter("channel_id", channelId);
