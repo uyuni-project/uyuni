@@ -19,14 +19,21 @@ package com.redhat.rhn.domain.test;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  */
@@ -53,6 +60,13 @@ public class TestEntity extends BaseDomainHelper implements TestInterface {
 
     @Transient
     private String noColumnField;
+
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TestEntity> children = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "parent_id")
+    private TestEntity parent;
 
     public Long getId() {
         return id;
@@ -100,5 +114,21 @@ public class TestEntity extends BaseDomainHelper implements TestInterface {
 
     public void setNoColumnField(String noColumnFieldIn) {
         noColumnField = noColumnFieldIn;
+    }
+
+    public List<TestEntity> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<TestEntity> childrenIn) {
+        children = childrenIn;
+    }
+
+    public TestEntity getParent() {
+        return parent;
+    }
+
+    public void setParent(TestEntity parentIn) {
+        parent = parentIn;
     }
 }

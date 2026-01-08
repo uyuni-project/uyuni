@@ -54,6 +54,7 @@ import java.util.stream.IntStream;
 
 import jakarta.persistence.FlushModeType;
 import jakarta.persistence.LockModeType;
+import jakarta.persistence.PersistenceUnitUtil;
 import jakarta.persistence.Tuple;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaDelete;
@@ -166,8 +167,9 @@ public abstract class HibernateFactory {
                     .setCacheable(cacheable)
                     .uniqueResult();
         }
-        catch (NonUniqueResultException e){
-            throw new HibernateRuntimeException("lookupObjectByParam with param [%s]=[%s] on class [%s] expected only one result"
+        catch (NonUniqueResultException e) {
+            throw new HibernateRuntimeException(
+                "lookupObjectByParam with param [%s]=[%s] on class [%s] expected only one result"
                     .formatted(paramName, paramValue.toString(), objClass.getSimpleName()), e);
         }
         catch (HibernateException | IllegalArgumentException e) {
@@ -319,14 +321,35 @@ public abstract class HibernateFactory {
         bindParameters(query, qryParams);
         return query.list();
     }
-    
-    /**
-     * Saves the given object to the database using Hibernate.
-     * @param toSave Object to be persisted.
+
+     /**
+     * Saves the given object to the database using Hibernate
+     * @param entity Object to be persisted.
+     * @return A managed entity
+     * @param <T> type of the entity
      */
-    protected void saveObject(Object toSave) {
-        HibernateFactory.getSession().persist(toSave);
-    }
+     protected <T> T saveObject(T entity) {
+         var session = getSession();
+
+         // if the entity happens to be already managed, return it
+         if (session.contains(entity)) {
+             return entity;
+         }
+
+         Object id = getSession().getEntityManagerFactory().getPersistenceUnitUtil().getIdentifier(entity);
+         T managed = entity;
+
+         if (id == null) {
+             // new entity - use persist() to avoid cascading issues
+             session.persist(entity);
+         }
+         else {
+             // detached entity - use merge() and return managed instance
+             managed = session.merge(entity);
+         }
+
+         return managed;
+     }
 
     /**
      * Remove a Session from the DB
@@ -504,7 +527,8 @@ public abstract class HibernateFactory {
     }
 
     /**
-     * Util to reload an object using Hibernate
+     * Util to reload an object using Hibernate.
+     * Any changes to the object before calling this method will be lost.
      * @param obj to be reloaded
      * @return Object found if not, null
      * @throws HibernateException if something bad happens.
@@ -515,13 +539,7 @@ public abstract class HibernateFactory {
         Serializable id = (Serializable) session.getEntityManagerFactory().getPersistenceUnitUtil().getIdentifier(obj);
         session.flush();
         session.evict(obj);
-        /*
-         * In hibernate 3, the following doesn't work:
-         * session.getReference(obj.getClass(), id)
-         * load returns the proxy class instead of the persisted class, ie,
-         * Filter$$EnhancerByCGLIB$$9bcc734d_2 instead of Filter.
-         * session.get is set to not return the proxy class, so that is what we'll use.
-         */
+
         return (T) session.find(obj.getClass(), id);
     }
 
