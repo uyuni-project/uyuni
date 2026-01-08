@@ -23,7 +23,10 @@ import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.nio.channels.OverlappingFileLockException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class FileLocksTest {
 
@@ -72,15 +75,17 @@ public class FileLocksTest {
     }
 
     @Test
-    public void testRecursiveLocking() {
-        String path = "/tmp/" + System.currentTimeMillis() + TestUtils.randomString() + ".lock";
+    public void testRecursiveLocking() throws IOException {
+        Path tempFile = Files.createTempFile(System.currentTimeMillis() + TestUtils.randomString(), ".lock");
 
-        FileLocksClass testClass = new FileLocksClass(path);
+        FileLocksClass testClass = new FileLocksClass(tempFile.toString());
 
         assertEquals("method1", testClass.lockingMethod1());
         assertEquals("method2", testClass.lockingMethod2());
         assertThrows(OverlappingFileLockException.class, testClass::recursiveLockingMethod3);
 
         assertEquals("method1method2", testClass.lockingMethod3());
+
+        Files.deleteIfExists(tempFile);
     }
 }
