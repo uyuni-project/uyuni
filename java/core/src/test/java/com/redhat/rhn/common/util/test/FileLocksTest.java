@@ -35,6 +35,7 @@ public class FileLocksTest {
 
         public FileLocksClass(String path) {
             theFileLocks = new FileLocks(path);
+            theFileLocks.setSkipSetOwner(true);
         }
 
         public String lockingMethod1() {
