@@ -1,0 +1,1 @@
+- Enable HSTS in Apache config (bsc#1255176)
