@@ -16,7 +16,8 @@ package com.suse.manager.webui.controllers.appstreams.response;
 
 import java.util.Objects;
 
-import javax.persistence.Tuple;
+import jakarta.persistence.Tuple;
+
 
 /**
  * A response model (DTO) representing an AppStream module in the SSM context.
