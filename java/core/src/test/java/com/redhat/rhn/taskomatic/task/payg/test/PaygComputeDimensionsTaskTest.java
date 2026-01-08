@@ -73,8 +73,14 @@ public class PaygComputeDimensionsTaskTest extends JMockBaseTestCaseWithUser {
         );
     }
 
+    private void cleanupAllServers() {
+        ServerFactory.list().forEach(ServerFactory::delete);
+    }
+
     @Test
     public void canComputeDimensions() throws Exception {
+        cleanupAllServers();
+
         assertTrue(ServerFactory.listAllServerIds().isEmpty(), "Unable to execute test: " +
             "there are entries the rhnserver table not cleaned up by previous unit tests.");
 
