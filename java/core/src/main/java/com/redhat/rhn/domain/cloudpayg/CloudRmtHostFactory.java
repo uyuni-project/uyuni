@@ -59,11 +59,13 @@ public class CloudRmtHostFactory extends HibernateFactory {
 
     /**
      * save the cloud rmt host object to the database
+     *
      * @param host to be saved
+     * @return the managed {@link CloudRmtHost} instance
      */
-    public static void saveCloudRmtHost(CloudRmtHost host) {
+    public static CloudRmtHost saveCloudRmtHost(CloudRmtHost host) {
         host.setModified(new Date());
-        SINGLETON.saveObject(host);
+        return SINGLETON.saveObject(host);
     }
 
     /**

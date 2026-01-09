@@ -509,12 +509,9 @@ public class KickstartData extends BaseDomainHelper {
      * Adds a KickstartPackage object to ksPackages.
      * @param kp KickstartPackage to add
      */
-
     public void addKsPackage(KickstartPackage kp) {
         kp.setPosition((long)ksPackages.size());
-        if (this.ksPackages.add(kp)) {              // save to collection
-            KickstartFactory.savePackage(kp);       // save to DB
-        }
+        this.ksPackages.add(kp);
     }
 
     /**

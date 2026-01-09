@@ -74,18 +74,22 @@ import jakarta.persistence.Tuple;
 
     /**
      * Store {@link SCCRepository} to the database.
+     *
      * @param repo repository
+     * @return the managed {@link SCCRepository} instance
      */
-    public static void saveRepository(SCCRepository repo) {
-        singleton.saveObject(repo);
+    public static SCCRepository saveRepository(SCCRepository repo) {
+        return singleton.saveObject(repo);
     }
 
     /**
      * Store {@link SCCRepositoryAuth} to the database.
+     *
      * @param auth repo authentication
+     * @return the managed {@link SCCRepositoryAuth} instance
      */
-    public static void saveRepositoryAuth(SCCRepositoryAuth auth) {
-        singleton.saveObject(auth);
+    public static SCCRepositoryAuth saveRepositoryAuth(SCCRepositoryAuth auth) {
+        return singleton.saveObject(auth);
     }
 
     /**
@@ -108,11 +112,13 @@ import jakarta.persistence.Tuple;
 
     /**
      * Store {@link SCCSubscriptionJson} to the database.
+     *
      * @param subscription the subscription
+     * @return the managed {@link SCCSubscription} instance
      */
-    public static void saveSubscription(SCCSubscription subscription) {
+    public static SCCSubscription saveSubscription(SCCSubscription subscription) {
         subscription.setModified(new Date());
-        singleton.saveObject(subscription);
+        return singleton.saveObject(subscription);
     }
 
     /**
@@ -155,8 +161,7 @@ import jakarta.persistence.Tuple;
         products.removeAll(toRemove);
         sub.setProducts(products);
         sub.setModified(new Date());
-        singleton.saveObject(sub);
-        return sub;
+        return singleton.saveObject(sub);
     }
 
     /**
@@ -240,20 +245,24 @@ import jakarta.persistence.Tuple;
 
     /**
      * Store {@link SCCOrderItem} to the database.
+     *
      * @param item order item
+     * @return the managed {@link SCCOrderItem} instance
      */
-    public static void saveOrderItem(SCCOrderItem item) {
+    public static SCCOrderItem saveOrderItem(SCCOrderItem item) {
         item.setModified(new Date());
-        singleton.saveObject(item);
+        return singleton.saveObject(item);
     }
 
     /**
      * Store {@link SCCRegCacheItem} to the database.
+     *
      * @param item regcache item
+     * @return the managed {@link SCCRegCacheItem} instance
      */
-    public static void saveRegCacheItem(SCCRegCacheItem item) {
+    public static SCCRegCacheItem saveRegCacheItem(SCCRegCacheItem item) {
         item.setModified(new Date());
-        singleton.saveObject(item);
+        return singleton.saveObject(item);
     }
 
     /**

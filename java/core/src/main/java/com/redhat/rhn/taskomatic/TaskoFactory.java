@@ -106,10 +106,12 @@ public class TaskoFactory extends HibernateFactory {
 
     /**
      * hibernate save run
+     *
      * @param taskoRun run to save
+     * @return the managed {@link TaskoRun}
      */
-    public static void save(TaskoRun taskoRun) {
-        singleton.saveObject(taskoRun);
+    public static TaskoRun save(TaskoRun taskoRun) {
+        return singleton.saveObject(taskoRun);
     }
 
     /**
@@ -130,18 +132,22 @@ public class TaskoFactory extends HibernateFactory {
 
     /**
      * hibernate save schedule
+     *
      * @param taskoSchedule schedule to save
+     * @return the managed {@link TaskoSchedule} instance
      */
-    public static void save(TaskoSchedule taskoSchedule) {
-        singleton.saveObject(taskoSchedule);
+    public static TaskoSchedule save(TaskoSchedule taskoSchedule) {
+        return singleton.saveObject(taskoSchedule);
     }
 
     /**
      * hibernate save template
+     *
      * @param taskoTemplate run to save
+     * @return the managed {@link TaskoTemplate} instance
      */
-    public static void save(TaskoTemplate taskoTemplate) {
-        singleton.saveObject(taskoTemplate);
+    public static TaskoTemplate save(TaskoTemplate taskoTemplate) {
+        return singleton.saveObject(taskoTemplate);
     }
 
     /**
@@ -154,10 +160,12 @@ public class TaskoFactory extends HibernateFactory {
 
     /**
      * hibernate save bunch
+     *
      * @param taskoBunch run to save
+     * @return the managed {@link TaskoBunch} instance
      */
-    public static void save(TaskoBunch taskoBunch) {
-        singleton.saveObject(taskoBunch);
+    public static TaskoBunch save(TaskoBunch taskoBunch) {
+        return singleton.saveObject(taskoBunch);
     }
 
     /**
@@ -170,10 +178,12 @@ public class TaskoFactory extends HibernateFactory {
 
     /**
      * hibernate save task
+     *
      * @param taskoTask run to save
+     * @return the managed {@link TaskoTask} instance
      */
-    public static void save(TaskoTask taskoTask) {
-        singleton.saveObject(taskoTask);
+    public static TaskoTask save(TaskoTask taskoTask) {
+        return singleton.saveObject(taskoTask);
     }
 
     /**

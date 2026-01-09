@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 SUSE LCC
  * Copyright (c) 2009--2016 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -56,7 +57,7 @@ import java.util.TimeZone;
  * com.redhat.rhn.domain.user.User objects from the
  * database.
  */
-public  class UserFactory extends HibernateFactory {
+public class UserFactory extends HibernateFactory {
 
     private static final String USER_ID = "user_id";
     private static final String LOGIN_UC = "loginUc";

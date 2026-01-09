@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017--2025 SUSE LLC
+ * Copyright (c) 2017--2026 SUSE LLC
  * Copyright (c) 2009--2017 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -784,13 +784,14 @@ public class ActionFactory extends HibernateFactory {
             }
         }
 
-        singleton.saveObject(actionIn);
-        if (actionIn.getServerActions() != null) {
-            actionIn.getServerActions().stream()
+
+        Action action = singleton.saveObject(actionIn);
+        if (action.getServerActions() != null) {
+            action.getServerActions().stream()
                     .map(sa -> sa.getServerId())
                     .forEach(sid -> SystemManager.updateSystemOverview(sid));
         }
-        return actionIn;
+        return action;
     }
 
     /**
@@ -1186,11 +1187,14 @@ public class ActionFactory extends HibernateFactory {
 
     /**
      * Save a {@link ServerAction} object.
+     *
      * @param serverActionIn the server action to save
+     * @return the managed {@link ServerAction} object
      */
-    public static void save(ServerAction serverActionIn) {
-        singleton.saveObject(serverActionIn);
-        SystemManager.updateSystemOverview(serverActionIn.getServerId());
+    public static ServerAction save(ServerAction serverActionIn) {
+        ServerAction managed = singleton.saveObject(serverActionIn);
+        SystemManager.updateSystemOverview(managed.getServerId());
+        return managed;
     }
 
     /**

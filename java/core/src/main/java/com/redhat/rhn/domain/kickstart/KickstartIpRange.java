@@ -22,6 +22,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
 import jakarta.persistence.JoinColumn;
@@ -39,12 +40,12 @@ public class KickstartIpRange extends BaseDomainHelper {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @ManyToOne(targetEntity = KickstartData.class)
+    @ManyToOne(targetEntity = KickstartData.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "kickstart_id")
     private KickstartData ksdata;
 
     @Id
-    @ManyToOne(targetEntity = Org.class)
+    @ManyToOne(targetEntity = Org.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "org_id")
     private Org org;
 

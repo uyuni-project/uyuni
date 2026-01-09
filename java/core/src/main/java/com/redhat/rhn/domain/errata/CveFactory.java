@@ -74,10 +74,12 @@ public class CveFactory extends HibernateFactory {
 
     /**
      * Insert or Update a CVE.
+     *
      * @param cve CVE to be stored in database.
+     * @return the managed {@link Cve} instance
      */
-    public static void save(Cve cve) {
-        singleton.saveObject(cve);
+    public static Cve save(Cve cve) {
+        return singleton.saveObject(cve);
     }
 
 }

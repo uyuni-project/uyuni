@@ -65,10 +65,12 @@ public class WebSessionFactory extends HibernateFactory {
 
     /**
      * Insert or Update a Session.
+     *
      * @param webSession WebSession to be stored in database.
+     * @return the managed {@link WebSession} instance
      */
-    public static void save(WebSession webSession) {
-        singleton.saveObject(webSession);
+    public static WebSession save(WebSession webSession) {
+        return singleton.saveObject(webSession);
     }
 
     /**

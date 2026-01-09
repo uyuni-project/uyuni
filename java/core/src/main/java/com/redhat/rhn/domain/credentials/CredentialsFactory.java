@@ -37,11 +37,13 @@ public class CredentialsFactory extends HibernateFactory {
 
     /**
      * Store {@link Credentials} to the database.
+     *
      * @param creds credentials
+     * @return the managed {@link Credentials} instance
      */
-    public static void storeCredentials(Credentials creds) {
+    public static Credentials storeCredentials(Credentials creds) {
         creds.setModified(new Date());
-        singleton.saveObject(creds);
+        return singleton.saveObject(creds);
     }
 
     /**

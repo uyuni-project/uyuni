@@ -98,11 +98,10 @@ public class AccessTokenFactory extends HibernateFactory {
     /**
      * Saves the AccessToken to the database.
      * @param accessToken the AccessToken to save
-     * @return the saved AccessToken
+     * @return the managed {@link AccessToken}
      */
     public static AccessToken save(AccessToken accessToken) {
-        singleton.saveObject(accessToken);
-        return accessToken;
+        return singleton.saveObject(accessToken);
     }
 
     /**

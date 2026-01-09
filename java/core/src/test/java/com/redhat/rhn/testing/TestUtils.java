@@ -399,13 +399,40 @@ public class TestUtils {
     /**
      * Helper method to save objects to the database and flush
      * the session.
-     * @param obj object to save.
+     * @param entity object to save.
+     * @param <T> the entity type
+     * @return the managed entity
      * @throws HibernateException HibernateException
      */
-    public static void saveAndFlush(Object obj) throws HibernateException {
+    public static <T> T save(T entity) throws HibernateException {
         Session session = HibernateFactory.getSession();
-        session.persist(obj);
+
+        // if the entity happens to be already managed, return it
+        if (session.contains(entity)) {
+            return entity;
+        }
+
+        Object id = session.getEntityManagerFactory().getPersistenceUnitUtil().getIdentifier(entity);
+        T managed = entity;
+
+        if (id == null) {
+            // new entity - use persist() to avoid cascading issues
+            session.persist(entity);
+        }
+        else {
+            // detached entity - use merge() and return managed instance
+            managed = session.merge(entity);
+        }
+
+        return managed;
+    }
+
+
+    public static <T> T saveAndFlush(T entity) throws HibernateException {
+        T managed = save(entity);
+        Session session = HibernateFactory.getSession();
         session.flush();
+        return managed;
     }
 
     /**
@@ -570,8 +597,8 @@ public class TestUtils {
      * @return Object fresh from DB
      */
     public static <T> T saveAndReload(T o) {
-        TestUtils.saveAndFlush(o);
-        return reload(o);
+        T managed = TestUtils.saveAndFlush(o);
+        return reload(managed);
     }
 
     /**

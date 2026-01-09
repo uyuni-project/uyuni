@@ -141,7 +141,7 @@ public class ChannelFamilyFactory extends HibernateFactory {
             cfam.setLabel(label);
             cfam.setName(name);
 
-            ChannelFamilyFactory.save(cfam);
+            cfam = ChannelFamilyFactory.save(cfam);
 
             //If we're creating a new channel fam, make sure the org has
             updateFamilyPermissions(orgIn);
@@ -188,9 +188,10 @@ public class ChannelFamilyFactory extends HibernateFactory {
     /**
      * Insert or Update a ChannelFamily.
      * @param cfam ChannelFamily to be stored in database.
+     * @return the managed {@link ChannelFamily} instance
      */
-    public static void save(ChannelFamily cfam) {
-        singleton.saveObject(cfam);
+    public static ChannelFamily save(ChannelFamily cfam) {
+        return singleton.saveObject(cfam);
     }
 
     /**
@@ -211,17 +212,19 @@ public class ChannelFamilyFactory extends HibernateFactory {
     /**
      * Insert or Update a PrivateChannelFamily.
      * @param pcfam PrivateChannelFamily to be stored in database.
+     * @return the managed {@link PrivateChannelFamily} instance
      */
-    public static void save(PrivateChannelFamily pcfam) {
-        singleton.saveObject(pcfam);
+    public static PrivateChannelFamily save(PrivateChannelFamily pcfam) {
+        return singleton.saveObject(pcfam);
     }
 
     /**
      * Insert or Update a PublicChannelFamily.
      * @param pcf PublicChannelFamily to be stored in database.
+     * @return the managed {@link PublicChannelFamily} instance
      */
-    public static void save(PublicChannelFamily pcf) {
-        singleton.saveObject(pcf);
+    public static PublicChannelFamily save(PublicChannelFamily pcf) {
+        return singleton.saveObject(pcf);
     }
 
     /**

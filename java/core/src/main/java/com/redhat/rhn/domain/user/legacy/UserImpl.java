@@ -407,8 +407,8 @@ public class UserImpl extends BaseDomainHelper implements User {
             UserGroupImpl ug = org.getUserGroup(label);
             if (ug != null) {
                 UserGroupMembers ugm = new UserGroupMembers(this, ug, temporary);
-                groupMembers.add(ugm);
-                UserGroupFactory.save(ugm);
+                UserGroupMembers managedUgm = UserGroupFactory.save(ugm);
+                groupMembers.add(managedUgm);
             }
             else {
                 throw new IllegalArgumentException("Org doesn't have role: " + label);

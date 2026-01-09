@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 SUSE LLC
  * Copyright (c) 2009--2017 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -361,10 +362,12 @@ public class KickstartFactory extends HibernateFactory {
 
     /**
      * Insert or Update a CryptoKey.
+     *
      * @param cryptoKeyIn CryptoKey to be stored in database.
+     * @return the managed {@link CryptoKey} instance
      */
-    public static void saveCryptoKey(CryptoKey cryptoKeyIn) {
-        singleton.saveObject(cryptoKeyIn);
+    public static CryptoKey saveCryptoKey(CryptoKey cryptoKeyIn) {
+        return singleton.saveObject(cryptoKeyIn);
     }
 
     /**
@@ -377,10 +380,12 @@ public class KickstartFactory extends HibernateFactory {
 
     /**
      * Insert or Update a Command.
+     *
      * @param commandIn Command to be stored in database.
+     * @return the managed {@link KickstartCommand} instance
      */
-    public static void saveCommand(KickstartCommand commandIn) {
-        singleton.saveObject(commandIn);
+    public static KickstartCommand saveCommand(KickstartCommand commandIn) {
+        return singleton.saveObject(commandIn);
     }
 
 
@@ -394,21 +399,21 @@ public class KickstartFactory extends HibernateFactory {
      */
     public static void saveKickstartData(KickstartData ksdataIn, KickstartSession ksession) {
         log.debug("saveKickstartData: {}", ksdataIn.getLabel());
-        singleton.saveObject(ksdataIn);
+        KickstartData kickstartData = singleton.saveObject(ksdataIn);
         String fileData = null;
-        if (ksdataIn.isRawData()) {
+        if (kickstartData.isRawData()) {
             log.debug("saveKickstartData is raw, use file");
-            KickstartRawData rawData = (KickstartRawData) ksdataIn;
+            KickstartRawData rawData = (KickstartRawData) kickstartData;
             fileData = rawData.getData();
         }
         else {
             log.debug("saveKickstartData wizard.  use object");
             KickstartFormatter formatter = new KickstartFormatter(
-                    KickstartUrlHelper.COBBLER_SERVER_VARIABLE, ksdataIn, ksession);
+                    KickstartUrlHelper.COBBLER_SERVER_VARIABLE, kickstartData, ksession);
             fileData = formatter.getFileData();
         }
         Profile p = Profile.lookupById(CobblerXMLRPCHelper.getAutomatedConnection(),
-                ksdataIn.getCobblerId());
+                kickstartData.getCobblerId());
         if (p != null && p.getKsMeta().isPresent()) {
             Map<String, Object> ksmeta = p.getKsMeta().orElse(new HashMap<>());
             for (String name : ksmeta.keySet()) {
@@ -419,7 +424,7 @@ public class KickstartFactory extends HibernateFactory {
         else {
             log.debug("No ks meta for this profile.");
         }
-        String path = ksdataIn.buildCobblerFileName();
+        String path = kickstartData.buildCobblerFileName();
         log.debug("writing ks file to : {}", path);
         FileUtils.writeStringToFile(fileData, ConfigDefaults.get().getKickstartConfigDir(), path);
     }
@@ -794,12 +799,15 @@ public class KickstartFactory extends HibernateFactory {
 
     /**
      * Save a KickstartSession object
+     *
      * @param ksession to save.
+     * @return the managed {@link KickstartSession} instance
      */
-    public static void saveKickstartSession(KickstartSession ksession) {
-        singleton.saveObject(ksession);
-        SystemManager.updateSystemOverview(ksession.getOldServer());
-        SystemManager.updateSystemOverview(ksession.getNewServer());
+    public static KickstartSession saveKickstartSession(KickstartSession ksession) {
+        KickstartSession kickstartSession = singleton.saveObject(ksession);
+        SystemManager.updateSystemOverview(kickstartSession.getOldServer());
+        SystemManager.updateSystemOverview(kickstartSession.getNewServer());
+        return kickstartSession;
     }
 
     /**
@@ -898,10 +906,12 @@ public class KickstartFactory extends HibernateFactory {
 
     /**
      * Save the KickstartableTree to the DB.
+     *
      * @param tree to save
+     * @return the managed {@link KickstartableTree} instance
      */
-    public static void saveKickstartableTree(KickstartableTree tree) {
-        singleton.saveObject(tree);
+    public static KickstartableTree saveKickstartableTree(KickstartableTree tree) {
+        return singleton.saveObject(tree);
     }
 
     /**
@@ -1095,9 +1105,10 @@ public class KickstartFactory extends HibernateFactory {
 
     /**
      * @param p KickstartPackage to add to DB
+     * @return the managed {@link KickstartPackage} instance
      */
-    public static void savePackage(KickstartPackage p) {
-        singleton.saveObject(p);
+    public static KickstartPackage savePackage(KickstartPackage p) {
+        return singleton.saveObject(p);
     }
 
     /**

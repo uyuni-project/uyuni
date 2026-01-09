@@ -54,11 +54,13 @@ public class PaygSshDataFactory extends HibernateFactory {
 
     /**
      * Save the payg ssh data object to the database
+     *
      * @param sshData payg ssh data object
+     * @return the managed {@link PaygSshData} instance
      */
-    public static void savePaygSshData(PaygSshData sshData) {
+    public static PaygSshData savePaygSshData(PaygSshData sshData) {
         sshData.setModified(new Date());
-        SINGLETON.saveObject(sshData);
+        return SINGLETON.saveObject(sshData);
     }
 
     /**

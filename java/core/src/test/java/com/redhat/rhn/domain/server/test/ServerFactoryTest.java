@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 SUSE LCC
  * Copyright (c) 2009--2015 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -522,14 +523,14 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
         assertEquals(dmi, server.getDmi());
 
-        ServerFactory.save(server);
+        Server serverManaged = ServerFactory.save(server);
         //Evict from session to make sure that we get a fresh server
         //from the db.
-        flushAndEvict(server);
+        flushAndEvict(serverManaged);
+        assertFalse(HibernateFactory.getSession().contains(serverManaged));
 
-        Server server2 = ServerFactory.lookupByIdAndOrg(server.getId(),
-                user.getOrg());
-        assertEquals(dmi, server2.getDmi());
+        Server server2 = ServerFactory.lookupByIdAndOrg(serverManaged.getId(), user.getOrg());
+        assertEquals(serverManaged.getDmi(), server2.getDmi());
     }
 
     /**
@@ -601,28 +602,24 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         if (type.getAssociatedEntitlement().equals(EntitlementManager.SALT) && stype == TYPE_SERVER_NORMAL) {
             stype = TYPE_SERVER_MINION;
         }
-        Server newS = createUnentitledTestServer(owner, ensureOwnerAccess, stype,
-                dateCreated);
+        Server server = createUnentitledTestServer(owner, ensureOwnerAccess, stype, dateCreated);
 
         if (!type.getAssociatedEntitlement().isBase()) {
-            EntitlementServerGroup mgmt = ServerGroupFactory.lookupEntitled(
-                    EntitlementManager.SALT, owner.getOrg());
+            EntitlementServerGroup mgmt = ServerGroupFactory.lookupEntitled(EntitlementManager.SALT, owner.getOrg());
             if (mgmt == null) {
-                newS = TestUtils.saveAndReload(newS);
-                mgmt = ServerGroupFactory.lookupEntitled(
-                        EntitlementManager.SALT,
-                        owner.getOrg());
-                newS = ServerFactory.lookupById(newS.getId());
+                mgmt = ServerGroupFactory.lookupEntitled(EntitlementManager.SALT, owner.getOrg());
+                server = ServerFactory.lookupById(server.getId());
             }
             assertNotNull(mgmt);
             assertNotNull(mgmt.getGroupType().getAssociatedEntitlement());
-            SYSTEM_ENTITLEMENT_MANAGER.addEntitlementToServer(newS, mgmt.getGroupType().getAssociatedEntitlement());
+            SYSTEM_ENTITLEMENT_MANAGER.addEntitlementToServer(server, mgmt.getGroupType().getAssociatedEntitlement());
         }
 
         EntitlementServerGroup sg = ServerGroupTestUtils.createEntitled(owner.getOrg(), type);
 
-        SYSTEM_ENTITLEMENT_MANAGER.addEntitlementToServer(newS, sg.getGroupType().getAssociatedEntitlement());
-        return TestUtils.saveAndReload(newS);
+        SYSTEM_ENTITLEMENT_MANAGER.addEntitlementToServer(server, sg.getGroupType().getAssociatedEntitlement());
+        HibernateFactory.getSession().flush();
+        return server;
     }
 
     /**
@@ -636,15 +633,13 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
      */
     public static Server createUnentitledTestServer(User owner, boolean ensureOwnerAccess,
                     int stype, Date dateCreated) {
-        Server newS = createServer(stype);
-        // We have to commit this change manually since
-        // ServerGroups aren't actually mapped from within
-        // the Server class.
-        TestUtils.saveAndFlush(owner);
+        Server serverTransient = createServer(stype);
 
-        populateServer(newS, owner, stype);
-        createProvisionState(newS, "Test Description", "Test Label");
-        createServerInfo(newS, dateCreated, 0L);
+        populateServer(serverTransient, owner, stype);
+        createProvisionState(serverTransient, "Test Description", "Test Label");
+        createServerInfo(serverTransient, dateCreated, 0L);
+
+        Server server = TestUtils.save(serverTransient);
 
         NetworkInterface netint = new NetworkInterface();
         netint.setHwaddr("AA:AA:BB:BB:CC:CC");
@@ -652,12 +647,8 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
         netint.setName(TestUtils.randomString());
 
-        netint.setServer(newS);
-        newS.addNetworkInterface(netint);
-
-        ServerFactory.save(newS);
-        newS = TestUtils.saveAndReload(newS);
-
+        netint.setServer(server);
+        server.addNetworkInterface(netint);
 
         /* Since we added a server to the Org we need
          * to update the User's permissions as associated with
@@ -686,19 +677,20 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
          */
         if (ensureOwnerAccess) {
             ManagedServerGroup sg2 = ServerGroupTestUtils.createManaged(owner);
-            ServerFactory.addServerToGroup(newS, sg2);
+            ServerFactory.addServerToGroup(server, sg2);
             TestUtils.saveAndFlush(sg2);
         }
 
-        Long id = newS.getId();
+        Long id = server.getId();
         HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().evict(newS);
-        newS = ServerFactory.lookupByIdAndOrg(id, owner.getOrg());
-        assertNotNull(newS.getEntitledGroupTypes());
-        assertNotNull(newS.getManagedGroups());
-        assertNotNull(newS.getServerInfo());
-        assertNotNull(newS.getServerInfo().getCheckinCounter());
-        return newS;
+        HibernateFactory.getSession().evict(server);
+
+        Server managedServer = ServerFactory.lookupByIdAndOrg(id, owner.getOrg());
+        assertNotNull(managedServer.getEntitledGroupTypes());
+        assertNotNull(managedServer.getManagedGroups());
+        assertNotNull(managedServer.getServerInfo());
+        assertNotNull(managedServer.getServerInfo().getCheckinCounter());
+        return managedServer;
     }
 
     private static void populateServer(Server s, User owner, int type) {
@@ -880,17 +872,17 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     public void testGetServerHistory() throws Exception {
 
         Server serverTest = ServerFactoryTest.createTestServer(user);
-        ServerHistoryEvent event1 = new ServerHistoryEvent();
-        event1.setSummary("summary1");
-        event1.setDetails("details1");
-        event1.setServer(serverTest);
+        ServerHistoryEvent event = new ServerHistoryEvent();
+        event.setSummary("summary1");
+        event.setDetails("details1");
+        event.setServer(serverTest);
 
-        Set history = serverTest.getHistory();
-        history.add(event1);
+        Set<ServerHistoryEvent> history = serverTest.getHistory();
+        history.add(event);
 
         ServerFactory.save(serverTest);
-        TestUtils.saveAndFlush(event1);
-        Long eventId = event1.getId();
+        ServerHistoryEvent eventManaged = TestUtils.saveAndFlush(event);
+        Long eventId = eventManaged.getId();
         Long sid = serverTest.getId();
 
         HibernateFactory.getSession().clear();
@@ -940,13 +932,14 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         product.setProduct("proxy" + TestUtils.randomString());
         product.setVersion("1.1");
         product.setBeta(false);
-        proxyChan.setProduct(product);
+        ChannelProduct productManaged = TestUtils.saveAndReload(product);
+
+        proxyChan.setProduct(productManaged);
         proxyChan.setChannelFamilies(chanFamilies);
         proxyChan.setParentChannel(baseChan);
 
         ChannelFactory.save(baseChan);
         ChannelFactory.save(proxyChan);
-        TestUtils.saveAndReload(product);
 
         SystemManager.activateProxy(server, "1.1");
         SystemManager.storeServer(server);
@@ -1005,9 +998,8 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testLookupSnapshotById() {
-        Server server2 = ServerFactoryTest.createTestServer(user, true);
-        ServerSnapshot snap = generateSnapshot(server2);
-        TestUtils.saveAndFlush(snap);
+        Server server = ServerFactoryTest.createTestServer(user, true);
+        ServerSnapshot snap = TestUtils.saveAndFlush(generateSnapshot(server));
 
         ServerSnapshot snap2 = ServerFactory.lookupSnapshotById(snap.getId().intValue());
         assertEquals(snap, snap2);
@@ -1016,34 +1008,34 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testDeleteSnapshot() {
-        Server server2 = ServerFactoryTest.createTestServer(user, true);
-        ServerSnapshot snap = generateSnapshot(server2);
-        TestUtils.saveAndFlush(snap);
-        ServerFactory.deleteSnapshot(snap);
+        Server server = ServerFactoryTest.createTestServer(user, true);
+        ServerSnapshot serverSnapshotNew = generateSnapshot(server);
+        ServerSnapshot serverSnapshot = TestUtils.saveAndFlush(serverSnapshotNew);
+        ServerFactory.deleteSnapshot(serverSnapshot);
         ServerSnapshot snap2 = ServerFactory.lookupSnapshotById(
-            snap.getId().intValue());
+                serverSnapshot.getId().intValue());
         assertNull(snap2);
     }
 
 
     @Test
     public void testGetSnapshotTags() {
-        Server server2 = ServerFactoryTest.createTestServer(user, true);
-        ServerSnapshot snap = generateSnapshot(server2);
+        Server server = ServerFactoryTest.createTestServer(user, true);
+        ServerSnapshot snap = TestUtils.saveAndFlush(generateSnapshot(server));
 
-        SnapshotTag tag = new SnapshotTag();
-        SnapshotTagName name = new SnapshotTagName();
-        name.setName("blah");
-        tag.setName(name);
-        tag.setOrg(server2.getOrg());
+        SnapshotTagName nameNew = new SnapshotTagName();
+        nameNew.setName("blah");
+        SnapshotTagName name = TestUtils.saveAndFlush(nameNew);
+
+        SnapshotTag tagNew = new SnapshotTag();
+        tagNew.setName(name);
+        tagNew.setOrg(server.getOrg());
+        SnapshotTag tag = TestUtils.saveAndFlush(tagNew);
 
         ServerSnapshotTagLink link = new ServerSnapshotTagLink();
-        link.setServer(server2);
+        link.setServer(server);
         link.setSnapshot(snap);
         link.setTag(tag);
-
-        TestUtils.saveAndFlush(tag);
-        TestUtils.saveAndFlush(snap);
         TestUtils.saveAndFlush(link);
 
         List<SnapshotTag> tags = ServerFactory.getSnapshotTags(snap);
@@ -1363,33 +1355,34 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         assertEquals(proxy, proxyPaths.iterator().next().getId().getProxyServer());
         assertEquals("proxy1", proxyPaths.iterator().next().getHostname());
 
-        Long proxiedProxyId = proxiedProxy.getId();
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
-        proxiedProxy = ServerFactory.lookupById(proxiedProxyId);
+        proxiedProxy = HibernateFactory.reload(proxiedProxy);
+        proxy = HibernateFactory.reload(proxy);
 
         Server minion = ServerTestUtils.createTestSystem();
         Set<ServerPath> serverPath1 = ServerFactory.createServerPaths(minion, proxiedProxy, "proxy2");
         minion.getServerPaths().addAll(serverPath1);
 
-        Long minionId = minion.getId();
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
-        minion = ServerFactory.lookupById(minionId);
+        minion = HibernateFactory.reload(minion);
+        proxiedProxy = HibernateFactory.reload(proxiedProxy);
+        proxy = HibernateFactory.reload(proxy);
 
         proxyPaths = minion.getServerPaths();
         assertEquals(2, proxyPaths.size());
 
         ServerPath first = minion.getFirstServerPath().get();
         assertEquals(Long.valueOf(0L), first.getPosition());
-        assertEquals(minion.getId(), first.getId().getServer().getId());
-        assertEquals(proxiedProxyId, first.getId().getProxyServer().getId());
+        assertEquals(minion, first.getId().getServer());
+        assertEquals(proxiedProxy, first.getId().getProxyServer());
         assertEquals("proxy2", first.getHostname());
 
         ServerPath second = serverPath1.stream().filter(p -> p.getPosition() == 1L).findFirst().get();
         assertEquals(Long.valueOf(1L), second.getPosition());
-        assertEquals(minion.getId(), second.getId().getServer().getId());
-        assertEquals(proxy.getId(), second.getId().getProxyServer().getId());
+        assertEquals(minion, second.getId().getServer());
+        assertEquals(proxy, second.getId().getProxyServer());
         assertEquals("proxy1", second.getHostname());
     }
 

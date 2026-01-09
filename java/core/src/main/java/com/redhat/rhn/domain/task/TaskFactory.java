@@ -64,16 +64,16 @@ public class TaskFactory extends HibernateFactory {
         t.setName(name);
         t.setData(data);
         t.setEarliest(new Date()); //set to now
-        save(t); //store the task to the db
-        return reload(t);
+        return save(t);
     }
 
     /**
      * Saves the object to the db
      * @param taskIn The task to save
+     * @return the managed {@link Task} instance
      */
-    public static void save(Task taskIn) {
-        singleton.saveObject(taskIn);
+    public static Task save(Task taskIn) {
+        return singleton.saveObject(taskIn);
     }
 
     /**

@@ -198,26 +198,32 @@ public class PackageFactory extends HibernateFactory {
 
     /**
      * Store the package provider.
+     *
      * @param prov The object we are commiting.
+     * @return the managed {@link PackageProvider} instance
      */
-    public static void save(PackageProvider prov) {
-        singleton.saveObject(prov);
+    public static PackageProvider save(PackageProvider prov) {
+        return singleton.saveObject(prov);
     }
 
     /**
      * Store the package delta.
+     *
      * @param delta The object we are commiting.
+     * @return the managed {@link PackageDelta} instance
      */
-    public static void save(PackageDelta delta) {
-        singleton.saveObject(delta);
+    public static PackageDelta save(PackageDelta delta) {
+        return singleton.saveObject(delta);
     }
 
     /**
      * Store the package.
+     *
      * @param pkg The object we are commiting.
+     * @return the managed {@link Package} instance
      */
-    public static void save(Package pkg) {
-        singleton.saveObject(pkg);
+    public static Package save(Package pkg) {
+        return singleton.saveObject(pkg);
     }
 
     /**
