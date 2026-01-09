@@ -19,8 +19,8 @@ import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.EntitlementServerGroup;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
+import com.redhat.rhn.domain.server.ServerGroupTest;
 import com.redhat.rhn.domain.server.ServerGroupType;
-import com.redhat.rhn.domain.server.test.ServerGroupTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 

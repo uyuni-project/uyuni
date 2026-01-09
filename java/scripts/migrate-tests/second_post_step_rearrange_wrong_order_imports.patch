@@ -1,0 +1,339 @@
+From 145b20670de8e7082141061ceb12a6814e9f44dd Mon Sep 17 00:00:00 2001
+From: Carlo Della Giusta <carlo.dellagiusta@suse.com>
+Date: Mon, 22 Dec 2025 09:31:42 +0100
+Subject: [PATCH 1/1] second patch to rearrange wrong import order
+
+---
+ .../com/redhat/rhn/domain/errata/ErrataFactoryTest.java  | 2 +-
+ .../action/rhnpackage/profile/SyncActionsTest.java       | 2 +-
+ .../frontend/xmlrpc/chain/ActionChainHandlerTest.java    | 2 +-
+ .../channel/software/ChannelSoftwareHandlerTest.java     | 2 +-
+ .../rhn/frontend/xmlrpc/errata/ErrataHandlerTest.java    | 2 +-
+ .../rhn/frontend/xmlrpc/proxy/ProxyHandlerTest.java      | 4 ++--
+ .../rhn/frontend/xmlrpc/system/SystemHandlerTest.java    | 9 +++++----
+ .../redhat/rhn/manager/audit/CVEAuditManagerTest.java    | 2 +-
+ .../redhat/rhn/manager/channel/ChannelManagerTest.java   | 2 +-
+ .../contentmgmt/ContentManagerChannelAlignmentTest.java  | 2 +-
+ .../rhn/manager/contentmgmt/ContentManagerTest.java      | 2 +-
+ .../redhat/rhn/manager/contentmgmt/MockModulemdApi.java  | 2 +-
+ .../redhat/rhn/manager/profile/ProfileManagerTest.java   | 4 ++--
+ .../rhn/manager/rhnpackage/PackageManagerTest.java       | 2 +-
+ .../com/redhat/rhn/manager/system/SystemManagerTest.java | 4 ++--
+ .../rhn/taskomatic/task/ForwardRegistrationTaskTest.java | 2 +-
+ .../java/com/redhat/rhn/testing/ErrataTestUtils.java     | 2 +-
+ .../com/suse/scc/SCCSystemRegistrationManagerTest.java   | 2 +-
+ 18 files changed, 25 insertions(+), 24 deletions(-)
+
+diff --git a/java/core/src/test/java/com/redhat/rhn/domain/errata/ErrataFactoryTest.java b/java/core/src/test/java/com/redhat/rhn/domain/errata/ErrataFactoryTest.java
+index 15c50538db7..733e814765a 100644
+--- a/java/core/src/test/java/com/redhat/rhn/domain/errata/ErrataFactoryTest.java
++++ b/java/core/src/test/java/com/redhat/rhn/domain/errata/ErrataFactoryTest.java
+@@ -29,8 +29,8 @@ import com.redhat.rhn.common.db.datasource.WriteMode;
+ import com.redhat.rhn.common.hibernate.HibernateFactory;
+ import com.redhat.rhn.domain.channel.Channel;
+ import com.redhat.rhn.domain.channel.ChannelFactory;
+-import com.redhat.rhn.domain.channel.ChannelTestUtility;
+ import com.redhat.rhn.domain.channel.ChannelFactoryTest;
++import com.redhat.rhn.domain.channel.ChannelTestUtility;
+ import com.redhat.rhn.domain.org.Org;
+ import com.redhat.rhn.domain.org.OrgFactory;
+ import com.redhat.rhn.domain.product.Tuple2;
+diff --git a/java/core/src/test/java/com/redhat/rhn/frontend/action/rhnpackage/profile/SyncActionsTest.java b/java/core/src/test/java/com/redhat/rhn/frontend/action/rhnpackage/profile/SyncActionsTest.java
+index 0b78cabe1b9..9c475fdb9fc 100644
+--- a/java/core/src/test/java/com/redhat/rhn/frontend/action/rhnpackage/profile/SyncActionsTest.java
++++ b/java/core/src/test/java/com/redhat/rhn/frontend/action/rhnpackage/profile/SyncActionsTest.java
+@@ -18,8 +18,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
+ 
+ import com.redhat.rhn.domain.channel.Channel;
+ import com.redhat.rhn.domain.channel.ChannelFactory;
+-import com.redhat.rhn.domain.channel.ChannelTestUtility;
+ import com.redhat.rhn.domain.channel.ChannelFactoryTest;
++import com.redhat.rhn.domain.channel.ChannelTestUtility;
+ import com.redhat.rhn.domain.rhnpackage.Package;
+ import com.redhat.rhn.domain.rhnpackage.PackageTest;
+ import com.redhat.rhn.domain.server.Server;
+diff --git a/java/core/src/test/java/com/redhat/rhn/frontend/xmlrpc/chain/ActionChainHandlerTest.java b/java/core/src/test/java/com/redhat/rhn/frontend/xmlrpc/chain/ActionChainHandlerTest.java
+index 33481444c2b..c7df6d479da 100644
+--- a/java/core/src/test/java/com/redhat/rhn/frontend/xmlrpc/chain/ActionChainHandlerTest.java
++++ b/java/core/src/test/java/com/redhat/rhn/frontend/xmlrpc/chain/ActionChainHandlerTest.java
+@@ -39,8 +39,8 @@ import com.redhat.rhn.domain.action.rhnpackage.PackageUpdateAction;
+ import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
+ import com.redhat.rhn.domain.action.script.ScriptRunAction;
+ import com.redhat.rhn.domain.channel.Channel;
+-import com.redhat.rhn.domain.channel.ChannelTestUtility;
+ import com.redhat.rhn.domain.channel.ChannelFactoryTest;
++import com.redhat.rhn.domain.channel.ChannelTestUtility;
+ import com.redhat.rhn.domain.config.ConfigFile;
+ import com.redhat.rhn.domain.config.ConfigRevision;
+ import com.redhat.rhn.domain.errata.Errata;
+diff --git a/java/core/src/test/java/com/redhat/rhn/frontend/xmlrpc/channel/software/ChannelSoftwareHandlerTest.java b/java/core/src/test/java/com/redhat/rhn/frontend/xmlrpc/channel/software/ChannelSoftwareHandlerTest.java
+index 08e3cb22d2f..6d7e7c52ad9 100644
+--- a/java/core/src/test/java/com/redhat/rhn/frontend/xmlrpc/channel/software/ChannelSoftwareHandlerTest.java
++++ b/java/core/src/test/java/com/redhat/rhn/frontend/xmlrpc/channel/software/ChannelSoftwareHandlerTest.java
+@@ -29,8 +29,8 @@ import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
+ import com.redhat.rhn.domain.channel.Channel;
+ import com.redhat.rhn.domain.channel.ChannelArch;
+ import com.redhat.rhn.domain.channel.ChannelFactory;
+-import com.redhat.rhn.domain.channel.ChannelTestUtility;
+ import com.redhat.rhn.domain.channel.ChannelFactoryTest;
++import com.redhat.rhn.domain.channel.ChannelTestUtility;
+ import com.redhat.rhn.domain.errata.AdvisoryStatus;
+ import com.redhat.rhn.domain.errata.Errata;
+ import com.redhat.rhn.domain.errata.ErrataFactoryTest;
+diff --git a/java/core/src/test/java/com/redhat/rhn/frontend/xmlrpc/errata/ErrataHandlerTest.java b/java/core/src/test/java/com/redhat/rhn/frontend/xmlrpc/errata/ErrataHandlerTest.java
+index 744c27ef0fa..22909145365 100644
+--- a/java/core/src/test/java/com/redhat/rhn/frontend/xmlrpc/errata/ErrataHandlerTest.java
++++ b/java/core/src/test/java/com/redhat/rhn/frontend/xmlrpc/errata/ErrataHandlerTest.java
+@@ -33,8 +33,8 @@ import com.redhat.rhn.FaultException;
+ import com.redhat.rhn.common.db.datasource.DataResult;
+ import com.redhat.rhn.common.db.datasource.Row;
+ import com.redhat.rhn.domain.channel.Channel;
+-import com.redhat.rhn.domain.channel.ChannelTestUtility;
+ import com.redhat.rhn.domain.channel.ChannelFactoryTest;
++import com.redhat.rhn.domain.channel.ChannelTestUtility;
+ import com.redhat.rhn.domain.errata.AdvisoryStatus;
+ import com.redhat.rhn.domain.errata.Bug;
+ import com.redhat.rhn.domain.errata.ClonedErrata;
+diff --git a/java/core/src/test/java/com/redhat/rhn/frontend/xmlrpc/proxy/ProxyHandlerTest.java b/java/core/src/test/java/com/redhat/rhn/frontend/xmlrpc/proxy/ProxyHandlerTest.java
+index 94cd1e92433..bb0cfeb3183 100644
+--- a/java/core/src/test/java/com/redhat/rhn/frontend/xmlrpc/proxy/ProxyHandlerTest.java
++++ b/java/core/src/test/java/com/redhat/rhn/frontend/xmlrpc/proxy/ProxyHandlerTest.java
+@@ -51,10 +51,10 @@ import com.suse.manager.ssl.SSLCertManager;
+ import com.suse.manager.ssl.SSLCertPair;
+ import com.suse.manager.webui.controllers.bootstrap.RegularMinionBootstrapper;
+ import com.suse.manager.webui.controllers.bootstrap.SSHMinionBootstrapper;
+-import com.suse.manager.webui.services.iface.SaltApi;
+-import com.suse.manager.webui.services.iface.SystemQuery;
+ import com.suse.manager.webui.services.TestSaltApi;
+ import com.suse.manager.webui.services.TestSystemQuery;
++import com.suse.manager.webui.services.iface.SaltApi;
++import com.suse.manager.webui.services.iface.SystemQuery;
+ import com.suse.manager.webui.utils.gson.ProxyConfigUpdateJson;
+ import com.suse.proxy.update.ProxyConfigUpdateFacade;
+ import com.suse.proxy.update.ProxyConfigUpdateFacadeImpl;
+diff --git a/java/core/src/test/java/com/redhat/rhn/frontend/xmlrpc/system/SystemHandlerTest.java b/java/core/src/test/java/com/redhat/rhn/frontend/xmlrpc/system/SystemHandlerTest.java
+index 5ce23673be3..a8d1693839a 100644
+--- a/java/core/src/test/java/com/redhat/rhn/frontend/xmlrpc/system/SystemHandlerTest.java
++++ b/java/core/src/test/java/com/redhat/rhn/frontend/xmlrpc/system/SystemHandlerTest.java
+@@ -52,30 +52,31 @@ import com.redhat.rhn.domain.action.supportdata.SupportDataAction;
+ import com.redhat.rhn.domain.action.supportdata.SupportDataActionDetails;
+ import com.redhat.rhn.domain.channel.Channel;
+ import com.redhat.rhn.domain.channel.ChannelFactory;
++import com.redhat.rhn.domain.channel.ChannelFactoryTest;
+ import com.redhat.rhn.domain.channel.ChannelFamily;
+ import com.redhat.rhn.domain.channel.ChannelTestUtility;
+-import com.redhat.rhn.domain.channel.ChannelFactoryTest;
+ import com.redhat.rhn.domain.entitlement.Entitlement;
+ import com.redhat.rhn.domain.errata.Errata;
+ import com.redhat.rhn.domain.errata.ErrataFactory;
+ import com.redhat.rhn.domain.errata.ErrataFactoryTest;
+ import com.redhat.rhn.domain.kickstart.KickstartData;
+-import com.redhat.rhn.domain.kickstart.KickstartFactory;
+ import com.redhat.rhn.domain.kickstart.KickstartDataTest;
++import com.redhat.rhn.domain.kickstart.KickstartFactory;
+ import com.redhat.rhn.domain.org.CustomDataKey;
+-import com.redhat.rhn.domain.org.Org;
+ import com.redhat.rhn.domain.org.CustomDataKeyTest;
++import com.redhat.rhn.domain.org.Org;
+ import com.redhat.rhn.domain.product.SUSEProduct;
+ import com.redhat.rhn.domain.product.SUSEProductFactory;
+ import com.redhat.rhn.domain.product.SUSEProductTestUtils;
+ import com.redhat.rhn.domain.rhnpackage.Package;
+ import com.redhat.rhn.domain.rhnpackage.PackageArch;
+ import com.redhat.rhn.domain.rhnpackage.PackageFactory;
++import com.redhat.rhn.domain.rhnpackage.PackageTest;
+ import com.redhat.rhn.domain.rhnpackage.profile.Profile;
+ import com.redhat.rhn.domain.rhnpackage.profile.ProfileFactory;
+-import com.redhat.rhn.domain.rhnpackage.PackageTest;
+ import com.redhat.rhn.domain.role.RoleFactory;
+ import com.redhat.rhn.domain.server.CPU;
++import com.redhat.rhn.domain.server.CPUTest;
+ import com.redhat.rhn.domain.server.CustomDataValue;
+ import com.redhat.rhn.domain.server.Device;
+ import com.redhat.rhn.domain.server.Dmi;
+diff --git a/java/core/src/test/java/com/redhat/rhn/manager/audit/CVEAuditManagerTest.java b/java/core/src/test/java/com/redhat/rhn/manager/audit/CVEAuditManagerTest.java
+index 9d248032e90..8045e917f6c 100644
+--- a/java/core/src/test/java/com/redhat/rhn/manager/audit/CVEAuditManagerTest.java
++++ b/java/core/src/test/java/com/redhat/rhn/manager/audit/CVEAuditManagerTest.java
+@@ -42,10 +42,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
+ 
+ import com.redhat.rhn.domain.channel.Channel;
+ import com.redhat.rhn.domain.channel.ChannelFactory;
++import com.redhat.rhn.domain.channel.ChannelFactoryTest;
+ import com.redhat.rhn.domain.channel.ChannelFamily;
+ import com.redhat.rhn.domain.channel.ChannelProduct;
+ import com.redhat.rhn.domain.channel.ChannelTestUtility;
+-import com.redhat.rhn.domain.channel.ChannelFactoryTest;
+ import com.redhat.rhn.domain.errata.Cve;
+ import com.redhat.rhn.domain.errata.Errata;
+ import com.redhat.rhn.domain.image.ImageInfo;
+diff --git a/java/core/src/test/java/com/redhat/rhn/manager/channel/ChannelManagerTest.java b/java/core/src/test/java/com/redhat/rhn/manager/channel/ChannelManagerTest.java
+index 60e10207024..9dfe11da1f7 100644
+--- a/java/core/src/test/java/com/redhat/rhn/manager/channel/ChannelManagerTest.java
++++ b/java/core/src/test/java/com/redhat/rhn/manager/channel/ChannelManagerTest.java
+@@ -30,13 +30,13 @@ import com.redhat.rhn.domain.action.Action;
+ import com.redhat.rhn.domain.channel.AccessTokenFactory;
+ import com.redhat.rhn.domain.channel.Channel;
+ import com.redhat.rhn.domain.channel.ChannelFactory;
++import com.redhat.rhn.domain.channel.ChannelFactoryTest;
+ import com.redhat.rhn.domain.channel.ChannelTestUtility;
+ import com.redhat.rhn.domain.channel.ChannelVersion;
+ import com.redhat.rhn.domain.channel.ClonedChannel;
+ import com.redhat.rhn.domain.channel.DistChannelMap;
+ import com.redhat.rhn.domain.channel.ProductName;
+ import com.redhat.rhn.domain.channel.ReleaseChannelMap;
+-import com.redhat.rhn.domain.channel.ChannelFactoryTest;
+ import com.redhat.rhn.domain.errata.AdvisoryStatus;
+ import com.redhat.rhn.domain.errata.Errata;
+ import com.redhat.rhn.domain.errata.ErrataFactory;
+diff --git a/java/core/src/test/java/com/redhat/rhn/manager/contentmgmt/ContentManagerChannelAlignmentTest.java b/java/core/src/test/java/com/redhat/rhn/manager/contentmgmt/ContentManagerChannelAlignmentTest.java
+index 8d11e8d755a..696b708059d 100644
+--- a/java/core/src/test/java/com/redhat/rhn/manager/contentmgmt/ContentManagerChannelAlignmentTest.java
++++ b/java/core/src/test/java/com/redhat/rhn/manager/contentmgmt/ContentManagerChannelAlignmentTest.java
+@@ -36,8 +36,8 @@ import com.redhat.rhn.common.db.datasource.DataResult;
+ import com.redhat.rhn.common.hibernate.HibernateFactory;
+ import com.redhat.rhn.domain.channel.Channel;
+ import com.redhat.rhn.domain.channel.ChannelFactory;
+-import com.redhat.rhn.domain.channel.ChannelTestUtility;
+ import com.redhat.rhn.domain.channel.ChannelFactoryTest;
++import com.redhat.rhn.domain.channel.ChannelTestUtility;
+ import com.redhat.rhn.domain.contentmgmt.ContentFilter;
+ import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
+ import com.redhat.rhn.domain.errata.AdvisoryStatus;
+diff --git a/java/core/src/test/java/com/redhat/rhn/manager/contentmgmt/ContentManagerTest.java b/java/core/src/test/java/com/redhat/rhn/manager/contentmgmt/ContentManagerTest.java
+index 7b3575839dd..aa1d2021e16 100644
+--- a/java/core/src/test/java/com/redhat/rhn/manager/contentmgmt/ContentManagerTest.java
++++ b/java/core/src/test/java/com/redhat/rhn/manager/contentmgmt/ContentManagerTest.java
+@@ -38,10 +38,10 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
+ import com.redhat.rhn.common.security.PermissionException;
+ import com.redhat.rhn.domain.channel.Channel;
+ import com.redhat.rhn.domain.channel.ChannelFactory;
++import com.redhat.rhn.domain.channel.ChannelFactoryTest;
+ import com.redhat.rhn.domain.channel.ChannelTestUtility;
+ import com.redhat.rhn.domain.channel.ClonedChannel;
+ import com.redhat.rhn.domain.channel.Modules;
+-import com.redhat.rhn.domain.channel.ChannelFactoryTest;
+ import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
+ import com.redhat.rhn.domain.contentmgmt.ContentEnvironmentDiff;
+ import com.redhat.rhn.domain.contentmgmt.ContentFilter;
+diff --git a/java/core/src/test/java/com/redhat/rhn/manager/contentmgmt/MockModulemdApi.java b/java/core/src/test/java/com/redhat/rhn/manager/contentmgmt/MockModulemdApi.java
+index 1f28d0de6a3..5ff28c057b8 100644
+--- a/java/core/src/test/java/com/redhat/rhn/manager/contentmgmt/MockModulemdApi.java
++++ b/java/core/src/test/java/com/redhat/rhn/manager/contentmgmt/MockModulemdApi.java
+@@ -22,9 +22,9 @@ import com.redhat.rhn.common.conf.Config;
+ import com.redhat.rhn.common.conf.ConfigDefaults;
+ import com.redhat.rhn.domain.channel.Channel;
+ import com.redhat.rhn.domain.channel.ChannelFactory;
++import com.redhat.rhn.domain.channel.ChannelFactoryTest;
+ import com.redhat.rhn.domain.channel.ChannelTestUtility;
+ import com.redhat.rhn.domain.channel.Modules;
+-import com.redhat.rhn.domain.channel.ChannelFactoryTest;
+ import com.redhat.rhn.domain.contentmgmt.modulemd.ConflictingStreamsException;
+ import com.redhat.rhn.domain.contentmgmt.modulemd.Module;
+ import com.redhat.rhn.domain.contentmgmt.modulemd.ModuleInfo;
+diff --git a/java/core/src/test/java/com/redhat/rhn/manager/profile/ProfileManagerTest.java b/java/core/src/test/java/com/redhat/rhn/manager/profile/ProfileManagerTest.java
+index 80a179a42d1..6d1df5098e2 100644
+--- a/java/core/src/test/java/com/redhat/rhn/manager/profile/ProfileManagerTest.java
++++ b/java/core/src/test/java/com/redhat/rhn/manager/profile/ProfileManagerTest.java
+@@ -25,14 +25,14 @@ import com.redhat.rhn.common.db.datasource.DataResult;
+ import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
+ import com.redhat.rhn.domain.channel.Channel;
+ import com.redhat.rhn.domain.channel.ChannelFactory;
++import com.redhat.rhn.domain.channel.ChannelFactoryTest;
+ import com.redhat.rhn.domain.channel.ChannelTestUtility;
+ import com.redhat.rhn.domain.channel.NoBaseChannelFoundException;
+-import com.redhat.rhn.domain.channel.ChannelFactoryTest;
+ import com.redhat.rhn.domain.rhnpackage.Package;
+ import com.redhat.rhn.domain.rhnpackage.PackageArch;
+ import com.redhat.rhn.domain.rhnpackage.PackageFactory;
+-import com.redhat.rhn.domain.rhnpackage.profile.Profile;
+ import com.redhat.rhn.domain.rhnpackage.PackageTest;
++import com.redhat.rhn.domain.rhnpackage.profile.Profile;
+ import com.redhat.rhn.domain.role.RoleFactory;
+ import com.redhat.rhn.domain.server.Server;
+ import com.redhat.rhn.domain.server.ServerConstants;
+diff --git a/java/core/src/test/java/com/redhat/rhn/manager/rhnpackage/PackageManagerTest.java b/java/core/src/test/java/com/redhat/rhn/manager/rhnpackage/PackageManagerTest.java
+index 6c2a402f3e1..2b8a3297592 100644
+--- a/java/core/src/test/java/com/redhat/rhn/manager/rhnpackage/PackageManagerTest.java
++++ b/java/core/src/test/java/com/redhat/rhn/manager/rhnpackage/PackageManagerTest.java
+@@ -28,8 +28,8 @@ import com.redhat.rhn.common.db.datasource.WriteMode;
+ import com.redhat.rhn.common.hibernate.HibernateFactory;
+ import com.redhat.rhn.domain.channel.Channel;
+ import com.redhat.rhn.domain.channel.ChannelFactory;
+-import com.redhat.rhn.domain.channel.ChannelTestUtility;
+ import com.redhat.rhn.domain.channel.ChannelFactoryTest;
++import com.redhat.rhn.domain.channel.ChannelTestUtility;
+ import com.redhat.rhn.domain.errata.Errata;
+ import com.redhat.rhn.domain.errata.ErrataFactory;
+ import com.redhat.rhn.domain.errata.ErrataFactoryTest;
+diff --git a/java/core/src/test/java/com/redhat/rhn/manager/system/SystemManagerTest.java b/java/core/src/test/java/com/redhat/rhn/manager/system/SystemManagerTest.java
+index 9db77723506..d16b34cbad8 100644
+--- a/java/core/src/test/java/com/redhat/rhn/manager/system/SystemManagerTest.java
++++ b/java/core/src/test/java/com/redhat/rhn/manager/system/SystemManagerTest.java
+@@ -44,15 +44,15 @@ import com.redhat.rhn.common.validator.ValidatorResult;
+ import com.redhat.rhn.common.validator.ValidatorWarning;
+ import com.redhat.rhn.domain.action.Action;
+ import com.redhat.rhn.domain.action.ActionFactory;
++import com.redhat.rhn.domain.action.ActionFactoryTest;
+ import com.redhat.rhn.domain.action.ActionType;
+ import com.redhat.rhn.domain.action.server.ServerAction;
+ import com.redhat.rhn.domain.action.server.ServerActionTest;
+-import com.redhat.rhn.domain.action.ActionFactoryTest;
+ import com.redhat.rhn.domain.channel.Channel;
+ import com.redhat.rhn.domain.channel.ChannelArch;
++import com.redhat.rhn.domain.channel.ChannelFactoryTest;
+ import com.redhat.rhn.domain.channel.ChannelTestUtility;
+ import com.redhat.rhn.domain.channel.ProductName;
+-import com.redhat.rhn.domain.channel.ChannelFactoryTest;
+ import com.redhat.rhn.domain.dto.SystemGroupID;
+ import com.redhat.rhn.domain.dto.SystemGroupsDTO;
+ import com.redhat.rhn.domain.entitlement.Entitlement;
+diff --git a/java/core/src/test/java/com/redhat/rhn/taskomatic/task/ForwardRegistrationTaskTest.java b/java/core/src/test/java/com/redhat/rhn/taskomatic/task/ForwardRegistrationTaskTest.java
+index 1237a113947..be4ffec81b8 100644
+--- a/java/core/src/test/java/com/redhat/rhn/taskomatic/task/ForwardRegistrationTaskTest.java
++++ b/java/core/src/test/java/com/redhat/rhn/taskomatic/task/ForwardRegistrationTaskTest.java
+@@ -44,8 +44,8 @@ import com.suse.manager.model.hub.HubFactory;
+ import com.suse.manager.model.hub.IssHub;
+ import com.suse.manager.model.hub.IssPeripheral;
+ import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
+-import com.suse.manager.webui.services.iface.SaltApi;
+ import com.suse.manager.webui.services.TestSaltApi;
++import com.suse.manager.webui.services.iface.SaltApi;
+ import com.suse.scc.SCCEndpoints;
+ import com.suse.scc.SCCSystemRegistrationManager;
+ import com.suse.scc.SCCTaskManager;
+diff --git a/java/core/src/test/java/com/redhat/rhn/testing/ErrataTestUtils.java b/java/core/src/test/java/com/redhat/rhn/testing/ErrataTestUtils.java
+index a97768dfa2a..a5388fd7a32 100644
+--- a/java/core/src/test/java/com/redhat/rhn/testing/ErrataTestUtils.java
++++ b/java/core/src/test/java/com/redhat/rhn/testing/ErrataTestUtils.java
+@@ -21,12 +21,12 @@ import com.redhat.rhn.common.db.datasource.ModeFactory;
+ import com.redhat.rhn.common.db.datasource.WriteMode;
+ import com.redhat.rhn.common.hibernate.HibernateFactory;
+ import com.redhat.rhn.domain.channel.Channel;
++import com.redhat.rhn.domain.channel.ChannelFactoryTest;
+ import com.redhat.rhn.domain.channel.ChannelFamily;
+ import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
+ import com.redhat.rhn.domain.channel.ChannelProduct;
+ import com.redhat.rhn.domain.channel.ChannelTestUtility;
+ import com.redhat.rhn.domain.channel.PublicChannelFamily;
+-import com.redhat.rhn.domain.channel.ChannelFactoryTest;
+ import com.redhat.rhn.domain.errata.ClonedErrata;
+ import com.redhat.rhn.domain.errata.Cve;
+ import com.redhat.rhn.domain.errata.Errata;
+diff --git a/java/core/src/test/java/com/suse/scc/SCCSystemRegistrationManagerTest.java b/java/core/src/test/java/com/suse/scc/SCCSystemRegistrationManagerTest.java
+index c58ae855894..48f0d59fe49 100644
+--- a/java/core/src/test/java/com/suse/scc/SCCSystemRegistrationManagerTest.java
++++ b/java/core/src/test/java/com/suse/scc/SCCSystemRegistrationManagerTest.java
+@@ -33,8 +33,8 @@ import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
+ import com.redhat.rhn.testing.BaseTestCaseWithUser;
+ import com.redhat.rhn.testing.ServerTestUtils;
+ 
+-import com.suse.manager.webui.services.iface.SaltApi;
+ import com.suse.manager.webui.services.TestSaltApi;
++import com.suse.manager.webui.services.iface.SaltApi;
+ import com.suse.scc.client.SCCClient;
+ import com.suse.scc.client.SCCConfig;
+ import com.suse.scc.client.SCCConfigBuilder;
+-- 
+2.52.0
+

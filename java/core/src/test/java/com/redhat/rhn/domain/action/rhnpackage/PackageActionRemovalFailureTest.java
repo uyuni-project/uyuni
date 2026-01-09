@@ -1,0 +1,87 @@
+/*
+ * Copyright (c) 2009--2013 Red Hat, Inc.
+ *
+ * This software is licensed to you under the GNU General Public License,
+ * version 2 (GPLv2). There is NO WARRANTY for this software, express or
+ * implied, including the implied warranties of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+ * along with this software; if not, see
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * Red Hat trademarks are not licensed under GPLv2. No permission is
+ * granted to use or replicate Red Hat trademarks that are incorporated
+ * in this software or its documentation.
+ */
+package com.redhat.rhn.domain.action.rhnpackage;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionFactoryTest;
+import com.redhat.rhn.domain.rhnpackage.PackageCapability;
+import com.redhat.rhn.domain.rhnpackage.PackageCapabilityTest;
+import com.redhat.rhn.domain.rhnpackage.PackageEvr;
+import com.redhat.rhn.domain.rhnpackage.PackageEvrFactoryTest;
+import com.redhat.rhn.domain.rhnpackage.PackageName;
+import com.redhat.rhn.domain.rhnpackage.PackageNameTest;
+import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactoryTest;
+import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.TestUtils;
+import com.redhat.rhn.testing.UserTestUtils;
+
+import org.hibernate.Session;
+import org.junit.jupiter.api.Test;
+
+/**
+ * PackageActionRemovalFailureTest
+ */
+public class PackageActionRemovalFailureTest extends RhnBaseTestCase {
+
+    @Test
+    public void testPackageActionRemovalFailure() throws Exception {
+        User usr = UserTestUtils.createUser(this);
+        PackageAction pkgaction = (PackageAction) ActionFactoryTest.createAction(
+                                         usr, ActionFactory.TYPE_PACKAGES_VERIFY);
+        Server server = ServerFactoryTest.createTestServer(usr);
+        PackageName name = PackageNameTest.createTestPackageName();
+        PackageEvr evr = PackageEvrFactoryTest.createTestPackageEvr();
+        PackageCapability cap = PackageCapabilityTest.createTestCapability();
+
+        PackageActionRemovalFailure failure = new PackageActionRemovalFailure();
+        failure.setServer(server);
+        failure.setAction(pkgaction);
+        failure.setPackageName(name);
+        failure.setEvr(evr);
+        failure.setCapability(cap);
+        failure.setFlags(1L);
+        failure.setSense(1L);
+
+        TestUtils.saveAndFlush(failure);
+
+        PackageActionRemovalFailure failure2 = lookupByKey(server, pkgaction, name);
+        assertNotNull(failure2);
+        assertEquals(failure, failure2);
+    }
+
+    /**
+     * Helper method to look up a PackageActionRemovalFailure
+     * by Server, PackageAction, and PackageName.
+     */
+    private PackageActionRemovalFailure lookupByKey(Server s, Action a, PackageName n) {
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("""
+                        FROM PackageActionRemovalFailure AS p
+                            WHERE p.server = :server
+                            AND p.action = :action
+                            AND p.packageName = :packageName""", PackageActionRemovalFailure.class)
+                .setParameter("server", s)
+                .setParameter("action", a)
+                .setParameter("packageName", n)
+                .uniqueResult();
+    }
+}

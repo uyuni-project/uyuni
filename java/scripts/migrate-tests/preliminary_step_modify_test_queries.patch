@@ -1,0 +1,106 @@
+From 028042a46f019f4bb9e9da1aa35ca0bebfe81821 Mon Sep 17 00:00:00 2001
+From: Carlo Della Giusta <carlo.dellagiusta@suse.com>
+Date: Thu, 18 Dec 2025 08:46:20 +0100
+Subject: [PATCH] modified stuff in test_queries (post)
+
+---
+ .../redhat/rhn/common/db/datasource/xml/test_queries.xml  | 8 ++++----
+ .../rhn/common/db/datasource/test/DataSourceParserTest.java    | 8 ++++----
+ .../redhat/rhn/common/security/acl/test/AclFactoryTest.java    | 2 +-
+ 3 files changed, 9 insertions(+), 9 deletions(-)
+
+diff --git a/java/core/src/main/resources/com/redhat/rhn/common/db/datasource/xml/test_queries.xml b/java/core/src/main/resources/com/redhat/rhn/common/db/datasource/xml/test_queries.xml
+index 96c5d286c83..091a65d3ea0 100644
+--- a/java/core/src/main/resources/com/redhat/rhn/common/db/datasource/xml/test_queries.xml
++++ b/java/core/src/main/resources/com/redhat/rhn/common/db/datasource/xml/test_queries.xml
+@@ -102,7 +102,7 @@
+ 
+ 
+ <mode name="find_all_in_table"
+- class="com.redhat.rhn.common.db.datasource.test.AdvDataSourceDto">
++ class="com.redhat.rhn.common.db.datasource.AdvDataSourceDto">
+   <query params="">
+     SELECT foobar, id
+       FROM adv_datasource
+@@ -112,7 +112,7 @@
+ 
+ 
+ <mode name="find_in_table"
+-                class="com.redhat.rhn.common.db.datasource.test.AdvDataSourceDto">
++                class="com.redhat.rhn.common.db.datasource.AdvDataSourceDto">
+   <query params="foobar">
+     SELECT foobar, id
+       FROM adv_datasource
+@@ -149,7 +149,7 @@
+ </callable-mode>
+ 
+ <!-- Test to benchmark datasource vs hibernate -->
+-<mode name="withClass_pg" class="com.redhat.rhn.common.db.datasource.test.TableData">
++<mode name="withClass_pg" class="com.redhat.rhn.common.db.datasource.TableData">
+   <query params="">
+       SELECT t.tablename as table_name
+         FROM pg_tables t
+@@ -165,7 +165,7 @@
+ </mode>
+ 
+ 
+-<mode name="user_class_pg" class="com.redhat.rhn.common.db.datasource.test.UserData">
++<mode name="user_class_pg" class="com.redhat.rhn.common.db.datasource.UserData">
+   <query params="username">
+       SELECT u.usename as USERNAME, u.usesysid as USER_ID
+         FROM pg_user u
+diff --git a/java/core/src/test/java/com/redhat/rhn/common/db/datasource/test/DataSourceParserTest.java b/java/core/src/test/java/com/redhat/rhn/common/db/datasource/test/DataSourceParserTest.java
+index 2da4c361a45..515d0cfddb6 100644
+--- a/java/core/src/test/java/com/redhat/rhn/common/db/datasource/test/DataSourceParserTest.java
++++ b/java/core/src/test/java/com/redhat/rhn/common/db/datasource/test/DataSourceParserTest.java
+@@ -299,14 +299,14 @@ public class DataSourceParserTest extends RhnBaseTestCase {
+     public void testSpecifiedClass() {
+         SelectMode m = ModeFactory.getMode(TEST_QUERIES, "withClass_pg");
+         String clazz = m.getClassString();
+-        assertEquals("com.redhat.rhn.common.db.datasource.test.TableData", clazz);
++        assertEquals("com.redhat.rhn.common.db.datasource.TableData", clazz);
+     }
+ 
+     @Test
+     public void testSpecifiedClassExecute() {
+         SelectMode m = ModeFactory.getMode(TEST_QUERIES, "withClass_pg");
+         String clazz = m.getClassString();
+-        assertEquals("com.redhat.rhn.common.db.datasource.test.TableData", clazz);
++        assertEquals("com.redhat.rhn.common.db.datasource.TableData", clazz);
+         DataResult<TableData> dr = m.execute(new HashMap<>());
+         assertNotNull(dr);
+         assertFalse(dr.isEmpty());
+@@ -319,7 +319,7 @@ public class DataSourceParserTest extends RhnBaseTestCase {
+     public void testClassElaborateList() {
+         SelectMode m = ModeFactory.getMode(TEST_QUERIES, "withClass_pg");
+         String clazz = m.getClassString();
+-        assertEquals("com.redhat.rhn.common.db.datasource.test.TableData", clazz);
++        assertEquals("com.redhat.rhn.common.db.datasource.TableData", clazz);
+         DataResult<TableData> dr = m.execute(new HashMap<>());
+         assertNotNull(dr);
+         assertFalse(dr.isEmpty());
+@@ -337,7 +337,7 @@ public class DataSourceParserTest extends RhnBaseTestCase {
+     public void testSpecifiedClassElaborate() {
+         SelectMode m = ModeFactory.getMode(TEST_QUERIES, "user_class_pg");
+         String clazz = m.getClassString();
+-        assertEquals("com.redhat.rhn.common.db.datasource.test.UserData", clazz);
++        assertEquals("com.redhat.rhn.common.db.datasource.UserData", clazz);
+         Map<String, Object> hm = new HashMap<>();
+         hm.put("username", dbUser);
+         DataResult<UserData> dr = m.execute(hm);
+diff --git a/java/core/src/test/java/com/redhat/rhn/common/security/acl/test/AclFactoryTest.java b/java/core/src/test/java/com/redhat/rhn/common/security/acl/test/AclFactoryTest.java
+index e8997c7b592..b236fdba1e4 100644
+--- a/java/core/src/test/java/com/redhat/rhn/common/security/acl/test/AclFactoryTest.java
++++ b/java/core/src/test/java/com/redhat/rhn/common/security/acl/test/AclFactoryTest.java
+@@ -28,7 +28,7 @@ public class AclFactoryTest extends RhnBaseTestCase {
+     @Test
+     public void testGetAcl() {
+         AclFactory aclFactory = new AclFactory(new Access());
+-        Acl test = aclFactory.getAcl("  com.redhat.rhn.common.security.acl.test.MixinTestHandler  ");
++        Acl test = aclFactory.getAcl("  com.redhat.rhn.common.security.acl.MixinTestHandler  ");
+         assertNotNull(test);
+     }
+ }
+-- 
+2.52.0
+

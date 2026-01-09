@@ -1,0 +1,313 @@
+/*
+ * Copyright (c) 2009--2014 Red Hat, Inc.
+ *
+ * This software is licensed to you under the GNU General Public License,
+ * version 2 (GPLv2). There is NO WARRANTY for this software, express or
+ * implied, including the implied warranties of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+ * along with this software; if not, see
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * Red Hat trademarks are not licensed under GPLv2. No permission is
+ * granted to use or replicate Red Hat trademarks that are incorporated
+ * in this software or its documentation.
+ */
+package com.redhat.rhn.frontend.action.common;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.hibernate.HibernateHelper;
+import com.redhat.rhn.domain.Identifiable;
+import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.struts.RequestContext;
+import com.redhat.rhn.manager.rhnset.RhnSetDecl;
+import com.redhat.rhn.testing.ActionHelper;
+import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionForward;
+import org.hibernate.HibernateException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+/**
+ * RhnSetActionTest
+ */
+public class RhnSetActionTest extends RhnBaseTestCase {
+    private static Logger log = LogManager.getLogger(RhnSetActionTest.class);
+    private TestAction action = null;
+
+    @Override
+    @BeforeEach
+    public void setUp() {
+        action = new TestAction();
+    }
+
+    @Test
+    public void testUpdateList() throws Exception {
+        ActionHelper sah = new ActionHelper();
+        sah.setUpAction(action);
+        sah.setupClampListBounds();
+        sah.getRequest().setRequestURL("foo");
+        sah.getRequest().addParameter("items_selected",
+            new String[] {"10", "20", "30"});
+        sah.getRequest().addParameter("newset", (String)null);
+        sah.getRequest().addParameter("items_on_page", (String)null);
+        ActionForward forward = sah.executeAction("updatelist");
+
+        // let's go find the data
+        verifyRhnSetData(sah.getUser().getId(), action.getSetDecl().getLabel(), 3);
+        verifyParam(forward.getPath(), "setupdated", "true");
+    }
+
+    @Test
+    public void testUpdateListPipe() throws Exception {
+        ActionHelper sah = new ActionHelper();
+        sah.setUpAction(action);
+        sah.setupClampListBounds();
+        sah.getRequest().setRequestURL("foo");
+        sah.getRequest().addParameter("items_selected",
+            new String[] {"777|999", "99|555", "666|77656"});
+        sah.getRequest().addParameter("newset", (String)null);
+        sah.getRequest().addParameter("items_on_page", (String)null);
+        sah.executeAction("updatelist");
+
+        // let's go find the data
+        verifyRhnSetData(sah.getUser().getId(), action.getSetDecl().getLabel(), 3);
+    }
+    @Test
+    public void testUnselectAll() throws Exception {
+        ActionHelper sah = new ActionHelper();
+        sah.setUpAction(action);
+        sah.setupClampListBounds();
+        ActionForward forward = sah.executeAction("unselectall");
+
+        verifyRhnSetData(sah.getUser().getId(), action.getSetDecl().getLabel(), 0);
+        verifyParam(forward.getPath(), "setupdated", "true");
+    }
+
+    @Test
+    public void testSelectAllBadDataType() throws Exception {
+        ActionHelper sah = new ActionHelper();
+        TestActionWithData a = new TestActionWithData();
+        sah.setUpAction(a);
+        sah.setupClampListBounds();
+        // We check to make sure we throw
+        // exception if the list has invalid types in it.
+        boolean failed = false;
+        try {
+            sah.executeAction("selectall");
+        }
+        catch (Exception iea) {
+            failed = true;
+        }
+        assertTrue(failed);
+    }
+
+    @Test
+    public void testSelectAll() throws Exception {
+        ActionHelper sah = new ActionHelper();
+        TestActionWithData a = new TestActionWithData() {
+            @Override
+            protected DataResult getDataResult(User user,
+                                               ActionForm formIn,
+                                               HttpServletRequest request) {
+                List retval = new LinkedList<>();
+                for (int i = 0; i < 10; i++) {
+                    retval.add(new TestIdObject((long) i));
+                }
+                return new DataResult(retval);
+            }
+        };
+        sah.setUpAction(a);
+        sah.setupClampListBounds();
+        ActionForward forward = sah.executeAction("selectall");
+        verifyRhnSetData(sah.getUser().getId(), a.getSetDecl().getLabel(), 10);
+        verifyParam(forward.getPath(), "setupdated", "true");
+    }
+
+
+
+    @Test
+    public void testFilter() throws Exception {
+        ActionHelper sah = new ActionHelper();
+        sah.setUpAction(action);
+        sah.getRequest().addParameter(RequestContext.FILTER_STRING, "zzzz");
+        sah.setupClampListBounds();
+
+        ActionForward forward = sah.executeAction("filter");
+        verifyParam(forward.getPath(), RequestContext.FILTER_STRING, "zzzz");
+    }
+
+
+    @Test
+    public void testUnspecified() throws Exception {
+        ActionHelper sah = new ActionHelper();
+        sah.setUpAction(action);
+        sah.setupClampListBounds();
+        sah.getRequest().addParameter("items_selected",
+            new String[] {"10", "20", "30"});
+        sah.getRequest().addParameter("newset", (String)null);
+        sah.getRequest().addParameter("items_on_page", (String)null);
+        ActionForward forward  = sah.executeAction("unspecified");
+
+        verifyParam(forward.getPath(), "newset", "[10, 20, 30]");
+    }
+
+    private void verifyParam(String path, String name, String value) {
+        String[] args = StringUtils.split(path, "?&");
+        for (String argIn : args) {
+            String[] param = StringUtils.split(argIn, "=");
+            if (param[0].equals(name)) {
+                assertEquals(value, param[1]);
+                break;
+            }
+        }
+    }
+
+    public static void verifyRhnSetData(User user, RhnSetDecl decl, int size)
+        throws HibernateException, SQLException {
+        verifyRhnSetData(user.getId(), decl.getLabel(), size);
+    }
+
+    public static void verifyRhnSetData(Long uid, String setname, int size)
+        throws HibernateException {
+        HibernateFactory.getSession().doWork(connection -> {
+            Statement statement = null;
+            ResultSet rs = null;
+            try {
+                statement = connection.createStatement();
+                String query = "SELECT * FROM rhnSet WHERE user_id = " + uid;
+                rs = statement.executeQuery(query);
+
+                assertNotNull(rs);
+
+                int cnt = 0;
+                while (rs.next()) {
+                    assertEquals(uid.longValue(), rs.getLong("user_id"));
+                    assertEquals(setname, rs.getString("label"));
+                    cnt++;
+                }
+
+                assertEquals(size, cnt);
+            }
+            catch (SQLException e) {
+                log.error("Error validating data.", e);
+                throw e;
+            }
+            finally {
+                HibernateHelper.cleanupDB(rs, statement);
+            }
+        });
+    }
+
+    public static class TestAction extends RhnSetAction {
+
+        @Override
+        protected RhnSetDecl getSetDecl() {
+            return RhnSetDecl.TEST;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        protected DataResult<?> getDataResult(User user,
+                                           ActionForm formIn,
+                                           HttpServletRequest request) {
+            return null;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        protected void processMethodKeys(Map<String, String> map) {
+            assertNotNull(map.get("updatelist"));
+            assertNotNull(map.get("selectall"));
+            assertNotNull(map.get("unselectall"));
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        protected void processParamMap(ActionForm formIn,
+                                       HttpServletRequest request,
+                                       Map<String, Object> params) {
+            assertNotNull(params);
+        }
+
+    }
+
+    public static class TestActionWithData extends RhnSetAction {
+
+        @Override
+        protected RhnSetDecl getSetDecl() {
+            return RhnSetDecl.TEST;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        protected DataResult<String> getDataResult(User user,
+                                           ActionForm formIn,
+                                           HttpServletRequest request) {
+            List<String> retval = Arrays.asList(Locale.getISOCountries());
+            return new DataResult<>(retval);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        protected void processMethodKeys(Map<String, String> map) {
+            assertNotNull(map.get("updatelist"));
+            assertNotNull(map.get("selectall"));
+            assertNotNull(map.get("unselectall"));
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        protected void processParamMap(ActionForm formIn,
+                                       HttpServletRequest request,
+                                       Map<String, Object> params) {
+            assertNotNull(params);
+        }
+
+    }
+
+    public class TestIdObject implements Identifiable {
+        private Long id;
+
+        public TestIdObject(Long idIn) {
+            this.id = idIn;
+        }
+
+        @Override
+        public Long getId() {
+            return this.id;
+        }
+    }
+}
