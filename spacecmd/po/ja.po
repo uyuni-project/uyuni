@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-21 10:50+0100\n"
-"PO-Revision-Date: 2025-11-24 16:04+0000\n"
-"Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
+"POT-Creation-Date: 2026-01-09 10:26+0000\n"
+"PO-Revision-Date: 2025-12-09 13:07+0000\n"
+"Last-Translator: Julia Faltenbacher <julia.faltenbacher@suse.com>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/spacecmd/ja/>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
@@ -305,8 +305,8 @@ msgstr "連絡方法:         %s"
 msgid "Software Channels"
 msgstr "ソフトウェアチャンネル"
 
-#: ../src/spacecmd/activationkey.py:1050 ../src/spacecmd/configchannel.py:870
-#: ../src/spacecmd/configchannel.py:990 ../src/spacecmd/system.py:3165
+#: ../src/spacecmd/activationkey.py:1050 ../src/spacecmd/configchannel.py:872
+#: ../src/spacecmd/configchannel.py:992 ../src/spacecmd/system.py:3165
 msgid "Configuration Channels"
 msgstr "設定チャンネル"
 
@@ -426,6 +426,7 @@ msgid "File %s exists, confirm overwrite file? (y/n)"
 msgstr "ファイル %s は既に存在しています。上書きしてよろしいですか？ (y/n)"
 
 #: ../src/spacecmd/activationkey.py:1448
+#, python-brace-format
 msgid "Failed to save exported keys to file: {}"
 msgstr "エクスポートしたキーをファイルに書き込む処理が失敗しました: {}"
 
@@ -511,7 +512,7 @@ msgstr "元のキー:"
 msgid "Cloned Key:"
 msgstr "複製されたキー:"
 
-#: ../src/spacecmd/activationkey.py:1626 ../src/spacecmd/configchannel.py:1566
+#: ../src/spacecmd/activationkey.py:1626 ../src/spacecmd/configchannel.py:1568
 msgid "Error - must specify either -c or -x options!"
 msgstr "エラー - オプション -c と -x は同時に指定できません！"
 
@@ -552,7 +553,7 @@ msgstr "が存在しません。読み飛ばしています！"
 msgid "Cloning key %s as %s"
 msgstr "キー %s を %s として複製しています"
 
-#: ../src/spacecmd/activationkey.py:1768 ../src/spacecmd/configchannel.py:1631
+#: ../src/spacecmd/activationkey.py:1768 ../src/spacecmd/configchannel.py:1633
 #, python-format
 msgid "Failed to clone %s to %s"
 msgstr "%s を %s に複製する処理が失敗しました"
@@ -793,23 +794,23 @@ msgstr "修正日: %s"
 msgid "Target Path:     %s"
 msgstr "ターゲットパス:     %s"
 
-#: ../src/spacecmd/configchannel.py:306 ../src/spacecmd/configchannel.py:779
+#: ../src/spacecmd/configchannel.py:306 ../src/spacecmd/configchannel.py:781
 #, python-format
 msgid "Owner:           %s"
 msgstr "所有者:           %s"
 
-#: ../src/spacecmd/configchannel.py:307 ../src/spacecmd/configchannel.py:780
+#: ../src/spacecmd/configchannel.py:307 ../src/spacecmd/configchannel.py:782
 #, python-format
 msgid "Group:           %s"
 msgstr "グループ:           %s"
 
-#: ../src/spacecmd/configchannel.py:308 ../src/spacecmd/configchannel.py:781
+#: ../src/spacecmd/configchannel.py:308 ../src/spacecmd/configchannel.py:783
 #, python-format
 msgid "Mode:            %s"
 msgstr "モード:            %s"
 
 #: ../src/spacecmd/configchannel.py:310 ../src/spacecmd/configchannel.py:748
-#: ../src/spacecmd/configchannel.py:783
+#: ../src/spacecmd/configchannel.py:785
 #, python-format
 msgid "SELinux Context: %s"
 msgstr "SELinux コンテキスト: %s"
@@ -819,13 +820,13 @@ msgstr "SELinux コンテキスト: %s"
 msgid "SHA256:          %s"
 msgstr "SHA256:          %s"
 
-#: ../src/spacecmd/configchannel.py:314 ../src/spacecmd/configchannel.py:782
+#: ../src/spacecmd/configchannel.py:314 ../src/spacecmd/configchannel.py:784
 #, python-format
 msgid "Binary:          %s"
 msgstr "バイナリ:          %s"
 
-#: ../src/spacecmd/configchannel.py:318 ../src/spacecmd/configchannel.py:795
-#: ../src/spacecmd/configchannel.py:1061 ../src/spacecmd/kickstart.py:2114
+#: ../src/spacecmd/configchannel.py:318 ../src/spacecmd/configchannel.py:797
+#: ../src/spacecmd/configchannel.py:1063 ../src/spacecmd/kickstart.py:2114
 #: ../src/spacecmd/snippet.py:172
 msgid "Contents"
 msgstr "内容"
@@ -1007,15 +1008,15 @@ msgstr "モード [%s]:"
 msgid "SELinux Context [%s]:"
 msgstr "SELinux コンテキスト [%s]:"
 
-#: ../src/spacecmd/configchannel.py:668 ../src/spacecmd/configchannel.py:1029
+#: ../src/spacecmd/configchannel.py:668 ../src/spacecmd/configchannel.py:1031
 msgid "Revision [next]:"
 msgstr "リビジョン [次の値]:"
 
-#: ../src/spacecmd/configchannel.py:686 ../src/spacecmd/configchannel.py:1034
+#: ../src/spacecmd/configchannel.py:686 ../src/spacecmd/configchannel.py:1036
 msgid "The revision must be an integer"
 msgstr "リビジョンは整数でなければなりません"
 
-#: ../src/spacecmd/configchannel.py:690 ../src/spacecmd/configchannel.py:1015
+#: ../src/spacecmd/configchannel.py:690 ../src/spacecmd/configchannel.py:1017
 #: ../src/spacecmd/cryptokey.py:121 ../src/spacecmd/kickstart.py:2173
 #: ../src/spacecmd/snippet.py:152
 msgid "Read an existing file [y/N]:"
@@ -1029,7 +1030,7 @@ msgstr "ファイル:"
 msgid "The path is required"
 msgstr "パスを指定する必要があります"
 
-#: ../src/spacecmd/configchannel.py:725 ../src/spacecmd/configchannel.py:1040
+#: ../src/spacecmd/configchannel.py:725 ../src/spacecmd/configchannel.py:1042
 msgid "You must provide the file contents"
 msgstr "ファイルの内容を指定しなければなりません"
 
@@ -1037,30 +1038,30 @@ msgstr "ファイルの内容を指定しなければなりません"
 msgid "You must provide the target path for a symlink"
 msgstr "シンボリックリンクのターゲットパスを指定しなければなりません"
 
-#: ../src/spacecmd/configchannel.py:746 ../src/spacecmd/configchannel.py:777
+#: ../src/spacecmd/configchannel.py:746 ../src/spacecmd/configchannel.py:779
 #, python-format
 msgid "Path:            %s"
 msgstr "パス:            %s"
 
-#: ../src/spacecmd/configchannel.py:778
+#: ../src/spacecmd/configchannel.py:780
 #, python-format
 msgid "Directory:       %s"
 msgstr "ディレクトリ:       %s"
 
-#: ../src/spacecmd/configchannel.py:788
+#: ../src/spacecmd/configchannel.py:790
 #, python-format
 msgid "Revision:        %i"
 msgstr "リビジョン:        %i"
 
-#: ../src/spacecmd/configchannel.py:793
+#: ../src/spacecmd/configchannel.py:795
 msgid "Contents not displayed (base64 encoded)"
 msgstr "内容は表示されません (base64 でエンコードされています)"
 
-#: ../src/spacecmd/configchannel.py:807
+#: ../src/spacecmd/configchannel.py:809
 msgid "configchannel_addfile/configchannel_updatefile: Create a configuration file"
 msgstr "configchannel_addfile/configchannel_updatefile: 設定ファイルを作成"
 
-#: ../src/spacecmd/configchannel.py:811
+#: ../src/spacecmd/configchannel.py:813
 msgid ""
 "usage: configchannel_addfile/configchannel_updatefile -c CHANNEL - p PATH -f LOCAL_FILE_PATH [OPTIONS])\n"
 "\n"
@@ -1106,39 +1107,39 @@ msgstr ""
 "  を含むファイル) については、バイナリ (-b) オプションを指定する必要があります。場合によっては\n"
 "  自動検出されることもありますが、指定しておいたほうが適切です。\n"
 
-#: ../src/spacecmd/configchannel.py:875 ../src/spacecmd/softwarechannel.py:900
+#: ../src/spacecmd/configchannel.py:877 ../src/spacecmd/softwarechannel.py:900
 #: ../src/spacecmd/softwarechannel.py:1028
 #: ../src/spacecmd/softwarechannel.py:1035
 msgid "Select:"
 msgstr "選択:"
 
-#: ../src/spacecmd/configchannel.py:882 ../src/spacecmd/configchannel.py:1001
+#: ../src/spacecmd/configchannel.py:884 ../src/spacecmd/configchannel.py:1003
 #: ../src/spacecmd/softwarechannel.py:1520
 #, python-format
 msgid "%s is not a valid channel"
 msgstr "%s は正しいチャンネルではありません"
 
-#: ../src/spacecmd/configchannel.py:886
+#: ../src/spacecmd/configchannel.py:888
 msgid "Unable to obtain a valid channel. Aborting."
 msgstr "正しいチャンネルを取得できませんでした。中止しています。"
 
-#: ../src/spacecmd/configchannel.py:892 ../src/spacecmd/scap.py:190
+#: ../src/spacecmd/configchannel.py:894 ../src/spacecmd/scap.py:190
 msgid "Path:"
 msgstr "パス:"
 
-#: ../src/spacecmd/configchannel.py:907 ../src/spacecmd/configchannel.py:1050
+#: ../src/spacecmd/configchannel.py:909 ../src/spacecmd/configchannel.py:1052
 msgid "No config channel specified!"
 msgstr "設定チャンネルを指定していません！"
 
-#: ../src/spacecmd/configchannel.py:912 ../src/spacecmd/configchannel.py:1055
+#: ../src/spacecmd/configchannel.py:914 ../src/spacecmd/configchannel.py:1057
 msgid "Error obtaining file info"
 msgstr "ファイル情報の取得時にエラー"
 
-#: ../src/spacecmd/configchannel.py:958
+#: ../src/spacecmd/configchannel.py:960
 msgid "configchannel_updateinitsls: Update init.sls file"
 msgstr "configchannel_updateinitsls: init.sls ファイルを更新"
 
-#: ../src/spacecmd/configchannel.py:961
+#: ../src/spacecmd/configchannel.py:963
 msgid ""
 "usage: configchannel_updateinitsls -c CHANNEL -f LOCAL_FILE_PATH [OPTIONS])\n"
 "\n"
@@ -1156,52 +1157,52 @@ msgstr ""
 "  -f (ファイルの内容を含むローカルパス)\n"
 "  -y: ファイルの内容を自動処理する\n"
 
-#: ../src/spacecmd/configchannel.py:1010
+#: ../src/spacecmd/configchannel.py:1012
 #, python-format
 msgid "No existing file information found for %s"
 msgstr "%s に対する既存のファイル情報がありません"
 
-#: ../src/spacecmd/configchannel.py:1059
+#: ../src/spacecmd/configchannel.py:1061
 #, python-format
 msgid "revision:                 %s"
 msgstr "リビジョン:                 %s"
 
-#: ../src/spacecmd/configchannel.py:1060
+#: ../src/spacecmd/configchannel.py:1062
 #, python-format
 msgid "contents_enc64:           %s"
 msgstr "contents_enc64:           %s"
 
-#: ../src/spacecmd/configchannel.py:1091
+#: ../src/spacecmd/configchannel.py:1093
 msgid "configchannel_removefiles: Remove configuration files"
 msgstr "configchannel_removefiles: 設定ファイルを削除"
 
-#: ../src/spacecmd/configchannel.py:1092
+#: ../src/spacecmd/configchannel.py:1094
 msgid "usage: configchannel_removefiles CHANNEL <FILE ...>"
 msgstr "使用方法: configchannel_removefiles チャンネル <ファイル ...>"
 
-#: ../src/spacecmd/configchannel.py:1130
+#: ../src/spacecmd/configchannel.py:1132
 msgid "configchannel_verifyfile: Verify a configuration file"
 msgstr "configchannel_verifyfile: 設定ファイルを検証"
 
-#: ../src/spacecmd/configchannel.py:1131
+#: ../src/spacecmd/configchannel.py:1133
 msgid "usage: configchannel_verifyfile CHANNEL FILE <SYSTEMS>"
 msgstr "使用方法: configchannel_verifyfile チャンネル ファイル <システム>"
 
-#: ../src/spacecmd/configchannel.py:1172
+#: ../src/spacecmd/configchannel.py:1174
 msgid "No valid system selected"
 msgstr "正しいシステムを選択していません"
 
-#: ../src/spacecmd/configchannel.py:1178 ../src/spacecmd/system.py:551
+#: ../src/spacecmd/configchannel.py:1180 ../src/spacecmd/system.py:551
 #: ../src/spacecmd/system.py:572 ../src/spacecmd/system.py:1030
 #, python-format
 msgid "Action ID: %i"
 msgstr "アクション ID: %i"
 
-#: ../src/spacecmd/configchannel.py:1187
+#: ../src/spacecmd/configchannel.py:1189
 msgid "configchannel_export: export config channel(s) to json format file"
 msgstr "configchannel_export: 設定チャンネルを JSON 形式のファイルにエクスポートする"
 
-#: ../src/spacecmd/configchannel.py:1190
+#: ../src/spacecmd/configchannel.py:1192
 msgid ""
 "usage: configchannel_export <CHANNEL>... [options])\n"
 "options:\n"
@@ -1221,114 +1222,115 @@ msgstr ""
 "注意 : <チャンネル> を指定しない場合、全てのチャンネルをエクスポートします"
 
 #. Get the cc details
-#: ../src/spacecmd/configchannel.py:1208
+#: ../src/spacecmd/configchannel.py:1210
 #, python-format
 msgid "Getting config channel details for %s"
 msgstr "%s に対する設定チャンネルの詳細を取得しています"
 
-#: ../src/spacecmd/configchannel.py:1229
+#: ../src/spacecmd/configchannel.py:1231
 #, python-format
 msgid "Failed to get details for file %s from %s"
 msgstr "ファイル %s に対する詳細情報を %s から取得する処理に失敗しました"
 
-#: ../src/spacecmd/configchannel.py:1282
+#: ../src/spacecmd/configchannel.py:1284
 #, python-format
 msgid "File %s could not be exported "
 msgstr "ファイル %s をエクスポートできませんでした "
 
-#: ../src/spacecmd/configchannel.py:1283
+#: ../src/spacecmd/configchannel.py:1285
 msgid "with this API version(needs base64 encoding)"
 msgstr "(この API バージョンを利用した場合、 base64 エンコーディングが必要)"
 
-#: ../src/spacecmd/configchannel.py:1287
+#: ../src/spacecmd/configchannel.py:1289
 #, python-format
 msgid "File %s could not be exported as"
 msgstr "ファイル %s をエクスポートできませんでした"
 
-#: ../src/spacecmd/configchannel.py:1288
+#: ../src/spacecmd/configchannel.py:1290
 msgid " text...getting base64 encoded version"
 msgstr " (テキスト形式で取得できませんでした。 base64 で取得し直しています)"
 
-#: ../src/spacecmd/configchannel.py:1329
+#: ../src/spacecmd/configchannel.py:1331
 #, python-format
 msgid "Exporting ALL config channels to %s"
 msgstr "全ての設定チャンネルを %s にエクスポートしています"
 
-#: ../src/spacecmd/configchannel.py:1338
+#: ../src/spacecmd/configchannel.py:1340
 msgid "Error, no valid config channel passed, check name is  correct with spacecmd configchannel_list"
 msgstr "エラーです。正しい設定チャンネルを指定していないものと思われます。 spacecmd configchannel_list で名前の一覧をご確認ください"
 
-#: ../src/spacecmd/configchannel.py:1356
+#: ../src/spacecmd/configchannel.py:1358
 #, python-format
 msgid "Exporting cc %s to %s"
 msgstr "cc %s を %s にエクスポートしています"
 
-#: ../src/spacecmd/configchannel.py:1364
+#: ../src/spacecmd/configchannel.py:1366
+#, python-brace-format
 msgid "File '{}' exists, confirm overwrite file? (y/n)"
 msgstr "ファイル '{}' は既に存在しています。ファイルを上書きしますか？ (y/n)"
 
-#: ../src/spacecmd/configchannel.py:1368
+#: ../src/spacecmd/configchannel.py:1370
 #, python-format
 msgid "Error saving exported config channels to file: %s"
 msgstr "設定チャンネルをファイルに保存する際にエラーが発生しました: %s"
 
-#: ../src/spacecmd/configchannel.py:1378
+#: ../src/spacecmd/configchannel.py:1380
 msgid "configchannel_import: import config channel(s) from json file"
 msgstr "configchannel_import: JSON ファイルから設定チャンネルをインポートする"
 
-#: ../src/spacecmd/configchannel.py:1379
+#: ../src/spacecmd/configchannel.py:1381
 msgid "usage: configchannel_import <JSONFILES...>"
 msgstr "使用方法: configchannel_import <JSONファイル...>"
 
-#: ../src/spacecmd/configchannel.py:1389 ../src/spacecmd/kickstart.py:2604
+#: ../src/spacecmd/configchannel.py:1391 ../src/spacecmd/kickstart.py:2604
 msgid "Error, no filename passed"
 msgstr "エラーです、ファイル名を指定していません"
 
-#: ../src/spacecmd/configchannel.py:1397 ../src/spacecmd/kickstart.py:2613
+#: ../src/spacecmd/configchannel.py:1399 ../src/spacecmd/kickstart.py:2613
 #, python-format
 msgid "Error, could not read json data from %s"
 msgstr "エラーです、 JSON データを %s から読み込めませんでした"
 
-#: ../src/spacecmd/configchannel.py:1401
+#: ../src/spacecmd/configchannel.py:1403
 #, python-format
 msgid "Error importing configchannel %s"
 msgstr "設定チャンネル %s をインポートする際にエラーが発生しました"
 
-#: ../src/spacecmd/configchannel.py:1415
+#: ../src/spacecmd/configchannel.py:1417
 #, python-format
 msgid "Config channel %s already exists! Skipping!"
 msgstr "設定チャンネル %s は既に存在しています。読み飛ばします！"
 
 #. create the cc, we need to drop the org prefix from the cc name
-#: ../src/spacecmd/configchannel.py:1420
+#: ../src/spacecmd/configchannel.py:1422
 #, python-format
 msgid "Importing config channel  %s"
 msgstr "設定チャンネル %s をインポートしています"
 
-#: ../src/spacecmd/configchannel.py:1438
+#: ../src/spacecmd/configchannel.py:1440
 #, python-format
 msgid "Found %s %s for cc %s"
 msgstr "%s %s (cc %s 向け) が見つかりました"
 
-#: ../src/spacecmd/configchannel.py:1475
+#: ../src/spacecmd/configchannel.py:1477
 #, python-format
 msgid "Failed trying to import file %s (empty content)"
 msgstr "ファイル %s をインポートする処理に失敗しました (内容がありません)"
 
-#: ../src/spacecmd/configchannel.py:1477
+#: ../src/spacecmd/configchannel.py:1479
 msgid "Older APIs can't export encoded files"
 msgstr "古い API ではエンコードされたファイルをエクスポートできません"
 
-#: ../src/spacecmd/configchannel.py:1503
+#: ../src/spacecmd/configchannel.py:1505
 #, python-format
 msgid "Error adding file %s to %s"
 msgstr "ファイル %s を %s に追加する際にエラー"
 
-#: ../src/spacecmd/configchannel.py:1515
+#: ../src/spacecmd/configchannel.py:1517
 msgid "configchannel_clone: Clone config channel(s)"
 msgstr "configchannel_clone: 設定チャンネルを複製"
 
-#: ../src/spacecmd/configchannel.py:1518
+#: ../src/spacecmd/configchannel.py:1520
 msgid ""
 "usage examples:\n"
 "                 configchannel_clone foo_label -c bar_label\n"
@@ -1358,100 +1360,100 @@ msgstr ""
 "                   (\"foo\" を \"bar\" に置き換える)\n"
 "  注意 : -c や -x オプションを指定しない場合、対話的に操作を行ないます"
 
-#: ../src/spacecmd/configchannel.py:1549
+#: ../src/spacecmd/configchannel.py:1551
 msgid "No config channels found"
 msgstr "設定チャンネルが見つかりませんでした"
 
-#: ../src/spacecmd/configchannel.py:1552
+#: ../src/spacecmd/configchannel.py:1554
 msgid "Config Channels"
 msgstr "設定チャンネル"
 
-#: ../src/spacecmd/configchannel.py:1558
+#: ../src/spacecmd/configchannel.py:1560
 #, python-format
 msgid "Channel to clone: %s"
 msgstr "複製するチャンネル: %s"
 
-#: ../src/spacecmd/configchannel.py:1562
+#: ../src/spacecmd/configchannel.py:1564
 msgid "Channel to clone:"
 msgstr "複製するチャンネル:"
 
-#: ../src/spacecmd/configchannel.py:1563
+#: ../src/spacecmd/configchannel.py:1565
 msgid "Clone label:"
 msgstr "複製するラベル:"
 
-#: ../src/spacecmd/configchannel.py:1572
+#: ../src/spacecmd/configchannel.py:1574
 msgid "Error no channel label passed!"
 msgstr "チャンネルラベルを指定していません！"
 
-#: ../src/spacecmd/configchannel.py:1581
+#: ../src/spacecmd/configchannel.py:1583
 msgid "No suitable channels to clone has been found."
 msgstr "複製すべきチャンネルが見つかりませんでした。"
 
-#: ../src/spacecmd/configchannel.py:1648
+#: ../src/spacecmd/configchannel.py:1650
 msgid "no configchannel given"
 msgstr "設定チャンネルを指定していません"
 
-#: ../src/spacecmd/configchannel.py:1651
+#: ../src/spacecmd/configchannel.py:1653
 msgid "invalid configchannel label "
 msgstr "設定チャンネルのラベルが正しくありません "
 
-#: ../src/spacecmd/configchannel.py:1678
+#: ../src/spacecmd/configchannel.py:1680
 msgid "configchannel_diff: diff between config channels"
 msgstr "configchannel_diff: 設定チャンネル間の差分表示"
 
-#: ../src/spacecmd/configchannel.py:1680
+#: ../src/spacecmd/configchannel.py:1682
 msgid "usage: configchannel_diff SOURCE_CHANNEL TARGET_CHANNEL"
 msgstr "使用方法: configchannel_diff チャンネル_1 チャンネル_2"
 
-#: ../src/spacecmd/configchannel.py:1734
+#: ../src/spacecmd/configchannel.py:1736
 msgid "configchannel_sync:"
 msgstr "configchannel_sync:"
 
-#: ../src/spacecmd/configchannel.py:1735
+#: ../src/spacecmd/configchannel.py:1737
 msgid "sync config files between two config channels"
 msgstr "2 つの設定チャンネル間で設定ファイルを同期"
 
-#: ../src/spacecmd/configchannel.py:1737
+#: ../src/spacecmd/configchannel.py:1739
 msgid "usage: configchannel_sync SOURCE_CHANNEL TARGET_CHANNEL"
 msgstr "使用方法: configchannel_sync 同期元チャンネル 同期先チャンネル"
 
-#: ../src/spacecmd/configchannel.py:1777
+#: ../src/spacecmd/configchannel.py:1779
 msgid "syncing files from configchannel "
 msgstr "設定チャンネルからファイルを同期しています "
 
-#: ../src/spacecmd/configchannel.py:1788
+#: ../src/spacecmd/configchannel.py:1790
 msgid "files common in both channels:"
 msgstr "両方のチャンネルでの共通ファイル:"
 
-#: ../src/spacecmd/configchannel.py:1794
+#: ../src/spacecmd/configchannel.py:1796
 msgid "files only in source "
 msgstr "同期元にしかないファイル "
 
-#: ../src/spacecmd/configchannel.py:1800
+#: ../src/spacecmd/configchannel.py:1802
 msgid "files only in target "
 msgstr "同期先にしかないファイル "
 
-#: ../src/spacecmd/configchannel.py:1807
+#: ../src/spacecmd/configchannel.py:1809
 msgid "files that are in both channels will be overwritten in the target channel"
 msgstr "両方のチャンネルに存在するファイルについては、同期先のファイルが上書きされます"
 
-#: ../src/spacecmd/configchannel.py:1811
+#: ../src/spacecmd/configchannel.py:1813
 msgid "files only in the source channel will be added to the target channel"
 msgstr "同期元のチャンネルにしかないファイルについては、同期先のチャンネルに追加されます"
 
-#: ../src/spacecmd/configchannel.py:1813
+#: ../src/spacecmd/configchannel.py:1815
 msgid "files only in the target channel will be deleted"
 msgstr "同期先のチャンネルにしかないファイルは削除されます"
 
-#: ../src/spacecmd/configchannel.py:1816
+#: ../src/spacecmd/configchannel.py:1818
 msgid "nothing to do"
 msgstr "何も行なう必要がありません"
 
-#: ../src/spacecmd/configchannel.py:1820
+#: ../src/spacecmd/configchannel.py:1822
 msgid "perform synchronisation [y/N]:"
 msgstr "同期を実行しますか [y/N]:"
 
-#: ../src/spacecmd/configchannel.py:1873
+#: ../src/spacecmd/configchannel.py:1875
 msgid "unknown file type "
 msgstr "不明なファイルタイプです "
 
@@ -1585,6 +1587,7 @@ msgid "usage: custominfo_details KEY ..."
 msgstr "使用方法: custominfo_details 鍵 ..."
 
 #: ../src/spacecmd/custominfo.py:167
+#, python-brace-format
 msgid "No keys matched argument '{}'."
 msgstr "パラメータ '{}' に該当する鍵はありません。"
 
@@ -3471,34 +3474,34 @@ msgstr "** システムキャッシュを生成しています **"
 msgid "Could not create directory %s"
 msgstr "ディレクトリ %s を作成できませんでした"
 
-#: ../src/spacecmd/misc.py:862
+#: ../src/spacecmd/misc.py:870
 #, python-format
 msgid "Can't find system ID for %s"
 msgstr "%s に対するシステム ID が見つかりません"
 
-#: ../src/spacecmd/misc.py:867
+#: ../src/spacecmd/misc.py:875
 msgid "Duplicate system profile names found!"
 msgstr "重複したシステムプロファイル名が見つかりました！"
 
-#: ../src/spacecmd/misc.py:868
+#: ../src/spacecmd/misc.py:876
 msgid "Please reference systems by ID or resolve the"
 msgstr "ID でシステムを参照するか、もしくは"
 
-#: ../src/spacecmd/misc.py:869
+#: ../src/spacecmd/misc.py:877
 msgid "underlying issue with 'system_delete' or 'system_rename'"
 msgstr "'system_delete' や 'system_rename' で問題点をご確認ください"
 
-#: ../src/spacecmd/misc.py:940
+#: ../src/spacecmd/misc.py:948
 #, python-format
 msgid "No systems in group %s"
 msgstr "グループ %s 内にはシステムがありません"
 
-#: ../src/spacecmd/misc.py:954
+#: ../src/spacecmd/misc.py:962
 #, python-format
 msgid "No systems subscribed to %s"
 msgstr "%s をサブスクライブしているシステムはありません"
 
-#: ../src/spacecmd/misc.py:1015
+#: ../src/spacecmd/misc.py:1023
 msgid "Is this ok [y/N]:"
 msgstr "よろしいですか [y/N]:"
 
@@ -3643,6 +3646,7 @@ msgstr "%s という名前の組織は見つかりませんでした"
 #: ../src/spacecmd/org.py:229 ../src/spacecmd/org.py:264
 #: ../src/spacecmd/org.py:300 ../src/spacecmd/org.py:338
 #: ../src/spacecmd/org.py:460 ../src/spacecmd/org.py:497
+#, python-brace-format
 msgid "Organisation '{}' was not found"
 msgstr "組織 '{}' が見つかりませんでした"
 
@@ -3672,6 +3676,7 @@ msgid "No trust organisation found for the name %s"
 msgstr "名前 %s に対する信頼する組織が見つかりませんでした"
 
 #: ../src/spacecmd/org.py:304 ../src/spacecmd/org.py:342
+#, python-brace-format
 msgid "Organisation '{}' to trust for, was not found"
 msgstr "信頼先の組織 '{}' が見つかりませんでした"
 
@@ -3705,6 +3710,7 @@ msgid "No trusted organisation found for the name %s"
 msgstr "%s に対する信頼する組織が見つかりませんでした"
 
 #: ../src/spacecmd/org.py:388
+#, python-brace-format
 msgid "Trusted organisation '{}' was not found"
 msgstr "信頼する組織 '{}' が見つかりませんでした"
 
@@ -4002,7 +4008,6 @@ msgid "proxy_container_config: create a proxy system and return its configuratio
 msgstr "proxy_container_config: プロキシシステムを作成し、その設定ファイルを返します"
 
 #: ../src/spacecmd/proxy.py:46
-#, python-format
 msgid ""
 "usage: proxy_container_config [options] PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL ROOT_CA CRT KEY\n"
 "\n"
@@ -4049,7 +4054,7 @@ msgid "proxy_container_config_generate_cert: create a proxy system and return it
 msgstr "proxy_container_config_generate_cert: プロキシシステムを作成し、その設定ファイルを返します"
 
 #: ../src/spacecmd/proxy.py:119
-#, fuzzy, python-format
+#, fuzzy
 #| msgid ""
 #| "usage: proxy_container_config_generate_cert PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL\n"
 #| "\n"
@@ -4179,6 +4184,7 @@ msgid "Repository SSL Client Key:         %s"
 msgstr "リポジトリーの SSL クライアント鍵:         %s"
 
 #: ../src/spacecmd/repo.py:116
+#, python-brace-format
 msgid "No repositories found for '{}' query"
 msgstr "'{}' の問い合わせに対してリポジトリーが見つかりませんでした"
 
@@ -4399,6 +4405,7 @@ msgid "%s  # Systems"
 msgstr "%s  # システム"
 
 #: ../src/spacecmd/report.py:197
+#, python-brace-format
 msgid "No errata found for '{}'"
 msgstr "'{}' に対するエラータは見つかりませんでした"
 
@@ -4823,6 +4830,7 @@ msgid "If no date is provided it will delete all archived actions"
 msgstr "日付が指定されていない場合、アーカイブ済みのすべてのアクションが削除されます"
 
 #: ../src/spacecmd/schedule.py:537
+#, python-brace-format
 msgid "Do you want to delete ({}) archived actions? [y/N]"
 msgstr "アーカイブ済みのアクション ({}) を削除しますか? [y / N]"
 
@@ -4843,6 +4851,7 @@ msgid "If no date is provided it will archive all completed actions"
 msgstr "日付が指定されていない場合は、完了したすべてのアクションがアーカイブされます"
 
 #: ../src/spacecmd/schedule.py:619
+#, python-brace-format
 msgid "Do you want to archive ({}) completed actions? [y/N]"
 msgstr "完了したアクション ({}) をアーカイブしますか? [y / N]"
 
@@ -6107,10 +6116,12 @@ msgid "merging errata from softwarechannel "
 msgstr "下記のソフトウェアチャンネルからのエラータを併合します: "
 
 #: ../src/spacecmd/softwarechannel.py:2931
+#, python-brace-format
 msgid "{} contains no errata which is not already present in {}"
 msgstr "{} には {} に含まれていないエラータがありません"
 
 #: ../src/spacecmd/softwarechannel.py:2939
+#, python-brace-format
 msgid "errata to add to channel {}: "
 msgstr "チャンネル {} に追加されるエラータ: "
 
@@ -6124,6 +6135,7 @@ msgid " errata to  "
 msgstr " 個のエラータを下記に追加:  "
 
 #: ../src/spacecmd/softwarechannel.py:2955
+#, python-brace-format
 msgid "Perform these changes to channel {} [y/N]:"
 msgstr "チャンネル {} に対する変更を適用します [y/N]:"
 
@@ -8002,6 +8014,7 @@ msgstr "サーバは、ブートストラップ時に再アクティベーショ
 
 #. pylint: disable-next=consider-using-f-string
 #: ../src/spacecmd/system.py:5018
+#, python-brace-format
 msgid "Bootstrapping '{}'. This may take a while."
 msgstr "「{}」をブートストラップしています。 これにはしばらく時間がかかる場合があります。"
 
@@ -8015,11 +8028,13 @@ msgstr ""
 
 #. pylint: disable-next=consider-using-f-string
 #: ../src/spacecmd/system.py:5108
+#, python-brace-format
 msgid "System '{}' needs to be rebooted after update"
 msgstr ""
 
 #. pylint: disable-next=consider-using-f-string
 #: ../src/spacecmd/system.py:5117
+#, python-brace-format
 msgid "No reboot needed for system '{}' after applying available updates"
 msgstr ""
 
@@ -8337,40 +8352,41 @@ msgstr "順位が正しくありません"
 msgid "Clearing current selections"
 msgstr "現在の選択を消去しています"
 
-#: ../src/spacecmd/utils.py:817
+#: ../src/spacecmd/utils.py:818
 msgid "Could not generate json data object!"
 msgstr "JSON データオブジェクトを生成できませんでした！"
 
-#: ../src/spacecmd/utils.py:826
+#: ../src/spacecmd/utils.py:827
 #, python-format
 msgid "Could not open file %s for writing: %s"
 msgstr "ファイル %s を書き込み用に開くことができませんでした: %s"
 
-#: ../src/spacecmd/utils.py:839
+#: ../src/spacecmd/utils.py:840
 #, python-format
 msgid "Could not open file %s for reading: %s"
 msgstr "ファイル %s を読み込み用に開くことができませんでした: %s"
 
-#: ../src/spacecmd/utils.py:841
+#: ../src/spacecmd/utils.py:842
 #, python-format
 msgid "Could not parse JSON data from %s: %s"
 msgstr "JSON データを %s から処理できませんでした: %s"
 
 #. pylint: disable=broad-except
-#: ../src/spacecmd/utils.py:843
+#: ../src/spacecmd/utils.py:844
 #, python-format
 msgid "Error processing file %s: %s"
 msgstr "ファイル %s を処理する際にエラーが発生しました: %s"
 
-#: ../src/spacecmd/utils.py:880
+#: ../src/spacecmd/utils.py:881
 msgid "Skipping usage of common strings: both strings are equal"
 msgstr "共通する文字列を使用しているため読み飛ばしています: 両方の文字列が同じです"
 
-#: ../src/spacecmd/utils.py:901
+#: ../src/spacecmd/utils.py:902
 msgid "Skipping usage of common strings: number of substrings differ"
 msgstr "共通する文字列を使用しているため読み飛ばしています: 複数の箇所に違いがあります"
 
-#: ../src/spacecmd/utils.py:992
+#: ../src/spacecmd/utils.py:993
+#, python-brace-format
 msgid "Parameter {} not a string type, but {}."
 msgstr "パラメータ {} は文字列型ではなく {} です。"
 

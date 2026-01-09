@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-08-22 09:58+0200\n"
-"PO-Revision-Date: 2024-05-09 07:43+0000\n"
-"Last-Translator: Kristijan Fremen Velkovski <me@krisfremen.com>\n"
+"PO-Revision-Date: 2026-01-09 07:04+0000\n"
+"Last-Translator: \"Kristijan \\\"Fremen\\\" Velkovski\" <me@krisfremen.com>\n"
 "Language-Team: Macedonian <https://l10n.opensuse.org/projects/uyuni/backend/mk/>\n"
 "Language: mk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n==1 || n%10==1 ? 0 : 1;\n"
-"X-Generator: Weblate 4.9.1\n"
+"X-Generator: Weblate 5.15.1\n"
 
 #: ../server/apacheAuth.py:72
 #, python-format
@@ -74,10 +74,9 @@ msgstr ""
 "                   Молиме контактирајте го вашиот Орг Администратор за помош."
 
 #: ../server/handlers/xmlrpc/proxy.py:71
-#, fuzzy, python-format
-#| msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
+#, python-format
 msgid "SUSE Multi-Linux Manager Proxy service not enabled for server profile: \"%s\""
-msgstr "SUSE Manager Proxy сервис не е уклучен за сервер профилот: \"%s\""
+msgstr "SUSE Multi-Linux Manager Proxy сервис не е уклучен за сервер профилот: \"%s\""
 
 #: ../server/handlers/xmlrpc/proxy.py:94
 msgid "Invalid session key"
@@ -315,11 +314,11 @@ msgstr "Се чини дека ова не е важечко корисничк�
 
 #: ../common/rhnException.py:56
 msgid "Invalid username and password combination."
-msgstr ""
+msgstr "Неважечка комбинација на корисничко име и лозинка."
 
 #: ../common/rhnException.py:57
 msgid "This login is already taken, or the password is incorrect."
-msgstr ""
+msgstr "Ова најавување е веќе преземено или лозинката е неточна."
 
 #: ../common/rhnException.py:58
 msgid "Permission denied."
@@ -327,43 +326,43 @@ msgstr "Не е дозволено."
 
 #: ../common/rhnException.py:59
 msgid "Object not found."
-msgstr ""
+msgstr "Објектот не е пронајден."
 
 #: ../common/rhnException.py:60
 msgid "Invalid System Digital ID."
-msgstr ""
+msgstr "Неважечки системски дигитален идентификатор."
 
 #: ../common/rhnException.py:61
 msgid "Invalid System Credentials."
-msgstr ""
+msgstr "Неважечки системски акредитиви."
 
 #: ../common/rhnException.py:62
 msgid "Could not retrieve user data from database."
-msgstr ""
+msgstr "Не можеже да се преземат корисничките податоци од базата на податоци."
 
 #: ../common/rhnException.py:63
 msgid "Valid username required."
-msgstr ""
+msgstr "Потребно е важечко корисничко име."
 
 #: ../common/rhnException.py:64
 msgid "Valid password required."
-msgstr ""
+msgstr "Потребна е важечка лозинка."
 
 #: ../common/rhnException.py:65
 msgid "Minimum username length violation."
-msgstr ""
+msgstr "Прекршување на минималната должина на корисничкото име."
 
 #: ../common/rhnException.py:66
 msgid "Minimum password length violation."
-msgstr ""
+msgstr "Прекршување на минималната должина на лозинката."
 
 #: ../common/rhnException.py:67
 msgid "The username contains invalid characters."
-msgstr ""
+msgstr "Корисничкото име содржи неважечки знаци."
 
 #: ../common/rhnException.py:68
 msgid "File not found."
-msgstr ""
+msgstr "Фајлот не е пронајден."
 
 #: ../common/rhnException.py:69
 msgid "Architecture and OS version combination is not supported."
@@ -525,11 +524,6 @@ msgid ""
 msgstr ""
 
 #: ../common/rhnException.py:154
-#, fuzzy
-#| msgid ""
-#| "\n"
-#| "               %s Account has been deactivated on this server.\n"
-#| "               Please contact your Org administrator for more help."
 msgid ""
 "\n"
 "     The --force mgrpush option is disabled on this server.\n"
@@ -537,8 +531,9 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"               %s корисникот е деактивиран на овој сервер.\n"
-"               Молиме контактирајте го Орг администраторот за помош."
+"     Опцијата --force mgrpus е оневозможена на овој сервер.\n"
+"     Ве молиме контактирајте го вашиот администратор на SUSE Multi-Linux Manager за повеќе помош.\n"
+"     "
 
 #: ../common/rhnException.py:161
 msgid ""

@@ -7667,14 +7667,14 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="systemsearch_cpu_mhz_lt_column" xml:space="preserve">
         <source>CPU Mhz</source>
-        <target state="translated">CPU Mhz</target>
+        <target state="translated">CPU MHz</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_cpu_mhz_gt_column" xml:space="preserve">
         <source>CPU Mhz</source>
-        <target state="translated">CPU Mhz</target>
+        <target state="translated">CPU MHz</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
@@ -29306,116 +29306,128 @@ given channel.</source>
         </context-group>
         <target state="new"/>
       </trans-unit>
-    <trans-unit id="userdetails.jsp.adminroles" xml:space="preserve">
+      <trans-unit id="userdetails.jsp.adminroles" xml:space="preserve">
         <source>Administrative Roles</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="bunch.jsp.description.compare-task-bunch" xml:space="preserve">
         <source>Schedules a generic comparison task</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="schedule.edit.jsp.activateschedule" xml:space="preserve">
         <source>Activate Schedule</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/ScheduleDetail.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="task.status.compare-task-files" xml:space="preserve">
         <source>Compare Task</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="spmigration.jsp.dryrun.disabled.tooltip" xml:space="preserve">
         <source>Dry run is not available for this product.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="sdc.details.overview.subscribedchannels.edit" xml:space="preserve">
         <source>Edit Subscribed Channels</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="sdc.details.overview.sysproperties.edit" xml:space="preserve">
         <source>Edit System Properties</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="actionchain.jsp.distupgrade.upgrade" xml:space="preserve">
         <source>Migrate the installed product on</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="auditview.mark.reviewed" xml:space="preserve">
         <source>Mark reviewed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/audit/Search.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="ssm.overview.product_migration" xml:space="preserve">
-            <source>Product Migration</source>
+        <source>Product Migration</source>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="ssm.overview.product_migration.migrate" xml:space="preserve">
-            <source>&lt;a href="/rhn/manager/systems/ssm/product-migration"&gt;Migrate the products&lt;/a&gt; installed on the selected systems</source>
+      </trans-unit>
+      <trans-unit id="ssm.overview.product_migration.migrate" xml:space="preserve">
+        <source>&lt;a href="/rhn/manager/systems/ssm/product-migration"&gt;Migrate the products&lt;/a&gt; installed on the selected systems</source>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="channel.manage.sync.noerrata-tt.jsp" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="channel.manage.sync.noerrata-tt.jsp" xml:space="preserve">
         <source>Do not synchronize patches.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="channel.manage.sync.nostrict-tt.jsp" xml:space="preserve">
         <source>Allows a channel to deviate from the repository, keeping packages that have been removed from the remote repository.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="channel.manage.sync.latestonly-tt.jsp" xml:space="preserve">
         <source>Synchronize the latest package version only.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="channel.manage.sync.synckickstart-tt.jsp" xml:space="preserve">
         <source>This option prepares a directory tree ready for Kickstart auto installation.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="channel.manage.sync.fail-tt.jsp" xml:space="preserve">
         <source>Stop synchronizing if an error occurs.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="channel.jsp.sync.status.ready" xml:space="preserve">
         <source> Completed </source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="channel.jsp.sync.status.syncing" xml:space="preserve">
         <source> In Progress </source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="channel.jsp.sync.status.created" xml:space="preserve">
         <source> New Created </source>
+        <target state="new"/>
+      </trans-unit>
+    <trans-unit id="ssm.overview.appstreams" xml:space="preserve">
+            <source>AppStreams</source>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="ssm.overview.appstreams.manage" xml:space="preserve">
+            <source>&lt;a href="/rhn/manager/systems/ssm/appstreams"&gt;Enable and disable&lt;/a&gt; AppStreams on the selected systems</source>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="task.status.root-ca-cert-update" xml:space="preserve">
+        <source>CA Certificates Update</source>
       <target state="new"/>
   </trans-unit>
       </body>
