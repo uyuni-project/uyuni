@@ -150,8 +150,8 @@ public class ServerGroupFactory extends HibernateFactory {
      * Insert or update a ServerGroup
      * @param group the ServerGroup to save
      */
-    public static void save(ServerGroup group) {
-        SINGLETON.saveObject(group);
+    public static ServerGroup save(ServerGroup group) {
+        return SINGLETON.saveObject(group);
     }
 
     /**
@@ -291,8 +291,7 @@ public class ServerGroupFactory extends HibernateFactory {
             sg.setName(name);
             sg.setDescription(description);
             sg.setOrg(org);
-            save(sg);
-            return sg;
+            return (ManagedServerGroup) save(sg);
         }
         String msg = "Duplicate server group requested to be created.." +
                                 "Server Group with name -[" + name + "] and" +

@@ -76,9 +76,10 @@ public class StateFactory extends HibernateFactory {
      * Save a {@link StateRevision}.
      *
      * @param stateRevision the state revision to save
+     * @return the managed {@link StateRevision} instance
      */
-    public static void save(StateRevision stateRevision) {
-        singleton.saveObject(stateRevision);
+    public static StateRevision save(StateRevision stateRevision) {
+        return singleton.saveObject(stateRevision);
     }
 
     /**

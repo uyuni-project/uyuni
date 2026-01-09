@@ -426,37 +426,41 @@ public class ChannelFactory extends HibernateFactory {
      * Insert or Update a Channel.
      *
      * @param c Channel to be stored in database.
+     * @return the managed {@link Channel} object
      */
-    public static void save(Channel c) {
+    public static Channel save(Channel c) {
         c.setLastModified(new Date());
-        singleton.saveObject(c);
+        return singleton.saveObject(c);
     }
 
     /**
      * Insert or Update a content source.
      *
      * @param c content source to be stored in database.
+     * @return the managed {@link ContentSource} object
      */
-    public static void save(ContentSource c) {
-        singleton.saveObject(c);
+    public static ContentSource save(ContentSource c) {
+        return singleton.saveObject(c);
     }
 
     /**
      * Insert or Update a DistChannelMap.
      *
      * @param dcm DistChannelMap to be stored in database.
+     * @return the managed {@link DistChannelMap} object
      */
-    public static void save(DistChannelMap dcm) {
-        singleton.saveObject(dcm);
+    public static DistChannelMap save(DistChannelMap dcm) {
+        return singleton.saveObject(dcm);
     }
 
     /**
      * Insert or Update a content source filter.
      *
      * @param f content source filter to be stored in database.
+     * @return the managed {@link ContentSourceFilter} object
      */
-    public static void save(ContentSourceFilter f) {
-        singleton.saveObject(f);
+    public static ContentSourceFilter save(ContentSourceFilter f) {
+        return singleton.saveObject(f);
     }
 
     /**
@@ -1242,9 +1246,10 @@ public class ChannelFactory extends HibernateFactory {
      * Save a ChannelSyncFlag object for a specfic channel
      *
      * @param flags The ChannelSyncFlag object which should be added to channel
+     * @return the managed {@link ChannelSyncFlag} object
      */
-    public static void save(ChannelSyncFlag flags) {
-        singleton.saveObject(flags);
+    public static ChannelSyncFlag save(ChannelSyncFlag flags) {
+        return singleton.saveObject(flags);
     }
 
     /**
@@ -2098,18 +2103,20 @@ public class ChannelFactory extends HibernateFactory {
      * Insert or update a {@link ChannelProduct}.
      *
      * @param channelProduct ChannelProduct to be stored in database.
+     * @return the managed {@link ChannelProduct} object
      */
-    public static void save(ChannelProduct channelProduct) {
-        singleton.saveObject(channelProduct);
+    public static ChannelProduct save(ChannelProduct channelProduct) {
+        return singleton.saveObject(channelProduct);
     }
 
     /**
      * Insert or update a {@link ProductName}.
      *
      * @param productName ProductName to be stored in database.
+     * @return the managed {@link ProductName} object
      */
-    public static void save(ProductName productName) {
-        singleton.saveObject(productName);
+    public static ProductName save(ProductName productName) {
+        return singleton.saveObject(productName);
     }
 
     /**

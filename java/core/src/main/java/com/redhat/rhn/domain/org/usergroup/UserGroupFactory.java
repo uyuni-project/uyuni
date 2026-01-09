@@ -131,18 +131,22 @@ public class UserGroupFactory extends HibernateFactory {
 
     /**
      * save UserExtGroup object
+     *
      * @param extGroup external group
+     * @return the managed {@link UserExtGroup} instance
      */
-    public static void save(UserExtGroup extGroup) {
-        singleton.saveObject(extGroup);
+    public static UserExtGroup save(UserExtGroup extGroup) {
+        return singleton.saveObject(extGroup);
     }
 
     /**
      * save OrgUserGroup object
+     *
      * @param extGroup org user group
+     * @return the managed {@link OrgUserExtGroup} instance
      */
-    public static void save(OrgUserExtGroup extGroup) {
-        singleton.saveObject(extGroup);
+    public static OrgUserExtGroup save(OrgUserExtGroup extGroup) {
+        return singleton.saveObject(extGroup);
     }
 
     /**
@@ -194,9 +198,10 @@ public class UserGroupFactory extends HibernateFactory {
     /**
      * save UserGroupMembers object
      * @param ugmIn user group member
+     * @return the managed {@link UserGroupMembers} instance
      */
-    public static void save(UserGroupMembers ugmIn) {
-        singleton.saveObject(ugmIn);
+    public static UserGroupMembers save(UserGroupMembers ugmIn) {
+        return singleton.saveObject(ugmIn);
     }
 
     /**
