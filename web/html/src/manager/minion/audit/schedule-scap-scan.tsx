@@ -292,7 +292,7 @@ class ScheduleAuditScan extends React.Component<{}, StateType> {
                 <Text
                   name="advancedArgs"
                   disabled={!!selectedScapPolicy}
-                  placeholder={selectedScapPolicy ? "" : t("e.g: --skip-valid --thin-results")}
+                  placeholder={selectedScapPolicy ? "" : t("e.g: --results --report")}
                   title={t("Additional command-line arguments for oscap")}
                 />
               </div>
@@ -316,7 +316,7 @@ class ScheduleAuditScan extends React.Component<{}, StateType> {
                       }}
                     />
                     <span className="fetch-remote-help">
-                      {t("This requires a lot of memory, make sure this minion has enough memory available!")}
+                      {t("This requires internet and a lot of memory, make sure this minion has enough memory available!")}
                     </span>
                   </label>
                 </div>
