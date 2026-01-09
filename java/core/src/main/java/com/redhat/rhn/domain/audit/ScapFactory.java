@@ -131,18 +131,22 @@ public class ScapFactory extends HibernateFactory {
 
     /**
      * Persist {@link XccdfTestResult} to db.
+     *
      * @param result entity to persist
+     * @return the managed {@link XccdfTestResult} instance
      */
-    public static void save(XccdfTestResult result) {
-        getSession().persist(result);
+    public XccdfTestResult save(XccdfTestResult result) {
+        return saveObject(result);
     }
 
     /**
      * Persist {@link XccdfRuleResult} to db.
+     *
      * @param ruleResult entity to persist
+     * @return the managed {@link XccdfRuleResult} instance
      */
-    public static void save(XccdfRuleResult ruleResult) {
-        getSession().persist(ruleResult);
+    public XccdfRuleResult save(XccdfRuleResult ruleResult) {
+        return saveObject(ruleResult);
     }
 
     /**

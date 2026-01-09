@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 SUSE LLC
  * Copyright (c) 2009--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -129,9 +130,6 @@ public class NetworkInterfaceTest extends RhnBaseTestCase {
         salist.add(netAddr);
         netint.setSa4(salist);
         server.addNetworkInterface(netint);
-        netint = (NetworkInterface) TestUtils.saveAndReload(netint);
-        netAddr.setInterfaceId(netint.getInterfaceId());
-        TestUtils.saveAndFlush(netAddr);
         return netint;
     }
 }

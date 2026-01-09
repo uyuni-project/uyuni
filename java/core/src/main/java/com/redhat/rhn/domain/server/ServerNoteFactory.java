@@ -48,10 +48,12 @@ public class ServerNoteFactory extends HibernateFactory {
 
     /**
      * Insert or Update a Note.
+     *
      * @param noteIn Note to be stored in database.
+     * @return the managed {@link Note} instance
      */
-    public static void save(Note noteIn) {
-        singleton.saveObject(noteIn);
+    public static Note save(Note noteIn) {
+        return singleton.saveObject(noteIn);
     }
 
     /**
