@@ -72,10 +72,12 @@ public class ServerNetworkFactory extends HibernateFactory {
 
     /**
      * Save ServerNetAddress4
+     *
      * @param serverNetAddress4 the address to save
+     * @return the managed {@link ServerNetAddress4} instance
      */
-    public static void saveServerNetAddress4(ServerNetAddress4 serverNetAddress4) {
-        singleton.saveObject(serverNetAddress4);
+    public static ServerNetAddress4 saveServerNetAddress4(ServerNetAddress4 serverNetAddress4) {
+        return singleton.saveObject(serverNetAddress4);
     }
 
     /**
@@ -88,10 +90,12 @@ public class ServerNetworkFactory extends HibernateFactory {
 
     /**
      * Save ServerNetAddress4
+     *
      * @param serverNetAddress6 the address to save
+     * @return the managed {@link ServerNetAddress6} instance
      */
-    public static void saveServerNetAddress6(ServerNetAddress6 serverNetAddress6) {
-        singleton.saveObject(serverNetAddress6);
+    public static ServerNetAddress6 saveServerNetAddress6(ServerNetAddress6 serverNetAddress6) {
+        return singleton.saveObject(serverNetAddress6);
     }
 
     /**

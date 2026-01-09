@@ -160,15 +160,15 @@ public class ActivationKeyFactory extends HibernateFactory {
         // Set the default server contact method
         newKey.setContactMethod(ServerFactory.findContactMethodById(0L));
 
-        save(newKey);
+        ActivationKey activationKey = save(newKey);
 
         if (universalDefault) {
-            Token token = newKey.getToken();
+            Token token = activationKey.getToken();
             user.getOrg().setToken(token);
             OrgFactory.save(user.getOrg());
         }
 
-        return newKey;
+        return activationKey;
     }
 
     /**
@@ -208,10 +208,12 @@ public class ActivationKeyFactory extends HibernateFactory {
 
     /**
      * Saves an ActivationKey to the database
+     *
      * @param keyIn The ActivationKey to save.
+     * @return the managed {@link ActivationKey}
      */
-    public static void save(ActivationKey keyIn) {
-        singleton.saveObject(keyIn);
+    public static ActivationKey save(ActivationKey keyIn) {
+        return singleton.saveObject(keyIn);
     }
 
 

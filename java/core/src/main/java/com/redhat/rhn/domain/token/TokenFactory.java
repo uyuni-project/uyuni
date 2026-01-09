@@ -118,10 +118,12 @@ public class TokenFactory extends HibernateFactory {
 
     /**
      * Saves a token to the database
+     *
      * @param tokenIn The Token to save.
+     * @return the managed {@link Token} instance
      */
-    public static void save(Token tokenIn) {
-        singleton.saveObject(tokenIn);
+    public static Token save(Token tokenIn) {
+        return singleton.saveObject(tokenIn);
     }
 
     /**
