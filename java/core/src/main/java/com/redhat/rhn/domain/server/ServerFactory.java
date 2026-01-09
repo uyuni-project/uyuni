@@ -75,7 +75,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.persistence.Tuple;
+import jakarta.persistence.Tuple;
 
 /**
  * ServerFactory - the singleton class used to fetch and store
@@ -634,7 +634,7 @@ public class ServerFactory extends HibernateFactory {
             return Collections.emptyList();
         }
         return getSession()
-                .createQuery("FROM Server AS s WHERE ORG_ID = :orgId AND s.id IN (:serverIds)", Server.class)
+                .createQuery("FROM Server AS s WHERE s.org.id = :orgId AND s.id IN (:serverIds)", Server.class)
                 .setParameter("orgId", org.getId())
                 .setParameterList("serverIds", serverIds)
                 .list();
@@ -717,7 +717,7 @@ public class ServerFactory extends HibernateFactory {
         if (id == null || orgIn == null) {
             return null;
         }
-        return getSession().createQuery("FROM Server AS s WHERE s.id = :sid AND ORG_ID = :orgId", Server.class)
+        return getSession().createQuery("FROM Server AS s WHERE s.id = :sid AND org.id = :orgId", Server.class)
                 .setParameter("sid", id)
                 .setParameter("orgId", orgIn.getId())
                 .uniqueResult();
@@ -1896,7 +1896,7 @@ public class ServerFactory extends HibernateFactory {
      */
     public static List<Server> listOrgSystems(long orgId) {
         return getSession()
-                .createQuery("FROM com.redhat.rhn.domain.server.Server AS s WHERE ORG_ID = :orgId", Server.class)
+                .createQuery("FROM com.redhat.rhn.domain.server.Server AS s WHERE s.org.id = :orgId", Server.class)
                 .setParameter("orgId", orgId)
                 .list();
     }
@@ -1911,6 +1911,7 @@ public class ServerFactory extends HibernateFactory {
         if (systemIds.isEmpty()) {
             return new HashSet<>();
         }
+//        getSession().flush();
         return getSession().createNativeQuery(
                 """
                         SELECT sa.* FROM rhnServerAction sa
@@ -1920,6 +1921,7 @@ public class ServerFactory extends HibernateFactory {
                     """, ServerAction.class
                 )
                 .addSynchronizedEntityClass(Action.class)
+//                .addSynchronizedEntityClass(ServerAction.class)
                 .setParameterList("systemIds", systemIds, StandardBasicTypes.LONG)
                 .getResultList().stream().map(ServerAction::getServerId).collect(Collectors.toSet());
     }

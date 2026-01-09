@@ -104,7 +104,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.persistence.Tuple;
+import jakarta.persistence.Tuple;
 
 /**
  * ActionFactory - the singleton class used to fetch and store
@@ -633,7 +633,7 @@ public class ActionFactory extends HibernateFactory {
      * @return the Action found
      */
     public static Action lookupByUserAndId(User user, Long id) {
-        return getSession().createQuery("FROM Action AS a where a.id = :aid AND org_id = :orgId", Action.class)
+        return getSession().createQuery("FROM Action AS a where a.id = :aid AND a.org.id = :orgId", Action.class)
                 .setParameter("aid", id)
                 .setParameter("orgId", user.getOrg().getId())
                 .uniqueResult();

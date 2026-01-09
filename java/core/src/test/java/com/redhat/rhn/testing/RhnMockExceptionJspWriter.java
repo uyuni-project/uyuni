@@ -16,7 +16,7 @@ package com.redhat.rhn.testing;
 
 import java.io.IOException;
 
-import javax.servlet.jsp.JspWriter;
+import jakarta.servlet.jsp.JspWriter;
 
 /**
  * RhnMockExceptionJspWriter is a mock implementation of

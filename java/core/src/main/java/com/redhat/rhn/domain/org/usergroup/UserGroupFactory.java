@@ -122,7 +122,7 @@ public class UserGroupFactory extends HibernateFactory {
      */
     public static OrgUserExtGroup lookupOrgExtGroupByIdAndOrg(Long gidIn, Org orgIn) {
         Session session = HibernateFactory.getSession();
-        return session.createQuery("FROM OrgUserExtGroup WHERE id = :gid AND org_id = :org_id",
+        return session.createQuery("FROM OrgUserExtGroup WHERE id = :gid AND org.id = :org_id",
                         OrgUserExtGroup.class)
                 .setParameter("gid", gidIn)
                 .setParameter("org_id", orgIn.getId())
@@ -173,7 +173,7 @@ public class UserGroupFactory extends HibernateFactory {
      */
     public static OrgUserExtGroup lookupOrgExtGroupByLabelAndOrg(String labelIn, Org orgIn) {
         Session session = HibernateFactory.getSession();
-        return session.createQuery("FROM OrgUserExtGroup WHERE label = :label AND org_id = :org_id",
+        return session.createQuery("FROM OrgUserExtGroup WHERE label = :label AND org.id = :org_id",
                         OrgUserExtGroup.class)
                 .setParameter("label", labelIn)
                 .setParameter("org_id", orgIn.getId())

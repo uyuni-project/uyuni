@@ -18,8 +18,8 @@ package com.redhat.rhn.testing;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.WriteListener;
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.WriteListener;
 
 public class MockServletOutputStream extends ServletOutputStream {
     private ByteArrayOutputStream buffer;
@@ -58,6 +58,15 @@ public class MockServletOutputStream extends ServletOutputStream {
      */
     public void write(int b) throws IOException {
         buffer.write(b);
+    }
+
+    /**
+     * Flushes the output stream.
+     * @throws IOException
+     */
+    @Override
+    public void flush() throws IOException {
+        buffer.flush();
     }
 
     /**

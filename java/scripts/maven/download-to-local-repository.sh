@@ -95,9 +95,9 @@ fi
 
 ST_GROUP=strutstest
 ST_ARTIFACT=strutstest
-ST_VERSION=0.0.1
+ST_VERSION=1.0.0
 
-ST_URL="https://github.com/uyuni-project/strutstestcase/releases/download/v.$ST_VERSION-alpha/$ST_ARTIFACT-uyuni-$ST_VERSION.jar"
+ST_URL="https://github.com/uyuni-project/strutstestcase/releases/download/v$ST_VERSION-uyuni/$ST_ARTIFACT-uyuni-$ST_VERSION.jar"
 ST_ARTIFACT_DIR="$REPOSITORY_DIR/$ST_GROUP/$ST_ARTIFACT"
 ST_FULL_DIR="$ST_ARTIFACT_DIR/$ST_VERSION"
 

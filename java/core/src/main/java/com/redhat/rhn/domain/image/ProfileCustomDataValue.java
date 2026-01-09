@@ -19,16 +19,16 @@ import com.redhat.rhn.domain.user.legacy.UserImpl;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 
 /**
  * CustomDataValue
@@ -49,8 +49,8 @@ public class ProfileCustomDataValue extends BaseDomainHelper {
      * @return Returns the Id
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pcdv_seq")
-    @SequenceGenerator(name = "pcdv_seq", sequenceName = "suse_pcdv_id_seq", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pcdv_seq")
+	@SequenceGenerator(name = "pcdv_seq", sequenceName = "suse_pcdv_id_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }
